@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-13 15:25+0300\n"
+"POT-Creation-Date: 2008-02-14 07:13+0300\n"
 "PO-Revision-Date: 2006-08-09 15:58+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -697,17 +697,16 @@ msgid "unknown POSIX class name"
 msgstr "tuntematon POSIX-luokan nimi"
 
 #: ../glib/gregex.c:288
-#, fuzzy
 msgid "POSIX collating elements are not supported"
-msgstr "Symbolisia linkkejä ei tueta"
+msgstr ""
 
 #: ../glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
-msgstr ""
+msgstr "Merkin arvo sekvenssissä \\x{...} on liian suuri"
 
 #: ../glib/gregex.c:294
 msgid "invalid condition (?(0)"
-msgstr ""
+msgstr "virheellinen ehto (?(0)"
 
 #: ../glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
@@ -715,47 +714,47 @@ msgstr ""
 
 #: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
-msgstr ""
+msgstr "rekursiivinen kutsu voisi olla päättymätön"
 
 #: ../glib/gregex.c:303
 msgid "missing terminator in subpattern name"
-msgstr ""
+msgstr "alimallin nimestä puuttuu päätösmerkki"
 
 #: ../glib/gregex.c:306
 msgid "two named subpatterns have the same name"
-msgstr ""
+msgstr "kahdella nimetyllä alimallilla on sama nimi"
 
 #: ../glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
-msgstr ""
+msgstr "väärin muotoiltu \\P- tai \\p-sekvenssi"
 
 #: ../glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
-msgstr ""
+msgstr "tuntematon ominaisuuden nimi \\P- tai \\p-sekvenssin jälkeen"
 
 #: ../glib/gregex.c:315
 msgid "subpattern name is too long (maximum 32 characters)"
-msgstr ""
+msgstr "alimallin nimi on liian pitkä (enintään 32 merkkiä)"
 
 #: ../glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr ""
+msgstr "liian monta nimettyä alimallia (enintään 10000)"
 
 #: ../glib/gregex.c:321
 msgid "octal value is greater than \\377"
-msgstr ""
+msgstr "oktaaliarvo on suurempi kuin \\377"
 
 #: ../glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "DEFINE-ryhmä sisältää useampia kuin yhden haaran"
 
 #: ../glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
-msgstr ""
+msgstr "DEFINE-ryhmän toisto ei ole sallittu"
 
 #: ../glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
-msgstr ""
+msgstr "epäyhtenäisiä NEWLINE-valitsimia"
 
 #: ../glib/gregex.c:333
 msgid ""
@@ -764,19 +763,19 @@ msgstr ""
 
 #: ../glib/gregex.c:338
 msgid "unexpected repeat"
-msgstr ""
+msgstr "odottamaton toisto"
 
 #: ../glib/gregex.c:342
 msgid "code overflow"
-msgstr ""
+msgstr "koodin ylivuoto"
 
 #: ../glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr ""
+msgstr "käännöksen työalueen koko loppui kesken"
 
 #: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "aiemmin tarkistettua ja viitattua alimallia ei löydy"
 
 #: ../glib/gregex.c:517 ../glib/gregex.c:1565
 #, c-format
@@ -1170,80 +1169,79 @@ msgstr "Arvoa \"%s\" ei voida turkita totuusarvoksi."
 #: ../gio/goutputstream.c:647
 #, c-format
 msgid "Too large count value passed to %s"
-msgstr ""
+msgstr "Liian suuri laskuriarvo välitetty kohteelle %s"
 
 #: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:894
 #: ../gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
-msgstr ""
+msgstr "Virta on jo suljettu"
 
 #: ../gio/gcancellable.c:296 ../gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
-msgstr ""
+msgstr "Toiminto oli peruttu"
 
 #: ../gio/gcontenttype.c:156
-#, fuzzy
 msgid "Unknown type"
-msgstr "tuntematon virhe"
+msgstr "Tuntematon tyyppi"
 
 #: ../gio/gcontenttype.c:157
 #, c-format
 msgid "%s filetype"
-msgstr ""
+msgstr "%s-tiedostotyyppi"
 
 #: ../gio/gcontenttype.c:574
 #, c-format
 msgid "%s type"
-msgstr ""
+msgstr "%s-tyyppi"
 
 #: ../gio/gdatainputstream.c:309
 #, c-format
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "Odottamaton aikainen virran loppu"
 
 #: ../gio/gdesktopappinfo.c:411 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
-msgstr ""
+msgstr "Nimeämätön"
 
 #: ../gio/gdesktopappinfo.c:588
 #, c-format
 msgid "Desktop file didn't specify Exec field"
-msgstr ""
+msgstr "Työpöytätiedosto ei määrittele Exec-kenttää"
 
 #: ../gio/gdesktopappinfo.c:882
 #, c-format
 msgid "Unable to find terminal required for application"
-msgstr ""
+msgstr "Sovelluksen vaatimaa päätettä ei löydy"
 
 #: ../gio/gdesktopappinfo.c:1114
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
+msgstr "Käyttäjän sovellusten asetuskansiota %s ei voi luoda: %s"
 
 #: ../gio/gdesktopappinfo.c:1118
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
-msgstr ""
+msgstr "Käyttäjän MIME-asetusten kansiota %s ei voi luoda: %s"
 
 #: ../gio/gdesktopappinfo.c:1457
 #, c-format
 msgid "Can't create user desktop file %s"
-msgstr ""
+msgstr "Käyttäjän työpöytätiedostoa %s ei voi luoda"
 
 #: ../gio/gdesktopappinfo.c:1517
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Oma määrittely kohteelle %s"
 
 #: ../gio/gdrive.c:372
 msgid "drive doesn't implement eject"
-msgstr ""
+msgstr "asema ei toteuta aseman avausta"
 
 #: ../gio/gdrive.c:439
 msgid "drive doesn't implement polling for media"
-msgstr ""
+msgstr "asema ei toteut median tarkkailua"
 
 #: ../gio/gfile.c:755 ../gio/gfile.c:943 ../gio/gfile.c:1076
 #: ../gio/gfile.c:1230 ../gio/gfile.c:1283 ../gio/gfile.c:1339
@@ -1251,60 +1249,59 @@ msgstr ""
 #: ../gio/gfile.c:2553 ../gio/gfile.c:2592 ../gio/gfile.c:2916
 #: ../gio/gfile.c:3317 ../gio/gfile.c:3397 ../gio/gfile.c:3477
 #: ../gio/gfile.c:3555
-#, fuzzy, c-format
+#, c-format
 msgid "Operation not supported"
-msgstr "Symbolisia linkkejä ei tueta"
+msgstr "Toiminto ei ole tuettu"
 
 #: ../gio/gfile.c:1118 ../gio/glocalfile.c:925 ../gio/glocalfile.c:934
 #: ../gio/glocalfile.c:945
 #, c-format
 msgid "Containing mount does not exist"
-msgstr ""
+msgstr "Ylläolevaa liitospistettä ei löydy"
 
 #: ../gio/gfile.c:1759
 #, c-format
 msgid "Can't copy over directory"
-msgstr ""
+msgstr "Kansion päälle ei voi kopioida"
 
 #: ../gio/gfile.c:1819
 #, c-format
 msgid "Can't copy directory over directory"
-msgstr ""
+msgstr "Kansiota ei voi kopioida kansion päälle"
 
 #: ../gio/gfile.c:1827 ../gio/glocalfile.c:1872
 #, c-format
 msgid "Target file exists"
-msgstr ""
+msgstr "Kohdetiedosto on olemassa"
 
 #: ../gio/gfile.c:1845
 #, c-format
 msgid "Can't recursively copy directory"
-msgstr ""
+msgstr "Kansiota ei voi kopioida rekursiivisesti"
 
 #: ../gio/gfile.c:2543
 #, c-format
 msgid "Invalid symlink value given"
-msgstr ""
+msgstr "Saatiin virheellinen symbolisen linkin arvo"
 
 #: ../gio/gfile.c:2635
-#, fuzzy, c-format
+#, c-format
 msgid "Trash not supported"
-msgstr "Symbolisia linkkejä ei tueta"
+msgstr "Roskakori ei ole tuettu"
 
 #: ../gio/gfile.c:2682
 #, c-format
 msgid "File names cannot contain '%c'"
-msgstr ""
+msgstr "Tiedostonimi ei voi sisältää merkkiä \"%c\""
 
 #: ../gio/gfile.c:4532 ../gio/gvolume.c:357
 msgid "volume doesn't implement mount"
-msgstr ""
+msgstr "taltio ei toteuta liittämistä"
 
 #: ../gio/gfile.c:4640
-#, fuzzy, c-format
+#, c-format
 msgid "No application is registered as handling this file"
-msgstr ""
-"Sovellus nimeltä \"%s\" ei rekisteröinyt kirjanmerkkiä kohteelle \"%s\""
+msgstr "Tiedoston käsittelyyn ei ole rekisteröity mitään sovellusta"
 
 #: ../gio/gfileenumerator.c:151
 #, c-format
@@ -1325,161 +1322,161 @@ msgstr ""
 #: ../gio/gfileoutputstream.c:168 ../gio/gfileoutputstream.c:523
 #, c-format
 msgid "Stream doesn't support query_info"
-msgstr ""
+msgstr "Virta ei tue komentoa query_info"
 
 #: ../gio/gfileinputstream.c:336 ../gio/gfileoutputstream.c:381
 #, c-format
 msgid "Seek not supported on stream"
-msgstr ""
+msgstr "Virta ei tue siirtymistä"
 
 #: ../gio/gfileinputstream.c:380
 #, c-format
 msgid "Truncate not allowed on input stream"
-msgstr ""
+msgstr "Syötevirtaa ei voi kutistaa"
 
 #: ../gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
-msgstr ""
+msgstr "Virta ei tue kutistamista"
 
 #: ../gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
-msgstr ""
+msgstr "Syötevirta ei toteuta lukua"
 
 #: ../gio/ginputstream.c:901 ../gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "Virrassa on toiminto odottamassa"
 
 #: ../gio/glocaldirectorymonitor.c:270
 #, c-format
 msgid "Unable to find default local directory monitor type"
-msgstr ""
+msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
 
 #: ../gio/glocalfile.c:589
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid filename %s"
-msgstr "Virheellinen avaimen nimi: %s"
+msgstr "Virheellinen tiedostonimi %s"
 
 #: ../gio/glocalfile.c:847
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting filesystem info: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
 #: ../gio/glocalfile.c:965
 #, c-format
 msgid "Can't rename root directory"
-msgstr ""
+msgstr "Juurikansiota ei voi nimetä uudestaan"
 
 #: ../gio/glocalfile.c:983
 #, c-format
 msgid "Can't rename file, filename already exist"
-msgstr ""
+msgstr "Tiedostoa ei voi nimetä uudestaan, tiedosto on jo olemassa"
 
 #: ../gio/glocalfile.c:996 ../gio/glocalfile.c:1747 ../gio/glocalfile.c:1776
 #: ../gio/glocalfile.c:1925 ../gio/glocalfileoutputstream.c:468
 #: ../gio/glocalfileoutputstream.c:509 ../gio/glocalfileoutputstream.c:911
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid filename"
-msgstr "Virheellinen isäntänimi"
+msgstr "Virheellinen tiedostonimi"
 
 #: ../gio/glocalfile.c:1000
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
 
 #: ../gio/glocalfile.c:1119
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe avattaessa tiedostoa: %s"
 
 #: ../gio/glocalfile.c:1129
 #, c-format
 msgid "Can't open directory"
-msgstr ""
+msgstr "Kansiota ei voi avata"
 
 #: ../gio/glocalfile.c:1183 ../gio/glocalfile.c:1751
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe poistettaessa tiedostoa: %s"
 
 #: ../gio/glocalfile.c:1477
-#, fuzzy, c-format
+#, c-format
 msgid "Error trashing file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
 #: ../gio/glocalfile.c:1500
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
+msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
 #: ../gio/glocalfile.c:1524
 #, c-format
 msgid "Unable to find toplevel directory for trash"
-msgstr ""
+msgstr "Päätasoa roskakoria varten ei löydy"
 
 #: ../gio/glocalfile.c:1604 ../gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to find or create trash directory"
-msgstr ""
+msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
 #: ../gio/glocalfile.c:1658
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
+msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
 #: ../gio/glocalfile.c:1683
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to trash file: %s"
-msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
+msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
 #: ../gio/glocalfile.c:1780
-#, fuzzy, c-format
+#, c-format
 msgid "Error making symbolic link: %s"
-msgstr "Virhe käsiteltäessä valitsinta %s"
+msgstr "Virhe luotaessa symbolista linkkiä: %s"
 
 #: ../gio/glocalfile.c:1840 ../gio/glocalfile.c:1929
-#, fuzzy, c-format
+#, c-format
 msgid "Error moving file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe siirrettäessä tiedostoa: %s"
 
 #: ../gio/glocalfile.c:1863
 #, c-format
 msgid "Can't move directory over directory"
-msgstr ""
+msgstr "Kansiota ei voi siirtää kansion päälle"
 
 #: ../gio/glocalfile.c:1885 ../gio/glocalfileoutputstream.c:763
 #: ../gio/glocalfileoutputstream.c:777 ../gio/glocalfileoutputstream.c:792
 #: ../gio/glocalfileoutputstream.c:808 ../gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Backup file creation failed"
-msgstr ""
+msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
 #: ../gio/glocalfile.c:1904
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing target file: %s"
-msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
+msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
 #: ../gio/glocalfile.c:1918
 #, c-format
 msgid "Move between mounts not supported"
-msgstr ""
+msgstr "Siirto liitospisteiden välillä ei ole tuettu"
 
 #: ../gio/glocalfileinfo.c:707
 #, c-format
 msgid "Attribute value must be non-NULL"
-msgstr ""
+msgstr "Ominaisuuden arvo ei voi olla NULL"
 
 #: ../gio/glocalfileinfo.c:714
 #, c-format
 msgid "Invalid attribute type (string expected)"
-msgstr ""
+msgstr "Virheellinen ominaisuustyyppi (piti olla merkkijono)"
 
 #: ../gio/glocalfileinfo.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid extended attribute name"
-msgstr "Asiakirja loppui odottamattomasti ominaisuuden nimen kohdalla"
+msgstr "Virheellinen laajennetun ominaisuuden nimi"
 
 #: ../gio/glocalfileinfo.c:761
 #, c-format
@@ -1539,7 +1536,8 @@ msgstr "Virhe asetettaessa symbolista linkkiä: %s"
 #: ../gio/glocalfileinfo.c:1827
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
-msgstr "Virhe asetettaessa symbolista linkkiä: tiedosto ei ole symbolinen linkki"
+msgstr ""
+"Virhe asetettaessa symbolista linkkiä: tiedosto ei ole symbolinen linkki"
 
 #: ../gio/glocalfileinfo.c:2008
 #, c-format
@@ -1566,7 +1564,7 @@ msgstr "Virhe suljettaessa tiedostoa: %s"
 #: ../gio/glocalfilemonitor.c:197
 #, c-format
 msgid "Unable to find default local file monitor type"
-msgstr ""
+msgstr "Paikallisen tiedostomonitorinnin oletustapaa ei voitu selvittää"
 
 #: ../gio/glocalfileoutputstream.c:168 ../gio/glocalfileoutputstream.c:579
 #, c-format
@@ -1709,12 +1707,12 @@ msgstr "URI:ja ei tueta"
 #: ../gio/gwin32appinfo.c:371
 #, c-format
 msgid "association changes not supported on win32"
-msgstr ""
+msgstr "assosiaation muutokset eivät ole tuettu win32-alustalla"
 
 #: ../gio/gwin32appinfo.c:383
 #, c-format
 msgid "Association creation not supported on win32"
-msgstr ""
+msgstr "Assosiaation luonti ei ole tuettu win32-alustalla"
 
 #: ../tests/gio-ls.c:27
 msgid "do not hide entries"
@@ -1727,4 +1725,3 @@ msgstr "käytä pitkää listausmuotoa"
 #: ../tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[TIEDOSTO...]"
-
