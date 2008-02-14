@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-11 16:54-0500\n"
-"PO-Revision-Date: 2008-01-28 00:26+0530\n"
+"PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -592,11 +592,11 @@ msgstr "ಗುರುತಿಸಲಾಗದ ಅಕ್ಷರಗಳು ಕಂಡು�
 
 #: glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
+msgstr "ಕೇಸ್-ಬದಲಾವಣೆಗಳ ಎಸ್ಕೇಪ್‍ಗಳಿಗೆ (\\l, \\L, \\u, \\U) ಅನುಮತಿ ಇಲ್ಲ"
 
 #: glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
-msgstr ""
+msgstr "{} ಕ್ವಾಂಟಿಫೈರಿನಲ್ಲಿ ಸಂಖ್ಯೆಗಳು ಕ್ರಮದಲ್ಲಿ ಇಲ್ಲ"
 
 #: glib/gregex.c:218
 msgid "number too big in {} quantifier"
@@ -632,7 +632,7 @@ msgstr "(?P ಯ ನಂತರ ಗುರುತಿಸಲಾಗದ ಅಕ್ಷರ"
 
 #: glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
-msgstr ""
+msgstr "POSIX ಹೆಸರಿಸಲಾದ ವರ್ಗಗಳು ಕೇವಲ ಒಂದು ವರ್ಗದಲ್ಲಿ ಮಾತ್ರ ಬೆಂಬಲ ಹೊಂದಿರುತ್ತವೆ"
 
 #: glib/gregex.c:247
 msgid "missing terminating )"
@@ -651,7 +651,7 @@ msgstr "(?R ಅಥವ (?[+-] ಡಿಜಿಟ್‍ಗಳು ) ಅನ್ನು �
 
 #: glib/gregex.c:261
 msgid "reference to non-existent subpattern"
-msgstr ""
+msgstr "ಅಸ್ತಿತ್ವದಲ್ಲಿ ಇರದ ಉಪವಿನ್ಯಾಸದ ಉಲ್ಲೇಖ"
 
 #: glib/gregex.c:264
 msgid "missing ) after comment"
@@ -667,28 +667,27 @@ msgstr "ಮೆಮೊರಿಯನ್ನು ಪಡೆದುಕೊಳ್ಳಲು �
 
 #: glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "ಹಿಂದೆನೋಡು ಪ್ರತಿಪಾದನೆಯು ನಿಗದಿತ ಉದ್ದವನ್ನು ಹೊಂದಿಲ್ಲ"
 
 #: glib/gregex.c:276
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "(?( ನಂತರದ ಸಂಖ್ಯೆ ಅಥವ ಹೆಸರು ವಿರೂಪಗೊಂಡಿದೆ"
 
 #: glib/gregex.c:279
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "ಶರತ್ತಿನ ಸಮೂಹವು ಎರಡಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಶಾಖೆಗಳನ್ನು ಹೊಂದಿದೆ"
 
 #: glib/gregex.c:282
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "(?( ನಂತರ ಪ್ರತಿಪಾದನೆಯನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
 #: glib/gregex.c:285
 msgid "unknown POSIX class name"
 msgstr "ಗೊತ್ತಿರದ POSIX ವರ್ಗದ ಹೆಸರು"
 
 #: glib/gregex.c:288
-#, fuzzy
 msgid "POSIX collating elements are not supported"
-msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕುಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
+msgstr "ಘಟಕಗಳ POSIX ಹೋಲಿಕೆಯು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
@@ -700,11 +699,11 @@ msgstr "ಸರಿಯಲ್ಲದ (?(0) ಸ್ಥಿತಿ"
 
 #: glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "ಹಿಂದೆನೋಡು ಪ್ರತಿಪಾದನೆಯಲ್ಲಿ \\C ಗೆ ಅನುಮತಿ ಇಲ್ಲ"
 
 #: glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
-msgstr ""
+msgstr "ಪುನರಾವರ್ತಿತ ಕರೆಯು ಅನಿರ್ದಿಷ್ಟವಾಗಿ ಆವರ್ತಿತಗೊಳ್ಳಬಹುದು"
 
 #: glib/gregex.c:303
 msgid "missing terminator in subpattern name"
@@ -716,7 +715,7 @@ msgstr "ಹೆಸರಿಸಲಾದ ಎರಡು ಉಪನಮೂನೆಗಳು 
 
 #: glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
-msgstr ""
+msgstr "ವಿರೂಪಗೊಂಡ\\P ಅಥವ \\p ಅನುಕ್ರಮ"
 
 #: glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
@@ -736,20 +735,21 @@ msgstr "\\377 ಕ್ಕೂ ದೊಡ್ಡದಾದ ಆಕ್ಟಲ್ ಮೌಲ
 
 #: glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಶಾಖೆಯನ್ನು ಹೊಂದಿರುವ ಸಮೂಹವನ್ನು DEFINE ಮಾಡು"
 
 #: glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
-msgstr ""
+msgstr "ಒಂದು ಸಮೂಹವನ್ನು ಮತ್ತೆ ಮತ್ತೆ DEFINE ಮಾಡಲು ಅನುಮತಿ ಇಲ್ಲ"
 
 #: glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
-msgstr ""
+msgstr "ಅಸಂಜಸವಾದ NEWLINE ಆಯ್ಕೆಗಳು"
 
 #: glib/gregex.c:333
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
+"\\g ದ ನಂತರ ಒಂದು ಬ್ರೇಸ್ ಆದ ಹೆಸರು ಅಥವ ಆಯ್ಕಾತ್ಮಕ ಬ್ರೇಸ್ ಆದಂತಹ ಶೂನ್ಯವಲ್ಲದ ಸಂಖ್ಯೆ ಇಲ್ಲ"
 
 #: glib/gregex.c:338
 msgid "unexpected repeat"
@@ -761,11 +761,11 @@ msgstr "ಕೋಡ್ ಓವರ್-ಫ್ಲೋ"
 
 #: glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr ""
+msgstr "ಸಂಕಲಿಸುವ ಕಾರ್ಯಕ್ಷೇತ್ರವು overran ಆಗಿದೆ"
 
 #: glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "ಈ ಮೊದಲು ಪರೀಕ್ಷಿಸಲಾದ ಉಲ್ಲೇಖ ಉಪವಿನ್ಯಾಸ ಕಂಡುಬಂದಿಲ್ಲ"
 
 #: glib/gregex.c:517 glib/gregex.c:1565
 #, c-format
@@ -1149,9 +1149,9 @@ msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಬೂಲಿಯನ್ 
 #: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
 #: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
 #: gio/goutputstream.c:193 gio/goutputstream.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Too large count value passed to %s"
-msgstr "g_input_stream_read ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgstr "%s ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
 
 #: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
 #: gio/goutputstream.c:1076
@@ -1181,7 +1181,7 @@ msgstr "%s ಬಗೆ"
 #: gio/gdatainputstream.c:309
 #, c-format
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "ಸ್ಟ್ರೀಮ್‍ನ ಅನಿರೀಕ್ಷಿತ ಕ್ಷಿಪ್ರ ಅಂತ್ಯ"
 
 #: gio/gdesktopappinfo.c:411 gio/gwin32appinfo.c:222
 msgid "Unnamed"
@@ -1190,7 +1190,7 @@ msgstr "ಹೆಸರಿಸಲಾಗದ"
 #: gio/gdesktopappinfo.c:588
 #, c-format
 msgid "Desktop file didn't specify Exec field"
-msgstr ""
+msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
 #: gio/gdesktopappinfo.c:882
 #, c-format
@@ -1279,9 +1279,9 @@ msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #: gio/gfile.c:4640
-#, fuzzy, c-format
+#, c-format
 msgid "No application is registered as handling this file"
-msgstr "'%s' ಎಂಬ ಹೆಸರಿನ ಯಾವುದೇ ಅನ್ವಯವು '%s' ಗಾಗಿ ಒಂದು ಬುಕ್-ಮಾರ್ಕನ್ನು ನೊಂದಾಯಿಸಿಲ್ಲ"
+msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
 
 #: gio/gfileenumerator.c:151
 #, c-format
@@ -1330,9 +1330,9 @@ msgid "Stream has outstanding operation"
 msgstr "ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಕಾರ್ಯವು ಬಾಕಿ ಇದೆ"
 
 #: gio/glocaldirectorymonitor.c:270
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find default local directory monitor type"
-msgstr "ಕಸದ ಬುಟ್ಟಿಗಾಗಿ ಮೇಲ್ಮಟ್ಟದ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
+msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಕೋಶ ಮೇಲ್ವಿಚಾರಕ ಬಗೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ"
 
 #: gio/glocalfile.c:589
 #, c-format
@@ -1402,9 +1402,9 @@ msgid "Unable to find or create trash directory"
 msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲು ಅಥವ ರಚಿಸಲಾಗಿಲ್ಲ:"
 
 #: gio/glocalfile.c:1658
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr "ಟ್ರ್ಯಾಶ್ ಮಾಡಲಾದ ಕಡತವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
+msgstr "ಟ್ರ್ಯಾಶಿಂಗ್ ಮಾಹಿತಿ ಕಡತವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #: gio/glocalfile.c:1683
 #, c-format
@@ -1541,9 +1541,9 @@ msgid "Error closing file: %s"
 msgstr "ಕಡತವನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ದೋಷ: %s"
 
 #: gio/glocalfilemonitor.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find default local file monitor type"
-msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲು ಅಥವ ರಚಿಸಲಾಗಿಲ್ಲ:"
+msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಸ್ಥಳೀಯ ಕಡತ ಮೇಲ್ವಿಚಾರಕದ ಬಗೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
 #, c-format
@@ -1609,7 +1609,7 @@ msgstr "GMemoryInputStream ಅನ್ನು ಕಡಿತಗೊಳಿಸಲಾಗ�
 #: gio/gmemoryoutputstream.c:260
 #, c-format
 msgid "Reached maximum data array limit"
-msgstr ""
+msgstr "ಗರಿಷ್ಟ ದತ್ತಾಂಶ ಅರೆ(array) ಮಿತಿಯನ್ನು ತಲುಪಿದೆ"
 
 #: gio/gmemoryoutputstream.c:295
 #, c-format
@@ -1641,7 +1641,7 @@ msgstr "ಪ್ರದಾನ ಸ್ಟ್ರೀಮ್ ಬರೆಯುವುದನ�
 #: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
-msgstr ""
+msgstr "ಮೂಲ ಸ್ಟ್ರೀಮ್ ಈಗಾಗಲೆ ಮುಚ್ಚಲ್ಪಟ್ಟಿದೆ"
 
 #: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
 #: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289
@@ -1686,12 +1686,12 @@ msgstr "URI ಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 #: gio/gwin32appinfo.c:371
 #, c-format
 msgid "association changes not supported on win32"
-msgstr ""
+msgstr "win32 ನಲ್ಲಿ ಅಸೋಸಿಯೇಶನ್ ಬದಲಾವಣೆಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: gio/gwin32appinfo.c:383
 #, c-format
 msgid "Association creation not supported on win32"
-msgstr ""
+msgstr "win32 ನಲ್ಲಿ ಅಸೋಸಿಯೇಶನ್ ರಚನೆಯು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: tests/gio-ls.c:27
 msgid "do not hide entries"
@@ -1705,27 +1705,26 @@ msgstr "ದೊಡ್ಡದಾದ ಪಟ್ಟಿಯ ನಮೂನೆಯನ್ನ�
 msgid "[FILE...]"
 msgstr "[FILE...]"
 
-#~ msgid "Too large count value passed to g_input_stream_read_async"
-#~ msgstr "g_input_stream_read_async ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgid "Too large count value passed to g_input_stream_read_async"
+msgstr "g_input_stream_read_async ಗೆ ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
 
-#~ msgid "Can't load just created desktop file"
-#~ msgstr "ಈಗತಾನೆ ರಚಿಸಲ್ಪಟ್ಟ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ"
+msgid "Can't load just created desktop file"
+msgstr "ಈಗ ತಾನೆ ರಚಿಸಲಾದ ಗಣಕತೆರೆ್ ಕಡವನ್ನುು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#~ msgid "Too large count value passed to g_input_stream_skip"
-#~ msgstr "g_input_stream_skip ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgid "Too large count value passed to g_input_stream_skip"
+msgstr "g_input_stream_skip ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
 
-#~ msgid "Too large count value passed to g_input_stream_skip_async"
-#~ msgstr "g_input_stream_skip_async ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgid "Too large count value passed to g_input_stream_skip_async"
+msgstr "g_input_stream_skip_async ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
 
-#~ msgid "Target file already exists"
-#~ msgstr "ಸೂಚಿತ ಕಡತವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
+msgid "Target file already exists"
+msgstr "ಸೂಚಿತ ಕಡತವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#~ msgid "Error creating backup link: %s"
-#~ msgstr "ಬ್ಯಾಕ್ಅಪ್ ಕೊಂಡಿಯನ್ನು ನಿರ್ಮಿಸುವಲ್ಲಿ ದೋಷ: %s"
+msgid "Error creating backup link: %s"
+msgstr "ಬ್ಯಾಕ್ಅಪ್ ಕೊಂಡಿಯನ್ನು ನಿರ್ಮಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#~ msgid "Too large count value passed to g_output_stream_write"
-#~ msgstr "g_output_stream_write ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgid "Too large count value passed to g_output_stream_write"
+msgstr "g_output_stream_write ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
 
-#~ msgid "Too large count value passed to g_output_stream_write_async"
-#~ msgstr ""
-#~ "g_output_stream_write_async ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
+msgid "Too large count value passed to g_output_stream_write_async"
+msgstr "g_output_stream_write_async ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ್ಯವನ್ನು ರವಾನಿಸಲಾಗಿದೆ"
