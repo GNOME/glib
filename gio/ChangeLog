@@ -1,3 +1,14 @@
+2008-02-14  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+	Copy permissions with file on copy (#514084)
+	This is what cp does and makes sure e.g. the
+	exec permissions are kept.
+	Its kinda weird in that it keeps the permission bits
+	the same while the uid and gid are different. However
+	the new uid is the user so its not a security issue,
+	and I've heard no complaints about cp on this issue.
+
 2008-02-13  Ryan Lortie  <desrt@desrt.ca>
 
 	* gfileinfo.h: add G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
