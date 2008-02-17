@@ -1,5 +1,11 @@
 2008-02-17  Marco Barisione  <marco@barisione.org>
 
+	* glib/gregex.c: (translate_compile_error), (g_regex_new): Avoid some
+	useless casts from const gchar * to gchar *.  (#516597, patch by
+	Yevgen Muntyan)
+
+2008-02-17  Marco Barisione  <marco@barisione.org>
+
 	* glib/gregex.c: (match_info_new), (g_match_info_next): Don't return
 	duplicate matches when matching empty strings.  (#515944)
 	* tests/regex-test.c: Add tests.

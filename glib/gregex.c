@@ -180,7 +180,7 @@ match_error (gint errcode)
 }
 
 static void
-translate_compile_error (gint *errcode, gchar **errmsg)
+translate_compile_error (gint *errcode, const gchar **errmsg)
 {
   /* Compile errors are created adding 100 to the error code returned
    * by PCRE.
@@ -1075,7 +1075,7 @@ g_regex_new (const gchar         *pattern,
 {
   GRegex *regex;
   pcre *re;
-  gchar *errmsg;
+  const gchar *errmsg;
   gint erroffset;
   gint errcode;
   gboolean optimize = FALSE;
@@ -1142,7 +1142,7 @@ g_regex_new (const gchar         *pattern,
 
   /* compile the pattern */
   re = pcre_compile2 (pattern, compile_options, &errcode,
-		      (const gchar **)&errmsg, &erroffset, NULL);
+		      &errmsg, &erroffset, NULL);
 
   /* if the compilation failed, set the error member and return 
    * immediately */
@@ -1189,7 +1189,7 @@ g_regex_new (const gchar         *pattern,
 
   if (optimize)
     {
-      regex->extra = pcre_study (regex->pcre_re, 0, (const gchar **)&errmsg);
+      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
       if (errmsg != NULL)
         {
           GError *tmp_error = g_error_new (G_REGEX_ERROR,
