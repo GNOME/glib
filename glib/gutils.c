@@ -101,6 +101,9 @@
 #  ifndef CSIDL_COMMON_APPDATA
 #    define CSIDL_COMMON_APPDATA 35
 #  endif
+#  ifndef CSIDL_MYPICTURES
+#    define CSIDL_MYPICTURES 0x27
+#  endif
 #  ifndef CSIDL_COMMON_DOCUMENTS
 #    define CSIDL_COMMON_DOCUMENTS 46
 #  endif

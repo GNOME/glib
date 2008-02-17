@@ -1,3 +1,9 @@
+2008-02-17  Hans Breuer  <hans@breuer.org>
+
+	* glib/gutils.c : define CSIDL_MYPICTURES if not available
+	* gthread/gthread-win32.c : use G_STRFUNC instead of compiler 
+	specific __FUNCTION__
+
 2008-02-13  Ryan Lortie  <desrt@desrt.ca>
 
 	* docs/reference/gio/gio-sections.txt: add

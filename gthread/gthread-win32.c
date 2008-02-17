@@ -48,7 +48,7 @@
 #define win32_check_for_error(what) G_STMT_START{			\
   if (!(what))								\
     g_error ("file %s: line %d (%s): error %s during %s",		\
-	     __FILE__, __LINE__, __FUNCTION__,				\
+	     __FILE__, __LINE__, G_STRFUNC,				\
 	     g_win32_error_message (GetLastError ()), #what);		\
   }G_STMT_END
 
