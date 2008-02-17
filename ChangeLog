@@ -1,3 +1,9 @@
+2008-02-17  Marco Barisione  <marco@barisione.org>
+
+	* glib/gregex.c: (match_info_new), (g_match_info_next): Don't return
+	duplicate matches when matching empty strings.  (#515944)
+	* tests/regex-test.c: Add tests.
+
 2008-02-17  Hans Breuer  <hans@breuer.org>
 
 	* glib/gutils.c : define CSIDL_MYPICTURES if not available

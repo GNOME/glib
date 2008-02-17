@@ -411,7 +411,11 @@ match_info_new (const GRegex *regex,
                      PCRE_INFO_CAPTURECOUNT, &capture_count);
       match_info->n_offsets = (capture_count + 1) * 3;
     }
+
   match_info->offsets = g_new0 (gint, match_info->n_offsets);
+  /* Set an invalid position for the previous match. */
+  match_info->offsets[0] = -1;
+  match_info->offsets[1] = -1;
 
   return match_info;
 }
@@ -495,6 +499,8 @@ g_match_info_next (GMatchInfo  *match_info,
 		   GError     **error)
 {
   gint opts;
+  gint prev_match_start;
+  gint prev_match_end;
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -502,6 +508,9 @@ g_match_info_next (GMatchInfo  *match_info,
 
   opts = match_info->regex->match_opts | match_info->match_opts;
  
+  prev_match_start = match_info->offsets[0];
+  prev_match_end = match_info->offsets[1];
+
   match_info->matches = pcre_exec (match_info->regex->pcre_re,
 				   match_info->regex->extra,
 				   match_info->string,
@@ -538,6 +547,25 @@ g_match_info_next (GMatchInfo  *match_info,
   else
     {
       match_info->pos = match_info->offsets[1];
+    }
+
+  /* it's possibile to get two identical matches when we are matching
+   * empty strings, for instance if the pattern is "(?=[A-Z0-9])" and
+   * the string is "RegExTest" we have:
+   *  - search at position 0: match from 0 to 0
+   *  - search at position 1: match from 3 to 3
+   *  - search at position 3: match from 3 to 3 (duplicate)
+   *  - search at position 4: match from 5 to 5
+   *  - search at position 5: match from 5 to 5 (duplicate)
+   *  - search at position 6: no match -> stop
+   * so we have to ignore the duplicates.
+   * see bug #515944: http://bugzilla.gnome.org/show_bug.cgi?id=515944 */
+  if (match_info->matches >= 0 &&
+      prev_match_start == match_info->offsets[0] &&
+      prev_match_end == match_info->offsets[1])
+    {
+      /* ignore this match and search the next one */
+      return g_match_info_next (match_info, error);
     }
 
   return match_info->matches >= 0;
