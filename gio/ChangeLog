@@ -1,6 +1,15 @@
 2008-02-18  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfile.c:
+        * glocalfileinfo.c:
+        * glocalfileoutputstream.c:
+	Use g_unlink/g_rename instead of unlink/rename;
+	do not pass raw filenames to g_set_error. (#517239)
+	Patch from Yevgen Muntyan.
+
+2008-02-18  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
         * glocalfileoutputstream.c:
 	Open files with O_BINARY on windows. (#517140)
 

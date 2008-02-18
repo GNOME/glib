@@ -203,7 +203,7 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	  
 #ifdef HAVE_LINK
 	  /* create original -> backup link, the original is then renamed over */
-	  if (unlink (file->priv->backup_filename) != 0 &&
+	  if (g_unlink (file->priv->backup_filename) != 0 &&
 	      errno != ENOENT)
 	    {
               int errsv = errno;
@@ -218,7 +218,7 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	  if (link (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
 	      /*  link failed or is not supported, try rename  */
-	      if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+	      if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
 		{
                   int errsv = errno;
 
@@ -231,7 +231,7 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	    }
 #else
 	    /* If link not supported, just rename... */
-	  if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+	  if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
               int errsv = errno;
 
@@ -249,7 +249,7 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	goto err_out;
 
       /* tmp -> original */
-      if (rename (file->priv->tmp_filename, file->priv->original_filename) != 0)
+      if (g_rename (file->priv->tmp_filename, file->priv->original_filename) != 0)
 	{
           int errsv = errno;
 
@@ -471,10 +471,14 @@ _g_local_file_output_stream_create  (const char        *filename,
 		     G_IO_ERROR_INVALID_FILENAME,
 		     _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error opening file '%s': %s"),
-		     filename, g_strerror (errsv));
+	{
+	  char *display_name = g_filename_display_name (filename);
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error opening file '%s': %s"),
+		       display_name, g_strerror (errsv));
+	  g_free (display_name);
+	}
       return NULL;
     }
   
@@ -512,10 +516,14 @@ _g_local_file_output_stream_append  (const char        *filename,
 		     G_IO_ERROR_INVALID_FILENAME,
 		     _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error opening file '%s': %s"),
-		     filename, g_strerror (errsv));
+	{
+	  char *display_name = g_filename_display_name (filename);
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error opening file '%s': %s"),
+		       display_name, g_strerror (errsv));
+	  g_free (display_name);
+	}
       return NULL;
     }
   
@@ -640,22 +648,24 @@ handle_overwrite_open (const char    *filename,
   if (fd == -1)
     {
       int errsv = errno;
-
+      char *display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error opening file '%s': %s"),
-		   filename, g_strerror (errsv));
+		   display_name, g_strerror (errsv));
+      g_free (display_name);
       return -1;
     }
   
   if (fstat (fd, &original_stat) != 0) 
     {
       int errsv = errno;
-
+      char *display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error stating file '%s': %s"),
-		   filename, g_strerror (errsv));
+		   display_name, g_strerror (errsv));
+      g_free (display_name);
       goto err_out;
     }
   
@@ -738,7 +748,7 @@ handle_overwrite_open (const char    *filename,
 	      original_stat.st_mode != tmp_statbuf.st_mode)
 	    {
 	      close (tmpfd);
-	      unlink (tmp_filename);
+	      g_unlink (tmp_filename);
 	      g_free (tmp_filename);
 	      goto fallback_strategy;
 	    }
@@ -759,7 +769,7 @@ handle_overwrite_open (const char    *filename,
       
       backup_filename = create_backup_filename (filename);
 
-      if (unlink (backup_filename) == -1 && errno != ENOENT)
+      if (g_unlink (backup_filename) == -1 && errno != ENOENT)
 	{
 	  g_set_error (error,
 		       G_IO_ERROR,
@@ -794,7 +804,7 @@ handle_overwrite_open (const char    *filename,
 		       G_IO_ERROR,
 		       G_IO_ERROR_CANT_CREATE_BACKUP,
 		       _("Backup file creation failed"));
-	  unlink (backup_filename);
+	  g_unlink (backup_filename);
 	  g_free (backup_filename);
 	  goto err_out;
 	}
@@ -810,7 +820,7 @@ handle_overwrite_open (const char    *filename,
 			   G_IO_ERROR,
 			   G_IO_ERROR_CANT_CREATE_BACKUP,
 			   _("Backup file creation failed"));
-	      unlink (backup_filename);
+	      g_unlink (backup_filename);
 	      close (bfd);
 	      g_free (backup_filename);
 	      goto err_out;
@@ -824,7 +834,7 @@ handle_overwrite_open (const char    *filename,
 		       G_IO_ERROR,
 		       G_IO_ERROR_CANT_CREATE_BACKUP,
 		       _("Backup file creation failed"));
-	  unlink (backup_filename);
+	  g_unlink (backup_filename);
 	  close (bfd);
 	  g_free (backup_filename);
 	  
@@ -914,10 +924,14 @@ _g_local_file_output_stream_replace (const char        *filename,
 		     G_IO_ERROR_INVALID_FILENAME,
 		     _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error opening file '%s': %s"),
-		     filename, g_strerror (errsv));
+	{
+	  char *display_name = g_filename_display_name (filename);
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error opening file '%s': %s"),
+		       display_name, g_strerror (errsv));
+	  g_free (display_name);
+	}
       return NULL;
     }
   

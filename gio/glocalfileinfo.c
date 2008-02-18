@@ -1389,12 +1389,13 @@ _g_local_file_info_get (const char             *basename,
   if (res == -1)
     {
       int errsv = errno;
-
+      char *display_name = g_filename_display_name (path);
       g_object_unref (info);
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error stating file '%s': %s"),
-		   path, g_strerror (errsv));
+		   display_name, g_strerror (errsv));
+      g_free (display_name);
       return NULL;
     }
   

@@ -989,7 +989,7 @@ g_local_file_set_display_name (GFile         *file,
       return NULL;
     }
 
-  if (rename (local->filename, new_local->filename) == -1)
+  if (g_rename (local->filename, new_local->filename) == -1)
     {
       errsv = errno;
 
@@ -1882,7 +1882,7 @@ g_local_file_move (GFile                  *source,
   if (flags & G_FILE_COPY_BACKUP && destination_exist)
     {
       backup_name = g_strconcat (local_destination->filename, "~", NULL);
-      if (rename (local_destination->filename, backup_name) == -1)
+      if (g_rename (local_destination->filename, backup_name) == -1)
 	{
       	  g_set_error (error,
 		       G_IO_ERROR,
@@ -1899,7 +1899,7 @@ g_local_file_move (GFile                  *source,
     {
       /* Source is a dir, destination exists (and is not a dir, because that would have failed
 	 earlier), and we're overwriting. Manually remove the target so we can do the rename. */
-      res = unlink (local_destination->filename);
+      res = g_unlink (local_destination->filename);
       if (res == -1)
 	{
           int errsv = errno;
@@ -1912,7 +1912,7 @@ g_local_file_move (GFile                  *source,
 	}
     }
   
-  if (rename (local_source->filename, local_destination->filename) == -1)
+  if (g_rename (local_source->filename, local_destination->filename) == -1)
     {
       int errsv = errno;
 
