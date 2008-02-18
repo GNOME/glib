@@ -46,6 +46,10 @@
 #include <sys/mount.h>
 #endif
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 #if defined(HAVE_STATFS) && defined(HAVE_STATVFS)
 /* Some systems have both statfs and statvfs, pick the
    most "native" for these */
@@ -1110,7 +1114,7 @@ g_local_file_read (GFile         *file,
   int fd;
   struct stat buf;
   
-  fd = g_open (local->filename, O_RDONLY, 0);
+  fd = g_open (local->filename, O_RDONLY|O_BINARY, 0);
   if (fd == -1)
     {
       int errsv = errno;

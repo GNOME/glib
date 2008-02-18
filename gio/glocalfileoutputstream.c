@@ -48,6 +48,10 @@
 #endif
 #endif
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 #include "gioalias.h"
 
 #define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
@@ -456,7 +460,7 @@ _g_local_file_output_stream_create  (const char        *filename,
   else
     mode = 0666;
   
-  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY, mode);
+  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY | O_BINARY, mode);
   if (fd == -1)
     {
       int errsv = errno;
@@ -497,7 +501,7 @@ _g_local_file_output_stream_append  (const char        *filename,
   else
     mode = 0666;
 
-  fd = g_open (filename, O_CREAT | O_APPEND | O_WRONLY, mode);
+  fd = g_open (filename, O_CREAT | O_APPEND | O_WRONLY | O_BINARY, mode);
   if (fd == -1)
     {
       int errsv = errno;
@@ -611,9 +615,9 @@ handle_overwrite_open (const char    *filename,
   /* We only need read access to the original file if we are creating a backup.
    * We also add O_CREATE to avoid a race if the file was just removed */
   if (create_backup)
-    open_flags = O_RDWR | O_CREAT;
+    open_flags = O_RDWR | O_CREAT | O_BINARY;
   else
-    open_flags = O_WRONLY | O_CREAT;
+    open_flags = O_WRONLY | O_CREAT | O_BINARY;
   
   /* Some systems have O_NOFOLLOW, which lets us avoid some races
    * when finding out if the file we opened was a symlink */
@@ -766,7 +770,7 @@ handle_overwrite_open (const char    *filename,
 	}
 
       bfd = g_open (backup_filename,
-		    O_WRONLY | O_CREAT | O_EXCL,
+		    O_WRONLY | O_CREAT | O_EXCL | O_BINARY,
 		    original_stat.st_mode & 0777);
 
       if (bfd == -1)
@@ -890,7 +894,7 @@ _g_local_file_output_stream_replace (const char        *filename,
     mode = 0666;
 
   /* If the file doesn't exist, create it */
-  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY, mode);
+  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY | O_BINARY, mode);
 
   if (fd == -1 && errno == EEXIST)
     {
