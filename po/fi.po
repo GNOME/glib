@@ -8,13 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-14 07:13+0300\n"
+"POT-Creation-Date: 2008-02-18 07:30+0300\n"
 "PO-Revision-Date: 2006-08-09 15:58+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 #: ../glib/gbookmarkfile.c:705 ../glib/gbookmarkfile.c:782
 #: ../glib/gbookmarkfile.c:861 ../glib/gbookmarkfile.c:908
@@ -244,8 +245,8 @@ msgstr "Malli \"%s\" ei sisällä merkkijonoa XXXXXX"
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u tavu"
+msgstr[1] "%u tavua"
 
 #: ../glib/gfileutils.c:1834
 #, c-format
@@ -678,7 +679,7 @@ msgstr "muistia ei voitu varata"
 
 #: ../glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "lookbehind-tyyppinen assert-makro ei ole kiinteäpituinen"
 
 #: ../glib/gregex.c:276
 msgid "malformed number or name after (?("
@@ -686,11 +687,11 @@ msgstr "virheellinen numero tai nimi (?( jälkeen"
 
 #: ../glib/gregex.c:279
 msgid "conditional group contains more than two branches"
-msgstr "ehdollisessa ryhmässä on enenmmäin kuin kaksi haaraa"
+msgstr "ehdollisessa ryhmässä on enenmmän kuin kaksi haaraa"
 
 #: ../glib/gregex.c:282
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "assert-makrotoiminto odotettu merkkien (?( jälkeen"
 
 #: ../glib/gregex.c:285
 msgid "unknown POSIX class name"
@@ -698,7 +699,7 @@ msgstr "tuntematon POSIX-luokan nimi"
 
 #: ../glib/gregex.c:288
 msgid "POSIX collating elements are not supported"
-msgstr ""
+msgstr "POSIX-vertailuelementtejä ei tueta"
 
 #: ../glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
@@ -710,7 +711,7 @@ msgstr "virheellinen ehto (?(0)"
 
 #: ../glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "\\C ei ole sallittu lookbehind-tyyppisissä assert-makroissa"
 
 #: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
@@ -760,6 +761,8 @@ msgstr "epäyhtenäisiä NEWLINE-valitsimia"
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
+"\\g:n jälkeen ei tule nimeä aaltosulkeissa tai nollasta poikeavaa numeroa "
+"valinnaisesti aaltosulkeissa"
 
 #: ../glib/gregex.c:338
 msgid "unexpected repeat"
@@ -777,66 +780,66 @@ msgstr "käännöksen työalueen koko loppui kesken"
 msgid "previously-checked referenced subpattern not found"
 msgstr "aiemmin tarkistettua ja viitattua alimallia ei löydy"
 
-#: ../glib/gregex.c:517 ../glib/gregex.c:1565
+#: ../glib/gregex.c:526 ../glib/gregex.c:1593
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Virhe täsmätessä säännöllistä lauseketta %s: %s"
 
-#: ../glib/gregex.c:1070
+#: ../glib/gregex.c:1098
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE-kirjasto on käännetty ilman UTF8-tukea"
 
-#: ../glib/gregex.c:1079
+#: ../glib/gregex.c:1107
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE-kirjasto on käännetty ilman UTF8-ominaisuuksien tukea"
 
-#: ../glib/gregex.c:1133
+#: ../glib/gregex.c:1161
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Virhe säännöllisessä lausekkeessa %s kohdassa %d: %s"
 
-#: ../glib/gregex.c:1169
+#: ../glib/gregex.c:1197
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Virhe optimoitaessa säännöllistä lauseketta %s: %s"
 
-#: ../glib/gregex.c:1993
+#: ../glib/gregex.c:2021
 msgid "hexadecimal digit or '}' expected"
 msgstr "odotettiin heksadesimaalista numeroa tai merkkiä \"}\""
 
-#: ../glib/gregex.c:2009
+#: ../glib/gregex.c:2037
 msgid "hexadecimal digit expected"
 msgstr "odotettiin heksadesimaalista numeroa"
 
-#: ../glib/gregex.c:2049
+#: ../glib/gregex.c:2077
 msgid "missing '<' in symbolic reference"
 msgstr "merkki '<' puuttuu symbolisesta viitteestä"
 
-#: ../glib/gregex.c:2058
+#: ../glib/gregex.c:2086
 msgid "unfinished symbolic reference"
 msgstr "päättämätön symbolinen viite"
 
-#: ../glib/gregex.c:2065
+#: ../glib/gregex.c:2093
 msgid "zero-length symbolic reference"
 msgstr "nollan mittainen symbolinen viite"
 
-#: ../glib/gregex.c:2076
+#: ../glib/gregex.c:2104
 msgid "digit expected"
 msgstr "odotettiin numeroa"
 
-#: ../glib/gregex.c:2094
+#: ../glib/gregex.c:2122
 msgid "illegal symbolic reference"
 msgstr "virheellinen symbolinen viite"
 
-#: ../glib/gregex.c:2156
+#: ../glib/gregex.c:2184
 msgid "stray final '\\'"
 msgstr "ylimääräinen päättävä '\\'"
 
-#: ../glib/gregex.c:2160
+#: ../glib/gregex.c:2188
 msgid "unknown escape sequence"
 msgstr "tuntematon escape-jono"
 
-#: ../glib/gregex.c:2170
+#: ../glib/gregex.c:2198
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Virhe tulkittaessa korvaavaa tekstia \"%s\" kohdassa %lu: %s"
@@ -1253,8 +1256,8 @@ msgstr "asema ei toteut median tarkkailua"
 msgid "Operation not supported"
 msgstr "Toiminto ei ole tuettu"
 
-#: ../gio/gfile.c:1118 ../gio/glocalfile.c:925 ../gio/glocalfile.c:934
-#: ../gio/glocalfile.c:945
+#: ../gio/gfile.c:1118 ../gio/glocalfile.c:926 ../gio/glocalfile.c:935
+#: ../gio/glocalfile.c:946
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Ylläolevaa liitospistettä ei löydy"
@@ -1269,7 +1272,7 @@ msgstr "Kansion päälle ei voi kopioida"
 msgid "Can't copy directory over directory"
 msgstr "Kansiota ei voi kopioida kansion päälle"
 
-#: ../gio/gfile.c:1827 ../gio/glocalfile.c:1872
+#: ../gio/gfile.c:1827 ../gio/glocalfile.c:1873
 #, c-format
 msgid "Target file exists"
 msgstr "Kohdetiedosto on olemassa"
@@ -1306,17 +1309,17 @@ msgstr "Tiedoston käsittelyyn ei ole rekisteröity mitään sovellusta"
 #: ../gio/gfileenumerator.c:151
 #, c-format
 msgid "Enumerator is closed"
-msgstr ""
+msgstr "Numeraattori on suljettu"
 
 #: ../gio/gfileenumerator.c:158 ../gio/gfileenumerator.c:217
 #: ../gio/gfileenumerator.c:317 ../gio/gfileenumerator.c:425
 #, c-format
 msgid "File enumerator has outstanding operation"
-msgstr ""
+msgstr "Tiedoston numeraattorilla on odottavia toimintoja"
 
 #: ../gio/gfileenumerator.c:307 ../gio/gfileenumerator.c:415
 msgid "File enumerator is already closed"
-msgstr ""
+msgstr "Numeraattori on jo suljettu"
 
 #: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
 #: ../gio/gfileoutputstream.c:168 ../gio/gfileoutputstream.c:523
@@ -1354,111 +1357,111 @@ msgstr "Virrassa on toiminto odottamassa"
 msgid "Unable to find default local directory monitor type"
 msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
 
-#: ../gio/glocalfile.c:589
+#: ../gio/glocalfile.c:590
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Virheellinen tiedostonimi %s"
 
-#: ../gio/glocalfile.c:847
+#: ../gio/glocalfile.c:848
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
-#: ../gio/glocalfile.c:965
+#: ../gio/glocalfile.c:966
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Juurikansiota ei voi nimetä uudestaan"
 
-#: ../gio/glocalfile.c:983
+#: ../gio/glocalfile.c:984
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Tiedostoa ei voi nimetä uudestaan, tiedosto on jo olemassa"
 
-#: ../gio/glocalfile.c:996 ../gio/glocalfile.c:1747 ../gio/glocalfile.c:1776
-#: ../gio/glocalfile.c:1925 ../gio/glocalfileoutputstream.c:468
+#: ../gio/glocalfile.c:997 ../gio/glocalfile.c:1748 ../gio/glocalfile.c:1777
+#: ../gio/glocalfile.c:1926 ../gio/glocalfileoutputstream.c:468
 #: ../gio/glocalfileoutputstream.c:509 ../gio/glocalfileoutputstream.c:911
 #, c-format
 msgid "Invalid filename"
 msgstr "Virheellinen tiedostonimi"
 
-#: ../gio/glocalfile.c:1000
+#: ../gio/glocalfile.c:1001
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
 
-#: ../gio/glocalfile.c:1119
+#: ../gio/glocalfile.c:1120
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Virhe avattaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1129
+#: ../gio/glocalfile.c:1130
 #, c-format
 msgid "Can't open directory"
 msgstr "Kansiota ei voi avata"
 
-#: ../gio/glocalfile.c:1183 ../gio/glocalfile.c:1751
+#: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:1752
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Virhe poistettaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1477
+#: ../gio/glocalfile.c:1478
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
-#: ../gio/glocalfile.c:1500
+#: ../gio/glocalfile.c:1501
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1524
+#: ../gio/glocalfile.c:1525
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Päätasoa roskakoria varten ei löydy"
 
-#: ../gio/glocalfile.c:1604 ../gio/glocalfile.c:1624
+#: ../gio/glocalfile.c:1605 ../gio/glocalfile.c:1625
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
-#: ../gio/glocalfile.c:1658
+#: ../gio/glocalfile.c:1659
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1683
+#: ../gio/glocalfile.c:1684
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: ../gio/glocalfile.c:1780
+#: ../gio/glocalfile.c:1781
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Virhe luotaessa symbolista linkkiä: %s"
 
-#: ../gio/glocalfile.c:1840 ../gio/glocalfile.c:1929
+#: ../gio/glocalfile.c:1841 ../gio/glocalfile.c:1930
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Virhe siirrettäessä tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1863
+#: ../gio/glocalfile.c:1864
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Kansiota ei voi siirtää kansion päälle"
 
-#: ../gio/glocalfile.c:1885 ../gio/glocalfileoutputstream.c:763
+#: ../gio/glocalfile.c:1886 ../gio/glocalfileoutputstream.c:763
 #: ../gio/glocalfileoutputstream.c:777 ../gio/glocalfileoutputstream.c:792
 #: ../gio/glocalfileoutputstream.c:808 ../gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
-#: ../gio/glocalfile.c:1904
+#: ../gio/glocalfile.c:1905
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
-#: ../gio/glocalfile.c:1918
+#: ../gio/glocalfile.c:1919
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Siirto liitospisteiden välillä ei ole tuettu"
