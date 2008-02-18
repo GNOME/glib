@@ -1158,9 +1158,9 @@ msgstr "Không thể giải dịch giá trị « %s » dạng bun (đúng/sai)."
 #: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
 #: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
 #: gio/goutputstream.c:193 gio/goutputstream.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Too large count value passed to %s"
-msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_input_stream_read »"
+msgstr "Giá trị đếm quá lớn được gửi cho %s"
 
 #: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
 #: gio/goutputstream.c:1076
@@ -1288,9 +1288,9 @@ msgid "volume doesn't implement mount"
 msgstr "hàm volume (khối tin) không thực hiện chức năng mount (lắp)"
 
 #: gio/gfile.c:4640
-#, fuzzy, c-format
+#, c-format
 msgid "No application is registered as handling this file"
-msgstr "Không có ứng dụng tên « %s » đã đăng ký một liên kết lưu « %s »"
+msgstr "Không có ứng dụng đăng ký xử lý tập tin này"
 
 #: gio/gfileenumerator.c:151
 #, c-format
@@ -1326,7 +1326,7 @@ msgstr "Không cho phép cắt ngắn luồng nhập vào"
 #: gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
-msgstr "hông cho phép cắt ngắn luồng"
+msgstr "Không cho phép cắt ngắn luồng"
 
 #: gio/ginputstream.c:195
 #, c-format
@@ -1339,9 +1339,9 @@ msgid "Stream has outstanding operation"
 msgstr "Luồng có thao tác còn chạy"
 
 #: gio/glocaldirectorymonitor.c:270
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find default local directory monitor type"
-msgstr "Không tìm thấy thư mục cấp đầu cho thùng rác"
+msgstr "Không tìm thấy kiểu theo dõi thư mục cục bộ mặc định"
 
 #: gio/glocalfile.c:589
 #, c-format
@@ -1393,32 +1393,32 @@ msgstr "Gặp lỗi khi gỡ bỏ tập tin: %s"
 #: gio/glocalfile.c:1477
 #, c-format
 msgid "Error trashing file: %s"
-msgstr "Gặp lỗi khi chuyển tập tin vào thùng rác: %s"
+msgstr "Gặp lỗi khi chuyển tập tin vào sọt rác: %s"
 
 #: gio/glocalfile.c:1500
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Không thể tạo thư mục thùng rác %s: %s"
+msgstr "Không thể tạo thư mục sọt rác %s: %s"
 
 #: gio/glocalfile.c:1524
 #, c-format
 msgid "Unable to find toplevel directory for trash"
-msgstr "Không tìm thấy thư mục cấp đầu cho thùng rác"
+msgstr "Không tìm thấy thư mục cấp đầu cho sọt rác"
 
 #: gio/glocalfile.c:1604 gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to find or create trash directory"
-msgstr "Không tìm thấy hay không thể tạo thư mục thùng rác"
+msgstr "Không tìm thấy hay không thể tạo thư mục sọt rác"
 
 #: gio/glocalfile.c:1658
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr "Không thể tạo tập tin đã chuyển vào thùng rác: %s"
+msgstr "Không thể tạo tập tin thông tin sọt rác: %s"
 
 #: gio/glocalfile.c:1683
 #, c-format
 msgid "Unable to trash file: %s"
-msgstr "Không thể chuyển tập tin vào thùng rác: %s"
+msgstr "Không thể chuyển tập tin vào sọt rác: %s"
 
 #: gio/glocalfile.c:1780
 #, c-format
@@ -1552,9 +1552,9 @@ msgid "Error closing file: %s"
 msgstr "Gặp lỗi khi đóng tập tin: %s"
 
 #: gio/glocalfilemonitor.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find default local file monitor type"
-msgstr "Không tìm thấy hay không thể tạo thư mục thùng rác"
+msgstr "Không tìm thấy kiểu theo dõi tập tin cục bộ mặc định"
 
 #: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
 #, c-format
@@ -1605,32 +1605,32 @@ msgstr "Tập tin đã bị sửa đổi bên ngoài"
 #: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
 #, c-format
 msgid "Invalid GSeekType supplied"
-msgstr ""
+msgstr "GSeekType được cung cấp không hợp lệ"
 
 #: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid seek request"
-msgstr "Tên tập tin không hợp lệ: %s"
+msgstr "Yêu cầu tìm không hợp lệ"
 
 #: gio/gmemoryinputstream.c:521
 #, c-format
 msgid "Cannot truncate GMemoryInputStream"
-msgstr ""
+msgstr "Không thể cắt GMemoryInputStream"
 
 #: gio/gmemoryoutputstream.c:260
 #, c-format
 msgid "Reached maximum data array limit"
-msgstr ""
+msgstr "Đã đạt ngưỡng mảng dữ liệu tối đa"
 
 #: gio/gmemoryoutputstream.c:295
 #, c-format
 msgid "Memory output stream not resizable"
-msgstr ""
+msgstr "Luồng ra bộ nhớ không thể thay đổi kích thước"
 
 #: gio/gmemoryoutputstream.c:311
 #, c-format
 msgid "Failed to resize memory output stream"
-msgstr ""
+msgstr "Lỗi thay đổi kích thước luồng ra bộ nhớ"
 
 #: gio/gmount.c:341
 msgid "mount doesn't implement unmount"
