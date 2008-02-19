@@ -1329,17 +1329,6 @@ g_string_write_out (GString *gstring,
     }
 }
 
-static int
-sane_dup2 (int fd1,
-           int fd2)
-{
-  int ret;
-  do
-    ret = dup2 (fd1, fd2);
-  while (ret < 0 && errno == EINTR);
-  return ret;
-}
-
 static void
 test_trap_clear (void)
 {
@@ -1349,6 +1338,19 @@ test_trap_clear (void)
   test_trap_last_stdout = NULL;
   g_free (test_trap_last_stderr);
   test_trap_last_stderr = NULL;
+}
+
+#ifdef G_OS_UNIX
+
+static int
+sane_dup2 (int fd1,
+           int fd2)
+{
+  int ret;
+  do
+    ret = dup2 (fd1, fd2);
+  while (ret < 0 && errno == EINTR);
+  return ret;
 }
 
 static guint64
@@ -1361,6 +1363,8 @@ test_time_stamp (void)
   stamp = stamp * 1000000 + tv.tv_usec;
   return stamp;
 }
+
+#endif
 
 /**
  * g_test_trap_fork:
@@ -1403,6 +1407,8 @@ test_time_stamp (void)
  *     g_test_trap_assert_stderr ("*semagic43*");
  *   }
  * ]|
+ *
+ * This function is implemented only on Unix platforms.
  *
  * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
  */
@@ -1541,7 +1547,9 @@ g_test_trap_fork (guint64        usec_timeout,
       return FALSE;
     }
 #else
-  g_error ("Not implemented: g_test_trap_fork");
+  g_message ("Not implemented: g_test_trap_fork");
+
+  return FALSE;
 #endif
 }
 
@@ -1579,6 +1587,7 @@ g_test_trap_assertions (const char     *domain,
                         guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
                         const char     *pattern)
 {
+#ifdef G_OS_UNIX
   gboolean must_pass = assertion_flags == 0;
   gboolean must_fail = assertion_flags == 1;
   gboolean match_result = 0 == (assertion_flags & 1);
@@ -1611,6 +1620,7 @@ g_test_trap_assertions (const char     *domain,
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
+#endif
 }
 
 static void
