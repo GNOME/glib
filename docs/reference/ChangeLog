@@ -1,3 +1,7 @@
+2008-02-13  Ryan Lortie  <desrt@desrt.ca>
+
+        * gio/gio-sections.txt: add G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
+
 2008-02-12  Matthias Clasen <mclasen@redhat.com>
 
 	* gio/migration.xml: Add a note about mime monitoring
@@ -21,6 +25,11 @@
 
 	* glib/tmpl/i18n.sgml: Improve the documentation for the
 	N_() macro.  (#514053, Tommi Vainikainen)
+
+2008-01-29  Christian Persch  <chpe@gnome.org>
+
+	* glib/tmpl/macros_misc.sgml: G_GNUC_[PRETTY_]FUNCTION are
+	deprecated since 2.16, not 2.14.
 
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 

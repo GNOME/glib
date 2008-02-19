@@ -16,11 +16,6 @@
 	* gthread/gthread-win32.c : use G_STRFUNC instead of compiler 
 	specific __FUNCTION__
 
-2008-02-13  Ryan Lortie  <desrt@desrt.ca>
-
-	* docs/reference/gio/gio-sections.txt: add
-	G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
-
 2008-02-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c: Doc change: Deprecate passing anything but NULL
@@ -169,11 +164,6 @@
 
 	Fixed gtk-doc warnings by updating the documentation of
 	various functions.
-
-2008-01-29  Christian Persch  <chpe@gnome.org>
-
-	* docs/reference/glib/tmpl/macros_misc.sgml: G_GNUC_[PRETTY_]FUNCTION
-	are deprecated since 2.16, not 2.14.
 
 2008-01-29 14:58:31  Tim Janik  <timj@imendio.com>
 
