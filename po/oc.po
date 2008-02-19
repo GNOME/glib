@@ -238,6 +238,7 @@ msgstr ""
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u octet"
+msgstr[1] "%u octets"
 
 #: ../glib/gfileutils.c:1834
 #, c-format
