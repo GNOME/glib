@@ -1,3 +1,8 @@
+2008-02-18  Sylvain Pasche <sylvain.pasche@gmail.com>
+
+        * gfile.h:
+	 Remove trailing coma in GMountMountFlags struct
+
 2008-02-18  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfile.c:

@@ -75,7 +75,7 @@ typedef enum  {
  * Flags used when mounting a mount.
  */
 typedef enum  {
-  G_MOUNT_MOUNT_NONE = 0,
+  G_MOUNT_MOUNT_NONE = 0
 } GMountMountFlags;
 
 
