@@ -3308,13 +3308,15 @@ g_file_mount_mountable (GFile               *file,
 
   iface = G_FILE_GET_IFACE (file);
 
-  if (iface->mount_mountable == NULL)
+  if (iface->mount_mountable == NULL) {
     g_simple_async_report_error_in_idle (G_OBJECT (file),
 				         callback,
 					 user_data,
 					 G_IO_ERROR,
 					 G_IO_ERROR_NOT_SUPPORTED,
 					 _("Operation not supported"));
+    return;
+  }
   
   (* iface->mount_mountable) (file,
 			      flags,

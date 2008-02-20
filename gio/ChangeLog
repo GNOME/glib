@@ -1,3 +1,8 @@
+2008-02-20  Benjamin Otte  <otte@gnome.org>
+
+	* gfile.c: (g_file_mount_mountable): 
+	return from function in error path.
+
 2008-02-18  Sylvain Pasche <sylvain.pasche@gmail.com>
 
         * gfile.h:
