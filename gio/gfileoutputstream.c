@@ -33,7 +33,7 @@
 /**
  * SECTION:gfileoutputstream
  * @short_description: File output streaming operations
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GOutputStream, #GDataOutputStream, #GSeekable
  * 
  * GFileOutputStream provides output streams that write their

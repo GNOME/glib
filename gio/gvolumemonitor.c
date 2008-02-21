@@ -32,7 +32,7 @@
 /**
  * SECTION:gvolumemonitor
  * @short_description: Volume Monitor
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GFileMonitor
  * 
  * #GVolumeMonitor is for listing the user interesting devices and volumes

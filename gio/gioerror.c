@@ -29,7 +29,7 @@
 /**
  * SECTION:gioerror
  * @short_description: Error helper functions
- * @include: gio.h
+ * @include: gio/gio.h
  *
  * Contains helper functions for reporting errors to the user.
  **/

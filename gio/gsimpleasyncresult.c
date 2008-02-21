@@ -41,7 +41,7 @@
 /**
  * SECTION:gsimpleasyncresult
  * @short_description: Simple asynchronous results implementation
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GAsyncResult
  *
  * Implements #GAsyncResult for simple cases. Most of the time, this 

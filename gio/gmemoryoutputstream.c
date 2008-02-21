@@ -33,7 +33,7 @@
 /**
  * SECTION:gmemoryoutputstream
  * @short_description: Streaming output operations on memory chunks
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GMemoryInputStream
  *
  * #GMemoryOutputStream is a class for using arbitrary

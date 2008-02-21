@@ -29,7 +29,7 @@
 /**
  * SECTION:gasynchelper
  * @short_description: Asynchronous Helper Functions
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GAsyncReady
  * 
  * Provides helper functions for asynchronous operations.

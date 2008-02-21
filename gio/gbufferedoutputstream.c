@@ -32,7 +32,7 @@
 /**
  * SECTION:gbufferedoutputstream
  * @short_description: Buffered Output Stream
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GFilterOutputStream, #GOutputStream
  * 
  * Buffered output stream implements #GFilterOutputStream and provides 

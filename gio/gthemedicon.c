@@ -31,7 +31,7 @@
 /**
  * SECTION:gthemedicon
  * @short_description: Icon theming support
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GIcon, #GLoadableIcon
  *
  * #GThemedIcon is an implementation of #GIcon that supports icon themes.

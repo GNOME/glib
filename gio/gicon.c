@@ -30,7 +30,7 @@
 /**
  * SECTION:gicon
  * @short_description: Interface for icons
- * @include: gio.h
+ * @include: gio/gio.h
  *
  * #GIcon is a very minimal interface for icons. It provides functions 
  * for checking the equality of two icons and hashing of icons.

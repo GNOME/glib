@@ -32,7 +32,7 @@
 /**
  * SECTION:gfileenumerator
  * @short_description: Enumerated Files Routines
- * @include: gio.h
+ * @include: gio/gio.h
  * 
  * #GFileEnumerator allows you to operate on a set of #GFile<!-- -->s, 
  * returning a #GFileInfo structure for each file enumerated (e.g. 

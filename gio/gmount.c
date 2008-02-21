@@ -37,7 +37,7 @@
 /**
  * SECTION:gmount
  * @short_description: Mount management
- * @include: gio.h
+ * @include: gio/gio.h
  * @see also: GVolume, GUnixMount
  *
  * The #GMount interface represents user-visible mounts. Note, when 

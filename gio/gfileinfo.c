@@ -23,7 +23,7 @@
 /**
  * SECTION:gfileinfo
  * @short_description: File Information and Attributes
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GFile, <link linkend="gio-GFileAttribute">GFileAttribute</link>
  * 
  * Functionality for manipulating basic metadata for files. #GFileInfo

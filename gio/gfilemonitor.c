@@ -34,7 +34,7 @@
 /**
  * SECTION:gfilemonitor
  * @short_description: File Monitor
- * @include: gio.h
+ * @include: gio/gio.h
  *
  * Monitors a file or directory for changes.
  *

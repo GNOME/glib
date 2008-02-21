@@ -32,7 +32,7 @@
 /**
  * SECTION:gfilenamecompleter
  * @short_description: Filename Completer
- * @include: gio.h
+ * @include: gio/gio.h
  * 
  * Completes partial file and directory names given a partial string by
  * looking in the file system for clues. Can return a list of possible 

@@ -34,7 +34,7 @@
 /**
  * SECTION:gfileattribute
  * @short_description: Key-Value Paired File Attributes
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GFile, #GFileInfo
  * 
  * File attributes in GIO consist of a list of key-value pairs. 

@@ -1,3 +1,7 @@
+2008-02-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* *.c: Correct the @include in for section docs.
+
 2008-02-21  David Zeuthen  <davidz@redhat.com>
 
 	* glocalfileinfo.c: (_g_local_file_info_get):

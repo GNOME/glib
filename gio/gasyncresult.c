@@ -29,7 +29,7 @@
 /**
  * SECTION:gasyncresult
  * @short_description: Asynchronous Function Results
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GSimpleAsyncResult
  * 
  * Provides a base class for implementing asynchronous function results.

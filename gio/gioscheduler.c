@@ -29,7 +29,7 @@
 /**
  * SECTION:gioscheduler
  * @short_description: I/O Scheduler
- * @include: gio.h
+ * @include: gio/gio.h
  * 
  * Schedules asynchronous I/O operations. #GIOScheduler integrates 
  * into the main event loop (#GMainLoop) and may use threads if they 

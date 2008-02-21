@@ -32,7 +32,7 @@
 /**
  * SECTION:gvolume
  * @short_description: Volume management
- * @include: gio.h
+ * @include: gio/gio.h
  * 
  * The #GVolume interface represents user-visible objects that can be
  * mounted. Note, when porting from GnomeVFS, #GVolume is the moral

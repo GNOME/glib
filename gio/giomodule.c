@@ -38,7 +38,7 @@
 /**
  * SECTION:giomodule
  * @short_description: Loadable GIO Modules
- * @include: gio.h
+ * @include: gio/gio.h
  *
  * Provides an interface and default functions for loading and unloading 
  * modules. This is used internally to make GIO extensible, but can also

@@ -30,7 +30,7 @@
 /**
  * SECTION:goutputstream
  * @short_description: Base class for implementing streaming output
- * @include: gio.h
+ * @include: gio/gio.h
  *
  *
  **/

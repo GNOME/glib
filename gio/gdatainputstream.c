@@ -31,7 +31,7 @@
 /**
  * SECTION:gdatainputstream
  * @short_description: Data Input Stream
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GInputStream
  * 
  * Data input stream implements #GInputStream and includes functions for 

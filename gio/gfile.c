@@ -42,7 +42,7 @@
 /**
  * SECTION:gfile
  * @short_description: File and Directory Handling
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GFileInfo, #GFileEnumerator
  * 
  * #GFile is a high level abstraction for manipulating files on a 
@@ -59,7 +59,7 @@
  * g_file_parse_name() from a utf8 string gotten from g_file_get_parse_name().
  * 
  * One way to think of a #GFile is as an abstraction of a pathname. For normal
- * files the system pathname is what is stored interanally, but as #GFile<!-- -->s
+ * files the system pathname is what is stored internally, but as #GFile<!-- -->s
  * are extensible it could also be something else that corresponds to a pathname
  * in a userspace implementation of a filesystem.
  *

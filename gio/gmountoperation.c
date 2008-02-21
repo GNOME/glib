@@ -34,7 +34,7 @@
 /** 
  * SECTION:gmountoperation
  * @short_description: Authentication methods for mountable locations
- * @include: gio.h
+ * @include: gio/gio.h
  *
  * #GMountOperation provides a mechanism for authenticating mountable 
  * operations, such as loop mounting files, hard drive partitions or 

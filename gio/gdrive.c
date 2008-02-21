@@ -31,7 +31,7 @@
 /**
  * SECTION:gdrive
  * @short_description: Virtual File System drive management
- * @include: gio.h
+ * @include: gio/gio.h
  * 
  * #GDrive - this represent a piece of hardware connected to the machine.
  * Its generally only created for removable hardware or hardware with

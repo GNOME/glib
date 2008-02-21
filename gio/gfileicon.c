@@ -30,7 +30,7 @@
 /**
  * SECTION:gfileicon
  * @short_description: Icons pointing to an image file
- * @include: gio.h
+ * @include: gio/gio.h
  * @see_also: #GIcon, #GLoadableIcon
  * 
  * #GFileIcon specifies an icon by pointing to an image file
