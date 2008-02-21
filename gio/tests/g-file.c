@@ -348,12 +348,12 @@ test_g_file_new_for_commandline_arg (void)
 }
 
 static char*
-get_relative_path (const gboolean use_uri, const gboolean should_contain_file, const char *dir1, const char *dir2)
+get_relative_path (const gboolean use_uri, const gboolean should_have_prefix, const char *dir1, const char *dir2)
 {
   GFile *file1 = NULL;
   GFile *file2 = NULL;
   GFile *file3 = NULL;
-  gboolean contains_file = FALSE;
+  gboolean has_prefix = FALSE;
   char *relative_path = NULL;
   
   if (use_uri)
@@ -370,12 +370,12 @@ get_relative_path (const gboolean use_uri, const gboolean should_contain_file, c
   g_assert (file1 != NULL);
   g_assert (file2 != NULL);
   
-  contains_file = g_file_contains_file (file1, file2);
+  has_prefix = g_file_has_prefix (file2, file1);
   g_print ("%s %s\n", dir1, dir2);
-  g_assert (contains_file == should_contain_file);
+  g_assert (has_prefix == should_have_prefix);
 
   relative_path = g_file_get_relative_path (file1, file2);
-  if (should_contain_file)
+  if (should_have_prefix)
     {
       g_assert (relative_path != NULL);
       
@@ -394,7 +394,7 @@ get_relative_path (const gboolean use_uri, const gboolean should_contain_file, c
 }
 
 static void
-test_g_file_contains_file (void)
+test_g_file_has_prefix (void)
 {
   /*  TestPathsWithOper.equal represents here if the dir belongs to the directory structure  */
   const struct TestPathsWithOper dirs[] =
@@ -528,8 +528,8 @@ main (int   argc,
   /*  Testing g_file_new_for_commandline_arg() for correct relavive path resolution and correct path/URI guess   */
   g_test_add_func ("/g-file/test_g_file_new_for_commandline_arg", test_g_file_new_for_commandline_arg);
   
-  /*  Testing g_file_contains_file(), g_file_get_relative_path() and g_file_resolve_relative_path() to return and process correct relative paths         */
-  g_test_add_func ("/g-file/test_g_file_contains_file", test_g_file_contains_file);
+  /*  Testing g_file_has_prefix(), g_file_get_relative_path() and g_file_resolve_relative_path() to return and process correct relative paths         */
+  g_test_add_func ("/g-file/test_g_file_has_prefix", test_g_file_has_prefix);
   
   /*  Testing g_file_get_parent() and g_file_get_child()            */
   g_test_add_func ("/g-file/test_g_file_get_parent_child", test_g_file_get_parent_child);

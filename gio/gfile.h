@@ -187,7 +187,7 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @get_uri: Gets a URI for the path within a #GFile.
  * @get_parse_name: Gets the parsed name for the #GFile.
  * @get_parent: Gets the parent directory for the #GFile.
- * @contains_file: Checks whether a #GFile contains a specified file.
+ * @prefix_matches: Checks whether a #GFile contains a specified file.
  * @get_relative_path: Gets the path for a #GFile relative to a given path.
  * @resolve_relative_path: Resolves a relative path for a #GFile to an absolute path.
  * @get_child_for_display_name: Gets the child #GFile for a given display name.
@@ -278,8 +278,8 @@ struct _GFileIface
   char *              (*get_uri)                    (GFile         *file);
   char *              (*get_parse_name)             (GFile         *file);
   GFile *             (*get_parent)                 (GFile         *file);
-  gboolean            (*contains_file)              (GFile         *parent,
-						     GFile         *descendant);
+  gboolean            (*prefix_matches)             (GFile         *prefix,
+						     GFile         *file);
   char *              (*get_relative_path)          (GFile         *parent,
 						     GFile         *descendant);
   GFile *             (*resolve_relative_path)      (GFile        *file,
@@ -573,8 +573,11 @@ GFile *                 g_file_get_child                  (GFile                
 GFile *                 g_file_get_child_for_display_name (GFile                      *file,
 							   const char                 *display_name,
 							   GError                    **error);
-gboolean                g_file_contains_file              (GFile                      *parent,
-							   GFile                      *descendant);
+#ifndef G_DISABLE_DEPRECATED
+#define g_file_contains_file(_parent, _child)  g_file_has_prefix (_child, _parent)
+#endif
+gboolean                g_file_has_prefix                 (GFile                      *file,
+							   GFile                      *prefix);
 char *                  g_file_get_relative_path          (GFile                      *parent,
 							   GFile                      *descendant);
 GFile *                 g_file_resolve_relative_path      (GFile                      *file,

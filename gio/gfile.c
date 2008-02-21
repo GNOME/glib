@@ -617,32 +617,60 @@ g_file_get_child_for_display_name (GFile      *file,
   return (* iface->get_child_for_display_name) (file, display_name, error);
 }
 
+#undef g_file_contains_file
+
 /**
  * g_file_contains_file:
  * @parent: input #GFile.
  * @descendant: input #GFile.
- * 
- * Checks whether @parent (recursively) contains the specified @descendant.
- * 
- * This call does no blocking i/o.
- * 
+ *
+ * Deprecated version of g_file_has_prefix().
+ *
  * Returns:  %TRUE if the @descendant's parent, grandparent, etc is @parent. %FALSE otherwise.
- **/
+ *
+ * Deprecated:2.16: The initial chosen name was unfortunate, as it
+ * may cause you to think this function did more than just
+ * filename comparisons.
+ */
 gboolean
 g_file_contains_file (GFile *parent,
 		      GFile *descendant)
 {
+  /* This function is not in the header and will not be referenced by newly built code */
+  return g_file_has_prefix (descendant, parent);
+}
+
+/**
+ * g_file_has_prefix:
+ * @file: input #GFile.
+ * @prefix: input #GFile.
+ * 
+ * Checks whether @file has the prefix specified by @prefix. In other word, if the
+ * inital elements of @file<!-- -->s pathname match @prefix.
+ * 
+ * This call does no i/o, as it works purely on names. As such it can sometimes
+ * return %FALSE even if @file is inside a @prefix (from a filesystem point of view),
+ * because the prefix of @file is an alias of @prefix.
+ *
+ * Returns:  %TRUE if the @files's parent, grandparent, etc is @prefix. %FALSE otherwise.
+ **/
+gboolean
+g_file_has_prefix (GFile *file,
+		   GFile *prefix)
+{
   GFileIface *iface;
   
-  g_return_val_if_fail (G_IS_FILE (parent), FALSE);
-  g_return_val_if_fail (G_IS_FILE (descendant), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_FILE (prefix), FALSE);
 
-  if (G_TYPE_FROM_INSTANCE (parent) != G_TYPE_FROM_INSTANCE (descendant))
+  if (G_TYPE_FROM_INSTANCE (file) != G_TYPE_FROM_INSTANCE (prefix))
     return FALSE;
   
-  iface = G_FILE_GET_IFACE (parent);
+  iface = G_FILE_GET_IFACE (file);
 
-  return (* iface->contains_file) (parent, descendant);
+  /* The vtable function differs in arg order since we're
+     using the old contains_file call */
+  return (* iface->prefix_matches) (prefix, file);
 }
 
 /**

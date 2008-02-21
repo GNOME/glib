@@ -1,3 +1,19 @@
+2008-02-21  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.[ch]:
+        * gio.symbols:
+	Add new g_file_has_prefix that does the same as g_file_contains_file.
+	Deprecate g_file_contains_file and add a macro that converts
+	it to g_file_has_prefix.
+	The reason for this change is that the contains_file() name seems to
+	imply that this does more work than what it does, but its really only
+	a name match (from #517086)
+	
+        * gdummyfile.c:
+        * glocalfile.c:
+        * tests/g-file.c:
+	Update to match the above change.
+
 2008-02-20  Benjamin Otte  <otte@gnome.org>
 
 	* gfile.c: (g_file_mount_mountable), (g_file_unmount_mountable),

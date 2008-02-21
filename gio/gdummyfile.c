@@ -261,8 +261,7 @@ match_prefix (const char *path,
 }
 
 static gboolean
-g_dummy_file_contains_file (GFile *parent,
-			    GFile *descendant)
+g_dummy_file_prefix_matches (GFile *parent, GFile *descendant)
 {
   GDummyFile *parent_dummy = G_DUMMY_FILE (parent);
   GDummyFile *descendant_dummy = G_DUMMY_FILE (descendant);
@@ -425,7 +424,7 @@ g_dummy_file_file_iface_init (GFileIface *iface)
   iface->get_uri = g_dummy_file_get_uri;
   iface->get_parse_name = g_dummy_file_get_parse_name;
   iface->get_parent = g_dummy_file_get_parent;
-  iface->contains_file = g_dummy_file_contains_file;
+  iface->prefix_matches = g_dummy_file_prefix_matches;
   iface->get_relative_path = g_dummy_file_get_relative_path;
   iface->resolve_relative_path = g_dummy_file_resolve_relative_path;
   iface->get_child_for_display_name = g_dummy_file_get_child_for_display_name;
