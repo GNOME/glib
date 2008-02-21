@@ -1,3 +1,9 @@
+2008-02-21  Tor Lillqvist  <tml@novell.com>
+	
+	* glib/gutf8.c (g_get_charset)
+	* glib/gconvert.c (g_locale_from_utf8): Clarify character set
+	issues on Windows.
+
 2008-02-07  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Unfortunately the mingw implementations of

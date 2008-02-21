@@ -214,6 +214,22 @@ call <function>setlocale (LC_ALL, "")</function> to set up the current
 locale.
 </para>
 
+<para>
+On Windows, in a C program there are several locale concepts
+that not necessarily are synchronized. On one hand, there is the
+system default ANSI code-page, which determines what encoding is used
+for file names handled by the C library's functions and the Win32
+API. (We are talking about the "narrow" functions here that take
+character pointers, not the "wide" ones.)
+</para>
+
+<para>
+On the other hand, there is the C library's current locale. The
+character set (code-page) used by that is not necessarily the same as
+the system default ANSI code-page. Strings in this character set are
+returned by functions like <function>strftime</function>.
+</para>
+
 </refsect2>
 
 <refsect2>

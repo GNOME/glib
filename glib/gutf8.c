@@ -510,6 +510,12 @@ charset_cache_free (gpointer data)
  * other encoding. (Frequently g_locale_to_utf8() and g_locale_from_utf8()
  * are nice shortcuts, though.)
  *
+ * On Windows the character set returned by this function is the
+ * so-called system default ANSI code-page. That is the character set
+ * used by the "narrow" versions of C library and Win32 functions that
+ * handle file names. It might be different from the character set
+ * used by the C library's current locale.
+ *
  * The return value is %TRUE if the locale's encoding is UTF-8, in that
  * case you can perhaps avoid calling g_convert().
  *

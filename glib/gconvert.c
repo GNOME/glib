@@ -1091,7 +1091,8 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * 
  * Converts a string from UTF-8 to the encoding used for strings by
  * the C runtime (usually the same as that used by the operating
- * system) in the <link linkend="setlocale">current locale</link>.
+ * system) in the <link linkend="setlocale">current locale</link>. On
+ * Windows this means the system codepage.
  * 
  * Return value: The converted string, or %NULL on an error.
  **/
