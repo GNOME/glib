@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -127,6 +129,15 @@ static void               g_file_real_query_info_async            (GFile        
 								   GAsyncReadyCallback     callback,
 								   gpointer                user_data);
 static GFileInfo *        g_file_real_query_info_finish           (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_query_filesystem_info_async (GFile                  *file,
+								   const char             *attributes,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileInfo *        g_file_real_query_filesystem_info_finish (GFile                  *file,
 								   GAsyncResult           *res,
 								   GError                **error);
 static void               g_file_real_enumerate_children_async    (GFile                  *file,
@@ -264,6 +275,8 @@ g_file_class_init (gpointer g_class,
   iface->set_display_name_finish = g_file_real_set_display_name_finish;
   iface->query_info_async = g_file_real_query_info_async;
   iface->query_info_finish = g_file_real_query_info_finish;
+  iface->query_filesystem_info_async = g_file_real_query_filesystem_info_async;
+  iface->query_filesystem_info_finish = g_file_real_query_filesystem_info_finish;
   iface->set_attributes_async = g_file_real_set_attributes_async;
   iface->set_attributes_finish = g_file_real_set_attributes_finish;
   iface->read_async = g_file_real_read_async;
@@ -1145,6 +1158,81 @@ g_file_query_filesystem_info (GFile         *file,
     }
   
   return (* iface->query_filesystem_info) (file, attributes, cancellable, error);
+}
+
+/**
+ * g_file_query_filesystem_info_async:
+ * @file: input #GFile.
+ * @attributes: an attribute query string.
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
+ *     of the request.
+ * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ * 
+ * Asynchronously gets the requested information about the filesystem
+ * that the specified @file is on. The result is a #GFileInfo object
+ * that contains key-value attributes (such as type or size for the
+ * file).
+ * 
+ * For more details, see g_file_query_filesystem_info() which is the
+ * synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can
+ * then call g_file_query_info_finish() to get the result of the
+ * operation.
+ **/
+void
+g_file_query_filesystem_info_async (GFile               *file,
+                                    const char          *attributes,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
+{
+  GFileIface *iface;
+  
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+  (* iface->query_filesystem_info_async) (file,
+                                          attributes,
+                                          io_priority,
+                                          cancellable,
+                                          callback,
+                                          user_data);
+}
+
+/**
+ * g_file_query_filesystem_info_finish:
+ * @file: input #GFile.
+ * @res: a #GAsyncResult. 
+ * @error: a #GError. 
+ * 
+ * Finishes an asynchronous filesystem info query.  See
+ * g_file_query_filesystem_info_async().
+ * 
+ * Returns: #GFileInfo for given @file or %NULL on error.
+ **/
+GFileInfo *
+g_file_query_filesystem_info_finish (GFile         *file,
+                                     GAsyncResult  *res,
+                                     GError       **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return NULL;
+    }
+  
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->query_filesystem_info_finish) (file, res, error);
 }
 
 /**
@@ -3752,6 +3840,80 @@ g_file_real_query_info_finish (GFile         *file,
   QueryInfoAsyncData *data;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_query_info_async);
+
+  data = g_simple_async_result_get_op_res_gpointer (simple);
+  if (data->info)
+    return g_object_ref (data->info);
+  
+  return NULL;
+}
+
+typedef struct {
+  char *attributes;
+  GFileInfo *info;
+} QueryFilesystemInfoAsyncData;
+
+static void
+query_filesystem_info_data_free (QueryFilesystemInfoAsyncData *data)
+{
+  if (data->info)
+    g_object_unref (data->info);
+  g_free (data->attributes);
+  g_free (data);
+}
+
+static void
+query_filesystem_info_async_thread (GSimpleAsyncResult *res,
+                                    GObject            *object,
+                                    GCancellable       *cancellable)
+{
+  GError *error = NULL;
+  QueryFilesystemInfoAsyncData *data;
+  GFileInfo *info;
+  
+  data = g_simple_async_result_get_op_res_gpointer (res);
+  
+  info = g_file_query_filesystem_info (G_FILE (object), data->attributes, cancellable, &error);
+
+  if (info == NULL)
+    {
+      g_simple_async_result_set_from_error (res, error);
+      g_error_free (error);
+    }
+  else
+    data->info = info;
+}
+
+static void
+g_file_real_query_filesystem_info_async (GFile               *file,
+                                         const char          *attributes,
+                                         int                  io_priority,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data)
+{
+  GSimpleAsyncResult *res;
+  QueryFilesystemInfoAsyncData *data;
+
+  data = g_new0 (QueryFilesystemInfoAsyncData, 1);
+  data->attributes = g_strdup (attributes);
+  
+  res = g_simple_async_result_new (G_OBJECT (file), callback, user_data, g_file_real_query_filesystem_info_async);
+  g_simple_async_result_set_op_res_gpointer (res, data, (GDestroyNotify)query_filesystem_info_data_free);
+  
+  g_simple_async_result_run_in_thread (res, query_filesystem_info_async_thread, io_priority, cancellable);
+  g_object_unref (res);
+}
+
+static GFileInfo *
+g_file_real_query_filesystem_info_finish (GFile         *file,
+                                          GAsyncResult  *res,
+                                          GError       **error)
+{
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  QueryFilesystemInfoAsyncData *data;
+
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_query_filesystem_info_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)

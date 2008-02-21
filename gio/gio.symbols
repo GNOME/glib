@@ -253,6 +253,8 @@ g_file_query_info
 g_file_query_info_async
 g_file_query_info_finish
 g_file_query_filesystem_info
+g_file_query_filesystem_info_async
+g_file_query_filesystem_info_finish
 g_file_find_enclosing_mount
 g_file_find_enclosing_mount_async
 g_file_find_enclosing_mount_finish
@@ -627,6 +629,7 @@ g_themed_icon_new
 g_themed_icon_new_with_default_fallbacks
 g_themed_icon_new_from_names
 g_themed_icon_get_names
+g_themed_icon_append_name
 #endif
 #endif
 

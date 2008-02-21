@@ -215,6 +215,28 @@ g_themed_icon_get_names (GThemedIcon *icon)
   return (const char * const *)icon->names;
 }
 
+/**
+ * g_themed_icon_append_name:
+ * @icon: a #GThemedIcon
+ * @iconname: name of icon to append to list of icons from within @icon.
+ *
+ * Append a name to the list of icons from within @icon.
+ */
+void
+g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
+{
+  guint num_names;
+  char **new_names;
+
+  g_return_if_fail (G_IS_THEMED_ICON (icon));
+  g_return_if_fail (iconname != NULL);
+
+  num_names = g_strv_length (icon->names);
+  icon->names = g_realloc (icon->names, sizeof (char*) * (num_names + 2));
+  icon->names[num_names] = g_strdup (iconname);
+  icon->names[num_names + 1] = NULL;
+}
+
 static guint
 g_themed_icon_hash (GIcon *icon)
 {

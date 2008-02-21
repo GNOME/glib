@@ -1,3 +1,42 @@
+2008-02-21  David Zeuthen  <davidz@redhat.com>
+
+	* glocalfileinfo.c: (_g_local_file_info_get):
+	* gcontenttype.c:
+	(g_content_type_get_icon): Implement this function by
+	moving bits from glocalfileinfo.c
+	(g_content_type_get_description): Unalias before getting
+	description (#517687)
+
+	* gfile.c: (g_file_class_init),
+	(g_file_query_filesystem_info_async),
+	(g_file_query_filesystem_info_finish),
+	(query_filesystem_info_data_free),
+	(query_filesystem_info_async_thread),
+	(g_file_real_query_filesystem_info_async),
+	(g_file_real_query_filesystem_info_finish):
+	* gfile.h: Implement async version of
+	g_file_query_filesystem_info()
+
+	* gfileinfo.h: Add new attributes for filesystem::use-preview
+
+	* gio.symbols: Update
+
+	* gthemedicon.c: (g_themed_icon_append_name):
+	* gthemedicon.h: Add new new convenience function.
+
+	* gunionvolumemonitor.c: (g_union_volume_monitor_dispose),
+	(get_mounts), (get_volumes), (get_connected_drives),
+	(get_volume_for_uuid), (get_mount_for_uuid),
+	(g_union_volume_monitor_init), (populate_union_monitor),
+	(g_volume_monitor_get), (_g_mount_get_for_mount_path),
+	(g_volume_monitor_adopt_orphan_mount):
+	* gvolumemonitor.c:
+	* gvolumemonitor.h: Use recursive locks so it's safe for volume
+	monitor implementations to call into the main volume monitor. Also
+	separate object initialization and volume monitor initialization
+	such that non-native volume monitors can properly adopt their
+	mounts away.
+
 2008-02-21  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:

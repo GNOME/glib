@@ -80,6 +80,22 @@ typedef enum {
   G_FILE_TYPE_MOUNTABLE
 } GFileType;
 
+/**
+ * GFilesystemPreviewType:
+ * @G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS: Only preview files if user has explicitly requested it.
+ * @G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL: Preview files if user has requested preview of "local" files.
+ * @G_FILESYSTEM_PREVIEW_TYPE_NEVER: Never preview files.
+ * 
+ * Indicates a hint from the file system whether files should be
+ * previewed in a file manager. Returned as the value of the key
+ * #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
+ **/
+typedef enum {
+  G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS = 0,
+  G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL,
+  G_FILESYSTEM_PREVIEW_TYPE_NEVER
+} GFilesystemPreviewType;
+
 /* Common Attributes:  */
 /**
  * G_FILE_ATTRIBUTE_STANDARD_TYPE:
@@ -678,6 +694,16 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_FILESYSTEM_READONLY "filesystem::readonly"               /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW:
+ *
+ * A key in the "filesystem" namespace for hinting a file manager
+ * application whether it should preview (e.g. thumbnail) files on the
+ * file system. The value for this key contain a
+ * #GFilesystemPreviewType.
+ **/
+#define G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW "filesystem::use-preview"        /* uint32 (GFilesystemPreviewType) */
 
 /**
  * G_FILE_ATTRIBUTE_GVFS_BACKEND:

@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -51,8 +53,8 @@ static void g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_mo
 #define g_union_volume_monitor_get_type _g_union_volume_monitor_get_type
 G_DEFINE_TYPE (GUnionVolumeMonitor, g_union_volume_monitor, G_TYPE_VOLUME_MONITOR);
 
+static GStaticRecMutex the_volume_monitor_mutex = G_STATIC_REC_MUTEX_INIT;
 
-G_LOCK_DEFINE_STATIC(the_volume_monitor);
 static GUnionVolumeMonitor *the_volume_monitor = NULL;
 
 static void
@@ -82,9 +84,9 @@ g_union_volume_monitor_dispose (GObject *object)
   
   monitor = G_UNION_VOLUME_MONITOR (object);
 
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
   the_volume_monitor = NULL;
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
   
   if (G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose)
     (*G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose) (object);
@@ -102,7 +104,7 @@ get_mounts (GVolumeMonitor *volume_monitor)
 
   res = NULL;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = monitor->monitors; l != NULL; l = l->next)
     {
@@ -111,7 +113,7 @@ get_mounts (GVolumeMonitor *volume_monitor)
       res = g_list_concat (res, g_volume_monitor_get_mounts (child_monitor));
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return res;
 }
@@ -128,7 +130,7 @@ get_volumes (GVolumeMonitor *volume_monitor)
 
   res = NULL;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = monitor->monitors; l != NULL; l = l->next)
     {
@@ -137,7 +139,7 @@ get_volumes (GVolumeMonitor *volume_monitor)
       res = g_list_concat (res, g_volume_monitor_get_volumes (child_monitor));
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return res;
 }
@@ -154,7 +156,7 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
 
   res = NULL;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = monitor->monitors; l != NULL; l = l->next)
     {
@@ -163,7 +165,7 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
       res = g_list_concat (res, g_volume_monitor_get_connected_drives (child_monitor));
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return res;
 }
@@ -180,7 +182,7 @@ get_volume_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
 
   volume = NULL;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = monitor->monitors; l != NULL; l = l->next)
     {
@@ -192,7 +194,7 @@ get_volume_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
 
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return volume;
 }
@@ -209,7 +211,7 @@ get_mount_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
 
   mount = NULL;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = monitor->monitors; l != NULL; l = l->next)
     {
@@ -221,7 +223,7 @@ get_mount_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
 
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return mount;
 }
@@ -470,6 +472,11 @@ get_native_class ()
 static void
 g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
 {
+}
+
+static void
+populate_union_monitor (GUnionVolumeMonitor *union_monitor)
+{
   GVolumeMonitor *monitor;
   GNativeVolumeMonitorClass *native_class;
   GVolumeMonitorClass *klass;
@@ -526,17 +533,18 @@ g_volume_monitor_get (void)
 {
   GVolumeMonitor *vm;
   
-  G_LOCK (the_volume_monitor);
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   if (the_volume_monitor)
     vm = G_VOLUME_MONITOR (g_object_ref (the_volume_monitor));
   else
     {
       the_volume_monitor = g_union_volume_monitor_new ();
+      populate_union_monitor (the_volume_monitor);
       vm = G_VOLUME_MONITOR (the_volume_monitor);
     }
   
-  G_UNLOCK (the_volume_monitor);
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return vm;
 }
@@ -563,9 +571,9 @@ _g_mount_get_for_mount_path (const char *mount_path,
 
   if (klass->get_mount_for_mount_path)
     {
-      G_LOCK (the_volume_monitor);
+      g_static_rec_mutex_lock (&the_volume_monitor_mutex);
       mount = klass->get_mount_for_mount_path (mount_path, cancellable);
-      G_UNLOCK (the_volume_monitor);
+      g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
     }
 
   /* TODO: How do we know this succeeded? Keep in mind that the native
@@ -632,9 +640,7 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
 
   volume = NULL;
   
-  /* TODO: nasty locking issues because current VM's don't emit signals in idle */
-
-  /*G_LOCK (the_volume_monitor);*/
+  g_static_rec_mutex_lock (&the_volume_monitor_mutex);
 
   for (l = the_volume_monitor->monitors; l != NULL; l = l->next)
     {
@@ -649,7 +655,7 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
         }
     }
   
-  /*G_UNLOCK (the_volume_monitor);*/
+  g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   return volume;
 }

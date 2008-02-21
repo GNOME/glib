@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -25,6 +27,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "gcontenttypeprivate.h"
+#include "gthemedicon.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -591,6 +594,8 @@ g_content_type_get_description (const char *type)
   g_return_val_if_fail (type != NULL, NULL);
   
   G_LOCK (gio_xdgmime);
+  type = xdg_mime_unalias_mime_type (type);
+
   if (type_comment_cache == NULL)
     type_comment_cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
@@ -639,10 +644,35 @@ g_content_type_get_mime_type (const char *type)
 GIcon *
 g_content_type_get_icon (const char *type)
 {
+  char *mimetype_icon, *generic_mimetype_icon, *p;
+  char *icon_names[2];
+  GThemedIcon *themed_icon;
+  
   g_return_val_if_fail (type != NULL, NULL);
-
-  /* TODO: Implement */
-  return NULL;
+  
+  mimetype_icon = g_strdup (type);
+  
+  while ((p = strchr (mimetype_icon, '/')) != NULL)
+    *p = '-';
+  
+  p = strchr (type, '/');
+  if (p == NULL)
+    p = type + strlen (type);
+  
+  generic_mimetype_icon = g_malloc (p - type + strlen ("-x-generic") + 1);
+  memcpy (generic_mimetype_icon, type, p - type);
+  memcpy (generic_mimetype_icon + (p - type), "-x-generic", strlen ("-x-generic"));
+  generic_mimetype_icon[(p - type) + strlen ("-x-generic")] = 0;
+  
+  icon_names[0] = mimetype_icon;
+  icon_names[1] = generic_mimetype_icon;
+  
+  themed_icon = g_themed_icon_new_from_names (icon_names, 2);
+  
+  g_free (mimetype_icon);
+  g_free (generic_mimetype_icon);
+  
+  return G_ICON (themed_icon);
 }
 
 /**

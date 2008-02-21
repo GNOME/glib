@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -1488,48 +1490,31 @@ _g_local_file_info_get (const char             *basename,
 	  if (g_file_attribute_matcher_matches (attribute_matcher,
 						G_FILE_ATTRIBUTE_STANDARD_ICON))
 	    {
-	      char *mimetype_icon, *generic_mimetype_icon, *type_icon, *p;
-	      char *icon_names[3];
 	      GIcon *icon;
-	      int i;
 
-	      mimetype_icon = g_strdup (content_type);
-	      
-	      while ((p = strchr (mimetype_icon, '/')) != NULL)
-		*p = '-';
+              icon = g_content_type_get_icon (content_type);
+              if (icon != NULL)
+                {
+                  if (G_IS_THEMED_ICON (icon))
+                    {
+                      const char *type_icon;
 
-	      p = strchr (content_type, '/');
-	      if (p == NULL)
-		p = content_type + strlen (content_type);
+                      /* TODO: Special case desktop dir? That could be expensive with xdg dirs... */
+                      if (strcmp (path, g_get_home_dir ()) == 0)
+                        type_icon = "user-home";
+                      else if (S_ISDIR (statbuf.st_mode)) 
+                        type_icon = "folder";
+                      else if (statbuf.st_mode & S_IXUSR)
+                        type_icon = "application-x-executable";
+                      else
+                        type_icon = "text-x-generic";
 
-	      generic_mimetype_icon = g_malloc (p - content_type + strlen ("-x-generic") + 1);
-	      memcpy (generic_mimetype_icon, content_type, p - content_type);
-	      memcpy (generic_mimetype_icon + (p - content_type), "-x-generic", strlen ("-x-generic"));
-	      generic_mimetype_icon[(p - content_type) + strlen ("-x-generic")] = 0;
+                      g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
+                    }
 
-	      /* TODO: Special case desktop dir? That could be expensive with xdg dirs... */
-	      if (strcmp (path, g_get_home_dir ()) == 0)
-		type_icon = "user-home";
-	      else if (S_ISDIR (statbuf.st_mode)) 
-		type_icon = "folder";
-	      else if (statbuf.st_mode & S_IXUSR)
-		type_icon = "application-x-executable";
-	      else
-		type_icon = "text-x-generic";
-
-	      i = 0;
-	      icon_names[i++] = mimetype_icon;
-	      icon_names[i++] = generic_mimetype_icon;
-	      if (strcmp (generic_mimetype_icon, type_icon) != 0 &&
-		  strcmp (mimetype_icon, type_icon) != 0) 
-		icon_names[i++] = type_icon;
-	      
-	      icon = g_themed_icon_new_from_names (icon_names, i);
-	      g_file_info_set_icon (info, icon);
-	      
-	      g_object_unref (icon);
-	      g_free (mimetype_icon);
-	      g_free (generic_mimetype_icon);
+                  g_file_info_set_icon (info, icon);
+                  g_object_unref (icon);
+                }
 	    }
 	  
 	  g_free (content_type);

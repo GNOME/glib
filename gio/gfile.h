@@ -198,8 +198,8 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @query_info_async: Asynchronously gets the #GFileInfo for a #GFile.
  * @query_info_finish: Finishes an asynchronous query info operation.
  * @query_filesystem_info: Gets a #GFileInfo for the file system #GFile is on.
- * @_query_filesystem_info_async: Asynchronously gets a #GFileInfo for the file system #GFile is on.
- * @_query_filesystem_info_finish: Finishes asynchronously getting the file system info.
+ * @query_filesystem_info_async: Asynchronously gets a #GFileInfo for the file system #GFile is on.
+ * @query_filesystem_info_finish: Finishes asynchronously getting the file system info.
  * @find_enclosing_mount: Gets a #GMount for the #GFile.
  * @find_enclosing_mount_async: Asynchronously gets the #GMount for a #GFile.
  * @find_enclosing_mount_finish: Finishes asynchronously getting the volume.
@@ -324,8 +324,15 @@ struct _GFileIface
 					     const char           *attributes,
 					     GCancellable         *cancellable,
 					     GError              **error);
-  void                (*_query_filesystem_info_async) (void);
-  void                (*_query_filesystem_info_finish) (void);
+  void                (*query_filesystem_info_async) (GFile                *file,
+                                                      const char           *attributes,
+                                                      int                   io_priority,
+                                                      GCancellable         *cancellable,
+                                                      GAsyncReadyCallback   callback,
+                                                      gpointer              user_data);
+  GFileInfo *         (*query_filesystem_info_finish) (GFile                *file,
+                                                       GAsyncResult         *res,
+                                                       GError              **error);
   
   GMount *            (*find_enclosing_mount)(GFile              *file,
 					       GCancellable       *cancellable,
@@ -660,6 +667,15 @@ GFileInfo *             g_file_query_info_finish          (GFile                
 GFileInfo *             g_file_query_filesystem_info      (GFile                      *file,
 							   const char                 *attributes,
 							   GCancellable               *cancellable,
+							   GError                    **error);
+void                    g_file_query_filesystem_info_async (GFile                      *file,
+							   const char                 *attributes,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+GFileInfo *             g_file_query_filesystem_info_finish (GFile                      *file,
+                                                           GAsyncResult               *res,
 							   GError                    **error);
 GMount *                g_file_find_enclosing_mount       (GFile                      *file,
                                                            GCancellable               *cancellable,
