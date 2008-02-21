@@ -1,3 +1,7 @@
+2008-02-21  Tor Lillqvist  <tml@novell.com>
+
+	* glib/running.sgml: Clarify character set issues on Windows.
+
 2008-02-13  Ryan Lortie  <desrt@desrt.ca>
 
         * gio/gio-sections.txt: add G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
