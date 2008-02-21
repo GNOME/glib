@@ -79,7 +79,7 @@
  * store the real basename or the #GFile to use to actually access the file, because
  * there is no way to go from a display name to the actual name.
  *
- * Using #GFile as an identifier has the same weaknesses as using an path in that
+ * Using #GFile as an identifier has the same weaknesses as using a path in that
  * there may be multiple aliases for the same file. For instance, hard or
  * soft links may cause two different #GFile<!-- -->s to refer to the same file.
  * Other possible causes for aliases are: case insensitive filesystems, short
