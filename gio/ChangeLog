@@ -1,5 +1,10 @@
 2008-02-21  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.c:
+	Add more documentation about how GFiles work (from #517086)
+
+2008-02-21  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * gio.symbols:
 	Add new g_file_has_prefix that does the same as g_file_contains_file.

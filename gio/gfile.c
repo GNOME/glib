@@ -46,20 +46,49 @@
  * #GFile is a high level abstraction for manipulating files on a 
  * virtual file system. #GFile<!-- -->s are lightweight, immutable 
  * objects that do no I/O upon creation. It is necessary to understand that
- * #GFile objects do not represent files, merely a handle to a file. All
- * file I/O is implemented as streaming operations (see #GInputStream and 
+ * #GFile objects do not represent files, merely an identifier for a file. All
+ * file content I/O is implemented as streaming operations (see #GInputStream and 
  * #GOutputStream).
- * 
+ *
  * To construct a #GFile, you can use: 
  * g_file_new_for_path() if you have a path.
  * g_file_new_for_uri() if you have a URI.
  * g_file_new_for_commandline_arg() for a command line argument.
+ * g_file_parse_name() from a utf8 string gotten from g_file_get_parse_name().
  * 
- * You can move through the file system with #GFile handles with
- * g_file_get_parent() to get a handle to the parent directory.
- * g_file_get_child() to get a handle to a child within a directory.
- * g_file_resolve_relative_path() to resolve a relative path between
- * two #GFile<!-- -->s.
+ * One way to think of a #GFile is as an abstraction of a pathname. For normal
+ * files the system pathname is what is stored interanally, but as #GFile<!-- -->s
+ * are extensible it could also be something else that corresponds to a pathname
+ * in a userspace implementation of a filesystem.
+ *
+ * #GFile<!-- -->s make up hierarchies of directories and files that correspond to the
+ * files on a filesystem. You can move through the file system with #GFile using
+ * g_file_get_parent() to get an identifier for the parent directory, g_file_get_child()
+ * to get a child within a directory, g_file_resolve_relative_path() to resolve a relative
+ * path between two #GFile<!-- -->s. There can be multiple hierarchies, so you may not
+ * end up at the same root if you repeatedly call g_file_get_parent() on two different
+ * files.
+ *
+ * All #GFile<!-- -->s have a basename (get with g_file_get_basename()). These names
+ * are byte strings that are used to identify the file on the filesystem (relative to
+ * its parent directory) and there is no guarantees that they have any particular charset
+ * encoding or even make any sense at all. If you want to use filenames in a user
+ * interface you should use the display name that you can get by requesting the
+ * %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME attribute with g_file_query_info().
+ * This is guaranteed to be in utf8 and can be used in a user interface. But always
+ * store the real basename or the #GFile to use to actually access the file, because
+ * there is no way to go from a display name to the actual name.
+ *
+ * Using #GFile as an indetifier has the same weaknesses as using an path in that
+ * there may be multiple aliases for the same file. For instance, hard or
+ * soft links may cause two different #GFile<!-- -->s to refer to the same file.
+ * Other possible causes for aliases are: case insensitive filesystems, short
+ * and long names on Fat/NTFS, or bind mounts in linux. If you want to check if
+ * two #GFile<!-- -->s point to the same file you can query for the
+ * %G_FILE_ATTRIBUTE_ID_FILE attribute. Note that #GFile does some trivial
+ * canonicalization of pathnames passed in, so that trivial differences in the
+ * path string used at creation (dupplicated slashes, slash at end of path, "."
+ * or ".." path segments, etc) does not create different #GFile<!-- -->s.
  * 
  * Many #GFile operations have both synchronous and asynchronous versions 
  * to suit your application. Asynchronous versions of synchronous functions 
@@ -355,9 +384,15 @@ g_file_get_uri_scheme (GFile *file)
  * Gets the base name (the last component of the path) for a given #GFile.
  *
  * If called for the top level of a system (such as the filesystem root
- * or a uri like sftp://host/ it will return a single directory separator
+ * or a uri like sftp://host/) it will return a single directory separator
  * (and on Windows, possibly a drive letter).
  *
+ * The base name is a byte string (*not* UTF-8). It has no defined encoding
+ * or rules other than it may not contain zero bytes.  If you want to use
+ * filenames in a user interface you should use the display name that you
+ * can get by requesting the %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+ * attribute with g_file_query_info().
+ * 
  * This call does no blocking i/o.
  * 
  * Returns: string containing the #GFile's base name, or %NULL 
@@ -433,7 +468,8 @@ g_file_get_uri (GFile *file)
  * g_file_parse_name().
  *
  * This is generally used to show the #GFile as a nice
- * string in a user interface, like in a location entry.
+ * full-pathname kind of string in a user interface,
+ * like in a location entry.
  *
  * For local files with names that can safely be converted
  * to UTF8 the pathname is used, otherwise the IRI is used
@@ -510,7 +546,10 @@ g_file_hash (gconstpointer file)
  * @file1: the first #GFile.
  * @file2: the second #GFile.
  *
- * Checks equality of two given #GFile<!-- -->s
+ * Checks equality of two given #GFile<!-- -->s. Note that two
+ * #GFile<!-- -->s that differ can still refer to the same
+ * file on the filesystem due to various forms of filename
+ * aliasing.
  *
  * This call does no blocking i/o.
  * 
@@ -563,9 +602,9 @@ g_file_get_parent (GFile *file)
 /**
  * g_file_get_child:
  * @file: input #GFile.
- * @name: string containing the child's name.
+ * @name: string containing the child's basename.
  *
- * Gets a specific child of @file with name equal to @name.
+ * Gets a child of @file with basename equal to @name.
  *
  * Note that the file with that specific name might not exist, but
  * you can still have a #GFile that points to it. You can use this
@@ -646,7 +685,7 @@ g_file_contains_file (GFile *parent,
  * @prefix: input #GFile.
  * 
  * Checks whether @file has the prefix specified by @prefix. In other word, if the
- * inital elements of @file<!-- -->s pathname match @prefix.
+ * names of inital elements of @file<!-- -->s pathname match @prefix.
  * 
  * This call does no i/o, as it works purely on names. As such it can sometimes
  * return %FALSE even if @file is inside a @prefix (from a filesystem point of view),
@@ -683,7 +722,7 @@ g_file_has_prefix (GFile *file,
  * This call does no blocking i/o.
  * 
  * Returns: string with the relative path from @descendant 
- *     to @parent, or %NULL if @descendant is not a descendant of @parent. The returned string should be freed with 
+ *     to @parent, or %NULL if @descendant doesn't have @parent as prefix. The returned string should be freed with 
  *     g_free() when no longer needed.
  **/
 char *
