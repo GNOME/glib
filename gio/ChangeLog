@@ -1,3 +1,9 @@
+2008-02-22  Alexander Larsson  <alexl@redhat.com>
+
+	* gcontenttype.c (g_content_type_get_icon):
+	Look at old-style gnome mime icon names too, as many
+	have not moved to the new style.
+
 2008-02-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* *.c: Correct the @include in for section docs.
