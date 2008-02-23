@@ -1,3 +1,29 @@
+Overview of Changes from GLib 2.15.5 to GLib 2.15.6
+===================================================
+
+* GIO:
+ - New file attributes: trash::item-count, filesystem::use-preview
+ - Rename g_file_contains_file to g_file_has_prefix
+ - g_file_query_filesystem_info grew async variants
+ - g_themed_icon_append_name: new convenience function
+ - g_content_type_get_icon is implemented now
+
+* Updated translations:
+ Arabic (ar)
+ Belarusian Latin (be@latin)
+ Catalan (ca) 
+ British English (en_GB)
+ Finnish (fi)
+ Galician (gl)
+ Hebrew (he)
+ Italian (it)
+ Kannada (kn)
+ Norwegian bokmål (nb)
+ Dutch (nl)
+ Brazilian Portugese (pt_BR)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.15.4 to GLib 2.15.5
 ===================================================
 
