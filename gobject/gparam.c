@@ -923,7 +923,7 @@ pool_depth_list (gpointer key,
 }
 
 /* We handle interfaces specially since we don't want to
- * count interface prerequsites like normal inheritance;
+ * count interface prerequisites like normal inheritance;
  * the property comes from the direct inheritance from
  * the prerequisite class, not from the interface that
  * prerequires it.
