@@ -366,6 +366,7 @@ parse_args (gint    *argc_p,
  *        Changed if any arguments were handled.
  * @argv: Address of the @argv parameter of main().
  *        Any parameters understood by g_test_init() stripped before return.
+ * @Varargs: Reserved for future extension. Currently, you must pass %NULL.
  *
  * Initialize the GLib testing framework, e.g. by seeding the
  * test random number generator, the name for g_get_prgname()
@@ -520,7 +521,7 @@ g_test_rand_int_range (gint32          begin,
  * Get a reproducable random floating point number,
  * see g_test_rand_int() for details on test case random numbers.
  *
- * Return a random number from the seeded random number generator.
+ * Returns: a random number from the seeded random number generator.
  */
 double
 g_test_rand_double (void)
@@ -591,6 +592,7 @@ g_test_timer_last (void)
  * g_test_minimized_result:
  * @minimized_quantity: the reported value
  * @format: the format string of the report message
+ * @Varargs: arguments to pass to the printf() function
  *
  * Report the result of a performance or measurement test.
  * The test should generally strive to minimize the reported
@@ -617,6 +619,7 @@ g_test_minimized_result (double          minimized_quantity,
  * g_test_maximized_result:
  * @maximized_quantity: the reported value
  * @format: the format string of the report message
+ * @Varargs: arguments to pass to the printf() function
  *
  * Report the result of a performance or measurement test.
  * The test should generally strive to maximize the reported
@@ -1229,6 +1232,8 @@ g_assertion_message_cmpstr (const char     *domain,
  * @str2: another C string or %NULL
  *
  * Compares @str1 and @str2 like strcmp(). Handles %NULL strings gracefully.
+ *
+ * Returns: -1, 0 or 1, if @str1 is <, == or > than @str2.
  */
 int
 g_strcmp0 (const char     *str1,
@@ -1822,6 +1827,7 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
  * g_test_add:
  * @testpath:  The test path for a new test case.
  * @Fixture:   The type of a fixture data structure.
+ * @tdata:     Data argument for the test functions.
  * @fsetup:    The function to set up the fixture data.
  * @ftest:     The actual test function.
  * @fteardown: The function to tear down the fixture data.

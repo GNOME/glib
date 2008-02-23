@@ -1,3 +1,8 @@
+2008-02-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gasyncqueue.c:
+	* glib/gtestutils.c: Documentation fixes
+
 2008-02-21  Tor Lillqvist  <tml@novell.com>
 	
 	* glib/gutf8.c (g_get_charset)

@@ -67,6 +67,7 @@ g_async_queue_new (void)
 
 /**
  * g_async_queue_new_full:
+ * @item_free_func: function to free queue elements
  * 
  * Creates a new asynchronous queue with an initial reference count of 1 and
  * sets up a destroy notify function that is used to free any remaining
