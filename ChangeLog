@@ -1,3 +1,8 @@
+2008-02-23  Matthias Clasen  <mclasen@redhat.com> 
+
+	* glib/gkeyfile.c (g_key_file_get_string_list): Return
+	NULL when the key is not found.  (#513171, Дилян Палаузов)
+
 2008-02-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/testglib.c: Don't test user directories for being

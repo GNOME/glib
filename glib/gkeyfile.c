@@ -1520,6 +1520,8 @@ g_key_file_get_string_list (GKeyFile     *key_file,
         }
       else
         g_propagate_error (error, key_file_error);
+
+      return NULL;
     }
 
   len = g_slist_length (pieces);
