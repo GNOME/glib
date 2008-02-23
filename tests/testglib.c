@@ -787,10 +787,6 @@ test_info (void)
 
   uddesktop = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
   g_assert (uddesktop != NULL);
-  udddocs = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
-  g_assert (udddocs != NULL);
-  uddpubshare = g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE);
-  g_assert (uddpubshare != NULL);
 
   sv = (gchar **) g_get_system_data_dirs ();
   sdatadirs = g_strjoinv (G_SEARCHPATH_SEPARATOR_S, sv);
