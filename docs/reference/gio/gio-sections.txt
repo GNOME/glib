@@ -31,6 +31,7 @@ GFileQueryInfoFlags
 GFileCreateFlags
 GFileCopyFlags
 GFileMonitorFlags
+GFilesystemPreviewType
 GFileProgressCallback
 GFileReadMoreCallback
 g_file_new_for_path
@@ -48,6 +49,7 @@ g_file_get_parent
 g_file_get_child
 g_file_get_child_for_display_name
 g_file_contains_file
+g_file_has_prefix
 g_file_get_relative_path
 g_file_resolve_relative_path
 g_file_is_native
@@ -70,6 +72,8 @@ g_file_query_info_async
 g_file_query_info_finish
 g_file_query_exists
 g_file_query_filesystem_info
+g_file_query_filesystem_info_async
+g_file_query_filesystem_info_finish
 g_file_query_default_handler
 g_file_find_enclosing_mount
 g_file_find_enclosing_mount_async
@@ -222,6 +226,8 @@ G_FILE_ATTRIBUTE_FILESYSTEM_READONLY
 G_FILE_ATTRIBUTE_GVFS_BACKEND
 G_FILE_ATTRIBUTE_SELINUX_CONTEXT
 G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
+G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW
+G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION
 g_file_info_new
 g_file_info_dup
 g_file_info_copy_into
@@ -358,6 +364,7 @@ GThemedIcon
 g_themed_icon_new
 g_themed_icon_new_from_names
 g_themed_icon_new_with_default_fallbacks
+g_themed_icon_append_name
 <SUBSECTION Standard>
 GThemedIconClass
 G_THEMED_ICON
@@ -793,6 +800,7 @@ g_mount_get_drive
 g_mount_get_root
 g_mount_get_volume
 g_mount_can_unmount
+GMountMountFlags
 GMountUnmountFlags
 g_mount_unmount
 g_mount_unmount_finish

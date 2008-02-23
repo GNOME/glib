@@ -1,3 +1,7 @@
+2008-02-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/gio-sections.txt: Updates
+
 2008-02-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib/running.sgml: Clarify character set issues on Windows.
