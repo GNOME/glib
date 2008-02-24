@@ -201,51 +201,56 @@ g_win32_error_message (gint error)
   return retval;
 }
 
-static gchar *
-get_package_directory_from_module (const gchar *module_name)
+/**
+ * g_win32_get_package_installation_directory_of_module:
+ * @hmodule: The Win32 handle for a DLL loaded into the current process, or %NULL
+ *
+ * This function tries to determine the installation directory of a
+ * software package based on the location of a DLL of the software
+ * package.
+ *
+ * @hmodule should be the handle of a loaded DLL or %NULL. The
+ * function looks up the directory that DLL was loaded from. If
+ * @hmodule is NULL, the directory the main executable of the current
+ * process is looked up. If that directory's last component is "bin"
+ * or "lib", its parent directory is returned, otherwise the directory
+ * itself.
+ *
+ * It thus makes sense to pass only the handle to a "public" DLL of a
+ * software package to this function, as such DLLs typically are known
+ * to be installed in a "bin" or occasionally "lib" subfolder of the
+ * installation folder. DLLs that are of the dynamically loaded module
+ * or plugin variety are often located in more private locations
+ * deeper down in the tree, from which it is impossible for GLib to
+ * deduce the root of the package installation.
+ *
+ * The typical use case for this function is to have a DllMain() that
+ * saves the handle for the DLL. Then when code in the DLL needs to
+ * construct names of files in the installation tree it calls this
+ * function passing the DLL handle.
+ *
+ * Returns: a string containing the guessed installation directory for
+ * the software package @hmodule is from. The string is in the GLib
+ * file name encoding, i.e. UTF-8. The return value should be freed
+ * with g_free() when not needed any longer. If the function fails
+ * %NULL is returned.
+ */
+gchar *
+g_win32_get_package_installation_directory_of_module (gpointer hmodule)
 {
-  static GHashTable *module_dirs = NULL;
-  G_LOCK_DEFINE_STATIC (module_dirs);
-  HMODULE hmodule = NULL;
-  gchar *fn;
+  gchar *retval;
   gchar *p;
-  gchar *result;
   wchar_t wc_fn[MAX_PATH];
 
-  G_LOCK (module_dirs);
-
-  if (module_dirs == NULL)
-    module_dirs = g_hash_table_new (g_str_hash, g_str_equal);
-  
-  result = g_hash_table_lookup (module_dirs, module_name ? module_name : "");
-      
-  if (result)
-    {
-      G_UNLOCK (module_dirs);
-      return g_strdup (result);
-    }
-
-  if (module_name)
-    {
-      wchar_t *wc_module_name = g_utf8_to_utf16 (module_name, -1, NULL, NULL, NULL);
-      hmodule = GetModuleHandleW (wc_module_name);
-      g_free (wc_module_name);
-
-      if (!hmodule)
-	return NULL;
-    }
-
   if (!GetModuleFileNameW (hmodule, wc_fn, MAX_PATH))
-    {
-      G_UNLOCK (module_dirs);
-      return NULL;
-    }
-  fn = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
+    return NULL;
 
-  if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
+  retval = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
+
+  if ((p = strrchr (retval, G_DIR_SEPARATOR)) != NULL)
     *p = '\0';
 
-  p = strrchr (fn, G_DIR_SEPARATOR);
+  p = strrchr (retval, G_DIR_SEPARATOR);
   if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
 	    g_ascii_strcasecmp (p + 1, "lib") == 0))
     *p = '\0';
@@ -261,6 +266,45 @@ get_package_directory_from_module (const gchar *module_name)
   }
 #endif
 
+  return retval;
+}
+
+static gchar *
+get_package_directory_from_module (const gchar *module_name)
+{
+  static GHashTable *module_dirs = NULL;
+  G_LOCK_DEFINE_STATIC (module_dirs);
+  HMODULE hmodule = NULL;
+  gchar *fn;
+
+  G_LOCK (module_dirs);
+
+  if (module_dirs == NULL)
+    module_dirs = g_hash_table_new (g_str_hash, g_str_equal);
+  
+  fn = g_hash_table_lookup (module_dirs, module_name ? module_name : "");
+      
+  if (fn)
+    {
+      G_UNLOCK (module_dirs);
+      return g_strdup (fn);
+    }
+
+  if (module_name)
+    {
+      wchar_t *wc_module_name = g_utf8_to_utf16 (module_name, -1, NULL, NULL, NULL);
+      hmodule = GetModuleHandleW (wc_module_name);
+      g_free (wc_module_name);
+
+      if (!hmodule)
+	return NULL;
+    }
+
+  fn = g_win32_get_package_installation_directory_of_module (hmodule);
+
+  if (fn == NULL)
+    return NULL;
+  
   g_hash_table_insert (module_dirs, module_name ? g_strdup (module_name) : "", fn);
 
   G_UNLOCK (module_dirs);
@@ -275,9 +319,12 @@ get_package_directory_from_module (const gchar *module_name)
  *
  * Try to determine the installation directory for a software package.
  *
+ * This function will be deprecated in the future. Use
+ * g_win32_get_package_installation_directory_of_module() instead.
+ *
  * The use of @package is deprecated. You should always pass %NULL.
  *
- * Its original intended use was for a short identifier for
+ * The original intended use of @package was for a short identifier of
  * the package, typically the same identifier as used for
  * <literal>GETTEXT_PACKAGE</literal> in software configured using GNU
  * autotools. The function first looks in the Windows Registry for the
@@ -312,9 +359,9 @@ get_package_directory_from_module (const gchar *module_name)
  * the same way as above.
  *
  * Returns: a string containing the installation directory for
- * @package. The string is in the GLib file name encoding, i.e. UTF-8
- * on Windows. The return value should be freed with g_free() when not
- * needed any longer.
+ * @package. The string is in the GLib file name encoding,
+ * i.e. UTF-8. The return value should be freed with g_free() when not
+ * needed any longer. If the function fails %NULL is returned.
  **/
 
 gchar *
@@ -429,6 +476,9 @@ g_win32_get_package_installation_directory (const gchar *package,
  * @dll_name: The name of a DLL that a package provides, in UTF-8, or %NULL.
  * @subdir: A subdirectory of the package installation directory, also in UTF-8
  *
+ * This function will be deprecated in the future. Use
+ * g_win32_get_package_installation_directory_of_module() instead.
+ *
  * Returns a newly-allocated string containing the path of the
  * subdirectory @subdir in the return value from calling
  * g_win32_get_package_installation_directory() with the @package and
@@ -439,8 +489,9 @@ g_win32_get_package_installation_directory (const gchar *package,
  *
  * Returns: a string containing the complete path to @subdir inside
  * the installation directory of @package. The returned string is in
- * the GLib file name encoding, i.e. UTF-8 on Windows. The return
- * value should be freed with g_free() when no longer needed.
+ * the GLib file name encoding, i.e. UTF-8. The return value should be
+ * freed with g_free() when no longer needed. If something goes wrong,
+ * %NULL is returned.
  **/
 
 gchar *

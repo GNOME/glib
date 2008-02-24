@@ -1,3 +1,35 @@
+2008-02-24  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c
+	(g_win32_get_package_installation_directory_of_module): New
+	function. Supersedes g_win32_get_package_installation_directory()
+	and g_win32_get_package_installation_directory().
+
+	It makes more sense to have the function for this functionality
+	take a HMODULE as parameter instead of DLL name. The typical use
+	scenario has been to have a DllMain() function that retrieves the
+	full pathname for the DLL in question, and saves just the basename
+	of that. Then later code passes that saved dll basename to
+	g_win32_get_package_installation_directory(), which retrieves the
+	corresponding DLL handle, and then retrieves up its full
+	pathname. (Which DLlMain() already had.) It is less convoluted to
+	have a DllMain() that just saves the DLL handle, and then when
+	needed call this function to get the corresponding installation
+	folder.
+
+	(get_package_directory_from_module): Use
+	g_win32_get_package_installation_directory_of_module().
+
+	(g_win32_get_package_installation_directory)
+	(g_win32_get_package_installation_subdirectory): Mention these
+	functions will be deprecated and recommend using
+	g_win32_get_package_installation_directory_of_module() instead.
+	
+	* glib/gwin32.h: Declare
+	g_win32_get_package_installation_directory_of_module().
+
+	* glib/glib.symbols: Add it.
+
 2008-02-23  Matthias Clasen  <mclasen@redhat.com> 
 
 	* NEWS: Updates

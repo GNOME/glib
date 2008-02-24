@@ -89,6 +89,8 @@ gchar*          g_win32_get_package_installation_subdirectory (const gchar *pack
 							       const gchar *dll_name,
 							       const gchar *subdir);
 
+gchar*          g_win32_get_package_installation_directory_of_module (gpointer hmodule);
+
 guint		g_win32_get_windows_version (void);
 
 gchar*          g_win32_locale_filename_from_utf8 (const gchar *utf8filename);
