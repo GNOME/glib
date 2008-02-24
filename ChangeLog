@@ -7,13 +7,15 @@
 
 	* glib/gspawn-win32.c
 	* glib/gspawn-win32-helper.c: Fix race condition when using the
-	helper process: When the helper process writes the handle of the
-	actual started user process to the parent process, it must be
-	duplicated in the parent process with DuplicateHandle() so that it
-	is a valid handle in that process. However, if the helper process
-	has happened to exit before the DuplicateHandle() call, the
-	duplication will fail. Thus we must synchronise the helper
-	process's exit. Use another pipe for this.
+	helper process. This seems to fix #510664.
+
+	When the helper process writes the handle of the actual started
+	user process to the parent process, it must be duplicated in the
+	parent process with DuplicateHandle() so that it is a valid handle
+	in that process. However, if the helper process has happened to
+	exit before the DuplicateHandle() call, the duplication will
+	fail. Thus we must synchronise the helper process's exit. Use
+	another pipe for this.
 
 	Take care not to inherit the writing end of this pipe to the
 	helper process. Also, in the helper process, take care not to
