@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-11 16:54-0500\n"
-"PO-Revision-Date: 2008-02-06 16:00+0700\n"
+"PO-Revision-Date: 2008-02-24 19:10+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -668,7 +668,7 @@ msgstr "ไม่รองรับ collating element ของ POSIX"
 
 #: glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
-msgstr "ค่าอักขระในลำดับ \\x{...} มีีค่าสูงเกินไป"
+msgstr "ค่าอักขระในลำดับ \\x{...} มีค่าสูงเกินไป"
 
 #: glib/gregex.c:294
 msgid "invalid condition (?(0)"
