@@ -30,6 +30,15 @@
 
 	* glib/glib.symbols: Add it.
 
+	* glib/gutils.h: Mention G_WIN32_DLLMAIN_FOR_DLL_NAME() will be
+	deprecated in the future.
+
+	* glib/gutils.c: Drop use of G_WIN32_DLLMAIN_FOR_DLL_NAME(). Use a
+	minimal DllMain() instead that just saves the DLL handle.
+	(g_win32_get_system_data_dirs_for_module, _glib_get_locale_dir)
+	(get_module_share_dir): Use
+	g_win32_get_package_installation_directory_of_module().
+
 2008-02-23  Matthias Clasen  <mclasen@redhat.com> 
 
 	* NEWS: Updates

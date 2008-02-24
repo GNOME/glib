@@ -427,6 +427,12 @@ const gchar * glib_check_version (guint required_major,
 G_END_DECLS
 
 /*
+ * This macro will be deprecated in the future. This DllMain() is too
+ * complex. It is recommended to have a DLlMain() that just saves the
+ * handle to the DLL and then use that handle in normal code instead,
+ * for instance passing it to
+ * g_win32_get_package_installation_directory_of_module().
+ *
  * On Windows, this macro defines a DllMain function that stores the
  * actual DLL name that the code being compiled will be included in.
  * STATIC should be empty or 'static'. DLL_NAME is the name of the
