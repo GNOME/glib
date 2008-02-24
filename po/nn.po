@@ -1,16 +1,14 @@
 # translation of nn.po to Norwegian Nynorsk
+# Roy-Magne Mo <rmo@sunnmore.net>, 2002.
+# Åsmund Skjæveland <aasmunds@ulrik.uio.no>, 2003-2008.
 # Norwegian (Nynorsk) translation of glib
 # Copyright (C) Free Software Foundation, 2002.
-#
-# Roy-Magne Mo <rmo@sunnmore.net>, 2002.
-# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003, 2004, 2006.
-# Åsmund Skjæveland <aasmunds@ulrik.uio.no>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-24 17:21+0100\n"
-"PO-Revision-Date: 2008-02-24 17:20+0100\n"
+"POT-Creation-Date: 2008-02-24 16:07+0100\n"
+"PO-Revision-Date: 2008-02-24 17:33+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -200,8 +198,7 @@ msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
 #: ../glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr ""
-"Klarte ikkje å endra namnet på fila «%s» til «%s»: g_rename() feila: %s"
+msgstr "Klarte ikkje å endra namnet på fila «%s» til «%s»: g_rename() feila: %s"
 
 #: ../glib/gfileutils.c:932 ../glib/gfileutils.c:1390
 #, c-format
@@ -317,8 +314,7 @@ msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
 #: ../glib/gmarkup.c:442
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "Fann tom entitet «&;»; gyldige entitetar er: &amp; &quot; &lt; &apos;"
 
 #: ../glib/gmarkup.c:452
@@ -422,8 +418,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1267
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%"
 "s»"
@@ -512,8 +507,7 @@ msgstr "Dokumentet tok uventa slutt inni eit attributtnamn"
 
 #: ../glib/gmarkup.c:1804
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
-"Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
+msgstr "Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
 
 #: ../glib/gmarkup.c:1810
 msgid ""
@@ -534,8 +528,7 @@ msgstr "Dokumentet avslutta uventa i eit lukkemerke for elementet «%s»"
 
 #: ../glib/gmarkup.c:1839
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
+msgstr "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: ../glib/gregex.c:131
 msgid "corrupted object"
@@ -595,9 +588,7 @@ msgstr "ukjend teikn etter \\"
 
 #: ../glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
-"skiftesekvensar som påverkar små/store bokstavar (\\I, \\L, \\u, \\U) er "
-"ikkje tillatne her"
+msgstr "skiftesekvensar som påverkar små/store bokstavar (\\I, \\L, \\u, \\U) er ikkje tillatne her"
 
 #: ../glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
@@ -751,11 +742,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "inkonsistente NEWLINE-val"
 
 #: ../glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g er ikkje følgd av eit namn i klammer eller eit ikkje-null tal i valfrie "
-"klamer"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "\\g er ikkje følgd av eit namn i klammer eller eit ikkje-null tal i valfrie klamer"
 
 #: ../glib/gregex.c:338
 msgid "unexpected repeat"
@@ -921,8 +909,7 @@ msgstr "Klarte ikkje å køyra hjelpeprogram (%s)"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: ../glib/gspawn.c:180
 #, c-format
@@ -1061,8 +1048,7 @@ msgstr "Fila er tom"
 
 #: ../glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Nøkkelfila inneheld linja «%s» som ikkje er eit nøkkel-verdi-par, ei gruppe "
 "eller ein kommentar"
@@ -1114,8 +1100,7 @@ msgstr "Nøkkelfila har nøkkelen «%s» med ein verdi som ikkje kan tolkast."
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr ""
-"Nøkkelfila har feil i nøkkelen «%s» i gruppa «%s». Verdien kan ikkje tolkast."
+msgstr "Nøkkelfila har feil i nøkkelen «%s» i gruppa «%s». Verdien kan ikkje tolkast."
 
 #: ../glib/gkeyfile.c:2502 ../glib/gkeyfile.c:2705 ../glib/gkeyfile.c:3237
 #, c-format
@@ -1525,8 +1510,7 @@ msgstr "Fil under oppretting av symbolsk lenkje: %s"
 #: ../gio/glocalfileinfo.c:1813
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
-msgstr ""
-"Fil under oppretting av symbolsk lenkje: Fila er ikkje ei symbolsk lenkje"
+msgstr "Fil under oppretting av symbolsk lenkje: Fila er ikkje ei symbolsk lenkje"
 
 #: ../gio/glocalfileinfo.c:1994
 #, c-format
@@ -1714,3 +1698,4 @@ msgstr "bruk langt listeformat"
 #: ../tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FIL ...]"
+
