@@ -1,5 +1,11 @@
 2008-02-24  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gmain.c (g_poll) [Win32]: Use alertable wait functions so
+	that I/O completion routines or user-mode Asynchronous Procedure
+	Calls can be run. (#517484, Vlad Grecescu)
+
+2008-02-24  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gwin32.c
 	(g_win32_get_package_installation_directory_of_module): New
 	function. Supersedes g_win32_get_package_installation_directory()
