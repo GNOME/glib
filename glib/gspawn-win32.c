@@ -592,8 +592,13 @@ do_spawn_with_pipes (gint                 *exit_status,
     helper_process = HELPER_PROCESS ".exe";
   
   glib_top = _glib_get_installation_directory ();
-  helper_process = g_build_filename (glib_top, "bin", helper_process, NULL);
-  g_free (glib_top);
+  if (glib_top != NULL)
+    {
+      helper_process = g_build_filename (glib_top, "bin", helper_process, NULL);
+      g_free (glib_top);
+    }
+  else
+    helper_process = g_strdup (helper_process);
 
   new_argv[0] = helper_process;
 
