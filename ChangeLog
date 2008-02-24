@@ -1,5 +1,27 @@
 2008-02-24  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gutils.c (_glib_get_installation_directory): New internal function.
+
+	* glib/gspawn-win32.c: When spawning the helper process, use an
+	explicit full path. (#518292)
+
+	* glib/gspawn-win32.c
+	* glib/gspawn-win32-helper.c: Fix race condition when using the
+	helper process: When the helper process writes the handle of the
+	actual started user process to the parent process, it must be
+	duplicated in the parent process with DuplicateHandle() so that it
+	is a valid handle in that process. However, if the helper process
+	has happened to exit before the DuplicateHandle() call, the
+	duplication will fail. Thus we must synchronise the helper
+	process's exit. Use another pipe for this.
+
+	Take care not to inherit the writing end of this pipe to the
+	helper process. Also, in the helper process, take care not to
+	inherit either of the pipes used for communication with the parent
+	process to the started user process.
+
+2008-02-24  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gmain.c (g_poll) [Win32]: Use alertable wait functions so
 	that I/O completion routines or user-mode Asynchronous Procedure
 	Calls can be run. (#517484, Vlad Grecescu)

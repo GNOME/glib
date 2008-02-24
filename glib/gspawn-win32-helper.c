@@ -21,6 +21,8 @@
 
 #include "config.h"
 
+#include <fcntl.h>
+
 #undef G_LOG_DOMAIN
 #include "glib.h"
 #define GSPAWN_HELPER
@@ -151,7 +153,8 @@ WinMain (struct HINSTANCE__ *hInstance,
 	 char               *lpszCmdLine,
 	 int                 nCmdShow)
 {
-  int child_err_report_fd;
+  int child_err_report_fd = -1;
+  int helper_sync_fd = -1;
   int i;
   int fd;
   int mode;
@@ -164,6 +167,7 @@ WinMain (struct HINSTANCE__ *hInstance,
   int argc;
   wchar_t **wargv, **wenvp;
   _startupinfo si = { 0 };
+  char c;
 
   g_assert (__argc >= ARG_COUNT);
 
@@ -187,6 +191,14 @@ WinMain (struct HINSTANCE__ *hInstance,
    */
   if (__argv[ARG_CHILD_ERR_REPORT][strlen (__argv[ARG_CHILD_ERR_REPORT]) - 1] == '#')
     argv_zero_offset++;
+
+  /* argv[ARG_HELPER_SYNC] is the file descriptor number we read a
+   * byte that tells us it is OK to exit. We have to wait until the
+   * parent allows us to exit, so that the parent has had time to
+   * duplicate the process handle we sent it. Duplicating a handle
+   * from another process works only if that other process exists.
+   */
+  helper_sync_fd = atoi (__argv[ARG_HELPER_SYNC]);
 
   /* argv[ARG_STDIN..ARG_STDERR] are the file descriptor numbers that
    * should be dup2'd to 0, 1 and 2. '-' if the corresponding fd
@@ -270,8 +282,14 @@ WinMain (struct HINSTANCE__ *hInstance,
    */
   if (__argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
-      if (i != child_err_report_fd)
+      if (i != child_err_report_fd && i != helper_sync_fd)
 	close (i);
+
+  /* We don't want our child to inherit the error report and
+   * helper sync fds.
+   */
+  child_err_report_fd = dup_noninherited (child_err_report_fd, _O_WRONLY);
+  helper_sync_fd = dup_noninherited (helper_sync_fd, _O_RDONLY);
 
   /* __argv[ARG_WAIT] is "w" to wait for the program to exit */
   if (__argv[ARG_WAIT][0] == 'w')
@@ -307,5 +325,8 @@ WinMain (struct HINSTANCE__ *hInstance,
     write (child_err_report_fd, &handle, sizeof (handle));
   else
     write (child_err_report_fd, &zero, sizeof (zero));
+
+  read (helper_sync_fd, &c, 1);
+
   return 0;
 }

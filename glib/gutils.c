@@ -146,6 +146,15 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
+gchar *
+_glib_get_installation_directory (void)
+{
+  if (glib_dll == NULL)
+    return NULL;
+
+  return g_win32_get_package_installation_directory_of_module (glib_dll);
+}
+
 #endif
 
 /**
