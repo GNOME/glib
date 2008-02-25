@@ -41,7 +41,7 @@
 	full pathname for the DLL in question, and saves just the basename
 	of that. Then later code passes that saved dll basename to
 	g_win32_get_package_installation_directory(), which retrieves the
-	corresponding DLL handle, and then retrieves up its full
+	corresponding DLL handle, and then retrieves its full
 	pathname. (Which DLlMain() already had.) It is less convoluted to
 	have a DllMain() that just saves the DLL handle, and then when
 	needed call this function to get the corresponding installation
