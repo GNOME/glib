@@ -1,5 +1,10 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.[ch]:
+	Remove deprecated g_file_contains_file.
+
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
         * gfilemonitor.c:
 	Emit actual change signals in an idle handler.
 	This avoids reentrance and locking problems in

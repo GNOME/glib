@@ -669,29 +669,6 @@ g_file_get_child_for_display_name (GFile      *file,
   return (* iface->get_child_for_display_name) (file, display_name, error);
 }
 
-#undef g_file_contains_file
-
-/**
- * g_file_contains_file:
- * @parent: input #GFile.
- * @descendant: input #GFile.
- *
- * Deprecated version of g_file_has_prefix().
- *
- * Returns:  %TRUE if the @descendant's parent, grandparent, etc is @parent. %FALSE otherwise.
- *
- * Deprecated:2.16: The initial chosen name was unfortunate, as it
- * may cause you to think this function did more than just
- * filename comparisons.
- */
-gboolean
-g_file_contains_file (GFile *parent,
-		      GFile *descendant)
-{
-  /* This function is not in the header and will not be referenced by newly built code */
-  return g_file_has_prefix (descendant, parent);
-}
-
 /**
  * g_file_has_prefix:
  * @file: input #GFile.

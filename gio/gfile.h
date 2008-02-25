@@ -580,9 +580,6 @@ GFile *                 g_file_get_child                  (GFile                
 GFile *                 g_file_get_child_for_display_name (GFile                      *file,
 							   const char                 *display_name,
 							   GError                    **error);
-#ifndef G_DISABLE_DEPRECATED
-#define g_file_contains_file(_parent, _child)  g_file_has_prefix (_child, _parent)
-#endif
 gboolean                g_file_has_prefix                 (GFile                      *file,
 							   GFile                      *prefix);
 char *                  g_file_get_relative_path          (GFile                      *parent,
