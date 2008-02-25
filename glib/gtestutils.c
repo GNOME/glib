@@ -389,6 +389,8 @@ parse_args (gint    *argc_p,
  * --GTestLogFD N       gtester specific argument.
  * --GTestSkipCount N   gtester specific argument.
  * </informalexample>
+ *
+ * Since: 2.16
  */
 void
 g_test_init (int    *argc,
@@ -491,6 +493,8 @@ test_run_seed (const gchar *rseed)
  * effective for all test cases.
  *
  * Returns: a random number from the seeded random number generator.
+ *
+ * Since: 2.16
  */
 gint32
 g_test_rand_int (void)
@@ -507,6 +511,8 @@ g_test_rand_int (void)
  * see g_test_rand_int() for details on test case random numbers.
  *
  * Returns: a number with @begin <= number < @end.
+ * 
+ * Since: 2.16
  */
 gint32
 g_test_rand_int_range (gint32          begin,
@@ -522,6 +528,8 @@ g_test_rand_int_range (gint32          begin,
  * see g_test_rand_int() for details on test case random numbers.
  *
  * Returns: a random number from the seeded random number generator.
+ *
+ * Since: 2.16
  */
 double
 g_test_rand_double (void)
@@ -538,6 +546,8 @@ g_test_rand_double (void)
  * see g_test_rand_int() for details on test case random numbers.
  *
  * Returns: a number with @range_start <= number < @range_end.
+ *
+ * Since: 2.16
  */
 double
 g_test_rand_double_range (double          range_start,
@@ -551,6 +561,8 @@ g_test_rand_double_range (double          range_start,
  *
  * Start a timing test. Call g_test_timer_elapsed() when the task is supposed
  * to be done. Call this function again to restart the timer.
+ *
+ * Since: 2.16
  */
 void
 g_test_timer_start (void)
@@ -567,6 +579,8 @@ g_test_timer_start (void)
  * Get the time since the last start of the timer with g_test_timer_start().
  *
  * Returns: the time since the last start of the timer, as a double
+ *
+ * Since: 2.16
  */
 double
 g_test_timer_elapsed (void)
@@ -581,6 +595,8 @@ g_test_timer_elapsed (void)
  * Report the last result of g_test_timer_elapsed().
  *
  * Returns: the last result of g_test_timer_elapsed(), as a double
+ *
+ * Since: 2.16
  */
 double
 g_test_timer_last (void)
@@ -599,6 +615,8 @@ g_test_timer_last (void)
  * quantities (smaller values are better than larger ones),
  * this and @minimized_quantity can determine sorting
  * order for test result reports.
+ *
+ * Since: 2.16
  */
 void
 g_test_minimized_result (double          minimized_quantity,
@@ -626,6 +644,8 @@ g_test_minimized_result (double          minimized_quantity,
  * quantities (larger values are better than smaller ones),
  * this and @maximized_quantity can determine sorting
  * order for test result reports.
+ *
+ * Since: 2.16
  */
 void
 g_test_maximized_result (double          maximized_quantity,
@@ -648,6 +668,8 @@ g_test_maximized_result (double          maximized_quantity,
  * @...:    printf-like arguments to @format
  *
  * Add a message to the test report.
+ *
+ * Since: 2.16
  */
 void
 g_test_message (const char *format,
@@ -676,6 +698,8 @@ g_test_message (const char *format,
  * Bug URIs are constructed by appending a bug specific URI
  * portion to @uri_pattern, or by replacing the special string
  * '%s' within @uri_pattern if that is present.
+ *
+ * Since: 2.16
  */
 void
 g_test_bug_base (const char *uri_pattern)
@@ -692,6 +716,8 @@ g_test_bug_base (const char *uri_pattern)
  * associates a bug URI with a test case.
  * Bug URIs are constructed from a base URI set with g_test_bug_base()
  * and @bug_uri_snippet.
+ *
+ * Since: 2.16
  */
 void
 g_test_bug (const char *bug_uri_snippet)
@@ -718,6 +744,8 @@ g_test_bug (const char *bug_uri_snippet)
  * Get the toplevel test suite for the test path API.
  *
  * Returns: the toplevel #GTestSuite
+ *
+ * Since: 2.16
  */
 GTestSuite*
 g_test_get_root (void)
@@ -743,6 +771,8 @@ g_test_get_root (void)
  * in a program.
  *
  * Returns: 0 on success
+ *
+ * Since: 2.16
  */
 int
 g_test_run (void)
@@ -767,6 +797,7 @@ g_test_run (void)
  * function data_test() is called. Once the test run completed, the
  * fixture structure is torn down  by calling data_teardown() and
  * after that the memory is released.
+ *
  * Splitting up a test run into fixture setup, test function and
  * fixture teardown is most usful if the same fixture is used for
  * multiple tests. In this cases, g_test_create_case() will be
@@ -774,6 +805,8 @@ g_test_run (void)
  * @data_test arguments.
  *
  * Returns: a newly allocated #GTestCase.
+ *
+ * Since: 2.16
  */
 GTestCase*
 g_test_create_case (const char     *test_name,
@@ -848,6 +881,8 @@ g_test_add_vtable (const char     *testpath,
  * the test is assumed to use no fixture, and test suites are automatically
  * created on the fly and added to the root fixture, based on the
  * slash seperated portions of @testpath.
+ *
+ * Since: 2.16
  */
 void
 g_test_add_func (const char     *testpath,
@@ -870,6 +905,8 @@ g_test_add_func (const char     *testpath,
  * created on the fly and added to the root fixture, based on the
  * slash seperated portions of @testpath. The @test_data argument
  * will be passed as first argument to @test_func.
+ *
+ * Since: 2.16
  */
 void
 g_test_add_data_func (const char     *testpath,
@@ -889,6 +926,8 @@ g_test_add_data_func (const char     *testpath,
  * Create a new test suite with the name @suite_name.
  *
  * Returns: A newly allocated #GTestSuite instance.
+ *
+ * Since: 2.16
  */
 GTestSuite*
 g_test_create_suite (const char *suite_name)
@@ -908,6 +947,8 @@ g_test_create_suite (const char *suite_name)
  * @test_case: a #GTestCase
  *
  * Adds @test_case to @suite.
+ *
+ * Since: 2.16
  */
 void
 g_test_suite_add (GTestSuite     *suite,
@@ -924,6 +965,8 @@ g_test_suite_add (GTestSuite     *suite,
  * @nestedsuite: another #GTestSuite
  *
  * Adds @nestedsuite to @suite.
+ *
+ * Since: 2.16
  */
 void
 g_test_suite_add_suite (GTestSuite     *suite,
@@ -941,6 +984,8 @@ g_test_suite_add_suite (GTestSuite     *suite,
  * Enqueue a pointer to be released with g_free() during the next
  * teardown phase. This is equivalent to calling g_test_queue_destroy()
  * with a destroy callback of g_free().
+ *
+ * Since: 2.16
  */
 void
 g_test_queue_free (gpointer gfree_pointer)
@@ -960,6 +1005,8 @@ g_test_queue_free (gpointer gfree_pointer)
  * Resources are released in reverse queue order, that means enqueueing
  * callback A before callback B will cause B() to be called before
  * A() during teardown.
+ *
+ * Since: 2.16
  */
 void
 g_test_queue_destroy (GDestroyNotify destroy_func,
@@ -1076,6 +1123,8 @@ g_test_run_suite_internal (GTestSuite *suite,
  * in a program.
  *
  * Returns: 0 on success
+ *
+ * Since: 2.16
  */
 int
 g_test_run_suite (GTestSuite *suite)
@@ -1234,6 +1283,8 @@ g_assertion_message_cmpstr (const char     *domain,
  * Compares @str1 and @str2 like strcmp(). Handles %NULL strings gracefully.
  *
  * Returns: -1, 0 or 1, if @str1 is <, == or > than @str2.
+ *
+ * Since: 2.16
  */
 int
 g_strcmp0 (const char     *str1,
@@ -1416,6 +1467,8 @@ test_time_stamp (void)
  * This function is implemented only on Unix platforms.
  *
  * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
+ *
+ * Since: 2.16
  */
 gboolean
 g_test_trap_fork (guint64        usec_timeout,
@@ -1564,6 +1617,8 @@ g_test_trap_fork (guint64        usec_timeout,
  * Check the reuslt of the last g_test_trap_fork() call.
  *
  * Returns: %TRUE if the last forked child terminated successfully.
+ *
+ * Since: 2.16
  */
 gboolean
 g_test_trap_has_passed (void)
@@ -1577,6 +1632,8 @@ g_test_trap_has_passed (void)
  * Check the reuslt of the last g_test_trap_fork() call.
  *
  * Returns: %TRUE if the last forked child got killed due to a fork timeout.
+ *
+ * Since: 2.16
  */
 gboolean
 g_test_trap_reached_timeout (void)
@@ -1838,6 +1895,8 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
  * g_test_add() is implemented as a macro, so that the fsetup(), ftest() and
  * fteardown() callbacks can expect a @Fixture pointer as first argument in
  * a type safe manner.
+ *
+ * Since: 2.16
  **/
 /* --- macros docs END --- */
 
