@@ -157,7 +157,7 @@ g_output_stream_init (GOutputStream *stream)
  *
  * On success, the number of bytes written to the stream is returned.
  * It is not an error if this is not the same as the requested size, as it
- * can happen e.g. on a partial i/o error, or if the there is not enough
+ * can happen e.g. on a partial i/o error, or if there is not enough
  * storage in the stream. All writes either block until at least one byte
  * is written, so zero is never returned (unless @count is zero).
  * 

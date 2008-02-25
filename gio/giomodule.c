@@ -230,9 +230,9 @@ is_valid_module_name (const gchar *basename)
 /**
  * g_io_modules_load_all_in_directory:
  * @dirname: pathname for a directory containing modules to load.
- * 
- * Loads all the modules in the the specified directory. 
- * 
+ *
+ * Loads all the modules in the specified directory.
+ *
  * Returns: a list of #GIOModules loaded from the directory,
  *      All the modules are loaded into memory, if you want to
  *      unload them (enabling on-demand loading) you must call

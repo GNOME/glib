@@ -1,3 +1,12 @@
+2008-02-25  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* gfile.c (g_file_find_enclosing_mount):
+	* giomodule.c:
+	* glocalfile.c (g_local_file_find_enclosing_mount):
+	* goutputstream.c:
+
+	Fix a few typos in translator comments and documentation.
+
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:

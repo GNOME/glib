@@ -1248,7 +1248,7 @@ g_file_find_enclosing_mount (GFile         *file,
   GFileIface *iface;
 
   g_return_val_if_fail (G_IS_FILE (file), NULL);
-  
+
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
 
@@ -1256,14 +1256,14 @@ g_file_find_enclosing_mount (GFile         *file,
   if (iface->find_enclosing_mount == NULL)
     {
 
-      /* Translators: This is an error message when trying to the the
-         enclosing (user visible) mount of a file, but none exist. */
+      /* Translators: This is an error message when trying to find the
+         enclosing (user visible) mount of a file, but none exists. */
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
 		   _("Containing mount does not exist"));
       return NULL;
     }
-  
+
   return (* iface->find_enclosing_mount) (file, cancellable, error);
 }
 /**
