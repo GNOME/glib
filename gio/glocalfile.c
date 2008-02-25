@@ -1853,14 +1853,14 @@ g_local_file_trash (GFile         *file,
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_CANCELLED,
 		   _("Unable to trash file: %s"),
-		   _("cancelled"));
+		   _("Operation was cancelled"));
       success = FALSE;
     }
   else if (!success)
     g_set_error (error, G_IO_ERROR,
 		 G_IO_ERROR_FAILED,
 		 _("Unable to trash file: %s"),
-		 _("failed"));
+		 _("internal error"));
 
   g_free (wfilename);
   return success;

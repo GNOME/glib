@@ -1,6 +1,11 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfile.c:
+	Make new strings reuse old ones.
+	
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
 	Implement trashing and filesystem::readonly for win32 (#517235)
 	Patch from Yevgen Muntyan
 
