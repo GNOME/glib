@@ -1,3 +1,9 @@
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+	Implement trashing and filesystem::readonly for win32 (#517235)
+	Patch from Yevgen Muntyan
+
 2008-02-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* gfileinfo.h: Documentation fixes.

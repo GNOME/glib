@@ -84,6 +84,7 @@
 #include "glibintl.h"
 
 #ifdef G_OS_WIN32
+#define _WIN32_WINNT 0x0500
 #include <windows.h>
 #include <io.h>
 #include <direct.h>
@@ -794,6 +795,111 @@ get_mount_info (GFileInfo             *fs_info,
 
 #endif
 
+#ifdef G_OS_WIN32
+
+static gboolean
+is_xp_or_later (void)
+{
+  static int result = -1;
+
+  if (result == -1)
+    {
+      OSVERSIONINFOEX ver_info = {0};
+      DWORDLONG cond_mask = 0;
+      int op = VER_GREATER_EQUAL;
+
+      ver_info.dwOSVersionInfoSize = sizeof ver_info;
+      ver_info.dwMajorVersion = 5;
+      ver_info.dwMinorVersion = 1;
+
+      VER_SET_CONDITION (cond_mask, VER_MAJORVERSION, op);
+      VER_SET_CONDITION (cond_mask, VER_MINORVERSION, op);
+
+      result = VerifyVersionInfo (&ver_info,
+				  VER_MAJORVERSION | VER_MINORVERSION, 
+				  cond_mask) != 0;
+    }
+
+  return result;
+}
+
+static wchar_t *
+get_volume_for_path (const char *path)
+{
+  long len;
+  wchar_t *wpath;
+  wchar_t *result;
+
+  wpath = g_utf8_to_utf16 (path, -1, NULL, &len, NULL);
+  result = g_new (wchar_t, len + 2);
+
+  if (!GetVolumePathNameW (wpath, result, len + 2))
+    {
+      char *msg = g_win32_error_message (GetLastError ());
+      g_critical ("GetVolumePathName failed: %s", msg);
+      g_free (msg);
+      g_free (result);
+      g_free (wpath);
+      return NULL;
+    }
+
+  len = wcslen (result);
+  if (len > 0 && result[len-1] != L'\\')
+    {
+      result = g_renew (wchar_t, result, len + 2);
+      result[len] = L'\\';
+      result[len + 1] = 0;
+    }
+
+  g_free (wpath);
+  return result;
+}
+
+static char *
+find_mountpoint_for (const char *file, dev_t dev)
+{
+  wchar_t *wpath;
+  char *utf8_path;
+
+  wpath = get_volume_for_path (file);
+  if (!wpath)
+    return NULL;
+
+  utf8_path = g_utf16_to_utf8 (wpath, -1, NULL, NULL, NULL);
+
+  g_free (wpath);
+  return utf8_path;
+}
+
+static void
+get_filesystem_readonly (GFileInfo  *info,
+			 const char *path)
+{
+  wchar_t *rootdir;
+
+  rootdir = get_volume_for_path (path);
+
+  if (rootdir)
+    {
+      if (is_xp_or_later ())
+        {
+          DWORD flags;
+          if (GetVolumeInformationW (rootdir, NULL, 0, NULL, NULL, &flags, NULL, 0))
+	    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY,
+					       (flags & FILE_READ_ONLY_VOLUME) != 0);
+        }
+      else
+        {
+          if (GetDriveTypeW (rootdir) == DRIVE_CDROM)
+	    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
+        }
+    }
+
+  g_free (rootdir);
+}
+
+#endif /* G_OS_WIN32 */
+
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
 				    const char    *attributes,
@@ -902,7 +1008,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 					G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
     {
 #ifdef G_OS_WIN32
-      /* need to implement with *unix_mount* */
+      get_filesystem_readonly (info, local->filename);
 #else
       get_mount_info (info, local->filename, attribute_matcher);
 #endif
@@ -1316,6 +1422,8 @@ expand_all_symlinks (const char *path)
   return res;
 }
 
+#ifndef G_OS_WIN32
+
 static char *
 find_mountpoint_for (const char *file, 
                      dev_t       dev)
@@ -1343,8 +1451,6 @@ find_mountpoint_for (const char *file,
     }
 }
 
-#ifndef G_OS_WIN32
-
 static char *
 find_topdir_for (const char *file)
 {
@@ -1357,8 +1463,6 @@ find_topdir_for (const char *file)
 
   return find_mountpoint_for (dir, dir_dev);
 }
-
-#endif
 
 static char *
 get_unique_filename (const char *basename, 
@@ -1468,10 +1572,8 @@ g_local_file_trash (GFile         *file,
   gboolean is_homedir_trash;
   char delete_time[32];
   int fd;
-#ifndef G_OS_WIN32
   struct stat trash_stat, global_stat;
   char *dirname, *globaldir;
-#endif
   
   if (g_lstat (local->filename, &file_stat) != 0)
     {
@@ -1512,9 +1614,6 @@ g_local_file_trash (GFile         *file,
     }
   else
     {
-#ifdef G_OS_WIN32
-      g_warning ("Recycle bin not implemented");
-#else
       uid_t uid;
       char uid_str[32];
 
@@ -1599,7 +1698,6 @@ g_local_file_trash (GFile         *file,
 		}
 	    }
 	}
-#endif
 
       if (trashdir == NULL)
 	{
@@ -1704,13 +1802,6 @@ g_local_file_trash (GFile         *file,
   g_free (original_name);
   g_free (topdir);
   
-#ifdef G_OS_WIN32
-  {
-    GTimeVal now;
-    g_get_current_time (&now);
-    strncpy (delete_time, g_time_val_to_iso8601 (&now), sizeof (delete_time));
-  }
-#else
   {
     time_t t;
     struct tm now;
@@ -1719,7 +1810,6 @@ g_local_file_trash (GFile         *file,
     delete_time[0] = 0;
     strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
   }
-#endif
 
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
 			  original_name_escaped, delete_time);
@@ -1733,6 +1823,49 @@ g_local_file_trash (GFile         *file,
   
   return TRUE;
 }
+#else /* G_OS_WIN32 */
+static gboolean
+g_local_file_trash (GFile         *file,
+		    GCancellable  *cancellable,
+		    GError       **error)
+{
+  GLocalFile *local = G_LOCAL_FILE (file);
+  SHFILEOPSTRUCTW op = {0};
+  gboolean success;
+  wchar_t *wfilename;
+  long len;
+
+  wfilename = g_utf8_to_utf16 (local->filename, -1, NULL, &len, NULL);
+  /* SHFILEOPSTRUCT.pFrom is double-zero-terminated */
+  wfilename = g_renew (wchar_t, wfilename, len + 2);
+  wfilename[len + 1] = 0;
+
+  op.wFunc = FO_DELETE;
+  op.pFrom = wfilename;
+  op.fFlags = FOF_ALLOWUNDO;
+
+  success = SHFileOperationW (&op) == 0;
+
+  if (success && op.fAnyOperationsAborted)
+    {
+      if (cancellable && !g_cancellable_is_cancelled (cancellable))
+	g_cancellable_cancel (cancellable);
+      g_set_error (error, G_IO_ERROR,
+		   G_IO_ERROR_CANCELLED,
+		   _("Unable to trash file: %s"),
+		   _("cancelled"));
+      success = FALSE;
+    }
+  else if (!success)
+    g_set_error (error, G_IO_ERROR,
+		 G_IO_ERROR_FAILED,
+		 _("Unable to trash file: %s"),
+		 _("failed"));
+
+  g_free (wfilename);
+  return success;
+}
+#endif /* G_OS_WIN32 */
 
 static gboolean
 g_local_file_make_directory (GFile         *file,
