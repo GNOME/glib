@@ -1031,6 +1031,8 @@ g_local_file_find_enclosing_mount (GFile         *file,
 
   if (g_lstat (local->filename, &buf) != 0)
     {
+      /* Translators: This is an error message when trying to the the
+         enclosing (user visible) mount of a file, but none exist. */
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
 		   _("Containing mount does not exist"));
@@ -1040,6 +1042,8 @@ g_local_file_find_enclosing_mount (GFile         *file,
   mountpoint = find_mountpoint_for (local->filename, buf.st_dev);
   if (mountpoint == NULL)
     {
+      /* Translators: This is an error message when trying to the the
+         enclosing (user visible) mount of a file, but none exist. */
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
 		   _("Containing mount does not exist"));
@@ -1051,6 +1055,8 @@ g_local_file_find_enclosing_mount (GFile         *file,
   if (mount)
     return mount;
 
+  /* Translators: This is an error message when trying to the the
+     enclosing (user visible) mount of a file, but none exist. */
   g_set_error (error, G_IO_ERROR,
 	       G_IO_ERROR_NOT_FOUND,
 	       _("Containing mount does not exist"));

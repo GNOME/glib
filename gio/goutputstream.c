@@ -1079,6 +1079,9 @@ g_output_stream_set_pending (GOutputStream *stream,
   
   if (stream->priv->pending)
     {
+      /* Translators: This is an error you get if there is already
+	 an operation running against this stream when you try to
+	 start one */
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
 		   _("Stream has outstanding operation"));
       return FALSE;

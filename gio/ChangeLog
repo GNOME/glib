@@ -1,5 +1,14 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.c:
+        * ginputstream.c:
+        * glocalfile.c:
+        * gmount.c:
+        * goutputstream.c:
+	Add translator comments (#518578)
+
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.c:	
         Reintroduce g_file_contains_file, keep around for one
 	unstable release cycle to avoid crashing to many apps.
