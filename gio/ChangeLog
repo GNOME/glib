@@ -1,5 +1,12 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+        * gfilemonitor.c:
+	Emit actual change signals in an idle handler.
+	This avoids reentrance and locking problems in
+	the file notification backends.
+	
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
         * gunixmounts.c:
         (g_unix_mount_guess_should_display):
 	Remove type guessing, instead just display

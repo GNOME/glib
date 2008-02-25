@@ -302,6 +302,60 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
     }
 }
 
+typedef struct {
+  GFileMonitor      *monitor;
+  GFile             *child;
+  GFile             *other_file;
+  GFileMonitorEvent  event_type;
+} FileChange;
+
+static gboolean
+emit_cb (gpointer data)
+{
+  FileChange *change = data;
+  g_signal_emit (change->monitor, signals[CHANGED], 0,
+		 change->child, change->other_file, change->event_type);
+  return FALSE;
+}
+
+static void
+file_change_free (FileChange *change)
+{
+  g_object_unref (change->monitor);
+  g_object_unref (change->child);
+  if (change->other_file)
+    g_object_unref (change->other_file);
+  
+  g_slice_free (FileChange, change);
+}
+
+static void
+emit_in_idle (GFileMonitor      *monitor,
+	      GFile             *child,
+	      GFile             *other_file,
+	      GFileMonitorEvent  event_type)
+{
+  GSource *source;
+  FileChange *change;
+
+  change = g_slice_new (FileChange);
+
+  change->monitor = g_object_ref (monitor);
+  change->child = g_object_ref (child);
+  if (other_file)
+    change->other_file = g_object_ref (other_file);
+  else
+    change->other_file = NULL;
+  change->event_type = event_type;
+
+  source = g_idle_source_new ();
+  g_source_set_priority (source, 0);
+
+  g_source_set_callback (source, emit_cb, change, file_change_free);
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+}
+
 static guint32
 get_time_msecs (void)
 {
@@ -337,9 +391,8 @@ rate_limiter_send_virtual_changes_done_now (GFileMonitor *monitor,
 {
   if (limiter->send_virtual_changes_done_at != 0)
     {
-      g_signal_emit (monitor, signals[CHANGED], 0,
-		     limiter->file, NULL,
-		     G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
+      emit_in_idle (monitor, limiter->file, NULL,
+		    G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
       limiter->send_virtual_changes_done_at = 0;
     }
 }
@@ -351,9 +404,9 @@ rate_limiter_send_delayed_change_now (GFileMonitor *monitor,
 {
   if (limiter->send_delayed_change_at != 0)
     {
-      g_signal_emit (monitor, signals[CHANGED], 0,
-		     limiter->file, NULL,
-		     G_FILE_MONITOR_EVENT_CHANGED);
+      emit_in_idle (monitor, 
+		    limiter->file, NULL,
+		    G_FILE_MONITOR_EVENT_CHANGED);
       limiter->send_delayed_change_at = 0;
       limiter->last_sent_change_time = time_now;
     }
@@ -522,6 +575,8 @@ update_rate_limiter_timeout (GFileMonitor *monitor,
  * Emits the #GFileMonitor::changed signal if a change
  * has taken place. Should be called from file monitor 
  * implementations only.
+ *
+ * The signal will be emitted from an idle handler.
  **/
 void
 g_file_monitor_emit_event (GFileMonitor      *monitor,
@@ -549,7 +604,7 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
 	    rate_limiter_send_virtual_changes_done_now (monitor, limiter);
 	  update_rate_limiter_timeout (monitor, 0);
 	}
-      g_signal_emit (monitor, signals[CHANGED], 0, child, other_file, event_type);
+      emit_in_idle (monitor, child, other_file, event_type);
     }
   else
     {
@@ -578,7 +633,7 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
       
       if (emit_now)
 	{
-	  g_signal_emit (monitor, signals[CHANGED], 0, child, other_file, event_type);
+	  emit_in_idle (monitor, child, other_file, event_type);
 	  
 	  limiter->last_sent_change_time = time_now;
 	  limiter->send_delayed_change_at = 0;
