@@ -1154,7 +1154,7 @@ g_dpgettext
 #if IN_FILE(__G_URI_FUNCS_C__)
 g_uri_unescape_string 
 g_uri_unescape_segment 
-g_uri_get_scheme 
+g_uri_parse_scheme 
 g_uri_escape_string 
 #endif
 #endif

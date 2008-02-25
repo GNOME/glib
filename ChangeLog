@@ -1,5 +1,6 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+	* glib/glib.symbols:
         * glib/gurifuncs.[ch]:
         Rename g_uri_get_scheme to g_uri_parse_scheme.
 	Keep g_uri_get_scheme() symbol for this
