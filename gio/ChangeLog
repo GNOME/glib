@@ -1,5 +1,12 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.c:	
+        Reintroduce g_file_contains_file, keep around for one
+	unstable release cycle to avoid crashing to many apps.
+	Make sure to delete after release.
+
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
 	Remove deprecated g_file_contains_file.
 
