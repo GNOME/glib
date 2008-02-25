@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-11 16:54-0500\n"
+"POT-Creation-Date: 2008-02-25 13:59-0500\n"
 "PO-Revision-Date: 2008-02-24 19:10+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -100,8 +100,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2215 glib/gutf8.c:950
-#: glib/gutf8.c:1399
+#: glib/giochannel.c:1372 glib/giochannel.c:2215 glib/gutf8.c:956
+#: glib/gutf8.c:1405
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "มีลำดับไบต์ที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
@@ -112,8 +112,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
-#: glib/gutf8.c:1395
+#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156 glib/gutf8.c:1297
+#: glib/gutf8.c:1401
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
@@ -123,37 +123,37 @@ msgstr "มีลำดับไบต์ไม่เต็มอักขระ
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ไม่สามารถแปลงสตริงซ่อมเสริม '%s' ให้เป็นรหัส '%s' ได้"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1734
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' ไม่ใช่ URI สัมบูรณ์ที่ใช้ scheme \"file\""
 
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1744
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI ของแฟ้มท้องถิ่น '%s' ต้องไม่มี '#'"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ใช้ไม่ได้"
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1773
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ชื่อโฮสต์ของ URI '%s' ใช้ไม่ได้"
 
-#: glib/gconvert.c:1788
+#: glib/gconvert.c:1789
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' มีอักขระหลีกที่ไม่ถูกต้อง"
 
-#: glib/gconvert.c:1883
+#: glib/gconvert.c:1884
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ชื่อพาธ '%s' ไม่ใช่พาธเต็ม"
 
-#: glib/gconvert.c:1893
+#: glib/gconvert.c:1894
 #, c-format
 msgid "Invalid hostname"
 msgstr "ชื่อโฮสต์ผิดรูปแบบ"
@@ -531,7 +531,7 @@ msgstr "เกินขอบเขตการถอยคืน"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:154
+#: glib/gregex.c:154 gio/glocalfile.c:1869
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
@@ -743,66 +743,66 @@ msgstr "ใช้พื้นที่ทำงานสำหรับการ
 msgid "previously-checked referenced subpattern not found"
 msgstr "ไม่พบแพตเทิร์นย่อยที่ตรวจสอบไปก่อนหน้าที่อ้างถึง"
 
-#: glib/gregex.c:517 glib/gregex.c:1565
+#: glib/gregex.c:526 glib/gregex.c:1593
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะจับคู่นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:1070
+#: glib/gregex.c:1098
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่รองรับ UTF8"
 
-#: glib/gregex.c:1079
+#: glib/gregex.c:1107
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่รองรับคุณสมบัติ UTF8"
 
-#: glib/gregex.c:1133
+#: glib/gregex.c:1161
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงนิพจน์เรกกิวลาร์ %s ที่อักขระที่ %d: %s"
 
-#: glib/gregex.c:1169
+#: glib/gregex.c:1197
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะออปติไมซ์นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:1993
+#: glib/gregex.c:2021
 msgid "hexadecimal digit or '}' expected"
 msgstr "ต้องการเลขฐานสิบหกหรือ '}'"
 
-#: glib/gregex.c:2009
+#: glib/gregex.c:2037
 msgid "hexadecimal digit expected"
 msgstr "ต้องการเลขฐานสิบหก"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2077
 msgid "missing '<' in symbolic reference"
 msgstr "ไม่มี '<' ในตัวอ้างอิงสัญลักษณ์"
 
-#: glib/gregex.c:2058
+#: glib/gregex.c:2086
 msgid "unfinished symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่สมบูรณ์"
 
-#: glib/gregex.c:2065
+#: glib/gregex.c:2093
 msgid "zero-length symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์มีความยาวเป็นศูนย์"
 
-#: glib/gregex.c:2076
+#: glib/gregex.c:2104
 msgid "digit expected"
 msgstr "ต้องการตัวเลข"
 
-#: glib/gregex.c:2094
+#: glib/gregex.c:2122
 msgid "illegal symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่ถูกต้อง"
 
-#: glib/gregex.c:2156
+#: glib/gregex.c:2184
 msgid "stray final '\\'"
 msgstr "'\\' ปราศจากข้อมูลอยู่ที่ท้ายสตริง"
 
-#: glib/gregex.c:2160
+#: glib/gregex.c:2188
 msgid "unknown escape sequence"
 msgstr "ลำดับอักขระหลีกไม่รู้จัก"
 
-#: glib/gregex.c:2170
+#: glib/gregex.c:2198
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงข้อความสำหรับแทนที่ \"%s\" ที่อักขระที่ %lu: %s"
@@ -832,57 +832,57 @@ msgstr "ข้อความจบเสียก่อนจะพบอัญ
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ข้อความว่างเปล่า (หรือมีแต่อักขระช่องว่าง)"
 
-#: glib/gspawn-win32.c:272
+#: glib/gspawn-win32.c:279
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1455
+#: glib/gspawn-win32.c:294 glib/gspawn.c:1455
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "สร้างไปป์เพื่อสื่อสารกับโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:358 glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "เข้าไปที่ไดเรกทอรี '%s' ไม่สำเร็จ (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
+#: glib/gspawn-win32.c:364 glib/gspawn-win32.c:488
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ดำเนินงานโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: glib/gspawn-win32.c:428
+#: glib/gspawn-win32.c:435
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:445 glib/gspawn-win32.c:718 glib/gspawn-win32.c:1276
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:456 glib/gspawn-win32.c:732 glib/gspawn-win32.c:1309
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
 
-#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
+#: glib/gspawn-win32.c:714 glib/gspawn-win32.c:1257
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "ไดเรกทอรีใช้งานมีรูปแบบไม่ถูกต้อง: %s"
 
-#: glib/gspawn-win32.c:738
+#: glib/gspawn-win32.c:782
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ดำเนินงานโปรแกรมช่วยไม่สำเร็จ (%s)"
 
-#: glib/gspawn-win32.c:938
+#: glib/gspawn-win32.c:996
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -935,18 +935,18 @@ msgstr "เกิดข้อผิดพลาดไม่ทราบสาเ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกได้ไม่เพียงพอ (%s)"
 
-#: glib/gutf8.c:1024
+#: glib/gutf8.c:1030
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
-#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265 glib/gutf8.c:1274
+#: glib/gutf8.c:1415 glib/gutf8.c:1511
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
-#: glib/gutf8.c:1420 glib/gutf8.c:1516
+#: glib/gutf8.c:1426 glib/gutf8.c:1522
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "อักขระอยู่นอกช่วงของ UTF-16"
@@ -1051,9 +1051,9 @@ msgstr "ชื่อคีย์ผิดรูปแบบ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "แฟ้มคีย์มีเนื้อหาเป็นรหัสอักขระ '%s' ซึ่งไม่รองรับ"
 
-#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2485
-#: glib/gkeyfile.c:2553 glib/gkeyfile.c:2688 glib/gkeyfile.c:2823
-#: glib/gkeyfile.c:2976 glib/gkeyfile.c:3163 glib/gkeyfile.c:3224
+#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
+#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "แฟ้มคีย์ไม่มีกลุ่ม '%s'"
@@ -1068,49 +1068,49 @@ msgstr "แฟ้มคีย์ไม่มีคีย์ '%s'"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่า '%s' ซึ่งไม่ใช่รูปแบบ UTF-8"
 
-#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1889
+#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1891
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2104 glib/gkeyfile.c:2316
+#: glib/gkeyfile.c:2106 glib/gkeyfile.c:2318
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ในกลุ่ม '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2500 glib/gkeyfile.c:2703 glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "แฟ้มคีย์ไม่มีคีย์ '%s' ในกลุ่ม '%s'"
 
-#: glib/gkeyfile.c:3469
+#: glib/gkeyfile.c:3471
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "แฟ้มคีย์มีอักขระหลีกที่ท้ายบรรทัด"
 
-#: glib/gkeyfile.c:3491
+#: glib/gkeyfile.c:3493
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "แฟ้มคีย์มีลำดับหลีก '%s' ที่ไม่ถูกต้อง"
 
-#: glib/gkeyfile.c:3633
+#: glib/gkeyfile.c:3635
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
 
-#: glib/gkeyfile.c:3680
+#: glib/gkeyfile.c:3682
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลข float ได้"
 
-#: glib/gkeyfile.c:3704
+#: glib/gkeyfile.c:3706
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
@@ -1128,21 +1128,21 @@ msgstr "มีการส่งค่า count ที่สูงเกิน�
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: gio/gcancellable.c:296 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1862 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
 
-#: gio/gcontenttype.c:156
+#: gio/gcontenttype.c:159
 msgid "Unknown type"
 msgstr "ชนิดข้อมูลไม่รู้จัก"
 
-#: gio/gcontenttype.c:157
+#: gio/gcontenttype.c:160
 #, c-format
 msgid "%s filetype"
 msgstr "ชนิดแฟ้ม %s"
 
-#: gio/gcontenttype.c:574
+#: gio/gcontenttype.c:577
 #, c-format
 msgid "%s type"
 msgstr "ชนิด %s"
@@ -1194,60 +1194,68 @@ msgstr "ไดรว์ไม่สามารถใช้คำสั่งด
 msgid "drive doesn't implement polling for media"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งตรวจสอบสื่อได้"
 
-#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
-#: gio/gfile.c:1283 gio/gfile.c:1339 gio/gfile.c:1420 gio/gfile.c:2458
-#: gio/gfile.c:2503 gio/gfile.c:2553 gio/gfile.c:2592 gio/gfile.c:2916
-#: gio/gfile.c:3317 gio/gfile.c:3397 gio/gfile.c:3477 gio/gfile.c:3555
+#: gio/gfile.c:822 gio/gfile.c:1010 gio/gfile.c:1143 gio/gfile.c:1374
+#: gio/gfile.c:1427 gio/gfile.c:1483 gio/gfile.c:1564 gio/gfile.c:2602
+#: gio/gfile.c:2647 gio/gfile.c:2697 gio/gfile.c:2736 gio/gfile.c:3060
+#: gio/gfile.c:3462 gio/gfile.c:3545 gio/gfile.c:3628 gio/gfile.c:3708
 #, c-format
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
 
-#: gio/gfile.c:1118 gio/glocalfile.c:925 gio/glocalfile.c:934
-#: gio/glocalfile.c:945
+#. Translators: This is an error message when trying to find the
+#. * enclosing (user visible) mount of a file, but none exists.
+#. Translators: This is an error message when trying to
+#. * find the enclosing (user visible) mount of a file, but
+#. * none exists.
+#. Translators: This is an error message when trying to find
+#. * the enclosing (user visible) mount of a file, but none
+#. * exists.
+#: gio/gfile.c:1262 gio/glocalfile.c:1038 gio/glocalfile.c:1049
+#: gio/glocalfile.c:1062
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ไม่มีจุดเมานท์ที่บรรจุแฟ้มอยู่"
 
-#: gio/gfile.c:1759
+#: gio/gfile.c:1903
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ไม่สามารถคัดลอกทับไดเรกทอรี"
 
-#: gio/gfile.c:1819
+#: gio/gfile.c:1963
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/gfile.c:1827 gio/glocalfile.c:1872
+#: gio/gfile.c:1971 gio/glocalfile.c:2016
 #, c-format
 msgid "Target file exists"
 msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้ว"
 
-#: gio/gfile.c:1845
+#: gio/gfile.c:1989
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
-#: gio/gfile.c:2543
+#: gio/gfile.c:2687
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ได้รับชื่อ symlink ที่ใช้การไม่ได้"
 
-#: gio/gfile.c:2635
+#: gio/gfile.c:2779
 #, c-format
 msgid "Trash not supported"
 msgstr "ไม่รองรับการใช้ถังขยะ"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2826
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ได้"
 
-#: gio/gfile.c:4532 gio/gvolume.c:357
+#: gio/gfile.c:4759 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
-#: gio/gfile.c:4640
+#: gio/gfile.c:4867
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
@@ -1293,7 +1301,13 @@ msgstr "สตรีมไม่รองรับการตัดท้าย
 msgid "Input stream doesn't implement read"
 msgstr "สตรีมข้อมูลเข้ายังไม่รองรับการอ่าน"
 
-#: gio/ginputstream.c:901 gio/goutputstream.c:1083
+#. Translators: This is an error you get if there is already an
+#. * operation running against this stream when you try to start
+#. * one
+#. Translators: This is an error you get if there is
+#. * already an operation running against this stream when
+#. * you try to start one
+#: gio/ginputstream.c:904 gio/goutputstream.c:1086
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "สตรีมมีการกระทำค้างอยู่"
@@ -1303,208 +1317,208 @@ msgstr "สตรีมมีการกระทำค้างอยู่"
 msgid "Unable to find default local directory monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองไดเรกทอรีในเครื่อง"
 
-#: gio/glocalfile.c:589
+#: gio/glocalfile.c:595
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ชื่อแฟ้ม %s ผิดรูปแบบ"
 
-#: gio/glocalfile.c:847
+#: gio/glocalfile.c:958
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลของระบบแฟ้ม: %s"
 
-#: gio/glocalfile.c:965
+#: gio/glocalfile.c:1082
 #, c-format
 msgid "Can't rename root directory"
 msgstr "ไม่สามารถเปลี่ยนชื่อไดเรกทอรีราก"
 
-#: gio/glocalfile.c:983
+#: gio/glocalfile.c:1100
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "ไม่สามารถเปลี่ยนชื่อแฟ้ม เนื่องจากมีแฟ้มชื่อเดียวกันอยู่ก่อนแล้ว"
 
-#: gio/glocalfile.c:996 gio/glocalfile.c:1747 gio/glocalfile.c:1776
-#: gio/glocalfile.c:1925 gio/glocalfileoutputstream.c:468
-#: gio/glocalfileoutputstream.c:509 gio/glocalfileoutputstream.c:911
+#: gio/glocalfile.c:1113 gio/glocalfile.c:1891 gio/glocalfile.c:1920
+#: gio/glocalfile.c:2069 gio/glocalfileoutputstream.c:472
+#: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "ชื่อแฟ้มผิดรูปแบบ"
 
-#: gio/glocalfile.c:1000
+#: gio/glocalfile.c:1117
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้ม: %s"
 
-#: gio/glocalfile.c:1119
+#: gio/glocalfile.c:1236
 #, c-format
 msgid "Error opening file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
 
-#: gio/glocalfile.c:1129
+#: gio/glocalfile.c:1246
 #, c-format
 msgid "Can't open directory"
 msgstr "ไม่สามารถเปิดไดเรกทอรี"
 
-#: gio/glocalfile.c:1183 gio/glocalfile.c:1751
+#: gio/glocalfile.c:1300 gio/glocalfile.c:1895
 #, c-format
 msgid "Error removing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
 
-#: gio/glocalfile.c:1477
+#: gio/glocalfile.c:1590
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะทิ้งแฟ้มลงถังขยะ: %s"
 
-#: gio/glocalfile.c:1500
+#: gio/glocalfile.c:1613
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "สร้างไดเรกทอรีถังขยะ '%s' ไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1524
+#: gio/glocalfile.c:1634
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "หาไดเรกทอรีระดับบนสุดสำหรับถังขยะไม่สำเร็จ"
 
-#: gio/glocalfile.c:1604 gio/glocalfile.c:1624
+#: gio/glocalfile.c:1713 gio/glocalfile.c:1733
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "หาหรือสร้างไดเรกทอรีถังขยะไม่สำเร็จ"
 
-#: gio/glocalfile.c:1658
+#: gio/glocalfile.c:1767
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "สร้างแฟ้มข้อมูลการทิ้งขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1683
+#: gio/glocalfile.c:1792 gio/glocalfile.c:1861 gio/glocalfile.c:1868
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1780
+#: gio/glocalfile.c:1924
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้าง symbolic link: %s"
 
-#: gio/glocalfile.c:1840 gio/glocalfile.c:1929
+#: gio/glocalfile.c:1984 gio/glocalfile.c:2073
 #, c-format
 msgid "Error moving file: %s"
 msgstr "เกิดข้อผิดพลาดขณะย้ายแฟ้ม: %s"
 
-#: gio/glocalfile.c:1863
+#: gio/glocalfile.c:2007
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "ไม่สามารถย้ายไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/glocalfile.c:1885 gio/glocalfileoutputstream.c:763
-#: gio/glocalfileoutputstream.c:777 gio/glocalfileoutputstream.c:792
-#: gio/glocalfileoutputstream.c:808 gio/glocalfileoutputstream.c:822
+#: gio/glocalfile.c:2029 gio/glocalfileoutputstream.c:777
+#: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
+#: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "สร้างแฟ้มสำรองไม่สำเร็จ"
 
-#: gio/glocalfile.c:1904
+#: gio/glocalfile.c:2048
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มปลายทาง: %s"
 
-#: gio/glocalfile.c:1918
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "ไม่รองรับการย้ายแฟ้มข้ามอุปกรณ์"
 
-#: gio/glocalfileinfo.c:707
+#: gio/glocalfileinfo.c:709
 #, c-format
 msgid "Attribute value must be non-NULL"
 msgstr "ค่าแอตทริบิวต์ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:714
+#: gio/glocalfileinfo.c:716
 #, c-format
 msgid "Invalid attribute type (string expected)"
 msgstr "ชนิดของแอตทริบิวต์ใช้การไม่ได้ (ต้องการสตริง)"
 
-#: gio/glocalfileinfo.c:721
+#: gio/glocalfileinfo.c:723
 #, c-format
 msgid "Invalid extended attribute name"
 msgstr "ชื่อแอตทริบิวต์ส่วนขยายเพิ่มใช้การไม่ได้"
 
-#: gio/glocalfileinfo.c:761
+#: gio/glocalfileinfo.c:763
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดแอตทริบิวต์ส่วนขยาย '%s': %s"
 
-#: gio/glocalfileinfo.c:1396 gio/glocalfileoutputstream.c:653
+#: gio/glocalfileinfo.c:1398 gio/glocalfileoutputstream.c:666
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%s': %s"
 
-#: gio/glocalfileinfo.c:1451
+#: gio/glocalfileinfo.c:1454
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: gio/glocalfileinfo.c:1628
+#: gio/glocalfileinfo.c:1614
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1673
+#: gio/glocalfileinfo.c:1659
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: gio/glocalfileinfo.c:1690
+#: gio/glocalfileinfo.c:1676
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: gio/glocalfileinfo.c:1708
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: gio/glocalfileinfo.c:1734
+#: gio/glocalfileinfo.c:1720
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:1785 gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1771 gio/glocalfileinfo.c:1939
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: gio/glocalfileinfo.c:1808
+#: gio/glocalfileinfo.c:1794
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:1818 gio/glocalfileinfo.c:1837
-#: gio/glocalfileinfo.c:1848
+#: gio/glocalfileinfo.c:1804 gio/glocalfileinfo.c:1823
+#: gio/glocalfileinfo.c:1834
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1813
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:1994
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:558
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:570
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลจากแฟ้ม: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:368
-#: gio/glocalfileoutputstream.c:840
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:372
+#: gio/glocalfileoutputstream.c:854
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเลื่อนตำแหน่งอ่านเขียนแฟ้ม: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:275
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:279
 #, c-format
 msgid "Error closing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม: %s"
@@ -1514,48 +1528,48 @@ msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม
 msgid "Unable to find default local file monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองแฟ้มในเครื่อง"
 
-#: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
+#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:591
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้ม: %s"
 
-#: gio/glocalfileoutputstream.c:209
+#: gio/glocalfileoutputstream.c:213
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มสำรองเก่า: %s"
 
-#: gio/glocalfileoutputstream.c:223 gio/glocalfileoutputstream.c:236
+#: gio/glocalfileoutputstream.c:227 gio/glocalfileoutputstream.c:240
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างสำเนาสำรอง: %s"
 
-#: gio/glocalfileoutputstream.c:254
+#: gio/glocalfileoutputstream.c:258
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้มสำรอง: %s"
 
-#: gio/glocalfileoutputstream.c:414 gio/glocalfileoutputstream.c:857
+#: gio/glocalfileoutputstream.c:418 gio/glocalfileoutputstream.c:871
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
 
-#: gio/glocalfileoutputstream.c:472 gio/glocalfileoutputstream.c:513
-#: gio/glocalfileoutputstream.c:642 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileoutputstream.c:478 gio/glocalfileoutputstream.c:523
+#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:931
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม '%s': %s"
 
-#: gio/glocalfileoutputstream.c:665
+#: gio/glocalfileoutputstream.c:679
 #, c-format
 msgid "Target file is a directory"
 msgstr "แฟ้มปลายทางเป็นไดเรกทอรี"
 
-#: gio/glocalfileoutputstream.c:670
+#: gio/glocalfileoutputstream.c:684
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "แฟ้มปลายทางไม่ใช่แฟ้มปกติ"
 
-#: gio/glocalfileoutputstream.c:682
+#: gio/glocalfileoutputstream.c:696
 #, c-format
 msgid "The file was externally modified"
 msgstr "แฟ้มถูกแก้ไขโดยโปรแกรมอื่น"
@@ -1590,15 +1604,24 @@ msgstr "สตรีมข้อมูลออกในหน่วยควา
 msgid "Failed to resize memory output stream"
 msgstr "เปลี่ยนขนาดสตรีมข้อมูลออกในหน่วยความจำไม่สำเร็จ"
 
-#: gio/gmount.c:341
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement unmount.
+#: gio/gmount.c:344
 msgid "mount doesn't implement unmount"
 msgstr "การเมานท์นี้ยังไม่รองรับการเลิกเมานท์"
 
-#: gio/gmount.c:413
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement eject.
+#: gio/gmount.c:419
 msgid "mount doesn't implement eject"
 msgstr "การเมานท์นี้ยังไม่รองรับการดันสื่อออก"
 
-#: gio/gmount.c:492
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement remount.
+#: gio/gmount.c:501
 msgid "mount doesn't implement remount"
 msgstr "การเมานท์นี้ยังไม่รองรับการเมานท์ซ้ำ"
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-10.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-11 16:54-0500\n"
+"POT-Creation-Date: 2008-02-25 13:59-0500\n"
 "PO-Revision-Date: 2006-04-27 00:00+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -104,8 +104,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' बाट '%s'मा रूपान्तरणकर्ता खोल्न सकेन"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2215 glib/gutf8.c:950
-#: glib/gutf8.c:1399
+#: glib/giochannel.c:1372 glib/giochannel.c:2215 glib/gutf8.c:956
+#: glib/gutf8.c:1405
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध बाइट अनुक्रम"
@@ -116,8 +116,8 @@ msgstr "रूपान्तरण आगतमा अवैध बाइट �
 msgid "Error during conversion: %s"
 msgstr "रूपान्तरण अवधिमा त्रुटि: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
-#: glib/gutf8.c:1395
+#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156 glib/gutf8.c:1297
+#: glib/gutf8.c:1401
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "आगतको अन्त्यमा आंशिक क्यारेक्टर"
@@ -127,37 +127,37 @@ msgstr "आगतको अन्त्यमा आंशिक क्यार
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "फलब्याक '%s' बाट कोड सेट'%s' मा रूपान्तरण गर्न सक्दैन"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1734
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"file\" योजना प्रयोग गर्ने एउटा निश्चित URI होइन"
 
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1744
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "स्थानीय फाइल URI '%s' मा एउटा '#' समावेश नहुनसक्छ"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' अवैध छ "
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1773
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' को होस्टनाम अवैध छ"
 
-#: glib/gconvert.c:1788
+#: glib/gconvert.c:1789
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' मा अवैध रूपमा निस्किएका क्यारेक्टरहरू देखिन्छन्"
 
-#: glib/gconvert.c:1883
+#: glib/gconvert.c:1884
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "बाटोनाम '%s' निश्चित मार्ग होइन"
 
-#: glib/gconvert.c:1893
+#: glib/gconvert.c:1894
 #, c-format
 msgid "Invalid hostname"
 msgstr "अवैध होस्टनाम "
@@ -552,7 +552,7 @@ msgstr ""
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:154
+#: glib/gregex.c:154 gio/glocalfile.c:1869
 msgid "internal error"
 msgstr ""
 
@@ -770,67 +770,67 @@ msgstr ""
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:517 glib/gregex.c:1565
+#: glib/gregex.c:526 glib/gregex.c:1593
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1070
+#: glib/gregex.c:1098
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:1079
+#: glib/gregex.c:1107
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:1133
+#: glib/gregex.c:1161
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "लाइन %d क्यारेक्टर %d मा त्रुटि: %s"
 
-#: glib/gregex.c:1169
+#: glib/gregex.c:1197
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1993
+#: glib/gregex.c:2021
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:2009
+#: glib/gregex.c:2037
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2077
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2058
+#: glib/gregex.c:2086
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr "अधुरो अस्तित्व सन्दर्भ"
 
-#: glib/gregex.c:2065
+#: glib/gregex.c:2093
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2076
+#: glib/gregex.c:2104
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:2094
+#: glib/gregex.c:2122
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2156
+#: glib/gregex.c:2184
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:2160
+#: glib/gregex.c:2188
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:2170
+#: glib/gregex.c:2198
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -860,57 +860,57 @@ msgstr "%c का लागि मिल्ने उद्धरण फेल�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "पाठ खाली थियो (वा सेतो खाली स्थान मात्र समावेश थियो)"
 
-#: glib/gspawn-win32.c:272
+#: glib/gspawn-win32.c:279
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "शाखा प्रक्रियाबाट डेटा पढ्न असफल भयो"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1455
+#: glib/gspawn-win32.c:294 glib/gspawn.c:1455
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "शाखा प्रक्रिया (%s)सँग कुराकानीका लागि पाइप सिर्जना गर्न असफल"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "शाखा प्रक्रिया (%s)बाट पढ्न असफल"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:358 glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "डाइरेक्टरी '%s' (%s) मा परिवर्तन गर्न असफल"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
+#: glib/gspawn-win32.c:364 glib/gspawn-win32.c:488
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) कार्यान्वयन गर्न असफल"
 
-#: glib/gspawn-win32.c:428
+#: glib/gspawn-win32.c:435
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "अवैध कार्यक्रम नाम : %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:445 glib/gspawn-win32.c:718 glib/gspawn-win32.c:1276
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr " अार्गुमेन्ट भेक्टरको %d मा अवैध स्ट्रीङ: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:456 glib/gspawn-win32.c:732 glib/gspawn-win32.c:1309
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "वातावरणमा अवैध स्ट्रीङ: %s"
 
-#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
+#: glib/gspawn-win32.c:714 glib/gspawn-win32.c:1257
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "अवैध कार्य डाइरेक्टरी : %s"
 
-#: glib/gspawn-win32.c:738
+#: glib/gspawn-win32.c:782
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "मद्दत गर्ने कार्यक्रम कार्यान्वयन गर्न असफल (%s)"
 
-#: glib/gspawn-win32.c:938
+#: glib/gspawn-win32.c:996
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -962,18 +962,18 @@ msgstr "शाखा प्रक्रिया \"%s\" कार्यान्
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "शाखा पिड पाईप (%s) बाट प्रशस्त डेटाहरू पढ्न असफल"
 
-#: glib/gutf8.c:1024
+#: glib/gutf8.c:1030
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"
 
-#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
-#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265 glib/gutf8.c:1274
+#: glib/gutf8.c:1415 glib/gutf8.c:1511
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध अनुक्रम"
 
-#: glib/gutf8.c:1420 glib/gutf8.c:1516
+#: glib/gutf8.c:1426 glib/gutf8.c:1522
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"
@@ -1078,9 +1078,9 @@ msgstr "अवैध कार्यक्रम नाम : %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "कुञ्जी फाइलमा समर्थन प्राप्त नभएको सङ्केतन '%s' समावेश छ।"
 
-#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2485
-#: glib/gkeyfile.c:2553 glib/gkeyfile.c:2688 glib/gkeyfile.c:2823
-#: glib/gkeyfile.c:2976 glib/gkeyfile.c:3163 glib/gkeyfile.c:3224
+#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
+#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "कुञ्जी फाइलसंगसमूह '%s' छैन"
@@ -1095,12 +1095,12 @@ msgstr "कुञ्जी फाइलसंगकुञ्जी '%s' हु�
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "कुञ्जी फाइलमा मान '%s'सँगै कुञ्जी '%s' समावेश छ जुन UTF-8 होइन"
 
-#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1889
+#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1891
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "कुञ्जी फाइलमा कुञ्जी '%s' समावेश छ जसको मानलाई व्याख्या गर्न सकिँदैन।"
 
-#: glib/gkeyfile.c:2104 glib/gkeyfile.c:2316
+#: glib/gkeyfile.c:2106 glib/gkeyfile.c:2318
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1108,37 +1108,37 @@ msgid ""
 msgstr ""
 "कुञ्जी फाइलमा समूह '%s' मा कुञ्जी '%s' समावेश छ जसको मानलाई व्याख्या गर्न सकिँदैन।"
 
-#: glib/gkeyfile.c:2500 glib/gkeyfile.c:2703 glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "कुञ्जी फाइलमा समूह '%s' मा कुञ्जी '%s' हुँदैन"
 
-#: glib/gkeyfile.c:3469
+#: glib/gkeyfile.c:3471
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "कुञ्जी फाइलमा पङ्गतिको अन्त्यमा निकास क्यारेक्टर समावेश छ।"
 
-#: glib/gkeyfile.c:3491
+#: glib/gkeyfile.c:3493
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुञ्जी फाइलमा अवैध निकास अनुक्रम '%s' समावेस छ।"
 
-#: glib/gkeyfile.c:3633
+#: glib/gkeyfile.c:3635
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान '%s' लाई सङ्ख्याको रूपमा व्याख्या गर्न सकिँदैन"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "इन्टेजर मान '%s' क्षेत्र भन्दा बाहिर छ"
 
-#: glib/gkeyfile.c:3680
+#: glib/gkeyfile.c:3682
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "मान '%s' लाई सङ्ख्याको रूपमा व्याख्या गर्न सकिँदैन"
 
-#: glib/gkeyfile.c:3704
+#: glib/gkeyfile.c:3706
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' एउटा बुलिएनको रूपमा व्याख्या गर्न सकिँदैन।"
@@ -1156,22 +1156,22 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:296 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1862 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr ""
 
-#: gio/gcontenttype.c:156
+#: gio/gcontenttype.c:159
 #, fuzzy
 msgid "Unknown type"
 msgstr "अज्ञात विकल्प %s"
 
-#: gio/gcontenttype.c:157
+#: gio/gcontenttype.c:160
 #, c-format
 msgid "%s filetype"
 msgstr ""
 
-#: gio/gcontenttype.c:574
+#: gio/gcontenttype.c:577
 #, c-format
 msgid "%s type"
 msgstr ""
@@ -1223,60 +1223,68 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
-#: gio/gfile.c:1283 gio/gfile.c:1339 gio/gfile.c:1420 gio/gfile.c:2458
-#: gio/gfile.c:2503 gio/gfile.c:2553 gio/gfile.c:2592 gio/gfile.c:2916
-#: gio/gfile.c:3317 gio/gfile.c:3397 gio/gfile.c:3477 gio/gfile.c:3555
+#: gio/gfile.c:822 gio/gfile.c:1010 gio/gfile.c:1143 gio/gfile.c:1374
+#: gio/gfile.c:1427 gio/gfile.c:1483 gio/gfile.c:1564 gio/gfile.c:2602
+#: gio/gfile.c:2647 gio/gfile.c:2697 gio/gfile.c:2736 gio/gfile.c:3060
+#: gio/gfile.c:3462 gio/gfile.c:3545 gio/gfile.c:3628 gio/gfile.c:3708
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "सांकेतिक सम्बन्ध समर्थन गरिएन"
 
-#: gio/gfile.c:1118 gio/glocalfile.c:925 gio/glocalfile.c:934
-#: gio/glocalfile.c:945
+#. Translators: This is an error message when trying to find the
+#. * enclosing (user visible) mount of a file, but none exists.
+#. Translators: This is an error message when trying to
+#. * find the enclosing (user visible) mount of a file, but
+#. * none exists.
+#. Translators: This is an error message when trying to find
+#. * the enclosing (user visible) mount of a file, but none
+#. * exists.
+#: gio/gfile.c:1262 gio/glocalfile.c:1038 gio/glocalfile.c:1049
+#: gio/glocalfile.c:1062
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1759
+#: gio/gfile.c:1903
 #, c-format
 msgid "Can't copy over directory"
 msgstr ""
 
-#: gio/gfile.c:1819
+#: gio/gfile.c:1963
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:1827 gio/glocalfile.c:1872
+#: gio/gfile.c:1971 gio/glocalfile.c:2016
 #, c-format
 msgid "Target file exists"
 msgstr ""
 
-#: gio/gfile.c:1845
+#: gio/gfile.c:1989
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2543
+#: gio/gfile.c:2687
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2635
+#: gio/gfile.c:2779
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "सांकेतिक सम्बन्ध समर्थन गरिएन"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2826
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4532 gio/gvolume.c:357
+#: gio/gfile.c:4759 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:4640
+#: gio/gfile.c:4867
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr ""
@@ -1322,7 +1330,13 @@ msgstr ""
 msgid "Input stream doesn't implement read"
 msgstr ""
 
-#: gio/ginputstream.c:901 gio/goutputstream.c:1083
+#. Translators: This is an error you get if there is already an
+#. * operation running against this stream when you try to start
+#. * one
+#. Translators: This is an error you get if there is
+#. * already an operation running against this stream when
+#. * you try to start one
+#: gio/ginputstream.c:904 gio/goutputstream.c:1086
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr ""
@@ -1332,208 +1346,208 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:589
+#: gio/glocalfile.c:595
 #, fuzzy, c-format
 msgid "Invalid filename %s"
 msgstr "अवैध कार्यक्रम नाम : %s"
 
-#: gio/glocalfile.c:847
+#: gio/glocalfile.c:958
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:965
+#: gio/glocalfile.c:1082
 #, c-format
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:983
+#: gio/glocalfile.c:1100
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:996 gio/glocalfile.c:1747 gio/glocalfile.c:1776
-#: gio/glocalfile.c:1925 gio/glocalfileoutputstream.c:468
-#: gio/glocalfileoutputstream.c:509 gio/glocalfileoutputstream.c:911
+#: gio/glocalfile.c:1113 gio/glocalfile.c:1891 gio/glocalfile.c:1920
+#: gio/glocalfile.c:2069 gio/glocalfileoutputstream.c:472
+#: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, fuzzy, c-format
 msgid "Invalid filename"
 msgstr "अवैध होस्टनाम "
 
-#: gio/glocalfile.c:1000
+#: gio/glocalfile.c:1117
 #, fuzzy, c-format
 msgid "Error renaming file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1119
+#: gio/glocalfile.c:1236
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1129
+#: gio/glocalfile.c:1246
 #, c-format
 msgid "Can't open directory"
 msgstr ""
 
-#: gio/glocalfile.c:1183 gio/glocalfile.c:1751
+#: gio/glocalfile.c:1300 gio/glocalfile.c:1895
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1477
+#: gio/glocalfile.c:1590
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1500
+#: gio/glocalfile.c:1613
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
 
-#: gio/glocalfile.c:1524
+#: gio/glocalfile.c:1634
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1604 gio/glocalfile.c:1624
+#: gio/glocalfile.c:1713 gio/glocalfile.c:1733
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: gio/glocalfile.c:1658
+#: gio/glocalfile.c:1767
 #, fuzzy, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
 
-#: gio/glocalfile.c:1683
+#: gio/glocalfile.c:1792 gio/glocalfile.c:1861 gio/glocalfile.c:1868
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
 
-#: gio/glocalfile.c:1780
+#: gio/glocalfile.c:1924
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "पद वर्णन विकल्पमा त्रुटि %s"
 
-#: gio/glocalfile.c:1840 gio/glocalfile.c:1929
+#: gio/glocalfile.c:1984 gio/glocalfile.c:2073
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1863
+#: gio/glocalfile.c:2007
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:1885 gio/glocalfileoutputstream.c:763
-#: gio/glocalfileoutputstream.c:777 gio/glocalfileoutputstream.c:792
-#: gio/glocalfileoutputstream.c:808 gio/glocalfileoutputstream.c:822
+#: gio/glocalfile.c:2029 gio/glocalfileoutputstream.c:777
+#: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
+#: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr ""
 
-#: gio/glocalfile.c:1904
+#: gio/glocalfile.c:2048
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfile.c:1918
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
 
-#: gio/glocalfileinfo.c:707
+#: gio/glocalfileinfo.c:709
 #, c-format
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:714
+#: gio/glocalfileinfo.c:716
 #, c-format
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:721
+#: gio/glocalfileinfo.c:723
 #, fuzzy, c-format
 msgid "Invalid extended attribute name"
 msgstr "विशेषता नाम भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: gio/glocalfileinfo.c:761
+#: gio/glocalfileinfo.c:763
 #, fuzzy, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "डाइरेक्टरी '%s' खोल्दा त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1396 gio/glocalfileoutputstream.c:653
+#: gio/glocalfileinfo.c:1398 gio/glocalfileoutputstream.c:666
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileinfo.c:1451
+#: gio/glocalfileinfo.c:1454
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1628
+#: gio/glocalfileinfo.c:1614
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileinfo.c:1673
+#: gio/glocalfileinfo.c:1659
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1690
+#: gio/glocalfileinfo.c:1676
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1708
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1734
+#: gio/glocalfileinfo.c:1720
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "रूपान्तरण अवधिमा त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1785 gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1771 gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "रूपान्तरण अवधिमा त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1808
+#: gio/glocalfileinfo.c:1794
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1818 gio/glocalfileinfo.c:1837
-#: gio/glocalfileinfo.c:1848
+#: gio/glocalfileinfo.c:1804 gio/glocalfileinfo.c:1823
+#: gio/glocalfileinfo.c:1834
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "लाइन %d मा त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1813
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:1994
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "सांकेतिक सम्बन्ध समर्थन गरिएन"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:558
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:570
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:368
-#: gio/glocalfileoutputstream.c:840
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:372
+#: gio/glocalfileoutputstream.c:854
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:275
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:279
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
@@ -1543,48 +1557,48 @@ msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 msgid "Unable to find default local file monitor type"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
+#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:591
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileoutputstream.c:209
+#: gio/glocalfileoutputstream.c:213
 #, fuzzy, c-format
 msgid "Error removing old backup link: %s"
 msgstr "पद वर्णन विकल्पमा त्रुटि %s"
 
-#: gio/glocalfileoutputstream.c:223 gio/glocalfileoutputstream.c:236
+#: gio/glocalfileoutputstream.c:227 gio/glocalfileoutputstream.c:240
 #, fuzzy, c-format
 msgid "Error creating backup copy: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileoutputstream.c:254
+#: gio/glocalfileoutputstream.c:258
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileoutputstream.c:414 gio/glocalfileoutputstream.c:857
+#: gio/glocalfileoutputstream.c:418 gio/glocalfileoutputstream.c:871
 #, fuzzy, c-format
 msgid "Error truncating file: %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileoutputstream.c:472 gio/glocalfileoutputstream.c:513
-#: gio/glocalfileoutputstream.c:642 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileoutputstream.c:478 gio/glocalfileoutputstream.c:523
+#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:931
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 
-#: gio/glocalfileoutputstream.c:665
+#: gio/glocalfileoutputstream.c:679
 #, c-format
 msgid "Target file is a directory"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:670
+#: gio/glocalfileoutputstream.c:684
 #, fuzzy, c-format
 msgid "Target file is not a regular file"
 msgstr "नियमित फाइल होइन"
 
-#: gio/glocalfileoutputstream.c:682
+#: gio/glocalfileoutputstream.c:696
 #, c-format
 msgid "The file was externally modified"
 msgstr ""
@@ -1619,15 +1633,24 @@ msgstr ""
 msgid "Failed to resize memory output stream"
 msgstr ""
 
-#: gio/gmount.c:341
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement unmount.
+#: gio/gmount.c:344
 msgid "mount doesn't implement unmount"
 msgstr ""
 
-#: gio/gmount.c:413
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement eject.
+#: gio/gmount.c:419
 msgid "mount doesn't implement eject"
 msgstr ""
 
-#: gio/gmount.c:492
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement remount.
+#: gio/gmount.c:501
 msgid "mount doesn't implement remount"
 msgstr ""
 

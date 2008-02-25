@@ -1,3 +1,7 @@
+2008-02-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.6 ===
+
 2008-02-25  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gfile.c (g_file_find_enclosing_mount):

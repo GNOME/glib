@@ -7,6 +7,18 @@ Overview of Changes from GLib 2.15.5 to GLib 2.15.6
  - g_file_query_filesystem_info grew async variants
  - g_themed_icon_append_name: new convenience function
  - g_content_type_get_icon is implemented now
+ - Only show mounts in /media and ~
+ - g_file_contains_file has been renamed to g_file_has_prefix
+
+* Win32:
+ - g_win32_get_package_installation_directory_of_module: new function
+   which supersedes g_win32_get_package_installation_directory
+ - Use alertable wait functions so that I/O completion routines or 
+   user-mode Asynchronous Procedure Calls can be run
+ - Fix race conditions in g_spawn implementation on win32
+
+* Other:
+ - g_uri_get_scheme has been renamed go g_uri_parse_scheme
 
 * Updated translations:
  Arabic (ar)

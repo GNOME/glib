@@ -234,6 +234,8 @@ g_win32_error_message (gint error)
  * file name encoding, i.e. UTF-8. The return value should be freed
  * with g_free() when not needed any longer. If the function fails
  * %NULL is returned.
+ *
+ * Since: 2.16
  */
 gchar *
 g_win32_get_package_installation_directory_of_module (gpointer hmodule)

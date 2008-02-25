@@ -1703,6 +1703,7 @@ MAXPATHLEN
 g_win32_error_message
 g_win32_getlocale
 g_win32_get_package_installation_directory
+g_win32_get_package_installation_directory_of_module
 g_win32_get_package_installation_subdirectory
 g_win32_get_windows_version
 g_win32_locale_filename_from_utf8
@@ -2519,10 +2520,10 @@ G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT
 G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO
 G_URI_RESERVED_CHARS_GENERIC_DELIMITERS
 G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS
+g_uri_parse_scheme
 g_uri_escape_string
-g_uri_get_scheme
-g_uri_unescape_segment
 g_uri_unescape_string
+g_uri_unescape_segment
 </SECTION>
 
 <SECTION>

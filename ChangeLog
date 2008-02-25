@@ -1,5 +1,11 @@
 2008-02-25  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.15.6 ===
+
+	* NEWS: Updates
+
+2008-02-25  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gtestfuncs.c: Add Since: markers to docs.  (#518556, 
 	Jerry Yu)
 
