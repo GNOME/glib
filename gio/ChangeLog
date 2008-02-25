@@ -1,5 +1,12 @@
 2008-02-25  Alexander Larsson  <alexl@redhat.com>
 
+        * gunixmounts.c:
+        (g_unix_mount_guess_should_display):
+	Remove type guessing, instead just display
+	mounts in /media and in ~/.
+
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfile.c:
 	Make new strings reuse old ones.
 	

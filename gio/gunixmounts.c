@@ -1866,25 +1866,27 @@ gboolean
 g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
 {
   GUnixMountType guessed_type;
+  const char *mount_path;
 
   /* Never display internal mountpoints */
   if (g_unix_mount_is_system_internal (mount_entry))
     return FALSE;
-
-  /* Only display things that look "removable" or
-     things in /media (which are generally user mountable) */
-  guessed_type = g_unix_mount_guess_type (mount_entry);
-  if (guessed_type == G_UNIX_MOUNT_TYPE_IPOD ||
-      guessed_type == G_UNIX_MOUNT_TYPE_CDROM ||
-      guessed_type == G_UNIX_MOUNT_TYPE_FLOPPY ||
-      guessed_type == G_UNIX_MOUNT_TYPE_ZIP ||
-      guessed_type == G_UNIX_MOUNT_TYPE_JAZ ||
-      guessed_type == G_UNIX_MOUNT_TYPE_CAMERA ||
-      guessed_type == G_UNIX_MOUNT_TYPE_MEMSTICK ||
-      (mount_entry->mount_path != NULL &&
-       g_str_has_prefix (mount_entry->mount_path, "/media")))
-    return TRUE;
-
+  
+  /* Only display things in /media (which are generally user mountable)
+     and home dir (fuse stuff) */
+  mount_path = mount_entry->mount_path;
+  if (mount_path != NULL)
+    {
+      if (strstr (mount_path, "/.gvfs") != NULL)
+        return TRUE;
+      
+      if (g_str_has_prefix (mount_path, "/media/"))
+        return TRUE;
+      
+      if (g_str_has_prefix (mount_path, g_get_home_dir ()))
+        return TRUE;
+    }
+  
   return FALSE;
 }
 
