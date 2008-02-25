@@ -152,10 +152,10 @@ g_uri_unescape_string (const char *escaped_string,
 }
 
 /**
- * g_uri_get_scheme:
+ * g_uri_parse_scheme:
  * @uri: a valid URI.
  * 
- * Gets the scheme portion of a URI. RFC 3986 decodes the scheme as:
+ * Gets the scheme portion of a URI string. RFC 3986 decodes the scheme as:
  * <programlisting>
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] 
  * </programlisting>
@@ -167,7 +167,7 @@ g_uri_unescape_string (const char *escaped_string,
  * Since: 2.16
  **/
 char *
-g_uri_get_scheme (const char  *uri)
+g_uri_parse_scheme (const char  *uri)
 {
   const char *p;
   char c;
@@ -203,6 +203,15 @@ g_uri_get_scheme (const char  *uri)
   
   return g_strndup (uri, p - uri - 1);
 }
+
+/* Temporary add a symbol to avoid crashing to many apps.
+   Remove after 2.15.6 release */
+char * g_uri_get_scheme (const char  *uri);
+char *g_uri_get_scheme (const char  *uri)
+{
+  return g_uri_parse_scheme (uri);
+}
+
 
 /**
  * g_uri_escape_string:

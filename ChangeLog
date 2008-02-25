@@ -1,3 +1,10 @@
+2008-02-25  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/gurifuncs.[ch]:
+        Rename g_uri_get_scheme to g_uri_parse_scheme.
+	Keep g_uri_get_scheme() symbol for this
+	unstable release to avoid breaking to many apps.
+
 2008-02-24  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (_glib_get_installation_directory): New internal function.
