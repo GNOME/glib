@@ -335,13 +335,14 @@ g_mount_unmount (GMount *mount,
 
   if (iface->unmount == NULL)
     {
-      /* Translators: This is an error message for mount objects
-         that don't implement unmount. */
       g_simple_async_report_error_in_idle (G_OBJECT (mount),
 					   callback, user_data,
 					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for mount objects that
+					    * don't implement unmount. */
 					   _("mount doesn't implement unmount"));
-      
+
       return;
     }
   
@@ -409,11 +410,12 @@ g_mount_eject (GMount *mount,
 
   if (iface->eject == NULL)
     {
-      /* Translators: This is an error message for mount objects
-         that don't implement eject. */
       g_simple_async_report_error_in_idle (G_OBJECT (mount),
 					   callback, user_data,
 					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for mount objects that
+					    * don't implement eject. */
 					   _("mount doesn't implement eject"));
       
       return;
@@ -490,11 +492,12 @@ g_mount_remount (GMount *mount,
 
   if (iface->remount == NULL)
     { 
-      /* Translators: This is an error message for mount objects
-         that don't implement remount. */
      g_simple_async_report_error_in_idle (G_OBJECT (mount),
 					   callback, user_data,
 					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for mount objects that
+					    * don't implement remount. */
 					   _("mount doesn't implement remount"));
       
       return;

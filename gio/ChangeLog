@@ -1,6 +1,16 @@
 2008-02-25  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gfile.c (g_file_find_enclosing_mount):
+	* ginputstream.c (g_input_stream_set_pending):
+	* glocalfile.c (g_local_file_find_enclosing_mount):
+	* gmount.c (g_mount_unmount), (g_mount_eject), (g_mount_remount):
+	* goutputstream.c (g_output_stream_set_pending):
+
+	Fixup translator comments (#518578).
+
+2008-02-25  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* gfile.c (g_file_find_enclosing_mount):
 	* giomodule.c:
 	* glocalfile.c (g_local_file_find_enclosing_mount):
 	* goutputstream.c:
