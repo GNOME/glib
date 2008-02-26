@@ -1,3 +1,11 @@
+2008-02-26  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gmain.c (g_poll): Further patch by Vlad Grecescu: Drop the
+	code path that called WaitMessage(), as WaitMessage() doesn't
+	offer any chance for APCs to run. Instead just use the code path
+	with MsgWaitForMultipleObjectsEx() even for the
+	wait-only-for--messages case. (#517484)
+
 2008-02-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

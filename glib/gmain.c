@@ -328,7 +328,6 @@ g_poll (GPollFD *fds,
   GPollFD *f;
   DWORD ready;
   MSG msg;
-  UINT timer;
   gint nhandles = 0;
 
   for (f = fds; f < &fds[nfds]; ++f)
@@ -365,81 +364,20 @@ g_poll (GPollFD *fds,
 	ready = WAIT_OBJECT_0 + nhandles;
       else
 	{
-	  if (nhandles == 0)
-	    {
-	      /* Waiting just for messages */
-	      if (timeout == INFINITE)
-		{
-		  /* Infinite timeout
-		   * -> WaitMessage
-		   */
+	  /* Wait for either message or event
+	   * -> Use MsgWaitForMultipleObjectsEx
+	   */
 #ifdef G_MAIN_POLL_DEBUG
-		  g_print ("WaitMessage\n");
+	  g_print ("MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 #endif
-		  if (!WaitMessage ())
-		    {
-		      gchar *emsg = g_win32_error_message (GetLastError ());
-		      g_warning (G_STRLOC ": WaitMessage() failed: %s", emsg);
-		      g_free (emsg);
-		    }
-		  ready = WAIT_OBJECT_0 + nhandles;
-		}
-	      else if (timeout == 0)
-		{
-		  /* Waiting just for messages, zero timeout.
-		   * If we got here, there was no message
-		   */
-		  ready = WAIT_TIMEOUT;
-		}
-	      else
-		{
-		  /* Waiting just for messages, some timeout
-		   * -> Set a timer, wait for message,
-		   * kill timer, use PeekMessage
-		   */
-		  timer = SetTimer (NULL, 0, timeout, NULL);
-		  if (timer == 0)
-		    {
-		      gchar *emsg = g_win32_error_message (GetLastError ());
-		      g_warning (G_STRLOC ": SetTimer() failed: %s", emsg);
-		      g_free (emsg);
-		      ready = WAIT_TIMEOUT;
-		    }
-		  else
-		    {
-#ifdef G_MAIN_POLL_DEBUG
-		      g_print ("WaitMessage\n");
-#endif
-		      WaitMessage ();
-		      KillTimer (NULL, timer);
-#ifdef G_MAIN_POLL_DEBUG
-		      g_print ("PeekMessage\n");
-#endif
-		      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE)
-			  && msg.message != WM_TIMER)
-			ready = WAIT_OBJECT_0;
-		      else
-			ready = WAIT_TIMEOUT;
-		    }
-		}
-	    }
-	  else
-	    {
-	      /* Wait for either message or event
-	       * -> Use MsgWaitForMultipleObjectsEx
-	       */
-#ifdef G_MAIN_POLL_DEBUG
-	      g_print ("MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
-#endif
-	      ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
-						   QS_ALLINPUT, MWMO_ALERTABLE);
+	  ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
+					       QS_ALLINPUT, MWMO_ALERTABLE);
 
-	      if (ready == WAIT_FAILED)
-		{
-		  gchar *emsg = g_win32_error_message (GetLastError ());
-		  g_warning (G_STRLOC ": MsgWaitForMultipleObjectsEx() failed: %s", emsg);
-		  g_free (emsg);
-		}
+	  if (ready == WAIT_FAILED)
+	    {
+	      gchar *emsg = g_win32_error_message (GetLastError ());
+	      g_warning (G_STRLOC ": MsgWaitForMultipleObjectsEx() failed: %s", emsg);
+	      g_free (emsg);
 	    }
 	}
     }
