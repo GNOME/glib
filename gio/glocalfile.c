@@ -1295,6 +1295,12 @@ g_local_file_delete (GFile         *file,
     {
       int errsv = errno;
 
+      /* Posix allows EEXIST too, but the more sane error
+	 is G_IO_ERROR_NOT_FOUND, and its what nautilus
+	 expects */
+      if (errsv == EEXIST)
+	errsv = ENOTEMPTY;
+
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error removing file: %s"),

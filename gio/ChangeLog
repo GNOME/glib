@@ -1,3 +1,10 @@
+2008-02-26  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+        (g_local_file_delete):
+	Handle filesystems (like ntfs-3g) that return EEXIST instead
+	of ENOTEMPTY (#518816)
+
 2008-02-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.6 ===
