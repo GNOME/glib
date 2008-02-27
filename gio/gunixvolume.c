@@ -391,6 +391,7 @@ eject_mount_do (GVolume             *volume,
 
 static void
 g_unix_volume_mount (GVolume    *volume,
+                     GMountMountFlags    flags,
                      GMountOperation     *mount_operation,
                      GCancellable        *cancellable,
                      GAsyncReadyCallback  callback,

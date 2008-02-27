@@ -644,16 +644,17 @@ g_content_type_get_mime_type (const char *type)
 GIcon *
 g_content_type_get_icon (const char *type)
 {
-  char *mimetype_icon, *generic_mimetype_icon, *p;
+  char *mimetype_icon, *generic_mimetype_icon, *q;
   char *icon_names[3];
-  GThemedIcon *themed_icon;
+  const char *p;
+  GIcon *themed_icon;
   
   g_return_val_if_fail (type != NULL, NULL);
   
   mimetype_icon = g_strdup (type);
   
-  while ((p = strchr (mimetype_icon, '/')) != NULL)
-    *p = '-';
+  while ((q = strchr (mimetype_icon, '/')) != NULL)
+    *q = '-';
   
   p = strchr (type, '/');
   if (p == NULL)
@@ -675,7 +676,7 @@ g_content_type_get_icon (const char *type)
   g_free (icon_names[1]);
   g_free (generic_mimetype_icon);
   
-  return G_ICON (themed_icon);
+  return themed_icon;
 }
 
 /**
