@@ -54,7 +54,7 @@ GChecksum *           g_checksum_copy       (const GChecksum  *checksum);
 void                  g_checksum_free       (GChecksum        *checksum);
 void                  g_checksum_update     (GChecksum        *checksum,
                                              const guchar     *data,
-                                             gsize             length);
+                                             gssize            length);
 G_CONST_RETURN gchar *g_checksum_get_string (GChecksum        *checksum);
 void                  g_checksum_get_digest (GChecksum        *checksum,
                                              guint8           *buffer,
@@ -65,7 +65,7 @@ gchar *g_compute_checksum_for_data   (GChecksumType  checksum_type,
                                       gsize          length);
 gchar *g_compute_checksum_for_string (GChecksumType  checksum_type,
                                       const gchar   *str,
-                                      gsize          length);
+                                      gssize         length);
 
 G_END_DECLS
 

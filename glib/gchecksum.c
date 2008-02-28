@@ -1198,7 +1198,7 @@ g_checksum_free (GChecksum *checksum)
 void
 g_checksum_update (GChecksum    *checksum,
                    const guchar *data,
-                   gsize         length)
+                   gssize        length)
 {
   g_return_if_fail (checksum != NULL);
   g_return_if_fail (data != NULL);
@@ -1402,7 +1402,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
 gchar *
 g_compute_checksum_for_string (GChecksumType  checksum_type,
                                const gchar   *str,
-                               gsize          length)
+                               gssize         length)
 {
   g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
   g_return_val_if_fail (str != NULL, NULL);

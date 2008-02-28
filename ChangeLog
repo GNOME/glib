@@ -1,3 +1,9 @@
+2008-02-27  Matthew Barnes  <mbarnes@redhat.com>
+
+	* glib/gchecksum.[ch] (g_checksum_update),
+	(g_compute_checksum_for_string): Make 'length' parameter
+	signed to accomodate passing negative lengths. (#510855)
+
 2008-02-26  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.c (g_poll): Further patch by Vlad Grecescu: Drop the
