@@ -10,7 +10,7 @@
 	code path that called WaitMessage(), as WaitMessage() doesn't
 	offer any chance for APCs to run. Instead just use the code path
 	with MsgWaitForMultipleObjectsEx() even for the
-	wait-only-for--messages case. (#517484)
+	wait-only-for-messages case. (#517484)
 
 2008-02-25  Matthias Clasen  <mclasen@redhat.com>
 
