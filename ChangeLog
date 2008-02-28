@@ -1,3 +1,10 @@
+2008-02-29  Tor Lillqvist  <tml@novell.com>
+
+	* glib/win_iconv.c (name_to_codepage): Add some GNU libiconv
+	compatibility: Recognize "" and "char" as aliases for the current
+	locale's charset. (We use the system ANSI codepage as returned by
+	GetACP().) Recognize "wchar_t" as an alias for UTF-16LE.
+
 2008-02-27  Matthew Barnes  <mbarnes@redhat.com>
 
 	* glib/gchecksum.[ch] (g_checksum_update),

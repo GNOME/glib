@@ -953,7 +953,12 @@ name_to_codepage(const char *name)
 {
     int i;
 
-    if (_strnicmp(name, "cp", 2) == 0)
+    if (*name == '\0' ||
+	strcmp(name, "char") == 0)
+        return GetACP();
+    else if (strcmp(name, "wchar_t") == 0)
+        return 1200;
+    else if (_strnicmp(name, "cp", 2) == 0)
         return atoi(name + 2); /* CP123 */
     else if ('0' <= name[0] && name[0] <= '9')
         return atoi(name);     /* 123 */
