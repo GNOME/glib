@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Amitakhya Phukan <amitakhya@svn.gnome.org>, 2007.
+# Amitakhya Phukan <amitakhya@svn.gnome.org>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-25 13:59-0500\n"
-"PO-Revision-Date: 2007-07-25 15:21+0530\n"
+"PO-Revision-Date: 2008-02-28 17:08+0530\n"
 "Last-Translator: Amitakhya Phukan <amitakhya@svn.gnome.org>\n"
 "Language-Team: Assamese\n"
 "MIME-Version: 1.0\n"
@@ -237,23 +237,23 @@ msgstr "'%s' টেমপ্লেটত XXXXXX নাই"
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u বাইট"
+msgstr[1] "%u বাইটসমূহ"
 
 #: glib/gfileutils.c:1834
 #, c-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f KB"
 
 #: glib/gfileutils.c:1839
 #, c-format
 msgid "%.1f MB"
-msgstr ""
+msgstr "%.1f MB"
 
 #: glib/gfileutils.c:1844
 #, c-format
 msgid "%.1f GB"
-msgstr ""
+msgstr "%.1f GB"
 
 #: glib/gfileutils.c:1887
 #, c-format
@@ -301,9 +301,9 @@ msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' নথিপত্ৰ map কৰোঁতে বিফল: mmap() বিফল: %s"
 
 #: glib/gmarkup.c:228 glib/gmarkup.c:244
-#, fuzzy, c-format
+#, c-format
 msgid "Error on line %d char %d: "
-msgstr "%d শাৰীৰ %d আখৰত ভুল: %s"
+msgstr "%d শাৰীৰ %d আখৰত ভুল:"
 
 #: glib/gmarkup.c:338
 #, c-format
@@ -311,10 +311,8 @@ msgid "Error on line %d: %s"
 msgstr "%d শাৰীত ভুল: %s"
 
 #: glib/gmarkup.c:442
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:452
 #, c-format
@@ -356,8 +354,7 @@ msgstr ""
 #: glib/gmarkup.c:612
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
-"আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
+msgstr "আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
 #: glib/gmarkup.c:627
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -381,19 +378,17 @@ msgid "Unfinished character reference"
 msgstr "অসম্পূৰ্ণ আখৰৰ উল্লেখ"
 
 #: glib/gmarkup.c:972
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি"
+msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি - overlong ক্ৰম"
 
 #: glib/gmarkup.c:1000
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি"
+msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি - এটা আৰম্ভৰ আখৰ নহয়"
 
 #: glib/gmarkup.c:1036
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি"
+msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি - অবৈধ '%s'"
 
 #: glib/gmarkup.c:1074
 msgid "Document must begin with an element (e.g. <book>)"
@@ -415,8 +410,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1267
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1309
@@ -459,9 +453,8 @@ msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1757
-#, fuzzy
 msgid "Document was empty or contained only whitespace"
-msgstr "প্ৰলেক্ষ"
+msgstr "প্ৰলেক্ষ ৰিক্ত বা অকল ৰিক্ত স্থান আছিলে"
 
 #: glib/gmarkup.c:1771
 #, fuzzy
@@ -737,8 +730,7 @@ msgid "inconsistent NEWLINE options"
 msgstr ""
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 
 #: glib/gregex.c:338
@@ -1040,8 +1032,7 @@ msgstr ""
 
 #: glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 
 #: glib/gkeyfile.c:821
@@ -1710,6 +1701,3 @@ msgstr ""
 msgid "[FILE...]"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Error creating backup link: %s"
-#~ msgstr "সলনি কৰাৰ সময়ত ভুল: %s"
