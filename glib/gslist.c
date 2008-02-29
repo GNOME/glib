@@ -47,18 +47,66 @@ g_slist_alloc (void)
   return _g_slist_alloc0 ();
 }
 
+/**
+ * g_slist_free:
+ * @list: a #GSList
+ *
+ * Frees all of the memory used by a #GSList.
+ * The freed elements are returned to the slice allocator.
+ */
 void
-g_slist_free (GSList *slist)
+g_slist_free (GSList *list)
 {
-  g_slice_free_chain (GSList, slist, next);
+  g_slice_free_chain (GSList, list, next);
 }
 
+/**
+ * g_slist_free_1:
+ * @list: a #GSList element
+ * 
+ * Frees one #GSList element.
+ * It is usually used after g_slist_remove_link().
+ */
 void
-g_slist_free_1 (GSList *slist)
+g_slist_free_1 (GSList *list)
 {
-  _g_slist_free1 (slist);
+  _g_slist_free1 (list);
 }
 
+/**
+ * g_slist_append:
+ * @list: a #GSList
+ * @data: the data for the new element
+ *
+ * Adds a new element on to the end of the list.
+ *
+ * <note><para>
+ * The return value is the new start of the list, which may 
+ * have changed, so make sure you store the new value.
+ * </para></note>
+ *
+ * <note><para>
+ * Note that g_slist_append() has to traverse the entire list 
+ * to find the end, which is inefficient when adding multiple 
+ * elements. A common idiom to avoid the inefficiency is to prepend 
+ * the elements and reverse the list when all elements have been added.
+ * </para></note>
+ *
+ * |[
+ * /&ast; Notice that these are initialized to the empty list. &ast;/
+ * GSList *list = NULL, *number_list = NULL;
+ *
+ * /&ast; This is a list of strings. &ast;/
+ * list = g_slist_append (list, "first");
+ * list = g_slist_append (list, "second");
+ *
+ * /&ast; This is a list of integers. &ast;/
+ * number_list = g_slist_append (number_list, GINT_TO_POINTER (27));
+ * number_list = g_slist_append (number_list, GINT_TO_POINTER (14));
+ * ]|
+ *
+ * Returns: the new start of the #GSList
+ */
 GSList*
 g_slist_append (GSList   *list,
 		gpointer  data)
@@ -82,6 +130,27 @@ g_slist_append (GSList   *list,
     return new_list;
 }
 
+/**
+ * g_slist_prepend:
+ * @list: a #GSList
+ * @data: the data for the new element
+ *
+ * Adds a new element on to the start of the list.
+ *
+ * <note><para>
+ * The return value is the new start of the list, which 
+ * may have changed, so make sure you store the new value.
+ * </para></note>
+ *
+ * |[
+ * /&ast; Notice that it is initialized to the empty list. &ast;/
+ * GSList *list = NULL;
+ * list = g_slist_prepend (list, "last");
+ * list = g_slist_prepend (list, "first");
+ * ]|
+ *
+ * Returns: the new start of the #GSList
+ */
 GSList*
 g_slist_prepend (GSList   *list,
 		 gpointer  data)
@@ -95,6 +164,19 @@ g_slist_prepend (GSList   *list,
   return new_list;
 }
 
+/**
+ * g_slist_insert:
+ * @list: a #GSList
+ * @data: the data for the new element
+ * @position: the position to insert the element. 
+ *     If this is negative, or is larger than the number 
+ *     of elements in the list, the new element is added on
+ *     to the end of the list.
+ *
+ * Inserts a new element into the list at the given position.
+ *
+ * Returns: the new start of the #GSList
+ */
 GSList*
 g_slist_insert (GSList   *list,
 		gpointer  data,
@@ -141,6 +223,16 @@ g_slist_insert (GSList   *list,
   return list;
 }
 
+/**
+ * g_slist_insert_before:
+ * @slist: a #GSList
+ * @sibling: node to insert @data before
+ * @data: data to put in the newly-inserted node
+ *
+ * Inserts a node before @sibling containing @data. 
+ * 
+ * Returns: the new head of the list.
+ */
 GSList*
 g_slist_insert_before (GSList  *slist,
 		       GSList  *sibling,
@@ -181,6 +273,17 @@ g_slist_insert_before (GSList  *slist,
     }
 }
 
+/**
+ * g_slist_concat:
+ * @list1: a #GSList
+ * @list2: the #GSList to add to the end of the first #GSList
+ *
+ * Adds the second #GSList onto the end of the first #GSList.
+ * Note that the elements of the second #GSList are not copied.
+ * They are used directly.
+ *
+ * Returns: the start of the new #GSList
+ */
 GSList *
 g_slist_concat (GSList *list1, GSList *list2)
 {
@@ -195,6 +298,17 @@ g_slist_concat (GSList *list1, GSList *list2)
   return list1;
 }
 
+/**
+ * g_slist_remove:
+ * @list: a #GSList
+ * @data: the data of the element to remove
+ *
+ * Removes an element from a #GSList.
+ * If two elements contain the same data, only the first is removed.
+ * If none of the elements contain the data, the #GSList is unchanged.
+ *
+ * Returns: the new start of the #GSList
+ */
 GSList*
 g_slist_remove (GSList        *list,
 		gconstpointer  data)
@@ -221,6 +335,18 @@ g_slist_remove (GSList        *list,
   return list;
 }
 
+/**
+ * g_slist_remove_all:
+ * list: a #GSList
+ * @data: data to remove
+ *
+ * Removes all list nodes with data equal to @data. 
+ * Returns the new head of the list. Contrast with 
+ * g_slist_remove() which removes only the first node 
+ * matching the given data.
+ *
+ * Returns: new head of @list
+ */
 GSList*
 g_slist_remove_all (GSList        *list,
 		    gconstpointer  data)
@@ -282,23 +408,60 @@ _g_slist_remove_link (GSList *list,
   return list;
 }
 
+/**
+ * g_slist_remove_link:
+ * @list: a #GSList
+ * @link_: an element in the #GSList
+ *
+ * Removes an element from a #GSList, without 
+ * freeing the element. The removed element's next 
+ * link is set to %NULL, so that it becomes a
+ * self-contained list with one element.
+ *
+ * Returns: the new start of the #GSList, without the element
+ */
 GSList* 
 g_slist_remove_link (GSList *list,
-		     GSList *link)
+		     GSList *link_)
 {
-  return _g_slist_remove_link (list, link);
+  return _g_slist_remove_link (list, link_);
 }
 
+/**
+ * g_slist_delete_link:
+ * @list: a #GSList
+ * @link_: node to delete
+ *
+ * Removes the node link_ from the list and frees it. 
+ * Compare this to g_slist_remove_link() which removes the node 
+ * without freeing it.
+ *
+ * Returns: the new head of @list
+ */
 GSList*
 g_slist_delete_link (GSList *list,
-		     GSList *link)
+		     GSList *link_)
 {
-  list = _g_slist_remove_link (list, link);
-  _g_slist_free1 (link);
+  list = _g_slist_remove_link (list, link_);
+  _g_slist_free1 (link_);
 
   return list;
 }
 
+/**
+ * g_slist_copy:
+ * @list: a #GSList
+ * 
+ * Copies a #GSList.
+ * 
+ * <note><para>
+ * Note that this is a "shallow" copy. If the list elements 
+ * consist of pointers to data, the pointers are copied but 
+ * the actual data isn't.
+ * </para></note>
+ *
+ * Returns: a copy of @list
+ */
 GSList*
 g_slist_copy (GSList *list)
 {
@@ -325,6 +488,14 @@ g_slist_copy (GSList *list)
   return new_list;
 }
 
+/**
+ * g_slist_reverse:
+ * @list: a #GSList
+ *
+ * Reverses a #GSList.
+ *
+ * Returns: the start of the reversed #GSList
+ */
 GSList*
 g_slist_reverse (GSList *list)
 {
@@ -343,6 +514,16 @@ g_slist_reverse (GSList *list)
   return prev;
 }
 
+/**
+ * g_slist_nth:
+ * @list: a #GSList
+ * @n: the position of the element, counting from 0
+ *
+ * Gets the element at the given position in a #GSList.
+ *
+ * Returns: the element, or %NULL if the position is off 
+ *     the end of the #GSList
+ */
 GSList*
 g_slist_nth (GSList *list,
 	     guint   n)
@@ -353,6 +534,16 @@ g_slist_nth (GSList *list,
   return list;
 }
 
+/**
+ * g_slist_nth_data:
+ * @list: a #GSList
+ * @n: the position of the element
+ *
+ * Gets the data of the element at the given position.
+ *
+ * Returns: the element's data, or %NULL if the position 
+ *     is off the end of the #GSList
+ */
 gpointer
 g_slist_nth_data (GSList   *list,
 		  guint     n)
@@ -363,6 +554,17 @@ g_slist_nth_data (GSList   *list,
   return list ? list->data : NULL;
 }
 
+/**
+ * g_slist_find:
+ * @list: a #GSList
+ * @data: the element data to find
+ *
+ * Finds the element in a #GSList which 
+ * contains the given data.
+ *
+ * Returns: the found #GSList element, 
+ *     or %NULL if it is not found
+ */
 GSList*
 g_slist_find (GSList        *list,
 	      gconstpointer  data)
@@ -377,6 +579,23 @@ g_slist_find (GSList        *list,
   return list;
 }
 
+
+/**
+ * g_slist_find_custom:
+ * @list: a #GSList
+ * @data: user data passed to the function
+ * @func: the function to call for each element. 
+ *     It should return 0 when the desired element is found
+ *
+ * Finds an element in a #GSList, using a supplied function to 
+ * find the desired element. It iterates over the list, calling 
+ * the given function which should return 0 when the desired 
+ * element is found. The function takes two #gconstpointer arguments, 
+ * the #GSList element's data as the first argument and the 
+ * given user data.
+ *
+ * Returns: the found #GSList element, or %NULL if it is not found
+ */
 GSList*
 g_slist_find_custom (GSList        *list,
 		     gconstpointer  data,
@@ -394,16 +613,27 @@ g_slist_find_custom (GSList        *list,
   return NULL;
 }
 
+/**
+ * g_slist_position:
+ * @list: a #GSList
+ * @llink: an element in the #GSList
+ *
+ * Gets the position of the given element 
+ * in the #GSList (starting from 0).
+ *
+ * Returns: the position of the element in the #GSList, 
+ *     or -1 if the element is not found
+ */
 gint
 g_slist_position (GSList *list,
-		  GSList *link)
+		  GSList *llink)
 {
   gint i;
 
   i = 0;
   while (list)
     {
-      if (list == link)
+      if (list == llink)
 	return i;
       i++;
       list = list->next;
@@ -412,6 +642,17 @@ g_slist_position (GSList *list,
   return -1;
 }
 
+/**
+ * g_slist_index:
+ * @list: a #GSList
+ * @data: the data to find
+ *
+ * Gets the position of the element containing 
+ * the given data (starting from 0).
+ *
+ * Returns: the index of the element containing the data, 
+ *     or -1 if the data is not found
+ */
 gint
 g_slist_index (GSList        *list,
 	       gconstpointer  data)
@@ -430,6 +671,19 @@ g_slist_index (GSList        *list,
   return -1;
 }
 
+/**
+ * g_slist_last:
+ * @list: a #GSList 
+ *
+ * Gets the last element in a #GSList.
+ *  
+ * <note><para>
+ * This function iterates over the whole list.
+ * </para></note>
+ *
+ * Returns: the last element in the #GSList, 
+ *     or %NULL if the #GSList has no elements
+ */
 GSList*
 g_slist_last (GSList *list)
 {
@@ -442,6 +696,19 @@ g_slist_last (GSList *list)
   return list;
 }
 
+/**
+ * g_slist_length:
+ * @list: a #GSList
+ *
+ * Gets the number of elements in a #GSList.
+ *
+ * <note><para>
+ * This function iterates over the whole list to 
+ * count its elements.
+ * </para></note>
+ *
+ * Returns: the number of elements in the #GSList
+ */
 guint
 g_slist_length (GSList *list)
 {
@@ -457,6 +724,14 @@ g_slist_length (GSList *list)
   return length;
 }
 
+/**
+ * g_slist_foreach:
+ * @list: a #GSList
+ * @func: the function to call with each element's data
+ * @user_data: user data to pass to the function
+ *
+ * Calls a function for each element of a #GSList.
+ */
 void
 g_slist_foreach (GSList   *list,
 		 GFunc     func,
@@ -524,6 +799,19 @@ g_slist_insert_sorted_real (GSList   *list,
     }
 }
 
+/**
+ * g_slist_insert_sorted:
+ * @list: a #GSList
+ * @data: the data for the new element
+ * @func: the function to compare elements in the list. 
+ *     It should return a number > 0 if the first parameter 
+ *     comes after the second parameter in the sort order.
+ *
+ * Inserts a new element into the list, using the given 
+ * comparison function to determine its position.
+ *
+ * Returns: the new start of the #GSList
+ */
 GSList*
 g_slist_insert_sorted (GSList       *list,
                        gpointer      data,
@@ -532,6 +820,22 @@ g_slist_insert_sorted (GSList       *list,
   return g_slist_insert_sorted_real (list, data, (GFunc) func, NULL);
 }
 
+/**
+ * g_slist_insert_sorted_with_data:
+ * @list: a #GSList
+ * @data: the data for the new element
+ * @func: the function to compare elements in the list. 
+ *     It should return a number > 0 if the first parameter 
+ *     comes after the second parameter in the sort order.
+ * @user_data: data to pass to comparison function
+ *
+ * Inserts a new element into the list, using the given 
+ * comparison function to determine its position.
+ *
+ * Returns: the new start of the #GSList
+ *
+ * Since: 2.10
+ */
 GSList*
 g_slist_insert_sorted_with_data (GSList           *list,
 				 gpointer          data,
@@ -602,6 +906,19 @@ g_slist_sort_real (GSList   *list,
 			     user_data);
 }
 
+/**
+ * g_slist_sort:
+ * @list: a #GSList
+ * @compare_func: the comparison function used to sort the #GSList.
+ *     This function is passed the data from 2 elements of the #GSList 
+ *     and should return 0 if they are equal, a negative value if the 
+ *     first element comes before the second, or a positive value if 
+ *     the first element comes after the second.
+ *
+ * Sorts a #GSList using the given comparison function.
+ *
+ * Returns: the start of the sorted #GSList
+ */
 GSList *
 g_slist_sort (GSList       *list,
 	      GCompareFunc  compare_func)
@@ -609,6 +926,16 @@ g_slist_sort (GSList       *list,
   return g_slist_sort_real (list, (GFunc) compare_func, NULL);
 }
 
+/**
+ * g_slist_sort_with_data:
+ * @list: a #GSList
+ * @compare_func: comparison function
+ * @user_data: data to pass to comparison function
+ *
+ * Like g_slist_sort(), but the sort function accepts a user data argument.
+ *
+ * Returns: new head of the list
+ */
 GSList *
 g_slist_sort_with_data (GSList           *list,
 			GCompareDataFunc  compare_func,
