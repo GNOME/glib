@@ -1,3 +1,9 @@
+2008-02-29  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfileinfo.c:
+        (get_content_type):
+	Make sure empty files get text/plain type (#518720)
+
 2008-02-27  Alexander Larsson  <alexl@redhat.com>
 
         * gcontenttype.c:

@@ -1215,7 +1215,7 @@ get_content_type (const char          *basename,
 	      
 	      res = read (fd, sniff_buffer, sniff_length);
 	      close (fd);
-	      if (res > 0)
+	      if (res >= 0)
 		{
 		  g_free (content_type);
 		  content_type = g_content_type_guess (basename, sniff_buffer, res, NULL);
