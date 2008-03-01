@@ -2707,7 +2707,8 @@ g_file_make_symbolic_link (GFile         *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL 
  * 
- * Deletes a file.
+ * Deletes a file. If the @file is a directory, it will only be deleted if it 
+ * is empty.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation

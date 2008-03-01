@@ -1,3 +1,8 @@
+2008-03-01  Benjamin Otte  <otte@gnome.org>
+
+	* gfile.c:
+	clarify docs for g_file_delete().
+
 2008-02-29  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfileinfo.c:
