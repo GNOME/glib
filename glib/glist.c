@@ -88,7 +88,7 @@ g_list_free_1 (GList *list)
  * <note><para>
  * The return value is the new start of the list, which 
  * may have changed, so make sure you store the new value.
- * </para</note>
+ * </para></note>
  *
  * <note><para>
  * Note that g_list_append() has to traverse the entire list 
