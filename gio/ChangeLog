@@ -1,3 +1,13 @@
+2008-03-03  Alexander Larsson  <alexl@redhat.com>
+
+        * gunionvolumemonitor.c:
+        * gvolumemonitor.h:
+	Fix the adopt_orphan_mount vfunc to take a
+	volume_monitor reference in an ABI compat way.
+	This change is not API compat, but the added
+	arg is not used in the only user of this vfunc, so
+	all we get is a harmless warning in gvfs (#520169)
+	
 2008-03-01  Benjamin Otte  <otte@gnome.org>
 
 	* gfile.c:

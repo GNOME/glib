@@ -65,12 +65,13 @@ g_union_volume_monitor_finalize (GObject *object)
 
   monitor = G_UNION_VOLUME_MONITOR (object);
 
-  while (monitor->monitors != NULL) {
-    child_monitor = monitor->monitors->data;
-    g_union_volume_monitor_remove_monitor (monitor, 
-                                           child_monitor);
-    g_object_unref (child_monitor);
-  }
+  while (monitor->monitors != NULL)
+    {
+      child_monitor = monitor->monitors->data;
+      g_union_volume_monitor_remove_monitor (monitor, 
+                                             child_monitor);
+      g_object_unref (child_monitor);
+    }
 
   
   if (G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize)
@@ -649,7 +650,7 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
 
       if (child_monitor_class->adopt_orphan_mount != NULL)
         {
-          volume = child_monitor_class->adopt_orphan_mount (mount);
+          volume = child_monitor_class->adopt_orphan_mount (mount, child_monitor);
           if (volume != NULL)
             break;
         }

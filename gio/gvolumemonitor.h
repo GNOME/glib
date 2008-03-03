@@ -111,8 +111,9 @@ struct _GVolumeMonitorClass {
                                      const char      *uuid);
 
 
-  GVolume * (*adopt_orphan_mount)   (GMount          *mount);
-
+  /* These arguments are unfortunately backwards by mistake (bug #520169) */
+  GVolume * (*adopt_orphan_mount)   (GMount          *mount,
+                                     GVolumeMonitor  *volume_monitor);
   
   /*< private >*/
   /* Padding for future expansion */
