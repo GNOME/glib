@@ -1,3 +1,8 @@
+2008-03-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.h: Add a version of G_INLINE_FUNC for
+	__GNUC__ && __GNUC_STDC_INLINE__, patch by Jakub Jelinek
+
 2008-03-03  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (read_helper_report): Must set the GError

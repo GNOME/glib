@@ -97,7 +97,11 @@ G_BEGIN_DECLS
 #  define G_INLINE_FUNC
 #  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
-#  define G_INLINE_FUNC static __inline __attribute__ ((unused))
+#  ifdef __GNUC_STDC_INLINE__
+#   define G_INLINE_FUNC extern inline __attribute__ ((__gnu_inline__))
+#  else
+#   define G_INLINE_FUNC extern inline
+#  endif
 #elif defined (G_CAN_INLINE) 
 #  define G_INLINE_FUNC static inline
 #else /* can't inline */
