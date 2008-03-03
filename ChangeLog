@@ -1,3 +1,9 @@
+2008-03-03  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gspawn-win32.c (read_helper_report): Must set the GError
+	also in the unexpected EOF case.
+	(do_spawn_with_pipes): Must protect also new_argv[0].
+
 2008-03-01  Benjamin Otte  <otte@gnome.org>
 
 	* glib/glist.c:

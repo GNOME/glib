@@ -335,7 +335,12 @@ read_helper_report (int      fd,
           return FALSE;
         }
       else if (chunk == 0)
-        break; /* EOF */
+	{
+	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		       _("Failed to read from child pipe (%s)"),
+		       "EOF");
+	  break; /* EOF */
+	}
       else
 	bytes += chunk;
     }
@@ -600,7 +605,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   else
     helper_process = g_strdup (helper_process);
 
-  new_argv[0] = helper_process;
+  new_argv[0] = protect_argv_string (helper_process);
 
   _g_sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_pipe[1]);
   new_argv[ARG_CHILD_ERR_REPORT] = args[ARG_CHILD_ERR_REPORT];
@@ -719,6 +724,7 @@ do_spawn_with_pipes (gint                 *exit_status,
 		     conv_error_index - ARG_PROGRAM, conv_error->message);
       g_error_free (conv_error);
       g_strfreev (protected_argv);
+      g_free (new_argv[0]);
       g_free (new_argv[ARG_WORKING_DIRECTORY]);
       g_free (new_argv);
       g_free (helper_process);
@@ -733,6 +739,7 @@ do_spawn_with_pipes (gint                 *exit_status,
 		   conv_error->message);
       g_error_free (conv_error);
       g_strfreev (protected_argv);
+      g_free (new_argv[0]);
       g_free (new_argv[ARG_WORKING_DIRECTORY]);
       g_free (new_argv);
       g_free (helper_process);
@@ -748,9 +755,6 @@ do_spawn_with_pipes (gint                 *exit_status,
   g_free (helper_process);
 
   if (wenvp != NULL)
-    /* Let's hope envp hasn't mucked with PATH so that
-     * gspawn-win32-helper.exe isn't found.
-     */
     rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
   else
     rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
@@ -772,6 +776,7 @@ do_spawn_with_pipes (gint                 *exit_status,
 
   g_strfreev (protected_argv);
 
+  g_free (new_argv[0]);
   g_free (new_argv[ARG_WORKING_DIRECTORY]);
   g_free (new_argv);
 
@@ -849,6 +854,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   return TRUE;
 
  cleanup_and_fail:
+
   if (rc != -1)
     CloseHandle ((HANDLE) rc);
   if (child_err_report_pipe[0] != -1)
