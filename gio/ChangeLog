@@ -1,3 +1,8 @@
+2008-03-04  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.c:
+	Remove deprecated symbols we kept for one release.
+
 2008-03-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* ginputstream.c:

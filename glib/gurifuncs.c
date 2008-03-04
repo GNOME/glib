@@ -204,15 +204,6 @@ g_uri_parse_scheme (const char  *uri)
   return g_strndup (uri, p - uri - 1);
 }
 
-/* Temporary add a symbol to avoid crashing to many apps.
-   Remove after 2.15.6 release */
-char * g_uri_get_scheme (const char  *uri);
-char *g_uri_get_scheme (const char  *uri)
-{
-  return g_uri_parse_scheme (uri);
-}
-
-
 /**
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.

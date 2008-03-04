@@ -1,3 +1,8 @@
+2008-03-04  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/gurifuncs.c:
+	Remove deprecated symbols we kept for one release.
+
 2008-03-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: Add a version of G_INLINE_FUNC for
