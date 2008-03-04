@@ -1,3 +1,8 @@
+2008-03-04  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* gbufferedinputstream.c: Fix typo in parameter
+	documentation.
+
 2008-03-04  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:

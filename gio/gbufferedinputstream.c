@@ -336,7 +336,7 @@ g_buffered_input_stream_new (GInputStream *base_stream)
 
 /**
  * g_buffered_input_stream_new_sized:
- * @base_stream: a #GOutputStream.
+ * @base_stream: a #GInputStream.
  * @size: a #gsize.
  * 
  * Creates a new #GBufferedInputStream from the given @base_stream, 
