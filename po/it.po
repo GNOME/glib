@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.16.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-02 20:32+0100\n"
-"PO-Revision-Date: 2008-03-02 20:34+0100\n"
+"POT-Creation-Date: 2008-03-04 10:21+0100\n"
+"PO-Revision-Date: 2008-03-04 10:18+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -174,10 +174,11 @@ msgstr "Nome host non valido"
 msgid "Error opening directory '%s': %s"
 msgstr "Errore nell'aprire la directory \"%s\": %s"
 
+# GLIB-2-16
 #: ../glib/gfileutils.c:557 ../glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Impossibile allocare %lu bytes per leggere il file \"%s\""
+msgstr "Impossibile allocare %lu byte per leggere il file \"%s\""
 
 #: ../glib/gfileutils.c:572
 #, c-format
@@ -349,7 +350,7 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "Il carattere '%s' non è valido all'inizio di un nome di entità: il carattere "
-"'&' dà inizio ad un'entità; se questo simbolo \"e commerciale\" non vuole "
+"'&' dà inizio a un'entità; se questo simbolo \"e commerciale\" non vuole "
 "essere l'inizio di una entità, ricorrere a &amp;"
 
 #: ../glib/gmarkup.c:486
@@ -483,7 +484,7 @@ msgid ""
 "begin an element name"
 msgstr ""
 "'%s' non è un carattere valido dopo i caratteri '</'; '%s' non può dare "
-"inizio ad un nome di elemento"
+"inizio a un nome di elemento"
 
 #: ../glib/gmarkup.c:1577
 #, c-format
@@ -576,13 +577,16 @@ msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un commento o "
 "istruzione di processo"
 
+# GLIB-2-16
+# corrotto sembrava brutto, cfr revisione su TP
 #: ../glib/gregex.c:131
 msgid "corrupted object"
-msgstr "oggetto corrotto"
+msgstr "oggetto non attendibile"
 
+# GLIB-2-16
 #: ../glib/gregex.c:133
 msgid "internal error or corrupted object"
-msgstr "errore interno oppure oggetto corrotto"
+msgstr "errore interno oppure oggetto non attendibile"
 
 #: ../glib/gregex.c:135
 msgid "out of memory"
@@ -611,10 +615,11 @@ msgstr ""
 msgid "recursion limit reached"
 msgstr "raggiunto limite di ricorsione"
 
+# GLIB-2-16
 # oppure lasciare workspace non tradotto?
 #: ../glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
-msgstr "raggiunto limite dello spazio di lavoro per sottostringhe vuote"
+msgstr "raggiunto limite dello spazio di lavoro per sotto-stringhe vuote"
 
 #: ../glib/gregex.c:175
 msgid "invalid combination of newline flags"
@@ -993,52 +998,52 @@ msgstr ""
 "Creazione della pipe per comunicare con il processo figlio fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:332 ../glib/gspawn.c:1119
+#: ../glib/gspawn-win32.c:332 ../glib/gspawn-win32.c:340 ../glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lettura dalla pipe figlia fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn.c:1324
+#: ../glib/gspawn-win32.c:363 ../glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Cambio della directory in \"%s\" fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:364 ../glib/gspawn-win32.c:488
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn-win32.c:493
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Esecuzione del processo figlio fallita (%s)"
 
-#: ../glib/gspawn-win32.c:435
+#: ../glib/gspawn-win32.c:440
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Nome programma non valido: %s"
 
-#: ../glib/gspawn-win32.c:445 ../glib/gspawn-win32.c:718
-#: ../glib/gspawn-win32.c:1276
+#: ../glib/gspawn-win32.c:450 ../glib/gspawn-win32.c:723
+#: ../glib/gspawn-win32.c:1282
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Stringa non valida nel vettore di argomenti a %d: %s"
 
-#: ../glib/gspawn-win32.c:456 ../glib/gspawn-win32.c:732
-#: ../glib/gspawn-win32.c:1309
+#: ../glib/gspawn-win32.c:461 ../glib/gspawn-win32.c:738
+#: ../glib/gspawn-win32.c:1315
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Stringa non valida nell'ambiente: %s"
 
-#: ../glib/gspawn-win32.c:714 ../glib/gspawn-win32.c:1257
+#: ../glib/gspawn-win32.c:719 ../glib/gspawn-win32.c:1263
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Directory di lavoro non valida: %s"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:782
+#: ../glib/gspawn-win32.c:787
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Esecuzione del programma helper fallita (%s)"
 
-#: ../glib/gspawn-win32.c:996
+#: ../glib/gspawn-win32.c:1002
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -1332,7 +1337,7 @@ msgstr "Tipo %s"
 #: ../gio/gdatainputstream.c:309
 #, c-format
 msgid "Unexpected early end-of-stream"
-msgstr "End-of-stream inaspettatamente prematuro"
+msgstr "End-of-stream prematuro inatteso"
 
 # NdT: nome di applicazione (quando manca)
 #: ../gio/gdesktopappinfo.c:411 ../gio/gwin32appinfo.c:222
@@ -1386,9 +1391,9 @@ msgstr "l'unità non supporta il sondaggio di supporti"
 #: ../gio/gfile.c:822 ../gio/gfile.c:1010 ../gio/gfile.c:1143
 #: ../gio/gfile.c:1374 ../gio/gfile.c:1427 ../gio/gfile.c:1483
 #: ../gio/gfile.c:1564 ../gio/gfile.c:2602 ../gio/gfile.c:2647
-#: ../gio/gfile.c:2697 ../gio/gfile.c:2736 ../gio/gfile.c:3060
-#: ../gio/gfile.c:3462 ../gio/gfile.c:3545 ../gio/gfile.c:3628
-#: ../gio/gfile.c:3708
+#: ../gio/gfile.c:2697 ../gio/gfile.c:2737 ../gio/gfile.c:3061
+#: ../gio/gfile.c:3463 ../gio/gfile.c:3546 ../gio/gfile.c:3629
+#: ../gio/gfile.c:3709
 #, c-format
 msgid "Operation not supported"
 msgstr "Operazione non supportata"
@@ -1432,21 +1437,21 @@ msgstr "Impossibile copiare la directory ricorsivamente"
 msgid "Invalid symlink value given"
 msgstr "Fornito valore di collegamento simbolico non valido"
 
-#: ../gio/gfile.c:2779
+#: ../gio/gfile.c:2780
 #, c-format
 msgid "Trash not supported"
 msgstr "Cestino non supportato"
 
-#: ../gio/gfile.c:2826
+#: ../gio/gfile.c:2827
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "I nomi di file non possono contenere '%c'"
 
-#: ../gio/gfile.c:4759 ../gio/gvolume.c:357
+#: ../gio/gfile.c:4760 ../gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "il volume non implementa il montaggio"
 
-#: ../gio/gfile.c:4867
+#: ../gio/gfile.c:4868
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Non risulta registrata alcuna applicazione per gestire questo file"
