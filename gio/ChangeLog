@@ -1,3 +1,8 @@
+2008-03-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* ginputstream.c:
+	* goutputstream.c: Tiny documentation corrections.
+
 2008-03-03  Alexander Larsson  <alexl@redhat.com>
 
         * gunionvolumemonitor.c:

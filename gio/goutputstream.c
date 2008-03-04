@@ -483,7 +483,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
  *
  * On failure the first error that happened will be reported, but the close
  * operation will finish as much as possible. A stream that failed to
- * close will still return %G_IO_ERROR_CLOSED all operations. Still, it
+ * close will still return %G_IO_ERROR_CLOSED for all operations. Still, it
  * is important to check and report the error to the user, otherwise
  * there might be a loss of data as all data might not be written.
  * 
