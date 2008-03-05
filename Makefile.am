@@ -12,7 +12,8 @@ libgirepository_la_SOURCES =			\
 	gmetadata.c				\
 	ginfo.c					\
 	ginvoke.c
-libgirepository_la_CFLAGS = $(GIREPO_CFLAGS)
+libgirepository_la_CPPFLAGS = $(GIREPO_CFLAGS)
+libgirepository_la_LIBADD = $(GIREPO_LIBS)
 
 girepodir = $(includedir)/glib-2.0/gobject-introspection
 girepo_HEADERS = girepository.h
