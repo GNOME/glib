@@ -128,8 +128,8 @@ g_local_directory_monitor_constructor (GType                  type,
         g_unix_mount_free (mount);
 
       local_monitor->mount_monitor = g_unix_mount_monitor_new ();
-      g_signal_connect (local_monitor->mount_monitor, "mounts_changed",
-        G_CALLBACK (mounts_changed), local_monitor);
+      g_signal_connect_object (local_monitor->mount_monitor, "mounts_changed",
+			       G_CALLBACK (mounts_changed), local_monitor, 0);
 #endif
     }
 

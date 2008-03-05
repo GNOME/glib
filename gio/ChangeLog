@@ -1,3 +1,14 @@
+2008-03-05  Alexander Larsson  <alexl@redhat.com>
+
+        * gfilemonitor.c:
+	Make cancellation threadsafe (i.e.
+	guarantee its only done once, and always
+	done)
+	
+        * glocaldirectorymonitor.c:
+	Make sure we the monitor lives while the
+	mounts_changed callback is being called (#520484)
+
 2008-03-04  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gbufferedinputstream.c: Fix typo in parameter

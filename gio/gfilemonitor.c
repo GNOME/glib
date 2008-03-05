@@ -45,6 +45,8 @@
  * are monitoring, connect to the #GFileMonitor::changed signal.
  **/
 
+G_LOCK_DEFINE_STATIC(cancelled);
+
 enum {
   CHANGED,
   LAST_SIGNAL
@@ -117,7 +119,9 @@ g_file_monitor_get_property (GObject    *object,
       break;
 
     case PROP_CANCELLED:
+      G_LOCK (cancelled);
       g_value_set_boolean (value, priv->cancelled);
+      G_UNLOCK (cancelled);
       break;
 
     default:
@@ -165,8 +169,7 @@ g_file_monitor_dispose (GObject *object)
   monitor = G_FILE_MONITOR (object);
 
   /* Make sure we cancel on last unref */
-  if (!monitor->priv->cancelled)
-    g_file_monitor_cancel (monitor);
+  g_file_monitor_cancel (monitor);
   
   if (G_OBJECT_CLASS (g_file_monitor_parent_class)->dispose)
     (*G_OBJECT_CLASS (g_file_monitor_parent_class)->dispose) (object);
@@ -247,8 +250,13 @@ gboolean
 g_file_monitor_is_cancelled (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
+  gboolean res;
 
-  return monitor->priv->cancelled;
+  G_LOCK (cancelled);
+  res = monitor->priv->cancelled;
+  G_UNLOCK (cancelled);
+  
+  return res;
 }
 
 /**
@@ -266,10 +274,16 @@ g_file_monitor_cancel (GFileMonitor* monitor)
   
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
   
+  G_LOCK (cancelled);
   if (monitor->priv->cancelled)
-    return TRUE;
+    {
+      G_UNLOCK (cancelled);
+      return TRUE;
+    }
   
   monitor->priv->cancelled = TRUE;
+  G_UNLOCK (cancelled);
+  
   g_object_notify (G_OBJECT (monitor), "cancelled");
 
   klass = G_FILE_MONITOR_GET_CLASS (monitor);
