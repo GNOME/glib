@@ -1598,5 +1598,4 @@ glib_micro_version
 glib_minor_version
 glib_on_error_halt
 g_mem_gc_friendly
-g_uri_get_scheme
 #endif

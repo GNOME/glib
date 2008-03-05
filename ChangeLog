@@ -1,3 +1,7 @@
+2008-03-05  Tor Lillqvist  <tml@novell.com>
+
+	* glib/glib.symbols: Remove g_uri_get_scheme.
+
 2008-03-04  Alexander Larsson  <alexl@redhat.com>
 
         * glib/gurifuncs.c:
