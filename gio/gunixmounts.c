@@ -1865,7 +1865,6 @@ g_unix_mount_guess_can_eject (GUnixMountEntry *mount_entry)
 gboolean
 g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
 {
-  GUnixMountType guessed_type;
   const char *mount_path;
 
   /* Never display internal mountpoints */

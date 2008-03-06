@@ -1,3 +1,15 @@
+2008-03-06  Alexander Larsson  <alexl@redhat.com>
+
+        * gdesktopappinfo.c:
+        * gfilemonitor.c:
+        * gthemedicon.c:
+        * gunionvolumemonitor.c:
+        * gunixmounts.c:
+        * tests/g-file.c:
+        * tests/live-g-file.c:
+        * xdgmime/xdgmimecache.c:
+	Fix sparse warnings (#519489)
+
 2008-03-05  Alexander Larsson  <alexl@redhat.com>
 
         * gfilemonitor.c:

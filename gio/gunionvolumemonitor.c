@@ -456,7 +456,7 @@ get_default_native_class (gpointer data)
  * instance on the first call.
  */
 static GNativeVolumeMonitorClass *
-get_native_class ()
+get_native_class (void)
 {
   static GOnce once_init = G_ONCE_INIT;
   GTypeClass *type_class;
@@ -464,7 +464,7 @@ get_native_class ()
   type_class = NULL;
   g_once (&once_init, (GThreadFunc)get_default_native_class, &type_class);
 
-  if (type_class == NULL && once_init.retval != G_TYPE_INVALID)
+  if (type_class == NULL && once_init.retval != GUINT_TO_POINTER(G_TYPE_INVALID))
     type_class = g_type_class_ref ((GType)once_init.retval);
   
   return (GNativeVolumeMonitorClass *)type_class;

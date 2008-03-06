@@ -226,7 +226,6 @@ void
 g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
 {
   guint num_names;
-  char **new_names;
 
   g_return_if_fail (G_IS_THEMED_ICON (icon));
   g_return_if_fail (iconname != NULL);

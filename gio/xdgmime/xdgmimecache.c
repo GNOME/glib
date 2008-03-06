@@ -910,7 +910,7 @@ _xdg_mime_cache_list_mime_parents (const char *mime)
 	    }
 	}
     }
-  all_parents[p++] = 0;
+  all_parents[p++] = NULL;
   
   result = (char **) malloc (p * sizeof (char *));
   memcpy (result, all_parents, p * sizeof (char *));

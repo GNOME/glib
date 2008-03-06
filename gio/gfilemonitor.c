@@ -365,7 +365,7 @@ emit_in_idle (GFileMonitor      *monitor,
   source = g_idle_source_new ();
   g_source_set_priority (source, 0);
 
-  g_source_set_callback (source, emit_cb, change, file_change_free);
+  g_source_set_callback (source, emit_cb, change, (GDestroyNotify)file_change_free);
   g_source_attach (source, NULL);
   g_source_unref (source);
 }

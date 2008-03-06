@@ -436,7 +436,7 @@ static void
 roundtrip_parent_child (const gboolean use_uri, const gboolean under_root_descending,
 			const char *path, const char *dir_holder)
 {
-  GFile *files[6] = {0};
+  GFile *files[6] = {NULL};
   int i;
   
   if (use_uri)

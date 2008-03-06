@@ -26,9 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define PATTERN_FILE_SIZE	0x10000
-
 #define TEST_HANDLE_SPECIAL	TRUE
 
 enum StructureExtraFlags
@@ -71,7 +69,7 @@ struct StructureItem
 #define TEST_TARGET_FILE		"target-file"
 
 
-const struct StructureItem sample_struct[] = {
+static const struct StructureItem sample_struct[] = {
 /*	 filename				link	file_type				create_flags		mode | handle_special | extra_flags              */
     {"dir1",				NULL,	G_FILE_TYPE_DIRECTORY,	G_FILE_CREATE_NONE, 0, 0, TEST_DELETE_NORMAL | TEST_DELETE_NON_EMPTY | TEST_REPLACE | TEST_OPEN},
     {"dir1/subdir",			NULL,	G_FILE_TYPE_DIRECTORY,	G_FILE_CREATE_NONE, 0, 0, TEST_COPY	| TEST_COPY_ERROR_RECURSE | TEST_APPEND},
@@ -100,22 +98,13 @@ const struct StructureItem sample_struct[] = {
 	{"lost_symlink",		"nowhere",	G_FILE_TYPE_SYMBOLIC_LINK, G_FILE_CREATE_NONE, 0, 0, TEST_COPY | TEST_DELETE_NORMAL | TEST_OPEN | TEST_INVALID_SYMLINK},
   };
 
-
-
-
 static gboolean write_test;
 static gboolean verbose;
 static gboolean posix_compat;
 
 #define log(msg...) if (verbose)  g_print (msg)
 
-
-
-
-
-
-
-GFile *
+static GFile *
 create_empty_file (GFile * parent, const char *filename,
 		   GFileCreateFlags create_flags)
 {
@@ -123,7 +112,6 @@ create_empty_file (GFile * parent, const char *filename,
   gboolean res;
   GError *error;
   GFileOutputStream *outs;
-
 
   child = g_file_get_child (parent, filename);
   g_assert (child != NULL);
@@ -138,7 +126,7 @@ create_empty_file (GFile * parent, const char *filename,
   return child;
 }
 
-GFile *
+static GFile *
 create_empty_dir (GFile * parent, const char *filename)
 {
   GFile *child;
@@ -154,7 +142,7 @@ create_empty_dir (GFile * parent, const char *filename)
   return child;
 }
 
-GFile *
+static GFile *
 create_symlink (GFile * parent, const char *filename, const char *points_to)
 {
   GFile *child;
@@ -182,7 +170,6 @@ test_create_structure (gconstpointer test_data)
   int i;
   struct StructureItem item;
 
-
   g_assert (test_data != NULL);
   log ("\n  Going to create testing structure in '%s'...\n",
        (char *) test_data);
@@ -193,7 +180,6 @@ test_create_structure (gconstpointer test_data)
   /*  create root directory  */
   res = g_file_make_directory (root, NULL, NULL);
   /*  don't care about errors here  */
-
 
   /*  create any other items  */
   for (i = 0; i < G_N_ELEMENTS (sample_struct); i++)
@@ -270,11 +256,7 @@ test_create_structure (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
-
-GFile *
+static GFile *
 file_exists (GFile * parent, const char *filename, gboolean * result)
 {
   GFile *child;
@@ -292,7 +274,7 @@ file_exists (GFile * parent, const char *filename, gboolean * result)
   return child;
 }
 
-void
+static void
 test_attributes (struct StructureItem item, GFileInfo * info)
 {
   GFileType ftype;
@@ -381,7 +363,6 @@ test_attributes (struct StructureItem item, GFileInfo * info)
     }
 }
 
-
 static void
 test_initial_structure (gconstpointer test_data)
 {
@@ -405,7 +386,6 @@ test_initial_structure (gconstpointer test_data)
   g_assert (root != NULL);
   res = g_file_query_exists (root, NULL);
   g_assert_cmpint (res, ==, TRUE);
-
 
   /*  test the structure  */
   for (i = 0; i < G_N_ELEMENTS (sample_struct); i++)
@@ -432,7 +412,6 @@ test_initial_structure (gconstpointer test_data)
 
       g_object_unref (child);
     }
-
 
   /*  read and test the pattern file  */
   log ("    Testing pattern file...\n");
@@ -484,12 +463,7 @@ test_initial_structure (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
-
-
-void
+static void
 traverse_recurse_dirs (GFile * parent, GFile * root)
 {
   gboolean res;
@@ -500,7 +474,6 @@ traverse_recurse_dirs (GFile * parent, GFile * root)
   char *relative_path;
   int i;
   gboolean found;
-
 
   g_assert (root != NULL);
 
@@ -546,7 +519,6 @@ traverse_recurse_dirs (GFile * parent, GFile * root)
       info = g_file_enumerator_next_file (enumerator, NULL, &error);
     }
   g_assert (error == NULL);
-
 
   error = NULL;
   res = g_file_enumerator_close (enumerator, NULL, &error);
@@ -656,12 +628,7 @@ test_enumerate (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
-
-
-void
+static void
 do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
 	      enum StructureExtraFlags extra_flags)
 {
@@ -694,7 +661,6 @@ do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
   if (error)
     log ("       res = %d, error code %d = %s\n", res, error->code,
 	 error->message);
-
 
   /*  copying file/directory to itself (".")  */
   if (((item.extra_flags & TEST_NOT_EXISTS) != TEST_NOT_EXISTS) &&
@@ -758,7 +724,6 @@ test_copy_move (gconstpointer test_data)
   int i;
   struct StructureItem item;
 
-
   log ("\n");
 
   g_assert (test_data != NULL);
@@ -814,10 +779,6 @@ test_copy_move (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
-
 static void
 test_create (gconstpointer test_data)
 {
@@ -828,7 +789,6 @@ test_create (gconstpointer test_data)
   struct StructureItem item;
   GFileOutputStream *os;
 
-
   g_assert (test_data != NULL);
   log ("\n");
 
@@ -836,7 +796,6 @@ test_create (gconstpointer test_data)
   g_assert (root != NULL);
   res = g_file_query_exists (root, NULL);
   g_assert_cmpint (res, ==, TRUE);
-
 
   for (i = 0; i < G_N_ELEMENTS (sample_struct); i++)
     {
@@ -865,7 +824,6 @@ test_create (gconstpointer test_data)
 
 	  if (error)
 	    log ("       error code %d = %s\n", error->code, error->message);
-
 
 	  if (((item.extra_flags & TEST_NOT_EXISTS) == 0) &&
 	      ((item.extra_flags & TEST_CREATE) == TEST_CREATE))
@@ -909,9 +867,6 @@ test_create (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
 static void
 test_open (gconstpointer test_data)
 {
@@ -922,7 +877,6 @@ test_open (gconstpointer test_data)
   struct StructureItem item;
   GFileInputStream *input_stream;
 
-
   g_assert (test_data != NULL);
   log ("\n");
 
@@ -930,7 +884,6 @@ test_open (gconstpointer test_data)
   g_assert (root != NULL);
   res = g_file_query_exists (root, NULL);
   g_assert_cmpint (res, ==, TRUE);
-
 
   for (i = 0; i < G_N_ELEMENTS (sample_struct); i++)
     {
@@ -984,10 +937,6 @@ test_open (gconstpointer test_data)
   g_object_unref (root);
 }
 
-
-
-
-
 static void
 test_delete (gconstpointer test_data)
 {
@@ -997,7 +946,6 @@ test_delete (gconstpointer test_data)
   GError *error;
   int i;
   struct StructureItem item;
-
 
   g_assert (test_data != NULL);
   log ("\n");
@@ -1055,18 +1003,11 @@ test_delete (gconstpointer test_data)
 	      g_error_free (error);
 	    }
 
-
 	  g_object_unref (child);
 	}
     }
   g_object_unref (root);
 }
-
-
-
-
-
-
 
 int
 main (int argc, char *argv[])
@@ -1114,8 +1055,6 @@ main (int argc, char *argv[])
       return g_test_run ();
     }
   target_path = strdup (argv[1]);
-
-
 
   /*  Write test - create new testing structure  */
   if (write_test || create_struct)
