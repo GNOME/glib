@@ -423,7 +423,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC:
  * 
- * A key in the "time" namespace for getting the milliseconds of the time
+ * A key in the "time" namespace for getting the miliseconds of the time
  * the file was last modified. This should be used in conjunction with 
  * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
@@ -443,7 +443,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_TIME_ACCESS_USEC:
  * 
- * A key in the "time" namespace for getting the milliseconds of the time
+ * A key in the "time" namespace for getting the microseconds of the time
  * the file was last accessed. This should be used in conjunction with
  * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
@@ -464,7 +464,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED_USEC:
  * 
- * A key in the "time" namespace for getting the milliseconds of the time
+ * A key in the "time" namespace for getting the microseconds of the time
  * the file was last changed. This should be used in conjunction with
  * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
@@ -485,7 +485,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_TIME_CREATED_USEC:
  * 
- * A key in the "time" namespace for getting the milliseconds of the time
+ * A key in the "time" namespace for getting the microseconds of the time
  * the file was created. This should be used in conjunction with
  * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
