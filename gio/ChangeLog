@@ -1,5 +1,10 @@
 2008-03-06  Alexander Larsson  <alexl@redhat.com>
 
+	* gfile.c (g_file_query_exists):
+	Add g_return_val_if_fail check (#520700)
+
+2008-03-06  Alexander Larsson  <alexl@redhat.com>
+
         * gdesktopappinfo.c:
         * gfilemonitor.c:
         * gthemedicon.c:
