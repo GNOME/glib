@@ -1,3 +1,8 @@
+2008-03-07  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Look for struct statfs.f_fstypename
+
 2008-03-07  Tor Lillqvist  <tml@novell.com>
 
 	* README.win32: Updates.

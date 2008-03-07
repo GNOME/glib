@@ -839,7 +839,7 @@ AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h sys/sysctl.h f
 
 # check for structure fields
 AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
-AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks])
+AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename])
 
 # Checks for libcharset
 jm_LANGINFO_CODESET

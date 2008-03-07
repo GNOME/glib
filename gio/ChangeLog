@@ -1,3 +1,10 @@
+2008-03-07  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+        (g_local_file_query_filesystem_info):
+	Use struct statfs.f_fstypename if availible (e.g. on OpenBSD)
+	Patch from Jasper Lievisse Adriaanse
+
 2008-03-06  Tor Lillqvist  <tml@novell.com>
 
 	* gfileinfo.h: Correct milliseconds to microseconds in the doc
