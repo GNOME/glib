@@ -14,9 +14,12 @@ Windows meaning they use the Win32 API and Microsoft C runtime library
 only. No POSIX (Unix) emulation layer like Cygwin in involved.
 
 To build GLib on Win32, you can use either gcc ("mingw") or the
-Microsoft compiler and tools. Microsoft's MSVC6 and later have been
-used successfully. People have also successfully cross-compiled GLib
-for Win32 from Linux using the cross-mingw packages.
+Microsoft compiler and tools. For the latter, MSVC6 and later have
+been used successfully. Also the Digital Mars C/C++ compiler have been
+used. 
+
+People have also successfully cross-compiled GLib for Win32 from Linux
+using the cross-mingw packages.
 
 Note that to just *use* GLib on Windows, there is no need to build it
 yourself.
@@ -30,18 +33,18 @@ compilation related to Win32 in GLib-using code:
 
 - G_OS_WIN32 is defined when compiling for native Win32, without
   any POSIX emulation, other than to the extent provided by the
-  bundled Microsoft C library (msvcrt.dll).
+  bundled Microsoft C library (msvcr*.dll).
 
 - G_WITH_CYGWIN is defined if compiling for the Cygwin
   environment. Note that G_OS_WIN32 is *not* defined in that case, as
-  Cygwin is supposed to behave like Unix. G_OS_UNIX *is* defined when
-  compiling for Cygwin.
+  Cygwin is supposed to behave like Unix. G_OS_UNIX *is* defined by a GLib
+  for Cygwin.
 
 - G_PLATFORM_WIN32 is defined when either G_OS_WIN32 or G_WITH_CYGWIN
   is defined.
 
-These macros are defined in glibconfig.h, and are thus (indirectly)
-available in all source files that include <glib.h> or GTK+ headers.
+These macros are defined in glibconfig.h, and are thus available in
+all source files that include <glib.h>.
 
 Additionally, there are the compiler-specific macros:
 - __GNUC__ is defined when using gcc
@@ -62,20 +65,20 @@ system, but of the MSVC product. msvcrt.dll is part of Windows.
 Building software that use GLib or GTK+
 =======================================
 
-Even building software that just *uses* GLib or GTK+ also require to
-have the right compiler set up the right way, so if you intend to use
-gcc, follow the relevant instructions below in that case, too.
+Building software that just *uses* GLib or GTK+ also require to have
+the right compiler set up the right way. If you intend to use gcc,
+follow the relevant instructions below in that case, too.
 
 Tor uses gcc with the -mms-bitfields flag which means that in order to
 use the prebuilt DLLs (especially of GTK+), if you compile your code
 with gcc, you *must* also use that flag. This flag means that the
 struct layout rules are identical to those used by MSVC. This is
 essential if the same DLLs are to be usable both from gcc- and
-MSVC(6)-compiled code. Such compatibility is desirable.
+MSVC-compiled code. Such compatibility is desirable.
 
 When using the prebuilt GLib DLLs that use msvcrt.dll from code that
 uses other C runtimes like for example msvcr70.dll, one should note
-that one cannot use such GLib API that takes or returns file
+that one cannot use such GLib API that take or returns file
 descriptors. On Windows, a file descriptor (the small integer as
 returned by open() and handled by related functions, and included in
 the FILE struct) is an index into a table local to the C runtime
@@ -87,26 +90,25 @@ Building GLib
 
 Again, first decide whether you really want to do this.
 
-Before building GLib you must also have the libiconv library and GNU
-gettext. Get prebuilt binaries of libiconv (1.9.1 or newer), and
-gettext-runtime (0.13.1 or newer) from www.gimp.org/win32/downloads.html.
+Before building GLib you must also have a GNU gettext-runtime
+developer package. Get prebuilt binaries of gettext-runtime from
+http://www.gtk.org/download-windows.html .
 
 Autoconfiscated build (with gcc)
 ================================
 
-Tor uses gcc 3.4.5 from www.mingw.org, and the rest of the mingw
-utilities, including MSYS. Somewhat earlier or later versions of gcc
-presumably also work fine. Using Cygwin's gcc with the -mno-cygwin
-switch is not recommended. In theory it should work to use the
--no-cygwin flag, but Tor hasn't tested that lately, and it can easily
-lead to confusion where one mixes up headers for Cygwin from
-/usr/include with the headers one really should use. Ditto for
-libraries.
+Tor uses gcc 3.4.5 and the rest of the mingw utilities, including MSYS
+from www.mingw.org. Somewhat earlier or later versions of gcc
+presumably also work fine.
 
-If you want to use mingw's gcc, install gcc, Win32 headers and
-binutils from www.mingw.org. Set up your PATH so that the mingw gcc is
-the one that gets used, and not Cygwin's gcc. Even if you run the
-mingw gcc, you still want to have Cygwin to run make in.
+Using Cygwin's gcc with the -mno-cygwin switch is not recommended. In
+theory it should work, but Tor hasn't tested that lately. It can
+easily lead to confusing situations where one mixes headers for Cygwin
+from /usr/include with the headers for native software one really
+should use. Ditto for libraries.
+
+If you want to use mingw's gcc, install gcc, win32api, binutils and
+MSYS from www.mingw.org.
 
 Tor invokes configure using:
 
@@ -114,25 +116,25 @@ CC='gcc -mtune=pentium3 -mthreads' CPPFLAGS='-I/opt/gnu/include' \
 	LDFLAGS='-L/opt/gnu/lib -Wl,--enable-auto-image-base' CFLAGS=-O2 \
 	./configure --disable-gtk-doc --prefix=$TARGET
 
-(on a single line). The /opt/gnu mentioned contains the header files
-for GNU and (import) libraries for GNU libintl. The build scripts used
-to produce the prebuilt binaries are included in the "dev" packages.
+The /opt/gnu mentioned contains the header files for GNU and (import)
+libraries for GNU libintl. The build scripts used to produce the
+prebuilt binaries are included in the "dev" packages.
 
 Please note that the ./configure mechanism should not blindly be used
 to build a GLib to be distributed to other developers because it
-produces a compiler-dependent glibconfig.h. (Also config.h, but that
-shouldn't matter, as it isn't seen by GLib-using applications). For
-instance, the typedef for gint64 is long long with gcc, but __int64
-with MSVC.
+produces a compiler-dependent glibconfig.h. For instance, the typedef
+for gint64 is long long with gcc, but __int64 with MSVC.
 
-Except for this and a few other minor issues, there really shouldn't
-be any reason to distribute separate GLib headers and DLLs for gcc and
-MSVC6 users, as the compilers generate code that uses the same C
-runtime library. The DLL generated by either compiler is binary
-compatible with the other one. Thus one either has to manually edit
-glibconfig.h afterwards, or use the supplied glibconfig.h.win32 which
-has been produced by running configure twice, once using gcc and once
-using MSVC, and merging the resulting files with diff -D.
+Except for this and a few other minor issues, there shouldn't be any
+reason to distribute separate GLib headers and DLLs for gcc and MSVC6
+users, as the compilers generate code that uses the same C runtime
+library.
+
+The DLL generated by either compiler is binary compatible with the
+other one. Thus one either has to manually edit glibconfig.h
+afterwards, or use the supplied glibconfig.h.win32 which has been
+produced by running configure twice, once using gcc and once using
+MSVC, and merging the resulting files with diff -D.
 
 For MSVC7 and later (Visual C++ .NET 2003, Visual C++ 2005, Visual C++
 2008 etc) it is preferred to use specific builds of GLib DLLs that use
@@ -142,12 +144,12 @@ named differently than the ones that use msvcrt.dll.
 For GLib, the DLL is called libglib-2.0-0.dll, and the import
 libraries libglib-2.0.dll.a and glib-2.0.lib. Note that the "2.0" is
 part of the "basename" of the library, it is not something that
-libtool has added. The -0 suffix is the value of "LT_CURRENT -
-LT_AGE". The 0 is *not* simply the micro version number of GLib,
-although, for GLib 2.x.0, it happens to be the same. The LT_CURRENT -
-LT_AGE value will on purpose be kept as zero as long as binary
-compatibility is maintained. For the gory details, see configure.in
-and libtool documentation.
+libtool has added. The -0 suffix is added by libtool and is the value
+of "LT_CURRENT - LT_AGE". The 0 is *not* part of the version number of
+GLib, although, for GLib 2.x.0, it happens to be the same. The
+LT_CURRENT - LT_AGE value will on purpose be kept as zero as long as
+binary compatibility is maintained. For the gory details, see
+configure.in and libtool documentation.
 
 Cross-compiling
 ===============
@@ -159,7 +161,7 @@ reference manual) for more information.
 Building with MSVC
 ==================
 
-If you are building from a CVS snapshot, you will not have any
+If you are building from a SVN snapshot, you will not have any
 makefile.msc files. You should copy the corresponding makefile.msc.in
 file to that name, and replace any @...@ strings with the correct
 value.
@@ -274,7 +276,7 @@ dependencies order.
   |
   +- glib
   |   |
-  |   +- build          : [this module lives in the cvs root dir]
+  |   +- build          : [this module lives in the SVN root dir]
   |   |   +- win32
   |   |       .\module.defs : defines (relative) locations of the headers
   |   |                       and libs and version numbers to be include 
@@ -323,7 +325,7 @@ dependencies order.
   |                     the user needs to know the build order
 
   |
-  +- dia                : additionally depends on libart_lgpl (in cvs)
+  +- dia                : additionally depends on libart_lgpl (in SVN)
       |                 and libxml2 ( see http://www.xmlsoft.org/ )
       +- lib
       +- app
