@@ -1,3 +1,7 @@
+2008-03-07  Tor Lillqvist  <tml@novell.com>
+
+	* README.win32: Updates.
+
 2008-03-05  Tor Lillqvist  <tml@novell.com>
 
 	* glib/glib.symbols: Remove g_uri_get_scheme.
