@@ -89,6 +89,10 @@
 #include <io.h>
 #include <direct.h>
 
+#ifndef FILE_READ_ONLY_VOLUME
+#define FILE_READ_ONLY_VOLUME           0x00080000
+#endif
+
 #ifndef S_ISDIR
 #define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
 #endif
