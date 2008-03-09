@@ -1494,7 +1494,7 @@ msgstr " (ugyldig koding)"
 #: ../gio/glocalfileinfo.c:1614
 #, c-format
 msgid "Error stating file descriptor: %s"
-msgstr "Feil ved henting av informasjon om fildeskriptor «%s»: %s"
+msgstr "Feil ved henting av informasjon om fildeskriptor: %s"
 
 #: ../gio/glocalfileinfo.c:1659
 #, c-format
