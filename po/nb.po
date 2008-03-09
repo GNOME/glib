@@ -1,9 +1,8 @@
 # translation of nb.po to Norwegian Bokmal
 # Norwegian (bokmål) translation of glib.
 # Copyright (C) 2001-2003, 2005 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@gnome.org>, 2001-2007.
+# Kjartan Maraas <kmaraas@gnome.org>, 2001-2008.
 # Terance Edward Sola <terance@lyse.net>, 2005.
-# Kjartan Maraas <kmaraas@gnome.org>, 2007.
 #
 #
 msgid ""
