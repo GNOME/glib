@@ -337,7 +337,7 @@ g_slist_remove (GSList        *list,
 
 /**
  * g_slist_remove_all:
- * list: a #GSList
+ * @list: a #GSList
  * @data: data to remove
  *
  * Removes all list nodes with data equal to @data. 
