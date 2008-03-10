@@ -161,29 +161,35 @@ g_info_from_entry (GMetadata *metadata,
 {
   GIBaseInfo *result;
   DirEntry *entry = g_metadata_get_dir_entry (metadata, index);
-  
+
   if (entry->local)
     result = g_info_new (entry->blob_type, NULL, metadata, entry->offset);
-  else 
+  else
     {
-      const gchar *namespace = g_metadata_get_string (metadata, entry->offset);
-      const gchar *name = g_metadata_get_string (metadata, entry->name);
-      
+      const gchar *namespace = NULL;
+      const gchar *name = NULL;
       GIRepository *repository = g_irepository_get_default ();
-      
+
+      namespace = g_metadata_get_string (metadata, entry->offset);
+      name = g_metadata_get_string (metadata, entry->name);
+
       result = g_irepository_find_by_name (repository, namespace, name);
       if (result == NULL)
 	{
 	  GIUnresolvedInfo *unresolved;
-
 	  unresolved = g_new0 (GIUnresolvedInfo, 1);
-	  
 	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
 	  unresolved->ref_count = 1;
 	  unresolved->container = NULL;
 	  unresolved->name = name;
-	  unresolved->namespace = namespace;
-
+	  if (entry->offset)
+	    {
+	      unresolved->namespace = namespace;
+	    }
+	  else
+	    {
+	      unresolved->namespace = NULL;
+	    }
 	  result = (GIBaseInfo*)unresolved;
 	}
     }
