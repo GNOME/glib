@@ -1,5 +1,9 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.16.0 ===
+
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/linked_lists_double.sgml:
 	* glib/tmpl/linked_lists_single.sgml: Remove docs that have
 	been inlined.

@@ -1,5 +1,9 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.16.0 ===
+
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* uk.po: Mark a string as fuzzy to fix the build
 
 2008-03-10  Runa Bhattacharjee <runab@fedoraproject.org>

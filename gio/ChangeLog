@@ -1,3 +1,7 @@
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.16.0 ===
+
 2008-03-10  Matthias Clasen <mclasen@redhat.com>
 
 	* gio.symbols: Remove g_file_contains_file here, too.

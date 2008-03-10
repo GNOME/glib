@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 13:59-0500\n"
+"POT-Creation-Date: 2008-03-10 13:55-0400\n"
 "PO-Revision-Date: 2008-02-21 22:24-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -570,7 +570,7 @@ msgstr "limite de backtracking alcançado"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "o padrão contém itens sem suporte para correspondência parcial"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1869
+#: glib/gregex.c:154 gio/glocalfile.c:1883
 msgid "internal error"
 msgstr "erro interno"
 
@@ -889,47 +889,47 @@ msgstr "Falha ao ler dados de processo filho"
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:363 glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para diretório \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:364 glib/gspawn-win32.c:488
+#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Falha ao executar processo filho (%s)"
 
-#: glib/gspawn-win32.c:435
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Nome de programa inválido: %s"
 
-#: glib/gspawn-win32.c:445 glib/gspawn-win32.c:718 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "String inválida no vetor de argumentos em %d: %s"
 
-#: glib/gspawn-win32.c:456 glib/gspawn-win32.c:732 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "String inválida no ambiente: %s"
 
-#: glib/gspawn-win32.c:714 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Diretório de trabalho inválido: %s"
 
-#: glib/gspawn-win32.c:782
+#: glib/gspawn-win32.c:787
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Falha ao executar programa auxiliar (%s)"
 
-#: glib/gspawn-win32.c:996
+#: glib/gspawn-win32.c:1002
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -1184,7 +1184,7 @@ msgstr "Valor muito alto passado para %s"
 msgid "Stream is already closed"
 msgstr "O fluxo já está fechado"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1862 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1876 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "A operação foi cancelada"
@@ -1251,10 +1251,10 @@ msgstr "drive não implementa ejetar"
 msgid "drive doesn't implement polling for media"
 msgstr "drive não implementa verificação por mídia"
 
-#: gio/gfile.c:822 gio/gfile.c:1010 gio/gfile.c:1143 gio/gfile.c:1374
-#: gio/gfile.c:1427 gio/gfile.c:1483 gio/gfile.c:1564 gio/gfile.c:2602
-#: gio/gfile.c:2647 gio/gfile.c:2697 gio/gfile.c:2736 gio/gfile.c:3060
-#: gio/gfile.c:3462 gio/gfile.c:3545 gio/gfile.c:3628 gio/gfile.c:3708
+#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2594
+#: gio/gfile.c:2639 gio/gfile.c:2689 gio/gfile.c:2729 gio/gfile.c:3053
+#: gio/gfile.c:3455 gio/gfile.c:3538 gio/gfile.c:3621 gio/gfile.c:3701
 #, c-format
 msgid "Operation not supported"
 msgstr "Operação sem suporte"
@@ -1267,52 +1267,52 @@ msgstr "Operação sem suporte"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1262 gio/glocalfile.c:1038 gio/glocalfile.c:1049
-#: gio/glocalfile.c:1062
+#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
+#: gio/glocalfile.c:1070
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Ponto de montagem contido não existe"
 
-#: gio/gfile.c:1903
+#: gio/gfile.c:1895
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Não foi possível copiar sobre diretório"
 
-#: gio/gfile.c:1963
+#: gio/gfile.c:1955
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Não foi possível copiar diretório sobre diretório"
 
-#: gio/gfile.c:1971 gio/glocalfile.c:2016
+#: gio/gfile.c:1963 gio/glocalfile.c:2030
 #, c-format
 msgid "Target file exists"
 msgstr "Arquivo alvo existe"
 
-#: gio/gfile.c:1989
+#: gio/gfile.c:1981
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Não foi possível copiar o diretório recursivamente"
 
-#: gio/gfile.c:2687
+#: gio/gfile.c:2679
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Valor fornecido de link simbólico inválido"
 
-#: gio/gfile.c:2779
+#: gio/gfile.c:2772
 #, c-format
 msgid "Trash not supported"
 msgstr "Não há suporte para lixeira"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2819
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nomes de arquivo não podem conter \"%c\""
 
-#: gio/gfile.c:4759 gio/gvolume.c:357
+#: gio/gfile.c:4752 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "volume não implementa montagem"
 
-#: gio/gfile.c:4867
+#: gio/gfile.c:4860
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Nenhuma aplicação está registrada como manipuladora deste arquivo"
@@ -1374,111 +1374,111 @@ msgstr "O fluxo tem operação pendente"
 msgid "Unable to find default local directory monitor type"
 msgstr "Não foi possível localizar o tipo de diretório monitor local padrão"
 
-#: gio/glocalfile.c:595
+#: gio/glocalfile.c:599
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nome de arquivo inválido: %s"
 
-#: gio/glocalfile.c:958
+#: gio/glocalfile.c:962
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Erro ao obter informações do sistema de arquivos: %s"
 
-#: gio/glocalfile.c:1082
+#: gio/glocalfile.c:1090
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Não foi possível renomear o diretório root"
 
-#: gio/glocalfile.c:1100
+#: gio/glocalfile.c:1108
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Não foi possível renomear o arquivo, o nome do arquivo já existe"
 
-#: gio/glocalfile.c:1113 gio/glocalfile.c:1891 gio/glocalfile.c:1920
-#: gio/glocalfile.c:2069 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1121 gio/glocalfile.c:1905 gio/glocalfile.c:1934
+#: gio/glocalfile.c:2083 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "Nome de arquivo inválido"
 
-#: gio/glocalfile.c:1117
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Erro ao renomear arquivo: %s"
 
-#: gio/glocalfile.c:1236
+#: gio/glocalfile.c:1244
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Erro ao abrir arquivo: %s"
 
-#: gio/glocalfile.c:1246
+#: gio/glocalfile.c:1254
 #, c-format
 msgid "Can't open directory"
 msgstr "Não foi possível abrir diretório"
 
-#: gio/glocalfile.c:1300 gio/glocalfile.c:1895
+#: gio/glocalfile.c:1314 gio/glocalfile.c:1909
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Erro ao remover arquivo: %s"
 
-#: gio/glocalfile.c:1590
+#: gio/glocalfile.c:1604
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Erro ao mover arquivo para a lixeira: %s"
 
-#: gio/glocalfile.c:1613
+#: gio/glocalfile.c:1627
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Não foi possível criar o diretório da lixeira %s: %s"
 
-#: gio/glocalfile.c:1634
+#: gio/glocalfile.c:1648
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Não foi possível localizar diretório de nível superior para a lixeira"
 
-#: gio/glocalfile.c:1713 gio/glocalfile.c:1733
+#: gio/glocalfile.c:1727 gio/glocalfile.c:1747
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Não foi possível localizar ou criar o diretório da lixeira"
 
-#: gio/glocalfile.c:1767
+#: gio/glocalfile.c:1781
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Não foi possível criar o arquivo de informações da lixeira: %s"
 
-#: gio/glocalfile.c:1792 gio/glocalfile.c:1861 gio/glocalfile.c:1868
+#: gio/glocalfile.c:1806 gio/glocalfile.c:1875 gio/glocalfile.c:1882
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Não foi possível mover arquivo para a lixeira: %s"
 
-#: gio/glocalfile.c:1924
+#: gio/glocalfile.c:1938
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Erro ao criar link simbólico: %s"
 
-#: gio/glocalfile.c:1984 gio/glocalfile.c:2073
+#: gio/glocalfile.c:1998 gio/glocalfile.c:2087
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Erro ao mover arquivo: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2021
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Não foi possível mover diretório sobre diretório"
 
-#: gio/glocalfile.c:2029 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2043 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Falha ao criar arquivo de backup"
 
-#: gio/glocalfile.c:2048
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Erro ao remover arquivo alvo: %s"
 
-#: gio/glocalfile.c:2062
+#: gio/glocalfile.c:2076
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Não há suporte a mover entre montagens"
@@ -1691,6 +1691,35 @@ msgstr "Fluxo de saída não implementa escrita"
 #, c-format
 msgid "Source stream is already closed"
 msgstr "A fonte do fluxo já está fechada"
+
+#: gio/gthemedicon.c:192
+#, fuzzy
+msgid "name"
+msgstr "Não nomeado"
+
+#: gio/gthemedicon.c:193
+#, fuzzy
+msgid "The name of the icon"
+msgstr "O nome de servidor do URI \"%s\" é inválido"
+
+#: gio/gthemedicon.c:204
+#, fuzzy
+msgid "names"
+msgstr "Não nomeado"
+
+#: gio/gthemedicon.c:205
+msgid "An array containing the icon names"
+msgstr ""
+
+#: gio/gthemedicon.c:230
+msgid "use default fallbacks"
+msgstr ""
+
+#: gio/gthemedicon.c:231
+msgid ""
+"Whether to use default fallbacks found by shortening the name at '-' "
+"characters. Ignores names after the first if multiple names are given."
+msgstr ""
 
 #: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
 #: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289

@@ -94,7 +94,7 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 </para>
 
 @list: 
-@data:
+@data: 
 @Returns: 
 
 
@@ -104,8 +104,8 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 </para>
 
 @list: 
-@data:
-@Returns:
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_insert ##### -->
@@ -113,9 +113,9 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 </para>
 
-@list:
-@data:
-@position:
+@list: 
+@data: 
+@position: 
 @Returns: 
 
 
@@ -124,8 +124,8 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 </para>
 
-@slist:
-@sibling:
+@slist: 
+@sibling: 
 @data: 
 @Returns: 
 
@@ -135,9 +135,9 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 </para>
 
-@list:
-@data:
-@func:
+@list: 
+@data: 
+@func: 
 @Returns: 
 
 
@@ -146,9 +146,9 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 </para>
 
-
-@data:
-@Returns:
+@list: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_remove_link ##### -->
@@ -156,9 +156,9 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 </para>
 
-@list:
-@link_:
-@Returns:
+@list: 
+@link_: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_delete_link ##### -->
@@ -167,8 +167,8 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 </para>
 
 @list: 
-@link_:
-@Returns:
+@link_: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_remove_all ##### -->
@@ -178,7 +178,7 @@ g_slist_insert_sorted() functions and so is rarely used on its own.
 
 @list: 
 @data: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_free ##### -->
@@ -210,7 +210,7 @@ A macro which does the same as g_slist_free_1().
 
 </para>
 
-@list:
+@list: 
 @Returns: 
 
 
@@ -219,8 +219,8 @@ A macro which does the same as g_slist_free_1().
 
 </para>
 
-@list:
-@Returns:
+@list: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_reverse ##### -->
@@ -251,7 +251,7 @@ A macro which does the same as g_slist_free_1().
 
 @list: 
 @compare_func: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_sort_with_data ##### -->
@@ -270,9 +270,9 @@ A macro which does the same as g_slist_free_1().
 
 </para>
 
-@list1:
-@list2:
-@Returns:
+@list1: 
+@list2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_foreach ##### -->
@@ -282,7 +282,7 @@ A macro which does the same as g_slist_free_1().
 
 @list: 
 @func: 
-@user_data:
+@user_data: 
 
 
 <!-- ##### FUNCTION g_slist_last ##### -->
@@ -308,7 +308,7 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
+@list: 
 @n: 
 @Returns: 
 
@@ -318,9 +318,9 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
+@list: 
 @n: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_find ##### -->
@@ -328,9 +328,9 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
-@data:
-@Returns:
+@list: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_find_custom ##### -->
@@ -338,10 +338,10 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
-@data:
-@func:
-@Returns:
+@list: 
+@data: 
+@func: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_position ##### -->
@@ -349,9 +349,9 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
-@llink:
-@Returns:
+@list: 
+@llink: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_index ##### -->
@@ -359,9 +359,9 @@ A convenience macro to gets the next element in a #GSList.
 
 </para>
 
-@list:
-@data:
-@Returns:
+@list: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_slist_push_allocator ##### -->

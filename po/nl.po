@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 13:59-0500\n"
+"POT-Creation-Date: 2008-03-10 13:55-0400\n"
 "PO-Revision-Date: 2008-02-24 15:21+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -578,7 +578,7 @@ msgstr "limiet voor backtracking bereikt"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "het patroon bevat niet-ondersteunde tekens"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1869
+#: glib/gregex.c:154 gio/glocalfile.c:1883
 msgid "internal error"
 msgstr "interne fout"
 
@@ -914,48 +914,48 @@ msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Aanmaken van pijplijn voor het communiceren met dochterproces is mislukt (%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijplijn naar dochter (%s) is mislukt"
 
-#: glib/gspawn-win32.c:358 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:363 glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Wijzigen naar map ‘%s’ is mislukt (%s)"
 
-#: glib/gspawn-win32.c:364 glib/gspawn-win32.c:488
+#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Uitvoeren van dochterproces is mislukt (%s)"
 
-#: glib/gspawn-win32.c:435
+#: glib/gspawn-win32.c:440
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Ongeldige programmanaam: %s"
 
-#: glib/gspawn-win32.c:445 glib/gspawn-win32.c:718 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Ongeldige tekenreeks in argumentvector bij %d: %s"
 
-#: glib/gspawn-win32.c:456 glib/gspawn-win32.c:732 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Ongeldige tekenreeks in omgeving: %s"
 
 # werkmap/huidige map
-#: glib/gspawn-win32.c:714 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Ongeldige werkmap: %s"
 
-#: glib/gspawn-win32.c:782
+#: glib/gspawn-win32.c:787
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Uitvoeren van het hulpprogramma (%s) is mislukt"
 
-#: glib/gspawn-win32.c:996
+#: glib/gspawn-win32.c:1002
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -1217,7 +1217,7 @@ msgstr "De telwaarde die aan %s werd gegeven is te groot"
 msgid "Stream is already closed"
 msgstr "De stroom is al gesloten"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1862 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1876 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "De bewerking werd afgebroken"
@@ -1287,10 +1287,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "dit station kan niet onderzocht worden op de aanwezigheid van media"
 
 # niet ondersteund/niet mogelijk
-#: gio/gfile.c:822 gio/gfile.c:1010 gio/gfile.c:1143 gio/gfile.c:1374
-#: gio/gfile.c:1427 gio/gfile.c:1483 gio/gfile.c:1564 gio/gfile.c:2602
-#: gio/gfile.c:2647 gio/gfile.c:2697 gio/gfile.c:2736 gio/gfile.c:3060
-#: gio/gfile.c:3462 gio/gfile.c:3545 gio/gfile.c:3628 gio/gfile.c:3708
+#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2594
+#: gio/gfile.c:2639 gio/gfile.c:2689 gio/gfile.c:2729 gio/gfile.c:3053
+#: gio/gfile.c:3455 gio/gfile.c:3538 gio/gfile.c:3621 gio/gfile.c:3701
 #, c-format
 msgid "Operation not supported"
 msgstr "De bewerking is niet mogelijk"
@@ -1303,18 +1303,18 @@ msgstr "De bewerking is niet mogelijk"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1262 gio/glocalfile.c:1038 gio/glocalfile.c:1049
-#: gio/glocalfile.c:1062
+#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
+#: gio/glocalfile.c:1070
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1903
+#: gio/gfile.c:1895
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Kan niet over map kopiëren"
 
-#: gio/gfile.c:1963
+#: gio/gfile.c:1955
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Kan map niet over map kopiëren"
@@ -1322,40 +1322,40 @@ msgstr "Kan map niet over map kopiëren"
 # er is al een bestand met die naam?
 # Het doelbestand bestaat (al)
 # er was ook een msgid: Target file already exists
-#: gio/gfile.c:1971 gio/glocalfile.c:2016
+#: gio/gfile.c:1963 gio/glocalfile.c:2030
 #, c-format
 msgid "Target file exists"
 msgstr "Doelbestand bestaat al"
 
 # map/de map
-#: gio/gfile.c:1989
+#: gio/gfile.c:1981
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Kan map niet recursief kopiëren"
 
-#: gio/gfile.c:2687
+#: gio/gfile.c:2679
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Ongeldige symbolische verwijzing gegeven"
 
 # wordt hier niet ondersteund
 # (dus bijv. op een aangekoppelde externe opslag?)
-#: gio/gfile.c:2779
+#: gio/gfile.c:2772
 #, c-format
 msgid "Trash not supported"
 msgstr "Prullenbak wordt ondersteund"
 
 # Een bestandsnaam mag het teken / niet bevatten
-#: gio/gfile.c:2826
+#: gio/gfile.c:2819
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Het teken ‘%c’ mag niet in een bestandsnaam voorkomen"
 
-#: gio/gfile.c:4759 gio/gvolume.c:357
+#: gio/gfile.c:4752 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "volumen begrijpt de opdracht ‘aankoppelen’ niet"
 
-#: gio/gfile.c:4867
+#: gio/gfile.c:4860
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Er is geen programma toegewezen om dit bestand te openen"
@@ -1420,116 +1420,116 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:595
+#: gio/glocalfile.c:599
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ongeldige bestandsnaam: %s"
 
-#: gio/glocalfile.c:958
+#: gio/glocalfile.c:962
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Fout bij het ophalen van informatie over bestandssysteem: %s"
 
-#: gio/glocalfile.c:1082
+#: gio/glocalfile.c:1090
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Kan de root-map niet hernoemen"
 
-#: gio/glocalfile.c:1100
+#: gio/glocalfile.c:1108
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Kan het bestand niet hernoemen, de bestandsnaam bestaat al"
 
 # ongeldige naam voor bestand/ongeldige bestandsnaam
-#: gio/glocalfile.c:1113 gio/glocalfile.c:1891 gio/glocalfile.c:1920
-#: gio/glocalfile.c:2069 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1121 gio/glocalfile.c:1905 gio/glocalfile.c:1934
+#: gio/glocalfile.c:2083 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "Ongeldige bestandsnaam"
 
-#: gio/glocalfile.c:1117
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Fout bij het hernoemen van bestand: %s"
 
 # openen/lezen
-#: gio/glocalfile.c:1236
+#: gio/glocalfile.c:1244
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: gio/glocalfile.c:1246
+#: gio/glocalfile.c:1254
 #, c-format
 msgid "Can't open directory"
 msgstr "Kan map niet openen"
 
 # volledig verwijderen/definitief verwijderen/verwijderen
-#: gio/glocalfile.c:1300 gio/glocalfile.c:1895
+#: gio/glocalfile.c:1314 gio/glocalfile.c:1909
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Fout bij het verwijderen van bestand: %s"
 
 # naar prullenbak verplaatsen/verwijderen
-#: gio/glocalfile.c:1590
+#: gio/glocalfile.c:1604
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Fout bij het verplaatsen naar de prullenbak van bestand: %s"
 
-#: gio/glocalfile.c:1613
+#: gio/glocalfile.c:1627
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan de prullenbakmap %s niet aanmaken: %s"
 
-#: gio/glocalfile.c:1634
+#: gio/glocalfile.c:1648
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Kan de bovenliggende map voor de prullenbak niet vinden"
 
-#: gio/glocalfile.c:1713 gio/glocalfile.c:1733
+#: gio/glocalfile.c:1727 gio/glocalfile.c:1747
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Kan prullenbakmap niet vinden of aanmaken"
 
-#: gio/glocalfile.c:1767
+#: gio/glocalfile.c:1781
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kan prullenbak-informatiebestand ‘%s’ niet aanmaken"
 
-#: gio/glocalfile.c:1792 gio/glocalfile.c:1861 gio/glocalfile.c:1868
+#: gio/glocalfile.c:1806 gio/glocalfile.c:1875 gio/glocalfile.c:1882
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kan het bestand ‘%s’ niet naar de prullenbak verplaatsen"
 
-#: gio/glocalfile.c:1924
+#: gio/glocalfile.c:1938
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Fout bij het maken van symbolische verwijzing: %s"
 
-#: gio/glocalfile.c:1984 gio/glocalfile.c:2073
+#: gio/glocalfile.c:1998 gio/glocalfile.c:2087
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Fout bij het verplaatsen van bestand: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2021
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Kan map niet over map verplaatsen"
 
-#: gio/glocalfile.c:2029 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2043 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Aanmaken van backupbestand is mislukt"
 
-#: gio/glocalfile.c:2048
+#: gio/glocalfile.c:2062
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Fout bij het verwijderen doelbestand: %s"
 
 # (nog) niet mogelijk/niet ondersteund
-#: gio/glocalfile.c:2062
+#: gio/glocalfile.c:2076
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Verplaatsen tussen aankoppelpunten is niet mogelijk"
@@ -1749,6 +1749,37 @@ msgstr "Uitvoerdatastroom begrijpt de opdracht ‘schrijven’ niet"
 #, c-format
 msgid "Source stream is already closed"
 msgstr "Datastroom is al gesloten"
+
+# naamloos/zonder naam/onbenoemd
+#: gio/gthemedicon.c:192
+#, fuzzy
+msgid "name"
+msgstr "Zonder naam"
+
+#: gio/gthemedicon.c:193
+#, fuzzy
+msgid "The name of the icon"
+msgstr "De hostnaam van de URI ‘%s’ is ongeldig"
+
+# naamloos/zonder naam/onbenoemd
+#: gio/gthemedicon.c:204
+#, fuzzy
+msgid "names"
+msgstr "Zonder naam"
+
+#: gio/gthemedicon.c:205
+msgid "An array containing the icon names"
+msgstr ""
+
+#: gio/gthemedicon.c:230
+msgid "use default fallbacks"
+msgstr ""
+
+#: gio/gthemedicon.c:231
+msgid ""
+"Whether to use default fallbacks found by shortening the name at '-' "
+"characters. Ignores names after the first if multiple names are given."
+msgstr ""
 
 #: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
 #: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289

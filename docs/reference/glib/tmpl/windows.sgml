@@ -55,6 +55,15 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 @Returns: 
 
 
+<!-- ##### FUNCTION g_win32_get_package_installation_directory_of_module ##### -->
+<para>
+
+</para>
+
+@hmodule: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_win32_get_package_installation_subdirectory ##### -->
 <para>
 

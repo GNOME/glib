@@ -1,5 +1,7 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.16.0 ===
+
 	* NEWS: Updates
 
 	* configure.in: Bump version to 2.16.0
