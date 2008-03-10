@@ -1,3 +1,50 @@
+Overview of Changes from GLib 2.15.6 to GLib 2.16.0
+===================================================
+
+* Fix the definition of G_INLINE_FUNC to work with gcc 4.3.0
+
+* GIO:
+ - Add missing GMountMountFlags argument to g_unix_volume_mount
+ - Fix the adopt_orphan_mount vfunc to take a volume monitor 
+   reference
+ - Add properties to GThemedIcon for bindings sake
+
+* Bugs fixed:
+ 520484 gvfsd-trash crashed with SIGSEGV in g_path_is_absolute()
+ 510855 g_checksum_update(): Take -1 for length.
+ 517676 g_themed_icon_new*() do more than call g_object_new().
+ 518816 should handle rmdir returning EEXIST correctly
+ 519352 g_[s]list_delete_link() docs
+ 519489 Fixes for sparse warnings in gio
+ 520169 add monitor argument to vfunc for GVolumeMonitor
+ 520700 Add type check in g_file_query_exists
+ 521145 FILE_READ_ONLY_VOLUME not present on Mingw32
+ 518720 No MIME type for empty files
+ 521013 in documentation, goffset doesn't say "Since 2.x"
+ 521028 Missleading error messages from g_io_channel_set_encoding()
+ 517484 GMainLoop could set the thread "Alertable" for APCs to be... 
+
+* Updated translations:
+ Assamese (as)
+ Bengali India (bn_IN)
+ Czech (cs)
+ German (de)
+ Spanish (es)
+ Estonian (et)
+ Finnish (fi)
+ French (fr)
+ Gujarati (gu)
+ Italian (it)
+ Lithuanian (lt)
+ Malayalam (ml)
+ Marathi (mr)
+ Norwegian bokmål (nb)
+ Romanian (ro)
+ Russian (ru)
+ Slovak (sk)
+ Ukrainian (uk)
+
+ 
 Overview of Changes from GLib 2.15.5 to GLib 2.15.6
 ===================================================
 
