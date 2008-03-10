@@ -95,10 +95,6 @@ typedef struct
   guint32 offset;
 } DirEntry;
 
-
-#define TYPE_POINTER_MASK 1 << 7
-#define TYPE_TAG_MASK         63
-
 typedef enum 
 {
   TYPE_TAG_VOID      =  0,
@@ -121,8 +117,8 @@ typedef enum
   TYPE_TAG_DOUBLE    = 17,
   TYPE_TAG_UTF8      = 18,
   TYPE_TAG_FILENAME  = 19,
-  TYPE_TAG_ARRAY     = 20,
-  TYPE_TAG_INTERFACE = 21,
+  TYPE_TAG_SYMBOL    = 20,
+  TYPE_TAG_ARRAY     = 21,
   TYPE_TAG_LIST      = 22,
   TYPE_TAG_SLIST     = 23,
   TYPE_TAG_HASH      = 24,

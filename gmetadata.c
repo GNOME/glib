@@ -30,6 +30,11 @@
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
+static gboolean
+validate_blob (GMetadata     *metadata,
+	       guint32        offset,
+	       GError       **error);
+
 
 DirEntry *
 g_metadata_get_dir_entry (GMetadata *metadata,
@@ -419,9 +424,9 @@ validate_type_blob (GMetadata     *metadata,
 				     signature_offset, return_type, error))
 	return FALSE;
       break;
-    case TYPE_TAG_INTERFACE:
-      if (!validate_iface_type_blob (metadata, simple->offset, 
-				     signature_offset, return_type, error))
+    case TYPE_TAG_SYMBOL:
+      if (!validate_blob (metadata, simple->offset,
+			  error))
 	return FALSE;
       break;
     case TYPE_TAG_LIST:
