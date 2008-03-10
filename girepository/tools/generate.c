@@ -574,16 +574,22 @@ write_enum_info (const gchar *namespace,
 		 FILE        *file)
 {
   const gchar *name;
-  const gchar *type_name;
-  const gchar *type_init;
+  const gchar *type_name = NULL;
+  const gchar *type_init = NULL;
   gboolean deprecated;
   gint i;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  /* Make sure this is a registered enum before filling out the
+   * GType information
+   */
+  if (g_enum_info_is_registered ((GIEnumInfo *)info))
+    {
+      type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+      type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+    }
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
     g_fprintf (file, "    <enum ");
@@ -1147,8 +1153,6 @@ main (int argc, char *argv[])
   GMetadata *data;
 
   g_type_init ();
-
-  g_metadata_check_sanity ();
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
