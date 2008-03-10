@@ -1117,12 +1117,17 @@ load_metadata (const gchar  *filename,
 	       GModule     **dlhandle,
                gsize        *len)
 {
-  guchar *metadata;
+  gpointer metadata;
   gsize *metadata_size;
   GModule *handle; 
 
-  handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
-  if (!g_module_symbol (handle, "_G_METADATA", (gpointer *) &metadata))
+  handle = g_module_open (filename,  G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+  if (!handle)
+    {
+      g_printerr("Could not load module '%s'\n", filename);
+      return NULL;
+    }
+  if (!g_module_symbol (handle, "_G_METADATA", &metadata))
     {
       g_printerr ("Could not load metadata from '%s': %s\n", 
 		  filename, g_module_error ());
@@ -1141,7 +1146,7 @@ load_metadata (const gchar  *filename,
   if (dlhandle)
     *dlhandle = handle;
 
-  return metadata;
+  return *((const guchar **) metadata);
 }
 
 int 
@@ -1169,7 +1174,7 @@ main (int argc, char *argv[])
   for (i = 0; input[i]; i++)
     {
       GModule *dlhandle = NULL;
-      const guchar *metadata;
+      const guchar *metadata = NULL;
       gsize len;
 
       if (raw)
