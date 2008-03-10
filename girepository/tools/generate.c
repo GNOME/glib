@@ -39,7 +39,8 @@ write_type_name (const gchar *namespace,
 		 GIBaseInfo  *info,
 		 FILE        *file)
 {
-  if (strcmp (namespace, g_base_info_get_namespace (info)) != 0)
+  if (g_base_info_get_namespace (info) != 0 &&
+      strcmp (namespace, g_base_info_get_namespace (info)) != 0)
     g_fprintf (file, "%s.", g_base_info_get_namespace (info));
 
   g_fprintf (file, "%s", g_base_info_get_name (info));
