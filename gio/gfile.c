@@ -901,9 +901,9 @@ g_file_enumerate_children_finish (GFile         *file,
  * Utility function to check if a particular file exists. This is
  * implemented using g_file_query_info() and as such does blocking I/O.
  *
- * Note that in many cases it is racy to first check for file existance
+ * Note that in many cases it is racy to first check for file existence
  * and then execute something based on the outcome of that, because the
- * file might have been created or removed inbetween the operations. The
+ * file might have been created or removed in between the operations. The
  * general approach to handling that is to not check, but just do the
  * operation and handle the errors as they come.
  *
@@ -915,7 +915,7 @@ g_file_enumerate_children_finish (GFile         *file,
  * the file with g_file_create() which will either atomically create the file
  * or fail with a G_IO_ERROR_EXISTS error.
  *
- * However, in many cases an existance check is useful in a user
+ * However, in many cases an existence check is useful in a user
  * interface, for instance to make a menu item sensitive/insensitive, so that
  * you don't have to fool users that something is possible and then just show
  * and error dialog. If you do this, you should make sure to also handle the

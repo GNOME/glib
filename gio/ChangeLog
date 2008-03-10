@@ -1,3 +1,8 @@
+2008-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* gfile.c: Minor spelling correction in documentation:
+	existance -> existence.
+
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.16.0 ===
