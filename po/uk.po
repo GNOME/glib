@@ -1316,7 +1316,7 @@ msgid "volume doesn't implement mount"
 msgstr "том не підтримує операцію монтування"
 
 #: ../gio/gfile.c:4860
-#, c-format
+#, c-format,fuzzy
 msgid "No application is registered as handling this file"
 msgstr "Не зареєстровано програму з назвою '%s', що створило закладку '%s'"
 
