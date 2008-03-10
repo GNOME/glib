@@ -234,17 +234,16 @@ validate_array_type_blob (GMetadata     *metadata,
 			  gboolean       return_type,
 			  GError       **error)
 {
-  ArrayTypeBlob *blob;
+  ArrayTypeBlob *blob = (ArrayTypeBlob*)&metadata->data[offset];
+  TypeHeader *header = (TypeHeader *)&metadata->data[offset];
 
-  blob = (ArrayTypeBlob*)&metadata->data[offset];
-
-  if (!blob->pointer)
+  if (!header->pointer)
     {
       g_set_error (error,
 		   G_METADATA_ERROR,
 		   G_METADATA_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
-      return FALSE;	  
+		   "Pointer type exected for tag %d", header->tag);
+      return FALSE;
     }
 
   /* FIXME validate length */
@@ -258,32 +257,6 @@ validate_array_type_blob (GMetadata     *metadata,
 }
 
 static gboolean
-validate_iface_type_blob (GMetadata     *metadata,
-			  guint32        offset,
-			  guint32        signature_offset,
-			  gboolean       return_type,
-			  GError       **error)
-{
-  InterfaceTypeBlob *blob;
-  Header *header;
-
-  header = (Header *)metadata->data;
-
-  blob = (InterfaceTypeBlob*)&metadata->data[offset];
-
-  if (blob->interface == 0 || blob->interface > header->n_entries)
-    {
-      g_set_error (error,
-		   G_METADATA_ERROR,
-		   G_METADATA_ERROR_INVALID_BLOB,
-		   "Invalid directory index %d", blob->interface);
-      return FALSE;	        
-    }
-
-  return TRUE;
-}
-
-static gboolean
 validate_param_type_blob (GMetadata     *metadata,
 			  guint32        offset,
 			  guint32        signature_offset,
@@ -291,17 +264,17 @@ validate_param_type_blob (GMetadata     *metadata,
 			  gint           n_params,
 			  GError       **error)
 {
-  ParamTypeBlob *blob;
+  ParamTypeBlob *blob = (ParamTypeBlob*)&metadata->data[offset];
+  TypeHeader *header = (TypeHeader *)&metadata->data[offset];
   gint i;
 
-  blob = (ParamTypeBlob*)&metadata->data[offset];
 
-  if (!blob->pointer)
+  if (!header->pointer)
     {
       g_set_error (error,
 		   G_METADATA_ERROR,
 		   G_METADATA_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
+		   "Pointer type exected for tag %d", header->tag);
       return FALSE;	  
     }
   
@@ -334,35 +307,39 @@ validate_error_type_blob (GMetadata     *metadata,
 			  GError       **error)
 {
   ErrorTypeBlob *blob;
+  TypeHeader *type_header;
   Header *header;
   gint i;
   DirEntry *entry;
+  guint16 *domain;
 
   blob = (ErrorTypeBlob*)&metadata->data[offset];
+  type_header = (TypeHeader*)&metadata->data[offset];
 
   header = (Header *)metadata->data;
 
-  if (!blob->pointer)
+  if (!type_header->pointer)
     {
       g_set_error (error,
 		   G_METADATA_ERROR,
 		   G_METADATA_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
-      return FALSE;	  
+		   "Pointer type exected for tag %d", type_header->tag);
+      return FALSE;
     }
   
-  for (i = 0; i < blob->n_domains; i++)
+  domain = (guint16*)&metadata->data[offset +  sizeof(ErrorTypeBlob)];
+  for (i = 0; i < blob->n_domains; i++, domain++)
     {
-      if (blob->domains[i] == 0 || blob->domains[i] > header->n_entries)
+      if (*domain == 0 || *domain > header->n_entries)
 	{
 	  g_set_error (error,
 		       G_METADATA_ERROR,
 		       G_METADATA_ERROR_INVALID_BLOB,
-		       "Invalid directory index %d", blob->domains[i]);
+		       "Invalid directory index %d", *domain);
 	  return FALSE;	        
 	}
 
-      entry = g_metadata_get_dir_entry (metadata, blob->domains[i]);
+      entry = g_metadata_get_dir_entry (metadata, *domain);
 
       if (entry->blob_type != BLOB_TYPE_ERROR_DOMAIN &&
 	  (entry->local || entry->blob_type != BLOB_TYPE_INVALID))
@@ -386,14 +363,14 @@ validate_type_blob (GMetadata     *metadata,
 		    GError       **error)
 {
   SimpleTypeBlob *simple;
-  InterfaceTypeBlob *iface;
-  
-  simple = (SimpleTypeBlob *)&metadata->data[offset];
+  TypeHeader *header;
 
-  if (simple->reserved == 0 && 
-      simple->reserved2 == 0)
+  simple = (SimpleTypeBlob *)&metadata->data[offset];
+  header = (TypeHeader *)&metadata->data[offset];
+
+  if (TYPE_IS_SIMPLE(header->tag))
     {
-      if (simple->tag >= TYPE_TAG_ARRAY)
+      if (header->tag >= TYPE_TAG_ARRAY)
 	{
 	  g_set_error (error,
 		       G_METADATA_ERROR,
@@ -402,22 +379,20 @@ validate_type_blob (GMetadata     *metadata,
 	  return FALSE;
 	}
       
-      if (simple->tag >= TYPE_TAG_UTF8 &&
-	  !simple->pointer)
+      if (header->tag >= TYPE_TAG_UTF8 &&
+	  !header->pointer)
 	{
 	  g_set_error (error,
 		       G_METADATA_ERROR,
 		       G_METADATA_ERROR_INVALID_BLOB,
-		       "Pointer type exected for tag %d", simple->tag);
-	  return FALSE;	  
+		       "Pointer type exected for tag %d", header->tag);
+	  return FALSE;
 	}
 
       return TRUE;
     }
 
-  iface = (InterfaceTypeBlob*)&metadata->data[simple->offset];
-
-  switch (iface->tag)
+  switch (header->tag)
     {
     case TYPE_TAG_ARRAY:
       if (!validate_array_type_blob (metadata, simple->offset, 
@@ -691,6 +666,7 @@ validate_constant_blob (GMetadata     *metadata,
     0, 0
   }; 
   ConstantBlob *blob;
+  TypeHeader *header;
   SimpleTypeBlob *type;
 
   if (metadata->len < offset + sizeof (ConstantBlob))
@@ -734,11 +710,12 @@ validate_constant_blob (GMetadata     *metadata,
 		   "Misaligned constant value");
       return FALSE;
     }
-  
+
   type = (SimpleTypeBlob *)&metadata->data[offset + G_STRUCT_OFFSET (ConstantBlob, type)];
-  if (type->reserved == 0)
+  header = (TypeHeader *)&metadata->data[offset + G_STRUCT_OFFSET (ConstantBlob, type)];
+  if (TYPE_IS_SIMPLE(header->tag))
     {
-      if (type->tag == 0)
+      if (header->tag == 0)
 	{
 	  g_set_error (error,
 		       G_METADATA_ERROR,
@@ -747,8 +724,8 @@ validate_constant_blob (GMetadata     *metadata,
 	  return FALSE;
 	}
 
-      if (value_size[type->tag] != 0 &&
-	  blob->size != value_size[type->tag])
+      if (value_size[header->tag] != 0 &&
+	  blob->size != value_size[header->tag])
 	{
 	  g_set_error (error,
 		       G_METADATA_ERROR,

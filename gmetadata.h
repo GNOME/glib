@@ -126,19 +126,25 @@ typedef enum
   TYPE_TAG_ERROR     = 25
 } TypeTag;
 
-typedef union
+typedef struct
 {
-  struct 
-  {
-    guint reserved   : 8;
-    guint reserved2  :16;
-    guint pointer    : 1;
-    guint reserved3  : 2;
-    guint tag        : 5;    
-  };
+  guint pointer    :1;
+  guint reserved   :2;
+  guint tag        :5;
+} TypeHeader;
+
+#define TYPE_IS_SIMPLE(tAG)  (tAG < TYPE_TAG_SYMBOL ? TRUE : FALSE)
+
+#define TYPE_IS_SYMBOL(tAG)  (tAG == TYPE_TAG_SYMBOL ? TRUE : FALSE)
+
+#define TYPE_IS_COMPLEX(tAG) (tAG > TYPE_TAG_SYMBOL ? TRUE : FALSE)
+
+typedef struct
+{
+  TypeHeader header;
+
   guint32    offset;
 } SimpleTypeBlob;
-
 
 typedef struct
 {
@@ -209,25 +215,13 @@ typedef struct
   guint32 signature;
 } CallbackBlob;
 
-typedef struct 
-{
-  guint pointer    :1;
-  guint reserved   :2;
-  guint tag        :5;    
-  guint8     reserved2;
-  guint16    interface;  
-} InterfaceTypeBlob;
-
 typedef struct
 {
-  guint pointer    :1;
-  guint reserved   :2;
-  guint tag        :5;    
+  TypeHeader     header;
 
   guint          zero_terminated :1;
   guint          has_length      :1;
   guint          reserved2       :6;
-
   guint16        length;
 
   SimpleTypeBlob type;
@@ -235,9 +229,7 @@ typedef struct
 
 typedef struct
 {
-  guint pointer    :1;
-  guint reserved   :2;
-  guint tag        :5;    
+  TypeHeader     header;
 
   guint8         reserved2;
   guint16        n_types;
@@ -247,11 +239,8 @@ typedef struct
 
 typedef struct
 {
-  guint pointer    :1;
-  guint reserved   :2;
-  guint tag        :5;    
+  TypeHeader     header;
 
-  guint8     reserved2;
   guint16    n_domains;
 
   guint16    domains[];

@@ -1,4 +1,4 @@
-/* GObject introspection: Repository implementation
+</* GObject introspection: Repository implementation
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -528,15 +528,27 @@ signature_offset (GICallableInfo *info)
   return 0;
 }
 
+/* Type blobs when created always point to a SimpleTypeBlob,
+ * If the type tag means that the type needs to be complex then
+ * the SimpleTypeBlob has an offset which points to the real type.
+ */
 GITypeInfo *
 g_type_info_new (GIBaseInfo    *container,
 		 GMetadata     *metadata,
 		 guint32        offset)
 {
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&metadata->data[offset];
+  TypeHeader *header;
+  SimpleTypeBlob *simple;
 
-  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, metadata, 
-				    type->reserved == 0 ? offset : type->offset);
+  header = (TypeHeader *)&metadata->data[offset];
+  if (TYPE_IS_COMPLEX (header->tag))
+    {
+      simple = (SimpleTypeBlob *)&metadata->data[offset];
+      offset = simple->offset;
+    }
+
+  return (GITypeInfo*)g_info_new (GI_INFO_TYPE_TYPE, container,
+				  metadata, offset);
 }
 
 /**
@@ -721,32 +733,18 @@ gboolean
 g_type_info_is_pointer (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved == 0)
-    return type->pointer;
-  else
-    {
-      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->metadata->data[base->offset];
-      
-      return iface->pointer;
-    }
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+
+  return header->pointer != 0;
 }
 
 GITypeTag
 g_type_info_get_tag (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
 
-  if (type->reserved == 0)
-    return type->tag;
-  else
-    {
-      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->metadata->data[base->offset];
-
-      return iface->tag;
-    }
+  return header->tag;
 }
 
 GITypeInfo *
@@ -754,42 +752,39 @@ g_type_info_get_param_type (GITypeInfo *info,
 			    gint       n)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
-    {
-      ParamTypeBlob *param = (ParamTypeBlob *)&base->metadata->data[base->offset];
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  ParamTypeBlob *param = (ParamTypeBlob *)&base->metadata->data[base->offset];
 
-      switch (param->tag)
-	{
-	case GI_TYPE_TAG_ARRAY: 
-	case GI_TYPE_TAG_GLIST:
-	case GI_TYPE_TAG_GSLIST:
-	case GI_TYPE_TAG_GHASH:
-	  return g_type_info_new (base, base->metadata, base->offset + 4 + 4 * n);
-	  break;
-	  
-	default: ;
-	}
+  switch (header->tag)
+    {
+    case TYPE_TAG_ARRAY: 
+    case TYPE_TAG_LIST:
+    case TYPE_TAG_SLIST:
+    case TYPE_TAG_HASH:
+      {
+	guint32 offset = base->offset + sizeof(ParamTypeBlob) +
+	                     (sizeof(SimpleTypeBlob)* n);
+	return g_type_info_new (base, base->metadata, offset);
+      }
+    default:
+      return NULL;
     }
-      
-  return NULL;
+
+  g_assert_not_reached ();
 }
 
 GIBaseInfo *
 g_type_info_get_interface (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
-    {
-      InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&base->metadata->data[base->offset];
-      
-      if (blob->tag == GI_TYPE_TAG_INTERFACE)
-	return g_info_from_entry (base->metadata, blob->interface);
-    }
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  SimpleTypeBlob *simple = (SimpleTypeBlob *)&base->metadata->data[base->offset];
 
+  if (header->tag == TYPE_TAG_SYMBOL)
+    {
+      CommonBlob *common = (CommonBlob *)&base->metadata->data[simple->offset];
+      return g_info_from_entry (base->metadata, simple->offset);
+    }
   return NULL;
 }
 
@@ -797,19 +792,13 @@ gint
 g_type_info_get_array_length (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  ArrayTypeBlob *array = (ArrayTypeBlob *)&base->metadata->data[base->offset];
+
+  if (header->tag == TYPE_TAG_ARRAY && array->has_length)
     {
-      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->metadata->data[base->offset];
-
-      if (blob->tag == GI_TYPE_TAG_ARRAY)
-	{
-	  if (blob->has_length)
-	    return blob->length;
-	}
+      return array->length;
     }
-
   return -1;
 }
 
@@ -817,33 +806,24 @@ gboolean
 g_type_info_is_zero_terminated (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
-    {
-      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->metadata->data[base->offset];
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  ArrayTypeBlob *array = (ArrayTypeBlob *)&base->metadata->data[base->offset];
 
-      if (blob->tag == GI_TYPE_TAG_ARRAY)
-	return blob->zero_terminated;
-    }
-
-  return FALSE;
+  return (header->tag == TYPE_TAG_ARRAY &&
+	  array->zero_terminated);
 }
 
 gint
 g_type_info_get_n_error_domains (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  ErrorTypeBlob *error = (ErrorTypeBlob *)&base->metadata->data[base->offset];
+
+  if (header->tag == TYPE_TAG_ERROR)
     {
-      ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->metadata->data[base->offset];
-
-      if (blob->tag == GI_TYPE_TAG_ERROR)
-	return blob->n_domains;
+      return error->n_domains;
     }
-
   return 0;
 }
 
@@ -852,17 +832,16 @@ g_type_info_get_error_domain (GITypeInfo *info,
 			      gint       n)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->metadata->data[base->offset];
-  
-  if (type->reserved != 0)
+  TypeHeader *header = (TypeHeader *)&base->metadata->data[base->offset];
+  ErrorTypeBlob *error = (ErrorTypeBlob *)&base->metadata->data[base->offset];
+  guint16 *domain;
+
+  if (header->tag == TYPE_TAG_ERROR)
     {
-      ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->metadata->data[base->offset];
-
-      if (blob->tag == GI_TYPE_TAG_ERROR)
-	return (GIErrorDomainInfo *) g_info_from_entry (base->metadata, 
-							blob->domains[n]);
+      domain = (guint16*) (&base->metadata->data[base->offset + sizeof(ErrorTypeBlob)]);
+      return (GIErrorDomainInfo *) g_info_from_entry (base->metadata,
+						      domain[n]);
     }
-
   return NULL;
 }
 
@@ -883,7 +862,8 @@ g_error_domain_info_get_codes (GIErrorDomainInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->metadata->data[base->offset];
   
-  return (GIInterfaceInfo *) g_info_from_entry (base->metadata, blob->error_codes);
+  return (GIInterfaceInfo *) g_info_from_entry (base->metadata,
+						blob->error_codes);
 }
 
 
@@ -1010,8 +990,8 @@ g_struct_info_get_method (GIStructInfo *info,
   gint offset;
 
   offset = base->offset + header->struct_blob_size 
-    + blob->n_fields * header->field_blob_size 
-    + n * header->function_blob_size;
+                        + blob->n_fields * header->field_blob_size 
+                        + n * header->function_blob_size;
   return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
 					base->metadata, offset);
 }
@@ -1075,7 +1055,8 @@ g_enum_info_get_value (GIEnumInfo *info,
 
   offset = base->offset + header->enum_blob_size 
     + n * header->value_blob_size;
-  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, base, base->metadata, offset);
+  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, base,
+				     base->metadata, offset);
 }
 
 /* GIObjectInfo functions */
@@ -1125,7 +1106,8 @@ g_object_info_get_interface (GIObjectInfo *info,
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->metadata->data[base->offset];
 
-  return (GIInterfaceInfo *) g_info_from_entry (base->metadata, blob->interfaces[n]);
+  return (GIInterfaceInfo *) g_info_from_entry (base->metadata,
+						blob->interfaces[n]);
 }
 
 gint
@@ -1150,7 +1132,8 @@ g_object_info_get_field (GIObjectInfo *info,
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + n * header->field_blob_size;
   
-  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base, base->metadata, offset);
+  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base,
+				     base->metadata, offset);
 }
 
 gint
@@ -1572,7 +1555,8 @@ g_signal_info_get_class_closure (GISignalInfo *info)
   SignalBlob *blob = (SignalBlob *)&base->metadata->data[base->offset];
 
   if (blob->has_class_closure)
-    return g_interface_info_get_vfunc ((GIInterfaceInfo *)base->container, blob->class_closure);
+    return g_interface_info_get_vfunc ((GIInterfaceInfo *)base->container,
+				       blob->class_closure);
 
   return NULL;
 }
@@ -1803,4 +1787,4 @@ g_union_info_get_discriminator (GIUnionInfo *info,
     }
 
   return NULL;
-}
+}   
