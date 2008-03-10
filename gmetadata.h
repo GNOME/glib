@@ -28,6 +28,7 @@
 G_BEGIN_DECLS
 
 #define G_IDL_MAGIC "GOBJ\nMETADATA\r\n\032"
+#define G_IDL_MAGIC_ESCAPED "GOBJ\\nMETADATA\\r\\n\\032"
 
 enum 
 {
