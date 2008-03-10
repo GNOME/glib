@@ -1,5 +1,11 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/linked_lists_double.sgml:
+	* glib/tmpl/linked_lists_single.sgml: Remove docs that have
+	been inlined.
+
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/types.sgml: Add a Since marker for goffset (#521013,
 	Charles Kerr)
 
