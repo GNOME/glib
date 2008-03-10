@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "gthemedicon.h"
+#include "glibintl.h"
 
 #include "gioalias.h"
 
@@ -49,7 +50,8 @@ struct _GThemedIcon
 {
   GObject parent_instance;
   
-  char **names;
+  char     **names;
+  gboolean   use_default_fallbacks;
 };
 
 struct _GThemedIconClass
@@ -57,10 +59,106 @@ struct _GThemedIconClass
   GObjectClass parent_class;
 };
 
+enum
+{
+  PROP_0,
+  PROP_NAME,
+  PROP_NAMES,
+  PROP_USE_DEFAULT_FALLBACKS
+};
+
 G_DEFINE_TYPE_WITH_CODE (GThemedIcon, g_themed_icon, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
 						g_themed_icon_icon_iface_init))
-  
+
+static void
+g_themed_icon_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
+{
+  GThemedIcon *icon = G_THEMED_ICON (object);
+
+  switch (prop_id)
+    {
+      case PROP_NAMES:
+        g_value_set_boxed (value, icon->names);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+g_themed_icon_set_property (GObject      *object,
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
+{
+  GThemedIcon *icon = G_THEMED_ICON (object);
+
+  switch (prop_id)
+    {
+      case PROP_NAME:
+        if (icon->names)
+          g_strfreev (icon->names);
+        icon->names = g_new (char *, 2);
+        icon->names[0] = g_value_dup_string (value);
+        icon->names[1] = NULL;
+        break;
+
+      case PROP_NAMES:
+        if (icon->names)
+          g_strfreev (icon->names);
+        icon->names = g_value_dup_boxed (value);
+        break;
+
+      case PROP_USE_DEFAULT_FALLBACKS:
+        icon->use_default_fallbacks = g_value_get_boolean (value);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+g_themed_icon_constructed (GObject *object)
+{
+  GThemedIcon *themed = G_THEMED_ICON (object);
+
+  g_return_if_fail (themed->names != NULL && themed->names[0] != NULL);
+
+  if (themed->use_default_fallbacks)
+    {
+      int i = 0, dashes = 0;
+      const char *p;
+      char *dashp;
+      char *last;
+
+      p = themed->names[0];
+      while (*p)
+        {
+          if (*p == '-')
+            dashes++;
+          p++;
+        }
+
+      last = g_strdup (themed->names[0]);
+
+      g_strfreev (themed->names);
+
+      themed->names = g_new (char *, dashes + 1 + 1);
+      themed->names[i++] = last;
+
+      while ((dashp = strrchr (last, '-')) != NULL)
+        themed->names[i++] = last = g_strndup (last, dashp - last);
+
+      themed->names[i++] = NULL;
+    }
+}
+
 static void
 g_themed_icon_finalize (GObject *object)
 {
@@ -80,11 +178,65 @@ g_themed_icon_class_init (GThemedIconClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
   gobject_class->finalize = g_themed_icon_finalize;
+  gobject_class->constructed = g_themed_icon_constructed;
+  gobject_class->set_property = g_themed_icon_set_property;
+  gobject_class->get_property = g_themed_icon_get_property;
+
+  /**
+   * GThemedIcon:name:
+   *
+   * The icon name.
+   */
+  g_object_class_install_property (gobject_class, PROP_NAMES,
+                                   g_param_spec_string ("name",
+                                                        _("name"),
+                                                        _("The name of the icon"),
+                                                        NULL,
+                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
+
+  /**
+   * GThemedIcon:names:
+   *
+   * A %NULL-terminated array of icon names.
+   */
+  g_object_class_install_property (gobject_class, PROP_NAMES,
+                                   g_param_spec_boxed ("names",
+                                                       _("names"),
+                                                       _("An array containing the icon names"),
+                                                       G_TYPE_STRV,
+                                                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
+
+  /**
+   * GThemedIcon:use-default-fallbacks:
+   *
+   * Whether to use the default fallbacks found by shortening the icon name 
+   * at '-' characters. If the "names" array has more than one element, 
+   * ignores any past the first.
+   *
+   * For example, if the icon name was "gnome-dev-cdrom-audio", the array 
+   * would become
+   * |[
+   * {
+   *   "gnome-dev-cdrom-audio",
+   *   "gnome-dev-cdrom",
+   *   "gnome-dev",
+   *   "gnome",
+   *   NULL
+   * };
+   * ]|
+   */
+  g_object_class_install_property (gobject_class, PROP_USE_DEFAULT_FALLBACKS,
+                                   g_param_spec_boolean ("use-default-fallbacks",
+                                                         _("use default fallbacks"),
+                                                         _("Whether to use default fallbacks found by shortening the name at '-' characters. Ignores names after the first if multiple names are given."),
+                                                         FALSE,
+                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }
 
 static void
 g_themed_icon_init (GThemedIcon *themed)
 {
+  themed->names = NULL;
 }
 
 /**
@@ -98,49 +250,49 @@ g_themed_icon_init (GThemedIcon *themed)
 GIcon *
 g_themed_icon_new (const char *iconname)
 {
-  GThemedIcon *themed;
-
   g_return_val_if_fail (iconname != NULL, NULL);
 
-  themed = g_object_new (G_TYPE_THEMED_ICON, NULL);
-  themed->names = g_new (char *, 2);
-  themed->names[0] = g_strdup (iconname);
-  themed->names[1] = NULL;
-  
-  return G_ICON (themed);
+  return G_ICON (g_object_new (G_TYPE_THEMED_ICON, "name", iconname, NULL));
 }
 
 /**
  * g_themed_icon_new_from_names:
  * @iconnames: an array of strings containing icon names.
- * @len: the number of elements in the @iconnames array.
+ * @len: the length of the @iconnames array, or -1 if @iconnames is 
+ *     %NULL-terminated
  * 
  * Creates a new themed icon for @iconnames.
  * 
- * Returns: a new #GThemedIcon.
+ * Returns: a new #GThemedIcon
  **/
 GIcon *
-g_themed_icon_new_from_names (char **iconnames, 
+g_themed_icon_new_from_names (char **iconnames,
                               int    len)
 {
-  GThemedIcon *themed;
-  int i;
+  GIcon *icon = icon;
 
   g_return_val_if_fail (iconnames != NULL, NULL);
-  
-  themed = g_object_new (G_TYPE_THEMED_ICON, NULL);
-  if (len == -1)
-    themed->names = g_strdupv (iconnames);
-  else
+
+  if (len >= 0)
     {
-      themed->names = g_new (char *, len + 1);
+      char **names;
+      int i;
+
+      names = g_malloc (len + 1);
+
       for (i = 0; i < len; i++)
-	themed->names[i] = g_strdup (iconnames[i]);
-      themed->names[i] = NULL;
+        names[i] = iconnames[i];
+
+      names[i] = NULL;
+
+      icon = G_ICON (g_object_new (G_TYPE_THEMED_ICON, "names", names, NULL));
+
+      g_free (names);
     }
-  
-  
-  return G_ICON (themed);
+  else
+    icon = G_ICON (g_object_new (G_TYPE_THEMED_ICON, "names", iconnames, NULL));
+
+  return icon;
 }
 
 /**
@@ -168,35 +320,9 @@ g_themed_icon_new_from_names (char **iconnames,
 GIcon *
 g_themed_icon_new_with_default_fallbacks (const char *iconname)
 {
-  GThemedIcon *themed;
-  int i, dashes;
-  const char *p;
-  char *dashp;
-  char *last;
-
   g_return_val_if_fail (iconname != NULL, NULL);
-  
-  themed = g_object_new (G_TYPE_THEMED_ICON, NULL);
 
-  dashes = 0;
-  p = iconname;
-  while (*p)
-    {
-      if (*p == '-')
-	dashes++;
-      p++;
-    }
-
-  themed->names = g_new (char *, dashes + 1 + 1);
-  i = 0;
-  themed->names[i++] = last = g_strdup (iconname);
-
-  while ((dashp = strrchr (last, '-')) != NULL)
-    themed->names[i++] = last = g_strndup (last, dashp - last);
-  
-  themed->names[i++] = NULL;
-
-  return G_ICON (themed);
+  return G_ICON (g_object_new (G_TYPE_THEMED_ICON, "name", iconname, "use-default-fallbacks", TRUE, NULL));
 }
 
 
@@ -221,6 +347,11 @@ g_themed_icon_get_names (GThemedIcon *icon)
  * @iconname: name of icon to append to list of icons from within @icon.
  *
  * Append a name to the list of icons from within @icon.
+ *
+ * <note><para>
+ * Note that doing so invalidates the hash computed by prior calls
+ * to g_icon_hash().
+ * </para></note>
  */
 void
 g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
@@ -234,6 +365,8 @@ g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
   icon->names = g_realloc (icon->names, sizeof (char*) * (num_names + 2));
   icon->names[num_names] = g_strdup (iconname);
   icon->names[num_names + 1] = NULL;
+
+  g_object_notify (G_OBJECT (icon), "names");
 }
 
 static guint
