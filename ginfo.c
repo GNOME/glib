@@ -860,10 +860,13 @@ GIInterfaceInfo *
 g_error_domain_info_get_codes (GIErrorDomainInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->metadata->data[base->offset];
-  
-  return (GIInterfaceInfo *) g_info_from_entry (base->metadata,
-						blob->error_codes);
+  ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->metadata->data[base->offset]; 
+
+  /* FIXME need to check if blob really is an enum */
+  return (GIInterfaceInfo *) g_info_new (BLOB_TYPE_ENUM,
+					 NULL,
+					 base->metadata,
+					 blob->error_codes);
 }
 
 
@@ -1114,9 +1117,11 @@ g_object_info_get_interface (GIObjectInfo *info,
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->metadata->data[base->offset];
+  guint16 *interface;
 
-  return (GIInterfaceInfo *) g_info_from_entry (base->metadata,
-						blob->interfaces[n]);
+  interface = (guint16 *)&base->metadata->data[base->offset + sizeof(ObjectBlob)];
+
+  return (GIInterfaceInfo *) g_info_from_entry (base->metadata, interface[n]);
 }
 
 gint
@@ -1324,8 +1329,11 @@ g_interface_info_get_prerequisite (GIInterfaceInfo *info,
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   InterfaceBlob *blob = (InterfaceBlob *)&base->metadata->data[base->offset];
+  guint16 *prerequisite;
 
-  return g_info_from_entry (base->metadata, blob->prerequisites[n]);
+  prerequisite = (guint16 *)&base->metadata->data[base->offset + sizeof(InterfaceBlob)];
+
+  return g_info_from_entry (base->metadata, prerequisite[n]);
 }
 
 
@@ -1639,63 +1647,67 @@ g_constant_info_get_value (GIConstantInfo *info,
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   ConstantBlob *blob = (ConstantBlob *)&base->metadata->data[base->offset];
+  TypeHeader *header = (TypeHeader*) &blob->type;
 
-  /* FIXME non-basic types ? */
-  if (blob->type.reserved == 0)
+  if (TYPE_IS_SIMPLE (header->tag))
     {
-      if (blob->type.pointer)
-	value->v_pointer = g_memdup (&base->metadata->data[blob->offset], blob->size);
-      else
-	{
-	  switch (blob->type.tag)
-	    {
-	    case GI_TYPE_TAG_BOOLEAN:
-	      value->v_boolean = *(gboolean*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT8:
-	      value->v_int8 = *(gint8*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT8:
-	      value->v_uint8 = *(guint8*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT16:
-	      value->v_int16 = *(gint16*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT16:
-	      value->v_uint16 = *(guint16*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT32:
-	      value->v_int32 = *(gint32*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT32:
-	      value->v_uint32 = *(guint32*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT64:
-	      value->v_int64 = *(gint64*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT64:
-	      value->v_uint64 = *(guint64*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_FLOAT:
-	      value->v_float = *(gfloat*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_DOUBLE:
-	      value->v_double = *(gdouble*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT:
-	      value->v_int = *(gint*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT:
-	      value->v_uint = *(guint*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_LONG:
-	      value->v_long = *(glong*)&base->metadata->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_ULONG:
-	      value->v_ulong = *(gulong*)&base->metadata->data[blob->offset];
-	      break;
-	    }
-	}
+      switch (header->tag)
+        {
+        case GI_TYPE_TAG_BOOLEAN:
+          value->v_boolean = *(gboolean*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_INT8:
+          value->v_int8 = *(gint8*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_UINT8:
+          value->v_uint8 = *(guint8*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_INT16:
+          value->v_int16 = *(gint16*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_UINT16:
+          value->v_uint16 = *(guint16*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_INT32:
+          value->v_int32 = *(gint32*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_UINT32:
+          value->v_uint32 = *(guint32*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_INT64:
+          value->v_int64 = *(gint64*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_UINT64:
+          value->v_uint64 = *(guint64*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_FLOAT:
+          value->v_float = *(gfloat*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_DOUBLE:
+          value->v_double = *(gdouble*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_INT:
+          value->v_int = *(gint*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_UINT:
+          value->v_uint = *(guint*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_LONG:
+          value->v_long = *(glong*)&base->metadata->data[blob->offset];
+          break;
+        case GI_TYPE_TAG_ULONG:
+          value->v_ulong = *(gulong*)&base->metadata->data[blob->offset];
+          break;
+        }
+    }
+  else
+    {
+      switch (header->tag)
+        {
+        case GI_TYPE_TAG_SYMBOL:
+          value->v_string = *(gchar**)&base->metadata->data[blob->offset];
+          break;
+        }
     }
 
   return blob->size;

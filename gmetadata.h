@@ -174,7 +174,9 @@ typedef struct
 
   guint16        n_arguments;
 
+#if 0
   ArgBlob        arguments[];
+#endif
 } SignatureBlob;
 
 typedef struct
@@ -233,8 +235,9 @@ typedef struct
 
   guint8         reserved2;
   guint16        n_types;
-
+#if 0
   SimpleTypeBlob type[];
+#endif
 } ParamTypeBlob;
 
 typedef struct
@@ -243,7 +246,9 @@ typedef struct
 
   guint16    n_domains;
 
+#if 0
   guint16    domains[];
+#endif
 }  ErrorTypeBlob;
 
 typedef struct
@@ -357,7 +362,9 @@ typedef struct
   guint16   n_values;
   guint16   reserved2;
 
-  ValueBlob values[];    
+#if 0
+  ValueBlob values[];
+#endif
 } EnumBlob;
 
 typedef struct
@@ -432,10 +439,9 @@ typedef struct
   guint16   n_vfuncs;
   guint16   n_constants;
 
-  guint16   interfaces[];
- 
 #if 0
   /* variable-length parts of the blob */
+  guint16             interfaces[];
   FieldBlob           fields[];
   PropertyBlob        properties[];
   FunctionBlob        methods[];
@@ -462,10 +468,10 @@ typedef struct
   guint16 n_vfuncs;
   guint16 n_constants;  
 
-  guint16 prerequisites[];
 
-#if 0 
+#if 0
   /* variable-length parts of the blob */
+  guint16             prerequisites[];
   PropertyBlob        properties[];
   FunctionBlob        methods[];
   SignalBlob          signals[];
