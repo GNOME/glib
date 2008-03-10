@@ -1,5 +1,9 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.16.0
+
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gslist.c: Fix a doc typo
 
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
