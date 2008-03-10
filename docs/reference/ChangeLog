@@ -1,3 +1,12 @@
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/types.sgml: Add a Since marker for goffset (#521013,
+	Charles Kerr)
+
+2008-02-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/linked_lists_double.sgml: Move docs inline
+
 2008-02-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.6 ===

@@ -241,4 +241,5 @@ A signed integer type that is used for file offsets, corresponding to the
 C99 type off64_t.
 </para>
 
+@Since: 2.16
 
