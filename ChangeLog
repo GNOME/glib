@@ -1,3 +1,8 @@
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/testglib.c: Still set the udddocs and uddpubshare 
+	variables for the verbose case.
+
 2008-03-07  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:
