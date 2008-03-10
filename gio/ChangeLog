@@ -1,5 +1,9 @@
 2008-03-10  Matthias Clasen <mclasen@redhat.com>
 
+	* gio.symbols: Remove g_file_contains_file here, too.
+
+2008-03-10  Matthias Clasen <mclasen@redhat.com>
+
 	* gthemedicon.c: Add properties to make bindings happy.  (#517676,
 	Samuel Cormier-Iijima)
 
