@@ -79,11 +79,11 @@ write_type_info (const gchar *namespace,
 
   tag = g_type_info_get_tag (info);
 
-  if (tag < 18)
+  if (tag < TYPE_TAG_UTF8)
     g_fprintf (file, "%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
-  else if (tag < 20)
+  else if (tag <= TYPE_TAG_FILENAME)
     g_fprintf (file, "%s", basic[tag]);
-  else if (tag == 20)
+  else if (tag == TYPE_TAG_ARRAY)
     {
       gint length;
 
@@ -102,7 +102,7 @@ write_type_info (const gchar *namespace,
      g_fprintf (file, "]"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
-  else if (tag == 21)
+  else if (tag == TYPE_TAG_SYMBOL)
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
       write_type_name (namespace, iface, file);
@@ -110,7 +110,7 @@ write_type_info (const gchar *namespace,
 	g_fprintf (file, "*"); 
       g_base_info_unref (iface);
     }
-  else if (tag == 22)
+  else if (tag == TYPE_TAG_LIST)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GList");
@@ -123,7 +123,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == 23)
+  else if (tag == TYPE_TAG_SLIST)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GSList");
@@ -136,7 +136,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == 24)
+  else if (tag == TYPE_TAG_HASH)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GHashTable");
@@ -153,7 +153,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == 25) 
+  else if (tag == TYPE_TAG_ERROR)
     {
       gint n;
 
@@ -532,8 +532,11 @@ write_constant_value (const gchar *namespace,
     case GI_TYPE_TAG_FILENAME:
       g_fprintf (file, "%s", value->v_string);
       break;
+    case GI_TYPE_TAG_SYMBOL:
+      g_fprintf (file, "%s", value->v_string);
+      break;
     default:
-      g_assert_not_reached ();
+      g_warning ("Could not get type tag for constant");
     }
 }
 
