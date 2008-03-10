@@ -355,6 +355,7 @@ const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInf
 /* GIEnumInfo */
 
 gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
+gboolean               g_enum_info_get_is_registered        (GIEnumInfo      *info);
 GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
 							     gint            n);
 

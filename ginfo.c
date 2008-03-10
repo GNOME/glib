@@ -1,4 +1,4 @@
-</* GObject introspection: Repository implementation
+/* GObject introspection: Repository implementation
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -1043,6 +1043,15 @@ g_enum_info_get_n_values (GIEnumInfo *info)
   EnumBlob *blob = (EnumBlob *)&base->metadata->data[base->offset];
 
   return blob->n_values;
+}
+
+gboolean
+g_enum_info_is_registered (GIEnumInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  EnumBlob *blob = (EnumBlob *)&base->metadata->data[base->offset];
+
+  return !blob->unregistered;
 }
 
 GIValueInfo *

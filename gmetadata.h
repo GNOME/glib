@@ -507,10 +507,7 @@ struct _GMetadata {
 DirEntry *g_metadata_get_dir_entry (GMetadata *metadata,
 				    guint16            index);
 
-void      g_metadata_check_sanity (void);
-
 #define   g_metadata_get_string(metadata,offset) ((const gchar*)&(metadata->data)[(offset)])
-
 
 typedef enum
 {

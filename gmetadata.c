@@ -42,40 +42,8 @@ g_metadata_get_dir_entry (GMetadata *metadata,
 {
   Header *header = (Header *)metadata->data;
 
-  return (DirEntry *)&metadata->data[header->directory + (index - 1) * header->entry_blob_size];
+  return (DirEntry *)&metadata->data[header->directory + ((index - 1) * header->entry_blob_size)];
 }
-
-void    
-g_metadata_check_sanity (void)
-{
-  /* Check that struct layout is as we expect */
-  g_assert (sizeof (Header) == 100);
-  g_assert (sizeof (DirEntry) == 12);
-  g_assert (sizeof (SimpleTypeBlob) == 4);
-  g_assert (sizeof (ArgBlob) == 12);
-  g_assert (sizeof (SignatureBlob) == 8);
-  g_assert (sizeof (CommonBlob) == 8);
-  g_assert (sizeof (FunctionBlob) == 16);
-  g_assert (sizeof (InterfaceTypeBlob) == 4);
-  g_assert (sizeof (ArrayTypeBlob) == 8);
-  g_assert (sizeof (ParamTypeBlob) == 4);
-  g_assert (sizeof (ErrorTypeBlob) == 4);
-  g_assert (sizeof (ErrorDomainBlob) == 16);
-  g_assert (sizeof (ValueBlob) == 12);
-  g_assert (sizeof (FieldBlob) == 12);
-  g_assert (sizeof (RegisteredTypeBlob) == 16);
-  g_assert (sizeof (StructBlob) == 20);
-  g_assert (sizeof (EnumBlob) == 20);
-  g_assert (sizeof (PropertyBlob) == 12);
-  g_assert (sizeof (SignalBlob) == 12);
-  g_assert (sizeof (VFuncBlob) == 16);
-  g_assert (sizeof (ObjectBlob) == 32);
-  g_assert (sizeof (InterfaceBlob) == 28);
-  g_assert (sizeof (ConstantBlob) == 20);
-  g_assert (sizeof (AnnotationBlob) == 12);
-  g_assert (sizeof (UnionBlob) == 28);
-}
-
 
 static gboolean
 is_aligned (guint32 offset)
@@ -153,32 +121,6 @@ validate_header (GMetadata  *metadata,
 		   G_METADATA_ERROR,
 		   G_METADATA_ERROR_INVALID_HEADER,
 		   "Metadata size mismatch");
-      return FALSE; 
-    }
-
-  if (header->entry_blob_size != 12 ||
-      header->function_blob_size != 16 ||
-      header->callback_blob_size != 12 ||
-      header->signal_blob_size != 12 ||
-      header->vfunc_blob_size != 16 ||
-      header->arg_blob_size != 12 ||
-      header->property_blob_size != 12 ||
-      header->field_blob_size != 12 ||
-      header->value_blob_size != 12 ||
-      header->constant_blob_size != 20 ||
-      header->error_domain_blob_size != 16 ||
-      header->annotation_blob_size != 12 ||
-      header->signature_blob_size != 8 ||
-      header->enum_blob_size != 20 ||
-      header->struct_blob_size != 20 ||
-      header->object_blob_size != 32 ||
-      header->interface_blob_size != 28 ||
-      header->union_blob_size != 28)
-    {
-      g_set_error (error,
-		   G_METADATA_ERROR,
-		   G_METADATA_ERROR_INVALID_HEADER,
-		   "Blob size mismatch");
       return FALSE; 
     }
 
@@ -1046,17 +988,6 @@ validate_struct_blob (GMetadata     *metadata,
 	  return FALSE; 
 	}
     }
-  else
-    {
-      if (blob->gtype_name || blob->gtype_init)
-	{
-	  g_set_error (error,
-		       G_METADATA_ERROR,
-		       G_METADATA_ERROR_INVALID_BLOB,
-		       "Gtype data in struct");
-	  return FALSE; 
-	}
-    }
 
   if (metadata->len < offset + sizeof (StructBlob) + 
             blob->n_fields * sizeof (FieldBlob) +
@@ -1139,17 +1070,6 @@ validate_enum_blob (GMetadata     *metadata,
 		       G_METADATA_ERROR,
 		       G_METADATA_ERROR_INVALID_BLOB,
 		       "Invalid enum type init");
-	  return FALSE; 
-	}
-    }
-  else
-    {
-      if (blob->gtype_name || blob->gtype_init)
-	{
-	  g_set_error (error,
-		       G_METADATA_ERROR,
-		       G_METADATA_ERROR_INVALID_BLOB,
-		       "Gtype data in unregistered enum");
 	  return FALSE; 
 	}
     }
