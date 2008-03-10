@@ -1127,8 +1127,8 @@ g_io_channel_set_encoding (GIOChannel	*channel,
           if (read_cd == (GIConv) -1)
             {
               err = errno;
-              from_enc = "UTF-8";
-              to_enc = encoding;
+              from_enc = encoding;
+              to_enc = "UTF-8";
             }
         }
       else
@@ -1141,8 +1141,8 @@ g_io_channel_set_encoding (GIOChannel	*channel,
           if (write_cd == (GIConv) -1)
             {
               err = errno;
-              from_enc = encoding;
-              to_enc = "UTF-8";
+              from_enc = "UTF-8";
+              to_enc = encoding;
             }
         }
       else

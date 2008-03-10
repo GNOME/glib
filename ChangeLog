@@ -1,5 +1,10 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/giochannel.c (g_io_channle_set_encoding): Fix confusing
+	error message.  (#521028, Peter Kjellerstedt)
+
+2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/testglib.c: Still set the udddocs and uddpubshare 
 	variables for the verbose case.
 
