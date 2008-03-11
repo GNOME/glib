@@ -97,21 +97,35 @@ g_themed_icon_set_property (GObject      *object,
                             GParamSpec   *pspec)
 {
   GThemedIcon *icon = G_THEMED_ICON (object);
+  gchar **names;
+  const gchar *name;
 
   switch (prop_id)
     {
       case PROP_NAME:
+        name = g_value_get_string (value);
+
+        if (!name)
+          break;
+
         if (icon->names)
           g_strfreev (icon->names);
+
         icon->names = g_new (char *, 2);
-        icon->names[0] = g_value_dup_string (value);
+        icon->names[0] = g_strdup (name);
         icon->names[1] = NULL;
         break;
 
       case PROP_NAMES:
+        names = g_value_dup_boxed (value);
+
+        if (!names)
+          break;
+
         if (icon->names)
           g_strfreev (icon->names);
-        icon->names = g_value_dup_boxed (value);
+
+        icon->names = names;
         break;
 
       case PROP_USE_DEFAULT_FALLBACKS:
@@ -187,7 +201,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    *
    * The icon name.
    */
-  g_object_class_install_property (gobject_class, PROP_NAMES,
+  g_object_class_install_property (gobject_class, PROP_NAME,
                                    g_param_spec_string ("name",
                                                         _("name"),
                                                         _("The name of the icon"),
@@ -278,7 +292,7 @@ g_themed_icon_new_from_names (char **iconnames,
       char **names;
       int i;
 
-      names = g_malloc (len + 1);
+      names = g_new (char *, len + 1);
 
       for (i = 0; i < len; i++)
         names[i] = iconnames[i];
