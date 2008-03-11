@@ -30,9 +30,8 @@
 #include "girepository.h"
 #include "gmetadata.h"
 
-gboolean raw = FALSE;
-gchar **input = NULL;
-gchar *output = NULL;
+/* FIXME: Avoid global */
+static gchar *output = NULL;
 
 static void 
 write_type_name (const gchar *namespace,
@@ -1104,14 +1103,6 @@ write_repository (GIRepository *repository,
   g_strfreev (namespaces);
 }
 
-static GOptionEntry options[] = 
-{
-  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw metadata", NULL },
-  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
-  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
-  { NULL, }
-};
-
 static const guchar *
 load_metadata (const gchar  *filename,
 	       GModule     **dlhandle,
@@ -1152,11 +1143,20 @@ load_metadata (const gchar  *filename,
 int 
 main (int argc, char *argv[])
 {  
+  gboolean raw = FALSE;
+  gchar **input = NULL;
   GOptionContext *context;
   GError *error = NULL;
   gboolean needs_prefix;
   gint i;
   GMetadata *data;
+  GOptionEntry options[] = 
+    {
+      { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw metadata", NULL },
+      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
+      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
+      { NULL, }
+    };
 
   g_type_init ();
 
