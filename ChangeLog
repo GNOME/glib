@@ -1,3 +1,12 @@
+2008-03-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Bug 521591 – g_markup_parse_context_parse() creates GError message that 
+	is invalid UTF8.
+
+	* glib/gmarkup.c (set_error): Make sure that the GError::message is 
+	valid UTF-8 even if it is complaining about invalid UTF-8 in the 
+	markup text, using _g_utf8_make_valid().
+
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.16.1 ===

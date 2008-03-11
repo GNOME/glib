@@ -215,14 +215,20 @@ set_error (GMarkupParseContext *context,
 {
   GError *tmp_error;
   gchar *s;
+  gchar *s_valid;
   va_list args;
 
   va_start (args, format);
   s = g_strdup_vprintf (format, args);
   va_end (args);
 
-  tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, s);
+  /* Make sure that the GError message is valid UTF-8 even if it is 
+   * complaining about invalid UTF-8 in the markup: */
+  s_valid = _g_utf8_make_valid (s);
+  tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, s_valid);
+
   g_free (s);
+  g_free (s_valid);
 
   g_prefix_error (&tmp_error,
                   _("Error on line %d char %d: "),
