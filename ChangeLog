@@ -1,4 +1,6 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
+	
+	* configure.in: Bump version
 
 	* NEWS: Updates
 
