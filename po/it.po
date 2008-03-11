@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.16.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 13:55-0400\n"
+"POT-Creation-Date: 2008-03-10 21:09-0400\n"
 "PO-Revision-Date: 2008-03-04 10:18+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1837,31 +1837,31 @@ msgid "Source stream is already closed"
 msgstr "Lo stream sorgente è già chiuso"
 
 # NdT: nome di applicazione (quando manca)
-#: gio/gthemedicon.c:192
+#: gio/gthemedicon.c:206
 #, fuzzy
 msgid "name"
 msgstr "Senza nome"
 
-#: gio/gthemedicon.c:193
+#: gio/gthemedicon.c:207
 #, fuzzy
 msgid "The name of the icon"
 msgstr "Il nome dell'host nell'URI \"%s\" non è valido"
 
 # NdT: nome di applicazione (quando manca)
-#: gio/gthemedicon.c:204
+#: gio/gthemedicon.c:218
 #, fuzzy
 msgid "names"
 msgstr "Senza nome"
 
-#: gio/gthemedicon.c:205
+#: gio/gthemedicon.c:219
 msgid "An array containing the icon names"
 msgstr ""
 
-#: gio/gthemedicon.c:230
+#: gio/gthemedicon.c:244
 msgid "use default fallbacks"
 msgstr ""
 
-#: gio/gthemedicon.c:231
+#: gio/gthemedicon.c:245
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 13:55-0400\n"
+"POT-Creation-Date: 2008-03-10 21:09-0400\n"
 "PO-Revision-Date: 2008-02-04 20:35+0800\n"
 "Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -1630,30 +1630,30 @@ msgstr "输出流未实现写入"
 msgid "Source stream is already closed"
 msgstr "来源流已经关闭"
 
-#: gio/gthemedicon.c:192
+#: gio/gthemedicon.c:206
 #, fuzzy
 msgid "name"
 msgstr "未命名"
 
-#: gio/gthemedicon.c:193
+#: gio/gthemedicon.c:207
 #, fuzzy
 msgid "The name of the icon"
 msgstr "URI中的主机名“%s”无效"
 
-#: gio/gthemedicon.c:204
+#: gio/gthemedicon.c:218
 #, fuzzy
 msgid "names"
 msgstr "未命名"
 
-#: gio/gthemedicon.c:205
+#: gio/gthemedicon.c:219
 msgid "An array containing the icon names"
 msgstr ""
 
-#: gio/gthemedicon.c:230
+#: gio/gthemedicon.c:244
 msgid "use default fallbacks"
 msgstr ""
 
-#: gio/gthemedicon.c:231
+#: gio/gthemedicon.c:245
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."

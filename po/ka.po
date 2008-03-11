@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 13:55-0400\n"
+"POT-Creation-Date: 2008-03-10 21:09-0400\n"
 "PO-Revision-Date: 2007-09-14 12:15+0200\n"
 "Last-Translator: Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@gnome.org>\n"
 "Language-Team: Georgian <http://mail.gnome.org/mailman/listinfo/gnome-ge-"
@@ -1680,28 +1680,28 @@ msgstr ""
 msgid "Source stream is already closed"
 msgstr ""
 
-#: gio/gthemedicon.c:192
+#: gio/gthemedicon.c:206
 msgid "name"
 msgstr ""
 
-#: gio/gthemedicon.c:193
+#: gio/gthemedicon.c:207
 #, fuzzy
 msgid "The name of the icon"
 msgstr "URI იდენტიფიკატორის \"%s\" მასპინძლის სახელი მცდარია"
 
-#: gio/gthemedicon.c:204
+#: gio/gthemedicon.c:218
 msgid "names"
 msgstr ""
 
-#: gio/gthemedicon.c:205
+#: gio/gthemedicon.c:219
 msgid "An array containing the icon names"
 msgstr ""
 
-#: gio/gthemedicon.c:230
+#: gio/gthemedicon.c:244
 msgid "use default fallbacks"
 msgstr ""
 
-#: gio/gthemedicon.c:231
+#: gio/gthemedicon.c:245
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."

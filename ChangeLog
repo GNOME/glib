@@ -1,8 +1,13 @@
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 	
+	* === Released 2.16.1 ===
+
 	* configure.in: Bump version
 
 	* NEWS: Updates
+
+	* glib/pcre/*: Update the internal copy of PCRE to 7.6, this time
+	for real.
 
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 

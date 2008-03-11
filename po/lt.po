@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 13:55-0400\n"
+"POT-Creation-Date: 2008-03-10 21:09-0400\n"
 "PO-Revision-Date: 2008-03-07 02:07+0200\n"
 "Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
@@ -1681,30 +1681,30 @@ msgstr "Išvedimo srautas nepalaiko rašymo"
 msgid "Source stream is already closed"
 msgstr "Šaltinio srautas jau užvertas"
 
-#: gio/gthemedicon.c:192
+#: gio/gthemedicon.c:206
 #, fuzzy
 msgid "name"
 msgstr "Nepavadinta"
 
-#: gio/gthemedicon.c:193
+#: gio/gthemedicon.c:207
 #, fuzzy
 msgid "The name of the icon"
 msgstr "Kompiuterio vardas „%s“ adrese yra klaidingas"
 
-#: gio/gthemedicon.c:204
+#: gio/gthemedicon.c:218
 #, fuzzy
 msgid "names"
 msgstr "Nepavadinta"
 
-#: gio/gthemedicon.c:205
+#: gio/gthemedicon.c:219
 msgid "An array containing the icon names"
 msgstr ""
 
-#: gio/gthemedicon.c:230
+#: gio/gthemedicon.c:244
 msgid "use default fallbacks"
 msgstr ""
 
-#: gio/gthemedicon.c:231
+#: gio/gthemedicon.c:245
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
