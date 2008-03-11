@@ -150,20 +150,20 @@ main (int argc, char ** argv)
        * A method of finding out if an external reference is
        * needed
        */
-      for (c=module->entries; c; c = c->next)
+      for (c = module->entries; c; c = c->next)
         {
           GIdlNode *node = (GIdlNode*) c->data;
 
-          g_idl_compiler_add_entry(ctx, node);
+          g_idl_compiler_add_entry (ctx, node);
         }
 
-      for (c=module->entries; c; c = c->next)
+      for (c = module->entries; c; c = c->next)
         {
           GIdlNode *node = (GIdlNode*) c->data;
 
-          entry_id = g_idl_compiler_get_entry_id(ctx, node->name);
+          entry_id = g_idl_compiler_get_entry_id (ctx, node->name);
 
-          g_idl_compiler_write_node(node, entry_id, ctx);
+          g_idl_compiler_write_node (node, entry_id, ctx);
         }
 
       if (output == NULL)
@@ -190,9 +190,9 @@ main (int argc, char ** argv)
          g_free (filename);
        }
 
-      g_idl_compiler_context_finalize(ctx, file, module->shared_library, &err);
+      g_idl_compiler_context_finalize (ctx, file, module->shared_library, &err);
 
-      g_idl_compiler_context_destroy(ctx);
+      g_idl_compiler_context_destroy (ctx);
 
       /* when writing to stdout, stop after the first module */
       if (m->next && !output && !mname)
