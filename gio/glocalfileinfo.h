@@ -35,10 +35,13 @@ G_BEGIN_DECLS
 typedef struct {
   gboolean writable;
   gboolean is_sticky;
+  gboolean has_trash_dir;
   int owner;
   dev_t device;
 } GLocalParentFileInfo;
 
+gboolean   _g_local_file_has_trash_dir        (const char *dirname,
+					       dev_t dir_dev);
 void       _g_local_file_info_get_parent_info (const char                 *dir,
 					       GFileAttributeMatcher      *attribute_matcher,
 					       GLocalParentFileInfo       *parent_info);

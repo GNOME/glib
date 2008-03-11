@@ -1,3 +1,11 @@
+2008-03-11  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+        * glocalfileinfo.[ch]:
+	Correctly implement can_trash by actually
+	looking for a trash dir, not just assuming
+	one exists.
+
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.16.1 ===

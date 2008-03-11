@@ -781,6 +781,7 @@ _g_local_file_info_get_parent_info (const char            *dir,
   
   parent_info->writable = FALSE;
   parent_info->is_sticky = FALSE;
+  parent_info->has_trash_dir = FALSE;
   parent_info->device = 0;
 
   if (g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME) ||
@@ -806,6 +807,10 @@ _g_local_file_info_get_parent_info (const char            *dir,
 #endif
 	  parent_info->owner = statbuf.st_uid;
 	  parent_info->device = statbuf.st_dev;
+          /* No need to find trash dir if its not writable anyway */
+          if (parent_info->writable &&
+              g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH))
+            parent_info->has_trash_dir = _g_local_file_has_trash_dir (dir, statbuf.st_dev);
 	}
     }
 }
@@ -863,10 +868,9 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE,
 					   writable);
 
-      /* TODO: This means we can move it, but we should also look for a trash dir */
       if (g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH))
-	g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH,
-					   writable);
+        g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH,
+                                           writable && parent_info->has_trash_dir);
     }
 }
 
