@@ -3,6 +3,8 @@ Overview of Changes from GLib 2.16.0 to GLib 2.16.1
 
 * Fix a crash in g_themed_icon_new
 
+* Update the included PCRE to 7.6
+
 
 Overview of Changes from GLib 2.15.6 to GLib 2.16.0
 ===================================================
