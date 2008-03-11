@@ -30,15 +30,7 @@
 #include "gmetadata.h"
 #include "gidlcompilercontext.h"
 
-gboolean no_init = FALSE;
-gchar **input = NULL;
-gchar *output = NULL;
-gchar *mname = NULL;
-gchar *shlib = NULL;
-gboolean debug = FALSE;
-gboolean verbose = FALSE;
-
-GLogLevelFlags logged_levels;
+static GLogLevelFlags logged_levels;
 
 static void log_handler (const gchar *log_domain,
 			 GLogLevelFlags log_level,
@@ -50,30 +42,43 @@ static void log_handler (const gchar *log_domain,
     g_log_default_handler (log_domain, log_level, message, user_data);
 }
 
-static GOptionEntry options[] = 
-{
-  { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
-  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
-  { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
-  { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib, "shared library", "FILE" }, 
-  { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL }, 
-  { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL }, 
-  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
-  { NULL, }
-};
-
 int
 main (int argc, char ** argv)
 {
+  gboolean no_init = FALSE;
+  gchar **input = NULL;
+  gchar *output = NULL;
+  gchar *mname = NULL;
+  gchar *shlib = NULL;
+  gboolean debug = FALSE;
+  gboolean verbose = FALSE;
+
   GOptionContext *context;
   GError *error = NULL;
   GList *m, *modules; 
   gint i;
   GList *c;
   gint entry_id;
-
   FILE *file;
   GIdlCompilerContext *ctx;
+  GOptionEntry options[] = 
+    {
+      { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init,
+	"do not create _init() function", NULL },
+      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output,
+	"output file", "FILE" }, 
+      { "module", 'm', 0, G_OPTION_ARG_STRING, &mname,
+	"module to compile", "NAME" }, 
+      { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib,
+	"shared library", "FILE" }, 
+      { "debug", 0, 0, G_OPTION_ARG_NONE, &debug,
+	"show debug messages", NULL }, 
+      { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose,
+	"show verbose messages", NULL }, 
+      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input,
+	NULL, NULL },
+      { NULL, }
+    };
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
