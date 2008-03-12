@@ -1,3 +1,8 @@
+2008-03-12  Tor Lillqvist  <tml@novell.com>
+
+	* glocalfile.c (_g_local_file_has_trash_dir): Implement as empty,
+	returning FALSE, on Win32.
+
 2008-03-11  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfile.c:

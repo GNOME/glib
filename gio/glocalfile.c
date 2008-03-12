@@ -1917,6 +1917,12 @@ g_local_file_trash (GFile         *file,
   return TRUE;
 }
 #else /* G_OS_WIN32 */
+gboolean
+_g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
+{
+  return FALSE;			/* XXX ??? */
+}
+
 static gboolean
 g_local_file_trash (GFile         *file,
 		    GCancellable  *cancellable,
