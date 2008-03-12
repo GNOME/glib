@@ -1311,7 +1311,7 @@ msgstr "том не підтримує операцію монтування"
 #: gio/gfile.c:4860
 #, fuzzy, c-format
 msgid "No application is registered as handling this file"
-msgstr "Не зареєстровано програму з назвою '%s', що створило закладку '%s'"
+msgstr "Не зареєстровано програму з назвою що створило закладку"
 
 #: gio/gfileenumerator.c:151
 #, c-format
