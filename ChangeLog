@@ -1,3 +1,11 @@
+2008-03-12  Sebastian Dröge  <slomo@circular-chaos.org>
+
+	Bug 316221 - G_LOCK warns about breaking strict-aliasing rules
+
+	* configure.in:
+	* glib/gthread.h: Prevent the compiler from warning about breaking
+	strict-aliasing rules when using gcc 4.3 and G_LOCK on C sources.
+
 2008-03-12  Tor Lillqvist  <tml@novell.com>
 
 	Bug 520914 - win_iconv doesn't support UCS-2
