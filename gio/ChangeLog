@@ -1,3 +1,15 @@
+2008-03-12  Tor Lillqvist  <tml@novell.com>
+
+	* glocalfileinfo.h: Introduce a macro GLocalFileStat that is the
+	normal struct stat on Unix but struct _stati64 on Windows to have
+	access to 64-bit file size information. Use that instead of struct
+	stat in the functions declared here in this private header.
+
+	* glocalfileinfo.c: Corresponding changes. Move some G_OS_WIN32,
+	S_ISLNK and HAVE_UTIMES ifdefs and add some more to avoid compiler
+	warnings about unused functions and variables. Don't set
+	meaningless attributes like inode numbers on Windows.
+
 2008-03-12  Benjamin Otte  <otte@gnome.org>
 
 	* gvfs.h:

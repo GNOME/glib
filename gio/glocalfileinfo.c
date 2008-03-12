@@ -99,20 +99,24 @@ struct ThumbMD5Context {
 	guint32 bits[2];
 	unsigned char in[64];
 };
+
 #ifndef G_OS_WIN32
+
 typedef struct {
   char *user_name;
   char *real_name;
 } UidData;
-#endif
+
 G_LOCK_DEFINE_STATIC (uid_cache);
 static GHashTable *uid_cache = NULL;
 
 G_LOCK_DEFINE_STATIC (gid_cache);
 static GHashTable *gid_cache = NULL;
 
+#endif  /* !G_OS_WIN32 */
+
 char *
-_g_local_file_info_create_etag (struct stat *statbuf)
+_g_local_file_info_create_etag (GLocalFileStat *statbuf)
 {
   GTimeVal tv;
   
@@ -129,7 +133,7 @@ _g_local_file_info_create_etag (struct stat *statbuf)
 }
 
 static char *
-_g_local_file_info_create_file_id (struct stat *statbuf)
+_g_local_file_info_create_file_id (GLocalFileStat *statbuf)
 {
   return g_strdup_printf ("l%" G_GUINT64_FORMAT ":%" G_GUINT64_FORMAT,
 			  (guint64) statbuf->st_dev, 
@@ -137,12 +141,14 @@ _g_local_file_info_create_file_id (struct stat *statbuf)
 }
 
 static char *
-_g_local_file_info_create_fs_id (struct stat *statbuf)
+_g_local_file_info_create_fs_id (GLocalFileStat *statbuf)
 {
   return g_strdup_printf ("l%" G_GUINT64_FORMAT,
 			  (guint64) statbuf->st_dev);
 }
 
+
+#ifdef S_ISLNK
 
 static gchar *
 read_link (const gchar *full_name)
@@ -176,6 +182,8 @@ read_link (const gchar *full_name)
   return NULL;
 #endif
 }
+
+#endif  /* S_ISLNK */
 
 /* Get the SELinux security context */
 static void
@@ -776,6 +784,9 @@ _g_local_file_info_get_parent_info (const char            *dir,
 				    GFileAttributeMatcher *attribute_matcher,
 				    GLocalParentFileInfo  *parent_info)
 {
+  /* Use plain struct stat for now as long as we only look at the
+   * S_ISVTX bit which doesn't exist on Win32 anyway.
+   */
   struct stat statbuf;
   int res;
   
@@ -789,6 +800,11 @@ _g_local_file_info_get_parent_info (const char            *dir,
       g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH) ||
       g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT))
     {
+      /* FIXME: Windows: The underlying _waccess() call in the C
+       * library is mostly pointless as it only looks at the READONLY
+       * FAT-style attribute of the file, it doesn't check the ACL at
+       * all.
+       */
       parent_info->writable = (g_access (dir, W_OK) == 0);
       
       res = g_stat (dir, &statbuf);
@@ -819,9 +835,10 @@ static void
 get_access_rights (GFileAttributeMatcher *attribute_matcher,
 		   GFileInfo             *info,
 		   const gchar           *path,
-		   struct stat           *statbuf,
+		   GLocalFileStat        *statbuf,
 		   GLocalParentFileInfo  *parent_info)
 {
+  /* FIXME: Windows: The underlyin _waccess() is mostly pointless */
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_ACCESS_CAN_READ))
     g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_READ,
@@ -876,7 +893,7 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 
 static void
 set_info_from_stat (GFileInfo             *info, 
-                    struct stat           *statbuf,
+                    GLocalFileStat        *statbuf,
 		    GFileAttributeMatcher *attribute_matcher)
 {
   GFileType file_type;
@@ -906,12 +923,16 @@ set_info_from_stat (GFileInfo             *info,
   g_file_info_set_size (info, statbuf->st_size);
 
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_DEVICE, statbuf->st_dev);
+#ifndef G_OS_WIN32
+  /* Pointless setting these on Windows even if they exist in the struct */
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE, statbuf->st_ino);
-  g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE, statbuf->st_mode);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_NLINK, statbuf->st_nlink);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_UID, statbuf->st_uid);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_GID, statbuf->st_gid);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_RDEV, statbuf->st_rdev);
+#endif
+  /* FIXME: st_mode is mostly pointless on Windows, too. Set the attribute or not? */
+  g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE, statbuf->st_mode);
 #if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE, statbuf->st_blksize);
 #endif
@@ -964,6 +985,8 @@ set_info_from_stat (GFileInfo             *info,
       g_free (id);
     }
 }
+
+#ifndef G_OS_WIN32
 
 static char *
 make_valid_utf8 (const char *name)
@@ -1019,7 +1042,7 @@ convert_pwd_string_to_utf8 (char *pwd_str)
   
   return utf8_string;
 }
-#ifndef G_OS_WIN32
+
 static void
 uid_data_free (UidData *data)
 {
@@ -1166,12 +1189,13 @@ get_groupname_from_gid (gid_t gid)
   G_UNLOCK (gid_cache);
   return res;
 }
+
 #endif /* !G_OS_WIN32 */
 
 static char *
 get_content_type (const char          *basename,
 		  const char          *path,
-		  struct stat         *statbuf,
+		  GLocalFileStat      *statbuf,
 		  gboolean             is_symlink,
 		  gboolean             symlink_broken,
 		  GFileQueryInfoFlags  flags,
@@ -1375,10 +1399,15 @@ _g_local_file_info_get (const char             *basename,
 			GError                **error)
 {
   GFileInfo *info;
-  struct stat statbuf;
+  GLocalFileStat statbuf;
+#ifdef S_ISLNK
   struct stat statbuf2;
+#endif
   int res;
   gboolean is_symlink, symlink_broken;
+#ifdef G_OS_WIN32
+  DWORD dos_attributes;
+#endif
 
   info = g_file_info_new ();
 
@@ -1391,7 +1420,33 @@ _g_local_file_info_get (const char             *basename,
   if (attribute_matcher == NULL)
     return info;
 
+#ifndef G_OS_WIN32
   res = g_lstat (path, &statbuf);
+#else
+  {
+    wchar_t *wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, error);
+    int len;
+
+    if (wpath == NULL)
+      {
+        g_object_unref (info);
+        return NULL;
+      }
+
+    len = wcslen (wpath);
+    while (len > 0 && G_IS_DIR_SEPARATOR (wpath[len-1]))
+      len--;
+    if (len > 0 &&
+        (!g_path_is_absolute (path) || len > g_path_skip_root (path) - path))
+      wpath[len] = '\0';
+
+    res = _wstati64 (wpath, &statbuf);
+    dos_attributes = GetFileAttributesW (wpath);
+
+    g_free (wpath);
+  }
+#endif
+
   if (res == -1)
     {
       int errsv = errno;
@@ -1412,6 +1467,7 @@ _g_local_file_info_get (const char             *basename,
 #endif
   symlink_broken = FALSE;
   
+#ifdef S_ISLNK
   if (is_symlink)
     {
       g_file_info_set_is_symlink (info, TRUE);
@@ -1428,15 +1484,28 @@ _g_local_file_info_get (const char             *basename,
 	    symlink_broken = TRUE;
 	}
     }
+#endif
 
   set_info_from_stat (info, &statbuf, attribute_matcher);
   
+#ifndef G_OS_WIN32
   if (basename != NULL && basename[0] == '.')
     g_file_info_set_is_hidden (info, TRUE);
 
   if (basename != NULL && basename[strlen (basename) -1] == '~')
     g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP, TRUE);
+#else
+  if (dos_attributes & FILE_ATTRIBUTE_HIDDEN)
+    g_file_info_set_is_hidden (info, TRUE);
 
+  if (dos_attributes & FILE_ATTRIBUTE_ARCHIVE)
+    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE, TRUE);
+
+  if (dos_attributes & FILE_ATTRIBUTE_SYSTEM)
+    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_DOS_IS_SYSTEM, TRUE);
+#endif
+
+#ifdef S_ISLNK
   if (is_symlink &&
       g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET))
@@ -1445,6 +1514,7 @@ _g_local_file_info_get (const char             *basename,
       g_file_info_set_symlink_target (info, link);
       g_free (link);
     }
+#endif
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
@@ -1605,11 +1675,17 @@ _g_local_file_info_get_from_fd (int      fd,
 				char    *attributes,
 				GError **error)
 {
-  struct stat stat_buf;
+  GLocalFileStat stat_buf;
   GFileAttributeMatcher *matcher;
   GFileInfo *info;
   
-  if (fstat (fd, &stat_buf) == -1)
+#ifdef G_OS_WIN32
+#define FSTAT _fstati64
+#else
+#define FSTAT fstat
+#endif
+
+  if (FSTAT (fd, &stat_buf) == -1)
     {
       int errsv = errno;
 
@@ -1669,6 +1745,7 @@ get_uint32 (const GFileAttributeValue  *value,
   return TRUE;
 }
 
+#ifdef HAVE_UTIMES
 static gboolean
 get_uint64 (const GFileAttributeValue  *value,
 	    guint64                    *val_out,
@@ -1685,6 +1762,7 @@ get_uint64 (const GFileAttributeValue  *value,
   
   return TRUE;
 }
+#endif
 
 #if defined(HAVE_SYMLINK)
 static gboolean
@@ -1844,6 +1922,7 @@ set_symlink (char                       *filename,
 }
 #endif
 
+#ifdef HAVE_UTIMES
 static int
 lazy_stat (char        *filename, 
            struct stat *statbuf, 
@@ -1863,7 +1942,6 @@ lazy_stat (char        *filename,
 }
 
 
-#ifdef HAVE_UTIMES
 static gboolean
 set_mtime_atime (char                       *filename,
 		 const GFileAttributeValue  *mtime_value,
@@ -2006,9 +2084,16 @@ _g_local_file_info_set_attributes  (char                 *filename,
 				    GCancellable         *cancellable,
 				    GError              **error)
 {
-  GFileAttributeValue *value, *uid, *gid;
+  GFileAttributeValue *value;
+#ifdef HAVE_CHOWN
+  GFileAttributeValue *uid, *gid;
+#endif
+#ifdef HAVE_UTIMES
   GFileAttributeValue *mtime, *mtime_usec, *atime, *atime_usec;
+#endif
+#if defined (HAVE_CHOWN) && defined (HAVE_UTIMES)
   GFileAttributeStatus status;
+#endif
   gboolean res;
   
   /* Handles setting multiple specified data in a single set, and takes care

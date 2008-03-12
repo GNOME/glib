@@ -40,6 +40,13 @@ typedef struct {
   dev_t device;
 } GLocalParentFileInfo;
 
+#ifdef G_OS_WIN32
+/* We want 64-bit file size support */
+#define GLocalFileStat struct _stati64
+#else
+#define GLocalFileStat struct stat
+#endif
+
 gboolean   _g_local_file_has_trash_dir        (const char *dirname,
 					       dev_t dir_dev);
 void       _g_local_file_info_get_parent_info (const char                 *dir,
@@ -54,7 +61,7 @@ GFileInfo *_g_local_file_info_get             (const char                 *basen
 GFileInfo *_g_local_file_info_get_from_fd     (int                         fd,
 					       char                       *attributes,
 					       GError                    **error);
-char *     _g_local_file_info_create_etag     (struct stat                *statbuf);
+char *     _g_local_file_info_create_etag     (GLocalFileStat             *statbuf);
 gboolean   _g_local_file_info_set_attribute   (char                       *filename,
 					       const char                 *attribute,
 					       GFileAttributeType          type,
