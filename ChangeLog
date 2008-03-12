@@ -1,3 +1,11 @@
+2008-03-12  Tor Lillqvist  <tml@novell.com>
+
+	Bug 520914 - win_iconv doesn't support UCS-2
+	
+	* glib/win_iconv.c: Make UCS-2 just an alias for
+	UTF-16. Technically this is wrong of course, but shouldn't matter
+	an awful lot in practice.
+
 2008-03-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Bug 521591 – g_markup_parse_context_parse() creates GError message that 

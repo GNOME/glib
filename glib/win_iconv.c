@@ -178,10 +178,12 @@ static struct {
     {1200, "CP1200"},
     {1200, "UTF16LE"},
     {1200, "UTF-16LE"},
+    {1200, "UCS-2LE"},
 
     {1201, "CP1201"},
     {1201, "UTF16BE"},
     {1201, "UTF-16BE"},
+    {1201, "UCS-2BE"},
     {1201, "unicodeFFFE"},
 
     {12000, "CP12000"},
@@ -205,6 +207,7 @@ static struct {
     /* Default is little endian, because the platform is */
     {1200, "UTF16"},
     {1200, "UTF-16"},
+    {1200, "UCS-2"},
     {12000, "UTF32"},
     {12000, "UTF-32"},
 #endif
@@ -891,7 +894,9 @@ make_csconv(const char *_name)
     {
         cv.mbtowc = utf16_mbtowc;
         cv.wctomb = utf16_wctomb;
-        if (_stricmp(name, "UTF-16") == 0 || _stricmp(name, "UTF16") == 0)
+        if (_stricmp(name, "UTF-16") == 0 ||
+	    _stricmp(name, "UTF16") == 0 ||
+	    _stricmp(name, "UCS-2") == 0)
             cv.flags |= UNICODE_FLAG_USE_BOM_ENDIAN;
     }
     else if (cv.codepage == 12000 || cv.codepage == 12001)
