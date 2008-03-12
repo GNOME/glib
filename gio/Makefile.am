@@ -86,6 +86,12 @@ SUBDIRS += inotify
 platform_libadd += inotify/libinotify.la
 endif
 
+if OS_WIN32
+SUBDIRS += win32
+platform_libadd += win32/libgiowin32.la
+endif
+
+
 SUBDIRS += .
 
 if HAVE_FAM

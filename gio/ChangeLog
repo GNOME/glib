@@ -1,5 +1,18 @@
 2008-03-12  Tor Lillqvist  <tml@novell.com>
 
+	Bug 517419 - gio win32 directory monitor
+	Implementation by Vlad Grecescu.
+	
+	* win32/Makefile.am
+	* win32/gwin32directorymonitor.h
+	* win32/gwin32directorymonitor.c: New files.
+
+	* giomodule.c: Set up the GWin32DirectoryMonitor plumbing.
+
+	* Makefile.am: Add the win32 subdirectory.
+
+2008-03-12  Tor Lillqvist  <tml@novell.com>
+
 	* glocalfileinfo.h: Introduce a macro GLocalFileStat that is the
 	normal struct stat on Unix but struct _stati64 on Windows to have
 	access to 64-bit file size information. Use that instead of struct
