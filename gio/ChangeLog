@@ -1,3 +1,8 @@
+2008-03-12  Benjamin Otte  <otte@gnome.org>
+
+	* gvfs.h:
+	trim whitespace so gtk-doc groks the function name
+
 2008-03-12  Tor Lillqvist  <tml@novell.com>
 
 	* glocalfile.c (_g_local_file_has_trash_dir): Implement as empty,

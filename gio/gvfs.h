@@ -99,7 +99,7 @@ GFile *               g_vfs_get_file_for_path         (GVfs       *vfs,
 				                       const char *path);
 GFile *               g_vfs_get_file_for_uri          (GVfs       *vfs,
 				                       const char *uri);
-const gchar * const * g_vfs_get_supported_uri_schemes (GVfs *vfs);
+const gchar* const * g_vfs_get_supported_uri_schemes  (GVfs *vfs);
 
 GFile *               g_vfs_parse_name                (GVfs       *vfs,
 				                       const char *parse_name);
