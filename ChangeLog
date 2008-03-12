@@ -1,5 +1,7 @@
 2008-03-12  Matthias Clasen <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.17.0
+
 	* ChangeLog.pre-2-16: rotate ChangeLog
 	
 	* === branch for 2.16 ===
