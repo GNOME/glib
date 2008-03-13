@@ -8,6 +8,19 @@ if OS_UNIX
 SUBDIRS += xdgmime
 endif
 
+if MS_LIB_AVAILABLE
+noinst_DATA = gio-2.0.lib
+
+install-ms-lib:
+	$(INSTALL) gio-2.0.lib $(DESTDIR)$(libdir)
+
+uninstall-ms-lib:
+	-rm $(DESTDIR)$(libdir)/gio-2.0.lib
+else
+install-ms-lib:
+uninstall-ms-lib:
+endif
+
 gio.def: gio.symbols
 	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
 	  mv gio.def.tmp gio.def
@@ -205,11 +218,30 @@ libgio_2_0_la_LIBADD = \
 	$(XATTR_LIBS) 					\
 	$(NULL)
 
-if OS_WIN32
+if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
-libgio_2_0_la_LDFLAGS= -export-dynamic $(no_undefined) -export-symbols-regex '^g_.*'
+if OS_WIN32
+export_symbols = -export-symbols gio.def
+
+install-def-file:
+	$(INSTALL) gio.def $(DESTDIR)$(libdir)/gio-2.0.def
+
+uninstall-def-file:
+	-rm $(DESTDIR)$(libdir)/gio-2.0.def
+else
+install-def-file:
+uninstall-def-file:
+
+export_symbols = -export-symbols-regex '^g_.*'
+endif
+
+install-data-local: install-ms-lib install-def-file
+
+uninstall-local: uninstall-ms-lib uninstall-def-file
+
+libgio_2_0_la_LDFLAGS= -export-dynamic $(no_undefined) $(export_symbols)
 
 gio_headers =			\
 	gappinfo.h 		\
@@ -292,3 +324,6 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 	( top_builddir=`cd $(top_builddir) && pwd`; \
 	  cd $(srcdir) && $$top_builddir/gobject/glib-mkenums --template gioenumtypes.c.template $(gio_headers) ) > \
 	    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
+
+gio-2.0.lib: libgio-2.0.la gio.def
+	lib -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@

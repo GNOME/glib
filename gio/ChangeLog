@@ -1,3 +1,10 @@
+2008-03-13  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am: Actually use the gio.def file when linking the
+	library on Windows. Produce .lib library for Microsoft's toolchain
+	when possible. Install the .lib and .def file like for the other
+	libraries of GLib.
+
 2008-03-13  Tomas Bzatek  <tbzatek@redhat.com>
 
 	* tests/live-g-file.c:
