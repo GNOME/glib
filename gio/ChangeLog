@@ -1,3 +1,11 @@
+2008-03-13  Tomas Bzatek  <tbzatek@redhat.com>
+
+	* tests/live-g-file.c:
+	Include live-g-file in standard set of tests, making a temporary
+	directory in source structure.
+	
+	Clean target directory before the tests (write mode only)
+
 2008-03-12  Tor Lillqvist  <tml@novell.com>
 
 	Bug 517419 - gio win32 directory monitor

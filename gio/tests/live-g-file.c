@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+#define DEFAULT_TEST_DIR		"testdir_live-g-file"
+
 #define PATTERN_FILE_SIZE	0x10000
 #define TEST_HANDLE_SPECIAL	TRUE
 
@@ -1009,10 +1012,78 @@ test_delete (gconstpointer test_data)
   g_object_unref (root);
 }
 
+
+static void
+cleanup_dir_recurse (GFile *parent, GFile *root)
+{
+  gboolean res;
+  GError *error;
+  GFileEnumerator *enumerator;
+  GFileInfo *info;
+  GFile *descend;
+  char *relative_path;
+
+  g_assert (root != NULL);
+
+  error = NULL;
+  enumerator =
+    g_file_enumerate_children (parent, "*",
+			       G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL,
+			       &error);
+  if (! enumerator)
+	  return;
+
+  error = NULL;
+  info = g_file_enumerator_next_file (enumerator, NULL, &error);
+  while ((info) && (!error))
+    {
+      descend = g_file_get_child (parent, g_file_info_get_name (info));
+      g_assert (descend != NULL);
+      relative_path = g_file_get_relative_path (root, descend);
+      g_assert (relative_path != NULL);
+
+      log ("    deleting '%s'\n", g_file_info_get_display_name (info));
+
+      if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY)
+    	  cleanup_dir_recurse (descend, root);
+      
+      error = NULL;
+      res = g_file_delete (descend, NULL, &error);
+      g_assert_cmpint (res, ==, TRUE);
+
+      g_object_unref (descend);
+      error = NULL;
+      info = g_file_enumerator_next_file (enumerator, NULL, &error);
+    }
+  g_assert (error == NULL);
+
+  error = NULL;
+  res = g_file_enumerator_close (enumerator, NULL, &error);
+  g_assert_cmpint (res, ==, TRUE);
+  g_assert (error == NULL);
+}
+
+static void
+prep_clean_structure (gconstpointer test_data)
+{
+  GFile *root;
+  
+  g_assert (test_data != NULL);
+  log ("\n  Cleaning target testing structure in '%s'...\n",
+       (char *) test_data);
+
+  root = g_file_new_for_commandline_arg ((char *) test_data);
+  g_assert (root != NULL);
+  
+  cleanup_dir_recurse (root, root);
+
+  g_object_unref (root);
+}
+
 int
 main (int argc, char *argv[])
 {
-  static gboolean create_struct;
+  static gboolean only_create_struct;
   static char *target_path;
   GError *error;
   GOptionContext *context;
@@ -1020,7 +1091,7 @@ main (int argc, char *argv[])
   static GOptionEntry cmd_entries[] = {
     {"read-write", 'w', 0, G_OPTION_ARG_NONE, &write_test,
      "Perform write tests (incl. structure creation)", NULL},
-    {"create-struct", 'c', 0, G_OPTION_ARG_NONE, &create_struct,
+    {"create-struct", 'c', 0, G_OPTION_ARG_NONE, &only_create_struct,
      "Only create testing structure (no tests)", NULL},
     {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "Be verbose", NULL},
     {"posix", 'x', 0, G_OPTION_ARG_NONE, &posix_compat,
@@ -1030,7 +1101,7 @@ main (int argc, char *argv[])
 
   verbose = FALSE;
   write_test = FALSE;
-  create_struct = FALSE;
+  only_create_struct = FALSE;
   target_path = NULL;
   posix_compat = FALSE;
 
@@ -1038,6 +1109,20 @@ main (int argc, char *argv[])
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  /*  no extra parameters specified, assume we're executed from glib test suite  */ 
+  if (argc < 2)
+    {
+	  verbose = TRUE;
+	  write_test = TRUE;
+	  only_create_struct = FALSE;
+	  target_path = DEFAULT_TEST_DIR;
+#ifdef G_PLATFORM_WIN32
+	  posix_compat = FALSE;
+#else
+	  posix_compat = TRUE;
+#endif
+    }
+  
   /*  add trailing args  */
   error = NULL;
   context = g_option_context_new ("target_path");
@@ -1048,50 +1133,60 @@ main (int argc, char *argv[])
       return g_test_run ();
     }
 
-  /*  missing mandatory arg for target dir  */
-  if (argc < 2)
+  /*  remaining arg should is the target path; we don't care of the extra args here  */ 
+  if (argc >= 2)
+    target_path = strdup (argv[1]);
+  
+  if (! target_path) 
     {
+      g_print ("error: target path was not specified\n");
       g_print (g_option_context_get_help (context, TRUE, NULL));
       return g_test_run ();
     }
-  target_path = strdup (argv[1]);
 
+  
+  /*  Write test - clean target directory first  */
+  /*    this can be also considered as a test - enumerate + delete  */ 
+  if (write_test || only_create_struct)
+    g_test_add_data_func ("/live-g-file/prep_clean_structure", target_path,
+    	  	  prep_clean_structure);
+  
   /*  Write test - create new testing structure  */
-  if (write_test || create_struct)
+  if (write_test || only_create_struct)
     g_test_add_data_func ("/live-g-file/create_structure", target_path,
 			  test_create_structure);
 
   /*  Read test - test the sample structure - expect defined attributes to be there  */
-  if (!create_struct)
+  if (!only_create_struct)
     g_test_add_data_func ("/live-g-file/test_initial_structure", target_path,
 			  test_initial_structure);
 
   /*  Read test - test traverse the structure - no special file should appear  */
-  if (!create_struct)
+  if (!only_create_struct)
     g_test_add_data_func ("/live-g-file/test_traverse_structure", target_path,
 			  test_traverse_structure);
 
   /*  Read test - enumerate  */
-  if (!create_struct)
+  if (!only_create_struct)
     g_test_add_data_func ("/live-g-file/test_enumerate", target_path,
 			  test_enumerate);
 
   /*  Read test - open (g_file_read())  */
-  if (!create_struct)
+  if (!only_create_struct)
     g_test_add_data_func ("/live-g-file/test_open", target_path, test_open);
 
   /*  Write test - create  */
-  if (write_test && (!create_struct))
+  if (write_test && (!only_create_struct))
     g_test_add_data_func ("/live-g-file/test_create", target_path,
 			  test_create);
 
   /*  Write test - copy, move  */
-  if (write_test && (!create_struct))
+  if (write_test && (!only_create_struct))
     g_test_add_data_func ("/live-g-file/test_copy_move", target_path,
 			  test_copy_move);
 
   /*  Write test - delete, trash  */
-  if (write_test && (!create_struct))
+  if (write_test && (!only_create_struct))
     g_test_add_data_func ("/live-g-file/test_delete", target_path,
 			  test_delete);
 
