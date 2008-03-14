@@ -842,7 +842,12 @@ AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct 
 AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename], [#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <sys/mount.h>])
+#ifdef HAVE_PARAM_H
+#include <sys/param.h>
+#endif
+#ifdef HAVE_MOUNT_H
+#include <sys/mount.h>
+#endif])
 
 # Checks for libcharset
 jm_LANGINFO_CODESET

@@ -1,5 +1,11 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfile.c:
+        (g_local_file_query_filesystem_info):
+	Use right define name for f_fstypename member check
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
         * Makefile.am:
         * fen/Makefile.am: Added.
         * fen/fen-data.[ch]: Added.

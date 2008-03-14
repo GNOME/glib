@@ -1,6 +1,11 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:
+	Add required includes for f_fstypename member check.
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
 	Added checks for FEN (Solaris  File Event Notification)
 
 2008-03-13  Tor Lillqvist  <tml@novell.com>
