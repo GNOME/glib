@@ -90,8 +90,10 @@ GUnixMountEntry *g_unix_mount_at                    (const char         *mount_p
 gboolean       g_unix_mounts_changed_since          (guint64             time);
 gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
-GType              g_unix_mount_monitor_get_type (void) G_GNUC_CONST;
-GUnixMountMonitor *g_unix_mount_monitor_new      (void);
+GType              g_unix_mount_monitor_get_type       (void) G_GNUC_CONST;
+GUnixMountMonitor *g_unix_mount_monitor_new            (void);
+void               g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,
+                                                        int                limit_msec);
 
 gboolean g_unix_is_mount_path_system_internal (const char *mount_path);
 

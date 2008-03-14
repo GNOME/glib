@@ -1231,9 +1231,36 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
 }
 
 /**
+ * g_unix_mount_monitor_set_rate_limit:
+ * @mount_monitor: a #GUnixMountMonitor.
+ * @limit_msecs: a integer with the limit in milliseconds to
+ * poll for changes.
+ *
+ * Sets the rate limit to which the @mount_monitor will report
+ * consecutive change events to the mount and mount point entry files.
+ *
+ * Since: 2.18
+ **/
+void
+g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,
+                                     int                limit_msec)
+{
+  g_return_if_fail (G_IS_UNIX_MOUNT_MONITOR (mount_monitor));
+
+  if (mount_monitor->fstab_monitor != NULL)
+    g_file_monitor_set_rate_limit (mount_monitor->fstab_monitor, limit_msec);
+
+  if (mount_monitor->mtab_monitor != NULL)
+    g_file_monitor_set_rate_limit (mount_monitor->mtab_monitor, limit_msec);
+}
+
+/**
  * g_unix_mount_monitor_new:
  * 
- * Gets a new #GUnixMountMonitor.
+ * Gets a new #GUnixMountMonitor. The default rate limit for which the
+ * monitor will report consecutive changes for the mount and mount
+ * point entry files is the default for a #GFileMonitor. Use
+ * g_unix_mount_monitor_set_rate_limit() to change this.
  * 
  * Returns: a #GUnixMountMonitor. 
  **/

@@ -1,3 +1,9 @@
+2008-03-12  David Zeuthen  <davidz@redhat.com>
+
+	* gio.symbols:
+	* gunixmounts.[ch]:
+	Add g_unix_mount_monitor_set_rate_limit() function (#521946)
+
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
         * gunixmounts.c:
