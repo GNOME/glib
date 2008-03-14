@@ -1598,27 +1598,10 @@ guess_mount_type (const char *mount_path,
     {
       basename = g_path_get_basename (mount_path);
       
-      if (g_str_has_prefix (basename, "cdrom") ||
+      if (g_str_has_prefix (basename, "cdr") ||
 	  g_str_has_prefix (basename, "cdwriter") ||
 	  g_str_has_prefix (basename, "burn") ||
-	  g_str_has_prefix (basename, "cdr") ||
-	  g_str_has_prefix (basename, "cdrw") ||
-	  g_str_has_prefix (basename, "dvdrom") ||
-	  g_str_has_prefix (basename, "dvdram") ||
-	  g_str_has_prefix (basename, "dvdr") ||
-	  g_str_has_prefix (basename, "dvdrw") ||
-	  g_str_has_prefix (basename, "cdrom_dvdrom") ||
-	  g_str_has_prefix (basename, "cdrom_dvdram") ||
-	  g_str_has_prefix (basename, "cdrom_dvdr") ||
-	  g_str_has_prefix (basename, "cdrom_dvdrw") ||
-	  g_str_has_prefix (basename, "cdr_dvdrom") ||
-	  g_str_has_prefix (basename, "cdr_dvdram") ||
-	  g_str_has_prefix (basename, "cdr_dvdr") ||
-	  g_str_has_prefix (basename, "cdr_dvdrw") ||
-	  g_str_has_prefix (basename, "cdrw_dvdrom") ||
-	  g_str_has_prefix (basename, "cdrw_dvdram") ||
-	  g_str_has_prefix (basename, "cdrw_dvdr") ||
-	  g_str_has_prefix (basename, "cdrw_dvdrw"))
+	  g_str_has_prefix (basename, "dvdr"))
 	type = G_UNIX_MOUNT_TYPE_CDROM;
       else if (g_str_has_prefix (basename, "floppy"))
 	type = G_UNIX_MOUNT_TYPE_FLOPPY;

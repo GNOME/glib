@@ -1,5 +1,12 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
+        * gunixmounts.c:
+        (guess_mount_type):
+	Avoid redudant tests (#521851)
+	Patch from Josselin Mouette
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
         * gfilemonitor.c:
         (g_file_monitor_is_cancelled):
 	Fix C89 issue (#521672)
