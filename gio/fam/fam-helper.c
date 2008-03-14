@@ -181,6 +181,22 @@ _fam_sub_startup (void)
   return TRUE;
 }
 
+void
+_fam_sub_shutdown (void)
+{
+  G_LOCK (fam_connection);
+
+  if (fam_connection != NULL) {
+    FAMClose (fam_connection);
+    g_free (fam_connection);
+    g_source_remove (fam_watch_id);
+    fam_watch_id = 0;
+    fam_connection = NULL;
+  }
+
+  G_UNLOCK (fam_connection);
+}
+
 fam_sub*
 _fam_sub_add (const gchar* pathname,
 	      gboolean directory,

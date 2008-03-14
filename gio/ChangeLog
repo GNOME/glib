@@ -1,5 +1,13 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
+        * fam/fam-helper.[ch]:
+        * fam/fam-module.c:
+	Shut down fam (including removing fam GSource) when
+	module is unloaded (#521513)
+	Patch from Joe Marcus Clarke   
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
         * giomodule.c:
         (_g_io_modules_ensure_loaded):
 	Fix up FEN ifdefs
