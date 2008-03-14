@@ -249,8 +249,9 @@ g_file_monitor_init (GFileMonitor *monitor)
 gboolean
 g_file_monitor_is_cancelled (GFileMonitor *monitor)
 {
-  g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
   gboolean res;
+
+  g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
   G_LOCK (cancelled);
   res = monitor->priv->cancelled;

@@ -1,5 +1,12 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
+        * gfilemonitor.c:
+        (g_file_monitor_is_cancelled):
+	Fix C89 issue (#521672)
+	Patch from Jens Granseuer
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
         * fam/fam-helper.[ch]:
         * fam/fam-module.c:
 	Shut down fam (including removing fam GSource) when
