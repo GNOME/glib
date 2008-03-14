@@ -1,5 +1,13 @@
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
+        * fam/fam-helper.[ch]:
+        * fam/fam-module.c:
+	Shut down fam (including removing fam GSource) when
+	module is unloaded (#521513)
+	Patch from Joe Marcus Clarke   
+
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfile.c:
         (g_local_file_query_filesystem_info):
 	Use right define name for f_fstypename member check

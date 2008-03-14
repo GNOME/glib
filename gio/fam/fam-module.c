@@ -26,6 +26,7 @@
 #include "giomodule.h"
 #include "gfamdirectorymonitor.h"
 #include "gfamfilemonitor.h"
+#include "fam-helper.h"
 
 void
 g_io_module_load (GIOModule *module)
@@ -37,5 +38,6 @@ g_io_module_load (GIOModule *module)
 void
 g_io_module_unload (GIOModule   *module)
 {
+  _fam_sub_shutdown ();
 }
 
