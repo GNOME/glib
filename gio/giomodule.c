@@ -333,9 +333,13 @@ _g_io_modules_ensure_loaded (void)
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
       _g_inotify_directory_monitor_get_type ();
       _g_inotify_file_monitor_get_type ();
-#elif defined(HAVE_FEN)
+#endif
+#if defined(HAVE_FEN)
       _g_fen_directory_monitor_get_type ();
       _g_fen_file_monitor_get_type ();
+#endif
+#ifdef G_OS_WIN32
+      g_win32_directory_monitor_get_type ();
 #endif
 #ifdef G_OS_UNIX
       _g_unix_volume_monitor_get_type ();
