@@ -1,3 +1,9 @@
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+        (g_local_file_query_filesystem_info):
+	Use right define name for f_fstypename member check
+
 2008-03-12  Tor Lillqvist  <tml@novell.com>
 
 	* glocalfile.c (_g_local_file_has_trash_dir): Implement as empty,

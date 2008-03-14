@@ -1,3 +1,8 @@
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Add required includes for f_fstypename member check.
+
 2008-03-12  Sebastian Dröge  <slomo@circular-chaos.org>
 
 	Bug 316221 - G_LOCK warns about breaking strict-aliasing rules

@@ -1001,7 +1001,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif
     }
 #ifdef USE_STATFS
-#if defined(HAVE_STRUCT_STATFS_FS_TYPENAME)
+#if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
   fstype = g_strdup(statfs_buffer.f_fstypename);
 #else
   fstype = get_fs_type (statfs_buffer.f_type);
