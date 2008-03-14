@@ -1502,6 +1502,22 @@ AC_CHECK_HEADERS([sys/inotify.h],
 
 AM_CONDITIONAL(HAVE_INOTIFY, [test "$inotify_support" = "yes"])
 
+dnl *********************************
+dnl ** Check for Solaris FEN (GIO) **
+dnl *********************************
+fen_support=no
+AC_COMPILE_IFELSE([ 
+#include <port.h> 
+#ifndef PORT_SOURCE_FILE 
+#error "Please upgrade to Nevada 72 or above to suppoert FEN" 
+#endif 
+int main() { return 0; } ],
+[
+	fen_support=yes
+],)
+
+AM_CONDITIONAL(HAVE_FEN, [test "$fen_support" = "yes"])
+
 dnl ****************************
 dnl *** Checks for FAM (GIO) ***
 dnl ****************************
@@ -3234,6 +3250,7 @@ gthread/Makefile
 gio/Makefile
 gio/xdgmime/Makefile
 gio/inotify/Makefile
+gio/fen/Makefile
 gio/fam/Makefile
 gio/win32/Makefile
 gio/tests/Makefile

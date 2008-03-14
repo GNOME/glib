@@ -1,3 +1,8 @@
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Added checks for FEN (Solaris  File Event Notification)
+
 2008-03-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Add lib/gio-2.0.lib and lib/gio-2.0.def.

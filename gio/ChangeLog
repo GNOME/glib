@@ -1,3 +1,20 @@
+2008-03-14  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
+        * fen/Makefile.am: Added.
+        * fen/fen-data.[ch]: Added.
+        * fen/fen-dump.[ch]: Added.
+        * fen/fen-helper.[ch]: Added.
+        * fen/fen-kernel.[ch]: Added.
+        * fen/fen-missing.[ch]: Added.
+        * fen/fen-node.[ch]: Added.
+        * fen/fen-sub.[ch]: Added.
+        * fen/gfendirectorymonitor.[ch]: Added.
+        * fen/gfenfilemonitor.[ch]: Added.
+        * giomodule.c:
+	Added Solaris FEN file notification backend.
+	Patch from Lin Ma <Lin.Ma@Sun.COM>
+
 2008-03-13  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am: Actually use the gio.def file when linking the
