@@ -19,6 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
+
 #ifndef __G_REGEX_H__
 #define __G_REGEX_H__
 
@@ -235,6 +239,5 @@ gboolean	  g_match_info_fetch_named_pos	(const GMatchInfo    *match_info,
 gchar		**g_match_info_fetch_all	(const GMatchInfo    *match_info);
 
 G_END_DECLS
-
 
 #endif  /*  __G_REGEX_H__ */

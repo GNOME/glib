@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,6 +19,10 @@
  *
  * Author: Alexander Larsson <alexl@redhat.com>
  */
+
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
 
 #ifndef __G_URI_FUNCS_H__
 #define __G_URI_FUNCS_H__

@@ -1,3 +1,16 @@
+2008-03-14  Michael Natterer  <mitch@imendio.com>
+
+	* glib/*.h: make it possible to disable single-file includes by
+	defining G_DISABLE_SINGLE_INCLUDES when building against GLib.
+	Approved by Tim Janik.
+
+	* glib/glib.h: include <glib/gslice.h>.
+
+	* glib/gi18n.h
+	* glib/gi18n-lib.h
+	* glib/gprintf.h: include <glib.h> so the above works when these
+	files are included without including <glib.h> first.
+
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:

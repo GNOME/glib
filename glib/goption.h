@@ -18,6 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
+
 #ifndef __G_OPTION_H__
 #define __G_OPTION_H__
 
@@ -153,7 +157,6 @@ void          g_option_group_set_translate_func     (GOptionGroup       *group,
 						     GDestroyNotify      destroy_notify);
 void          g_option_group_set_translation_domain (GOptionGroup       *group,
 						     const gchar        *domain);
-
 
 G_END_DECLS
 

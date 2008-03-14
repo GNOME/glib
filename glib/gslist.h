@@ -21,8 +21,12 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
+
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
 
 #ifndef __G_SLIST_H__
 #define __G_SLIST_H__
@@ -104,7 +108,7 @@ gpointer g_slist_nth_data                (GSList           *list,
 void     g_slist_push_allocator          (gpointer	   dummy);
 void     g_slist_pop_allocator           (void);
 #endif
+
 G_END_DECLS
 
 #endif /* __G_SLIST_H__ */
-

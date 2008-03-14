@@ -21,8 +21,12 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
+
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
 
 #ifndef __G_QUARK_H__
 #define __G_QUARK_H__
@@ -43,8 +47,6 @@ G_CONST_RETURN gchar* g_quark_to_string          (GQuark       quark) G_GNUC_CON
 G_CONST_RETURN gchar* g_intern_string            (const gchar *string);
 G_CONST_RETURN gchar* g_intern_static_string     (const gchar *string);
 
-
 G_END_DECLS
 
 #endif /* __G_QUARK_H__ */
-

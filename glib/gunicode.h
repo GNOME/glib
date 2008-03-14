@@ -19,6 +19,10 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
+
 #ifndef __G_UNICODE_H__
 #define __G_UNICODE_H__
 
@@ -381,7 +385,6 @@ GUnicodeScript g_unichar_get_script (gunichar ch) G_GNUC_CONST;
 /* private */
 
 gchar *_g_utf8_make_valid (const gchar *name);
-
 
 G_END_DECLS
 

@@ -18,6 +18,10 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
+#endif
+
 #ifndef __G_MARKUP_H__
 #define __G_MARKUP_H__
 
@@ -152,4 +156,3 @@ gboolean   g_markup_collect_attributes (const gchar         *element_name,
 G_END_DECLS
 
 #endif /* __G_MARKUP_H__ */
-
