@@ -93,7 +93,9 @@ limits the usefulness of child setup functions.
 </para>
 
 <para>
-Also note that modifying the environment from 
+Also note that modifying the environment from the child setup function
+may not have the intended effect, since it will get overridden by
+a non-%NULL @env argument to the <literal>g_spawn...</literal> functions.
 </para>
 
 <para>
