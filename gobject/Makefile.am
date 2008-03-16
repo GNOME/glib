@@ -55,6 +55,7 @@ endif
 
 if OS_WIN32
 export_symbols = -export-symbols gobject.def
+gobject_def = gobject.def
 
 install-def-file:
 	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
@@ -82,7 +83,7 @@ libgobject_2_0_la_LDFLAGS = \
 
 libgobject_2_0_la_LIBADD = $(libglib)
 
-libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(GOBJECT_DEF)
+libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
 
 #
 # setup source file variables

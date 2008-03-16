@@ -59,6 +59,7 @@ endif
 
 if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gmodule.def
+gmodule_def = gmodule.def
 
 install-def-file:
 	$(INSTALL) $(srcdir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
@@ -84,7 +85,7 @@ libgmodule_2_0_la_LDFLAGS = \
 
 libgmodule_2_0_la_LIBADD = $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 
-libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(GMODULE_DEF)
+libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(gmodule_def)
 
 if OS_WIN32
 gmodule-win32-res.o: gmodule.rc

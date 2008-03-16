@@ -47,6 +47,7 @@ endif
 
 if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gthread.def
+gthread_def = gthread.def
 
 install-def-file:
 	$(INSTALL) $(srcdir)/gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
@@ -71,7 +72,7 @@ libgthread_2_0_la_LDFLAGS = \
 
 libgthread_2_0_la_LIBADD = $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(libglib)
 
-libgthread_2_0_la_DEPENDENCIES = $(gthread_win32_res) $(GTHREAD_DEF)
+libgthread_2_0_la_DEPENDENCIES = $(gthread_win32_res) $(gthread_def)
 
 if OS_WIN32
 gthread-win32-res.o: gthread.rc

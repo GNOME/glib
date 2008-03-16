@@ -1,3 +1,12 @@
+2008-03-16  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Don't bother defining Autoconf variables for
+	glib.def, gmodule.def, gobject.def and gthread.def when this can
+	be handled easily in */Makefile.am which are the only files that
+	use them. Remove also TESTGMODULE_EXP which isn't used at all.
+
+	* glib/Makefile.am: Corrsponding change.
+	
 2008-03-14  Michael Natterer  <mitch@imendio.com>
 
 	* glib/*.h: make it possible to disable single-file includes by

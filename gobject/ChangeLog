@@ -1,3 +1,8 @@
+2008-03-16  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am: Define gobject_def locally here instead of using an
+	Autoconf variable.
+
 2008-03-10  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.16.1 ===

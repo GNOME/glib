@@ -252,8 +252,8 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-# This requires a very new libtool
 export_symbols = -export-symbols glib.def
+glib_def = glib.def
 
 install-def-file:
 	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
@@ -286,7 +286,7 @@ pcre_inc =
 endif
 
 libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib)
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) @GLIB_DEF@
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
 
 libglib_2_0_la_LDFLAGS = \
 	 $(glib_win32_res_ldflag) \

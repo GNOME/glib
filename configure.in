@@ -118,11 +118,6 @@ AC_MSG_CHECKING([for Win32])
 case "$host" in
   *-*-mingw*)
     glib_native_win32=yes
-    GLIB_DEF=glib.def
-    GMODULE_DEF=gmodule.def
-    GOBJECT_DEF=gobject.def
-    GTHREAD_DEF=gthread.def
-    TESTGMODULE_EXP=testgmodule.exp
     glib_pid_type='void *'
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
     # don't seem to be quite good enough, at least not in mingw-runtime-3.14.
@@ -136,11 +131,6 @@ case "$host" in
     ;;
   *)
     glib_native_win32=no
-    GLIB_DEF=
-    GMODULE_DEF=
-    GOBJECT_DEF=
-    GTHREAD_DEF=
-    TESTGMODULE_EXP=
     glib_pid_type=int
     ;;
 esac
@@ -165,11 +155,6 @@ AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
 AM_CONDITIONAL(OS_LINUX, [test "$glib_os_linux" = "yes"])
 AM_CONDITIONAL(OS_CARBON, [test "$glib_have_carbon" = "yes"])
-AC_SUBST(GLIB_DEF)
-AC_SUBST(GMODULE_DEF)
-AC_SUBST(GOBJECT_DEF)
-AC_SUBST(GTHREAD_DEF)
-AC_SUBST(TESTGMODULE_EXP)
 
 if test "$glib_native_win32" = "yes"; then
   AC_CHECK_TOOL(WINDRES, windres, no)
