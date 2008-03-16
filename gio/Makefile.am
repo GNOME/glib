@@ -230,6 +230,7 @@ endif
 
 if OS_WIN32
 export_symbols = -export-symbols gio.def
+gio_def = gio.def
 
 install-def-file:
 	$(INSTALL) gio.def $(DESTDIR)$(libdir)/gio-2.0.def
@@ -248,6 +249,7 @@ install-data-local: install-ms-lib install-def-file
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
 libgio_2_0_la_LDFLAGS= -export-dynamic $(no_undefined) $(export_symbols)
+libgio_2_0_la_DEPENDENCIES = $(gio_def)
 
 gio_headers =			\
 	gappinfo.h 		\
