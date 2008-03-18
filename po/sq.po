@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-16\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-14 04:06+0000\n"
-"PO-Revision-Date: 2008-03-18 10:57+0100\n"
+"PO-Revision-Date: 2008-03-18 16:17+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1518,7 +1518,7 @@ msgstr "I pamundur riemërtimi i file, emër ekzistues file"
 #, c-format
 #, c-format
 msgid "Invalid filename"
-msgstr "Emër i pasaktë file"
+msgstr "Emër i pavlefshëm file"
 
 # (pofilter) variables: translation contains variables not in original: %s, %s
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
@@ -1969,7 +1969,7 @@ msgstr "Një array me emrat e ikonave"
 # (pofilter) untranslated: checks whether a string has been translated at all
 #: ../gio/gthemedicon.c:244
 msgid "use default fallbacks"
-msgstr ""
+msgstr "përdor alternativat e paracaktuara"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
 #: ../gio/gthemedicon.c:245
@@ -1977,6 +1977,9 @@ msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
+"Tregon nëse duhen përdorur ikonat alternative të paracaktuara gjetur duke "
+"shkurtuar emrin tek simbolet '-'. Shpërfill emrat mbas emrit të parë në rast "
+"se jepen më shumë se një."
 
 # (pofilter) variables: translation contains variables not in original: %s, %s
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
