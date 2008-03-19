@@ -1,3 +1,10 @@
+2008-03-19  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.c:
+        (copy_stream_with_progress):
+	Bump block side for copy to 64k to minimize
+	overhead for low latency links. (#523015)
+
 2008-03-14  Alexander Larsson  <alexl@redhat.com>
 
         * gfilemonitor.c:
