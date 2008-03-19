@@ -47,7 +47,8 @@
  * user credentials such as FTP or WebDAV.
  *
  * Users should instantiate a subclass of this that implements all
- * the various callbacks to show the required dialogs.
+ * the various callbacks to show the required dialogs, such as 
+ * #GtkMountOperation.
  **/
 
 G_DEFINE_TYPE (GMountOperation, g_mount_operation, G_TYPE_OBJECT);

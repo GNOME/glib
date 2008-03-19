@@ -85,6 +85,9 @@ typedef enum {
  * @G_PASSWORD_SAVE_PERMANENTLY: save a password permanently.
  * 
  * #GPasswordSave is used to indicate the lifespan of a saved password.
+ *
+ * #Gvfs stores passwords in the Gnome keyring when this flag allows it
+ * to, and later retrieves it again from there. 
  **/ 
 typedef enum {
   G_PASSWORD_SAVE_NEVER,
