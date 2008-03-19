@@ -142,6 +142,15 @@
       </para>
     </formalpara>
 
+    <formalpara>
+      <title><envar>GVFS_DISABLE_FUSE</envar></title>
+
+      <para>
+        This variable can be set to keep #Gvfs from starting the fuse backend,
+        which may be unwanted or unnecessary in certain situations.
+      </para>
+    </formalpara>
+
     <para>
       The following environment variables are only useful for debugging
       GIO itself or modules that it loads. They should not be set in a
