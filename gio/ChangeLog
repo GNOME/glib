@@ -1,3 +1,8 @@
+2008-03-19  Sebastien Bacher  <seb128@ubuntu.com>
+
+	* gunixmounts.c: (guess_mount_type): change from debian,
+	consider nfs4 mounts as G_UNIX_MOUNT_TYPE_NFS (#523338)
+
 2008-03-19  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:

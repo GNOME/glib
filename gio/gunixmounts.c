@@ -1568,7 +1568,8 @@ guess_mount_type (const char *mount_path,
       (strcmp (filesystem_type, "iso9660") == 0) ||
       (strcmp (filesystem_type, "cd9660") == 0))
     type = G_UNIX_MOUNT_TYPE_CDROM;
-  else if (strcmp (filesystem_type, "nfs") == 0)
+  else if ((strcmp (filesystem_type, "nfs") == 0) ||
+           (strcmp (filesystem_type, "nfs4") == 0))
     type = G_UNIX_MOUNT_TYPE_NFS;
   else if (g_str_has_prefix (device_path, "/vol/dev/diskette/") ||
 	   g_str_has_prefix (device_path, "/dev/fd") ||
