@@ -1,3 +1,10 @@
+2008-03-19  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.c:
+        (copy_stream_with_progress):
+	Bump block side for copy to 64k to minimize
+	overhead for low latency links. (#523015)
+
 2008-03-16  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am (libgio_2_0_la_DEPENDENCIES): Make libgio-2.0.la

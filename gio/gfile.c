@@ -2124,7 +2124,7 @@ copy_stream_with_progress (GInputStream           *in,
 {
   gssize n_read, n_written;
   goffset current_size;
-  char buffer[8192], *p;
+  char buffer[1024*64], *p;
   gboolean res;
   goffset total_size;
   GFileInfo *info;
