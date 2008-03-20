@@ -1,3 +1,9 @@
+2008-03-20  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Final fixes for struct statfs.f_fstypename checks (OpenBSD). (#521045)
+	Patch from ephraim_owns@hotmail.com
+
 2008-03-19  Tor Lillqvist  <tml@novell.com>
 
 	Bug 523298 - win_iconv can't convert from UTF-8 to GB18030 (or vice versa)
