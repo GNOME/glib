@@ -450,7 +450,7 @@ fdata_adjust_changed (fdata *f)
     }
     f->is_dir = S_ISDIR (buf.st_mode) ? TRUE : FALSE;
     if (f->len != buf.st_size) {
-        FD_W ("LEN [%lld:%lld] %s\n", f->len, buf.st_size, FN_NAME(f));
+        /* FD_W ("LEN [%lld:%lld] %s\n", f->len, buf.st_size, FN_NAME(f)); */
         f->len = buf.st_size;
         ev = fnode_event_new (FILE_MODIFIED, TRUE, f);
         if (ev != NULL) {

@@ -1,5 +1,9 @@
 2008-03-20  Lin Ma  <Lin.Ma@Sun.COM>
 
+	* fen/fen-data.c: (fdata_adjust_changed): Removed a bad formatted msg.
+
+2008-03-20  Lin Ma  <Lin.Ma@Sun.COM>
+
 	* fen/fen-data.c: (process_events), (fdata_add_event): Fixed FEN does
 	not emit attribute changed events when optimizing changed events.
 	* fen/fen-helper.c, fen/fen-kernel.c: Added ifdef to default disable
