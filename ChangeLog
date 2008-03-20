@@ -1,3 +1,16 @@
+2008-03-19  Tor Lillqvist  <tml@novell.com>
+
+	Bug 523298 - win_iconv can't convert from UTF-8 to GB18030 (or vice versa)
+
+	* glib/win_iconv.c: Fixes for code page 54936 (GB18030)
+	(mbtowc_flags): New function. Check if a code page is one of those
+	for which the dwFlags parameter to MultiByteToWideChar() must be
+	zero. Return 0 or MB_ERR_INVALID_CHARS.
+	(mbcs_mblen): New function for multi-byte (more than two bytes for
+	some characters) code pages. Only handles 54936 for now.
+	(make_csconv): Use it for 54936.
+	(kernel_mbtowc): Use mbtowc_flags().
+
 2008-03-18  Sebastian Dröge  <slomo@circular-chaos.org>
 
 	Bug 522292 - Gives warnings in glib/gutils.h with GCC in C99 mode
