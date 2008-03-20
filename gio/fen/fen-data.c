@@ -43,7 +43,11 @@
 #define	BASE_NUM	2
 
 #define FD_W if (fd_debug_enabled) g_warning
+#ifdef GIO_COMPILATION
 static gboolean fd_debug_enabled = FALSE;
+#else
+static gboolean fd_debug_enabled = TRUE;
+#endif
 
 G_LOCK_EXTERN (fen_lock);
 static GList *deleting_data = NULL;
@@ -557,8 +561,16 @@ process_events (gpointer udata)
                 g_assert (f->change_update_id > 0);
             }
             break;
-        case FILE_ATTRIB: /* Ignored */
-        case FILE_DELETE:
+        case FILE_ATTRIB:
+            g_assert (f->change_update_id == 0);
+            if (!port_add (&f->fobj, &f->len, f)) {
+                ev = fnode_event_new (FILE_DELETE, FALSE, f);
+                if (ev != NULL) {
+                    fdata_add_event (f, ev);
+                }
+            }
+            break;
+        case FILE_DELETE: /* Ignored */
             break;
         default:
             g_assert_not_reached ();
@@ -651,10 +663,10 @@ fdata_add_event (fdata *f, fnode_event_t *ev)
                     } else {
                         break;
                     }
-                } else if (tail->e == FILE_ATTRIB && ev->e == FILE_MODIFIED) {
+                } else if (ev->e == FILE_MODIFIED && tail->e == FILE_ATTRIB) {
                     ev->has_twin = TRUE;
                     fnode_event_delete (tail);
-                } else if (ev->e == FILE_ATTRIB) {
+                } else if (ev->e == FILE_ATTRIB && f->change_update_id > 0) {
                     tail->has_twin = TRUE;
                     /* skip the current event */
                     fnode_event_delete (ev);

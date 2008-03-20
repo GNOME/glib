@@ -35,7 +35,11 @@
 #endif
 
 #define FH_W if (fh_debug_enabled) g_warning
+#ifdef GIO_COMPILATION
 static gboolean fh_debug_enabled = FALSE;
+#else
+static gboolean fh_debug_enabled = TRUE;
+#endif
 
 G_LOCK_EXTERN (fen_lock);
 

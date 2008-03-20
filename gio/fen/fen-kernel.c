@@ -33,7 +33,11 @@
 #include "fen-dump.h"
 
 #define FK_W if (fk_debug_enabled) g_warning
+#ifdef GIO_COMPILATION
 static gboolean fk_debug_enabled = FALSE;
+#else
+static gboolean fk_debug_enabled = TRUE;
+#endif
 
 G_GNUC_INTERNAL G_LOCK_DEFINE (fen_lock);
 #define PE_ALLOC	64
