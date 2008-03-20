@@ -839,13 +839,13 @@ AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h sys/sysctl.h f
 
 # check for structure fields
 AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
-AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename], [#include <sys/types.h>
+AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename],,, [#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#ifdef HAVE_PARAM_H
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
-#ifdef HAVE_MOUNT_H
+#ifdef HAVE_SYS_MOUNT_H
 #include <sys/mount.h>
 #endif])
 
