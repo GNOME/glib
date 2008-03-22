@@ -998,7 +998,7 @@ is_element_full (ParseData   *parse_data,
                  const gchar *element,
                  const gchar  sep)
 {
-  gchar *ns_uri, *ns_name, *s, *resolved;
+  gchar *ns_uri, *ns_name;
   const gchar *p, *element_name;
   gboolean retval;
  
@@ -1017,7 +1017,7 @@ is_element_full (ParseData   *parse_data,
    * namespace has been set, just do a plain comparison between @full_element
    * and @element.
    */
-  p = strchr (element_full, ':');
+  p = g_utf8_strchr (element_full, -1, ':');
   if (p)
     {
       ns_name = g_strndup (element_full, p - element_full);
@@ -1037,14 +1037,11 @@ is_element_full (ParseData   *parse_data,
       
       return (0 == strcmp (element_full, element));
     }
-  
-  resolved = g_strdup_printf ("%s%c%s", ns_uri, sep, element_name);
-  s = g_strdup_printf ("%s%c%s", namespace, sep, element);
-  retval = (0 == strcmp (resolved, s));
+
+  retval = (0 == strcmp (ns_uri, namespace) &&
+            0 == strcmp (element_name, element));
   
   g_free (ns_name);
-  g_free (resolved);
-  g_free (s);
   
   return retval;
 }

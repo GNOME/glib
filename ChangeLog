@@ -1,6 +1,14 @@
+2008-03-22  Emmanuele Bassi  <ebassi@gnome.org>
+
+	Bug 518160 - replace two g_strdup_printf calls in GBookmarkFile
+
+	* glib/gbookmarkfile.c (is_element_full): Compare the fragments
+	instead of building two strings; this avoids two g_strdup_printf()
+	per namespaced element enountered. (#518160, Felix Riemann)
+
 2008-03-20  Alexander Larsson  <alexl@redhat.com>
 
-        * configure.in:
+	* configure.in:
 	Final fixes for struct statfs.f_fstypename checks (OpenBSD). (#521045)
 	Patch from ephraim_owns@hotmail.com
 
