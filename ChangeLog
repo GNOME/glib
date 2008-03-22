@@ -1,3 +1,16 @@
+2008-03-22  Claudio Saavedra  <csaavedra@gnome.org>
+
+	Bug 523877 – gbookmarkfile: avoid using g_string_append_printf() and
+	other optimizations
+
+	* glib/gbookmarkfile.c: (bookmark_metadata_dump),
+	(bookmark_item_dump), (g_bookmark_file_dump), (expand_exec_line):
+	Replace all calls to g_string_append_printf with g_strconcat () or
+	g_string_append () where appropriate, to reduce the file creation time.
+	Also, use g_string_sized_new () with an appropriate buffer size instead
+	of g_string_new (NULL), to reduce time spent in memory reallocation.
+	(#523877, Claudio Saavedra, Emmanuele Bassi)
+
 2008-03-22  Emmanuele Bassi  <ebassi@gnome.org>
 
 	Bug 518160 - replace two g_strdup_printf calls in GBookmarkFile

@@ -339,56 +339,62 @@ static gchar *
 bookmark_metadata_dump (BookmarkMetadata *metadata)
 {
   GString *retval;
+  gchar *buffer;
  
   if (!metadata->applications)
     return NULL;
   
-  retval = g_string_new (NULL);
+  retval = g_string_sized_new (1024);
   
   /* metadata container */
-  g_string_append_printf (retval,
-  			  "      <%s %s=\"%s\">\n",
-  			  XBEL_METADATA_ELEMENT,
-  			  XBEL_OWNER_ATTRIBUTE, BOOKMARK_METADATA_OWNER);
-  
+  g_string_append (retval,
+		   "      "
+		   "<" XBEL_METADATA_ELEMENT
+		   " " XBEL_OWNER_ATTRIBUTE "=\"" BOOKMARK_METADATA_OWNER
+		   "\">\n");
+
   /* mime type */
-  if (metadata->mime_type)
-    g_string_append_printf (retval,
-  			    "        <%s:%s %s=\"%s\"/>\n",
-  			    MIME_NAMESPACE_NAME,
-  			    MIME_TYPE_ELEMENT,
-  			    MIME_TYPE_ATTRIBUTE, metadata->mime_type);
-  
+  if (metadata->mime_type) {
+    buffer = g_strconcat ("        "
+			  "<" MIME_NAMESPACE_NAME ":" MIME_TYPE_ELEMENT " "
+			  MIME_TYPE_ATTRIBUTE "=\"", metadata->mime_type, "\"/>\n",
+			  NULL);    
+    g_string_append (retval, buffer);
+    g_free (buffer);
+  }
+
   if (metadata->groups)
     {
       GList *l;
       
       /* open groups container */
-      g_string_append_printf (retval,
-      			      "        <%s:%s>\n",
-      			      BOOKMARK_NAMESPACE_NAME,
-      			      BOOKMARK_GROUPS_ELEMENT);
+      g_string_append (retval,
+		       "        "
+		       "<" BOOKMARK_NAMESPACE_NAME
+		       ":" BOOKMARK_GROUPS_ELEMENT ">\n");
       
       for (l = g_list_last (metadata->groups); l != NULL; l = l->prev)
         {
           gchar *group_name;
 
 	  group_name = g_markup_escape_text ((gchar *) l->data, -1);
-          g_string_append_printf (retval,
-          			  "          <%s:%s>%s</%s:%s>\n",
-          			  BOOKMARK_NAMESPACE_NAME,
-          			  BOOKMARK_GROUP_ELEMENT,
-          			  group_name,
-          			  BOOKMARK_NAMESPACE_NAME,
-          			  BOOKMARK_GROUP_ELEMENT);
+	  buffer = g_strconcat ("          "
+				"<" BOOKMARK_NAMESPACE_NAME
+				":" BOOKMARK_GROUP_ELEMENT ">",
+				group_name,
+				"</" BOOKMARK_NAMESPACE_NAME
+				":"  BOOKMARK_GROUP_ELEMENT ">\n", NULL);
+	  g_string_append (retval, buffer);
+
+	  g_free (buffer);
 	  g_free (group_name);
         }
       
       /* close groups container */
-      g_string_append_printf (retval,
-      			      "        </%s:%s>\n",
-      			      BOOKMARK_NAMESPACE_NAME,
-      			      BOOKMARK_GROUPS_ELEMENT);
+      g_string_append (retval,
+		       "        "
+		       "</" BOOKMARK_NAMESPACE_NAME
+		       ":" BOOKMARK_GROUPS_ELEMENT ">\n");
     }
   
   if (metadata->applications)
@@ -396,10 +402,10 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
       GList *l;
       
       /* open applications container */
-      g_string_append_printf (retval,
-      			      "        <%s:%s>\n",
-      			      BOOKMARK_NAMESPACE_NAME,
-      			      BOOKMARK_APPLICATIONS_ELEMENT);
+      g_string_append (retval,
+		       "        "
+		       "<" BOOKMARK_NAMESPACE_NAME
+		       ":" BOOKMARK_APPLICATIONS_ELEMENT ">\n");
       
       for (l = g_list_last (metadata->applications); l != NULL; l = l->prev)
         {
@@ -419,10 +425,10 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
         }
       
       /* close applications container */
-      g_string_append_printf (retval,
-      			      "        </%s:%s>\n",
-      			      BOOKMARK_NAMESPACE_NAME,
-      			      BOOKMARK_APPLICATIONS_ELEMENT);
+      g_string_append (retval,
+		       "        "
+		       "</" BOOKMARK_NAMESPACE_NAME
+		       ":" BOOKMARK_APPLICATIONS_ELEMENT ">\n");
     }
   
   /* icon */
@@ -430,24 +436,28 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
     {
       if (!metadata->icon_mime)
         metadata->icon_mime = g_strdup ("application/octet-stream");
-      
-      g_string_append_printf (retval,
-      			      "       <%s:%s %s=\"%s\" %s=\"%s\"/>\n",
-      			      BOOKMARK_NAMESPACE_NAME,
-      			      BOOKMARK_ICON_ELEMENT,
-      			      BOOKMARK_HREF_ATTRIBUTE, metadata->icon_href,
-      			      BOOKMARK_TYPE_ATTRIBUTE, metadata->icon_mime);
+
+      buffer = g_strconcat ("       "
+			    "<" BOOKMARK_NAMESPACE_NAME
+			    ":" BOOKMARK_ICON_ELEMENT
+			    " " BOOKMARK_HREF_ATTRIBUTE "=\"", metadata->icon_href,
+			    "\" " BOOKMARK_TYPE_ATTRIBUTE "=\"", metadata->icon_mime, "\"/>\n", NULL);
+      g_string_append (retval, buffer);
+
+      g_free (buffer);
     }
   
   /* private hint */
   if (metadata->is_private)
-    g_string_append_printf (retval,
-    			    "        <%s:%s/>\n",
-    			    BOOKMARK_NAMESPACE_NAME,
-    			    BOOKMARK_PRIVATE_ELEMENT);
+    g_string_append (retval,
+		     "        "
+		     "<" BOOKMARK_NAMESPACE_NAME
+		     ":" BOOKMARK_PRIVATE_ELEMENT "/>\n");
   
   /* close metadata container */
-  g_string_append_printf (retval, "      </%s>\n", XBEL_METADATA_ELEMENT);
+  g_string_append (retval,
+		   "      "
+		   "</" XBEL_METADATA_ELEMENT ">\n");
   			   
   return g_string_free (retval, FALSE);
 }
@@ -501,6 +511,7 @@ bookmark_item_dump (BookmarkItem *item)
   GString *retval;
   gchar *added, *visited, *modified;
   gchar *escaped_uri;
+  gchar *buffer;
  
   /* at this point, we must have at least a registered application; if we don't
    * we don't screw up the bookmark file, and just skip this item
@@ -511,37 +522,45 @@ bookmark_item_dump (BookmarkItem *item)
       return NULL;
     }
   
-  retval = g_string_new (NULL);
+  retval = g_string_sized_new (4096);
   
   added = timestamp_to_iso8601 (item->added);
   modified = timestamp_to_iso8601 (item->modified);
   visited = timestamp_to_iso8601 (item->visited);
 
   escaped_uri = g_markup_escape_text (item->uri, -1);
-  
-  g_string_append_printf (retval,
-                          "  <%s %s=\"%s\" %s=\"%s\" %s=\"%s\" %s=\"%s\">\n",
-                          XBEL_BOOKMARK_ELEMENT,
-                          XBEL_HREF_ATTRIBUTE, escaped_uri,
-                          XBEL_ADDED_ATTRIBUTE, added,
-                          XBEL_MODIFIED_ATTRIBUTE, modified,
-                          XBEL_VISITED_ATTRIBUTE, visited);
+
+  buffer = g_strconcat ("  <"
+                        XBEL_BOOKMARK_ELEMENT
+                        " "
+                        XBEL_HREF_ATTRIBUTE "=\"", escaped_uri, "\" "
+                        XBEL_ADDED_ATTRIBUTE "=\"", added, "\" "
+                        XBEL_MODIFIED_ATTRIBUTE "=\"", modified, "\" "
+                        XBEL_VISITED_ATTRIBUTE "=\"", visited, "\">\n",
+                        NULL);
+
+  g_string_append (retval, buffer);
+
   g_free (escaped_uri);
   g_free (visited);
   g_free (modified);
   g_free (added);
+  g_free (buffer);
   
   if (item->title)
     {
       gchar *escaped_title;
       
       escaped_title = g_markup_escape_text (item->title, -1);
-      g_string_append_printf (retval,
-    			      "    <%s>%s</%s>\n",
-    			      XBEL_TITLE_ELEMENT,
-    			      escaped_title,
-    			      XBEL_TITLE_ELEMENT);
+      buffer = g_strconcat ("    "
+                            "<" XBEL_TITLE_ELEMENT ">",
+                            escaped_title,
+                            "</" XBEL_TITLE_ELEMENT ">\n",
+                            NULL);
+      g_string_append (retval, buffer);
+
       g_free (escaped_title);
+      g_free (buffer);
     }
   
   if (item->description)
@@ -549,34 +568,38 @@ bookmark_item_dump (BookmarkItem *item)
       gchar *escaped_desc;
       
       escaped_desc = g_markup_escape_text (item->description, -1);
-      g_string_append_printf (retval,
-    			      "    <%s>%s</%s>\n",
-    			      XBEL_DESC_ELEMENT,
-    			      escaped_desc,
-    			      XBEL_DESC_ELEMENT);
+      buffer = g_strconcat ("    "
+                            "<" XBEL_DESC_ELEMENT ">",
+                            escaped_desc,
+                            "</" XBEL_DESC_ELEMENT ">\n",
+                            NULL);
+      g_string_append (retval, buffer);
+
       g_free (escaped_desc);
+      g_free (buffer);
     }
   
   if (item->metadata)
     {
       gchar *metadata;
       
-      /* open info container */
-      g_string_append_printf (retval, "    <%s>\n", XBEL_INFO_ELEMENT);
-      
       metadata = bookmark_metadata_dump (item->metadata);
       if (metadata)
         {
-          retval = g_string_append (retval, metadata);
+          buffer = g_strconcat ("    "
+                                "<" XBEL_INFO_ELEMENT ">\n",
+                                metadata,
+                                "    "
+				"</" XBEL_INFO_ELEMENT ">\n",
+                                NULL);
+          retval = g_string_append (retval, buffer);
 
+          g_free (buffer);
 	  g_free (metadata);
 	}
-      
-      /* close info container */
-      g_string_append_printf (retval, "    </%s>\n", XBEL_INFO_ELEMENT);
     }
-  
-  g_string_append_printf (retval, "  </%s>\n", XBEL_BOOKMARK_ELEMENT);
+
+  g_string_append (retval, "  </" XBEL_BOOKMARK_ELEMENT ">\n");
   
   return g_string_free (retval, FALSE);
 }
@@ -1435,56 +1458,53 @@ g_bookmark_file_dump (GBookmarkFile  *bookmark,
 		      GError        **error)
 {
   GString *retval;
+  gchar *buffer;
   GList *l;
   
-  retval = g_string_new (NULL);
-  
-  g_string_append_printf (retval,
-  			  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+  retval = g_string_sized_new (4096);
+
+  g_string_append (retval,
+		   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 #if 0
-			  /* XXX - do we really need the doctype? */
-  			  "<!DOCTYPE %s\n"
-  			  "  PUBLIC \"%s\"\n"
-  			  "         \"%s\">\n"
+		   /* XXX - do we really need the doctype? */
+		   "<!DOCTYPE " XBEL_DTD_NICK "\n"
+		   "  PUBLIC \"" XBEL_DTD_SYSTEM "\"\n"
+		   "         \"" XBEL_DTD_URI "\">\n"
 #endif
-  			  "<%s %s=\"%s\"\n"
-  			  "      xmlns:%s=\"%s\"\n"
-  			  "      xmlns:%s=\"%s\"\n>",
-#if 0
-			  /* XXX - do we really need the doctype? */
-  			  XBEL_DTD_NICK,
-  			  XBEL_DTD_SYSTEM, XBEL_DTD_URI,
-#endif
-  			  XBEL_ROOT_ELEMENT,
-  			  XBEL_VERSION_ATTRIBUTE, XBEL_VERSION,
-  			  BOOKMARK_NAMESPACE_NAME, BOOKMARK_NAMESPACE_URI,
-  			  MIME_NAMESPACE_NAME, MIME_NAMESPACE_URI);
+		   "<" XBEL_ROOT_ELEMENT " " XBEL_VERSION_ATTRIBUTE "=\"" XBEL_VERSION "\"\n"
+		   "      xmlns:" BOOKMARK_NAMESPACE_NAME "=\"" BOOKMARK_NAMESPACE_URI "\"\n"
+		   "      xmlns:" MIME_NAMESPACE_NAME     "=\"" MIME_NAMESPACE_URI "\"\n>");
   
   if (bookmark->title)
     {
       gchar *escaped_title;
-      
+ 
       escaped_title = g_markup_escape_text (bookmark->title, -1);
+
+      buffer = g_strconcat ("  "
+			    "<" XBEL_TITLE_ELEMENT ">",
+			    escaped_title,
+			    "</" XBEL_TITLE_ELEMENT ">\n", NULL);
       
-      g_string_append_printf (retval, "  <%s>%s</%s>\n",
-                              XBEL_TITLE_ELEMENT,
-                              escaped_title,
-                              XBEL_TITLE_ELEMENT);
-      
+      g_string_append (retval, buffer);
+
+      g_free (buffer);
       g_free (escaped_title);
     }
   
   if (bookmark->description)
     {
       gchar *escaped_desc;
-      
+ 
       escaped_desc = g_markup_escape_text (bookmark->description, -1);
-      
-      g_string_append_printf (retval, "  <%s>%s</%s>\n",
-                              XBEL_DESC_ELEMENT,
-                              escaped_desc,
-                              XBEL_DESC_ELEMENT);
-      
+
+      buffer = g_strconcat ("  "
+			    "<" XBEL_DESC_ELEMENT ">",
+			    escaped_desc,
+			    "</" XBEL_DESC_ELEMENT ">\n", NULL);
+      g_string_append (retval, buffer);
+
+      g_free (buffer);
       g_free (escaped_desc);
     }
   
@@ -1510,7 +1530,7 @@ g_bookmark_file_dump (GBookmarkFile  *bookmark,
     }
 
 out:
-  g_string_append_printf (retval, "</%s>", XBEL_ROOT_ELEMENT);
+  g_string_append (retval, "</" XBEL_ROOT_ELEMENT ">");
   
   if (length)
     *length = retval->len;
@@ -3271,7 +3291,7 @@ expand_exec_line (const gchar *exec_fmt,
   GString *exec;
   gchar ch;
   
-  exec = g_string_new (NULL);
+  exec = g_string_sized_new (512);
   while ((ch = *exec_fmt++) != '\0')
    {
      if (ch != '%')
