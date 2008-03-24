@@ -1,3 +1,15 @@
+2008-03-24  Tor Lillqvist  <tml@novell.com>
+
+	Merge from trunk:
+
+	* Makefile.am (libgio_2_0_la_DEPENDENCIES): Make libgio-2.0.la
+	depend on gio.def on Windows.
+
+	* Makefile.am: Actually use the gio.def file when linking the
+	library on Windows. Produce .lib library for Microsoft's toolchain
+	when possible. Install the .lib and .def file like for the other
+	libraries of GLib.
+
 2008-03-19  Sebastien Bacher  <seb128@ubuntu.com>
 
 	* gunixmounts.c: (guess_mount_type): change from debian,
