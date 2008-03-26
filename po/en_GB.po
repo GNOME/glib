@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-11 17:30+0000\n"
+"POT-Creation-Date: 2008-03-26 15:51+0000\n"
 "PO-Revision-Date: 2008-02-17 09:21-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
@@ -278,7 +278,7 @@ msgstr "Can't do a raw read in g_io_channel_read_line_string"
 #: ../glib/giochannel.c:1898
 #, c-format
 msgid "Leftover unconverted data in read buffer"
-msgstr "Left over unconverted data in read buffer"
+msgstr "Leftover unconverted data in read buffer"
 
 #: ../glib/giochannel.c:1634 ../glib/giochannel.c:1711
 #, c-format
@@ -550,7 +550,7 @@ msgstr "backtracking limit reached"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "the pattern contains items not supported for partial matching"
 
-#: ../glib/gregex.c:154 ../gio/glocalfile.c:1956
+#: ../glib/gregex.c:154 ../gio/glocalfile.c:1962
 msgid "internal error"
 msgstr "internal error"
 
@@ -757,7 +757,7 @@ msgstr "code overflow"
 
 #: ../glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr "over ran compiling workspace"
+msgstr "overran compiling workspace"
 
 #: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
@@ -1155,7 +1155,7 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
-#: ../gio/gcancellable.c:296 ../gio/glocalfile.c:1949
+#: ../gio/gcancellable.c:296 ../gio/glocalfile.c:1955
 #: ../gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
@@ -1256,7 +1256,7 @@ msgstr "Can't copy over directory"
 msgid "Can't copy directory over directory"
 msgstr "Can't copy directory over directory"
 
-#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2103
+#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2109
 #, c-format
 msgid "Target file exists"
 msgstr "Target file exists"
@@ -1367,8 +1367,8 @@ msgstr "Can't rename root directory"
 msgid "Can't rename file, filename already exist"
 msgstr "Can't rename file, filename already exist"
 
-#: ../gio/glocalfile.c:1121 ../gio/glocalfile.c:1978 ../gio/glocalfile.c:2007
-#: ../gio/glocalfile.c:2156 ../gio/glocalfileoutputstream.c:472
+#: ../gio/glocalfile.c:1121 ../gio/glocalfile.c:1984 ../gio/glocalfile.c:2013
+#: ../gio/glocalfile.c:2162 ../gio/glocalfileoutputstream.c:472
 #: ../gio/glocalfileoutputstream.c:517 ../gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
@@ -1389,7 +1389,7 @@ msgstr "Error opening file: %s"
 msgid "Can't open directory"
 msgstr "Can't open directory"
 
-#: ../gio/glocalfile.c:1314 ../gio/glocalfile.c:1982
+#: ../gio/glocalfile.c:1314 ../gio/glocalfile.c:1988
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Error removing file: %s"
@@ -1397,7 +1397,7 @@ msgstr "Error removing file: %s"
 #: ../gio/glocalfile.c:1677
 #, c-format
 msgid "Error trashing file: %s"
-msgstr "Error trashing file: %s"
+msgstr "Error moving file to the wastebasket: %s"
 
 #: ../gio/glocalfile.c:1700
 #, c-format
@@ -1407,51 +1407,51 @@ msgstr "Unable to create wastebasket dir %s: %s"
 #: ../gio/glocalfile.c:1721
 #, c-format
 msgid "Unable to find toplevel directory for trash"
-msgstr "Unable to find toplevel directory for trash"
+msgstr "Unable to find top-level directory for wastebasket"
 
 #: ../gio/glocalfile.c:1800 ../gio/glocalfile.c:1820
 #, c-format
 msgid "Unable to find or create trash directory"
-msgstr "Unable to find or create trash directory"
+msgstr "Unable to find or create wastebasket directory"
 
 #: ../gio/glocalfile.c:1854
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Unable to create wastebasket info file: %s"
 
-#: ../gio/glocalfile.c:1879 ../gio/glocalfile.c:1948 ../gio/glocalfile.c:1955
+#: ../gio/glocalfile.c:1879 ../gio/glocalfile.c:1954 ../gio/glocalfile.c:1961
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Unable to move file to the wastebasket: %s"
 
-#: ../gio/glocalfile.c:2011
+#: ../gio/glocalfile.c:2017
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error making symbolic link: %s"
 
-#: ../gio/glocalfile.c:2071 ../gio/glocalfile.c:2160
+#: ../gio/glocalfile.c:2077 ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error moving file: %s"
 
-#: ../gio/glocalfile.c:2094
+#: ../gio/glocalfile.c:2100
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Can't move directory over directory"
 
-#: ../gio/glocalfile.c:2116 ../gio/glocalfileoutputstream.c:777
+#: ../gio/glocalfile.c:2122 ../gio/glocalfileoutputstream.c:777
 #: ../gio/glocalfileoutputstream.c:791 ../gio/glocalfileoutputstream.c:806
 #: ../gio/glocalfileoutputstream.c:822 ../gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Backup file creation failed"
 
-#: ../gio/glocalfile.c:2135
+#: ../gio/glocalfile.c:2141
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error removing target file: %s"
 
-#: ../gio/glocalfile.c:2149
+#: ../gio/glocalfile.c:2155
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Move between mounts not supported"
@@ -1705,7 +1705,7 @@ msgstr "Error reading from unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Error closing unix: %s"
 
-#: ../gio/gunixmounts.c:1778 ../gio/gunixmounts.c:1815
+#: ../gio/gunixmounts.c:1779 ../gio/gunixmounts.c:1816
 msgid "Filesystem root"
 msgstr "Filesystem root"
 
