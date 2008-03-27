@@ -1,3 +1,10 @@
+2008-03-27  Alexander Larsson  <alexl@redhat.com>
+
+	* glocalfile.c (g_local_file_move):
+	Return G_IO_ERROR_IS_DIRECTORY, not G_IO_ERROR_WOULD_MERGE when moving
+	file over directory. This is according to the docs and what the move via
+	copy+remove fallback does.
+
 2008-03-27  Lin Ma  <Lin.Ma@Sun.COM>
 
 	* fen/*.[hc]: Updated copyright.

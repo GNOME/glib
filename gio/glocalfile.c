@@ -2078,9 +2078,8 @@ g_local_file_move (GFile                  *source,
 		   g_strerror (errsv));
       return FALSE;
     }
-  else
-    source_is_dir = S_ISDIR (statbuf.st_mode);
 
+  source_is_dir = S_ISDIR (statbuf.st_mode);
   source_size = statbuf.st_size;
   
   destination_exist = FALSE;
@@ -2094,10 +2093,16 @@ g_local_file_move (GFile                  *source,
 	  /* Always fail on dirs, even with overwrite */
 	  if (S_ISDIR (statbuf.st_mode))
 	    {
-	      g_set_error (error,
-			   G_IO_ERROR,
-			   G_IO_ERROR_WOULD_MERGE,
-			   _("Can't move directory over directory"));
+	      if (source_is_dir)
+		g_set_error (error,
+			     G_IO_ERROR,
+			     G_IO_ERROR_WOULD_MERGE,
+			     _("Can't move directory over directory"));
+              else
+		g_set_error (error,
+			     G_IO_ERROR,
+			     G_IO_ERROR_IS_DIRECTORY,
+			     _("File is directory"));
 	      return FALSE;
 	    }
 	}
