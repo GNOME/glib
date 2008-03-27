@@ -1,3 +1,7 @@
+2008-03-27  Lin Ma  <Lin.Ma@Sun.COM>
+
+	* fen/*.[hc]: Updated copyright.
+
 2008-03-20  Lin Ma  <Lin.Ma@Sun.COM>
 
 	* fen/fen-data.c: (fdata_adjust_changed): Removed a bad formatted msg.
