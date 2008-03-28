@@ -2117,6 +2117,8 @@ g_file_copy_attributes (GFile           *source,
 static gboolean
 copy_stream_with_progress (GInputStream           *in,
 			   GOutputStream          *out,
+                           GFile                  *source,
+                           GFileQueryInfoFlags     info_flags,
 			   GCancellable           *cancellable,
 			   GFileProgressCallback   progress_callback,
 			   gpointer                progress_callback_data,
@@ -2129,15 +2131,33 @@ copy_stream_with_progress (GInputStream           *in,
   goffset total_size;
   GFileInfo *info;
 
-  total_size = 0;
+  total_size = -1;
   info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (in),
 					 G_FILE_ATTRIBUTE_STANDARD_SIZE,
 					 cancellable, NULL);
   if (info)
     {
-      total_size = g_file_info_get_size (info);
+      if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
+        total_size = g_file_info_get_size (info);
       g_object_unref (info);
     }
+
+  if (total_size == -1)
+    {
+      info = g_file_query_info (source, 
+                                G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                G_FILE_QUERY_INFO_NONE,
+                                cancellable, NULL);
+      if (info)
+        {
+          if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
+            total_size = g_file_info_get_size (info);
+          g_object_unref (info);
+        }
+    }
+
+  if (total_size == -1)
+    total_size = 0;
   
   current_size = 0;
   res = TRUE;
@@ -2171,7 +2191,7 @@ copy_stream_with_progress (GInputStream           *in,
 
       if (!res)
         break;
-      
+
       if (progress_callback)
 	progress_callback (current_size, total_size, progress_callback_data);
     }
@@ -2182,7 +2202,6 @@ copy_stream_with_progress (GInputStream           *in,
   /* Make sure we send full copied size */
   if (progress_callback)
     progress_callback (current_size, total_size, progress_callback_data);
-
   
   /* Don't care about errors in source here */
   g_input_stream_close (in, cancellable, NULL);
@@ -2260,7 +2279,7 @@ file_copy_fallback (GFile                  *source,
       return FALSE;
     }
 
-  if (!copy_stream_with_progress (in, out, cancellable,
+  if (!copy_stream_with_progress (in, out, source, cancellable,
 				  progress_callback, progress_callback_data,
 				  error))
     return FALSE;

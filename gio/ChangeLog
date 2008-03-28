@@ -1,5 +1,13 @@
 2008-03-28  Alexander Larsson  <alexl@redhat.com>
 
+        Reviewed by NOBODY (OOPS!).
+
+        * gfile.c:
+        (copy_stream_with_progress):
+        (file_copy_fallback):
+
+2008-03-28  Alexander Larsson  <alexl@redhat.com>
+
 	* glocalfile.c (g_local_file_move):
 	Reuse old string instead of adding new one.
 
