@@ -4,7 +4,8 @@
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2007 Sebastian Dröge.
- * Copyright (C) 2008 Sun Microsystems, Inc.
+ * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
+ * Use is subject to license terms.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

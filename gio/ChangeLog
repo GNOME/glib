@@ -1,3 +1,7 @@
+2008-03-28  Lin Ma  <Lin.Ma@Sun.COM>
+
+	* fen/*.[hc]: still copyright issue. I hate copyright.
+
 2008-03-27  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfile.c (g_local_file_move):
