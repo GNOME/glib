@@ -2,6 +2,12 @@
 
         * gfile.c:
         (copy_stream_with_progress):
+	Fix up last commit.
+	
+2008-03-28  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.c:
+        (copy_stream_with_progress):
         (file_copy_fallback):
 	Fallback to g_file_query_info for source size
 	if g_file_input_stream_query_info fails. (#524579)
