@@ -2118,7 +2118,6 @@ static gboolean
 copy_stream_with_progress (GInputStream           *in,
 			   GOutputStream          *out,
                            GFile                  *source,
-                           GFileQueryInfoFlags     info_flags,
 			   GCancellable           *cancellable,
 			   GFileProgressCallback   progress_callback,
 			   gpointer                progress_callback_data,
