@@ -2102,7 +2102,7 @@ g_local_file_move (GFile                  *source,
 		g_set_error (error,
 			     G_IO_ERROR,
 			     G_IO_ERROR_IS_DIRECTORY,
-			     _("File is directory"));
+			     _("Can't copy over directory"));
 	      return FALSE;
 	    }
 	}
