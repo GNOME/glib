@@ -300,6 +300,7 @@ _g_io_modules_ensure_loaded (void)
   GList *modules, *l;
   static gboolean loaded_dirs = FALSE;
   GIOExtensionPoint *ep;
+  const char *module_path;
 
   G_LOCK (loaded_dirs);
 
@@ -328,6 +329,23 @@ _g_io_modules_ensure_loaded (void)
       g_io_extension_point_set_required_type (ep, G_TYPE_VFS);
       
       modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
+
+      module_path = g_getenv ("GIO_EXTRA_MODULES");
+
+      if (module_path)
+        {
+          int i = 0;
+          gchar **paths;
+          paths = g_strsplit (module_path, ":", 0);
+    
+          while (paths[i] != NULL)
+            { 
+              modules = g_list_prepend (modules, g_io_modules_load_all_in_directory (paths[i]));
+              i++;
+            }
+
+          g_strfreev (paths);
+        }
 
       /* Initialize types from built-in "modules" */
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)

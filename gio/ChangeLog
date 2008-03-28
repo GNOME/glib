@@ -1,3 +1,9 @@
+2008-03-28  A. Walton  <awalton@svn.gnome.org>
+
+	* giomodule.c (_g_io_modules_ensure_loaded):
+	Adds GIO_EXTRA_MODULES environment variable support, closing bug 
+	#523039.
+
 2008-03-28  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:

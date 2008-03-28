@@ -185,7 +185,7 @@
 
       <para>
         This variable can be set to the name of a #GDesktopAppInfoLookup
-        implementation to override the dfeault for debugging purposes.
+        implementation to override the default for debugging purposes.
         GIO does not include a #GDesktopAppInfoLookup implementation,
         the GConf-based implementation in the gvfs module has the name
         "gconf".  
@@ -200,6 +200,16 @@
         with inotify support, a dump of diagnostic inotify information 
         will be written every 20 seconds to a file named
         <filename>/tmp/gvfsdid.<replaceable>pid</replaceable></filename>.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><envar>GIO_EXTRA_MODULES</envar></title>
+
+      <para>
+	When this environment variable is set to a path, or a set of 
+	paths separated by a colon, GIO will attempt to load
+	modules from within the path.
       </para>
     </formalpara>
 
