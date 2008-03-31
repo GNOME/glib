@@ -36,7 +36,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <libintl.h>
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>		/* For tolower() */

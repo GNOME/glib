@@ -42,11 +42,11 @@
 #if !defined (HAVE_STRSIGNAL) || !defined(NO_SYS_SIGLIST_DECL)
 #include <signal.h>
 #endif
-#include <libintl.h>
 
 #include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"
+#include "glibintl.h"
 
 #include "galias.h"
 
