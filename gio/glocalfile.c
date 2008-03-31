@@ -1386,6 +1386,7 @@ get_parent (const char *path,
   if (strcmp (parent, ".") == 0 ||
       strcmp (parent, path_copy) == 0)
     {
+      g_free (parent);
       g_free (path_copy);
       return NULL;
     }
