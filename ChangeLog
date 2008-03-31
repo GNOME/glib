@@ -1,3 +1,9 @@
+2008-03-31  Tor Lillqvist  <tml@novell.com>
+
+	Bug 525192 - 100% CPU if run main loop with no IO sources
+
+	* glib/gmain.c (g_poll) [Win32]: Patch by Neil Roberts.
+
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
