@@ -1,5 +1,11 @@
 2008-03-31  Alexander Larsson  <alexl@redhat.com>
 
+	* glocalfile.c (get_parent):
+	Don't leak parent.
+	(From trunk)
+	
+2008-03-31  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfileenumerator.c:
 	Read readdir() info in chunks (of 1000) and sort
 	the chunks by inode before stat:ing.
