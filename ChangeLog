@@ -1,3 +1,7 @@
+2008-03-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: More updates
+
 2008-03-31  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.c (g_poll): Improve fix for #525192 below: Use

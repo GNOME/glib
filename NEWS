@@ -19,6 +19,7 @@ Overview of Changes from GLib 2.16.1 to GLib 2.16.2
  524950 Minor documentation typos.
  524344 glib/gthread.h still use G_GNUC_PRETTY_FUNCTION
  525060 glib fails to build with -DG_DISABLE_ASSERT in CPPFLAGS o... 
+ 525192 100% CPU if run main loop with no IO sources
 
 * Translation updates:
  Belarusian Latin (be@latin)
