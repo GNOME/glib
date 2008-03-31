@@ -218,7 +218,7 @@ gchar*                g_strescape      (const gchar *source,
 					const gchar *exceptions) G_GNUC_MALLOC;
 
 gpointer              g_memdup	       (gconstpointer mem,
-					guint	       byte_size) G_GNUC_MALLOC;
+					guint	       byte_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(2);
 
 /* NULL terminated string arrays.
  * g_strsplit(), g_strsplit_set() split up string into max_tokens tokens

@@ -141,15 +141,42 @@ See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_MALLOC ##### -->
 <para>
-Expands to the GNU C <literal>malloc</literal> function attribute if the compiler is 
-<command>gcc</command>. Declaring a function as malloc enables better optimization of the 
-function. A function can have the malloc attribute if it returns a pointer which is guaranteed
-to not alias with any other pointer when the function returns (in practice, this means newly 
-allocated memory).  
+Expands to the GNU C <literal>malloc</literal> function attribute if the 
+compiler is <command>gcc</command>. Declaring a function as malloc enables 
+better optimization of the function. A function can have the malloc attribute 
+if it returns a pointer which is guaranteed to not alias with any other pointer
+when the function returns (in practice, this means newly allocated memory).  
 See the GNU C documentation for details. 
 </para>
 
 @Since: 2.6
+
+
+<!-- ##### MACRO G_GNUC_ALLOC_SIZE ##### -->
+<para>
+Expands to the GNU C <literal>alloc_size</literal> function attribute if the 
+compiler is a new enough <command>gcc</command>. This attribute tells the
+compiler that the function returns a pointer to memory of a size that is
+specified by the @x<!-- -->th function parameter.
+See the GNU C documentation for details. 
+</para>
+
+@x: the index of the argument specifying the allocation size 
+@Since: 2.18
+
+
+<!-- ##### MACRO G_GNUC_ALLOC_SIZE2 ##### -->
+<para>
+Expands to the GNU C <literal>alloc_size</literal> function attribute if the 
+compiler is a new enough <command>gcc</command>. This attribute tells the
+compiler that the function returns a pointer to memory of a size that is
+specified by the product of two function parameters.
+See the GNU C documentation for details. 
+</para>
+
+@x: the index of the argument specifying one factor of the allocation size 
+@y: the index of the argument specifying the second factor of the allocation size 
+@Since: 2.18
 
 
 <!-- ##### MACRO G_GNUC_DEPRECATED ##### -->

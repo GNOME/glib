@@ -1,5 +1,14 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmacros.h: Add macros wrapping the gcc alloc_size 
+	function attribute.  (#523019, Rodrigo Moya)
+
+	* glib/gmem.h: 
+	* glib/gslice.h:
+	* glib/gstrfuncs.h: Use the new attribute where appropriate.
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glibintl.h:
 	* glib/gstrfuncs.c:
 	* glib/gutils.c: Simple fixes to help building GLib on 

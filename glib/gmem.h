@@ -48,13 +48,13 @@ typedef struct _GMemVTable GMemVTable;
 
 /* Memory allocation functions
  */
-gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC;
-gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC;
+gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_realloc        (gpointer	 mem,
 			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 void	 g_free	          (gpointer	 mem);
-gpointer g_try_malloc     (gsize	 n_bytes) G_GNUC_MALLOC;
-gpointer g_try_malloc0    (gsize	 n_bytes) G_GNUC_MALLOC;
+gpointer g_try_malloc     (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+gpointer g_try_malloc0    (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_try_realloc    (gpointer	 mem,
 			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 

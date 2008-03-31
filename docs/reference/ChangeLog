@@ -1,3 +1,9 @@
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt:
+	* glib/tmpl/macros-misc.sgml: Document G_GNUC_ALLOC_SIZE
+	macros
+
 2008-03-28  A. Walton  <awalton@svn.gnome.org>
 
 	* gio/overview.xml:
