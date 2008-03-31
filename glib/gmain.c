@@ -383,8 +383,14 @@ g_poll (GPollFD *fds,
     }
   else if (nhandles == 0)
     {
-      /* Wait for nothing (huh?) */
-      return 0;
+      /* No handles to wait for, just the timeout */
+      if (timeout == INFINITE)
+	ready = WAIT_FAILED;
+      else
+	{
+	  Sleep (timeout);
+	  ready = WAIT_TIMEOUT;
+	}
     }
   else
     {
