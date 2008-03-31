@@ -1,5 +1,11 @@
 2008-03-31  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gmain.c (g_poll): Improve fix for #525192 below: Use
+	SleepEx() so that the sleep is alertable. Thanks to John
+	Ehresman.
+
+2008-03-31  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gwin32.c
 	(g_win32_get_package_installation_directory_of_module): Fix Cygwin
 	breakage. Patch by Lieven van der Heide.
