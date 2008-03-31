@@ -366,21 +366,21 @@ extern void glib_dummy_decl (void);
 #    define G_LOCK(name)                G_STMT_START{             \
         g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,                   \
                "file %s: line %d (%s): locking: %s ",             \
-               __FILE__,        __LINE__, G_GNUC_PRETTY_FUNCTION, \
+               __FILE__,        __LINE__, G_STRFUNC,              \
                #name);                                            \
         g_static_mutex_lock (&G_LOCK_NAME (name));                \
      }G_STMT_END
 #    define G_UNLOCK(name)              G_STMT_START{             \
         g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,                   \
                "file %s: line %d (%s): unlocking: %s ",           \
-               __FILE__,        __LINE__, G_GNUC_PRETTY_FUNCTION, \
+               __FILE__,        __LINE__, G_STRFUNC,              \
                #name);                                            \
        g_static_mutex_unlock (&G_LOCK_NAME (name));               \
      }G_STMT_END
 #    define G_TRYLOCK(name)                                       \
         (g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,                  \
                "file %s: line %d (%s): try locking: %s ",         \
-               __FILE__,        __LINE__, G_GNUC_PRETTY_FUNCTION, \
+               __FILE__,        __LINE__, G_STRFUNC,              \
                #name), g_static_mutex_trylock (&G_LOCK_NAME (name)))
 #  else  /* !G_DEBUG_LOCKS */
 #    define G_LOCK(name) g_static_mutex_lock       (&G_LOCK_NAME (name))
