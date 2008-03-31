@@ -1,5 +1,9 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.16.2
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 
 	* glib/gtester.c: Don't use ARG_MAX.  (#522335, patch by
