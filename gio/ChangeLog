@@ -1,3 +1,8 @@
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* gfileenumerator.c:
+	* gfile.c: Fix some documentation typos.  (#524950, Rob Bradford)
+
 2008-03-28  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.c:
