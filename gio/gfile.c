@@ -966,7 +966,7 @@ g_file_query_file_type (GFile *file,
   GFileInfo *info;
   GFileType file_type;
   
-  g_return_val_if_fail (G_IS_FILE(file), FALSE);
+  g_return_val_if_fail (G_IS_FILE(file), G_FILE_TYPE_UNKNOWN);
   info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TYPE, flags,
 			    cancellable, NULL);
   if (info != NULL)
