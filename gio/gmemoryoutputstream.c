@@ -232,12 +232,19 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  * g_memory_output_stream_get_size:
  * @ostream: a #GMemoryOutputStream
  *
- * Gets the size of the loaded data from the @ostream.
+ * Gets the size of the currently allocated data area (availible from
+ * g_memory_output_stream_get_data()). If the stream isn't
+ * growable (no realloc was passed to g_memory_output_stream_new()) then
+ * this is the max size of the stream and further writes
+ * will return G_IO_ERROR_NO_SPACE.
  *
- * Note that the returned size may become invalid on the next
- * write or truncate operation on the stream.
+ * Note that for growable streams the returned size may become invalid on
+ * the next write or truncate operation on the stream.
  *
- * Returns: the size of the stream's data
+ * If you want the number of bytes currently written to the stream, use
+ * g_memory_output_stream_get_data_size().
+ * 
+ * Returns: the number of bytes allocated for the data buffer
  */
 gsize
 g_memory_output_stream_get_size (GMemoryOutputStream *ostream)
@@ -246,6 +253,27 @@ g_memory_output_stream_get_size (GMemoryOutputStream *ostream)
   
   return ostream->priv->len;
 }
+
+/**
+ * g_memory_output_stream_get_data_size:
+ * @ostream: a #GMemoryOutputStream
+ *
+ * Returns the number of bytes from the start up
+ * to including the last byte written in the stream
+ * that has not been truncated away.
+ * 
+ * Returns: the number of bytes written to the stream
+ *
+ * Since: 2.18
+ */
+gsize
+g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream)
+{
+  g_return_val_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream), 0);
+  
+  return ostream->priv->pos;
+}
+
 
 static gboolean
 array_check_boundary (GMemoryOutputStream  *stream,
