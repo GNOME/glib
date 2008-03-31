@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 21:09-0400\n"
+"POT-Creation-Date: 2008-03-31 17:53-0400\n"
 "PO-Revision-Date: 2008-02-06 02:05+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -308,22 +308,22 @@ msgstr "فشل فتح الملف '%s': فشل open(): %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "فشل في مقابلة الملف'%s': mmap() فشل: %s"
 
-#: glib/gmarkup.c:228 glib/gmarkup.c:244
+#: glib/gmarkup.c:234 glib/gmarkup.c:250
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "خطأ في السطر %d الرمز %d: "
 
-#: glib/gmarkup.c:338
+#: glib/gmarkup.c:344
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "خطأ في السطر %d: %s"
 
-#: glib/gmarkup.c:442
+#: glib/gmarkup.c:448
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "رُؤي كيان فارغ '&;'، الكيانات السليمة هي:&amp; &quot; &lt; &gt; &apos; "
 
-#: glib/gmarkup.c:452
+#: glib/gmarkup.c:458
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -333,17 +333,17 @@ msgstr ""
 "المحرف '%s' غير سليم عند بداية اسم الكيان؛ المحرف & يبدأ كيانا، ان كان علامة "
 "اﻻمبارساند هذه غير موضوعة على انها كيان، تخطاها باعتبارها &amp;"
 
-#: glib/gmarkup.c:486
+#: glib/gmarkup.c:492
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "المحرف '%s' غير موجود داخل اسم أي كيان"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:529
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "اسم الكيان '%s' غير معروف"
 
-#: glib/gmarkup.c:534
+#: glib/gmarkup.c:540
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -351,7 +351,7 @@ msgstr ""
 "اسم الكيان لم ينته بفاصلة منقوطة؛ الأرجح أنك استخدمت علامة امبارساند دون أن "
 "تنوي بدء كيان - تخطا العلامة عن طريق اعتبارها &amp;"
 
-#: glib/gmarkup.c:587
+#: glib/gmarkup.c:593
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -360,16 +360,16 @@ msgstr ""
 "فشل في تحليل '%-.*s'، والتي كان لابد من كتبتها بالأرقام داخل مرجع محرف "
 "(&#234; كمثال) - ربما الرقم كبير جداً"
 
-#: glib/gmarkup.c:612
+#: glib/gmarkup.c:618
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "مرجع المحرف '%-.*s'  لا يقوم بترميز محرف مسموح به"
 
-#: glib/gmarkup.c:627
+#: glib/gmarkup.c:633
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "مرجع محرف فارغ؛ يجب أن يتضمن رقما مثل &#454;"
 
-#: glib/gmarkup.c:637
+#: glib/gmarkup.c:643
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -378,52 +378,52 @@ msgstr ""
 "مرجع المحرف لم ينته بفاصلة منقوطة؛ الأرجح أنك استخدمت علامة امبارساند دون أن "
 "تنوي بدء كيان - تخطا العلامت عن طريق اعتبارها &amp;"
 
-#: glib/gmarkup.c:723
+#: glib/gmarkup.c:729
 msgid "Unfinished entity reference"
 msgstr "مرجع كيان غير مكتمل"
 
-#: glib/gmarkup.c:729
+#: glib/gmarkup.c:735
 msgid "Unfinished character reference"
 msgstr "مرجع محرف غير مكتمل"
 
-#: glib/gmarkup.c:972
+#: glib/gmarkup.c:978
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "نص مرمّز بـ UTF-8 غير سليم - سلسة طويلة جدا"
 
-#: glib/gmarkup.c:1000
+#: glib/gmarkup.c:1006
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "نص مرمّز بـ UTF-8 غير سليم - ليس محرف بداية"
 
-#: glib/gmarkup.c:1036
+#: glib/gmarkup.c:1042
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "نص مرمّز بـ UTF-8 غير سليم - غير سليم '%s'"
 
-#: glib/gmarkup.c:1074
+#: glib/gmarkup.c:1080
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "يجب أن يبدأ المستند بعنصر (<book> مثلا)"
 
-#: glib/gmarkup.c:1114
+#: glib/gmarkup.c:1120
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' محرف غير سليم بعد المحرف '<'؛  ربما لا يبدأ هذا المحرف اسم عنصر"
 
-#: glib/gmarkup.c:1178
+#: glib/gmarkup.c:1184
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "محرف غريب '%s'،  توقعت محرف '>' لإنهاء بداية علامة العنصر '%s'"
 
-#: glib/gmarkup.c:1267
+#: glib/gmarkup.c:1273
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "محرف غريب '%s'، توقعت '=' بعد اسم الصفة  '%s' للعنصر '%s'"
 
-#: glib/gmarkup.c:1309
+#: glib/gmarkup.c:1315
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -433,7 +433,7 @@ msgstr ""
 "محرف غريب '%s'، توقعت المحرف '>' أو '/' لإنهاء علامة البداية للعنصر '%s'، أو "
 "بشكل اختياري صفة؛ ربما استخدمت محرفاً غير صالح في اسم صفة"
 
-#: glib/gmarkup.c:1395
+#: glib/gmarkup.c:1401
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -442,39 +442,39 @@ msgstr ""
 "محرف غريب '%s'، توقعت علامة اقتباس مفتوحة بعد علامة التساوي عند إعطاء قيمة "
 "من الصفة '%s' للعنصر '%s'"
 
-#: glib/gmarkup.c:1537
+#: glib/gmarkup.c:1543
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' محرف غير صالح بعد الرموز '</'; '%s'   ربما لن يبدأ اسم عنصر"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1583
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' محرف غير صالح بعد اغلاق اسم العنصر '%s'؛ المحرف المسموح به هو '>'"
 
-#: glib/gmarkup.c:1588
+#: glib/gmarkup.c:1594
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "العنصر '%s' كان مغلقا، لا عنصر مفتوح حاليا"
 
-#: glib/gmarkup.c:1597
+#: glib/gmarkup.c:1603
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "العنصر '%s' كان مغلقا، لكن العنصر المفتوح حاليا هو '%s'"
 
-#: glib/gmarkup.c:1757
+#: glib/gmarkup.c:1763
 msgid "Document was empty or contained only whitespace"
 msgstr "المستند كان فارغا أو كان يحتوي فقط على مساحات فارغة"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1777
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "انتهى المستند بشكل غير متوقع بعد قوس بزاوية '<'"
 
-#: glib/gmarkup.c:1779 glib/gmarkup.c:1824
+#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -483,7 +483,7 @@ msgstr ""
 "انتهى المستند بشكل غير متوقع مع عناصر لا زالت مفتوحة - '%s' كان آخر عنصر "
 "مفتوح"
 
-#: glib/gmarkup.c:1787
+#: glib/gmarkup.c:1793
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -491,19 +491,19 @@ msgid ""
 msgstr ""
 "انتهى المستند بشكل غير متوقع، توقعت رؤية قوس ذا زاوية لينهي العلامة<%s/>"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element name"
 msgstr "انتهى المستند بشكل غير متوقع داخل اسم عنصر"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1805
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "انتهى المستند بشكل غير متوقع داخل اسم صفة"
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "انتهى المستند بشكل غير متوقع بعد علامة فتح عنصر"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1816
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -511,16 +511,16 @@ msgstr ""
 "انتهى المستند بشكل غير متوقع بعد علامة التساوي اثر اسم صفة؛ لا توجد قيمة "
 "للصفة"
 
-#: glib/gmarkup.c:1817
+#: glib/gmarkup.c:1823
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "انتهى المستند بشكل غير متوقع وهو داخلَ قيمة صفة"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1839
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "انتهى المستند بشكل غير متوقع داخل علامة انهاء للعنصر '%s'"
 
-#: glib/gmarkup.c:1839
+#: glib/gmarkup.c:1845
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "انتهى المستند بشكل غير متوقع داخل تعليق أو تعليمات معالجة"
 
@@ -544,7 +544,7 @@ msgstr "وُصِلَ للحد المسموح به من أمكنة الرجوع �
 msgid "the pattern contains items not supported for partial matching"
 msgstr "المثال يحتوي على عناصر لا تحتمل التطابق الجزئي"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1883
+#: glib/gregex.c:154 gio/glocalfile.c:1963
 msgid "internal error"
 msgstr "خطأ داخلي"
 
@@ -1143,7 +1143,7 @@ msgstr "مُرِّرت قيمة كبيرة جدّا إلى %s"
 msgid "Stream is already closed"
 msgstr "سبق إغلاق الدَفق "
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1876 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "أُلغيت العملية "
@@ -1210,9 +1210,9 @@ msgid "drive doesn't implement polling for media"
 msgstr "محرك الأقراص لا ينفذ جسّ الوسائط"
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2594
-#: gio/gfile.c:2639 gio/gfile.c:2689 gio/gfile.c:2729 gio/gfile.c:3053
-#: gio/gfile.c:3455 gio/gfile.c:3538 gio/gfile.c:3621 gio/gfile.c:3701
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2612
+#: gio/gfile.c:2657 gio/gfile.c:2707 gio/gfile.c:2747 gio/gfile.c:3071
+#: gio/gfile.c:3473 gio/gfile.c:3556 gio/gfile.c:3639 gio/gfile.c:3719
 #, c-format
 msgid "Operation not supported"
 msgstr "عمليّة غير مدعومة"
@@ -1231,7 +1231,7 @@ msgstr "عمليّة غير مدعومة"
 msgid "Containing mount does not exist"
 msgstr "الوصل الحاوي غير موجود"
 
-#: gio/gfile.c:1895
+#: gio/gfile.c:1895 gio/glocalfile.c:2106
 #, c-format
 msgid "Can't copy over directory"
 msgstr "لا يمكنك نقل دليل على دليل"
@@ -1241,7 +1241,7 @@ msgstr "لا يمكنك نقل دليل على دليل"
 msgid "Can't copy directory over directory"
 msgstr "لا يمكنك نسخ دليل على دليل"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2030
+#: gio/gfile.c:1963 gio/glocalfile.c:2115
 #, c-format
 msgid "Target file exists"
 msgstr "الملف الهدف موجود مسبّقا"
@@ -1251,26 +1251,26 @@ msgstr "الملف الهدف موجود مسبّقا"
 msgid "Can't recursively copy directory"
 msgstr " لا يمكنك النسخ التكراري للدليل "
 
-#: gio/gfile.c:2679
+#: gio/gfile.c:2697
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "  قيمة الوصلة الرمزية المُعطاة غير سليمة"
 
-#: gio/gfile.c:2772
+#: gio/gfile.c:2790
 #, c-format
 msgid "Trash not supported"
 msgstr "المهملات غير مدعومة"
 
-#: gio/gfile.c:2819
+#: gio/gfile.c:2837
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "لا يمكن  لأسماء الملفات أن تحتوي على '%c'  "
 
-#: gio/gfile.c:4752 gio/gvolume.c:357
+#: gio/gfile.c:4770 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "الجهاز لا ينفذ الوَصل"
 
-#: gio/gfile.c:4860
+#: gio/gfile.c:4878
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "لم يسجل أي تطبيق كمعالج لهذا الملف"
@@ -1281,12 +1281,12 @@ msgid "Enumerator is closed"
 msgstr "المُعدِّد مغلق"
 
 #: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
-#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:425
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:426
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr "مُعدد الملف له عملية عالقة"
 
-#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:415
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:416
 msgid "File enumerator is already closed"
 msgstr "مُعدد الملف سبق إغلاقه"
 
@@ -1352,8 +1352,8 @@ msgstr " لا يمكنك إعادة تسمية الدليل الجذري  "
 msgid "Can't rename file, filename already exist"
 msgstr "لا يمكنك إعادة تسمية الملف، اسم الملف موجود بالفعل"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1905 gio/glocalfile.c:1934
-#: gio/glocalfile.c:2083 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
+#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
@@ -1374,69 +1374,69 @@ msgstr "خطأ عند فتح الملف: %s"
 msgid "Can't open directory"
 msgstr "لا يمكن فتح الدّليل"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1909
+#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
 #, c-format
 msgid "Error removing file: %s"
 msgstr "خطأ عند حذف الملف: %s"
 
-#: gio/glocalfile.c:1604
+#: gio/glocalfile.c:1678
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "خطأ عند ارسال الملف للمهملات: %s"
 
-#: gio/glocalfile.c:1627
+#: gio/glocalfile.c:1701
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "غير قادر على إنشاء مجلد سلة المهملات %s: %s"
 
-#: gio/glocalfile.c:1648
+#: gio/glocalfile.c:1722
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "غير قادر على إيجاد دليل المستوى الأعلى للمهملات"
 
-#: gio/glocalfile.c:1727 gio/glocalfile.c:1747
+#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "غير قادر على ايجاد أو إنشاء دليل المهملات"
 
-#: gio/glocalfile.c:1781
+#: gio/glocalfile.c:1855
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "تعذّر إنشاء ملف المُهْملات: %s"
 
-#: gio/glocalfile.c:1806 gio/glocalfile.c:1875 gio/glocalfile.c:1882
+#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "غير قادر على نقل الملف: %s إلى المهملات "
 
-#: gio/glocalfile.c:1938
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "خطأ أثناء تشكيل الوصلة الرمزية: %s"
 
-#: gio/glocalfile.c:1998 gio/glocalfile.c:2087
+#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
 #, c-format
 msgid "Error moving file: %s"
 msgstr "خطأ عندنقل الملف: %s"
 
-#: gio/glocalfile.c:2021
+#: gio/glocalfile.c:2101
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "لا يمكنك نقل دليل على دليل"
 
-#: gio/glocalfile.c:2043 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "فشل إنشاء ملف النسخة الاحتياطية"
 
-#: gio/glocalfile.c:2062
+#: gio/glocalfile.c:2147
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "خطأ في إزالة الملف الهدف: %s"
 
-#: gio/glocalfile.c:2076
+#: gio/glocalfile.c:2161
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "النقل بين الوصلات غير مدعوم"
@@ -1461,62 +1461,62 @@ msgstr "اسم غير سليم للخاصية الممتدة"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "خطأ عند تعيين الخاصية الممتدة '%s': %s"
 
-#: gio/glocalfileinfo.c:1398 gio/glocalfileoutputstream.c:666
+#: gio/glocalfileinfo.c:1402 gio/glocalfileoutputstream.c:666
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "خطأ عند تناول الملف '%s': %s"
 
-#: gio/glocalfileinfo.c:1454
+#: gio/glocalfileinfo.c:1458
 msgid " (invalid encoding)"
 msgstr "  (ترميز غير سليم)"
 
-#: gio/glocalfileinfo.c:1614
+#: gio/glocalfileinfo.c:1618
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "خطأ فى تناول واصف الملف: %s"
 
-#: gio/glocalfileinfo.c:1659
+#: gio/glocalfileinfo.c:1663
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "نوع الخاصية غير سليم ( يُفترض uint32 )"
 
-#: gio/glocalfileinfo.c:1676
+#: gio/glocalfileinfo.c:1680
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "نوع الخاصية غير سليم ( يُفترض uint64 )"
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1698
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "نوع الخاصية غير سليم ( يُنتضر مقطع بايت )"
 
-#: gio/glocalfileinfo.c:1720
+#: gio/glocalfileinfo.c:1724
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "خطأ تعيين الأذونات: %s"
 
-#: gio/glocalfileinfo.c:1771 gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "خطأ تعيين المالك: %s"
 
-#: gio/glocalfileinfo.c:1794
+#: gio/glocalfileinfo.c:1798
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "يجب أن يكون فهرس القائمة غير سلبي."
 
-#: gio/glocalfileinfo.c:1804 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1834
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1838
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "خطأ أثناء تعيين الوصلة الرمزية: %s"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "خطأ في تعيين الوصلة الرمزية: الملف ليس وصلة رمزية"
 
-#: gio/glocalfileinfo.c:1994
+#: gio/glocalfileinfo.c:1998
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "تعيين الصفة %s غير مُدَعَّم"
@@ -1589,12 +1589,12 @@ msgstr "الملف الهدف هو ليس ملفاً عادياً."
 msgid "The file was externally modified"
 msgstr "تمّ تعديل الملف خارجيّا"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:526
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr "تم تقديم GSeekType  غير سليم"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:536
 #, c-format
 msgid "Invalid seek request"
 msgstr "طلب بحث غير سليم"
@@ -1604,17 +1604,17 @@ msgstr "طلب بحث غير سليم"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "تعذر بَتْرُGMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:260
+#: gio/gmemoryoutputstream.c:269
 #, c-format
 msgid "Reached maximum data array limit"
 msgstr "تَمَّ بُلوغ أقصى حد لمصفوفة المعطيات"
 
-#: gio/gmemoryoutputstream.c:295
+#: gio/gmemoryoutputstream.c:304
 #, c-format
 msgid "Memory output stream not resizable"
 msgstr "دَفْقُ الاخراج للذاكرة غير قابل لتغيير القياس"
 
-#: gio/gmemoryoutputstream.c:311
+#: gio/gmemoryoutputstream.c:320
 #, c-format
 msgid "Failed to resize memory output stream"
 msgstr "فشل تغيير قياس دَفْقُ الاخراج للذاكرة"
@@ -1691,7 +1691,7 @@ msgstr "خطأ عند القراءة من يونكس: %s"
 msgid "Error closing unix: %s"
 msgstr "خطأ عند غلق يونكس: %s"
 
-#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
+#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
 msgid "Filesystem root"
 msgstr "جذر نظام الملفّات"
 
