@@ -422,7 +422,9 @@ g_hash_table_iter_next (GHashTableIter *iter,
   RealIter *ri = (RealIter *) iter;
 
   g_return_val_if_fail (iter != NULL, FALSE);
+#ifndef G_DISABLE_ASSERT
   g_return_val_if_fail (ri->version == ri->hash_table->version, FALSE);
+#endif
 
   if (ri->pre_advanced)
     {
@@ -484,7 +486,9 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
   int position;
 
   g_return_if_fail (ri != NULL);
+#ifndef G_DISABLE_ASSERT
   g_return_if_fail (ri->version == ri->hash_table->version);
+#endif
   g_return_if_fail (ri->node != NULL);
 
   prev = ri->prev_node;
