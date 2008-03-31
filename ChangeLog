@@ -1,3 +1,7 @@
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtestutils.c: Fix a doc typo. (#524742, Hiroyuki Ikezoe)
+
 2008-03-22  Claudio Saavedra  <csaavedra@gnome.org>
 
 	Bug 523877 – gbookmarkfile: avoid using g_string_append_printf() and
