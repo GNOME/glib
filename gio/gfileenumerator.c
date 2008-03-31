@@ -336,8 +336,9 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
  * 
  * Finishes the asynchronous operation started with g_file_enumerator_next_files_async().
  * 
- * Returns: a #GList of #GFileInfo<!---->s. You must free the list with g_list_free
- * and unref the infos with g_object_unref when your done with them.
+ * Returns: a #GList of #GFileInfo<!---->s. You must free the list with 
+ *     g_list_free() and unref the infos with g_object_unref when you're 
+ *     done with them.
  **/
 GList *
 g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,

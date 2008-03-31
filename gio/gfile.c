@@ -85,11 +85,11 @@
  * there may be multiple aliases for the same file. For instance, hard or
  * soft links may cause two different #GFile<!-- -->s to refer to the same file.
  * Other possible causes for aliases are: case insensitive filesystems, short
- * and long names on Fat/NTFS, or bind mounts in linux. If you want to check if
+ * and long names on Fat/NTFS, or bind mounts in Linux. If you want to check if
  * two #GFile<!-- -->s point to the same file you can query for the
  * %G_FILE_ATTRIBUTE_ID_FILE attribute. Note that #GFile does some trivial
  * canonicalization of pathnames passed in, so that trivial differences in the
- * path string used at creation (dupplicated slashes, slash at end of path, "."
+ * path string used at creation (duplicated slashes, slash at end of path, "."
  * or ".." path segments, etc) does not create different #GFile<!-- -->s.
  * 
  * Many #GFile operations have both synchronous and asynchronous versions 
@@ -97,8 +97,7 @@
  * simply have _async() appended to their function names. The asynchronous 
  * I/O functions call a #GAsyncReadyCallback which is then used to finalize 
  * the operation, producing a GAsyncResult which is then passed to the 
- * function's matching _finish() 
- * operation. 
+ * function's matching _finish() operation. 
  *
  * Some #GFile operations do not have synchronous analogs, as they may
  * take a very long time to finish, and blocking may leave an application
