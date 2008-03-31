@@ -2,6 +2,15 @@
 
 	Merged from trunk:
 
+	* glib/glibintl.h:
+	* glib/gstrfuncs.c:
+	* glib/gutils.c: Simple fixes to help building GLib on
+	embedded systems without NLS.  (#524350, Peter Kjellerstedt)
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
 	* glib/ghash.c: Fix the build with -DG_DISABLE_ASSERT.
 	(#525060, Arfrever Frehtes Taifersar Arahesis)
 
@@ -10,7 +19,7 @@
 	Merged from trunk:
 
 	* glib/gthread.h: Replace occurrances of G_GNUC_PRETTY_FUNCTION
-	by G_STRFUNC.  (#524344, Peter, Kjellerstedt)
+	by G_STRFUNC.  (#524344, Peter Kjellerstedt)
 
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 

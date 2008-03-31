@@ -27,6 +27,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str);
 #define gettext(String) (String)
 #define dgettext(Domain,String) (String)
 #define dcgettext(Domain,String,Type) (String)
+#define dngettext(Domain,String1,String2,N) ((N) == 1 ? (String1) : (String2))
 #define bindtextdomain(Domain,Directory) (Domain) 
 #endif
 
