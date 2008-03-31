@@ -1,4 +1,9 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/ghash.c: Fix the build with -DG_DISABLE_ASSERT.
+	(#525060, Arfrever Frehtes Taifersar Arahesis)
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/gthread.h: Replace occurrances of G_GNUC_PRETTY_FUNCTION
 	by G_STRFUNC.  (#524344, Peter, Kjellerstedt)
