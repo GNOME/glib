@@ -1,5 +1,14 @@
 2008-03-31  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfileenumerator.c:
+	Read readdir() info in chunks (of 1000) and sort
+	the chunks by inode before stat:ing.
+	This is a 20% performance increase in testing
+	gvfs-ls on /usr/bin with cold cache.
+	(From trunk)
+	
+2008-03-31  Alexander Larsson  <alexl@redhat.com>
+
 	* gmemoryoutputstream.c:
 	Update docs for g_memory_output_stream_get_size.
 

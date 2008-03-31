@@ -25,29 +25,57 @@
 #include <glib.h>
 #include <glocalfileenumerator.h>
 #include <glocalfileinfo.h>
+#include <string.h>
+#include <stdlib.h>
 #include "glibintl.h"
 
 #include "gioalias.h"
+
+#define CHUNK_SIZE 1000
 
   /* TODO:
    *  It would be nice to use the dirent->d_type to check file type without
    *  needing to stat each files on linux and other systems that support it.
    *  (question: does that following symlink or not?)
    */
-  
+
+#ifdef G_OS_WIN32
+#define USE_GDIR
+#endif
+
+#ifndef USE_GDIR
+
+#include <sys/types.h>
+#include <dirent.h>
+#include <errno.h>
+
+typedef struct {
+  char *name;
+  long inode;
+} DirEntry;
+
+#endif
 
 struct _GLocalFileEnumerator
 {
   GFileEnumerator parent;
 
   GFileAttributeMatcher *matcher;
-  GDir *dir;
   char *filename;
   char *attributes;
   GFileQueryInfoFlags flags;
 
   gboolean got_parent_info;
   GLocalParentFileInfo parent_info;
+  
+#ifdef USE_GDIR
+  GDir *dir;
+#else
+  DIR *dir;
+  DirEntry *entries;
+  int entries_pos;
+  gboolean at_end;
+#endif
   
   gboolean follow_symlinks;
 };
@@ -64,6 +92,22 @@ static gboolean   g_local_file_enumerator_close     (GFileEnumerator  *enumerato
 
 
 static void
+free_entries (GLocalFileEnumerator *local)
+{
+#ifndef USE_GDIR
+  int i;
+
+  if (local->entries != NULL)
+    {
+      for (i = 0; local->entries[i].name != NULL; i++)
+	g_free (local->entries[i].name);
+      
+      g_free (local->entries);
+    }
+#endif
+}
+
+static void
 g_local_file_enumerator_finalize (GObject *object)
 {
   GLocalFileEnumerator *local;
@@ -74,9 +118,15 @@ g_local_file_enumerator_finalize (GObject *object)
   g_file_attribute_matcher_unref (local->matcher);
   if (local->dir)
     {
+#ifdef USE_GDIR
       g_dir_close (local->dir);
+#else
+      closedir (local->dir);
+#endif      
       local->dir = NULL;
     }
+
+  free_entries (local);
   
   if (G_OBJECT_CLASS (g_local_file_enumerator_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_local_file_enumerator_parent_class)->finalize) (object);
@@ -100,6 +150,7 @@ g_local_file_enumerator_init (GLocalFileEnumerator *local)
 {
 }
 
+#ifdef USE_GDIR
 static void
 convert_file_to_io_error (GError **error,
 			  GError  *file_error)
@@ -133,6 +184,7 @@ convert_file_to_io_error (GError **error,
 	       new_code,
 	       "%s", file_error->message);
 }
+#endif
 
 GFileEnumerator *
 _g_local_file_enumerator_new (const char           *filename,
@@ -142,9 +194,11 @@ _g_local_file_enumerator_new (const char           *filename,
 			      GError              **error)
 {
   GLocalFileEnumerator *local;
-  GDir *dir;
-  GError *dir_error;
 
+#ifdef USE_GDIR
+  GError *dir_error;
+  GDir *dir;
+  
   dir_error = NULL;
   dir = g_dir_open (filename, 0, error != NULL ? &dir_error : NULL);
   if (dir == NULL) 
@@ -156,6 +210,22 @@ _g_local_file_enumerator_new (const char           *filename,
 	}
       return NULL;
     }
+#else
+  DIR *dir;
+  int errsv;
+
+  dir = opendir (filename);
+  if (dir == NULL)
+    {
+      errsv = errno;
+
+      g_set_error (error, G_IO_ERROR,
+		   g_io_error_from_errno (errsv),
+		   "%s", g_strerror (errsv));
+      return NULL;
+    }
+
+#endif
   
   local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR, NULL);
 
@@ -167,6 +237,70 @@ _g_local_file_enumerator_new (const char           *filename,
   return G_FILE_ENUMERATOR (local);
 }
 
+#ifndef USE_GDIR
+static int
+sort_by_inode (const void *_a, const void *_b)
+{
+  const DirEntry *a, *b;
+
+  a = _a;
+  b = _b;
+  return a->inode - b->inode;
+}
+
+static const char *
+next_file_helper (GLocalFileEnumerator *local)
+{
+  struct dirent *entry;
+  const char *filename;
+  int i;
+
+  if (local->at_end)
+    return NULL;
+  
+  if (local->entries == NULL ||
+      (local->entries[local->entries_pos].name == NULL))
+    {
+      if (local->entries == NULL)
+	local->entries = g_new (DirEntry, CHUNK_SIZE + 1);
+      else
+	{
+	  /* Restart by clearing old names */
+	  for (i = 0; local->entries[i].name != NULL; i++)
+	    g_free (local->entries[i].name);
+	}
+      
+      for (i = 0; i < CHUNK_SIZE; i++)
+	{
+	  entry = readdir (local->dir);
+	  while (entry 
+		 && (0 == strcmp (entry->d_name, ".") ||
+		     0 == strcmp (entry->d_name, "..")))
+	    entry = readdir (local->dir);
+
+	  if (entry)
+	    {
+	      local->entries[i].name = g_strdup (entry->d_name);
+	      local->entries[i].inode = entry->d_ino;
+	    }
+	  else
+	    break;
+	}
+      local->entries[i].name = NULL;
+      local->entries_pos = 0;
+      
+      qsort (local->entries, i, sizeof (DirEntry), sort_by_inode);
+    }
+
+  filename = local->entries[local->entries_pos++].name;
+  if (filename == NULL)
+    local->at_end = TRUE;
+    
+  return filename;
+}
+
+#endif
+
 static GFileInfo *
 g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
 				   GCancellable     *cancellable,
@@ -176,7 +310,7 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
   const char *filename;
   char *path;
   GFileInfo *info;
-  GError *my_error = NULL;
+  GError *my_error;
 
   if (!local->got_parent_info)
     {
@@ -185,11 +319,17 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
     }
   
  next_file:
-  
+
+#ifdef USE_GDIR
   filename = g_dir_read_name (local->dir);
+#else
+  filename = next_file_helper (local);
+#endif
+
   if (filename == NULL)
     return NULL;
 
+  my_error = NULL;
   path = g_build_filename (local->filename, filename, NULL);
   info = _g_local_file_info_get (filename, path,
 				 local->matcher,
@@ -197,7 +337,7 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
 				 &local->parent_info,
 				 &my_error); 
   g_free (path);
-  
+
   if (info == NULL)
     {
       /* Failed to get info */
@@ -226,7 +366,11 @@ g_local_file_enumerator_close (GFileEnumerator  *enumerator,
 
   if (local->dir)
     {
+#ifdef USE_GDIR
       g_dir_close (local->dir);
+#else
+      closedir (local->dir);
+#endif
       local->dir = NULL;
     }
 
