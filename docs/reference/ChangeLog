@@ -1,4 +1,8 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+	
+	* gio/gio-sections.txt: Add g_file_query_file_type.
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt:
 	* glib/tmpl/macros-misc.sgml: Document G_GNUC_ALLOC_SIZE

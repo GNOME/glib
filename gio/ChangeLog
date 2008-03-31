@@ -1,5 +1,12 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio.symbols:
+	* gfile.c:
+	* gfile.h: Add g_file_query_file_type convenience function
+	to query the type of a file.  (#520715, Mikkel Kamstrup Erlandsen)
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfileenumerator.c:
 	* gfile.c: Fix some documentation typos.  (#524950, Rob Bradford)
 

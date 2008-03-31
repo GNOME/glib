@@ -931,8 +931,7 @@ g_file_query_exists (GFile *file,
   g_return_val_if_fail (G_IS_FILE(file), FALSE);
   
   info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TYPE,
-			    G_FILE_QUERY_INFO_NONE,
-			    cancellable, NULL);
+			    G_FILE_QUERY_INFO_NONE, cancellable, NULL);
   if (info != NULL)
     {
       g_object_unref (info);
@@ -940,6 +939,45 @@ g_file_query_exists (GFile *file,
     }
   
   return FALSE;
+}
+
+/**
+ * g_file_query_file_type:
+ * @file: input #GFile.
+ * @flags: a set of #GFileQueryInfoFlags passed to g_file_query_info().
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ *
+ * Utility function to inspect the #GFileType of a file. This is
+ * implemented using g_file_query_info() and as such does blocking I/O.
+ *
+ * The primary use case of this method is to check if a file is a regular file,
+ * directory, or symlink.
+ * 
+ * Returns: The #GFileType of the file and #G_FILE_TYPE_UNKNOWN if the file
+ *          does not exist
+ *
+ * Since: 2.18
+ */
+GFileType
+g_file_query_file_type (GFile *file,
+                        GFileQueryInfoFlags   flags,
+		 	GCancellable *cancellable)
+{
+  GFileInfo *info;
+  GFileType file_type;
+  
+  g_return_val_if_fail (G_IS_FILE(file), FALSE);
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TYPE, flags,
+			    cancellable, NULL);
+  if (info != NULL)
+    {
+      file_type = g_file_info_get_file_type (info);
+      g_object_unref (info);
+    }
+  else
+    file_type = G_FILE_TYPE_UNKNOWN;
+  
+  return file_type;
 }
 
 /**

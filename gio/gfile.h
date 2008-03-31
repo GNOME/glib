@@ -646,6 +646,9 @@ GFileOutputStream *     g_file_replace_finish             (GFile                
 							   GError                    **error);
 gboolean                g_file_query_exists               (GFile                      *file,
 							   GCancellable               *cancellable);
+GFileType               g_file_query_file_type            (GFile                      *file,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable);
 GFileInfo *             g_file_query_info                 (GFile                      *file,
 							   const char                 *attributes,
 							   GFileQueryInfoFlags         flags,

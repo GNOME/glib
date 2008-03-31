@@ -252,6 +252,7 @@ g_file_query_exists
 g_file_query_info
 g_file_query_info_async
 g_file_query_info_finish
+g_file_query_file_type
 g_file_query_filesystem_info
 g_file_query_filesystem_info_async
 g_file_query_filesystem_info_finish
