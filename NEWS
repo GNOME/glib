@@ -1,3 +1,49 @@
+Overview of Changes from GLib 2.16.1 to GLib 2.16.2
+===================================================
+
+* Bug fixes:
+ 521513 Firefox crash when using file picker
+ 316221 G_LOCK warns about breaking strict-aliasing
+ 520914 win_iconv doesn't support UCS-2
+ 521045 glib f_fstypename miscellany
+ 521591 g_markup_parse_context_parse() creates GError message th...
+ 521672 compile error
+ 522292 Gives warnings in glib/gutils.h with GCC in C99 mode
+ 522335 Fails to build: glib/gtester.c:276: error: 'ARG_MAX' unde...
+ 523015 Implement sliding window based upload operation
+ 523298 win_iconv can't convert from UTF-8 to GB18030 (or vice ve...
+ 523338 list nfs4 as a nfs mount type
+ 524350 Make glib build without NLS again
+ 524579 g_file_copy reports wrong total on progress callback for ...
+ 524742 A typo in gtestutils.c.
+ 524950 Minor documentation typos.
+ 524344 glib/gthread.h still use G_GNUC_PRETTY_FUNCTION
+ 525060 glib fails to build with -DG_DISABLE_ASSERT in CPPFLAGS o... 
+
+* Translation updates:
+ Belarusian Latin (be@latin)
+ Catalan (ca)
+ Greek (el)
+ British English (en_GB)
+ Spanish (es)
+ Basque (eu)
+ French (fr)
+ Galician (gl)
+ Hebrew (he)
+ Hungarian (hu)
+ Italian (it)
+ Japanese (ja)
+ Korean (ko)
+ Lithuanian (lt)
+ Dutch (nl)
+ Portugese (pt)
+ Slovak (sk)
+ Albanian (sq)
+ Swedish (sv)
+ Turkish (tr)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.16.0 to GLib 2.16.1
 ===================================================
 
