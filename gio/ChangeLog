@@ -1,3 +1,8 @@
+2008-03-31  Alexander Larsson  <alexl@redhat.com>
+
+	* gmemoryoutputstream.c:
+	Update docs for g_memory_output_stream_get_size.
+
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* gfileenumerator.c:

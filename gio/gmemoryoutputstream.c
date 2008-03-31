@@ -232,12 +232,21 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  * g_memory_output_stream_get_size:
  * @ostream: a #GMemoryOutputStream
  *
- * Gets the size of the loaded data from the @ostream.
+ * Gets the size of the currently allocated data area (availible from
+ * g_memory_output_stream_get_data()). If the stream isn't
+ * growable (no realloc was passed to g_memory_output_stream_new()) then
+ * this is the max size of the stream and further writes
+ * will return G_IO_ERROR_NO_SPACE.
  *
- * Note that the returned size may become invalid on the next
- * write or truncate operation on the stream.
+ * Note that for growable streams the returned size may become invalid on
+ * the next write or truncate operation on the stream.
  *
- * Returns: the size of the stream's data
+ * Note, this does not return the number of bytes written to the stream.
+ * In glib 2.18 this is availible with g_memory_output_stream_get_data_size(),
+ * but for 2.16 you have to use g_seekable_seek() to G_SEEK_END
+ * and call g_seekable_tell() to achive this.
+ * 
+ * Returns: the number of bytes allocated for the data buffer
  */
 gsize
 g_memory_output_stream_get_size (GMemoryOutputStream *ostream)
