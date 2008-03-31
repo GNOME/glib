@@ -262,9 +262,9 @@ g_win32_get_package_installation_directory_of_module (gpointer hmodule)
   {
     gchar tmp[MAX_PATH];
 
-    cygwin_conv_to_posix_path(fn, tmp);
-    g_free(fn);
-    fn = g_strdup(tmp);
+    cygwin_conv_to_posix_path (retval, tmp);
+    g_free (retval);
+    retval = g_strdup (tmp);
   }
 #endif
 

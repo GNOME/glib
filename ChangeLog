@@ -1,5 +1,11 @@
 2008-03-31  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gwin32.c
+	(g_win32_get_package_installation_directory_of_module): Fix Cygwin
+	breakage. Patch by Lieven van der Heide.
+
+2008-03-31  Tor Lillqvist  <tml@novell.com>
+
 	Bug 525192 - 100% CPU if run main loop with no IO sources
 
 	* glib/gmain.c (g_poll) [Win32]: Patch by Neil Roberts.
