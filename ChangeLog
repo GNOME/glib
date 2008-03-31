@@ -1,3 +1,9 @@
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	* glib/gtestutils.c: Fix a doc typo. (#524742, Hiroyuki Ikezoe)
+
 2008-03-20  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:

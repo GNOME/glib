@@ -1446,7 +1446,7 @@ test_time_stamp (void)
  * In the following example, the test code forks, the forked child
  * process produces some sample output and exits successfully.
  * The forking parent process then asserts successfull child program
- * termination and validates cihld program outputs.
+ * termination and validates child program outputs.
  *
  * |[
  *   static void
