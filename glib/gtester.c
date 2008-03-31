@@ -273,7 +273,8 @@ launch_test_binary (const char *binary,
   GTestLogBuffer *tlb;
   GSList *slist, *free_list = NULL;
   GError *error = NULL;
-  const gchar *argv[ARG_MAX];
+  int argc = 0;
+  const gchar **argv;
   GPid pid = 0;
   gint report_pipe[2] = { -1, -1 };
   guint child_report_cb_id = 0;
@@ -289,7 +290,34 @@ launch_test_binary (const char *binary,
       return FALSE;
     }
 
+  /* setup argc */
+  for (slist = subtest_args; slist; slist = slist->next)
+    argc++;
+  /* argc++; */
+  if (subtest_quiet)
+    argc++;
+  if (subtest_verbose)
+    argc++;
+  if (!subtest_mode_fatal)
+    argc++;
+  if (subtest_mode_quick)
+    argc++;
+  else
+    argc++;
+  if (subtest_mode_perf)
+    argc++;
+  if (gtester_list_tests)
+    argc++;
+  if (subtest_seedstr)
+    argc++;
+  argc++;
+  if (skip_tests)
+    argc++;
+  for (slist = subtest_paths; slist; slist = slist->next)
+    argc++;
+
   /* setup argv */
+  argv = g_malloc ((argc + 1) * sizeof(gchar *));
   argv[i++] = binary;
   for (slist = subtest_args; slist; slist = slist->next)
     argv[i++] = (gchar*) slist->data;
@@ -343,8 +371,10 @@ launch_test_binary (const char *binary,
       else
         g_warning ("Failed to execute test binary: %s: %s", argv[0], error->message);
       g_clear_error (&error);
+      g_free (argv);
       return FALSE;
     }
+  g_free (argv);
 
   subtest_running = TRUE;
   subtest_io_pending = TRUE;
