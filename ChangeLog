@@ -1,3 +1,9 @@
+2008-03-31  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c
+	(g_win32_get_package_installation_directory_of_module): Fix Cygwin
+	breakage. Patch by Lieven van der Heide.
+
 2008-03-31 10:39:17  Tim Janik  <timj@imendio.com>
 
 	* glib/gutils.h: reapply inlining fix from r6333 to fix:
