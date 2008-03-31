@@ -1,4 +1,9 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gthread.h: Replace occurrances of G_GNUC_PRETTY_FUNCTION
+	by G_STRFUNC.  (#524344, Peter, Kjellerstedt)
+
+2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtestutils.c: Fix a doc typo. (#524742, Hiroyuki Ikezoe)
 
