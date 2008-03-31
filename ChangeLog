@@ -1,3 +1,10 @@
+2008-03-31 10:39:17  Tim Janik  <timj@imendio.com>
+
+	* glib/gutils.h: reapply inlining fix from r6333 to fix:
+	Bug 522292 – Gives warnings in glib/gutils.h with GCC in C99 mode
+	and again:
+	Bug 315437 – extern inline -> static inline
+
 2008-03-31  Tor Lillqvist  <tml@novell.com>
 
 	Bug 525192 - 100% CPU if run main loop with no IO sources
