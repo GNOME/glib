@@ -388,7 +388,7 @@ g_poll (GPollFD *fds,
 	ready = WAIT_FAILED;
       else
 	{
-	  Sleep (timeout);
+	  SleepEx (timeout, TRUE);
 	  ready = WAIT_TIMEOUT;
 	}
     }
