@@ -36,6 +36,10 @@
 #include "gthreadprivate.h"
 #include "gunicode.h"
 
+#ifdef G_OS_WIN32
+#include "win_iconv.c"
+#endif
+
 #ifdef G_PLATFORM_WIN32
 #define STRICT
 #include <windows.h>
@@ -52,10 +56,6 @@
 #endif
 
 #include "galias.h"
-
-#ifdef G_OS_WIN32
-#include "win_iconv.c"
-#endif
 
 GQuark 
 g_convert_error_quark (void)

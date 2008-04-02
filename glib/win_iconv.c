@@ -19,6 +19,12 @@
  * be used for encoding validation purpose.
  */
 
+/* for WC_NO_BEST_FIT_CHARS */
+#ifndef WINVER
+# define WINVER 0x0500
+#endif
+
+#define STRICT
 #include <windows.h>
 #include <errno.h>
 #include <string.h>
@@ -36,10 +42,12 @@
 
 #define MB_CHAR_MAX 16
 
-#define UNICODE_MODE_BOM_DONE 1
-#define UNICODE_MODE_SWAPPED 2
+#define UNICODE_MODE_BOM_DONE   1
+#define UNICODE_MODE_SWAPPED    2
 
-#define UNICODE_FLAG_USE_BOM_ENDIAN 1
+#define FLAG_USE_BOM_ENDIAN     1
+#define FLAG_TRANSLIT           2 /* //TRANSLIT */
+#define FLAG_IGNORE             4 /* //IGNORE (not implemented) */
 
 #define return_error(code)  \
     do {                    \
@@ -873,6 +881,7 @@ make_csconv(const char *_name)
     CPINFOEX cpinfoex;
     csconv_t cv;
     int use_compat = TRUE;
+    int flag = 0;
     char name[128];
     char *p;
 
@@ -883,11 +892,15 @@ make_csconv(const char *_name)
     {
         if (_stricmp(p + 2, "nocompat") == 0)
             use_compat = FALSE;
+        else if (_stricmp(p + 2, "translit") == 0)
+            flag |= FLAG_TRANSLIT;
+        else if (_stricmp(p + 2, "ignore") == 0)
+            flag |= FLAG_IGNORE;
         *p = 0;
     }
 
     cv.mode = 0;
-    cv.flags = 0;
+    cv.flags = flag;
     cv.mblen = NULL;
     cv.flush = NULL;
     cv.compat = NULL;
@@ -899,14 +912,14 @@ make_csconv(const char *_name)
         if (_stricmp(name, "UTF-16") == 0 ||
 	    _stricmp(name, "UTF16") == 0 ||
 	    _stricmp(name, "UCS-2") == 0)
-            cv.flags |= UNICODE_FLAG_USE_BOM_ENDIAN;
+            cv.flags |= FLAG_USE_BOM_ENDIAN;
     }
     else if (cv.codepage == 12000 || cv.codepage == 12001)
     {
         cv.mbtowc = utf32_mbtowc;
         cv.wctomb = utf32_wctomb;
         if (_stricmp(name, "UTF-32") == 0 || _stricmp(name, "UTF32") == 0)
-            cv.flags |= UNICODE_FLAG_USE_BOM_ENDIAN;
+            cv.flags |= FLAG_USE_BOM_ENDIAN;
     }
     else if (cv.codepage == 65001)
     {
@@ -1061,7 +1074,7 @@ static void
 check_utf_bom(rec_iconv_t *cd, ushort *wbuf, int *wbufsize)
 {
     /* If we have a BOM, trust it, despite what the caller said */
-    if (wbuf[0] == 0xFFFE && (cd->from.flags & UNICODE_FLAG_USE_BOM_ENDIAN))
+    if (wbuf[0] == 0xFFFE && (cd->from.flags & FLAG_USE_BOM_ENDIAN))
     {
         /* swap endian: 1200 <-> 1201 or 12000 <-> 12001 */
         cd->from.codepage ^= 1;
@@ -1345,13 +1358,22 @@ static int
 kernel_wctomb(csconv_t *cv, ushort *wbuf, int wbufsize, uchar *buf, int bufsize)
 {
     BOOL usedDefaultChar = 0;
+    BOOL *p = NULL;
+    int flags = 0;
     int len;
 
     if (bufsize == 0)
         return_error(E2BIG);
-    len = WideCharToMultiByte(cv->codepage, 0,
-            (const wchar_t *)wbuf, wbufsize, (char *)buf, bufsize, NULL,
-            must_use_null_useddefaultchar(cv->codepage) ? NULL : &usedDefaultChar);
+    if (!must_use_null_useddefaultchar(cv->codepage))
+    {
+        p = &usedDefaultChar;
+#ifdef WC_NO_BEST_FIT_CHARS
+        if (!(cv->flags & FLAG_TRANSLIT))
+            flags |= WC_NO_BEST_FIT_CHARS;
+#endif
+    }
+    len = WideCharToMultiByte(cv->codepage, flags,
+            (const wchar_t *)wbuf, wbufsize, (char *)buf, bufsize, NULL, p);
     if (len == 0)
     {
         if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)

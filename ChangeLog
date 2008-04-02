@@ -1,3 +1,15 @@
+2008-04-02  Tor Lillqvist  <tml@novell.com>
+
+	Bug 524314 - g_convert() on Win32 implicitly converts full width
+	alphanumerics into half width
+	
+	* glib/win_iconv.c: Update from Yukihiro Nakadaira. Use
+	WC_NO_BEST_FIT_CHARS flag for WideCharToMultiByte() unless the
+	//translit flag was suffixed to the codeset name.
+
+	* glib/gconvert.c: Include win_iconv.c earlier so that its
+	definition of WINVER before it includes <windows.h> is used.
+
 2008-03-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
