@@ -1,5 +1,13 @@
 2008-04-03  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 448943 – g_timeout_add_seconds() problems
+
+	* glib/gmain.c (g_timeout_set_expiration): Prevent expiration
+	time going negative. Reported by Cody Russell, analyzed by
+	Olivier Crete, patch by Sjoerd Simons.
+
+2008-04-03  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 525674 – A typo in gmarkup.c
 
 	* glib/gmarkup.c (g_markup_parse_context_get_element_stack): Fix
