@@ -1,3 +1,10 @@
+2008-04-03  Tor Lillqvist  <tml@novell.com>
+
+	Bug 525972 - UCS-4 not in the new win_iconv implementation
+
+	* glib/win_iconv.c: Add UCS-4. Also add spelling of UCS-2 without
+	the hyphen.
+
 2008-04-03  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 448943 – g_timeout_add_seconds() problems

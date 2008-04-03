@@ -188,21 +188,27 @@ static struct {
     {1200, "CP1200"},
     {1200, "UTF16LE"},
     {1200, "UTF-16LE"},
+    {1200, "UCS2LE"},
     {1200, "UCS-2LE"},
 
     {1201, "CP1201"},
     {1201, "UTF16BE"},
     {1201, "UTF-16BE"},
+    {1201, "UCS2BE"},
     {1201, "UCS-2BE"},
     {1201, "unicodeFFFE"},
 
     {12000, "CP12000"},
     {12000, "UTF32LE"},
     {12000, "UTF-32LE"},
+    {12000, "UCS4LE"},
+    {12000, "UCS-4LE"},
 
     {12001, "CP12001"},
     {12001, "UTF32BE"},
     {12001, "UTF-32BE"},
+    {12001, "UCS4BE"},
+    {12001, "UCS-4BE"},
 
 #ifndef GLIB_COMPILATION
     /*
@@ -213,13 +219,18 @@ static struct {
     {1201, "UTF-16"},
     {12001, "UTF32"},
     {12001, "UTF-32"},
+    {12001, "UCS-4"},
+    {12001, "UCS4"},
 #else
     /* Default is little endian, because the platform is */
     {1200, "UTF16"},
     {1200, "UTF-16"},
+    {1200, "UCS2"},
     {1200, "UCS-2"},
     {12000, "UTF32"},
     {12000, "UTF-32"},
+    {12000, "UCS4"},
+    {12000, "UCS-4"},
 #endif
 
     /* copy from libiconv `iconv -l` */
@@ -911,14 +922,18 @@ make_csconv(const char *_name)
         cv.wctomb = utf16_wctomb;
         if (_stricmp(name, "UTF-16") == 0 ||
 	    _stricmp(name, "UTF16") == 0 ||
-	    _stricmp(name, "UCS-2") == 0)
+	    _stricmp(name, "UCS-2") == 0 ||
+	    _stricmp(name, "UCS2") == 0)
             cv.flags |= FLAG_USE_BOM_ENDIAN;
     }
     else if (cv.codepage == 12000 || cv.codepage == 12001)
     {
         cv.mbtowc = utf32_mbtowc;
         cv.wctomb = utf32_wctomb;
-        if (_stricmp(name, "UTF-32") == 0 || _stricmp(name, "UTF32") == 0)
+        if (_stricmp(name, "UTF-32") == 0 ||
+	    _stricmp(name, "UTF32") == 0 ||
+	    _stricmp(name, "UCS-4") == 0 ||
+	    _stricmp(name, "UCS4") == 0)
             cv.flags |= FLAG_USE_BOM_ENDIAN;
     }
     else if (cv.codepage == 65001)
