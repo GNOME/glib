@@ -264,7 +264,7 @@ The return value is cast to the given type.
 <programlisting>
   EDayViewEvent *event;
 
-  /* This gets a pointer to the 3rd element in the array of EDayViewEvent
+  /* This gets a pointer to the 4th element in the array of EDayViewEvent
      structs. */
   event = &amp;g_array_index (events, EDayViewEvent, 3);
 </programlisting>

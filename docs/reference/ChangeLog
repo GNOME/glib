@@ -1,3 +1,9 @@
+2008-04-03  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 525553 – fix typo and nitpicking in GArray documentation
+
+	* glib/tmpl/arrays.sgml: Correct an index in an example
+
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 	
 	* gio/gio-sections.txt: Add g_file_query_file_type.
