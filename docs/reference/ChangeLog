@@ -2,7 +2,8 @@
 
 	Bug 525553 – fix typo and nitpicking in GArray documentation
 
-	* glib/tmpl/arrays.sgml: Correct an index in an example
+	* glib/tmpl/arrays.sgml: Correct an index in an example,
+	pointed out by Paul Bolle
 
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 	
