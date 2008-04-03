@@ -1898,7 +1898,7 @@ g_markup_parse_context_get_element (GMarkupParseContext *context)
  *
  * Returns: the element stack, which must not be modified
  *
- * Since 2.16
+ * Since: 2.16
  **/
 G_CONST_RETURN GSList *
 g_markup_parse_context_get_element_stack (GMarkupParseContext *context)
