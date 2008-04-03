@@ -500,6 +500,17 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 
+if test "$glib_native_win32" = "yes"; then
+  if test x$enable_static = xyes -a x$enable_shared = xyes; then
+    AC_MSG_ERROR([Can not build both shared and static at the same time on Windows.])
+  fi
+  if test x$enable_static = xyes; then
+    glib_win32_static_compilation=yes
+    GLIB_WIN32_STATIC_COMPILATION_DEFINE="#define GLIB_STATIC_COMPILATION 1"
+    AC_SUBST(GLIB_WIN32_STATIC_COMPILATION_DEFINE)
+  fi
+fi
+
 dnl
 dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
 dnl
@@ -2710,6 +2721,7 @@ $glib_atexit
 $glib_memmove
 $glib_defines
 $glib_os
+$glib_static_compilation
 
 $glib_vacopy
 
@@ -3188,6 +3200,10 @@ case $host in
     glib_os="#define G_OS_UNIX"
     ;;
 esac
+glib_static_compilation=""
+if test x$glib_win32_static_compilation = xyes; then
+  glib_static_compilation="#define GLIB_STATIC_COMPILATION 1"
+fi
 ])
 
 AC_CONFIG_FILES([
