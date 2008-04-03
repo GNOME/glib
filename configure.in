@@ -491,6 +491,8 @@ if test "$glib_native_win32" = "yes"; then
   fi
   if test x$enable_static = xyes; then
     glib_win32_static_compilation=yes
+    GLIB_WIN32_STATIC_COMPILATION_DEFINE="#define GLIB_STATIC_COMPILATION 1"
+    AC_SUBST(GLIB_WIN32_STATIC_COMPILATION_DEFINE)
   fi
 fi
 

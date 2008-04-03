@@ -11,6 +11,9 @@
 	force the developer who compiles against a statically built GLib
 	to use -DGLIB_STATIC_COMPILATION.
 
+	* glibconfig.h.win32.in: Define GLIB_STATIC_COMPILATION here also,
+	if needed.
+
 2008-04-03  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Don't enforce shared library build only on
