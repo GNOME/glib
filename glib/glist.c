@@ -727,7 +727,7 @@ g_list_last (GList *list)
  *
  * Gets the first element in a #GList.
  *
- * Returns: the last element in the #GList, 
+ * Returns: the first element in the #GList, 
  *     or %NULL if the #GList has no elements
  */
 GList*

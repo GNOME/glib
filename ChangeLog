@@ -1,3 +1,9 @@
+2008-04-03  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 525732 – Error in documentation for g_list_first
+
+	* glib/glist.c (g_list_first): Fix the docs
+
 2008-04-02  Tor Lillqvist  <tml@novell.com>
 
 	Bug 524314 - g_convert() on Win32 implicitly converts full width
