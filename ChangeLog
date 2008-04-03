@@ -3,14 +3,13 @@
 	* configure.in: Make sure we don't build both shared and static at
 	the same time on Windows. Put a #define for
 	GLIB_STATIC_COMPILATION into glibconfig.h in the static case, so
-	that the use of variables from libglib gets the dllimport stuff in
-	the GLIB_VAR macro as defined in gtypes.h automatically
-	correct. This means that a shared and static build of GLib can't
-	be installed in the same prefix on Windows, which sucks a bit. But
-	with variables in the GLib API, there isn't much we can do
-	otherwise. The alternative would be to force the developer who
-	compiles against a statically built GLib to use
-	-DGLIB_STATIC_COMPILATION.
+	that the use of variables from libglib gets the GLIB_VAR macro in
+	gtypes.h automatically correct. This means that a shared and
+	static build of GLib can't be installed in the same prefix on
+	Windows, which sucks a bit. But with variables in the GLib API,
+	there isn't much we can do otherwise. The alternative would be to
+	force the developer who compiles against a statically built GLib
+	to use -DGLIB_STATIC_COMPILATION.
 
 2008-04-03  Tor Lillqvist  <tml@novell.com>
 
