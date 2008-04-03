@@ -1,5 +1,16 @@
 2008-04-03  Tor Lillqvist  <tml@novell.com>
 
+	* configure.in: Don't enforce shared library build only on
+	Windows. It might well make sense to build static libraries in
+	some use cases.
+
+	* glib/gutils.c: Don't compile the DllMain if building libglib
+	statically. Also in that case don't return NULL from
+	_glib_get_installation_directory(), but return the installation
+	directory of the program's .exe file.
+
+2008-04-03  Tor Lillqvist  <tml@novell.com>
+
 	Bug 525972 - UCS-4 not in the new win_iconv implementation
 
 	* glib/win_iconv.c: Add UCS-4. Also add spelling of UCS-2 without
