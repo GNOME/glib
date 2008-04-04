@@ -1,3 +1,7 @@
+2008-04-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c: Make the fix for bug 448943 work.
+
 2008-04-04  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Make sure we don't build both shared and static at
