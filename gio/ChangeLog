@@ -1,3 +1,10 @@
+2008-04-04  Sebastien Bacher  <seb128@ubuntu.com>
+
+	* gunixmounts.c: (g_unix_mount_guess_should_display):
+	Don't list the user directory as a mount, fix potential issue
+	when other users have a similar naming and don't special case the
+	gvfs mounts there since that's not required (#525866)
+
 2008-03-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.16.2 ===
