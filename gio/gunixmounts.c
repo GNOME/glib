@@ -1887,13 +1887,10 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
-      if (strstr (mount_path, "/.gvfs") != NULL)
-        return TRUE;
-      
       if (g_str_has_prefix (mount_path, "/media/"))
         return TRUE;
       
-      if (g_str_has_prefix (mount_path, g_get_home_dir ()))
+      if (g_str_has_prefix (mount_path, g_get_home_dir ()) && mount_path[strlen (g_get_home_dir())] == G_DIR_SEPARATOR)
         return TRUE;
     }
   
