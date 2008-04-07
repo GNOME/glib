@@ -98,7 +98,7 @@
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtester.c: Don't use ARG_MAX.  (#522335, patch by 
-	Sebastian Dröge)
+	Samuel Thibault, adapted by Sebastian Dröge)
 
 2008-03-30  Matthias Clasen  <mclasen@redhat.com>
 
