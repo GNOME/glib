@@ -409,7 +409,7 @@ struct _MamanBarPrivate {
   gboolean dispose_has_run;
 };
 
-static GObjectClass parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 static void
 bar_dispose (GObject *obj)

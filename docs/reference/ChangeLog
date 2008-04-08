@@ -1,3 +1,10 @@
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 526572 – Missing * in declaration of parent_class in Object
+	Destruction section of GObject Reference Manual
+
+	* gobject/tut_howto.xml: Add missing *.
+
 2008-04-03  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 525553 – fix typo and nitpicking in GArray documentation
