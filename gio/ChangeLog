@@ -1,3 +1,12 @@
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	Bug 526796 – Wrong order of arguments in g_file_copy's fallback
+
+	* gfile.c (file_copy_fallback): Fix the argument order. Patch
+	by Christian Kellner.
+
 2008-04-04  Sebastien Bacher  <seb128@ubuntu.com>
 
 	* gunixmounts.c: (g_unix_mount_guess_should_display):
