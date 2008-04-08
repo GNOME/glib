@@ -1,3 +1,8 @@
+2008-04-08  Tomas Bzatek  <tbzatek@redhat.com>
+
+	* gfile.c: (g_file_replace):
+	Doc update
+
 2008-04-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 526796 – Wrong order of arguments in g_file_copy's fallback
