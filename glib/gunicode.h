@@ -194,17 +194,17 @@ typedef enum
   G_UNICODE_SCRIPT_NKO,                /* Nkoo */
 
   /* Unicode-5.1 additions */
-  G_UNICODE_SCRIPT_KAYAH_LI,
-  G_UNICODE_SCRIPT_LEPCHA,
-  G_UNICODE_SCRIPT_REJANG,
-  G_UNICODE_SCRIPT_SUNDANESE,
-  G_UNICODE_SCRIPT_SAURASHTRA,
-  G_UNICODE_SCRIPT_CHAM,
-  G_UNICODE_SCRIPT_OL_CHIKI,
-  G_UNICODE_SCRIPT_VAI,
-  G_UNICODE_SCRIPT_CARIAN,
-  G_UNICODE_SCRIPT_LYCIAN,
-  G_UNICODE_SCRIPT_LYDIAN
+  G_UNICODE_SCRIPT_KAYAH_LI,           /* Kali */
+  G_UNICODE_SCRIPT_LEPCHA,             /* Lepc */
+  G_UNICODE_SCRIPT_REJANG,             /* Rjng */
+  G_UNICODE_SCRIPT_SUNDANESE,          /* Sund */
+  G_UNICODE_SCRIPT_SAURASHTRA,         /* Saur */
+  G_UNICODE_SCRIPT_CHAM,               /* Cham */
+  G_UNICODE_SCRIPT_OL_CHIKI,           /* Olck */
+  G_UNICODE_SCRIPT_VAI,                /* Vaii */
+  G_UNICODE_SCRIPT_CARIAN,             /* Cari */
+  G_UNICODE_SCRIPT_LYCIAN,             /* Lyci */
+  G_UNICODE_SCRIPT_LYDIAN              /* Lydi */
 } GUnicodeScript;
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is

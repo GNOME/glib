@@ -1,3 +1,7 @@
+2008-04-08  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gunicode.h: Add ISO 15924 code comments for new scripts.
+
 2008-04-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 491554 – Update to Unicode 5.1.0
