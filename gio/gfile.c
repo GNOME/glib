@@ -2300,8 +2300,9 @@ file_copy_fallback (GFile                  *source,
   if (flags & G_FILE_COPY_OVERWRITE)
     {
       out = (GOutputStream *)g_file_replace (destination,
-					     NULL, 0,
+					     NULL,
 					     flags & G_FILE_COPY_BACKUP,
+                                             0,
 					     cancellable, error);
     }
   else
