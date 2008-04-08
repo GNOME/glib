@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 17:53-0400\n"
+"POT-Creation-Date: 2008-04-08 00:40-0400\n"
 "PO-Revision-Date: 2007-06-11 18:17+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -1225,9 +1225,9 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2612
-#: gio/gfile.c:2657 gio/gfile.c:2707 gio/gfile.c:2747 gio/gfile.c:3071
-#: gio/gfile.c:3473 gio/gfile.c:3556 gio/gfile.c:3639 gio/gfile.c:3719
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
+#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
+#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ଅସହାୟକ"
@@ -1266,26 +1266,26 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2697
+#: gio/gfile.c:2698
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2790
+#: gio/gfile.c:2791
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ଅସହାୟକ"
 
-#: gio/gfile.c:2837
+#: gio/gfile.c:2838
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4770 gio/gvolume.c:357
+#: gio/gfile.c:4771 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:4878
+#: gio/gfile.c:4879
 #, fuzzy, c-format
 msgid "No application is registered as handling this file"
 msgstr "'%s' ନାମରେ ନାମିତ କୌଣସି ପ୍ରୟୋଗ '%s' ପାଇଁ ଗୋଟିଏ ବୁକ୍ ମାର୍କକୁ ପଞ୍ଜିକ୍ରୁତ କରିନାହିଁ"
