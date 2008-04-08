@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.16.2 to GLib 2.16.3
+===================================================
+
+* Update the Unicode support to 5.1.0
+
+* Bug fixes:
+ 524314 g_convert() on Win32 implicitly converts full width alpha...
+ 448943 g_timeout_add_seconds() problems
+ 525972 UCS-4 not in the new win_iconv implementation
+ 526619 make test-report crash
+ 491554 Update to Unicode 5.1.0
+ 525866 the user directory should not be considered as a mount...
+ 526796 Wrong order of arguments in g_file_copy's fallback
+
+* Translation updates:
+ Czech (cs)
+
+
 Overview of Changes from GLib 2.16.1 to GLib 2.16.2
 ===================================================
 

@@ -1,5 +1,9 @@
 2008-04-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 
 	Bug 491554 – Update to Unicode 5.1.0
