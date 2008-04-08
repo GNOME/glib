@@ -1490,7 +1490,8 @@ g_file_create (GFile             *file,
  * @error: a #GError, or %NULL
  *
  * Returns an output stream for overwriting the file, possibly
- * creating a backup copy of the file first.
+ * creating a backup copy of the file first. If the file doesn't exist,
+ * it will be created.
  *
  * This will try to replace the file in the safest way possible so
  * that any errors during the writing will not affect an already
