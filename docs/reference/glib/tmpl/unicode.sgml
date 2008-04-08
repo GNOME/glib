@@ -20,7 +20,7 @@ The implementations of the Unicode functions in GLib are based
 on the Unicode Character Data tables, which are available from
 <ulink url="http://www.unicode.org">www.unicode.org</ulink>.
 GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1,
-GLib 2.12 supports Unicode 5.0.
+GLib 2.12 supports Unicode 5.0, GLib 2.16.3 supports Unicode 5.1.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -490,6 +490,19 @@ url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
 @G_UNICODE_SCRIPT_PHOENICIAN: Phoenician
 @G_UNICODE_SCRIPT_PHAGS_PA:   Phags-pa
 @G_UNICODE_SCRIPT_NKO:        N'Ko
+
+@G_UNICODE_SCRIPT_KAYAH_LI:   Kayah Li. Since 2.16.3
+@G_UNICODE_SCRIPT_LEPCHA:     Lepcha. Since 2.16.3
+@G_UNICODE_SCRIPT_REJANG:     Rejang. Since 2.16.3
+@G_UNICODE_SCRIPT_SUNDANESE:  Sundanese. Since 2.16.3
+@G_UNICODE_SCRIPT_SAURASHTRA: Saurashtra. Since 2.16.3
+@G_UNICODE_SCRIPT_CHAM:       Cham. Since 2.16.3
+@G_UNICODE_SCRIPT_OL_CHIKI:   Ol Chiki. Since 2.16.3
+@G_UNICODE_SCRIPT_VAI:        Vai. Since 2.16.3
+@G_UNICODE_SCRIPT_CARIAN:     Carian. Since 2.16.3
+@G_UNICODE_SCRIPT_LYCIAN:     Lycian. Since 2.16.3
+@G_UNICODE_SCRIPT_LYDIAN:     Lydian. Since 2.16.3
+
 
 <!-- ##### FUNCTION g_unichar_get_script ##### -->
 <para>

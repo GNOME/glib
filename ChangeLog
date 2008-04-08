@@ -2,6 +2,20 @@
 
 	Merged from trunk:
 
+	Bug 491554 – Update to Unicode 5.1.0
+
+	* glib/gunichartables.h:
+	* glib/gunicode.h:
+	* glib/gunibreak.h:
+	* glib/gmirroringtable.h:
+	* glib/gscripttable.h:
+	* glib/gen-script-table.pl: Update to Unicode 5.1.0. Patch by
+	Behdad Esfahbod
+
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
 	Bug 526619 – make test-report crash
 
 	* glib/gtester.c: Allocate enough space for argv. Patch by
