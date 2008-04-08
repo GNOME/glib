@@ -1,3 +1,10 @@
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 526619 – make test-report crash
+
+	* glib/gtester.c: Allocate enough space for argv. Patch by
+	 Hiroyuki Ikezoe
+
 2008-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmain.c: Make the fix for bug 448943 work.

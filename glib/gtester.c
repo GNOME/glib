@@ -317,7 +317,7 @@ launch_test_binary (const char *binary,
     argc++;
 
   /* setup argv */
-  argv = g_malloc ((argc + 1) * sizeof(gchar *));
+  argv = g_malloc ((argc + 2) * sizeof(gchar *));
   argv[i++] = binary;
   for (slist = subtest_args; slist; slist = slist->next)
     argv[i++] = (gchar*) slist->data;
