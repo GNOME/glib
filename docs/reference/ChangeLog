@@ -1,5 +1,9 @@
 2008-04-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/unicode.sgml: Updates for Unicode 5.1
+
+2008-04-07  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 526572 – Missing * in declaration of parent_class in Object
 	Destruction section of GObject Reference Manual
 

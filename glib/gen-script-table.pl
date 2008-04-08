@@ -77,9 +77,9 @@ for (my $c = 0; $c < $easy_range; $c++) {
     }
     
     if ($c < $start) {
-        printf " G_SCRIPT_UNKNOWN,";
+        printf " G_UNICODE_SCRIPT_UNKNOWN,";
     } else {
-        printf " G_SCRIPT_%s,", $script;
+        printf " G_UNICODE_SCRIPT_%s,", $script;
     }
 }
 
@@ -112,7 +112,7 @@ for (; $i <= $#ranges; $i++) {
 	$end = $ranges[$i]->[1];
     }
 
-    printf " { %#06x, %5d, G_SCRIPT_%s },\n", $start, $end - $start + 1, $script;
+    printf " { %#06x, %5d, G_UNICODE_SCRIPT_%s },\n", $start, $end - $start + 1, $script;
 }
 
 printf "};\n";
