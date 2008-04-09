@@ -325,10 +325,10 @@ bookmark_metadata_free (BookmarkMetadata *metadata)
 		      (GFunc) bookmark_app_info_free,
 		      NULL);
       g_list_free (metadata->applications);
-      
-      g_hash_table_destroy (metadata->apps_by_name);
     }
-  
+
+  g_hash_table_destroy (metadata->apps_by_name);
+
   g_free (metadata->icon_href);
   g_free (metadata->icon_mime);
   

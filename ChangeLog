@@ -1,3 +1,8 @@
+2008-04-09  Federico Mena Quintero  <federico@novell.com>
+
+	* glib/gbookmarkfile.c (bookmark_metadata_free): Don't leak
+	the apps_by_name hash table if the applications list is empty.
+
 2008-04-08  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gunicode.h: Add ISO 15924 code comments for new scripts.
