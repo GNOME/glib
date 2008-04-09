@@ -1,3 +1,8 @@
+2008-04-09  Padraig O'Briain  <padraig.obriain@sun.com>
+
+        * gdesktopappinfo.c: In g_app_info_create_from_commandline set comment
+        after name. Fixes #527132.
+
 2008-04-08  Tomas Bzatek  <tbzatek@redhat.com> 
 
         * gfile.c: (g_file_replace):
