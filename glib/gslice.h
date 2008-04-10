@@ -59,7 +59,8 @@ void     g_slice_free_chain_with_offset (gsize         block_size,
 
 /* we go through extra hoops to ensure type safety */
 #define g_slice_dup(type, mem)                                  \
-  (1 ? g_slice_copy (sizeof (type), (mem)) : (type*) ((type*) 0 == (mem)))
+  (1 ? (type*) g_slice_copy (sizeof (type), (mem))              \
+     : ((void) ((type*) 0 == (mem)), (type*) 0))
 #define g_slice_free(type, mem)				do {	\
   if (1) g_slice_free1 (sizeof (type), (mem));			\
   else   (void) ((type*) 0 == (mem)); 				\

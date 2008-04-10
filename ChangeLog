@@ -1,3 +1,10 @@
+2008-04-10  Mathias Hasselmann  <mathias@openismus.com>
+
+	Bug 519137 – g_slice_dup macro needs cast for 64-bit platform
+
+	* glib/gslice.h (g_slice_copy): Apply type casts needed
+	  for proper compilation on 64-bit platforms.
+
 2008-04-09  Federico Mena Quintero  <federico@novell.com>
 
 	* glib/gbookmarkfile.c (bookmark_metadata_free): Don't leak
