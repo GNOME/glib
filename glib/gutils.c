@@ -134,8 +134,6 @@ const guint glib_binary_age = GLIB_BINARY_AGE;
 
 static HMODULE glib_dll = NULL;
 
-#ifdef DLL_EXPORT
-
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
 	 DWORD     fdwReason,
@@ -147,18 +145,12 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
-#endif
-
 gchar *
 _glib_get_installation_directory (void)
 {
-#ifdef DLL_EXPORT
   if (glib_dll == NULL)
     return NULL;
-#endif
-  /* In a static build of GLib just use the application's .exe file's
-   * installation directory...
-   */
+
   return g_win32_get_package_installation_directory_of_module (glib_dll);
 }
 

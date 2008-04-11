@@ -103,7 +103,6 @@ typedef gint64 goffset;
 
 #define G_OS_WIN32
 #define G_PLATFORM_WIN32
-@GLIB_WIN32_STATIC_COMPILATION_DEFINE@
 
 #ifndef _MSC_VER
 #define G_VA_COPY	va_copy

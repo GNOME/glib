@@ -250,6 +250,17 @@ else
   AC_MSG_RESULT([yes])
 fi
 
+if test "$glib_native_win32" = "yes"; then
+  if test x$enable_static = xyes -o x$enable_static = x; then
+    AC_MSG_WARN([Disabling static library build, must build as DLL on Windows.])
+    enable_static=no
+  fi
+  if test x$enable_shared = xno; then
+    AC_MSG_WARN([Enabling shared library build, must build as DLL on Windows.])
+  fi
+  enable_shared=yes
+fi
+
 dnl Checks for programs.
 AC_PROG_CC
 
@@ -498,17 +509,6 @@ if test "x$GCC" = "xyes"; then
   *[[\ \	]]-Wall[[\ \	]]*) ;;
   *) CFLAGS="$CFLAGS -Wall" ;;
   esac
-fi
-
-if test "$glib_native_win32" = "yes"; then
-  if test x$enable_static = xyes -a x$enable_shared = xyes; then
-    AC_MSG_ERROR([Can not build both shared and static at the same time on Windows.])
-  fi
-  if test x$enable_static = xyes; then
-    glib_win32_static_compilation=yes
-    GLIB_WIN32_STATIC_COMPILATION_DEFINE="#define GLIB_STATIC_COMPILATION 1"
-    AC_SUBST(GLIB_WIN32_STATIC_COMPILATION_DEFINE)
-  fi
 fi
 
 dnl
@@ -2721,7 +2721,6 @@ $glib_atexit
 $glib_memmove
 $glib_defines
 $glib_os
-$glib_static_compilation
 
 $glib_vacopy
 
@@ -3200,10 +3199,6 @@ case $host in
     glib_os="#define G_OS_UNIX"
     ;;
 esac
-glib_static_compilation=""
-if test x$glib_win32_static_compilation = xyes; then
-  glib_static_compilation="#define GLIB_STATIC_COMPILATION 1"
-fi
 ])
 
 AC_CONFIG_FILES([

@@ -1,3 +1,12 @@
+2008-04-11  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in
+	* glibconfig.h.win32.in
+	* glib/gutils.c: Revert my changes for static build for Win32
+	from 2008-04-03--04. They were not complete and it's not
+	apropriate to do changes like that in the stable branch anyway. I
+	will continue that effort in trunk.
+
 2008-04-09  Federico Mena Quintero  <federico@novell.com>
 
 	Merged from trunk:
