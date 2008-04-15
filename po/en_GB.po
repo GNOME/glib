@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-11 17:30+0000\n"
+"POT-Creation-Date: 2008-04-15 17:50+0100\n"
 "PO-Revision-Date: 2008-02-17 09:21-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
@@ -16,74 +16,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gbookmarkfile.c:705 ../glib/gbookmarkfile.c:782
-#: ../glib/gbookmarkfile.c:861 ../glib/gbookmarkfile.c:908
+#: ../glib/gbookmarkfile.c:728 ../glib/gbookmarkfile.c:805
+#: ../glib/gbookmarkfile.c:884 ../glib/gbookmarkfile.c:931
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Unexpected attribute '%s' for element '%s'"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:803 ../glib/gbookmarkfile.c:919
+#: ../glib/gbookmarkfile.c:739 ../glib/gbookmarkfile.c:816
+#: ../glib/gbookmarkfile.c:826 ../glib/gbookmarkfile.c:942
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Attribute '%s' of element '%s' not found"
 
-#: ../glib/gbookmarkfile.c:1092 ../glib/gbookmarkfile.c:1157
-#: ../glib/gbookmarkfile.c:1221 ../glib/gbookmarkfile.c:1231
+#: ../glib/gbookmarkfile.c:1112 ../glib/gbookmarkfile.c:1177
+#: ../glib/gbookmarkfile.c:1241 ../glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Unexpected tag '%s', tag '%s' expected"
 
-#: ../glib/gbookmarkfile.c:1117 ../glib/gbookmarkfile.c:1131
-#: ../glib/gbookmarkfile.c:1199 ../glib/gbookmarkfile.c:1251
+#: ../glib/gbookmarkfile.c:1137 ../glib/gbookmarkfile.c:1151
+#: ../glib/gbookmarkfile.c:1219 ../glib/gbookmarkfile.c:1271
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Unexpected tag '%s' inside '%s'"
 
-#: ../glib/gbookmarkfile.c:1781
+#: ../glib/gbookmarkfile.c:1798
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "No valid bookmark file found in data dirs"
 
-#: ../glib/gbookmarkfile.c:1982
+#: ../glib/gbookmarkfile.c:1999
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "A bookmark for URI '%s' already exists"
 
-#: ../glib/gbookmarkfile.c:2028 ../glib/gbookmarkfile.c:2185
-#: ../glib/gbookmarkfile.c:2270 ../glib/gbookmarkfile.c:2350
-#: ../glib/gbookmarkfile.c:2435 ../glib/gbookmarkfile.c:2518
-#: ../glib/gbookmarkfile.c:2596 ../glib/gbookmarkfile.c:2675
-#: ../glib/gbookmarkfile.c:2717 ../glib/gbookmarkfile.c:2814
-#: ../glib/gbookmarkfile.c:2940 ../glib/gbookmarkfile.c:3130
-#: ../glib/gbookmarkfile.c:3206 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3460 ../glib/gbookmarkfile.c:3550
-#: ../glib/gbookmarkfile.c:3677
+#: ../glib/gbookmarkfile.c:2045 ../glib/gbookmarkfile.c:2202
+#: ../glib/gbookmarkfile.c:2287 ../glib/gbookmarkfile.c:2367
+#: ../glib/gbookmarkfile.c:2452 ../glib/gbookmarkfile.c:2535
+#: ../glib/gbookmarkfile.c:2613 ../glib/gbookmarkfile.c:2692
+#: ../glib/gbookmarkfile.c:2734 ../glib/gbookmarkfile.c:2831
+#: ../glib/gbookmarkfile.c:2957 ../glib/gbookmarkfile.c:3147
+#: ../glib/gbookmarkfile.c:3223 ../glib/gbookmarkfile.c:3388
+#: ../glib/gbookmarkfile.c:3477 ../glib/gbookmarkfile.c:3567
+#: ../glib/gbookmarkfile.c:3694
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "No bookmark found for URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2359
+#: ../glib/gbookmarkfile.c:2376
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "No MIME type defined in the bookmark for URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2444
+#: ../glib/gbookmarkfile.c:2461
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "No private flag has been defined in bookmark for URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2823
+#: ../glib/gbookmarkfile.c:2840
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "No groups set in bookmark for URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3224 ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3241 ../glib/gbookmarkfile.c:3398
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "No application with name '%s' registered a bookmark for '%s'"
 
-#: ../glib/gbookmarkfile.c:3404
+#: ../glib/gbookmarkfile.c:3421
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Failed to expand exec line '%s' with URI '%s'"
@@ -278,7 +278,7 @@ msgstr "Can't do a raw read in g_io_channel_read_line_string"
 #: ../glib/giochannel.c:1898
 #, c-format
 msgid "Leftover unconverted data in read buffer"
-msgstr "Left over unconverted data in read buffer"
+msgstr "Leftover unconverted data in read buffer"
 
 #: ../glib/giochannel.c:1634 ../glib/giochannel.c:1711
 #, c-format
@@ -550,7 +550,7 @@ msgstr "backtracking limit reached"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "the pattern contains items not supported for partial matching"
 
-#: ../glib/gregex.c:154 ../gio/glocalfile.c:1956
+#: ../glib/gregex.c:154 ../gio/glocalfile.c:1963
 msgid "internal error"
 msgstr "internal error"
 
@@ -757,7 +757,7 @@ msgstr "code overflow"
 
 #: ../glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr "over ran compiling workspace"
+msgstr "overran compiling workspace"
 
 #: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
@@ -1155,7 +1155,7 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
-#: ../gio/gcancellable.c:296 ../gio/glocalfile.c:1949
+#: ../gio/gcancellable.c:296 ../gio/glocalfile.c:1956
 #: ../gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
@@ -1209,7 +1209,7 @@ msgstr "Can't create user MIME configuration folder %s: %s"
 msgid "Can't create user desktop file %s"
 msgstr "Can't create user desktop file %s"
 
-#: ../gio/gdesktopappinfo.c:1517
+#: ../gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Custom definition for %s"
@@ -1222,12 +1222,12 @@ msgstr "drive doesn't implement eject"
 msgid "drive doesn't implement polling for media"
 msgstr "drive doesn't implement polling for media"
 
-#: ../gio/gfile.c:812 ../gio/gfile.c:1002 ../gio/gfile.c:1135
-#: ../gio/gfile.c:1366 ../gio/gfile.c:1419 ../gio/gfile.c:1475
-#: ../gio/gfile.c:1556 ../gio/gfile.c:2594 ../gio/gfile.c:2639
-#: ../gio/gfile.c:2689 ../gio/gfile.c:2729 ../gio/gfile.c:3053
-#: ../gio/gfile.c:3455 ../gio/gfile.c:3538 ../gio/gfile.c:3621
-#: ../gio/gfile.c:3701
+#: ../gio/gfile.c:811 ../gio/gfile.c:1039 ../gio/gfile.c:1172
+#: ../gio/gfile.c:1403 ../gio/gfile.c:1456 ../gio/gfile.c:1512
+#: ../gio/gfile.c:1594 ../gio/gfile.c:2651 ../gio/gfile.c:2696
+#: ../gio/gfile.c:2746 ../gio/gfile.c:2786 ../gio/gfile.c:3110
+#: ../gio/gfile.c:3512 ../gio/gfile.c:3595 ../gio/gfile.c:3678
+#: ../gio/gfile.c:3758
 #, c-format
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -1240,52 +1240,52 @@ msgstr "Operation not supported"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1254 ../gio/glocalfile.c:1046 ../gio/glocalfile.c:1057
+#: ../gio/gfile.c:1291 ../gio/glocalfile.c:1046 ../gio/glocalfile.c:1057
 #: ../gio/glocalfile.c:1070
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Containing mount does not exist"
 
-#: ../gio/gfile.c:1895
+#: ../gio/gfile.c:1933 ../gio/glocalfile.c:2106
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Can't copy over directory"
 
-#: ../gio/gfile.c:1955
+#: ../gio/gfile.c:1993
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Can't copy directory over directory"
 
-#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2103
+#: ../gio/gfile.c:2001 ../gio/glocalfile.c:2115
 #, c-format
 msgid "Target file exists"
 msgstr "Target file exists"
 
-#: ../gio/gfile.c:1981
+#: ../gio/gfile.c:2019
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Can't recursively copy directory"
 
-#: ../gio/gfile.c:2679
+#: ../gio/gfile.c:2736
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Invalid symlink value given"
 
-#: ../gio/gfile.c:2772
+#: ../gio/gfile.c:2829
 #, c-format
 msgid "Trash not supported"
 msgstr "Wastebasket not supported"
 
-#: ../gio/gfile.c:2819
+#: ../gio/gfile.c:2876
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "File names cannot contain '%c'"
 
-#: ../gio/gfile.c:4752 ../gio/gvolume.c:357
+#: ../gio/gfile.c:4809 ../gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "volume doesn't implement mount"
 
-#: ../gio/gfile.c:4860
+#: ../gio/gfile.c:4917
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "No application is registered as handling this file"
@@ -1296,12 +1296,12 @@ msgid "Enumerator is closed"
 msgstr "Enumerator is closed"
 
 #: ../gio/gfileenumerator.c:158 ../gio/gfileenumerator.c:217
-#: ../gio/gfileenumerator.c:317 ../gio/gfileenumerator.c:425
+#: ../gio/gfileenumerator.c:317 ../gio/gfileenumerator.c:426
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr "File enumerator has outstanding operation"
 
-#: ../gio/gfileenumerator.c:307 ../gio/gfileenumerator.c:415
+#: ../gio/gfileenumerator.c:307 ../gio/gfileenumerator.c:416
 msgid "File enumerator is already closed"
 msgstr "File enumerator is already closed"
 
@@ -1367,8 +1367,8 @@ msgstr "Can't rename root directory"
 msgid "Can't rename file, filename already exist"
 msgstr "Can't rename file, filename already exist"
 
-#: ../gio/glocalfile.c:1121 ../gio/glocalfile.c:1978 ../gio/glocalfile.c:2007
-#: ../gio/glocalfile.c:2156 ../gio/glocalfileoutputstream.c:472
+#: ../gio/glocalfile.c:1121 ../gio/glocalfile.c:1985 ../gio/glocalfile.c:2014
+#: ../gio/glocalfile.c:2168 ../gio/glocalfileoutputstream.c:472
 #: ../gio/glocalfileoutputstream.c:517 ../gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
@@ -1389,149 +1389,149 @@ msgstr "Error opening file: %s"
 msgid "Can't open directory"
 msgstr "Can't open directory"
 
-#: ../gio/glocalfile.c:1314 ../gio/glocalfile.c:1982
+#: ../gio/glocalfile.c:1314 ../gio/glocalfile.c:1989
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Error removing file: %s"
 
-#: ../gio/glocalfile.c:1677
+#: ../gio/glocalfile.c:1678
 #, c-format
 msgid "Error trashing file: %s"
-msgstr "Error trashing file: %s"
+msgstr "Error moving file to wastebasket: %s"
 
-#: ../gio/glocalfile.c:1700
+#: ../gio/glocalfile.c:1701
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Unable to create wastebasket dir %s: %s"
 
-#: ../gio/glocalfile.c:1721
+#: ../gio/glocalfile.c:1722
 #, c-format
 msgid "Unable to find toplevel directory for trash"
-msgstr "Unable to find toplevel directory for trash"
+msgstr "Unable to find toplevel directory for wastebasket"
 
-#: ../gio/glocalfile.c:1800 ../gio/glocalfile.c:1820
+#: ../gio/glocalfile.c:1801 ../gio/glocalfile.c:1821
 #, c-format
 msgid "Unable to find or create trash directory"
-msgstr "Unable to find or create trash directory"
+msgstr "Unable to find or create wastebasket directory"
 
-#: ../gio/glocalfile.c:1854
+#: ../gio/glocalfile.c:1855
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Unable to create wastebasket info file: %s"
 
-#: ../gio/glocalfile.c:1879 ../gio/glocalfile.c:1948 ../gio/glocalfile.c:1955
+#: ../gio/glocalfile.c:1880 ../gio/glocalfile.c:1955 ../gio/glocalfile.c:1962
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Unable to move file to the wastebasket: %s"
 
-#: ../gio/glocalfile.c:2011
+#: ../gio/glocalfile.c:2018
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error making symbolic link: %s"
 
-#: ../gio/glocalfile.c:2071 ../gio/glocalfile.c:2160
+#: ../gio/glocalfile.c:2078 ../gio/glocalfile.c:2172
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error moving file: %s"
 
-#: ../gio/glocalfile.c:2094
+#: ../gio/glocalfile.c:2101
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Can't move directory over directory"
 
-#: ../gio/glocalfile.c:2116 ../gio/glocalfileoutputstream.c:777
+#: ../gio/glocalfile.c:2128 ../gio/glocalfileoutputstream.c:777
 #: ../gio/glocalfileoutputstream.c:791 ../gio/glocalfileoutputstream.c:806
 #: ../gio/glocalfileoutputstream.c:822 ../gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Backup file creation failed"
 
-#: ../gio/glocalfile.c:2135
+#: ../gio/glocalfile.c:2147
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error removing target file: %s"
 
-#: ../gio/glocalfile.c:2149
+#: ../gio/glocalfile.c:2161
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Move between mounts not supported"
 
-#: ../gio/glocalfileinfo.c:709
+#: ../gio/glocalfileinfo.c:717
 #, c-format
 msgid "Attribute value must be non-NULL"
 msgstr "Attribute value must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:716
+#: ../gio/glocalfileinfo.c:724
 #, c-format
 msgid "Invalid attribute type (string expected)"
 msgstr "Invalid attribute type (string expected)"
 
-#: ../gio/glocalfileinfo.c:723
+#: ../gio/glocalfileinfo.c:731
 #, c-format
 msgid "Invalid extended attribute name"
 msgstr "Invalid extended attribute name"
 
-#: ../gio/glocalfileinfo.c:763
+#: ../gio/glocalfileinfo.c:771
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error setting extended attribute '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1402 ../gio/glocalfileoutputstream.c:666
+#: ../gio/glocalfileinfo.c:1457 ../gio/glocalfileoutputstream.c:666
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Error stating file '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1458
+#: ../gio/glocalfileinfo.c:1528
 msgid " (invalid encoding)"
 msgstr " (invalid encoding)"
 
-#: ../gio/glocalfileinfo.c:1618
+#: ../gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Error stating file descriptor: %s"
 
-#: ../gio/glocalfileinfo.c:1663
+#: ../gio/glocalfileinfo.c:1739
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Invalid attribute type (uint32 expected)"
 
-#: ../gio/glocalfileinfo.c:1680
+#: ../gio/glocalfileinfo.c:1757
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Invalid attribute type (uint64 expected)"
 
-#: ../gio/glocalfileinfo.c:1698
+#: ../gio/glocalfileinfo.c:1776
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Invalid attribute type (byte string expected)"
 
-#: ../gio/glocalfileinfo.c:1724
+#: ../gio/glocalfileinfo.c:1802
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error setting permissions: %s"
 
-#: ../gio/glocalfileinfo.c:1775 ../gio/glocalfileinfo.c:1943
+#: ../gio/glocalfileinfo.c:1853 ../gio/glocalfileinfo.c:2021
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error setting owner: %s"
 
-#: ../gio/glocalfileinfo.c:1798
+#: ../gio/glocalfileinfo.c:1876
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "symlink must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:1808 ../gio/glocalfileinfo.c:1827
-#: ../gio/glocalfileinfo.c:1838
+#: ../gio/glocalfileinfo.c:1886 ../gio/glocalfileinfo.c:1905
+#: ../gio/glocalfileinfo.c:1916
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error setting symlink: %s"
 
-#: ../gio/glocalfileinfo.c:1817
+#: ../gio/glocalfileinfo.c:1895
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error setting symlink: file is not a symlink"
 
-#: ../gio/glocalfileinfo.c:1998
+#: ../gio/glocalfileinfo.c:2076
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setting attribute %s not supported"
@@ -1604,12 +1604,12 @@ msgstr "Target file is not a regular file"
 msgid "The file was externally modified"
 msgstr "The file was externally modified"
 
-#: ../gio/gmemoryinputstream.c:487 ../gio/gmemoryoutputstream.c:517
+#: ../gio/gmemoryinputstream.c:487 ../gio/gmemoryoutputstream.c:545
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr "Invalid GSeekType supplied"
 
-#: ../gio/gmemoryinputstream.c:497 ../gio/gmemoryoutputstream.c:527
+#: ../gio/gmemoryinputstream.c:497 ../gio/gmemoryoutputstream.c:555
 #, c-format
 msgid "Invalid seek request"
 msgstr "Invalid seek request"
@@ -1619,17 +1619,17 @@ msgstr "Invalid seek request"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Cannot truncate GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:260
+#: ../gio/gmemoryoutputstream.c:288
 #, c-format
 msgid "Reached maximum data array limit"
 msgstr "Reached maximum data array limit"
 
-#: ../gio/gmemoryoutputstream.c:295
+#: ../gio/gmemoryoutputstream.c:323
 #, c-format
 msgid "Memory output stream not resizable"
 msgstr "Memory output stream not resizable"
 
-#: ../gio/gmemoryoutputstream.c:311
+#: ../gio/gmemoryoutputstream.c:339
 #, c-format
 msgid "Failed to resize memory output stream"
 msgstr "Failed to resize memory output stream"
@@ -1705,7 +1705,7 @@ msgstr "Error reading from unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Error closing unix: %s"
 
-#: ../gio/gunixmounts.c:1778 ../gio/gunixmounts.c:1815
+#: ../gio/gunixmounts.c:1789 ../gio/gunixmounts.c:1826
 msgid "Filesystem root"
 msgstr "Filesystem root"
 
