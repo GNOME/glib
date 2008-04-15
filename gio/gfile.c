@@ -1468,7 +1468,7 @@ g_file_append_to (GFile             *file,
  * @error: a #GError, or %NULL
  *
  * Creates a new file and returns an output stream for writing to it.
- * The file must not already exists.
+ * The file must not already exist.
  *
  * By default files created are generally readable by everyone,
  * but if you pass #G_FILE_CREATE_PRIVATE in @flags the file
@@ -1753,7 +1753,7 @@ g_file_append_to_finish (GFile         *file,
  * @user_data: the data to pass to callback function
  * 
  * Asynchronously creates a new file and returns an output stream for writing to it.
- * The file must not already exists.
+ * The file must not already exist.
  *
  * For more details, see g_file_create() which is
  * the synchronous version of this call.
