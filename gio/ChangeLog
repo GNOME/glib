@@ -1,5 +1,11 @@
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* xdgmime/xdgmime.c: Rework the timestamp checking code
+	to protect against duplicate directories in XDG_DATA_DIRS.
+	Fixes fd.o bug 12513, reported by Joe Shaw.
+
+2008-04-16  Matthias Clasen  <mclasen@redhat.com>
+
 	Partically revert the last commit after realizing that
 	xdg_mime_media_type_equal doesn't have to init at all.
 

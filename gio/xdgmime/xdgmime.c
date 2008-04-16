@@ -93,17 +93,26 @@ struct XdgCallbackList
 typedef int (*XdgDirectoryFunc) (const char *directory,
 				 void       *user_data);
 
-static XdgDirTimeList *
-xdg_dir_time_list_new (void)
+static void
+xdg_dir_time_list_add (char   *file_name, 
+		       time_t  mtime)
 {
-  XdgDirTimeList *retval;
+  XdgDirTimeList *list;
 
-  retval = calloc (1, sizeof (XdgDirTimeList));
-  retval->checked = XDG_CHECKED_UNCHECKED;
-
-  return retval;
+  for (list = dir_time_list; list; list = list->next) 
+    {
+      if (strcmp (list->directory_name, file_name) == 0) 
+        return;
+    }
+  
+  list = calloc (1, sizeof (XdgDirTimeList));
+  list->checked = XDG_CHECKED_UNCHECKED;
+  list->directory_name = file_name;
+  list->mtime = mtime;
+  list->next = dir_time_list;
+  dir_time_list = list;
 }
-
+ 
 static void
 xdg_dir_time_list_free (XdgDirTimeList *list)
 {
@@ -123,7 +132,6 @@ xdg_mime_init_from_directory (const char *directory)
 {
   char *file_name;
   struct stat st;
-  XdgDirTimeList *list;
 
   assert (directory != NULL);
 
@@ -135,11 +143,7 @@ xdg_mime_init_from_directory (const char *directory)
 
       if (cache != NULL)
 	{
-	  list = xdg_dir_time_list_new ();
-	  list->directory_name = file_name;
-	  list->mtime = st.st_mtime;
-	  list->next = dir_time_list;
-	  dir_time_list = list;
+	  xdg_dir_time_list_add (file_name, st.st_mtime);
 
 	  _caches = realloc (_caches, sizeof (XdgMimeCache *) * (n_caches + 2));
 	  _caches[n_caches] = cache;
@@ -156,12 +160,7 @@ xdg_mime_init_from_directory (const char *directory)
   if (stat (file_name, &st) == 0)
     {
       _xdg_mime_glob_read_from_file (global_hash, file_name);
-
-      list = xdg_dir_time_list_new ();
-      list->directory_name = file_name;
-      list->mtime = st.st_mtime;
-      list->next = dir_time_list;
-      dir_time_list = list;
+      xdg_dir_time_list_add (file_name, st.st_mtime);
     }
   else
     {
@@ -173,12 +172,7 @@ xdg_mime_init_from_directory (const char *directory)
   if (stat (file_name, &st) == 0)
     {
       _xdg_mime_magic_read_from_file (global_magic, file_name);
-
-      list = xdg_dir_time_list_new ();
-      list->directory_name = file_name;
-      list->mtime = st.st_mtime;
-      list->next = dir_time_list;
-      dir_time_list = list;
+      xdg_dir_time_list_add (file_name, st.st_mtime);
     }
   else
     {
@@ -296,12 +290,11 @@ xdg_check_file (const char *file_path,
 
       for (list = dir_time_list; list; list = list->next)
 	{
-	  if (! strcmp (list->directory_name, file_path) &&
-	      st.st_mtime == list->mtime)
+	  if (! strcmp (list->directory_name, file_path))
 	    {
-	      if (list->checked == XDG_CHECKED_UNCHECKED)
+	      if (st.st_mtime == list->mtime)
 		list->checked = XDG_CHECKED_VALID;
-	      else if (list->checked == XDG_CHECKED_VALID)
+	      else 
 		list->checked = XDG_CHECKED_INVALID;
 
 	      return (list->checked != XDG_CHECKED_VALID);
