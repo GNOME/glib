@@ -107,8 +107,6 @@ void         xdg_mime_remove_callback              (int              callback_id
    /* Private versions of functions that don't call xdg_mime_init () */
 int          _xdg_mime_mime_type_equal             (const char *mime_a,
 						    const char *mime_b);
-int          _xdg_mime_media_type_equal            (const char *mime_a,
-						    const char *mime_b);
 int          _xdg_mime_mime_type_subclass          (const char *mime,
 						    const char *base);
 const char  *_xdg_mime_unalias_mime_type           (const char *mime);

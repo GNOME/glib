@@ -684,8 +684,8 @@ xdg_mime_mime_type_equal (const char *mime_a,
 }
 
 int
-_xdg_mime_media_type_equal (const char *mime_a,
-			    const char *mime_b)
+xdg_mime_media_type_equal (const char *mime_a,
+		           const char *mime_b)
 {
   char *sep;
 
@@ -695,15 +695,6 @@ _xdg_mime_media_type_equal (const char *mime_a,
     return 1;
 
   return 0;
-}
-
-int
-xdg_mime_media_type_equal (const char *mime_a,
-			   const char *mime_b)
-{
-  xdg_mime_init ();
-
-  return _xdg_mime_media_type_equal (mime_a, mime_b);
 }
 
 #if 1
@@ -742,7 +733,7 @@ _xdg_mime_mime_type_subclass (const char *mime,
 #if 1  
   /* Handle supertypes */
   if (xdg_mime_is_super_type (ubase) &&
-      _xdg_mime_media_type_equal (umime, ubase))
+      xdg_mime_media_type_equal (umime, ubase))
     return 1;
 #endif
 

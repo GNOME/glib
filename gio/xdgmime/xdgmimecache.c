@@ -797,7 +797,7 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 #if 1
   /* Handle supertypes */
   if (is_super_type (ubase) &&
-      _xdg_mime_media_type_equal (umime, ubase))
+      xdg_mime_media_type_equal (umime, ubase))
     return 1;
 #endif
 

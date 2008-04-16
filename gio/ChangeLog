@@ -1,5 +1,15 @@
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
 
+	Partically revert the previous commits after realizing that
+	xdg_mime_media_type_equal doesn't have to init at all.
+
+	* xdgmime/xdgmime.h:
+	* xdgmime/xdgmime.c: Get rid of _xdg_mime_media_type_equal
+
+	* xdgmime/xdgmimecache.c: Use xdg_mime_media_type_equal
+
+2008-04-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* xdgmime/xdgmime.c: Use _-prefixed versions here, too.
 
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
