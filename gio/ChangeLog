@@ -1,3 +1,15 @@
+2008-04-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Avoid possible memory corruption in xdgmime, fd.o bug 12512,
+	reported by Joe Shaw and Federico Mena Quintero.
+
+	* xdgmime/xdgmime.c(_xdg_mime_media_type_equal): Implement.
+	(xdg_mime_media_type_equal): Turn into a wrapper around the
+	_-prefixed version.
+
+	* xdgmime/xdgmimecache.c: Use _-prefixed versions of
+	comparison functions throughout.
+
 2008-04-16  Michael Meeks  <michael.meeks@novell.com>
 
 	* gdesktopappinfo.c (g_desktop_app_info_new_from_filename): 
