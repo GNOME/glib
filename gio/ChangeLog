@@ -1,3 +1,9 @@
+2008-04-16  Michael Meeks  <michael.meeks@novell.com>
+
+	* gdesktopappinfo.c (g_desktop_app_info_new_from_filename): 
+	tolerate an empty TryExec= line without failing; nautilus used
+	to create launchers with these in previous versions. Fixes #528433
+
 2008-04-09  Padraig O'Briain  <padraig.obriain@sun.com>
 
         * gdesktopappinfo.c: In g_app_info_create_from_commandline set comment

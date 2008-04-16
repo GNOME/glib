@@ -236,7 +236,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
                                     G_KEY_FILE_DESKTOP_GROUP,
                                     G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
                                     NULL);
-  if (try_exec)
+  if (try_exec && try_exec[0] != '\0')
     {
       char *t;
       t = g_find_program_in_path (try_exec);
