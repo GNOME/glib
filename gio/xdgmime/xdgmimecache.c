@@ -297,7 +297,7 @@ cache_magic_lookup_data (XdgMimeCache *cache,
 	  for (n = 0; n < n_mime_types; n++)
 	    {
 	      if (mime_types[n] && 
-		  xdg_mime_mime_type_equal (mime_types[n], non_match))
+		  _xdg_mime_mime_type_equal (mime_types[n], non_match))
 		mime_types[n] = NULL;
 	    }
 	}
@@ -797,7 +797,7 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 #if 1
   /* Handle supertypes */
   if (is_super_type (ubase) &&
-      xdg_mime_media_type_equal (umime, ubase))
+      _xdg_mime_media_type_equal (umime, ubase))
     return 1;
 #endif
 
