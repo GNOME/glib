@@ -1,5 +1,15 @@
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
 
+	Partically revert the last commit after realizing that
+	xdg_mime_media_type_equal doesn't have to init at all.
+
+	* xdgmime/xdgmime.h:
+	* xdgmime/xdgmime.c: Get rid of _xdg_mime_media_type_equal
+
+	* xdgmime/xdgmimecache.c: Use xdg_mime_media_type_equal
+
+2008-04-16  Matthias Clasen  <mclasen@redhat.com>
+
 	Avoid possible memory corruption in xdgmime, fd.o bug 12512,
 	reported by Joe Shaw and Federico Mena Quintero.
 
