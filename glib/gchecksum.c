@@ -122,10 +122,7 @@ sha_byte_reverse (guint32 *buffer,
   length /= sizeof (guint32);
   while (length--)
     {
-      *buffer = ((guint32) (((*buffer & (guint32) 0x000000ffU) << 24) |
-                            ((*buffer & (guint32) 0x0000ff00U) <<  8) |
-                            ((*buffer & (guint32) 0x00ff0000U) >>  8) |
-                            ((*buffer & (guint32) 0xff000000U) >> 24)));
+      *buffer = GUINT32_SWAP_LE_BE (*buffer);
       ++buffer;
     }
 }
@@ -1204,7 +1201,7 @@ g_checksum_update (GChecksum    *checksum,
   g_return_if_fail (data != NULL);
 
   if (length < 0)
-    length = strlen (data);
+    length = strlen ((const gchar *) data);
 
   if (checksum->digest_str)
     {
