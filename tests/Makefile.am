@@ -77,6 +77,7 @@ TEST_PROGS              += scannerapi
 scannerapi_SOURCES       = scannerapi.c
 scannerapi_LDADD         = $(progs_ldadd)
 TEST_PROGS		+= testglib
+testglib_SOURCES         = testglib.c
 testglib_LDADD		 = $(libglib)
 TEST_PROGS              += testingbase64
 testingbase64_SOURCES    = testingbase64.c

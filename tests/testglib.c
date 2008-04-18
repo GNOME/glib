@@ -33,7 +33,7 @@
 #include <errno.h>
 
 #include "glib.h"
-#include "gstdio.h"
+#include <glib/gstdio.h>
 
 #include <stdlib.h>
 

@@ -1,3 +1,9 @@
+2008-04-18 17:40:58  Tim Janik  <timj@imendio.com>
+
+	* tests/testglib.c: fixed gstdio.h include.
+
+	* tests/Makefile.am: properly list testglib.c SOURCES.
+
 2008-04-17  Emmanuele Bassi  <ebassi@gnome.org>
 
 	* glib/gchecksum.c:
