@@ -8,18 +8,20 @@ if OS_UNIX
 SUBDIRS += xdgmime
 endif
 
+if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
 noinst_DATA = gio-2.0.lib
 
+install_ms_lib_cmd = $(INSTALL) gio-2.0.lib $(DESTDIR)$(libdir)
+uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/gio-2.0.lib
+endif
+endif
+
 install-ms-lib:
-	$(INSTALL) gio-2.0.lib $(DESTDIR)$(libdir)
+	$(install_ms_lib_cmd)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gio-2.0.lib
-else
-install-ms-lib:
-uninstall-ms-lib:
-endif
+	$(uninstall_ms_lib_cmd)
 
 gio.def: gio.symbols
 	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
@@ -228,7 +230,7 @@ if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
-if OS_WIN32
+if OS_WIN32_AND_DLL_COMPILATION
 export_symbols = -export-symbols gio.def
 gio_def = gio.def
 

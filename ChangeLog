@@ -1,3 +1,14 @@
+2008-04-21  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in
+	* */Makefile.am: More work on enabling static building on
+	Windows. When building statically: Also define
+	GOBJECT_STATIC_COMPILATION in glibconfig.h so that also the
+	variables in gparamspecs.h get declared without any
+	dllimport/dllexport decorations. Don't install .def files which
+	obviously have no meaning for static libraries. Don't create MS
+	import libraries. Don't do any resource object files.
+
 2008-04-18 17:40:58  Tim Janik  <timj@imendio.com>
 
 	* tests/testglib.c: fixed gstdio.h include.

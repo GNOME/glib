@@ -81,18 +81,20 @@ BUILT_EXTRA_DIST = 		\
 
 lib_LTLIBRARIES = libglib-2.0.la
 
+if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
 noinst_DATA = glib-2.0.lib
 
+install_ms_lib_cmd = $(INSTALL) glib-2.0.lib $(DESTDIR)$(libdir)
+uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/glib-2.0.lib
+endif
+endif
+
 install-ms-lib:
-	$(INSTALL) glib-2.0.lib $(DESTDIR)$(libdir)
+	$(install_ms_lib_cmd)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/glib-2.0.lib
-else
-install-ms-lib:
-uninstall-ms-lib:
-endif
+	$(uninstall_ms_lib_cmd)
 
 libglib_2_0_la_SOURCES = 	\
 	garray.c		\
@@ -251,8 +253,12 @@ if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
-if OS_WIN32
+if OS_WIN32_AND_DLL_COMPILATION
 export_symbols = -export-symbols glib.def
+
+glib_win32_res = glib-win32-res.o
+glib_win32_res_ldflag = -Wl,$(glib_win32_res)
+
 glib_def = glib.def
 
 install-def-file:
@@ -265,11 +271,6 @@ install-def-file:
 uninstall-def-file:
 
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
-endif
-
-if OS_WIN32
-glib_win32_res = glib-win32-res.o
-glib_win32_res_ldflag = -Wl,$(glib_win32_res)
 endif
 
 if ENABLE_REGEX
@@ -303,10 +304,10 @@ INSTALL_PROGS += gspawn-win32-helper gspawn-win32-helper-console
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 gspawn_win32_helper_console_LDADD = libglib-2.0.la
+endif
 
 glib-win32-res.o: glib.rc
 	$(WINDRES) glib.rc $@
-endif
 
 bin_PROGRAMS	 = ${INSTALL_PROGS}
 

@@ -491,10 +491,12 @@ if test "$glib_native_win32" = "yes"; then
   fi
   if test x$enable_static = xyes; then
     glib_win32_static_compilation=yes
-    GLIB_WIN32_STATIC_COMPILATION_DEFINE="#define GLIB_STATIC_COMPILATION 1"
+    GLIB_WIN32_STATIC_COMPILATION_DEFINE="#define GLIB_STATIC_COMPILATION 1
+#define GOBJECT_STATIC_COMPILATION 1"
     AC_SUBST(GLIB_WIN32_STATIC_COMPILATION_DEFINE)
   fi
 fi
+AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a x$glib_win32_static_compilation != xyes])
 
 dnl
 dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
@@ -3203,7 +3205,8 @@ case $host in
 esac
 glib_static_compilation=""
 if test x$glib_win32_static_compilation = xyes; then
-  glib_static_compilation="#define GLIB_STATIC_COMPILATION 1"
+  glib_static_compilation="#define GLIB_STATIC_COMPILATION 1
+#define GOBJECT_STATIC_COMPILATION 1"
 fi
 ])
 
