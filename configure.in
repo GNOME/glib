@@ -321,6 +321,8 @@ if test x"$glib_native_win32" = xyes; then
     fi
   fi
 fi
+GLIB_EXTRA_CFLAGS="${msnative_struct}"
+AC_SUBST(GLIB_EXTRA_CFLAGS)
 
 AC_EXEEXT
 
