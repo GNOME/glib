@@ -35,11 +35,12 @@
 #include "gam_protocol.h"
 #endif
 
-#define FH_W if (fh_debug_enabled) g_warning
 #ifdef GIO_COMPILATION
+#define FH_W if (fh_debug_enabled) g_warning
 static gboolean fh_debug_enabled = FALSE;
 #else
-static gboolean fh_debug_enabled = TRUE;
+#include "gam_error.h"
+#define FH_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
 #endif
 
 G_LOCK_EXTERN (fen_lock);

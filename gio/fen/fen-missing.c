@@ -29,10 +29,16 @@
 
 G_LOCK_EXTERN (fen_lock);
 #define SCAN_MISSING_INTERVAL 4000	/* in milliseconds */
+
+#ifdef GIO_COMPILATION
 #define FM_W if (fm_debug_enabled) g_warning
+gboolean fm_debug_enabled = FALSE;
+#else
+#include "gam_error.h"
+#define FM_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
+#endif
 
 /* global data structure for scan missing files */
-gboolean fm_debug_enabled = TRUE;
 static GList *missing_list = NULL;
 static guint scan_missing_source_id = 0;
 

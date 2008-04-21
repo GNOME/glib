@@ -33,17 +33,18 @@
 #include "fen-kernel.h"
 #include "fen-dump.h"
 
-#define FK_W if (fk_debug_enabled) g_warning
 #ifdef GIO_COMPILATION
+#define FK_W if (fk_debug_enabled) g_warning
 static gboolean fk_debug_enabled = FALSE;
 #else
-static gboolean fk_debug_enabled = TRUE;
+#include "gam_error.h"
+#define FK_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
 #endif
 
 G_GNUC_INTERNAL G_LOCK_DEFINE (fen_lock);
 #define PE_ALLOC	64
-#define F_PORT(pp)		(((_f *)(fo))->port->port)
-#define F_NAME(pp)		(((_f *)(fo))->fobj->fo_name)
+#define F_PORT(pfo)		(((_f *)(pfo))->port->port)
+#define F_NAME(pfo)		(((_f *)(pfo))->fobj->fo_name)
 #define FEN_ALL_EVENTS	(FILE_MODIFIED | FILE_ATTRIB | FILE_NOFOLLOW)
 #define FEN_IGNORE_EVENTS	(FILE_ACCESS)
 #define PROCESS_PORT_EVENTS_TIME	400	/* in milliseconds */
@@ -85,12 +86,17 @@ is_ported (gpointer f)
     return FALSE;
 }
 
-static void
+static gchar*
 printevent (const char *pname, int event, const char *tag)
 {
-    GString* str;
+    static gchar	*event_string = NULL;
+    GString			*str;
+
+    if (event_string) {
+        g_free(event_string);
+    }
+
     str = g_string_new ("");
-    
     g_string_printf (str, "[%s] [%-20s]", tag, pname);
     if (event & FILE_ACCESS) {
         str = g_string_append (str, " ACCESS");
@@ -116,9 +122,9 @@ printevent (const char *pname, int event, const char *tag)
     if (event & MOUNTEDOVER) {
         str = g_string_append (str, " MOUNTEDOVER");
     }
-
-    FK_W ("%s\n", str->str);
-    g_string_free (str, TRUE);
+    event_string = str->str;
+    g_string_free (str, FALSE);
+    return event_string;
 }
 
 static void
@@ -128,7 +134,7 @@ port_add_kevent (int e, gpointer f)
     GTimeVal t;
     gboolean has_twin = FALSE;
     
-    /* printevent (F_NAME(f), e, "org"); */
+    FK_W("%s\n", printevent(F_NAME(f), e, "org"));
     /*
      * Child FILE_DELETE | FILE_RENAME_FROM will trigger parent FILE_MODIFIED.
      * FILE_MODIFIED will trigger FILE_ATTRIB.
@@ -224,7 +230,8 @@ port_fetch_event_cb (void *arg)
                        delete the pnode */
                     fo->is_active = FALSE;
                     if (fo->user_data) {
-                        printevent (F_NAME(fo), pe[i].portev_events, "RAW");
+                        FK_W("%s\n",
+                          printevent(F_NAME(fo), pe[i].portev_events, "RAW"));
                         port_add_kevent (pe[i].portev_events, fo->user_data);
                     } else {
                         /* fnode is deleted */

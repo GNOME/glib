@@ -1,3 +1,10 @@
+2008-04-21  Lin Ma  <Lin.Ma@Sun.COM>
+
+	* fen/fen-data.c, fen/fen-helper.c, fen/fen-missing.c, fen/fen-node.c:
+	Default disable all loggings.
+	* fen/fen-kernel.c: (printevent), (port_add_kevent),
+	(port_fetch_event_cb): Fixed two macro nits.
+
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* xdgmime/xdgmime.c: Rework the timestamp checking code

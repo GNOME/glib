@@ -43,11 +43,12 @@
 #define	INIT_CHANGES_NUM	2
 #define	BASE_NUM	2
 
-#define FD_W if (fd_debug_enabled) g_warning
 #ifdef GIO_COMPILATION
+#define FD_W if (fd_debug_enabled) g_warning
 static gboolean fd_debug_enabled = FALSE;
 #else
-static gboolean fd_debug_enabled = TRUE;
+#include "gam_error.h"
+#define FD_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
 #endif
 
 G_LOCK_EXTERN (fen_lock);

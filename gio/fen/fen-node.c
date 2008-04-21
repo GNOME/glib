@@ -37,8 +37,13 @@ struct _dnode {
     GTimeVal tv;
 };
 
+#ifdef GIO_COMPILATION
 #define FN_W if (fn_debug_enabled) g_warning
 static gboolean fn_debug_enabled = FALSE;
+#else
+#include "gam_error.h"
+#define FN_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
+#endif
 
 G_LOCK_EXTERN (fen_lock);
 #define	PROCESS_DELETING_INTERVAL	900 /* in second */
