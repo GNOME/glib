@@ -11,5 +11,4 @@ Name: GLib
 Description: C Utility Library
 Version: @VERSION@
 Libs: -L${libdir} -lglib-2.0 @INTLLIBS@ @ICONV_LIBS@
-Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include 
-
+Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include @GLIB_EXTRA_CFLAGS@

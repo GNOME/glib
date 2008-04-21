@@ -1,3 +1,16 @@
+2008-04-21  Tor Lillqvist  <tml@novell.com>
+
+	Bug 528752 - Win32 build and SSL not working
+
+	This bug report against libsoup points out an issue with the use
+	of bitfields in the GIOChannel struct that should really be taken
+	care of here in GLib.
+
+	* configure.in: Add Autoconf variable GLIB_EXTRA_CFLAGS which will
+	contain the -mms-bitfields flag on Windows.
+	
+	* glib-2.0.pc.in: Add it to Cflags.
+
 2008-04-11  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in
