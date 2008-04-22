@@ -250,7 +250,10 @@ install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
-libgio_2_0_la_LDFLAGS= -export-dynamic $(no_undefined) $(export_symbols)
+libgio_2_0_la_LDFLAGS = \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
+	-export-dynamic $(no_undefined) $(export_symbols)
+
 libgio_2_0_la_DEPENDENCIES = $(gio_def)
 
 gio_headers =			\
