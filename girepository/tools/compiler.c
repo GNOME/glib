@@ -28,9 +28,113 @@
 #include "gidlnode.h"
 #include "gidlparser.h"
 #include "gmetadata.h"
-#include "gidlcompilercontext.h"
 
-static GLogLevelFlags logged_levels;
+gboolean raw = FALSE;
+gboolean no_init = FALSE;
+gchar **input = NULL;
+gchar *output = NULL;
+gchar *mname = NULL;
+gchar *shlib = NULL;
+gboolean debug = FALSE;
+gboolean verbose = FALSE;
+
+static gchar *
+format_output (GMetadata *metadata)
+{
+  GString *result;
+  gint i;
+
+  result = g_string_sized_new (6 * metadata->len);
+
+  g_string_append_printf (result, "#include <stdlib.h>\n");
+  g_string_append_printf (result, "#include <girepository.h>\n\n");
+  
+  g_string_append_printf (result, "const unsigned char _G_METADATA[] = \n{");
+
+  for (i = 0; i < metadata->len; i++)
+    {
+      if (i > 0)
+	g_string_append (result, ", ");
+
+      if (i % 10 == 0)
+	g_string_append (result, "\n\t");
+      
+      g_string_append_printf (result, "0x%.2x", metadata->data[i]);      
+    }
+
+  g_string_append_printf (result, "\n};\n\n");
+  g_string_append_printf (result, "const gsize _G_METADATA_SIZE = %u;\n\n",
+			  (guint)metadata->len);
+
+  if (!no_init)
+    {
+      g_string_append_printf (result,
+			      "__attribute__((constructor)) void\n"
+			      "register_metadata (void)\n"
+			      "{\n"
+			      "\tGMetadata *metadata;\n"
+			      "\tmetadata = g_metadata_new_from_const_memory (_G_METADATA, _G_METADATA_SIZE);\n"
+			      "\tg_irepository_register (NULL, metadata);\n"
+			      "}\n\n");
+
+      g_string_append_printf (result,
+			      "__attribute__((destructor)) void\n"
+			      "unregister_metadata (void)\n"
+			      "{\n"
+			      "\tg_irepository_unregister (NULL, \"%s\");\n"
+			      "}\n",
+			      g_metadata_get_namespace (metadata));
+    }
+
+  return g_string_free (result, FALSE);
+}
+
+static void
+write_out_metadata (gchar *prefix,
+		    GMetadata *metadata)
+{
+  FILE *file;
+
+  if (output == NULL)
+    file = stdout;
+  else
+    {
+      gchar *filename;
+
+      if (prefix)
+	filename = g_strdup_printf ("%s-%s", prefix, output);  
+      else
+	filename = g_strdup (output);
+      file = g_fopen (filename, "w");
+
+      if (file == NULL)
+	{
+	  g_fprintf (stderr, "failed to open '%s': %s\n",
+		     filename, g_strerror (errno));
+	  g_free (filename);
+
+	  return;
+	}
+
+      g_free (filename);
+    }
+
+  if (raw)
+    fwrite (metadata->data, 1, metadata->len, file);
+  else
+    {
+      gchar *code;
+
+      code = format_output (metadata);
+      fputs (code, file);
+      g_free (code);
+    }
+
+  if (output != NULL)
+    fclose (file);    
+}
+
+GLogLevelFlags logged_levels;
 
 static void log_handler (const gchar *log_domain,
 			 GLogLevelFlags log_level,
@@ -42,43 +146,28 @@ static void log_handler (const gchar *log_domain,
     g_log_default_handler (log_domain, log_level, message, user_data);
 }
 
+static GOptionEntry options[] = 
+{
+  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "emit raw metadata", NULL },
+  { "code", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &raw, "emit C code", NULL },
+  { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
+  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
+  { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
+  { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib, "shared library", "FILE" }, 
+  { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL }, 
+  { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL }, 
+  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
+  { NULL, }
+};
+
 int
 main (int argc, char ** argv)
 {
-  gboolean no_init = FALSE;
-  gchar **input = NULL;
-  gchar *output = NULL;
-  gchar *mname = NULL;
-  gchar *shlib = NULL;
-  gboolean debug = FALSE;
-  gboolean verbose = FALSE;
-
   GOptionContext *context;
   GError *error = NULL;
-  GList *m, *modules; 
+  GList *c, *m, *modules; 
   gint i;
-  GList *c;
-  gint entry_id;
-  FILE *file;
-  GIdlCompilerContext *ctx;
-  GOptionEntry options[] = 
-    {
-      { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init,
-	"do not create _init() function", NULL },
-      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output,
-	"output file", "FILE" }, 
-      { "module", 'm', 0, G_OPTION_ARG_STRING, &mname,
-	"module to compile", "NAME" }, 
-      { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib,
-	"shared library", "FILE" }, 
-      { "debug", 0, 0, G_OPTION_ARG_NONE, &debug,
-	"show debug messages", NULL }, 
-      { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose,
-	"show verbose messages", NULL }, 
-      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input,
-	NULL, NULL },
-      { NULL, }
-    };
+  g_metadata_check_sanity ();
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
@@ -96,6 +185,7 @@ main (int argc, char ** argv)
   if (!input) 
     { 
       g_fprintf (stderr, "no input files\n"); 
+
       return 1;
     }
 
@@ -120,8 +210,7 @@ main (int argc, char ** argv)
     {
       GIdlModule *module = m->data;
       gchar *prefix;
-      GError *err = NULL;
-
+      GMetadata *metadata;
 
       if (mname && strcmp (mname, module->name) != 0)
 	continue;
@@ -131,71 +220,25 @@ main (int argc, char ** argv)
 	    g_free (module->shared_library);
           module->shared_library = g_strdup (shlib);
 	}
+      metadata = g_idl_module_build_metadata (module, modules);
+      if (metadata == NULL)
+	{
+	  g_error ("Failed to build metadata for module '%s'\n", module->name);
+
+	  continue;
+	}
+      if (!g_metadata_validate (metadata, &error))
+	g_error ("Invalid metadata for module '%s': %s", 
+		 module->name, error->message);
 
       if (!mname && (m->next || m->prev) && output)
 	prefix = module->name;
       else
 	prefix = NULL;
 
-      ctx = g_idl_compiler_context_new (module->name, &err);
-      if (err != NULL) 
-	{
-	  g_fprintf (stderr, "Error creating new compiler context: %s",
-		     err->message);
-
-	  return 1;
-	}
-
-      /* This is making sure all the types
-       * that have local directory entries are already
-       * in the entries database.
-       *
-       * A method of finding out if an external reference is
-       * needed
-       */
-      for (c = module->entries; c; c = c->next)
-        {
-          GIdlNode *node = (GIdlNode*) c->data;
-
-          g_idl_compiler_add_entry (ctx, node);
-        }
-
-      for (c = module->entries; c; c = c->next)
-        {
-          GIdlNode *node = (GIdlNode*) c->data;
-
-          entry_id = g_idl_compiler_get_entry_id (ctx, node->name);
-
-          g_idl_compiler_write_node (node, entry_id, ctx);
-        }
-
-      if (output == NULL)
-        file = stdout;
-      else
-       {
-         gchar *filename;
-
-         if (prefix)
-           filename = g_strdup_printf ("%s-%s", prefix, output);  
-         else
-           filename = g_strdup (output);
-         file = g_fopen (filename, "w");
-
-         if (file == NULL)
-           {
-             g_fprintf (stderr, "failed to open '%s': %s\n",
-                        filename, g_strerror (errno));
-             g_free (filename);
-
-              return;
-           }
-
-         g_free (filename);
-       }
-
-      g_idl_compiler_context_finalize (ctx, file, module->shared_library, &err);
-
-      g_idl_compiler_context_destroy (ctx);
+      write_out_metadata (prefix, metadata);
+      g_metadata_free (metadata);
+      metadata = NULL;
 
       /* when writing to stdout, stop after the first module */
       if (m->next && !output && !mname)
