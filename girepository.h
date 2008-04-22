@@ -277,8 +277,8 @@ typedef enum {
   GI_TYPE_TAG_DOUBLE    = 17,
   GI_TYPE_TAG_UTF8      = 18,
   GI_TYPE_TAG_FILENAME  = 19,
-  GI_TYPE_TAG_SYMBOL    = 20,
-  GI_TYPE_TAG_ARRAY     = 21,
+  GI_TYPE_TAG_ARRAY     = 20,
+  GI_TYPE_TAG_INTERFACE = 21,
   GI_TYPE_TAG_GLIST     = 22,
   GI_TYPE_TAG_GSLIST    = 23,
   GI_TYPE_TAG_GHASH     = 24,
@@ -355,7 +355,6 @@ const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInf
 /* GIEnumInfo */
 
 gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
-gboolean               g_enum_info_get_is_registered        (GIEnumInfo      *info);
 GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
 							     gint            n);
 

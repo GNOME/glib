@@ -100,8 +100,8 @@ get_ffi_type (GITypeInfo *info)
 	break;
       case GI_TYPE_TAG_UTF8:
       case GI_TYPE_TAG_FILENAME:
-      case GI_TYPE_TAG_SYMBOL:
       case GI_TYPE_TAG_ARRAY:
+      case GI_TYPE_TAG_INTERFACE:
       case GI_TYPE_TAG_GLIST:
       case GI_TYPE_TAG_GSLIST:
       case GI_TYPE_TAG_GHASH:

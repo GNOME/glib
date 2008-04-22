@@ -28,7 +28,6 @@
 G_BEGIN_DECLS
 
 #define G_IDL_MAGIC "GOBJ\nMETADATA\r\n\032"
-#define G_IDL_MAGIC_ESCAPED "GOBJ\\nMETADATA\\r\\n\\032"
 
 enum 
 {
@@ -96,6 +95,10 @@ typedef struct
   guint32 offset;
 } DirEntry;
 
+
+#define TYPE_POINTER_MASK 1 << 7
+#define TYPE_TAG_MASK         63
+
 typedef enum 
 {
   TYPE_TAG_VOID      =  0,
@@ -118,33 +121,27 @@ typedef enum
   TYPE_TAG_DOUBLE    = 17,
   TYPE_TAG_UTF8      = 18,
   TYPE_TAG_FILENAME  = 19,
-  TYPE_TAG_SYMBOL    = 20,
-  TYPE_TAG_ARRAY     = 21,
+  TYPE_TAG_ARRAY     = 20,
+  TYPE_TAG_INTERFACE = 21,
   TYPE_TAG_LIST      = 22,
   TYPE_TAG_SLIST     = 23,
   TYPE_TAG_HASH      = 24,
   TYPE_TAG_ERROR     = 25
 } TypeTag;
 
-typedef struct
+typedef union
 {
-  guint pointer    :1;
-  guint reserved   :2;
-  guint tag        :5;
-} TypeHeader;
-
-#define TYPE_IS_SIMPLE(tAG)  (tAG < TYPE_TAG_SYMBOL ? TRUE : FALSE)
-
-#define TYPE_IS_SYMBOL(tAG)  (tAG == TYPE_TAG_SYMBOL ? TRUE : FALSE)
-
-#define TYPE_IS_COMPLEX(tAG) (tAG > TYPE_TAG_SYMBOL ? TRUE : FALSE)
-
-typedef struct
-{
-  TypeHeader header;
-
+  struct 
+  {
+    guint reserved   : 8;
+    guint reserved2  :16;
+    guint pointer    : 1;
+    guint reserved3  : 2;
+    guint tag        : 5;    
+  };
   guint32    offset;
 } SimpleTypeBlob;
+
 
 typedef struct
 {
@@ -174,9 +171,7 @@ typedef struct
 
   guint16        n_arguments;
 
-#if 0
   ArgBlob        arguments[];
-#endif
 } SignatureBlob;
 
 typedef struct
@@ -217,13 +212,25 @@ typedef struct
   guint32 signature;
 } CallbackBlob;
 
+typedef struct 
+{
+  guint pointer    :1;
+  guint reserved   :2;
+  guint tag        :5;    
+  guint8     reserved2;
+  guint16    interface;  
+} InterfaceTypeBlob;
+
 typedef struct
 {
-  TypeHeader     header;
+  guint pointer    :1;
+  guint reserved   :2;
+  guint tag        :5;    
 
   guint          zero_terminated :1;
   guint          has_length      :1;
   guint          reserved2       :6;
+
   guint16        length;
 
   SimpleTypeBlob type;
@@ -231,24 +238,26 @@ typedef struct
 
 typedef struct
 {
-  TypeHeader     header;
+  guint pointer    :1;
+  guint reserved   :2;
+  guint tag        :5;    
 
   guint8         reserved2;
   guint16        n_types;
-#if 0
+
   SimpleTypeBlob type[];
-#endif
 } ParamTypeBlob;
 
 typedef struct
 {
-  TypeHeader     header;
+  guint pointer    :1;
+  guint reserved   :2;
+  guint tag        :5;    
 
+  guint8     reserved2;
   guint16    n_domains;
 
-#if 0
   guint16    domains[];
-#endif
 }  ErrorTypeBlob;
 
 typedef struct
@@ -362,9 +371,7 @@ typedef struct
   guint16   n_values;
   guint16   reserved2;
 
-#if 0
-  ValueBlob values[];
-#endif
+  ValueBlob values[];    
 } EnumBlob;
 
 typedef struct
@@ -439,9 +446,10 @@ typedef struct
   guint16   n_vfuncs;
   guint16   n_constants;
 
+  guint16   interfaces[];
+ 
 #if 0
   /* variable-length parts of the blob */
-  guint16             interfaces[];
   FieldBlob           fields[];
   PropertyBlob        properties[];
   FunctionBlob        methods[];
@@ -468,10 +476,10 @@ typedef struct
   guint16 n_vfuncs;
   guint16 n_constants;  
 
+  guint16 prerequisites[];
 
-#if 0
+#if 0 
   /* variable-length parts of the blob */
-  guint16             prerequisites[];
   PropertyBlob        properties[];
   FunctionBlob        methods[];
   SignalBlob          signals[];
@@ -513,7 +521,10 @@ struct _GMetadata {
 DirEntry *g_metadata_get_dir_entry (GMetadata *metadata,
 				    guint16            index);
 
+void      g_metadata_check_sanity (void);
+
 #define   g_metadata_get_string(metadata,offset) ((const gchar*)&(metadata->data)[(offset)])
+
 
 typedef enum
 {
