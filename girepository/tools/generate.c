@@ -38,8 +38,7 @@ write_type_name (const gchar *namespace,
 		 GIBaseInfo  *info,
 		 FILE        *file)
 {
-  if (g_base_info_get_namespace (info) != 0 &&
-      strcmp (namespace, g_base_info_get_namespace (info)) != 0)
+  if (strcmp (namespace, g_base_info_get_namespace (info)) != 0)
     g_fprintf (file, "%s.", g_base_info_get_namespace (info));
 
   g_fprintf (file, "%s", g_base_info_get_name (info));
@@ -79,11 +78,11 @@ write_type_info (const gchar *namespace,
 
   tag = g_type_info_get_tag (info);
 
-  if (tag < TYPE_TAG_UTF8)
+  if (tag < 18)
     g_fprintf (file, "%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
-  else if (tag <= TYPE_TAG_FILENAME)
+  else if (tag < 20)
     g_fprintf (file, "%s", basic[tag]);
-  else if (tag == TYPE_TAG_ARRAY)
+  else if (tag == 20)
     {
       gint length;
 
@@ -102,7 +101,7 @@ write_type_info (const gchar *namespace,
      g_fprintf (file, "]"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
-  else if (tag == TYPE_TAG_SYMBOL)
+  else if (tag == 21)
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
       write_type_name (namespace, iface, file);
@@ -110,7 +109,7 @@ write_type_info (const gchar *namespace,
 	g_fprintf (file, "*"); 
       g_base_info_unref (iface);
     }
-  else if (tag == TYPE_TAG_LIST)
+  else if (tag == 22)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GList");
@@ -123,7 +122,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == TYPE_TAG_SLIST)
+  else if (tag == 23)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GSList");
@@ -136,7 +135,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == TYPE_TAG_HASH)
+  else if (tag == 24)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GHashTable");
@@ -153,7 +152,7 @@ write_type_info (const gchar *namespace,
 	}
       g_fprintf (file, "*");
     }
-  else if (tag == TYPE_TAG_ERROR)
+  else if (tag == 25) 
     {
       gint n;
 
@@ -532,11 +531,8 @@ write_constant_value (const gchar *namespace,
     case GI_TYPE_TAG_FILENAME:
       g_fprintf (file, "%s", value->v_string);
       break;
-    case GI_TYPE_TAG_SYMBOL:
-      g_fprintf (file, "%s", value->v_string);
-      break;
     default:
-      g_warning ("Could not get type tag for constant");
+      g_assert_not_reached ();
     }
 }
 
@@ -574,22 +570,16 @@ write_enum_info (const gchar *namespace,
 		 FILE        *file)
 {
   const gchar *name;
-  const gchar *type_name = NULL;
-  const gchar *type_init = NULL;
+  const gchar *type_name;
+  const gchar *type_init;
   gboolean deprecated;
   gint i;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  /* Make sure this is a registered enum before filling out the
-   * GType information
-   */
-  if (g_enum_info_is_registered ((GIEnumInfo *)info))
-    {
-      type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-      type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-    }
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
     g_fprintf (file, "    <enum ");
@@ -1108,17 +1098,12 @@ load_metadata (const gchar  *filename,
 	       GModule     **dlhandle,
                gsize        *len)
 {
-  gpointer metadata;
+  guchar *metadata;
   gsize *metadata_size;
   GModule *handle; 
 
-  handle = g_module_open (filename,  G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
-  if (!handle)
-    {
-      g_printerr("Could not load module '%s'\n", filename);
-      return NULL;
-    }
-  if (!g_module_symbol (handle, "_G_METADATA", &metadata))
+  handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+  if (!g_module_symbol (handle, "_G_METADATA", (gpointer *) &metadata))
     {
       g_printerr ("Could not load metadata from '%s': %s\n", 
 		  filename, g_module_error ());
@@ -1137,7 +1122,7 @@ load_metadata (const gchar  *filename,
   if (dlhandle)
     *dlhandle = handle;
 
-  return *((const guchar **) metadata);
+  return metadata;
 }
 
 int 
@@ -1160,6 +1145,8 @@ main (int argc, char *argv[])
 
   g_type_init ();
 
+  g_metadata_check_sanity ();
+
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
@@ -1174,7 +1161,7 @@ main (int argc, char *argv[])
   for (i = 0; input[i]; i++)
     {
       GModule *dlhandle = NULL;
-      const guchar *metadata = NULL;
+      const guchar *metadata;
       gsize len;
 
       if (raw)
