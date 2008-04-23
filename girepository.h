@@ -350,7 +350,7 @@ GIFunctionInfo *       g_struct_info_find_method   (GIStructInfo *info,
 
 const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
-
+GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 /* GIEnumInfo */
 

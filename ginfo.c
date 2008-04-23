@@ -968,6 +968,25 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
   return NULL;
 }
 
+GType
+g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
+{
+  const char *type_init;
+  GType (* get_type_func) (void);
+
+  type_init = g_registered_type_info_get_type_init (info);  
+  
+  if (type_init == NULL)
+    return G_TYPE_NONE;
+  
+  get_type_func = NULL;
+  if (!g_module_symbol (((GIBaseInfo*)info)->metadata->module,
+                        type_init,
+                        (void**) &get_type_func))
+    return G_TYPE_NONE;
+  
+  return (* get_type_func) ();
+}
 
 /* GIStructInfo functions */
 gint
