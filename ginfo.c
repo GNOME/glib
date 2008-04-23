@@ -1418,7 +1418,7 @@ g_interface_info_find_method (GIInterfaceInfo *info,
   Header *header = (Header *)base->metadata->data;  
   InterfaceBlob *blob = (InterfaceBlob *)&base->metadata->data[base->offset];
 
-  offset = base->offset + header->object_blob_size
+  offset = base->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size;
 
