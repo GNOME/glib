@@ -1749,6 +1749,43 @@ g_metadata_error_quark (void)
   return quark;
 }
 
+static const char*
+find_some_symbol (GMetadata *metadata)
+{
+  Header *header = (Header *) metadata->data;
+  gint i;
+
+  for (i = 0; i < header->n_entries; i++)
+    {
+      DirEntry *entry;
+      
+      entry = g_metadata_get_dir_entry (metadata, i + 1);
+
+      switch (entry->blob_type)
+        {
+        case BLOB_TYPE_FUNCTION:
+          {
+            FunctionBlob *blob = (FunctionBlob *) &metadata->data[entry->offset];
+            
+            if (blob->symbol)
+              return g_metadata_get_string (metadata, blob->symbol);
+          }
+          break;
+        case BLOB_TYPE_OBJECT:
+          {
+            RegisteredTypeBlob *blob = (RegisteredTypeBlob *) &metadata->data[entry->offset];
+            
+            if (blob->gtype_init)
+              return g_metadata_get_string (metadata, blob->gtype_init);
+          }
+          break;
+        default:
+          break;
+        }
+    }
+
+  return NULL;
+}
 
 static inline void
 _g_metadata_init (GMetadata *metadata)
@@ -1760,20 +1797,56 @@ _g_metadata_init (GMetadata *metadata)
     {
       const gchar *shlib;
 
-      /* Glade's autoconnect feature and OpenGL's extension mechanism
-       * as used by Clutter rely on dlopen(NULL) to work as a means of
-       * accessing the app's symbols. This keeps us from using
-       * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
-       * in general libraries are not expecting multiple copies of
-       * themselves and are not expecting to be unloaded. So we just
-       * load modules globally for now.
-       */
-      
       shlib = g_metadata_get_string (metadata, header->shared_library);
-      metadata->module = g_module_open (shlib, G_MODULE_BIND_LAZY);
+      /* note that NULL shlib means to open the main app, which is allowed */
+
+      /* If we do have a shared lib, first be sure the main app isn't already linked to it */
+      if (shlib != NULL)
+        {
+          const char *symbol_in_module;
+           
+          symbol_in_module = find_some_symbol (metadata);
+          if (symbol_in_module != NULL)
+            {
+              metadata->module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+              if (metadata->module == NULL)
+                {
+                  g_warning ("Could not open main app as GModule: %s",
+                             g_module_error ());
+                }
+              else
+                {
+                  void *sym;
+                  if (!g_module_symbol (metadata->module, symbol_in_module, &sym))
+                    {
+                      /* we will try opening the shlib, symbol is not in app already */
+                      g_module_close (metadata->module);
+                      metadata->module = NULL;
+                    }
+                }
+            }
+          else
+            {
+              g_warning ("Could not find any symbols in metadata");
+            }
+        }
+     
       if (metadata->module == NULL)
-        g_warning ("Failed to load shared library referenced by the metadata: %s",
-                   g_module_error ());
+        {
+          /* Glade's autoconnect feature and OpenGL's extension mechanism
+           * as used by Clutter rely on dlopen(NULL) to work as a means of
+           * accessing the app's symbols. This keeps us from using
+           * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
+           * in general libraries are not expecting multiple copies of
+           * themselves and are not expecting to be unloaded. So we just
+           * load modules globally for now.
+           */
+          
+          metadata->module = g_module_open (shlib, G_MODULE_BIND_LAZY);
+          if (metadata->module == NULL)
+            g_warning ("Failed to load shared library referenced by the metadata: %s",
+                       g_module_error ());
+        }
     }
 }
 
