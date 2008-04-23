@@ -1759,8 +1759,18 @@ _g_metadata_init (GMetadata *metadata)
   if (header->shared_library)
     {
       const gchar *shlib;
+
+      /* Glade's autoconnect feature and OpenGL's extension mechanism
+       * as used by Clutter rely on dlopen(NULL) to work as a means of
+       * accessing the app's symbols. This keeps us from using
+       * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
+       * in general libraries are not expecting multiple copies of
+       * themselves and are not expecting to be unloaded. So we just
+       * load modules globally for now.
+       */
+      
       shlib = g_metadata_get_string (metadata, header->shared_library);
-      metadata->module = g_module_open (shlib, G_MODULE_BIND_LAZY|G_MODULE_BIND_LOCAL);
+      metadata->module = g_module_open (shlib, G_MODULE_BIND_LAZY);
       if (metadata->module == NULL)
         g_warning ("Failed to load shared library referenced by the metadata: %s",
                    g_module_error ());
