@@ -166,12 +166,36 @@ g_function_info_invoke (GIFunctionInfo *info,
   if (!g_module_symbol (g_base_info_get_metadata((GIBaseInfo *) info)->module,
                         symbol, &func))
     {
-      g_set_error (error,
-		   G_INVOKE_ERROR,
-		   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
-		   "Could not locate %s: %s", symbol, g_module_error ());
-		   
-      return FALSE;
+      GModule *entire_app;
+
+      /*
+       * We want to be able to add symbols to an app or an auxiliary
+       * library to fill in gaps in an introspected library. However,
+       * normally we would only look for symbols in the main library
+       * (metadata->module).
+       *
+       * A more elaborate solution is probably possible, but as a
+       * simple approach for now, if we fail to find a symbol we look
+       * for it in the global module.
+       *
+       * This would not be very efficient if it happened often, since
+       * we always do the failed lookup above first, but very few
+       * symbols should be outside of metadata->module so it doesn't
+       * matter.
+       */
+      entire_app = g_module_open (NULL, 0);
+      if (!g_module_symbol (entire_app, symbol, &func))
+        {
+          g_set_error (error,
+                       G_INVOKE_ERROR,
+                       G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                       "Could not locate %s: %s", symbol, g_module_error ());
+          
+          g_module_close (entire_app);
+          
+          return FALSE;
+        }
+      g_module_close (entire_app);
     }
 
   tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
