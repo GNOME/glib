@@ -44,6 +44,7 @@
 #include <errno.h>
 #include <string.h>
 #include <signal.h>
+#include <gstdio.h>
 
 #include "gunixmounts.h"
 #include "gfile.h"
@@ -1877,8 +1878,24 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
-      if (g_str_has_prefix (mount_path, "/media/"))
+      if (g_str_has_prefix (mount_path, "/media/")) {
+        char *path;
+        /* Avoid displaying mounts that are not accessible to the user.
+         *
+         * See http://bugzilla.gnome.org/show_bug.cgi?id=526320 for why we
+         * want to avoid g_access() for every mount point.
+         */
+        path = g_path_get_dirname (mount_path);
+        if (g_str_has_prefix (path, "/media/"))
+          {
+            if (g_access (path, R_OK|X_OK) != 0) {
+              g_free (path);
+              return FALSE;
+            }
+          }
+        g_free (path);
         return TRUE;
+      }
       
       if (g_str_has_prefix (mount_path, g_get_home_dir ()) && mount_path[strlen (g_get_home_dir())] == G_DIR_SEPARATOR)
         return TRUE;

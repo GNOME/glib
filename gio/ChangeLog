@@ -1,3 +1,9 @@
+2008-04-28  David Zeuthen  <davidz@redhat.com>
+
+        * gunixmounts.c (g_unix_mount_guess_should_display): Avoid
+        displaying mounts in a subdirectory not accessible to the
+        user (#526320).
+
 2008-04-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* xdgmime/xdgmime.c: Rework the timestamp checking code
