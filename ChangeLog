@@ -1,3 +1,8 @@
+2008-05-02 13:24:13  Tim Janik  <timj@imendio.com>
+
+	* glib/gmain.c: renamed GMainDispatch.dispatching_sources to be more
+	descriptive and distinguishable within the source file.
+
 2008-04-21  Tor Lillqvist  <tml@novell.com>
 
 	Bug 528752 - Win32 build and SSL not working

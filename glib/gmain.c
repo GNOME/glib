@@ -108,7 +108,7 @@ typedef struct _GMainDispatch GMainDispatch;
 struct _GMainDispatch
 {
   gint depth;
-  GSList *source; /* stack of current sources */
+  GSList *dispatching_sources; /* stack of current sources */
 };
 
 struct _GMainContext
@@ -1829,7 +1829,7 @@ GSource *
 g_main_current_source (void)
 {
   GMainDispatch *dispatch = get_dispatch ();
-  return dispatch->source ? dispatch->source->data : NULL;
+  return dispatch->dispatching_sources ? dispatch->dispatching_sources->data : NULL;
 }
 
 /**
@@ -2004,13 +2004,13 @@ g_main_dispatch (GMainContext *context)
 	   * This is a performance hack - do not revert to g_slist_prepend()!
 	   */
 	  current_source_link.data = source;
-	  current_source_link.next = current->source;
-	  current->source = &current_source_link;
+	  current_source_link.next = current->dispatching_sources;
+	  current->dispatching_sources = &current_source_link;
 	  need_destroy = ! dispatch (source,
 				     callback,
 				     user_data);
-	  g_assert (current->source == &current_source_link);
-	  current->source = current_source_link.next;
+	  g_assert (current->dispatching_sources == &current_source_link);
+	  current->dispatching_sources = current_source_link.next;
 	  current->depth--;
 	  
 	  if (cb_funcs)
