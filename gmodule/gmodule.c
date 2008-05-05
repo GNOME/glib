@@ -29,7 +29,8 @@
  */
 
 #include "config.h"
-#include "glibconfig.h"
+
+#include "glib.h"
 
 #include <errno.h>
 #include <string.h>

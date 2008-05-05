@@ -1,3 +1,11 @@
+2008-05-05  Michael Natterer  <mitch@imendio.com>
+
+	* Makefile.am. build with G_DISABLE_SINGLE_INCLUDES to prevent
+	code from being checked in that breaks the build of applications
+	which use G_DISABLE_SINGLE_INCLUDES.
+
+	* gmodule.c: #include "glib.h" instead of "glibconfig.h"
+
 2008-03-16  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am: Define gmodule_def locally here instead of using an
