@@ -22,7 +22,6 @@
 
 #include <config.h>
 #include "gfilenamecompleter.h"
-#include "gurifuncs.h"
 #include "gfile.h"
 #include <string.h>
 #include "glibintl.h"

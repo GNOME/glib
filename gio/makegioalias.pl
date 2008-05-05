@@ -12,7 +12,7 @@ print <<EOF;
 
 #ifndef DISABLE_VISIBILITY
 
-#include "glibconfig.h"
+#include "glib.h"
 
 #ifdef G_HAVE_GNUC_VISIBILITY
 

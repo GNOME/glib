@@ -58,7 +58,6 @@
 #endif /* HAVE_XATTR */
 
 #include <glib/gstdio.h>
-#include <glib/gchecksum.h>
 #include <gfileattribute-priv.h>
 
 #include "glibintl.h"

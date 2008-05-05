@@ -1,3 +1,23 @@
+2008-05-05  Michael Natterer  <mitch@imendio.com>
+
+	* Makefile.am. build with G_DISABLE_SINGLE_INCLUDES to prevent
+	code from being checked in that breaks the build of applications
+	which use G_DISABLE_SINGLE_INCLUDES.
+
+	* makegioalias.pl: make the alias file include "glib.h" instead of
+	"glibconfig.h".
+
+	* gio.symbols: whitespace change to force regeneration of the
+	alias file after above script change.
+
+	* gfileinfo.h: remove inlcusion of <glib/gfileutils.h>.
+
+	* gfilenamecompleter.c: remove inclusion of "gurifuncs.h".
+
+	* gioerror.h: #include <glib.h> instead of <glib/gerror.h>.
+
+	* glocalfileinfo.c: remove inclusion of <glib/gchecksum>.
+
 2008-04-28  David Zeuthen  <davidz@redhat.com>
 
 	* gunixmounts.c (g_unix_mount_guess_should_display): Avoid

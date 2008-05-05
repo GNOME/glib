@@ -28,7 +28,6 @@
 #define __G_FILE_INFO_H__
 
 #include <glib-object.h>
-#include <glib/gfileutils.h>
 #include <gio/gfileattribute.h>
 #include <gio/gicon.h>
 
