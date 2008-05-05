@@ -27,7 +27,7 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__G_LIB_H__) && !defined (GLIB_COMPILATION)
+#if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
 

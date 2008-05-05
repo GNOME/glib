@@ -27,6 +27,8 @@
 #ifndef __G_LIB_H__
 #define __G_LIB_H__
 
+#define __GLIB_H_INSIDE__
+
 #include <glib/galloca.h>
 #include <glib/garray.h>
 #include <glib/gasyncqueue.h>
@@ -84,5 +86,7 @@
 #ifdef G_PLATFORM_WIN32
 #include <glib/gwin32.h>
 #endif
+
+#undef __GLIB_H_INSIDE__
 
 #endif /* __G_LIB_H__ */

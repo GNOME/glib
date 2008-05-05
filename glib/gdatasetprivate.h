@@ -28,7 +28,7 @@
 #ifndef __G_DATASETPRIVATE_H__
 #define __G_DATASETPRIVATE_H__
 
-#include <glib/gdataset.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 
