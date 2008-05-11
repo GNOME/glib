@@ -1,6 +1,8 @@
 #ifndef __GLIBINTL_H__
 #define __GLIBINTL_H__
 
+#include <glib/gi18n.h>
+
 #ifndef SIZEOF_CHAR
 #error "config.h must be included prior to glibintl.h"
 #endif

@@ -1,3 +1,27 @@
+2008-05-11  Yair Hershkovitz  <yairhr@gmail.com>
+
+        Bug 503071 - Application direction changes to right to left even if
+	theres no translation. 
+
+	* glib/gi18n.c: g_i18n_init() for initializing the glib i18n,
+	checking if a translation is available for the calling app. wrappers for
+	gettext, dgettext and dpgettext to check first if the application
+	should be translated.
+
+	* glib/gi18n.h: symbol declaration for gettext wrappers.
+
+	* glib/gi18n-lib.h: include gi18n.h instead of libintl.h.
+
+	* glib/gstrfuncs.c: moved g_dpgettext() to glib/gi18n.c.
+
+	* glib/gutils.c: use g_dgettext() instead of dgettext().
+
+	* glib/glibintl.h: include gi18n.h.
+
+	* glib.symbols: added gettext wrappers.
+
+	* glib/Makefile.am: added gi18n.c.
+
 2008-05-05  Michael Natterer  <mitch@imendio.com>
 
 	* glib/glib.h: #define __GLIB_H_INSIDE__ around including

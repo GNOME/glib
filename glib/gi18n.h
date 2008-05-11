@@ -24,9 +24,26 @@
 
 #include <libintl.h>
 
-#define  _(String) gettext (String)
+#if !defined(__G_I18N_LIB_H__) && !defined(__GLIBINTL_H__)
+#define  _(String) g_gettext (String)
 #define Q_(String) g_dpgettext (NULL, String, 0)
 #define N_(String) (String)
 #define C_(Context,String) g_dpgettext (NULL, Context "\004" String, strlen (Context) + 1)
+#endif
+
+G_BEGIN_DECLS
+
+G_CONST_RETURN gchar *g_gettext        (const gchar *msgid);
+
+G_CONST_RETURN gchar *g_dgettext       (const gchar *domain,
+                                        const gchar *msgid);
+
+G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
+                                        const gchar *msgctxtid,
+                                        gsize        msgidoffset);
+
+void		      g_i18n_init      (void);
+
+G_END_DECLS
 
 #endif  /* __G_I18N_H__ */

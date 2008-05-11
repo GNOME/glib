@@ -21,14 +21,13 @@
 #define __G_I18N_LIB_H__
 
 #include <glib.h>
-
-#include <libintl.h>
+#include <glib/gi18n.h>
 
 #ifndef GETTEXT_PACKAGE
 #error You must define GETTEXT_PACKAGE before including gi18n-lib.h.
 #endif
 
-#define  _(String) dgettext (GETTEXT_PACKAGE, String)
+#define  _(String) g_dgettext (GETTEXT_PACKAGE, String)
 #define Q_(String) g_dpgettext (GETTEXT_PACKAGE, String, 0)
 #define N_(String) (String)
 #define C_(Context,String) g_dpgettext (GETTEXT_PACKAGE, Context "\004" String, strlen (Context) + 1)
