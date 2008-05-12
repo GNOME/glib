@@ -2225,12 +2225,55 @@ load_user_special_dirs (void)
 static void
 load_user_special_dirs (void)
 {
+  typedef HRESULT (WINAPI *t_SHGetKnownFolderPath) (const GUID *rfid,
+						    DWORD dwFlags,
+						    HANDLE hToken,
+						    PWSTR *ppszPath);
+  t_SHGetKnownFolderPath p_SHGetKnownFolderPath;
+  static const GUID FOLDERID_Downloads =
+    { 0x374de290, 0x123f, 0x4565, { 0x91, 0x64, 0x39, 0xc4, 0x92, 0x5e, 0x46, 0x7b } };
+  static const GUID FOLDERID_Public =
+    { 0xDFDF76A2, 0xC82A, 0x4D63, { 0x90, 0x6A, 0x56, 0x44, 0xAC, 0x45, 0x73, 0x85 } };
+  wchar_t *wcp;
+
+  p_SHGetKnownFolderPath = (t_SHGetKnownFolderPath) GetProcAddress (LoadLibrary ("shell32.dll"),
+								    "SHGetKnownFolderPath");
+
   g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
   g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (CSIDL_PERSONAL);
-  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY); /* XXX correct ? */
+
+  if (p_SHGetKnownFolderPath == NULL)
+    {
+      g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
+    }
+  else
+    {
+      wcp = NULL;
+      (*p_SHGetKnownFolderPath) (&FOLDERID_Downloads, 0, NULL, &wcp);
+      g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
+      if (g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] == NULL)
+	g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
+      CoTaskMemFree (wcp);
+    }
+
   g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = get_special_folder (CSIDL_MYMUSIC);
   g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = get_special_folder (CSIDL_MYPICTURES);
-  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);  /* XXX correct ? */
+
+  if (p_SHGetKnownFolderPath == NULL)
+    {
+      /* XXX */
+      g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
+    }
+  else
+    {
+      wcp = NULL;
+      (*p_SHGetKnownFolderPath) (&FOLDERID_Public, 0, NULL, &wcp);
+      g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
+      if (g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] == NULL)
+	g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
+      CoTaskMemFree (wcp);
+    }
+  
   g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (CSIDL_TEMPLATES);
   g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = get_special_folder (CSIDL_MYVIDEO);
 }

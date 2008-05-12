@@ -1,3 +1,12 @@
+2008-05-12  Tor Lillqvist  <tml@novell.com>
+
+	Bug 530457 - G_USER_DIRECTORY_DOWNLOAD folder improperly mapped
+
+	* glib/gutils.c (load_user_special_dirs): When running on Vista or
+	later, use SHGetKnownFolderPath() to get the FOLDERID_Downloads
+	folder for G_USER_DIRECTORY_DOWNLOAD, and FOLDERID_Public for
+	G_USER_DIRECTORY_PUBLIC_SHARE.
+
 2008-05-11  Yair Hershkovitz  <yairhr@gmail.com>
 
         Bug 503071 - Application direction changes to right to left even if
