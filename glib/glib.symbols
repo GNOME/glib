@@ -1584,6 +1584,7 @@ g_win32_locale_filename_from_utf8
 
 #if IN_HEADER(__G_I18N_H__)
 #if IN_FILE(__G_I18N_C__)
+g_i18n_init
 g_gettext
 g_dgettext
 g_dpgettext
