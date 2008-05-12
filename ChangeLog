@@ -1,3 +1,8 @@
+2008-05-12  Yair Hershkovitz  <yairhr@gmail.com>
+
+	* glib/gi18n.c (g_i18n_init): Coding convention fix. Space between
+	a function name and its opening parenthesis.
+
 2008-05-12  Tor Lillqvist  <tml@novell.com>
 
 	* glib/glib.symbols: Add g_i18n_init.
@@ -13,7 +18,7 @@
 
 2008-05-11  Yair Hershkovitz  <yairhr@gmail.com>
 
-        Bug 503071 - Application direction changes to right to left even if
+	Bug 503071 - Application direction changes to right to left even if
 	theres no translation. 
 
 	* glib/gi18n.c: g_i18n_init() for initializing the glib i18n,

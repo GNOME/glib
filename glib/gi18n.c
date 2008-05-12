@@ -37,18 +37,18 @@ g_i18n_init (void)
 {
   gchar *domain, *default_domain;
 
-  setlocale(LC_ALL, "");
-  domain = g_strdup(textdomain (NULL));
-  default_domain = g_strdup(textdomain (""));
-  textdomain(domain);
+  setlocale (LC_ALL, "");
+  domain = g_strdup (textdomain (NULL));
+  default_domain = g_strdup (textdomain (""));
+  textdomain (domain);
 
   if (!strcmp (domain, default_domain))
     g_warning ("textdomain() must be called before glib i18n initialization");
 
-  g_free(domain);
-  g_free(default_domain);
+  g_free (domain);
+  g_free (default_domain);
 
-  if (!*gettext(""))
+  if (!*gettext (""))
     {
       g_should_translate = FALSE;
       g_warning ("No translation is available for the requested locale.");
