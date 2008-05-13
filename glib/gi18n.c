@@ -28,7 +28,8 @@
 #include "galias.h"
 #include "gmessages.h"
 #include "galloca.h"
-#include "string.h"
+#include <string.h>
+#include <locale.h>
 
 static gboolean g_should_translate = TRUE;
 
