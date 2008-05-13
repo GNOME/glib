@@ -4677,6 +4677,9 @@ is_valid_scheme_character (char c)
   return g_ascii_isalnum (c) || c == '+' || c == '-' || c == '.';
 }
 
+/* Following RFC 2396, valid schemes are built like:
+ *       scheme        = alpha *( alpha | digit | "+" | "-" | "." )
+ */
 static gboolean
 has_valid_scheme (const char *uri)
 {
@@ -4684,7 +4687,7 @@ has_valid_scheme (const char *uri)
   
   p = uri;
   
-  if (!is_valid_scheme_character (*p))
+  if (!g_ascii_isalpha (*p))
     return FALSE;
 
   do {
