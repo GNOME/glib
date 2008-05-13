@@ -1,3 +1,8 @@
+2008-05-13  Bastien Nocera  <hadess@hadess.net>
+
+	* gfile.c (has_valid_scheme): A URI scheme must start with a
+	letter, even if later more characters are allowed (#532852)
+
 2008-05-05  Michael Natterer  <mitch@imendio.com>
 
 	* Makefile.am. build with G_DISABLE_SINGLE_INCLUDES to prevent
