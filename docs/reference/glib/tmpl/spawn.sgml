@@ -2,7 +2,7 @@
 Spawning Processes
 
 <!-- ##### SECTION Short_Description ##### -->
-process launching with fork()/exec()
+process launching
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

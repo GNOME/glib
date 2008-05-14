@@ -1,3 +1,8 @@
+2008-05-14  Tor Lillqvist  <tml@novell.com>
+
+	* glib/tmpl/spawn.sgml: Don't mention fork()/exec() in the short
+	description. fork()/exec() is an implementation detail on Unix.
+
 2008-04-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/unicode.sgml: Updates for Unicode 5.1
