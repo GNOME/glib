@@ -21,11 +21,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #if defined (G_ATOMIC_ARM)
 #include <sched.h>
 #endif
-
-#include "config.h"
 
 #include "glib.h"
 #include "gthreadprivate.h"

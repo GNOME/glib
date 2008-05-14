@@ -1,3 +1,9 @@
+2008-05-14  Michael Natterer  <mitch@imendio.com>
+
+	Merged from trunk:
+
+	* glib/gatomic.c: #include "config.h" before using G_ATOMIC_ARM.
+
 2008-04-21  Tor Lillqvist  <tml@novell.com>
 
 	Bug 528752 - Win32 build and SSL not working
