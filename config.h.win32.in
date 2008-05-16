@@ -201,6 +201,9 @@
 /* Define to 1 if you have the `getgrgid' function. */
 /* #undef HAVE_GETGRGID */
 
+/* Define to 1 if you have the `getmntent_r' function. */
+/* #undef HAVE_GETMNTENT_R */
+
 /* Define to 1 if you have the `getmntinfo' function. */
 /* #undef HAVE_GETMNTINFO */
 
@@ -268,9 +271,6 @@
 
 /* Define to 1 if you have the `link' function. */
 /* #undef HAVE_LINK */
-
-/* Define to 1 if you have the <linux/inotify.h> header file. */
-/* #undef HAVE_LINUX_INOTIFY_H */
 
 /* Define to 1 if you have the <locale.h> header file. */
 #define HAVE_LOCALE_H 1
@@ -448,6 +448,9 @@
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
 
+/* Define to 1 if `f_fstypename' is member of `struct statfs'. */
+/* #undef HAVE_STRUCT_STATFS_F_FSTYPENAME */
+
 /* Define to 1 if `st_atimensec' is member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIMENSEC */
 
@@ -604,6 +607,9 @@
 /* Define to 1 if xattr is available */
 /* #undef HAVE_XATTR */
 
+/* Define to 1 if xattr API uses XATTR_NOFOLLOW */
+/* #undef HAVE_XATTR_NOFOLLOW */
+
 /* Define to 1 if you have the `_NSGetEnviron' function. */
 /* #undef HAVE__NSGETENVIRON */
 
@@ -727,11 +733,7 @@
 /* #undef const */
 
 /* Define to long or long long if <inttypes.h> and <stdint.h> don't define. */
-#ifndef _MSC_VER
 /* #undef intmax_t */
-#else /* _MSC_VER */
-#define intmax_t __int64
-#endif /* _MSC_VER */
 
 /* Define to empty if the C compiler doesn't support this keyword. */
 /* #undef signed */

@@ -1,3 +1,7 @@
+2008-05-16  Tor Lillqvist  <tml@novell.com>
+
+	* config.h.win32.in: Update to match the configure-produced one.
+
 2008-05-14  Michael Natterer  <mitch@imendio.com>
 
 	* glib/gatomic.c: #include "config.h" before using G_ATOMIC_ARM.
