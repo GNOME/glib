@@ -21,6 +21,8 @@
  * 
  */
 
+#define _WIN32_WINNT 0x0400
+
 #include "config.h"
 #include "gwin32directorymonitor.h"
 #include "giomodule.h"

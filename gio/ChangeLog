@@ -1,3 +1,8 @@
+2008-05-16  Tor Lillqvist  <tml@novell.com>
+
+	* win32/gwin32directorymonitor.c: #define _WIN32_WINNT 0x0400 to
+	get declaration of ReadDirectoryChangesW() from Platform SDK headers.
+
 2008-05-13  Bastien Nocera  <hadess@hadess.net>
 
 	* gfile.c (has_valid_scheme): A URI scheme must start with a
