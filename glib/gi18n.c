@@ -31,29 +31,57 @@
 #include <string.h>
 #include <locale.h>
 
-static gboolean g_should_translate = TRUE;
+static gboolean should_translate = TRUE;
+static gboolean do_setlocale = TRUE;
+static gboolean initialized = FALSE;
 
 void
 g_i18n_init (void)
 {
-  gchar *domain, *default_domain;
+  gchar *domain, *default_domain, *locale;
 
-  setlocale (LC_ALL, "");
+  initialized = TRUE;
+
+  locale = setlocale (LC_ALL, do_setlocale ? "" : NULL);
   domain = g_strdup (textdomain (NULL));
   default_domain = g_strdup (textdomain (""));
   textdomain (domain);
 
   if (!strcmp (domain, default_domain))
-    g_warning ("textdomain() must be called before glib i18n initialization");
-
-  g_free (domain);
-  g_free (default_domain);
-
-  if (!*gettext (""))
     {
-      g_should_translate = FALSE;
+      g_warning ("textdomain() must be called before glib i18n initialization");
+      goto out;
+    }
+
+  if (!*gettext ("") && (!locale || strcmp (locale, "C")))
+    {
+      should_translate = FALSE;
       g_warning ("No translation is available for the requested locale.");
     }
+
+out:
+  g_free (domain);
+  g_free (default_domain);
+}
+
+/**
+ * g_disable_setlocale:
+ * 
+ * Prevents g_i18n_init() from automatically
+ * calling <literal>setlocale (LC_ALL, "")</literal>. You would 
+ * want to use this function if you wanted to set the locale for 
+ * your program to something other than the user's locale, or if 
+ * you wanted to set different values for different locale categories.
+ *
+ * Most programs should not need to call this function.
+ **/
+void
+g_disable_setlocale (void)
+{
+  if (initialized)
+    g_warning ("g_disable_setlocale() must be called before g_i18n_init()");
+
+  do_setlocale = FALSE;
 }
 
 /**
@@ -73,10 +101,14 @@ g_i18n_init (void)
 const gchar *
 g_gettext (const gchar *msgid)
 {
-  if (g_should_translate)
-    return gettext (msgid);
-  else
+  if (!initialized)
+    goto out;
+
+  if (!should_translate)
     return msgid;
+
+out:
+  return gettext (msgid);
 }
 
 /**
@@ -99,10 +131,14 @@ const gchar *
 g_dgettext (const gchar *domain,
             const gchar *msgid)
 {
-  if (g_should_translate)
-    return dgettext (domain, msgid);
-  else
+  if (!initialized)
+    goto out;
+
+  if (!should_translate)
     return msgid;
+
+out:
+  return dgettext (domain, msgid);
 }
 
 /**

@@ -42,7 +42,8 @@ G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
                                         gsize        msgidoffset);
 
-void		      g_i18n_init      (void);
+void		      g_i18n_init      		(void);
+void		      g_disable_setlocale	(void);
 
 G_END_DECLS
 

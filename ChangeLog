@@ -1,3 +1,13 @@
+2008-05-17  Yair Hershkovitz  <yairhr@gmail.com>
+
+	* glib/glib.symbols:
+	* glib/gi18n.h: Added g_disable_setlocale().
+
+	* glib/gi18n.c: Added g_disable_setlocale() API to disable setting
+	the locale in g_i18n_init(). Dont disable translations if textdomain
+	was not set before calling g_i18n_init(). Dont disable translations if
+	the locale is "C".
+
 2008-05-16  Tor Lillqvist  <tml@novell.com>
 
 	* config.h.win32.in: Update to match the configure-produced one.
