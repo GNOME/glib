@@ -1,3 +1,9 @@
+2008-05-17  Tor Lillqvist  <tml@novell.com>
+
+	* build: Don't include the "build" module with svn:externals any
+	longer. Instead add the still relevant directories and files from
+	it for real here in GLib.
+
 2008-05-17  Yair Hershkovitz  <yairhr@gmail.com>
 
 	* glib/glib.symbols:
