@@ -1,3 +1,9 @@
+2008-05-17  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* build: Fixup Tor's "build" svn:external commit. The
+	svn:external was not actually removed, so this caused
+	errors when updating.
+
 2008-05-17  Tor Lillqvist  <tml@novell.com>
 
 	* build: Don't include the "build" module with svn:externals any
