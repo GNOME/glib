@@ -968,7 +968,8 @@ g_local_file_query_filesystem_info (GFile         *file,
 
   attribute_matcher = g_file_attribute_matcher_new (attributes);
   
-  if (g_file_attribute_matcher_matches (attribute_matcher,
+  if (!no_size &&
+      g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_FREE))
     {
 #ifdef G_OS_WIN32
@@ -984,7 +985,8 @@ g_local_file_query_filesystem_info (GFile         *file,
       g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE, block_size * statfs_buffer.f_bavail);
 #endif
     }
-  if (g_file_attribute_matcher_matches (attribute_matcher,
+  if (!no_size &&
+      g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_SIZE))
     {
 #ifdef G_OS_WIN32
