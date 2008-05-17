@@ -1114,7 +1114,24 @@ g_checksum_new (GChecksumType checksum_type)
   checksum = g_slice_new0 (GChecksum);
   checksum->type = checksum_type;
 
-  switch (checksum_type)
+  g_checksum_reset (checksum);
+
+  return checksum;
+}
+
+/**
+ * g_checksum_reset:
+ * @checksum: the #GChecksum to reset
+ *
+ * Resets the state of the @checksum back to it's initial state.
+ **/
+void
+g_checksum_reset (GChecksum *checksum)
+{
+  g_free (checksum->digest_str);
+  checksum->digest_str = NULL;
+  
+  switch (checksum->type)
     {
     case G_CHECKSUM_MD5:
       md5_sum_init (&(checksum->sum.md5));
@@ -1129,8 +1146,6 @@ g_checksum_new (GChecksumType checksum_type)
       g_assert_not_reached ();
       break;
     }
-
-  return checksum;
 }
 
 /**

@@ -1,3 +1,10 @@
+2008-05-12  Jeffrey Stedfast  <fejj@novell.com>
+
+	* glib/gchecksum.c (g_checksum_reset): New function to reset the
+	state of a GChecksum.
+	(g_checksum_new): Call g_checksum_reset() instead of duplicating
+	code.
+
 2008-05-17  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 528667 – Typos in testing module documentation
@@ -45,6 +52,7 @@
 
 	* glib/gi18n.c: #include <locale.h> to fix the build.
 
+>>>>>>> .r6902
 2008-05-12  Yair Hershkovitz  <yairhr@gmail.com>
 
 	* glib/gi18n.c (g_i18n_init): Coding convention fix. Space between
