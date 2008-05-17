@@ -318,7 +318,7 @@ maman_bar_get_type (void)
 
     <para>
       Construction properties will be set only after all instance_init functions have run.
-      No object reference will be returned to the client of <function><link linkend="g-object-new>">g_object_new></link></function>
+      No object reference will be returned to the client of <function><link linkend="g-object-new">g_object_new</link></function>
       until all the construction properties have been set.
     </para>
 
