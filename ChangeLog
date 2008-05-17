@@ -1,3 +1,9 @@
+2008-05-17  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 528667 – Typos in testing module documentation
+
+	* glib/gtestutils.c: Fix typos in the documentation.
+
 2008-05-17  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: Make debugging printout more compact and add
