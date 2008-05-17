@@ -33,8 +33,17 @@
 
 #include "config.h"
 
-/* uncomment the next line to get poll() debugging info */
+/* Uncomment the next line to enable debugging printouts if the
+ * environment variable G_MAIN_POLL_DEBUG is set to some value.
+ */
 /* #define G_MAIN_POLL_DEBUG */
+
+#ifdef _WIN32
+/* Always enable debugging printout on Windows, as it is more often
+ * needed there...
+ */
+#define G_MAIN_POLL_DEBUG
+#endif
 
 #include "glib.h"
 #include "gthreadprivate.h"
@@ -80,6 +89,14 @@
 
 #include "galias.h"
 
+#ifdef G_MAIN_POLL_DEBUG
+#ifdef G_OS_WIN32
+#define GPOLLFD_FORMAT "%#x"
+#else
+#define GPOLLFD_FORMAT "%d"
+#endif
+#endif
+
 /* Types */
 
 typedef struct _GTimeoutSource GTimeoutSource;
@@ -110,6 +127,10 @@ struct _GMainDispatch
   gint depth;
   GSList *dispatching_sources; /* stack of current sources */
 };
+
+#ifdef G_MAIN_POLL_DEBUG
+static gboolean g_main_poll_debug = FALSE;
+#endif
 
 struct _GMainContext
 {
@@ -330,11 +351,21 @@ g_poll (GPollFD *fds,
   MSG msg;
   gint nhandles = 0;
 
+#ifdef G_MAIN_POLL_DEBUG
+  if (g_main_poll_debug)
+    g_print ("g_poll: waiting for");
+#endif
   for (f = fds; f < &fds[nfds]; ++f)
     if (f->fd >= 0)
       {
 	if (f->fd == G_WIN32_MSG_HANDLE)
-	  poll_msgs = TRUE;
+	  {
+	    poll_msgs = TRUE;
+#ifdef G_MAIN_POLL_DEBUG
+	    if (g_main_poll_debug)
+	      g_print (" MSG");
+#endif
+	  }
 	else if (nhandles == MAXIMUM_WAIT_OBJECTS)
 	  {
 	    g_warning (G_STRLOC ": Too many handles to wait for!\n");
@@ -343,11 +374,16 @@ g_poll (GPollFD *fds,
 	else
 	  {
 #ifdef G_MAIN_POLL_DEBUG
-	    g_print ("g_poll: waiting for %#x\n", f->fd);
+	    if (g_main_poll_debug)
+	      g_print (" %#x", f->fd);
 #endif
 	    handles[nhandles++] = (HANDLE) f->fd;
 	  }
       }
+#ifdef G_MAIN_POLL_DEBUG
+  if (g_main_poll_debug)
+    g_print ("\n");
+#endif
 
   if (timeout == -1)
     timeout = INFINITE;
@@ -358,7 +394,8 @@ g_poll (GPollFD *fds,
        * -> First PeekMessage
        */
 #ifdef G_MAIN_POLL_DEBUG
-      g_print ("PeekMessage\n");
+      if (g_main_poll_debug)
+	g_print ("PeekMessage\n");
 #endif
       if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
 	ready = WAIT_OBJECT_0 + nhandles;
@@ -368,7 +405,8 @@ g_poll (GPollFD *fds,
 	   * -> Use MsgWaitForMultipleObjectsEx
 	   */
 #ifdef G_MAIN_POLL_DEBUG
-	  g_print ("MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
+	  if (g_main_poll_debug)
+	    g_print ("MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 #endif
 	  ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
 					       QS_ALLINPUT, MWMO_ALERTABLE);
@@ -398,7 +436,8 @@ g_poll (GPollFD *fds,
        * -> Use WaitForMultipleObjectsEx
        */
 #ifdef G_MAIN_POLL_DEBUG
-      g_print ("WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
+      if (g_main_poll_debug)
+	g_print ("WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 #endif
       ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout, TRUE);
       if (ready == WAIT_FAILED)
@@ -410,11 +449,12 @@ g_poll (GPollFD *fds,
     }
 
 #ifdef G_MAIN_POLL_DEBUG
-  g_print ("wait returns %ld%s\n",
-	   ready,
-	   (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
-	    (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
-	     (poll_msgs && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
+  if (g_main_poll_debug)
+    g_print ("wait returns %ld%s\n",
+	     ready,
+	     (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
+	      (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
+	       (poll_msgs && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
 #endif
   for (f = fds; f < &fds[nfds]; ++f)
     f->revents = 0;
@@ -441,7 +481,8 @@ g_poll (GPollFD *fds,
 	  {
 	    f->revents = f->events;
 #ifdef G_MAIN_POLL_DEBUG
-	    g_print ("g_poll: got event %#x\n", f->fd);
+	    if (g_main_poll_debug)
+	      g_print ("g_poll: got event %#x\n", f->fd);
 #endif
 	  }
       }
@@ -641,7 +682,8 @@ g_main_context_init_pipe (GMainContext *context)
   context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
   context->wake_up_rec.events = G_IO_IN;
 #  ifdef G_MAIN_POLL_DEBUG
-  g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
+  if (g_main_poll_debug)
+    g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
 #  endif
 # endif
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
@@ -716,6 +758,12 @@ g_main_context_new (void)
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
+
+#ifdef G_MAIN_POLL_DEBUG
+  if (g_main_poll_debug)
+    g_print ("created context=%p\n", context);
+#endif
+
   G_UNLOCK (main_context_list);
 
   return context;
@@ -738,7 +786,13 @@ g_main_context_default (void)
   G_LOCK (main_loop);
 
   if (!default_main_context)
-    default_main_context = g_main_context_new ();
+    {
+      default_main_context = g_main_context_new ();
+#ifdef G_MAIN_POLL_DEBUG
+      if (g_main_poll_debug)
+	g_print ("default context=%p\n", default_main_context);
+#endif
+    }
 
   G_UNLOCK (main_loop);
 
@@ -2724,7 +2778,22 @@ g_main_loop_new (GMainContext *context,
 		 gboolean      is_running)
 {
   GMainLoop *loop;
-  
+#ifdef G_MAIN_POLL_DEBUG
+  static gboolean beenhere = FALSE;
+#endif
+
+#ifdef G_MAIN_POLL_DEBUG
+  G_LOCK (main_loop);
+
+  if (!beenhere)
+    {
+      beenhere = TRUE;
+      if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
+	g_main_poll_debug = TRUE;
+    }
+  G_UNLOCK (main_loop);
+#endif
+
   if (!context)
     context = g_main_context_default();
   
@@ -2939,8 +3008,12 @@ g_main_context_poll (GMainContext *context,
   if (n_fds || timeout != 0)
     {
 #ifdef	G_MAIN_POLL_DEBUG
-      g_print ("g_main_poll(%d) timeout: %d\n", n_fds, timeout);
-      poll_timer = g_timer_new ();
+      if (g_main_poll_debug)
+	{
+	  g_print ("polling context=%p n=%d timeout=%d\n",
+		   context, n_fds, timeout);
+	  poll_timer = g_timer_new ();
+	}
 #endif
 
       LOCK_CONTEXT (context);
@@ -2959,43 +3032,49 @@ g_main_context_poll (GMainContext *context,
 	}
       
 #ifdef	G_MAIN_POLL_DEBUG
-      LOCK_CONTEXT (context);
-
-      g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
-	       n_fds,
-	       timeout,
-	       g_timer_elapsed (poll_timer, NULL));
-      g_timer_destroy (poll_timer);
-      pollrec = context->poll_records;
-      i = 0;
-      while (i < n_fds)
+      if (g_main_poll_debug)
 	{
-	  if (pollrec->fd->events)
+	  LOCK_CONTEXT (context);
+
+	  g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
+		   n_fds,
+		   timeout,
+		   g_timer_elapsed (poll_timer, NULL));
+	  g_timer_destroy (poll_timer);
+	  pollrec = context->poll_records;
+
+	  while (pollrec != NULL)
 	    {
-	      if (fds[i].revents)
+	      i = 0;
+	      while (i < n_fds)
 		{
-		  g_print (" [%d:", fds[i].fd);
-		  if (fds[i].revents & G_IO_IN)
-		    g_print ("i");
-		  if (fds[i].revents & G_IO_OUT)
-		    g_print ("o");
-		  if (fds[i].revents & G_IO_PRI)
-		    g_print ("p");
-		  if (fds[i].revents & G_IO_ERR)
-		    g_print ("e");
-		  if (fds[i].revents & G_IO_HUP)
-		    g_print ("h");
-		  if (fds[i].revents & G_IO_NVAL)
-		    g_print ("n");
-		  g_print ("]");
+		  if (fds[i].fd == pollrec->fd->fd &&
+		      pollrec->fd->events &&
+		      fds[i].revents)
+		    {
+		      g_print (" [" GPOLLFD_FORMAT " :", fds[i].fd);
+		      if (fds[i].revents & G_IO_IN)
+			g_print ("i");
+		      if (fds[i].revents & G_IO_OUT)
+			g_print ("o");
+		      if (fds[i].revents & G_IO_PRI)
+			g_print ("p");
+		      if (fds[i].revents & G_IO_ERR)
+			g_print ("e");
+		      if (fds[i].revents & G_IO_HUP)
+			g_print ("h");
+		      if (fds[i].revents & G_IO_NVAL)
+			g_print ("n");
+		      g_print ("]");
+		    }
+		  i++;
 		}
-	      i++;
+	      pollrec = pollrec->next;
 	    }
-	  pollrec = pollrec->next;
+	  g_print ("\n");
+
+	  UNLOCK_CONTEXT (context);
 	}
-      g_print ("\n");
-      
-      UNLOCK_CONTEXT (context);
 #endif
     } /* if (n_fds || timeout != 0) */
 }

@@ -1,5 +1,15 @@
 2008-05-17  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gmain.c: Improve debugging printouts. When
+	G_MAIN_POLL_DEBUG is defined, we check for an environment variable
+	of the same name to decide whether to print out debugging
+	information or not. G_MAIN_POLL_DEBUG is always defined on Windows
+	as there is more often a need to debug this stuff there. On Unix
+	the definition has to be uncommented (or done on the compile
+	command line).
+
+2008-05-17  Tor Lillqvist  <tml@novell.com>
+
 	* build: Don't include the "build" module with svn:externals any
 	longer. Instead add the still relevant directories and files from
 	it for real here in GLib.
