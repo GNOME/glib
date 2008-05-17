@@ -1,3 +1,10 @@
+2008-05-17  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 530196 – _g_local_file_has_trash_dir() doesn't handle st_dev == 0
+
+	* glocalfile.c (_g_local_file_has_trash_dir): Handle the case that
+	st_dev might be zero.
+
 2008-05-16  Tor Lillqvist  <tml@novell.com>
 
 	* win32/gwin32directorymonitor.c: #define _WIN32_WINNT 0x0400 to
