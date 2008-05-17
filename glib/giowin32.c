@@ -776,16 +776,25 @@ g_io_win32_prepare (GSource *source,
   
   *timeout = -1;
   
+  if (channel->debug)
+    g_print ("g_io_win32_prepare: source=%p channel=%p", source, channel);
+
   switch (channel->type)
     {
     case G_IO_WIN32_WINDOWS_MESSAGES:
+      if (channel->debug)
+	g_print (" MSG");
+      break;
+
     case G_IO_WIN32_CONSOLE:
+      if (channel->debug)
+	g_print (" CON");
       break;
 
     case G_IO_WIN32_FILE_DESC:
       if (channel->debug)
-	g_print ("g_io_win32_prepare: for thread %#x buffer_condition:{%s}\n"
-		 "  watch->pollfd.events:{%s} watch->pollfd.revents:{%s} channel->revents:{%s}\n",
+	g_print (" FD thread=%#x buffer_condition:{%s}"
+		 "\n  watch->pollfd.events:{%s} watch->pollfd.revents:{%s} channel->revents:{%s}",
 		 channel->thread_id, condition_to_string (buffer_condition),
 		 condition_to_string (watch->pollfd.events),
 		 condition_to_string (watch->pollfd.revents),
@@ -797,8 +806,7 @@ g_io_win32_prepare (GSource *source,
 	  if (channel->direction == 0 && channel->wrp == channel->rdp)
 	    {
 	      if (channel->debug)
-		g_print ("g_io_win32_prepare: for thread %#x, setting channel->revents = 0\n",
-			 channel->thread_id);
+		g_print ("\n  setting revents=0");
 	      channel->revents = 0;
 	    }
 	}
@@ -808,8 +816,7 @@ g_io_win32_prepare (GSource *source,
 	      && (channel->wrp + 1) % BUFFER_SIZE == channel->rdp)
 	    {
 	      if (channel->debug)
-		g_print ("g_io_win32_prepare: for thread %#x, setting channel->revents = %i\n",
-			 channel->thread_id, 0);
+		g_print ("\n setting revents=0");
 	      channel->revents = 0;
 	    }
 	}	  
@@ -817,6 +824,8 @@ g_io_win32_prepare (GSource *source,
       break;
 
     case G_IO_WIN32_SOCKET:
+      if (channel->debug)
+	g_print (" SOCK");
       event_mask = 0;
       if (watch->condition & G_IO_IN)
 	event_mask |= (FD_READ | FD_ACCEPT);
@@ -827,7 +836,7 @@ g_io_win32_prepare (GSource *source,
       if (channel->event_mask != event_mask /* || channel->event != watch->pollfd.fd*/)
 	{
 	  if (channel->debug)
-	    g_print ("g_io_win32_prepare: WSAEventSelect(%d, %#x, {%s}\n",
+	    g_print ("\n  WSAEventSelect(%d,%#x,{%s})",
 		     channel->fd, watch->pollfd.fd,
 		     event_mask_to_string (event_mask));
 	  if (WSAEventSelect (channel->fd, (HANDLE) watch->pollfd.fd,
@@ -837,6 +846,8 @@ g_io_win32_prepare (GSource *source,
 #if 0
 	  channel->event = watch->pollfd.fd;
 #endif
+	  if (channel->debug)
+	    g_print ("\n  setting last_events=0");
 	  channel->last_events = 0;
 	}
       break;
@@ -845,6 +856,9 @@ g_io_win32_prepare (GSource *source,
       g_assert_not_reached ();
       abort ();
     }
+  if (channel->debug)
+    g_print ("\n");
+
   return ((watch->condition & buffer_condition) == watch->condition);
 }
 
@@ -857,14 +871,19 @@ g_io_win32_check (GSource *source)
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
   WSANETWORKEVENTS events;
 
+  if (channel->debug)
+    g_print ("g_io_win32_check: source=%p channel=%p", source, channel);
+
   switch (channel->type)
     {
     case G_IO_WIN32_WINDOWS_MESSAGES:
+      if (channel->debug)
+	g_print (" MSG\n");
       return (PeekMessage (&msg, channel->hwnd, 0, 0, PM_NOREMOVE));
 
     case G_IO_WIN32_FILE_DESC:
       if (channel->debug)
-	g_print ("g_io_win32_check: for thread %#x buffer_condition=%s\n"
+	g_print (" FD thread=%#x buffer_condition=%s\n"
 		 "  watch->pollfd.events={%s} watch->pollfd.revents={%s} channel->revents={%s}\n",
 		 channel->thread_id, condition_to_string (buffer_condition),
 		 condition_to_string (watch->pollfd.events),
@@ -876,6 +895,8 @@ g_io_win32_check (GSource *source)
       return ((watch->pollfd.revents | buffer_condition) & watch->condition);
 
     case G_IO_WIN32_CONSOLE:
+      if (channel->debug)
+	g_print (" CON\n");
       if (watch->channel->is_writeable)
 	return TRUE;
       else if (watch->channel->is_readable)
@@ -899,10 +920,12 @@ g_io_win32_check (GSource *source)
       return FALSE;
 
     case G_IO_WIN32_SOCKET:
+      if (channel->debug)
+	g_print (" SOCK");
       if (channel->last_events & FD_WRITE)
 	{
 	  if (channel->debug)
-	    g_print ("g_io_win32_check: sock=%d event=%#x last_events has FD_WRITE\n",
+	    g_print (" sock=%d event=%#x last_events has FD_WRITE",
 		     channel->fd, watch->pollfd.fd);
 	}
       else
@@ -910,10 +933,11 @@ g_io_win32_check (GSource *source)
 	  WSAEnumNetworkEvents (channel->fd, 0, &events);
 
 	  if (channel->debug)
-	    g_print ("g_io_win32_check: WSAEnumNetworkEvents (%d, %#x) revents={%s} condition={%s} events={%s}\n",
-		     channel->fd, watch->pollfd.fd,
+	    g_print ("\n  revents={%s} condition={%s}"
+		     "\n  WSAEnumNetworkEvents(%d,0) sets events={%s}",
 		     condition_to_string (watch->pollfd.revents),
 		     condition_to_string (watch->condition),
+		     channel->fd, 
 		     event_mask_to_string (events.lNetworkEvents));
 	  
 	  if (watch->pollfd.revents != 0 &&
@@ -922,11 +946,11 @@ g_io_win32_check (GSource *source)
 	    {
 	      channel->event_mask = 0;
 	      if (channel->debug)
-		g_print ("g_io_win32_check: WSAEventSelect(%d, %#x, {})\n",
+		g_print ("\n  WSAEventSelect(%d,%#x,{})",
 			 channel->fd, watch->pollfd.fd);
 	      WSAEventSelect (channel->fd, (HANDLE) watch->pollfd.fd, 0);
 	      if (channel->debug)
-		g_print ("g_io_win32_check: ResetEvent(%#x)\n",
+		g_print ("  ResetEvent(%#x)",
 			 watch->pollfd.fd);
 	      ResetEvent ((HANDLE) watch->pollfd.fd);
 	    }
@@ -961,6 +985,11 @@ g_io_win32_check (GSource *source)
 	  !channel->write_would_have_blocked &&
 	  (channel->event_mask & FD_WRITE))
 	watch->pollfd.revents |= G_IO_OUT;
+
+      if (channel->debug)
+	g_print ("\n  revents={%s} retval={%s}\n",
+		 condition_to_string (watch->pollfd.revents),
+		 condition_to_string ((watch->pollfd.revents | buffer_condition) & watch->condition));
 
       return ((watch->pollfd.revents | buffer_condition) & watch->condition);
 
@@ -1004,23 +1033,29 @@ g_io_win32_finalize (GSource *source)
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
+  if (channel->debug)
+    g_print ("g_io_win32_finalize: source=%p channel=%p", source, channel);
+
   switch (channel->type)
     {
     case G_IO_WIN32_WINDOWS_MESSAGES:
+      if (channel->debug)
+	g_print (" MSG");
+      break;
+
     case G_IO_WIN32_CONSOLE:
+      if (channel->debug)
+	g_print (" CON");
       break;
 
     case G_IO_WIN32_FILE_DESC:
-      LOCK (channel->mutex);
       if (channel->debug)
-	g_print ("g_io_win32_finalize: channel with thread %#x\n",
-		 channel->thread_id);
-      UNLOCK (channel->mutex);
+	g_print (" FD thread=%#x", channel->thread_id);
       break;
 
     case G_IO_WIN32_SOCKET:
       if (channel->debug)
-	g_print ("g_io_win32_finalize: channel is for sock=%d\n", channel->fd);
+	g_print (" SOCK sock=%d", channel->fd);
 #if 0
       CloseHandle ((HANDLE) watch->pollfd.fd);
       channel->event = 0;
@@ -1032,6 +1067,8 @@ g_io_win32_finalize (GSource *source)
       g_assert_not_reached ();
       abort ();
     }
+  if (channel->debug)
+    g_print ("\n");
   g_io_channel_unref (watch->channel);
 }
 
@@ -1060,8 +1097,8 @@ g_io_win32_msg_read (GIOChannel *channel,
     }
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_msg_read: for %#x\n",
-	     (guint) win32_channel->hwnd);
+    g_print ("g_io_win32_msg_read: channel=%p hwnd=%#x\n",
+	     channel, (guint) win32_channel->hwnd);
   if (!PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_REMOVE))
     return G_IO_STATUS_AGAIN;
 
@@ -1118,7 +1155,7 @@ g_io_win32_free (GIOChannel *channel)
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_free channel fd=%d\n", win32_channel->fd);
+    g_print ("g_io_win32_free channel=%p fd=%d\n", channel, win32_channel->fd);
 
   if (win32_channel->data_avail_event)
     CloseHandle (win32_channel->data_avail_event);
@@ -1302,7 +1339,7 @@ g_io_win32_fd_close (GIOChannel *channel,
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   
   if (win32_channel->debug)
-    g_print ("thread %#x: closing fd %d\n",
+    g_print ("g_io_win32_fd_close: thread=%#x: fd=%d\n",
 	     win32_channel->thread_id,
 	     win32_channel->fd);
   LOCK (win32_channel->mutex);
@@ -1355,8 +1392,9 @@ g_io_win32_fd_create_watch (GIOChannel    *channel,
   watch->pollfd.events = condition;
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_fd_create_watch: fd=%d condition={%s} handle=%#x\n",
-	     win32_channel->fd, condition_to_string (condition), watch->pollfd.fd);
+    g_print ("g_io_win32_fd_create_watch: channel=%p fd=%d condition={%s} event=%#x\n",
+	     channel, win32_channel->fd,
+	     condition_to_string (condition), watch->pollfd.fd);
 
   LOCK (win32_channel->mutex);
   if (win32_channel->thread_id == 0)
@@ -1424,15 +1462,15 @@ g_io_win32_sock_read (GIOChannel *channel,
   int winsock_error;
 
   if (win32_channel->debug)
-    g_print ("g_io_win32_sock_read: sockfd=%d count=%d\n",
-	     win32_channel->fd, count);
+    g_print ("g_io_win32_sock_read: channel=%p sock=%d count=%d",
+	     channel, win32_channel->fd, count);
 
   result = recv (win32_channel->fd, buf, count, 0);
   if (result == SOCKET_ERROR)
     winsock_error = WSAGetLastError ();
 
   if (win32_channel->debug)
-    g_print ("g_io_win32_sock_read: recv=%d %s\n",
+    g_print (" recv=%d %s\n",
 	     result,
 	     (result == SOCKET_ERROR ? winsock_error_message (winsock_error) : ""));
   
@@ -1478,15 +1516,15 @@ g_io_win32_sock_write (GIOChannel  *channel,
   int winsock_error;
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_sock_write: sockfd=%d count=%d\n",
-	     win32_channel->fd, count);
+    g_print ("g_io_win32_sock_write: channel=%p sock=%d count=%d",
+	     channel, win32_channel->fd, count);
 
   result = send (win32_channel->fd, buf, count, 0);
   if (result == SOCKET_ERROR)
     winsock_error = WSAGetLastError ();
 
   if (win32_channel->debug)
-    g_print ("g_io_win32_sock_write: send=%d %s\n",
+    g_print (" send=%d %s\n",
 	     result,
 	     (result == SOCKET_ERROR ? winsock_error_message (winsock_error) : ""));
   
@@ -1530,8 +1568,8 @@ g_io_win32_sock_close (GIOChannel *channel,
   if (win32_channel->fd != -1)
     {
       if (win32_channel->debug)
-	g_print ("g_io_win32_sock_close: closing socket %d\n",
-		 win32_channel->fd);
+	g_print ("g_io_win32_sock_close: channel=%p sock=%d\n",
+		 channel, win32_channel->fd);
       
       closesocket (win32_channel->fd);
       win32_channel->fd = -1;
@@ -1562,8 +1600,8 @@ g_io_win32_sock_create_watch (GIOChannel    *channel,
   watch->pollfd.events = condition;
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_sock_create_watch: sock=%d handle=%#x condition={%s}\n",
-	     win32_channel->fd, watch->pollfd.fd,
+    g_print ("g_io_win32_sock_create_watch: channel=%p sock=%d event=%#x condition={%s}\n",
+	     channel, win32_channel->fd, watch->pollfd.fd,
 	     condition_to_string (watch->condition));
 
   g_source_add_poll (source, &watch->pollfd);
@@ -1658,7 +1696,7 @@ g_io_channel_new_file (const gchar  *filename,
 
   if (g_io_win32_get_debug_flag ())
     {
-      g_print ("g_io_channel_win32_new_file: open(\"%s\", ", filename);
+      g_print ("g_io_channel_win32_new_file: open(\"%s\",", filename);
       g_win32_print_access_mode (flags|_O_BINARY);
       g_print (",%#o)=%d\n", pmode, fid);
     }
@@ -1929,7 +1967,8 @@ g_io_channel_win32_new_messages (guint hwnd)
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_messages: hwnd=%#x\n", hwnd);
+    g_print ("g_io_channel_win32_new_messages: channel=%p hwnd=%#x\n",
+	     channel, hwnd);
   channel->funcs = &win32_channel_msg_funcs;
   win32_channel->type = G_IO_WIN32_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
@@ -1959,7 +1998,9 @@ g_io_channel_win32_new_fd_internal (gint         fd,
   win32_channel->fd = fd;
 
   if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_fd: %u\n", fd);
+    g_print ("g_io_channel_win32_new_fd: channel=%p fd=%u\n",
+	     channel, fd);
+
   if (st->st_mode & _S_IFCHR) /* console */
     {
       channel->funcs = &win32_channel_console_funcs;
@@ -2007,7 +2048,8 @@ g_io_channel_win32_new_socket (int socket)
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_socket: sockfd=%d\n", socket);
+    g_print ("g_io_channel_win32_new_socket: channel=%p sock=%d\n",
+	     channel, socket);
   channel->funcs = &win32_channel_sock_funcs;
   win32_channel->type = G_IO_WIN32_SOCKET;
   win32_channel->fd = socket;

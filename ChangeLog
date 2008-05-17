@@ -1,5 +1,8 @@
 2008-05-17  Tor Lillqvist  <tml@novell.com>
 
+	* glib/giowin32.c: Make debugging printout more compact and add
+	more information to it. No changes to actual functionality.
+
 	* glib/gmain.c: Improve debugging printouts. When
 	G_MAIN_POLL_DEBUG is defined, we check for an environment variable
 	of the same name to decide whether to print out debugging
