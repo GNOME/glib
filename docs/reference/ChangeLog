@@ -1,3 +1,11 @@
+2008-05-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 527214 – g_timer_elapsed() returns random values.
+
+	* docs/reference/glib/tmpl/timers.sgml:
+	Add notes regarding gthreads dependency. 
+	Patch by Mathias Hasselmann
+
 2008-05-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/gio-sections.txt: Add new api

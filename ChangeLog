@@ -1,3 +1,11 @@
+2008-05-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 527214 – g_timer_elapsed() returns random values.
+
+	* glib/gtimer.c (g_timer_new()):
+	Print warning if g_thread_init() has not been called yet. 
+	Patch by Mathias Hasselmann
+
 2008-05-12  Jeffrey Stedfast  <fejj@novell.com>
 
 	* glib/gchecksum.c (g_checksum_reset): New function to reset the

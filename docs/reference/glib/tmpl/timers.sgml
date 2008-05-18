@@ -10,6 +10,10 @@ keep track of elapsed time
 This is done somewhat differently on different platforms, and can be tricky to
 get exactly right, so #GTimer provides a portable/convenient interface.
 </para>
+<note><para>
+#GTimer internally uses the threading API. Therefore g_thread_init() has to be
+called before creating #GTimer instances.
+</para></note>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -30,6 +34,9 @@ Opaque datatype that records a start time.
 Creates a new timer, and starts timing (i.e. g_timer_start() is implicitly
 called for you).
 </para>
+<note><para>
+Call g_thread_init() before using this function.
+</para></note>
 
 @Returns: a new #GTimer.
 
