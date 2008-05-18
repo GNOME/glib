@@ -147,11 +147,16 @@ protect_wargv (wchar_t  **wargv,
   return argc;
 }
 
+#ifndef HELPER_CONSOLE
 int _stdcall
 WinMain (struct HINSTANCE__ *hInstance,
 	 struct HINSTANCE__ *hPrevInstance,
 	 char               *lpszCmdLine,
 	 int                 nCmdShow)
+#else
+int
+main (int ignored_argc, char **ignored_argv)
+#endif
 {
   int child_err_report_fd = -1;
   int helper_sync_fd = -1;

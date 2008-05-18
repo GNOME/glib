@@ -298,7 +298,8 @@ libglib_2_0_la_LDFLAGS = \
 INSTALL_PROGS=
 
 gspawn-win32-helper-console.c:
-	echo '#include "gspawn-win32-helper.c"' >$@
+	echo '#define HELPER_CONSOLE' >$@
+	echo '#include "gspawn-win32-helper.c"' >>$@
 
 if OS_WIN32
 INSTALL_PROGS += gspawn-win32-helper gspawn-win32-helper-console
