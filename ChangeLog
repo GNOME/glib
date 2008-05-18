@@ -60,7 +60,6 @@
 
 	* glib/gi18n.c: #include <locale.h> to fix the build.
 
->>>>>>> .r6902
 2008-05-12  Yair Hershkovitz  <yairhr@gmail.com>
 
 	* glib/gi18n.c (g_i18n_init): Coding convention fix. Space between
