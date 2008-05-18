@@ -42,6 +42,8 @@ char *   g_content_type_get_mime_type     (const char   *type);
 GIcon *  g_content_type_get_icon          (const char   *type);
 gboolean g_content_type_can_be_executable (const char   *type);
 
+char *   g_content_type_from_mime_type    (const char   *mime_type);
+
 char *   g_content_type_guess             (const char   *filename,
 					   const guchar *data,
 					   gsize         data_size,

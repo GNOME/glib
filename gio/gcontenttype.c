@@ -222,6 +222,20 @@ looks_like_text (const guchar *data,
 }
 
 char *
+g_content_type_from_mime_type (const char *mime_type)
+{
+  char *key, *content_type;
+
+  g_return_val_if_fail (mime_type != NULL, NULL);
+
+  key = g_strconcat ("MIME\\DataBase\\Content Type\\", mime_type, NULL);
+  content_type = get_registry_classes_key (key, L"Extension");
+  g_free (key);
+
+  return content_type;
+}
+
+char *
 g_content_type_guess (const char   *filename,
 		      const guchar *data,
 		      gsize         data_size,
@@ -716,6 +730,25 @@ looks_like_text (const guchar *data, gsize data_size)
 	return FALSE;
     }
   return TRUE;
+}
+
+/**
+ * g_content_type_from_mime_type:
+ * @mime_type: a mime type string.
+ *
+ * Tries to find a content type based on the mime type name.
+ *
+ * Returns: Newly allocated string with content type or NULL when does not know.
+ *
+ * Since: 2.18
+ **/
+char *
+g_content_type_from_mime_type (const char *mime_type)
+{
+  g_return_val_if_fail (mime_type != NULL, NULL);
+
+  /* mime type and content type are same on unixes */
+  return g_strdup (mime_type);
 }
 
 /**

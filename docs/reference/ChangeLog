@@ -1,5 +1,9 @@
 2008-05-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/gio-sections.txt: Add new api
+
+2008-05-17  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528648 – Extra >s in Object Construction section...
 
 	* gobject/tut_howto.xml: Fix a formatting glitch
