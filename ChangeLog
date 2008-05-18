@@ -4,7 +4,8 @@
 	gspawn-win32-helper-console.c
 
 	* glib/gspawn-win32-helper.c: Compile a main() instead of
-	WinMain() if HELPER_CONSOLE is defined.
+	WinMain() if HELPER_CONSOLE is defined. MSVC insists on a console
+	application having a main().
 
 2008-05-18  Matthias Clasen  <mclasen@redhat.com>
 
