@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="windows-1251"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="gthread"
-	ProjectGUID="{C8AFB8C3-FFFD-460F-BC13-9AC25D7B117C}"
-	RootNamespace="gthread"
+	Name="gspawn-win32-helper"
+	ProjectGUID="{289240E7-E167-47CE-A20C-58D852E520BA}"
+	RootNamespace="gspawnwin32helper"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)\bin"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\obj"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,8 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../..,../../../glib"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GTHREAD_EXPORTS;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GThread\&quot;;G_THREADS_ENABLED"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
+				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -63,12 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="../../../gthread/gthread.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				ImportLibrary="$(TargetDir)$(ProjectName)-2.0-vs8.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -100,8 +97,8 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)\bin"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\obj"
-			ConfigurationType="2"
-			CharacterSet="2"
+			ConfigurationType="1"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -121,8 +118,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../..,../../../glib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GTHREAD_EXPORTS;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GThread\&quot;"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
+				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -142,14 +139,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="../../../gthread/gthread.def"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(TargetDir)$(ProjectName)-2.0-vs8.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -187,7 +181,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\gthread\gthread-impl.c"
+				RelativePath="..\..\..\glib\gspawn-win32-helper.c"
 				>
 			</File>
 		</Filter>
@@ -202,14 +196,6 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\..\..\gthread\gthread.def"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\gthread\gthread.rc"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

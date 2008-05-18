@@ -1,3 +1,19 @@
+2008-05-19  Tor Lillqvist  <tml@novell.com>
+	
+	* win32/vs8/gspawn-win32-helper.vcproj
+	* win32/vs8/gspawn-win32-helper-console.vcproj: New files. Build
+	these two executables.
+
+	* win32/vs8/*.vcproj: Compile as C and not C++.
+
+	* win32/vs8/glib-genmarshal.vcproj: Use MBS and not Unicode. (What
+	this setting really means is just that we don't define the UNICODE
+	and _UNICODE macros when compiling; it has no effect on what APIs
+	the code might use.) Use the same IntermediateDirectory as the
+	other projects.
+
+	* win32/vs8/glib.sln: Add the gspawn-win32-helper and gspawn-win32-helper projects.
+
 2008-05-17  Tor Lillqvist  <tml@novell.com>
 
 	* "build" is no longer include into GLib through
