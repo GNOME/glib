@@ -1,5 +1,10 @@
 2008-05-19  Tor Lillqvist  <tml@novell.com>
-	
+
+	* win32/dirent/dirent.c: Include dirent.h with doublequotes so
+	that it is searched from this same folder first.
+
+2008-05-19  Tor Lillqvist  <tml@novell.com>
+
 	* win32/vs8/gspawn-win32-helper.vcproj
 	* win32/vs8/gspawn-win32-helper-console.vcproj: New files. Build
 	these two executables.
