@@ -1,3 +1,7 @@
+2008-05-19  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc : added gi18n.c
+
 2008-05-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am: #define HELPER_CONSOLE in
