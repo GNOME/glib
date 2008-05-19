@@ -320,6 +320,7 @@ EXTRA_DIST += 			\
 	gio.symbols		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
+	makefile.msc		\
 	makegioalias.pl		\
 	abicheck.sh		\
 	pltcheck.sh		\
