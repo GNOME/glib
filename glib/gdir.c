@@ -40,6 +40,11 @@
 
 #include "galias.h"
 
+#if defined (_MSC_VER) && !defined (HAVE_DIRENT_H)
+#include "../build/win32/dirent/dirent.h"
+#include "../build/win32/dirent/wdirent.c"
+#endif
+
 struct _GDir
 {
 #ifdef G_OS_WIN32

@@ -1,3 +1,9 @@
+2008-05-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gdir.c: Include the dirent.h and wdirent.c from
+	../build/win32/dirent directly here when compiling with MSVC and
+	without HAVE_DIRENT_H.
+
 2008-05-19  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc : added gi18n.c
