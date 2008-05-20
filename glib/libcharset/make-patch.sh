@@ -12,7 +12,7 @@ if test -f $ORIGINAL/lib/localcharset.c ; then : ; else
   exit 1
 fi
 
-VERSION=`grep VERSION= $ORIGINAL/configure.in | sed s/VERSION=//`
+VERSION=`grep VERSION= $ORIGINAL/configure.ac | sed s/VERSION=//`
 
 echo "# Patch against libcharset version $VERSION" > libcharset-glib.patch
 
@@ -25,3 +25,4 @@ for i in glibc21.m4 codeset.m4 ; do
 done
 
 diff -u $ORIGINAL/include/libcharset.h.in libcharset.h >> libcharset-glib.patch
+diff -u $ORIGINAL/include/localcharset.h.in localcharset.h >> libcharset-glib.patch

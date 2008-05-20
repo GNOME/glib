@@ -8,6 +8,7 @@ noinst_LTLIBRARIES = libcharset.la
 
 libcharset_la_SOURCES =    	\
 	libcharset.h		\
+	localcharset.h		\
 	localcharset.c
 
 EXTRA_DIST += 			\

@@ -17,6 +17,11 @@ below.
 Owen Taylor
 26 September 2001
 
+Updated to libiconv-1.12.
+
+Behdad Esfahbod
+20 May 2008
+
 ====
 
 /* Determine a canonical name for the current locale's character encoding.

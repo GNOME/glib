@@ -12,13 +12,15 @@ if test -f $ORIGINAL/lib/localcharset.c ; then : ; else
   exit 1
 fi
 
-VERSION=`grep VERSION= $ORIGINAL/configure.in | sed s/VERSION=//`
+VERSION=`grep VERSION= $ORIGINAL/configure.ac | sed s/VERSION=//`
 
 for i in localcharset.c ref-add.sin ref-del.sin config.charset ; do
   cp $ORIGINAL/lib/$i .
 done
 
-cp $ORIGINAL/include/libcharset.h.in ./libcharset.h
+for i in libcharset.h localcharset.h ; do
+  cp $ORIGINAL/include/$i.in ./$i
+done
 
 for i in codeset.m4 glibc21.m4 ; do
   cp $ORIGINAL/m4/$i .

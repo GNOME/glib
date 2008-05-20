@@ -1,5 +1,26 @@
 2008-05-20  Behdad Esfahbod  <behdad@gnome.org>
 
+	Bug 501651 – Update glib/libcharset
+
+	* configure.in:
+	* glib/libcharset/Makefile.am:
+	* glib/libcharset/README:
+	* glib/libcharset/codeset.m4:
+	* glib/libcharset/config.charset:
+	* glib/libcharset/glibc21.m4:
+	* glib/libcharset/libcharset-glib.patch:
+	* glib/libcharset/libcharset.h:
+	* glib/libcharset/localcharset.c (_g_locale_get_charset_aliases),
+	(_g_locale_charset_raw):
+	* glib/libcharset/localcharset.h:
+	* glib/libcharset/make-patch.sh:
+	* glib/libcharset/ref-add.sin:
+	* glib/libcharset/ref-del.sin:
+	* glib/libcharset/update.sh:
+	Update libcharset to the one shipped with libiconv-0.12.
+
+2008-05-20  Behdad Esfahbod  <behdad@gnome.org>
+
 	Bug 459905 – Bug in wcwidth data
 	Bug 534085 – g_unichar_iswide_cjk() has a totally wrong table
 	* glib/guniprop.c (g_unichar_iswide), (g_unichar_iswide_cjk):
