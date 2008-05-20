@@ -2367,6 +2367,11 @@ if test x"$GCC" = xyes; then
       glib_memory_barrier_needed=yes
       ;;
   esac
+else
+  if test $glib_native_win32 = yes; then
+    # For Windows but not using gcc. No barriers needed then either.
+    glib_memory_barrier_needed=no
+  fi
 fi
 
 dnl ****************************************
