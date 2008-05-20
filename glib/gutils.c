@@ -3280,7 +3280,7 @@ glib_gettext (const gchar *str)
       _glib_gettext_initialized = TRUE;
     }
   
-  return g_dgettext (GETTEXT_PACKAGE, str);
+  return dgettext (GETTEXT_PACKAGE, str);
 }
 
 #ifdef G_OS_WIN32

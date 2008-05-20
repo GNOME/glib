@@ -1,3 +1,8 @@
+2008-05-20 14:31:18  Tim Janik  <timj@imendio.com>
+
+	* reverted recent unapproved changes by Yair Hershkovitz, regarding:
+	Bug 503071 – Application direction changes to right to left even if theres no translation.
+
 2008-05-20  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Don't need memory barriers when using a non-gcc

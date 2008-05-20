@@ -164,8 +164,7 @@ libglib_2_0_la_SOURCES = 	\
 	gutils.c		\
 	gdebug.h		\
 	gprintf.c		\
-	gprintfint.h		\
-	gi18n.c
+	gprintfint.h
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
