@@ -1,3 +1,9 @@
+2008-05-22 10:49:37  Tim Janik  <timj@imendio.com>
+
+	* glib/gmacros.h: implement G_STMT_START and G_STMT_END with
+	do{}while(0), which is believed to be widely portable, fixes:
+	Bug 519026 - G_STMT_START/G_STMT_END test a non-existent preprocessor symbol
+
 2008-05-20  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 501651 – Update glib/libcharset
