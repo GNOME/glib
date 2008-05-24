@@ -45,21 +45,8 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* See also https://bugzilla.gnome.org/show_bug.cgi?id=449565 ... */
-#define _MY_DEFINE_BOXED_TYPE(TypeName, type_name)                     \
-  GType                                                                 \
-  type_name##_get_type (void)                                           \
-  {                                                                     \
-    static volatile gsize type_volatile = 0;                            \
-    if (g_once_init_enter (&type_volatile))                             \
-      {                                                                 \
-        GType type = g_boxed_type_register_static (g_intern_static_string (#TypeName),  \
-                                                   (GBoxedCopyFunc) type_name##_ref,    \
-                                                   (GBoxedFreeFunc) type_name##_unref); \
-        g_once_init_leave (&type_volatile, type);                       \
-      }                                                                 \
-    return (GType) type_volatile;                                       \
-  }
+#define _MY_DEFINE_BOXED_TYPE(TypeName, type_name) \
+  G_DEFINE_BOXED_TYPE (TypeName, type_name, type_name##_ref, type_name##_unref)
 
 _MY_DEFINE_BOXED_TYPE (GDBusNodeInfo,       g_dbus_node_info);
 _MY_DEFINE_BOXED_TYPE (GDBusInterfaceInfo,  g_dbus_interface_info);

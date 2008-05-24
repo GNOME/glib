@@ -65,21 +65,8 @@ struct _GSrvTarget {
  * A single target host/port that a network service is running on.
  */
 
-GType
-g_srv_target_get_type (void)
-{
-  static volatile gsize type_volatile = 0;
-
-  if (g_once_init_enter (&type_volatile))
-    {
-      GType type = g_boxed_type_register_static (
-                        g_intern_static_string ("GSrvTarget"),
-			(GBoxedCopyFunc) g_srv_target_copy,
-			(GBoxedFreeFunc) g_srv_target_free);
-      g_once_init_leave (&type_volatile, type);
-    }
-  return type_volatile;
-}
+G_DEFINE_BOXED_TYPE (GSrvTarget, g_srv_target,
+                     g_srv_target_copy, g_srv_target_free)
 
 /**
  * g_srv_target_new:

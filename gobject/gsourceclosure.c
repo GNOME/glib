@@ -26,19 +26,7 @@
 #include "gvalue.h"
 #include "gvaluetypes.h"
 
-
-GType
-g_io_channel_get_type (void)
-{
-  static GType our_type = 0;
-  
-  if (our_type == 0)
-    our_type = g_boxed_type_register_static ("GIOChannel",
-					     (GBoxedCopyFunc) g_io_channel_ref,
-					     (GBoxedFreeFunc) g_io_channel_unref);
-
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (GIOChannel, g_io_channel, g_io_channel_ref, g_io_channel_unref)
 
 GType
 g_io_condition_get_type (void)

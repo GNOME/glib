@@ -1129,15 +1129,7 @@ g_value_get_pointer (const GValue *value)
   return value->data[0].v_pointer;
 }
 
-GType
-g_gtype_get_type (void)
-{
-  static const GTypeInfo type_info = { 0, };
-  static GType type;
-  if (!type)
-    type = g_type_register_static (G_TYPE_POINTER, g_intern_static_string ("GType"), &type_info, 0);
-  return type;
-}
+G_DEFINE_POINTER_TYPE (GType, g_gtype)
 
 /**
  * g_value_set_gtype:

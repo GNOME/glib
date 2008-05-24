@@ -2147,23 +2147,9 @@ matcher_add (GFileAttributeMatcher *matcher,
   g_array_append_val (matcher->more_sub_matchers, s);
 }
 
-GType
-g_file_attribute_matcher_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      GType g_define_type_id =
-        g_boxed_type_register_static (I_("GFileAttributeMatcher"),
-                                      (GBoxedCopyFunc) g_file_attribute_matcher_ref,
-                                      (GBoxedFreeFunc) g_file_attribute_matcher_unref);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+G_DEFINE_BOXED_TYPE (GFileAttributeMatcher, g_file_attribute_matcher,
+                     g_file_attribute_matcher_ref,
+                     g_file_attribute_matcher_unref)
 
 /**
  * g_file_attribute_matcher_new:
