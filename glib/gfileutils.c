@@ -1296,7 +1296,7 @@ g_mkstemp (gchar *tmpl)
  * g_file_open_tmp:
  * @tmpl: Template for file name, as in g_mkstemp(), basename only,
  *        or %NULL, to a default template
- * @name_used: location to store actual name used
+ * @name_used: location to store actual name used, or %NULL
  * @error: return location for a #GError
  *
  * Opens a file for writing in the preferred directory for temporary
