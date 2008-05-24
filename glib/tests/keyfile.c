@@ -1090,6 +1090,7 @@ test_key_names (void)
   g_key_file_set_string (keyfile, "a", "key\tfoo", "123");
   value = g_key_file_get_string (keyfile, "a", "key\tfoo", &error);
   check_no_error (&error);
+  g_free (value);
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
