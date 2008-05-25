@@ -774,11 +774,11 @@ A marshaller for a #GCClosure with a callback of type
 <!-- ##### FUNCTION g_cclosure_marshal_STRING__OBJECT_POINTER ##### -->
 <para>
 A marshaller for a #GCClosure with a callback of type
-<literal>void (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
+<literal>gchar* (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
 </para>
 
 @closure: the #GClosure to which the marshaller belongs
-@return_value: ignored
+@return_value: a #GValue, which can store the returned string
 @n_param_values: 3
 @param_values: a #GValue array holding instance, arg1 and arg2
 @invocation_hint: the invocation hint given as the the last argument

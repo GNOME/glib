@@ -1,3 +1,8 @@
+2008-05-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gclosure.sgml: Fix docs for
+	g_cclosure_marshal_STRING__OBJECT_POINTER. (#534177, Areg Beketovski)
+
 2008-05-18  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 527214 – g_timer_elapsed() returns random values.
