@@ -7,7 +7,8 @@
 	* gmodule-2.0-uninstalled.pc.in
 	* gmodule-2.0.pc.in
 	* gmodule-export-2.0.pc.in
-	* gmodule-no-export-2.0.pc.in: Move ICONV_LIBS and G_MODULE_LIBS to Libs.private.
+	* gmodule-no-export-2.0.pc.in: Move ICONV_LIBS and G_MODULE_LIBS
+	to Libs.private.
 
 2008-05-24  Matthias Clasen  <mclasen@redhat.com>
 
