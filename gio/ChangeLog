@@ -1,5 +1,10 @@
 2008-05-25  Ross Burton  <ross@burtonini.com>
 
+	* glocalfile.c:
+	Fix typo in error message (#534764).
+
+2008-05-25  Ross Burton  <ross@burtonini.com>
+
 	* Makefile.am:
 	Fix circular dependency loop for gioenumtypes.h (#534759).
 

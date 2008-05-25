@@ -1988,7 +1988,7 @@ g_local_file_make_directory (GFile         *file,
       else
 	g_set_error (error, G_IO_ERROR,
 		     g_io_error_from_errno (errsv),
-		     _("Error removing file: %s"),
+		     _("Error creating directory: %s"),
 		     g_strerror (errsv));
       return FALSE;
     }
