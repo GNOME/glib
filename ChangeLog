@@ -1,6 +1,8 @@
 2008-05-25  Matthias Clasen  <mclasen@redhat.com>
 
-	* glib/gspawn.c: Fix a typo in the docs
+	Bug 534137 – Typo in g_spawn_async_with_pipes doc
+
+	* glib/gspawn.c: Fix a typo in the docs, pointed out by Ted Percival.
 
 2008-05-25  Tor Lillqvist  <tml@novell.com>
 
