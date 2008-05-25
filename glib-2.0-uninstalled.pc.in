@@ -5,5 +5,5 @@ glib_mkenums=${pc_top_builddir}/${pcfiledir}/@srcdir@/gobject/glib-mkenums
 Name: GLib Uninstalled
 Description: C Utility Library, Not Installed
 Version: @VERSION@
-Libs: ${pc_top_builddir}/${pcfiledir}/glib/libglib-2.0.la @ICONV_LIBS@ @INTLLIBS@
+Libs: ${pc_top_builddir}/${pcfiledir}/glib/libglib-2.0.la
 Cflags: -I${pc_top_builddir}/${pcfiledir} -I${pc_top_builddir}/${pcfiledir}/@srcdir@ -I${pc_top_builddir}/${pcfiledir}/@srcdir@/glib
