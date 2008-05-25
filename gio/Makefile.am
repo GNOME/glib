@@ -281,7 +281,6 @@ gio_headers =			\
 	gicon.h 		\
 	ginputstream.h 		\
 	gio.h			\
-	gioenumtypes.h		\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
