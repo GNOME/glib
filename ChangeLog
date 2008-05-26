@@ -1,5 +1,7 @@
 2008-05-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gchecksum.c: Add Since: tag to g_checksum_reset
+
 	* glib/glib.symbols: Add g_checksum_reset
 
 2008-05-25  Matthias Clasen  <mclasen@redhat.com>

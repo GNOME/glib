@@ -1124,6 +1124,8 @@ g_checksum_new (GChecksumType checksum_type)
  * @checksum: the #GChecksum to reset
  *
  * Resets the state of the @checksum back to it's initial state.
+ *
+ * Since: 2.18
  **/
 void
 g_checksum_reset (GChecksum *checksum)

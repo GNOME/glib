@@ -1,5 +1,7 @@
 2008-05-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-docs.sgml: Add 2.18 index
+
 	* glib/glib-sections.txt: Add g_checksum_reset
 
 2008-05-25  Matthias Clasen  <mclasen@redhat.com>
