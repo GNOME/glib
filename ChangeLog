@@ -1,3 +1,7 @@
+2008-05-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: Add g_checksum_reset
+
 2008-05-25  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 534137 – Typo in g_spawn_async_with_pipes doc
