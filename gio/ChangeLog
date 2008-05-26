@@ -1,3 +1,8 @@
+2008-05-26  Michael Natterer  <mitch@imendio.com>
+
+	* gmemoryoutputstream.h: declare
+	g_memory_output_stream_get_data_size().
+
 2008-05-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/*: Make tests work 

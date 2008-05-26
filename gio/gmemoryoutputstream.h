@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Christian Kellner <gicmo@gnome.org> 
+ * Author: Christian Kellner <gicmo@gnome.org>
  */
 
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 
 /**
  * GMemoryOutputStream:
- * 
+ *
  * Implements #GOutputStream for arbitrary memory chunks.
  **/
 typedef struct _GMemoryOutputStream         GMemoryOutputStream;
@@ -75,22 +75,24 @@ struct _GMemoryOutputStreamClass
  * @size: size to reallocate @data to
  *
  * Changes the size of the memory block pointed to by @data to
- * @size bytes. 
+ * @size bytes.
  *
  * The function should have the same semantics as realloc().
  *
  * Returns: a pointer to the reallocated memory
  */
-typedef gpointer (*GReallocFunc) (gpointer data, gsize size);
+typedef gpointer (*GReallocFunc) (gpointer data,
+                                  gsize    size);
 
-GType          g_memory_output_stream_get_type (void) G_GNUC_CONST;
+GType          g_memory_output_stream_get_type      (void) G_GNUC_CONST;
 
-GOutputStream *g_memory_output_stream_new      (gpointer             data,
-                                                gsize                len,
-                                                GReallocFunc         realloc_fn,
-                                                GDestroyNotify       destroy);
-gpointer       g_memory_output_stream_get_data (GMemoryOutputStream *ostream);
-gsize          g_memory_output_stream_get_size (GMemoryOutputStream *ostream);
+GOutputStream *g_memory_output_stream_new           (gpointer             data,
+                                                     gsize                len,
+                                                     GReallocFunc         realloc_fn,
+                                                     GDestroyNotify       destroy);
+gpointer       g_memory_output_stream_get_data      (GMemoryOutputStream *ostream);
+gsize          g_memory_output_stream_get_size      (GMemoryOutputStream *ostream);
+gsize          g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream);
 
 G_END_DECLS
 
