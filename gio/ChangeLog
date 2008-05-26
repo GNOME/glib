@@ -1,5 +1,9 @@
 2008-05-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/*: Make tests work 
+
+2008-05-26  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio.symbols: Add g_memory_output_stream_get_data_size.
 
 2008-05-25  Ross Burton  <ross@burtonini.com>

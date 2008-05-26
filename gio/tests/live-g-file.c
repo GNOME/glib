@@ -1107,6 +1107,7 @@ main (int argc, char *argv[])
 
   /*  strip all gtester-specific args  */
   g_type_init ();
+  g_thread_init (0);
   g_test_init (&argc, &argv, NULL);
 
   /*  no extra parameters specified, assume we're executed from glib test suite  */ 
