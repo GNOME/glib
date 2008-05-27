@@ -1,3 +1,11 @@
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 535021 – g_param_spec_internal documentation should 
+	describe purpose of nick and blurb
+
+	* gobject/tmpl/gparamspec.sgml: Explain nicks and blurbs
+	some more.
+
 2008-05-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-docs.sgml: Add 2.18 index

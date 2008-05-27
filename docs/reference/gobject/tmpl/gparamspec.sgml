@@ -408,6 +408,13 @@ When creating and looking up a #GParamSpec, either separator can be used,
 but they cannot be mixed. Using '-' is considerably more efficient and in 
 fact required when using property names as detail strings for signals.
 </para>
+<para>
+Beyond the name, #GParamSpec<!-- -->s have two more descriptive strings 
+associated with them, the @nick, which should be suitable for use as 
+a label for the property in a property editor, and the @blurb, which should
+be a somewhat longer description, suitable for e.g. a tooltip. The @nick
+and @blurb should ideally be localized.
+</para>
 
 @param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
 @name: the canonical name of the property
