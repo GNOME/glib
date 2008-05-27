@@ -1526,7 +1526,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
                        _("Key file contains key '%s' "
-                         "which has value that cannot be interpreted."),
+                         "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
         }
