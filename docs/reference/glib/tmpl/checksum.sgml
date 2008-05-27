@@ -84,6 +84,14 @@ Support for checksums has been added in GLib 2.16
 @checksum: 
 
 
+<!-- ##### FUNCTION g_checksum_reset ##### -->
+<para>
+
+</para>
+
+@checksum: 
+
+
 <!-- ##### FUNCTION g_checksum_update ##### -->
 <para>
 

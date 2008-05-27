@@ -161,7 +161,7 @@ specified by the @x<!-- -->th function parameter.
 See the GNU C documentation for details. 
 </para>
 
-@x: the index of the argument specifying the allocation size 
+@x: the index of the argument specifying the allocation size
 @Since: 2.18
 
 
@@ -174,8 +174,8 @@ specified by the product of two function parameters.
 See the GNU C documentation for details. 
 </para>
 
-@x: the index of the argument specifying one factor of the allocation size 
-@y: the index of the argument specifying the second factor of the allocation size 
+@x: the index of the argument specifying one factor of the allocation size
+@y: the index of the argument specifying the second factor of the allocation size
 @Since: 2.18
 
 
