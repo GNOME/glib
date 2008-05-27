@@ -70,7 +70,6 @@ main (int   argc,
       char *argv[])
 {
   g_type_init ();
-  g_thread_init (0);
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/memory-input-stream/read-chunks", test_read_chunks);

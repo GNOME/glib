@@ -69,10 +69,6 @@ g_timer_new (void)
 {
   GTimer *timer;
 
-  if (!g_thread_supported ())
-    g_warning ("g_timer_new() called, but GThreads not initialized yet. "
-               "Call g_thread_init ().");
-
   timer = g_new (GTimer, 1);
   timer->active = TRUE;
 

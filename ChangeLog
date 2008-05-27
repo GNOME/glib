@@ -1,3 +1,8 @@
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* Revert the patch for bug 527214 and related changes. GTimer
+	is supposed to work without threads.
+
 2008-05-27  simon.zheng  <simon.zheng@sun.com>
 
 	* configure.in: Fix #533369. Check whether memeber statvfs.f_basetype 

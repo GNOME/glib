@@ -316,7 +316,7 @@ if OS_UNIX
 
 INSTALL_PROGS	+= gtester
 gtester_SOURCES	 = gtester.c
-gtester_LDADD	 = libglib-2.0.la
+gtester_LDADD	 = libglib-2.0.la 
 
 auto_config_binscripts = gtester-report
 bin_SCRIPTS = ${auto_config_binscripts}

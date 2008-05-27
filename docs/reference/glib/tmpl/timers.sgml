@@ -11,8 +11,10 @@ This is done somewhat differently on different platforms, and can be tricky to
 get exactly right, so #GTimer provides a portable/convenient interface.
 </para>
 <note><para>
-#GTimer internally uses the threading API. Therefore g_thread_init() has to be
-called before creating #GTimer instances.
+#GTimer uses a higher-quality clock when thread support is available. 
+Therefore, calling g_thread_init() while timers are running may lead to
+unreliable results. It is best to call g_thread_init() before starting
+any timers, if you are using threads at all.
 </para></note>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -34,9 +36,6 @@ Opaque datatype that records a start time.
 Creates a new timer, and starts timing (i.e. g_timer_start() is implicitly
 called for you).
 </para>
-<note><para>
-Call g_thread_init() before using this function.
-</para></note>
 
 @Returns: a new #GTimer.
 

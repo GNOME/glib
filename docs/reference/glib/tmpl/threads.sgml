@@ -162,20 +162,22 @@ the thread system by calling g_thread_init(). Most of the time you
 will only have to call <literal>g_thread_init (NULL)</literal>. 
 </para>
 
-<note>
-<para>
+<note><para>
 Do not call g_thread_init() with a non-%NULL parameter unless you
 really know what you are doing.
-</para>
-</note>
+</para></note>
 
-<note>
-<para>
+<note><para>
 g_thread_init() must not be called directly or indirectly as a
 callback from GLib. Also no mutexes may be currently locked while
 calling g_thread_init().
-</para>
-</note>
+</para></note>
+
+<note><para>
+g_thread_init() changes the way in which #GTimer measures elapsed time.
+As a consequence, timers that are running while g_thread_init() is called
+may report unreliable times.
+</para></note>
 
 <para>
 g_thread_init() might only be called once. On the second call

@@ -62,3 +62,5 @@ EXTRA_DIST =				\
 		COPYING			\
 		makefile.msc
 
+# automake workaround
+test:
