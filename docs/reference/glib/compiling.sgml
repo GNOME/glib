@@ -67,6 +67,18 @@ functions, you can define the preprocessor symbol G_DISABLE_DEPRECATED
 by using the command line option <literal>-DG_DISABLE_DEPRECATED=1</literal>.
 </para>
 
+<para>
+The recommended way of using GLib has always been to only include the 
+toplevel headers <filename>glib.h</filename>, 
+<filename>glib-object.h</filename>, <filename>gio.h</filename>.
+Starting with 2.17, GLib enforces this this by generating an error
+when individual headers are directly included. To help with the 
+transition, the enforcement is not turned on by default for GLib 
+headers (it <emphasis>is</emphasis> turned on for GObject and GIO).
+To turn it on, define the preprocessor symbol G_DISABLE_SINGLE_INCLUDES
+by using the command line option <literal>-DG_DISABLE_SINGLE_INCLUDES</literal>.
+</para>
+
 </refsect1>
 
 </refentry>

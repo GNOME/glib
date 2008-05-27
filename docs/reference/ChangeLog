@@ -1,3 +1,7 @@
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/compiling.sgml: Document G_DISABLE_SINGLE_INCLUDES
+
 2008-05-27  Michael Natterer  <mitch@gimp.org>
 
 	* glib/tmpl/gurifuncs.sgml
