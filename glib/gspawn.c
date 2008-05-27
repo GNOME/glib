@@ -1462,11 +1462,12 @@ make_pipe (gint     p[2],
 {
   if (pipe (p) < 0)
     {
+      gint errsv = errno;
       g_set_error (error,
                    G_SPAWN_ERROR,
                    G_SPAWN_ERROR_FAILED,
                    _("Failed to create pipe for communicating with child process (%s)"),
-                   g_strerror (errno));
+                   g_strerror (errsv));
       return FALSE;
     }
   else
