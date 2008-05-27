@@ -1,3 +1,14 @@
+2008-05-27  Michael Natterer  <mitch@gimp.org>
+
+	* glib/tmpl/gurifuncs.sgml
+	* glib/tmpl/testing.sgml: new files.
+
+	* glib/tmpl/unicode.sgml
+	* glib/tmpl/macros_misc.sgml
+	* glib/tmpl/checksum.sgml: regenerated.
+
+	* Updated lots of svn:ignore all over the place.
+
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 	
 	Bug 535021 – g_param_spec_internal documentation should 
