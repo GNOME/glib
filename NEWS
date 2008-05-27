@@ -1,3 +1,128 @@
+Overview of Changes from GLib 2.16.x to GLib 2.17.0
+===================================================
+
+* Update to Unicode 5.1
+
+* Update included libcharset to the one shipped with libiconv 0.12
+
+* Update included PCRE to 7.7
+
+* Enforce that only toplevel headers are directly included.
+  This is turned on by default for GObject and GIO. To turn
+  it on for GLib, define G_DISABLE_SINGLE_INCLUDES.
+
+* Fix library version of GIO.  GLib 2.16 shipped with libgio-2.0.so.0.0.0
+
+* On Solaris, use FEN for file monitoring in GIO
+
+* Use the GIO_EXTRA_MODULES environment variable to find
+  additional GIO modules 
+
+* G_GNUC_ALLOC_SIZE: New macro that wraps the gcc alloc_size
+  function attribute
+
+* g_checksum_reset: New function to reset the state of a GChecksum 
+
+* g_unix_mount_monitor_set_rate_limit: New function to limit the 
+  rate at which events are reported
+
+* g_file_query_file_type: New utility function to query the type of
+  a file
+
+* g_memory_output_stream_get_data_size: New function to obtain the
+  size of the written data.
+
+* Bugs fixed:
+ 522292 Gives warnings in glib/gutils.h with GCC in C99 mode
+ 523298 win_iconv can't convert from UTF-8 to GB18030 (or vice versa)
+ 518160 replace two g_strdup_printf calls in GBookmarkFile
+ 523877 gbookmarkfile: avoid using g_string_append_printf() and
+        other optimizations 
+ 525192 100% CPU if run main loop with no IO sources
+ 315437 extern inline -> static inline
+ 524314 g_convert() on Win32 implicitly converts full width
+        alphanumerics into half width
+ 525732 Error in documentation for g_list_first
+ 525674 A typo in gmarkup.c
+ 448943 g_timeout_add_seconds() problems
+ 525972 UCS-4 not in the new win_iconv implementation
+ 526619 make test-report crash
+ 491554 Update to Unicode 5.1.0
+ 519137 g_slice_dup macro needs cast for 64-bit platform
+ 528752 Win32 build and SSL not working
+ 530457 G_USER_DIRECTORY_DOWNLOAD folder improperly mapped
+ 528667 Typos in testing module documentation
+ 459905 Bug in wcwidth data
+ 534085 g_unichar_iswide_cjk() has a totally wrong table
+ 501651 Update glib/libcharset
+ 519026 G_STMT_START/G_STMT_END test a non-existent preprocessor symbol
+ 534319 GLib's .pc files could use Libs.private
+ 534137 Typo in g_spawn_async_with_pipes doc
+ 517419 gio win32 directory monitor
+ 526796 Wrong order of arguments in g_file_copy's fallback
+ 530196 _g_local_file_has_trash_dir() doesn't handle st_dev == 0
+ 532965 Should not return filesystem::free for certain file systems
+ 525553 fix typo and nitpicking in GArray documentation
+ 526572 Missing * in declaration of parent_class in Object
+        Destruction section of GObject Reference Manual
+ 528648 Extra >s in Object Construction section
+ 535021 g_param_spec_internal documentation should
+        describe purpose of nick and blurb
+ 521513 Firefox crash when using file picker
+ 528433 gdesktopappinfo snafu ...
+ 533369 API g_file_info_get_attribute_string () unables to get "...
+ 521045 glib f_fstypename miscellany
+ 521672 compile error
+ 521946 control rate limit on GUnixMountMonitor
+ 522335 Fails to build: glib/gtester.c:276: error: 'ARG_MAX' unde...
+ 523015 Implement sliding window based upload operation
+ 523019 Use new GCC 4 feature
+ 523338 list nfs4 as a nfs mount type
+ 524350 Make glib build without NLS again
+ 524579 g_file_copy reports wrong total on progress callback for ...
+ 524742 A typo in gtestutils.c.
+ 524950 Minor documentation typos.
+ 525866 the user directory should not be considered as a mount to...
+ 526320 should not list mounts that the user doesn't have permiss...
+ 527132 nautilus crash when making ftp connection
+ 532852 CRITICAL **: totem_pl_parser_parse_with_base: assertion `...
+ 534759 Build failure in gio
+ 534764 Typo in error produced by g_file_make_directory
+ 521851 Redudant tests in gunixmounts.c
+ 524344 glib/gthread.h still use G_GNUC_PRETTY_FUNCTION
+ 525060 glib fails to build with -DG_DISABLE_ASSERT in CPPFLAGS o...
+ 534177 Invalid description of the interface g_cclosure_marshal_S...
+ 520715 Add GFile method g_file_query_file_type
+ 523039 nautilus can't access to trash/computer/network if gvfs i...
+ 
+* Updated translations:
+ Arabic (ar)
+ Bulgarian (bg)
+ Catalan (ca) 
+ Czech (cs)
+ Greek (el)
+ Candian English (en_CA)
+ British English (en_GB)
+ Spanish (es)
+ Estonian (et)
+ Basque (eu)
+ Galician (gl)
+ Hebrew (he)
+ Hungarian (hu)
+ Japanese (ja)
+ Lithuanian (lt)
+ Norwegian bokmål (nb)
+ Dutch (nl)
+ Occitan (oc)
+ Portugese (pt)
+ Russian (ru)
+ Slovak (sk)
+ Albanian (sq)
+ Swedish (sv)
+ Turkish (tr)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.16.0 to GLib 2.16.1
 ===================================================
 
