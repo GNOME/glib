@@ -916,9 +916,9 @@ g_local_file_query_filesystem_info (GFile         *file,
   gboolean no_size;
 #ifndef G_OS_WIN32
   guint64 block_size;
+  const char *fstype;
 #ifdef USE_STATFS
   struct statfs statfs_buffer;
-  const char *fstype;
 #elif defined(USE_STATVFS)
   struct statvfs statfs_buffer;
 #endif
@@ -1008,6 +1008,12 @@ g_local_file_query_filesystem_info (GFile         *file,
 #else
   fstype = get_fs_type (statfs_buffer.f_type);
 #endif
+
+#elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
+  fstype = g_strdup(statfs_buffer.f_basetype); 
+#endif
+
+#ifndef G_OS_WIN32
   if (fstype &&
       g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))

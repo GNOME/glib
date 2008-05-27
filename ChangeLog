@@ -1,3 +1,8 @@
+2008-05-27  simon.zheng  <simon.zheng@sun.com>
+
+	* configure.in: Fix #533369. Check whether memeber statvfs.f_basetype 
+        available or not.
+
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/pcre/*: Update to PCRE 7.7

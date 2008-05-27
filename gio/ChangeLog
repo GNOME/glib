@@ -1,3 +1,8 @@
+2008-05-27  simon.zheng  <simon.zheng@sun.com>
+
+	* glocalfile.c: (g_local_file_query_filesystem_info):
+        Fix #533369. Make G_FILE_ATTRIBUTE_FILESYSTEM_TYPE work on Solaris.
+
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* gmemoryoutputstream.h: declare
