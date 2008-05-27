@@ -1,5 +1,7 @@
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* README.in: Add a note about G_DISABLE_SINGLE_HEADERS.
+
 	* NEWS: Updates
 
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
