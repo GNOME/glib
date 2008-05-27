@@ -1077,6 +1077,8 @@ prep_clean_structure (gconstpointer test_data)
   
   cleanup_dir_recurse (root, root);
 
+  g_file_delete (root, NULL, NULL);
+  
   g_object_unref (root);
 }
 
@@ -1190,5 +1192,10 @@ main (int argc, char *argv[])
     g_test_add_data_func ("/live-g-file/test_delete", target_path,
 			  test_delete);
 
+  if (write_test || only_create_struct)
+    g_test_add_data_func ("/live-g-file/final_clean", target_path,
+    	  	  prep_clean_structure);
+
   return g_test_run ();
+
 }

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 21:09-0400\n"
+"POT-Creation-Date: 2008-05-27 16:12-0400\n"
 "PO-Revision-Date: 2008-03-10 12:49+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@fedoraproject.org>\n"
 "Language-Team: Bengali INDIA <discuss@ankur.co.in>\n"
@@ -22,74 +22,74 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:728 glib/gbookmarkfile.c:805 glib/gbookmarkfile.c:884
+#: glib/gbookmarkfile.c:931
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "অপ্রত্যাশিত '%s' বৈশিষ্ট্য '%s' বস্তুর জন্য উল্লিখিত হয়েছে"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:739 glib/gbookmarkfile.c:816 glib/gbookmarkfile.c:826
+#: glib/gbookmarkfile.c:942
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "'%s' বৈশিষ্ট্য '%s' বস্তুর ক্ষেত্রে পাওয়া যায়নি"
 
-#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
-#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#: glib/gbookmarkfile.c:1112 glib/gbookmarkfile.c:1177
+#: glib/gbookmarkfile.c:1241 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "অপ্রত্যাশিত ট্যাগ '%s', ট্যাগ '%s' প্রত্যাশিত"
 
-#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
-#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1137 glib/gbookmarkfile.c:1151
+#: glib/gbookmarkfile.c:1219 glib/gbookmarkfile.c:1271
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "অপ্রত্যাশিত '%s' ট্যাগ '%s'-র মধ্যে"
 
-#: glib/gbookmarkfile.c:1781
+#: glib/gbookmarkfile.c:1798
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "data dir'র মধ্যে বৈধ বুকমার্ক ফাইল পাওয়া যায়নি"
 
-#: glib/gbookmarkfile.c:1982
+#: glib/gbookmarkfile.c:1999
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s'-র জন্য বুকমার্ক বর্তমানে উপস্থিত রয়েছে"
 
-#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
-#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
-#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
-#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
-#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
-#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
-#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
-#: glib/gbookmarkfile.c:3677
+#: glib/gbookmarkfile.c:2045 glib/gbookmarkfile.c:2202
+#: glib/gbookmarkfile.c:2287 glib/gbookmarkfile.c:2367
+#: glib/gbookmarkfile.c:2452 glib/gbookmarkfile.c:2535
+#: glib/gbookmarkfile.c:2613 glib/gbookmarkfile.c:2692
+#: glib/gbookmarkfile.c:2734 glib/gbookmarkfile.c:2831
+#: glib/gbookmarkfile.c:2957 glib/gbookmarkfile.c:3147
+#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3388
+#: glib/gbookmarkfile.c:3477 glib/gbookmarkfile.c:3567
+#: glib/gbookmarkfile.c:3694
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s'-র জন্য বুকমার্ক পাওয়া যায়নি"
 
-#: glib/gbookmarkfile.c:2359
+#: glib/gbookmarkfile.c:2376
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে MIME'র ধরন নির্ধারিত হয়নি"
 
-#: glib/gbookmarkfile.c:2444
+#: glib/gbookmarkfile.c:2461
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে ব্যক্তিগত ফ্ল্যাগ চিহ্ন দেওয়া হয়নি"
 
-#: glib/gbookmarkfile.c:2823
+#: glib/gbookmarkfile.c:2840
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে দল নির্ধারণ করা হয়নি"
 
-#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3241 glib/gbookmarkfile.c:3398
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনের দ্বারা '%s' বুকমার্ক নিবন্ধিত হয়নি"
 
-#: glib/gbookmarkfile.c:3404
+#: glib/gbookmarkfile.c:3421
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec পংক্তি '%s'-টি URI '%s' সহ প্রসারণ করতে ব্যর্থ"
@@ -164,7 +164,7 @@ msgstr "'%s' পাথটি সুনিশ্চিত নয়"
 msgid "Invalid hostname"
 msgstr "হোস্ট-নেম বৈধ নয়"
 
-#: glib/gdir.c:104 glib/gdir.c:124
+#: glib/gdir.c:109 glib/gdir.c:129
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' ডিরেক্টরি খুলতে ব্যর্থ: %s"
@@ -305,23 +305,23 @@ msgstr "'%s' খুলতে ব্যর্থ: open() বিফল: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' ফাইল ম্যাপ করতে ব্যর্থ: mmap() বিফল: %s"
 
-#: glib/gmarkup.c:228 glib/gmarkup.c:244
+#: glib/gmarkup.c:234 glib/gmarkup.c:250
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "পংক্তি %d অক্ষর %d'এ ত্রুটি: "
 
-#: glib/gmarkup.c:338
+#: glib/gmarkup.c:344
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "পংক্তি %d'এ ত্রুটি: %s"
 
-#: glib/gmarkup.c:442
+#: glib/gmarkup.c:448
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "তথ্যবিহীন স্বত্বা '&;' প্রদর্শিত; বৈধ স্বত্বা হল: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:452
+#: glib/gmarkup.c:458
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -332,17 +332,17 @@ msgstr ""
 "এই অ্যাম্পারসেন্ড চিহ্নটি স্বত্বার ক্ষেত্রে ব্যবহৃত না হলে &amp; রূপে এটিকে এস্কেপ করানো "
 "যাবে"
 
-#: glib/gmarkup.c:486
+#: glib/gmarkup.c:492
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "স্বতার নামে '%s' অক্ষরের ব্যবহার বৈধ নয়"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:529
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "'%s' নামের স্বত্বা অজানা"
 
-#: glib/gmarkup.c:534
+#: glib/gmarkup.c:540
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -350,7 +350,7 @@ msgstr ""
 "স্বত্বার নাম সেমিকোলোন চিহ্ন দ্বারা সমাপ্ত হয়নি; সম্ভবত আপনি স্বত্বা হিসাবে ব্যবহারের "
 "উদ্দেশ্যে এম্পারসেন্ড চিহ্ন প্রয়োগ করেননি - &amp; রূপে এম্পারসেন্ড এস্কেপ করানো যাবে"
 
-#: glib/gmarkup.c:587
+#: glib/gmarkup.c:593
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -359,16 +359,16 @@ msgstr ""
 "'%-.*s' পার্স করতে ব্যর্থ, এটি কোনো অক্ষরের রেফারেন্সের মধ্যে একটি সংখ্যা হওয়া উচিত "
 "(উদাহরণস্বরূপ &#234;) - সম্ভবত সংখ্যাটি অত্যাধিক বড়"
 
-#: glib/gmarkup.c:612
+#: glib/gmarkup.c:618
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "'%-.*s' অক্ষরের রেফারেন্সের মধ্যে অনুমোদিত অক্ষর এনকোড করা হয়নি"
 
-#: glib/gmarkup.c:627
+#: glib/gmarkup.c:633
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "অক্ষর রেফারেন্স ফাঁকা; &#454;'র অনুরূপ সংখ্যা উপস্থিত আবশ্যক"
 
-#: glib/gmarkup.c:637
+#: glib/gmarkup.c:643
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -378,32 +378,32 @@ msgstr ""
 "ব্যবহারের উদ্দেশ্যে এম্পারসেন্ড চিহ্ন প্রয়োগ করেননি - &amp; রূপে এম্পারসেন্ড এস্কেপ "
 "করানো যাবে"
 
-#: glib/gmarkup.c:723
+#: glib/gmarkup.c:729
 msgid "Unfinished entity reference"
 msgstr "স্বত্বার রেফারেন্স অসম্পূর্ণ"
 
-#: glib/gmarkup.c:729
+#: glib/gmarkup.c:735
 msgid "Unfinished character reference"
 msgstr "অক্ষরের রেফারেন্স অসম্পূর্ণ"
 
-#: glib/gmarkup.c:972
+#: glib/gmarkup.c:978
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "অবৈধ UTF-8 এনকোডিং সহ টেক্সট - অত্যাধিক লম্বা পংক্তি"
 
-#: glib/gmarkup.c:1000
+#: glib/gmarkup.c:1006
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "অবৈধ UTF-8 এনকোডিং সহ টেক্সট - প্রারম্ভিক অক্ষর নয়"
 
-#: glib/gmarkup.c:1036
+#: glib/gmarkup.c:1042
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "অবৈধ UTF-8 এনকোডিং সহ টেক্সট - বৈধ '%s' নয়"
 
-#: glib/gmarkup.c:1074
+#: glib/gmarkup.c:1080
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "নথি কোনো এলিমেন্ট দ্বারা আরম্ভ হওয়া আবশ্যক (উদাহরণস্বরূপ <book>)"
 
-#: glib/gmarkup.c:1114
+#: glib/gmarkup.c:1120
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -411,7 +411,7 @@ msgid ""
 msgstr ""
 "'<' অক্ষরের পরে '%s'-র ব্যবহার বৈধ নয়; এর দ্বারা এলিমেন্টের নাম আরম্ভ করা যাবে না"
 
-#: glib/gmarkup.c:1178
+#: glib/gmarkup.c:1184
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -420,7 +420,7 @@ msgstr ""
 "'%s' অক্ষর প্রত্যাশিত নয়, '%s' এলিমেন্টের প্রারম্ভিক ট্যাগ সমাপ্ত করার উদ্দেশ্যে '>' "
 "অক্ষর প্রত্যাশিত"
 
-#: glib/gmarkup.c:1267
+#: glib/gmarkup.c:1273
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -428,7 +428,7 @@ msgstr ""
 "'%1$s' অক্ষর প্রত্যাশিত নয়, '%3$s' এলিমেন্টের '%2$s' নামক বৈশিষ্ট্যের নামের পরে "
 "একটি '=' চিহ্ন প্রত্যাশিত"
 
-#: glib/gmarkup.c:1309
+#: glib/gmarkup.c:1315
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -439,7 +439,7 @@ msgstr ""
 "অথবা '/' চিহ্ন অথবা কোনো বৈশিষ্ট্যর উপস্থিতি কাম্য; সম্ভবত কোনো বৈশিষ্ট্যের নামের "
 "মধ্যে অবৈধ অক্ষর ব্যবহৃত হয়েছে"
 
-#: glib/gmarkup.c:1395
+#: glib/gmarkup.c:1401
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -448,7 +448,7 @@ msgstr ""
 "'%1$s' অক্ষর অপ্রত্যাশিত, '%3$s' এলিমেন্টের '%2$s' বৈশিষ্ট্যের মান নির্ধারণের "
 "উদ্দেশ্যে সমান চিহ্নের (=) পরে একটি উদ্ধৃতি চিহ্নের প্রারম্ভিক অংশ উপস্থিতি প্রত্যাশিত"
 
-#: glib/gmarkup.c:1537
+#: glib/gmarkup.c:1543
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -457,7 +457,7 @@ msgstr ""
 "'%s' অক্ষরের ব্যবহার '</'-র পশ্চাত বৈধ নয়; '%s' দ্বারা কোনো এলিমেন্টের নাম আরম্ভ "
 "করা যাবে না"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1583
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -466,26 +466,26 @@ msgstr ""
 "'%2$s' বদ্ধ এলিমেন্টের নামের পশ্চাত '%1$s' অক্ষরের ব্যবহার বৈধ নয়; অনুমোদিত অক্ষর "
 "হল '>'"
 
-#: glib/gmarkup.c:1588
+#: glib/gmarkup.c:1594
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' এলিমেন্ট বদ্ধ অবস্থায়, বর্তমানে কোনো এলিমেন্ট খোলা অবস্থায় নেই"
 
-#: glib/gmarkup.c:1597
+#: glib/gmarkup.c:1603
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' এলিমেন্ট বদ্ধ অবস্থায়, বর্তমানে '%s' এলিমেন্ট খোলা অবস্থায় রয়েছে"
 
-#: glib/gmarkup.c:1757
+#: glib/gmarkup.c:1763
 msgid "Document was empty or contained only whitespace"
 msgstr "ডকুমেন্ট সম্ভবত ফাঁকা অথবা শুধুমাত্র শূণ্যস্থান উপস্থিত"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1777
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "তেরছা বন্ধনীর প্রারম্ভিক চিহ্নের '<' ঠিক পরে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1779 glib/gmarkup.c:1824
+#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -494,7 +494,7 @@ msgstr ""
 "খোলা এলিমেন্টসহ ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে - '%s' এলিমেন্ট সর্বশেষ খোলা "
 "হয়েছিল"
 
-#: glib/gmarkup.c:1787
+#: glib/gmarkup.c:1793
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -503,19 +503,19 @@ msgstr ""
 "নথি অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে, <%s/> ট্যাগ সমাপ্তির জন্য তেরছা বন্ধনী চিহ্নের "
 "অন্তিম অংশের উপস্থিতি প্রত্যাশিত"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element name"
 msgstr "এলিমেন্টের নামের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1805
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "বৈশিষ্ট্যের নামের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "এলিমেন্টের প্রারম্ভিক ট্যাগের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1816
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -523,16 +523,16 @@ msgstr ""
 "বৈশিষ্ট্যের নামের পরে উপস্থিত সমান চিহ্নের (=) পরে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত "
 "হয়েছে; বৈশিষ্ট্যের মান অনুপস্থিত"
 
-#: glib/gmarkup.c:1817
+#: glib/gmarkup.c:1823
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "বৈশিষ্ট্যের মানের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1839
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' এলিমেন্টের অন্তিম ট্যাগের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
-#: glib/gmarkup.c:1839
+#: glib/gmarkup.c:1845
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "কোনো মন্তব্য অথবা প্রক্রিয়াকরণের নির্দেশের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
@@ -557,7 +557,7 @@ msgstr "ব্যাক-ট্যাক করার সুনির্দিষ
 msgid "the pattern contains items not supported for partial matching"
 msgstr "উল্লিখিত বিন্যাসটির মধ্যে অন্তর্ভুক্ত সামগ্রী, আংশিক মিল অনুসন্ধানে সমর্থিত নয়"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1883
+#: glib/gregex.c:154 gio/glocalfile.c:1971
 msgid "internal error"
 msgstr "অভ্যন্তরীণ সমস্যা"
 
@@ -1157,7 +1157,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1876 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1964 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "কর্ম বাতিল করা হয়েছে"
@@ -1171,7 +1171,7 @@ msgstr "অজানা প্রকৃতি"
 msgid "%s filetype"
 msgstr "%s ফাইলের ধরন"
 
-#: gio/gcontenttype.c:577
+#: gio/gcontenttype.c:591
 #, c-format
 msgid "%s type"
 msgstr "%s ধরন"
@@ -1210,7 +1210,7 @@ msgstr "ইউজার MIME কনফিগারেশন ফোল্ডা�
 msgid "Can't create user desktop file %s"
 msgstr "ইউজার ডেস্কটপ ফাইল %s নির্মাণ করতে ব্যর্থ"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s-র জন্য স্বনির্ধারত ব্যাখ্যা"
@@ -1223,10 +1223,10 @@ msgstr "ড্রাইভ দ্বারা ইজেক্ট কর্ম �
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2594
-#: gio/gfile.c:2639 gio/gfile.c:2689 gio/gfile.c:2729 gio/gfile.c:3053
-#: gio/gfile.c:3455 gio/gfile.c:3538 gio/gfile.c:3621 gio/gfile.c:3701
+#: gio/gfile.c:811 gio/gfile.c:1039 gio/gfile.c:1172 gio/gfile.c:1403
+#: gio/gfile.c:1456 gio/gfile.c:1512 gio/gfile.c:1594 gio/gfile.c:2651
+#: gio/gfile.c:2696 gio/gfile.c:2746 gio/gfile.c:2786 gio/gfile.c:3110
+#: gio/gfile.c:3512 gio/gfile.c:3595 gio/gfile.c:3678 gio/gfile.c:3758
 #, c-format
 msgid "Operation not supported"
 msgstr "কর্ম সমর্থিত হয় না"
@@ -1239,52 +1239,52 @@ msgstr "কর্ম সমর্থিত হয় না"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1291 gio/glocalfile.c:1054 gio/glocalfile.c:1065
+#: gio/glocalfile.c:1078
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ধারণকারী মাউন্ট উপস্থিত নেই"
 
-#: gio/gfile.c:1895
+#: gio/gfile.c:1933 gio/glocalfile.c:2114
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ডিরেক্টরির উপরে কপি করা যাবে না"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1993
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ডিরেক্টরির উপর ডিরেক্টরি কপি করা যায়নি"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2030
+#: gio/gfile.c:2001 gio/glocalfile.c:2123
 #, c-format
 msgid "Target file exists"
 msgstr "উদ্দিষ্ট ফাইল উপস্থিত রয়েছে"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:2019
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2679
+#: gio/gfile.c:2736
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "অবৈধ সিম-লিঙ্ক মান উপলব্ধ করা হয়েছে"
 
-#: gio/gfile.c:2772
+#: gio/gfile.c:2829
 #, c-format
 msgid "Trash not supported"
 msgstr "আবর্জনা সমর্থিত হয় না"
 
-#: gio/gfile.c:2819
+#: gio/gfile.c:2876
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ফাইলের নামের মধ্যে '%c' ব্যবহার করা যাবে না"
 
-#: gio/gfile.c:4752 gio/gvolume.c:357
+#: gio/gfile.c:4812 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বারা mount প্রয়োগ করা হয় না"
 
-#: gio/gfile.c:4860
+#: gio/gfile.c:4920
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "চিহ্নিত ফাইল ব্যবস্থাপনার উদ্দেশ্যে কোনো অ্যাপ্লিকেশন নিবন্ধিত হয়নি"
@@ -1295,12 +1295,12 @@ msgid "Enumerator is closed"
 msgstr ""
 
 #: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
-#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:425
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:426
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:415
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:416
 msgid "File enumerator is already closed"
 msgstr ""
 
@@ -1356,182 +1356,187 @@ msgstr "ফাইলের নাম অবৈধ: %s"
 msgid "Error getting filesystem info: %s"
 msgstr "ফাইল-সিস্টেম সংক্রান্ত তথ্য প্রাপ্ত করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1098
 #, c-format
 msgid "Can't rename root directory"
 msgstr "root ডিরেক্টরির নাম পরিবর্তন করা সম্ভব নয়"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1116
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 "ফাইলের নাম পরিবর্তন করা যায়নি, নতুন নামের একটি ফাইলের নাম বর্তমানে উপস্থিত রয়েছে"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1905 gio/glocalfile.c:1934
-#: gio/glocalfile.c:2083 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1129 gio/glocalfile.c:1993 gio/glocalfile.c:2022
+#: gio/glocalfile.c:2176 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "ফাইলের নাম বৈধ নয়"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1133
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ফাইলের নাম পরিবর্তনে সমস্যা: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1252
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ফাইল খুলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1262
 #, c-format
 msgid "Can't open directory"
 msgstr "ডিরেক্টরি খুলতে সমস্যা"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1909
+#: gio/glocalfile.c:1322
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ফাইল মুছে ফেলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1604
+#: gio/glocalfile.c:1686
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ফাইলটি আবর্জনায় স্থানান্তর করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1627
+#: gio/glocalfile.c:1709
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "আবর্জনার ডিরেক্টরি %s নির্মাণ করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1648
+#: gio/glocalfile.c:1730
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "আবর্জনার ঊর্ধ্বতন ডিরেক্টরি সনাক্ত করতে ব্যর্থ"
 
-#: gio/glocalfile.c:1727 gio/glocalfile.c:1747
+#: gio/glocalfile.c:1809 gio/glocalfile.c:1829
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "আবর্জনার ডিরেক্টরি সনাক্ত অথবা নির্মাণ করতে ব্যর্থ"
 
-#: gio/glocalfile.c:1781
+#: gio/glocalfile.c:1863
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr ""
 
-#: gio/glocalfile.c:1806 gio/glocalfile.c:1875 gio/glocalfile.c:1882
+#: gio/glocalfile.c:1888 gio/glocalfile.c:1963 gio/glocalfile.c:1970
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ফাইল বর্জন করতে ব্যর্থ: %s"
 
-#: gio/glocalfile.c:1938
+#: gio/glocalfile.c:1997
+#, fuzzy, c-format
+msgid "Error creating directory: %s"
+msgstr "'%s' ডিরেক্টরি খুলতে ব্যর্থ: %s"
+
+#: gio/glocalfile.c:2026
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "সিম্‌বলিক লিঙ্ক নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/glocalfile.c:1998 gio/glocalfile.c:2087
+#: gio/glocalfile.c:2086 gio/glocalfile.c:2180
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ফাইল স্থানান্তর করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:2021
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "ডিরেক্টরির উপর ডিরেক্টরি স্থানান্তর করা যাবে না"
 
-#: gio/glocalfile.c:2043 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2136 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "ব্যাক-আপ ফাইল নির্মাণ করতে ব্যর্থ"
 
-#: gio/glocalfile.c:2062
+#: gio/glocalfile.c:2155
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "উদ্দিষ্ট ফাইল মুছে ফেলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:2076
+#: gio/glocalfile.c:2169
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
 
-#: gio/glocalfileinfo.c:709
+#: gio/glocalfileinfo.c:716
 #, c-format
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:723
 #, c-format
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:730
 #, c-format
 msgid "Invalid extended attribute name"
 msgstr ""
 
-#: gio/glocalfileinfo.c:763
+#: gio/glocalfileinfo.c:770
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1398 gio/glocalfileoutputstream.c:666
+#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:666
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "ফাইল '%s' stat করতে ব্যর্থ: %s"
 
-#: gio/glocalfileinfo.c:1454
+#: gio/glocalfileinfo.c:1527
 msgid " (invalid encoding)"
 msgstr " (অবৈধ এনকোডিং)"
 
-#: gio/glocalfileinfo.c:1614
+#: gio/glocalfileinfo.c:1693
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ফাইলের বিবরণ stat করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1659
+#: gio/glocalfileinfo.c:1738
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "অ্যাট্রিবিউটের ধরন বৈধ নয় (প্রত্যাশিত uint32)"
 
-#: gio/glocalfileinfo.c:1676
+#: gio/glocalfileinfo.c:1756
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "অ্যাট্রিবিউটের ধরন বৈধ নয় (প্রত্যাশিত uint64)"
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1775
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1720
+#: gio/glocalfileinfo.c:1801
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "অনুমতি নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1771 gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1852 gio/glocalfileinfo.c:2020
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "মালিকানা নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1794
+#: gio/glocalfileinfo.c:1875
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1804 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1834
+#: gio/glocalfileinfo.c:1885 gio/glocalfileinfo.c:1904
+#: gio/glocalfileinfo.c:1915
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "সিম্‌বলিক লিঙ্ক নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1894
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "সিম্‌-লিঙ্ক নির্ধারণ করতে ত্রুটি: ফাইলটি সিম্‌-লিঙ্ক নয়"
 
-#: gio/glocalfileinfo.c:1994
+#: gio/glocalfileinfo.c:2075
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
@@ -1604,12 +1609,12 @@ msgstr ""
 msgid "The file was externally modified"
 msgstr "ফাইলটি স্বতন্ত্ররূপে পরিবর্তন করা হয়েছে"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:545
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr "অবৈধ GSeekType উল্লিখিত হয়েছে"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:555
 #, c-format
 msgid "Invalid seek request"
 msgstr ""
@@ -1619,17 +1624,17 @@ msgstr ""
 msgid "Cannot truncate GMemoryInputStream"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:260
+#: gio/gmemoryoutputstream.c:288
 #, c-format
 msgid "Reached maximum data array limit"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:295
+#: gio/gmemoryoutputstream.c:323
 #, c-format
 msgid "Memory output stream not resizable"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:311
+#: gio/gmemoryoutputstream.c:339
 #, c-format
 msgid "Failed to resize memory output stream"
 msgstr ""
@@ -1706,7 +1711,7 @@ msgstr "unix থেকে পড়তে সমস্যা: %s"
 msgid "Error closing unix: %s"
 msgstr "unix বন্ধ করতে সমস্যা: %s"
 
-#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
+#: gio/gunixmounts.c:1790 gio/gunixmounts.c:1827
 msgid "Filesystem root"
 msgstr "ফাইল-সিস্টেমের root"
 

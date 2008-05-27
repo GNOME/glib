@@ -1,5 +1,9 @@
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.0 ===
+
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/compiling.sgml: Document G_DISABLE_SINGLE_INCLUDES
 
 2008-05-27  Michael Natterer  <mitch@gimp.org>

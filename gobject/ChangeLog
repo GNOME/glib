@@ -1,3 +1,7 @@
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.17.0 ===
+
 2008-05-05  Michael Natterer  <mitch@imendio.com>
 
 	* Makefile.am. build with G_DISABLE_SINGLE_INCLUDES to prevent
