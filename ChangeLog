@@ -1,5 +1,10 @@
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/casemap.txt:
+	* tests/casefold.txt: Update for Unicode 5.1
+
+2008-05-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* Revert the patch for bug 527214 and related changes. GTimer
 	is supposed to work without threads.
 
