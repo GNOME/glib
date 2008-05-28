@@ -1,3 +1,8 @@
+2008-05-28  Michael Natterer  <mitch@imendio.com>
+
+	* Makefile.am: don't define G_DISABLE_SINGLE_INCLUDES, it's in
+	the global CPPFLAGS now.
+
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.0 ===

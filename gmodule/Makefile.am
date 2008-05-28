@@ -7,8 +7,7 @@ AM_CPPFLAGS = 				\
 	-I$(top_srcdir)/gmodule 	\
 	-DG_LOG_DOMAIN=\"GModule\" 	\
 	@GLIB_DEBUG_FLAGS@ 		\
-	-DG_DISABLE_DEPRECATED		\
-	-DG_DISABLE_SINGLE_INCLUDES
+	-DG_DISABLE_DEPRECATED
 
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
