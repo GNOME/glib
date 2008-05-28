@@ -1,3 +1,12 @@
+2008-05-28  Michael Natterer  <mitch@imendio.com>
+
+	* configure.in: add G_DISABLE_SINGLE_INCLUDES to CPPFLAGS
+	globally.
+
+	* glib/tests/option-context.c
+	* glib/tests/testing.c
+	* tests/testingbase64.c: don't include <glib/gtestutils.h>
+
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

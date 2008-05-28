@@ -487,6 +487,8 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 
+CPPFLAGS="$CPPFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+
 if test "$glib_native_win32" = "yes"; then
   if test x$enable_static = xyes -a x$enable_shared = xyes; then
     AC_MSG_ERROR([Can not build both shared and static at the same time on Windows.])

@@ -18,7 +18,8 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
-#include <glib/gtestutils.h>
+
+#include <glib.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
