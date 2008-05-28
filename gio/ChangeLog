@@ -1,3 +1,15 @@
+2008-05-28  Michael Natterer  <mitch@imendio.com>
+
+	* Makefile.am: don't define G_DISABLE_SINGLE_INCLUDES, it's in
+	the global CPPFLAGS now.
+
+	* tests/data-input-stream.c
+	* tests/data-output-stream.c
+	* tests/g-file-info.c
+	* tests/g-file.c
+	* tests/live-g-file.c
+	* tests/memory-input-stream.c: don't include <glib/gtestutils.h>
+
 2008-05-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.0 ===

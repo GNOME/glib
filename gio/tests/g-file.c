@@ -19,7 +19,7 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
-#include <glib/gtestutils.h>
+
 #include <glib/glib.h>
 #include <gio/gio.h>
 #include <stdlib.h>
