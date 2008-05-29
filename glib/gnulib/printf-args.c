@@ -90,7 +90,11 @@ printf_fetchargs (va_list args, arguments *a)
 	break;
 #ifdef HAVE_WINT_T
       case TYPE_WIDE_CHAR:
+#ifdef _WIN32
+	ap->a.a_wide_char = va_arg (args, int);
+#else
 	ap->a.a_wide_char = va_arg (args, wint_t);
+#endif
 	break;
 #endif
       case TYPE_STRING:
