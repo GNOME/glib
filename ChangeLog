@@ -1,3 +1,10 @@
+2008-05-30  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_access) [Win32]: Mask out X_OK to avoid problem
+	on Vista. X_OK was just ignored by access() in earlier Microsoft C
+	libraries. (Which is fine as executability has little meaning on
+	Windows.) The one on Vista returns an error if X_OK is passed.
+
 2008-05-29  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.h

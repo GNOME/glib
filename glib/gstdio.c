@@ -85,7 +85,7 @@ g_access (const gchar *filename,
       return -1;
     }
 
-  retval = _waccess (wfilename, mode);
+  retval = _waccess (wfilename, mode & ~X_OK);
   save_errno = errno;
 
   g_free (wfilename);
