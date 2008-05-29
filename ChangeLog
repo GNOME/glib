@@ -1,3 +1,10 @@
+2008-05-29  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gnulib/printf-args.c (printf_fetchargs): wint_t is short on
+	Windows, and gcc warns: "wint_t is promoted to int when passed
+	through ... (so you should pass int not wint_t to va_arg)." So do
+	that then.
+
 2008-05-28  Michael Natterer  <mitch@imendio.com>
 
 	* configure.in: add G_DISABLE_SINGLE_INCLUDES to CPPFLAGS
