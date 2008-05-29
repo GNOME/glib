@@ -45,6 +45,7 @@ G_BEGIN_DECLS
 #define g_remove  remove
 #define g_fopen   fopen
 #define g_freopen freopen
+#define g_utime   utime
 
 int g_access (const gchar *filename,
 	      int          mode);
@@ -106,6 +107,13 @@ FILE *g_fopen   (const gchar *filename,
 FILE *g_freopen (const gchar *filename,
                  const gchar *mode,
                  FILE        *stream);
+
+struct utimbuf;			/* Don't need the real definition of struct utimbuf when just
+				 * including this header.
+				 */
+
+int g_utime     (const gchar    *filename,
+		 struct utimbuf *utb);
 
 #endif /* G_OS_UNIX */
 

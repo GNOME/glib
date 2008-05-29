@@ -1,5 +1,13 @@
 2008-05-29  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gstdio.h
+	* glib/gstdio.c: Add g_utime(). No need to include <sys/utime.h>
+	in gstdio.h, just use a forward struct declaration.
+
+	* glib/glib.symbols: Add it.
+
+2008-05-29  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gnulib/printf-args.c (printf_fetchargs): wint_t is short on
 	Windows, and gcc warns: "wint_t is promoted to int when passed
 	through ... (so you should pass int not wint_t to va_arg)." And

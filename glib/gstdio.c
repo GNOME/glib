@@ -38,6 +38,7 @@
 #include <wchar.h>
 #include <direct.h>
 #include <io.h>
+#include <sys/utime.h>
 #endif
 
 #include "gstdio.h"
@@ -722,6 +723,49 @@ g_freopen (const gchar *filename,
   return retval;
 #else
   return freopen (filename, mode, stream);
+#endif
+}
+
+/**
+ * g_utime:
+ * @filename: a pathname in the GLib file name encoding (UTF-8 on Windows)
+ * @utb: a pointer to a struct utimbuf.
+ *
+ * A wrapper for the POSIX utime() function. The utime() function
+ * sets the access and modification timestamps of a file.
+ * 
+ * See your C library manual for more details about how utime() works
+ * on your system.
+ *
+ * Returns: 0 if the operation was successful, -1 if an error 
+ *    occurred
+ * 
+ * Since: 2.18
+ */
+int
+g_utime (const gchar    *filename,
+	 struct utimbuf *utb)
+{
+#ifdef G_OS_WIN32
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wfilename == NULL)
+    {
+      errno = EINVAL;
+      return -1;
+    }
+  
+  retval = _wutime (wfilename, (struct _utimbuf*) utb);
+  save_errno = errno;
+
+  g_free (wfilename);
+
+  errno = save_errno;
+  return retval;
+#else
+  return utime (filename, utb);
 #endif
 }
 

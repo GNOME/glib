@@ -1090,6 +1090,7 @@ g_access
 g_chdir
 g_unlink
 g_rmdir
+g_utime
 #endif
 #endif
 
