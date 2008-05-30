@@ -1,3 +1,11 @@
+2008-05-30  Michael Natterer  <mitch@imendio.com>
+
+	Bug 535628 - test/patterntest.c still includes gpattern.h
+	directly.
+
+	* tests/patterntest.c: don't include "glib/gpattern.h" directly.
+	Patch from Hiroyuki Ikezoe.
+
 2008-05-30  Tor Lillqvist  <tml@novell.com>
 
 	Bug 535625 - alias.h:2648: error: 'utime' undeclared here (not in

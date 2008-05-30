@@ -21,9 +21,7 @@
 #undef G_LOG_DOMAIN
 
 #include <string.h>
-
-#include "glib.h"
-#include "glib/gpattern.h"
+#include <glib.h>
 
 static gboolean noisy = FALSE;
 
