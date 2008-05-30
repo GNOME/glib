@@ -1085,12 +1085,12 @@ g_lstat
 g_remove
 g_fopen
 g_freopen
+g_utime
 #endif
 g_access
 g_chdir
 g_unlink
 g_rmdir
-g_utime
 #endif
 #endif
 

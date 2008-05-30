@@ -1,5 +1,13 @@
 2008-05-30  Tor Lillqvist  <tml@novell.com>
 
+	Bug 535625 - alias.h:2648: error: 'utime' undeclared here (not in
+	a function)
+
+	* glib/glib.symbols: Move g_utime inside #if !defined(G_OS_UNIX)
+	|| defined(G_STDIO_NO_WRAP_ON_UNIX).
+
+2008-05-30  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gstdio.c (g_access) [Win32]: Mask out X_OK to avoid problem
 	on Vista. X_OK was just ignored by access() in earlier Microsoft C
 	libraries. (Which is fine as executability has little meaning on
