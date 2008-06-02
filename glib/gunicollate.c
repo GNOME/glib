@@ -26,6 +26,10 @@
 #include <wchar.h>
 #endif
 
+#ifdef HAVE_CARBON
+#include <CoreServices/CoreServices.h>
+#endif
+
 #include "glib.h"
 #include "gunicodeprivate.h"
 #include "galias.h"
@@ -68,8 +72,30 @@ g_utf8_collate (const gchar *str1,
 		const gchar *str2)
 {
   gint result;
-  
-#ifdef __STDC_ISO_10646__
+
+#ifdef HAVE_CARBON
+
+  UniChar *str1_utf16;
+  UniChar *str2_utf16;
+  glong len1;
+  glong len2;
+  SInt32 retval = 0;
+
+  g_return_val_if_fail (str1 != NULL, 0);
+  g_return_val_if_fail (str2 != NULL, 0);
+
+  str1_utf16 = g_utf8_to_utf16 (str1, -1, NULL, &len1, NULL);
+  str2_utf16 = g_utf8_to_utf16 (str2, -1, NULL, &len2, NULL);
+
+  UCCompareTextDefault (kUCCollateStandardOptions,
+                        str1_utf16, len1, str2_utf16, len2,
+                        NULL, &retval);
+  result = retval;
+
+  g_free (str2_utf16);
+  g_free (str1_utf16);
+
+#elif defined(__STDC_ISO_10646__)
 
   gunichar *str1_norm;
   gunichar *str2_norm;
@@ -127,7 +153,7 @@ g_utf8_collate (const gchar *str1,
   return result;
 }
 
-#ifdef __STDC_ISO_10646__
+#if defined(__STDC_ISO_10646__) || defined(HAVE_CARBON)
 /* We need UTF-8 encoding of numbers to encode the weights if
  * we are using wcsxfrm. However, we aren't encoding Unicode
  * characters, so we can't simply use g_unichar_to_utf8.
@@ -174,7 +200,149 @@ utf8_encode (char *buf, wchar_t val)
 
   return retval;
 }
-#endif /* __STDC_ISO_10646__ */
+#endif /* __STDC_ISO_10646__ || HAVE_CARBON */
+
+#ifdef HAVE_CARBON
+
+static gchar *
+collate_key_to_string (UCCollationValue *key,
+                       gsize             key_len)
+{
+  gchar *result;
+  gsize result_len;
+  gsize i;
+
+  /* Pretty smart algorithm here: ignore first eight bytes of the
+   * collation key. It doesn't produce results equivalent to
+   * UCCompareCollationKeys's, but the difference seems to be only
+   * that UCCompareCollationKeys in some cases produces 0 where our
+   * comparison gets -1 or 1. */
+
+  if (key_len * sizeof (UCCollationValue) <= 8)
+    return g_strdup ("");
+
+  result_len = 0;
+  for (i = 8; i < key_len * sizeof (UCCollationValue); i++)
+    /* there may be nul bytes, encode byteval+1 */
+    result_len += utf8_encode (NULL, *((guchar*)key + i) + 1);
+
+  result = g_malloc (result_len + 1);
+  result_len = 0;
+  for (i = 8; i < key_len * sizeof (UCCollationValue); i++)
+    result_len += utf8_encode (result + result_len, *((guchar*)key + i) + 1);
+
+  result[result_len] = 0;
+  return result;
+}
+
+static gchar *
+carbon_collate_key_with_collator (const gchar *str,
+                                  gssize       len,
+                                  CollatorRef  collator)
+{
+  UniChar *str_utf16 = NULL;
+  glong len_utf16;
+  OSStatus ret;
+  UCCollationValue staticbuf[512];
+  UCCollationValue *freeme = NULL;
+  UCCollationValue *buf;
+  ItemCount buf_len;
+  ItemCount key_len;
+  ItemCount try_len;
+  gchar *result = NULL;
+
+  str_utf16 = g_utf8_to_utf16 (str, len, NULL, &len_utf16, NULL);
+  try_len = len_utf16 * 5 + 2;
+
+  if (try_len <= sizeof staticbuf)
+    {
+      buf = staticbuf;
+      buf_len = sizeof staticbuf;
+    }
+  else
+    {
+      freeme = g_new (UCCollationValue, try_len);
+      buf = freeme;
+      buf_len = try_len;
+    }
+
+  ret = UCGetCollationKey (collator, str_utf16, len_utf16,
+                           buf_len, &key_len, buf);
+
+  if (ret == kCollateBufferTooSmall)
+    {
+      freeme = g_renew (UCCollationValue, freeme, try_len * 2);
+      buf = freeme;
+      buf_len = try_len * 2;
+      ret = UCGetCollationKey (collator, str_utf16, len_utf16,
+                               buf_len, &key_len, buf);
+    }
+
+  if (ret == 0)
+    result = collate_key_to_string (buf, key_len);
+  else
+    result = g_strdup ("");
+
+  g_free (freeme);
+  g_free (str_utf16);
+  return result;
+}
+
+static gchar *
+carbon_collate_key (const gchar *str,
+                    gssize       len)
+{
+  static CollatorRef collator;
+
+  if (G_UNLIKELY (!collator))
+    {
+      UCCreateCollator (NULL, 0, kUCCollateStandardOptions, &collator);
+
+      if (!collator)
+        {
+          static gboolean been_here;
+          if (!been_here)
+            g_warning ("%s: UCCreateCollator failed", G_STRLOC);
+          been_here = TRUE;
+          return g_strdup ("");
+        }
+    }
+
+  return carbon_collate_key_with_collator (str, len, collator);
+}
+
+static gchar *
+carbon_collate_key_for_filename (const gchar *str,
+                                 gssize       len)
+{
+  static CollatorRef collator;
+
+  if (G_UNLIKELY (!collator))
+    {
+      /* http://developer.apple.com/qa/qa2004/qa1159.html */
+      UCCreateCollator (NULL, 0,
+                        kUCCollateComposeInsensitiveMask
+                         | kUCCollateWidthInsensitiveMask
+                         | kUCCollateCaseInsensitiveMask
+                         | kUCCollateDigitsOverrideMask
+                         | kUCCollateDigitsAsNumberMask
+                         | kUCCollatePunctuationSignificantMask, 
+                        &collator);
+
+      if (!collator)
+        {
+          static gboolean been_here;
+          if (!been_here)
+            g_warning ("%s: UCCreateCollator failed", G_STRLOC);
+          been_here = TRUE;
+          return g_strdup ("");
+        }
+    }
+
+  return carbon_collate_key_with_collator (str, len, collator);
+}
+
+#endif /* HAVE_CARBON */
 
 /**
  * g_utf8_collate_key:
@@ -200,10 +368,15 @@ g_utf8_collate_key (const gchar *str,
 		    gssize       len)
 {
   gchar *result;
-  gsize xfrm_len;
-  
-#ifdef __STDC_ISO_10646__
 
+#ifdef HAVE_CARBON
+
+  g_return_val_if_fail (str != NULL, NULL);
+  result = carbon_collate_key (str, len);
+
+#elif defined(__STDC_ISO_10646__)
+
+  gsize xfrm_len;
   gunichar *str_norm;
   wchar_t *result_wc;
   gsize i;
@@ -233,6 +406,7 @@ g_utf8_collate_key (const gchar *str,
   return result;
 #else /* !__STDC_ISO_10646__ */
 
+  gsize xfrm_len;
   const gchar *charset;
   gchar *str_norm;
 
@@ -317,6 +491,7 @@ gchar*
 g_utf8_collate_key_for_filename (const gchar *str,
 				 gssize       len)
 {
+#ifndef HAVE_CARBON
   GString *result;
   GString *append;
   const gchar *p;
@@ -488,6 +663,9 @@ g_utf8_collate_key_for_filename (const gchar *str,
   g_string_free (append, TRUE);
 
   return g_string_free (result, FALSE);
+#else /* HAVE_CARBON */
+  return carbon_collate_key_for_filename (str, len);
+#endif
 }
 
 

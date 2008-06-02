@@ -1,3 +1,14 @@
+2008-06-02  Yevgen Muntyan  <muntyan@tamu.edu>
+
+	Bug 531403 – g_utf8_collate broken on Mac.
+
+	* glib/gunicollate.c:  (g_utf8_collate): use UCCompareTextDefault;
+        (collate_key_to_string), (carbon_collate_key_with_collator),
+        (carbon_collate_key), (carbon_collate_key_for_filename): new
+        functions using Carbon API to get collate key for g_utf8_collate_key()
+        and g_utf8_collate_key_for_filename();
+        (g_utf8_collate_key), (g_utf8_collate_key_for_filename): use those.
+
 2008-05-30  Michael Natterer  <mitch@imendio.com>
 
 	Bug 535628 - test/patterntest.c still includes gpattern.h
