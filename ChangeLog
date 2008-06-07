@@ -1,3 +1,7 @@
+2008-06-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_access): Define X_OK if not defined (MSVC).
+
 2008-05-30  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_access) [Win32]: Mask out X_OK to avoid problem
