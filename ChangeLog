@@ -1,3 +1,7 @@
+2008-06-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_access): Define X_OK if not defined (MSVC).
+
 2008-06-02  Yevgen Muntyan  <muntyan@tamu.edu>
 
 	Bug 531403 – g_utf8_collate broken on Mac.

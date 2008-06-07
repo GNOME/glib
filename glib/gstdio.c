@@ -85,6 +85,10 @@ g_access (const gchar *filename,
       return -1;
     }
 
+#ifndef X_OK
+#define X_OK 1
+#endif
+
   retval = _waccess (wfilename, mode & ~X_OK);
   save_errno = errno;
 
