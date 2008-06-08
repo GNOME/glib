@@ -27,7 +27,7 @@
 #include "gidlmodule.h"
 #include "gidlnode.h"
 #include "gidlparser.h"
-#include "gmetadata.h"
+#include "gtypelib.h"
 
 gboolean raw = FALSE;
 gboolean no_init = FALSE;
@@ -39,7 +39,7 @@ gboolean debug = FALSE;
 gboolean verbose = FALSE;
 
 static gchar *
-format_output (GMetadata *metadata)
+format_output (GTypelib *metadata)
 {
   GString *result;
   gint i;
@@ -49,7 +49,7 @@ format_output (GMetadata *metadata)
   g_string_append_printf (result, "#include <stdlib.h>\n");
   g_string_append_printf (result, "#include <girepository.h>\n\n");
   
-  g_string_append_printf (result, "const unsigned char _G_METADATA[] = \n{");
+  g_string_append_printf (result, "const unsigned char _G_TYPELIB[] = \n{");
 
   for (i = 0; i < metadata->len; i++)
     {
@@ -63,7 +63,7 @@ format_output (GMetadata *metadata)
     }
 
   g_string_append_printf (result, "\n};\n\n");
-  g_string_append_printf (result, "const gsize _G_METADATA_SIZE = %u;\n\n",
+  g_string_append_printf (result, "const gsize _G_TYPELIB_SIZE = %u;\n\n",
 			  (guint)metadata->len);
 
   if (!no_init)
@@ -72,8 +72,8 @@ format_output (GMetadata *metadata)
 			      "__attribute__((constructor)) void\n"
 			      "register_metadata (void)\n"
 			      "{\n"
-			      "\tGMetadata *metadata;\n"
-			      "\tmetadata = g_metadata_new_from_const_memory (_G_METADATA, _G_METADATA_SIZE);\n"
+			      "\tGTypelib *metadata;\n"
+			      "\tmetadata = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
 			      "\tg_irepository_register (NULL, metadata);\n"
 			      "}\n\n");
 
@@ -83,7 +83,7 @@ format_output (GMetadata *metadata)
 			      "{\n"
 			      "\tg_irepository_unregister (NULL, \"%s\");\n"
 			      "}\n",
-			      g_metadata_get_namespace (metadata));
+			      g_typelib_get_namespace (metadata));
     }
 
   return g_string_free (result, FALSE);
@@ -91,7 +91,7 @@ format_output (GMetadata *metadata)
 
 static void
 write_out_metadata (gchar *prefix,
-		    GMetadata *metadata)
+		    GTypelib *metadata)
 {
   FILE *file;
 
@@ -167,7 +167,7 @@ main (int argc, char ** argv)
   GError *error = NULL;
   GList *c, *m, *modules; 
   gint i;
-  g_metadata_check_sanity ();
+  g_typelib_check_sanity ();
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
@@ -210,7 +210,7 @@ main (int argc, char ** argv)
     {
       GIdlModule *module = m->data;
       gchar *prefix;
-      GMetadata *metadata;
+      GTypelib *metadata;
 
       if (mname && strcmp (mname, module->name) != 0)
 	continue;
@@ -227,7 +227,7 @@ main (int argc, char ** argv)
 
 	  continue;
 	}
-      if (!g_metadata_validate (metadata, &error))
+      if (!g_typelib_validate (metadata, &error))
 	g_error ("Invalid metadata for module '%s': %s", 
 		 module->name, error->message);
 
@@ -237,7 +237,7 @@ main (int argc, char ** argv)
 	prefix = NULL;
 
       write_out_metadata (prefix, metadata);
-      g_metadata_free (metadata);
+      g_typelib_free (metadata);
       metadata = NULL;
 
       /* when writing to stdout, stop after the first module */
