@@ -24,7 +24,7 @@
 #include <glib-object.h>
 
 #include "girepository.h"
-#include "gmetadata.h"
+#include "gtypelib.h"
 
 struct _GIBaseInfo 
 {
@@ -32,7 +32,7 @@ struct _GIBaseInfo
   gint ref_count;
   GIBaseInfo *container;
 
-  GMetadata *metadata;
+  GTypelib *metadata;
   guint32 offset;
 };
 
@@ -136,7 +136,7 @@ struct _GIUnionInfo
 GIBaseInfo *
 g_info_new (GIInfoType     type,
 	    GIBaseInfo    *container,
-	    GMetadata     *metadata, 
+	    GTypelib     *metadata, 
 	    guint32        offset)
 {
   GIBaseInfo *info;
@@ -156,18 +156,18 @@ g_info_new (GIInfoType     type,
 }
 
 static GIBaseInfo *
-g_info_from_entry (GMetadata *metadata,
+g_info_from_entry (GTypelib *metadata,
 		   guint16    index)
 {
   GIBaseInfo *result;
-  DirEntry *entry = g_metadata_get_dir_entry (metadata, index);
+  DirEntry *entry = g_typelib_get_dir_entry (metadata, index);
   
   if (entry->local)
     result = g_info_new (entry->blob_type, NULL, metadata, entry->offset);
   else 
     {
-      const gchar *namespace = g_metadata_get_string (metadata, entry->offset);
-      const gchar *name = g_metadata_get_string (metadata, entry->name);
+      const gchar *namespace = g_typelib_get_string (metadata, entry->offset);
+      const gchar *name = g_typelib_get_string (metadata, entry->name);
       
       GIRepository *repository = g_irepository_get_default ();
       
@@ -240,7 +240,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	CommonBlob *blob = (CommonBlob *)&info->metadata->data[info->offset];
 
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -248,7 +248,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	ValueBlob *blob = (ValueBlob *)&info->metadata->data[info->offset];
 
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -256,7 +256,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	SignalBlob *blob = (SignalBlob *)&info->metadata->data[info->offset];
 
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -264,7 +264,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	PropertyBlob *blob = (PropertyBlob *)&info->metadata->data[info->offset];
 
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -272,7 +272,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	VFuncBlob *blob = (VFuncBlob *)&info->metadata->data[info->offset];
 
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -280,7 +280,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	FieldBlob *blob = (FieldBlob *)&info->metadata->data[info->offset];
 	
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -288,7 +288,7 @@ g_base_info_get_name (GIBaseInfo *info)
       {
 	ArgBlob *blob = (ArgBlob *)&info->metadata->data[info->offset];
 	
-	return g_metadata_get_string (info->metadata, blob->name);
+	return g_typelib_get_string (info->metadata, blob->name);
       }
       break;
 
@@ -320,7 +320,7 @@ g_base_info_get_namespace (GIBaseInfo *info)
       return unresolved->namespace;
     }
 
-  return g_metadata_get_string (info->metadata, header->namespace);
+  return g_typelib_get_string (info->metadata, header->namespace);
 }
 
 gboolean 
@@ -430,9 +430,9 @@ g_base_info_get_annotation (GIBaseInfo   *info,
     {
       res = next;
       
-      rname = g_metadata_get_string (base->metadata, res->name);
+      rname = g_typelib_get_string (base->metadata, res->name);
       if (strcmp (name, rname) == 0)
-	return g_metadata_get_string (base->metadata, res->value);
+	return g_typelib_get_string (base->metadata, res->value);
 
       next = res += header->annotation_blob_size;
     }
@@ -447,7 +447,7 @@ g_base_info_get_container (GIBaseInfo *info)
   return info->container;
 }
 
-GMetadata *
+GTypelib *
 g_base_info_get_metadata (GIBaseInfo *info)
 {
   return info->metadata;
@@ -460,7 +460,7 @@ g_function_info_get_symbol (GIFunctionInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   FunctionBlob *blob = (FunctionBlob *)&base->metadata->data[base->offset];
 
-  return g_metadata_get_string (base->metadata, blob->symbol);
+  return g_typelib_get_string (base->metadata, blob->symbol);
 }
 
 GIFunctionInfoFlags
@@ -530,7 +530,7 @@ signature_offset (GICallableInfo *info)
 
 GITypeInfo *
 g_type_info_new (GIBaseInfo    *container,
-		 GMetadata     *metadata,
+		 GTypelib     *metadata,
 		 guint32        offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&metadata->data[offset];
@@ -874,7 +874,7 @@ g_error_domain_info_get_quark (GIErrorDomainInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->metadata->data[base->offset];
 
-  return g_metadata_get_string (base->metadata, blob->get_quark);
+  return g_typelib_get_string (base->metadata, blob->get_quark);
 }
 
 GIInterfaceInfo *
@@ -951,7 +951,7 @@ g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
   RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&base->metadata->data[base->offset];
 
   if (blob->gtype_name)
-    return g_metadata_get_string (base->metadata, blob->gtype_name);
+    return g_typelib_get_string (base->metadata, blob->gtype_name);
 
   return NULL;
 }
@@ -963,7 +963,7 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
   RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&base->metadata->data[base->offset];
 
   if (blob->gtype_init)
-    return g_metadata_get_string (base->metadata, blob->gtype_init);
+    return g_typelib_get_string (base->metadata, blob->gtype_init);
 
   return NULL;
 }
@@ -1116,7 +1116,7 @@ g_object_info_get_type_name (GIObjectInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->metadata->data[base->offset];
 
-  return g_metadata_get_string (base->metadata, blob->gtype_name);
+  return g_typelib_get_string (base->metadata, blob->gtype_name);
 }
 
 const gchar *
@@ -1125,7 +1125,7 @@ g_object_info_get_type_init (GIObjectInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->metadata->data[base->offset];
 
-  return g_metadata_get_string (base->metadata, blob->gtype_init);
+  return g_typelib_get_string (base->metadata, blob->gtype_init);
 }
 
 gint

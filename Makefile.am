@@ -8,8 +8,8 @@ noinst_LTLIBRARIES = libgirepository.la
 
 libgirepository_la_SOURCES =			\
 	girepository.c				\
-	gmetadata.h				\
-	gmetadata.c				\
+	gtypelib.h				\
+	gtypelib.c				\
 	ginfo.c					\
 	ginvoke.c
 libgirepository_la_CPPFLAGS = $(GIREPO_CFLAGS)

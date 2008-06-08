@@ -24,7 +24,7 @@
 #include <glib-object.h>
 
 #include "girepository.h"
-#include "gmetadata.h"
+#include "gtypelib.h"
 #include "config.h"
 
 GQuark

@@ -52,7 +52,7 @@ typedef struct _GIArgInfo            GIArgInfo;
 typedef struct _GITypeInfo           GITypeInfo;
 typedef struct _GIErrorDomainInfo    GIErrorDomainInfo;
 typedef struct _GIUnresolvedInfo     GIUnresolvedInfo;
-typedef struct _GMetadata            GMetadata;
+typedef struct _GTypelib            GTypelib;
 
 struct _GIRepository 
 { 
@@ -73,7 +73,7 @@ struct _GIRepositoryClass
 GType         g_irepository_get_type      (void) G_GNUC_CONST;
 GIRepository *g_irepository_get_default   (void);
 const gchar * g_irepository_register      (GIRepository *repository,
-					   GMetadata    *metadata);
+					   GTypelib    *metadata);
 void          g_irepository_unregister    (GIRepository *repository,
 					   const gchar  *namespace);
 const gchar * g_irepository_register_file (GIRepository *repository,
@@ -96,15 +96,15 @@ const gchar * g_irepository_get_shared_library (GIRepository *repository,
 						const gchar  *namespace);
 /* Metadata */
 
-GMetadata *   g_metadata_new_from_memory       (guchar       *memory,
+GTypelib *   g_typelib_new_from_memory       (guchar       *memory,
                                                 gsize         len);
-GMetadata *   g_metadata_new_from_const_memory (const guchar *memory,
+GTypelib *   g_typelib_new_from_const_memory (const guchar *memory,
                                                 gsize         len);
-GMetadata *   g_metadata_new_from_mapped_file  (GMappedFile  *mfile);
-void          g_metadata_free                  (GMetadata    *metadata);
-void          g_metadata_set_module            (GMetadata    *metadata,
+GTypelib *   g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
+void          g_typelib_free                  (GTypelib    *metadata);
+void          g_typelib_set_module            (GTypelib    *metadata,
                                                 GModule      *module);
-const gchar * g_metadata_get_namespace         (GMetadata    *metadata);
+const gchar * g_typelib_get_namespace         (GTypelib    *metadata);
 
 typedef enum
 {
@@ -156,11 +156,11 @@ gboolean               g_base_info_is_deprecated    (GIBaseInfo   *info);
 const gchar *          g_base_info_get_annotation   (GIBaseInfo   *info,
                                                      const gchar  *name);
 GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
-GMetadata *            g_base_info_get_metadata     (GIBaseInfo   *info);
+GTypelib *            g_base_info_get_metadata     (GIBaseInfo   *info);
 
 GIBaseInfo *           g_info_new                   (GIInfoType     type,
 						     GIBaseInfo    *container,
-						     GMetadata     *metadata, 
+						     GTypelib     *metadata, 
 						     guint32       offset);
 
 

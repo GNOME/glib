@@ -19,8 +19,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_METADATA_H__
-#define __G_METADATA_H__
+#ifndef __G_TYPELIB_H__
+#define __G_TYPELIB_H__
 
 #include <gmodule.h>
 #include "girepository.h"
@@ -510,7 +510,7 @@ typedef struct
 } AnnotationBlob;
 
 
-struct _GMetadata {
+struct _GTypelib {
   guchar *data;
   gsize len;
   gboolean owns_memory;
@@ -518,32 +518,32 @@ struct _GMetadata {
   GModule *module;
 };
 
-DirEntry *g_metadata_get_dir_entry (GMetadata *metadata,
+DirEntry *g_typelib_get_dir_entry (GTypelib *metadata,
 				    guint16            index);
 
-void      g_metadata_check_sanity (void);
+void      g_typelib_check_sanity (void);
 
-#define   g_metadata_get_string(metadata,offset) ((const gchar*)&(metadata->data)[(offset)])
+#define   g_typelib_get_string(metadata,offset) ((const gchar*)&(metadata->data)[(offset)])
 
 
 typedef enum
 {
-  G_METADATA_ERROR_INVALID,
-  G_METADATA_ERROR_INVALID_HEADER,
-  G_METADATA_ERROR_INVALID_DIRECTORY,
-  G_METADATA_ERROR_INVALID_ENTRY,
-  G_METADATA_ERROR_INVALID_BLOB
-} GMetadataError;
+  G_TYPELIB_ERROR_INVALID,
+  G_TYPELIB_ERROR_INVALID_HEADER,
+  G_TYPELIB_ERROR_INVALID_DIRECTORY,
+  G_TYPELIB_ERROR_INVALID_ENTRY,
+  G_TYPELIB_ERROR_INVALID_BLOB
+} GTypelibError;
 
-#define G_METADATA_ERROR (g_metadata_error_quark ())
+#define G_TYPELIB_ERROR (g_typelib_error_quark ())
 
-GQuark g_metadata_error_quark (void);
+GQuark g_typelib_error_quark (void);
 
-gboolean g_metadata_validate (GMetadata  *metadata,
+gboolean g_typelib_validate (GTypelib  *metadata,
 			      GError    **error);
 
 
 G_END_DECLS
 
-#endif  /* __G_METADATA_H__ */
+#endif  /* __G_TYPELIB_H__ */
 
