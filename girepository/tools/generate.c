@@ -28,7 +28,7 @@
 #include <glib/gstdio.h>
 
 #include "girepository.h"
-#include "gmetadata.h"
+#include "gtypelib.h"
 
 /* FIXME: Avoid global */
 static gchar *output = NULL;
@@ -1103,14 +1103,14 @@ load_metadata (const gchar  *filename,
   GModule *handle; 
 
   handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
-  if (!g_module_symbol (handle, "_G_METADATA", (gpointer *) &metadata))
+  if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &metadata))
     {
       g_printerr ("Could not load metadata from '%s': %s\n", 
 		  filename, g_module_error ());
       return NULL;
     }
   
-  if (!g_module_symbol (handle, "_G_METADATA_SIZE", (gpointer *) &metadata_size))
+  if (!g_module_symbol (handle, "_G_TYPELIB_SIZE", (gpointer *) &metadata_size))
     {
       g_printerr ("Could not load metadata from '%s': %s\n", 
 		  filename, g_module_error ());
@@ -1134,7 +1134,7 @@ main (int argc, char *argv[])
   GError *error = NULL;
   gboolean needs_prefix;
   gint i;
-  GMetadata *data;
+  GTypelib *data;
   GOptionEntry options[] = 
     {
       { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw metadata", NULL },
@@ -1145,7 +1145,7 @@ main (int argc, char *argv[])
 
   g_type_init ();
 
-  g_metadata_check_sanity ();
+  g_typelib_check_sanity ();
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
@@ -1190,10 +1190,10 @@ main (int argc, char *argv[])
       else
 	needs_prefix = FALSE;
 
-      data = g_metadata_new_from_const_memory (metadata, len);
+      data = g_typelib_new_from_const_memory (metadata, len);
       {
         GError *error = NULL;
-        if (!g_metadata_validate (data, &error)) {
+        if (!g_typelib_validate (data, &error)) {
           g_printerr ("metadata not valid: %s\n", error->message);
           g_clear_error (&error);
         }
@@ -1201,7 +1201,7 @@ main (int argc, char *argv[])
       g_irepository_register (g_irepository_get_default (), data);
       write_repository (g_irepository_get_default (), needs_prefix);
       g_irepository_unregister (g_irepository_get_default (),
-                                g_metadata_get_namespace (data));
+                                g_typelib_get_namespace (data));
 
       if (dlhandle)
 	{
