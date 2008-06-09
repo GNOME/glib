@@ -1,6 +1,6 @@
 2008-06-07  Tor Lillqvist  <tml@novell.com>
 
-	* glib/gstdio.c (g_access): Define X_OK if not defined (MSVC).
+	* glib/gstdio.c (g_access): Define X_OK if necessary (MSVC).
 
 2008-05-30  Tor Lillqvist  <tml@novell.com>
 
