@@ -46,11 +46,13 @@ typedef unsigned short xdg_uint16_t;
 typedef unsigned int   xdg_uint32_t;
 
 #ifdef XDG_PREFIX
-#define _xdg_utf8_skip   XDG_ENTRY(utf8_skip)
-#define _xdg_utf8_to_ucs4   XDG_ENTRY(utf8_to_ucs4)
-#define _xdg_ucs4_to_lower   XDG_ENTRY(ucs4_to_lower)
-#define _xdg_utf8_validate   XDG_ENTRY(utf8_validate)
-#define _xdg_get_base_name   XDG_ENTRY(get_ase_name)
+#define _xdg_utf8_skip       XDG_RESERVED_ENTRY(utf8_skip)
+#define _xdg_utf8_to_ucs4    XDG_RESERVED_ENTRY(utf8_to_ucs4)
+#define _xdg_ucs4_to_lower   XDG_RESERVED_ENTRY(ucs4_to_lower)
+#define _xdg_utf8_validate   XDG_RESERVED_ENTRY(utf8_validate)
+#define _xdg_get_base_name   XDG_RESERVED_ENTRY(get_base_name)
+#define _xdg_convert_to_ucs4 XDG_RESERVED_ENTRY(convert_to_ucs4)
+#define _xdg_reverse_ucs4    XDG_RESERVED_ENTRY(reverse_ucs4)
 #endif
 
 #define SWAP_BE16_TO_LE16(val) (xdg_uint16_t)(((xdg_uint16_t)(val) << 8)|((xdg_uint16_t)(val) >> 8))
@@ -68,6 +70,8 @@ extern const char *const _xdg_utf8_skip;
 xdg_unichar_t  _xdg_utf8_to_ucs4  (const char    *source);
 xdg_unichar_t  _xdg_ucs4_to_lower (xdg_unichar_t  source);
 int            _xdg_utf8_validate (const char    *source);
+xdg_unichar_t *_xdg_convert_to_ucs4 (const char *source, int *len);
+void           _xdg_reverse_ucs4 (xdg_unichar_t *source, int len);
 const char    *_xdg_get_base_name (const char    *file_name);
 
 #endif /* __XDG_MIME_INT_H__ */

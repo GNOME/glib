@@ -1,3 +1,9 @@
+2008-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* xdgmime/*: Sync with upstream. This brings support for
+	glob weights, generic icons, and changes the cache format to 
+	version 1.1.
+
 2008-05-28  Michael Natterer  <mitch@imendio.com>
 
 	* Makefile.am: don't define G_DISABLE_SINGLE_INCLUDES, it's in
@@ -48,6 +54,13 @@
 2008-05-19  Hans Breuer  <hans@breuer.org>
 
 	* Makefile.am : EXTRA_DIST += makefile.msc
+
+2008-05-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* gcontenttype.h:
+	* gcontenttype.c: (g_content_type_from_mime_type):
+	New function to create a content type from a mime type. (#527175,
+	Milan Crha)
 
 2008-05-17  Matthias Clasen  <mclasen@redhat.com>
 

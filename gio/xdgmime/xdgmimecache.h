@@ -32,18 +32,20 @@
 typedef struct _XdgMimeCache XdgMimeCache;
 
 #ifdef XDG_PREFIX
-#define _xdg_mime_cache_new_from_file                 XDG_ENTRY(cache_new_from_file)
-#define _xdg_mime_cache_ref                           XDG_ENTRY(cache_ref)
-#define _xdg_mime_cache_unref                         XDG_ENTRY(cache_unref)
-#define _xdg_mime_cache_get_max_buffer_extents        XDG_ENTRY(cache_get_max_buffer_extents)
-#define _xdg_mime_cache_get_mime_type_for_data        XDG_ENTRY(cache_get_mime_type_for_data)
-#define _xdg_mime_cache_get_mime_type_for_file        XDG_ENTRY(cache_get_mime_type_for_file)
-#define _xdg_mime_cache_get_mime_type_from_file_name  XDG_ENTRY(cache_get_mime_type_from_file_name)
-#define _xdg_mime_cache_get_mime_types_from_file_name XDG_ENTRY(cache_get_mime_types_from_file_name)
-#define _xdg_mime_cache_list_mime_parents             XDG_ENTRY(cache_list_mime_parents)
-#define _xdg_mime_cache_mime_type_subclass            XDG_ENTRY(cache_mime_type_subclass)
-#define _xdg_mime_cache_unalias_mime_type             XDG_ENTRY(cache_unalias_mime_type)
-
+#define _xdg_mime_cache_new_from_file                 XDG_RESERVED_ENTRY(cache_new_from_file)
+#define _xdg_mime_cache_ref                           XDG_RESERVED_ENTRY(cache_ref)
+#define _xdg_mime_cache_unref                         XDG_RESERVED_ENTRY(cache_unref)
+#define _xdg_mime_cache_get_max_buffer_extents        XDG_RESERVED_ENTRY(cache_get_max_buffer_extents)
+#define _xdg_mime_cache_get_mime_type_for_data        XDG_RESERVED_ENTRY(cache_get_mime_type_for_data)
+#define _xdg_mime_cache_get_mime_type_for_file        XDG_RESERVED_ENTRY(cache_get_mime_type_for_file)
+#define _xdg_mime_cache_get_mime_type_from_file_name  XDG_RESERVED_ENTRY(cache_get_mime_type_from_file_name)
+#define _xdg_mime_cache_get_mime_types_from_file_name XDG_RESERVED_ENTRY(cache_get_mime_types_from_file_name)
+#define _xdg_mime_cache_list_mime_parents             XDG_RESERVED_ENTRY(cache_list_mime_parents)
+#define _xdg_mime_cache_mime_type_subclass            XDG_RESERVED_ENTRY(cache_mime_type_subclass)
+#define _xdg_mime_cache_unalias_mime_type             XDG_RESERVED_ENTRY(cache_unalias_mime_type)
+#define _xdg_mime_cache_get_icon                      XDG_RESERVED_ENTRY(cache_get_icon)
+#define _xdg_mime_cache_get_generic_icon              XDG_RESERVED_ENTRY(cache_get_generic_icon)
+#define _xdg_mime_cache_glob_dump                     XDG_RESERVED_ENTRY(cache_glob_dump)
 #endif
 
 extern XdgMimeCache **_caches;
@@ -72,5 +74,8 @@ int          _xdg_mime_cache_mime_type_subclass           (const char *mime_a,
 char       **_xdg_mime_cache_list_mime_parents		  (const char *mime);
 const char  *_xdg_mime_cache_unalias_mime_type            (const char *mime);
 int          _xdg_mime_cache_get_max_buffer_extents       (void);
+const char  *_xdg_mime_cache_get_icon                     (const char *mime);
+const char  *_xdg_mime_cache_get_generic_icon             (const char *mime);
+void         _xdg_mime_cache_glob_dump                    (void);
 
 #endif /* __XDG_MIME_CACHE_H__ */

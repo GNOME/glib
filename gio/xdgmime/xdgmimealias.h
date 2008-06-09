@@ -33,11 +33,11 @@
 typedef struct XdgAliasList XdgAliasList;
 
 #ifdef XDG_PREFIX
-#define _xdg_mime_alias_read_from_file        XDG_ENTRY(alias_read_from_file)
-#define _xdg_mime_alias_list_new              XDG_ENTRY(alias_list_new)
-#define _xdg_mime_alias_list_free             XDG_ENTRY(alias_list_free)
-#define _xdg_mime_alias_list_lookup           XDG_ENTRY(alias_list_lookup)
-#define _xdg_mime_alias_list_dump             XDG_ENTRY(alias_list_dump)
+#define _xdg_mime_alias_read_from_file        XDG_RESERVED_ENTRY(alias_read_from_file)
+#define _xdg_mime_alias_list_new              XDG_RESERVED_ENTRY(alias_list_new)
+#define _xdg_mime_alias_list_free             XDG_RESERVED_ENTRY(alias_list_free)
+#define _xdg_mime_alias_list_lookup           XDG_RESERVED_ENTRY(alias_list_lookup)
+#define _xdg_mime_alias_list_dump             XDG_RESERVED_ENTRY(alias_list_dump)
 #endif
 
 void          _xdg_mime_alias_read_from_file (XdgAliasList *list,

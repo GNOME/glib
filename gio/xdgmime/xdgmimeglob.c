@@ -52,6 +52,7 @@ struct XdgGlobHashNode
 {
   xdg_unichar_t character;
   const char *mime_type;
+  int weight;
   XdgGlobHashNode *next;
   XdgGlobHashNode *child;
 };
@@ -59,6 +60,7 @@ struct XdgGlobList
 {
   const char *data;
   const char *mime_type;
+  int weight;
   XdgGlobList *next;
 };
 
@@ -107,7 +109,8 @@ _xdg_glob_list_free (XdgGlobList *glob_list)
 static XdgGlobList *
 _xdg_glob_list_append (XdgGlobList *glob_list,
 		       void        *data,
-		       const char  *mime_type)
+		       const char  *mime_type,
+		       int          weight)
 {
   XdgGlobList *new_element;
   XdgGlobList *tmp_element;
@@ -115,6 +118,7 @@ _xdg_glob_list_append (XdgGlobList *glob_list,
   new_element = _xdg_glob_list_new ();
   new_element->data = data;
   new_element->mime_type = mime_type;
+  new_element->weight = weight;
   if (glob_list == NULL)
     return new_element;
 
@@ -126,23 +130,6 @@ _xdg_glob_list_append (XdgGlobList *glob_list,
 
   return glob_list;
 }
-
-#if 0
-static XdgGlobList *
-_xdg_glob_list_prepend (XdgGlobList *glob_list,
-			void        *data,
-			const char  *mime_type)
-{
-  XdgGlobList *new_element;
-
-  new_element = _xdg_glob_list_new ();
-  new_element->data = data;
-  new_element->next = glob_list;
-  new_element->mime_type = mime_type;
-
-  return new_element;
-}
-#endif
 
 /* XdgGlobHashNode
  */
@@ -167,7 +154,7 @@ _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
 
   printf ("%c", (char)glob_hash_node->character);
   if (glob_hash_node->mime_type)
-    printf (" - %s\n", glob_hash_node->mime_type);
+    printf (" - %s %d\n", glob_hash_node->mime_type, glob_hash_node->weight);
   else
     printf ("\n");
   if (glob_hash_node->child)
@@ -177,14 +164,15 @@ _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
 }
 
 static XdgGlobHashNode *
-_xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
-			    const char      *text,
-			    const char      *mime_type)
+_xdg_glob_hash_insert_ucs4 (XdgGlobHashNode *glob_hash_node,
+			    xdg_unichar_t   *text,
+			    const char      *mime_type,
+			    int              weight)
 {
   XdgGlobHashNode *node;
   xdg_unichar_t character;
 
-  character = _xdg_utf8_to_ucs4 (text);
+  character = text[0];
 
   if ((glob_hash_node == NULL) ||
       (character < glob_hash_node->character))
@@ -238,8 +226,8 @@ _xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
 	}
     }
 
-  text = _xdg_utf8_next_char (text);
-  if (*text == '\000')
+  text++;
+  if (*text == 0)
     {
       if (node->mime_type)
 	{
@@ -249,7 +237,7 @@ _xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
 	      int found_node = FALSE;
 	      
 	      child = node->child;
-	      while (child && child->character == '\0')
+	      while (child && child->character == 0)
 		{
 		  if (strcmp (child->mime_type, mime_type) == 0)
 		    {
@@ -262,8 +250,9 @@ _xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
 	      if (!found_node)
 		{
 		  child = _xdg_glob_hash_node_new ();
-		  child->character = '\000';
+		  child->character = 0;
 		  child->mime_type = strdup (mime_type);
+		  child->weight = weight;
 		  child->child = NULL;
 		  child->next = node->child;
 		  node->child = child;
@@ -273,20 +262,45 @@ _xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
       else
 	{
 	  node->mime_type = strdup (mime_type);
+	  node->weight = weight;
 	}
     }
   else
     {
-      node->child = _xdg_glob_hash_insert_text (node->child, text, mime_type);
+      node->child = _xdg_glob_hash_insert_ucs4 (node->child, text, mime_type, weight);
     }
   return glob_hash_node;
 }
 
+/* glob must be valid UTF-8 */
+static XdgGlobHashNode *
+_xdg_glob_hash_insert_text (XdgGlobHashNode *glob_hash_node,
+			    const char      *text,
+			    const char      *mime_type,
+			    int              weight)
+{
+  XdgGlobHashNode *node;
+  xdg_unichar_t *unitext;
+  int len;
+
+  unitext = _xdg_convert_to_ucs4 (text, &len);
+  _xdg_reverse_ucs4 (unitext, len);
+  node = _xdg_glob_hash_insert_ucs4 (glob_hash_node, unitext, mime_type, weight);
+  free (unitext);
+  return node;
+}
+
+typedef struct {
+  const char *mime;
+  int weight;
+} MimeWeight;
+
 static int
 _xdg_glob_hash_node_lookup_file_name (XdgGlobHashNode *glob_hash_node,
-				      const char      *file_name,
+				      xdg_unichar_t   *file_name,
+				      int              len,
 				      int              ignore_case,
-				      const char      *mime_types[],
+				      MimeWeight       mime_types[],
 				      int              n_mime_types)
 {
   int n;
@@ -296,41 +310,58 @@ _xdg_glob_hash_node_lookup_file_name (XdgGlobHashNode *glob_hash_node,
   if (glob_hash_node == NULL)
     return 0;
 
-  character = _xdg_utf8_to_ucs4 (file_name);
+  character = file_name[len - 1];
   if (ignore_case)
     character = _xdg_ucs4_to_lower(character);
 
   for (node = glob_hash_node; node && character >= node->character; node = node->next)
     {
       if (character == node->character)
-	{
-	  file_name = _xdg_utf8_next_char (file_name);
-	  if (*file_name == '\000')
+        {
+          len--;
+          n = 0;
+          if (len > 0) 
 	    {
-	      n = 0;
+	      n = _xdg_glob_hash_node_lookup_file_name (node->child,
+							file_name,
+							len,
+							ignore_case,
+							mime_types,
+							n_mime_types);
+	    }
+	  if (n == 0)
+	    {
               if (node->mime_type)
-	        mime_types[n++] = node->mime_type;
+                {
+	          mime_types[n].mime = node->mime_type;
+		  mime_types[n].weight = node->weight;
+		  n++; 
+                }
 	      node = node->child;
 	      while (n < n_mime_types && node && node->character == 0)
 		{
                   if (node->mime_type)
-		    mime_types[n++] = node->mime_type;
+		    {
+		      mime_types[n].mime = node->mime_type;
+		      mime_types[n].weight = node->weight;
+		      n++;
+		    }
 		  node = node->next;
 		}
-	    }
-	  else
-	    {
-	      n = _xdg_glob_hash_node_lookup_file_name (node->child,
-							file_name,
-							ignore_case,
-							mime_types,
-							n_mime_types);
 	    }
 	  return n;
 	}
     }
 
   return 0;
+}
+
+static int compare_mime_weight (const void *a, const void *b)
+{
+  const MimeWeight *aa = (const MimeWeight *)a;
+  const MimeWeight *bb = (const MimeWeight *)b;
+
+  return aa->weight - bb->weight;
 }
 
 int
@@ -340,14 +371,17 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 				 int          n_mime_types)
 {
   XdgGlobList *list;
-  const char *ptr;
-  char stopchars[128];
   int i, n;
-  XdgGlobHashNode *node;
+  MimeWeight mimes[10];
+  int n_mimes = 10;
+  xdg_unichar_t *ucs4;
+  int len;
 
   /* First, check the literals */
 
   assert (file_name != NULL && n_mime_types > 0);
+
+  n = 0;
 
   for (list = glob_hash->literal_list; list; list = list->next)
     {
@@ -358,37 +392,35 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 	}
     }
 
-  i = 0;
-  for (node = glob_hash->simple_node; node; node = node->next)
-    {
-      if (node->character < 128)
- 	stopchars[i++] = (char)node->character;
-    }
-  stopchars[i] = '\0';
- 
-  ptr = strpbrk (file_name, stopchars);
-  while (ptr)
-    {
-      n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ptr, FALSE,
-						mime_types, n_mime_types);
-      if (n > 0)
-	return n;
-      
-      n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ptr, TRUE,
-						mime_types, n_mime_types);
-      if (n > 0)
-	return n;
-      
-      ptr = strpbrk (ptr + 1, stopchars);
-    }
+  ucs4 = _xdg_convert_to_ucs4 (file_name, &len);
+  n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ucs4, len, FALSE,
+					    mimes, n_mimes);
+  if (n == 0)
+    n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ucs4, len, TRUE,
+					      mimes, n_mimes);
+  free(ucs4);
 
   /* FIXME: Not UTF-8 safe */
-  n = 0;
-  for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
+  if (n == 0)
     {
-      if (fnmatch ((const char *)list->data, file_name, 0) == 0)
-	mime_types[n++] = list->mime_type;
+      for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
+        {
+          if (fnmatch ((const char *)list->data, file_name, 0) == 0)
+	    {
+	      mimes[n].mime = list->mime_type;
+	      mimes[n].weight = list->weight;
+	      n++;
+	    }
+        }
     }
+
+  qsort (mimes, n, sizeof (MimeWeight), compare_mime_weight);
+
+  if (n_mime_types < n)
+    n = n_mime_types;
+
+  for (i = 0; i < n; i++)
+    mime_types[i] = mimes[i].mime;
 
   return n;
 }
@@ -442,7 +474,7 @@ _xdg_glob_determine_type (const char *glob)
 
   ptr = glob;
 
-  while (*ptr != '\000')
+  while (*ptr != '\0')
     {
       if (*ptr == '*' && first_char)
 	maybe_in_simple_glob = TRUE;
@@ -462,7 +494,8 @@ _xdg_glob_determine_type (const char *glob)
 void
 _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
 			    const char  *glob,
-			    const char  *mime_type)
+			    const char  *mime_type,
+			    int          weight)
 {
   XdgGlobType type;
 
@@ -474,13 +507,13 @@ _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
   switch (type)
     {
     case XDG_GLOB_LITERAL:
-      glob_hash->literal_list = _xdg_glob_list_append (glob_hash->literal_list, strdup (glob), strdup (mime_type));
+      glob_hash->literal_list = _xdg_glob_list_append (glob_hash->literal_list, strdup (glob), strdup (mime_type), weight);
       break;
     case XDG_GLOB_SIMPLE:
-      glob_hash->simple_node = _xdg_glob_hash_insert_text (glob_hash->simple_node, glob + 1, mime_type);
+      glob_hash->simple_node = _xdg_glob_hash_insert_text (glob_hash->simple_node, glob + 1, mime_type, weight);
       break;
     case XDG_GLOB_FULL:
-      glob_hash->full_list = _xdg_glob_list_append (glob_hash->full_list, strdup (glob), strdup (mime_type));
+      glob_hash->full_list = _xdg_glob_list_append (glob_hash->full_list, strdup (glob), strdup (mime_type), weight);
       break;
     }
 }
@@ -490,27 +523,34 @@ _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
 {
   XdgGlobList *list;
   printf ("LITERAL STRINGS\n");
-  if (glob_hash->literal_list == NULL)
+  if (!glob_hash || glob_hash->literal_list == NULL)
     {
       printf ("    None\n");
     }
   else
     {
       for (list = glob_hash->literal_list; list; list = list->next)
-	printf ("    %s - %s\n", (char *)list->data, list->mime_type);
+	printf ("    %s - %s %d\n", (char *)list->data, list->mime_type, list->weight);
     }
   printf ("\nSIMPLE GLOBS\n");
-  _xdg_glob_hash_node_dump (glob_hash->simple_node, 4);
+  if (!glob_hash || glob_hash->simple_node == NULL)
+    {
+      printf ("    None\n");
+    }
+  else
+    {
+      _xdg_glob_hash_node_dump (glob_hash->simple_node, 4);
+    }
 
   printf ("\nFULL GLOBS\n");
-  if (glob_hash->full_list == NULL)
+  if (!glob_hash || glob_hash->full_list == NULL)
     {
       printf ("    None\n");
     }
   else
     {
       for (list = glob_hash->full_list; list; list = list->next)
-	printf ("    %s - %s\n", (char *)list->data, list->mime_type);
+	printf ("    %s - %s %d\n", (char *)list->data, list->mime_type, list->weight);
     }
 }
 
@@ -531,16 +571,33 @@ _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
    * Blah */
   while (fgets (line, 255, glob_file) != NULL)
     {
-      char *colon;
+      char *colon, *colon2;
+      char *mimetype, *glob;
+      int weight;
+
       if (line[0] == '#')
 	continue;
 
       colon = strchr (line, ':');
       if (colon == NULL)
 	continue;
-      *(colon++) = '\000';
-      colon[strlen (colon) -1] = '\000';
-      _xdg_glob_hash_append_glob (glob_hash, colon, line);
+      *(colon++) = '\0';
+      colon[strlen (colon) -1] = '\0';
+      colon2 = strchr (colon, ':');
+      if (colon2) 
+        {
+          *(colon2++) = '\000';
+          weight = atoi (line);
+          mimetype = colon;
+          glob = colon2;
+        }
+      else 
+        {
+          weight = 50;
+          mimetype = line;
+          glob = colon;
+        }
+      _xdg_glob_hash_append_glob (glob_hash, glob, mimetype, weight);
     }
 
   fclose (glob_file);

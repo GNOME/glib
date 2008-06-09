@@ -33,12 +33,12 @@
 typedef struct XdgMimeMagic XdgMimeMagic;
 
 #ifdef XDG_PREFIX
-#define _xdg_mime_glob_read_from_file             XDG_ENTRY(glob_read_from_file)
-#define _xdg_mime_magic_new                       XDG_ENTRY(magic_new)
-#define _xdg_mime_magic_read_from_file            XDG_ENTRY(magic_read_from_file)
-#define _xdg_mime_magic_free                      XDG_ENTRY(magic_free)
-#define _xdg_mime_magic_get_buffer_extents        XDG_ENTRY(magic_get_buffer_extents)
-#define _xdg_mime_magic_lookup_data               XDG_ENTRY(magic_lookup_data)
+#define _xdg_mime_glob_read_from_file             XDG_RESERVED_ENTRY(glob_read_from_file)
+#define _xdg_mime_magic_new                       XDG_RESERVED_ENTRY(magic_new)
+#define _xdg_mime_magic_read_from_file            XDG_RESERVED_ENTRY(magic_read_from_file)
+#define _xdg_mime_magic_free                      XDG_RESERVED_ENTRY(magic_free)
+#define _xdg_mime_magic_get_buffer_extents        XDG_RESERVED_ENTRY(magic_get_buffer_extents)
+#define _xdg_mime_magic_lookup_data               XDG_RESERVED_ENTRY(magic_lookup_data)
 #endif
 
 
