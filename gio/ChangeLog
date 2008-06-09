@@ -1,5 +1,9 @@
 2008-06-09  Matthias Clasen  <mclasen@redhat.com>
 
+	* xdgmime/Makefile.am: Fix the build
+
+2008-06-09  Matthias Clasen  <mclasen@redhat.com>
+
 	* gcontenttype.c (g_content_type_get_icon): Use icons specified
 	in the shared mime database, if available.
 
