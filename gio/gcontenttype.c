@@ -659,12 +659,18 @@ GIcon *
 g_content_type_get_icon (const char *type)
 {
   char *mimetype_icon, *generic_mimetype_icon, *q;
-  char *icon_names[3];
+  char *xdg_mimetype_icon, *legacy_mimetype_icon;
+  char *icon_names[4];
+  int n;
   const char *p;
   GIcon *themed_icon;
   
   g_return_val_if_fail (type != NULL, NULL);
   
+  G_LOCK (gio_xdgmime);
+  xdg_mimetype_icon = g_strdup (xdg_mime_get_icon (type));
+  G_UNLOCK (gio_xdgmime);
+
   mimetype_icon = g_strdup (type);
   
   while ((q = strchr (mimetype_icon, '/')) != NULL)
@@ -673,21 +679,27 @@ g_content_type_get_icon (const char *type)
   p = strchr (type, '/');
   if (p == NULL)
     p = type + strlen (type);
+
+  /* Not all icons have migrated to the new icon theme spec, look for old names too */
+  legacy_mimetype_icon = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
   
   generic_mimetype_icon = g_malloc (p - type + strlen ("-x-generic") + 1);
   memcpy (generic_mimetype_icon, type, p - type);
   memcpy (generic_mimetype_icon + (p - type), "-x-generic", strlen ("-x-generic"));
   generic_mimetype_icon[(p - type) + strlen ("-x-generic")] = 0;
   
-  icon_names[0] = mimetype_icon;
-  /* Not all icons have migrated to the new icon theme spec, look for old names too */
-  icon_names[1] = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
-  icon_names[2] = generic_mimetype_icon;
+  if (xdg_mimetype_icon)
+    icon_names[n++] = xdg_mimetype_icon;
+
+  icon_names[n++] = mimetype_icon;
+  icon_names[n++] = legacy_mimetype_icon;
+  icon_names[n++] = generic_mimetype_icon;
   
-  themed_icon = g_themed_icon_new_from_names (icon_names, 3);
+  themed_icon = g_themed_icon_new_from_names (icon_names, n);
   
+  g_free (xdg_mimetype_icon);
   g_free (mimetype_icon);
-  g_free (icon_names[1]);
+  g_free (legacy_mimetype_icon);
   g_free (generic_mimetype_icon);
   
   return themed_icon;
@@ -845,7 +857,7 @@ g_content_type_guess (const char   *filename,
       
       if (mimetype == NULL)
 	{
-	  /* Conflicts, and sniffed type was no help or not there. guess on the first one */
+	  /* Conflicts, and sniffed type was no help or not there. Guess on the first one */
 	  mimetype = g_strdup (name_mimetypes[0]);
 	  if (result_uncertain)
 	    *result_uncertain = TRUE;
