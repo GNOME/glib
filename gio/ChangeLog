@@ -1,3 +1,8 @@
+2008-06-10  Tor Lillqvist  <tml@novell.com>
+
+	* gcontenttype.c (g_content_type_can_be_executable) [Win32]: Add
+	TODO comment.
+
 2008-06-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* xdgmime/Makefile.am: Fix the build

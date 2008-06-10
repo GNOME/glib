@@ -203,6 +203,18 @@ g_content_type_can_be_executable (const char *type)
       strcmp (type, ".com") == 0 ||
       strcmp (type, ".bat") == 0)
     return TRUE;
+
+  /* TODO: Also look at PATHEXT, which lists the extensions for
+   * "scripts" in addition to those for true binary executables.
+   *
+   * (PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH for me
+   * right now, for instance). And in a sense, all associated file
+   * types are "executable" on Windows... You can just type foo.jpg as
+   * a command name in cmd.exe, and it will run the application
+   * associated with .jpg. Hard to say what this API actually means
+   * with "executable".
+   */
+
   return FALSE;
 }
 
