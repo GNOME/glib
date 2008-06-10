@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-27 16:12-0400\n"
-"PO-Revision-Date: 2008-02-24 19:10+0700\n"
+"PO-Revision-Date: 2008-06-10 16:05+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1395,9 +1395,9 @@ msgid "Unable to trash file: %s"
 msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
 
 #: gio/glocalfile.c:1997
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating directory: %s"
-msgstr "เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี: %s"
 
 #: gio/glocalfile.c:2026
 #, c-format
@@ -1641,33 +1641,32 @@ msgid "Source stream is already closed"
 msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
 
 #: gio/gthemedicon.c:206
-#, fuzzy
 msgid "name"
-msgstr "ไม่มีชื่อ"
+msgstr "ชื่อ"
 
 #: gio/gthemedicon.c:207
-#, fuzzy
 msgid "The name of the icon"
-msgstr "ชื่อโฮสต์ของ URI '%s' ใช้ไม่ได้"
+msgstr "ชื่อของไอคอน"
 
 #: gio/gthemedicon.c:218
-#, fuzzy
 msgid "names"
-msgstr "ไม่มีชื่อ"
+msgstr "รายชื่อ"
 
 #: gio/gthemedicon.c:219
 msgid "An array containing the icon names"
-msgstr ""
+msgstr "แอร์เรย์เก็บรายชื่อของไอคอน"
 
 #: gio/gthemedicon.c:244
 msgid "use default fallbacks"
-msgstr ""
+msgstr "ใช้ fallback ปริยาย"
 
 #: gio/gthemedicon.c:245
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
+"กำหนดว่าจะใช้ fallback ปริยายซึ่งหาได้โดยตัดท้ายชื่อที่อักขระ '-' หรือไม่ ถ้ามีหลายชื่อ "
+"จะใช้เพียงชื่อแรกเท่านั้น"
 
 #: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
 #: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289
