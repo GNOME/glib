@@ -1,3 +1,8 @@
+2008-06-10  Michael Natterer  <mitch@imendio.com>
+
+	* gcontenttype.c (g_content_type_get_icon): fix SEGV by not using
+	uninitialized memory as array index.
+
 2008-06-10  Tor Lillqvist  <tml@novell.com>
 
 	* gcontenttype.c (g_content_type_can_be_executable)

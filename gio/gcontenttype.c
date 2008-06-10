@@ -676,7 +676,7 @@ g_content_type_get_icon (const char *type)
   char *mimetype_icon, *generic_mimetype_icon, *q;
   char *xdg_mimetype_icon, *legacy_mimetype_icon;
   char *icon_names[4];
-  int n;
+  int n = 0;
   const char *p;
   GIcon *themed_icon;
   
