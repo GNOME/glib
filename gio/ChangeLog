@@ -1,5 +1,12 @@
 2008-06-10  Matthias Clasen <mclasen@redhat.com>
 
+	ug 537392 – Additional colon in xattr name
+
+	* glocalfileinfo.c (set_xattr): Skip the second colon of the prefix,
+	too. Reported by  Alessandro Morandi 
+
+2008-06-10  Matthias Clasen <mclasen@redhat.com>
+
 	Bug 536641 – Filesystem querying in gio does not list AFS and autofs
 	file systems
 
