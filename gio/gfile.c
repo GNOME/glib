@@ -5411,6 +5411,7 @@ g_file_replace_contents (GFile             *file,
   GFileOutputStream *out;
   gsize pos, remainder;
   gssize res;
+  gboolean ret;
 
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (contents != NULL, FALSE);
@@ -5436,18 +5437,19 @@ g_file_replace_contents (GFile             *file,
     {
       /* Ignore errors on close */
       g_output_stream_close (G_OUTPUT_STREAM (out), cancellable, NULL);
-      
+      g_object_unref (out);
+
       /* error is set already */
       return FALSE;
     }
   
-  if (!g_output_stream_close (G_OUTPUT_STREAM (out), cancellable, error))
-    return FALSE;
+  ret = g_output_stream_close (G_OUTPUT_STREAM (out), cancellable, error);
+  g_object_unref (out);
 
   if (new_etag)
     *new_etag = g_file_output_stream_get_etag (out);
-  
-  return TRUE;
+
+  return ret;
 }
 
 typedef struct {
