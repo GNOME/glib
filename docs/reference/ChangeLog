@@ -1,3 +1,8 @@
+2008-06-10 14:06:34  Tim Janik  <timj@imendio.com>
+
+	* gobject/tmpl/gtype.sgml: fixed documentation regarding type checking
+	macros that do and do not issue warnings.
+
 2008-05-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-docs.sgml:
