@@ -1,3 +1,9 @@
+2008-06-10 13:34:01  Tim Janik  <timj@imendio.com>
+
+	* tests/threadtests.c: added race condition tester from Michael Meeks
+	with a couple fixes so it's not triggering development warnings. From:
+	Bug 537555 - GObject instantiation not thread safe ...
+
 2008-06-10 13:15:29  Tim Janik  <timj@imendio.com>
 
 	* gtype.c (g_type_class_ref): fixed race condition where references to
