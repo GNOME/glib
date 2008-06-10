@@ -11,7 +11,7 @@
 	Bug 528600 – g_dummy_file_get_parent("scheme://example.com/")
 
 	* gdummyfile.c (g_dummy_file_get_parent): Return NULL if there
-	is no parent.  (Owen Taylor, patch by Christian Persch)
+	is no parent.  (Owen Taylor, patch by Christian Neumair)
 	
 2008-06-10  Paolo Borelli  <pborelli@katamail.com>
 
