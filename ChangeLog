@@ -1,3 +1,11 @@
+2008-06-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 536158 – also bump GHashTable version when a node is removed via
+	g_hash_table_iter_remove()/g_hash_table_iter_steal()
+
+	* glib/ghash.c (iter_remove_or_steal): Bump the hash table 
+	version. Patch by Jean-Yves Lefort
+
 2008-06-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_access): Define X_OK if necessary (MSVC).
