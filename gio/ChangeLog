@@ -1,7 +1,7 @@
 2008-06-10  Tor Lillqvist  <tml@novell.com>
 
-	* gcontenttype.c (g_content_type_can_be_executable) [Win32]: Add
-	TODO comment.
+	* gcontenttype.c (g_content_type_can_be_executable)
+	(g_content_type_get_icon) [Win32]: Add TODO comments.
 
 2008-06-09  Matthias Clasen  <mclasen@redhat.com>
 

@@ -190,6 +190,9 @@ g_content_type_get_icon (const char *type)
      <type>: <value>
      REG_EXPAND_SZ: %SystemRoot%\System32\Wscript.exe,3
      REG_SZ: shimgvw.dll,3
+
+     gtkfilesystemwin32.c in gtk-2-12 is probably a good place to look
+     for inspiration.
   */
   return NULL;
 }
