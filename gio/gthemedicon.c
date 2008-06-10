@@ -368,7 +368,8 @@ g_themed_icon_get_names (GThemedIcon *icon)
  * </para></note>
  */
 void
-g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
+g_themed_icon_append_name (GThemedIcon *icon, 
+                           const char  *iconname)
 {
   guint num_names;
 
@@ -379,6 +380,44 @@ g_themed_icon_append_name (GThemedIcon *icon, const char *iconname)
   icon->names = g_realloc (icon->names, sizeof (char*) * (num_names + 2));
   icon->names[num_names] = g_strdup (iconname);
   icon->names[num_names + 1] = NULL;
+
+  g_object_notify (G_OBJECT (icon), "names");
+}
+
+/**
+ * g_themed_icon_prepend_name:
+ * @icon: a #GThemedIcon
+ * @iconname: name of icon to prepend to list of icons from within @icon.
+ *
+ * Prepend a name to the list of icons from within @icon.
+ *
+ * <note><para>
+ * Note that doing so invalidates the hash computed by prior calls
+ * to g_icon_hash().
+ * </para></note>
+ *
+ * Since: 2.18
+ */
+void
+g_themed_icon_prepend_name (GThemedIcon *icon, 
+                            const char  *iconname)
+{
+  guint num_names;
+  gchar **names;
+  gint i;
+
+  g_return_if_fail (G_IS_THEMED_ICON (icon));
+  g_return_if_fail (iconname != NULL);
+
+  num_names = g_strv_length (icon->names);
+  names = g_new (char*, num_names + 2);
+  for (i = 0; icon->names[i]; i++)
+    names[i + 1] = icon->names[i];
+  names[0] = g_strdup (iconname);
+  names[num_names + 1] = NULL;
+
+  g_free (icon->names);
+  icon->names = names;
 
   g_object_notify (G_OBJECT (icon), "names");
 }

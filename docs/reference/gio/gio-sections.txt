@@ -364,6 +364,7 @@ GThemedIcon
 g_themed_icon_new
 g_themed_icon_new_from_names
 g_themed_icon_new_with_default_fallbacks
+g_themed_icon_prepend_name
 g_themed_icon_append_name
 <SUBSECTION Standard>
 GThemedIconClass

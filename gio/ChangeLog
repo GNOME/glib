@@ -1,6 +1,12 @@
 2008-06-10  Matthias Clasen <mclasen@redhat.com>
 
-	ug 537392 – Additional colon in xattr name
+	* gio.symbols:
+	* gthemedicon.[hc] (g_themed_icon_prepend_name): New function,
+	to add a name to the front of the list.
+
+2008-06-10  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 537392 – Additional colon in xattr name
 
 	* glocalfileinfo.c (set_xattr): Skip the second colon of the prefix,
 	too. Reported by  Alessandro Morandi 
