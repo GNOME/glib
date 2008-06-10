@@ -1,5 +1,9 @@
 2008-06-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/tmpl/gparamspec.sgml: Document G_PARAM_STATIC_NICK
+
+2008-06-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/gio-sections.txt: Add g_themed_icon_prepend_name
 
 2008-06-10 14:06:34  Tim Janik  <timj@imendio.com>
