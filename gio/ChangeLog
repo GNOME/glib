@@ -1,5 +1,14 @@
 2008-06-10  Matthias Clasen <mclasen@redhat.com>
 
+	Bug 537546 – 'desktop' shortcut in file chooser looks like a generic
+	folder
+	
+	* glocalfileinfo.c (_g_local_file_info_get): Return user-desktop
+	as icon for the desktop directory, also make user-home and
+	user-desktop the preferred icons.
+
+2008-06-10  Matthias Clasen <mclasen@redhat.com>
+
 	* gio.symbols:
 	* gthemedicon.[hc] (g_themed_icon_prepend_name): New function,
 	to add a name to the front of the list.

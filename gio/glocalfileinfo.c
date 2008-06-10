@@ -1570,19 +1570,24 @@ _g_local_file_info_get (const char             *basename,
                 {
                   if (G_IS_THEMED_ICON (icon))
                     {
-                      const char *type_icon;
+                      const char *preferred_icon = NULL;
+                      const char *type_icon = NULL;
 
-                      /* TODO: Special case desktop dir? That could be expensive with xdg dirs... */
                       if (strcmp (path, g_get_home_dir ()) == 0)
-                        type_icon = "user-home";
-                      else if (S_ISDIR (statbuf.st_mode)) 
+                        preferred_icon = "user-home";
+                      else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0) 
+                        preferred_icon = "user-desktop";
+                      if (S_ISDIR (statbuf.st_mode)) 
                         type_icon = "folder";
                       else if (statbuf.st_mode & S_IXUSR)
                         type_icon = "application-x-executable";
                       else
                         type_icon = "text-x-generic";
 
-                      g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
+                      if (preferred_icon)
+                        g_themed_icon_prepend_name (G_THEMED_ICON (icon), preferred_icon);
+                      if (type_icon) 
+                        g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
                     }
 
                   g_file_info_set_icon (info, icon);
