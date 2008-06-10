@@ -2389,7 +2389,8 @@ g_type_class_ref (GType type)
   G_WRITE_UNLOCK (&type_rw_lock);
 
   g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
-  /* here, we either have node->data->class.class == NULL, or
+  /* here, we either have node->data->class.class == NULL, or a recursive
+   * call to g_type_class_ref() with a partly initialized class, or
    * node->data->class.init_state == INITIALIZED, because any
    * concurrently running initialization was guarded by class_init_rec_mutex.
    */
