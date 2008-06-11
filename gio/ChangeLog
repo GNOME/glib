@@ -1,5 +1,10 @@
 2008-06-11  Matthias Clasen <mclasen@redhat.com>
 
+	* glocalfile.c (g_local_file_enumerate_children): Revert
+	an unintended change.
+
+2008-06-11  Matthias Clasen <mclasen@redhat.com>
+
 	* gfile.c (g_file_replace_contents): Don't unref before the last use.
 
 2008-06-10  Matthias Clasen <mclasen@redhat.com>
