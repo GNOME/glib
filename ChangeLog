@@ -1,5 +1,14 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 455215 – g_get_user_special_dir: no reference about
+	G_USER_DIRECTORY_DOWNLOAD fallback to $HOME/Desktop if 
+	xdg-user-dirs is not in use
+
+	* glib/gutils.c (g_get_user_special_dir): Improve the docs.
+	Proposed by Luca Ferretti
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 498732 – g_key_file_to_data cannot fail
 
 	* glib/gkeyfile.c (g_key_file_to_data): Improve the docs.

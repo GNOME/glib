@@ -2446,6 +2446,9 @@ load_user_special_dirs (void)
  * Returns the full path of a special directory using its logical id.
  *
  * On Unix this is done using the XDG special user directories.
+ * For compatibility with existing practise, %G_USER_DIRECTORY_DESKTOP
+ * falls back to <filename>$HOME/Desktop</filename> when XDG special
+ * user directories have not been set up. 
  *
  * Depending on the platform, the user might be able to change the path
  * of the special directory without requiring the session to restart; GLib
