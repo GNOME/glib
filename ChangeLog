@@ -1,5 +1,14 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 338162 – [PATCH] Use po/LINGUAS
+
+	* po/LINGUAS: New file
+	* po/Makefile.in.in: Dist LINGUAS
+	* configure.in: Use po/LINUAS
+	Patch by Thomas Andersen
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 314453 – Nautilus crashes in Solaris when browsing the attached
 	file
 
