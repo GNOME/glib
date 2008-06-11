@@ -1,5 +1,12 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 537260 – Doc bug in G_TYPE_INSTANCE_GET_CLASS()
+
+	* gobject/tmpl/gtype.sgml: Fix unclear parameter descriptions.
+	Pointed out by Behdad Esfahbod
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 530527 – Misprint in the description of the interface
 	g_cclosure_marshal_VOID__FLAGS
 

@@ -480,8 +480,8 @@ This macro should only be used in type implementations.
 </para>
 
 @instance: 	Location of the #GTypeInstance structure.
-@g_type: 	The anchestor type of the class to be returned.
-@c_type: 	The corresponding C type of @g_type.
+@g_type: 	The #GType of the class to be returned.
+@c_type: 	The C type of the class structure.
 
 
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_INTERFACE ##### -->
@@ -493,8 +493,8 @@ This macro should only be used in type implementations.
 </para>
 
 @instance: Location of the #GTypeInstance structure.
-@g_type: The interface type to be returned.
-@c_type: The corresponding C type of @g_type.
+@g_type: The #GType of the interface to be returned.
+@c_type: The C type of the interface structure.
 
 
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_PRIVATE ##### -->
