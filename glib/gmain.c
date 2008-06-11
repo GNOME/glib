@@ -4003,8 +4003,8 @@ g_child_watch_source_init (void)
 
 /**
  * g_child_watch_source_new:
- * @pid: process id of a child process to watch. On Windows, a HANDLE
- * for the process to watch (which actually doesn't have to be a child).
+ * @pid: process to watch. On POSIX the pid of a child process. On
+ * Windows a handle for a process (which doesn't have to be a child).
  * 
  * Creates a new child_watch source.
  *
@@ -4054,7 +4054,8 @@ g_child_watch_source_new (GPid pid)
  * g_child_watch_add_full:
  * @priority: the priority of the idle source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
- * @pid:      process id of a child process to watch
+ * @pid:      process to watch. On POSIX the pid of a child process. On
+ * Windows a handle for a process (which doesn't have to be a child).
  * @function: function to call
  * @data:     data to pass to @function
  * @notify:   function to call when the idle is removed, or %NULL
@@ -4103,7 +4104,8 @@ g_child_watch_add_full (gint            priority,
 
 /**
  * g_child_watch_add:
- * @pid:      process id of a child process to watch
+ * @pid:      process id to watch. On POSIX the pid of a child process. On
+ * Windows a handle for a process (which doesn't have to be a child).
  * @function: function to call
  * @data:     data to pass to @function
  * 

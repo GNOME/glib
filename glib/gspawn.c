@@ -84,17 +84,25 @@ g_spawn_error_quark (void)
  * @flags: flags from #GSpawnFlags
  * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
- * @child_pid: return location for child process ID, or %NULL
+ * @child_pid: return location for child process reference, or %NULL
  * @error: return location for error
  * 
  * See g_spawn_async_with_pipes() for a full description; this function
  * simply calls the g_spawn_async_with_pipes() without any pipes.
+ *
+ * You should call g_spawn_close_pid() on the returned child process
+ * reference when you don't need it any more.
  * 
  * <note><para>
  * If you are writing a GTK+ application, and the program you 
  * are spawning is a graphical application, too, then you may
  * want to use gdk_spawn_on_screen() instead to ensure that 
  * the spawned program opens its windows on the right screen.
+ * </para></note>
+ *
+ * <note><para> Note that the returned @child_pid on Windows is a
+ * handle to the child process and not its identifier. Process handles
+ * and process identifiers are different concepts on Windows.
  * </para></note>
  *
  * Return value: %TRUE on success, %FALSE if error is set
@@ -485,6 +493,10 @@ g_spawn_sync (const gchar          *working_directory,
  * vector elements that need it before calling the C runtime
  * spawn() function.
  *
+ * The returned @child_pid on Windows is a handle to the child
+ * process, not its identifier. Process handles and process
+ * identifiers are different concepts on Windows.
+ *
  * @envp is a %NULL-terminated array of strings, where each string
  * has the form <literal>KEY=VALUE</literal>. This will become
  * the child's environment. If @envp is %NULL, the child inherits its
@@ -577,7 +589,7 @@ g_spawn_sync (const gchar          *working_directory,
  * and @standard_error will not be filled with valid values.
  *
  * If @child_pid is not %NULL and an error does not occur then the returned
- * pid must be closed using g_spawn_close_pid().
+ * process reference must be closed using g_spawn_close_pid().
  *
  * <note><para>
  * If you are writing a GTK+ application, and the program you 
@@ -1641,9 +1653,9 @@ g_execute (const gchar *file,
 
 /**
  * g_spawn_close_pid:
- * @pid: The process identifier to close
+ * @pid: The process reference to close
  *
- * On some platforms, notably WIN32, the #GPid type represents a resource
+ * On some platforms, notably Windows, the #GPid type represents a resource
  * which must be closed to prevent resource leaking. g_spawn_close_pid()
  * is provided for this purpose. It should be used on all platforms, even
  * though it doesn't do anything under UNIX.
