@@ -1,3 +1,8 @@
+2008-06-11  A. Walton  <awalton@gnome.org>
+
+	* tests/g-file.c (test_g_file_new_null):
+	Fix broken test case.
+
 2008-06-11  Matthias Clasen <mclasen@redhat.com>
 
 	* pltcheck.sh: We use g_clear_error now.

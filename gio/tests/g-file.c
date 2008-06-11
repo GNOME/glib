@@ -69,7 +69,7 @@ test_g_file_new_null (void)
   i = 0;
   while (uris[i])
     {
-      file = g_file_new_for_uri (paths[i++]);
+      file = g_file_new_for_uri (uris[i++]);
       g_assert (file != NULL);
       g_object_unref(file);
     }
