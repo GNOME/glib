@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 528172 – gtk_signal_handlers_unblock_* functions return value
+	amount of matched signals, not amount of actually unblocked.
+
+	* gobject/tmpl/signals.sgml: Fix documentation of return value
+	of functions that operate on matched signal handlers.
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528717 – Misprint in the description of the parameter 
 	'type_id' for the interface g_type_register_fundamental
 

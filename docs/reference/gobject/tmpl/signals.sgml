@@ -676,7 +676,7 @@ otherwise.
 @closure: The closure the handlers will invoke.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The amount of handlers that got blocked.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### FUNCTION g_signal_handlers_unblock_matched ##### -->
@@ -699,7 +699,7 @@ not currently blocked.
 @closure: The closure the handlers will invoke.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The amount of handlers that got unblocked.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### FUNCTION g_signal_handlers_disconnect_matched ##### -->
@@ -721,7 +721,7 @@ handlers otherwise.
 @closure: The closure the handlers will invoke.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The amount of handlers that got disconnected.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### FUNCTION g_signal_handler_is_connected ##### -->
@@ -742,7 +742,7 @@ Blocks all handlers on an instance that match @func and @data.
 @instance: The instance to block handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The number of handlers that got blocked.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### MACRO g_signal_handlers_unblock_by_func ##### -->
@@ -753,7 +753,7 @@ Unblocks all handlers on an instance that match @func and @data.
 @instance: The instance to unblock handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The number of handlers that got unblocked.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### MACRO g_signal_handlers_disconnect_by_func ##### -->
@@ -764,7 +764,7 @@ Disconnects all handlers on an instance that match @func and @data.
 @instance: The instance to remove handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
-@Returns: The number of handlers that got disconnected.
+@Returns: The number of handlers that matched.
 
 
 <!-- ##### FUNCTION g_signal_has_handler_pending ##### -->
