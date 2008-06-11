@@ -1,3 +1,13 @@
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 528716 – Misprint in the description of the parameter 
+	'iface_data' for the callback types GInterfaceInitFunc and 
+	GInterfaceFinalizeFunc
+
+	* gobject/tmpl/gtype.sgml: Fix description of parameters
+	for GInterface{Init/Finalize}Func.
+	Pointed out by Areg Beketovski
+
 2008-06-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gparamspec.sgml: Document G_PARAM_STATIC_NICK

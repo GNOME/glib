@@ -1161,7 +1161,7 @@ allocate any resources required by the interface.
 </para>
 
 @g_iface: 	The interface structure to initialize.
-@iface_data: 	The @class_data supplied via the #GTypeInfo structure.
+@iface_data: 	The @interface_data supplied via the #GInterfaceInfo structure.
 
 
 <!-- ##### USER_FUNCTION GInterfaceFinalizeFunc ##### -->
@@ -1172,7 +1172,7 @@ allocated by the corresponding GInterfaceInitFunc() function.
 </para>
 
 @g_iface: 	The interface structure to finalize.
-@iface_data: 	The @class_data supplied via the #GTypeInfo structure.
+@iface_data: 	The @interface_data supplied via the #GInterfaceInfo structure.
 
 
 <!-- ##### USER_FUNCTION GTypeClassCacheFunc ##### -->
