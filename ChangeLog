@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 502511 – g_assert_cmphex prints invalid message
+
+	* glib/gtestutils.c (g_assertion_message_cmpnum): Actually print
+	hex numbers in hex. 
+	Pointed out by Tor Lillqvist
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 338162 – [PATCH] Use po/LINGUAS
 
 	* po/LINGUAS: New file
