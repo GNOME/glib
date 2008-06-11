@@ -653,8 +653,7 @@ A marshaller for a #GCClosure with a callback of type
 <!-- ##### FUNCTION g_cclosure_marshal_VOID__FLAGS ##### -->
 <para>
 A marshaller for a #GCClosure with a callback of type
-<literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes a flags type
-denotes a flags type.
+<literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes a flags type.
 </para>
 
 @closure: the #GClosure to which the marshaller belongs

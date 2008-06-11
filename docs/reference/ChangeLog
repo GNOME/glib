@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 530527 – Misprint in the description of the interface
+	g_cclosure_marshal_VOID__FLAGS
+
+	* gobject/tmpl/gclosure.sgml: Fix a duplication.
+	Noticed by Areg Beketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 530526 – Misprint in the description of the fields 'class_init' 
 	and 'class_finalize' of the structure GTypeInfo
 
