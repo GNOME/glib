@@ -1278,7 +1278,7 @@ type and its instances.  The value of @flags determines additional
 characteristics of the fundamental type.
 </para>
 
-@type_id: 	A predefined #GTypeFundamentals value.
+@type_id: 	A predefined type identifier.
 @type_name: 	0-terminated string used as the name of the new type.
 @info: 		The #GTypeInfo structure for this type.
 @finfo: 		The #GTypeFundamentalInfo structure for this type.

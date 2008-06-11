@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 528717 – Misprint in the description of the parameter 
+	'type_id' for the interface g_type_register_fundamental
+
+	* gobject/tmpl/gtype.sgml: Remove references to GTypeFundamentals
+	Pointed out by Areg Beketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528716 – Misprint in the description of the parameter 
 	'iface_data' for the callback types GInterfaceInitFunc and 
 	GInterfaceFinalizeFunc
