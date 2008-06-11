@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 530526 – Misprint in the description of the fields 'class_init' 
+	and 'class_finalize' of the structure GTypeInfo
+
+	* gobject/tmpl/gtype.sgml: Improve GTypeInfo docs
+	Proposed by Areg Beketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528719 – Improvement to the documentation of the
 	"g_object_connect" interface
 
