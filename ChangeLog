@@ -1,3 +1,10 @@
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 498732 – g_key_file_to_data cannot fail
+
+	* glib/gkeyfile.c (g_key_file_to_data): Improve the docs.
+	Proposed by Christian Persch
+
 2008-06-11  Ross Burton  <ross@burtonini.com>
 
 	Bug 511367 - add g_file_make_directory_with_parents.

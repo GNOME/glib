@@ -1010,6 +1010,9 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
  *
  * This function outputs @key_file as a string.  
  *
+ * Note that this function never reports an error,
+ * so it is safe to pass %NULL as @error.
+ *
  * Return value: a newly allocated string holding
  *   the contents of the #GKeyFile 
  *
