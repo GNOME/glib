@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 528714 – Misprint in the description of the interface 
+	g_param_spec_flags
+
+	* gobject/tmpl/param_value_types.sgml: Fix a typo.
+	Pointed out by Areg Beketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 537260 – Doc bug in G_TYPE_INSTANCE_GET_CLASS()
 
 	* gobject/tmpl/gtype.sgml: Fix unclear parameter descriptions.

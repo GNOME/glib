@@ -991,7 +991,7 @@ properties.
 
 <!-- ##### FUNCTION g_param_spec_flags ##### -->
 <para>
-Creates a new #GParamSpecEnum instance specifying a %G_TYPE_FLAGS
+Creates a new #GParamSpecFlags instance specifying a %G_TYPE_FLAGS
 property.
 </para>
 <para> 
