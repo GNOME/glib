@@ -1,5 +1,13 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 528719 – Improvement to the documentation of the
+	"g_object_connect" interface
+
+	* gobject/tmpl/objects.sgml: Improve the documentation of
+	g_object_connect. Proposed by Areg Bketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528172 – gtk_signal_handlers_unblock_* functions return value
 	amount of matched signals, not amount of actually unblocked.
 
