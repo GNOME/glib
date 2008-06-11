@@ -227,122 +227,6 @@ g_io_win32_get_debug_flag (void)
   return (getenv ("G_IO_WIN32_DEBUG") != NULL);
 }
 
-static char *
-winsock_error_message (int number)
-{
-  static char unk[100];
-
-  switch (number) {
-  case WSAEINTR:
-    return "Interrupted function call";
-  case WSAEACCES:
-    return "Permission denied";
-  case WSAEFAULT:
-    return "Bad address";
-  case WSAEINVAL:
-    return "Invalid argument";
-  case WSAEMFILE:
-    return "Too many open sockets";
-  case WSAEWOULDBLOCK:
-    return "Resource temporarily unavailable";
-  case WSAEINPROGRESS:
-    return "Operation now in progress";
-  case WSAEALREADY:
-    return "Operation already in progress";
-  case WSAENOTSOCK:
-    return "Socket operation on nonsocket";
-  case WSAEDESTADDRREQ:
-    return "Destination address required";
-  case WSAEMSGSIZE:
-    return "Message too long";
-  case WSAEPROTOTYPE:
-    return "Protocol wrong type for socket";
-  case WSAENOPROTOOPT:
-    return "Bad protocol option";
-  case WSAEPROTONOSUPPORT:
-    return "Protocol not supported";
-  case WSAESOCKTNOSUPPORT:
-    return "Socket type not supported";
-  case WSAEOPNOTSUPP:
-    return "Operation not supported on transport endpoint";
-  case WSAEPFNOSUPPORT:
-    return "Protocol family not supported";
-  case WSAEAFNOSUPPORT:
-    return "Address family not supported by protocol family";
-  case WSAEADDRINUSE:
-    return "Address already in use";
-  case WSAEADDRNOTAVAIL:
-    return "Address not available";
-  case WSAENETDOWN:
-    return "Network interface is not configured";
-  case WSAENETUNREACH:
-    return "Network is unreachable";
-  case WSAENETRESET:
-    return "Network dropped connection on reset";
-  case WSAECONNABORTED:
-    return "Software caused connection abort";
-  case WSAECONNRESET:
-    return "Connection reset by peer";
-  case WSAENOBUFS:
-    return "No buffer space available";
-  case WSAEISCONN:
-    return "Socket is already connected";
-  case WSAENOTCONN:
-    return "Socket is not connected";
-  case WSAESHUTDOWN:
-    return "Can't send after socket shutdown";
-  case WSAETIMEDOUT:
-    return "Connection timed out";
-  case WSAECONNREFUSED:
-    return "Connection refused";
-  case WSAEHOSTDOWN:
-    return "Host is down";
-  case WSAEHOSTUNREACH:
-    return "Host is unreachable";
-  case WSAEPROCLIM:
-    return "Too many processes";
-  case WSASYSNOTREADY:
-    return "Network subsystem is unavailable";
-  case WSAVERNOTSUPPORTED:
-    return "Winsock.dll version out of range";
-  case WSANOTINITIALISED:
-    return "Successful WSAStartup not yet performed";
-  case WSAEDISCON:
-    return "Graceful shutdown in progress";
-  case WSATYPE_NOT_FOUND:
-    return "Class type not found";
-  case WSAHOST_NOT_FOUND:
-    return "Host not found";
-  case WSATRY_AGAIN:
-    return "Nonauthoritative host not found";
-  case WSANO_RECOVERY:
-    return "This is a nonrecoverable error";
-  case WSANO_DATA:
-    return "Valid name, no data record of requested type";
-  case WSA_INVALID_HANDLE:
-    return "Specified event object handle is invalid";
-  case WSA_INVALID_PARAMETER:
-    return "One or more parameters are invalid";
-  case WSA_IO_INCOMPLETE:
-    return "Overlapped I/O event object not in signaled state";
-  case WSA_NOT_ENOUGH_MEMORY:
-    return "Insufficient memory available";
-  case WSA_OPERATION_ABORTED:
-    return "Overlapped operation aborted";
-  case WSAEINVALIDPROCTABLE:
-    return "Invalid procedure table from service provider";
-  case WSAEINVALIDPROVIDER:
-    return "Invalid service provider version number";
-  case WSAEPROVIDERFAILEDINIT:
-    return "Unable to initialize a service provider";
-  case WSASYSCALLFAILURE:
-    return "System call failure";
-  default:
-    sprintf (unk, "Unknown WinSock error %d", number);
-    return unk;
-  }
-}
-
 static void
 g_io_channel_win32_init (GIOWin32Channel *channel)
 {
@@ -1470,12 +1354,15 @@ g_io_win32_sock_read (GIOChannel *channel,
     winsock_error = WSAGetLastError ();
 
   if (win32_channel->debug)
-    g_print (" recv=%d %s\n",
-	     result,
-	     (result == SOCKET_ERROR ? winsock_error_message (winsock_error) : ""));
+    g_print (" recv=%d", result);
   
   if (result == SOCKET_ERROR)
     {
+      gchar *emsg = g_win32_error_message (winsock_error);
+
+      if (win32_channel->debug)
+	g_print (" %s\n", emsg);
+
       *bytes_read = 0;
 
       switch (winsock_error)
@@ -1484,17 +1371,21 @@ g_io_win32_sock_read (GIOChannel *channel,
           error = G_IO_CHANNEL_ERROR_INVAL;
           break;
 	case WSAEWOULDBLOCK:
+	  g_free (emsg);
           return G_IO_STATUS_AGAIN;
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error (err, G_IO_CHANNEL_ERROR, error,
-		   winsock_error_message (winsock_error));
+      g_set_error (err, G_IO_CHANNEL_ERROR, error, emsg);
+      g_free (emsg);
+
       return G_IO_STATUS_ERROR;
     }
   else
     {
+      if (win32_channel->debug)
+	g_print ("\n");
       *bytes_read = result;
       if (result == 0)
 	return G_IO_STATUS_EOF;
@@ -1524,12 +1415,15 @@ g_io_win32_sock_write (GIOChannel  *channel,
     winsock_error = WSAGetLastError ();
 
   if (win32_channel->debug)
-    g_print (" send=%d %s\n",
-	     result,
-	     (result == SOCKET_ERROR ? winsock_error_message (winsock_error) : ""));
+    g_print (" send=%d", result);
   
   if (result == SOCKET_ERROR)
     {
+      gchar *emsg = g_win32_error_message (winsock_error);
+
+      if (win32_channel->debug)
+	g_print (" %s\n", emsg);
+
       *bytes_written = 0;
 
       switch (winsock_error)
@@ -1540,18 +1434,21 @@ g_io_win32_sock_write (GIOChannel  *channel,
 	case WSAEWOULDBLOCK:
 	  win32_channel->write_would_have_blocked = TRUE;
 	  win32_channel->last_events = 0;
+	  g_free (emsg);
           return G_IO_STATUS_AGAIN;
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error (err, G_IO_CHANNEL_ERROR, error,
-		   winsock_error_message (winsock_error));
+      g_set_error (err, G_IO_CHANNEL_ERROR, error, emsg);
+      g_free (emsg);
 
       return G_IO_STATUS_ERROR;
     }
   else
     {
+      if (win32_channel->debug)
+	g_print ("\n");
       *bytes_written = result;
       win32_channel->write_would_have_blocked = FALSE;
 
@@ -1886,9 +1783,13 @@ g_io_win32_sock_set_flags (GIOChannel *channel,
       arg = 1;
       if (ioctlsocket (win32_channel->fd, FIONBIO, &arg) == SOCKET_ERROR)
 	{
+	  gchar *emsg = g_win32_error_message (WSAGetLastError ());
+
 	  g_set_error (err, G_IO_CHANNEL_ERROR,
 		       G_IO_CHANNEL_ERROR_FAILED,
-		       winsock_error_message (WSAGetLastError ()));
+		       emsg);
+	  g_free (emsg);
+
 	  return G_IO_STATUS_ERROR;
 	}
     }
@@ -1897,9 +1798,13 @@ g_io_win32_sock_set_flags (GIOChannel *channel,
       arg = 0;
       if (ioctlsocket (win32_channel->fd, FIONBIO, &arg) == SOCKET_ERROR)
 	{
+	  gchar *emsg = g_win32_error_message (WSAGetLastError ());
+
 	  g_set_error (err, G_IO_CHANNEL_ERROR,
 		       G_IO_CHANNEL_ERROR_FAILED,
-		       winsock_error_message (WSAGetLastError ()));
+		       emsg);
+	  g_free (emsg);
+
 	  return G_IO_STATUS_ERROR;
 	}
     }

@@ -1,3 +1,9 @@
+2008-06-11  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c: g_win32_error_message() works fine for the
+	Winsock WSA* error codes, too, so drop the winsock_error_message()
+	function.
+
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 455215 – g_get_user_special_dir: no reference about
