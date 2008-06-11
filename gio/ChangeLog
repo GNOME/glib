@@ -1,5 +1,9 @@
 2008-06-11  Matthias Clasen <mclasen@redhat.com>
 
+	* pltcheck.sh: We use g_clear_error now.
+
+2008-06-11  Matthias Clasen <mclasen@redhat.com>
+
 	* glocalfile.c (g_local_file_enumerate_children): Revert
 	an unintended change.
 
