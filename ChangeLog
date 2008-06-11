@@ -1,3 +1,10 @@
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 529321 – make check fails in glib/pcre
+
+	* glib/pcre/Makefile.am: include Makefile.decl to fix 'make check'.
+	Patch by Hiroyuki Ikezoe
+
 2008-06-11  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: g_win32_error_message() works fine for the
