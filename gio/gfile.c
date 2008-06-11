@@ -5444,10 +5444,11 @@ g_file_replace_contents (GFile             *file,
     }
   
   ret = g_output_stream_close (G_OUTPUT_STREAM (out), cancellable, error);
-  g_object_unref (out);
 
   if (new_etag)
     *new_etag = g_file_output_stream_get_etag (out);
+
+  g_object_unref (out);
 
   return ret;
 }
