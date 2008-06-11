@@ -1,5 +1,12 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 535418 – Please document which glib version defines goffset
+
+	* glib/tmpl/types.sgml: Add a Since tag for goffset
+	Proposed by Holger Berndt
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528715 – Misprint in the description of the interface
 	g_type_class_add_private
 
