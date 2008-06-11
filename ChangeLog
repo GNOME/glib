@@ -1,3 +1,19 @@
+2008-06-11  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 503071 – Application direction changes to right to left even if
+	theres no translation
+
+	* glib/gi18n-lib.h:
+	* glib/glib.symbols:
+	* glib/gstrfuncs.h:
+	* glib/gstrfuncs.c:
+	Add new functions g_dgettext() and g_dngettext().
+
+	* glib/gutils.c (glib_gettext):
+	* glib/gfileutils.c (g_format_size_for_display):
+	* glib/goption.c (dgettext_swapped):
+	Use the new functions.
+
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 502511 – g_assert_cmphex prints invalid message

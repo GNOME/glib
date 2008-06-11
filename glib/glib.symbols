@@ -1148,6 +1148,8 @@ g_strdown
 #endif
 g_strv_length
 g_strip_context
+g_dgettext
+g_dngettext
 g_dpgettext
 #endif
 #endif

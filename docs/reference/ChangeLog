@@ -1,3 +1,7 @@
+2008-06-11  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/glib-sections.txt: Add g_dgettext() and g_dngettext().
+
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 535418 – Please document which glib version defines goffset

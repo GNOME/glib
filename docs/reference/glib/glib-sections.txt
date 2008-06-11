@@ -2498,8 +2498,10 @@ g_unichar_to_utf8
 Q_
 C_
 N_
-g_strip_context
+g_dgettext
+g_dngettext
 g_dpgettext
+g_strip_context
 <SUBSECTION>
 g_get_language_names
 </SECTION>

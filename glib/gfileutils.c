@@ -1823,7 +1823,7 @@ char *
 g_format_size_for_display (goffset size)
 {
   if (size < (goffset) KILOBYTE_FACTOR)
-    return g_strdup_printf (dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes",(guint) size), (guint) size);
+    return g_strdup_printf (g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes",(guint) size), (guint) size);
   else
     {
       gdouble displayed_size;

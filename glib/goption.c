@@ -2058,7 +2058,7 @@ static gchar *
 dgettext_swapped (const gchar *msgid, 
 		  const gchar *domainname)
 {
-  return dgettext (domainname, msgid);
+  return g_dgettext (domainname, msgid);
 }
 
 /**
