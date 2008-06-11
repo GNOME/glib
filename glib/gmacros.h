@@ -209,8 +209,15 @@
 /* Provide convenience macros for handling structure
  * fields through their offsets.
  */
-#define G_STRUCT_OFFSET(struct_type, member)	\
-    ((glong) ((guint8*) &((struct_type*) 0)->member))
+
+#if defined(__GNUC__)  && __GNUC__ >= 4
+#  define G_STRUCT_OFFSET(struct_type, member) \
+      ((glong) __builtin_offsetof (struct_type, member))
+#else
+#  define G_STRUCT_OFFSET(struct_type, member)	\
+      ((glong) ((guint8*) &((struct_type*) 0)->member))
+#endif
+
 #define G_STRUCT_MEMBER_P(struct_p, struct_offset)   \
     ((gpointer) ((guint8*) (struct_p) + (glong) (struct_offset)))
 #define G_STRUCT_MEMBER(member_type, struct_p, struct_offset)   \

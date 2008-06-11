@@ -1,3 +1,11 @@
+2008-06-11  Sebastian Dröge  <slomo@circular-chaos.org>
+
+	Bug 531900 – Use __builtin_offsetof for G_STRUCT_OFFSET if building
+	with gcc 4.0 or newer
+
+	* glib/gmacros.h: Use __builtin_offsetof for G_STRUCT_OFFSET if
+	building with gcc 4.0 or newer.
+
 2008-06-11  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.c
