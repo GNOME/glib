@@ -791,9 +791,9 @@ g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
 
 <!-- ##### FUNCTION g_type_class_add_private ##### -->
 <para>
-Registers a private structure for a instantiatable type;
+Registers a private structure for an instantiatable type;
 when an object is allocated, the private structures for
-the type and and all of its parent types are allocated
+the type and all of its parent types are allocated
 sequentially in the same memory block as the public
 structures. This function should be called in the
 type's class_init() function. The private structure can

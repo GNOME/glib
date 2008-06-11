@@ -148,7 +148,7 @@ The type used for marshaller functions.
 @n_param_values: the length of the @param_values array
 @param_values: an array of #GValue<!-- -->s holding the arguments on
   which to invoke the callback of @closure
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller,
   see g_closure_set_marshal() and g_closure_set_meta_marshal()
@@ -525,7 +525,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 1
 @param_values: a #GValue array holding only the instance
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -540,7 +540,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gboolean parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -555,7 +555,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gchar parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -570,7 +570,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #guchar parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -585,7 +585,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gint parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -600,7 +600,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #guint parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -615,7 +615,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #glong parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -630,7 +630,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gulong parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -645,7 +645,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the enumeration parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -660,7 +660,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the flags parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -675,7 +675,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gfloat parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -690,7 +690,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gdouble parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -705,7 +705,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gchar* parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -720,7 +720,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #GParamSpec* parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -735,7 +735,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #GBoxed* parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -750,7 +750,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #gpointer parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -765,7 +765,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 2
 @param_values: a #GValue array holding the instance and the #GObject* parameter
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -780,7 +780,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: a #GValue, which can store the returned string
 @n_param_values: 3
 @param_values: a #GValue array holding instance, arg1 and arg2
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -795,7 +795,7 @@ A marshaller for a #GCClosure with a callback of type
 @return_value: ignored
 @n_param_values: 3
 @param_values: a #GValue array holding instance, arg1 and arg2
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 
@@ -811,7 +811,7 @@ denotes a flags type.
 @return_value: a #GValue which can store the returned #gboolean
 @n_param_values: 2
 @param_values: a #GValue array holding instance and arg1
-@invocation_hint: the invocation hint given as the the last argument
+@invocation_hint: the invocation hint given as the last argument
   to g_closure_invoke()
 @marshal_data: additional data specified when registering the marshaller
 

@@ -322,7 +322,7 @@ See the GNU C documentation for details.
 
 <!-- ##### MACRO G_HAVE_GNUC_VISIBILITY ##### -->
 <para>
-This macro is defined as 1 if the the compiler supports ELF visibility 
+This macro is defined as 1 if the compiler supports ELF visibility 
 attributes (currently only <command>gcc</command>).
 </para>
 

@@ -1,5 +1,15 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 528715 – Misprint in the description of the interface
+	g_type_class_add_private
+
+	* glib/tmpl/macros_misc.sgml:
+	* gobject/tmpl/gclosure.sgml:
+	* gobject/tmpl/gtype.sgml: Fix typos
+	Noticed by Areg Beketovski
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 528714 – Misprint in the description of the interface 
 	g_param_spec_flags
 
