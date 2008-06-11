@@ -751,6 +751,9 @@ gboolean                g_file_move                       (GFile                
 gboolean                g_file_make_directory             (GFile                      *file,
 							   GCancellable               *cancellable,
 							   GError                    **error);
+gboolean                g_file_make_directory_with_parents (GFile                     *file,
+		                                           GCancellable               *cancellable,
+		                                           GError                    **error);
 gboolean                g_file_make_symbolic_link         (GFile                      *file,
 							   const char                 *symlink_value,
 							   GCancellable               *cancellable,

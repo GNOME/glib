@@ -1,3 +1,11 @@
+2008-06-11  Ross Burton  <ross@burtonini.com>
+
+	Bug 511367 - add g_file_make_directory_with_parents.
+	
+	* gio/gfile.c:
+	* gio/gfile.h:
+	* gio/gio.symbols: Add g_file_make_directory_with_parents.
+	
 2008-06-11  Sebastian Dröge  <slomo@circular-chaos.org>
 
 	Bug 531900 – Use __builtin_offsetof for G_STRUCT_OFFSET if building
