@@ -1,3 +1,8 @@
+2008-06-12  Ross Burton  <ross@burtonini.com>
+
+	* gio/gio-sections.txt:
+	Add g_file_make_directory_with_parents.
+
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Testing documentation fixups
