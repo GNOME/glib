@@ -191,17 +191,6 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara> 
 
-<formalpara id="G_WIN32_PRETEND_WIN9X">
-  <title><envar>G_WIN32_PRETEND_WIN9X</envar></title>
-
-  <para>
-    Setting this variable to any value forces g_win32_get_windows_version()
-    to return a version code for Windows 9x. This is mainly an internal 
-    debugging aid for GTK+ and GLib developers, to be able to check the 
-    code paths for Windows 9x.
-  </para>
-</formalpara> 
-
 </refsect2>
 
 <refsect2 id="setlocale">
@@ -227,7 +216,7 @@ character pointers, not the "wide" ones.)
 On the other hand, there is the C library's current locale. The
 character set (code-page) used by that is not necessarily the same as
 the system default ANSI code-page. Strings in this character set are
-returned by functions like <function>strftime</function>.
+returned by functions like <function>strftime()</function>.
 </para>
 
 </refsect2>
