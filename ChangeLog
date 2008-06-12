@@ -1,3 +1,7 @@
+2008-06-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtestutils.c: Documentation fixups
+
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glist.c: Tiny doc fix
