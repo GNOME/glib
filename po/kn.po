@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 16:12-0400\n"
+"POT-Creation-Date: 2008-06-12 13:04-0400\n"
 "PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -234,13 +234,6 @@ msgstr "ಮಾದರಿ '%s' ಅಮಾನ್ಯವಾಗಿದೆ, ಅದು ಒ
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ಮಾದರಿ '%s' ಯು XXXXXX ಅನ್ನು ಹೊಂದಿಲ್ಲ"
-
-#: glib/gfileutils.c:1826
-#, c-format
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] "%u ಬೈಟ್"
-msgstr[1] "%u ಬೈಟ್‍ಗಳು"
 
 #: glib/gfileutils.c:1834
 #, c-format
@@ -553,7 +546,7 @@ msgstr "ಹಿಂಬಾಲಿಸುವ ಮಿತಿ ತಲುಪಿದೆ"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ಆಂಶಿಕ ಹೊಂದಾಣಿಕೆಗೆ ಬೆಂಬಲಿತವಾಗದ ಅಂಶಗಳನ್ನು ಈ ವಿನ್ಯಾಸವು ಹೊಂದಿದೆ"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1971
+#: glib/gregex.c:154 gio/glocalfile.c:1975
 msgid "internal error"
 msgstr "ಆಂತರಿಕ ದೋಷ"
 
@@ -862,17 +855,17 @@ msgstr "ಪಠ್ಯವು ಖಾಲಿಯಾಗಿತ್ತು (ಅಥವ ಕ�
 msgid "Failed to read data from child process"
 msgstr "child ಪ್ರಕ್ರಿಯೆಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1455
+#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ಉಪ ಪ್ರಕ್ರಿಯೆಯೊಂದಿಗೆ ಸಂವಹನಕ್ಕೆ ಪೈಪನ್ನು ರಚಿಸುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ (%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "child pipe (%s) ನಿಂದ ಓದುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ಕೋಶಕ್ಕೆ ಬದಲಾಯಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ (%s)"
@@ -916,48 +909,48 @@ msgstr ""
 "child ಪ್ರಕ್ರಿಯೆ ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಾಗ g_io_channel_win32_poll() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ "
 "ದೋಷ"
 
-#: glib/gspawn.c:180
+#: glib/gspawn.c:188
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ (%s) ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲ"
 
-#: glib/gspawn.c:317
+#: glib/gspawn.c:325
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ (%s) ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಾಗ select() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ ದೋಷ"
 
-#: glib/gspawn.c:400
+#: glib/gspawn.c:408
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ ದೋಷ (%s)"
 
-#: glib/gspawn.c:1184
+#: glib/gspawn.c:1196
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ಕವಲೊಡೆಸುವಲ್ಲಿ ವಿಫಲತೆ (%s)"
 
-#: glib/gspawn.c:1334
+#: glib/gspawn.c:1346
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ \"%s\" (%s) ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
 
-#: glib/gspawn.c:1344
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "child ಪ್ರಕ್ರಿಯೆಯ ಆದಾನ ಅಥವ ಪ್ರದಾನವನ್ನು ಪುನರ್ನಿರ್ದೇಶಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ (%s)"
 
-#: glib/gspawn.c:1353
+#: glib/gspawn.c:1365
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆಯನ್ನು ಕವಲೊಡೆಯಲು ವಿಫಲಗೊಂಡಿದೆ (%s)"
 
-#: glib/gspawn.c:1361
+#: glib/gspawn.c:1373
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "child ಪ್ರಕ್ರಿಯೆ \"%s\" ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಾಗ ಗೊತ್ತಿರದ ದೋಷ"
 
-#: glib/gspawn.c:1383
+#: glib/gspawn.c:1395
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "child pid pipe (%s) ಇಂದ ಸಾಕಷ್ಟು ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
@@ -1079,30 +1072,30 @@ msgstr "ಅಮಾನ್ಯ ಕೀಲಿ ಹೆಸರು: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಬೆಂಬಲಿತವಲ್ಲದ encoding '%s'ಅನ್ನು ಹೊಂದಿದೆ"
 
-#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
-#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
-#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
+#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಸಮೂಹ '%s'ವನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: glib/gkeyfile.c:1281
+#: glib/gkeyfile.c:1284
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: glib/gkeyfile.c:1383 glib/gkeyfile.c:1496
+#: glib/gkeyfile.c:1386 glib/gkeyfile.c:1499
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು UTF-8 ಅಲ್ಲದ ಮೌಲ್ಯವಾದ '%s'ವನ್ನು ಹೊಂದಿದೆ "
 
-#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1891
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು ಮೌಲ್ಯವನ್ನು ವಿವರಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:2106 glib/gkeyfile.c:2318
+#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1111,37 +1104,37 @@ msgstr ""
 "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು ಸಮೂಹ '%s'ದ್ದಾಗಿದ್ದು ಹಾಗು ಅದರ ಮೌಲ್ಯವನ್ನು "
 "ವಿವರಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
+#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ'%s' ಯನ್ನು ಗುಂಪು '%s'ನಲ್ಲಿ ಹೊಂದಿಲ್ಲ"
 
-#: glib/gkeyfile.c:3471
+#: glib/gkeyfile.c:3474
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ಕೀಲಿ ಕಡತವು ಸಾಲಿನ ಕೊನೆಯಲ್ಲಿ ಪಾರು ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿದೆ"
 
-#: glib/gkeyfile.c:3493
+#: glib/gkeyfile.c:3496
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಅಮಾನ್ಯ ಪಾರು ಅನುಕ್ರಮವನ್ನು ಹೊಂದಿದೆ '%s'"
 
-#: glib/gkeyfile.c:3635
+#: glib/gkeyfile.c:3638
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಸಂಖ್ಯೆಯಾಗಿ ಸೂಚಿಸಲು ಆಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3652
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ಪೂರ್ಣಾಂಕ ಮೌಲ್ಯ '%s' ವು ವ್ಯಾಪ್ತಿಯನ್ನು ಮೀರಿದೆ"
 
-#: glib/gkeyfile.c:3682
+#: glib/gkeyfile.c:3685
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ತೇಲು ಸಂಖ್ಯೆ ಆಗಿ ವಿವರಿಸಲು ಆಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:3706
+#: glib/gkeyfile.c:3709
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಬೂಲಿಯನ್ ಆಗಿ ವಿವರಿಸಲು ಆಗುವುದಿಲ್ಲ."
@@ -1159,7 +1152,7 @@ msgstr "%s ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ�
 msgid "Stream is already closed"
 msgstr "ಸ್ಟ್ರೀಮ್ ಈಗಾಗಲೆ ಮುಚ್ಚಲ್ಪಟ್ಟಿದೆ"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1964 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1968 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "ಕಾರ್ಯವು ರದ್ದುಗೊಂಡಿದೆ"
@@ -1173,7 +1166,7 @@ msgstr "ಗೊತ್ತಿರದ ಬಗೆ"
 msgid "%s filetype"
 msgstr "%s ಕಡತದ ಬಗೆ"
 
-#: gio/gcontenttype.c:591
+#: gio/gcontenttype.c:606
 #, c-format
 msgid "%s type"
 msgstr "%s ಬಗೆ"
@@ -1227,8 +1220,8 @@ msgstr "ಮಾಧ್ಯಮಕ್ಕಾಗಿ ಪೋಲ್ ಮಾಡುವುದ�
 
 #: gio/gfile.c:811 gio/gfile.c:1039 gio/gfile.c:1172 gio/gfile.c:1403
 #: gio/gfile.c:1456 gio/gfile.c:1512 gio/gfile.c:1594 gio/gfile.c:2651
-#: gio/gfile.c:2696 gio/gfile.c:2746 gio/gfile.c:2786 gio/gfile.c:3110
-#: gio/gfile.c:3512 gio/gfile.c:3595 gio/gfile.c:3678 gio/gfile.c:3758
+#: gio/gfile.c:2702 gio/gfile.c:2830 gio/gfile.c:2870 gio/gfile.c:3194
+#: gio/gfile.c:3596 gio/gfile.c:3679 gio/gfile.c:3762 gio/gfile.c:3842
 #, c-format
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1241,13 +1234,13 @@ msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1291 gio/glocalfile.c:1054 gio/glocalfile.c:1065
-#: gio/glocalfile.c:1078
+#: gio/gfile.c:1291 gio/glocalfile.c:1058 gio/glocalfile.c:1069
+#: gio/glocalfile.c:1082
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ಹೊಂದಿರುವ ಮೌಂಟ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:1933 gio/glocalfile.c:2114
+#: gio/gfile.c:1933 gio/glocalfile.c:2118
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
@@ -1257,7 +1250,7 @@ msgstr "ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿ�
 msgid "Can't copy directory over directory"
 msgstr "ಕೋಶವನ್ನು ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2001 gio/glocalfile.c:2123
+#: gio/gfile.c:2001 gio/glocalfile.c:2127
 #, c-format
 msgid "Target file exists"
 msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
@@ -1267,26 +1260,26 @@ msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿ�
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2736
+#: gio/gfile.c:2820
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:2829
+#: gio/gfile.c:2913
 #, c-format
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2876
+#: gio/gfile.c:2960
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:4812 gio/gvolume.c:357
+#: gio/gfile.c:4896 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:4920
+#: gio/gfile.c:5004
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
@@ -1353,111 +1346,111 @@ msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಕೋಶ ಮೇಲ್ವ�
 msgid "Invalid filename %s"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು %s"
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ಕಡತವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1098
+#: gio/glocalfile.c:1102
 #, c-format
 msgid "Can't rename root directory"
 msgstr "ಮೂಲ ಕಡತಕೋಶದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: gio/glocalfile.c:1116
+#: gio/glocalfile.c:1120
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "ಕಡತದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗಲಿಲ್ಲ, ಈ ಹೆಸರಿನ ಕಡತವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1993 gio/glocalfile.c:2022
-#: gio/glocalfile.c:2176 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1133 gio/glocalfile.c:1997 gio/glocalfile.c:2026
+#: gio/glocalfile.c:2180 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು"
 
-#: gio/glocalfile.c:1133
+#: gio/glocalfile.c:1137
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ಕಡತದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1252
+#: gio/glocalfile.c:1256
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1266
 #, c-format
 msgid "Can't open directory"
 msgstr "ಕೋಶವನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/glocalfile.c:1322
+#: gio/glocalfile.c:1326
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1686
+#: gio/glocalfile.c:1690
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ಕಡತವನ್ನು ಕಸದ ಬುಟ್ಟಿಗೆ ವರ್ಗಾಯಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1709
+#: gio/glocalfile.c:1713
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:1730
+#: gio/glocalfile.c:1734
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "ಕಸದ ಬುಟ್ಟಿಗಾಗಿ ಮೇಲ್ಮಟ್ಟದ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/glocalfile.c:1809 gio/glocalfile.c:1829
+#: gio/glocalfile.c:1813 gio/glocalfile.c:1833
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲು ಅಥವ ರಚಿಸಲಾಗಿಲ್ಲ:"
 
-#: gio/glocalfile.c:1863
+#: gio/glocalfile.c:1867
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ಟ್ರ್ಯಾಶಿಂಗ್ ಮಾಹಿತಿ ಕಡತವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:1888 gio/glocalfile.c:1963 gio/glocalfile.c:1970
+#: gio/glocalfile.c:1892 gio/glocalfile.c:1967 gio/glocalfile.c:1974
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ಕಡತವನ್ನು ಟ್ರ್ಯಾಶ್ ಮಾಡುವಲ್ಲಿ ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:1997
+#: gio/glocalfile.c:2001
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "ಕಡತ ಕೋಶ '%s' ವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2026
+#: gio/glocalfile.c:2030
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಮಾಡುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2086 gio/glocalfile.c:2180
+#: gio/glocalfile.c:2090 gio/glocalfile.c:2184
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ಕಡತವನ್ನು ಸ್ಥಳಾಂತರಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2109
+#: gio/glocalfile.c:2113
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "ಕೋಶವನ್ನು ಇನ್ನೊಂದು ಕೋಶಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: gio/glocalfile.c:2136 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2140 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "ಬ್ಯಾಕ್ ಕಡತವನ್ನು ನಿರ್ಮಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: gio/glocalfile.c:2155
+#: gio/glocalfile.c:2159
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ಸೂಚಿತ ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2169
+#: gio/glocalfile.c:2173
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "ಎರಡು ಆರೋಹಣ ತಾಣಗಳ ನಡುವೆ ವರ್ಗಾಯಿಸುವುದು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1491,53 +1484,53 @@ msgstr "'%s' ಕಡತವನ್ನು ವ್ಯಕ್ತಪಡಿಸುವಲ್
 msgid " (invalid encoding)"
 msgstr " (ಅಮಾನ್ಯ ಸಂಕೇತಿಕರಣ)"
 
-#: gio/glocalfileinfo.c:1693
+#: gio/glocalfileinfo.c:1698
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ಕಡತ ಡಿಸ್ಕ್ರಿಪ್ಟರನ್ನು ವ್ಯಕ್ತಪಡಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1738
+#: gio/glocalfileinfo.c:1743
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (uint32 ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1756
+#: gio/glocalfileinfo.c:1761
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (uint64 ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1775
+#: gio/glocalfileinfo.c:1780
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (ಬೈಟ್ ಸಾಲನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1806
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ಅನುಮತಿಗಳನ್ನು ಹೊಂದಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1852 gio/glocalfileinfo.c:2020
+#: gio/glocalfileinfo.c:1857 gio/glocalfileinfo.c:2025
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ಮಾಲಿಕನನ್ನು ಹೊಂದಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1875
+#: gio/glocalfileinfo.c:1880
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "ಸಾಂಕೇತಿಕಕೊಂಡಿಯು ಶೂನ್ಯವಾಗಿರುವಂತಿಲ್ಲ"
 
-#: gio/glocalfileinfo.c:1885 gio/glocalfileinfo.c:1904
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1890 gio/glocalfileinfo.c:1909
+#: gio/glocalfileinfo.c:1920
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1894
+#: gio/glocalfileinfo.c:1899
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ: ಕಡತವು ಒಂದು ಸಾಂಕೇತಿಕಕೊಂಡಿಯಾಗಿಲ್ಲ"
 
-#: gio/glocalfileinfo.c:2075
+#: gio/glocalfileinfo.c:2080
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹೊಂದಿಸುವುದು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1761,6 +1754,11 @@ msgstr "ದೊಡ್ಡದಾದ ಪಟ್ಟಿಯ ನಮೂನೆಯನ್ನ�
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
+#~ msgid "%u byte"
+#~ msgid_plural "%u bytes"
+#~ msgstr[0] "%u ಬೈಟ್"
+#~ msgstr[1] "%u ಬೈಟ್‍ಗಳು"
 
 #~ msgid "Too large count value passed to g_input_stream_read_async"
 #~ msgstr ""

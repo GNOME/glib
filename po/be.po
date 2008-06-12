@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 16:12-0400\n"
+"POT-Creation-Date: 2008-06-12 13:04-0400\n"
 "PO-Revision-Date: 2005-11-16 11:21+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -266,13 +266,6 @@ msgstr "Шаблён \"%s\" недапушчальны, не павінны ўт
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблён \"%s\" канчацца не на XXXXXX"
-
-#: glib/gfileutils.c:1826
-#, c-format
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
 
 #: glib/gfileutils.c:1834
 #, c-format
@@ -632,7 +625,7 @@ msgstr ""
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:154 gio/glocalfile.c:1971
+#: glib/gregex.c:154 gio/glocalfile.c:1975
 msgid "internal error"
 msgstr ""
 
@@ -957,19 +950,19 @@ msgid "Failed to read data from child process"
 msgstr "Збой чытаньня даньняў з працэсу-нашчадка"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1455
+#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збой стварэньня канала для абмену з працэсам-нашчадкам (%s)"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Збой чытаньня даньняў з каналу нашчадка (%s)"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1324
+#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Збой зьмены каталёга \"%s\" (%s)"
@@ -1021,56 +1014,56 @@ msgstr ""
 "з працэсу-нашчадка"
 
 # glib/gspawn.c:161
-#: glib/gspawn.c:180
+#: glib/gspawn.c:188
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Збой чытаньня даньняў з працэсу-нашчадка (%s)"
 
 # glib/gspawn.c:293
-#: glib/gspawn.c:317
+#: glib/gspawn.c:325
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Непрадбачаная памылка у select() чытаньня даньняў з працэсу-нашчадка (%s)"
 
 # glib/gspawn.c:376
-#: glib/gspawn.c:400
+#: glib/gspawn.c:408
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Непрадбачаная памылка ў waitpid() (%s)"
 
 # glib/gspawn.c:979
-#: glib/gspawn.c:1184
+#: glib/gspawn.c:1196
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Збой разгалінаваньня  fork() (%s)"
 
 # glib/gspawn.c:1129
-#: glib/gspawn.c:1334
+#: glib/gspawn.c:1346
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Збой выкананьня працэсу-нашчадка \"%s\" (%s)"
 
 # glib/gspawn.c:1139
-#: glib/gspawn.c:1344
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Збой перанакіраваньня вываду ці ўводу працэсу-нашчадка (%s)"
 
 # glib/gspawn.c:1148
-#: glib/gspawn.c:1353
+#: glib/gspawn.c:1365
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Збой разгалінаваньня fork() працэсу-нашчадка (%s)"
 
 # glib/gspawn.c:1156
-#: glib/gspawn.c:1361
+#: glib/gspawn.c:1373
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Невядомая памылка выкананьня працэсу-нашчадка \"%s\""
 
 # glib/gspawn.c:1178
-#: glib/gspawn.c:1383
+#: glib/gspawn.c:1395
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Збой чытаньня патрэбнае колькасьці даньняў з pid канала нашчадку (%s)"
@@ -1201,32 +1194,32 @@ msgstr "Недапушчальная назва праграмы: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Файл ключу ўтрымлівае кадаваньне якое не падтрымліваецца '%s'"
 
-#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
-#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
-#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
+#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Файл ключу не мае групу '%s'"
 
-#: glib/gkeyfile.c:1281
+#: glib/gkeyfile.c:1284
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Файл ключу не мае ключ '%s'"
 
-#: glib/gkeyfile.c:1383 glib/gkeyfile.c:1496
+#: glib/gkeyfile.c:1386 glib/gkeyfile.c:1499
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Файл ключу утрымлівае ключ '%s' са значэньнем '%s' які не закадаваны UTF-8"
 
-#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1891
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Файл ключу утрымлівае ключ '%s' які мае значэньне што не можа быць "
 "інтэрпрэтаванае."
 
-#: glib/gkeyfile.c:2106 glib/gkeyfile.c:2318
+#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1235,38 +1228,38 @@ msgstr ""
 "Файл ключу утрымлівае ключ '%s' у групе '%s' які мае значэньне што не можа "
 "быць інтэрпрэтаванае."
 
-#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
+#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Файл ключу не мае ключ '%s' у групе '%s'"
 
-#: glib/gkeyfile.c:3471
+#: glib/gkeyfile.c:3474
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Файл ключу ўтрымлівае пасьлядоўнасьць завяршэньня ў канцы радку"
 
 # glib/gconvert.c:1648
-#: glib/gkeyfile.c:3493
+#: glib/gkeyfile.c:3496
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Файл ключу утрымлівае недапушчальную пасьлядоўнасьць завяршэньня '%s'"
 
-#: glib/gkeyfile.c:3635
+#: glib/gkeyfile.c:3638
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як лік."
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3652
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Цэлае значэньне '%s' па-за межамі"
 
-#: glib/gkeyfile.c:3682
+#: glib/gkeyfile.c:3685
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як лік."
 
-#: glib/gkeyfile.c:3706
+#: glib/gkeyfile.c:3709
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як булева."
@@ -1284,7 +1277,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1964 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1968 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr ""
@@ -1299,7 +1292,7 @@ msgstr "Невядомая можнасьць %s"
 msgid "%s filetype"
 msgstr ""
 
-#: gio/gcontenttype.c:591
+#: gio/gcontenttype.c:606
 #, c-format
 msgid "%s type"
 msgstr ""
@@ -1353,8 +1346,8 @@ msgstr ""
 
 #: gio/gfile.c:811 gio/gfile.c:1039 gio/gfile.c:1172 gio/gfile.c:1403
 #: gio/gfile.c:1456 gio/gfile.c:1512 gio/gfile.c:1594 gio/gfile.c:2651
-#: gio/gfile.c:2696 gio/gfile.c:2746 gio/gfile.c:2786 gio/gfile.c:3110
-#: gio/gfile.c:3512 gio/gfile.c:3595 gio/gfile.c:3678 gio/gfile.c:3758
+#: gio/gfile.c:2702 gio/gfile.c:2830 gio/gfile.c:2870 gio/gfile.c:3194
+#: gio/gfile.c:3596 gio/gfile.c:3679 gio/gfile.c:3762 gio/gfile.c:3842
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"
@@ -1367,13 +1360,13 @@ msgstr "Сымбалічныя спасылкі не падтрымліваюц�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1291 gio/glocalfile.c:1054 gio/glocalfile.c:1065
-#: gio/glocalfile.c:1078
+#: gio/gfile.c:1291 gio/glocalfile.c:1058 gio/glocalfile.c:1069
+#: gio/glocalfile.c:1082
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1933 gio/glocalfile.c:2114
+#: gio/gfile.c:1933 gio/glocalfile.c:2118
 #, c-format
 msgid "Can't copy over directory"
 msgstr ""
@@ -1383,7 +1376,7 @@ msgstr ""
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:2001 gio/glocalfile.c:2123
+#: gio/gfile.c:2001 gio/glocalfile.c:2127
 #, c-format
 msgid "Target file exists"
 msgstr ""
@@ -1393,26 +1386,26 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2736
+#: gio/gfile.c:2820
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2829
+#: gio/gfile.c:2913
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"
 
-#: gio/gfile.c:2876
+#: gio/gfile.c:2960
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4812 gio/gvolume.c:357
+#: gio/gfile.c:4896 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:4920
+#: gio/gfile.c:5004
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr ""
@@ -1481,111 +1474,111 @@ msgid "Invalid filename %s"
 msgstr "Недапушчальная назва праграмы: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfile.c:1098
+#: gio/glocalfile.c:1102
 #, c-format
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:1116
+#: gio/glocalfile.c:1120
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
 # glib/gconvert.c:1729
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1993 gio/glocalfile.c:2022
-#: gio/glocalfile.c:2176 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1133 gio/glocalfile.c:1997 gio/glocalfile.c:2026
+#: gio/glocalfile.c:2180 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, fuzzy, c-format
 msgid "Invalid filename"
 msgstr "Недапушчальная назва вузла"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1133
+#: gio/glocalfile.c:1137
 #, fuzzy, c-format
 msgid "Error renaming file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1252
+#: gio/glocalfile.c:1256
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1266
 #, c-format
 msgid "Can't open directory"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1322
+#: gio/glocalfile.c:1326
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1686
+#: gio/glocalfile.c:1690
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1709
+#: gio/glocalfile.c:1713
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Збой стварэньня файлу \"%s\": %s"
 
-#: gio/glocalfile.c:1730
+#: gio/glocalfile.c:1734
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1809 gio/glocalfile.c:1829
+#: gio/glocalfile.c:1813 gio/glocalfile.c:1833
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1863
+#: gio/glocalfile.c:1867
 #, fuzzy, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Збой стварэньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1888 gio/glocalfile.c:1963 gio/glocalfile.c:1970
+#: gio/glocalfile.c:1892 gio/glocalfile.c:1967 gio/glocalfile.c:1974
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "Збой стварэньня файлу \"%s\": %s"
 
 # glib/gdir.c:79
-#: gio/glocalfile.c:1997
+#: gio/glocalfile.c:2001
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "Памылка ў часе адкрыцьця каталёгу \"%s\": %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfile.c:2026
+#: gio/glocalfile.c:2030
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:2086 gio/glocalfile.c:2180
+#: gio/glocalfile.c:2090 gio/glocalfile.c:2184
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfile.c:2109
+#: gio/glocalfile.c:2113
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:2136 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2140 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
@@ -1593,12 +1586,12 @@ msgid "Backup file creation failed"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:2155
+#: gio/glocalfile.c:2159
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfile.c:2169
+#: gio/glocalfile.c:2173
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1636,58 +1629,58 @@ msgid " (invalid encoding)"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1693
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1738
+#: gio/glocalfileinfo.c:1743
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1756
+#: gio/glocalfileinfo.c:1761
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1775
+#: gio/glocalfileinfo.c:1780
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1806
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1852 gio/glocalfileinfo.c:2020
+#: gio/glocalfileinfo.c:1857 gio/glocalfileinfo.c:2025
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
-#: gio/glocalfileinfo.c:1875
+#: gio/glocalfileinfo.c:1880
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
 # glib/gmarkup.c:303
-#: gio/glocalfileinfo.c:1885 gio/glocalfileinfo.c:1904
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1890 gio/glocalfileinfo.c:1909
+#: gio/glocalfileinfo.c:1920
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Памылка ў радку %d: %s"
 
-#: gio/glocalfileinfo.c:1894
+#: gio/glocalfileinfo.c:1899
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2075
+#: gio/glocalfileinfo.c:2080
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"

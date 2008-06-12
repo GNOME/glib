@@ -1,4 +1,10 @@
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.17.2 ===
+
+	* configure.in: Fix LINGUAS conversion
+
+2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
 
