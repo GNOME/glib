@@ -1,5 +1,9 @@
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/gio-sections.txt: Add some new symbols
+
+2008-06-12  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/running.sgml: Remove mention of G_WIN32_PRETEND_WIN9X
 
 2008-06-12  Ross Burton  <ross@burtonini.com>

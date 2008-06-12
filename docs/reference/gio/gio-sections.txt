@@ -687,6 +687,7 @@ GMemoryOutputStream
 g_memory_output_stream_new
 g_memory_output_stream_get_data
 g_memory_output_stream_get_size
+g_memory_output_stream_get_data_size
 <SUBSECTION Standard>
 GMemoryOutputStreamClass
 G_MEMORY_OUTPUT_STREAM
@@ -1138,6 +1139,7 @@ g_unix_mount_at
 g_unix_mounts_changed_since
 g_unix_mount_points_changed_since
 g_unix_mount_monitor_new
+g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal
 <SUBSECTION Standard>
 GUnixMountClass
