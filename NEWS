@@ -1,3 +1,63 @@
+Overview of Changes from GLib 2.17.0 to GLib 2.17.1
+===================================================
+
+* New function: g_utime(), a gstdio wrapper for utime()
+
+* New functions: g_dgettext() and g_dngettext(), wrappers
+  for corresponding gettext functions with added functionaliy
+
+* Support the latest version of the shared-mime spec, including
+  icons for mime types 
+
+* New function: g_themed_icon_prepend_name()
+
+* Bugs fixed: 
+ 535418 Please document which glib version defines goffset
+ 528715 Misprint in the description of the interface g_type_class_add_private
+ 528714 Misprint in the description of the interface g_param_spec_flags
+ 537260 Doc bug in G_TYPE_INSTANCE_GET_CLASS()
+ 530527 Misprint in the description of the interface 
+        g_cclosure_marshal_VOID__FLAGS
+ 530526 Misprint in the description of the fields 'class_init' and 
+        'class_finalize' of the structure GTypeInfo
+ 528719 Improvement to the documentation of the "g_object_connect" interface
+ 528172 gtk_signal_handlers_unblock_* functions return value
+        amount of matched signals, not amount of actually unblocked
+ 528717 Misprint in the description of the parameter 'type_id' for 
+        the interface g_type_register_fundamental
+ 528716 Misprint in the description of the parameter 'iface_data' for 
+        the callback types GInterfaceInitFunc and GInterfaceFinalizeFunc 
+ 537555 GObject instantiation not thread safe
+ 537546 'desktop' shortcut in file chooser looks like a generic folder
+ 537392 Additional colon in xattr name
+ 536641 Filesystem querying in gio does not list AFS and autofs file systems
+ 528600 g_dummy_file_get_parent("scheme://example.com/")
+ 503071 Application direction changes to right to left even if theres no 
+        translation
+ 502511 g_assert_cmphex prints invalid message
+ 338162 Use po/LINGUAS
+ 314453 Nautilus crashes in Solaris when browsing the attached file
+ 529321 make check fails in glib/pcre
+ 455215 g_get_user_special_dir: no reference about G_USER_DIRECTORY_DOWNLOAD 
+        fallback to $HOME/Desktop if xdg-user-dirs is not in use
+ 498732 g_key_file_to_data cannot fail
+ 511367 add g_file_make_directory_with_parents
+ 531900 Use __builtin_offsetof for G_STRUCT_OFFSET if building with 
+        gcc 4.0 or newer
+ 536158 also bump GHashTable version when a node is removed via
+        g_hash_table_iter_remove()/g_hash_table_iter_steal()
+ 531403 g_utf8_collate broken on Mac
+ 535628 test/patterntest.c still includes gpattern.h directly
+ 535625 alias.h:2648: error: 'utime' undeclared here (not in a function)
+
+* Translation updates:
+ Arabic (ar)
+ German (de)
+ Italian (it)
+ Norwegian bokmål (nb)
+ Thai (th)
+
+
 Overview of Changes from GLib 2.16.x to GLib 2.17.0
 ===================================================
 
