@@ -853,7 +853,6 @@ g_return_if_reached
 g_return_val_if_reached
 g_warn_if_fail
 g_warn_if_reached
-g_warn_message
 
 <SUBSECTION>
 g_on_error_query
@@ -865,6 +864,7 @@ G_BREAKPOINT
 <SUBSECTION Private>
 g_return_if_fail_warning
 g_assert_warning
+g_warn_message
 </SECTION>
 
 <SECTION>
@@ -1112,6 +1112,7 @@ g_chmod
 g_access
 g_creat
 g_chdir
+g_utime
 
 <SUBSECTION Private>
 g_file_error_quark
@@ -2551,8 +2552,6 @@ g_compute_checksum_for_string
 <SECTION>
 <TITLE>Testing</TITLE>
 <FILE>testing</FILE>
-GTestCase
-GTestSuite
 g_test_minimized_result
 g_test_maximized_result
 g_test_init
@@ -2605,7 +2604,8 @@ g_assert_cmphex
 g_assert_cmpfloat
 g_strcmp0
 
-<SUBSECTION Private>
+GTestCase
+GTestSuite
 g_test_create_case
 g_test_create_suite
 g_test_get_root
@@ -2613,6 +2613,7 @@ g_test_suite_add
 g_test_suite_add_suite
 g_test_run_suite
 
+<SUBSECTION Private>
 g_test_trap_assertions
 g_assertion_message
 g_assertion_message_expr

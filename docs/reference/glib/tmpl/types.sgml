@@ -185,6 +185,8 @@ An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
 </para>
 
+@Returns: 
+
 
 <!-- ##### MACRO G_GINT64_CONSTANT ##### -->
 <para>

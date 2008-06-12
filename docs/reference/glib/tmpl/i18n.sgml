@@ -115,13 +115,25 @@ To get the translated string, call gettext() at runtime.
 @Since: 2.4
 
 
-<!-- ##### FUNCTION g_strip_context ##### -->
+<!-- ##### FUNCTION g_dgettext ##### -->
 <para>
 
 </para>
 
+@domain: 
 @msgid: 
-@msgval: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_dngettext ##### -->
+<para>
+
+</para>
+
+@domain: 
+@msgid: 
+@msgid_plural: 
+@n: 
 @Returns: 
 
 
@@ -133,6 +145,16 @@ To get the translated string, call gettext() at runtime.
 @domain: 
 @msgctxtid: 
 @msgidoffset: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_strip_context ##### -->
+<para>
+
+</para>
+
+@msgid: 
+@msgval: 
 @Returns: 
 
 

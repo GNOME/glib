@@ -136,29 +136,19 @@ Logs a critical message and returns @val.
 
 <!-- ##### MACRO g_warn_if_fail ##### -->
 <para>
-
+Logs a warning if the expression is not true.
 </para>
 
-@expr: 
+@expr: the expression to check
+@Since: 2.16
 
 
 <!-- ##### MACRO g_warn_if_reached ##### -->
 <para>
-
+Logs a critical warning.
 </para>
 
-
-
-<!-- ##### FUNCTION g_warn_message ##### -->
-<para>
-
-</para>
-
-@domain: 
-@file: 
-@line: 
-@func: 
-@warnexpr: 
+@Since: 2.16
 
 
 <!-- ##### FUNCTION g_on_error_query ##### -->

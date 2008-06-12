@@ -2,33 +2,68 @@
 Testing
 
 <!-- ##### SECTION Short_Description ##### -->
-
+a test framework
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+GLib provides a framework for writing and maintaining unit tests
+in parallel to the code they are testing. The API is designed according 
+to established concepts found in the other test frameworks (JUnit, NUnit, 
+RUnit), which in turn is based on smalltalk unit testing concepts.
+<variablelist>
+  <varlistentry>
+    <term>Test case</term>
+    <listitem><para>
+      Tests (test methods) are grouped together with their 
+      fixture into test cases.
+    </para></listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>Fixture</term>
+    <listitem><para>
+      A test fixture consists of fixture data and setup and teardown methods 
+      to establish the environment for the test functions. We use fresh 
+      fixtures, i.e. fixtures are newly set up and torn down around each test 
+      invokation to avoid dependencies between tests.
+    </para></listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>Test suite</term>
+    <listitem><para>
+      Test cases can be grouped into test suites, to allow subsets of the 
+      available tests to be run. Test suites can be grouped into other test 
+      suites as well.
+    </para></listitem>
+  </varlistentry>
+</variablelist>
+The API is designed to handle creation and registration of test suites and
+test cases implicitly. A simple call like
+<informalexample><programlisting>
+  g_test_add_func ("/misc/assertions", test_assertions);
+</programlisting></informalexample>
+creates a test suite called "misc" with a single test case named "assertions",
+which consists of running the test_assertions function.
 </para>
-
+<para>
+In addition to the traditional g_assert(), the test framework provides
+an extended set of assertions for string and numerical comparisons:
+g_assert_cmpfloat(), g_assert_cmpint(), g_assert_cmpuint(), g_assert_cmphex(),
+g_assert_cmpstr(). The advantage of these variants over plain g_assert()
+is that the assertion messages can be more elaborate, and include the
+values of the compared entities.
+</para>
+<para>
+GLib ships with two utilites called gtester and gtester-report to 
+facilitate running tests and producing nicely formatted test reports. 
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+<link linkend="gtester">gtester</link>,
+<link linkend="gtester-report">gtester-report</link>
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### TYPEDEF GTestCase ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### TYPEDEF GTestSuite ##### -->
-<para>
-
-</para>
 
 
 <!-- ##### FUNCTION g_test_minimized_result ##### -->
@@ -63,42 +98,42 @@ Testing
 
 <!-- ##### MACRO g_test_quick ##### -->
 <para>
-
+Returns %TRUE if tests are run in quick mode.
 </para>
 
 
 
 <!-- ##### MACRO g_test_slow ##### -->
 <para>
-
+Returns %TRUE if tests are run in slow mode.
 </para>
 
 
 
 <!-- ##### MACRO g_test_thorough ##### -->
 <para>
-
+Returns %TRUE if tests are run in thorough mode.
 </para>
 
 
 
 <!-- ##### MACRO g_test_perf ##### -->
 <para>
-
+Returns %TRUE if tests are run in performance mode.
 </para>
 
 
 
 <!-- ##### MACRO g_test_verbose ##### -->
 <para>
-
+Returns %TRUE if tests are run in verbose mode.
 </para>
 
 
 
 <!-- ##### MACRO g_test_quiet ##### -->
 <para>
-
+Returns %TRUE if tests are run in quite mode.
 </para>
 
 
@@ -342,67 +377,118 @@ Testing
 
 <!-- ##### MACRO g_assert ##### -->
 <para>
-
+Debugging macro to terminate the application if the assertion fails.
+If the assertion fails (i.e. the expression is not true), an error message
+is logged and the application is terminated.
+</para>
+<para>
+The macro can be turned off in final releases of code by defining
+#G_DISABLE_ASSERT when compiling the application.
 </para>
 
-@expr: 
+@expr: the expression to check.
 
 
 <!-- ##### MACRO g_assert_not_reached ##### -->
 <para>
-
+Debugging macro to terminate the application if it is ever reached.
+If it is reached, an error message is logged and the application is terminated.
+</para>
+<para>
+The macro can be turned off in final releases of code by defining
+#G_DISABLE_ASSERT when compiling the application.
 </para>
 
 
 
 <!-- ##### MACRO g_assert_cmpstr ##### -->
 <para>
-
+Debugging macro to terminate the application with a warning message 
+if a string comparison fails.
+The strings are compared using g_strcmp0().
 </para>
+<para>
+The effect of <literal>g_assert_cmpstr (s1, op, s2)</literal> is the same
+as <literal>g_assert (s1 op s2)</literal>. The advantage of this macro
+is that it can produce a message that includes the actual values of @s1
+and @s2.
+</para>
+<informalexample><programlisting>
+  g_assert_cmpstr (mystring, ==, "fubar");
+</programlisting></informalexample>
 
-@s1: 
-@cmp: 
-@s2: 
+@s1: a string (may be %NULL)
+@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@s2: another string (may be %NULL)
+Since: 2.16
 
 
 <!-- ##### MACRO g_assert_cmpint ##### -->
 <para>
-
+Debugging macro to terminate the application with a warning message 
+if an integer comparison fails.
+</para>
+<para>
+The effect of <literal>g_assert_cmpint (n1, op, n2)</literal> is the same
+as <literal>g_assert (n1 op n2)</literal>. The advantage of this macro
+is that it can produce a message that includes the actual values of @n1
+and @n2.
 </para>
 
-@n1: 
-@cmp: 
-@n2: 
+@n1: an integer
+@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@n2: another integer
+Since: 2.16
 
 
 <!-- ##### MACRO g_assert_cmpuint ##### -->
 <para>
-
+Debugging macro to terminate the application with a warning message 
+if an unsigned integer comparison fails.
+</para>
+<para>
+The effect of <literal>g_assert_cmpuint (n1, op, n2)</literal> is the same
+as <literal>g_assert (n1 op n2)</literal>. The advantage of this macro
+is that it can produce a message that includes the actual values of @n1
+and @n2.
 </para>
 
-@n1: 
-@cmp: 
-@n2: 
+@n1: an unsigned integer
+@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@n2: another unsigned integer
+Since: 2.16
 
 
 <!-- ##### MACRO g_assert_cmphex ##### -->
 <para>
-
+Debugging macro to terminate the application with a warning message 
+if an unsigned integer comparison fails. This is a variant of
+g_assert_cmpuint() that displays the numbers in hexadecimal notation
+in the message.
 </para>
 
-@n1: 
-@cmp: 
-@n2: 
+@n1: an unsigned integer
+@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@n2: another unsigned integer
+Since: 2.16
 
 
 <!-- ##### MACRO g_assert_cmpfloat ##### -->
 <para>
-
+Debugging macro to terminate the application with a warning message 
+if a floating point number comparison fails.
+</para>
+<para>
+The effect of <literal>g_assert_cmpflott (n1, op, n2)</literal> is the same
+as <literal>g_assert (n1 op n2)</literal>. The advantage of this function
+is that it can produce a message that includes the actual values of @n1
+and @n2.
 </para>
 
-@n1: 
-@cmp: 
-@n2: 
+@n1: an floating point number
+@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@n2: another floating point number
+Since: 2.16
 
 
 <!-- ##### FUNCTION g_strcmp0 ##### -->
@@ -412,6 +498,76 @@ Testing
 
 @str1: 
 @str2: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF GTestCase ##### -->
+<para>
+An opaque structure representing a test case.
+</para>
+
+
+<!-- ##### TYPEDEF GTestSuite ##### -->
+<para>
+An opaque structure representing a test suite.
+</para>
+
+
+<!-- ##### FUNCTION g_test_create_case ##### -->
+<para>
+
+</para>
+
+@test_name: 
+@data_size: 
+@test_data: 
+@data_setup: 
+@data_test: 
+@data_teardown: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_test_create_suite ##### -->
+<para>
+
+</para>
+
+@suite_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_test_get_root ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_test_suite_add ##### -->
+<para>
+
+</para>
+
+@suite: 
+@test_case: 
+
+
+<!-- ##### FUNCTION g_test_suite_add_suite ##### -->
+<para>
+
+</para>
+
+@suite: 
+@nestedsuite: 
+
+
+<!-- ##### FUNCTION g_test_run_suite ##### -->
+<para>
+
+</para>
+
+@suite: 
 @Returns: 
 
 

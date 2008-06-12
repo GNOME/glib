@@ -877,6 +877,17 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
+<!-- ##### FUNCTION g_warn_message ##### -->
+<para>
+
+</para>
+
+@domain: 
+@file: 
+@line: 
+@func: 
+@warnexpr: 
+
 <!-- ##### MACRO getcwd ##### -->
 <para>
 

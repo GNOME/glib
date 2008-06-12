@@ -76,6 +76,8 @@
 <!ENTITY glib-RegexSyntax SYSTEM "regex-syntax.sgml">
 
 <!ENTITY glib-gettextize SYSTEM "glib-gettextize.xml">
+<!ENTITY gtester SYSTEM "gtester.xml">
+<!ENTITY gtester-report SYSTEM "gtester-report.xml">
 
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -196,6 +198,8 @@ synchronize their operation.
     <title>GLib Tools</title>
 
     &glib-gettextize;
+    &gtester;
+    &gtester-report;
   </chapter>
 
   <index>

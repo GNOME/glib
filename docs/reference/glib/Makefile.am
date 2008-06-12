@@ -61,7 +61,9 @@ content_files =				\
 	resources.sgml			\
 	regex-syntax.sgml		\
 	version.xml			\
-	glib-gettextize.xml
+	glib-gettextize.xml		\
+	gtester.xml			\
+	gtester-report.xml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=
@@ -80,8 +82,10 @@ EXTRA_DIST +=				\
 
 ########################################################################
 
-man_MANS = glib-gettextize.1 
-
+man_MANS =		  	\ 
+	glib-gettextize.1 	\
+	gtester.1		\
+	gtester-report.1
 if ENABLE_MAN
 
 %.1 : %.xml 

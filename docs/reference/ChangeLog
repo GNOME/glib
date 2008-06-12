@@ -1,3 +1,16 @@
+2008-06-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Testing documentation fixups
+
+2008-06-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtester.xml:
+	* glib/gtester.1:
+	* glib/gtester-report.xml:
+	* glib/gtester-report.1:
+	* glib/glib-docs.sgml:
+	* glib/Makefile.am: Add gtester, gtester-report man pages
+
 2008-06-11  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/glib-sections.txt: Add g_dgettext() and g_dngettext().
