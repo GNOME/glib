@@ -1,5 +1,9 @@
 2008-06-11  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glist.c: Tiny doc fix
+
+2008-06-11  Matthias Clasen  <mclasen@redhat.com>
+
 	* NEWS: Updates
 
 2008-06-11  Behdad Esfahbod  <behdad@gnome.org>
