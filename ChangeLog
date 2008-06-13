@@ -1,3 +1,10 @@
+2008-06-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 538119 – glib's mainloop leaks a pipe to sub-processes
+
+	* glib/gmain.c (g_main_context_init_pipe): Don't leak the
+	pipes to child processes. Patch by Thiago Macieira.
+
 2008-06-13  Hans Breuer  <hans@breuer.org>
 
 	* glib/gstrfuncs.c : to get the default translation target on
