@@ -1,3 +1,9 @@
+2008-06-12  Yevgen Muntyan  <muntyan@tamu.edu>
+
+	* tests/live-g-file.c (sample_struct):
+        Use less fancy unicode filenames, so the test doesn't fail
+        on Mac OS X (#531476).
+
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.17.2 ===
