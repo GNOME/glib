@@ -51,7 +51,6 @@ glib_OBJECTS =			\
 	gfileutils.obj		\
 	ghash.obj		\
 	ghook.obj		\
-	gi18n.obj	\
 	giochannel.obj		\
 	giowin32.obj		\
 	gkeyfile.obj		\

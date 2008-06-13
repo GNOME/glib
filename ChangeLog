@@ -1,3 +1,11 @@
+2008-06-13  Hans Breuer  <hans@breuer.org>
+
+	* glib/gstrfuncs.c : to get the default translation target on
+	win32 use g_win32_get_locale() instead of setlocale(LS_MESSAGES,NULL)
+	Fixes bug #538044
+
+	* glib/makefile.msc.in gio/makefile.msc : updated
+
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

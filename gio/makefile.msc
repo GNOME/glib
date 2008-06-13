@@ -129,7 +129,8 @@ OBJECTS = \
 	glocaldirectorymonitor.obj \
 	gwin32appinfo.obj \
 	\
-	gio-marshal.obj
+	gio-marshal.obj \
+	gwin32directorymonitor.obj
 
 libgio_2_0_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la \
@@ -248,6 +249,8 @@ gio.def: gio.symbols
 		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
 		-DG_GNUC_PRINTF=;G_GNUC_PRINTF gio.symbols >> gio.def
 
+gwin32directorymonitor.obj : win32\gwin32directorymonitor.c 
+	$(CC) $(CFLAGS) -I win32 -c win32\gwin32directorymonitor.c
 
 RESOURCE = $(PACKAGE).res
 
@@ -255,7 +258,7 @@ libgio-$(PKG_VER).dll : $(OBJECTS) $(PACKAGE).def
 	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER).dll $(OBJECTS) \
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
 	$(INTL_LIBS) \
-	user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) \
+	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) \
 	/implib:gio-2.0.lib /def:$(PACKAGE).def
 
 .c.obj :
