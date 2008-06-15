@@ -342,7 +342,10 @@ This function is deprecated and will be removed in the next major
 
 <!-- ##### STRUCT GHashTableIter ##### -->
 <para>
-
+A GHashTableIter structure represents an iterator that can be
+used to iterate over the elements of a #GHashTable. GHashTableIter
+structures are typically allocated on the stack and then initialized
+with g_hash_table_iter_init().
 </para>
 
 
