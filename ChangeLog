@@ -1,5 +1,7 @@
 2008-06-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gtestutils.c: Move docs around
+
 	* glib/gchecksum.h: Add docs.
 
 2008-06-13  Matthias Clasen  <mclasen@redhat.com>

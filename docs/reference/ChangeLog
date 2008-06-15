@@ -1,6 +1,9 @@
 2008-06-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/testing.sgml: Move docs around
+
 	* glib/tmpl/unicode.sgml: Document break types
+
 	* glib/tmpl/hash_tables.sgml: Add docs for GHashTableIter
 
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>

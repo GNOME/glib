@@ -1489,35 +1489,7 @@ test_time_stamp (void)
  * not return or that might abort. The forked test case is aborted
  * and considered failing if its run time exceeds @usec_timeout.
  *
- * The forking behavior can be configured with the following flags:
- * <variablelist>
- *   <varlistentry>
- *     <term>%G_TEST_TRAP_SILENCE_STDOUT</term>
- *     <listitem><para>
- *       redirect stdout of the test child to <filename>/dev/null</filename> 
- *       so it cannot be observed on the console during test runs. 
- *       The actual output is still captured though to allow later
- *       tests with g_test_trap_assert_stdout().
- *     </para></listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term>%G_TEST_TRAP_SILENCE_STDERR</term>
- *     <listitem><para>
- *       redirect stderr of the test child to <filename>/dev/null</filename>
- *       so it cannot be observed on the console during test runs. 
- *       The actual output is still captured though to allow later
- *       tests with g_test_trap_assert_stderr().
- *     </para></listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term>%G_TEST_TRAP_INHERIT_STDIN</term>
- *     <listitem><para>
- *       if this flag is given, stdin of the forked child process is 
- *       shared with stdin of its parent process. It is redirected to 
- *       <filename>/dev/null</filename> otherwise.
- *     </para></listitem>
- *   </varlistentry>
- * </variablelist>
+ * The forking behavior can be configured with the #GTestTrapFlags flags.
  *
  * In the following example, the test code forks, the forked child
  * process produces some sample output and exits successfully.
