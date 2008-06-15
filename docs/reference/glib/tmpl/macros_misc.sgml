@@ -362,9 +362,14 @@ Since: 2.6
 
 <!-- ##### MACRO G_GNUC_MAY_ALIAS ##### -->
 <para>
-
+Expands to the GNU C <literal>may_alias</literal> type attribute 
+if the compiler is <command>gcc</command>. Types with this attribute 
+will not be subjected to type-based alias analysis, but are assumed
+to alias with any other type, just like char.
+See the GNU C documentation for details. 
 </para>
 
+Since: 2.14
 
 
 <!-- ##### FUNCTION G_LIKELY ##### -->
