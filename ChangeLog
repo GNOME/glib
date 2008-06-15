@@ -1,3 +1,7 @@
+2008-06-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gchecksum.h: Add docs.
+
 2008-06-13  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 538119 – glib's mainloop leaks a pipe to sub-processes
