@@ -194,9 +194,7 @@ _g_local_file_enumerator_new (GLocalFile *file,
 			      GError              **error)
 {
   GLocalFileEnumerator *local;
-  char *filename;
-
-  filename = g_file_get_path (G_FILE (file));
+  char *filename = g_file_get_path (G_FILE (file));
 
 #ifdef USE_GDIR
   GError *dir_error;

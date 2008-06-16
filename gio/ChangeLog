@@ -1,3 +1,8 @@
+2008-05-19  Hans Breuer  <hans@breuer.org>
+
+	* glocalfileenumerator.c(_g_local_file_enumerator_new) : declaration 
+	and initialization in one step avoids c99ism
+
 2008-06-16  Christian Persch  <chpe@gnome.org>
 
 	* gio/gappinfo.c
