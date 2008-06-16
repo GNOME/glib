@@ -323,6 +323,7 @@ g_file_enumerator_close_finish
 g_file_enumerator_is_closed
 g_file_enumerator_has_pending
 g_file_enumerator_set_pending
+g_file_enumerator_get_container
 #endif
 #endif
 

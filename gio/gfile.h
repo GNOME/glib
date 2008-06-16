@@ -124,6 +124,7 @@ typedef enum  {
   G_FILE_MONITOR_WATCH_MOUNTS = (1<<0)
 } GFileMonitorFlags;
 
+#if 0
 /**
  * GFile:
  * 
@@ -132,6 +133,7 @@ typedef enum  {
  * necessarily represent files or directories that currently exist.
  **/
 typedef struct _GFile         		GFile; /* Dummy typedef */
+#endif
 typedef struct _GFileIface    		GFileIface;
 typedef struct _GFileMonitor            GFileMonitor;
 

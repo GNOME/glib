@@ -26,6 +26,7 @@
 #include <gfileenumerator.h>
 #include <gfileinfo.h>
 #include <gfile.h>
+#include <glocalfile.h>
 
 G_BEGIN_DECLS
 
@@ -49,7 +50,7 @@ struct _GLocalFileEnumeratorClass
 
 GType _g_local_file_enumerator_get_type (void) G_GNUC_CONST;
 
-GFileEnumerator *_g_local_file_enumerator_new (const char *filename,
+GFileEnumerator *_g_local_file_enumerator_new (GLocalFile *file,
 					       const char *attributes,
 					       GFileQueryInfoFlags flags,
 					       GCancellable *cancellable,

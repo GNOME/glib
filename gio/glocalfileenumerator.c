@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <glocalfileenumerator.h>
 #include <glocalfileinfo.h>
+#include <glocalfile.h>
 #include <string.h>
 #include <stdlib.h>
 #include "glibintl.h"
@@ -187,13 +188,16 @@ convert_file_to_io_error (GError **error,
 #endif
 
 GFileEnumerator *
-_g_local_file_enumerator_new (const char           *filename,
+_g_local_file_enumerator_new (GLocalFile *file,
 			      const char           *attributes,
 			      GFileQueryInfoFlags   flags,
 			      GCancellable         *cancellable,
 			      GError              **error)
 {
   GLocalFileEnumerator *local;
+  char *filename;
+
+  filename = g_file_get_path (G_FILE (file));
 
 #ifdef USE_GDIR
   GError *dir_error;
@@ -208,6 +212,7 @@ _g_local_file_enumerator_new (const char           *filename,
 	  convert_file_to_io_error (error, dir_error);
 	  g_error_free (dir_error);
 	}
+      g_free (filename);
       return NULL;
     }
 #else
@@ -222,15 +227,18 @@ _g_local_file_enumerator_new (const char           *filename,
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   "%s", g_strerror (errsv));
+      g_free (filename);
       return NULL;
     }
 
 #endif
   
-  local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR, NULL);
+  local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR,
+                        "container", file,
+                        NULL);
 
   local->dir = dir;
-  local->filename = g_strdup (filename);
+  local->filename = filename;
   local->matcher = g_file_attribute_matcher_new (attributes);
   local->flags = flags;
   

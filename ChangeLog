@@ -1,3 +1,25 @@
+2008-06-16  Ross Burton  <ross@burtonini.com>
+
+	Bug 536252 – GFileEnumerator should allow access to the containing
+	GFile
+	
+	* gio/gfileenumerator.c:
+	* gio/gfileenumerator.h:
+	* gio/gfile.h:
+	Add g_file_enumerator_get_container() and a container writeable
+	construct-only property.  Also shuffle around typedefs to make it
+	compile.
+	
+	* gio/glocalfileenumerator.c:
+	* gio/glocalfileenumerator.h:
+	* gio/glocalfile.c:
+	Instead of a string filename take a GFile in the constructor and
+	use it to set the container property.
+	
+	* gio/gio.symbols:
+	* docs/reference/gio/gio-sections.txt:
+	Update with new API.
+
 2008-06-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtestutils.c: Move docs around

@@ -56,10 +56,16 @@ G_DEFINE_TYPE (GFileEnumerator, g_file_enumerator, G_TYPE_OBJECT);
 
 struct _GFileEnumeratorPrivate {
   /* TODO: Should be public for subclasses? */
+  GFile *container;
   guint closed : 1;
   guint pending : 1;
   GAsyncReadyCallback outstanding_callback;
   GError *outstanding_error;
+};
+
+enum {
+  PROP_0,
+  PROP_CONTAINER
 };
 
 static void     g_file_enumerator_real_next_files_async  (GFileEnumerator      *enumerator,
@@ -79,6 +85,42 @@ static void     g_file_enumerator_real_close_async       (GFileEnumerator      *
 static gboolean g_file_enumerator_real_close_finish      (GFileEnumerator      *enumerator,
 							  GAsyncResult         *res,
 							  GError              **error);
+
+static void
+g_file_enumerator_set_property (GObject      *object,
+                                guint         property_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  GFileEnumerator *enumerator;
+  
+  enumerator = G_FILE_ENUMERATOR (object);
+  
+  switch (property_id) {
+  case PROP_CONTAINER:
+    enumerator->priv->container = g_value_dup_object (value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
+}
+
+static void
+g_file_enumerator_dispose (GObject *object)
+{
+  GFileEnumerator *enumerator;
+
+  enumerator = G_FILE_ENUMERATOR (object);
+  
+  if (enumerator->priv->container) {
+    g_object_unref (enumerator->priv->container);
+    enumerator->priv->container = NULL;
+  }
+  
+  if (G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose)
+    (*G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose) (object);
+}
 
 static void
 g_file_enumerator_finalize (GObject *object)
@@ -101,12 +143,23 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
   
   g_type_class_add_private (klass, sizeof (GFileEnumeratorPrivate));
   
+  gobject_class->set_property = g_file_enumerator_set_property;
+  gobject_class->dispose = g_file_enumerator_dispose;
   gobject_class->finalize = g_file_enumerator_finalize;
 
   klass->next_files_async = g_file_enumerator_real_next_files_async;
   klass->next_files_finish = g_file_enumerator_real_next_files_finish;
   klass->close_async = g_file_enumerator_real_close_async;
   klass->close_finish = g_file_enumerator_real_close_finish;
+
+  g_object_class_install_property
+    (gobject_class, PROP_CONTAINER,
+     g_param_spec_object ("container", P_("Container"),
+                          P_("The container that is being enumerated"),
+                          G_TYPE_FILE,
+                          G_PARAM_WRITABLE |
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -524,6 +577,24 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
   g_return_if_fail (G_IS_FILE_ENUMERATOR (enumerator));
   
   enumerator->priv->pending = pending;
+}
+
+/**
+ * g_file_enumerator_get_container:
+ * @enumerator: a #GFileEnumerator
+ *
+ * Get the #GFile container which is being enumerated.
+ *
+ * Returns: the #GFile which is being enumerated.
+ *
+ * Since: 2.18.
+ */
+GFile *
+g_file_enumerator_get_container (GFileEnumerator *enumerator)
+{
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+
+  return enumerator->priv->container;
 }
 
 typedef struct {

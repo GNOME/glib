@@ -53,6 +53,17 @@ typedef struct _GFileEnumerator         GFileEnumerator;
 typedef struct _GFileEnumeratorClass    GFileEnumeratorClass;
 typedef struct _GFileEnumeratorPrivate  GFileEnumeratorPrivate;
 
+/* Nasty */
+GType g_file_get_type (void) G_GNUC_CONST;
+#define G_TYPE_FILE            (g_file_get_type ())
+/**
+ * GFile:
+ * 
+ * A handle to an object implementing the #GFileIface interface. 
+ * Generally stores a location within the file system. Handles do not 
+ * necessarily represent files or directories that currently exist.
+ **/
+typedef struct _GFile         		GFile; /* Dummy typedef */
 
 struct _GFileEnumerator
 {
@@ -133,6 +144,7 @@ gboolean   g_file_enumerator_is_closed         (GFileEnumerator      *enumerator
 gboolean   g_file_enumerator_has_pending       (GFileEnumerator      *enumerator);
 void       g_file_enumerator_set_pending       (GFileEnumerator      *enumerator,
 						gboolean              pending);
+GFile *    g_file_enumerator_get_container     (GFileEnumerator *enumerator);
 
 G_END_DECLS
 

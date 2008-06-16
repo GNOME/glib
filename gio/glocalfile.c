@@ -578,7 +578,7 @@ g_local_file_enumerate_children (GFile                *file,
 				 GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
-  return _g_local_file_enumerator_new (local->filename,
+  return _g_local_file_enumerator_new (local,
 				       attributes, flags,
 				       cancellable, error);
 }
