@@ -63,6 +63,11 @@ void     g_set_error           (GError       **err,
                                 const gchar   *format,
                                 ...) G_GNUC_PRINTF (4, 5);
 
+void     g_set_error_literal   (GError       **err,
+                                GQuark         domain,
+                                gint           code,
+                                const gchar   *message);
+
 /* if (dest) *dest = src; also has some sanity checks.
  */
 void     g_propagate_error     (GError       **dest,

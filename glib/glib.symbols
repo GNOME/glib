@@ -336,6 +336,7 @@ g_error_new G_GNUC_PRINTF(3,4)
 g_error_new_literal
 g_propagate_error
 g_set_error G_GNUC_PRINTF(4,5)
+g_set_error_literal
 g_prefix_error G_GNUC_PRINTF(2,3)
 g_propagate_prefixed_error G_GNUC_PRINTF(3,4)
 #endif

@@ -212,6 +212,37 @@ g_set_error (GError      **err,
 }
 
 /**
+ * g_set_error_literal:
+ * @err: a return location for a #GError, or %NULL
+ * @domain: error domain
+ * @code: error code 
+ * @message: error message
+ *
+ * Does nothing if @err is %NULL; if @err is non-%NULL, then *@err must
+ * be %NULL. A new #GError is created and assigned to *@err.
+ * Unlike g_set_error(), @message is not a printf()-style format string.
+ * Use this function if @message contains text you don't have control over,
+ * that could include printf() escape sequences.
+ **/
+void
+g_set_error_literal (GError      **err,
+                     GQuark        domain,
+                     gint          code,
+                     const gchar  *message)
+{
+  GError *new;
+  
+  if (err == NULL)
+    return;
+
+  new = g_error_new_literal (domain, code, message);
+  if (*err == NULL)
+    *err = new;
+  else
+    g_warning (ERROR_OVERWRITTEN_WARNING, new->message);    
+}
+
+/**
  * g_propagate_error:
  * @dest: error return location
  * @src: error to move into the return location
