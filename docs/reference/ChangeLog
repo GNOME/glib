@@ -1,3 +1,8 @@
+2008-06-16  Ross Burton  <ross@burtonini.com>
+
+	* gio/gio-sections.txt:
+	Add g_file_enumerator_get_container.
+
 2008-06-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/macros_misc.sgml: Document G_GNUC_MAY_ALIAS

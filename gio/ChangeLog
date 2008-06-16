@@ -1,3 +1,29 @@
+2008-06-16  Ross Burton  <ross@burtonini.com>
+
+	* gfileenumerator.c:
+	Remove check for dispose implementation as it annoys Emmanuele.
+	
+2008-06-16  Ross Burton  <ross@burtonini.com>
+
+	Bug 536252 – GFileEnumerator should allow access to the containing
+	GFile
+	
+	* gfileenumerator.c:
+	* gfileenumerator.h:
+	* gfile.h:
+	Add g_file_enumerator_get_container() and a container writeable
+	construct-only property.  Also shuffle around typedefs to make it
+	compile.
+	
+	* glocalfileenumerator.c:
+	* glocalfileenumerator.h:
+	* glocalfile.c:
+	Instead of a string filename take a GFile in the constructor and
+	use it to set the container property.
+	
+	* gio.symbols:
+	Update with new API.
+
 2008-06-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* gfile.c: Make includes more uniform
