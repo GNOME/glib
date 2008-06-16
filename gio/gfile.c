@@ -31,7 +31,7 @@
 #include "gfile.h"
 #include "gvfs.h"
 #include "gioscheduler.h"
-#include <glocalfile.h>
+#include "glocalfile.h"
 #include "gsimpleasyncresult.h"
 #include "gfileattribute-priv.h"
 #include "gpollfilemonitor.h"

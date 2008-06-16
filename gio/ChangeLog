@@ -1,3 +1,7 @@
+2008-06-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* gfile.c: Make includes more uniform
+
 2008-06-12  Yevgen Muntyan  <muntyan@tamu.edu>
 
 	* tests/live-g-file.c (sample_struct):
