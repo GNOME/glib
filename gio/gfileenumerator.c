@@ -118,8 +118,7 @@ g_file_enumerator_dispose (GObject *object)
     enumerator->priv->container = NULL;
   }
   
-  if (G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose) (object);
+  (*G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose) (object);
 }
 
 static void

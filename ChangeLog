@@ -1,5 +1,10 @@
 2008-06-16  Ross Burton  <ross@burtonini.com>
 
+	* gio/gfileenumerator.c:
+	Remove check for dispose implementation as it annoys Emmanuele.
+	
+2008-06-16  Ross Burton  <ross@burtonini.com>
+
 	Bug 536252 – GFileEnumerator should allow access to the containing
 	GFile
 	
