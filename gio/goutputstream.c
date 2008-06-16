@@ -196,8 +196,8 @@ g_output_stream_write (GOutputStream  *stream,
 
   if (class->write_fn == NULL) 
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Output stream doesn't implement write"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Output stream doesn't implement write"));
       return -1;
     }
   
@@ -357,8 +357,8 @@ g_output_stream_splice (GOutputStream             *stream,
 
   if (g_input_stream_is_closed (source))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Source stream is already closed"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+                           _("Source stream is already closed"));
       return -1;
     }
 
@@ -397,8 +397,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
   bytes_copied = 0;
   if (class->write_fn == NULL) 
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Output stream doesn't implement write"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Output stream doesn't implement write"));
       res = FALSE;
       goto notsupported;
     }
@@ -1070,18 +1070,18 @@ g_output_stream_set_pending (GOutputStream *stream,
   
   if (stream->priv->closed)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+                           _("Stream is already closed"));
       return FALSE;
     }
   
   if (stream->priv->pending)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		      /* Translators: This is an error you get if there is
-		       * already an operation running against this stream when
-		       * you try to start one */
-		      _("Stream has outstanding operation"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+                           /* Translators: This is an error you get if there is
+                            * already an operation running against this stream when
+                            * you try to start one */
+                           _("Stream has outstanding operation"));
       return FALSE;
     }
   

@@ -281,10 +281,10 @@ array_check_boundary (GMemoryOutputStream  *stream,
 {
   if (size > G_MAXUINT)
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Reached maximum data array limit"));
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_FAILED,
+                           _("Reached maximum data array limit"));
 
       return FALSE;
     }
@@ -316,10 +316,10 @@ array_resize (GMemoryOutputStream  *ostream,
 	  priv->pos < priv->len)
 	return TRUE; /* Short write */
       
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NO_SPACE,
-                   _("Memory output stream not resizable"));
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_NO_SPACE,
+                           _("Memory output stream not resizable"));
       return FALSE;
     }
 
@@ -332,10 +332,10 @@ array_resize (GMemoryOutputStream  *ostream,
 	  priv->pos < priv->len)
 	return TRUE; /* Short write */
       
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NO_SPACE,
-                   _("Failed to resize memory output stream"));
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_NO_SPACE,
+                           _("Failed to resize memory output stream"));
       return FALSE;
     }
 
@@ -538,20 +538,20 @@ g_memory_output_stream_seek (GSeekable    *seekable,
       break;
   
     default:
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid GSeekType supplied"));
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid GSeekType supplied"));
 
       return FALSE;
     }
 
   if (absolute < 0) 
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid seek request"));
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid seek request"));
       return FALSE;
     }
 

@@ -180,9 +180,9 @@ convert_file_to_io_error (GError **error,
         }
     }
   
-  g_set_error (error, G_IO_ERROR,
-	       new_code,
-	       "%s", file_error->message);
+  g_set_error_literal (error, G_IO_ERROR,
+                       new_code,
+                       file_error->message);
 }
 #endif
 
@@ -223,9 +223,9 @@ _g_local_file_enumerator_new (GLocalFile *file,
     {
       errsv = errno;
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   "%s", g_strerror (errsv));
+      g_set_error_literal (error, G_IO_ERROR,
+                           g_io_error_from_errno (errsv),
+                           g_strerror (errsv));
       g_free (filename);
       return NULL;
     }

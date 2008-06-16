@@ -1097,7 +1097,7 @@ g_regex_new (const gchar         *pattern,
 	{
 	  msg = N_("PCRE library is compiled without UTF8 support");
 	  g_critical (msg);
-	  g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
+	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
 	  return NULL;
 	}
 
@@ -1106,7 +1106,7 @@ g_regex_new (const gchar         *pattern,
 	{
 	  msg = N_("PCRE library is compiled without UTF8 properties support");
 	  g_critical (msg);
-	  g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
+	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
 	  return NULL;
 	}
 

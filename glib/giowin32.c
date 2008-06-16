@@ -975,8 +975,8 @@ g_io_win32_msg_read (GIOChannel *channel,
   
   if (count < sizeof (MSG))
     {
-      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-		   "Incorrect message size"); /* Informative enough error message? */
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
+                           "Incorrect message size"); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
@@ -1004,8 +1004,8 @@ g_io_win32_msg_write (GIOChannel  *channel,
   
   if (count != sizeof (MSG))
     {
-      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-		   "Incorrect message size"); /* Informative enough error message? */
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
+                           "Incorrect message size"); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
@@ -1014,7 +1014,7 @@ g_io_win32_msg_write (GIOChannel  *channel,
   if (!PostMessage (win32_channel->hwnd, msg.message, msg.wParam, msg.lParam))
     {
       gchar *emsg = g_win32_error_message (GetLastError ());
-      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED, emsg);
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED, emsg);
       g_free (emsg);
       return G_IO_STATUS_ERROR;
     }
@@ -1111,9 +1111,9 @@ g_io_win32_fd_and_console_read (GIOChannel *channel,
 	  return G_IO_STATUS_AGAIN;
 #endif
 	default:
-	  g_set_error (err, G_IO_CHANNEL_ERROR,
-		       g_io_channel_error_from_errno (errno),
-		       g_strerror (errno));
+	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                               g_io_channel_error_from_errno (errno),
+                               g_strerror (errno));
 	  return G_IO_STATUS_ERROR;
         }
     }
@@ -1154,9 +1154,9 @@ g_io_win32_fd_and_console_write (GIOChannel  *channel,
 	  return G_IO_STATUS_AGAIN;
 #endif
 	default:
-	  g_set_error (err, G_IO_CHANNEL_ERROR,
-		       g_io_channel_error_from_errno (errno),
-		       g_strerror (errno));
+	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                               g_io_channel_error_from_errno (errno),
+                               g_strerror (errno));
 	  return G_IO_STATUS_ERROR;
         }
     }
@@ -1197,9 +1197,9 @@ g_io_win32_fd_seek (GIOChannel *channel,
   tmp_offset = offset;
   if (tmp_offset != offset)
     {
-      g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_io_channel_error_from_errno (EINVAL),
-		   g_strerror (EINVAL));
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                           g_io_channel_error_from_errno (EINVAL),
+                           g_strerror (EINVAL));
       return G_IO_STATUS_ERROR;
     }
   
@@ -1207,9 +1207,9 @@ g_io_win32_fd_seek (GIOChannel *channel,
   
   if (result < 0)
     {
-      g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_io_channel_error_from_errno (errno),
-		   g_strerror (errno));
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                           g_io_channel_error_from_errno (errno),
+                           g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1303,9 +1303,9 @@ g_io_win32_console_close (GIOChannel *channel,
   
   if (close (win32_channel->fd) < 0)
     {
-      g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_io_channel_error_from_errno (errno),
-		   g_strerror (errno));
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                           g_io_channel_error_from_errno (errno),
+                           g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1377,7 +1377,7 @@ g_io_win32_sock_read (GIOChannel *channel,
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error (err, G_IO_CHANNEL_ERROR, error, emsg);
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR, error, emsg);
       g_free (emsg);
 
       return G_IO_STATUS_ERROR;
@@ -1440,7 +1440,7 @@ g_io_win32_sock_write (GIOChannel  *channel,
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error (err, G_IO_CHANNEL_ERROR, error, emsg);
+      g_set_error_literal (err, G_IO_CHANNEL_ERROR, error, emsg);
       g_free (emsg);
 
       return G_IO_STATUS_ERROR;
@@ -1600,9 +1600,9 @@ g_io_channel_new_file (const gchar  *filename,
 
   if (fid < 0)
     {
-      g_set_error (error, G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
-                   g_strerror (errno));
+      g_set_error_literal (error, G_FILE_ERROR,
+                           g_file_error_from_errno (errno),
+                           g_strerror (errno));
       return (GIOChannel *)NULL;
     }
 
@@ -1677,9 +1677,9 @@ g_io_win32_unimpl_set_flags (GIOChannel *channel,
       g_print ("\n");
     }
 
-  g_set_error (err, G_IO_CHANNEL_ERROR,
-	       G_IO_CHANNEL_ERROR_FAILED,
-	       "Not implemented on Win32");
+  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+                       G_IO_CHANNEL_ERROR_FAILED,
+                       "Not implemented on Win32");
 
   return G_IO_STATUS_ERROR;
 }
@@ -1785,9 +1785,9 @@ g_io_win32_sock_set_flags (GIOChannel *channel,
 	{
 	  gchar *emsg = g_win32_error_message (WSAGetLastError ());
 
-	  g_set_error (err, G_IO_CHANNEL_ERROR,
-		       G_IO_CHANNEL_ERROR_FAILED,
-		       emsg);
+	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+			       G_IO_CHANNEL_ERROR_FAILED,
+			       emsg);
 	  g_free (emsg);
 
 	  return G_IO_STATUS_ERROR;
@@ -1800,9 +1800,9 @@ g_io_win32_sock_set_flags (GIOChannel *channel,
 	{
 	  gchar *emsg = g_win32_error_message (WSAGetLastError ());
 
-	  g_set_error (err, G_IO_CHANNEL_ERROR,
-		       G_IO_CHANNEL_ERROR_FAILED,
-		       emsg);
+	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
+			       G_IO_CHANNEL_ERROR_FAILED,
+			       emsg);
 	  g_free (emsg);
 
 	  return G_IO_STATUS_ERROR;

@@ -865,8 +865,8 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
 
   if (g_input_stream_is_closed (input_stream))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-       _("Stream is already closed"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+                           _("Stream is already closed"));
       return -1;
     }
 

@@ -150,8 +150,8 @@ g_file_input_stream_query_info (GFileInputStream  *stream,
   if (class->query_info)
     info = class->query_info (stream, attributes, cancellable, error);
   else
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		 _("Stream doesn't support query_info"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                         _("Stream doesn't support query_info"));
 
   if (cancellable)
     g_cancellable_pop_current (cancellable);
@@ -332,8 +332,8 @@ g_file_input_stream_seek (GFileInputStream  *stream,
 
   if (!class->seek)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Seek not supported on stream"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Seek not supported on stream"));
       return FALSE;
     }
 
@@ -376,8 +376,8 @@ g_file_input_stream_seekable_truncate (GSeekable     *seekable,
 				       GCancellable  *cancellable,
 				       GError       **error)
 {
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-	       _("Truncate not allowed on input stream"));
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Truncate not allowed on input stream"));
   return FALSE;
 }
 
@@ -417,8 +417,8 @@ query_info_async_thread (GSimpleAsyncResult *res,
   if (class->query_info)
     info = class->query_info (G_FILE_INPUT_STREAM (object), data->attributes, cancellable, &error);
   else
-    g_set_error (&error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		 _("Stream doesn't support query_info"));
+    g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                         _("Stream doesn't support query_info"));
 
   if (info == NULL)
     {

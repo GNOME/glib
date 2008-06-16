@@ -806,9 +806,9 @@ g_file_enumerate_children (GFile                *file,
 
   if (iface->enumerate_children == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
 
@@ -1034,9 +1034,9 @@ g_file_query_info (GFile                *file,
 
   if (iface->query_info == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1167,9 +1167,9 @@ g_file_query_filesystem_info (GFile         *file,
 
   if (iface->query_filesystem_info == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1285,7 +1285,7 @@ g_file_find_enclosing_mount (GFile         *file,
   if (iface->find_enclosing_mount == NULL)
     {
 
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
 			/* Translators: This is an error message when trying to find the
 			 * enclosing (user visible) mount of a file, but none exists. */
 		   _("Containing mount does not exist"));
@@ -1398,9 +1398,9 @@ g_file_read (GFile         *file,
 
   if (iface->read_fn == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1451,9 +1451,9 @@ g_file_append_to (GFile             *file,
 
   if (iface->append_to == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1507,9 +1507,9 @@ g_file_create (GFile             *file,
 
   if (iface->create == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1589,9 +1589,9 @@ g_file_replace (GFile             *file,
 
   if (iface->replace == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
   
@@ -1929,8 +1929,8 @@ copy_symlink (GFile           *destination,
 	      
 	      if (file_type == G_FILE_TYPE_DIRECTORY)
 		{
-		  g_set_error (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
-			       _("Can't copy over directory"));
+		  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
+                                       _("Can't copy over directory"));
 		  return FALSE;
 		}
 	    }
@@ -1989,16 +1989,16 @@ open_source_for_copy (GFile           *source,
 	    {
 	      if (file_type == G_FILE_TYPE_DIRECTORY)
 		{
-		  g_set_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_MERGE,
-			       _("Can't copy directory over directory"));
+		  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_MERGE,
+                                       _("Can't copy directory over directory"));
 		  return NULL;
 		}
 	      /* continue to would_recurse error */
 	    }
 	  else
 	    {
-	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_EXISTS,
-			   _("Target file exists"));
+	      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_EXISTS,
+                                   _("Target file exists"));
 	      return NULL;
 	    }
 	}
@@ -2015,8 +2015,8 @@ open_source_for_copy (GFile           *source,
 	  g_error_free (my_error);
 	}
       
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_RECURSE,
-		   _("Can't recursively copy directory"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_RECURSE,
+                           _("Can't recursively copy directory"));
       return NULL;
     }
 
@@ -2646,9 +2646,9 @@ g_file_move (GFile                  *source,
   
   if (flags & G_FILE_COPY_NO_FALLBACK_FOR_MOVE)
     {  
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return FALSE;
     }
   
@@ -2697,9 +2697,9 @@ g_file_make_directory (GFile         *file,
 
   if (iface->make_directory == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return FALSE;
     }
   
@@ -2815,9 +2815,9 @@ g_file_make_symbolic_link (GFile         *file,
 
   if (*symlink_value == '\0')
     {
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid symlink value given"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid symlink value given"));
       return FALSE;
     }
   
@@ -2825,9 +2825,9 @@ g_file_make_symbolic_link (GFile         *file,
 
   if (iface->make_symbolic_link == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return FALSE;
     }
   
@@ -2865,9 +2865,9 @@ g_file_delete (GFile         *file,
 
   if (iface->delete_file == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return FALSE;
     }
   
@@ -2908,9 +2908,9 @@ g_file_trash (GFile         *file,
 
   if (iface->trash == NULL)
     {
-      g_set_error (error,
-		   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Trash not supported"));
+      g_set_error_literal (error,
+                           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Trash not supported"));
       return FALSE;
     }
   
@@ -3189,9 +3189,9 @@ g_file_set_attribute (GFile                      *file,
 
   if (iface->set_attribute == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return FALSE;
     }
 
@@ -3837,9 +3837,9 @@ g_file_monitor_directory (GFile             *file,
 
   if (iface->monitor_dir == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SUPPORTED,
-		   _("Operation not supported"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SUPPORTED,
+                           _("Operation not supported"));
       return NULL;
     }
 
@@ -4999,9 +4999,9 @@ g_file_query_default_handler (GFile                  *file,
   if (appinfo != NULL)
     return appinfo;
 
-  g_set_error (error, G_IO_ERROR,
-	       G_IO_ERROR_NOT_SUPPORTED,
-	       _("No application is registered as handling this file"));
+  g_set_error_literal (error, G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("No application is registered as handling this file"));
   return NULL;
   
 }

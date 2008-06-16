@@ -273,7 +273,7 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
 		      NULL,
 		      &class_key) != S_OK)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Can't find application"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Can't find application"));
       return FALSE;
     }
 #endif
@@ -343,9 +343,9 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 			      GAppLaunchContext  *launch_context,
 			      GError            **error)
 {
-  g_set_error (error, G_IO_ERROR, 
-               G_IO_ERROR_NOT_SUPPORTED, 
-               _("URIs not supported"));
+  g_set_error_literal (error, G_IO_ERROR, 
+                       G_IO_ERROR_NOT_SUPPORTED, 
+                       _("URIs not supported"));
   return FALSE;
 }
 
@@ -365,9 +365,9 @@ g_win32_app_info_set_as_default_for_type (GAppInfo    *appinfo,
                                           const char  *content_type,
                                           GError     **error)
 {
-  g_set_error (error, G_IO_ERROR, 
-               G_IO_ERROR_NOT_SUPPORTED, 
-               _("association changes not supported on win32"));
+  g_set_error_literal (error, G_IO_ERROR, 
+                       G_IO_ERROR_NOT_SUPPORTED, 
+                       _("association changes not supported on win32"));
   return FALSE;
 }
 
@@ -377,9 +377,9 @@ g_app_info_create_from_commandline (const char           *commandline,
 				    GAppInfoCreateFlags   flags,
 				    GError              **error)
 {
-  g_set_error (error, G_IO_ERROR, 
-               G_IO_ERROR_NOT_SUPPORTED, 
-               _("Association creation not supported on win32"));
+  g_set_error_literal (error, G_IO_ERROR, 
+                       G_IO_ERROR_NOT_SUPPORTED, 
+                       _("Association creation not supported on win32"));
   return NULL;
 }
 

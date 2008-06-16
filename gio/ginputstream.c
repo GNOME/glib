@@ -189,8 +189,8 @@ g_input_stream_read  (GInputStream  *stream,
 
   if (class->read_fn == NULL) 
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Input stream doesn't implement read"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Input stream doesn't implement read"));
       return -1;
     }
 
@@ -888,14 +888,14 @@ g_input_stream_set_pending (GInputStream *stream, GError **error)
   
   if (stream->priv->closed)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+                           _("Stream is already closed"));
       return FALSE;
     }
   
   if (stream->priv->pending)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
 		/* Translators: This is an error you get if there is already an
 		 * operation running against this stream when you try to start
 		 * one */

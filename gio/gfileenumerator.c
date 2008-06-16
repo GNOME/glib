@@ -198,15 +198,15 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
   
   if (enumerator->priv->closed)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Enumerator is closed"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+                           _("Enumerator is closed"));
       return NULL;
     }
 
   if (enumerator->priv->pending)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("File enumerator has outstanding operation"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+                           _("File enumerator has outstanding operation"));
       return NULL;
     }
 
@@ -264,8 +264,8 @@ g_file_enumerator_close (GFileEnumerator  *enumerator,
   
   if (enumerator->priv->pending)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("File enumerator has outstanding operation"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+                           _("File enumerator has outstanding operation"));
       return FALSE;
     }
 

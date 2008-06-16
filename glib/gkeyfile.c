@@ -353,10 +353,10 @@ find_file_in_data_dirs (const gchar   *file,
 
   if (fd < 0)
     {
-      g_set_error (error, G_KEY_FILE_ERROR,
-                   G_KEY_FILE_ERROR_NOT_FOUND,
-                   _("Valid key file could not be "
-                     "found in search dirs"));
+      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_NOT_FOUND,
+                           _("Valid key file could not be "
+                             "found in search dirs"));
     }
 
   if (output_file != NULL && fd > 0)
@@ -380,25 +380,25 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
   
   if (fstat (fd, &stat_buf) < 0)
     {
-      g_set_error (error, G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
-                   "%s", g_strerror (errno));
+      g_set_error_literal (error, G_FILE_ERROR,
+                           g_file_error_from_errno (errno),
+                           g_strerror (errno));
       return FALSE;
     }
 
   if (!S_ISREG (stat_buf.st_mode))
     {
-      g_set_error (error, G_KEY_FILE_ERROR,
-                   G_KEY_FILE_ERROR_PARSE,
-                   _("Not a regular file"));
+      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_PARSE,
+                           _("Not a regular file"));
       return FALSE;
     }
 
   if (stat_buf.st_size == 0)
     {
-      g_set_error (error, G_KEY_FILE_ERROR,
-                   G_KEY_FILE_ERROR_PARSE,
-                   _("File is empty"));
+      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_PARSE,
+                           _("File is empty"));
       return FALSE;
     }
 
@@ -422,9 +422,9 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
           if (errno == EINTR || errno == EAGAIN)
             continue;
 
-          g_set_error (error, G_FILE_ERROR,
-                       g_file_error_from_errno (errno),
-                       "%s", g_strerror (errno));
+          g_set_error_literal (error, G_FILE_ERROR,
+                               g_file_error_from_errno (errno),
+                               g_strerror (errno));
           return FALSE;
         }
 
@@ -482,9 +482,9 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 
   if (fd < 0)
     {
-      g_set_error (error, G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
-                   "%s", g_strerror (errno));
+      g_set_error_literal (error, G_FILE_ERROR,
+                           g_file_error_from_errno (errno),
+                           g_strerror (errno));
       return FALSE;
     }
 
@@ -838,9 +838,9 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   if (key_file->current_group == NULL || key_file->current_group->name == NULL)
     {
-      g_set_error (error, G_KEY_FILE_ERROR,
-		   G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-		   _("Key file does not start with a group"));
+      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
+                           _("Key file does not start with a group"));
       return;
     }
 
@@ -3469,10 +3469,10 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
               break;
 
 	    case '\0':
-	      g_set_error (error, G_KEY_FILE_ERROR,
-			   G_KEY_FILE_ERROR_INVALID_VALUE,
-			   _("Key file contains escape character "
-			     "at end of line"));
+	      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                                   G_KEY_FILE_ERROR_INVALID_VALUE,
+                                   _("Key file contains escape character "
+                                     "at end of line"));
 	      break;
 
             default:

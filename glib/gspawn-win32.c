@@ -275,8 +275,8 @@ read_data (GString     *str,
     goto again;
   else if (giostatus == G_IO_STATUS_ERROR)
     {
-      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_READ,
-                   _("Failed to read data from child process"));
+      g_set_error_literal (error, G_SPAWN_ERROR, G_SPAWN_ERROR_READ,
+                           _("Failed to read data from child process"));
       
       return READ_FAILED;
     }
@@ -998,8 +998,8 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
         {
           failed = TRUE;
 
-          g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_READ,
-                       _("Unexpected error in g_io_channel_win32_poll() reading data from a child process"));
+          g_set_error_literal (error, G_SPAWN_ERROR, G_SPAWN_ERROR_READ,
+                               _("Unexpected error in g_io_channel_win32_poll() reading data from a child process"));
 	  
           break;
         }

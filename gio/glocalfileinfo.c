@@ -712,22 +712,22 @@ set_xattr (char                       *filename,
 
   if (attr_value == NULL)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Attribute value must be non-NULL"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Attribute value must be non-NULL"));
       return FALSE;
     }
 
   if (attr_value->type != G_FILE_ATTRIBUTE_TYPE_STRING)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid attribute type (string expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (string expected)"));
       return FALSE;
     }
 
   if (!name_is_valid (escaped_attribute))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid extended attribute name"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid extended attribute name"));
       return FALSE;
     }
 
@@ -1739,8 +1739,8 @@ get_uint32 (const GFileAttributeValue  *value,
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_UINT32)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid attribute type (uint32 expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (uint32 expected)"));
       return FALSE;
     }
 
@@ -1757,8 +1757,8 @@ get_uint64 (const GFileAttributeValue  *value,
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_UINT64)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid attribute type (uint64 expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (uint64 expected)"));
       return FALSE;
     }
 
@@ -1776,8 +1776,8 @@ get_byte_string (const GFileAttributeValue  *value,
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_BYTE_STRING)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid attribute type (byte string expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (byte string expected)"));
       return FALSE;
     }
 
@@ -1876,8 +1876,8 @@ set_symlink (char                       *filename,
   
   if (val == NULL)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("symlink must be non-NULL"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("symlink must be non-NULL"));
       return FALSE;
     }
   
@@ -1894,9 +1894,9 @@ set_symlink (char                       *filename,
   
   if (!S_ISLNK (statbuf.st_mode))
     {
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_NOT_SYMBOLIC_LINK,
-		   _("Error setting symlink: file is not a symlink"));
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_NOT_SYMBOLIC_LINK,
+                           _("Error setting symlink: file is not a symlink"));
       return FALSE;
     }
   

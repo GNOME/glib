@@ -1902,10 +1902,10 @@ g_file_read_link (const gchar *filename,
       buffer = g_realloc (buffer, size);
     }
 #else
-  g_set_error (error,
-	       G_FILE_ERROR,
-	       G_FILE_ERROR_INVAL,
-	       _("Symbolic links not supported"));
+  g_set_error_literal (error,
+                       G_FILE_ERROR,
+                       G_FILE_ERROR_INVAL,
+                       _("Symbolic links not supported"));
 	
   return NULL;
 #endif

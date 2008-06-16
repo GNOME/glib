@@ -193,7 +193,8 @@ _g_local_file_monitor_new (const char         *pathname,
   if (type != G_TYPE_INVALID)
     monitor = G_FILE_MONITOR (g_object_new (type, "filename", pathname, NULL));
   else
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Unable to find default local file monitor type"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                         _("Unable to find default local file monitor type"));
 
   /* This is non-null on first pass here. Unref the class now.
    * This is to avoid unloading the module and then loading it

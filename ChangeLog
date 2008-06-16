@@ -1,5 +1,20 @@
 2008-06-16  Christian Persch  <chpe@gnome.org>
 
+	* glib/gbookmarkfile.c
+	* glib/gconvert.c
+	* glib/gfileutils.c
+	* glib/giochannel.c
+	* glib/giounix.c
+	* glib/giowin32.c
+	* glib/gkeyfile.c
+	* glib/gregex.c
+	* glib/gshell.c
+	* glib/gspawn-win32.c
+	* glib/gutf8.c: Use g_set_error_literal where appropriate. Patch from 
+	bug #535947.
+
+2008-06-16  Christian Persch  <chpe@gnome.org>
+
 	* docs/reference/glib/glib-sections.txt:
 	* glib/gerror.c:
 	* glib/gerror.h:

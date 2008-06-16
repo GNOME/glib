@@ -628,8 +628,8 @@ g_convert_with_iconv (const gchar *str,
 	      break;
 	    case EILSEQ:
 	      if (error)
-		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			     _("Invalid byte sequence in conversion input"));
+		g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                                     _("Invalid byte sequence in conversion input"));
 	      have_error = TRUE;
 	      break;
 	    default:
@@ -665,8 +665,8 @@ g_convert_with_iconv (const gchar *str,
           if (!have_error)
             {
 	      if (error)
-		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-			     _("Partial character sequence at end of input"));
+		g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                                     _("Partial character sequence at end of input"));
               have_error = TRUE;
             }
 	}
@@ -1013,8 +1013,8 @@ strdup_len (const gchar *string,
       if (bytes_written)
 	*bytes_written = 0;
 
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-		   _("Invalid byte sequence in conversion input"));
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                           _("Invalid byte sequence in conversion input"));
       return NULL;
     }
   
@@ -1890,8 +1890,8 @@ g_filename_to_uri (const gchar *filename,
       !(g_utf8_validate (hostname, -1, NULL)
 	&& hostname_validate (hostname)))
     {
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-		   _("Invalid hostname"));
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                           _("Invalid hostname"));
       return NULL;
     }
   

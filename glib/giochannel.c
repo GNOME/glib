@@ -1325,7 +1325,7 @@ reencode:
                   status = G_IO_STATUS_NORMAL;
                 else
                   {
-                    g_set_error (err, G_CONVERT_ERROR,
+                    g_set_error_literal (err, G_CONVERT_ERROR,
                       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
                       _("Invalid byte sequence in conversion input"));
                     return G_IO_STATUS_ERROR;
@@ -1367,7 +1367,7 @@ reencode:
                   status = G_IO_STATUS_NORMAL;
                 else
                   {
-                    g_set_error (err, G_CONVERT_ERROR,
+                    g_set_error_literal (err, G_CONVERT_ERROR,
                       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
                       _("Invalid byte sequence in conversion input"));
                     status = G_IO_STATUS_ERROR;
@@ -1503,8 +1503,8 @@ g_io_channel_read_line_backend (GIOChannel  *channel,
   if (!channel->use_buffer)
     {
       /* Can't do a raw read in read_line */
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                   _("Can't do a raw read in g_io_channel_read_line_string"));
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                           _("Can't do a raw read in g_io_channel_read_line_string"));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1549,9 +1549,10 @@ read_again:
 
                     if (channel->encoding && channel->read_buf->len != 0)
                       {
-                        g_set_error (error, G_CONVERT_ERROR,
-                                     G_CONVERT_ERROR_PARTIAL_INPUT,
-                                     _("Leftover unconverted data in read buffer"));
+                        g_set_error_literal (error, G_CONVERT_ERROR,
+                                             G_CONVERT_ERROR_PARTIAL_INPUT,
+                                             _("Leftover unconverted data in "
+                                               "read buffer"));
                         return G_IO_STATUS_ERROR;
                       }
                     else
@@ -1630,8 +1631,8 @@ read_again:
         {
           if (channel->encoding && channel->read_buf->len > 0)
             {
-              g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-                           _("Channel terminates in a partial character"));
+              g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                                   _("Channel terminates in a partial character"));
               return G_IO_STATUS_ERROR;
             }
           line_length = use_buf->len;
@@ -1693,8 +1694,8 @@ g_io_channel_read_to_end (GIOChannel  *channel,
 
   if (!channel->use_buffer)
     {
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                   _("Can't do a raw read in g_io_channel_read_to_end"));
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                           _("Can't do a raw read in g_io_channel_read_to_end"));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1707,8 +1708,8 @@ g_io_channel_read_to_end (GIOChannel  *channel,
 
   if (channel->encoding && channel->read_buf->len > 0)
     {
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-                   _("Channel terminates in a partial character"));
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                           _("Channel terminates in a partial character"));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1806,9 +1807,9 @@ g_io_channel_read_chars (GIOChannel  *channel,
       if (status == G_IO_STATUS_EOF && channel->encoding
           && BUF_LEN (channel->read_buf) > 0)
         {
-          g_set_error (error, G_CONVERT_ERROR,
-                       G_CONVERT_ERROR_PARTIAL_INPUT,
-                       _("Leftover unconverted data in read buffer"));
+          g_set_error_literal (error, G_CONVERT_ERROR,
+                               G_CONVERT_ERROR_PARTIAL_INPUT,
+                               _("Leftover unconverted data in read buffer"));
           status = G_IO_STATUS_ERROR;
         }
 
@@ -1893,9 +1894,9 @@ g_io_channel_read_unichar (GIOChannel  *channel,
 
       if (status == G_IO_STATUS_EOF && BUF_LEN (channel->read_buf) > 0)
         {
-          g_set_error (error, G_CONVERT_ERROR,
-                       G_CONVERT_ERROR_PARTIAL_INPUT,
-                       _("Leftover unconverted data in read buffer"));
+          g_set_error_literal (error, G_CONVERT_ERROR,
+                               G_CONVERT_ERROR_PARTIAL_INPUT,
+                               _("Leftover unconverted data in read buffer"));
           status = G_IO_STATUS_ERROR;
         }
 
@@ -2210,7 +2211,7 @@ reconvert:
                       }
                     break;
                   case EILSEQ:
-                    g_set_error (error, G_CONVERT_ERROR,
+                    g_set_error_literal (error, G_CONVERT_ERROR,
                       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
                       _("Invalid byte sequence in conversion input"));
                     if (from_buf_old_len > 0 && from_buf_len == left_len)

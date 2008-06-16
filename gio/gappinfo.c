@@ -271,7 +271,8 @@ g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
   if (iface->set_as_default_for_extension)
     return (* iface->set_as_default_for_extension) (appinfo, extension, error);
 
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "g_app_info_set_as_default_for_extension not supported yet");
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       "g_app_info_set_as_default_for_extension not supported yet");
   return FALSE;
 }
 
@@ -302,9 +303,9 @@ g_app_info_add_supports_type (GAppInfo    *appinfo,
   if (iface->add_supports_type)
     return (* iface->add_supports_type) (appinfo, content_type, error);
 
-  g_set_error (error, G_IO_ERROR, 
-               G_IO_ERROR_NOT_SUPPORTED, 
-               "g_app_info_add_supports_type not supported yet");
+  g_set_error_literal (error, G_IO_ERROR, 
+                       G_IO_ERROR_NOT_SUPPORTED, 
+                       "g_app_info_add_supports_type not supported yet");
 
   return FALSE;
 }
@@ -360,9 +361,9 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
   if (iface->remove_supports_type)
     return (* iface->remove_supports_type) (appinfo, content_type, error);
 
-  g_set_error (error, G_IO_ERROR, 
-               G_IO_ERROR_NOT_SUPPORTED, 
-               "g_app_info_remove_supports_type not supported yet");
+  g_set_error_literal (error, G_IO_ERROR, 
+                       G_IO_ERROR_NOT_SUPPORTED, 
+                       "g_app_info_remove_supports_type not supported yet");
 
   return FALSE;
 }

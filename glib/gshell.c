@@ -551,10 +551,10 @@ tokenize_command_line (const gchar *command_line,
 
   if (retval == NULL)
     {
-      g_set_error (error,
-                   G_SHELL_ERROR,
-                   G_SHELL_ERROR_EMPTY_STRING,
-                   _("Text was empty (or contained only whitespace)"));
+      g_set_error_literal (error,
+                           G_SHELL_ERROR,
+                           G_SHELL_ERROR_EMPTY_STRING,
+                           _("Text was empty (or contained only whitespace)"));
 
       goto error;
     }

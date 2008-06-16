@@ -1,3 +1,27 @@
+2008-06-16  Christian Persch  <chpe@gnome.org>
+
+	* gio/gappinfo.c
+	* gio/gbufferedinputstream.c
+	* gio/gcancellable.c
+	* gio/gdatainputstream.c
+	* gio/gdesktopappinfo.c
+	* gio/gfile.c
+	* gio/gfileenumerator.c
+	* gio/gfileinputstream.c
+	* gio/gfileoutputstream.c
+	* gio/ginputstream.c
+	* gio/glocaldirectorymonitor.c
+	* gio/glocalfile.c
+	* gio/glocalfileenumerator.c
+	* gio/glocalfileinfo.c
+	* gio/glocalfilemonitor.c
+	* gio/glocalfileoutputstream.c
+	* gio/gmemoryinputstream.c
+	* gio/gmemoryoutputstream.c
+	* gio/goutputstream.c
+	* gio/gwin32appinfo.c: Use g_set_error_literal where appropriate. Patch from 
+	bug #535947.
+
 2008-06-16  Tor Lillqvist  <tml@novell.com>
 
 	Bug 538362 - Get Win32 icons back in the file chooser

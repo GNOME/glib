@@ -584,8 +584,8 @@ expand_application_parameters (GDesktopAppInfo   *info,
   
   if (info->exec == NULL)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		   _("Desktop file didn't specify Exec field"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Desktop file didn't specify Exec field"));
       return FALSE;
     }
   
@@ -878,8 +878,8 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
       
       if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
 	{
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		       _("Unable to find terminal required for application"));
+	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                               _("Unable to find terminal required for application"));
 	  goto out;
 	}
 
