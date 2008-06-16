@@ -811,6 +811,7 @@ is_xp_or_later (void)
 
   if (result == -1)
     {
+#ifndef _MSC_VER    
       OSVERSIONINFOEX ver_info = {0};
       DWORDLONG cond_mask = 0;
       int op = VER_GREATER_EQUAL;
@@ -825,6 +826,9 @@ is_xp_or_later (void)
       result = VerifyVersionInfo (&ver_info,
 				  VER_MAJORVERSION | VER_MINORVERSION, 
 				  cond_mask) != 0;
+#else
+      result = ((DWORD)(LOBYTE (LOWORD (GetVersion ())))) >= 5;  
+#endif
     }
 
   return result;
@@ -915,7 +919,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GFileInfo *info;
-  int statfs_result;
+  int statfs_result = 0;
   gboolean no_size;
 #ifndef G_OS_WIN32
   guint64 block_size;

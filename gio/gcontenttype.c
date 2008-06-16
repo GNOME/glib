@@ -65,14 +65,30 @@ get_registry_classes_key (const char    *subdir,
 		     KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS &&
       RegQueryValueExW (reg_key, key_name, 0,
 			&key_type, NULL, &nbytes) == ERROR_SUCCESS &&
-      key_type == REG_SZ)
+      (key_type == REG_SZ || key_type == REG_EXPAND_SZ))
     {
       wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
       RegQueryValueExW (reg_key, key_name, 0,
 			&key_type, (LPBYTE) wc_temp, &nbytes);
       wc_temp[nbytes/2] = '\0';
-      value_utf8 = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
+      if (key_type == REG_EXPAND_SZ)
+        {
+          wchar_t dummy[1];
+          int len = ExpandEnvironmentStringsW (wc_temp, dummy, 1);
+          if (len > 0)
+            {
+              wchar_t *wc_temp_expanded = g_new (wchar_t, len);
+              if (ExpandEnvironmentStringsW (wc_temp, wc_temp_expanded, len) == len)
+                value_utf8 = g_utf16_to_utf8 (wc_temp_expanded, -1, NULL, NULL, NULL);
+              g_free (wc_temp_expanded);
+            }
+        }
+      else
+        {
+          value_utf8 = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
+        }
       g_free (wc_temp);
+      
     }
   g_free (wc_key);
   
@@ -179,22 +195,66 @@ g_content_type_get_mime_type (const char *type)
   return g_strdup ("application/octet-stream");
 }
 
+G_LOCK_DEFINE_STATIC (_type_icons);
+static GHashTable *_type_icons = NULL;
+
 GIcon *
 g_content_type_get_icon (const char *type)
 {
+  GIcon *themed_icon;
+  char *name = NULL;
+
   g_return_val_if_fail (type != NULL, NULL);
 
-  /* TODO: How do we represent icons???
-     In the registry they are the default value of
+  /* In the Registry icons are the default value of
      HKEY_CLASSES_ROOT\<progid>\DefaultIcon with typical values like:
      <type>: <value>
      REG_EXPAND_SZ: %SystemRoot%\System32\Wscript.exe,3
      REG_SZ: shimgvw.dll,3
-
-     gtkfilesystemwin32.c in gtk-2-12 is probably a good place to look
-     for inspiration.
   */
-  return NULL;
+  G_LOCK (_type_icons);
+  if (!_type_icons)
+    _type_icons = g_hash_table_new (g_str_hash, g_str_equal);
+  name = g_hash_table_lookup (_type_icons, type);
+  if (!name && type[0] == '.')
+    {
+      /* double lookup by extension */
+      gchar *key = get_registry_classes_key (type, NULL);
+      if (!key)
+        key = g_strconcat (type+1, "file\\DefaultIcon", NULL);
+      else
+        {
+	  gchar *key2 = g_strconcat (key, "\\DefaultIcon", NULL);
+	  g_free (key);
+	  key = key2;
+	}
+      name = get_registry_classes_key (key, NULL);
+      if (name && strcmp (name, "%1") == 0)
+        {
+	  g_free (name);
+	  name = NULL;
+	}
+      if (name)
+        g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
+      g_free (key);
+    }
+
+  /* icon-name similar to how it was with gtk-2-12 */
+  if (name)
+    {
+      themed_icon = g_themed_icon_new (name);
+    }
+  else
+    {
+      /* if not found an icon fall back to gtk-builtins */
+      name = strcmp (type, "inode/directory") == 0 ? "gtk-directory" : 
+	                   g_content_type_can_be_executable (type) ? "gtk-execute" : "gtk-file";
+      g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
+      themed_icon = g_themed_icon_new_with_default_fallbacks (name);
+    }
+  G_UNLOCK (_type_icons);
+
+  return G_ICON (themed_icon);
 }
 
 gboolean

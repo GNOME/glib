@@ -1,3 +1,22 @@
+2008-06-16  Tor Lillqvist  <tml@novell.com>
+
+	Bug 538362 - Get Win32 icons back in the file chooser
+
+	* gcontenttype.c (g_content_type_get_icon): Look up the icon
+	corresponding to a file extension in the Registry. Patch by Hans
+	Breuer.
+	(get_registry_classes_key): Handle also REG_EXPAND_SZ type values.
+	
+2008-06-16  Tor Lillqvist  <tml@novell.com>
+
+	Patches by Hans Breuer:
+
+	* glocalfile.c (is_xp_or_later): Handle compiling against older
+	SDK headers with missing VerifyVersionInfo().  Conditioned on
+	_MSC_VER, but should probably use some better test.
+	* glocalfile.c (g_local_file_query_filesystem_info): Don't test
+	uninitialised statfs_result variable on Win32.
+
 2008-06-16  Michael Natterer  <mitch@imendio.com>
 
 	* *.c: chain up unconditionally in finalize() and dispose(). Also
