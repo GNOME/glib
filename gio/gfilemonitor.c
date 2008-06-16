@@ -156,9 +156,8 @@ g_file_monitor_finalize (GObject *object)
     }
 
   g_hash_table_destroy (monitor->priv->rate_limiter);
-  
-  if (G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize (object);
 }
 
 static void
@@ -170,9 +169,8 @@ g_file_monitor_dispose (GObject *object)
 
   /* Make sure we cancel on last unref */
   g_file_monitor_cancel (monitor);
-  
-  if (G_OBJECT_CLASS (g_file_monitor_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_file_monitor_parent_class)->dispose) (object);
+
+  G_OBJECT_CLASS (g_file_monitor_parent_class)->dispose (object);
 }
 
 static void

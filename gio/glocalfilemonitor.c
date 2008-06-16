@@ -106,8 +106,7 @@ g_local_file_monitor_finalize (GObject *object)
       local_monitor->filename = NULL;
     }
 
-  if (G_OBJECT_CLASS (g_local_file_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_file_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_local_file_monitor_parent_class)->finalize (object);
 }
 
 static void g_local_file_monitor_class_init (GLocalFileMonitorClass *klass)

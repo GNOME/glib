@@ -136,9 +136,8 @@ g_memory_output_stream_finalize (GObject *object)
   
   if (priv->destroy)
     priv->destroy (priv->data);
-    
-  if (G_OBJECT_CLASS (g_memory_output_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_memory_output_stream_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_memory_output_stream_parent_class)->finalize (object);
 }
 
 static void

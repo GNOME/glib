@@ -73,9 +73,7 @@ g_union_volume_monitor_finalize (GObject *object)
       g_object_unref (child_monitor);
     }
 
-  
-  if (G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize (object);
 }
 
 static void
@@ -88,9 +86,8 @@ g_union_volume_monitor_dispose (GObject *object)
   g_static_rec_mutex_lock (&the_volume_monitor_mutex);
   the_volume_monitor = NULL;
   g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
-  
-  if (G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose) (object);
+
+  G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose (object);
 }
 
 static GList *

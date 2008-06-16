@@ -117,8 +117,8 @@ g_file_enumerator_dispose (GObject *object)
     g_object_unref (enumerator->priv->container);
     enumerator->priv->container = NULL;
   }
-  
-  (*G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose) (object);
+
+  G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose (object);
 }
 
 static void
@@ -131,8 +131,7 @@ g_file_enumerator_finalize (GObject *object)
   if (!enumerator->priv->closed)
     g_file_enumerator_close (enumerator, NULL, NULL);
 
-  if (G_OBJECT_CLASS (g_file_enumerator_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_file_enumerator_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_file_enumerator_parent_class)->finalize (object);
 }
 
 static void

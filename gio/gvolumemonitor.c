@@ -66,8 +66,7 @@ g_volume_monitor_finalize (GObject *object)
 
   monitor = G_VOLUME_MONITOR (object);
 
-  if (G_OBJECT_CLASS (g_volume_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_volume_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_volume_monitor_parent_class)->finalize (object);
 }
 
 static void

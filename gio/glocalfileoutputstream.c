@@ -108,9 +108,8 @@ g_local_file_output_stream_finalize (GObject *object)
   g_free (file->priv->original_filename);
   g_free (file->priv->backup_filename);
   g_free (file->priv->etag);
-  
-  if (G_OBJECT_CLASS (g_local_file_output_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_file_output_stream_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_local_file_output_stream_parent_class)->finalize (object);
 }
 
 static void

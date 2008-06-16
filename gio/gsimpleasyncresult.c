@@ -155,9 +155,8 @@ g_simple_async_result_finalize (GObject *object)
 
   if (simple->error)
     g_error_free (simple->error);
-  
-  if (G_OBJECT_CLASS (g_simple_async_result_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_simple_async_result_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_simple_async_result_parent_class)->finalize (object);
 }
 
 static void

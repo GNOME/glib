@@ -80,9 +80,8 @@ g_local_file_input_stream_finalize (GObject *object)
   GLocalFileInputStream *file;
   
   file = G_LOCAL_FILE_INPUT_STREAM (object);
-  
-  if (G_OBJECT_CLASS (g_local_file_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_file_input_stream_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_local_file_input_stream_parent_class)->finalize (object);
 }
 
 static void

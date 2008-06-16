@@ -130,9 +130,8 @@ g_local_file_finalize (GObject *object)
   local = G_LOCAL_FILE (object);
 
   g_free (local->filename);
-  
-  if (G_OBJECT_CLASS (g_local_file_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_file_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_local_file_parent_class)->finalize (object);
 }
 
 static void

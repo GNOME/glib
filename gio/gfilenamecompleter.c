@@ -85,9 +85,8 @@ g_filename_completer_finalize (GObject *object)
 
   g_list_foreach (completer->basenames, (GFunc)g_free, NULL);
   g_list_free (completer->basenames);
-  
-  if (G_OBJECT_CLASS (g_filename_completer_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_filename_completer_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_filename_completer_parent_class)->finalize (object);
 }
 
 static void

@@ -95,8 +95,7 @@ g_unix_output_stream_finalize (GObject *object)
   
   stream = G_UNIX_OUTPUT_STREAM (object);
 
-  if (G_OBJECT_CLASS (g_unix_output_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_unix_output_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_unix_output_stream_parent_class)->finalize (object);
 }
 
 static void

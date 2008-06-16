@@ -84,9 +84,8 @@ g_unix_volume_monitor_finalize (GObject *object)
   g_list_free (monitor->volumes);
   g_list_foreach (monitor->mounts, (GFunc)g_object_unref, NULL);
   g_list_free (monitor->mounts);
-  
-  if (G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->finalize (object);
 }
 
 static GList *

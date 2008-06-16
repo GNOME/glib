@@ -92,9 +92,8 @@ g_output_stream_finalize (GObject *object)
   GOutputStream *stream;
 
   stream = G_OUTPUT_STREAM (object);
-  
-  if (G_OBJECT_CLASS (g_output_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_output_stream_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_output_stream_parent_class)->finalize (object);
 }
 
 static void
@@ -106,9 +105,8 @@ g_output_stream_dispose (GObject *object)
   
   if (!stream->priv->closed)
     g_output_stream_close (stream, NULL, NULL);
-  
-  if (G_OBJECT_CLASS (g_output_stream_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_output_stream_parent_class)->dispose) (object);
+
+  G_OBJECT_CLASS (g_output_stream_parent_class)->dispose (object);
 }
 
 static void

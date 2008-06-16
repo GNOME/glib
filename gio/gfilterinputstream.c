@@ -185,8 +185,7 @@ g_filter_input_stream_finalize (GObject *object)
 
   g_object_unref (stream->base_stream);
 
-  if (G_OBJECT_CLASS (g_filter_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_filter_input_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_filter_input_stream_parent_class)->finalize (object);
 }
 
 static void

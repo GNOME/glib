@@ -163,8 +163,7 @@ g_memory_input_stream_finalize (GObject *object)
   g_slist_foreach (priv->chunks, free_chunk, NULL);
   g_slist_free (priv->chunks);
 
-  if (G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize (object);
 }
 
 static void

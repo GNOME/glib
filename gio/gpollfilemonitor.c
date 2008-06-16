@@ -53,8 +53,7 @@ g_poll_file_monitor_finalize (GObject* object)
 
   g_object_unref (poll_monitor->file);
 
-  if (G_OBJECT_CLASS (g_poll_file_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_poll_file_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_poll_file_monitor_parent_class)->finalize (object);
 }
 
 

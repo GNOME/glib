@@ -78,9 +78,8 @@ g_cancellable_finalize (GObject *object)
   
   if (cancellable->cancel_pipe[1] != -1)
     close (cancellable->cancel_pipe[1]);
-  
-  if (G_OBJECT_CLASS (g_cancellable_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_cancellable_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
 }
 
 static void

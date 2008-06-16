@@ -234,9 +234,8 @@ g_file_info_finalize (GObject *object)
 
   if (info->mask != NO_ATTRIBUTE_MASK)
     g_file_attribute_matcher_unref (info->mask);
-  
-  if (G_OBJECT_CLASS (g_file_info_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_file_info_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_file_info_parent_class)->finalize (object);
 }
 
 static void

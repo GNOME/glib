@@ -1131,9 +1131,8 @@ g_unix_mount_monitor_finalize (GObject *object)
     }
 
   the_mount_monitor = NULL;
-  
-  if (G_OBJECT_CLASS (g_unix_mount_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_unix_mount_monitor_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_unix_mount_monitor_parent_class)->finalize (object);
 }
 
 

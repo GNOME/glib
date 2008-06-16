@@ -87,9 +87,8 @@ g_dummy_file_finalize (GObject *object)
     _g_decoded_uri_free (dummy->decoded_uri);
   
   g_free (dummy->text_uri);
-  
-  if (G_OBJECT_CLASS (g_dummy_file_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_dummy_file_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_dummy_file_parent_class)->finalize (object);
 }
 
 static void

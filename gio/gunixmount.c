@@ -82,9 +82,8 @@ g_unix_mount_finalize (GObject *object)
   g_free (mount->name);
   g_free (mount->device_path);
   g_free (mount->mount_path);
-  
-  if (G_OBJECT_CLASS (g_unix_mount_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_unix_mount_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_unix_mount_parent_class)->finalize (object);
 }
 
 static void

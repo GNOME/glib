@@ -83,8 +83,7 @@ g_unix_volume_finalize (GObject *object)
   g_free (volume->identifier);
   g_free (volume->identifier_type);
 
-  if (G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize (object);
 }
 
 static void

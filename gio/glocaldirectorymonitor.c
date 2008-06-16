@@ -58,8 +58,7 @@ g_local_directory_monitor_finalize (GObject *object)
       local_monitor->mount_monitor = NULL;
     }
 
-  if (G_OBJECT_CLASS (g_local_directory_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_directory_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_local_directory_monitor_parent_class)->finalize (object);
 }
 
 static void

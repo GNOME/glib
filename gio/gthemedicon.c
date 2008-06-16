@@ -181,9 +181,8 @@ g_themed_icon_finalize (GObject *object)
   themed = G_THEMED_ICON (object);
 
   g_strfreev (themed->names);
-  
-  if (G_OBJECT_CLASS (g_themed_icon_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_themed_icon_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_themed_icon_parent_class)->finalize (object);
 }
 
 static void

@@ -79,9 +79,8 @@ g_win32_app_info_finalize (GObject *object)
   g_free (info->id_utf8);
   g_free (info->name);
   g_free (info->executable);
-  
-  if (G_OBJECT_CLASS (g_win32_app_info_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_win32_app_info_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_win32_app_info_parent_class)->finalize (object);
 }
 
 static void

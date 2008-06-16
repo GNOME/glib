@@ -12,8 +12,7 @@ G_DEFINE_ABSTRACT_TYPE (GNativeVolumeMonitor, g_native_volume_monitor, G_TYPE_VO
 static void
 g_native_volume_monitor_finalize (GObject *object)
 {
-  if (G_OBJECT_CLASS (g_native_volume_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_native_volume_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_native_volume_monitor_parent_class)->finalize (object);
 }
 
 

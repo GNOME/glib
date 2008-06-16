@@ -128,9 +128,8 @@ g_local_file_enumerator_finalize (GObject *object)
     }
 
   free_entries (local);
-  
-  if (G_OBJECT_CLASS (g_local_file_enumerator_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_local_file_enumerator_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_local_file_enumerator_parent_class)->finalize (object);
 }
 
 

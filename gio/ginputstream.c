@@ -89,8 +89,7 @@ g_input_stream_finalize (GObject *object)
   if (!stream->priv->closed)
     g_input_stream_close (stream, NULL, NULL);
 
-  if (G_OBJECT_CLASS (g_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_input_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_input_stream_parent_class)->finalize (object);
 }
 
 static void
@@ -102,9 +101,8 @@ g_input_stream_dispose (GObject *object)
   
   if (!stream->priv->closed)
     g_input_stream_close (stream, NULL, NULL);
-  
-  if (G_OBJECT_CLASS (g_input_stream_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_input_stream_parent_class)->dispose) (object);
+
+  G_OBJECT_CLASS (g_input_stream_parent_class)->dispose (object);
 }
 
 

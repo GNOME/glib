@@ -188,9 +188,8 @@ g_mount_operation_finalize (GObject *object)
   g_free (priv->password);
   g_free (priv->user);
   g_free (priv->domain);
-  
-  if (G_OBJECT_CLASS (g_mount_operation_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_mount_operation_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_mount_operation_parent_class)->finalize (object);
 }
 
 static gboolean

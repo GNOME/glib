@@ -73,9 +73,8 @@ g_file_icon_finalize (GObject *object)
   icon = G_FILE_ICON (object);
 
   g_object_unref (icon->file);
-  
-  if (G_OBJECT_CLASS (g_file_icon_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_file_icon_parent_class)->finalize) (object);
+
+  G_OBJECT_CLASS (g_file_icon_parent_class)->finalize (object);
 }
 
 static void
