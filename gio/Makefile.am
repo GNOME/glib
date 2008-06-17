@@ -148,6 +148,13 @@ endif
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
 platform_libadd += -lshlwapi
+win32_sources = \
+	gwin32mount.c \
+	gwin32mount.h \
+	gwin32volumemonitor.c \
+	gwin32volumemonitor.h \
+	$(NULL)
+
 endif
 
 SUBDIRS += tests
@@ -210,6 +217,7 @@ libgio_2_0_la_SOURCES =		\
 	gioaliasdef.c		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
+	$(win32_sources) 	\
 	$(local_sources) 	\
 	$(marshal_sources) 	\
 	$(NULL)

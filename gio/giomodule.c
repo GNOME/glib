@@ -292,6 +292,7 @@ extern GType _g_inotify_file_monitor_get_type (void);
 extern GType _g_unix_volume_monitor_get_type (void);
 extern GType _g_local_vfs_get_type (void);
 
+extern GType _g_win32_volume_monitor_get_type (void);
 extern GType g_win32_directory_monitor_get_type (void);
 
 void
@@ -357,6 +358,7 @@ _g_io_modules_ensure_loaded (void)
       _g_fen_file_monitor_get_type ();
 #endif
 #ifdef G_OS_WIN32
+      _g_win32_volume_monitor_get_type ();
       g_win32_directory_monitor_get_type ();
 #endif
 #ifdef G_OS_UNIX

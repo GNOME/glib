@@ -1,3 +1,12 @@
+2008-06-17  Hans Breuer  <hans@breuer.org>
+
+        * gwin32mount.[ch] gwin32volumemonitor.[ch] : bits and pieces from 
+        gtk-2-12 and gunix*.[hc] to make the file chooser show drive letter
+	access again on win32, see bug #538127
+        * giomodule.c : ensure GWin32VolumeMonitor is registered
+        * glocaldireoctorymonitor.c : initial state on win32 is_mounted=TRUE
+        * Makefile.am makefile.msc : updated
+
 2008-06-16  Hans Breuer  <hans@breuer.org>
 
 	* glocalfileenumerator.c(_g_local_file_enumerator_new) : declaration 
