@@ -1,3 +1,10 @@
+2008-06-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
+	* gtype.c (g_type_class_ref): fixed race condition where references to 
+	partially initialized classes could be handed out.
+
 2008-04-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.16.3 ===

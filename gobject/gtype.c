@@ -2363,20 +2363,19 @@ gpointer
 g_type_class_ref (GType type)
 {
   TypeNode *node;
-  
-  /* optimize for common code path
-   */
+  GType ptype;
+
+  /* optimize for common code path */
   G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (type);
   if (node && node->is_classed && node->data &&
-      node->data->class.class && node->data->common.ref_count > 0)
+      node->data->class.class &&
+      node->data->class.init_state == INITIALIZED)
     {
       type_data_ref_Wm (node);
       G_WRITE_UNLOCK (&type_rw_lock);
-      
       return node->data->class.class;
     }
-  
   if (!node || !node->is_classed ||
       (node->data && node->data->common.ref_count < 1))
     {
@@ -2385,33 +2384,28 @@ g_type_class_ref (GType type)
 		 type_descriptive_name_I (type));
       return NULL;
     }
-
   type_data_ref_Wm (node);
+  ptype = NODE_PARENT_TYPE (node);
+  G_WRITE_UNLOCK (&type_rw_lock);
 
+  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+  /* here, we either have node->data->class.class == NULL, or a recursive
+   * call to g_type_class_ref() with a partly initialized class, or
+   * node->data->class.init_state == INITIALIZED, because any
+   * concurrently running initialization was guarded by class_init_rec_mutex.
+   */
   if (!node->data->class.class) /* class uninitialized */
     {
-      GType ptype = NODE_PARENT_TYPE (node);
-      GTypeClass *pclass = NULL;
+      /* acquire reference on parent class */
+      GTypeClass *pclass = ptype ? g_type_class_ref (ptype) : NULL;
+      G_WRITE_LOCK (&type_rw_lock);
+      if (node->data->class.class) /* class was initialized during parent class initialization? */
+        INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
+      type_class_init_Wm (node, pclass);
       G_WRITE_UNLOCK (&type_rw_lock);
-      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
-      if (ptype)
-        {
-          pclass = g_type_class_ref (ptype);
-          G_WRITE_LOCK (&type_rw_lock);
-          node = lookup_type_node_I (type);
-          if (node->data->class.class)
-            INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
-        }
-      else
-        {
-          G_WRITE_LOCK (&type_rw_lock);
-          node = lookup_type_node_I (type);
-        }
-      if (!node->data->class.class) /* class could have been initialized meanwhile */
-        type_class_init_Wm (node, pclass);
-      G_WRITE_UNLOCK (&type_rw_lock);
-      g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
+  g_static_rec_mutex_unlock (&class_init_rec_mutex);
+
   return node->data->class.class;
 }
 
