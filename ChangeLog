@@ -1,3 +1,11 @@
+2008-06-19  Tor Lillqvist  <tml@novell.com>
+
+	Bug 539074 - Cannot get exit status with g_spawn_command_line_sync()
+
+	* glib/gspawn-win32-helper.c (main): Write also the exit status of
+	the spawned process to the error report pipe. Patch by Hiroyuki
+	Ikezoe.
+
 2008-06-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_access): Define X_OK if necessary (MSVC).
