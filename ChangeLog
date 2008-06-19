@@ -1,3 +1,10 @@
+2008-06-16  Christian Persch  <chpe@gnome.org>
+
+	Bug 539123 – annotate g_d[n]gettext with G_GNUC_FORMAT
+
+	* glib/gstrfuncs.h:
+	* glib/glib.symbols: Annotate some functions with G_GNUC_FORMAT. 
+
 2008-06-19  Tor Lillqvist  <tml@novell.com>
 
 	Bug 539074 - Cannot get exit status with g_spawn_command_line_sync()

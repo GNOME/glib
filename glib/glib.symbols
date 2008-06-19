@@ -1149,8 +1149,8 @@ g_strdown
 #endif
 g_strv_length
 g_strip_context G_GNUC_FORMAT(1)
-g_dgettext
-g_dngettext
+g_dgettext G_GNUC_FORMAT(2)
+g_dngettext G_GNUC_FORMAT(3)
 g_dpgettext G_GNUC_FORMAT(2)
 #endif
 #endif

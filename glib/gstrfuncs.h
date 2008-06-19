@@ -248,12 +248,12 @@ G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid,
 					const gchar *msgval) G_GNUC_FORMAT(1);
 
 G_CONST_RETURN gchar *g_dgettext       (const gchar *domain,
-					const gchar *msgid);
+					const gchar *msgid) G_GNUC_FORMAT(2);
 
 G_CONST_RETURN gchar *g_dngettext      (const gchar *domain,
 					const gchar *msgid,
 					const gchar *msgid_plural,
-					gulong       n);
+					gulong       n) G_GNUC_FORMAT(3);
 G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
                                         gsize        msgidoffset) G_GNUC_FORMAT(2);
