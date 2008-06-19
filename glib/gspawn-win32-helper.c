@@ -166,7 +166,6 @@ main (int ignored_argc, char **ignored_argv)
   int handle;
   int saved_errno;
   int no_error = CHILD_NO_ERROR;
-  int zero = 0;
   gint argv_zero_offset = ARG_PROGRAM;
   wchar_t **new_wargv;
   int argc;
@@ -326,10 +325,7 @@ main (int ignored_argc, char **ignored_argv)
     write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
 
   write (child_err_report_fd, &no_error, sizeof (no_error));
-  if (mode == P_NOWAIT)
-    write (child_err_report_fd, &handle, sizeof (handle));
-  else
-    write (child_err_report_fd, &zero, sizeof (zero));
+  write (child_err_report_fd, &handle, sizeof (handle));
 
   read (helper_sync_fd, &c, 1);
 
