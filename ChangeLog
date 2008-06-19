@@ -1,3 +1,19 @@
+2008-06-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 537635 – Corrections and improvements to
+	g_time_val_from_iso8601()/g_time_val_to_iso8601()
+
+	* glib/gtimer.c (g_time_val_from_iso8601): set tv_usec to 0 rather 
+	than 1 when a fraction of a second is not specified
+	(g_time_val_from_iso8601): calculate a fraction of a second
+	correctly even in case it does not happen to consist of exactly 
+	six digits; do not allow random data after the ISO 8601 string,
+	only whitespace
+	(make g_time_val_to_iso8601): support fractions of a second
+	Patch by Peter Kjellerstedt
+
+	* tests/testglib.c: Update to match
+
 2008-06-16  Christian Persch  <chpe@gnome.org>
 
 	* glib/gbookmarkfile.c
