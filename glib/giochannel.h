@@ -337,7 +337,7 @@ GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
  * implemented on Win32 by starting a thread that sits blocked in a
  * read() from the file descriptor most of the time. All reads from
  * the file descriptor should be done by this internal GLib
- * thread. Your code should call only g_io_channel_read().
+ * thread. Your code should call only g_io_channel_read_chars().
  */
 GIOChannel* g_io_channel_win32_new_fd (gint         fd);
 
