@@ -1,3 +1,8 @@
+2008-06-18  Matthias Clasen <mclasen@rdhat.com>
+
+	* glocalfileinfo.c: Don't do fallback for user-home and user-desktop
+	to avoid problems with partial icon themes.
+	
 2008-06-17  Hans Breuer  <hans@breuer.org>
 
         * gwin32mount.[ch] gwin32volumemonitor.[ch] : bits and pieces from 

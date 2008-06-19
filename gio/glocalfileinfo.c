@@ -1465,7 +1465,6 @@ _g_local_file_info_get (const char             *basename,
   is_symlink = FALSE;
 #endif
   symlink_broken = FALSE;
-  
 #ifdef S_ISLNK
   if (is_symlink)
     {
@@ -1565,18 +1564,17 @@ _g_local_file_info_get (const char             *basename,
 	    {
 	      GIcon *icon;
 
-              icon = g_content_type_get_icon (content_type);
-              if (icon != NULL)
+              if (strcmp (path, g_get_home_dir ()) == 0)
+                icon = g_themed_icon_new ("user-home");
+              else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0) 
+                icon = g_themed_icon_new ("user-desktop");
+              else 
                 {
+                  icon = g_content_type_get_icon (content_type);
                   if (G_IS_THEMED_ICON (icon))
                     {
-                      const char *preferred_icon = NULL;
                       const char *type_icon = NULL;
 
-                      if (strcmp (path, g_get_home_dir ()) == 0)
-                        preferred_icon = "user-home";
-                      else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0) 
-                        preferred_icon = "user-desktop";
                       if (S_ISDIR (statbuf.st_mode)) 
                         type_icon = "folder";
                       else if (statbuf.st_mode & S_IXUSR)
@@ -1584,12 +1582,12 @@ _g_local_file_info_get (const char             *basename,
                       else
                         type_icon = "text-x-generic";
 
-                      if (preferred_icon)
-                        g_themed_icon_prepend_name (G_THEMED_ICON (icon), preferred_icon);
-                      if (type_icon) 
-                        g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
+                      g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
                     }
+                }
 
+              if (icon != NULL)
+                {
                   g_file_info_set_icon (info, icon);
                   g_object_unref (icon);
                 }
