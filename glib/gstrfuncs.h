@@ -245,7 +245,7 @@ gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 
 G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid, 
-					const gchar *msgval);
+					const gchar *msgval) G_GNUC_FORMAT(1);
 
 G_CONST_RETURN gchar *g_dgettext       (const gchar *domain,
 					const gchar *msgid);
@@ -256,7 +256,7 @@ G_CONST_RETURN gchar *g_dngettext      (const gchar *domain,
 					gulong       n);
 G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
-                                        gsize        msgidoffset);
+                                        gsize        msgidoffset) G_GNUC_FORMAT(2);
 
 G_END_DECLS
 

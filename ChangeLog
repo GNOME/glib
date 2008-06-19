@@ -1,5 +1,14 @@
 2008-06-19  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 535949 – annotate g_strip_context and g_dpgettext with
+	G_GNUC_FORMAT
+
+	* glib/gstrfuncs.h:
+	* glib/glib.symbols: Annotate some functions with G_GNUC_FORMAT.
+	Patch by Christian Persch
+
+2008-06-19  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 539067 – The document g_io_channel_win32_new_fd() says that "Your
 	code should call only g_io_channel_read()." but gio_channel_read() is
 	deprecated
