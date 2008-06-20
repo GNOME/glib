@@ -2830,15 +2830,9 @@ struct _GStaticMutex
   } static_mutex;
 };
 #define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
-#ifdef __cplusplus
 #define	g_static_mutex_get_mutex(mutex) \\
   (g_thread_use_default_impl ? ((GMutex*) ((mutex)->static_mutex.pad)) : \\
    g_static_mutex_get_mutex_impl_shortcut (&((mutex)->runtime_mutex)))
-#else
-#define	g_static_mutex_get_mutex(mutex) \\
-  (g_thread_use_default_impl ? ((GMutex*) (void*) ((mutex)->static_mutex.pad)) : \\
-   g_static_mutex_get_mutex_impl_shortcut (&((mutex)->runtime_mutex)))
-#endif
 _______EOF
 	else
 		cat >>$outfile <<_______EOF
