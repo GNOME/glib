@@ -144,15 +144,9 @@ void    g_thread_init_with_errorcheck_mutexes (GThreadFunctions* vtable);
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
-#ifdef __cplusplus
 #define g_static_mutex_get_mutex_impl_shortcut(mutex) \
   (g_atomic_pointer_get ((gpointer*)(void*)mutex) ? *(mutex) : \
    g_static_mutex_get_mutex_impl (mutex))
-#else
-#define g_static_mutex_get_mutex_impl_shortcut(mutex) \
-  (g_atomic_pointer_get (mutex) ? *(mutex) : \
-   g_static_mutex_get_mutex_impl (mutex))
-#endif
 
 /* shorthands for conditional and unconditional function calls */
 

@@ -1,3 +1,11 @@
+2008-06-20  Sebastian Dröge  <slomo@circular-chaos.org>
+
+	Bug 316221 - G_LOCK warns about breaking strict-aliasing rules
+
+	* configure.in:
+	* glib/gthread.h: Revert previous patch as it doesn't improve the
+	situation and results in other warnings.
+
 2008-06-16  Christian Persch  <chpe@gnome.org>
 
 	Bug 539123 – annotate g_d[n]gettext with G_GNUC_FORMAT
