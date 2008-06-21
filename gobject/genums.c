@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 /**
- * SECTION:Enums and Flags
+ * SECTION:enumerations_flags
  * @Short_description: Enumeration and flags types
  * @See_also:#GParamSpecEnum, #GParamSpecFlags, g_param_spec_enum(), g_param_spec_flags(), 
  * <link linkend="glib-mkenums">glib-mkenums</link>

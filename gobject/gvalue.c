@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 /**
- * SECTION:Generic Values
+ * SECTION:generic_values
  * @Short_description: A polymorphic type that can hold values of any other type
  * @See_also: The fundamental types which all support #GValue operations and
  * thus can be used as a type initializer for g_value_init() are defined by

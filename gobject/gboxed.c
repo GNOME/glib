@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 /**
- * SECTION:GBoxed
+ * SECTION:gboxed
  * @Short_description: A mechanism to wrap opaque C structures registered by the type system
  * @See_also:#GParamSpecBoxed, g_param_spec_boxed()
  * 

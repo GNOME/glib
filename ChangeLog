@@ -1,5 +1,13 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* gobject/gboxed.c:
+	* gobject/gclosure.c:
+	* gobject/genums.c:
+	* gobject/gvalue.c:
+	  Use file-names from the section file for SECTION: comments.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/generic_values.sgml:
 	* gobject/gboxed.h:
 	* gobject/gtype.h:
