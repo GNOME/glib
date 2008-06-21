@@ -81,6 +81,16 @@ G_BEGIN_DECLS
 #define G_TYPE_IS_DERIVABLE(type)               (g_type_test_flags ((type), G_TYPE_FLAG_DERIVABLE))
 #define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
 #define G_TYPE_IS_ABSTRACT(type)                (g_type_test_flags ((type), G_TYPE_FLAG_ABSTRACT))
+/**
+ * G_TYPE_IS_VALUE_ABSTRACT:
+ * @type: A #GType value.
+ * 
+ * Checks if @type is an abstract value type.  An abstract value type introduces
+ * a value table, but can't be used for g_value_init() and is normally used as
+ * an abstract base type for derived value types.
+ *
+ * Returns: %TRUE on success.
+ */
 #define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_test_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
 #define G_TYPE_IS_VALUE_TYPE(type)              (g_type_check_is_value_type (type))
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)

@@ -16,6 +16,27 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+/**
+ * SECTION:Generic Values
+ * @Short_description: A polymorphic type that can hold values of any other type
+ * @See_also: The fundamental types which all support #GValue operations and
+ * thus can be used as a type initializer for g_value_init() are defined by
+ * a separate interface.  See the <link 
+ * linkend="gobject-Standard-Parameter-and-Value-Types">Standard Values 
+ * API</link> for details.
+ * 
+ * The #GValue structure is basically a variable container that consists
+ * of a type identifier and a specific value of that type.
+ * The type identifier within a #GValue structure always determines the
+ * type of the associated value.
+ * To create a undefined #GValue structure, simply create a zero-filled
+ * #GValue structure. To initialize the #GValue, use the g_value_init()
+ * function. A #GValue cannot be used until it is initialized.
+ * The basic type operations (such as freeing and copying) are determined
+ * by the #GTypeValueTable associated with the type ID stored in the #GValue.
+ * Other #GValue operations (such as converting values between types) are
+ * provided by this interface.
+ */
 
 /*
  * FIXME: MT-safety
@@ -66,6 +87,15 @@ value_meminit (GValue *value,
   memset (value->data, 0, sizeof (value->data));
 }
 
+/**
+ * g_value_init:
+ * @value: A zero-filled (uninitialized) #GValue structure.
+ * @g_type: Type the #GValue should hold values of.
+ * 
+ * Initializes @value with the default value of @type.
+ * 
+ * Returns: the #GValue structure that has been passed in
+ */
 GValue*
 g_value_init (GValue *value,
 	      GType   g_type)
@@ -97,6 +127,13 @@ g_value_init (GValue *value,
   return value;
 }
 
+/**
+ * g_value_copy:
+ * @src_value: An initialized #GValue structure.
+ * @dest_value: An initialized #GValue structure of the same type as @src_value.
+ * 
+ * Copies the value of @src_value into @dest_value.
+ */
 void
 g_value_copy (const GValue *src_value,
 	      GValue       *dest_value)
@@ -120,6 +157,15 @@ g_value_copy (const GValue *src_value,
     }
 }
 
+/**
+ * g_value_reset:
+ * @value: An initialized #GValue structure.
+ * 
+ * Clears the current value in @value and resets it to the default value
+ * (as if the value had just been initialized).
+ * 
+ * Returns: the #GValue structure that has been passed in
+ */
 GValue*
 g_value_reset (GValue *value)
 {
@@ -142,6 +188,15 @@ g_value_reset (GValue *value)
   return value;
 }
 
+/**
+ * g_value_unset:
+ * @value: An initialized #GValue structure.
+ * 
+ * Clears the current value in @value and "unsets" the type,
+ * this releases all resources associated with this GValue.
+ * An unset value is the same as an uninitialized (zero-filled)
+ * #GValue structure.
+ */
 void
 g_value_unset (GValue *value)
 {
@@ -156,6 +211,15 @@ g_value_unset (GValue *value)
   memset (value, 0, sizeof (*value));
 }
 
+/**
+ * g_value_fits_pointer:
+ * @value: An initialized #GValue structure.
+ * 
+ * Determines if @value will fit inside the size of a pointer value.
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Returns: %TRUE if @value will fit inside a pointer value.
+ */
 gboolean
 g_value_fits_pointer (const GValue *value)
 {
@@ -168,6 +232,16 @@ g_value_fits_pointer (const GValue *value)
   return value_table->value_peek_pointer != NULL;
 }
 
+/**
+ * g_value_peek_pointer:
+ * @value: An initialized #GValue structure.
+ * 
+ * Return the value contents as pointer. This function asserts that
+ * g_value_fits_pointer() returned %TRUE for the passed in value.
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Returns: %TRUE if @value will fit inside a pointer value.
+ */
 gpointer
 g_value_peek_pointer (const GValue *value)
 {
@@ -185,6 +259,14 @@ g_value_peek_pointer (const GValue *value)
   return value_table->value_peek_pointer (value);
 }
 
+/**
+ * g_value_set_instance:
+ * @value: An initialized #GValue structure.
+ * @instance: the instance
+ * 
+ * Sets @value from an instantiatable type via the 
+ * value_table's collect_value() function.
+ */
 void
 g_value_set_instance (GValue  *value,
 		      gpointer instance)
@@ -276,6 +358,17 @@ transform_entries_cmp (gconstpointer bsearch_node1,
     return G_BSEARCH_ARRAY_CMP (e1->dest_type, e2->dest_type);
 }
 
+/**
+ * g_value_register_transform_func:
+ * @src_type: Source type.
+ * @dest_type: Target type.
+ * @transform_func: a function which transforms values of type @src_type
+ *  into value of type @dest_type
+ * 
+ * Registers a value transformation function for use in g_value_transform().
+ * A previously registered transformation function for @src_type and @dest_type
+ * will be replaced.
+ */
 void
 g_value_register_transform_func (GType           src_type,
 				 GType           dest_type,
@@ -304,6 +397,16 @@ g_value_register_transform_func (GType           src_type,
   transform_array = g_bsearch_array_replace (transform_array, &transform_bconfig, &entry);
 }
 
+/**
+ * g_value_type_transformable:
+ * @src_type: Source type.
+ * @dest_type: Target type.
+ * 
+ * Check whether g_value_transform() is able to transform values
+ * of type @src_type into values of type @dest_type.
+ * 
+ * Returns: %TRUE if the transformation is possible, %FALSE otherwise.
+ */
 gboolean
 g_value_type_transformable (GType src_type,
 			    GType dest_type)
@@ -315,6 +418,16 @@ g_value_type_transformable (GType src_type,
 	  transform_func_lookup (src_type, dest_type) != NULL);
 }
 
+/**
+ * g_value_type_compatible:
+ * @src_type: source type to be copied.
+ * @dest_type: destination type for copying.
+ * 
+ * Returns whether a #GValue of type @src_type can be copied into
+ * a #GValue of type @dest_type.
+ * 
+ * Returns: %TRUE if g_value_copy() is possible with @src_type and @dest_type.
+ */
 gboolean
 g_value_type_compatible (GType src_type,
 			 GType dest_type)
@@ -326,6 +439,22 @@ g_value_type_compatible (GType src_type,
 	  g_type_value_table_peek (dest_type) == g_type_value_table_peek (src_type));
 }
 
+/**
+ * g_value_transform:
+ * @src_value: Source value.
+ * @dest_value: Target value.
+ * 
+ * Tries to cast the contents of @src_value into a type appropriate
+ * to store in @dest_value, e.g. to transform a %G_TYPE_INT value
+ * into a %G_TYPE_FLOAT value. Performing transformations between
+ * value types might incur precision lossage. Especially
+ * transformations into strings might reveal seemingly arbitrary
+ * results and shouldn't be relied upon for production code (such
+ * as rcfile value or object property serialization).
+ * 
+ * Returns: Whether a transformation rule was found and could be applied.
+ *  Upon failing transformations, @dest_value is left untouched.
+ */
 gboolean
 g_value_transform (const GValue *src_value,
 		   GValue       *dest_value)

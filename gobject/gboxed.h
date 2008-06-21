@@ -80,7 +80,19 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  * The #GType for #GClosure.
  */
 #define	G_TYPE_CLOSURE		(g_closure_get_type ())
+/**
+ * G_TYPE_VALUE:
+ * 
+ * The type ID of the "GValue" type which is a boxed type,
+ * used to pass around pointers to GValues.
+ */
 #define	G_TYPE_VALUE		(g_value_get_type ())
+/**
+ * G_TYPE_VALUE_ARRAY:
+ * 
+ * The type ID of the "GValueArray" type which is a boxed type,
+ * used to pass around pointers to GValueArrays.
+ */
 #define	G_TYPE_VALUE_ARRAY	(g_value_array_get_type ())
 /**
  * G_TYPE_DATE:

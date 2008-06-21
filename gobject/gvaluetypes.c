@@ -852,7 +852,17 @@ g_value_get_gtype (const GValue *value)
   return value->data[0].v_long;
 }
 
-
+/**
+ * g_strdup_value_contents:
+ * @value: #GValue which contents are to be described.
+ * 
+ * Return a newly allocated string, which describes the contents of a #GValue.
+ * The main purpose of this function is to describe #GValue contents for 
+ * debugging output, the way in which the contents are described may change 
+ * between different GLib versions.
+ * 
+ * Returns: Newly allocated string.
+ */
 gchar*
 g_strdup_value_contents (const GValue *value)
 {
