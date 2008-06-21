@@ -57,12 +57,16 @@
  *
  * A wrapper for the POSIX access() function. This function is used to
  * test a pathname for one or several of read, write or execute
- * permissions, or just existence. On Windows, the underlying access()
- * function in the C library only checks the READONLY attribute, and
- * does not look at the ACL at all. Software that needs to handle file
- * permissions on Windows more exactly should use the Win32 API.
+ * permissions, or just existence.
  *
- * See the C library manual for more details about access().
+ * On Windows, the file protection mechanism is not at all POSIX-like,
+ * and the underlying function in the C library only checks the
+ * FAT-style READONLY attribute, and does not look at the ACL of a
+ * file at all. This function is this in practise almost useless on
+ * Windows. Software that needs to handle file permissions on Windows
+ * more exactly should use the Win32 API.
+ *
+ * See your C library manual for more details about access().
  *
  * Returns: zero if the pathname refers to an existing file system
  * object that has all the tested permissions, or -1 otherwise or on
@@ -107,14 +111,15 @@ g_access (const gchar *filename,
  * @mode: as in chmod()
  *
  * A wrapper for the POSIX chmod() function. The chmod() function is
- * used to set the permissions of a file system object. Note that on
- * Windows the file protection mechanism is not at all POSIX-like, and
- * the underlying chmod() function in the C library just sets or
- * clears the READONLY attribute. It does not touch any ACL. Software
- * that needs to manage file permissions on Windows exactly should
- * use the Win32 API.
+ * used to set the permissions of a file system object.
+ * 
+ * On Windows the file protection mechanism is not at all POSIX-like,
+ * and the underlying chmod() function in the C library just sets or
+ * clears the FAT-style READONLY attribute. It does not touch any
+ * ACL. Software that needs to manage file permissions on Windows
+ * exactly should use the Win32 API.
  *
- * See the C library manual for more details about chmod().
+ * See your C library manual for more details about chmod().
  *
  * Returns: zero if the operation succeeded, -1 on error.
  * 
@@ -146,7 +151,6 @@ g_chmod (const gchar *filename,
   return chmod (filename, mode);
 #endif
 }
-
 /**
  * g_open:
  * @filename: a pathname in the GLib file name encoding (UTF-8 on Windows)
@@ -154,13 +158,23 @@ g_chmod (const gchar *filename,
  * @mode: as in open()
  *
  * A wrapper for the POSIX open() function. The open() function is
- * used to convert a pathname into a file descriptor. Note that on
- * POSIX systems file descriptors are implemented by the operating
- * system. On Windows, it's the C library that implements open() and
- * file descriptors. The actual Windows API for opening files is
- * something different.
+ * used to convert a pathname into a file descriptor.
  *
- * See the C library manual for more details about open().
+ * On POSIX systems file descriptors are implemented by the operating
+ * system. On Windows, it's the C library that implements open() and
+ * file descriptors. The actual Win32 API for opening files is quite
+ * different, see MSDN documentation for CreateFile(). The Win32 API
+ * uses file handles, which are more randomish integers, not small
+ * integers like file descriptors.
+ *
+ * Because file descriptors are specific to the C library on Windows,
+ * the file descriptor returned by this function makes sense only to
+ * functions in the same C library. Thus if the GLib-using code uses a
+ * different C library than GLib does, the file descriptor returned by
+ * this function cannot be passed to C library functions like write()
+ * or read().
+ *
+ * See your C library manual for more details about open().
  *
  * Returns: a new file descriptor, or -1 if an error occurred. The
  * return value can be used exactly like the return value from open().
@@ -202,12 +216,23 @@ g_open (const gchar *filename,
  *
  * A wrapper for the POSIX creat() function. The creat() function is
  * used to convert a pathname into a file descriptor, creating a file
- * if necessary. Note that on POSIX systems file descriptors are
- * implemented by the operating system. On Windows, it's the C library
- * that implements creat() and file descriptors. The actual Windows
- * API for opening files is something different.
+ * if necessary.
+
+ * On POSIX systems file descriptors are implemented by the operating
+ * system. On Windows, it's the C library that implements creat() and
+ * file descriptors. The actual Windows API for opening files is
+ * different, see MSDN documentation for CreateFile(). The Win32 API
+ * uses file handles, which are more randomish integers, not small
+ * integers like file descriptors.
  *
- * See the C library manual for more details about creat().
+ * Because file descriptors are specific to the C library on Windows,
+ * the file descriptor returned by this function makes sense only to
+ * functions in the same C library. Thus if the GLib-using code uses a
+ * different C library than GLib does, the file descriptor returned by
+ * this function cannot be passed to C library functions like write()
+ * or read().
+ *
+ * See your C library manual for more details about creat().
  *
  * Returns: a new file descriptor, or -1 if an error occurred. The
  * return value can be used exactly like the return value from creat().
@@ -250,9 +275,8 @@ g_creat (const gchar *filename,
  * renames a file, moving it between directories if required.
  * 
  * See your C library manual for more details about how rename() works
- * on your system. Note in particular that on Win9x it is not possible
- * to rename a file if a file with the new name already exists. Also
- * it is not possible in general on Windows to rename an open file.
+ * on your system. It is not possible in general on Windows to rename
+ * a file that is open to some process.
  *
  * Returns: 0 if the renaming succeeded, -1 if an error occurred
  * 
@@ -323,7 +347,7 @@ g_rename (const gchar *oldfilename,
  * attempts to create a directory with the given name and permissions.
  * The mode argument is ignored on Windows.
  * 
- * See the C library manual for more details about mkdir().
+ * See your C library manual for more details about mkdir().
  *
  * Returns: 0 if the directory was successfully created, -1 if an error 
  *    occurred
@@ -404,11 +428,11 @@ g_chdir (const gchar *path)
  *
  * A wrapper for the POSIX stat() function. The stat() function
  * returns information about a file. On Windows the stat() function in
- * the C library checks only the READONLY attribute and does not look
- * at the ACL at all. Thus the protection bits in the st_mode field
- * are a fabrication of little use.
+ * the C library checks only the FAT-style READONLY attribute and does
+ * not look at the ACL at all. Thus on Windows the protection bits in
+ * the st_mode field are a fabrication of little use.
  * 
- * See the C library manual for more details about stat().
+ * See your C library manual for more details about stat().
  *
  * Returns: 0 if the information was successfully retrieved, -1 if an error 
  *    occurred
@@ -462,7 +486,7 @@ g_stat (const gchar *filename,
  * refers to. If the system does not support symbolic links g_lstat()
  * is identical to g_stat().
  * 
- * See the C library manual for more details about lstat().
+ * See your C library manual for more details about lstat().
  *
  * Returns: 0 if the information was successfully retrieved, -1 if an error 
  *    occurred
@@ -626,10 +650,18 @@ g_rmdir (const gchar *filename)
  * @mode: a string describing the mode in which the file should be 
  *   opened
  *
- * A wrapper for the POSIX fopen() function. The fopen() function opens
- * a file and associates a new stream with it. 
+ * A wrapper for the stdio fopen() function. The fopen() function
+ * opens a file and associates a new stream with it.
  * 
- * See the C library manual for more details about fopen().
+ * Because file descriptors are specific to the C library on Windows,
+ * and a file descriptor is partof the <type>FILE</type> struct, the
+ * <type>FILE</type> pointer returned by this function makes sense
+ * only to functions in the same C library. Thus if the GLib-using
+ * code uses a different C library than GLib does, the
+ * <type>FILE</type> pointer returned by this function cannot be
+ * passed to C library functions like fprintf() or fread().
+ *
+ * See your C library manual for more details about fopen().
  *
  * Returns: A <type>FILE</type> pointer if the file was successfully
  *    opened, or %NULL if an error occurred
@@ -684,7 +716,7 @@ g_fopen (const gchar *filename,
  * A wrapper for the POSIX freopen() function. The freopen() function
  * opens a file and associates it with an existing stream.
  * 
- * See the C library manual for more details about freopen().
+ * See your C library manual for more details about freopen().
  *
  * Returns: A <type>FILE</type> pointer if the file was successfully
  *    opened, or %NULL if an error occurred.
