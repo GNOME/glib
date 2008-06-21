@@ -915,6 +915,15 @@ g_strdup_value_contents (const GValue *value)
   return contents;
 }
 
+/**
+ * g_pointer_type_register_static:
+ * @name: the name of the new pointer type.
+ * 
+ * Creates a new %G_TYPE_POINTER derived type id for a new
+ * pointer type with name @name. 
+ * 
+ * Returns: a new %G_TYPE_POINTER derived type id for @name.
+ */
 GType
 g_pointer_type_register_static (const gchar *name)
 {

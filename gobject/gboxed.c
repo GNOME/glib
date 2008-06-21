@@ -16,6 +16,20 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+/**
+ * SECTION:GBoxed
+ * @Short_description: A mechanism to wrap opaque C structures registered by the type system
+ * @See_also:#GParamSpecBoxed, g_param_spec_boxed()
+ * 
+ * GBoxed is a generic wrapper mechanism for arbitrary C structures. The only
+ * thing the type system needs to know about the structures is how to copy and
+ * free them, beyond that they are treated as opaque chunks of memory.
+ * 
+ * Boxed types are useful for simple value-holder structures like rectangles or
+ * points. They can also be used for wrapping structures defined in non-GObject
+ * based libraries.
+ */
+
 #include	"gboxed.h"
 
 #include	"gbsearcharray.h"
@@ -347,6 +361,18 @@ boxed_proxy_lcopy_value (const GValue *value,
   return NULL;
 }
 
+/**
+ * g_boxed_type_register_static:
+ * @name: Name of the new boxed type.
+ * @boxed_copy: Boxed structure copy function.
+ * @boxed_free: Boxed structure free function.
+ * 
+ * This function creates a new %G_TYPE_BOXED derived type id for a new
+ * boxed type with name @name. Boxed type handling functions have to be
+ * provided to copy and free opaque boxed structures of this type.
+ * 
+ * Returns: New %G_TYPE_BOXED derived type id for @name.
+ */
 GType
 g_boxed_type_register_static (const gchar   *name,
 			      GBoxedCopyFunc boxed_copy,
@@ -397,6 +423,15 @@ g_boxed_type_register_static (const gchar   *name,
   return type;
 }
 
+/**
+ * g_boxed_copy:
+ * @boxed_type: The type of @src_boxed.
+ * @src_boxed: The boxed structure to be copied.
+ * 
+ * Provide a copy of a boxed structure @src_boxed which is of type @boxed_type.
+ * 
+ * Returns: The newly created copy of the boxed structure.
+ */
 gpointer
 g_boxed_copy (GType         boxed_type,
 	      gconstpointer src_boxed)
@@ -455,6 +490,13 @@ g_boxed_copy (GType         boxed_type,
   return dest_boxed;
 }
 
+/**
+ * g_boxed_free:
+ * @boxed_type: The type of @boxed.
+ * @boxed: The boxed structure to be freed.
+ * 
+ * Free the boxed structure @boxed which is of type @boxed_type.
+ */
 void
 g_boxed_free (GType    boxed_type,
 	      gpointer boxed)
