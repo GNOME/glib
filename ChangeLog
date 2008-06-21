@@ -1,5 +1,14 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* gobject/gboxed.c:
+	* gobject/gclosure.c:
+	* gobject/genums.c:
+	* gobject/gparam.c:
+	* gobject/gvalue.c:
+	  Add titles back from tmpl.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gtype.sgml:
 	* gobject/gtype.c:
 	* gobject/gtype.h:

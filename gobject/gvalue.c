@@ -24,6 +24,7 @@
  * a separate interface.  See the <link 
  * linkend="gobject-Standard-Parameter-and-Value-Types">Standard Values 
  * API</link> for details.
+ * @Title: Generic values
  * 
  * The #GValue structure is basically a variable container that consists
  * of a type identifier and a specific value of that type.

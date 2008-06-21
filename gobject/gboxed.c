@@ -20,6 +20,7 @@
  * SECTION:gboxed
  * @Short_description: A mechanism to wrap opaque C structures registered by the type system
  * @See_also:#GParamSpecBoxed, g_param_spec_boxed()
+ * @Title: Boxed Types
  * 
  * GBoxed is a generic wrapper mechanism for arbitrary C structures. The only
  * thing the type system needs to know about the structures is how to copy and
