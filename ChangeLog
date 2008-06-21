@@ -1,5 +1,11 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* gobject/gclosure.h:
+	* gobject/gparam.h:
+	  Add one missing ':' and reformate GParamFlags docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gparamspec.sgml:
 	* gobject/gparam.c:
 	* gobject/gparam.h:

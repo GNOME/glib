@@ -35,7 +35,7 @@ G_BEGIN_DECLS
  * 
  * Check if the closure still needs a marshaller. See g_closure_set_marshal().
  *
- * Returns %TRUE if a #GClosureMarshal marshaller has not yet been set on 
+ * Returns: %TRUE if a #GClosureMarshal marshaller has not yet been set on 
  * @closure.
  */
 #define	G_CLOSURE_NEEDS_MARSHAL(closure) (((GClosure*) (closure))->marshal == NULL)

@@ -115,7 +115,7 @@ G_BEGIN_DECLS
  *  parameter is guaranteed to remain valid and
  *  unmodified for the lifetime of the parameter. 
  *  Since 2.8
- * @G_PARAM_PRIVATE:  * @G_PARAM_STATIC_NICK: the string used as nick when constructing the
+ * @G_PARAM_STATIC_NICK: the string used as nick when constructing the
  *  parameter is guaranteed to remain valid and
  *  unmmodified for the lifetime of the parameter.
  *  Since 2.8
@@ -123,6 +123,7 @@ G_BEGIN_DECLS
  *  parameter is guaranteed to remain valid and 
  *  unmodified for the lifetime of the parameter. 
  *  Since 2.8
+ * @G_PARAM_PRIVATE: internal
  * 
  * Through the #GParamFlags flag values, certain aspects of parameters
  * can be configured.
