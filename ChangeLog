@@ -1,5 +1,10 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* gobject/genums.h:
+	  Fix documentation for return values.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gclosure.sgml:
 	* gobject/gboxed.h:
 	* gobject/gclosure.c:

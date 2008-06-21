@@ -32,7 +32,9 @@ G_BEGIN_DECLS
  * G_TYPE_IS_ENUM:
  * @type: a #GType ID.
  * 
- * Returns: whether @type "is a" %G_TYPE_ENUM.
+ * Checks whether @type "is a" %G_TYPE_ENUM.
+ *
+ * Returns: %TRUE if @type "is a" %G_TYPE_ENUM.
  */
 #define G_TYPE_IS_ENUM(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
 /**
@@ -54,14 +56,18 @@ G_BEGIN_DECLS
  * G_ENUM_CLASS_TYPE:
  * @class: a #GEnumClass
  * 
- * Returns: the type identifier from a given #GEnumClass structure.
+ * Get the type identifier from a given #GEnumClass structure.
+ *
+ * Returns: the #GType
  */
 #define G_ENUM_CLASS_TYPE(class)       (G_TYPE_FROM_CLASS (class))
 /**
  * G_ENUM_CLASS_TYPE_NAME:
  * @class: a #GEnumClass
  * 
- * Returns: the static type name from a given #GEnumClass structure.
+ * Get the static type name from a given #GEnumClass structure.
+ *
+ * Returns: the type name.
  */
 #define G_ENUM_CLASS_TYPE_NAME(class)  (g_type_name (G_ENUM_CLASS_TYPE (class)))
 
@@ -69,8 +75,10 @@ G_BEGIN_DECLS
 /**
  * G_TYPE_IS_FLAGS:
  * @type: a #GType ID.
- * 
- * Returns: whether @type "is a" %G_TYPE_FLAGS.
+ *
+ * Checks whether @type "is a" %G_TYPE_FLAGS. 
+ *
+ * Returns: %TRUE if @type "is a" %G_TYPE_FLAGS.
  */
 #define G_TYPE_IS_FLAGS(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
 /**
@@ -92,14 +100,18 @@ G_BEGIN_DECLS
  * G_FLAGS_CLASS_TYPE:
  * @class: a #GFlagsClass
  * 
- * Returns: the type identifier from a given #GFlagsClass structure.
+ * Get the type identifier from a given #GFlagsClass structure.
+ *
+ * Returns: the #GType
  */
 #define G_FLAGS_CLASS_TYPE(class)      (G_TYPE_FROM_CLASS (class))
 /**
  * G_FLAGS_CLASS_TYPE_NAME:
  * @class: a #GFlagsClass
  * 
- * Returns: the static type name from a given #GFlagsClass structure.
+ * Get the static type name from a given #GFlagsClass structure.
+ *
+ * Returns: the type name.
  */
 #define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_CLASS_TYPE (class)))
 
