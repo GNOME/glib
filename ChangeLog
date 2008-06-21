@@ -1,5 +1,13 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/objects.sgml:
+	* gobject/gobject.c:
+	* gobject/gobject.h:
+	* gobject/gparam.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gtypeplugin.sgml:
 	* gobject/gtypeplugin.c:
 	* gobject/gtypeplugin.h:
