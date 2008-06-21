@@ -99,6 +99,14 @@ G_BEGIN_DECLS
  * Retrieves the #GType to initialize a #GValue for this parameter.
  */
 #define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC (pspec)->value_type)
+/**
+ * G_VALUE_HOLDS_PARAM:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values derived from type %G_TYPE_PARAM.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_PARAM(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_PARAM))
        
 

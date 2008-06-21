@@ -554,6 +554,13 @@ g_value_types_init (void)
 
 
 /* --- GValue functions --- */
+/**
+ * g_value_set_char:
+ * @value: a valid #GValue of type %G_TYPE_CHAR
+ * @v_char: character value to be set
+ * 
+ * Set the contents of a %G_TYPE_CHAR #GValue to @v_char.
+ */
 void
 g_value_set_char (GValue *value,
 		  gchar	  v_char)
@@ -563,6 +570,14 @@ g_value_set_char (GValue *value,
   value->data[0].v_int = v_char;
 }
 
+/**
+ * g_value_get_char:
+ * @value: a valid #GValue of type %G_TYPE_CHAR
+ * 
+ * Get the contents of a %G_TYPE_CHAR #GValue.
+ * 
+ * Returns: character contents of @value
+ */
 gchar
 g_value_get_char (const GValue *value)
 {
@@ -571,6 +586,13 @@ g_value_get_char (const GValue *value)
   return value->data[0].v_int;
 }
 
+/**
+ * g_value_set_uchar:
+ * @value: a valid #GValue of type %G_TYPE_UCHAR
+ * @v_uchar: unsigned character value to be set
+ * 
+ * Set the contents of a %G_TYPE_UCHAR #GValue to @v_uchar.
+ */
 void
 g_value_set_uchar (GValue *value,
 		   guchar  v_uchar)
@@ -580,6 +602,14 @@ g_value_set_uchar (GValue *value,
   value->data[0].v_uint = v_uchar;
 }
 
+/**
+ * g_value_get_uchar:
+ * @value: a valid #GValue of type %G_TYPE_UCHAR
+ * 
+ * Get the contents of a %G_TYPE_UCHAR #GValue.
+ * 
+ * Returns: unsigned character contents of @value
+ */
 guchar
 g_value_get_uchar (const GValue *value)
 {
@@ -588,6 +618,13 @@ g_value_get_uchar (const GValue *value)
   return value->data[0].v_uint;
 }
 
+/**
+ * g_value_set_boolean:
+ * @value: a valid #GValue of type %G_TYPE_BOOLEAN
+ * @v_boolean: boolean value to be set
+ * 
+ * Set the contents of a %G_TYPE_BOOLEAN #GValue to @v_boolean.
+ */
 void
 g_value_set_boolean (GValue  *value,
 		     gboolean v_boolean)
@@ -597,6 +634,14 @@ g_value_set_boolean (GValue  *value,
   value->data[0].v_int = v_boolean != FALSE;
 }
 
+/**
+ * g_value_get_boolean:
+ * @value: a valid #GValue of type %G_TYPE_BOOLEAN
+ * 
+ * Get the contents of a %G_TYPE_BOOLEAN #GValue.
+ * 
+ * Returns: boolean contents of @value
+ */
 gboolean
 g_value_get_boolean (const GValue *value)
 {
@@ -605,6 +650,13 @@ g_value_get_boolean (const GValue *value)
   return value->data[0].v_int;
 }
 
+/**
+ * g_value_set_int:
+ * @value: a valid #GValue of type %G_TYPE_INT
+ * @v_int: integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_INT #GValue to @v_int.
+ */
 void
 g_value_set_int (GValue *value,
 		 gint	 v_int)
@@ -614,6 +666,14 @@ g_value_set_int (GValue *value,
   value->data[0].v_int = v_int;
 }
 
+/**
+ * g_value_get_int:
+ * @value: a valid #GValue of type %G_TYPE_INT
+ * 
+ * Get the contents of a %G_TYPE_INT #GValue.
+ * 
+ * Returns: integer contents of @value
+ */
 gint
 g_value_get_int (const GValue *value)
 {
@@ -622,6 +682,13 @@ g_value_get_int (const GValue *value)
   return value->data[0].v_int;
 }
 
+/**
+ * g_value_set_uint:
+ * @value: a valid #GValue of type %G_TYPE_UINT
+ * @v_uint: unsigned integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_UINT #GValue to @v_uint.
+ */
 void
 g_value_set_uint (GValue *value,
 		  guint	  v_uint)
@@ -631,6 +698,14 @@ g_value_set_uint (GValue *value,
   value->data[0].v_uint = v_uint;
 }
 
+/**
+ * g_value_get_uint:
+ * @value: a valid #GValue of type %G_TYPE_UINT
+ * 
+ * Get the contents of a %G_TYPE_UINT #GValue.
+ * 
+ * Returns: unsigned integer contents of @value
+ */
 guint
 g_value_get_uint (const GValue *value)
 {
@@ -639,6 +714,13 @@ g_value_get_uint (const GValue *value)
   return value->data[0].v_uint;
 }
 
+/**
+ * g_value_set_long:
+ * @value: a valid #GValue of type %G_TYPE_LONG
+ * @v_long: long integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_LONG #GValue to @v_long.
+ */
 void
 g_value_set_long (GValue *value,
 		  glong	  v_long)
@@ -648,6 +730,14 @@ g_value_set_long (GValue *value,
   value->data[0].v_long = v_long;
 }
 
+/**
+ * g_value_get_long:
+ * @value: a valid #GValue of type %G_TYPE_LONG
+ * 
+ * Get the contents of a %G_TYPE_LONG #GValue.
+ * 
+ * Returns: long integer contents of @value
+ */
 glong
 g_value_get_long (const GValue *value)
 {
@@ -656,6 +746,13 @@ g_value_get_long (const GValue *value)
   return value->data[0].v_long;
 }
 
+/**
+ * g_value_set_ulong:
+ * @value: a valid #GValue of type %G_TYPE_ULONG
+ * @v_ulong: unsigned long integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_ULONG #GValue to @v_ulong.
+ */
 void
 g_value_set_ulong (GValue *value,
 		   gulong  v_ulong)
@@ -665,6 +762,14 @@ g_value_set_ulong (GValue *value,
   value->data[0].v_ulong = v_ulong;
 }
 
+/**
+ * g_value_get_ulong:
+ * @value: a valid #GValue of type %G_TYPE_ULONG
+ * 
+ * Get the contents of a %G_TYPE_ULONG #GValue.
+ * 
+ * Returns: unsigned long integer contents of @value
+ */
 gulong
 g_value_get_ulong (const GValue *value)
 {
@@ -673,6 +778,14 @@ g_value_get_ulong (const GValue *value)
   return value->data[0].v_ulong;
 }
 
+/**
+ * g_value_get_int64:
+ * @value: a valid #GValue of type %G_TYPE_INT64
+ * 
+ * Get the contents of a %G_TYPE_INT64 #GValue.
+ * 
+ * Returns: 64bit integer contents of @value
+ */
 void
 g_value_set_int64 (GValue *value,
 		   gint64  v_int64)
@@ -682,6 +795,13 @@ g_value_set_int64 (GValue *value,
   value->data[0].v_int64 = v_int64;
 }
 
+/**
+ * g_value_set_int64:
+ * @value: a valid #GValue of type %G_TYPE_INT64
+ * @v_int64: 64bit integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_INT64 #GValue to @v_int64.
+ */
 gint64
 g_value_get_int64 (const GValue *value)
 {
@@ -690,6 +810,13 @@ g_value_get_int64 (const GValue *value)
   return value->data[0].v_int64;
 }
 
+/**
+ * g_value_set_uint64:
+ * @value: a valid #GValue of type %G_TYPE_UINT64
+ * @v_uint64: unsigned 64bit integer value to be set
+ * 
+ * Set the contents of a %G_TYPE_UINT64 #GValue to @v_uint64.
+ */
 void
 g_value_set_uint64 (GValue *value,
 		    guint64 v_uint64)
@@ -699,6 +826,14 @@ g_value_set_uint64 (GValue *value,
   value->data[0].v_uint64 = v_uint64;
 }
 
+/**
+ * g_value_get_uint64:
+ * @value: a valid #GValue of type %G_TYPE_UINT64
+ * 
+ * Get the contents of a %G_TYPE_UINT64 #GValue.
+ * 
+ * Returns: unsigned 64bit integer contents of @value
+ */
 guint64
 g_value_get_uint64 (const GValue *value)
 {
@@ -707,6 +842,13 @@ g_value_get_uint64 (const GValue *value)
   return value->data[0].v_uint64;
 }
 
+/**
+ * g_value_set_float:
+ * @value: a valid #GValue of type %G_TYPE_FLOAT
+ * @v_float: float value to be set
+ * 
+ * Set the contents of a %G_TYPE_FLOAT #GValue to @v_float.
+ */
 void
 g_value_set_float (GValue *value,
 		   gfloat  v_float)
@@ -716,6 +858,14 @@ g_value_set_float (GValue *value,
   value->data[0].v_float = v_float;
 }
 
+/**
+ * g_value_get_float:
+ * @value: a valid #GValue of type %G_TYPE_FLOAT
+ * 
+ * Get the contents of a %G_TYPE_FLOAT #GValue.
+ * 
+ * Returns: float contents of @value
+ */
 gfloat
 g_value_get_float (const GValue *value)
 {
@@ -724,6 +874,13 @@ g_value_get_float (const GValue *value)
   return value->data[0].v_float;
 }
 
+/**
+ * g_value_set_double:
+ * @value: a valid #GValue of type %G_TYPE_DOUBLE
+ * @v_double: double value to be set
+ * 
+ * Set the contents of a %G_TYPE_DOUBLE #GValue to @v_double.
+ */
 void
 g_value_set_double (GValue *value,
 		    gdouble v_double)
@@ -733,6 +890,14 @@ g_value_set_double (GValue *value,
   value->data[0].v_double = v_double;
 }
 
+/**
+ * g_value_get_double:
+ * @value: a valid #GValue of type %G_TYPE_DOUBLE
+ * 
+ * Get the contents of a %G_TYPE_DOUBLE #GValue.
+ * 
+ * Returns: double contents of @value
+ */
 gdouble
 g_value_get_double (const GValue *value)
 {
@@ -741,6 +906,13 @@ g_value_get_double (const GValue *value)
   return value->data[0].v_double;
 }
 
+/**
+ * g_value_set_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * @v_string: string to be set
+ * 
+ * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
+ */
 void
 g_value_set_string (GValue	*value,
 		    const gchar *v_string)
@@ -759,6 +931,15 @@ g_value_set_string (GValue	*value,
   value->data[0].v_pointer = new_val;
 }
 
+/**
+ * g_value_set_static_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * @v_string: static string to be set
+ * 
+ * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
+ * The string is assumed to be static, and is thus not duplicated
+ * when setting the #GValue.
+ */
 void
 g_value_set_static_string (GValue      *value,
 			   const gchar *v_string)
@@ -771,6 +952,15 @@ g_value_set_static_string (GValue      *value,
   value->data[0].v_pointer = (gchar*) v_string;
 }
 
+/**
+ * g_value_set_string_take_ownership:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * @v_string: duplicated unowned string to be set
+ * 
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Deprecated: 2.4: Use g_value_take_string() instead.
+ */
 void
 g_value_set_string_take_ownership (GValue *value,
 				   gchar  *v_string)
@@ -778,6 +968,15 @@ g_value_set_string_take_ownership (GValue *value,
   g_value_take_string (value, v_string);
 }
 
+/**
+ * g_value_take_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * @v_string: duplicated unowned string to be set
+ * 
+ * Sets the contents of a %G_TYPE_STRING #GValue to @v_string.
+ * 
+ * Since: 2.4
+ */
 void
 g_value_take_string (GValue *value,
 		     gchar  *v_string)
@@ -791,6 +990,14 @@ g_value_take_string (GValue *value,
   value->data[0].v_pointer = v_string;
 }
 
+/**
+ * g_value_get_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * 
+ * Get the contents of a %G_TYPE_STRING #GValue.
+ * 
+ * Returns: string content of @value
+ */
 G_CONST_RETURN gchar*
 g_value_get_string (const GValue *value)
 {
@@ -799,6 +1006,14 @@ g_value_get_string (const GValue *value)
   return value->data[0].v_pointer;
 }
 
+/**
+ * g_value_dup_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * 
+ * Get a copy the contents of a %G_TYPE_STRING #GValue.
+ * 
+ * Returns: a newly allocated copy of the string content of @value
+ */
 gchar*
 g_value_dup_string (const GValue *value)
 {
@@ -807,6 +1022,13 @@ g_value_dup_string (const GValue *value)
   return g_strdup (value->data[0].v_pointer);
 }
 
+/**
+ * g_value_set_pointer:
+ * @value: a valid #GValue of %G_TYPE_POINTER
+ * @v_pointer: pointer value to be set
+ * 
+ * Set the contents of a pointer #GValue to @v_pointer.
+ */
 void
 g_value_set_pointer (GValue  *value,
 		     gpointer v_pointer)
@@ -816,6 +1038,14 @@ g_value_set_pointer (GValue  *value,
   value->data[0].v_pointer = v_pointer;
 }
 
+/**
+ * g_value_get_pointer:
+ * @value: a valid #GValue of %G_TYPE_POINTER
+ * 
+ * Get the contents of a pointer #GValue.
+ * 
+ * Returns: pointer contents of @value
+ */
 gpointer
 g_value_get_pointer (const GValue *value)
 {
@@ -834,6 +1064,15 @@ g_gtype_get_type (void)
   return type;
 }
 
+/**
+ * g_value_set_gtype:
+ * @value: a valid #GValue of type %G_TYPE_GTYPE
+ * @v_gtype: #GType to be set
+ * 
+ * Set the contents of a %G_TYPE_GTYPE #GValue to @v_gtype.
+ * 
+ * Since: 2.12
+ */
 void 
 g_value_set_gtype (GValue *value,
 		   GType   v_gtype)
@@ -844,6 +1083,15 @@ g_value_set_gtype (GValue *value,
   
 }
 
+/**
+ * g_value_get_gtype:
+ * @value: a valid #GValue of type %G_TYPE_GTYPE
+ * 
+ * Get the contents of a %G_TYPE_GTYPE #GValue.
+ * 
+ * Since: 2.12
+ * Returns: the #GType stored in @value
+ */
 GType	              
 g_value_get_gtype (const GValue *value)
 {

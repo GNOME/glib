@@ -29,6 +29,14 @@ G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_IS_BOXED(type)	   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_BOXED)
+/**
+ * G_VALUE_HOLDS_BOXED:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values derived from type %G_TYPE_BOXED.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_BOXED(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOXED))
 
 

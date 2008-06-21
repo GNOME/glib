@@ -116,7 +116,23 @@ G_BEGIN_DECLS
 #define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_CLASS_TYPE (class)))
 
 
+/**
+ * G_VALUE_HOLDS_ENUM:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values derived from type %G_TYPE_ENUM.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_ENUM(value)      (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ENUM))
+/**
+ * G_VALUE_HOLDS_FLAGS:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values derived from type %G_TYPE_FLAGS.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_FLAGS(value)     (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLAGS))
 
 

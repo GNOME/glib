@@ -1386,6 +1386,13 @@ g_param_type_register_static (const gchar              *name,
   return g_type_register_static (G_TYPE_PARAM, name, &info, 0);
 }
 
+/**
+ * g_value_set_param:
+ * @value: a valid #GValue of type %G_TYPE_PARAM
+ * @param: the #GParamSpec to be set
+ * 
+ * Set the contents of a %G_TYPE_PARAM #GValue to @param.
+ */
 void
 g_value_set_param (GValue     *value,
 		   GParamSpec *param)
@@ -1401,6 +1408,15 @@ g_value_set_param (GValue     *value,
     g_param_spec_ref (value->data[0].v_pointer);
 }
 
+/**
+ * g_value_set_param_take_ownership:
+ * @value: a valid #GValue of type %G_TYPE_PARAM
+ * @param: the #GParamSpec to be set
+ * 
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Deprecated: 2.4: Use g_value_take_param() instead.
+ */
 void
 g_value_set_param_take_ownership (GValue     *value,
 				  GParamSpec *param)
@@ -1408,6 +1424,17 @@ g_value_set_param_take_ownership (GValue     *value,
   g_value_take_param (value, param);
 }
 
+/**
+ * g_value_take_param:
+ * @value: a valid #GValue of type %G_TYPE_PARAM
+ * @param: the #GParamSpec to be set
+ * 
+ * Sets the contents of a %G_TYPE_PARAM #GValue to @param and
+ * takes over the ownership of the callers reference to @param; 
+ * the caller doesn't have to unref it any more.
+ * 
+ * Since: 2.4
+ */
 void
 g_value_take_param (GValue     *value,
 		    GParamSpec *param)
@@ -1421,6 +1448,14 @@ g_value_take_param (GValue     *value,
   value->data[0].v_pointer = param; /* we take over the reference count */
 }
 
+/**
+ * g_value_get_param:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_PARAM
+ * 
+ * Get the contents of a %G_TYPE_PARAM #GValue.
+ * 
+ * Returns: #GParamSpec content of @value
+ */
 GParamSpec*
 g_value_get_param (const GValue *value)
 {
@@ -1429,6 +1464,14 @@ g_value_get_param (const GValue *value)
   return value->data[0].v_pointer;
 }
 
+/**
+ * g_value_dup_param:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_PARAM
+ * 
+ * Get the contents of a %G_TYPE_PARAM #GValue, increasing its reference count.
+ * 
+ * Returns: #GParamSpec content of @value, should be unreferenced when no longer needed.
+ */
 GParamSpec*
 g_value_dup_param (const GValue *value)
 {

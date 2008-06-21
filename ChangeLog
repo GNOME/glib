@@ -1,3 +1,20 @@
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/param_value_types.sgml:
+	* gobject/gboxed.c:
+	* gobject/gboxed.h:
+	* gobject/genums.c:
+	* gobject/genums.h:
+	* gobject/gobject.c:
+	* gobject/gobject.h:
+	* gobject/gparam.c:
+	* gobject/gparam.h:
+	* gobject/gparamspecs.c:
+	* gobject/gparamspecs.h:
+	* gobject/gvaluetypes.c:
+	* gobject/gvaluetypes.h:
+	  Migrating docs.
+
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
 	* docs/reference/gobject/tmpl/objects.sgml:

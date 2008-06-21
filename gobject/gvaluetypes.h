@@ -30,18 +30,122 @@
 G_BEGIN_DECLS
 
 /* --- type macros --- */
+/**
+ * G_VALUE_HOLDS_CHAR:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_CHAR.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_CHAR(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CHAR))
+/**
+ * G_VALUE_HOLDS_UCHAR:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_UCHAR.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_UCHAR(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UCHAR))
+/**
+ * G_VALUE_HOLDS_BOOLEAN:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_BOOLEAN.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_BOOLEAN(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOOLEAN))
+/**
+ * G_VALUE_HOLDS_INT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_INT.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_INT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_INT))
+/**
+ * G_VALUE_HOLDS_UINT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_UINT.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_UINT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UINT))
+/**
+ * G_VALUE_HOLDS_LONG:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_LONG.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_LONG(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_LONG))
+/**
+ * G_VALUE_HOLDS_ULONG:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_ULONG.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_ULONG(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ULONG))
+/**
+ * G_VALUE_HOLDS_INT64:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_INT64.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_INT64(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_INT64))
+/**
+ * G_VALUE_HOLDS_UINT64:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_UINT64.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_UINT64(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UINT64))
+/**
+ * G_VALUE_HOLDS_FLOAT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_FLOAT.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_FLOAT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLOAT))
+/**
+ * G_VALUE_HOLDS_DOUBLE:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_DOUBLE.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_DOUBLE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
+/**
+ * G_VALUE_HOLDS_STRING:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_STRING.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_STRING(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
+/**
+ * G_VALUE_HOLDS_POINTER:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_POINTER.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_POINTER(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
 /**
  * G_TYPE_GTYPE:
@@ -49,6 +153,15 @@ G_BEGIN_DECLS
  * The type for #GType.
  */
 #define	G_TYPE_GTYPE			 (g_gtype_get_type())
+/**
+ * G_VALUE_HOLDS_GTYPE:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_GTYPE.
+ * 
+ * Since: 2.12
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_GTYPE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_GTYPE))
 
 
@@ -117,6 +230,11 @@ void g_value_set_string_take_ownership		(GValue		   *value,
 
 
 /* humpf, need a C representable type name for G_TYPE_STRING */
+/**
+ * gchararray:
+ * 
+ * A C representable type name for #G_TYPE_STRING.
+ */
 typedef gchar* gchararray;
 
 

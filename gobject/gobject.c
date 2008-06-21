@@ -2718,6 +2718,24 @@ g_value_object_lcopy_value (const GValue *value,
   return NULL;
 }
 
+/**
+ * g_value_set_object:
+ * @value: a valid #GValue of %G_TYPE_OBJECT derived type
+ * @v_object: object value to be set
+ * 
+ * Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
+ * 
+ * g_value_set_object() increases the reference count of @v_object
+ * (the #GValue holds a reference to @v_object).
+ * If you do not wish to increase the reference count of the object
+ * (i.e. you wish to pass your current reference to the #GValue because you no
+ * longer need it),
+ * use g_value_take_object() instead.
+ * 
+ * It is important that your #GValue holds a reference to @v_object (either its
+ * own, or one it has taken) to ensure that the object won't be destroyed while
+ * the #GValue still exists).
+ */
 void
 g_value_set_object (GValue   *value,
 		    gpointer  v_object)
@@ -2743,6 +2761,15 @@ g_value_set_object (GValue   *value,
     g_object_unref (old);
 }
 
+/**
+ * g_value_set_object_take_ownership:
+ * @value: a valid #GValue of %G_TYPE_OBJECT derived type
+ * @v_object: object value to be set
+ * 
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Deprecated: 2.4: Use g_value_take_object() instead.
+ */
 void
 g_value_set_object_take_ownership (GValue  *value,
 				   gpointer v_object)
@@ -2750,6 +2777,21 @@ g_value_set_object_take_ownership (GValue  *value,
   g_value_take_object (value, v_object);
 }
 
+/**
+ * g_value_take_object:
+ * @value: a valid #GValue of %G_TYPE_OBJECT derived type
+ * @v_object: object value to be set
+ * 
+ * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object 
+ * and takes over the ownership of the callers reference to @v_object; 
+ * the caller doesn't have to unref it any more (i.e. the reference
+ * count of the object is not increased).
+ * 
+ * If you want the #GValue to hold its own reference to @v_object, use
+ * g_value_set_object() instead.
+ * 
+ * Since: 2.4
+ */
 void
 g_value_take_object (GValue  *value,
 		     gpointer v_object)
@@ -2771,6 +2813,14 @@ g_value_take_object (GValue  *value,
     }
 }
 
+/**
+ * g_value_get_object:
+ * @value: a valid #GValue of %G_TYPE_OBJECT derived type
+ * 
+ * Get the contents of a %G_TYPE_OBJECT derived #GValue.
+ * 
+ * Returns: object contents of @value
+ */
 gpointer
 g_value_get_object (const GValue *value)
 {
@@ -2779,6 +2829,14 @@ g_value_get_object (const GValue *value)
   return value->data[0].v_pointer;
 }
 
+/**
+ * g_value_dup_object:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_OBJECT
+ * 
+ * Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing its reference count.
+ * 
+ * Returns: object content of @value, should be unreferenced when no longer needed.
+ */
 gpointer
 g_value_dup_object (const GValue *value)
 {

@@ -546,6 +546,13 @@ g_flags_get_first_value (GFlagsClass *flags_class,
   return NULL;
 }
 
+/**
+ * g_value_set_enum:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_ENUM
+ * @v_enum: enum value to be set
+ * 
+ * Set the contents of a %G_TYPE_ENUM #GValue to @v_enum.
+ */
 void
 g_value_set_enum (GValue *value,
 		  gint    v_enum)
@@ -555,6 +562,14 @@ g_value_set_enum (GValue *value,
   value->data[0].v_long = v_enum;
 }
 
+/**
+ * g_value_get_enum:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_ENUM
+ * 
+ * Get the contents of a %G_TYPE_ENUM #GValue.
+ * 
+ * Returns: enum contents of @value
+ */
 gint
 g_value_get_enum (const GValue *value)
 {
@@ -563,6 +578,13 @@ g_value_get_enum (const GValue *value)
   return value->data[0].v_long;
 }
 
+/**
+ * g_value_set_flags:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_FLAGS
+ * @v_flags: flags value to be set
+ * 
+ * Set the contents of a %G_TYPE_FLAGS #GValue to @v_flags.
+ */
 void
 g_value_set_flags (GValue *value,
 		   guint   v_flags)
@@ -572,6 +594,14 @@ g_value_set_flags (GValue *value,
   value->data[0].v_ulong = v_flags;
 }
 
+/**
+ * g_value_get_flags:
+ * @value: a valid #GValue whose type is derived from %G_TYPE_FLAGS
+ * 
+ * Get the contents of a %G_TYPE_FLAGS #GValue.
+ * 
+ * Returns: flags contents of @value
+ */
 guint
 g_value_get_flags (const GValue *value)
 {

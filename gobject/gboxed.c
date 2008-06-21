@@ -532,6 +532,14 @@ g_boxed_free (GType    boxed_type,
     }
 }
 
+/**
+ * g_value_get_boxed:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * 
+ * Get the contents of a %G_TYPE_BOXED derived #GValue.
+ * 
+ * Returns: boxed contents of @value
+ */
 gpointer
 g_value_get_boxed (const GValue *value)
 {
@@ -541,6 +549,16 @@ g_value_get_boxed (const GValue *value)
   return value->data[0].v_pointer;
 }
 
+/**
+ * g_value_dup_boxed:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * 
+ * Get the contents of a %G_TYPE_BOXED derived #GValue.
+ * Upon getting, the boxed value is duplicated and needs to be
+ * later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value), return_value);
+ * 
+ * Returns: boxed contents of @value
+ */
 gpointer
 g_value_dup_boxed (const GValue *value)
 {
@@ -593,6 +611,13 @@ value_set_boxed_internal (GValue       *value,
     }
 }
 
+/**
+ * g_value_set_boxed:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * @v_boxed: boxed value to be set
+ * 
+ * Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
+ */
 void
 g_value_set_boxed (GValue       *value,
 		   gconstpointer boxed)
@@ -603,6 +628,15 @@ g_value_set_boxed (GValue       *value,
   value_set_boxed_internal (value, boxed, TRUE, TRUE);
 }
 
+/**
+ * g_value_set_static_boxed:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * @v_boxed: static boxed value to be set
+ * 
+ * Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
+ * The boxed value is assumed to be static, and is thus not duplicated
+ * when setting the #GValue.
+ */
 void
 g_value_set_static_boxed (GValue       *value,
 			  gconstpointer boxed)
@@ -613,6 +647,15 @@ g_value_set_static_boxed (GValue       *value,
   value_set_boxed_internal (value, boxed, FALSE, FALSE);
 }
 
+/**
+ * g_value_set_boxed_take_ownership:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * @v_boxed: duplicated unowned boxed value to be set
+ * 
+ * This is an internal function introduced mainly for C marshallers.
+ * 
+ * Deprecated: 2.4: Use g_value_take_boxed() instead.
+ */
 void
 g_value_set_boxed_take_ownership (GValue       *value,
 				  gconstpointer boxed)
@@ -620,6 +663,17 @@ g_value_set_boxed_take_ownership (GValue       *value,
   g_value_take_boxed (value, boxed);
 }
 
+/**
+ * g_value_take_boxed:
+ * @value: a valid #GValue of %G_TYPE_BOXED derived type
+ * @v_boxed: duplicated unowned boxed value to be set
+ * 
+ * Sets the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed and
+ * takes over the ownership of the callers reference to @v_boxed; 
+ * the caller doesn't have to unref it any more.
+ * 
+ * Since: 2.4
+ */
 void
 g_value_take_boxed (GValue       *value,
 		    gconstpointer boxed)

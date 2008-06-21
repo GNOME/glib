@@ -119,6 +119,14 @@ G_BEGIN_DECLS
  *  should not be freed.
  */
 #define G_OBJECT_CLASS_NAME(class)  (g_type_name (G_OBJECT_CLASS_TYPE (class)))
+/**
+ * G_VALUE_HOLDS_OBJECT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values derived from type %G_TYPE_OBJECT.
+ * 
+ * Returns: %TRUE on success.
+ */
 #define G_VALUE_HOLDS_OBJECT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
 
 /* --- type macros --- */
