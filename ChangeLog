@@ -1,5 +1,13 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/gtype.sgml:
+	* gobject/gtype.c:
+	* gobject/gtype.h:
+	* gobject/gvaluetypes.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* gobject/gclosure.h:
 	* gobject/gparam.h:
 	  Add one missing ':' and reformate GParamFlags docs.
