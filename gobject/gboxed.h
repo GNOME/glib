@@ -74,6 +74,11 @@ GType	g_boxed_type_register_static		(const gchar	*name,
 
 
 /* --- GLib boxed types --- */
+/**
+ * G_TYPE_CLOSURE:
+ * 
+ * The #GType for #GClosure.
+ */
 #define	G_TYPE_CLOSURE		(g_closure_get_type ())
 #define	G_TYPE_VALUE		(g_value_get_type ())
 #define	G_TYPE_VALUE_ARRAY	(g_value_array_get_type ())

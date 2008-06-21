@@ -2182,6 +2182,20 @@ g_object_watch_closure (GObject  *object,
   g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
 }
 
+/**
+ * g_closure_new_object:
+ * @sizeof_closure: the size of the structure to allocate, must be at least 
+ *  <literal>sizeof (GClosure)</literal>
+ * @object: a #GObject pointer to store in the @data field of the newly 
+ *  allocated #GClosure
+ * 
+ * A variant of g_closure_new_simple() which stores @object in the @data
+ * field of the closure and calls g_object_watch_closure() on @object and the 
+ * created closure. This function is mainly useful when implementing new types 
+ * of closures.
+ * 
+ * Returns: a newly allocated #GClosure
+ */
 GClosure*
 g_closure_new_object (guint    sizeof_closure,
 		      GObject *object)
@@ -2197,6 +2211,18 @@ g_closure_new_object (guint    sizeof_closure,
   return closure;
 }
 
+/**
+ * g_cclosure_new_object:
+ * @callback_func: the function to invoke
+ * @object: a #GObject pointer to pass to @callback_func
+ * 
+ * A variant of g_cclosure_new() which uses @object as @user_data and calls 
+ * g_object_watch_closure() on @object and the created closure. This function 
+ * is useful when you have a callback closely associated with a #GObject,
+ * and want the callback to no longer run after the object is is freed.
+ * 
+ * Returns: a new #GCClosure
+ */
 GClosure*
 g_cclosure_new_object (GCallback callback_func,
 		       GObject  *object)
@@ -2213,6 +2239,18 @@ g_cclosure_new_object (GCallback callback_func,
   return closure;
 }
 
+/**
+ * g_cclosure_new_object_swap:
+ * @callback_func: the function to invoke
+ * @object: a #GObject pointer to pass to @callback_func
+ * 
+ * A variant of g_cclosure_new_swap() which uses @object as @user_data and calls 
+ * g_object_watch_closure() on @object and the created closure. This function 
+ * is useful when you have a callback closely associated with a #GObject,
+ * and want the callback to no longer run after the object is is freed.
+ * 
+ * Returns: a new #GCClosure
+ */
 GClosure*
 g_cclosure_new_object_swap (GCallback callback_func,
 			    GObject  *object)

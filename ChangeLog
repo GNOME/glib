@@ -1,3 +1,14 @@
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gclosure.sgml:
+	* gobject/gboxed.h:
+	* gobject/gclosure.c:
+	* gobject/gclosure.h:
+	* gobject/gobject.c:
+	* gobject/gsourceclosure.c:
+	* gobject/gsourceclosure.h:
+	  Migrating docs.
+
 2008-06-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c: Improve Windows-specific parts of
