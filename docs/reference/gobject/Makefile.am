@@ -1,5 +1,6 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+# we have no tests here
+#include $(top_srcdir)/Makefile.decl
 
 # The name of the module.
 DOC_MODULE=gobject
@@ -8,7 +9,8 @@ DOC_MODULE=gobject
 DOC_MAIN_SGML_FILE=gobject-docs.sgml
 
 # Extra options to supply to gtkdoc-scan
-SCAN_OPTIONS=
+SCAN_OPTIONS=--deprecated-guards=G_DISABLE_DEPRECATED \
+	--ignore-decorators=G_GNUC_INTERNAL
 
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=../../../gobject

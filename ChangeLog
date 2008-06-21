@@ -1,5 +1,12 @@
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/Makefile.am:
+	  Help poor little gtkdoc a bit and tell that it can ignore
+	  G_GNUC_INTERNAL. Also disable including the unit-test header as this
+	  causes warnings and we don't need it here.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/param_value_types.sgml:
 	* gobject/gboxed.c:
 	* gobject/gboxed.h:
