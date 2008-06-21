@@ -16,7 +16,22 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
+/**
+ * SECTION:gparamspec
+ * @Short_description: Metadata for parameter specifications
+ * @See_also:g_object_class_install_property(), g_object_set(), g_object_get(),
+ * g_object_set_property(), g_object_get_property(), g_value_register_transform_func()
+ * 
+ * #GParamSpec is an object structure that encapsulates the metadata
+ * required to specify parameters, such as e.g. #GObject properties.
+ * 
+ * <para id="canonical-parameter-name">
+ * Parameter names need to start with a letter (a-z or A-Z). Subsequent
+ * characters can be letters, numbers or a '-'.
+ * All other characters are replaced by a '-' during construction.
+ * The result of this replacement is called the canonical name of the
+ * parameter.
+ */
 /*
  * MT safe
  */
@@ -160,6 +175,14 @@ g_param_spec_finalize (GParamSpec *pspec)
   g_type_free_instance ((GTypeInstance*) pspec);
 }
 
+/**
+ * g_param_spec_ref:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Increments the reference count of @pspec.
+ * 
+ * Returns: the #GParamSpec that was passed into this function
+ */
 GParamSpec*
 g_param_spec_ref (GParamSpec *pspec)
 {
@@ -171,6 +194,12 @@ g_param_spec_ref (GParamSpec *pspec)
   return pspec;
 }
 
+/**
+ * g_param_spec_unref:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Decrements the reference count of a @pspec.
+ */
 void
 g_param_spec_unref (GParamSpec *pspec)
 {
@@ -187,6 +216,18 @@ g_param_spec_unref (GParamSpec *pspec)
     }
 }
 
+/**
+ * g_param_spec_sink:
+ * @pspec: a valid #GParamSpec
+ * 
+ * The initial reference count of a newly created #GParamSpec is 1, even 
+ * though no one has explicitly called g_param_spec_ref() on it yet. So the 
+ * initial reference count is flagged as "floating", until someone calls 
+ * <literal>g_param_spec_ref (pspec); g_param_spec_sink (pspec);</literal>
+ * in sequence on it, taking over the initial reference count (thus
+ * ending up with a @pspec that has a reference count of 1 still, but is
+ * not flagged "floating" anymore).
+ */
 void
 g_param_spec_sink (GParamSpec *pspec)
 {
@@ -202,6 +243,15 @@ g_param_spec_sink (GParamSpec *pspec)
     g_param_spec_unref (pspec);
 }
 
+/**
+ * g_param_spec_ref_sink:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Convenience function to ref and sink a #GParamSpec.
+ * 
+ * Since: 2.10
+ * Returns: the #GParamSpec that was passed into this function
+ */
 GParamSpec*
 g_param_spec_ref_sink (GParamSpec *pspec)
 {
@@ -213,6 +263,14 @@ g_param_spec_ref_sink (GParamSpec *pspec)
   return pspec;
 }
 
+/**
+ * g_param_spec_get_name:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Get the name of a #GParamSpec.
+ * 
+ * Returns: the name of @pspec.
+ */
 G_CONST_RETURN gchar*
 g_param_spec_get_name (GParamSpec *pspec)
 {
@@ -221,6 +279,14 @@ g_param_spec_get_name (GParamSpec *pspec)
   return pspec->name;
 }
 
+/**
+ * g_param_spec_get_nick:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Get the nickname of a #GParamSpec.
+ * 
+ * Returns: the nickname of @pspec.
+ */
 G_CONST_RETURN gchar*
 g_param_spec_get_nick (GParamSpec *pspec)
 {
@@ -240,6 +306,14 @@ g_param_spec_get_nick (GParamSpec *pspec)
   return pspec->name;
 }
 
+/**
+ * g_param_spec_get_blurb:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Get the short description of a #GParamSpec.
+ * 
+ * Returns: the short description of @pspec.
+ */
 G_CONST_RETURN gchar*
 g_param_spec_get_blurb (GParamSpec *pspec)
 {
@@ -295,6 +369,33 @@ is_canonical (const gchar *key)
   return TRUE;
 }
 
+/**
+ * g_param_spec_internal:
+ * @param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
+ * @name: the canonical name of the property
+ * @nick: the nickname of the property
+ * @blurb: a short description of the property
+ * @flags: a combination of #GParamFlags
+ * 
+ * Creates a new #GParamSpec instance.
+ * 
+ * A property name consists of segments consisting of ASCII letters and
+ * digits, separated by either the '-' or '_' character. The first
+ * character of a property name must be a letter. Names which violate these
+ * rules lead to undefined behaviour. 
+ * 
+ * When creating and looking up a #GParamSpec, either separator can be used, 
+ * but they cannot be mixed. Using '-' is considerably more efficient and in 
+ * fact required when using property names as detail strings for signals.
+ * 
+ * Beyond the name, #GParamSpec<!-- -->s have two more descriptive strings 
+ * associated with them, the @nick, which should be suitable for use as 
+ * a label for the property in a property editor, and the @blurb, which should
+ * be a somewhat longer description, suitable for e.g. a tooltip. The @nick
+ * and @blurb should ideally be localized.
+ * 
+ * Returns: a newly allocated #GParamSpec instance
+ */
 gpointer
 g_param_spec_internal (GType        param_type,
 		       const gchar *name,
@@ -339,6 +440,15 @@ g_param_spec_internal (GType        param_type,
   return pspec;
 }
 
+/**
+ * g_param_spec_get_qdata:
+ * @pspec: a valid #GParamSpec
+ * @quark: a #GQuark, naming the user data pointer
+ * 
+ * Gets back user data pointers stored via g_param_spec_set_qdata().
+ * 
+ * Returns: the user data pointer set, or %NULL
+ */
 gpointer
 g_param_spec_get_qdata (GParamSpec *pspec,
 			GQuark      quark)
@@ -348,6 +458,19 @@ g_param_spec_get_qdata (GParamSpec *pspec,
   return quark ? g_datalist_id_get_data (&pspec->qdata, quark) : NULL;
 }
 
+/**
+ * g_param_spec_set_qdata:
+ * @pspec: the #GParamSpec to set store a user data pointer
+ * @quark: a #GQuark, naming the user data pointer
+ * @data: an opaque user data pointer
+ * 
+ * Sets an opaque, named pointer on a #GParamSpec. The name is specified 
+ * through a #GQuark (retrieved e.g. via g_quark_from_static_string()), and 
+ * the pointer can be gotten back from the @pspec with g_param_spec_get_qdata().
+ * Setting a previously set user data pointer, overrides (frees)
+ * the old pointer set, using %NULL as pointer essentially
+ * removes the data stored.
+ */
 void
 g_param_spec_set_qdata (GParamSpec *pspec,
 			GQuark      quark,
@@ -359,6 +482,20 @@ g_param_spec_set_qdata (GParamSpec *pspec,
   g_datalist_id_set_data (&pspec->qdata, quark, data);
 }
 
+/**
+ * g_param_spec_set_qdata_full:
+ * @pspec: the #GParamSpec to set store a user data pointer
+ * @quark: a #GQuark, naming the user data pointer
+ * @data: an opaque user data pointer
+ * @destroy: function to invoke with @data as argument, when @data needs to
+ *  be freed
+ * 
+ * This function works like g_param_spec_set_qdata(), but in addition, 
+ * a <literal>void (*destroy) (gpointer)</literal> function may be 
+ * specified which is called with @data as argument when the @pspec is 
+ * finalized, or the data is being overwritten by a call to 
+ * g_param_spec_set_qdata() with the same @quark.
+ */
 void
 g_param_spec_set_qdata_full (GParamSpec    *pspec,
 			     GQuark         quark,
@@ -371,6 +508,19 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
   g_datalist_id_set_data_full (&pspec->qdata, quark, data, data ? destroy : (GDestroyNotify) NULL);
 }
 
+/**
+ * g_param_spec_steal_qdata:
+ * @pspec: the #GParamSpec to get a stored user data pointer from
+ * @quark: a #GQuark, naming the user data pointer
+ * 
+ * Gets back user data pointers stored via g_param_spec_set_qdata() and 
+ * removes the @data from @pspec without invoking it's destroy() function 
+ * (if any was set).
+ * Usually, calling this function is only required to update
+ * user data pointers with a destroy notifier.
+ * 
+ * Returns: the user data pointer set, or %NULL
+ */
 gpointer
 g_param_spec_steal_qdata (GParamSpec *pspec,
 			  GQuark      quark)
@@ -381,6 +531,22 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
   return g_datalist_id_remove_no_notify (&pspec->qdata, quark);
 }
 
+/**
+ * g_param_spec_get_redirect_target:
+ * @pspec: a #GParamSpec
+ * 
+ * If the paramspec redirects operations to another paramspec,
+ * returns that paramspec. Redirect is used typically for
+ * providing a new implementation of a property in a derived
+ * type while preserving all the properties from the parent
+ * type. Redirection is established by creating a property
+ * of type #GParamSpecOverride. See g_object_class_override_property()
+ * for an example of the use of this capability.
+ * 
+ * Since: 2.4
+ * Returns: paramspec to which requests on this paramspec should
+ *  be redirected, or %NULL if none.
+ */
 GParamSpec*
 g_param_spec_get_redirect_target (GParamSpec *pspec)
 {
@@ -396,6 +562,13 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
     return NULL;
 }
 
+/**
+ * g_param_value_set_default:
+ * @pspec: a valid #GParamSpec
+ * @value: a #GValue of correct type for @pspec
+ * 
+ * Sets @value to its default value as specified in @pspec.
+ */
 void
 g_param_value_set_default (GParamSpec *pspec,
 			   GValue     *value)
@@ -408,6 +581,15 @@ g_param_value_set_default (GParamSpec *pspec,
   G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, value);
 }
 
+/**
+ * g_param_value_defaults:
+ * @pspec: a valid #GParamSpec
+ * @value: a #GValue of correct type for @pspec
+ * 
+ * Checks whether @value contains the default value as specified in @pspec.
+ * 
+ * Returns: whether @value contains the canonical default for this @pspec
+ */
 gboolean
 g_param_value_defaults (GParamSpec *pspec,
 			GValue     *value)
@@ -427,6 +609,20 @@ g_param_value_defaults (GParamSpec *pspec,
   return defaults;
 }
 
+/**
+ * g_param_value_validate:
+ * @pspec: a valid #GParamSpec
+ * @value: a #GValue of correct type for @pspec
+ * 
+ * Ensures that the contents of @value comply with the specifications
+ * set out by @pspec. For example, a #GParamSpecInt might require
+ * that integers stored in @value may not be smaller than -42 and not be
+ * greater than +42. If @value contains an integer outside of this range,
+ * it is modified accordingly, so the resulting value will fit into the
+ * range -42 .. +42.
+ * 
+ * Returns: whether modifying @value was necessary to ensure validity
+ */
 gboolean
 g_param_value_validate (GParamSpec *pspec,
 			GValue     *value)
@@ -447,6 +643,24 @@ g_param_value_validate (GParamSpec *pspec,
   return FALSE;
 }
 
+/**
+ * g_param_value_convert:
+ * @pspec: a valid #GParamSpec
+ * @src_value: souce #GValue
+ * @dest_value: destination #GValue of correct type for @pspec
+ * @strict_validation: %TRUE requires @dest_value to conform to @pspec without modifications
+ * 
+ * Transforms @src_value into @dest_value if possible, and then validates 
+ * @dest_value, in order for it to conform to @pspec.
+ * If @strict_validation is %TRUE this function will only succeed if
+ * the transformed @dest_value complied to @pspec without modifications.
+ * 
+ * See also g_value_type_transformable(), g_value_transform() and
+ * g_param_value_validate().
+ * 
+ * Returns: %TRUE if transformation and validation were successful,
+ *  %FALSE otherwise and @dest_value is left untouched.
+ */
 gboolean
 g_param_value_convert (GParamSpec   *pspec,
 		       const GValue *src_value,
@@ -481,6 +695,18 @@ g_param_value_convert (GParamSpec   *pspec,
     }
 }
 
+/**
+ * g_param_values_cmp:
+ * @pspec: a valid #GParamSpec
+ * @value1: a #GValue of correct type for @pspec
+ * @value2: a #GValue of correct type for @pspec
+ * 
+ * Compares @value1 with @value2 according to @pspec, and return -1, 0 or +1,
+ * if @value1 is found to be less than, equal to or greater than @value2, 
+ * respectively.
+ * 
+ * Returns: -1, 0 or +1, for a less than, equal to or greater than result
+ */
 gint
 g_param_values_cmp (GParamSpec   *pspec,
 		    const GValue *value1,
@@ -598,6 +824,14 @@ value_param_lcopy_value (const GValue *value,
 
 
 /* --- param spec pool --- */
+/**
+ * GParamSpecPool:
+ * 
+ * A #GParamSpecPool maintains a collection of #GParamSpec<!-- -->s which can be
+ * quickly accessed by owner and name. The implementation of the #GObject property
+ * system uses such a pool to store the #GParamSpecs of the properties all object
+ * types. 
+ */
 struct _GParamSpecPool
 {
   GStaticMutex smutex;
@@ -629,6 +863,19 @@ param_spec_pool_equals (gconstpointer key_spec_1,
 	  strcmp (key1->name, key2->name) == 0);
 }
 
+/**
+ * g_param_spec_pool_new:
+ * @type_prefixing: Whether the pool will support type-prefixed property names.
+ * 
+ * Creates a new #GParamSpecPool.
+ * 
+ * If @type_prefixing is %TRUE, lookups in the newly created pool will
+ * allow to specify the owner as a colon-separated prefix of the property name, 
+ * like "GtkContainer:border-width". This feature is deprecated, so you should 
+ * always set @type_prefixing to %FALSE.
+ * 
+ * Returns: a newly allocated #GParamSpecPool.
+ */
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
 {
@@ -642,7 +889,14 @@ g_param_spec_pool_new (gboolean type_prefixing)
   return pool;
 }
 
-void
+/**
+ * g_param_spec_pool_insert:
+ * @pool: a #GParamSpecPool.
+ * @pspec: the #GParamSpec to insert
+ * @owner_type: a #GType identifying the owner of @pspec
+ * 
+ * Inserts a #GParamSpec in the pool.
+ */void
 g_param_spec_pool_insert (GParamSpecPool *pool,
 			  GParamSpec     *pspec,
 			  GType           owner_type)
@@ -676,6 +930,13 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
     }
 }
 
+/**
+ * g_param_spec_pool_remove:
+ * @pool: a #GParamSpecPool
+ * @pspec: the #GParamSpec to remove
+ * 
+ * Removes a #GParamSpec from the pool.
+ */
 void
 g_param_spec_pool_remove (GParamSpecPool *pool,
 			  GParamSpec     *pspec)
@@ -745,6 +1006,18 @@ param_spec_ht_lookup (GHashTable  *hash_table,
   return pspec;
 }
 
+/**
+ * g_param_spec_pool_lookup:
+ * @pool: a #GParamSpecPool
+ * @param_name: the name to look for
+ * @owner_type: the owner to look for
+ * @walk_ancestors: If %TRUE, also try to find a #GParamSpec with @param_name 
+ *  owned by an ancestor of @owner_type.
+ * 
+ * Looks up a #GParamSpec in the pool.
+ * 
+ * Returns: The found #GParamSpec, or %NULL if no matching #GParamSpec was found.
+ */
 GParamSpec*
 g_param_spec_pool_lookup (GParamSpecPool *pool,
 			  const gchar    *param_name,
@@ -822,6 +1095,16 @@ pool_list (gpointer key,
     data[0] = g_list_prepend (data[0], pspec);
 }
 
+/**
+ * g_param_spec_pool_list_owned:
+ * @pool: a #GParamSpecPool
+ * @owner_type: the owner to look for
+ * 
+ * Gets an #GList of all #GParamSpec<!-- -->s owned by @owner_type in the pool. 
+ * 
+ * Returns: a #GList of all #GParamSpec<!-- -->s owned by @owner_type in 
+ *  the pool#GParamSpec<!-- -->s.
+ */
 GList*
 g_param_spec_pool_list_owned (GParamSpecPool *pool,
 			      GType           owner_type)
@@ -945,7 +1228,18 @@ pool_depth_list_for_interface (gpointer key,
     slists[0] = g_slist_prepend (slists[0], pspec);
 }
 
-GParamSpec** /* free result */
+/**
+ * g_param_spec_pool_list:
+ * @pool: a #GParamSpecPool
+ * @owner_type: the owner to look for
+ * @n_pspecs_p: return location for the length of the returned array
+ * 
+ * Gets an array of all #GParamSpec<!-- -->s owned by @owner_type in the pool. 
+ * 
+ * Returns: a newly allocated array containing pointers to all 
+ *  #GParamSpec<!-- -->s owned by @owner_type in the pool
+ */
+GParamSpec**
 g_param_spec_pool_list (GParamSpecPool *pool,
 			GType           owner_type,
 			guint          *n_pspecs_p)
@@ -1038,6 +1332,18 @@ default_values_cmp (GParamSpec   *pspec,
   return memcmp (&value1->data, &value2->data, sizeof (value1->data));
 }
 
+/**
+ * g_param_type_register_static:
+ * @name: 0-terminated string used as the name of the new #GParamSpec type.
+ * @pspec_info: The #GParamSpecTypeInfo for this #GParamSpec type.
+ * 
+ * Registers @name as the name of a new static type derived from
+ * #G_TYPE_PARAM. The type system uses the information contained in the
+ * #GParamSpecTypeInfo structure pointed to by @info to manage the #GParamSpec 
+ * type and its instances. 
+ * 
+ * Returns: The new type identifier.
+ */
 GType
 g_param_type_register_static (const gchar              *name,
 			      const GParamSpecTypeInfo *pspec_info)

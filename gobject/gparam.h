@@ -30,22 +30,103 @@
 G_BEGIN_DECLS
 
 /* --- standard type macros --- */
+/**
+ * G_TYPE_IS_PARAM:
+ * @type: a #GType ID
+ * 
+ * Checks whether @type "is a" %G_TYPE_PARAM.
+ */
 #define G_TYPE_IS_PARAM(type)		(G_TYPE_FUNDAMENTAL (type) == G_TYPE_PARAM)
+/**
+ * G_PARAM_SPEC:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Casts a derived #GParamSpec object (e.g. of type #GParamSpecInt) into
+ * a #GParamSpec object.
+ */
 #define G_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM, GParamSpec))
+/**
+ * G_IS_PARAM_SPEC:
+ * @pspec: a #GParamSpec
+ * 
+ * Checks whether @pspec "is a" valid #GParamSpec structure of type %G_TYPE_PARAM
+ * or derived.
+ */
 #define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
+/**
+ * G_PARAM_SPEC_CLASS:
+ * @pclass: a valid #GParamSpecClass
+ * 
+ * Casts a derived #GParamSpecClass structure into a #GParamSpecClass structure.
+ */
 #define G_PARAM_SPEC_CLASS(pclass)      (G_TYPE_CHECK_CLASS_CAST ((pclass), G_TYPE_PARAM, GParamSpecClass))
+/**
+ * G_IS_PARAM_SPEC_CLASS:
+ * @pclass: a #GParamSpecClass
+ * 
+ * Checks whether @pclass "is a" valid #GParamSpecClass structure of type 
+ * %G_TYPE_PARAM or derived.
+ */
 #define G_IS_PARAM_SPEC_CLASS(pclass)   (G_TYPE_CHECK_CLASS_TYPE ((pclass), G_TYPE_PARAM))
+/**
+ * G_PARAM_SPEC_GET_CLASS:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Retrieves the #GParamSpecClass of a #GParamSpec.
+ */
 #define G_PARAM_SPEC_GET_CLASS(pspec)	(G_TYPE_INSTANCE_GET_CLASS ((pspec), G_TYPE_PARAM, GParamSpecClass))
 
 
 /* --- convenience macros --- */
+/**
+ * G_PARAM_SPEC_TYPE:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Retrieves the #GType of this @pspec.
+ */
 #define G_PARAM_SPEC_TYPE(pspec)	(G_TYPE_FROM_INSTANCE (pspec))
+/**
+ * G_PARAM_SPEC_TYPE_NAME:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Retrieves the #GType name of this @pspec.
+ */
 #define G_PARAM_SPEC_TYPE_NAME(pspec)	(g_type_name (G_PARAM_SPEC_TYPE (pspec)))
+/**
+ * G_PARAM_SPEC_VALUE_TYPE:
+ * @pspec: a valid #GParamSpec
+ * 
+ * Retrieves the #GType to initialize a #GValue for this parameter.
+ */
 #define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC (pspec)->value_type)
 #define G_VALUE_HOLDS_PARAM(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_PARAM))
        
 
 /* --- flags --- */
+/**
+ * GParamFlags:
+ * @G_PARAM_READABLE: the parameter is readable
+ * @G_PARAM_WRITABLE: the parameter is writable
+ * @G_PARAM_CONSTRUCT: the parameter will be set upon object construction
+ * @G_PARAM_CONSTRUCT_ONLY: the parameter will only be set upon object construction
+ * @G_PARAM_LAX_VALIDATION: upon parameter conversion (see g_param_value_convert())
+ *  strict validation is not required
+ * @G_PARAM_STATIC_NAME: the string used as name when constructing the 
+ *  parameter is guaranteed to remain valid and
+ *  unmodified for the lifetime of the parameter. 
+ *  Since 2.8
+ * @G_PARAM_PRIVATE:  * @G_PARAM_STATIC_NICK: the string used as nick when constructing the
+ *  parameter is guaranteed to remain valid and
+ *  unmmodified for the lifetime of the parameter.
+ *  Since 2.8
+ * @G_PARAM_STATIC_BLURB: the string used as blurb when constructing the 
+ *  parameter is guaranteed to remain valid and 
+ *  unmodified for the lifetime of the parameter. 
+ *  Since 2.8
+ * 
+ * Through the #GParamFlags flag values, certain aspects of parameters
+ * can be configured.
+ */
 typedef enum
 {
   G_PARAM_READABLE            = 1 << 0,
@@ -60,10 +141,33 @@ typedef enum
   G_PARAM_STATIC_NICK	      = 1 << 6,
   G_PARAM_STATIC_BLURB	      = 1 << 7
 } GParamFlags;
+/**
+ * G_PARAM_READWRITE:
+ * 
+ * #GParamFlags value alias for %G_PARAM_READABLE | %G_PARAM_WRITABLE.
+ */
 #define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
+/**
+ * G_PARAM_STATIC_STRINGS:
+ * 
+ * #GParamFlags value alias for %G_PARAM_STATIC_NAME | %G_PARAM_STATIC_NICK | %G_PARAM_STATIC_BLURB.
+ * 
+ * Since 2.13.0
+ */
 #define	G_PARAM_STATIC_STRINGS (G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB)
-#define	G_PARAM_MASK		(0x000000ff)
 /* bits in the range 0xffffff00 are reserved for 3rd party usage */
+/**
+ * G_PARAM_MASK:
+ * 
+ * Mask containing the bits of #GParamSpec.flags which are reserved for GLib.
+ */
+#define	G_PARAM_MASK		(0x000000ff)
+/**
+ * G_PARAM_USER_SHIFT:
+ * 
+ * Minimum shift count to be used for user defined flags, to be stored in
+ * #GParamSpec.flags.
+ */
 #define	G_PARAM_USER_SHIFT	(8)
 
 
@@ -72,6 +176,17 @@ typedef struct _GParamSpec      GParamSpec;
 typedef struct _GParamSpecClass GParamSpecClass;
 typedef struct _GParameter	GParameter;
 typedef struct _GParamSpecPool  GParamSpecPool;
+/**
+ * GParamSpec:
+ * @g_type_instance: private #GTypeInstance portion
+ * @name: name of this parameter
+ * @flags: #GParamFlags flags for this parameter
+ * @value_type: the #GValue type for this parameter
+ * @owner_type: #GType type that uses (introduces) this paremeter
+ * 
+ * All fields of the <structname>GParamSpec</structname> struct are private and
+ * should not be used directly, except for the following:
+ */
 struct _GParamSpec
 {
   GTypeInstance  g_type_instance;
@@ -88,6 +203,25 @@ struct _GParamSpec
   guint          ref_count;
   guint		 param_id;	/* sort-criteria */
 };
+/**
+ * GParamSpecClass:
+ * @g_type_class: the parent class
+ * @value_type: the #GValue type for this parameter
+ * @finalize: The instance finalization function (optional), should chain 
+ *  up to the finalize method of the parent class.
+ * @value_set_default: Resets a @value to the default value for this type
+ *  (recommended, the default is g_value_reset()), see 
+ *  g_param_value_set_default().
+ * @value_validate: Ensures that the contents of @value comply with the 
+ *  specifications set out by this type (optional), see 
+ *  g_param_value_set_validate().
+ * @values_cmp: Compares @value1 with @value2 according to this type
+ *  (recommended, the default is memcmp()), see g_param_values_cmp().
+ * 
+ * The class structure for the <structname>GParamSpec</structname> type.
+ * Normally, <structname>GParamSpec</structname> classes are filled by
+ * g_param_type_register_static().
+ */
 struct _GParamSpecClass
 {
   GTypeClass      g_type_class;
@@ -163,6 +297,30 @@ void           g_value_set_param_take_ownership (GValue        *value,
 
 /* --- convenience functions --- */
 typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
+/**
+ * GParamSpecTypeInfo:
+ * @instance_size: Size of the instance (object) structure.
+ * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the <link linkend="glib-Memory-Slices">slice allocator</link> now.
+ * @instance_init: Location of the instance initialization function (optional).
+ * @value_type: The #GType of values conforming to this #GParamSpec
+ * @finalize: The instance finalization function (optional).
+ * @value_set_default: Resets a @value to the default value for @pspec 
+ *  (recommended, the default is g_value_reset()), see 
+ *  g_param_value_set_default().
+ * @value_validate: Ensures that the contents of @value comply with the 
+ *  specifications set out by @pspec (optional), see 
+ *  g_param_value_set_validate().
+ * @values_cmp: Compares @value1 with @value2 according to @pspec 
+ *  (recommended, the default is memcmp()), see g_param_values_cmp().
+ * 
+ * This structure is used to provide the type system with the information
+ * required to initialize and destruct (finalize) a parameter's class and
+ * instances thereof.
+ * The initialized structure is passed to the g_param_type_register_static() 
+ * The type system will perform a deep copy of this structure, so it's memory 
+ * does not need to be persistent across invocation of 
+ * g_param_type_register_static().
+ */
 struct _GParamSpecTypeInfo
 {
   /* type system portion */
