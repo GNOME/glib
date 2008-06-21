@@ -1,5 +1,12 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/gtypemodule.sgml:
+	* gobject/gtypemodule.c:
+	* gobject/gtypemodule.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* gobject/gboxed.c:
 	* gobject/gclosure.c:
 	* gobject/genums.c:

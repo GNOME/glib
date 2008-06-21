@@ -38,6 +38,13 @@ typedef struct _GTypeModuleClass GTypeModuleClass;
 #define G_IS_TYPE_MODULE_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_TYPE_MODULE))
 #define G_TYPE_MODULE_GET_CLASS(module) (G_TYPE_INSTANCE_GET_CLASS ((module), G_TYPE_TYPE_MODULE, GTypeModuleClass))
 
+/**
+ * GTypeModule:
+ * @name: the name of the module
+ * 
+ * The members of the <structname>GTypeModule</structname> structure should not 
+ * be accessed directly, except for the @name field.
+ */
 struct _GTypeModule 
 {
   GObject parent_instance;
@@ -50,6 +57,16 @@ struct _GTypeModule
   gchar *name;
 };
 
+/**
+ * GTypeModuleClass:
+ * @parent_class: the parent class
+ * @load: loads the module and registers one or more types using
+ *  g_type_module_register_type().
+ * @unload: unloads the module
+ * 
+ * In order to implement dynamic loading of types based on #GTypeModule, 
+ * the @load and @unload functions in #GTypeModuleClass must be implemented.
+ */
 struct _GTypeModuleClass
 {
   GObjectClass parent_class;
@@ -66,7 +83,97 @@ struct _GTypeModuleClass
   void (*reserved4) (void);
 };
 
+/**
+ * G_DEFINE_DYNAMIC_TYPE:
+ * @TN: The name of the new type, in Camel case.
+ * @t_n: The name of the new type, in lowercase, with words
+ *  separated by '_'.
+ * @T_P: The #GType of the parent type.
+ * 
+ * A convenience macro for dynamic type implementations, which declares a
+ * class initialization function, an instance initialization function (see 
+ * #GTypeInfo for information about these) and a static variable named 
+ * @t_n<!-- -->_parent_class pointing to the parent class. Furthermore, 
+ * it defines a <function>*_get_type()</function> and a static 
+ * <function>*_register_type()</function> function for use in your
+ * <function>module_init()</function>.
+ * See G_DEFINE_DYNAMIC_TYPE_EXTENDED() for an example.
+ * 
+ * Since: 2.14
+ */
 #define G_DEFINE_DYNAMIC_TYPE(TN, t_n, T_P)          G_DEFINE_DYNAMIC_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+/**
+ * G_DEFINE_DYNAMIC_TYPE_EXTENDED:
+ * @TypeName: The name of the new type, in Camel case.
+ * @type_name: The name of the new type, in lowercase, with words
+ *  separated by '_'.
+ * @TYPE_PARENT: The #GType of the parent type.
+ * @flags: #GTypeFlags to pass to g_type_module_register_type()
+ * @CODE: Custom code that gets inserted in the *_get_type() function.
+ * 
+ * A more general version of G_DEFINE_DYNAMIC_TYPE() which
+ * allows to specify #GTypeFlags and custom code.
+ * 
+ * |[
+ * G_DEFINE_DYNAMIC_TYPE_EXTENDED (GtkGadget,
+ *                                 gtk_gadget,
+ *                                 GTK_TYPE_THING,
+ *                                 0,
+ *                                 G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
+ *                                                        gtk_gadget_gizmo_init));
+ * ]|
+ * expands to
+ * |[
+ * static void     gtk_gadget_init              (GtkGadget      *self);
+ * static void     gtk_gadget_class_init        (GtkGadgetClass *klass);
+ * static void     gtk_gadget_class_finalize    (GtkGadgetClass *klass);
+ * 
+ * static gpointer gtk_gadget_parent_class = NULL;
+ * static GType    gtk_gadget_type_id = 0;
+ * 
+ * static void     gtk_gadget_class_intern_init (gpointer klass)
+ * {
+ *   gtk_gadget_parent_class = g_type_class_peek_parent (klass); 
+ *   gtk_gadget_class_init ((GtkGadgetClass*) klass); 
+ * }
+ * 
+ * GType
+ * gtk_gadget_get_type (void)
+ * {
+ *   return gtk_gadget_type_id;
+ * }
+ * 
+ * static void
+ * gtk_gadget_register_type (GTypeModule *type_module)
+ * {
+ *   const GTypeInfo g_define_type_info = {
+ *     sizeof (GtkGadgetClass),
+ *     (GBaseInitFunc) NULL,
+ *     (GBaseFinalizeFunc) NULL,
+ *     (GClassInitFunc) gtk_gadget_class_intern_init,
+ *     (GClassFinalizeFunc) gtk_gadget_class_finalize,
+ *     NULL,   // class_data
+ *     sizeof (GtkGadget),
+ *     0,      // n_preallocs
+ *     (GInstanceInitFunc) gtk_gadget_init, 
+ *     NULL    // value_table
+ *   };
+ *   gtk_gadget_type_id = g_type_module_register_type (type_module,
+ *                                                     GTK_TYPE_THING,
+ *                                                     GtkGadget,
+ *                                                     &g_define_type_info,
+ *                                                     (GTypeFlags) flags);
+ *   {
+ *     const GInterfaceInfo g_implement_interface_info = {
+ *       (GInterfaceInitFunc) gtk_gadget_gizmo_init
+ *     };
+ *     g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
+ *   }
+ * }
+ * ]|
+ * 
+ * Since: 2.14
+ */
 #define G_DEFINE_DYNAMIC_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, CODE) \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
