@@ -1,5 +1,12 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/gtypeplugin.sgml:
+	* gobject/gtypeplugin.c:
+	* gobject/gtypeplugin.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/Makefile.am:
 	  Add --sgml-mode to allow sgml in doc-fragments (which somehow works
 	  before already).
@@ -9,7 +16,7 @@
 	* gobject/gparam.c:
 	* gobject/gparam.h:
 	* gobject/gtype.h:
-	  Convert character entities back. FIx some broken sgml.
+	  Convert character entities back. Fix some broken sgml.
 
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
