@@ -28,16 +28,82 @@
 G_BEGIN_DECLS
 
 /* --- type macros --- */
+/**
+ * G_TYPE_IS_ENUM:
+ * @type: a #GType ID.
+ * 
+ * Returns: whether @type "is a" %G_TYPE_ENUM.
+ */
 #define G_TYPE_IS_ENUM(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
+/**
+ * G_ENUM_CLASS:
+ * @class: a valid #GEnumClass
+ * 
+ * Casts a derived #GEnumClass structure into a #GEnumClass structure.
+ */
 #define G_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_ENUM, GEnumClass))
+/**
+ * G_IS_ENUM_CLASS:
+ * @class: a #GEnumClass
+ * 
+ * Checks whether @class "is a" valid #GEnumClass structure of type %G_TYPE_ENUM
+ * or derived.
+ */
 #define G_IS_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ENUM))
+/**
+ * G_ENUM_CLASS_TYPE:
+ * @class: a #GEnumClass
+ * 
+ * Returns: the type identifier from a given #GEnumClass structure.
+ */
 #define G_ENUM_CLASS_TYPE(class)       (G_TYPE_FROM_CLASS (class))
+/**
+ * G_ENUM_CLASS_TYPE_NAME:
+ * @class: a #GEnumClass
+ * 
+ * Returns: the static type name from a given #GEnumClass structure.
+ */
 #define G_ENUM_CLASS_TYPE_NAME(class)  (g_type_name (G_ENUM_CLASS_TYPE (class)))
+
+
+/**
+ * G_TYPE_IS_FLAGS:
+ * @type: a #GType ID.
+ * 
+ * Returns: whether @type "is a" %G_TYPE_FLAGS.
+ */
 #define G_TYPE_IS_FLAGS(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
+/**
+ * G_FLAGS_CLASS:
+ * @class: a valid #GFlagsClass
+ * 
+ * Casts a derived #GFlagsClass structure into a #GFlagsClass structure.
+ */
 #define G_FLAGS_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
+/**
+ * G_IS_FLAGS_CLASS:
+ * @class: a #GFlagsClass
+ * 
+ * Checks whether @class "is a" valid #GFlagsClass structure of type %G_TYPE_FLAGS
+ * or derived.
+ */
 #define G_IS_FLAGS_CLASS(class)        (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_FLAGS))
+/**
+ * G_FLAGS_CLASS_TYPE:
+ * @class: a #GFlagsClass
+ * 
+ * Returns: the type identifier from a given #GFlagsClass structure.
+ */
 #define G_FLAGS_CLASS_TYPE(class)      (G_TYPE_FROM_CLASS (class))
+/**
+ * G_FLAGS_CLASS_TYPE_NAME:
+ * @class: a #GFlagsClass
+ * 
+ * Returns: the static type name from a given #GFlagsClass structure.
+ */
 #define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_CLASS_TYPE (class)))
+
+
 #define G_VALUE_HOLDS_ENUM(value)      (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ENUM))
 #define G_VALUE_HOLDS_FLAGS(value)     (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLAGS))
 
@@ -47,6 +113,19 @@ typedef struct _GEnumClass  GEnumClass;
 typedef struct _GFlagsClass GFlagsClass;
 typedef struct _GEnumValue  GEnumValue;
 typedef struct _GFlagsValue GFlagsValue;
+
+/**
+ * GEnumClass:
+ * @g_type_class: the parent class
+ * @minimum: the smallest possible value.
+ * @maximum: the largest possible value.
+ * @n_values: the number of possible values.
+ * @values: an array of #GEnumValue structs describing the 
+ *  individual values.
+ * 
+ * The class of an enumeration type holds information about its 
+ * possible values.
+ */
 struct	_GEnumClass
 {
   GTypeClass  g_type_class;
@@ -57,6 +136,17 @@ struct	_GEnumClass
   guint	      n_values;
   GEnumValue *values;
 };
+/**
+ * GFlagsClass:
+ * @g_type_class: the parent class
+ * @mask: a mask covering all possible values.
+ * @n_values: the number of possible values.
+ * @values: an array of #GFlagsValue structs describing the 
+ *  individual values.
+ * 
+ * The class of a flags type holds information about its 
+ * possible values.
+ */
 struct	_GFlagsClass
 {
   GTypeClass   g_type_class;
@@ -66,12 +156,30 @@ struct	_GFlagsClass
   guint	       n_values;
   GFlagsValue *values;
 };
+/**
+ * GEnumValue:
+ * @value: the enum value
+ * @value_name: the name of the value
+ * @value_nick: the nickname of the value
+ * 
+ * A structure which contains a single enum value, it's name, and it's
+ * nickname.
+ */
 struct _GEnumValue
 {
   gint	 value;
   const gchar *value_name;
   const gchar *value_nick;
 };
+/**
+ * GFlagsValue:
+ * @value: the flags value
+ * @value_name: the name of the value
+ * @value_nick: the nickname of the value
+ * 
+ * A structure which contains a single flags value, it's name, and it's
+ * nickname.
+ */
 struct _GFlagsValue
 {
   guint	 value;

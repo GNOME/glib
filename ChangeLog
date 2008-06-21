@@ -1,5 +1,12 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/enumerations_flags.sgml:
+	* gobject/genums.c:
+	* gobject/genums.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gboxed.sgml:
 	* gobject/gboxed.c:
 	* gobject/gboxed.h:
