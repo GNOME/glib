@@ -1,5 +1,10 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/gobject-sections.txt:
+	  Remove duplicated entries. They are documented and should be shown.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/enumerations_flags.sgml:
 	* gobject/genums.c:
 	* gobject/genums.h:
