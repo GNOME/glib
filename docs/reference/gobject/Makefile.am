@@ -33,7 +33,7 @@ GTKDOC_LIBS = \
 	$(top_builddir)/gobject/libgobject-2.0.la
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS=
+MKDB_OPTIONS=--sgml-mode
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files = version.xml 		\

@@ -185,8 +185,8 @@ typedef struct _GParamSpecPool  GParamSpecPool;
  * @value_type: the #GValue type for this parameter
  * @owner_type: #GType type that uses (introduces) this paremeter
  * 
- * All fields of the <structname>GParamSpec</structname> struct are private and
- * should not be used directly, except for the following:
+ * All other fields of the <structname>GParamSpec</structname> struct are private and
+ * should not be used directly.
  */
 struct _GParamSpec
 {

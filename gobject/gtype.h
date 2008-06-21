@@ -700,7 +700,7 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * of a specific type. This function should initialize all static class
  * members.
  * The initialization process of a class involves:
- * <variablelist>
+ * <itemizedlist>
  * <listitem><para>
  * 	1 - Copying common members from the parent class over to the
  * 	derived class structure.
@@ -716,7 +716,7 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * <listitem><para>
  * 	4 - Invocation of the class' GClassInitFunc() initializer.
  * </para></listitem>
- * </variablelist>
+ * </itemizedlist>
  * Since derived classes are partially initialized through a memory copy
  * of the parent class, the general rule is that GBaseInitFunc() and
  * GBaseFinalizeFunc() should take care of necessary reinitialization
@@ -993,7 +993,7 @@ struct _GInterfaceInfo
 /**
  * GTypeValueTable:
  * @value_init: Default initialize @values contents by poking values
- *  directly into the value-&gt;data array. The data array of
+ *  directly into the value->data array. The data array of
  *  the #GValue passed into this function was zero-filled
  *  with <function>memset()</function>, so no care has to
  *  be taken to free any
@@ -1001,7 +1001,7 @@ struct _GInterfaceInfo
  *  value that may never be %NULL, the implementation might
  *  look like:
  *  |[
- *  value-&gt;data[0].v_pointer = g_strdup ("");
+ *  value->data[0].v_pointer = g_strdup ("");
  *  ]|
  * @value_free: Free any old contents that might be left in the
  *  data array of the passed in @value. No resources may
@@ -1009,8 +1009,8 @@ struct _GInterfaceInfo
  *  this function returns. E.g. for our above string type:
  *  |[
  *  // only free strings without a specific flag for static storage
- *  if (!(value-&gt;data[1].v_uint &amp; G_VALUE_NOCOPY_CONTENTS))
- *    g_free (value-&gt;data[0].v_pointer);
+ *  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
+ *    g_free (value->data[0].v_pointer);
  *  ]|
  * @value_copy: @dest_value is a #GValue with zero-filled data section
  *  and @src_value is a properly setup #GValue of same or
@@ -1020,29 +1020,29 @@ struct _GInterfaceInfo
  *  @src_value has been freed, the contents of @dest_value
  *  remain valid. String type example:
  *  |[
- *  dest_value-&gt;data[0].v_pointer = g_strdup (src_value-&gt;data[0].v_pointer);
+ *  dest_value->data[0].v_pointer = g_strdup (src_value->data[0].v_pointer);
  *  ]|
  * @value_peek_pointer: If the value contents fit into a pointer, such as objects
  *  or strings, return this pointer, so the caller can peek at
  *  the current contents. To extend on our above string example:
  *  |[
- *  return value-&gt;data[0].v_pointer;
+ *  return value->data[0].v_pointer;
  *  ]|
  * @collect_format: A string format describing how to collect the contents of
  *  this value bit-by-bit. Each character in the format represents
  *  an argument to be collected, and the characters themselves indicate
  *  the type of the argument. Currently supported arguments are:
  *  <variablelist>
- *  <varlistentry><term></term><listitem><para>
+ *  <varlistentry><term /><listitem><para>
  *  'i' - Integers. passed as collect_values[].v_int.
  *  </para></listitem></varlistentry>
- *  <varlistentry><term></term><listitem><para>
+ *  <varlistentry><term /><listitem><para>
  *  'l' - Longs. passed as collect_values[].v_long.
  *  </para></listitem></varlistentry>
- *  <varlistentry><term></term><listitem><para>
+ *  <varlistentry><term /><listitem><para>
  *  'd' - Doubles. passed as collect_values[].v_double.
  *  </para></listitem></varlistentry>
- *  <varlistentry><term></term><listitem><para>
+ *  <varlistentry><term /><listitem><para>
  *  'p' - Pointers. passed as collect_values[].v_pointer.
  *  </para></listitem></varlistentry>
  *  </variablelist>
@@ -1064,7 +1064,7 @@ struct _GInterfaceInfo
  *  length @n_collect_values, containing the collected values
  *  according to @collect_format.
  *  @collect_flags is an argument provided as a hint by the caller.
- *  It may contain the flag #G_VALUE_NOCOPY_CONTENTS indicating,
+ *  It may contain the flag %G_VALUE_NOCOPY_CONTENTS indicating,
  *  that the collected value contents may be considered "static"
  *  for the duration of the @value lifetime.
  *  Thus an extra copy of the contents stored in @collect_values is
@@ -1073,21 +1073,21 @@ struct _GInterfaceInfo
  *  |[
  *  if (!collect_values[0].v_pointer)
  *    value->data[0].v_pointer = g_strdup ("");
- *  else if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS)
+ *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
  *  {
- *    value-&gt;data[0].v_pointer = collect_values[0].v_pointer;
+ *    value->data[0].v_pointer = collect_values[0].v_pointer;
  *    // keep a flag for the value_free() implementation to not free this string
- *    value-&gt;data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
+ *    value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
  *  }
  *  else
- *    value-&gt;data[0].v_pointer = g_strdup (collect_values[0].v_pointer);
+ *    value->data[0].v_pointer = g_strdup (collect_values[0].v_pointer);
  *  return NULL;
  *  ]|
  *  It should be noted, that it is generally a bad idea to follow the
  *  #G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
  *  reentrancy requirements and reference count assertions performed
  *  by the #GSignal code, reference counts should always be incremented
- *  for reference counted contents stored in the value-&gt;data array.
+ *  for reference counted contents stored in the value->data array.
  *  To deviate from our string example for a moment, and taking a look
  *  at an exemplary implementation for collect_value() of #GObject:
  *  |[
@@ -1095,7 +1095,7 @@ struct _GInterfaceInfo
  *  {
  *    GObject *object = G_OBJECT (collect_values[0].v_pointer);
  *    // never honour G_VALUE_NOCOPY_CONTENTS for ref-counted types
- *    value-&gt;data[0].v_pointer = g_object_ref (object);
+ *    value->data[0].v_pointer = g_object_ref (object);
  *    return NULL;
  *  }
  *  else
@@ -1124,9 +1124,9 @@ struct _GInterfaceInfo
  *  arguments passed through a variable argument list which got
  *  collected into @collect_values according to @lcopy_format.
  *  @n_collect_values equals the string length of @lcopy_format,
- *  and @collect_flags may contain #G_VALUE_NOCOPY_CONTENTS.
+ *  and @collect_flags may contain %G_VALUE_NOCOPY_CONTENTS.
  *  In contrast to collect_value(), lcopy_value() is obliged to
- *  always properly support #G_VALUE_NOCOPY_CONTENTS.
+ *  always properly support %G_VALUE_NOCOPY_CONTENTS.
  *  Similar to collect_value() the function may prematurely abort
  *  by returning a newly allocated string describing an error condition.
  *  To complete the string example:
@@ -1134,10 +1134,10 @@ struct _GInterfaceInfo
  *  gchar **string_p = collect_values[0].v_pointer;
  *  if (!string_p)
  *    return g_strdup_printf ("string location passed as NULL");
- *  if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS)
- *    *string_p = value-&gt;data[0].v_pointer;
+ *  if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+ *    *string_p = value->data[0].v_pointer;
  *  else
- *    *string_p = g_strdup (value-&gt;data[0].v_pointer);
+ *    *string_p = g_strdup (value->data[0].v_pointer);
  *  ]|
  *  And an illustrative version of lcopy_value() for
  *  reference-counted types:
@@ -1145,12 +1145,12 @@ struct _GInterfaceInfo
  *  GObject **object_p = collect_values[0].v_pointer;
  *  if (!object_p)
  *    return g_strdup_printf ("object location passed as NULL");
- *  if (!value-&gt;data[0].v_pointer)
+ *  if (!value->data[0].v_pointer)
  *    *object_p = NULL;
- *  else if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS) // always honour
- *    *object_p = value-&gt;data[0].v_pointer;
+ *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) // always honour
+ *    *object_p = value->data[0].v_pointer;
  *  else
- *    *object_p = g_object_ref (value-&gt;data[0].v_pointer);
+ *    *object_p = g_object_ref (value->data[0].v_pointer);
  *  return NULL;
  *  ]|
  * 
@@ -1323,12 +1323,12 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  *         0,      // n_preallocs 
  *         (GInstanceInitFunc) gtk_gadget_init, 
  *       }; 
- *       g_define_type_id = g_type_register_static (GTK_TYPE_WIDGET, "GtkGadget", &amp;g_define_type_info, 0); 
+ *       g_define_type_id = g_type_register_static (GTK_TYPE_WIDGET, "GtkGadget", &g_define_type_info, 0); 
  *       {
  *         static const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
  *         };
- *         g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &amp;g_implement_interface_info);
+ *         g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
  *       } 
  *     } 
  *   return g_define_type_id; 

@@ -1,5 +1,18 @@
 2008-06-21  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/Makefile.am:
+	  Add --sgml-mode to allow sgml in doc-fragments (which somehow works
+	  before already).
+
+	* gobject/gboxed.h:
+	* gobject/gclosure.c:
+	* gobject/gparam.c:
+	* gobject/gparam.h:
+	* gobject/gtype.h:
+	  Convert character entities back. FIx some broken sgml.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/gtypemodule.sgml:
 	* gobject/gtypemodule.c:
 	* gobject/gtypemodule.h:

@@ -124,7 +124,7 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  * 
  * 
  * gchar *writers[];
- * g_object_get (obj, "authors", &amp;writers, NULL);
+ * g_object_get (obj, "authors", &writers, NULL);
  * // do something with writers
  * g_strfreev (writers);
  * ]|

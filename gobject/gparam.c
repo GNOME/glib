@@ -32,6 +32,7 @@
  * All other characters are replaced by a '-' during construction.
  * The result of this replacement is called the canonical name of the
  * parameter.
+ * </para>
  */
 /*
  * MT safe

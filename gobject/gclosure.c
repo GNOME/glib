@@ -41,8 +41,8 @@
  * g_signal_new() specifies the default C marshaller for any closure which is 
  * connected to this signal. GObject provides a number of C marshallers  
  * for this purpose, see the g_cclosure_marshal_*() functions. Additional
- * C marshallers can be generated with the <link linkend="glib-genmarshal"
- * >glib-genmarshal</link> utility.
+ * C marshallers can be generated with the
+ * <link linkend="glib-genmarshal">glib-genmarshal</link> utility.
  * Closures can be explicitly connected to signals with 
  * g_signal_connect_closure(), but it usually more convenient to let GObject 
  * create a closure automatically by using one of the g_signal_connect_*() 
