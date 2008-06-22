@@ -893,6 +893,18 @@ g_type_iface_meta_marshal (GClosure       *closure,
 		      callback);
 }
 
+/**
+ * g_signal_type_cclosure_new:
+ * @itype: the #GType identifier of an interface or classed type
+ * @struct_offset: the offset of the member function of @itype's class 
+ *  structure which is to be invoked by the new closure
+ * 
+ * Creates a new closure which invokes the function found at the offset
+ * @struct_offset in the class structure of the interface or classed type
+ * identified by @itype.
+ * 
+ * Returns: a new #GCClosure
+ */
 GClosure*
 g_signal_type_cclosure_new (GType    itype,
 			    guint    struct_offset)

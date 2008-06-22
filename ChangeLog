@@ -1,5 +1,14 @@
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/signals.sgml:
+	* gobject/gclosure.c:
+	* gobject/gobject.c:
+	* gobject/gsignal.c:
+	* gobject/gsignal.h:
+	  Migrating docs.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/Makefile.am:
 	  Help poor little gtkdoc a bit and tell that it can ignore
 	  G_GNUC_INTERNAL. Also disable including the unit-test header as this

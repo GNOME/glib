@@ -2845,6 +2845,39 @@ g_value_dup_object (const GValue *value)
   return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
 }
 
+/**
+ * g_signal_connect_object:
+ * @instance: the instance to connect to.
+ * @detailed_signal: a string of the form "signal-name::detail".
+ * @c_handler: the #GCallback to connect.
+ * @gobject: the object to pass as data to @c_handler.
+ * @connect_flags: a combination of #GConnnectFlags.
+ * 
+ *  This is similar to g_signal_connect_data(), but uses a closure which
+ *  ensures that the @gobject stays alive during the call to @c_handler
+ *  by temporarily adding a reference count to @gobject.
+ * 
+ *  Note that there is a bug in GObject that makes this function
+ *  much less useful than it might seem otherwise. Once @gobject is
+ *  disposed, the callback will no longer be called, but, the signal
+ *  handler is <emphasis>not</emphasis> currently disconnected. If the
+ *  @instance is itself being freed at the same time than this doesn't
+ *  matter, since the signal will automatically be removed, but
+ *  if @instance persists, then the signal handler will leak. You
+ *  should not remove the signal yourself because in a future versions of
+ *  GObject, the handler <emphasis>will</emphasis> automatically
+ *  be disconnected.
+ * 
+ *  It's possible to work around this problem in a way that will
+ *  continue to work with future versions of GObject by checking
+ *  that the signal handler is still connected before disconnected it:
+ * <informalexample><programlisting>
+ *  if (g_signal_handler_is_connected (instance, id))
+ *    g_signal_handler_disconnect (instance, id);
+ * </programlisting></informalexample>
+ * 
+ * Returns: the handler id.
+ */
 gulong
 g_signal_connect_object (gpointer      instance,
 			 const gchar  *detailed_signal,
