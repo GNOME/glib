@@ -1,3 +1,189 @@
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gobject-unused.sgml:
+	* gobject/gobject.h:
+	* gobject/gtype.c:
+	* gobject/gtype.h:
+	  Move some content for gobject-unused.sgml and cleared empty entries.
+	  The remaining 4 ones should be checked by some else. If they are not
+	  needed. The file can be removed.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/value_collection.sgml:
+	* gobject/gvaluecollector.h:
+	  Migrating docs.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/value_arrays.sgml:
+	* gobject/gvaluearray.c:
+	* gobject/gvaluearray.h:
+	  Migrating docs.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/gsignal.c:
+	  Fix compiler warning in format string check.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/signals.sgml:
+	* gobject/gclosure.c:
+	* gobject/gobject.c:
+	* gobject/gsignal.c:
+	* gobject/gsignal.h:
+	  Migrating docs.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/Makefile.am:
+	  Help poor little gtkdoc a bit and tell that it can ignore
+	  G_GNUC_INTERNAL. Also disable including the unit-test header as this
+	  causes warnings and we don't need it here.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/param_value_types.sgml:
+	* gobject/gboxed.c:
+	* gobject/gboxed.h:
+	* gobject/genums.c:
+	* gobject/genums.h:
+	* gobject/gobject.c:
+	* gobject/gobject.h:
+	* gobject/gparam.c:
+	* gobject/gparam.h:
+	* gobject/gparamspecs.c:
+	* gobject/gparamspecs.h:
+	* gobject/gvaluetypes.c:
+	* gobject/gvaluetypes.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/objects.sgml:
+	* gobject/gobject.c:
+	* gobject/gobject.h:
+	* gobject/gparam.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gtypeplugin.sgml:
+	* gobject/gtypeplugin.c:
+	* gobject/gtypeplugin.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/Makefile.am:
+	  Add --sgml-mode to allow sgml in doc-fragments (which somehow works
+	  before already).
+
+	* gobject/gboxed.h:
+	* gobject/gclosure.c:
+	* gobject/gparam.c:
+	* gobject/gparam.h:
+	* gobject/gtype.h:
+	  Convert character entities back. Fix some broken sgml.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gtypemodule.sgml:
+	* gobject/gtypemodule.c:
+	* gobject/gtypemodule.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/gboxed.c:
+	* gobject/gclosure.c:
+	* gobject/genums.c:
+	* gobject/gparam.c:
+	* gobject/gvalue.c:
+	  Add titles back from tmpl.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gtype.sgml:
+	* gobject/gtype.c:
+	* gobject/gtype.h:
+	* gobject/gvaluetypes.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/gclosure.h:
+	* gobject/gparam.h:
+	  Add one missing ':' and reformate GParamFlags docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gparamspec.sgml:
+	* gobject/gparam.c:
+	* gobject/gparam.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/gboxed.c:
+	* gobject/gclosure.c:
+	* gobject/genums.c:
+	* gobject/gvalue.c:
+	  Use file-names from the section file for SECTION: comments.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/generic_values.sgml:
+	* gobject/gboxed.h:
+	* gobject/gtype.h:
+	* gobject/gvalue.c:
+	* gobject/gvalue.h:
+	* gobject/gvaluetypes.c:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/genums.h:
+	  Fix documentation for return values.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gclosure.sgml:
+	* gobject/gboxed.h:
+	* gobject/gclosure.c:
+	* gobject/gclosure.h:
+	* gobject/gobject.c:
+	* gobject/gsourceclosure.c:
+	* gobject/gsourceclosure.h:
+	  Migrating docs.
+
+2008-06-21  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c: Improve Windows-specific parts of
+	documentation. Mention the different C library issue in more
+	places.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/gobject-sections.txt:
+	  Remove duplicated entries. They are documented and should be shown.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/enumerations_flags.sgml:
+	* gobject/genums.c:
+	* gobject/genums.h:
+	  Migrating docs.
+
+2008-06-21  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/gobject/tmpl/gboxed.sgml:
+	* gobject/gboxed.c:
+	* gobject/gboxed.h:
+	* gobject/gvaluetypes.c:
+	  Migrating docs.
+
 2008-06-12  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.17.2 ===
