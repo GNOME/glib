@@ -18,6 +18,17 @@
  *
  * gvaluecollector.h: GValue varargs stubs
  */
+/**
+ * SECTION:value_collection
+ * @Short_description: Converting varargs to generic values
+ * @See_also:#GValueTable
+ * @Title: Varargs Value Collection
+ * 
+ * The macros in this section provide the varargs parsing support needed
+ * in variadic GObject functions such as g_object_new() or g_object_set().
+ * They currently support the collection of integral types, floating point 
+ * types and pointers.
+ */
 #ifndef __G_VALUE_COLLECTOR_H__
 #define __G_VALUE_COLLECTOR_H__
 
@@ -42,6 +53,11 @@ enum	/*< skip >*/
 
 /* vararg union holding actuall values collected
  */
+/**
+ * GTypeCValue:
+ * 
+ * A union holding one collected value.
+ */
 union _GTypeCValue
 {
   gint     v_int;
@@ -51,16 +67,19 @@ union _GTypeCValue
   gpointer v_pointer;
 };
 
-
-/* G_VALUE_COLLECT() collects a variable argument value
- * from a va_list. we have to implement the varargs collection as a
- * macro, because on some systems va_list variables cannot be passed
- * by reference.
- * value is supposed to be initialized according to the value
- * type to be collected.
- * var_args is the va_list variable and may be evaluated multiple times.
- * __error is a gchar** variable that will be modified to hold a g_new()
- * allocated error messages if something fails.
+/**
+ * G_VALUE_COLLECT:
+ * @value: a #GValue return location. @value is supposed to be initialized 
+ *  according to the value type to be collected
+ * @var_args: the va_list variable; it may be evaluated multiple times
+ * @flags: flags which are passed on to the collect_value() function of
+ *  the #GTypeValueTable of @value.
+ * @__error: a #gchar** variable that will be modified to hold a g_new()
+ *  allocated error messages if something fails
+ * 
+ * Collects a variable argument value from a va_list. We have to
+ * implement the varargs collection as a macro, because on some systems
+ * va_list variables cannot be passed by reference.
  */
 #define G_VALUE_COLLECT(value, var_args, flags, __error)				\
 G_STMT_START {										\
@@ -108,8 +127,18 @@ G_STMT_START {										\
 } G_STMT_END
 
 
-/* G_VALUE_LCOPY() collects a value's variable argument
- * locations from a va_list. usage is analogous to G_VALUE_COLLECT().
+/**
+ * G_VALUE_LCOPY:
+ * @value: a #GValue return location. @value is supposed to be initialized 
+ *  according to the value type to be collected
+ * @var_args: the va_list variable; it may be evaluated multiple times
+ * @flags: flags which are passed on to the lcopy_value() function of
+ *  the #GTypeValueTable of @value.
+ * @__error: a #gchar** variable that will be modified to hold a g_new()
+ *  allocated error messages if something fails
+ * 
+ * Collects a value's variable argument locations from a va_list. Usage is
+ * analogous to G_VALUE_COLLECT().
  */
 #define G_VALUE_LCOPY(value, var_args, flags, __error)					\
 G_STMT_START {										\
@@ -153,6 +182,12 @@ G_STMT_START {										\
 } G_STMT_END
 
 
+/**
+ * G_VALUE_COLLECT_FORMAT_MAX_LENGTH:
+ * 
+ * The maximal number of #GTypeCValue<!-- -->s which can be collected for a 
+ * single #GValue.
+ */
 #define	G_VALUE_COLLECT_FORMAT_MAX_LENGTH	(8)
 
 G_END_DECLS
