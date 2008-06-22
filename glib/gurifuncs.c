@@ -31,10 +31,10 @@
  * @short_description: URI Functions
  * 
  * Functions for manipulating Universal Resource Identifiers (URIs) as 
- * defined by RFC 3986. It is highly recommended that you have read and
- * understand RFC 3986 for understanding this API. A copy of RFC 3986 
- * can be found at <ulink url="http://www.ietf.org/rfc/rfc3986.txt"/>.
- **/
+ * defined by <ulink url="http://www.ietf.org/rfc/rfc3986.txt">
+ * RFC 3986</ulink>. It is highly recommended that you have read and
+ * understand RFC 3986 for understanding this API.
+ */
 
 static int
 unescape_character (const char *scanner)
