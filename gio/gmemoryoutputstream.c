@@ -20,7 +20,7 @@
  * Author: Christian Kellner <gicmo@gnome.org>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gmemoryoutputstream.h"
 #include "goutputstream.h"
 #include "gseekable.h"

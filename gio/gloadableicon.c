@@ -20,7 +20,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gsimpleasyncresult.h"
 #include "gloadableicon.h"
 #include "glibintl.h"

@@ -21,7 +21,7 @@
  * Author: Christian Kellner <gicmo@gnome.org> 
  */
 
-#include <config.h>
+#include "config.h"
 #include "gbufferedinputstream.h"
 #include "ginputstream.h"
 #include "gsimpleasyncresult.h"

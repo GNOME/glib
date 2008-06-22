@@ -23,7 +23,7 @@
  *         Hans Breuer <hans@breuer.org>
  */
 
-#include <config.h>
+#include "config.h"
 
 #include <string.h>
 #define WIN32_MEAN_AND_LEAN

@@ -21,7 +21,7 @@
  *         David Zeuthen <davidz@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gmount.h"
 #include "gvolume.h"
 #include "gsimpleasyncresult.h"

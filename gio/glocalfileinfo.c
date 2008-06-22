@@ -22,7 +22,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

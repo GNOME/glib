@@ -20,7 +20,7 @@
  * Author: Christian Kellner <gicmo@gnome.org> 
  */
 
-#include <config.h>
+#include "config.h"
 #include "gbufferedoutputstream.h"
 #include "goutputstream.h"
 #include "gsimpleasyncresult.h"

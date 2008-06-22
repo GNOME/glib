@@ -21,7 +21,7 @@
  *         David Zeuthen <davidz@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gdrive.h"
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"

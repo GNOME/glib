@@ -20,7 +20,7 @@
  * Author: Christian Kellner <gicmo@gnome.org> 
  */
 
-#include <config.h>
+#include "config.h"
 #include "gfilterinputstream.h"
 #include "ginputstream.h"
 #include "glibintl.h"

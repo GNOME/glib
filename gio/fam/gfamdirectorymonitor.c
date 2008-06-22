@@ -23,7 +23,7 @@
  *          Sebastian Dröge <slomo@circular-chaos.org>
  */
 
-#include <config.h>
+#include "config.h"
 
 #include "gfamdirectorymonitor.h"
 #include "giomodule.h"

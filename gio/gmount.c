@@ -23,7 +23,7 @@
  *         David Zeuthen <davidz@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 
 #include <string.h>
 

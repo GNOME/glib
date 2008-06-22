@@ -28,7 +28,7 @@
  *          Lin Ma <lin.ma@sun.com>
  */
 
-#include <config.h>
+#include "config.h"
 
 #include "gfendirectorymonitor.h"
 #include "giomodule.h"

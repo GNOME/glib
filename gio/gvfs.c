@@ -20,7 +20,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include <string.h>
 #include "gvfs.h"
 #include "glocalvfs.h"

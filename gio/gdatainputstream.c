@@ -21,7 +21,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gdatainputstream.h"
 #include "gioenumtypes.h"
 #include "glibintl.h"

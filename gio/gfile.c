@@ -22,7 +22,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include <string.h>
 #include <sys/types.h>
 #ifdef HAVE_PWD_H

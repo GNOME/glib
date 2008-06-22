@@ -20,7 +20,7 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include <config.h>
+#include "config.h"
 #include "gfileenumerator.h"
 #include "gioscheduler.h"
 #include "gasynchelper.h"
