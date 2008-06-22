@@ -1,3 +1,9 @@
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* glib/Makefile.am:
+	* gobject/Makefile.am:
+	  Unify the Makefiles. In glib only scan glib folders.
+
 2008-06-16  Ross Burton  <ross@burtonini.com>
 
 	* gio/gio-sections.txt:
