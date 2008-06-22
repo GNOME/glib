@@ -16,26 +16,33 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe
+ */
+
+#include "config.h"
+
+#include <string.h>
+#include <stdlib.h>  /* qsort() */
+
+#include "gvaluearray.h"
+
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:value_arrays
  * @Short_description: A container structure to maintain an array of generic values
  * @See_also:#GValue, #GParamSpecValueArray, g_param_spec_value_array()
  * @Title: Value arrays
- * 
- * The prime purpose of a #GValueArray is for it to be used as an object property
- * that holds an array of values. A #GValueArray wraps an array of #GValue elements
- * in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
- */
-/*
- * MT safe
+ *
+ * The prime purpose of a #GValueArray is for it to be used as an
+ * object property that holds an array of values. A #GValueArray wraps
+ * an array of #GValue elements in order for it to be used as a boxed
+ * type through %G_TYPE_VALUE_ARRAY.
  */
 
-#include <config.h>
-
-#include	"gvaluearray.h"
-#include 	"gobjectalias.h"
-#include	<string.h>
-#include	<stdlib.h>	/* qsort() */
 
 #ifdef	DISABLE_MEM_POOLS
 #  define	GROUP_N_VALUES	(1)	/* power of 2 !! */

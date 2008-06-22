@@ -16,32 +16,37 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include "config.h"
+
+#include <string.h>
+
+#include "gboxed.h"
+#include "gbsearcharray.h"
+#include "gvalue.h"
+#include "gvaluearray.h"
+#include "gclosure.h"
+#include "gvaluecollector.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:gboxed
- * @Short_description: A mechanism to wrap opaque C structures registered by the type system
- * @See_also:#GParamSpecBoxed, g_param_spec_boxed()
+ * @Short_description: A mechanism to wrap opaque C structures registered
+ *                     by the type system
+ *
+ * @See_also: #GParamSpecBoxed, g_param_spec_boxed()
+ *
  * @Title: Boxed Types
- * 
+ *
  * GBoxed is a generic wrapper mechanism for arbitrary C structures. The only
  * thing the type system needs to know about the structures is how to copy and
  * free them, beyond that they are treated as opaque chunks of memory.
- * 
+ *
  * Boxed types are useful for simple value-holder structures like rectangles or
  * points. They can also be used for wrapping structures defined in non-GObject
  * based libraries.
  */
-
-#include	"gboxed.h"
-
-#include	"gbsearcharray.h"
-#include	"gvalue.h"
-#include	"gvaluearray.h"
-#include	"gclosure.h"
-#include	"gvaluecollector.h"
-
-#include	"gobjectalias.h"
-
-#include <string.h>
 
 /* --- typedefs & structures --- */
 typedef struct

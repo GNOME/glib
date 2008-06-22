@@ -16,35 +16,39 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe
+ */
+
+#include "config.h"
+
+#include <string.h>
+
+#include "gparamspecs.h"
+#include "gvaluecollector.h"
+#include "gvaluearray.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:param_value_types
  * @Short_description: Standard Parameter and Value Types
  * @See_also:#GParamSpec, #GValue, g_object_class_install_property().
  * @Title: Parameters and Values
- * 
+ *
  * #GValue provides an abstract container structure which can be copied,
  * transformed and compared while holding a value of any (derived) type, which
  * is registered as a #GType with a #GTypeValueTable in its #GTypeInfo structure.
  * Parameter specifications for most value types can be created as
  * #GParamSpec derived instances, to implement e.g. #GObject properties which
  * operate on #GValue containers.
- * 
+ *
  * Parameter names need to start with a letter (a-z or A-Z). Subsequent
  * characters can be letters, numbers or a '-'.
  * All other characters are replaced by a '-' during construction.
  */
-/*
- * MT safe
- */
 
-#include	"../config.h"
-
-#include	"gparamspecs.h"
-
-#include	"gvaluecollector.h"
-#include	"gvaluearray.h"
-#include	"gobjectalias.h"
-#include	<string.h>
 
 #define	G_FLOAT_EPSILON		(1e-30)
 #define	G_DOUBLE_EPSILON	(1e-90)

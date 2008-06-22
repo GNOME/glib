@@ -17,6 +17,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include "gsourceclosure.h"
 #include "gboxed.h"
 #include "genums.h"
@@ -24,6 +26,7 @@
 #include "gvalue.h"
 #include "gvaluetypes.h"
 #include "gobjectalias.h"
+
 
 GType
 g_io_channel_get_type (void)

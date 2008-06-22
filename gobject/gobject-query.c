@@ -16,18 +16,20 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include	"../config.h"
 
-#include        <glib-object.h>
+#include "config.h"
 
-#include	<glib/gprintf.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef HAVE_UNISTD_H
-#include	<unistd.h>
+#include <unistd.h>
 #endif
-#include	<sys/stat.h>
-#include	<fcntl.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <glib-object.h>
+#include <glib/gprintf.h>
+
 
 static gchar *indent_inc = NULL;
 static guint spacing = 1;

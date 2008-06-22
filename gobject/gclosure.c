@@ -17,49 +17,65 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe with regards to reference counting.
+ */
+
+#include "config.h"
+
+#include <string.h>
+
+#include "gclosure.h"
+#include "gvalue.h"
+#include "gobjectalias.h"
+
 /**
  * SECTION:gclosure
  * @Short_description: Functions as first-class objects
  * @Title: Closures
- * 
- * A #GClosure represents a callback supplied by the programmer. It will generally
- * comprise a function of some kind and a marshaller used to call it. It is the 
- * reponsibility of the marshaller to convert the arguments for the invocation 
- * from #GValue<!-- -->s into a suitable form, perform the callback on the 
- * converted arguments, and transform the return value back into a #GValue.
- * 
- * In the case of C programs, a closure usually just holds a pointer to a function
- * and maybe a data argument, and the marshaller converts between #GValue<!-- -->
- * and native C types. The GObject library provides the #GCClosure type for this
- * purpose. Bindings for other languages need marshallers which 
- * convert between #GValue<!-- -->s and suitable representations in the runtime
- * of the language in order to use functions written in that languages as 
- * callbacks.
- * 
- * Within GObject, closures play an important role in the implementation of 
- * signals. When a signal is registered, the @c_marshaller argument to 
- * g_signal_new() specifies the default C marshaller for any closure which is 
- * connected to this signal. GObject provides a number of C marshallers  
- * for this purpose, see the g_cclosure_marshal_*() functions. Additional
- * C marshallers can be generated with the
- * <link linkend="glib-genmarshal">glib-genmarshal</link> utility.
- * Closures can be explicitly connected to signals with 
- * g_signal_connect_closure(), but it usually more convenient to let GObject 
- * create a closure automatically by using one of the g_signal_connect_*() 
- * functions which take a callback function/user data pair.
- * 
+ *
+ * A #GClosure represents a callback supplied by the programmer. It
+ * will generally comprise a function of some kind and a marshaller
+ * used to call it. It is the reponsibility of the marshaller to
+ * convert the arguments for the invocation from #GValue<!-- -->s into
+ * a suitable form, perform the callback on the converted arguments,
+ * and transform the return value back into a #GValue.
+ *
+ * In the case of C programs, a closure usually just holds a pointer
+ * to a function and maybe a data argument, and the marshaller
+ * converts between #GValue<!-- --> and native C types. The GObject
+ * library provides the #GCClosure type for this purpose. Bindings for
+ * other languages need marshallers which convert between #GValue<!--
+ * -->s and suitable representations in the runtime of the language in
+ * order to use functions written in that languages as callbacks.
+ *
+ * Within GObject, closures play an important role in the
+ * implementation of signals. When a signal is registered, the
+ * @c_marshaller argument to g_signal_new() specifies the default C
+ * marshaller for any closure which is connected to this
+ * signal. GObject provides a number of C marshallers for this
+ * purpose, see the g_cclosure_marshal_*() functions. Additional C
+ * marshallers can be generated with the <link
+ * linkend="glib-genmarshal">glib-genmarshal</link> utility.  Closures
+ * can be explicitly connected to signals with
+ * g_signal_connect_closure(), but it usually more convenient to let
+ * GObject create a closure automatically by using one of the
+ * g_signal_connect_*() functions which take a callback function/user
+ * data pair.
+ *
  * Using closures has a number of important advantages over a simple
  * callback function/data pointer combination:
  * <itemizedlist>
  * <listitem><para>
- * Closures allow the callee to get the types of the callback parameters, 
- * which means that language bindings don't have to write individual glue 
+ * Closures allow the callee to get the types of the callback parameters,
+ * which means that language bindings don't have to write individual glue
  * for each callback type.
  * </para></listitem>
  * <listitem><para>
- * The reference counting of #GClosure makes it easy to handle reentrancy 
- * right; if a callback is removed while it is being invoked, the closure 
- * and it's parameters won't be freed until the invocation finishes. 
+ * The reference counting of #GClosure makes it easy to handle reentrancy
+ * right; if a callback is removed while it is being invoked, the closure
+ * and it's parameters won't be freed until the invocation finishes.
  * </para></listitem>
  * <listitem><para>
  * g_closure_invalidate() and invalidation notifiers allow callbacks to be
@@ -67,17 +83,6 @@
  * </para></listitem>
  * </itemizedlist>
  */
-
-#include	"gclosure.h"
-
-/*
- * MT safe with regards to reference counting.
- */
-
-#include	"gvalue.h"
-#include 	"gobjectalias.h"
-#include	<string.h>
-
 
 #define	CLOSURE_MAX_REF_COUNT		((1 << 15) - 1)
 #define	CLOSURE_MAX_N_GUARDS		((1 << 1) - 1)

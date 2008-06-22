@@ -16,17 +16,33 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe
+ */
+
+#include "config.h"
+
+#include <string.h>
+
+#include "gtype.h"
+#include "gtypeplugin.h"
+#include "gvaluecollector.h"
+#include "gbsearcharray.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:gtype
  * @Short_description: The GLib Runtime type identification and management system
  * @Title:Type Information
- * 
+ *
  * The GType API is the foundation of the GObject system.  It provides the
  * facilities for registering and managing all fundamental data types,
  * user-defined object and interface types.  Before using any GType
  * or GObject functions, g_type_init() must be called to initialize the
  * type system.
- * 
+ *
  * For type creation and registration purposes, all types fall into one of
  * two categories: static or dynamic.  Static types are never loaded or
  * unloaded at run-time as dynamic types may be.  Static types are created
@@ -36,8 +52,8 @@
  * #GTypePlugin structure instead. The remaining type information (the
  * #GTypeInfo structure) is retrieved during runtime through #GTypePlugin
  * and the g_type_plugin_*() API.
- * These registration functions are usually called only once from a 
- * function whose only purpose is to return the type identifier for a 
+ * These registration functions are usually called only once from a
+ * function whose only purpose is to return the type identifier for a
  * specific class.  Once the type (or class or interface) is registered,
  * it may be instantiated, inherited, or implemented depending on exactly
  * what sort of type it is.
@@ -45,26 +61,14 @@
  * types called g_type_register_fundamental() which requires both a #GTypeInfo
  * structure and a #GTypeFundamentalInfo structure but it is seldom used
  * since most fundamental types are predefined rather than user-defined.
- * 
+ *
  * A final word about type names.
  * Such an identifier needs to be at least three characters long. There is no
  * upper length limit. The first character needs to be a letter (a-z or A-Z)
  * or an underscore '_'. Subsequent characters can be letters, numbers or
  * any of '-_+'.
  */
-#include        <config.h>
-#include	"gtype.h"
 
-/*
- * MT safe
- */
-
-#include	"gtypeplugin.h"
-#include	"gvaluecollector.h"
-#include	"gbsearcharray.h"
-#include	<string.h>
-
-#include	"gobjectalias.h"
 
 /* NOTE: some functions (some internal variants and exported ones)
  * invalidate data portions of the TypeNodes. if external functions/callbacks

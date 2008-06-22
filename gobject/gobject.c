@@ -16,21 +16,45 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe with regards to reference counting.
+ */
+
+#include "config.h"
+
+#include <string.h>
+#include <signal.h>
+
+#include "glib/gdatasetprivate.h"
+
+#include "gobject.h"
+#include "gvaluecollector.h"
+#include "gsignal.h"
+#include "gparamspecs.h"
+#include "gvaluetypes.h"
+#include "gobjectalias.h"
+
+/* This should be included after gobjectalias.h (or pltcheck.sh will fail) */
+#include "gobjectnotifyqueue.c"
+
+
 /**
  * SECTION:objects
  * @Short_description: The base object type
  * @See_also:#GParamSpecObject, g_param_spec_object()
  * @Title: The Base Object Type
- * 
- * GObject is the fundamental type providing the common attributes and methods 
- * for all object types in GTK+, Pango and other libraries based on GObject. 
- * The GObject class provides methods for object construction and destruction, 
- * property access methods, and signal support. 
- * Signals are described in detail in <xref linkend="gobject-Signals"/>.
- * 
+ *
+ * GObject is the fundamental type providing the common attributes and
+ * methods for all object types in GTK+, Pango and other libraries
+ * based on GObject.  The GObject class provides methods for object
+ * construction and destruction, property access methods, and signal
+ * support.  Signals are described in detail in <xref
+ * linkend="gobject-Signals"/>.
+ *
  * <para id="floating-ref">
  * #GInitiallyUnowned is derived from #GObject. The only difference between
- * the two is that the initial reference of a #GInitiallyUnowned is flagged 
+ * the two is that the initial reference of a #GInitiallyUnowned is flagged
  * as a <firstterm>floating</firstterm> reference.
  * This means that it is not specifically claimed to be "owned" by
  * any code portion. The main motivation for providing floating references is
@@ -51,7 +75,7 @@
  * container_add_child (container, child);
  * g_object_unref (child);
  * ]|
- * The floating reference can be converted into 
+ * The floating reference can be converted into
  * an ordinary reference by calling g_object_ref_sink().
  * For already sunken objects (objects that don't have a floating reference
  * anymore), g_object_ref_sink() is equivalent to g_object_ref() and returns
@@ -61,11 +85,11 @@
  * maintenance (such as smart pointers or garbage collection) therefore don't
  * need to expose floating references in their API.
  * </para>
- * 
+ *
  * Some object implementations may need to save an objects floating state
  * across certain code portions (an example is #GtkMenu), to achive this, the
  * following sequence can be used:
- * 
+ *
  * |[
  * // save floating state
  * gboolean was_floating = g_object_is_floating (object);
@@ -78,24 +102,6 @@
  * g_obejct_unref (object); // release previously acquired reference
  * ]|
  */
-#include	"gobject.h"
-#include        <glib/gdatasetprivate.h>
-
-/*
- * MT safe with regards to reference counting.
- */
-
-#include	"gvaluecollector.h"
-#include	"gsignal.h"
-#include	"gparamspecs.h"
-#include	"gvaluetypes.h"
-#include	<string.h>
-#include	<signal.h>
-
-#include	"gobjectalias.h"
-
-/* This should be included after gobjectalias.h (or pltcheck.sh will fail) */
-#include	"gobjectnotifyqueue.c"
 
 
 #define	PREALLOC_CPARAMS	(8)

@@ -16,6 +16,16 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include "config.h"
+
+#include <stdlib.h>
+
+#include "gtypeplugin.h"
+#include "gtypemodule.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:gtypemodule
  * @Short_description: Type loading modules
@@ -30,7 +40,7 @@
  * </varlistentry>
  * </variablelist>
  * @Title: GTypeModule
- * 
+ *
  * #GTypeModule provides a simple implementation of the #GTypePlugin
  * interface. The model of #GTypeModule is a dynamically loaded module
  * which implements some number of types and interface
@@ -43,7 +53,7 @@
  * will be reloaded. Note that the last unref can not happen in module
  * code, since that would lead to the caller's code being unloaded before
  * g_object_unref() returns to it.
- * 
+ *
  * Keeping track of whether the module should be loaded or not is done by
  * using a use count - it starts at zero, and whenever it is greater than
  * zero, the module is loaded. The use count is maintained internally by
@@ -53,18 +63,13 @@
  * it so that it can initialize its types. At some later point, when the
  * module no longer needs to be loaded except for the type
  * implementations it contains, g_type_module_unuse() is called.
- * 
+ *
  * #GTypeModule does not actually provide any implementation of module
  * loading and unloading. To create a particular module type you must
  * derive from #GTypeModule and implement the load and unload functions
  * in #GTypeModuleClass.
  */
 
-#include <stdlib.h>
-
-#include "gtypeplugin.h"
-#include "gtypemodule.h"
-#include "gobjectalias.h"
 
 typedef struct _ModuleTypeInfo ModuleTypeInfo;
 typedef struct _ModuleInterfaceInfo ModuleInterfaceInfo;

@@ -21,18 +21,19 @@
  * MT safe
  */
 
-#include	"gvaluetypes.h"
+#include "config.h"
 
-#include	"gvaluecollector.h"
+#include <string.h>
+#include <stdlib.h> /* qsort() */
 
+#include "gvaluetypes.h"
+#include "gvaluecollector.h"
 #include "gobject.h"
 #include "gparam.h"
 #include "gboxed.h"
 #include "genums.h"
 
-#include	"gobjectalias.h"
-#include	<string.h>
-#include	<stdlib.h>	/* qsort() */
+#include "gobjectalias.h"
 
 
 /* --- value functions --- */

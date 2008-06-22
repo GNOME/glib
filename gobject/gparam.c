@@ -16,16 +16,31 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe
+ */
+
+#include "config.h"
+
+#include <string.h>
+
+#include "gparam.h"
+#include "gparamspecs.h"
+#include "gvaluecollector.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:gparamspec
  * @Short_description: Metadata for parameter specifications
  * @See_also:g_object_class_install_property(), g_object_set(), g_object_get(),
  * g_object_set_property(), g_object_get_property(), g_value_register_transform_func()
  * @Title: GParamSpec
- * 
+ *
  * #GParamSpec is an object structure that encapsulates the metadata
  * required to specify parameters, such as e.g. #GObject properties.
- * 
+ *
  * <para id="canonical-parameter-name">
  * Parameter names need to start with a letter (a-z or A-Z). Subsequent
  * characters can be letters, numbers or a '-'.
@@ -34,17 +49,6 @@
  * parameter.
  * </para>
  */
-/*
- * MT safe
- */
-
-#include	"gparam.h"
-#include        "gparamspecs.h"
-
-#include	"gvaluecollector.h"
-#include	"gobjectalias.h"
-#include	<string.h>
-
 
 
 /* --- defines --- */

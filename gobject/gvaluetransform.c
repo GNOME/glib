@@ -16,11 +16,15 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include        <string.h>
 
-#include        "gvalue.h"
-#include        "genums.h"
-#include	"gobjectalias.h"
+#include "config.h"
+
+#include <string.h>
+
+#include "gvalue.h"
+#include "genums.h"
+
+#include "gobjectalias.h"
 
 
 /* same type transforms

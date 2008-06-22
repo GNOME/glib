@@ -19,22 +19,42 @@
  * this code is based on the original GtkSignal implementation
  * for the Gtk+ library by Peter Mattis <petm@xcf.berkeley.edu>
  */
+
+/*
+ * MT safe
+ */
+
+#include "config.h"
+
+#include <string.h>
+#include <signal.h>
+
+#include "gsignal.h"
+#include "gbsearcharray.h"
+#include "gvaluecollector.h"
+#include "gvaluetypes.h"
+#include "gboxed.h"
+#include "gobject.h"
+#include "genums.h"
+#include "gobjectalias.h"
+
+
 /**
  * SECTION:signals
  * @Short_description: A means for customization of object behaviour and a general purpose notification mechanism
  * @Title: Signals
- * 
- * The basic concept of the signal system is that of the <emphasis>emission</emphasis>
- * of a signal.
- * Signals are introduced per-type and are identified through strings.
- * Signals introduced for a parent type are available in derived types as well,
- * so basically they are a per-type facility that is inherited.
- * A signal emission mainly involves invocation of a certain set of callbacks in
- * precisely defined manner. There are two main categories of such callbacks,
- * per-object
- * 	i'm referring to those types as "object types" in the following, simply
- * 	because that is the context most users will encounter signals in.
- * 
+ *
+ * The basic concept of the signal system is that of the
+ * <emphasis>emission</emphasis> of a signal. Signals are introduced
+ * per-type and are identified through strings.  Signals introduced
+ * for a parent type are available in derived types as well, so
+ * basically they are a per-type facility that is inherited.  A signal
+ * emission mainly involves invocation of a certain set of callbacks
+ * in precisely defined manner. There are two main categories of such
+ * callbacks, per-object i'm referring to those types as "object
+ * types" in the following, simply because that is the context most
+ * users will encounter signals in.
+ *
  * ones and user provided ones.
  * The per-object callbacks are most often referred to as "object method
  * handler" or "default (signal) handler", while user provided callbacks are
@@ -43,7 +63,7 @@
  * frequently happens at the end of an object class' creation), while user
  * provided handlers are frequently connected and disconnected to/from a certain
  * signal on certain object instances.
- * 
+ *
  * A signal emission consists of five stages, unless prematurely stopped:
  * <variablelist>
  * <varlistentry><term></term><listitem><para>
@@ -80,25 +100,6 @@
  * detail part of the signal specification upon connection) serves as a
  * wildcard and matches any detail argument passed in to emission.
  */
-/*
- * MT safe
- */
-
-#include <config.h>
-
-#include        "gsignal.h"
-
-#include        "gbsearcharray.h"
-#include        "gvaluecollector.h"
-#include	"gvaluetypes.h"
-#include	"gboxed.h"
-#include	"gobject.h"
-#include	"genums.h"
-
-#include	"gobjectalias.h"
-
-#include	<string.h> 
-#include	<signal.h>
 
 
 /* pre allocation configurations
@@ -3156,7 +3157,7 @@ g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
 }
 
 /* --- compile standard marshallers --- */
-#include        "gmarshal.c"
+#include "gmarshal.c"
 
 #define __G_SIGNAL_C__
 #include "gobjectaliasdef.c"
