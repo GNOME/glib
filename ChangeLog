@@ -1,5 +1,12 @@
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/value_arrays.sgml:
+	* gobject/gvaluearray.c:
+	* gobject/gvaluearray.h:
+	  Migrating docs.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
 	* gobject/gsignal.c:
 	  Fix compiler warning in format string check.
 

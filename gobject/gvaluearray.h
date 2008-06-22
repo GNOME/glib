@@ -33,6 +33,13 @@ G_BEGIN_DECLS
 
 /* --- typedefs & structs --- */
 typedef struct _GValueArray GValueArray;
+/**
+ * GValueArray:
+ * @n_values: number of values contained in the array
+ * @values: array of values
+ * 
+ * A #GValueArray contains an array of #GValue elements.
+ */
 struct _GValueArray
 {
   guint   n_values;
