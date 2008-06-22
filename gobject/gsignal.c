@@ -1143,7 +1143,7 @@ g_signal_lookup (const gchar *name,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id `%lu'",
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id `%"G_GSIZE_FORMAT"'",
 		   name, itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype))
 	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for non instantiatable type `%s'",
@@ -1201,7 +1201,7 @@ g_signal_list_ids (GType  itype,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_warning (G_STRLOC ": unable to list signals for invalid type id `%lu'",
+	g_warning (G_STRLOC ": unable to list signals for invalid type id `%"G_GSIZE_FORMAT"'",
 		   itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype) && !G_TYPE_IS_INTERFACE (itype))
 	g_warning (G_STRLOC ": unable to list signals of non instantiatable type `%s'",

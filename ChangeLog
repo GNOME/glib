@@ -1,5 +1,10 @@
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
+	* gobject/gsignal.c:
+	  Fix compiler warning in format string check.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/signals.sgml:
 	* gobject/gclosure.c:
 	* gobject/gobject.c:
