@@ -25,8 +25,11 @@
 
 /**
  * SECTION:gtypeplugin
+ *
  * @Short_description: An interface for dynamically loadable types
+ *
  * @See_also:#GTypeModule and g_type_register_dynamic().
+ *
  * @Titile: GTypePlugin
  *
  * The GObject type system supports dynamic loading of types. The
@@ -111,10 +114,10 @@ g_type_plugin_get_type (void)
 /**
  * g_type_plugin_use:
  * @plugin: a #GTypePlugin
- * 
- * Calls the @use_plugin function from the #GTypePluginClass of @plugin.
- * There should be no need to use this function outside of the GObject 
- * type system itself.
+ *
+ * Calls the @use_plugin function from the #GTypePluginClass of
+ * @plugin.  There should be no need to use this function outside of
+ * the GObject type system itself.
  */
 void
 g_type_plugin_use (GTypePlugin *plugin)
@@ -130,10 +133,10 @@ g_type_plugin_use (GTypePlugin *plugin)
 /**
  * g_type_plugin_unuse:
  * @plugin: a #GTypePlugin
- * 
- * Calls the @unuse_plugin function from the #GTypePluginClass of @plugin.
- * There should be no need to use this function outside of the GObject 
- * type system itself.
+ *
+ * Calls the @unuse_plugin function from the #GTypePluginClass of
+ * @plugin.  There should be no need to use this function outside of
+ * the GObject type system itself.
  */
 void
 g_type_plugin_unuse (GTypePlugin *plugin)
@@ -183,10 +186,10 @@ g_type_plugin_complete_type_info (GTypePlugin     *plugin,
  *  is added
  * @interface_type: the #GType of the interface whose info is completed
  * @info: the #GInterfaceInfo to fill in
- * 
- * Calls the @complete_interface_info function from the #GTypePluginClass 
- * of @plugin. There should be no need to use this function outside of the 
- * GObject type system itself.
+ *
+ * Calls the @complete_interface_info function from the
+ * #GTypePluginClass of @plugin. There should be no need to use this
+ * function outside of the GObject type system itself.
  */
 void
 g_type_plugin_complete_interface_info (GTypePlugin    *plugin,

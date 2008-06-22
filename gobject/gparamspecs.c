@@ -33,15 +33,19 @@
 
 /**
  * SECTION:param_value_types
+ *
  * @Short_description: Standard Parameter and Value Types
- * @See_also:#GParamSpec, #GValue, g_object_class_install_property().
+ *
+ * @See_also: #GParamSpec, #GValue, g_object_class_install_property().
+ *
  * @Title: Parameters and Values
  *
- * #GValue provides an abstract container structure which can be copied,
- * transformed and compared while holding a value of any (derived) type, which
- * is registered as a #GType with a #GTypeValueTable in its #GTypeInfo structure.
- * Parameter specifications for most value types can be created as
- * #GParamSpec derived instances, to implement e.g. #GObject properties which
+ * #GValue provides an abstract container structure which can be
+ * copied, transformed and compared while holding a value of any
+ * (derived) type, which is registered as a #GType with a
+ * #GTypeValueTable in its #GTypeInfo structure.  Parameter
+ * specifications for most value types can be created as #GParamSpec
+ * derived instances, to implement e.g. #GObject properties which
  * operate on #GValue containers.
  *
  * Parameter names need to start with a letter (a-z or A-Z). Subsequent
@@ -1522,9 +1526,9 @@ g_param_spec_types_init (void)
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecChar instance specifying a %G_TYPE_CHAR property.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1562,9 +1566,9 @@ g_param_spec_char (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecUChar instance specifying a %G_TYPE_UCHAR property.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1600,12 +1604,12 @@ g_param_spec_uchar (const gchar *name,
  * @blurb: description of the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN 
+ *
+ * Creates a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1639,11 +1643,11 @@ g_param_spec_boolean (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecInt instance specifying a %G_TYPE_INT property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1681,11 +1685,11 @@ g_param_spec_int (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecUInt instance specifying a %G_TYPE_UINT property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1723,11 +1727,11 @@ g_param_spec_uint (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecLong instance specifying a %G_TYPE_LONG property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1765,11 +1769,12 @@ g_param_spec_long (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecULong instance specifying a %G_TYPE_ULONG property.
- * 
+ *
+ * Creates a new #GParamSpecULong instance specifying a %G_TYPE_ULONG
+ * property.
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1807,11 +1812,11 @@ g_param_spec_ulong (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecInt64 instance specifying a %G_TYPE_INT64 property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1849,12 +1854,12 @@ g_param_spec_int64 (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecUInt64 instance specifying a %G_TYPE_UINT64 
+ *
+ * Creates a new #GParamSpecUInt64 instance specifying a %G_TYPE_UINT64
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1890,13 +1895,13 @@ g_param_spec_uint64 (const gchar *name,
  * @blurb: description of the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecUnichar instance specifying a %G_TYPE_UINT 
- * property. #GValue structures for this property can be accessed with 
+ *
+ * Creates a new #GParamSpecUnichar instance specifying a %G_TYPE_UINT
+ * property. #GValue structures for this property can be accessed with
  * g_value_set_uint() and g_value_get_uint().
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1927,12 +1932,12 @@ g_param_spec_unichar (const gchar *name,
  * @enum_type: a #GType derived from %G_TYPE_ENUM
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecEnum instance specifying a %G_TYPE_ENUM
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -1973,12 +1978,12 @@ g_param_spec_enum (const gchar *name,
  * @flags_type: a #GType derived from %G_TYPE_FLAGS
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecFlags instance specifying a %G_TYPE_FLAGS
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2020,11 +2025,11 @@ g_param_spec_flags (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecFloat instance specifying a %G_TYPE_FLOAT property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2062,12 +2067,12 @@ g_param_spec_float (const gchar *name,
  * @maximum: maximum value for the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecDouble instance specifying a %G_TYPE_DOUBLE 
+ *
+ * Creates a new #GParamSpecDouble instance specifying a %G_TYPE_DOUBLE
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2103,11 +2108,11 @@ g_param_spec_double (const gchar *name,
  * @blurb: description of the property specified
  * @default_value: default value for the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecString instance.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2135,12 +2140,12 @@ g_param_spec_string (const gchar *name,
  * @blurb: description of the property specified
  * @param_type: a #GType derived from %G_TYPE_PARAM
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecParam instance specifying a %G_TYPE_PARAM
  * property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2171,12 +2176,12 @@ g_param_spec_param (const gchar *name,
  * @blurb: description of the property specified
  * @boxed_type: %G_TYPE_BOXED derived type of this property
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_BOXED 
+ *
+ * Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_BOXED
  * derived property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2207,11 +2212,11 @@ g_param_spec_boxed (const gchar *name,
  * @nick: nick name for the property specified
  * @blurb: description of the property specified
  * @flags: flags for the property specified
- * 
+ *
  * Creates a new #GParamSpecPoiner instance specifying a pointer property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2238,13 +2243,14 @@ g_param_spec_pointer (const gchar *name,
  * @is_a_type: a #GType whose subtypes are allowed as values
  *  of the property (use %G_TYPE_NONE for any type)
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecGType instance specifying a 
- * %G_TYPE_GTYPE property. 
- * 
+ *
+ * Creates a new #GParamSpecGType instance specifying a
+ * %G_TYPE_GTYPE property.
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Since: 2.10
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2272,17 +2278,17 @@ g_param_spec_gtype (const gchar *name,
  * @name: canonical name of the property specified
  * @nick: nick name for the property specified
  * @blurb: description of the property specified
- * @element_spec: a #GParamSpec describing the elements contained in 
+ * @element_spec: a #GParamSpec describing the elements contained in
  *  arrays of this property, may be %NULL
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecValueArray instance specifying a 
- * %G_TYPE_VALUE_ARRAY property. %G_TYPE_VALUE_ARRAY is a %G_TYPE_BOXED 
- * type, as such, #GValue structures for this property can be accessed 
- * with g_value_set_boxed() and g_value_get_boxed().
- * 
+ *
+ * Creates a new #GParamSpecValueArray instance specifying a
+ * %G_TYPE_VALUE_ARRAY property. %G_TYPE_VALUE_ARRAY is a
+ * %G_TYPE_BOXED type, as such, #GValue structures for this property
+ * can be accessed with g_value_set_boxed() and g_value_get_boxed().
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2318,12 +2324,12 @@ g_param_spec_value_array (const gchar *name,
  * @blurb: description of the property specified
  * @object_type: %G_TYPE_OBJECT derived type of this property
  * @flags: flags for the property specified
- * 
- * Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_OBJECT 
+ *
+ * Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_OBJECT
  * derived property.
- * 
+ *
  * See g_param_spec_internal() for details on property names.
- * 
+ *
  * Returns: a newly created parameter specification
  */
 GParamSpec*
@@ -2351,12 +2357,13 @@ g_param_spec_object (const gchar *name,
  * g_param_spec_override:
  * @name: the name of the property.
  * @overridden: The property that is being overridden
- * 
+ *
  * Creates a new property of type #GParamSpecOverride. This is used
  * to direct operations to another paramspec, and will not be directly
  * useful unless you are implementing a new base type similar to GObject.
- * 
+ *
  * Since: 2.4
+ *
  * Returns: the newly created #GParamSpec
  */
 GParamSpec*

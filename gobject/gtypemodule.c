@@ -28,7 +28,9 @@
 
 /**
  * SECTION:gtypemodule
+ *
  * @Short_description: Type loading modules
+ *
  * @See_also:<variablelist>
  * <varlistentry>
  * <term>#GTypePlugin</term>
@@ -39,6 +41,7 @@
  * <listitem><para>Portable mechanism for dynamically loaded modules.</para></listitem>
  * </varlistentry>
  * </variablelist>
+ *
  * @Title: GTypeModule
  *
  * #GTypeModule provides a simple implementation of the #GTypePlugin
@@ -280,11 +283,11 @@ g_type_module_use (GTypeModule *module)
 /**
  * g_type_module_unuse:
  * @module: a #GTypeModule
- * 
+ *
  * Decreases the use count of a #GTypeModule by one. If the
  * result is zero, the module will be unloaded. (However, the
  * #GTypeModule will not be freed, and types associated with the
- * #GTypeModule are not unregistered. Once a #GTypeModule is 
+ * #GTypeModule are not unregistered. Once a #GTypeModule is
  * initialized, it must exist forever.)
  */
 void
@@ -359,19 +362,19 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
  * @type_name: name for the type
  * @type_info: type information structure
  * @flags: flags field providing details about the type
- * 
+ *
  * Looks up or registers a type that is implemented with a particular
  * type plugin. If a type with name @type_name was previously registered,
  * the #GType identifier for the type is returned, otherwise the type
  * is newly registered, and the resulting #GType identifier returned.
- * 
+ *
  * When reregistering a type (typically because a module is unloaded
  * then reloaded, and reinitialized), @module and @parent_type must
  * be the same as they were previously.
- * 
+ *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
- * 
+ *
  * Returns: the new or existing type ID
  */
 GType
@@ -443,11 +446,11 @@ g_type_module_register_type (GTypeModule     *module,
  * @instance_type: type to which to add the interface.
  * @interface_type: interface type to add
  * @interface_info: type information structure
- * 
- * Registers an additional interface for a type, whose interface
- * lives in the given type plugin. If the interface was already registered
- * for the type in this plugin, nothing will be done. 
- * 
+ *
+ * Registers an additional interface for a type, whose interface lives
+ * in the given type plugin. If the interface was already registered
+ * for the type in this plugin, nothing will be done.
+ *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
  */
@@ -504,19 +507,21 @@ g_type_module_add_interface (GTypeModule          *module,
  * g_type_module_register_enum:
  * @module: a #GTypeModule
  * @name: name for the type
- * @const_static_values: an array of #GEnumValue structs for the possible
- *  enumeration values. The array is terminated by a struct with all 
- *  members being 0.
- * 
+ * @const_static_values: an array of #GEnumValue structs for the
+ *                       possible enumeration values. The array is
+ *                       terminated by a struct with all members being
+ *                       0.
+ *
  * Looks up or registers an enumeration that is implemented with a particular
  * type plugin. If a type with name @type_name was previously registered,
  * the #GType identifier for the type is returned, otherwise the type
  * is newly registered, and the resulting #GType identifier returned.
- * 
+ *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
- * 
+ *
  * Since: 2.6
+ *
  * Returns: the new or existing type ID
  */
 GType
@@ -541,19 +546,21 @@ g_type_module_register_enum (GTypeModule      *module,
  * g_type_module_register_flags:
  * @module: a #GTypeModule
  * @name: name for the type
- * @const_static_values: an array of #GFlagsValue structs for the possible
- *  flags values. The array is terminated by a struct with all 
- *  members being 0.
- * 
+ * @const_static_values: an array of #GFlagsValue structs for the
+ *                       possible flags values. The array is
+ *                       terminated by a struct with all members being
+ *                       0.
+ *
  * Looks up or registers a flags type that is implemented with a particular
  * type plugin. If a type with name @type_name was previously registered,
  * the #GType identifier for the type is returned, otherwise the type
  * is newly registered, and the resulting #GType identifier returned.
- * 
+ *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
- * 
+ *
  * Since: 2.6
+ *
  * Returns: the new or existing type ID
  */
 GType

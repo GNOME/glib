@@ -1,5 +1,11 @@
 2008-06-22  Michael Natterer  <mitch@imendio.com>
 
+	* *.c: remove trailing whitespace from newly added gtk-doc
+	comments and reformatted some where they contained overly long or
+	ill-formatted lines.
+
+2008-06-22  Michael Natterer  <mitch@imendio.com>
+
 	* *.c: moved includes back to the top of the files (before gtk-doc
 	SECTION comments). Add "config.h" in all files and move system
 	included before glib includes. Remove trailing whitespace from

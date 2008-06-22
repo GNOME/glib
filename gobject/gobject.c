@@ -41,8 +41,11 @@
 
 /**
  * SECTION:objects
+ *
  * @Short_description: The base object type
+ *
  * @See_also:#GParamSpecObject, g_param_spec_object()
+ *
  * @Title: The Base Object Type
  *
  * GObject is the fundamental type providing the common attributes and
@@ -198,6 +201,7 @@ G_LOCK_DEFINE_STATIC     (debug_objects);
 static volatile GObject *g_trap_object_ref = NULL;
 static guint		 debug_objects_count = 0;
 static GHashTable	*debug_objects_ht = NULL;
+
 static void
 debug_objects_foreach (gpointer key,
 		       gpointer value,
@@ -210,6 +214,7 @@ debug_objects_foreach (gpointer key,
 	     G_OBJECT_TYPE_NAME (object),
 	     object->ref_count);
 }
+
 static void
 debug_objects_atexit (void)
 {
@@ -337,13 +342,14 @@ g_object_do_class_init (GObjectClass *class)
    * GObject::notify:
    * @pspec: the #GParamSpec of the property which changed
    * @gobject: the object which received the signal.
-   * 
-   * The notify signal is emitted on an object when one of its properties 
-   * has been changed. Note that getting this signal doesn't guarantee that the
-   * value of the property has actually changed, it may also be emitted when
-   * the setter for the property is called to reinstate the previous value.
-   * 
-   * This signal is typically used to obtain change notification for a 
+   *
+   * The notify signal is emitted on an object when one of its
+   * properties has been changed. Note that getting this signal
+   * doesn't guarantee that the value of the property has actually
+   * changed, it may also be emitted when the setter for the property
+   * is called to reinstate the previous value.
+   *
+   * This signal is typically used to obtain change notification for a
    * single property, by specifying the property name as a detail in the
    * g_signal_connect() call, like this:
    * |[
@@ -351,7 +357,7 @@ g_object_do_class_init (GObjectClass *class)
    *                   G_CALLBACK (gtk_text_view_target_list_notify),
    *                   text_view)
    * ]|
-   * It is important to note that you must use 
+   * It is important to note that you must use
    * <link linkend="canonical-parameter-name">canonical</link> parameter names as
    * detail strings for the notify signal.
    */
@@ -395,7 +401,7 @@ install_property_internal (GType       g_type,
  * @oclass: a #GObjectClass
  * @property_id: the id for the new property
  * @pspec: the #GParamSpec for the new property
- * 
+ *
  * Installs a new property. This is usually done in the class initializer.
  */
 void
@@ -434,7 +440,7 @@ g_object_class_install_property (GObjectClass *class,
  * @g_iface: any interface vtable for the interface, or the default
  *  vtable for the interface.
  * @pspec: the #GParamSpec for the new property
- * 
+ *
  * Add a property to an interface; this is only useful for interfaces
  * that are added to GObject-derived types. Adding a property to an
  * interface forces all objects classes with that interface to have a
@@ -444,12 +450,12 @@ g_object_class_install_property (GObjectClass *class,
  * class only needs to provide an implementation and inherits the
  * property description, default value, bounds, and so forth from the
  * interface property.
- * 
+ *
  * This function is meant to be called from the interface's default
  * vtable initialization function (the @class_init member of
  * #GTypeInfo.) It must not be called after after @class_init has
  * been called for any object types implementing this interface.
- * 
+ *
  * Since: 2.4
  */
 void
@@ -470,11 +476,11 @@ g_object_interface_install_property (gpointer      g_iface,
  * g_object_class_find_property:
  * @oclass: a #GObjectClass
  * @property_name: the name of the property to look up
- * 
+ *
  * Looks up the #GParamSpec for a property of a class.
- * 
- * Returns: the #GParamSpec for the property, or %NULL if the class doesn't have
- *  a property of that name
+ *
+ * Returns: the #GParamSpec for the property, or %NULL if the class
+ *          doesn't have a property of that name
  */
 GParamSpec*
 g_object_class_find_property (GObjectClass *class,
@@ -507,17 +513,17 @@ g_object_class_find_property (GObjectClass *class,
  * @g_iface: any interface vtable for the interface, or the default
  *  vtable for the interface
  * @property_name: name of a property to lookup.
- * 
+ *
  * Find the #GParamSpec with the given name for an
  * interface. Generally, the interface vtable passed in as @g_iface
  * will be the default vtable from g_type_default_interface_ref(), or,
  * if you know the interface has already been loaded,
  * g_type_default_interface_peek().
- * 
+ *
  * Since: 2.4
- * Returns: the #GParamSpec for the property of the
- *  interface with the name @property_name, or %NULL
- *  if no such property exists.
+ *
+ * Returns: the #GParamSpec for the property of the interface with the
+ *          name @property_name, or %NULL if no such property exists.
  */
 GParamSpec*
 g_object_interface_find_property (gpointer      g_iface,
@@ -540,13 +546,13 @@ g_object_interface_find_property (gpointer      g_iface,
  * @property_id: the new property ID
  * @name: the name of a property registered in a parent class or
  *  in an interface of this class.
- * 
+ *
  * Registers @property_id as referring to a property with the
  * name @name in a parent class or in an interface implemented
  * by @oclass. This allows this class to <firstterm>override</firstterm>
  * a property implementation in a parent class or to provide
  * the implementation of a property from an interface.
- * 
+ *
  * <note>
  * Internally, overriding is implemented by creating a property of type
  * #GParamSpecOverride; generally operations that query the properties of
@@ -559,7 +565,7 @@ g_object_interface_find_property (gpointer      g_iface,
  * need to get the overridden property, you can call
  * g_param_spec_get_redirect_target().
  * </note>
- * 
+ *
  * Since: 2.4
  */
 void
@@ -617,9 +623,9 @@ g_object_class_override_property (GObjectClass *oclass,
  * g_object_class_list_properties:
  * @oclass: a #GObjectClass
  * @n_properties: return location for the length of the returned array
- * 
+ *
  * Get an array of #GParamSpec* for all properties of a class.
- * 
+ *
  * Returns: an array of #GParamSpec* which should be freed after use
  */
 GParamSpec** /* free result */
@@ -645,16 +651,18 @@ g_object_class_list_properties (GObjectClass *class,
  * @g_iface: any interface vtable for the interface, or the default
  *  vtable for the interface
  * @n_properties_p: location to store number of properties returned.
- * 
+ *
  * Lists the properties of an interface.Generally, the interface
  * vtable passed in as @g_iface will be the default vtable from
  * g_type_default_interface_ref(), or, if you know the interface has
  * already been loaded, g_type_default_interface_peek().
- * 
+ *
  * Since: 2.4
- * Returns: a pointer to an array of pointers to #GParamSpec structures.
- *  The paramspecs are owned by GLib, but the array should
- *  be freed with g_free() when you are done with it.
+ *
+ * Returns: a pointer to an array of pointers to #GParamSpec
+ *          structures. The paramspecs are owned by GLib, but the
+ *          array should be freed with g_free() when you are done with
+ *          it.
  */
 GParamSpec**
 g_object_interface_list_properties (gpointer      g_iface,
@@ -767,10 +775,10 @@ g_object_dispatch_properties_changed (GObject     *object,
 /**
  * g_object_run_dispose:
  * @object: a #GObject
- * 
- * Releases all references to other objects. This can be used to break 
+ *
+ * Releases all references to other objects. This can be used to break
  * reference cycles.
- * 
+ *
  * This functions should only be called from object system implementations.
  */
 void
@@ -787,10 +795,10 @@ g_object_run_dispose (GObject *object)
 /**
  * g_object_freeze_notify:
  * @object: a #GObject
- * 
+ *
  * Stops emission of "notify" signals on @object. The signals are
- * queued until g_object_thaw_notify() is called on @object. 
- * 
+ * queued until g_object_thaw_notify() is called on @object.
+ *
  * This is necessary for accessors that modify multiple properties to prevent
  * premature notification while the object is still being modified.
  */
@@ -811,8 +819,8 @@ g_object_freeze_notify (GObject *object)
  * g_object_notify:
  * @object: a #GObject
  * @property_name: the name of a property installed on the class of @object.
- * 
- * Emits a "notify" signal for the property @property_name on @object. 
+ *
+ * Emits a "notify" signal for the property @property_name on @object.
  */
 void
 g_object_notify (GObject     *object,
@@ -854,7 +862,7 @@ g_object_notify (GObject     *object,
 /**
  * g_object_thaw_notify:
  * @object: a #GObject
- * 
+ *
  * Reverts the effect of a previous call to g_object_freeze_notify().
  * This causes all queued "notify" signals on @object to be emitted.
  */
@@ -1021,12 +1029,12 @@ object_interface_check_properties (gpointer func_data,
  * @first_property_name: the name of the first property
  * @...: the value of the first property, followed optionally by more
  *  name/value pairs, followed by %NULL
- * 
+ *
  * Creates a new instance of a #GObject subtype and sets its properties.
- * 
- * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+ *
+ * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
  * which are not explicitly specified are set to their default values.
- * 
+ *
  * Returns: a new instance of @object_type
  */
 gpointer
@@ -1083,12 +1091,12 @@ object_in_construction_list (GObject *object)
  * @object_type: the type id of the #GObject subtype to instantiate
  * @n_parameters: the length of the @parameters array
  * @parameters: an array of #GParameter
- * 
+ *
  * Creates a new instance of a #GObject subtype and sets its properties.
- * 
- * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+ *
+ * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
  * which are not explicitly specified are set to their default values.
- * 
+ *
  * Returns: a new instance of @object_type
  */
 gpointer
@@ -1236,12 +1244,12 @@ g_object_newv (GType       object_type,
  * @first_property_name: the name of the first property
  * @var_args: the value of the first property, followed optionally by more
  *  name/value pairs, followed by %NULL
- * 
+ *
  * Creates a new instance of a #GObject subtype and sets its properties.
- * 
- * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+ *
+ * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
  * which are not explicitly specified are set to their default values.
- * 
+ *
  * Returns: a new instance of @object_type
  */
 GObject*
@@ -1350,7 +1358,7 @@ g_object_constructor (GType                  type,
  * @first_property_name: name of the first property to set
  * @var_args: value for the first property, followed optionally by more
  *  name/value pairs, followed by %NULL
- * 
+ *
  * Sets properties on an object.
  */
 void
@@ -1427,13 +1435,13 @@ g_object_set_valist (GObject	 *object,
  * @first_property_name: name of the first property to get
  * @var_args: return location for the first property, followed optionally by more
  *  name/return location pairs, followed by %NULL
- * 
- * Gets properties of an object. 
- * 
- * In general, a copy is made of the property contents and the caller is
- * responsible for freeing the memory in the appropriate manner for the type, 
- * for instance by calling g_free() or g_object_unref().
- * 
+ *
+ * Gets properties of an object.
+ *
+ * In general, a copy is made of the property contents and the caller
+ * is responsible for freeing the memory in the appropriate manner for
+ * the type, for instance by calling g_free() or g_object_unref().
+ *
  * See g_object_get().
  */
 void
@@ -1503,7 +1511,7 @@ g_object_get_valist (GObject	 *object,
  * @first_property_name: name of the first property to set
  * @...: value for the first property, followed optionally by more
  *  name/value pairs, followed by %NULL
- * 
+ *
  * Sets properties on an object.
  */
 void
@@ -1527,13 +1535,13 @@ g_object_set (gpointer     _object,
  * @first_property_name: name of the first property to get
  * @...: return location for the first property, followed optionally by more
  *  name/return location pairs, followed by %NULL
- * 
+ *
  * Gets properties of an object.
- * 
- * In general, a copy is made of the property contents and the caller is
- * responsible for freeing the memory in the appropriate manner for the type, 
- * for instance by calling g_free() or g_object_unref().
- * 
+ *
+ * In general, a copy is made of the property contents and the caller
+ * is responsible for freeing the memory in the appropriate manner for
+ * the type, for instance by calling g_free() or g_object_unref().
+ *
  * <example>
  * <title>Using g_object_get(<!-- -->)</title>
  * An example of using g_object_get() to get the contents
@@ -1542,16 +1550,16 @@ g_object_set (gpointer     _object,
  * <programlisting>
  *  gint intval;
  *  gchar *strval;
- *  GObject *objval; 
- *  
+ *  GObject *objval;
+ *
  *  g_object_get (my_object,
  *                "int-property", &intval,
  *                "str-property", &strval,
  *                "obj-property", &objval,
  *                NULL);
- * 
+ *
  *  // Do something with intval, strval, objval
- *  
+ *
  *  g_free (strval);
  *  g_object_unref (objval);
  * </programlisting>
@@ -1577,7 +1585,7 @@ g_object_get (gpointer     _object,
  * @object: a #GObject
  * @property_name: the name of the property to set
  * @value: the value
- * 
+ *
  * Sets a property on an object.
  */
 void
@@ -1624,12 +1632,12 @@ g_object_set_property (GObject	    *object,
  * @object: a #GObject
  * @property_name: the name of the property to get
  * @value: return location for the property value
- * 
+ *
  * Gets a property of an object.
- * 
+ *
  * In general, a copy is made of the property contents and the caller is
  * responsible for freeing the memory by calling g_value_unset().
- * 
+ *
  * Note that g_object_get_property() is really intended for language
  * bindings, g_object_get() is much more convenient for C programming.
  */
@@ -1700,12 +1708,12 @@ g_object_get_property (GObject	   *object,
  * g_object_connect:
  * @object: a #GObject
  * @signal_spec: the spec for the first signal
- * @...: #GCallback for the first signal, followed by data for the first signal, 
- *  followed optionally by more signal spec/callback/data triples, 
- *  followed by %NULL
- * 
+ * @...: #GCallback for the first signal, followed by data for the
+ *       first signal, followed optionally by more signal
+ *       spec/callback/data triples, followed by %NULL
+ *
  * A convenience function to connect multiple signals at once.
- * 
+ *
  * The signal specs expected by this function have the form
  * "modifier::signal_name", where modifier can be one of the following:
  * <variablelist>
@@ -1765,7 +1773,7 @@ g_object_get_property (GObject	   *object,
  * </para></listitem>
  * </varlistentry>
  * </variablelist>
- * 
+ *
  * |[
  *   menu->toplevel = g_object_connect (g_object_new (GTK_TYPE_WINDOW,
  * 						   "type", GTK_WINDOW_POPUP,
@@ -1776,7 +1784,7 @@ g_object_get_property (GObject	   *object,
  * 				     "signal::destroy", gtk_widget_destroyed, &amp;menu-&gt;toplevel,
  * 				     NULL);
  * ]|
- * 
+ *
  * Returns: @object
  */
 gpointer
@@ -1852,15 +1860,16 @@ g_object_connect (gpointer     _object,
  * g_object_disconnect:
  * @object: a #GObject
  * @signal_spec: the spec for the first signal
- * @...: #GCallback for the first signal, followed by data for the first signal, 
- *  followed optionally by more signal spec/callback/data triples, 
+ * @...: #GCallback for the first signal, followed by data for the first signal,
+ *  followed optionally by more signal spec/callback/data triples,
  *  followed by %NULL
- * 
+ *
  * A convenience function to disconnect multiple signals at once.
- * 
- * The signal specs expected by this function have the form "any_signal", which
- * means to disconnect any signal with matching callback and data, or 
- * "any_signal::signal_name", which only disconnects the signal named "signal_name". 
+ *
+ * The signal specs expected by this function have the form
+ * "any_signal", which means to disconnect any signal with matching
+ * callback and data, or "any_signal::signal_name", which only
+ * disconnects the signal named "signal_name".
  */
 void
 g_object_disconnect (gpointer     _object,
@@ -1935,12 +1944,12 @@ weak_refs_notify (gpointer data)
  * @object: #GObject to reference weakly
  * @notify: callback to invoke before the object is freed
  * @data: extra data to pass to notify
- * 
- * Adds a weak reference callback to an object. Weak references are used for
- * notification when an object is finalized. They are called "weak references" 
- * because they allow you to safely hold a pointer to an object without calling 
- * g_object_ref() (g_object_ref() adds a strong reference, that is, forces the 
- * object to stay alive).
+ *
+ * Adds a weak reference callback to an object. Weak references are
+ * used for notification when an object is finalized. They are called
+ * "weak references" because they allow you to safely hold a pointer
+ * to an object without calling g_object_ref() (g_object_ref() adds a
+ * strong reference, that is, forces the object to stay alive).
  */
 void
 g_object_weak_ref (GObject    *object,
@@ -1977,7 +1986,7 @@ g_object_weak_ref (GObject    *object,
  * @object: #GObject to remove a weak reference from
  * @notify: callback to search for
  * @data: data to search for
- * 
+ *
  * Removes a weak reference callback to an object.
  */
 void
@@ -2016,11 +2025,11 @@ g_object_weak_unref (GObject    *object,
  * g_object_add_weak_pointer:
  * @object: The object that should be weak referenced.
  * @weak_pointer_location: The memory address of a pointer.
- * 
+ *
  * Adds a weak reference from weak_pointer to @object to indicate that
- * the pointer located at @weak_pointer_location is only valid during the 
- * lifetime of @object. When the @object is finalized, @weak_pointer will 
- * be set to %NULL.
+ * the pointer located at @weak_pointer_location is only valid during
+ * the lifetime of @object. When the @object is finalized,
+ * @weak_pointer will be set to %NULL.
  */
 void
 g_object_add_weak_pointer (GObject  *object, 
@@ -2038,7 +2047,7 @@ g_object_add_weak_pointer (GObject  *object,
  * g_object_remove_weak_pointer:
  * @object: The object that is weak referenced.
  * @weak_pointer_location: The memory address of a pointer.
- * 
+ *
  * Removes a weak reference from @object that was previously added
  * using g_object_add_weak_pointer(). The @weak_pointer_location has
  * to match the one used with g_object_add_weak_pointer().
@@ -2082,11 +2091,12 @@ object_floating_flag_handler (GObject        *object,
 /**
  * g_object_is_floating:
  * @object: a #GObject
- * 
+ *
  * Checks wether @object has a <link linkend="floating-ref">floating</link>
  * reference.
- * 
+ *
  * Since: 2.10
+ *
  * Returns: %TRUE if @object has a floating reference
  */
 gboolean
@@ -2100,18 +2110,19 @@ g_object_is_floating (gpointer _object)
 /**
  * g_object_ref_sink:
  * @object: a #GObject
- * 
- * Increase the reference count of @object, and possibly remove the 
+ *
+ * Increase the reference count of @object, and possibly remove the
  * <link linkend="floating-ref">floating</link> reference, if @object
  * has a floating reference.
- * 
- * In other words, if the object is floating, then this call "assumes 
- * ownership" of the floating reference, converting it to a normal reference 
- * by clearing the floating flag while leaving the reference count unchanged. 
- * If the object is not floating, then this call adds a new normal reference 
- * increasing the reference count by one.
- * 
+ *
+ * In other words, if the object is floating, then this call "assumes
+ * ownership" of the floating reference, converting it to a normal
+ * reference by clearing the floating flag while leaving the reference
+ * count unchanged.  If the object is not floating, then this call
+ * adds a new normal reference increasing the reference count by one.
+ *
  * Since: 2.10
+ *
  * Returns: @object
  */
 gpointer
@@ -2131,13 +2142,13 @@ g_object_ref_sink (gpointer _object)
 /**
  * g_object_force_floating:
  * @object: a #GObject
- * 
+ *
  * This function is intended for #GObject implementations to re-enforce a
  * <link linkend="floating-ref">floating</link> object reference.
  * Doing this is seldomly required, all
- * #GInitiallyUnowned<!-- -->s are created with a floating reference which 
+ * #GInitiallyUnowned<!-- -->s are created with a floating reference which
  * usually just needs to be sunken by calling g_object_ref_sink().
- * 
+ *
  * Since: 2.10
  */
 void
@@ -2179,18 +2190,18 @@ toggle_refs_notify (GObject *object,
  *  last reference to the object, or is no longer
  *  the last reference.
  * @data: data to pass to @notify
- * 
+ *
  * Increases the reference count of the object by one and sets a
  * callback to be called when all other references to the object are
  * dropped, or when this is already the last reference to the object
  * and another reference is established.
- * 
+ *
  * This functionality is intended for binding @object to a proxy
  * object managed by another memory manager. This is done with two
  * paired references: the strong reference added by
  * g_object_add_toggle_ref() and a reverse reference to the proxy
  * object which is either a strong reference or weak reference.
- * 
+ *
  * The setup is that when there are no other references to @object,
  * only a weak reference is held in the reverse direction from @object
  * to the proxy object, but when there are other references held to
@@ -2198,17 +2209,17 @@ toggle_refs_notify (GObject *object,
  * when the reference from @object to the proxy object should be
  * <firstterm>toggled</firstterm> from strong to weak (@is_last_ref
  * true) or weak to strong (@is_last_ref false).
- * 
+ *
  * Since a (normal) reference must be held to the object before
  * calling g_object_toggle_ref(), the initial state of the reverse
  * link is always strong.
- * 
+ *
  * Multiple toggle references may be added to the same gobject,
  * however if there are multiple toggle references to an object, none
  * of them will ever be notified until all but one are removed.  For
  * this reason, you should only ever use a toggle reference if there
  * is important state in the proxy object.
- * 
+ *
  * Since: 2.8
  */
 void
@@ -2250,7 +2261,7 @@ g_object_add_toggle_ref (GObject       *object,
   g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
 			       (GDestroyNotify)g_free);
 }
- 
+
 /**
  * g_object_remove_toggle_ref:
  * @object: a #GObject
@@ -2258,10 +2269,10 @@ g_object_add_toggle_ref (GObject       *object,
  *  last reference to the object, or is no longer
  *  the last reference.
  * @data: data to pass to @notify
- * 
+ *
  * Removes a reference added with g_object_add_toggle_ref(). The
  * reference count of the object is decreased by one.
- * 
+ *
  * Since: 2.8
  */
 void
@@ -2305,9 +2316,9 @@ g_object_remove_toggle_ref (GObject       *object,
 /**
  * g_object_ref:
  * @object: a #GObject
- * 
+ *
  * Increases the reference count of @object.
- * 
+ *
  * Returns: the same @object
  */
 gpointer
@@ -2336,10 +2347,9 @@ g_object_ref (gpointer _object)
 /**
  * g_object_unref:
  * @object: a #GObject
- * 
- * Decreases the reference count of @object.
- * When its reference count drops to 0, the object is finalized 
- * (i.e. its memory is freed).
+ *
+ * Decreases the reference count of @object. When its reference count
+ * drops to 0, the object is finalized (i.e. its memory is freed).
  */
 void
 g_object_unref (gpointer _object)
@@ -2438,7 +2448,7 @@ g_object_get_qdata (GObject *object,
  * @object: The GObject to set store a user data pointer
  * @quark: A #GQuark, naming the user data pointer
  * @data: An opaque user data pointer
- * 
+ *
  * This sets an opaque, named pointer on an object.
  * The name is specified through a #GQuark (retrived e.g. via
  * g_quark_from_static_string()), and the pointer
@@ -2464,8 +2474,9 @@ g_object_set_qdata (GObject *object,
  * @object: The GObject to set store a user data pointer
  * @quark: A #GQuark, naming the user data pointer
  * @data: An opaque user data pointer
- * @destroy: Function to invoke with @data as argument, when @data needs to be freed
- * 
+ * @destroy: Function to invoke with @data as argument, when @data
+ *           needs to be freed
+ *
  * This function works like g_object_set_qdata(), but in addition,
  * a void (*destroy) (gpointer) function may be specified which is
  * called with @data as argument when the @object is finalized, or
@@ -2489,7 +2500,7 @@ g_object_set_qdata_full (GObject       *object,
  * g_object_steal_qdata:
  * @object: The GObject to get a stored user data pointer from
  * @quark: A #GQuark, naming the user data pointer
- * 
+ *
  * This function gets back user data pointers stored via
  * g_object_set_qdata() and removes the @data from object
  * without invoking it's destroy() function (if any was
@@ -2505,7 +2516,7 @@ g_object_set_qdata_full (GObject       *object,
  *   GQuark quark_string_list = g_quark_from_static_string ("my-string-list");
  *   // retrive the old string list
  *   GList *list = g_object_steal_qdata (object, quark_string_list);
- *   
+ *
  *   // prepend new string
  *   list = g_list_prepend (list, g_strdup (new_string));
  *   // this changed 'list', so we need to set it again
@@ -2515,16 +2526,17 @@ g_object_set_qdata_full (GObject       *object,
  * free_string_list (gpointer data)
  * {
  *   GList *node, *list = data;
- *   
+ *
  *   for (node = list; node; node = node->next)
  *     g_free (node->data);
  *   g_list_free (list);
  * }
  * ]|
- * Using g_object_get_qdata() in the above example, instead of g_object_steal_qdata()
- * would have left the destroy function set, and thus the partial string list would
- * have been freed upon g_object_set_qdata_full().
- * 
+ * Using g_object_get_qdata() in the above example, instead of
+ * g_object_steal_qdata() would have left the destroy function set,
+ * and thus the partial string list would have been freed upon
+ * g_object_set_qdata_full().
+ *
  * Returns: The user data pointer set, or %NULL
  */
 gpointer
@@ -2565,10 +2577,10 @@ g_object_get_data (GObject     *object,
  * @object: #GObject containing the associations.
  * @key: name of the key
  * @data: data to associate with that key
- * 
+ *
  * Each object carries around a table of associations from
  * strings to pointers.  This function lets you set an association.
- * 
+ *
  * If the object already had an association with that name,
  * the old association will be destroyed.
  */
@@ -2589,11 +2601,11 @@ g_object_set_data (GObject     *object,
  * @key: name of the key
  * @data: data to associate with that key
  * @destroy: function to call when the association is destroyed
- * 
+ *
  * Like g_object_set_data() except it adds notification
- * for when the association is destroyed, either by setting it 
+ * for when the association is destroyed, either by setting it
  * to a different value or when the object is destroyed.
- * 
+ *
  * Note that the @destroy callback is not called if @data is %NULL.
  */
 void
@@ -2613,10 +2625,10 @@ g_object_set_data_full (GObject       *object,
  * g_object_steal_data:
  * @object: #GObject containing the associations
  * @key: name of the key
- * 
+ *
  * Remove a specified datum from the object's data associations,
  * without invoking the association's destroy handler.
- * 
+ *
  * Returns: the data if found, or %NULL if no such data exists.
  */
 gpointer
@@ -2728,16 +2740,15 @@ g_value_object_lcopy_value (const GValue *value,
  * g_value_set_object:
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
  * @v_object: object value to be set
- * 
+ *
  * Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
- * 
+ *
  * g_value_set_object() increases the reference count of @v_object
- * (the #GValue holds a reference to @v_object).
- * If you do not wish to increase the reference count of the object
- * (i.e. you wish to pass your current reference to the #GValue because you no
- * longer need it),
- * use g_value_take_object() instead.
- * 
+ * (the #GValue holds a reference to @v_object).  If you do not wish
+ * to increase the reference count of the object (i.e. you wish to
+ * pass your current reference to the #GValue because you no longer
+ * need it), use g_value_take_object() instead.
+ *
  * It is important that your #GValue holds a reference to @v_object (either its
  * own, or one it has taken) to ensure that the object won't be destroyed while
  * the #GValue still exists).
@@ -2771,9 +2782,9 @@ g_value_set_object (GValue   *value,
  * g_value_set_object_take_ownership:
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
  * @v_object: object value to be set
- * 
+ *
  * This is an internal function introduced mainly for C marshallers.
- * 
+ *
  * Deprecated: 2.4: Use g_value_take_object() instead.
  */
 void
@@ -2787,15 +2798,15 @@ g_value_set_object_take_ownership (GValue  *value,
  * g_value_take_object:
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
  * @v_object: object value to be set
- * 
- * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object 
- * and takes over the ownership of the callers reference to @v_object; 
+ *
+ * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object
+ * and takes over the ownership of the callers reference to @v_object;
  * the caller doesn't have to unref it any more (i.e. the reference
  * count of the object is not increased).
- * 
+ *
  * If you want the #GValue to hold its own reference to @v_object, use
  * g_value_set_object() instead.
- * 
+ *
  * Since: 2.4
  */
 void
@@ -2838,10 +2849,12 @@ g_value_get_object (const GValue *value)
 /**
  * g_value_dup_object:
  * @value: a valid #GValue whose type is derived from %G_TYPE_OBJECT
- * 
- * Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing its reference count.
- * 
- * Returns: object content of @value, should be unreferenced when no longer needed.
+ *
+ * Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing
+ * its reference count.
+ *
+ * Returns: object content of @value, should be unreferenced when no
+ *          longer needed.
  */
 gpointer
 g_value_dup_object (const GValue *value)
@@ -2858,30 +2871,30 @@ g_value_dup_object (const GValue *value)
  * @c_handler: the #GCallback to connect.
  * @gobject: the object to pass as data to @c_handler.
  * @connect_flags: a combination of #GConnnectFlags.
- * 
- *  This is similar to g_signal_connect_data(), but uses a closure which
- *  ensures that the @gobject stays alive during the call to @c_handler
- *  by temporarily adding a reference count to @gobject.
- * 
- *  Note that there is a bug in GObject that makes this function
- *  much less useful than it might seem otherwise. Once @gobject is
- *  disposed, the callback will no longer be called, but, the signal
- *  handler is <emphasis>not</emphasis> currently disconnected. If the
- *  @instance is itself being freed at the same time than this doesn't
- *  matter, since the signal will automatically be removed, but
- *  if @instance persists, then the signal handler will leak. You
- *  should not remove the signal yourself because in a future versions of
- *  GObject, the handler <emphasis>will</emphasis> automatically
- *  be disconnected.
- * 
- *  It's possible to work around this problem in a way that will
- *  continue to work with future versions of GObject by checking
- *  that the signal handler is still connected before disconnected it:
+ *
+ * This is similar to g_signal_connect_data(), but uses a closure which
+ * ensures that the @gobject stays alive during the call to @c_handler
+ * by temporarily adding a reference count to @gobject.
+ *
+ * Note that there is a bug in GObject that makes this function
+ * much less useful than it might seem otherwise. Once @gobject is
+ * disposed, the callback will no longer be called, but, the signal
+ * handler is <emphasis>not</emphasis> currently disconnected. If the
+ * @instance is itself being freed at the same time than this doesn't
+ * matter, since the signal will automatically be removed, but
+ * if @instance persists, then the signal handler will leak. You
+ * should not remove the signal yourself because in a future versions of
+ * GObject, the handler <emphasis>will</emphasis> automatically
+ * be disconnected.
+ *
+ * It's possible to work around this problem in a way that will
+ * continue to work with future versions of GObject by checking
+ * that the signal handler is still connected before disconnected it:
  * <informalexample><programlisting>
  *  if (g_signal_handler_is_connected (instance, id))
  *    g_signal_handler_disconnect (instance, id);
  * </programlisting></informalexample>
- * 
+ *
  * Returns: the handler id.
  */
 gulong
@@ -2976,16 +2989,16 @@ destroy_closure_array (gpointer data)
  * g_object_watch_closure:
  * @object: GObject restricting lifetime of @closure
  * @closure: GClosure to watch
- * 
- * This function essentially limits the life time of the @closure
- * to the life time of the object. That is, when the object is finalized,
- * the @closure is invalidated by calling g_closure_invalidate() on it,
- * in order to prevent invocations of the closure with a finalized 
- * (nonexisting) object. Also, g_object_ref() and g_object_unref() are added
- * as marshal guards to the @closure, to ensure that an extra reference
- * count is held on @object during invocation of the @closure.
- * Usually, this function will be called on closures that use this @object
- * as closure data.
+ *
+ * This function essentially limits the life time of the @closure to
+ * the life time of the object. That is, when the object is finalized,
+ * the @closure is invalidated by calling g_closure_invalidate() on
+ * it, in order to prevent invocations of the closure with a finalized
+ * (nonexisting) object. Also, g_object_ref() and g_object_unref() are
+ * added as marshal guards to the @closure, to ensure that an extra
+ * reference count is held on @object during invocation of the
+ * @closure.  Usually, this function will be called on closures that
+ * use this @object as closure data.
  */
 void
 g_object_watch_closure (GObject  *object,
@@ -3023,16 +3036,16 @@ g_object_watch_closure (GObject  *object,
 
 /**
  * g_closure_new_object:
- * @sizeof_closure: the size of the structure to allocate, must be at least 
+ * @sizeof_closure: the size of the structure to allocate, must be at least
  *  <literal>sizeof (GClosure)</literal>
- * @object: a #GObject pointer to store in the @data field of the newly 
+ * @object: a #GObject pointer to store in the @data field of the newly
  *  allocated #GClosure
- * 
- * A variant of g_closure_new_simple() which stores @object in the @data
- * field of the closure and calls g_object_watch_closure() on @object and the 
- * created closure. This function is mainly useful when implementing new types 
- * of closures.
- * 
+ *
+ * A variant of g_closure_new_simple() which stores @object in the
+ * @data field of the closure and calls g_object_watch_closure() on
+ * @object and the created closure. This function is mainly useful
+ * when implementing new types of closures.
+ *
  * Returns: a newly allocated #GClosure
  */
 GClosure*
@@ -3054,12 +3067,13 @@ g_closure_new_object (guint    sizeof_closure,
  * g_cclosure_new_object:
  * @callback_func: the function to invoke
  * @object: a #GObject pointer to pass to @callback_func
- * 
- * A variant of g_cclosure_new() which uses @object as @user_data and calls 
- * g_object_watch_closure() on @object and the created closure. This function 
- * is useful when you have a callback closely associated with a #GObject,
- * and want the callback to no longer run after the object is is freed.
- * 
+ *
+ * A variant of g_cclosure_new() which uses @object as @user_data and
+ * calls g_object_watch_closure() on @object and the created
+ * closure. This function is useful when you have a callback closely
+ * associated with a #GObject, and want the callback to no longer run
+ * after the object is is freed.
+ *
  * Returns: a new #GCClosure
  */
 GClosure*
@@ -3082,12 +3096,13 @@ g_cclosure_new_object (GCallback callback_func,
  * g_cclosure_new_object_swap:
  * @callback_func: the function to invoke
  * @object: a #GObject pointer to pass to @callback_func
- * 
- * A variant of g_cclosure_new_swap() which uses @object as @user_data and calls 
- * g_object_watch_closure() on @object and the created closure. This function 
- * is useful when you have a callback closely associated with a #GObject,
- * and want the callback to no longer run after the object is is freed.
- * 
+ *
+ * A variant of g_cclosure_new_swap() which uses @object as @user_data
+ * and calls g_object_watch_closure() on @object and the created
+ * closure. This function is useful when you have a callback closely
+ * associated with a #GObject, and want the callback to no longer run
+ * after the object is is freed.
+ *
  * Returns: a new #GCClosure
  */
 GClosure*

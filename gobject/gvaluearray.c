@@ -27,14 +27,17 @@
 #include <stdlib.h>  /* qsort() */
 
 #include "gvaluearray.h"
-
 #include "gobjectalias.h"
 
 
 /**
  * SECTION:value_arrays
- * @Short_description: A container structure to maintain an array of generic values
+ *
+ * @Short_description: A container structure to maintain an array of
+ * generic values
+ *
  * @See_also:#GValue, #GParamSpecValueArray, g_param_spec_value_array()
+ *
  * @Title: Value arrays
  *
  * The prime purpose of a #GValueArray is for it to be used as an
@@ -56,9 +59,9 @@
  * g_value_array_get_nth:
  * @value_array: #GValueArray to get a value from
  * @index_: index of the value of interest
- * 
+ *
  * Return a pointer to the value at @index_ containd in @value_array.
- * 
+ *
  * Returns: pointer to a value at @index_ in @value_array
  */
 GValue*
@@ -107,11 +110,11 @@ value_array_shrink (GValueArray *value_array)
 /**
  * g_value_array_new:
  * @n_prealloced: number of values to preallocate space for
- * 
+ *
  * Allocate and initialize a new #GValueArray, optionally preserve space
  * for @n_prealloced elements. New arrays always contain 0 elements,
  * regardless of the value of @n_prealloced.
- * 
+ *
  * Returns: a newly allocated #GValueArray with 0 values
  */
 GValueArray*
@@ -131,7 +134,7 @@ g_value_array_new (guint n_prealloced)
 /**
  * g_value_array_free:
  * @value_array: #GValueArray to free
- * 
+ *
  * Free a #GValueArray including its contents.
  */
 void
@@ -155,10 +158,10 @@ g_value_array_free (GValueArray *value_array)
 /**
  * g_value_array_copy:
  * @value_array: #GValueArray to copy
- * 
+ *
  * Construct an exact copy of a #GValueArray by duplicating all its
  * contents.
- * 
+ *
  * Returns: Newly allocated copy of #GValueArray
  */
 GValueArray*
@@ -189,9 +192,9 @@ g_value_array_copy (const GValueArray *value_array)
  * g_value_array_prepend:
  * @value_array: #GValueArray to add an element to
  * @value: #GValue to copy into #GValueArray
- * 
+ *
  * Insert a copy of @value as first element of @value_array.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
@@ -207,9 +210,9 @@ g_value_array_prepend (GValueArray  *value_array,
  * g_value_array_append:
  * @value_array: #GValueArray to add an element to
  * @value: #GValue to copy into #GValueArray
- * 
+ *
  * Insert a copy of @value as last element of @value_array.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
@@ -226,9 +229,9 @@ g_value_array_append (GValueArray  *value_array,
  * @value_array: #GValueArray to add an element to
  * @index_: insertion position, must be &lt;= value_array-&gt;n_values
  * @value: #GValue to copy into #GValueArray
- * 
+ *
  * Insert a copy of @value at specified position into @value_array.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
@@ -261,9 +264,9 @@ g_value_array_insert (GValueArray  *value_array,
  * g_value_array_remove:
  * @value_array: #GValueArray to remove an element from
  * @index_: position of value to remove, must be &lt; value_array->n_values
- * 
+ *
  * Remove the value at position @index_ from @value_array.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
@@ -290,12 +293,12 @@ g_value_array_remove (GValueArray *value_array,
  * g_value_array_sort:
  * @value_array: #GValueArray to sort
  * @compare_func: function to compare elements
- * 
+ *
  * Sort @value_array using @compare_func to compare the elements accoring to
  * the semantics of #GCompareFunc.
- * 
+ *
  * The current implementation uses Quick-Sort as sorting algorithm.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
@@ -317,13 +320,12 @@ g_value_array_sort (GValueArray *value_array,
  * @value_array: #GValueArray to sort
  * @compare_func: function to compare elements
  * @user_data: extra data argument provided for @compare_func
- * 
+ *
  * Sort @value_array using @compare_func to compare the elements accoring
  * to the semantics of #GCompareDataFunc.
- * 
- * 
+ *
  * The current implementation uses Quick-Sort as sorting algorithm.
- * 
+ *
  * Returns: the #GValueArray passed in as @value_array
  */
 GValueArray*
