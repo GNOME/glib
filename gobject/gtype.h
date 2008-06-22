@@ -185,6 +185,11 @@ G_BEGIN_DECLS
  * type IDs with G_TYPE_MAKE_FUNDAMENTAL().
  * Send email to gtk-devel-list@gnome.org for reservations.
  */
+/**
+ * G_TYPE_FUNDAMENTAL_SHIFT:
+ *
+ * Shift value used in converting numbers to type IDs.
+ */
 #define	G_TYPE_FUNDAMENTAL_SHIFT	(2)
 /**
  * G_TYPE_MAKE_FUNDAMENTAL:

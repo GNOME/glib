@@ -1,5 +1,15 @@
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
+	* docs/reference/gobject/tmpl/gobject-unused.sgml:
+	* gobject/gobject.h:
+	* gobject/gtype.c:
+	* gobject/gtype.h:
+	  Move some content for gobject-unused.sgml and cleared empty entries.
+	  The remaining 4 ones should be checked by some else. If they are not
+	  needed. The file can be removed.
+
+2008-06-22  Stefan Kost  <ensonic@users.sf.net>
+
 	* docs/reference/gobject/tmpl/value_collection.sgml:
 	* gobject/gvaluecollector.h:
 	  Migrating docs.

@@ -136,10 +136,46 @@ G_BEGIN_DECLS
  * The type for #GInitiallyUnowned.
  */
 #define G_TYPE_INITIALLY_UNOWNED	      (g_initially_unowned_get_type())
+/**
+ * G_INITIALLY_UNOWNED:
+ * @object: Object which is subject to casting.
+ * 
+ * Casts a #GInitiallyUnowned or derived pointer into a (GInitiallyUnowned*) 
+ * pointer. Depending on the current debugging level, this function may invoke
+ * certain runtime checks to identify invalid casts.
+ */
 #define G_INITIALLY_UNOWNED(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnowned))
+/**
+ * G_INITIALLY_UNOWNED_CLASS:
+ * @class: a valid #GInitiallyUnownedClass
+ * 
+ * Casts a derived #GInitiallyUnownedClass structure into a
+ * #GInitiallyUnownedClass structure.
+ */
 #define G_INITIALLY_UNOWNED_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnownedClass))
+/**
+ * G_IS_INITIALLY_UNOWNED:
+ * @object: Instance to check for being a %G_TYPE_INITIALLY_UNOWNED.
+ * 
+ * Checks whether a valid #GTypeInstance pointer is of type %G_TYPE_INITIALLY_UNOWNED.
+ */
 #define G_IS_INITIALLY_UNOWNED(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_INITIALLY_UNOWNED))
+/**
+ * G_IS_INITIALLY_UNOWNED_CLASS:
+ * @class: a #GInitiallyUnownedClass
+ * 
+ * Checks whether @class "is a" valid #GInitiallyUnownedClass structure of type
+ * %G_TYPE_INITIALLY_UNOWNED or derived.
+ */
 #define G_IS_INITIALLY_UNOWNED_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_INITIALLY_UNOWNED))
+/**
+ * G_INITIALLY_UNOWNED_GET_CLASS:
+ * @object: a #GInitiallyUnowned instance.
+ * 
+ * Get the class structure associated to a #GInitiallyUnowned instance.
+ *
+ * Returns: pointer to object class structure.
+ */
 #define G_INITIALLY_UNOWNED_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnownedClass))
 /* GInitiallyUnowned ia a GObject with initially floating reference count */
 

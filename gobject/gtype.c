@@ -3750,6 +3750,15 @@ g_type_check_class_cast (GTypeClass *type_class,
   return type_class;
 }
 
+/*
+ * g_type_check_instance:
+ * @instance: A valid #GTypeInstance structure.
+ *
+ * Private helper function to aid implementation of the G_TYPE_CHECK_INSTANCE()
+ * macro.
+ *
+ * @Returns:  #TRUE if @instance is valid, #FALSE otherwise.
+ */
 gboolean
 g_type_check_instance (GTypeInstance *type_instance)
 {
