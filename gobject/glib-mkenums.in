@@ -15,6 +15,7 @@ my $seenbitshift;		# Have we seen bitshift operators?
 my $enum_prefix;		# Prefix for this enumeration
 my $enumname;			# Name for this enumeration
 my $enumshort;			# $enumname without prefix
+my $enumname_prefix;		# prefix of $enumname
 my $enumindex = 0;		# Global enum counter
 my $firstenum = 1;		# Is this the first enumeration per file?
 my @entries;			# [ $name, $val ] for each entry
@@ -149,6 +150,7 @@ sub usage {
     print "  \@enum_name\@                prefix_the_xenum\n";
     print "  \@ENUMNAME\@                 PREFIX_THE_XENUM\n";
     print "  \@ENUMSHORT\@                THE_XENUM\n";
+    print "  \@ENUMPREFIX\@               PREFIX\n";
     print "  \@VALUENAME\@                PREFIX_THE_XVALUE\n";
     print "  \@valuenick\@                the-xvalue\n";
     print "  \@type\@                     either enum or flags\n";
@@ -361,6 +363,9 @@ while (<>) {
 	    $enumsym = lc $option_underscore_name;
 	    $enumshort = $enumlong;
 	    $enumshort =~ s/^[A-Z][A-Z0-9]*_//;
+
+	    $enumname_prefix = $enumlong;
+	    $enumname_prefix =~ s/$enumshort$//;
 	} else {
 	    # enumname is e.g. GMatchType
 	    $enspace = $enumname;
@@ -371,6 +376,10 @@ while (<>) {
 	    $enumshort =~ s/([^A-Z])([A-Z])/$1_$2/g;
 	    $enumshort =~ s/([A-Z][A-Z])([A-Z][0-9a-z])/$1_$2/g;
 	    $enumshort = uc($enumshort);
+
+	    $enumname_prefix = $enumname;
+	    $enumname_prefix =~ s/^([A-Z][a-z]*).*$/$1/;
+	    $enumname_prefix = uc($enumname_prefix);
 
 	    $enumlong = uc($enspace) . "_" . $enumshort;
 	    $enumsym = lc($enspace) . "_" . lc($enumshort);
@@ -402,6 +411,7 @@ while (<>) {
 	    $prod =~ s/\@EnumName\@/$enumname/g;
 	    $prod =~ s/\@ENUMSHORT\@/$enumshort/g;
 	    $prod =~ s/\@ENUMNAME\@/$enumlong/g;
+	    $prod =~ s/\@ENUMPREFIX\@/$enumname_prefix/g;
 	    if ($flags) { $prod =~ s/\@type\@/flags/g; } else { $prod =~ s/\@type\@/enum/g; }
 	    if ($flags) { $prod =~ s/\@Type\@/Flags/g; } else { $prod =~ s/\@Type\@/Enum/g; }
 	    if ($flags) { $prod =~ s/\@TYPE\@/FLAGS/g; } else { $prod =~ s/\@TYPE\@/ENUM/g; }
@@ -419,6 +429,7 @@ while (<>) {
             $prod =~ s/\@EnumName\@/$enumname/g;
             $prod =~ s/\@ENUMSHORT\@/$enumshort/g;
             $prod =~ s/\@ENUMNAME\@/$enumlong/g;
+	    $prod =~ s/\@ENUMPREFIX\@/$enumname_prefix/g;
 	    if ($flags) { $prod =~ s/\@type\@/flags/g; } else { $prod =~ s/\@type\@/enum/g; }
 	    if ($flags) { $prod =~ s/\@Type\@/Flags/g; } else { $prod =~ s/\@Type\@/Enum/g; }
 	    if ($flags) { $prod =~ s/\@TYPE\@/FLAGS/g; } else { $prod =~ s/\@TYPE\@/ENUM/g; }
@@ -456,6 +467,7 @@ while (<>) {
             $prod =~ s/\@EnumName\@/$enumname/g;
             $prod =~ s/\@ENUMSHORT\@/$enumshort/g;
             $prod =~ s/\@ENUMNAME\@/$enumlong/g;
+	    $prod =~ s/\@ENUMPREFIX\@/$enumname_prefix/g;
 	    if ($flags) { $prod =~ s/\@type\@/flags/g; } else { $prod =~ s/\@type\@/enum/g; }
 	    if ($flags) { $prod =~ s/\@Type\@/Flags/g; } else { $prod =~ s/\@Type\@/Enum/g; }
 	    if ($flags) { $prod =~ s/\@TYPE\@/FLAGS/g; } else { $prod =~ s/\@TYPE\@/ENUM/g; }
