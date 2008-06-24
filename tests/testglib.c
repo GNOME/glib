@@ -506,85 +506,6 @@ find_first_that(gpointer key,
   return (*v == *test);
 }
 
-
-static void
-test_g_mkdir_with_parents_1 (const gchar *base)
-{
-  char *p0 = g_build_filename (base, "fum", NULL);
-  char *p1 = g_build_filename (p0, "tem", NULL);
-  char *p2 = g_build_filename (p1, "zap", NULL);
-  FILE *f;
-
-  g_remove (p2);
-  g_remove (p1);
-  g_remove (p0);
-
-  if (g_file_test (p0, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p0);
-
-  if (g_file_test (p1, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p1);
-
-  if (g_file_test (p2, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p2);
-
-  if (g_mkdir_with_parents (p2, 0777) == -1)
-    g_error ("failed, g_mkdir_with_parents(%s) failed: %s\n", p2, g_strerror (errno));
-
-  if (!g_file_test (p2, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p2);
-
-  if (!g_file_test (p1, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p1);
-
-  if (!g_file_test (p0, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p0);
-
-  g_rmdir (p2);
-  if (g_file_test (p2, G_FILE_TEST_EXISTS))
-    g_error ("failed, did g_rmdir(%s), but %s is still there\n", p2, p2);
-
-  g_rmdir (p1);
-  if (g_file_test (p1, G_FILE_TEST_EXISTS))
-    g_error ("failed, did g_rmdir(%s), but %s is still there\n", p1, p1);
-
-  f = g_fopen (p1, "w");
-  if (f == NULL)
-    g_error ("failed, couldn't create file %s\n", p1);
-  fclose (f);
-
-  if (g_mkdir_with_parents (p1, 0666) == 0)
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p1, p1);
-
-  if (g_mkdir_with_parents (p2, 0666) == 0)
-    g_error("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p2, p1);
-
-  g_remove (p2);
-  g_remove (p1);
-  g_remove (p0);
-}
-
-static void
-test_g_mkdir_with_parents (void)
-{
-  gchar *cwd;
-  if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in subdir ./hum/");
-  test_g_mkdir_with_parents_1 ("hum");
-  g_remove ("hum");
-  if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  test_g_mkdir_with_parents_1 ("hii///haa/hee");
-  g_remove ("hii/haa/hee");
-  g_remove ("hii/haa");
-  g_remove ("hii");
-  cwd = g_get_current_dir ();
-  if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_g_mkdir_with_parents_1 (cwd);
-  g_free (cwd);
-}
-
 static void
 test_g_parse_debug_string (void)
 {
@@ -1601,7 +1522,6 @@ main (int   argc,
   g_test_add_func ("/testglib/Relation", relation_test);
   g_test_add_func ("/testglib/File Paths", test_paths);
   g_test_add_func ("/testglib/File Functions", test_file_functions);
-  g_test_add_func ("/testglib/Mkdir", test_g_mkdir_with_parents);
   g_test_add_func ("/testglib/Parse Debug Strings", test_g_parse_debug_string);
   g_test_add_func ("/testglib/GMemChunk (deprecated)", test_mem_chunks);
   g_test_add_func ("/testglib/Warnings & Errors", log_warning_error_tests);

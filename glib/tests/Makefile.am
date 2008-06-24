@@ -14,6 +14,14 @@ TEST_PROGS       	 += option-context
 option_context_SOURCES	  = option-context.c
 option_context_LDADD	  = $(progs_ldadd)
 
+TEST_PROGS        += fileutils
+fileutils_SOURCES   = fileutils.c
+fileutils_LDADD	   = $(progs_ldadd)
+
+TEST_PROGS        += strfuncs
+strfuncs_SOURCES   = strfuncs.c
+strfuncs_LDADD	   = $(progs_ldadd) -lm
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present

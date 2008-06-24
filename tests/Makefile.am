@@ -137,10 +137,7 @@ test_programs =					\
 	slice-threadinit			\
 	spawn-test				\
 	$(spawn_test_win32_gui)			\
-	strfunc-test				\
 	string-test				\
-	strtod-test				\
-	strtoll-test				\
 	thread-test				\
 	threadpool-test				\
 	tree-test				\
@@ -213,10 +210,7 @@ slice_concurrent_LDADD = $(thread_ldadd)
 slice_threadinit_SOURCES = slice-threadinit.c
 slice_threadinit_LDADD = $(thread_ldadd)
 spawn_test_LDADD = $(progs_ldadd)
-strfunc_test_LDADD = $(progs_ldadd)
 string_test_LDADD = $(progs_ldadd)
-strtod_test_LDADD = $(progs_ldadd) -lm
-strtoll_test_LDADD = $(progs_ldadd) -lm
 thread_test_LDADD = $(thread_ldadd)
 threadpool_test_LDADD = $(thread_ldadd)
 tree_test_LDADD = $(progs_ldadd)

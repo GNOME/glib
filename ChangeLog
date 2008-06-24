@@ -1,3 +1,21 @@
+2008-06-24  Paolo Borelli  <pborelli@katamail.com>
+
+	Bug 539770 - migrate gstrfunc unit tests to gtest
+
+	* tests/strfunc-test.c:
+	* tests/testglib.c:
+	* tests/strtoll-test.c:
+	* tests/strtod-test.c:
+	* tests/string-test.c:
+	* tests/Makefile.am:
+	Removed old tests.
+
+	* glib/tests/fileutils.c:
+	* glib/tests/strfuncs.c:
+	* glib/tests/Makefile.am:
+	Added all the old tests migrated to the new unit test framework
+	and add new unit tests for some of the functions.
+
 2008-06-23  Kristian Rietveld  <kris@imendio.com>
 
 	* gobject/glib-mkenums.in: introduce an ENUMPREFIX substitution.
