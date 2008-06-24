@@ -1,6 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-# we have no tests here
-#include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/Makefile.decl
 
 AUTOMAKE_OPTIONS = 1.6
 

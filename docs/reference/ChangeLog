@@ -1,3 +1,10 @@
+2008-06-24  Michael Natterer  <mitch@imendio.com>
+
+	* glib/Makefile.am
+	* gobject/Makefile.am: don't comment out the include of
+	Makefile.decl just because there are no tests. It needs to be
+	included in each Makefile.am or make check will fail.
+
 2008-06-22  Stefan Kost  <ensonic@users.sf.net>
 
 	* glib/Makefile.am:
