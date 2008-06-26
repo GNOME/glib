@@ -1,3 +1,10 @@
+2008-06-26  Cody Russell  <bratsche@gnome.org>
+
+	* configure.in: Add #define GLIB_USING_SYSTEM_PRINTF
+	to glibconfig.h, which specifies if GLib is using
+	the system printf functions for g_print*().
+	(#539999, by Tim-Philipp Müller)
+
 2008-06-24  Paolo Borelli  <pborelli@katamail.com>
 
 	Bug 539770 - migrate gstrfunc unit tests to gtest
