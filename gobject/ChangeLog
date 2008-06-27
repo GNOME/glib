@@ -1,3 +1,8 @@
+2008-06-27  Hans Breuer  <hans@breuer.org>
+
+	* glib-genmarshal.c : move G_OS_WIN32 inclusion of <io.h> down to
+	where G_OS_WIN32 will be defined (#540047, Kazuki IWAMOTO)
+
 2008-06-22  Michael Natterer  <mitch@imendio.com>
 
 	* *.c: remove trailing whitespace from newly added gtk-doc
