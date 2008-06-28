@@ -59,12 +59,11 @@ struct _GFileIconClass
 };
 
 G_DEFINE_TYPE_WITH_CODE (GFileIcon, g_file_icon, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
-						g_file_icon_icon_iface_init);
-			 G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
-						g_file_icon_loadable_icon_iface_init);
-			 )
-  
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                g_file_icon_icon_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
+                                                g_file_icon_loadable_icon_iface_init))
+
 static void
 g_file_icon_finalize (GObject *object)
 {

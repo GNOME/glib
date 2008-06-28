@@ -1,3 +1,7 @@
+2008-06-28  Michael Natterer  <mitch@imendio.com>
+
+	* gfileicon.c: remove semicolons from G_IMPLEMENT_INTERFACE().
+
 2008-06-18  Matthias Clasen <mclasen@rdhat.com>
 
 	* glocalfileinfo.c: Don't do fallback for user-home and user-desktop
