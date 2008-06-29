@@ -1,3 +1,10 @@
+2008-06-29  Björn Lindqvist  <bjourne@gmail.com>
+
+	Bug 539626 – Update docstrings for g_object_freeze_notify and
+	g_object_thaw_notify
+
+	* gobject/gobject.c: Explain how the freeze count works.
+
 2008-06-26  Cody Russell  <bratsche@gnome.org>
 
 	* configure.in: Add #define GLIB_USING_SYSTEM_PRINTF

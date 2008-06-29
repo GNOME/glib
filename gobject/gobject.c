@@ -796,8 +796,10 @@ g_object_run_dispose (GObject *object)
  * g_object_freeze_notify:
  * @object: a #GObject
  *
- * Stops emission of "notify" signals on @object. The signals are
- * queued until g_object_thaw_notify() is called on @object.
+ * Increases the freeze count on @object. If the freeze count is
+ * non-zero, the emission of "notify" signals on @object is
+ * stopped. The signals are queued until the freeze count is decreased
+ * to zero.
  *
  * This is necessary for accessors that modify multiple properties to prevent
  * premature notification while the object is still being modified.
@@ -863,8 +865,11 @@ g_object_notify (GObject     *object,
  * g_object_thaw_notify:
  * @object: a #GObject
  *
- * Reverts the effect of a previous call to g_object_freeze_notify().
- * This causes all queued "notify" signals on @object to be emitted.
+ * Reverts the effect of a previous call to
+ * g_object_freeze_notify(). The freeze count is decreased on @object
+ * and when it reaches zero, all queued "notify" signals are emitted.
+ *
+ * It is an error to call this function when the freeze count is zero.
  */
 void
 g_object_thaw_notify (GObject *object)
