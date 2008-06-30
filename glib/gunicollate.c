@@ -240,11 +240,16 @@ g_utf8_collate_key (const gchar *str,
 
   str_norm = g_utf8_normalize (str, len, G_NORMALIZE_ALL_COMPOSE);
 
+  result = NULL;
+
   if (g_get_charset (&charset))
     {
       xfrm_len = strxfrm (NULL, str_norm, 0);
-      result = g_malloc (xfrm_len + 1);
-      strxfrm (result, str_norm, xfrm_len + 1);
+      if (xfrm_len >= 0 && xfrm_len < G_MAXINT - 2)
+        {
+          result = g_malloc (xfrm_len + 1);
+          strxfrm (result, str_norm, xfrm_len + 1);
+        }
     }
   else
     {
@@ -267,14 +272,15 @@ g_utf8_collate_key (const gchar *str,
 	  
 	  g_free (str_locale);
 	}
-      else
-	{
-	  xfrm_len = strlen (str_norm);
-	  result = g_malloc (xfrm_len + 2);
-	  result[0] = 'B';
-	  memcpy (result + 1, str_norm, xfrm_len);
-	  result[xfrm_len+1] = '\0';
-	}
+    }
+
+  if (!result)
+    {
+      xfrm_len = strlen (str_norm);
+      result = g_malloc (xfrm_len + 2);
+      result[0] = 'B';
+      memcpy (result + 1, str_norm, xfrm_len);
+      result[xfrm_len+1] = '\0';
     }
 
   g_free (str_norm);
