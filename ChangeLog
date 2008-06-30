@@ -2,6 +2,15 @@
 
 	Backport from trunk:
 
+	Bug 538119 – glib's mainloop leaks a pipe to sub-processes
+
+	* glib/gmain.c (g_main_context_init_pipe): Don't leak the
+	pipes to child processes. Patch by Thiago Macieira.
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
 	Bug 502511 – g_assert_cmphex prints invalid message
 
 	* glib/gtestutils.c (g_assertion_message_cmpnum): Actually print
