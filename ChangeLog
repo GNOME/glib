@@ -1,3 +1,12 @@
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
+	Bug 519137 – g_slice_dup macro needs cast for 64-bit platform
+
+	* glib/gslice.h (g_slice_copy): Apply type casts needed
+	for proper compilation on 64-bit platforms.
+
 2008-06-20  Sebastian Dröge  <slomo@circular-chaos.org>
 
 	Bug 316221 - G_LOCK warns about breaking strict-aliasing rules
