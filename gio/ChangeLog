@@ -1,5 +1,19 @@
 2008-06-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am: 
+	* tests/memory-output-stream.c: Add some tests for
+	GMemoryOutputStream. 
+
+2008-06-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 540423 – unrecoverable error after g_seekable_truncate(seekable,
+	0, ...)
+
+	* gmemoryoutputstream.c (array_resize): Handle truncation to
+	zero correctly. Reported by Akira Tagoh
+
+2008-06-29  Matthias Clasen  <mclasen@redhat.com>
+
 	* gmemoryoutputstream.c: Trivial doc fixes
 
 2008-06-29  Matthias Clasen  <mclasen@redhat.com>

@@ -326,7 +326,7 @@ array_resize (GMemoryOutputStream  *ostream,
   len = priv->len;
   data = priv->realloc_fn (priv->data, size);
 
-  if (!data) 
+  if (size > 0 && !data) 
     {
       if (allow_partial &&
 	  priv->pos < priv->len)
