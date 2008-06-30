@@ -530,6 +530,11 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
   g_slice_free (GHashNode, node);
 
   ri->hash_table->nnodes--;
+
+#ifndef G_DISABLE_ASSERT
+  ri->version++;
+  ri->hash_table->version++;
+#endif
 }
 
 /**

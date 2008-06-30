@@ -2,6 +2,16 @@
 
 	Backport from trunk:
 
+	Bug 536158 – also bump GHashTable version when a node is removed via
+	g_hash_table_iter_remove()/g_hash_table_iter_steal()
+
+	* glib/ghash.c (iter_remove_or_steal): Bump the hash table
+	version. Patch by Jean-Yves Lefort
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
 	Bug 519137 – g_slice_dup macro needs cast for 64-bit platform
 
 	* glib/gslice.h (g_slice_copy): Apply type casts needed
