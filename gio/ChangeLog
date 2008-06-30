@@ -1,3 +1,11 @@
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 538836 – make check failure on PPC and ALPHA: pltcheck.sh on
+	g_atomic_pointer_get
+
+	* pltcheck.sh: Allow g_atomic_pointer_get, to fix 'make check'
+	on ppc and alpha. Reported by Mart Raudsepp
+
 2008-06-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/Makefile.am: 
