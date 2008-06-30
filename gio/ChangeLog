@@ -1,5 +1,12 @@
 2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 539090 – g_content_type_from_mime_type() should unalias
+
+	* gcontentype.c (g_content_type_from_mime_type): Unalias.
+	Patch by Markus Bergman
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 538836 – make check failure on PPC and ALPHA: pltcheck.sh on
 	g_atomic_pointer_get
 

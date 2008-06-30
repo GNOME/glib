@@ -832,10 +832,16 @@ looks_like_text (const guchar *data, gsize data_size)
 char *
 g_content_type_from_mime_type (const char *mime_type)
 {
+  char *umime;
+
   g_return_val_if_fail (mime_type != NULL, NULL);
 
+  G_LOCK (gio_xdgmime);
   /* mime type and content type are same on unixes */
-  return g_strdup (mime_type);
+  umime = g_strdup (xdg_mime_unalias_mime_type (mime_type));
+  G_LOCK (gio_xdgmime);
+
+  return umime;
 }
 
 /**
