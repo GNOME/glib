@@ -341,7 +341,7 @@ _g_io_modules_ensure_loaded (void)
     
           while (paths[i] != NULL)
             { 
-              modules = g_list_prepend (modules, g_io_modules_load_all_in_directory (paths[i]));
+              modules = g_list_concat (modules, g_io_modules_load_all_in_directory (paths[i]));
               i++;
             }
 
