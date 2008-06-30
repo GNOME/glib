@@ -234,8 +234,8 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  * Gets the size of the currently allocated data area (availible from
  * g_memory_output_stream_get_data()). If the stream isn't
  * growable (no realloc was passed to g_memory_output_stream_new()) then
- * this is the max size of the stream and further writes
- * will return G_IO_ERROR_NO_SPACE.
+ * this is the maximum size of the stream and further writes
+ * will return %G_IO_ERROR_NO_SPACE.
  *
  * Note that for growable streams the returned size may become invalid on
  * the next write or truncate operation on the stream.

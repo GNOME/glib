@@ -1,5 +1,9 @@
 2008-06-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* gmemoryoutputstream.c: Trivial doc fixes
+
+2008-06-29  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 540802 – g_list_prepend doesn't concat lists
 
 	* giomodule.c (_g_io_modules_ensure_loaded): Don't g_list_prepend
