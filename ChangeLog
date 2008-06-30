@@ -2,6 +2,16 @@
 
 	Backport from trunk:
 
+	Bug 502511 – g_assert_cmphex prints invalid message
+
+	* glib/gtestutils.c (g_assertion_message_cmpnum): Actually print
+	hex numbers in hex.
+	Pointed out by Tor Lillqvist
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
 	Bug 314453 – Nautilus crashes in Solaris when browsing the attached
 	file
 
