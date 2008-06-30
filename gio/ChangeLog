@@ -1,5 +1,12 @@
 2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 540331 – g_file_append_to () documentation: can return NULL
+
+	* gfile.c (g_file_append_to): Clarify docs.
+	Patch by Jared Moore
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 539090 – g_content_type_from_mime_type() should unalias
 
 	* gcontentype.c (g_content_type_from_mime_type): Unalias.

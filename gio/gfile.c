@@ -1427,12 +1427,12 @@ g_file_read (GFile         *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *
  * Some file systems don't allow all file names, and may
- * return an G_IO_ERROR_INVALID_FILENAME error.
- * If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
+ * return an %G_IO_ERROR_INVALID_FILENAME error.
+ * If the file is a directory the %G_IO_ERROR_IS_DIRECTORY error will be
  * returned. Other errors are possible too, and depend on what kind of
  * filesystem the file is on.
  * 
- * Returns: a #GFileOutputStream.
+ * Returns: a #GFileOutputStream, or %NULL on error
  **/
 GFileOutputStream *
 g_file_append_to (GFile             *file,
