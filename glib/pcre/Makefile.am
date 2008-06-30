@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"GLib-GRegex\" \
 	-DSUPPORT_UCP \

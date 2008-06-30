@@ -2,6 +2,15 @@
 
 	Backport from trunk:
 
+	Bug 529321 – make check fails in glib/pcre
+
+	* glib/pcre/Makefile.am: include Makefile.decl to fix 'make check'.
+	Patch by Hiroyuki Ikezoe
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backport from trunk:
+
 	Bug 536158 – also bump GHashTable version when a node is removed via
 	g_hash_table_iter_remove()/g_hash_table_iter_steal()
 
