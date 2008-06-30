@@ -243,7 +243,7 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  *
  * Note, this does not return the number of bytes written to the stream.
  * In glib 2.18 this is availible with g_memory_output_stream_get_data_size(),
- * but for 2.16 you have to use g_seekable_seek() to G_SEEK_END
+ * but for 2.16 you have to use g_seekable_seek() to %G_SEEK_CUR
  * and call g_seekable_tell() to achive this.
  * 
  * Returns: the number of bytes allocated for the data buffer

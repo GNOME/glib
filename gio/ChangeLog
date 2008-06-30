@@ -1,3 +1,11 @@
+2008-06-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 540459 – there are no way of getting the real number of bytes
+	written in GMemoryOutputStream
+
+	* gmemoryoutputstream.c: Fix docs for how to get the data size.
+	Pointed out by Akira Tagoh
+
 2008-05-13  Bastien Nocera  <hadess@hadess.net>
 
 	* gfile.c (has_valid_scheme): A URI scheme must start with a
