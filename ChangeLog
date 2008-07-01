@@ -1,3 +1,7 @@
+2008-07-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-05-20  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 459905 – Bug in wcwidth data

@@ -28,6 +28,8 @@ Overview of Changes from GLib 2.16.3 to GLib 2.16.4
  526320 should not list mounts that the user doesn't have permiss...
  527132 nautilus crash when making ftp connection
  532852 totem_pl_parser_parse_with_base: assertion `... 
+ 459905 Bug in wcwidth data
+ 534085 g_unichar_iswide_cjk() has a totally wrong table
 
 * Updated translations:
  Bulgarian (bg)
