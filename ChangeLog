@@ -1,3 +1,8 @@
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/pcre/pcre_compile.c: Apply fix for CVE-2008-2371 to
+	fix a heap-based buffer overflow.
+
 2008-06-29  Björn Lindqvist  <bjourne@gmail.com>
 
 	Bug 539626 – Update docstrings for g_object_freeze_notify and
