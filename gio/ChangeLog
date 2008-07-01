@@ -1,3 +1,12 @@
+2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+
+	Backported from trunk:
+
+	Bug 530196 – _g_local_file_has_trash_dir() doesn't handle st_dev == 0
+
+	* glocalfile.c (_g_local_file_has_trash_dir): Handle the case that
+	st_dev might be zero.
+
 2008-06-29  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 540423 – unrecoverable error after g_seekable_truncate(seekable,
