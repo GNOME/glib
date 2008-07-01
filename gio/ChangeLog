@@ -1,3 +1,14 @@
+2008-07-01  Cody Russell  <bratsche@gnome.org>
+
+        * gio/gioenums.h:
+        * gio/giotypes.h:
+        Moved all relevant typedefs into these files.
+
+        * gio/*.[ch]:
+        Updated wrt added files.
+
+        Split types into separate file for easier maintainership. (#538564)
+
 2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 540331 – g_file_append_to () documentation: can return NULL
