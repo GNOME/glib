@@ -2,6 +2,12 @@
 
 	Backported from trunk:
 
+	* gfile.c (g_file_replace_contents): do not leak the output stream.
+
+2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+
+	Backported from trunk:
+
 	Bug 530196 – _g_local_file_has_trash_dir() doesn't handle st_dev == 0
 
 	* glocalfile.c (_g_local_file_has_trash_dir): Handle the case that

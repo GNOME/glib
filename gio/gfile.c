@@ -5399,6 +5399,7 @@ g_file_replace_contents (GFile             *file,
     {
       /* Ignore errors on close */
       g_output_stream_close (G_OUTPUT_STREAM (out), cancellable, NULL);
+      g_object_unref (out);
       
       /* error is set already */
       return FALSE;
@@ -5410,6 +5411,8 @@ g_file_replace_contents (GFile             *file,
   if (new_etag)
     *new_etag = g_file_output_stream_get_etag (out);
   
+  g_object_unref (out);
+
   return TRUE;
 }
 
