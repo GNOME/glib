@@ -172,7 +172,8 @@ g_dummy_file_get_parent (GFile *file)
   char *uri;
   GDecodedUri new_decoded_uri;
 
-  if (dummy->decoded_uri == NULL)
+  if (dummy->decoded_uri == NULL ||
+      g_strcmp0 (dummy->decoded_uri->path, "/") == 0)
     return NULL;
 
   dirname = g_path_get_dirname (dummy->decoded_uri->path);
