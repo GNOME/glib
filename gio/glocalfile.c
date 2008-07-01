@@ -618,6 +618,10 @@ get_fs_type (long f_type)
     {
     case 0xadf5:
       return "adfs";
+    case 0x5346414f:
+      return "afs";
+    case 0x0187:
+      return "autofs";
     case 0xADFF:
       return "affs";
     case 0x42465331:

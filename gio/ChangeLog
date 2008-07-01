@@ -2,6 +2,16 @@
 
 	Backported from trunk:
 
+	Bug 536641 – Filesystem querying in gio does not list AFS and autofs
+	file systems
+
+	* glocalfile.c (get_fs_type): Add afs and autofs.
+	Patch by Danny Baumann.
+
+2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+
+	Backported from trunk:
+
 	Bug 528600 – g_dummy_file_get_parent("scheme://example.com/")
 
 	* gdummyfile.c (g_dummy_file_get_parent): Return NULL if there
