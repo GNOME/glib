@@ -1,3 +1,11 @@
+2008-05-20  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 459905 – Bug in wcwidth data
+	Bug 534085 – g_unichar_iswide_cjk() has a totally wrong table
+	* glib/guniprop.c (g_unichar_iswide), (g_unichar_iswide_cjk):
+	Regenrate wide and wide_cjk tables from Unicode 5.1.0 data directly.
+	Not using Markus Kuhn's tables anymore.
+
 2008-07-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
