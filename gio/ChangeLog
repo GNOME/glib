@@ -1,4 +1,13 @@
-2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Backported from trunk:
+
+	Bug 537392 – Additional colon in xattr name
+
+	* glocalfileinfo.c (set_xattr): Skip the second colon of the prefix,
+	too. Reported by  Alessandro Morandi
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Backported from trunk:
 
@@ -8,7 +17,7 @@
 	* glocalfile.c (get_fs_type): Add afs and autofs.
 	Patch by Danny Baumann.
 
-2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Backported from trunk:
 
@@ -17,13 +26,13 @@
 	* gdummyfile.c (g_dummy_file_get_parent): Return NULL if there
 	is no parent.  (Owen Taylor, patch by Christian Neumair)
 
-2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Backported from trunk:
 
 	* gfile.c (g_file_replace_contents): do not leak the output stream.
 
-2008-06-30 Matthias Clasen  <mclasen@redhat.com>
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Backported from trunk:
 

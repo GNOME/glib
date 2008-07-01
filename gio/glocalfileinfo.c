@@ -726,13 +726,13 @@ set_xattr (char                       *filename,
 
   if (g_str_has_prefix (escaped_attribute, "xattr::"))
     {
-      escaped_attribute += 6;
+      escaped_attribute += strlen ("xattr::");
       is_user = TRUE;
     }
   else
     {
       g_warn_if_fail (g_str_has_prefix (escaped_attribute, "xattr-sys::"));
-      escaped_attribute += 10;
+      escaped_attribute += strlen ("xattr-sys::");
       is_user = FALSE;
     }
   
