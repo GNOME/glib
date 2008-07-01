@@ -24,7 +24,6 @@
 #ifndef __G_UNIX_VOLUME_MONITOR_H__
 #define __G_UNIX_VOLUME_MONITOR_H__
 
-#include <glib-object.h>
 #include <gio/gnativevolumemonitor.h>
 
 G_BEGIN_DECLS
@@ -35,7 +34,7 @@ G_BEGIN_DECLS
 #define G_IS_UNIX_VOLUME_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_VOLUME_MONITOR))
 #define G_IS_UNIX_VOLUME_MONITOR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_UNIX_VOLUME_MONITOR))
 
-typedef struct _GUnixVolumeMonitor GUnixVolumeMonitor;
+typedef struct _GUnixVolumeMonitor      GUnixVolumeMonitor;
 typedef struct _GUnixVolumeMonitorClass GUnixVolumeMonitorClass;
 
 /* Forward definitions */

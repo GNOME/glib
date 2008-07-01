@@ -23,7 +23,6 @@
 #ifndef __G_LOCAL_DIRECTORY_MONITOR_H__
 #define __G_LOCAL_DIRECTORY_MONITOR_H__
 
-#include <glib-object.h>
 #include <gio/gfilemonitor.h>
 
 #include "gunixmounts.h"

@@ -35,6 +35,12 @@
 #include "gsimpleasyncresult.h"
 #include "gfileattribute-priv.h"
 #include "gpollfilemonitor.h"
+#include "gappinfo.h"
+#include "gfileinputstream.h"
+#include "gfileoutputstream.h"
+#include "gcancellable.h"
+#include "gasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

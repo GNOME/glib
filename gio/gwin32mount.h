@@ -26,9 +26,7 @@
 #ifndef __G_WIN32_MOUNT_H__
 #define __G_WIN32_MOUNT_H__
 
-#include <glib-object.h>
-#include <gio/gmount.h>
-#include <gio/gwin32volumemonitor.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

@@ -26,6 +26,7 @@
 #include "gseekable.h"
 #include "string.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

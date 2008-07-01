@@ -22,7 +22,11 @@
 
 #include "config.h"
 #include "gfilenamecompleter.h"
+#include "gfileenumerator.h"
+#include "gfileattribute.h"
 #include "gfile.h"
+#include "gfileinfo.h"
+#include "gcancellable.h"
 #include <string.h>
 #include "glibintl.h"
 

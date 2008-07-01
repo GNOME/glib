@@ -188,6 +188,7 @@ libgio_2_0_la_SOURCES =		\
 	gfilteroutputstream.c 	\
 	gicon.c 		\
 	ginputstream.c 		\
+	gioenums.h		\
 	gioerror.c 		\
 	giomodule.c 		\
 	giomodule-priv.h	\
@@ -288,6 +289,8 @@ gio_headers =			\
 	gicon.h 		\
 	ginputstream.h 		\
 	gio.h			\
+	giotypes.h		\
+	gioenums.h		\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\

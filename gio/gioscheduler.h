@@ -28,38 +28,10 @@
 #define __G_IO_SCHEDULER_H__
 
 #include <glib.h>
-#include <gio/gcancellable.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
-/**
- * GIOSchedulerJob:
- * 
- * Opaque class for definining and scheduling IO jobs.
- **/
-typedef struct _GIOSchedulerJob GIOSchedulerJob;
-
-/**
- * GIOSchedulerJobFunc:
- * @job: a #GIOSchedulerJob.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @user_data: the data to pass to callback function
- * 
- * I/O Job function. 
- *
- * Note that depending on whether threads are available, the 
- * #GIOScheduler may run jobs in separate threads or in an idle 
- * in the mainloop. 
- *
- * Long-running jobs should periodically check the @cancellable
- * to see if they have been cancelled.
- *
- * Returns: %TRUE if this function should be called again to
- *    complete the job, %FALSE if the job is complete (or cancelled)
- **/
-typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
-		   		         GCancellable    *cancellable,
-				         gpointer         user_data);
 
 void     g_io_scheduler_push_job                   (GIOSchedulerJobFunc  job_func,
 						    gpointer             user_data,

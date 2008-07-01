@@ -24,6 +24,7 @@
 #include "glocalvfs.h"
 #include "glocalfile.h"
 #include "giomodule.h"
+#include "gvfs.h"
 #include <gio/gdummyfile.h>
 #include <sys/types.h>
 #ifdef HAVE_PWD_H

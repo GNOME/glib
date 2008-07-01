@@ -27,11 +27,7 @@
 #ifndef __G_OUTPUT_STREAM_H__
 #define __G_OUTPUT_STREAM_H__
 
-#include <glib-object.h>
-#include <gio/gioerror.h>
-#include <gio/gasyncresult.h>
-#include <gio/gcancellable.h>
-#include <gio/ginputstream.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -43,20 +39,6 @@ G_BEGIN_DECLS
 #define G_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_OUTPUT_STREAM, GOutputStreamClass))
 
 /**
- * GOutputStreamSpliceFlags:
- * @G_OUTPUT_STREAM_SPLICE_NONE: Do not close either stream.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after the splice.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after the splice.
- * 
- * GOutputStreamSpliceFlags determine how streams should be spliced.
- **/
-typedef enum {
-  G_OUTPUT_STREAM_SPLICE_NONE = 0,
-  G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE = 1 << 0,
-  G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET = 1 << 1
-} GOutputStreamSpliceFlags;
-
-/**
  * GOutputStream:
  * 
  * Base class for writing output. 
@@ -65,7 +47,6 @@ typedef enum {
  * writing, splicing, flushing and closing streams, but may implement
  * asynchronous versions.
  **/
-typedef struct _GOutputStream         GOutputStream;
 typedef struct _GOutputStreamClass    GOutputStreamClass;
 typedef struct _GOutputStreamPrivate  GOutputStreamPrivate;
 

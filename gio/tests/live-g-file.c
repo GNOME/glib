@@ -24,7 +24,7 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <sys/stat.h>
 
 #define DEFAULT_TEST_DIR		"testdir_live-g-file"
 

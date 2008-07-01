@@ -27,8 +27,7 @@
 #ifndef __G_APP_INFO_H__
 #define __G_APP_INFO_H__
 
-#include <glib-object.h>
-#include <gio/gicon.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -44,21 +43,6 @@ G_BEGIN_DECLS
 #define G_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_APP_LAUNCH_CONTEXT))
 #define G_APP_LAUNCH_CONTEXT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_APP_LAUNCH_CONTEXT, GAppLaunchContextClass))
 
-/**
- * GAppInfoCreateFlags:
- * @G_APP_INFO_CREATE_NONE: No flags.
- * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens in a terminal window.
- * @G_APP_INFO_CREATE_SUPPORTS_URIS: Application supports URI arguments.
- * 
- * Flags used when creating a #GAppInfo.
- */
-typedef enum {
-  G_APP_INFO_CREATE_NONE = 0,           /*< nick=none >*/
-  G_APP_INFO_CREATE_NEEDS_TERMINAL = (1<<0),  /*< nick=needs-terminal >*/
-  G_APP_INFO_CREATE_SUPPORTS_URIS = (1<<1)   /*< nick=supports-uris >*/
-} GAppInfoCreateFlags;
-
-typedef struct _GAppLaunchContext        GAppLaunchContext;
 typedef struct _GAppLaunchContextClass   GAppLaunchContextClass;
 typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
 
@@ -68,7 +52,6 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * Information about an installed application and methods to launch
  * it (with file arguments).
  */
-typedef struct _GAppInfo         GAppInfo; /* Dummy typedef */
 
 /**
  * GAppInfoIface:

@@ -72,6 +72,7 @@
 
 #endif
 
+#include "gfileattribute.h"
 #include "glocalfile.h"
 #include "glocalfileinfo.h"
 #include "glocalfileenumerator.h"
@@ -80,6 +81,8 @@
 #include "glocaldirectorymonitor.h"
 #include "glocalfilemonitor.h"
 #include "gmountprivate.h"
+#include "gunixmounts.h"
+#include "gioerror.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
 

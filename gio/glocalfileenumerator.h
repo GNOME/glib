@@ -24,8 +24,6 @@
 #define __G_LOCAL_FILE_ENUMERATOR_H__
 
 #include <gfileenumerator.h>
-#include <gfileinfo.h>
-#include <gfile.h>
 #include <glocalfile.h>
 
 G_BEGIN_DECLS

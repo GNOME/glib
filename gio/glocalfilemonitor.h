@@ -23,7 +23,6 @@
 #ifndef __G_LOCAL_FILE_MONITOR_H__
 #define __G_LOCAL_FILE_MONITOR_H__
 
-#include <glib-object.h>
 #include <gio/gfilemonitor.h>
 
 G_BEGIN_DECLS

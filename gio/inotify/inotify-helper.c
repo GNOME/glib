@@ -32,6 +32,7 @@
 #include <sys/inotify.h>
 #include <gio/glocalfile.h>
 #include <gio/gfilemonitor.h>
+#include <gio/gfile.h>
 #include "inotify-helper.h"
 #include "inotify-missing.h"
 #include "inotify-path.h"

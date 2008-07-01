@@ -24,6 +24,7 @@
 #include "config.h"
 #include "gdatainputstream.h"
 #include "gioenumtypes.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

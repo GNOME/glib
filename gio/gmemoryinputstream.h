@@ -27,7 +27,6 @@
 #ifndef __G_MEMORY_INPUT_STREAM_H__
 #define __G_MEMORY_INPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/ginputstream.h>
 
 G_BEGIN_DECLS
@@ -44,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Implements #GInputStream for arbitrary memory chunks.
  **/
-typedef struct _GMemoryInputStream         GMemoryInputStream;
 typedef struct _GMemoryInputStreamClass    GMemoryInputStreamClass;
 typedef struct _GMemoryInputStreamPrivate  GMemoryInputStreamPrivate;
 

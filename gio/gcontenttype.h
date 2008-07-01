@@ -28,7 +28,7 @@
 #define __G_CONTENT_TYPE_H__
 
 #include <glib.h>
-#include <gio/gicon.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

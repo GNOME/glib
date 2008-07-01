@@ -28,7 +28,6 @@
 #define __G_FILE_INPUT_STREAM_H__
 
 #include <gio/ginputstream.h>
-#include <gio/gfileinfo.h>
 
 G_BEGIN_DECLS
 
@@ -47,7 +46,6 @@ G_BEGIN_DECLS
  *
  * #GFileInputStream implements #GSeekable.
  **/
-typedef struct _GFileInputStream         GFileInputStream;
 typedef struct _GFileInputStreamClass    GFileInputStreamClass;
 typedef struct _GFileInputStreamPrivate  GFileInputStreamPrivate;
 

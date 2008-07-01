@@ -28,9 +28,7 @@
 #ifndef __G_VOLUME_H__
 #define __G_VOLUME_H__
 
-#include <glib-object.h>
-#include <gio/gfile.h>
-#include <gio/gdrive.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

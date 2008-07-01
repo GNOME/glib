@@ -25,6 +25,9 @@
 
 #include "config.h"
 #include "gvolumemonitor.h"
+#include "gvolume.h"
+#include "gmount.h"
+#include "gdrive.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

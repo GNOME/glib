@@ -34,12 +34,14 @@
 
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
+#include "gfile.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
 #include "gfileicon.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
 #include "giomodule-priv.h"
+#include "gappinfo.h"
 
 #include "gioalias.h"
 

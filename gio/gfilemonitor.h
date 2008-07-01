@@ -27,8 +27,7 @@
 #ifndef __G_FILE_MONITOR_H__
 #define __G_FILE_MONITOR_H__
 
-#include <glib-object.h>
-#include <gio/gfile.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -39,29 +38,7 @@ G_BEGIN_DECLS
 #define G_IS_FILE_MONITOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_MONITOR))
 #define G_FILE_MONITOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_MONITOR, GFileMonitorClass))
 
-/**
- * GFileMonitorEvent:
- * @G_FILE_MONITOR_EVENT_CHANGED: a file changed.
- * @G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT: a hint that this was probably the last change in a set of changes.
- * @G_FILE_MONITOR_EVENT_DELETED: a file was deleted.
- * @G_FILE_MONITOR_EVENT_CREATED: a file was created.
- * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: a file attribute was changed.
- * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: the file location will soon be unmounted.
- * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was unmounted.
- * 
- * Specifies what type of event a monitor event is.
- **/
-typedef enum {
-  G_FILE_MONITOR_EVENT_CHANGED,
-  G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
-  G_FILE_MONITOR_EVENT_DELETED,
-  G_FILE_MONITOR_EVENT_CREATED,
-  G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED,
-  G_FILE_MONITOR_EVENT_PRE_UNMOUNT,
-  G_FILE_MONITOR_EVENT_UNMOUNTED
-} GFileMonitorEvent;
-
-typedef struct _GFileMonitorClass	GFileMonitorClass;
+typedef struct _GFileMonitorClass       GFileMonitorClass;
 typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
 
 /**

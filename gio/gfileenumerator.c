@@ -22,9 +22,12 @@
 
 #include "config.h"
 #include "gfileenumerator.h"
+#include "gfile.h"
 #include "gioscheduler.h"
+#include "gasyncresult.h"
 #include "gasynchelper.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

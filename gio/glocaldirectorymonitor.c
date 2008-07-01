@@ -25,6 +25,8 @@
 #include "glocaldirectorymonitor.h"
 #include "gunixmounts.h"
 #include "giomodule-priv.h"
+#include "gfile.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include <string.h>

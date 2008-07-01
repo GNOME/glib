@@ -33,6 +33,7 @@
 #include <stdlib.h>
 
 #include "gdummyfile.h"
+#include "gfile.h"
 
 #include "gioalias.h"
 

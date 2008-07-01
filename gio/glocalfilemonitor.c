@@ -24,6 +24,7 @@
 
 #include "glocalfilemonitor.h"
 #include "giomodule-priv.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include <string.h>

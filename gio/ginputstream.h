@@ -27,10 +27,7 @@
 #ifndef __G_INPUT_STREAM_H__
 #define __G_INPUT_STREAM_H__
 
-#include <glib-object.h>
-#include <gio/gioerror.h>
-#include <gio/gcancellable.h>
-#include <gio/gasyncresult.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -46,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Base class for streaming input operations.
  **/
-typedef struct _GInputStream         GInputStream;
 typedef struct _GInputStreamClass    GInputStreamClass;
 typedef struct _GInputStreamPrivate  GInputStreamPrivate;
 

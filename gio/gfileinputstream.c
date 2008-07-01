@@ -26,6 +26,9 @@
 #include <gfileinputstream.h>
 #include <gseekable.h>
 #include "gsimpleasyncresult.h"
+#include "gcancellable.h"
+#include "gasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

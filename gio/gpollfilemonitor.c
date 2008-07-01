@@ -24,7 +24,9 @@
 #include <string.h>
 
 #include "gpollfilemonitor.h"
+#include "gfile.h"
 #include "gfilemonitor.h"
+#include "gfileinfo.h"
 
 #include "gioalias.h"
 

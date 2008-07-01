@@ -30,10 +30,7 @@
 #ifndef __G_VOLUME_MONITOR_H__
 #define __G_VOLUME_MONITOR_H__
 
-#include <glib-object.h>
-#include <gio/gmount.h>
-#include <gio/gvolume.h>
-#include <gio/gdrive.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -58,7 +55,6 @@ G_BEGIN_DECLS
  *
  * A Volume Monitor that watches for volume events.
  **/
-typedef struct _GVolumeMonitor GVolumeMonitor;
 typedef struct _GVolumeMonitorClass GVolumeMonitorClass;
 
 struct _GVolumeMonitor {

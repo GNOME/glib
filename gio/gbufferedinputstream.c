@@ -24,7 +24,10 @@
 #include "config.h"
 #include "gbufferedinputstream.h"
 #include "ginputstream.h"
+#include "gcancellable.h"
+#include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include <string.h>
 #include "glibintl.h"
 

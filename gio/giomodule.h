@@ -27,7 +27,7 @@
 #ifndef __G_IO_MODULE_H__
 #define __G_IO_MODULE_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 #include <gmodule.h>
 
 G_BEGIN_DECLS
@@ -44,11 +44,7 @@ G_BEGIN_DECLS
  * 
  * Opaque module base class for extending GIO.
  **/
-typedef struct _GIOModule GIOModule;
 typedef struct _GIOModuleClass GIOModuleClass;
-
-typedef struct _GIOExtensionPoint GIOExtensionPoint;
-typedef struct _GIOExtension GIOExtension;
 
 GType      g_io_module_get_type (void) G_GNUC_CONST;
 GIOModule *g_io_module_new      (const gchar *filename);

@@ -27,7 +27,6 @@
 #ifndef __G_BUFFERED_OUTPUT_STREAM_H__
 #define __G_BUFFERED_OUTPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/gfilteroutputstream.h>
 
 G_BEGIN_DECLS
@@ -45,7 +44,6 @@ G_BEGIN_DECLS
  * 
  * An implementation of #GFilterOutputStream with a sized buffer.
  **/
-typedef struct _GBufferedOutputStream         GBufferedOutputStream;
 typedef struct _GBufferedOutputStreamClass    GBufferedOutputStreamClass;
 typedef struct _GBufferedOutputStreamPrivate  GBufferedOutputStreamPrivate;
 

@@ -27,7 +27,6 @@
 #ifndef __G_BUFFERED_INPUT_STREAM_H__
 #define __G_BUFFERED_INPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/gfilterinputstream.h>
 
 G_BEGIN_DECLS
@@ -44,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Implements #GFilterInputStream with a sized input buffer.
  **/
-typedef struct _GBufferedInputStream         GBufferedInputStream;
 typedef struct _GBufferedInputStreamClass    GBufferedInputStreamClass;
 typedef struct _GBufferedInputStreamPrivate  GBufferedInputStreamPrivate;
 

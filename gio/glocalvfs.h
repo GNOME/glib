@@ -23,7 +23,7 @@
 #ifndef __G_LOCAL_VFS_H__
 #define __G_LOCAL_VFS_H__
 
-#include <gio/gvfs.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

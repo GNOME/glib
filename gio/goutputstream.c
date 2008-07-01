@@ -22,7 +22,11 @@
 
 #include "config.h"
 #include "goutputstream.h"
+#include "gcancellable.h"
+#include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "ginputstream.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

@@ -24,6 +24,8 @@
 #include "config.h"
 #include "gdrive.h"
 #include "gsimpleasyncresult.h"
+#include "gasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

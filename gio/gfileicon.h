@@ -27,8 +27,7 @@
 #ifndef __G_FILE_ICON_H__
 #define __G_FILE_ICON_H__
 
-#include <gio/gloadableicon.h>
-#include <gio/gfile.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -44,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Gets an icon for a #GFile. Implements #GLoadableIcon.
  **/
-typedef struct _GFileIcon        GFileIcon;
 typedef struct _GFileIconClass   GFileIconClass;
 
 GType g_file_icon_get_type (void) G_GNUC_CONST;

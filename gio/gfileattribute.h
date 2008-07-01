@@ -27,63 +27,9 @@
 #ifndef __G_FILE_ATTRIBUTE_H__
 #define __G_FILE_ATTRIBUTE_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
-
-/**
- * GFileAttributeType:
- * @G_FILE_ATTRIBUTE_TYPE_INVALID: indicates an invalid or uninitalized type.
- * @G_FILE_ATTRIBUTE_TYPE_STRING: a null terminated UTF8 string.
- * @G_FILE_ATTRIBUTE_TYPE_BYTE_STRING: a zero terminated string of non-zero bytes.
- * @G_FILE_ATTRIBUTE_TYPE_BOOLEAN: a boolean value.
- * @G_FILE_ATTRIBUTE_TYPE_UINT32: an unsigned 4-byte/32-bit integer.
- * @G_FILE_ATTRIBUTE_TYPE_INT32: a signed 4-byte/32-bit integer.
- * @G_FILE_ATTRIBUTE_TYPE_UINT64: an unsigned 8-byte/64-bit integer.
- * @G_FILE_ATTRIBUTE_TYPE_INT64: a signed 8-byte/64-bit integer.
- * @G_FILE_ATTRIBUTE_TYPE_OBJECT: a #GObject.
- * 
- * The data types for file attributes.
- **/ 
-typedef enum {
-  G_FILE_ATTRIBUTE_TYPE_INVALID = 0,
-  G_FILE_ATTRIBUTE_TYPE_STRING,
-  G_FILE_ATTRIBUTE_TYPE_BYTE_STRING, /* zero terminated string of non-zero bytes */
-  G_FILE_ATTRIBUTE_TYPE_BOOLEAN,
-  G_FILE_ATTRIBUTE_TYPE_UINT32,
-  G_FILE_ATTRIBUTE_TYPE_INT32,
-  G_FILE_ATTRIBUTE_TYPE_UINT64,
-  G_FILE_ATTRIBUTE_TYPE_INT64,
-  G_FILE_ATTRIBUTE_TYPE_OBJECT
-} GFileAttributeType;
-
-/**
- * GFileAttributeInfoFlags:
- * @G_FILE_ATTRIBUTE_INFO_NONE: no flags set.
- * @G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE: copy the attribute values when the file is copied.
- * @G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED: copy the attribute values when the file is moved.
- * 
- * Flags specifying the behaviour of an attribute.
- **/
-typedef enum {
-  G_FILE_ATTRIBUTE_INFO_NONE = 0,
-  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE = 1 << 0,
-  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED = 1 << 1
-} GFileAttributeInfoFlags;
-
-/**
- * GFileAttributeStatus:
- * @G_FILE_ATTRIBUTE_STATUS_UNSET: Attribute value is unset (empty).
- * @G_FILE_ATTRIBUTE_STATUS_SET: Attribute value is set.
- * @G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING: Indicates an error in setting the value.
- * 
- * Used by g_file_set_attributes_from_info() when setting file attributes.
- **/
-typedef enum {
-  G_FILE_ATTRIBUTE_STATUS_UNSET = 0,
-  G_FILE_ATTRIBUTE_STATUS_SET,
-  G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING
-} GFileAttributeStatus;
 
 /**
  * GFileAttributeInfo:
@@ -93,11 +39,11 @@ typedef enum {
  * 
  * Information about a specific attribute. 
  **/
-typedef struct {
+struct _GFileAttributeInfo {
   char *name;
   GFileAttributeType type;
   GFileAttributeInfoFlags flags;
-} GFileAttributeInfo;
+};
 
 /**
  * GFileAttributeInfoList:
@@ -107,10 +53,10 @@ typedef struct {
  * Acts as a lightweight registry for possible valid file attributes.
  * The registry stores Key-Value pair formats as #GFileAttributeInfo<!-- -->s.
  **/
-typedef struct {
+struct _GFileAttributeInfoList {
   GFileAttributeInfo *infos;
   int n_infos;
-} GFileAttributeInfoList;
+};
 
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
 GFileAttributeInfoList *  g_file_attribute_info_list_ref    (GFileAttributeInfoList *list);

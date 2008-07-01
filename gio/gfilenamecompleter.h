@@ -27,7 +27,7 @@
 #ifndef __G_FILENAME_COMPLETER_H__
 #define __G_FILENAME_COMPLETER_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -43,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Completes filenames based on files that exist within the file system.
  **/
-typedef struct _GFilenameCompleter GFilenameCompleter;
 typedef struct _GFilenameCompleterClass GFilenameCompleterClass;
 
 struct _GFilenameCompleterClass {

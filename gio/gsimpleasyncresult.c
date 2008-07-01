@@ -32,6 +32,8 @@
 #endif
 
 #include "gsimpleasyncresult.h"
+#include "gasyncresult.h"
+#include "gcancellable.h"
 #include "gioscheduler.h"
 #include <gio/gioerror.h>
 #include "glibintl.h"

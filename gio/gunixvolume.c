@@ -32,9 +32,12 @@
 #include <glib.h>
 #include "gunixvolume.h"
 #include "gunixmount.h"
+#include "gunixmounts.h"
 #include "gthemedicon.h"
+#include "gvolume.h"
 #include "gvolumemonitor.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

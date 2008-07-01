@@ -27,8 +27,7 @@
 #ifndef __G_VFS_H__
 #define __G_VFS_H__
 
-#include <glib-object.h>
-#include <gio/gfile.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -52,7 +51,6 @@ G_BEGIN_DECLS
  * 
  * Virtual File System object.
  **/
-typedef struct _GVfs         GVfs; /* Dummy typedef */
 typedef struct _GVfsClass    GVfsClass;
 
 struct _GVfs {

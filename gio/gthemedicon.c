@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "gthemedicon.h"
+#include "gicon.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

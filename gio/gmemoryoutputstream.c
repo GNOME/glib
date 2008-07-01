@@ -25,6 +25,7 @@
 #include "goutputstream.h"
 #include "gseekable.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include "string.h"
 #include "glibintl.h"
 

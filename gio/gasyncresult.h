@@ -27,7 +27,7 @@
 #ifndef __G_ASYNC_RESULT_H__
 #define __G_ASYNC_RESULT_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -42,21 +42,8 @@ G_BEGIN_DECLS
  * Holds results information for an asynchronous operation, 
  * usually passed directly to a asynchronous _finish() operation.
  **/
-typedef struct _GAsyncResult         GAsyncResult; /* Dummy typedef */
 typedef struct _GAsyncResultIface    GAsyncResultIface;
 
-/**
- * GAsyncReadyCallback:
- * @source_object: the object the asynchronous operation was started with.
- * @res: a #GAsyncResult.
- * @user_data: user data passed to the callback.
- *
- * Type definition for a function that will be called back when an asynchronous 
- * operation within GIO has been completed. 
- **/
-typedef void (*GAsyncReadyCallback) (GObject *source_object,
-				     GAsyncResult *res,
-				     gpointer user_data);
 
 /**
  * GAsyncResultIface:

@@ -27,13 +27,7 @@
 #ifndef __G_FILE_H__
 #define __G_FILE_H__
 
-#include <glib-object.h>
-#include <gio/gfileinfo.h>
-#include <gio/gfileenumerator.h>
-#include <gio/gfileinputstream.h>
-#include <gio/gfileoutputstream.h>
-#include <gio/gmountoperation.h>
-#include <gio/gappinfo.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -41,88 +35,6 @@ G_BEGIN_DECLS
 #define G_FILE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_FILE, GFile))
 #define G_IS_FILE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE))
 #define G_FILE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_FILE, GFileIface))
-
-/**
- * GFileQueryInfoFlags:
- * @G_FILE_QUERY_INFO_NONE: No flags set.
- * @G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS: Don't follow symlinks.
- * 
- * Flags used when querying a #GFileInfo.
- */
-typedef enum {
-  G_FILE_QUERY_INFO_NONE = 0,
-  G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)   /*< nick=nofollow-symlinks >*/
-} GFileQueryInfoFlags;
-
-/**
- * GFileCreateFlags:
- * @G_FILE_CREATE_NONE: No flags set.
- * @G_FILE_CREATE_PRIVATE: Create a file that can only be 
- *    accessed by the current user.
- * 
- * Flags used when an operation may create a file.
- */
-typedef enum  {
-  G_FILE_CREATE_NONE = 0,
-  G_FILE_CREATE_PRIVATE = (1<<0)
-} GFileCreateFlags;
-
-
-/**
- * GMountMountFlags:
- * @G_MOUNT_MOUNT_NONE: No flags set.
- * 
- * Flags used when mounting a mount.
- */
-typedef enum  {
-  G_MOUNT_MOUNT_NONE = 0
-} GMountMountFlags;
-
-
-/**
- * GMountUnmountFlags:
- * @G_MOUNT_UNMOUNT_NONE: No flags set.
- * @G_MOUNT_UNMOUNT_FORCE: Unmount even if there are outstanding
- *  file operations on the mount.
- * 
- * Flags used when an unmounting a mount.
- */
-typedef enum  {
-  G_MOUNT_UNMOUNT_NONE = 0,
-  G_MOUNT_UNMOUNT_FORCE = (1<<0)
-} GMountUnmountFlags;
-
-/**
- * GFileCopyFlags:
- * @G_FILE_COPY_NONE: No flags set.
- * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
- * @G_FILE_COPY_BACKUP: Make a backup of any existing files.
- * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
- * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set used for copy (see #GFileInfo).
- * @G_FILE_COPY_NO_FALLBACK_FOR_MOVE: Don't use copy and delete fallback if native move not supported.
- *
- * Flags used when copying or moving files. 
- */
-typedef enum {
-  G_FILE_COPY_NONE = 0,          /*< nick=none >*/
-  G_FILE_COPY_OVERWRITE = (1<<0),
-  G_FILE_COPY_BACKUP = (1<<1),
-  G_FILE_COPY_NOFOLLOW_SYMLINKS = (1<<2),
-  G_FILE_COPY_ALL_METADATA = (1<<3),
-  G_FILE_COPY_NO_FALLBACK_FOR_MOVE = (1<<4)
-} GFileCopyFlags;
-
-/**
- * GFileMonitorFlags:
- * @G_FILE_MONITOR_NONE: No flags set.
- * @G_FILE_MONITOR_WATCH_MOUNTS: Watch for mount events. 
- *
- * Flags used to set what a #GFileMonitor will watch for. 
- */
-typedef enum  {
-  G_FILE_MONITOR_NONE = 0,
-  G_FILE_MONITOR_WATCH_MOUNTS = (1<<0)
-} GFileMonitorFlags;
 
 #if 0
 /**
@@ -135,45 +47,7 @@ typedef enum  {
 typedef struct _GFile         		GFile; /* Dummy typedef */
 #endif
 typedef struct _GFileIface    		GFileIface;
-typedef struct _GFileMonitor            GFileMonitor;
 
-/**
- * GMount:
- * 
- * A handle to an object implementing the #GMountIface interface.
- **/
-typedef struct _GMount         GMount; /* Dummy typedef */
-
-/**
- * GFileProgressCallback:
- * @current_num_bytes: the current number of bytes in the operation.
- * @total_num_bytes: the total number of bytes in the operation.
- * @user_data: user data passed to the callback.
- *
- * When doing file operations that may take a while, such as moving 
- * a file or copying a file, a progress callback is used to pass how 
- * far along that operation is to the application. 
- **/
-typedef void (*GFileProgressCallback) (goffset current_num_bytes,
-				       goffset total_num_bytes,
-				       gpointer user_data);
-
-/**
- * GFileReadMoreCallback:
- * @file_contents: the data as currently read.
- * @file_size: the size of the data currently read.
- * @callback_data: data passed to the callback.
- *
- * When loading the partial contents of a file with g_file_read_partial_contents(), 
- * it may become necessary to determine if any more data from the file should be loaded. 
- * A #GFileReadMoreCallback function facilitates this by returning %TRUE if more data 
- * should be read, or %FALSE otherwise.
- *
- * Returns: %TRUE if more data should be read back. %FALSE otherwise.
- **/
-typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
-					    goffset file_size,
-					    gpointer callback_data);
 
 /**
  * GFileIface:

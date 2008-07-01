@@ -23,7 +23,7 @@
 #ifndef __G_DUMMY_FILE_H__
 #define __G_DUMMY_FILE_H__
 
-#include <gio/gfile.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 

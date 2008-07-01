@@ -27,11 +27,7 @@
 #ifndef __G_FILE_ENUMERATOR_H__
 #define __G_FILE_ENUMERATOR_H__
 
-#include <glib-object.h>
-#include <gio/gioerror.h>
-#include <gio/gcancellable.h>
-#include <gio/gfileinfo.h>
-#include <gio/gasyncresult.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -49,21 +45,8 @@ G_BEGIN_DECLS
  * 
  * A per matched file iterator.
  **/
-typedef struct _GFileEnumerator         GFileEnumerator;
 typedef struct _GFileEnumeratorClass    GFileEnumeratorClass;
 typedef struct _GFileEnumeratorPrivate  GFileEnumeratorPrivate;
-
-/* Nasty */
-GType g_file_get_type (void) G_GNUC_CONST;
-#define G_TYPE_FILE            (g_file_get_type ())
-/**
- * GFile:
- * 
- * A handle to an object implementing the #GFileIface interface. 
- * Generally stores a location within the file system. Handles do not 
- * necessarily represent files or directories that currently exist.
- **/
-typedef struct _GFile         		GFile; /* Dummy typedef */
 
 struct _GFileEnumerator
 {

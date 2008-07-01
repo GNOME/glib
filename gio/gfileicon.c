@@ -23,6 +23,10 @@
 #include "config.h"
 
 #include "gfileicon.h"
+#include "gfile.h"
+#include "gicon.h"
+#include "gloadableicon.h"
+#include "ginputstream.h"
 #include "gsimpleasyncresult.h"
 
 #include "gioalias.h"

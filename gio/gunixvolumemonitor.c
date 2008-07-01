@@ -32,7 +32,9 @@
 #include "gunixmounts.h"
 #include "gunixmount.h"
 #include "gunixvolume.h"
+#include "gmount.h"
 #include "gmountprivate.h"
+#include "giomodule.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

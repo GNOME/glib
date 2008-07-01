@@ -27,9 +27,7 @@
 #ifndef __G_LOADABLE_ICON_H__
 #define __G_LOADABLE_ICON_H__
 
-#include <glib-object.h>
-#include <gio/gicon.h>
-#include <gio/ginputstream.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -44,7 +42,6 @@ G_BEGIN_DECLS
  * Generic type for all kinds of icons that can be loaded 
  * as a stream.
  **/
-typedef struct _GLoadableIcon         		GLoadableIcon; /* Dummy typedef */
 typedef struct _GLoadableIconIface    		GLoadableIconIface;
 
 /**

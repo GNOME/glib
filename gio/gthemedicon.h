@@ -27,7 +27,7 @@
 #ifndef __G_THEMED_ICON_H__
 #define __G_THEMED_ICON_H__
 
-#include <gio/gicon.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -43,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * An implementation of #GIcon for themed icons.
  **/
-typedef struct _GThemedIcon        GThemedIcon;
 typedef struct _GThemedIconClass   GThemedIconClass;
 
 GType g_themed_icon_get_type (void) G_GNUC_CONST;

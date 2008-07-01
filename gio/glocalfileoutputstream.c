@@ -35,6 +35,7 @@
 #include <glib/gstdio.h>
 #include "glibintl.h"
 #include "gioerror.h"
+#include "gcancellable.h"
 #include "glocalfileoutputstream.h"
 #include "glocalfileinfo.h"
 

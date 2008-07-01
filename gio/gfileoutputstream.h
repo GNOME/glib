@@ -28,7 +28,6 @@
 #define __G_FILE_OUTPUT_STREAM_H__
 
 #include <gio/goutputstream.h>
-#include <gio/gfileinfo.h>
 
 G_BEGIN_DECLS
 
@@ -47,7 +46,6 @@ G_BEGIN_DECLS
  *
  * #GFileOutputStream implements GSeekable.
  **/
-typedef struct _GFileOutputStream         GFileOutputStream;
 typedef struct _GFileOutputStreamClass    GFileOutputStreamClass;
 typedef struct _GFileOutputStreamPrivate  GFileOutputStreamPrivate;
 

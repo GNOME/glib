@@ -27,9 +27,7 @@
 #ifndef __G_FILE_INFO_H__
 #define __G_FILE_INFO_H__
 
-#include <glib-object.h>
-#include <gio/gfileattribute.h>
-#include <gio/gicon.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -45,55 +43,8 @@ G_BEGIN_DECLS
  * 
  * Stores information about a file system object referenced by a #GFile.
  **/
-typedef struct _GFileInfo        GFileInfo;
 typedef struct _GFileInfoClass   GFileInfoClass;
 
-/**
- * GFileAttributeMatcher:
- * 
- * Determines if a string matches a file attribute.
- **/
-typedef struct _GFileAttributeMatcher GFileAttributeMatcher;
-
-/**
- * GFileType:
- * @G_FILE_TYPE_UNKNOWN: File's type is unknown.
- * @G_FILE_TYPE_REGULAR: File handle represents a regular file.
- * @G_FILE_TYPE_DIRECTORY: File handle represents a directory.
- * @G_FILE_TYPE_SYMBOLIC_LINK: File handle represents a symbolic link 
- *    (Unix systems).
- * @G_FILE_TYPE_SPECIAL: File is a "special" file, such as a socket, fifo, 
- *    block device, or character device.
- * @G_FILE_TYPE_SHORTCUT: File is a shortcut (Windows systems).
- * @G_FILE_TYPE_MOUNTABLE: File is a mountable location.
- * 
- * Indicates the file's on-disk type.
- **/
-typedef enum {
-  G_FILE_TYPE_UNKNOWN = 0,
-  G_FILE_TYPE_REGULAR,
-  G_FILE_TYPE_DIRECTORY,
-  G_FILE_TYPE_SYMBOLIC_LINK,
-  G_FILE_TYPE_SPECIAL, /* socket, fifo, blockdev, chardev */
-  G_FILE_TYPE_SHORTCUT,
-  G_FILE_TYPE_MOUNTABLE
-} GFileType;
-
-/**
- * GFilesystemPreviewType:
- * @G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS: Only preview files if user has explicitly requested it.
- * @G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL: Preview files if user has requested preview of "local" files.
- * @G_FILESYSTEM_PREVIEW_TYPE_NEVER: Never preview files.
- * 
- * Indicates a hint from the file system whether files should be
- * previewed in a file manager. Returned as the value of the key
- * #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
- **/
-typedef enum {
-  G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS = 0,
-  G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL,
-  G_FILESYSTEM_PREVIEW_TYPE_NEVER
-} GFilesystemPreviewType;
 
 /* Common Attributes:  */
 /**

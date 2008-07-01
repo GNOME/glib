@@ -24,10 +24,9 @@
 #ifndef __G_UNIX_VOLUME_H__
 #define __G_UNIX_VOLUME_H__
 
-#include <glib-object.h>
-#include <gio/gvolume.h>
-#include <gio/gunixmounts.h>
+#include <gio/giotypes.h>
 #include <gio/gunixvolumemonitor.h>
+#include <gio/gunixmounts.h>
 
 G_BEGIN_DECLS
 

@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "gioscheduler.h"
+#include "gcancellable.h"
 
 #include "gioalias.h"
 

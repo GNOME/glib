@@ -27,7 +27,7 @@
 #ifndef __G_ICON_H__
 #define __G_ICON_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -41,7 +41,6 @@ G_BEGIN_DECLS
  *
  * An abstract type that specifies an icon.
  **/
-typedef struct _GIcon         		GIcon; /* Dummy typedef */
 typedef struct _GIconIface    		GIconIface;
 
 /**

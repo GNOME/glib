@@ -29,7 +29,9 @@
 
 #include "gmount.h"
 #include "gmountprivate.h"
+#include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

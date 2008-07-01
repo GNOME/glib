@@ -27,9 +27,7 @@
 #ifndef __G_DATA_OUTPUT_STREAM_H__
 #define __G_DATA_OUTPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/gfilteroutputstream.h>
-#include <gio/gdatainputstream.h>
 
 G_BEGIN_DECLS
 

@@ -24,7 +24,6 @@
 #define __G_LOCAL_FILE_OUTPUT_STREAM_H__
 
 #include <gio/gfileoutputstream.h>
-#include <gio/gfile.h>
 
 G_BEGIN_DECLS
 

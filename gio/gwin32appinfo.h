@@ -23,7 +23,7 @@
 #ifndef __G_WIN32_APP_INFO_H__
 #define __G_WIN32_APP_INFO_H__
 
-#include <gio/gappinfo.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

@@ -27,8 +27,7 @@
 #ifndef __G_SIMPLE_ASYNC_RESULT_H__
 #define __G_SIMPLE_ASYNC_RESULT_H__
 
-#include <gio/gasyncresult.h>
-#include <gio/gcancellable.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -44,21 +43,7 @@ G_BEGIN_DECLS
  * 
  * A simple implementation of #GAsyncResult.
  **/
-typedef struct _GSimpleAsyncResult        GSimpleAsyncResult;
 typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
-
-/**
- * GSimpleAsyncThreadFunc:
- * @res: a #GSimpleAsyncResult. 
- * @object: a #GObject.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * 
- * Simple thread function that runs an asynchronous operation and 
- * checks for cancellation.
- **/
-typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
-					GObject *object,
-					GCancellable *cancellable);
 
 
 GType g_simple_async_result_get_type (void) G_GNUC_CONST;

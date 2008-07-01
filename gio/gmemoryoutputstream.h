@@ -27,7 +27,6 @@
 #ifndef __G_MEMORY_OUTPUT_STREAM_H__
 #define __G_MEMORY_OUTPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/goutputstream.h>
 
 G_BEGIN_DECLS
@@ -44,7 +43,6 @@ G_BEGIN_DECLS
  *
  * Implements #GOutputStream for arbitrary memory chunks.
  **/
-typedef struct _GMemoryOutputStream         GMemoryOutputStream;
 typedef struct _GMemoryOutputStreamClass    GMemoryOutputStreamClass;
 typedef struct _GMemoryOutputStreamPrivate  GMemoryOutputStreamPrivate;
 

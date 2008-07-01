@@ -23,7 +23,7 @@
 #ifndef __G_LOCAL_FILE_H__
 #define __G_LOCAL_FILE_H__
 
-#include <gio/gfile.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

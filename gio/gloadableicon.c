@@ -21,7 +21,9 @@
  */
 
 #include "config.h"
+#include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "gicon.h"
 #include "gloadableicon.h"
 #include "glibintl.h"
 

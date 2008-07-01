@@ -32,6 +32,7 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include "gcancellable.h"
 #include "gioerror.h"
 #include "glocalfileinputstream.h"
 #include "glocalfileinfo.h"

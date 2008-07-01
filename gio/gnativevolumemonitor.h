@@ -1,7 +1,6 @@
 #ifndef __G_NATIVE_VOLUME_MONITOR_H__
 #define __G_NATIVE_VOLUME_MONITOR_H__
 
-#include <glib-object.h>
 #include <gio/gvolumemonitor.h>
 
 G_BEGIN_DECLS
@@ -14,7 +13,7 @@ G_BEGIN_DECLS
 
 #define G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME "gio-native-volume-monitor"
 
-typedef struct _GNativeVolumeMonitor GNativeVolumeMonitor;
+typedef struct _GNativeVolumeMonitor      GNativeVolumeMonitor;
 typedef struct _GNativeVolumeMonitorClass GNativeVolumeMonitorClass;
 
 struct _GNativeVolumeMonitor {

@@ -28,10 +28,7 @@
 #ifndef __G_DRIVE_H__
 #define __G_DRIVE_H__
 
-#include <glib-object.h>
-#include <gio/gmount.h>
-#include <gio/gvolume.h>
-#include <gio/gmountoperation.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 

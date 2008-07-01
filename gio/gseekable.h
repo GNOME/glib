@@ -27,8 +27,7 @@
 #ifndef __G_SEEKABLE_H__
 #define __G_SEEKABLE_H__
 
-#include <glib-object.h>
-#include <gio/gcancellable.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -42,7 +41,6 @@ G_BEGIN_DECLS
  * 
  * Seek object for streaming operations.
  **/ 
-typedef struct _GSeekable        GSeekable;
 typedef struct _GSeekableIface   GSeekableIface;
 
 /**

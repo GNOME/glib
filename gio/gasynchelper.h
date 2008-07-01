@@ -23,8 +23,7 @@
 #ifndef __G_ASYNC_HELPER_H__
 #define __G_ASYNC_HELPER_H__
 
-#include <glib-object.h>
-#include "gcancellable.h"
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 

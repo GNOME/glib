@@ -27,7 +27,7 @@
 #ifndef __G_CANCELLABLE_H__
 #define __G_CANCELLABLE_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -43,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * Allows actions to be cancelled.
  */
-typedef struct _GCancellable        GCancellable;
 typedef struct _GCancellableClass   GCancellableClass;
 
 struct _GCancellableClass

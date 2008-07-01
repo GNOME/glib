@@ -27,7 +27,6 @@
 #ifndef __G_DATA_INPUT_STREAM_H__
 #define __G_DATA_INPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/gbufferedinputstream.h>
 
 G_BEGIN_DECLS
@@ -46,7 +45,6 @@ G_BEGIN_DECLS
  * An implementation of #GBufferedInputStream that allows for high-level 
  * data manipulation of arbitrary data (including binary operations).
  **/
-typedef struct _GDataInputStream         GDataInputStream;
 typedef struct _GDataInputStreamClass    GDataInputStreamClass;
 typedef struct _GDataInputStreamPrivate  GDataInputStreamPrivate;
 
@@ -69,38 +67,6 @@ struct _GDataInputStreamClass
   void (*_g_reserved4) (void);
   void (*_g_reserved5) (void);
 };
-
-/**
- * GDataStreamByteOrder:
- * @G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN: Selects Big Endian byte order. 
- * @G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN: Selects Little Endian byte order.
- * @G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN: Selects endianness based on host machine's architecture.
- *
- * #GDataStreamByteOrder is used to ensure proper endianness of streaming data sources
- * across various machine architectures.
- *
- **/
-typedef enum  {
-  G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN,
-  G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN,
-  G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN
-} GDataStreamByteOrder;
-
-/** 
- * GDataStreamNewlineType:
- * @G_DATA_STREAM_NEWLINE_TYPE_LF: Selects "LF" line endings, common on most modern UNIX platforms.
- * @G_DATA_STREAM_NEWLINE_TYPE_CR: Selects "CR" line endings.
- * @G_DATA_STREAM_NEWLINE_TYPE_CR_LF: Selects "CR, LF" line ending, common on Microsoft Windows.
- * @G_DATA_STREAM_NEWLINE_TYPE_ANY: Automatically try to handle any line ending type.
- *
- * #GDataStreamNewlineType is used when checking for or setting the line endings for a given file.
- **/
-typedef enum  {
-  G_DATA_STREAM_NEWLINE_TYPE_LF,
-  G_DATA_STREAM_NEWLINE_TYPE_CR,
-  G_DATA_STREAM_NEWLINE_TYPE_CR_LF,
-  G_DATA_STREAM_NEWLINE_TYPE_ANY
-} GDataStreamNewlineType;
 
 GType          g_data_input_stream_get_type   (void) G_GNUC_CONST;
 GDataInputStream*  g_data_input_stream_new        (GInputStream *base_stream);

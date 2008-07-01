@@ -27,7 +27,6 @@
 #ifndef __G_FILTER_INPUT_STREAM_H__
 #define __G_FILTER_INPUT_STREAM_H__
 
-#include <glib-object.h>
 #include <gio/ginputstream.h>
 
 G_BEGIN_DECLS
@@ -44,7 +43,6 @@ G_BEGIN_DECLS
  * 
  * A base class for all input streams that work on an underlying stream.
  **/
-typedef struct _GFilterInputStream         GFilterInputStream;
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;
 typedef struct _GFilterInputStreamPrivate  GFilterInputStreamPrivate;
 

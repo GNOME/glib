@@ -26,6 +26,7 @@
 #include "gfilemonitor.h"
 #include "gio-marshal.h"
 #include "gioenumtypes.h"
+#include "gfile.h"
 #include "gvfs.h"
 #include "glibintl.h"
 

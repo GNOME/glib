@@ -26,6 +26,7 @@
 #include <glocalfileenumerator.h>
 #include <glocalfileinfo.h>
 #include <glocalfile.h>
+#include <gioerror.h>
 #include <string.h>
 #include <stdlib.h>
 #include "glibintl.h"

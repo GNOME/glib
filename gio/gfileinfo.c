@@ -58,6 +58,7 @@
 
 #include "gfileinfo.h"
 #include "gfileattribute-priv.h"
+#include "gicon.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
