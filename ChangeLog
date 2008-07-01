@@ -1,5 +1,9 @@
 2008-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/pcre/*: Update to PCRE 7.7
+
+2008-06-30  Matthias Clasen  <mclasen@redhat.com>
+
 	Backport from trunk:
 
 	Bug 538119 – glib's mainloop leaks a pipe to sub-processes

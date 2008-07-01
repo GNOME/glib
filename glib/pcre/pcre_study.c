@@ -217,6 +217,13 @@ do
       tcode += 1 + LINK_SIZE;
       break;
 
+      /* SKIPZERO skips the bracket. */
+
+      case OP_SKIPZERO:
+      do tcode += GET(tcode,1); while (*tcode == OP_ALT);
+      tcode += 1 + LINK_SIZE;
+      break;
+
       /* Single-char * or ? sets the bit and tries the next item */
 
       case OP_STAR:
@@ -341,6 +348,7 @@ do
       switch(tcode[1])
         {
         case OP_ANY:
+        case OP_ALLANY:
         return SSB_FAIL;
 
         case OP_NOT_DIGIT:

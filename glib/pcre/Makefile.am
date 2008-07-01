@@ -64,4 +64,3 @@ EXTRA_DIST =				\
 		COPYING			\
 		makefile.msc
 
-test: 
