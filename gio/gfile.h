@@ -749,6 +749,10 @@ GFileMonitor*           g_file_monitor_file               (GFile                
 							   GFileMonitorFlags       flags,
 							   GCancellable           *cancellable,
 							   GError                **error);
+GFileMonitor*           g_file_monitor                    (GFile                  *file,
+							   GFileMonitorFlags       flags,
+							   GCancellable           *cancellable,
+							   GError                **error);
 
 
 /* Utilities */

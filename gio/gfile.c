@@ -3896,6 +3896,36 @@ g_file_monitor_file (GFile             *file,
   return monitor;
 }
 
+/**
+ * g_file_monitor:
+ * @file: input #GFile
+ * @flags: a set of #GFileMonitorFlags
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @error: a #GError, or %NULL
+ * 
+ * Obtains a file or directory monitor for the given file, depending
+ * on the type of the file.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * 
+ * Returns: a #GFileMonitor for the given @file.
+ *
+ * Since: 2.18
+ */
+GFileMonitor*
+g_file_monitor (GFile             *file,
+	        GFileMonitorFlags  flags,
+		GCancellable      *cancellable,
+		GError           **error)
+{
+  if (g_file_query_file_type (file, 0, cancellable) == G_FILE_TYPE_DIRECTORY)
+    return g_file_monitor_directory (file, flags, cancellable, error);
+  else
+    return g_file_monitor_file (file, flags, cancellable, error);
+}
+
 /********************************************
  *   Default implementation of async ops    *
  ********************************************/

@@ -300,6 +300,7 @@ g_file_eject_mountable_finish
 g_file_copy_attributes
 g_file_monitor_directory
 g_file_monitor_file
+g_file_monitor
 g_file_query_default_handler
 g_file_load_contents
 g_file_load_contents_async

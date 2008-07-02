@@ -1,6 +1,7 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/gio-sections.txt: Add g_desktop_app_info_new_from_keyfile
+	and g_file_monitor
 
 2008-07-01  Matthias Clasen  <mclasen@redhat.com>
 
