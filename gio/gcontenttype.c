@@ -840,7 +840,7 @@ g_content_type_from_mime_type (const char *mime_type)
   G_LOCK (gio_xdgmime);
   /* mime type and content type are same on unixes */
   umime = g_strdup (xdg_mime_unalias_mime_type (mime_type));
-  G_LOCK (gio_xdgmime);
+  G_UNLOCK (gio_xdgmime);
 
   return umime;
 }

@@ -1,3 +1,7 @@
+2008-07-02  Colin Walters  <walters@redhat.com>
+
+	* gio/gcontenttype.c: Use UNLOCK to unlock, not LOCK.
+
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Add a check for structfs.f_bavail
