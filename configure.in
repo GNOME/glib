@@ -3177,10 +3177,6 @@ if test x$ac_cv_c_bigendian = xyes; then
   g_byte_order=G_BIG_ENDIAN
   g_bs_native=BE
   g_bs_alien=LE
-elif test x$ac_cv_c_bigendian = xuniversal; then
-  g_byte_order=G_BIG_ENDIAN
-  g_bs_native=BE
-  g_bs_alien=LE
 else
   g_byte_order=G_LITTLE_ENDIAN
   g_bs_native=LE
