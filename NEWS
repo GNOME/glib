@@ -1,3 +1,39 @@
+Overview of Changes from GLib 2.17.1 to GLib 2.17.3
+===================================================
+
+* PCRE
+ - fix for CVE-2008-2371 
+
+* Bugs fixed:
+ 538119 glib's mainloop leaks a pipe to sub-processes
+ 537635 Corrections and improvements to g_time_val_{to,from}_iso8601
+ 539067 The document g_io_channel_win32_new_fd() says...
+ 535949 annotate g_strip_context and g_dpgettext with G_GNUC_FORMAT
+ 539123 annotate g_d[n]gettext with G_GNUC_FORMAT
+ 539074 Cannot get exit status with g_spawn_command_line_sync
+ 316221 G_LOCK warns about breaking strict-aliasing rules
+ 539770 migrate gstrfunc unit tests to gtest
+ 539626 Update docstrings for g_object_freeze_notify and g_object_thaw_notify
+ 538044 unconditional use of LC_MESSAGES
+ 540545 Monotonic time and timer offset
+ 535947 want g_set_error_literal
+ 539999 glibconfig.h: add GLIB_USING_SYSTEM_PRINTF 
+ 536252 GFileEnumerator should allow access to the containing GFile
+ 538362 Get Win32 icons back in the file chooser
+ 540802 g_list_prepend doesn't concat lists
+ 540423 unrecoverable error after g_seekable_truncate
+ 538836 make check failure on PPC and ALPHA: pltcheck.sh on g_atomic_pointer_get
+ 539090 g_content_type_from_mime_type() should unalias
+ 540331 g_file_append_to () documentation: can return NULL
+ 534639 add g_desktop_app_info_new_from_keyfile
+ 536733 gio build failure on Irix
+ 536160 Add g_file_monitor()
+ 538127 FileChooser broken on win32
+ 531476 /live-g-file/test_traverse_structure test fails on Mac HFS+
+ 538564 gio should have gio-types.h
+ 540047 glib-genmarshal.c: '#include <io.h>' is too before
+
+
 Overview of Changes from GLib 2.17.0 to GLib 2.17.1
 ===================================================
 
