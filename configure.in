@@ -729,17 +729,17 @@ main (void) {
 AC_MSG_RESULT($g_can_inline)
 
 dnl *** check for working do while(0) macros ***
-AC_CACHE_CHECK([for working do while(0) macros], g_support_dowhile_macros, [
+AC_CACHE_CHECK([for working do while(0) macros], g_cv_support_dowhile_macros, [
 	AC_TRY_COMPILE([],[
 	#define STMT_START do
 	#define STMT_END while(0)
 	#define STMT_TEST STMT_START { i = 0; } STMT_END
 	int main(void) { int i = 1; STMT_TEST; return i; }],
-	[g_support_dowhile_macros=yes],
-	[g_support_dowhile_macros=no],
-	[g_support_dowhile_macros=yes])
+	[g_cv_support_dowhile_macros=yes],
+	[g_cv_support_dowhile_macros=no],
+	[g_cv_support_dowhile_macros=yes])
 ])
-if test x$g_support_dowhile_macros = xyes; then
+if test x$g_cv_support_dowhile_macros = xyes; then
   AC_DEFINE(HAVE_DOWHILE_MACROS, 1, [define for working do while(0) macros])
 fi
 
@@ -3159,18 +3159,21 @@ g_can_inline=$g_can_inline
 g_have_gnuc_visibility=$g_have_gnuc_visibility
 g_have_sunstudio_visibility=$g_have_sunstudio_visibility
 
-case xyes in
-x$ac_cv_c_bigendian)
+if test x$ac_cv_c_bigendian = xyes; then
   g_byte_order=G_BIG_ENDIAN
   g_bs_native=BE
   g_bs_alien=LE
-  ;;
-*)
-  g_byte_order=G_LITTLE_ENDIAN
-  g_bs_native=LE
-  g_bs_alien=BE
-  ;;
-esac
+else
+  if test x$ac_cv_c_bigendian = xuniversal then
+    g_byte_order=G_BIG_ENDIAN
+    g_bs_native=BE
+    g_bs_alien=LE
+  else
+    g_byte_order=G_LITTLE_ENDIAN
+    g_bs_native=LE
+    g_bs_alien=BE
+  fi
+fi
 
 g_pollin=$glib_cv_value_POLLIN
 g_pollout=$glib_cv_value_POLLOUT
