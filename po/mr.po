@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-08 00:40-0400\n"
+"POT-Creation-Date: 2008-07-01 21:48-0400\n"
 "PO-Revision-Date: 2008-03-04 17:38+0530\n"
 "Last-Translator: Sandeep Shedmake <sandeep.shedmake@gmail.com>\n"
 "Language-Team: marathi\n"
@@ -538,7 +538,7 @@ msgstr "संयुक्त शोध सीमा पोहचले"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "रचनेत अपूरे जुळवणीकरीता समाविष्टीत घटक जी समर्थित नाही"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1963
+#: glib/gregex.c:154 gio/glocalfile.c:1967
 msgid "internal error"
 msgstr "आंतरीक त्रूटी"
 
@@ -1138,7 +1138,7 @@ msgstr "%s करीता खूप मोठी प्रमाण संख�
 msgid "Stream is already closed"
 msgstr "श्रृंखला आधिपासूनच बंद आहे"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1960 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "कार्य रद्द करण्यात आले"
@@ -1191,7 +1191,7 @@ msgstr "वापरकर्ता MIME संयोजन संचयीक�
 msgid "Can't create user desktop file %s"
 msgstr "वापरकर्ता डेस्कटॉप फाइल %s बनवू शकत नाही"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s करीता इच्छिक व्याख्या"
@@ -1205,9 +1205,9 @@ msgid "drive doesn't implement polling for media"
 msgstr "ड्राइव्ह मिडीयाकरीता पोलींग कार्यान्वीत करत नाही"
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
-#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
-#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
+#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
+#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
 #, c-format
 msgid "Operation not supported"
 msgstr "कार्य समर्थित नाही"
@@ -1220,52 +1220,52 @@ msgstr "कार्य समर्थित नाही"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "समाविष्टीत आरोहन अस्तीत्वात नाही"
 
-#: gio/gfile.c:1895 gio/glocalfile.c:2106
+#: gio/gfile.c:1896 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "संचयीकेवर प्रत बनवू शकत नाही"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1956
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "संचयीकेवर संचयीकेची प्रत बनवू शकत नाही"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2115
+#: gio/gfile.c:1964 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "लक्ष्य फाइल अस्तित्वात आहे"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:1982
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "संचयीकेची पुनः प्रत बनवू शकत नाही"
 
-#: gio/gfile.c:2698
+#: gio/gfile.c:2699
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "अवैध symlink मुल्य दिले गेले"
 
-#: gio/gfile.c:2791
+#: gio/gfile.c:2792
 #, c-format
 msgid "Trash not supported"
 msgstr "कचरापेटी समर्थित नाही"
 
-#: gio/gfile.c:2838
+#: gio/gfile.c:2839
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "फाइल नावात '%c' असू शकत नाही"
 
-#: gio/gfile.c:4771 gio/gvolume.c:357
+#: gio/gfile.c:4775 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "खंड आरोहन कार्यारत करत नाही"
 
-#: gio/gfile.c:4879
+#: gio/gfile.c:4883
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ही फाइल हाताळण्याकरीता कुठलेही अनुप्रयोग पंजीकृत नाही"
@@ -1332,106 +1332,106 @@ msgstr "मुलभूत संचयीका मॉनीटर प्रक
 msgid "Invalid filename %s"
 msgstr "अवैध फाइलनाव %s"
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "फाइलप्रणाली विषयी माहिती मिळवतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1094
 #, c-format
 msgid "Can't rename root directory"
 msgstr "रूट संचयीका पुनःनामांकीत करू शकत नाही"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1112
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "फाइल पुनःनामांकीत करू शकत नाही, फाइलनाव आधिपासूनच अस्तित्वात आहे"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
-#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1125 gio/glocalfile.c:1989 gio/glocalfile.c:2018
+#: gio/glocalfile.c:2172 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "अवैध फाइल नाव"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "फाइल पुनःनामांकीत करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1248
 #, c-format
 msgid "Error opening file: %s"
 msgstr "फाइल उघडतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1258
 #, c-format
 msgid "Can't open directory"
 msgstr "संचयीका उघडू शकत नाही"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
+#: gio/glocalfile.c:1318 gio/glocalfile.c:1993
 #, c-format
 msgid "Error removing file: %s"
 msgstr "फाइल काढून टाकतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:1678
+#: gio/glocalfile.c:1682
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "फाइल कचरापेटीत हलवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:1701
+#: gio/glocalfile.c:1705
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "कचरापेटी संचयीका %1$s निर्माण करती आली नाही: %2$s"
 
-#: gio/glocalfile.c:1722
+#: gio/glocalfile.c:1726
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "कचरापेटी करीता उच्चस्थरीय संचयीका शोधता आली नाही"
 
-#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
+#: gio/glocalfile.c:1805 gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "कचरापेटी करीता उच्चस्थरीय संचयीका शोधता आली नाही"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1859
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "कचरापेटी माहिती फाइल बनविता आली नाही: %s"
 
-#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
+#: gio/glocalfile.c:1884 gio/glocalfile.c:1959 gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "कचरापेटीकडे फाइल हलवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:2022
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "बोधचिन्ह लिंक बनवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2082 gio/glocalfile.c:2176
 #, c-format
 msgid "Error moving file: %s"
 msgstr "फाइल स्थानांतरन करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2105
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "संचयीकेवर संचयीका हलवू शकत नाही"
 
-#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2132 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "प्रतिकृत फाइल निर्माण अपयशी"
 
-#: gio/glocalfile.c:2147
+#: gio/glocalfile.c:2151
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "लक्ष्य फाइल काढून टाकतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2161
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "आरोहन मधिल स्थानांतरन समर्थीत नाही"
@@ -1686,7 +1686,7 @@ msgstr "युनीक्स पासून वाचतेवेळी त्
 msgid "Error closing unix: %s"
 msgstr "युनीक्स बंद करतेवेळी त्रूटी: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "रूट फाइलप्रणाली"
 

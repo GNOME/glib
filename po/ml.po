@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-08 00:40-0400\n"
+"POT-Creation-Date: 2008-07-01 21:48-0400\n"
 "PO-Revision-Date: 2008-03-03 17:37+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <smc-discuss@googlegroups.com>\n"
@@ -551,7 +551,7 @@ msgstr "ബാക്ക്ട്രാക്കിങ് പരിധി എത�
 msgid "the pattern contains items not supported for partial matching"
 msgstr "പാറ്‍ഷ്യല്‍ മാച്ചിങിന് പിന്തുണ ലഭ്യമല്ലാത്ത വസ്തുക്കള്‍ ഈ മാതൃകയിലുണ്ട്"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1963
+#: glib/gregex.c:154 gio/glocalfile.c:1967
 msgid "internal error"
 msgstr "ആന്തരിക പിശക്"
 
@@ -1151,7 +1151,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1960 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "പ്രക്രിയ റദ്ദാക്കിയിരിക്കുന്നു"
@@ -1204,7 +1204,7 @@ msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികര
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1218,9 +1218,9 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
-#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
-#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
+#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
+#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
 #, c-format
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
@@ -1233,52 +1233,52 @@ msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1895 gio/glocalfile.c:2106
+#: gio/gfile.c:1896 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1956
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2115
+#: gio/gfile.c:1964 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നിലവിലുണ്ട്"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:1982
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2698
+#: gio/gfile.c:2699
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2791
+#: gio/gfile.c:2792
 #, c-format
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:2838
+#: gio/gfile.c:2839
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:4771 gio/gvolume.c:357
+#: gio/gfile.c:4775 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:4879
+#: gio/gfile.c:4883
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr ""
@@ -1345,106 +1345,106 @@ msgstr ""
 msgid "Invalid filename %s"
 msgstr "തെറ്റായ ഫയല്‍ നാമം %s "
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ഫയല്‍സിസ്റ്റം വിവരം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1094
 #, c-format
 msgid "Can't rename root directory"
 msgstr "റൂട്ട് ഡയറക്ടറിയുടെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1112
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല, കാരണം ഈ പേര് നിലവിലുണ്ട്"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
-#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1125 gio/glocalfile.c:1989 gio/glocalfile.c:2018
+#: gio/glocalfile.c:2172 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "തെറ്റായ ഫയല്‍നാമം"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1248
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ഫയല്‍ തുറക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1258
 #, c-format
 msgid "Can't open directory"
 msgstr "ഡയറക്ടറി തുറക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
+#: gio/glocalfile.c:1318 gio/glocalfile.c:1993
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1678
+#: gio/glocalfile.c:1682
 #, c-format
 msgid "Error trashing file: %s"
 msgstr ""
 
-#: gio/glocalfile.c:1701
+#: gio/glocalfile.c:1705
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:1722
+#: gio/glocalfile.c:1726
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
+#: gio/glocalfile.c:1805 gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി ഉണ്ടാക്കുവാനോ ലഭ്യമാക്കുവാനോ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1859
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "വിവരങ്ങള്‍ സംബന്ധിച്ചുള്ള ഫയല്‍ ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
+#: gio/glocalfile.c:1884 gio/glocalfile.c:1959 gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ഫയല്‍ ചവറ്റുകുട്ടയിലേക്ക് നീക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:2022
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "സിംബോളിക് ലിങ്ക് ഉണ്ടാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2082 gio/glocalfile.c:2176
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ഫയല്‍ നീക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2105
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2132 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "ബാക്കപ്പ് ഫയല്‍ ഉണ്ടാക്കുന്നതില്‍ പരാജയം"
 
-#: gio/glocalfile.c:2147
+#: gio/glocalfile.c:2151
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2161
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1699,7 +1699,7 @@ msgstr "യൂണിക്സില്‍ നിന്നും ലഭ്യമ�
 msgid "Error closing unix: %s"
 msgstr "യൂണിക്സ് അടയ്ക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "ഫയല്‍സിസ്റ്റം റൂട്ട്"
 

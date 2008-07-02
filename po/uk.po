@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-08 00:40-0400\n"
+"POT-Creation-Date: 2008-07-01 21:48-0400\n"
 "PO-Revision-Date: 2008-01-25 11:56+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -567,7 +567,7 @@ msgstr ""
 "шаблон містить елементи, які не підтримуються при пошуку часткової "
 "відповідності"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1963
+#: glib/gregex.c:154 gio/glocalfile.c:1967
 msgid "internal error"
 msgstr "внутрішня помилка"
 
@@ -1181,7 +1181,7 @@ msgstr "До %s передано надто велике значення ліч
 msgid "Stream is already closed"
 msgstr "Потік вже закрито"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1960 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Операцію скасовано"
@@ -1234,7 +1234,7 @@ msgstr "Не вдається створити теку параметрів MIM
 msgid "Can't create user desktop file %s"
 msgstr "Не вдається створити для користувача desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Власне визначення %s"
@@ -1248,9 +1248,9 @@ msgid "drive doesn't implement polling for media"
 msgstr "пристрій не має функції опитування наявності носія"
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
-#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
-#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
+#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
+#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
 #, c-format
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
@@ -1263,52 +1263,52 @@ msgstr "Операція не підтримується"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:1895 gio/glocalfile.c:2106
+#: gio/gfile.c:1896 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Не вдається копіювати у каталог"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1956
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Не вдається копіювати каталог у каталог"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2115
+#: gio/gfile.c:1964 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "Цільовий файл існує"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:1982
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Не вдається рекурсивно скопіювати каталог"
 
-#: gio/gfile.c:2698
+#: gio/gfile.c:2699
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:2791
+#: gio/gfile.c:2792
 #, c-format
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:2838
+#: gio/gfile.c:2839
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "назви файлів не можуть містити символ '%c'"
 
-#: gio/gfile.c:4771 gio/gvolume.c:357
+#: gio/gfile.c:4775 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "том не підтримує операцію монтування"
 
-#: gio/gfile.c:4879
+#: gio/gfile.c:4883
 #, fuzzy, c-format
 msgid "No application is registered as handling this file"
 msgstr "Не зареєстровано програму з назвою що створило закладку"
@@ -1375,106 +1375,106 @@ msgstr "Не вдається знайти типовий різновид мо�
 msgid "Invalid filename %s"
 msgstr "Неправильна назва файлу %s"
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Помилка при отриманні інформації з файлової системи: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1094
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Не можна перейменовувати кореневий каталог"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1112
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Не вдається перейменувати файлу, файл з такою назвою вже існує"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
-#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1125 gio/glocalfile.c:1989 gio/glocalfile.c:2018
+#: gio/glocalfile.c:2172 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "Неправильна назва файлу"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Помилка при перейменуванні файлу: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1248
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Помилка при відкриванні файлу: %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1258
 #, c-format
 msgid "Can't open directory"
 msgstr "Не вдається відкрити каталог"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
+#: gio/glocalfile.c:1318 gio/glocalfile.c:1993
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Помилка при видаленні файлу: %s"
 
-#: gio/glocalfile.c:1678
+#: gio/glocalfile.c:1682
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Помилка при переміщенні файлу до смітника: %s"
 
-#: gio/glocalfile.c:1701
+#: gio/glocalfile.c:1705
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Помилка при створенні каталогу смітника %s: %s"
 
-#: gio/glocalfile.c:1722
+#: gio/glocalfile.c:1726
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не вдається знайти каталог верхнього рівня для смітника"
 
-#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
+#: gio/glocalfile.c:1805 gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "не вдається знайти чи створити каталог смітника"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1859
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Помилка створення файл у смітнику: %s"
 
-#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
+#: gio/glocalfile.c:1884 gio/glocalfile.c:1959 gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не вдається перемістити файл до смітника: %s"
 
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:2022
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Помилка при створенні символьного посилання: %s"
 
-#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2082 gio/glocalfile.c:2176
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Помилка при переміщенні файлу: %s"
 
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2105
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Не вдається перемістити каталог у каталог"
 
-#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2132 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Помилка при створенні файлу резервної копії"
 
-#: gio/glocalfile.c:2147
+#: gio/glocalfile.c:2151
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Помилка при зчитуванні цільового файлу: %s"
 
-#: gio/glocalfile.c:2161
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Переміщення між різними точками монтування не підтримується"
@@ -1731,7 +1731,7 @@ msgstr "Помилка при зчитуванні unix-сокету: %s"
 msgid "Error closing unix: %s"
 msgstr "Помилка при закриванні unix-сокету: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "Корінь файлової системи"
 

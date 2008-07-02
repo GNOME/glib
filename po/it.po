@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.16.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-08 00:40-0400\n"
+"POT-Creation-Date: 2008-07-01 21:48-0400\n"
 "PO-Revision-Date: 2008-03-17 22:06+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -600,7 +600,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "il modello contiene elementi non supportati per la corrispondenza parziale"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1963
+#: glib/gregex.c:154 gio/glocalfile.c:1967
 msgid "internal error"
 msgstr "errore interno"
 
@@ -1310,7 +1310,7 @@ msgstr "Valore count troppo largo passato a %s"
 msgid "Stream is already closed"
 msgstr "Lo stream è già chiuso"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1960 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "L'operazione è stata annullata"
@@ -1369,7 +1369,7 @@ msgstr "Impossibile creare la cartella utente di configurazione MIME (%s): %s"
 msgid "Can't create user desktop file %s"
 msgstr "Impossibile creare il file .desktop utente %s"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definizione personalizzata per %s"
@@ -1384,9 +1384,9 @@ msgid "drive doesn't implement polling for media"
 msgstr "l'unità non supporta il sondaggio di supporti"
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
-#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
-#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
+#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
+#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
 #, c-format
 msgid "Operation not supported"
 msgstr "Operazione non supportata"
@@ -1399,52 +1399,52 @@ msgstr "Operazione non supportata"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "L'oggetto mount contenuto non esiste"
 
-#: gio/gfile.c:1895 gio/glocalfile.c:2106
+#: gio/gfile.c:1896 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Impossibile copiare sopra la directory"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1956
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Impossibile copiare la directory sopra la directory"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2115
+#: gio/gfile.c:1964 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "Il file destinazione esiste"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:1982
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Impossibile copiare la directory ricorsivamente"
 
-#: gio/gfile.c:2698
+#: gio/gfile.c:2699
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Fornito valore di collegamento simbolico non valido"
 
-#: gio/gfile.c:2791
+#: gio/gfile.c:2792
 #, c-format
 msgid "Trash not supported"
 msgstr "Cestino non supportato"
 
-#: gio/gfile.c:2838
+#: gio/gfile.c:2839
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "I nomi di file non possono contenere '%c'"
 
-#: gio/gfile.c:4771 gio/gvolume.c:357
+#: gio/gfile.c:4775 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "il volume non implementa il montaggio"
 
-#: gio/gfile.c:4879
+#: gio/gfile.c:4883
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Non risulta registrata alcuna applicazione per gestire questo file"
@@ -1515,64 +1515,64 @@ msgstr ""
 msgid "Invalid filename %s"
 msgstr "Nome di file %s non valido"
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Errore nell'ottenere informazioni sul file system: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1094
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Impossibile rinominare la directory root"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1112
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Impossibile rinominare il file, il nome di file esiste già"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
-#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1125 gio/glocalfile.c:1989 gio/glocalfile.c:2018
+#: gio/glocalfile.c:2172 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "Nome di file non valido"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Errore nel rinominare il file: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1248
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Errore nell'aprire il file: %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1258
 #, c-format
 msgid "Can't open directory"
 msgstr "Impossibile aprire la directory"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
+#: gio/glocalfile.c:1318 gio/glocalfile.c:1993
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Errore nel rimuovere il file: %s"
 
-#: gio/glocalfile.c:1678
+#: gio/glocalfile.c:1682
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Errore nel cestinare il file: %s"
 
-#: gio/glocalfile.c:1701
+#: gio/glocalfile.c:1705
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossibile creare la directory cestino \"%s\": %s"
 
-#: gio/glocalfile.c:1722
+#: gio/glocalfile.c:1726
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Impossibile trovare la directory di livello superiore per il cestino"
 
-#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
+#: gio/glocalfile.c:1805 gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Impossibile trovare o creare la directory cestino"
@@ -1580,46 +1580,46 @@ msgstr "Impossibile trovare o creare la directory cestino"
 # consultare la specifica del cestino di freedesktop.org
 # (in breve per ogni file cestinato viene creata una copia
 # del file e un file di informazioni - data, posizione originaria...)
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1859
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Impossibile creare il file informazioni cestinamento: %s"
 
-#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
+#: gio/glocalfile.c:1884 gio/glocalfile.c:1959 gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossibile cestinare il file: %s"
 
 # FIXME: all other occurrences are "symlink"
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:2022
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Errore nel creare il collegamento simbolico: %s"
 
-#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2082 gio/glocalfile.c:2176
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Errore nello spostare il file: %s"
 
 # ma che senso ha???
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2105
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Impossibile spostare la directory sopra la directory"
 
-#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2132 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Creazione del file backup fallita"
 
-#: gio/glocalfile.c:2147
+#: gio/glocalfile.c:2151
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Errore nel rimuovare il file destinazione: %s"
 
-#: gio/glocalfile.c:2161
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Spostamento tra oggetti mount non supportato"
@@ -1877,7 +1877,7 @@ msgstr "Errore nel leggere da unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Errore nel chiudere unix: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "File system radice"
 

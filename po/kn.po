@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-08 00:40-0400\n"
+"POT-Creation-Date: 2008-07-01 21:48-0400\n"
 "PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -553,7 +553,7 @@ msgstr "ಹಿಂಬಾಲಿಸುವ ಮಿತಿ ತಲುಪಿದೆ"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ಆಂಶಿಕ ಹೊಂದಾಣಿಕೆಗೆ ಬೆಂಬಲಿತವಾಗದ ಅಂಶಗಳನ್ನು ಈ ವಿನ್ಯಾಸವು ಹೊಂದಿದೆ"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1963
+#: glib/gregex.c:154 gio/glocalfile.c:1967
 msgid "internal error"
 msgstr "ಆಂತರಿಕ ದೋಷ"
 
@@ -1159,7 +1159,7 @@ msgstr "%s ಗೆ ಬಹಳ ದೊಡ್ಡದಾದ ಎಣಿಕೆ ಮೌಲ�
 msgid "Stream is already closed"
 msgstr "ಸ್ಟ್ರೀಮ್ ಈಗಾಗಲೆ ಮುಚ್ಚಲ್ಪಟ್ಟಿದೆ"
 
-#: gio/gcancellable.c:296 gio/glocalfile.c:1956 gio/gsimpleasyncresult.c:611
+#: gio/gcancellable.c:296 gio/glocalfile.c:1960 gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "ಕಾರ್ಯವು ರದ್ದುಗೊಂಡಿದೆ"
@@ -1212,7 +1212,7 @@ msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s �
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1517
+#: gio/gdesktopappinfo.c:1532
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -1226,9 +1226,9 @@ msgid "drive doesn't implement polling for media"
 msgstr "ಮಾಧ್ಯಮಕ್ಕಾಗಿ ಪೋಲ್ ಮಾಡುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1556 gio/gfile.c:2613
-#: gio/gfile.c:2658 gio/gfile.c:2708 gio/gfile.c:2748 gio/gfile.c:3072
-#: gio/gfile.c:3474 gio/gfile.c:3557 gio/gfile.c:3640 gio/gfile.c:3720
+#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
+#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
+#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
 #, c-format
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1241,52 +1241,52 @@ msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1046 gio/glocalfile.c:1057
-#: gio/glocalfile.c:1070
+#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ಹೊಂದಿರುವ ಮೌಂಟ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:1895 gio/glocalfile.c:2106
+#: gio/gfile.c:1896 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:1955
+#: gio/gfile.c:1956
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ಕೋಶವನ್ನು ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2115
+#: gio/gfile.c:1964 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:1981
+#: gio/gfile.c:1982
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2698
+#: gio/gfile.c:2699
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:2791
+#: gio/gfile.c:2792
 #, c-format
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2838
+#: gio/gfile.c:2839
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:4771 gio/gvolume.c:357
+#: gio/gfile.c:4775 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:4879
+#: gio/gfile.c:4883
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
@@ -1353,106 +1353,106 @@ msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಕೋಶ ಮೇಲ್ವ�
 msgid "Invalid filename %s"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು %s"
 
-#: gio/glocalfile.c:962
+#: gio/glocalfile.c:966
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ಕಡತವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1094
 #, c-format
 msgid "Can't rename root directory"
 msgstr "ಮೂಲ ಕಡತಕೋಶದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1112
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "ಕಡತದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗಲಿಲ್ಲ, ಈ ಹೆಸರಿನ ಕಡತವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: gio/glocalfile.c:1121 gio/glocalfile.c:1985 gio/glocalfile.c:2014
-#: gio/glocalfile.c:2168 gio/glocalfileoutputstream.c:472
+#: gio/glocalfile.c:1125 gio/glocalfile.c:1989 gio/glocalfile.c:2018
+#: gio/glocalfile.c:2172 gio/glocalfileoutputstream.c:472
 #: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
 #, c-format
 msgid "Invalid filename"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ಕಡತದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1244
+#: gio/glocalfile.c:1248
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1254
+#: gio/glocalfile.c:1258
 #, c-format
 msgid "Can't open directory"
 msgstr "ಕೋಶವನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/glocalfile.c:1314 gio/glocalfile.c:1989
+#: gio/glocalfile.c:1318 gio/glocalfile.c:1993
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1678
+#: gio/glocalfile.c:1682
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ಕಡತವನ್ನು ಕಸದ ಬುಟ್ಟಿಗೆ ವರ್ಗಾಯಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:1701
+#: gio/glocalfile.c:1705
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:1722
+#: gio/glocalfile.c:1726
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "ಕಸದ ಬುಟ್ಟಿಗಾಗಿ ಮೇಲ್ಮಟ್ಟದ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/glocalfile.c:1801 gio/glocalfile.c:1821
+#: gio/glocalfile.c:1805 gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "ಕಸದ ಬುಟ್ಟಿ ಕೋಶವನ್ನು ಪತ್ತೆಮಾಡಲು ಅಥವ ರಚಿಸಲಾಗಿಲ್ಲ:"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1859
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ಟ್ರ್ಯಾಶಿಂಗ್ ಮಾಹಿತಿ ಕಡತವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:1880 gio/glocalfile.c:1955 gio/glocalfile.c:1962
+#: gio/glocalfile.c:1884 gio/glocalfile.c:1959 gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ಕಡತವನ್ನು ಟ್ರ್ಯಾಶ್ ಮಾಡುವಲ್ಲಿ ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:2022
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಮಾಡುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2078 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2082 gio/glocalfile.c:2176
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ಕಡತವನ್ನು ಸ್ಥಳಾಂತರಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2105
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "ಕೋಶವನ್ನು ಇನ್ನೊಂದು ಕೋಶಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: gio/glocalfile.c:2128 gio/glocalfileoutputstream.c:777
+#: gio/glocalfile.c:2132 gio/glocalfileoutputstream.c:777
 #: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
 #: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
 #, c-format
 msgid "Backup file creation failed"
 msgstr "ಬ್ಯಾಕ್ ಕಡತವನ್ನು ನಿರ್ಮಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: gio/glocalfile.c:2147
+#: gio/glocalfile.c:2151
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ಸೂಚಿತ ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfile.c:2161
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "ಎರಡು ಆರೋಹಣ ತಾಣಗಳ ನಡುವೆ ವರ್ಗಾಯಿಸುವುದು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1707,7 +1707,7 @@ msgstr "ಯುನಿಕ್ಸ್‍ನಿಂದ ಓದುವಲ್ಲಿ ದೋ�
 msgid "Error closing unix: %s"
 msgstr "ಯುನಿಕ್ಸ್ ಅನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "ಕಡತವ್ಯವಸ್ಥೆ ಮೂಲ"
 
