@@ -1232,9 +1232,9 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
 
 /**
  * g_unix_mount_monitor_set_rate_limit:
- * @mount_monitor: a #GUnixMountMonitor.
- * @limit_msecs: a integer with the limit in milliseconds to
- * poll for changes.
+ * @mount_monitor: a #GUnixMountMonitor
+ * @limit_msec: a integer with the limit in milliseconds to
+ *     poll for changes.
  *
  * Sets the rate limit to which the @mount_monitor will report
  * consecutive change events to the mount and mount point entry files.

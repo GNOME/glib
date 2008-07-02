@@ -1,3 +1,7 @@
+2008-07-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* gunixmounts.c: Fix a doc typo.
+
 2008-07-01  Cody Russell  <bratsche@gnome.org>
 
 	* gio/gcontenttype.c:
