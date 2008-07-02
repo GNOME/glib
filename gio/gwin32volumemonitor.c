@@ -32,6 +32,7 @@
 
 #include "gwin32volumemonitor.h"
 #include "gwin32mount.h"
+#include "gmount.h"
 #include "giomodule.h"
 #include "gioalias.h"
 

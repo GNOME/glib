@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "gcontenttypeprivate.h"
 #include "gthemedicon.h"
+#include "gicon.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
