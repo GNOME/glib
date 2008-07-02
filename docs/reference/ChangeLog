@@ -1,3 +1,7 @@
+2008-07-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/gio.types: Add missing types. Pointed out by David Zeuthen.
+
 2008-06-24  Michael Natterer  <mitch@imendio.com>
 
 	* glib/Makefile.am
