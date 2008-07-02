@@ -33,10 +33,8 @@
 
 /**
  * SECTION:gclosure
- *
- * @Short_description: Functions as first-class objects
- *
- * @Title: Closures
+ * @short_description: Functions as first-class objects
+ * @title: Closures
  *
  * A #GClosure represents a callback supplied by the programmer. It
  * will generally comprise a function of some kind and a marshaller

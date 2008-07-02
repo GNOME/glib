@@ -32,13 +32,10 @@
 
 /**
  * SECTION:value_arrays
- *
- * @Short_description: A container structure to maintain an array of
- * generic values
- *
- * @See_also:#GValue, #GParamSpecValueArray, g_param_spec_value_array()
- *
- * @Title: Value arrays
+ * @short_description: A container structure to maintain an array of
+ *     generic values
+ * @see_also: #GValue, #GParamSpecValueArray, g_param_spec_value_array()
+ * @title: Value arrays
  *
  * The prime purpose of a #GValueArray is for it to be used as an
  * object property that holds an array of values. A #GValueArray wraps

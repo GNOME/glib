@@ -41,11 +41,9 @@
 
 /**
  * SECTION:signals
- *
- * @Short_description: A means for customization of object behaviour
- * and a general purpose notification mechanism
- *
- * @Title: Signals
+ * @short_description: A means for customization of object behaviour
+ *     and a general purpose notification mechanism
+ * @title: Signals
  *
  * The basic concept of the signal system is that of the
  * <emphasis>emission</emphasis> of a signal. Signals are introduced
@@ -54,10 +52,11 @@
  * basically they are a per-type facility that is inherited.  A signal
  * emission mainly involves invocation of a certain set of callbacks
  * in precisely defined manner. There are two main categories of such
- * callbacks, per-object i'm referring to those types as "object
- * types" in the following, simply because that is the context most
- * users will encounter signals in.
- *
+ * callbacks, per-object 
+ * <footnote><para>Although signals can deal with any kind of instantiatable 
+ * type, i'm referring to those types as "object types" in the following, 
+ * simply because that is the context most users will encounter signals in.
+ * </para></footnote>
  * ones and user provided ones.
  * The per-object callbacks are most often referred to as "object method
  * handler" or "default (signal) handler", while user provided callbacks are

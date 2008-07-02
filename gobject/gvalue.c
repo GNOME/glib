@@ -33,17 +33,14 @@
 
 /**
  * SECTION:generic_values
- *
- * @Short_description: A polymorphic type that can hold values of any
- * other type
- *
- * @See_also: The fundamental types which all support #GValue
- * operations and thus can be used as a type initializer for
- * g_value_init() are defined by a separate interface.  See the <link
- * linkend="gobject-Standard-Parameter-and-Value-Types">Standard
- * Values API</link> for details.
- *
- * @Title: Generic values
+ * @short_description: A polymorphic type that can hold values of any
+ *     other type
+ * @see_also: The fundamental types which all support #GValue
+ *     operations and thus can be used as a type initializer for
+ *     g_value_init() are defined by a separate interface.  See the <link
+ *     linkend="gobject-Standard-Parameter-and-Value-Types">Standard
+ *     Values API</link> for details.
+ * @title: Generic values
  *
  * The #GValue structure is basically a variable container that consists
  * of a type identifier and a specific value of that type.

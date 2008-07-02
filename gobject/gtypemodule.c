@@ -28,10 +28,8 @@
 
 /**
  * SECTION:gtypemodule
- *
- * @Short_description: Type loading modules
- *
- * @See_also:<variablelist>
+ * @short_description: Type loading modules
+ * @see_also:<variablelist>
  * <varlistentry>
  * <term>#GTypePlugin</term>
  * <listitem><para>The abstract type loader interface.</para></listitem>
@@ -41,8 +39,7 @@
  * <listitem><para>Portable mechanism for dynamically loaded modules.</para></listitem>
  * </varlistentry>
  * </variablelist>
- *
- * @Title: GTypeModule
+ * @title: GTypeModule
  *
  * #GTypeModule provides a simple implementation of the #GTypePlugin
  * interface. The model of #GTypeModule is a dynamically loaded module

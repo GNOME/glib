@@ -33,12 +33,9 @@
 
 /**
  * SECTION:param_value_types
- *
- * @Short_description: Standard Parameter and Value Types
- *
- * @See_also: #GParamSpec, #GValue, g_object_class_install_property().
- *
- * @Title: Parameters and Values
+ * @short_description: Standard Parameter and Value Types
+ * @see_also: #GParamSpec, #GValue, g_object_class_install_property().
+ * @title: Parameters and Values
  *
  * #GValue provides an abstract container structure which can be
  * copied, transformed and compared while holding a value of any

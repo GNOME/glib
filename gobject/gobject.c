@@ -41,12 +41,9 @@
 
 /**
  * SECTION:objects
- *
- * @Short_description: The base object type
- *
- * @See_also:#GParamSpecObject, g_param_spec_object()
- *
- * @Title: The Base Object Type
+ * @short_description: The base object type
+ * @see_also: #GParamSpecObject, g_param_spec_object()
+ * @title: The Base Object Type
  *
  * GObject is the fundamental type providing the common attributes and
  * methods for all object types in GTK+, Pango and other libraries

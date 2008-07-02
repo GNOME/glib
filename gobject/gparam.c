@@ -33,14 +33,11 @@
 
 /**
  * SECTION:gparamspec
- *
- * @Short_description: Metadata for parameter specifications
- *
- * @See_also:g_object_class_install_property(), g_object_set(),
- * g_object_get(), g_object_set_property(), g_object_get_property(),
- * g_value_register_transform_func()
- *
- * @Title: GParamSpec
+ * @short_description: Metadata for parameter specifications
+ * @see_also: g_object_class_install_property(), g_object_set(),
+ *     g_object_get(), g_object_set_property(), g_object_get_property(),
+ *     g_value_register_transform_func()
+ * @title: GParamSpec
  *
  * #GParamSpec is an object structure that encapsulates the metadata
  * required to specify parameters, such as e.g. #GObject properties.

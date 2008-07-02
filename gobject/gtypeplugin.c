@@ -25,12 +25,9 @@
 
 /**
  * SECTION:gtypeplugin
- *
- * @Short_description: An interface for dynamically loadable types
- *
- * @See_also:#GTypeModule and g_type_register_dynamic().
- *
- * @Titile: GTypePlugin
+ * @short_description: An interface for dynamically loadable types
+ * @see_also: #GTypeModule and g_type_register_dynamic().
+ * @title: GTypePlugin
  *
  * The GObject type system supports dynamic loading of types. The
  * #GTypePlugin interface is used to handle the lifecycle of
