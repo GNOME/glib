@@ -1,5 +1,10 @@
 2008-07-01  Cody Russell  <bratsche@gnome.org>
 
+	* gio/gwin32appinfo.c:
+	* gio/gwin32mount.c: Fixed some include problems.
+
+2008-07-01  Cody Russell  <bratsche@gnome.org>
+
         * gio/gioenums.h:
         * gio/giotypes.h:
         Moved all relevant typedefs into these files.

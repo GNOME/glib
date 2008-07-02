@@ -32,6 +32,8 @@
 #include <glib.h>
 #include "gwin32volumemonitor.h"
 #include "gwin32mount.h"
+#include "gmount.h"
+#include "gfile.h"
 #include "gmountprivate.h"
 #include "gvolumemonitor.h"
 #include "gthemedicon.h"

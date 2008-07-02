@@ -26,6 +26,7 @@
 
 #include "gcontenttypeprivate.h"
 #include "gwin32appinfo.h"
+#include "gappinfo.h"
 #include "gioerror.h"
 #include "gfile.h"
 #include <glib/gstdio.h>
