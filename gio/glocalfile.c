@@ -53,8 +53,8 @@
 #if defined(HAVE_STATFS) && defined(HAVE_STATVFS)
 /* Some systems have both statfs and statvfs, pick the
    most "native" for these */
-# if defined(sun) && defined(__SVR4)
-   /* on solaris, statfs doesn't even have the
+# if !defined(HAVE_STRUCT_STATFS_F_BAVAIL)
+   /* on solaris and irix, statfs doesn't even have the
       f_bavail field */
 #  define USE_STATVFS
 # else

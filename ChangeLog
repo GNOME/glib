@@ -1,5 +1,9 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Add a check for structfs.f_bavail
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmain.c (g_get_current_time): Add a g_return_val_if_fail
 	check in both versions. Proposed by Patrik Olsson in bug 540545.
 

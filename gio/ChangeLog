@@ -1,5 +1,11 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	536733 – gio build failure on Irix
+
+	* glocalfile.c: Use a configure check for structfs.f_bavail.
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 534639 – add g_desktop_app_info_new_from_keyfile
 
 	* gio.symbols:
