@@ -1,5 +1,10 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmain.c (g_get_current_time): Add a g_return_val_if_fail
+	check in both versions. Proposed by Patrik Olsson in bug 540545.
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Workaround AC_C_BIGENDIAN breakage in autoconf 2.61.
 	Add a _cv_ to some variable names, since autoconf wants it.
 

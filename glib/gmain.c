@@ -1715,6 +1715,8 @@ g_get_current_time (GTimeVal *result)
   FILETIME ft;
   guint64 *time64 = (guint64 *) &ft;
 
+  g_return_if_fail (result != NULL);
+
   GetSystemTimeAsFileTime (&ft);
 
   /* Convert from 100s of nanoseconds since 1601-01-01
