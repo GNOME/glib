@@ -1,3 +1,11 @@
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 534639 – add g_desktop_app_info_new_from_keyfile
+
+	* gio.symbols:
+	* gdesktopappinfo.[hc]: Add a function to create a
+	GDesktopAppInfo from a GKeyFile. Proposed by Josselin Mouette.
+
 2008-07-02  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gappinfo.c: Fix ulink in doc to make gtk-doc happy.
