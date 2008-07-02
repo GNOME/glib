@@ -53,6 +53,9 @@ enum {
   LAST_SIGNAL
 };
 
+/* work around a limitation of the aliasing foo */
+#undef g_file_monitor
+
 G_DEFINE_ABSTRACT_TYPE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT);
 
 typedef struct {

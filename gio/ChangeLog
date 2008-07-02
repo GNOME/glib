@@ -1,5 +1,9 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* gfilemonitor.c: Fix the build.
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 536160 – Add g_file_monitor()
 
 	* gio.symbols:
