@@ -237,7 +237,6 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 	}
       g_free (t);
     }
-  g_free (try_exec);
 
   info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
   info->filename = NULL;
