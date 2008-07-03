@@ -258,16 +258,6 @@ Wraps g_alloca() in a more typesafe manner.
 @Returns:     Pointer to stack space for @n_structs chunks of type @struct_type
 
 
-<!-- ##### MACRO g_memmove ##### -->
-<para>
-
-</para>
-
-@dest: 
-@src: 
-@len: 
-
-
 <!-- ##### FUNCTION g_memdup ##### -->
 <para>
 Allocates @byte_size bytes of memory, and copies @byte_size bytes into it

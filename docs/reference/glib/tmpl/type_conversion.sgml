@@ -57,52 +57,6 @@ integer; values outside the range of a 32-bit integer will be mangled.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO GINT_TO_POINTER ##### -->
-<para>
-Stuffs an integer into a pointer type.
-</para>
-<para>
-Remember, YOU MAY NOT STORE POINTERS IN INTEGERS. THIS IS NOT PORTABLE
-IN ANY WAY SHAPE OR FORM. These macros <emphasis>ONLY</emphasis> allow
-storing integers in pointers, and only preserve 32 bits of the
-integer; values outside the range of a 32-bit integer will be mangled.
-</para>
-
-@i: integer to stuff into a pointer.
-
-
-<!-- ##### MACRO GPOINTER_TO_INT ##### -->
-<para>
-Extracts an integer from a pointer. The integer must have
-been stored in the pointer with GINT_TO_POINTER().
-</para>
-<para>
-Remember, YOU MAY NOT STORE POINTERS IN INTEGERS. THIS IS NOT PORTABLE
-IN ANY WAY SHAPE OR FORM. These macros <emphasis>ONLY</emphasis> allow
-storing integers in pointers, and only preserve 32 bits of the
-integer; values outside the range of a 32-bit integer will be mangled.
-</para>
-
-@p: pointer containing an integer.
-
-
-<!-- ##### MACRO GUINT_TO_POINTER ##### -->
-<para>
-Stuffs an unsigned integer into a pointer type.
-</para>
-
-@u: unsigned integer to stuff into the pointer.
-
-
-<!-- ##### MACRO GPOINTER_TO_UINT ##### -->
-<para>
-Extracts an unsigned integer from a pointer. The integer must have
-been stored in the pointer with GUINT_TO_POINTER().
-</para>
-
-@p: pointer to extract an unsigned integer from.
-
-
 <!-- ##### MACRO GSIZE_TO_POINTER ##### -->
 <para>
 Stuffs a #gsize into a pointer type.

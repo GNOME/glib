@@ -1,5 +1,9 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.3 ===
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Better endianness fix. From Tomas Mraz.
 
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>

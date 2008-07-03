@@ -1,5 +1,9 @@
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.3 ===
+
+2008-07-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfilemonitor.c: Fix the build.
 
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>

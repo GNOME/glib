@@ -33,6 +33,10 @@ Overview of Changes from GLib 2.17.1 to GLib 2.17.3
  538564 gio should have gio-types.h
  540047 glib-genmarshal.c: '#include <io.h>' is too before
 
+Updated translations:
+ Korean (ko)
+ Occitan (oc)
+
 
 Overview of Changes from GLib 2.17.0 to GLib 2.17.1
 ===================================================

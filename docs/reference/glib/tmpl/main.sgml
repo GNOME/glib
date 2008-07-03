@@ -645,15 +645,6 @@ for the default main context.
 @Returns: 
 
 
-<!-- ##### TYPEDEF GPid ##### -->
-<para>
-A type which is used to hold a process identification. 
-On Unix, processes are identified by a process id (an 
-integer), while Windows uses process handles (which are 
-pointers).
-</para>
-
-
 <!-- ##### USER_FUNCTION GChildWatchFunc ##### -->
 <para>
 The type of functions to be called when a child exists.

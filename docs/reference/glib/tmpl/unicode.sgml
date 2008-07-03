@@ -330,7 +330,7 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 @G_UNICODE_BREAK_SURROGATE: Surrogates (SG)
 @G_UNICODE_BREAK_ZERO_WIDTH_SPACE: Zero Width Space (ZW)
 @G_UNICODE_BREAK_INSEPARABLE: Inseparable (IN)
-@G_UNICODE_BREAK_NON_BREAKING_GLUE: Non-breaking ("Glue") (GL) 
+@G_UNICODE_BREAK_NON_BREAKING_GLUE: Non-breaking ("Glue") (GL)
 @G_UNICODE_BREAK_CONTINGENT: Contingent Break Opportunity (CB)
 @G_UNICODE_BREAK_SPACE: Space (SP)
 @G_UNICODE_BREAK_AFTER: Break Opportunity After (BA)

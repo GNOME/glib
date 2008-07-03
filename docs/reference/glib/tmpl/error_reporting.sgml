@@ -455,6 +455,17 @@ information about an error that has occurred.
 @Varargs: 
 
 
+<!-- ##### FUNCTION g_set_error_literal ##### -->
+<para>
+
+</para>
+
+@err: 
+@domain: 
+@code: 
+@message: 
+
+
 <!-- ##### FUNCTION g_propagate_error ##### -->
 <para>
 

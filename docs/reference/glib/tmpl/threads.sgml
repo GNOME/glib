@@ -71,19 +71,6 @@ common problems. To use error-checking mutexes, define the symbol
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO G_THREADS_ENABLED ##### -->
-
-<para>
-This macro is defined if GLib was compiled with thread support. This
-does not necessarily mean that there is a thread implementation
-available, but it does mean that the infrastructure is in place and
-that once you provide a thread implementation to g_thread_init(), GLib
-will be multi-thread safe. If #G_THREADS_ENABLED is not defined, then
-Glib is not, and cannot be, multi-thread safe.
-</para>
-
-
-
 <!-- ##### MACRO G_THREADS_IMPL_POSIX ##### -->
 
 <para>
