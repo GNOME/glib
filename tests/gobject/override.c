@@ -37,6 +37,7 @@
 
 static guint foo_signal_id = 0;
 static guint bar_signal_id = 0;
+static guint baz_signal_id = 0;
 
 static GType test_i_get_type (void);
 static GType test_a_get_type (void);
@@ -112,6 +113,19 @@ test_a_bar (TestA *self)
   record ("TestA::bar");
 }
 
+static gchar *
+test_a_baz (TestA    *self,
+            GObject  *object,
+            gpointer  pointer)
+{
+  record ("TestA::baz");
+
+  g_assert (object == G_OBJECT (self));
+  g_assert (GPOINTER_TO_INT (pointer) == 23);
+
+  return g_strdup ("TestA::baz");
+}
+
 static void
 test_a_class_init (TestAClass *class)
 {
@@ -124,6 +138,16 @@ test_a_class_init (TestAClass *class)
 				NULL, NULL,
 				g_cclosure_marshal_VOID__VOID,
 				G_TYPE_NONE, 0, NULL);
+
+  baz_signal_id = g_signal_new_class_handler ("baz",
+                                              TEST_TYPE_A,
+                                              G_SIGNAL_RUN_LAST,
+                                              G_CALLBACK (test_a_baz),
+                                              NULL, NULL,
+                                              g_cclosure_marshal_STRING__OBJECT_POINTER,
+                                              G_TYPE_STRING, 2,
+                                              G_TYPE_OBJECT,
+                                              G_TYPE_POINTER);
 }
 
 static void
@@ -153,7 +177,7 @@ struct _TestBClass {
 };
 
 static void
-test_b_foo (TestA *self)
+test_b_foo (TestI *self)
 {
   GValue args[1] = { { 0, } };
 
@@ -169,7 +193,7 @@ test_b_foo (TestA *self)
 }
 
 static void
-test_b_bar (TestI *self)
+test_b_bar (TestA *self)
 {
   GValue args[1] = { { 0, } };
 
@@ -184,6 +208,30 @@ test_b_bar (TestI *self)
   g_value_unset (&args[0]);
 }
 
+static gchar *
+test_b_baz (TestA    *self,
+            GObject  *object,
+            gpointer  pointer)
+{
+  gchar *retval = NULL;
+
+  record ("TestB::baz");
+
+  g_assert (object == G_OBJECT (self));
+  g_assert (GPOINTER_TO_INT (pointer) == 23);
+
+  g_signal_chain_from_overridden_handler (self, object, pointer, &retval);
+
+  if (retval)
+    {
+      gchar *tmp = g_strconcat (retval , ",TestB::baz", NULL);
+      g_free (retval);
+      retval = tmp;
+    }
+
+  return retval;
+}
+
 static void
 test_b_class_init (TestBClass *class)
 {
@@ -195,6 +243,9 @@ test_b_class_init (TestBClass *class)
 				   TEST_TYPE_B,
 				   g_cclosure_new (G_CALLBACK (test_b_bar),
 						   NULL, NULL));
+  g_signal_override_class_handler ("baz",
+				   TEST_TYPE_B,
+				   G_CALLBACK (test_b_baz));
 }
 
 static DEFINE_TYPE (TestB, test_b,
@@ -214,7 +265,7 @@ struct _TestCClass {
 };
 
 static void
-test_c_foo (TestA *self)
+test_c_foo (TestI *self)
 {
   GValue args[1] = { { 0, } };
 
@@ -230,7 +281,7 @@ test_c_foo (TestA *self)
 }
 
 static void
-test_c_bar (TestI *self)
+test_c_bar (TestA *self)
 {
   GValue args[1] = { { 0, } };
 
@@ -245,6 +296,30 @@ test_c_bar (TestI *self)
   g_value_unset (&args[0]);
 }
 
+static gchar *
+test_c_baz (TestA    *self,
+            GObject  *object,
+            gpointer  pointer)
+{
+  gchar *retval = NULL;
+
+  record ("TestC::baz");
+
+  g_assert (object == G_OBJECT (self));
+  g_assert (GPOINTER_TO_INT (pointer) == 23);
+
+  g_signal_chain_from_overridden_handler (self, object, pointer, &retval);
+
+  if (retval)
+    {
+      gchar *tmp = g_strconcat (retval , ",TestC::baz", NULL);
+      g_free (retval);
+      retval = tmp;
+    }
+
+  return retval;
+}
+
 static void
 test_c_class_init (TestBClass *class)
 {
@@ -256,6 +331,9 @@ test_c_class_init (TestBClass *class)
 				   TEST_TYPE_C,
 				   g_cclosure_new (G_CALLBACK (test_c_bar),
 						   NULL, NULL));
+  g_signal_override_class_handler ("baz",
+				   TEST_TYPE_C,
+				   G_CALLBACK (test_c_baz));
 }
 
 
@@ -277,13 +355,26 @@ record (const gchar *str)
 static void
 test (GType        type,
       const gchar *signal,
-      const gchar *expected)
+      const gchar *expected,
+      const gchar *expected_retval)
 {
   GObject *self = g_object_new (type, NULL);
 
   test_string = g_string_new (NULL);
 
-  g_signal_emit_by_name (self, signal, 0);
+  if (strcmp (signal, "baz"))
+    {
+      g_signal_emit_by_name (self, signal);
+    }
+  else
+    {
+      gchar *ret;
+
+      g_signal_emit_by_name (self, signal, self, GINT_TO_POINTER (23), &ret);
+
+      if (strcmp (ret, expected_retval) != 0)
+        failed = TRUE;
+    }
 
 #ifndef VERBOSE
   if (strcmp (test_string->str, expected) != 0)
@@ -311,14 +402,17 @@ main (int argc, char **argv)
 			  G_LOG_LEVEL_CRITICAL);
   g_type_init();
 
-  test (TEST_TYPE_A, "foo", "TestA::foo,TestI::foo");
-  test (TEST_TYPE_A, "bar", "TestA::bar");
+  test (TEST_TYPE_A, "foo", "TestA::foo,TestI::foo", NULL);
+  test (TEST_TYPE_A, "bar", "TestA::bar", NULL);
+  test (TEST_TYPE_A, "baz", "TestA::baz", "TestA::baz");
 
-  test (TEST_TYPE_B, "foo", "TestB::foo,TestA::foo,TestI::foo");
-  test (TEST_TYPE_B, "bar", "TestB::bar,TestA::bar");
+  test (TEST_TYPE_B, "foo", "TestB::foo,TestA::foo,TestI::foo", NULL);
+  test (TEST_TYPE_B, "bar", "TestB::bar,TestA::bar", NULL);
+  test (TEST_TYPE_B, "baz", "TestB::baz,TestA::baz", "TestA::baz,TestB::baz");
 
-  test (TEST_TYPE_C, "foo", "TestC::foo,TestB::foo,TestA::foo,TestI::foo");
-  test (TEST_TYPE_C, "bar", "TestC::bar,TestB::bar,TestA::bar");
+  test (TEST_TYPE_C, "foo", "TestC::foo,TestB::foo,TestA::foo,TestI::foo", NULL);
+  test (TEST_TYPE_C, "bar", "TestC::bar,TestB::bar,TestA::bar", NULL);
+  test (TEST_TYPE_C, "baz", "TestC::baz,TestB::baz,TestA::baz", "TestA::baz,TestB::baz,TestC::baz");
 
   return failed ? 1 : 0;
 }

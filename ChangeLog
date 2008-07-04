@@ -1,3 +1,11 @@
+2008-07-04  Michael Natterer  <mitch@imendio.com>
+
+	Bug 541208 – Functions to easily install and use signals without
+	class struct slot
+
+	* tests/gobject/override.c: added tests for the new gsignal
+	overriding and chaining APIs.
+
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.3 ===
