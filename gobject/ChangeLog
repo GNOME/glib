@@ -1,5 +1,9 @@
 2008-07-04  Michael Natterer  <mitch@imendio.com>
 
+	* gobject.c: remove unused #define PREALLOC_CPARAMS.
+
+2008-07-04  Michael Natterer  <mitch@imendio.com>
+
 	Bug 541208 – Functions to easily install and use signals without
 	class struct slot
 
