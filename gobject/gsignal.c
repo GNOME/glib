@@ -1352,6 +1352,73 @@ g_signal_new (const gchar	 *signal_name,
   return signal_id;
 }
 
+/**
+ * g_signal_new_class_handler:
+ * @signal_name: the name for the signal
+ * @itype: the type this signal pertains to. It will also pertain to
+ *  types which are derived from this type.
+ * @signal_flags: a combination of #GSignalFlags specifying detail of when
+ *  the default handler is to be invoked. You should at least specify
+ *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
+ * @class_handler: a #GCallback which acts as class implementation of
+ *  this signal. Used to invoke a class method generically. Pass %NULL to
+ *  not associate a class method with this signal.
+ * @accumulator: the accumulator for this signal; may be %NULL.
+ * @accu_data: user data for the @accumulator.
+ * @c_marshaller: the function to translate arrays of parameter values to
+ *  signal emissions into C language callback invocations.
+ * @return_type: the type of return value, or #G_TYPE_NONE for a signal
+ *  without a return value.
+ * @n_params: the number of parameter types to follow.
+ * @...: a list of types, one for each parameter.
+ *
+ * Creates a new signal. (This is usually done in the class initializer.)
+ *
+ * This is a variant of g_signal_new() that takes a C callback instead
+ * off a class offset for the signal's class handler. This function
+ * doesn't need a function pointer exposed in the class structure of
+ * an object definition, instead the function pointer is passed
+ * directly and can be overriden by derived classes with
+ * g_signal_override_class_closure() or
+ * g_signal_override_class_handler()and chained to with
+ * g_signal_chain_from_overridden() or
+ * g_signal_chain_from_overridden().
+ *
+ * See g_signal_new() for information about signal names.
+ *
+ * Returns: the signal id
+ *
+ * Since: 2.18
+ */
+guint
+g_signal_new_class_handler (const gchar        *signal_name,
+                            GType               itype,
+                            GSignalFlags        signal_flags,
+                            GCallback           class_handler,
+                            GSignalAccumulator  accumulator,
+                            gpointer            accu_data,
+                            GSignalCMarshaller  c_marshaller,
+                            GType               return_type,
+                            guint               n_params,
+                            ...)
+{
+  va_list args;
+  guint signal_id;
+
+  g_return_val_if_fail (signal_name != NULL, 0);
+
+  va_start (args, n_params);
+
+  signal_id = g_signal_new_valist (signal_name, itype, signal_flags,
+                                   class_handler ? g_cclosure_new (class_handler, NULL, NULL) : NULL,
+                                   accumulator, accu_data, c_marshaller,
+                                   return_type, n_params, args);
+
+  va_end (args);
+
+  return signal_id;
+}
+
 static inline ClassClosure*
 signal_find_class_closure (SignalNode *node,
 			   GType       itype)
@@ -1694,6 +1761,10 @@ signal_destroy_R (SignalNode *signal_node)
  * Overrides the class closure (i.e. the default handler) for the given signal
  * for emissions on instances of @instance_type. @instance_type must be derived
  * from the type to which the signal belongs.
+ *
+ * See g_signal_chain_from_overridden() and
+ * g_signal_chain_from_overridden_handler() for how to chain up to the
+ * parent class closure from inside the overridden one.
  */
 void
 g_signal_override_class_closure (guint     signal_id,
@@ -1722,6 +1793,46 @@ g_signal_override_class_closure (guint     signal_id,
 }
 
 /**
+ * g_signal_override_class_handler:
+ * @signal_name: the name for the signal
+ * @instance_type: the instance type on which to override the class handler
+ *  for the signal.
+ * @class_handler: the handler.
+ *
+ * Overrides the class closure (i.e. the default handler) for the
+ * given signal for emissions on instances of @instance_type with
+ * callabck @class_handler. @instance_type must be derived from the
+ * type to which the signal belongs.
+ *
+ * See g_signal_chain_from_overridden() and
+ * g_signal_chain_from_overridden_handler() for how to chain up to the
+ * parent class closure from inside the overridden one.
+ *
+ * Since: 2.18
+ */
+void
+g_signal_override_class_handler (const gchar *signal_name,
+				 GType        instance_type,
+				 GCallback    class_handler)
+{
+  guint signal_id;
+
+  g_return_if_fail (signal_name != NULL);
+  g_return_if_fail (instance_type != G_TYPE_NONE);
+  g_return_if_fail (class_handler != NULL);
+
+  signal_id = g_signal_lookup (signal_name, instance_type);
+
+  if (signal_id)
+    g_signal_override_class_closure (signal_id, instance_type,
+                                     g_cclosure_new (class_handler, NULL, NULL));
+  else
+    g_warning ("%s: signal name '%s' is invalid for type id '%"G_GSIZE_FORMAT"'",
+               G_STRLOC, signal_name, instance_type);
+
+}
+
+/**
  * g_signal_chain_from_overridden:
  * @instance_and_params: the argument list of the signal emission. The first
  *  element in the array is a #GValue for the instance the signal is being
@@ -1730,7 +1841,8 @@ g_signal_override_class_closure (guint     signal_id,
  *
  * Calls the original class closure of a signal. This function should only
  * be called from an overridden class closure; see
- * g_signal_override_class_closure().
+ * g_signal_override_class_closure() and
+ * g_signal_override_class_handler().
  */
 void
 g_signal_chain_from_overridden (const GValue *instance_and_params,
@@ -1776,6 +1888,7 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
     }
   else
     g_warning ("%s: no signal is currently being emitted for instance `%p'", G_STRLOC, instance);
+
   if (closure)
     {
       emission->chain_type = chain_type;
@@ -1785,6 +1898,174 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
 			n_params + 1,
 			instance_and_params,
 			&emission->ihint);
+      SIGNAL_LOCK ();
+      emission->chain_type = restore_type;
+    }
+  SIGNAL_UNLOCK ();
+}
+
+/**
+ * g_signal_chain_from_overridden_handler:
+ * @instance: the instance the signal is being emitted on.
+ * @...: parameters to be passed to the parent class closure, followed by a
+ *  location for the return value. If the return type of the signal
+ *  is #G_TYPE_NONE, the return value location can be omitted.
+ *
+ * Calls the original class closure of a signal. This function should
+ * only be called from an overridden class closure; see
+ * g_signal_override_class_closure() and
+ * g_signal_override_class_handler().
+ *
+ * Since: 2.18
+ */
+void
+g_signal_chain_from_overridden_handler (gpointer instance,
+                                        ...)
+{
+  GType chain_type = 0, restore_type = 0;
+  Emission *emission = NULL;
+  GClosure *closure = NULL;
+  SignalNode *node;
+  guint n_params = 0;
+
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+
+  SIGNAL_LOCK ();
+  emission = emission_find_innermost (instance);
+  if (emission)
+    {
+      node = LOOKUP_SIGNAL_NODE (emission->ihint.signal_id);
+
+      g_assert (node != NULL);	/* paranoid */
+
+      /* we should probably do the same parameter checks as g_signal_emit() here.
+       */
+      if (emission->chain_type != G_TYPE_NONE)
+	{
+	  ClassClosure *cc = signal_find_class_closure (node, emission->chain_type);
+
+	  g_assert (cc != NULL);	/* closure currently in call stack */
+
+	  n_params = node->n_params;
+	  restore_type = cc->instance_type;
+	  cc = signal_find_class_closure (node, g_type_parent (cc->instance_type));
+	  if (cc && cc->instance_type != restore_type)
+	    {
+	      closure = cc->closure;
+	      chain_type = cc->instance_type;
+	    }
+	}
+      else
+	g_warning ("%s: signal id `%u' cannot be chained from current emission stage for instance `%p'", G_STRLOC, node->signal_id, instance);
+    }
+  else
+    g_warning ("%s: no signal is currently being emitted for instance `%p'", G_STRLOC, instance);
+
+  if (closure)
+    {
+      GValue *instance_and_params, *free_me = NULL;
+      GType signal_return_type;
+      GValue *param_values;
+      va_list var_args;
+      guint i;
+
+      va_start (var_args, instance);
+
+      signal_return_type = node->return_type;
+      free_me = g_new (GValue, node->n_params + 1);
+      instance_and_params = free_me;
+      param_values = instance_and_params + 1;
+
+      for (i = 0; i < node->n_params; i++)
+        {
+          gchar *error;
+          GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+          gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
+
+          param_values[i].g_type = 0;
+          SIGNAL_UNLOCK ();
+          g_value_init (param_values + i, ptype);
+          G_VALUE_COLLECT (param_values + i,
+                           var_args,
+                           static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
+                           &error);
+          if (error)
+            {
+              g_warning ("%s: %s", G_STRLOC, error);
+              g_free (error);
+
+              /* we purposely leak the value here, it might not be
+               * in a sane state if an error condition occoured
+               */
+              while (i--)
+                g_value_unset (param_values + i);
+
+              g_free (free_me);
+              va_end (var_args);
+              return;
+            }
+          SIGNAL_LOCK ();
+        }
+
+      SIGNAL_UNLOCK ();
+      instance_and_params->g_type = 0;
+      g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
+      g_value_set_instance (instance_and_params, instance);
+      SIGNAL_LOCK ();
+
+      emission->chain_type = chain_type;
+      SIGNAL_UNLOCK ();
+
+      if (signal_return_type == G_TYPE_NONE)
+        {
+          g_closure_invoke (closure,
+                            NULL,
+                            n_params + 1,
+                            instance_and_params,
+                            &emission->ihint);
+        }
+      else
+        {
+          GValue return_value = { 0, };
+          gchar *error = NULL;
+          GType rtype = signal_return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+          gboolean static_scope = signal_return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
+
+          g_value_init (&return_value, rtype);
+
+          g_closure_invoke (closure,
+                            &return_value,
+                            n_params + 1,
+                            instance_and_params,
+                            &emission->ihint);
+
+          G_VALUE_LCOPY (&return_value,
+                         var_args,
+                         static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
+                         &error);
+          if (!error)
+            {
+              g_value_unset (&return_value);
+            }
+          else
+            {
+              g_warning ("%s: %s", G_STRLOC, error);
+              g_free (error);
+
+              /* we purposely leak the value here, it might not be
+               * in a sane state if an error condition occured
+               */
+            }
+        }
+
+      for (i = 0; i < n_params; i++)
+        g_value_unset (param_values + i);
+      g_value_unset (instance_and_params);
+      if (free_me)
+        g_free (free_me);
+
+      va_end (var_args);
+
       SIGNAL_LOCK ();
       emission->chain_type = restore_type;
     }

@@ -277,6 +277,17 @@ guint                 g_signal_new          (const gchar        *signal_name,
 					     GType               return_type,
 					     guint               n_params,
 					     ...);
+guint            g_signal_new_class_handler (const gchar        *signal_name,
+                                             GType               itype,
+                                             GSignalFlags        signal_flags,
+                                             GCallback           class_handler,
+                                             GSignalAccumulator  accumulator,
+                                             gpointer            accu_data,
+                                             GSignalCMarshaller  c_marshaller,
+                                             GType               return_type,
+                                             guint               n_params,
+                                             ...);
+
 void                  g_signal_emitv        (const GValue       *instance_and_params,
 					     guint               signal_id,
 					     GQuark              detail,
@@ -380,12 +391,17 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 					       gpointer		  data);
 
 
-/* --- chaining for language bindings --- */
-void	g_signal_override_class_closure	      (guint		  signal_id,
-					       GType		  instance_type,
-					       GClosure		 *class_closure);
-void	g_signal_chain_from_overridden	      (const GValue      *instance_and_params,
-					       GValue            *return_value);
+/* --- overriding and chaining --- */
+void    g_signal_override_class_closure       (guint              signal_id,
+                                               GType              instance_type,
+                                               GClosure          *class_closure);
+void    g_signal_override_class_handler       (const gchar       *signal_name,
+                                               GType              instance_type,
+                                               GCallback          class_handler);
+void    g_signal_chain_from_overridden        (const GValue      *instance_and_params,
+                                               GValue            *return_value);
+void   g_signal_chain_from_overridden_handler (gpointer           instance,
+                                               ...);
 
 
 /* --- convenience --- */

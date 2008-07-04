@@ -1,3 +1,24 @@
+2008-07-04  Michael Natterer  <mitch@imendio.com>
+
+	Bug 541208 – Functions to easily install and use signals without
+	class struct slot
+
+	* gobject.symbols
+	* gsignal.[ch] (g_signal_new_class_handler): the same as
+	_gtk_binding_signal_new(), to install signals with a callback
+	instead of a class struct slot as class closure.
+
+	The next two functions are C convenience and much easier to use
+	than the generic overriding and chaining APIs which are intended
+	primarily for language bindings:
+
+	(g_signal_override_class_handler): to override a signal with a
+	callback instead of a class struct slot.
+
+	(g_signal_chain_from_overridden_handler): to chain up from a
+	signal without class struct slot. The API is similar to
+	g_signal_emit().
+
 2008-07-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.3 ===

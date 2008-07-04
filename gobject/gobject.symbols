@@ -279,6 +279,7 @@ g_value_get_gtype
 g_signal_accumulator_true_handled
 g_signal_add_emission_hook
 g_signal_chain_from_overridden
+g_signal_chain_from_overridden_handler
 g_signal_connect_closure
 g_signal_connect_closure_by_id
 g_signal_connect_data
@@ -303,7 +304,9 @@ g_signal_name
 g_signal_new
 g_signal_newv
 g_signal_new_valist
+g_signal_new_class_handler
 g_signal_override_class_closure
+g_signal_override_class_handler
 g_signal_parse_name
 g_signal_query
 g_signal_remove_emission_hook
