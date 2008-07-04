@@ -1,3 +1,13 @@
+2008-07-04  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 541507 – Ambiguous description of assigned characters in the Glib
+	Unicode Manipulation reference
+
+	* glib/guniprop.c
+	(g_unichar_isgraph): Return true for PrivateUse too.
+	(g_unichar_isprint): Return true for PrivateUse too.
+	(g_unichar_isdefined): Return false for Surrogate.
+
 2008-07-04  Michael Natterer  <mitch@imendio.com>
 
 	Bug 541208 – Functions to easily install and use signals without

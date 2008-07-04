@@ -175,10 +175,9 @@ g_unichar_isgraph (gunichar c)
 	      OR (G_UNICODE_CONTROL,
 	      OR (G_UNICODE_FORMAT,
 	      OR (G_UNICODE_UNASSIGNED,
-	      OR (G_UNICODE_PRIVATE_USE,
 	      OR (G_UNICODE_SURROGATE,
 	      OR (G_UNICODE_SPACE_SEPARATOR,
-	     0)))))));
+	     0))))));
 }
 
 /**
@@ -216,9 +215,8 @@ g_unichar_isprint (gunichar c)
 	      OR (G_UNICODE_CONTROL,
 	      OR (G_UNICODE_FORMAT,
 	      OR (G_UNICODE_UNASSIGNED,
-	      OR (G_UNICODE_PRIVATE_USE,
 	      OR (G_UNICODE_SURROGATE,
-	     0))))));
+	     0)))));
 }
 
 /**
@@ -377,7 +375,10 @@ g_unichar_isxdigit (gunichar c)
 gboolean
 g_unichar_isdefined (gunichar c)
 {
-  return TYPE (c) != G_UNICODE_UNASSIGNED;
+  return !IS (TYPE(c),
+	      OR (G_UNICODE_UNASSIGNED,
+	      OR (G_UNICODE_SURROGATE,
+	     0)));
 }
 
 /**
