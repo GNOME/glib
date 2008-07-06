@@ -1134,6 +1134,7 @@ g_strrstr
 g_strrstr_len
 g_str_has_prefix
 g_str_has_suffix
+g_strcmp0
 
 <SUBSECTION>
 g_strlcpy
@@ -2603,7 +2604,6 @@ g_assert_cmpint
 g_assert_cmpuint
 g_assert_cmphex
 g_assert_cmpfloat
-g_strcmp0
 
 GTestCase
 GTestSuite
