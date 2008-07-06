@@ -392,10 +392,10 @@ g_app_info_get_icon (GAppInfo *appinfo)
 
 /**
  * g_app_info_launch:
- * @appinfo: a #GAppInfo.
- * @files: a #GList of #GFile objects.
- * @launch_context: a #GAppLaunchContext.
- * @error: a #GError.
+ * @appinfo: a #GAppInfo
+ * @files: a #GList of #GFile objects
+ * @launch_context: a #GAppLaunchContext or %NULL
+ * @error: a #GError
  * 
  * Launches the application. Passes @files to the launched application 
  * as arguments, using the optional @launch_context to get information
@@ -475,10 +475,10 @@ g_app_info_supports_files (GAppInfo *appinfo)
 
 /**
  * g_app_info_launch_uris:
- * @appinfo: a #GAppInfo.
+ * @appinfo: a #GAppInfo
  * @uris: a #GList containing URIs to launch. 
- * @launch_context: a #GAppLaunchContext.
- * @error: a #GError.
+ * @launch_context: a #GAppLaunchContext or %NULL
+ * @error: a #GError
  * 
  * Launches the application. Passes @uris to the launched application 
  * as arguments, using the optional @launch_context to get information
@@ -602,9 +602,9 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
 
 /**
  * g_app_launch_context_get_display:
- * @context: a #GAppLaunchContext.  
- * @info: a #GAppInfo. 
- * @files: a #GList of @GFile<!-- -->s.
+ * @context: a #GAppLaunchContext
+ * @info: a #GAppInfo
+ * @files: a #GList of #GFile objects
  *
  * Gets the display string for the display. This is used to ensure new
  * applications are started on the same display as the launching 
@@ -632,9 +632,9 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
 
 /**
  * g_app_launch_context_get_startup_notify_id:
- * @context: a #GAppLaunchContext.
- * @info: a #GAppInfo.
- * @files: a #GList of files.
+ * @context: a #GAppLaunchContext
+ * @info: a #GAppInfo
+ * @files: a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
  * DESKTOP_STARTUP_ID for the launched operation, if supported.
