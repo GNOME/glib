@@ -1,3 +1,11 @@
+2008-07-05  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 528317 – GRegex does not allow recursion limit
+
+	* glib/pcre/Makefile.am: Set a sane default recursion limit
+	of 8192 instead of 1000000. 
+	Patch by Mart Raudsepp.
+
 2008-07-04  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 541507 – Ambiguous description of assigned characters in the Glib
