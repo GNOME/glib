@@ -604,7 +604,7 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * g_app_launch_context_get_display:
  * @context: a #GAppLaunchContext.  
  * @info: a #GAppInfo. 
- * @files: a #GList of files.
+ * @files: a #GList of @GFile<!-- -->s.
  *
  * Gets the display string for the display. This is used to ensure new
  * applications are started on the same display as the launching 
@@ -636,7 +636,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * @info: a #GAppInfo.
  * @files: a #GList of files.
  * 
- * Initiates startup notification for the applicaiont and returns the
+ * Initiates startup notification for the application and returns the
  * DESKTOP_STARTUP_ID for the launched operation, if supported.
  *
  * Startup notification IDs are defined in the <ulink
