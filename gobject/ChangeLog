@@ -1,3 +1,10 @@
+2008-07-05  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 539229 – gobject-query calls itself query
+
+	* gobject-query.c: Use the right binary name in help output.
+	Patch by Hiroyuki Ikezoe.
+
 2008-07-04  Michael Natterer  <mitch@imendio.com>
 
 	* gobject.c: remove unused #define PREALLOC_CPARAMS.

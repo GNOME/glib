@@ -103,7 +103,7 @@ show_nodes (GType        type,
 static gint
 help (gchar *arg)
 {
-  g_fprintf (stderr, "usage: query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
+  g_fprintf (stderr, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
   g_fprintf (stderr, "       -r       specifiy root type\n");
   g_fprintf (stderr, "       -n       don't descend type tree\n");
   g_fprintf (stderr, "       -h       guess what ;)\n");
