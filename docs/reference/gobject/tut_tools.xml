@@ -1,25 +1,51 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
 <partintro>
   <para>
-    Several useful developer tools have been build around GObject technology.
-    The next sections briefly introduce them and link to the respective project pages.
+    Several useful developer tools have been build around GObject
+    technology.  The next sections briefly introduce them and link to
+    the respective project pages.
+  </para>
+
+  <para>
+    For example, writing GObjects is often seen as a tedious task. It
+    requires a lot of typing and just doing a copy/paste requires a
+    great deal of care. A lot of projects and scripts have been
+    written to generate GObject skeleton form boilerplate code, or
+    even translating higher-level language into plain C.
   </para>
 </partintro>
+
+<chapter id="tools-vala">
+  <title>Vala</title>
+  <para>
+    From the <ulink url="http://live.gnome.org/Vala">Vala
+    homepage</ulink> itself: <quote>Vala is a new programming language
+    that aims to bring modern programming language features to GNOME
+    developers without imposing any additional runtime requirements
+    and without using a different ABI compared to applications and
+    libraries written in C.</quote>
+  </para>
+
+  <para>
+    The syntax of Vala is similar to C#. The available compiler
+    translates Vala into GObject C code. It can also compile
+    non-GObject C, using plain C API.
+  </para>
+</chapter>
 
 <chapter id="tools-gob">
   <title>GObject builder</title>
 
   <para>
-    Writing GObjects can be a tedious task. It requires a lot of typing and just
-    doing a copy/paste requires a great deal of care.
-    One obvious idea is to use some sort of templates for the class skeletons.
-    and then run them through a special tool to generate the real C files.
-    <ulink url="http://www.5z.com/jirka/gob.html">GOB/</ulink> (or GOB2) is such
-    a tool. It is a preprocessor which can be used to build GObjects 
-    with inline C code so that there is no need to edit the generated C code.
-    The syntax is inspired by Java and Yacc or Lex. The implementation is
-    intentionally kept simple: the inline C code provided by the user
-    is not parsed.
+    In order to help a GObject class developper, one obvious idea is
+    to use some sort of templates for the skeletons.  and then run
+    them through a special tool to generate the real C files.  <ulink
+    url="http://www.5z.com/jirka/gob.html">GOB</ulink> (or GOB2) is
+    such a tool. It is a preprocessor which can be used to build
+    GObjects with inline C code so that there is no need to edit the
+    generated C code.  The syntax is inspired by Java and Yacc or
+    Lex. The implementation is intentionally kept simple: the inline C
+    code provided by the user is not parsed.
   </para>
 </chapter>
 
@@ -34,7 +60,6 @@
     </para>
 </chapter>
 
-
 <chapter id="tools-refdb">
   <title>Debugging reference count problems</title>
 
@@ -43,7 +68,7 @@
     a few memory management problems but also introduces new sources of bugs.
     In large applications, finding the exact spot where the reference count
     of an Object is not properly handled can be very difficult. Hopefully, 
-    there exist a tool named <ulink url="http://refdbg.sf.net/">refdbg/</ulink>
+    there exist a tool named <ulink url="http://refdbg.sf.net/">refdbg</ulink>
     which can be used to automate the task of tracking down the location
     of invalid code with regard to reference counting. This application 
     intercepts the reference counting calls and tries to detect invalid behavior. 

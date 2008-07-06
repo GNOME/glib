@@ -1,5 +1,12 @@
 2008-07-05  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 521589 – [RFC] gobject documentation should mention Vala
+
+	* gobject/tut_tools.xml: Add a reference to Vala.
+	Patch by Marc-Andre Lureau.
+
+2008-07-05  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib-sections.txt: Move g_strcmp0 to a more appropriate
 	place in the docs.
 
