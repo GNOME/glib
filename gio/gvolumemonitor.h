@@ -110,7 +110,11 @@ struct _GVolumeMonitorClass {
   /* These arguments are unfortunately backwards by mistake (bug #520169) */
   GVolume * (*adopt_orphan_mount)   (GMount          *mount,
                                      GVolumeMonitor  *volume_monitor);
-  
+
+  /* signal added in 2.17 */
+  void (* drive_eject_button)   (GVolumeMonitor *volume_monitor,
+				 GDrive         *drive);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -120,7 +124,6 @@ struct _GVolumeMonitorClass {
   void (*_g_reserved5) (void);
   void (*_g_reserved6) (void);
   void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
 };
 
 GType g_volume_monitor_get_type (void) G_GNUC_CONST;

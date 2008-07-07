@@ -1,3 +1,9 @@
+2008-07-06  David Zeuthen  <davidz@redhat.com>
+
+	* gvolumemonitor.[ch]:
+	* gunionvolumemonitor.c: Export the eject-button signal on the
+	volume monitor class (#541794).
+
 2008-07-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* gappinfo.c: More doc tweaks

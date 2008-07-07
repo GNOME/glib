@@ -56,6 +56,7 @@ enum {
   DRIVE_CONNECTED,
   DRIVE_DISCONNECTED,
   DRIVE_CHANGED,
+  DRIVE_EJECT_BUTTON,
   LAST_SIGNAL
 };
 
@@ -228,6 +229,23 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                          NULL, NULL,
                                          g_cclosure_marshal_VOID__OBJECT,
                                          G_TYPE_NONE, 1, G_TYPE_DRIVE);
+
+  /**
+   * GVolumeMonitor::drive-eject-button:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @drive: the drive where the eject button was pressed
+   *
+   * Emitted when the eject button is pressed on @drive.
+   *
+   * Since: 2.18
+   **/
+  signals[DRIVE_EJECT_BUTTON] = g_signal_new (I_("drive_eject_button"),
+                                              G_TYPE_VOLUME_MONITOR,
+                                              G_SIGNAL_RUN_LAST,
+                                              G_STRUCT_OFFSET (GVolumeMonitorClass, drive_eject_button),
+                                              NULL, NULL,
+                                              g_cclosure_marshal_VOID__OBJECT,
+                                              G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
 }
 
