@@ -94,6 +94,8 @@ G_BEGIN_DECLS
  * @enumerate_identifiers: Returns an array strings listing the kinds
  *    of <link linkend="volume-identifier">identifiers</link> which the #GVolume has.
  * @should_automount: Returns %TRUE if the #GVolume should be automatically mounted.
+ * @get_activation_root: Returns the activation root for the #GVolume if it is known in advance or %NULL if
+ *   it is not known.
  * 
  * Interface for implementing operations for mountable volumes.
  **/
@@ -140,6 +142,8 @@ struct _GVolumeIface
   char **  (*enumerate_identifiers)    (GVolume             *volume);
 
   gboolean (*should_automount)         (GVolume             *volume);
+
+  GFile *  (*get_activation_root)      (GVolume             *volume);
   
 };
 
@@ -173,6 +177,8 @@ gboolean g_volume_eject_finish          (GVolume              *volume,
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
+
+GFile *  g_volume_get_activation_root   (GVolume              *volume);
 
 
 G_END_DECLS

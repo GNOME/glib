@@ -516,6 +516,88 @@ g_volume_enumerate_identifiers (GVolume *volume)
   return (* iface->enumerate_identifiers) (volume);
 }
 
+/**
+ * g_volume_get_activation_root:
+ * @volume: a #GVolume
+ *
+ * Gets the activation root for a #GVolume if it is known ahead of
+ * mount time. Returns %NULL otherwise. If not %NULL and if @volume
+ * is mounted, then the result of g_mount_get_root() on the
+ * #GMount object obtained from g_volume_get_mount() will always
+ * either be equal or a prefix of what this function returns. In
+ * other words, in code
+ *
+ * <programlisting>
+ *   GMount *mount;
+ *   GFile *mount_root
+ *   GFile *volume_activation_root;
+ *
+ *   mount = g_volume_get_mount (volume); // mounted, so never NULL
+ *   mount_root = g_mount_get_root (mount);
+ *   volume_activation_root = g_volume_get_activation_root(volume); // assume not NULL
+ * </programlisting>
+ *
+ * then the expression
+ *
+ * <programlisting>
+ *   (g_file_has_prefix (volume_activation_root, mount_root) ||
+      g_file_equal (volume_activation_root, mount_root))
+ * </programlisting>
+ *
+ * will always be %TRUE.
+ *
+ * There is a number of possible uses of this function.
+ *
+ * First, implementations of #GVolumeMonitor can use this method to
+ * determine if a #GMount should be adopted in the implementation of
+ * g_volume_monitor_adopt_orphan_mount() by testing if the result of
+ * this function equals (or has as prefix) the root of the given
+ * #GMount. In particular this is useful in the in-process proxy part
+ * of an out-of-process volume monitor implementation.
+ *
+ * Second, applications such as a file manager can use this to
+ * navigate to the correct root in response to the user navigating to
+ * a server. Now suppose there is a volume monitor for networked
+ * servers that creates #GVolume objects corresponding to the
+ * "favorite servers" (e.g. set up by the user via some "Connect to
+ * Server" dialog). Suppose also that one of the favorite servers is
+ * named "public_html @ fd.o" and the URI is
+ * <literal>sftp://people.freedesktop.org/home/david/public_html</literal>.
+ *
+ * Now, due to the way GIO works, when the corresponding #GVolume is
+ * mounted then a #GMount (typically adopted by the volume monitor)
+ * will appear with the mount root (e.g. the result of
+ * g_mount_get_root())
+ * <literal>sftp://people.freedesktop.org</literal>. However, this
+ * function (g_volume_get_activation_root()) can return a #GFile for
+ * the URI
+ * <literal>sftp://people.freedesktop.org/home/david/public_html</literal>.
+ *
+ * All this means that a file manager can use the latter URI for
+ * navigating when the user clicks an icon representing the #GVolume
+ * (e.g. clicking an icon with the name "public_html @ fd.o" or
+ * similar).
+ *
+ * Returns: the activation root of @volume or %NULL. Use
+ * g_object_unref() to free.
+ *
+ * Since: 2.18
+ **/
+GFile *
+g_volume_get_activation_root (GVolume *volume)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->get_activation_root == NULL)
+    return NULL;
+
+  return (* iface->get_activation_root) (volume);
+}
+
+
 
 #define __G_VOLUME_C__
 #include "gioaliasdef.c"

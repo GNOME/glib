@@ -1,5 +1,12 @@
 2008-07-06  David Zeuthen  <davidz@redhat.com>
 
+	* gio.symbols:
+	* gvolume.[ch]: Add new method g_volume_get_activation_root(). This
+	is needed for easily handling adoption of foreign volumes by
+	out-of-process volume monitors (#541793)
+
+2008-07-06  David Zeuthen  <davidz@redhat.com>
+
 	* gvolumemonitor.[ch]:
 	* gunionvolumemonitor.c: Export the eject-button signal on the
 	volume monitor class (#541794).

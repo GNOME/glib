@@ -735,6 +735,7 @@ g_volume_eject
 g_volume_eject_finish
 g_volume_get_identifier
 g_volume_enumerate_identifiers
+g_volume_get_activation_root
 #endif
 #endif
 
