@@ -2,7 +2,7 @@
 
 /* GIO - GLib Input, Output and Streaming Library
  * 
- * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2006-2008 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -494,7 +494,7 @@ g_mount_remount (GMount *mount,
 
   if (iface->remount == NULL)
     { 
-     g_simple_async_report_error_in_idle (G_OBJECT (mount),
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
 					   callback, user_data,
 					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 					   /* Translators: This is an error
@@ -539,6 +539,95 @@ g_mount_remount_finish (GMount       *mount,
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->remount_finish) (mount, result, error);
+}
+
+/**
+ * g_mount_guess_content_type:
+ * @mount: a #GMount
+ * @force_rescan: Whether to force a rescan of the content. 
+ *     Otherwise a cached result will be used if available
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: a #GAsyncReadyCallback
+ * @user_data: user data passed to @callback
+ * 
+ * Tries to guess the type of content stored on @mount. Returns one or
+ * more textual identifiers of well-known content types (typically
+ * prefixed with "x-content/"), e.g. x-content/image-dcf for camera 
+ * memory cards. See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * specification for more on x-content types.
+ *
+ * This is an asynchronous operation, and is finished by calling 
+ * g_mount_guess_content_type_finish() with the @mount and #GAsyncResult 
+ * data returned in the @callback. 
+ *
+ * Since: 2.18
+ */
+void
+g_mount_guess_content_type (GMount              *mount,
+                            gboolean             force_rescan,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data)
+{
+  GMountIface *iface;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->guess_content_type == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
+                                           callback, user_data,
+                                           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                                           /* Translators: This is an error
+                                            * message for mount objects that
+                                            * don't implement content type guessing. */
+                                           _("mount doesn't implement content type guessing"));
+
+      return;
+    }
+  
+  (* iface->guess_content_type) (mount, force_rescan, cancellable, callback, user_data);
+}
+
+/**
+ * g_mount_guess_content_type_finish:
+ * @mount: a #GMount
+ * @result: a #GAsyncResult
+ * @error: a #GError location to store the error occuring, or %NULL to 
+ *     ignore
+ * 
+ * Finishes guessing content types of @mount. If any errors occured
+ * during the operation, @error will be set to contain the errors and
+ * %FALSE will be returned. In particular, you may get an 
+ * %G_IO_ERROR_NOT_SUPPORTED if the mount does not support content 
+ * guessing.
+ * 
+ * Returns: a %NULL-terminated array of content types or %NULL on error. 
+ *     Caller should free this array with g_strfreev() when done with it.
+ *
+ * Since: 2.18
+ **/
+gchar **
+g_mount_guess_content_type_finish (GMount        *mount,
+                                   GAsyncResult  *result,
+                                   GError       **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+  
+  iface = G_MOUNT_GET_IFACE (mount);
+  return (* iface->guess_content_type_finish) (mount, result, error);
 }
 
 

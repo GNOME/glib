@@ -1,7 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  * 
- * Copyright (C) 2006-2007 Red Hat, Inc.
- *
+ * Copyright (C) 2006-2008 Red Hat, Inc.
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -58,6 +58,10 @@ typedef struct _GMountIface    GMountIface;
  * @eject_finish: Finishes an eject operation.
  * @remount: Starts remounting a #GMount.
  * @remount_finish: Finishes a remounting operation.
+ * @guess_content_type: Starts guessing the type of the content of a #GMount.
+ *     See g_mount_guess_content_type() for more information on content
+ *     type guessing. This operation was added in 2.18.
+ * @guess_content_type_finish: Finishes a contenet type guessing operation.
  * 
  * Interface for implementing operations for mounts.
  **/
@@ -102,9 +106,19 @@ struct _GMountIface
                                               GCancellable    *cancellable,
                                               GAsyncReadyCallback callback,
                                               gpointer         user_data);
-  gboolean           (*remount_finish)       (GMount         *mount,
+  gboolean           (*remount_finish)       (GMount          *mount,
                                               GAsyncResult    *result,
                                               GError         **error);
+
+  void               (*guess_content_type)        (GMount              *mount,
+                                                   gboolean             force_rescan,
+                                                   GCancellable        *cancellable,
+				                   GAsyncReadyCallback  callback,
+				                   gpointer             user_data);
+
+  gchar **           (*guess_content_type_finish) (GMount              *mount,
+                                                   GAsyncResult        *result,
+                                                    GError             **error); 
 };
 
 GType g_mount_get_type (void) G_GNUC_CONST;
@@ -140,6 +154,15 @@ void               g_mount_remount              (GMount              *mount,
                                                  GAsyncReadyCallback  callback,
                                                  gpointer             user_data);
 gboolean           g_mount_remount_finish       (GMount              *mount,
+                                                 GAsyncResult        *result,
+                                                 GError             **error);
+
+void          g_mount_guess_content_type        (GMount              *mount,
+                                                 gboolean             force_rescan,
+                                                 GCancellable        *cancellable,
+                                                 GAsyncReadyCallback  callback,
+                                                 gpointer             user_data);
+gchar **      g_mount_guess_content_type_finish (GMount              *mount,
                                                  GAsyncResult        *result,
                                                  GError             **error);
 

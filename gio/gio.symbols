@@ -715,6 +715,8 @@ g_mount_eject
 g_mount_eject_finish 
 g_mount_remount 
 g_mount_remount_finish 
+g_mount_guess_content_type
+g_mount_guess_content_type_finish
 #endif
 #endif
 
