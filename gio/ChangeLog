@@ -1,5 +1,10 @@
 2008-07-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* gvolume.c:
+	* gmount.c: Documentation improvements.
+
+2008-07-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio.symbols:
 	* gmount.[hc]: Add g_mount_guess_content_type(). 
 

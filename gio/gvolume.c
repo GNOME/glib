@@ -159,7 +159,7 @@ g_volume_base_init (gpointer g_class)
  * Gets the name of @volume.
  * 
  * Returns: the name for the given @volume. The returned string should 
- * be freed when no longer needed.
+ * be freed with g_free() when no longer needed.
  **/
 char *
 g_volume_get_name (GVolume *volume)
@@ -180,6 +180,8 @@ g_volume_get_name (GVolume *volume)
  * Gets the icon for @volume.
  * 
  * Returns: a #GIcon.
+ *     The returned object should be unreffed with g_object_unref()
+ *     when no longer needed.
  **/
 GIcon *
 g_volume_get_icon (GVolume *volume)
@@ -203,6 +205,8 @@ g_volume_get_icon (GVolume *volume)
  * available.
  * 
  * Returns: the UUID for @volume or %NULL if no UUID can be computed.
+ *     The returned string should be freed with g_free() 
+ *     when no longer needed.
  **/
 char *
 g_volume_get_uuid (GVolume *volume)
@@ -223,6 +227,8 @@ g_volume_get_uuid (GVolume *volume)
  * Gets the drive for the @volume.
  * 
  * Returns: a #GDrive or %NULL if @volume is not associated with a drive.
+ *     The returned object should be unreffed with g_object_unref()
+ *     when no longer needed.
  **/
 GDrive *
 g_volume_get_drive (GVolume *volume)
@@ -243,6 +249,8 @@ g_volume_get_drive (GVolume *volume)
  * Gets the mount for the @volume.
  * 
  * Returns: a #GMount or %NULL if @volume isn't mounted.
+ *     The returned object should be unreffed with g_object_unref()
+ *     when no longer needed.
  **/
 GMount *
 g_volume_get_mount (GVolume *volume)
@@ -334,12 +342,14 @@ g_volume_should_automount (GVolume *volume)
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
- * @user_data: a #gpointer.
+ * @user_data: user data that gets passed to @callback
  * 
- * Mounts a volume.
+ * Mounts a volume. This is an asynchronous operation, and is
+ * finished by calling g_volume_mount_finish() with the @volume
+ * and #GAsyncResult returned in the @callback.
  **/
 void
-g_volume_mount (GVolume    *volume,
+g_volume_mount (GVolume             *volume,
 		GMountMountFlags     flags,
                 GMountOperation     *mount_operation,
                 GCancellable        *cancellable,
@@ -366,18 +376,19 @@ g_volume_mount (GVolume    *volume,
 
 /**
  * g_volume_mount_finish:
- * @volume: pointer to a #GVolume.
- * @result: a #GAsyncResult.
- * @error: a #GError.
+ * @volume: a #GVolume
+ * @result: a #GAsyncResult
+ * @error: a #GError location to store an error, or %NULL to ignore
  * 
- * Finishes mounting a volume.
+ * Finishes mounting a volume. If any errors occured during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE, %FALSE if operation failed.
  **/
 gboolean
-g_volume_mount_finish (GVolume  *volume,
-                       GAsyncResult      *result,
-                       GError           **error)
+g_volume_mount_finish (GVolume       *volume,
+                       GAsyncResult  *result,
+                       GError       **error)
 {
   GVolumeIface *iface;
 
@@ -401,12 +412,14 @@ g_volume_mount_finish (GVolume  *volume,
  * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
- * @user_data: a #gpointer.
+ * @user_data: user data that gets passed to @callback
  * 
- * Ejects a volume.
+ * Ejects a volume. This is an asynchronous operation, and is
+ * finished by calling g_volume_eject_finish() with the @volume
+ * and #GAsyncResult returned in the @callback.
  **/
 void
-g_volume_eject (GVolume    *volume,
+g_volume_eject (GVolume             *volume,
 		GMountUnmountFlags   flags,
                 GCancellable        *cancellable,
                 GAsyncReadyCallback  callback,
@@ -434,16 +447,17 @@ g_volume_eject (GVolume    *volume,
  * g_volume_eject_finish:
  * @volume: pointer to a #GVolume.
  * @result: a #GAsyncResult.
- * @error: a #GError.
+ * @error: a #GError location to store an error, or %NULL to ignore
  * 
- * Finishes ejecting a volume.
+ * Finishes ejecting a volume. If any errors occured during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE, %FALSE if operation failed.
  **/
 gboolean
-g_volume_eject_finish (GVolume  *volume,
-                       GAsyncResult      *result,
-                       GError           **error)
+g_volume_eject_finish (GVolume       *volume,
+                       GAsyncResult  *result,
+                       GError       **error)
 {
   GVolumeIface *iface;
 

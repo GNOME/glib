@@ -149,7 +149,9 @@ g_mount_base_init (gpointer g_class)
  * 
  * Gets the root directory on @mount.
  * 
- * Returns: a #GFile.
+ * Returns: a #GFile. 
+ *      The returned object should be unreffed with 
+ *      g_object_unref() when no longer needed.
  **/
 GFile *
 g_mount_get_root (GMount *mount)
@@ -169,8 +171,9 @@ g_mount_get_root (GMount *mount)
  * 
  * Gets the name of @mount.
  * 
- * Returns: the name for the given @mount. The returned string should 
- * be freed when no longer needed.
+ * Returns: the name for the given @mount. 
+ *     The returned string should be freed with g_free()
+ *     when no longer needed.
  **/
 char *
 g_mount_get_name (GMount *mount)
@@ -191,6 +194,8 @@ g_mount_get_name (GMount *mount)
  * Gets the icon for @mount.
  * 
  * Returns: a #GIcon.
+ *      The returned object should be unreffed with 
+ *      g_object_unref() when no longer needed.
  **/
 GIcon *
 g_mount_get_icon (GMount *mount)
@@ -214,6 +219,8 @@ g_mount_get_icon (GMount *mount)
  * available.
  * 
  * Returns: the UUID for @mount or %NULL if no UUID can be computed.
+ *     The returned string should be freed with g_free()
+ *     when no longer needed.
  **/
 char *
 g_mount_get_uuid (GMount *mount)
@@ -234,6 +241,8 @@ g_mount_get_uuid (GMount *mount)
  * Gets the volume for the @mount.
  * 
  * Returns: a #GVolume or %NULL if @mount is not associated with a volume.
+ *      The returned object should be unreffed with 
+ *      g_object_unref() when no longer needed.
  **/
 GVolume *
 g_mount_get_volume (GMount *mount)
@@ -257,6 +266,8 @@ g_mount_get_volume (GMount *mount)
  * using that object to get the #GDrive.
  * 
  * Returns: a #GDrive or %NULL if @mount is not associated with a volume or a drive.
+ *      The returned object should be unreffed with 
+ *      g_object_unref() when no longer needed.
  **/
 GDrive *
 g_mount_get_drive (GMount *mount)
@@ -320,14 +331,14 @@ g_mount_can_eject (GMount *mount)
  * 
  * Unmounts a mount. This is an asynchronous operation, and is 
  * finished by calling g_mount_unmount_finish() with the @mount 
- * and #GAsyncResults data returned in the @callback.
+ * and #GAsyncResult data returned in the @callback.
  **/
 void
-g_mount_unmount (GMount *mount,
-                 GMountUnmountFlags flags,
-                 GCancellable *cancellable,
-                 GAsyncReadyCallback callback,
-                 gpointer user_data)
+g_mount_unmount (GMount              *mount,
+                 GMountUnmountFlags   flags,
+                 GCancellable        *cancellable,
+                 GAsyncReadyCallback  callback,
+                 gpointer             user_data)
 {
   GMountIface *iface;
 
@@ -364,7 +375,7 @@ g_mount_unmount (GMount *mount,
  * Returns: %TRUE if the mount was successfully unmounted. %FALSE otherwise.
  **/
 gboolean
-g_mount_unmount_finish (GMount       *mount,
+g_mount_unmount_finish (GMount        *mount,
                         GAsyncResult  *result,
                         GError       **error)
 {
@@ -395,14 +406,14 @@ g_mount_unmount_finish (GMount       *mount,
  * 
  * Ejects a mount. This is an asynchronous operation, and is 
  * finished by calling g_mount_eject_finish() with the @mount 
- * and #GAsyncResults data returned in the @callback.
+ * and #GAsyncResult data returned in the @callback.
  **/
 void
-g_mount_eject (GMount *mount,
-               GMountUnmountFlags flags,
-               GCancellable *cancellable,
-               GAsyncReadyCallback callback,
-               gpointer user_data)
+g_mount_eject (GMount              *mount,
+               GMountUnmountFlags   flags,
+               GCancellable        *cancellable,
+               GAsyncReadyCallback  callback,
+               gpointer             user_data)
 {
   GMountIface *iface;
 
@@ -439,7 +450,7 @@ g_mount_eject (GMount *mount,
  * Returns: %TRUE if the mount was successfully ejected. %FALSE otherwise.
  **/
 gboolean
-g_mount_eject_finish (GMount       *mount,
+g_mount_eject_finish (GMount        *mount,
                       GAsyncResult  *result,
                       GError       **error)
 {
@@ -479,12 +490,12 @@ g_mount_eject_finish (GMount       *mount,
  * unmounted.
  **/
 void
-g_mount_remount (GMount *mount,
-                 GMountMountFlags flags,
-                 GMountOperation *mount_operation,
-                 GCancellable *cancellable,
-                 GAsyncReadyCallback callback,
-                 gpointer user_data)
+g_mount_remount (GMount              *mount,
+                 GMountMountFlags     flags,
+                 GMountOperation     *mount_operation,
+                 GCancellable        *cancellable,
+                 GAsyncReadyCallback  callback,
+                 gpointer             user_data)
 {
   GMountIface *iface;
 
@@ -521,7 +532,7 @@ g_mount_remount (GMount *mount,
  * Returns: %TRUE if the mount was successfully remounted. %FALSE otherwise.
  **/
 gboolean
-g_mount_remount_finish (GMount       *mount,
+g_mount_remount_finish (GMount        *mount,
                         GAsyncResult  *result,
                         GError       **error)
 {
