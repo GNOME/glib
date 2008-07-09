@@ -604,6 +604,7 @@ g_file_equal (GFile *file1,
  * 
  * Returns: a #GFile structure to the parent of the given
  *     #GFile or %NULL if there is no parent. 
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_get_parent (GFile *file)
@@ -631,6 +632,7 @@ g_file_get_parent (GFile *file)
  * This call does no blocking i/o.
  * 
  * Returns: a #GFile to a child specified by @name.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_get_child (GFile      *file,
@@ -658,6 +660,7 @@ g_file_get_child (GFile      *file,
  * 
  * Returns: a #GFile to the specified child, or 
  *     %NULL if the display name couldn't be converted.  
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_get_child_for_display_name (GFile      *file,
@@ -679,14 +682,16 @@ g_file_get_child_for_display_name (GFile      *file,
  * @file: input #GFile.
  * @prefix: input #GFile.
  * 
- * Checks whether @file has the prefix specified by @prefix. In other word, if the
- * names of inital elements of @file<!-- -->s pathname match @prefix.
+ * Checks whether @file has the prefix specified by @prefix. In other word, 
+ * if the names of inital elements of @file<!-- -->s pathname match @prefix.
  * 
- * This call does no i/o, as it works purely on names. As such it can sometimes
- * return %FALSE even if @file is inside a @prefix (from a filesystem point of view),
- * because the prefix of @file is an alias of @prefix.
+ * This call does no i/o, as it works purely on names. As such it can 
+ * sometimes return %FALSE even if @file is inside a @prefix (from a 
+ * filesystem point of view), because the prefix of @file is an alias 
+ * of @prefix.
  *
- * Returns:  %TRUE if the @files's parent, grandparent, etc is @prefix. %FALSE otherwise.
+ * Returns:  %TRUE if the @files's parent, grandparent, etc is @prefix. 
+ *     %FALSE otherwise.
  **/
 gboolean
 g_file_has_prefix (GFile *file,
@@ -717,8 +722,8 @@ g_file_has_prefix (GFile *file,
  * This call does no blocking i/o.
  * 
  * Returns: string with the relative path from @descendant 
- *     to @parent, or %NULL if @descendant doesn't have @parent as prefix. The returned string should be freed with 
- *     g_free() when no longer needed.
+ *     to @parent, or %NULL if @descendant doesn't have @parent as prefix. 
+ *     The returned string should be freed with g_free() when no longer needed.
  **/
 char *
 g_file_get_relative_path (GFile *parent,
@@ -748,6 +753,7 @@ g_file_get_relative_path (GFile *parent,
  * 
  * Returns: #GFile to the resolved path. %NULL if @relative_path 
  *     is %NULL or if @file is invalid.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_resolve_relative_path (GFile      *file,

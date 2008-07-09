@@ -1,5 +1,7 @@
 2008-07-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* gvolumemonitor.c:
+	* gfile.c:
 	* gvolume.c:
 	* gmount.c: Documentation improvements.
 
