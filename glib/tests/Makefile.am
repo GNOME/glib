@@ -22,6 +22,9 @@ TEST_PROGS        += strfuncs
 strfuncs_SOURCES   = strfuncs.c
 strfuncs_LDADD	   = $(progs_ldadd) -lm
 
+TEST_PROGS               += markup-subparser
+markup_subparser_LDADD    = $(progs_ldadd)
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present

@@ -1,3 +1,17 @@
+2008-07-10  Ryan Lortie  <desrt@desrt.ca>
+
+ 	* docs/reference/glib/glib-sections.txt:
+ 	* glib/glib.symbols:
+ 	* glib/gmarkup.c:
+ 	* glib/gmarkup.h: add functions g_markup_parse_context_{push,pop} in
+ 	order to provide some small hooks on which to build easy-to-use
+ 	subparsers.
+ 
+ 	* glib/tests/Makefile: add new test
+ 	* glib/tests/markup-subparser.c: new test for subparsers
+ 
+ 	Fixes bug #337518.
+
 2008-07-05  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 528317 – GRegex does not allow recursion limit

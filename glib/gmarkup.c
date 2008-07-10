@@ -1,6 +1,7 @@
 /* gmarkup.c - Simple XML-like parser
  *
  *  Copyright 2000, 2003 Red Hat, Inc.
+ *  Copyright 2007, 2008 Ryan Lortie <desrt@desrt.ca>
  *
  * GLib is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -57,6 +58,13 @@ typedef enum
   STATE_ERROR
 } GMarkupParseState;
 
+typedef struct
+{
+  const char *prev_element;
+  const GMarkupParser *prev_parser;
+  gpointer prev_user_data;
+} GMarkupRecursionTracker;
+
 struct _GMarkupParseContext
 {
   const GMarkupParser *parser;
@@ -95,7 +103,13 @@ struct _GMarkupParseContext
 
   guint document_empty : 1;
   guint parsing : 1;
+  guint awaiting_pop : 1;
   gint balance;
+
+  /* subparser support */
+  GSList *subparser_stack; /* (GMarkupRecursionTracker *) */
+  const char *subparser_element;
+  gpointer held_user_data;
 };
 
 /**
@@ -153,6 +167,13 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->document_empty = TRUE;
   context->parsing = FALSE;
 
+  context->awaiting_pop = FALSE;
+  context->subparser_stack = NULL;
+  context->subparser_element = NULL;
+
+  /* this is only looked at if awaiting_pop = TRUE.  initialise anyway. */
+  context->held_user_data = NULL;
+
   context->balance = 0;
 
   return context;
@@ -163,14 +184,16 @@ g_markup_parse_context_new (const GMarkupParser *parser,
  * @context: a #GMarkupParseContext
  * 
  * Frees a #GMarkupParseContext. Can't be called from inside
- * one of the #GMarkupParser functions.
- * 
+ * one of the #GMarkupParser functions. Can't be called while
+ * a subparser is pushed.
  **/
 void
 g_markup_parse_context_free (GMarkupParseContext *context)
 {
   g_return_if_fail (context != NULL);
   g_return_if_fail (!context->parsing);
+  g_return_if_fail (!context->subparser_stack);
+  g_return_if_fail (!context->awaiting_pop);
 
   if (context->dnotify)
     (* context->dnotify) (context->user_data);
@@ -190,6 +213,8 @@ g_markup_parse_context_free (GMarkupParseContext *context)
   g_free (context);
 }
 
+static void pop_subparser_stack (GMarkupParseContext *context);
+
 static void
 mark_error (GMarkupParseContext *context,
             GError              *error)
@@ -198,6 +223,16 @@ mark_error (GMarkupParseContext *context,
 
   if (context->parser->error)
     (*context->parser->error) (context, error, context->user_data);
+
+  /* report the error all the way up to free all the user-data */
+  while (context->subparser_stack)
+    {
+      pop_subparser_stack (context);
+      context->awaiting_pop = FALSE; /* already been freed */
+
+      if (context->parser->error)
+        (*context->parser->error) (context, error, context->user_data);
+    }
 }
 
 static void set_error (GMarkupParseContext *context,
@@ -827,6 +862,49 @@ current_element (GMarkupParseContext *context)
   return context->tag_stack->data;
 }
 
+static void
+pop_subparser_stack (GMarkupParseContext *context)
+{
+  GMarkupRecursionTracker *tracker;
+
+  g_assert (context->subparser_stack);
+
+  tracker = context->subparser_stack->data;
+
+  context->awaiting_pop = TRUE;
+  context->held_user_data = context->user_data;
+
+  context->user_data = tracker->prev_user_data;
+  context->parser = tracker->prev_parser;
+  context->subparser_element = tracker->prev_element;
+  g_slice_free (GMarkupRecursionTracker, tracker);
+
+  context->subparser_stack = g_slist_delete_link (context->subparser_stack,
+                                                  context->subparser_stack);
+}
+
+static void
+possibly_finish_subparser (GMarkupParseContext *context)
+{
+  if (current_element (context) == context->subparser_element)
+    pop_subparser_stack (context);
+}
+
+static void
+ensure_no_outstanding_subparser (GMarkupParseContext *context)
+{
+  if (context->awaiting_pop)
+    g_critical ("During the first end_element call after invoking a "
+		"subparser you must pop the subparser stack and handle "
+		"the freeing of the subparser user_data.  This can be "
+		"done by calling the end function of the subparser.  "
+		"Very probably, your program just leaked memory.");
+
+  /* let valgrind watch the pointer disappear... */
+  context->held_user_data = NULL;
+  context->awaiting_pop = FALSE;
+}
+
 static const gchar*
 current_attribute (GMarkupParseContext *context)
 {
@@ -1154,12 +1232,16 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           
             g_assert (context->tag_stack != NULL);
 
+            possibly_finish_subparser (context);
+
             tmp_error = NULL;
             if (context->parser->end_element)
               (* context->parser->end_element) (context,
                                                 context->tag_stack->data,
                                                 context->user_data,
                                                 &tmp_error);
+
+            ensure_no_outstanding_subparser (context);
           
             if (tmp_error)
               {
@@ -1612,6 +1694,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 		  context->state = STATE_AFTER_CLOSE_ANGLE;
 		  context->start = NULL;
 		  
+                  possibly_finish_subparser (context);
+
 		  /* call the end_element callback */
 		  tmp_error = NULL;
 		  if (context->parser->end_element)
@@ -1620,6 +1704,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 						      context->user_data,
 						      &tmp_error);
 		  
+                  ensure_no_outstanding_subparser (context);
 		  
 		  /* Pop the tag stack */
 		  g_free (context->tag_stack->data);
@@ -1932,6 +2017,190 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
 
   if (char_number)
     *char_number = context->char_number;
+}
+
+/**
+ * g_markup_parse_context_push:
+ * @context: a #GMarkupParseContext
+ * @parser: a #GMarkupParser
+ * @user_data: user data to pass to #GMarkupParser functions
+ *
+ * Temporarily redirects markup data to a sub-parser.
+ *
+ * This function may only be called from the start_element handler of
+ * a #GMarkupParser.  It must be matched with a corresponding call to
+ * g_markup_parse_context_pop() in the matching end_element handler
+ * (except in the case that the parser aborts due to an error).
+ *
+ * All tags, text and other data between the matching tags is
+ * redirected to the subparser given by @parser.  @user_data is used
+ * as the user_data for that parser.  @user_data is also passed to the
+ * error callback in the event that an error occurs.  This includes
+ * errors that occur in subparsers of the subparser.
+ *
+ * The end tag matching the start tag for which this call was made is
+ * handled by the previous parser (which is given its own user_data)
+ * which is why g_markup_parse_context_pop() is provided to allow "one
+ * last access" to the @user_data provided to this function.  In the
+ * case of error, the @user_data provided here is passed directly to
+ * the error callback of the subparser and g_markup_parse_context()
+ * should not be called.  In either case, if @user_data was allocated
+ * then it ought to be freed from both of these locations.
+ *
+ * This function is not intended to be directly called by users
+ * interested in invoking subparsers.  Instead, it is intended to be
+ * used by the subparsers themselves to implement a higher-level
+ * interface.
+ *
+ * As an example, see the following implementation of a simple
+ * parser that counts the number of tags encountered.
+ *
+ * |[
+ * typedef struct
+ * {
+ *   gint tag_count;
+ * } CounterData;
+ * 
+ * static void
+ * counter_start_element (GMarkupParseContext  *context,
+ *                        const gchar          *element_name,
+ *                        const gchar         **attribute_names,
+ *                        const gchar         **attribute_values,
+ *                        gpointer              user_data,
+ *                        GError              **error)
+ * {
+ *   CounterData *data = user_data;
+ * 
+ *   data->tag_count++;
+ * }
+ * 
+ * static void
+ * counter_error (GMarkupParseContext *context,
+ *                GError              *error,
+ *                gpointer             user_data)
+ * {
+ *   CounterData *data = user_data;
+ * 
+ *   g_slice_free (CounterData, data);
+ * }
+ * 
+ * static GMarkupParser counter_subparser =
+ * {
+ *   counter_start_element,
+ *   NULL,
+ *   NULL,
+ *   NULL,
+ *   counter_error
+ * };
+ * ]|
+ *
+ * In order to allow this parser to be easily used as a subparser, the
+ * following interface is provided:
+ *
+ * |[
+ * void
+ * start_counting (GMarkupParseContext *context)
+ * {
+ *   CounterData *data = g_slice_new (CounterData);
+ * 
+ *   data->tag_count = 0;
+ *   g_markup_parse_context_push (context, &counter_subparser, data);
+ * }
+ * 
+ * gint
+ * end_counting (GMarkupParseContext *context)
+ * {
+ *   CounterData *data = g_markup_parse_context_pop (context);
+ *   int result;
+ * 
+ *   result = data->tag_count;
+ *   g_slice_free (CounterData, data);
+ * 
+ *   return result;
+ * }
+ * ]|
+ *
+ * The subparser would then be used as follows:
+ *
+ * |[
+ * static void start_element (context, element_name, ...)
+ * {
+ *   if (strcmp (element_name, "count-these") == 0)
+ *     start_counting (context);
+ * 
+ *   /&ast; else, handle other tags... &ast;/
+ * }
+ * 
+ * static void end_element (context, element_name, ...)
+ * {
+ *   if (strcmp (element_name, "count-these") == 0)
+ *     g_print ("Counted %d tags\n", end_counting (context));
+ * 
+ *   /&ast; else, handle other tags... &ast;/
+ * }
+ * ]|
+ *
+ * Since: 2.18
+ **/
+void
+g_markup_parse_context_push (GMarkupParseContext *context,
+                             GMarkupParser       *parser,
+                             gpointer             user_data)
+{
+  GMarkupRecursionTracker *tracker;
+
+  tracker = g_slice_new (GMarkupRecursionTracker);
+  tracker->prev_element = context->subparser_element;
+  tracker->prev_parser = context->parser;
+  tracker->prev_user_data = context->user_data;
+
+  context->subparser_element = current_element (context);
+  context->parser = parser;
+  context->user_data = user_data;
+
+  context->subparser_stack = g_slist_prepend (context->subparser_stack,
+                                              tracker);
+}
+
+/**
+ * g_markup_parse_context_pop:
+ * @context: a #GMarkupParseContext
+ *
+ * Completes the process of a temporary sub-parser redirection.
+ *
+ * This function exists to collect the user_data allocated by a
+ * matching call to g_markup_parse_context_push().  It must be called
+ * in the end_element handler corresponding to the start_element
+ * handler during which g_markup_parse_context_push() was called.  You
+ * must not call this function from the error callback -- the
+ * @user_data is provided directly to the callback in that case.
+ *
+ * This function is not intended to be directly called by users
+ * interested in invoking subparsers.  Instead, it is intended to be
+ * used by the subparsers themselves to implement a higher-level
+ * interface.
+ *
+ * Returns: the user_data passed to g_markup_parse_context_push().
+ *
+ * Since: 2.18
+ **/
+gpointer
+g_markup_parse_context_pop (GMarkupParseContext *context)
+{
+  gpointer user_data;
+
+  if (!context->awaiting_pop)
+    possibly_finish_subparser (context);
+
+  g_assert (context->awaiting_pop);
+
+  context->awaiting_pop = FALSE;
+  
+  /* valgrind friendliness */
+  user_data = context->held_user_data;
+  context->held_user_data = NULL;
+
+  return user_data;
 }
 
 static void
