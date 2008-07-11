@@ -1,3 +1,10 @@
+2008-07-11  Tor Lillqvist  <tml@novell.com>
+
+	Merge from trunk:
+
+	* glib-zip.in: Include also lib/gio-2.0.{lib,def} in the developer
+	zipfile.
+
 2008-07-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
