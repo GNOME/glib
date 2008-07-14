@@ -44,7 +44,10 @@ test_iconv_state (void)
 
   out = g_convert (in, -1, "UTF-8", "CP1255", 
 		   &bytes_read, &bytes_written, &error);
-  
+
+  if (error && error->code == G_CONVERT_ERROR_NO_CONVERSION)
+    return; /* silently skip if CP1255 is not supported, see bug 467707 */ 
+
   g_assert (error == NULL);
   g_assert (bytes_read == 5);
   g_assert (bytes_written == 10);

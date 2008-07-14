@@ -1,3 +1,10 @@
+2008-07-14  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 467707 – test_iconv_state() in tests/convert-test.c fails on AIX 5.3
+
+	* tests/convert-test.c (test_iconv_state): Skip this test if
+	CP1255 is not supported.  
+
 2008-07-10  Ryan Lortie  <desrt@desrt.ca>
 
  	* docs/reference/glib/glib-sections.txt:
