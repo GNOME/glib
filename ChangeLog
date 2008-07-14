@@ -1,5 +1,12 @@
 2008-07-14  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 428048 – 2 of 51 tests fail on Solaris
+
+	* tests/iochannel-test.c: Ignore the error if iconv doesn't
+	support EUC-JP.
+
+2008-07-14  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/option-test.c: Print error messages when something fails.
 
 2008-07-14  Matthias Clasen  <mclasen@redhat.com>

@@ -91,8 +91,11 @@ gint main (gint argc, gchar * argv[])
     if (gerr)
       {
         g_warning (gerr->message);
+        /* Keep going if this is just a case of iconv not supporting EUC-JP, see bug 428048 */
+        if (gerr->code != G_CONVERT_ERROR_NO_CONVERSION)
+          return 1;
         g_error_free (gerr);
-        return 1;
+        gerr = NULL;
       }
     
     g_io_channel_set_buffer_size (gio_r, BUFFER_SIZE);
