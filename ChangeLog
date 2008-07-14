@@ -1,5 +1,9 @@
 2008-07-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/option-test.c: Print error messages when something fails.
+
+2008-07-14  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 467707 – test_iconv_state() in tests/convert-test.c fails on AIX 5.3
 
 	* tests/convert-test.c (test_iconv_state): Skip this test if

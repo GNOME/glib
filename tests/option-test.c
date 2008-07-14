@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
@@ -248,6 +249,16 @@ error_test3 (void)
   g_option_context_free (context);
 }
 
+static void
+assert_no_error (GError *error)
+{
+  if (error) 
+    {
+      fprintf (stderr, "unexpected error: %s, %d, %s\n", g_quark_to_string (error->domain), error->code, error->message);
+      exit (1);
+    }
+}
+
 void
 arg_test1 (void)
 {
@@ -267,6 +278,7 @@ arg_test1 (void)
   argv = split_string ("program --test 20 --test 30", &argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -295,6 +307,7 @@ arg_test2 (void)
   argv = split_string ("program --test foo --test bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -325,6 +338,7 @@ arg_test3 (void)
   argv = split_string ("program --test foo.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -356,6 +370,7 @@ arg_test4 (void)
   argv = split_string ("program --test 20.0 --test 30.03", &argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -396,6 +411,7 @@ arg_test5 (void)
     }
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -429,6 +445,7 @@ arg_test6 (void)
   argv = split_string ("program --test 4294967297 --test 4294967296 --test2 0xfffffffff", &argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
@@ -466,6 +483,7 @@ callback_test1 (void)
   argv = split_string ("program --test foo.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (strcmp (callback_test1_string, "foo.txt") == 0);
@@ -503,6 +521,7 @@ callback_test2 (void)
   argv = split_string ("program --test --test", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test2_int == 2);
@@ -543,6 +562,7 @@ callback_test_optional_1 (void)
   argv = split_string ("program --test foo.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (strcmp (callback_test_optional_string, "foo.txt") == 0);
@@ -575,6 +595,7 @@ callback_test_optional_2 (void)
   argv = split_string ("program --test", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string == NULL);
@@ -607,6 +628,7 @@ callback_test_optional_3 (void)
   argv = split_string ("program -t foo.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (strcmp (callback_test_optional_string, "foo.txt") == 0);
@@ -640,6 +662,7 @@ callback_test_optional_4 (void)
   argv = split_string ("program -t", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string == NULL);
@@ -674,6 +697,7 @@ callback_test_optional_5 (void)
   argv = split_string ("program --test --dummy", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string == NULL);
@@ -708,6 +732,7 @@ callback_test_optional_6 (void)
   argv = split_string ("program -t -d", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string == NULL);
@@ -742,6 +767,7 @@ callback_test_optional_7 (void)
   argv = split_string ("program -td", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string == NULL);
@@ -776,6 +802,7 @@ callback_test_optional_8 (void)
   argv = split_string ("program -dt foo.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_test_optional_string);
@@ -817,6 +844,7 @@ callback_remaining_test1 (void)
   argv = split_string ("program foo.txt blah.txt", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (callback_remaining_args->len == 2);
@@ -852,6 +880,7 @@ ignore_test1 (void)
   argv_copy = copy_stringv (argv, argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -885,6 +914,7 @@ ignore_test2 (void)
   argv = split_string ("program -test", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -918,6 +948,7 @@ ignore_test3 (void)
   argv_copy = copy_stringv (argv, argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -952,6 +983,7 @@ array_test1 (void)
   argv = split_string ("program --test foo --test bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1053,6 +1085,7 @@ rest_test1 (void)
   argv = split_string ("program foo --test bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1087,6 +1120,7 @@ rest_test2 (void)
   argv = split_string ("program foo --test -- -bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1122,6 +1156,7 @@ rest_test2a (void)
   argv = split_string ("program foo --test -- bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1156,6 +1191,7 @@ rest_test2b (void)
   argv = split_string ("program foo --test -bar --", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1189,6 +1225,7 @@ rest_test2c (void)
   argv = split_string ("program --test foo -- bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1222,6 +1259,7 @@ rest_test2d (void)
   argv = split_string ("program --test -- -bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1258,6 +1296,7 @@ rest_test3 (void)
   argv = split_string ("program foo --test bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1295,6 +1334,7 @@ rest_test4 (void)
   argv = split_string ("program foo --test -- -bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1331,6 +1371,7 @@ rest_test5 (void)
   argv = split_string ("program foo --test bar", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
+  assert_no_error (error);
   g_assert (retval);
 
   /* Check array */
@@ -1383,7 +1424,7 @@ void lonely_dash_test (void)
   argv = split_string ("program -", &argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-
+  assert_no_error (error);
   g_assert (retval);
 
   g_assert (argv[1] && strcmp (argv[1], "-") == 0);
