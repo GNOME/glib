@@ -1,3 +1,8 @@
+2008-07-15  Runa Bhattacharjee <runabh@gmail.com>
+
+	* ps.po: Added Pashto (ps) Translations by Zabeeh Khan.
+	* LINGUAS: Added Pashto (ps) to the List of Languages
+
 2008-07-14  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
 
         * zh_HK.po: Updated Traditional Chinese translation(Hong Kong).
