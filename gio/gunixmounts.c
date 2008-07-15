@@ -1310,19 +1310,6 @@ g_unix_mount_point_free (GUnixMountPoint *mount_point)
   g_free (mount_point);
 }
 
-static int
-strcmp_null (const char *str1,
-	     const char *str2)
-{
-  if (str1 == str2)
-    return 0;
-  if (str1 == NULL && str2 != NULL) 
-    return -1;
-  if (str1 != NULL && str2 == NULL)
-    return 1;
-  return strcmp (str1, str2);
-}
-
 /**
  * g_unix_mount_compare:
  * @mount1: first #GUnixMountEntry to compare.
@@ -1341,15 +1328,15 @@ g_unix_mount_compare (GUnixMountEntry *mount1,
 
   g_return_val_if_fail (mount1 != NULL && mount2 != NULL, 0);
   
-  res = strcmp_null (mount1->mount_path, mount2->mount_path);
+  res = g_strcmp0 (mount1->mount_path, mount2->mount_path);
   if (res != 0)
     return res;
 	
-  res = strcmp_null (mount1->device_path, mount2->device_path);
+  res = g_strcmp0 (mount1->device_path, mount2->device_path);
   if (res != 0)
     return res;
 	
-  res = strcmp_null (mount1->filesystem_type, mount2->filesystem_type);
+  res = g_strcmp0 (mount1->filesystem_type, mount2->filesystem_type);
   if (res != 0)
     return res;
 
@@ -1458,15 +1445,15 @@ g_unix_mount_point_compare (GUnixMountPoint *mount1,
 
   g_return_val_if_fail (mount1 != NULL && mount2 != NULL, 0);
 
-  res = strcmp_null (mount1->mount_path, mount2->mount_path);
+  res = g_strcmp0 (mount1->mount_path, mount2->mount_path);
   if (res != 0) 
     return res;
 	
-  res = strcmp_null (mount1->device_path, mount2->device_path);
+  res = g_strcmp0 (mount1->device_path, mount2->device_path);
   if (res != 0) 
     return res;
 	
-  res = strcmp_null (mount1->filesystem_type, mount2->filesystem_type);
+  res = g_strcmp0 (mount1->filesystem_type, mount2->filesystem_type);
   if (res != 0) 
     return res;
 

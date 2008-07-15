@@ -1,3 +1,7 @@
+2008-07-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* gunixmounts.c: Use g_strcmp0 instead of rolling our own.
+
 2008-07-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* gvolumemonitor.c:
