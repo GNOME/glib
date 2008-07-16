@@ -1,5 +1,12 @@
 2008-07-16  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 540616 – mem leak in filechooser button
+
+	* gunixvolumemonitor.c (get_mount_for_mount_path): Free
+	the mount entry. Reported by Chrisitan Persch
+
+2008-07-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfile.c: Small documentation fixes.
 
 2008-07-15  Matthias Clasen  <mclasen@redhat.com>
