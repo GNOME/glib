@@ -332,10 +332,12 @@ g_strtod (const gchar *nptr,
  *           the last character used in the conversion.
  * 
  * Converts a string to a #gdouble value.
+ *
  * This function behaves like the standard strtod() function
- * does in the C locale. It does this without actually
- * changing the current locale, since that would not be
- * thread-safe.
+ * does in the C locale. It does this without actually changing 
+ * the current locale, since that would not be thread-safe. 
+ * A limitation of the implementation is that this function
+ * will still accept localized versions of infinities and NANs. 
  *
  * This function is typically used when reading configuration
  * files or other non-user input that should be locale independent.
