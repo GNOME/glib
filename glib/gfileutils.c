@@ -577,13 +577,28 @@ get_contents_stdio (const gchar *display_filename,
         }
 
       memcpy (str + total_bytes, buf, bytes);
+
+      if (total_bytes + bytes < total_bytes) 
+        {
+          g_set_error (error,
+                       G_FILE_ERROR,
+                       G_FILE_ERROR_FAILED,
+                       _("File \"%s\" is too large"),
+                       display_filename);
+
+          goto error;
+        }
+
       total_bytes += bytes;
     }
 
   fclose (f);
 
   if (total_allocated == 0)
-    str = g_new (gchar, 1);
+    {
+      str = g_new (gchar, 1);
+      total_bytes = 0;
+    }
 
   str[total_bytes] = '\0';
 

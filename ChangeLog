@@ -1,5 +1,12 @@
 2008-07-16  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 482413 - get_contents_stdio -- overflow and memory corruption
+
+	* glib/gfileutils.c (get_contents_stdio): Detect overflow and
+	error out. Reported by Morten Welinder. 
+
+2008-07-16  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 542332 – small fix for error message in GMarkup
 	
 	* glib/gmarkup.c: Improve an error message. 
