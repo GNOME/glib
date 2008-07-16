@@ -1189,7 +1189,7 @@ mem_error (const char *format,
   /* at least, put out "MEMORY-ERROR", in case we segfault during the rest of the function */
   fputs ("\n***MEMORY-ERROR***: ", stderr);
   pname = g_get_prgname();
-  fprintf (stderr, "%s[%u]: GSlice: ", pname ? pname : "", getpid());
+  fprintf (stderr, "%s[%ld]: GSlice: ", pname ? pname : "", (long)getpid());
   va_start (args, format);
   vfprintf (stderr, format, args);
   va_end (args);
