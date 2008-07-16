@@ -50,7 +50,7 @@
  * SECTION:extensionpoints
  * @short_description: Extension Points
  * @include: gio.h
- * @see_also: <link linkend="gio-extension-points">Extending GIO</link>
+ * @see_also: <link linkend="extending-gio">Extending GIO</link>
  *
  * #GIOExtensionPoint provides a mechanism for modules to extend the
  * functionality of the library or application that loaded it in an 

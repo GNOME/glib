@@ -1,5 +1,12 @@
 2008-07-16  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 543220 – Case collision on gio-extension-points.html
+
+	Reported by Ryan Schmidt
+	* gio/overview.xml: Rename id to avoid filename conflict.
+
+2008-07-16  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 543168 – Description of G_SLICE=debug-blocks discourages its use
 
 	* glib/running.sgml: Improve docs of G_SLICE=debug-blocks.

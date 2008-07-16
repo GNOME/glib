@@ -42,7 +42,7 @@ G_BEGIN_DECLS
  * G_VFS_EXTENSION_POINT_NAME:
  *
  * Extension point for #GVfs functionality. 
- * See <link linkend="gio-extension-points">Extending GIO</link>.
+ * See <link linkend="extending-gio">Extending GIO</link>.
  */
 #define G_VFS_EXTENSION_POINT_NAME "gio-vfs"
 

@@ -215,7 +215,7 @@
 
   </chapter>
 
-  <chapter id="gio-extension-points">
+  <chapter id="extending-gio">
     <title>Extending GIO</title>
 
     <para>
