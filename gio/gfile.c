@@ -520,7 +520,7 @@ g_file_get_parse_name (GFile *file)
  *
  * This call does no blocking i/o.
  * 
- * Returns: #GFile that is a duplicate of the given #GFile. 
+ * Returns: a new #GFile that is a duplicate of the given #GFile. 
  **/
 GFile *
 g_file_dup (GFile *file)
@@ -798,6 +798,7 @@ g_file_resolve_relative_path (GFile      *file,
  * Other errors are possible too.
  *
  * Returns: A #GFileEnumerator if successful, %NULL on error. 
+ *     Free the returned object with g_object_unref().
  **/
 GFileEnumerator *
 g_file_enumerate_children (GFile                *file,
@@ -882,6 +883,7 @@ g_file_enumerate_children_async (GFile               *file,
  * See g_file_enumerate_children_async().
  *
  * Returns: a #GFileEnumerator or %NULL if an error occurred.
+ *     Free the returned object with g_object_unref().
  **/
 GFileEnumerator *
 g_file_enumerate_children_finish (GFile         *file,
@@ -1027,6 +1029,7 @@ g_file_query_file_type (GFile *file,
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
  * Returns: a #GFileInfo for the given @file, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
 g_file_query_info (GFile                *file,
@@ -1109,6 +1112,7 @@ g_file_query_info_async (GFile               *file,
  * See g_file_query_info_async().
  * 
  * Returns: #GFileInfo for given @file or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
 g_file_query_info_finish (GFile         *file,
@@ -1161,6 +1165,7 @@ g_file_query_info_finish (GFile         *file,
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
  * Returns: a #GFileInfo or %NULL if there was an error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
 g_file_query_filesystem_info (GFile         *file,
@@ -1241,6 +1246,7 @@ g_file_query_filesystem_info_async (GFile               *file,
  * g_file_query_filesystem_info_async().
  * 
  * Returns: #GFileInfo for given @file or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
 g_file_query_filesystem_info_finish (GFile         *file,
@@ -1280,6 +1286,7 @@ g_file_query_filesystem_info_finish (GFile         *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: a #GMount where the @file is located or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GMount *
 g_file_find_enclosing_mount (GFile         *file,
@@ -1353,6 +1360,7 @@ g_file_find_enclosing_mount_async (GFile              *file,
  * See g_file_find_enclosing_mount_async().
  * 
  * Returns: #GMount for given @file or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GMount *
 g_file_find_enclosing_mount_finish (GFile         *file,
@@ -1394,6 +1402,7 @@ g_file_find_enclosing_mount_finish (GFile         *file,
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
  * Returns: #GFileInputStream or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInputStream *
 g_file_read (GFile         *file,
@@ -1445,7 +1454,8 @@ g_file_read (GFile         *file,
  * returned. Other errors are possible too, and depend on what kind of
  * filesystem the file is on.
  * 
- * Returns: a #GFileOutputStream, or %NULL on error
+ * Returns: a #GFileOutputStream, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_append_to (GFile             *file,
@@ -1501,7 +1511,8 @@ g_file_append_to (GFile             *file,
  * filesystem the file is on.
  * 
  * Returns: a #GFileOutputStream for the newly created file, or 
- * %NULL on error.
+ *     %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_create (GFile             *file,
@@ -1582,6 +1593,7 @@ g_file_create (GFile             *file,
  * filesystem the file is on.
  *
  * Returns: a #GFileOutputStream or %NULL on error. 
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_replace (GFile             *file,
@@ -1662,6 +1674,7 @@ g_file_read_async (GFile               *file,
  * g_file_read_async(). 
  *  
  * Returns: a #GFileInputStream or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileInputStream *
 g_file_read_finish (GFile         *file,
@@ -1733,6 +1746,7 @@ g_file_append_to_async (GFile               *file,
  * g_file_append_to_async(). 
  * 
  * Returns: a valid #GFileOutputStream or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_append_to_finish (GFile         *file,
@@ -1805,6 +1819,7 @@ g_file_create_async (GFile               *file,
  * g_file_create_async(). 
  * 
  * Returns: a #GFileOutputStream or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_create_finish (GFile         *file,
@@ -1884,6 +1899,7 @@ g_file_replace_async (GFile               *file,
  * g_file_replace_async(). 
  * 
  * Returns: a #GFileOutputStream, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
 g_file_replace_finish (GFile         *file,
@@ -2952,7 +2968,9 @@ g_file_trash (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFile specifying what @file was renamed to, or %NULL if there was an error.
+ * Returns: a #GFile specifying what @file was renamed to, or %NULL 
+ *     if there was an error.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_set_display_name (GFile         *file,
@@ -3032,6 +3050,7 @@ g_file_set_display_name_async (GFile               *file,
  * g_file_set_display_name_async().
  * 
  * Returns: a #GFile or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_set_display_name_finish (GFile         *file,
@@ -3630,6 +3649,7 @@ g_file_mount_mountable (GFile               *file,
  * with g_file_mount_mountable().
  *
  * Returns: a #GFile or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_mount_mountable_finish (GFile         *file,
@@ -3830,8 +3850,8 @@ g_file_eject_mountable_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFileMonitor for the given @file, 
- * or %NULL on error.
+ * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileMonitor*
 g_file_monitor_directory (GFile             *file,
@@ -3873,7 +3893,8 @@ g_file_monitor_directory (GFile             *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFileMonitor for the given @file.
+ * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  **/
 GFileMonitor*
 g_file_monitor_file (GFile             *file,
@@ -3917,7 +3938,8 @@ g_file_monitor_file (GFile             *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFileMonitor for the given @file.
+ * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.18
  */
