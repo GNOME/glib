@@ -1306,6 +1306,7 @@ g_file_find_enclosing_mount (GFile         *file,
 
   return (* iface->find_enclosing_mount) (file, cancellable, error);
 }
+
 /**
  * g_file_find_enclosing_mount_async:
  * @file: a #GFile
@@ -5056,20 +5057,23 @@ g_file_query_default_handler (GFile                  *file,
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file.
- * @etag_out: a location to place the current entity tag for the file.
+ * @length: a location to place the length of the contents of the file,
+ *    or %NULL if the length is not needed
+ * @etag_out: a location to place the current entity tag for the file,
+ *    or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  *
- * Loads the content of the file into memory, returning the size of
- * the data. The data is always zero terminated, but this is not
- * included in the resultant @length.
+ * Loads the content of the file into memory. The data is always 
+ * zero-terminated, but this is not included in the resultant @length.
+ * The returned @content should be freed with g_free() when no longer
+ * needed.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: %TRUE if the @file's contents were successfully loaded.
- * %FALSE if there were errors..
+ * %FALSE if there were errors.
  **/
 gboolean
 g_file_load_contents (GFile         *file,
@@ -5361,12 +5365,17 @@ g_file_load_partial_contents_async (GFile                 *file,
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
  * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file.
- * @etag_out: a location to place the current entity tag for the file.
+ * @length: a location to place the length of the contents of the file,
+ *     or %NULL if the length is not needed
+ * @etag_out: a location to place the current entity tag for the file,
+ *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  * 
  * Finishes an asynchronous partial load operation that was started
- * with g_file_load_partial_contents_async().
+ * with g_file_load_partial_contents_async(). The data is always 
+ * zero-terminated, but this is not included in the resultant @length.
+ * The returned @content should be freed with g_free() when no longer
+ * needed.
  *
  * Returns: %TRUE if the load was successful. If %FALSE and @error is 
  * present, it will be set appropriately. 
@@ -5462,13 +5471,16 @@ g_file_load_contents_async (GFile               *file,
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
  * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file.
- * @etag_out: a location to place the current entity tag for the file.
+ * @length: a location to place the length of the contents of the file,
+ *     or %NULL if the length is not needed
+ * @etag_out: a location to place the current entity tag for the file,
+ *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  * 
  * Finishes an asynchronous load of the @file's contents. 
  * The contents are placed in @contents, and @length is set to the 
- * size of the @contents string. If @etag_out is present, it will be 
+ * size of the @contents string. The @content should be freed with
+ * g_free() when no longer needed. If @etag_out is present, it will be 
  * set to the new entity tag for the @file.
  * 
  * Returns: %TRUE if the load was successful. If %FALSE and @error is 
@@ -5496,12 +5508,12 @@ g_file_load_contents_finish (GFile         *file,
  * @contents: a string containing the new contents for @file.
  * @length: the length of @contents in bytes.
  * @etag: the old <link linkend="gfile-etag">entity tag</link> 
- *     for the document.
+ *     for the document, or %NULL
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @new_etag: a location to a new <link linkend="gfile-etag">entity tag</link>
  *      for the document. This should be freed with g_free() when no longer 
- *      needed.
+ *      needed, or %NULL
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
@@ -5709,7 +5721,7 @@ replace_contents_open_callback (GObject      *obj,
  * @file: input #GFile.
  * @contents: string of contents to replace the file with.
  * @length: the length of @contents in bytes.
- * @etag: a new <link linkend="gfile-etag">entity tag</link> for the @file.
+ * @etag: a new <link linkend="gfile-etag">entity tag</link> for the @file, or %NULL
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
@@ -5774,7 +5786,7 @@ g_file_replace_contents_async  (GFile               *file,
  * @res: a #GAsyncResult. 
  * @new_etag: a location of a new <link linkend="gfile-etag">entity tag</link> 
  *     for the document. This should be freed with g_free() when it is no 
- *     longer needed.
+ *     longer needed, or %NULL
  * @error: a #GError, or %NULL 
  * 
  * Finishes an asynchronous replace of the given @file. See
