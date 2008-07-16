@@ -149,14 +149,17 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 		  which performs sanity checks on the released memory slices.
 		  Invalid slice adresses or slice sizes will be reported and lead to
 		  a program halt.
-		  This option should only be used in debugging scenarios, because it
-		  significantly degrades GSlice performance. Extra per slice memory
-		  is requied to do the necessary bookeeping, and multi-thread scalability
-		  is given up to perform global slice validation.
-		  This option is mostly useful in scenarios where program crashes are encountered
-		  while GSlice is in use, but crashes cannot be reproduced with G_SLICE=always-malloc.
-		  A potential cause for such a situation that will be caught by G_SLICE=debug-blocks
-		  is e.g.:
+		  This option is for debugging scenarios.
+		  In particular, client packages sporting their own test suite should
+		  <emphasis>always enable this option when running tests</emphasis>.
+		  Global slice validation is ensured by storing size and address information
+		  for each allocated chunk, and maintaining a global hash table of that data.
+		  That way, multi-thread scalability is given up, and memory consumption is
+		  increased. However, the resulting code usually performs acceptably well,
+		  possibly better than with comparable memory checking carried out using
+		  external tools. An example of a memory corruption scenario that cannot be
+		  reproduced with <literal>G_SLICE=always-malloc</literal>, but will be caught
+		  by <literal>G_SLICE=debug-blocks</literal> is as follows:
 		  <programlisting>
 		    void *slist = g_slist_alloc(); /* void* gives up type-safety */
 		    g_list_free (slist);           /* corruption: sizeof (GSList) != sizeof (GList) */

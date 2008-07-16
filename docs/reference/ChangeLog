@@ -1,3 +1,10 @@
+2008-07-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 543168 – Description of G_SLICE=debug-blocks discourages its use
+
+	* glib/running.sgml: Improve docs of G_SLICE=debug-blocks.
+	Patch by Alessandro Vesely.
+
 2008-07-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/gio-sections.txt: Add new GMount functions
