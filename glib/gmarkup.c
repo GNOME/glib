@@ -1264,7 +1264,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                error,
                                G_MARKUP_ERROR_PARSE,
                                _("Odd character '%s', expected a '>' character "
-                                 "to end the start tag of element '%s'"),
+                                 "to end the empty-element tag '%s'"),
                                utf8_str (context->iter, buf),
                                current_element (context));
                   }
