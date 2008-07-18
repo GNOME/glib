@@ -1,5 +1,13 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 543560 – enable gio-FEN back-end warnings on Solaris will crash
+	any applications
+
+	* fen/fen-kernel.c: Remove a warning that was causing
+	crashes. Reported by Lin Ma.
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 543040 – async reading on dummy file will crash on
 	GIO_USE_VFS=local
 

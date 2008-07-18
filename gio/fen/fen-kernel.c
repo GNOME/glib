@@ -134,7 +134,6 @@ port_add_kevent (int e, gpointer f)
     GTimeVal t;
     gboolean has_twin = FALSE;
     
-    FK_W("%s\n", printevent(F_NAME(f), e, "org"));
     /*
      * Child FILE_DELETE | FILE_RENAME_FROM will trigger parent FILE_MODIFIED.
      * FILE_MODIFIED will trigger FILE_ATTRIB.
