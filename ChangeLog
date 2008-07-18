@@ -1,3 +1,9 @@
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/Makefile.am:
+	* tests/option-test.c: Remove
+	* glib/tests/option-context.c: Add all GOptionContext tests here.
+
 2008-07-16  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 334234 – "printf" format error

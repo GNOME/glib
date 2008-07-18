@@ -120,7 +120,6 @@ test_programs =					\
 	module-test				\
 	node-test				\
 	onceinit				\
-	option-test				\
 	patterntest				\
 	printf-test				\
 	queue-test				\
