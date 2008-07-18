@@ -78,14 +78,14 @@ return_type function_callback (... , gpointer user_data);
         which have a pretty minimal API or the even simpler <function><link linkend="g-signal-connect">g_signal_connect</link></function> 
         functions (which will be presented a bit later :).
 <programlisting>
-GClosure* g_cclosure_new (GCallback        callback_func,
-                          gpointer         user_data,
-                          GClosureNotify   destroy_data);
-GClosure* g_cclosure_new_swap (GCallback        callback_func,
-                               gpointer         user_data,
-                               GClosureNotify   destroy_data);
-GClosure* g_signal_type_cclosure_new (GType  itype,
-                                      guint  struct_offset);
+GClosure *g_cclosure_new             (GCallback      callback_func,
+                                      gpointer       user_data,
+                                      GClosureNotify destroy_data);
+GClosure *g_cclosure_new_swap        (GCallback      callback_func,
+                                      gpointer       user_data,
+                                      GClosureNotify destroy_data);
+GClosure *g_signal_type_cclosure_new (GType          itype,
+                                      guint          struct_offset);
 </programlisting>
       </para>
 
@@ -203,16 +203,16 @@ return_type function_callback (gpointer instance, ... , gpointer user_data);
 		To register a new signal on an existing type, we can use any of <function><link linkend="g-signal-newv">g_signal_newv</link></function>,
 		<function><link linkend="g-signal-new-valist">g_signal_new_valist</link></function> or <function><link linkend="g-signal-new">g_signal_new</link></function> functions:
 <programlisting>
-guint                 g_signal_newv         (const gchar        *signal_name,
-                                             GType               itype,
-                                             GSignalFlags        signal_flags,
-                                             GClosure           *class_closure,
-                                             GSignalAccumulator  accumulator,
-                                             gpointer            accu_data,
-                                             GSignalCMarshaller  c_marshaller,
-                                             GType               return_type,
-                                             guint               n_params,
-                                             GType              *param_types);
+guint g_signal_newv (const gchar        *signal_name,
+                     GType               itype,
+                     GSignalFlags        signal_flags,
+                     GClosure           *class_closure,
+                     GSignalAccumulator  accumulator,
+                     gpointer            accu_data,
+                     GSignalCMarshaller  c_marshaller,
+                     GType               return_type,
+                     guint               n_params,
+                     GType              *param_types);
 </programlisting>
 		The number of parameters to these functions is a bit intimidating but they are relatively
 		simple:
@@ -308,10 +308,10 @@ guint                 g_signal_newv         (const gchar        *signal_name,
 		Signal emission is done through the use of the <function><link linkend="g-signal-emit">g_signal_emit</link></function> family 
 		of functions.
 <programlisting>
-void                  g_signal_emitv        (const GValue       *instance_and_params,
-                         guint               signal_id,
-                         GQuark              detail,
-                         GValue             *return_value);
+void g_signal_emitv (const GValue *instance_and_params,
+                     guint         signal_id,
+                     GQuark        detail,
+                     GValue       *return_value);
 </programlisting>
 		<itemizedlist>
 		  <listitem><para>

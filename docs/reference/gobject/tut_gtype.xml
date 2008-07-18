@@ -787,7 +787,7 @@ struct _GInterfaceInfo
             When an instantiable classed type which registered an interface implementation
             is created for the first time, its class structure is initialized following the process
             described in <xref linkend="gtype-instantiable-classed"/>. Once the class structure is 
-              initialized,the function <function>type_class_init_Wm</function> (implemented in <filename>
+              initialized, the function <function>type_class_init_Wm</function> (implemented in <filename>
               gtype.c</filename>) initializes the interface implementations associated with
               that type by calling <function>type_iface_vtable_init_Wm</function> for each
               interface.
