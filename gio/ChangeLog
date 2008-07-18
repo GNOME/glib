@@ -1,3 +1,22 @@
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 543040 – async reading on dummy file will crash on
+	GIO_USE_VFS=local
+
+	* gfile.c (open_read_async_thread): Cope with read_fn being
+	NULL. Reported by Lin Ma.  
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio.symbols:
+	* gcontenttype.[hc]: Add g_content_type_guess_for_tree().
+
+2008-07-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvfs.h:
+	* gdesktopappinfo.h: 
+	* giomodule.c: Rename a chapter id to avoid filename conflict.
+
 2008-07-16  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 540616 – mem leak in filechooser button
