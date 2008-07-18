@@ -1000,6 +1000,7 @@ g_content_type_get_icon
 g_content_type_can_be_executable
 g_content_type_from_mime_type
 g_content_type_guess
+g_content_type_guess_for_tree
 g_content_types_get_registered
 </SECTION>
 

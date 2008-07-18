@@ -47,7 +47,9 @@ char *   g_content_type_from_mime_type    (const char   *mime_type);
 char *   g_content_type_guess             (const char   *filename,
 					   const guchar *data,
 					   gsize         data_size,
-					   gboolean     *result_uncertain );
+					   gboolean     *result_uncertain);
+
+char **  g_content_type_guess_for_tree    (GFile *root); 
 
 GList *  g_content_types_get_registered   (void);
 

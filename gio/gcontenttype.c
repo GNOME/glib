@@ -24,11 +24,15 @@
 
 #include "config.h"
 #include <sys/types.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include "gcontenttypeprivate.h"
 #include "gthemedicon.h"
 #include "gicon.h"
+#include "gfile.h"
+#include "gfileenumerator.h"
+#include "gfileinfo.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -375,6 +379,13 @@ g_content_types_get_registered (void)
     }
   
   return g_list_reverse (types);
+}
+
+char **
+g_content_type_guess_for_tree (GFile *root)
+{
+  /* FIXME: implement */
+  return NULL;
 }
 
 #else /* !G_OS_WIN32 - Unix specific version */
@@ -847,14 +858,15 @@ g_content_type_from_mime_type (const char *mime_type)
 
 /**
  * g_content_type_guess:
- * @filename: a string.
- * @data: a stream of data.
- * @data_size: the size of @data.
- * @result_uncertain: a flag indicating the certainty of the 
- * result.
+ * @filename: a string, or %NULL
+ * @data: a stream of data, or %NULL
+ * @data_size: the size of @data
+ * @result_uncertain: a flag indicating the certainty of the result
  * 
  * Guesses the content type based on example data. If the function is 
- * uncertain, @result_uncertain will be set to %TRUE.
+ * uncertain, @result_uncertain will be set to %TRUE. Either @filename
+ * or @data may be %NULL, in which case the guess will be based solely
+ * on the other argument.
  * 
  * Returns: a string indicating a guessed content type for the 
  * given data. 
@@ -1039,6 +1051,590 @@ g_content_types_get_registered (void)
   g_hash_table_destroy (mimetypes);
 
   return l;
+}
+
+
+/* tree magic data */
+static GList *tree_matches = NULL;
+static gboolean need_reload = FALSE;
+
+G_LOCK_DEFINE_STATIC (gio_treemagic);
+
+typedef struct 
+{
+  gchar *path;
+  GFileType type;
+  guint match_case : 1;
+  guint executable : 1;
+  guint non_empty  : 1;
+  guint on_disc    : 1;
+  gchar *mimetype;
+  GList *matches;
+} TreeMatchlet;
+
+typedef struct
+{
+  gchar *contenttype;
+  gint priority;
+  GList *matches;
+} TreeMatch;
+
+
+static void
+tree_matchlet_free (TreeMatchlet *matchlet)
+{
+  g_list_foreach (matchlet->matches, (GFunc)tree_matchlet_free, NULL);
+  g_list_free (matchlet->matches);
+  g_free (matchlet->path);
+  g_free (matchlet->mimetype);
+  g_slice_free (TreeMatchlet, matchlet);
+}
+
+static void
+tree_match_free (TreeMatch *match)
+{
+  g_list_foreach (match->matches, (GFunc)tree_matchlet_free, NULL);
+  g_list_free (match->matches);
+  g_free (match->contenttype);
+  g_slice_free (TreeMatch, match);
+}
+
+static TreeMatch *
+parse_header (gchar *line)
+{
+  gint len;
+  gchar *s;
+  TreeMatch *match;
+
+  len = strlen (line);
+
+  if (line[0] != '[' || line[len - 1] != ']')
+    return NULL;
+	
+  line[len - 1] = 0;
+  s = strchr (line, ':');
+	
+  match = g_slice_new0 (TreeMatch);
+  match->priority = atoi (line + 1);
+  match->contenttype = g_strdup (s + 1);
+
+  return match;
+}
+
+static TreeMatchlet *
+parse_match_line (gchar *line, 
+		  gint  *depth)
+{
+  gchar *s, *p;
+  TreeMatchlet *matchlet;
+  gchar **parts;
+  gint i;
+
+  matchlet = g_slice_new0 (TreeMatchlet);
+
+  if (line[0] == '>') 
+    {
+      *depth = 0;
+      s = line;
+    }
+  else 
+    {
+      *depth = atoi (line);
+      s = strchr (line, '>');
+    }
+  s += 2; 
+  p = strchr (s, '"');
+  *p = 0;
+
+  matchlet->path = g_strdup (s);
+  s = p + 1;
+  parts = g_strsplit (s, ",", 0);
+  if (strcmp (parts[0], "=file") == 0)
+    matchlet->type = G_FILE_TYPE_REGULAR;
+  else if (strcmp (parts[0], "=directory") == 0)
+    matchlet->type = G_FILE_TYPE_DIRECTORY;
+  else if (strcmp (parts[0], "=link") == 0)
+    matchlet->type = G_FILE_TYPE_SYMBOLIC_LINK;
+  else
+    matchlet->type = G_FILE_TYPE_UNKNOWN;
+  for (i = 1; parts[i]; i++)
+    {
+      if (strcmp (parts[i], "executable") == 0)
+        matchlet->executable = 1;
+      else if (strcmp (parts[i], "match-case") == 0)
+        matchlet->match_case = 1;
+      else if (strcmp (parts[i], "non-empty") == 0)
+        matchlet->non_empty = 1;
+      else if (strcmp (parts[i], "on-disc") == 0)
+        matchlet->on_disc = 1;
+      else 
+        matchlet->mimetype = g_strdup (parts[i]);
+    }
+
+  g_strfreev (parts);
+
+  return matchlet;
+}
+
+static gint
+cmp_match (gconstpointer a, gconstpointer b)
+{
+  const TreeMatch *aa = (const TreeMatch *)a;
+  const TreeMatch *bb = (const TreeMatch *)b;
+
+  return bb->priority - aa->priority;
+}
+
+static void
+insert_match (TreeMatch *match)
+{
+  tree_matches = g_list_insert_sorted (tree_matches, match, cmp_match);
+}
+
+static void
+insert_matchlet (TreeMatch    *match, 
+                 TreeMatchlet *matchlet, 
+                 gint          depth)
+{
+  if (depth == 0) 
+    match->matches = g_list_append (match->matches, matchlet);
+  else 
+    {
+      GList *last;
+      TreeMatchlet *m;
+
+      last = g_list_last (match->matches);
+      if (!last) 
+        {
+          tree_matchlet_free (matchlet);
+          g_warning ("can't insert tree matchlet at depth %d", depth);
+          return;
+        }
+
+      m = (TreeMatchlet *) last->data;
+      while (--depth > 0) 
+        {
+          last = g_list_last (m->matches);
+          if (!last) 
+            {
+              tree_matchlet_free (matchlet);
+              g_warning ("can't insert tree matchlet at depth %d", depth);
+              return;
+            }
+			
+          m = (TreeMatchlet *) last->data;
+        }
+      m->matches = g_list_append (m->matches, matchlet);
+    }
+}
+
+static void
+read_tree_magic_from_directory (const gchar *prefix)
+{
+  gchar *filename;
+  gchar *text;
+  gsize len;
+  gchar **lines;
+  gint i;
+  TreeMatch *match;
+  TreeMatchlet *matchlet;
+  gint depth;
+
+  filename = g_build_filename (prefix, "mime", "treemagic", NULL);
+
+  if (g_file_get_contents (filename, &text, &len, NULL)) 
+    {
+      if (strcmp (text, "MIME-TreeMagic") == 0) 
+        {
+          lines = g_strsplit (text + strlen ("MIME-TreeMagic") + 2, "\n", 0);
+          match = NULL;
+          for (i = 0; lines[i] && lines[i][0]; i++) 
+            {
+              if (lines[i][0] == '[') 
+                {
+                  match = parse_header (lines[i]);
+                  insert_match (match);
+                }
+              else 
+                {
+                  matchlet = parse_match_line (lines[i], &depth);
+                  insert_matchlet (match, matchlet, depth);
+                }
+            }
+      
+          g_strfreev (lines);
+        }
+      else 
+        g_warning ("%s: header not found, skipping\n", filename);
+
+      g_free (text);
+    }
+	
+  g_free (filename);
+}
+
+
+static void
+xdg_mime_reload (void *user_data)
+{
+  g_print ("need_reload = TRUE\n");
+  need_reload = TRUE;
+}
+
+static void 
+tree_magic_shutdown (void)
+{
+  g_print ("tree_magic_shutdown\n");
+  g_list_foreach (tree_matches, (GFunc)tree_match_free, NULL);
+  g_list_free (tree_matches);
+  tree_matches = NULL;
+}
+
+static void
+tree_magic_init (void)
+{
+  static gboolean initialized = FALSE;
+  const gchar *dir;
+  const gchar * const * dirs;
+  int i;
+
+  g_print ("tree_magic_init\n");
+  if (!initialized) 
+    {
+      initialized = TRUE;
+
+      xdg_mime_register_reload_callback (xdg_mime_reload, NULL, NULL);
+      need_reload = TRUE;
+    }
+
+  if (need_reload) 
+    {
+      need_reload = FALSE;
+
+      tree_magic_shutdown ();
+
+      g_print ("reloading\n");
+      dir = g_get_user_data_dir ();
+      read_tree_magic_from_directory (dir);
+      dirs = g_get_system_data_dirs ();
+      for (i = 0; dirs[i]; i++)
+        read_tree_magic_from_directory (dirs[i]);
+    }
+}
+
+/* a filtering enumerator */
+
+typedef struct 
+{
+  gchar *path;
+  gint depth;
+  gboolean ignore_case;
+  gchar **components;
+  gchar **case_components;
+  GFileEnumerator **enumerators;
+  GFile **children;
+} Enumerator;
+
+static gboolean
+component_match (Enumerator  *e, 
+                 gint         depth, 
+                 const gchar *name)
+{
+  gchar *case_folded, *key;
+  gboolean found;
+
+  if (strcmp (name, e->components[depth]) == 0)
+    return TRUE;
+
+  if (!e->ignore_case)
+    return FALSE;
+
+  case_folded = g_utf8_casefold (name, -1);
+  key = g_utf8_collate_key (case_folded, -1);
+
+  found = strcmp (key, e->case_components[depth]) == 0;
+
+  g_free (case_folded);
+  g_free (key);
+
+  return found;
+}
+
+static GFile *
+next_match_recurse (Enumerator *e, 
+                    gint        depth)
+{
+  GFile *file;
+  GFileInfo *info;
+  const gchar *name;
+
+  while (TRUE) 
+    {
+      if (e->enumerators[depth] == NULL) 
+        {
+          if (depth > 0) 
+            {
+              file = next_match_recurse (e, depth - 1);
+              if (file)  
+                {
+                  e->children[depth] = file;
+                  e->enumerators[depth] = g_file_enumerate_children (file,
+                                                                     G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                                                     G_FILE_QUERY_INFO_NONE,
+							             NULL,
+							             NULL);
+                }
+            }
+          if (e->enumerators[depth] == NULL)
+            return NULL;
+        }
+
+      while ((info = g_file_enumerator_next_file (e->enumerators[depth], NULL, NULL))) 
+        {
+          name = g_file_info_get_name (info);
+          if (component_match (e, depth, name)) 
+            {
+              file = g_file_get_child (e->children[depth], name);
+              g_object_unref (info);
+              return file;
+            }
+          g_object_unref (info);
+        }
+
+      g_object_unref (e->enumerators[depth]);
+      e->enumerators[depth] = NULL;
+      g_object_unref (e->children[depth]);
+      e->children[depth] = NULL;
+    }
+}
+
+static GFile *
+enumerator_next (Enumerator *e)
+{
+  return next_match_recurse (e, e->depth - 1);
+}
+
+static Enumerator *
+enumerator_new (GFile      *root,
+                const char *path, 
+                gboolean    ignore_case)
+{
+  Enumerator *e;
+  gint i;
+  gchar *case_folded;
+
+  e = g_new0 (Enumerator, 1);
+  e->path = g_strdup (path);
+  e->ignore_case = ignore_case;
+
+  e->components = g_strsplit (e->path, G_DIR_SEPARATOR_S, -1);
+  e->depth = g_strv_length (e->components);
+  if (e->ignore_case) 
+    {
+      e->case_components = g_new0 (char *, e->depth + 1);
+      for (i = 0; e->components[i]; i++) 
+        {
+          case_folded = g_utf8_casefold (e->components[i], -1);
+          e->case_components[i] = g_utf8_collate_key (case_folded, -1);
+          g_free (case_folded);
+        }	
+    }
+
+  e->children = g_new0 (GFile *, e->depth);
+  e->children[0] = g_object_ref (root);
+  e->enumerators = g_new0 (GFileEnumerator *, e->depth);
+  e->enumerators[0] = g_file_enumerate_children (root,
+                                                 G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                                 G_FILE_QUERY_INFO_NONE,
+                                                 NULL,
+                                                 NULL);
+
+  return e;
+}
+
+static void
+enumerator_free (Enumerator *e)
+{
+  gint i;
+
+  for (i = 0; i < e->depth; i++) 
+    { 
+      if (e->enumerators[i]) 
+        g_object_unref (e->enumerators[i]);
+      if (e->children[i])
+        g_object_unref (e->children[i]);
+    }
+
+  g_free (e->enumerators);
+  g_free (e->children);
+  g_strfreev (e->components);
+  if (e->case_components)
+    g_strfreev (e->case_components);
+  g_free (e->path);
+  g_free (e);
+}
+
+static gboolean
+matchlet_match (TreeMatchlet *matchlet,
+                GFile        *root)
+{
+  GFile *file;
+  GFileInfo *info;
+  gboolean result;
+  const gchar *attrs;
+  Enumerator *e;
+  GList *l;
+
+  e = enumerator_new (root, matchlet->path, !matchlet->match_case);
+	
+  do 
+    {
+      file = enumerator_next (e);
+      if (!file) 
+        {
+          enumerator_free (e);	
+          return FALSE;
+        }
+
+      if (matchlet->mimetype)
+        attrs = G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE ","
+                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE;
+      else
+        attrs = G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE;
+      info = g_file_query_info (file, 
+                                attrs,
+                                G_FILE_QUERY_INFO_NONE,
+                                NULL,
+                                NULL);
+      if (info) 
+        {
+          result = TRUE;
+
+          if (matchlet->type != G_FILE_TYPE_UNKNOWN &&
+              g_file_info_get_file_type (info) != matchlet->type) 
+            result = FALSE;
+
+          if (matchlet->executable &&
+              !g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE))
+            result = FALSE;
+        }	
+      else 
+        result = FALSE;
+
+      if (result && matchlet->non_empty) 
+        {
+          GFileEnumerator *child_enum;
+          GFileInfo *child_info;
+
+          child_enum = g_file_enumerate_children (file, 
+                                                  G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                                  G_FILE_QUERY_INFO_NONE,
+                                                  NULL,
+                                                  NULL);
+	
+          if (child_enum) 
+            {
+              child_info = g_file_enumerator_next_file (child_enum, NULL, NULL);
+              if (child_info)
+                g_object_unref (child_info);
+              else 
+                result = FALSE;	
+              g_object_unref (child_enum);
+            }
+          else 
+            result = FALSE;
+        }
+	
+      if (result && matchlet->mimetype) 
+        {
+          if (strcmp (matchlet->mimetype, g_file_info_get_content_type (info)) != 0) 
+            result = FALSE;
+        }
+	
+      g_object_unref (info);
+      g_object_unref (file);
+    }
+  while (!result);
+
+  enumerator_free (e);
+	
+  if (!matchlet->matches) 
+    return TRUE;
+
+  for (l = matchlet->matches; l; l = l->next) 
+    {
+      TreeMatchlet *submatchlet;
+
+      submatchlet = l->data;
+      if (matchlet_match (submatchlet, root))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+match_match (TreeMatch    *match,
+             GFile        *root,
+             GPtrArray    *types)
+{
+  GList *l;
+	
+  for (l = match->matches; l; l = l->next) 
+    {
+      TreeMatchlet *matchlet = l->data;
+      if (matchlet_match (matchlet, root)) 
+        {
+          g_ptr_array_add (types, g_strdup (match->contenttype));
+          break;
+        }
+    }
+}
+
+/**
+ * g_content_type_guess_for_tree:
+ * @root: the root of the tree to guess a type for
+ *
+ * Tries to guess the type of the tree with root @root, by
+ * looking at the files it contains. The result is an array
+ * of content types, with the best guess coming first.
+ *
+ * The types returned all have the form x-content/foo, e.g.
+ * x-content/audio-cdda (for audio CDs) or x-content/image-dcf 
+ * (for a camera memory card). See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * specification for more on x-content types.
+ *
+ * This function is useful in the implementation of g_mount_guess_content_type().
+ *
+ * Returns: an %NULL-terminated array of zero or more content types, or %NULL. 
+ *    Free with g_strfreev()
+ *
+ * Since: 2.18
+ */
+char **
+g_content_type_guess_for_tree (GFile *root)
+{
+  GPtrArray *types;
+  GList *l;
+
+  types = g_ptr_array_new ();
+
+  G_LOCK (gio_treemagic);
+
+  tree_magic_init ();
+  for (l = tree_matches; l; l = l->next) 
+    {
+      TreeMatch *match = l->data;
+      match_match (match, root, types);
+    }
+
+  G_UNLOCK (gio_treemagic);
+
+  g_ptr_array_add (types, NULL);
+
+  return (char **)g_ptr_array_free (types, FALSE);
 }
 
 #endif /* Unix version */
