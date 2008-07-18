@@ -1,5 +1,18 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 536996 – Missing noop i18n macro equivalent to C_
+
+	* glib/glib.symbols:
+	* glib/gstrfuncs.[hc]: Add g_dpgettext2() which is a 
+	variant of g_dpgettext() taking context and id as separate
+	arguments.
+
+	* glib/gi18n-lib.h:
+	* glib/gi18n.h: Add an NC_() macro that is to C_() as N_()
+	is to _().
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/Makefile.am:
 	* tests/keyfile-test.c:
 	* tests/option-test.c: Remove

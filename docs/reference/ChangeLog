@@ -1,5 +1,10 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt:
+	* glib/tmpl/i18n.sgml: Add new gettext stuff
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 530759 – update the gobject tutorial to the XXI century
 
 	* gobject/*: Some updates to the tutorial. Patch by Emmanuele

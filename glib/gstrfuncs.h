@@ -257,6 +257,9 @@ G_CONST_RETURN gchar *g_dngettext      (const gchar *domain,
 G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
                                         gsize        msgidoffset) G_GNUC_FORMAT(2);
+G_CONST_RETURN gchar *g_dpgettext2     (const gchar *domain,
+                                        const gchar *context,
+                                        const gchar *msgid) G_GNUC_FORMAT(3);
 
 G_END_DECLS
 

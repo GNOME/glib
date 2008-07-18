@@ -2909,6 +2909,62 @@ g_dpgettext (const gchar *domain,
   return translation;
 }
 
+/* This function is taken from gettext.h 
+ * GNU gettext uses '\004' to separate context and msgid in .mo files.
+ */
+/**
+ * g_dpgettext2:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @context: the message context
+ * @msgid: the message
+ *
+ * This function is a variant of g_dgettext() which supports
+ * a disambiguating message context. GNU gettext uses the
+ * '\004' character to separate the message context and
+ * message id in @msgctxtid.
+ *
+ * This uses g_dgettext() internally.  See that functions for differences
+ * with dgettext() proper.
+ *
+ * This function differs from C_() in that it is not a macro and 
+ * thus you may use non-string-literals as context and msgid arguments.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.18
+ */
+G_CONST_RETURN char *
+g_dpgettext2 (const char *domain,
+              const char *msgctxt,
+              const char *msgid)
+{
+  size_t msgctxt_len = strlen (msgctxt) + 1;
+  size_t msgid_len = strlen (msgid) + 1;
+  const char *translation;
+  char* msg_ctxt_id;
+
+  msg_ctxt_id = g_alloca (msgctxt_len + msgid_len);
+
+  memcpy (msg_ctxt_id, msgctxt, msgctxt_len - 1);
+  msg_ctxt_id[msgctxt_len - 1] = '\004';
+  memcpy (msg_ctxt_id + msgctxt_len, msgid, msgid_len);
+
+  translation = g_dgettext (domain, msg_ctxt_id);
+
+  if (translation == msg_ctxt_id) 
+    {
+      /* try the old way of doing message contexts, too */
+      msg_ctxt_id[msgctxt_len - 1] = '|';
+      translation = g_dgettext (domain, msg_ctxt_id);
+
+      if (translation == msg_ctxt_id)
+        return msgid;
+    }
+
+  return translation;
+}
+
 static gboolean
 _g_dgettext_should_translate (void)
 {

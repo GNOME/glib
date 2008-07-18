@@ -148,6 +148,41 @@ To get the translated string, call gettext() at runtime.
 @Returns: 
 
 
+<!-- ##### MACRO NC_ ##### -->
+<para>
+Only marks a string for translation, with context.
+This is useful in situations where the translated strings can't
+be directly used, e.g. in string array initializers. 
+To get the translated string, you should call g_dpgettext2() at runtime.
+</para>
+|[
+     {
+       static const char *messages[] = {
+         NC_("some context", "some very meaningful message"),
+         NC_("some context", "and another one")
+       };
+       const char *string;
+       ...
+       string
+         = index &gt; 1 ? g_dpgettext2 (NULL, "some context", "a default message") : g_dpgettext2 (NULL, "some context", messages[index]);
+<!-- -->     
+       fputs (string);
+       ...
+     }
+]|
+
+<note><para>
+If you are using the NC_() macro, you need to make sure that you
+pass <option>--keyword=NC_:1c,2</option> to xgettext when extracting
+messages. Note that this only works with GNU gettext >= 0.15.
+</para></note>
+
+
+@Context: a message context, must be a string literal
+@String: a message id, must be a string literal
+@Since: 2.18
+
+
 <!-- ##### FUNCTION g_strip_context ##### -->
 <para>
 
