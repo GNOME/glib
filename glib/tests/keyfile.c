@@ -12,12 +12,7 @@ load_data (const gchar   *data,
 
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, flags, &error);
-  if (error)
-    {
-      g_print ("Could not load data: %s\n", error->message);
-      exit (1);
-    }
-  
+  g_assert (error == NULL);
   return keyfile;
 }
 
@@ -26,27 +21,9 @@ check_error (GError **error,
 	     GQuark   domain,
 	     gint     code)
 {
-  if (*error == NULL)
-    {
-      g_print ("Missing an error\n");
-      exit (1);
-    }
-  
-  if ((*error)->domain != domain)
-    {
-      g_print ("Wrong error domain: got %s, expected %s\n",
-	       g_quark_to_string ((*error)->domain),
-	       g_quark_to_string (domain));
-      exit (1);
-    }
-  
-  if ((*error)->code != code)
-    {
-      g_print ("Wrong error code: got %d, expected %d\n",
-	       (*error)->code, code);
-      exit (1);
-    }
-
+  g_assert (*error != NULL);
+  g_assert ((*error)->domain == domain);
+  g_assert ((*error)->code == code);
   g_error_free (*error);
   *error = NULL;
 }
@@ -54,13 +31,7 @@ check_error (GError **error,
 static void 
 check_no_error (GError **error)
 {
-  if (*error != NULL)
-    {
-      g_print ("Unexpected error: (%s, %d) %s\n",
-	       g_quark_to_string ((*error)->domain),
-	       (*error)->code, (*error)->message);
-      exit (1);
-    }
+  g_assert (*error == NULL);
 }
 
 static void
@@ -75,15 +46,7 @@ check_string_value (GKeyFile    *keyfile,
   value = g_key_file_get_string (keyfile, group, key, &error);
   check_no_error (&error);
   g_assert (value != NULL);
-
-  if (strcmp (value, expected) != 0)
-    {
-      g_print ("Group %s key %s: "
-	       "expected string value '%s', actual value '%s'\n",
-	       group, key, expected, value);      
-      exit (1);
-    }
-
+  g_assert_cmpstr (value, ==, expected);
   g_free (value);
 }
 
@@ -100,15 +63,7 @@ check_locale_string_value (GKeyFile    *keyfile,
   value = g_key_file_get_locale_string (keyfile, group, key, locale, &error);
   check_no_error (&error);
   g_assert (value != NULL);
-
-  if (strcmp (value, expected) != 0)
-    {
-      g_print ("Group %s key %s locale %s: "
-	       "expected string value '%s', actual value '%s'\n",
-	       group, key, locale, expected, value);      
-      exit (1);
-    }
-
+  g_assert_cmpstr (value, ==, expected);
   g_free (value);
 }
 
@@ -133,19 +88,8 @@ check_string_list_value (GKeyFile    *keyfile,
   v = va_arg (args, gchar*);
   while (v)
     {
-      if (value[i] == NULL)
-	{
-	  g_print ("Group %s key %s: list too short (%d)\n", 
-		   group, key, i);      
-	  exit (1);
-	}
-      if (strcmp (v, value[i]) != 0)
-	{
-	  g_print ("Group %s key %s: mismatch at %d, expected %s, got %s\n", 
-		   group, key, i, v, value[i]);      
-	  exit (1);
-	}
-
+      g_assert (value[i] != NULL);
+      g_assert_cmpstr (v, ==, value[i]);
       i++;
       v = va_arg (args, gchar*);
     }
@@ -176,19 +120,8 @@ check_integer_list_value (GKeyFile    *keyfile,
   v = va_arg (args, gint);
   while (v != -100)
     {
-      if (i == len)
-	{
-	  g_print ("Group %s key %s: list too short (%d)\n", 
-		   group, key, i);      
-	  exit (1);
-	}
-      if (value[i] != v)
-	{
-	  g_print ("Group %s key %s: mismatch at %d, expected %d, got %d\n", 
-		   group, key, i, v, value[i]);      
-	  exit (1);
-	}
-
+      g_assert_cmpint (i, <, len);
+      g_assert_cmpint (value[i], ==, v);
       i++;
       v = va_arg (args, gint);
     }
@@ -219,19 +152,8 @@ check_double_list_value (GKeyFile    *keyfile,
   v = va_arg (args, gdouble);
   while (v != -100)
     {
-      if (i == len)
-	{
-	  g_print ("Group %s key %s: list too short (%d)\n", 
-		   group, key, i);      
-	  exit (1);
-	}
-      if (value[i] != v)
-	{
-	  g_print ("Group %s key %s: mismatch at %d, expected %e, got %e\n", 
-		   group, key, i, v, value[i]);      
-	  exit (1);
-	}
-
+      g_assert_cmpint (i, <, len);
+      g_assert_cmpfloat (value[i], ==, v);
       i++;
       v = va_arg (args, gdouble);
     }
@@ -262,19 +184,8 @@ check_boolean_list_value (GKeyFile    *keyfile,
   v = va_arg (args, gboolean);
   while (v != -100)
     {
-      if (i == len)
-	{
-	  g_print ("Group %s key %s: list too short (%d)\n", 
-		   group, key, i);      
-	  exit (1);
-	}
-      if (value[i] != v)
-	{
-	  g_print ("Group %s key %s: mismatch at %d, expected %d, got %d\n", 
-		   group, key, i, v, value[i]);      
-	  exit (1);
-	}
-
+      g_assert_cmpint (i, <, len);
+      g_assert_cmpint (value[i], ==, v);
       i++;
       v = va_arg (args, gboolean);
     }
@@ -295,16 +206,7 @@ check_boolean_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_boolean (keyfile, group, key, &error);
   check_no_error (&error);
-
-  if (value != expected)
-    {
-      g_print ("Group %s key %s: "
-	       "expected boolean value '%s', actual value '%s'\n",
-	       group, key, 
-	       expected ? "true" : "false", 
-	       value ? "true" : "false");      
-      exit (1);
-    }
+  g_assert_cmpint (value, ==, expected);
 }
 
 static void
@@ -318,14 +220,7 @@ check_integer_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_integer (keyfile, group, key, &error);
   check_no_error (&error);
-
-  if (value != expected)
-    {
-      g_print ("Group %s key %s: "
-	       "expected integer value %d, actual value %d\n",
-	       group, key, expected, value);      
-      exit (1);
-    }
+  g_assert_cmpint (value, ==, expected);
 }
 
 static void
@@ -339,14 +234,7 @@ check_double_value (GKeyFile    *keyfile,
 
   value = g_key_file_get_double (keyfile, group, key, &error);
   check_no_error (&error);
-
-  if (value != expected)
-    {
-      g_print ("Group %s key %s: "
-	       "expected integer value %e, actual value %e\n",
-	       group, key, expected, value);      
-      exit (1);
-    }
+  g_assert_cmpfloat (value, ==, expected);
 }
 
 static void
@@ -355,12 +243,7 @@ check_name (const gchar *what,
 	    const gchar *expected,
 	    gint         position)
 {
-  if (!value || strcmp (expected, value) != 0)
-    {
-      g_print ("Wrong %s returned: got '%s' at %d, expected '%s'\n",
-	       what, value, position, expected);
-      exit (1);
-    }
+  g_assert_cmpstr (value, ==, expected);
 }
 
 static void
@@ -369,12 +252,8 @@ check_length (const gchar *what,
 	      gint         length,
 	      gint         expected)
 {
-  if (n_items != length || length != expected)
-    {
-      g_print ("Wrong number of %s returned: got %d items, length %d, expected %d\n",
-	       what, n_items, length, expected);
-      exit (1);
-    }
+  g_assert_cmpint (n_items, ==, length);
+  g_assert_cmpint (n_items, ==, expected);
 }
 
 
@@ -540,11 +419,7 @@ test_listing (void)
   keyfile = load_data (data, 0);
 
   names = g_key_file_get_groups (keyfile, &len);
-  if (names == NULL)
-    {
-      g_print ("Error listing groups\n");
-      exit (1);
-    }
+  g_assert (names != NULL);
 
   check_length ("groups", g_strv_length (names), len, 2);
   check_name ("group name", names[0], "group1", 0);
@@ -566,31 +441,20 @@ test_listing (void)
 
   g_strfreev (names);
 
-  if (!g_key_file_has_group (keyfile, "group1") ||
-      !g_key_file_has_group (keyfile, "group2") ||
-      g_key_file_has_group (keyfile, "group10") ||
-      g_key_file_has_group (keyfile, "group2 "))      
-    {
-      g_print ("Group finding trouble\n");
-      exit (1);      
-    }
+  g_assert (g_key_file_has_group (keyfile, "group1"));
+  g_assert (g_key_file_has_group (keyfile, "group2"));
+  g_assert (!g_key_file_has_group (keyfile, "group10"));
+  g_assert (!g_key_file_has_group (keyfile, "group20"));
 
   start = g_key_file_get_start_group (keyfile);
-  if (!start || strcmp (start, "group1") != 0)
-    {
-      g_print ("Start group finding trouble\n");
-      exit (1);
-    }
+  g_assert_cmpstr (start, ==, "group1");
   g_free (start);
 
-  if (!g_key_file_has_key (keyfile, "group1", "key1", &error) ||
-      !g_key_file_has_key (keyfile, "group2", "key3", &error) ||
-      g_key_file_has_key (keyfile, "group2", "no-such-key", &error))
-    {
-      g_print ("Key finding trouble\n");
-      exit (1);      
-    }
+  g_assert (g_key_file_has_key (keyfile, "group1", "key1", &error));
   check_no_error (&error);
+  g_assert (g_key_file_has_key (keyfile, "group2", "key3", &error)); 
+  check_no_error (&error);
+  g_assert (!g_key_file_has_key (keyfile, "group2", "no-such-key", NULL)); 
   
   g_key_file_has_key (keyfile, "no-such-group", "key", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
@@ -833,7 +697,6 @@ test_lists (void)
   g_key_file_free (keyfile);  
 }
 
-/* http://bugzilla.gnome.org/show_bug.cgi?id=165887 */
 static void 
 test_group_remove (void)
 {
@@ -851,14 +714,12 @@ test_group_remove (void)
     "key1=bla\n"
     "key2=bla\n";
   
+  g_test_bug ("165887");
+
   keyfile = load_data (data, 0);
   
   names = g_key_file_get_groups (keyfile, &len);
-  if (names == NULL)
-    {
-      g_print ("Error listing groups\n");
-      exit (1);
-    }
+  g_assert (names != NULL);
 
   check_length ("groups", g_strv_length (names), len, 3);
   check_name ("group name", names[0], "group1", 0);
@@ -871,11 +732,7 @@ test_group_remove (void)
   g_strfreev (names);
 
   names = g_key_file_get_groups (keyfile, &len);
-  if (names == NULL)
-    {
-      g_print ("Error listing groups\n");
-      exit (1);
-    }
+  g_assert (names != NULL);
 
   check_length ("groups", g_strv_length (names), len, 2);
   check_name ("group name", names[0], "group2", 0);
@@ -887,11 +744,7 @@ test_group_remove (void)
   g_strfreev (names);
 
   names = g_key_file_get_groups (keyfile, &len);
-  if (names == NULL)
-    {
-      g_print ("Error listing groups\n");
-      exit (1);
-    }
+  g_assert (names != NULL);
 
   check_length ("groups", g_strv_length (names), len, 1);
   check_name ("group name", names[0], "group3", 0);
@@ -904,7 +757,6 @@ test_group_remove (void)
   g_key_file_free (keyfile);
 }
 
-/* http://bugzilla.gnome.org/show_bug.cgi?id=165980 */
 static void 
 test_key_remove (void)
 {
@@ -916,6 +768,8 @@ test_key_remove (void)
     "[group1]\n"
     "key1=bla\n"
     "key2=bla\n";
+  
+  g_test_bug ("165980");
   
   keyfile = load_data (data, 0);
   
@@ -938,7 +792,6 @@ test_key_remove (void)
 }
 
 
-/* http://bugzilla.gnome.org/show_bug.cgi?id=316309 */
 static void
 test_groups (void)
 {
@@ -950,6 +803,8 @@ test_groups (void)
     "[2]\n"
     "key2=123\n";
   
+  g_test_bug ("316309");
+
   keyfile = load_data (data, 0);
 
   check_string_value (keyfile, "1", "key1", "123");
@@ -1015,7 +870,7 @@ test_group_names (void)
   check_no_error (&error);
 
   keyfile = g_key_file_new ();
-  g_key_file_set_string (keyfile, "a[b", "key1", "123");
+  /*g_key_file_set_string (keyfile, "a[b", "key1", "123");*/
   value = g_key_file_get_string (keyfile, "a[b", "key1", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1023,7 +878,7 @@ test_group_names (void)
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
-  g_key_file_set_string (keyfile, "a]b", "key1", "123");
+  /*g_key_file_set_string (keyfile, "a]b", "key1", "123");*/
   value = g_key_file_get_string (keyfile, "a]b", "key1", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1031,7 +886,7 @@ test_group_names (void)
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
-  g_key_file_set_string (keyfile, "a\tb", "key1", "123");
+  /*g_key_file_set_string (keyfile, "a\tb", "key1", "123");*/
   value = g_key_file_get_string (keyfile, "a\tb", "key1", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1147,7 +1002,7 @@ test_key_names (void)
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
-  g_key_file_set_string (keyfile, "a", "key=", "123");
+  /*g_key_file_set_string (keyfile, "a", "key=", "123");*/
   value = g_key_file_get_string (keyfile, "a", "key=", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1156,7 +1011,7 @@ test_key_names (void)
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
-  g_key_file_set_string (keyfile, "a", "key[", "123");
+  /*g_key_file_set_string (keyfile, "a", "key[", "123");*/
   value = g_key_file_get_string (keyfile, "a", "key[", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1172,7 +1027,7 @@ test_key_names (void)
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
-  g_key_file_set_string (keyfile, "a", " key", "123");
+  /*g_key_file_set_string (keyfile, "a", " key", "123");*/
   value = g_key_file_get_string (keyfile, "a", " key", &error);
   check_error (&error, 
                G_KEY_FILE_ERROR,
@@ -1212,7 +1067,6 @@ test_duplicate_keys (void)
   g_key_file_free (keyfile);  
 }
 
-/* http://bugzilla.gnome.org/show_bug.cgi?id=157877 */
 static void
 test_duplicate_groups (void)
 {
@@ -1223,6 +1077,8 @@ test_duplicate_groups (void)
     "[Desktop Entry]\n"
     "key2=123\n";
   
+  g_test_bug ("157877");
+
   keyfile = load_data (data, 0);
   check_string_value (keyfile, "Desktop Entry", "key1", "123");
   check_string_value (keyfile, "Desktop Entry", "key2", "123");
@@ -1230,7 +1086,6 @@ test_duplicate_groups (void)
   g_key_file_free (keyfile);  
 }
 
-/* http://bugzilla.gnome.org/show_bug.cgi?id=385910 */
 static void
 test_duplicate_groups2 (void)
 {
@@ -1243,6 +1098,8 @@ test_duplicate_groups2 (void)
     "[A]\n"
     "foo=bang\n";
   
+  g_test_bug ("385910");
+
   keyfile = load_data (data, 0);
   check_string_value (keyfile, "A", "foo", "bang");
   check_string_value (keyfile, "B", "foo", "baz");
@@ -1250,8 +1107,6 @@ test_duplicate_groups2 (void)
   g_key_file_free (keyfile);  
 }
 
-
-/* http://bugzilla.gnome.org/show_bug.cgi?id=420686 */
 static void
 test_reload_idempotency (void)
 {
@@ -1279,88 +1134,61 @@ test_reload_idempotency (void)
   gchar *data1, *data2;
   gsize len1, len2;
 
+  g_test_bug ("420686");
+
   /* check that we only insert a single new line between groups */
   keyfile = g_key_file_new ();
-  if (!g_key_file_load_from_data (keyfile,
-	                          original_data, strlen(original_data),
-	                          G_KEY_FILE_KEEP_COMMENTS,
-	                          &error)) {
-    g_print ("Failed to parse keyfile[1]: %s", error->message);
-    g_error_free (error);
-    exit (1);
-  }
+  g_key_file_load_from_data (keyfile,
+	                     original_data, strlen(original_data),
+	                     G_KEY_FILE_KEEP_COMMENTS,
+	                     &error);
+  check_no_error (&error);
 
   data1 = g_key_file_to_data (keyfile, &len1, &error);
-  if (data1 == NULL) {
-    g_print ("Failed to extract keyfile[1]: %s", error->message);
-    g_error_free (error);
-    exit (1);
-  }
+  g_assert (data1 != NULL);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
-  if (!g_key_file_load_from_data (keyfile,
-	                          data1, len1,
-				  G_KEY_FILE_KEEP_COMMENTS,
-				  &error)) {
-    g_print ("Failed to parse keyfile[2]: %s", error->message);
-    g_error_free (error);
-    exit (1);
-  }
+  g_key_file_load_from_data (keyfile,
+	                     data1, len1,
+			     G_KEY_FILE_KEEP_COMMENTS,
+			     &error);
+  check_no_error (&error);
 
   data2 = g_key_file_to_data (keyfile, &len2, &error);
-  if (data2 == NULL) {
-    g_print ("Failed to extract keyfile[2]: %s", error->message);
-    g_error_free (error);
-    exit (1);
-  }
+  g_assert (data2 != NULL);
   g_key_file_free (keyfile);
 
-
-  if (strcmp(data1, data2) != 0) {
-    g_print ("Reloading GKeyFile is not idempotent.");
-    g_print ("original:\n%s\n---\n", original_data);
-    g_print ("pass1:\n%s\n---\n", data1);
-    g_print ("pass2:\n%s\n---\n", data2);
-    exit (1);
-  }
+  g_assert_cmpstr (data1, ==, data2);
 
   g_free (data2);
   g_free (data1);
 }
 
-
-static void 
-log_func (const gchar   *log_domain,
-          GLogLevelFlags log_level,
-          const gchar   *message,
-          gpointer       user_data)
-{
-}
-
 int
 main (int argc, char *argv[])
 {
-  g_log_set_default_handler (log_func, NULL);
+  g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
-  test_line_ends ();
-  test_whitespace ();
-  test_comments ();
-  test_listing ();
-  test_string ();
-  test_boolean ();
-  test_number ();
-  test_locale_string ();
-  test_lists ();
-  test_group_remove ();
-  test_key_remove ();
-  test_groups ();
-  test_duplicate_keys ();
-  test_duplicate_groups ();
-  test_duplicate_groups2 ();
-  test_group_names ();
-  test_key_names ();
-  test_reload_idempotency ();
+  g_test_add_func ("/keyfile/line-ends", test_line_ends);
+  g_test_add_func ("/keyfile/whitespace", test_whitespace);
+  g_test_add_func ("/keyfile/comments", test_comments);
+  g_test_add_func ("/keyfile/listing", test_listing);
+  g_test_add_func ("/keyfile/string", test_string);
+  g_test_add_func ("/keyfile/boolean", test_boolean);
+  g_test_add_func ("/keyfile/number", test_number);
+  g_test_add_func ("/keyfile/locale-string", test_locale_string);
+  g_test_add_func ("/keyfile/lists", test_lists);
+  g_test_add_func ("/keyfile/group-remove", test_group_remove);
+  g_test_add_func ("/keyfile/key-remove", test_key_remove);
+  g_test_add_func ("/keyfile/groups", test_groups);
+  g_test_add_func ("/keyfile/duplicate-keys", test_duplicate_keys);
+  g_test_add_func ("/keyfile/duplicate-groups", test_duplicate_groups);
+  g_test_add_func ("/keyfile/duplicate-groups2", test_duplicate_groups2);
+  g_test_add_func ("/keyfile/group-names", test_group_names);
+  g_test_add_func ("/keyfile/key-names", test_key_names);
+  g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   
-  return 0;
+  return g_test_run ();
 }

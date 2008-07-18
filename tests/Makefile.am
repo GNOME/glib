@@ -111,7 +111,6 @@ test_programs =					\
 	gio-test				\
 	hash-test				\
 	iochannel-test				\
-	keyfile-test				\
 	list-test				\
 	mainloop-test				\
 	mapping-test				\
@@ -180,7 +179,6 @@ env_test_LDADD = $(progs_ldadd)
 gio_test_LDADD = $(progs_ldadd)
 hash_test_LDADD = $(progs_ldadd)
 iochannel_test_LDADD = $(progs_ldadd)
-keyfile_test_LDADD = $(progs_ldadd)
 list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
 markup_test_LDADD = $(progs_ldadd)
