@@ -1,3 +1,48 @@
+Overview of Changes from GLib 2.17.3 to GLib 2.17.4
+===================================================
+
+* GIO:
+ - New API to handle content types: g_mount_guess_content_type,
+   g_content_type_guess_for_tree
+ - Export the eject-button signal on the volume monitor class
+ - New API to enable out-of-process volume monitors: 
+   g_volume_get_activation_root
+
+* GObject:
+ - New API to handle signals without slots in the class structure:
+   g_signal_new_class_handler, g_signal_override_class_handler   
+
+* Internationalization:
+ - Add an NC_ macro that is a no-op equivalent of C_
+
+* GMarkup:
+ - Add two new functions g_markup_parse_context_push,
+   g_markup_parse_context_pop to support "subparsers"
+
+* Bugs fixed:
+ 541208 Functions to easily install and use signals without...
+ 541507 Ambiguous description of assigned characters in the...
+ 543040 async reading on dummy file will crash on GIO_USE_VFS=local
+ 543560 enable gio-FEN back-end warnings on Solaris will crash...
+ 528317 GRegex does not allow recursion limit
+ 337518 GMarkup: Subparser support
+ 541794 drive-eject-button signal
+ 541793 activation root for volumes
+ 467707 test_iconv_state() in tests/convert-test.c fails on AIX 5.3
+ 428048 2 of 51 tests fail on Solaris
+ 542332 small fix for error message in GMarkup
+ 482413 get_contents_stdio -- overflow and memory corruption
+ 406120 g_ascii_strtod
+ 334234 "printf" format error
+ 536996 Missing noop i18n macro equivalent to C_
+ 540616 mem leak in filechooser button
+ 539229 gobject-query calls itself query
+ 521589 [RFC] gobject documentation should mention Vala
+ 543168 Description of G_SLICE=debug-blocks discourages its use
+ 543220 Case collision on gio-extension-points.html
+ 530759 update the gobject tutorial to the XXI century
+
+
 Overview of Changes from GLib 2.17.1 to GLib 2.17.3
 ===================================================
 

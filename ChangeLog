@@ -1,5 +1,9 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 536996 – Missing noop i18n macro equivalent to C_
 
 	* glib/glib.symbols:
