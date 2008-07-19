@@ -42,6 +42,15 @@ Overview of Changes from GLib 2.17.3 to GLib 2.17.4
  543220 Case collision on gio-extension-points.html
  530759 update the gobject tutorial to the XXI century
 
+* Updated translation:
+ German (de)
+ Estonian (et)
+ Pashto (ps)
+ Albanian (sq)
+ Thai (th)
+ Traditional Chinese (zh_HK)
+ Traditional Chinese (zh_TW)
+
 
 Overview of Changes from GLib 2.17.1 to GLib 2.17.3
 ===================================================
