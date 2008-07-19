@@ -1,5 +1,9 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* gcontenttype.c: Remove debug spew
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 543560 – enable gio-FEN back-end warnings on Solaris will crash
 	any applications
 

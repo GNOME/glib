@@ -1277,14 +1277,12 @@ read_tree_magic_from_directory (const gchar *prefix)
 static void
 xdg_mime_reload (void *user_data)
 {
-  g_print ("need_reload = TRUE\n");
   need_reload = TRUE;
 }
 
 static void 
 tree_magic_shutdown (void)
 {
-  g_print ("tree_magic_shutdown\n");
   g_list_foreach (tree_matches, (GFunc)tree_match_free, NULL);
   g_list_free (tree_matches);
   tree_matches = NULL;
@@ -1298,7 +1296,6 @@ tree_magic_init (void)
   const gchar * const * dirs;
   int i;
 
-  g_print ("tree_magic_init\n");
   if (!initialized) 
     {
       initialized = TRUE;
@@ -1313,7 +1310,6 @@ tree_magic_init (void)
 
       tree_magic_shutdown ();
 
-      g_print ("reloading\n");
       dir = g_get_user_data_dir ();
       read_tree_magic_from_directory (dir);
       dirs = g_get_system_data_dirs ();
