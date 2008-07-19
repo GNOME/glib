@@ -1,5 +1,9 @@
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/gobject-sections.txt: Add new signal api.
+
+2008-07-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib-sections.txt:
 	* glib/tmpl/i18n.sgml: Add new gettext stuff
 
