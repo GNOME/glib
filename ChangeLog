@@ -1,3 +1,9 @@
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+	* configure.in:  Workaround AC_C_BIGENDIAN breakage in autoconf 2.61.
+
 2008-07-11  Tor Lillqvist  <tml@novell.com>
 
 	Merge from trunk:
