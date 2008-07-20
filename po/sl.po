@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 21:48-0400\n"
+"POT-Creation-Date: 2008-07-19 23:22-0400\n"
 "PO-Revision-Date: 2008-03-21 19:16+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -1227,18 +1227,19 @@ msgstr "Ni mogoče ustvariti uporabnikove datoteke namizja %s"
 msgid "Custom definition for %s"
 msgstr "Določilo po meri za %s"
 
-#: gio/gdrive.c:372
+#: gio/gdrive.c:373
 msgid "drive doesn't implement eject"
 msgstr "pogona ni mogoče izvreči"
 
-#: gio/gdrive.c:439
+#: gio/gdrive.c:440
 msgid "drive doesn't implement polling for media"
 msgstr "pogon ne podpira preverjanja enote"
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
-#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
-#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
+#: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
+#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
+#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
+#: gio/gfile.c:4020
 #, c-format
 msgid "Operation not supported"
 msgstr "Operacija ni podprta"
@@ -1251,52 +1252,52 @@ msgstr "Operacija ni podprta"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/gfile.c:1255 gio/glocalfile.c:1050 gio/glocalfile.c:1061
 #: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Obstoječa enota ne obstaja"
 
-#: gio/gfile.c:1896 gio/glocalfile.c:2110
+#: gio/gfile.c:1897 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Ni mogoče kopirati preko mape"
 
-#: gio/gfile.c:1956
+#: gio/gfile.c:1957
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Ni mogoče kopirati mape preko mape"
 
-#: gio/gfile.c:1964 gio/glocalfile.c:2119
+#: gio/gfile.c:1965 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "Ciljna datoteka obstaja"
 
-#: gio/gfile.c:1982
+#: gio/gfile.c:1983
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Ni mogoče kopirati drevesne strukture mape"
 
-#: gio/gfile.c:2699
+#: gio/gfile.c:2700
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Neveljavna vrednost simbolne povezave"
 
-#: gio/gfile.c:2792
+#: gio/gfile.c:2793
 #, c-format
 msgid "Trash not supported"
 msgstr "Smeti niso podprte"
 
-#: gio/gfile.c:2839
+#: gio/gfile.c:2840
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Ni mogoče uporabiti '%c' v imenu datoteke"
 
-#: gio/gfile.c:4775 gio/gvolume.c:357
+#: gio/gfile.c:4788 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "enota ne podpira priklopa"
 
-#: gio/gfile.c:4883
+#: gio/gfile.c:4896
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Na voljo ni programa z a upravljanje s to datoteko"
@@ -1649,21 +1650,21 @@ msgstr "Napaka med razširjanjem pretoka odvoda spomina"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:344
+#: gio/gmount.c:345
 msgid "mount doesn't implement unmount"
 msgstr "enota ne podpira odklopa"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:419
+#: gio/gmount.c:420
 msgid "mount doesn't implement eject"
 msgstr "enote ni mogoče izvreči"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:501
+#: gio/gmount.c:502
 msgid "mount doesn't implement remount"
 msgstr "enota ne podpira ponovnega priklopa"
 
@@ -1726,7 +1727,7 @@ msgstr "Koren datotečnega sistema"
 msgid "Error writing to unix: %s"
 msgstr "Napaka med pisanjem na unix: %s"
 
-#: gio/gvolume.c:423
+#: gio/gvolume.c:424
 msgid "volume doesn't implement eject"
 msgstr "medija ni mogoče izvreči"
 

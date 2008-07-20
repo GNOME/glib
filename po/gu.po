@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 21:48-0400\n"
+"POT-Creation-Date: 2008-07-19 23:22-0400\n"
 "PO-Revision-Date: 2008-03-03 14:10+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
@@ -1204,18 +1204,19 @@ msgstr "વપરાશકર્તા ડેસ્કટોપ ફાઈલ %s 
 msgid "Custom definition for %s"
 msgstr "%s માટે વૈવિધ્યપૂર્ણ વ્યાખ્યા"
 
-#: gio/gdrive.c:372
+#: gio/gdrive.c:373
 msgid "drive doesn't implement eject"
 msgstr "ડ્રાઈવર બહાર કાઢો અમલમાં મૂકતું નથી"
 
-#: gio/gdrive.c:439
+#: gio/gdrive.c:440
 msgid "drive doesn't implement polling for media"
 msgstr "ડ્રાઈવ મીડિયા માટે પોલીંગને અમલમાં મૂકતું નથી"
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
-#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
-#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
+#: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
+#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
+#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
+#: gio/gfile.c:4020
 #, c-format
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
@@ -1228,52 +1229,52 @@ msgstr "પ્રક્રિયા આધારભૂત નથી"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/gfile.c:1255 gio/glocalfile.c:1050 gio/glocalfile.c:1061
 #: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "સમાવનાર માઉન્ટ અસ્તિત્વમાં નથી"
 
-#: gio/gfile.c:1896 gio/glocalfile.c:2110
+#: gio/gfile.c:1897 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:1956
+#: gio/gfile.c:1957
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:1964 gio/glocalfile.c:2119
+#: gio/gfile.c:1965 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથી"
 
-#: gio/gfile.c:1982
+#: gio/gfile.c:1983
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "પુનરાવર્તિત રીતે ડિરેક્ટરીની નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:2699
+#: gio/gfile.c:2700
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: gio/gfile.c:2792
+#: gio/gfile.c:2793
 #, c-format
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: gio/gfile.c:2839
+#: gio/gfile.c:2840
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: gio/gfile.c:4775 gio/gvolume.c:357
+#: gio/gfile.c:4788 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: gio/gfile.c:4883
+#: gio/gfile.c:4896
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
@@ -1625,21 +1626,21 @@ msgstr "મેમરી આઉટપુટ સ્ટ્રીમનું મા
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:344
+#: gio/gmount.c:345
 msgid "mount doesn't implement unmount"
 msgstr "માઉન્ટ એ અનમાઉન્ટને અમલમાં મૂકતું નથી"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:419
+#: gio/gmount.c:420
 msgid "mount doesn't implement eject"
 msgstr "માઉન્ટ એ બહાર કાઢોને અમલમાં મૂકતું નથી"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:501
+#: gio/gmount.c:502
 msgid "mount doesn't implement remount"
 msgstr "માઉન્ટ એ પુનઃમાઉન્ટને અમલમાં મૂકતું નથી"
 
@@ -1703,7 +1704,7 @@ msgstr "ફાઈલસિસ્ટમ રુટ"
 msgid "Error writing to unix: %s"
 msgstr "unix માં લખતી વખતે ભૂલ: %s"
 
-#: gio/gvolume.c:423
+#: gio/gvolume.c:424
 msgid "volume doesn't implement eject"
 msgstr "વોલ્યુમ બહાર કાઢોને અમલમાં મૂકતું નથી"
 

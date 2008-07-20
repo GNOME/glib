@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 21:48-0400\n"
+"POT-Creation-Date: 2008-07-19 23:22-0400\n"
 "PO-Revision-Date: 2008-03-11 20:46+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1218,18 +1218,19 @@ msgstr "ユーザのデスクトップ・ファイル %s を生成できませ�
 msgid "Custom definition for %s"
 msgstr "%s に対する独自の設定"
 
-#: gio/gdrive.c:372
+#: gio/gdrive.c:373
 msgid "drive doesn't implement eject"
 msgstr "ドライブ側で取り出しの操作を実装していません"
 
-#: gio/gdrive.c:439
+#: gio/gdrive.c:440
 msgid "drive doesn't implement polling for media"
 msgstr "ドライブ側でポーリングによるメディアの検出を実装していません"
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
-#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
-#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
+#: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
+#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
+#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
+#: gio/gfile.c:4020
 #, c-format
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
@@ -1242,52 +1243,52 @@ msgstr "サポートしていない操作です"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/gfile.c:1255 gio/glocalfile.c:1050 gio/glocalfile.c:1061
 #: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "マウントを含んでいるものはありません"
 
-#: gio/gfile.c:1896 gio/glocalfile.c:2110
+#: gio/gfile.c:1897 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ディレクトリ全体をコピーできません"
 
-#: gio/gfile.c:1956
+#: gio/gfile.c:1957
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ディレクトリからディレクトリへコピーできません"
 
-#: gio/gfile.c:1964 gio/glocalfile.c:2119
+#: gio/gfile.c:1965 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "対象となるファイルが存在しています"
 
-#: gio/gfile.c:1982
+#: gio/gfile.c:1983
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ディレクトリを再帰的にコピーできません"
 
-#: gio/gfile.c:2699
+#: gio/gfile.c:2700
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "指定したシンボリックリンクは間違っています"
 
-#: gio/gfile.c:2792
+#: gio/gfile.c:2793
 #, c-format
 msgid "Trash not supported"
 msgstr "ゴミ箱はサポートしていません"
 
-#: gio/gfile.c:2839
+#: gio/gfile.c:2840
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ファイル名に '%c' を含めることはできません"
 
-#: gio/gfile.c:4775 gio/gvolume.c:357
+#: gio/gfile.c:4788 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "ボリュームはマウントを実装していません"
 
-#: gio/gfile.c:4883
+#: gio/gfile.c:4896
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "このファイルを扱うアプリケーションが登録されていません"
@@ -1640,21 +1641,21 @@ msgstr "メモリ出力ストリームの大きさを変更できませんでし
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:344
+#: gio/gmount.c:345
 msgid "mount doesn't implement unmount"
 msgstr "マウントはアンマウントを実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:419
+#: gio/gmount.c:420
 msgid "mount doesn't implement eject"
 msgstr "マウントは取り出しを実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:501
+#: gio/gmount.c:502
 msgid "mount doesn't implement remount"
 msgstr "マウントは再マウントを実装していません"
 
@@ -1717,7 +1718,7 @@ msgstr "ファイルシステムのルート"
 msgid "Error writing to unix: %s"
 msgstr "unix に書き込む際にエラー: %s"
 
-#: gio/gvolume.c:423
+#: gio/gvolume.c:424
 msgid "volume doesn't implement eject"
 msgstr "ボリュームは取り出しを実装していません"
 

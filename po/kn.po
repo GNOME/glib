@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 21:48-0400\n"
+"POT-Creation-Date: 2008-07-19 23:22-0400\n"
 "PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -1217,18 +1217,19 @@ msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s 
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
 
-#: gio/gdrive.c:372
+#: gio/gdrive.c:373
 msgid "drive doesn't implement eject"
 msgstr "ಹೊರತಳ್ಳುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gdrive.c:439
+#: gio/gdrive.c:440
 msgid "drive doesn't implement polling for media"
 msgstr "ಮಾಧ್ಯಮಕ್ಕಾಗಿ ಪೋಲ್ ಮಾಡುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
-#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
-#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
+#: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
+#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
+#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
+#: gio/gfile.c:4020
 #, c-format
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1241,52 +1242,52 @@ msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/gfile.c:1255 gio/glocalfile.c:1050 gio/glocalfile.c:1061
 #: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ಹೊಂದಿರುವ ಮೌಂಟ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:1896 gio/glocalfile.c:2110
+#: gio/gfile.c:1897 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:1956
+#: gio/gfile.c:1957
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ಕೋಶವನ್ನು ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:1964 gio/glocalfile.c:2119
+#: gio/gfile.c:1965 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:1982
+#: gio/gfile.c:1983
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2699
+#: gio/gfile.c:2700
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:2792
+#: gio/gfile.c:2793
 #, c-format
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2839
+#: gio/gfile.c:2840
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:4775 gio/gvolume.c:357
+#: gio/gfile.c:4788 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:4883
+#: gio/gfile.c:4896
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
@@ -1638,21 +1639,21 @@ msgstr "ಮೆಮೊರಿ ಪ್ರದಾನ ಸ್ಟ್ರೀಮ್ ಅನ್
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:344
+#: gio/gmount.c:345
 msgid "mount doesn't implement unmount"
 msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:419
+#: gio/gmount.c:420
 msgid "mount doesn't implement eject"
 msgstr "ಆರೋಹಣವು ಹೊರತೆಗೆಯುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:501
+#: gio/gmount.c:502
 msgid "mount doesn't implement remount"
 msgstr "ಆರೋಹಣವು ಪುನಃ ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
@@ -1716,7 +1717,7 @@ msgstr "ಕಡತವ್ಯವಸ್ಥೆ ಮೂಲ"
 msgid "Error writing to unix: %s"
 msgstr "ಯುನಿಕ್ಸ್‍ಗೆ ಬರೆಯುವಲ್ಲೆ ದೋಷ: %s"
 
-#: gio/gvolume.c:423
+#: gio/gvolume.c:424
 msgid "volume doesn't implement eject"
 msgstr "ಪರಿಮಾಣವು ಹೊರ ತಳ್ಳುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 

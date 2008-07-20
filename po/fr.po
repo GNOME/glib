@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 21:48-0400\n"
+"POT-Creation-Date: 2008-07-19 23:22-0400\n"
 "PO-Revision-Date: 2008-03-14 13:26+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1284,18 +1284,19 @@ msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
 
-#: gio/gdrive.c:372
+#: gio/gdrive.c:373
 msgid "drive doesn't implement eject"
 msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
 
-#: gio/gdrive.c:439
+#: gio/gdrive.c:440
 msgid "drive doesn't implement polling for media"
 msgstr "le lecteur n'implémente pas la scrutation du média (« polling »)"
 
-#: gio/gfile.c:812 gio/gfile.c:1002 gio/gfile.c:1135 gio/gfile.c:1366
-#: gio/gfile.c:1419 gio/gfile.c:1475 gio/gfile.c:1557 gio/gfile.c:2614
-#: gio/gfile.c:2659 gio/gfile.c:2709 gio/gfile.c:2749 gio/gfile.c:3073
-#: gio/gfile.c:3475 gio/gfile.c:3558 gio/gfile.c:3641 gio/gfile.c:3721
+#: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
+#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
+#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
+#: gio/gfile.c:4020
 #, c-format
 msgid "Operation not supported"
 msgstr "Opération non prise en charge"
@@ -1308,52 +1309,52 @@ msgstr "Opération non prise en charge"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1254 gio/glocalfile.c:1050 gio/glocalfile.c:1061
+#: gio/gfile.c:1255 gio/glocalfile.c:1050 gio/glocalfile.c:1061
 #: gio/glocalfile.c:1074
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Le point de montage conteneur n'existe pas"
 
-#: gio/gfile.c:1896 gio/glocalfile.c:2110
+#: gio/gfile.c:1897 gio/glocalfile.c:2110
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Impossible de copier par dessus un répertoire"
 
-#: gio/gfile.c:1956
+#: gio/gfile.c:1957
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Impossible de copier un répertoire par dessus un autre"
 
-#: gio/gfile.c:1964 gio/glocalfile.c:2119
+#: gio/gfile.c:1965 gio/glocalfile.c:2119
 #, c-format
 msgid "Target file exists"
 msgstr "Le fichier cible existe"
 
-#: gio/gfile.c:1982
+#: gio/gfile.c:1983
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Impossible de copier récursivement un répertoire"
 
-#: gio/gfile.c:2699
+#: gio/gfile.c:2700
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Valeur de lien symbolique donnée non valide"
 
-#: gio/gfile.c:2792
+#: gio/gfile.c:2793
 #, c-format
 msgid "Trash not supported"
 msgstr "La corbeille n'est pas prise en charge"
 
-#: gio/gfile.c:2839
+#: gio/gfile.c:2840
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Les noms de fichiers ne peuvent contenir « %c »"
 
-#: gio/gfile.c:4775 gio/gvolume.c:357
+#: gio/gfile.c:4788 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "le volume n'implémente pas « mount »"
 
-#: gio/gfile.c:4883
+#: gio/gfile.c:4896
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "Aucune application n'est enregistrée pour gérer ce fichier"
@@ -1709,21 +1710,21 @@ msgstr "Le redimensionnement du flux de sortie mémoire a échoué"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:344
+#: gio/gmount.c:345
 msgid "mount doesn't implement unmount"
 msgstr "mount n'implémente pas le démontage (« unmount »)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:419
+#: gio/gmount.c:420
 msgid "mount doesn't implement eject"
 msgstr "mount n'implémente pas l'éjection"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:501
+#: gio/gmount.c:502
 msgid "mount doesn't implement remount"
 msgstr "mount n'implémente pas le remontage (« remount »)"
 
@@ -1787,7 +1788,7 @@ msgstr "Racine du système de fichiers"
 msgid "Error writing to unix: %s"
 msgstr "Erreur lors de l'écriture vers unix : %s"
 
-#: gio/gvolume.c:423
+#: gio/gvolume.c:424
 msgid "volume doesn't implement eject"
 msgstr "le volume n'implémente pas l'éjection (« eject »)"
 

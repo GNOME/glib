@@ -1,5 +1,9 @@
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.16.5 === 
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfile.c: Make it compile.
 
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
