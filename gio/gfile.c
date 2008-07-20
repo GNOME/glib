@@ -4015,9 +4015,9 @@ open_read_async_thread (GSimpleAsyncResult *res,
 
   if (iface->read_fn == NULL)
     {
-      g_set_error_literal (error, G_IO_ERROR,
-                           G_IO_ERROR_NOT_SUPPORTED,
-                           _("Operation not supported"));
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_NOT_SUPPORTED,
+                   _("Operation not supported"));
 
       g_simple_async_result_set_from_error (res, error);
       g_error_free (error);

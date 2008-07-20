@@ -1,5 +1,9 @@
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* gfile.c: Make it compile.
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
 	Merge from trunk:
 
 	543504 – crash in Epiphany Web Browser: Opening local file
