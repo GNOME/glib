@@ -2,7 +2,18 @@
 
 	Merge from trunk:
 
+	Bug 528317 – GRegex does not allow recursion limit
+
+	* glib/pcre/Makefile.am: Set a sane default recursion limit
+	of 8192 instead of 1000000.
+	Patch by Mart Raudsepp.
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
 	* configure.in:  Workaround AC_C_BIGENDIAN breakage in autoconf 2.61.
+	Patch by Tomas Mraz.
 
 2008-07-11  Tor Lillqvist  <tml@novell.com>
 
