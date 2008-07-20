@@ -733,6 +733,13 @@ g_io_win32_prepare (GSource *source,
 	  if (channel->debug)
 	    g_print ("\n  setting last_events=0");
 	  channel->last_events = 0;
+
+	  if ((event_mask & FD_WRITE) && !channel->write_would_have_blocked)
+	    {
+	      if (channel->debug)
+		g_print (" WSASetEvent(%#x)", watch->pollfd.fd);
+	      WSASetEvent ((WSAEVENT) watch->pollfd.fd);
+	    }
 	}
       break;
 

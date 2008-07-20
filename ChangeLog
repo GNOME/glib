@@ -1,3 +1,11 @@
+2008-07-20  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c (g_io_win32_prepare): Patch from Yu Kuan that
+	makes watched sockets behave much better. See gtk-devel-list
+	archives from May for the (unfortunately rather meager)
+	discussion. This patch fixes the presented simple test program,
+	which reasonably could be expected to work.
+
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
