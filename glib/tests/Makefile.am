@@ -14,8 +14,12 @@ TEST_PROGS       	 += option-context
 option_context_SOURCES	  = option-context.c
 option_context_LDADD	  = $(progs_ldadd)
 
+TEST_PROGS     	 += keyfile
+keyfile_SOURCES	  = keyfile.c
+keyfile_LDADD	  = $(progs_ldadd)
+
 TEST_PROGS        += fileutils
-fileutils_SOURCES   = fileutils.c
+fileutils_SOURCES  = fileutils.c
 fileutils_LDADD	   = $(progs_ldadd)
 
 TEST_PROGS        += strfuncs
@@ -24,6 +28,9 @@ strfuncs_LDADD	   = $(progs_ldadd) -lm
 
 TEST_PROGS               += markup-subparser
 markup_subparser_LDADD    = $(progs_ldadd)
+
+TEST_PROGS         += array-test
+array_test_LDADD    = $(progs_ldadd)
 
 # some testing of gtester funcitonality
 XMLLINT=xmllint

@@ -96,7 +96,6 @@ endif
 
 test_programs =					\
 	atomic-test				\
-	array-test				\
 	base64-test				\
 	bit-test				\
 	$(CXX_TEST)				\
@@ -164,7 +163,6 @@ thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
 module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 atomic_test_LDADD = $(progs_ldadd)
-array_test_LDADD = $(progs_ldadd)
 base64_test_LDADD = $(progs_ldadd)
 bit_test_LDADD = $(progs_ldadd)
 bookmarkfile_test_LDADD = $(progs_ldadd)
