@@ -4,16 +4,16 @@
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
 # Hendrik Richter <hendrikr@gnome.org>, 2004, 2005, 2006, 2007, 2008.
 # Hendrik Brandt <heb@gnome-de.org>, 2004.
-# Andre Klapper <ak-47@gmx.net>, 2007.
+# Andre Klapper <ak-47@gmx.net>, 2007, 2008.
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-03 19:34+0200\n"
-"PO-Revision-Date: 2008-07-03 19:34+0200\n"
-"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
+"POT-Creation-Date: 2008-07-21 00:17+0200\n"
+"PO-Revision-Date: 2008-07-21 00:18+0200\n"
+"Last-Translator: Andre Klapper <ak-47@gmx.net>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +169,7 @@ msgstr "Ungültiger Rechnername"
 msgid "Error opening directory '%s': %s"
 msgstr "Fehler beim Öffnen des Verzeichnisses »%s«: %s"
 
-#: ../glib/gfileutils.c:557 ../glib/gfileutils.c:630
+#: ../glib/gfileutils.c:557 ../glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu byte konnten nicht alloziiert werden, um Datei »%s« zu lesen"
@@ -179,97 +179,102 @@ msgstr "%lu byte konnten nicht alloziiert werden, um Datei »%s« zu lesen"
 msgid "Error reading file '%s': %s"
 msgstr "Fehler beim Lesen der Datei »%s«: %s"
 
-#: ../glib/gfileutils.c:654
+#: ../glib/gfileutils.c:586
+#, c-format
+msgid "File \"%s\" is too large"
+msgstr "Datei »%s« ist zu groß"
+
+#: ../glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei »%s« gelesen werden: %s"
 
-#: ../glib/gfileutils.c:705 ../glib/gfileutils.c:792
+#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: %s"
 
-#: ../glib/gfileutils.c:722 ../glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Attribute der Datei »%s« konnten nicht ermittelt werden: fstat() "
 "fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:756
+#: ../glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:890
+#: ../glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist "
 "fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:932 ../glib/gfileutils.c:1390
+#: ../glib/gfileutils.c:947 ../glib/gfileutils.c:1405
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei »%s« konnte nicht angelegt werden: %s"
 
-#: ../glib/gfileutils.c:946
+#: ../glib/gfileutils.c:961
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Datei »%s« konnte nicht im Schreibmodus geöffnet werden: fdopen() ist "
 "fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:971
+#: ../glib/gfileutils.c:986
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr ""
 "Datei »%s« konnte nicht geschrieben werden: fwrite() ist fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:990
+#: ../glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr ""
 "Datei »%s« konnte nicht geschlossen werden: fclose() ist fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:1108
+#: ../glib/gfileutils.c:1123
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Die vorhandene Datei »%s« konnte nicht entfernt werden: g_unlink() ist "
 "fehlgeschlagen: %s"
 
-#: ../glib/gfileutils.c:1352
+#: ../glib/gfileutils.c:1367
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Vorlage »%s« ungültig, sollte kein »%s« enthalten"
 
-#: ../glib/gfileutils.c:1365
+#: ../glib/gfileutils.c:1380
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Vorlage »%s« enthält nicht XXXXXX"
 
-#: ../glib/gfileutils.c:1834
+#: ../glib/gfileutils.c:1849
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1839
+#: ../glib/gfileutils.c:1854
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1844
+#: ../glib/gfileutils.c:1859
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1887
+#: ../glib/gfileutils.c:1902
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
 
-#: ../glib/gfileutils.c:1908
+#: ../glib/gfileutils.c:1923
 msgid "Symbolic links not supported"
 msgstr "Symbolische Verknüpfungen nicht unterstützt"
 
@@ -305,24 +310,24 @@ msgstr "Datei »%s« konnte nicht geöffnet werden: open() ist fehlgeschlagen: %
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Datei »%s« konnte nicht gemappt werden: mmap() ist fehlgeschlagen: %s"
 
-#: ../glib/gmarkup.c:234 ../glib/gmarkup.c:250
+#: ../glib/gmarkup.c:269 ../glib/gmarkup.c:285
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Fehler in Zeile %d, Zeichen %d: "
 
-#: ../glib/gmarkup.c:344
+#: ../glib/gmarkup.c:379
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fehler in Zeile %d: %s"
 
-#: ../glib/gmarkup.c:448
+#: ../glib/gmarkup.c:483
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Leere Entität »&;« gefunden; gültige Entitäten sind &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: ../glib/gmarkup.c:458
+#: ../glib/gmarkup.c:493
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -333,18 +338,18 @@ msgstr ""
 "beginnt mit dem Zeichen &; wenn das Et keine Entität sein soll, es als &amp; "
 "umschreiben"
 
-#: ../glib/gmarkup.c:492
+#: ../glib/gmarkup.c:527
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Zeichen »%s« ist in einem Entitätsnamen ungültig"
 
-#: ../glib/gmarkup.c:529
+#: ../glib/gmarkup.c:564
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitätsname »%s« ist unbekannt"
 
 # CHECK
-#: ../glib/gmarkup.c:540
+#: ../glib/gmarkup.c:575
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -353,7 +358,7 @@ msgstr ""
 "benutzt, ohne eine Entity beginnen zu wollen - umschreiben Sie das Et als "
 "&amp;"
 
-#: ../glib/gmarkup.c:593
+#: ../glib/gmarkup.c:628
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -362,16 +367,16 @@ msgstr ""
 "»%-.*s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, "
 "konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
 
-#: ../glib/gmarkup.c:618
+#: ../glib/gmarkup.c:653
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Zeichenreferenz »%-.*s« kodiert kein zulässiges Zeichen"
 
-#: ../glib/gmarkup.c:633
+#: ../glib/gmarkup.c:668
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Leere Zeichenangabe; sollte eine Zahl wie z.B. &#454; enthalten"
 
-#: ../glib/gmarkup.c:643
+#: ../glib/gmarkup.c:678
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -381,32 +386,32 @@ msgstr ""
 "Et-Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie "
 "das Et als &amp;"
 
-#: ../glib/gmarkup.c:729
+#: ../glib/gmarkup.c:764
 msgid "Unfinished entity reference"
 msgstr "Unvollendete Entitätsreferenz"
 
-#: ../glib/gmarkup.c:735
+#: ../glib/gmarkup.c:770
 msgid "Unfinished character reference"
 msgstr "Unvollendete Zeichenreferenz"
 
-#: ../glib/gmarkup.c:978
+#: ../glib/gmarkup.c:1056
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Ungültiger UTF-8-kodierter Text - überlange Sequenz"
 
-#: ../glib/gmarkup.c:1006
+#: ../glib/gmarkup.c:1084
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Ungültiger UTF-8-kodierter Text - Kein Anfangszeichen"
 
-#: ../glib/gmarkup.c:1042
+#: ../glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Ungültiger UTF-8-kodierter Text - »%s« ist nicht gültig"
 
-#: ../glib/gmarkup.c:1080
+#: ../glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: ../glib/gmarkup.c:1120
+#: ../glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -415,23 +420,23 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen nach einem »<«-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: ../glib/gmarkup.c:1184
+#: ../glib/gmarkup.c:1266
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
-"Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des Elements »%s« "
+"Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
 
-#: ../glib/gmarkup.c:1273
+#: ../glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »=« erwartet nach Attributname »%s« des Elements »%s«"
 
-#: ../glib/gmarkup.c:1315
+#: ../glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -442,7 +447,7 @@ msgstr ""
 "erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
 "Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: ../glib/gmarkup.c:1401
+#: ../glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -451,7 +456,7 @@ msgstr ""
 "Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elemente "
 "»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
-#: ../glib/gmarkup.c:1543
+#: ../glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -460,7 +465,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
 "keinen Elementnamen beginnen"
 
-#: ../glib/gmarkup.c:1583
+#: ../glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -469,25 +474,25 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
 "folgt; das erlaubte Zeichen ist »>«"
 
-#: ../glib/gmarkup.c:1594
+#: ../glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 
-#: ../glib/gmarkup.c:1603
+#: ../glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
-#: ../glib/gmarkup.c:1763
+#: ../glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: ../glib/gmarkup.c:1777
+#: ../glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: ../glib/gmarkup.c:1785 ../glib/gmarkup.c:1830
+#: ../glib/gmarkup.c:1870 ../glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -496,7 +501,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - »%s« war das letzte "
 "offene Element"
 
-#: ../glib/gmarkup.c:1793
+#: ../glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -505,19 +510,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
 "> schließt, erwartet"
 
-#: ../glib/gmarkup.c:1799
+#: ../glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: ../glib/gmarkup.c:1805
+#: ../glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: ../glib/gmarkup.c:1810
+#: ../glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: ../glib/gmarkup.c:1816
+#: ../glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -525,18 +530,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: ../glib/gmarkup.c:1823
+#: ../glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: ../glib/gmarkup.c:1839
+#: ../glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: ../glib/gmarkup.c:1845
+#: ../glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "
@@ -1189,16 +1194,16 @@ msgstr "Datenstrom ist bereits geschlossen"
 msgid "Operation was cancelled"
 msgstr "Vorgang wurde abgebrochen"
 
-#: ../gio/gcontenttype.c:176
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Unbekannter Typ"
 
-#: ../gio/gcontenttype.c:177
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "%s-Dateityp"
 
-#: ../gio/gcontenttype.c:667
+#: ../gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "%s-Typ"
@@ -1207,55 +1212,55 @@ msgstr "%s-Typ"
 msgid "Unexpected early end-of-stream"
 msgstr "Unerwartet frühes Datenstromende"
 
-#: ../gio/gdesktopappinfo.c:430 ../gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:429 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: ../gio/gdesktopappinfo.c:607
+#: ../gio/gdesktopappinfo.c:606
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 
-#: ../gio/gdesktopappinfo.c:901
+#: ../gio/gdesktopappinfo.c:900
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: ../gio/gdesktopappinfo.c:1133
+#: ../gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1137
+#: ../gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1476
+#: ../gio/gdesktopappinfo.c:1475
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: ../gio/gdesktopappinfo.c:1551
+#: ../gio/gdesktopappinfo.c:1550
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
 
-#: ../gio/gdrive.c:374
+#: ../gio/gdrive.c:375
 msgid "drive doesn't implement eject"
 msgstr "Laufwerk unterstützt Auswerfen nicht"
 
-#: ../gio/gdrive.c:441
+#: ../gio/gdrive.c:442
 msgid "drive doesn't implement polling for media"
 msgstr "Laufwerk unterstützt Prüfen auf Datenträger nicht"
 
-#: ../gio/gfile.c:817 ../gio/gfile.c:1045 ../gio/gfile.c:1178
-#: ../gio/gfile.c:1409 ../gio/gfile.c:1462 ../gio/gfile.c:1518
-#: ../gio/gfile.c:1600 ../gio/gfile.c:2657 ../gio/gfile.c:2708
-#: ../gio/gfile.c:2836 ../gio/gfile.c:2876 ../gio/gfile.c:3200
-#: ../gio/gfile.c:3602 ../gio/gfile.c:3685 ../gio/gfile.c:3768
-#: ../gio/gfile.c:3848
+#: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
+#: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2681 ../gio/gfile.c:2732
+#: ../gio/gfile.c:2860 ../gio/gfile.c:2900 ../gio/gfile.c:3227
+#: ../gio/gfile.c:3629 ../gio/gfile.c:3713 ../gio/gfile.c:3796
+#: ../gio/gfile.c:3876 ../gio/gfile.c:4206
 msgid "Operation not supported"
 msgstr "Vorgang nicht unterstützt"
 
@@ -1267,45 +1272,45 @@ msgstr "Vorgang nicht unterstützt"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1297 ../gio/glocalfile.c:1064 ../gio/glocalfile.c:1075
+#: ../gio/gfile.c:1311 ../gio/glocalfile.c:1064 ../gio/glocalfile.c:1075
 #: ../gio/glocalfile.c:1088
 msgid "Containing mount does not exist"
 msgstr "Enthaltender Einhängepunkt existiert nicht"
 
-#: ../gio/gfile.c:1939 ../gio/glocalfile.c:2124
+#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2124
 msgid "Can't copy over directory"
 msgstr "Es kann nicht über das Verzeichnis kopiert werden"
 
-#: ../gio/gfile.c:1999
+#: ../gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "Verzeichnis kann nicht über Verzeichnis kopiert werden"
 
-#: ../gio/gfile.c:2007 ../gio/glocalfile.c:2133
+#: ../gio/gfile.c:2031 ../gio/glocalfile.c:2133
 msgid "Target file exists"
 msgstr "Zieldatei existiert"
 
-#: ../gio/gfile.c:2025
+#: ../gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "Verzeichnis kann nicht rekursiv kopiert werden"
 
-#: ../gio/gfile.c:2826
+#: ../gio/gfile.c:2850
 msgid "Invalid symlink value given"
 msgstr "Ungültiger Wert für Symbolische Verknüpfung angegeben"
 
-#: ../gio/gfile.c:2919
+#: ../gio/gfile.c:2943
 msgid "Trash not supported"
 msgstr "Müll nicht unterstützt"
 
-#: ../gio/gfile.c:2966
+#: ../gio/gfile.c:2992
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Dateinamen dürfen kein »%c« enthalten"
 
-#: ../gio/gfile.c:4932 ../gio/gvolume.c:359
+#: ../gio/gfile.c:4974 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
-#: ../gio/gfile.c:5040
+#: ../gio/gfile.c:5082
 msgid "No application is registered as handling this file"
 msgstr "Es wurde keine Anwendung gefunden, die diese Datei verarbeiten kann"
 
@@ -1629,23 +1634,30 @@ msgstr "Größe des Speicherausgabestroms konnte nicht geändert werden"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: ../gio/gmount.c:346
+#: ../gio/gmount.c:358
 msgid "mount doesn't implement unmount"
 msgstr "Einhängepunkt unterstützt Aushängen nicht"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: ../gio/gmount.c:421
+#: ../gio/gmount.c:433
 msgid "mount doesn't implement eject"
 msgstr "Einhängepunkt unterstützt Auswerfen nicht"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:503
+#: ../gio/gmount.c:515
 msgid "mount doesn't implement remount"
 msgstr "Einhängepunkt unterstützt erneutes Einhängen nicht"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: ../gio/gmount.c:598
+msgid "mount doesn't implement content type guessing"
+msgstr "Einhängepunkt unterstützt nicht Erraten des Inhaltstyps"
 
 #: ../gio/goutputstream.c:204 ../gio/goutputstream.c:405
 msgid "Output stream doesn't implement write"
@@ -1696,7 +1708,7 @@ msgstr "Fehler beim Lesen aus Unix-Datenstrom: %s"
 msgid "Error closing unix: %s"
 msgstr "Fehler beim Schließen des Unix-Datenstroms: %s"
 
-#: ../gio/gunixmounts.c:1789 ../gio/gunixmounts.c:1826
+#: ../gio/gunixmounts.c:1776 ../gio/gunixmounts.c:1813
 msgid "Filesystem root"
 msgstr "Wurzelverzeichnis des Dateisystems"
 
@@ -1705,7 +1717,7 @@ msgstr "Wurzelverzeichnis des Dateisystems"
 msgid "Error writing to unix: %s"
 msgstr "Fehler beim Schreiben in Unix-Datenstrom: %s"
 
-#: ../gio/gvolume.c:425
+#: ../gio/gvolume.c:439
 msgid "volume doesn't implement eject"
 msgstr "Datenträger unterstützt Auswerfen nicht"
 
