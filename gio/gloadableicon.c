@@ -53,11 +53,11 @@ static void          g_loadable_icon_class_init       (gpointer              g_c
 GType
 g_loadable_icon_get_type (void)
 {
-  static GType loadable_icon_type = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (! loadable_icon_type)
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GTypeInfo loadable_icon_info =
+      const GTypeInfo loadable_icon_info =
 	{
         sizeof (GLoadableIconIface), /* class_size */
 	g_loadable_icon_base_init,   /* base_init */
@@ -69,15 +69,16 @@ g_loadable_icon_get_type (void)
 	0,              /* n_preallocs */
 	NULL
       };
-
-      loadable_icon_type =
+      GType g_define_type_id =
 	g_type_register_static (G_TYPE_INTERFACE, I_("GLoadableIcon"),
 				&loadable_icon_info, 0);
 
-      g_type_interface_add_prerequisite (loadable_icon_type, G_TYPE_ICON);
+      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_ICON);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
-  return loadable_icon_type;
+  return g_define_type_id__volatile;
 }
 
 static void

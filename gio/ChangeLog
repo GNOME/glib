@@ -2,6 +2,24 @@
 
 	Merge from trunk:
 
+	543504 – crash in Epiphany Web Browser: Opening local file
+
+	* gappinfo.c:
+	* gasyncresult.c:
+	* gdesktopappinfo.c:
+	* gdrive.c:
+	* gfile.c:
+	* gicon.c:
+	* gloadableicon.c:
+	* gmount.c:
+	* gseekable.c:
+	* gvolume.c: Register types thread-safely. 
+	Patch by Christian Persch
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
 	Bug 543040 – async reading on dummy file will crash on
 	GIO_USE_VFS=local
 

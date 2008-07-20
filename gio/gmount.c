@@ -68,11 +68,11 @@ static void g_mount_class_init (gpointer g_class,
 GType
 g_mount_get_type (void)
 {
-  static GType mount_type = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (! mount_type)
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GTypeInfo mount_info =
+      const GTypeInfo mount_info =
       {
         sizeof (GMountIface), /* class_size */
 	g_mount_base_init,   /* base_init */
@@ -84,15 +84,16 @@ g_mount_get_type (void)
 	0,              /* n_preallocs */
 	NULL
       };
-
-      mount_type =
+      GType g_define_type_id =
 	g_type_register_static (G_TYPE_INTERFACE, I_("GMount"),
 				&mount_info, 0);
 
-      g_type_interface_add_prerequisite (mount_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
-  return mount_type;
+  return g_define_type_id__volatile;
 }
 
 static void
