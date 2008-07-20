@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.16.4 to GLib 2.16.5
+===================================================
+
+* Work around AC_C_BIGENDIAN breakage in autoconf 2.61
+
+* Bugs fixed:
+ 528317 GRegex does not allow recursion limit
+ 540616 mem leak in filechooser button
+ 543040 async reading on dummy file will crash on GIO_USE_VFS=local
+ 543504 crash in Epiphany Web Browser: Opening local file
+
+* Updated translations:
+ Traditional Chinese (zh_HK)
+ Traditional Chinese (zh_TW)
+
+
 Overview of Changes from GLib 2.16.3 to GLib 2.16.4
 ===================================================
 

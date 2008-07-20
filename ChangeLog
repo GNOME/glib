@@ -1,5 +1,9 @@
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
 	Merge from trunk:
 
 	Bug 528317 – GRegex does not allow recursion limit
