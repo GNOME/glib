@@ -2,6 +2,16 @@
 
 	Merge from trunk:
 
+	Bug 543040 – async reading on dummy file will crash on
+	GIO_USE_VFS=local
+
+	* gfile.c (open_read_async_thread): Cope with read_fn being
+	NULL. Reported by Lin Ma.
+
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
 	Bug 540616 – mem leak in filechooser button
 
 	* gunixvolumemonitor.c (get_mount_for_mount_path): Free
