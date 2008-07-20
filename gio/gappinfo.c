@@ -46,11 +46,11 @@ static void g_app_info_class_init (gpointer g_class,
 GType
 g_app_info_get_type (void)
 {
-  static GType app_info_type = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (! app_info_type)
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GTypeInfo app_info_info =
+     const GTypeInfo app_info_info =
       {
         sizeof (GAppInfoIface), /* class_size */
 	g_app_info_base_init,   /* base_init */
@@ -62,15 +62,16 @@ g_app_info_get_type (void)
 	0,              /* n_preallocs */
 	NULL
       };
-
-      app_info_type =
+      GType g_define_type_id =
 	g_type_register_static (G_TYPE_INTERFACE, I_("GAppInfo"),
 				&app_info_info, 0);
 
-      g_type_interface_add_prerequisite (app_info_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
-  return app_info_type;
+  return g_define_type_id__volatile;
 }
 
 static void

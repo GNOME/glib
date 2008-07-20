@@ -115,11 +115,11 @@ static void g_async_result_class_init (gpointer g_class,
 GType
 g_async_result_get_type (void)
 {
-  static GType async_result_type = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (! async_result_type)
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GTypeInfo async_result_info =
+      const GTypeInfo async_result_info =
       {
         sizeof (GAsyncResultIface), /* class_size */
 	g_async_result_base_init,   /* base_init */
@@ -131,15 +131,16 @@ g_async_result_get_type (void)
 	0,              /* n_preallocs */
 	NULL
       };
-
-      async_result_type =
+      GType g_define_type_id =
 	g_type_register_static (G_TYPE_INTERFACE, I_("GAsyncResult"),
 				&async_result_info, 0);
 
-      g_type_interface_add_prerequisite (async_result_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
-  return async_result_type;
+  return g_define_type_id__volatile;
 }
 
 static void

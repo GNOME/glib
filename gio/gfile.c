@@ -241,11 +241,11 @@ static gboolean           g_file_real_copy_finish                 (GFile        
 GType
 g_file_get_type (void)
 {
-  static GType file_type = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (! file_type)
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GTypeInfo file_info =
+      const GTypeInfo file_info =
       {
         sizeof (GFileIface), /* class_size */
 	g_file_base_init,   /* base_init */
@@ -257,15 +257,16 @@ g_file_get_type (void)
 	0,              /* n_preallocs */
 	NULL
       };
-
-      file_type =
+      GType g_define_type_id =
 	g_type_register_static (G_TYPE_INTERFACE, I_("GFile"),
 				&file_info, 0);
 
-      g_type_interface_add_prerequisite (file_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
-  return file_type;
+  return g_define_type_id__volatile;
 }
 
 static void
