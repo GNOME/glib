@@ -430,20 +430,30 @@ g_time_val_to_iso8601 (GTimeVal *time_)
 
   if (time_->tv_usec != 0)
     {
-#define ISO_8601_FRAC_LEN    28
-#define ISO_8601_FRAC_FORMAT "%%Y-%%m-%%dT%%H:%%M:%%S.%06ldZ"
-      gchar *format = g_strdup_printf (ISO_8601_FRAC_FORMAT, time_->tv_usec);
-
-      retval = g_new0 (gchar, ISO_8601_FRAC_LEN + 1);
-      strftime (retval, ISO_8601_FRAC_LEN, format, tm);
-      g_free (format);
+      /* ISO 8601 date and time format, with fractionary seconds:
+       *   YYYY-MM-DDTHH:MM:SS.MMMMMMZ
+       */
+      retval = g_strdup_printf ("%d-%d-%dT%d:%d:%d.%06ldZ",
+                                tm->tm_year + 1900,
+                                tm->tm_mon + 1,
+                                tm->tm_mday,
+                                tm->tm_hour,
+                                tm->tm_min,
+                                tm->tm_sec,
+                                time_->tv_usec);
     }
   else
     {
-#define ISO_8601_LEN    21
-#define ISO_8601_FORMAT "%Y-%m-%dT%H:%M:%SZ"
-      retval = g_new0 (gchar, ISO_8601_LEN + 1);
-      strftime (retval, ISO_8601_LEN, ISO_8601_FORMAT, tm);
+      /* ISO 8601 date and time format:
+       *   YYYY-MM-DDTHH:MM:SSZ
+       */
+      retval = g_strdup_printf ("%d-%d-%dT%d:%d:%dZ",
+                                tm->tm_year + 1900,
+                                tm->tm_mon + 1,
+                                tm->tm_mday,
+                                tm->tm_hour,
+                                tm->tm_min,
+                                tm->tm_sec);
     }
   
   return retval;

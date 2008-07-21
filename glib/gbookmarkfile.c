@@ -104,7 +104,8 @@
 #define BOOKMARK_NAME_ATTRIBUTE		"name"
 #define BOOKMARK_EXEC_ATTRIBUTE		"exec"
 #define BOOKMARK_COUNT_ATTRIBUTE 	"count"
-#define BOOKMARK_TIMESTAMP_ATTRIBUTE	"timestamp"
+#define BOOKMARK_TIMESTAMP_ATTRIBUTE	"timestamp"     /* deprecated by "modified" */
+#define BOOKMARK_MODIFIED_ATTRIBUTE     "modified"
 #define BOOKMARK_HREF_ATTRIBUTE 	"href"
 #define BOOKMARK_TYPE_ATTRIBUTE 	"type"
 
@@ -227,7 +228,7 @@ bookmark_app_info_new (const gchar *name)
   retval->name = g_strdup (name);
   retval->exec = NULL;
   retval->count = 0;
-  retval->stamp = time (NULL);
+  retval->stamp = 0;
   
   return retval;
 }
@@ -248,7 +249,7 @@ static gchar *
 bookmark_app_info_dump (BookmarkAppInfo *app_info)
 {
   gchar *retval;
-  gchar *name, *exec;
+  gchar *name, *exec, *modified, *count;
 
   g_warn_if_fail (app_info != NULL);
 
@@ -257,17 +258,21 @@ bookmark_app_info_dump (BookmarkAppInfo *app_info)
 
   name = g_markup_escape_text (app_info->name, -1);
   exec = g_markup_escape_text (app_info->exec, -1);
- 
-  retval = g_strdup_printf ("          <%s:%s %s=\"%s\" %s=\"%s\" %s=\"%ld\" %s=\"%u\"/>\n",
-                            BOOKMARK_NAMESPACE_NAME,
-                            BOOKMARK_APPLICATION_ELEMENT,
-                            BOOKMARK_NAME_ATTRIBUTE, name,
-                            BOOKMARK_EXEC_ATTRIBUTE, exec,
-                            BOOKMARK_TIMESTAMP_ATTRIBUTE, (time_t) app_info->stamp,
-                            BOOKMARK_COUNT_ATTRIBUTE, app_info->count);
+  modified = timestamp_to_iso8601 (app_info->stamp);
+  count = g_strdup_printf ("%u", app_info->count);
+
+  retval = g_strconcat ("          "
+                        "<" BOOKMARK_NAMESPACE_NAME ":" BOOKMARK_APPLICATION_ELEMENT
+                        " " BOOKMARK_NAME_ATTRIBUTE "=\"", name, "\""
+                        " " BOOKMARK_EXEC_ATTRIBUTE "=\"", exec, "\""
+                        " " BOOKMARK_MODIFIED_ATTRIBUTE "=\"", modified, "\""
+                        " " BOOKMARK_COUNT_ATTRIBUTE "=\"", count, "\"/>\n",
+                        NULL);
 
   g_free (name);
   g_free (exec);
+  g_free (modified);
+  g_free (count);
 
   return retval;
 }
@@ -757,8 +762,8 @@ parse_bookmark_element (GMarkupParseContext  *context,
 
   add_error = NULL;
   g_bookmark_file_add_item (parse_data->bookmark_file,
-  			      item,
-  			      &add_error);
+  			    item,
+  			    &add_error);
   if (add_error)
     {
       bookmark_item_free (item);
@@ -778,7 +783,7 @@ parse_application_element (GMarkupParseContext  *context,
 			   const gchar         **attribute_values,
 			   GError              **error)
 {
-  const gchar *name, *exec, *count, *stamp;
+  const gchar *name, *exec, *count, *stamp, *modified;
   const gchar *attr;
   gint i;
   BookmarkItem *item;
@@ -787,7 +792,7 @@ parse_application_element (GMarkupParseContext  *context,
   g_warn_if_fail ((parse_data != NULL) && (parse_data->state == STATE_APPLICATION));
 
   i = 0;
-  name = exec = count = stamp = NULL;
+  name = exec = count = stamp = modified = NULL;
   for (attr = attribute_names[i]; attr != NULL; attr = attribute_names[++i])
     {
       if (IS_ATTRIBUTE (attr, BOOKMARK_NAME_ATTRIBUTE))
@@ -798,6 +803,8 @@ parse_application_element (GMarkupParseContext  *context,
         count = attribute_values[i];
       else if (IS_ATTRIBUTE (attr, BOOKMARK_TIMESTAMP_ATTRIBUTE))
         stamp = attribute_values[i];
+      else if (IS_ATTRIBUTE (attr, BOOKMARK_MODIFIED_ATTRIBUTE))
+        modified = attribute_values[i];
       else
         {
           g_set_error (error, G_MARKUP_ERROR,
@@ -850,11 +857,19 @@ parse_application_element (GMarkupParseContext  *context,
     ai->count = atoi (count);
   else
     ai->count = 1;
-  
-  if (stamp)
-    ai->stamp = (time_t) atol (stamp);
+
+  if (modified)
+    ai->stamp = timestamp_from_iso8601 (modified);
   else
-    ai->stamp = time (NULL);
+    {
+      /* the timestamp attribute has been deprecated but we still parse
+       * it for backward compatibility
+       */
+      if (stamp)
+        ai->stamp = (time_t) atol (stamp);
+      else
+        ai->stamp = time (NULL);
+    }
 }
 
 static void
@@ -1512,7 +1527,8 @@ g_bookmark_file_dump (GBookmarkFile  *bookmark,
     goto out;
   else
     retval = g_string_append (retval, "\n");
-  
+
+  /* the items are stored in reverse order */
   for (l = g_list_last (bookmark->items);
        l != NULL;
        l = l->prev)
@@ -1526,7 +1542,7 @@ g_bookmark_file_dump (GBookmarkFile  *bookmark,
       
       retval = g_string_append (retval, item_dump);
       
-      g_free (item_dump);      
+      g_free (item_dump);
     }
 
 out:
@@ -1577,7 +1593,7 @@ timestamp_from_iso8601 (const gchar *iso_date)
 GQuark
 g_bookmark_file_error_quark (void)
 {
-  return g_quark_from_static_string ("egg-bookmark-file-error-quark");
+  return g_quark_from_static_string ("g-bookmark-file-error-quark");
 }
 
 
@@ -2102,7 +2118,8 @@ g_bookmark_file_get_uris (GBookmarkFile *bookmark,
   
   n_items = g_list_length (bookmark->items); 
   uris = g_new0 (gchar *, n_items + 1);
-  
+
+  /* the items are stored in reverse order, so we walk the list backward */
   for (l = g_list_last (bookmark->items), i = 0; l != NULL; l = l->prev)
     {
       BookmarkItem *item = (BookmarkItem *) l->data;
@@ -3615,10 +3632,11 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
  * @href: the URI of the icon for the bookmark, or %NULL
  * @mime_type: the MIME type of the icon for the bookmark
  *
- * Sets the icon for the bookmark for @uri.  If @href is %NULL, unsets
- * the currently set icon.
+ * Sets the icon for the bookmark for @uri. If @href is %NULL, unsets
+ * the currently set icon. @href can either be a full URL for the icon
+ * file or the icon name following the Icon Naming specification.
  *
- * If no bookmark for @uri is found it is created.
+ * If no bookmark for @uri is found one is created.
  *
  * Since: 2.12
  */

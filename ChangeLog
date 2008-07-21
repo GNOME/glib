@@ -1,3 +1,24 @@
+2008-07-21  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gbookmarkfile.c:
+	(bookmark_app_info_new): Do not set the timestamp value
+	using time(), as it will be overwritten anyway. (#535223,
+	Michael Meeks)
+
+	(parse_application_element),
+	(bookmark_app_info_dump): Support the "modified" attribute,
+	which takes an ISO-formatted string instead of a Unix time
+	stamp, to keep the number of g_strdup_printf() calls to a
+	minimum.
+
+	* glib/gtimer.c:
+	(g_time_val_to_iso8601): Do not use strftime(): we know
+	the format and contents of the ISO 8601 date format we
+	use.
+
+	* tests/bookmarks/valid-03.xbel: Add a test file for the
+	modified attribute.
+
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tests/Makefile.am:
