@@ -137,8 +137,8 @@ g_drive_base_init (gpointer g_class)
       * GDrive::eject-button:
       * @drive: a #GDrive.
       * 
-      * Emitted when the physical eject button (if any) of a drive have been pressed.
-      * 
+      * Emitted when the physical eject button (if any) of a drive has
+      * been pressed.
       **/
       g_signal_new (I_("eject-button"),
                     G_TYPE_DRIVE,
@@ -180,6 +180,7 @@ g_drive_get_name (GDrive *drive)
  * Gets the icon for @drive.
  * 
  * Returns: #GIcon for the @drive.
+ *    Free the returned object with g_object_unref().
  **/
 GIcon *
 g_drive_get_icon (GDrive *drive)
@@ -222,7 +223,7 @@ g_drive_has_volumes (GDrive *drive)
  * The returned list should be freed with g_list_free(), after
  * its elements have been unreffed with g_object_unref().
  * 
- * Returns: #GList containing any #GVolume<!---->s on the given @drive.
+ * Returns: #GList containing any #GVolume objects on the given @drive.
  **/
 GList *
 g_drive_get_volumes (GDrive *drive)
@@ -242,7 +243,8 @@ g_drive_get_volumes (GDrive *drive)
  * 
  * Checks if @drive is capabable of automatically detecting media changes.
  * 
- * Returns: %TRUE if the @drive is capabable of automatically detecting media changes, %FALSE otherwise.
+ * Returns: %TRUE if the @drive is capabable of automatically detecting 
+ *     media changes, %FALSE otherwise.
  **/
 gboolean
 g_drive_is_media_check_automatic (GDrive *drive)
@@ -300,11 +302,11 @@ g_drive_has_media (GDrive *drive)
 
 /**
  * g_drive_can_eject:
- * @drive: pointer to a #GDrive.
+ * @drive: a #GDrive.
  * 
  * Checks if a drive can be ejected.
  * 
- * Returns: %TRUE if the @drive can be ejected. %FALSE otherwise.
+ * Returns: %TRUE if the @drive can be ejected, %FALSE otherwise.
  **/
 gboolean
 g_drive_can_eject (GDrive *drive)
@@ -327,7 +329,8 @@ g_drive_can_eject (GDrive *drive)
  * 
  * Checks if a drive can be polled for media changes.
  * 
- * Returns: %TRUE if the @drive can be polled for media changes. %FALSE otherwise.
+ * Returns: %TRUE if the @drive can be polled for media changes,
+ *     %FALSE otherwise.
  **/
 gboolean
 g_drive_can_poll_for_media (GDrive *drive)
@@ -350,10 +353,13 @@ g_drive_can_poll_for_media (GDrive *drive)
  * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
- * @user_data: a #gpointer.
+ * @user_data: user data to pass to @callback
  * 
- * Ejects a drive.
- * 
+ * Asynchronously ejects a drive.
+ *
+ * When the operation is finished, @callback will be called.
+ * You can then call g_drive_eject_finish() to obtain the
+ * result of the operation.
  **/
 void
 g_drive_eject (GDrive              *drive,
@@ -381,15 +387,15 @@ g_drive_eject (GDrive              *drive,
 }
 
 /**
- * g_drive_eject_finish
+ * g_drive_eject_finish:
  * @drive: a #GDrive.
  * @result: a #GAsyncResult.
- * @error: a #GError.
+ * @error: a #GError, or %NULL
  * 
  * Finishes ejecting a drive.
  * 
  * Returns: %TRUE if the drive has been ejected successfully,
- * %FALSE otherwise.
+ *     %FALSE otherwise.
  **/
 gboolean
 g_drive_eject_finish (GDrive        *drive,
@@ -418,10 +424,13 @@ g_drive_eject_finish (GDrive        *drive,
  * @drive: a #GDrive.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
- * @user_data: a #gpointer.
+ * @user_data: user data to pass to @callback
  * 
- * Polls @drive to see if media has been inserted or removed.
+ * Asynchronously polls @drive to see if media has been inserted or removed.
  * 
+ * When the operation is finished, @callback will be called.
+ * You can then call g_drive_poll_for_media_finish() to obtain the
+ * result of the operation.
  **/
 void
 g_drive_poll_for_media (GDrive              *drive,
@@ -448,15 +457,15 @@ g_drive_poll_for_media (GDrive              *drive,
 }
 
 /**
- * g_drive_poll_for_media_finish
+ * g_drive_poll_for_media_finish:
  * @drive: a #GDrive.
  * @result: a #GAsyncResult.
- * @error: a #GError.
+ * @error: a #GError, or %NULL
  * 
- * Finishes poll_for_mediaing a drive.
+ * Finishes an operation started with g_drive_poll_for_media() on a drive.
  * 
  * Returns: %TRUE if the drive has been poll_for_mediaed successfully,
- * %FALSE otherwise.
+ *     %FALSE otherwise.
  **/
 gboolean
 g_drive_poll_for_media_finish (GDrive        *drive,
@@ -488,8 +497,8 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  * Gets the identifier of the given kind for @drive.
  *
  * Returns: a newly allocated string containing the
- *   requested identfier, or %NULL if the #GDrive
- *   doesn't have this kind of identifier
+ *     requested identfier, or %NULL if the #GDrive
+ *     doesn't have this kind of identifier.
  */
 char *
 g_drive_get_identifier (GDrive     *drive,
@@ -517,7 +526,7 @@ g_drive_get_identifier (GDrive     *drive,
  * themselves.
  *
  * Returns: a %NULL-terminated array of strings containing
- *   kinds of identifiers. Use g_strfreev() to free.
+ *     kinds of identifiers. Use g_strfreev() to free.
  */
 char **
 g_drive_enumerate_identifiers (GDrive *drive)

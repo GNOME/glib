@@ -1,5 +1,6 @@
 2008-07-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* gdrive.c:
 	* gvfs.c:
 	* gmount.c: Documentation fixes
 
