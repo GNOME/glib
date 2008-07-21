@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-02 20:10-0400\n"
+"POT-Creation-Date: 2008-07-21 13:36-0400\n"
 "PO-Revision-Date: 2008-06-07 20:40+0200\n"
 "Last-Translator: Espen Stefansen <espens@svn.gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
@@ -17,73 +17,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:728 glib/gbookmarkfile.c:805 glib/gbookmarkfile.c:884
-#: glib/gbookmarkfile.c:931
+#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
+#: glib/gbookmarkfile.c:946
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Uventet attributt «%s» for element «%s»"
 
-#: glib/gbookmarkfile.c:739 glib/gbookmarkfile.c:816 glib/gbookmarkfile.c:826
-#: glib/gbookmarkfile.c:942
+#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
+#: glib/gbookmarkfile.c:957
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Attributt «%s» i element «%s» ble ikke funnet"
 
-#: glib/gbookmarkfile.c:1112 glib/gbookmarkfile.c:1177
-#: glib/gbookmarkfile.c:1241 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
+#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Uventet tagg «%s», tagg «%s» forventet"
 
-#: glib/gbookmarkfile.c:1137 glib/gbookmarkfile.c:1151
-#: glib/gbookmarkfile.c:1219 glib/gbookmarkfile.c:1271
+#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
+#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Uventet tagg «%s» i «%s»"
 
-#: glib/gbookmarkfile.c:1798
+#: glib/gbookmarkfile.c:1814
 msgid "No valid bookmark file found in data dirs"
 msgstr "Ingen gyldig bokmerkefil ble funnet i datakatalogene"
 
-#: glib/gbookmarkfile.c:1999
+#: glib/gbookmarkfile.c:2015
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Et bokmerke eksisterer allerede for URI «%s»"
 
-#: glib/gbookmarkfile.c:2045 glib/gbookmarkfile.c:2202
-#: glib/gbookmarkfile.c:2287 glib/gbookmarkfile.c:2367
-#: glib/gbookmarkfile.c:2452 glib/gbookmarkfile.c:2535
-#: glib/gbookmarkfile.c:2613 glib/gbookmarkfile.c:2692
-#: glib/gbookmarkfile.c:2734 glib/gbookmarkfile.c:2831
-#: glib/gbookmarkfile.c:2957 glib/gbookmarkfile.c:3147
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3388
-#: glib/gbookmarkfile.c:3477 glib/gbookmarkfile.c:3567
-#: glib/gbookmarkfile.c:3694
+#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
+#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
+#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
+#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
+#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
+#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
+#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
+#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
+#: glib/gbookmarkfile.c:3712
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Ingen bokmerker funnet for URI «%s»"
 
-#: glib/gbookmarkfile.c:2376
+#: glib/gbookmarkfile.c:2393
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Ingen MIME-type definert i bokmerke for URI «%s»"
 
-#: glib/gbookmarkfile.c:2461
+#: glib/gbookmarkfile.c:2478
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Ingen private flagg er definert i bokmerke for URI «%s»"
 
-#: glib/gbookmarkfile.c:2840
+#: glib/gbookmarkfile.c:2857
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Ingen grupper satt i bokmerke for URI «%s»"
 
-#: glib/gbookmarkfile.c:3241 glib/gbookmarkfile.c:3398
+#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Ingen program med navn «%s» har registrert et bokmerke for «%s»"
 
-#: glib/gbookmarkfile.c:3421
+#: glib/gbookmarkfile.c:3438
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Feil under utvidelse av exec-linje «%s» med URI «%s»"
@@ -159,7 +159,7 @@ msgstr "Ugyldig vertsnavn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#: glib/gfileutils.c:557 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
@@ -169,87 +169,92 @@ msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:586
+#, c-format
+msgid "File \"%s\" is too large"
+msgstr ""
+
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: glib/gfileutils.c:756
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:890
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Feil under endring av navn på filen «%s» til «%s»: g_rename() feilet: %s"
 
-#: glib/gfileutils.c:932 glib/gfileutils.c:1390
+#: glib/gfileutils.c:947 glib/gfileutils.c:1405
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:961
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Feil under åpning av filen «%s» for skriving: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:971
+#: glib/gfileutils.c:986
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Kunne ikke skrive fil «%s»: fwrite() feilet: %s"
 
-#: glib/gfileutils.c:990
+#: glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Kunne ikke lukke fil «%s»: fclose() feilet: %s"
 
-#: glib/gfileutils.c:1108
+#: glib/gfileutils.c:1123
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Eksisterende fil «%s» kunne ikke bli fjernet: g_unlink() feilet: %s"
 
-#: glib/gfileutils.c:1352
+#: glib/gfileutils.c:1367
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: glib/gfileutils.c:1365
+#: glib/gfileutils.c:1380
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mal «%s» inneholder ikke XXXXXX"
 
-#: glib/gfileutils.c:1834
+#: glib/gfileutils.c:1849
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1844
+#: glib/gfileutils.c:1859
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1887
+#: glib/gfileutils.c:1902
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: glib/gfileutils.c:1908
+#: glib/gfileutils.c:1923
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -284,23 +289,23 @@ msgstr "Kunne ikke åpne fil «%s»: open() feilet: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Kunne ikke lese fil «%s» inn i minnet: mmap() feilet: %s"
 
-#: glib/gmarkup.c:234 glib/gmarkup.c:250
+#: glib/gmarkup.c:269 glib/gmarkup.c:285
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Feil på linje %d tegn %d: "
 
-#: glib/gmarkup.c:344
+#: glib/gmarkup.c:379
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
-#: glib/gmarkup.c:448
+#: glib/gmarkup.c:483
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Tom entitet «&;» funnet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:493
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -311,17 +316,17 @@ msgstr ""
 "starter en entitet; hvis dette og-tegnet ikke er ment å være en entitet, "
 "unngå dette ved å bruke &amp; i stedet"
 
-#: glib/gmarkup.c:492
+#: glib/gmarkup.c:527
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Tegn «%s» er ikke gyldig inne i et entitetsnavn"
 
-#: glib/gmarkup.c:529
+#: glib/gmarkup.c:564
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitetsnavn «%s» er ikke kjent"
 
-#: glib/gmarkup.c:540
+#: glib/gmarkup.c:575
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -330,7 +335,7 @@ msgstr ""
 "tegn uten at det var ment å starte en entitet - ungå ved å bruke &amp; i "
 "stedet"
 
-#: glib/gmarkup.c:593
+#: glib/gmarkup.c:628
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -339,16 +344,16 @@ msgstr ""
 "Feil under lesing av «%-.*s», som skulle vært et tall inne i en tegnreferanse "
 "(&#234; for eksempel) - tallet er muligens for stort"
 
-#: glib/gmarkup.c:618
+#: glib/gmarkup.c:653
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Tegnreferanse «%-.*s» koder ikke et tillatt tegn"
 
-#: glib/gmarkup.c:633
+#: glib/gmarkup.c:668
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tom tegnreferanse; skulle inkludert et tall slik som &#454;"
 
-#: glib/gmarkup.c:643
+#: glib/gmarkup.c:678
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -358,32 +363,32 @@ msgstr ""
 "og-tegn uten at det var ment å starte en entitet - unngå ved å bruke &amp; i "
 "stedet"
 
-#: glib/gmarkup.c:729
+#: glib/gmarkup.c:764
 msgid "Unfinished entity reference"
 msgstr "Uferdig referanse til entitet"
 
-#: glib/gmarkup.c:735
+#: glib/gmarkup.c:770
 msgid "Unfinished character reference"
 msgstr "Uferdig referanse til tegn"
 
-#: glib/gmarkup.c:978
+#: glib/gmarkup.c:1056
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Ugyldig UTF-8 kodet tekst - for lang sekvens"
 
-#: glib/gmarkup.c:1006
+#: glib/gmarkup.c:1084
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Ugyldig UTF-8 kodet tekst - ikke et starttegn"
 
-#: glib/gmarkup.c:1042
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Ugyldig UTF-8 kodet tekst - ikke gyldig «%s»"
 
-#: glib/gmarkup.c:1080
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet må starte med et element (f.eks <book>)"
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -392,22 +397,22 @@ msgstr ""
 "«%s» er ikke et gyldig tegn etter en «<» tegn; det kan ikke være begynnelsen "
 "på et elementnavn"
 
-#: glib/gmarkup.c:1184
-#, c-format
+#: glib/gmarkup.c:1266
+#, fuzzy, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Rart tegn «%s», forventet et «>» tegn for å avslutte start-taggen til "
 "elementet «%s»"
 
-#: glib/gmarkup.c:1273
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "Rart tegn «%s», forventet et «=» etter attributtnavn «%s» for element «%s»"
 
-#: glib/gmarkup.c:1315
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -418,7 +423,7 @@ msgstr ""
 "element «%s», eller alternativt en attributt; kanskje du brukte et ugyldig "
 "tegn i attributtnavnet"
 
-#: glib/gmarkup.c:1401
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -427,7 +432,7 @@ msgstr ""
 "Rart tegn «%s», ventet et åpent sitattegn etter likhetstegnet når verdi for "
 "attributt «%s» for element «%s» oppgis"
 
-#: glib/gmarkup.c:1543
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -436,7 +441,7 @@ msgstr ""
 "«%s» er ikke et gyldig tegn etter tegnene «</»; «%s» er kanskje ikke "
 "begynnelsen på et elementnavn"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -445,25 +450,25 @@ msgstr ""
 "«%s» er ikke et gyldig tegn etter element for lukking med navn «%s»; tillatt "
 "tegn er «>»"
 
-#: glib/gmarkup.c:1594
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element «%s» ble lukket, ingen åpne elementer nå"
 
-#: glib/gmarkup.c:1603
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element «%s» ble lukket, men aktivt åpent element er «%s»"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller inneholdt kun blanke tegn"
 
-#: glib/gmarkup.c:1777
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentet sluttet uventet rett etter en åpen vinkelparantes «<»"
 
-#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -471,7 +476,7 @@ msgid ""
 msgstr ""
 "Dokumentet sluttet uventet med åpne elementer - «%s» var siste åpne element"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -480,19 +485,19 @@ msgstr ""
 "Dokumentet sluttet uventet, forventet å se en vinkelparantes for å slutte av "
 "den siste taggen <%s/>"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentet sluttet uventet inni et elementnavn"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentet sluttet uventet inni et attributtnavn"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumentet sluttet uventet inni en tagg for åpning av element."
 
-#: glib/gmarkup.c:1816
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -500,16 +505,16 @@ msgstr ""
 "Dokumentet sluttet uventet etter likhetstegnet som følger et attributtnavn; "
 "ingen attributtverdi"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentet sluttet uventet inni en attributtverdi"
 
-#: glib/gmarkup.c:1839
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumentet sluttet uventet inni tagg for lukking av element «%s»"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
@@ -1132,16 +1137,16 @@ msgstr "Strømmen er allerede lukket"
 msgid "Operation was cancelled"
 msgstr "Operasjonen ble avbrutt"
 
-#: gio/gcontenttype.c:176
+#: gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Ukjent type"
 
-#: gio/gcontenttype.c:177
+#: gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "filtype %s"
 
-#: gio/gcontenttype.c:667
+#: gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "type %s"
@@ -1150,50 +1155,51 @@ msgstr "type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Uventet tidlig slutt på strøm"
 
-#: gio/gdesktopappinfo.c:430 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: gio/gdesktopappinfo.c:607
+#: gio/gdesktopappinfo.c:606
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: gio/gdesktopappinfo.c:901
+#: gio/gdesktopappinfo.c:900
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: gio/gdesktopappinfo.c:1133
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: gio/gdesktopappinfo.c:1137
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: gio/gdesktopappinfo.c:1476
+#: gio/gdesktopappinfo.c:1475
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: gio/gdesktopappinfo.c:1551
+#: gio/gdesktopappinfo.c:1550
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
 
-#: gio/gdrive.c:374
+#: gio/gdrive.c:381
 msgid "drive doesn't implement eject"
 msgstr "stasjonen implementerer ikke utløsing"
 
-#: gio/gdrive.c:441
+#: gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
 msgstr "stasjonen implementerer ikke sjekk om medie er satt inn"
 
-#: gio/gfile.c:817 gio/gfile.c:1045 gio/gfile.c:1178 gio/gfile.c:1409
-#: gio/gfile.c:1462 gio/gfile.c:1518 gio/gfile.c:1600 gio/gfile.c:2657
-#: gio/gfile.c:2708 gio/gfile.c:2836 gio/gfile.c:2876 gio/gfile.c:3200
-#: gio/gfile.c:3602 gio/gfile.c:3685 gio/gfile.c:3768 gio/gfile.c:3848
+#: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
+#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
+#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
+#: gio/gfile.c:4206
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
 
@@ -1205,45 +1211,45 @@ msgstr "Operasjonen er ikke støttet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1297 gio/glocalfile.c:1064 gio/glocalfile.c:1075
+#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
 #: gio/glocalfile.c:1088
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: gio/gfile.c:1939 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2124
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
-#: gio/gfile.c:1999
+#: gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: gio/gfile.c:2007 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2133
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2850
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: gio/gfile.c:2919
+#: gio/gfile.c:2943
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: gio/gfile.c:2966
+#: gio/gfile.c:2992
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: gio/gfile.c:4932 gio/gvolume.c:359
+#: gio/gfile.c:4974 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: gio/gfile.c:5040
+#: gio/gfile.c:5082
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1563,23 +1569,31 @@ msgstr "Klarte ikke å endre størrelse på utdatastrøm for minne"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:346
+#: gio/gmount.c:360
 msgid "mount doesn't implement unmount"
 msgstr "monteringspunktet implementerer ikke avmontering"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:421
+#: gio/gmount.c:435
 msgid "mount doesn't implement eject"
 msgstr "montering implementerer ikke utløsing"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:503
+#: gio/gmount.c:517
 msgid "mount doesn't implement remount"
 msgstr "montering implementerer ikke remontering"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:600
+#, fuzzy
+msgid "mount doesn't implement content type guessing"
+msgstr "monteringspunktet implementerer ikke avmontering"
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405
 msgid "Output stream doesn't implement write"
@@ -1627,7 +1641,7 @@ msgstr "Feil under lesing fra unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Feil ved lukking av unix: %s"
 
-#: gio/gunixmounts.c:1789 gio/gunixmounts.c:1826
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr "Filsystemrot"
 
@@ -1636,7 +1650,7 @@ msgstr "Filsystemrot"
 msgid "Error writing to unix: %s"
 msgstr "Feil ved skriving til unix: %s"
 
-#: gio/gvolume.c:425
+#: gio/gvolume.c:439
 msgid "volume doesn't implement eject"
 msgstr "volumet implementerer ikke utløsing"
 

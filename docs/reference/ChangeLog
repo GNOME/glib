@@ -1,3 +1,7 @@
+2008-07-21  Matthias Clasen  <mclasen2redhat.com>
+
+	* === Released 2.17.4 ===
+
 2008-07-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/gobject-sections.txt: Add new signal api.

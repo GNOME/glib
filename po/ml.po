@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-02 20:10-0400\n"
+"POT-Creation-Date: 2008-07-21 13:36-0400\n"
 "PO-Revision-Date: 2008-03-03 17:37+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <smc-discuss@googlegroups.com>\n"
@@ -19,73 +19,73 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
-#: glib/gbookmarkfile.c:728 glib/gbookmarkfile.c:805 glib/gbookmarkfile.c:884
-#: glib/gbookmarkfile.c:931
+#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
+#: glib/gbookmarkfile.c:946
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "r'%s' എലമെന്‍റിന് അപ്രതീക്ഷിതമായ സവിശേഷത '%s'"
 
-#: glib/gbookmarkfile.c:739 glib/gbookmarkfile.c:816 glib/gbookmarkfile.c:826
-#: glib/gbookmarkfile.c:942
+#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
+#: glib/gbookmarkfile.c:957
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "എലമെന്‍റ് '%s'-ന്‍റെ സവിശേഷതയായ '%s' കണ്ടുകിട്ടിയില്ല"
 
-#: glib/gbookmarkfile.c:1112 glib/gbookmarkfile.c:1177
-#: glib/gbookmarkfile.c:1241 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
+#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "അപ്രതീക്ഷിതമായ ടാഗ് '%s', ടാഗ് '%s' പ്രതീക്ഷിച്ചിരുന്നു"
 
-#: glib/gbookmarkfile.c:1137 glib/gbookmarkfile.c:1151
-#: glib/gbookmarkfile.c:1219 glib/gbookmarkfile.c:1271
+#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
+#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "'%s'-ന്‍റെ ഉളളില്‍ അപ്രതീക്ഷിതമായ ടാഗ് '%s'"
 
-#: glib/gbookmarkfile.c:1798
+#: glib/gbookmarkfile.c:1814
 msgid "No valid bookmark file found in data dirs"
 msgstr "ഡേറ്റാ ഡയറക്ടറികളില്‍ സാധുതയുളള ബുക്ക് മാര്‍ക്ക് കണ്ടുകിട്ടിയില്ല"
 
-#: glib/gbookmarkfile.c:1999
+#: glib/gbookmarkfile.c:2015
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s'-നുളള ബുക്ക് മാര്‍ക്ക് നിലവിലുണ്ട് "
 
-#: glib/gbookmarkfile.c:2045 glib/gbookmarkfile.c:2202
-#: glib/gbookmarkfile.c:2287 glib/gbookmarkfile.c:2367
-#: glib/gbookmarkfile.c:2452 glib/gbookmarkfile.c:2535
-#: glib/gbookmarkfile.c:2613 glib/gbookmarkfile.c:2692
-#: glib/gbookmarkfile.c:2734 glib/gbookmarkfile.c:2831
-#: glib/gbookmarkfile.c:2957 glib/gbookmarkfile.c:3147
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3388
-#: glib/gbookmarkfile.c:3477 glib/gbookmarkfile.c:3567
-#: glib/gbookmarkfile.c:3694
+#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
+#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
+#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
+#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
+#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
+#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
+#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
+#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
+#: glib/gbookmarkfile.c:3712
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s'-നുളള ബുക്ക് മാര്‍ക്ക് ലഭ്യമല്ല"
 
-#: glib/gbookmarkfile.c:2376
+#: glib/gbookmarkfile.c:2393
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s'-നുളള ബുക്ക് മാര്‍ക്കില്‍ MIME തരം വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: glib/gbookmarkfile.c:2461
+#: glib/gbookmarkfile.c:2478
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s'-നുളള ബുക്ക് മാര്‍ക്കില്‍ സ്വകാര്യ ഫ്ളാഗ് വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: glib/gbookmarkfile.c:2840
+#: glib/gbookmarkfile.c:2857
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s'-നുളള ബുക്ക് മാര്‍ക്കില്‍ ഗ്രൂപ്പുകളൊന്നും ക്രമീകരിച്ചിട്ടില്ല"
 
-#: glib/gbookmarkfile.c:3241 glib/gbookmarkfile.c:3398
+#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' എന്ന് പേരുളള ഒരു പ്രയോഗവും '%s'-നുളള ബുക്ക് മാര്‍ക്കില്‍ രജിസ്ടര്‍ ചെയ്തിട്ടില്ല"
 
-#: glib/gbookmarkfile.c:3421
+#: glib/gbookmarkfile.c:3438
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "'%s' എന്ന URI ഉളള '%s' എന്ന  exec വരി വികസിപ്പിക്കുന്നതില്‍ പരാജയപ്പെട്ടു"
@@ -161,7 +161,7 @@ msgstr "സാധുതയില്ലാത്ത ഹോസ്റ്റ് ന�
 msgid "Error opening directory '%s': %s"
 msgstr "ഡയറക്ടറി '%s' തുറക്കുന്നതില്‍ പിശക്: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#: glib/gfileutils.c:557 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu ബൈറ്റ്സ് ഫയല്‍ \"%s\" വായിക്കുന്നതിനായി നീക്ക് വയ്ക്കുവാന്‍ സാധ്യമല്ല"
@@ -171,88 +171,93 @@ msgstr "%lu ബൈറ്റ്സ് ഫയല്‍ \"%s\" വായിക്�
 msgid "Error reading file '%s': %s"
 msgstr "%s വായിക്കുന്നതില്‍‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:586
+#, c-format
+msgid "File \"%s\" is too large"
+msgstr ""
+
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ഫയല്‍ '%s'-ല്‍ നിന്നും വായിക്കുന്നതില്‍ പരാജയം: %s"
 
-#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‍‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "%s-ന്‍റെ വിശേഷതകള്‍ കണ്ടെത്തുന്നതില്‍ പരാജയം: fstat() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:756
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' തുറക്കുന്നതില്‍ പരാജയം: fdopen() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:890
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "ഫയല്‍ '%s'-ന്‍റെ പേര് '%s' ആയി മാറ്റുന്നതില്‍ പരാജയപ്പെട്ടു: g_rename() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:932 glib/gfileutils.c:1390
+#: glib/gfileutils.c:947 glib/gfileutils.c:1405
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ഫയല്‍ '%s' സൃഷ്ടിക്കുന്നതില്‍ പരാജയം: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:961
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "എഴുതുന്നതിനായി '%s' തുറക്കുവാന്‍ പരാജയപ്പെട്ടു: fdopen() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:971
+#: glib/gfileutils.c:986
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ഫയല്‍ '%s' എഴുതുവാന്‍ പരാജയപ്പെട്ടു: fwrite() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:990
+#: glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ഫയല്‍ '%s' അടയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു: fclose() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:1108
+#: glib/gfileutils.c:1123
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "നിലവിലുളള ഫയല്‍ '%s' നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല: g_unlink() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:1352
+#: glib/gfileutils.c:1367
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ടെംപ്ളേറ്റ് \"%s\" അസാധുവാണ്,ഇതില്‍ \"%s\" ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: glib/gfileutils.c:1365
+#: glib/gfileutils.c:1380
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ടെംപ്ളേറ്റ് \"%s\"-ല്‍ XXXXXX ലഭ്യമല്ല"
 
-#: glib/gfileutils.c:1834
+#: glib/gfileutils.c:1849
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1844
+#: glib/gfileutils.c:1859
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1887
+#: glib/gfileutils.c:1902
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "സിബോളിക്ക് ലിങ്ക് '%s' വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു: %s"
 
-#: glib/gfileutils.c:1908
+#: glib/gfileutils.c:1923
 msgid "Symbolic links not supported"
 msgstr "സിബോളിക്ക് ലിങ്ക് പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -287,23 +292,23 @@ msgstr "ഫയല്‍ '%s' തുറക്കുന്നതില്‍ പ�
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ഫയല്‍ '%s' മാപ്പ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു: mmap() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gmarkup.c:234 glib/gmarkup.c:250
+#: glib/gmarkup.c:269 glib/gmarkup.c:285
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "%d-ആം വരിയില്‍ %d-ആം അക്ഷരത്തില്‍ പിശക്:"
 
-#: glib/gmarkup.c:344
+#: glib/gmarkup.c:379
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "വരി %d-ല്‍ പിശക്: %s"
 
-#: glib/gmarkup.c:448
+#: glib/gmarkup.c:483
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "‌ശൂന്യമായ എന്‍റിന്‍റി '&;' കണ്ടു; അനുവദനീയമായവ ഇവയാണ്: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:493
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -313,17 +318,17 @@ msgstr ""
 "%sല് ഒരു എന്‍റിന്‍റി തു‌ടങ്ങാവുന്നതല്ല. & എന്ന അക്ഷരം ഒരു എന്‍റിന്‍റിയുടെ തുടക്കം കുറിക്കുന്നു. & ഒരു "
 "എന്‍റിന്‍റിഅല്ലെങ്കില്‍ &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
 
-#: glib/gmarkup.c:492
+#: glib/gmarkup.c:527
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "'%s' എന്ന അക്ഷരത്തിന് എന്‍റിന്‍റിയുടെ പേരിനുള്ളില്‍ സാധുതയില്ല"
 
-#: glib/gmarkup.c:529
+#: glib/gmarkup.c:564
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "എന്‍റിന്‍റി നാമം '%s' അപരിചിതമാണ്"
 
-#: glib/gmarkup.c:540
+#: glib/gmarkup.c:575
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -331,7 +336,7 @@ msgstr ""
 "എന്‍റിന്‍റി ഒരു അര്ദ്ധവിരാമത്തില് അവസാനിക്കുന്നില്ല.  & എന്ന അക്ഷരം അറിയാതെ ഉള്‍ക്കൊളളാന്‍ "
 "ഇടയായോ? & ഒരു എന്‍റിന്‍റി അല്ലെങ്കില്‍ &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
 
-#: glib/gmarkup.c:593
+#: glib/gmarkup.c:628
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -340,17 +345,17 @@ msgstr ""
 "'%-.*s' പാഴ്സ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു, ഇത് അക്ഷര റഫറന്‍സിനുളളില്‍ ഒരു അക്കം ആയിരിക്കണമാരുന്നു "
 "(&#234; ഉദാഹരണത്തിന്) - ഒരു പക്ഷേ അക്കം വളരെ വലുതാവാം"
 
-#: glib/gmarkup.c:618
+#: glib/gmarkup.c:653
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr ""
 "അക്ഷരത്തിന്‍റെ സൂചനയായ '%-.*s' ഒരു അനുവദനീയമായ രഹസ്യ അക്ഷരത്തിലേക്കല്ല വേര്‍തിരിക്കുന്നത്"
 
-#: glib/gmarkup.c:633
+#: glib/gmarkup.c:668
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "ശൂന്യമായ അക്ഷര സൂചനാ; &#454 പോലുളള അക്കം ഉല്‍പ്പെടുത്തേണ്ടതാണ്;"
 
-#: glib/gmarkup.c:643
+#: glib/gmarkup.c:678
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -359,32 +364,32 @@ msgstr ""
 "അക്ഷരസൂചകം ഒരു അര്ദ്ധവിരാമത്തില് അവസാനിക്കുന്നില്ല.  & എന്ന അക്ഷരം അറിയാതെ ഉള്‍ക്കൊളളാന്‍ "
 "ഇടയായോ? & ഒരു  സത്ത അല്ലെങ്കില് &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
 
-#: glib/gmarkup.c:729
+#: glib/gmarkup.c:764
 msgid "Unfinished entity reference"
 msgstr "പൂര്‍ണ്ണമാകാത്ത എന്‍റിന്‍റി സൂചനാ"
 
-#: glib/gmarkup.c:735
+#: glib/gmarkup.c:770
 msgid "Unfinished character reference"
 msgstr "പൂര്‍ണ്ണമാകാത്ത അക്ഷര സൂചനാ"
 
-#: glib/gmarkup.c:978
+#: glib/gmarkup.c:1056
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr ""
 
-#: glib/gmarkup.c:1006
+#: glib/gmarkup.c:1084
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr ""
 
-#: glib/gmarkup.c:1042
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "സാധുതയില്ലാത്ത UTF-8 രഹസ്യ വാചകം - '%s' തെറ്റാകുന്നു"
 
-#: glib/gmarkup.c:1080
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "രേഖ തുടങ്ങേണ്ടത് ഒരു എലമെന്‍റിലാണ് (ഉദാ <book>)"
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -392,23 +397,23 @@ msgid ""
 msgstr ""
 "'<' അക്ഷരത്തിന് പിന്നിലുളള '%s' ഒരു അസാധുവായ അക്ഷരമാണ്; ഇത് ഒരു എലമെന്‍റ് പേര് തുടങ്ങില്ല"
 
-#: glib/gmarkup.c:1184
-#, c-format
+#: glib/gmarkup.c:1266
+#, fuzzy, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "ഓഡ് അക്ഷരം '%s', എലമെന്‍റ് '%s' ആരംഭിക്കുന്ന ടാഗ് അവസാനിക്കേണ്ടത് '>' അക്ഷരത്തിലാവും എന്ന് "
 "പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1273
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "ഓഡ് അക്ഷരം '%s', എലമെന്‍റ് '%s'-ന്‍റെ സവിശേഷത നാമം '%s'-ന് ശേഷം ഒരു '=' പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1315
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -419,7 +424,7 @@ msgstr ""
 "ആട്റിബ്യൂട്ട് ആണ് '%s' എന്ന എലമെന്‍റിന്‍റെ ആരംഭത്തിലുളള ടാഗ് അവസാനിപ്പിക്കുന്നതിന് പ്രതീക്ഷിച്ചത്; "
 "ഒരു പക്ഷേ, ആട്റിബ്യൂട്ടിന്‍റെ പേരില്‍ നിങ്ങള്‍ തെറ്റായ അക്ഷരം ആവാം ഉപയോഗിച്ചത്"
 
-#: glib/gmarkup.c:1401
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -428,7 +433,7 @@ msgstr ""
 "'%s' ഒരു ഓഡ് അക്ഷരം ആണ്, '%s' എന്ന എലമെന്‍റിന്‍റെ ആട്റിബ്യൂട്ട് ആയ '%s'-നുളള മൂല്ല്യം നല്‍കുമ്പോള്‍ "
 "സമം‌ എന്ന ചിഹ്നത്തിന് ശേഷം ഒരു തുറന്ന കോട്ട് ആണ് പ്റതീക്ഷിച്ചത്"
 
-#: glib/gmarkup.c:1543
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -436,7 +441,7 @@ msgid ""
 msgstr ""
 "'</' അക്ഷരങ്ങള്‍ക്ക് ശേഷം ഉളള '%s', അസാധുവായ അക്ഷരമാണ്; '%s' ഒരു എലമെന്‍റ് നാമം തുടങ്ങുന്നില്ല"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -444,25 +449,25 @@ msgid ""
 msgstr ""
 "എലമെന്‍റ് നാമം '%s'-ന് ശേഷം ഉളള '%s', ഒരു അസാധുവായ അക്ഷരമാണ്; '>' അക്ഷരമാണ് അനുവദിക്കുന്നത്"
 
-#: glib/gmarkup.c:1594
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, ഒരു എലമെന്‍റുകളും നിലവില്‍ തുറന്നിട്ടില്ല"
 
-#: glib/gmarkup.c:1603
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, പക്ഷേ നിലവില്‍ ലഭ്യമായ എലമെന്‍റ് '%s' ആണ്"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "രേഖ ശൂന്യമാണ് അല്ലെങ്കില്‍ അതില്‍ വയിറ്റ് സ്പെയിസ് മാത്രമേ ഉള്ളൂ"
 
-#: glib/gmarkup.c:1777
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ഒരു '<' ബ്രാക്കറ്റിന് ശേഷം രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചിരിക്കുന്നു "
 
-#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -471,7 +476,7 @@ msgstr ""
 "എലമെന്‍റുകള്‍ തുറന്നു കിടക്കുന്പോള്‍ തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു - ഒടുവില്‍ തുറന്ന എലമെന്‍റ് "
 "'%s' ആണ്"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -480,19 +485,19 @@ msgstr ""
 "തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു, ടാഗ് <%s/>-ന് അവസാനമായി ഒരു ക്ളോസ് ആങ്കില്‍ ബ്രാക്കറ്റ് "
 "പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ഒരു എലമെന്‍റിന്‍റെ നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ഒരു എലമെന്‍റ്-ഓപ്പണിങ് ടാഗിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1816
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -500,16 +505,16 @@ msgstr ""
 "സമം ചിഹ്നത്തിന് ശേഷം ഒരു ആട്റിബ്യൂട്ടിന്‍റെ പേര് ആയതിനാല്‍ അപ്റതീക്ഷിതമായി ഡോക്യുമെന്‍റ് "
 "അവസാനിച്ചു; ആട്റിബ്യൂട്ടിന് മൂല്ല്യം ലഭ്യമല്ല"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ വച്ച് രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1839
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "എലമെന്‍റ് '%s'-ന്‍റെ ക്ളോസ് ടാഗിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ഒരു അഭിപ്രായം അല്ലെങ്കില്‍ ഒരു പ്രക്രിയ നടത്തുന്ന നിര്‍ദ്ദേശത്തിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി "
@@ -1127,16 +1132,16 @@ msgstr ""
 msgid "Operation was cancelled"
 msgstr "പ്രക്രിയ റദ്ദാക്കിയിരിക്കുന്നു"
 
-#: gio/gcontenttype.c:176
+#: gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "അപരിചിതമായ തരത്തിലുള്ളത്"
 
-#: gio/gcontenttype.c:177
+#: gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "%s ഫയല്‍ രീതിയിലുള്ള"
 
-#: gio/gcontenttype.c:667
+#: gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "%s തരത്തിലുള്ള"
@@ -1145,50 +1150,51 @@ msgstr "%s തരത്തിലുള്ള"
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:430 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "പേരിടാത്ത"
 
-#: gio/gdesktopappinfo.c:607
+#: gio/gdesktopappinfo.c:606
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:901
+#: gio/gdesktopappinfo.c:900
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1133
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1137
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1476
+#: gio/gdesktopappinfo.c:1475
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1551
+#: gio/gdesktopappinfo.c:1550
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
 
-#: gio/gdrive.c:374
+#: gio/gdrive.c:381
 msgid "drive doesn't implement eject"
 msgstr ""
 
-#: gio/gdrive.c:441
+#: gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:817 gio/gfile.c:1045 gio/gfile.c:1178 gio/gfile.c:1409
-#: gio/gfile.c:1462 gio/gfile.c:1518 gio/gfile.c:1600 gio/gfile.c:2657
-#: gio/gfile.c:2708 gio/gfile.c:2836 gio/gfile.c:2876 gio/gfile.c:3200
-#: gio/gfile.c:3602 gio/gfile.c:3685 gio/gfile.c:3768 gio/gfile.c:3848
+#: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
+#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
+#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
+#: gio/gfile.c:4206
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1200,45 +1206,45 @@ msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1297 gio/glocalfile.c:1064 gio/glocalfile.c:1075
+#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
 #: gio/glocalfile.c:1088
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1939 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2124
 msgid "Can't copy over directory"
 msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:1999
+#: gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2007 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2133
 msgid "Target file exists"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നിലവിലുണ്ട്"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2850
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2919
+#: gio/gfile.c:2943
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:2966
+#: gio/gfile.c:2992
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:4932 gio/gvolume.c:359
+#: gio/gfile.c:4974 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5040
+#: gio/gfile.c:5082
 msgid "No application is registered as handling this file"
 msgstr ""
 
@@ -1558,22 +1564,29 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:346
+#: gio/gmount.c:360
 msgid "mount doesn't implement unmount"
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:421
+#: gio/gmount.c:435
 msgid "mount doesn't implement eject"
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:503
+#: gio/gmount.c:517
 msgid "mount doesn't implement remount"
+msgstr ""
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:600
+msgid "mount doesn't implement content type guessing"
 msgstr ""
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405
@@ -1625,7 +1638,7 @@ msgstr "യൂണിക്സില്‍ നിന്നും ലഭ്യമ�
 msgid "Error closing unix: %s"
 msgstr "യൂണിക്സ് അടയ്ക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gunixmounts.c:1789 gio/gunixmounts.c:1826
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr "ഫയല്‍സിസ്റ്റം റൂട്ട്"
 
@@ -1634,7 +1647,7 @@ msgstr "ഫയല്‍സിസ്റ്റം റൂട്ട്"
 msgid "Error writing to unix: %s"
 msgstr "യൂണിക്സിലേക്ക് എഴുതുന്നതില്‍ പിശക്: %s"
 
-#: gio/gvolume.c:425
+#: gio/gvolume.c:439
 msgid "volume doesn't implement eject"
 msgstr ""
 

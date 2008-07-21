@@ -141,6 +141,16 @@ The returned string should be freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_strcmp0 ##### -->
+<para>
+
+</para>
+
+@str1: 
+@str2: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
 Portability wrapper that calls strlcpy() on systems which have it, and emulates

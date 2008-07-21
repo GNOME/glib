@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-10 19:33+0700\n"
+"POT-Creation-Date: 2008-07-21 13:36-0400\n"
 "PO-Revision-Date: 2008-07-10 19:34+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -17,73 +17,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: glib/gbookmarkfile.c:728 glib/gbookmarkfile.c:805
-#: glib/gbookmarkfile.c:884 glib/gbookmarkfile.c:931
+#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
+#: glib/gbookmarkfile.c:946
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:739 glib/gbookmarkfile.c:816
-#: glib/gbookmarkfile.c:826 glib/gbookmarkfile.c:942
+#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
+#: glib/gbookmarkfile.c:957
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:1112 glib/gbookmarkfile.c:1177
-#: glib/gbookmarkfile.c:1241 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
+#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "พบแท็ก '%s' ที่ไม่ต้องการ ขณะที่ต้องการแท็ก '%s'"
 
-#: glib/gbookmarkfile.c:1137 glib/gbookmarkfile.c:1151
-#: glib/gbookmarkfile.c:1219 glib/gbookmarkfile.c:1271
+#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
+#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "พบแท็ก '%s' ที่ไม่ต้องการภายใน '%s'"
 
-#: glib/gbookmarkfile.c:1798
+#: glib/gbookmarkfile.c:1814
 msgid "No valid bookmark file found in data dirs"
 msgstr "ไม่พบแฟ้มที่คั่นหน้าที่ใช้การได้ในไดเรกทอรีข้อมูล"
 
-#: glib/gbookmarkfile.c:1999
+#: glib/gbookmarkfile.c:2015
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "มีที่คั่นหน้าสำหรับ URI '%s' อยู่ก่อนแล้ว"
 
-#: glib/gbookmarkfile.c:2045 glib/gbookmarkfile.c:2202
-#: glib/gbookmarkfile.c:2287 glib/gbookmarkfile.c:2367
-#: glib/gbookmarkfile.c:2452 glib/gbookmarkfile.c:2535
-#: glib/gbookmarkfile.c:2613 glib/gbookmarkfile.c:2692
-#: glib/gbookmarkfile.c:2734 glib/gbookmarkfile.c:2831
-#: glib/gbookmarkfile.c:2957 glib/gbookmarkfile.c:3147
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3388
-#: glib/gbookmarkfile.c:3477 glib/gbookmarkfile.c:3567
-#: glib/gbookmarkfile.c:3694
+#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
+#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
+#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
+#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
+#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
+#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
+#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
+#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
+#: glib/gbookmarkfile.c:3712
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "ไม่พบที่คั่นหน้าสำหรับ URI '%s'"
 
-#: glib/gbookmarkfile.c:2376
+#: glib/gbookmarkfile.c:2393
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดชนิด MIME ไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: glib/gbookmarkfile.c:2461
+#: glib/gbookmarkfile.c:2478
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดแฟล็กส่วนตัวไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: glib/gbookmarkfile.c:2840
+#: glib/gbookmarkfile.c:2857
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดกลุ่มไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: glib/gbookmarkfile.c:3241 glib/gbookmarkfile.c:3398
+#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ '%s' ที่ลงทะเบียนที่คั่นหน้าสำหรับ '%s' ไว้"
 
-#: glib/gbookmarkfile.c:3421
+#: glib/gbookmarkfile.c:3438
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "กระจายบรรทัดคำสั่ง '%s' ด้วย URI '%s' ไม่สำเร็จ"
@@ -110,8 +110,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156
-#: glib/gutf8.c:1297 glib/gutf8.c:1401
+#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156 glib/gutf8.c:1297
+#: glib/gutf8.c:1401
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
 
@@ -159,7 +159,7 @@ msgstr "ชื่อโฮสต์ผิดรูปแบบ"
 msgid "Error opening directory '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี '%s': %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#: glib/gfileutils.c:557 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "ไม่สามารถจองหน่วยความจำ %lu ไบต์เพื่ออ่านแฟ้ม \"%s\" ได้"
@@ -169,87 +169,92 @@ msgstr "ไม่สามารถจองหน่วยความจำ %l
 msgid "Error reading file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:586
+#, c-format
+msgid "File \"%s\" is too large"
+msgstr ""
+
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:756
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: fdopen() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:890
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "เปลี่ยนชื่อแฟ้ม '%s' ไปเป็น '%s' ไม่สำเร็จ: g_rename() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:932 glib/gfileutils.c:1390
+#: glib/gfileutils.c:947 glib/gfileutils.c:1405
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "สร้างแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:961
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "เปิดแฟ้ม '%s' เพื่อเขียนไม่สำเร็จ: fdopen() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:971
+#: glib/gfileutils.c:986
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:990
+#: glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ปิดแฟ้ม '%s' ไม่สำเร็จ: fclose() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:1108
+#: glib/gfileutils.c:1123
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ไม่สามารถลบแฟ้ม '%s' ที่มีอยู่ได้: g_unlink() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:1352
+#: glib/gfileutils.c:1367
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควรมี '%s'"
 
-#: glib/gfileutils.c:1365
+#: glib/gfileutils.c:1380
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "แม่แบบ '%s' ไม่มี XXXXXX"
 
-#: glib/gfileutils.c:1834
+#: glib/gfileutils.c:1849
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1844
+#: glib/gfileutils.c:1859
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1887
+#: glib/gfileutils.c:1902
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:1908
+#: glib/gfileutils.c:1923
 msgid "Symbolic links not supported"
 msgstr "ไม่รองรับลิงก์สัญลักษณ์"
 
@@ -262,8 +267,7 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1554 glib/giochannel.c:1812
-#: glib/giochannel.c:1899
+#: glib/giochannel.c:1554 glib/giochannel.c:1812 glib/giochannel.c:1899
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
 
@@ -388,10 +392,10 @@ msgid ""
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
 #: glib/gmarkup.c:1266
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กตั้งต้นอิลิเมนต์ '%s'"
 
 #: glib/gmarkup.c:1355
@@ -846,14 +850,12 @@ msgstr "ดำเนินงานโพรเซสลูกไม่สำเ
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723
-#: glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738
-#: glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
@@ -924,8 +926,8 @@ msgstr "อ่านข้อมูลจากไปป์จากโพรเ
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265
-#: glib/gutf8.c:1274 glib/gutf8.c:1415 glib/gutf8.c:1511
+#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265 glib/gutf8.c:1274
+#: glib/gutf8.c:1415 glib/gutf8.c:1511
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
@@ -1093,9 +1095,8 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
 
 #: gio/gbufferedinputstream.c:485 gio/ginputstream.c:187
-#: gio/ginputstream.c:319 gio/ginputstream.c:560
-#: gio/ginputstream.c:685 gio/goutputstream.c:195
-#: gio/goutputstream.c:649
+#: gio/ginputstream.c:319 gio/ginputstream.c:560 gio/ginputstream.c:685
+#: gio/goutputstream.c:195 gio/goutputstream.c:649
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "มีการส่งค่า count ที่สูงเกินไปมาให้ %s"
@@ -1105,21 +1106,20 @@ msgstr "มีการส่งค่า count ที่สูงเกิน�
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974
-#: gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
 
-#: gio/gcontenttype.c:176
+#: gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "ชนิดข้อมูลไม่รู้จัก"
 
-#: gio/gcontenttype.c:177
+#: gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "ชนิดแฟ้ม %s"
 
-#: gio/gcontenttype.c:667
+#: gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "ชนิด %s"
@@ -1160,20 +1160,19 @@ msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
 
-#: gio/gdrive.c:374
+#: gio/gdrive.c:381
 msgid "drive doesn't implement eject"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
 
-#: gio/gdrive.c:441
+#: gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งตรวจสอบสื่อได้"
 
-#: gio/gfile.c:823 gio/gfile.c:1051 gio/gfile.c:1184
-#: gio/gfile.c:1415 gio/gfile.c:1468 gio/gfile.c:1524
-#: gio/gfile.c:1606 gio/gfile.c:2663 gio/gfile.c:2714
-#: gio/gfile.c:2842 gio/gfile.c:2882 gio/gfile.c:3206
-#: gio/gfile.c:3608 gio/gfile.c:3691 gio/gfile.c:3774
-#: gio/gfile.c:3854
+#: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
+#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
+#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
+#: gio/gfile.c:4206
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
 
@@ -1185,45 +1184,45 @@ msgstr "ไม่รองรับการกระทำนี้"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1303 gio/glocalfile.c:1064 gio/glocalfile.c:1075
+#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
 #: gio/glocalfile.c:1088
 msgid "Containing mount does not exist"
 msgstr "ไม่มีจุดเมานท์ที่บรรจุแฟ้มอยู่"
 
-#: gio/gfile.c:1945 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2124
 msgid "Can't copy over directory"
 msgstr "ไม่สามารถคัดลอกทับไดเรกทอรี"
 
-#: gio/gfile.c:2005
+#: gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/gfile.c:2013 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2133
 msgid "Target file exists"
 msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้ว"
 
-#: gio/gfile.c:2031
+#: gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
-#: gio/gfile.c:2832
+#: gio/gfile.c:2850
 msgid "Invalid symlink value given"
 msgstr "ได้รับชื่อ symlink ที่ใช้การไม่ได้"
 
-#: gio/gfile.c:2925
+#: gio/gfile.c:2943
 msgid "Trash not supported"
 msgstr "ไม่รองรับการใช้ถังขยะ"
 
-#: gio/gfile.c:2972
+#: gio/gfile.c:2992
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ได้"
 
-#: gio/gfile.c:4938 gio/gvolume.c:369
+#: gio/gfile.c:4974 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
-#: gio/gfile.c:5046
+#: gio/gfile.c:5082
 msgid "No application is registered as handling this file"
 msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
 
@@ -1543,28 +1542,28 @@ msgstr "เปลี่ยนขนาดสตรีมข้อมูลออ
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:357
+#: gio/gmount.c:360
 msgid "mount doesn't implement unmount"
 msgstr "การเมานท์นี้ยังไม่รองรับการเลิกเมานท์"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:432
+#: gio/gmount.c:435
 msgid "mount doesn't implement eject"
 msgstr "การเมานท์นี้ยังไม่รองรับการดันสื่อออก"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:514
+#: gio/gmount.c:517
 msgid "mount doesn't implement remount"
 msgstr "การเมานท์นี้ยังไม่รองรับการเมานท์ซ้ำ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:597
+#: gio/gmount.c:600
 msgid "mount doesn't implement content type guessing"
 msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหา"
 
@@ -1616,7 +1615,7 @@ msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้
 msgid "Error closing unix: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้มยูนิกซ์: %s"
 
-#: gio/gunixmounts.c:1789 gio/gunixmounts.c:1826
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr "รากระบบแฟ้ม"
 
@@ -1625,7 +1624,7 @@ msgstr "รากระบบแฟ้ม"
 msgid "Error writing to unix: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้มยูนิกซ์: %s"
 
-#: gio/gvolume.c:438
+#: gio/gvolume.c:439
 msgid "volume doesn't implement eject"
 msgstr "โวลุมยังไม่รองรับการดันสื่อออก"
 

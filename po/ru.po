@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-02 20:10-0400\n"
+"POT-Creation-Date: 2008-07-21 13:36-0400\n"
 "PO-Revision-Date: 2008-03-11 20:54+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -21,73 +21,73 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: glib/gbookmarkfile.c:728 glib/gbookmarkfile.c:805 glib/gbookmarkfile.c:884
-#: glib/gbookmarkfile.c:931
+#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
+#: glib/gbookmarkfile.c:946
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Встретился неожиданный атрибут «%s» элемента «%s»"
 
-#: glib/gbookmarkfile.c:739 glib/gbookmarkfile.c:816 glib/gbookmarkfile.c:826
-#: glib/gbookmarkfile.c:942
+#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
+#: glib/gbookmarkfile.c:957
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Не найден атрибут «%s» элемента «%s»"
 
-#: glib/gbookmarkfile.c:1112 glib/gbookmarkfile.c:1177
-#: glib/gbookmarkfile.c:1241 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
+#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Неожиданный тэг «%s», ожидался тэг «%s»"
 
-#: glib/gbookmarkfile.c:1137 glib/gbookmarkfile.c:1151
-#: glib/gbookmarkfile.c:1219 glib/gbookmarkfile.c:1271
+#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
+#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Неожиданный тэг «%s» внутри «%s»"
 
-#: glib/gbookmarkfile.c:1798
+#: glib/gbookmarkfile.c:1814
 msgid "No valid bookmark file found in data dirs"
 msgstr "Не удалось найти допустимый файл закладок в каталогах поиска"
 
-#: glib/gbookmarkfile.c:1999
+#: glib/gbookmarkfile.c:2015
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Закладка для ресурса URI «%s» уже существует"
 
-#: glib/gbookmarkfile.c:2045 glib/gbookmarkfile.c:2202
-#: glib/gbookmarkfile.c:2287 glib/gbookmarkfile.c:2367
-#: glib/gbookmarkfile.c:2452 glib/gbookmarkfile.c:2535
-#: glib/gbookmarkfile.c:2613 glib/gbookmarkfile.c:2692
-#: glib/gbookmarkfile.c:2734 glib/gbookmarkfile.c:2831
-#: glib/gbookmarkfile.c:2957 glib/gbookmarkfile.c:3147
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3388
-#: glib/gbookmarkfile.c:3477 glib/gbookmarkfile.c:3567
-#: glib/gbookmarkfile.c:3694
+#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
+#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
+#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
+#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
+#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
+#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
+#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
+#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
+#: glib/gbookmarkfile.c:3712
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Для ресурса URI «%s» закладок не найдено"
 
-#: glib/gbookmarkfile.c:2376
+#: glib/gbookmarkfile.c:2393
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "В закладке на ресурс «%s» не определён тип MIME"
 
-#: glib/gbookmarkfile.c:2461
+#: glib/gbookmarkfile.c:2478
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Отметка о приватности данных в закладке для URI «%s» не определена"
 
-#: glib/gbookmarkfile.c:2840
+#: glib/gbookmarkfile.c:2857
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "В закладке для URI «%s» не определена группа"
 
-#: glib/gbookmarkfile.c:3241 glib/gbookmarkfile.c:3398
+#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Нет приложения с именем «%s», создавшего закладку для «%s»"
 
-#: glib/gbookmarkfile.c:3421
+#: glib/gbookmarkfile.c:3438
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Не удалось дополнить строку выполнения «%s» с помощью URI «%s»"
@@ -167,7 +167,7 @@ msgstr "Имя узла недопустимо"
 msgid "Error opening directory '%s': %s"
 msgstr "Произошла ошибка при открытии каталога «%s»: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#: glib/gfileutils.c:557 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не удалось выделить %lu байтов для прочтения файла «%s»"
@@ -177,88 +177,93 @@ msgstr "Не удалось выделить %lu байтов для прочт�
 msgid "Error reading file '%s': %s"
 msgstr "Произошла ошибка при чтении файла «%s»: %s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:586
+#, c-format
+msgid "File \"%s\" is too large"
+msgstr ""
+
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Не удалось прочитать из файла «%s»: %s"
 
-#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Не удалось открыть файл «%s»: %s"
 
-#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Не удалось получить атрибуты файла «%s»: сбой в функции fstat(): %s"
 
-#: glib/gfileutils.c:756
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Не удалось открыть файл «%s»: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:890
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Не удалось переименовать файл «%s» в «%s»: сбой в функции g_rename(): %s"
 
-#: glib/gfileutils.c:932 glib/gfileutils.c:1390
+#: glib/gfileutils.c:947 glib/gfileutils.c:1405
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не удалось создать файл «%s»: %s"
 
-#: glib/gfileutils.c:946
+#: glib/gfileutils.c:961
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Не удалось открыть файл «%s» для записи: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:971
+#: glib/gfileutils.c:986
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции fwrite(): %s"
 
-#: glib/gfileutils.c:990
+#: glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Не удалось закрыть файл «%s»: сбой в функции fclose(): %s"
 
-#: glib/gfileutils.c:1108
+#: glib/gfileutils.c:1123
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
-#: glib/gfileutils.c:1352
+#: glib/gfileutils.c:1367
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон «%s» недопустим: он не должен содержать «%s»"
 
-#: glib/gfileutils.c:1365
+#: glib/gfileutils.c:1380
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
-#: glib/gfileutils.c:1834
+#: glib/gfileutils.c:1849
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gfileutils.c:1844
+#: glib/gfileutils.c:1859
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gfileutils.c:1887
+#: glib/gfileutils.c:1902
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
 
-#: glib/gfileutils.c:1908
+#: glib/gfileutils.c:1923
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
@@ -297,24 +302,24 @@ msgstr "Не удалось открыть файл «%s»: сбой в функ
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не удалось отобразить файл «%s»: сбой в функции mmap(): %s"
 
-#: glib/gmarkup.c:234 glib/gmarkup.c:250
+#: glib/gmarkup.c:269 glib/gmarkup.c:285
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Ошибка в строке %d на символе %d: "
 
-#: glib/gmarkup.c:344
+#: glib/gmarkup.c:379
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Ошибка в строке %d: %s"
 
-#: glib/gmarkup.c:448
+#: glib/gmarkup.c:483
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая конструкция «&;»; допустимыми конструкциями являются: &amp; "
 "&quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:493
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -325,17 +330,17 @@ msgstr ""
 "конструкцию; если этот символ не должен быть частью конструкции, то "
 "экранируйте его конструкцией «&amp;»"
 
-#: glib/gmarkup.c:492
+#: glib/gmarkup.c:527
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Символ «%s» недопустим внутри названия конструкции"
 
-#: glib/gmarkup.c:529
+#: glib/gmarkup.c:564
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Наименование конструкции «%s» неизвестно"
 
-#: glib/gmarkup.c:540
+#: glib/gmarkup.c:575
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -344,7 +349,7 @@ msgstr ""
 "использован не для обозначения начала конструкции — экранируйте его как "
 "«&amp;»"
 
-#: glib/gmarkup.c:593
+#: glib/gmarkup.c:628
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -353,16 +358,16 @@ msgstr ""
 "Не удалось разобрать строку «%-.*s», которая должна быть числом внутри ссылки "
 "на символ (например &#234;) — возможно, номер слишком велик"
 
-#: glib/gmarkup.c:618
+#: glib/gmarkup.c:653
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Ссылка на символ «%-.*s» не определяет допустимый символ"
 
-#: glib/gmarkup.c:633
+#: glib/gmarkup.c:668
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Ссылка на символ пуста; она должна включать номер, например &#454;"
 
-#: glib/gmarkup.c:643
+#: glib/gmarkup.c:678
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -372,38 +377,38 @@ msgstr ""
 "использован не для обозначения начала конструкции — экранируйте его как "
 "«&amp;»"
 
-#: glib/gmarkup.c:729
+#: glib/gmarkup.c:764
 msgid "Unfinished entity reference"
 msgstr "Ссылка на конструкцию не закончена"
 
-#: glib/gmarkup.c:735
+#: glib/gmarkup.c:770
 msgid "Unfinished character reference"
 msgstr "Ссылка на символ не закончена"
 
-#: glib/gmarkup.c:978
+#: glib/gmarkup.c:1056
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr ""
 "Текст закодирован как UTF-8 недопустимым образом — слишком длинная "
 "последовательность"
 
-#: glib/gmarkup.c:1006
+#: glib/gmarkup.c:1084
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr ""
 "Текст закодирован как UTF-8 недопустимым образом — неправильный начальный "
 "символ"
 
-#: glib/gmarkup.c:1042
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr ""
 "Текст закодирован как UTF-8 недопустимым образом — недопустимая "
 "последовательность «%s»"
 
-#: glib/gmarkup.c:1080
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ должен начинаться с элемента (например <book>)"
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -412,16 +417,16 @@ msgstr ""
 "Символ «%s» является недопустимым после символа «<»; этот символ не может "
 "начинать имя элемента"
 
-#: glib/gmarkup.c:1184
-#, c-format
+#: glib/gmarkup.c:1266
+#, fuzzy, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Встретился лишний символ «%s», ожидался символ «>» для завершения открывающего "
 "тэга элемента «%s»"
 
-#: glib/gmarkup.c:1273
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -429,7 +434,7 @@ msgstr ""
 "Встретился лишний символ «%s», ожидался символ «=» после имени атрибута «%s» "
 "элемента «%s»"
 
-#: glib/gmarkup.c:1315
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -440,7 +445,7 @@ msgstr ""
 "открывающего тэга элемента «%s», либо, возможно, атрибут; может быть, был "
 "использован недопустимый символ в имени атрибута"
 
-#: glib/gmarkup.c:1401
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -449,7 +454,7 @@ msgstr ""
 "Встретился лишний символ «%s», ожидалась открывающая двойная кавычка после "
 "знака равенства при присваивании значения атрибуту «%s» элемента «%s»"
 
-#: glib/gmarkup.c:1543
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -458,7 +463,7 @@ msgstr ""
 "Символ «%s» недопустим после символов «</»; символ «%s» не может начинать имя "
 "элемента"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -467,27 +472,27 @@ msgstr ""
 "Символ «%s» недопустим после закрывающего элемента имени «%s»; допустимым "
 "символом является «>»"
 
-#: glib/gmarkup.c:1594
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Элемент «%s» был закрыт, ни один элемент в настоящий момент не открыт"
 
-#: glib/gmarkup.c:1603
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Элемент «%s» был закрыт, но открытым в настоящий момент является элемент «%s»"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ был пуст или содержал только пробелы"
 
-#: glib/gmarkup.c:1777
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документ неожиданно окончился сразу же после открывающей угловой скобки «<»"
 
-#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -496,7 +501,7 @@ msgstr ""
 "Документ неожиданно окончился, когда ещё были открыты элементы — «%s» был "
 "последним открытым элементом"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -504,19 +509,19 @@ msgid ""
 msgstr ""
 "Документ неожиданно окончился, ожидалась закрывающая тэг <%s/> угловая скобка"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документ неожиданно окончился внутри имени элемента"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документ неожиданно окончился внутри имени атрибута"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документ неожиданно окончился внутри открывающего элемент тэга"
 
-#: glib/gmarkup.c:1816
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -524,16 +529,16 @@ msgstr ""
 "Документ неожиданно окончился после знака равенства, следующего за именем "
 "атрибута; значение атрибута не указано"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документ неожиданно окончился внутри значения атрибута"
 
-#: glib/gmarkup.c:1839
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документ неожиданно окончился внутри тэга, закрывающего элемент «%s»"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Документ неожиданно окончился внутри комментария или инструкции обработки"
@@ -1175,16 +1180,16 @@ msgstr "Поток уже закрыт"
 msgid "Operation was cancelled"
 msgstr "Действие было отменено"
 
-#: gio/gcontenttype.c:176
+#: gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Неизвестный тип"
 
-#: gio/gcontenttype.c:177
+#: gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "тип файлов %s"
 
-#: gio/gcontenttype.c:667
+#: gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "тип %s"
@@ -1193,50 +1198,51 @@ msgstr "тип %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неожиданный ранний конец потока"
 
-#: gio/gdesktopappinfo.c:430 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без имени"
 
-#: gio/gdesktopappinfo.c:607
+#: gio/gdesktopappinfo.c:606
 msgid "Desktop file didn't specify Exec field"
 msgstr "В desktop-файле не указано поле Exec"
 
-#: gio/gdesktopappinfo.c:901
+#: gio/gdesktopappinfo.c:900
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: gio/gdesktopappinfo.c:1133
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек приложения %s: %s"
 
-#: gio/gdesktopappinfo.c:1137
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1476
+#: gio/gdesktopappinfo.c:1475
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не удалось создать пользовательский desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1551
+#: gio/gdesktopappinfo.c:1550
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Особое определение для %s"
 
-#: gio/gdrive.c:374
+#: gio/gdrive.c:381
 msgid "drive doesn't implement eject"
 msgstr "привод не реализует извлечение"
 
-#: gio/gdrive.c:441
+#: gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
 msgstr "привод не реализует опрос носителя"
 
-#: gio/gfile.c:817 gio/gfile.c:1045 gio/gfile.c:1178 gio/gfile.c:1409
-#: gio/gfile.c:1462 gio/gfile.c:1518 gio/gfile.c:1600 gio/gfile.c:2657
-#: gio/gfile.c:2708 gio/gfile.c:2836 gio/gfile.c:2876 gio/gfile.c:3200
-#: gio/gfile.c:3602 gio/gfile.c:3685 gio/gfile.c:3768 gio/gfile.c:3848
+#: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
+#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
+#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
+#: gio/gfile.c:4206
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
@@ -1248,45 +1254,45 @@ msgstr "Действие не поддерживается"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1297 gio/glocalfile.c:1064 gio/glocalfile.c:1075
+#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
 #: gio/glocalfile.c:1088
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: gio/gfile.c:1939 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2124
 msgid "Can't copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
-#: gio/gfile.c:1999
+#: gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "Нельзя скопировать каталог поверх каталога"
 
-#: gio/gfile.c:2007 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2133
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2850
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:2919
+#: gio/gfile.c:2943
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:2966
+#: gio/gfile.c:2992
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:4932 gio/gvolume.c:359
+#: gio/gfile.c:4974 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "том не реализует присоединение"
 
-#: gio/gfile.c:5040
+#: gio/gfile.c:5082
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -1608,23 +1614,31 @@ msgstr "Не удалось изменить размер выходного п�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:346
+#: gio/gmount.c:360
 msgid "mount doesn't implement unmount"
 msgstr "точка монтирования не реализует отсоединение"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:421
+#: gio/gmount.c:435
 msgid "mount doesn't implement eject"
 msgstr "точка монтирования не реализует извлечение"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:503
+#: gio/gmount.c:517
 msgid "mount doesn't implement remount"
 msgstr "точка монтирования не реализует пересоединение"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:600
+#, fuzzy
+msgid "mount doesn't implement content type guessing"
+msgstr "точка монтирования не реализует отсоединение"
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405
 msgid "Output stream doesn't implement write"
@@ -1675,7 +1689,7 @@ msgstr "Произошла ошибка при чтении из unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Произошла ошибка при закрытии unix: %s"
 
-#: gio/gunixmounts.c:1789 gio/gunixmounts.c:1826
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
@@ -1684,7 +1698,7 @@ msgstr "Корень файловой системы"
 msgid "Error writing to unix: %s"
 msgstr "Произошла ошибка при записи в unix: %s"
 
-#: gio/gvolume.c:425
+#: gio/gvolume.c:439
 msgid "volume doesn't implement eject"
 msgstr "том не реализует извлечение"
 

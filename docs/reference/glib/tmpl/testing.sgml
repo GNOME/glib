@@ -515,16 +515,6 @@ and @n2.
 @Since: 2.16
 
 
-<!-- ##### FUNCTION g_strcmp0 ##### -->
-<para>
-
-</para>
-
-@str1: 
-@str2: 
-@Returns: 
-
-
 <!-- ##### TYPEDEF GTestCase ##### -->
 <para>
 An opaque structure representing a test case.

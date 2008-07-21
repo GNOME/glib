@@ -267,6 +267,25 @@ g_markup_parse_context_parse() will report that error back to its caller.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_markup_parse_context_push ##### -->
+<para>
+
+</para>
+
+@context: 
+@parser: 
+@user_data: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_pop ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
 <!-- ##### ENUM GMarkupCollectType ##### -->
 <para>
 
