@@ -113,6 +113,7 @@ g_mount_base_init (gpointer g_class)
     {
      /**
       * GMount::changed:
+      * @mount: the object on which the signal is emitted
       * 
       * Emitted when the mount has been changed.
       **/
@@ -126,6 +127,7 @@ g_mount_base_init (gpointer g_class)
 
      /**
       * GMount::unmounted:
+      * @mount: the object on which the signal is emitted
       * 
       * This signal is emitted when the #GMount have been
       * unmounted. If the recipient is holding references to the
@@ -368,7 +370,7 @@ g_mount_unmount (GMount              *mount,
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ *     ignore.
  * 
  * Finishes unmounting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.
@@ -443,7 +445,7 @@ g_mount_eject (GMount              *mount,
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ *     ignore.
  * 
  * Finishes ejecting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.
@@ -525,7 +527,7 @@ g_mount_remount (GMount              *mount,
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ *     ignore.
  * 
  * Finishes remounting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.

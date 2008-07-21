@@ -78,7 +78,8 @@ g_vfs_is_active (GVfs *vfs)
  * 
  * Gets a #GFile for @path.
  * 
- * Returns: a #GFile.
+ * Returns: a #GFile. 
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_vfs_get_file_for_path (GVfs       *vfs,
@@ -97,16 +98,16 @@ g_vfs_get_file_for_path (GVfs       *vfs,
 /**
  * g_vfs_get_file_for_uri:
  * @vfs: a#GVfs.
- * @uri: a string containing a URI path.
+ * @uri: a string containing a URI 
  * 
  * Gets a #GFile for @uri.
  * 
  * This operation never fails, but the returned object
- * might not support any I/O operation if the uri
- * is malformed or if the uri type is not supported.
+ * might not support any I/O operation if the URI 
+ * is malformed or if the URI scheme is not supported.
  * 
  * Returns: a #GFile. 
- * 
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_vfs_get_file_for_uri (GVfs       *vfs,
@@ -128,7 +129,9 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
  * 
  * Gets a list of URI schemes supported by @vfs.
  * 
- * Returns: a list of strings.
+ * Returns: a %NULL-terminated array of strings.
+ *     The returned array belongs to GIO and must 
+ *     not be freed or modified.
  **/
 const gchar * const *
 g_vfs_get_supported_uri_schemes (GVfs *vfs)
@@ -152,6 +155,7 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
  * be parsed by the #GVfs module.
  * 
  * Returns: a #GFile for the given @parse_name.
+ *     Free the returned object with g_object_unref().
  **/
 GFile *
 g_vfs_parse_name (GVfs       *vfs,
