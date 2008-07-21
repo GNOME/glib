@@ -75,21 +75,26 @@ group_captions (void)
 
       for (j = 0; j < G_N_ELEMENTS (help_variants); ++j)
         {
+          GTestTrapFlags trap_flags = 0;
           gchar *args[3];
 
           args[0] = __FILE__;
           args[1] = help_variants[j];
           args[2] = NULL;
 
+          if (!g_test_verbose ())
+            trap_flags |= G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR;
+
           g_test_message ("test setup: args='%s', main-entries=%d, test-entries=%d",
                           args[1], have_main_entries, have_test_entries);
 
-          if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT |
-                                   G_TEST_TRAP_SILENCE_STDERR))
+          if (g_test_trap_fork (0, trap_flags))
             {
               gchar **argv = args;
               gint    argc = 2;
               GError *error = NULL;
+
+              g_setenv ("LANG", "C", TRUE);
 
               g_option_context_parse (options, &argc, &argv, &error);
               exit(0);

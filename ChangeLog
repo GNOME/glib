@@ -1,3 +1,12 @@
+2008-07-22  Mathias Hasselmann  <mathias@openismus.com>
+
+	Set LANG variable for group caption tests to get reproducable results.
+
+	* glib/tests/option-context.c (group_captions()):
+	  Set LANG variable to C in the forked process to get reproducable.
+	  Don't silence the forked process in --verbose mode to support
+	  debugging.
+
 2008-07-21  Matthias Clasen  <mclasen2redhat.com>
 
 	* configure.in: Fix detection of struct statfs fields.
