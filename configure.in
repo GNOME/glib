@@ -848,6 +848,7 @@ AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct 
 AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename, struct statfs.f_bavail],,, [#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <sys/statfs.h>
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
