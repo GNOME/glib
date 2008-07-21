@@ -1,5 +1,9 @@
 2008-07-21  Matthias Clasen  <mclasen2redhat.com>
 
+	* configure.in: Bump version
+
+2008-07-21  Matthias Clasen  <mclasen2redhat.com>
+
 	* === Released 2.17.4 ===
 
 	* configure.in: Bump version
