@@ -1,3 +1,11 @@
+2008-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tests/Makefile.am:
+	* glib/tests/array-test.c: Move array tests here.
+
+	* tests/Makefile.am:
+	* tests/array-test.c: Removed.
+
 2008-07-20  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c (g_io_win32_prepare): Patch from Yu Kuan that
