@@ -282,7 +282,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   /**
    * GMountOperation::reply:
    * @op: a #GMountOperation.
-   * @abort: a boolean indicating %TRUE if the operation was aborted.
+   * @result: a #GMountOperationResult indicating how the request was handled
    * 
    * Emitted when the user has replied to the mount operation.
    */
@@ -427,7 +427,6 @@ g_mount_operation_get_username (GMountOperation *op)
  * @username: input username.
  *
  * Sets the user name within @op to @username.
- * 
  **/
 void
 g_mount_operation_set_username (GMountOperation *op,

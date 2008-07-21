@@ -1,5 +1,8 @@
 2008-07-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* gvolumemonitor.[hc]:
+	* gmountoperation.c:
+	* gioenums.h:
 	* gdrive.c:
 	* gvfs.c:
 	* gmount.c: Documentation fixes

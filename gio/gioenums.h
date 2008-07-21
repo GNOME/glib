@@ -377,7 +377,6 @@ typedef enum {
  * #GAskPasswordFlags are used to request specific information from the
  * user, or to notify the user of their choices in an authentication
  * situation.
- *
  **/
 typedef enum {
   G_ASK_PASSWORD_NEED_PASSWORD       = (1 << 0),
@@ -408,12 +407,15 @@ typedef enum {
 
 /**
  * GMountOperationResult:
- * @G_MOUNT_OPERATION_HANDLED: The request was fulfilled and the user specified data is now availible
- * @G_MOUNT_OPERATION_ABORTED: The user requested the mount operation to be aborted
- * @G_MOUNT_OPERATION_UNHANDLED: The request was unhandled (i.e. not implemented)
+ * @G_MOUNT_OPERATION_HANDLED: The request was fulfilled and the 
+ *     user specified data is now available
+ * @G_MOUNT_OPERATION_ABORTED: The user requested the mount operation 
+ *     to be aborted
+ * @G_MOUNT_OPERATION_UNHANDLED: The request was unhandled (i.e. not 
+ *     implemented)
  * 
- * #GMountOperationResult is returned as a result when a request for information
- * is send by the mounting operation.
+ * #GMountOperationResult is returned as a result when a request for 
+ * information is send by the mounting operation.
  **/
 typedef enum {
   G_MOUNT_OPERATION_HANDLED,
@@ -425,8 +427,10 @@ typedef enum {
 /**
  * GOutputStreamSpliceFlags:
  * @G_OUTPUT_STREAM_SPLICE_NONE: Do not close either stream.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after the splice.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after the splice.
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after 
+ *     the splice.
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after 
+ *     the splice.
  *
  * GOutputStreamSpliceFlags determine how streams should be spliced.
  **/

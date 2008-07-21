@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  * G_VOLUME_MONITOR_EXTENSION_POINT_NAME:
  *
  * Extension point for volume monitor functionality.
- * See <link linkend="gio-extension-points">Extending GIO</link>.
+ * See <link linkend="extending-gio">Extending GIO</link>.
  */
 #define G_VOLUME_MONITOR_EXTENSION_POINT_NAME "gio-volume-monitor"
 
