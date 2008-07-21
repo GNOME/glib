@@ -1,5 +1,11 @@
 2008-07-21  Emmanuele Bassi  <ebassi@gnome.org>
 
+	* glib/gtimer.c (g_time_val_to_iso8601): Use the right format
+	string to get leading zeros when converting to ISO 8601. (Sven
+	Herzberg)
+
+2008-07-21  Emmanuele Bassi  <ebassi@gnome.org>
+
 	* glib/gbookmarkfile.c:
 	(bookmark_app_info_new): Do not set the timestamp value
 	using time(), as it will be overwritten anyway. (#535223,
