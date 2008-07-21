@@ -104,10 +104,6 @@
  */
 
 
-/* pre allocation configurations
- */
-#define	MAX_STACK_VALUES	(16)
-
 #define REPORT_BUG      "please report occurrence circumstances to gtk-devel-list@gnome.org"
 #ifdef	G_ENABLE_DEBUG
 #define IF_DEBUG(debug_type, cond)	if ((_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) || cond)
@@ -1382,7 +1378,7 @@ g_signal_new (const gchar	 *signal_name,
  * g_signal_override_class_closure() or
  * g_signal_override_class_handler()and chained to with
  * g_signal_chain_from_overridden() or
- * g_signal_chain_from_overridden().
+ * g_signal_chain_from_overridden_handler().
  *
  * See g_signal_new() for information about signal names.
  *
@@ -1963,7 +1959,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
 
   if (closure)
     {
-      GValue *instance_and_params, *free_me = NULL;
+      GValue *instance_and_params;
       GType signal_return_type;
       GValue *param_values;
       va_list var_args;
@@ -1972,8 +1968,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
       va_start (var_args, instance);
 
       signal_return_type = node->return_type;
-      free_me = g_new (GValue, node->n_params + 1);
-      instance_and_params = free_me;
+      instance_and_params = g_slice_alloc (sizeof (GValue) * (n_params + 1));
       param_values = instance_and_params + 1;
 
       for (i = 0; i < node->n_params; i++)
@@ -2000,7 +1995,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
               while (i--)
                 g_value_unset (param_values + i);
 
-              g_free (free_me);
+              g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
               va_end (var_args);
               return;
             }
@@ -2061,8 +2056,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
       for (i = 0; i < n_params; i++)
         g_value_unset (param_values + i);
       g_value_unset (instance_and_params);
-      if (free_me)
-        g_free (free_me);
+      g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 
       va_end (var_args);
 
@@ -2906,7 +2900,7 @@ g_signal_emit_valist (gpointer instance,
 		      GQuark   detail,
 		      va_list  var_args)
 {
-  GValue *instance_and_params, stack_values[MAX_STACK_VALUES], *free_me = NULL;
+  GValue *instance_and_params;
   GType signal_return_type;
   GValue *param_values;
   SignalNode *node;
@@ -2943,20 +2937,15 @@ g_signal_emit_valist (gpointer instance,
 
   n_params = node->n_params;
   signal_return_type = node->return_type;
-  if (node->n_params < MAX_STACK_VALUES)
-    instance_and_params = stack_values;
-  else
-    {
-      free_me = g_new (GValue, node->n_params + 1);
-      instance_and_params = free_me;
-    }
+  instance_and_params = g_slice_alloc (sizeof (GValue) * (n_params + 1));
   param_values = instance_and_params + 1;
+
   for (i = 0; i < node->n_params; i++)
     {
       gchar *error;
       GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
-      
+
       param_values[i].g_type = 0;
       SIGNAL_UNLOCK ();
       g_value_init (param_values + i, ptype);
@@ -2975,7 +2964,7 @@ g_signal_emit_valist (gpointer instance,
 	  while (i--)
 	    g_value_unset (param_values + i);
 
-	  g_free (free_me);
+	  g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 	  return;
 	}
       SIGNAL_LOCK ();
@@ -3016,8 +3005,7 @@ g_signal_emit_valist (gpointer instance,
   for (i = 0; i < n_params; i++)
     g_value_unset (param_values + i);
   g_value_unset (instance_and_params);
-  if (free_me)
-    g_free (free_me);
+  g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 }
 
 /**

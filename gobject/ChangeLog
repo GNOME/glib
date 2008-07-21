@@ -1,3 +1,11 @@
+2008-07-21  Michael Natterer  <mitch@imendio.com>
+
+	* gsignal.c (g_signal_chain_from_overridden_handler): allocate
+	the temp GValue array with GSLice.
+
+	(g_signal_emit_valist): dito. Remove optimization/obfuscation of
+	allocating up to 16 GValues on the stack and always use GSLice.
+
 2008-07-05  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 539229 – gobject-query calls itself query
