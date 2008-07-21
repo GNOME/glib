@@ -1,5 +1,7 @@
 2008-07-21  Michael Natterer  <mitch@imendio.com>
 
+	Reviewed by Tim Janik:
+
 	* gsignal.c (g_signal_chain_from_overridden_handler): allocate
 	the temp GValue array with GSLice.
 
