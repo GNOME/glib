@@ -1144,6 +1144,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
   gobject_class->finalize = g_unix_mount_monitor_finalize;
   /**
    * GUnixMountMonitor::mounts-changed:
+   * @monitor: the object on which the signal is emitted
    * 
    * Emitted when the unix mounts have changed.
    **/ 
@@ -1157,6 +1158,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
 		  G_TYPE_NONE, 0);
   /**
    * GUnixMountMonitor::mountpoints-changed:
+   * @monitor: the object on which the signal is emitted
    * 
    * Emitted when the unix mount points have changed.
    **/
