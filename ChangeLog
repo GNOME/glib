@@ -1,3 +1,7 @@
+2008-07-21  Matthias Clasen  <mclasen2redhat.com>
+
+	* NEWS: Updates
+
 2008-07-21  Emmanuele Bassi  <ebassi@gnome.org>
 
 	* glib/gtimer.c (g_time_val_to_iso8601): Use the right format
