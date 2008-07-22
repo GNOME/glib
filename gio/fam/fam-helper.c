@@ -26,6 +26,7 @@
 #include <fam.h>
 #include <gio/gfilemonitor.h>
 
+#include "gfile.h"
 #include "fam-helper.h"
 
 static FAMConnection* fam_connection = NULL;
