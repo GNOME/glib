@@ -64,6 +64,24 @@ typedef unsigned __int64 guint64;
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
 
+#if defined(_M_X64) || defined(_M_AMD64)
+
+#define GLIB_SIZEOF_VOID_P 8
+#define GLIB_SIZEOF_LONG   4
+#define GLIB_SIZEOF_SIZE_T 8
+
+typedef signed long long gssize;
+typedef unsigned long long gsize;
+#define G_GSIZE_MODIFIER "I64"
+#define G_GSSIZE_FORMAT "I64d"
+#define G_GSIZE_FORMAT "I64u"
+
+#define G_MAXSIZE	G_MAXUINT64
+#define G_MINSSIZE	G_MININT64
+#define G_MAXSSIZE	G_MAXINT64
+
+#else
+
 #define GLIB_SIZEOF_VOID_P 4
 #define GLIB_SIZEOF_LONG   4
 #define GLIB_SIZEOF_SIZE_T 4
@@ -77,6 +95,8 @@ typedef unsigned int gsize;
 #define G_MAXSIZE	G_MAXUINT
 #define G_MINSSIZE	G_MININT
 #define G_MAXSSIZE	G_MAXINT
+
+#endif
 
 typedef gint64 goffset;
 #define G_MINOFFSET	G_MININT64

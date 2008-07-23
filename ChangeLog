@@ -1,3 +1,8 @@
+2008-07-24  Tor Lillqvist  <tml@novell.com>
+
+	* glibconfig.h.win32.in: Patch for 64-bit Windows from Richard
+	Hult.
+
 2008-07-23  Matthias Clasen  <mclasen@redhat.com>
 
 	544088 – option_test_LDADD is left in tests/Makefile.am
