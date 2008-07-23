@@ -64,7 +64,7 @@ typedef unsigned __int64 guint64;
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
 
-#if defined(_M_X64) || defined(_M_AMD64)
+#if defined(_WIN64) || defined(_M_X64) || defined(_M_AMD64)
 
 #define GLIB_SIZEOF_VOID_P 8
 #define GLIB_SIZEOF_LONG   4

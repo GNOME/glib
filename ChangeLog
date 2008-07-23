@@ -1,5 +1,9 @@
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
+	* glibconfig.h.win32.in: Check also _WIN64.
+
+2008-07-24  Tor Lillqvist  <tml@novell.com>
+
 	* glibconfig.h.win32.in: Patch for 64-bit Windows from Richard
 	Hult.
 
