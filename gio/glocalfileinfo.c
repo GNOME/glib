@@ -1786,6 +1786,24 @@ get_byte_string (const GFileAttributeValue  *value,
 #endif
 
 static gboolean
+get_string (const GFileAttributeValue  *value,
+	    const char                **val_out,
+	    GError                    **error)
+{
+  if (value->type != G_FILE_ATTRIBUTE_TYPE_STRING)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+		   _("Invalid attribute type (byte string expected)"));
+      return FALSE;
+    }
+
+  *val_out = value->u.string;
+  
+  return TRUE;
+}
+
+
+static gboolean
 set_unix_mode (char                       *filename,
 	       const GFileAttributeValue  *value,
 	       GError                    **error)
@@ -2028,6 +2046,52 @@ set_mtime_atime (char                       *filename,
 }
 #endif
 
+
+static gboolean
+set_selinux_context (char                       *filename,
+		 const GFileAttributeValue  *value,
+		 GError                    **error)
+{
+  const char *val;
+
+  if (!get_string (value, &val, error))
+    return FALSE;
+
+  if (val == NULL)
+  {
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+               _("SELinux context must be non-NULL"));
+    return FALSE;
+  }
+
+#ifdef HAVE_SELINUX
+  if (is_selinux_enabled ()) {
+	security_context_t val_s;
+	
+	val_s = g_strdup (val);
+	
+	if (setfilecon_raw (filename, val_s) < 0)
+	{
+            int errsv = errno;
+            
+            g_set_error (error, G_IO_ERROR,
+                         g_io_error_from_errno (errsv),
+                	_("Error setting SELinux context: %s"),
+                         g_strerror (errsv));
+            return FALSE;
+        }
+        g_free (val_s);
+  } else {
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+               _("SELinux is not enabled on this system"));
+    return FALSE;
+  }
+#endif 
+                                                     
+  return TRUE;
+}
+
+
 gboolean
 _g_local_file_info_set_attribute (char                 *filename,
 				  const char           *attribute,
@@ -2072,6 +2136,11 @@ _g_local_file_info_set_attribute (char                 *filename,
     return set_xattr (filename, attribute, &value, error);
   else if (g_str_has_prefix (attribute, "xattr-sys::"))
     return set_xattr (filename, attribute, &value, error);
+#endif
+
+#ifdef HAVE_SELINUX 
+  else if (strcmp (attribute, G_FILE_ATTRIBUTE_SELINUX_CONTEXT) == 0)
+    return set_selinux_context (filename, &value, error);
 #endif
   
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -2196,6 +2265,26 @@ _g_local_file_info_set_attributes  (char                 *filename,
 #endif
 
   /* xattrs are handled by default callback */
+
+
+  /*  SELinux context */
+#ifdef HAVE_SELINUX 
+  if (is_selinux_enabled ()) {
+    value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_SELINUX_CONTEXT);
+    if (value)
+    {
+      if (!set_selinux_context (filename, value, error))
+        {
+          value->status = G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING;
+          res = FALSE;
+          /* Don't set error multiple times */
+          error = NULL;
+        }
+      else
+        value->status = G_FILE_ATTRIBUTE_STATUS_SET;
+    }
+  }
+#endif
 
   return res;
 }
