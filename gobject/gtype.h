@@ -483,7 +483,7 @@ struct _GTypeQuery
  * Get the class structure of a given @instance, casted
  * to a specified ancestor type @g_type of the instance.
  * 
- * that while calling a GInstanceInitFunc(), the class pointer gets
+ * Note that while calling a GInstanceInitFunc(), the class pointer gets
  * modified, so it might not always return the expected pointer.
  * 
  * This macro should only be used in type implementations.
