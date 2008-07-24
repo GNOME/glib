@@ -1,5 +1,22 @@
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
+	* configure.in: Must output the GLIB_USING_SYSTEM_PRINTF to
+	glibconfig.h using the same two phase code as for the other
+	defines in it. Can't check enable_included_printf directly in the
+	shell code that is the first argument to AC_CONFIG_COMMANDS().
+
+	Preset glib_cv_stack_grows=no on Windows to help
+	cross-compilation.
+
+	* configure.in: Enhancements for 64-bit Windows: 
+
+	Handle also size_t being larger than long. It is long long
+	a.k.a. __int64 on the LLP64 Win64.
+
+	Set glib_void_p and glib_long correctly. Their assignments were
+	crossed. It hasn't mattered on LP64 platforms like all (?) 64-bit
+	UNIXes, but on the LLP Win64 it was wrong.
+
 	* glibconfig.h.win32.in: Check also _WIN64.
 
 2008-07-24  Tor Lillqvist  <tml@novell.com>

@@ -119,6 +119,7 @@ case "$host" in
   *-*-mingw*)
     glib_native_win32=yes
     glib_pid_type='void *'
+    glib_cv_stack_grows=no
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
     # don't seem to be quite good enough, at least not in mingw-runtime-3.14.
     # (Sorry, I don't know exactly what is the problem, but it is related to
@@ -879,6 +880,12 @@ case $ac_cv_sizeof_size_t in
       ;;
   $ac_cv_sizeof_long) 
       glib_size_type=long
+      ;;
+  $ac_cv_sizeof_long_long)
+      glib_size_type='long long'
+      ;;
+  $ac_cv_sizeof__int64)
+      glib_size_type='__int64'
       ;;
   *)  AC_MSG_ERROR([No type matching size_t in size])
       ;;
@@ -2632,7 +2639,7 @@ _______EOF
 	if test x$glib_sys_poll_h = xyes; then
 	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
 	fi
-	if test x$enable_included_printf != xyes; then
+	if test x$glib_included_printf != xyes; then
           echo "
 /* Specifies that GLib's g_print*() functions wrap the
  * system printf functions.  This is useful to know, for example,
@@ -2991,6 +2998,10 @@ if test x$ac_cv_header_sys_poll_h = xyes ; then
   glib_sys_poll_h=yes
 fi
 
+if test x$enable_included_printf = xyes ; then
+  glib_included_printf=yes
+fi
+
 case 2 in
 $ac_cv_sizeof_short)		
   gint16=short
@@ -3068,11 +3079,11 @@ $ac_cv_sizeof___int64)
   ;;
 esac
 glib_size_t=$ac_cv_sizeof_size_t
-glib_size_type_define=$glib_size_type
-glib_void_p=$ac_cv_sizeof_long
-glib_long=$ac_cv_sizeof_void_p
+glib_size_type_define="$glib_size_type"
+glib_void_p=$ac_cv_sizeof_void_p
+glib_long=$ac_cv_sizeof_long
 
-case $glib_size_type in
+case "$glib_size_type" in
 short)
   gsize_modifier='"h"'
   gsize_format='"hu"'
@@ -3091,6 +3102,12 @@ long)
   gssize_format='"li"'
   glib_msize_type='LONG'
   ;;
+"long long"|__int64)
+  gsize_modifier='"I64"'
+  gsize_format='"I64u"'
+  gssize_format='"I64i"'
+  glib_msize_type='INT64'
+  ;;
 esac
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`
@@ -3100,6 +3117,7 @@ glongbits=`expr $ac_cv_sizeof_long \* 8`
 case $ac_cv_sizeof_void_p in
 $ac_cv_sizeof_int)  	glib_gpi_cast=''        glib_gpui_cast=''         ;;
 $ac_cv_sizeof_long) 	glib_gpi_cast='(glong)' glib_gpui_cast='(gulong)' ;;
+$ac_cv_sizeof_long_long)glib_gpi_cast='(gint64)' glib_gpui_cast='(guint64)' ;;
 *) 			glib_unknown_void_p=yes ;;
 esac
 
