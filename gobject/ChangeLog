@@ -1,3 +1,10 @@
+2008-07-24  Tor Lillqvist  <tml@novell.com>
+
+	* gtype.h: Define G_TYPE_FORMAT as the printf format for a GType
+	value. Either G_GSIZE_FORMAT or "lu".
+
+	* gtype.c: Use it instead of the C99 zu.
+
 2008-07-23  Matthias Clasen  <mclasen2redhat.com>
 
 	544177 - Fix trivial cut and paste error in documentation

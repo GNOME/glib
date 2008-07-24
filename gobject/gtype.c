@@ -2355,7 +2355,7 @@ g_type_register_fundamental (GType                       type_id,
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
-      g_warning ("attempt to register fundamental type `%s' with invalid type id (%zu)",
+      g_warning ("attempt to register fundamental type `%s' with invalid type id (%" G_TYPE_FORMAT ")",
 		 type_name,
 		 type_id);
       return 0;
@@ -3937,7 +3937,7 @@ g_type_value_table_peek (GType type)
     return vtable;
   
   if (!node)
-    g_warning (G_STRLOC ": type id `%zu' is invalid", type);
+    g_warning (G_STRLOC ": type id `%" G_TYPE_FORMAT "' is invalid", type);
   if (!has_refed_data)
     g_warning ("can't peek value table for type `%s' which is not currently referenced",
 	       type_descriptive_name_I (type));
