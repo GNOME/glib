@@ -1,5 +1,10 @@
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gslice.c (smc_notify_free): Use G_GSIZE_FORMAT instead of
+	the C99 "zu".
+
+2008-07-24  Tor Lillqvist  <tml@novell.com>
+
 	* configure.in: Must output the GLIB_USING_SYSTEM_PRINTF to
 	glibconfig.h using the same two phase code as for the other
 	defines in it. Can't check enable_included_printf directly in the
