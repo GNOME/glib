@@ -1,5 +1,10 @@
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gdir.c: Include <stdio.h> for FILENAME_MAX on newer mingw
+	installations.
+
+2008-07-24  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gslice.c (smc_notify_free): Use G_GSIZE_FORMAT instead of
 	the C99 "zu".
 
