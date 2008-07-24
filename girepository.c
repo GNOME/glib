@@ -114,6 +114,11 @@ g_irepository_register (GIRepository *repository,
   if (metadata->module == NULL)
       metadata->module = g_module_open (NULL, 0); 
 
+  if (g_getenv ("G_IREPOSITORY_VERBOSE"))
+    {
+      g_printerr ("Loaded typelib %s\n", name);
+    }
+
   return name;
 }
 
@@ -443,7 +448,7 @@ g_irepository_register_file (GIRepository  *repository,
     full_path = g_build_filename (dir, fname, NULL);
     mfile = g_mapped_file_new (full_path, FALSE, &error1);
     if (error1) {
-      g_debug ("Failed to mmap \"%s\"", full_path);
+      g_debug ("Failed to mmap \"%s\": %s", full_path, error1->message);
       g_clear_error (&error1);
       g_free (full_path);
       continue;
