@@ -119,6 +119,11 @@ struct _GMountIface
   gchar **           (*guess_content_type_finish) (GMount              *mount,
                                                    GAsyncResult        *result,
                                                     GError             **error); 
+
+  gchar **           (*guess_content_type_sync) (GMount              *mount,
+                                                 gboolean             force_rescan,
+                                                 GCancellable        *cancellable,
+                                                 GError             **error);
 };
 
 GType g_mount_get_type (void) G_GNUC_CONST;
@@ -165,6 +170,11 @@ void          g_mount_guess_content_type        (GMount              *mount,
 gchar **      g_mount_guess_content_type_finish (GMount              *mount,
                                                  GAsyncResult        *result,
                                                  GError             **error);
+
+gchar **      g_mount_guess_content_type_sync (GMount              *mount,
+                                               gboolean             force_rescan,
+                                               GCancellable        *cancellable,
+                                               GError             **error);
 
 G_END_DECLS
 

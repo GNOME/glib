@@ -570,9 +570,10 @@ g_mount_remount_finish (GMount        *mount,
  * memory cards. See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
  * specification for more on x-content types.
  *
- * This is an asynchronous operation, and is finished by calling 
- * g_mount_guess_content_type_finish() with the @mount and #GAsyncResult 
- * data returned in the @callback. 
+ * This is an asynchronous operation (see
+ * g_mount_guess_content_type_sync() for the synchronous version), and
+ * is finished by calling g_mount_guess_content_type_finish() with the
+ * @mount and #GAsyncResult data returned in the @callback.
  *
  * Since: 2.18
  */
@@ -644,6 +645,55 @@ g_mount_guess_content_type_finish (GMount        *mount,
   return (* iface->guess_content_type_finish) (mount, result, error);
 }
 
+/**
+ * g_mount_guess_content_type_sync:
+ * @mount: a #GMount
+ * @force_rescan: Whether to force a rescan of the content.
+ *     Otherwise a cached result will be used if available
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore
+ *
+ * Tries to guess the type of content stored on @mount. Returns one or
+ * more textual identifiers of well-known content types (typically
+ * prefixed with "x-content/"), e.g. x-content/image-dcf for camera 
+ * memory cards. See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * specification for more on x-content types.
+ *
+ * This is an synchronous operation and as such may block doing IO;
+ * see g_mount_guess_content_type() for the asynchronous version.
+ *
+ * Returns: a %NULL-terminated array of content types or %NULL on error.
+ *     Caller should free this array with g_strfreev() when done with it.
+ *
+ * Since: 2.18
+ */
+char **
+g_mount_guess_content_type_sync (GMount              *mount,
+                                 gboolean             force_rescan,
+                                 GCancellable        *cancellable,
+                                 GError             **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->guess_content_type_sync == NULL)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           /* Translators: This is an error
+                            * message for mount objects that
+                            * don't implement content type guessing. */
+                           _("mount doesn't implement synchronous content type guessing"));
+
+      return NULL;
+    }
+
+  return (* iface->guess_content_type_sync) (mount, force_rescan, cancellable, error);
+}
 
 #define __G_MOUNT_C__
 #include "gioaliasdef.c"

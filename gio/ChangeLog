@@ -1,3 +1,9 @@
+2008-07-24  David Zeuthen  <davidz@redhat.com>
+
+	* gmount.[ch]:
+	* gio.symbols:
+	Also export a g_mount_guess_content_type_sync() function.
+
 2008-07-23  Matthias Clasen  <mclasen@redhat.com>
 
 	529694 – SELinux context setting support

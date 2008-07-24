@@ -718,6 +718,7 @@ g_mount_remount
 g_mount_remount_finish 
 g_mount_guess_content_type
 g_mount_guess_content_type_finish
+g_mount_guess_content_type_sync
 #endif
 #endif
 

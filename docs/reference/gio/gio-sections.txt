@@ -816,6 +816,7 @@ g_mount_eject
 g_mount_eject_finish
 g_mount_guess_content_type
 g_mount_guess_content_type_finish
+g_mount_guess_content_type_sync
 <SUBSECTION Standard>
 G_IS_MOUNT
 G_MOUNT
