@@ -1,3 +1,8 @@
+2008-07-25 15:47:08  Tim Janik  <timj@imendio.com>
+
+	* glib/tests/testing.c (test_random_conversions): added new sample
+	test to prepare for extended range random tests.
+
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gdir.c: Include <stdio.h> for FILENAME_MAX on newer mingw

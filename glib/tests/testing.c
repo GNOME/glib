@@ -179,6 +179,18 @@ test_data_test (gconstpointer test_data)
   g_assert (test_data == (void*) 0xc0c0baba);
 }
 
+static void
+test_random_conversions (void)
+{
+  /* very simple conversion test using random numbers */
+  int vint = g_test_rand_int();
+  char *err, *str = g_strdup_printf ("%d", vint);
+  gint64 vint64 = g_ascii_strtoll (str, &err, 10);
+  g_assert_cmphex (vint, ==, vint64);
+  g_assert (!err || *err == 0);
+  g_free (str);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -187,6 +199,7 @@ main (int   argc,
 
   g_test_add_func ("/random-generator/rand-1", test_rand1);
   g_test_add_func ("/random-generator/rand-2", test_rand2);
+  g_test_add_func ("/random-generator/random-conversions", test_random_conversions);
   g_test_add_func ("/misc/assertions", test_assertions);
   g_test_add_data_func ("/misc/test-data", (void*) 0xc0c0baba, test_data_test);
   g_test_add ("/misc/primetoul", Fixturetest, (void*) 0xc0cac01a, fixturetest_setup, fixturetest_test, fixturetest_teardown);
