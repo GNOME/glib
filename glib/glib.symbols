@@ -492,7 +492,9 @@ g_io_channel_new_file PRIVATE
 #ifdef G_OS_WIN32
 g_io_channel_unix_get_fd
 g_io_channel_unix_new
+#ifndef _WIN64
 g_io_channel_new_file PRIVATE
+#endif
 g_io_channel_new_file_utf8
 g_io_channel_win32_get_fd
 g_io_channel_win32_make_pollfd
