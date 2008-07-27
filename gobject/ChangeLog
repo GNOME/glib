@@ -1,5 +1,11 @@
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
+	* gtype.h
+	* gtype.c: Revert my change from 2008-07-24. No G_TYPE_FORMAT is
+	needed. Just use G_GSIZE_FORMAT always when printing GType values.
+
+2008-07-27  Tor Lillqvist  <tml@novell.com>
+
 	* Makefile.am (gobject-2.0.lib): Pass appropriate -machine flag to lib.exe.
 
 2008-07-24  Tor Lillqvist  <tml@novell.com>

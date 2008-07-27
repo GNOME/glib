@@ -365,10 +365,8 @@ G_BEGIN_DECLS
  */
 #if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined __cplusplus
 typedef gsize                           GType;
-#define G_TYPE_FORMAT G_GSIZE_FORMAT
 #else   /* for historic reasons, C++ links against gulong GTypes */
 typedef gulong                          GType;
-#define G_TYPE_FORMAT "lu"
 #endif
 typedef struct _GValue                  GValue;
 typedef union  _GTypeCValue             GTypeCValue;
