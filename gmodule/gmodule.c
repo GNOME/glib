@@ -61,7 +61,7 @@
 struct _GModule
 {
   gchar	*file_name;
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
   gchar *cp_file_name;
 #endif
   gpointer handle;
@@ -355,7 +355,7 @@ g_module_open (const gchar    *file_name,
 	    {
 	      main_module = g_new (GModule, 1);
 	      main_module->file_name = NULL;
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
 	      main_module->cp_file_name = NULL;
 #endif
 	      main_module->handle = handle;
@@ -470,7 +470,7 @@ g_module_open (const gchar    *file_name,
       
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
       module->cp_file_name = g_locale_from_utf8 (file_name, -1,
 						 NULL, NULL, NULL);
 #endif
@@ -516,7 +516,7 @@ g_module_open (const gchar    *file_name,
   return module;
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
 
 #undef g_module_open
 
@@ -580,7 +580,7 @@ g_module_close (GModule	       *module)
       
       _g_module_close (module->handle, FALSE);
       g_free (module->file_name);
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
       g_free (module->cp_file_name);
 #endif
       g_free (module);
@@ -659,7 +659,7 @@ g_module_name (GModule *module)
   return module->file_name;
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined(_WIN64)
 
 #undef g_module_name
 

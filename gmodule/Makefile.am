@@ -9,10 +9,13 @@ AM_CPPFLAGS = 				\
 	@GLIB_DEBUG_FLAGS@ 		\
 	-DG_DISABLE_DEPRECATED
 
+gmodule.def: gmodule.symbols
+	(echo -e EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
+
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
 		gmoduleconf.h.in 	\
-		gmodule.def		\
+		gmodule.symbols		\
 		gmodule-dl.c		\
 		gmodule-dld.c		\
 		gmodule-dyld.c		\

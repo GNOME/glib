@@ -1,6 +1,20 @@
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
-	* Makefile.am (gmodule-2.0.lib): Pass appropriate -machine flag to lib.exe.
+	* gmodule.symbols: New file.
+
+	* gmodule.c: Bypass the Windows ABI compatibility symbols on
+	64-bit Windows. Thus no need to keep the file name in system
+	codepage around on 64-bit Windows either.
+	
+	* Makefile.am: Produce gmodule.def from gmodule.symbols. Dist
+	gmodule.symbols instead of gmodule.def.
+
+	* gmodule.def: Drop from SVN.
+
+2008-07-27  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am (gmodule-2.0.lib): Pass appropriate -machine flag to
+	lib.exe.
 
 2008-07-21  Matthias Clasen  <mclasen2redhat.com>
 
