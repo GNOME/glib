@@ -1,3 +1,7 @@
+2008-07-27  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am (gobject-2.0.lib): Pass appropriate -machine flag to lib.exe.
+
 2008-07-24  Tor Lillqvist  <tml@novell.com>
 
 	* gtype.h: Define G_TYPE_FORMAT as the printf format for a GType

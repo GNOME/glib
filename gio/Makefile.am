@@ -147,7 +147,7 @@ endif
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi
+platform_libadd += -lshlwapi -lwininet
 win32_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
@@ -350,4 +350,4 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 	    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
 
 gio-2.0.lib: libgio-2.0.la gio.def
-	lib -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@

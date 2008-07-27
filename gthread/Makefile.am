@@ -80,7 +80,7 @@ gthread-win32-res.o: gthread.rc
 	$(WINDRES) gthread.rc $@
 
 gthread-2.0.lib: libgthread-2.0.la gthread.def
-	lib -name:libgthread-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(srcdir)/gthread.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgthread-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(srcdir)/gthread.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \

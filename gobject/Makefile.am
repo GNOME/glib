@@ -244,7 +244,7 @@ gobject-win32-res.o: gobject.rc
 	$(WINDRES) gobject.rc $@
 
 gobject-2.0.lib: libgobject-2.0.la gobject.def
-	lib -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \

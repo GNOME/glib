@@ -115,6 +115,7 @@ AC_MSG_RESULT([$glib_native_beos])
 dnl
 
 AC_MSG_CHECKING([for Win32])
+LIB_EXE_MACHINE_FLAG=X86
 case "$host" in
   *-*-mingw*)
     glib_native_win32=yes
@@ -129,6 +130,11 @@ case "$host" in
     # So preset the autoconf cache variables.
     ac_cv_func_vsnprintf_c99=no
     ac_cv_func_snprintf_c99=no
+    case "$host" in
+    x86_64-*-*)
+      LIB_EXE_MACHINE_FLAG=X64
+      ;;
+    esac
     ;;
   *)
     glib_native_win32=no
@@ -142,6 +148,8 @@ case $host in
 esac
 
 AC_MSG_RESULT([$glib_native_win32])
+
+AC_SUBST(LIB_EXE_MACHINE_FLAG)
 
 glib_have_carbon=no
 AC_MSG_CHECKING([for Mac OS X Carbon support])

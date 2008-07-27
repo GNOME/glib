@@ -1,3 +1,11 @@
+2008-07-27  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Set LIB_EXE_MACHINE_FLAG to either X86 or X64 on
+	Windows. AC_SUBST it.
+
+	* glib/Makefile.am (glib-2.0.lib): Pass appropriate -machine flag
+	to lib.exe.
+
 2008-07-25 15:47:08  Tim Janik  <timj@imendio.com>
 
 	* glib/tests/testing.c (test_random_conversions): added new sample
