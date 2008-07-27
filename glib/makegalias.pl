@@ -83,7 +83,7 @@ while (<>) {
       next;
   }
 
-  if ($_ =~ /^\#ifn?def\s+(G|DISABLE_MEM_POOLS)/)
+  if ($_ =~ /^\#ifn?def\s+(G|DISABLE_MEM_POOLS|_WIN64)/)
   {
       print $_;
       

@@ -1331,11 +1331,14 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		      "UTF-8", charset, bytes_read, bytes_written, error);
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_filename_to_utf8
 
-/* Binary compatibility version. Not for newly compiled code. */
+/* Binary compatibility version. Not for newly compiled code. Also not needed for
+ * 64-bit versions as there should be no old deployed binaries that would use
+ * the old versions.
+ */
 
 gchar*
 g_filename_to_utf8 (const gchar *opsysstring, 
@@ -1396,7 +1399,7 @@ g_filename_from_utf8 (const gchar *utf8string,
 		      charset, "UTF-8", bytes_read, bytes_written, error);
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_filename_from_utf8
 
@@ -1831,7 +1834,7 @@ g_filename_from_uri (const gchar *uri,
   return result;
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_filename_from_uri
 
@@ -1906,7 +1909,7 @@ g_filename_to_uri (const gchar *filename,
   return escaped_uri;
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_filename_to_uri
 

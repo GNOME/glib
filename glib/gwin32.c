@@ -442,6 +442,8 @@ g_win32_get_package_installation_directory (const gchar *package,
   return result;
 }
 
+#if !defined (_WIN64)
+
 #undef g_win32_get_package_installation_directory
 
 /* DLL ABI binary compatibility version that uses system codepage file names */
@@ -471,6 +473,8 @@ g_win32_get_package_installation_directory (const gchar *package,
 
   return retval;
 }
+
+#endif
 
 /**
  * g_win32_get_package_installation_subdirectory:
@@ -512,6 +516,8 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
   return dirname;
 }
 
+#if !defined (_WIN64)
+
 #undef g_win32_get_package_installation_subdirectory
 
 /* DLL ABI binary compatibility version that uses system codepage file names */
@@ -531,6 +537,8 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
 
   return dirname;
 }
+
+#endif
 
 static guint windows_version;
 

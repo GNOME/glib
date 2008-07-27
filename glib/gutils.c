@@ -3286,7 +3286,7 @@ glib_gettext (const gchar *str)
   return g_dgettext (GETTEXT_PACKAGE, str);
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 /* Binary compatibility versions. Not for newly compiled code. */
 

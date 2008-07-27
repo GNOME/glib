@@ -316,7 +316,7 @@ g_file_test (const gchar *filename,
 #endif
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_file_test
 
@@ -860,7 +860,7 @@ g_file_get_contents (const gchar *filename,
 #endif
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_file_get_contents
 
@@ -1238,7 +1238,7 @@ g_mkstemp (gchar *tmpl)
   return create_temp_file (tmpl, 0600);
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_mkstemp
 
@@ -1417,7 +1417,7 @@ g_file_open_tmp (const gchar *tmpl,
   return retval;
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 #undef g_file_open_tmp
 

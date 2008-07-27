@@ -1227,6 +1227,8 @@ g_spawn_close_pid (GPid pid)
     CloseHandle (pid);
 }
 
+#if !defined (_WIN64)
+
 /* Binary compatibility versions that take system codepage pathnames,
  * argument vectors and environments. These get used only by code
  * built against 2.8.1 or earlier. Code built against 2.8.2 or later
@@ -1491,6 +1493,8 @@ g_spawn_command_line_async (const gchar *command_line,
 
   return retval;
 }
+
+#endif	/* !_WIN64 */
 
 #endif /* !GSPAWN_HELPER */
 

@@ -1,5 +1,22 @@
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
+	* glib/glib.symbols
+	* glib/gconvert.c
+	* glib/gdir.c
+	* glib/gfileutils.c
+	* glib/giowin32.c
+	* glib/gspawn-win32.c
+	* glib/gutils.c
+	* glib/gwin32.c: Bypass the Windows "ABI compatibility" symbols on
+	_WIN64. As there hasn't been any widely deployed 64-bit Windows
+	builds of the really old GLib (pre-2.8.1) versions those refer to,
+	there is no need to have the "ABI compatibility" versions in the
+	DLL.
+
+	* glib/makegalias.pl: Handle #ifndef _WIN64: Just output it, too.
+
+2008-07-27  Tor Lillqvist  <tml@novell.com>
+
 	* configure.in: Set LIB_EXE_MACHINE_FLAG to either X86 or X64 on
 	Windows. AC_SUBST it.
 

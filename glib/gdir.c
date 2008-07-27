@@ -137,7 +137,7 @@ g_dir_open (const gchar  *path,
 #endif
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 /* The above function actually is called g_dir_open_utf8, and it's
  * that what applications compiled with this GLib version will
@@ -227,7 +227,7 @@ g_dir_read_name (GDir *dir)
 #endif
 }
 
-#ifdef G_OS_WIN32
+#if defined (G_OS_WIN32) && !defined (_WIN64)
 
 /* Ditto for g_dir_read_name */
 

@@ -1644,7 +1644,7 @@ g_io_channel_new_file (const gchar  *filename,
   return channel;
 }
 
-#ifdef G_OS_WIN32
+#if !defined (_WIN64)
 
 #undef g_io_channel_new_file
 
