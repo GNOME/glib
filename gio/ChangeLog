@@ -1,3 +1,15 @@
+2008-07-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gemblemedicon.[hc]: Add a GIcon implementation that can
+	add an emblem to another icon.
+
+	* gio.h:
+	* Makefile.am:
+	* gio.symbols: Glue
+
+	* gloadableicon.c:
+	* gfileicon.c: Small documentation additions.
+
 2008-07-28  Tor Lillqvist  <tml@novell.com>
 
 	* gwin32appinfo.c (g_win32_app_info_get_icon): Correct return
