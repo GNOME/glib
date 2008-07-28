@@ -1,5 +1,14 @@
 2008-07-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 545157 – wrong/no list of "open with" applications for .cc and
+	.cpp files
+
+	* gdesktopappinfo.c (get_all_desktop_entries_for_mime_type):
+	Collect all ancestors, not just direct parents. Pointed
+	out by Bastien Nocera
+
+2008-07-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* Makefile.am: Install gemblemedicon.h
 
 2008-07-28  Matthias Clasen  <mclasen@redhat.com>
