@@ -1,3 +1,8 @@
+2008-07-28  Tor Lillqvist  <tml@novell.com>
+
+	* gwin32appinfo.c (g_win32_app_info_get_icon): Correct return
+	type.
+
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am (gio-2.0.lib): Pass appropriate -machine flag to lib.exe.

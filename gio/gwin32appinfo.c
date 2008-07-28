@@ -239,7 +239,7 @@ g_win32_app_info_get_executable (GAppInfo *appinfo)
   return info->executable;
 }
 
-static const char *
+static GIcon *
 g_win32_app_info_get_icon (GAppInfo *appinfo)
 {
   /* GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo); */
