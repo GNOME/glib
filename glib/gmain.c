@@ -91,7 +91,11 @@
 
 #ifdef G_MAIN_POLL_DEBUG
 #ifdef G_OS_WIN32
+#ifdef _WIN64
+#define GPOLLFD_FORMAT "%#I64x"
+#else
 #define GPOLLFD_FORMAT "%#x"
+#endif
 #else
 #define GPOLLFD_FORMAT "%d"
 #endif
@@ -375,7 +379,7 @@ g_poll (GPollFD *fds,
 	  {
 #ifdef G_MAIN_POLL_DEBUG
 	    if (g_main_poll_debug)
-	      g_print (" %#x", f->fd);
+	      g_print (" %p", (HANDLE) f->fd);
 #endif
 	    handles[nhandles++] = (HANDLE) f->fd;
 	  }
@@ -477,12 +481,12 @@ g_poll (GPollFD *fds,
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {
-	if (f->fd == (gint) handles[ready - WAIT_OBJECT_0])
+	if ((HANDLE) f->fd == handles[ready - WAIT_OBJECT_0])
 	  {
 	    f->revents = f->events;
 #ifdef G_MAIN_POLL_DEBUG
 	    if (g_main_poll_debug)
-	      g_print ("g_poll: got event %#x\n", f->fd);
+	      g_print ("g_poll: got event %p\n", (HANDLE) f->fd);
 #endif
 	  }
       }
@@ -682,11 +686,11 @@ g_main_context_init_pipe (GMainContext *context)
   if (context->wake_up_semaphore == NULL)
     g_error ("Cannot create wake-up semaphore: %s",
 	     g_win32_error_message (GetLastError ()));
-  context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
+  context->wake_up_rec.fd = (gssize) context->wake_up_semaphore;
   context->wake_up_rec.events = G_IO_IN;
 #  ifdef G_MAIN_POLL_DEBUG
   if (g_main_poll_debug)
-    g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
+    g_print ("wake-up semaphore: %p\n", context->wake_up_semaphore);
 #  endif
 # endif
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
@@ -4042,7 +4046,7 @@ g_child_watch_source_new (GPid pid)
   GChildWatchSource *child_watch_source = (GChildWatchSource *)source;
 
 #ifdef G_OS_WIN32
-  child_watch_source->poll.fd = (int)pid;
+  child_watch_source->poll.fd = (gssize) pid;
   child_watch_source->poll.events = G_IO_IN;
 
   g_source_add_poll (source, &child_watch_source->poll);

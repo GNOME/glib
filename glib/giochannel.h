@@ -328,7 +328,15 @@ gint        g_io_channel_win32_poll   (GPollFD    *fds,
 				       gint        timeout_);
 
 /* Create an IO channel for Windows messages for window handle hwnd. */
+#if GLIB_SIZEOF_VOID_P == 8
+/* We use gsize here so that it is still an integer type and not a
+ * pointer, like the guint in the traditional prototype. We can't use
+ * intptr_t as that is not portable enough.
+ */
+GIOChannel *g_io_channel_win32_new_messages (gsize hwnd);
+#else
 GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
+#endif
 
 /* Create an IO channel for C runtime (emulated Unix-like) file
  * descriptors. After calling g_io_add_watch() on a IO channel

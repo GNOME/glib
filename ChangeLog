@@ -1,3 +1,53 @@
+2008-07-28  Tor Lillqvist  <tml@novell.com>
+
+	Fix problems on 64-bit Windows. Avoid warnings, some of which
+	indicated actual problems, some which were just annoyances. 
+
+	Where casts to an integer type are needed for pointers, use
+	gssize. Technically intptr_t would be the more proper type, but we
+	still want to be compilable with MSVS6 and 7 which don't have
+	intptr_t. MSVS8 and 9 do have intptr_t, but in <crtdefs.h>, not
+	<stdint.h>.
+
+	Use %p to print out handles. Use gssize casts when assigning
+	GPollFD::fd fields.
+
+	Use G_GSIZE_FORMAT when printing size_t values.
+	
+	* configure.in: Define automake conditional G_OS_WIN32_X64 which
+	is true on Win64.
+
+	* glib/giochannel.h: Use slightly different prototype for
+	g_io_channel_win32_new_messages() on Win64 with gsize instead of
+	guint.
+
+	* glib/giowin32.c
+	* glib/gmain.c
+	* glib/gspawn-win32.c
+	* tests/testglib.c: Generic changes as described above.
+
+	* glib/gmain.h: Don't bother mentioning GIMP in comment.
+
+	* glib/grel.c (tuple_hash_2): Use all bits of pointer.
+
+	* glib/gspawn-win32.c
+	* glib/gspawn-win32-helper.c: Use gssize types in the
+	communication between parent and helper process, so that we can
+	pass process handles, which are pointers, also on Win64.
+
+	* glib/gtimer.c (g_time_val_to_iso8601): time_t is 64 bits on
+	Win64 so we can't pass the address of a GTimeVal::tv_sec which is
+	a long directly to gmtime(). On the other hand, changing
+	GTimeVal::tv_sec to be a gint64 on Win64 is not really feasible
+	either, as that would then require changes in much code that uses
+	GTimeVals.
+
+	* glib/gspawn-win32.c
+	* glib/Makefile.am: Call the helper programs
+	gspawn-win64-helper.exe and gspawn-win64-helper-console.exe on
+	Win64, to avoid potential risk of running a 32-bit version of the
+	helper.
+
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
 	* glib/glib.symbols

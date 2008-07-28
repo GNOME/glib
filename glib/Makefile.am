@@ -300,11 +300,25 @@ gspawn-win32-helper-console.c:
 	echo '#define HELPER_CONSOLE' >$@
 	echo '#include "gspawn-win32-helper.c"' >>$@
 
+gspawn-win64-helper.c:
+	echo '#include "gspawn-win32-helper.c"' >$@
+
+gspawn-win64-helper-console.c:
+	echo '#define HELPER_CONSOLE' >$@
+	echo '#include "gspawn-win32-helper.c"' >>$@
+
 if OS_WIN32
+if OS_WIN32_X64
+INSTALL_PROGS += gspawn-win64-helper gspawn-win64-helper-console
+gspawn_win64_helper_LDADD = libglib-2.0.la
+gspawn_win64_helper_LDFLAGS = -mwindows
+gspawn_win64_helper_console_LDADD = libglib-2.0.la
+else
 INSTALL_PROGS += gspawn-win32-helper gspawn-win32-helper-console
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 gspawn_win32_helper_console_LDADD = libglib-2.0.la
+endif
 endif
 
 glib-win32-res.o: glib.rc

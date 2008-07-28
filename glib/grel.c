@@ -69,9 +69,19 @@ tuple_equal_2 (gconstpointer v_a,
 static guint
 tuple_hash_2 (gconstpointer v_a)
 {
+#if GLIB_SIZEOF_VOID_P > GLIB_SIZEOF_LONG
+  /* In practise this snippet has been written for 64-bit Windows
+   * where ints are 32 bits, pointers 64 bits. More exotic platforms
+   * need more tweaks.
+   */
+  guint* a = (guint*) v_a;
+
+  return (a[0] ^ a[1] ^ a[2] ^ a[3]);
+#else
   gpointer* a = (gpointer*) v_a;
   
   return (gulong)a[0] ^ (gulong)a[1];
+#endif
 }
 
 static GHashFunc

@@ -161,6 +161,7 @@ AC_TRY_CPP([
 AC_MSG_RESULT([$glib_have_carbon])
 
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
+AM_CONDITIONAL(OS_WIN32_X64, [test "$LIB_EXE_MACHINE_FLAG" = "X64"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
 AM_CONDITIONAL(OS_LINUX, [test "$glib_os_linux" = "yes"])
 AM_CONDITIONAL(OS_CARBON, [test "$glib_have_carbon" = "yes"])

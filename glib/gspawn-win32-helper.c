@@ -30,13 +30,13 @@
 
 
 static void
-write_err_and_exit (gint fd,
-		    gint msg)
+write_err_and_exit (gint   fd,
+		    gssize msg)
 {
-  gint en = errno;
+  gssize en = errno;
   
-  write (fd, &msg, sizeof(msg));
-  write (fd, &en, sizeof(en));
+  write (fd, &msg, sizeof(gssize));
+  write (fd, &en, sizeof(gssize));
   
   _exit (1);
 }
@@ -163,9 +163,9 @@ main (int ignored_argc, char **ignored_argv)
   int i;
   int fd;
   int mode;
-  int handle;
+  gssize handle;
   int saved_errno;
-  int no_error = CHILD_NO_ERROR;
+  gssize no_error = CHILD_NO_ERROR;
   gint argv_zero_offset = ARG_PROGRAM;
   wchar_t **new_wargv;
   int argc;

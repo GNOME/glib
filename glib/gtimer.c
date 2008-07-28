@@ -422,10 +422,17 @@ g_time_val_to_iso8601 (GTimeVal *time_)
   
   g_return_val_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC, NULL);
 
+#ifdef _WIN64
+  {
+    time_t secs = time_->tv_sec;
+    tm = gmtime (&secs);
+  }
+#else
 #ifdef HAVE_GMTIME_R
   tm = gmtime_r (&time_->tv_sec, &tm_);
 #else
   tm = gmtime (&time_->tv_sec);
+#endif
 #endif
 
   if (time_->tv_usec != 0)
