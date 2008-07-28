@@ -1,5 +1,13 @@
 2008-07-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 545203 – gfile.c: argument is different type.
+
+	* gfile.c (open_read_async_thread): Pass a GError **
+	to g_file_set_error_literal.
+	Reported by Kazuki Iwamoto
+
+2008-07-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 545157 – wrong/no list of "open with" applications for .cc and
 	.cpp files
 
