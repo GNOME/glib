@@ -1,5 +1,9 @@
 2008-07-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* Makefile.am: Install gemblemedicon.h
+
+2008-07-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* gemblemedicon.[hc]: Add a GIcon implementation that can
 	add an emblem to another icon.
 

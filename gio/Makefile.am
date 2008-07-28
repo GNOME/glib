@@ -277,6 +277,7 @@ gio_headers =			\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
+	gemblemedicon.h		\
 	gfile.h 		\
 	gfileattribute.h 	\
 	gfileenumerator.h 	\
