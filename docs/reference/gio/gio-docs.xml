@@ -83,6 +83,7 @@
     	<xi:include href="xml/gfileicon.xml"/>
     	<xi:include href="xml/gloadableicon.xml"/>
     	<xi:include href="xml/gthemedicon.xml"/>
+    	<xi:include href="xml/gemblemedicon.xml"/>
     </chapter>
     <chapter id="utils">   
     	<title>Utilities</title>

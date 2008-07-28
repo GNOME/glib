@@ -804,3 +804,13 @@ g_ask_password_flags_get_type G_GNUC_CONST
 g_password_save_get_type G_GNUC_CONST
 #endif
 #endif
+
+
+#if IN_HEADER(__G_EMBLEMED_ICON_H__)
+#if IN_FILE(__G_EMBLEMED_ICON_C__)
+g_emblemed_icon_get_type G_GNUC_CONST
+g_emblemed_icon_new
+g_emblemed_icon_get_icon
+g_emblemed_icon_get_emblem
+#endif
+#endif

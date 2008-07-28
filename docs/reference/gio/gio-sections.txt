@@ -417,6 +417,17 @@ g_file_icon_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gemblemedicon</FILE>
+<TITLE>GEmblemedIcon</TITLE>
+GEmblemedIcon
+g_emblemed_icon_new
+g_emblemed_icon_get_icon
+g_emblemed_icon_get_emblem
+<SUBSECTION Private>
+g_emblemed_icon_get_type
+</SECTION>
+
+<SECTION>
 <FILE>ginputstream</FILE>
 <TITLE>GInputStream</TITLE>
 GInputStream

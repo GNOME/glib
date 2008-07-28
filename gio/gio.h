@@ -36,6 +36,7 @@
 #include <gio/gdatainputstream.h>
 #include <gio/gdataoutputstream.h>
 #include <gio/gdrive.h>
+#include <gio/gemblemedicon.h>
 #include <gio/gfile.h>
 #include <gio/gfileattribute.h>
 #include <gio/gfileenumerator.h>

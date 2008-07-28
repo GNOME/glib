@@ -174,6 +174,8 @@ libgio_2_0_la_SOURCES =		\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
+	gemblemedicon.h		\
+	gemblemedicon.c		\
 	gfile.c 		\
 	gfileattribute.c 	\
 	gfileattribute-priv.h 	\
