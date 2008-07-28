@@ -1,5 +1,12 @@
 2008-07-28  Tor Lillqvist  <tml@novell.com>
 
+	* glib-zip.in: Message catalogs should always get installed into
+	share/locale nowadays, don't bother with the convoluted logic
+	checking if they are in lib/locale instead. Put the correct helper
+	programs in the zipfile.
+
+2008-07-28  Tor Lillqvist  <tml@novell.com>
+
 	Fix problems on 64-bit Windows. Avoid warnings, some of which
 	indicated actual problems, some which were just annoyances. 
 
