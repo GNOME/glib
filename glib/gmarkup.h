@@ -126,6 +126,7 @@ G_CONST_RETURN GSList *g_markup_parse_context_get_element_stack (GMarkupParseCon
 void                 g_markup_parse_context_get_position (GMarkupParseContext *context,
                                                           gint                *line_number,
                                                           gint                *char_number);
+gpointer             g_markup_parse_context_get_user_data (GMarkupParseContext *context);
 
 /* useful when saving */
 gchar* g_markup_escape_text (const gchar *text,

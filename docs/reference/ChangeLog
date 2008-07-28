@@ -1,5 +1,9 @@
 2008-07-28  Matthias Clasen  <mclasen2redhat.com>
 
+	* glib/glib-sections.txt: Add g_markup_context_get_user_data
+
+2008-07-28  Matthias Clasen  <mclasen2redhat.com>
+
 	* gio/gio-sections.txt:
 	* gio/gio-docs.xml: Add GEmblemedIcon 
 

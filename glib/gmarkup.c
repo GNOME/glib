@@ -2020,6 +2020,26 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
 }
 
 /**
+ * g_markup_parse_context_get_user_data:
+ * @context: a #GMarkupParseContext
+ *
+ * Returns the user_data associated with @context.  This will either
+ * be the user_data that was provided to g_markup_parse_context_new()
+ * or to the most recent call of g_markup_parse_context_push().
+ *
+ * Returns: the provided user_data. The returned data belongs to
+ *     the markup context and will be freed when g_markup_context_free()
+ *     is called.
+ *
+ * Since: 2.18
+ **/
+gpointer
+g_markup_parse_context_get_user_data (GMarkupParseContext *context)
+{
+  return context->user_data;
+}
+
+/**
  * g_markup_parse_context_push:
  * @context: a #GMarkupParseContext
  * @parser: a #GMarkupParser

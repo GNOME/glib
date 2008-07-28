@@ -1,3 +1,11 @@
+2008-07-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 544465 – gmarkup makes it hard to use pre-rolled parsers
+
+	* glib/glib.symbols:
+	* glib/gmarkup.[hc]: Add g_markup_context_get_user_data.
+	Patch by Ryan Lortie
+
 2008-07-28  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Message catalogs should always get installed into
