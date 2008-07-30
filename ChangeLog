@@ -1,3 +1,19 @@
+2008-07-28  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Output to glibconfig.h typedefs for gintptr as the
+	signed integer type that can hold a pointer, and guintptr as the
+	corresponding unsigned type. These types are portable equivalents
+	to intptr_t and uintptr_t which are not available in all
+	compilers.
+
+	For all current platforms, they will presumably end up as the same
+	types as gssize and gsize, but in theory size_t can be smaller
+	than intptr_t. Also, the intended use case for gintptr and
+	guintptr is different from that of gssize and gsize. As the name
+	indicates, gintptr is for when one wants an integer type that can
+	hold a pointer, and gsize is for when one wants an integer type
+	that can hold the value of the sizeof operator.
+
 2008-07-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 544465 – gmarkup makes it hard to use pre-rolled parsers

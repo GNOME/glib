@@ -2763,6 +2763,9 @@ _______EOF
 
 #define GINT_TO_POINTER(i)	((gpointer) ${glib_gpi_cast} (i))
 #define GUINT_TO_POINTER(u)	((gpointer) ${glib_gpui_cast} (u))
+
+typedef signed $glib_intptr_type_define gintptr;
+typedef unsigned $glib_intptr_type_define guintptr;
 _______EOF
 	else
 	  echo '#error SIZEOF_VOID_P unknown - This should never happen' >>$outfile
@@ -3122,12 +3125,30 @@ esac
 gintbits=`expr $ac_cv_sizeof_int \* 8`
 glongbits=`expr $ac_cv_sizeof_long \* 8`
 
-
 case $ac_cv_sizeof_void_p in
-$ac_cv_sizeof_int)  	glib_gpi_cast=''        glib_gpui_cast=''         ;;
-$ac_cv_sizeof_long) 	glib_gpi_cast='(glong)' glib_gpui_cast='(gulong)' ;;
-$ac_cv_sizeof_long_long)glib_gpi_cast='(gint64)' glib_gpui_cast='(guint64)' ;;
-*) 			glib_unknown_void_p=yes ;;
+$ac_cv_sizeof_int)
+  glib_intptr_type_define=int
+  glib_gpi_cast=''
+  glib_gpui_cast=''
+  ;;
+$ac_cv_sizeof_long)
+  glib_intptr_type_define=long
+  glib_gpi_cast='(glong)'
+  glib_gpui_cast='(gulong)'
+  ;;
+$ac_cv_sizeof_long_long)
+  glib_intptr_type_define='long long'
+  glib_gpi_cast='(gint64)'
+  glib_gpui_cast='(guint64)'
+  ;;
+$ac_cv_sizeof___int64)
+  glib_intptr_type_define=__int64
+  glib_gpi_cast='(gint64)'
+  glib_gpui_cast='(guint64)'
+  ;;
+*)
+  glib_unknown_void_p=yes
+  ;;
 esac
 
 
