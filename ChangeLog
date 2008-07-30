@@ -1,3 +1,9 @@
+2008-07-30  Tor Lillqvist  <tml@novell.com>
+
+	Bug 545485 - Implicit declaration of utime()
+
+	* glib/gstdio.c: Include <utime.h> on POSIX.
+
 2008-07-28  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Output to glibconfig.h typedefs for gintptr as the

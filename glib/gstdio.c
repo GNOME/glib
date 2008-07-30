@@ -39,6 +39,8 @@
 #include <direct.h>
 #include <io.h>
 #include <sys/utime.h>
+#else
+#include <utime.h>
 #endif
 
 #include "gstdio.h"
