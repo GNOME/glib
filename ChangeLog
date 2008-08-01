@@ -1,5 +1,9 @@
 2008-08-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+	
+2008-08-01  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 545798 – "Since: 2.18" mark is missing in g_set_error_literal
 	documentation
 

@@ -1,3 +1,41 @@
+Overview of Changes from GLib 2.17.4 to GLib 2.17.5
+===================================================
+
+* Fix problems on 64-bit Windows
+
+* g_markup_context_get_user_data: New function to access
+  the user_data outside of callbacks
+
+* GIO
+ - g_mount_guess_content_type_sync: synchronous version of
+   g_mount_guess_content_type
+ - GEmblemedIcon: A GIcon implementation that can add emblems
+   to icons
+
+* Bugs fixed:
+ 544088 option_test_LDADD is left in tests/Makefile.am
+ 544465 gmarkup makes it hard to use pre-rolled parsers
+ 545485 Implicit declaration of utime()
+ 545798 "Since: 2.18" mark is missing in g_set_error_literal...
+ 544140 fam-helper 64-bit issue
+ 529694 SELinux context setting support
+ 545157 wrong/no list of "open with" applications for .cc...
+ 545203 gfile.c: argument is different type
+ 545457 gdmsetup crashed with SIGSEGV in g_unix_mount_guess...
+ 544177 Fix trivial cut and paste error in documentation
+ 545395 Language tweak for g_value_set_string* docs
+
+* Updated translations:
+ Arabic (ar)
+ Estonian (et)
+ Galician (gl)
+ Italian (it)
+ Japanese (ja)
+ Norwegian bokmål (nb)
+ Pashto (ps)
+ Portugese (pt)
+
+
 Overview of Changes from GLib 2.17.3 to GLib 2.17.4
 ===================================================
 
