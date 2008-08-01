@@ -16,6 +16,12 @@ all : \
 
 gmodule_OBJECTS = \
 	gmodule.obj
+gmodule.def: gmodule.symbols
+	echo EXPORTS > gmodule.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES \
+		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF gmodule.symbols >> gmodule.def
+
 
 gmoduleconf.h: gmoduleconf.h.win32
 	copy gmoduleconf.h.win32 gmoduleconf.h
