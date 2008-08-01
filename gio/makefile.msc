@@ -38,6 +38,7 @@ gio_headers =			\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
+	gemblemedicon.h		\
 	gfile.h 		\
 	gfileattribute.h 	\
 	gfileenumerator.h 	\
@@ -52,7 +53,8 @@ gio_headers =			\
 	gicon.h 		\
 	ginputstream.h 		\
 	gio.h			\
-#	gioenumtypes.h		\
+	giotypes.h		\
+	gioenums.h		\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
@@ -84,6 +86,7 @@ OBJECTS = \
 #	gdesktopappinfo.obj \
 	gdrive.obj \
 	gdummyfile.obj \
+	gemblemedicon.obj \
 	gfile.obj \
 	gfileattribute.obj \
 	gfileenumerator.obj \

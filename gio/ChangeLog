@@ -1,3 +1,7 @@
+2008-08-01  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc : add gemblembedicon
+
 2008-07-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 545457 – gdmsetup crashed with SIGSEGV in
