@@ -423,6 +423,15 @@ GEmblemedIcon
 g_emblemed_icon_new
 g_emblemed_icon_get_icon
 g_emblemed_icon_get_emblem
+<SUBSECTION Standard>
+GEmblemedIconClass
+G_EMBLEMED_ICON
+G_EMBLEMED_ICON_CLASS
+G_EMBLEMED_ICON_GET_CLASS
+G_IS_EMBLEMED_ICON
+G_IS_EMBLEMED_ICON_CLASS
+G_TYPE_EMBLEMED_ICON
+
 <SUBSECTION Private>
 g_emblemed_icon_get_type
 </SECTION>
