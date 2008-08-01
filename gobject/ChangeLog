@@ -1,3 +1,7 @@
+2008-08-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluetypes.c: Clarify the docs of some GValue setters.
+
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
 	* gtype.h

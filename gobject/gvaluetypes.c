@@ -909,7 +909,7 @@ g_value_get_double (const GValue *value)
 /**
  * g_value_set_string:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: string to be set
+ * @v_string: caller-owned string to be duplicated for the #GValue
  *
  * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
  */
@@ -971,7 +971,7 @@ g_value_set_string_take_ownership (GValue *value,
 /**
  * g_value_take_string:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: duplicated unowned string to be set
+ * @v_string: string to take ownership of
  *
  * Sets the contents of a %G_TYPE_STRING #GValue to @v_string.
  *
