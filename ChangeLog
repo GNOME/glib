@@ -1,3 +1,11 @@
+2008-08-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 545798 – "Since: 2.18" mark is missing in g_set_error_literal
+	documentation
+
+	* glib/gerror.c (g_set_error_literal): Add a Since: marker.
+	Pointed out by Kouhei Sutou
+
 2008-07-30  Tor Lillqvist  <tml@novell.com>
 
 	Bug 545485 - Implicit declaration of utime()

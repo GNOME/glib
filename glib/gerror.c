@@ -223,6 +223,8 @@ g_set_error (GError      **err,
  * Unlike g_set_error(), @message is not a printf()-style format string.
  * Use this function if @message contains text you don't have control over,
  * that could include printf() escape sequences.
+ *
+ * Since: 2.18
  **/
 void
 g_set_error_literal (GError      **err,
