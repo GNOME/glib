@@ -1,3 +1,7 @@
+2008-08-01  Matthias Clasen  <mclasen2redhat.com>
+
+	* glib/tmpl/testing.sgml: Fix a typo. Noticed by Marek Kasik.
+
 2008-07-28  Matthias Clasen  <mclasen2redhat.com>
 
 	* glib/glib-sections.txt: Add g_markup_context_get_user_data

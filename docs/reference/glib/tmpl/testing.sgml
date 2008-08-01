@@ -133,7 +133,7 @@ Returns %TRUE if tests are run in verbose mode.
 
 <!-- ##### MACRO g_test_quiet ##### -->
 <para>
-Returns %TRUE if tests are run in quite mode.
+Returns %TRUE if tests are run in quiet mode.
 </para>
 
 
