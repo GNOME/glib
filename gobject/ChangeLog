@@ -1,6 +1,9 @@
 2008-08-01  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 545395 – Language tweak for g_value_set_string* docs
+
 	* gvaluetypes.c: Clarify the docs of some GValue setters.
+	Proposed by Erik Walthinsen
 
 2008-07-27  Tor Lillqvist  <tml@novell.com>
 
