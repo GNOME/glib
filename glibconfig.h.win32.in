@@ -109,6 +109,19 @@ typedef gint64 goffset;
 #define GINT_TO_POINTER(i)	((gpointer)  (i))
 #define GUINT_TO_POINTER(u)	((gpointer)  (u))
 
+#ifndef _WIN64
+typedef signed int gintptr;
+typedef unsigned int guintptr;
+#else
+#ifndef _MSC_VER
+typedef signed long long gintptr;
+typedef unsigned long long guintptr;
+#else
+typedef signed __int64 gintptr;
+typedef unsigned __int64 guintptr;
+#endif
+#endif
+
 #ifdef NeXT /* @#%@! NeXTStep */
 # define g_ATEXIT(proc)	(!atexit (proc))
 #else
