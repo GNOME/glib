@@ -1,3 +1,12 @@
+2008-08-02  Tor Lillqvist  <tml@novell.com>
+
+	Bug 545954 - 64-bit issue in dirent
+
+	* win32/dirent/dirent.h: Use __int64 for the dd_handle on 64-bit
+	Windows. (Would use intptr_t, but that is not available before
+	MSVS8, and we want to keep this compilable also with MSVS6 and 7,
+	I think.) Thanks to Richard Hult.
+
 2008-05-19  Tor Lillqvist  <tml@novell.com>
 
 	* win32/dirent/dirent.c: Include dirent.h with doublequotes so
