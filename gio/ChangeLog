@@ -1,3 +1,17 @@
+2008-08-03  Tor Lillqvist  <tml@novell.com>
+
+	Bug 541036 - Gnumeric crashes when trying to open Desktop or
+	user's folder under Windows
+
+	* win32/gwin32directorymonitor.c
+	(g_win32_directory_monitor_constructor): Ignore error from
+	CreateFile() when opening directory. Instead of asserting, just
+	store INVALID_HANDLE_VALUE then in
+	GWin32DirectoryMonitorPrivate::hDirectory. Also ignore error from
+	ReadDirectoryChangesW().
+	(g_win32_directory_monitor_cancel): Don't attempt to close
+	directory handle if it is INVALID_HANDLE_VALUE.
+
 2008-08-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* gdesktopappinfo.c: Remove debug spew

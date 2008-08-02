@@ -69,7 +69,8 @@ static gboolean g_win32_directory_monitor_cancel (GFileMonitor* base) {
 	self = G_WIN32_DIRECTORY_MONITOR (base);
 	
 	/* this triggers a last callback() with nBytes=0 */ 
-	CloseHandle (self->priv->hDirectory);
+	if (self->priv->hDirectory != INVALID_HANDLE_VALUE)
+	  CloseHandle (self->priv->hDirectory);
 
 	if (G_FILE_MONITOR_CLASS (g_win32_directory_monitor_parent_class)->cancel)
     	(*G_FILE_MONITOR_CLASS (g_win32_directory_monitor_parent_class)->cancel) (base);
@@ -130,13 +131,17 @@ static GObject * g_win32_directory_monitor_constructor (GType type, guint n_cons
 	
 	self->priv->hDirectory = CreateFile (dirname, FILE_LIST_DIRECTORY, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE, 
 		NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED, NULL); 
-	g_assert (self->priv->hDirectory != INVALID_HANDLE_VALUE); /* harsh */
+	if (self->priv->hDirectory == INVALID_HANDLE_VALUE)
+	  {
+	    /* Ignore errors */
+	    return obj;
+	  }
 
 	result = ReadDirectoryChangesW (self->priv->hDirectory, (gpointer)self->priv->file_notify_buffer, self->priv->buffer_allocated_bytes, FALSE, 
 		FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_ATTRIBUTES |
 		FILE_NOTIFY_CHANGE_SIZE, &self->priv->buffer_filled_bytes, &self->priv->overlapped, g_win32_directory_monitor_callback);
-	g_assert (result); /* harsh */
-
+	/* Ignore errors */
+	
 	return obj;
 }
 
