@@ -1,8 +1,10 @@
 2008-08-02  Tor Lillqvist  <tml@novell.com>
 
 	* glibconfig.h.win32.in: Add gintptr and guintptr typedefs here,
-	too, appropriately ifdeffed for 32/64 bit, gcc/MSVC.
-
+	too, appropriately ifdeffed for 32/64 bit, gcc/MSVC. Add 64-bit
+	versions of GPOINTER_TO_INT(), GPOINTER_TO_UINT() and vice versa,
+	too.
+	
 2008-08-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
