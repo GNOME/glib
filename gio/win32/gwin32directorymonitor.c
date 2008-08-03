@@ -77,13 +77,14 @@ static gboolean g_win32_directory_monitor_cancel (GFileMonitor* base) {
 	return TRUE;
 }
 
-void CALLBACK g_win32_directory_monitor_callback (DWORD error, DWORD nBytes, GWin32DirectoryMonitorPrivate* lpOverlapped)
+void CALLBACK g_win32_directory_monitor_callback (DWORD error, DWORD nBytes, LPOVERLAPPED lpOverlapped)
 {
 	gulong offset;
 	PFILE_NOTIFY_INFORMATION pfile_notify_walker;
 	gulong file_name_len;
 	gchar* file_name;
 	GFile * file;
+	GWin32DirectoryMonitorPrivate *priv = (GWin32DirectoryMonitorPrivate *) lpOverlapped;
 
 	static GFileMonitorEvent events[] = {0, 
 		G_FILE_MONITOR_EVENT_CREATED, /* FILE_ACTION_ADDED            */
@@ -96,23 +97,23 @@ void CALLBACK g_win32_directory_monitor_callback (DWORD error, DWORD nBytes, GWi
 	if (!nBytes) /* monitor was cancelled/finalized */
 		return;
 	
-	if (g_file_monitor_is_cancelled (G_FILE_MONITOR (lpOverlapped->self)))
+	if (g_file_monitor_is_cancelled (G_FILE_MONITOR (priv->self)))
 		return; /* and ReadDirectoryChangesW doesn't get called this time */
 
 	offset = 0;
 	do {
-		pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)(lpOverlapped->file_notify_buffer + offset);
+		pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)(priv->file_notify_buffer + offset);
 		offset += pfile_notify_walker->NextEntryOffset;
 		file_name = g_utf16_to_utf8 (pfile_notify_walker->FileName, pfile_notify_walker->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
 		file = g_file_new_for_path (file_name);	
-		g_file_monitor_emit_event (lpOverlapped->self, file, NULL, events [pfile_notify_walker->Action]);
+		g_file_monitor_emit_event (priv->self, file, NULL, events [pfile_notify_walker->Action]);
 		g_object_unref (file);
 		g_free (file_name);
 	} while (pfile_notify_walker->NextEntryOffset);
 	
-	ReadDirectoryChangesW (lpOverlapped->hDirectory, (gpointer)lpOverlapped->file_notify_buffer, lpOverlapped->buffer_allocated_bytes, FALSE, 
+	ReadDirectoryChangesW (priv->hDirectory, (gpointer)priv->file_notify_buffer, priv->buffer_allocated_bytes, FALSE, 
 		FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_ATTRIBUTES |
-		FILE_NOTIFY_CHANGE_SIZE, &lpOverlapped->buffer_filled_bytes, &lpOverlapped->overlapped, g_win32_directory_monitor_callback);
+		FILE_NOTIFY_CHANGE_SIZE, &priv->buffer_filled_bytes, &priv->overlapped, g_win32_directory_monitor_callback);
 }
 
 static GObject * g_win32_directory_monitor_constructor (GType type, guint n_construct_properties, GObjectConstructParam * construct_properties) {
@@ -120,17 +121,18 @@ static GObject * g_win32_directory_monitor_constructor (GType type, guint n_cons
 	GWin32DirectoryMonitorClass * klass;
 	GObjectClass * parent_class;
 	GWin32DirectoryMonitor * self;
-	gchar * dirname;
+	wchar_t * wdirname;
 	gboolean result;
 	
 	klass = G_WIN32_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_WIN32_DIRECTORY_MONITOR));
 	parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 	self = G_WIN32_DIRECTORY_MONITOR (obj);
-	dirname = G_LOCAL_DIRECTORY_MONITOR (obj)->dirname;
+	wdirname = g_utf8_to_utf16 (G_LOCAL_DIRECTORY_MONITOR (obj)->dirname, -1, NULL, NULL, NULL);
 	
-	self->priv->hDirectory = CreateFile (dirname, FILE_LIST_DIRECTORY, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE, 
+	self->priv->hDirectory = CreateFileW (wdirname, FILE_LIST_DIRECTORY, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE, 
 		NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED, NULL); 
+	g_free (wdirname);
 	if (self->priv->hDirectory == INVALID_HANDLE_VALUE)
 	  {
 	    /* Ignore errors */

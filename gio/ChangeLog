@@ -1,5 +1,18 @@
 2008-08-03  Tor Lillqvist  <tml@novell.com>
 
+	* win32/gwin32directorymonitor.c
+	(g_win32_directory_monitor_callback): Make prototype match
+	LPOVERLAPPED_COMPLETION_ROUTINE to avoid warning. Cast
+	LPOVERLAPPED parameter to local GWin32DirectoryMonitorPrivate
+	pointer.
+
+	(g_win32_directory_monitor_constructor):
+	GLocalDirectoryMonitor::dirname is in UTF-8 like all other file
+	names in the GLib API on Windows, so convert to UTF-16 and open
+	with CreateFileW().
+
+2008-08-03  Tor Lillqvist  <tml@novell.com>
+
 	Bug 541036 - Gnumeric crashes when trying to open Desktop or
 	user's folder under Windows
 
