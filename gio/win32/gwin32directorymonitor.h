@@ -47,11 +47,11 @@ typedef struct _GWin32DirectoryMonitorClass GWin32DirectoryMonitorClass;
 typedef struct _GWin32DirectoryMonitorPrivate GWin32DirectoryMonitorPrivate;
 
 struct _GWin32DirectoryMonitor {
-	GLocalDirectoryMonitor parent_instance;
-	GWin32DirectoryMonitorPrivate * priv;
+  GLocalDirectoryMonitor parent_instance;
+  GWin32DirectoryMonitorPrivate * priv;
 };
 struct _GWin32DirectoryMonitorClass {
-	GLocalDirectoryMonitorClass parent_class;
+  GLocalDirectoryMonitorClass parent_class;
 };
 
 GType g_win32_directory_monitor_get_type (void);

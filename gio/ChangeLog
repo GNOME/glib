@@ -1,5 +1,11 @@
 2008-08-03  Tor Lillqvist  <tml@novell.com>
 
+	* win32/gwin32directorymonitor.h
+	* win32/gwin32directorymonitor.c: Whitespace cleanup to match GLib
+	style.
+
+2008-08-03  Tor Lillqvist  <tml@novell.com>
+
 	* win32/gwin32directorymonitor.c
 	(g_win32_directory_monitor_callback): Make prototype match
 	LPOVERLAPPED_COMPLETION_ROUTINE to avoid warning. Cast
