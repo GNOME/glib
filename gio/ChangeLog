@@ -1,3 +1,9 @@
+2008-08-03  Carlos Garcia Campos  <carlosgc@gnome.org>
+
+	Bug 546079 – leak in xdgmime
+	
+	* xdgmime/xdgmime.c (xdg_mime_shutdown): Fix memory leak.
+	
 2008-08-03  Tor Lillqvist  <tml@novell.com>
 
 	* win32/gwin32directorymonitor.h

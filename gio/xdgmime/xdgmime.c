@@ -627,6 +627,18 @@ xdg_mime_shutdown (void)
       _xdg_mime_parent_list_free (parent_list);
       parent_list = NULL;
     }
+
+  if (icon_list)
+    {
+      _xdg_mime_icon_list_free (icon_list);
+      icon_list = NULL;
+    }
+
+  if (generic_icon_list)
+    {
+      _xdg_mime_icon_list_free (generic_icon_list);
+      generic_icon_list = NULL;
+    }
   
   if (_caches)
     {
