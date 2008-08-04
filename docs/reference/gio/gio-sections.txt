@@ -437,6 +437,18 @@ g_emblemed_icon_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gemblem</FILE>
+<TITE>GEmblem</TITLE>
+GEmblem
+g_emblem_new
+g_emblem_new_with_origin
+g_emblem_get_icon
+g_emblem_get_origin
+<SUBSECTION Private>
+g_emblem_get_type
+</SECTION>
+
+<SECTION>
 <FILE>ginputstream</FILE>
 <TITLE>GInputStream</TITLE>
 GInputStream

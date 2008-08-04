@@ -441,6 +441,25 @@ typedef enum {
 } GOutputStreamSpliceFlags;
 
 
+/**
+ * GEmblemOrigin:
+ * @G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
+ * @G_EMBLEM_ORIGIN_DEVICE: Embleme adds device-specific information
+ * @G_EMBLEM_ORIGIN_LIVEMETADATA: Emblem depicts live metadata, such as "readonly" 
+ * @G_EMBLEM_ORIGIN_TAG: Emblem comes from a user-defined tag, e.g. set by nautilus (in the future)
+ *
+ * GEmblemOrigin is used to add information about the origin of the emblem
+ * to #GEmblem.
+ *
+ * Since: 2.18
+ */
+typedef enum  {
+  G_EMBLEM_ORIGIN_UNKNOWN,
+  G_EMBLEM_ORIGIN_DEVICE,
+  G_EMBLEM_ORIGIN_LIVEMETADATA,
+  G_EMBLEM_ORIGIN_TAG
+} GEmblemOrigin;
+
 
 G_END_DECLS
 

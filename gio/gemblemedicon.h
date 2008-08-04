@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Matthias Clasen <mclasen@redhat.com>
+ *         Clemens N. Buss <cebuzz@gmail.com>
  */
 
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
@@ -28,6 +29,8 @@
 #define __G_EMBLEMED_ICON_H__
 
 #include <gio/gicon.h>
+
+#include "gemblem.h"
 
 G_BEGIN_DECLS
 
@@ -46,12 +49,14 @@ G_BEGIN_DECLS
 typedef struct _GEmblemedIcon        GEmblemedIcon;
 typedef struct _GEmblemedIconClass   GEmblemedIconClass;
 
-GType g_emblemed_icon_get_type (void) G_GNUC_CONST;
+GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
   
-GIcon *g_emblemed_icon_new                        (GIcon         *icon, 
-                                                   GIcon         *emblem);
-GIcon *g_emblemed_icon_get_icon                   (GEmblemedIcon *icon);
-GIcon *g_emblemed_icon_get_emblem                 (GEmblemedIcon *icon);
+GIcon *g_emblemed_icon_new         (GIcon         *icon, 
+                                    GEmblem       *emblem);
+GIcon *g_emblemed_icon_get_icon    (GEmblemedIcon *emblemed);
+GList *g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed);
+void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed, 
+                                    GEmblem       *emblem);
 
 
 G_END_DECLS

@@ -50,6 +50,7 @@
 #include <gio/gfilteroutputstream.h>
 #include <gio/gicon.h>
 #include <gio/ginputstream.h>
+#include <gio/gioenums.h>
 #include <gio/gioenumtypes.h>
 #include <gio/gioerror.h>
 #include <gio/giomodule.h>

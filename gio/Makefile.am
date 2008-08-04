@@ -174,6 +174,8 @@ libgio_2_0_la_SOURCES =		\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
+	gemblem.h 		\
+	gemblem.c 		\
 	gemblemedicon.h		\
 	gemblemedicon.c		\
 	gfile.c 		\
@@ -277,6 +279,7 @@ gio_headers =			\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
+	gemblem.h 		\
 	gemblemedicon.h		\
 	gfile.h 		\
 	gfileattribute.h 	\
