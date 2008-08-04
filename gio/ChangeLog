@@ -1,3 +1,21 @@
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 546017 – Don't copy attributes when copying a symlink
+
+	* gfile.c (g_file_copy_attributes): Specify
+	G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in the call to 
+	g_file_set_attributes_from_info. Patch by Christian Kellner
+
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* gemblemedicon.[hc]: 
+	* gio.symbols:
+	* gemblem.[hc]: Add GEmblem to make the emblem mechanism
+	a bit more extensible. Work by Clemens Buss.
+
+	* gioenums.h: Add GEmblemOrigin.
+	* Makefile.am: Glue
+
 2008-08-03  Carlos Garcia Campos  <carlosgc@gnome.org>
 
 	Bug 546079 – leak in xdgmime

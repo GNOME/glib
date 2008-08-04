@@ -2169,7 +2169,8 @@ g_file_copy_attributes (GFile           *source,
   if  (info)
     {
       res = g_file_set_attributes_from_info (destination,
-					     info, 0,
+					     info,
+                         G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 					     cancellable,
 					     error);
       g_object_unref (info);
