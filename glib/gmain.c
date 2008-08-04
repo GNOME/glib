@@ -686,7 +686,7 @@ g_main_context_init_pipe (GMainContext *context)
   if (context->wake_up_semaphore == NULL)
     g_error ("Cannot create wake-up semaphore: %s",
 	     g_win32_error_message (GetLastError ()));
-  context->wake_up_rec.fd = (gssize) context->wake_up_semaphore;
+  context->wake_up_rec.fd = (gintptr) context->wake_up_semaphore;
   context->wake_up_rec.events = G_IO_IN;
 #  ifdef G_MAIN_POLL_DEBUG
   if (g_main_poll_debug)
@@ -4046,7 +4046,7 @@ g_child_watch_source_new (GPid pid)
   GChildWatchSource *child_watch_source = (GChildWatchSource *)source;
 
 #ifdef G_OS_WIN32
-  child_watch_source->poll.fd = (gssize) pid;
+  child_watch_source->poll.fd = (gintptr) pid;
   child_watch_source->poll.events = G_IO_IN;
 
   g_source_add_poll (source, &child_watch_source->poll);

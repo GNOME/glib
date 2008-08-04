@@ -1,5 +1,14 @@
 2008-08-04  Tor Lillqvist  <tml@novell.com>
 
+	* glib/giowin32.c
+	* glib/gmain.c
+	* glib/gspawn-win32.c
+	* glib/gspawn-win32-helper.c: Change gssize casts introduced on
+	2008-07-28 to gintptr casts now that we have that. gssize is as
+	such the same as gintptr on both 32- and 64-bit Windows, but the
+	gintptr name indicates that it is used to hold pointers, i.e. also
+	HANDLEs.
+
 	* tests/testglib.c: Avoid warning on Win64 by using gintptr cast
 	instead if long cast.
 

@@ -111,7 +111,7 @@ dup_noninherited (int fd,
 		   GetCurrentProcess (), &filehandle,
 		   0, FALSE, DUPLICATE_SAME_ACCESS);
   close (fd);
-  return _open_osfhandle ((gssize) filehandle, mode | _O_NOINHERIT);
+  return _open_osfhandle ((gintptr) filehandle, mode | _O_NOINHERIT);
 }
 
 #ifndef GSPAWN_HELPER
@@ -308,22 +308,22 @@ make_pipe (gint     p[2],
  */
 static gboolean
 read_helper_report (int      fd,
-		    gssize   report[2],
+		    gintptr  report[2],
 		    GError **error)
 {
   gint bytes = 0;
   
-  while (bytes < sizeof(gssize)*2)
+  while (bytes < sizeof(gintptr)*2)
     {
       gint chunk;
 
       if (debug)
 	g_print ("%s:read_helper_report: read %" G_GSIZE_FORMAT "...\n",
 		 __FILE__,
-		 sizeof(gssize)*2 - bytes);
+		 sizeof(gintptr)*2 - bytes);
 
       chunk = read (fd, ((gchar*)report) + bytes,
-		    sizeof(gssize)*2 - bytes);
+		    sizeof(gintptr)*2 - bytes);
 
       if (debug)
 	g_print ("...got %d bytes\n", chunk);
@@ -349,14 +349,14 @@ read_helper_report (int      fd,
 	bytes += chunk;
     }
 
-  if (bytes < sizeof(gssize)*2)
+  if (bytes < sizeof(gintptr)*2)
     return FALSE;
 
   return TRUE;
 }
 
 static void
-set_child_error (gssize       report[2],
+set_child_error (gintptr      report[2],
 		 const gchar *working_directory,
 		 GError     **error)
 {
@@ -429,7 +429,7 @@ do_spawn_directly (gint                 *exit_status,
 {
   const int mode = (exit_status == NULL) ? P_NOWAIT : P_WAIT;
   char **new_argv;
-  gssize rc = -1;
+  gintptr rc = -1;
   int saved_errno;
   GError *conv_error = NULL;
   gint conv_error_index;
@@ -536,7 +536,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   char args[ARG_COUNT][10];
   char **new_argv;
   int i;
-  gssize rc = -1;
+  gintptr rc = -1;
   int saved_errno;
   int argc;
   int stdin_pipe[2] = { -1, -1 };
@@ -544,7 +544,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   int stderr_pipe[2] = { -1, -1 };
   int child_err_report_pipe[2] = { -1, -1 };
   int helper_sync_pipe[2] = { -1, -1 };
-  gssize helper_report[2];
+  gintptr helper_report[2];
   static gboolean warned_about_child_setup = FALSE;
   GError *conv_error = NULL;
   gint conv_error_index;
@@ -1074,7 +1074,7 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
       /* Helper process was involved. Read its report now after the
        * grandchild has finished.
        */
-      gssize helper_report[2];
+      gintptr helper_report[2];
 
       if (!read_helper_report (reportpipe, helper_report, error))
 	failed = TRUE;

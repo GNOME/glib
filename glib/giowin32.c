@@ -1075,7 +1075,7 @@ g_io_win32_msg_create_watch (GIOChannel   *channel,
   
   watch->condition = condition;
   
-  watch->pollfd.fd = (gssize) G_WIN32_MSG_HANDLE;
+  watch->pollfd.fd = (gintptr) G_WIN32_MSG_HANDLE;
   watch->pollfd.events = condition;
   
   g_source_add_poll (source, &watch->pollfd);
@@ -1279,7 +1279,7 @@ g_io_win32_fd_create_watch (GIOChannel    *channel,
   if (win32_channel->data_avail_event == NULL)
     create_events (win32_channel);
 
-  watch->pollfd.fd = (gssize) win32_channel->data_avail_event;
+  watch->pollfd.fd = (gintptr) win32_channel->data_avail_event;
   watch->pollfd.events = condition;
   
   if (win32_channel->debug)
@@ -1332,7 +1332,7 @@ g_io_win32_console_create_watch (GIOChannel    *channel,
   
   watch->condition = condition;
   
-  watch->pollfd.fd = (gssize) _get_osfhandle (win32_channel->fd);
+  watch->pollfd.fd = _get_osfhandle (win32_channel->fd);
   watch->pollfd.events = condition;
   
   g_source_add_poll (source, &watch->pollfd);
@@ -1500,7 +1500,7 @@ g_io_win32_sock_create_watch (GIOChannel    *channel,
   if (win32_channel->event == 0)
     win32_channel->event = WSACreateEvent ();
 
-  watch->pollfd.fd = (gssize) win32_channel->event;
+  watch->pollfd.fd = (gintptr) win32_channel->event;
   watch->pollfd.events = condition;
   
   if (win32_channel->debug)
@@ -2045,7 +2045,7 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
       if (win32_channel->data_avail_event == NULL)
 	create_events (win32_channel);
 
-      fd->fd = (gssize) win32_channel->data_avail_event;
+      fd->fd = (gintptr) win32_channel->data_avail_event;
 
       if (win32_channel->thread_id == 0 && (condition & G_IO_IN))
 	{
@@ -2057,15 +2057,15 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
       break;
 
     case G_IO_WIN32_CONSOLE:
-      fd->fd = (gssize) _get_osfhandle (win32_channel->fd);
+      fd->fd = _get_osfhandle (win32_channel->fd);
       break;
 
     case G_IO_WIN32_SOCKET:
-      fd->fd = (gssize) WSACreateEvent ();
+      fd->fd = (gintptr) WSACreateEvent ();
       break;
       
     case G_IO_WIN32_WINDOWS_MESSAGES:
-      fd->fd = (gssize) G_WIN32_MSG_HANDLE;
+      fd->fd = G_WIN32_MSG_HANDLE;
       break;
 
     default:
