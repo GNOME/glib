@@ -1717,20 +1717,21 @@ g_get_current_time (GTimeVal *result)
   result->tv_usec = r.tv_usec;
 #else
   FILETIME ft;
-  guint64 *time64 = (guint64 *) &ft;
+  guint64 time64;
 
   g_return_if_fail (result != NULL);
 
   GetSystemTimeAsFileTime (&ft);
+  memmove (&time64, &ft, sizeof (FILETIME));
 
   /* Convert from 100s of nanoseconds since 1601-01-01
    * to Unix epoch. Yes, this is Y2038 unsafe.
    */
-  *time64 -= G_GINT64_CONSTANT (116444736000000000);
-  *time64 /= 10;
+  time64 -= G_GINT64_CONSTANT (116444736000000000);
+  time64 /= 10;
 
-  result->tv_sec = *time64 / 1000000;
-  result->tv_usec = *time64 % 1000000;
+  result->tv_sec = time64 / 1000000;
+  result->tv_usec = time64 % 1000000;
 #endif
 }
 
