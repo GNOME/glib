@@ -1,5 +1,12 @@
 2008-08-04  Tor Lillqvist  <tml@novell.com>
 
+	* glibconfig.h.win32.in: Make the union _GSystemThread::data array
+	8 bytes on Win64. Not that it matters as the union contains a
+	pointer also anyway, but for equivalence with the configure-
+	generated glibconfig.h
+
+2008-08-04  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gmain.c (g_get_current_time): MSDN says: "Do not cast a
 	pointer to a FILETIME structure to either a LARGE_INTEGER* or
 	__int64* value because it can cause alignment faults on 64-bit

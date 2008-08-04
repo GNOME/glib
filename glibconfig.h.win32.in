@@ -200,7 +200,11 @@ typedef struct _GMutex* GStaticMutex;
 typedef union _GSystemThread GSystemThread;
 union _GSystemThread
 {
+#ifndef _WIN64
   char   data[4];
+#else
+  char   data[8];
+#endif
   double dummy_double;
   void  *dummy_pointer;
   long   dummy_long;
