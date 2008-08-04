@@ -242,7 +242,7 @@ node_build_string (GNode    *node,
   gchar *string;
   gchar c[2] = "_";
 
-  c[0] = ((gchar) ((long) (node->data)));
+  c[0] = ((gchar) ((gintptr) (node->data)));
 
   string = g_strconcat (*p ? *p : "", c, NULL);
   g_free (*p);
@@ -255,7 +255,7 @@ static void
 gnode_test (void)
 {
 #define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
+#define	P2C(p)		((gchar) ((gintptr) (p)))
   GNode *root;
   GNode *node;
   GNode *node_B;
