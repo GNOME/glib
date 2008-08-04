@@ -407,7 +407,7 @@ struct _GTimeVal
 G_END_DECLS
 
 /* We prefix variable declarations so they can
- * properly get exported in windows dlls.
+ * properly get exported in Windows DLLs.
  */
 #ifndef GLIB_VAR
 #  ifdef G_PLATFORM_WIN32
