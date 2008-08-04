@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 13:36-0400\n"
+"POT-Creation-Date: 2008-08-04 12:39-0400\n"
 "PO-Revision-Date: 2006-08-31 21:21+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -121,41 +121,41 @@ msgstr "প্রদত্ত তথ্যের শেষে আংশিক �
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ফলব্যাক '%s' থেকে কোডসেট '%s' এ পরিবর্তন করা যায়নি"
 
-#: glib/gconvert.c:1734
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"ফাইল\" স্কীম অনুযায়ী URI '%s' একটি পরিপূর্ণ আপেক্ষিক URI নয়"
 
-#: glib/gconvert.c:1744
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানীয় ফাইল ইউআরআই '%s' এর মধ্যে '#' থাকা বৈধ নয়"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ইউআরআই '%s' গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1773
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ইউআরআই '%s' এর হোস্ট নাম গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1789
+#: glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ইউআরআই '%s' এর মধ্যে অগ্রহণীয় এস্কেপ অক্ষর আছে"
 
-#: glib/gconvert.c:1884
+#: glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "পথনাম '%s' একটি আপেক্ষিক পথ"
 
-#: glib/gconvert.c:1894
+#: glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "ভুল হোস্ট নাম"
 
-#: glib/gdir.c:109 glib/gdir.c:129
+#: glib/gdir.c:110 glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ডাইরেক্টরি '%s' খুলতে ব্যর্থ: %s"
@@ -843,56 +843,56 @@ msgstr "%c এর জন্য মিলানো কোওট পাবার �
 msgid "Text was empty (or contained only whitespace)"
 msgstr "টেক্সট শূণ্য ছিল (অথবা সুধু ওয়াইটস্পেইস ছিল)"
 
-#: glib/gspawn-win32.c:279
+#: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্রসেস থেকে তথ্য পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) এর সাথে যোগাযোগ করার জন্য পাইপ সৃষ্টি করতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "চাইল্ড পাইপ (%s) থেকে পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ডাইরেক্টরি '%s' (%s) তে বদলাতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) কার্যকর করতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:440
+#: glib/gspawn-win32.c:444
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "প্রোগ্রামের নাম অবৈধ: %s"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d এ আর্গুমেন্ট ভেক্টরে উল্লিখিত পংক্তি বৈধ নয়: %s"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "পরিবেশের মধ্যে উল্লিখিত পংক্তি বৈধ নয়: %s"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
+#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "সক্রিয় ডিরেক্টরি বৈধ নয়: %s"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:791
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "সাহায্যকারী প্রোগ্রাম চলাতে ব্যর্থ (%s)"
 
-#: glib/gspawn-win32.c:1002
+#: glib/gspawn-win32.c:1006
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1193,10 +1193,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
-#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
-#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
-#: gio/gfile.c:4206
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
+#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
+#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
+#: gio/gfile.c:4207
 #, fuzzy
 msgid "Operation not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
@@ -1230,25 +1230,25 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2850
+#: gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2943
+#: gio/gfile.c:2944
 #, fuzzy
 msgid "Trash not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
 
-#: gio/gfile.c:2992
+#: gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4974 gio/gvolume.c:370
+#: gio/gfile.c:4975 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5082
+#: gio/gfile.c:5083
 #, fuzzy
 msgid "No application is registered as handling this file"
 msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনের দ্বারা '%s' বুকমার্ক নিবন্ধিত হয় নি"
@@ -1447,35 +1447,51 @@ msgstr ""
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778
+#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
+#, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1822
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:1855 gio/glocalfileinfo.c:2023
+#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:1878
+#: gio/glocalfileinfo.c:1896
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1888 gio/glocalfileinfo.c:1907
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1936
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "লাইন %d এ ভুল: %s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1915
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2063
+#, c-format
+msgid "SELinux context must be non-NULL"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2079
+#, fuzzy, c-format
+msgid "Error setting SELinux context: %s"
+msgstr "পরিবর্তন সময়কালীন ভুল: %s"
+
+#: gio/glocalfileinfo.c:2086
+#, c-format
+msgid "SELinux is not enabled on this system"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2147
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
@@ -1594,8 +1610,15 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:600
+#: gio/gmount.c:601
 msgid "mount doesn't implement content type guessing"
+msgstr ""
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:690
+msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405

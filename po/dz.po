@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 13:36-0400\n"
+"POT-Creation-Date: 2008-08-04 12:39-0400\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -121,42 +121,42 @@ msgstr "ཨིན་པུཊི་མཇུག་ལུ་ ཡི་གུའ�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "གློ་བུར་རྒྱབ་ཐག ’%s’ ལས་ ཀོཌི་སེཊི་ ’%s’ ལུ་ གཞི་བསྒྱུར་འབད་མི་ཚུགས། "
 
-#: glib/gconvert.c:1734
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "ཡུ་ཨར་ཨའི་  ’%s’ འབད་མི་དེ་ \"file\" འཆར་ལས་ལག་ལེན་འཐབ་པའི་ ཡུ་ཨར་ཨའི་ཡང་དག་ཅིག་མེན།"
 
-#: glib/gconvert.c:1744
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ཉེ་གནས་་ཀྱི་ཡིག་སྣོད་ ཡུ་ཨར་ཨའི་ ’%s’ འབད་མི་དེ་ནང་ '#' ཅིག་མེདཔ་འོང༌།"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ཡུ་ཨར་ཨའི་ ’%s’ ནུས་མེད་ཨིན་པས།"
 
-#: glib/gconvert.c:1773
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ཡུ་ཨར་ཨའི་ ’%s’ གི་ ཧོསཊི་ནེམ་དེ་ ནུས་མེད་ཨིན་པས།"
 
-#: glib/gconvert.c:1789
+#: glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ཡུ་ཨར་ཨའི་ ’%s’ གི་ནང་ན་ ནུས་མེད་ཐོག་ལས་ཐར་མི་ ཡིག་འབྲུ་་ཚུ་འདུག"
 
-#: glib/gconvert.c:1884
+#: glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "འགྲུལ་ལམ་གྱི་མིང་ ’%s’ འབད་མི་དེ་ འགྲུལ་ལམ་ཡང་དག་ཅིག་མེན།"
 
-#: glib/gconvert.c:1894
+#: glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "ནུས་མེད་ཀྱི་ ཧོསཊི་ནེམ།"
 
-#: glib/gdir.c:109 glib/gdir.c:129
+#: glib/gdir.c:110 glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "སྣོད་ཐོ་ '%s':%s ཁ་ཕྱེ་ནི་ལུ་འཛོལ་བ།"
@@ -853,57 +853,57 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ཚིག་ཡིག་དེ་ སྟོང་པའམ་ (ཡང་ཅིན་ ནང་ན་ས་སྟོང་དཀརཔོ་རྐྱངམ་ཅིག་ འོང་ནི་མས།)"
 
-#: glib/gspawn-win32.c:279
+#: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ནང་ལས་ གནད་སྡུད་ལྷག་མ་ཚུགས། "
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "ཆ་ལག་ལས་སྦྱོར་ (%s) དང་གཅིག་ཁར་ རྒྱུད་འབྲེལ་འཐབ་ནིའི་དོན་ལུ་ རྒྱུད་དུང་གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ཆ་ལག་རྒྱུད་དུང་ (%s) ནང་ལས་ ལྷག་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "སྣོད་ཐོ་’%s’ (%s)ལུ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགས། "
 
-#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ (%s) དེ་ ལག་ལེན་འཐབ་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:440
+#: glib/gspawn-win32.c:444
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d: %s ལུ་ སྒྲུབ་རྟགས་ཝེཀ་ཊོར་ནང་ ནུས་མེད་ཡིག་རྒྱུན།"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "མཐའ་འཁོར་:%sནང་ལུ་ ནུས་མེད་ཡིག་རྒྱུན།"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
+#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "ནུས་མེད་ལཱ་གཡོག་སྣོད་ཐོ་:%s།"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:791
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ལས་རོགས་པའི་ལས་རིམ་ (%s) ལག་ལེན་འཐབ་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:1002
+#: glib/gspawn-win32.c:1006
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1206,10 +1206,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
-#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
-#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
-#: gio/gfile.c:4206
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
+#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
+#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
+#: gio/gfile.c:4207
 #, fuzzy
 msgid "Operation not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1243,25 +1243,25 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2850
+#: gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2943
+#: gio/gfile.c:2944
 #, fuzzy
 msgid "Trash not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
 
-#: gio/gfile.c:2992
+#: gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4974 gio/gvolume.c:370
+#: gio/gfile.c:4975 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5082
+#: gio/gfile.c:5083
 #, fuzzy
 msgid "No application is registered as handling this file"
 msgstr "མིང་'%sའབད་མི་གློག་རིམ་གྱིས་ '%s དོན་ལུ་ དེབ་རྟགས་ཅིག་ཐོ་འགོད་མ་འབད་བས། "
@@ -1460,35 +1460,51 @@ msgstr ""
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778
+#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
+#, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1822
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1855 gio/glocalfileinfo.c:2023
+#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1878
+#: gio/glocalfileinfo.c:1896
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1888 gio/glocalfileinfo.c:1907
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1936
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1915
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2063
+#, c-format
+msgid "SELinux context must be non-NULL"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2079
+#, fuzzy, c-format
+msgid "Error setting SELinux context: %s"
+msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
+
+#: gio/glocalfileinfo.c:2086
+#, c-format
+msgid "SELinux is not enabled on this system"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2147
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1607,8 +1623,15 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:600
+#: gio/gmount.c:601
 msgid "mount doesn't implement content type guessing"
+msgstr ""
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:690
+msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405

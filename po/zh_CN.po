@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 13:36-0400\n"
+"POT-Creation-Date: 2008-08-04 12:39-0400\n"
 "PO-Revision-Date: 2008-03-13 10:20+0800\n"
 "Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -121,41 +121,41 @@ msgstr "输入末尾出现未尽字符序列"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
-#: glib/gconvert.c:1734
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI“%s”不是“file”格式的绝对 URI"
 
-#: glib/gconvert.c:1744
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: glib/gconvert.c:1773
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI中的主机名“%s”无效"
 
-#: glib/gconvert.c:1789
+#: glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: glib/gconvert.c:1884
+#: glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: glib/gconvert.c:1894
+#: glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "无效的主机名"
 
-#: glib/gdir.c:109 glib/gdir.c:129
+#: glib/gdir.c:110 glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "打开目录“%s”时发生错误：%s"
@@ -817,56 +817,56 @@ msgstr "文本在找到与 %c 匹配的引号之前结束。(文本为“%s”)"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "空文本(或仅含空白字符)"
 
-#: glib/gspawn-win32.c:279
+#: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "从子进程中读取数据失败"
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "创建与子进程通讯的管道失败(%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败(%s)"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "更改到目录“%s”失败(%s)"
 
-#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "执行子进程失败(%s)"
 
-#: glib/gspawn-win32.c:440
+#: glib/gspawn-win32.c:444
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "无效的程序名：%s"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d 处的参数中有无效的字符串：%s"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "环境中有无效的字符串：%s"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
+#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "无效的工作目录：%s"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:791
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "执行助手程序(%s)失败"
 
-#: glib/gspawn-win32.c:1002
+#: glib/gspawn-win32.c:1006
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1164,10 +1164,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "驱动未实现媒体轮询"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
-#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
-#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
-#: gio/gfile.c:4206
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
+#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
+#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
+#: gio/gfile.c:4207
 msgid "Operation not supported"
 msgstr "不支持该操作"
 
@@ -1200,24 +1200,24 @@ msgstr "目标文件已存在"
 msgid "Can't recursively copy directory"
 msgstr "无法递归复制目录"
 
-#: gio/gfile.c:2850
+#: gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr "给出的符号链接值无效"
 
-#: gio/gfile.c:2943
+#: gio/gfile.c:2944
 msgid "Trash not supported"
 msgstr "不支持垃圾箱"
 
-#: gio/gfile.c:2992
+#: gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "文件名不能包含“%c”"
 
-#: gio/gfile.c:4974 gio/gvolume.c:370
+#: gio/gfile.c:4975 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "卷未实现挂载"
 
-#: gio/gfile.c:5082
+#: gio/gfile.c:5083
 msgid "No application is registered as handling this file"
 msgstr "没有注册为处理此文件的应用程序"
 
@@ -1413,35 +1413,51 @@ msgstr "无效的属性类型(应为 uint32)"
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "无效的属性类型(应为 uint64)"
 
-#: gio/glocalfileinfo.c:1778
+#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
+#, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "无效的属性类型(应为 byte string)"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1822
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:1855 gio/glocalfileinfo.c:2023
+#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "设置所有者出错：%s"
 
-#: gio/glocalfileinfo.c:1878
+#: gio/glocalfileinfo.c:1896
 msgid "symlink must be non-NULL"
 msgstr "符号链接必须是非空"
 
-#: gio/glocalfileinfo.c:1888 gio/glocalfileinfo.c:1907
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "设置符号链接出错：%s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1915
 msgid "Error setting symlink: file is not a symlink"
 msgstr "设定符号链接出错：文件不是符号链接"
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2063
+#, fuzzy, c-format
+msgid "SELinux context must be non-NULL"
+msgstr "符号链接必须是非空"
+
+#: gio/glocalfileinfo.c:2079
+#, fuzzy, c-format
+msgid "Error setting SELinux context: %s"
+msgstr "设置所有者出错：%s"
+
+#: gio/glocalfileinfo.c:2086
+#, c-format
+msgid "SELinux is not enabled on this system"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2147
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支持设置属性 %s"
@@ -1558,9 +1574,17 @@ msgstr "挂载没有实现重新挂载"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:600
+#: gio/gmount.c:601
 #, fuzzy
 msgid "mount doesn't implement content type guessing"
+msgstr "挂载未实现卸载"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:690
+#, fuzzy
+msgid "mount doesn't implement synchronous content type guessing"
 msgstr "挂载未实现卸载"
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405

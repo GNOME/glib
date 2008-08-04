@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 13:36-0400\n"
+"POT-Creation-Date: 2008-08-04 12:39-0400\n"
 "PO-Revision-Date: 2008-03-18 16:47+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -120,41 +120,41 @@ msgstr "Sekuencë e pjesëshme simbolesh në fund të së dhënave në hyrje"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "I pamundur konvertimi i '%s' në familjen e simboleve '%s'"
 
-#: glib/gconvert.c:1734
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' nuk është një URI absolute duke përdorur skemën e \"file\""
 
-#: glib/gconvert.c:1744
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI për file lokal '%s' mund të mos përdorë një '#'"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' është e pasaktë"
 
-#: glib/gconvert.c:1773
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Emri i host të URI '%s' është i pasaktë"
 
-#: glib/gconvert.c:1789
+#: glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' përmban simbole escape të pavlefshëm"
 
-#: glib/gconvert.c:1884
+#: glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Pozicioni me emër '%s' nuk është një pozicion absolut"
 
-#: glib/gconvert.c:1894
+#: glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "Emër host i pasaktë"
 
-#: glib/gdir.c:109 glib/gdir.c:129
+#: glib/gdir.c:110 glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Gabim gjatë hapjes së directory '%s': %s"
@@ -937,57 +937,57 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksti është bosh (ose përmban vetëm hapsira të bardha)"
 
-#: glib/gspawn-win32.c:279
+#: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "I pamundur leximi i të dhënave nga proçesi bir"
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "I pamundur krijimi i pipe për të komunikuar me proçesin bir (%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "I pamundur leximi nga pipe bijë (%s)"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "I pamundur ndryshimi i directory në '%s' (%s)"
 
-#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "I pamundur ekzekutimi i proçesit bir (%s)"
 
-#: glib/gspawn-win32.c:440
+#: glib/gspawn-win32.c:444
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Emër i pasaktë programi: %s"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Vlerë e pasaktë në vektorin e argumentit tek %d: %s"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Vlerë e pavlefshme në ambient: %s"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
+#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Directory e pavlefshme pune: %s"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:791
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "I pamundur ekzekutimi i programit ndihmues (%s)"
 
 # (pofilter) doublewords: The word 'të' is repeated
-#: glib/gspawn-win32.c:1002
+#: glib/gspawn-win32.c:1006
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1317,10 +1317,10 @@ msgstr "njësia nuk suporton shqyrtimin e suporteve"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
-#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
-#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
-#: gio/gfile.c:4206
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
+#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
+#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
+#: gio/gfile.c:4207
 msgid "Operation not supported"
 msgstr "Veprimi nuk suportohet"
 
@@ -1359,23 +1359,23 @@ msgid "Can't recursively copy directory"
 msgstr "I pamundur kopjimi rekursiv i directory"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:2850
+#: gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr "Dhënë vlerë e pavlefshme lidhje simbolike"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/gfile.c:2943
+#: gio/gfile.c:2944
 msgid "Trash not supported"
 msgstr "Koshi nuk suportohet"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:2992
+#: gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Emrat e file nuk mund të përmbajnë '%c'"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:4974 gio/gvolume.c:370
+#: gio/gfile.c:4975 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "Volumi nuk suporton montimin"
 
@@ -1383,7 +1383,7 @@ msgstr "Volumi nuk suporton montimin"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gfile.c:5082
+#: gio/gfile.c:5083
 msgid "No application is registered as handling this file"
 msgstr "Nuk rezulton i regjistruar asnjë aplikativ për të manazhuar këtë file"
 
@@ -1653,45 +1653,63 @@ msgid "Invalid attribute type (uint64 expected)"
 msgstr "Lloj i pasaktë atributi (pritej uint64)"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1778
+#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
+#, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Lloj i pasaktë atributi (pritej byte string)"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1822
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Gabim gjatë caktimit të së drejtave: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1855 gio/glocalfileinfo.c:2023
+#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Gabim gjatë caktimit të pronarit: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1878
+#: gio/glocalfileinfo.c:1896
 msgid "symlink must be non-NULL"
 msgstr "symlink duhet të jetë jo-NULL"
 
 # (pofilter) variables: translation contains variables not in original: %d
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:1888 gio/glocalfileinfo.c:1907
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Gabim gjatë caktimit të symlink: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1915
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Gabim gjatë caktimit të symlink: file nuk është një lidhje simbolike"
+
+# (pofilter) untranslated: checks whether a string has been translated at all
+#: gio/glocalfileinfo.c:2063
+#, fuzzy, c-format
+msgid "SELinux context must be non-NULL"
+msgstr "symlink duhet të jetë jo-NULL"
+
+# (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
+#: gio/glocalfileinfo.c:2079
+#, fuzzy, c-format
+msgid "Error setting SELinux context: %s"
+msgstr "Gabim gjatë caktimit të pronarit: %s"
+
+#: gio/glocalfileinfo.c:2086
+#, c-format
+msgid "SELinux is not enabled on this system"
+msgstr ""
 
 # (pofilter) variables: do not translate: %s
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2147
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Caktimi i atributit %s nuk suportohet"
@@ -1854,9 +1872,18 @@ msgstr "objekti mount nuk suporton rimontimin"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:600
+#: gio/gmount.c:601
 #, fuzzy
 msgid "mount doesn't implement content type guessing"
+msgstr "objekti mount nuk suporton zmontimin"
+
+# (pofilter) untranslated: checks whether a string has been translated at all
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:690
+#, fuzzy
+msgid "mount doesn't implement synchronous content type guessing"
 msgstr "objekti mount nuk suporton zmontimin"
 
 # (pofilter) untranslated: checks whether a string has been translated at all

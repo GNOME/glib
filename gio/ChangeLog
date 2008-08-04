@@ -1,5 +1,9 @@
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.5 ===
+
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 546017 – Don't copy attributes when copying a symlink
 
 	* gfile.c (g_file_copy_attributes): Specify

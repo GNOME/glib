@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-21 13:36-0400\n"
+"POT-Creation-Date: 2008-08-04 12:39-0400\n"
 "PO-Revision-Date: 2008-03-03 17:37+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <smc-discuss@googlegroups.com>\n"
@@ -122,41 +122,41 @@ msgstr "ഇന്‍പുട്ടിന്‍റെ അവസാനം ഭാ�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ഫോള്‍സെറ്റ് '%s'-ല്‍ നിന്നും കോഡ്സെറ്റ് '%s'-ലേക്ക് മാറ്റുവാന്‍ സാധ്യമല്ല"
 
-#: glib/gconvert.c:1734
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI %s \"file\" സ്കീം ഉപയോഗിക്കുന്ന പൂര്‍ണ്ണമായ ഒരു URI അല്ല"
 
-#: glib/gconvert.c:1744
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ലോക്കല്‍ ഫയല്‍ URI %s-ല്‍ '#' ഉല്‍പ്പെടുത്താന്‍ പാടില്ല"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' അസാധുവാണ്"
 
-#: glib/gconvert.c:1773
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s'-ന്‍റെ ഹോസ്റ്റ് നാമം അസാധുവാണ്"
 
-#: glib/gconvert.c:1789
+#: glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s'-ല്‍ അസാധുവായ എസ്കേപ്ഡ് അക്ഷരങ്ങള്‍ ഉണ്ട്"
 
-#: glib/gconvert.c:1884
+#: glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' പാഥ് നാമം പൂര്‍ണ്ണമായ ഒരു പാഥ് അല്ല"
 
-#: glib/gconvert.c:1894
+#: glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "സാധുതയില്ലാത്ത ഹോസ്റ്റ് നാമം"
 
-#: glib/gdir.c:109 glib/gdir.c:129
+#: glib/gdir.c:110 glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ഡയറക്ടറി '%s' തുറക്കുന്നതില്‍ പിശക്: %s"
@@ -840,56 +840,56 @@ msgstr "%c-ന്‍റെ അവസാനം കോട്ട് ഇട്ടി
 msgid "Text was empty (or contained only whitespace)"
 msgstr "വാചകം ശൂന്യമായിരുന്നു (അല്ലെങ്കില്‍ ഇതില്‍ വയിറ്റ് സ്പെയിസ് മാത്രമേ ഉളളൂ)"
 
-#: glib/gspawn-win32.c:279
+#: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "ചൈള്‍ഡ് പ്രക്രിയയില്‍ നിന്നും വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു"
 
-#: glib/gspawn-win32.c:294 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ചൈള്‍ഡ് പ്രക്രിയയുമായി ബന്ധപ്പെടുന്നതിനുളള പൈപ്പ് ഉണ്ടാക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gspawn-win32.c:332 glib/gspawn-win32.c:340 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ചൈള്‍ഡ് പൈപ്പില്‍ നിന്നും വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gspawn-win32.c:363 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ഡയറക്ടറി '%s'-ലേക്ക് മാറ്റുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gspawn-win32.c:369 glib/gspawn-win32.c:493
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ചൈള്‍ഡ് പ്രക്രിയ പ്രവര്‍ത്തിപ്പിക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gspawn-win32.c:440
+#: glib/gspawn-win32.c:444
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "അസാധുവായ പ്രോഗ്രാം നാമം: %s"
 
-#: glib/gspawn-win32.c:450 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1282
+#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d-ല്‍ ആര്‍ഗ്യുമെന്‍റ് വെക്റ്ററില്‍ അസാധുവായ സ്ട്രിങ്: %s"
 
-#: glib/gspawn-win32.c:461 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1315
+#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "എന്‍വിറോണ്‍മെന്‍റില്‍ അസാധുവായ സ്ട്രിങ്: %s"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1263
+#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "പ്രവര്‍ത്തിക്കുന്ന ഡയറക്ടറി അസാധുവാണ്: %s"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:791
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "സഹായത്തിനുളള പ്രോഗ്രാം പ്രവര്‍ത്തിപ്പിക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gspawn-win32.c:1002
+#: glib/gspawn-win32.c:1006
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1191,10 +1191,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2681
-#: gio/gfile.c:2732 gio/gfile.c:2860 gio/gfile.c:2900 gio/gfile.c:3227
-#: gio/gfile.c:3629 gio/gfile.c:3713 gio/gfile.c:3796 gio/gfile.c:3876
-#: gio/gfile.c:4206
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
+#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
+#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
+#: gio/gfile.c:4207
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1227,24 +1227,24 @@ msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ �
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2850
+#: gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2943
+#: gio/gfile.c:2944
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:2992
+#: gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:4974 gio/gvolume.c:370
+#: gio/gfile.c:4975 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5082
+#: gio/gfile.c:5083
 msgid "No application is registered as handling this file"
 msgstr ""
 
@@ -1440,35 +1440,51 @@ msgstr ""
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778
+#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
+#, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1822
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1855 gio/glocalfileinfo.c:2023
+#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1878
+#: gio/glocalfileinfo.c:1896
 msgid "symlink must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:1888 gio/glocalfileinfo.c:1907
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "സിംലിങ്ക് ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1915
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2063
+#, fuzzy, c-format
+msgid "SELinux context must be non-NULL"
+msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
+
+#: gio/glocalfileinfo.c:2079
+#, fuzzy, c-format
+msgid "Error setting SELinux context: %s"
+msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
+
+#: gio/glocalfileinfo.c:2086
+#, c-format
+msgid "SELinux is not enabled on this system"
+msgstr ""
+
+#: gio/glocalfileinfo.c:2147
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ആട്രിബ്യൂട്ട് ക്രമികരണം പിന്തുണയ്ക്കുന്നില്ല"
@@ -1585,8 +1601,15 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:600
+#: gio/gmount.c:601
 msgid "mount doesn't implement content type guessing"
+msgstr ""
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement content type guessing.
+#: gio/gmount.c:690
+msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405

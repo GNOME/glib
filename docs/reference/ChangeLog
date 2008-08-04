@@ -1,5 +1,9 @@
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.5 ===
+
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
 	* gobject/gobject-docs.sgml: Add a 2.18 index
 
 2008-08-01  Matthias Clasen  <mclasen@redhat.com>
