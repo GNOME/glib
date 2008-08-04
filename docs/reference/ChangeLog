@@ -1,5 +1,9 @@
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.17.6 ===
+
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/gio.types:
 	* gio/gio-docs.xml:
 	* gio/gio-sections.txt: Add Gemblem
