@@ -1,3 +1,7 @@
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-08-02  Tor Lillqvist  <tml@novell.com>
 
 	* glibconfig.h.win32.in: Add gintptr and guintptr typedefs here,

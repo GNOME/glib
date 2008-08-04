@@ -9,6 +9,8 @@ Overview of Changes from GLib 2.17.4 to GLib 2.17.5
 * GIO
  - g_mount_guess_content_type_sync: synchronous version of
    g_mount_guess_content_type
+ - GEmblem: A GIcon implementation that adds emblem-related
+   metadata to icons
  - GEmblemedIcon: A GIcon implementation that can add emblems
    to icons
 
@@ -24,6 +26,10 @@ Overview of Changes from GLib 2.17.4 to GLib 2.17.5
  545457 gdmsetup crashed with SIGSEGV in g_unix_mount_guess...
  544177 Fix trivial cut and paste error in documentation
  545395 Language tweak for g_value_set_string* docs
+ 541036 Gnumeric crashes when trying to open Desktop...
+ 546079 leak in xdgmime
+ 545395 Language tweak for g_value_set_string* docs
+ 546017 Don't copy attributes when copying a symlink
 
 * Updated translations:
  Arabic (ar)
@@ -31,9 +37,11 @@ Overview of Changes from GLib 2.17.4 to GLib 2.17.5
  Galician (gl)
  Italian (it)
  Japanese (ja)
+ Korean (ko)
  Norwegian bokmål (nb)
  Pashto (ps)
  Portugese (pt)
+
 
 
 Overview of Changes from GLib 2.17.3 to GLib 2.17.4
@@ -41,7 +49,7 @@ Overview of Changes from GLib 2.17.3 to GLib 2.17.4
 
 * GIO:
  - New API to handle content types: g_mount_guess_content_type,
-   g_content_type_guess_for_tree
+   g_content_type_guess_for_tree.
  - Export the eject-button signal on the volume monitor class
  - New API to enable out-of-process volume monitors: 
    g_volume_get_activation_root
