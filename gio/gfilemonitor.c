@@ -40,7 +40,8 @@
  * Monitors a file or directory for changes.
  *
  * To obtain a #GFileMonitor for a file or directory, use
- * g_file_monitor_file() or g_file_monitor_directory().
+ * g_file_monitor(), g_file_monitor_file(), or
+ * g_file_monitor_directory().
  *
  * To get informed about changes to the file or directory you
  * are monitoring, connect to the #GFileMonitor::changed signal.

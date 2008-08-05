@@ -1,3 +1,9 @@
+2008-08-05  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 546371 – Improve docs re g_file_monitor
+
+	* gfilemonitor.c: Mention g_file_monitor() in the docs.
+
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.6 ===
