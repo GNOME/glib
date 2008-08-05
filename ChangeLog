@@ -1,3 +1,11 @@
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 546329 – API docs for g_utf8_normalize() are incorrect
+
+	* glib/gunidecomp.c: Remove inaccurate information about
+	g_utf8_collate() from g_utf8_normalize() docs.
+	Pointed out by Sven Neumann.
+
 2008-08-04  Tor Lillqvist  <tml@novell.com>
 
 	* glibconfig.h.win32.in: Make the union _GSystemThread::data array

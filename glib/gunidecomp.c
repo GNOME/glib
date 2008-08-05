@@ -504,8 +504,6 @@ _g_utf8_normalize_wc (const gchar    *str,
  * (in this case DIGIT THREE). Formatting information
  * may be lost but for most text operations such
  * characters should be considered the same.
- * For example, g_utf8_collate() normalizes
- * with %G_NORMALIZE_ALL as its first step.
  *
  * %G_NORMALIZE_DEFAULT_COMPOSE and %G_NORMALIZE_ALL_COMPOSE
  * are like %G_NORMALIZE_DEFAULT and %G_NORMALIZE_ALL,
