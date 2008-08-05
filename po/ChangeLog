@@ -1,3 +1,8 @@
+2008-08-05  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation.
+	* POTFILES.in: Added missing file.
+
 2008-08-05  Yair Hershkovitz  <yairhr@gmail.com>
 
 	* he.po: Updated Hebrew translation.

@@ -26,6 +26,7 @@ gio/gdataoutputstream.c
 gio/gdesktopappinfo.c
 gio/gdrive.c
 gio/gdummyfile.c
+gio/gemblem.c
 gio/gfileattribute.c
 gio/gfile.c
 gio/gfileenumerator.c
