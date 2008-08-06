@@ -86,6 +86,10 @@ g_themed_icon_get_property (GObject    *object,
         g_value_set_boxed (value, icon->names);
         break;
 
+      case PROP_USE_DEFAULT_FALLBACKS:
+        g_value_set_boolean (value, icon->use_default_fallbacks);
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -244,7 +248,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
                                                          _("use default fallbacks"),
                                                          _("Whether to use default fallbacks found by shortening the name at '-' characters. Ignores names after the first if multiple names are given."),
                                                          FALSE,
-                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
+                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }
 
 static void

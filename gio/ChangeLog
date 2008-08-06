@@ -1,3 +1,10 @@
+2008-08-06  Paul Pogonyshev  <pogonyshev@gmx.net>
+
+	* gthemedicon.c (g_themed_icon_get_property): Also handle
+	`PROP_USE_DEFAULT_FALLBACKS'.
+	(g_themed_icon_class_init): Make
+	`GThemedIcon:use-default-fallbacks' read-write (bug #546483).
+
 2008-08-05  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 546371 – Improve docs re g_file_monitor
