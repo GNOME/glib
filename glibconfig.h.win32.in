@@ -241,6 +241,12 @@ union _GSystemThread
 
 #define G_MODULE_SUFFIX "dll"
 
+/* A GPid is an abstraction for a process "handle". It is *not* a 
+ * process identifier, the type that getpid() returns. GPid is used in
+ * GLib only in gspawn.h and gmain.h. On POSIX there are no "handles"
+ * as such, but on Windows a GPid is a handle to a process, a kind of
+ * pointer, not a process identifier.
+ */
 typedef void * GPid;
 
 G_END_DECLS

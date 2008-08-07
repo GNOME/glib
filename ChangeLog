@@ -1,3 +1,10 @@
+2008-08-07  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Output comment clarifying GPid semantics to
+	glibconfig.h.
+
+	* glibconfig.h.win32.in: Ditto here.
+
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 546329 – API docs for g_utf8_normalize() are incorrect
