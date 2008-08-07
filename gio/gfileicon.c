@@ -25,6 +25,7 @@
 #include "gfileicon.h"
 #include "gfile.h"
 #include "gicon.h"
+#include "glibintl.h"
 #include "gloadableicon.h"
 #include "ginputstream.h"
 #include "gsimpleasyncresult.h"
@@ -62,11 +63,55 @@ struct _GFileIconClass
   GObjectClass parent_class;
 };
 
+enum
+{
+  PROP_0,
+  PROP_FILE
+};
+
 G_DEFINE_TYPE_WITH_CODE (GFileIcon, g_file_icon, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
                                                 g_file_icon_icon_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
                                                 g_file_icon_loadable_icon_iface_init))
+
+static void
+g_file_icon_get_property (GObject    *object,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
+{
+  GFileIcon *icon = G_FILE_ICON (object);
+
+  switch (prop_id)
+    {
+      case PROP_FILE:
+        g_value_set_object (value, icon->file);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+g_file_icon_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  GFileIcon *icon = G_FILE_ICON (object);
+
+  switch (prop_id)
+    {
+      case PROP_FILE:
+        icon->file = G_FILE (g_value_dup_object (value));
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
 
 static void
 g_file_icon_finalize (GObject *object)
@@ -85,7 +130,21 @@ g_file_icon_class_init (GFileIconClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
+  gobject_class->get_property = g_file_icon_get_property;
+  gobject_class->set_property = g_file_icon_set_property;
   gobject_class->finalize = g_file_icon_finalize;
+
+  /**
+   * GFileIcon:file:
+   *
+   * The file containing the icon.
+   */
+  g_object_class_install_property (gobject_class, PROP_FILE,
+                                   g_param_spec_object ("file",
+                                                        _("file"),
+                                                        _("The file containing the icon"),
+                                                        G_TYPE_FILE,
+                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }
 
 static void
@@ -104,14 +163,9 @@ g_file_icon_init (GFileIcon *file)
 GIcon *
 g_file_icon_new (GFile *file)
 {
-  GFileIcon *icon;
-
   g_return_val_if_fail (G_IS_FILE (file), NULL);
 
-  icon = g_object_new (G_TYPE_FILE_ICON, NULL);
-  icon->file = g_object_ref (file);
-  
-  return G_ICON (icon);
+  return G_ICON (g_object_new (G_TYPE_FILE_ICON, "file", file, NULL));
 }
 
 /**

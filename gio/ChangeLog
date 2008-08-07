@@ -1,3 +1,11 @@
+2008-08-07  Paul Pogonyshev  <pogonyshev@gmx.net>
+
+	* gfileicon.c (g_file_icon_get_property)
+	(g_file_icon_set_property): New functions.
+	(g_file_icon_class_init): Hook them up.  Install `GFileIcon:file'
+	property.
+	(g_file_icon_new): Use the property (bug #546132).
+
 2008-08-06  Paul Pogonyshev  <pogonyshev@gmx.net>
 
 	* gthemedicon.c (g_themed_icon_get_property): Also handle
