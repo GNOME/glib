@@ -2951,11 +2951,12 @@ _______EOF
 
 #define G_MODULE_SUFFIX "$g_module_suffix"
 
-/* A GPid is an abstraction for a process "handle". It is *not* a 
- * process identifier, the type that getpid() returns. GPid is used in
- * GLib only in gspawn.h and gmain.h. On POSIX there are no "handles"
- * as such, but on Windows a GPid is a handle to a process, a kind of
- * pointer, not a process identifier.
+/* A GPid is an abstraction for a process "handle". It is *not* an abstraction for
+ * a process identifier in general. GPid is used in GLib only for
+ * descendant processes spawned with the g_spawn* functions. On POSIX
+ * there is no "process handle" concept as such, but on Windows a GPid
+ * is a handle to a process, a kind of pointer, not a process
+ * identifier.
  */
 typedef $g_pid_type GPid;
 
