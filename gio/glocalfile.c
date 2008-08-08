@@ -1992,7 +1992,7 @@ g_local_file_make_directory (GFile         *file,
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   
-  if (g_mkdir (local->filename, 0755) == -1)
+  if (g_mkdir (local->filename, 0777) == -1)
     {
       int errsv = errno;
 
