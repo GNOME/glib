@@ -237,7 +237,7 @@ write_callable_info (const gchar    *namespace,
   GITypeInfo *type;
   gint i;
 
-  g_fprintf (file, "%*s  <return-type type=\"", indent, "");
+  g_fprintf (file, "%*s  <return-type c:type=\"", indent, "");
   
   type = g_callable_info_get_return_type (info);
   write_type_info (namespace, type, file);
@@ -274,7 +274,7 @@ write_callable_info (const gchar    *namespace,
 	{
 	  GIArgInfo *arg = g_callable_info_get_arg (info, i);
 		
-	  g_fprintf (file, "%*s    <parameter name=\"%s\" type=\"",
+	  g_fprintf (file, "%*s    <parameter name=\"%s\" c:type=\"",
 		     indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
 		
 	  type = g_arg_info_get_type (arg);
@@ -360,7 +360,7 @@ write_function_info (const gchar    *namespace,
   else
     tag = "function";
 	
-  g_fprintf (file, "%*s<%s name=\"%s\" symbol=\"%s\"", 
+  g_fprintf (file, "%*s<%s name=\"%s\" c:identifier=\"%s\"", 
 	     indent, "", tag, name, symbol);
 	
   if (flags & GI_FUNCTION_IS_SETTER)
@@ -1019,7 +1019,10 @@ write_repository (GIRepository *repository,
     }
   
   g_fprintf (file, "<?xml version=\"1.0\"?>\n");
-  g_fprintf (file, "<api version=\"1.0\">\n");
+  g_fprintf (file, "<repository version=\"1.0\"\n"
+	     "            xmlns=\"http://www.gtk.org/introspection/core/1.0\"\n"
+	     "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
+	     "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\">\n");
 
   for (i = 0; namespaces[i]; i++)
     {
@@ -1085,7 +1088,7 @@ write_repository (GIRepository *repository,
       g_fprintf (file, "  </namespace>\n");
     }
 
-  g_fprintf (file, "</api>\n");
+  g_fprintf (file, "</repository>\n");
       
   if (output != NULL)
     fclose (file);        
