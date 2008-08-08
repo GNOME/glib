@@ -634,13 +634,10 @@ unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
             }
           else
             {
-              /* characters XML permits */
-              if (l == 0x9 ||
-                  l == 0xA ||
-                  l == 0xD ||
-                  (l >= 0x20 && l <= 0xD7FF) ||
-                  (l >= 0xE000 && l <= 0xFFFD) ||
-                  (l >= 0x10000 && l <= 0x10FFFF))
+              /* characters XML 1.1 permits */
+              if ((0 < l && l <= 0xD7FF) ||
+                  (0xE000 <= l && l <= 0xFFFD) ||
+                  (0x10000 <= l && l <= 0x10FFFF))
                 {
                   gchar buf[8];
                   g_string_append (ucontext->str, char_str (l, buf));
