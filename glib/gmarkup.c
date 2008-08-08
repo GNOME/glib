@@ -2289,6 +2289,13 @@ append_escaped_text (GString     *str,
  * Note that this function doesn't protect whitespace and line endings
  * from being processed according to the XML rules for normalization
  * of line endings and attribute values.
+ *
+ * Note also that if given a string containing them, this function
+ * will produce character references in the range of &amp;#x1; ..
+ * &amp;#x1f; for all control sequences except for tabstop, newline
+ * and carriage return.  The character references in this range are
+ * not valid XML 1.0, but they are valid XML 1.1 and will be accepted
+ * by the GMarkup parser.
  * 
  * Return value: a newly allocated string with the escaped text
  **/
