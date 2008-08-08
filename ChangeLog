@@ -1,5 +1,12 @@
 2008-08-08  Ryan Lortie  <desrt@desrt.ca>
 
+	Fix 'fail' markup test cases to -not- be valid XML 1.1.
+
+	* tests/markups/fail-32.gmarkup: change &#x10; to &#x0; since the
+	former is no longer a failure.
+
+2008-08-08  Ryan Lortie  <desrt@desrt.ca>
+
 	Bug 546876 - Modify GMarkup parser to accept &#x1; .. &#x1f;
 
 	* glib/gmarkup.c: previously the parser only accepted character
