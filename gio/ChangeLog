@@ -1,3 +1,10 @@
+2008-08-08  Tor Lillqvist  <tml@novell.com>
+
+	* gwin32volumemonitor.c (get_connected_drives): Put questionable
+	code that didn't actually do anything inside #if 0, and add a
+	comment wondering what the code was supposed to do. This also gets
+	rid of a leftover debugging printout.
+
 2008-08-07  Paul Pogonyshev  <pogonyshev@gmx.net>
 
 	* gfileicon.c (g_file_icon_get_property)
