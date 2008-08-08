@@ -1,3 +1,11 @@
+2008-08-08  Loïc Minier  <lool@dooz.org>
+
+	Bug 535124 – umask 002 not being applied for new directories, new
+	files get the correct umask
+
+	* glocalfile.c: (g_local_file_make_directory): Use 0777 instead of
+	0755 as umask
+
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.16.5 === 
