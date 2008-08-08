@@ -124,8 +124,8 @@ _win32_get_displayname (const char *drive)
  **/
 GWin32Mount *
 _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
-                    const char       *path,
-                    GWin32Volume     *volume)
+                    const char      *path,
+                    GWin32Volume    *volume)
 {
   GWin32Mount *mount;
   const gchar *drive = path; //fixme
@@ -168,8 +168,8 @@ _g_win32_mount_unmounted (GWin32Mount *mount)
 }
 
 void
-_g_win32_mount_unset_volume (GWin32Mount *mount,
-                            GWin32Volume  *volume)
+_g_win32_mount_unset_volume (GWin32Mount  *mount,
+			     GWin32Volume *volume)
 {
   if (mount->volume == volume)
     {
@@ -294,102 +294,36 @@ typedef struct {
   GString *error_string;
 } UnmountEjectOp;
 
-static void 
-eject_unmount_cb (GPid pid, gint status, gpointer user_data)
+static void
+g_win32_mount_unmount (GMount              *mount,
+		       GMountUnmountFlags   flags,
+		       GCancellable        *cancellable,
+		       GAsyncReadyCallback  callback,
+		       gpointer             user_data)
 {
-  UnmountEjectOp *data = user_data;
-  GSimpleAsyncResult *simple;
-
-#if 0  
-  if (WEXITSTATUS (status) != 0)
-    {
-      GError *error;
-      error = g_error_new_literal (G_IO_ERROR, 
-                                   G_IO_ERROR_FAILED,
-                                   data->error_string->str);
-      simple = g_simple_async_result_new_from_error (G_OBJECT (data->win32_mount),
-                                                     data->callback,
-                                                     data->user_data,
-                                                     error);
-      g_error_free (error);
-    }
-  else
-    {
-      simple = g_simple_async_result_new (G_OBJECT (data->win32_mount),
-                                          data->callback,
-                                          data->user_data,
-                                          NULL);
-    }
-
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-
-  g_source_remove (data->error_channel_source_id);
-  g_io_channel_unref (data->error_channel);
-  g_string_free (data->error_string, TRUE);
-  close (data->error_fd);
-  g_spawn_close_pid (pid);
-  g_free (data);
-#endif
 }
 
 static gboolean
-eject_unmount_read_error (GIOChannel *channel,
-                    GIOCondition condition,
-                    gpointer user_data)
-{
-  char *str;
-  gsize str_len;
-  UnmountEjectOp *data = user_data;
-
-  g_io_channel_read_to_end (channel, &str, &str_len, NULL);
-  g_string_append (data->error_string, str);
-  g_free (str);
-  return TRUE;
-}
-
-static void
-eject_unmount_do (GMount              *mount,
-                  GCancellable        *cancellable,
-                  GAsyncReadyCallback  callback,
-                  gpointer             user_data,
-                  char               **argv)
-{
-  GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
-}
-
-static void
-g_win32_mount_unmount (GMount             *mount,
-                      GMountUnmountFlags flags,
-                      GCancellable        *cancellable,
-                      GAsyncReadyCallback  callback,
-                      gpointer             user_data)
-{
-  GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
-}
-
-static gboolean
-g_win32_mount_unmount_finish (GMount       *mount,
-                             GAsyncResult  *result,
-                             GError       **error)
+g_win32_mount_unmount_finish (GMount        *mount,
+			      GAsyncResult  *result,
+			      GError       **error)
 {
   return FALSE;
 }
 
 static void
-g_win32_mount_eject (GMount             *mount,
-                    GMountUnmountFlags flags,
-                    GCancellable        *cancellable,
-                    GAsyncReadyCallback  callback,
-                    gpointer             user_data)
+g_win32_mount_eject (GMount              *mount,
+		     GMountUnmountFlags   flags,
+		     GCancellable        *cancellable,
+		     GAsyncReadyCallback  callback,
+		     gpointer             user_data)
 {
-  GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
 }
 
 static gboolean
-g_win32_mount_eject_finish (GMount       *mount,
-                           GAsyncResult  *result,
-                           GError       **error)
+g_win32_mount_eject_finish (GMount        *mount,
+			    GAsyncResult  *result,
+			    GError       **error)
 {
   return FALSE;
 }
