@@ -24,9 +24,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#include "gidlmodule.h"
-#include "gidlnode.h"
-#include "gidlparser.h"
+#include "girmodule.h"
+#include "girnode.h"
+#include "girparser.h"
 #include "gtypelib.h"
 
 gboolean raw = FALSE;
@@ -179,6 +179,7 @@ main (int argc, char ** argv)
     logged_levels = logged_levels | G_LOG_LEVEL_DEBUG;
   if (verbose)
     logged_levels = logged_levels | G_LOG_LEVEL_MESSAGE;
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   g_log_set_default_handler (log_handler, NULL);
 
@@ -189,11 +190,13 @@ main (int argc, char ** argv)
       return 1;
     }
 
+  g_debug ("[parsing] start");
+
   modules = NULL;
   for (i = 0; input[i]; i++)
     {
       GList *mods;
-      mods = g_idl_parse_file (input[i], &error);
+      mods = g_ir_parse_file (input[i], &error);
       
       if (mods == NULL) 
 	{
@@ -206,9 +209,13 @@ main (int argc, char ** argv)
       modules = g_list_concat (modules, mods);
     }
 
+  g_debug ("[parsing] done");
+
+  g_debug ("[building] start");
+
   for (m = modules; m; m = m->next)
     {
-      GIdlModule *module = m->data;
+      GIrModule *module = m->data;
       gchar *prefix;
       GTypelib *metadata;
 
@@ -220,7 +227,10 @@ main (int argc, char ** argv)
 	    g_free (module->shared_library);
           module->shared_library = g_strdup (shlib);
 	}
-      metadata = g_idl_module_build_metadata (module, modules);
+
+      g_debug ("[building] module %s", module->name);
+
+      metadata = g_ir_module_build_metadata (module, modules);
       if (metadata == NULL)
 	{
 	  g_error ("Failed to build metadata for module '%s'\n", module->name);
@@ -248,6 +258,8 @@ main (int argc, char ** argv)
 	  break;
 	}
     }
-             
+
+  g_debug ("[building] done");
+
   return 0; 
 }
