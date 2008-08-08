@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define G_IDL_MAGIC "GOBJ\nMETADATA\r\n\032"
+#define G_IR_MAGIC "GOBJ\nMETADATA\r\n\032"
 
 enum 
 {
@@ -126,7 +126,10 @@ typedef enum
   TYPE_TAG_LIST      = 22,
   TYPE_TAG_SLIST     = 23,
   TYPE_TAG_HASH      = 24,
-  TYPE_TAG_ERROR     = 25
+  TYPE_TAG_ERROR     = 25,
+  TYPE_TAG_STRING    = 26,
+  TYPE_TAG_SEQUENCE  = 27,
+  TYPE_TAG_ANY       = 28
 } TypeTag;
 
 typedef union

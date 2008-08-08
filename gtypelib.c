@@ -113,7 +113,7 @@ validate_header (GTypelib  *metadata,
 
   header = (Header *)metadata->data;
 
-  if (strncmp (header->magic, G_IDL_MAGIC, 16) != 0)
+  if (strncmp (header->magic, G_IR_MAGIC, 16) != 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
