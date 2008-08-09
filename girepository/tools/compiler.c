@@ -1,4 +1,4 @@
-/* GObject introspection: Metadata compiler
+/* GObject introspection: Typelib compiler
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -39,19 +39,19 @@ gboolean debug = FALSE;
 gboolean verbose = FALSE;
 
 static gchar *
-format_output (GTypelib *metadata)
+format_output (GTypelib *typelib)
 {
   GString *result;
   gint i;
 
-  result = g_string_sized_new (6 * metadata->len);
+  result = g_string_sized_new (6 * typelib->len);
 
   g_string_append_printf (result, "#include <stdlib.h>\n");
   g_string_append_printf (result, "#include <girepository.h>\n\n");
   
   g_string_append_printf (result, "const unsigned char _G_TYPELIB[] = \n{");
 
-  for (i = 0; i < metadata->len; i++)
+  for (i = 0; i < typelib->len; i++)
     {
       if (i > 0)
 	g_string_append (result, ", ");
@@ -59,39 +59,39 @@ format_output (GTypelib *metadata)
       if (i % 10 == 0)
 	g_string_append (result, "\n\t");
       
-      g_string_append_printf (result, "0x%.2x", metadata->data[i]);      
+      g_string_append_printf (result, "0x%.2x", typelib->data[i]);      
     }
 
   g_string_append_printf (result, "\n};\n\n");
   g_string_append_printf (result, "const gsize _G_TYPELIB_SIZE = %u;\n\n",
-			  (guint)metadata->len);
+			  (guint)typelib->len);
 
   if (!no_init)
     {
       g_string_append_printf (result,
 			      "__attribute__((constructor)) void\n"
-			      "register_metadata (void)\n"
+			      "register_typelib (void)\n"
 			      "{\n"
-			      "\tGTypelib *metadata;\n"
-			      "\tmetadata = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
-			      "\tg_irepository_register (NULL, metadata);\n"
+			      "\tGTypelib *typelib;\n"
+			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
+			      "\tg_irepository_register (NULL, typelib);\n"
 			      "}\n\n");
 
       g_string_append_printf (result,
 			      "__attribute__((destructor)) void\n"
-			      "unregister_metadata (void)\n"
+			      "unregister_typelib (void)\n"
 			      "{\n"
 			      "\tg_irepository_unregister (NULL, \"%s\");\n"
 			      "}\n",
-			      g_typelib_get_namespace (metadata));
+			      g_typelib_get_namespace (typelib));
     }
 
   return g_string_free (result, FALSE);
 }
 
 static void
-write_out_metadata (gchar *prefix,
-		    GTypelib *metadata)
+write_out_typelib (gchar *prefix,
+		   GTypelib *typelib)
 {
   FILE *file;
 
@@ -120,12 +120,12 @@ write_out_metadata (gchar *prefix,
     }
 
   if (raw)
-    fwrite (metadata->data, 1, metadata->len, file);
+    fwrite (typelib->data, 1, typelib->len, file);
   else
     {
       gchar *code;
 
-      code = format_output (metadata);
+      code = format_output (typelib);
       fputs (code, file);
       g_free (code);
     }
@@ -148,7 +148,7 @@ static void log_handler (const gchar *log_domain,
 
 static GOptionEntry options[] = 
 {
-  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "emit raw metadata", NULL },
+  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "emit raw typelib", NULL },
   { "code", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &raw, "emit C code", NULL },
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
@@ -217,7 +217,7 @@ main (int argc, char ** argv)
     {
       GIrModule *module = m->data;
       gchar *prefix;
-      GTypelib *metadata;
+      GTypelib *typelib;
 
       if (mname && strcmp (mname, module->name) != 0)
 	continue;
@@ -230,15 +230,15 @@ main (int argc, char ** argv)
 
       g_debug ("[building] module %s", module->name);
 
-      metadata = g_ir_module_build_metadata (module, modules);
-      if (metadata == NULL)
+      typelib = g_ir_module_build_typelib (module, modules);
+      if (typelib == NULL)
 	{
-	  g_error ("Failed to build metadata for module '%s'\n", module->name);
+	  g_error ("Failed to build typelib for module '%s'\n", module->name);
 
 	  continue;
 	}
-      if (!g_typelib_validate (metadata, &error))
-	g_error ("Invalid metadata for module '%s': %s", 
+      if (!g_typelib_validate (typelib, &error))
+	g_error ("Invalid typelib for module '%s': %s", 
 		 module->name, error->message);
 
       if (!mname && (m->next || m->prev) && output)
@@ -246,9 +246,9 @@ main (int argc, char ** argv)
       else
 	prefix = NULL;
 
-      write_out_metadata (prefix, metadata);
-      g_typelib_free (metadata);
-      metadata = NULL;
+      write_out_typelib (prefix, typelib);
+      g_typelib_free (typelib);
+      typelib = NULL;
 
       /* when writing to stdout, stop after the first module */
       if (m->next && !output && !mname)
