@@ -2705,6 +2705,9 @@ g_file_move (GFile                  *source,
  * @error to %G_IO_ERROR_NOT_FOUND. If the file system doesn't support creating
  * directories, this function will fail, setting @error to 
  * %G_IO_ERROR_NOT_SUPPORTED.
+ *
+ * For a local #GFile the newly created directory will have the default
+ * (current) ownership and permissions of the current process.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2746,6 +2749,9 @@ g_file_make_directory (GFile         *file,
  * Creates a directory and any parent directories that may not exist similar to
  * 'mkdir -p'. If the file system does not support creating directories, this
  * function will fail, setting @error to %G_IO_ERROR_NOT_SUPPORTED.
+ * 
+ * For a local #GFile the newly created directories will have the default
+ * (current) ownership and permissions of the current process.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation

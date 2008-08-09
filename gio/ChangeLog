@@ -1,3 +1,13 @@
+2008-08-09  Loïc Minier  <lool@dooz.org>
+
+	Bug 535124 – umask 002 not being applied for new directories, new
+	files get the correct umask
+
+	* gfile.c (g_file_make_directory)
+	(g_file_make_directory_with_parents): Document ownership and
+	permissions of newly created directories as being the default
+	ones of the process.
+
 2008-08-08  Loïc Minier  <lool@dooz.org>
 
 	Bug 535124 – umask 002 not being applied for new directories, new
