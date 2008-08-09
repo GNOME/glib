@@ -309,23 +309,23 @@ GIrNode * g_ir_node_new             (GIrNodeTypeId type);
 void      g_ir_node_free            (GIrNode    *node);
 guint32   g_ir_node_get_size        (GIrNode    *node);
 guint32   g_ir_node_get_full_size   (GIrNode    *node);
-void      g_ir_node_build_metadata  (GIrNode    *node,
-				      GIrModule  *module,
-				      GList       *modules,
-                                      GHashTable  *strings,
-                                      GHashTable  *types,
-				      guchar      *data,
-				      guint32     *offset,
-                                      guint32     *offset2);
+void      g_ir_node_build_typelib   (GIrNode    *node,
+				     GIrModule  *module,
+				     GList       *modules,
+				     GHashTable  *strings,
+				     GHashTable  *types,
+				     guchar      *data,
+				     guint32     *offset,
+				     guint32     *offset2);
 int       g_ir_node_cmp             (GIrNode    *node,
-				      GIrNode    *other);
+				     GIrNode    *other);
 gboolean  g_ir_node_can_have_member (GIrNode    *node);
 void      g_ir_node_add_member      (GIrNode         *node,
-				      GIrNodeFunction *member);
-guint32   write_string               (const gchar *str,
-				      GHashTable  *strings, 
-				      guchar      *data,
-				      guint32     *offset);
+				     GIrNodeFunction *member);
+guint32   write_string              (const gchar *str,
+				     GHashTable  *strings, 
+				     guchar      *data,
+				     guint32     *offset);
 
 const gchar * g_ir_node_param_direction_string (GIrNodeParam * node);
 

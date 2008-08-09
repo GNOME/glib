@@ -29,12 +29,12 @@
 #include "gtypelib.h"
 
 static GIRepository *default_repository = NULL;
-static GHashTable *default_metadata = NULL;
+static GHashTable *default_typelib = NULL;
 static GSList *search_path = NULL;
 
 struct _GIRepositoryPrivate 
 {
-  GHashTable *metadata; /* (string) namespace -> GTypelib */
+  GHashTable *typelib; /* (string) namespace -> GTypelib */
 };
 
 G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
@@ -51,7 +51,7 @@ g_irepository_finalize (GObject *object)
 {
   GIRepository *repository = G_IREPOSITORY (object);
 
-  g_hash_table_destroy (repository->priv->metadata);
+  g_hash_table_destroy (repository->priv->typelib);
   
   (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -70,49 +70,49 @@ g_irepository_class_init (GIRepositoryClass *class)
 
 const gchar *
 g_irepository_register (GIRepository *repository,
-                        GTypelib    *metadata)
+                        GTypelib    *typelib)
 {
   Header *header;
   const gchar *name;
   GHashTable *table;
   GError *error = NULL;
   
-  g_return_val_if_fail (metadata != NULL, NULL);
+  g_return_val_if_fail (typelib != NULL, NULL);
   
-  header = (Header *)metadata->data;
+  header = (Header *)typelib->data;
 
   g_return_val_if_fail (header != NULL, NULL);
 
   if (repository != NULL)
     {
-      if (repository->priv->metadata == NULL)
-	repository->priv->metadata = g_hash_table_new_full (g_str_hash, g_str_equal,
+      if (repository->priv->typelib == NULL)
+	repository->priv->typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                             (GDestroyNotify) NULL,
                                                             (GDestroyNotify) g_typelib_free);
-      table = repository->priv->metadata;
+      table = repository->priv->typelib;
     }
   else 
     {
-      if (default_metadata == NULL)
-	default_metadata = g_hash_table_new_full (g_str_hash, g_str_equal,
+      if (default_typelib == NULL)
+	default_typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   (GDestroyNotify) NULL,
                                                   (GDestroyNotify) g_typelib_free);
-      table = default_metadata;
+      table = default_typelib;
     }
 
-  name = g_typelib_get_string (metadata, header->namespace);
+  name = g_typelib_get_string (typelib, header->namespace);
 
   if (g_hash_table_lookup (table, name))
     {
-      g_printerr ("metadata (%p) for '%s' already registered\n",
-		 metadata, name);
+      g_printerr ("typelib (%p) for '%s' already registered\n",
+		 typelib, name);
 
       return NULL;
     }
-  g_hash_table_insert (table, g_strdup(name), (void *)metadata);
+  g_hash_table_insert (table, g_strdup(name), (void *)typelib);
 
-  if (metadata->module == NULL)
-      metadata->module = g_module_open (NULL, 0); 
+  if (typelib->module == NULL)
+      typelib->module = g_module_open (NULL, 0); 
 
   if (g_getenv ("G_IREPOSITORY_VERBOSE"))
     {
@@ -130,9 +130,9 @@ g_irepository_unregister (GIRepository *repository,
   GHashTable *table;
 
   if (repository != NULL)
-    table = repository->priv->metadata;
+    table = repository->priv->typelib;
   else
-    table = default_metadata;
+    table = default_typelib;
 
   if (!g_hash_table_remove (table, namespace))
     {
@@ -147,9 +147,9 @@ g_irepository_is_registered (GIRepository *repository,
   GHashTable *table;
 
   if (repository != NULL)
-    table = repository->priv->metadata;
+    table = repository->priv->typelib;
   else
-    table = default_metadata;
+    table = default_typelib;
 
   return g_hash_table_lookup (table, namespace) != NULL;
 }
@@ -160,11 +160,11 @@ g_irepository_get_default (void)
   if (default_repository == NULL) 
     { 
       default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
-      if (default_metadata == NULL)
-	default_metadata = g_hash_table_new_full (g_str_hash, g_str_equal,
+      if (default_typelib == NULL)
+	default_typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   (GDestroyNotify) NULL,
                                                   (GDestroyNotify) g_typelib_free);
-      default_repository->priv->metadata = default_metadata;
+      default_repository->priv->typelib = default_typelib;
     }
 
   return default_repository; 
@@ -175,10 +175,10 @@ count_interfaces (gpointer key,
 		  gpointer value,
 		  gpointer data)
 {
-  guchar *metadata = ((GTypelib *) value)->data;
+  guchar *typelib = ((GTypelib *) value)->data;
   gint *n_interfaces = (gint *)data;
   
-  *n_interfaces += ((Header *)metadata)->n_local_entries;
+  *n_interfaces += ((Header *)typelib)->n_local_entries;
 }
 
 gint                   
@@ -189,16 +189,16 @@ g_irepository_get_n_infos (GIRepository *repository,
   
   if (namespace)
     {
-      GTypelib *metadata;
+      GTypelib *typelib;
 
-      metadata = g_hash_table_lookup (repository->priv->metadata, namespace);
+      typelib = g_hash_table_lookup (repository->priv->typelib, namespace);
 
-      if (metadata)
-	n_interfaces = ((Header *)metadata->data)->n_local_entries;
+      if (typelib)
+	n_interfaces = ((Header *)typelib->data)->n_local_entries;
     }
   else
     {
-      g_hash_table_foreach (repository->priv->metadata, 
+      g_hash_table_foreach (repository->priv->typelib, 
 			    count_interfaces, &n_interfaces);
     }
 
@@ -219,7 +219,7 @@ find_interface (gpointer key,
 		gpointer data)
 {
   gint i;
-  GTypelib *metadata = (GTypelib *)value;
+  GTypelib *typelib = (GTypelib *)value;
   IfaceData *iface_data = (IfaceData *)data;
   gint index;
   gint n_entries;
@@ -229,14 +229,14 @@ find_interface (gpointer key,
   DirEntry *entry;    
 
   index = 0;
-  n_entries = ((Header *)metadata->data)->n_local_entries;
+  n_entries = ((Header *)typelib->data)->n_local_entries;
 
   if (iface_data->name)
     {
       for (i = 1; i <= n_entries; i++)
 	{
-	  entry = g_typelib_get_dir_entry (metadata, i);
-	  name = g_typelib_get_string (metadata, entry->name);
+	  entry = g_typelib_get_dir_entry (typelib, i);
+	  name = g_typelib_get_string (typelib, entry->name);
 	  if (strcmp (name, iface_data->name) == 0)
 	    {
 	      index = i;
@@ -248,12 +248,12 @@ find_interface (gpointer key,
     {
       for (i = 1; i <= n_entries; i++)
 	{
-	  entry = g_typelib_get_dir_entry (metadata, i);
+	  entry = g_typelib_get_dir_entry (typelib, i);
 	  if (entry->blob_type < 4)
 	    continue;
 	  
-	  offset = *(guint32*)&metadata->data[entry->offset + 8];
-	  type = g_typelib_get_string (metadata, offset);
+	  offset = *(guint32*)&typelib->data[entry->offset + 8];
+	  type = g_typelib_get_string (typelib, offset);
 	  if (strcmp (type, iface_data->type) == 0)
 	    {
 	      index = i;
@@ -271,9 +271,9 @@ find_interface (gpointer key,
 
   if (index != 0)
     {
-      entry = g_typelib_get_dir_entry (metadata, index);
+      entry = g_typelib_get_dir_entry (typelib, index);
       iface_data->iface = g_info_new (entry->blob_type, NULL,
-				      metadata, entry->offset);
+				      typelib, entry->offset);
     }
 }
 
@@ -291,15 +291,15 @@ g_irepository_get_info (GIRepository *repository,
 
   if (namespace)
     {
-      GTypelib *metadata;
+      GTypelib *typelib;
       
-      metadata = g_hash_table_lookup (repository->priv->metadata, namespace);
+      typelib = g_hash_table_lookup (repository->priv->typelib, namespace);
       
-      if (metadata)
-	find_interface ((void *)namespace, metadata, &data);
+      if (typelib)
+	find_interface ((void *)namespace, typelib, &data);
     }
   else
-    g_hash_table_foreach (repository->priv->metadata, find_interface, &data);
+    g_hash_table_foreach (repository->priv->typelib, find_interface, &data);
 
   return data.iface;  
 }
@@ -315,7 +315,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
   data.index = -1;
   data.iface = NULL;
 
-  g_hash_table_foreach (repository->priv->metadata, find_interface, &data);
+  g_hash_table_foreach (repository->priv->typelib, find_interface, &data);
 
   return data.iface;
 }
@@ -334,15 +334,15 @@ g_irepository_find_by_name (GIRepository *repository,
 
   if (namespace)
     {
-      GTypelib *metadata;
+      GTypelib *typelib;
       
-      metadata = g_hash_table_lookup (repository->priv->metadata, namespace);
+      typelib = g_hash_table_lookup (repository->priv->typelib, namespace);
       
-      if (metadata)
-	find_interface ((void *)namespace, metadata, &data);
+      if (typelib)
+	find_interface ((void *)namespace, typelib, &data);
     }
   else
-    g_hash_table_foreach (repository->priv->metadata, find_interface, &data);
+    g_hash_table_foreach (repository->priv->typelib, find_interface, &data);
 
   return data.iface;
 }
@@ -364,7 +364,7 @@ g_irepository_get_namespaces (GIRepository *repository)
   gchar **names;
   gint i;
 
-  g_hash_table_foreach (repository->priv->metadata, collect_namespaces, &list);
+  g_hash_table_foreach (repository->priv->typelib, collect_namespaces, &list);
 
   names = g_malloc0 (sizeof (gchar *) * (g_list_length (list) + 1));
   i = 0;
@@ -379,15 +379,15 @@ const gchar *
 g_irepository_get_shared_library (GIRepository *repository,
                                    const gchar  *namespace)
 {
-  GTypelib *metadata;
+  GTypelib *typelib;
   Header *header;
 
-  metadata = g_hash_table_lookup (repository->priv->metadata, namespace);
-  if (!metadata)
+  typelib = g_hash_table_lookup (repository->priv->typelib, namespace);
+  if (!typelib)
     return NULL;
-  header = (Header *) metadata->data;
+  header = (Header *) typelib->data;
   if (header->shared_library)
-    return g_typelib_get_string (metadata, header->shared_library);
+    return g_typelib_get_string (typelib, header->shared_library);
   else
     return NULL;
 }
@@ -423,16 +423,16 @@ g_irepository_register_file (GIRepository  *repository,
   gchar *fname, *full_path;
   GMappedFile *mfile;
   GError *error1 = NULL;
-  GTypelib *metadata = NULL;
-  const gchar *metadata_namespace, *shlib_fname;
+  GTypelib *typelib = NULL;
+  const gchar *typelib_namespace, *shlib_fname;
   GModule *module;
   guint32 shlib;
   GHashTable *table;
 
   if (repository != NULL)
-    table = repository->priv->metadata;
+    table = repository->priv->typelib;
   else
-    table = default_metadata;
+    table = default_typelib;
 
   /* don't bother loading a namespace if already registered */
   if (g_hash_table_lookup (table, namespace))
@@ -454,35 +454,35 @@ g_irepository_register_file (GIRepository  *repository,
       continue;
     }
     g_free (full_path);
-    metadata = g_typelib_new_from_mapped_file (mfile);
-    metadata_namespace = g_typelib_get_string (metadata, ((Header *) metadata->data)->namespace);
-    if (strcmp (metadata_namespace, namespace) != 0) {
+    typelib = g_typelib_new_from_mapped_file (mfile);
+    typelib_namespace = g_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
+    if (strcmp (typelib_namespace, namespace) != 0) {
       g_set_error (error, G_IREPOSITORY_ERROR,
                    G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
-                   "Metadata file %s for namespace '%s' contains namespace '%s'"
+                   "Typelib file %s for namespace '%s' contains namespace '%s'"
                    " which doesn't match the file name",
-                   full_path, namespace, metadata_namespace);
+                   full_path, namespace, typelib_namespace);
       return NULL; 
     }
     break;
   }
   g_free (fname);
-  if (metadata == NULL) {
+  if (typelib == NULL) {
     g_set_error (error, G_IREPOSITORY_ERROR,
-                 G_IREPOSITORY_ERROR_METADATA_NOT_FOUND,
-                 "Metadata file for namespace '%s' was not found in search"
+                 G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+                 "Typelib file for namespace '%s' was not found in search"
                  " path or could not be openened", namespace);
     return NULL;
   }
-  /* optionally load shared library and attach it to the metadata */
-  shlib = ((Header *) metadata->data)->shared_library;
+  /* optionally load shared library and attach it to the typelib */
+  shlib = ((Header *) typelib->data)->shared_library;
   if (shlib) {
-    shlib_fname = g_typelib_get_string (metadata, shlib);
+    shlib_fname = g_typelib_get_string (typelib, shlib);
     module = g_module_open (shlib_fname, G_MODULE_BIND_LAZY|G_MODULE_BIND_LOCAL);
     if (module == NULL) {
       g_set_error (error, G_IREPOSITORY_ERROR,
-                   G_IREPOSITORY_ERROR_METADATA_NOT_FOUND,
-                   "Metadata for namespace '%s' references shared library %s,"
+                   G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+                   "Typelib for namespace '%s' references shared library %s,"
                    " but it could not be openened (%s)",
                    namespace, shlib_fname, g_module_error ());
       return NULL;
@@ -490,7 +490,7 @@ g_irepository_register_file (GIRepository  *repository,
   }
 
   g_hash_table_remove (table, namespace);
-  return g_irepository_register (repository, metadata);
+  return g_irepository_register (repository, typelib);
 }
 
 

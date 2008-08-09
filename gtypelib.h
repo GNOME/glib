@@ -1,5 +1,5 @@
 /* GObject introspection: struct definitions for the binary
- * metadata format, validation
+ * typelib format, validation
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -521,12 +521,12 @@ struct _GTypelib {
   GModule *module;
 };
 
-DirEntry *g_typelib_get_dir_entry (GTypelib *metadata,
-				    guint16            index);
+DirEntry *g_typelib_get_dir_entry (GTypelib *typelib,
+				   guint16   index);
 
 void      g_typelib_check_sanity (void);
 
-#define   g_typelib_get_string(metadata,offset) ((const gchar*)&(metadata->data)[(offset)])
+#define   g_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
 
 
 typedef enum
@@ -542,8 +542,8 @@ typedef enum
 
 GQuark g_typelib_error_quark (void);
 
-gboolean g_typelib_validate (GTypelib  *metadata,
-			      GError    **error);
+gboolean g_typelib_validate (GTypelib  *typelib,
+			     GError    **error);
 
 
 G_END_DECLS

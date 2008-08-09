@@ -163,7 +163,7 @@ g_function_info_invoke (GIFunctionInfo *info,
   
   symbol = g_function_info_get_symbol (info);
 
-  if (!g_module_symbol (g_base_info_get_metadata((GIBaseInfo *) info)->module,
+  if (!g_module_symbol (g_base_info_get_typelib((GIBaseInfo *) info)->module,
                         symbol, &func))
     {
       GModule *entire_app;
@@ -172,7 +172,7 @@ g_function_info_invoke (GIFunctionInfo *info,
        * We want to be able to add symbols to an app or an auxiliary
        * library to fill in gaps in an introspected library. However,
        * normally we would only look for symbols in the main library
-       * (metadata->module).
+       * (typelib->module).
        *
        * A more elaborate solution is probably possible, but as a
        * simple approach for now, if we fail to find a symbol we look
@@ -180,7 +180,7 @@ g_function_info_invoke (GIFunctionInfo *info,
        *
        * This would not be very efficient if it happened often, since
        * we always do the failed lookup above first, but very few
-       * symbols should be outside of metadata->module so it doesn't
+       * symbols should be outside of typelib->module so it doesn't
        * matter.
        */
       entire_app = g_module_open (NULL, 0);

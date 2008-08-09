@@ -40,7 +40,7 @@ GIrModule *g_ir_module_new            (const gchar *name,
 				       const gchar *module_filename);
 void       g_ir_module_free           (GIrModule  *module);
 
-GTypelib * g_ir_module_build_metadata (GIrModule  *module,
+GTypelib * g_ir_module_build_typelib  (GIrModule  *module,
 				       GList       *modules);
 
 G_END_DECLS

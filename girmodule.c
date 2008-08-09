@@ -1,4 +1,4 @@
-/* GObject introspection: Metadata creation 
+/* GObject introspection: Typelib creation 
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -61,10 +61,10 @@ g_ir_module_free (GIrModule *module)
 }
 
 GTypelib *
-g_ir_module_build_metadata (GIrModule  *module,
+g_ir_module_build_typelib (GIrModule  *module,
 			     GList       *modules)
 {
-  guchar *metadata;
+  guchar *typelib;
   gsize length;
   gint i;
   GList *e;
@@ -190,7 +190,7 @@ g_ir_module_build_metadata (GIrModule  *module,
 	  entry->offset = offset;
 	  entry->name = write_string (node->name, strings, data, &offset2);
 
-	  g_ir_node_build_metadata (node, module, modules, 
+	  g_ir_node_build_typelib (node, module, modules, 
 				     strings, types, data, &offset, &offset2);
 
 	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
@@ -208,8 +208,8 @@ g_ir_module_build_metadata (GIrModule  *module,
   
   g_message ("reallocating to %d bytes", offset2);
 
-  metadata = g_realloc (data, offset2);
+  typelib = g_realloc (data, offset2);
   length = header->size = offset2;
-  return g_typelib_new_from_memory (metadata, length);
+  return g_typelib_new_from_memory (typelib, length);
 }
 

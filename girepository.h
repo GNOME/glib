@@ -73,7 +73,7 @@ struct _GIRepositoryClass
 GType         g_irepository_get_type      (void) G_GNUC_CONST;
 GIRepository *g_irepository_get_default   (void);
 const gchar * g_irepository_register      (GIRepository *repository,
-					   GTypelib    *metadata);
+					   GTypelib    *typelib);
 void          g_irepository_unregister    (GIRepository *repository,
 					   const gchar  *namespace);
 const gchar * g_irepository_register_file (GIRepository *repository,
@@ -94,21 +94,21 @@ GIBaseInfo *  g_irepository_get_info      (GIRepository *repository,
 					   gint          index);
 const gchar * g_irepository_get_shared_library (GIRepository *repository,
 						const gchar  *namespace);
-/* Metadata */
+/* Typelib */
 
 GTypelib *   g_typelib_new_from_memory       (guchar       *memory,
                                                 gsize         len);
 GTypelib *   g_typelib_new_from_const_memory (const guchar *memory,
                                                 gsize         len);
 GTypelib *   g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
-void          g_typelib_free                  (GTypelib    *metadata);
-void          g_typelib_set_module            (GTypelib    *metadata,
+void          g_typelib_free                  (GTypelib    *typelib);
+void          g_typelib_set_module            (GTypelib    *typelib,
                                                 GModule      *module);
-const gchar * g_typelib_get_namespace         (GTypelib    *metadata);
+const gchar * g_typelib_get_namespace         (GTypelib    *typelib);
 
 typedef enum
 {
-  G_IREPOSITORY_ERROR_METADATA_NOT_FOUND,
+  G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
   G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
   G_IREPOSITORY_ERROR_LIBRARY_NOT_FOUND
 } GIRepositoryError;
@@ -156,11 +156,11 @@ gboolean               g_base_info_is_deprecated    (GIBaseInfo   *info);
 const gchar *          g_base_info_get_annotation   (GIBaseInfo   *info,
                                                      const gchar  *name);
 GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
-GTypelib *            g_base_info_get_metadata     (GIBaseInfo   *info);
+GTypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
 
-GIBaseInfo *           g_info_new                   (GIInfoType     type,
-						     GIBaseInfo    *container,
-						     GTypelib     *metadata, 
+GIBaseInfo *           g_info_new                   (GIInfoType    type,
+						     GIBaseInfo   *container,
+						     GTypelib     *typelib, 
 						     guint32       offset);
 
 
