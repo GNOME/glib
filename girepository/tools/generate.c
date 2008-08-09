@@ -1097,35 +1097,35 @@ write_repository (GIRepository *repository,
 }
 
 static const guchar *
-load_metadata (const gchar  *filename,
+load_typelib (const gchar  *filename,
 	       GModule     **dlhandle,
                gsize        *len)
 {
-  guchar *metadata;
-  gsize *metadata_size;
+  guchar *typelib;
+  gsize *typelib_size;
   GModule *handle; 
 
   handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
-  if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &metadata))
+  if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &typelib))
     {
-      g_printerr ("Could not load metadata from '%s': %s\n", 
+      g_printerr ("Could not load typelib from '%s': %s\n", 
 		  filename, g_module_error ());
       return NULL;
     }
   
-  if (!g_module_symbol (handle, "_G_TYPELIB_SIZE", (gpointer *) &metadata_size))
+  if (!g_module_symbol (handle, "_G_TYPELIB_SIZE", (gpointer *) &typelib_size))
     {
-      g_printerr ("Could not load metadata from '%s': %s\n", 
+      g_printerr ("Could not load typelib from '%s': %s\n", 
 		  filename, g_module_error ());
       return NULL;
     }
 
-  *len = *metadata_size;
+  *len = *typelib_size;
   
   if (dlhandle)
     *dlhandle = handle;
 
-  return metadata;
+  return typelib;
 }
 
 int 
@@ -1140,7 +1140,7 @@ main (int argc, char *argv[])
   GTypelib *data;
   GOptionEntry options[] = 
     {
-      { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw metadata", NULL },
+      { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw typelib", NULL },
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       { NULL, }
@@ -1164,12 +1164,12 @@ main (int argc, char *argv[])
   for (i = 0; input[i]; i++)
     {
       GModule *dlhandle = NULL;
-      const guchar *metadata;
+      const guchar *typelib;
       gsize len;
 
       if (raw)
 	{
-	  if (!g_file_get_contents (input[i], (gchar **)&metadata, &len, &error))
+	  if (!g_file_get_contents (input[i], (gchar **)&typelib, &len, &error))
 	    {
 	      g_fprintf (stderr, "failed to read '%s': %s\n", 
 			 input[i], error->message);
@@ -1179,10 +1179,10 @@ main (int argc, char *argv[])
 	}
       else
 	{
-	  metadata = load_metadata (input[i], &dlhandle, &len);
-	  if (!metadata)
+	  typelib = load_typelib (input[i], &dlhandle, &len);
+	  if (!typelib)
 	    {
-	      g_fprintf (stderr, "failed to load metadata from '%s'\n", 
+	      g_fprintf (stderr, "failed to load typelib from '%s'\n", 
 			 input[i]);
 	      continue;
 	    }
@@ -1193,11 +1193,11 @@ main (int argc, char *argv[])
       else
 	needs_prefix = FALSE;
 
-      data = g_typelib_new_from_const_memory (metadata, len);
+      data = g_typelib_new_from_const_memory (typelib, len);
       {
         GError *error = NULL;
         if (!g_typelib_validate (data, &error)) {
-          g_printerr ("metadata not valid: %s\n", error->message);
+          g_printerr ("typelib not valid: %s\n", error->message);
           g_clear_error (&error);
         }
       }
