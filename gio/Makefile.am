@@ -147,7 +147,7 @@ endif
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi -lwininet
+platform_libadd += -lshlwapi
 win32_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
