@@ -1,3 +1,7 @@
+2008-08-10  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gutf8.c: Fix docs to use "nul-terminated" consistently.
+
 2008-08-08  Ryan Lortie  <desrt@desrt.ca>
 
 	Fix 'fail' markup test cases to -not- be valid XML 1.1.
