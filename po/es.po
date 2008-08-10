@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-28 20:24+0000\n"
-"PO-Revision-Date: 2008-08-04 20:25+0200\n"
+"POT-Creation-Date: 2008-08-07 19:45+0000\n"
+"PO-Revision-Date: 2008-08-10 14:05+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1233,10 +1233,10 @@ msgstr "la unidad no implementa el sondeo para medios"
 
 #: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
 #: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
-#: ../gio/gfile.c:1620 ../gio/gfile.c:2681 ../gio/gfile.c:2732
-#: ../gio/gfile.c:2860 ../gio/gfile.c:2900 ../gio/gfile.c:3227
-#: ../gio/gfile.c:3629 ../gio/gfile.c:3713 ../gio/gfile.c:3796
-#: ../gio/gfile.c:3876 ../gio/gfile.c:4206
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2682 ../gio/gfile.c:2733
+#: ../gio/gfile.c:2861 ../gio/gfile.c:2901 ../gio/gfile.c:3228
+#: ../gio/gfile.c:3630 ../gio/gfile.c:3714 ../gio/gfile.c:3797
+#: ../gio/gfile.c:3877 ../gio/gfile.c:4207
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
@@ -1269,24 +1269,24 @@ msgstr "El archivo destino ya existe"
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2850
+#: ../gio/gfile.c:2851
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:2943
+#: ../gio/gfile.c:2944
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:2992
+#: ../gio/gfile.c:2993
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:4974 ../gio/gvolume.c:370
+#: ../gio/gfile.c:4975 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:5082
+#: ../gio/gfile.c:5083
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -1302,6 +1302,14 @@ msgstr "El enumerador del archivo tiene una operación excepcional"
 #: ../gio/gfileenumerator.c:361 ../gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
 msgstr "El enumerador del archivo ya está cerrado"
+
+#: ../gio/gfileicon.c:144
+msgid "file"
+msgstr "archivo"
+
+#: ../gio/gfileicon.c:145
+msgid "The file containing the icon"
+msgstr "El archivo que contiene el icono"
 
 #: ../gio/gfileinputstream.c:157 ../gio/gfileinputstream.c:424
 #: ../gio/gfileoutputstream.c:171 ../gio/gfileoutputstream.c:526
@@ -1666,27 +1674,27 @@ msgstr "El flujo de salida no implementa la escritura"
 msgid "Source stream is already closed"
 msgstr "El flujo de origen ya está cerrado"
 
-#: ../gio/gthemedicon.c:206
+#: ../gio/gthemedicon.c:210
 msgid "name"
 msgstr "nombre"
 
-#: ../gio/gthemedicon.c:207
+#: ../gio/gthemedicon.c:211
 msgid "The name of the icon"
 msgstr "El nombre del icono"
 
-#: ../gio/gthemedicon.c:218
+#: ../gio/gthemedicon.c:222
 msgid "names"
 msgstr "nombres"
 
-#: ../gio/gthemedicon.c:219
+#: ../gio/gthemedicon.c:223
 msgid "An array containing the icon names"
 msgstr "Un array que contiene los nombres de los iconos"
 
-#: ../gio/gthemedicon.c:244
+#: ../gio/gthemedicon.c:248
 msgid "use default fallbacks"
 msgstr "usar valores predeterminados de reserva"
 
-#: ../gio/gthemedicon.c:245
+#: ../gio/gthemedicon.c:249
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
