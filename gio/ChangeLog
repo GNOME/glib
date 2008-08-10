@@ -1,3 +1,10 @@
+2008-08-10  Felix Riemann  <friemann@svn.gnome.org>
+
+	Bug 547080 – g_file_copy leaks expected errors
+
+	* gfile.c: (g_file_copy): Clear G_IO_ERROR_NOT_SUPPORTED errors
+	before trying the next fallback routine.
+
 2008-08-09  Loïc Minier  <lool@dooz.org>
 
 	Bug 535124 – umask 002 not being applied for new directories, new
