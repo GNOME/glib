@@ -1,3 +1,9 @@
+2008-08-11  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 547200 – g_utf8_find_next_char() issues
+
+	* glib/gutf8.c: Improve wording about @end arguments in str funcs.
+
 2008-08-10  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gutf8.c: Fix docs to use "nul-terminated" consistently.

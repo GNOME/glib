@@ -146,9 +146,8 @@ g_utf8_find_prev_char (const char *str,
 /**
  * g_utf8_find_next_char:
  * @p: a pointer to a position within a UTF-8 encoded string
- * @end: a pointer to the end of the string, or %NULL to indicate
- *        that the string is nul-terminated, in which case
- *        the returned value will be 
+ * @end: a pointer to the byte following the end of the string,
+ * or %NULL to indicate that the string is nul-terminated.
  *
  * Finds the start of the next UTF-8 character in the string after @p.
  *
@@ -797,8 +796,8 @@ g_utf8_get_char_validated (const  gchar *p,
 /**
  * g_utf8_to_ucs4_fast:
  * @str: a UTF-8 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is nul-terminated.
+ * @len: the maximum length of @str to use, in bytes. If @len < 0,
+ *       then the string is nul-terminated.
  * @items_written: location to store the number of characters in the
  *                 result, or %NULL.
  *
@@ -902,8 +901,8 @@ g_utf8_to_ucs4_fast (const gchar *str,
 /**
  * g_utf8_to_ucs4:
  * @str: a UTF-8 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is nul-terminated.
+ * @len: the maximum length of @str to use, in bytes. If @len < 0,
+ *       then the string is nul-terminated.
  * @items_read: location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
@@ -1772,8 +1771,8 @@ g_unichar_validate (gunichar ch)
 /**
  * g_utf8_strreverse:
  * @str: a UTF-8 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is nul-terminated.
+ * @len: the maximum length of @str to use, in bytes. If @len < 0,
+ *       then the string is nul-terminated.
  *
  * Reverses a UTF-8 string. @str must be valid UTF-8 encoded text. 
  * (Use g_utf8_validate() on all text before trying to use UTF-8 
