@@ -210,11 +210,11 @@ g_unix_volume_monitor_init (GUnixVolumeMonitor *unix_monitor)
   unix_monitor->mount_monitor = g_unix_mount_monitor_new ();
 
   g_signal_connect (unix_monitor->mount_monitor,
-		    "mounts_changed", G_CALLBACK (mounts_changed),
+		    "mounts-changed", G_CALLBACK (mounts_changed),
 		    unix_monitor);
   
   g_signal_connect (unix_monitor->mount_monitor,
-		    "mountpoints_changed", G_CALLBACK (mountpoints_changed),
+		    "mountpoints-changed", G_CALLBACK (mountpoints_changed),
 		    unix_monitor);
 		    
   update_volumes (unix_monitor);
@@ -347,7 +347,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
 	{
 	  _g_unix_volume_disconnected (volume);
 	  monitor->volumes = g_list_remove (monitor->volumes, volume);
-	  g_signal_emit_by_name (monitor, "volume_removed", volume);
+	  g_signal_emit_by_name (monitor, "volume-removed", volume);
 	  g_signal_emit_by_name (volume, "removed");
 	  g_object_unref (volume);
 	}
@@ -361,7 +361,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
       if (volume)
 	{
 	  monitor->volumes = g_list_prepend (monitor->volumes, volume);
-	  g_signal_emit_by_name (monitor, "volume_added", volume);
+	  g_signal_emit_by_name (monitor, "volume-added", volume);
 	}
     }
   
@@ -400,7 +400,7 @@ update_mounts (GUnixVolumeMonitor *monitor)
 	{
 	  _g_unix_mount_unmounted (mount);
 	  monitor->mounts = g_list_remove (monitor->mounts, mount);
-	  g_signal_emit_by_name (monitor, "mount_removed", mount);
+	  g_signal_emit_by_name (monitor, "mount-removed", mount);
 	  g_signal_emit_by_name (mount, "unmounted");
 	  g_object_unref (mount);
 	}
@@ -417,7 +417,7 @@ update_mounts (GUnixVolumeMonitor *monitor)
       if (mount)
 	{
 	  monitor->mounts = g_list_prepend (monitor->mounts, mount);
-	  g_signal_emit_by_name (monitor, "mount_added", mount);
+	  g_signal_emit_by_name (monitor, "mount-added", mount);
 	}
     }
   

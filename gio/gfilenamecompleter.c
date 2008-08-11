@@ -104,7 +104,7 @@ g_filename_completer_class_init (GFilenameCompleterClass *klass)
    * 
    * Emitted when the file name completion information comes available.
    **/
-  signals[GOT_COMPLETION_DATA] = g_signal_new (I_("got_completion_data"),
+  signals[GOT_COMPLETION_DATA] = g_signal_new (I_("got-completion-data"),
 					  G_TYPE_FILENAME_COMPLETER,
 					  G_SIGNAL_RUN_LAST,
 					  G_STRUCT_OFFSET (GFilenameCompleterClass, got_completion_data),

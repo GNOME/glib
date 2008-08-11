@@ -1149,7 +1149,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
    * Emitted when the unix mounts have changed.
    **/ 
   signals[MOUNTS_CHANGED] =
-    g_signal_new ("mounts_changed",
+    g_signal_new ("mounts-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
@@ -1163,7 +1163,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
    * Emitted when the unix mount points have changed.
    **/
   signals[MOUNTPOINTS_CHANGED] =
-    g_signal_new ("mountpoints_changed",
+    g_signal_new ("mountpoints-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,

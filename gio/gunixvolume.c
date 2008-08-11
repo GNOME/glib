@@ -190,7 +190,7 @@ _g_unix_volume_set_mount (GUnixVolume  *volume,
   /* TODO: Emit changed in idle to avoid locking issues */
   g_signal_emit_by_name (volume, "changed");
   if (volume->volume_monitor != NULL)
-    g_signal_emit_by_name (volume->volume_monitor, "volume_changed", volume);
+    g_signal_emit_by_name (volume->volume_monitor, "volume-changed", volume);
 }
 
 /**
@@ -209,7 +209,7 @@ _g_unix_volume_unset_mount (GUnixVolume  *volume,
       /* TODO: Emit changed in idle to avoid locking issues */
       g_signal_emit_by_name (volume, "changed");
       if (volume->volume_monitor != NULL)
-        g_signal_emit_by_name (volume->volume_monitor, "volume_changed", volume);
+        g_signal_emit_by_name (volume->volume_monitor, "volume-changed", volume);
     }
 }
 

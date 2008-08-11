@@ -251,7 +251,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * Emitted when a mount operation asks the user for a password.
    */
   signals[ASK_PASSWORD] =
-    g_signal_new (I_("ask_password"),
+    g_signal_new (I_("ask-password"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
@@ -270,7 +270,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * choices for the user to choose from. 
    */
   signals[ASK_QUESTION] =
-    g_signal_new (I_("ask_question"),
+    g_signal_new (I_("ask-question"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),

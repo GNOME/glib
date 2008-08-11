@@ -177,7 +177,7 @@ _g_win32_mount_unset_volume (GWin32Mount  *mount,
       /* TODO: Emit changed in idle to avoid locking issues */
       g_signal_emit_by_name (mount, "changed");
       if (mount->volume_monitor != NULL)
-        g_signal_emit_by_name (mount->volume_monitor, "mount_changed", mount);
+        g_signal_emit_by_name (mount->volume_monitor, "mount-changed", mount);
     }
 }
 

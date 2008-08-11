@@ -248,7 +248,7 @@ child_volume_added (GVolumeMonitor      *child_monitor,
                     GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_added",
+			 "volume-added",
 			 child_volume);
 }
 
@@ -258,7 +258,7 @@ child_volume_removed (GVolumeMonitor      *child_monitor,
                       GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_removed",
+			 "volume-removed",
 			 child_volume);
 }
 
@@ -268,7 +268,7 @@ child_volume_changed (GVolumeMonitor      *child_monitor,
                       GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_changed",
+			 "volume-changed",
 			 child_volume);
 }
 
@@ -278,7 +278,7 @@ child_mount_added (GVolumeMonitor      *child_monitor,
                    GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-                         "mount_added",
+                         "mount-added",
                          child_mount);
 }
 
@@ -288,7 +288,7 @@ child_mount_removed (GVolumeMonitor      *child_monitor,
                      GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "mount_removed",
+			 "mount-removed",
 			 child_mount);
 }
 
@@ -298,7 +298,7 @@ child_mount_pre_unmount (GVolumeMonitor       *child_monitor,
                           GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "mount_pre_unmount",
+			 "mount-pre-unmount",
 			 child_mount);
 }
 
@@ -309,7 +309,7 @@ child_mount_changed (GVolumeMonitor       *child_monitor,
                       GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "mount_changed",
+			 "mount-changed",
 			 child_mount);
 }
 
@@ -319,7 +319,7 @@ child_drive_connected (GVolumeMonitor      *child_monitor,
                        GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "drive_connected",
+			 "drive-connected",
 			 child_drive);
 }
 
@@ -329,7 +329,7 @@ child_drive_disconnected (GVolumeMonitor      *child_monitor,
                           GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "drive_disconnected",
+			 "drive-disconnected",
 			 child_drive);
 }
 
@@ -339,7 +339,7 @@ child_drive_changed (GVolumeMonitor      *child_monitor,
                      GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-                         "drive_changed",
+                         "drive-changed",
                          child_drive);
 }
 
@@ -349,7 +349,7 @@ child_drive_eject_button (GVolumeMonitor      *child_monitor,
                           GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-                         "drive_eject_button",
+                         "drive-eject-button",
                          child_drive);
 }
 
@@ -364,17 +364,17 @@ g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
     g_list_prepend (union_monitor->monitors,
 		    g_object_ref (volume_monitor));
 
-  g_signal_connect (volume_monitor, "volume_added", (GCallback)child_volume_added, union_monitor);
-  g_signal_connect (volume_monitor, "volume_removed", (GCallback)child_volume_removed, union_monitor);
-  g_signal_connect (volume_monitor, "volume_changed", (GCallback)child_volume_changed, union_monitor);
-  g_signal_connect (volume_monitor, "mount_added", (GCallback)child_mount_added, union_monitor);
-  g_signal_connect (volume_monitor, "mount_removed", (GCallback)child_mount_removed, union_monitor);
-  g_signal_connect (volume_monitor, "mount_pre_unmount", (GCallback)child_mount_pre_unmount, union_monitor);
-  g_signal_connect (volume_monitor, "mount_changed", (GCallback)child_mount_changed, union_monitor);
-  g_signal_connect (volume_monitor, "drive_connected", (GCallback)child_drive_connected, union_monitor);
-  g_signal_connect (volume_monitor, "drive_disconnected", (GCallback)child_drive_disconnected, union_monitor);
-  g_signal_connect (volume_monitor, "drive_changed", (GCallback)child_drive_changed, union_monitor);
-  g_signal_connect (volume_monitor, "drive_eject_button", (GCallback)child_drive_eject_button, union_monitor);
+  g_signal_connect (volume_monitor, "volume-added", (GCallback)child_volume_added, union_monitor);
+  g_signal_connect (volume_monitor, "volume-removed", (GCallback)child_volume_removed, union_monitor);
+  g_signal_connect (volume_monitor, "volume-changed", (GCallback)child_volume_changed, union_monitor);
+  g_signal_connect (volume_monitor, "mount-added", (GCallback)child_mount_added, union_monitor);
+  g_signal_connect (volume_monitor, "mount-removed", (GCallback)child_mount_removed, union_monitor);
+  g_signal_connect (volume_monitor, "mount-pre-unmount", (GCallback)child_mount_pre_unmount, union_monitor);
+  g_signal_connect (volume_monitor, "mount-changed", (GCallback)child_mount_changed, union_monitor);
+  g_signal_connect (volume_monitor, "drive-connected", (GCallback)child_drive_connected, union_monitor);
+  g_signal_connect (volume_monitor, "drive-disconnected", (GCallback)child_drive_disconnected, union_monitor);
+  g_signal_connect (volume_monitor, "drive-changed", (GCallback)child_drive_changed, union_monitor);
+  g_signal_connect (volume_monitor, "drive-eject-button", (GCallback)child_drive_eject_button, union_monitor);
 }
 
 static void

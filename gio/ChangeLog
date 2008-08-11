@@ -1,3 +1,17 @@
+2008-08-11  Sven Neumann  <sven@gimp.org>
+
+	* gfilenamecompleter.c
+	* glocaldirectorymonitor.c
+	* gmountoperation.c
+	* gunionvolumemonitor.c
+	* gunixmount.c
+	* gunixmounts.c
+	* gunixvolume.c
+	* gunixvolumemonitor.c
+	* gvolumemonitor.c
+	* gwin32mount.c
+	* gwin32volumemonitor.c: use canonical signal names.
+
 2008-08-11  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am: Put a list of the platform-dependent .la files in
