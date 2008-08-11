@@ -1,3 +1,10 @@
+2008-08-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 547262 – Missing link in the docs
+
+	* glib/tmpl/gregex.sgml: Fix a reference.
+	Pointed out by Bastien Nocera
+
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.6 ===

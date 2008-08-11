@@ -220,7 +220,7 @@ with "a" or "b", it matches the empty string at the start of the string.
 With this flag set, this match is not valid, so GRegex searches further
 into the string for occurrences of "a" or "b".
 @G_REGEX_MATCH_PARTIAL: Turns on the partial matching feature, for more
-documentation on partial matching see g_regex_is_partial_match().
+documentation on partial matching see g_match_info_is_partial_match().
 @G_REGEX_MATCH_NEWLINE_CR: Overrides the newline definition set when creating
 a new #GRegex, setting the '\r' character as line terminator.
 @G_REGEX_MATCH_NEWLINE_LF: Overrides the newline definition set when creating
