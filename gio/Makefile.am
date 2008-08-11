@@ -94,22 +94,26 @@ local_sources = \
 	$(NULL)
 
 platform_libadd =
+platform_deps =
 appinfo_sources =
 
 if HAVE_INOTIFY
 SUBDIRS += inotify
 platform_libadd += inotify/libinotify.la
+platform_deps += inotify/libinotify.la
 endif
 
 if HAVE_FEN
 AM_CPPFLAGS += -DHAVE_FEN
 SUBDIRS += fen
 platform_libadd += fen/libfen.la
+platform_deps += fen/libfen.la
 endif
 
 if OS_WIN32
 SUBDIRS += win32
 platform_libadd += win32/libgiowin32.la
+platform_deps += win32/libgiowin32.la
 endif
 
 
@@ -122,6 +126,7 @@ endif
 if OS_UNIX
 appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
 platform_libadd += xdgmime/libxdgmime.la
+platform_deps += xdgmime/libxdgmime.la
 unix_sources = \
 	gunixmount.c		\
 	gunixmount.h		\
@@ -267,7 +272,7 @@ libgio_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgio_2_0_la_DEPENDENCIES = $(gio_def)
+libgio_2_0_la_DEPENDENCIES = $(gio_def) $(platform_deps)
 
 gio_headers =			\
 	gappinfo.h 		\

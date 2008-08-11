@@ -1,5 +1,12 @@
 2008-08-11  Tor Lillqvist  <tml@novell.com>
 
+	* Makefile.am: Put a list of the platform-dependent .la files in
+	the subdirectories in the platform_deps Make variable, and make
+	libgio-2.0.la depend on that, so that it gets relinked if one of
+	the dependent libraries has changed.
+
+2008-08-11  Tor Lillqvist  <tml@novell.com>
+
 	* Makefile.am (platform_libadd): Remove -lwininet which had been
 	added by mistake. We will probably eventually be using WinHTTP,
 	not the older WinInet anyway. (Actually I am working on it.)
