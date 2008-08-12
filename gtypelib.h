@@ -96,42 +96,6 @@ typedef struct
 } DirEntry;
 
 
-#define TYPE_POINTER_MASK 1 << 7
-#define TYPE_TAG_MASK         63
-
-typedef enum 
-{
-  TYPE_TAG_VOID      =  0,
-  TYPE_TAG_BOOLEAN   =  1,
-  TYPE_TAG_INT8      =  2,
-  TYPE_TAG_UINT8     =  3,
-  TYPE_TAG_INT16     =  4,
-  TYPE_TAG_UINT16    =  5,  
-  TYPE_TAG_INT32     =  6,
-  TYPE_TAG_UINT32    =  7,
-  TYPE_TAG_INT64     =  8,
-  TYPE_TAG_UINT64    =  9,
-  TYPE_TAG_INT       = 10,
-  TYPE_TAG_UINT      = 11,
-  TYPE_TAG_LONG      = 12,
-  TYPE_TAG_ULONG     = 13,
-  TYPE_TAG_SSIZE     = 14,
-  TYPE_TAG_SIZE      = 15,
-  TYPE_TAG_FLOAT     = 16,
-  TYPE_TAG_DOUBLE    = 17,
-  TYPE_TAG_UTF8      = 18,
-  TYPE_TAG_FILENAME  = 19,
-  TYPE_TAG_ARRAY     = 20,
-  TYPE_TAG_INTERFACE = 21,
-  TYPE_TAG_LIST      = 22,
-  TYPE_TAG_SLIST     = 23,
-  TYPE_TAG_HASH      = 24,
-  TYPE_TAG_ERROR     = 25,
-  TYPE_TAG_STRING    = 26,
-  TYPE_TAG_SEQUENCE  = 27,
-  TYPE_TAG_ANY       = 28
-} TypeTag;
-
 typedef union
 {
   struct 

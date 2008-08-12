@@ -388,7 +388,7 @@ validate_type_blob (GTypelib     *typelib,
   if (simple->reserved == 0 && 
       simple->reserved2 == 0)
     {
-      if (simple->tag >= TYPE_TAG_ARRAY)
+      if (simple->tag >= GI_TYPE_TAG_ARRAY)
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
@@ -397,7 +397,7 @@ validate_type_blob (GTypelib     *typelib,
 	  return FALSE;
 	}
       
-      if (simple->tag >= TYPE_TAG_UTF8 &&
+      if (simple->tag >= GI_TYPE_TAG_UTF8 &&
 	  !simple->pointer)
 	{
 	  g_set_error (error,
@@ -414,28 +414,28 @@ validate_type_blob (GTypelib     *typelib,
 
   switch (iface->tag)
     {
-    case TYPE_TAG_ARRAY:
+    case GI_TYPE_TAG_ARRAY:
       if (!validate_array_type_blob (typelib, simple->offset, 
 				     signature_offset, return_type, error))
 	return FALSE;
       break;
-    case TYPE_TAG_INTERFACE:
+    case GI_TYPE_TAG_INTERFACE:
       if (!validate_iface_type_blob (typelib, simple->offset, 
 				     signature_offset, return_type, error))
 	return FALSE;
       break;
-    case TYPE_TAG_LIST:
-    case TYPE_TAG_SLIST:
+    case GI_TYPE_TAG_GLIST:
+    case GI_TYPE_TAG_GSLIST:
       if (!validate_param_type_blob (typelib, simple->offset, 
 				     signature_offset, return_type, 1, error))
 	return FALSE;
       break;
-    case TYPE_TAG_HASH:
+    case GI_TYPE_TAG_GHASH:
       if (!validate_param_type_blob (typelib, simple->offset, 
 				     signature_offset, return_type, 2, error))
 	return FALSE;
       break;
-    case TYPE_TAG_ERROR:
+    case GI_TYPE_TAG_ERROR:
       if (!validate_error_type_blob (typelib, simple->offset, 
 				     signature_offset, return_type, error))
 	return FALSE;

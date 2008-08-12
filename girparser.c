@@ -133,59 +133,60 @@ parse_type_internal (gchar *str, gchar **rest)
     gint tag;
     gboolean pointer;
   } basic[] = {
-    { "void",     TYPE_TAG_VOID,    0 },
-    { "gpointer", TYPE_TAG_VOID,    1 },
-    { "bool",     TYPE_TAG_BOOLEAN, 0 },
-    { "gboolean", TYPE_TAG_BOOLEAN, 0 },
-#if 0
-    { "char",     TYPE_TAG_INT8,    0 },
-    { "gchar",    TYPE_TAG_INT8,    0 },
-    { "guchar",   TYPE_TAG_UINT8,   0 },
-#endif
-    { "int8_t",   TYPE_TAG_INT8,    0 },
-    { "int8",     TYPE_TAG_INT8,    0 },
-    { "gint8",    TYPE_TAG_INT8,    0 },
-    { "uint8_t",  TYPE_TAG_UINT8,   0 },
-    { "uint8",    TYPE_TAG_UINT8,   0 },
-    { "guint8",   TYPE_TAG_UINT8,   0 },
-    { "int16_t",  TYPE_TAG_INT16,   0 },
-    { "int16",    TYPE_TAG_INT16,   0 },
-    { "gint16",   TYPE_TAG_INT16,   0 },
-    { "uint16_t", TYPE_TAG_UINT16,  0 },
-    { "uint16",   TYPE_TAG_UINT16,  0 },
-    { "guint16",  TYPE_TAG_UINT16,  0 },
-    { "int32_t",  TYPE_TAG_INT32,   0 },
-    { "int32",    TYPE_TAG_INT32,   0 },
-    { "gint32",   TYPE_TAG_INT32,   0 },
-    { "uint32_t", TYPE_TAG_UINT32,  0 },
-    { "uint32",   TYPE_TAG_UINT32,  0 },
-    { "guint32",  TYPE_TAG_UINT32,  0 },
-    { "int64_t",  TYPE_TAG_INT64,   0 },
-    { "int64",    TYPE_TAG_INT64,   0 },
-    { "gint64",   TYPE_TAG_INT64,   0 },
-    { "uint64_t", TYPE_TAG_UINT64,  0 },
-    { "uint64",   TYPE_TAG_UINT64,  0 },
-    { "guint64",  TYPE_TAG_UINT64,  0 },
-    { "int",      TYPE_TAG_INT,     0 },
-    { "gint",     TYPE_TAG_INT,     0 },
-    { "uint",     TYPE_TAG_UINT,    0 },
-    { "guint",    TYPE_TAG_UINT,    0 },
-    { "long",     TYPE_TAG_LONG,    0 },
-    { "glong",    TYPE_TAG_LONG,    0 },
-    { "ulong",    TYPE_TAG_ULONG,   0 },
-    { "gulong",   TYPE_TAG_ULONG,   0 },
-    { "ssize_t",  TYPE_TAG_SSIZE,   0 },
-    { "gssize",   TYPE_TAG_SSIZE,   0 },
-    { "size_t",   TYPE_TAG_SIZE,    0 },
-    { "gsize",    TYPE_TAG_SIZE,    0 },
-    { "float",    TYPE_TAG_FLOAT,   0 },
-    { "gfloat",   TYPE_TAG_FLOAT,   0 },
-    { "double",   TYPE_TAG_DOUBLE,  0 },
-    { "gdouble",  TYPE_TAG_DOUBLE,  0 },
-    { "utf8",     TYPE_TAG_UTF8,    1 },  
-    { "gchar*",   TYPE_TAG_UTF8,    1 },  
-    { "filename", TYPE_TAG_FILENAME,1 },
-    { "string",   TYPE_TAG_STRING,  1 }
+    { "void",     GI_TYPE_TAG_VOID,    0 },
+    { "none",     GI_TYPE_TAG_VOID,    0 },
+    { "gpointer", GI_TYPE_TAG_VOID,    1 },
+    { "bool",     GI_TYPE_TAG_BOOLEAN, 0 },
+    { "gboolean", GI_TYPE_TAG_BOOLEAN, 0 },
+    { "char",     GI_TYPE_TAG_INT8,    0 },
+    { "gchar",    GI_TYPE_TAG_INT8,    0 },
+    { "guchar",   GI_TYPE_TAG_UINT8,   0 },
+    { "gunichar", GI_TYPE_TAG_UINT32,  0 },
+    { "int8_t",   GI_TYPE_TAG_INT8,    0 },
+    { "int8",     GI_TYPE_TAG_INT8,    0 },
+    { "gint8",    GI_TYPE_TAG_INT8,    0 },
+    { "uint8_t",  GI_TYPE_TAG_UINT8,   0 },
+    { "uint8",    GI_TYPE_TAG_UINT8,   0 },
+    { "guint8",   GI_TYPE_TAG_UINT8,   0 },
+    { "int16_t",  GI_TYPE_TAG_INT16,   0 },
+    { "int16",    GI_TYPE_TAG_INT16,   0 },
+    { "gint16",   GI_TYPE_TAG_INT16,   0 },
+    { "uint16_t", GI_TYPE_TAG_UINT16,  0 },
+    { "uint16",   GI_TYPE_TAG_UINT16,  0 },
+    { "guint16",  GI_TYPE_TAG_UINT16,  0 },
+    { "int32_t",  GI_TYPE_TAG_INT32,   0 },
+    { "int32",    GI_TYPE_TAG_INT32,   0 },
+    { "gint32",   GI_TYPE_TAG_INT32,   0 },
+    { "uint32_t", GI_TYPE_TAG_UINT32,  0 },
+    { "uint32",   GI_TYPE_TAG_UINT32,  0 },
+    { "guint32",  GI_TYPE_TAG_UINT32,  0 },
+    { "int64_t",  GI_TYPE_TAG_INT64,   0 },
+    { "int64",    GI_TYPE_TAG_INT64,   0 },
+    { "gint64",   GI_TYPE_TAG_INT64,   0 },
+    { "uint64_t", GI_TYPE_TAG_UINT64,  0 },
+    { "uint64",   GI_TYPE_TAG_UINT64,  0 },
+    { "guint64",  GI_TYPE_TAG_UINT64,  0 },
+    { "int",      GI_TYPE_TAG_INT,     0 },
+    { "gint",     GI_TYPE_TAG_INT,     0 },
+    { "uint",     GI_TYPE_TAG_UINT,    0 },
+    { "guint",    GI_TYPE_TAG_UINT,    0 },
+    { "long",     GI_TYPE_TAG_LONG,    0 },
+    { "glong",    GI_TYPE_TAG_LONG,    0 },
+    { "ulong",    GI_TYPE_TAG_ULONG,   0 },
+    { "gulong",   GI_TYPE_TAG_ULONG,   0 },
+    { "ssize_t",  GI_TYPE_TAG_SSIZE,   0 },
+    { "gssize",   GI_TYPE_TAG_SSIZE,   0 },
+    { "size_t",   GI_TYPE_TAG_SIZE,    0 },
+    { "gsize",    GI_TYPE_TAG_SIZE,    0 },
+    { "float",    GI_TYPE_TAG_FLOAT,   0 },
+    { "gfloat",   GI_TYPE_TAG_FLOAT,   0 },
+    { "double",   GI_TYPE_TAG_DOUBLE,  0 },
+    { "gdouble",  GI_TYPE_TAG_DOUBLE,  0 },
+    { "utf8",     GI_TYPE_TAG_UTF8,    1 },  
+    { "gchar*",   GI_TYPE_TAG_UTF8,    1 },  
+    { "filename", GI_TYPE_TAG_FILENAME,1 },
+    // FIXME merge - do we still want this?
+    { "string",   GI_TYPE_TAG_UTF8,  1 }
   };  
 
   gint n_basic = G_N_ELEMENTS (basic);
@@ -227,14 +228,14 @@ parse_type_internal (gchar *str, gchar **rest)
     {
       if (g_str_has_prefix (*rest, "GList"))
 	{
-	  type->tag = TYPE_TAG_LIST;
+	  type->tag = GI_TYPE_TAG_GLIST;
 	  type->is_glist = TRUE;
 	  type->is_pointer = TRUE;
 	  *rest += strlen ("GList");
 	}
       else
 	{
-	  type->tag = TYPE_TAG_SLIST;
+	  type->tag = GI_TYPE_TAG_GSLIST;
 	  type->is_gslist = TRUE;
 	  type->is_pointer = TRUE;
 	  *rest += strlen ("GSList");
@@ -259,7 +260,7 @@ parse_type_internal (gchar *str, gchar **rest)
     }
   else if (g_str_has_prefix (*rest, "GHashTable"))
     {
-      type->tag = TYPE_TAG_HASH;
+      type->tag = GI_TYPE_TAG_GHASH;
       type->is_ghashtable = TRUE;
       type->is_pointer = TRUE;
       *rest += strlen ("GHashTable");
@@ -291,7 +292,7 @@ parse_type_internal (gchar *str, gchar **rest)
     }
   else if (g_str_has_prefix (*rest, "GError"))
     {
-      type->tag = TYPE_TAG_ERROR;
+      type->tag = GI_TYPE_TAG_ERROR;
       type->is_error = TRUE;
       type->is_pointer = TRUE;
       *rest += strlen ("GError");
@@ -312,7 +313,7 @@ parse_type_internal (gchar *str, gchar **rest)
     }
   else 
     {
-      type->tag = TYPE_TAG_INTERFACE;
+      type->tag = GI_TYPE_TAG_INTERFACE;
       type->is_interface = TRUE; 
       start = *rest;
 
@@ -341,7 +342,7 @@ parse_type_internal (gchar *str, gchar **rest)
 
       array = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
 
-      array->tag = TYPE_TAG_ARRAY;
+      array->tag = GI_TYPE_TAG_ARRAY;
       array->is_pointer = TRUE;
       array->is_array = TRUE;
       
@@ -385,6 +386,7 @@ parse_type_internal (gchar *str, gchar **rest)
       type = array;
     }
 
+  g_assert (type->tag >= 0 && type->tag <= GI_TYPE_TAG_ERROR);
   return type;
 
  error:
@@ -625,6 +627,7 @@ start_parameter (GMarkupParseContext *context,
   param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM);
 
   ctx->current_typed = (GIrNode*) param;
+  ctx->current_typed->name = g_strdup (name);
 
   state_switch (ctx, STATE_FUNCTION_PARAMETER);
 
