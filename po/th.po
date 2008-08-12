@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-04 13:30-0400\n"
-"PO-Revision-Date: 2008-07-10 19:34+0700\n"
+"PO-Revision-Date: 2008-08-12 18:41+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -172,7 +172,7 @@ msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้
 #: glib/gfileutils.c:586
 #, c-format
 msgid "File \"%s\" is too large"
-msgstr ""
+msgstr "แฟ้ม \"%s\" ใหญ่เกินไป"
 
 #: glib/gfileutils.c:669
 #, c-format
@@ -392,11 +392,11 @@ msgid ""
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
 #: glib/gmarkup.c:1266
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
-msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กตั้งต้นอิลิเมนต์ '%s'"
+msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กอิลิเมนต์เปล่า '%s'"
 
 #: glib/gmarkup.c:1355
 #, c-format
@@ -1448,19 +1448,19 @@ msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
 #: gio/glocalfileinfo.c:2063
-#, fuzzy, c-format
+#, c-format
 msgid "SELinux context must be non-NULL"
-msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
+msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
 #: gio/glocalfileinfo.c:2079
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting SELinux context: %s"
-msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
+msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
 #: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "SELinux is not enabled on this system"
-msgstr ""
+msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
 #: gio/glocalfileinfo.c:2147
 #, c-format
@@ -1587,9 +1587,8 @@ msgstr "การเมานท์นี้ยังไม่รองรับ
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: gio/gmount.c:690
-#, fuzzy
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหา"
+msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหาแบบซิงโครนัส"
 
 #: gio/goutputstream.c:204 gio/goutputstream.c:405
 msgid "Output stream doesn't implement write"
