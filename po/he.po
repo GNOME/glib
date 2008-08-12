@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 17:58+0000\n"
+"POT-Creation-Date: 2008-08-07 19:45+0000\n"
 "PO-Revision-Date: 2006-04-27 18:48+0300\n"
 "Last-Translator: Yair Hershkovitz <yairhr@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -403,8 +403,9 @@ msgstr ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 
-#: ../glib/gmarkup.c:1266
 # c-format
+#: ../glib/gmarkup.c:1266
+#, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
@@ -1274,6 +1275,15 @@ msgstr "File enumerator has outstanding operation"
 msgid "File enumerator is already closed"
 msgstr "File enumerator is already closed"
 
+#: ../gio/gfileicon.c:144
+msgid "file"
+msgstr ""
+
+#: ../gio/gfileicon.c:145
+#, fuzzy
+msgid "The file containing the icon"
+msgstr "An array containing the icon names"
+
 #: ../gio/gfileinputstream.c:157 ../gio/gfileinputstream.c:424
 #: ../gio/gfileoutputstream.c:171 ../gio/gfileoutputstream.c:526
 msgid "Stream doesn't support query_info"
@@ -1482,8 +1492,9 @@ msgstr "Error setting symlink: %s"
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error setting symlink: file is not a symlink"
 
-#: ../gio/glocalfileinfo.c:2063
 # c-format
+#: ../gio/glocalfileinfo.c:2063
+#, c-format
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context must be non-NULL"
 
@@ -1633,27 +1644,27 @@ msgstr "Output stream doesn't implement write"
 msgid "Source stream is already closed"
 msgstr "Source stream is already closed"
 
-#: ../gio/gthemedicon.c:206
+#: ../gio/gthemedicon.c:210
 msgid "name"
 msgstr "name"
 
-#: ../gio/gthemedicon.c:207
+#: ../gio/gthemedicon.c:211
 msgid "The name of the icon"
 msgstr "The name of the icon"
 
-#: ../gio/gthemedicon.c:218
+#: ../gio/gthemedicon.c:222
 msgid "names"
 msgstr "names"
 
-#: ../gio/gthemedicon.c:219
+#: ../gio/gthemedicon.c:223
 msgid "An array containing the icon names"
 msgstr "An array containing the icon names"
 
-#: ../gio/gthemedicon.c:244
+#: ../gio/gthemedicon.c:248
 msgid "use default fallbacks"
 msgstr "use default fallbacks"
 
-#: ../gio/gthemedicon.c:245
+#: ../gio/gthemedicon.c:249
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
