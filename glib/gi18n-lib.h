@@ -25,7 +25,7 @@
 #include <libintl.h>
 
 #ifndef GETTEXT_PACKAGE
-#error You must define GETTEXT_PACKAGE before including gi18n-lib.h.
+#error You must define GETTEXT_PACKAGE before including gi18n-lib.h.  Did you forget to include config.h?
 #endif
 
 #define  _(String) ((char *) g_dgettext (GETTEXT_PACKAGE, String))

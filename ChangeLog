@@ -1,3 +1,8 @@
+2008-08-12  Federico Mena Quintero  <federico@novell.com>
+
+	* glib/gi18n-lib.h: In the #error about having to define
+	GETTEXT_PACKAGE, add a hint about a possibly-missing config.h.
+
 2008-08-11  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 547200 – g_utf8_find_next_char() issues
