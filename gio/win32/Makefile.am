@@ -4,9 +4,18 @@ NULL =
 
 noinst_LTLIBRARIES = libgiowin32.la
 
-libgiowin32_la_SOURCES = 		\
+libgiowin32_la_SOURCES =			\
 	gwin32directorymonitor.c		\
 	gwin32directorymonitor.h		\
+	gwinhttpvfs.c				\
+	gwinhttpvfs.h				\
+	gwinhttpfile.c				\
+	gwinhttpfile.h				\
+	gwinhttpfileinputstream.c		\
+	gwinhttpfileinputstream.h		\
+	gwinhttpfileoutputstream.c		\
+	gwinhttpfileoutputstream.h		\
+	winhttp.h				\
 	$(NULL)
 
 libgiowin32_la_CFLAGS = \

@@ -294,6 +294,7 @@ extern GType _g_local_vfs_get_type (void);
 
 extern GType _g_win32_volume_monitor_get_type (void);
 extern GType g_win32_directory_monitor_get_type (void);
+extern GType _g_winhttp_vfs_get_type (void);
 
 void
 _g_io_modules_ensure_loaded (void)
@@ -363,6 +364,9 @@ _g_io_modules_ensure_loaded (void)
 #endif
 #ifdef G_OS_UNIX
       _g_unix_volume_monitor_get_type ();
+#endif
+#ifdef G_OS_WIN32
+      _g_winhttp_vfs_get_type ();
 #endif
       _g_local_vfs_get_type ();
     

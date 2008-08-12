@@ -1,3 +1,30 @@
+2008-08-13  Tor Lillqvist  <tml@novell.com>
+
+	* win32/gwinhttpvfs.c
+	* win32/gwinhttpvfs.h
+	* win32/gwinhttpfile.c
+	* win32/gwinhttpfile.h
+	* win32/gwinhttpfileinputstream.c
+	* win32/gwinhttpfileinputstream.h
+	* win32/gwinhttpfileoutputstream.c
+	* win32/gwinhttpfileoutputstream.h: New files implementing
+	GWinHttpVfs and related classes, a GVfs for HTTP and HTTPS URIs on
+	Windows. The implementation uses the WinHttp API. Both reading and
+	writing are supported, i.e. GET and PUT requests. When writing,
+	each write call is done using a separate PUT request with a
+	Content-Range header. Requests for file URIs and plain pathnames
+	are forwarded to GLocalVfs.
+
+	* win32/winhttp.h: Reverse engineered <winhttp.h>, borrowed from
+	WINE. Used as there is no <winhttp.h> bundled with mingw, and
+	requiring people to download the Windows SDK just for this one
+	header is not reasonable.
+
+	* win32/Makefile.am: Add above files.
+
+	* giomodule.c: Call _g_winhttp_vfs_get_type() on Windows to set up
+	the plumbing for the above.
+
 2008-08-11  Sven Neumann  <sven@gimp.org>
 
 	* gfilenamecompleter.c
