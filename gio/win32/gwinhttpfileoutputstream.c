@@ -142,9 +142,8 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
       return -1;
     }
 
-  headers = g_strdup_printf ("Content-Range: bytes %" G_GINT64_FORMAT "-%" G_GINT64_FORMAT "/*\r\n"
-                             "Content-Length: %" G_GSIZE_FORMAT "\r\n",
-                             winhttp_stream->offset, winhttp_stream->offset + count, count);
+  headers = g_strdup_printf ("Content-Range: bytes %" G_GINT64_FORMAT "-%" G_GINT64_FORMAT "/*\r\n",
+                             winhttp_stream->offset, winhttp_stream->offset + count);
   wheaders = g_utf8_to_utf16 (headers, -1, NULL, NULL, NULL);
   g_free (headers);
 
@@ -152,7 +151,7 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
       (request,
        wheaders, -1,
        NULL, 0,
-       0,
+       count,
        0))
     {
       char *emsg = _g_winhttp_error_message (GetLastError ());
@@ -168,7 +167,6 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
       return -1;
     }
   
-  winhttp_stream->offset += count;
   g_free (wheaders);
 
   if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->pWinHttpWriteData
@@ -185,6 +183,8 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
       return -1;
     }
   
+  winhttp_stream->offset += bytes_written;
+
   if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->pWinHttpReceiveResponse
       (request, NULL))
     {

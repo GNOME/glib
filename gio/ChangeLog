@@ -1,5 +1,15 @@
 2008-08-13  Tor Lillqvist  <tml@novell.com>
 
+	* win32/gwinhttpfileoutputstream.c
+	(g_winhttp_file_output_stream_write): Don't write the
+	Content-Length header ourselves, WinHttpSendRequest() takes care
+	of that when the dwTotalLength parameter is non-zero. Increment
+	offset by the number of actual bytes sent, although I wonder if
+	such a scenario is possible where less than requested would be
+	sent and accepted by the server without errors.
+
+2008-08-13  Tor Lillqvist  <tml@novell.com>
+
 	* win32/gwinhttpvfs.c
 	* win32/gwinhttpvfs.h
 	* win32/gwinhttpfile.c
