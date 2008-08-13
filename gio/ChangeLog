@@ -1,3 +1,11 @@
+2008-08-13  Tor Lillqvist  <tml@novell.com>
+
+	Bug 546582 - Callbacks from GFileMonitor present a GFile in the
+	wrong folder
+
+	* win32/gwin32directorymonitor.c
+	(g_win32_directory_monitor_callback): Patch by Erik van Pienbroek.
+
 2008-08-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* ginputstream.c:

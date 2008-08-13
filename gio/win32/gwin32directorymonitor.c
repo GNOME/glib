@@ -96,6 +96,7 @@ g_win32_directory_monitor_callback (DWORD        error,
   PFILE_NOTIFY_INFORMATION pfile_notify_walker;
   gulong file_name_len;
   gchar *file_name;
+  gchar *path;
   GFile *file;
   GWin32DirectoryMonitorPrivate *priv = (GWin32DirectoryMonitorPrivate *) lpOverlapped;
 
@@ -120,9 +121,11 @@ g_win32_directory_monitor_callback (DWORD        error,
     pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)(priv->file_notify_buffer + offset);
     offset += pfile_notify_walker->NextEntryOffset;
     file_name = g_utf16_to_utf8 (pfile_notify_walker->FileName, pfile_notify_walker->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
-    file = g_file_new_for_path (file_name);	
+    path = g_build_filename(G_LOCAL_DIRECTORY_MONITOR (priv->self)->dirname, file_name, NULL);
+    file = g_file_new_for_path (path);
     g_file_monitor_emit_event (priv->self, file, NULL, events [pfile_notify_walker->Action]);
     g_object_unref (file);
+    g_free (path);
     g_free (file_name);
   } while (pfile_notify_walker->NextEntryOffset);
 
