@@ -53,7 +53,8 @@ typedef enum
   STATE_STRUCT_FIELD,
   STATE_ERRORDOMAIN, 
   STATE_UNION,
-  STATE_CONSTANT
+  STATE_CONSTANT,
+  STATE_ALIAS,  /* 25 */
 } ParseState;
 
 typedef struct _ParseContext ParseContext;
@@ -63,6 +64,7 @@ struct _ParseContext
   ParseState prev_state;
 
   GList *modules;
+  GHashTable *aliases;
 
   GIrModule *current_module;
   GIrNode *current_node;
@@ -121,6 +123,18 @@ state_switch (ParseContext *ctx, ParseState newstate)
 {
   ctx->prev_state = ctx->state;
   ctx->state = newstate;
+}
+
+static GIrNodeType * parse_type_internal (gchar *str, gchar **rest);
+
+static GIrNodeType *
+create_pointer ()
+{
+  char *pointer = g_strdup ("any");
+  char *pointer_rest;
+  GIrNodeType *ret = parse_type_internal (pointer, &pointer_rest);
+  g_free (pointer);
+  return ret;
 }
 
 static GIrNodeType *
@@ -258,6 +272,10 @@ parse_type_internal (gchar *str, gchar **rest)
 	    goto error;
 	  (*rest)++;
 	}
+      else
+	{
+	  type->parameter_type1 = create_pointer ();
+	}
     }
   else if (g_str_has_prefix (*rest, "GHashTable"))
     {
@@ -290,6 +308,12 @@ parse_type_internal (gchar *str, gchar **rest)
 	    goto error;
 	  (*rest)++;
 	}
+      else
+	{
+	  type->parameter_type1 = create_pointer ();
+	  type->parameter_type2 = create_pointer ();
+	}
+
     }
   else if (g_str_has_prefix (*rest, "GError"))
     {
@@ -396,13 +420,28 @@ parse_type_internal (gchar *str, gchar **rest)
   return NULL;
 }
 
+static const char *
+resolve_aliases (ParseContext *ctx, const gchar *type)
+{
+  gpointer orig;
+  gpointer value;
+
+  while (g_hash_table_lookup_extended (ctx->aliases, type, &orig, &value))
+    {
+      g_debug ("Resolved: %s => %s", type, value);
+      type = value;
+    }
+  return type;
+}
+
 static GIrNodeType *
-parse_type (const gchar *type)
+parse_type (ParseContext *ctx, const gchar *type)
 {
   gchar *str;
   gchar *rest;
   GIrNodeType *node;
   
+  type = resolve_aliases (ctx, type);
   str = g_strdup (type);
   node = parse_type_internal (str, &rest);
   g_free (str);
@@ -849,6 +888,34 @@ start_field (GMarkupParseContext *context,
 }
 
 static gboolean
+start_alias (GMarkupParseContext *context,
+	     const gchar         *element_name,
+	     const gchar        **attribute_names,
+	     const gchar        **attribute_values,
+	     ParseContext        *ctx,
+	     GError             **error)
+{
+  const gchar *name;
+  const gchar *target;
+  const gchar *type;
+
+  name = find_attribute ("name", attribute_names, attribute_values);
+  if (name == NULL) {
+    MISSING_ATTRIBUTE (context, error, element_name, "name");
+    return FALSE;
+  }
+
+  target = find_attribute ("target", attribute_names, attribute_values);
+  if (name == NULL) {
+    MISSING_ATTRIBUTE (context, error, element_name, "target");
+    return FALSE;
+  }
+
+  g_hash_table_insert (ctx->aliases, g_strdup (name), g_strdup (target));
+  return TRUE;
+}
+
+static gboolean
 start_enum (GMarkupParseContext *context,
 	     const gchar         *element_name,
 	     const gchar        **attribute_names,
@@ -1075,7 +1142,7 @@ start_constant (GMarkupParseContext *context,
 	  ((GIrNode *)constant)->name = g_strdup (name);
 	  constant->value = g_strdup (value);
 	  
-	  constant->type = parse_type (type);
+	  constant->type = parse_type (ctx, type);
 
 	  if (deprecated && strcmp (deprecated, "1") == 0)
 	    constant->deprecated = TRUE;
@@ -1310,19 +1377,19 @@ start_type (GMarkupParseContext *context,
       {
 	GIrNodeParam *param;
 	param = (GIrNodeParam *)ctx->current_typed;
-	param->type = parse_type (name);
+	param->type = parse_type (ctx, name);
       }
       break;
     case G_IR_NODE_FIELD:
       {
 	GIrNodeField *field = (GIrNodeField *)ctx->current_typed;
-	field->type = parse_type (name);
+	field->type = parse_type (ctx, name);
       }
       break;
     case G_IR_NODE_PROPERTY:
       {
 	GIrNodeProperty *property = (GIrNodeProperty *) ctx->current_typed;
-	property->type = parse_type (name);
+	property->type = parse_type (ctx, name);
       }
       break;
     default:
@@ -1661,7 +1728,7 @@ start_discriminator (GMarkupParseContext *context,
 	MISSING_ATTRIBUTE (context, error, element_name, "offset");
 	{
 	  ((GIrNodeUnion *)ctx->current_node)->discriminator_type 
-	    = parse_type (type);
+	    = parse_type (ctx, type);
 	  ((GIrNodeUnion *)ctx->current_node)->discriminator_offset 
 	    = atoi (offset);
 	}
@@ -1705,6 +1772,13 @@ start_element_handler (GMarkupParseContext *context,
 
   switch (element_name[0]) 
     {
+    case 'a':
+      if (ctx->state == STATE_NAMESPACE && strcmp (element_name, "alias") == 0) 
+	{
+	  state_switch (ctx, STATE_ALIAS);
+	  goto out;
+	}
+      break;
     case 'b':
       if (start_enum (context, element_name, 
 		      attribute_names, attribute_values,
@@ -2047,6 +2121,13 @@ end_element_handler (GMarkupParseContext *context,
         }
       break;
 
+    case STATE_ALIAS:
+      if (require_end_element (context, "alias", element_name, error))
+	{
+	  state_switch (ctx, STATE_NAMESPACE);
+	}
+      break;
+
     case STATE_FUNCTION_RETURN:
       if (strcmp ("type", element_name) == 0)
 	break;
@@ -2262,6 +2343,44 @@ cleanup (GMarkupParseContext *context,
   ctx->current_module = NULL;
 }
 
+static void
+firstpass_start_element_handler (GMarkupParseContext *context,
+				 const gchar         *element_name,
+				 const gchar        **attribute_names,
+				 const gchar        **attribute_values,
+				 gpointer             user_data,
+				 GError             **error)
+{
+  ParseContext *ctx = user_data;
+
+  if (strcmp (element_name, "alias") == 0) 
+    {
+      start_alias (context, element_name, attribute_names, attribute_values,
+		   ctx, error);
+    }
+}
+
+static void
+firstpass_end_element_handler (GMarkupParseContext *context,
+			       const gchar         *element_name,
+			       gpointer             user_data,
+			       GError             **error)
+{
+  ParseContext *ctx = user_data;
+
+}
+
+
+static GMarkupParser firstpass_parser = 
+{
+  firstpass_start_element_handler,
+  firstpass_end_element_handler,
+  NULL,
+  NULL,
+  NULL,
+};
+
+
 static GMarkupParser parser = 
 {
   start_element_handler,
@@ -2280,6 +2399,15 @@ g_ir_parse_string (const gchar  *buffer,
   GMarkupParseContext *context;
 
   ctx.state = STATE_START;
+  ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  context = g_markup_parse_context_new (&firstpass_parser, 0, &ctx, NULL);
+
+  if (!g_markup_parse_context_parse (context, buffer, length, error))
+    goto out;
+
+  if (!g_markup_parse_context_end_parse (context, error))
+    goto out;
   
   context = g_markup_parse_context_new (&parser, 0, &ctx, NULL);
   if (!g_markup_parse_context_parse (context, buffer, length, error))
@@ -2289,6 +2417,8 @@ g_ir_parse_string (const gchar  *buffer,
     goto out;
 
  out:
+
+  g_hash_table_destroy (ctx.aliases);
   
   g_markup_parse_context_free (context);
   

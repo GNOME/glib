@@ -880,7 +880,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent, GIrNode *node)
       size = 0;
     }
 
-  g_debug ("node %p type '%s' full size %d", node,
+  g_debug ("node '%s' %p type '%s' full size %d", node->name, node,
 	   g_ir_node_type_to_string (node->type), size);
 
   return size;
@@ -2173,8 +2173,8 @@ g_ir_node_build_typelib (GIrNode   *node,
       g_assert_not_reached ();
     }
   
-  g_debug ("node %p type '%s', offset %d -> %d, offset2 %d -> %d",
-	   node, g_ir_node_type_to_string (node->type),
+  g_debug ("node '%s' %p type '%s', offset %d -> %d, offset2 %d -> %d",
+	   node->name, node, g_ir_node_type_to_string (node->type),
 	   old_offset, *offset, old_offset2, *offset2);
 
   if (*offset2 - old_offset2 + *offset - old_offset > g_ir_node_get_full_size (node))
