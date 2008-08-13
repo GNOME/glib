@@ -1304,7 +1304,7 @@ start_class (GMarkupParseContext *context,
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
       else if (typename == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "glib:type-name");
-      else if (typeinit == NULL)
+      else if (typeinit == NULL && strcmp (typename, "GObject"))
 	MISSING_ATTRIBUTE (context, error, element_name, "glib:get-type");
       else
 	{
