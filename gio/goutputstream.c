@@ -36,7 +36,14 @@
  * @short_description: Base class for implementing streaming output
  * @include: gio/gio.h
  *
+ * GOutputStream has functions to write to a stream (g_output_stream_write()),
+ * to close a stream (g_output_stream_close()) and to flush pending writes
+ * (g_output_stream_flush()). 
  *
+ * To copy the content of an input stream to an output stream without 
+ * manually handling the reads and writes, use g_output_stream_splice(). 
+ *
+ * All of these functions have async variants too.
  **/
 
 G_DEFINE_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);

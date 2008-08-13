@@ -38,8 +38,14 @@
  * @short_description: Base class for implementing streaming input
  * @include: gio/gio.h
  *
- * 
- * 
+ * GInputStream has functions to read from a stream (g_input_stream_read()),
+ * to close a stream (g_input_stream_close()) and to skip some content
+ * (g_input_stream_skip()). 
+ *
+ * To copy the content of an input stream to an output stream without 
+ * manually handling the reads and writes, use g_output_stream_splice(). 
+ *
+ * All of these functions have async variants too.
  **/
 
 G_DEFINE_TYPE (GInputStream, g_input_stream, G_TYPE_OBJECT);
