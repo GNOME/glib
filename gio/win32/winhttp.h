@@ -229,6 +229,18 @@ BOOL        WINAPI WinHttpWriteData(HINTERNET,LPCVOID,DWORD,LPDWORD);
 #define ICU_ESCAPE 0x80000000
 #define ICU_DECODE 0x10000000
 
+/* A few constants I couldn't find publicly documented, so I looked up
+ * their value from the Windows SDK <winhttp.h>. Presumably this falls
+ * under fair use.
+ */
+#define WINHTTP_QUERY_CONTENT_LENGTH 5
+#define WINHTTP_QUERY_CONTENT_TYPE 1
+#define WINHTTP_QUERY_LAST_MODIFIED 11
+#define WINHTTP_QUERY_STATUS_CODE 19
+#define WINHTTP_QUERY_STATUS_TEXT 20
+
+#define WINHTTP_QUERY_FLAG_SYSTEMTIME 0x40000000
+
 #ifdef __cplusplus
 }
 #endif

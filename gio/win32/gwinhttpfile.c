@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Novell, Inc.
  *
@@ -28,6 +28,7 @@
 
 #include "gfile.h"
 #include "gfileattribute.h"
+#include "gfileinfo.h"
 #include "gwinhttpfile.h"
 #include "gwinhttpfileinputstream.h"
 #include "gwinhttpfileoutputstream.h"
@@ -78,7 +79,7 @@ g_winhttp_file_init (GWinHttpFile *winhttp)
  * _g_winhttp_file_new:
  * @vfs: GWinHttpVfs to use
  * @uri: URI of the GWinHttpFile to create.
- * 
+ *
  * Returns: new winhttp #GFile.
  **/
 GFile *
@@ -129,7 +130,7 @@ _g_winhttp_file_new (GWinHttpVfs *vfs,
       g_free (wuri);
       return NULL;
     }
-  
+
   g_free (wuri);
   return G_FILE (file);
 }
@@ -206,6 +207,17 @@ g_winhttp_file_get_uri (GFile *file)
   retval = g_utf16_to_utf8 (wuri, -1, NULL, NULL, NULL);
   g_free (wuri);
 
+  if (g_str_has_prefix (retval, "http://:@"))
+    {
+      memmove (retval + 7, retval + 9, strlen (retval) - 9);
+      retval[strlen (retval) - 2] = '\0';
+    }
+  else if (g_str_has_prefix (retval, "https://:@"))
+    {
+      memmove (retval + 8, retval + 10, strlen (retval) - 10);
+      retval[strlen (retval) - 2] = '\0';
+    }
+
   return retval;
 }
 
@@ -230,7 +242,7 @@ g_winhttp_file_get_parent (GFile *file)
   uri = g_winhttp_file_get_uri (file);
   if (uri == NULL)
     return NULL;
-    
+
   last_slash = strrchr (uri, '/');
   if (last_slash == NULL || *(last_slash+1) == 0)
     {
@@ -245,7 +257,7 @@ g_winhttp_file_get_parent (GFile *file)
 
   parent = _g_winhttp_file_new (winhttp_file->vfs, uri);
   g_free (uri);
-  
+
   return parent;
 }
 
@@ -282,12 +294,12 @@ g_winhttp_file_equal (GFile *file1,
 
   g_free (uri1);
   g_free (uri2);
-  
+
   return retval;
 }
 
 static const char *
-match_prefix (const char *path, 
+match_prefix (const char *path,
               const char *prefix)
 {
   int prefix_len;
@@ -295,10 +307,10 @@ match_prefix (const char *path,
   prefix_len = strlen (prefix);
   if (strncmp (path, prefix, prefix_len) != 0)
     return NULL;
-  
+
   if (prefix_len > 0 && prefix[prefix_len-1] == '/')
     prefix_len--;
-  
+
   return path + prefix_len;
 }
 
@@ -334,7 +346,7 @@ g_winhttp_file_get_relative_path (GFile *parent,
   char *retval;
 
   remainder = match_prefix (descendant_uri, parent_uri);
-  
+
   if (remainder != NULL && *remainder == '/')
     retval = g_strdup (remainder + 1);
   else
@@ -379,7 +391,7 @@ g_winhttp_file_resolve_relative_path (GFile      *file,
   child->url.dwUrlPathLength = 2*(wcslen (wnew_path)+1);
   child->url.lpszExtraInfo = NULL;
   child->url.dwExtraInfoLength = 0;
-  
+
   return (GFile *) child;
 }
 
@@ -394,15 +406,14 @@ g_winhttp_file_get_child_for_display_name (GFile        *file,
   basename = g_locale_from_utf8 (display_name, -1, NULL, NULL, NULL);
   if (basename == NULL)
     {
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_INVALID_FILENAME,
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_FILENAME,
                    _("Invalid filename %s"), display_name);
       return NULL;
     }
 
   new_file = g_file_get_child (file, basename);
   g_free (basename);
-  
+
   return new_file;
 }
 
@@ -412,11 +423,184 @@ g_winhttp_file_set_display_name (GFile         *file,
                                  GCancellable  *cancellable,
                                  GError       **error)
 {
-  g_set_error_literal (error, G_IO_ERROR,
-                       G_IO_ERROR_NOT_SUPPORTED,
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        _("Operation not supported"));
 
   return NULL;
+}
+
+static time_t
+mktime_utc (SYSTEMTIME *t)
+{
+  time_t retval;
+
+  static const gint days_before[] =
+  {
+    0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+  };
+
+  if (t->wMonth < 1 || t->wMonth > 12)
+    return (time_t) -1;
+
+  retval = (t->wYear - 1970) * 365;
+  retval += (t->wYear - 1968) / 4;
+  retval += days_before[t->wMonth-1] + t->wDay - 1;
+
+  if (t->wYear % 4 == 0 && t->wMonth < 3)
+    retval -= 1;
+
+  retval = ((((retval * 24) + t->wHour) * 60) + t->wMinute) * 60 + t->wSecond;
+
+  return retval;
+}
+
+static GFileInfo *
+g_winhttp_file_query_info (GFile                *file,
+                           const char           *attributes,
+                           GFileQueryInfoFlags   flags,
+                           GCancellable         *cancellable,
+                           GError              **error)
+{
+  GWinHttpFile *winhttp_file = G_WINHTTP_FILE (file);
+  HINTERNET connection, request;
+  const wchar_t *accept_types[] =
+    {
+      L"*/*",
+      NULL,
+    };
+  GFileInfo *info;
+  GFileAttributeMatcher *matcher;
+  char *basename;
+  wchar_t *content_length;
+  wchar_t *content_type;
+  SYSTEMTIME last_modified;
+  DWORD last_modified_len;
+
+  connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->pWinHttpConnect
+    (G_WINHTTP_VFS (winhttp_file->vfs)->session,
+     winhttp_file->url.lpszHostName,
+     winhttp_file->url.nPort,
+     0);
+
+  if (connection == NULL)
+    {
+      _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
+
+      return NULL;
+    }
+
+  request = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->pWinHttpOpenRequest
+    (connection,
+     L"HEAD",
+     winhttp_file->url.lpszUrlPath,
+     NULL,
+     WINHTTP_NO_REFERER,
+     accept_types,
+     winhttp_file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
+
+  if (request == NULL)
+    {
+      _g_winhttp_set_error (error, GetLastError (), "HEAD request");
+
+      return NULL;
+    }
+
+  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->pWinHttpSendRequest
+      (request,
+       NULL, 0,
+       NULL, 0,
+       0,
+       0))
+    {
+      _g_winhttp_set_error (error, GetLastError (), "HEAD request");
+
+      return NULL;
+    }
+
+  if (!_g_winhttp_response (winhttp_file->vfs, request, error, "HEAD request"))
+    return NULL;
+
+  matcher = g_file_attribute_matcher_new (attributes);
+  info = g_file_info_new ();
+  g_file_info_set_attribute_mask (info, matcher);
+
+  basename = g_winhttp_file_get_basename (file);
+  g_file_info_set_name (info, basename);
+  g_free (basename);
+
+  content_length = NULL;
+  if (_g_winhttp_query_header (winhttp_file->vfs,
+                               request,
+                               "HEAD request",
+                               WINHTTP_QUERY_CONTENT_LENGTH,
+                               &content_length,
+                               NULL))
+    {
+      gint64 cl;
+      int n;
+
+      if (swscanf (content_length, L"%I64d%n", &cl, &n) == 1 &&
+          n == wcslen (content_length))
+        g_file_info_set_size (info, cl);
+
+      g_free (content_length);
+    }
+
+  if (matcher == NULL)
+    return info;
+
+  content_type = NULL;
+  if (_g_winhttp_query_header (winhttp_file->vfs,
+                               request,
+                               "HEAD request",
+                               WINHTTP_QUERY_CONTENT_TYPE,
+                               &content_type,
+                               NULL))
+    {
+      char *ct = g_utf16_to_utf8 (content_type, -1, NULL, NULL, NULL);
+
+      if (ct != NULL)
+        {
+          char *p = strchr (ct, ';');
+
+          if (p != NULL)
+            {
+              char *tmp = g_strndup (ct, p - ct);
+
+              g_file_info_set_content_type (info, tmp);
+              g_free (tmp);
+            }
+          else
+            g_file_info_set_content_type (info, ct);
+        }
+
+      g_free (ct);
+    }
+
+  last_modified_len = sizeof (last_modified);
+  if (G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->pWinHttpQueryHeaders
+      (request,
+       WINHTTP_QUERY_LAST_MODIFIED | WINHTTP_QUERY_FLAG_SYSTEMTIME,
+       NULL,
+       &last_modified,
+       &last_modified_len,
+       NULL) &&
+      last_modified_len == sizeof (last_modified) &&
+      /* Don't bother comparing to the exact Y2038 moment */
+      last_modified.wYear >= 1970 &&
+      last_modified.wYear < 2038)
+    {
+      GTimeVal tv;
+
+      tv.tv_sec = mktime_utc (&last_modified);
+      tv.tv_usec = last_modified.wMilliseconds * 1000;
+
+      g_file_info_set_modification_time (info, &tv);
+    }
+
+  g_file_attribute_matcher_unref (matcher);
+
+  return info;
 }
 
 static GFileInputStream *
@@ -440,12 +624,7 @@ g_winhttp_file_read (GFile         *file,
 
   if (connection == NULL)
     {
-      char *emsg = _g_winhttp_error_message (GetLastError ());
-
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   "%s", emsg);
-      g_free (emsg);
+      _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
 
       return NULL;
     }
@@ -461,12 +640,7 @@ g_winhttp_file_read (GFile         *file,
 
   if (request == NULL)
     {
-      char *emsg = _g_winhttp_error_message (GetLastError ());
-
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   "%s", emsg);
-      g_free (emsg);
+      _g_winhttp_set_error (error, GetLastError (), "GET request");
 
       return NULL;
     }
@@ -481,7 +655,7 @@ g_winhttp_file_create (GFile             *file,
                        GError           **error)
 {
   GWinHttpFile *winhttp_file = G_WINHTTP_FILE (file);
-  HINTERNET connection, request;
+  HINTERNET connection;
 
   connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->pWinHttpConnect
     (G_WINHTTP_VFS (winhttp_file->vfs)->session,
@@ -491,12 +665,7 @@ g_winhttp_file_create (GFile             *file,
 
   if (connection == NULL)
     {
-      char *emsg = _g_winhttp_error_message (GetLastError ());
-
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   "%s", emsg);
-      g_free (emsg);
+      _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
 
       return NULL;
     }
@@ -550,7 +719,8 @@ g_winhttp_file_copy (GFile                  *source,
                      GError                **error)
 {
   /* Fall back to default copy?? */
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "Copy not supported");
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       "Copy not supported");
 
   return FALSE;
 }
@@ -590,6 +760,7 @@ g_winhttp_file_file_iface_init (GFileIface *iface)
   iface->resolve_relative_path = g_winhttp_file_resolve_relative_path;
   iface->get_child_for_display_name = g_winhttp_file_get_child_for_display_name;
   iface->set_display_name = g_winhttp_file_set_display_name;
+  iface->query_info = g_winhttp_file_query_info;
   iface->read_fn = g_winhttp_file_read;
   iface->create = g_winhttp_file_create;
 #if 0

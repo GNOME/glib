@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Novell, Inc.
  *
@@ -61,7 +61,7 @@ static void
 g_winhttp_file_input_stream_finalize (GObject *object)
 {
   GWinHttpFileInputStream *winhttp_stream;
-  
+
   winhttp_stream = G_WINHTTP_FILE_INPUT_STREAM (object);
 
   if (winhttp_stream->request != NULL)
@@ -77,7 +77,7 @@ g_winhttp_file_input_stream_class_init (GWinHttpFileInputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
-  
+
   gobject_class->finalize = g_winhttp_file_input_stream_finalize;
 
   stream_class->read_fn = g_winhttp_file_input_stream_read;
@@ -90,10 +90,10 @@ g_winhttp_file_input_stream_init (GWinHttpFileInputStream *info)
 
 /**
  * g_winhttp_file_input_stream_new:
- * @file: the GWinHttpFile being read 
+ * @file: the GWinHttpFile being read
  * @connection: handle to the HTTP connection, as from WinHttpConnect()
  * @request: handle to the HTTP request, as from WinHttpOpenRequest
- * 
+ *
  * Returns: #GFileInputStream for the given request
  **/
 GFileInputStream *
@@ -109,7 +109,7 @@ _g_winhttp_file_input_stream_new (GWinHttpFile *file,
   stream->request_sent = FALSE;
   stream->connection = connection;
   stream->request = request;
-  
+
   return G_FILE_INPUT_STREAM (stream);
 }
 
@@ -132,39 +132,27 @@ g_winhttp_file_input_stream_read (GInputStream  *stream,
            0,
            0))
         {
-          char *emsg = _g_winhttp_error_message (GetLastError ());
-          
-          g_set_error (error, G_IO_ERROR,
-                       G_IO_ERROR_FAILED,
-                       "%s", emsg);
-          g_free (emsg);
-          
-          return -1;
-        }
-  
-      if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->pWinHttpReceiveResponse
-          (winhttp_stream->request, NULL))
-        {
-          char *emsg = _g_winhttp_error_message (GetLastError ());
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "%s", emsg);
-          g_free (emsg);
+          _g_winhttp_set_error (error, GetLastError (), "GET request");
 
           return -1;
         }
+
+      if (!_g_winhttp_response (winhttp_stream->file->vfs,
+                                winhttp_stream->request,
+                                error,
+                                "GET request"))
+        return -1;
+
       winhttp_stream->request_sent = TRUE;
     }
-  
+
   if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->pWinHttpReadData
       (winhttp_stream->request, buffer, count, &bytes_read))
     {
-      char *emsg = _g_winhttp_error_message (GetLastError ());
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "%s", emsg);
-      g_free (emsg);
+      _g_winhttp_set_error (error, GetLastError (), "GET request");
 
       return -1;
     }
-  
+
   return bytes_read;
 }

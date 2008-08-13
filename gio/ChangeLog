@@ -1,5 +1,20 @@
 2008-08-13  Tor Lillqvist  <tml@novell.com>
 
+	* win32/gwinhttpvfs.c
+	* win32/gwinhttpvfs.h
+	* win32/gwinhttpfile.c
+	* win32/gwinhttpfileinputstream.c
+	* win32/gwinhttpfileoutputstream.c: Refactor some common code
+	snippets into helper functions. Check HTTP response status
+	codes. Implement g_winhttp_file_query_info(), looking at
+	Content-Length, Content-Type and Last-Modified.
+
+	* win32/winhttp.h: Add some symbolic constants that are not
+	publicly documented. Just a handful, so it should be OK to use
+	information from the Windows SDK's headers.
+
+2008-08-13  Tor Lillqvist  <tml@novell.com>
+
 	Bug 546582 - Callbacks from GFileMonitor present a GFile in the
 	wrong folder
 

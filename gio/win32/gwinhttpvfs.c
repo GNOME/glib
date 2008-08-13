@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Novell, Inc.
  *
@@ -24,6 +24,9 @@
 
 #include "config.h"
 
+#include <wchar.h>
+
+#include "gioerror.h"
 #include "giomodule.h"
 #include "gvfs.h"
 
@@ -69,7 +72,7 @@ g_winhttp_vfs_init (GWinHttpVfs *vfs)
 
   if (!wagent)
     wagent = g_utf8_to_utf16 ("GWinHttpVfs", -1, NULL, NULL, NULL);
-  
+
   vfs->session = (G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpOpen)
     (wagent,
      WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
@@ -142,7 +145,7 @@ g_winhttp_vfs_get_supported_uri_schemes (GVfs *vfs)
     }
 
   retval[n] = NULL;
-  
+
   return retval;
 }
 
@@ -151,7 +154,7 @@ g_winhttp_vfs_parse_name (GVfs       *vfs,
                           const char *parse_name)
 {
   GWinHttpVfs *winhttp_vfs = G_WINHTTP_VFS (vfs);
-  
+
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
   g_return_val_if_fail (parse_name != NULL, NULL);
 
@@ -177,7 +180,7 @@ g_winhttp_vfs_class_init (GWinHttpVfsClass *class)
   GObjectClass *object_class;
   GVfsClass *vfs_class;
   HMODULE winhttp;
-  
+
   object_class = (GObjectClass *) class;
 
   object_class->finalize = g_winhttp_vfs_finalize;
@@ -266,9 +269,154 @@ _g_winhttp_error_message (DWORD error_code)
           CASE (UNRECOGNIZED_SCHEME);
           #undef CASE
         default:
-          return g_strdup_printf ("WinHttp error %ld", error_code); 
+          return g_strdup_printf ("WinHttp error %ld", error_code);
         }
     }
   else
     return g_win32_error_message (error_code);
+}
+
+void
+_g_winhttp_set_error (GError     **error,
+                      DWORD        error_code,
+                      const char  *what)
+{
+  char *emsg = _g_winhttp_error_message (error_code);
+
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+               "%s failed: %s", what, emsg);
+  g_free (emsg);
+}
+
+gboolean
+_g_winhttp_response (GWinHttpVfs *vfs,
+                     HINTERNET    request,
+                     GError     **error,
+                     const char  *what)
+{
+  wchar_t *status_code;
+  DWORD status_code_len;
+
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpReceiveResponse (request, NULL))
+    {
+      _g_winhttp_set_error (error, GetLastError (), what);
+
+      return FALSE;
+    }
+
+  status_code_len = 0;
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+      (request,
+       WINHTTP_QUERY_STATUS_CODE,
+       NULL,
+       NULL,
+       &status_code_len,
+       NULL) &&
+      GetLastError () != ERROR_INSUFFICIENT_BUFFER)
+    {
+      _g_winhttp_set_error (error, GetLastError (), what);
+
+      return FALSE;
+    }
+
+  status_code = g_malloc (status_code_len);
+
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+      (request,
+       WINHTTP_QUERY_STATUS_CODE,
+       NULL,
+       status_code,
+       &status_code_len,
+       NULL))
+    {
+      _g_winhttp_set_error (error, GetLastError (), what);
+      g_free (status_code);
+
+      return FALSE;
+    }
+
+  if (status_code[0] != L'2')
+    {
+      wchar_t *status_text = NULL;
+      DWORD status_text_len;
+
+      if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+          (request,
+           WINHTTP_QUERY_STATUS_TEXT,
+           NULL,
+           NULL,
+           &status_text_len,
+           NULL) &&
+          GetLastError () == ERROR_INSUFFICIENT_BUFFER)
+        {
+          status_text = g_malloc (status_text_len);
+
+          if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+              (request,
+               WINHTTP_QUERY_STATUS_TEXT,
+               NULL,
+               status_text,
+               &status_text_len,
+               NULL))
+            {
+              g_free (status_text);
+              status_text = NULL;
+            }
+        }
+
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "%s failed: %S %S",
+                   what, status_code, status_text ? status_text : L"");
+      g_free (status_code);
+      g_free (status_text);
+
+      return FALSE;
+    }
+
+  g_free (status_code);
+
+  return TRUE;
+}
+
+gboolean
+_g_winhttp_query_header (GWinHttpVfs *vfs,
+                         HINTERNET    request,
+                         const char  *request_description,
+                         DWORD        which_header,
+                         wchar_t    **header,
+                         GError     **error)
+{
+  DWORD header_len = 0;
+
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+      (request,
+       which_header,
+       NULL,
+       NULL,
+       &header_len,
+       NULL) &&
+      GetLastError () != ERROR_INSUFFICIENT_BUFFER)
+    {
+      _g_winhttp_set_error (error, GetLastError (), request_description);
+
+      return FALSE;
+    }
+
+  *header = g_malloc (header_len);
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+      (request,
+       which_header,
+       NULL,
+       *header,
+       &header_len,
+       NULL))
+    {
+      _g_winhttp_set_error (error, GetLastError (), request_description);
+      g_free (*header);
+      *header = NULL;
+
+      return FALSE;
+    }
+
+  return TRUE;
 }

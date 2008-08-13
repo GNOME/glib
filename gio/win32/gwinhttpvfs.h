@@ -1,6 +1,6 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
- * Copyright (C) 2006-2007 Red Hat, Inc. 
+ *
+ * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Novell, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -82,6 +82,22 @@ GType   _g_winhttp_vfs_get_type  (void) G_GNUC_CONST;
 GVfs *_g_winhttp_vfs_new (void);
 
 char *_g_winhttp_error_message (DWORD error_code);
+
+void _g_winhttp_set_error (GError     **error,
+                           DWORD        error_code,
+                           const char  *what);
+
+gboolean _g_winhttp_response (GWinHttpVfs *vfs,
+                              HINTERNET    request,
+                              GError     **error,
+                              const char  *what);
+
+gboolean _g_winhttp_query_header (GWinHttpVfs *vfs,
+                                  HINTERNET    request,
+                                  const char  *request_description,
+                                  DWORD        which_header,
+                                  wchar_t    **header,
+                                  GError     **error);
 
 G_END_DECLS
 
