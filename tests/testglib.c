@@ -1486,6 +1486,7 @@ various_string_tests (void)
   /* g_debug (argv[0]); */
 }
 
+#ifndef G_DISABLE_DEPRECATED
 static void
 test_mem_chunks (void)
 {
@@ -1502,6 +1503,7 @@ test_mem_chunks (void)
   for (i = 0; i < 10000; i++)
     g_mem_chunk_free (mem_chunk, mem[i]);
 }
+#endif
 
 int
 main (int   argc,
@@ -1523,7 +1525,9 @@ main (int   argc,
   g_test_add_func ("/testglib/File Paths", test_paths);
   g_test_add_func ("/testglib/File Functions", test_file_functions);
   g_test_add_func ("/testglib/Parse Debug Strings", test_g_parse_debug_string);
+#ifndef G_DISABLE_DEPRECATED
   g_test_add_func ("/testglib/GMemChunk (deprecated)", test_mem_chunks);
+#endif
   g_test_add_func ("/testglib/Warnings & Errors", log_warning_error_tests);
   g_test_add_func ("/testglib/Timers (slow)", timer_tests);
 
