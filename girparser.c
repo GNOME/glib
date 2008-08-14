@@ -53,8 +53,10 @@ typedef enum
   STATE_STRUCT_FIELD,
   STATE_ERRORDOMAIN, 
   STATE_UNION,
-  STATE_CONSTANT,
-  STATE_ALIAS,  /* 25 */
+  STATE_NAMESPACE_CONSTANT,
+  STATE_CLASS_CONSTANT, /* 25 */
+  STATE_INTERFACE_CONSTANT,
+  STATE_ALIAS
 } ParseState;
 
 typedef struct _ParseContext ParseContext;
@@ -776,7 +778,6 @@ start_field (GMarkupParseContext *context,
        ctx->state == STATE_INTERFACE))
     {
       const gchar *name;
-      const gchar *type;
       const gchar *readable;
       const gchar *writable;
       const gchar *bits;
@@ -784,7 +785,6 @@ start_field (GMarkupParseContext *context,
       const gchar *offset;
       
       name = find_attribute ("name", attribute_names, attribute_values);
-      type = find_attribute ("c:type", attribute_names, attribute_values);
       readable = find_attribute ("readable", attribute_names, attribute_values);
       writable = find_attribute ("writable", attribute_names, attribute_values);
       bits = find_attribute ("bits", attribute_names, attribute_values);
@@ -1119,19 +1119,15 @@ start_constant (GMarkupParseContext *context,
        ctx->state == STATE_INTERFACE))
     {
       const gchar *name;
-      const gchar *type;
       const gchar *value;
       const gchar *deprecated;
       
       name = find_attribute ("name", attribute_names, attribute_values);
-      type = find_attribute ("c:type", attribute_names, attribute_values);
       value = find_attribute ("value", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
       
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
-      else if (type == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "c:type");
       else if (value == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "value");
       else 
@@ -1142,8 +1138,8 @@ start_constant (GMarkupParseContext *context,
 
 	  ((GIrNode *)constant)->name = g_strdup (name);
 	  constant->value = g_strdup (value);
-	  
-	  constant->type = parse_type (ctx, type);
+
+	  ctx->current_typed = (GIrNode*) constant;
 
 	  if (deprecated && strcmp (deprecated, "1") == 0)
 	    constant->deprecated = TRUE;
@@ -1163,7 +1159,22 @@ start_constant (GMarkupParseContext *context,
 	      iface = (GIrNodeInterface *)ctx->current_node;
 	      iface->members = g_list_append (iface->members, constant);
 	    }
-	  state_switch (ctx, STATE_CONSTANT);
+
+	  switch (ctx->state)
+	    {
+	    case STATE_NAMESPACE:
+	      state_switch (ctx, STATE_NAMESPACE_CONSTANT);
+	      break;
+	    case STATE_CLASS:
+	      state_switch (ctx, STATE_CLASS_CONSTANT);
+	      break;
+	    case STATE_INTERFACE:
+	      state_switch (ctx, STATE_INTERFACE_CONSTANT);
+	      break;
+	    default:
+	      g_assert_not_reached ();
+	      break;
+	    }
 	}
       
       return TRUE;
@@ -1351,7 +1362,10 @@ start_type (GMarkupParseContext *context,
 	ctx->state == STATE_CLASS_FIELD ||
 	ctx->state == STATE_INTERFACE_FIELD ||
 	ctx->state == STATE_INTERFACE_PROPERTY ||
-	ctx->state == STATE_BOXED_FIELD
+	ctx->state == STATE_BOXED_FIELD ||
+	ctx->state == STATE_NAMESPACE_CONSTANT ||
+	ctx->state == STATE_CLASS_CONSTANT ||
+	ctx->state == STATE_INTERFACE_CONSTANT
 	))
     return FALSE;
 
@@ -1373,8 +1387,7 @@ start_type (GMarkupParseContext *context,
     {
     case G_IR_NODE_PARAM:
       {
-	GIrNodeParam *param;
-	param = (GIrNodeParam *)ctx->current_typed;
+	GIrNodeParam *param = (GIrNodeParam *)ctx->current_typed;
 	param->type = parse_type (ctx, name);
       }
       break;
@@ -1388,6 +1401,12 @@ start_type (GMarkupParseContext *context,
       {
 	GIrNodeProperty *property = (GIrNodeProperty *) ctx->current_typed;
 	property->type = parse_type (ctx, name);
+      }
+      break;
+    case G_IR_NODE_CONSTANT:
+      {
+	GIrNodeConstant *constant = (GIrNodeConstant *)ctx->current_typed;
+	constant->type = parse_type (ctx, name);
       }
       break;
     default:
@@ -2308,11 +2327,29 @@ end_element_handler (GMarkupParseContext *context,
       if (require_end_element (context, ctx, "requires", element_name, error))
         state_switch (ctx, STATE_INTERFACE);
       break;
-    case STATE_CONSTANT:
+    case STATE_NAMESPACE_CONSTANT:
+    case STATE_CLASS_CONSTANT:
+    case STATE_INTERFACE_CONSTANT:
+      if (strcmp ("type", element_name) == 0)
+	break;
       if (require_end_element (context, ctx, "constant", element_name, error))
 	{
 	  ctx->current_node = NULL;
-	  state_switch (ctx, STATE_NAMESPACE);
+	  switch (ctx->state)
+	    {
+	    case STATE_NAMESPACE_CONSTANT:
+	      state_switch (ctx, STATE_NAMESPACE);
+	      break;
+	    case STATE_CLASS_CONSTANT:
+	      state_switch (ctx, STATE_CLASS);
+	      break;
+	    case STATE_INTERFACE_CONSTANT:
+	      state_switch (ctx, STATE_INTERFACE);
+	      break;
+	    default:
+	      g_assert_not_reached ();
+	      break;
+	    }
 	}
       break;
     default:
