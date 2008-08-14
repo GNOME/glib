@@ -54,24 +54,24 @@ write_type_info (const gchar *namespace,
   GITypeInfo *type;
   
   const gchar* basic[] = {
-    "void", 
-    "gboolean", 
-    "gint8", 
-    "guint8", 
-    "gint16", 
-    "guint16", 
-    "gint32", 
-    "guint32", 
-    "gint64", 
-    "guint64", 
-    "gint",
-    "guint",
-    "glong",
-    "gulong",
-    "gssize",
-    "gsize",
-    "gfloat", 
-    "gdouble", 
+    "none", 
+    "boolean", 
+    "int8", 
+    "uint8", 
+    "int16", 
+    "uint16", 
+    "int32", 
+    "uint32", 
+    "int64", 
+    "uint64", 
+    "int",
+    "uint",
+    "long",
+    "ulong",
+    "ssize",
+    "size",
+    "float", 
+    "double", 
     "utf8",
     "filename"
   };
@@ -200,21 +200,16 @@ write_field_info (const gchar *namespace,
   offset = g_field_info_get_offset (info);
 
   g_fprintf (file, 
-	     "      <field name=\"%s\" readable=\"%s\" writable=\"%s\" ",
+	     "      <field name=\"%s\" readable=\"%s\" writable=\"%s\"",
 	     name, 
 	     flags & GI_FIELD_IS_READABLE ? "1" : "0", 
 	     flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
   if (size)
-    g_fprintf (file, "bits=\"%d\" ", size);
-  g_fprintf (file, "offset=\"%d\" ", offset);
+    g_fprintf (file, " bits=\"%d\"", size);
 
-  g_fprintf (file, "type=\"");
+  g_fprintf (file, " offset=\"%d\"", offset);
 
   type = g_field_info_get_type (info);
-  write_type_info (namespace, type, file);
-  g_base_info_unref ((GIBaseInfo *)type);
-
-  g_fprintf (file, "\"");
 
   if (branch)
     {
@@ -225,7 +220,17 @@ write_field_info (const gchar *namespace,
       g_fprintf (file, "\"");
     }
 
-  g_fprintf (file," />\n");
+  g_fprintf (file,">\n");
+
+  g_fprintf (file, "        <type name=\"");
+
+  write_type_info (namespace, type, file);
+  g_base_info_unref ((GIBaseInfo *)type);
+
+  g_fprintf (file, "\"/>\n");
+
+  g_fprintf (file,  "      </field>\n");
+
 }
 
 static void 
@@ -237,12 +242,9 @@ write_callable_info (const gchar    *namespace,
   GITypeInfo *type;
   gint i;
 
-  g_fprintf (file, "%*s  <return-type c:type=\"", indent, "");
+  g_fprintf (file, "%*s  <return-value>\n", indent, "");
   
   type = g_callable_info_get_return_type (info);
-  write_type_info (namespace, type, file);
-
-  g_fprintf (file, "\"");
 
   if (g_type_info_is_pointer (type))
     {
@@ -265,75 +267,86 @@ write_callable_info (const gchar    *namespace,
   if (g_callable_info_may_return_null (info))
     g_fprintf (file, " null-ok=\"1\"");
 
-  g_fprintf (file, " />\n");
+  g_fprintf (file, "%*s  <type name=\"", indent + 2, "");
+
+  write_type_info (namespace, type, file);
+
+  g_fprintf (file, "\"/>\n");
+
+  g_fprintf (file, "%*s  </return-value>\n", indent, "");
 	
-  if (g_callable_info_get_n_args (info) > 0)
+  if (g_callable_info_get_n_args (info) <= 0)
+    return;
+
+  g_fprintf (file, "%*s  <parameters>\n", indent, "");
+  for (i = 0; i < g_callable_info_get_n_args (info); i++)
     {
-      g_fprintf (file, "%*s  <parameters>\n", indent, "");
-      for (i = 0; i < g_callable_info_get_n_args (info); i++)
+      GIArgInfo *arg = g_callable_info_get_arg (info, i);
+      
+      g_fprintf (file, "%*s    <parameter name=\"%s\"",
+		 indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
+      
+      if (g_type_info_is_pointer (type))
 	{
-	  GIArgInfo *arg = g_callable_info_get_arg (info, i);
-		
-	  g_fprintf (file, "%*s    <parameter name=\"%s\" c:type=\"",
-		     indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
-		
-	  type = g_arg_info_get_type (arg);
-	  write_type_info (namespace, type, file);
-	  g_fprintf (file, "\"");
-
-	  if (g_type_info_is_pointer (type))
+	  switch (g_arg_info_get_ownership_transfer (arg))
 	    {
-	      switch (g_arg_info_get_ownership_transfer (arg))
-		{
-		case GI_TRANSFER_NOTHING:
-		  g_fprintf (file, " transfer=\"none\"");
-		  break;
-		case GI_TRANSFER_CONTAINER:
-		  g_fprintf (file, " transfer=\"shallow\"");
-		  break;
-		case GI_TRANSFER_EVERYTHING:
-		  g_fprintf (file, " transfer=\"full\"");
-		  break;
-		default:
-		  g_assert_not_reached ();
-		}
-	    }	      
-	  g_base_info_unref ((GIBaseInfo *)type);
-
-	  g_fprintf (file, " direction=\"");
-	  switch (g_arg_info_get_direction (arg))
-	    {
-	    case GI_DIRECTION_IN:
-	      g_fprintf (file, "in");
+	    case GI_TRANSFER_NOTHING:
+	      g_fprintf (file, " transfer=\"none\"");
 	      break;
-	    case GI_DIRECTION_OUT:
-	      g_fprintf (file, "out");
+	    case GI_TRANSFER_CONTAINER:
+	      g_fprintf (file, " transfer=\"shallow\"");
 	      break;
-	    case GI_DIRECTION_INOUT:
-	      g_fprintf (file, "inout");
+	    case GI_TRANSFER_EVERYTHING:
+	      g_fprintf (file, " transfer=\"full\"");
 	      break;
+	    default:
+	      g_assert_not_reached ();
 	    }
-	  g_fprintf (file, "\"");
-
-	  if (g_arg_info_may_be_null (arg))
-	    g_fprintf (file, " null-ok=\"1\"");
-	  
-	  if (g_arg_info_is_dipper (arg))
-	    g_fprintf (file, " dipper=\"1\"");
-	  
-	  if (g_arg_info_is_return_value (arg))
-	    g_fprintf (file, " retval=\"1\"");
-	  
-	  if (g_arg_info_is_optional (arg))
-	    g_fprintf (file, " optional=\"1\"");
-	  
-	  g_fprintf (file, " />\n");
-                
-	  g_base_info_unref ((GIBaseInfo *)arg);
+	}	      
+      g_base_info_unref ((GIBaseInfo *)type);
+      
+      g_fprintf (file, " direction=\"");
+      switch (g_arg_info_get_direction (arg))
+	{
+	case GI_DIRECTION_IN:
+	  g_fprintf (file, "in");
+	  break;
+	case GI_DIRECTION_OUT:
+	  g_fprintf (file, "out");
+	  break;
+	case GI_DIRECTION_INOUT:
+	  g_fprintf (file, "inout");
+	  break;
 	}
-	    
-      g_fprintf (file, "%*s  </parameters>\n", indent, "");
+      g_fprintf (file, "\"");
+      
+      if (g_arg_info_may_be_null (arg))
+	g_fprintf (file, " null-ok=\"1\"");
+      
+      if (g_arg_info_is_dipper (arg))
+	g_fprintf (file, " dipper=\"1\"");
+      
+      if (g_arg_info_is_return_value (arg))
+	g_fprintf (file, " retval=\"1\"");
+      
+      if (g_arg_info_is_optional (arg))
+	g_fprintf (file, " optional=\"1\"");
+      
+      g_fprintf (file, ">\n");
+      
+      g_fprintf (file, "%*s    <type name=\"", indent+2, "");
+
+      type = g_arg_info_get_type (arg);
+      write_type_info (namespace, type, file);
+
+      g_fprintf (file, "\"/>\n");
+      
+      g_fprintf (file, "%*s    </parameter>\n", indent, "");
+
+      g_base_info_unref ((GIBaseInfo *)arg);
     }
+  
+  g_fprintf (file, "%*s  </parameters>\n", indent, "");
 }
 
 static void
@@ -417,7 +430,7 @@ write_struct_info (const gchar  *namespace,
       type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
       type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 	    
-      g_fprintf (file, "    <boxed name=\"%s\" type-name=\"%s\" get-type=\"%s\"", name, type_name, type_init);
+      g_fprintf (file, "    <glib:boxed glib:name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"", name, type_name, type_init);
     }
   else
     g_fprintf (file, "    <struct name=\"%s\"", name);
@@ -442,7 +455,7 @@ write_struct_info (const gchar  *namespace,
     }
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
-    g_fprintf (file, "    </boxed>\n");
+    g_fprintf (file, "    </glib:boxed>\n");
   else
     g_fprintf (file, "    </struct>\n");
 }
