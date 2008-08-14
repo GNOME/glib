@@ -1342,7 +1342,6 @@ start_type (GMarkupParseContext *context,
 	    GError             **error)
 {
   const gchar *name;
-  const gchar *ctype;
 
   if (strcmp (element_name, "type") != 0 ||
       !(ctx->state == STATE_FUNCTION_PARAMETER ||
@@ -1366,12 +1365,9 @@ start_type (GMarkupParseContext *context,
     }
 
   name = find_attribute ("name", attribute_names, attribute_values);
-  ctype = find_attribute ("c:type", attribute_names, attribute_values);
 
   if (name == NULL)
     MISSING_ATTRIBUTE (context, error, element_name, "name");
-  if (ctype == NULL)
-    MISSING_ATTRIBUTE (context, error, element_name, "c:type");
   
   switch (ctx->current_typed->type)
     {
