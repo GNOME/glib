@@ -1,3 +1,10 @@
+2008-08-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 547637 – unconditional #include of sys/statfs.h in configure
+	impedes detection of statfs things if non-existant
+
+	* configure.in: Protect the statfs.h include by guards.
+
 2008-08-12  Federico Mena Quintero  <federico@novell.com>
 
 	* glib/gi18n-lib.h: In the #error about having to define
