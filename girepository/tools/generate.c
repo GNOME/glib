@@ -603,13 +603,13 @@ write_enum_info (const gchar *namespace,
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
-    g_fprintf (file, "    <enum ");
+    g_fprintf (file, "    <enumeration ");
   else
-    g_fprintf (file, "    <flags ");
+    g_fprintf (file, "    <bitfield ");
   g_fprintf (file, "name=\"%s\"", name);
 
   if (type_init)
-    g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
+    g_fprintf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
   
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -624,9 +624,9 @@ write_enum_info (const gchar *namespace,
     }
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
-    g_fprintf (file, "    </enum>\n");
+    g_fprintf (file, "    </enumeration>\n");
   else
-    g_fprintf (file, "    </flags>\n");
+    g_fprintf (file, "    </bitfield>\n");
 }
 
 static void
