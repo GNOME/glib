@@ -242,8 +242,6 @@ write_callable_info (const gchar    *namespace,
   GITypeInfo *type;
   gint i;
 
-  g_fprintf (file, "%*s  <return-value>\n", indent, "");
-  
   type = g_callable_info_get_return_type (info);
 
   if (g_type_info_is_pointer (type))
@@ -263,6 +261,11 @@ write_callable_info (const gchar    *namespace,
 	  g_assert_not_reached ();
 	}
     }
+
+  g_fprintf (file, ">\n");
+
+  g_fprintf (file, "%*s  <return-value>\n", indent, "");
+  
   g_base_info_unref ((GIBaseInfo *)type);
   if (g_callable_info_may_return_null (info))
     g_fprintf (file, " null-ok=\"1\"");
@@ -384,7 +387,6 @@ write_function_info (const gchar    *namespace,
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
 	
-  g_fprintf (file, ">\n");
   write_callable_info (namespace, (GICallableInfo*)info, file, indent);
   g_fprintf (file, "%*s</%s>\n", indent, "", tag);
 }
@@ -406,7 +408,6 @@ write_callback_info (const gchar    *namespace,
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
 	
-  g_fprintf (file, ">\n");
   write_callable_info (namespace, (GICallableInfo*)info, file, indent);
   g_fprintf (file, "%*s</callback>\n", indent, "");
 }
@@ -563,15 +564,22 @@ write_constant_info (const gchar    *namespace,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_fprintf (file, "%*s<constant name=\"%s\" type=\"", indent, "", name);
+  g_fprintf (file, "%*s<constant name=\"%s\"", indent, "", name);
 
   type = g_constant_info_get_type (info);
-  write_type_info (namespace, type, file);
-  g_fprintf (file, "\" value=\"");
+  g_fprintf (file, " value=\"");
 
   g_constant_info_get_value (info, &value);
   write_constant_value (namespace, type, &value, file);
-  g_fprintf (file, "\" />\n");
+  g_fprintf (file, "\">\n");
+
+  g_fprintf (file, "%*s<type name=\"", indent + 2, "");
+
+  write_type_info (namespace, type, file);
+
+  g_fprintf (file, "\"/>\n");
+
+  g_fprintf (file, "%*s</constant>\n", indent, "");
   
   g_base_info_unref ((GIBaseInfo *)type);
 }
@@ -634,7 +642,7 @@ write_signal_info (const gchar  *namespace,
   flags = g_signal_info_get_flags (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_fprintf (file, "      <signal name=\"%s\"", name);
+  g_fprintf (file, "      <glib:signal name=\"%s\"", name);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -658,10 +666,9 @@ write_signal_info (const gchar  *namespace,
   if (flags & G_SIGNAL_NO_HOOKS)
     g_fprintf (file, " no-hooks=\"1\"");
 
-  g_fprintf (file, ">\n");
-
   write_callable_info (namespace, (GICallableInfo*)info, file, 6);
-  g_fprintf (file, "      </signal>\n");
+
+  g_fprintf (file, "      </glib:signal>\n");
 }
 
 static void
@@ -693,9 +700,9 @@ write_vfunc_info (const gchar *namespace,
     g_fprintf (file, " override=\"never\"");
     
   g_fprintf (file, " offset=\"%d\"", offset);
-  g_fprintf (file, ">\n");
 
   write_callable_info (namespace, (GICallableInfo*)info, file, 6);
+
   g_fprintf (file, "      </vfunc>\n");
 }
 
@@ -735,11 +742,17 @@ write_property_info (const gchar    *namespace,
     g_fprintf (file, " construct-only=\"1\"");
     
   type = g_property_info_get_type (info);
-  g_fprintf (file, " type=\"");
-  write_type_info (namespace, type, file);
-  g_fprintf (file, "\"");
 
-  g_fprintf (file, " />\n");
+  g_fprintf (file, ">\n");
+
+  g_fprintf (file, "        <type name=\"", name);
+
+  write_type_info (namespace, type, file);
+
+  g_fprintf (file, "\"/>\n");
+  
+  g_fprintf (file, "      </property>\n");
+
 }
 
 static void
@@ -759,7 +772,7 @@ write_object_info (const gchar  *namespace,
   
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-  g_fprintf (file, "    <object name=\"%s\"", name);
+  g_fprintf (file, "    <class name=\"%s\"", name);
 
   pnode = g_object_info_get_parent (info);
   if (pnode)
@@ -770,7 +783,7 @@ write_object_info (const gchar  *namespace,
       g_base_info_unref ((GIBaseInfo *)pnode);
     }
 
-  g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
+  g_fprintf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -833,7 +846,7 @@ write_object_info (const gchar  *namespace,
       g_base_info_unref ((GIBaseInfo *)constant);
     }
   
-  g_fprintf (file, "    </object>\n");
+  g_fprintf (file, "    </class>\n");
 }
 
 static void
@@ -852,7 +865,7 @@ write_interface_info (const gchar     *namespace,
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-  g_fprintf (file, "    <interface name=\"%s\" type-name=\"%s\" get-type=\"%s\"",
+  g_fprintf (file, "    <interface name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"",
 	     name, type_name, type_init);
 
   if (deprecated)
