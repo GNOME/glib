@@ -434,7 +434,7 @@ write_struct_info (const gchar  *namespace,
       g_fprintf (file, "    <glib:boxed glib:name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"", name, type_name, type_init);
     }
   else
-    g_fprintf (file, "    <struct name=\"%s\"", name);
+    g_fprintf (file, "    <record name=\"%s\"", name);
 	  
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -458,7 +458,7 @@ write_struct_info (const gchar  *namespace,
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
     g_fprintf (file, "    </glib:boxed>\n");
   else
-    g_fprintf (file, "    </struct>\n");
+    g_fprintf (file, "    </record>\n");
 }
 
 static void
