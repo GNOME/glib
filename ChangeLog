@@ -1,3 +1,11 @@
+2008-08-14  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 547832 – gtk+-2.12.11 fails to build - AC_PROG_MMAP too strict,
+	and unnecessary
+
+	* configure.in: Be a little bit more forgiving when checking
+	for mmap. Patch by Peter O'Gorman
+
 2008-08-13  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 547337 – G_DISABLE_DEPRECATED breaks tests build
