@@ -1,3 +1,8 @@
+2008-08-15  Padraig O'Briain  <padraig.obriain@sun.com>
+
+	* gunixmounts.c: Add zfs to ignore_fs array in guess_system_internal:
+	Fix for #542156.
+
 2008-08-13  Tor Lillqvist  <tml@novell.com>
 
 	* win32/gwinhttpvfs.c
