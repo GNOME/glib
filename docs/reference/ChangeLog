@@ -1,5 +1,10 @@
 2008-08-15  Tor Lillqvist  <tml@novell.com>
 
+	* glib/tmpl/threads.sgml: Add an exception: g_mem_set_vtable() may
+	be called before g_thread_init().
+
+2008-08-15  Tor Lillqvist  <tml@novell.com>
+
 	* glib/tmpl/threads.sgml: Warn about the consequences of not
 	calling g_thread_init() first, if it will be called at all. Advice
 	calling it if using random GLib-based libraries.

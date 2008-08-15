@@ -34,14 +34,15 @@ primitives to portably create and manage threads (#GThread).
 
 <para>
 You must call g_thread_init() before executing any other GLib
-functions in a GLib program if g_thread_init() will be called at
-all. This is a requirement even if no threads are in fact ever created
-by the process. It is enough that g_thread_init() is called. If other
-GLib functions have been called before that, the behaviour of the
-program is undefined.
+functions (except g_mem_set_vtable()) in a GLib program if
+g_thread_init() will be called at all. This is a requirement even if
+no threads are in fact ever created by the process. It is enough that
+g_thread_init() is called. If other GLib functions have been called
+before that, the behaviour of the program is undefined. An exception
+is g_mem_set_vtable() which may be called before g_thread_init().
 
-Failing this requirement leads easily to hangs or crashes, apparently
-more easily on Windows than on Linux, for example.
+Failing this requirement can lead to hangs or crashes, apparently more
+easily on Windows than on Linux, for example.
 
 Please note that if you call functions in some GLib-using library, in
 particular those above the GTK+ stack, that library might well call
