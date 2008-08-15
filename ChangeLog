@@ -1,3 +1,9 @@
+2008-08-15 12:41:26  Tim Janik  <timj@imendio.com>
+
+	* glib/gtestutils.c: changed assertion messages, so older emacsen
+	can also detect failing source file and line, fixes:
+	Bug 502498 – Test framework assertion failures should follow gcc error format
+
 2008-08-14  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 547832 – gtk+-2.12.11 fails to build - AC_PROG_MMAP too strict,
