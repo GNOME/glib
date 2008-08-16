@@ -1,4 +1,42 @@
-Overview of Changes from GLib 2.17.4 to GLib 2.17.5
+Overview of Changes from GLib 2.17.6 to GLib 2.17.7
+===================================================
+
+* More fixes for 64-bit Windows
+
+* Bugs fixed:
+ 546329 API docs for g_utf8_normalize() are incorrect
+ 546876 Modify GMarkup parser to accept &#x1; .. &#x1f;
+ 547200 g_utf8_find_next_char() issues
+ 547637 unconditional #include of sys/statfs.h in configure
+ 547337 G_DISABLE_DEPRECATED breaks tests build
+ 547832 gtk+-2.12.11 fails to build - AC_PROG_MMAP too strict
+ 502498 Test framework assertion failures should follow gcc
+ 546371 Improve docs re g_file_monitor
+ 546483 GThemedIcon:use-default-fallbacks is not readable without...
+ 546132 GFileIcon is bindings-unfriendly
+ 542156 zfs mount in home directory shown on nautilus desktop 
+ 535124 umask 002 not being applied for new directories...
+ 547080 g_file_copy leaks expected errors
+ 546582 Callbacks from GFileMonitor present a GFile...
+ 547262 Missing link in the docs
+
+* Updated translations:
+ Arabic (ar)
+ Catalan (ca)
+ Spanish (es)
+ Basque (eu)
+ Finnish (fi)
+ Galician (gl)
+ Hebrew (he)
+ Marathi (mr)
+ Norwegian bokmål (nb)
+ Portugese (pt)
+ Brazilian Portugese (pt_BR)
+ Swedish (sv)
+ Thai (th)
+
+
+Overview of Changes from GLib 2.17.4 to GLib 2.17.6
 ===================================================
 
 * Fix problems on 64-bit Windows
