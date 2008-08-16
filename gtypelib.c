@@ -1199,6 +1199,7 @@ validate_enum_blob (GTypelib     *typelib,
 				error))
 	return FALSE;
 
+#if 0
       v1 = (ValueBlob *)&typelib->data[offset + sizeof (EnumBlob) + 
                                         i * sizeof (ValueBlob)];
       for (j = 0; j < i; j++) 
@@ -1208,6 +1209,7 @@ validate_enum_blob (GTypelib     *typelib,
 
 	  if (v1->value == v2->value)
 	    {
+
 	      /* FIXME should this be an error ? */
 	      g_set_error (error,
 			   G_TYPELIB_ERROR,
@@ -1216,6 +1218,7 @@ validate_enum_blob (GTypelib     *typelib,
 	      return FALSE;
 	    }
 	}
+#endif      
     }
   
   return TRUE;
