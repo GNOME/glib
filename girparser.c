@@ -177,7 +177,7 @@ parse_type_internal (gchar *str, gchar **rest)
     { "filename", GI_TYPE_TAG_FILENAME,1 },
 
     /* FIXME: merge - do we still want this? */
-    { "string",   GI_TYPE_TAG_UTF8,  1 }
+    { "string",   GI_TYPE_TAG_UTF8,  1 },
 
     /* FIXME: Remove these */
     { "void",     GI_TYPE_TAG_VOID,    0 },
@@ -210,7 +210,7 @@ parse_type_internal (gchar *str, gchar **rest)
     { "gsize",    GI_TYPE_TAG_SIZE,    0 },
     { "gfloat",   GI_TYPE_TAG_FLOAT,   0 },
     { "gdouble",  GI_TYPE_TAG_DOUBLE,  0 },
-    { "gchar*",   GI_TYPE_TAG_UTF8,    1 },  
+    { "gchar*",   GI_TYPE_TAG_UTF8,    1 }
   };  
 
   gint n_basic = G_N_ELEMENTS (basic);
