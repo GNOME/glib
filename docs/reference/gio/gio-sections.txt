@@ -438,7 +438,7 @@ g_emblemed_icon_get_type
 
 <SECTION>
 <FILE>gemblem</FILE>
-<TITE>GEmblem</TITLE>
+<TITLE>GEmblem</TITLE>
 GEmblem
 g_emblem_new
 g_emblem_new_with_origin

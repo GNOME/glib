@@ -1,3 +1,7 @@
+2008-08-16  Matthias Clasen  <mclasen@redhat.com>
+	
+	* gio/gio-sections.txt: Fix a typo
+
 2008-08-15  Tor Lillqvist  <tml@novell.com>
 
 	* glib/tmpl/threads.sgml: Add an exception: g_mem_set_vtable() may
