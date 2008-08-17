@@ -1,5 +1,12 @@
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 460920 – build fix for --disable-threads
+
+	* gthread-impl.c: Implement g_thread_init_with_errorcheck_mutexes
+	in the !G_THREAD_ENABLED case. Pointed out by Jan Nieuwenhuizen
+
+2008-08-04  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.17.6 ===
 
 2008-08-04  Matthias Clasen  <mclasen@redhat.com>
