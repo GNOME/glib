@@ -1,5 +1,9 @@
 2008-08-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
+2008-08-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.17.7 ===
 
 2008-08-17  Sven Neumann  <sven@gimp.org>
