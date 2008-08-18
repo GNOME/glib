@@ -285,6 +285,8 @@ typedef enum {
   GI_TYPE_TAG_ERROR     = 25
 } GITypeTag;
 
+const gchar*           g_type_tag_to_string            (GITypeTag   type);
+
 gboolean               g_type_info_is_pointer          (GITypeInfo *info);
 GITypeTag              g_type_info_get_tag             (GITypeInfo *info);
 GITypeInfo *           g_type_info_get_param_type      (GITypeInfo *info,

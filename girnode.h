@@ -328,6 +328,7 @@ guint32   write_string              (const gchar *str,
 				     guint32     *offset);
 
 const gchar * g_ir_node_param_direction_string (GIrNodeParam * node);
+const gchar * g_ir_node_type_to_string         (GIrNodeTypeId type);
 
 G_END_DECLS
 

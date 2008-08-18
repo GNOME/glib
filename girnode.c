@@ -56,7 +56,7 @@ dump_stats (void)
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
 
-static const gchar *
+const gchar *
 g_ir_node_type_to_string (GIrNodeTypeId type)
 {
   switch (type)
@@ -99,68 +99,6 @@ g_ir_node_type_to_string (GIrNodeTypeId type)
       return "xref";
     case G_IR_NODE_UNION:
       return "union";
-    default:
-      return "unknown";
-    }
-}
-
-static const gchar*
-gi_type_tag_to_string (GITypeTag type)
-{
-  switch (type)
-    {
-    case GI_TYPE_TAG_VOID:
-      return "void";
-    case GI_TYPE_TAG_BOOLEAN:
-      return "boolean";
-    case GI_TYPE_TAG_INT8:
-      return "int8";
-    case GI_TYPE_TAG_UINT8:
-      return "uint8";
-    case GI_TYPE_TAG_INT16:
-      return "int16";
-    case GI_TYPE_TAG_UINT16:
-      return "uint16";
-    case GI_TYPE_TAG_INT32:
-      return "int32";
-    case GI_TYPE_TAG_UINT32:
-      return "uint32";
-    case GI_TYPE_TAG_INT64:
-      return "int64";
-    case GI_TYPE_TAG_UINT64:
-      return "uint64";
-    case GI_TYPE_TAG_INT:
-      return "int";
-    case GI_TYPE_TAG_UINT:
-      return "uint";
-    case GI_TYPE_TAG_LONG:
-      return "long";
-    case GI_TYPE_TAG_ULONG:
-      return "ulong";
-    case GI_TYPE_TAG_SSIZE:
-      return "ssize";
-    case GI_TYPE_TAG_SIZE:
-      return "size";
-    case GI_TYPE_TAG_FLOAT:
-      return "float";
-    case GI_TYPE_TAG_DOUBLE:
-      return "double";
-    case GI_TYPE_TAG_UTF8:
-      return "utf8";
-    case GI_TYPE_TAG_FILENAME:
-      return "filename";
-    case GI_TYPE_TAG_ARRAY:
-      return "array";
-    case GI_TYPE_TAG_INTERFACE:
-      return "interface";
-    case GI_TYPE_TAG_GLIST:
-      return "glist";
-    case GI_TYPE_TAG_GSLIST:
-      return "gslist";
-    case GI_TYPE_TAG_GHASH:
-      return "ghash";
-    case GI_TYPE_TAG_ERROR:
-      return "error";
     default:
       return "unknown";
     }
@@ -598,7 +536,8 @@ g_ir_node_get_size (GIrNode *node)
 
 /* returns the full size of the blob including variable-size parts */
 static guint32
-g_ir_node_get_full_size_internal (GIrNode *parent, GIrNode *node)
+g_ir_node_get_full_size_internal (GIrNode *parent,
+				  GIrNode *node)
 {
   GList *l;
   gint size, n;
@@ -655,7 +594,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent, GIrNode *node)
 	else
 	  {
 	    g_debug ("node %p type tag '%s'", node,
-		     gi_type_tag_to_string (type->tag));
+		     g_type_tag_to_string (type->tag));
 
 	    switch (type->tag)
 	      {
@@ -923,7 +862,7 @@ g_ir_node_can_have_member (GIrNode    *node)
 
 void
 g_ir_node_add_member (GIrNode         *node,
-		       GIrNodeFunction *member)
+		      GIrNodeFunction *member)
 {
   g_return_if_fail (node != NULL);
   g_return_if_fail (member != NULL);
@@ -1014,7 +953,7 @@ parse_boolean_value (const gchar *str)
 }
 
 static GIrNode *
-find_entry_node (GIrModule  *module,
+find_entry_node (GIrModule   *module,
 		 GList       *modules,
 		 const gchar *name,
 		 guint16     *idx)
@@ -1026,6 +965,9 @@ find_entry_node (GIrModule  *module,
   gint n_names;
   GIrNode *result = NULL;
 
+  g_assert (name != NULL);
+  g_assert (strlen (name) > 0);
+  
   names = g_strsplit (name, ".", 0);
   n_names = g_strv_length (names);
   if (n_names > 2)
@@ -1082,7 +1024,7 @@ find_entry_node (GIrModule  *module,
 }
 
 static guint16
-find_entry (GIrModule  *module,
+find_entry (GIrModule   *module,
 	    GList       *modules,
 	    const gchar *name)
 {
@@ -1094,9 +1036,9 @@ find_entry (GIrModule  *module,
 }
 
 static void
-serialize_type (GIrModule   *module, 
+serialize_type (GIrModule    *module, 
 		GList        *modules,
-		GIrNodeType *node, 
+		GIrNodeType  *node, 
 		GString      *str)
 {
   gint i;
@@ -1211,8 +1153,8 @@ serialize_type (GIrModule   *module,
 }
 
 void
-g_ir_node_build_typelib (GIrNode   *node,
-			 GIrModule *module,
+g_ir_node_build_typelib (GIrNode    *node,
+			 GIrModule  *module,
 			 GList      *modules,
 			 GHashTable *strings,
 			 GHashTable *types,
