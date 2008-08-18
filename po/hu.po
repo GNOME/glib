@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 13:30-0400\n"
+"POT-Creation-Date: 2008-08-18 00:50-0400\n"
 "PO-Revision-Date: 2008-03-16 02:05+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
@@ -105,8 +105,8 @@ msgstr ""
 "meg"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:956
-#: glib/gutf8.c:1405
+#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:955
+#: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 
@@ -116,8 +116,8 @@ msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 msgid "Error during conversion: %s"
 msgstr "Hiba az átalakítás során: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156 glib/gutf8.c:1297
-#: glib/gutf8.c:1401
+#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
+#: glib/gutf8.c:1400
 msgid "Partial character sequence at end of input"
 msgstr "Részleges karaktersorozat a bemenet végén"
 
@@ -355,17 +355,17 @@ msgstr ""
 "Nem sikerült feldolgozni ezt: „%-.*s”. Valószínűleg számjegy lett volna egy "
 "karakterhivatkozáson (mint az &#234) belül - lehet, hogy túl nagy a számjegy"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:650
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "A(z) „%-.*s” karakterhivatkozás nem engedélyezett karaktert kódol"
 
-#: glib/gmarkup.c:668
+#: glib/gmarkup.c:665
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Üres karakterhivatkozás; számjegyet is kell tartalmaznia, például így: &#454;"
 
-#: glib/gmarkup.c:678
+#: glib/gmarkup.c:675
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -374,32 +374,32 @@ msgstr ""
 "A karakterhivatkozás nem pontosvesszővel ért véget; valószínűleg egy &-jelet "
 "használt anélkül, hogy entitást akart volna kezdeni - írja &amp; formában."
 
-#: glib/gmarkup.c:764
+#: glib/gmarkup.c:761
 msgid "Unfinished entity reference"
 msgstr "Befejezetlen entitáshivatkozás"
 
-#: glib/gmarkup.c:770
+#: glib/gmarkup.c:767
 msgid "Unfinished character reference"
 msgstr "Befejezetlen karakterhivatkozás"
 
-#: glib/gmarkup.c:1056
+#: glib/gmarkup.c:1053
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Érvénytelen UTF-8 kódolású szöveg - túl hosszú sorozat"
 
-#: glib/gmarkup.c:1084
+#: glib/gmarkup.c:1081
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Érvénytelen UTF-8 kódolású szöveg - ez nem kezdőkarakter"
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1117
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Érvénytelen UTF-8 kódolású szöveg - nem érvényes „%s”"
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1155
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "A dokumentumnak egy elemmel kell kezdődnie (pl. <book>)"
 
-#: glib/gmarkup.c:1198
+#: glib/gmarkup.c:1195
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -407,7 +407,7 @@ msgid ""
 msgstr ""
 "„%s” nem érvényes karakter a „<” karakter után; elem neve nem kezdődhet vele"
 
-#: glib/gmarkup.c:1266
+#: glib/gmarkup.c:1263
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -416,7 +416,7 @@ msgstr ""
 "Furcsa karakter („%s”) - „>” karakternek kellett volna jönnie, hogy lezárja a"
 "(z) „%s” elem kezdő címkéjét"
 
-#: glib/gmarkup.c:1355
+#: glib/gmarkup.c:1352
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -424,7 +424,7 @@ msgstr ""
 "Furcsa karakter („%s”) - „=” karakternek kellett volna jönnie a(z) „%s” elem "
 "„%s” attribútumneve után"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1394
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -435,7 +435,7 @@ msgstr ""
 "„%s” elem kezdő címkéje után, esetleg egy attribútumnak; lehet, hogy "
 "érvénytelen karaktert használt az attribútum nevében"
 
-#: glib/gmarkup.c:1483
+#: glib/gmarkup.c:1480
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -444,7 +444,7 @@ msgstr ""
 "Furcsa karakter („%s”) - egy nyitó idézőjelnek kellene jönnie az "
 "egyenlőségjel után, ha értéket ad a(z) „%s” attribútumnak „%s” elemben"
 
-#: glib/gmarkup.c:1625
+#: glib/gmarkup.c:1622
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -453,7 +453,7 @@ msgstr ""
 "„%s” nem érvényes karakter a „</” karakterek után; „%s” karakterrel nem "
 "kezdődhet egy elem neve"
 
-#: glib/gmarkup.c:1665
+#: glib/gmarkup.c:1662
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -462,26 +462,26 @@ msgstr ""
 "„%s” nem érvényes karakter a „%s” lezáró elemnév után; az engedélyezett "
 "karakter egyedül a „>”."
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1673
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "A(z) „%s” elem le lett lezárva, jelenleg egy elem sincs nyitva"
 
-#: glib/gmarkup.c:1685
+#: glib/gmarkup.c:1682
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "A(z) „%s” elem le lett lezárva, de a jelenleg nyitott elem a(z) „%s”"
 
-#: glib/gmarkup.c:1848
+#: glib/gmarkup.c:1845
 msgid "Document was empty or contained only whitespace"
 msgstr "A dokumentum üres volt, vagy csak üreshely karaktereket tartalmazott"
 
-#: glib/gmarkup.c:1862
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "A dokumentum váratlanul véget ért egy nyitott hegyes zárójel („<”) után"
 
-#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
+#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -490,7 +490,7 @@ msgstr ""
 "A dokumentum váratlanul véget ért, pedig még nyitva vannak elemek - „%s” az "
 "utoljára megnyitott elem"
 
-#: glib/gmarkup.c:1878
+#: glib/gmarkup.c:1875
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -499,19 +499,19 @@ msgstr ""
 "A dokumentum váratlanul véget ért; a(z) <%s/> elemet lezáró hegyes "
 "zárójelnek kellett volna következnie"
 
-#: glib/gmarkup.c:1884
+#: glib/gmarkup.c:1881
 msgid "Document ended unexpectedly inside an element name"
 msgstr "A dokumentum váratlanul véget ért egy elemnéven belül"
 
-#: glib/gmarkup.c:1890
+#: glib/gmarkup.c:1887
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "A dokumentum váratlanul véget ért egy attribútumnéven belül"
 
-#: glib/gmarkup.c:1895
+#: glib/gmarkup.c:1892
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "A dokumentum váratlanul véget ért egy elemnyitó címkén belül"
 
-#: glib/gmarkup.c:1901
+#: glib/gmarkup.c:1898
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -519,16 +519,16 @@ msgstr ""
 "A dokumentum váratlanul véget ért egy az attribútumnevet követő "
 "egyenlőségjel után; az attribútum értéke nem lett megadva"
 
-#: glib/gmarkup.c:1908
+#: glib/gmarkup.c:1905
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "A dokumentum váratlanul véget ért egy attribútumértéken belül"
 
-#: glib/gmarkup.c:1924
+#: glib/gmarkup.c:1921
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "A dokumentum váratlanul véget ért a(z) „%s” elem lezáró címkéjén belül"
 
-#: glib/gmarkup.c:1930
+#: glib/gmarkup.c:1927
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "A dokumentum váratlanul véget ért egy megjegyzésen vagy feldolgozási "
@@ -974,16 +974,16 @@ msgstr "Ismeretlen hiba a gyermekfolyamat („%s”) végrehajtása közben"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nem sikerült elég adatot kiolvasni a gyermek pid csővezetékből (%s)"
 
-#: glib/gutf8.c:1030
+#: glib/gutf8.c:1029
 msgid "Character out of range for UTF-8"
 msgstr "A karakter az UTF-8 tartományon kívülre esik"
 
-#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265 glib/gutf8.c:1274
-#: glib/gutf8.c:1415 glib/gutf8.c:1511
+#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
+#: glib/gutf8.c:1414 glib/gutf8.c:1510
 msgid "Invalid sequence in conversion input"
 msgstr "Érvénytelen sorozat az átalakítási bemenetben"
 
-#: glib/gutf8.c:1426 glib/gutf8.c:1522
+#: glib/gutf8.c:1425 glib/gutf8.c:1521
 msgid "Character out of range for UTF-16"
 msgstr "A karakter az UTF-16 tartományon kívülre esik"
 
@@ -1156,15 +1156,15 @@ msgstr "A(z) „%s” érték nem értelmezhető lebegőpontos számként."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "A(z) „%s” érték nem értelmezhető logikai értékként."
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:187
-#: gio/ginputstream.c:319 gio/ginputstream.c:560 gio/ginputstream.c:685
-#: gio/goutputstream.c:195 gio/goutputstream.c:649
+#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
+#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
+#: gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Túl nagy számérték került átadásra ennek: %s"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:895
-#: gio/goutputstream.c:1078
+#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Az adatfolyam már le van zárva"
 
@@ -1232,10 +1232,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "a meghajtó nem valósítja meg a média lekérdezését"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
-#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
-#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
-#: gio/gfile.c:4207
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
+#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
+#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
 
@@ -1268,24 +1268,24 @@ msgstr "A célfájl létezik"
 msgid "Can't recursively copy directory"
 msgstr "A könyvtár nem másolható rekurzívan"
 
-#: gio/gfile.c:2851
+#: gio/gfile.c:2861
 msgid "Invalid symlink value given"
 msgstr "Érvénytelen szimbolikus link érték került megadásra"
 
-#: gio/gfile.c:2944
+#: gio/gfile.c:2954
 msgid "Trash not supported"
 msgstr "A Kuka nem támogatott"
 
-#: gio/gfile.c:2993
+#: gio/gfile.c:3003
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 
-#: gio/gfile.c:4975 gio/gvolume.c:370
+#: gio/gfile.c:4985 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: gio/gfile.c:5083
+#: gio/gfile.c:5093
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
@@ -1301,6 +1301,15 @@ msgstr "A fájlenumerátor hátralévő művelettel rendelkezik"
 #: gio/gfileenumerator.c:361 gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
 msgstr "A fájlenumerátor már le van zárva"
+
+#: gio/gfileicon.c:144
+msgid "file"
+msgstr ""
+
+#: gio/gfileicon.c:145
+#, fuzzy
+msgid "The file containing the icon"
+msgstr "Az ikonneveket tartalmazó tömb"
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1319,7 +1328,7 @@ msgstr "A bemeneti adatfolyam csonkítása nem engedélyezett"
 msgid "Truncate not supported on stream"
 msgstr "Az adatfolyam csonkítása nem engedélyezett"
 
-#: gio/ginputstream.c:196
+#: gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
 msgstr "A bemeneti adatfolyam nem valósítja meg az olvasást"
 
@@ -1329,7 +1338,7 @@ msgstr "A bemeneti adatfolyam nem valósítja meg az olvasást"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:905 gio/goutputstream.c:1088
+#: gio/ginputstream.c:911 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Az adatfolyam hátralévő művelettel rendelkezik"
 
@@ -1337,7 +1346,7 @@ msgstr "Az adatfolyam hátralévő művelettel rendelkezik"
 msgid "Unable to find default local directory monitor type"
 msgstr "Nem található az alapértelmezett helyi könyvtárfigyelő típus"
 
-#: gio/glocalfile.c:601
+#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Érvénytelen fájlnév: %s"
@@ -1655,35 +1664,35 @@ msgstr "A csatolás nem valósítja meg a leválasztást"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "A csatolás nem valósítja meg a leválasztást"
 
-#: gio/goutputstream.c:204 gio/goutputstream.c:405
+#: gio/goutputstream.c:211 gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
 msgstr "A kimeneti adatfolyam nem valósítja meg az írást"
 
-#: gio/goutputstream.c:365 gio/goutputstream.c:773
+#: gio/goutputstream.c:372 gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "A forrás adatfolyam már le van zárva"
 
-#: gio/gthemedicon.c:206
+#: gio/gthemedicon.c:210
 msgid "name"
 msgstr "név"
 
-#: gio/gthemedicon.c:207
+#: gio/gthemedicon.c:211
 msgid "The name of the icon"
 msgstr "Az ikon neve"
 
-#: gio/gthemedicon.c:218
+#: gio/gthemedicon.c:222
 msgid "names"
 msgstr "nevek"
 
-#: gio/gthemedicon.c:219
+#: gio/gthemedicon.c:223
 msgid "An array containing the icon names"
 msgstr "Az ikonneveket tartalmazó tömb"
 
-#: gio/gthemedicon.c:244
+#: gio/gthemedicon.c:248
 msgid "use default fallbacks"
 msgstr "alapértelmezett tartalékok használata"
 
-#: gio/gthemedicon.c:245
+#: gio/gthemedicon.c:249
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
@@ -1704,7 +1713,7 @@ msgstr "Hiba a unix olvasásakor: %s"
 msgid "Error closing unix: %s"
 msgstr "Hiba a unix lezárásakor: %s"
 
-#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
+#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
 msgid "Filesystem root"
 msgstr "Fájlrendszer gyökere"
 

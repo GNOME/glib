@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-04 13:30-0400\n"
+"POT-Creation-Date: 2008-08-18 00:50-0400\n"
 "PO-Revision-Date: 2008-07-21 00:18+0200\n"
 "Last-Translator: Andre Klapper <ak-47@gmx.net>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -108,8 +108,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:956
-#: glib/gutf8.c:1405
+#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:955
+#: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
@@ -119,8 +119,8 @@ msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 msgid "Error during conversion: %s"
 msgstr "Fehler bei der Umwandlung: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:952 glib/gutf8.c:1156 glib/gutf8.c:1297
-#: glib/gutf8.c:1401
+#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
+#: glib/gutf8.c:1400
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
@@ -366,16 +366,16 @@ msgstr ""
 "»%-.*s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, "
 "konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:650
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Zeichenreferenz »%-.*s« kodiert kein zulässiges Zeichen"
 
-#: glib/gmarkup.c:668
+#: glib/gmarkup.c:665
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Leere Zeichenangabe; sollte eine Zahl wie z.B. &#454; enthalten"
 
-#: glib/gmarkup.c:678
+#: glib/gmarkup.c:675
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -385,32 +385,32 @@ msgstr ""
 "Et-Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie "
 "das Et als &amp;"
 
-#: glib/gmarkup.c:764
+#: glib/gmarkup.c:761
 msgid "Unfinished entity reference"
 msgstr "Unvollendete Entitätsreferenz"
 
-#: glib/gmarkup.c:770
+#: glib/gmarkup.c:767
 msgid "Unfinished character reference"
 msgstr "Unvollendete Zeichenreferenz"
 
-#: glib/gmarkup.c:1056
+#: glib/gmarkup.c:1053
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Ungültiger UTF-8-kodierter Text - überlange Sequenz"
 
-#: glib/gmarkup.c:1084
+#: glib/gmarkup.c:1081
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Ungültiger UTF-8-kodierter Text - Kein Anfangszeichen"
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1117
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Ungültiger UTF-8-kodierter Text - »%s« ist nicht gültig"
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1155
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: glib/gmarkup.c:1198
+#: glib/gmarkup.c:1195
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -419,7 +419,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen nach einem »<«-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: glib/gmarkup.c:1266
+#: glib/gmarkup.c:1263
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -428,14 +428,14 @@ msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
 
-#: glib/gmarkup.c:1355
+#: glib/gmarkup.c:1352
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »=« erwartet nach Attributname »%s« des Elements »%s«"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1394
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -446,7 +446,7 @@ msgstr ""
 "erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
 "Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: glib/gmarkup.c:1483
+#: glib/gmarkup.c:1480
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -455,7 +455,7 @@ msgstr ""
 "Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elemente "
 "»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
-#: glib/gmarkup.c:1625
+#: glib/gmarkup.c:1622
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -464,7 +464,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
 "keinen Elementnamen beginnen"
 
-#: glib/gmarkup.c:1665
+#: glib/gmarkup.c:1662
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -473,25 +473,25 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
 "folgt; das erlaubte Zeichen ist »>«"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1673
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 
-#: glib/gmarkup.c:1685
+#: glib/gmarkup.c:1682
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
-#: glib/gmarkup.c:1848
+#: glib/gmarkup.c:1845
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: glib/gmarkup.c:1862
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
+#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -500,7 +500,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - »%s« war das letzte "
 "offene Element"
 
-#: glib/gmarkup.c:1878
+#: glib/gmarkup.c:1875
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -509,19 +509,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
 "> schließt, erwartet"
 
-#: glib/gmarkup.c:1884
+#: glib/gmarkup.c:1881
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1890
+#: glib/gmarkup.c:1887
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1895
+#: glib/gmarkup.c:1892
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1901
+#: glib/gmarkup.c:1898
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -529,18 +529,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1908
+#: glib/gmarkup.c:1905
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1924
+#: glib/gmarkup.c:1921
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: glib/gmarkup.c:1930
+#: glib/gmarkup.c:1927
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "
@@ -990,16 +990,16 @@ msgstr ""
 "Es konnten nicht genug Daten von Kind-Programmkennungsweiterleitung (%s) "
 "gelesen werden"
 
-#: glib/gutf8.c:1030
+#: glib/gutf8.c:1029
 msgid "Character out of range for UTF-8"
 msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
-#: glib/gutf8.c:1124 glib/gutf8.c:1133 glib/gutf8.c:1265 glib/gutf8.c:1274
-#: glib/gutf8.c:1415 glib/gutf8.c:1511
+#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
+#: glib/gutf8.c:1414 glib/gutf8.c:1510
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gutf8.c:1426 glib/gutf8.c:1522
+#: glib/gutf8.c:1425 glib/gutf8.c:1521
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
@@ -1173,15 +1173,15 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
 "Der Wert »%s« konnte nicht als boolescher Ausdruck interpretiert werden."
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:187
-#: gio/ginputstream.c:319 gio/ginputstream.c:560 gio/ginputstream.c:685
-#: gio/goutputstream.c:195 gio/goutputstream.c:649
+#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
+#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
+#: gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Zu großer Zählwert an %s übermittelt"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:895
-#: gio/goutputstream.c:1078
+#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Datenstrom ist bereits geschlossen"
 
@@ -1251,10 +1251,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "Laufwerk unterstützt Prüfen auf Datenträger nicht"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2682
-#: gio/gfile.c:2733 gio/gfile.c:2861 gio/gfile.c:2901 gio/gfile.c:3228
-#: gio/gfile.c:3630 gio/gfile.c:3714 gio/gfile.c:3797 gio/gfile.c:3877
-#: gio/gfile.c:4207
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
+#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
+#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
 msgid "Operation not supported"
 msgstr "Vorgang nicht unterstützt"
 
@@ -1287,24 +1287,24 @@ msgstr "Zieldatei existiert"
 msgid "Can't recursively copy directory"
 msgstr "Verzeichnis kann nicht rekursiv kopiert werden"
 
-#: gio/gfile.c:2851
+#: gio/gfile.c:2861
 msgid "Invalid symlink value given"
 msgstr "Ungültiger Wert für Symbolische Verknüpfung angegeben"
 
-#: gio/gfile.c:2944
+#: gio/gfile.c:2954
 msgid "Trash not supported"
 msgstr "Müll nicht unterstützt"
 
-#: gio/gfile.c:2993
+#: gio/gfile.c:3003
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Dateinamen dürfen kein »%c« enthalten"
 
-#: gio/gfile.c:4975 gio/gvolume.c:370
+#: gio/gfile.c:4985 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
-#: gio/gfile.c:5083
+#: gio/gfile.c:5093
 msgid "No application is registered as handling this file"
 msgstr "Es wurde keine Anwendung gefunden, die diese Datei verarbeiten kann"
 
@@ -1320,6 +1320,15 @@ msgstr "Datei-Enumerator hat noch einen ausstehenden Vorgang"
 #: gio/gfileenumerator.c:361 gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
 msgstr "Datei-Enumerator ist bereits geschlossen"
+
+#: gio/gfileicon.c:144
+msgid "file"
+msgstr ""
+
+#: gio/gfileicon.c:145
+#, fuzzy
+msgid "The file containing the icon"
+msgstr "Ein Datenfeld, das die Symbolnamen enthält"
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1338,7 +1347,7 @@ msgstr "Abschneiden des Eingabedatenstroms nicht erlaubt"
 msgid "Truncate not supported on stream"
 msgstr "Abschneiden wird vom Datenstrom nicht unterstützt"
 
-#: gio/ginputstream.c:196
+#: gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
 msgstr "Eingabedatenstrom unterstützt kein Lesen"
 
@@ -1348,7 +1357,7 @@ msgstr "Eingabedatenstrom unterstützt kein Lesen"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:905 gio/goutputstream.c:1088
+#: gio/ginputstream.c:911 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Datenstrom hat noch einen ausstehenden Vorgang"
 
@@ -1357,7 +1366,7 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Vorgegebener Überwachungstyp für lokale Ordner konnte nicht gefunden werden"
 
-#: gio/glocalfile.c:601
+#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ungültiger Dateiname %s"
@@ -1677,35 +1686,35 @@ msgstr "Einhängepunkt unterstützt nicht Erraten des Inhaltstyps"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "Einhängepunkt unterstützt nicht Erraten des Inhaltstyps"
 
-#: gio/goutputstream.c:204 gio/goutputstream.c:405
+#: gio/goutputstream.c:211 gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
 msgstr "Ausgabedatenstrom unterstützt kein Schreiben"
 
-#: gio/goutputstream.c:365 gio/goutputstream.c:773
+#: gio/goutputstream.c:372 gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "Quelldatenstrom ist bereits geschlossen"
 
-#: gio/gthemedicon.c:206
+#: gio/gthemedicon.c:210
 msgid "name"
 msgstr "Name"
 
-#: gio/gthemedicon.c:207
+#: gio/gthemedicon.c:211
 msgid "The name of the icon"
 msgstr "Der Name des Symbols"
 
-#: gio/gthemedicon.c:218
+#: gio/gthemedicon.c:222
 msgid "names"
 msgstr "Namen"
 
-#: gio/gthemedicon.c:219
+#: gio/gthemedicon.c:223
 msgid "An array containing the icon names"
 msgstr "Ein Datenfeld, das die Symbolnamen enthält"
 
-#: gio/gthemedicon.c:244
+#: gio/gthemedicon.c:248
 msgid "use default fallbacks"
 msgstr "Standard-Alternativen benutzen"
 
-#: gio/gthemedicon.c:245
+#: gio/gthemedicon.c:249
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
@@ -1726,7 +1735,7 @@ msgstr "Fehler beim Lesen aus Unix-Datenstrom: %s"
 msgid "Error closing unix: %s"
 msgstr "Fehler beim Schließen des Unix-Datenstroms: %s"
 
-#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
+#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
 msgid "Filesystem root"
 msgstr "Wurzelverzeichnis des Dateisystems"
 
