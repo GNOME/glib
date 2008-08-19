@@ -29,6 +29,44 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
+/*
+ * Bugs that are related to the code in this file:
+ *
+ * Bug 137968 - Sometimes a GIOFunc on Win32 is called with zero condition
+ * http://bugzilla.gnome.org/show_bug.cgi?id=137968
+ *
+ * Bug 324234 - Using g_io_add_watch_full() to wait for connect() to return on a non-blocking socket returns prematurely
+ * http://bugzilla.gnome.org/show_bug.cgi?id=324234
+ *
+ * Bug 331214 - g_io_channel async socket io stalls
+ * http://bugzilla.gnome.org/show_bug.cgi?id=331214
+ *
+ * Bug 338943 - Multiple watches on the same socket
+ * http://bugzilla.gnome.org/show_bug.cgi?id=338943
+ *
+ * Bug 357674 - 2 serious bugs in giowin32.c making glib iochannels useless
+ * http://bugzilla.gnome.org/show_bug.cgi?id=357674
+ *
+ * Bug 425156 - GIOChannel deadlocks on a win32 socket
+ * http://bugzilla.gnome.org/show_bug.cgi?id=425156
+ *
+ * Bug 468910 - giofunc condition=0
+ * http://bugzilla.gnome.org/show_bug.cgi?id=468910
+ *
+ * Bug 500246 - Bug fixes for giowin32
+ * http://bugzilla.gnome.org/show_bug.cgi?id=500246
+ *
+ * Bug 548278 - Async GETs connections are always terminated unexpectedly on windows
+ * http://bugzilla.gnome.org/show_bug.cgi?id=548278
+ *
+ * Bug 548536 - giowin32 problem when adding and removing watches
+ * http://bugzilla.gnome.org/show_bug.cgi?id=548536
+ *
+ * When fixing bugs related to the code in this file, either the above
+ * bugs or others, make sure that the test programs attached to the
+ * above bugs continue to work.
+ */
+
 #include "config.h"
 
 #include "glib.h"
@@ -116,6 +154,7 @@ struct _GIOWin32Channel {
   int last_events;
   HANDLE event;
   gboolean write_would_have_blocked;
+  gboolean ever_writable;
 };
 
 #define LOCK(mutex) EnterCriticalSection (&mutex)
@@ -242,6 +281,7 @@ g_io_channel_win32_init (GIOWin32Channel *channel)
   channel->last_events = 0;
   channel->event = NULL;
   channel->write_would_have_blocked = FALSE;
+  channel->ever_writable = FALSE;
   InitializeCriticalSection (&channel->mutex);
 }
 
@@ -734,7 +774,9 @@ g_io_win32_prepare (GSource *source,
 	    g_print ("\n  setting last_events=0");
 	  channel->last_events = 0;
 
-	  if ((event_mask & FD_WRITE) && !channel->write_would_have_blocked)
+	  if ((event_mask & FD_WRITE) &&
+	      channel->ever_writable &&
+	      !channel->write_would_have_blocked)
 	    {
 	      if (channel->debug)
 		g_print (" WSASetEvent(%p)", (WSAEVENT) watch->pollfd.fd);
@@ -845,11 +887,15 @@ g_io_win32_check (GSource *source)
 			 (HANDLE) watch->pollfd.fd);
 	      ResetEvent ((HANDLE) watch->pollfd.fd);
 	    }
+	  else if (events.lNetworkEvents & FD_WRITE)
+	    channel->ever_writable = TRUE;
 	  channel->last_events = events.lNetworkEvents;
 	}
+
       watch->pollfd.revents = 0;
       if (channel->last_events & (FD_READ | FD_ACCEPT))
 	watch->pollfd.revents |= G_IO_IN;
+
       if (channel->last_events & FD_WRITE)
 	watch->pollfd.revents |= G_IO_OUT;
       else
@@ -869,10 +915,12 @@ g_io_win32_check (GSource *source)
 	}
 
       /* Regardless of WSAEnumNetworkEvents() result, if watching for
-       * writability, unless last write would have blocked set
-       * G_IO_OUT. But never set both G_IO_OUT and G_IO_HUP.
+       * writability, and if we have ever got a FD_WRITE event, and
+       * unless last write would have blocked, set G_IO_OUT. But never
+       * set both G_IO_OUT and G_IO_HUP.
        */
       if (!(watch->pollfd.revents & G_IO_HUP) &&
+	  channel->ever_writable &&
 	  !channel->write_would_have_blocked &&
 	  (channel->event_mask & FD_WRITE))
 	watch->pollfd.revents |= G_IO_OUT;

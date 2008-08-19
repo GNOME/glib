@@ -1,3 +1,28 @@
+2008-08-20  Tor Lillqvist  <tml@novell.com>
+
+	Bug 324234 - Using g_io_add_watch_full() to wait for connect() to
+	return on a non-blocking socket returns prematurely
+
+	Bug 548278 - Async GETs connections are always terminated
+	unexpectedly on Windows
+
+	* glib/giowin32.c: Add one more state variable to the
+	GIOWin32Channel struct, ever_writable. Initialise it to FALSE, set
+	to TRUE when the WSAEventSelect() indicates FD_WRITE, and never
+	reset to FALSE.
+
+	Don't do the WSASetEvent() in g_io_win32_prepare() unless
+	ever_writable is TRUE. Don't automatically indicate G_IO_OUT in
+	g_io_win32_check() unless ever_writable is TRUE.
+
+	This fixes the behaviour of the test case program in bug #548278,
+	and the "Testcase for the spurious OUT event bug" in bug
+	#324234. It also doesn't seem to break anything. Not that there is
+	any exhaustive test suite...
+
+	Add a comment with a list of bugs that are related to the code in
+	this file.
+
 2008-08-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
