@@ -114,11 +114,6 @@ g_irepository_register (GIRepository *repository,
   if (typelib->module == NULL)
       typelib->module = g_module_open (NULL, 0); 
 
-  if (g_getenv ("G_IREPOSITORY_VERBOSE"))
-    {
-      g_printerr ("Loaded typelib %s\n", name);
-    }
-
   return name;
 }
 
@@ -395,22 +390,17 @@ g_irepository_get_shared_library (GIRepository *repository,
 static inline void
 g_irepository_build_search_path (void)
 {
-  gchar **dir;
-  gchar **tokens;
+  const gchar *const *datadirs;
+  const gchar *const *dir;
 
-  if (g_getenv ("GIREPOPATH")) {
-    gchar *path;
-    path = g_strconcat (g_getenv ("GIREPOPATH"), ":", GIREPO_DEFAULT_SEARCH_PATH, NULL);
-    tokens = g_strsplit (path, ":", 0);
-    g_free (path);
-  } else
-    tokens = g_strsplit (GIREPO_DEFAULT_SEARCH_PATH, ":", 0);
+  datadirs = g_get_system_data_dirs ();
 
-  search_path = g_slist_prepend (search_path, ".");
-  for (dir = tokens; *dir; ++dir)
-    search_path = g_slist_prepend (search_path, *dir);
+  search_path = NULL;
+  for (dir = datadirs; *dir; dir++) {
+    char *path = g_build_filename (*dir, "gitypelibs", NULL);
+    search_path = g_slist_prepend (search_path, path);
+  }
   search_path = g_slist_reverse (search_path);
-  g_free (tokens);
 }
 
 const gchar *
@@ -441,7 +431,7 @@ g_irepository_register_file (GIRepository  *repository,
   if (search_path == NULL)
     g_irepository_build_search_path ();
 
-  fname = g_strconcat (namespace, ".repo", NULL);
+  fname = g_strconcat (namespace, ".typelib", NULL);
 
   for (ldir = search_path; ldir; ldir = ldir->next) {
     dir = ldir->data;

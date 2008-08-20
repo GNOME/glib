@@ -2,8 +2,6 @@ include $(top_srcdir)/gcov.mak
 
 GCOVSOURCES = $(libgirepository_la_SOURCES)
 
-INCLUDES = -DGIREPO_DEFAULT_SEARCH_PATH="\"$(libdir)\""
-
 girepodir = $(includedir)/gobject-introspection-1.0/
 girepo_HEADERS = girepository.h
 
