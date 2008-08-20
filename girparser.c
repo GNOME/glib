@@ -53,8 +53,9 @@ typedef enum
   STATE_STRUCT_FIELD,
   STATE_ERRORDOMAIN, 
   STATE_UNION,
-  STATE_NAMESPACE_CONSTANT,
-  STATE_CLASS_CONSTANT, /* 25 */
+  STATE_UNION_FIELD,
+  STATE_NAMESPACE_CONSTANT, /* 25 */
+  STATE_CLASS_CONSTANT, 
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS
 } ParseState;
@@ -882,6 +883,7 @@ start_field (GMarkupParseContext *context,
 
 		    union_->discriminators = g_list_append (union_->discriminators, constant);
 		  }
+		state_switch (ctx, STATE_UNION_FIELD);
 	      }
 	      break;
 	    default:
@@ -1364,6 +1366,7 @@ start_type (GMarkupParseContext *context,
       !(ctx->state == STATE_FUNCTION_PARAMETER ||
 	ctx->state == STATE_FUNCTION_RETURN || 
 	ctx->state == STATE_STRUCT_FIELD ||
+	ctx->state == STATE_UNION_FIELD ||
 	ctx->state == STATE_CLASS_PROPERTY ||
 	ctx->state == STATE_CLASS_FIELD ||
 	ctx->state == STATE_INTERFACE_FIELD ||
@@ -2316,6 +2319,16 @@ end_element_handler (GMarkupParseContext *context,
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
+
+    case STATE_UNION_FIELD:
+      if (strcmp ("type", element_name) == 0)
+	break;
+      if (require_end_element (context, ctx, "field", element_name, error))
+	{
+	  state_switch (ctx, STATE_UNION);
+	}
+      break;
+
     case STATE_UNION:
       if (require_end_element (context, ctx, "union", element_name, error))
 	{
