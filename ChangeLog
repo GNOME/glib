@@ -1,5 +1,15 @@
 2008-08-20  Tor Lillqvist  <tml@novell.com>
 
+	Bug 500246 - Bug fixes for giowin32
+
+	* glib/giowin32.c (read_thread) (write_thread): Change the nbytes
+	variables to signed.
+	(g_io_channel_win32_make_pollfd): Fix an obvious error in the file
+	descriptor case leftover after the patch from bug #333098 on
+	2006-03-02. Thanks to Marcus Brinkmann.
+
+2008-08-20  Tor Lillqvist  <tml@novell.com>
+
 	Bug 324234 - Using g_io_add_watch_full() to wait for connect() to
 	return on a non-blocking socket returns prematurely
 

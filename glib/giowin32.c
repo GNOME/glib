@@ -311,7 +311,7 @@ read_thread (void *parameter)
 {
   GIOWin32Channel *channel = parameter;
   guchar *buffer;
-  guint nbytes;
+  gint nbytes;
 
   g_io_channel_ref ((GIOChannel *)channel);
 
@@ -422,7 +422,7 @@ write_thread (void *parameter)
 {
   GIOWin32Channel *channel = parameter;
   guchar *buffer;
-  guint nbytes;
+  gint nbytes;
 
   g_io_channel_ref ((GIOChannel *)channel);
 
@@ -2095,8 +2095,14 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 
       fd->fd = (gintptr) win32_channel->data_avail_event;
 
-      if (win32_channel->thread_id == 0 && (condition & G_IO_IN))
+      if (win32_channel->thread_id == 0)
 	{
+	  /* Is it meaningful for a file descriptor to be polled for
+	   * both IN and OUT? For what kind of file descriptor would
+	   * that be? Doesn't seem to make sense, in practise the file
+	   * descriptors handled here are always read or write ends of
+	   * pipes surely, and thus unidirectional.
+	   */
 	  if (condition & G_IO_IN)
 	    create_thread (win32_channel, condition, read_thread);
 	  else if (condition & G_IO_OUT)
