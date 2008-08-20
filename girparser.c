@@ -197,6 +197,8 @@ parse_type_internal (gchar *str, gchar **rest)
     { "gunichar", GI_TYPE_TAG_UINT32,  0 },
     { "gint",     GI_TYPE_TAG_INT,     0 },
     { "guint",    GI_TYPE_TAG_UINT,    0 },
+    { "gshort",   GI_TYPE_TAG_INT16,   0 },
+    { "gushort",  GI_TYPE_TAG_UINT16,  0 },
     { "gint8",    GI_TYPE_TAG_INT8,    0 },
     { "guint8",   GI_TYPE_TAG_UINT8,   0 },
     { "gint16",   GI_TYPE_TAG_INT16,   0 },
