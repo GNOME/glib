@@ -28,6 +28,7 @@
 #include "girepository.h"
 #include "gtypelib.h"
 
+static GStaticMutex globals_lock = G_STATIC_MUTEX_INIT;
 static GIRepository *default_repository = NULL;
 static GHashTable *default_typelib = NULL;
 static GSList *search_path = NULL;
@@ -68,6 +69,39 @@ g_irepository_class_init (GIRepositoryClass *class)
   g_type_class_add_private (class, sizeof (GIRepositoryPrivate)); 
 }
 
+static void
+init_globals ()
+{
+  g_static_mutex_lock (&globals_lock);
+
+  if (default_repository == NULL) 
+    { 
+      default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
+      if (default_typelib == NULL)
+	default_typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                  (GDestroyNotify) NULL,
+                                                  (GDestroyNotify) g_typelib_free);
+      default_repository->priv->typelib = default_typelib;
+    }
+
+  if (search_path == NULL)
+    {
+      const gchar *const *datadirs;
+      const gchar *const *dir;
+      
+      datadirs = g_get_system_data_dirs ();
+      
+      search_path = NULL;
+      for (dir = datadirs; *dir; dir++) {
+	char *path = g_build_filename (*dir, "gitypelibs", NULL);
+	search_path = g_slist_prepend (search_path, path);
+      }
+      search_path = g_slist_reverse (search_path);
+    }
+
+  g_static_mutex_unlock (&globals_lock);
+}
+
 const gchar *
 g_irepository_register (GIRepository *repository,
                         GTypelib    *typelib)
@@ -93,10 +127,7 @@ g_irepository_register (GIRepository *repository,
     }
   else 
     {
-      if (default_typelib == NULL)
-	default_typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  (GDestroyNotify) NULL,
-                                                  (GDestroyNotify) g_typelib_free);
+      init_globals ();
       table = default_typelib;
     }
 
@@ -126,8 +157,11 @@ g_irepository_unregister (GIRepository *repository,
 
   if (repository != NULL)
     table = repository->priv->typelib;
-  else
-    table = default_typelib;
+  else 
+    {
+      init_globals ();
+      table = default_typelib;
+    }
 
   if (!g_hash_table_remove (table, namespace))
     {
@@ -144,7 +178,10 @@ g_irepository_is_registered (GIRepository *repository,
   if (repository != NULL)
     table = repository->priv->typelib;
   else
-    table = default_typelib;
+    {
+      init_globals ();
+      table = default_typelib;
+    }
 
   return g_hash_table_lookup (table, namespace) != NULL;
 }
@@ -152,16 +189,7 @@ g_irepository_is_registered (GIRepository *repository,
 GIRepository * 
 g_irepository_get_default (void)
 {
-  if (default_repository == NULL) 
-    { 
-      default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
-      if (default_typelib == NULL)
-	default_typelib = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  (GDestroyNotify) NULL,
-                                                  (GDestroyNotify) g_typelib_free);
-      default_repository->priv->typelib = default_typelib;
-    }
-
+  init_globals ();
   return default_repository; 
 }
 
@@ -315,6 +343,17 @@ g_irepository_find_by_gtype (GIRepository *repository,
   return data.iface;
 }
 
+/**
+ * g_irepository_find_by_name
+ * @repository: A #GIRepository, may be %NULL for the default
+ * @namespace: Namespace to search in, may be %NULL for all
+ * @name: Name to find
+ *
+ * Searches for a particular name in one or all namespaces.
+ * See #g_irepository_require to load metadata for namespaces.
+
+ * Returns: #GIBaseInfo representing metadata about @name, or %NULL
+ */
 GIBaseInfo * 
 g_irepository_find_by_name (GIRepository *repository,
 			    const gchar  *namespace,
@@ -352,6 +391,16 @@ collect_namespaces (gpointer key,
   *list = g_list_append (*list, key);
 }
 
+/**
+ * g_irepository_get_namespaces
+ * @repository: A #GIRepository, may be %NULL for the default
+ *
+ * Return the list of currently known namespaces.  Normally
+ * if you want a particular namespace, you should call 
+ * #g_irepository_require to load it in.
+
+ * Returns: List of namespaces
+ */
 gchar ** 
 g_irepository_get_namespaces (GIRepository *repository)
 {
@@ -390,23 +439,25 @@ g_irepository_get_shared_library (GIRepository *repository,
 static inline void
 g_irepository_build_search_path (void)
 {
-  const gchar *const *datadirs;
-  const gchar *const *dir;
-
-  datadirs = g_get_system_data_dirs ();
-
-  search_path = NULL;
-  for (dir = datadirs; *dir; dir++) {
-    char *path = g_build_filename (*dir, "gitypelibs", NULL);
-    search_path = g_slist_prepend (search_path, path);
-  }
-  search_path = g_slist_reverse (search_path);
 }
 
+/**
+ * g_irepository_require
+ * @repository: Repository, may be null for the default
+ * @namespace: GI namespace to use, e.g. "Gtk"
+ * @error: a #GError.
+ *
+ * Force the namespace @namespace to be loaded if it isn't
+ * already.  If @namespace is not loaded, this function will
+ * search for a ".typelib" file using the repository search 
+ * path.
+ *
+ * Returns: Namespace if successful, NULL otherwise
+ */
 const gchar *
-g_irepository_register_file (GIRepository  *repository,
-			     const gchar   *namespace,
-			     GError       **error)
+g_irepository_require (GIRepository  *repository,
+		       const gchar   *namespace,
+		       GError       **error)
 {
   GSList *ldir;
   const char *dir;
@@ -422,14 +473,14 @@ g_irepository_register_file (GIRepository  *repository,
   if (repository != NULL)
     table = repository->priv->typelib;
   else
-    table = default_typelib;
+    {
+      init_globals ();
+      table = default_typelib;
+    }
 
   /* don't bother loading a namespace if already registered */
   if (g_hash_table_lookup (table, namespace))
-    return NULL;
-
-  if (search_path == NULL)
-    g_irepository_build_search_path ();
+    return namespace;
 
   fname = g_strconcat (namespace, ".typelib", NULL);
 
@@ -438,7 +489,6 @@ g_irepository_register_file (GIRepository  *repository,
     full_path = g_build_filename (dir, fname, NULL);
     mfile = g_mapped_file_new (full_path, FALSE, &error1);
     if (error1) {
-      g_debug ("Failed to mmap \"%s\": %s", full_path, error1->message);
       g_clear_error (&error1);
       g_free (full_path);
       continue;

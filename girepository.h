@@ -76,14 +76,14 @@ const gchar * g_irepository_register      (GIRepository *repository,
 					   GTypelib    *typelib);
 void          g_irepository_unregister    (GIRepository *repository,
 					   const gchar  *namespace);
-const gchar * g_irepository_register_file (GIRepository *repository,
-					   const gchar  *filename,
-					   GError      **error);
 gboolean      g_irepository_is_registered (GIRepository *repository, 
 					   const gchar  *namespace);
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *name);
+const char *  g_irepository_require       (GIRepository *repository,
+					   const char   *namespace,
+					   GError      **error);
 gchar      ** g_irepository_get_namespaces (GIRepository *repository);
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
