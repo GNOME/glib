@@ -1,6 +1,7 @@
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 
-	* glib/giowin32.c: Minor comment improvements.
+	* glib/giowin32.c: Minor comment improvements. Improve run-time
+	warning messages. Drop some #if 0 code.
 
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 

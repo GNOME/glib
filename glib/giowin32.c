@@ -544,10 +544,10 @@ create_thread (GIOWin32Channel     *channel,
   thread_handle = (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
 					   &channel->thread_id);
   if (thread_handle == 0)
-    g_warning (G_STRLOC ": Error creating reader thread: %s",
+    g_warning ("Error creating thread: %s.",
 	       g_strerror (errno));
   else if (!CloseHandle (thread_handle))
-    g_warning (G_STRLOC ": Error closing thread handle: %s\n",
+    g_warning ("Error closing thread handle: %s.\n",
 	       g_win32_error_message (GetLastError ()));
 
   WaitForSingleObject (channel->space_avail_event, INFINITE);
@@ -763,7 +763,7 @@ g_io_win32_prepare (GSource *source,
 	event_mask |= (FD_WRITE | FD_CONNECT);
       event_mask |= FD_CLOSE;
 
-      if (channel->event_mask != event_mask /* || channel->event != watch->pollfd.fd*/)
+      if (channel->event_mask != event_mask)
 	{
 	  if (channel->debug)
 	    g_print ("\n  WSAEventSelect(%d,%p,{%s})",
@@ -956,7 +956,7 @@ g_io_win32_dispatch (GSource     *source,
   
   if (!func)
     {
-      g_warning (G_STRLOC ": GIOWin32Watch dispatched without callback\n"
+      g_warning ("IO Watch dispatched without callback\n"
 		 "You must call g_source_connect().");
       return FALSE;
     }
@@ -1001,11 +1001,6 @@ g_io_win32_finalize (GSource *source)
     case G_IO_WIN32_SOCKET:
       if (channel->debug)
 	g_print (" SOCK sock=%d", channel->fd);
-#if 0
-      CloseHandle ((HANDLE) watch->pollfd.fd);
-      channel->event = 0;
-      channel->event_mask = 0;
-#endif
       break;
 
     default:
@@ -1994,7 +1989,7 @@ g_io_channel_win32_new_fd (gint fd)
 
   if (fstat (fd, &st) == -1)
     {
-      g_warning (G_STRLOC ": %d isn't a C library file descriptor", fd);
+      g_warning ("g_io_channel_win32_new_fd: %d isn't an open file descriptor in the C library GLib uses.", fd);
       return NULL;
     }
 
@@ -2044,7 +2039,7 @@ g_io_channel_unix_new (gint fd)
   is_socket = (getsockopt (fd, SOL_SOCKET, SO_TYPE, (char *) &optval, &optlen) != SOCKET_ERROR);
 
   if (is_fd && is_socket)
-    g_warning (G_STRLOC ": %d is both a file descriptor and a socket, file descriptor interpretation assumed.", fd);
+    g_warning ("g_io_channel_unix_new: %d is both a file descriptor and a socket. File descriptor interpretation assumed. To avoid ambiguity, call either g_io_channel_win32_new_fd() or g_io_channel_win32_new_socket() instead.", fd);
 
   if (is_fd)
     return g_io_channel_win32_new_fd_internal (fd, &st);
@@ -2052,7 +2047,7 @@ g_io_channel_unix_new (gint fd)
   if (is_socket)
     return g_io_channel_win32_new_socket(fd);
 
-  g_warning (G_STRLOC ": %d is neither a file descriptor or a socket", fd);
+  g_warning ("g_io_channel_unix_new: %d is neither a file descriptor or a socket.", fd);
 
   return NULL;
 }
