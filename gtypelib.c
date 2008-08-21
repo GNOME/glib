@@ -1836,6 +1836,8 @@ _g_typelib_init (GTypelib *typelib)
      
       if (typelib->module == NULL)
         {
+	  gchar *resolved_shlib;
+
           /* Glade's autoconnect feature and OpenGL's extension mechanism
            * as used by Clutter rely on dlopen(NULL) to work as a means of
            * accessing the app's symbols. This keeps us from using
@@ -1844,11 +1846,14 @@ _g_typelib_init (GTypelib *typelib)
            * themselves and are not expecting to be unloaded. So we just
            * load modules globally for now.
            */
-          
-          typelib->module = g_module_open (shlib, G_MODULE_BIND_LAZY);
+
+	  resolved_shlib = g_module_build_path (NULL, shlib);
+          typelib->module = g_module_open (resolved_shlib, G_MODULE_BIND_LAZY);
           if (typelib->module == NULL)
             g_warning ("Failed to load shared library referenced by the typelib: %s",
                        g_module_error ());
+
+	  g_free (resolved_shlib);
         }
     }
 }
