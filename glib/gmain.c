@@ -89,7 +89,6 @@
 
 #include "galias.h"
 
-#ifdef G_MAIN_POLL_DEBUG
 #ifdef G_OS_WIN32
 #ifdef _WIN64
 #define GPOLLFD_FORMAT "%#I64x"
@@ -98,7 +97,6 @@
 #endif
 #else
 #define GPOLLFD_FORMAT "%d"
-#endif
 #endif
 
 /* Types */
@@ -343,84 +341,34 @@ extern gint poll (GPollFD *ufds, guint nfsd, gint timeout);
 
 #ifdef G_OS_WIN32
 
-static gint
-g_poll (GPollFD *fds,
-	guint    nfds,
-	gint     timeout)
+static int
+poll_rest (gboolean  poll_msgs,
+	   HANDLE   *handles,
+	   gint      nhandles,
+	   GPollFD  *fds,
+	   guint     nfds,
+	   gint      timeout)
 {
-  HANDLE handles[MAXIMUM_WAIT_OBJECTS];
-  gboolean poll_msgs = FALSE;
-  GPollFD *f;
   DWORD ready;
-  MSG msg;
-  gint nhandles = 0;
-
-#ifdef G_MAIN_POLL_DEBUG
-  if (g_main_poll_debug)
-    g_print ("g_poll: waiting for");
-#endif
-  for (f = fds; f < &fds[nfds]; ++f)
-    if (f->fd >= 0)
-      {
-	if (f->fd == G_WIN32_MSG_HANDLE)
-	  {
-	    poll_msgs = TRUE;
-#ifdef G_MAIN_POLL_DEBUG
-	    if (g_main_poll_debug)
-	      g_print (" MSG");
-#endif
-	  }
-	else if (nhandles == MAXIMUM_WAIT_OBJECTS)
-	  {
-	    g_warning (G_STRLOC ": Too many handles to wait for!\n");
-	    break;
-	  }
-	else
-	  {
-#ifdef G_MAIN_POLL_DEBUG
-	    if (g_main_poll_debug)
-	      g_print (" %p", (HANDLE) f->fd);
-#endif
-	    handles[nhandles++] = (HANDLE) f->fd;
-	  }
-      }
-#ifdef G_MAIN_POLL_DEBUG
-  if (g_main_poll_debug)
-    g_print ("\n");
-#endif
-
-  if (timeout == -1)
-    timeout = INFINITE;
+  GPollFD *f;
+  int recursed_result;
 
   if (poll_msgs)
     {
-      /* Waiting for messages, and maybe events
-       * -> First PeekMessage
+      /* Wait for either messages or handles
+       * -> Use MsgWaitForMultipleObjectsEx
        */
-#ifdef G_MAIN_POLL_DEBUG
       if (g_main_poll_debug)
-	g_print ("PeekMessage\n");
-#endif
-      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
-	ready = WAIT_OBJECT_0 + nhandles;
-      else
-	{
-	  /* Wait for either message or event
-	   * -> Use MsgWaitForMultipleObjectsEx
-	   */
-#ifdef G_MAIN_POLL_DEBUG
-	  if (g_main_poll_debug)
-	    g_print ("MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
-#endif
-	  ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
-					       QS_ALLINPUT, MWMO_ALERTABLE);
+	g_print ("  MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 
-	  if (ready == WAIT_FAILED)
-	    {
-	      gchar *emsg = g_win32_error_message (GetLastError ());
-	      g_warning (G_STRLOC ": MsgWaitForMultipleObjectsEx() failed: %s", emsg);
-	      g_free (emsg);
-	    }
+      ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
+					   QS_ALLINPUT, MWMO_ALERTABLE);
+
+      if (ready == WAIT_FAILED)
+	{
+	  gchar *emsg = g_win32_error_message (GetLastError ());
+	  g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
+	  g_free (emsg);
 	}
     }
   else if (nhandles == 0)
@@ -436,32 +384,27 @@ g_poll (GPollFD *fds,
     }
   else
     {
-      /* Wait for just events
+      /* Wait for just handles
        * -> Use WaitForMultipleObjectsEx
        */
-#ifdef G_MAIN_POLL_DEBUG
       if (g_main_poll_debug)
-	g_print ("WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
-#endif
+	g_print ("  WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
+
       ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout, TRUE);
       if (ready == WAIT_FAILED)
 	{
 	  gchar *emsg = g_win32_error_message (GetLastError ());
-	  g_warning (G_STRLOC ": WaitForMultipleObjectsEx() failed: %s", emsg);
+	  g_warning ("WaitForMultipleObjectsEx failed: %s", emsg);
 	  g_free (emsg);
 	}
     }
 
-#ifdef G_MAIN_POLL_DEBUG
   if (g_main_poll_debug)
-    g_print ("wait returns %ld%s\n",
+    g_print ("  wait returns %ld%s\n",
 	     ready,
 	     (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
 	      (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
 	       (poll_msgs && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
-#endif
-  for (f = fds; f < &fds[nfds]; ++f)
-    f->revents = 0;
 
   if (ready == WAIT_FAILED)
     return -1;
@@ -471,27 +414,141 @@ g_poll (GPollFD *fds,
   else if (poll_msgs && ready == WAIT_OBJECT_0 + nhandles)
     {
       for (f = fds; f < &fds[nfds]; ++f)
-	if (f->fd >= 0)
-	  {
-	    if (f->events & G_IO_IN)
-	      if (f->fd == G_WIN32_MSG_HANDLE)
-		f->revents |= G_IO_IN;
-	  }
+	if (f->fd == G_WIN32_MSG_HANDLE && f->events & G_IO_IN)
+	  f->revents |= G_IO_IN;
+
+      /* If we have a timeout, or no handles to poll, be satisfied
+       * with just noticing we have messages waiting.
+       */
+      if (timeout != 0 || nhandles == 0)
+	return 1;
+
+      /* If no timeout and handles to poll, recurse to poll them,
+       * too.
+       */
+      recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
+      return (recursed_result == -1) ? -1 : 1 + recursed_result;
     }
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
-    for (f = fds; f < &fds[nfds]; ++f)
+    {
+      for (f = fds; f < &fds[nfds]; ++f)
+	{
+	  if ((HANDLE) f->fd == handles[ready - WAIT_OBJECT_0])
+	    {
+	      f->revents = f->events;
+	      if (g_main_poll_debug)
+		g_print ("  got event %p\n", (HANDLE) f->fd);
+	    }
+	}
+
+      /* If no timeout and polling several handles, recurse to poll
+       * the rest of them.
+       */
+      if (timeout == 0 && nhandles > 1)
+	{
+	  /* Remove the handle that fired */
+	  if (ready < nhandles - 1)
+	    memmove (handles + ready - WAIT_OBJECT_0, handles + ready - WAIT_OBJECT_0 + 1, nhandles - ready - 1);
+	  nhandles--;
+	  recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
+	  return (recursed_result == -1) ? -1 : 1 + recursed_result;
+	}
+      return 1;
+    }
+    
+  return 0;
+}
+
+
+static gint
+g_poll (GPollFD *fds,
+	guint    nfds,
+	gint     timeout)
+{
+  HANDLE handles[MAXIMUM_WAIT_OBJECTS];
+  gboolean poll_msgs = FALSE;
+  GPollFD *f;
+  gint nhandles = 0;
+  int retval;
+
+  if (g_main_poll_debug)
+    g_print ("g_poll: waiting for");
+
+  for (f = fds; f < &fds[nfds]; ++f)
+    if (f->fd == G_WIN32_MSG_HANDLE && (f->events & G_IO_IN))
       {
-	if ((HANDLE) f->fd == handles[ready - WAIT_OBJECT_0])
+	if (g_main_poll_debug && !poll_msgs)
+	  g_print (" MSG");
+	poll_msgs = TRUE;
+      }
+    else if (f->fd > 0)
+      {
+	/* Don't add the same handle several times into the array, as
+	 * docs say that is not allowed, even if it actually does seem
+	 * to work.
+	 */
+	gint i;
+
+	for (i = 0; i < nhandles; i++)
+	  if (handles[i] == (HANDLE) f->fd)
+	    break;
+
+	if (i == nhandles)
 	  {
-	    f->revents = f->events;
-#ifdef G_MAIN_POLL_DEBUG
-	    if (g_main_poll_debug)
-	      g_print ("g_poll: got event %p\n", (HANDLE) f->fd);
-#endif
+	    if (nhandles == MAXIMUM_WAIT_OBJECTS)
+	      {
+		g_warning ("Too many handles to wait for!\n");
+		break;
+	      }
+	    else
+	      {
+		if (g_main_poll_debug)
+		  g_print (" %p", (HANDLE) f->fd);
+		handles[nhandles++] = (HANDLE) f->fd;
+	      }
 	  }
       }
-    
-  return 1;
+
+  if (g_main_poll_debug)
+    g_print ("\n");
+
+  for (f = fds; f < &fds[nfds]; ++f)
+    f->revents = 0;
+
+  if (timeout == -1)
+    timeout = INFINITE;
+
+  /* Polling for several things? */
+  if (nhandles > 1 || (nhandles > 0 && poll_msgs))
+    {
+      /* First check if one or several of them are immediately
+       * available
+       */
+      retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, 0);
+
+      /* If not, and we have a significant timeout, poll again with
+       * timeout then. Note that this will return indication for only
+       * one event, or only for messages. We ignore timeouts less than
+       * ten milliseconds as they are mostly pointless on Windows, the
+       * MsgWaitForMultipleObjectsEx() call will timeout right away
+       * anyway.
+       */
+      if (retval == 0 && (timeout == INFINITE || timeout >= 10))
+	retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
+    }
+  else
+    {
+      /* Just polling for one thing, so no need to check first if
+       * available immediately
+       */
+      retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
+    }
+
+  if (retval == -1)
+    for (f = fds; f < &fds[nfds]; ++f)
+      f->revents = 0;
+
+  return retval;
 }
 
 #else  /* !G_OS_WIN32 */
@@ -688,10 +745,9 @@ g_main_context_init_pipe (GMainContext *context)
 	     g_win32_error_message (GetLastError ()));
   context->wake_up_rec.fd = (gintptr) context->wake_up_semaphore;
   context->wake_up_rec.events = G_IO_IN;
-#  ifdef G_MAIN_POLL_DEBUG
+
   if (g_main_poll_debug)
     g_print ("wake-up semaphore: %p\n", context->wake_up_semaphore);
-#  endif
 # endif
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 }
@@ -721,6 +777,19 @@ GMainContext *
 g_main_context_new (void)
 {
   GMainContext *context = g_new0 (GMainContext, 1);
+
+#ifdef G_MAIN_POLL_DEBUG
+  {
+    static gboolean beenhere = FALSE;
+
+    if (!beenhere)
+      {
+	if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
+	  g_main_poll_debug = TRUE;
+	beenhere = TRUE;
+      }
+  }
+#endif
 
 #ifdef G_THREADS_ENABLED
   g_static_mutex_init (&context->mutex);
@@ -2788,21 +2857,6 @@ g_main_loop_new (GMainContext *context,
 		 gboolean      is_running)
 {
   GMainLoop *loop;
-#ifdef G_MAIN_POLL_DEBUG
-  static gboolean beenhere = FALSE;
-#endif
-
-#ifdef G_MAIN_POLL_DEBUG
-  G_LOCK (main_loop);
-
-  if (!beenhere)
-    {
-      beenhere = TRUE;
-      if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
-	g_main_poll_debug = TRUE;
-    }
-  G_UNLOCK (main_loop);
-#endif
 
   if (!context)
     context = g_main_context_default();
