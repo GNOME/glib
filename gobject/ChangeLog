@@ -14,13 +14,6 @@
 	* gobject.symbols:
 	Add g_object_get_type
 
-2008-08-20  Johan Dahlin  <johan@gnome.org>
-
-	Bug 548689 – The type name for GParamSpec is wrong
-
-	* gparam.c (g_param_type_init):
-	Register the type name as GParamSpec instead of GParam.
-
 2008-08-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.7 ===

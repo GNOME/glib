@@ -122,7 +122,12 @@ g_param_type_init (void)
   };
   GType type;
 
-  type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParamSpec"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
+  /* This should be registred as GParamSpec instead of GParam, for
+   * consistency sake, so that type name can be mapped to struct name,
+   * However, some language bindings, most noticable the python ones
+   * depends on the "GParam" identifier, see #548689
+   */
+  type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParam"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
   g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
 }
