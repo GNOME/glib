@@ -3,7 +3,7 @@
 	Bug 548689 – The type name for GParamSpec is wrong
 
 	* gparam.c (g_param_type_init):
-	Register the type name as GParam instead of GParamSpec.
+	Register the type name as GParamSpec instead of GParam.
 
 2008-08-18  Matthias Clasen  <mclasen@redhat.com>
 
