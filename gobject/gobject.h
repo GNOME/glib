@@ -396,7 +396,7 @@ GParamSpec* g_object_interface_find_property    (gpointer     g_iface,
 GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
 						 guint       *n_properties_p);
 
-GType       g_object_get_type                 (void);
+GType       g_object_get_type                 (void) G_GNUC_CONST;
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
 					       ...);
