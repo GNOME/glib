@@ -529,7 +529,6 @@ g_irepository_require (GIRepository  *repository,
       if (error1)
 	{
 	  g_clear_error (&error1);
-	  g_free (full_path);
 	  continue;
 	}
 
@@ -539,12 +538,12 @@ g_irepository_require (GIRepository  *repository,
 
       if (strcmp (typelib_namespace, namespace) != 0)
 	{
-	  g_free (full_path);
 	  g_set_error (error, G_IREPOSITORY_ERROR,
 		       G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
 		       "Typelib file %s for namespace '%s' contains "
 		       "namespace '%s' which doesn't match the file name",
 		       full_path, namespace, typelib_namespace);
+	  g_free (full_path);
 	  return NULL; 
 	}
       break;
@@ -552,11 +551,11 @@ g_irepository_require (GIRepository  *repository,
 
   if (typelib == NULL)
     {
-      g_free (full_path);
       g_set_error (error, G_IREPOSITORY_ERROR,
 		   G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		   "Typelib file for namespace '%s' was not found in search"
 		   " path or could not be openened", namespace);
+      g_free (full_path);
       return NULL;
     }
 
@@ -566,19 +565,25 @@ g_irepository_require (GIRepository  *repository,
   shlib = ((Header *) typelib->data)->shared_library;
   if (shlib)
     {
+      gchar *resolved_shlib;
+
       shlib_fname = g_typelib_get_string (typelib, shlib);
-      module = g_module_open (shlib_fname,
+      resolved_shlib = g_module_build_path (NULL, shlib_fname);
+
+      module = g_module_open (resolved_shlib,
 			      G_MODULE_BIND_LAZY|G_MODULE_BIND_LOCAL);
       if (module == NULL)
 	{
-	  g_free (full_path);
 	  g_set_error (error, G_IREPOSITORY_ERROR,
 		       G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		       "Typelib for namespace '%s' references shared library "
 		       "%s, but it could not be openened (%s)",
-		       namespace, shlib_fname, g_module_error ());
+		       namespace, resolved_shlib, g_module_error ());
+	  g_free (full_path);
+	  g_free (resolved_shlib);
 	  return NULL;
 	}
+      g_free (resolved_shlib);
     }
 
   g_hash_table_remove (table, namespace);
