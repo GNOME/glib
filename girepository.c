@@ -552,6 +552,7 @@ g_irepository_require (GIRepository  *repository,
 
   if (typelib == NULL)
     {
+      g_free (full_path);
       g_set_error (error, G_IREPOSITORY_ERROR,
 		   G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
 		   "Typelib file for namespace '%s' was not found in search"
