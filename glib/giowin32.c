@@ -93,12 +93,16 @@ typedef struct _GIOWin32Watch GIOWin32Watch;
 
 typedef enum {
   G_IO_WIN32_WINDOWS_MESSAGES,	/* Windows messages */
+
   G_IO_WIN32_FILE_DESC,		/* Unix-like file descriptors from
-				 * _open() or _pipe(), except for console IO.
-				 * Have to create separate thread to read.
+				 * _open() or _pipe(), except for
+				 * console IO. Separate thread to read
+				 * or write.
 				 */
+
   G_IO_WIN32_CONSOLE,		/* Console IO (usually stdin, stdout, stderr) */
-  G_IO_WIN32_SOCKET		/* Sockets. No separate thread */
+
+  G_IO_WIN32_SOCKET		/* Sockets. No separate thread. */
 } GIOWin32ChannelType;
 
 struct _GIOWin32Channel {
@@ -111,32 +115,34 @@ struct _GIOWin32Channel {
   
   gboolean debug;
 
-  /* This is used by G_IO_WIN32_WINDOWS_MESSAGES channels */
-  HWND hwnd;			/* handle of window, or NULL */
+  /* Field used by G_IO_WIN32_WINDOWS_MESSAGES channels */
+  HWND hwnd;			/* Handle of window, or NULL */
   
-  /* Following fields are used by fd channels. */
+  /* Fields used by G_IO_WIN32_FILE_DESC channels. */
   CRITICAL_SECTION mutex;
 
   int direction;		/* 0 means we read from it,
 				 * 1 means we write to it.
 				 */
 
-  gboolean running;		/* Is reader thread running. FALSE if
-				 * EOF has been reached.
+  gboolean running;		/* Is reader or writer thread
+				 * running. FALSE if EOF has been
+				 * reached by the reader thread.
 				 */
+
   gboolean needs_close;		/* If the channel has been closed while
 				 * the reader thread was still running.
 				 */
-  guint thread_id;		/* If non-NULL has a reader thread, or has
-				 * had.*/
+
+  guint thread_id;		/* If non-NULL the channel has or has
+				 * had a reader or writer thread.
+				 */
   HANDLE data_avail_event;
 
   gushort revents;
 
-  /* Following fields used by fd channels for input */
-  
   /* Data is kept in a circular buffer. To be able to distinguish between
-   * empty and full buffer, we cannot fill it completely, but have to
+   * empty and full buffers, we cannot fill it completely, but have to
    * leave a one character gap.
    *
    * Data available is between indexes rdp and wrp-1 (modulo BUFFER_SIZE).
@@ -149,7 +155,7 @@ struct _GIOWin32Channel {
   gint wrp, rdp;		/* Buffer indices for writing and reading */
   HANDLE space_avail_event;
 
-  /* Following fields used by socket channels */
+  /* Fields used by G_IO_WIN32_SOCKET channels */
   int event_mask;
   int last_events;
   HANDLE event;

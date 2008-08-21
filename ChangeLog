@@ -1,5 +1,9 @@
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 
+	* glib/giowin32.c: Minor comment improvements.
+
+2008-08-21  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gmain.c: Rework the g_poll() implementation on Windows to
 	match poll() semantics more closely. This makes the test program
 	in bug #468910 behave better and doesn't seem to break anything
