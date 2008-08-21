@@ -92,6 +92,8 @@ gint          g_irepository_get_n_infos   (GIRepository *repository,
 GIBaseInfo *  g_irepository_get_info      (GIRepository *repository,
 					   const gchar  *namespace,
 					   gint          index);
+const gchar * g_irepository_get_typelib_path   (GIRepository *repository,
+						const gchar  *namespace);
 const gchar * g_irepository_get_shared_library (GIRepository *repository,
 						const gchar  *namespace);
 /* Typelib */

@@ -102,9 +102,19 @@ init_globals ()
   g_static_mutex_unlock (&globals_lock);
 }
 
-const gchar *
-g_irepository_register (GIRepository *repository,
-                        GTypelib    *typelib)
+static char *
+build_typelib_key (const char *name, const char *source)
+{
+  GString *str = g_string_new (name);
+  g_string_append_c (str, '\0');
+  g_string_append (str, source);
+  return g_string_free (str, FALSE);
+}
+
+static const gchar *
+register_internal (GIRepository *repository,
+		   const char   *source,
+		   GTypelib     *typelib)
 {
   Header *header;
   const gchar *name;
@@ -140,7 +150,7 @@ g_irepository_register (GIRepository *repository,
 
       return NULL;
     }
-  g_hash_table_insert (table, g_strdup(name), (void *)typelib);
+  g_hash_table_insert (table, build_typelib_key (name, source), (void *)typelib);
 
   if (typelib->module == NULL)
       typelib->module = g_module_open (NULL, 0); 
@@ -148,6 +158,12 @@ g_irepository_register (GIRepository *repository,
   return name;
 }
 
+const gchar *
+g_irepository_register (GIRepository *repository,
+                        GTypelib     *typelib)
+{
+  return register_internal (repository, "<builtin>", typelib);
+}
 
 void
 g_irepository_unregister (GIRepository *repository,
@@ -436,14 +452,34 @@ g_irepository_get_shared_library (GIRepository *repository,
     return NULL;
 }
 
-static inline void
-g_irepository_build_search_path (void)
+/**
+ * g_irepository_get_typelib_path
+ * @repository: Repository, may be %NULL for the default
+ * @namespace: GI namespace to use, e.g. "Gtk"
+ *
+ * If namespace @namespace is loaded, return the full path to the
+ * .typelib file it was loaded from.  If the typelib for 
+ * namespace @namespace was included in a shared library, return
+ * the special string "<builtin>".
+ *
+ * Returns: Filesystem path (or <builtin>) if successful, %NULL otherwise
+ */
+
+const gchar * 
+g_irepository_get_typelib_path (GIRepository *repository,
+				const gchar  *namespace)
 {
+  gpointer orig_key, value;
+
+  if (!g_hash_table_lookup_extended (repository->priv->typelib, namespace,
+				     &orig_key, &value))
+    return NULL;
+  return ((char*)orig_key) + strlen ((char *) orig_key) + 1;
 }
 
 /**
  * g_irepository_require
- * @repository: Repository, may be null for the default
+ * @repository: Repository, may be %NULL for the default
  * @namespace: GI namespace to use, e.g. "Gtk"
  * @error: a #GError.
  *
@@ -493,10 +529,10 @@ g_irepository_require (GIRepository  *repository,
       g_free (full_path);
       continue;
     }
-    g_free (full_path);
     typelib = g_typelib_new_from_mapped_file (mfile);
     typelib_namespace = g_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
     if (strcmp (typelib_namespace, namespace) != 0) {
+      g_free (full_path);
       g_set_error (error, G_IREPOSITORY_ERROR,
                    G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
                    "Typelib file %s for namespace '%s' contains namespace '%s'"
@@ -508,6 +544,7 @@ g_irepository_require (GIRepository  *repository,
   }
   g_free (fname);
   if (typelib == NULL) {
+    g_free (full_path);
     g_set_error (error, G_IREPOSITORY_ERROR,
                  G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
                  "Typelib file for namespace '%s' was not found in search"
@@ -520,6 +557,7 @@ g_irepository_require (GIRepository  *repository,
     shlib_fname = g_typelib_get_string (typelib, shlib);
     module = g_module_open (shlib_fname, G_MODULE_BIND_LAZY|G_MODULE_BIND_LOCAL);
     if (module == NULL) {
+      g_free (full_path);
       g_set_error (error, G_IREPOSITORY_ERROR,
                    G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
                    "Typelib for namespace '%s' references shared library %s,"
@@ -530,7 +568,9 @@ g_irepository_require (GIRepository  *repository,
   }
 
   g_hash_table_remove (table, namespace);
-  return g_irepository_register (repository, typelib);
+  register_internal (repository, full_path, typelib);
+  g_free (full_path);
+  return namespace; 
 }
 
 
