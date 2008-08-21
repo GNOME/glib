@@ -773,9 +773,7 @@ g_io_win32_prepare (GSource *source,
 			      event_mask) == SOCKET_ERROR)
 	    ;			/* What? */
 	  channel->event_mask = event_mask;
-#if 0
-	  channel->event = watch->pollfd.fd;
-#endif
+
 	  if (channel->debug)
 	    g_print ("\n  setting last_events=0");
 	  channel->last_events = 0;
