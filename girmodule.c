@@ -104,12 +104,8 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   /* Adjust size for strings allocated in header below specially */
   size += strlen (module->name);
-  header_size = ALIGN_VALUE (header_size + strlen (module->name) + 1, 4);
   if (module->shared_library) 
-    {
-      size += strlen (module->shared_library);
-      header_size = ALIGN_VALUE (header_size + strlen (module->shared_library) + 1, 4);
-    }
+    size += strlen (module->shared_library);
 
   g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n", 
 	  size, header_size, dir_size, size - header_size - dir_size);
