@@ -439,15 +439,17 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   gpointer value;
   GSList *seen_values = NULL;
 
-  seen_values = g_slist_prepend (seen_values, type);
+  seen_values = g_slist_prepend (seen_values, (char*)type);
   while (g_hash_table_lookup_extended (ctx->aliases, type, &orig, &value))
     {
       g_debug ("Resolved: %s => %s", type, value);
       type = value;
-      if (g_slist_find_custom (seen_values, type, strcmp) != NULL)
+      if (g_slist_find_custom (seen_values, type,
+			       (GCompareFunc)strcmp) != NULL)
 	break;
-      seen_values = g_slist_prepend (seen_values, type);
+      seen_values = g_slist_prepend (seen_values, (gchar*)type);
     }
+  g_slist_free (seen_values);
   return type;
 }
 
