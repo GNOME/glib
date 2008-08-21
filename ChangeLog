@@ -1,7 +1,13 @@
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: Minor comment improvements. Improve run-time
-	warning messages. Drop some #if 0 code.
+	warning messages. Drop some #if 0 code. Don't bother compiling the
+	binary compatibility g_io_channel_win32_new_stream_socket()
+	function that has not been mentioned in any header since 2.0 on
+	Win64.
+
+	* glib/glib.symbols: Mark it, too, private, and don't export it on
+	Win64.
 
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 

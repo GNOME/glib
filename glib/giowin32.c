@@ -2131,12 +2131,16 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
   fd->events = condition;
 }
 
+#ifndef _WIN64
+
 /* Binary compatibility */
 GIOChannel *
 g_io_channel_win32_new_stream_socket (int socket)
 {
   return g_io_channel_win32_new_socket (socket);
 }
+
+#endif
 
 #define __G_IO_WIN32_C__
 #include "galiasdef.c"
