@@ -81,17 +81,44 @@ is_aligned (guint32 offset)
 #define MAX_NAME_LEN 200
 
 static gboolean
-is_name (const guchar *data, guint32 offset)
+validate_name (GTypelib *typelib,
+	       const char *msg,
+	       const guchar *data, guint32 offset,
+	       GError **error)
 {
   gchar *name;
 
+  if (typelib->len < offset)
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "The buffer is too short for type %s",
+		   msg);
+      return FALSE;
+    }
+
   name = (gchar*)&data[offset];
   
-  if (!memchr (name, '\0', MAX_NAME_LEN))
-    return FALSE;
+  if (!memchr (name, '\0', MAX_NAME_LEN)) 
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "The %s is too long: %s",
+		   msg, name);
+      return FALSE;
+    }
   
-  if (strspn (name, G_CSET_a_2_z G_CSET_A_2_Z G_CSET_DIGITS "-_") < strlen (name))
-    return FALSE;
+  if (strspn (name, G_CSET_a_2_z G_CSET_A_2_Z G_CSET_DIGITS "-_") < strlen (name)) 
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "The %s is contains invalid characters: %s",
+		   msg, name);
+      return FALSE;
+    }
   
   return TRUE;
 }
@@ -204,14 +231,8 @@ validate_header (GTypelib  *typelib,
       return FALSE; 
     }
 
-  if (!is_name (typelib->data, header->namespace))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Invalid namespace name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "namespace", typelib->data, header->namespace, error))
+    return FALSE; 
 
   return TRUE;
 }
@@ -470,14 +491,8 @@ validate_arg_blob (GTypelib     *typelib,
 
   blob = (ArgBlob*) &typelib->data[offset];
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid argument name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "argument", typelib->data, blob->name, error))
+    return FALSE; 
  
   if (!validate_type_blob (typelib, 
 			   offset + G_STRUCT_OFFSET (ArgBlob, arg_type), 
@@ -557,23 +572,11 @@ validate_function_blob (GTypelib     *typelib,
       return FALSE;
     }
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid function name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "function", typelib->data, blob->name, error))
+    return FALSE; 
   
-  if (!is_name (typelib->data, blob->symbol))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid function symbol");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "function symbol", typelib->data, blob->symbol, error))
+    return FALSE; 
   
   if (blob->constructor)
     {
@@ -657,14 +660,8 @@ validate_callback_blob (GTypelib     *typelib,
       return FALSE;
     }
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid callback name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "callback", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (!validate_signature_blob (typelib, blob->signature, error))
     return FALSE;
@@ -708,14 +705,8 @@ validate_constant_blob (GTypelib     *typelib,
       return FALSE;
     }
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid constant name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "constant", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (!validate_type_blob (typelib, offset + G_STRUCT_OFFSET (ConstantBlob, type), 
 			   0, FALSE, error))
@@ -775,14 +766,8 @@ validate_value_blob (GTypelib     *typelib,
 
   blob = (ValueBlob*) &typelib->data[offset];
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid value name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "value", typelib->data, blob->name, error))
+    return FALSE; 
   
   return TRUE;
 }
@@ -805,15 +790,9 @@ validate_field_blob (GTypelib     *typelib,
 
   blob = (FieldBlob*) &typelib->data[offset];
   
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid field name");
-      return FALSE; 
-    }
-    
+  if (!validate_name (typelib, "field", typelib->data, blob->name, error))
+    return FALSE; 
+  
   if (!validate_type_blob (typelib,
 			   offset + G_STRUCT_OFFSET (FieldBlob, type), 
 			   0, FALSE, error))
@@ -840,14 +819,8 @@ validate_property_blob (GTypelib     *typelib,
 
   blob = (PropertyBlob*) &typelib->data[offset];
   
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid property name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "property", typelib->data, blob->name, error))
+    return FALSE; 
     
   if (!validate_type_blob (typelib,
 			   offset + G_STRUCT_OFFSET (PropertyBlob, type), 
@@ -877,14 +850,8 @@ validate_signal_blob (GTypelib     *typelib,
 
   blob = (SignalBlob*) &typelib->data[offset];
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid signal name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "signal", typelib->data, blob->name, error))
+    return FALSE; 
   
   if ((blob->run_first != 0) + 
       (blob->run_last != 0) + 
@@ -952,14 +919,8 @@ validate_vfunc_blob (GTypelib     *typelib,
 
   blob = (VFuncBlob*) &typelib->data[offset];
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid vfunc name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "vfunc", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (blob->class_closure)
     {
@@ -1035,34 +996,16 @@ validate_struct_blob (GTypelib     *typelib,
       return FALSE;
     }
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid struct name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "struct", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (blob_type == BLOB_TYPE_BOXED)
     {
-      if (!is_name (typelib->data, blob->gtype_name))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid boxed type name");
-	  return FALSE; 
-	}
+      if (!validate_name (typelib, "boxed", typelib->data, blob->gtype_name, error))
+	return FALSE; 
 
-      if (!is_name (typelib->data, blob->gtype_init))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid boxed type init");
-	  return FALSE; 
-	}
+      if (!validate_name (typelib, "boxed", typelib->data, blob->gtype_init, error))
+	return FALSE; 
     }
   else
     {
@@ -1142,23 +1085,11 @@ validate_enum_blob (GTypelib     *typelib,
   
   if (!blob->unregistered)
     {
-      if (!is_name (typelib->data, blob->gtype_name))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid enum type name");
-	  return FALSE; 
-	}
+      if (!validate_name (typelib, "enum", typelib->data, blob->gtype_name, error))
+	return FALSE; 
 
-      if (!is_name (typelib->data, blob->gtype_init))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid enum type init");
-	  return FALSE; 
-	}
+      if (!validate_name (typelib, "enum", typelib->data, blob->gtype_init, error))
+	return FALSE; 
     }
   else
     {
@@ -1172,14 +1103,8 @@ validate_enum_blob (GTypelib     *typelib,
 	}
     }
 
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid enum name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "enum", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (typelib->len < offset + sizeof (EnumBlob) + 
       blob->n_values * sizeof (ValueBlob))
@@ -1256,32 +1181,14 @@ validate_object_blob (GTypelib     *typelib,
       return FALSE;
     }
   
-  if (!is_name (typelib->data, blob->gtype_name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid object type name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "object", typelib->data, blob->gtype_name, error))
+    return FALSE; 
   
-  if (!is_name (typelib->data, blob->gtype_init))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid object type init");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "object", typelib->data, blob->gtype_init, error))
+    return FALSE; 
   
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid object name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "object", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (blob->parent > header->n_entries)
     {
@@ -1428,32 +1335,14 @@ validate_interface_blob (GTypelib     *typelib,
       return FALSE;
     }
   
-  if (!is_name (typelib->data, blob->gtype_name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid interface type name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "interface", typelib->data, blob->gtype_name, error))
+    return FALSE; 
   
-  if (!is_name (typelib->data, blob->gtype_init))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid interface type init");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "interface", typelib->data, blob->gtype_init, error))
+    return FALSE; 
   
-  if (!is_name (typelib->data, blob->name))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Invalid interface name");
-      return FALSE; 
-    }
+  if (!validate_name (typelib, "interface", typelib->data, blob->name, error))
+    return FALSE; 
   
   if (typelib->len < offset + sizeof (InterfaceBlob) + 
             (blob->n_prerequisites + blob->n_prerequisites % 2) * 2 +
@@ -1642,14 +1531,8 @@ validate_directory (GTypelib     *typelib,
     {
       entry = g_typelib_get_dir_entry (typelib, i + 1);
 
-      if (!is_name (typelib->data, entry->name))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_DIRECTORY,
-		       "Invalid entry name");
-	  return FALSE; 
-	}
+      if (!validate_name (typelib, "entry", typelib->data, entry->name, error))
+	return FALSE; 
       
       if ((entry->local && entry->blob_type == BLOB_TYPE_INVALID) ||
 	  entry->blob_type > BLOB_TYPE_UNION)
@@ -1695,14 +1578,8 @@ validate_directory (GTypelib     *typelib,
 	      return FALSE;
 	    }
 
-	  if (!is_name (typelib->data, entry->offset))
-	    {
-	      g_set_error (error,
-			   G_TYPELIB_ERROR,
-			   G_TYPELIB_ERROR_INVALID_DIRECTORY,
-			   "Invalid namespace name");
-	      return FALSE; 
-	    }
+	  if (!validate_name (typelib, "namespace", typelib->data, entry->offset, error))
+	    return FALSE; 
 	}
     }
 

@@ -2144,12 +2144,12 @@ write_string (const gchar *str,
   value = g_hash_table_lookup (strings, str);
   
   if (value)
-    return GPOINTER_TO_INT (value);
+    return GPOINTER_TO_UINT (value);
 
   unique_string_count += 1;
   unique_string_size += strlen (str);
 
-  g_hash_table_insert (strings, (gpointer)str, GINT_TO_POINTER (*offset));
+  g_hash_table_insert (strings, (gpointer)str, GUINT_TO_POINTER (*offset));
 
   start = *offset;
   *offset = ALIGN_VALUE (start + strlen (str) + 1, 4);
