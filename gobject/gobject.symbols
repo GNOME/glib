@@ -126,6 +126,7 @@ g_object_get G_GNUC_NULL_TERMINATED
 g_object_get_data
 g_object_get_property
 g_object_get_qdata
+g_object_get_type
 g_object_get_valist
 g_object_interface_find_property
 g_object_interface_install_property

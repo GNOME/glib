@@ -1,3 +1,12 @@
+2008-08-21  Johan Dahlin  <johan@gnome.org>
+
+	Bug 548800 – Missing a g_object_get_type function
+
+	* gobject.c (g_object_get_type):
+	* gobject.h:
+	* gobject.symbols:
+	Add g_object_get_type
+
 2008-08-20  Johan Dahlin  <johan@gnome.org>
 
 	Bug 548689 – The type name for GParamSpec is wrong

@@ -1022,6 +1022,12 @@ object_interface_check_properties (gpointer func_data,
   g_free (pspecs);
 }
 
+GType
+g_object_get_type (void)
+{
+    return G_TYPE_OBJECT;
+}
+
 /**
  * g_object_new:
  * @object_type: the type id of the #GObject subtype to instantiate
