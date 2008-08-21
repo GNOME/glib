@@ -7,8 +7,11 @@
 
 	If polling several GPollFDs, i.e. messages and/or waitable
 	handles, first check if one or several of them are in the
-	signalled state right away, and return indication for all that are
-	in that case.
+	signalled state right away, with timeout zero. Return indication
+	for all that are in that case. To check if several handles are
+	signalled, we have to call the WaitForMultipleObjectsEx() function
+	repeatedly, each time removing the handle it indicated was
+	signalled last time, until WAIT_TIMEOUT is returned.
 
 	If not, then poll with timeout and indicate only the single one
 	that the Win32 wait function tells us as before.
@@ -19,9 +22,9 @@
 	Initialise g_main_poll_debug in g_main_context_new() so we have it
 	before testing it in one case.
 
-	Don't add several copies of a handle in the array of handles to
+	Don't put several copies of a handle in the array of handles to
 	wait for. The documentation says this is not allowed, although it
-	did seem to work fine in practise. But do as the documentations
+	did seem to work fine in practise. But do as the documentation
 	says anyway.
 
 2008-08-20  Tor Lillqvist  <tml@novell.com>
