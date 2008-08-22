@@ -266,7 +266,6 @@ write_callable_info (const gchar    *namespace,
 
   g_fprintf (file, "%*s  <return-value>\n", indent, "");
   
-  g_base_info_unref ((GIBaseInfo *)type);
   if (g_callable_info_may_return_null (info))
     g_fprintf (file, " null-ok=\"1\"");
 
@@ -306,7 +305,6 @@ write_callable_info (const gchar    *namespace,
 	      g_assert_not_reached ();
 	    }
 	}	      
-      g_base_info_unref ((GIBaseInfo *)type);
       
       g_fprintf (file, " direction=\"");
       switch (g_arg_info_get_direction (arg))
@@ -350,6 +348,7 @@ write_callable_info (const gchar    *namespace,
     }
   
   g_fprintf (file, "%*s  </parameters>\n", indent, "");
+  g_base_info_unref ((GIBaseInfo *)type);
 }
 
 static void
