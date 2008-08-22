@@ -1127,6 +1127,13 @@ load_typelib (const gchar  *filename,
   GModule *handle; 
 
   handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+  if (handle == NULL)
+    {
+      g_printerr ("Could not load typelib from '%s': %s\n", 
+		  filename, g_module_error ());
+      return NULL;
+    }
+
   if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &typelib))
     {
       g_printerr ("Could not load typelib from '%s': %s\n", 
