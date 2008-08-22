@@ -78,9 +78,7 @@ write_type_info (const gchar *namespace,
 
   tag = g_type_info_get_tag (info);
 
-  if (tag < 18)
-    g_fprintf (file, "%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
-  else if (tag < 20)
+  if (tag < 20)
     g_fprintf (file, "%s", basic[tag]);
   else if (tag == 20)
     {
@@ -105,8 +103,6 @@ write_type_info (const gchar *namespace,
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
       write_type_name (namespace, iface, file);
-      if (g_type_info_is_pointer (info))
-	g_fprintf (file, "*"); 
       g_base_info_unref (iface);
     }
   else if (tag == 22)
@@ -120,7 +116,6 @@ write_type_info (const gchar *namespace,
 	  g_fprintf (file, ">"); 
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
-      g_fprintf (file, "*");
     }
   else if (tag == 23)
     {
@@ -133,7 +128,6 @@ write_type_info (const gchar *namespace,
 	  g_fprintf (file, ">"); 
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
-      g_fprintf (file, "*");
     }
   else if (tag == 24)
     {
@@ -150,7 +144,6 @@ write_type_info (const gchar *namespace,
 	  g_fprintf (file, ">"); 
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
-      g_fprintf (file, "*");
     }
   else if (tag == 25) 
     {
@@ -171,7 +164,6 @@ write_type_info (const gchar *namespace,
 	    }
 	  g_fprintf (file, ">");
 	}
-      g_fprintf (file, "*");
     }
 }
 
@@ -249,7 +241,6 @@ write_callable_info (const gchar    *namespace,
       switch (g_callable_info_get_caller_owns (info))
 	{
 	case GI_TRANSFER_NOTHING:
-	  g_fprintf (file, " transfer=\"none\"");
 	  break;
 	case GI_TRANSFER_CONTAINER:
 	  g_fprintf (file, " transfer=\"shallow\"");
@@ -293,7 +284,6 @@ write_callable_info (const gchar    *namespace,
 	  switch (g_arg_info_get_ownership_transfer (arg))
 	    {
 	    case GI_TRANSFER_NOTHING:
-	      g_fprintf (file, " transfer=\"none\"");
 	      break;
 	    case GI_TRANSFER_CONTAINER:
 	      g_fprintf (file, " transfer=\"shallow\"");
