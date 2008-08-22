@@ -29,7 +29,7 @@
 #include "girparser.h"
 #include "gtypelib.h"
 
-gboolean raw = FALSE;
+gboolean code = FALSE;
 gboolean no_init = FALSE;
 gchar **input = NULL;
 gchar *output = NULL;
@@ -119,7 +119,7 @@ write_out_typelib (gchar *prefix,
       g_free (filename);
     }
 
-  if (raw)
+  if (!code)
     fwrite (typelib->data, 1, typelib->len, file);
   else
     {
@@ -148,8 +148,7 @@ static void log_handler (const gchar *log_domain,
 
 static GOptionEntry options[] = 
 {
-  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "emit raw typelib", NULL },
-  { "code", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &raw, "emit C code", NULL },
+  { "code", 0, 0, G_OPTION_ARG_NONE, &code, "emit C code", NULL },
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
   { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
