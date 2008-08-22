@@ -53,6 +53,66 @@
  * by the #GTypeValueTable associated with the type ID stored in the #GValue.
  * Other #GValue operations (such as converting values between types) are
  * provided by this interface.
+ *
+ * The code in the example program below demonstrates #GValue's
+ * features.
+ *
+ * |[
+ * #include &lt;glib-object.h&gt;
+ *
+ * static void
+ * int2string (const GValue *src_value,
+ *             GValue       *dest_value)
+ * {
+ *   if (g_value_get_int (src_value) == 42)
+ *     g_value_set_static_string (dest_value, "An important number");
+ *   else
+ *     g_value_set_static_string (dest_value, "What's that?");
+ * }
+ *
+ * int
+ * main (int   argc,
+ *       char *argv[])
+ * {
+ *   /&ast; GValues must start zero-filled &ast;/
+ *   GValue a = {0};
+ *   GValue b = {0};
+ *   const gchar *message;
+ *
+ *   g_type_init ();
+ *
+ *   /&ast; The GValue starts empty &ast;/
+ *   g_assert (!G_VALUE_HOLDS_STRING (&amp;a));
+ *
+ *   /&ast; Put a string in it &ast;/
+ *   g_value_init (&amp;a, G_TYPE_STRING);
+ *   g_assert (G_VALUE_HOLDS_STRING (&amp;a));
+ *   g_value_set_static_string (&amp;a, "Hello, world!");
+ *   g_printf ("%s\n", g_value_get_string (&amp;a));
+ *
+ *   /&ast; Reset it to its pristine state &ast;/
+ *   g_value_unset (&amp;a);
+ *
+ *   /&ast; It can then be reused for another type &ast;/
+ *   g_value_init (&amp;a, G_TYPE_INT);
+ *   g_value_set_int (&amp;a, 42);
+ *
+ *   /&ast; Attempt to transform it into a GValue of type STRING &ast;/
+ *   g_value_init (&amp;b, G_TYPE_STRING);
+ *
+ *   /&ast; An INT is transformable to a STRING &ast;/
+ *   g_assert (g_value_type_transformable (G_TYPE_INT, G_TYPE_STRING));
+ *
+ *   g_value_transform (&amp;a, &amp;b);
+ *   g_printf ("%s\n", g_value_get_string (&amp;b));
+ *
+ *   /&ast; Attempt to transform it again using a custom transform function &ast;/
+ *   g_value_register_transform_func (G_TYPE_INT, G_TYPE_STRING, int2string);
+ *   g_value_transform (&amp;a, &amp;b);
+ *   g_printf ("%s\n", g_value_get_string (&amp;b));
+ *   return 0;
+ * }
+ * ]|
  */
 
 

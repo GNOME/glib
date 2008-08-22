@@ -1,3 +1,10 @@
+2008-08-22  Björn Lindqvist  <bjourne@gmail.com>
+
+	Bug 523939 – Example program for GValue
+
+	* gobject/gvalue.c: Add code example that demonstrates GValue's
+	features.
+
 2008-08-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: Minor comment improvements. Improve run-time
