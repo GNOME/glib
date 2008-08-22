@@ -422,6 +422,7 @@ write_struct_info (const gchar  *namespace,
   const gchar *type_init;
   gboolean deprecated;
   gint i;
+  int n_elts;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -439,26 +440,34 @@ write_struct_info (const gchar  *namespace,
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
 	
-  g_fprintf (file, ">\n");
-
-  for (i = 0; i < g_struct_info_get_n_fields (info); i++)
+  n_elts = g_struct_info_get_n_fields (info) + g_struct_info_get_n_methods (info);
+  if (n_elts > 0)
     {
-      GIFieldInfo *field = g_struct_info_get_field (info, i);
-      write_field_info (namespace, field, NULL, file);
-      g_base_info_unref ((GIBaseInfo *)field);
-    }
-
-  for (i = 0; i < g_struct_info_get_n_methods (info); i++)
-    {
-      GIFunctionInfo *function = g_struct_info_get_method (info, i);
-      write_function_info (namespace, function, file, 6);
-      g_base_info_unref ((GIBaseInfo *)function);
-    }
-
-  if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
-    g_fprintf (file, "    </glib:boxed>\n");
+      g_fprintf (file, ">\n");
+      
+      for (i = 0; i < g_struct_info_get_n_fields (info); i++)
+	{
+	  GIFieldInfo *field = g_struct_info_get_field (info, i);
+	  write_field_info (namespace, field, NULL, file);
+	  g_base_info_unref ((GIBaseInfo *)field);
+	}
+      
+      for (i = 0; i < g_struct_info_get_n_methods (info); i++)
+	{
+	  GIFunctionInfo *function = g_struct_info_get_method (info, i);
+	  write_function_info (namespace, function, file, 6);
+	  g_base_info_unref ((GIBaseInfo *)function);
+	}
+      
+      if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
+	g_fprintf (file, "    </glib:boxed>\n");
+      else
+	g_fprintf (file, "    </record>\n");
+    } 
   else
-    g_fprintf (file, "    </record>\n");
+    {
+      g_fprintf (file, "/>\n");
+    }
 }
 
 static void
