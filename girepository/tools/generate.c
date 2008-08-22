@@ -1159,7 +1159,7 @@ load_typelib (const gchar  *filename,
 int 
 main (int argc, char *argv[])
 {  
-  gboolean raw = FALSE;
+  gboolean shlib = FALSE;
   gchar **input = NULL;
   GOptionContext *context;
   GError *error = NULL;
@@ -1168,7 +1168,7 @@ main (int argc, char *argv[])
   GTypelib *data;
   GOptionEntry options[] = 
     {
-      { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw typelib", NULL },
+      { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       { NULL, }
@@ -1195,7 +1195,7 @@ main (int argc, char *argv[])
       const guchar *typelib;
       gsize len;
 
-      if (raw)
+      if (!shlib)
 	{
 	  if (!g_file_get_contents (input[i], (gchar **)&typelib, &len, &error))
 	    {
