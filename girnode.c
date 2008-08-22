@@ -1068,12 +1068,12 @@ serialize_type (GIrModule    *module,
     "any"
   };
   
-  if (node->tag < 20)
+  if (node->tag < GI_TYPE_TAG_ARRAY)
     {
       g_string_append_printf (str, "%s%s", 
 			      basic[node->tag], node->is_pointer ? "*" : "");
     }
-  else if (node->tag == 20)
+  else if (node->tag == GI_TYPE_TAG_ARRAY)
     {
       serialize_type (module, modules, node->parameter_type1, str);
       g_string_append (str, "[");
@@ -1087,7 +1087,7 @@ serialize_type (GIrModule    *module,
       
       g_string_append (str, "]");
     }
-  else if (node->tag == 21)
+  else if (node->tag == GI_TYPE_TAG_INTERFACE)
     {
       GIrNode *iface;
       gchar *name;
@@ -1103,7 +1103,7 @@ serialize_type (GIrModule    *module,
 
       g_string_append_printf (str, "%s%s", name, node->is_pointer ? "*" : "");
     }
-  else if (node->tag == 22)
+  else if (node->tag == GI_TYPE_TAG_GLIST)
     {
       g_string_append (str, "GList");
       if (node->parameter_type1)
@@ -1113,7 +1113,7 @@ serialize_type (GIrModule    *module,
 	  g_string_append (str, ">"); 
 	}
     }
-  else if (node->tag == 23)
+  else if (node->tag == GI_TYPE_TAG_GSLIST)
     {
       g_string_append (str, "GSList");
       if (node->parameter_type1)
@@ -1123,7 +1123,7 @@ serialize_type (GIrModule    *module,
 	  g_string_append (str, ">"); 
 	}
     }
-  else if (node->tag == 24)
+  else if (node->tag == GI_TYPE_TAG_GHASH)
     {
       g_string_append (str, "GHashTable<");
       if (node->parameter_type1)
@@ -1135,7 +1135,7 @@ serialize_type (GIrModule    *module,
 	  g_string_append (str, ">"); 
 	}
     }
-  else if (node->tag == 25) 
+  else if (node->tag == GI_TYPE_TAG_ERROR)
     {
       g_string_append (str, "GError");
       if (node->errors)
