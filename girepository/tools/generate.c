@@ -279,22 +279,19 @@ write_callable_info (const gchar    *namespace,
       g_fprintf (file, "%*s    <parameter name=\"%s\"",
 		 indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
       
-      if (g_type_info_is_pointer (type))
+      switch (g_arg_info_get_ownership_transfer (arg))
 	{
-	  switch (g_arg_info_get_ownership_transfer (arg))
-	    {
-	    case GI_TRANSFER_NOTHING:
-	      break;
-	    case GI_TRANSFER_CONTAINER:
-	      g_fprintf (file, " transfer=\"shallow\"");
-	      break;
-	    case GI_TRANSFER_EVERYTHING:
-	      g_fprintf (file, " transfer=\"full\"");
-	      break;
-	    default:
-	      g_assert_not_reached ();
-	    }
-	}	      
+	case GI_TRANSFER_NOTHING:
+	  break;
+	case GI_TRANSFER_CONTAINER:
+	  g_fprintf (file, " transfer=\"shallow\"");
+	  break;
+	case GI_TRANSFER_EVERYTHING:
+	  g_fprintf (file, " transfer=\"full\"");
+	  break;
+	default:
+	  g_assert_not_reached ();
+	}
       
       g_fprintf (file, " direction=\"");
       switch (g_arg_info_get_direction (arg))
