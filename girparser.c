@@ -57,7 +57,8 @@ typedef enum
   STATE_NAMESPACE_CONSTANT, /* 25 */
   STATE_CLASS_CONSTANT, 
   STATE_INTERFACE_CONSTANT,
-  STATE_ALIAS
+  STATE_ALIAS,
+  STATE_TYPE,
 } ParseState;
 
 typedef struct _ParseContext ParseContext;
@@ -72,6 +73,7 @@ struct _ParseContext
   GIrModule *current_module;
   GIrNode *current_node;
   GIrNode *current_typed;
+  int type_depth;
 };
 
 #define MISSING_ATTRIBUTE(ctx,error,element,attribute)			        \
@@ -736,9 +738,19 @@ start_parameter (GMarkupParseContext *context,
       param->transfer = FALSE;
       param->shallow_transfer = TRUE;
     }
-  else
+  else 
     {
-      param->transfer = TRUE;
+      if (transfer)
+	{
+	  if (strcmp (transfer, "full") != 0)
+	    g_warning ("Unknown transfer %s", transfer);
+	  else
+	    param->transfer = TRUE;
+	}
+      else if (param->in && !param->out)
+	param->transfer = FALSE;
+      else
+	param->transfer = TRUE;
       param->shallow_transfer = FALSE;
     }
 	  
@@ -1371,21 +1383,32 @@ start_type (GMarkupParseContext *context,
 {
   const gchar *name;
 
-  if (strcmp (element_name, "type") != 0 ||
-      !(ctx->state == STATE_FUNCTION_PARAMETER ||
-	ctx->state == STATE_FUNCTION_RETURN || 
-	ctx->state == STATE_STRUCT_FIELD ||
-	ctx->state == STATE_UNION_FIELD ||
-	ctx->state == STATE_CLASS_PROPERTY ||
-	ctx->state == STATE_CLASS_FIELD ||
-	ctx->state == STATE_INTERFACE_FIELD ||
-	ctx->state == STATE_INTERFACE_PROPERTY ||
-	ctx->state == STATE_BOXED_FIELD ||
-	ctx->state == STATE_NAMESPACE_CONSTANT ||
-	ctx->state == STATE_CLASS_CONSTANT ||
-	ctx->state == STATE_INTERFACE_CONSTANT
-	))
+  if (strcmp (element_name, "type") != 0)
     return FALSE;
+
+  if (ctx->state == STATE_TYPE)
+    ctx->type_depth++;
+  else if (ctx->state == STATE_FUNCTION_PARAMETER ||
+	   ctx->state == STATE_FUNCTION_RETURN || 
+	   ctx->state == STATE_STRUCT_FIELD ||
+	   ctx->state == STATE_UNION_FIELD ||
+	   ctx->state == STATE_CLASS_PROPERTY ||
+	   ctx->state == STATE_CLASS_FIELD ||
+	   ctx->state == STATE_INTERFACE_FIELD ||
+	   ctx->state == STATE_INTERFACE_PROPERTY ||
+	   ctx->state == STATE_BOXED_FIELD ||
+	   ctx->state == STATE_NAMESPACE_CONSTANT ||
+	   ctx->state == STATE_CLASS_CONSTANT ||
+	   ctx->state == STATE_INTERFACE_CONSTANT
+	   )
+    {
+      state_switch (ctx, STATE_TYPE);
+      ctx->type_depth = 1;
+    }
+
+  /* FIXME handle recursive types */
+  if (ctx->type_depth > 1)
+    return TRUE;
 
   if (!ctx->current_typed)
     {
@@ -1395,7 +1418,7 @@ start_type (GMarkupParseContext *context,
 		   "The element <type> is invalid here");
       return FALSE;
     }
-
+  
   name = find_attribute ("name", attribute_names, attribute_values);
 
   if (name == NULL)
@@ -2063,12 +2086,13 @@ start_element_handler (GMarkupParseContext *context,
 
   g_markup_parse_context_get_position (context, &line_number, &char_number);
 
-  g_set_error (error,
-	       G_MARKUP_ERROR,
-	       G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-	       "Unexpected start tag '%s' on line %d char %d; current state=%d",
-	       element_name,
-	       line_number, char_number, ctx->state);
+  if (error && *error == NULL)
+    g_set_error (error,
+		 G_MARKUP_ERROR,
+		 G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+		 "Unexpected start tag '%s' on line %d char %d; current state=%d",
+		 element_name,
+		 line_number, char_number, ctx->state);
   
  out: ;
   if (*error) 
@@ -2380,6 +2404,15 @@ end_element_handler (GMarkupParseContext *context,
 	    }
 	}
       break;
+    case STATE_TYPE:
+      if (strcmp ("type", element_name) == 0)
+	{
+	  if (ctx->type_depth == 1)
+	    state_switch (ctx, ctx->prev_state);
+	  else
+	    ctx->type_depth -= 1;
+	  break;
+	}
     default:
       g_error ("Unhandled state %d in end_element_handler\n", ctx->state);
     }
@@ -2469,6 +2502,7 @@ g_ir_parse_string (const gchar  *buffer,
 
   ctx.state = STATE_START;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  ctx.type_depth = 0;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &ctx, NULL);
 
