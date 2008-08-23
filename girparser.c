@@ -32,29 +32,30 @@ typedef enum
   STATE_START,    
   STATE_END,        
   STATE_REPOSITORY, 
+  STATE_INCLUDE,  
   STATE_NAMESPACE,  
-  STATE_ENUM,        
-  STATE_BITFIELD,  /* 5 */  
+  STATE_ENUM,      /* 5 */    
+  STATE_BITFIELD,  
   STATE_FUNCTION,   
   STATE_FUNCTION_RETURN, 
   STATE_FUNCTION_PARAMETERS,
-  STATE_FUNCTION_PARAMETER, 
-  STATE_CLASS,   /* 10 */
+  STATE_FUNCTION_PARAMETER,  /* 10 */
+  STATE_CLASS,  
   STATE_CLASS_FIELD,
   STATE_CLASS_PROPERTY,
   STATE_INTERFACE,
-  STATE_INTERFACE_PROPERTY, 
-  STATE_INTERFACE_FIELD,  /* 15 */
+  STATE_INTERFACE_PROPERTY,   /* 15 */
+  STATE_INTERFACE_FIELD,
   STATE_IMPLEMENTS, 
   STATE_REQUIRES,
   STATE_BOXED,  
-  STATE_BOXED_FIELD,
-  STATE_STRUCT,   /* 20 */
+  STATE_BOXED_FIELD, /* 20 */
+  STATE_STRUCT,   
   STATE_STRUCT_FIELD,
   STATE_ERRORDOMAIN, 
   STATE_UNION,
-  STATE_UNION_FIELD,
-  STATE_NAMESPACE_CONSTANT, /* 25 */
+  STATE_UNION_FIELD, /* 25 */
+  STATE_NAMESPACE_CONSTANT, 
   STATE_CLASS_CONSTANT, 
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS,
@@ -1922,6 +1923,12 @@ start_element_handler (GMarkupParseContext *context,
       break;
 
     case 'i':
+      if (strcmp (element_name, "include") == 0 &&
+	  ctx->state == STATE_REPOSITORY)
+	{
+	  state_switch (ctx, STATE_INCLUDE);
+	  goto out;
+	}
       if (start_interface (context, element_name, 
 			   attribute_names, attribute_values,
 			   ctx, error))
@@ -2172,6 +2179,13 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_REPOSITORY:
       state_switch (ctx, STATE_END);
+      break;
+
+    case STATE_INCLUDE:
+      if (require_end_element (context, ctx, "include", element_name, error))
+	{
+          state_switch (ctx, STATE_REPOSITORY);
+        }
       break;
 
     case STATE_NAMESPACE:
