@@ -30,6 +30,46 @@
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
+static gboolean
+validate_interface_blob (GTypelib     *typelib,
+			 guint32        offset,
+			 GError       **error);
+
+static InterfaceTypeBlob *
+get_type_blob (GTypelib *typelib,
+	       const char *funcname,
+	       SimpleTypeBlob *simple,
+	       GError  **error)
+{
+  if (simple->offset == 0)
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "Expected blob for type");
+      return FALSE;
+    }
+
+  if (simple->reserved == 0 && simple->reserved2 == 0)
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "Expected non-basic type in function %s, got %d", funcname,
+		   simple->tag);
+      return FALSE;
+    }
+
+  if (typelib->len < simple->offset + sizeof (CommonBlob))
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "The buffer is too short");
+      return FALSE;
+    }
+  return (InterfaceTypeBlob*) &typelib->data[simple->offset];
+}
 
 DirEntry *
 g_typelib_get_dir_entry (GTypelib *typelib,
@@ -80,26 +120,41 @@ is_aligned (guint32 offset)
 
 #define MAX_NAME_LEN 200
 
+static const char *
+get_string (GTypelib *typelib, guint32 offset, GError **error)
+{
+  if (typelib->len < offset)
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "Buffer is too short while looking up name");
+      return NULL;
+    }
+
+  return (const char*)&typelib->data[offset];
+}
+
+static const char *
+get_string_nofail (GTypelib *typelib, guint32 offset)
+{
+  const char *ret = get_string (typelib, offset, NULL);
+  g_assert (ret);
+  return ret;
+}
+
 static gboolean
 validate_name (GTypelib *typelib,
 	       const char *msg,
 	       const guchar *data, guint32 offset,
 	       GError **error)
 {
-  gchar *name;
+  const char *name;
 
-  if (typelib->len < offset)
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short for type %s",
-		   msg);
-      return FALSE;
-    }
+  name = get_string (typelib, offset, error);
+  if (!name)
+    return FALSE;
 
-  name = (gchar*)&data[offset];
-  
   if (!memchr (name, '\0', MAX_NAME_LEN)) 
     {
       g_set_error (error,
@@ -502,6 +557,34 @@ validate_arg_blob (GTypelib     *typelib,
   return TRUE;
 }
 
+static SimpleTypeBlob *
+return_type_from_signature (GTypelib *typelib,
+			    guint32   offset,
+			    GError  **error)
+{
+  SignatureBlob *blob;
+  if (typelib->len < offset + sizeof (SignatureBlob))
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "The buffer is too short");
+      return NULL;
+    }
+
+  blob = (SignatureBlob*) &typelib->data[offset];
+  if (blob->return_type.offset == 0)
+    {
+      g_set_error (error,
+		   G_TYPELIB_ERROR,
+		   G_TYPELIB_ERROR_INVALID,
+		   "No return type found in signature");
+      return NULL;
+    }
+
+  return (SimpleTypeBlob *)&typelib->data[offset + G_STRUCT_OFFSET (SignatureBlob, return_type)];
+}
+
 static gboolean
 validate_signature_blob (GTypelib     *typelib,
 			 guint32        offset,
@@ -551,6 +634,8 @@ validate_function_blob (GTypelib     *typelib,
 			GError       **error)
 {
   FunctionBlob *blob;
+  SignatureBlob *sigblob;
+  const char *funcname;
 
   if (typelib->len < offset + sizeof (FunctionBlob))
     {
@@ -574,6 +659,8 @@ validate_function_blob (GTypelib     *typelib,
 
   if (!validate_name (typelib, "function", typelib->data, blob->name, error))
     return FALSE; 
+
+  funcname = get_string_nofail (typelib, blob->name);
   
   if (!validate_name (typelib, "function symbol", typelib->data, blob->symbol, error))
     return FALSE; 
@@ -590,7 +677,7 @@ validate_function_blob (GTypelib     *typelib,
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
 		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Constructor not allowed");
+		       "Constructor %s not allowed", funcname);
 	  return FALSE;
 	}
     }
@@ -625,10 +712,33 @@ validate_function_blob (GTypelib     *typelib,
 
   /* FIXME: validate index range */
   /* FIXME: validate "this" argument for methods */
-  /* FIXME: validate return type for constructors */
 
   if (!validate_signature_blob (typelib, blob->signature, error))
     return FALSE;
+
+  sigblob = (SignatureBlob*) &typelib->data[blob->signature];
+
+  if (blob->constructor) 
+    {
+      SimpleTypeBlob *simple = return_type_from_signature (typelib,
+							   blob->signature,
+							   error);
+      InterfaceTypeBlob *iface;
+      if (!simple)
+	return FALSE;
+      iface = get_type_blob (typelib, funcname, simple, error);
+      if (!iface)
+	return FALSE;
+      if (!(iface->tag == GI_TYPE_TAG_INTERFACE))
+	{
+	  g_set_error (error,
+		       G_TYPELIB_ERROR,
+		       G_TYPELIB_ERROR_INVALID,
+		       "Invalid return type %d for constructor %s",
+		       iface->tag, funcname);
+	  return FALSE;
+	}
+    }
 	
   return TRUE;
 }
@@ -1331,7 +1441,7 @@ validate_interface_blob (GTypelib     *typelib,
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+		   "Wrong blob type; expected interface, got %d", blob->blob_type);
       return FALSE;
     }
   
