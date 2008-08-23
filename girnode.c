@@ -1390,7 +1390,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->symbol = write_string (function->symbol, strings, data, offset2);
 	blob->signature = signature;
-	
+
+	g_debug ("building function '%s'", function->symbol);
+
         g_ir_node_build_typelib ((GIrNode *)function->result->type, 
 				 module, modules, strings, types,
 				 data, &signature, offset2);
@@ -1411,6 +1413,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 				     module, modules, strings, types,
 				     data, &signature, offset2);
 	  }
+
       }
       break;
 
