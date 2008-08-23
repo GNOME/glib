@@ -185,10 +185,32 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 				  GError        **error)
 {
   GLocalFileOutputStream *file;
-  struct stat final_stat;
+  GLocalFileStat final_stat;
   int res;
 
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
+
+#ifdef G_OS_WIN32
+
+  /* Must close before renaming on Windows, so just do the close first
+   * in all cases for now.
+   */
+  if (_fstati64 (file->priv->fd, &final_stat) == 0)
+    file->priv->etag = _g_local_file_info_create_etag (&final_stat);
+
+  res = close (file->priv->fd);
+  if (res == -1)
+    {
+      int errsv = errno;
+      
+      g_set_error (error, G_IO_ERROR,
+		   g_io_error_from_errno (errsv),
+		   _("Error closing file: %s"),
+		   g_strerror (errsv));
+      return FALSE;
+    }
+
+#endif
 
   if (file->priv->tmp_filename)
     {
@@ -264,6 +286,8 @@ g_local_file_output_stream_close (GOutputStream  *stream,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     goto err_out;
       
+#ifndef G_OS_WIN32		/* Already did the fstat() and close() above on Win32 */
+
   if (fstat (file->priv->fd, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
@@ -284,9 +308,18 @@ g_local_file_output_stream_close (GOutputStream  *stream,
   
   return res != -1;
 
+#else
+
+  return TRUE;
+
+#endif
+
  err_out:
+
+#ifndef G_OS_WIN32
   /* A simple try to close the fd in case we fail before the actual close */
   close (file->priv->fd);
+#endif
   return FALSE;
 }
 
@@ -615,10 +648,11 @@ handle_overwrite_open (const char    *filename,
 		       GError       **error)
 {
   int fd = -1;
-  struct stat original_stat;
+  GLocalFileStat original_stat;
   char *current_etag;
   gboolean is_symlink;
   int open_flags;
+  int res;
 
   /* We only need read access to the original file if we are creating a backup.
    * We also add O_CREATE to avoid a race if the file was just removed */
@@ -657,7 +691,13 @@ handle_overwrite_open (const char    *filename,
       return -1;
     }
   
-  if (fstat (fd, &original_stat) != 0) 
+#ifdef G_OS_WIN32
+  res = _fstati64 (fd, &original_stat);
+#else
+  res = fstat (fd, &original_stat);
+#endif
+
+  if (res != 0) 
     {
       int errsv = errno;
       char *display_name = g_filename_display_name (filename);
@@ -763,7 +803,9 @@ handle_overwrite_open (const char    *filename,
 
   if (create_backup)
     {
+#if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
       struct stat tmp_statbuf;      
+#endif
       char *backup_filename;
       int bfd;
       
