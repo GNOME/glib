@@ -1917,10 +1917,6 @@ start_element_handler (GMarkupParseContext *context,
 			     attribute_names, attribute_values,
 			     ctx, error))
 	goto out;
-      else if (start_glib_boxed (context, element_name,
-				 attribute_names, attribute_values,
-				 ctx, error))
-	goto out;
       break;
 
     case 'i':
