@@ -1011,6 +1011,8 @@ find_entry_node (GIrModule   *module,
 
       result = node;
 
+      g_debug ("Creating XREF: %s %s", names[0], names[1]);
+
       goto out;
     }
 
@@ -1204,13 +1206,13 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    value = g_hash_table_lookup (types, s);
 	    if (value)
 	      {
-		blob->offset = GPOINTER_TO_INT (value);
+		blob->offset = GPOINTER_TO_UINT (value);
 		g_free (s);
 	      }
 	    else
 	      {
 		unique_types_count += 1;
-		g_hash_table_insert (types, s, GINT_TO_POINTER(*offset2));
+		g_hash_table_insert (types, s, GUINT_TO_POINTER(*offset2));
 				     
 		blob->offset = *offset2;
 		switch (type->tag)
