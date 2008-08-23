@@ -467,6 +467,7 @@ parse_type (ParseContext *ctx, const gchar *type)
   str = g_strdup (type);
   node = parse_type_internal (str, &rest);
   g_free (str);
+  g_debug ("Parsed type: %s => %d", type, node->tag);
 
   return node;
 }
