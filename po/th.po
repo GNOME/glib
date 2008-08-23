@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-18 00:50-0400\n"
-"PO-Revision-Date: 2008-08-12 18:41+0700\n"
+"PO-Revision-Date: 2008-08-23 17:58+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1241,12 +1241,11 @@ msgstr "ตัวแจงนับแฟ้มถูกปิดไปแล้
 
 #: gio/gfileicon.c:144
 msgid "file"
-msgstr ""
+msgstr "แฟ้ม"
 
 #: gio/gfileicon.c:145
-#, fuzzy
 msgid "The file containing the icon"
-msgstr "แอร์เรย์เก็บรายชื่อของไอคอน"
+msgstr "แฟ้มที่เก็บไอคอน"
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
