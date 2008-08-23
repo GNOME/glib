@@ -4,8 +4,8 @@
 	exists already
 
 	* glocalfileoutputstream.c (g_local_file_output_stream_close): On
-	Windows, close the file before renaming it (in case we have been
-	writing to a file with a temporary name).
+	Windows, close the file before potentially renaming it (in case we
+	have been writing to a file with a temporary name).
 
 	(g_local_file_output_stream_close, handle_overwrite_open): Use
 	GLocalFileStat instead of plain struct stat, for passing to
