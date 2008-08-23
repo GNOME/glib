@@ -515,16 +515,24 @@ g_function_info_get_vfunc (GIFunctionInfo *info)
 static guint32
 signature_offset (GICallableInfo *info)
 {
+  int sigoff = -1;
   switch (info->base.type)
     {
     case GI_INFO_TYPE_FUNCTION:
+      sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
+      break;
     case GI_INFO_TYPE_VFUNC:
-      return *(guint32 *)&info->base.typelib->data[info->base.offset + 12];
+      sigoff = G_STRUCT_OFFSET (VFuncBlob, signature);
+      break;
     case GI_INFO_TYPE_CALLBACK:
+      sigoff = G_STRUCT_OFFSET (CallbackBlob, signature);
+      break;
     case GI_INFO_TYPE_SIGNAL:
-      return *(guint32 *)&info->base.typelib->data[info->base.offset + 8];
+      sigoff = G_STRUCT_OFFSET (SignalBlob, signature);
+      break;
     }
-  
+  if (sigoff >= 0)
+    return *(guint32 *)&info->base.typelib->data[info->base.offset + sigoff];
   return 0;
 }
 
