@@ -560,32 +560,6 @@ g_irepository_require (GIRepository  *repository,
     }
 
   g_free (fname);
-  
-  /* optionally load shared library and attach it to the typelib */
-  shlib = ((Header *) typelib->data)->shared_library;
-  if (shlib)
-    {
-      gchar *resolved_shlib;
-
-      shlib_fname = g_typelib_get_string (typelib, shlib);
-      resolved_shlib = g_module_build_path (NULL, shlib_fname);
-
-      module = g_module_open (resolved_shlib,
-			      G_MODULE_BIND_LAZY|G_MODULE_BIND_LOCAL);
-      if (module == NULL)
-	{
-	  g_set_error (error, G_IREPOSITORY_ERROR,
-		       G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-		       "Typelib for namespace '%s' references shared library "
-		       "%s, but it could not be openened (%s)",
-		       namespace, resolved_shlib, g_module_error ());
-	  g_free (full_path);
-	  g_free (resolved_shlib);
-	  return NULL;
-	}
-      g_free (resolved_shlib);
-    }
-
   g_hash_table_remove (table, namespace);
   register_internal (repository, full_path, typelib);
   g_free (full_path);
