@@ -551,12 +551,10 @@ start_function (GMarkupParseContext *context,
       const gchar *name;
       const gchar *symbol;
       const gchar *deprecated;
-      const gchar *type;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
-      type = find_attribute ("type", attribute_names, attribute_values);
       
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
@@ -580,11 +578,6 @@ start_function (GMarkupParseContext *context,
 	      strcmp (element_name, "constructor") == 0)
 	    {
 	      function->is_method = TRUE;
-
-	      if (type && strcmp (type, "setter") == 0)
-		function->is_setter = TRUE;
-	      else if (type && strcmp (type, "getter") == 0)
-		function->is_getter = TRUE;		  
 
 	      if (strcmp (element_name, "constructor") == 0)
 		function->is_constructor = TRUE;
