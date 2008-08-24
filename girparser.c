@@ -480,50 +480,54 @@ start_glib_boxed (GMarkupParseContext *context,
 		  ParseContext        *ctx,
 		  GError             **error)
 {
-  if (strcmp (element_name, "glib:boxed") == 0 && 
-      ctx->state == STATE_NAMESPACE)
-    {
-      const gchar *name;
-      const gchar *typename;
-      const gchar *typeinit;
-      const gchar *deprecated;
-      
-      name = find_attribute ("glib:name", attribute_names, attribute_values);
-      typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
-      typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
-      deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
-      
-      if (name == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "glib:name");
-      else if (typename == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "glib:type-name");
-      else if (typeinit == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "glib:get-type");
-      else
-	{
-	  GIrNodeBoxed *boxed;
+  const gchar *name;
+  const gchar *typename;
+  const gchar *typeinit;
+  const gchar *deprecated;
+  GIrNodeBoxed *boxed;
 
-	  boxed = (GIrNodeBoxed *) g_ir_node_new (G_IR_NODE_BOXED);
-	  
-	  ((GIrNode *)boxed)->name = g_strdup (name);
-	  boxed->gtype_name = g_strdup (typename);
-	  boxed->gtype_init = g_strdup (typeinit);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
-	    boxed->deprecated = TRUE;
-	  else
-	    boxed->deprecated = FALSE;
-	  
-	  ctx->current_node = (GIrNode *)boxed;
-	  ctx->current_module->entries = 
-	    g_list_append (ctx->current_module->entries, boxed);
-	  
-	  state_switch (ctx, STATE_BOXED);
-	}
-	  
-      return TRUE;
+  if (!(strcmp (element_name, "glib:boxed") == 0 &&
+	ctx->state == STATE_NAMESPACE))
+    return FALSE;
+
+  name = find_attribute ("glib:name", attribute_names, attribute_values);
+  typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
+  typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
+  deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+  
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "glib:name");
+      return FALSE;
+    }
+  else if (typename == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "glib:type-name");
+      return FALSE;
+    }
+  else if (typeinit == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "glib:get-type");
+      return FALSE;
     }
 
-  return FALSE;
+  boxed = (GIrNodeBoxed *) g_ir_node_new (G_IR_NODE_BOXED);
+	  
+  ((GIrNode *)boxed)->name = g_strdup (name);
+  boxed->gtype_name = g_strdup (typename);
+  boxed->gtype_init = g_strdup (typeinit);
+  if (deprecated && strcmp (deprecated, "1") == 0)
+    boxed->deprecated = TRUE;
+  else
+    boxed->deprecated = FALSE;
+	  
+  ctx->current_node = (GIrNode *)boxed;
+  ctx->current_module->entries = 
+    g_list_append (ctx->current_module->entries, boxed);
+  
+  state_switch (ctx, STATE_BOXED);
+
+  return TRUE;
 }
 
 static gboolean
@@ -534,118 +538,129 @@ start_function (GMarkupParseContext *context,
 		ParseContext        *ctx,
 		GError             **error)
 {
-  if ((ctx->state == STATE_NAMESPACE &&
-       (strcmp (element_name, "function") == 0 ||
-	strcmp (element_name, "callback") == 0)) ||
-      ((ctx->state == STATE_CLASS ||
-	ctx->state == STATE_INTERFACE ||
-	ctx->state == STATE_BOXED ||
-        ctx->state == STATE_UNION) &&
-       (strcmp (element_name, "method") == 0 || 
-	strcmp (element_name, "callback") == 0)) ||
-      ((ctx->state == STATE_CLASS ||
-	ctx->state == STATE_BOXED) &&
-       (strcmp (element_name, "constructor") == 0)) ||
-      (ctx->state == STATE_STRUCT && strcmp (element_name, "callback") == 0))
+  const gchar *name;
+  const gchar *symbol;
+  const gchar *deprecated;
+  GIrNodeFunction *function;
+  gboolean found = FALSE;
+  
+  switch (ctx->state)
     {
-      const gchar *name;
-      const gchar *symbol;
-      const gchar *deprecated;
-      
-      name = find_attribute ("name", attribute_names, attribute_values);
-      symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
-      deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
-      
-      if (name == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "name");
-      else if (strcmp (element_name, "callback") != 0 && symbol == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "c:identifier");
-      else
-	{
-	  GIrNodeFunction *function;
-	  
-	  function = (GIrNodeFunction *) g_ir_node_new (G_IR_NODE_FUNCTION);
-
-	  ((GIrNode *)function)->name = g_strdup (name);
-	  function->symbol = g_strdup (symbol);
-	  function->parameters = NULL;
-	  if (deprecated && strcmp (deprecated, "1") == 0)
-	    function->deprecated = TRUE;
-	  else
-	    function->deprecated = FALSE;
-	
-	  if (strcmp (element_name, "method") == 0 ||
-	      strcmp (element_name, "constructor") == 0)
-	    {
-	      function->is_method = TRUE;
-
-	      if (strcmp (element_name, "constructor") == 0)
-		function->is_constructor = TRUE;
-	      else
-		function->is_constructor = FALSE;
-	    }
-	  else
-	    {
-	      function->is_method = FALSE;
-	      function->is_setter = FALSE;
-	      function->is_getter = FALSE;
-	      function->is_constructor = FALSE;
-	      if (strcmp (element_name, "callback") == 0)
-		((GIrNode *)function)->type = G_IR_NODE_CALLBACK;
-	    }
-	  
-	  if (ctx->current_node == NULL)
-	    {
-	      ctx->current_module->entries = 
-		g_list_append (ctx->current_module->entries, function);	      
-	    }
-	  else
-	    switch (ctx->current_node->type)
-	      {
-	      case G_IR_NODE_INTERFACE:
-	      case G_IR_NODE_OBJECT:
-		{
-		  GIrNodeInterface *iface;
-		  
-		  iface = (GIrNodeInterface *)ctx->current_node;
-		  iface->members = g_list_append (iface->members, function);
-		}
-		break;
-	      case G_IR_NODE_BOXED:
-		{
-		  GIrNodeBoxed *boxed;
-
-		  boxed = (GIrNodeBoxed *)ctx->current_node;
-		  boxed->members = g_list_append (boxed->members, function);
-		}
-		break;
-	      case G_IR_NODE_STRUCT:
-		{
-		  GIrNodeStruct *struct_;
-		  
-		  struct_ = (GIrNodeStruct *)ctx->current_node;
-		  struct_->members = g_list_append (struct_->members, function);		}
-		break;
-	      case G_IR_NODE_UNION:
-		{
-		  GIrNodeUnion *union_;
-		  
-		  union_ = (GIrNodeUnion *)ctx->current_node;
-		  union_->members = g_list_append (union_->members, function);
-		}
-		break;
-	      default:
-		g_assert_not_reached ();
-	      }
-	  
-	  ctx->current_node = (GIrNode *)function;
-	  state_switch (ctx, STATE_FUNCTION);
-
-	  return TRUE;
-	}
+    case STATE_NAMESPACE:
+      found = (strcmp (element_name, "function") == 0 ||
+	       strcmp (element_name, "callback") == 0);
+      break;
+    case STATE_CLASS:
+    case STATE_BOXED:
+    case STATE_STRUCT:
+    case STATE_UNION:
+      found = strcmp (element_name, "constructor") == 0;
+      /* fallthrough */
+    case STATE_INTERFACE:
+      found = (found ||
+	       strcmp (element_name, "method") == 0 ||
+	       strcmp (element_name, "callback") == 0);
+      break;
+    default:
+      break;
     }
 
-  return FALSE;
+  if (!found)
+    return FALSE;
+
+  name = find_attribute ("name", attribute_names, attribute_values);
+  symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
+  deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+      
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "name");
+      return FALSE;
+    }
+  else if (strcmp (element_name, "callback") != 0 && symbol == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "c:identifier");
+      return FALSE;
+    }
+
+  function = (GIrNodeFunction *) g_ir_node_new (G_IR_NODE_FUNCTION);
+      
+  ((GIrNode *)function)->name = g_strdup (name);
+  function->symbol = g_strdup (symbol);
+  function->parameters = NULL;
+  if (deprecated && strcmp (deprecated, "1") == 0)
+    function->deprecated = TRUE;
+  else
+    function->deprecated = FALSE;
+  
+  if (strcmp (element_name, "method") == 0 ||
+      strcmp (element_name, "constructor") == 0)
+    {
+      function->is_method = TRUE;
+      
+      if (strcmp (element_name, "constructor") == 0)
+	function->is_constructor = TRUE;
+      else
+	function->is_constructor = FALSE;
+    }
+  else
+    {
+      function->is_method = FALSE;
+      function->is_setter = FALSE;
+      function->is_getter = FALSE;
+      function->is_constructor = FALSE;
+      if (strcmp (element_name, "callback") == 0)
+	((GIrNode *)function)->type = G_IR_NODE_CALLBACK;
+    }
+	  
+  if (ctx->current_node == NULL)
+    {
+      ctx->current_module->entries = 
+	g_list_append (ctx->current_module->entries, function);	      
+    }
+  else
+    switch (ctx->current_node->type)
+      {
+      case G_IR_NODE_INTERFACE:
+      case G_IR_NODE_OBJECT:
+	{
+	  GIrNodeInterface *iface;
+	  
+	  iface = (GIrNodeInterface *)ctx->current_node;
+	  iface->members = g_list_append (iface->members, function);
+	}
+	break;
+      case G_IR_NODE_BOXED:
+	{
+	  GIrNodeBoxed *boxed;
+	  
+	  boxed = (GIrNodeBoxed *)ctx->current_node;
+	  boxed->members = g_list_append (boxed->members, function);
+	}
+	break;
+      case G_IR_NODE_STRUCT:
+	{
+	  GIrNodeStruct *struct_;
+	  
+	  struct_ = (GIrNodeStruct *)ctx->current_node;
+	  struct_->members = g_list_append (struct_->members, function);		}
+	break;
+      case G_IR_NODE_UNION:
+	{
+	  GIrNodeUnion *union_;
+	  
+	  union_ = (GIrNodeUnion *)ctx->current_node;
+	  union_->members = g_list_append (union_->members, function);
+	}
+	break;
+      default:
+	g_assert_not_reached ();
+      }
+  
+  ctx->current_node = (GIrNode *)function;
+  state_switch (ctx, STATE_FUNCTION);
+  
+  return TRUE;
 }
 
 static gboolean
@@ -793,123 +808,129 @@ start_field (GMarkupParseContext *context,
 	     ParseContext        *ctx,
 	     GError             **error)
 {
-  if (strcmp (element_name, "field") == 0 &&
-      (ctx->state == STATE_CLASS ||
-       ctx->state == STATE_BOXED ||
-       ctx->state == STATE_STRUCT ||
-       ctx->state == STATE_UNION ||
-       ctx->state == STATE_INTERFACE))
+  const gchar *name;
+  const gchar *readable;
+  const gchar *writable;
+  const gchar *bits;
+  const gchar *branch;
+  const gchar *offset;
+  GIrNodeField *field;
+
+  switch (ctx->state)
     {
-      const gchar *name;
-      const gchar *readable;
-      const gchar *writable;
-      const gchar *bits;
-      const gchar *branch;
-      const gchar *offset;
-      
-      name = find_attribute ("name", attribute_names, attribute_values);
-      readable = find_attribute ("readable", attribute_names, attribute_values);
-      writable = find_attribute ("writable", attribute_names, attribute_values);
-      bits = find_attribute ("bits", attribute_names, attribute_values);
-      branch = find_attribute ("branch", attribute_names, attribute_values);
-      offset = find_attribute ("offset", attribute_names, attribute_values);
-      
-      if (name == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "name");
-      else
-	{
-	  GIrNodeField *field;
-
-	  field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD);
-	  ctx->current_typed = (GIrNode*) field;
-	  ((GIrNode *)field)->name = g_strdup (name);
-	  if (readable && strcmp (readable, "1") == 0)
-	    field->readable = TRUE;
-	  else
-	    field->readable = FALSE;
-	  
-	  if (writable && strcmp (writable, "1") == 0)
-	    field->writable = TRUE;
-	  else
-	    field->writable = FALSE;
-	  
-	  if (bits)
-	    field->bits = atoi (bits);
-	  else
-	    field->bits = 0;
-
-	  if (offset)
-	    field->offset = atoi (offset);
-	  else
-	    field->offset = 0;
-	  
-	  switch (ctx->current_node->type)
-	    {
-	    case G_IR_NODE_OBJECT:
-	      {
-		GIrNodeInterface *iface;
-
-		iface = (GIrNodeInterface *)ctx->current_node;
-		iface->members = g_list_append (iface->members, field);
-		state_switch (ctx, STATE_CLASS_FIELD);
-	      }
-	      break;
-	    case G_IR_NODE_INTERFACE:
-	      {
-		GIrNodeInterface *iface;
-
-		iface = (GIrNodeInterface *)ctx->current_node;
-		iface->members = g_list_append (iface->members, field);
-		state_switch (ctx, STATE_INTERFACE_FIELD);
-	      }
-	      break;
-	    case G_IR_NODE_BOXED:
-	      {
-		GIrNodeBoxed *boxed;
-
-		boxed = (GIrNodeBoxed *)ctx->current_node;
-		boxed->members = g_list_append (boxed->members, field);
-		state_switch (ctx, STATE_BOXED_FIELD);
-	      }
-	      break;
-	    case G_IR_NODE_STRUCT:
-	      {
-		GIrNodeStruct *struct_;
-
-		struct_ = (GIrNodeStruct *)ctx->current_node;
-		struct_->members = g_list_append (struct_->members, field);
-		state_switch (ctx, STATE_STRUCT_FIELD);
-	      }
-	      break;
-	    case G_IR_NODE_UNION:
-	      {
-		GIrNodeUnion *union_;
-
-		union_ = (GIrNodeUnion *)ctx->current_node;
-		union_->members = g_list_append (union_->members, field);
-		if (branch)
-		  {
-		    GIrNodeConstant *constant;
-		    
-		    constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT);
-		    ((GIrNode *)constant)->name = g_strdup (name);
-		    constant->value = g_strdup (branch);	  
-		    constant->type = union_->discriminator_type;
-		    constant->deprecated = FALSE;
-
-		    union_->discriminators = g_list_append (union_->discriminators, constant);
-		  }
-		state_switch (ctx, STATE_UNION_FIELD);
-	      }
-	      break;
-	    default:
-	      g_assert_not_reached ();
-	    }
-	}
-      return TRUE;
+    case STATE_CLASS:
+    case STATE_BOXED:
+    case STATE_STRUCT:
+    case STATE_UNION:
+    case STATE_INTERFACE:
+      break;
+    default:
+      return FALSE;
     }
   
-  return FALSE;
+  if (strcmp (element_name, "field") != 0)
+    return FALSE;
+  
+  name = find_attribute ("name", attribute_names, attribute_values);
+  readable = find_attribute ("readable", attribute_names, attribute_values);
+  writable = find_attribute ("writable", attribute_names, attribute_values);
+  bits = find_attribute ("bits", attribute_names, attribute_values);
+  branch = find_attribute ("branch", attribute_names, attribute_values);
+  offset = find_attribute ("offset", attribute_names, attribute_values);
+  
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "name");
+      return FALSE;
+    }
+
+  field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD);
+  ctx->current_typed = (GIrNode*) field;
+  ((GIrNode *)field)->name = g_strdup (name);
+  if (readable && strcmp (readable, "1") == 0)
+    field->readable = TRUE;
+  else
+    field->readable = FALSE;
+  
+  if (writable && strcmp (writable, "1") == 0)
+    field->writable = TRUE;
+  else
+    field->writable = FALSE;
+  
+  if (bits)
+    field->bits = atoi (bits);
+  else
+    field->bits = 0;
+  
+  if (offset)
+    field->offset = atoi (offset);
+  else
+    field->offset = 0;
+  
+  switch (ctx->current_node->type)
+    {
+    case G_IR_NODE_OBJECT:
+      {
+	GIrNodeInterface *iface;
+	
+	iface = (GIrNodeInterface *)ctx->current_node;
+	iface->members = g_list_append (iface->members, field);
+	state_switch (ctx, STATE_CLASS_FIELD);
+      }
+      break;
+    case G_IR_NODE_INTERFACE:
+      {
+	GIrNodeInterface *iface;
+	
+	iface = (GIrNodeInterface *)ctx->current_node;
+	iface->members = g_list_append (iface->members, field);
+	state_switch (ctx, STATE_INTERFACE_FIELD);
+      }
+      break;
+    case G_IR_NODE_BOXED:
+      {
+	GIrNodeBoxed *boxed;
+	
+	boxed = (GIrNodeBoxed *)ctx->current_node;
+		boxed->members = g_list_append (boxed->members, field);
+		state_switch (ctx, STATE_BOXED_FIELD);
+      }
+      break;
+    case G_IR_NODE_STRUCT:
+      {
+	GIrNodeStruct *struct_;
+	
+	struct_ = (GIrNodeStruct *)ctx->current_node;
+	struct_->members = g_list_append (struct_->members, field);
+	state_switch (ctx, STATE_STRUCT_FIELD);
+      }
+      break;
+    case G_IR_NODE_UNION:
+      {
+	GIrNodeUnion *union_;
+	
+	union_ = (GIrNodeUnion *)ctx->current_node;
+	union_->members = g_list_append (union_->members, field);
+	if (branch)
+	  {
+	    GIrNodeConstant *constant;
+	    
+	    constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT);
+	    ((GIrNode *)constant)->name = g_strdup (name);
+	    constant->value = g_strdup (branch);	  
+	    constant->type = union_->discriminator_type;
+	    constant->deprecated = FALSE;
+	    
+	    union_->discriminators = g_list_append (union_->discriminators, constant);
+	  }
+	state_switch (ctx, STATE_UNION_FIELD);
+      }
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+  
+  return TRUE;
 }
 
 static gboolean
@@ -925,18 +946,21 @@ start_alias (GMarkupParseContext *context,
   const gchar *type;
 
   name = find_attribute ("name", attribute_names, attribute_values);
-  if (name == NULL) {
-    MISSING_ATTRIBUTE (context, error, element_name, "name");
-    return FALSE;
-  }
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "name");
+      return FALSE;
+    }
 
   target = find_attribute ("target", attribute_names, attribute_values);
-  if (name == NULL) {
-    MISSING_ATTRIBUTE (context, error, element_name, "target");
-    return FALSE;
-  }
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "target");
+      return FALSE;
+    }
 
   g_hash_table_insert (ctx->aliases, g_strdup (name), g_strdup (target));
+
   return TRUE;
 }
 
