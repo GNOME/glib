@@ -787,16 +787,14 @@ write_object_info (const gchar  *namespace,
 
   if (g_object_info_get_n_interfaces (info) > 0)
     {
-      g_fprintf (file, "      <implements>\n");
       for (i = 0; i < g_object_info_get_n_interfaces (info); i++)
 	{
 	  GIInterfaceInfo *imp = g_object_info_get_interface (info, i);
-	  g_fprintf (file, "        <interface name=\"");
+	  g_fprintf (file, "      <implements name=\"");
 	  write_type_name (namespace, (GIBaseInfo*)imp, file);
 	  g_fprintf (file,"\" />\n");
 	  g_base_info_unref ((GIBaseInfo*)imp);
 	}
-      g_fprintf (file, "      </implements>\n");
     }
 
   for (i = 0; i < g_object_info_get_n_fields (info); i++)
