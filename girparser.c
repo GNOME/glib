@@ -1532,6 +1532,36 @@ start_return_value (GMarkupParseContext *context,
 }
 
 static gboolean
+start_implements (GMarkupParseContext *context,
+		  const gchar         *element_name,
+		  const gchar        **attribute_names,
+		  const gchar        **attribute_values,
+		  ParseContext       *ctx,
+		  GError             **error)
+{
+  GIrNodeInterface *iface;
+  const char *name;
+
+  if (strcmp (element_name, "implements") != 0 ||
+      !(ctx->state == STATE_CLASS))
+    return FALSE;
+
+  state_switch (ctx, STATE_IMPLEMENTS);
+  
+  name = find_attribute ("name", attribute_names, attribute_values);
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "name");
+      return FALSE;
+    }
+      
+  iface = (GIrNodeInterface *)ctx->current_node;
+  iface->interfaces = g_list_append (iface->interfaces, g_strdup (name));
+
+  return TRUE;
+}
+
+static gboolean
 start_glib_signal (GMarkupParseContext *context,
 		   const gchar         *element_name,
 		   const gchar        **attribute_names,
@@ -1947,51 +1977,10 @@ start_element_handler (GMarkupParseContext *context,
 			   attribute_names, attribute_values,
 			   ctx, error))
 	goto out;
-      if (strcmp (element_name, "implements") == 0 &&
-	  ctx->state == STATE_CLASS)
-	{
-	  state_switch (ctx, STATE_IMPLEMENTS);
-
-	  goto out;
-	}
-      else if (strcmp (element_name, "interface") == 0 &&
-	       ctx->state == STATE_IMPLEMENTS)
-	{
-	  const gchar *name;
-
-	  name = find_attribute ("name", attribute_names, attribute_values);
-
-	  if (name == NULL)
-	    MISSING_ATTRIBUTE (context, error, element_name, "name");
-	  else
-	    {  
-	      GIrNodeInterface *iface;
-
-	      iface = (GIrNodeInterface *)ctx->current_node;
-	      iface ->interfaces = g_list_append (iface->interfaces, g_strdup (name));
-	    }
-
-	  goto out;
-	}
-      else if (strcmp (element_name, "interface") == 0 &&
-	       ctx->state == STATE_REQUIRES)
-	{
-	  const gchar *name;
-
-	  name = find_attribute ("name", attribute_names, attribute_values);
-
-	  if (name == NULL)
-	    MISSING_ATTRIBUTE (context, error, element_name, "name");
-	  else
-	    {  
-	      GIrNodeInterface *iface;
-
-	      iface = (GIrNodeInterface *)ctx->current_node;
-	      iface ->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
-	    }
-
-	  goto out;
-	}
+      else if (start_implements (context, element_name,
+				 attribute_names, attribute_values,
+				 ctx, error))
+	goto out;
       break;
 
     case 'm':
