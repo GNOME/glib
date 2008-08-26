@@ -1937,7 +1937,7 @@ _g_typelib_init (GTypelib *typelib)
      
       if (typelib->module == NULL)
         {
-	  gchar *resolved_shlib;
+	  GString *shlib_full;
 
           /* Glade's autoconnect feature and OpenGL's extension mechanism
            * as used by Clutter rely on dlopen(NULL) to work as a means of
@@ -1948,13 +1948,23 @@ _g_typelib_init (GTypelib *typelib)
            * load modules globally for now.
            */
 
-	  resolved_shlib = g_module_build_path (NULL, shlib);
-          typelib->module = g_module_open (resolved_shlib, G_MODULE_BIND_LAZY);
-          if (typelib->module == NULL)
-            g_warning ("Failed to load shared library referenced by the typelib: %s",
-                       g_module_error ());
+	  typelib->module = g_module_open (shlib, G_MODULE_BIND_LAZY);
 
-	  g_free (resolved_shlib);
+	  if (typelib->module == NULL)
+	    {
+	      shlib_full = g_string_new (shlib);
+	      /* Prefix with "lib", try both .la and .so */
+	      if (!g_str_has_prefix (shlib_full->str, "lib"))
+		g_string_prepend (shlib_full, "lib");
+	      g_string_append (shlib_full, ".la");
+	      typelib->module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+	      if (typelib->module == NULL)
+		g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, "so");
+	      typelib->module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+	    }
+	  if (typelib->module == NULL)
+            g_warning ("Failed to load shared library '%s' referenced by the typelib: %s",
+                       shlib, g_module_error ());
         }
     }
 }
