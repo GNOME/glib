@@ -1953,6 +1953,7 @@ _g_typelib_init (GTypelib *typelib)
 	  if (typelib->module == NULL)
 	    {
 	      shlib_full = g_string_new (shlib);
+
 	      /* Prefix with "lib", try both .la and .so */
 	      if (!g_str_has_prefix (shlib_full->str, "lib"))
 		g_string_prepend (shlib_full, "lib");
@@ -1961,11 +1962,12 @@ _g_typelib_init (GTypelib *typelib)
 	      if (typelib->module == NULL)
 		g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, "so");
 	      typelib->module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+
+	      g_string_free (shlib_full, TRUE);
 	    }
 	  if (typelib->module == NULL)
             g_warning ("Failed to load shared library '%s' referenced by the typelib: %s",
                        shlib, g_module_error ());
-	  g_string_free (shlib_full, TRUE);
         }
     }
 }
