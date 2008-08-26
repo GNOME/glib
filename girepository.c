@@ -93,7 +93,7 @@ init_globals ()
       
       search_path = NULL;
       for (dir = datadirs; *dir; dir++) {
-	char *path = g_build_filename (*dir, "gitypelibs", NULL);
+	char *path = g_build_filename (*dir, "girepository", NULL);
 	search_path = g_slist_prepend (search_path, path);
       }
       search_path = g_slist_reverse (search_path);
