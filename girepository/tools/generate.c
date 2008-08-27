@@ -20,7 +20,6 @@
  */
 
 #include <errno.h>
-#include <dlfcn.h>
 #include <string.h>
 
 #include <glib.h>
