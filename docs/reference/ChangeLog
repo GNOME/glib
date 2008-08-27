@@ -1,3 +1,7 @@
+2008-08-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/i18n.sgml: Add hint about intltool to NC_() docs.
+
 2008-08-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.17.7 ===

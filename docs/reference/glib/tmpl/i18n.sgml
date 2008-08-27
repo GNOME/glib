@@ -142,6 +142,7 @@ To get the translated string, you should call g_dpgettext2() at runtime.
 If you are using the NC_() macro, you need to make sure that you
 pass <option>--keyword=NC_:1c,2</option> to xgettext when extracting
 messages. Note that this only works with GNU gettext >= 0.15.
+Intltool has support for the NC_() macro since version 0.40.1.
 </para></note>
 
 @Context: a message context, must be a string literal
