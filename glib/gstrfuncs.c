@@ -2578,7 +2578,9 @@ g_strjoin (const gchar  *separator,
 /**
  * g_strstr_len:
  * @haystack: a string.
- * @haystack_len: the maximum length of @haystack.
+ * @haystack_len: the maximum length of @haystack. Note that -1 is
+ * a valid length, if @haystack is nul-terminated, meaning it will
+ * search through the whole string.
  * @needle: the string to search for.
  *
  * Searches the string @haystack for the first occurrence
@@ -2595,11 +2597,14 @@ g_strstr_len (const gchar *haystack,
 {
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
-  
+
   if (haystack_len < 0)
     return strstr (haystack, needle);
   else
     {
+#ifdef HAVE_MEMMEM
+      return memmem (haystack, haystack_len, needle, strlen (needle));
+#else
       const gchar *p = haystack;
       gsize needle_len = strlen (needle);
       const gchar *end;
@@ -2626,6 +2631,7 @@ g_strstr_len (const gchar *haystack,
 	}
       
       return NULL;
+#endif /* HAVE_MEMMEM */
     }
 }
 

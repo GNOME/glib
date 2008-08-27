@@ -307,6 +307,11 @@ main (int   argc,
   g_assert (strcmp (tmp_string, "b a") == 0);
   g_free (tmp_string);
 
+  tmp_string = g_strdup (GLIB_TEST_STRING);
+  g_assert (g_strstr_len (tmp_string, 4, "rado") == NULL);
+  g_assert (g_strstr_len (tmp_string, -1, "rado") == tmp_string + 5);
+  g_free (tmp_string);
+
   return 0;
 }
 
