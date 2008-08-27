@@ -1,3 +1,11 @@
+2008-08-27  Tor Lillqvist  <tml@novell.com>
+
+	* config.h.win32.in: Should not define HAVE_DIRENT_H when
+	compiling with MSVC, as the only file which checks HAVE_DIRENT_H
+	is gdir.c, and that includes the dirent.h and wdirent.c from
+	build/win32/dirent explicitly anyway when being compiled with
+	MSVC.
+
 2008-08-22  Björn Lindqvist  <bjourne@gmail.com>
 
 	Bug 523939 – Example program for GValue
