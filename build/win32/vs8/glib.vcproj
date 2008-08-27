@@ -577,7 +577,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating glib.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/glib.def &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF $(InputPath) &gt;&gt; $(InputDir)/glib.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; $(InputDir)/glib.def &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT $(InputPath) &gt;&gt; $(InputDir)/glib.def&#x0D;&#x0A;"
 						Outputs="$(InputDir)/glib.def"
 					/>
 				</FileConfiguration>

@@ -6,7 +6,8 @@
 	user of the project file probably needs to edit anyway depending
 	on their directory structure). Drop the nonexistent gi18n.c
 	file. Drop dirent as gdir.c includes dirent.h and wdirent.c
-	directly.
+	directly. Handle also G_GNUC_FORMAT in the custom build step for
+	glib.symbols.
 
 2008-08-02  Tor Lillqvist  <tml@novell.com>
 
