@@ -1,5 +1,13 @@
 2008-08-27  Tor Lillqvist  <tml@novell.com>
 
+	* glib/giowin32.c: Stylistic changes. Plug an unlikely memory leak
+	that occurred in create_thread() if closing the thread handle
+	failed. Add more error messages to g_io_win32_free() that are
+	printed only when debugging. Plug handle leak, a socket channel's
+	event was never closed.
+
+2008-08-27  Tor Lillqvist  <tml@novell.com>
+
 	* config.h.win32.in: Should not define HAVE_DIRENT_H when
 	compiling with MSVC, as the only file which checks HAVE_DIRENT_H
 	is gdir.c, and that includes the dirent.h and wdirent.c from
