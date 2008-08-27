@@ -16,6 +16,7 @@ libgirepository_la_SOURCES =			\
 	ginvoke.c
 libgirepository_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_la_LIBADD = $(GIREPO_LIBS)
+libgirepository_la_LDFLAGS = -no-undefined
 
 libgirepository_parser_la_SOURCES =		\
 	girmodule.c				\

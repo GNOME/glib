@@ -91,6 +91,7 @@ struct _ParseContext
 static void
 backtrace_stderr (void)
 {
+#ifndef _WIN32
   void *array[50];
   int size;
   char **strings;
@@ -107,6 +108,7 @@ backtrace_stderr (void)
   fprintf (stderr, "--- END BACKTRACE ---\n", size);
 
   free (strings);
+#endif
 }
 
 

@@ -141,31 +141,45 @@ void
 g_typelib_check_sanity (void)
 {
   /* Check that struct layout is as we expect */
-  g_assert (sizeof (Header) == 100);
-  g_assert (sizeof (DirEntry) == 12);
-  g_assert (sizeof (SimpleTypeBlob) == 4);
-  g_assert (sizeof (ArgBlob) == 12);
-  g_assert (sizeof (SignatureBlob) == 8);
-  g_assert (sizeof (CommonBlob) == 8);
-  g_assert (sizeof (FunctionBlob) == 16);
-  g_assert (sizeof (InterfaceTypeBlob) == 4);
-  g_assert (sizeof (ArrayTypeBlob) == 8);
-  g_assert (sizeof (ParamTypeBlob) == 4);
-  g_assert (sizeof (ErrorTypeBlob) == 4);
-  g_assert (sizeof (ErrorDomainBlob) == 16);
-  g_assert (sizeof (ValueBlob) == 12);
-  g_assert (sizeof (FieldBlob) == 12);
-  g_assert (sizeof (RegisteredTypeBlob) == 16);
-  g_assert (sizeof (StructBlob) == 20);
-  g_assert (sizeof (EnumBlob) == 20);
-  g_assert (sizeof (PropertyBlob) == 12);
-  g_assert (sizeof (SignalBlob) == 12);
-  g_assert (sizeof (VFuncBlob) == 16);
-  g_assert (sizeof (ObjectBlob) == 32);
-  g_assert (sizeof (InterfaceBlob) == 28);
-  g_assert (sizeof (ConstantBlob) == 20);
-  g_assert (sizeof (AnnotationBlob) == 12);
-  g_assert (sizeof (UnionBlob) == 28);
+
+  gboolean size_check_ok = TRUE;
+
+#define CHECK_SIZE(s,n) \
+  if (sizeof(s) != n) \
+    { \
+      g_printerr ("sizeof("#s") is expected to be %d but is %"G_GSIZE_FORMAT".\n", \
+		  n, sizeof (s));					\
+      size_check_ok = FALSE; \
+    }
+  
+  CHECK_SIZE (Header, 100);
+  CHECK_SIZE (DirEntry, 12);
+  CHECK_SIZE (SimpleTypeBlob, 4);
+  CHECK_SIZE (ArgBlob, 12);
+  CHECK_SIZE (SignatureBlob, 8);
+  CHECK_SIZE (CommonBlob, 8);
+  CHECK_SIZE (FunctionBlob, 16);
+  CHECK_SIZE (InterfaceTypeBlob, 4);
+  CHECK_SIZE (ArrayTypeBlob, 8);
+  CHECK_SIZE (ParamTypeBlob, 4);
+  CHECK_SIZE (ErrorTypeBlob, 4);
+  CHECK_SIZE (ErrorDomainBlob, 16);
+  CHECK_SIZE (ValueBlob, 12);
+  CHECK_SIZE (FieldBlob, 12);
+  CHECK_SIZE (RegisteredTypeBlob, 16);
+  CHECK_SIZE (StructBlob, 20);
+  CHECK_SIZE (EnumBlob, 20);
+  CHECK_SIZE (PropertyBlob, 12);
+  CHECK_SIZE (SignalBlob, 12);
+  CHECK_SIZE (VFuncBlob, 16);
+  CHECK_SIZE (ObjectBlob, 32);
+  CHECK_SIZE (InterfaceBlob, 28);
+  CHECK_SIZE (ConstantBlob, 20);
+  CHECK_SIZE (AnnotationBlob, 12);
+  CHECK_SIZE (UnionBlob, 28);
+#undef CHECK_SIZE
+
+  g_assert (size_check_ok);
 }
 
 
