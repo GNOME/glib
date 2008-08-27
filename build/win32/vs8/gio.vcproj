@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../gio,../../..,../../../glib,../../../gmodule,../../../../dependencies/proxy-libintl-20080418/include"
+				AdditionalIncludeDirectories="../../../gio,../../..,../../../glib,../../../gmodule,../../../../dependencies/win32/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;G_DISABLE_DEPRECATED;GIO_COMPILATION;GIO_MODULE_DIR=\&quot;gio/modules\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib"
 				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../../dependencies/proxy-libintl-20080418/lib"
+				AdditionalLibraryDirectories="../../../../dependencies/win32/proxy-libintl-20080418/lib"
 				ModuleDefinitionFile="../../../gio/gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -122,7 +122,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../gio,../../..,../../../glib,../../../gmodule,../../../../dependencies/proxy-libintl-20080418/include"
+				AdditionalIncludeDirectories="../../../gio,../../..,../../../glib,../../../gmodule,../../../../dependencies/win32/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;G_DISABLE_DEPRECATED;GIO_COMPILATION;GIO_MODULE_DIR=\&quot;gio/modules\&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -146,7 +146,7 @@
 				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib"
 				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../../dependencies/proxy-libintl-20080418/lib"
+				AdditionalLibraryDirectories="../../../../dependencies/win32/proxy-libintl-20080418/lib"
 				ModuleDefinitionFile="../../../gio/gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -231,6 +231,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gdummyfile.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gemblem.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gemblemedicon.c"
 				>
 			</File>
 			<File
@@ -406,10 +414,34 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\gwin32mount.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gwin32volumemonitor.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\win32\gwin32directorymonitor.c"
 				>
 			</File>
-		</Filter>
+			<File
+				RelativePath="..\..\..\gio\win32\gwinhttpvfs.c"
+				>
+			</File>	
+			<File
+				RelativePath="..\..\..\gio\win32\gwinhttpfile.c"
+				>
+			</File>	
+			<File
+				RelativePath="..\..\..\gio\win32\gwinhttpfileinputstream.c"
+				>
+			</File>	
+			<File
+				RelativePath="..\..\..\gio\win32\gwinhttpfileoutputstream.c"
+				>
+			</File>	
+	</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"

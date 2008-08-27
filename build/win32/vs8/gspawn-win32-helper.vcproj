@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/win32/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/win32/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
