@@ -24,7 +24,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="if exist ..\..\..\config.h goto GLIB_CONFIG&#x0D;&#x0A;copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;:GLIB_CONFIG&#x0D;&#x0A;if exist ..\..\..\glibconfig.h goto CHARSET&#x0D;&#x0A;copy ..\..\..\glibconfig.h.win32 ..\..\..\glibconfig.h&#x0D;&#x0A;:CHARSET&#x0D;&#x0A;if exist ..\..\..\glib\localcharset.c goto END&#x0D;&#x0A;copy ..\..\..\glib\libcharset\localcharset.c ..\..\..\glib\localcharset.c&#x0D;&#x0A;:END&#x0D;&#x0A;"
+				CommandLine="if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;:DONE_CONFIG_H&#x0D;&#x0A;if exist ..\..\..\glibconfig.h goto DONE_GLIBCONFIG_H&#x0D;&#x0A;copy ..\..\..\glibconfig.h.win32 ..\..\..\glibconfig.h&#x0D;&#x0A;:DONE_GLIBCONFIG_H&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../..;../dirent;../../../glib;&quot;../../../../dependencies/proxy-libintl-20080418/include&quot;"
+				AdditionalIncludeDirectories="../../..;../dirent;../../../glib;&quot;../../../../dependencies/win32/proxy-libintl-20080418/include&quot;"
 				PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;WIN32;HAVE_CONFIG_H;GLIB_COMPILATION;GLIB_EXPORTS;G_LOG_DOMAIN=\&quot;Glib\&quot;;G_ENABLE_DEBUG;LINK_SIZE=2;MAX_NAME_SIZE=32;MAX_NAME_COUNT=10000;NEWLINE=-1;POSIX_MALLOC_THRESHOLD=10;MATCH_LIMIT=10000000;MATCH_LIMIT_RECURSION=10000000"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -67,7 +67,7 @@
 				AdditionalDependencies="intl.lib Ws2_32.lib"
 				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;../../../../dependencies/proxy-libintl-20080418/lib&quot;"
+				AdditionalLibraryDirectories="&quot;../../../../dependencies/win32/proxy-libintl-20080418/lib&quot;"
 				ModuleDefinitionFile="../../../glib/glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -261,10 +261,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\glib\gi18n.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\glib\giochannel.c"
 				>
 			</File>
@@ -434,18 +430,14 @@
 				<File
 					RelativePath="..\..\..\glib\libcharset\localcharset.c"
 					>
-				</File>
-			</Filter>
-			<Filter
-				Name="dirent"
-				>
-				<File
-					RelativePath="..\dirent\dirent.c"
-					>
-				</File>
-				<File
-					RelativePath="..\dirent\wdirent.c"
-					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 			<Filter

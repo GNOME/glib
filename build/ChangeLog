@@ -1,3 +1,13 @@
+2008-08-27  Tor Lillqvist  <tml@novell.com>
+
+	* win32/vs8/glib.vcproj: Don't needlessly copy localcharset.c, but
+	compile it where it is in libcharset. Add "win32" directory level
+	to the references to the dependencies folder (which each actual
+	user of the project file probably needs to edit anyway depending
+	on their directory structure). Drop the nonexistent gi18n.c
+	file. Drop dirent as gdir.c includes dirent.h and wdirent.c
+	directly.
+
 2008-08-02  Tor Lillqvist  <tml@novell.com>
 
 	Bug 545954 - 64-bit issue in dirent
