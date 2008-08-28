@@ -201,13 +201,14 @@ main (int argc, char ** argv)
       return 1;
     }
 
-  g_debug ("[parsing] start");
+  g_debug ("[parsing] start, %d includes", 
+	   includedirs ? g_strv_length (includedirs) : 0);
 
   modules = NULL;
   for (i = 0; input[i]; i++)
     {
       GList *mods;
-      mods = g_ir_parse_file (input[i], &error);
+      mods = g_ir_parse_file (input[i], (const char*const*) includedirs, &error);
       
       if (mods == NULL) 
 	{
