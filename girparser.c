@@ -68,14 +68,93 @@ struct _ParseContext
   ParseState state;
   ParseState prev_state;
 
+  const char **includes;
+  
   GList *modules;
+  gboolean prefix_aliases;
   GHashTable *aliases;
 
+  const char *namespace;
   GIrModule *current_module;
   GIrNode *current_node;
   GIrNode *current_typed;
   int type_depth;
 };
+
+static gboolean
+start_alias (GMarkupParseContext *context,
+	     const gchar         *element_name,
+	     const gchar        **attribute_names,
+	     const gchar        **attribute_values,
+	     ParseContext        *ctx,
+	     GError             **error);
+
+static void
+firstpass_start_element_handler (GMarkupParseContext *context,
+				 const gchar         *element_name,
+				 const gchar        **attribute_names,
+				 const gchar        **attribute_values,
+				 gpointer             user_data,
+				 GError             **error)
+{
+  ParseContext *ctx = user_data;
+
+  if (strcmp (element_name, "alias") == 0) 
+    {
+      start_alias (context, element_name, attribute_names, attribute_values,
+		   ctx, error);
+    }
+}
+
+static void
+firstpass_end_element_handler (GMarkupParseContext *context,
+			       const gchar         *element_name,
+			       gpointer             user_data,
+			       GError             **error)
+{
+  ParseContext *ctx = user_data;
+
+}
+
+static GMarkupParser firstpass_parser = 
+{
+  firstpass_start_element_handler,
+  firstpass_end_element_handler,
+  NULL,
+  NULL,
+  NULL,
+};
+
+static char *
+locate_gir (const char *name, const char **extra_paths)
+{
+  const gchar *const *datadirs;
+  const gchar *const *dir;
+  char *girname;
+  char *path = NULL;
+  GSList *link;
+  gboolean firstpass = TRUE;
+      
+  datadirs = g_get_system_data_dirs ();
+      
+  girname = g_strdup_printf ("%s.gir", name);
+  
+  for (dir = datadirs; *dir; dir++) 
+    {
+      path = g_build_filename (*dir, "gir", girname, NULL);
+      if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+	return path;
+      g_free (path);
+      path = NULL;
+      if (firstpass && !*dir)
+	{
+	  firstpass = FALSE;
+	  dir = extra_paths;
+	}
+    }
+  g_free (girname);
+  return path;
+}
 
 #define MISSING_ATTRIBUTE(ctx,error,element,attribute)			        \
   do {                                                                          \
@@ -946,6 +1025,8 @@ start_alias (GMarkupParseContext *context,
   const gchar *name;
   const gchar *target;
   const gchar *type;
+  char *key;
+  char *value;
 
   name = find_attribute ("name", attribute_names, attribute_values);
   if (name == NULL)
@@ -961,7 +1042,12 @@ start_alias (GMarkupParseContext *context,
       return FALSE;
     }
 
-  g_hash_table_insert (ctx->aliases, g_strdup (name), g_strdup (target));
+  if (ctx->prefix_aliases)
+    key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+  else
+    key = g_strdup (name);
+  
+  g_hash_table_insert (ctx->aliases, key, g_strdup (target));
 
   return TRUE;
 }
@@ -1847,6 +1933,63 @@ start_discriminator (GMarkupParseContext *context,
 
   return FALSE;
 }
+
+static gboolean
+parse_include (GMarkupParseContext *context,
+	       ParseContext        *ctx,
+	       const char          *name,
+	       GError             **error)
+{
+  ParseContext sub_ctx = { 0 };
+  GMarkupParseContext *sub_context;
+  gchar *buffer;
+  gsize length;
+  char *girpath;
+  
+  girpath = locate_gir (name, ctx->includes);
+
+  if (girpath == NULL)
+    {
+      g_set_error (error,
+		   G_MARKUP_ERROR,
+		   G_MARKUP_ERROR_INVALID_CONTENT,
+		   "Could not find GIR file '%s'; check XDG_DATA_DIRS or use --includedir",
+		   name);
+      return FALSE;
+    }
+
+  g_debug ("Parsing include %s", girpath);
+
+  if (!g_file_get_contents (girpath, &buffer, &length, error))
+    {
+      g_free (girpath);
+      return FALSE;
+    }
+  g_free (girpath);
+
+  sub_ctx.state = STATE_START;
+  sub_ctx.prefix_aliases = TRUE;
+  sub_ctx.namespace = name;
+  sub_ctx.aliases = ctx->aliases;
+  sub_ctx.type_depth = 0;
+
+  context = g_markup_parse_context_new (&firstpass_parser, 0, &sub_ctx, NULL);
+	  
+  if (!g_markup_parse_context_parse (context, buffer, length, error))
+    {
+      g_free (buffer);
+      return FALSE;
+    }
+	  
+  if (!g_markup_parse_context_end_parse (context, error))
+    {
+      g_free (buffer);
+      return FALSE;
+    }
+	  
+  g_markup_parse_context_free (context);
+  return TRUE;
+}
   
 extern GLogLevelFlags logged_levels;
 
@@ -1972,6 +2115,19 @@ start_element_handler (GMarkupParseContext *context,
       if (strcmp (element_name, "include") == 0 &&
 	  ctx->state == STATE_REPOSITORY)
 	{
+	  const gchar *name;
+	  
+	  name = find_attribute ("name", attribute_names, attribute_values);
+
+	  if (name == NULL)
+	    {
+	      MISSING_ATTRIBUTE (context, error, element_name, "name");
+	      break;
+	    }
+
+	  if (!parse_include (context, ctx, name, error))
+	    break;
+
 	  state_switch (ctx, STATE_INCLUDE);
 	  goto out;
 	}
@@ -2464,44 +2620,6 @@ cleanup (GMarkupParseContext *context,
   ctx->current_module = NULL;
 }
 
-static void
-firstpass_start_element_handler (GMarkupParseContext *context,
-				 const gchar         *element_name,
-				 const gchar        **attribute_names,
-				 const gchar        **attribute_values,
-				 gpointer             user_data,
-				 GError             **error)
-{
-  ParseContext *ctx = user_data;
-
-  if (strcmp (element_name, "alias") == 0) 
-    {
-      start_alias (context, element_name, attribute_names, attribute_values,
-		   ctx, error);
-    }
-}
-
-static void
-firstpass_end_element_handler (GMarkupParseContext *context,
-			       const gchar         *element_name,
-			       gpointer             user_data,
-			       GError             **error)
-{
-  ParseContext *ctx = user_data;
-
-}
-
-
-static GMarkupParser firstpass_parser = 
-{
-  firstpass_start_element_handler,
-  firstpass_end_element_handler,
-  NULL,
-  NULL,
-  NULL,
-};
-
-
 static GMarkupParser parser = 
 {
   start_element_handler,
@@ -2512,7 +2630,8 @@ static GMarkupParser parser =
 };
 
 GList * 
-g_ir_parse_string (const gchar  *buffer, 
+g_ir_parse_string (const char   *namespace,
+		   const gchar  *buffer, 
 		   gssize        length,
 		   GError      **error)
 {
@@ -2520,6 +2639,8 @@ g_ir_parse_string (const gchar  *buffer,
   GMarkupParseContext *context;
 
   ctx.state = STATE_START;
+  ctx.prefix_aliases = FALSE;
+  ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.type_depth = 0;
 
@@ -2530,6 +2651,8 @@ g_ir_parse_string (const gchar  *buffer,
 
   if (!g_markup_parse_context_end_parse (context, error))
     goto out;
+
+  g_markup_parse_context_free (context);
   
   context = g_markup_parse_context_new (&parser, 0, &ctx, NULL);
   if (!g_markup_parse_context_parse (context, buffer, length, error))
@@ -2554,13 +2677,33 @@ g_ir_parse_file (const gchar  *filename,
   gchar *buffer;
   gsize length;
   GList *modules;
+  const char *slash;
+  char *namespace;
+
+  if (!g_str_has_suffix (filename, ".gir"))
+    {
+      g_set_error (error,
+		   G_MARKUP_ERROR,
+		   G_MARKUP_ERROR_INVALID_CONTENT,
+		   "Expected filename to end with '.gir'");
+      return NULL;
+    }
 
   g_debug ("[parsing] filename %s", filename);
+
+  slash = g_strrstr (filename, "/");
+  if (!slash)
+    namespace = g_strdup (filename);
+  else
+    namespace = g_strdup (slash+1);
+  namespace[strlen(namespace)-4] = '\0';
 
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return NULL;
   
-  modules = g_ir_parse_string (buffer, length, error);
+  modules = g_ir_parse_string (namespace, buffer, length, error);
+
+  g_free (namespace);
 
   g_free (buffer);
 
