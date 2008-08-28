@@ -1515,7 +1515,7 @@ if test "x$enable_selinux" != "xno"; then
 
  AC_CHECK_LIB(selinux, is_selinux_enabled,
    [AC_CHECK_HEADERS(selinux/selinux.h,
-     [AC_SEARCH_LIBS(lgetfilecon_raw, selinux, 
+     [AC_CHECK_LIB(selinux, lgetfilecon_raw, 
        [AC_DEFINE(HAVE_SELINUX, 1, [Define to 1 if libselinux is available])
         SELINUX_LIBS="-lselinux"
         msg_selinux=yes])

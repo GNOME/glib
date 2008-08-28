@@ -1,3 +1,8 @@
+2008-08-28  Matthias Clasen  <mclsaen@redhat.com>
+
+	* configure.in: Change libselinux detection to not link libglib
+	against it.
+
 2008-08-28  Michael Natterer  <mitch@imendio.com>
 
 	* glib/gstrfuncs.c (g_parse_long_long): make "endptr" const since
