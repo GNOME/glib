@@ -559,7 +559,6 @@ AC_CHECK_FUNCS(mmap)
 AC_CHECK_FUNCS(posix_memalign)
 AC_CHECK_FUNCS(memalign)
 AC_CHECK_FUNCS(valloc)
-AC_CHECK_FUNCS(memmem)
 
 AC_CHECK_FUNCS(atexit on_exit)
 

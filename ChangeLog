@@ -1,3 +1,10 @@
+2008-08-28  Ryan Lortie  <desrt@desrt.ca>
+
+	[REVERT] Bug 548612 – g_strstr_len() should use memmem when available
+
+	* configure.in:
+	* glib/gstrfuncs.c (g_strstr_len): revert use of memmem (see bug)
+
 2008-08-28  Matthias Clasen  <mclsaen@redhat.com>
 
 	* configure.in: Change libselinux detection to not link libglib
