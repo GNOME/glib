@@ -1,3 +1,13 @@
+2008-08-28  Michael Natterer  <mitch@imendio.com>
+
+	* glib/gstrfuncs.c (g_parse_long_long): make "endptr" const since
+	it's always a pointer into the const string passed. Remove some
+	casting to (gchar*) in this function.
+
+	(g_ascii_strtoull)
+	(g_ascii_strtoll): cast "endptr" to (const gchar**) here when
+	passing it to above function.
+
 2008-08-28  Bastien Nocera  <hadess@hadess.net>
 
 	Bug 548612 – g_strstr_len() should use memmem when available

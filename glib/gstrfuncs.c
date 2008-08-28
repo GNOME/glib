@@ -627,7 +627,7 @@ g_ascii_formatd (gchar       *buffer,
 
 static guint64
 g_parse_long_long (const gchar  *nptr,
-		   gchar       **endptr,
+		   const gchar **endptr,
 		   guint         base,
 		   gboolean     *negative)
 {
@@ -729,7 +729,7 @@ g_parse_long_long (const gchar  *nptr,
   /* Store in ENDPTR the address of one character
      past the last character we converted.  */
   if (endptr)
-    *endptr = (gchar*) s;
+    *endptr = s;
   
   if (G_UNLIKELY (overflow))
     {
@@ -748,10 +748,10 @@ g_parse_long_long (const gchar  *nptr,
     {
       if (save - nptr >= 2 && TOUPPER (save[-1]) == 'X'
 	  && save[-2] == '0')
-	*endptr = (gchar*) &save[-1];
+	*endptr = &save[-1];
       else
 	/*  There was no number to convert.  */
-	*endptr = (gchar*) nptr;
+	*endptr = nptr;
     }
   return 0;
 }
@@ -792,7 +792,7 @@ g_ascii_strtoull (const gchar *nptr,
   gboolean negative;
   guint64 result;
 
-  result = g_parse_long_long (nptr, endptr, base, &negative);
+  result = g_parse_long_long (nptr, (const gchar **) endptr, base, &negative);
 
   /* Return the result of the appropriate sign.  */
   return negative ? -result : result;
@@ -834,7 +834,7 @@ g_ascii_strtoll (const gchar *nptr,
   gboolean negative;
   guint64 result;
 
-  result = g_parse_long_long (nptr, endptr, base, &negative);
+  result = g_parse_long_long (nptr, (const gchar **) endptr, base, &negative);
 
   if (negative && result > (guint64) G_MININT64)
     {
