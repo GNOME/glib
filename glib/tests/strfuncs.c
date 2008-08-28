@@ -556,10 +556,19 @@ test_strstr (void)
   res = g_strstr_len (haystack, 6, "FooBarFooBarFooBar");
   g_assert (res == NULL);
 
+  res = g_strstr_len (haystack, 3, "Bar");
+  g_assert (res == NULL);
+
   res = g_strstr_len (haystack, 6, "");
   g_assert (res == haystack);
+  g_assert_cmpstr (res, ==, "FooBarFooBarFoo");
 
   res = g_strstr_len (haystack, 6, "Bar");
+  g_assert (res == haystack + 3);
+  g_assert_cmpstr (res, ==, "BarFooBarFoo");
+
+  res = g_strstr_len (haystack, -1, "Bar");
+  g_assert (res == haystack + 3);
   g_assert_cmpstr (res, ==, "BarFooBarFoo");
 
   /* strrstr */
@@ -571,8 +580,10 @@ test_strstr (void)
 
   res = g_strrstr (haystack, "");
   g_assert (res == haystack);
+  g_assert_cmpstr (res, ==, "FooBarFooBarFoo");
 
   res = g_strrstr (haystack, "Bar");
+  g_assert (res == haystack + 9);
   g_assert_cmpstr (res, ==, "BarFoo");
 
   /* strrstr_len */
@@ -582,8 +593,25 @@ test_strstr (void)
   res = g_strrstr_len (haystack, 14, "FooBarFooBarFooBar");
   g_assert (res == NULL);
 
+  res = g_strrstr_len (haystack, 3, "Bar");
+  g_assert (res == NULL);
+
   res = g_strrstr_len (haystack, 14, "BarFoo");
+  g_assert (res == haystack + 3);
   g_assert_cmpstr (res, ==, "BarFooBarFoo");
+
+  res = g_strrstr_len (haystack, 15, "BarFoo");
+  g_assert (res == haystack + 9);
+  g_assert_cmpstr (res, ==, "BarFoo");
+
+  res = g_strrstr_len (haystack, -1, "BarFoo");
+  g_assert (res == haystack + 9);
+  g_assert_cmpstr (res, ==, "BarFoo");
+
+  /* test case for strings with \0 in the middle */
+  *(haystack + 7) = '\0';
+  res = g_strstr_len (haystack, 15, "BarFoo");
+  g_assert (res == NULL);
 
   g_free (haystack);
 }

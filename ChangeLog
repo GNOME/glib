@@ -2,6 +2,18 @@
 
 	Bug 548612 – g_strstr_len() should use memmem when available
 
+	* glib/tests/strfuncs.c (test_strstr):
+	* tests/string-test.c (main): Patch by Paolo Borelli
+	<pborelli@katamail.com> to move the tests to the right place,
+	and add more tests
+
+	* glib/gstrfuncs.c (g_strstr_len): Fix problem with memmem ignoring
+	nul-terminators in strings, and using the haystack_len instead
+
+2008-08-28  Bastien Nocera  <hadess@hadess.net>
+
+	Bug 548612 – g_strstr_len() should use memmem when available
+
 	* configure.in: detect whether memmem is available in the C library
 	* glib/gstrfuncs.c (g_strstr_len): use memmem for g_strstr_len() if
 	available in it's available, as it could be optimised by the C library

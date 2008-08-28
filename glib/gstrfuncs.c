@@ -2603,7 +2603,10 @@ g_strstr_len (const gchar *haystack,
   else
     {
 #ifdef HAVE_MEMMEM
-      return memmem (haystack, haystack_len, needle, strlen (needle));
+      size_t len;
+
+      len = MIN(haystack_len, strlen (haystack));
+      return memmem (haystack, len, needle, strlen (needle));
 #else
       const gchar *p = haystack;
       gsize needle_len = strlen (needle);
