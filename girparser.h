@@ -27,9 +27,11 @@ G_BEGIN_DECLS
 
 
 GList *g_ir_parse_string (const gchar  *buffer, 
+			  const gchar *const *includes,
 			  gssize        length,
 			  GError      **error);
 GList *g_ir_parse_file   (const gchar  *filename,
+			  const gchar *const *includes,
 			  GError      **error);
 
 

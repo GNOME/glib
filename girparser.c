@@ -68,7 +68,7 @@ struct _ParseContext
   ParseState state;
   ParseState prev_state;
 
-  const char **includes;
+  const char * const*includes;
   
   GList *modules;
   gboolean prefix_aliases;
@@ -126,7 +126,7 @@ static GMarkupParser firstpass_parser =
 };
 
 static char *
-locate_gir (const char *name, const char **extra_paths)
+locate_gir (const char *name, const char * const* extra_paths)
 {
   const gchar *const *datadirs;
   const gchar *const *dir;
@@ -146,11 +146,14 @@ locate_gir (const char *name, const char **extra_paths)
 	return path;
       g_free (path);
       path = NULL;
-      if (firstpass && !*dir)
-	{
-	  firstpass = FALSE;
-	  dir = extra_paths;
-	}
+    }
+  for (dir = extra_paths; *dir; dir++) 
+    {
+      path = g_build_filename (*dir, girname, NULL);
+      if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+	return path;
+      g_free (path);
+      path = NULL;
     }
   g_free (girname);
   return path;
@@ -1968,6 +1971,7 @@ parse_include (GMarkupParseContext *context,
   g_free (girpath);
 
   sub_ctx.state = STATE_START;
+  sub_ctx.includes = ctx->includes;
   sub_ctx.prefix_aliases = TRUE;
   sub_ctx.namespace = name;
   sub_ctx.aliases = ctx->aliases;
@@ -2630,7 +2634,8 @@ static GMarkupParser parser =
 };
 
 GList * 
-g_ir_parse_string (const char   *namespace,
+g_ir_parse_string (const gchar  *namespace,
+		   const gchar *const *includes,
 		   const gchar  *buffer, 
 		   gssize        length,
 		   GError      **error)
@@ -2639,6 +2644,7 @@ g_ir_parse_string (const char   *namespace,
   GMarkupParseContext *context;
 
   ctx.state = STATE_START;
+  ctx.includes = includes;
   ctx.prefix_aliases = FALSE;
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
@@ -2672,6 +2678,7 @@ g_ir_parse_string (const char   *namespace,
 
 GList *
 g_ir_parse_file (const gchar  *filename,
+		 const gchar *const *includes,
 		 GError      **error)
 {
   gchar *buffer;
@@ -2701,7 +2708,7 @@ g_ir_parse_file (const gchar  *filename,
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return NULL;
   
-  modules = g_ir_parse_string (namespace, buffer, length, error);
+  modules = g_ir_parse_string (namespace, includes, buffer, length, error);
 
   g_free (namespace);
 
