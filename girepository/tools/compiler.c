@@ -36,6 +36,7 @@
 
 gboolean code = FALSE;
 gboolean no_init = FALSE;
+gchar **includedirs = NULL;
 gchar **input = NULL;
 gchar *output = NULL;
 gchar *mname = NULL;
@@ -160,6 +161,7 @@ static GOptionEntry options[] =
 {
   { "code", 0, 0, G_OPTION_ARG_NONE, &code, "emit C code", NULL },
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
+  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL }, 
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
   { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib, "shared library", "FILE" }, 
