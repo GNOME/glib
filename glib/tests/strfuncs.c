@@ -1048,6 +1048,160 @@ test_strtoll (void)
   check_int64 ("-001", "", 10, -1, 0);
 }
 
+static void
+test_bounds (void)
+{
+  GMappedFile *file, *before, *after;
+  char buffer[4097];
+  char *tmp, *tmp2;
+  char **array;
+  char *string;
+
+  /* if we allocate the file between two others and then free those
+   * other two, then hopefully we end up with unmapped memory on either
+   * side.
+   */
+  before = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
+  file = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
+  after = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
+  g_mapped_file_free (before);
+  g_mapped_file_free (after);
+
+  g_assert (file != NULL);
+  g_assert_cmpint (g_mapped_file_get_length (file), ==, 4096);
+  string = g_mapped_file_get_contents (file);
+
+  /* ensure they're all non-nul */
+  g_assert (memchr (string, '\0', 4096) == NULL);
+
+  /* test set 1: ensure that nothing goes past its maximum length, even in
+   *             light of a missing nul terminator.
+   *
+   * we try to test all of the 'n' functions here.
+   */
+  tmp = g_strndup (string, 4096);
+  g_assert_cmpint (strlen (tmp), ==, 4096);
+  g_free (tmp);
+
+  /* found no bugs in gnome, i hope :) */
+  g_assert (g_strstr_len (string, 4096, "BUGS") == NULL);
+  g_strstr_len (string, 4096, "B");
+  g_strstr_len (string, 4096, ".");
+  g_strstr_len (string, 4096, "");
+
+  g_strrstr_len (string, 4096, "BUGS");
+  g_strrstr_len (string, 4096, "B");
+  g_strrstr_len (string, 4096, ".");
+  g_strrstr_len (string, 4096, "");
+
+  g_ascii_strdown (string, 4096);
+  g_ascii_strdown (string, 4096);
+  g_ascii_strup (string, 4096);
+  g_ascii_strup (string, 4096);
+
+  g_ascii_strncasecmp (string, string, 4096);
+
+  tmp = g_markup_escape_text (string, 4096);
+  g_free (tmp);
+
+  /* test set 2: ensure that nothing reads even one byte past a '\0'.
+   */
+  g_assert_cmpint (string[4095], ==, '\n');
+  string[4095] = '\0';
+
+  tmp = g_strdup (string);
+  g_assert_cmpint (strlen (tmp), ==, 4095);
+  g_free (tmp);
+
+  tmp = g_strndup (string, 10000);
+  g_assert_cmpint (strlen (tmp), ==, 4095);
+  g_free (tmp);
+
+  g_stpcpy (buffer, string);
+  g_assert_cmpint (strlen (buffer), ==, 4095);
+
+  g_strstr_len (string, 10000, "BUGS");
+  g_strstr_len (string, 10000, "B");
+  g_strstr_len (string, 10000, ".");
+  g_strstr_len (string, 10000, "");
+
+  g_strrstr (string, "BUGS");
+  g_strrstr (string, "B");
+  g_strrstr (string, ".");
+  g_strrstr (string, "");
+
+  g_strrstr_len (string, 10000, "BUGS");
+  g_strrstr_len (string, 10000, "B");
+  g_strrstr_len (string, 10000, ".");
+  g_strrstr_len (string, 10000, "");
+
+  g_str_has_prefix (string, "this won't do very much...");
+  g_str_has_suffix (string, "but maybe this will...");
+  g_str_has_suffix (string, "HMMMM.");
+  g_str_has_suffix (string, "MMMM.");
+  g_str_has_suffix (string, "M.");
+
+  g_strlcpy (buffer, string, sizeof buffer);
+  g_assert_cmpint (strlen (buffer), ==, 4095);
+  g_strlcpy (buffer, string, sizeof buffer);
+  buffer[0] = '\0';
+  g_strlcat (buffer, string, sizeof buffer);
+  g_assert_cmpint (strlen (buffer), ==, 4095);
+
+  tmp = g_strdup_printf ("<%s>", string);
+  g_assert_cmpint (strlen (tmp), ==, 4095 + 2);
+  g_free (tmp);
+
+  g_ascii_strdown (string, -1);
+  g_ascii_strdown (string, -1);
+  g_ascii_strup (string, -1);
+  g_ascii_strup (string, -1);
+
+  g_ascii_strcasecmp (string, string);
+  g_ascii_strncasecmp (string, string, 10000);
+
+  g_strreverse (string);
+  g_strreverse (string);
+  g_strchug (string);
+  g_strchomp (string);
+  g_strstrip (string);
+  g_assert_cmpint (strlen (string), ==, 4095);
+
+  g_strdelimit (string, "M", 'N');
+  g_strcanon (string, " N.", ':');
+  g_assert_cmpint (strlen (string), ==, 4095);
+
+  array = g_strsplit (string, ".", -1);
+  tmp = g_strjoinv (".", array);
+  g_strfreev (array);
+
+  g_assert_cmpint (strlen (tmp), ==, 4095);
+  g_assert (memcmp (tmp, string, 4095) == 0);
+  g_free (tmp);
+
+  tmp = g_strconcat (string, string, string, NULL);
+  g_assert_cmpint (strlen (tmp), ==, 4095 * 3);
+  g_free (tmp);
+
+  tmp = g_strjoin ("!", string, string, NULL);
+  g_assert_cmpint (strlen (tmp), ==, 4095 + 1 + 4095);
+  g_free (tmp);
+
+  tmp = g_markup_escape_text (string, -1);
+  g_free (tmp);
+
+  tmp = g_markup_printf_escaped ("%s", string);
+  g_free (tmp);
+
+  tmp = g_strescape (string, NULL);
+  tmp2 = g_strcompress (tmp);
+  g_assert_cmpstr (string, ==, tmp2);
+  g_free (tmp2);
+  g_free (tmp);
+
+  g_mapped_file_free (file);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1076,6 +1230,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strv-length", test_strv_length);
   g_test_add_func ("/strfuncs/strtod", test_strtod);
   g_test_add_func ("/strfuncs/strtoull-strtoll", test_strtoll);
+  g_test_add_func ("/strfuncs/bounds-check", test_bounds);
 
   return g_test_run();
 }

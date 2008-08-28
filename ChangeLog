@@ -2,6 +2,16 @@
 
 	[REVERT] Bug 548612 – g_strstr_len() should use memmem when available
 
+	* glib/gstrfuncs.c (g_strstr_len): fix off-by-one memory access error
+	* glib/tests/strfuncs.c (test_bounds): add some new test cases that
+	would catch problems like this
+	* glib/tests/4096-random-bytes: test data for the previous
+	* glib/tests/Makefile.am: add previous to EXTRA_DIST
+	
+2008-08-28  Ryan Lortie  <desrt@desrt.ca>
+
+	[REVERT] Bug 548612 – g_strstr_len() should use memmem when available
+
 	* configure.in:
 	* glib/gstrfuncs.c (g_strstr_len): revert use of memmem (see bug)
 

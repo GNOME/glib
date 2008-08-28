@@ -2615,7 +2615,7 @@ g_strstr_len (const gchar *haystack,
       
       end = haystack + haystack_len - needle_len;
       
-      while (*p && p <= end)
+      while (p <= end && *p)
 	{
 	  for (i = 0; i < needle_len; i++)
 	    if (p[i] != needle[i])

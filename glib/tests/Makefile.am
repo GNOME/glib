@@ -41,3 +41,6 @@ check-am: gtester-xmllint-check
 
 CLEANFILES = \
 	tmpsample.xml
+
+EXTRA_DIST += \
+	4096-random-bytes
