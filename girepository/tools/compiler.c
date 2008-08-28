@@ -24,6 +24,11 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
+
 #include "girmodule.h"
 #include "girnode.h"
 #include "girparser.h"
@@ -96,7 +101,12 @@ write_out_typelib (gchar *prefix,
   FILE *file;
 
   if (output == NULL)
-    file = stdout;
+    {
+      file = stdout;
+#ifdef G_OS_WIN32
+      setmode (fileno (file), _O_BINARY);
+#endif
+    }
   else
     {
       gchar *filename;
@@ -105,7 +115,7 @@ write_out_typelib (gchar *prefix,
 	filename = g_strdup_printf ("%s-%s", prefix, output);  
       else
 	filename = g_strdup (output);
-      file = g_fopen (filename, "w");
+      file = g_fopen (filename, "wb");
 
       if (file == NULL)
 	{
