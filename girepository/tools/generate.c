@@ -107,7 +107,7 @@ write_type_info (const gchar *namespace,
   else if (tag == 22)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GList");
+      g_fprintf (file, "GLib.List");
       if (type)
 	{
 	  g_fprintf (file, "<"); 
@@ -119,7 +119,7 @@ write_type_info (const gchar *namespace,
   else if (tag == 23)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GSList");
+      g_fprintf (file, "GLib.SList");
       if (type)
 	{
 	  g_fprintf (file, "<"); 
@@ -131,7 +131,7 @@ write_type_info (const gchar *namespace,
   else if (tag == 24)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GHashTable");
+      g_fprintf (file, "GLib.HashTable");
       if (type)
 	{
 	  g_fprintf (file, "<"); 
@@ -148,7 +148,7 @@ write_type_info (const gchar *namespace,
     {
       gint n;
 
-      g_fprintf (file, "GError");
+      g_fprintf (file, "GLib.Error");
       n = g_type_info_get_n_error_domains (info);
       if (n > 0)
 	{
