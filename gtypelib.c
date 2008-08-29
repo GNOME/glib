@@ -1246,11 +1246,12 @@ validate_struct_blob (ValidateContext *ctx,
 }
 
 static gboolean
-validate_enum_blob (GTypelib     *typelib,
+validate_enum_blob (ValidateContext *ctx,
 		    guint32        offset,
 		    guint16        blob_type,
 		    GError       **error)
 {
+  GTypelib *typelib = ctx->typelib;
   EnumBlob *blob;
   ValueBlob *v1, *v2;
   gint i, j; 
@@ -1307,6 +1308,8 @@ validate_enum_blob (GTypelib     *typelib,
 		   "The buffer is too short");
       return FALSE;
     }
+
+  push_context (ctx, get_string_nofail (typelib, blob->name));
   
   for (i = 0; i < blob->n_values; i++)
     {
@@ -1337,6 +1340,8 @@ validate_enum_blob (GTypelib     *typelib,
 	}
 #endif      
     }
+
+  pop_context (ctx);
   
   return TRUE;
 }
@@ -1382,7 +1387,7 @@ validate_object_blob (ValidateContext *ctx,
   
   if (!validate_name (typelib, "object", typelib->data, blob->name, error))
     return FALSE; 
-  
+
   if (blob->parent > header->n_entries)
     {
       g_set_error (error,
@@ -1457,6 +1462,8 @@ validate_object_blob (ValidateContext *ctx,
 
   offset2 += 2 * (blob->n_interfaces %2);
 
+  push_context (ctx, get_string_nofail (typelib, blob->name));
+  
   for (i = 0; i < blob->n_fields; i++, offset2 += sizeof (FieldBlob))
     {
       if (!validate_field_blob (typelib, offset2, error))
@@ -1492,6 +1499,8 @@ validate_object_blob (ValidateContext *ctx,
       if (!validate_constant_blob (typelib, offset2, error))
 	return FALSE;
     }
+
+  pop_context (ctx);
 
   return TRUE;
 }
@@ -1586,6 +1595,8 @@ validate_interface_blob (ValidateContext *ctx,
 
   offset2 += 2 * (blob->n_prerequisites % 2);
 
+  push_context (ctx, get_string_nofail (typelib, blob->name));
+  
   for (i = 0; i < blob->n_properties; i++, offset2 += sizeof (PropertyBlob))
     {
       if (!validate_property_blob (typelib, offset2, error))
@@ -1615,6 +1626,8 @@ validate_interface_blob (ValidateContext *ctx,
       if (!validate_constant_blob (typelib, offset2, error))
 	return FALSE;
     }
+
+  pop_context (ctx);
 
   return TRUE;
 }
@@ -1671,7 +1684,7 @@ validate_blob (ValidateContext *ctx,
       break;
     case BLOB_TYPE_ENUM:
     case BLOB_TYPE_FLAGS:
-      if (!validate_enum_blob (typelib, offset, common->blob_type, error))
+      if (!validate_enum_blob (ctx, offset, common->blob_type, error))
 	return FALSE;
       break;
     case BLOB_TYPE_OBJECT:
