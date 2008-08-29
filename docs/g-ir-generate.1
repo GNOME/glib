@@ -1,0 +1,29 @@
+%.TH "g-ir-generate" 1
+.SH NAME
+g-ir-generate \- typelib generator
+.SH SYNOPSIS
+.B g-ir-generate
+[OPTION...] FILES...
+.SH DESCRIPTION
+g-idl-generate is an GIR generator, using the repository API. It generates
+GIR files from a raw typelib or in a shared library (--shlib).
+The output will be written to standard output unless the --output 
+is specified.
+.SH OPTIONS
+.TP
+.B \---help
+Show help options
+.TP
+.B \, ---shlib=FILENAME
+The shared library to read the symbols from.
+.TP
+.B \, ---output=FILENAME
+Save the resulting output in FILENAME.
+.TP
+.SH BUGS
+Report bugs at http://bugzilla.gnome.org/ in the glib product and
+introspection component.
+.SH HOMEPAGE and CONTACT
+http://live.gnome.org/GObjectIntrospection
+.SH AUTHORS
+Mattias Clasen
