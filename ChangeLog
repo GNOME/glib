@@ -1,6 +1,14 @@
 2008-08-28  Ryan Lortie  <desrt@desrt.ca>
 
-	[REVERT] Bug 548612 – g_strstr_len() should use memmem when available
+	Fixup for test case in previous commit.
+
+	* glib/tests/strfuncs.c: don't fail if we can't open the test data.
+	This happens if $(builddir) != $(srcdir) (like when doing 'make
+	distcheck').  Quick workaround for now until #549783 can be fixed.
+
+2008-08-28  Ryan Lortie  <desrt@desrt.ca>
+
+	Bug 548612 – g_strstr_len() should use memmem when available
 
 	* glib/gstrfuncs.c (g_strstr_len): fix off-by-one memory access error
 	* glib/tests/strfuncs.c (test_bounds): add some new test cases that
