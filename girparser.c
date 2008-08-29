@@ -1086,12 +1086,27 @@ start_alias (GMarkupParseContext *context,
       return FALSE;
     }
 
+  value = g_strdup (target);
   if (ctx->prefix_aliases)
-    key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+    {
+      key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+      if (!strchr (target, '.'))
+	{
+	  const BasicTypeInfo *basic = parse_basic (target);
+	  if (!basic)
+	    {
+	      g_free (value);
+	      /* For non-basic types, re-qualify the interface */
+	      value = g_strdup_printf ("%s.%s", ctx->namespace, target);
+	    }
+	}
+    }
   else
-    key = g_strdup (name);
+    {
+      key = g_strdup (name);
+    }
   
-  g_hash_table_insert (ctx->aliases, key, g_strdup (target));
+  g_hash_table_insert (ctx->aliases, key, value);
 
   return TRUE;
 }
@@ -2213,9 +2228,8 @@ start_element_handler (GMarkupParseContext *context,
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 
 	      state_switch (ctx, STATE_NAMESPACE);
+	      goto out;
 	    }
-
-	  goto out;
 	}
       break;
 
@@ -2690,6 +2704,7 @@ g_ir_parse_string (const gchar  *namespace,
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.type_depth = 0;
+  ctx.current_module = NULL;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &ctx, NULL);
 
