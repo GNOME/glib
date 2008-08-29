@@ -1962,7 +1962,7 @@ _g_typelib_init (GTypelib *typelib)
             }
         }
      
-      if (typelib->module == NULL)
+      if (typelib->module == NULL && shlib != NULL)
         {
 	  GString *shlib_full;
 
