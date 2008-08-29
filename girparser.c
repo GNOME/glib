@@ -337,22 +337,26 @@ parse_type_internal (gchar *str, gchar **rest)
 
   if (i < n_basic)
     /* found a basic type */;
-  else if (g_str_has_prefix (*rest, "GList") ||
-	   g_str_has_prefix (*rest, "GSList"))
+  else if (g_str_has_prefix (*rest, "GLib.List") ||
+	   g_str_has_prefix (*rest, "GLib.SList") ||
+	   g_str_has_prefix (*rest, "List") ||
+	   g_str_has_prefix (*rest, "SList"))
     {
-      if (g_str_has_prefix (*rest, "GList"))
+      if (g_str_has_prefix (*rest, "GLib."))
+	*rest += strlen ("GLib.");
+      if (g_str_has_prefix (*rest, "List"))
 	{
 	  type->tag = GI_TYPE_TAG_GLIST;
 	  type->is_glist = TRUE;
 	  type->is_pointer = TRUE;
-	  *rest += strlen ("GList");
+	  *rest += strlen ("List");
 	}
       else
 	{
 	  type->tag = GI_TYPE_TAG_GSLIST;
 	  type->is_gslist = TRUE;
 	  type->is_pointer = TRUE;
-	  *rest += strlen ("GSList");
+	  *rest += strlen ("SList");
 	}
       
       *rest = g_strchug (*rest);
@@ -376,12 +380,16 @@ parse_type_internal (gchar *str, gchar **rest)
 	  type->parameter_type1 = create_pointer ();
 	}
     }
-  else if (g_str_has_prefix (*rest, "GHashTable"))
+  else if (g_str_has_prefix (*rest, "HashTable") ||
+	   g_str_has_prefix (*rest, "GLib.HashTable"))
     {
+      if (g_str_has_prefix (*rest, "GLib."))
+	*rest += strlen ("GLib.");
+
       type->tag = GI_TYPE_TAG_GHASH;
       type->is_ghashtable = TRUE;
       type->is_pointer = TRUE;
-      *rest += strlen ("GHashTable");
+      *rest += strlen ("HashTable");
       
       *rest = g_strchug (*rest);
       
@@ -414,8 +422,12 @@ parse_type_internal (gchar *str, gchar **rest)
 	}
 
     }
-  else if (g_str_has_prefix (*rest, "GError"))
+  else if (g_str_has_prefix (*rest, "GLib.Error")
+	   || g_str_has_prefix (*rest, "Error"))
     {
+      if (g_str_has_prefix (*rest, "GLib."))
+	*rest += strlen ("GLib.");
+
       type->tag = GI_TYPE_TAG_ERROR;
       type->is_error = TRUE;
       type->is_pointer = TRUE;
