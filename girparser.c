@@ -216,20 +216,10 @@ state_switch (ParseContext *ctx, ParseState newstate)
   ctx->state = newstate;
 }
 
-static GIrNodeType * parse_type_internal (gchar *str, gchar **rest);
+static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib);
 
 static GIrNodeType *
-create_pointer ()
-{
-  char *pointer = g_strdup ("any");
-  char *pointer_rest;
-  GIrNodeType *ret = parse_type_internal (pointer, &pointer_rest);
-  g_free (pointer);
-  return ret;
-}
-
-static GIrNodeType *
-parse_type_internal (gchar *str, gchar **rest)
+parse_type_internal (const gchar *str, char **next, gboolean in_glib)
 {
   gint i;
 
@@ -304,175 +294,186 @@ parse_type_internal (gchar *str, gchar **rest)
   };  
 
   gint n_basic = G_N_ELEMENTS (basic);
-  gchar *start, *end;
+  gchar *temporary_type = NULL;
+  const gchar *start;
+  const gchar *end;
   
   GIrNodeType *type;
   
   type = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
   
-  str = g_strstrip (str);
-
   type->unparsed = g_strdup (str);
- 
-  *rest = str;
+
+  if (in_glib)
+    {
+      if (g_str_has_prefix (str, "List<") ||
+	  strcmp (str, "List") == 0)
+	{
+	  temporary_type = g_strdup_printf ("GLib.List%s", str + 4);
+	  str = temporary_type;
+	}
+      else if (g_str_has_prefix (str, "SList<") ||
+	  strcmp (str, "SList") == 0)
+	{
+	  temporary_type = g_strdup_printf ("GLib.SList%s", str + 5);
+	  str = temporary_type;
+	}
+      else if (g_str_has_prefix (str, "HashTable<") ||
+	  strcmp (str, "HashTable") == 0)
+	{
+	  temporary_type = g_strdup_printf ("GLib.HashTable%s", str + 9);
+	  str = temporary_type;
+	}
+      else if (g_str_has_prefix (str, "Error<") ||
+	  strcmp (str, "Error") == 0)
+	{
+	  temporary_type = g_strdup_printf ("GLib.Error%s", str + 5);
+	  str = temporary_type;
+	}
+    }
+
   for (i = 0; i < n_basic; i++)
     {
-      if (g_str_has_prefix (*rest, basic[i].str))
+      if (g_str_has_prefix (str, basic[i].str))
 	{
 	  type->is_basic = TRUE;
 	  type->tag = basic[i].tag;
  	  type->is_pointer = basic[i].pointer;
 
-	  *rest += strlen(basic[i].str);
-	  *rest = g_strchug (*rest);
-	  if (**rest == '*' && !type->is_pointer)
+	  str += strlen(basic[i].str);
+	  if (*str == '*' && !type->is_pointer)
 	    {
 	      type->is_pointer = TRUE;
-	      (*rest)++;
+	      str++;
 	    }
-
 	  break;
 	}
     }
 
   if (i < n_basic)
     /* found a basic type */;
-  else if (g_str_has_prefix (*rest, "GLib.List") ||
-	   g_str_has_prefix (*rest, "GLib.SList") ||
-	   g_str_has_prefix (*rest, "List") ||
-	   g_str_has_prefix (*rest, "SList"))
+  else if (g_str_has_prefix (str, "GLib.List") ||
+	   g_str_has_prefix (str, "GLib.SList"))
     {
-      if (g_str_has_prefix (*rest, "GLib."))
-	*rest += strlen ("GLib.");
-      if (g_str_has_prefix (*rest, "List"))
+      str += strlen ("GLib.");
+      if (g_str_has_prefix (str, "List"))
 	{
 	  type->tag = GI_TYPE_TAG_GLIST;
 	  type->is_glist = TRUE;
 	  type->is_pointer = TRUE;
-	  *rest += strlen ("List");
+	  str += strlen ("List");
 	}
       else
 	{
 	  type->tag = GI_TYPE_TAG_GSLIST;
 	  type->is_gslist = TRUE;
 	  type->is_pointer = TRUE;
-	  *rest += strlen ("SList");
+	  str += strlen ("SList");
 	}
       
-      *rest = g_strchug (*rest);
-      
-      if (**rest == '<')
+      if (*str == '<')
 	{
-	  (*rest)++;
-	  
-	  type->parameter_type1 = parse_type_internal (*rest, rest);
+	  (str)++;
+	  char *rest;
+
+	  type->parameter_type1 = parse_type_internal (str, &rest, in_glib);
 	  if (type->parameter_type1 == NULL)
 	    goto error;
+	  str = rest;
 	  
-	  *rest = g_strchug (*rest);
-	  
-	  if ((*rest)[0] != '>')
+	  if (str[0] != '>')
 	    goto error;
-	  (*rest)++;
+	  (str)++;
 	}
       else
 	{
-	  type->parameter_type1 = create_pointer ();
+	  type->parameter_type1 = parse_type_internal ("any", NULL, in_glib);
 	}
     }
-  else if (g_str_has_prefix (*rest, "HashTable") ||
-	   g_str_has_prefix (*rest, "GLib.HashTable"))
+  else if (g_str_has_prefix (str, "GLib.HashTable"))
     {
-      if (g_str_has_prefix (*rest, "GLib."))
-	*rest += strlen ("GLib.");
+      str += strlen ("GLib.");
 
       type->tag = GI_TYPE_TAG_GHASH;
       type->is_ghashtable = TRUE;
       type->is_pointer = TRUE;
-      *rest += strlen ("HashTable");
+      str += strlen ("HashTable");
       
-      *rest = g_strchug (*rest);
-      
-      if (**rest == '<')
+      if (*str == '<')
 	{
-	  (*rest)++;
+	  char *rest;
+	  (str)++;
       
-	  type->parameter_type1 = parse_type_internal (*rest, rest);
+	  type->parameter_type1 = parse_type_internal (str, &rest, in_glib);
 	  if (type->parameter_type1 == NULL)
 	    goto error;
+	  str = rest;
       
-	  *rest = g_strchug (*rest);
-	  
-	  if ((*rest)[0] != ',')
+	  if (str[0] != ',')
 	    goto error;
-	  (*rest)++;
+	  (str)++;
 	  
-	  type->parameter_type2 = parse_type_internal (*rest, rest);
+	  type->parameter_type2 = parse_type_internal (str, &rest, in_glib);
 	  if (type->parameter_type2 == NULL)
 	    goto error;
+	  str = rest;
       
-	  if ((*rest)[0] != '>')
+	  if ((str)[0] != '>')
 	    goto error;
-	  (*rest)++;
+	  (str)++;
 	}
       else
 	{
-	  type->parameter_type1 = create_pointer ();
-	  type->parameter_type2 = create_pointer ();
+	  type->parameter_type1 = parse_type_internal ("any", NULL, in_glib);
+	  type->parameter_type2 = parse_type_internal ("any", NULL, in_glib);
 	}
-
     }
-  else if (g_str_has_prefix (*rest, "GLib.Error")
-	   || g_str_has_prefix (*rest, "Error"))
+  else if (g_str_has_prefix (str, "GLib.Error"))
     {
-      if (g_str_has_prefix (*rest, "GLib."))
-	*rest += strlen ("GLib.");
+      str += strlen ("GLib.");
 
       type->tag = GI_TYPE_TAG_ERROR;
       type->is_error = TRUE;
       type->is_pointer = TRUE;
-      *rest += strlen ("GError");
+      str += strlen ("Error");
       
-      *rest = g_strchug (*rest);
-      
-      if (**rest == '<')
+      if (*str == '<')
 	{
-	  (*rest)++;
+	  (str)++;
+	  char *tmp;
 	  
-	  end = strchr (*rest, '>');
-	  str = g_strndup (*rest, end - *rest);
-	  type->errors = g_strsplit (str, ",", 0);
-	  g_free (str);
-	  
-	  *rest = end + 1;
+	  end = strchr (str, '>');
+	  tmp = g_strndup (str, end - str);
+	  type->errors = g_strsplit (tmp, ",", 0);
+	  g_free (tmp);
+
+	  str = end;
 	}
     }
   else 
     {
       type->tag = GI_TYPE_TAG_INTERFACE;
       type->is_interface = TRUE; 
-      start = *rest;
+      start = str;
 
       /* must be an interface type */
-      while (g_ascii_isalnum (**rest) || 
-	     **rest == '.' || 
-	     **rest == '-' || 
-	     **rest == '_' ||
-	     **rest == ':')
-	(*rest)++;
+      while (g_ascii_isalnum (*str) || 
+	     *str == '.' || 
+	     *str == '-' || 
+	     *str == '_' ||
+	     *str == ':')
+	(str)++;
 
-      type->interface = g_strndup (start, *rest - start);
+      type->interface = g_strndup (start, str - start);
 
-      *rest = g_strchug (*rest);
-      if (**rest == '*')
+      if (*str == '*')
 	{
 	  type->is_pointer = TRUE;
-	  (*rest)++;
+	  (str)++;
 	}
     }
   
-  *rest = g_strchug (*rest);
-  if (g_str_has_prefix (*rest, "["))
+  if (g_str_has_prefix (str, "["))
     {
       GIrNodeType *array;
 
@@ -488,15 +489,13 @@ parse_type_internal (gchar *str, gchar **rest)
       array->has_length = FALSE;
       array->length = 0;
 
-      if (!g_str_has_prefix (*rest, "[]"))
+      if (!g_str_has_prefix (str, "[]"))
 	{
-	  gchar *end, *str, **opts;
+	  gchar *end, *tmp, **opts;
 	  
-	  end = strchr (*rest, ']');
-	  str = g_strndup (*rest + 1, (end - *rest) - 1); 
-	  opts = g_strsplit (str, ",", 0);
-	  
-	  *rest = end + 1;
+	  end = strchr (str, ']');
+	  tmp = g_strndup (str + 1, (end - str) - 1); 
+	  opts = g_strsplit (tmp, ",", 0);
 
 	  for (i = 0; opts[i]; i++)
 	    {
@@ -515,19 +514,24 @@ parse_type_internal (gchar *str, gchar **rest)
 	      g_strfreev (vals);
 	    }
 
-	  g_free (str);
+	  g_free (tmp);
 	  g_strfreev (opts);
+
+	  str = end;
 	}
 	      
       type = array;
     }
 
+  if (next)
+    *next = (char*)str;
   g_assert (type->tag >= 0 && type->tag <= GI_TYPE_TAG_ERROR);
+  g_free (temporary_type);
   return type;
 
  error:
   g_ir_node_free ((GIrNode *)type);
-  
+  g_free (temporary_type);  
   return NULL;
 }
 
@@ -556,14 +560,18 @@ static GIrNodeType *
 parse_type (ParseContext *ctx, const gchar *type)
 {
   gchar *str;
-  gchar *rest;
   GIrNodeType *node;
-  
+  gboolean in_glib;
+  gboolean matched_special = FALSE;
+
+  in_glib = strcmp (ctx->namespace, "GLib") == 0;
+
   type = resolve_aliases (ctx, type);
-  str = g_strdup (type);
-  node = parse_type_internal (str, &rest);
-  g_free (str);
-  g_debug ("Parsed type: %s => %d", type, node->tag);
+  node = parse_type_internal (type, NULL, in_glib);
+  if (node)
+    g_debug ("Parsed type: %s => %d", type, node->tag);
+  else
+    g_critical ("Failed to parse type: '%s'", type);
 
   return node;
 }
