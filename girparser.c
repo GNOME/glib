@@ -218,16 +218,13 @@ state_switch (ParseContext *ctx, ParseState newstate)
 
 static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib);
 
-static GIrNodeType *
-parse_type_internal (const gchar *str, char **next, gboolean in_glib)
-{
-  gint i;
+typedef struct {
+  const gchar *str;
+  gint tag;
+  gboolean pointer;
+} BasicTypeInfo;
 
-  static struct {
-    const gchar *str;
-    gint tag;
-    gboolean pointer;
-  } basic[] = {
+static BasicTypeInfo basic_types[] = {
     { "none",     GI_TYPE_TAG_VOID,    0 },
     { "any",      GI_TYPE_TAG_VOID,    1 },
 
@@ -291,21 +288,57 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
     { "gfloat",   GI_TYPE_TAG_FLOAT,   0 },
     { "gdouble",  GI_TYPE_TAG_DOUBLE,  0 },
     { "gchar*",   GI_TYPE_TAG_UTF8,    1 }
-  };  
+};  
 
-  gint n_basic = G_N_ELEMENTS (basic);
+static const BasicTypeInfo *
+parse_basic (const char *str)
+{
+  gint i;
+  gint n_basic = G_N_ELEMENTS (basic_types);
   gchar *temporary_type = NULL;
   const gchar *start;
   const gchar *end;
   
+  for (i = 0; i < n_basic; i++)
+    {
+      if (g_str_has_prefix (str, basic_types[i].str))
+	return &(basic_types[i]);
+    }  
+  return NULL;
+}
+
+static GIrNodeType *
+parse_type_internal (const gchar *str, char **next, gboolean in_glib)
+{
+  const BasicTypeInfo *basic;  
   GIrNodeType *type;
+  char *temporary_type = NULL;
   
   type = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
   
   type->unparsed = g_strdup (str);
 
-  if (in_glib)
+  basic = parse_basic (str);
+  if (basic != NULL)
     {
+      type->is_basic = TRUE;
+      type->tag = basic->tag;
+      type->is_pointer = basic->pointer;
+
+      str += strlen(basic->str);
+      if (*str == '*' && !type->is_pointer)
+	{
+	  type->is_pointer = TRUE;
+	  (str)++;
+	}
+    }
+  else if (in_glib)
+    {
+      /* If we're inside GLib, handle "List" by prefixing it with
+       * "GLib." so the parsing code below doesn't have to get more
+       * special. 
+       */
+      
       if (g_str_has_prefix (str, "List<") ||
 	  strcmp (str, "List") == 0)
 	{
@@ -332,25 +365,7 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
 	}
     }
 
-  for (i = 0; i < n_basic; i++)
-    {
-      if (g_str_has_prefix (str, basic[i].str))
-	{
-	  type->is_basic = TRUE;
-	  type->tag = basic[i].tag;
- 	  type->is_pointer = basic[i].pointer;
-
-	  str += strlen(basic[i].str);
-	  if (*str == '*' && !type->is_pointer)
-	    {
-	      type->is_pointer = TRUE;
-	      str++;
-	    }
-	  break;
-	}
-    }
-
-  if (i < n_basic)
+  if (basic != NULL)
     /* found a basic type */;
   else if (g_str_has_prefix (str, "GLib.List") ||
 	   g_str_has_prefix (str, "GLib.SList"))
@@ -440,7 +455,7 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
       if (*str == '<')
 	{
 	  (str)++;
-	  char *tmp;
+	  char *tmp, *end;
 	  
 	  end = strchr (str, '>');
 	  tmp = g_strndup (str, end - str);
@@ -454,7 +469,7 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
     {
       type->tag = GI_TYPE_TAG_INTERFACE;
       type->is_interface = TRUE; 
-      start = str;
+      const char *start = str;
 
       /* must be an interface type */
       while (g_ascii_isalnum (*str) || 
@@ -476,6 +491,7 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
   if (g_str_has_prefix (str, "["))
     {
       GIrNodeType *array;
+      int i;
 
       array = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
 
@@ -561,12 +577,17 @@ parse_type (ParseContext *ctx, const gchar *type)
 {
   gchar *str;
   GIrNodeType *node;
+  const BasicTypeInfo *basic;
   gboolean in_glib;
   gboolean matched_special = FALSE;
 
   in_glib = strcmp (ctx->namespace, "GLib") == 0;
 
-  type = resolve_aliases (ctx, type);
+  /* Do not search aliases for basic types */
+  basic = parse_basic (type);
+  if (basic == NULL)
+    type = resolve_aliases (ctx, type);
+
   node = parse_type_internal (type, NULL, in_glib);
   if (node)
     g_debug ("Parsed type: %s => %d", type, node->tag);
