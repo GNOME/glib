@@ -57,6 +57,8 @@ typedef struct
   guint32 n_annotations;
   guint32 annotations;
 
+  guint32 dependencies;
+
   guint32 size;
   guint32 namespace;
   guint32 shared_library;

@@ -152,7 +152,7 @@ g_typelib_check_sanity (void)
       size_check_ok = FALSE; \
     }
   
-  CHECK_SIZE (Header, 100);
+  CHECK_SIZE (Header, 104);
   CHECK_SIZE (DirEntry, 12);
   CHECK_SIZE (SimpleTypeBlob, 4);
   CHECK_SIZE (ArgBlob, 12);

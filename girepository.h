@@ -72,8 +72,10 @@ struct _GIRepositoryClass
 
 GType         g_irepository_get_type      (void) G_GNUC_CONST;
 GIRepository *g_irepository_get_default   (void);
-const gchar * g_irepository_register      (GIRepository *repository,
-					   GTypelib    *typelib);
+void          g_irepository_prepend_search_path (const char *directory);
+const char *  g_irepository_load_typelib  (GIRepository *repository,
+					   GTypelib     *typelib,
+					   GError      **error);
 void          g_irepository_unregister    (GIRepository *repository,
 					   const gchar  *namespace);
 gboolean      g_irepository_is_registered (GIRepository *repository, 
@@ -81,9 +83,11 @@ gboolean      g_irepository_is_registered (GIRepository *repository,
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *name);
-const char *  g_irepository_require       (GIRepository *repository,
+gboolean      g_irepository_require       (GIRepository *repository,
 					   const char   *namespace,
 					   GError      **error);
+gchar      ** g_irepository_get_dependencies (GIRepository *repository,
+					      const char *namespace);
 gchar      ** g_irepository_get_namespaces (GIRepository *repository);
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
@@ -142,8 +146,7 @@ typedef enum
   GI_INFO_TYPE_PROPERTY,
   GI_INFO_TYPE_FIELD,
   GI_INFO_TYPE_ARG,
-  GI_INFO_TYPE_TYPE,
-  GI_INFO_TYPE_UNRESOLVED
+  GI_INFO_TYPE_TYPE
 } GIInfoType;
 
 

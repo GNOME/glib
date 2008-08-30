@@ -33,13 +33,14 @@ g_ir_module_new (const gchar *name, const gchar *shared_library)
 {
   GIrModule *module;
   
-  module = g_new (GIrModule, 1);
+  module = g_new0 (GIrModule, 1);
 
   module->name = g_strdup (name);
   if (shared_library)
       module->shared_library = g_strdup (shared_library);
   else
       module->shared_library = NULL;
+  module->dependencies = NULL;
   module->entries = NULL;
 
   return module;
@@ -56,6 +57,7 @@ g_ir_module_free (GIrModule *module)
     g_ir_node_free ((GIrNode *)e->data);
 
   g_list_free (module->entries);
+  /* Don't free dependencies, we inherit that from the parser */
 
   g_free (module);
 }
@@ -77,10 +79,33 @@ g_ir_module_build_typelib (GIrModule  *module,
   guint32 size, offset, offset2, old_offset;
   GHashTable *strings;
   GHashTable *types;
+  char *dependencies;
   guchar *data;
 
   header_size = ALIGN_VALUE (sizeof (Header), 4);
   n_local_entries = g_list_length (module->entries);
+
+  /* Serialize dependencies into one string; this is convenient
+   * and not a major change to the typelib format. */
+  {
+    GString *dependencies_str = g_string_new ("");
+    GList *link;
+    for (link = module->dependencies; link; link = link->next)
+      {
+	const char *dependency = link->data;
+	if (!strcmp (dependency, module->name))
+	  continue;
+	g_string_append (dependencies_str, dependency);
+	if (link->next)
+	  g_string_append_c (dependencies_str, '|');
+      }
+    dependencies = g_string_free (dependencies_str, FALSE);
+    if (!dependencies[0])
+      {
+	g_free (dependencies);
+	dependencies = NULL;
+      }
+  }
 
  restart:
   init_stats ();
@@ -88,7 +113,8 @@ g_ir_module_build_typelib (GIrModule  *module,
   types = g_hash_table_new (g_str_hash, g_str_equal);
   n_entries = g_list_length (module->entries);
 
-  g_message ("%d entries (%d local)\n", n_entries, n_local_entries);
+  g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
+	     g_list_length (module->dependencies));
   
   dir_size = n_entries * 12;  
   size = header_size + dir_size;
@@ -106,6 +132,8 @@ g_ir_module_build_typelib (GIrModule  *module,
   size += strlen (module->name);
   if (module->shared_library) 
     size += strlen (module->shared_library);
+  if (dependencies != NULL)
+    size += strlen (dependencies);
 
   g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n", 
 	  size, header_size, dir_size, size - header_size - dir_size);
@@ -122,6 +150,10 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->n_local_entries = n_local_entries;
   header->n_annotations = 0;
   header->annotations = 0; /* filled in later */
+  if (dependencies != NULL)
+    header->dependencies = write_string (dependencies, strings, data, &header_size);
+  else
+    header->dependencies = 0;
   header->size = 0; /* filled in later */
   header->namespace = write_string (module->name, strings, data, &header_size);
   header->shared_library = (module->shared_library?
@@ -180,9 +212,11 @@ g_ir_module_build_typelib (GIrModule  *module,
 
       if (node->type == G_IR_NODE_XREF)
 	{
+	  const char *namespace = ((GIrNodeXRef*)node)->namespace;
+	  
 	  entry->blob_type = 0;
 	  entry->local = FALSE;
-	  entry->offset = write_string (((GIrNodeXRef*)node)->namespace, strings, data, &offset2);
+	  entry->offset = write_string (namespace, strings, data, &offset2);
 	  entry->name = write_string (node->name, strings, data, &offset2);
 	}
       else

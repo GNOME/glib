@@ -72,6 +72,7 @@ struct _ParseContext
   
   GList *modules;
   gboolean prefix_aliases;
+  GList *dependencies;
   GHashTable *aliases;
 
   const char *namespace;
@@ -2188,6 +2189,9 @@ start_element_handler (GMarkupParseContext *context,
 	  if (!parse_include (context, ctx, name, error))
 	    break;
 
+	  ctx->dependencies = g_list_prepend (ctx->dependencies, g_strdup (name));
+
+
 	  state_switch (ctx, STATE_INCLUDE);
 	  goto out;
 	}
@@ -2226,6 +2230,7 @@ start_element_handler (GMarkupParseContext *context,
 	    {
 	      ctx->current_module = g_ir_module_new (name, shared_library);
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
+	      ctx->current_module->dependencies = ctx->dependencies;
 
 	      state_switch (ctx, STATE_NAMESPACE);
 	      goto out;
@@ -2704,6 +2709,7 @@ g_ir_parse_string (const gchar  *namespace,
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.type_depth = 0;
+  ctx.dependencies = NULL;
   ctx.current_module = NULL;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &ctx, NULL);

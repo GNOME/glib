@@ -33,6 +33,7 @@ struct _GIrModule
 { 
   gchar *name;
   gchar *shared_library;
+  GList *dependencies;
   GList *entries;
 };
 
