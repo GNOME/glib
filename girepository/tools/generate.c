@@ -31,6 +31,7 @@
 
 /* FIXME: Avoid global */
 static gchar *output = NULL;
+gchar **includedirs = NULL;
 
 static void 
 write_type_name (const gchar *namespace,
@@ -371,7 +372,7 @@ write_function_info (const gchar    *namespace,
 	  
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
-	
+
   write_callable_info (namespace, (GICallableInfo*)info, file, indent);
   g_fprintf (file, "%*s</%s>\n", indent, "", tag);
 }
@@ -1002,15 +1003,16 @@ write_union_info (const gchar *namespace,
 }
 
 static void
-write_repository (GIRepository *repository,
+write_repository (const char   *namespace,
 		  gboolean      needs_prefix)
 {
   FILE *file;
-  gchar **namespaces;
   gchar *ns;
   gint i, j;
+  char **dependencies;
+  GIRepository *repository;
 
-  namespaces = g_irepository_get_namespaces (repository);
+  repository = g_irepository_get_default ();
 
   if (output == NULL)
     file = stdout;
@@ -1019,7 +1021,7 @@ write_repository (GIRepository *repository,
       gchar *filename;
       
       if (needs_prefix)
-	filename = g_strdup_printf ("%s-%s", namespaces[0], output);  
+	filename = g_strdup_printf ("%s-%s", namespace, output);  
       else
 	filename = g_strdup (output);
       file = g_fopen (filename, "w");
@@ -1042,10 +1044,21 @@ write_repository (GIRepository *repository,
 	     "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
 	     "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\">\n");
 
-  for (i = 0; namespaces[i]; i++)
+  dependencies = g_irepository_get_dependencies (repository,
+						 namespace);
+  if (dependencies != NULL)
+    {
+      for (i = 0; dependencies[i]; i++)
+	{
+	  g_fprintf (file, "  <include name=\"%s\"/>\n", dependencies[i]);
+	}
+    }
+
+  if (TRUE)
     {
       const gchar *shared_library;
-      ns = namespaces[i];
+      const char *ns = namespace;
+
       shared_library = g_irepository_get_shared_library (repository, ns);
       if (shared_library)
         g_fprintf (file, "  <namespace name=\"%s\" shared-library=\"%s\">\n",
@@ -1110,8 +1123,6 @@ write_repository (GIRepository *repository,
       
   if (output != NULL)
     fclose (file);        
-
-  g_strfreev (namespaces);
 }
 
 static const guchar *
@@ -1167,9 +1178,12 @@ main (int argc, char *argv[])
     {
       { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
+      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL }, 
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       { NULL, }
     };
+
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   g_type_init ();
 
@@ -1186,11 +1200,16 @@ main (int argc, char *argv[])
       return 1;
     }
 
+  if (includedirs != NULL)
+    for (i = 0; includedirs[i]; i++)
+      g_irepository_prepend_search_path (includedirs[i]);
+
   for (i = 0; input[i]; i++)
     {
       GModule *dlhandle = NULL;
       const guchar *typelib;
       gsize len;
+      const char *namespace;
 
       if (!shlib)
 	{
@@ -1224,12 +1243,18 @@ main (int argc, char *argv[])
         if (!g_typelib_validate (data, &error)) {
           g_printerr ("typelib not valid: %s\n", error->message);
           g_clear_error (&error);
+	  return 1;
         }
       }
-      g_irepository_register (g_irepository_get_default (), data);
-      write_repository (g_irepository_get_default (), needs_prefix);
-      g_irepository_unregister (g_irepository_get_default (),
-                                g_typelib_get_namespace (data));
+      namespace = g_irepository_load_typelib (g_irepository_get_default (), data,
+					      &error);
+      if (namespace == NULL)
+	{
+	  g_printerr ("failed to load typelib: %s\n", error->message);
+	  return 1;
+	}
+	
+      write_repository (namespace, needs_prefix);
 
       if (dlhandle)
 	{
