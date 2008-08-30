@@ -203,6 +203,7 @@ g_base_info_ref (GIBaseInfo *info)
 void
 g_base_info_unref (GIBaseInfo *info)
 {
+  g_assert (info->ref_count > 0);
   info->ref_count--;
 
   if (!info->ref_count)
@@ -224,6 +225,7 @@ g_base_info_get_type (GIBaseInfo *info)
 const gchar *
 g_base_info_get_name (GIBaseInfo *info)
 {
+  g_assert (info->ref_count > 0);
   switch (info->type)
     {
     case GI_INFO_TYPE_FUNCTION:
@@ -302,6 +304,7 @@ g_base_info_get_name (GIBaseInfo *info)
 
     case GI_INFO_TYPE_TYPE:
     default: ;
+      g_assert_not_reached ();
       /* unnamed */
     }
 
@@ -311,7 +314,9 @@ g_base_info_get_name (GIBaseInfo *info)
 const gchar *
 g_base_info_get_namespace (GIBaseInfo *info)
 {
-  Header *header = (Header *)info->typelib->data;  
+  Header *header = (Header *)info->typelib->data;
+
+  g_assert (info->ref_count > 0);
 
   if (info->type == GI_INFO_TYPE_UNRESOLVED)
     {
