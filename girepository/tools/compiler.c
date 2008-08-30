@@ -81,16 +81,8 @@ format_output (GTypelib *typelib)
 			      "{\n"
 			      "\tGTypelib *typelib;\n"
 			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
-			      "\tg_irepository_load_typelib (NULL, typelib, NULL);\n"
+			      "\tg_irepository_load_typelib (NULL, typelib, G_IREPOSITORY_LOAD_FLAG_LAZY, NULL);\n"
 			      "}\n\n");
-
-      g_string_append_printf (result,
-			      "__attribute__((destructor)) void\n"
-			      "unregister_typelib (void)\n"
-			      "{\n"
-			      "\tg_irepository_unregister (NULL, \"%s\");\n"
-			      "}\n",
-			      g_typelib_get_namespace (typelib));
     }
 
   return g_string_free (result, FALSE);
