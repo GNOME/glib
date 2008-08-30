@@ -1246,7 +1246,7 @@ main (int argc, char *argv[])
 	  return 1;
         }
       }
-      namespace = g_irepository_load_typelib (g_irepository_get_default (), data,
+      namespace = g_irepository_load_typelib (g_irepository_get_default (), data, 0,
 					      &error);
       if (namespace == NULL)
 	{
