@@ -174,12 +174,17 @@ g_info_from_entry (GTypelib *typelib,
       result = g_irepository_find_by_name (repository, namespace, name);
       if (result == NULL)
 	{
-	  char **all_namespaces = g_irepository_get_namespaces (repository);
-	  char *namespaces_str = g_strjoinv (", ", all_namespaces);
-	  g_critical ("Failed to find namespace: %s name: %s (currently loaded namespaces: %s)", namespace,
-		      name, namespaces_str);
-	  g_strfreev (all_namespaces);
-	  g_free (namespaces_str);
+	  GIUnresolvedInfo *unresolved;
+
+	  unresolved = g_new0 (GIUnresolvedInfo, 1);
+	  
+	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
+	  unresolved->ref_count = 1;
+	  unresolved->container = NULL;
+	  unresolved->name = name;
+	  unresolved->namespace = namespace;
+	  
+	  return (GIBaseInfo*)unresolved;
 	}
       return result;
     }
@@ -289,7 +294,13 @@ g_base_info_get_name (GIBaseInfo *info)
 	return g_typelib_get_string (info->typelib, blob->name);
       }
       break;
+    case GI_INFO_TYPE_UNRESOLVED:
+      {
+	GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
 
+	return unresolved->name;
+      }
+      break;
     case GI_INFO_TYPE_TYPE:
     default: ;
       g_assert_not_reached ();
@@ -305,6 +316,13 @@ g_base_info_get_namespace (GIBaseInfo *info)
   Header *header = (Header *)info->typelib->data;
 
   g_assert (info->ref_count > 0);
+
+  if (info->type == GI_INFO_TYPE_UNRESOLVED)
+    {
+      GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
+      
+      return unresolved->namespace;
+    }
 
   return g_typelib_get_string (info->typelib, header->namespace);
 }
