@@ -67,6 +67,10 @@ struct _GIRepositoryClass
   GObjectClass parent; 
 };
 
+typedef enum
+{
+  G_IREPOSITORY_LOAD_FLAG_LAZY = 1 << 0
+} GIRepositoryLoadFlags;
 
 /* Repository */
 
@@ -75,9 +79,8 @@ GIRepository *g_irepository_get_default   (void);
 void          g_irepository_prepend_search_path (const char *directory);
 const char *  g_irepository_load_typelib  (GIRepository *repository,
 					   GTypelib     *typelib,
+					   GIRepositoryLoadFlags flags,
 					   GError      **error);
-void          g_irepository_unregister    (GIRepository *repository,
-					   const gchar  *namespace);
 gboolean      g_irepository_is_registered (GIRepository *repository, 
 					   const gchar  *namespace);
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
@@ -85,6 +88,7 @@ GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *name);
 gboolean      g_irepository_require       (GIRepository *repository,
 					   const char   *namespace,
+					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,
 					      const char *namespace);

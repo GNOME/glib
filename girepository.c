@@ -35,6 +35,7 @@ static GSList *search_path = NULL;
 struct _GIRepositoryPrivate 
 {
   GHashTable *typelibs; /* (string) namespace -> GTypelib */
+  GHashTable *lazy_typelibs; /* (string) namespace -> GTypelib */
 };
 
 G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
@@ -44,6 +45,12 @@ g_irepository_init (GIRepository *repository)
 {
   repository->priv = G_TYPE_INSTANCE_GET_PRIVATE (repository, G_TYPE_IREPOSITORY,
 						  GIRepositoryPrivate);
+  repository->priv->typelibs 
+    = g_hash_table_new_full (g_str_hash, g_str_equal,
+			     (GDestroyNotify) NULL,
+			     (GDestroyNotify) g_typelib_free);
+  repository->priv->lazy_typelibs 
+    = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
 static void
@@ -76,10 +83,6 @@ init_globals ()
   if (default_repository == NULL) 
     { 
       default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
-      default_repository->priv->typelibs 
-	= g_hash_table_new_full (g_str_hash, g_str_equal,
-				 (GDestroyNotify) NULL,
-				 (GDestroyNotify) g_typelib_free);
     }
 
   if (search_path == NULL)
@@ -135,13 +138,7 @@ static GIRepository *
 get_repository (GIRepository *repository)
 {
   if (repository != NULL)
-    {
-      if (repository->priv->typelibs == NULL)
-	repository->priv->typelibs = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                            (GDestroyNotify) NULL,
-                                                            (GDestroyNotify) g_typelib_free);
-      return repository;
-    }
+    return repository;
   else 
     {
       init_globals ();
@@ -149,16 +146,76 @@ get_repository (GIRepository *repository)
     }
 }
 
+static GTypelib *
+get_registered_status (GIRepository *repository,
+		       const char   *namespace,
+		       gboolean      allow_lazy,
+		       gboolean     *lazy_status)
+{
+  GTypelib *typelib;
+  repository = get_repository (repository);
+  if (lazy_status)
+    *lazy_status = FALSE;
+  typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+  if (typelib)
+    return typelib;
+  typelib = g_hash_table_lookup (repository->priv->lazy_typelibs, namespace);
+  if (!typelib)
+    return NULL;
+  if (lazy_status)
+    *lazy_status = TRUE;
+  if (!allow_lazy)
+    return NULL;
+  return typelib;
+}
+
+static GTypelib *
+get_registered (GIRepository *repository,
+		const char   *namespace)
+{
+  return get_registered_status (repository, namespace, TRUE, NULL);
+}
+
+static gboolean
+load_dependencies_recurse (GIRepository *repository,
+			   GTypelib     *typelib,
+			   GError      **error)
+{
+  char **dependencies;
+
+  dependencies = get_typelib_dependencies (typelib);
+
+  if (dependencies != NULL)
+    {
+      int i;
+	  
+      for (i = 0; dependencies[i]; i++)
+	{
+	  char *dependency = dependencies[i];
+	      
+	  if (!g_irepository_require (repository, dependency, 
+				      0, error))
+	    {
+	      g_strfreev (dependencies);
+	      return FALSE;
+	    }
+	}
+      g_strfreev (dependencies);
+    }
+  return TRUE;
+}
+			   
 static const char *
 register_internal (GIRepository *repository,
 		   const char   *source,
+		   gboolean      lazy,
 		   GTypelib     *typelib,
 		   GError      **error)
 {
   Header *header;
-  const gchar *name;
-  const char *dependencies_glob;
-  char **dependencies;
+  const gchar *namespace;
+  gboolean was_loaded;
+  gboolean currently_lazy;
 
   g_return_val_if_fail (typelib != NULL, FALSE);
   
@@ -166,34 +223,39 @@ register_internal (GIRepository *repository,
 
   g_return_val_if_fail (header != NULL, FALSE);
 
-  name = g_typelib_get_string (typelib, header->namespace);
+  namespace = g_typelib_get_string (typelib, header->namespace);
 
-  dependencies = get_typelib_dependencies (typelib);
-  if (dependencies != NULL)
+  if (lazy)
     {
-      int i;
-	
-      for (i = 0; dependencies[i]; i++)
-	{
-	  char *dependency = dependencies[i];
-	  
-	  if (!g_irepository_require (repository, dependency, error))
-	    {
-	      g_strfreev (dependencies);
-	      return NULL;
-	    }
-	}
-      g_strfreev (dependencies);
+      g_assert (!g_hash_table_lookup (repository->priv->lazy_typelibs, 
+				      namespace));
+      g_hash_table_insert (repository->priv->lazy_typelibs, 
+			   build_typelib_key (namespace, source), (void *)typelib);
     }
+  else
+    {
+      gpointer value;
+      char *key;
 
-  g_assert (g_hash_table_lookup (repository->priv->typelibs, name) == NULL);
-  g_hash_table_insert (repository->priv->typelibs, 
-		       build_typelib_key (name, source), (void *)typelib);
+      /* First, try loading all the dependencies */
+      if (!load_dependencies_recurse (repository, typelib, error))
+	return NULL;
+      
+      /* Check if we are transitioning from lazily loaded state */
+      if (g_hash_table_lookup_extended (repository->priv->lazy_typelibs, 
+					namespace,
+					(gpointer)&key, &value))
+	g_hash_table_remove (repository->priv->lazy_typelibs, key);
+      else
+	key = build_typelib_key (namespace, source);
+
+      g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
+    }
 
   if (typelib->module == NULL)
       typelib->module = g_module_open (NULL, 0); 
 
-  return name;
+  return namespace;
 }
 
 char **
@@ -206,7 +268,7 @@ g_irepository_get_dependencies (GIRepository *repository,
 
   repository = get_repository (repository);
 
-  typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+  typelib = get_registered (repository, namespace);
   g_return_val_if_fail (typelib != NULL, NULL);
 
   return get_typelib_dependencies (typelib);
@@ -215,31 +277,23 @@ g_irepository_get_dependencies (GIRepository *repository,
 const char *
 g_irepository_load_typelib (GIRepository *repository,
 			    GTypelib     *typelib,
+			    GIRepositoryLoadFlags flags,
 			    GError      **error)
 {
   Header *header;
   const char *namespace;
+  gboolean allow_lazy = flags & G_IREPOSITORY_LOAD_FLAG_LAZY;
+  gboolean is_lazy;
 
   repository = get_repository (repository);
 
   header = (Header *) typelib->data;
   namespace = g_typelib_get_string (typelib, header->namespace);
 
-  if (g_hash_table_lookup (repository->priv->typelibs, namespace))
+  if (get_registered_status (repository, namespace, allow_lazy, &is_lazy))
     return namespace;
-  return register_internal (repository, "<builtin>", typelib, error);
-}
-
-void
-g_irepository_unregister (GIRepository *repository,
-                          const gchar  *namespace)
-{
-  repository = get_repository (repository);
-
-  if (!g_hash_table_remove (repository->priv->typelibs, namespace))
-    {
-      g_printerr ("namespace '%s' not registered\n", namespace);
-    }
+  return register_internal (repository, "<builtin>", 
+			    allow_lazy, typelib, error);
 }
 
 gboolean
@@ -247,8 +301,7 @@ g_irepository_is_registered (GIRepository *repository,
 			     const gchar *namespace)
 {
   repository = get_repository (repository);
-
-  return g_hash_table_lookup (repository->priv->typelibs, namespace) != NULL;
+  return get_registered (repository, namespace) != NULL;
 }
 
 GIRepository * 
@@ -280,7 +333,7 @@ g_irepository_get_n_infos (GIRepository *repository,
     {
       GTypelib *typelib;
 
-      typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+      typelib = get_registered (repository, namespace);
 
       if (typelib)
 	n_interfaces = ((Header *)typelib->data)->n_local_entries;
@@ -288,6 +341,8 @@ g_irepository_get_n_infos (GIRepository *repository,
   else
     {
       g_hash_table_foreach (repository->priv->typelibs, 
+			    count_interfaces, &n_interfaces);
+      g_hash_table_foreach (repository->priv->lazy_typelibs, 
 			    count_interfaces, &n_interfaces);
     }
 
@@ -384,13 +439,16 @@ g_irepository_get_info (GIRepository *repository,
     {
       GTypelib *typelib;
       
-      typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+      typelib = get_registered (repository, namespace);
       
       if (typelib)
 	find_interface ((void *)namespace, typelib, &data);
     }
   else
-    g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+    {
+      g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+      g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+    }
 
   return data.iface;  
 }
@@ -409,6 +467,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
   data.iface = NULL;
 
   g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+  g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
 
   return data.iface;
 }
@@ -442,13 +501,16 @@ g_irepository_find_by_name (GIRepository *repository,
     {
       GTypelib *typelib;
       
-      typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+      typelib = get_registered (repository, namespace);
       
       if (typelib)
 	find_interface ((void *)namespace, typelib, &data);
     }
   else
-    g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+    {
+      g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+      g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+    }
 
   return data.iface;
 }
@@ -483,6 +545,7 @@ g_irepository_get_namespaces (GIRepository *repository)
   repository = get_repository (repository);
 
   g_hash_table_foreach (repository->priv->typelibs, collect_namespaces, &list);
+  g_hash_table_foreach (repository->priv->lazy_typelibs, collect_namespaces, &list);
 
   names = g_malloc0 (sizeof (gchar *) * (g_list_length (list) + 1));
   i = 0;
@@ -502,7 +565,7 @@ g_irepository_get_shared_library (GIRepository *repository,
 
   repository = get_repository (repository);
 
-  typelib = g_hash_table_lookup (repository->priv->typelibs, namespace);
+  typelib = get_registered (repository, namespace);
   if (!typelib)
     return NULL;
   header = (Header *) typelib->data;
@@ -535,7 +598,12 @@ g_irepository_get_typelib_path (GIRepository *repository,
 
   if (!g_hash_table_lookup_extended (repository->priv->typelibs, namespace,
 				     &orig_key, &value))
-    return NULL;
+    {
+      if (!g_hash_table_lookup_extended (repository->priv->lazy_typelibs, namespace,
+					 &orig_key, &value))
+	
+	return NULL;
+    }
   return ((char*)orig_key) + strlen ((char *) orig_key) + 1;
 }
 
@@ -543,6 +611,7 @@ g_irepository_get_typelib_path (GIRepository *repository,
  * g_irepository_require
  * @repository: Repository, may be %NULL for the default
  * @namespace: GI namespace to use, e.g. "Gtk"
+ * @flags: Set of %GIRepositoryLoadFlags, may be %0
  * @error: a #GError.
  *
  * Force the namespace @namespace to be loaded if it isn't
@@ -555,6 +624,7 @@ g_irepository_get_typelib_path (GIRepository *repository,
 gboolean
 g_irepository_require (GIRepository  *repository,
 		       const gchar   *namespace,
+		       GIRepositoryLoadFlags flags,
 		       GError       **error)
 {
   GSList *ldir;
@@ -566,13 +636,12 @@ g_irepository_require (GIRepository  *repository,
   const gchar *typelib_namespace, *shlib_fname;
   GModule *module;
   guint32 shlib;
-  GHashTable *table;
+  gboolean allow_lazy = flags & G_IREPOSITORY_LOAD_FLAG_LAZY;
+  gboolean is_lazy;
 
   repository = get_repository (repository);
-  table = repository->priv->typelibs;
 
-  /* don't bother loading a namespace if already registered */
-  if (g_hash_table_lookup (table, namespace))
+  if (get_registered_status (repository, namespace, allow_lazy, &is_lazy))
     return TRUE;
 
   fname = g_strconcat (namespace, ".typelib", NULL);
@@ -617,7 +686,8 @@ g_irepository_require (GIRepository  *repository,
     }
 
   g_free (fname);
-  if (!register_internal (repository, full_path, typelib, error))
+  if (!register_internal (repository, full_path, allow_lazy, 
+			  typelib, error))
     {
       g_typelib_free (typelib);
       g_free (full_path);
