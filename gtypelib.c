@@ -1962,11 +1962,7 @@ _g_typelib_init (GTypelib *typelib)
             }
         }
      
-<<<<<<< HEAD:girepository/gtypelib.c
       if (typelib->module == NULL && shlib != NULL)
-=======
-      if (shlib != NULL && typelib->module == NULL)
->>>>>>> Don't lose on NULL shlib:girepository/gtypelib.c
         {
 	  GString *shlib_full;
 
