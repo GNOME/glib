@@ -41,6 +41,7 @@ gchar **input = NULL;
 gchar *output = NULL;
 gchar *mname = NULL;
 gchar *shlib = NULL;
+gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
 
@@ -80,7 +81,7 @@ format_output (GTypelib *typelib)
 			      "{\n"
 			      "\tGTypelib *typelib;\n"
 			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
-			      "\tg_irepository_register (NULL, typelib);\n"
+			      "\tg_irepository_load_typelib (NULL, typelib, NULL);\n"
 			      "}\n\n");
 
       g_string_append_printf (result,
@@ -203,6 +204,12 @@ main (int argc, char ** argv)
 
   g_debug ("[parsing] start, %d includes", 
 	   includedirs ? g_strv_length (includedirs) : 0);
+
+  g_type_init ();
+
+  if (includedirs != NULL)
+    for (i = 0; includedirs[i]; i++)
+      g_irepository_prepend_search_path (includedirs[i]);
 
   modules = NULL;
   for (i = 0; input[i]; i++)
