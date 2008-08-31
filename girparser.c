@@ -148,13 +148,16 @@ locate_gir (const char *name, const char * const* extra_paths)
       g_free (path);
       path = NULL;
     }
-  for (dir = extra_paths; *dir; dir++) 
+  if (extra_paths != NULL)
     {
-      path = g_build_filename (*dir, girname, NULL);
-      if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
-	return path;
-      g_free (path);
-      path = NULL;
+      for (dir = extra_paths; *dir; dir++) 
+	{
+	  path = g_build_filename (*dir, girname, NULL);
+	  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+	    return path;
+	  g_free (path);
+	  path = NULL;
+	}
     }
   g_free (girname);
   return path;
