@@ -1,3 +1,12 @@
+2008-08-31  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gbookmarkfile.c:
+	(parse_bookmark_element), (parse_application_element),
+	(parse_mime_type_element), (parse_icon_element): Relax the
+	attributes checking of the GBookmarkFile parser for the
+	attributes that the desktop bookmark file specification
+	defines and controls. (See bug 550096)
+
 2008-07-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

@@ -700,6 +700,10 @@ parse_bookmark_element (GMarkupParseContext  *context,
         visited = attribute_values[i];
       else
         {
+          /* bookmark is defined by the XBEL spec, so we need
+           * to error out if the element has different or
+           * missing attributes
+           */
           g_set_error (error, G_MARKUP_ERROR,
 		       G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
           	       _("Unexpected attribute '%s' for element '%s'"),
@@ -775,17 +779,9 @@ parse_application_element (GMarkupParseContext  *context,
         count = attribute_values[i];
       else if (IS_ATTRIBUTE (attr, BOOKMARK_TIMESTAMP_ATTRIBUTE))
         stamp = attribute_values[i];
-      else
-        {
-          g_set_error (error, G_MARKUP_ERROR,
-		       G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-          	       _("Unexpected attribute '%s' for element '%s'"),
-          	       attr,
-          	       BOOKMARK_APPLICATION_ELEMENT);
-          return;
-        }        
     }
 
+  /* the "name" and "exec" attributes are mandatory */
   if (!name)
     {
       g_set_error (error, G_MARKUP_ERROR,
@@ -854,15 +850,6 @@ parse_mime_type_element (GMarkupParseContext  *context,
     {
       if (IS_ATTRIBUTE (attr, MIME_TYPE_ATTRIBUTE))
         type = attribute_values[i];
-      else
-        {
-          g_set_error (error, G_MARKUP_ERROR,
-		       G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-          	       _("Unexpected attribute '%s' for element '%s'"),
-          	       attr,
-          	       MIME_TYPE_ELEMENT);
-          return;
-        }        
     }
 
   if (!type)
@@ -901,17 +888,9 @@ parse_icon_element (GMarkupParseContext  *context,
         href = attribute_values[i];
       else if (IS_ATTRIBUTE (attr, BOOKMARK_TYPE_ATTRIBUTE))
         type = attribute_values[i];
-      else
-        {
-          g_set_error (error, G_MARKUP_ERROR,
-		       G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-          	       _("Unexpected attribute '%s' for element '%s'"),
-          	       attr,
-          	       BOOKMARK_ICON_ELEMENT);
-          return;
-        }        
     }
 
+  /* the "href" attribute is mandatory */
   if (!href)
     {
       g_set_error (error, G_MARKUP_ERROR,
