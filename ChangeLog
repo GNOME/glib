@@ -1,3 +1,16 @@
+2008-08-31  Emmanuele Bassi  <ebassi@gnome.org>
+
+	Bug 550096 – GBookmarkFile parser is not forward compatible
+
+	* glib/gbookmarkfile.c:
+	(parse_bookmark_element), (parse_application_element),
+	(parse_mime_type_element), (parse_icon_element): Relax the
+	attributes checking of the GBookmarkFile parser for the
+	attributes that the desktop bookmark file specification
+	defines and controls. This allows adding new attributes to
+	the existing elements in newer versions without breaking the
+	parser in older ones.
+
 2008-08-28  Ryan Lortie  <desrt@desrt.ca>
 
 	Fixup for test case in previous commit.
