@@ -146,8 +146,6 @@ test_rand (void)
 
   g_rand_free (rand);
   g_rand_free (copy);
-
-  return 0;
 }
 
 int
