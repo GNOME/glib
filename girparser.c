@@ -330,11 +330,6 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
       type->is_pointer = basic->pointer;
 
       str += strlen(basic->str);
-      if (*str == '*' && !type->is_pointer)
-	{
-	  type->is_pointer = TRUE;
-	  (str)++;
-	}
     }
   else if (in_glib)
     {
@@ -484,12 +479,6 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
 	(str)++;
 
       type->interface = g_strndup (start, str - start);
-
-      if (*str == '*')
-	{
-	  type->is_pointer = TRUE;
-	  (str)++;
-	}
     }
   
   if (g_str_has_prefix (str, "["))
@@ -1552,6 +1541,9 @@ start_type (GMarkupParseContext *context,
 	    GError             **error)
 {
   const gchar *name;
+  const gchar *ctype;
+  gboolean is_pointer;
+  GIrNodeType *typenode;
 
   if (strcmp (element_name, "type") != 0)
     return FALSE;
@@ -1593,37 +1585,48 @@ start_type (GMarkupParseContext *context,
 
   if (name == NULL)
     MISSING_ATTRIBUTE (context, error, element_name, "name");
-  
+
+  ctype = find_attribute ("c:type", attribute_names, attribute_values);
+  if (ctype != NULL && strchr (ctype, '*'))
+    is_pointer = TRUE;
+  else
+    is_pointer = FALSE;
+
+  typenode = parse_type (ctx, name);
+  if (is_pointer)
+    typenode->is_pointer = is_pointer;
+	
   switch (ctx->current_typed->type)
     {
     case G_IR_NODE_PARAM:
       {
 	GIrNodeParam *param = (GIrNodeParam *)ctx->current_typed;
-	param->type = parse_type (ctx, name);
+	param->type = typenode;
       }
       break;
     case G_IR_NODE_FIELD:
       {
 	GIrNodeField *field = (GIrNodeField *)ctx->current_typed;
-	field->type = parse_type (ctx, name);
+	field->type = typenode;
       }
       break;
     case G_IR_NODE_PROPERTY:
       {
 	GIrNodeProperty *property = (GIrNodeProperty *) ctx->current_typed;
-	property->type = parse_type (ctx, name);
+	property->type = typenode;
       }
       break;
     case G_IR_NODE_CONSTANT:
       {
 	GIrNodeConstant *constant = (GIrNodeConstant *)ctx->current_typed;
-	constant->type = parse_type (ctx, name);
+	constant->type = typenode;
       }
       break;
     default:
       g_printerr("current node is %d\n", ctx->current_node->type);
       g_assert_not_reached ();
     }
+
 
   ctx->current_typed = NULL;
   return TRUE;
