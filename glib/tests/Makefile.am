@@ -22,9 +22,21 @@ TEST_PROGS        += fileutils
 fileutils_SOURCES  = fileutils.c
 fileutils_LDADD	   = $(progs_ldadd)
 
+TEST_PROGS        += printf
+printf_SOURCES       = printf.c
+printf_LDADD	   = $(progs_ldadd) -lm
+
+TEST_PROGS        += rand
+rand_SOURCES       = rand.c
+rand_LDADD	   = $(progs_ldadd) -lm
+
 TEST_PROGS        += strfuncs
 strfuncs_SOURCES   = strfuncs.c
 strfuncs_LDADD	   = $(progs_ldadd) -lm
+
+TEST_PROGS        += string
+string_SOURCES     = string.c
+string_LDADD	   = $(progs_ldadd) -lm
 
 TEST_PROGS               += markup-subparser
 markup_subparser_LDADD    = $(progs_ldadd)

@@ -1,7 +1,25 @@
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
+/* Unit tests for gstring
+ * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ *
+ * This work is provided "as is"; redistribution and modification
+ * in whole or in part, in any medium, physical or electronic is
+ * permitted without restriction.
+ *
+ * This work is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * In no event shall the authors or contributors be liable for any
+ * direct, indirect, incidental, special, exemplary, or consequential
+ * damages (including, but not limited to, procurement of substitute
+ * goods or services; loss of use, data, or profits; or business
+ * interruption) however caused and on any theory of liability, whether
+ * in contract, strict liability, or tort (including negligence or
+ * otherwise) arising in any way out of the use of this software, even
+ * if advised of the possibility of such damage.
+ */
 
-#include <glib.h>
+#include "glib.h"
 
 /* Outputs tested against the reference implementation mt19937ar.c from
    http://www.math.keio.ac.jp/~matumoto/MT2002/emt19937ar.html */
@@ -56,26 +74,24 @@ const guint32 array_outputs[] =
   0x10e736ae
 };
 
-const gint length = sizeof (first_numbers) / sizeof (first_numbers[0]);
-const gint seed_length = sizeof (seed_array) / sizeof (seed_array[0]);
-const gint array_length = sizeof (array_outputs) / sizeof (array_outputs[0]);
-
-int main()
+static void
+test_rand (void)
 {
   guint n;
   guint ones;
   double proportion;
+  GRand *rand;
+  GRand *copy;
 
-  GRand* rand = g_rand_new_with_seed (first_numbers[0]);
-  GRand* copy;
+  rand = g_rand_new_with_seed (first_numbers[0]);
 
-  for (n = 1; n < length; n++)
+  for (n = 1; n < G_N_ELEMENTS (first_numbers); n++)
     g_assert (first_numbers[n] == g_rand_int (rand));
 
   g_rand_set_seed (rand, 2);
-  g_rand_set_seed_array (rand, seed_array, seed_length);
+  g_rand_set_seed_array (rand, seed_array, G_N_ELEMENTS (seed_array));
 
-  for (n = 0; n < array_length; n++)
+  for (n = 0; n < G_N_ELEMENTS (array_outputs); n++)
     g_assert (array_outputs[n] == g_rand_int (rand));
 
   copy = g_rand_copy (rand);
@@ -123,6 +139,7 @@ int main()
       if (g_random_int_range (0, 4) == 1)
         ones ++;
     }
+
   proportion = (double)ones / (double)100000;
   /* 0.025 is overkill, but should suffice to test for some unreasonability */
   g_assert (ABS (proportion - 0.25) < 0.025);
@@ -133,3 +150,13 @@ int main()
   return 0;
 }
 
+int
+main (int   argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/rand/test-rand", test_rand);
+
+  return g_test_run();
+}

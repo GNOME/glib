@@ -119,11 +119,9 @@ test_programs =					\
 	node-test				\
 	onceinit				\
 	patterntest				\
-	printf-test				\
 	queue-test				\
 	asyncqueue-test				\
 	qsort-test				\
-	rand-test				\
 	relation-test				\
 	sequence-test				\
 	shell-test				\
@@ -134,7 +132,6 @@ test_programs =					\
 	slice-threadinit			\
 	spawn-test				\
 	$(spawn_test_win32_gui)			\
-	string-test				\
 	thread-test				\
 	threadpool-test				\
 	tree-test				\
@@ -186,11 +183,9 @@ module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 node_test_LDADD = $(progs_ldadd)
 onceinit_LDADD = $(thread_ldadd)
-printf_test_LDADD = $(progs_ldadd)
 queue_test_LDADD = $(progs_ldadd)
 asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
-rand_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)
 sequence_test_LDADD = $(progs_ldadd)
 shell_test_LDADD = $(progs_ldadd)
@@ -204,7 +199,6 @@ slice_concurrent_LDADD = $(thread_ldadd)
 slice_threadinit_SOURCES = slice-threadinit.c
 slice_threadinit_LDADD = $(thread_ldadd)
 spawn_test_LDADD = $(progs_ldadd)
-string_test_LDADD = $(progs_ldadd)
 thread_test_LDADD = $(thread_ldadd)
 threadpool_test_LDADD = $(thread_ldadd)
 tree_test_LDADD = $(progs_ldadd)
