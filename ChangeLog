@@ -1,5 +1,7 @@
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* configure.in: Bump version to 2.18.0
 
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>

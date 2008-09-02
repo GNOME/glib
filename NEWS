@@ -1,3 +1,42 @@
+Overview of Changes from GLib 2.17.7 to GLib 2.18.0
+===================================================
+
+* Win32:
+  - rework the g_poll() implementation to match poll() semantics more closely
+
+* Bugs fixed:
+ 324234 Using g_io_add_watch_full() to wait for connect() to return...
+ 548278 Async GETs connections are always terminated unexpectedly...
+ 500246 Bug fixes for giowin32
+ 523939 Example program for GValue
+ 550096 GBookmarkFile parser is not forward compatible
+ 550040 Move GString, rand and printf tests to the unit test framework
+ 550104 trivial documentation fix for g_get_home_dir
+ 548988 g_file_replace fails on Windows when the target file exists
+ 550059 Wrong docs for g_emblemed_icon_add_emblem
+ 548800 Missing a g_object_get_type function
+ 550056 Missing documentation for g_emblemed_icon_get_emblems
+
+* Updated translations:
+ Bulgarian (bg)
+ Czech (cs)
+ German (de)
+ Estonian (et)
+ Basque (eu)
+ French (fr)
+ Hebrew (he)
+ Hungarian (hu)
+ Italian (it)
+ Japanese (ja)
+ Lithuanian (lt)
+ Maithili (mai)
+ Dutch (nl)
+ Swedish (sv)
+ Thai (th)
+ Ukrainian (uk)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.17.6 to GLib 2.17.7
 ===================================================
 
