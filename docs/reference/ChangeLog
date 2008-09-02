@@ -1,5 +1,9 @@
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/gobject-sections.txt: Add g_object_get_type
+
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 550056 – Missing documentation for g_emblemed_icon_get_emblems
 
 	* gio/gio-sections.txt: Add some missing GEmblem functions.
