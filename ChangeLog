@@ -1,5 +1,9 @@
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.18.0
+
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 550104 – trivial documentation fix for g_get_home_dir
 
 	* glib/gutils.c (g_get_home_dir): Fix up the docs.
