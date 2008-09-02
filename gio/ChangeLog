@@ -1,3 +1,10 @@
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 550059 – Wrong docs for g_emblemed_icon_add_emblem
+
+	* gemblemedicon.c (g_emblemed_icon_get_add_emblem): Don't document
+	nonexisting return values. Pointed out by Cosimo Cecchi.
+
 2008-08-23  Tor Lillqvist  <tml@novell.com>
 
 	Bug 548988 - g_file_replace fails on Windows when the target file

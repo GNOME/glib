@@ -166,8 +166,6 @@ g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed)
  *
  * Adds @emblem to the #GList of #GEmblem <!-- -->s.
  *
- * Returns: a #GList of #GEmblem <!-- -->s that is owned by @emblemed
- *
  * Since: 2.18
  **/
 void 
