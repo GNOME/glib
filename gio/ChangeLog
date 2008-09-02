@@ -1,3 +1,11 @@
+2008-09-02  Michael Natterer  <mitch@imendio.com>
+
+	* gbufferedoutputstream.h (struct _GBufferedOutputStreamClass):
+	fix parent_class member to be GFilterOutputStreamClass (not
+	GOutputStreamClass). Drop three pointers of padding, which is
+	exactly what GFilterOutputStreamClass adds to GOutputStreamClass,
+	so the class struct size stays the same.
+
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 550059 – Wrong docs for g_emblemed_icon_add_emblem

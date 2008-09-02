@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Christian Kellner <gicmo@gnome.org> 
+ * Author: Christian Kellner <gicmo@gnome.org>
  */
 
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * GBufferedOutputStream:
  * @parent_class: The parent class.
- * 
+ *
  * An implementation of #GFilterOutputStream with a sized buffer.
  **/
 typedef struct _GBufferedOutputStreamClass    GBufferedOutputStreamClass;
@@ -57,19 +57,16 @@ struct _GBufferedOutputStream
 
 struct _GBufferedOutputStreamClass
 {
- GOutputStreamClass parent_class;
+  GFilterOutputStreamClass parent_class;
 
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
 };
 
 
-GType           g_buffered_output_stream_get_type  (void) G_GNUC_CONST;
+GType          g_buffered_output_stream_get_type        (void) G_GNUC_CONST;
 GOutputStream* g_buffered_output_stream_new             (GOutputStream         *base_stream);
 GOutputStream* g_buffered_output_stream_new_sized       (GOutputStream         *base_stream,
 							 gsize                  size);
