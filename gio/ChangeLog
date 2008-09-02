@@ -1,3 +1,7 @@
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* gmount.h: Document guess_content_type sync vfunc.
+
 2008-09-02  Michael Natterer  <mitch@imendio.com>
 
 	* gbufferedoutputstream.h (struct _GBufferedOutputStreamClass):
