@@ -1,5 +1,7 @@
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.18.0 ===
 
 2008-09-02  Ryan Lortie  <desrt@desrt.ca>
