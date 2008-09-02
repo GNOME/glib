@@ -1811,13 +1811,13 @@ g_get_real_name (void)
  * </simplelist>
  * Since applications are in general <emphasis>not</emphasis> written 
  * to deal with these situations it was considered better to make 
- * g_get_homedir() not pay attention to <envar>HOME</envar> and to 
+ * g_get_home_dir() not pay attention to <envar>HOME</envar> and to 
  * return the real home directory for the user. If applications
  * want to pay attention to <envar>HOME</envar>, they can do:
  * |[
  *  const char *homedir = g_getenv ("HOME");
  *   if (!homedir)
- *      homedir = g_get_homedir (<!-- -->);
+ *      homedir = g_get_home_dir (<!-- -->);
  * ]|
  *
  * Returns: the current user's home directory

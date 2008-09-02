@@ -1,3 +1,9 @@
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 550104 – trivial documentation fix for g_get_home_dir
+
+	* glib/gutils.c (g_get_home_dir): Fix up the docs.
+
 2008-09-02  Michael Natterer  <mitch@imendio.com>
 
 	* glib/gchecksum.c (g_checksum_reset): add
