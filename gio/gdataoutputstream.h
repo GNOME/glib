@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ G_BEGIN_DECLS
  * GDataOutputStream:
  * @parent_instance: a #GBufferedOutputStream.
  *
- * An implementation of #GBufferedOutputStream that allows for high-level 
+ * An implementation of #GBufferedOutputStream that allows for high-level
  * data manipulation of arbitrary data (including binary operations).
  **/
 typedef struct _GDataOutputStream         GDataOutputStream;
@@ -59,7 +59,8 @@ struct _GDataOutputStream
 
 struct _GDataOutputStreamClass
 {
- GFilterOutputStreamClass parent_class;
+  GFilterOutputStreamClass parent_class;
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -70,8 +71,8 @@ struct _GDataOutputStreamClass
 };
 
 
-GType          g_data_output_stream_get_type   (void) G_GNUC_CONST;
-GDataOutputStream*  g_data_output_stream_new        (GOutputStream *base_stream);
+GType                g_data_output_stream_get_type       (void) G_GNUC_CONST;
+GDataOutputStream *  g_data_output_stream_new            (GOutputStream         *base_stream);
 
 void                 g_data_output_stream_set_byte_order (GDataOutputStream     *stream,
 							  GDataStreamByteOrder   order);

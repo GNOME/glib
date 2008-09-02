@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GInputStream:
- * 
+ *
  * Base class for streaming input operations.
  **/
 typedef struct _GInputStreamClass    GInputStreamClass;
@@ -59,48 +59,48 @@ struct _GInputStreamClass
   GObjectClass parent_class;
 
   /* Sync ops: */
-  
-  gssize   (* read_fn)     (GInputStream *stream,
-			    void         *buffer,
-			    gsize         count,
-			    GCancellable *cancellable,
-			    GError      **error);
-  gssize   (* skip)        (GInputStream *stream,
-			    gsize         count,
-			    GCancellable *cancellable,
-			    GError      **error);
-  gboolean (* close_fn)	   (GInputStream *stream,
-			    GCancellable *cancellable,
-			    GError      **error);
+
+  gssize   (* read_fn)      (GInputStream        *stream,
+                             void                *buffer,
+                             gsize                count,
+                             GCancellable        *cancellable,
+                             GError             **error);
+  gssize   (* skip)         (GInputStream        *stream,
+                             gsize                count,
+                             GCancellable        *cancellable,
+                             GError             **error);
+  gboolean (* close_fn)	    (GInputStream        *stream,
+                             GCancellable        *cancellable,
+                             GError             **error);
 
   /* Async ops: (optional in derived classes) */
-  void     (* read_async)  (GInputStream        *stream,
-			    void               *buffer,
-			    gsize               count,
-			    int                 io_priority,
-			    GCancellable       *cancellable,
-			    GAsyncReadyCallback callback,
-			    gpointer            user_data);
-  gssize   (* read_finish) (GInputStream       *stream,
-			    GAsyncResult       *result,
-			    GError            **error);
-  void     (* skip_async)  (GInputStream       *stream,
-			    gsize               count,
-			    int                 io_priority,
-			    GCancellable       *cancellable,
-			    GAsyncReadyCallback callback,
-			    gpointer            user_data);
-  gssize   (* skip_finish) (GInputStream        *stream,
-			    GAsyncResult       *result,
-			    GError            **error);
-  void     (* close_async) (GInputStream        *stream,
-			    int                  io_priority,
-			    GCancellable       *cancellable,
-			    GAsyncReadyCallback callback,
-			    gpointer            user_data);
-  gboolean (* close_finish)(GInputStream        *stream,
-			    GAsyncResult       *result,
-			    GError            **error);
+  void     (* read_async)   (GInputStream        *stream,
+                             void                *buffer,
+                             gsize                count,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data);
+  gssize   (* read_finish)  (GInputStream        *stream,
+                             GAsyncResult        *result,
+                             GError             **error);
+  void     (* skip_async)   (GInputStream        *stream,
+                             gsize                count,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data);
+  gssize   (* skip_finish)  (GInputStream        *stream,
+                             GAsyncResult        *result,
+                             GError             **error);
+  void     (* close_async)  (GInputStream        *stream,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data);
+  gboolean (* close_finish) (GInputStream        *stream,
+                             GAsyncResult        *result,
+                             GError             **error);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -111,7 +111,7 @@ struct _GInputStreamClass
   void (*_g_reserved5) (void);
 };
 
-GType g_input_stream_get_type (void) G_GNUC_CONST;
+GType    g_input_stream_get_type      (void) G_GNUC_CONST;
 
 gssize   g_input_stream_read          (GInputStream          *stream,
 				       void                  *buffer,

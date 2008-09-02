@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -38,21 +38,22 @@ G_BEGIN_DECLS
 
 typedef struct _GUnixVolumeClass GUnixVolumeClass;
 
-struct _GUnixVolumeClass {
-   GObjectClass parent_class;
+struct _GUnixVolumeClass
+{
+  GObjectClass parent_class;
 };
 
-GType _g_unix_volume_get_type (void) G_GNUC_CONST;
+GType         _g_unix_volume_get_type       (void) G_GNUC_CONST;
 
-GUnixVolume *_g_unix_volume_new           (GVolumeMonitor    *volume_monitor,
-                                           GUnixMountPoint   *mountpoint);
-gboolean    _g_unix_volume_has_mount_path (GUnixVolume       *volume,
-                                           const char        *mount_path);
-void        _g_unix_volume_set_mount      (GUnixVolume       *volume,
-                                           GUnixMount        *mount);
-void        _g_unix_volume_unset_mount    (GUnixVolume       *volume,
-                                           GUnixMount        *mount);
-void        _g_unix_volume_disconnected   (GUnixVolume       *volume);
+GUnixVolume * _g_unix_volume_new            (GVolumeMonitor  *volume_monitor,
+                                             GUnixMountPoint *mountpoint);
+gboolean      _g_unix_volume_has_mount_path (GUnixVolume     *volume,
+                                             const char      *mount_path);
+void          _g_unix_volume_set_mount      (GUnixVolume     *volume,
+                                             GUnixMount      *mount);
+void          _g_unix_volume_unset_mount    (GUnixVolume     *volume,
+                                             GUnixMount      *mount);
+void          _g_unix_volume_disconnected   (GUnixVolume     *volume);
 
 G_END_DECLS
 

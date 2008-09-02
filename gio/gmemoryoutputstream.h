@@ -56,7 +56,7 @@ struct _GMemoryOutputStream
 
 struct _GMemoryOutputStreamClass
 {
- GOutputStreamClass parent_class;
+  GOutputStreamClass parent_class;
 
   /*< private >*/
   /* Padding for future expansion */
@@ -79,8 +79,8 @@ struct _GMemoryOutputStreamClass
  *
  * Returns: a pointer to the reallocated memory
  */
-typedef gpointer (*GReallocFunc) (gpointer data,
-                                  gsize    size);
+typedef gpointer (* GReallocFunc) (gpointer data,
+                                   gsize    size);
 
 GType          g_memory_output_stream_get_type      (void) G_GNUC_CONST;
 

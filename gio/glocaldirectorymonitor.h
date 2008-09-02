@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -43,23 +43,27 @@ typedef struct _GLocalDirectoryMonitorClass GLocalDirectoryMonitorClass;
 struct _GLocalDirectoryMonitor
 {
   GFileMonitor parent_instance;
-  gchar *dirname;
+
+  gchar             *dirname;
   /* For mount emulation */
   GUnixMountMonitor *mount_monitor;
-  gboolean was_mounted;
+  gboolean           was_mounted;
 };
 
-struct _GLocalDirectoryMonitorClass {
+struct _GLocalDirectoryMonitorClass
+{
   GFileMonitorClass parent_class;
+
   gboolean mount_notify;
-  gboolean (*is_supported) (void);
+
+  gboolean (* is_supported) (void);
 };
 
-GType g_local_directory_monitor_get_type (void) G_GNUC_CONST;
+GType           g_local_directory_monitor_get_type (void) G_GNUC_CONST;
 
-GFileMonitor* _g_local_directory_monitor_new (const char         *dirname,
-					      GFileMonitorFlags   flags,
-					      GError            **error);
+GFileMonitor * _g_local_directory_monitor_new      (const char         *dirname,
+                                                    GFileMonitorFlags   flags,
+                                                    GError            **error);
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
 
 /**
  * GFileMonitor:
- * 
+ *
  * Watches for changes to a file.
  **/
 struct _GFileMonitor
@@ -57,15 +57,15 @@ struct _GFileMonitor
 struct _GFileMonitorClass
 {
   GObjectClass parent_class;
-  
+
   /* Signals */
-  void (* changed) (GFileMonitor* monitor,
-		    GFile* file,
-		    GFile* other_file,
-		    GFileMonitorEvent event_type);
-  
+  void     (* changed) (GFileMonitor      *monitor,
+                        GFile             *file,
+                        GFile             *other_file,
+                        GFileMonitorEvent  event_type);
+
   /* Virtual Table */
-  gboolean	(*cancel)(GFileMonitor* monitor);
+  gboolean (* cancel)  (GFileMonitor      *monitor);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -76,19 +76,19 @@ struct _GFileMonitorClass
   void (*_g_reserved5) (void);
 };
 
-GType g_file_monitor_get_type (void) G_GNUC_CONST;
+GType    g_file_monitor_get_type       (void) G_GNUC_CONST;
 
-gboolean g_file_monitor_cancel         (GFileMonitor *monitor);
-gboolean g_file_monitor_is_cancelled   (GFileMonitor *monitor);
-void     g_file_monitor_set_rate_limit (GFileMonitor *monitor,
-					int           limit_msecs);
+gboolean g_file_monitor_cancel         (GFileMonitor      *monitor);
+gboolean g_file_monitor_is_cancelled   (GFileMonitor      *monitor);
+void     g_file_monitor_set_rate_limit (GFileMonitor      *monitor,
+                                        int                limit_msecs);
 
 
 /* For implementations */
-void g_file_monitor_emit_event (GFileMonitor      *monitor,
-				GFile             *child,
-				GFile             *other_file,
-				GFileMonitorEvent  event_type);
+void     g_file_monitor_emit_event     (GFileMonitor      *monitor,
+                                        GFile             *child,
+                                        GFile             *other_file,
+                                        GFileMonitorEvent  event_type);
 
 G_END_DECLS
 

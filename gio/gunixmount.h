@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -38,20 +38,21 @@ G_BEGIN_DECLS
 
 typedef struct _GUnixMountClass GUnixMountClass;
 
-struct _GUnixMountClass {
-   GObjectClass parent_class;
+struct _GUnixMountClass
+{
+  GObjectClass parent_class;
 };
 
-GType _g_unix_mount_get_type (void) G_GNUC_CONST;
+GType        _g_unix_mount_get_type       (void) G_GNUC_CONST;
 
-GUnixMount *_g_unix_mount_new                    (GVolumeMonitor       *volume_monitor,
-                                                  GUnixMountEntry      *mount_entry,
-                                                  GUnixVolume          *volume);
-gboolean     _g_unix_mount_has_mount_path        (GUnixMount           *mount,
-                                                  const char           *mount_path);
-void         _g_unix_mount_unset_volume          (GUnixMount            *mount,
-                                                  GUnixVolume           *volume);
-void         _g_unix_mount_unmounted             (GUnixMount           *mount);
+GUnixMount * _g_unix_mount_new            (GVolumeMonitor  *volume_monitor,
+                                           GUnixMountEntry *mount_entry,
+                                           GUnixVolume     *volume);
+gboolean     _g_unix_mount_has_mount_path (GUnixMount      *mount,
+                                           const char      *mount_path);
+void         _g_unix_mount_unset_volume   (GUnixMount      *mount,
+                                           GUnixVolume     *volume);
+void         _g_unix_mount_unmounted      (GUnixMount      *mount);
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -38,8 +38,8 @@ G_BEGIN_DECLS
 
 /**
  * GLoadableIcon:
- * 
- * Generic type for all kinds of icons that can be loaded 
+ *
+ * Generic type for all kinds of icons that can be loaded
  * as a stream.
  **/
 typedef struct _GLoadableIconIface    		GLoadableIconIface;
@@ -50,7 +50,7 @@ typedef struct _GLoadableIconIface    		GLoadableIconIface;
  * @load: Loads an icon.
  * @load_async: Loads an icon asynchronously.
  * @load_finish: Finishes an asynchronous icon load.
- * 
+ *
  * Interface for icons that can be loaded as a stream.
  **/
 struct _GLoadableIconIface
@@ -59,24 +59,23 @@ struct _GLoadableIconIface
 
   /* Virtual Table */
 
-  GInputStream * (*load)        (GLoadableIcon      *icon,
-				 int                 size,
-				 char              **type,
-				 GCancellable       *cancellable,
-				 GError            **error);
-  void           (*load_async)  (GLoadableIcon      *icon,
-				 int                 size,
-				 GCancellable       *cancellable,
-				 GAsyncReadyCallback callback,
-				 gpointer            user_data);
-  GInputStream * (*load_finish) (GLoadableIcon      *icon,
-				  GAsyncResult      *res,
-				  char             **type,
-				  GError           **error);
+  GInputStream * (* load)        (GLoadableIcon       *icon,
+                                  int                  size,
+                                  char               **type,
+                                  GCancellable        *cancellable,
+                                  GError             **error);
+  void           (* load_async)  (GLoadableIcon       *icon,
+                                  int                  size,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data);
+  GInputStream * (* load_finish) (GLoadableIcon       *icon,
+                                  GAsyncResult        *res,
+                                  char               **type,
+                                  GError             **error);
 };
 
-GType g_loadable_icon_get_type (void) G_GNUC_CONST;
-
+GType         g_loadable_icon_get_type    (void) G_GNUC_CONST;
 
 GInputStream *g_loadable_icon_load        (GLoadableIcon        *icon,
 					   int                   size,

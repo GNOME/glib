@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,20 +40,20 @@ G_BEGIN_DECLS
 
 /**
  * GThemedIcon:
- * 
+ *
  * An implementation of #GIcon for themed icons.
  **/
 typedef struct _GThemedIconClass   GThemedIconClass;
 
-GType g_themed_icon_get_type (void) G_GNUC_CONST;
-  
+GType  g_themed_icon_get_type                   (void) G_GNUC_CONST;
+
 GIcon *g_themed_icon_new                        (const char  *iconname);
 GIcon *g_themed_icon_new_with_default_fallbacks (const char  *iconname);
-GIcon *g_themed_icon_new_from_names             (char       **iconnames, 
+GIcon *g_themed_icon_new_from_names             (char       **iconnames,
                                                  int          len);
-void   g_themed_icon_prepend_name               (GThemedIcon *icon, 
+void   g_themed_icon_prepend_name               (GThemedIcon *icon,
                                                  const char  *iconname);
-void   g_themed_icon_append_name                (GThemedIcon *icon, 
+void   g_themed_icon_append_name                (GThemedIcon *icon,
                                                  const char  *iconname);
 
 const char * const *g_themed_icon_get_names     (GThemedIcon *icon);

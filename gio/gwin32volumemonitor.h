@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Hans Breuer
  *
@@ -46,20 +46,20 @@ typedef struct _GWin32VolumeMonitorClass GWin32VolumeMonitorClass;
  *
  * Implementation of the #GMount interface for Win32 systems.
  */
-typedef struct _GWin32Mount GWin32Mount;
+typedef struct _GWin32Mount  GWin32Mount;
 typedef struct _GWin32Volume GWin32Volume;
 
-struct _GWin32VolumeMonitorClass {
+struct _GWin32VolumeMonitorClass
+{
   GNativeVolumeMonitorClass parent_class;
-
 };
 
-GType _g_win32_volume_monitor_get_type (void) G_GNUC_CONST;
+GType            _g_win32_volume_monitor_get_type                     (void) G_GNUC_CONST;
 
 GVolumeMonitor * _g_win32_volume_monitor_new                          (void);
-GWin32Volume *    _g_win32_volume_monitor_lookup_volume_for_mount_path (GWin32VolumeMonitor *monitor,
-                                                                      const char         *mount_path);
+GWin32Volume   * _g_win32_volume_monitor_lookup_volume_for_mount_path (GWin32VolumeMonitor *monitor,
+                                                                       const char          *mount_path);
 
 G_END_DECLS
 
-#endif
+#endif /* __G_WIN32_VOLUME_MONITOR_H__ */

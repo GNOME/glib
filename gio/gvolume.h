@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -89,14 +89,14 @@ G_BEGIN_DECLS
  * @mount_finish: Finishes a mount operation.
  * @eject: Ejects a given #GVolume.
  * @eject_finish: Finishes an eject operation.
- * @get_identifier: Returns the <link linkend="volume-identifier">identifier</link> of the given kind, or %NULL if 
+ * @get_identifier: Returns the <link linkend="volume-identifier">identifier</link> of the given kind, or %NULL if
  *    the #GVolume doesn't have one.
  * @enumerate_identifiers: Returns an array strings listing the kinds
  *    of <link linkend="volume-identifier">identifiers</link> which the #GVolume has.
  * @should_automount: Returns %TRUE if the #GVolume should be automatically mounted.
  * @get_activation_root: Returns the activation root for the #GVolume if it is known in advance or %NULL if
  *   it is not known.
- * 
+ *
  * Interface for implementing operations for mountable volumes.
  **/
 typedef struct _GVolumeIface    GVolumeIface;
@@ -107,47 +107,47 @@ struct _GVolumeIface
 
   /* signals */
 
-  void (*changed) (GVolume *volume);
-  void (*removed) (GVolume *volume);
-  
+  void        (* changed)               (GVolume             *volume);
+  void        (* removed)               (GVolume             *volume);
+
   /* Virtual Table */
 
-  char *    (*get_name)       (GVolume             *volume);
-  GIcon *   (*get_icon)       (GVolume             *volume);
-  char *    (*get_uuid)       (GVolume             *volume);
-  GDrive *  (*get_drive)      (GVolume             *volume);
-  GMount *  (*get_mount)      (GVolume             *volume);
-  gboolean  (*can_mount)      (GVolume             *volume);
-  gboolean  (*can_eject)      (GVolume             *volume);
-  void      (*mount_fn)       (GVolume             *volume,
-			       GMountMountFlags     flags,
-                               GMountOperation     *mount_operation,
-                               GCancellable        *cancellable,
-                               GAsyncReadyCallback  callback,
-                               gpointer             user_data);
-  gboolean  (*mount_finish)   (GVolume             *volume,
-                               GAsyncResult        *result,
-                               GError             **error);
-  void      (*eject)          (GVolume             *volume,
-			       GMountUnmountFlags   flags,
-                               GCancellable        *cancellable,
-                               GAsyncReadyCallback  callback,
-                               gpointer             user_data);
-  gboolean  (*eject_finish)   (GVolume             *volume,
-                               GAsyncResult        *result,
-                               GError             **error);
-  
-  char *   (*get_identifier)           (GVolume             *volume,
-					const char          *kind);
-  char **  (*enumerate_identifiers)    (GVolume             *volume);
+  char      * (* get_name)              (GVolume             *volume);
+  GIcon     * (* get_icon)              (GVolume             *volume);
+  char      * (* get_uuid)              (GVolume             *volume);
+  GDrive    * (* get_drive)             (GVolume             *volume);
+  GMount    * (* get_mount)             (GVolume             *volume);
+  gboolean    (* can_mount)             (GVolume             *volume);
+  gboolean    (* can_eject)             (GVolume             *volume);
+  void        (* mount_fn)              (GVolume             *volume,
+                                         GMountMountFlags     flags,
+                                         GMountOperation     *mount_operation,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data);
+  gboolean    (* mount_finish)          (GVolume             *volume,
+                                         GAsyncResult        *result,
+                                         GError             **error);
+  void        (* eject)                 (GVolume             *volume,
+                                         GMountUnmountFlags   flags,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data);
+  gboolean    (* eject_finish)          (GVolume             *volume,
+                                         GAsyncResult        *result,
+                                         GError             **error);
 
-  gboolean (*should_automount)         (GVolume             *volume);
+  char      * (* get_identifier)        (GVolume             *volume,
+                                         const char          *kind);
+  char     ** (* enumerate_identifiers) (GVolume             *volume);
 
-  GFile *  (*get_activation_root)      (GVolume             *volume);
-  
+  gboolean    (* should_automount)      (GVolume             *volume);
+
+  GFile     * (* get_activation_root)   (GVolume             *volume);
+
 };
 
-GType     g_volume_get_type       (void) G_GNUC_CONST;
+GType    g_volume_get_type              (void) G_GNUC_CONST;
 
 char *   g_volume_get_name              (GVolume              *volume);
 GIcon *  g_volume_get_icon              (GVolume              *volume);
@@ -179,7 +179,6 @@ char *   g_volume_get_identifier        (GVolume              *volume,
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
 
 GFile *  g_volume_get_activation_root   (GVolume              *volume);
-
 
 G_END_DECLS
 

@@ -1,3 +1,10 @@
+2008-09-02  Michael Natterer  <mitch@imendio.com>
+
+	* *.h: big header formatting cleanup: indentation, vtable
+	formatting, consistent spacing in (* vfunc), trailing whitespace
+	removal. Formatting should be pretty consistent in all GIO headers
+	now.
+
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* gmount.h: Document guess_content_type sync vfunc.

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Christian Kellner <gicmo@gnome.org> 
+ * Author: Christian Kellner <gicmo@gnome.org>
  */
 
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GMemoryInputStream:
- * 
+ *
  * Implements #GInputStream for arbitrary memory chunks.
  **/
 typedef struct _GMemoryInputStreamClass    GMemoryInputStreamClass;
@@ -56,7 +56,7 @@ struct _GMemoryInputStream
 
 struct _GMemoryInputStreamClass
 {
- GInputStreamClass parent_class;
+  GInputStreamClass parent_class;
 
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -67,15 +67,15 @@ struct _GMemoryInputStreamClass
 };
 
 
-GType          g_memory_input_stream_get_type  (void) G_GNUC_CONST;
-GInputStream * g_memory_input_stream_new               (void);
-GInputStream * g_memory_input_stream_new_from_data     (const void     *data,
-					  	   	gssize          len,
-						    	GDestroyNotify  destroy);
-void           g_memory_input_stream_add_data          (GMemoryInputStream *stream,
-                                                        const void         *data,
-                                                        gssize              len,
-                                                        GDestroyNotify      destroy);
+GType          g_memory_input_stream_get_type      (void) G_GNUC_CONST;
+GInputStream * g_memory_input_stream_new           (void);
+GInputStream * g_memory_input_stream_new_from_data (const void         *data,
+                                                    gssize              len,
+                                                    GDestroyNotify      destroy);
+void           g_memory_input_stream_add_data      (GMemoryInputStream *stream,
+                                                    const void         *data,
+                                                    gssize              len,
+                                                    GDestroyNotify      destroy);
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2008 Hans Breuer
  *
@@ -38,18 +38,19 @@ G_BEGIN_DECLS
 
 typedef struct _GWin32MountClass GWin32MountClass;
 
-struct _GWin32MountClass {
-   GObjectClass parent_class;
+struct _GWin32MountClass
+{
+  GObjectClass parent_class;
 };
 
-GType _g_win32_mount_get_type (void) G_GNUC_CONST;
+GType         _g_win32_mount_get_type     (void) G_GNUC_CONST;
 
-GWin32Mount *_g_win32_mount_new                    (GVolumeMonitor       *volume_monitor,
-                                                    const char           *path,
-                                                    GWin32Volume          *volume);
-void         _g_win32_mount_unset_volume          (GWin32Mount            *mount,
-                                                  GWin32Volume           *volume);
-void         _g_win32_mount_unmounted             (GWin32Mount           *mount);
+GWin32Mount * _g_win32_mount_new          (GVolumeMonitor *volume_monitor,
+                                           const char     *path,
+                                           GWin32Volume   *volume);
+void          _g_win32_mount_unset_volume (GWin32Mount    *mount,
+                                           GWin32Volume   *volume);
+void          _g_win32_mount_unmounted    (GWin32Mount    *mount);
 
 G_END_DECLS
 

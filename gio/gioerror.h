@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -32,16 +32,15 @@
 
 G_BEGIN_DECLS
 
-GQuark          g_io_error_quark      (void);
-
 /**
  * G_IO_ERROR:
- * 
+ *
  * Error domain for GIO. Errors in this domain will be from the #GIOErrorEnum enumeration.
  * See #GError for more information on error domains.
  **/
 #define G_IO_ERROR g_io_error_quark()
 
+GQuark       g_io_error_quark      (void);
 GIOErrorEnum g_io_error_from_errno (gint err_no);
 
 G_END_DECLS

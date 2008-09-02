@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,14 +40,14 @@ G_BEGIN_DECLS
 
 /**
  * GSimpleAsyncResult:
- * 
+ *
  * A simple implementation of #GAsyncResult.
  **/
 typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
 
 
-GType g_simple_async_result_get_type (void) G_GNUC_CONST;
-  
+GType               g_simple_async_result_get_type         (void) G_GNUC_CONST;
+
 GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
@@ -103,20 +103,20 @@ void                g_simple_async_result_set_error_va     (GSimpleAsyncResult  
 							    const char              *format,
 							    va_list                  args);
 
-void g_simple_async_report_error_in_idle  (GObject *object,
+void g_simple_async_report_error_in_idle  (GObject            *object,
 					   GAsyncReadyCallback callback,
-					   gpointer user_data,
-					   GQuark         domain,
-					   gint           code,
-					   const char    *format,
+					   gpointer            user_data,
+					   GQuark              domain,
+					   gint                code,
+					   const char         *format,
 					   ...);
-void g_simple_async_report_gerror_in_idle (GObject *object,
+void g_simple_async_report_gerror_in_idle (GObject            *object,
 					   GAsyncReadyCallback callback,
-					   gpointer user_data,
-					   GError *error);
+					   gpointer            user_data,
+					   GError             *error);
 
 G_END_DECLS
 
 
-  
+
 #endif /* __G_SIMPLE_ASYNC_RESULT_H__ */

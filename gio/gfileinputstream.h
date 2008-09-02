@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GFileInputStream:
- * 
+ *
  * A subclass of GInputStream for opened files. This adds
  * a few file-specific operations and seeking.
  *
@@ -61,26 +61,27 @@ struct _GFileInputStreamClass
 {
   GInputStreamClass parent_class;
 
-  goffset    (*tell)          (GFileInputStream     *stream);
-  gboolean   (*can_seek)      (GFileInputStream     *stream);
-  gboolean   (*seek)	      (GFileInputStream     *stream,
-			       goffset               offset,
-			       GSeekType             type,
-			       GCancellable         *cancellable,
-			       GError              **error);
-  GFileInfo *(*query_info)    (GFileInputStream     *stream,
-			       char                 *attributes,
-			       GCancellable         *cancellable,
-			       GError              **error);
-  void       (*query_info_async)  (GFileInputStream     *stream,
-				   char                 *attributes,
-				   int                   io_priority,
-				   GCancellable         *cancellable,
-				   GAsyncReadyCallback   callback,
-				   gpointer              user_data);
-  GFileInfo *(*query_info_finish) (GFileInputStream     *stream,
-				   GAsyncResult         *res,
-				   GError              **error);
+  goffset     (* tell)              (GFileInputStream     *stream);
+  gboolean    (* can_seek)          (GFileInputStream     *stream);
+  gboolean    (* seek)	            (GFileInputStream     *stream,
+                                     goffset               offset,
+                                     GSeekType             type,
+                                     GCancellable         *cancellable,
+                                     GError              **error);
+  GFileInfo * (* query_info)        (GFileInputStream     *stream,
+                                     char                 *attributes,
+                                     GCancellable         *cancellable,
+                                     GError              **error);
+  void        (* query_info_async)  (GFileInputStream     *stream,
+                                     char                 *attributes,
+                                     int                   io_priority,
+                                     GCancellable         *cancellable,
+                                     GAsyncReadyCallback   callback,
+                                     gpointer              user_data);
+  GFileInfo * (* query_info_finish) (GFileInputStream     *stream,
+                                     GAsyncResult         *res,
+                                     GError              **error);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -90,7 +91,7 @@ struct _GFileInputStreamClass
   void (*_g_reserved5) (void);
 };
 
-GType g_file_input_stream_get_type (void) G_GNUC_CONST;
+GType      g_file_input_stream_get_type          (void) G_GNUC_CONST;
 
 GFileInfo *g_file_input_stream_query_info        (GFileInputStream     *stream,
 						  char                 *attributes,
@@ -105,7 +106,6 @@ void       g_file_input_stream_query_info_async  (GFileInputStream     *stream,
 GFileInfo *g_file_input_stream_query_info_finish (GFileInputStream     *stream,
 						  GAsyncResult         *result,
 						  GError              **error);
-
 
 G_END_DECLS
 

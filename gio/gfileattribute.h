@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -36,26 +36,28 @@ G_BEGIN_DECLS
  * @name: the name of the attribute.
  * @type: the #GFileAttributeType type of the attribute.
  * @flags: a set of #GFileAttributeInfoFlags.
- * 
- * Information about a specific attribute. 
+ *
+ * Information about a specific attribute.
  **/
-struct _GFileAttributeInfo {
-  char *name;
-  GFileAttributeType type;
-  GFileAttributeInfoFlags flags;
+struct _GFileAttributeInfo
+{
+  char                    *name;
+  GFileAttributeType       type;
+  GFileAttributeInfoFlags  flags;
 };
 
 /**
  * GFileAttributeInfoList:
  * @infos: an array of #GFileAttributeInfo<!-- -->s.
  * @n_infos: the number of values in the array.
- * 
+ *
  * Acts as a lightweight registry for possible valid file attributes.
  * The registry stores Key-Value pair formats as #GFileAttributeInfo<!-- -->s.
  **/
-struct _GFileAttributeInfoList {
+struct _GFileAttributeInfoList
+{
   GFileAttributeInfo *infos;
-  int n_infos;
+  int                 n_infos;
 };
 
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
@@ -70,6 +72,5 @@ void                      g_file_attribute_info_list_add    (GFileAttributeInfoL
 							     GFileAttributeInfoFlags flags);
 
 G_END_DECLS
-
 
 #endif /* __G_FILE_INFO_H__ */

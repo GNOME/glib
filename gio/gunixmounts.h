@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -29,15 +29,15 @@ G_BEGIN_DECLS
 
 /**
  * GUnixMountEntry:
- * 
- * Defines a Unix mount entry (e.g. <filename>/media/cdrom</filename>). 
+ *
+ * Defines a Unix mount entry (e.g. <filename>/media/cdrom</filename>).
  * This corresponds roughly to a mtab entry.
  **/
 typedef struct _GUnixMountEntry GUnixMountEntry;
 
 /**
  * GUnixMountPoint:
- * 
+ *
  * Defines a Unix mount point (e.g. <filename>/dev</filename>).
  * This corresponds roughly to a fstab entry.
  **/
@@ -45,7 +45,7 @@ typedef struct _GUnixMountPoint GUnixMountPoint;
 
 /**
  * GUnixMountMonitor:
- * 
+ *
  * Watches #GUnixMount<!-- -->s for changes.
  **/
 typedef struct _GUnixMountMonitor      GUnixMountMonitor;

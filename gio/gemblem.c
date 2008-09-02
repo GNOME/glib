@@ -19,9 +19,9 @@
  *
  */
 
-
 #include <config.h>
 
+#include "gicon.h"
 #include "gemblem.h"
 #include "glibintl.h"
 #include "gioenums.h"

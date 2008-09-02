@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Christian Kellner <gicmo@gnome.org> 
+ * Author: Christian Kellner <gicmo@gnome.org>
  */
 
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GFilterInputStream:
- * 
+ *
  * A base class for all input streams that work on an underlying stream.
  **/
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;
@@ -58,7 +58,7 @@ struct _GFilterInputStreamClass
 {
   GInputStreamClass parent_class;
 
-  /*< private >*/  
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
@@ -66,8 +66,9 @@ struct _GFilterInputStreamClass
 };
 
 
-GType          g_filter_input_stream_get_type  (void) G_GNUC_CONST;
-GInputStream  *g_filter_input_stream_get_base_stream (GFilterInputStream *stream);
+GType          g_filter_input_stream_get_type        (void) G_GNUC_CONST;
+GInputStream * g_filter_input_stream_get_base_stream (GFilterInputStream *stream);
+
 G_END_DECLS
 
 #endif /* __G_FILTER_INPUT_STREAM_H__ */

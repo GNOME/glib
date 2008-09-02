@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -41,15 +41,15 @@ G_BEGIN_DECLS
 
 /**
  * GIOModule:
- * 
+ *
  * Opaque module base class for extending GIO.
  **/
 typedef struct _GIOModuleClass GIOModuleClass;
 
-GType      g_io_module_get_type (void) G_GNUC_CONST;
-GIOModule *g_io_module_new      (const gchar *filename);
+GType              g_io_module_get_type                       (void) G_GNUC_CONST;
+GIOModule         *g_io_module_new                            (const gchar       *filename);
 
-GList *g_io_modules_load_all_in_directory            (const char *dirname);
+GList             *g_io_modules_load_all_in_directory         (const gchar       *dirname);
 
 GIOExtensionPoint *g_io_extension_point_register              (const char        *name);
 GIOExtensionPoint *g_io_extension_point_lookup                (const char        *name);
@@ -64,31 +64,33 @@ GIOExtension *     g_io_extension_point_implement             (const char       
 							       const char        *extension_name,
 							       gint               priority);
 
-GType                   g_io_extension_get_type     (GIOExtension *extension);
-const char *            g_io_extension_get_name     (GIOExtension *extension);
-gint                    g_io_extension_get_priority (GIOExtension *extension);
-GTypeClass*             g_io_extension_ref_class    (GIOExtension *extension);
+GType              g_io_extension_get_type                    (GIOExtension      *extension);
+const char *       g_io_extension_get_name                    (GIOExtension      *extension);
+gint               g_io_extension_get_priority                (GIOExtension      *extension);
+GTypeClass*        g_io_extension_ref_class                   (GIOExtension      *extension);
+
 
 /* API for the modules to implement */
+
 /**
  * g_io_module_load:
  * @module: a #GIOModule.
- * 
- * Required API for GIO modules to implement. 
- * This function is ran after the module has been loaded into GIO, 
+ *
+ * Required API for GIO modules to implement.
+ * This function is ran after the module has been loaded into GIO,
  * to initialize the module.
  **/
-void        g_io_module_load     (GIOModule   *module);
+void   g_io_module_load   (GIOModule *module);
 
 /**
  * g_io_module_unload:
  * @module: a #GIOModule.
- * 
- * Required API for GIO modules to implement. 
- * This function is ran when the module is being unloaded from GIO, 
+ *
+ * Required API for GIO modules to implement.
+ * This function is ran when the module is being unloaded from GIO,
  * to finalize the module.
  **/
-void        g_io_module_unload   (GIOModule   *module);
+void   g_io_module_unload (GIOModule *module);
 
 G_END_DECLS
 

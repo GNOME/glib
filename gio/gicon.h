@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ G_BEGIN_DECLS
  *
  * An abstract type that specifies an icon.
  **/
-typedef struct _GIconIface    		GIconIface;
+typedef struct _GIconIface GIconIface;
 
 /**
  * GIconIface:
@@ -59,16 +59,16 @@ struct _GIconIface
 
   /* Virtual Table */
 
-  guint               (*hash)               (GIcon                *icon);
-  gboolean            (*equal)              (GIcon                *icon1,
-					     GIcon                *icon2);
+  guint    (* hash)  (GIcon *icon);
+  gboolean (* equal) (GIcon *icon1,
+                      GIcon *icon2);
 };
 
-GType g_icon_get_type (void) G_GNUC_CONST;
+GType    g_icon_get_type (void) G_GNUC_CONST;
 
-guint    g_icon_hash  (gconstpointer  icon);
-gboolean g_icon_equal (GIcon         *icon1,
-		       GIcon         *icon2);
+guint    g_icon_hash     (gconstpointer  icon);
+gboolean g_icon_equal    (GIcon         *icon1,
+                          GIcon         *icon2);
 
 G_END_DECLS
 

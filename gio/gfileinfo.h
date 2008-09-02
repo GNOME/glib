@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GFileInfo:
- * 
+ *
  * Stores information about a file system object referenced by a #GFile.
  **/
 typedef struct _GFileInfoClass   GFileInfoClass;
@@ -49,8 +49,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 /* Common Attributes:  */
 /**
  * G_FILE_ATTRIBUTE_STANDARD_TYPE:
- * 
- * A key in the "standard" namespace for storing file types. 
+ *
+ * A key in the "standard" namespace for storing file types.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  * The value for this key should contain a #GFileType.
  **/
@@ -58,15 +58,15 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN:
- * 
- * A key in the "standard" namespace for checking if a file is hidden. 
+ *
+ * A key in the "standard" namespace for checking if a file is hidden.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN "standard::is-hidden"           /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP:
- * 
+ *
  * A key in the "standard" namespace for checking if a file is a backup file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
@@ -74,7 +74,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK:
- * 
+ *
  * A key in the "standard" namespace for checking if the file is a symlink.
  * Typically the actual type is something else, if we followed the symlink
  * to get the type.
@@ -84,7 +84,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL:
- * 
+ *
  * A key in the "standard" namespace for checking if a file is virtual.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
@@ -92,7 +92,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_NAME:
- * 
+ *
  * A key in the "standard" namespace for getting the name of the file.
  * The name is the on-disk filename which may not be in any known encoding,
  * and can thus not be generally displayed as is.
@@ -104,7 +104,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME:
- * 
+ *
  * A key in the "standard" namespace for getting the display name of the file.
  * A display name is guaranteed to be in UTF8 and can thus be displayed in
  * the UI.
@@ -114,48 +114,48 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME:
- * 
+ *
  * A key in the "standard" namespace for edit name of the file.
  * An edit name is similar to the display name, but it is meant to be
  * used when you want to rename the file in the UI. The display name
  * might contain information you don't want in the new filename (such as
  * "(invalid unicode)" if the filename was in an invalid encoding).
- * 
+ *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME "standard::edit-name"           /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_COPY_NAME:
- * 
+ *
  * A key in the "standard" namespace for getting the copy name of the file.
  * The copy name is an optional version of the name. If availible its always
  * in UTF8, and corresponds directly to the original filename (only transcoded to
  * UTF8). This is useful if you want to copy the file to another filesystem that
  * might have a different encoding. If the filename is not a valid string in the
  * encoding selected for the filesystem it is in then the copy name will not be set.
- * 
+ *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_COPY_NAME "standard::copy-name"           /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION:
- * 
+ *
  * A key in the "standard" namespace for getting the description of the file.
  * The description is a utf8 string that describes the file, generally containing
  * the filename, but can also contain furter information. Example descriptions
  * could be "filename (on hostname)" for a remote file or "filename (in trash)"
  * for a file in the trash. This is useful for instance as the window title
  * when displaying a directory or for a bookmarks menu.
- * 
+ *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION "standard::description"        /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_ICON:
- * 
+ *
  * A key in the "standard" namespace for getting the icon for the file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
  * The value for this key should contain a #GIcon.
@@ -164,7 +164,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE:
- * 
+ *
  * A key in the "standard" namespace for getting the content type of the file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * The value for this key should contain a valid content type.
@@ -173,19 +173,19 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE:
- * 
+ *
  * A key in the "standard" namespace for getting the fast content type.
  * The fast content type isn't as reliable as the regular one, as it
  * only uses the filename to guess it, but it is faster to calculate than the
  * regular content type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
- * 
+ *
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE "standard::fast-content-type" /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_SIZE:
- * 
+ *
  * A key in the "standard" namespace for getting the file's size (in bytes).
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
@@ -193,16 +193,16 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET:
- * 
+ *
  * A key in the "standard" namespace for getting the symlink target, if the file
- * is a symlink. Corresponding #GFileAttributeType is 
+ * is a symlink. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET "standard::symlink-target" /* byte string */
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_TARGET_URI:
- * 
+ *
  * A key in the "standard" namespace for getting the target URI for the file, in
  * the case of %G_FILE_TYPE_SHORTCUT or %G_FILE_TYPE_MOUNTABLE files.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
@@ -211,10 +211,10 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER:
- * 
- * A key in the "standard" namespace for setting the sort order of a file. 
+ *
+ * A key in the "standard" namespace for setting the sort order of a file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_INT32.
- * An example use would be in file managers, which would use this key 
+ * An example use would be in file managers, which would use this key
  * to set the order files are displayed. Files with smaller sort order
  * should be sorted first, and files without sort order as if sort order
  * was zero.
@@ -225,20 +225,20 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ETAG_VALUE:
- * 
+ *
  * A key in the "etag" namespace for getting the value of the file's
- * entity tag. Corresponding #GFileAttributeType is 
+ * entity tag. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_ETAG_VALUE "etag::value"                 /* string */
 
-/* File identifier, for e.g. avoiding loops when doing recursive 
- * directory scanning 
+/* File identifier, for e.g. avoiding loops when doing recursive
+ * directory scanning
  */
 
 /**
  * G_FILE_ATTRIBUTE_ID_FILE:
- * 
+ *
  * A key in the "id" namespace for getting a file identifier.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * An example use would be during listing files, to avoid recursive
@@ -248,7 +248,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ID_FILESYSTEM:
- * 
+ *
  * A key in the "id" namespace for getting the file system identifier.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * An example use would be during drag and drop to see if the source
@@ -261,8 +261,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_READ:
- * 
- * A key in the "access" namespace for getting read privileges. 
+ *
+ * A key in the "access" namespace for getting read privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to read the file.
  **/
@@ -270,7 +270,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE:
- * 
+ *
  * A key in the "access" namespace for getting write privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to write to the file.
@@ -279,7 +279,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE:
- * 
+ *
  * A key in the "access" namespace for getting execution privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to execute the file.
@@ -288,7 +288,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE:
- * 
+ *
  * A key in the "access" namespace for checking deletion privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to delete the file.
@@ -297,22 +297,22 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH:
- * 
+ *
  * A key in the "access" namespace for checking trashing privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
- * This attribute will be %TRUE if the user is able to move the file to 
+ * This attribute will be %TRUE if the user is able to move the file to
  * the trash.
  **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH "access::can-trash"     /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME:
- * 
+ *
  * A key in the "access" namespace for checking renaming privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to rename the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME "access::can-rename"   /* boolean */ 
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME "access::can-rename"   /* boolean */
 
 /* TODO: Should we have special version for directories? can_enumerate, etc */
 
@@ -320,7 +320,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT:
- * 
+ *
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
@@ -328,7 +328,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT:
- * 
+ *
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE)  is unmountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
@@ -336,7 +336,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT:
- * 
+ *
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
@@ -344,7 +344,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE:
- * 
+ *
  * A key in the "mountable" namespace for getting the unix device.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
@@ -352,7 +352,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI:
- * 
+ *
  * A key in the "mountable" namespace for getting the HAL UDI for the mountable
  * file. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
@@ -362,49 +362,49 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_TIME_MODIFIED:
- * 
+ *
  * A key in the "time" namespace for getting the time the file was last
- * modified. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the 
+ * modified. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the
  * file was modified.
  **/
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED "time::modified"           /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC:
- * 
+ *
  * A key in the "time" namespace for getting the miliseconds of the time
- * the file was last modified. This should be used in conjunction with 
- * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is 
+ * the file was last modified. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC "time::modified-usec" /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_ACCESS:
- * 
+ *
  * A key in the "time" namespace for getting the time the file was last
- * accessed. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the 
+ * accessed. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the
  * file was last accessed.
  **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS "time::access"               /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_ACCESS_USEC:
- * 
+ *
  * A key in the "time" namespace for getting the microseconds of the time
  * the file was last accessed. This should be used in conjunction with
- * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is 
+ * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS_USEC "time::access-usec"     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED:
- * 
+ *
  * A key in the "time" namespace for getting the time the file was last
- * changed. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * changed. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64,
  * and contains the UNIX time since the file was last changed.
  *
  * This corresponds to the traditional UNIX ctime.
@@ -413,19 +413,19 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED_USEC:
- * 
+ *
  * A key in the "time" namespace for getting the microseconds of the time
  * the file was last changed. This should be used in conjunction with
- * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_CHANGED_USEC "time::changed-usec"   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CREATED:
- * 
+ *
  * A key in the "time" namespace for getting the time the file was created.
- * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64,
  * and contains the UNIX time since the file was created.
  *
  * This corresponds to the NTFS ctime.
@@ -434,11 +434,11 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CREATED_USEC:
- * 
+ *
  * A key in the "time" namespace for getting the microseconds of the time
  * the file was created. This should be used in conjunction with
- * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_CREATED_USEC "time::created-usec"   /* uint32 */
 
@@ -446,95 +446,95 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_DEVICE:
- * 
- * A key in the "unix" namespace for getting the device id of the device the 
- * file is located on (see stat() documentation). This attribute is only 
- * available for UNIX file systems. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ *
+ * A key in the "unix" namespace for getting the device id of the device the
+ * file is located on (see stat() documentation). This attribute is only
+ * available for UNIX file systems. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_DEVICE "unix::device"               /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_INODE:
- * 
+ *
  * A key in the "unix" namespace for getting the inode of the file.
- * This attribute is only available for UNIX file systems. Corresponding 
+ * This attribute is only available for UNIX file systems. Corresponding
  * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_INODE "unix::inode"                 /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_MODE:
- * 
+ *
  * A key in the "unix" namespace for getting the mode of the file
- * (e.g. whether the file is a regular file, symlink, etc). See lstat() 
- * documentation. This attribute is only available for UNIX file systems. 
+ * (e.g. whether the file is a regular file, symlink, etc). See lstat()
+ * documentation. This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_MODE "unix::mode"                   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_NLINK:
- * 
- * A key in the "unix" namespace for getting the number of hard links 
- * for a file. See lstat() documentation. This attribute is only available 
- * for UNIX file systems. Corresponding #GFileAttributeType is 
+ *
+ * A key in the "unix" namespace for getting the number of hard links
+ * for a file. See lstat() documentation. This attribute is only available
+ * for UNIX file systems. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_NLINK "unix::nlink"                 /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_UID:
- * 
- * A key in the "unix" namespace for getting the user ID for the file. 
- * This attribute is only available for UNIX file systems. 
+ *
+ * A key in the "unix" namespace for getting the user ID for the file.
+ * This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_UID "unix::uid"                     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_GID:
- * 
+ *
  * A key in the "unix" namespace for getting the group ID for the file.
- * This attribute is only available for UNIX file systems. 
+ * This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_GID "unix::gid"                     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_RDEV:
- * 
- * A key in the "unix" namespace for getting the device ID for the file 
- * (if it is a special file). See lstat() documentation. This attribute 
- * is only available for UNIX file systems. Corresponding #GFileAttributeType 
+ *
+ * A key in the "unix" namespace for getting the device ID for the file
+ * (if it is a special file). See lstat() documentation. This attribute
+ * is only available for UNIX file systems. Corresponding #GFileAttributeType
  * is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_RDEV "unix::rdev"                   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE:
- * 
- * A key in the "unix" namespace for getting the block size for the file 
- * system. This attribute is only available for UNIX file systems. 
+ *
+ * A key in the "unix" namespace for getting the block size for the file
+ * system. This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE "unix::block-size"       /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_BLOCKS:
- * 
- * A key in the "unix" namespace for getting the number of blocks allocated 
- * for the file. This attribute is only available for UNIX file systems. 
+ *
+ * A key in the "unix" namespace for getting the number of blocks allocated
+ * for the file. This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_BLOCKS "unix::blocks"               /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT:
- * 
- * A key in the "unix" namespace for checking if the file represents a 
- * UNIX mount point. This attribute is %TRUE if the file is a UNIX mount 
- * point. This attribute is only available for UNIX file systems. 
+ *
+ * A key in the "unix" namespace for checking if the file represents a
+ * UNIX mount point. This attribute is %TRUE if the file is a UNIX mount
+ * point. This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT "unix::is-mountpoint" /* boolean */
@@ -543,20 +543,20 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE:
- * 
- * A key in the "dos" namespace for checking if the file's archive flag 
- * is set. This attribute is %TRUE if the archive flag is set. This attribute 
- * is only available for DOS file systems. Corresponding #GFileAttributeType 
+ *
+ * A key in the "dos" namespace for checking if the file's archive flag
+ * is set. This attribute is %TRUE if the archive flag is set. This attribute
+ * is only available for DOS file systems. Corresponding #GFileAttributeType
  * is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE "dos::is-archive"         /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_DOS_IS_SYSTEM:
- * 
- * A key in the "dos" namespace for checking if the file's backup flag 
- * is set. This attribute is %TRUE if the backup flag is set. This attribute 
- * is only available for DOS file systems. Corresponding #GFileAttributeType 
+ *
+ * A key in the "dos" namespace for checking if the file's backup flag
+ * is set. This attribute is %TRUE if the backup flag is set. This attribute
+ * is only available for DOS file systems. Corresponding #GFileAttributeType
  * is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_DOS_IS_SYSTEM "dos::is-system"           /* boolean */
@@ -565,25 +565,25 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_OWNER_USER:
- * 
- * A key in the "owner" namespace for getting the user name of the 
- * file's owner. Corresponding #GFileAttributeType is 
+ *
+ * A key in the "owner" namespace for getting the user name of the
+ * file's owner. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_OWNER_USER "owner::user"                 /* string */
 
 /**
  * G_FILE_ATTRIBUTE_OWNER_USER_REAL:
- * 
- * A key in the "owner" namespace for getting the real name of the 
- * user that owns the file. Corresponding #GFileAttributeType is 
+ *
+ * A key in the "owner" namespace for getting the real name of the
+ * user that owns the file. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_OWNER_USER_REAL "owner::user-real"       /* string */
 
 /**
  * G_FILE_ATTRIBUTE_OWNER_GROUP:
- * 
+ *
  * A key in the "owner" namespace for getting the file owner's group.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
@@ -593,18 +593,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_THUMBNAIL_PATH:
- * 
- * A key in the "thumbnail" namespace for getting the path to the thumbnail 
- * image. Corresponding #GFileAttributeType is 
+ *
+ * A key in the "thumbnail" namespace for getting the path to the thumbnail
+ * image. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_THUMBNAIL_PATH "thumbnail::path"         /* bytestring */
 /**
  * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED:
- * 
- * A key in the "thumbnail" namespace for checking if thumbnailing failed. 
- * This attribute is %TRUE if thumbnailing failed. Corresponding 
- * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN. 
+ *
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed.
+ * This attribute is %TRUE if thumbnailing failed. Corresponding
+ * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED "thumbnail::failed"         /* boolean */
 
@@ -612,25 +612,25 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_SIZE:
- * 
- * A key in the "filesystem" namespace for getting the total size (in bytes) of the file system, 
- * used in g_file_query_filesystem_info(). Corresponding #GFileAttributeType 
+ *
+ * A key in the "filesystem" namespace for getting the total size (in bytes) of the file system,
+ * used in g_file_query_filesystem_info(). Corresponding #GFileAttributeType
  * is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_FILESYSTEM_SIZE "filesystem::size"                       /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_FREE:
- * 
- * A key in the "filesystem" namespace for getting the number of bytes of free space left on the 
- * file system. Corresponding #GFileAttributeType is 
+ *
+ * A key in the "filesystem" namespace for getting the number of bytes of free space left on the
+ * file system. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_FILESYSTEM_FREE "filesystem::free"                       /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_TYPE:
- * 
+ *
  * A key in the "filesystem" namespace for getting the file system's type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
@@ -639,8 +639,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_READONLY:
  *
- * A key in the "filesystem" namespace for checking if the file system 
- * is read only. Is set to %TRUE if the file system is read only. 
+ * A key in the "filesystem" namespace for checking if the file system
+ * is read only. Is set to %TRUE if the file system is read only.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_FILESYSTEM_READONLY "filesystem::readonly"               /* boolean */
@@ -657,18 +657,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 
 /**
  * G_FILE_ATTRIBUTE_GVFS_BACKEND:
- * 
+ *
  * A key in the "gvfs" namespace that gets the name of the current
- * GVFS backend in use. Corresponding #GFileAttributeType is 
+ * GVFS backend in use. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_GVFS_BACKEND "gvfs::backend"             /* string */
 
 /**
  * G_FILE_ATTRIBUTE_SELINUX_CONTEXT:
- * 
+ *
  * A key in the "selinux" namespace for getting the file's SELinux
- * context. Corresponding #GFileAttributeType is 
+ * context. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_STRING. Note that this attribute is only
  * available if GLib has been built with SELinux support.
  **/
@@ -677,13 +677,13 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 /**
  * G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT:
  *
- * A key in the "trash" namespace.  When requested against 
+ * A key in the "trash" namespace.  When requested against
  * "trash:///" returns the number of (toplevel) items in the trash folder.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT "trash::item-count"     /* uint32 */
 
-GType g_file_info_get_type (void) G_GNUC_CONST;
+GType              g_file_info_get_type                  (void) G_GNUC_CONST;
 
 GFileInfo *        g_file_info_new                       (void);
 GFileInfo *        g_file_info_dup                       (GFileInfo  *other);
@@ -813,6 +813,5 @@ gboolean               g_file_attribute_matcher_enumerate_namespace (GFileAttrib
 const char *           g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher);
 
 G_END_DECLS
-
 
 #endif /* __G_FILE_INFO_H__ */

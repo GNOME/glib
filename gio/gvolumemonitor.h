@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -57,63 +57,65 @@ G_BEGIN_DECLS
  **/
 typedef struct _GVolumeMonitorClass GVolumeMonitorClass;
 
-struct _GVolumeMonitor {
+struct _GVolumeMonitor
+{
   GObject parent_instance;
 
   /*< private >*/
   gpointer priv;
 };
 
-struct _GVolumeMonitorClass {
+struct _GVolumeMonitorClass
+{
   GObjectClass parent_class;
 
   /*< public >*/
   /* signals */
-  void (* volume_added)     (GVolumeMonitor   *volume_monitor,
-                             GVolume          *volume);
-  void (* volume_removed)   (GVolumeMonitor   *volume_monitor,
-                             GVolume          *volume);
-  void (* volume_changed)   (GVolumeMonitor   *volume_monitor,
-                             GVolume          *volume);
+  void      (* volume_added)         (GVolumeMonitor *volume_monitor,
+                                      GVolume        *volume);
+  void      (* volume_removed)       (GVolumeMonitor *volume_monitor,
+                                      GVolume        *volume);
+  void      (* volume_changed)       (GVolumeMonitor *volume_monitor,
+                                      GVolume        *volume);
 
-  void (* mount_added)       (GVolumeMonitor *volume_monitor,
-                              GMount         *mount);
-  void (* mount_removed)     (GVolumeMonitor *volume_monitor,
-                              GMount         *mount);
-  void (* mount_pre_unmount) (GVolumeMonitor *volume_monitor,
-                              GMount         *mount);
-  void (* mount_changed)     (GVolumeMonitor *volume_monitor,
-                              GMount         *mount);
+  void      (* mount_added)          (GVolumeMonitor *volume_monitor,
+                                      GMount         *mount);
+  void      (* mount_removed)        (GVolumeMonitor *volume_monitor,
+                                      GMount         *mount);
+  void      (* mount_pre_unmount)    (GVolumeMonitor *volume_monitor,
+                                      GMount         *mount);
+  void      (* mount_changed)        (GVolumeMonitor *volume_monitor,
+                                      GMount         *mount);
 
-  void (* drive_connected)      (GVolumeMonitor *volume_monitor,
-				 GDrive	        *drive);
-  void (* drive_disconnected)   (GVolumeMonitor *volume_monitor,
-				 GDrive         *drive);
-  void (* drive_changed)        (GVolumeMonitor *volume_monitor,
-				 GDrive         *drive);
+  void      (* drive_connected)      (GVolumeMonitor *volume_monitor,
+                                      GDrive	     *drive);
+  void      (* drive_disconnected)   (GVolumeMonitor *volume_monitor,
+                                      GDrive         *drive);
+  void      (* drive_changed)        (GVolumeMonitor *volume_monitor,
+                                      GDrive         *drive);
 
   /* Vtable */
 
-  gboolean (*is_supported)          (void);
+  gboolean  (* is_supported)         (void);
 
-  GList * (*get_connected_drives)   (GVolumeMonitor *volume_monitor);
-  GList * (*get_volumes)            (GVolumeMonitor *volume_monitor);
-  GList * (*get_mounts)             (GVolumeMonitor *volume_monitor);
+  GList   * (* get_connected_drives) (GVolumeMonitor *volume_monitor);
+  GList   * (* get_volumes)          (GVolumeMonitor *volume_monitor);
+  GList   * (* get_mounts)           (GVolumeMonitor *volume_monitor);
 
-  GVolume * (*get_volume_for_uuid)  (GVolumeMonitor  *volume_monitor, 
-                                     const char      *uuid);
+  GVolume * (* get_volume_for_uuid)  (GVolumeMonitor *volume_monitor,
+                                      const char     *uuid);
 
-  GMount *  (*get_mount_for_uuid)   (GVolumeMonitor  *volume_monitor, 
-                                     const char      *uuid);
+  GMount  * (* get_mount_for_uuid)   (GVolumeMonitor *volume_monitor,
+                                      const char     *uuid);
 
 
   /* These arguments are unfortunately backwards by mistake (bug #520169) */
-  GVolume * (*adopt_orphan_mount)   (GMount          *mount,
-                                     GVolumeMonitor  *volume_monitor);
+  GVolume * (* adopt_orphan_mount)   (GMount         *mount,
+                                      GVolumeMonitor *volume_monitor);
 
   /* signal added in 2.17 */
-  void (* drive_eject_button)   (GVolumeMonitor *volume_monitor,
-				 GDrive         *drive);
+  void      (* drive_eject_button)   (GVolumeMonitor *volume_monitor,
+                                      GDrive         *drive);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -126,18 +128,18 @@ struct _GVolumeMonitorClass {
   void (*_g_reserved7) (void);
 };
 
-GType g_volume_monitor_get_type (void) G_GNUC_CONST;
+GType           g_volume_monitor_get_type             (void) G_GNUC_CONST;
 
-GVolumeMonitor *g_volume_monitor_get                     (void);
-GList *         g_volume_monitor_get_connected_drives    (GVolumeMonitor  *volume_monitor);
-GList *         g_volume_monitor_get_volumes             (GVolumeMonitor  *volume_monitor);
-GList *         g_volume_monitor_get_mounts              (GVolumeMonitor  *volume_monitor);
-GVolume *       g_volume_monitor_get_volume_for_uuid     (GVolumeMonitor  *volume_monitor,
-                                                          const char      *uuid);
-GMount *        g_volume_monitor_get_mount_for_uuid      (GVolumeMonitor  *volume_monitor,
-                                                          const char      *uuid);
+GVolumeMonitor *g_volume_monitor_get                  (void);
+GList *         g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor);
+GList *         g_volume_monitor_get_volumes          (GVolumeMonitor *volume_monitor);
+GList *         g_volume_monitor_get_mounts           (GVolumeMonitor *volume_monitor);
+GVolume *       g_volume_monitor_get_volume_for_uuid  (GVolumeMonitor *volume_monitor,
+                                                       const char     *uuid);
+GMount *        g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor,
+                                                       const char     *uuid);
 
-GVolume *       g_volume_monitor_adopt_orphan_mount      (GMount *mount);
+GVolume *       g_volume_monitor_adopt_orphan_mount   (GMount         *mount);
 
 G_END_DECLS
 

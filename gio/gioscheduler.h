@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #ifndef __G_IO_SCHEDULER_H__
 #define __G_IO_SCHEDULER_H__
 
-#include <glib.h>
 #include <gio/giotypes.h>
 
 G_BEGIN_DECLS

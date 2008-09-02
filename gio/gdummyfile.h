@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -42,9 +42,9 @@ struct _GDummyFileClass
   GObjectClass parent_class;
 };
 
-GType _g_dummy_file_get_type (void) G_GNUC_CONST;
-  
-GFile * _g_dummy_file_new (const char *uri);
+GType   _g_dummy_file_get_type (void) G_GNUC_CONST;
+
+GFile * _g_dummy_file_new      (const char *uri);
 
 G_END_DECLS
 

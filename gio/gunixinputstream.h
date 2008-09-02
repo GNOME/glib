@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 
 /**
  * GUnixInputStream:
- * 
+ *
  * Implements #GInputStream for reading from selectable unix file descriptors
  **/
 typedef struct _GUnixInputStream         GUnixInputStream;
@@ -64,10 +64,10 @@ struct _GUnixInputStreamClass
   void (*_g_reserved5) (void);
 };
 
-GType g_unix_input_stream_get_type (void) G_GNUC_CONST;
+GType          g_unix_input_stream_get_type (void) G_GNUC_CONST;
 
-GInputStream *g_unix_input_stream_new (int fd,
-				       gboolean close_fd_at_close);
+GInputStream * g_unix_input_stream_new      (int      fd,
+                                             gboolean close_fd_at_close);
 
 G_END_DECLS
 

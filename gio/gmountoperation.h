@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,8 +40,8 @@ G_BEGIN_DECLS
 
 /**
  * GMountOperation:
- * 
- * Class for providing authentication methods for mounting operations, 
+ *
+ * Class for providing authentication methods for mounting operations,
  * such as mounting a file locally, or authenticating with a server.
  **/
 typedef struct _GMountOperationClass   GMountOperationClass;
@@ -60,19 +60,19 @@ struct _GMountOperationClass
 
   /* signals: */
 
-  void (* ask_password) (GMountOperation *op,
-			 const char      *message,
-			 const char      *default_user,
-			 const char      *default_domain,
-			 GAskPasswordFlags flags);
+  void (* ask_password) (GMountOperation       *op,
+			 const char            *message,
+			 const char            *default_user,
+			 const char            *default_domain,
+			 GAskPasswordFlags      flags);
 
-  void (* ask_question) (GMountOperation *op,
-			 const char      *message,
-			 const char      *choices[]);
-  
-  void (* reply)        (GMountOperation *op,
-			 GMountOperationResult result);
-  
+  void (* ask_question) (GMountOperation       *op,
+			 const char            *message,
+			 const char            *choices[]);
+
+  void (* reply)        (GMountOperation       *op,
+			 GMountOperationResult  result);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -89,9 +89,8 @@ struct _GMountOperationClass
   void (*_g_reserved12) (void);
 };
 
-GType g_mount_operation_get_type (void) G_GNUC_CONST;
-  
-GMountOperation *  g_mount_operation_new (void);
+GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
+GMountOperation * g_mount_operation_new           (void);
 
 const char *  g_mount_operation_get_username      (GMountOperation *op);
 void          g_mount_operation_set_username      (GMountOperation *op,

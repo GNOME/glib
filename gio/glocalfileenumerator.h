@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -39,20 +39,18 @@ typedef struct _GLocalFileEnumerator         GLocalFileEnumerator;
 typedef struct _GLocalFileEnumeratorClass    GLocalFileEnumeratorClass;
 typedef struct _GLocalFileEnumeratorPrivate  GLocalFileEnumeratorPrivate;
 
-
 struct _GLocalFileEnumeratorClass
 {
   GFileEnumeratorClass parent_class;
-
 };
 
-GType _g_local_file_enumerator_get_type (void) G_GNUC_CONST;
+GType             _g_local_file_enumerator_get_type (void) G_GNUC_CONST;
 
-GFileEnumerator *_g_local_file_enumerator_new (GLocalFile *file,
-					       const char *attributes,
-					       GFileQueryInfoFlags flags,
-					       GCancellable *cancellable,
-					       GError **error);
+GFileEnumerator * _g_local_file_enumerator_new      (GLocalFile           *file,
+                                                     const char           *attributes,
+                                                     GFileQueryInfoFlags   flags,
+                                                     GCancellable         *cancellable,
+                                                     GError              **error);
 
 G_END_DECLS
 

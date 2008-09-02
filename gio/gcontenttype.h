@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #ifndef __G_CONTENT_TYPE_H__
 #define __G_CONTENT_TYPE_H__
 
-#include <glib.h>
 #include <gio/giotypes.h>
 
 G_BEGIN_DECLS
@@ -49,7 +48,7 @@ char *   g_content_type_guess             (const char   *filename,
 					   gsize         data_size,
 					   gboolean     *result_uncertain);
 
-char **  g_content_type_guess_for_tree    (GFile *root); 
+char **  g_content_type_guess_for_tree    (GFile        *root);
 
 GList *  g_content_types_get_registered   (void);
 

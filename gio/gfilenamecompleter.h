@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,17 +40,18 @@ G_BEGIN_DECLS
 
 /**
  * GFilenameCompleter:
- * 
+ *
  * Completes filenames based on files that exist within the file system.
  **/
 typedef struct _GFilenameCompleterClass GFilenameCompleterClass;
 
-struct _GFilenameCompleterClass {
+struct _GFilenameCompleterClass
+{
   GObjectClass parent_class;
 
   /*< public >*/
   /* signals */
-  void (* got_completion_data)	(GFilenameCompleter *filename_completer);
+  void (* got_completion_data) (GFilenameCompleter *filename_completer);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -59,16 +60,16 @@ struct _GFilenameCompleterClass {
   void (*_g_reserved3) (void);
 };
 
-GType g_filename_completer_get_type (void) G_GNUC_CONST;
+GType               g_filename_completer_get_type              (void) G_GNUC_CONST;
 
 GFilenameCompleter *g_filename_completer_new                   (void);
 
 char *              g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
-								const char *initial_text);
+                                                                const char *initial_text);
 char **             g_filename_completer_get_completions       (GFilenameCompleter *completer,
-								const char *initial_text);
+                                                                const char *initial_text);
 void                g_filename_completer_set_dirs_only         (GFilenameCompleter *completer,
-								gboolean dirs_only);
+                                                                gboolean dirs_only);
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -47,15 +47,15 @@ typedef struct _GUnixVolumeMonitorClass GUnixVolumeMonitorClass;
 typedef struct _GUnixMount GUnixMount;
 typedef struct _GUnixVolume GUnixVolume;
 
-struct _GUnixVolumeMonitorClass {
+struct _GUnixVolumeMonitorClass
+{
   GNativeVolumeMonitorClass parent_class;
-
 };
 
-GType _g_unix_volume_monitor_get_type (void) G_GNUC_CONST;
+GType            _g_unix_volume_monitor_get_type                     (void) G_GNUC_CONST;
 
 GVolumeMonitor * _g_unix_volume_monitor_new                          (void);
-GUnixVolume *    _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,
+GUnixVolume    * _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,
                                                                       const char         *mount_path);
 
 G_END_DECLS

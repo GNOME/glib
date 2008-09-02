@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -27,15 +27,16 @@
 
 G_BEGIN_DECLS
 
-typedef struct {
+typedef struct
+{
   gpointer       async_object;
   GError *       error;
   gpointer       user_data;
 } GAsyncResultData;
 
-typedef gboolean (*GFDSourceFunc) (gpointer user_data,
+typedef gboolean (*GFDSourceFunc) (gpointer     user_data,
 				   GIOCondition condition,
-				   int fd);
+				   int          fd);
 
 void     _g_queue_async_result (GAsyncResultData *result,
 				gpointer         async_object,

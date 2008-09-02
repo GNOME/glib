@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 /**
  * GAsyncResult:
  *
- * Holds results information for an asynchronous operation, 
+ * Holds results information for an asynchronous operation,
  * usually passed directly to a asynchronous _finish() operation.
  **/
 typedef struct _GAsyncResultIface    GAsyncResultIface;
@@ -47,7 +47,7 @@ typedef struct _GAsyncResultIface    GAsyncResultIface;
 
 /**
  * GAsyncResultIface:
- * @g_iface: The parent interface. 
+ * @g_iface: The parent interface.
  * @get_user_data: Gets the user data passed to the callback.
  * @get_source_object: Gets the source object that issued the asynchronous operation.
  *
@@ -59,11 +59,11 @@ struct _GAsyncResultIface
 
   /* Virtual Table */
 
-  gpointer   (*get_user_data)      (GAsyncResult                *async_result);
-  GObject *  (*get_source_object)  (GAsyncResult                *async_result);
+  gpointer  (* get_user_data)     (GAsyncResult *async_result);
+  GObject * (* get_source_object) (GAsyncResult *async_result);
 };
 
-GType g_async_result_get_type (void) G_GNUC_CONST;
+GType    g_async_result_get_type          (void) G_GNUC_CONST;
 
 gpointer g_async_result_get_user_data     (GAsyncResult *res);
 GObject *g_async_result_get_source_object (GAsyncResult *res);

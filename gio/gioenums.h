@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ typedef enum {
  * @G_DATA_STREAM_NEWLINE_TYPE_CR: Selects "CR" line endings.
  * @G_DATA_STREAM_NEWLINE_TYPE_CR_LF: Selects "CR, LF" line ending, common on Microsoft Windows.
  * @G_DATA_STREAM_NEWLINE_TYPE_ANY: Automatically try to handle any line ending type.
- * 
+ *
  * #GDataStreamNewlineType is used when checking for or setting the line endings for a given file.
  **/
 typedef enum {
@@ -394,7 +394,7 @@ typedef enum {
  * @G_PASSWORD_SAVE_PERMANENTLY: save a password permanently.
  *
  * #GPasswordSave is used to indicate the lifespan of a saved password.
- * 
+ *
  * #Gvfs stores passwords in the Gnome keyring when this flag allows it
  * to, and later retrieves it again from there.
  **/
@@ -407,14 +407,14 @@ typedef enum {
 
 /**
  * GMountOperationResult:
- * @G_MOUNT_OPERATION_HANDLED: The request was fulfilled and the 
+ * @G_MOUNT_OPERATION_HANDLED: The request was fulfilled and the
  *     user specified data is now available
- * @G_MOUNT_OPERATION_ABORTED: The user requested the mount operation 
+ * @G_MOUNT_OPERATION_ABORTED: The user requested the mount operation
  *     to be aborted
- * @G_MOUNT_OPERATION_UNHANDLED: The request was unhandled (i.e. not 
+ * @G_MOUNT_OPERATION_UNHANDLED: The request was unhandled (i.e. not
  *     implemented)
- * 
- * #GMountOperationResult is returned as a result when a request for 
+ *
+ * #GMountOperationResult is returned as a result when a request for
  * information is send by the mounting operation.
  **/
 typedef enum {
@@ -427,9 +427,9 @@ typedef enum {
 /**
  * GOutputStreamSpliceFlags:
  * @G_OUTPUT_STREAM_SPLICE_NONE: Do not close either stream.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after 
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after
  *     the splice.
- * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after 
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after
  *     the splice.
  *
  * GOutputStreamSpliceFlags determine how streams should be spliced.
@@ -445,7 +445,7 @@ typedef enum {
  * GEmblemOrigin:
  * @G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
  * @G_EMBLEM_ORIGIN_DEVICE: Embleme adds device-specific information
- * @G_EMBLEM_ORIGIN_LIVEMETADATA: Emblem depicts live metadata, such as "readonly" 
+ * @G_EMBLEM_ORIGIN_LIVEMETADATA: Emblem depicts live metadata, such as "readonly"
  * @G_EMBLEM_ORIGIN_TAG: Emblem comes from a user-defined tag, e.g. set by nautilus (in the future)
  *
  * GEmblemOrigin is used to add information about the origin of the emblem

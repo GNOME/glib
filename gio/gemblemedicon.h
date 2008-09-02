@@ -1,5 +1,5 @@
 /* Gio - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -29,8 +29,7 @@
 #define __G_EMBLEMED_ICON_H__
 
 #include <gio/gicon.h>
-
-#include "gemblem.h"
+#include <gio/gemblem.h>
 
 G_BEGIN_DECLS
 
@@ -43,21 +42,20 @@ G_BEGIN_DECLS
 
 /**
  * GEmblemedIcon:
- * 
+ *
  * An implementation of #GIcon for icons with emblems.
  **/
 typedef struct _GEmblemedIcon        GEmblemedIcon;
 typedef struct _GEmblemedIconClass   GEmblemedIconClass;
 
 GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
-  
-GIcon *g_emblemed_icon_new         (GIcon         *icon, 
+
+GIcon *g_emblemed_icon_new         (GIcon         *icon,
                                     GEmblem       *emblem);
 GIcon *g_emblemed_icon_get_icon    (GEmblemedIcon *emblemed);
 GList *g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed);
-void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed, 
+void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed,
                                     GEmblem       *emblem);
-
 
 G_END_DECLS
 

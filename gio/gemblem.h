@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2008 Clemens N. Buss <cebuzz@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  */
-     
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
@@ -26,9 +26,7 @@
 #ifndef __G_EMBLEM_H__
 #define __G_EMBLEM_H__
 
-#include <gio/gicon.h>
 #include <gio/gioenums.h>
-
 
 G_BEGIN_DECLS
 
@@ -41,14 +39,14 @@ G_BEGIN_DECLS
 
 /**
  * GEmblem:
- * 
+ *
  * An object for Emblems
  */
 typedef struct _GEmblem        GEmblem;
 typedef struct _GEmblemClass   GEmblemClass;
 
 GType          g_emblem_get_type        (void) G_GNUC_CONST;
-  
+
 GEmblem       *g_emblem_new             (GIcon         *icon);
 GEmblem       *g_emblem_new_with_origin (GIcon         *icon,
                                          GEmblemOrigin  origin);

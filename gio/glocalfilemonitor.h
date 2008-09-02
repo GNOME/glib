@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -41,19 +41,22 @@ typedef struct _GLocalFileMonitorClass GLocalFileMonitorClass;
 struct _GLocalFileMonitor
 {
   GFileMonitor parent_instance;
+
   gchar *filename;
 };
 
-struct _GLocalFileMonitorClass {
+struct _GLocalFileMonitorClass
+{
   GFileMonitorClass parent_class;
-  gboolean (*is_supported) (void);
+
+  gboolean (* is_supported) (void);
 };
 
-GType g_local_file_monitor_get_type (void) G_GNUC_CONST;
+GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
-GFileMonitor* _g_local_file_monitor_new (const char         *pathname,
-					 GFileMonitorFlags   flags,
-					 GError            **error);
+GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,
+                                               GFileMonitorFlags   flags,
+                                               GError            **error);
 
 G_END_DECLS
 

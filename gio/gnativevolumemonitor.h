@@ -16,19 +16,20 @@ G_BEGIN_DECLS
 typedef struct _GNativeVolumeMonitor      GNativeVolumeMonitor;
 typedef struct _GNativeVolumeMonitorClass GNativeVolumeMonitorClass;
 
-struct _GNativeVolumeMonitor {
+struct _GNativeVolumeMonitor
+{
   GVolumeMonitor parent_instance;
 };
 
-struct _GNativeVolumeMonitorClass {
+struct _GNativeVolumeMonitorClass
+{
   GVolumeMonitorClass parent_class;
 
-  GMount * (*get_mount_for_mount_path) (const char *mount_path,
-					GCancellable *cancellable);
+  GMount * (* get_mount_for_mount_path) (const char   *mount_path,
+                                         GCancellable *cancellable);
 };
 
 GType g_native_volume_monitor_get_type (void) G_GNUC_CONST;
-
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -51,21 +51,21 @@ struct _GLocalFileOutputStreamClass
   GFileOutputStreamClass parent_class;
 };
 
-GType _g_local_file_output_stream_get_type (void) G_GNUC_CONST;
-GFileOutputStream *_g_local_file_output_stream_create  (const char       *filename,
-							GFileCreateFlags  flags,
-							GCancellable     *cancellable,
-							GError          **error);
-GFileOutputStream *_g_local_file_output_stream_append  (const char       *filename,
-							GFileCreateFlags  flags,
-							GCancellable     *cancellable,
-							GError          **error);
-GFileOutputStream *_g_local_file_output_stream_replace (const char       *filename,
-							const char       *etag,
-							gboolean          create_backup,
-							GFileCreateFlags  flags,
-							GCancellable     *cancellable,
-							GError          **error);
+GType               _g_local_file_output_stream_get_type (void) G_GNUC_CONST;
+GFileOutputStream * _g_local_file_output_stream_create   (const char       *filename,
+                                                          GFileCreateFlags  flags,
+                                                          GCancellable     *cancellable,
+                                                          GError          **error);
+GFileOutputStream * _g_local_file_output_stream_append   (const char       *filename,
+                                                          GFileCreateFlags  flags,
+                                                          GCancellable     *cancellable,
+                                                          GError          **error);
+GFileOutputStream * _g_local_file_output_stream_replace  (const char       *filename,
+                                                          const char       *etag,
+                                                          gboolean          create_backup,
+                                                          GFileCreateFlags  flags,
+                                                          GCancellable     *cancellable,
+                                                          GError          **error);
 
 G_END_DECLS
 
