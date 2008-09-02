@@ -1,3 +1,8 @@
+2008-09-02  Michael Natterer  <mitch@imendio.com>
+
+	* glib/gchecksum.c (g_checksum_reset): add
+	g_return_if_fail (checksum != NULL)
+
 2008-09-01  Paolo Borelli  <pborelli@katamail.com>
 
 	Bug 550040 - Move GString, rand and printf tests to the unit test

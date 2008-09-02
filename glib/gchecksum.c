@@ -1130,9 +1130,11 @@ g_checksum_new (GChecksumType checksum_type)
 void
 g_checksum_reset (GChecksum *checksum)
 {
+  g_return_if_fail (checksum != NULL);
+
   g_free (checksum->digest_str);
   checksum->digest_str = NULL;
-  
+
   switch (checksum->type)
     {
     case G_CHECKSUM_MD5:
