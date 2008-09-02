@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 00:50-0400\n"
+"POT-Creation-Date: 2008-09-02 15:48-0400\n"
 "PO-Revision-Date: 2008-03-11 20:54+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -21,73 +21,72 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
-#: glib/gbookmarkfile.c:946
+#: glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Встретился неожиданный атрибут «%s» элемента «%s»"
 
-#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
-#: glib/gbookmarkfile.c:957
+#: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
+#: glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Не найден атрибут «%s» элемента «%s»"
 
-#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
-#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
+#: glib/gbookmarkfile.c:1106 glib/gbookmarkfile.c:1171
+#: glib/gbookmarkfile.c:1235 glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Неожиданный тэг «%s», ожидался тэг «%s»"
 
-#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
-#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
+#: glib/gbookmarkfile.c:1131 glib/gbookmarkfile.c:1145
+#: glib/gbookmarkfile.c:1213 glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Неожиданный тэг «%s» внутри «%s»"
 
-#: glib/gbookmarkfile.c:1814
+#: glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
 msgstr "Не удалось найти допустимый файл закладок в каталогах поиска"
 
-#: glib/gbookmarkfile.c:2015
+#: glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Закладка для ресурса URI «%s» уже существует"
 
-#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
-#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
-#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
-#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
-#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
-#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
-#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
-#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
-#: glib/gbookmarkfile.c:3712
+#: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
+#: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
+#: glib/gbookmarkfile.c:2448 glib/gbookmarkfile.c:2531
+#: glib/gbookmarkfile.c:2609 glib/gbookmarkfile.c:2688
+#: glib/gbookmarkfile.c:2730 glib/gbookmarkfile.c:2827
+#: glib/gbookmarkfile.c:2953 glib/gbookmarkfile.c:3143
+#: glib/gbookmarkfile.c:3219 glib/gbookmarkfile.c:3384
+#: glib/gbookmarkfile.c:3473 glib/gbookmarkfile.c:3563
+#: glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Для ресурса URI «%s» закладок не найдено"
 
-#: glib/gbookmarkfile.c:2393
+#: glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "В закладке на ресурс «%s» не определён тип MIME"
 
-#: glib/gbookmarkfile.c:2478
+#: glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Отметка о приватности данных в закладке для URI «%s» не определена"
 
-#: glib/gbookmarkfile.c:2857
+#: glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "В закладке для URI «%s» не определена группа"
 
-#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
+#: glib/gbookmarkfile.c:3237 glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Нет приложения с именем «%s», создавшего закладку для «%s»"
 
-#: glib/gbookmarkfile.c:3438
+#: glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Не удалось дополнить строку выполнения «%s» с помощью URI «%s»"
@@ -1372,8 +1371,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "Не удалось переименовать файл, такое имя файла уже есть"
 
 #: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:472
-#: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
+#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "Недопустимое имя файла"
 
@@ -1443,9 +1442,9 @@ msgstr "Произошла ошибка при перемещении файла
 msgid "Can't move directory over directory"
 msgstr "Нельзя переместить каталог поверх каталога"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:777
-#: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
-#: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
+#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
+#: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Не удалось создать резервный файл"
 
@@ -1475,7 +1474,7 @@ msgstr "Недопустимое имя расширенного атрибут�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Произошла ошибка при установке расширенного атрибута «%s»: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:666
+#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Произошла ошибка при получении сведений о файле «%s»: %s"
@@ -1548,19 +1547,20 @@ msgstr ""
 msgid "Setting attribute %s not supported"
 msgstr "Установка атрибута %s не поддерживается"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:570
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Произошла ошибка при чтении из файла: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:372
-#: gio/glocalfileoutputstream.c:854
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
+#: gio/glocalfileoutputstream.c:896
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Произошла ошибка при переходе по файлу: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:279
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
+#: gio/glocalfileoutputstream.c:303
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Произошла ошибка при закрытии файла: %s"
@@ -1569,46 +1569,46 @@ msgstr "Произошла ошибка при закрытии файла: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Не удалось найти тип монитора локальных файлов по умолчанию"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:591
+#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Произошла ошибка при записи в файл: %s"
 
-#: gio/glocalfileoutputstream.c:213
+#: gio/glocalfileoutputstream.c:235
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Произошла ошибка при удалении старой резервной ссылки: %s"
 
-#: gio/glocalfileoutputstream.c:227 gio/glocalfileoutputstream.c:240
+#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Произошла ошибка при создании резервной копии: %s"
 
-#: gio/glocalfileoutputstream.c:258
+#: gio/glocalfileoutputstream.c:280
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Произошла ошибка при переименовании временного файла: %s"
 
-#: gio/glocalfileoutputstream.c:418 gio/glocalfileoutputstream.c:871
+#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:913
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Произошла ошибка при усечении файла: %s"
 
-#: gio/glocalfileoutputstream.c:478 gio/glocalfileoutputstream.c:523
-#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:931
+#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
+#: gio/glocalfileoutputstream.c:688 gio/glocalfileoutputstream.c:973
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Произошла ошибка при открытии файла «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:679
+#: gio/glocalfileoutputstream.c:719
 msgid "Target file is a directory"
 msgstr "Целевой файл является каталогом"
 
-#: gio/glocalfileoutputstream.c:684
+#: gio/glocalfileoutputstream.c:724
 msgid "Target file is not a regular file"
 msgstr "Целевой файл не является обычным файлом"
 
-#: gio/glocalfileoutputstream.c:696
+#: gio/glocalfileoutputstream.c:736
 msgid "The file was externally modified"
 msgstr "Файл был изменён извне"
 

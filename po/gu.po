@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 00:50-0400\n"
+"POT-Creation-Date: 2008-09-02 15:48-0400\n"
 "PO-Revision-Date: 2008-03-03 14:10+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
@@ -27,73 +27,72 @@ msgstr ""
 "\n"
 "\n"
 
-#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
-#: glib/gbookmarkfile.c:946
+#: glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "ઘટક '%s' માટે અનિચ્છનીય લક્ષણ '%s'"
 
-#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
-#: glib/gbookmarkfile.c:957
+#: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
+#: glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ઘટક '%s' નું લક્ષણ '%s' મળ્યું નહિં"
 
-#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
-#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
+#: glib/gbookmarkfile.c:1106 glib/gbookmarkfile.c:1171
+#: glib/gbookmarkfile.c:1235 glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "અનિચ્છનીય ટેગ '%s', ટેગ '%s' ઈચ્છિત"
 
-#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
-#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
+#: glib/gbookmarkfile.c:1131 glib/gbookmarkfile.c:1145
+#: glib/gbookmarkfile.c:1213 glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "અનિચ્છનીય ટેગ '%s' એ '%s' માં"
 
-#: glib/gbookmarkfile.c:1814
+#: glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
 msgstr "માહિતી ડિરેક્ટરીઓ માટે કોઈ માન્ય બુકમાર્ક ફાઈલ મળી નહિં"
 
-#: glib/gbookmarkfile.c:2015
+#: glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' માટેની બુકમાર્ક પહેલાથી જ હાજર છે"
 
-#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
-#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
-#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
-#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
-#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
-#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
-#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
-#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
-#: glib/gbookmarkfile.c:3712
+#: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
+#: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
+#: glib/gbookmarkfile.c:2448 glib/gbookmarkfile.c:2531
+#: glib/gbookmarkfile.c:2609 glib/gbookmarkfile.c:2688
+#: glib/gbookmarkfile.c:2730 glib/gbookmarkfile.c:2827
+#: glib/gbookmarkfile.c:2953 glib/gbookmarkfile.c:3143
+#: glib/gbookmarkfile.c:3219 glib/gbookmarkfile.c:3384
+#: glib/gbookmarkfile.c:3473 glib/gbookmarkfile.c:3563
+#: glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s' માટે કોઈ બુકમાર્ક મળી નહિં"
 
-#: glib/gbookmarkfile.c:2393
+#: glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ MIME પ્રકાર વ્યાખ્યાયિત નથી"
 
-#: glib/gbookmarkfile.c:2478
+#: glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ ખાનગી ફ્લેગ વ્યાખ્યાયિત થયેલ નથી"
 
-#: glib/gbookmarkfile.c:2857
+#: glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ જૂથો સુયોજિત નથી"
 
-#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
+#: glib/gbookmarkfile.c:3237 glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' નામવાળા કોઈ કાર્યક્રમે '%s' માટે બુકમાર્ક રજીસ્ટર કરી નથી"
 
-#: glib/gbookmarkfile.c:3438
+#: glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec લીટી '%s' ને URI '%s' સાથે વિસ્તારવામાં નિષ્ફળ"
@@ -1319,8 +1318,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "ફાઈલનું નામ બદલી શકતા નથી, ફાઈલનામ પહેલાથી જ હાજર છે"
 
 #: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:472
-#: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
+#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "અયોગ્ય ફાઈલનામ"
 
@@ -1390,9 +1389,9 @@ msgstr "ફાઈલ ખસેડવામાં ભૂલ: %s"
 msgid "Can't move directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર ખસેડી શકતા નથી"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:777
-#: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
-#: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
+#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
+#: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "બેકઅપ ફાઈલ બનાવટ નિષ્ફળ"
 
@@ -1422,7 +1421,7 @@ msgstr "અયોગ્ય વિસ્તૃત લક્ષણ નામ"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "વિસ્તૃત લક્ષણ '%s' સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:666
+#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "ફાઈલ '%s' કહેવામાં ભૂલ: %s"
@@ -1493,19 +1492,20 @@ msgstr ""
 msgid "Setting attribute %s not supported"
 msgstr "લક્ષણ %s સુયોજીત કરવાનું આધારભૂત નથી"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:570
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ફાઈલમાંથી વાંચવામાં ભૂલ: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:372
-#: gio/glocalfileoutputstream.c:854
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
+#: gio/glocalfileoutputstream.c:896
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ફાઈલમાં પહોંચવામાં ભૂલ: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:279
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
+#: gio/glocalfileoutputstream.c:303
 #, c-format
 msgid "Error closing file: %s"
 msgstr "ફાઈલ બંધ કરવામાં ભૂલ: %s"
@@ -1514,46 +1514,46 @@ msgstr "ફાઈલ બંધ કરવામાં ભૂલ: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "મૂળભૂત સ્થાનિક ફાઈલ મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:591
+#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ફાઈલમાં લખવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:213
+#: gio/glocalfileoutputstream.c:235
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "જૂની બેકઅપ કડી દૂર કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:227 gio/glocalfileoutputstream.c:240
+#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "બેકઅપ નકલ બનાવવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:258
+#: gio/glocalfileoutputstream.c:280
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "કામચલાઉ ફાઈલનું નામ બદલવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:418 gio/glocalfileoutputstream.c:871
+#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:913
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ફાઈલ કાપવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:478 gio/glocalfileoutputstream.c:523
-#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:931
+#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
+#: gio/glocalfileoutputstream.c:688 gio/glocalfileoutputstream.c:973
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "ફાઈલ '%s' ખોલવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:679
+#: gio/glocalfileoutputstream.c:719
 msgid "Target file is a directory"
 msgstr "લક્ષ્ય ફાઈલ ડિરેક્ટરી છે"
 
-#: gio/glocalfileoutputstream.c:684
+#: gio/glocalfileoutputstream.c:724
 msgid "Target file is not a regular file"
 msgstr "લક્ષ્ય ફાઈલ નિયમિત ફાઈલ નથી"
 
-#: gio/glocalfileoutputstream.c:696
+#: gio/glocalfileoutputstream.c:736
 msgid "The file was externally modified"
 msgstr "ફાઈલ બાહ્ય રીતે સુધારેલ હતી"
 

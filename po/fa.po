@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 00:50-0400\n"
+"POT-Creation-Date: 2008-09-02 15:48-0400\n"
 "PO-Revision-Date: 2006-09-04 18:36+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@farsiweb.info>\n"
 "Language-Team: Persian\n"
@@ -15,74 +15,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:733 glib/gbookmarkfile.c:812 glib/gbookmarkfile.c:899
-#: glib/gbookmarkfile.c:946
+#: glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "مشخصهٔ غیرمنتظرهٔ «%s» برای عنصر «%s»"
 
-#: glib/gbookmarkfile.c:744 glib/gbookmarkfile.c:823 glib/gbookmarkfile.c:833
-#: glib/gbookmarkfile.c:957
+#: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
+#: glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "مشخصهٔ «%s» برای عنصر «%s» پیدا نشد"
 
-#: glib/gbookmarkfile.c:1127 glib/gbookmarkfile.c:1192
-#: glib/gbookmarkfile.c:1256 glib/gbookmarkfile.c:1266
+#: glib/gbookmarkfile.c:1106 glib/gbookmarkfile.c:1171
+#: glib/gbookmarkfile.c:1235 glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "برچسب غیرمنتظرهٔ «%s»، برچسب «%s» انتظار می‌رفت"
 
-#: glib/gbookmarkfile.c:1152 glib/gbookmarkfile.c:1166
-#: glib/gbookmarkfile.c:1234 glib/gbookmarkfile.c:1286
+#: glib/gbookmarkfile.c:1131 glib/gbookmarkfile.c:1145
+#: glib/gbookmarkfile.c:1213 glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "برچسب غیرمنتظرهٔ «%s» داخل «%s»"
 
-#: glib/gbookmarkfile.c:1814
+#: glib/gbookmarkfile.c:1793
 #, fuzzy
 msgid "No valid bookmark file found in data dirs"
 msgstr "پروندهٔ چوب‌الف معتبری در شاخه‌های داده پیدا نمی‌شود"
 
-#: glib/gbookmarkfile.c:2015
+#: glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "چوب‌الفی برای نشانی «‎%s» از قبل موجود است"
 
-#: glib/gbookmarkfile.c:2061 glib/gbookmarkfile.c:2219
-#: glib/gbookmarkfile.c:2304 glib/gbookmarkfile.c:2384
-#: glib/gbookmarkfile.c:2469 glib/gbookmarkfile.c:2552
-#: glib/gbookmarkfile.c:2630 glib/gbookmarkfile.c:2709
-#: glib/gbookmarkfile.c:2751 glib/gbookmarkfile.c:2848
-#: glib/gbookmarkfile.c:2974 glib/gbookmarkfile.c:3164
-#: glib/gbookmarkfile.c:3240 glib/gbookmarkfile.c:3405
-#: glib/gbookmarkfile.c:3494 glib/gbookmarkfile.c:3584
-#: glib/gbookmarkfile.c:3712
+#: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
+#: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
+#: glib/gbookmarkfile.c:2448 glib/gbookmarkfile.c:2531
+#: glib/gbookmarkfile.c:2609 glib/gbookmarkfile.c:2688
+#: glib/gbookmarkfile.c:2730 glib/gbookmarkfile.c:2827
+#: glib/gbookmarkfile.c:2953 glib/gbookmarkfile.c:3143
+#: glib/gbookmarkfile.c:3219 glib/gbookmarkfile.c:3384
+#: glib/gbookmarkfile.c:3473 glib/gbookmarkfile.c:3563
+#: glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "چوب‌الفی برای نشانی «‎%s» پیدا نشد"
 
-#: glib/gbookmarkfile.c:2393
+#: glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "هیچ نوع MIME در چوب‌الف برای نشانی «‎%s» تعریف نشده است"
 
-#: glib/gbookmarkfile.c:2478
+#: glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "پرچم خصوصی‌ای برای چوب‌الف برای نشانی «%s» تعریف نشده است"
 
-#: glib/gbookmarkfile.c:2857
+#: glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "گروهی در چوب‌الف برای نشانی «‎%s» تعیین نشده است"
 
-#: glib/gbookmarkfile.c:3258 glib/gbookmarkfile.c:3415
+#: glib/gbookmarkfile.c:3237 glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "برنامه‌ای با نام «%s» چوب‌الفی برای «‎%s» ثبت نکرده است"
 
-#: glib/gbookmarkfile.c:3438
+#: glib/gbookmarkfile.c:3417
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "خواندن پیوند نمادی «‎%s» شکست خورد: %s"
@@ -1337,8 +1336,8 @@ msgid "Can't rename file, filename already exist"
 msgstr ""
 
 #: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:472
-#: gio/glocalfileoutputstream.c:517 gio/glocalfileoutputstream.c:925
+#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 #, fuzzy
 msgid "Invalid filename"
 msgstr "نام میزبان نامعتبر"
@@ -1409,9 +1408,9 @@ msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:777
-#: gio/glocalfileoutputstream.c:791 gio/glocalfileoutputstream.c:806
-#: gio/glocalfileoutputstream.c:822 gio/glocalfileoutputstream.c:836
+#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
+#: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr ""
 
@@ -1442,7 +1441,7 @@ msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل نام ی�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "خطا در باز کردن شاخهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:666
+#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
@@ -1513,19 +1512,20 @@ msgstr ""
 msgid "Setting attribute %s not supported"
 msgstr "پیوندهای نمادی پشتیبانی نمی‌شوند"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:570
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:372
-#: gio/glocalfileoutputstream.c:854
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
+#: gio/glocalfileoutputstream.c:896
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:279
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
+#: gio/glocalfileoutputstream.c:303
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
@@ -1534,47 +1534,47 @@ msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 msgid "Unable to find default local file monitor type"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:591
+#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileoutputstream.c:213
+#: gio/glocalfileoutputstream.c:235
 #, fuzzy, c-format
 msgid "Error removing old backup link: %s"
 msgstr "خطا در تجزیهٔ گزینهٔ %s"
 
-#: gio/glocalfileoutputstream.c:227 gio/glocalfileoutputstream.c:240
+#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
 #, fuzzy, c-format
 msgid "Error creating backup copy: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileoutputstream.c:258
+#: gio/glocalfileoutputstream.c:280
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileoutputstream.c:418 gio/glocalfileoutputstream.c:871
+#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:913
 #, fuzzy, c-format
 msgid "Error truncating file: %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileoutputstream.c:478 gio/glocalfileoutputstream.c:523
-#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:931
+#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
+#: gio/glocalfileoutputstream.c:688 gio/glocalfileoutputstream.c:973
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s"
 msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
-#: gio/glocalfileoutputstream.c:679
+#: gio/glocalfileoutputstream.c:719
 msgid "Target file is a directory"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:684
+#: gio/glocalfileoutputstream.c:724
 #, fuzzy
 msgid "Target file is not a regular file"
 msgstr "پرونده متعارف نیست"
 
-#: gio/glocalfileoutputstream.c:696
+#: gio/glocalfileoutputstream.c:736
 msgid "The file was externally modified"
 msgstr ""
 
