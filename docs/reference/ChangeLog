@@ -1,3 +1,10 @@
+2008-09-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 550056 – Missing documentation for g_emblemed_icon_get_emblems
+
+	* gio/gio-sections.txt: Add some missing GEmblem functions.
+	Noticed by Cosmio Cecchi
+
 2008-08-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/i18n.sgml: Add hint about intltool to NC_() docs.

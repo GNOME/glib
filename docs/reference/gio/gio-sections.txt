@@ -422,7 +422,8 @@ g_file_icon_get_type
 GEmblemedIcon
 g_emblemed_icon_new
 g_emblemed_icon_get_icon
-g_emblemed_icon_get_emblem
+g_emblemed_icon_get_emblems
+g_emblemed_icon_add_emblem
 <SUBSECTION Standard>
 GEmblemedIconClass
 G_EMBLEMED_ICON
@@ -440,6 +441,7 @@ g_emblemed_icon_get_type
 <FILE>gemblem</FILE>
 <TITLE>GEmblem</TITLE>
 GEmblem
+GEmblemOrigin
 g_emblem_new
 g_emblem_new_with_origin
 g_emblem_get_icon
