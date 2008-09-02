@@ -1,0 +1,8 @@
+glib-genmarshal
+glib-mkenums
+gmarshal.[ch]
+gmarshal.strings
+gobject-query
+gobjectalias.h
+gobjectaliasdef.c
+testgobject

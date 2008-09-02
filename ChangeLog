@@ -1,3 +1,23 @@
+2007-09-02  Ryan Lortie  <desrt@desrt.ca>
+
+	Bug 549771 – improved .gitignore for glib
+
+	* docs/reference/.gitignore:
+	* docs/reference/gio/.gitignore:
+	* docs/reference/gobject/tmpl/.gitignore:
+	* gio/.gitignore:
+	* gio/tests/.gitignore:
+	* glib/.gitignore:
+	* glib/libcharset/.gitignore:
+	* glib/tests/.gitignore:
+	* gmodule/.gitignore:
+	* gobject/.gitignore:
+	* gobject/tests/.gitignore:
+	* po/.gitignore:
+	* tests/.gitignore: new files
+	* .gitignore: remove 'build' (since it's part of glib now), add more
+	useful things.
+
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
