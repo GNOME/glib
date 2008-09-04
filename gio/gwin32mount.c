@@ -80,7 +80,10 @@ g_win32_mount_finalize (GObject *object)
     _g_win32_volume_unset_mount (mount->volume, mount);
 #endif
   /* TODO: g_warn_if_fail (volume->volume == NULL); */
-  g_object_unref (mount->icon);
+
+  if (mount->icon != NULL)
+    g_object_unref (mount->icon);
+
   g_free (mount->name);
   g_free (mount->mount_path);
   
