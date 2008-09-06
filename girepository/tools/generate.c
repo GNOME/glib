@@ -413,15 +413,18 @@ write_struct_info (const gchar  *namespace,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
     {
-      type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
-      type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-	    
-      g_fprintf (file, "    <glib:boxed glib:name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"", name, type_name, type_init);
+      g_fprintf (file, "    <glib:boxed glib:name=\"%s\"", name);
     }
   else
     g_fprintf (file, "    <record name=\"%s\"", name);
+  
+  if (type_name != NULL)
+    g_fprintf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
 	  
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
