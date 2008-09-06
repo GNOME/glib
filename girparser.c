@@ -1889,30 +1889,47 @@ start_struct (GMarkupParseContext *context,
     {
       const gchar *name;
       const gchar *deprecated;
+      const gchar *gtype_name;
+      const gchar *gtype_init;
+      GIrNodeStruct *struct_;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
-      
+      gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
+      gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
+
       if (name == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "name");
-      else
 	{
-	  GIrNodeStruct *struct_;
-
-	  struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT);
-	  
-	  ((GIrNode *)struct_)->name = g_strdup (name);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
-	    struct_->deprecated = TRUE;
-	  else
-	    struct_->deprecated = FALSE;
-
-	  ctx->current_node = (GIrNode *)struct_;
-	  ctx->current_module->entries = 
-	    g_list_append (ctx->current_module->entries, struct_);
-	  
-	  state_switch (ctx, STATE_STRUCT);
+	  MISSING_ATTRIBUTE (context, error, element_name, "name");
+	  return FALSE;
 	}
+      if ((gtype_name == NULL && gtype_init != NULL))
+	{
+	  MISSING_ATTRIBUTE (context, error, element_name, "glib:type-name");
+	  return FALSE;
+	}
+      if ((gtype_name != NULL && gtype_init == NULL))
+	{
+	  MISSING_ATTRIBUTE (context, error, element_name, "glib:get-type");
+	  return FALSE;
+	}
+
+      struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT);
+      
+      ((GIrNode *)struct_)->name = g_strdup (name);
+      if (deprecated && strcmp (deprecated, "1") == 0)
+	struct_->deprecated = TRUE;
+      else
+	struct_->deprecated = FALSE;
+
+      struct_->gtype_name = g_strdup (gtype_name);
+      struct_->gtype_init = g_strdup (gtype_init);
+      
+      ctx->current_node = (GIrNode *)struct_;
+      ctx->current_module->entries = 
+	g_list_append (ctx->current_module->entries, struct_);
+      
+      state_switch (ctx, STATE_STRUCT);
       return TRUE;
     }
   return FALSE;

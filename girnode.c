@@ -339,6 +339,9 @@ g_ir_node_free (GIrNode *node)
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
 	g_free (node->name);
+	g_free (struct_->gtype_name);
+	g_free (struct_->gtype_init);
+
 	for (l = struct_->members; l; l = l->next)
 	  g_ir_node_free ((GIrNode *)l->data);
 	g_list_free (struct_->members);
@@ -706,6 +709,10 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 
 	size = 20;
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
+	if (struct_->gtype_name)
+	  size += ALIGN_VALUE (strlen (struct_->gtype_name) + 1, 4);
+	if (struct_->gtype_init)
+	  size += ALIGN_VALUE (strlen (struct_->gtype_init) + 1, 4);
 	for (l = struct_->members; l; l = l->next)
 	  size += g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
       }
@@ -809,6 +816,10 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 
 	size = 28;
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
+	if (union_->gtype_name)
+	  size += ALIGN_VALUE (strlen (union_->gtype_name) + 1, 4);
+	if (union_->gtype_init)
+	  size += ALIGN_VALUE (strlen (union_->gtype_init) + 1, 4);
 	for (l = union_->members; l; l = l->next)
 	  size += g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
@@ -1594,11 +1605,20 @@ g_ir_node_build_typelib (GIrNode    *node,
 	
 	blob->blob_type = BLOB_TYPE_STRUCT;
 	blob->deprecated = struct_->deprecated;
-	blob->unregistered = TRUE;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
-	blob->gtype_name = 0;
-	blob->gtype_init = 0;
+	if (struct_->gtype_name)
+	  {
+	    blob->unregistered = FALSE;
+	    blob->gtype_name = write_string (struct_->gtype_name, strings, data, offset2);
+	    blob->gtype_init = write_string (struct_->gtype_init, strings, data, offset2);
+	  }
+	else
+	  {
+	    blob->unregistered = TRUE;
+	    blob->gtype_name = 0;
+	    blob->gtype_init = 0;
+	  }
 
 	blob->n_fields = 0;
 	blob->n_methods = 0;

@@ -272,6 +272,9 @@ struct _GIrNodeStruct
   GIrNode node;
 
   gboolean deprecated;
+
+  gchar *gtype_name;
+  gchar *gtype_init;
   
   GList *members;
 };

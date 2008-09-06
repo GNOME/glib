@@ -1173,23 +1173,13 @@ validate_struct_blob (ValidateContext *ctx,
 		   "Wrong blob type");
       return FALSE;
     }
-  
-  if ((blob->blob_type == BLOB_TYPE_BOXED && blob->unregistered) ||
-      (blob->blob_type == BLOB_TYPE_STRUCT && !blob->unregistered))
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Registration/blob type mismatch");
-      return FALSE;
-    }
 
   if (!validate_name (typelib, "struct", typelib->data, blob->name, error))
     return FALSE; 
 
   push_context (ctx, get_string_nofail (typelib, blob->name));
   
-  if (blob_type == BLOB_TYPE_BOXED)
+  if (!blob->unregistered)
     {
       if (!validate_name (typelib, "boxed", typelib->data, blob->gtype_name, error))
 	return FALSE; 
