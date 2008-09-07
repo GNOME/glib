@@ -1,3 +1,10 @@
+2008-09-06  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 551149 – xdgmime mem leak
+
+	* xdgmime/xdgmime.c (xdg_mime_init_from_directory): Plug
+	a memory leak. Patch by Christian Persch
+
 2008-09-04  Tor Lillqvist  <tml@novell.com>
 
 	* gwin32mount.c (g_win32_mount_finalize): Don't unref icon if

@@ -104,8 +104,11 @@ xdg_dir_time_list_add (char   *file_name,
 
   for (list = dir_time_list; list; list = list->next) 
     {
-      if (strcmp (list->directory_name, file_name) == 0) 
-        return;
+      if (strcmp (list->directory_name, file_name) == 0)
+        {
+          free (file_name);
+          return;
+        }
     }
   
   list = calloc (1, sizeof (XdgDirTimeList));
