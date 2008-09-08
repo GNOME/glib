@@ -228,6 +228,9 @@ g_test_log (GTestLogType lbit,
     }
 }
 
+/* We intentionally parse the command line without GOptionContext
+ * because otherwise you would never be able to test it.
+ */
 static void
 parse_args (gint    *argc_p,
             gchar ***argv_p)
@@ -346,6 +349,27 @@ parse_args (gint    *argc_p,
               test_run_seedstr = argv[i];
             }
           argv[i] = NULL;
+        }
+      else if (strcmp ("-?", argv[i]) == 0 || strcmp ("--help", argv[i]) == 0)
+        {
+          printf ("Usage:\n"
+                  "  %s [OPTION...]\n\n"
+                  "Help Options:\n"
+                  "  -?, --help                     Show help options\n"
+                  "Test Options:\n"
+                  "  -l                             List test cases available in a test executable\n"
+                  "  -seed=RANDOMSEED               Provide a random seed to reproduce test\n"
+                  "                                 runs using random numbers\n"
+                  "  --verbose                      Run tests verbosely\n"
+                  "  -q, --quiet                    Run tests quietly\n"
+                  "  -p TESTPATH                    execute all tests matching TESTPATH\n"
+                  "  -m {perf|slow|thorough|quick}  Execute tests according modes\n"
+                  "  --debug-log                    debug test logging output\n"
+                  "  -k, --keep-going               gtester-specific argument\n"
+                  "  --GTestLogFD=N                 gtester-specific argument\n"
+                  "  --GTestSkipCount=N             gtester-specific argument\n",
+                  argv[0]);
+          exit (0);
         }
     }
   /* collapse argv */

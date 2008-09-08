@@ -1,3 +1,9 @@
+2008-09-08  Christian Dywan  <christian@imendio.com>
+
+	Bug 550433 – g_test_init doesn't recognize --help
+
+	* glib/gtestutils.c (parse_args): Add detailed --help output
+
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
