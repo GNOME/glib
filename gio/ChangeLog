@@ -1,3 +1,9 @@
+2008-09-08  Christian Neumair  <cneumair@gnome.org>
+
+	* gunixmount.c (eject_unmount_read_error), (eject_unmount_do):
+	* gunixvolume.c (eject_mount_read_error), (eject_mount_do):
+	Use non-blocking pipe for mount helper I/O. Fixes #550647.
+
 2008-09-06  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 551149 – xdgmime mem leak
