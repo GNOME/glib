@@ -63,14 +63,14 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(srcdir)/gmodule.def
+export_symbols = -export-symbols gmodule.def
 gmodule_def = gmodule.def
 
 gmodule_win32_res = gmodule-win32-res.o
 gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
 
 install-def-file:
-	$(INSTALL) $(srcdir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
+	$(INSTALL) gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
 
 uninstall-def-file:
 	-rm $(DESTDIR)$(libdir)/gmodule-2.0.def
@@ -94,7 +94,7 @@ gmodule-win32-res.o: gmodule.rc
 	$(WINDRES) gmodule.rc $@
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(srcdir)/gmodule.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gmodule.def -out:$@
 
 .PHONY: files release
 

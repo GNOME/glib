@@ -1,3 +1,9 @@
+2008-09-08  Tor Lillqvist  <tml@novell.com>
+
+	Bug 551408 - gmodule.def generated to builddir, but required in srcdir
+
+	* Makefile.am: Use gmodule.def from builddir, not srcdir.
+
 2008-09-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.18.0 ===
