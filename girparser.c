@@ -1191,7 +1191,8 @@ start_property (GMarkupParseContext *context,
 
 	  ((GIrNode *)property)->name = g_strdup (name);
 	  
-	  if (readable && strcmp (readable, "1") == 0)
+	  /* Assume properties are readable */
+	  if (readable == NULL || strcmp (readable, "1") == 0)
 	    property->readable = TRUE;
 	  else
 	    property->readable = FALSE;
