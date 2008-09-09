@@ -1,3 +1,11 @@
+2008-09-09  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 523463 – Core dump in gmain.c:2482:IA__g_main_context_check()
+
+	* glib/gmain.c (g_main_context_check): Be robust against setting
+	event fields on the fly, as e.g. happens in linc. Tracked down
+	by Paul Smith, fix proposed by Owen Taylor.
+
 2008-09-08  Christian Dywan  <christian@imendio.com>
 
 	Bug 550433 – g_test_init doesn't recognize --help

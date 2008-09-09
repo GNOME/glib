@@ -2525,23 +2525,25 @@ g_main_context_query (GMainContext *context,
   n_poll = 0;
   while (pollrec && max_priority >= pollrec->priority)
     {
-      if (pollrec->fd->events)
+      /* We need to include entries with fd->events == 0 in the array because
+       * otherwise if the application changes fd->events behind our back and 
+       * makes it non-zero, we'll be out of sync when we check the fds[] array.
+       * (Changing fd->events after adding an FD wasn't an anticipated use of 
+       * this API, but it occurs in practice.) */
+      if (n_poll < n_fds)
 	{
-	  if (n_poll < n_fds)
-	    {
-	      fds[n_poll].fd = pollrec->fd->fd;
-	      /* In direct contradiction to the Unix98 spec, IRIX runs into
-	       * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
-	       * flags in the events field of the pollfd while it should
-	       * just ignoring them. So we mask them out here.
-	       */
-	      fds[n_poll].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
-	      fds[n_poll].revents = 0;
-	    }
-	  n_poll++;
+	  fds[n_poll].fd = pollrec->fd->fd;
+	  /* In direct contradiction to the Unix98 spec, IRIX runs into
+	   * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
+	   * flags in the events field of the pollfd while it should
+	   * just ignoring them. So we mask them out here.
+	   */
+	  fds[n_poll].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
+	  fds[n_poll].revents = 0;
 	}
-      
+
       pollrec = pollrec->next;
+      n_poll++;
     }
 
 #ifdef G_THREADS_ENABLED
@@ -2582,7 +2584,7 @@ g_main_context_check (GMainContext *context,
   GPollRec *pollrec;
   gint n_ready = 0;
   gint i;
-  
+   
   LOCK_CONTEXT (context);
 
   if (context->in_check_or_prepare)
@@ -2619,11 +2621,10 @@ g_main_context_check (GMainContext *context,
   while (i < n_fds)
     {
       if (pollrec->fd->events)
-	{
-	  pollrec->fd->revents = fds[i].revents;
-	  i++;
-	}
+	pollrec->fd->revents = fds[i].revents;
+
       pollrec = pollrec->next;
+      i++;
     }
 
   source = next_valid_source (context, NULL);
