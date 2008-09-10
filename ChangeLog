@@ -1,5 +1,14 @@
 2008-09-09  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 551228 – G_STRFUNC on recent Sun compiler should be expanded to
+	__func__ rather than '???'
+
+	* glib/gmacros.h: Don't use glibconfig.h defines in gmacros.h,
+	as the comment up top says. Instead look at __STDC_VERSION__.
+	Problem reported by Lin Ma.
+
+2008-09-09  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 523463 – Core dump in gmain.c:2482:IA__g_main_context_check()
 
 	* glib/gmain.c (g_main_context_check): Be robust against setting

@@ -147,7 +147,7 @@
 /* Provide a string identifying the current function, non-concatenatable */
 #if defined (__GNUC__)
 #  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
-#elif defined (G_HAVE_ISO_VARARGS)
+#elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 19901L
 #  define G_STRFUNC     ((const char*) (__func__))
 #else
 #  define G_STRFUNC     ((const char*) ("???"))
