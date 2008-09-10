@@ -1,3 +1,9 @@
+2008-09-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 551410 – gtestutils.c: using printf without prototype
+
+	* glib/gtestutils.c: Include stdio.h. Pointed out by Kazuki Iwamoto.
+
 2008-09-09  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 551228 – G_STRFUNC on recent Sun compiler should be expanded to
