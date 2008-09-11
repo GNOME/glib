@@ -2415,11 +2415,39 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   char **mime_types;
   char **default_entries;
   char **removed_associations;
-  int i,j;
+  int i, j, k;
+  GPtrArray *array;
+  char **anc;
   
   mime_info_cache_init ();
 
+  /* collect all ancestors */
   mime_types = _g_unix_content_type_get_parents (base_mime_type);
+  array = g_ptr_array_new ();
+  for (i = 0; mime_types[i]; i++)
+    {
+      g_print ("%s\n", mime_types[i]);
+      g_ptr_array_add (array, mime_types[i]);
+    }
+  g_free (mime_types);
+  for (i = 0; i < array->len; i++)
+    {
+      anc = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
+      for (j = 0; anc[j]; j++)
+        {
+          for (k = 0; k < array->len; k++)
+            {
+              if (strcmp (anc[j], g_ptr_array_index (array, k)) == 0)
+                break;
+            }
+          if (k == array->len) /* not found */
+            g_ptr_array_add (array, g_strdup (anc[j]));
+        }
+      g_strfreev (anc);
+    }
+  g_ptr_array_add (array, NULL);
+  mime_types = g_ptr_array_free (array, FALSE);
+
   G_LOCK (mime_info_cache);
   
   removed_entries = NULL;
@@ -2440,7 +2468,7 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 	  for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
 	    desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
 
-	  /* Then removed assiciations from mimeapps.list */
+	  /* Then removed associations from mimeapps.list */
 	  removed_associations = g_hash_table_lookup (dir->mimeapps_list_removed_map, mime_type);
 	  for (j = 0; removed_associations != NULL && removed_associations[j] != NULL; j++)
 	    removed_entries = append_desktop_entry (removed_entries, removed_associations[j], NULL);

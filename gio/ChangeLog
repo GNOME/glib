@@ -2,6 +2,17 @@
 
 	Merge from trunk
 
+	Bug 545157 – wrong/no list of "open with" applications for .cc and
+	.cpp files
+
+	* gdesktopappinfo.c (get_all_desktop_entries_for_mime_type):
+	Collect all ancestors, not just direct parents. Pointed
+	out by Bastien Nocera
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 544140 - fam-helper 64-bit issue?
 
 	* fam/fam-helper.c: Added missing include so compiler doesn't complain.
