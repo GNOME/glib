@@ -1,3 +1,11 @@
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 548321 – <string.h> is not included in gi18n-lib.h
+
+	* glib/gi18n.h:
+	* glib/gi18n-lib.h: Include string.h, since strlen is used in 
+	the macros. Pointed out by Ignacio Casal Quinteiro
+
 2008-09-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 551731 – g_date_set_time[_t] docs should mention what timezone

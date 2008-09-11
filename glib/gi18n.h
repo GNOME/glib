@@ -23,6 +23,7 @@
 #include <glib.h>
 
 #include <libintl.h>
+#include <string.h>
 
 #define  _(String) gettext (String)
 #define Q_(String) g_dpgettext (NULL, String, 0)

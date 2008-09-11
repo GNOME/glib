@@ -23,6 +23,7 @@
 #include <glib.h>
 
 #include <libintl.h>
+#include <string.h>
 
 #ifndef GETTEXT_PACKAGE
 #error You must define GETTEXT_PACKAGE before including gi18n-lib.h.  Did you forget to include config.h?
