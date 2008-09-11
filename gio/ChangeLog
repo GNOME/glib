@@ -2,6 +2,13 @@
 
 	Merge from trunk
 
+	* gunixmounts.c: Add zfs to ignore_fs array in guess_system_internal:
+	Fix for #542156. Patch by Padraig O'Briain
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 547080 – g_file_copy leaks expected errors
 
 	* gfile.c: (g_file_copy): Clear G_IO_ERROR_NOT_SUPPORTED

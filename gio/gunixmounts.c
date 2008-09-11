@@ -275,6 +275,7 @@ guess_system_internal (const char *mountpoint,
     "usbfs",
     "nfsd",
     "rpc_pipefs",
+    "zfs",
     NULL
   };
   const char *ignore_devices[] = {
