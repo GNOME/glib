@@ -2,6 +2,16 @@
 
 	Merge from trunk
 
+	Bug 545457 – gdmsetup crashed with SIGSEGV in
+	g_unix_mount_guess_should_display()
+
+	* gunixvolumemonitor.c (get_mount_for_mount_path): Don't
+	crash if no mount is found.
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 545157 – wrong/no list of "open with" applications for .cc and
 	.cpp files
 
