@@ -861,7 +861,9 @@ g_date_set_parse (GDate       *d,
  * @date: a #GDate 
  * @timet: <type>time_t</type> value to set
  *
- * Sets the value of a date from a <type>time_t</type> value. 
+ * Sets the value of a date to the date corresponding to a time 
+ * specified as a time_t. The time to date conversion is done using 
+ * the user's current timezone.
  *
  * To set the value of a date to the current day, you could write:
  * |[
@@ -919,7 +921,8 @@ g_date_set_time_t (GDate *date,
  * @date: a #GDate.
  * @time_: #GTime value to set.
  *
- * Sets the value of a date from a #GTime value. 
+ * Sets the value of a date from a #GTime value.
+ * The time to date conversion is done using the user's current timezone.
  *
  * @Deprecated:2.10: Use g_date_set_time_t() instead.
  */

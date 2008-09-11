@@ -1,5 +1,12 @@
 2008-09-10  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 551731 – g_date_set_time[_t] docs should mention what timezone
+
+	* glib/gdate.c (g_date_set_time, g_date_set_time_t): Documentation
+	improvements proposed by Owen Taylor.
+
+2008-09-10  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 551410 – gtestutils.c: using printf without prototype
 
 	* glib/gtestutils.c: Include stdio.h. Pointed out by Kazuki Iwamoto.
