@@ -2,6 +2,15 @@
 
 	Merge from trunk
 
+	Bug 546079 – leak in xdgmime
+
+	* xdgmime/xdgmime.c (xdg_mime_shutdown): Fix memory leak.
+	Patch by Carlos Garcia Campos
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 545457 – gdmsetup crashed with SIGSEGV in
 	g_unix_mount_guess_should_display()
 
