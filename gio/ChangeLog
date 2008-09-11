@@ -2,6 +2,16 @@
 
 	Merge from trunk
 
+	Bug 547080 – g_file_copy leaks expected errors
+
+	* gfile.c: (g_file_copy): Clear G_IO_ERROR_NOT_SUPPORTED
+	errors before trying the next fallback routine. Patch by
+	Felix Riemann
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 546017 – Don't copy attributes when copying a symlink
 
 	* gfile.c (g_file_copy_attributes): Specify
