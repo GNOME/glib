@@ -3,7 +3,8 @@
 	Merge from trunk
 
 	* configure.in: Fix detection of struct statfs fields.
-	Accept lesser mmaps.
+	Accept lesser mmaps. 
+	Change libselinux detection to not link libglib against it.
 
 2008-08-31  Emmanuele Bassi  <ebassi@gnome.org>
 
