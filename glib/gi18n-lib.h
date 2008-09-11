@@ -22,6 +22,7 @@
 #include <glib/gstrfuncs.h>
 
 #include <libintl.h>
+#include <string.h>
 
 #ifndef GETTEXT_PACKAGE
 #error You must define GETTEXT_PACKAGE before including gi18n-lib.h.
