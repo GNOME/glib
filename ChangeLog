@@ -3,6 +3,7 @@
 	Merge from trunk
 
 	* configure.in: Fix detection of struct statfs fields.
+	Accept lesser mmaps.
 
 2008-08-31  Emmanuele Bassi  <ebassi@gnome.org>
 

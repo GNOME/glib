@@ -554,8 +554,8 @@ AC_HEADER_STDC
 
 # Checks for library functions.
 AC_FUNC_VPRINTF
-AC_FUNC_MMAP
 AC_FUNC_ALLOCA
+AC_CHECK_FUNCS(mmap)
 AC_CHECK_FUNCS(posix_memalign)
 AC_CHECK_FUNCS(memalign)
 AC_CHECK_FUNCS(valloc)
