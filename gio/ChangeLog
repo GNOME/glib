@@ -1,3 +1,12 @@
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
+	Bug 544140 - fam-helper 64-bit issue?
+
+	* fam/fam-helper.c: Added missing include so compiler doesn't complain.
+	Patch by Priit Laes
+
 2008-08-08  Loïc Minier  <lool@dooz.org>
 
 	Bug 535124 – umask 002 not being applied for new directories, new
