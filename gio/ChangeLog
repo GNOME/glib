@@ -2,6 +2,15 @@
 
 	Merge from trunk
 
+	* gunixmount.c (eject_unmount_read_error), (eject_unmount_do):
+	* gunixvolume.c (eject_mount_read_error), (eject_mount_do):
+	Use non-blocking pipe for mount helper I/O. Fixes #550647.
+	Patch by Christian Neumair
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	Bug 551149 – xdgmime mem leak
 
 	* xdgmime/xdgmime.c (xdg_mime_init_from_directory): Plug

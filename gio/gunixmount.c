@@ -38,6 +38,8 @@
 #include "gthemedicon.h"
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
+/* for BUFSIZ */
+#include <stdio.h>
 
 #include "gioalias.h"
 
@@ -281,13 +283,33 @@ eject_unmount_read_error (GIOChannel *channel,
                     GIOCondition condition,
                     gpointer user_data)
 {
-  char *str;
-  gsize str_len;
   UnmountEjectOp *data = user_data;
+  char buf[BUFSIZ];
+  gsize bytes_read;
+  GError *error;
+  GIOStatus status;
 
-  g_io_channel_read_to_end (channel, &str, &str_len, NULL);
-  g_string_append (data->error_string, str);
-  g_free (str);
+  error = NULL;
+read:
+  status = g_io_channel_read_chars (channel, buf, sizeof (buf), &bytes_read, &error);
+  if (status == G_IO_STATUS_NORMAL)
+   {
+     g_string_append_len (data->error_string, buf, bytes_read);
+     if (bytes_read == sizeof (buf))
+        goto read;
+   }
+  else if (status == G_IO_STATUS_EOF)
+    g_string_append_len (data->error_string, buf, bytes_read);
+  else if (status == G_IO_STATUS_ERROR)
+    {
+      if (data->error_string->len > 0)
+        g_string_append (data->error_string, "\n");
+
+      g_string_append (data->error_string, error->message);
+      g_error_free (error);
+      return FALSE;
+    }
+
   return TRUE;
 }
 
@@ -321,6 +343,22 @@ eject_unmount_do (GMount              *mount,
                                  NULL,           /* standard_output */
                                  &(data->error_fd),
                                  &error)) {
+    g_assert (error != NULL);
+    goto handle_error;
+  }
+
+  data->error_string = g_string_new ("");
+
+  data->error_channel = g_io_channel_unix_new (data->error_fd);
+  g_io_channel_set_flags (data->error_channel, G_IO_FLAG_NONBLOCK, &error);
+  if (error != NULL)
+    goto handle_error;
+
+  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, eject_unmount_read_error, data);
+  g_child_watch_add (child_pid, eject_unmount_cb, data);
+
+handle_error:
+  if (error != NULL) {
     GSimpleAsyncResult *simple;
     simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_mount),
                                                    data->callback,
@@ -328,14 +366,16 @@ eject_unmount_do (GMount              *mount,
                                                    error);
     g_simple_async_result_complete (simple);
     g_object_unref (simple);
+
+    if (data->error_string != NULL)
+      g_string_free (data->error_string, TRUE);
+
+    if (data->error_channel != NULL)
+      g_io_channel_unref (data->error_channel);
+
     g_error_free (error);
     g_free (data);
-    return;
   }
-  data->error_string = g_string_new ("");
-  data->error_channel = g_io_channel_unix_new (data->error_fd);
-  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, eject_unmount_read_error, data);
-  g_child_watch_add (child_pid, eject_unmount_cb, data);
 }
 
 static void
