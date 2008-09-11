@@ -1325,7 +1325,7 @@ g_file_info_get_icon (GFileInfo *info)
  * 
  * Gets the file's content type.
  * 
- * Returns: a string containing the file's content type.s
+ * Returns: a string containing the file's content type.
  **/
 const char *
 g_file_info_get_content_type (GFileInfo *info)
