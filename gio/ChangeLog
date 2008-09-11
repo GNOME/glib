@@ -2,6 +2,15 @@
 
 	Merge from trunk
 
+	Bug 551149 – xdgmime mem leak
+
+	* xdgmime/xdgmime.c (xdg_mime_init_from_directory): Plug
+	a memory leak. Patch by Christian Persch
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk
+
 	* gunixmounts.c: Add zfs to ignore_fs array in guess_system_internal:
 	Fix for #542156. Patch by Padraig O'Briain
 
