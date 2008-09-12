@@ -293,25 +293,12 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
       exec_info.nShow = SW_SHOWNORMAL;
       exec_info.hkeyClass = class_key;
       
-      if (!ShellExecuteExW(&exec_info))
+      if (!ShellExecuteExW (&exec_info))
 	{
-	  DWORD last_error;
-	  LPVOID message;
-	  char *message_utf8;
-	  
-	  last_error = GetLastError ();
-	  FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-			 FORMAT_MESSAGE_FROM_SYSTEM,
-			 NULL,
-			 last_error,
-			 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			 (LPTSTR) &message,
-			 0, NULL );
-	  
-	  message_utf8 = g_utf16_to_utf8 (message, -1, NULL, NULL, NULL);
+	  char *message_utf8 = g_win32_error_message (GetLastError ());
+
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Error launching application: %s"), message_utf8);
 	  g_free (message_utf8);
-	  LocalFree (message);
 	  
 	  g_free (wfilename);
 	  RegCloseKey (class_key);
