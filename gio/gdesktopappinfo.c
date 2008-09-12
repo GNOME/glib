@@ -2425,10 +2425,7 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   mime_types = _g_unix_content_type_get_parents (base_mime_type);
   array = g_ptr_array_new ();
   for (i = 0; mime_types[i]; i++)
-    {
-      g_print ("%s\n", mime_types[i]);
-      g_ptr_array_add (array, mime_types[i]);
-    }
+    g_ptr_array_add (array, mime_types[i]);
   g_free (mime_types);
   for (i = 0; i < array->len; i++)
     {
