@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-19 23:22-0400\n"
+"POT-Creation-Date: 2008-09-12 15:23-0400\n"
 "PO-Revision-Date: 2008-07-13 16:19+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
@@ -19,74 +19,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:709
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "元素‘%2$s’中的不明屬性‘%1$s’"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:720 glib/gbookmarkfile.c:789 glib/gbookmarkfile.c:799
+#: glib/gbookmarkfile.c:898
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "找不到元素‘%2$s’的屬性‘%1$s’"
 
-#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
-#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#: glib/gbookmarkfile.c:1071 glib/gbookmarkfile.c:1136
+#: glib/gbookmarkfile.c:1200 glib/gbookmarkfile.c:1210
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "不明的標籤‘%s’，應為標籤‘%s’"
 
-#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
-#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1096 glib/gbookmarkfile.c:1110
+#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "‘%2$s’中有不明的標籤‘%1$s’"
 
-#: glib/gbookmarkfile.c:1781
+#: glib/gbookmarkfile.c:1760
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "在資料目錄中找不到有效的書籤檔案"
 
-#: glib/gbookmarkfile.c:1982
+#: glib/gbookmarkfile.c:1961
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI‘%s’的書籤已經存在"
 
-#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
-#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
-#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
-#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
-#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
-#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
-#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
-#: glib/gbookmarkfile.c:3677
+#: glib/gbookmarkfile.c:2007 glib/gbookmarkfile.c:2164
+#: glib/gbookmarkfile.c:2249 glib/gbookmarkfile.c:2329
+#: glib/gbookmarkfile.c:2414 glib/gbookmarkfile.c:2497
+#: glib/gbookmarkfile.c:2575 glib/gbookmarkfile.c:2654
+#: glib/gbookmarkfile.c:2696 glib/gbookmarkfile.c:2793
+#: glib/gbookmarkfile.c:2919 glib/gbookmarkfile.c:3109
+#: glib/gbookmarkfile.c:3185 glib/gbookmarkfile.c:3350
+#: glib/gbookmarkfile.c:3439 glib/gbookmarkfile.c:3529
+#: glib/gbookmarkfile.c:3656
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "找不到 URI‘%s’的書籤"
 
-#: glib/gbookmarkfile.c:2359
+#: glib/gbookmarkfile.c:2338
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中沒有定義 MIME 類型"
 
-#: glib/gbookmarkfile.c:2444
+#: glib/gbookmarkfile.c:2423
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中沒有定義 private flag"
 
-#: glib/gbookmarkfile.c:2823
+#: glib/gbookmarkfile.c:2802
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中並沒有設定羣組"
 
-#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3203 glib/gbookmarkfile.c:3360
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "沒有一個名為‘%s’的應用程式註冊一個書籤給‘%s’"
 
-#: glib/gbookmarkfile.c:3404
+#: glib/gbookmarkfile.c:3383
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "以 URI‘%2$s’ 展開 exec 行‘%1$s’失敗"
@@ -1193,10 +1192,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "裝置無法實作媒體的輪詢"
 
 #: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
-#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
-#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
-#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
-#: gio/gfile.c:4020
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2620
+#: gio/gfile.c:2665 gio/gfile.c:2715 gio/gfile.c:2755 gio/gfile.c:3079
+#: gio/gfile.c:3481 gio/gfile.c:3564 gio/gfile.c:3647 gio/gfile.c:3727
+#: gio/gfile.c:4025
 #, c-format
 msgid "Operation not supported"
 msgstr "不支援操作"
@@ -1235,26 +1234,26 @@ msgstr "目標檔案已存在"
 msgid "Can't recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
-#: gio/gfile.c:2700
+#: gio/gfile.c:2705
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:2793
+#: gio/gfile.c:2798
 #, c-format
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: gio/gfile.c:2840
+#: gio/gfile.c:2845
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:4788 gio/gvolume.c:358
+#: gio/gfile.c:4793 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "儲存裝置尚未實作掛載功能"
 
-#: gio/gfile.c:4896
+#: gio/gfile.c:4901
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
@@ -1674,7 +1673,7 @@ msgstr "從 unix 讀取時發生錯誤：%s"
 msgid "Error closing unix: %s"
 msgstr "關閉 unix 時發生錯誤：%s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "根檔案系統"
 

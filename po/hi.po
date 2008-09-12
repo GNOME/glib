@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-19 23:22-0400\n"
+"POT-Creation-Date: 2008-09-12 15:23-0400\n"
 "PO-Revision-Date: 2006-06-20 14:14+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -24,74 +24,73 @@ msgstr ""
 "\n"
 "\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:709
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "'%s' अप्रत्याशित गुण '%s' तत्व के लिये"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:720 glib/gbookmarkfile.c:789 glib/gbookmarkfile.c:799
+#: glib/gbookmarkfile.c:898
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "'%s' तत्व '%s' का  गुण नहीं मिला"
 
-#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
-#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#: glib/gbookmarkfile.c:1071 glib/gbookmarkfile.c:1136
+#: glib/gbookmarkfile.c:1200 glib/gbookmarkfile.c:1210
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "'%s' अप्रत्याशित टैग, '%s' टैग प्रत्याशित"
 
-#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
-#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1096 glib/gbookmarkfile.c:1110
+#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "अप्रत्याशित टैग '%s' '%s' के अंदर"
 
-#: glib/gbookmarkfile.c:1781
+#: glib/gbookmarkfile.c:1760
 #, fuzzy, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "कोई वैध पुस्तकचिह्न आंकड़ा निर्देशिका में नहीं मिला"
 
-#: glib/gbookmarkfile.c:1982
+#: glib/gbookmarkfile.c:1961
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' के लिये पुस्तकचिह्न पहले से मौजूद है"
 
-#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
-#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
-#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
-#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
-#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
-#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
-#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
-#: glib/gbookmarkfile.c:3677
+#: glib/gbookmarkfile.c:2007 glib/gbookmarkfile.c:2164
+#: glib/gbookmarkfile.c:2249 glib/gbookmarkfile.c:2329
+#: glib/gbookmarkfile.c:2414 glib/gbookmarkfile.c:2497
+#: glib/gbookmarkfile.c:2575 glib/gbookmarkfile.c:2654
+#: glib/gbookmarkfile.c:2696 glib/gbookmarkfile.c:2793
+#: glib/gbookmarkfile.c:2919 glib/gbookmarkfile.c:3109
+#: glib/gbookmarkfile.c:3185 glib/gbookmarkfile.c:3350
+#: glib/gbookmarkfile.c:3439 glib/gbookmarkfile.c:3529
+#: glib/gbookmarkfile.c:3656
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s' के लिये कोई पुस्तकचिह्न नहीं मिला"
 
-#: glib/gbookmarkfile.c:2359
+#: glib/gbookmarkfile.c:2338
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "कोई MIME प्रकार URI '%s' के लिये पुस्तकचिह्न में परिभाषित नहीं है"
 
-#: glib/gbookmarkfile.c:2444
+#: glib/gbookmarkfile.c:2423
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s' के लिये पुस्तकचिह्न में कोई निजी फ्लैग परिभाषित नहीं है"
 
-#: glib/gbookmarkfile.c:2823
+#: glib/gbookmarkfile.c:2802
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' के लिये पुस्तकचिह्न में कोई समूह सेट नहीं है"
 
-#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3203 glib/gbookmarkfile.c:3360
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' के नाम से कोई अनुप्रयोग ने '%s' के लिये पुस्तकचिह्न पंजीकृत नहीं है"
 
-#: glib/gbookmarkfile.c:3404
+#: glib/gbookmarkfile.c:3383
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "सिंबालिक लिंक '%s' से थीम पढ़ने में असफल %s"
@@ -1221,10 +1220,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
-#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
-#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
-#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
-#: gio/gfile.c:4020
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2620
+#: gio/gfile.c:2665 gio/gfile.c:2715 gio/gfile.c:2755 gio/gfile.c:3079
+#: gio/gfile.c:3481 gio/gfile.c:3564 gio/gfile.c:3647 gio/gfile.c:3727
+#: gio/gfile.c:4025
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "सिंबालिक लिंक समर्थित नहीं है"
@@ -1263,26 +1262,26 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2700
+#: gio/gfile.c:2705
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2793
+#: gio/gfile.c:2798
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "सिंबालिक लिंक समर्थित नहीं है"
 
-#: gio/gfile.c:2840
+#: gio/gfile.c:2845
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4788 gio/gvolume.c:358
+#: gio/gfile.c:4793 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:4896
+#: gio/gfile.c:4901
 #, fuzzy, c-format
 msgid "No application is registered as handling this file"
 msgstr "'%s' के नाम से कोई अनुप्रयोग ने '%s' के लिये पुस्तकचिह्न पंजीकृत नहीं है"
@@ -1701,7 +1700,7 @@ msgstr "'%s' फ़ाइल को पढ़ने में त्रुटि
 msgid "Error closing unix: %s"
 msgstr "पंक्ति %d: पर त्रुटि %s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr ""
 

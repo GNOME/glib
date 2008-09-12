@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-19 23:22-0400\n"
+"POT-Creation-Date: 2008-09-12 15:23-0400\n"
 "PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -17,74 +17,73 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:709
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "'%s'ಘಟಕಕ್ಕೆ ಅನಪೇಕ್ಷಿತ ಗುಣ ವಿಶೇಷ '%s'"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:720 glib/gbookmarkfile.c:789 glib/gbookmarkfile.c:799
+#: glib/gbookmarkfile.c:898
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "'%s' ದ ಘಟಕಕ್ಕೆ '%s' ಗುಣವಿಶೇಷ ಪತ್ತೆಯಾಗಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
-#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#: glib/gbookmarkfile.c:1071 glib/gbookmarkfile.c:1136
+#: glib/gbookmarkfile.c:1200 glib/gbookmarkfile.c:1210
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "ಅನಪೇಕ್ಷಿತ ಪದಗುಚ್ಛ '%s', ಪದಗುಚ್ಛ '%s' ವನ್ನು ಅಪೇಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
-#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#: glib/gbookmarkfile.c:1096 glib/gbookmarkfile.c:1110
+#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "'%s' ದ ಒಳಗೆ ಅನಪೇಕ್ಷಿತ ಪದಗುಚ್ಛ '%s"
 
-#: glib/gbookmarkfile.c:1781
+#: glib/gbookmarkfile.c:1760
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "ದತ್ತಾಂಶ ಕೋಶದಲ್ಲಿ ಯಾವುದೇ ಮಾನ್ಯ ಬುಕ್ ಮಾರ್ಕ್ ಕಂಡು ಬಂದಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:1982
+#: glib/gbookmarkfile.c:1961
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' ಗೆ ಈಗಾಗಲೆ ಒಂದು ಬುಕ್ ಮಾರ್ಕ್ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
-#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
-#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
-#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
-#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
-#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
-#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
-#: glib/gbookmarkfile.c:3677
+#: glib/gbookmarkfile.c:2007 glib/gbookmarkfile.c:2164
+#: glib/gbookmarkfile.c:2249 glib/gbookmarkfile.c:2329
+#: glib/gbookmarkfile.c:2414 glib/gbookmarkfile.c:2497
+#: glib/gbookmarkfile.c:2575 glib/gbookmarkfile.c:2654
+#: glib/gbookmarkfile.c:2696 glib/gbookmarkfile.c:2793
+#: glib/gbookmarkfile.c:2919 glib/gbookmarkfile.c:3109
+#: glib/gbookmarkfile.c:3185 glib/gbookmarkfile.c:3350
+#: glib/gbookmarkfile.c:3439 glib/gbookmarkfile.c:3529
+#: glib/gbookmarkfile.c:3656
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s' ಗೆ ಯಾವುದೇ ಬುಕ್ ಮಾರ್ಕ್ ಕಂಡು ಬಂದಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:2359
+#: glib/gbookmarkfile.c:2338
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s' ಗಾಗಿನ ಬುಕ್ ಮಾರ್ಕಿನಲ್ಲಿ ಯಾವುದೇ MIME ಪ್ರಕಾರವು ಕಂಡುಬಂದಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:2444
+#: glib/gbookmarkfile.c:2423
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s' ನ ಬುಕ್ ಮಾರ್ಕಿನಲ್ಲಿ ಯಾವುದೇ ಖಾಸಗಿ ನಿಶಾನೆಯು ಸೂಚಿತವಾಗಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:2823
+#: glib/gbookmarkfile.c:2802
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' ಗಾಗಿ ಯಾವುದೇ ಸಮೂಹವು ಸಂಯೋಜಿತವಾಗಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3203 glib/gbookmarkfile.c:3360
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' ಎಂಬ ಹೆಸರಿನ ಯಾವುದೇ ಅನ್ವಯವು '%s' ಗಾಗಿ ಒಂದು ಬುಕ್-ಮಾರ್ಕನ್ನು ನೊಂದಾಯಿಸಿಲ್ಲ"
 
-#: glib/gbookmarkfile.c:3404
+#: glib/gbookmarkfile.c:3383
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec ಸಾಲು '%s' ಅನ್ನು URI '%s' ನೊಂದಿಗೆ ವಿಸ್ತರಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
@@ -1226,10 +1225,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "ಮಾಧ್ಯಮಕ್ಕಾಗಿ ಪೋಲ್ ಮಾಡುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #: gio/gfile.c:813 gio/gfile.c:1003 gio/gfile.c:1136 gio/gfile.c:1367
-#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2615
-#: gio/gfile.c:2660 gio/gfile.c:2710 gio/gfile.c:2750 gio/gfile.c:3074
-#: gio/gfile.c:3476 gio/gfile.c:3559 gio/gfile.c:3642 gio/gfile.c:3722
-#: gio/gfile.c:4020
+#: gio/gfile.c:1420 gio/gfile.c:1476 gio/gfile.c:1558 gio/gfile.c:2620
+#: gio/gfile.c:2665 gio/gfile.c:2715 gio/gfile.c:2755 gio/gfile.c:3079
+#: gio/gfile.c:3481 gio/gfile.c:3564 gio/gfile.c:3647 gio/gfile.c:3727
+#: gio/gfile.c:4025
 #, c-format
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1268,26 +1267,26 @@ msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿ�
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2700
+#: gio/gfile.c:2705
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:2793
+#: gio/gfile.c:2798
 #, c-format
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2840
+#: gio/gfile.c:2845
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:4788 gio/gvolume.c:358
+#: gio/gfile.c:4793 gio/gvolume.c:358
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:4896
+#: gio/gfile.c:4901
 #, c-format
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
@@ -1708,7 +1707,7 @@ msgstr "ಯುನಿಕ್ಸ್‍ನಿಂದ ಓದುವಲ್ಲಿ ದೋ�
 msgid "Error closing unix: %s"
 msgstr "ಯುನಿಕ್ಸ್ ಅನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "ಕಡತವ್ಯವಸ್ಥೆ ಮೂಲ"
 
