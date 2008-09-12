@@ -1,5 +1,9 @@
 2008-09-11  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-09-11  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 548321 – <string.h> is not included in gi18n-lib.h
 
 	* glib/gi18n.h:

@@ -1,3 +1,23 @@
+Overview of Changes from GLib 2.16.5 to GLib 2.16.6
+===================================================
+
+* GBookmarkFile: Make the parser less strict about unknown attributes
+
+* Bugs fixed:
+ 547832 gtk+-2.12.11 fails to build - AC_PROG_MMAP too strict, and unnecessary
+ 548321 <string.h> is not included in gi18n-lib.h
+ 535124 umask 002 not being applied for new directories, new files get the correct umask
+ 544140 fam-helper 64-bit issue
+ 545157 wrong/no list of "open with" applications for .cc and .cpp files
+ 545457 gdmsetup crashed with SIGSEGV in g_unix_mount_guess_should_display
+ 546079 leak in xdgmime
+ 546017 Don't copy attributes when copying a symlink
+ 547080 g_file_copy leaks expected errors
+ 542156 zfs mount in home directory shown on nautilus desktop
+ 551149 xdgmime mem leak
+ 550647 synchronous pipe I/O when reading mount reply
+
+
 Overview of Changes from GLib 2.16.4 to GLib 2.16.5
 ===================================================
 
