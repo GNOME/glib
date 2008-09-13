@@ -277,7 +277,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 
 /**
  * g_desktop_app_info_new_from_filename:
- * @filename: a string containing a file name.
+ * @filename: the path of a desktop file, in the GLib filename encoding
  * 
  * Creates a new #GDesktopAppInfo.
  *

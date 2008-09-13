@@ -1,3 +1,11 @@
+2008-09-14  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	Bug 551887 – Docs for g_desktop_app_info_new_from_filename ()
+	aren't clear.
+
+	* gdesktopappinfo.c: add a note in the docs clarifying what the
+	"filename" parameter really is.
+
 2008-09-12  Tor Lillqvist  <tml@novell.com>
 
 	* gwin32appinfo.c (g_win32_app_info_launch): Don't call
