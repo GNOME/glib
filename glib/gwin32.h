@@ -83,6 +83,8 @@ gchar* 		g_win32_getlocale  (void);
  */
 gchar*          g_win32_error_message (gint error);
 
+#ifndef G_DISABLE_DEPRECATED
+
 #define g_win32_get_package_installation_directory g_win32_get_package_installation_directory_utf8
 #define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
 
@@ -92,6 +94,8 @@ gchar*          g_win32_get_package_installation_directory (const gchar *package
 gchar*          g_win32_get_package_installation_subdirectory (const gchar *package,
 							       const gchar *dll_name,
 							       const gchar *subdir);
+
+#endif
 
 gchar*          g_win32_get_package_installation_directory_of_module (gpointer hmodule);
 

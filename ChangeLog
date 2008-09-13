@@ -1,3 +1,16 @@
+2008-09-13  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.h
+	* glib/gwin32.h: Deprecate G_WIN32_DLLMAIN_FOR_DLL_NAME(),
+	g_win32_get_package_installation_directory() and
+	g_win32_get_package_installation_subdirectory() as their
+	documentation has warned for a while. Sorry that I forgot to do
+	this before 2.18.0.
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory):
+	Print a warning if a non-NULL package parameter is passed to this
+	function, as that is deprecated usage, as the documentation says.
+
 2008-09-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 548321 – <string.h> is not included in gi18n-lib.h

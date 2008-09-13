@@ -430,11 +430,13 @@ const gchar * glib_check_version (guint required_major,
 
 G_END_DECLS
 
+#ifndef G_DISABLE_DEPRECATED
+
 /*
- * This macro will be deprecated in the future. This DllMain() is too
- * complex. It is recommended to have a DLlMain() that just saves the
- * handle to the DLL and then use that handle in normal code instead,
- * for instance passing it to
+ * This macro is deprecated. This DllMain() is too complex. It is
+ * recommended to write an explicit minimal DLlMain() that just saves
+ * the handle to the DLL and then use that handle instead, for
+ * instance passing it to
  * g_win32_get_package_installation_directory_of_module().
  *
  * On Windows, this macro defines a DllMain function that stores the
@@ -472,6 +474,9 @@ DllMain (HINSTANCE hinstDLL,						\
 									\
   return TRUE;								\
 }
+
+#endif	/* !G_DISABLE_DEPRECATED */
+
 #endif /* G_PLATFORM_WIN32 */
 
 #endif /* __G_UTILS_H__ */
