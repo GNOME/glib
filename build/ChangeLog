@@ -3,7 +3,9 @@
 	* win32/vs8/*.vcproj: Update to match the Makefile.am files. Drop
 	G*_EXPORTS from PreprocessorDefinitions, nothing looks for such
 	macros. Add G_DISABLE_DEPRECATED. Add PCRE_STATIC for glib to
-	avoid exporting the pcre functions. Add G_LOG_DOMAIN for gobject.
+	avoid exporting the pcre functions. Add DLL_EXPORT to glib to
+	export also the GLIB_VAR variables that aren't mentioned in
+	glib.symbols. Add G_LOG_DOMAIN for gobject.
 
 2008-08-27  Tor Lillqvist  <tml@novell.com>
 
