@@ -1,3 +1,8 @@
+2008-09-16  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gbacktrace.h: Define G_BREAKPOINT() also for 64-bit MSVC,
+	using the __debugbreak() intrinsic.
+
 2008-09-15  Behdad Esfahbod  <behdad@gnome.org>
 
 	* configure.in: Fix description of module shared library suffix.
