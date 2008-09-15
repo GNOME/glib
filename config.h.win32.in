@@ -211,18 +211,14 @@
 /* Define to 1 if you have the `getmntinfo' function. */
 /* #undef HAVE_GETMNTINFO */
 
-/* Define to 1 if you have the `getpagesize' function. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define HAVE_GETPAGESIZE 1
-#else
-/* #undef HAVE_GETPAGESIZE */
-#endif
-
 /* Define to 1 if you have the `getpwuid' function. */
 /* #undef HAVE_GETPWUID */
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
+
+/* Define to 1 if you have the `gmtime_r' function. */
+/* #undef HAVE_GMTIME_R */
 
 /* define to use system printf */
 /* #undef HAVE_GOOD_PRINTF */
@@ -260,9 +256,6 @@
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
-
-/* Define to 1 if you have the <langinfo.h> header file. */
-/* #undef HAVE_LANGINFO_H */
 
 /* Define to 1 if you have the `lchown' function. */
 /* #undef HAVE_LCHOWN */
@@ -310,7 +303,7 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
-/* Define to 1 if you have a working `mmap' system call. */
+/* Define to 1 if you have the `mmap' system call. */
 /* #undef HAVE_MMAP */
 
 /* Define to 1 if you have the <mntent.h> header file. */
@@ -321,9 +314,6 @@
 
 /* Define to 1 if you have the `nanosleep' function. */
 /* #undef HAVE_NANOSLEEP */
-
-/* Define to 1 if you have the `nl_langinfo' function. */
-/* #undef HAVE_NL_LANGINFO */
 
 /* Have non-POSIX function getgrgid_r */
 /* #undef HAVE_NONPOSIX_GETGRGID_R */
@@ -452,8 +442,14 @@
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
 
+/* Define to 1 if `f_bavail' is member of `struct statfs'. */
+/* #undef HAVE_STRUCT_STATFS_F_BAVAIL */
+
 /* Define to 1 if `f_fstypename' is member of `struct statfs'. */
 /* #undef HAVE_STRUCT_STATFS_F_FSTYPENAME */
+
+/* Define to 1 if `f_basetype' is member of `struct statvfs'. */
+/* #undef HAVE_STRUCT_STATVFS_F_BASETYPE */
 
 /* Define to 1 if `st_atimensec' is member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIMENSEC */

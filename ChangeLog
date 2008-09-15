@@ -1,3 +1,8 @@
+2008-09-15  Tor Lillqvist  <tml@novell.com>
+
+	* config.h.win32.in: Update to match what the configure script
+	produces. Just for uniformity, only commented out parts affected.
+
 2008-09-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.h
