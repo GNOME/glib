@@ -1,3 +1,10 @@
+2008-09-15  Tor Lillqvist  <tml@novell.com>
+
+	* win32/vs8/*.vcproj: Update to match the Makefile.am files. Drop
+	G*_EXPORTS from PreprocessorDefinitions, nothing looks for such
+	macros. Add G_DISABLE_DEPRECATED. Add PCRE_STATIC for glib to
+	avoid exporting the pcre functions. Add G_LOG_DOMAIN for gobject.
+
 2008-08-27  Tor Lillqvist  <tml@novell.com>
 
 	* win32/vs8/*.vcproj: Add "win32" directory level to the
