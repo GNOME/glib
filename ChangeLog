@@ -1,5 +1,10 @@
 2008-09-16  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gtimer.c (g_time_val_to_iso8601): time_t is 64 bits in all
+	the newer Microsoft C libraries, not just 64-bit ones. So to avoid
+	crash if compiled with newer MSVSes, use a separate time_t
+	variable in all cases on Windows.
+
 	* glib/gbacktrace.h: Define G_BREAKPOINT() also for 64-bit MSVC,
 	using the __debugbreak() intrinsic.
 
