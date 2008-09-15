@@ -1436,7 +1436,7 @@ else
         G_MODULE_SUPPORTED=true
 fi
 
-AC_MSG_CHECKING(for the suffix of shared libraries)
+AC_MSG_CHECKING(for the suffix of module shared libraries)
 export SED
 shrext_cmds=`./libtool --config | grep '^shrext_cmds='`
 eval $shrext_cmds
