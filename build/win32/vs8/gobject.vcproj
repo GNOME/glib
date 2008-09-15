@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../../..,../../../glib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GOBJECT_EXPORTS;GOBJECT_COMPILATION;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;Glib-GObject\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GOBJECT_COMPILATION;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;Glib-GObject\&quot;;G_DISABLE_DEPRECATED"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
