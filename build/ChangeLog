@@ -1,3 +1,10 @@
+2008-09-16  Tor Lillqvist  <tml@novell.com>
+
+	* win32/vs9: New folder. Project files for use with MSVS9. Based
+	on the MSVS8 project files is win32/vs8. Four configurations:
+	Debug|Win32, Release|Win32, Debug|x64 and Release|x64. DLL names
+	simplified to of the style glib-2-vs9.dll.
+
 2008-09-15  Tor Lillqvist  <tml@novell.com>
 
 	* win32/vs8/*.vcproj: Update to match the Makefile.am files. Drop
