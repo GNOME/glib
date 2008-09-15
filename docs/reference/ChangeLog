@@ -1,3 +1,10 @@
+2008-09-15  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552359 – g_file_info_get_icon should return GThemedIcon, and
+	g_themed_icon_get_names shold be documented ?
+
+	* gio/gio-sections.txt: Add g_themed_icon_get_names. 
+
 2008-09-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/modules.sgml: Reinstate docs that somehow got lost.
