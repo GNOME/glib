@@ -46,7 +46,6 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 				CompileAs="1"
 				ForcedIncludeFiles="msvc_recommended_pragmas.h"
@@ -127,7 +126,6 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				CompileAs="1"
 				ForcedIncludeFiles="msvc_recommended_pragmas.h"
@@ -428,20 +426,20 @@
 			<File
 				RelativePath="..\..\..\gio\win32\gwinhttpvfs.c"
 				>
-			</File>	
+			</File>
 			<File
 				RelativePath="..\..\..\gio\win32\gwinhttpfile.c"
 				>
-			</File>	
+			</File>
 			<File
 				RelativePath="..\..\..\gio\win32\gwinhttpfileinputstream.c"
 				>
-			</File>	
+			</File>
 			<File
 				RelativePath="..\..\..\gio\win32\gwinhttpfileoutputstream.c"
 				>
-			</File>	
-	</Filter>
+			</File>
+		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
