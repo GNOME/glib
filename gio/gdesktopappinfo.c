@@ -272,6 +272,12 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   if (info->exec)
     info->binary = binary_from_exec (info->exec);
   
+  if (info->path && info->path[0] == '\0')
+    {
+      g_free (info->path);
+      info->path = NULL:
+    }
+
   return info;
 }
 

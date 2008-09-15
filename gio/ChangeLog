@@ -1,5 +1,13 @@
 2008-09-15  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 552352 – g_app_info_launch doesn't work if "Path" key in .desktop 
+	file is empty
+
+	* gdesktopappinfo.c (g_desktop_app_info_new_from_keyfile): Ignore
+	an empty Path value.  
+
+2008-09-15  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 551681 – g_content_type_guess() too naive with filenames
 
 	* gcontenttype.c (g_content_type_guess): Check whether there's a '/'
