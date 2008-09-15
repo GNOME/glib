@@ -634,7 +634,7 @@ start_glib_boxed (GMarkupParseContext *context,
   ((GIrNode *)boxed)->name = g_strdup (name);
   boxed->gtype_name = g_strdup (typename);
   boxed->gtype_init = g_strdup (typeinit);
-  if (deprecated && strcmp (deprecated, "1") == 0)
+  if (deprecated)
     boxed->deprecated = TRUE;
   else
     boxed->deprecated = FALSE;
@@ -706,7 +706,7 @@ start_function (GMarkupParseContext *context,
   ((GIrNode *)function)->name = g_strdup (name);
   function->symbol = g_strdup (symbol);
   function->parameters = NULL;
-  if (deprecated && strcmp (deprecated, "1") == 0)
+  if (deprecated)
     function->deprecated = TRUE;
   else
     function->deprecated = FALSE;
@@ -1138,7 +1138,7 @@ start_enum (GMarkupParseContext *context,
 	  ((GIrNode *)enum_)->name = g_strdup (name);
 	  enum_->gtype_name = g_strdup (typename);
 	  enum_->gtype_init = g_strdup (typeinit);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    enum_->deprecated = TRUE;
 	  else
 	    enum_->deprecated = FALSE;
@@ -1280,7 +1280,7 @@ start_member (GMarkupParseContext *context,
 	  
 	  value_->value = parse_value (value);
 	  
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    value_->deprecated = TRUE;
 	  else
 	    value_->deprecated = FALSE;
@@ -1330,7 +1330,7 @@ start_constant (GMarkupParseContext *context,
 
 	  ctx->current_typed = (GIrNode*) constant;
 
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    constant->deprecated = TRUE;
 	  else
 	    constant->deprecated = FALSE;
@@ -1408,7 +1408,7 @@ start_errordomain (GMarkupParseContext *context,
 	  domain->getquark = g_strdup (getquark);
 	  domain->codes = g_strdup (codes);
 
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    domain->deprecated = TRUE;
 	  else
 	    domain->deprecated = FALSE;
@@ -1460,7 +1460,7 @@ start_interface (GMarkupParseContext *context,
 	  ((GIrNode *)iface)->name = g_strdup (name);
 	  iface->gtype_name = g_strdup (typename);
 	  iface->gtype_init = g_strdup (typeinit);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    iface->deprecated = TRUE;
 	  else
 	    iface->deprecated = FALSE;
@@ -1516,7 +1516,7 @@ start_class (GMarkupParseContext *context,
 	  iface->gtype_name = g_strdup (typename);
 	  iface->gtype_init = g_strdup (typeinit);
 	  iface->parent = g_strdup (parent);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    iface->deprecated = TRUE;
 	  else
 	    iface->deprecated = FALSE;
@@ -1918,7 +1918,7 @@ start_struct (GMarkupParseContext *context,
       struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT);
       
       ((GIrNode *)struct_)->name = g_strdup (name);
-      if (deprecated && strcmp (deprecated, "1") == 0)
+      if (deprecated)
 	struct_->deprecated = TRUE;
       else
 	struct_->deprecated = FALSE;
@@ -1969,7 +1969,7 @@ start_union (GMarkupParseContext *context,
 	  ((GIrNode *)union_)->name = g_strdup (name);
 	  union_->gtype_name = g_strdup (typename);
 	  union_->gtype_init = g_strdup (typeinit);
-	  if (deprecated && strcmp (deprecated, "1") == 0)
+	  if (deprecated)
 	    union_->deprecated = TRUE;
 	  else
 	    union_->deprecated = FALSE;
