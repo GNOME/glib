@@ -13,6 +13,20 @@
 	variables that aren't mentioned in glib.symbols. Add G_LOG_DOMAIN
 	for gobject.
 
+	Drop the "win32" part from under "dependencies" so that the same
+	project files can be used also for 64-bit compilation by just
+	having a different "dependencies" folder containing 64-bit
+	packages instead. At least, I hope it will work out some way like
+	that. MSVS project files really are a pain to maintain.  Much
+	information is typically copied for four different configurations
+	"Debug|Win32", "Release|Win32", "Debug|x64" and "Release|x64"
+	instead of having common stuff listed just once and only different
+	parametrisations. Or am I missing something?
+	
+	Make the "Release" configuration work, too. Use correct character
+	set for the gspawn-win32-helper programs. Use correct subsystem
+	for the non-console one.
+
 2008-08-27  Tor Lillqvist  <tml@novell.com>
 
 	* win32/vs8/*.vcproj: Add "win32" directory level to the

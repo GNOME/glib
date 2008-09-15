@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../..;../dirent;../../../glib;&quot;../../../../dependencies/win32/proxy-libintl-20080418/include&quot;"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;Glib\&quot;;G_ENABLE_DEBUG;G_DISABLE_DEPRECATED;PCRE_STATIC;LINK_SIZE=2;MAX_NAME_SIZE=32;MAX_NAME_COUNT=10000;NEWLINE=-1;POSIX_MALLOC_THRESHOLD=10;MATCH_LIMIT=10000000;MATCH_LIMIT_RECURSION=10000000"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -66,7 +66,7 @@
 				AdditionalDependencies="intl.lib Ws2_32.lib"
 				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;../../../../dependencies/win32/proxy-libintl-20080418/lib&quot;"
+				AdditionalLibraryDirectories="../../../../dependencies/win32/proxy-libintl-20080418/lib"
 				ModuleDefinitionFile="../../../glib/glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../..;../dirent;../../../glib;&quot;../../../../dependencies/proxy-libintl-20080418/include&quot;"
+				AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/proxy-libintl-20080418/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;Glib\&quot;;G_DISABLE_DEPRECATED;PCRE_STATIC;LINK_SIZE=2;MAX_NAME_SIZE=32;MAX_NAME_COUNT=10000;NEWLINE=-1;POSIX_MALLOC_THRESHOLD=10;MATCH_LIMIT=10000000;MATCH_LIMIT_RECURSION=10000000"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -147,7 +147,7 @@
 				AdditionalDependencies="intl.lib Ws2_32.lib"
 				OutputFile="$(OutDir)\lib$(ProjectName)-2.0-0-vs8.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;../../../../dependencies/proxy-libintl-20080418/lib&quot;"
+				AdditionalLibraryDirectories="../../../../dependencies/proxy-libintl-20080418/lib"
 				ModuleDefinitionFile="../../../glib/glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -430,6 +430,14 @@
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
