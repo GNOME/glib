@@ -5,4 +5,5 @@ EXTRA_DIST = \
 	glib.vcproj \
 	gmodule.vcproj \
 	gobject.vcproj \
-	gthread.vcproj
+	gthread.vcproj \
+	install.vcproj
