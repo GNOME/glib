@@ -1,3 +1,10 @@
+2008-09-16  Michael Natterer  <mitch@imendio.com>
+
+	* gcontenttype.c (g_content_type_guess): can't assign the return
+	value of g_strdupv() to an array. Fill the array manually with
+	const strings instead (it is never freed anyway). Fixes the
+	build. Also fixed indentation.
+
 2008-09-16  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gdesktopappinfo.c (g_desktop_app_info_new_from_keyfile):

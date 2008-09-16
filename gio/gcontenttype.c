@@ -896,17 +896,20 @@ g_content_type_guess (const char   *filename,
   if (filename)
     {
       i = strlen (filename);
-      if (filename[i - 1] == '/') {
-        char *mimetypes[] = { "inode/directory", NULL };
-        name_mimetypes = g_strdupv (mimetypes);
-        n_name_mimetypes = 1;
-        if (result_uncertain)
-          *result_uncertain = TRUE;
-      } else {
-        basename = g_path_get_basename (filename);
-	n_name_mimetypes = xdg_mime_get_mime_types_from_file_name (basename, name_mimetypes, 10);
-	g_free (basename);
-      }
+      if (filename[i - 1] == '/')
+        {
+          name_mimetypes[0] = "inode/directory";
+          name_mimetypes[1] = NULL;
+          n_name_mimetypes = 1;
+          if (result_uncertain)
+            *result_uncertain = TRUE;
+        }
+      else
+        {
+          basename = g_path_get_basename (filename);
+          n_name_mimetypes = xdg_mime_get_mime_types_from_file_name (basename, name_mimetypes, 10);
+          g_free (basename);
+        }
     }
 
   /* Got an extension match, and no conflicts. This is it. */
