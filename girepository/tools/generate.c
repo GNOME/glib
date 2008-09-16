@@ -52,6 +52,7 @@ write_type_info (const gchar *namespace,
   gint tag;
   gint i;
   GITypeInfo *type;
+  gboolean is_pointer;
   
   const gchar* basic[] = {
     "none", 
@@ -77,8 +78,14 @@ write_type_info (const gchar *namespace,
   };
 
   tag = g_type_info_get_tag (info);
+  is_pointer = g_type_info_is_pointer (info);
 
-  if (tag < 20)
+  if (tag == GI_TYPE_TAG_VOID) {
+    if (is_pointer)
+      g_fprintf (file, "%s", "any");
+    else
+      g_fprintf (file, "%s", "none");
+  } else if (tag < 20)
     g_fprintf (file, "%s", basic[tag]);
   else if (tag == 20)
     {
