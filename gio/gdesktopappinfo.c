@@ -275,7 +275,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   if (info->path && info->path[0] == '\0')
     {
       g_free (info->path);
-      info->path = NULL:
+      info->path = NULL;
     }
 
   return info;

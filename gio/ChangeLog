@@ -1,3 +1,9 @@
+2008-09-16  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* gdesktopappinfo.c (g_desktop_app_info_new_from_keyfile):
+	Fix trivial typo to unbreak the build (there was a colon
+	instead of a semicolon at the end of a statement).
+
 2008-09-15  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 552352 – g_app_info_launch doesn't work if "Path" key in .desktop 
