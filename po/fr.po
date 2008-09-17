@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-02 15:48-0400\n"
+"POT-Creation-Date: 2008-09-17 19:21-0400\n"
 "PO-Revision-Date: 2008-08-21 13:10+0200\n"
 "Last-Translator: Robert-André Mauchin <zebob.m@pengzone.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1222,38 +1222,38 @@ msgstr "Type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Fin précoce de flux inattendue"
 
-#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sans nom"
 
-#: gio/gdesktopappinfo.c:606
+#: gio/gdesktopappinfo.c:612
 msgid "Desktop file didn't specify Exec field"
 msgstr "Le fichier Bureau n'a pas indiqué de champ Exec"
 
-#: gio/gdesktopappinfo.c:900
+#: gio/gdesktopappinfo.c:906
 msgid "Unable to find terminal required for application"
 msgstr "Impossible de trouver le terminal requis par l'application"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1138
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration de l'application %s pour "
 "l'utilisateur : %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1142
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration MIME %s pour l'utilisateur : "
 "%s"
 
-#: gio/gdesktopappinfo.c:1475
+#: gio/gdesktopappinfo.c:1481
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 
-#: gio/gdesktopappinfo.c:1550
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
@@ -1767,21 +1767,21 @@ msgstr "le volume n'implémente pas l'éjection (« eject »)"
 msgid "Can't find application"
 msgstr "Impossible de trouver l'application"
 
-#: gio/gwin32appinfo.c:312
+#: gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Erreur lors du lancement de l'application : %s"
 
-#: gio/gwin32appinfo.c:349
+#: gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "URI non pris en charge"
 
-#: gio/gwin32appinfo.c:371
+#: gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr ""
 "Les modifications d'association ne sont pas prises en en charge sur win32"
 
-#: gio/gwin32appinfo.c:383
+#: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "La création d'association n'est pas prise en charge sur win32"
 

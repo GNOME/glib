@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-02 15:48-0400\n"
+"POT-Creation-Date: 2008-09-17 19:21-0400\n"
 "PO-Revision-Date: 2008-08-13 23:23-0300\n"
 "Last-Translator: Henrique P Machado <zehrique@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -1183,35 +1183,35 @@ msgstr "tipo %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Fim do fluxo precoce não esperado"
 
-#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Não nomeado"
 
-#: gio/gdesktopappinfo.c:606
+#: gio/gdesktopappinfo.c:612
 msgid "Desktop file didn't specify Exec field"
 msgstr "O arquivo da área de trabalho não especifica o campo Exec"
 
-#: gio/gdesktopappinfo.c:900
+#: gio/gdesktopappinfo.c:906
 msgid "Unable to find terminal required for application"
 msgstr "Não foi possível localizar o terminal requerido para o aplicativo"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1138
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Não foi possível criar pasta de configuração do aplicativo do usuário %s: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1142
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Não foi possível criar pasta de configuração MIME do usuário %s: %s"
 
-#: gio/gdesktopappinfo.c:1475
+#: gio/gdesktopappinfo.c:1481
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Não foi possível criar arquivo %s da área de trabalho do usuário"
 
-#: gio/gdesktopappinfo.c:1550
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definição personalizada para %s"
@@ -1721,20 +1721,20 @@ msgstr "volume não implementa ejetar"
 msgid "Can't find application"
 msgstr "Não foi possível localizar o aplicativo"
 
-#: gio/gwin32appinfo.c:312
+#: gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Erro ao lançar o aplicativo: %s"
 
-#: gio/gwin32appinfo.c:349
+#: gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "Não há suporte a URIs"
 
-#: gio/gwin32appinfo.c:371
+#: gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr "não há suporte às alterações de associação em win32"
 
-#: gio/gwin32appinfo.c:383
+#: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Não há suporte à criação de associação em win32"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-02 15:48-0400\n"
+"POT-Creation-Date: 2008-09-17 19:21-0400\n"
 "PO-Revision-Date: 2008-08-24 11:56+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -1178,34 +1178,34 @@ msgstr "тип %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неочікуваний передчасний кінець потоку"
 
-#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без назви"
 
-#: gio/gdesktopappinfo.c:606
+#: gio/gdesktopappinfo.c:612
 msgid "Desktop file didn't specify Exec field"
 msgstr "У Desktop-файлі не визначено поле Exec"
 
-#: gio/gdesktopappinfo.c:900
+#: gio/gdesktopappinfo.c:906
 msgid "Unable to find terminal required for application"
 msgstr "Неможливо знайти термінал, що потрібен програмі"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1138
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не вдається створити теку параметрів програми %s: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1142
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не вдається створити теку параметрів MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1475
+#: gio/gdesktopappinfo.c:1481
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не вдається створити для користувача desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1550
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Власне визначення %s"
@@ -1720,20 +1720,20 @@ msgstr "том не підтримує операцію витягування �
 msgid "Can't find application"
 msgstr "Не вдається знайти програму"
 
-#: gio/gwin32appinfo.c:312
+#: gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Помилка при запусканні програми: %s"
 
-#: gio/gwin32appinfo.c:349
+#: gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "URI не підтримуються"
 
-#: gio/gwin32appinfo.c:371
+#: gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr "Зміни асоціацій розширень не підтримуються на win32"
 
-#: gio/gwin32appinfo.c:383
+#: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Створення асоціацій розширень не підтримуються на win32"
 

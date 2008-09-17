@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-02 15:48-0400\n"
+"POT-Creation-Date: 2008-09-17 19:21-0400\n"
 "PO-Revision-Date: 2008-08-18 10:19+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -1262,22 +1262,22 @@ msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream i parakohshëm papritur"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:429 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Paemër"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:606
+#: gio/gdesktopappinfo.c:612
 msgid "Desktop file didn't specify Exec field"
 msgstr "File .desktop nuk specifikon fushën Exec"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:900
+#: gio/gdesktopappinfo.c:906
 msgid "Unable to find terminal required for application"
 msgstr "E pamundur gjetja e terminalit të kërkuar nga aplikativi"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1138
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1285,20 +1285,20 @@ msgstr ""
 "(%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1142
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "E pamundur gjetja e kartelës së përdoruesit për konfigurimin MIME  (%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1475
+#: gio/gdesktopappinfo.c:1481
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "I pamundur krijimi i file .desktop të përdoruesit %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1550
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Përcaktimi i personalizuar për %s"
@@ -1983,23 +1983,23 @@ msgid "Can't find application"
 msgstr "E pamundur gjetja e aplikativit"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/gwin32appinfo.c:312
+#: gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Gabim gjatë nisjes së aplikativit: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/gwin32appinfo.c:349
+#: gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "URI nuk suportohen"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gwin32appinfo.c:371
+#: gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr "ndryshimi i shoqërimeve nuk suportohet në win32"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gwin32appinfo.c:383
+#: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Krijimi i shoqërimeve nuk suportohet në win32"
 

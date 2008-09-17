@@ -337,6 +337,7 @@ It should only be accessed via the following functions.
 <!-- ##### USER_FUNCTION GModuleCheckInit ##### -->
 <para>
 Specifies the type of the module initialization function.
+<indexterm zone="g-module-check-init"><primary>g_module_check_init</primary></indexterm>
 If a module contains a function named g_module_check_init() it is called
 automatically when the module is loaded. It is passed the #GModule structure
 and should return %NULL on success or a string describing the initialization
@@ -362,6 +363,7 @@ not supported on all platforms.
 
 <!-- ##### USER_FUNCTION GModuleUnload ##### -->
 <para>
+<indexterm zone="g-module-unload"><primary>g_module_unload</primary></indexterm>
 Specifies the type of the module function called when it is unloaded.
 If a module contains a function named g_module_unload() it is called
 automatically when the module is unloaded.
