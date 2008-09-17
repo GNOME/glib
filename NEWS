@@ -1,3 +1,33 @@
+Overview of Changes from GLib 2.18.0 to GLib 2.18.1
+===================================================
+
+* Bugs fixed:
+ 550433 g_test_init doesn't recognize --help
+ 523463 Core dump in gmain.c:2482:IA__g_main_context_check
+ 551228 G_STRFUNC on recent Sun compiler should be expanded...
+ 551410 gtestutils.c: using printf without prototype
+ 551731 g_date_set_time[_t] docs should mention what timezone
+ 548321 <string.h> is not included in gi18n-lib.h
+ 551149 xdgmime mem leak
+ 550647 synchronous pipe I/O when reading mount reply
+ 551887 Docs for g_desktop_app_info_new_from_filename aren't...
+ 551681 g_content_type_guess() too naive with filenames
+ 552352 g_app_info_launch doesn't work if "Path" key...
+ 551408 gmodule.def generated to builddir...
+ 552359 g_file_info_get_icon should return GThemedIcon, and...
+
+* Updated translations:
+ Arabic (ar)
+ Bengali India (bn_IN)
+ British English (en_GB)
+ Hindi (hi)
+ Croatian (hr)
+ Korean (ko)
+ Oriya (or)
+ Turkish (tr)
+ Telugu (te)
+
+
 Overview of Changes from GLib 2.17.7 to GLib 2.18.0
 ===================================================
 
@@ -2592,3 +2622,4 @@ What's new in GLib 1.3.1:
   more tightly defined semantics.
 * the g_string(x) macro has been removed, #x may be used instead.
                                 
+* bugs fixed:

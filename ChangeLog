@@ -1,3 +1,7 @@
+2008-09-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-09-16  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gtimer.c (g_time_val_to_iso8601): time_t is 64 bits in all
