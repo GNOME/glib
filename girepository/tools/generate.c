@@ -34,6 +34,16 @@ static gchar *output = NULL;
 gchar **includedirs = NULL;
 
 static void 
+check_unresolved (GIBaseInfo *info)
+{
+  if (g_base_info_get_type (info) != GI_INFO_TYPE_UNRESOLVED)
+    return;
+
+  g_critical ("Found unresolved type '%s' '%s'\n", 
+	      g_base_info_get_name (info), g_base_info_get_namespace (info));
+}
+
+static void 
 write_type_name (const gchar *namespace,
 		 GIBaseInfo  *info,
 		 FILE        *file)
@@ -76,6 +86,8 @@ write_type_info (const gchar *namespace,
     "utf8",
     "filename"
   };
+
+  check_unresolved ((GIBaseInfo*)info);
 
   tag = g_type_info_get_tag (info);
   is_pointer = g_type_info_is_pointer (info);
