@@ -186,6 +186,8 @@ write_type_info (const gchar *namespace,
 	  g_fprintf (file, ">");
 	}
     }
+  else
+    g_assert_not_reached ();
 }
 
 static void
