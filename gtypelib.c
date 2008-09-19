@@ -968,7 +968,7 @@ validate_constant_blob (GTypelib     *typelib,
     }
   
   type = (SimpleTypeBlob *)&typelib->data[offset + G_STRUCT_OFFSET (ConstantBlob, type)];
-  if (type->reserved == 0)
+  if (type->reserved == 0 && type->reserved2 == 0)
     {
       if (type->tag == 0)
 	{
