@@ -551,8 +551,8 @@ do_spawn_with_pipes (gint                 *exit_status,
   gchar *helper_process;
   CONSOLE_CURSOR_INFO cursor_info;
   wchar_t *whelper, **wargv, **wenvp;
-  extern gchar *_glib_get_installation_directory (void);
-  gchar *glib_top;
+  extern gchar *_glib_get_dll_directory (void);
+  gchar *glib_dll_directory;
 
   if (child_setup && !warned_about_child_setup)
     {
@@ -600,11 +600,11 @@ do_spawn_with_pipes (gint                 *exit_status,
   else
     helper_process = HELPER_PROCESS ".exe";
   
-  glib_top = _glib_get_installation_directory ();
-  if (glib_top != NULL)
+  glib_dll_directory = _glib_get_dll_directory ();
+  if (glib_dll_directory != NULL)
     {
-      helper_process = g_build_filename (glib_top, "bin", helper_process, NULL);
-      g_free (glib_top);
+      helper_process = g_build_filename (glib_dll_directory, helper_process, NULL);
+      g_free (glib_dll_directory);
     }
   else
     helper_process = g_strdup (helper_process);
