@@ -705,6 +705,7 @@ validate_function_blob (ValidateContext *ctx,
   GTypelib *typelib = ctx->typelib;
   FunctionBlob *blob;
   SignatureBlob *sigblob;
+  gboolean is_method;
 
   if (typelib->len < offset + sizeof (FunctionBlob))
     {
@@ -733,6 +734,17 @@ validate_function_blob (ValidateContext *ctx,
   
   if (!validate_name (typelib, "function symbol", typelib->data, blob->symbol, error))
     return FALSE; 
+
+  switch (container_type)
+    {
+    case BLOB_TYPE_BOXED:
+    case BLOB_TYPE_OBJECT:
+    case BLOB_TYPE_INTERFACE:
+      is_method = !(blob->constructor || blob->setter || blob->getter || blob->wraps_vfunc);
+      break;
+    default:
+      is_method = FALSE;
+    }
   
   if (blob->constructor)
     {
@@ -780,7 +792,6 @@ validate_function_blob (ValidateContext *ctx,
     }
 
   /* FIXME: validate index range */
-  /* FIXME: validate "this" argument for methods */
 
   if (!validate_signature_blob (typelib, blob->signature, error))
     return FALSE;
@@ -807,6 +818,53 @@ validate_function_blob (ValidateContext *ctx,
 		       G_TYPELIB_ERROR_INVALID,
 		       "Invalid return type %d for constructor",
 		       iface_type->tag);
+	  return FALSE;
+	}
+    }
+  else if (is_method)
+    {
+      guint32 this_offset;
+      guint32 this_type_offset;
+      ArgBlob *this;
+      SimpleTypeBlob *thistype;
+      InterfaceTypeBlob *thistype_iface;
+
+      if (sigblob->n_arguments == 0)
+	{
+	  g_set_error (error,
+		       G_TYPELIB_ERROR,
+		       G_TYPELIB_ERROR_INVALID,
+		       "Invalid 0-argument method");
+	}
+      
+      this_offset = blob->signature + sizeof (SignatureBlob);
+      this = (ArgBlob*) &typelib->data[this_offset];
+      this_type_offset = this_offset + G_STRUCT_OFFSET (ArgBlob, arg_type);
+      thistype = (SimpleTypeBlob *)&typelib->data[this_type_offset];
+      
+      if (thistype->reserved == 0 && 
+	  thistype->reserved2 == 0)
+	{
+	  g_set_error (error,
+		       G_TYPELIB_ERROR,
+		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       "Non-reference type tag %d found for \"this\" argument",
+		       thistype->tag);
+	  return FALSE;
+	}
+      
+      thistype_iface = (InterfaceTypeBlob*)&typelib->data[thistype->offset];
+
+      switch (thistype_iface->tag) 
+	{
+	case GI_TYPE_TAG_INTERFACE:
+	  break;
+	default:
+	  g_set_error (error,
+		       G_TYPELIB_ERROR,
+		       G_TYPELIB_ERROR_INVALID_BLOB,
+		       "Invalid type tag %d found for \"this\" argument",
+		       thistype_iface->tag);
 	  return FALSE;
 	}
     }
