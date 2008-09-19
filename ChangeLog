@@ -1,5 +1,7 @@
 2008-09-19  Tor Lillqvist  <tml@novell.com>
 
+	* glib-zip.in: Look for man pages in share/man.
+
 	* glib/gutils.c (_glib_get_dll_directory)
 	* glib/gspawn-win32.c (do_spawn_with_pipes): Be a bit less
 	restrictive, look for the helper programs in the same folder where
