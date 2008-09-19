@@ -24,6 +24,7 @@
 
 #include <glib.h>
 
+#include "config.h"
 #include "gtypelib.h"
 
 typedef struct {
@@ -1977,7 +1978,7 @@ _g_typelib_init (GTypelib *typelib)
 	      g_string_append (shlib_full, ".la");
 	      typelib->module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
 	      if (typelib->module == NULL)
-		g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, G_MODULE_SUFFIX);
+		g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
 	      typelib->module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
 
 	      g_string_free (shlib_full, TRUE);
