@@ -69,8 +69,9 @@ share/aclocal/glib-gettext.m4
 share/glib-2.0
 share/gtk-doc/html/glib
 share/gtk-doc/html/gobject
-man/man1/glib-mkenums.1
-man/man1/glib-genmarshal.1
+share/man/man1/glib-mkenums.1
+share/man/man1/glib-genmarshal.1
+share/man/man1/gobject-query.1
 EOF
 
 zip -r $DEVZIP share/doc/glib-dev-@GLIB_VERSION@

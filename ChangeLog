@@ -1,3 +1,7 @@
+2008-09-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib-zip.in: Look for man pages in share/man.
+
 2008-09-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version 
