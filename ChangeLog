@@ -1,3 +1,46 @@
+2008-09-19  Hans Petter Jansson  <hpj@novell.com>
+
+	Rewrite most of GHashTable to use open addressing with quadratic
+	probing instead of chaining. This has the potential to reduce memory
+	fragmentation significantly, while being slightly faster due to
+	better locality and no need to call alloc/free functions for nodes.
+	Benchmarks suggest it also uses less memory overall.
+
+	* glib/ghash.c (prime_mod): Table of suitable primes for
+	initial-probe distribution.
+	(g_hash_table_set_shift): New function.
+	(g_hash_table_find_closest_shift): New function.
+	(g_hash_table_set_shift_from_size): New function.
+	(g_hash_table_lookup_node_for_insertion): New function.
+	(g_hash_table_lookup_node): Rewritten to return node index instead of
+	pointer, use quadratic probe on flat table, and not return insertion
+	data. The latter saves some computation for read-only lookups.
+	(g_hash_table_remove_node): Rewrite to take a pointer directly to the
+	node structure to remove, and clear that. Remove unlinking code.
+	(g_hash_table_remove_all_nodes): Rewrite to not clear nodes
+	individually, but en masse using memset () after potentially calling
+	notify functions.
+	(iter_remove_or_steal): Use new data structure and algorithm. Vastly
+	simplified - now just a call to g_hash_table_remove_node ().
+	(g_hash_table_resize): New resize code, re-indexing with new prime
+	and cleaning up tombstones.
+	(g_hash_table_maybe_resize): Table may hold 8 buckets minimum, no less
+	than 1/4 load excluding tombstones, and no more than 15/16 load
+	including tombstones. These numbers are the results of a lot of
+	benchmarking with multiple complex applications, and should not be
+	changed lightly.
+	(g_hash_table_iter_next)
+	(g_hash_table_lookup)
+	(g_hash_table_lookup_extended)
+	(g_hash_table_insert_internal)
+	(g_hash_table_remove_internal)
+	(g_hash_table_foreach_remove_or_steal)
+	(g_hash_table_foreach)
+	(g_hash_table_find)
+	(g_hash_table_get_keys)
+	(g_hash_table_get_values): Use new data structure and algorithm,
+	fairly trivial changes.
+
 2008-09-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Look for man pages in share/man.
