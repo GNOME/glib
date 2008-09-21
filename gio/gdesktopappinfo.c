@@ -480,7 +480,7 @@ expand_macro_single (char macro, char *uri)
 {
   GFile *file;
   char *result = NULL;
-  char *path;
+  char *path, *name;
 
   file = g_file_new_for_uri (uri);
   path = g_file_get_path (file);
@@ -500,12 +500,20 @@ expand_macro_single (char macro, char *uri)
     case 'd':
     case 'D':
       if (path)
-	result = g_shell_quote (g_path_get_dirname (path));
+        {
+          name = g_path_get_dirname (path);
+	  result = g_shell_quote (name);
+          g_free (name);
+        }
       break;
     case 'n':
     case 'N':
       if (path)
-	result = g_shell_quote (g_path_get_basename (path));
+        {
+          name = g_path_get_basename (path);
+	  result = g_shell_quote (name);
+          g_free (name);
+        }
       break;
     }
 
