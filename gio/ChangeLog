@@ -1,3 +1,9 @@
+2008-09-20  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	* gdesktopappinfo.c (expand_macro_single): Plug a memory leak
+
 2008-09-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.18.1 ===
