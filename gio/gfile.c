@@ -2056,8 +2056,12 @@ open_source_for_copy (GFile           *source,
 
 static gboolean
 should_copy (GFileAttributeInfo *info, 
-             gboolean            as_move)
+             gboolean            as_move,
+             gboolean            skip_perms)
 {
+  if (skip_perms && strcmp(info->name, "unix::mode") == 0)
+        return FALSE;
+
   if (as_move)
     return info->flags & G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED;
   return info->flags & G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE;
@@ -2066,7 +2070,8 @@ should_copy (GFileAttributeInfo *info,
 static char *
 build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
 			       GFileAttributeInfoList *namespaces,
-			       gboolean                as_move)
+			       gboolean                as_move,
+			       gboolean                skip_perms)
 {
   GString *s;
   gboolean first;
@@ -2079,7 +2084,7 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
     {
       for (i = 0; i < attributes->n_infos; i++)
 	{
-	  if (should_copy (&attributes->infos[i], as_move))
+	  if (should_copy (&attributes->infos[i], as_move, skip_perms))
 	    {
 	      if (first)
 		first = FALSE;
@@ -2095,7 +2100,7 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
     {
       for (i = 0; i < namespaces->n_infos; i++)
 	{
-	  if (should_copy (&namespaces->infos[i], as_move))
+	  if (should_copy (&namespaces->infos[i], as_move, FALSE))
 	    {
 	      if (first)
 		first = FALSE;
@@ -2142,9 +2147,11 @@ g_file_copy_attributes (GFile           *source,
   GFileInfo *info;
   gboolean as_move;
   gboolean source_nofollow_symlinks;
+  gboolean skip_perms;
 
   as_move = flags & G_FILE_COPY_ALL_METADATA;
   source_nofollow_symlinks = flags & G_FILE_COPY_NOFOLLOW_SYMLINKS;
+  skip_perms = flags & G_FILE_COPY_TARGET_DEFAULT_PERMS != 0;
 
   /* Ignore errors here, if the target supports no attributes there is nothing to copy */
   attributes = g_file_query_settable_attributes (destination, cancellable, NULL);
@@ -2153,7 +2160,7 @@ g_file_copy_attributes (GFile           *source,
   if (attributes == NULL && namespaces == NULL)
     return TRUE;
 
-  attrs_to_read = build_attribute_list_for_copy (attributes, namespaces, as_move);
+  attrs_to_read = build_attribute_list_for_copy (attributes, namespaces, as_move, skip_perms);
 
   /* Ignore errors here, if we can't read some info (e.g. if it doesn't exist)
    * we just don't copy it. 

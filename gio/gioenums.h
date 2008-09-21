@@ -198,6 +198,7 @@ typedef enum {
  * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
  * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set used for copy (see #GFileInfo).
  * @G_FILE_COPY_NO_FALLBACK_FOR_MOVE: Don't use copy and delete fallback if native move not supported.
+ * @G_FILE_COPY_TARGET_DEFAULT_PERMS: Leaves target file with default perms, instead of setting the source file perms.
  *
  * Flags used when copying or moving files.
  */
@@ -207,7 +208,8 @@ typedef enum {
   G_FILE_COPY_BACKUP               = (1 << 1),
   G_FILE_COPY_NOFOLLOW_SYMLINKS    = (1 << 2),
   G_FILE_COPY_ALL_METADATA         = (1 << 3),
-  G_FILE_COPY_NO_FALLBACK_FOR_MOVE = (1 << 4)
+  G_FILE_COPY_NO_FALLBACK_FOR_MOVE = (1 << 4),
+  G_FILE_COPY_TARGET_DEFAULT_PERMS = (1 << 5)
 } GFileCopyFlags;
 
 

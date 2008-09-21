@@ -1,3 +1,14 @@
+2008-09-22  Nelson Benítez León  <nbenitez@svn.gnome.org>
+
+	* gio/gioenums.h: Add new GFileCopyFlag, to leave target file with
+	default perms, instead of setting the source file perms, in a copy
+	operation.
+
+	* gio/gfile.c (g_file_copy_attributes) 
+	(build_attribute_list_for_copy)
+	(should_copy): Not copy "unix::mode" attribute if we have received
+	G_FILE_COPY_TARGET_DEFAULT_PERMS flag.
+
 2008-09-19  Hans Petter Jansson  <hpj@novell.com>
 
 	Rewrite most of GHashTable to use open addressing with quadratic
