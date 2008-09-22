@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 03:08+0200\n"
-"PO-Revision-Date: 2008-09-22 03:07+0200\n"
+"POT-Creation-Date: 2008-09-22 21:21+0000\n"
+"PO-Revision-Date: 2008-09-22 21:19+0000\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -179,7 +179,7 @@ msgstr "Fejl ved læsning af filen \"%s\": %s"
 #: ../glib/gfileutils.c:586
 #, c-format
 msgid "File \"%s\" is too large"
-msgstr "Fil \"%s\" er for stor"
+msgstr "Filen \"%s\" er for stor"
 
 #: ../glib/gfileutils.c:669
 #, c-format
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../gio/glocalfileinfo.c:2063
 #, c-format
 msgid "SELinux context must be non-NULL"
-msgstr "SELinux-kontekst skal være ikke-NULL"
+msgstr "SELinux-kontekst skal være forskellig fra NULL"
 
 #: ../gio/glocalfileinfo.c:2079
 #, c-format
@@ -1686,15 +1686,15 @@ msgstr "Et array som indeholder ikonnavnene"
 
 #: ../gio/gthemedicon.c:248
 msgid "use default fallbacks"
-msgstr "brug forvalgte standardikoner"
+msgstr "brug forvalgte reserve"
 
 #: ../gio/gthemedicon.c:249
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
-"Om der skal bruges de forvalgte standardikoner som findes ved at afkorte "
-"navnet ved \"-\"-tegn. Ignorerer navne efter det første hvis der giver flere."
+"Om der skal bruges de forvalgte reserver som findes ved at afkorte navnet "
+"ved \"-\"-tegn. Ignorerer navne efter det første hvis der giver flere."
 
 #: ../gio/gunixinputstream.c:201 ../gio/gunixinputstream.c:221
 #: ../gio/gunixinputstream.c:299 ../gio/gunixoutputstream.c:288
