@@ -1,3 +1,14 @@
+2008-09-22  Nelson Benítez León  <nbenitez@svn.gnome.org>
+
+	* gioenums.h: Add new GFileCopyFlag, to leave target file with
+	default perms, instead of setting the source file perms, in a copy
+	operation.
+
+	* gfile.c (g_file_copy_attributes) 
+	(build_attribute_list_for_copy)
+	(should_copy): Not copy "unix::mode" attribute if we have received
+	G_FILE_COPY_TARGET_DEFAULT_PERMS flag.
+
 2008-09-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* gdesktopappinfo.c (expand_macro_single): Plug a memory leak
