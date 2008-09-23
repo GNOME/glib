@@ -1,3 +1,10 @@
+2008-09-23  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gmain.c (poll_rest) [Win32]: Fix embarrassing bug: I was
+	passing an incorrect third parameter to memmove(), had forgotten
+	to multiply by the size of the table entry. Just use a for loop
+	instead, clearer. Odd I didn't notice when testing this code.
+
 2008-09-22  Nelson Benítez León  <nbenitez@svn.gnome.org>
 
 	* gio/gioenums.h: Add new GFileCopyFlag, to leave target file with

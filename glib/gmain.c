@@ -447,8 +447,10 @@ poll_rest (gboolean  poll_msgs,
       if (timeout == 0 && nhandles > 1)
 	{
 	  /* Remove the handle that fired */
+	  int i;
 	  if (ready < nhandles - 1)
-	    memmove (handles + ready - WAIT_OBJECT_0, handles + ready - WAIT_OBJECT_0 + 1, nhandles - ready - 1);
+	    for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
+	      handles[i-1] = handles[i];
 	  nhandles--;
 	  recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
 	  return (recursed_result == -1) ? -1 : 1 + recursed_result;
