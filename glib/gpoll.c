@@ -25,10 +25,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -65,7 +65,7 @@
 #if defined(_POLL_EMUL_H_) || defined(BROKEN_POLL)
 #undef HAVE_POLL
 #endif
-   
+
 #endif /* GLIB_HAVE_SYS_POLL_H */
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -246,7 +246,7 @@ poll_rest (gboolean  poll_msgs,
 	}
       return 1;
     }
-    
+
   return 0;
 }
 
@@ -371,7 +371,7 @@ typedef long fd_mask;
 #  endif /* !_IBMR2 */
 #endif /* !NO_FD_SET */
 
-gint 
+gint
 g_poll (GPollFD *fds,
 	guint    nfds,
 	gint     timeout)

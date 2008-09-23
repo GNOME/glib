@@ -1,6 +1,14 @@
+2008-09-23  Michael Natterer  <mitch@imendio.com>
+
+	* glib/glib.h: #include <glib/gpoll.h>
+
+	* glib/gpoll.h: #error out if gpoll.h is included directly.
+
+	* glib/gpoll.c: remove trailing whitespace.
+
 2008-09-23  Dan Winship  <danw@gnome.org>
 
-	* glib/gpoll.c (g_poll): Move this out of gmain.c and make it part
+	* glib/gpoll.[ch] (g_poll): Move this out of gmain.c and make it part
 	of the public API. (Part of Bug 505361 - gunixinputstream.c assumes
 	poll() available.)
 
