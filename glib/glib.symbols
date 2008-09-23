@@ -845,6 +845,12 @@ g_pattern_spec_new
 #endif
 #endif
 
+#if IN_HEADER(__G_POLL_H__)
+#if IN_FILE(__G_POLL_C__)
+g_poll
+#endif
+#endif
+
 #if IN_HEADER(__G_PRIMES_H__)
 #if IN_FILE(__G_PRIMES_C__)
 g_spaced_primes_closest G_GNUC_CONST

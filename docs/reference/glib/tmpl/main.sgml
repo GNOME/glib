@@ -725,6 +725,17 @@ you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
 @events: 
 @revents: 
 
+<!-- ##### FUNCTION g_poll ##### -->
+<para>
+
+</para>
+
+@fds: 
+@nfds: 
+@timeout: 
+@Returns: 
+
+
 <!-- ##### STRUCT GSource ##### -->
 <para>
 The <structname>GSource</structname> struct is an opaque data type representing

@@ -468,8 +468,10 @@ GChildWatchFunc
 g_child_watch_source_new
 g_child_watch_add
 g_child_watch_add_full
+
 <SUBSECTION>
 GPollFD
+g_poll
 
 <SUBSECTION>
 GSource

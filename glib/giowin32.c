@@ -2121,13 +2121,9 @@ g_io_channel_win32_poll (GPollFD *fds,
 			 gint     n_fds,
 			 gint     timeout)
 {
-  int result;
-
   g_return_val_if_fail (n_fds >= 0, 0);
 
-  result = (*g_main_context_get_poll_func (NULL)) (fds, n_fds, timeout);
-
-  return result;
+  return g_poll (fds, n_fds, timeout);
 }
 
 void
