@@ -100,9 +100,9 @@ write_type_info (const gchar *namespace,
       else
 	g_fprintf (file, "%s", "none");
     } 
-  else if (tag < 20)
+  else if (tag < GI_TYPE_TAG_ARRAY)
     g_fprintf (file, "%s", basic[tag]);
-  else if (tag == 20)
+  else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length;
 
@@ -121,13 +121,13 @@ write_type_info (const gchar *namespace,
      g_fprintf (file, "]"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
-  else if (tag == 21)
+  else if (tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
       write_type_name (namespace, iface, file);
       g_base_info_unref (iface);
     }
-  else if (tag == 22)
+  else if (tag == GI_TYPE_TAG_GLIST)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GLib.List");
@@ -139,7 +139,7 @@ write_type_info (const gchar *namespace,
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
     }
-  else if (tag == 23)
+  else if (tag == GI_TYPE_TAG_GSLIST)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GLib.SList");
@@ -151,7 +151,7 @@ write_type_info (const gchar *namespace,
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
     }
-  else if (tag == 24)
+  else if (tag == GI_TYPE_TAG_GHASH)
     {
       type = g_type_info_get_param_type (info, 0);
       g_fprintf (file, "GLib.HashTable");
@@ -167,7 +167,7 @@ write_type_info (const gchar *namespace,
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
     }
-  else if (tag == 25) 
+  else if (tag == GI_TYPE_TAG_ERROR) 
     {
       gint n;
 
@@ -188,7 +188,10 @@ write_type_info (const gchar *namespace,
 	}
     }
   else
-    g_assert_not_reached ();
+    {
+      g_printerr ("Unhandled type tag %d\n", tag);
+      g_assert_not_reached ();
+    }
 }
 
 static void
