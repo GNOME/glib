@@ -83,6 +83,7 @@ write_type_info (const gchar *namespace,
     "size",
     "float", 
     "double", 
+    "time_t", 
     "utf8",
     "filename"
   };
