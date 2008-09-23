@@ -1,3 +1,9 @@
+2008-09-23  Dan Winship  <danw@gnome.org>
+
+	* glib/gpoll.c (g_poll): Move this out of gmain.c and make it part
+	of the public API. (Part of Bug 505361 - gunixinputstream.c assumes
+	poll() available.)
+
 2008-09-23  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.c (poll_rest) [Win32]: Fix embarrassing bug: I was
