@@ -285,14 +285,15 @@ typedef enum {
   GI_TYPE_TAG_SIZE      = 15,
   GI_TYPE_TAG_FLOAT     = 16,
   GI_TYPE_TAG_DOUBLE    = 17,
-  GI_TYPE_TAG_UTF8      = 18,
-  GI_TYPE_TAG_FILENAME  = 19,
-  GI_TYPE_TAG_ARRAY     = 20,
-  GI_TYPE_TAG_INTERFACE = 21,
-  GI_TYPE_TAG_GLIST     = 22,
-  GI_TYPE_TAG_GSLIST    = 23,
-  GI_TYPE_TAG_GHASH     = 24,
-  GI_TYPE_TAG_ERROR     = 25
+  GI_TYPE_TAG_TIME_T    = 18,
+  GI_TYPE_TAG_UTF8      = 19,
+  GI_TYPE_TAG_FILENAME  = 20,
+  GI_TYPE_TAG_ARRAY     = 21,
+  GI_TYPE_TAG_INTERFACE = 22,
+  GI_TYPE_TAG_GLIST     = 23,
+  GI_TYPE_TAG_GSLIST    = 24,
+  GI_TYPE_TAG_GHASH     = 25,
+  GI_TYPE_TAG_ERROR     = 26
 } GITypeTag;
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);

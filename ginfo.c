@@ -1720,6 +1720,9 @@ g_constant_info_get_value (GIConstantInfo *info,
 	    case GI_TYPE_TAG_DOUBLE:
 	      value->v_double = *(gdouble*)&base->typelib->data[blob->offset];
 	      break;
+	    case GI_TYPE_TAG_TIME_T:
+	      value->v_long = *(long*)&base->typelib->data[blob->offset];
+	      break;
 	    case GI_TYPE_TAG_INT:
 	      value->v_int = *(gint*)&base->typelib->data[blob->offset];
 	      break;

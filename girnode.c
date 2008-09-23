@@ -2117,6 +2117,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    *(glong*)&data[blob->offset] = (glong) parse_int_value (constant->value);
 	    break;
 	  case GI_TYPE_TAG_SIZE: /* FIXME */
+	  case GI_TYPE_TAG_TIME_T: 
 	  case GI_TYPE_TAG_ULONG:
 	    blob->size = sizeof (gulong);
 	    *(gulong*)&data[blob->offset] = (gulong) parse_uint_value (constant->value);

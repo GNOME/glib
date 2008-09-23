@@ -252,6 +252,7 @@ static BasicTypeInfo basic_types[] = {
     { "size",     GI_TYPE_TAG_SIZE,    0 },
     { "float",    GI_TYPE_TAG_FLOAT,   0 },
     { "double",   GI_TYPE_TAG_DOUBLE,  0 },
+    { "time_t",   GI_TYPE_TAG_TIME_T,  0 },
     { "utf8",     GI_TYPE_TAG_UTF8,    1 },  
     { "filename", GI_TYPE_TAG_FILENAME,1 },
 

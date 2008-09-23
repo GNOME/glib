@@ -89,6 +89,7 @@ get_ffi_type (GITypeInfo *info)
 	rettype = &ffi_type_slong;
 	break;
       case GI_TYPE_TAG_SIZE: /* FIXME */
+      case GI_TYPE_TAG_TIME_T: /* May not be portable */
       case GI_TYPE_TAG_ULONG:
 	rettype = &ffi_type_ulong;
 	break;
