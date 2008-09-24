@@ -1,3 +1,11 @@
+2008-09-24  Sven Herzberg  <sven@imendio.com>
+
+	Be a little more explcit in the docs. Includes Owen's requested
+	changes.
+
+	* glib/gmain.c: improved documentation for g_source_attach() and
+	g_source_destroy()
+
 2008-09-23  Michael Natterer  <mitch@imendio.com>
 
 	* glib/glib.h: #include <glib/gpoll.h>

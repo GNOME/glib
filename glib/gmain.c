@@ -639,7 +639,7 @@ g_source_list_remove (GSource      *source,
  * @context: a #GMainContext (if %NULL, the default context will be used)
  * 
  * Adds a #GSource to a @context so that it will be executed within
- * that context.
+ * that context. Remove it by calling g_source_destroy().
  *
  * Return value: the ID (greater than 0) for the source within the 
  *   #GMainContext. 
@@ -1364,7 +1364,8 @@ g_main_context_find_source_by_user_data (GMainContext *context,
  * g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
  * g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().
  *
- * See also g_source_destroy().
+ * See also g_source_destroy(). You must use g_source_destroy() for sources
+ * added to a non-default main context.
  *
  * Return value: %TRUE if the source was found and removed.
  **/
