@@ -255,44 +255,6 @@ static BasicTypeInfo basic_types[] = {
     { "time_t",   GI_TYPE_TAG_TIME_T,  0 },
     { "utf8",     GI_TYPE_TAG_UTF8,    1 },  
     { "filename", GI_TYPE_TAG_FILENAME,1 },
-
-    /* FIXME: merge - do we still want this? */
-    { "string",   GI_TYPE_TAG_UTF8,  1 },
-
-    /* FIXME: Remove these */
-    { "void",     GI_TYPE_TAG_VOID,    0 },
-    { "int8_t",   GI_TYPE_TAG_INT8,    0 },
-    { "uint8_t",  GI_TYPE_TAG_UINT8,   0 },
-    { "int16_t",  GI_TYPE_TAG_INT16,   0 },
-    { "uint16_t", GI_TYPE_TAG_UINT16,  0 },
-    { "int32_t",  GI_TYPE_TAG_INT32,   0 },
-    { "uint32_t", GI_TYPE_TAG_UINT32,  0 },
-    { "int64_t",  GI_TYPE_TAG_INT64,   0 },
-    { "uint64_t", GI_TYPE_TAG_UINT64,  0 },
-    { "gpointer", GI_TYPE_TAG_VOID,    1 },
-    { "gboolean", GI_TYPE_TAG_BOOLEAN, 0 },
-    { "gchar",    GI_TYPE_TAG_INT8,    0 },
-    { "guchar",   GI_TYPE_TAG_UINT8,   0 },
-    { "gunichar", GI_TYPE_TAG_UINT32,  0 },
-    { "gint",     GI_TYPE_TAG_INT,     0 },
-    { "guint",    GI_TYPE_TAG_UINT,    0 },
-    { "gshort",   GI_TYPE_TAG_INT16,   0 },
-    { "gushort",  GI_TYPE_TAG_UINT16,  0 },
-    { "gint8",    GI_TYPE_TAG_INT8,    0 },
-    { "guint8",   GI_TYPE_TAG_UINT8,   0 },
-    { "gint16",   GI_TYPE_TAG_INT16,   0 },
-    { "guint16",  GI_TYPE_TAG_UINT16,  0 },
-    { "gint32",   GI_TYPE_TAG_INT32,   0 },
-    { "guint32",  GI_TYPE_TAG_UINT32,  0 },
-    { "gint64",   GI_TYPE_TAG_INT64,   0 },
-    { "guint64",  GI_TYPE_TAG_UINT64,  0 },
-    { "glong",    GI_TYPE_TAG_LONG,    0 },
-    { "gulong",   GI_TYPE_TAG_ULONG,   0 },
-    { "gssize",   GI_TYPE_TAG_SSIZE,   0 },
-    { "gsize",    GI_TYPE_TAG_SIZE,    0 },
-    { "gfloat",   GI_TYPE_TAG_FLOAT,   0 },
-    { "gdouble",  GI_TYPE_TAG_DOUBLE,  0 },
-    { "gchar*",   GI_TYPE_TAG_UTF8,    1 }
 };  
 
 static const BasicTypeInfo *
