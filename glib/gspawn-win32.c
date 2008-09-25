@@ -422,8 +422,6 @@ do_spawn_directly (gint                 *exit_status,
 		   gchar               **argv,
 		   char                **envp,
 		   char                **protected_argv,
-		   GSpawnChildSetupFunc  child_setup,
-		   gpointer              user_data,
 		   GPid                 *child_handle,
 		   GError              **error)     
 {
@@ -470,9 +468,6 @@ do_spawn_directly (gint                 *exit_status,
 
       return FALSE;
     }
-
-  if (child_setup)
-    (* child_setup) (user_data);
 
   if (flags & G_SPAWN_SEARCH_PATH)
     if (wenvp != NULL)
@@ -524,7 +519,6 @@ do_spawn_with_pipes (gint                 *exit_status,
 		     char                **envp,
 		     GSpawnFlags           flags,
 		     GSpawnChildSetupFunc  child_setup,
-		     gpointer              user_data,
 		     GPid                 *child_handle,
 		     gint                 *standard_input,
 		     gint                 *standard_output,
@@ -557,7 +551,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   if (child_setup && !warned_about_child_setup)
     {
       warned_about_child_setup = TRUE;
-      g_warning ("passing a child setup function to the g_spawn functions is pointless and dangerous on Win32");
+      g_warning ("passing a child setup function to the g_spawn functions is pointless on Windows and it is ignored");
     }
 
   argc = protect_argv (argv, &protected_argv);
@@ -573,8 +567,7 @@ do_spawn_with_pipes (gint                 *exit_status,
       gboolean retval =
 	do_spawn_directly (exit_status, do_return_handle, flags,
 			   argv, envp, protected_argv,
-			   child_setup, user_data, child_handle,
-			   error);
+			   child_handle, error);
       g_strfreev (protected_argv);
       return retval;
     }
@@ -751,9 +744,6 @@ do_spawn_with_pipes (gint                 *exit_status,
  
       goto cleanup_and_fail;
     }
-
-  if (child_setup)
-    (* child_setup) (user_data);
 
   whelper = g_utf8_to_utf16 (helper_process, -1, NULL, NULL, NULL);
   g_free (helper_process);
@@ -936,7 +926,6 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
 			    envp,
 			    flags,
 			    child_setup,
-			    user_data,
 			    NULL,
 			    NULL,
 			    standard_output ? &outpipe : NULL,
@@ -1157,7 +1146,6 @@ g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
 			      envp,
 			      flags,
 			      child_setup,
-			      user_data,
 			      child_handle,
 			      standard_input,
 			      standard_output,

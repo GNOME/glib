@@ -1,3 +1,13 @@
+2008-09-25  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gspawn-win32.c (do_spawn_with_pipes) (do_spawn_directly):
+	Just ignore the child_setup function, never call it. The is no
+	situation in which it could be useful on Windows. Do print a
+	warning, like before.
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Corresponding change
+	in documentation.
+
 2008-09-24  Sven Herzberg  <sven@imendio.com>
 
 	Be a little more explcit in the docs. Includes Owen's requested

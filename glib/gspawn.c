@@ -542,12 +542,12 @@ g_spawn_sync (const gchar          *working_directory,
  * exec(). That is, @child_setup is called just
  * before calling exec() in the child. Obviously
  * actions taken in this function will only affect the child, not the
- * parent. On Windows, there is no separate fork() and exec()
- * functionality. Child processes are created and run with
- * a single API call, CreateProcess(). @child_setup is
- * called in the parent process just before creating the child
- * process. You should carefully consider what you do in @child_setup
- * if you intend your software to be portable to Windows.
+ * parent.
+ *
+ * On Windows, there is no separate fork() and exec()
+ * functionality. Child processes are created and run with a single
+ * API call, CreateProcess(). There is no sensible thing @child_setup
+ * could be used for on Windows so it is ignored and not called.
  *
  * If non-%NULL, @child_pid will on Unix be filled with the child's
  * process ID. You can use the process ID to send signals to the
