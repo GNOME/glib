@@ -93,11 +93,64 @@ g_cancellable_class_init (GCancellableClass *klass)
    * GCancellable::cancelled:
    * @cancellable: a #GCancellable.
    * 
-   * Emitted when the operation has been cancelled from another thread.
+   * Emitted when the operation has been cancelled.
    * 
-   * Can be used by implementations of cancellable operations. This will
-   * be emitted in the thread that tried to cancel the operation, not the
-   * thread the is running the operation.
+   * Can be used by implementations of cancellable operations. If the
+   * operation is cancelled from another thread, the signal will be
+   * emitted in the thread that cancelled the operation, not the
+   * thread that is running the operation.
+   *
+   * Note that disconnecting from this signal (or any signal) in a
+   * multi-threaded program is prone to race conditions, and it is
+   * possible that a signal handler may be invoked even
+   * <emphasis>after</emphasis> a call to
+   * g_signal_handler_disconnect() for that handler has already
+   * returned. Therefore, code such as the following is wrong in a
+   * multi-threaded program:
+   *
+   * |[
+   *     my_data = my_data_new (...);
+   *     id = g_signal_connect (cancellable, "cancelled",
+   *                            G_CALLBACK (cancelled_handler), my_data);
+   *
+   *     /<!-- -->* cancellable operation here... *<!-- -->/
+   *
+   *     g_signal_handler_disconnect (cancellable, id);
+   *     my_data_free (my_data);  /<!-- -->* WRONG! *<!-- -->/
+   *     /<!-- -->* if g_cancellable_cancel() is called from another
+   *      * thread, cancelled_handler() may be running at this point,
+   *      * so it's not safe to free my_data.
+   *      *<!-- -->/
+   * ]|
+   *
+   * The correct way to free data (or otherwise clean up temporary
+   * state) in this situation is to use g_signal_connect_data() (or
+   * g_signal_connect_closure()) to connect to the signal, and do the
+   * cleanup from a #GClosureNotify, which will not be called until
+   * after the signal handler is both removed and not running:
+   *
+   * |[
+   * static void
+   * cancelled_disconnect_notify (gpointer my_data, GClosure *closure)
+   * {
+   *   my_data_free (my_data);
+   * }
+   *
+   * ...
+   *
+   *     my_data = my_data_new (...);
+   *     id = g_signal_connect_data (cancellable, "cancelled",
+   *                                 G_CALLBACK (cancelled_handler), my_data,
+   *                                 cancelled_disconnect_notify, 0);
+   *
+   *     /<!-- -->* cancellable operation here... *<!-- -->/
+   *
+   *     g_signal_handler_disconnect (cancellable, id);
+   *     /<!-- -->* cancelled_disconnect_notify() may or may not have
+   *      * already been called at this point, so the code has to treat
+   *      * my_data as though it has been freed.
+   *      *<!-- -->/
+   * ]|
    */
   signals[CANCELLED] =
     g_signal_new (I_("cancelled"),
@@ -278,7 +331,7 @@ g_cancellable_is_cancelled (GCancellable *cancellable)
  * @cancellable: a #GCancellable object.
  * @error: #GError to append error state to.
  * 
- * If the @cancelalble is cancelled, sets the error to notify
+ * If the @cancellable is cancelled, sets the error to notify
  * that the operation was cancelled.
  * 
  * Returns: %TRUE if @cancellable was cancelled, %FALSE if it was not.
@@ -334,12 +387,20 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * g_cancellable_cancel:
  * @cancellable: a #GCancellable object.
  * 
- * Will set @cancellable to cancelled, and will emit the CANCELLED
- * signal.
+ * Will set @cancellable to cancelled, and will emit the
+ * #GCancellable::cancelled signal. (However, see the warning about
+ * race conditions in the documentation for that signal if you are
+ * planning to connect to it.)
  *
- * This function is thread-safe. In other words, you can safely call it from
- * another thread than the one running an operation that was passed
- * the @cancellable.
+ * This function is thread-safe. In other words, you can safely call
+ * it from a thread other than the one running the operation that was
+ * passed the @cancellable.
+ *
+ * The convention within gio is that cancelling an asynchronous
+ * operation causes it to complete asynchronously. That is, if you
+ * cancel the operation from the same thread in which it is running,
+ * then the operation's #GAsyncReadyCallback will not be invoked until
+ * the application returns to the main loop.
  **/
 void
 g_cancellable_cancel (GCancellable *cancellable)

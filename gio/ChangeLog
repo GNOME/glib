@@ -1,3 +1,12 @@
+2008-09-25  Dan Winship  <danw@gnome.org>
+
+	Bug 553426 - cancellable clarifications
+
+	* gcancellable.c (g_cancellable_class_init): Add a note to the
+	"cancelled" signal docs warning about thread-safety issues
+	(g_cancellable_cancel): Note that cancelling an asynchronous
+	operation takes effect asynchronously, not immediately.
+
 2008-09-22  Nelson Benítez León  <nbenitez@svn.gnome.org>
 
 	* gioenums.h: Add new GFileCopyFlag, to leave target file with
