@@ -1,5 +1,15 @@
 2008-09-25  Tor Lillqvist  <tml@novell.com>
 
+	Bug 553820 - gpoll.c: undeclared identifier
+
+	* glib/gmain.c
+	* glib/gpoll.c: Make the g_poll() function non-static also on
+	Windows. Prefix an underscore to the g_main_poll_debug variable
+	and make it non-static in gmain.c so that it can be used in
+	gpoll.c. Add back missing variable declaration.
+
+2008-09-25  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gspawn-win32.c (do_spawn_with_pipes) (do_spawn_directly):
 	Just ignore the child_setup function, never call it. The is no
 	situation in which it could be useful on Windows. Do print a

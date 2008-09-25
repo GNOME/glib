@@ -109,7 +109,7 @@ struct _GMainDispatch
 };
 
 #ifdef G_MAIN_POLL_DEBUG
-static gboolean g_main_poll_debug = FALSE;
+gboolean _g_main_poll_debug = FALSE;
 #endif
 
 struct _GMainContext
@@ -421,7 +421,7 @@ g_main_context_init_pipe (GMainContext *context)
   context->wake_up_rec.fd = (gintptr) context->wake_up_semaphore;
   context->wake_up_rec.events = G_IO_IN;
 
-  if (g_main_poll_debug)
+  if (_g_main_poll_debug)
     g_print ("wake-up semaphore: %p\n", context->wake_up_semaphore);
 # endif
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
@@ -460,7 +460,7 @@ g_main_context_new (void)
     if (!beenhere)
       {
 	if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
-	  g_main_poll_debug = TRUE;
+	  _g_main_poll_debug = TRUE;
 	beenhere = TRUE;
       }
   }
@@ -507,7 +507,7 @@ g_main_context_new (void)
   main_context_list = g_slist_append (main_context_list, context);
 
 #ifdef G_MAIN_POLL_DEBUG
-  if (g_main_poll_debug)
+  if (_g_main_poll_debug)
     g_print ("created context=%p\n", context);
 #endif
 
@@ -536,7 +536,7 @@ g_main_context_default (void)
     {
       default_main_context = g_main_context_new ();
 #ifdef G_MAIN_POLL_DEBUG
-      if (g_main_poll_debug)
+      if (_g_main_poll_debug)
 	g_print ("default context=%p\n", default_main_context);
 #endif
     }
@@ -2745,7 +2745,7 @@ g_main_context_poll (GMainContext *context,
   if (n_fds || timeout != 0)
     {
 #ifdef	G_MAIN_POLL_DEBUG
-      if (g_main_poll_debug)
+      if (_g_main_poll_debug)
 	{
 	  g_print ("polling context=%p n=%d timeout=%d\n",
 		   context, n_fds, timeout);
@@ -2769,7 +2769,7 @@ g_main_context_poll (GMainContext *context,
 	}
       
 #ifdef	G_MAIN_POLL_DEBUG
-      if (g_main_poll_debug)
+      if (_g_main_poll_debug)
 	{
 	  LOCK_CONTEXT (context);
 

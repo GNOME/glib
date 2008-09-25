@@ -80,7 +80,7 @@
 #include "galias.h"
 
 #ifdef G_MAIN_POLL_DEBUG
-extern gboolean g_main_poll_debug;
+extern gboolean _g_main_poll_debug;
 #endif
 
 #ifdef HAVE_POLL
@@ -148,7 +148,7 @@ poll_rest (gboolean  poll_msgs,
       /* Wait for either messages or handles
        * -> Use MsgWaitForMultipleObjectsEx
        */
-      if (g_main_poll_debug)
+      if (_g_main_poll_debug)
 	g_print ("  MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 
       ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
@@ -177,7 +177,7 @@ poll_rest (gboolean  poll_msgs,
       /* Wait for just handles
        * -> Use WaitForMultipleObjectsEx
        */
-      if (g_main_poll_debug)
+      if (_g_main_poll_debug)
 	g_print ("  WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
 
       ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout, TRUE);
@@ -189,7 +189,7 @@ poll_rest (gboolean  poll_msgs,
 	}
     }
 
-  if (g_main_poll_debug)
+  if (_g_main_poll_debug)
     g_print ("  wait returns %ld%s\n",
 	     ready,
 	     (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
@@ -226,7 +226,7 @@ poll_rest (gboolean  poll_msgs,
 	  if ((HANDLE) f->fd == handles[ready - WAIT_OBJECT_0])
 	    {
 	      f->revents = f->events;
-	      if (g_main_poll_debug)
+	      if (_g_main_poll_debug)
 		g_print ("  got event %p\n", (HANDLE) f->fd);
 	    }
 	}
@@ -237,6 +237,7 @@ poll_rest (gboolean  poll_msgs,
       if (timeout == 0 && nhandles > 1)
 	{
 	  /* Remove the handle that fired */
+	  int i;
 	  if (ready < nhandles - 1)
 	    for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
 	      handles[i-1] = handles[i];
@@ -250,8 +251,7 @@ poll_rest (gboolean  poll_msgs,
   return 0;
 }
 
-
-static gint
+gint
 g_poll (GPollFD *fds,
 	guint    nfds,
 	gint     timeout)
@@ -262,13 +262,13 @@ g_poll (GPollFD *fds,
   gint nhandles = 0;
   int retval;
 
-  if (g_main_poll_debug)
+  if (_g_main_poll_debug)
     g_print ("g_poll: waiting for");
 
   for (f = fds; f < &fds[nfds]; ++f)
     if (f->fd == G_WIN32_MSG_HANDLE && (f->events & G_IO_IN))
       {
-	if (g_main_poll_debug && !poll_msgs)
+	if (_g_main_poll_debug && !poll_msgs)
 	  g_print (" MSG");
 	poll_msgs = TRUE;
       }
@@ -293,14 +293,14 @@ g_poll (GPollFD *fds,
 	      }
 	    else
 	      {
-		if (g_main_poll_debug)
+		if (_g_main_poll_debug)
 		  g_print (" %p", (HANDLE) f->fd);
 		handles[nhandles++] = (HANDLE) f->fd;
 	      }
 	  }
       }
 
-  if (g_main_poll_debug)
+  if (_g_main_poll_debug)
     g_print ("\n");
 
   for (f = fds; f < &fds[nfds]; ++f)
