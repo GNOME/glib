@@ -22,7 +22,8 @@ TEST_PROGS +=	 		\
 	g-file 			\
 	g-file-info 		\
 	data-input-stream 	\
-	data-output-stream
+	data-output-stream 	\
+	desktop-app-info
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams
@@ -49,7 +50,9 @@ data_output_stream_LDADD	= $(progs_ldadd)
 live_g_file_SOURCES	  = live-g-file.c
 live_g_file_LDADD	  = $(progs_ldadd)
 
+desktop_app_info_SOURCES  = desktop-app-info.c
+desktop_app_info_LDADD	  = $(progs_ldadd)
+
 unix_streams_SOURCES	  = unix-streams.c
 unix_streams_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
-

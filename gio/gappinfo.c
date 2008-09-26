@@ -574,6 +574,62 @@ g_app_info_launch_default_for_uri (const char         *uri,
   return res;
 }
 
+/**
+ * g_app_info_can_delete:
+ * @appinfo: a #GAppInfo
+ *
+ * Obtains the information whether the GAppInfo can be deleted.
+ * See g_app_info_delete().
+ *
+ * Returns: %TRUE if @appinfo can be deleted
+ *
+ * Since: 2.20
+ */
+gboolean
+g_app_info_can_delete (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+  
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->can_delete)
+    return (* iface->can_delete) (appinfo);
+ 
+  return FALSE; 
+}
+
+
+/**
+ * g_app_info_delete:
+ * @appinfo: a #GAppInfo
+ *
+ * Tries to delete an #GAppInfo. 
+ *
+ * On some platforms, there may be a difference between user-defined
+ * #GAppInfo<!-- -->s which can be deleted, and system-wide ones which
+ * cannot. See g_app_info_can_delete().
+ * 
+ * Returns: %TRUE if @appinfo has been deleted
+ *
+ * Since: 2.20
+ */
+gboolean
+g_app_info_delete (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+  
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->do_delete)
+    return (* iface->do_delete) (appinfo);
+ 
+  return FALSE; 
+}
+
 
 G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 
@@ -689,6 +745,7 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
   if (class->launch_failed != NULL)
     class->launch_failed (context, startup_notify_id);
 }
+
 
 #define __G_APP_INFO_C__
 #include "gioaliasdef.c"

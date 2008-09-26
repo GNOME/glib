@@ -75,6 +75,8 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @add_supports_type: Adds to the #GAppInfo information about supported file types.
  * @can_remove_supports_type: Checks for support for removing supported file types from a #GAppInfo.
  * @remove_supports_type: Removes a supported application type from a #GAppInfo.
+ * @can_delete: Checks if a #GAppInfo can be deleted. Since 2.20
+ * @do_delete: Deletes a #GAppInfo. Since 2.20
  *
  * Application Information interface, for operating system portability.
  */
@@ -120,6 +122,8 @@ struct _GAppInfoIface
   gboolean     (* remove_supports_type)         (GAppInfo           *appinfo,
                                                  const char         *content_type,
                                                  GError            **error);
+  gboolean     (* can_delete)                   (GAppInfo           *appinfo);
+  gboolean     (* do_delete)                    (GAppInfo           *appinfo);
 };
 
 GType       g_app_info_get_type                     (void) G_GNUC_CONST;
@@ -160,9 +164,12 @@ gboolean    g_app_info_can_remove_supports_type     (GAppInfo             *appin
 gboolean    g_app_info_remove_supports_type         (GAppInfo             *appinfo,
 						     const char           *content_type,
 						     GError              **error);
+gboolean    g_app_info_can_delete                   (GAppInfo   *appinfo);
+gboolean    g_app_info_delete                       (GAppInfo   *appinfo);
 
 GList *   g_app_info_get_all                     (void);
 GList *   g_app_info_get_all_for_type            (const char  *content_type);
+void      g_app_info_reset_type_associations     (const char  *content_type);
 GAppInfo *g_app_info_get_default_for_type        (const char  *content_type,
 						  gboolean     must_support_uris);
 GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);

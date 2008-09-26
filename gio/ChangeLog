@@ -1,3 +1,18 @@
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 545350 – GAppInfo deletion
+	Bug 545351 – Reset associations for content type
+
+	* gio.symbols:
+	* gappinfo.[hc]: New functions g_app_info_can_delete,
+	g_app_info_delete and g_app_info_reset_type_associations.
+
+	* gdesktopappinfo.c:
+	* gwin32appinfo.c: Implementations of these.
+
+	* tests/Makefile.am:
+	* tests/desktop-app-info.c: Tests for GAppInfo functionality.
+
 2008-09-26  Dan Winship  <danw@gnome.org>
 
 	Bug 505361 – gunixinputstream.c assumes poll() available

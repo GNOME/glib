@@ -661,3 +661,9 @@ g_app_info_get_all (void)
 
   return g_list_reverse (infos);
 }
+
+void
+g_app_info_reset_type_associations (const char *content_type)
+{
+  /* nothing to do */
+}

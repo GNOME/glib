@@ -1171,7 +1171,8 @@ update_mimeapps_list (const char  *desktop_id,
   char **list;
   gsize length, data_size;
   char *data;
-  int i, j;
+  int i, j, k;
+  char **content_types;
 
   /* Don't add both at start and end */
   g_assert (!(add_at_start && add_at_end));
@@ -1191,75 +1192,109 @@ update_mimeapps_list (const char  *desktop_id,
       key_file = g_key_file_new ();
     }
 
-  /* Add to the right place in the list */
-  
-  length = 0;
-  old_list = g_key_file_get_string_list (key_file, ADDED_ASSOCIATIONS_GROUP,
-					 content_type, &length, NULL);
-
-  list = g_new (char *, 1 + length + 1);
-
-  i = 0;
-  if (add_at_start)
-    list[i++] = g_strdup (desktop_id);
-  if (old_list)
+  if (content_type)
     {
-      for (j = 0; old_list[j] != NULL; j++)
-	{
-	  if (strcmp (old_list[j], desktop_id) != 0)
-	    list[i++] = g_strdup (old_list[j]);
-	}
+      content_types = g_new (char *, 2);
+      content_types[0] = g_strdup (content_type);
+      content_types[1] = NULL;
     }
-  if (add_at_end)
-    list[i++] = g_strdup (desktop_id);
-  list[i] = NULL;
-  
-  g_strfreev (old_list);
-
-  g_key_file_set_string_list (key_file,
-			      ADDED_ASSOCIATIONS_GROUP,
-			      content_type,
-			      (const char * const *)list, i);
-
-  g_strfreev (list);
-
-  /* Remove from removed associations group (unless remove) */
-  
-  length = 0;
-  old_list = g_key_file_get_string_list (key_file, REMOVED_ASSOCIATIONS_GROUP,
-					 content_type, &length, NULL);
-
-  list = g_new (char *, 1 + length + 1);
-
-  i = 0;
-  if (remove)
-    list[i++] = g_strdup (desktop_id);
-  if (old_list)
-    {
-      for (j = 0; old_list[j] != NULL; j++)
-	{
-	  if (strcmp (old_list[j], desktop_id) != 0)
-	    list[i++] = g_strdup (old_list[j]);
-	}
-    }
-  list[i] = NULL;
-  
-  g_strfreev (old_list);
-
-  if (list[0] == NULL)
-    g_key_file_remove_key (key_file,
-			   REMOVED_ASSOCIATIONS_GROUP,
-			   content_type,
-			   NULL);
   else
-    g_key_file_set_string_list (key_file,
-				REMOVED_ASSOCIATIONS_GROUP,
-				content_type,
-				(const char * const *)list, i);
+    {
+      content_types = g_key_file_get_keys (key_file, ADDED_ASSOCIATIONS_GROUP, NULL, NULL);
+    }
 
-  g_strfreev (list);
-
+  for (k = 0; content_types && content_types[k]; k++)
+    { 
+      /* Add to the right place in the list */
   
+      length = 0;
+      old_list = g_key_file_get_string_list (key_file, ADDED_ASSOCIATIONS_GROUP,
+					     content_types[k], &length, NULL);
+
+      list = g_new (char *, 1 + length + 1);
+
+      i = 0;
+      if (add_at_start)
+        list[i++] = g_strdup (desktop_id);
+      if (old_list)
+        {
+          for (j = 0; old_list[j] != NULL; j++)
+	    {
+	      if (g_strcmp0 (old_list[j], desktop_id) != 0)
+	        list[i++] = g_strdup (old_list[j]);
+	    }
+        }
+      if (add_at_end)
+        list[i++] = g_strdup (desktop_id);
+      list[i] = NULL;
+  
+      g_strfreev (old_list);
+
+      if (list[0] == NULL || desktop_id == NULL)
+        g_key_file_remove_key (key_file,
+			       ADDED_ASSOCIATIONS_GROUP,
+			       content_types[k],
+			       NULL);
+      else
+        g_key_file_set_string_list (key_file,
+			            ADDED_ASSOCIATIONS_GROUP,
+			            content_types[k],
+			            (const char * const *)list, i);
+   
+      g_strfreev (list);
+    }
+  
+  if (content_type)
+    {
+      /* reuse the list from above */
+    }
+  else
+    {
+      g_strfreev (content_types);
+      content_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP, NULL, NULL);
+    }
+
+  for (k = 0; content_types && content_types[k]; k++) 
+    {
+      /* Remove from removed associations group (unless remove) */
+  
+      length = 0;
+      old_list = g_key_file_get_string_list (key_file, REMOVED_ASSOCIATIONS_GROUP,
+					     content_types[k], &length, NULL);
+
+      list = g_new (char *, 1 + length + 1);
+
+      i = 0;
+      if (remove)
+        list[i++] = g_strdup (desktop_id);
+      if (old_list)
+        {
+          for (j = 0; old_list[j] != NULL; j++)
+	    {
+	      if (g_strcmp0 (old_list[j], desktop_id) != 0)
+	        list[i++] = g_strdup (old_list[j]);
+	    }
+        }
+      list[i] = NULL;
+  
+      g_strfreev (old_list);
+
+      if (list[0] == NULL || desktop_id == NULL)
+        g_key_file_remove_key (key_file,
+			       REMOVED_ASSOCIATIONS_GROUP,
+			       content_types[k],
+			       NULL);
+      else
+        g_key_file_set_string_list (key_file,
+				    REMOVED_ASSOCIATIONS_GROUP,
+				    content_types[k],
+				    (const char * const *)list, i);
+
+      g_strfreev (list);
+    }
+  
+  g_strfreev (content_types);  
+
   data = g_key_file_to_data (key_file, &data_size, error);
   g_key_file_free (key_file);
   
@@ -1513,6 +1548,40 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo *info,
   return TRUE;
 }
 
+static gboolean
+g_desktop_app_info_can_delete (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+
+  if (info->filename)
+    return g_access (info->filename, W_OK) == 0;
+
+  return FALSE;
+}
+
+static gboolean
+g_desktop_app_info_delete (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+  
+  if (info->filename)
+    { 
+      if (g_remove (info->filename) == 0)
+        {
+          update_mimeapps_list (info->desktop_id, NULL, FALSE, FALSE, FALSE, NULL);
+
+          g_free (info->filename);
+          info->filename = NULL;
+          g_free (info->desktop_id);
+          info->desktop_id = NULL;
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 /**
  * g_app_info_create_from_commandline:
  * @commandline: the commandline to use
@@ -1586,6 +1655,8 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->add_supports_type = g_desktop_app_info_add_supports_type;
   iface->can_remove_supports_type = g_desktop_app_info_can_remove_supports_type;
   iface->remove_supports_type = g_desktop_app_info_remove_supports_type;
+  iface->can_delete = g_desktop_app_info_can_delete;
+  iface->do_delete = g_desktop_app_info_delete;
 }
 
 static gboolean
@@ -1643,6 +1714,22 @@ g_app_info_get_all_for_type (const char *content_type)
   return g_list_reverse (infos);
 }
 
+/**
+ * g_app_info_reset_type_associations:
+ * content_type: a content type 
+ *
+ * Removes all changes to the type associations done by
+ * g_app_info_set_as_default_for_type(), 
+ * g_app_info_set_as_default_for_extension(), 
+ * g_app_info_add_supports_type() of g_app_info_remove_supports_type().
+ *
+ * Since: 2.20
+ */
+void
+g_app_info_reset_type_associations (const char *content_type)
+{
+  update_mimeapps_list (NULL, content_type, FALSE, FALSE, FALSE, NULL);
+}
 
 /**
  * g_app_info_get_default_for_type:

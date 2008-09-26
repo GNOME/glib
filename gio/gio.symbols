@@ -48,6 +48,8 @@ g_app_info_add_supports_type
 g_app_info_can_remove_supports_type
 g_app_info_remove_supports_type
 g_app_info_launch_default_for_uri
+g_app_info_can_delete
+g_app_info_delete
 g_app_launch_context_new
 g_app_launch_context_get_display
 g_app_launch_context_get_startup_notify_id
@@ -60,6 +62,7 @@ g_app_info_get_all
 g_app_info_get_all_for_type
 g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
+g_app_info_reset_type_associations
 #endif
 #endif
 
