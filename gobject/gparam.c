@@ -201,7 +201,7 @@ g_param_spec_ref (GParamSpec *pspec)
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
   g_return_val_if_fail (pspec->ref_count > 0, NULL);
 
-  g_atomic_int_inc (&pspec->ref_count);
+  g_atomic_int_inc ((int *)&pspec->ref_count);
 
   return pspec;
 }
@@ -220,7 +220,7 @@ g_param_spec_unref (GParamSpec *pspec)
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (pspec->ref_count > 0);
 
-  is_zero = g_atomic_int_dec_and_test (&pspec->ref_count);
+  is_zero = g_atomic_int_dec_and_test ((int *)&pspec->ref_count);
 
   if (G_UNLIKELY (is_zero))
     {

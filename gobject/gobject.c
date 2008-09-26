@@ -803,7 +803,7 @@ g_object_freeze_notify (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
 
-  if (g_atomic_int_get (&object->ref_count) == 0)
+  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
     return;
 
   g_object_ref (object);
@@ -826,7 +826,7 @@ g_object_notify (GObject     *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name != NULL);
-  if (g_atomic_int_get (&object->ref_count) == 0)
+  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
@@ -871,7 +871,7 @@ g_object_thaw_notify (GObject *object)
   GObjectNotifyQueue *nqueue;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  if (g_atomic_int_get (&object->ref_count) == 0)
+  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
@@ -2341,7 +2341,7 @@ g_object_ref (gpointer _object)
 #endif  /* G_ENABLE_DEBUG */
 
 
-  old_val = g_atomic_int_exchange_and_add (&object->ref_count, 1);
+  old_val = g_atomic_int_exchange_and_add ((int *)&object->ref_count, 1);
 
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
@@ -2373,10 +2373,10 @@ g_object_unref (gpointer _object)
 
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
  retry_atomic_decrement1:
-  old_ref = g_atomic_int_get (&object->ref_count);
+  old_ref = g_atomic_int_get ((int *)&object->ref_count);
   if (old_ref > 1)
     {
-      if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_ref, old_ref - 1))
+      if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
 	goto retry_atomic_decrement1;
 
       /* if we went from 2->1 we need to notify toggle refs if any */
@@ -2390,10 +2390,10 @@ g_object_unref (gpointer _object)
 
       /* may have been re-referenced meanwhile */
     retry_atomic_decrement2:
-      old_ref = g_atomic_int_get (&object->ref_count);
+      old_ref = g_atomic_int_get ((int *)&object->ref_count);
       if (old_ref > 1)
         {
-          if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_ref, old_ref - 1))
+          if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
 	    goto retry_atomic_decrement2;
 
           /* if we went from 2->1 we need to notify toggle refs if any */
@@ -2409,7 +2409,7 @@ g_object_unref (gpointer _object)
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
       
       /* decrement the last reference */
-      is_zero = g_atomic_int_dec_and_test (&object->ref_count);
+      is_zero = g_atomic_int_dec_and_test ((int *)&object->ref_count);
       
       /* may have been re-referenced meanwhile */
       if (G_LIKELY (is_zero)) 

@@ -578,7 +578,7 @@ handler_ref (Handler *handler)
 {
   g_return_if_fail (handler->ref_count > 0);
   
-  g_atomic_int_inc (&handler->ref_count);
+  g_atomic_int_inc ((int *)&handler->ref_count);
 }
 
 static inline void
@@ -590,7 +590,7 @@ handler_unref_R (guint    signal_id,
 
   g_return_if_fail (handler->ref_count > 0);
   
-  is_zero = g_atomic_int_dec_and_test (&handler->ref_count);
+  is_zero = g_atomic_int_dec_and_test ((int *)&handler->ref_count);
 
   if (G_UNLIKELY (is_zero))
     {
