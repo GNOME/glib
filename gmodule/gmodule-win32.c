@@ -42,11 +42,25 @@
 #endif
 
 static void
-set_error (void)
+set_error (const gchar *format,
+	   ...)
 {
-  gchar *error = g_win32_error_message (GetLastError ());
+  gchar *error;
+  gchar *detail;
+  gchar *message;
+  va_list args;
 
-  g_module_set_error (error);
+  error = g_win32_error_message (GetLastError ());
+
+  va_start (args, format);
+  detail = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  message = g_strconcat (detail, error, NULL);
+
+  g_module_set_error (message);
+  g_free (message);
+  g_free (detail);
   g_free (error);
 }
 
@@ -70,7 +84,7 @@ _g_module_open (const gchar *file_name,
   g_free (wfilename);
       
   if (!handle)
-    set_error ();
+    set_error ("`%s': ", file_name);
 
   return handle;
 }
@@ -90,7 +104,7 @@ _g_module_close (gpointer handle,
 {
   if (handle != null_module_handle)
     if (!FreeLibrary (handle))
-      set_error ();
+      set_error ("");
 }
 
 static gpointer
@@ -219,7 +233,7 @@ _g_module_symbol (gpointer     handle,
     p = GetProcAddress (handle, symbol_name);
 
   if (!p)
-    set_error ();
+    set_error ("");
 
   return p;
 }
