@@ -2151,7 +2151,7 @@ g_file_copy_attributes (GFile           *source,
 
   as_move = flags & G_FILE_COPY_ALL_METADATA;
   source_nofollow_symlinks = flags & G_FILE_COPY_NOFOLLOW_SYMLINKS;
-  skip_perms = flags & G_FILE_COPY_TARGET_DEFAULT_PERMS != 0;
+  skip_perms = (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) != 0;
 
   /* Ignore errors here, if the target supports no attributes there is nothing to copy */
   attributes = g_file_query_settable_attributes (destination, cancellable, NULL);

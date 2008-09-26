@@ -1,3 +1,11 @@
+2008-09-26  Dan Winship  <danw@gnome.org>
+
+	* gdesktopappinfo.c (get_all_desktop_entries_for_mime_type): add a
+	cast to stop a gcc warning
+
+	* gfile.c (g_file_copy_attributes): add parens to stop a gcc
+	warning
+
 2008-09-25  Dan Winship  <danw@gnome.org>
 
 	Bug 553426 - cancellable clarifications

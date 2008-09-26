@@ -2475,7 +2475,7 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
       g_strfreev (anc);
     }
   g_ptr_array_add (array, NULL);
-  mime_types = g_ptr_array_free (array, FALSE);
+  mime_types = (char **)g_ptr_array_free (array, FALSE);
 
   G_LOCK (mime_info_cache);
   
