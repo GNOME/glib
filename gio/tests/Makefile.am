@@ -25,7 +25,7 @@ TEST_PROGS +=	 		\
 	data-output-stream
 
 if OS_UNIX
-TEST_PROGS += live-g-file
+TEST_PROGS += live-g-file unix-streams
 endif
 
 memory_input_stream_SOURCES	  = memory-input-stream.c
@@ -48,3 +48,8 @@ data_output_stream_LDADD	= $(progs_ldadd)
 
 live_g_file_SOURCES	  = live-g-file.c
 live_g_file_LDADD	  = $(progs_ldadd)
+
+unix_streams_SOURCES	  = unix-streams.c
+unix_streams_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+

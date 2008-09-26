@@ -59,6 +59,10 @@ struct _GCancellable
   guint cancelled : 1;
   guint allocated_pipe : 1;
   int cancel_pipe[2];
+
+#ifdef G_OS_WIN32
+  GIOChannel *read_channel;
+#endif
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
@@ -78,6 +82,11 @@ g_cancellable_finalize (GObject *object)
   
   if (cancellable->cancel_pipe[1] != -1)
     close (cancellable->cancel_pipe[1]);
+
+#ifdef G_OS_WIN32
+  if (cancellable->read_channel)
+    g_io_channel_unref (cancellable->read_channel);
+#endif
 
   G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
 }
@@ -304,6 +313,15 @@ g_cancellable_reset (GCancellable *cancellable)
   if (cancellable->cancelled)
     {
       char ch;
+#ifdef G_OS_WIN32
+      if (cancellable->read_channel)
+	{
+	  gsize bytes_read;
+	  g_io_channel_read_chars (cancellable->read_channel, &ch, 1,
+				   &bytes_read, NULL);
+	}
+      else
+#endif
       if (cancellable->cancel_pipe[0] != -1)
 	read (cancellable->cancel_pipe[0], &ch, 1);
       cancellable->cancelled = FALSE;
@@ -359,7 +377,9 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
  * Gets the file descriptor for a cancellable job. This can be used to
  * implement cancellable operations on Unix systems. The returned fd will
  * turn readable when @cancellable is cancelled.
- * 
+ *
+ * See also g_cancellable_make_pollfd().
+ *
  * Returns: A valid file descriptor. %-1 if the file descriptor 
  * is not supported, or on errors. 
  **/
@@ -381,6 +401,41 @@ g_cancellable_get_fd (GCancellable *cancellable)
   G_UNLOCK(cancellable);
   
   return fd;
+}
+
+/**
+ * g_cancellable_make_pollfd:
+ * @cancellable: a #GCancellable.
+ * @pollfd: a pointer to a #GPollFD
+ * 
+ * Creates a #GPollFD corresponding to @cancellable; this can be passed
+ * to g_poll() and used to poll for cancellation.
+ **/
+void
+g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
+{
+  g_return_if_fail (G_IS_CANCELLABLE (cancellable));
+  g_return_if_fail (pollfd != NULL);
+
+#ifdef G_OS_WIN32
+  if (!cancellable->read_channel)
+    {
+      int fd = g_cancellable_get_fd (cancellable);
+      cancellable->read_channel = g_io_channel_win32_new_fd (fd);
+      g_io_channel_set_buffered (cancellable->read_channel, FALSE);
+      g_io_channel_set_flags (cancellable->read_channel,
+			      G_IO_FLAG_NONBLOCK, NULL);
+      g_io_channel_set_encoding (cancellable->read_channel, NULL, NULL);
+    }
+  g_io_channel_win32_make_pollfd (cancellable->read_channel, G_IO_IN, pollfd);
+  /* (We need to keep cancellable->read_channel around, because it's
+   * keeping track of state related to the pollfd.)
+   */
+#else /* !G_OS_WIN32 */
+  pollfd->fd = g_cancellable_get_fd (cancellable);
+  pollfd->events = G_IO_IN;
+#endif /* G_OS_WIN32 */
+  pollfd->revents = 0;
 }
 
 /**

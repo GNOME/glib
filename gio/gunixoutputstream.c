@@ -28,7 +28,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <poll.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -161,23 +160,18 @@ g_unix_output_stream_write (GOutputStream  *stream,
 {
   GUnixOutputStream *unix_stream;
   gssize res;
-  struct pollfd poll_fds[2];
+  GPollFD poll_fds[2];
   int poll_ret;
-  int cancel_fd;
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
-  cancel_fd = g_cancellable_get_fd (cancellable);
-  if (cancel_fd != -1)
+  if (cancellable)
     {
+      poll_fds[0].fd = unix_stream->priv->fd;
+      poll_fds[0].events = G_IO_OUT;
+      g_cancellable_make_pollfd (cancellable, &poll_fds[1]);
       do
-	{
-	  poll_fds[0].events = POLLOUT;
-	  poll_fds[0].fd = unix_stream->priv->fd;
-	  poll_fds[1].events = POLLIN;
-	  poll_fds[1].fd = cancel_fd;
-	  poll_ret = poll (poll_fds, 2, -1);
-	}
+	poll_ret = g_poll (poll_fds, 2, -1);
       while (poll_ret == -1 && errno == EINTR);
       
       if (poll_ret == -1)
@@ -335,7 +329,7 @@ g_unix_output_stream_write_async (GOutputStream       *stream,
   data->stream = unix_stream;
 
   source = _g_fd_source_new (unix_stream->priv->fd,
-			     POLLOUT,
+			     G_IO_OUT,
 			     cancellable);
   
   g_source_set_callback (source, (GSourceFunc)write_async_cb, data, g_free);

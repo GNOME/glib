@@ -28,7 +28,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <poll.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -173,23 +172,18 @@ g_unix_input_stream_read (GInputStream  *stream,
 {
   GUnixInputStream *unix_stream;
   gssize res;
-  struct pollfd poll_fds[2];
+  GPollFD poll_fds[2];
   int poll_ret;
-  int cancel_fd;
 
   unix_stream = G_UNIX_INPUT_STREAM (stream);
 
-  cancel_fd = g_cancellable_get_fd (cancellable);
-  if (cancel_fd != -1)
+  if (cancellable)
     {
+      poll_fds[0].fd = unix_stream->priv->fd;
+      poll_fds[0].events = G_IO_IN;
+      g_cancellable_make_pollfd (cancellable, &poll_fds[1]);
       do
-	{
-	  poll_fds[0].events = POLLIN;
-	  poll_fds[0].fd = unix_stream->priv->fd;
-	  poll_fds[1].events = POLLIN;
-	  poll_fds[1].fd = cancel_fd;
-	  poll_ret = poll (poll_fds, 2, -1);
-	}
+	poll_ret = g_poll (poll_fds, 2, -1);
       while (poll_ret == -1 && errno == EINTR);
       
       if (poll_ret == -1)
@@ -346,7 +340,7 @@ g_unix_input_stream_read_async (GInputStream        *stream,
   data->stream = unix_stream;
 
   source = _g_fd_source_new (unix_stream->priv->fd,
-			     POLLIN,
+			     G_IO_IN,
 			     cancellable);
   
   g_source_set_callback (source, (GSourceFunc)read_async_cb, data, g_free);

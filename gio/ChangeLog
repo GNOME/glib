@@ -1,5 +1,22 @@
 2008-09-26  Dan Winship  <danw@gnome.org>
 
+	Bug 505361 – gunixinputstream.c assumes poll() available
+	Bug 509446 – portable blocking gio cancellation
+
+	* gcancellable.c (g_cancellable_make_pollfd): New method to make a
+	GPollFD for a cancellable (which is slightly more complicated on
+	Windows than Unix).
+
+	* gunixinputstream.c (g_unix_input_stream_read):
+	* gunixoutputstream.c (g_unix_output_stream_write): Use
+	g_cancellable_make_pollfd() and g_poll() rather than using poll()
+	directly.
+
+	* tests/unix-streams.c: test of GUnixInputStream,
+	GUnixOutputStream, and GCancellable.
+
+2008-09-26  Dan Winship  <danw@gnome.org>
+
 	* gdesktopappinfo.c (get_all_desktop_entries_for_mime_type): add a
 	cast to stop a gcc warning
 
