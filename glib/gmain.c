@@ -3346,6 +3346,10 @@ g_timeout_source_new_seconds (guint interval)
  * After each call to the timeout function, the time of the next
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
+ *
+ * This internally creates a main loop source using g_timeout_source_new()
+ * and attaches it to the main loop context using g_source_attach(). You can
+ * do these steps manually if you need greater control.
  * 
  * Return value: the ID (greater than 0) of the event source.
  **/
@@ -3397,6 +3401,10 @@ g_timeout_add_full (gint           priority,
  * g_timeout_add_seconds() function; this function allows for more
  * optimizations and more efficient system power usage.
  *
+ * This internally creates a main loop source using g_timeout_source_new()
+ * and attaches it to the main loop context using g_source_attach(). You can
+ * do these steps manually if you need greater control.
+ * 
  * Return value: the ID (greater than 0) of the event source.
  **/
 guint
@@ -3443,6 +3451,11 @@ g_timeout_add (guint32        interval,
  * and you don't require the first timer exactly one second from now, the
  * use of g_timeout_add_seconds() is preferred over g_timeout_add().
  *
+ * This internally creates a main loop source using 
+ * g_timeout_source_new_seconds() and attaches it to the main loop context 
+ * using g_source_attach(). You can do these steps manually if you need 
+ * greater control.
+ * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
@@ -3482,9 +3495,11 @@ g_timeout_add_seconds_full (gint           priority,
  * it returns %FALSE, at which point the timeout is automatically destroyed
  * and the function will not be called again.
  *
- * See g_timeout_add_seconds_full() for the differences between
- * g_timeout_add() and g_timeout_add_seconds().
- *
+ * This internally creates a main loop source using 
+ * g_timeout_source_new_seconds() and attaches it to the main loop context 
+ * using g_source_attach(). You can do these steps manually if you need 
+ * greater control. Also see g_timout_add_seconds_full().
+ * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
@@ -3805,6 +3820,11 @@ g_child_watch_source_new (GPid pid)
  * 
  * GLib supports only a single callback per process id.
  *
+ * This internally creates a main loop source using 
+ * g_child_watch_source_new() and attaches it to the main loop context 
+ * using g_source_attach(). You can do these steps manually if you 
+ * need greater control.
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.4
@@ -3853,6 +3873,11 @@ g_child_watch_add_full (gint            priority,
  * g_spawn_close_pid() in the callback function for the source.
  *
  * GLib supports only a single callback per process id.
+ *
+ * This internally creates a main loop source using 
+ * g_child_watch_source_new() and attaches it to the main loop context 
+ * using g_source_attach(). You can do these steps manually if you 
+ * need greater control.
  *
  * Return value: the ID (greater than 0) of the event source.
  *
@@ -3935,6 +3960,10 @@ g_idle_source_new (void)
  * events pending.  If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  * 
+ * This internally creates a main loop source using g_idle_source_new()
+ * and attaches it to the main loop context using g_source_attach(). 
+ * You can do these steps manually if you need greater control.
+ * 
  * Return value: the ID (greater than 0) of the event source.
  **/
 guint 
@@ -3970,6 +3999,10 @@ g_idle_add_full (gint           priority,
  * default idle priority, #G_PRIORITY_DEFAULT_IDLE.  If the function
  * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
+ * 
+ * This internally creates a main loop source using g_idle_source_new()
+ * and attaches it to the main loop context using g_source_attach(). 
+ * You can do these steps manually if you need greater control.
  * 
  * Return value: the ID (greater than 0) of the event source.
  **/

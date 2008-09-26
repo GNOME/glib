@@ -1,5 +1,7 @@
 @008-09-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmain.c: Add some more docs.
+
 	* glib/giochannel.c: Move more docs inline, and improve them
 	on the way.
 
