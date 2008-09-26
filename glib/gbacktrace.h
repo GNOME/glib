@@ -32,6 +32,7 @@
 #define __G_BACKTRACE_H__
 
 #include <glib/gtypes.h>
+#include <signal.h>
 
 G_BEGIN_DECLS
 

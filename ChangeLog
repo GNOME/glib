@@ -1,5 +1,12 @@
 2008-09-26  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 553857 – gbacktrace.h requires signal.h
+
+	* glib/gbacktrace.h: Include signal.h for raise(). 
+	Pointed out by Sebastien Bacher
+
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 553724 – python interpretter path not patched in correctly
 
 	* glib/Makefile.am: Fix the sed magic to replace python.
