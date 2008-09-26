@@ -51,7 +51,7 @@ struct _GRealThreadPool
 /* The following is just an address to mark the wakeup order for a
  * thread, it could be any address (as long, as it isn't a valid
  * GThreadPool address) */
-static gconstpointer const wakeup_thread_marker = (gconstpointer) &g_thread_pool_new;
+static const gpointer wakeup_thread_marker = (gpointer) &g_thread_pool_new;
 static gint wakeup_thread_serial = 0;
 
 /* Here all unused threads are waiting  */

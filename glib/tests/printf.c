@@ -69,6 +69,7 @@ test_d (void)
 {
   gchar buf[128];
   gint res;
+  const gchar *fmt;
 
   /* %d basic formatting */
 
@@ -172,21 +173,28 @@ test_d (void)
   g_assert_cmpint (res, ==, 1);
   g_assert_cmpstr (buf, ==, " ");
 
-  res = g_snprintf (buf, 128, "% +d", 5);
-  g_assert_cmpint (res, ==, 2);
-  g_assert_cmpstr (buf, ==, "+5");
-
   res = g_snprintf (buf, 128, "%03d", 5);
   g_assert_cmpint (res, ==, 3);
   g_assert_cmpstr (buf, ==, "005");
 
-  res = g_snprintf (buf, 128, "%-03d", -5);
-  g_assert_cmpint (res, ==, 3);
-  g_assert_cmpstr (buf, ==, "-5 ");
-
   res = g_snprintf (buf, 128, "%03d", -5);
   g_assert_cmpint (res, ==, 3);
   g_assert_cmpstr (buf, ==, "-05");
+
+  /* gcc emits warnings for the following formats, since the C spec
+   * says some of the flags must be ignored. (The " " in "% +d" and
+   * the "0" in "%-03d".) But we need to test that our printf gets
+   * those rules right. So we fool gcc into not warning.
+   */
+  fmt = "% +d";
+  res = g_snprintf (buf, 128, fmt, 5);
+  g_assert_cmpint (res, ==, 2);
+  g_assert_cmpstr (buf, ==, "+5");
+
+  fmt = "%-03d";
+  res = g_snprintf (buf, 128, fmt, -5);
+  g_assert_cmpint (res, ==, 3);
+  g_assert_cmpstr (buf, ==, "-5 ");
 }
 
 static void
