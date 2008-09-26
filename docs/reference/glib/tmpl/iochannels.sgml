@@ -184,13 +184,10 @@ Windows messages for the window in question.
 
 <!-- ##### FUNCTION g_io_channel_init ##### -->
 <para>
-Initializes a #GIOChannel struct. This is called by each of the 
-above functions when creating a #GIOChannel, and so is not often 
-needed by the application programmer (unless you are creating a 
-new type of #GIOChannel).
+
 </para>
 
-@channel: a #GIOChannel
+@channel: 
 
 
 <!-- ##### FUNCTION g_io_channel_new_file ##### -->
@@ -376,68 +373,55 @@ error domains.
 
 <!-- ##### FUNCTION g_io_channel_ref ##### -->
 <para>
-Increments the reference count of a #GIOChannel.
+
 </para>
 
-@channel: a #GIOChannel.
-@Returns:  the @channel that was passed in (since 2.6)
+@channel: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_io_channel_unref ##### -->
 <para>
-Decrements the reference count of a #GIOChannel.
+
 </para>
 
-@channel: a #GIOChannel.
+@channel: 
 
 
 <!-- ##### FUNCTION g_io_create_watch ##### -->
 <para>
-Creates a #GSource that's dispatched when @condition is met for the given
-@channel. For example, if condition is #G_IO_IN, the source will be dispatched
-when there's data available for reading.  g_io_add_watch() is a simpler
-interface to this same functionality, for the case where you want to add the
-source to the default main loop at the default priority.
-</para>
-<para>
-On Windows, polling a #GSource created to watch a channel for a socket
-puts the socket in non-blocking mode. This is a side-effect of the
-implementation and unavoidable.
+
 </para>
 
-@channel: a #GIOChannel to watch
-@condition: conditions to watch for
-@Returns: a new #GSource
+@channel: 
+@condition: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_io_add_watch ##### -->
 <para>
-Adds the #GIOChannel into the
-<link linkend="glib-The-Main-Event-Loop">main event loop</link>
-with the default priority.
+
 </para>
 
-@channel: a #GIOChannel
-@condition: the condition to watch for
-@func: the function to call when the condition is satisfied
-@user_data: user data to pass to @func
-@Returns: the event source id
+@channel: 
+@condition:
+@func: 
+@user_data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_io_add_watch_full ##### -->
 <para>
-Adds the #GIOChannel into the
-<link linkend="glib-The-Main-Event-Loop">main event loop</link>
-with the given priority.
+
 </para>
 
-@channel: a #GIOChannel
-@priority: the priority of the #GIOChannel source
-@condition: the condition to watch for
-@func: the function to call when the condition is satisfied
-@user_data: user data to pass to @func
-@notify: the function to call when the source is removed
-@Returns: the event source id
+@channel: 
+@priority: 
+@condition:
+@func: 
+@user_data:
+@notify: 
+@Returns: 
 
 
 <!-- ##### ENUM GIOCondition ##### -->

@@ -73,6 +73,16 @@ static GIOStatus	g_io_channel_read_line_backend	(GIOChannel  *channel,
 							 gsize       *terminator_pos,
 							 GError     **error);
 
+/**
+ * g_io_channel_init:
+ * @channel: a #GIOChannel
+ *
+ * Initializes a #GIOChannel struct. 
+ *
+ * This is called by each of the above functions when creating a 
+ * #GIOChannel, and so is not often needed by the application 
+ * programmer (unless you are creating a new type of #GIOChannel).
+ */
 void
 g_io_channel_init (GIOChannel *channel)
 {
@@ -92,6 +102,14 @@ g_io_channel_init (GIOChannel *channel)
   channel->close_on_unref = FALSE;
 }
 
+/**
+ * g_io_channel_ref:
+ * @channel: a #GIOChannel
+ *
+ * Increments the reference count of a #GIOChannel.
+ *
+ * Returns: the @channel that was passed in (since 2.6)
+ */
 GIOChannel *
 g_io_channel_ref (GIOChannel *channel)
 {
@@ -102,6 +120,12 @@ g_io_channel_ref (GIOChannel *channel)
   return channel;
 }
 
+/**
+ * g_io_channel_unref:
+ * @channel: a #GIOChannel
+ *
+ * Decrements the reference count of a #GIOChannel.
+ */
 void 
 g_io_channel_unref (GIOChannel *channel)
 {
@@ -465,6 +489,25 @@ g_io_channel_purge (GIOChannel *channel)
     }
 }
 
+/**
+ * g_io_create_watch:
+ * @channel: a #GIOChannel to watch
+ * @condition: conditions to watch for
+ *
+ * Creates a #GSource that's dispatched when @condition is met for the 
+ * given @channel. For example, if condition is #G_IO_IN, the source will 
+ * be dispatched when there's data available for reading.
+ *
+ * g_io_add_watch() is a simpler interface to this same functionality, for 
+ * the case where you want to add the source to the default main loop context 
+ * at the default priority.
+ *
+ * On Windows, polling a #GSource created to watch a channel for a socket
+ * puts the socket in non-blocking mode. This is a side-effect of the
+ * implementation and unavoidable.
+ *
+ * Returns: a new #GSource
+ */
 GSource *
 g_io_create_watch (GIOChannel   *channel,
 		   GIOCondition  condition)
@@ -474,6 +517,24 @@ g_io_create_watch (GIOChannel   *channel,
   return channel->funcs->io_create_watch (channel, condition);
 }
 
+/**
+ * g_io_add_watch_full:
+ * @channel: a #GIOChannel
+ * @priority: the priority of the #GIOChannel source
+ * @condition: the condition to watch for
+ * @func: the function to call when the condition is satisfied
+ * @user_data: user data to pass to @func
+ * @notify: the function to call when the source is removed
+ *
+ * Adds the #GIOChannel into the default main loop context
+ * with the given priority.
+ *
+ * This internally creates a main loop source using g_io_create_watch()
+ * and attaches it to the main loop context with g_source_attach().
+ * You can do these steps manuallt if you need greater control.
+ *
+ * Returns: the event source id
+ */
 guint 
 g_io_add_watch_full (GIOChannel    *channel,
 		     gint           priority,
@@ -499,6 +560,18 @@ g_io_add_watch_full (GIOChannel    *channel,
   return id;
 }
 
+/**
+ * g_io_add_watch:
+ * @channel: a #GIOChannel
+ * @condition: the condition to watch for
+ * @func: the function to call when the condition is satisfied
+ * @user_data: user data to pass to @func
+ *
+ * Adds the #GIOChannel into the default main loop context
+ * with the default priority.
+ *
+ * Returns: the event source id
+ */
 guint 
 g_io_add_watch (GIOChannel   *channel,
 		GIOCondition  condition,

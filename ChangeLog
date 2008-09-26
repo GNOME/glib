@@ -1,3 +1,8 @@
+@008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/giochannel.c: Move more docs inline, and improve them
+	on the way.
+
 2008-09-25  Tor Lillqvist  <tml@novell.com>
 
 	Bug 553820 - gpoll.c: undeclared identifier
