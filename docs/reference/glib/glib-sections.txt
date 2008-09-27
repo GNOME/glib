@@ -2611,6 +2611,8 @@ g_assert_cmpint
 g_assert_cmpuint
 g_assert_cmphex
 g_assert_cmpfloat
+g_assert_no_error
+g_assert_error
 
 GTestCase
 GTestSuite
@@ -2627,6 +2629,7 @@ g_assertion_message
 g_assertion_message_expr
 g_assertion_message_cmpstr
 g_assertion_message_cmpnum
+g_assertion_message_error
 
 g_test_add_vtable
 GTestConfig

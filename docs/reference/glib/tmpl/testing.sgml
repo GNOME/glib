@@ -24,7 +24,7 @@ RUnit), which in turn is based on smalltalk unit testing concepts.
       A test fixture consists of fixture data and setup and teardown methods 
       to establish the environment for the test functions. We use fresh 
       fixtures, i.e. fixtures are newly set up and torn down around each test 
-      invokation to avoid dependencies between tests.
+      invocation to avoid dependencies between tests.
     </para></listitem>
   </varlistentry>
   <varlistentry>
@@ -53,7 +53,7 @@ is that the assertion messages can be more elaborate, and include the
 values of the compared entities.
 </para>
 <para>
-GLib ships with two utilites called gtester and gtester-report to 
+GLib ships with two utilities called gtester and gtester-report to 
 facilitate running tests and producing nicely formatted test reports. 
 </para>
 
@@ -433,7 +433,7 @@ The strings are compared using g_strcmp0().
 </para>
 <para>
 The effect of <literal>g_assert_cmpstr (s1, op, s2)</literal> is the same
-as <literal>g_assert (s1 op s2)</literal>. The advantage of this macro
+as <literal>g_assert (g_strcmp0 (s1, s2) op 0)</literal>. The advantage of this macro
 is that it can produce a message that includes the actual values of @s1
 and @s2.
 </para>
@@ -442,7 +442,7 @@ and @s2.
 </programlisting></informalexample>
 
 @s1: a string (may be %NULL)
-@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@cmp: The comparison operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
 @s2: another string (may be %NULL)
 @Since: 2.16
 
@@ -460,7 +460,7 @@ and @n2.
 </para>
 
 @n1: an integer
-@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@cmp: The comparison operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
 @n2: another integer
 @Since: 2.16
 
@@ -478,7 +478,7 @@ and @n2.
 </para>
 
 @n1: an unsigned integer
-@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@cmp: The comparison operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
 @n2: another unsigned integer
 @Since: 2.16
 
@@ -492,7 +492,7 @@ in the message.
 </para>
 
 @n1: an unsigned integer
-@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@cmp: The comparison operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
 @n2: another unsigned integer
 @Since: 2.16
 
@@ -503,16 +503,54 @@ Debugging macro to terminate the application with a warning message
 if a floating point number comparison fails.
 </para>
 <para>
-The effect of <literal>g_assert_cmpflott (n1, op, n2)</literal> is the same
+The effect of <literal>g_assert_cmpfloat (n1, op, n2)</literal> is the same
 as <literal>g_assert (n1 op n2)</literal>. The advantage of this function
 is that it can produce a message that includes the actual values of @n1
 and @n2.
 </para>
 
 @n1: an floating point number
-@cmp: The comparsion operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+@cmp: The comparison operator to use. One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
 @n2: another floating point number
 @Since: 2.16
+
+
+<!-- ##### MACRO g_assert_no_error ##### -->
+<para>
+Debugging macro to terminate the application with a warning message 
+if a method has returned a #GError.
+</para>
+<para>
+The effect of <literal>g_assert_no_error (err)</literal> is the same
+as <literal>g_assert (err == NULL)</literal>. The advantage of this macro
+is that it can produce a message that includes the error message and code.
+</para>
+
+@err: a #GError, possibly %NULL
+@Since: 2.20
+
+
+<!-- ##### MACRO g_assert_error ##### -->
+<para>
+Debugging macro to terminate the application with a warning message 
+if a method has not returned the correct #GError.
+</para>
+<para>
+The effect of <literal>g_assert_error (err, dom, c)</literal> is the same
+as <literal>g_assert (err != NULL &amp;&amp; err->domain == dom &amp;&amp; err->code == c)</literal>.
+The advantage of this macro is that it can produce a message that
+includes the incorrect error message and code.
+</para>
+<para>
+This can only be used to test for a specific error. If you want to
+test that @err is set, but don't care what it's set to, just use
+<literal>g_assert (err != NULL)</literal>
+</para>
+
+@err: a #GError, possibly %NULL
+@dom: the expected error domain (a #GQuark)
+@c: the expected error code
+@Since: 2.20
 
 
 <!-- ##### TYPEDEF GTestCase ##### -->
