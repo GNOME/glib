@@ -1,3 +1,12 @@
+2008-09-26  Dan Winship  <danw@gnome.org>
+
+	* tests/data-input-stream.c:
+	* tests/data-output-stream.c:
+	* tests/live-g-file.c:
+	* tests/memory-input-stream.c:
+	* tests/memory-output-stream.c: Use g_assert_error() and
+	g_assert_no_error()
+
 2008-09-26  Matthias Clasen  <mclasen@redhat.com>
 	
 	Bug 545350 – GAppInfo deletion

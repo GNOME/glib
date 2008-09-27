@@ -34,7 +34,7 @@ test_seek_to_start (GInputStream *stream)
   GError *error = NULL;
   gboolean res = g_seekable_seek (G_SEEKABLE (stream), 0, G_SEEK_SET, NULL, &error);
   g_assert_cmpint (res, ==, TRUE);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 }
 
 static void
@@ -88,7 +88,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
       if (data)
 	{
 	  g_assert_cmpstr (data, ==, lines[line]);
-	  g_assert (error == NULL);
+	  g_assert_no_error (error);
 	  line++;
 	}
     }
@@ -151,11 +151,11 @@ test_read_until (void)
       if (data)
 	{
 	  g_assert_cmpint (strlen (data), ==, DATA_PART_LEN);
-	  g_assert (error == NULL);
+	  g_assert_no_error (error);
 	  line++;
 	}
     }
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert_cmpint (line, ==, DATA_PARTS_NUM);
 	
 	
@@ -267,7 +267,7 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
       pos += data_size;
     }
   if (pos < len + 1)
-    g_assert (error == NULL);
+    g_assert_no_error (error);
   g_assert_cmpint (pos - data_size, ==, len);
 }
 

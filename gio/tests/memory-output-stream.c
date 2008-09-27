@@ -39,14 +39,14 @@ test_truncate (void)
   for (i = 0; i < 1000; i++)
     {
       g_data_output_stream_put_byte (o, 1, NULL, &error);
-      g_assert (error == NULL);
+      g_assert_no_error (error);
     }
   g_seekable_truncate (G_SEEKABLE (mo), 0, NULL, &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   for (i = 0; i < 2000; i++)
     {
       g_data_output_stream_put_byte (o, 1, NULL, &error);
-      g_assert (error == NULL);
+      g_assert_no_error (error);
     }
 
   g_object_unref (o);

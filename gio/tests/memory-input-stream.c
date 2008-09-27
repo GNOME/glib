@@ -51,7 +51,7 @@ test_read_chunks (void)
       while (pos < len) 
         {
           bytes_read = g_input_stream_read (stream, buffer, chunk_size, NULL, &error);
-          g_assert (error == NULL);
+          g_assert_no_error (error);
           g_assert_cmpint (bytes_read, ==, MIN (chunk_size, len - pos));
           g_assert (strncmp (buffer, result + pos, bytes_read) == 0);
 
@@ -61,7 +61,7 @@ test_read_chunks (void)
       g_assert_cmpint (pos, ==, len);
       res = g_seekable_seek (G_SEEKABLE (stream), 0, G_SEEK_SET, NULL, &error);
       g_assert_cmpint (res, ==, TRUE);
-      g_assert (error == NULL);
+      g_assert_no_error (error);
     }
 }
 

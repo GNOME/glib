@@ -60,7 +60,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
       char *s = g_strconcat (TEST_STRING, endl[newline_type], NULL);
       res = g_data_output_stream_put_string (G_DATA_OUTPUT_STREAM (stream), s, NULL, &error);
       g_stpcpy ((char*)(lines + i*strlen(s)), s);
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (res == TRUE);
     }
 
@@ -205,7 +205,7 @@ test_data_array (gpointer buffer, int len,
 	  res = g_data_output_stream_put_uint64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	}
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert_cmpint (res, ==, TRUE);
       pos += data_size;
     }
