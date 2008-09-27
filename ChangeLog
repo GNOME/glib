@@ -1,5 +1,22 @@
 2008-09-26  Dan Winship  <danw@gnome.org>
 
+	Bug 553447 – g_assert_no_error()
+
+	* glib/gtestutils.h (g_assert_no_error, g_assert_error): Macros to
+	assert that a GError is not set, or else is set to a particular
+	error.
+
+	* glib/gtestutils.c (g_assertion_message_error): utility for
+	those macros
+
+	* glib/tests/keyfile.c:
+	* tests/asyncqueue-test.c:
+	* tests/bookmarkfile-test.c:
+	* tests/convert-test.c:
+	* tests/file-test.c: Use g_assert_error/g_assert_no_error
+
+2008-09-26  Dan Winship  <danw@gnome.org>
+
 	* glib/gthreadpool.c (wakeup_thread_marker): make this a "const
 	gpointer" rather than a gconstpointer to avoid warnings later
 

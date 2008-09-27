@@ -162,7 +162,7 @@ main (int argc, char *argv[])
   
     g_thread_pool_push (thread_pool, GINT_TO_POINTER (i), &error);
     
-    g_assert (error == NULL);
+    g_assert_no_error (error);
   }
 
   if (!SORT_QUEUE_AFTER) {

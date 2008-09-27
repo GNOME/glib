@@ -16,68 +16,6 @@
 #define TEST_APP_NAME 	"bookmarkfile-test"
 #define TEST_APP_EXEC 	"bookmarkfile-test %f"
 
-static void
-test_assert_empty_error (GError **error)
-{
-  if (*error != NULL)
-    {
-      g_warning ("Unexpected error (d: %s, c: %d): %s\n",
-		 g_quark_to_string ((*error)->domain),
-		 (*error)->code,
-		 (*error)->message);
-      g_error_free (*error);
-
-      g_assert_not_reached ();
-    }
-}
-
-static void
-test_assert_not_empty_error (GError **error,
-			     GQuark   domain,
-			     gint     code)
-{
-  if (*error == NULL)
-    {
-      g_warning ("Unexpected success (%s domain expected)\n",
-		 g_quark_to_string (domain));
-
-      g_assert_not_reached ();
-    }
-
-  if ((*error)->domain != domain)
-    {
-      g_warning ("Unexpected domain %s (%s domain expected)\n",
-		 g_quark_to_string ((*error)->domain),
-		 g_quark_to_string (domain));
-
-      g_assert_not_reached ();
-    }
-
-  if ((*error)->code != code)
-    {
-      g_warning ("Unexpected code %d (%d code expected)\n",
-		 (*error)->code,
-		 code);
-
-      g_assert_not_reached ();
-    }
-
-  g_error_free (*error);
-  *error = NULL;
-}
-
-static void
-test_assert_str_equal (const gchar *str,
-		       const gchar *cmp)
-{
-  if (strcmp (str, cmp) != 0)
-    {
-      g_warning ("Unexpected string '%s' ('%s' expected)\n", str, cmp);
-      
-      g_assert_not_reached ();
-    }
-}
-
 static gboolean
 test_load (GBookmarkFile *bookmark,
            const gchar   *filename)
@@ -139,13 +77,13 @@ test_modify (GBookmarkFile *bookmark)
   g_bookmark_file_set_description (bookmark, NULL, "a bookmark file");
   
   text = g_bookmark_file_get_title (bookmark, NULL, &error);
-  test_assert_empty_error (&error);
-  test_assert_str_equal (text, "a file");
+  g_assert_no_error (error);
+  g_assert_cmpstr (text, ==, "a file");
   g_free (text);
 
   text = g_bookmark_file_get_description (bookmark, NULL, &error);
-  test_assert_empty_error (&error);
-  test_assert_str_equal (text, "a bookmark file");
+  g_assert_no_error (error);
+  g_assert_cmpstr (text, ==, "a bookmark file");
   g_free (text);
   g_print ("ok\n");
 
@@ -154,14 +92,15 @@ test_modify (GBookmarkFile *bookmark)
   g_bookmark_file_set_description (bookmark, TEST_URI_0, "a description");
 
   text = g_bookmark_file_get_title (bookmark, TEST_URI_0, &error);
-  test_assert_empty_error (&error);
-  test_assert_str_equal (text, "a title");
+  g_assert_no_error (error);
+  g_assert_cmpstr (text, ==, "a title");
   g_free (text);
   g_print ("ok\n");
 
   g_print ("\t=> check non existing bookmark...");
   g_bookmark_file_get_description (bookmark, TEST_URI_1, &error);
-  test_assert_not_empty_error (&error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
   g_print ("ok\n");
   
   g_print ("\t=> check application...");
@@ -175,7 +114,7 @@ test_modify (GBookmarkFile *bookmark)
 				&count,
 				&stamp,
 				&error);
-  test_assert_empty_error (&error);
+  g_assert_no_error (error);
   g_assert (count == 1);
   g_assert (stamp == g_bookmark_file_get_modified (bookmark, TEST_URI_0, NULL));
   g_free (text);
@@ -185,7 +124,8 @@ test_modify (GBookmarkFile *bookmark)
 				&count,
 				&stamp,
 				&error);
-  test_assert_not_empty_error (&error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED);
+  g_clear_error (&error);
   g_print ("ok\n"); 
 
   g_print ("\t=> check groups...");
@@ -196,9 +136,10 @@ test_modify (GBookmarkFile *bookmark)
 
   g_print ("\t=> check remove...");
   g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == TRUE);
-  test_assert_empty_error (&error);
+  g_assert_no_error (error);
   g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == FALSE);
-  test_assert_not_empty_error (&error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
   g_print ("ok\n");
   
   return TRUE;

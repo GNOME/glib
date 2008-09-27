@@ -12,7 +12,7 @@ load_data (const gchar   *data,
 
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, flags, &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   return keyfile;
 }
 
@@ -21,9 +21,7 @@ check_error (GError **error,
 	     GQuark   domain,
 	     gint     code)
 {
-  g_assert (*error != NULL);
-  g_assert ((*error)->domain == domain);
-  g_assert ((*error)->code == code);
+  g_assert_error (*error, domain, code);
   g_error_free (*error);
   *error = NULL;
 }
@@ -31,7 +29,7 @@ check_error (GError **error,
 static void 
 check_no_error (GError **error)
 {
-  g_assert (*error == NULL);
+  g_assert_no_error (*error);
 }
 
 static void

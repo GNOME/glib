@@ -53,6 +53,12 @@ typedef struct GTestSuite GTestSuite;
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'f'); } while (0)
+#define g_assert_no_error(err)          do { if (err) \
+                                               g_assertion_message_error (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #err, err, 0, 0); } while (0)
+#define g_assert_error(err, dom, c)	do { if (!err || (err)->domain != dom || (err)->code != c) \
+                                               g_assertion_message_error (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #err, err, dom, c); } while (0)
 #ifdef G_DISABLE_ASSERT
 #define g_assert_not_reached()          do { (void) 0; } while (0)
 #define g_assert(expr)                  do { (void) 0; } while (0)
@@ -197,6 +203,14 @@ void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *cmp,
                                          long double     arg2,
                                          char            numtype) G_GNUC_NORETURN;
+void    g_assertion_message_error       (const char     *domain,
+                                         const char     *file,
+                                         int             line,
+                                         const char     *func,
+                                         const char     *expr,
+                                         GError         *error,
+                                         GQuark          error_domain,
+                                         int             error_code) G_GNUC_NORETURN;
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
                                          gconstpointer   test_data,

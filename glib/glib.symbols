@@ -1317,6 +1317,7 @@ g_assertion_message G_GNUC_NORETURN
 g_assertion_message_cmpnum G_GNUC_NORETURN
 g_assertion_message_cmpstr G_GNUC_NORETURN
 g_assertion_message_expr G_GNUC_NORETURN
+g_assertion_message_error G_GNUC_NORETURN
 g_strcmp0
 g_test_add_data_func
 g_test_add_func

@@ -1358,6 +1358,40 @@ g_assertion_message_cmpstr (const char     *domain,
   g_free (s);
 }
 
+void
+g_assertion_message_error (const char     *domain,
+			   const char     *file,
+			   int             line,
+			   const char     *func,
+			   const char     *expr,
+			   GError         *error,
+			   GQuark          error_domain,
+			   int             error_code)
+{
+  GString *gstring;
+
+  /* This is used by both g_assert_error() and g_assert_no_error(), so there
+   * are three cases: expected an error but got the wrong error, expected
+   * an error but got no error, and expected no error but got an error.
+   */
+
+  gstring = g_string_new ("assertion failed ");
+  if (error_domain)
+      g_string_append_printf (gstring, "(%s == (%s, %d)): ", expr,
+			      g_quark_to_string (error_domain), error_code);
+  else
+    g_string_append_printf (gstring, "(%s == NULL): ", expr);
+
+  if (error)
+      g_string_append_printf (gstring, "%s (%s, %d)", error->message,
+			      g_quark_to_string (error->domain), error->code);
+  else
+    g_string_append_printf (gstring, "%s is NULL", expr);
+
+  g_assertion_message (domain, file, line, func, gstring->str);
+  g_string_free (gstring, TRUE);
+}
+
 /**
  * g_strcmp0:
  * @str1: a C string or %NULL

@@ -48,7 +48,7 @@ test_iconv_state (void)
   if (error && error->code == G_CONVERT_ERROR_NO_CONVERSION)
     return; /* silently skip if CP1255 is not supported, see bug 467707 */ 
 
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert (bytes_read == 5);
   g_assert (bytes_written == 10);
   g_assert (strcmp (out, expected) == 0);
@@ -70,7 +70,7 @@ test_one_half (void)
 		   &bytes_read, &bytes_written,
 		   &error);
 
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert (bytes_read == 2);
   g_assert (bytes_written == 1);
   g_assert (strcmp (out, "\xbd") == 0);
@@ -81,7 +81,7 @@ test_one_half (void)
 		   &bytes_read, &bytes_written,
 		   &error);
 
-  g_assert (error && error->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE);
+  g_assert_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE);
   g_assert (bytes_read == 0);
   g_assert (bytes_written == 0);
   g_assert (out == NULL);
@@ -94,7 +94,7 @@ test_one_half (void)
 				 &bytes_read, &bytes_written,
 				 &error);
 
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert (bytes_read == 2);
   g_assert (bytes_written == 1);
   g_assert (strcmp (out, "a") == 0);
@@ -117,7 +117,7 @@ test_byte_order (void)
 		   &bytes_read, &bytes_written,
 		   &error);
 
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert (bytes_read == 4);
   g_assert (bytes_written == 2);
   g_assert (strcmp (out, expected) == 0);
@@ -128,7 +128,7 @@ test_byte_order (void)
 		   &bytes_read, &bytes_written,
 		   &error);
 
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_assert (bytes_read == 4);
   g_assert (bytes_written == 2);
   g_assert (strcmp (out, expected) == 0);
@@ -187,7 +187,7 @@ check_utf8_to_ucs4 (const char     *utf8,
       
   if (error3 && error3->code == G_CONVERT_ERROR_PARTIAL_INPUT)
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == error_pos);
       g_assert (items_written == ucs4_len);
       g_assert (result);
@@ -207,14 +207,14 @@ check_utf8_to_ucs4 (const char     *utf8,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == utf8_len);
       g_assert (items_written == ucs4_len);
       g_assert (result);
       for (i = 0; i <= items_written; i++)
 	g_assert (result[i] == ucs4[i]);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       for (i = 0; i <= ucs4_len; i++)
 	g_assert (result3[i] == ucs4[i]);
@@ -273,13 +273,13 @@ check_ucs4_to_utf8 (const gunichar *ucs4,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == ucs4_len);
       g_assert (items_written == utf8_len);
       g_assert (result);
       g_assert (strcmp (result, utf8) == 0);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       g_assert (strcmp (result3, utf8) == 0);
     }
@@ -327,7 +327,7 @@ check_utf8_to_utf16 (const char      *utf8,
       
   if (error3 && error3->code == G_CONVERT_ERROR_PARTIAL_INPUT)
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == error_pos);
       g_assert (items_written == utf16_len);
       g_assert (result);
@@ -347,14 +347,14 @@ check_utf8_to_utf16 (const char      *utf8,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == utf8_len);
       g_assert (items_written == utf16_len);
       g_assert (result);
       for (i = 0; i <= items_written; i++)
 	g_assert (result[i] == utf16[i]);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       for (i = 0; i <= utf16_len; i++)
 	g_assert (result3[i] == utf16[i]);
@@ -401,7 +401,7 @@ check_utf16_to_utf8 (const gunichar2 *utf16,
   
   if (error3 && error3->code == G_CONVERT_ERROR_PARTIAL_INPUT)
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == error_pos);
       g_assert (items_read + 1 == utf16_len);
       g_assert (items_written == utf8_len);
@@ -421,13 +421,13 @@ check_utf16_to_utf8 (const gunichar2 *utf16,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == utf16_len);
       g_assert (items_written == utf8_len);
       g_assert (result);
       g_assert (strcmp (result, utf8) == 0);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       g_assert (strcmp (result3, utf8) == 0);
     }
@@ -487,14 +487,14 @@ check_ucs4_to_utf16 (const gunichar  *ucs4,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == ucs4_len);
       g_assert (items_written == utf16_len);
       g_assert (result);
       for (i = 0; i <= utf16_len; i++)
 	g_assert (result[i] == utf16[i]);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       for (i = 0; i <= utf16_len; i++)
 	g_assert (result3[i] == utf16[i]);
@@ -542,7 +542,7 @@ check_utf16_to_ucs4 (const gunichar2 *utf16,
       
   if (error3 && error3->code == G_CONVERT_ERROR_PARTIAL_INPUT)
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == error_pos);
       g_assert (items_read + 1 == utf16_len);
       g_assert (items_written == ucs4_len);
@@ -563,14 +563,14 @@ check_utf16_to_ucs4 (const gunichar2 *utf16,
     }
   else
     {
-      g_assert (error == NULL);
+      g_assert_no_error (error);
       g_assert (items_read == utf16_len);
       g_assert (items_written == ucs4_len);
       g_assert (result);
       for (i = 0; i <= ucs4_len; i++)
 	g_assert (result[i] == ucs4[i]);
 
-      g_assert (error3 == NULL);
+      g_assert_no_error (error3);
       g_assert (result3);
       for (i = 0; i <= ucs4_len; i++)
 	g_assert (result3[i] == ucs4[i]);
