@@ -59,7 +59,7 @@ typedef enum
   STATE_CLASS_CONSTANT, 
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS,
-  STATE_TYPE,
+  STATE_TYPE
 } ParseState;
 
 typedef struct _ParseContext ParseContext;
@@ -79,6 +79,8 @@ struct _ParseContext
   GIrModule *current_module;
   GIrNode *current_node;
   GIrNode *current_typed;
+  GList *type_stack;
+  GList *type_parameters;
   int type_depth;
 };
 
@@ -347,25 +349,6 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
 	  type->is_pointer = TRUE;
 	  str += strlen ("SList");
 	}
-      
-      if (*str == '<')
-	{
-	  (str)++;
-	  char *rest;
-
-	  type->parameter_type1 = parse_type_internal (str, &rest, in_glib);
-	  if (type->parameter_type1 == NULL)
-	    goto error;
-	  str = rest;
-	  
-	  if (str[0] != '>')
-	    goto error;
-	  (str)++;
-	}
-      else
-	{
-	  type->parameter_type1 = parse_type_internal ("any", NULL, in_glib);
-	}
     }
   else if (g_str_has_prefix (str, "GLib.HashTable"))
     {
@@ -375,35 +358,6 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
       type->is_ghashtable = TRUE;
       type->is_pointer = TRUE;
       str += strlen ("HashTable");
-      
-      if (*str == '<')
-	{
-	  char *rest;
-	  (str)++;
-      
-	  type->parameter_type1 = parse_type_internal (str, &rest, in_glib);
-	  if (type->parameter_type1 == NULL)
-	    goto error;
-	  str = rest;
-      
-	  if (str[0] != ',')
-	    goto error;
-	  (str)++;
-	  
-	  type->parameter_type2 = parse_type_internal (str, &rest, in_glib);
-	  if (type->parameter_type2 == NULL)
-	    goto error;
-	  str = rest;
-      
-	  if ((str)[0] != '>')
-	    goto error;
-	  (str)++;
-	}
-      else
-	{
-	  type->parameter_type1 = parse_type_internal ("any", NULL, in_glib);
-	  type->parameter_type2 = parse_type_internal ("any", NULL, in_glib);
-	}
     }
   else if (g_str_has_prefix (str, "GLib.Error"))
     {
@@ -444,57 +398,6 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
       type->interface = g_strndup (start, str - start);
     }
   
-  if (g_str_has_prefix (str, "["))
-    {
-      GIrNodeType *array;
-      int i;
-
-      array = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
-
-      array->tag = GI_TYPE_TAG_ARRAY;
-      array->is_pointer = TRUE;
-      array->is_array = TRUE;
-      
-      array->parameter_type1 = type;
-
-      array->zero_terminated = FALSE;
-      array->has_length = FALSE;
-      array->length = 0;
-
-      if (!g_str_has_prefix (str, "[]"))
-	{
-	  gchar *end, *tmp, **opts;
-	  
-	  end = strchr (str, ']');
-	  tmp = g_strndup (str + 1, (end - str) - 1); 
-	  opts = g_strsplit (tmp, ",", 0);
-
-	  for (i = 0; opts[i]; i++)
-	    {
-	      gchar **vals;
-	      
-	      vals = g_strsplit (opts[i], "=", 0);
-
-	      if (strcmp (vals[0], "zero-terminated") == 0)
-		array->zero_terminated = (strcmp (vals[1], "1") == 0);
-	      else if (strcmp (vals[0], "length") == 0)
-		{
-		  array->has_length = TRUE;
-		  array->length = atoi (vals[1]);
-		}
-
-	      g_strfreev (vals);
-	    }
-
-	  g_free (tmp);
-	  g_strfreev (opts);
-
-	  str = end;
-	}
-	      
-      type = array;
-    }
-
   if (next)
     *next = (char*)str;
   g_assert (type->tag >= 0 && type->tag <= GI_TYPE_TAG_ERROR);
@@ -1506,14 +1409,20 @@ start_type (GMarkupParseContext *context,
 {
   const gchar *name;
   const gchar *ctype;
-  gboolean is_pointer;
+  gboolean is_array;
   GIrNodeType *typenode;
 
-  if (strcmp (element_name, "type") != 0)
+  is_array = strcmp (element_name, "array") == 0;
+
+  if (!(is_array || (strcmp (element_name, "type") == 0)))
     return FALSE;
 
-  if (ctx->state == STATE_TYPE)
-    ctx->type_depth++;
+  if (ctx->state == STATE_TYPE) 
+    {
+      ctx->type_depth++;
+      ctx->type_stack = g_list_prepend (ctx->type_stack, ctx->type_parameters);
+      ctx->type_parameters = NULL;
+    } 
   else if (ctx->state == STATE_FUNCTION_PARAMETER ||
 	   ctx->state == STATE_FUNCTION_RETURN || 
 	   ctx->state == STATE_STRUCT_FIELD ||
@@ -1530,11 +1439,9 @@ start_type (GMarkupParseContext *context,
     {
       state_switch (ctx, STATE_TYPE);
       ctx->type_depth = 1;
+      ctx->type_stack = NULL;
+      ctx->type_parameters = NULL;
     }
-
-  /* FIXME handle recursive types */
-  if (ctx->type_depth > 1)
-    return TRUE;
 
   if (!ctx->current_typed)
     {
@@ -1544,22 +1451,69 @@ start_type (GMarkupParseContext *context,
 		   "The element <type> is invalid here");
       return FALSE;
     }
-  
-  name = find_attribute ("name", attribute_names, attribute_values);
 
-  if (name == NULL)
-    MISSING_ATTRIBUTE (context, error, element_name, "name");
+  if (is_array) 
+    {
+      const char *zero;
+      const char *len;
+      int i;
 
-  ctype = find_attribute ("c:type", attribute_names, attribute_values);
-  if (ctype != NULL && strchr (ctype, '*'))
-    is_pointer = TRUE;
+      typenode = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
+
+      typenode->tag = GI_TYPE_TAG_ARRAY;
+      typenode->is_pointer = TRUE;
+      typenode->is_array = TRUE;
+      
+      zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
+      len = find_attribute ("length", attribute_names, attribute_values);
+
+      typenode->zero_terminated = !(zero && strcmp (zero, "1") != 0);
+      typenode->has_length = len != NULL;
+      typenode->length = typenode->has_length ? atoi (len) : -1;
+    }
   else
-    is_pointer = FALSE;
+    {
+      gboolean is_pointer;
+      name = find_attribute ("name", attribute_names, attribute_values);
 
-  typenode = parse_type (ctx, name);
-  if (is_pointer)
-    typenode->is_pointer = is_pointer;
-	
+      if (name == NULL)
+	MISSING_ATTRIBUTE (context, error, element_name, "name");
+      
+      ctype = find_attribute ("c:type", attribute_names, attribute_values);
+      if (ctype != NULL && strchr (ctype, '*'))
+	is_pointer = TRUE;
+      else
+	is_pointer = FALSE;
+
+      typenode = parse_type (ctx, name);
+
+      if (is_pointer)
+	typenode->is_pointer = is_pointer;
+    }
+
+  ctx->type_parameters = g_list_append (ctx->type_parameters, typenode);
+  
+  return TRUE;
+}
+
+static void
+end_type_top (ParseContext *ctx)
+{
+  GIrNodeType *typenode = (GIrNodeType*)ctx->type_parameters->data;
+
+  /* Default to pointer for unspecified containers */
+  if (typenode->tag == GI_TYPE_TAG_ARRAY ||
+      typenode->tag == GI_TYPE_TAG_GLIST ||
+      typenode->tag == GI_TYPE_TAG_GSLIST)
+    {
+      typenode->parameter_type1 = parse_type (ctx, "any");
+    }
+  else if (typenode->tag == GI_TYPE_TAG_GHASH)
+    {
+      typenode->parameter_type1 = parse_type (ctx, "any");
+      typenode->parameter_type2 = parse_type (ctx, "any");
+    }
+
   switch (ctx->current_typed->type)
     {
     case G_IR_NODE_PARAM:
@@ -1590,10 +1544,61 @@ start_type (GMarkupParseContext *context,
       g_printerr("current node is %d\n", ctx->current_node->type);
       g_assert_not_reached ();
     }
-
-
+  g_list_free (ctx->type_parameters);
+  
+  ctx->type_depth = 0;
+  ctx->type_parameters = NULL;
   ctx->current_typed = NULL;
-  return TRUE;
+}
+
+static void
+end_type_recurse (ParseContext *ctx)
+{
+  GList *types;
+  GIrNodeType *parent;
+
+  parent = (GIrNodeType *) ((GList*)ctx->type_stack->data)->data;
+
+  if (parent->tag == GI_TYPE_TAG_ARRAY ||
+      parent->tag == GI_TYPE_TAG_GLIST ||
+      parent->tag == GI_TYPE_TAG_GSLIST)
+    {
+      if (ctx->type_parameters == NULL)
+	parent->parameter_type1 = parse_type (ctx, "pointer");
+      else
+	parent->parameter_type1 = (GIrNodeType*)ctx->type_parameters->data;
+    }
+  else if (parent->tag == GI_TYPE_TAG_GHASH)
+    {
+      if (ctx->type_parameters == NULL)
+	{
+	  parent->parameter_type1 = parse_type (ctx, "pointer");
+	  parent->parameter_type2 = parse_type (ctx, "pointer");
+	}
+      else
+	{
+	  parent->parameter_type1 = (GIrNodeType*) ctx->type_parameters->data;
+	  parent->parameter_type2 = (GIrNodeType*) ctx->type_parameters->next->data;
+	}
+    }
+  g_list_free (ctx->type_parameters);
+  ctx->type_parameters = (GList *)ctx->type_stack->data;
+  ctx->type_stack = g_list_delete_link (ctx->type_stack, ctx->type_stack);
+}
+
+static void
+end_type (ParseContext *ctx)
+{
+  if (ctx->type_depth == 1)
+    {
+      end_type_top (ctx);
+      state_switch (ctx, ctx->prev_state);
+    }
+  else
+    {
+      end_type_recurse (ctx);
+      ctx->type_depth--;
+    }
 }
 
 static gboolean
@@ -2078,6 +2083,10 @@ start_element_handler (GMarkupParseContext *context,
 	  state_switch (ctx, STATE_ALIAS);
 	  goto out;
 	}
+      if (start_type (context, element_name,
+		      attribute_names, attribute_values,
+		      ctx, error))
+	goto out;
       break;
     case 'b':
       if (start_enum (context, element_name, 
@@ -2631,12 +2640,9 @@ end_element_handler (GMarkupParseContext *context,
 	}
       break;
     case STATE_TYPE:
-      if (strcmp ("type", element_name) == 0)
+      if ((strcmp ("type", element_name) == 0) || (strcmp ("array", element_name) == 0))
 	{
-	  if (ctx->type_depth == 1)
-	    state_switch (ctx, ctx->prev_state);
-	  else
-	    ctx->type_depth -= 1;
+	  end_type (ctx);
 	  break;
 	}
     default:
