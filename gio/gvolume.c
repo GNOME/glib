@@ -383,6 +383,11 @@ g_volume_mount (GVolume             *volume,
  * 
  * Finishes mounting a volume. If any errors occured during the operation,
  * @error will be set to contain the errors and %FALSE will be returned.
+ *
+ * If the mount operation succeeded, g_volume_get_mount() on @volume
+ * is guaranteed to return the mount right after calling this
+ * function; there's no need to listen for the 'mount-added' signal on
+ * #GVolumeMonitor.
  * 
  * Returns: %TRUE, %FALSE if operation failed.
  **/
