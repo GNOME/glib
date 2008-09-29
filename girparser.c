@@ -1506,12 +1506,16 @@ end_type_top (ParseContext *ctx)
       typenode->tag == GI_TYPE_TAG_GLIST ||
       typenode->tag == GI_TYPE_TAG_GSLIST)
     {
-      typenode->parameter_type1 = parse_type (ctx, "any");
+      if (typenode->parameter_type1 == NULL)
+	typenode->parameter_type1 = parse_type (ctx, "any");
     }
   else if (typenode->tag == GI_TYPE_TAG_GHASH)
     {
-      typenode->parameter_type1 = parse_type (ctx, "any");
-      typenode->parameter_type2 = parse_type (ctx, "any");
+      if (typenode->parameter_type1 == NULL)
+	{
+	  typenode->parameter_type1 = parse_type (ctx, "any");
+	  typenode->parameter_type2 = parse_type (ctx, "any");
+	}
     }
 
   switch (ctx->current_typed->type)
