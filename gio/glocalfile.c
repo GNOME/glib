@@ -844,10 +844,10 @@ get_volume_for_path (const char *path)
   wchar_t *wpath;
   wchar_t *result;
 
-  wpath = g_utf8_to_utf16 (path, -1, NULL, &len, NULL);
-  result = g_new (wchar_t, len + 2);
+  wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
+  result = g_new (wchar_t, MAX_PATH);
 
-  if (!GetVolumePathNameW (wpath, result, len + 2))
+  if (!GetVolumePathNameW (wpath, result, MAX_PATH))
     {
       char *msg = g_win32_error_message (GetLastError ());
       g_critical ("GetVolumePathName failed: %s", msg);
