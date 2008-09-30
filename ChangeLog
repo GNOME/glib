@@ -1,3 +1,13 @@
+2008-09-30  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 554092 – glib doesn't return G_FILE_ERROR_NOENT et al on OS X
+
+	* glib/giounix.c (g_io_unix_read), (g_io_unix_write),
+	(g_io_unix_seek), (g_io_unix_close), (g_io_unix_set_flags),
+	(g_io_unix_get_flags), (g_io_channel_new_file):
+	Like mclasen says: "well, thats the way errno works...,
+	save it or loose it".  Save errno.
+
 2008-09-30  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.decl
