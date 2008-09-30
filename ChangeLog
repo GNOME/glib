@@ -1,5 +1,10 @@
 2008-09-30  Tor Lillqvist  <tml@novell.com>
 
+	* Makefile.decl
+	* glib/tests/Makefile.am: Bypass gtester related stuff on Windows.
+
+2008-09-30  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gprintf.c
 	* glib/gnulib/vasnprintf.c: Don't define _GNU_SOURCE on Windows,
 	as _GNU_SOURCE has unintended side effects when compiling against

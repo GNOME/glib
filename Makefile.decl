@@ -12,11 +12,14 @@ TEST_PROGS =
 
 # test: run all tests in cwd and subdirs
 test:	${TEST_PROGS}
+if OS_UNIX
 	@test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done
+endif
+
 # test-report: run tests in subdirs and generate report
 # perf-report: run tests in subdirs with -m perf and generate report
 # full-report: like test-report: with -m perf and -m slow

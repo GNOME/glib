@@ -44,12 +44,16 @@ markup_subparser_LDADD    = $(progs_ldadd)
 TEST_PROGS         += array-test
 array_test_LDADD    = $(progs_ldadd)
 
+if OS_UNIX
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present
 	${GTESTER} -k --quiet -o tmpsample.xml --test-arg=--gtester-selftest ${GTESTER}
 	${XMLLINT} --version 2>/dev/null; test "$$?" != 0 || ${XMLLINT} --noout tmpsample.xml
 check-am: gtester-xmllint-check
+
+endif
 
 CLEANFILES = \
 	tmpsample.xml
