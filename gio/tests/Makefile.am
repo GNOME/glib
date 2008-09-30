@@ -22,11 +22,10 @@ TEST_PROGS +=	 		\
 	g-file 			\
 	g-file-info 		\
 	data-input-stream 	\
-	data-output-stream 	\
-	desktop-app-info
+	data-output-stream 
 
 if OS_UNIX
-TEST_PROGS += live-g-file unix-streams
+TEST_PROGS += live-g-file unix-streams desktop-app-info
 endif
 
 memory_input_stream_SOURCES	  = memory-input-stream.c

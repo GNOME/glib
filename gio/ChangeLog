@@ -1,5 +1,7 @@
 2008-09-30  Tor Lillqvist  <tml@novell.com>
 
+	* tests/Makefile.am: Build desktop-app-info only on Unix.
+
 	* glocalfile.c (get_volume_for_path) [Win32]: Avoid a
 	g_critical(). Pass a large enough result buffer to
 	GetVolumePathNameW(). Just use MAX_PATH.
