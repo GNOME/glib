@@ -24,6 +24,21 @@ Installation
 
 See the file 'INSTALL'
 
+Notes about GLib 2.20
+=====================
+
+^ The functions for launching applications (e.g. g_app_info_launch() +
+  friends) now passes a FUSE file:// URI if possible (requires gvfs
+  with the FUSE daemon to be running and operational). With gvfs 2.26,
+  FUSE file:// URIs will be mapped back to gio URIs in the GFile
+  constructors. The intent of this change is to better integrate
+  POSIX-only applications, see bug #528670 for the rationale.  The
+  only user-visible change is when an application needs to examine an
+  URI passed to it (e.g. as a positional parameter). Instead of
+  looking at the given URI, the application will now need to look at
+  the result of g_file_get_uri() after having constructed a GFile
+  object with the given URI.
+
 Notes about GLib 2.18
 =====================
 

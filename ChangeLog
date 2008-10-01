@@ -1,3 +1,8 @@
+2008-10-01  David Zeuthen  <davidz@redhat.com>
+
+	* README.in: Add "Notes about glib 2.20" section detailing the
+	ramifications of the patch from bug #528670.
+
 2008-09-30  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 554092 – glib doesn't return G_FILE_ERROR_NOENT et al on OS X

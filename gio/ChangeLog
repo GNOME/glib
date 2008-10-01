@@ -1,3 +1,18 @@
+2008-10-01  David Zeuthen  <davidz@redhat.com>
+
+	* gdesktopappinfo.c (expand_macro): If possible, always pass FUSE
+	file:// URIs (such as '/home/davidz/.gvfs/sftp on foo/file.avi')
+	instead of the gio URI (such as sftp://foo/file.avi) when using
+	g_app_info_launch() and friends. With a sufficiently recent gvfs,
+	apps using gio+gvfs will map the FUSE file:// URI back to the gio
+	URI (and thus bypass the fuse daemon) thanks the patch from bug
+	#530654.  Since Nautilus is an user of g_app_info_launch() it
+	means that non-gio POSIX apps, such as mplayer, will Just Work(tm)
+	when launced via the file manager. Win. Fixes bug #528670.
+
+	* gappinfo.c: Add some notes about the FUSE POSIX URI <-> GIO URI
+	mapping to the description of GAppInfo.
+
 2008-09-30  Tor Lillqvist  <tml@novell.com>
 
 	* tests/Makefile.am: Build desktop-app-info only on Unix.

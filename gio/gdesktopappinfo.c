@@ -530,9 +530,32 @@ expand_macro (char              macro,
 {
   GList *uris = *uri_list;
   char *expanded;
-  
+  gboolean force_file_uri;
+  char force_file_uri_macro;
+
   g_return_if_fail (exec != NULL);
-  
+
+  /* On %u and %U, pass POSIX file path pointing to the URI via
+   * the FUSE mount in ~/.gvfs. Note that if the FUSE daemon isn't
+   * running or the URI doesn't have a POSIX file path via FUSE
+   * we'll just pass the URI.
+   */
+  switch (macro)
+    {
+    case 'u':
+      force_file_uri_macro = 'f';
+      force_file_uri = TRUE;
+      break;
+    case 'U':
+      force_file_uri_macro = 'F';
+      force_file_uri = TRUE;
+      break;
+    default:
+      force_file_uri_macro = macro;
+      force_file_uri = FALSE;
+      break;
+    }
+
   switch (macro)
     {
     case 'u':
@@ -541,7 +564,17 @@ expand_macro (char              macro,
     case 'n':
       if (uris)
 	{
-	  expanded = expand_macro_single (macro, uris->data);
+          if (!force_file_uri)
+            {
+              expanded = expand_macro_single (macro, uris->data);
+            }
+          else
+            {
+              expanded = expand_macro_single (force_file_uri_macro, uris->data);
+              if (expanded == NULL)
+                expanded = expand_macro_single (macro, uris->data);
+            }
+
 	  if (expanded)
 	    {
 	      g_string_append (exec, expanded);
@@ -558,7 +591,17 @@ expand_macro (char              macro,
     case 'N':
       while (uris)
 	{
-	  expanded = expand_macro_single (macro, uris->data);
+          if (!force_file_uri)
+            {
+              expanded = expand_macro_single (macro, uris->data);
+            }
+          else
+            {
+              expanded = expand_macro_single (force_file_uri_macro, uris->data);
+              if (expanded == NULL)
+                expanded = expand_macro_single (macro, uris->data);
+            }
+
 	  if (expanded)
 	    {
 	      g_string_append (exec, expanded);
