@@ -226,8 +226,8 @@ g_function_info_invoke (GIFunctionInfo *info,
     }
   else
     n_invoke_args = n_args;
-  atypes = g_new (ffi_type*, n_invoke_args);
-  args =  g_new (gpointer, n_invoke_args);
+  atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
+  args = g_alloca (sizeof (gpointer) * n_invoke_args);
   
   if (is_method)
     {
@@ -326,10 +326,6 @@ g_function_info_invoke (GIFunctionInfo *info,
   ffi_call (&cif, func, return_value, args);
 
   success = TRUE;
-
  out:
-  g_free (atypes);
-  g_free (args);
-  
   return success;
 }
