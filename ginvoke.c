@@ -158,7 +158,8 @@ g_function_info_invoke (GIFunctionInfo *info,
   gpointer func;
   GITypeInfo *tinfo;
   GIArgInfo *ainfo;
-  gint n_args, in_pos, out_pos, i;
+  gboolean is_method;
+  gint n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
   
@@ -199,24 +200,49 @@ g_function_info_invoke (GIFunctionInfo *info,
       g_module_close (entire_app);
     }
 
+  is_method = (g_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
+    && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
+
   tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
   rtype = get_ffi_type (tinfo);
   g_base_info_unref ((GIBaseInfo *)tinfo);
 
-  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
-  atypes = g_new (ffi_type*, n_args);
-  args =  g_new (gpointer, n_args);
-  
   in_pos = 0;
   out_pos = 0;
+
+  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
+  if (is_method)
+    {
+      if (n_in_args == 0)
+	{
+	  g_set_error (error,
+		       G_INVOKE_ERROR,
+		       G_INVOKE_ERROR_ARGUMENT_MISMATCH,
+		       "Too few \"in\" arguments (handling this)");
+	  goto out;
+	}
+      n_invoke_args = n_args+1;
+      in_pos++;
+    }
+  else
+    n_invoke_args = n_args;
+  atypes = g_new (ffi_type*, n_invoke_args);
+  args =  g_new (gpointer, n_invoke_args);
+  
+  if (is_method)
+    {
+      atypes[0] = &ffi_type_pointer;
+      args[0] = (gpointer) &in_args[0];
+    }
   for (i = 0; i < n_args; i++)
     {
+      int offset = (is_method ? 1 : 0);
       ainfo = g_callable_info_get_arg ((GICallableInfo *)info, i);
       switch (g_arg_info_get_direction (ainfo))
 	{
 	case GI_DIRECTION_IN:
 	  tinfo = g_arg_info_get_type (ainfo);
-	  atypes[i] = get_ffi_type (tinfo);
+	  atypes[i+offset] = get_ffi_type (tinfo);
 	  g_base_info_unref ((GIBaseInfo *)tinfo);
 
 	  if (in_pos >= n_in_args)
@@ -224,38 +250,38 @@ g_function_info_invoke (GIFunctionInfo *info,
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"in\" arguments");	      
+			   "Too few \"in\" arguments (handling in)");
 	      goto out;
 	    }
 
-	  args[i] = (gpointer)&in_args[in_pos];
+	  args[i+offset] = (gpointer)&in_args[in_pos];
 	  in_pos++;
 	  
 	  break;
 	case GI_DIRECTION_OUT:
-	  atypes[i] = &ffi_type_pointer;
+	  atypes[i+offset] = &ffi_type_pointer;
 
 	  if (out_pos >= n_out_args)
 	    {
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"out\" arguments");	      
+			   "Too few \"out\" arguments (handling out)");	      
 	      goto out;
 	    }
 
-	  args[i] = (gpointer)&out_args[out_pos];
+	  args[i+offset] = (gpointer)&out_args[out_pos+offset];
 	  out_pos++;	  
 	  break;
 	case GI_DIRECTION_INOUT:
-	  atypes[i] = &ffi_type_pointer;
+	  atypes[i+offset] = &ffi_type_pointer;
 
 	  if (in_pos >= n_in_args)
 	    {
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"in\" arguments");	      
+			   "Too few \"in\" arguments (handling inout)");
 	      goto out;
 	    }
 
@@ -264,11 +290,11 @@ g_function_info_invoke (GIFunctionInfo *info,
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"in\" arguments");	      
+			   "Too few \"out\" arguments (handling inout)");	      
 	      goto out;
 	    }
 	  
-	  args[i] = (gpointer)&in_args[in_pos];
+	  args[i+offset] = (gpointer)&in_args[in_pos];
 	  in_pos++;	  
 	  out_pos++;	  
 	  break;
@@ -282,7 +308,7 @@ g_function_info_invoke (GIFunctionInfo *info,
       g_set_error (error,
 		   G_INVOKE_ERROR,
 		   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		   "Too many \"in\" arguments");	      
+		   "Too many \"in\" arguments (at end)");
       goto out;
     }
   if (out_pos < n_out_args)
@@ -290,11 +316,11 @@ g_function_info_invoke (GIFunctionInfo *info,
       g_set_error (error,
 		   G_INVOKE_ERROR,
 		   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		   "Too many \"out\" arguments");	      
+		   "Too many \"out\" arguments (at end)");	      
       goto out;
     }
 
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
+  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_invoke_args, rtype, atypes) != FFI_OK)
     goto out;
 
   ffi_call (&cif, func, return_value, args);
