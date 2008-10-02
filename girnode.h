@@ -85,6 +85,7 @@ struct _GIrNodeFunction
   GIrNode node;
 
   gboolean deprecated;
+  gboolean is_varargs; /* Not in typelib yet */ 
 
   gboolean is_method;
   gboolean is_setter;
@@ -183,6 +184,7 @@ struct _GIrNodeVFunc
 {
   GIrNode node;
 
+  gboolean is_varargs; /* Not in typelib yet */ 
   gboolean must_chain_up;
   gboolean must_be_implemented;
   gboolean must_not_be_implemented;

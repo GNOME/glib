@@ -79,6 +79,7 @@ struct _ParseContext
   GIrModule *current_module;
   GIrNode *current_node;
   GIrNode *current_typed;
+  gboolean is_varargs;
   GList *type_stack;
   GList *type_parameters;
   int type_depth;
@@ -1420,11 +1421,13 @@ start_type (GMarkupParseContext *context,
   const gchar *name;
   const gchar *ctype;
   gboolean is_array;
+  gboolean is_varargs;
   GIrNodeType *typenode;
 
   is_array = strcmp (element_name, "array") == 0;
+  is_varargs = strcmp (element_name, "varargs") == 0;
 
-  if (!(is_array || (strcmp (element_name, "type") == 0)))
+  if (!(is_array || is_varargs || (strcmp (element_name, "type") == 0)))
     return FALSE;
 
   if (ctx->state == STATE_TYPE) 
@@ -1449,6 +1452,25 @@ start_type (GMarkupParseContext *context,
     {
       state_switch (ctx, STATE_TYPE);
       ctx->type_depth = 1;
+      if (is_varargs)
+	{
+	  switch (ctx->current_node->type)
+	    {
+	    case G_IR_NODE_FUNCTION:
+	    case G_IR_NODE_CALLBACK:
+	      {
+		GIrNodeFunction *func = (GIrNodeFunction *)ctx->current_node;
+		func->is_varargs = TRUE;
+	      }
+	      break;
+	    case G_IR_NODE_VFUNC:
+	      {
+		GIrNodeVFunc *vfunc = (GIrNodeVFunc *)ctx->current_node;
+		vfunc->is_varargs = TRUE;
+	      }
+	      break;
+	    }
+	}
       ctx->type_stack = NULL;
       ctx->type_parameters = NULL;
     }
@@ -1461,6 +1483,9 @@ start_type (GMarkupParseContext *context,
 		   "The element <type> is invalid here");
       return FALSE;
     }
+
+  if (is_varargs)
+    return TRUE;
 
   if (is_array) 
     {
@@ -1509,7 +1534,12 @@ start_type (GMarkupParseContext *context,
 static void
 end_type_top (ParseContext *ctx)
 {
-  GIrNodeType *typenode = (GIrNodeType*)ctx->type_parameters->data;
+  GIrNodeType *typenode;
+
+  if (!ctx->type_parameters)
+    goto out;
+
+  typenode = (GIrNodeType*)ctx->type_parameters->data;
 
   /* Default to pointer for unspecified containers */
   if (typenode->tag == GI_TYPE_TAG_ARRAY ||
@@ -1559,7 +1589,8 @@ end_type_top (ParseContext *ctx)
       g_assert_not_reached ();
     }
   g_list_free (ctx->type_parameters);
-  
+
+ out:  
   ctx->type_depth = 0;
   ctx->type_parameters = NULL;
   ctx->current_typed = NULL;
@@ -2322,7 +2353,11 @@ start_element_handler (GMarkupParseContext *context,
       if (start_vfunc (context, element_name,
 		       attribute_names, attribute_values,
 		       ctx, error))
-	goto out;      
+	goto out;
+      if (start_type (context, element_name,
+		      attribute_names, attribute_values,
+		      ctx, error))
+	goto out;
       break;
     }
 
@@ -2464,36 +2499,43 @@ end_element_handler (GMarkupParseContext *context,
       break;
 
     case STATE_FUNCTION:
-       if (ctx->current_node == g_list_last (ctx->current_module->entries)->data)
-	{
-	  ctx->current_node = NULL;
-	  state_switch (ctx, STATE_NAMESPACE);
-	}
-      else 
-	{ 
-	  ctx->current_node = g_list_last (ctx->current_module->entries)->data;
-	  if (ctx->current_node->type == G_IR_NODE_INTERFACE)
-	    state_switch (ctx, STATE_INTERFACE);
-	  else if (ctx->current_node->type == G_IR_NODE_OBJECT)
-	    state_switch (ctx, STATE_CLASS);
-	  else if (ctx->current_node->type == G_IR_NODE_BOXED)
-	    state_switch (ctx, STATE_BOXED);
-	  else if (ctx->current_node->type == G_IR_NODE_STRUCT)
-	    state_switch (ctx, STATE_STRUCT);
-	  else if (ctx->current_node->type == G_IR_NODE_UNION)
-	    state_switch (ctx, STATE_UNION);
-	  else
-	    {
-	      int line_number, char_number;
-	      g_markup_parse_context_get_position (context, &line_number, &char_number);
-	      g_set_error (error,
-			   G_MARKUP_ERROR,
-			   G_MARKUP_ERROR_INVALID_CONTENT,
-			   "Unexpected end tag '%s' on line %d char %d",
-			   element_name,
-			   line_number, char_number);
-	    }
-	}
+      {
+ 	gboolean current_is_toplevel;
+	GList *last = g_list_last (ctx->current_module->entries);
+	
+	current_is_toplevel = ctx->current_node == last->data;	
+
+	if (current_is_toplevel)
+	  {
+	    ctx->current_node = NULL;
+	    state_switch (ctx, STATE_NAMESPACE);
+	  }
+	else 
+	  { 
+	    ctx->current_node = g_list_last (ctx->current_module->entries)->data;
+	    if (ctx->current_node->type == G_IR_NODE_INTERFACE)
+	      state_switch (ctx, STATE_INTERFACE);
+	    else if (ctx->current_node->type == G_IR_NODE_OBJECT) 
+	      state_switch (ctx, STATE_CLASS);
+	    else if (ctx->current_node->type == G_IR_NODE_BOXED)
+	      state_switch (ctx, STATE_BOXED);
+	    else if (ctx->current_node->type == G_IR_NODE_STRUCT)
+	      state_switch (ctx, STATE_STRUCT);
+	    else if (ctx->current_node->type == G_IR_NODE_UNION)
+	      state_switch (ctx, STATE_UNION);
+	    else
+	      {
+		int line_number, char_number;
+		g_markup_parse_context_get_position (context, &line_number, &char_number);
+		g_set_error (error,
+			     G_MARKUP_ERROR,
+			     G_MARKUP_ERROR_INVALID_CONTENT,
+			     "Unexpected end tag '%s' on line %d char %d",
+			     element_name,
+			     line_number, char_number);
+	      }
+	  }
+      }
       break;
 
     case STATE_CLASS_FIELD:
@@ -2654,7 +2696,8 @@ end_element_handler (GMarkupParseContext *context,
 	}
       break;
     case STATE_TYPE:
-      if ((strcmp ("type", element_name) == 0) || (strcmp ("array", element_name) == 0))
+      if ((strcmp ("type", element_name) == 0) || (strcmp ("array", element_name) == 0) ||
+	  (strcmp ("varargs", element_name) == 0))
 	{
 	  end_type (ctx);
 	  break;
@@ -2699,6 +2742,69 @@ static GMarkupParser parser =
   NULL,
   cleanup
 };
+
+static GList *
+post_filter_varargs_functions (GList *list)
+{
+  GList *iter;
+
+  iter = list;
+  while (iter)
+    {
+      GList *link = iter;
+      GIrNode *node = iter->data;
+
+      iter = iter->next;
+
+      if (node->type == G_IR_NODE_FUNCTION)
+	{
+	  if (((GIrNodeFunction*)node)->is_varargs)
+	    {
+	      g_printerr ("deleting varargs function\n");
+	      list = g_list_delete_link (list, link);
+	    }
+	}
+    }
+  return list;
+}
+
+static void
+post_filter (GIrModule *module)
+{
+  GList *iter;
+
+  module->entries = post_filter_varargs_functions (module->entries);
+  iter = module->entries;
+  while (iter)
+    {
+      GList *link = iter;
+      GIrNode *node = iter->data;
+
+      iter = iter->next;
+      
+      if (node->type == G_IR_NODE_OBJECT || 
+	  node->type == G_IR_NODE_INTERFACE) 
+	{
+	  GIrNodeInterface *iface = (GIrNodeInterface*)node;
+	  iface->members = post_filter_varargs_functions (iface->members);
+	}
+      else if (node->type == G_IR_NODE_BOXED)
+	{
+	  GIrNodeBoxed *boxed = (GIrNodeBoxed*)node;
+	  boxed->members = post_filter_varargs_functions (boxed->members);
+	}
+      else if (node->type == G_IR_NODE_STRUCT)
+	{
+	  GIrNodeStruct *iface = (GIrNodeStruct*)node;
+	  iface->members = post_filter_varargs_functions (iface->members);
+	}
+      else if (node->type == G_IR_NODE_UNION)
+	{
+	  GIrNodeUnion *iface = (GIrNodeUnion*)node;
+	  iface->members = post_filter_varargs_functions (iface->members);
+	}
+    }
+}
 
 GList * 
 g_ir_parse_string (const gchar  *namespace,
@@ -2753,6 +2859,7 @@ g_ir_parse_file (const gchar  *filename,
   gchar *buffer;
   gsize length;
   GList *modules;
+  GList *iter;
   const char *slash;
   char *namespace;
 
@@ -2778,6 +2885,11 @@ g_ir_parse_file (const gchar  *filename,
     return NULL;
   
   modules = g_ir_parse_string (namespace, includes, buffer, length, error);
+
+  for (iter = modules; iter; iter = iter->next) 
+    {
+      post_filter ((GIrModule*)iter->data);
+    }
 
   g_free (namespace);
 
