@@ -267,6 +267,7 @@ GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
 /* GITypeInfo */
 
 typedef enum {
+  /* Basic types */
   GI_TYPE_TAG_VOID      =  0,
   GI_TYPE_TAG_BOOLEAN   =  1,
   GI_TYPE_TAG_INT8      =  2,
@@ -286,15 +287,21 @@ typedef enum {
   GI_TYPE_TAG_FLOAT     = 16,
   GI_TYPE_TAG_DOUBLE    = 17,
   GI_TYPE_TAG_TIME_T    = 18,
-  GI_TYPE_TAG_UTF8      = 19,
-  GI_TYPE_TAG_FILENAME  = 20,
-  GI_TYPE_TAG_ARRAY     = 21,
-  GI_TYPE_TAG_INTERFACE = 22,
-  GI_TYPE_TAG_GLIST     = 23,
-  GI_TYPE_TAG_GSLIST    = 24,
-  GI_TYPE_TAG_GHASH     = 25,
-  GI_TYPE_TAG_ERROR     = 26
+  GI_TYPE_TAG_GTYPE     = 19,
+  GI_TYPE_TAG_UTF8      = 20,
+  GI_TYPE_TAG_FILENAME  = 21,
+  /* Non-basic types */
+  GI_TYPE_TAG_ARRAY     = 22,
+  GI_TYPE_TAG_INTERFACE = 23,
+  GI_TYPE_TAG_GLIST     = 24,
+  GI_TYPE_TAG_GSLIST    = 25,
+  GI_TYPE_TAG_GHASH     = 26,
+  GI_TYPE_TAG_ERROR     = 27
+  /* Note - there is only room currently for 32 tags.
+   * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;
+
+#define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
 

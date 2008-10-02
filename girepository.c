@@ -750,6 +750,8 @@ g_type_tag_to_string (GITypeTag type)
       return "double";
     case GI_TYPE_TAG_TIME_T:
       return "time_t";
+    case GI_TYPE_TAG_GTYPE:
+      return "GType";
     case GI_TYPE_TAG_UTF8:
       return "utf8";
     case GI_TYPE_TAG_FILENAME:

@@ -222,7 +222,8 @@ state_switch (ParseContext *ctx, ParseState newstate)
   ctx->state = newstate;
 }
 
-static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib);
+static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib,
+					  gboolean in_gobject);
 
 typedef struct {
   const gchar *str;
@@ -255,6 +256,7 @@ static BasicTypeInfo basic_types[] = {
     { "float",    GI_TYPE_TAG_FLOAT,   0 },
     { "double",   GI_TYPE_TAG_DOUBLE,  0 },
     { "time_t",   GI_TYPE_TAG_TIME_T,  0 },
+    { "GType",    GI_TYPE_TAG_GTYPE,   0 },
     { "utf8",     GI_TYPE_TAG_UTF8,    1 },  
     { "filename", GI_TYPE_TAG_FILENAME,1 },
 };  
@@ -277,7 +279,8 @@ parse_basic (const char *str)
 }
 
 static GIrNodeType *
-parse_type_internal (const gchar *str, char **next, gboolean in_glib)
+parse_type_internal (const gchar *str, char **next, gboolean in_glib,
+		     gboolean in_gobject)
 {
   const BasicTypeInfo *basic;  
   GIrNodeType *type;
@@ -287,6 +290,13 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
   
   type->unparsed = g_strdup (str);
 
+  /* See comment below on GLib.List handling */
+  if (in_gobject && strcmp (str, "Type") == 0) 
+    {
+      temporary_type = g_strdup ("GLib.Type");
+      str = temporary_type;
+    }
+  
   basic = parse_basic (str);
   if (basic != NULL)
     {
@@ -298,11 +308,10 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib)
     }
   else if (in_glib)
     {
-      /* If we're inside GLib, handle "List" by prefixing it with
+      /* If we're inside GLib, handle "List" etc. by prefixing with
        * "GLib." so the parsing code below doesn't have to get more
        * special. 
        */
-      
       if (g_str_has_prefix (str, "List<") ||
 	  strcmp (str, "List") == 0)
 	{
@@ -437,17 +446,18 @@ parse_type (ParseContext *ctx, const gchar *type)
   gchar *str;
   GIrNodeType *node;
   const BasicTypeInfo *basic;
-  gboolean in_glib;
+  gboolean in_glib, in_gobject;
   gboolean matched_special = FALSE;
 
   in_glib = strcmp (ctx->namespace, "GLib") == 0;
+  in_gobject = strcmp (ctx->namespace, "GObject") == 0;
 
   /* Do not search aliases for basic types */
   basic = parse_basic (type);
   if (basic == NULL)
     type = resolve_aliases (ctx, type);
 
-  node = parse_type_internal (type, NULL, in_glib);
+  node = parse_type_internal (type, NULL, in_glib, in_gobject);
   if (node)
     g_debug ("Parsed type: %s => %d", type, node->tag);
   else
