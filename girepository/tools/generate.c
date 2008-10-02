@@ -64,30 +64,6 @@ write_type_info (const gchar *namespace,
   GITypeInfo *type;
   gboolean is_pointer;
   
-  const gchar* basic[] = {
-    "none", 
-    "boolean", 
-    "int8", 
-    "uint8", 
-    "int16", 
-    "uint16", 
-    "int32", 
-    "uint32", 
-    "int64", 
-    "uint64", 
-    "int",
-    "uint",
-    "long",
-    "ulong",
-    "ssize",
-    "size",
-    "float", 
-    "double", 
-    "time_t", 
-    "utf8",
-    "filename"
-  };
-
   check_unresolved ((GIBaseInfo*)info);
 
   tag = g_type_info_get_tag (info);
@@ -100,8 +76,8 @@ write_type_info (const gchar *namespace,
       else
 	g_fprintf (file, "%s", "none");
     } 
-  else if (tag < GI_TYPE_TAG_ARRAY)
-    g_fprintf (file, "%s", basic[tag]);
+  else if (G_TYPE_TAG_IS_BASIC (tag))
+    g_fprintf (file, "%s", g_type_tag_to_string (tag));
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length;
