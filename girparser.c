@@ -2760,7 +2760,6 @@ post_filter_varargs_functions (GList *list)
 	{
 	  if (((GIrNodeFunction*)node)->is_varargs)
 	    {
-	      g_printerr ("deleting varargs function\n");
 	      list = g_list_delete_link (list, link);
 	    }
 	}
