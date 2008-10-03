@@ -738,6 +738,8 @@ validate_function_blob (ValidateContext *ctx,
   switch (container_type)
     {
     case BLOB_TYPE_BOXED:
+    case BLOB_TYPE_STRUCT:
+    case BLOB_TYPE_UNION:
     case BLOB_TYPE_OBJECT:
     case BLOB_TYPE_INTERFACE:
       is_method = !(blob->constructor || blob->setter || blob->getter || blob->wraps_vfunc);
@@ -751,6 +753,8 @@ validate_function_blob (ValidateContext *ctx,
       switch (container_type)
 	{
 	case BLOB_TYPE_BOXED:
+	case BLOB_TYPE_STRUCT:
+	case BLOB_TYPE_UNION:
 	case BLOB_TYPE_OBJECT:
 	case BLOB_TYPE_INTERFACE:
 	  break;
