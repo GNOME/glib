@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-19 07:34+0000\n"
+"POT-Creation-Date: 2008-10-04 10:17-0400\n"
 "PO-Revision-Date: 2008-08-13 23:23-0300\n"
 "Last-Translator: Henrique P Machado <zehrique@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -1192,31 +1192,31 @@ msgstr "Fim do fluxo precoce não esperado"
 msgid "Unnamed"
 msgstr "Não nomeado"
 
-#: ../gio/gdesktopappinfo.c:612
+#: ../gio/gdesktopappinfo.c:620
 msgid "Desktop file didn't specify Exec field"
 msgstr "O arquivo da área de trabalho não especifica o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:906
+#: ../gio/gdesktopappinfo.c:914
 msgid "Unable to find terminal required for application"
 msgstr "Não foi possível localizar o terminal requerido para o aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1138
+#: ../gio/gdesktopappinfo.c:1146
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Não foi possível criar pasta de configuração do aplicativo do usuário %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1142
+#: ../gio/gdesktopappinfo.c:1150
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Não foi possível criar pasta de configuração MIME do usuário %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1481
+#: ../gio/gdesktopappinfo.c:1489
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Não foi possível criar arquivo %s da área de trabalho do usuário"
 
-#: ../gio/gdesktopappinfo.c:1556
+#: ../gio/gdesktopappinfo.c:1564
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definição personalizada para %s"
