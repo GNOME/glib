@@ -1,3 +1,11 @@
+2008-10-05  Pascal Terjan  <pterjan@linuxfr.org>
+
+	Bug 554970 – segfault when update-desktop-database is not available
+	on the system
+
+	* gdesktopappinfo.c (run_update_command): Have the error set before 
+	using it.
+
 2008-10-01  David Zeuthen  <davidz@redhat.com>
 
 	* gdesktopappinfo.c (expand_macro): If possible, always pass FUSE
