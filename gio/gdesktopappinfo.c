@@ -1322,7 +1322,7 @@ run_update_command (char *command,
 			   G_SPAWN_DO_NOT_REAP_CHILD,
 			   NULL, NULL, /* No setup function */
 			   &pid,
-			   NULL)) 
+			   &error)) 
 	  g_child_watch_add (pid, update_program_done, NULL);
 	else
 	  {
