@@ -60,6 +60,7 @@ struct _GFileAttributeInfoList
   int                 n_infos;
 };
 
+GType                     g_file_attribute_info_list_get_type (void);
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
 GFileAttributeInfoList *  g_file_attribute_info_list_ref    (GFileAttributeInfoList *list);
 void                      g_file_attribute_info_list_unref  (GFileAttributeInfoList *list);

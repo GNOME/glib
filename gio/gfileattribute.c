@@ -326,6 +326,18 @@ _g_file_attribute_value_dup (const GFileAttributeValue *other)
   return attr;
 }
 
+GType
+g_file_attribute_info_list_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GFileAttributeInfoList"),
+					    (GBoxedCopyFunc) g_file_attribute_info_list_dup,
+					    (GBoxedFreeFunc) g_file_attribute_info_list_unref);
+  return type_id;
+}
+
 static gboolean
 valid_char (char c)
 {

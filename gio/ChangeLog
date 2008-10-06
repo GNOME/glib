@@ -1,3 +1,11 @@
+2008-10-06  Colin Walters  <walters@verbum.org>
+
+	Bug 554745 - GFileAttributeInfoList should be boxed
+
+	* gio/gfileattribute.c: Define a boxed type for GFileAttributeList
+	for convenience of bindings.
+	* gio/gfileattribute.h: Prototype it.
+
 2008-10-05  Pascal Terjan  <pterjan@linuxfr.org>
 
 	Bug 554970 – segfault when update-desktop-database is not available
