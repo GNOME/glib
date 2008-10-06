@@ -1,3 +1,12 @@
+2008-10-06  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 555309 – giochannel breaks on error
+	Patch from Christian Persch
+
+	* glib/giounix.c (g_io_unix_read), (g_io_unix_write),
+	(g_io_unix_seek), (g_io_unix_close), (g_io_unix_set_flags):
+	Don't shadow err.  Oops!
+
 2008-10-06  Christophe Fergeau  <teuf@gnome.org>
 
 	Bug 555224 – Improve g_format_size_for_display doc

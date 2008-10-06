@@ -190,10 +190,10 @@ g_io_unix_read (GIOChannel *channel,
 
   if (result < 0)
     {
-      int err = errno;
+      int errsv = errno;
       *bytes_read = 0;
 
-      switch (err)
+      switch (errsv)
         {
 #ifdef EINTR
           case EINTR:
@@ -205,8 +205,8 @@ g_io_unix_read (GIOChannel *channel,
 #endif
           default:
             g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                                 g_io_channel_error_from_errno (err),
-                                 g_strerror (err));
+                                 g_io_channel_error_from_errno (errsv),
+                                 g_strerror (errsv));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -231,10 +231,10 @@ g_io_unix_write (GIOChannel  *channel,
 
   if (result < 0)
     {
-      int err = errno;
+      int errsv = errno;
       *bytes_written = 0;
 
-      switch (err)
+      switch (errsv)
         {
 #ifdef EINTR
           case EINTR:
@@ -246,8 +246,8 @@ g_io_unix_write (GIOChannel  *channel,
 #endif
           default:
             g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                                 g_io_channel_error_from_errno (err),
-                                 g_strerror (err));
+                                 g_io_channel_error_from_errno (errsv),
+                                 g_strerror (errsv));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -297,10 +297,10 @@ g_io_unix_seek (GIOChannel *channel,
 
   if (result < 0)
     {
-      int err = errno;
+      int errsv = errno;
       g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                           g_io_channel_error_from_errno (err),
-                           g_strerror (err));
+                           g_io_channel_error_from_errno (errsv),
+                           g_strerror (errsv));
       return G_IO_STATUS_ERROR;
     }
 
@@ -316,10 +316,10 @@ g_io_unix_close (GIOChannel *channel,
 
   if (close (unix_channel->fd) < 0)
     {
-      int err = errno;
+      int errsv = errno;
       g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                           g_io_channel_error_from_errno (err),
-                           g_strerror (err));
+                           g_io_channel_error_from_errno (errsv),
+                           g_strerror (errsv));
       return G_IO_STATUS_ERROR;
     }
 
@@ -380,10 +380,10 @@ g_io_unix_set_flags (GIOChannel *channel,
 
   if (fcntl (unix_channel->fd, F_SETFL, fcntl_flags) == -1)
     {
-      int err = errno;
+      int errsv = errno;
       g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                           g_io_channel_error_from_errno (err),
-                           g_strerror (err));
+                           g_io_channel_error_from_errno (errsv),
+                           g_strerror (errsv));
       return G_IO_STATUS_ERROR;
     }
 
