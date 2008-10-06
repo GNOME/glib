@@ -1,3 +1,12 @@
+2008-10-06  Christophe Fergeau  <teuf@gnome.org>
+
+	Bug 555224 – Improve g_format_size_for_display doc
+	
+	* glib/gfileutils.c: change g_format_size_for_display API doc to
+	explicitly say that the returned string has to be freed. Change
+	spelling of "newly allocated" to "newly-allocated" in g_file_read_link
+	API doc to be more consistent with what is done in that file.
+
 2008-10-01  David Zeuthen  <davidz@redhat.com>
 
 	* README.in: Add "Notes about glib 2.20" section detailing the

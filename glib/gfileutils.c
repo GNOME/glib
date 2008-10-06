@@ -1824,13 +1824,16 @@ g_build_filename (const gchar *first_element,
  * @size: a size in bytes.
  * 
  * Formats a size (for example the size of a file) into a human readable string.
- * Sizes are rounded to the nearest size prefix (KB, MB, GB) and are displayed rounded to
- * the nearest  tenth. E.g. the file size 3292528 bytes will be converted into
- * the string "3.1 MB".
+ * Sizes are rounded to the nearest size prefix (KB, MB, GB) and are displayed 
+ * rounded to the nearest  tenth. E.g. the file size 3292528 bytes will be
+ * converted into the string "3.1 MB".
  *
  * The prefix units base is 1024 (i.e. 1 KB is 1024 bytes).
- * 
- * Returns: a formatted string containing a human readable file size.
+ *
+ * This string should be freed with g_free() when not needed any longer.
+ *
+ * Returns: a newly-allocated formatted string containing a human readable
+ *          file size.
  *
  * Since: 2.16
  **/
@@ -1871,7 +1874,7 @@ g_format_size_for_display (goffset size)
  * readlink() function.  The returned string is in the encoding used
  * for filenames. Use g_filename_to_utf8() to convert it to UTF-8.
  *
- * Returns: A newly allocated string with the contents of the symbolic link, 
+ * Returns: A newly-allocated string with the contents of the symbolic link, 
  *          or %NULL if an error occurred.
  *
  * Since: 2.4
