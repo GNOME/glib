@@ -992,9 +992,9 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
     return G_TYPE_NONE;
   
   get_type_func = NULL;
-  if (!g_module_symbol (((GIBaseInfo*)info)->typelib->module,
-                        type_init,
-                        (void**) &get_type_func))
+  if (!g_typelib_symbol (((GIBaseInfo*)info)->typelib,
+                         type_init,
+                         (void**) &get_type_func))
     return G_TYPE_NONE;
   
   return (* get_type_func) ();

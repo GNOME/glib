@@ -484,7 +484,7 @@ struct _GTypelib {
   gsize len;
   gboolean owns_memory;
   GMappedFile *mfile;
-  GModule *module;
+  GList *modules;
 };
 
 DirEntry *g_typelib_get_dir_entry (GTypelib *typelib,

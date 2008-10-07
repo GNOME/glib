@@ -252,9 +252,6 @@ register_internal (GIRepository *repository,
       g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
     }
 
-  if (typelib->module == NULL)
-      typelib->module = g_module_open (NULL, 0); 
-
   return namespace;
 }
 

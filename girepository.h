@@ -112,8 +112,9 @@ GTypelib *   g_typelib_new_from_const_memory (const guchar *memory,
                                                 gsize         len);
 GTypelib *   g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
 void          g_typelib_free                  (GTypelib    *typelib);
-void          g_typelib_set_module            (GTypelib    *typelib,
-                                                GModule      *module);
+gboolean      g_typelib_symbol                (GTypelib    *typelib,
+                                               const gchar *symbol_name,
+                                               gpointer    *symbol);
 const gchar * g_typelib_get_namespace         (GTypelib    *typelib);
 
 typedef enum
