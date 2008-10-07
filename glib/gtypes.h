@@ -32,6 +32,7 @@
 #define __G_TYPES_H__
 
 #include <glibconfig.h>
+#include <glib/gmacros.h>
 
 G_BEGIN_DECLS
 

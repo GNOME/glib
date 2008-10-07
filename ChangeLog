@@ -1,3 +1,7 @@
+2008-10-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtypes.h: Properly include gmacros.h
+
 2008-10-06  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 555309 – giochannel breaks on error
