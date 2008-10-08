@@ -329,13 +329,19 @@ _g_file_attribute_value_dup (const GFileAttributeValue *other)
 GType
 g_file_attribute_info_list_get_type (void)
 {
-  static GType type_id = 0;
+  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (!type_id)
-    type_id = g_boxed_type_register_static (g_intern_static_string ("GFileAttributeInfoList"),
-					    (GBoxedCopyFunc) g_file_attribute_info_list_dup,
-					    (GBoxedFreeFunc) g_file_attribute_info_list_unref);
-  return type_id;
+  if (g_once_init_enter (&g_define_type_id__volatile))
+    {
+      GType g_define_type_id =
+        g_boxed_type_register_static (I_("GFileAttributeInfoList"),
+                                      (GBoxedCopyFunc) g_file_attribute_info_list_dup,
+                                      (GBoxedFreeFunc) g_file_attribute_info_list_unref);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+    }
+
+  return g_define_type_id__volatile;
 }
 
 static gboolean
