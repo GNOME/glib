@@ -1,3 +1,10 @@
+2008-09-30  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gprintf.c
+	* glib/gnulib/vasnprintf.c: Don't define _GNU_SOURCE on Windows,
+	as _GNU_SOURCE has unintended side effects when compiling against
+	newest mingw headers.
+
 2008-09-26  Matthias Clasen  <mclasen@redhat.com>
 
 	Merged from trunk

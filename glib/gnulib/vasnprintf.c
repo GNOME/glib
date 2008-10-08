@@ -16,11 +16,13 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
    USA.  */
 
+#ifndef _WIN32
 /* Tell glibc's <stdio.h> to provide a prototype for snprintf().
    This must come before <config.h> because <config.h> may include
    <features.h>, and once <features.h> has been included, it's too late.  */
 #ifndef _GNU_SOURCE
 # define _GNU_SOURCE    1
+#endif
 #endif
 
 #ifdef HAVE_CONFIG_H
