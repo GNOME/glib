@@ -1,3 +1,11 @@
+2008-10-08  Tor Lillqvist  <tml@novell.com>
+
+	Bug 554790 - g_convert() misbehaves with winiconv versions
+
+	* glib/win_iconv.c (kernel_mbtowc): If converting from ASCII,
+	explicitly check for and reject 8bit chars. MultiByteToWideChar()
+	doesn't, at least not on XP.
+
 2008-09-30  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gprintf.c
