@@ -1096,6 +1096,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
     {
       gint newlines = 0;
       const gchar *p, *q;
+      gchar *current_text_dup;
+
       q = p = context->current_text;
       while (p != first_invalid)
         {
@@ -1111,12 +1113,13 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
       context->line_number += newlines;
       context->char_number += g_utf8_strlen (q, first_invalid - q);
 
+      current_text_dup = g_strndup (context->current_text, context->current_text_len);
       set_error (context,
                  error,
                  G_MARKUP_ERROR_BAD_UTF8,
                  _("Invalid UTF-8 encoded text - not valid '%s'"),
-                 g_strndup (context->current_text,
-                            context->current_text_len));
+                 current_text_dup);
+      g_free (current_text_dup);
       goto finished;
     }
 
