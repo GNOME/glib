@@ -207,7 +207,7 @@ g_unix_input_stream_read (GInputStream  *stream,
   while (1)
     {
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	break;
+	return -1;
       res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
 	{
