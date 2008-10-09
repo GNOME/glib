@@ -2059,7 +2059,7 @@ g_typelib_free (GTypelib *typelib)
 }
 
 const gchar *
-g_typelib_get_namespace(GTypelib *typelib)
+g_typelib_get_namespace (GTypelib *typelib)
 {
   return g_typelib_get_string (typelib, ((Header *) typelib->data)->namespace);
 }
@@ -2074,7 +2074,7 @@ g_typelib_get_namespace(GTypelib *typelib)
  * Return value: #TRUE on success
  **/
 gboolean
-g_typelib_symbol(GTypelib *typelib, const char *symbol_name, gpointer *symbol)
+g_typelib_symbol (GTypelib *typelib, const char *symbol_name, gpointer *symbol)
 {
   GList *l;
 
