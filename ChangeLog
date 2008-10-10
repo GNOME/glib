@@ -1,3 +1,8 @@
+2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
+
+	* configure.in: With libtool 2.x, regenerate libtool early.
+	Based on bug 552107, patch by Patryk Zawadzki
+
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 554557 – Patch to fix gcc warnings about missing format 
