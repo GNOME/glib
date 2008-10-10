@@ -93,8 +93,9 @@ main ()
 {
   int major, minor, micro;
   char *tmp_version;
+  int ignored;
 
-  system ("touch conf.glibtest");
+  ignored = system ("touch conf.glibtest");
 
   /* HP/UX 9 (%@#!) writes to sscanf strings */
   tmp_version = g_strdup("$min_glib_version");

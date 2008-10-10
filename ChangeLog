@@ -1,3 +1,10 @@
+2008-10-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552861 – glib-2.0.m4 calls system(3) without storing its result
+
+	* m4macros/glib-2.0.m4: Cosmetic change to make -Werror happy.
+	Patch by Andreas Köhler
+
 2008-10-08  Christian Persch  <chpe@gnome.org>
 
         Bug 555313 – GFileAttribute boxed type get_type function should
