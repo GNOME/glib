@@ -1,3 +1,11 @@
+2008-10-10  Alexander Larsson  <alexl@redhat.com>
+
+	Merged from trunk:
+
+	* gfileattribute.c (escape_byte_string):
+	Upper half of byte is >> 4, not >> 8.
+	Found by Kjartan Maraas via sparse
+
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Merged from trunk:
