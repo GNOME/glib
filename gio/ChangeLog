@@ -1,3 +1,9 @@
+2008-10-10  Alexander Larsson  <alexl@redhat.com>
+
+	* gfileattribute.c (escape_byte_string):
+	Upper half of byte is >> 4, not >> 8.
+	Found by Kjartan Maraas via sparse
+
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 555711 – Wrong fallback order of mimetype icons

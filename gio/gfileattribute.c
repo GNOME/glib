@@ -384,7 +384,7 @@ escape_byte_string (const char *str)
 	    {
 	      *p++ = '\\';
 	      *p++ = 'x';
-	      *p++ = hex_digits[(c >> 8) & 0xf];
+	      *p++ = hex_digits[(c >> 4) & 0xf];
 	      *p++ = hex_digits[c & 0xf];
 	    }
 	}
