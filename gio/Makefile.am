@@ -265,6 +265,7 @@ export_symbols = -export-symbols-regex '^g_.*'
 endif
 
 install-data-local: install-ms-lib install-def-file
+	$(mkinstalldirs) $(DESTDIR)$(GIO_MODULE_DIR)
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 

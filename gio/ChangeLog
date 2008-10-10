@@ -1,5 +1,12 @@
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 555121 – Improved build-time handling of gio module-dir
+
+	* fam/Makefile.am: Use GIO_MODULE_DIR consistently.
+	* Makefile.am: Create the module dir.
+
+2008-10-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/glocalfileinfo.c:
 	* gio/tests/live-g-file.c:
 	* gio/gsimpleasyncresult.c: Fix gcc warnings.

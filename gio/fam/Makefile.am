@@ -5,7 +5,7 @@ NULL =
 module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symbols-regex '^g_io_module_(load|unload)'
 
 giomodule_LTLIBRARIES = libgiofam.la
-giomoduledir = $(libdir)/gio/modules
+giomoduledir = $(GIO_MODULE_DIR)
 
 libgiofam_la_SOURCES = 		\
 	fam-helper.c			\
