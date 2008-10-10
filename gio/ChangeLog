@@ -1,3 +1,9 @@
+2008-10-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/glocalfileinfo.c:
+	* gio/tests/live-g-file.c:
+	* gio/gsimpleasyncresult.c: Fix gcc warnings.
+
 2008-10-09  Alexander Larsson  <alexl@redhat.com>
 
 	* gunixinputstream.c (g_unix_input_stream_read):

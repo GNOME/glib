@@ -1,5 +1,14 @@
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 554557 – Patch to fix gcc warnings about missing format 
+	specifiers
+
+	* glib/gmarkup.c:
+	* glib/gshell.c:
+	* glib/grel.c: Fix gcc warnings. Patch by Kjartan Maraas
+
+2008-10-10  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 552861 – glib-2.0.m4 calls system(3) without storing its result
 
 	* m4macros/glib-2.0.m4: Cosmetic change to make -Werror happy.

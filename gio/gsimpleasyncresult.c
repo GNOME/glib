@@ -609,6 +609,7 @@ run_in_thread (GIOSchedulerJob *job,
     g_simple_async_result_set_error (simple,
                                      G_IO_ERROR,
                                      G_IO_ERROR_CANCELLED,
+                                     "%s",
                                      _("Operation was cancelled"));
   else
     data->func (simple,

@@ -1136,7 +1136,7 @@ main (int argc, char *argv[])
   if (! target_path) 
     {
       g_print ("error: target path was not specified\n");
-      g_print (g_option_context_get_help (context, TRUE, NULL));
+      g_print ("%s", g_option_context_get_help (context, TRUE, NULL));
       return g_test_run ();
     }
 

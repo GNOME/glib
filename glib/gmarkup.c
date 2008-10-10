@@ -1050,6 +1050,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               set_error (context,
                          error,
                          G_MARKUP_ERROR_BAD_UTF8,
+                         "%s",
                          _("Invalid UTF-8 encoded text - overlong sequence"));
             }
           
@@ -1078,6 +1079,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
       set_error (context,
                  error,
                  G_MARKUP_ERROR_BAD_UTF8,
+                 "%s",
                  _("Invalid UTF-8 encoded text - not a start char"));
       goto finished;
     }
@@ -1155,6 +1157,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   set_error (context,
                              error,
                              G_MARKUP_ERROR_PARSE,
+                             "%s",
                              _("Document must begin with an element (e.g. <book>)"));
                 }
             }
@@ -1844,7 +1847,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
 
   if (context->document_empty)
     {
-      set_error (context, error, G_MARKUP_ERROR_EMPTY,
+      set_error (context, error, G_MARKUP_ERROR_EMPTY, "%s",
                  _("Document was empty or contained only whitespace"));
       return FALSE;
     }
@@ -1858,7 +1861,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_AFTER_OPEN_ANGLE:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly just after an open angle bracket '<'"));
       break;
 
@@ -1880,31 +1883,31 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_INSIDE_OPEN_TAG_NAME:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly inside an element name"));
       break;
 
     case STATE_INSIDE_ATTRIBUTE_NAME:
     case STATE_AFTER_ATTRIBUTE_NAME:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly inside an attribute name"));
       break;
 
     case STATE_BETWEEN_ATTRIBUTES:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly inside an element-opening "
                    "tag."));
       break;
 
     case STATE_AFTER_ATTRIBUTE_EQUALS_SIGN:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly after the equals sign "
                    "following an attribute name; no attribute value"));
       break;
 
     case STATE_INSIDE_ATTRIBUTE_VALUE_SQ:
     case STATE_INSIDE_ATTRIBUTE_VALUE_DQ:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly while inside an attribute "
                    "value"));
       break;
@@ -1926,7 +1929,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_INSIDE_PASSTHROUGH:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
+      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
                  _("Document ended unexpectedly inside a comment or "
                    "processing instruction"));
       break;

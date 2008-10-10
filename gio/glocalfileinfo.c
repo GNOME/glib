@@ -1792,8 +1792,8 @@ get_string (const GFileAttributeValue  *value,
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_STRING)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid attribute type (byte string expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (byte string expected)"));
       return FALSE;
     }
 
@@ -2059,8 +2059,8 @@ set_selinux_context (char                       *filename,
 
   if (val == NULL)
   {
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-               _("SELinux context must be non-NULL"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                         _("SELinux context must be non-NULL"));
     return FALSE;
   }
 
@@ -2082,8 +2082,8 @@ set_selinux_context (char                       *filename,
         }
         g_free (val_s);
   } else {
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-               _("SELinux is not enabled on this system"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                         _("SELinux is not enabled on this system"));
     return FALSE;
   }
 #endif 

@@ -365,7 +365,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case 45:
       /* These errors should not happen as we are using an UTF8-enabled PCRE
        * and we do not check if strings are valid */
-      g_warning (*errmsg);
+      g_warning ("%s", *errmsg);
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
     default:
@@ -1096,7 +1096,7 @@ g_regex_new (const gchar         *pattern,
       if (!support)
 	{
 	  msg = N_("PCRE library is compiled without UTF8 support");
-	  g_critical (msg);
+	  g_critical ("%s", msg);
 	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
 	  return NULL;
 	}
@@ -1105,7 +1105,7 @@ g_regex_new (const gchar         *pattern,
       if (!support)
 	{
 	  msg = N_("PCRE library is compiled without UTF8 properties support");
-	  g_critical (msg);
+	  g_critical ("%s", msg);
 	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
 	  return NULL;
 	}
