@@ -747,6 +747,7 @@ g_content_type_get_icon (const char *type)
 {
   char *mimetype_icon, *generic_mimetype_icon, *q;
   char *xdg_mimetype_icon, *legacy_mimetype_icon;
+  char *xdg_mimetype_generic_icon;
   char *icon_names[4];
   int n = 0;
   const char *p;
@@ -756,6 +757,7 @@ g_content_type_get_icon (const char *type)
   
   G_LOCK (gio_xdgmime);
   xdg_mimetype_icon = g_strdup (xdg_mime_get_icon (type));
+  xdg_mimetype_generic_icon = g_strdup (xdg_mime_get_generic_icon (type));
   G_UNLOCK (gio_xdgmime);
 
   mimetype_icon = g_strdup (type);
@@ -780,6 +782,10 @@ g_content_type_get_icon (const char *type)
 
   icon_names[n++] = mimetype_icon;
   icon_names[n++] = legacy_mimetype_icon;
+
+  if (xdg_mimetype_generic_icon)
+    icon_names[n++] = xdg_mimetype_generic_icon;
+
   icon_names[n++] = generic_mimetype_icon;
   
   themed_icon = g_themed_icon_new_from_names (icon_names, n);

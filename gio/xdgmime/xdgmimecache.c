@@ -953,14 +953,7 @@ _xdg_mime_cache_get_generic_icon (const char *mime)
 const char *
 _xdg_mime_cache_get_icon (const char *mime)
 {
-  const char *icon;
- 
-  icon = cache_lookup_icon (mime, 32);
- 
-  if (icon == NULL)
-    icon = _xdg_mime_cache_get_generic_icon (mime);
-
-  return icon;
+  return cache_lookup_icon (mime, 32);
 }
 
 static void
