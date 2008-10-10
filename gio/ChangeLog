@@ -1,5 +1,17 @@
 2008-10-10  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 555711 – Wrong fallback order of mimetype icons
+
+	* gcontenttype.c: Don't prefer generic icons over
+	default mimetype icons.
+
+	* xdgmime/xdgmimecache.c (xdg_mime_cache_get_icon): 
+	* xdgmime/xdgmime.c (xdg_mime_get_icon): Don't fall back
+	to generic icons.
+	Patch by Krysztof Kosiński
+
+2008-10-10  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 555121 – Improved build-time handling of gio module-dir
 
 	* fam/Makefile.am: Use GIO_MODULE_DIR consistently.
