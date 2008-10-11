@@ -878,13 +878,35 @@ validate_constant_blob (GTypelib     *typelib,
 			GError       **error)
 {
   gint value_size[] = {
-    0, 4, 1, 1, 2, 2, 4, 4, 8, 8, 
-    sizeof (gint), sizeof (guint), 
-    sizeof (glong), sizeof (gulong),
-    sizeof (gssize), sizeof (gsize),
-    sizeof (gfloat), sizeof (gdouble), 
-    0, 0
-  }; 
+    0, /* VOID */
+    4, /* BOOLEAN */
+    1, /* INT8 */
+    1, /* UINT8 */
+    2, /* INT16 */
+    2, /* UINT16 */
+    4, /* INT32 */
+    4, /* UINT32 */
+    8, /* INT64 */
+    8, /* UINT64 */
+    sizeof (gint),
+    sizeof (guint),
+    sizeof (glong),
+    sizeof (gulong),
+    sizeof (gssize),
+    sizeof (gsize),
+    sizeof (gfloat),
+    sizeof (gdouble),
+    sizeof (time_t),
+    0, /* GTYPE */
+    0, /* UTF8 */
+    0, /* FILENAME */
+    0, /* ARRAY */
+    0, /* INTERFACE */
+    0, /* GLIST */
+    0, /* GSLIST */
+    0, /* GHASH */
+    0, /* ERROR */
+  };
   ConstantBlob *blob;
   SimpleTypeBlob *type;
 
