@@ -1,5 +1,12 @@
 2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
 
+	Bug 551355 – [PATCH] Make glib build with libtool 2.2
+
+	* autogen.sh: Accept libtool 2.2.   We are moving towards having
+	it working.
+
+2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
+
 	* configure.in: With libtool 2.x, regenerate libtool early.
 	Based on bug 552107, patch by Patryk Zawadzki
 
