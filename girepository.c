@@ -495,7 +495,7 @@ find_interface (gpointer key,
 	  if (!BLOB_IS_REGISTERED_TYPE (entry))
 	    continue;
 
-	  blob = (RegisteredTypeBlob *)entry;
+	  blob = (RegisteredTypeBlob *)(&typelib->data[entry->offset]);
 	  if (!blob->gtype_name)
 	    continue;
 
