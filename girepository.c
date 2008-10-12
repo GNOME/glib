@@ -834,15 +834,15 @@ static int
 compare_version (const char *v1,
 		 const char *v2)
 {
-  gboolean err;
+  gboolean success;
   int v1_major, v1_minor;
   int v2_major, v2_minor;
-  
-  err = parse_version (v1, &v1_major, &v1_minor);
-  g_assert (!err);
 
-  err = parse_version (v2, &v2_major, &v2_minor);
-  g_assert (!err);
+  success = parse_version (v1, &v1_major, &v1_minor);
+  g_assert (success);
+
+  success = parse_version (v2, &v2_major, &v2_minor);
+  g_assert (success);
 
   if (v1_major > v2_major)
     return 1;
