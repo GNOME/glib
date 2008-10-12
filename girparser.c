@@ -666,7 +666,7 @@ parse_param_transfer (GIrNodeParam *param, const gchar *transfer)
       param->transfer = FALSE;
       param->shallow_transfer = FALSE;
     }
-  else if (transfer && strcmp (transfer, "shallow") == 0)
+  else if (transfer && strcmp (transfer, "container") == 0)
     {
       param->transfer = FALSE;
       param->shallow_transfer = TRUE;
