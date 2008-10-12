@@ -1,3 +1,10 @@
+2008-10-12  David Zeuthen  <davidz@redhat.com>
+
+	* gio.symbols:
+	* gunionvolumemonitor.c:
+	* gvolumemonitor.h:
+	Deprecate g_volume_monitor_adopt_orphan_mount() (#555331).
+
 2008-10-10  Alexander Larsson  <alexl@redhat.com>
 
 	* gfileattribute.c (escape_byte_string):

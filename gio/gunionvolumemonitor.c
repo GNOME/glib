@@ -634,6 +634,11 @@ _g_mount_get_for_mount_path (const char *mount_path,
  *
  * Returns: the #GVolume object that is the parent for @mount or %NULL
  * if no wants to adopt the #GMount.
+ *
+ * Deprecated: 2.20: Instead of using this function, #GVolumeMonitor
+ * implementations should instead create shadow mounts with the URI of
+ * the mount they intend to adopt. See the proxy volume monitor in
+ * gvfs for an example of this.
  */
 GVolume *
 g_volume_monitor_adopt_orphan_mount (GMount *mount)

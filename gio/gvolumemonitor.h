@@ -109,7 +109,7 @@ struct _GVolumeMonitorClass
                                       const char     *uuid);
 
 
-  /* These arguments are unfortunately backwards by mistake (bug #520169) */
+  /* These arguments are unfortunately backwards by mistake (bug #520169). Deprecated in 2.20. */
   GVolume * (* adopt_orphan_mount)   (GMount         *mount,
                                       GVolumeMonitor *volume_monitor);
 
@@ -139,7 +139,9 @@ GVolume *       g_volume_monitor_get_volume_for_uuid  (GVolumeMonitor *volume_mo
 GMount *        g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor,
                                                        const char     *uuid);
 
+#ifndef G_DISABLE_DEPRECATED
 GVolume *       g_volume_monitor_adopt_orphan_mount   (GMount         *mount);
+#endif
 
 G_END_DECLS
 
