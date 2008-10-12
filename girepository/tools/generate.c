@@ -250,10 +250,10 @@ write_callable_info (const gchar    *namespace,
 	case GI_TRANSFER_NOTHING:
 	  break;
 	case GI_TRANSFER_CONTAINER:
-	  g_fprintf (file, " transfer=\"container\"");
+	  g_fprintf (file, " transfer-ownership=\"container\"");
 	  break;
 	case GI_TRANSFER_EVERYTHING:
-	  g_fprintf (file, " transfer=\"full\"");
+	  g_fprintf (file, " transfer-ownership=\"full\"");
 	  break;
 	default:
 	  g_assert_not_reached ();
