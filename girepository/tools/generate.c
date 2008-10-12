@@ -239,6 +239,10 @@ write_callable_info (const gchar    *namespace,
 
   type = g_callable_info_get_return_type (info);
 
+  g_fprintf (file, ">\n");
+
+  g_fprintf (file, "%*s  <return-value", indent, "");
+
   if (g_type_info_is_pointer (type))
     {
       switch (g_callable_info_get_caller_owns (info))
@@ -255,13 +259,11 @@ write_callable_info (const gchar    *namespace,
 	  g_assert_not_reached ();
 	}
     }
-
-  g_fprintf (file, ">\n");
-
-  g_fprintf (file, "%*s  <return-value>\n", indent, "");
   
   if (g_callable_info_may_return_null (info))
     g_fprintf (file, " null-ok=\"1\"");
+
+  g_fprintf (file, ">\n");
 
   g_fprintf (file, "%*s  <type name=\"", indent + 2, "");
 
