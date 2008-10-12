@@ -489,12 +489,17 @@ find_interface (gpointer key,
     {
       for (i = 1; i <= n_entries; i++)
 	{
+	  RegisteredTypeBlob *blob;
+
 	  entry = g_typelib_get_dir_entry (typelib, i);
-	  if (entry->blob_type < BLOB_TYPE_BOXED)
+	  if (!BLOB_IS_REGISTERED_TYPE (entry))
 	    continue;
-	  
-	  offset = *(guint32*)&typelib->data[entry->offset + 8];
-	  type = g_typelib_get_string (typelib, offset);
+
+	  blob = (RegisteredTypeBlob *)entry;
+	  if (!blob->gtype_name)
+	    continue;
+
+	  type = g_typelib_get_string (typelib, blob->gtype_name);
 	  if (strcmp (type, iface_data->type) == 0)
 	    {
 	      index = i;

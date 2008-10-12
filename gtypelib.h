@@ -45,6 +45,13 @@ enum
   BLOB_TYPE_UNION
 };
 
+#define BLOB_IS_REGISTERED_TYPE(blob)               \
+        ((blob)->blob_type == BLOB_TYPE_STRUCT ||   \
+         (blob)->blob_type == BLOB_TYPE_UNION  ||   \
+         (blob)->blob_type == BLOB_TYPE_ENUM   ||   \
+         (blob)->blob_type == BLOB_TYPE_OBJECT ||   \
+         (blob)->blob_type == BLOB_TYPE_INTERFACE)
+
 typedef struct
 {
   gchar   magic[16];
