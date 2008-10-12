@@ -1664,6 +1664,7 @@ start_return_value (GMarkupParseContext *context,
       ctx->state == STATE_FUNCTION)
     {
       GIrNodeParam *param;
+      const gchar  *transfer;
 
       param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM);
       param->in = FALSE;
@@ -1673,6 +1674,9 @@ start_return_value (GMarkupParseContext *context,
       ctx->current_typed = (GIrNode*) param;
 
       state_switch (ctx, STATE_FUNCTION_RETURN);
+
+      transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
+      parse_param_transfer (param, transfer);
 
       switch (ctx->current_node->type)
 	{
