@@ -1064,13 +1064,16 @@ write_repository (const char   *namespace,
     {
       const gchar *shared_library;
       const char *ns = namespace;
+      const char *version;
+
+      version = g_irepository_get_version (repository, ns);
 
       shared_library = g_irepository_get_shared_library (repository, ns);
       if (shared_library)
-        g_fprintf (file, "  <namespace name=\"%s\" shared-library=\"%s\">\n",
-                   ns, shared_library);
+        g_fprintf (file, "  <namespace name=\"%s\" version=\"%s\" shared-library=\"%s\">\n",
+                   ns, version, shared_library);
       else
-        g_fprintf (file, "  <namespace name=\"%s\">\n", ns);
+        g_fprintf (file, "  <namespace name=\"%s\" version=\"%s\">\n", ns, version);
       
       for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
 	{
