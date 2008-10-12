@@ -270,7 +270,8 @@ typedef struct
 {
   guint16 blob_type;  
   guint16 deprecated   : 1; 
-  guint16 unregistered :15;
+  guint16 unregistered : 1;
+  guint16 reserved :14;
   guint32 name; 
 
   guint32 gtype_name;
