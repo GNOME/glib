@@ -82,17 +82,19 @@ const char *  g_irepository_load_typelib  (GIRepository *repository,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gboolean      g_irepository_is_registered (GIRepository *repository, 
-					   const gchar  *namespace);
+					   const gchar  *namespace,
+					   const gchar  *version);
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *name);
 gboolean      g_irepository_require       (GIRepository *repository,
-					   const char   *namespace,
+					   const gchar  *namespace,
+					   const gchar  *version,           
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,
-					      const char *namespace);
-gchar      ** g_irepository_get_namespaces (GIRepository *repository);
+					      const gchar  *namespace);
+gchar      ** g_irepository_get_loaded_namespaces (GIRepository *repository);
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
 gint          g_irepository_get_n_infos   (GIRepository *repository,
@@ -104,6 +106,9 @@ const gchar * g_irepository_get_typelib_path   (GIRepository *repository,
 						const gchar  *namespace);
 const gchar * g_irepository_get_shared_library (GIRepository *repository,
 						const gchar  *namespace);
+const gchar * g_irepository_get_version (GIRepository *repository,
+					 const gchar  *namespace);
+
 /* Typelib */
 
 GTypelib *   g_typelib_new_from_memory       (guchar       *memory,
@@ -112,6 +117,7 @@ GTypelib *   g_typelib_new_from_const_memory (const guchar *memory,
                                                 gsize         len);
 GTypelib *   g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
 void          g_typelib_free                  (GTypelib    *typelib);
+
 gboolean      g_typelib_symbol                (GTypelib    *typelib,
                                                const gchar *symbol_name,
                                                gpointer    *symbol);
@@ -121,6 +127,7 @@ typedef enum
 {
   G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
   G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH,
+  G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
   G_IREPOSITORY_ERROR_LIBRARY_NOT_FOUND
 } GIRepositoryError;
 

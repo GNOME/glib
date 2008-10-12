@@ -2050,7 +2050,7 @@ parse_include (GMarkupParseContext *context,
       g_set_error (error,
 		   G_MARKUP_ERROR,
 		   G_MARKUP_ERROR_INVALID_CONTENT,
-		   "Could not find GIR file '%s'; check XDG_DATA_DIRS or use --includedir",
+		   "Could not find GIR file '%s.gir'; check XDG_DATA_DIRS or use --includedir",
 		   name);
       return FALSE;
     }
@@ -2260,16 +2260,19 @@ start_element_handler (GMarkupParseContext *context,
     case 'n':
       if (strcmp (element_name, "namespace") == 0 && ctx->state == STATE_REPOSITORY)
 	{
-	  const gchar *name, *shared_library;
+	  const gchar *name, *version, *shared_library;
 	  
 	  name = find_attribute ("name", attribute_names, attribute_values);
+	  version = find_attribute ("version", attribute_names, attribute_values);
 	  shared_library = find_attribute ("shared-library", attribute_names, attribute_values);
 
 	  if (name == NULL)
 	    MISSING_ATTRIBUTE (context, error, element_name, "name");
+	  else if (version == NULL)
+	    MISSING_ATTRIBUTE (context, error, element_name, "version");
 	  else
 	    {
-	      ctx->current_module = g_ir_module_new (name, shared_library);
+	      ctx->current_module = g_ir_module_new (name, version, shared_library);
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 	      ctx->current_module->dependencies = ctx->dependencies;
 

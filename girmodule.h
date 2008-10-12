@@ -32,12 +32,14 @@ typedef struct _GIrModule GIrModule;
 struct _GIrModule
 { 
   gchar *name;
+  gchar *version;
   gchar *shared_library;
   GList *dependencies;
   GList *entries;
 };
 
 GIrModule *g_ir_module_new            (const gchar *name,
+				       const gchar *nsversion,
 				       const gchar *module_filename);
 void       g_ir_module_free           (GIrModule  *module);
 

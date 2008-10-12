@@ -61,6 +61,7 @@ typedef struct
 
   guint32 size;
   guint32 namespace;
+  guint32 nsversion;
   guint32 shared_library;
 
   guint16 entry_blob_size;

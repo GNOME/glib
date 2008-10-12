@@ -29,13 +29,16 @@
 
 
 GIrModule *
-g_ir_module_new (const gchar *name, const gchar *shared_library)
+g_ir_module_new (const gchar *name, 
+		 const gchar *version,
+		 const gchar *shared_library)
 {
   GIrModule *module;
   
   module = g_new0 (GIrModule, 1);
 
   module->name = g_strdup (name);
+  module->version = g_strdup (version);
   if (shared_library)
       module->shared_library = g_strdup (shared_library);
   else
@@ -156,6 +159,7 @@ g_ir_module_build_typelib (GIrModule  *module,
     header->dependencies = 0;
   header->size = 0; /* filled in later */
   header->namespace = write_string (module->name, strings, data, &header_size);
+  header->nsversion = write_string (module->version, strings, data, &header_size);
   header->shared_library = (module->shared_library?
                              write_string (module->shared_library, strings, data, &header_size)
                              : 0);
