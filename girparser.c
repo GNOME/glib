@@ -658,6 +658,36 @@ start_function (GMarkupParseContext *context,
   return TRUE;
 }
 
+static void
+parse_param_transfer (GIrNodeParam *param, const gchar *transfer)
+{
+  if (transfer && strcmp (transfer, "none") == 0)
+    {
+      param->transfer = FALSE;
+      param->shallow_transfer = FALSE;
+    }
+  else if (transfer && strcmp (transfer, "shallow") == 0)
+    {
+      param->transfer = FALSE;
+      param->shallow_transfer = TRUE;
+    }
+  else
+    {
+      if (transfer)
+	{
+	  if (strcmp (transfer, "full") != 0)
+	    g_warning ("Unknown transfer %s", transfer);
+	  else
+	    param->transfer = TRUE;
+	}
+      else if (param->in && !param->out)
+	param->transfer = FALSE;
+      else
+	param->transfer = TRUE;
+      param->shallow_transfer = FALSE;
+    }
+}
+
 static gboolean
 start_parameter (GMarkupParseContext *context,
 		 const gchar         *element_name,
@@ -733,32 +763,8 @@ start_parameter (GMarkupParseContext *context,
   else
     param->null_ok = FALSE;
 
-  if (transfer && strcmp (transfer, "none") == 0)
-    {
-      param->transfer = FALSE;
-      param->shallow_transfer = FALSE;
-    }
-  else if (transfer && strcmp (transfer, "shallow") == 0)
-    {
-      param->transfer = FALSE;
-      param->shallow_transfer = TRUE;
-    }
-  else 
-    {
-      if (transfer)
-	{
-	  if (strcmp (transfer, "full") != 0)
-	    g_warning ("Unknown transfer %s", transfer);
-	  else
-	    param->transfer = TRUE;
-	}
-      else if (param->in && !param->out)
-	param->transfer = FALSE;
-      else
-	param->transfer = TRUE;
-      param->shallow_transfer = FALSE;
-    }
-	  
+  parse_param_transfer (param, transfer);
+
   ((GIrNode *)param)->name = g_strdup (name);
 	  
   switch (ctx->current_node->type)
