@@ -490,7 +490,7 @@ find_interface (gpointer key,
       for (i = 1; i <= n_entries; i++)
 	{
 	  entry = g_typelib_get_dir_entry (typelib, i);
-	  if (entry->blob_type < 4)
+	  if (entry->blob_type < BLOB_TYPE_BOXED)
 	    continue;
 	  
 	  offset = *(guint32*)&typelib->data[entry->offset + 8];
