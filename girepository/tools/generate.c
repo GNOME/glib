@@ -246,7 +246,7 @@ write_callable_info (const gchar    *namespace,
 	case GI_TRANSFER_NOTHING:
 	  break;
 	case GI_TRANSFER_CONTAINER:
-	  g_fprintf (file, " transfer=\"shallow\"");
+	  g_fprintf (file, " transfer=\"container\"");
 	  break;
 	case GI_TRANSFER_EVERYTHING:
 	  g_fprintf (file, " transfer=\"full\"");
@@ -287,7 +287,7 @@ write_callable_info (const gchar    *namespace,
 	case GI_TRANSFER_NOTHING:
 	  break;
 	case GI_TRANSFER_CONTAINER:
-	  g_fprintf (file, " transfer=\"shallow\"");
+	  g_fprintf (file, " transfer=\"container\"");
 	  break;
 	case GI_TRANSFER_EVERYTHING:
 	  g_fprintf (file, " transfer=\"full\"");
