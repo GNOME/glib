@@ -81,7 +81,7 @@ const char *  g_irepository_load_typelib  (GIRepository *repository,
 					   GTypelib     *typelib,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
-gboolean      g_irepository_is_registered (GIRepository *repository, 
+gboolean      g_irepository_is_registered (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *version);
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
@@ -89,7 +89,7 @@ GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *name);
 gboolean      g_irepository_require       (GIRepository *repository,
 					   const gchar  *namespace,
-					   const gchar  *version,           
+					   const gchar  *version,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,

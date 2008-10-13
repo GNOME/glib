@@ -306,6 +306,20 @@ register_internal (GIRepository *repository,
   return namespace;
 }
 
+/**
+ * g_irepository_get_dependencies
+ * @repository: A #GIRepository, may be %NULL for the default
+ * @namespace: Namespace of interest
+ *
+ * Return an array of all (transitive) dependencies for namespace
+ * @namespace, including version.  The returned strings are of the
+ * form <code>namespace-version</code>.
+ *
+ * Note: The namespace must have already been loaded using a function
+ * such as #g_irepository_require before calling this function.
+ *
+ * Returns: Zero-terminated string array of versioned dependencies
+ */
 char **
 g_irepository_get_dependencies (GIRepository *repository,
 				const char *namespace)
