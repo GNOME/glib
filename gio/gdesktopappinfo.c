@@ -61,7 +61,8 @@
 #define MIME_CACHE_GROUP            "MIME Cache"
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
-static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type);
+static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type,
+						       const char      **except);
 static void     mime_info_cache_reload                (const char       *dir);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
 						       GError          **error);
@@ -1202,23 +1203,23 @@ ensure_dir (DirType   type,
 static gboolean
 update_mimeapps_list (const char  *desktop_id, 
 		      const char  *content_type, 
-		      gboolean     add_at_start, 
-		      gboolean     add_at_end, 
+		      gboolean     add_as_default,
+		      gboolean     add_non_default,
 		      gboolean     remove, 
 		      GError     **error)
 {
   char *dirname, *filename;
   GKeyFile *key_file;
   gboolean load_succeeded, res;
-  char **old_list;
-  char **list;
+  char **old_list, **list;
+  GList *system_list, *l;
   gsize length, data_size;
   char *data;
   int i, j, k;
   char **content_types;
 
   /* Don't add both at start and end */
-  g_assert (!(add_at_start && add_at_end));
+  g_assert (!(add_as_default && add_non_default));
   
   dirname = ensure_dir (APP_DIR, error);
   if (!dirname)
@@ -1257,7 +1258,7 @@ update_mimeapps_list (const char  *desktop_id,
       list = g_new (char *, 1 + length + 1);
 
       i = 0;
-      if (add_at_start)
+      if (add_as_default)
         list[i++] = g_strdup (desktop_id);
       if (old_list)
         {
@@ -1265,10 +1266,40 @@ update_mimeapps_list (const char  *desktop_id,
 	    {
 	      if (g_strcmp0 (old_list[j], desktop_id) != 0)
 	        list[i++] = g_strdup (old_list[j]);
+	      else if (add_non_default)
+		{
+		  /* If adding as non-default, and its already in,
+		     don't change order of desktop ids */
+		  add_non_default = FALSE;
+		  list[i++] = g_strdup (old_list[j]);
+		}
 	    }
         }
-      if (add_at_end)
-        list[i++] = g_strdup (desktop_id);
+      
+      if (add_non_default)
+	{
+	  /* We're adding as non-default, and it wasn't already in the list,
+	     so we add at the end. But to avoid listing the app before the
+	     current system default (thus changing the default) we have to
+	     add the current list of (not yet listed) apps before it. */
+
+	  list[i] = NULL; /* Terminate current list so we can use it */
+	  system_list =  get_all_desktop_entries_for_mime_type (content_type, list);
+	  
+	  list = g_renew (char *, list, 1 + length + g_list_length (system_list) + 1);
+	  
+	  for (l = system_list; l != NULL; l = l->next)
+	    {
+	      list[i++] = l->data; /* no strdup, taking ownership */
+	      if (g_strcmp0 (l->data, desktop_id) == 0)
+		add_non_default = FALSE;
+	    }
+	  g_list_free (system_list);
+		  
+	  if (add_non_default)
+	    list[i++] = g_strdup (desktop_id);
+	}
+      
       list[i] = NULL;
   
       g_strfreev (old_list);
@@ -1734,7 +1765,7 @@ g_app_info_get_all_for_type (const char *content_type)
 
   g_return_val_if_fail (content_type != NULL, NULL);
   
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type);
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL);
 
   infos = NULL;
   for (l = desktop_entries; l != NULL; l = l->next)
@@ -1793,7 +1824,7 @@ g_app_info_get_default_for_type (const char *content_type,
 
   g_return_val_if_fail (content_type != NULL, NULL);
   
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type);
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL);
 
   info = NULL;
   for (l = desktop_entries; l != NULL; l = l->next)
@@ -2559,17 +2590,21 @@ append_desktop_entry (GList      *list,
 /**
  * get_all_desktop_entries_for_mime_type:
  * @mime_type: a mime type.
+ * @except: NULL or a strv list
  *
  * Returns all the desktop ids for @mime_type. The desktop files
  * are listed in an order so that default applications are listed before
  * non-default ones, and handlers for inherited mimetypes are listed
  * after the base ones.
  *
+ * Optionally doesn't list the desktop ids given in the @except 
+ *
  * Return value: a #GList containing the desktop ids which claim
  *    to handle @mime_type.
  */
 static GList *
-get_all_desktop_entries_for_mime_type (const char *base_mime_type)
+get_all_desktop_entries_for_mime_type (const char *base_mime_type,
+				       const char **except)
 {
   GList *desktop_entries, *removed_entries, *list, *dir_list, *tmp;
   MimeInfoCacheDir *dir;
@@ -2611,6 +2646,10 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   
   removed_entries = NULL;
   desktop_entries = NULL;
+
+  for (i = 0; except != NULL && except[i] != NULL; i++)
+    removed_entries = g_list_prepend (removed_entries, g_strdup (except[i]));
+  
   for (i = 0; mime_types[i] != NULL; i++)
     {
       mime_type = mime_types[i];
@@ -2655,6 +2694,7 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 
   g_strfreev (mime_types);
 
+  g_list_foreach (removed_entries, (GFunc)g_free, NULL);
   g_list_free (removed_entries);
   
   desktop_entries = g_list_reverse (desktop_entries);

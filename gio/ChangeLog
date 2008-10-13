@@ -1,3 +1,14 @@
+2008-10-13  Alexander Larsson  <alexl@redhat.com>
+
+        * gdesktopappinfo.c:
+	When adding an application as handling a mime type (but
+	not as the default), copy the full list of desktop ids handling
+	that type in before adding the new one on the end of the list.
+	This means we're not accidentally changing the default by overriding
+	the info from the later directories in the search path.
+	
+	Also, fixes small leak of removed_entries.
+
 2008-10-12  David Zeuthen  <davidz@redhat.com>
 
 	* gio.symbols:
