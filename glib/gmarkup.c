@@ -242,28 +242,14 @@ static void set_error (GMarkupParseContext *context,
            	       ...) G_GNUC_PRINTF (4, 5);
 
 static void
-set_error (GMarkupParseContext *context,
-           GError             **error,
-           GMarkupError         code,
-           const gchar         *format,
-           ...)
+set_error_literal (GMarkupParseContext *context,
+                   GError             **error,
+                   GMarkupError         code,
+                   const gchar         *message)
 {
   GError *tmp_error;
-  gchar *s;
-  gchar *s_valid;
-  va_list args;
 
-  va_start (args, format);
-  s = g_strdup_vprintf (format, args);
-  va_end (args);
-
-  /* Make sure that the GError message is valid UTF-8 even if it is 
-   * complaining about invalid UTF-8 in the markup: */
-  s_valid = _g_utf8_make_valid (s);
-  tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, s_valid);
-
-  g_free (s);
-  g_free (s_valid);
+  tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, message);
 
   g_prefix_error (&tmp_error,
                   _("Error on line %d char %d: "),
@@ -273,6 +259,30 @@ set_error (GMarkupParseContext *context,
   mark_error (context, tmp_error);
 
   g_propagate_error (error, tmp_error);
+}
+
+static void
+set_error (GMarkupParseContext *context,
+           GError             **error,
+           GMarkupError         code,
+           const gchar         *format,
+           ...)
+{
+  gchar *s;
+  gchar *s_valid;
+  va_list args;
+
+  va_start (args, format);
+  s = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  /* Make sure that the GError message is valid UTF-8 even if it is
+   * complaining about invalid UTF-8 in the markup: */
+  s_valid = _g_utf8_make_valid (s);
+  set_error_literal (context, error, code, s);
+
+  g_free (s);
+  g_free (s_valid);
 }
 
 static void
@@ -1047,11 +1057,10 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               /* The leftover char portion is too big to be
                * a UTF-8 character
                */
-              set_error (context,
-                         error,
-                         G_MARKUP_ERROR_BAD_UTF8,
-                         "%s",
-                         _("Invalid UTF-8 encoded text - overlong sequence"));
+              set_error_literal (context,
+                                 error,
+                                 G_MARKUP_ERROR_BAD_UTF8,
+                                 _("Invalid UTF-8 encoded text - overlong sequence"));
             }
           
           goto finished;
@@ -1076,11 +1085,10 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
    */
   if ((*context->current_text & 0xc0) == 0x80) /* not a char start */
     {
-      set_error (context,
-                 error,
-                 G_MARKUP_ERROR_BAD_UTF8,
-                 "%s",
-                 _("Invalid UTF-8 encoded text - not a start char"));
+      set_error_literal (context,
+                         error,
+                         G_MARKUP_ERROR_BAD_UTF8,
+                         _("Invalid UTF-8 encoded text - not a start char"));
       goto finished;
     }
 
@@ -1154,11 +1162,10 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                 }
               else
                 {
-                  set_error (context,
-                             error,
-                             G_MARKUP_ERROR_PARSE,
-                             "%s",
-                             _("Document must begin with an element (e.g. <book>)"));
+                  set_error_literal (context,
+                                     error,
+                                     G_MARKUP_ERROR_PARSE,
+                                     _("Document must begin with an element (e.g. <book>)"));
                 }
             }
           break;
@@ -1847,8 +1854,8 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
 
   if (context->document_empty)
     {
-      set_error (context, error, G_MARKUP_ERROR_EMPTY, "%s",
-                 _("Document was empty or contained only whitespace"));
+      set_error_literal (context, error, G_MARKUP_ERROR_EMPTY,
+                         _("Document was empty or contained only whitespace"));
       return FALSE;
     }
   
@@ -1861,8 +1868,8 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_AFTER_OPEN_ANGLE:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly just after an open angle bracket '<'"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly just after an open angle bracket '<'"));
       break;
 
     case STATE_AFTER_CLOSE_ANGLE:
@@ -1883,33 +1890,33 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_INSIDE_OPEN_TAG_NAME:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly inside an element name"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly inside an element name"));
       break;
 
     case STATE_INSIDE_ATTRIBUTE_NAME:
     case STATE_AFTER_ATTRIBUTE_NAME:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly inside an attribute name"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly inside an attribute name"));
       break;
 
     case STATE_BETWEEN_ATTRIBUTES:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly inside an element-opening "
-                   "tag."));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly inside an element-opening "
+                           "tag."));
       break;
 
     case STATE_AFTER_ATTRIBUTE_EQUALS_SIGN:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly after the equals sign "
-                   "following an attribute name; no attribute value"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly after the equals sign "
+                           "following an attribute name; no attribute value"));
       break;
 
     case STATE_INSIDE_ATTRIBUTE_VALUE_SQ:
     case STATE_INSIDE_ATTRIBUTE_VALUE_DQ:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly while inside an attribute "
-                   "value"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly while inside an attribute "
+                           "value"));
       break;
 
     case STATE_INSIDE_TEXT:
@@ -1929,9 +1936,9 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
       break;
 
     case STATE_INSIDE_PASSTHROUGH:
-      set_error (context, error, G_MARKUP_ERROR_PARSE, "%s",
-                 _("Document ended unexpectedly inside a comment or "
-                   "processing instruction"));
+      set_error_literal (context, error, G_MARKUP_ERROR_PARSE,
+                         _("Document ended unexpectedly inside a comment or "
+                           "processing instruction"));
       break;
 
     case STATE_ERROR:

@@ -1,3 +1,10 @@
+2008-10-13  Christian Persch <chpe@gnome.org>
+
+	Bug 555311 – format not a string literal and no format arguments
+
+	* glib/gmarkup.c:
+	* glib/gshell.c: Use literal errors where appropriate.
+
 2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 551355 – [PATCH] Make glib build with libtool 2.2
