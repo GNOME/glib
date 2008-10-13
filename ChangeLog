@@ -1,3 +1,10 @@
+2008-10-13  Sven Herzberg  <sven@imendio.com>
+
+	Bug 556101 – static mutex yields warnings with g++
+	Reviewed by Tim Janik
+
+	* configure.in: added an intermediate cast to gpointer
+
 2008-10-13  Christian Persch <chpe@gnome.org>
 
 	Bug 555311 – format not a string literal and no format arguments
