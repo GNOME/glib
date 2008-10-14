@@ -1838,3 +1838,19 @@ g_union_info_get_discriminator (GIUnionInfo *info,
 
   return NULL;
 }
+
+GIFunctionInfo *
+g_union_info_find_method (GIUnionInfo *info,
+                          const gchar *name)
+{
+  gint offset;
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  Header *header = (Header *)base->typelib->data;
+  StructBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+
+  offset = base->offset + header->union_blob_size
+    + blob->n_fields * header->field_blob_size;
+
+  return find_method (base, offset, blob->n_methods, name);
+}
+

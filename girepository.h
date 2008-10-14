@@ -362,6 +362,8 @@ gint                   g_union_info_get_discriminator_offset (GIUnionInfo *info)
 GITypeInfo *           g_union_info_get_discriminator_type (GIUnionInfo *info);
 GIConstantInfo *       g_union_info_get_discriminator      (GIUnionInfo *info,
 					                    gint         n);
+GIFunctionInfo *       g_union_info_find_method    (GIUnionInfo *info,
+                                                    const gchar *name);
 
 
 /* GIStructInfo */
