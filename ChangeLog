@@ -1,3 +1,10 @@
+2008-10-14  Christian Persch <chpe@gnome.org>
+
+	Bug 556186 – gpoll.h breaks gmain.h inclusion
+
+	* glib/gpoll.h: Only disallow direct inclusion when
+	G_DISABLE_SINGLE_INCLUDES is defined.
+
 2008-10-13  Sven Herzberg  <sven@imendio.com>
 
 	Bug 556101 – static mutex yields warnings with g++
