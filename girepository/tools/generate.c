@@ -65,9 +65,12 @@ static void
 xml_printf (Xml *xml, const char *fmt, ...)
 {
   va_list ap;
+  char *s;
 
   va_start (ap, fmt);
-  vfprintf (xml->file, fmt, ap);
+  s = g_markup_vprintf_escaped (fmt, ap);
+  fputs (s, xml->file);
+  g_free (s);
   va_end (ap);
 }
 
