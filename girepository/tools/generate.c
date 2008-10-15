@@ -350,8 +350,7 @@ write_field_info (const gchar *namespace,
 static void 
 write_callable_info (const gchar    *namespace,
 		     GICallableInfo *info,
-		     Xml            *file,
-		     gint            indent)
+		     Xml            *file)
 {
   GITypeInfo *type;
   gint i;
@@ -468,8 +467,7 @@ write_callable_info (const gchar    *namespace,
 static void
 write_function_info (const gchar    *namespace,
 		     GIFunctionInfo *info,
-		     Xml            *file,
-		     gint            indent)
+		     Xml            *file)
 {
   GIFunctionInfoFlags flags;
   const gchar *tag;
@@ -501,15 +499,14 @@ write_function_info (const gchar    *namespace,
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 
-  write_callable_info (namespace, (GICallableInfo*)info, file, indent);
+  write_callable_info (namespace, (GICallableInfo*)info, file);
   xml_end_element (file, tag);
 }
 
 static void
 write_callback_info (const gchar    *namespace,
 		     GICallbackInfo *info,
-		     Xml            *file,
-		     gint            indent)
+		     Xml            *file)
 {
   const gchar *name;
   gboolean deprecated;
@@ -523,7 +520,7 @@ write_callback_info (const gchar    *namespace,
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 	
-  write_callable_info (namespace, (GICallableInfo*)info, file, indent);
+  write_callable_info (namespace, (GICallableInfo*)info, file);
   xml_end_element (file, "callback");
 }
 
@@ -575,7 +572,7 @@ write_struct_info (const gchar  *namespace,
       for (i = 0; i < g_struct_info_get_n_methods (info); i++)
 	{
 	  GIFunctionInfo *function = g_struct_info_get_method (info, i);
-	  write_function_info (namespace, function, file, 6);
+	  write_function_info (namespace, function, file);
 	  g_base_info_unref ((GIBaseInfo *)function);
 	}
       
@@ -677,8 +674,7 @@ write_constant_value (const gchar *namespace,
 static void
 write_constant_info (const gchar    *namespace,
 		     GIConstantInfo *info,
-		     Xml            *file,
-		     gint            indent)
+		     Xml            *file)
 {
   GITypeInfo *type;
   const gchar *name;
@@ -790,7 +786,7 @@ write_signal_info (const gchar  *namespace,
   if (flags & G_SIGNAL_NO_HOOKS)
     xml_printf (file, " no-hooks=\"1\"");
 
-  write_callable_info (namespace, (GICallableInfo*)info, file, 6);
+  write_callable_info (namespace, (GICallableInfo*)info, file);
 
   xml_end_element (file, "glib:signal");
 }
@@ -826,7 +822,7 @@ write_vfunc_info (const gchar *namespace,
     
   xml_printf (file, " offset=\"%d\"", offset);
 
-  write_callable_info (namespace, (GICallableInfo*)info, file, 6);
+  write_callable_info (namespace, (GICallableInfo*)info, file);
 
   xml_end_element (file, "vfunc");
 }
@@ -941,7 +937,7 @@ write_object_info (const gchar  *namespace,
   for (i = 0; i < g_object_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_object_info_get_method (info, i);
-      write_function_info (namespace, function, file, 6);
+      write_function_info (namespace, function, file);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
@@ -969,7 +965,7 @@ write_object_info (const gchar  *namespace,
   for (i = 0; i < g_object_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = g_object_info_get_constant (info, i);
-      write_constant_info (namespace, constant, file, 6);
+      write_constant_info (namespace, constant, file);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
   
@@ -1022,7 +1018,7 @@ write_interface_info (const gchar     *namespace,
   for (i = 0; i < g_interface_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_interface_info_get_method (info, i);
-      write_function_info (namespace, function, file, 6);
+      write_function_info (namespace, function, file);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
@@ -1050,7 +1046,7 @@ write_interface_info (const gchar     *namespace,
   for (i = 0; i < g_interface_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = g_interface_info_get_constant (info, i);
-      write_constant_info (namespace, constant, file, 6);
+      write_constant_info (namespace, constant, file);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
   
@@ -1131,7 +1127,7 @@ write_union_info (const gchar *namespace,
   for (i = 0; i < g_union_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_union_info_get_method (info, i);
-      write_function_info (namespace, function, file, 6);
+      write_function_info (namespace, function, file);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
@@ -1216,11 +1212,11 @@ write_repository (const char   *namespace,
 	  switch (g_base_info_get_type (info))
 	    {
 	    case GI_INFO_TYPE_FUNCTION:
-	      write_function_info (ns, (GIFunctionInfo *)info, xml, 4);
+	      write_function_info (ns, (GIFunctionInfo *)info, xml);
 	      break;
 	      
 	    case GI_INFO_TYPE_CALLBACK:
-	      write_callback_info (ns, (GICallbackInfo *)info, xml, 4);
+	      write_callback_info (ns, (GICallbackInfo *)info, xml);
 	      break;
 
 	    case GI_INFO_TYPE_STRUCT:
@@ -1238,7 +1234,7 @@ write_repository (const char   *namespace,
 	      break;
 	      
 	    case GI_INFO_TYPE_CONSTANT:
-	      write_constant_info (ns, (GIConstantInfo *)info, xml, 4);
+	      write_constant_info (ns, (GIConstantInfo *)info, xml);
 	      break;
 
 	    case GI_INFO_TYPE_OBJECT:
