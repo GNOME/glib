@@ -180,7 +180,7 @@ locate_gir (const char *name, const char * const* extra_paths)
 static void
 backtrace_stderr (void)
 {
-#ifndef _WIN32
+#if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
   void *array[50];
   int size;
   char **strings;
