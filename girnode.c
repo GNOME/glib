@@ -1197,6 +1197,33 @@ g_ir_node_build_members (GList         **members,
     }
 }
 
+static void
+g_ir_node_check_unhandled_members (GList         **members,
+				   GIrNodeTypeId   container_type)
+{
+  if (*members)
+    {
+      GList *l;
+
+      for (l = *members; l; l = l->next)
+	{
+	  GIrNode *member = (GIrNode *)l->data;
+
+	  g_printerr ("Unhandled '%s' member '%s' type '%s'\n",
+		      g_ir_node_type_to_string (container_type),
+		      member->name,
+		      g_ir_node_type_to_string (member->type));
+	}
+
+      g_list_free (*members);
+      *members = NULL;
+
+      /* Commented out for now to not break the build.
+      g_error ("Unhandled members. Aborting.");
+      */
+    }
+}
+
 void
 g_ir_node_build_typelib (GIrNode    *node,
 			 GIrModule  *module,
@@ -1665,7 +1692,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings,
 				 types, data, offset, offset2);
 
-	g_list_free (members);
+	g_ir_node_check_unhandled_members (&members, node->type);
+
+	g_assert (members == NULL);
       }
       break;
 
@@ -1698,7 +1727,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings,
 				 types, data, offset, offset2);
 
-	g_list_free (members);
+	g_ir_node_check_unhandled_members (&members, node->type);
+
+	g_assert (members == NULL);
       }
       break;
 
@@ -1755,7 +1786,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings,
 				 types, data, offset, offset2);
 
-	g_list_free (members);
+	g_ir_node_check_unhandled_members (&members, node->type);
+
+	g_assert (members == NULL);
 
 	if (union_->discriminator_type)
 	  {
@@ -1878,7 +1911,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings,
 				 types, data, offset, offset2);
 
-	g_list_free (members);
+	g_ir_node_check_unhandled_members (&members, node->type);
+
+	g_assert (members == NULL);
       }
       break;
 
@@ -1936,7 +1971,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings,
 				 types, data, offset, offset2);
 
-	g_list_free (members);
+	g_ir_node_check_unhandled_members (&members, node->type);
+
+	g_assert (members == NULL);
       }
       break;
 
