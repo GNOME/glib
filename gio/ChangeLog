@@ -1,3 +1,10 @@
+2008-10-14  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556335 – make check fails in abicheck.sh
+
+	* gio.symbols: Add g_file_attribute_info_list_get_type. 
+	Pointed out by Pascal Terjan.
+
 2008-10-13  Alexander Larsson  <alexl@redhat.com>
 
         * gdesktopappinfo.c:

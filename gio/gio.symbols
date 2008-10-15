@@ -216,6 +216,7 @@ g_file_attribute_info_list_new
 g_file_attribute_info_list_ref
 g_file_attribute_info_list_unref
 g_file_attribute_info_list_dup
+g_file_attribute_info_list_get_type G_GNUC_CONST
 g_file_attribute_info_list_lookup
 g_file_attribute_info_list_add
 #endif
