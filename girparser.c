@@ -1607,30 +1607,33 @@ end_type_recurse (ParseContext *ctx)
 {
   GList *types;
   GIrNodeType *parent;
+  GIrNodeType *param = NULL;
 
   parent = (GIrNodeType *) ((GList*)ctx->type_stack->data)->data;
+  if (ctx->type_parameters)
+    param = (GIrNodeType *) ctx->type_parameters->data;
 
   if (parent->tag == GI_TYPE_TAG_ARRAY ||
       parent->tag == GI_TYPE_TAG_GLIST ||
       parent->tag == GI_TYPE_TAG_GSLIST)
     {
-      if (ctx->type_parameters == NULL)
-	parent->parameter_type1 = parse_type (ctx, "pointer");
+      g_assert (param != NULL);
+
+      if (parent->parameter_type1 == NULL)
+        parent->parameter_type1 = param;
       else
-	parent->parameter_type1 = (GIrNodeType*)ctx->type_parameters->data;
+        g_assert_not_reached ();
     }
   else if (parent->tag == GI_TYPE_TAG_GHASH)
     {
-      if (ctx->type_parameters == NULL)
-	{
-	  parent->parameter_type1 = parse_type (ctx, "pointer");
-	  parent->parameter_type2 = parse_type (ctx, "pointer");
-	}
+      g_assert (param != NULL);
+
+      if (parent->parameter_type1 == NULL)
+        parent->parameter_type1 = param;
+      else if (parent->parameter_type2 == NULL)
+        parent->parameter_type2 = param;
       else
-	{
-	  parent->parameter_type1 = (GIrNodeType*) ctx->type_parameters->data;
-	  parent->parameter_type2 = (GIrNodeType*) ctx->type_parameters->next->data;
-	}
+        g_assert_not_reached ();
     }
   g_list_free (ctx->type_parameters);
   ctx->type_parameters = (GList *)ctx->type_stack->data;
