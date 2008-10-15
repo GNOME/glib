@@ -176,6 +176,17 @@ write_type_name (const gchar *namespace,
 }
 
 static void
+write_type_name_attribute (const gchar *namespace,
+			   GIBaseInfo  *info,
+			   const char  *attr_name,
+			   Xml         *file)
+{
+  xml_printf (file, " %s=\"", attr_name);
+  write_type_name (namespace, info, file);
+  xml_printf (file, "\"");
+}
+
+static void
 write_type_info (const gchar *namespace,
 		 GITypeInfo  *info, 
 		 Xml         *file)
@@ -230,9 +241,7 @@ write_type_info (const gchar *namespace,
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
       xml_start_element (file, "type");
-      xml_printf (file, " name=\"");
-      write_type_name (namespace, iface, file);
-      xml_printf (file, "\"");
+      write_type_name_attribute (namespace, iface, "name", file);
       xml_end_element (file, "type");
       g_base_info_unref (iface);
     }
@@ -289,9 +298,7 @@ write_type_info (const gchar *namespace,
 	    {
 	      GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
 	      xml_start_element (file, "type");
-	      xml_printf (file, " name=\"");
-	      write_type_name (namespace, (GIBaseInfo *)ed, file);
-	      xml_printf (file, "\"");
+	      write_type_name_attribute (namespace, (GIBaseInfo *)ed, "name", file);
 	      xml_end_element (file, "type");
 	      g_base_info_unref ((GIBaseInfo *)ed);
 	    }
@@ -881,9 +888,7 @@ write_object_info (const gchar  *namespace,
   pnode = g_object_info_get_parent (info);
   if (pnode)
     {
-      xml_printf (file, " parent=\"");
-      write_type_name (namespace, (GIBaseInfo *)pnode, file);
-      xml_printf (file, "\""  );
+      write_type_name_attribute (namespace, (GIBaseInfo *)pnode, "parent", file);
       g_base_info_unref ((GIBaseInfo *)pnode);
     }
 
@@ -899,9 +904,7 @@ write_object_info (const gchar  *namespace,
 	{
 	  GIInterfaceInfo *imp = g_object_info_get_interface (info, i);
           xml_start_element (file, "implements");
-	  xml_printf (file, " name=\"");
-	  write_type_name (namespace, (GIBaseInfo*)imp, file);
-	  xml_printf (file,"\"");
+	  write_type_name_attribute (namespace, (GIBaseInfo *)imp, "name", file);
           xml_end_element (file, "implements");
 	  g_base_info_unref ((GIBaseInfo*)imp);
 	}
@@ -987,8 +990,7 @@ write_interface_info (const gchar     *namespace,
             xml_start_element (file, "interface");
 	  else
             xml_start_element (file, "object");
-          xml_printf (file, " name=\"");
-	  write_type_name (namespace, req, file);
+	  write_type_name_attribute (namespace, req, "name", file);
           xml_end_element_unchecked (file);
 	  g_base_info_unref (req);
 	}
@@ -1045,9 +1047,9 @@ write_error_domain_info (const gchar       *namespace,
   quark = g_error_domain_info_get_quark (info);
   enum_ = (GIBaseInfo *)g_error_domain_info_get_codes (info);
   xml_start_element (file, "errordomain");
-  xml_printf (file, " name=\"%s\" get-quark=\"%s\" codes=\"",
+  xml_printf (file, " name=\"%s\" get-quark=\"%s\"",
               name, quark);
-  write_type_name (namespace, enum_, file);
+  write_type_name_attribute (namespace, enum_, "codes", file);
   xml_end_element (file, "errordomain");
   g_base_info_unref (enum_);
 }
