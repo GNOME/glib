@@ -184,6 +184,7 @@ read_link (const gchar *full_name)
 
 #endif  /* S_ISLNK */
 
+#ifdef HAVE_SELINUX
 /* Get the SELinux security context */
 static void
 get_selinux_context (const char            *path,
@@ -191,7 +192,6 @@ get_selinux_context (const char            *path,
 		     GFileAttributeMatcher *attribute_matcher,
 		     gboolean               follow_symlinks)
 {
-#ifdef HAVE_SELINUX
   char *context;
 
   if (!g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_SELINUX_CONTEXT))
@@ -216,8 +216,8 @@ get_selinux_context (const char            *path,
 	  freecon (context);
 	}
     }
-#endif
 }
+#endif
 
 #ifdef HAVE_XATTR
 
@@ -1659,7 +1659,9 @@ _g_local_file_info_get (const char             *basename,
   
   get_access_rights (attribute_matcher, info, path, &statbuf, parent_info);
   
+#ifdef HAVE_SELINUX
   get_selinux_context (path, info, attribute_matcher, (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) == 0);
+#endif
   get_xattrs (path, TRUE, info, attribute_matcher, (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) == 0);
   get_xattrs (path, FALSE, info, attribute_matcher, (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) == 0);
 
@@ -1785,6 +1787,7 @@ get_byte_string (const GFileAttributeValue  *value,
 }
 #endif
 
+#ifdef HAVE_SELINUX
 static gboolean
 get_string (const GFileAttributeValue  *value,
 	    const char                **val_out,
@@ -1792,8 +1795,8 @@ get_string (const GFileAttributeValue  *value,
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_STRING)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Invalid attribute type (byte string expected)"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Invalid attribute type (byte string expected)"));
       return FALSE;
     }
 
@@ -1801,7 +1804,7 @@ get_string (const GFileAttributeValue  *value,
   
   return TRUE;
 }
-
+#endif
 
 static gboolean
 set_unix_mode (char                       *filename,
@@ -2047,6 +2050,7 @@ set_mtime_atime (char                       *filename,
 #endif
 
 
+#ifdef HAVE_SELINUX
 static gboolean
 set_selinux_context (char                       *filename,
 		 const GFileAttributeValue  *value,
@@ -2059,12 +2063,11 @@ set_selinux_context (char                       *filename,
 
   if (val == NULL)
   {
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-               _("SELinux context must be non-NULL"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                         _("SELinux context must be non-NULL"));
     return FALSE;
   }
 
-#ifdef HAVE_SELINUX
   if (is_selinux_enabled ()) {
 	security_context_t val_s;
 	
@@ -2082,14 +2085,14 @@ set_selinux_context (char                       *filename,
         }
         g_free (val_s);
   } else {
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-               _("SELinux is not enabled on this system"));
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                         _("SELinux is not enabled on this system"));
     return FALSE;
   }
-#endif 
                                                      
   return TRUE;
 }
+#endif 
 
 
 gboolean
