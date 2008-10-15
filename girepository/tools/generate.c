@@ -192,97 +192,112 @@ write_type_info (const gchar *namespace,
 
   if (tag == GI_TYPE_TAG_VOID) 
     {
-      if (is_pointer)
-	xml_printf (file, "%s", "any");
-      else
-	xml_printf (file, "%s", "none");
+      xml_start_element (file, "type");
+
+      xml_printf (file, " name=\"%s\"", is_pointer ? "any" : "none");
+
+      xml_end_element (file, "type");
     } 
   else if (G_TYPE_TAG_IS_BASIC (tag))
-    xml_printf (file, "%s", g_type_tag_to_string (tag));
+    {
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"%s\"", g_type_tag_to_string (tag));
+      xml_end_element (file, "type");
+    }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length;
 
+      xml_start_element (file, "array");
+
       type = g_type_info_get_param_type (info, 0);
-      write_type_info (namespace, type, file);
-      xml_printf (file, "[");
 
       length = g_type_info_get_array_length (info);
       
       if (length >= 0)
-	xml_printf (file, "length=%d", length);
+	xml_printf (file, " length=\"%d\"", length);
       
       if (g_type_info_is_zero_terminated (info))
-	xml_printf (file, "%szero-terminated=1", length >= 0 ? "," : "");
-      
-     xml_printf (file, "]");
+	xml_printf (file, " zero-terminated=\"1\"");
+
+      write_type_info (namespace, type, file);
+
       g_base_info_unref ((GIBaseInfo *)type);
+
+      xml_end_element (file, "array");
     }
   else if (tag == GI_TYPE_TAG_INTERFACE)
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"");
       write_type_name (namespace, iface, file);
+      xml_printf (file, "\"");
+      xml_end_element (file, "type");
       g_base_info_unref (iface);
     }
   else if (tag == GI_TYPE_TAG_GLIST)
     {
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"GLib.List\"");
       type = g_type_info_get_param_type (info, 0);
-      xml_printf (file, "GLib.List");
       if (type)
 	{
-	  xml_printf (file, "<");
 	  write_type_info (namespace, type, file);
-	  xml_printf (file, ">");
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
+      xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_GSLIST)
     {
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"GLib.SList\"");
       type = g_type_info_get_param_type (info, 0);
-      xml_printf (file, "GLib.SList");
       if (type)
 	{
-	  xml_printf (file, "<");
 	  write_type_info (namespace, type, file);
-	  xml_printf (file, ">");
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
+      xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_GHASH)
     {
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"GLib.HashTable\"");
       type = g_type_info_get_param_type (info, 0);
-      xml_printf (file, "GLib.HashTable");
       if (type)
 	{
-	  xml_printf (file, "<");
 	  write_type_info (namespace, type, file);
 	  g_base_info_unref ((GIBaseInfo *)type);
 	  type = g_type_info_get_param_type (info, 1);
-	  xml_printf (file, ",");
 	  write_type_info (namespace, type, file);
-	  xml_printf (file, ">");
 	  g_base_info_unref ((GIBaseInfo *)type);
 	}
+      xml_end_element (file, "type");
     }
   else if (tag == GI_TYPE_TAG_ERROR) 
     {
       gint n;
 
-      xml_printf (file, "GLib.Error");
+      xml_start_element (file, "type");
+      xml_printf (file, " name=\"GLib.Error\"");
+
       n = g_type_info_get_n_error_domains (info);
       if (n > 0)
 	{
-	  xml_printf (file, "<");
 	  for (i = 0; i < n; i++)
 	    {
 	      GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
-	      if (i > 0)
-		xml_printf (file, ",");
+	      xml_start_element (file, "type");
+	      xml_printf (file, " name=\"");
 	      write_type_name (namespace, (GIBaseInfo *)ed, file);
+	      xml_printf (file, "\"");
+	      xml_end_element (file, "type");
 	      g_base_info_unref ((GIBaseInfo *)ed);
 	    }
-	  xml_printf (file, ">");
 	}
+
+      xml_end_element (file, "type");
     }
   else
     {
@@ -336,16 +351,8 @@ write_field_info (const gchar *namespace,
       xml_printf (file, "\"");
     }
 
-  xml_start_element (file, "type");
-
-  xml_printf (file, " name=\"");
-
   write_type_info (namespace, type, file);
   g_base_info_unref ((GIBaseInfo *)type);
-
-  xml_printf (file, "\"");
-
-  xml_end_element (file, "type");
 
   xml_end_element (file, "field");
 }
@@ -382,15 +389,7 @@ write_callable_info (const gchar    *namespace,
   if (g_callable_info_may_return_null (info))
     xml_printf (file, " null-ok=\"1\"");
 
-  xml_start_element (file, "type");
-
-  xml_printf (file, " name=\"");
-
   write_type_info (namespace, type, file);
-
-  xml_printf (file, "\"");
-
-  xml_end_element (file, "type");
 
   xml_end_element (file, "return-value");
 	
@@ -447,16 +446,8 @@ write_callable_info (const gchar    *namespace,
       if (g_arg_info_is_optional (arg))
 	xml_printf (file, " optional=\"1\"");
       
-      xml_start_element (file, "type");
-      
-      xml_printf (file, " name=\"");
-
       type = g_arg_info_get_type (arg);
       write_type_info (namespace, type, file);
-
-      xml_printf (file, "\"");
-
-      xml_end_element (file, "type");
 
       xml_end_element (file, "parameter");
 
@@ -697,13 +688,7 @@ write_constant_info (const gchar    *namespace,
   write_constant_value (namespace, type, &value, file);
   xml_printf (file, "\"");
 
-  xml_start_element (file, "type");
-  xml_printf (file, " name=\"");
-
   write_type_info (namespace, type, file);
-  xml_printf (file, "\"");
-
-  xml_end_element (file, "type");
 
   xml_end_element (file, "constant");
   
@@ -868,15 +853,7 @@ write_property_info (const gchar    *namespace,
     
   type = g_property_info_get_type (info);
 
-  xml_start_element (file, "type");
-
-  xml_printf (file, " name=\"");
-
   write_type_info (namespace, type, file);
-
-  xml_printf (file, "\"");
-  
-  xml_end_element (file, "type");
 
   xml_end_element (file, "property");
 }
