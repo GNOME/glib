@@ -1167,6 +1167,36 @@ serialize_type (GIrModule    *module,
     }
 }
 
+static void
+g_ir_node_build_members (GList         **members,
+			 GIrNodeTypeId   type,
+			 guint16        *count,
+			 GIrModule      *module,
+			 GList          *modules,
+			 GHashTable     *strings,
+			 GHashTable     *types,
+			 guchar         *data,
+			 guint32        *offset,
+			 guint32        *offset2)
+{
+  GList *l = *members;
+
+  while (l)
+    {
+      GIrNode *member = (GIrNode *)l->data;
+      GList *next = l->next;
+
+      if (member->type == type)
+	{
+	  (*count)++;
+	  g_ir_node_build_typelib (member, module, modules, strings,
+				   types, data, offset, offset2);
+	  *members = g_list_delete_link (*members, l);
+	}
+      l = next;
+    }
+}
+
 void
 g_ir_node_build_typelib (GIrNode    *node,
 			 GIrModule  *module,
@@ -1601,6 +1631,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	StructBlob *blob = (StructBlob *)&data[*offset];
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
+	GList *members;
 	
 	blob->blob_type = BLOB_TYPE_STRUCT;
 	blob->deprecated = struct_->deprecated;
@@ -1623,29 +1654,18 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_methods = 0;
 
 	*offset += 20; 
-	for (l = struct_->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
 
-	    if (member->type == G_IR_NODE_FIELD)
-	      {
-		blob->n_fields++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	members = g_list_copy (struct_->members);
 
-	for (l = struct_->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-	    
-	    if (member->type == G_IR_NODE_FUNCTION)
-	      {
-		blob->n_methods++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
+				 module, modules, strings,
+				 types, data, offset, offset2);
+
+	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
+				 module, modules, strings,
+				 types, data, offset, offset2);
+
+	g_list_free (members);
       }
       break;
 
@@ -1653,6 +1673,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	StructBlob *blob = (StructBlob *)&data[*offset];
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
+	GList *members;
 
 	blob->blob_type = BLOB_TYPE_BOXED;
 	blob->deprecated = boxed->deprecated;
@@ -1666,29 +1687,18 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_methods = 0;
 
 	*offset += 20; 
-	for (l = boxed->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
 
-	    if (member->type == G_IR_NODE_FIELD)
-	      {
-		blob->n_fields++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	members = g_list_copy (boxed->members);
 
-	for (l = boxed->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
+	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
-	    if (member->type == G_IR_NODE_FUNCTION)
-	      {
-		blob->n_methods++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
+				 module, modules, strings,
+				 types, data, offset, offset2);
+
+	g_list_free (members);
       }
       break;
 
@@ -1696,6 +1706,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	UnionBlob *blob = (UnionBlob *)&data[*offset];
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
+	GList *members;
 
 	blob->blob_type = BLOB_TYPE_UNION;
 	blob->deprecated = union_->deprecated;
@@ -1734,30 +1745,17 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    blob->discriminator_type.offset = 0;
 	  }
 	
-	
-	for (l = union_->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
+	members = g_list_copy (union_->members);
 
-	    if (member->type == G_IR_NODE_FIELD)
-	      {
-		blob->n_fields++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
-	for (l = union_->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
+	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_functions,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
-	    if (member->type == G_IR_NODE_FUNCTION)
-	      {
-		blob->n_functions++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_list_free (members);
 
 	if (union_->discriminator_type)
 	  {
@@ -1819,6 +1817,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	ObjectBlob *blob = (ObjectBlob *)&data[*offset];
 	GIrNodeInterface *object = (GIrNodeInterface *)node;
+	GList *members;
 
 	blob->blob_type = BLOB_TYPE_OBJECT;
 	blob->deprecated = object->deprecated;
@@ -1847,83 +1846,39 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    *offset += 2;
 	  }
 	
-	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_FIELD)
-	      {
-		blob->n_fields++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	members = g_list_copy (object->members);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_PROPERTY)
-	      {
-		blob->n_properties++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_FUNCTION)
-	      {
-		blob->n_methods++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_PROPERTY, &blob->n_properties,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_SIGNAL)
-	      {
-		blob->n_signals++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_VFUNC)
-	      {
-		blob->n_vfuncs++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_SIGNAL, &blob->n_signals,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = object->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
+	g_ir_node_build_members (&members, G_IR_NODE_VFUNC, &blob->n_vfuncs,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
-	    if (member->type == G_IR_NODE_CONSTANT)
-	      {
-		blob->n_constants++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	*offset = ALIGN_VALUE (*offset, 4);
+	g_ir_node_build_members (&members, G_IR_NODE_CONSTANT, &blob->n_constants,
+				 module, modules, strings,
+				 types, data, offset, offset2);
+
+	g_list_free (members);
       }
       break;
 
@@ -1931,6 +1886,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	InterfaceBlob *blob = (InterfaceBlob *)&data[*offset];
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
+	GList *members;
 
 	blob->blob_type = BLOB_TYPE_INTERFACE;
 	blob->deprecated = iface->deprecated;
@@ -1953,70 +1909,34 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    *offset += 2;
 	  }
 	
-	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = iface->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_PROPERTY)
-	      {
-		blob->n_properties++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	members = g_list_copy (iface->members);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = iface->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_FUNCTION)
-	      {
-		blob->n_methods++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_PROPERTY, &blob->n_properties,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = iface->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_SIGNAL)
-	      {
-		blob->n_signals++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = iface->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
-
-	    if (member->type == G_IR_NODE_VFUNC)
-	      {
-		blob->n_vfuncs++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	g_ir_node_build_members (&members, G_IR_NODE_SIGNAL, &blob->n_signals,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
-	for (l = iface->members; l; l = l->next)
-	  {
-	    GIrNode *member = (GIrNode *)l->data;
+	g_ir_node_build_members (&members, G_IR_NODE_VFUNC, &blob->n_vfuncs,
+				 module, modules, strings,
+				 types, data, offset, offset2);
 
-	    if (member->type == G_IR_NODE_CONSTANT)
-	      {
-		blob->n_constants++;
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
-	      }
-	  }
+	*offset = ALIGN_VALUE (*offset, 4);
+	g_ir_node_build_members (&members, G_IR_NODE_CONSTANT, &blob->n_constants,
+				 module, modules, strings,
+				 types, data, offset, offset2);
+
+	g_list_free (members);
       }
       break;
 
