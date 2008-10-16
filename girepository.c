@@ -1060,7 +1060,7 @@ g_irepository_require (GIRepository  *repository,
       if (version != NULL)
 	g_set_error (error, G_IREPOSITORY_ERROR,
 		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
-		     "Typelib file %s for namespace '%s', version '%s' not found",
+		     "Typelib file for namespace '%s', version '%s' not found",
 		     namespace, version);
       else
 	g_set_error (error, G_IREPOSITORY_ERROR,

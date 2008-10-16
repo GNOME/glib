@@ -130,7 +130,7 @@ static GMarkupParser firstpass_parser =
 };
 
 static char *
-locate_gir (const char *name, const char * const* extra_paths)
+locate_gir (const char *name, const char *version, const char * const* extra_paths)
 {
   const gchar *const *datadirs;
   const gchar *const *dir;
@@ -141,7 +141,7 @@ locate_gir (const char *name, const char * const* extra_paths)
       
   datadirs = g_get_system_data_dirs ();
       
-  girname = g_strdup_printf ("%s.gir", name);
+  girname = g_strdup_printf ("%s-%s.gir", name, version);
   
   for (dir = datadirs; *dir; dir++) 
     {
@@ -981,7 +981,6 @@ start_alias (GMarkupParseContext *context,
     {
       key = g_strdup (name);
     }
-  
   g_hash_table_insert (ctx->aliases, key, value);
 
   return TRUE;
@@ -2048,6 +2047,7 @@ static gboolean
 parse_include (GMarkupParseContext *context,
 	       ParseContext        *ctx,
 	       const char          *name,
+	       const char          *version,
 	       GError             **error)
 {
   ParseContext sub_ctx = { 0 };
@@ -2056,7 +2056,7 @@ parse_include (GMarkupParseContext *context,
   gsize length;
   char *girpath;
   
-  girpath = locate_gir (name, ctx->includes);
+  girpath = locate_gir (name, version, ctx->includes);
 
   if (girpath == NULL)
     {
@@ -2231,19 +2231,27 @@ start_element_handler (GMarkupParseContext *context,
 	  ctx->state == STATE_REPOSITORY)
 	{
 	  const gchar *name;
-	  
+	  const gchar *version;
+
 	  name = find_attribute ("name", attribute_names, attribute_values);
+	  version = find_attribute ("version", attribute_names, attribute_values);
 
 	  if (name == NULL)
 	    {
 	      MISSING_ATTRIBUTE (context, error, element_name, "name");
 	      break;
 	    }
+	  if (version == NULL)
+	    {
+	      MISSING_ATTRIBUTE (context, error, element_name, "version");
+	      break;
+	    }
 
-	  if (!parse_include (context, ctx, name, error))
+	  if (!parse_include (context, ctx, name, version, error))
 	    break;
 
-	  ctx->dependencies = g_list_prepend (ctx->dependencies, g_strdup (name));
+	  ctx->dependencies = g_list_prepend (ctx->dependencies,
+					      g_strdup_printf ("%s-%s", name, version));
 
 
 	  state_switch (ctx, STATE_INCLUDE);
