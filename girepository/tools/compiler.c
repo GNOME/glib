@@ -169,7 +169,7 @@ main (int argc, char ** argv)
 {
   GOptionContext *context;
   GError *error = NULL;
-  GList *c, *m, *modules; 
+  GList *m, *modules;
   gint i;
   g_typelib_check_sanity ();
 
