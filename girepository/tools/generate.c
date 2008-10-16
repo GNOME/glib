@@ -1168,9 +1168,11 @@ write_repository (const char   *namespace,
     {
       for (i = 0; dependencies[i]; i++)
 	{
+	  char **parts = g_strsplit (dependencies[i], "-", 2);
 	  xml_start_element (xml, "include");
-	  xml_printf (xml, " name=\"%s\"", dependencies[i]);
+	  xml_printf (xml, " name=\"%s\" version=\"%s\"", parts[0], parts[1]);
 	  xml_end_element (xml, "include");
+	  g_strfreev (parts);
 	}
     }
 
