@@ -1,3 +1,11 @@
+2008-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556422 – g_file_enumerator_next_file: unclear whether return 
+	value needs to be freed
+
+	* gfileenumerator.c (g_file_enumerate_next_file): Clarify
+	the return value docs. Pointed out by Armin Burgmeier
+
 2008-10-14  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 556334 – Warning when building without selinux support
