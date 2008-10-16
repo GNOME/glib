@@ -87,6 +87,36 @@ about it. ;-)
 @Returns: 
 
 
+<!-- ##### MACRO GLIB_MAJOR_VERSION ##### -->
+<para>
+The major version number of the GLib library.
+Like #glib_major_version, but from the headers used at
+application compile time, rather than from the library linked against
+at application run time.
+</para>
+
+
+
+<!-- ##### MACRO GLIB_MINOR_VERSION ##### -->
+<para>
+The minor version number of the GLib library.
+Like #gtk_minor_version, but from the headers used at
+application compile time, rather than from the library linked against
+at application run time.
+</para>
+
+
+
+<!-- ##### MACRO GLIB_MICRO_VERSION ##### -->
+<para>
+The micro version number of the GLib library.
+Like #gtk_micro_version, but from the headers used at
+application compile time, rather than from the library linked against
+at application run time.
+</para>
+
+
+
 <!-- ##### MACRO GLIB_CHECK_VERSION ##### -->
 <para>
 Checks the version of the GLib library.

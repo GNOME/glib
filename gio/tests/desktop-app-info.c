@@ -239,6 +239,8 @@ int
 main (int   argc,
       char *argv[])
 {
+  gint result;
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
   
@@ -249,5 +251,9 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
 
-  return g_test_run();
+  result = g_test_run ();
+
+  cleanup_subdirs (basedir);
+
+  return result;
 }

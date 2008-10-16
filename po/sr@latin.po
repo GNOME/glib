@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 18:46-0400\n"
 "PO-Revision-Date: 2007-09-06 21:11+0100\n"
 "Last-Translator: Goran Rakić <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -92,7 +92,7 @@ msgstr "Program „%s“ nije registrovao obeleživač ka „%s“"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Ne mogu da proširim komadnu liniju „%s“ sa vezom ka „%s“"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1158
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1231
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
@@ -102,14 +102,14 @@ msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:955
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1403
+#: glib/giochannel.c:1445 glib/giochannel.c:2289 glib/gutf8.c:955
 #: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neispravan niz bajtova u ulazu koji pretvaram"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1337
-#: glib/giochannel.c:2228
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1410
+#: glib/giochannel.c:2301
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Greška pri pretvaranju: %s"
@@ -240,48 +240,48 @@ msgstr "Neispravan šablon „%s“, ne sme sadržati „%s“"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Šablon „%s“ ne sadrži XXXXXX"
 
-#: glib/gfileutils.c:1849
+#: glib/gfileutils.c:1852
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1857
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1859
+#: glib/gfileutils.c:1862
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1902
+#: glib/gfileutils.c:1905
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ne mogu da pročitam simboličku vezu „%s“: %s"
 
-#: glib/gfileutils.c:1923
+#: glib/gfileutils.c:1926
 msgid "Symbolic links not supported"
 msgstr "Simboličke veze nisu podržane"
 
-#: glib/giochannel.c:1162
+#: glib/giochannel.c:1235
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“: %s"
 
-#: glib/giochannel.c:1507
+#: glib/giochannel.c:1580
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1554 glib/giochannel.c:1812 glib/giochannel.c:1899
+#: glib/giochannel.c:1627 glib/giochannel.c:1885 glib/giochannel.c:1972
 msgid "Leftover unconverted data in read buffer"
 msgstr "Preostali nepretvoreni podaci u baferu za čitanje"
 
-#: glib/giochannel.c:1635 glib/giochannel.c:1712
+#: glib/giochannel.c:1708 glib/giochannel.c:1785
 msgid "Channel terminates in a partial character"
 msgstr "Kanal se završava delimičnim znakom"
 
-#: glib/giochannel.c:1698
+#: glib/giochannel.c:1771
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_to_end"
 
@@ -295,24 +295,24 @@ msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan open(): %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Ne mogu da mapiram datoteku „%s“: neuspešan mmap(): %s"
 
-#: glib/gmarkup.c:269 glib/gmarkup.c:285
+#: glib/gmarkup.c:255 glib/gmarkup.c:295
 #, fuzzy, c-format
 msgid "Error on line %d char %d: "
 msgstr "Greška u %d. redu, %d. znak: %s"
 
-#: glib/gmarkup.c:379
+#: glib/gmarkup.c:389
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: glib/gmarkup.c:483
+#: glib/gmarkup.c:493
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Uočen prazan entitet „&;“; prihvatljivi entiteti su &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:493
+#: glib/gmarkup.c:503
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -322,17 +322,17 @@ msgstr ""
 "Ime entiteta ne može početi znakom „%s“ ; znak & započinje entitet; ako ovaj "
 "znak ne označava entitet, istaknite ga pomoću &amp;"
 
-#: glib/gmarkup.c:527
+#: glib/gmarkup.c:537
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Znak „%s“ nije dozvoljen u imenu entiteta"
 
-#: glib/gmarkup.c:564
+#: glib/gmarkup.c:574
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitet „%s“ nije poznat"
 
-#: glib/gmarkup.c:575
+#: glib/gmarkup.c:585
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -340,7 +340,7 @@ msgstr ""
 "Entitet se ne završava tačka-zapetom; najverovatnije ste koristili ampersand "
 "bez namere da započnete entitet — naznačite ampersand sa &amp;"
 
-#: glib/gmarkup.c:628
+#: glib/gmarkup.c:638
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -349,16 +349,16 @@ msgstr ""
 "Nisam uspeo da raščlanim „%-.*s“, što je trebalo da predstavlja cifru unutar "
 "znakovne reference (na primer &#234;) — možda je cifra prevelika"
 
-#: glib/gmarkup.c:650
+#: glib/gmarkup.c:660
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Znakovna referenca „%-.*s“ ne predstavlja dozvoljeni znak"
 
-#: glib/gmarkup.c:665
+#: glib/gmarkup.c:675
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Prazna znakovna referenca; mora da sadrži cifru kao na primer &#747;"
 
-#: glib/gmarkup.c:675
+#: glib/gmarkup.c:685
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -368,32 +368,32 @@ msgstr ""
 "koristili ampersand bez namere da započnete entitet — naznačite ampersand sa "
 "&amp;"
 
-#: glib/gmarkup.c:761
+#: glib/gmarkup.c:771
 msgid "Unfinished entity reference"
 msgstr "Nedovršena referenca entiteta"
 
-#: glib/gmarkup.c:767
+#: glib/gmarkup.c:777
 msgid "Unfinished character reference"
 msgstr "Nedovršena znakovna referenca"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1063
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Neispravan tekst u UTF-8 zapisu – predugačka sekvenca"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1091
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Neispravan tekst u UTF-8 zapisu — karakter nije početni"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1130
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Neispravan tekst u UTF-8 zapisu — „%s“ nije ispravno"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1168
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument mora početi elementom (npr. <knjiga>)"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1208
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -402,7 +402,7 @@ msgstr ""
 "„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
 "njime početi"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1276
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -411,14 +411,14 @@ msgstr ""
 "Čudan znak „%s“, a očekivao sam „>“ znak radi okončanja početne oznake "
 "elementa „%s“"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1365
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Čudan znak „%s“, očekivao sam „=“ posle imena atributa „%s“ elementa „%s“"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1407
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -429,7 +429,7 @@ msgstr ""
 "elementa „%s“, ili možda atribut; možda ste koristili neispravan znak u "
 "imenu atributa"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1493
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -438,7 +438,7 @@ msgstr ""
 "Čudan znak „%s“, očekivao sam početni navodnik nakon znaka jednakosti pri "
 "dodeli vrednosti atributa  „%s“ elementa „%s“"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1635
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -446,7 +446,7 @@ msgid ""
 msgstr ""
 "„%s“ nije ispravan znak nakon niza „</“; „%s“ ne može započeti ime elementa"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -455,26 +455,26 @@ msgstr ""
 "„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
 "znak je „>“"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1686
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element „%s“ je zatvoren, nema trenutno otvorenih elemenata"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1695
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element „%s“ je zatvoren, a trenutno otvoren element je „%s“"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1858
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prazan ili sadrži samo beline"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1872
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Dokument završen neočekivano neposredno nakon otvorene kosougle zagrade „<“"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -483,7 +483,7 @@ msgstr ""
 "Dokument završen neočekivano sa otvorenim elementima — „%s“ je poslednje "
 "otvoren element"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1888
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -492,19 +492,19 @@ msgstr ""
 "Dokument završen neočekivano, očekivao sam da naiđem na zatvorenu kosouglu "
 "zagradu koja zatvara oznaku <%s/>"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1894
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument završen neočekivano usred imena elementa"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1900
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument završen neočekivano usred imena atributa"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1905
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument završen neočekivano usred početne oznake elementa."
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1911
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -512,16 +512,16 @@ msgstr ""
 "Dokument završen neočekivano nakon znaka jednakosti posle imena atributa; "
 "vrednost atributa nije navedena"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1918
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument završen neočekivano usred vrednosti atributa"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1934
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument završen neočekivano usred završne oznake elementa „%s“"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1940
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument završen neočekivano usred primedbe ili uputa za obradu"
 
@@ -829,12 +829,10 @@ msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Greška prilikom obrade teksta za zamenu „%s“ kod karaktera %lu: %s"
 
 #: glib/gshell.c:70
-#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Navod ne počinje navodnikom"
 
 #: glib/gshell.c:160
-#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Neuparen navodnik u naredbi ili drugom citatu iz ljuske"
 
@@ -873,37 +871,37 @@ msgstr "Neuspelo čitanje iz podređene cevke (%s)"
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Neuspelo izvršavanje potprocesa (%s)"
 
-#: glib/gspawn-win32.c:444
+#: glib/gspawn-win32.c:442
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Neispravno ime programa: %s"
 
-#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
+#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Neispravna niska — član vektora u %d: %s"
 
-#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
+#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Neispravna niska u okruženju: %s"
 
-#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
+#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Neispravna radna fascikla: %s"
 
-#: glib/gspawn-win32.c:791
+#: glib/gspawn-win32.c:781
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Neuspelo izvršavanje pomoćnog programa (%s)"
 
-#: glib/gspawn-win32.c:1006
+#: glib/gspawn-win32.c:995
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1146,7 +1144,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr ""
 
@@ -1169,34 +1167,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:664
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:958
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1190
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1194
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1598
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1707
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1210,10 +1208,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
-#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
-#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
+#: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
+#: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
+#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:427
 #, fuzzy
 msgid "Operation not supported"
 msgstr "Simboličke veze nisu podržane"
@@ -1247,39 +1245,39 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2861
+#: gio/gfile.c:2868
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2954
+#: gio/gfile.c:2961
 #, fuzzy
 msgid "Trash not supported"
 msgstr "Simboličke veze nisu podržane"
 
-#: gio/gfile.c:3003
+#: gio/gfile.c:3010
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4985 gio/gvolume.c:370
+#: gio/gfile.c:4992 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5093
+#: gio/gfile.c:5100
 #, fuzzy
 msgid "No application is registered as handling this file"
 msgstr "Program „%s“ nije registrovao obeleživač ka „%s“"
 
-#: gio/gfileenumerator.c:205
+#: gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
 msgstr ""
 
-#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:271
-#: gio/gfileenumerator.c:371 gio/gfileenumerator.c:480
+#: gio/gfileenumerator.c:213 gio/gfileenumerator.c:272
+#: gio/gfileenumerator.c:372 gio/gfileenumerator.c:481
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: gio/gfileenumerator.c:361 gio/gfileenumerator.c:470
+#: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr ""
 
@@ -1460,64 +1458,61 @@ msgstr "Greška pri čitanju datoteke „%s“: %s"
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Greška pri čitanju datoteke „%s“: %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Greška pri pretvaranju: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Greška pri pretvaranju: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Greška pri pretvaranju: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Simboličke veze nisu podržane"
@@ -1683,14 +1678,14 @@ msgid ""
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
 
-#: gio/gunixinputstream.c:201 gio/gunixinputstream.c:221
-#: gio/gunixinputstream.c:299 gio/gunixoutputstream.c:288
+#: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215
+#: gio/gunixinputstream.c:293 gio/gunixoutputstream.c:282
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "Greška pri čitanju datoteke „%s“: %s"
 
-#: gio/gunixinputstream.c:254 gio/gunixinputstream.c:436
-#: gio/gunixoutputstream.c:243 gio/gunixoutputstream.c:394
+#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:430
+#: gio/gunixoutputstream.c:237 gio/gunixoutputstream.c:388
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "Greška u %d. redu: %s"
@@ -1699,12 +1694,12 @@ msgstr "Greška u %d. redu: %s"
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:189 gio/gunixoutputstream.c:210
+#: gio/gunixoutputstream.c:183 gio/gunixoutputstream.c:204
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "Greška pri raščlanjivanju mogućnosti %s"
 
-#: gio/gvolume.c:439
+#: gio/gvolume.c:444
 msgid "volume doesn't implement eject"
 msgstr ""
 

@@ -395,7 +395,7 @@ error domains.
 
 @channel: 
 @condition: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_io_add_watch ##### -->
@@ -404,7 +404,7 @@ error domains.
 </para>
 
 @channel: 
-@condition:
+@condition: 
 @func: 
 @user_data: 
 @Returns: 
@@ -417,9 +417,9 @@ error domains.
 
 @channel: 
 @priority: 
-@condition:
+@condition: 
 @func: 
-@user_data:
+@user_data: 
 @notify: 
 @Returns: 
 

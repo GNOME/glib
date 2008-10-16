@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 18:46-0400\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -88,7 +88,7 @@ msgstr "མིང་'%sའབད་མི་གློག་རིམ་གྱི
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ ’%s’:%s ལྷག་མ་ཚུགས།"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1158
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1231
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ཡིག་འབྲུའི་ཆ་ཚན་ ‘%s’ ལས་ ‘%s’ ལུ་གཞི་བསྒྱུར་འབད་ནི་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -98,14 +98,14 @@ msgstr "ཡིག་འབྲུའི་ཆ་ཚན་ ‘%s’ ལས་ ‘%
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "‘%s’ ལས་ '%s'  ལུ་ སྒྱུར་བྱེད་ཁ་ཕྱེ་མ་ཚུགས།"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
-#: glib/giochannel.c:1372 glib/giochannel.c:2216 glib/gutf8.c:955
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1403
+#: glib/giochannel.c:1445 glib/giochannel.c:2289 glib/gutf8.c:955
 #: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "གཞི་བསྒྱུར་གྱི་ཨིན་པུཊི་ནང་ བའིཊི་གི་འབྱུང་རིམ་ ནུས་མེད་ཨིན་པས།"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1337
-#: glib/giochannel.c:2228
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1410
+#: glib/giochannel.c:2301
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
@@ -235,48 +235,48 @@ msgstr "ཊེམ་པེ་ལེཊི་ '%s' དེ་ནུས་མེད
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ཊེམ་པེལེཊི་ ’%s’ འབད་མི་དེ་ནང་ XXXXXX མིན་འདུག།"
 
-#: glib/gfileutils.c:1849
+#: glib/gfileutils.c:1852
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1857
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1859
+#: glib/gfileutils.c:1862
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1902
+#: glib/gfileutils.c:1905
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ ’%s’:%s ལྷག་མ་ཚུགས།"
 
-#: glib/gfileutils.c:1923
+#: glib/gfileutils.c:1926
 msgid "Symbolic links not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
 
-#: glib/giochannel.c:1162
+#: glib/giochannel.c:1235
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "‘%s’ ལས་ ‘%s’:%s ལུ་སྒྱུར་བྱེད་ཁ་ཕྱེ་མ་ཚུགས།"
 
-#: glib/giochannel.c:1507
+#: glib/giochannel.c:1580
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ཇི་ཨའི་ ཨོ་ རྒྱུ་ལམ་ ལྷག་ གྱལ་རིམ་ ཡིག་རྒྱུན་ཚུ་ནང་ རགས་ལྷག་མི་བཏུབ།"
 
-#: glib/giochannel.c:1554 glib/giochannel.c:1812 glib/giochannel.c:1899
+#: glib/giochannel.c:1627 glib/giochannel.c:1885 glib/giochannel.c:1972
 msgid "Leftover unconverted data in read buffer"
 msgstr "ལྷག་ནིའི་གནད་ཁོངས་ནང་ གཞི་བསྒྱུར་མ་འབད་བའི་གནད་སྡུད་ ལྷག་ལུས་འདུག"
 
-#: glib/giochannel.c:1635 glib/giochannel.c:1712
+#: glib/giochannel.c:1708 glib/giochannel.c:1785
 msgid "Channel terminates in a partial character"
 msgstr "ཡིག་འབྲུ་ནང་ཆ་ཤས་ནང་ལུ་ རྒྱུ་ལམ་རྩ་འགྲོལ་འགྱོཝ་ཨིན།"
 
-#: glib/giochannel.c:1698
+#: glib/giochannel.c:1771
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ཇི་ཨའི ཨོ་ རྒྱ་ལམ་ མཇུག་ ཚུན་ ལྷག་ནི་ཚུ་ནང་ རགས་ལྷག་མི་བཏུབ།"
 
@@ -290,23 +290,23 @@ msgstr "ཡིག་སྣོད་ ’%s’ ཁ་ཕྱེ་མ་ཚུག�
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ཡིག་སྣོད་’%s’ གི་ས་ཁྲ་འབྲི་མ་ཚུགས་:  mmap() མ་བཏུབ་:%s།"
 
-#: glib/gmarkup.c:269 glib/gmarkup.c:285
+#: glib/gmarkup.c:255 glib/gmarkup.c:295
 #, fuzzy, c-format
 msgid "Error on line %d char %d: "
 msgstr "གྱལ་རིམ་%d ཡིག་འབྲུ་ %d:%s ལུ་འཛོལ་བ།"
 
-#: glib/gmarkup.c:379
+#: glib/gmarkup.c:389
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
 
-#: glib/gmarkup.c:483
+#: glib/gmarkup.c:493
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "ངོ་བོ་སྟོང་པ་ ’&;’ མཐོང་ཅི། ནུས་ཅན་ངོ་བོ་ཚུ་: &amp; &quot; &lt; &gt; &apos; ཚུ་ཨིན།"
 
-#: glib/gmarkup.c:493
+#: glib/gmarkup.c:503
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -316,17 +316,17 @@ msgstr ""
 "ངོ་བོའི་མིང་ འགོ་བཙུགས་སར ཡིག་འབྲུ་་ ’%s’ ནུས་མེད་ཨིན་པས། ཡིག་འབྲུ་ & འདི་གིས་ངོ་བོ་ཅིག་ འགོ་"
 "བཙུགསཔ་ཨིན། གལ་སྲིད་ དང་རྟགས་འདི་ ངོ་བོ་མིནམ་ཅིག་དགོ་པཅིན་ &amp; བཟུམ་ཅིག་སྦེ་ གྲོས་ཐར་འབད།"
 
-#: glib/gmarkup.c:527
+#: glib/gmarkup.c:537
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "ཡིག་འབྲུ་ ’%s དེ་ ངོ་བོའི་མིང་ཅིག་གི་ ནང་འཁོད་ལུ་ ནུས་མེད་ཨིན། "
 
-#: glib/gmarkup.c:564
+#: glib/gmarkup.c:574
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "ངོ་བོའི་མིང་ '%s' ཧ་མ་གོ"
 
-#: glib/gmarkup.c:575
+#: glib/gmarkup.c:585
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -334,7 +334,7 @@ msgstr ""
 "ངོ་བོ་འདི་ སེ་མི་ཀོ་ལཱོན་ ; གིས་འབད་ མཇུག་མ་བསྡུ་བས། ཁྱོད་ཀྱིས་ངོ་བོ་ཅིག་ འགོ་མ་བཙུགས་པར་ དང་རྟགས་"
 "ཡིག་འབྲུ་ཅིག་ ལག་ལེན་འཐབ་འཐབ་བཟུམ་ཅིག་འདུག དང་རྟགས་་ &amp; བཟུམ་ཅིག་སྦེ་ གྲོས་ཐར་འབད།"
 
-#: glib/gmarkup.c:628
+#: glib/gmarkup.c:638
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -343,16 +343,16 @@ msgstr ""
 "'%-.*s'ལུ་ མིང་དཔྱད་འབད་མ་ཚུགས། འདི་ཡིག་འབྲུ་གཞི་བསྟུན་ (དཔེར་ན་ (&#234; ) ཅིག་ནང་གི་ ཨང་"
 "ཡིག་ཅིག་འོང་དགོཔ་ཨིན་ - ཨང་ཡིག་དེ་ སྦོམ་དྲགསཔ་འོང་ནི་མས།"
 
-#: glib/gmarkup.c:650
+#: glib/gmarkup.c:660
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "ཡིག་འབྲུ་གཞི་བསྟུན་ '%-.*s' དེ་གིས་ གནང་བ་ཅན་གྱི་ཡིག་འབྲུ་ཅིག་ལུ་ ཨིན་ཀོཌི་མི་འབད་བས།"
 
-#: glib/gmarkup.c:665
+#: glib/gmarkup.c:675
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "ཡིག་འབྲུ་སྟོང་པའི་འབྲེལ་བ་འདི་ནང་ &#454; བཟུམ་མའི་ ཨང་ཡིག་ཅིག་འོང་དགོ"
 
-#: glib/gmarkup.c:675
+#: glib/gmarkup.c:685
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -362,34 +362,34 @@ msgstr ""
 "མེད་པར་ དང་རྟགས་ ཡིག་འབྲུ་ ལག་ལེན་འཐབ་འཐབ་འོང་ནི་མས།   དང་རྟགས་དེ་ &amp; བཟུམ་སྦེ་ གྲོས་ཐར་"
 "འབད།"
 
-#: glib/gmarkup.c:761
+#: glib/gmarkup.c:771
 msgid "Unfinished entity reference"
 msgstr "མཇུག་མ་བསྡུ་བའི་ ངོ་བོའི་གཞི་བསྟུན།"
 
-#: glib/gmarkup.c:767
+#: glib/gmarkup.c:777
 msgid "Unfinished character reference"
 msgstr "མཇུག་མ་བསྡུ་བའི་ ཡིག་འབྲུའི་གཞི་བསྟུན།"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1063
 #, fuzzy
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "ནུས་མེད་ཡུ་ཊི་ཨེཕ་-༨ ཀྱི ཨིན་ཀོ་དེཌི་ཚིག་ཡིག"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1091
 #, fuzzy
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "ནུས་མེད་ཡུ་ཊི་ཨེཕ་-༨ ཀྱི ཨིན་ཀོ་དེཌི་ཚིག་ཡིག"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1130
 #, fuzzy, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "ནུས་མེད་ཡུ་ཊི་ཨེཕ་-༨ ཀྱི ཨིན་ཀོ་དེཌི་ཚིག་ཡིག"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1168
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ཡིག་ཆ་དེ་  (དཔེར་ན་ <book>) བཟུམ་མའི་ཆ་ཤས་ཅིག་གིས་ འགོ་བཙུགས་དགོ"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1208
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -398,7 +398,7 @@ msgstr ""
 "ཡིག་འབྲུ་ ’%s’ དེ་ ཡིག་འབྲུ་’<’ ཅིག་གི་རྗེས་སུ་འོངམ་ད་ ནུས་པ་ཡོད་པའི་ཡིག་འབྲུ་ཅིག་མིན། འདི་གིས་ཆ་ཤས་"
 "ཀྱི་མིང་ཅིག་ འགོ་མི་བཙུགསཔ་འོང༌།"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1276
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -407,7 +407,7 @@ msgstr ""
 "’%s’ དེ་རྐྱང་ཡིག་ཨིན་པས། ཆ་ཤས་ཀྱི་ འགོ་བཙུགས་ངོ་རྟགས་ %s’ དེ་མཇུག་བསྡུ་ནི་ལུ་ ཡིག་འབྲུ་ ’>’ ཅིག་ "
 "ཨིན་པའི་རེ་བ་ཡོད།"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1365
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -415,7 +415,7 @@ msgstr ""
 "’%s’ དེ་རྐྱང་ཡིག་ཨིན་པས།  ’=’ ཅིག་ཡོད་པའི་ རེ་བ་ཡོད་ ཁྱད་ཆོས་ཀྱི་མིང་ ’%s’ ཆ་ཤས་ ’%s’ གི་རྗེས་"
 "སུ།"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1407
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -425,7 +425,7 @@ msgstr ""
 "’%s’ དེ་རྐྱང་ཡིག་ཨིན་པས། ཆ་ཤས་ ’%s’ གི་འགོ་བཙུགས་ངོ་རྟགས་ མཇུག་བསྡུ་ནི་ལུ་ ཡིག་འབྲུ་ ’>’ ཡང་ན་ "
 "’/’ གི་རེ་བ་ཡོད།"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1493
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -434,7 +434,7 @@ msgstr ""
 "’%s’ དེ་རྐྱང་ཡིག་ཨིན་པས། ཁྱད་ཆོས་’%s’ གི་ ཆ་ཤས’%s’ གི་དོན་ལུ་ བེ་ལུ་བྱིནམ་ད་ མཉམ་རྟགས་ཀྱི་ཤུལ་"
 "ལུ་ འགོ་བཙུགས་འདྲེན་རྟགས་ཅིག་ ཚུད་ཡོད་པའི་རེ་བ་ཡོད།"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1635
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -443,7 +443,7 @@ msgstr ""
 "’%s’ དེ་ ཡིག་འབྲུ་ནུས་ཅན་ཅིག་མེན་ ཡིག་འབྲུ་ ’</’; ’%s’ ཚུ་གི་རྗེས་ཤུལ་ལུ་འོངམ་  ཆ་ཤས་ཀྱི་མིང་ཅིག་ "
 "འགོ་མི་བཙུགསཔ་འོང༌།"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -452,25 +452,25 @@ msgstr ""
 "’%s’ དེ་ ཡིག་འབྲུ་ནུས་ཅན་ཅིག་མེན། ཁ་བསྡམ་ནིའི་ཆ་ཤས་མིང་ ’%s’; གི་རྟིང་བདའ་འོངམ་ད་ ཆོག་པའི་ཡིག་"
 "འབྲུ་དེ་ ’>’ ཨིན།"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1686
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ཆ་ཤས་ ’%s’ དེ་ ཁ་བསྡམས་ཏེ་ཡོདཔ་ལས་ ད་ལྟོ་ཆ་ཤས་གཅིག་ཡང་ ཁ་ཕྱེ་ཕྱེཝ་མིན་འདུག"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1695
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ཆ་ཤས་ ’%s’ དེ་ ཁ་བསྡམས་ནུག དེ་འབདཝ་ད་ ད་ལྟོ་ཁ་ཕྱེ་སྟེ་ཡོད་མི་ཆ་ཤས་དེ་ ’%s’ ཨིན།"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1858
 msgid "Document was empty or contained only whitespace"
 msgstr "ཡིག་ཆ་དེ་སྟོང་པའམ་ ཡང་ཅིན་ ནང་ན་ས་སྟོང་དཀརཔོ་མ་གཏོགས་ མེདཔ་འོང་ནི་མས།"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1872
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ཡིག་ཆ་དེ་ ཟུར་ཁུག་གུག་ཤད་ ’<’ ཅིག་གི་ཤུལ་ལས་ རེ་བ་མེད་པར་ རྫོགས་སོ་ཡི།"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -479,7 +479,7 @@ msgstr ""
 "ཡིག་ཆ་དེ་ རེ་བ་མེད་པར་རྫོགས་སོ་རུང་ ཆ་ཤས་དེ་ ཁ་ཕྱེ་སྟེ་རང་འདུག མཐའ་མཇུག་ཁ་ཕྱེ་མི་ ཆ་ཤས་དེ་ -’%"
 "s’ ཨིན་པས།"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1888
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -488,19 +488,19 @@ msgstr ""
 "ཡིག་ཆ་དེ་ རེ་བ་མེད་པར་རྫོགས་སོ་ནུག  ངོ་རྟགས་ <%s/> མཇུག་བསྡུ་བའི་ ཁ་བསྡམ་ཟུར་ཁུག་གུག་ཤད་ཅིག་ "
 "མཐོང་བའི་རེ་བ་ཡོད།"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1894
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ཅིག་གི་ མིང་གི་ནང་ན་ རེ་བ་མེད་པར་རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1900
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་མིང་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1905
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ཁ་ཕྱེ་ནིའི་ ངོ་རྟགས་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1911
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -508,16 +508,16 @@ msgstr ""
 "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་མིང་ཅིག་གི་ཤུལ་ལས་ མཉམ་རྟགས་ཀྱི་རྗེས་སུ་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག ཁྱད་ཆོས་ཀྱི་བེ་"
 "ལུ་མིན་འདུག"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1918
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་ བེ་ལུ་ཅིག་གི་ནང་ན་སྡོད་པའི་སྐབས་ལུ་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1934
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ ’%s’ གི་དོན་ལུ་ ཁ་བསྡམ་ངོ་རྟགས་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1940
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ཡིག་ཆ་དེ་ བསམ་བཀོད་ ཡང་ན་ ལས་སྦྱོར་བཀོད་རྒྱ་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
@@ -825,12 +825,10 @@ msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
 
 #: glib/gshell.c:70
-#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "ལུང་འདྲེན་ཚིག་ཡིག་ཚུ་ འདྲེན་རྟགས་ཀྱི་ཐོག་ལས་ འགོ་མི་བཙུགས།"
 
 #: glib/gshell.c:160
-#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "བཀོད་ལམ་ནང་ ཡང་ན་ གཞན་ ཤལ་གྱི་འདྲེན་རྟགས་ནང་བཙུགས་པའི་ཚིག་ཡིག་ཚུ་ནང་ མི་མཐུན་པའི་འདྲེན་རྟགས་"
@@ -872,37 +870,37 @@ msgstr "ཆ་ལག་རྒྱུད་དུང་ (%s) ནང་ལས་ �
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "སྣོད་ཐོ་’%s’ (%s)ལུ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགས། "
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:497
+#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ (%s) དེ་ ལག་ལེན་འཐབ་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:444
+#: glib/gspawn-win32.c:442
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 
-#: glib/gspawn-win32.c:454 glib/gspawn-win32.c:727 glib/gspawn-win32.c:1288
+#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d: %s ལུ་ སྒྲུབ་རྟགས་ཝེཀ་ཊོར་ནང་ ནུས་མེད་ཡིག་རྒྱུན།"
 
-#: glib/gspawn-win32.c:465 glib/gspawn-win32.c:742 glib/gspawn-win32.c:1321
+#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "མཐའ་འཁོར་:%sནང་ལུ་ ནུས་མེད་ཡིག་རྒྱུན།"
 
-#: glib/gspawn-win32.c:723 glib/gspawn-win32.c:1269
+#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "ནུས་མེད་ལཱ་གཡོག་སྣོད་ཐོ་:%s།"
 
-#: glib/gspawn-win32.c:791
+#: glib/gspawn-win32.c:781
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ལས་རོགས་པའི་ལས་རིམ་ (%s) ལག་ལེན་འཐབ་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:1006
+#: glib/gspawn-win32.c:995
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1141,7 +1139,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr ""
 
@@ -1164,34 +1162,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:664
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:958
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1190
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1194
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1598
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1707
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1205,10 +1203,10 @@ msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
-#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
-#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
+#: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
+#: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
+#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:427
 #, fuzzy
 msgid "Operation not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1242,39 +1240,39 @@ msgstr ""
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2861
+#: gio/gfile.c:2868
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2954
+#: gio/gfile.c:2961
 #, fuzzy
 msgid "Trash not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
 
-#: gio/gfile.c:3003
+#: gio/gfile.c:3010
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4985 gio/gvolume.c:370
+#: gio/gfile.c:4992 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:5093
+#: gio/gfile.c:5100
 #, fuzzy
 msgid "No application is registered as handling this file"
 msgstr "མིང་'%sའབད་མི་གློག་རིམ་གྱིས་ '%s དོན་ལུ་ དེབ་རྟགས་ཅིག་ཐོ་འགོད་མ་འབད་བས། "
 
-#: gio/gfileenumerator.c:205
+#: gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
 msgstr ""
 
-#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:271
-#: gio/gfileenumerator.c:371 gio/gfileenumerator.c:480
+#: gio/gfileenumerator.c:213 gio/gfileenumerator.c:272
+#: gio/gfileenumerator.c:372 gio/gfileenumerator.c:481
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: gio/gfileenumerator.c:361 gio/gfileenumerator.c:470
+#: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr ""
 
@@ -1455,64 +1453,61 @@ msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་�
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1678,14 +1673,14 @@ msgid ""
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
 
-#: gio/gunixinputstream.c:201 gio/gunixinputstream.c:221
-#: gio/gunixinputstream.c:299 gio/gunixoutputstream.c:288
+#: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215
+#: gio/gunixinputstream.c:293 gio/gunixoutputstream.c:282
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/gunixinputstream.c:254 gio/gunixinputstream.c:436
-#: gio/gunixoutputstream.c:243 gio/gunixoutputstream.c:394
+#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:430
+#: gio/gunixoutputstream.c:237 gio/gunixoutputstream.c:388
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
@@ -1694,12 +1689,12 @@ msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:189 gio/gunixoutputstream.c:210
+#: gio/gunixoutputstream.c:183 gio/gunixoutputstream.c:204
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "གདམ་ཁ་%s མིང་དཔྱད་འབད་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/gvolume.c:439
+#: gio/gvolume.c:444
 msgid "volume doesn't implement eject"
 msgstr ""
 

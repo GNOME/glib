@@ -52,6 +52,15 @@ side-effects.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### MACRO G_BYTE_ORDER ##### -->
+<para>
+The host byte order.
+This can be either #G_LITTLE_ENDIAN or #G_BIG_ENDIAN (support for
+#G_PDP_ENDIAN may be added in future.)
+</para>
+
+
+
 <!-- ##### MACRO G_LITTLE_ENDIAN ##### -->
 <para>
 Specifies one of the possible types of byte order.
@@ -130,6 +139,24 @@ Converts a #gint value from little-endian to host byte order.
 @Returns: @val converted to host byte order.
 
 
+<!-- ##### MACRO GINT_TO_BE ##### -->
+<para>
+Converts a #gint value from host byte order to big-endian.
+</para>
+
+@val: a #gint value in host byte order.
+@Returns: @val converted to big-endian byte order.
+
+
+<!-- ##### MACRO GINT_TO_LE ##### -->
+<para>
+Converts a #gint value from host byte order to little-endian.
+</para>
+
+@val: a #gint value in host byte order.
+@Returns: @val converted to little-endian byte order.
+
+
 <!-- ##### MACRO GUINT_FROM_BE ##### -->
 <para>
 Converts a #guint value from big-endian to host byte order.
@@ -146,6 +173,24 @@ Converts a #guint value from little-endian to host byte order.
 
 @val: a #guint value in little-endian byte order.
 @Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GUINT_TO_BE ##### -->
+<para>
+Converts a #guint value from host byte order to big-endian.
+</para>
+
+@val: a #guint value in host byte order.
+@Returns: @val converted to big-endian byte order.
+
+
+<!-- ##### MACRO GUINT_TO_LE ##### -->
+<para>
+Converts a #guint value from host byte order to little-endian.
+</para>
+
+@val: a #guint value in host byte order.
+@Returns: @val converted to little-endian byte order.
 
 
 <!-- ##### MACRO GLONG_FROM_BE ##### -->
@@ -166,6 +211,24 @@ Converts a #glong value from little-endian to host byte order.
 @Returns: @val converted to host byte order.
 
 
+<!-- ##### MACRO GLONG_TO_BE ##### -->
+<para>
+Converts a #glong value from host byte order to big-endian.
+</para>
+
+@val: a #glong value in host byte order.
+@Returns: @val converted to big-endian byte order.
+
+
+<!-- ##### MACRO GLONG_TO_LE ##### -->
+<para>
+Converts a #glong value from host byte order to little-endian.
+</para>
+
+@val: a #glong value in host byte order.
+@Returns: @val converted to little-endian.
+
+
 <!-- ##### MACRO GULONG_FROM_BE ##### -->
 <para>
 Converts a #gulong value from big-endian to host byte order.
@@ -182,6 +245,24 @@ Converts a #gulong value from little-endian to host byte order.
 
 @val: a #gulong value in little-endian byte order.
 @Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GULONG_TO_BE ##### -->
+<para>
+Converts a #gulong value from host byte order to big-endian.
+</para>
+
+@val: a #gulong value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GULONG_TO_LE ##### -->
+<para>
+Converts a #gulong value from host byte order to little-endian.
+</para>
+
+@val: a #gulong value in host byte order.
+@Returns: @val converted to little-endian.
 
 
 <!-- ##### MACRO GINT16_FROM_BE ##### -->
@@ -202,6 +283,24 @@ Converts a #gint16 value from little-endian to host byte order.
 @Returns: @val converted to host byte order.
 
 
+<!-- ##### MACRO GINT16_TO_BE ##### -->
+<para>
+Converts a #gint16 value from host byte order to big-endian.
+</para>
+
+@val: a #gint16 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GINT16_TO_LE ##### -->
+<para>
+Converts a #gint16 value from host byte order to little-endian.
+</para>
+
+@val: a #gint16 value in host byte order.
+@Returns: @val converted to little-endian.
+
+
 <!-- ##### MACRO GUINT16_FROM_BE ##### -->
 <para>
 Converts a #guint16 value from big-endian to host byte order.
@@ -218,6 +317,24 @@ Converts a #guint16 value from little-endian to host byte order.
 
 @val: a #guint16 value in little-endian byte order.
 @Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GUINT16_TO_BE ##### -->
+<para>
+Converts a #guint16 value from host byte order to big-endian.
+</para>
+
+@val: a #guint16 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GUINT16_TO_LE ##### -->
+<para>
+Converts a #guint16 value from host byte order to little-endian.
+</para>
+
+@val: a #guint16 value in host byte order.
+@Returns: @val converted to little-endian.
 
 
 <!-- ##### MACRO GINT32_FROM_BE ##### -->
@@ -238,6 +355,24 @@ Converts a #gint32 value from little-endian to host byte order.
 @Returns: @val converted to host byte order.
 
 
+<!-- ##### MACRO GINT32_TO_BE ##### -->
+<para>
+Converts a #gint32 value from host byte order to big-endian.
+</para>
+
+@val: a #gint32 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GINT32_TO_LE ##### -->
+<para>
+Converts a #gint32 value from host byte order to little-endian.
+</para>
+
+@val: a #gint32 value in host byte order.
+@Returns: @val converted to little-endian.
+
+
 <!-- ##### MACRO GUINT32_FROM_BE ##### -->
 <para>
 Converts a #guint32 value from big-endian to host byte order.
@@ -254,6 +389,24 @@ Converts a #guint32 value from little-endian to host byte order.
 
 @val: a #guint32 value in little-endian byte order.
 @Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GUINT32_TO_BE ##### -->
+<para>
+Converts a #guint32 value from host byte order to big-endian.
+</para>
+
+@val: a #guint32 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GUINT32_TO_LE ##### -->
+<para>
+Converts a #guint32 value from host byte order to little-endian.
+</para>
+
+@val: a #guint32 value in host byte order.
+@Returns: @val converted to little-endian.
 
 
 <!-- ##### MACRO GINT64_FROM_BE ##### -->
@@ -274,6 +427,24 @@ Converts a #gint64 value from little-endian to host byte order.
 @Returns: @val converted to host byte order.
 
 
+<!-- ##### MACRO GINT64_TO_BE ##### -->
+<para>
+Converts a #gint64 value from host byte order to big-endian.
+</para>
+
+@val: a #gint64 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GINT64_TO_LE ##### -->
+<para>
+Converts a #gint64 value from host byte order to little-endian.
+</para>
+
+@val: a #gint64 value in host byte order.
+@Returns: @val converted to little-endian.
+
+
 <!-- ##### MACRO GUINT64_FROM_BE ##### -->
 <para>
 Converts a #guint64 value from big-endian to host byte order.
@@ -290,6 +461,24 @@ Converts a #guint64 value from little-endian to host byte order.
 
 @val: a #guint64 value in little-endian byte order.
 @Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GUINT64_TO_BE ##### -->
+<para>
+Converts a #guint64 value from host byte order to big-endian.
+</para>
+
+@val: a #guint64 value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GUINT64_TO_LE ##### -->
+<para>
+Converts a #guint64 value from host byte order to little-endian.
+</para>
+
+@val: a #guint64 value in host byte order.
+@Returns: @val converted to little-endian.
 
 
 <!-- ##### MACRO GUINT16_SWAP_BE_PDP ##### -->

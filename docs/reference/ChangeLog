@@ -1,3 +1,12 @@
+2008-10-16  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.19.0 ===
+
+	* gio/gio-sections.txt: Add new api
+
+	* gobject/gobject-docs.sgml: 
+	* gio/gio-docs.xml: Add new indexes
+
 2008-10-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/Makefile.am: Don't specify multiple directories in

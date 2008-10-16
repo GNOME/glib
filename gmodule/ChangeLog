@@ -1,3 +1,7 @@
+2008-10-16  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.19.0 ===
+
 2008-09-26  Tor Lillqvist  <tml@novell.com>
 
 	* gmodule-win32.c: Improve error reporting: When g_module_open()
