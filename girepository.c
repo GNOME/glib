@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <glib.h>
 #include <glib/gprintf.h>
@@ -261,8 +262,6 @@ register_internal (GIRepository *repository,
   Header *header;
   const gchar *namespace;
   const gchar *version;
-  gboolean was_loaded;
-  gboolean currently_lazy;
 
   g_return_val_if_fail (typelib != NULL, FALSE);
   
@@ -418,17 +417,6 @@ g_irepository_get_default (void)
   return get_repository (NULL);
 }
 
-static void 
-count_interfaces (gpointer key,
-		  gpointer value,
-		  gpointer data)
-{
-  guchar *typelib = ((GTypelib *) value)->data;
-  gint *n_interfaces = (gint *)data;
-  
-  *n_interfaces += ((Header *)typelib)->n_local_entries;
-}
-
 /**
  * g_irepository_get_n_infos
  * @repository: A #GIRepository, may be %NULL for the default
@@ -478,7 +466,6 @@ find_interface (gpointer key,
   IfaceData *iface_data = (IfaceData *)data;
   gint index;
   gint n_entries;
-  guint32 offset;
   const gchar *name;
   const gchar *type;
   DirEntry *entry;    
@@ -804,7 +791,6 @@ find_namespace_version (const gchar  *namespace,
 
   for (ldir = search_path; ldir; ldir = ldir->next)
     {
-      Header *header;
       char *path = g_build_filename (ldir->data, fname, NULL);
       
       mfile = g_mapped_file_new (path, FALSE, &error);
@@ -827,7 +813,7 @@ parse_version (const char *version,
 	       int *minor)
 {
   const char *dot;
-  const char *end;
+  char *end;
 
   *major = strtol (version, &end, 10);
   dot = strchr (version, '.');
@@ -1012,15 +998,11 @@ g_irepository_require (GIRepository  *repository,
 		       GIRepositoryLoadFlags flags,
 		       GError       **error)
 {
-  const char *dir;
   GMappedFile *mfile;
   gboolean ret = FALSE;
-  GError *error1 = NULL;
   Header *header;
   GTypelib *typelib = NULL;
-  const gchar *typelib_namespace, *typelib_version, *shlib_fname;
-  GModule *module;
-  guint32 shlib;
+  const gchar *typelib_namespace, *typelib_version;
   gboolean allow_lazy = (flags & G_IREPOSITORY_LOAD_FLAG_LAZY) > 0;
   gboolean is_lazy;
   char *version_conflict = NULL;
@@ -1056,7 +1038,6 @@ g_irepository_require (GIRepository  *repository,
   
   if (mfile == NULL)
     {
-      const char *error_fmt;
       if (version != NULL)
 	g_set_error (error, G_IREPOSITORY_ERROR,
 		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,

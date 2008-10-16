@@ -24,6 +24,9 @@
 #include "girmodule.h"
 #include "girnode.h"
 
+void _g_irnode_init_stats (void);
+void _g_irnode_dump_stats (void);
+
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
@@ -111,7 +114,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   }
 
  restart:
-  init_stats ();
+  _g_irnode_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
   types = g_hash_table_new (g_str_hash, g_str_equal);
   n_entries = g_list_length (module->entries);
@@ -243,7 +246,7 @@ g_ir_module_build_typelib (GIrModule  *module,
       entry++;
     }
 
-  dump_stats ();
+  _g_irnode_dump_stats ();
 
   header->annotations = offset2;
   

@@ -34,7 +34,7 @@ static gulong types_count = 0;
 static gulong unique_types_count = 0;
 
 void
-init_stats (void)
+_g_irnode_init_stats (void)
 {
   string_count = 0;
   unique_string_count = 0;
@@ -45,7 +45,7 @@ init_stats (void)
 }
 
 void
-dump_stats (void)
+_g_irnode_dump_stats (void)
 {
   g_message ("%lu strings (%lu before sharing), %lu bytes (%lu before sharing)",
 	     unique_string_count, string_count, unique_string_size, string_size);
@@ -870,6 +870,25 @@ g_ir_node_can_have_member (GIrNode    *node)
     case G_IR_NODE_STRUCT:
     case G_IR_NODE_UNION:
       return TRUE;
+    /* list others individually rather than with default: so that compiler
+     * warns if new node types are added without adding them to the switch
+     */
+    case G_IR_NODE_INVALID:
+    case G_IR_NODE_FUNCTION:
+    case G_IR_NODE_CALLBACK:
+    case G_IR_NODE_ENUM:
+    case G_IR_NODE_FLAGS:
+    case G_IR_NODE_CONSTANT:
+    case G_IR_NODE_ERROR_DOMAIN:
+    case G_IR_NODE_PARAM:
+    case G_IR_NODE_TYPE:
+    case G_IR_NODE_PROPERTY:
+    case G_IR_NODE_SIGNAL:
+    case G_IR_NODE_VALUE:
+    case G_IR_NODE_VFUNC:
+    case G_IR_NODE_FIELD:
+    case G_IR_NODE_XREF:
+      return FALSE;
     };
   return FALSE;
 }

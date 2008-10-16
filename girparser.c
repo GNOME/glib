@@ -116,8 +116,6 @@ firstpass_end_element_handler (GMarkupParseContext *context,
 			       gpointer             user_data,
 			       GError             **error)
 {
-  ParseContext *ctx = user_data;
-
 }
 
 static GMarkupParser firstpass_parser = 
@@ -136,8 +134,6 @@ locate_gir (const char *name, const char *version, const char * const* extra_pat
   const gchar *const *dir;
   char *girname;
   char *path = NULL;
-  GSList *link;
-  gboolean firstpass = TRUE;
       
   datadirs = g_get_system_data_dirs ();
       
@@ -267,9 +263,6 @@ parse_basic (const char *str)
 {
   gint i;
   gint n_basic = G_N_ELEMENTS (basic_types);
-  gchar *temporary_type = NULL;
-  const gchar *start;
-  const gchar *end;
   
   for (i = 0; i < n_basic; i++)
     {
@@ -414,7 +407,7 @@ parse_type_internal (const gchar *str, char **next, gboolean in_glib,
   g_free (temporary_type);
   return type;
 
- error:
+/* error: */
   g_ir_node_free ((GIrNode *)type);
   g_free (temporary_type);  
   return NULL;
@@ -430,7 +423,7 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   seen_values = g_slist_prepend (seen_values, (char*)type);
   while (g_hash_table_lookup_extended (ctx->aliases, type, &orig, &value))
     {
-      g_debug ("Resolved: %s => %s", type, value);
+      g_debug ("Resolved: %s => %s", type, (char*)value);
       type = value;
       if (g_slist_find_custom (seen_values, type,
 			       (GCompareFunc)strcmp) != NULL)
@@ -444,11 +437,9 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
 static GIrNodeType *
 parse_type (ParseContext *ctx, const gchar *type)
 {
-  gchar *str;
   GIrNodeType *node;
   const BasicTypeInfo *basic;
   gboolean in_glib, in_gobject;
-  gboolean matched_special = FALSE;
 
   in_glib = strcmp (ctx->namespace, "GLib") == 0;
   in_gobject = strcmp (ctx->namespace, "GObject") == 0;
@@ -944,7 +935,6 @@ start_alias (GMarkupParseContext *context,
 {
   const gchar *name;
   const gchar *target;
-  const gchar *type;
   char *key;
   char *value;
 
@@ -1474,6 +1464,28 @@ start_type (GMarkupParseContext *context,
 		vfunc->is_varargs = TRUE;
 	      }
 	      break;
+	    /* list others individually rather than with default: so that compiler
+	     * warns if new node types are added without adding them to the switch
+	     */
+	    case G_IR_NODE_INVALID:
+	    case G_IR_NODE_ENUM:
+	    case G_IR_NODE_FLAGS:
+	    case G_IR_NODE_CONSTANT:
+	    case G_IR_NODE_ERROR_DOMAIN:
+	    case G_IR_NODE_PARAM:
+	    case G_IR_NODE_TYPE:
+	    case G_IR_NODE_PROPERTY:
+	    case G_IR_NODE_SIGNAL:
+	    case G_IR_NODE_VALUE:
+	    case G_IR_NODE_FIELD:
+	    case G_IR_NODE_XREF:
+	    case G_IR_NODE_STRUCT:
+	    case G_IR_NODE_BOXED:
+	    case G_IR_NODE_OBJECT:
+	    case G_IR_NODE_INTERFACE:
+	    case G_IR_NODE_UNION:
+	      g_assert_not_reached ();
+	      break;
 	    }
 	}
       ctx->type_stack = NULL;
@@ -1496,7 +1508,6 @@ start_type (GMarkupParseContext *context,
     {
       const char *zero;
       const char *len;
-      int i;
 
       typenode = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
 
@@ -1604,7 +1615,6 @@ end_type_top (ParseContext *ctx)
 static void
 end_type_recurse (ParseContext *ctx)
 {
-  GList *types;
   GIrNodeType *parent;
   GIrNodeType *param = NULL;
 
@@ -2051,7 +2061,6 @@ parse_include (GMarkupParseContext *context,
 	       GError             **error)
 {
   ParseContext sub_ctx = { 0 };
-  GMarkupParseContext *sub_context;
   gchar *buffer;
   gsize length;
   char *girpath;
@@ -2748,7 +2757,6 @@ cleanup (GMarkupParseContext *context,
 {
   ParseContext *ctx = user_data;
   GList *m;
-  int line_number, char_number;
 
   for (m = ctx->modules; m; m = m->next)
     g_ir_module_free (m->data);
@@ -2800,7 +2808,6 @@ post_filter (GIrModule *module)
   iter = module->entries;
   while (iter)
     {
-      GList *link = iter;
       GIrNode *node = iter->data;
 
       iter = iter->next;

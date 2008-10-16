@@ -808,7 +808,6 @@ validate_function_blob (ValidateContext *ctx,
 							   blob->signature,
 							   error);
       InterfaceTypeBlob *iface_type;
-      InterfaceBlob *iface;
 
       if (!simple)
 	return FALSE;
@@ -1281,8 +1280,7 @@ validate_enum_blob (ValidateContext *ctx,
 {
   GTypelib *typelib = ctx->typelib;
   EnumBlob *blob;
-  ValueBlob *v1, *v2;
-  gint i, j; 
+  gint i;
 
   if (typelib->len < offset + sizeof (EnumBlob))
     {
