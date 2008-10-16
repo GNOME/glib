@@ -1,3 +1,69 @@
+Overview of Changes from GLib 2.18.1 to GLib 2.19.0
+===================================================
+
+* Rewrite GHashTable to use open addressing with quadratic probing instead 
+  of chaining. This has the potential to reduce memory fragmentation 
+  significantly, while being slightly faster due to better locality and 
+  no need to call alloc/free functions for nodes. Benchmarks suggest it 
+  also uses less memory overall.
+
+* Make g_poll available as public api
+
+* New macros g_assert_error and g_assert_no_error to assert 
+  that a GError is set or unset
+
+* g_cancellable_make_pollfd: New method to make a GPollFD for a cancellable
+
+* g_app_info_can_delete, g_app_info_delete, g_app_info_reset_type_associations:
+  New functions to clean up app infos and content types
+
+* When launching applications, always pass fuse file:// uris when possible,
+  and let gio convert such uris back to gio uris.
+
+* Bugs fixed:
+ 505361 gunixinputstream.c assumes poll() available
+ 509446 portable blocking gio cancellation
+ 553820 gpoll.c: undeclared identifier
+ 553724 python interpretter path not patched in correctly
+ 553857 gbacktrace.h requires signal.h
+ 553447 g_assert_no_error()
+ 554092 glib doesn't return G_FILE_ERROR_NOENT et al on OS X
+ 528670 Always pass file:/// uri's in GAppLaunchContext
+ 555224 Improve g_format_size_for_display doc
+ 555309 giochannel breaks on error
+ 554790 g_convert() misbehaves with winiconv versions
+ 555314 mem leak in gmarkup
+ 555313 GFileAttribute boxed type get_type function should...
+ 552861 glib-2.0.m4 calls system(3) without storing its result
+ 554557 Patch to fix gcc warnings about missing format specifiers
+ 552107 Small libtool fixes
+ 551355 Make glib build with libtool 2.2
+ 555311 format not a string literal and no format arguments
+ 556101 static mutex yields warnings with g++
+ 556186 gpoll.h breaks gmain.h inclusion
+ 526456 Open addressing in GHashTable
+ 553426 cancellable clarifications
+ 545350 GAppInfo deletion
+ 545351 Reset associations for content type
+ 552168 volume's mount not mounted after g_volume_mount_finish
+ 554970 segfault when update-desktop-database is not available...
+ 554745 GFileAttributeInfoList should be boxed
+ 555121 Improved build-time handling of gio module-dir
+ 555711 Wrong fallback order of mimetype icons
+ 555331 Deprecate adoption of mounts
+ 556335 make check fails in abicheck.sh
+ 556334 Warning when building without selinux support
+ 556422 g_file_enumerator_next_file: unclear...
+
+* Updated translations:
+ Arabic (ar)
+ Danish (da)
+ Polish (pl)
+ Brazilian Portugese (pt_BR)
+ Romanian (ro)
+ Russian (ru)
+
+
 Overview of Changes from GLib 2.18.0 to GLib 2.18.1
 ===================================================
 

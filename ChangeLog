@@ -1,3 +1,7 @@
+2008-10-16  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-10-14  Christian Persch <chpe@gnome.org>
 
 	Bug 556186 – gpoll.h breaks gmain.h inclusion
