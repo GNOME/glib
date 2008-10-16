@@ -1,3 +1,8 @@
+2008-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/Makefile.am: Don't specify multiple directories in
+	DOC_SOURCE_DIR. It doesn't work.
+
 2008-09-26  Dan Winship  <danw@gnome.org>
 
 	* glib/tmpl/testing.sgml: Fix lots of typos, document
