@@ -1121,7 +1121,6 @@ write_repository (const char   *namespace,
 		  gboolean      needs_prefix)
 {
   FILE *ofile;
-  gchar *ns;
   gint i, j;
   char **dependencies;
   GIRepository *repository;
