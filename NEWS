@@ -1,3 +1,30 @@
+Overview of Changes from GLib 2.18.1 to GLib 2.18.2
+===================================================
+
+* Bugs fixed:
+ 553724 python interpreter path not patched in correctly
+ 553857 gbacktrace.h requires signal.h
+ 554790 g_convert() misbehaves with winiconv versions
+ 555314 mem leak in gmarkup
+ 554970 segfault when update-desktop-database is not available...
+ 555121 Improved build-time handling of gio module-dir
+ 555711 Wrong fallback order of mimetype icons
+ 556334 Warning when building without selinux support
+
+* Updated translations:
+ Arabic (ar)
+ Danish (da)
+ Estonian (et)
+ Gujarati (gu)
+ Norwegian (nb)
+ Polish (pl)
+ Brazilian Portugese (pt_BR)
+ Romanian (ro)
+ Russian (ru)
+ Serbian (sr)
+ Tamil (ta)
+
+
 Overview of Changes from GLib 2.18.0 to GLib 2.18.1
 ===================================================
 

@@ -1,3 +1,7 @@
+2008-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-10-08  Christian Persch  <chpe@gnome.org>
 
         Bug 555314 – mem leak in gmarkup
