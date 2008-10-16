@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2006-08-31 21:21+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -377,23 +377,23 @@ msgstr "অগ্রহনযোগ্য ইউটিএফ-৮ টেক্স
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "অগ্রহনযোগ্য ইউটিএফ-৮ টেক্সট"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, fuzzy, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "অগ্রহনযোগ্য ইউটিএফ-৮ টেক্সট"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ডকুউমেন্ট একটি এলিমেন্ট দিয়ে শুরু "
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'<' অক্ষরটির পরে '%s' গ্রহনযোগ্য নয়; এটি কোন এলিমেন্টের নাম শুরু করতে পারেনা"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -401,7 +401,7 @@ msgid ""
 msgstr ""
 "অসামঞ্জস্যকর অক্ষর '%s', এলিমেন্ট '%s' এর ট্যগ শেষ করার জন্য '>' অক্ষরটি আশা করা হয়"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -409,7 +409,7 @@ msgstr ""
 "বেজোড় অক্ষর '%1$s', এলিমেন্ট '%3$s' এর অ্যাট্রিবিউট নাম '%2$s' এর পর একটি '=' "
 "প্রত্যাশিত"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -420,7 +420,7 @@ msgstr ""
 "প্রত্যাশিত, অথবা একটি ঐচ্ছিক অ্যাট্রিবিউট; সম্ভবত আপনি বৈশিষ্ট্য নামে অবৈধ অক্ষর "
 "ব্যবহার করেছেন"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -429,7 +429,7 @@ msgstr ""
 "বেজোড় অক্ষর '%1$s', এলিমেন্ট '%3$s' এর অ্যাট্রিবিউট নাম '%2$s' এর মান দেয়ার সময়, "
 "'=' চিহ্নটির পর একটি খোলা উদ্ধৃতি চিহ্ন আব্যশক"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -438,7 +438,7 @@ msgstr ""
 "অক্ষর '</' কে অনুসরণকারী '%s' একটি বৈধ অক্ষর নয়; '%s' দিয়ে কোনো এলিমেন্টের নাম "
 "শুরু করা বৈধ নয়"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -447,25 +447,25 @@ msgstr ""
 "বন্ধ এলিমেন্ট নাম '%2$s' কে অনুসরণকারী '%1$s' একটি বৈধ অক্ষর নয়; সমর্থিত অক্ষর "
 "হচ্ছে '>'"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' এলিমেন্টটি বন্ধ ছিল, এখন খোলা এলিমেন্ট নেই"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' এলিমেন্টটি বন্ধ ছিল, কিন্তু এখন '%s' এলিমেন্টটি খোলা"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "ডকুউমেন্ট শূণ্য ছিল অথবা সুধু ওয়াইটস্পেইস ছিল"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "একটি কোণ বন্ধনী '<' খোলা থাকায় নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -473,7 +473,7 @@ msgid ""
 msgstr ""
 "উপাদান খোলা অবস্থায় নথী অপ্রত্যাশিতভাবে শেষ হয়েছে - '%s' ছিল শেষ খোলা উপাদান"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -482,19 +482,19 @@ msgstr ""
 "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে, প্রত্যাশিতভাবে দৃষ্ট কারণ একটি কোণ বন্ধনী যার শেষে <%"
 "s/> ট্যাগ রয়েছে"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "একটি এলিমেন্ট নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "একটি বৈশিষ্ট্য নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "একটি এলিমেন্ট-ওপেনিং ট্যাগ অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -502,16 +502,16 @@ msgstr ""
 "বৈশিষ্ট্য নাম অনুসরণকরী সমান চিহ্নের পর নথী অপ্রত্যাশিতভাবে শেষ হয়েছে; কোন বৈশিষ্ট্য "
 "মান নয়"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "একটি বৈশিষ্ট্য মান এর অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে উপাদান '%s' এর বন্ধ ট্যাগ এর অভ্যন্তরে"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে একটি মন্তব্য বা প্রসেসরত নির্দেশের অভ্যন্তরে"
 
@@ -1151,34 +1151,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1442,64 +1442,61 @@ msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "লাইন %d এ ভুল: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"

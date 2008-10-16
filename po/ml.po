@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2008-03-03 17:37+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <smc-discuss@googlegroups.com>\n"
@@ -379,16 +379,16 @@ msgstr ""
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr ""
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "സാധുതയില്ലാത്ത UTF-8 രഹസ്യ വാചകം - '%s' തെറ്റാകുന്നു"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "രേഖ തുടങ്ങേണ്ടത് ഒരു എലമെന്‍റിലാണ് (ഉദാ <book>)"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -396,7 +396,7 @@ msgid ""
 msgstr ""
 "'<' അക്ഷരത്തിന് പിന്നിലുളള '%s' ഒരു അസാധുവായ അക്ഷരമാണ്; ഇത് ഒരു എലമെന്‍റ് പേര് തുടങ്ങില്ല"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -405,14 +405,14 @@ msgstr ""
 "ഓഡ് അക്ഷരം '%s', എലമെന്‍റ് '%s' ആരംഭിക്കുന്ന ടാഗ് അവസാനിക്കേണ്ടത് '>' അക്ഷരത്തിലാവും എന്ന് "
 "പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "ഓഡ് അക്ഷരം '%s', എലമെന്‍റ് '%s'-ന്‍റെ സവിശേഷത നാമം '%s'-ന് ശേഷം ഒരു '=' പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -423,7 +423,7 @@ msgstr ""
 "ആട്റിബ്യൂട്ട് ആണ് '%s' എന്ന എലമെന്‍റിന്‍റെ ആരംഭത്തിലുളള ടാഗ് അവസാനിപ്പിക്കുന്നതിന് പ്രതീക്ഷിച്ചത്; "
 "ഒരു പക്ഷേ, ആട്റിബ്യൂട്ടിന്‍റെ പേരില്‍ നിങ്ങള്‍ തെറ്റായ അക്ഷരം ആവാം ഉപയോഗിച്ചത്"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -432,7 +432,7 @@ msgstr ""
 "'%s' ഒരു ഓഡ് അക്ഷരം ആണ്, '%s' എന്ന എലമെന്‍റിന്‍റെ ആട്റിബ്യൂട്ട് ആയ '%s'-നുളള മൂല്ല്യം നല്‍കുമ്പോള്‍ "
 "സമം‌ എന്ന ചിഹ്നത്തിന് ശേഷം ഒരു തുറന്ന കോട്ട് ആണ് പ്റതീക്ഷിച്ചത്"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -440,7 +440,7 @@ msgid ""
 msgstr ""
 "'</' അക്ഷരങ്ങള്‍ക്ക് ശേഷം ഉളള '%s', അസാധുവായ അക്ഷരമാണ്; '%s' ഒരു എലമെന്‍റ് നാമം തുടങ്ങുന്നില്ല"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -448,25 +448,25 @@ msgid ""
 msgstr ""
 "എലമെന്‍റ് നാമം '%s'-ന് ശേഷം ഉളള '%s', ഒരു അസാധുവായ അക്ഷരമാണ്; '>' അക്ഷരമാണ് അനുവദിക്കുന്നത്"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, ഒരു എലമെന്‍റുകളും നിലവില്‍ തുറന്നിട്ടില്ല"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, പക്ഷേ നിലവില്‍ ലഭ്യമായ എലമെന്‍റ് '%s' ആണ്"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "രേഖ ശൂന്യമാണ് അല്ലെങ്കില്‍ അതില്‍ വയിറ്റ് സ്പെയിസ് മാത്രമേ ഉള്ളൂ"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ഒരു '<' ബ്രാക്കറ്റിന് ശേഷം രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചിരിക്കുന്നു "
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -475,7 +475,7 @@ msgstr ""
 "എലമെന്‍റുകള്‍ തുറന്നു കിടക്കുന്പോള്‍ തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു - ഒടുവില്‍ തുറന്ന എലമെന്‍റ് "
 "'%s' ആണ്"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -484,19 +484,19 @@ msgstr ""
 "തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു, ടാഗ് <%s/>-ന് അവസാനമായി ഒരു ക്ളോസ് ആങ്കില്‍ ബ്രാക്കറ്റ് "
 "പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ഒരു എലമെന്‍റിന്‍റെ നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ഒരു എലമെന്‍റ്-ഓപ്പണിങ് ടാഗിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -504,16 +504,16 @@ msgstr ""
 "സമം ചിഹ്നത്തിന് ശേഷം ഒരു ആട്റിബ്യൂട്ടിന്‍റെ പേര് ആയതിനാല്‍ അപ്റതീക്ഷിതമായി ഡോക്യുമെന്‍റ് "
 "അവസാനിച്ചു; ആട്റിബ്യൂട്ടിന് മൂല്ല്യം ലഭ്യമല്ല"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ വച്ച് രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "എലമെന്‍റ് '%s'-ന്‍റെ ക്ളോസ് ടാഗിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ഒരു അഭിപ്രായം അല്ലെങ്കില്‍ ഒരു പ്രക്രിയ നടത്തുന്ന നിര്‍ദ്ദേശത്തിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി "
@@ -1149,34 +1149,34 @@ msgstr "%s തരത്തിലുള്ള"
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "പേരിടാത്ത"
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1435,64 +1435,62 @@ msgstr "'%s' എന്ന ഫയല്‍ സ്റ്റാറ്റ് ചെ�
 msgid " (invalid encoding)"
 msgstr " (തെറ്റായ എന്‍കോഡിങ്)"
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "സിംലിങ്ക് ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, fuzzy, c-format
+#: gio/glocalfileinfo.c:2067
+#, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ആട്രിബ്യൂട്ട് ക്രമികരണം പിന്തുണയ്ക്കുന്നില്ല"

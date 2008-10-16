@@ -18,6 +18,69 @@ the standard integer and floating point types.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### MACRO G_MININT ##### -->
+<para>
+The minimum value which can be held in a #gint.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXINT ##### -->
+<para>
+The maximum value which can be held in a #gint.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXUINT ##### -->
+<para>
+The maximum value which can be held in a #guint.
+</para>
+
+
+
+<!-- ##### MACRO G_MINSHORT ##### -->
+<para>
+The minimum value which can be held in a #gshort.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXSHORT ##### -->
+<para>
+The maximum value which can be held in a #gshort.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXUSHORT ##### -->
+<para>
+The maximum value which can be held in a #gushort.
+</para>
+
+
+
+<!-- ##### MACRO G_MINLONG ##### -->
+<para>
+The minimum value which can be held in a #glong.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXLONG ##### -->
+<para>
+The maximum value which can be held in a #glong.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXULONG ##### -->
+<para>
+The maximum value which can be held in a #gulong.
+</para>
+
+
+
 <!-- ##### MACRO G_MININT8 ##### -->
 <para>
 The minimum value which can be held in a #gint8.
@@ -107,6 +170,80 @@ The maximum value which can be held in a #gint64.
 <!-- ##### MACRO G_MAXUINT64 ##### -->
 <para>
 The maximum value which can be held in a #guint64.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXSIZE ##### -->
+<para>
+The maximum value which can be held in a #gsize.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MINSSIZE ##### -->
+<para>
+The minimum value which can be held in a #gssize.
+</para>
+
+@Since: 2.14
+
+
+<!-- ##### MACRO G_MAXSSIZE ##### -->
+<para>
+The maximum value which can be held in a #gssize.
+</para>
+
+@Since: 2.14
+
+
+<!-- ##### MACRO G_MINOFFSET ##### -->
+<para>
+The minimum value which can be held in a #goffset.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXOFFSET ##### -->
+<para>
+The maximum value which can be held in a #goffset.
+</para>
+
+
+
+<!-- ##### MACRO G_MINFLOAT ##### -->
+<para>
+The minimum positive value which can be held in a #gfloat.
+</para>
+<para>
+If you are interested in the smallest value which can be held in a #gfloat,
+use -G_MAX_FLOAT.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXFLOAT ##### -->
+<para>
+The maximum value which can be held in a #gfloat.
+</para>
+
+
+
+<!-- ##### MACRO G_MINDOUBLE ##### -->
+<para>
+The minimum positive value which can be held in a #gdouble.
+</para>
+<para>
+If you are interested in the smallest value which can be held in a #gdouble,
+use -G_MAXDOUBLE.
+</para>
+
+
+
+<!-- ##### MACRO G_MAXDOUBLE ##### -->
+<para>
+The maximum value which can be held in a #gdouble.
 </para>
 
 

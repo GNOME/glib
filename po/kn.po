@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2008-02-13 14:34+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -379,16 +379,16 @@ msgstr "ಅಮಾನ್ಯ UTF-8 ಎನ್ಕೋಡ್ ಆದ ಪಠ್ಯ - ಬ
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "ಅಮಾನ್ಯ UTF-8 ಎನ್ಕೋಡ್ ಆದ ಪಠ್ಯ - ಒಂದು ಆರಂಭ char ಅಲ್ಲ"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "ಅಮಾನ್ಯ UTF-8 ಎನ್ಕೋಡ್ ಆದ ಪಠ್ಯ - ಮಾನ್ಯವಾದ '%s' ಅಲ್ಲ"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ದಸ್ತಾವೇಜುಗಳು ಒಂದು ಅಂಶದಿಂದ ಆರಂಭಗೊಳ್ಳಬೇಕು (e.g. <book>)"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -397,7 +397,7 @@ msgstr ""
 "'<' ಅಕ್ಷರವು ಬಂದ ನಂತರ, '%s' ವು ಒಂದು ಮಾನ್ಯವಲ್ಲದ ಅಕ್ಷರವಾಗಿದೆ; ಅದು ಒಂದು ಅಂಶದ ಹೆಸರನ್ನು "
 "ಆರಂಭಿಸದೇ ಇರಬಹುದು"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -406,7 +406,7 @@ msgstr ""
 "ಸರಿಯಲ್ಲದ ಅಕ್ಷರ '%s', '%s' ಅಂಶದ ಟ್ಯಾಗಿನ ಆರಂಭವು ಒಂದು '>' ಅಕ್ಷರದಿಂದ ಕೊನೆಗೊಳ್ಳಬೇಕು "
 "ಎಂದು ಅಪೇಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -414,7 +414,7 @@ msgstr ""
 "ಸರಿಯಲ್ಲದ ಅಕ್ಷರ '%s', '%s'ವು '%s' ಅಂಶದ ಗುಣಲಕ್ಷಣ ಹೆಸರಾಗಿದ್ದು ಅದರ ನಂತರ ಒಂದು '=' "
 "ಅನ್ನು ಅಪೇಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -425,7 +425,7 @@ msgstr ""
 "ಕೊನೆಗೊಳ್ಳಬೇಕು ಎಂದು ಅಪೇಕ್ಷಿಸಲಾಗಿತ್ತು, ಅಥವ ಆಯ್ಕಾತ್ಮಕವಾಗಿ ಒಂದು ಗುಣಲಕ್ಷಣ; ಬಹುಷಃ ನೀವು "
 "ಅಮಾನ್ಯ ಅಕ್ಷರವನ್ನು ಒಂದು ಗುಣಲಕ್ಷಣದ ಹೆಸರಿನಲ್ಲಿ ಬಳಸಿದ್ದೀರೆಂದು ತೋರುತ್ತದೆ"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -434,7 +434,7 @@ msgstr ""
 "ಸರಿಯಲ್ಲದ ಅಕ್ಷರ '%s', ಗುಣಲಕ್ಷಣ '%s'ವು '%s' ದ ಅಂಶವಾಗಿದ್ದು, ಇದಕ್ಕೆ ಒಂದು ಮೌಲ್ಯವನ್ನು "
 "ಕೊಡುವಾಗ ಸಮ ಚಿಹ್ನೆಯ ನಂತರ ಒಂದು ಮುಕ್ತ ಉದ್ಧರಣ ಚಿಹ್ನೆಯನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -443,7 +443,7 @@ msgstr ""
 "'%s' ವು '</' ಗಳಂತಹ ಅಕ್ಷರಗಳ ನಂತರ ಬರುವ ಒಂದು ಮಾನ್ಯವಾದ ಅಕ್ಷರವಲ್ಲ; ಒಂದು ಅಂಶದ ಹೆಸರು '%"
 "s' ನಿಂದ ಆರಂಭಗೊಳ್ಳುವುದಿಲ್ಲ"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -452,25 +452,25 @@ msgstr ""
 "'%s' ವು ಮುಚ್ಚಲ್ಪಟ್ಟ ಅಂಶ ಹೆಸರು '%s' ನಂತರ ಬರುವ ಒಂದು ಮಾನ್ಯವಾದ ಅಕ್ಷರವಲ್ಲ; '>' ವು "
 "ಅನುಮತಿ ಇರುವ ಅಕ್ಷರವಾಗಿರುತ್ತದೆ"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ಅಂಶವು '%s' was closed, no element is currently open"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ಅಂಶ '%s' ವು ಮುಚ್ಚಲ್ಪಟ್ಟಿದೆ, ಆದರೆ ಪ್ರಸ್ತುತ ಮುಕ್ತವಾಗಿರುವ ಅಂಶವೆಂದರೆ '%s' ಆಗಿದೆ"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "ದಸ್ತಾವೇಜು ಖಾಲಿಯಾಗಿತ್ತು ಅಥವ ಕೇವಲ ಕೇವಲ ಖಾಲಿ ಜಾಗಗಳನ್ನು ಹೊಂದಿತ್ತು"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಮುಕ್ತ ಕೋನ ಆವರಣ ಚಿಹ್ನೆ '<' ಯ ನಂತರ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -479,7 +479,7 @@ msgstr ""
 "ಅಂಶಗಳು ತೆರೆದಿರುವಾಗಲೇ ದಸ್ತಾವೇಜು ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ - '%s' ಯು ತೆರೆಯಲ್ಪಟ್ಟ "
 "ಕೊನೆಯ ಅಂಶ"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -488,19 +488,19 @@ msgstr ""
 "ದಸ್ತಾವೇಜು ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ, <%s/> ಟ್ಯಾಗಿನ ಕೊನೆಯಲ್ಲಿ ಒಂದು ಮುಕ್ತ ಕೋನ ಆವರಣ "
 "ಚಿಹ್ನೆಯನ್ನು ಕಾಣಲು ಅಪೇಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಅಂಶದ ಹೆಸರಿನಲ್ಲಿ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಗುಣಲಕ್ಷಣ ಹೆಸರಿನಲ್ಲಿ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಅಂಶ ತೆರೆಯುವ ಟ್ಯಾಗಿನ ಒಳಗೆ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -508,16 +508,16 @@ msgstr ""
 "ದಸ್ತಾವೇಜು ಒಂದು ಗುಣಲಕ್ಷಣದ ಹೆಸರಿನ ನಂತರದ ಸಮ ಚಿಹ್ನೆಯ ನಂತರ ಅನಿರೀಕ್ಷಿತವಾಗಿ "
 "ಕೊನೆಗೊಂಡಿದೆ; ಯಾವುದೇ ಗುಣಲಕ್ಷಣ ಮೌಲ್ಯವಿಲ್ಲ"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಗುಣಲಕ್ಷಣ ಮೌಲ್ಯದ ಒಳಗಿರುವಾಗ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಅಂಶ'%s'ದ ಮುಚ್ಚಲ್ಪಟ್ಟ ಟ್ಯಾಗಿನ ಒಳಗೆ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ದಸ್ತಾವೇಜು ಒಂದು ಹೇಳಿಕೆ ಅಥವ ಪ್ರಕ್ರಿಯೆ ಸೂಚನೆಯ ಒಳಗೆ ಅನಿರೀಕ್ಷಿತವಾಗಿ ಕೊನೆಗೊಂಡಿದೆ"
 
@@ -1157,34 +1157,34 @@ msgstr "%s ಬಗೆ"
 msgid "Unexpected early end-of-stream"
 msgstr "ಸ್ಟ್ರೀಮ್‍ನ ಅನಿರೀಕ್ಷಿತ ಕ್ಷಿಪ್ರ ಅಂತ್ಯ"
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ಹೆಸರಿಸಲಾಗದ"
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr "ಅನ್ವಯಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಟರ್ಮಿನಲ್‍ ಅನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ ಅನ್ವಯ ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -1443,64 +1443,62 @@ msgstr "'%s' ಕಡತವನ್ನು ವ್ಯಕ್ತಪಡಿಸುವಲ್
 msgid " (invalid encoding)"
 msgstr " (ಅಮಾನ್ಯ ಸಂಕೇತಿಕರಣ)"
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ಕಡತ ಡಿಸ್ಕ್ರಿಪ್ಟರನ್ನು ವ್ಯಕ್ತಪಡಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (uint32 ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (uint64 ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ಅಮಾನ್ಯವಾದ ವೈಶಿಷ್ಟ್ಯದ ಬಗೆ (ಬೈಟ್ ಸಾಲನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ಅನುಮತಿಗಳನ್ನು ಹೊಂದಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ಮಾಲಿಕನನ್ನು ಹೊಂದಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr "ಸಾಂಕೇತಿಕಕೊಂಡಿಯು ಶೂನ್ಯವಾಗಿರುವಂತಿಲ್ಲ"
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr "ಸಾಂಕೇತಿಕ ಕೊಂಡಿಯನ್ನು ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ: ಕಡತವು ಒಂದು ಸಾಂಕೇತಿಕಕೊಂಡಿಯಾಗಿಲ್ಲ"
 
-#: gio/glocalfileinfo.c:2063
-#, fuzzy, c-format
+#: gio/glocalfileinfo.c:2067
+#, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "ಸಾಂಕೇತಿಕಕೊಂಡಿಯು ಶೂನ್ಯವಾಗಿರುವಂತಿಲ್ಲ"
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "ಮಾಲಿಕನನ್ನು ಹೊಂದಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹೊಂದಿಸುವುದು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"

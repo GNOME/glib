@@ -1,5 +1,9 @@
 2008-10-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.18.2 ===
+
+2008-10-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/Makefile.am: Don't specify multiple directories in 
 	DOC_SOURCE_DIR. It doesn't work.
 

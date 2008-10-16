@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2008-09-17 19:40+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -380,16 +380,16 @@ msgstr "చెల్లని UTF-8 యెన్కోడెడ్ పాఠ్�
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "చెల్లని UTF-8 యెన్కోడెడ్ పాఠ్యము - ప్రారంభ అక్షరము కాదు"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "చెల్లని UTF-8 యెన్కోడెడ్ పాఠ్యము - చెల్లునటువంటి '%s' కాదు"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "పత్రం తప్పనిసరిగా ఒక మూలకంతో ప్రారంభమవలెను (ఉదా. <బుక్>)"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -397,20 +397,20 @@ msgid ""
 msgstr ""
 "  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr "బేసి అక్షరము '%s', ఖాళీ-మూలకపు టాగ్ '%s'ను ముగించుటకు '>' అనుకొనబడింది"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -420,7 +420,7 @@ msgstr ""
 "'%s' ఊహించిన బేసి అక్షరము '>' లేక '/' చివరి ర్రంభ బొందు అక్షరము మాలకం %sలేక ఇచ్చాపూర్వక "
 "ఆపాదన; దాదాపుగా ఆపాదన నామంలో అనర్హమైన అక్షరం ఉపమెగించినావు"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -428,14 +428,14 @@ msgid ""
 msgstr ""
 "బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "  '</' వెంటనే ప్రారంభమగు '%s' నిసారమైన అక్షరము  ; '%s' తో మూలకనామం ప్రారంభమవరాదు "
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -444,26 +444,26 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధుతం ఏ మూలకము తెరచియుండలెదు "
 
 # ../glib/gmarkup.c:1588
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -471,7 +471,7 @@ msgid ""
 msgstr ""
 "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -479,19 +479,19 @@ msgid ""
 msgstr ""
 "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -499,16 +499,16 @@ msgstr ""
 " '=' చిహ్నము తర్వాత యాట్రిబ్యూట్ నామమును అనుసరిస్తూ యాట్రిబ్యూట్ విలువలేకుండా పత్రము అనుకోకుండా "
 "ముగించబడింది."
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
@@ -1140,34 +1140,34 @@ msgstr "%s రకము"
 msgid "Unexpected early end-of-stream"
 msgstr "స్ట్రీమ్ యొక్క అనుకోని త్వరిత ముగింపు"
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "నామములేని"
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1425,64 +1425,61 @@ msgstr "దస్త్రము '%s'ను ప్రారంభించుట
 msgid " (invalid encoding)"
 msgstr " (చెల్లని యెన్కోడింగ్)"
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "దస్త్రము వివరణిని ప్రతిపాదించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint32 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint64 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (బైట్ స్ట్రింగ్ అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "అనుమతులను అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "యజమానిని అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr "సిమ్‌లింకు తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: దస్త్రము సిమ్‌లింకు కాదు"
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux సందర్భం తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux సందర్భం అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ఈ సిస్టమ్‌పైన చేతనపరచ బడిలేదు"
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "యాట్రిబ్యూట్ %sను అమర్చుట మద్దతీయుటలేదు"

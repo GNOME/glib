@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2007-09-14 12:15+0200\n"
 "Last-Translator: Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@gnome.org>\n"
 "Language-Team: Georgian <http://mail.gnome.org/mailman/listinfo/gnome-ge-"
@@ -383,16 +383,16 @@ msgstr "ტექსტი მიუღებელი UTF-8 კოდირე�
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "ტექსტი მიუღებელი UTF-8 კოდირებით - not a start char"
 
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "ტექსტი მიუღებელი UTF-8 კოდირებით - მიუღებელი '%s'"
 
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "დოკუმენტი უნდა დაიწყოს ელემეტით (მაგალითად <book>)"
 
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -401,7 +401,7 @@ msgstr ""
 "სიმბოლო \"%s\" დაუშვებელია \"<\" სიმბოლოს შემდეგ; ამ სიმბოლოთი ელემენტის "
 "სახელის დაწყება არ შეიძლება"
 
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -410,7 +410,7 @@ msgstr ""
 "ზედმეტი სიმბოლო \"%s\", მოსალოდნელია \">\" სიმბოლო ელემენტის \"%s\" ჭდის "
 "დასახურად"
 
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -418,7 +418,7 @@ msgstr ""
 "ზედმეტი სიმბოლო \"%s\", მოსალოდნელია \"=\"ატრიბუტის სახელის \"%s\" შემდეგ "
 "ელემენტისთვის \"%s\""
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -429,7 +429,7 @@ msgstr ""
 "გამხსნელი ჭდის დასახურად ან დამატებითი ატრიბუტი; ასევე, შესაძლოა მცდარი "
 "სიმბოლო ატრიბუტის სახელში"
 
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -438,7 +438,7 @@ msgstr ""
 "ზედმეტი სიმბოლო \"%s\", მოსალოდნელია გახსნილი ბრჭყალები ტოლობის ნიშნის "
 "შემდეგ ატრიბუტისთვის \"%s\" მნიშვნელობის მისანიჭებლად ელემენტისთვის \"%s\""
 
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -447,7 +447,7 @@ msgstr ""
 "სიმბოლო \"%s\" დაუშვებელია \"</\" შემდეგ; სიმბოლო \"%s\" არ შეიძლება იყოს "
 "ელემენტის სახელის დასაწყისში"
 
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -456,25 +456,25 @@ msgstr ""
 "სიმბოლო \"%s\" დაუშვებელია ელემენტის \"%s\" დახურვის ჭდის შემდეგ; დასაშვები "
 "სიმბოლოა \">\""
 
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ელემენტი \"%s\" დაიხურა, არცერთი ელემენტი არაა გახსნილი"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ელემენტი \"%s\" დაიხურა, მაგრამ გახსნილია ელემენტი \"%s\""
 
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "დოკუმენტი ცარიელია ან მხოლოდ ხარეებს შეიცავს"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "დოკუმენტი დასრულდა უშუალოდ კუთხოვანი ფრჩხილის \"<\" შემდეგ"
 
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -483,7 +483,7 @@ msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა გახსნილი ელემენტებით - \"%s\" ბოლო გახსნილი "
 "ელემენტია"
 
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -491,19 +491,19 @@ msgid ""
 msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა, მოსალოდნელია ჩამკეტი კუთხოვანი ფრჩხილი <%s/>"
 
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის სახელის შიგნით"
 
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის სახელის შიგნით"
 
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის გამხსნელი ჭდის შიგნით."
 
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -511,16 +511,16 @@ msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის სახელის შემდგომი ტოლობის ნიშნის "
 "შემდეგ; ატრიბუტის მნიშვნელობა არ მითითებულა"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის მნიშვნელობის შიგნით"
 
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის \"%s\" ჩამკეტი ჭდის შიგნით"
 
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა კომენტარის ან დამუშავების ინსტრუქციის შიგნით"
@@ -1172,34 +1172,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1463,64 +1463,61 @@ msgstr "ფაილის \"%s\" წაკითხვის შეცდომ
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ფაილის \"%s\" წაკითხვის შეცდომა: %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "გარდაქმნის შეცდომა: %s"
 
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "გარდაქმნის შეცდომა: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "შეცდომა სტრიქონში %d: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "გარდაქმნის შეცდომა: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "სიმბოლური ბმების გამოყენება არაა რეალიზებული"

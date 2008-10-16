@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:21-0400\n"
+"POT-Creation-Date: 2008-10-16 17:07-0400\n"
 "PO-Revision-Date: 2005-11-16 11:21+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -438,18 +438,18 @@ msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Недапушчальна закадаваны тэкст UTF-8"
 
 # glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
-#: glib/gmarkup.c:1117
+#: glib/gmarkup.c:1120
 #, fuzzy, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Недапушчальна закадаваны тэкст UTF-8"
 
 # glib/gmarkup.c:932
-#: glib/gmarkup.c:1155
+#: glib/gmarkup.c:1158
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Дакумэнт мусіць пачынацца з элемэнту (напрыклад <book>)"
 
 # glib/gmarkup.c:970
-#: glib/gmarkup.c:1195
+#: glib/gmarkup.c:1198
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -459,7 +459,7 @@ msgstr ""
 "сымбаль ня можа пачынаць назву элемэнту"
 
 # glib/gmarkup.c:1033
-#: glib/gmarkup.c:1263
+#: glib/gmarkup.c:1266
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -469,7 +469,7 @@ msgstr ""
 "\""
 
 # glib/gmarkup.c:1120
-#: glib/gmarkup.c:1352
+#: glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -478,7 +478,7 @@ msgstr ""
 "элемэнту \"%s\""
 
 # glib/gmarkup.c:1161
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1397
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -490,7 +490,7 @@ msgstr ""
 "выкарыстаны недапушчальны сымбаль у назве атрыбуту"
 
 # glib/gmarkup.c:1244
-#: glib/gmarkup.c:1480
+#: glib/gmarkup.c:1483
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -500,7 +500,7 @@ msgstr ""
 "надаецца значэньне атрыбуту \"%s\" элемэнту \"%s\""
 
 # glib/gmarkup.c:1384
-#: glib/gmarkup.c:1622
+#: glib/gmarkup.c:1625
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -510,7 +510,7 @@ msgstr ""
 "s\" ня можа пачынаць назву элемэнту"
 
 # glib/gmarkup.c:1422
-#: glib/gmarkup.c:1662
+#: glib/gmarkup.c:1665
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -520,30 +520,30 @@ msgstr ""
 "\"; дапушчальным сымбалем зьяўляецца \">\""
 
 # glib/gmarkup.c:1433
-#: glib/gmarkup.c:1673
+#: glib/gmarkup.c:1676
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 "Элемэнт \"%s\" быў закрыты, аніводны элемэнт у бягучы момант не адкрыты"
 
 # glib/gmarkup.c:1442
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1685
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Элемэнт \"%s\" быў закрыты, але ў гэты час адкрыты \"%s\""
 
 # glib/gmarkup.c:1574
-#: glib/gmarkup.c:1845
+#: glib/gmarkup.c:1848
 msgid "Document was empty or contained only whitespace"
 msgstr "Дакумэнт быў пусты ці утрымліваў толькі прагалы"
 
 # glib/gmarkup.c:1588
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1862
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Дакумэнт нечакана скончыўся адразу пасьля вуглавой дужкі \"<\""
 
 # glib/gmarkup.c:1596 glib/gmarkup.c:1640
-#: glib/gmarkup.c:1867 glib/gmarkup.c:1912
+#: glib/gmarkup.c:1870 glib/gmarkup.c:1915
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -553,7 +553,7 @@ msgstr ""
 "апошнім адкрытым элемэнтам"
 
 # glib/gmarkup.c:1604
-#: glib/gmarkup.c:1875
+#: glib/gmarkup.c:1878
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -562,22 +562,22 @@ msgstr ""
 "Дакумэнт нечакана скончыўся, чакаецца вуглавая дужка якая закрывае тэг <%s/>"
 
 # glib/gmarkup.c:1610
-#: glib/gmarkup.c:1881
+#: glib/gmarkup.c:1884
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Дакумэнт нечакана скончыўся ўнутры назвы элемэнту"
 
 # glib/gmarkup.c:1615
-#: glib/gmarkup.c:1887
+#: glib/gmarkup.c:1890
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Дакумэнт нечакана скончыўся ўнутры назвы атрыбуту"
 
 # glib/gmarkup.c:1620
-#: glib/gmarkup.c:1892
+#: glib/gmarkup.c:1895
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Дакумэнт нечакана скончыўся  ўнутры элемэнту які адкрывае тэг."
 
 # glib/gmarkup.c:1626
-#: glib/gmarkup.c:1898
+#: glib/gmarkup.c:1901
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -586,18 +586,18 @@ msgstr ""
 "атрыбуту: не пазначана значэньне атрыбуту"
 
 # glib/gmarkup.c:1633
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1908
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Дакумэнт нечакана скончыўся ўнутры значэньня атрыбуту"
 
 # glib/gmarkup.c:1648
-#: glib/gmarkup.c:1921
+#: glib/gmarkup.c:1924
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Дакумэнт нечакана скончыўся ўнутры элемэнту \"%s\" які закрывае тэг"
 
 # glib/gmarkup.c:1654
-#: glib/gmarkup.c:1927
+#: glib/gmarkup.c:1930
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Дакумэнт нечакана скончыўся ўнутры камэнтару ці інструкцыі"
 
@@ -1285,34 +1285,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:435 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:612
+#: gio/gdesktopappinfo.c:621
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:906
+#: gio/gdesktopappinfo.c:915
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1138
+#: gio/gdesktopappinfo.c:1147
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1142
+#: gio/gdesktopappinfo.c:1151
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1481
+#: gio/gdesktopappinfo.c:1520
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1556
+#: gio/gdesktopappinfo.c:1595
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1595,71 +1595,68 @@ msgid " (invalid encoding)"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1696
+#: gio/glocalfileinfo.c:1698
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1741
+#: gio/glocalfileinfo.c:1743
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1761
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1778 gio/glocalfileinfo.c:1796
-#, c-format
+#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1825
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1873 gio/glocalfileinfo.c:2041
+#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
-#: gio/glocalfileinfo.c:1896
+#: gio/glocalfileinfo.c:1899
 msgid "symlink must be non-NULL"
 msgstr ""
 
 # glib/gmarkup.c:303
-#: gio/glocalfileinfo.c:1906 gio/glocalfileinfo.c:1925
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
+#: gio/glocalfileinfo.c:1939
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Памылка ў радку %d: %s"
 
-#: gio/glocalfileinfo.c:1915
+#: gio/glocalfileinfo.c:1918
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
-#, c-format
+#: gio/glocalfileinfo.c:2067
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:2079
+#: gio/glocalfileinfo.c:2082
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
-#: gio/glocalfileinfo.c:2086
-#, c-format
+#: gio/glocalfileinfo.c:2089
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2150
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"
