@@ -841,16 +841,12 @@ write_property_info (const gchar    *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
-  if (flags & G_PARAM_READABLE)
-    xml_printf (file, " readable=\"1\"");
-  else
-    xml_printf (file, " readable=\"0\"");
 
+  /* Properties are assumed to be read-only (see also girwriter.py) */
+  if (!(flags & G_PARAM_READABLE))
+    xml_printf (file, " readable=\"0\"");
   if (flags & G_PARAM_WRITABLE)
     xml_printf (file, " writable=\"1\"");
-  else
-    xml_printf (file, " writable=\"0\"");
 
   if (flags & G_PARAM_CONSTRUCT)
     xml_printf (file, " construct=\"1\"");
