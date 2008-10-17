@@ -432,20 +432,17 @@ write_callable_info (const gchar    *namespace,
 	  g_assert_not_reached ();
 	}
       
-      xml_printf (file, " direction=\"");
       switch (g_arg_info_get_direction (arg))
 	{
 	case GI_DIRECTION_IN:
-	  xml_printf (file, "in");
 	  break;
 	case GI_DIRECTION_OUT:
-	  xml_printf (file, "out");
+	  xml_printf (file, " direction=\"out\"");
 	  break;
 	case GI_DIRECTION_INOUT:
-	  xml_printf (file, "inout");
+	  xml_printf (file, " direction=\"inout\"");
 	  break;
 	}
-      xml_printf (file, "\"");
       
       if (g_arg_info_may_be_null (arg))
 	xml_printf (file, " null-ok=\"1\"");
