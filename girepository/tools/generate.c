@@ -338,10 +338,16 @@ write_field_info (const gchar *namespace,
   offset = g_field_info_get_offset (info);
 
   xml_start_element (file, "field");
-  xml_printf (file, " name=\"%s\" readable=\"%s\" writable=\"%s\"",
-	     name, 
-	     flags & GI_FIELD_IS_READABLE ? "1" : "0", 
-	     flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
+  xml_printf (file, " name=\"%s\"", name);
+
+  /* Fields are assumed to be read-only
+   * (see also girwriter.py and girparser.c)
+   */
+  if (!(flags & GI_FIELD_IS_READABLE))
+    xml_printf (file, " readable=\"0\"");
+  if (flags & GI_FIELD_IS_WRITABLE)
+    xml_printf (file, " writable=\"1\"");
+
   if (size)
     xml_printf (file, " bits=\"%d\"", size);
 
