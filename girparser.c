@@ -839,15 +839,11 @@ start_field (GMarkupParseContext *context,
   field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD);
   ctx->current_typed = (GIrNode*) field;
   ((GIrNode *)field)->name = g_strdup (name);
-  if (readable && strcmp (readable, "1") == 0)
-    field->readable = TRUE;
-  else
-    field->readable = FALSE;
-  
-  if (writable && strcmp (writable, "1") == 0)
-    field->writable = TRUE;
-  else
-    field->writable = FALSE;
+  /* Fields are assumed to be read-only.
+   * (see also girwriter.py and generate.c)
+   */
+  field->readable = readable == NULL || strcmp (readable, "0") == 0;
+  field->writable = writable != NULL && strcmp (writable, "1") == 0;
   
   if (bits)
     field->bits = atoi (bits);
