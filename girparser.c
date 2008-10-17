@@ -706,7 +706,7 @@ start_parameter (GMarkupParseContext *context,
   dipper = find_attribute ("dipper", attribute_names, attribute_values);
   optional = find_attribute ("optional", attribute_names, attribute_values);
   nullok = find_attribute ("null-ok", attribute_names, attribute_values);
-  transfer = find_attribute ("transfer", attribute_names, attribute_values);
+  transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
 
   if (name == NULL)
     name = "unknown";
