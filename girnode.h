@@ -212,6 +212,7 @@ struct _GIrNodeInterface
 {
   GIrNode node;
 
+  gboolean abstract;
   gboolean deprecated;
 
   gchar *gtype_name;

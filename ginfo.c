@@ -1123,6 +1123,14 @@ g_object_info_get_parent (GIObjectInfo *info)
     return NULL;
 }
 
+gboolean
+g_object_info_get_abstract (GIObjectInfo    *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  return blob->abstract != 0;
+}
+
 const gchar *
 g_object_info_get_type_name (GIObjectInfo *info)
 {

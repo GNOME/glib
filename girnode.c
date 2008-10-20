@@ -1872,6 +1872,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	GList *members;
 
 	blob->blob_type = BLOB_TYPE_OBJECT;
+	blob->abstract = object->abstract;
 	blob->deprecated = object->deprecated;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);

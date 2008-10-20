@@ -392,6 +392,7 @@ GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *in
 
 const gchar *          g_object_info_get_type_name 	    (GIObjectInfo    *info);
 const gchar *          g_object_info_get_type_init 	    (GIObjectInfo    *info);
+gboolean               g_object_info_get_abstract           (GIObjectInfo    *info);
 GIObjectInfo *         g_object_info_get_parent             (GIObjectInfo    *info);
 gint                   g_object_info_get_n_interfaces       (GIObjectInfo    *info);
 GIInterfaceInfo *      g_object_info_get_interface          (GIObjectInfo    *info,

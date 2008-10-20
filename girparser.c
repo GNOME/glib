@@ -1362,12 +1362,14 @@ start_class (GMarkupParseContext *context,
       const gchar *typename;
       const gchar *typeinit;
       const gchar *deprecated;
+      const gchar *abstract;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       parent = find_attribute ("parent", attribute_names, attribute_values);
       typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
       typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+      abstract = find_attribute ("abstract", attribute_names, attribute_values);
       
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
@@ -1388,7 +1390,9 @@ start_class (GMarkupParseContext *context,
 	    iface->deprecated = TRUE;
 	  else
 	    iface->deprecated = FALSE;
-	  
+
+	  iface->abstract = abstract && strcmp (abstract, "1") == 0;
+
 	  ctx->current_node = (GIrNode *) iface;
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, iface);	      
