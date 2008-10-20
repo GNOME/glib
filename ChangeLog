@@ -1,3 +1,9 @@
+2008-10-20 Christian Persch <chpe@gnome.org>
+
+	Bug 557087 – mem leak in g_content_types_get_registered
+		
+	* gio/gcontenttype.c: Plug a mem leak.
+
 2008-10-19  Michael Natterer  <mitch@imendio.com>
 
 	Bug 556186 – gpoll.h breaks gmain.h inclusion

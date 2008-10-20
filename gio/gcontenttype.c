@@ -998,7 +998,7 @@ enumerate_mimetypes_subdir (const char *dir,
 	  if (g_str_has_suffix (ent->d_name, ".xml"))
 	    {
 	      mimetype = g_strdup_printf ("%s/%.*s", prefix, (int) strlen (ent->d_name) - 4, ent->d_name);
-	      g_hash_table_insert (mimetypes, mimetype, NULL);
+	      g_hash_table_replace (mimetypes, mimetype, NULL);
 	    }
 	}
       closedir (d);
@@ -1053,7 +1053,7 @@ g_content_types_get_registered (void)
   int i;
   GList *l;
 
-  mimetypes = g_hash_table_new (g_str_hash, g_str_equal);
+  mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
   enumerate_mimetypes_dir (g_get_user_data_dir (), mimetypes);
   dirs = g_get_system_data_dirs ();
@@ -1064,7 +1064,10 @@ g_content_types_get_registered (void)
   l = NULL;
   g_hash_table_iter_init (&iter, mimetypes);
   while (g_hash_table_iter_next (&iter, &key, NULL))
-    l = g_list_prepend (l, key);
+    {
+      l = g_list_prepend (l, key);
+      g_hash_table_iter_steal (&iter);
+    }
 
   g_hash_table_destroy (mimetypes);
 
