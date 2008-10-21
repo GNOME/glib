@@ -26,6 +26,9 @@
 #include "glibintl.h"
 #include "gioenums.h"
 #include "gioenumtypes.h"
+#include "gioerror.h"
+#include <stdlib.h>
+#include <string.h>
 
 #include "gioalias.h"
 
@@ -273,11 +276,88 @@ g_emblem_equal (GIcon *icon1,
          g_icon_equal (emblem1->icon, emblem2->icon);
 }
 
+static gboolean
+g_emblem_to_tokens (GIcon *icon,
+		    GPtrArray *tokens,
+		    gint  *out_version)
+{
+  GEmblem *emblem = G_EMBLEM (icon);
+  char *s;
+
+  /* GEmblem are encoded as
+   *
+   * <origin> <icon>
+   */
+
+  g_return_val_if_fail (out_version != NULL, FALSE);
+
+  *out_version = 0;
+
+  s = g_icon_to_string (emblem->icon);
+  if (s == NULL)
+    return FALSE;
+
+  g_ptr_array_add (tokens, s);
+
+  s = g_strdup_printf ("%d", emblem->origin);
+  g_ptr_array_add (tokens, s);
+  
+  return TRUE;
+}
+
+static GIcon *
+g_emblem_from_tokens (gchar  **tokens,
+		      gint     num_tokens,
+		      gint     version,
+		      GError **error)
+{
+  GEmblem *emblem;
+  GIcon *icon;
+  GEmblemOrigin origin;
+  char *s;
+
+  emblem = NULL;
+
+  if (version != 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Can't handle version %d of GEmblem encoding"),
+                   version);
+      return NULL;
+    }
+
+  if (num_tokens != 2)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Malformed number of tokens (%d) in GEmblem encoding"),
+                   num_tokens);
+      return NULL;
+    }
+  
+  icon = g_icon_new_for_string (tokens[0], error);
+  
+  if (icon == NULL)
+    return NULL;
+
+  origin = atoi (tokens[1]);
+  
+  emblem = g_emblem_new_with_origin (icon, origin);
+  g_object_unref (icon);
+  
+  return G_ICON (emblem);
+}
+
 static void
 g_emblem_iface_init (GIconIface *iface)
 {
   iface->hash  = g_emblem_hash;
   iface->equal = g_emblem_equal;
+  iface->to_tokens = g_emblem_to_tokens;
+  iface->from_tokens = g_emblem_from_tokens;
 }
 
 #define __G_EMBLEM_C__

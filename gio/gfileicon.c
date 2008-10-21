@@ -29,6 +29,7 @@
 #include "gloadableicon.h"
 #include "ginputstream.h"
 #include "gsimpleasyncresult.h"
+#include "gioerror.h"
 
 #include "gioalias.h"
 
@@ -202,12 +203,66 @@ g_file_icon_equal (GIcon *icon1,
   return g_file_equal (file1->file, file2->file);
 }
 
+static gboolean
+g_file_icon_to_tokens (GIcon *icon,
+		       GPtrArray *tokens,
+                       gint  *out_version)
+{
+  GFileIcon *file_icon = G_FILE_ICON (icon);
+
+  g_return_val_if_fail (out_version != NULL, FALSE);
+
+  *out_version = 0;
+
+  g_ptr_array_add (tokens, g_file_get_uri (file_icon->file));
+  return TRUE;
+}
+
+static GIcon *
+g_file_icon_from_tokens (gchar  **tokens,
+                         gint     num_tokens,
+                         gint     version,
+                         GError **error)
+{
+  GIcon *icon;
+  GFile *file;
+
+  icon = NULL;
+
+  if (version != 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Can't handle version %d of GFileIcon encoding"),
+                   version);
+      goto out;
+    }
+
+  if (num_tokens != 1)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Malformed input data for GFileIcon"));
+      goto out;
+    }
+
+  file = g_file_new_for_uri (tokens[0]);
+  icon = g_file_icon_new (file);
+  g_object_unref (file);
+
+ out:
+  return icon;
+}
 
 static void
 g_file_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_file_icon_hash;
   iface->equal = g_file_icon_equal;
+  iface->to_tokens = g_file_icon_to_tokens;
+  iface->from_tokens = g_file_icon_from_tokens;
 }
 
 

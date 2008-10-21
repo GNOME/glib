@@ -26,6 +26,7 @@
 
 #include "gthemedicon.h"
 #include "gicon.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -458,11 +459,67 @@ g_themed_icon_equal (GIcon *icon1,
   return themed1->names[i] == NULL && themed2->names[i] == NULL;
 }
 
+
+static gboolean
+g_themed_icon_to_tokens (GIcon *icon,
+			 GPtrArray *tokens,
+                         gint  *out_version)
+{
+  GThemedIcon *themed_icon = G_THEMED_ICON (icon);
+  int n;
+
+  g_return_val_if_fail (out_version != NULL, FALSE);
+
+  *out_version = 0;
+
+  for (n = 0; themed_icon->names[n] != NULL; n++)
+    g_ptr_array_add (tokens,
+		     g_strdup (themed_icon->names[n]));
+  
+  return TRUE;
+}
+
+static GIcon *
+g_themed_icon_from_tokens (gchar  **tokens,
+                           gint     num_tokens,
+                           gint     version,
+                           GError **error)
+{
+  GIcon *icon;
+  gchar **names;
+  int n;
+
+  icon = NULL;
+
+  if (version != 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Can't handle version %d of GThemedIcon encoding"),
+                   version);
+      goto out;
+    }
+  
+  names = g_new0 (gchar *, num_tokens + 1);
+  for (n = 0; n < num_tokens; n++)
+    names[n] = tokens[n];
+  names[n] = NULL;
+
+  icon = g_themed_icon_new_from_names (names, num_tokens);
+  g_free (names);
+
+ out:
+  return icon;
+}
+
 static void
 g_themed_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_themed_icon_hash;
   iface->equal = g_themed_icon_equal;
+  iface->to_tokens = g_themed_icon_to_tokens;
+  iface->from_tokens = g_themed_icon_from_tokens;
 }
 
 #define __G_THEMED_ICON_C__

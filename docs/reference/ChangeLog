@@ -1,3 +1,8 @@
+2008-10-21  Alexander Larsson  <alexl@redhat.com>
+
+        * gio/gio-sections.txt:
+	Update with new symbolse
+
 2008-10-16  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.19.0 ===

@@ -29,6 +29,7 @@
 
 #include "gemblemedicon.h"
 #include "glibintl.h"
+#include "gioerror.h"
 
 #include "gioalias.h"
 
@@ -237,11 +238,117 @@ g_emblemed_icon_equal (GIcon *icon1,
   return list1 == NULL && list2 == NULL;
 }
 
+static gboolean
+g_emblemed_icon_to_tokens (GIcon *icon,
+                           GPtrArray *tokens,
+                           gint  *out_version)
+{
+  GEmblemedIcon *emblemed_icon = G_EMBLEMED_ICON (icon);
+  GList *l;
+  char *s;
+
+  /* GEmblemedIcons are encoded as
+   *
+   *   <encoded_icon> [<encoded_emblem_icon>]*
+   */
+
+  g_return_val_if_fail (out_version != NULL, FALSE);
+
+  *out_version = 0;
+
+  s = g_icon_to_string (emblemed_icon->icon);
+  if (s == NULL)
+    return FALSE;
+
+  g_ptr_array_add (tokens, s);
+
+  for (l = emblemed_icon->emblems; l != NULL; l = l->next)
+    {
+      GIcon *emblem_icon = G_ICON (l->data);
+
+      s = g_icon_to_string (emblem_icon);
+      if (s == NULL)
+        return FALSE;
+      
+      g_ptr_array_add (tokens, s);
+    }
+
+  return TRUE;
+}
+
+static GIcon *
+g_emblemed_icon_from_tokens (gchar  **tokens,
+                             gint     num_tokens,
+                             gint     version,
+                             GError **error)
+{
+  GEmblemedIcon *emblemed_icon;
+  char *s;
+  int n;
+
+  emblemed_icon = NULL;
+
+  if (version != 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Can't handle version %d of GEmblemedIcon encoding"),
+                   version);
+      goto fail;
+    }
+
+  if (num_tokens < 1)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Malformed number of tokens (%d) in GEmblemedIcon encoding"),
+                   num_tokens);
+      goto fail;
+    }
+
+  emblemed_icon = g_object_new (G_TYPE_EMBLEMED_ICON, NULL);
+  emblemed_icon->icon = g_icon_new_for_string (tokens[0], error);
+  if (emblemed_icon->icon == NULL)
+    goto fail;
+
+  for (n = 1; n < num_tokens; n++)
+    {
+      GIcon *emblem;
+
+      emblem = g_icon_new_for_string (tokens[n], error);
+      if (emblem == NULL)
+        goto fail;
+
+      if (!G_IS_EMBLEM (emblem))
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Expected a GEmblem for GEmblemedIcon"));
+          g_object_unref (emblem);
+          goto fail;
+        }
+
+      emblemed_icon->emblems = g_list_append (emblemed_icon->emblems, emblem);
+    }
+
+  return G_ICON (emblemed_icon);
+
+ fail:
+  if (emblemed_icon != NULL)
+    g_object_unref (emblemed_icon);
+  return NULL;
+}
+
 static void
 g_emblemed_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_emblemed_icon_hash;
   iface->equal = g_emblemed_icon_equal;
+  iface->to_tokens = g_emblemed_icon_to_tokens;
+  iface->from_tokens = g_emblemed_icon_from_tokens;
 }
 
 #define __G_EMBLEMED_ICON_C__

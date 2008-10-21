@@ -1,3 +1,22 @@
+2008-10-21  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 555740 - gicon serialization
+	Based on patch from David Zeuthen
+	
+        * gicon.[ch]:
+        * gio.symbols:
+	Add g_icon_to_string() and g_icon_new_for_string().
+	
+        * gemblem.c:
+        * gemblemedicon.c:
+        * gfileicon.c:
+        * gthemedicon.c:
+	Implement icon serialization for built-in icon types
+	
+        * tests/Makefile.am:
+        * tests/g-icon.c:
+	Added GIcon serialization test
+
 2008-10-16  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.19.0 ===
