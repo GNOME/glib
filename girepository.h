@@ -190,7 +190,8 @@ typedef enum
   GI_FUNCTION_IS_CONSTRUCTOR = 1 << 1,
   GI_FUNCTION_IS_GETTER      = 1 << 2,
   GI_FUNCTION_IS_SETTER      = 1 << 3,
-  GI_FUNCTION_WRAPS_VFUNC    = 1 << 4
+  GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
+  GI_FUNCTION_THROWS         = 1 << 5
 } GIFunctionInfoFlags;
 
 const gchar *           g_function_info_get_symbol     (GIFunctionInfo *info);

@@ -166,11 +166,11 @@ typedef struct
   guint16 blob_type;  /* 1 */
 
   guint16 deprecated  : 1;
-  guint16 setter      : 1; 
+  guint16 setter      : 1;
   guint16 getter      : 1;
   guint16 constructor : 1;
   guint16 wraps_vfunc : 1;
-  guint16 reserved    : 1;
+  guint16 throws      : 1;
   guint16 index       :10;
 
   guint32 name;

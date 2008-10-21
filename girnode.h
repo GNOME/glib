@@ -92,6 +92,7 @@ struct _GIrNodeFunction
   gboolean is_getter;
   gboolean is_constructor;
   gboolean wraps_vfunc;
+  gboolean throws;
 
   gchar *symbol;
 

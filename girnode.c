@@ -1477,7 +1477,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->getter = function->is_getter;
 	blob->constructor = function->is_constructor;
 	blob->wraps_vfunc = function->wraps_vfunc;
-	blob->reserved = 0;
+	blob->throws = function->throws;
 	blob->index = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->symbol = write_string (function->symbol, strings, data, offset2);

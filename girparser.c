@@ -527,6 +527,7 @@ start_function (GMarkupParseContext *context,
   const gchar *name;
   const gchar *symbol;
   const gchar *deprecated;
+  const gchar *throws;
   GIrNodeFunction *function;
   gboolean found = FALSE;
   
@@ -557,6 +558,7 @@ start_function (GMarkupParseContext *context,
   name = find_attribute ("name", attribute_names, attribute_values);
   symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+  throws = find_attribute ("throws", attribute_names, attribute_values);
       
   if (name == NULL)
     {
@@ -598,7 +600,12 @@ start_function (GMarkupParseContext *context,
       if (strcmp (element_name, "callback") == 0)
 	((GIrNode *)function)->type = G_IR_NODE_CALLBACK;
     }
-	  
+
+  if (throws && strcmp (throws, "1") == 0)
+    function->throws = TRUE;
+  else
+    function->throws = FALSE;
+
   if (ctx->current_node == NULL)
     {
       ctx->current_module->entries = 

@@ -159,9 +159,11 @@ g_function_info_invoke (GIFunctionInfo *info,
   GITypeInfo *tinfo;
   GIArgInfo *ainfo;
   gboolean is_method;
+  gboolean throws;
   gint n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
+  GError *local_error;
 
   symbol = g_function_info_get_symbol (info);
 
@@ -178,6 +180,7 @@ g_function_info_invoke (GIFunctionInfo *info,
 
   is_method = (g_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
     && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
+  throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
 
   tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
   rtype = get_ffi_type (tinfo);
@@ -202,6 +205,11 @@ g_function_info_invoke (GIFunctionInfo *info,
     }
   else
     n_invoke_args = n_args;
+
+  if (throws)
+    /* Add an argument for the GError */
+    n_invoke_args ++;
+
   atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
   args = g_alloca (sizeof (gpointer) * n_invoke_args);
   
@@ -279,6 +287,15 @@ g_function_info_invoke (GIFunctionInfo *info,
 	}
       g_base_info_unref ((GIBaseInfo *)ainfo);
     }
+
+  local_error = NULL;
+  if (throws)
+    {
+      gpointer address = &local_error;
+      args[n_invoke_args - 1] = &address;
+      atypes[n_invoke_args - 1] = &ffi_type_pointer;
+    }
+
   if (in_pos < n_in_args)
     {
       g_set_error (error,
@@ -301,7 +318,15 @@ g_function_info_invoke (GIFunctionInfo *info,
 
   ffi_call (&cif, func, return_value, args);
 
-  success = TRUE;
+  if (local_error)
+    {
+      g_propagate_error (error, local_error);
+      success = FALSE;
+    }
+  else
+    {
+      success = TRUE;
+    }
  out:
   return success;
 }
