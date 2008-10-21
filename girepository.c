@@ -858,6 +858,7 @@ compare_version (const char *v1,
 struct NamespaceVersionCandidadate
 {
   GMappedFile *mfile;
+  int path_index;
   char *path;
   char *version;
 };
@@ -867,12 +868,24 @@ compare_candidate_reverse (struct NamespaceVersionCandidadate *c1,
 			   struct NamespaceVersionCandidadate *c2)
 {
   int result = compare_version (c1->version, c2->version);
+  /* First, check the version */
   if (result > 0)
     return -1;
   else if (result < 0)
     return 1;
-  else
-    return 0;
+  else 
+    {
+      /* Now check the path index, which says how early in the search path
+       * we found it.  This ensures that of equal version targets, we
+       * pick the earlier one.
+       */
+      if (c1->path_index == c2->path_index)
+	return 0;
+      else if (c1->path_index > c2->path_index)
+	return 1;
+      else
+	return -1;
+    }
 }
 
 static void
@@ -895,13 +908,15 @@ find_namespace_latest (const gchar  *namespace,
   char *namespace_typelib;
   GSList *candidates = NULL;
   GMappedFile *result = NULL;
+  int index;
 
   *version_ret = NULL;
   *path_ret = NULL;
 
   namespace_dash = g_strdup_printf ("%s-", namespace);
   namespace_typelib = g_strdup_printf ("%s.typelib", namespace);
- 
+
+  index = 0;
   for (ldir = search_path; ldir; ldir = ldir->next)
     {
       GDir *dir;
@@ -947,11 +962,13 @@ find_namespace_latest (const gchar  *namespace,
 	    }
 	  candidate = g_new0 (struct NamespaceVersionCandidadate, 1);
 	  candidate->mfile = mfile;
+	  candidate->path_index = index;
 	  candidate->path = path;
 	  candidate->version = version;
 	  candidates = g_slist_prepend (candidates, candidate);
 	}
       g_dir_close (dir);
+      index++;
     }
 
   if (candidates != NULL)
