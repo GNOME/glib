@@ -1,5 +1,10 @@
 2008-10-21  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileinfo.h:
+	Add G_FILE_ATTRIBUTE_PREVIEW_ICON (#557182)
+
+2008-10-21  Alexander Larsson  <alexl@redhat.com>
+
 	Bug 555740 - gicon serialization
 	Based on patch from David Zeuthen
 	
