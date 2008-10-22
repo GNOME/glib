@@ -23,6 +23,7 @@
 #include <stdio.h>
 
 #include <glib.h>
+#include "girparser.h"
 #include "girmodule.h"
 #include "girnode.h"
 #include "gtypelib.h"

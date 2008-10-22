@@ -74,7 +74,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 {
   GTypelib *typelib;
   gsize length;
-  gint i;
+  guint i;
   GList *e;
   Header *header;
   DirEntry *entry;

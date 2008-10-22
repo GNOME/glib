@@ -54,7 +54,7 @@ validate_interface_blob (ValidateContext *ctx,
 			 guint32        offset,
 			 GError       **error);
 
-DirEntry *
+static DirEntry *
 get_dir_entry_checked (GTypelib *typelib,
 		       guint16    index,
 		       GError   **error)
@@ -876,7 +876,7 @@ validate_constant_blob (GTypelib     *typelib,
 			guint32        offset,
 			GError       **error)
 {
-  gint value_size[] = {
+  guint value_size[] = {
     0, /* VOID */
     4, /* BOOLEAN */
     1, /* INT8 */

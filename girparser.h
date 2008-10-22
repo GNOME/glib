@@ -26,8 +26,9 @@
 G_BEGIN_DECLS
 
 
-GList *g_ir_parse_string (const gchar  *buffer, 
+GList *g_ir_parse_string (const gchar *namespace,
 			  const gchar *const *includes,
+                          const gchar *buffer,
 			  gssize        length,
 			  GError      **error);
 GList *g_ir_parse_file   (const gchar  *filename,
