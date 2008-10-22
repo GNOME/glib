@@ -136,7 +136,7 @@ struct _GIrNodeParam
   gboolean dipper;
   gboolean optional;
   gboolean retval;
-  gboolean null_ok;
+  gboolean allow_none;
   gboolean transfer;
   gboolean shallow_transfer;
   

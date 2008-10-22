@@ -1489,7 +1489,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings, types,
 				 data, &signature, offset2);
 
-	blob2->may_return_null = function->result->null_ok;
+	blob2->may_return_null = function->result->allow_none;
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1533,7 +1533,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings, types,
 				 data, &signature, offset2);
 
-	blob2->may_return_null = function->result->null_ok;
+	blob2->may_return_null = function->result->allow_none;
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1585,7 +1585,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings, types,
 				 data, &signature, offset2);
 
-	blob2->may_return_null = signal->result->null_ok;
+	blob2->may_return_null = signal->result->allow_none;
 	blob2->caller_owns_return_value = signal->result->transfer;
 	blob2->caller_owns_return_container = signal->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1632,7 +1632,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 				 module, modules, strings, types,
 				 data, &signature, offset2);
 
-	blob2->may_return_null = vfunc->result->null_ok;
+	blob2->may_return_null = vfunc->result->allow_none;
 	blob2->caller_owns_return_value = vfunc->result->transfer;
 	blob2->caller_owns_return_container = vfunc->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1661,7 +1661,7 @@ g_ir_node_build_typelib (GIrNode    *node,
  	blob->in = param->in;
  	blob->out = param->out;
  	blob->dipper = param->dipper;
-	blob->null_ok = param->null_ok;
+	blob->allow_none = param->allow_none;
 	blob->optional = param->optional;
 	blob->transfer_ownership = param->transfer;
 	blob->transfer_container_ownership = param->shallow_transfer;

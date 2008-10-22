@@ -183,9 +183,9 @@ function_generate (GIdlWriter * writer, GIdlNodeFunction * node)
 	    g_string_append (markup_s,
 			   g_markup_printf_escaped (" transfer=\"full\""));
 
-	  if (param->null_ok)
+	  if (param->allow_none)
 	    g_string_append (markup_s,
-			     g_markup_printf_escaped (" null-ok=\"1\""));
+			     g_markup_printf_escaped (" allow-none=\"1\""));
 	  
 	  if (strcmp (direction, "in") != 0)
 	    g_string_append (markup_s,

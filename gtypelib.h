@@ -127,7 +127,7 @@ typedef struct
   guint          in                           : 1;
   guint          out                          : 1;
   guint          dipper                       : 1;
-  guint          null_ok                      : 1;
+  guint          allow_none                   : 1;
   guint          optional                     : 1;
   guint          transfer_ownership           : 1;
   guint          transfer_container_ownership : 1;

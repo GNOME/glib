@@ -707,7 +707,7 @@ g_arg_info_may_be_null (GIArgInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
   
-  return blob->null_ok;
+  return blob->allow_none;
 }
 
 GITransfer

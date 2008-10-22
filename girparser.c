@@ -699,7 +699,7 @@ start_parameter (GMarkupParseContext *context,
   const gchar *retval;
   const gchar *dipper;
   const gchar *optional;
-  const gchar *nullok;
+  const gchar *allow_none;
   const gchar *transfer;
   GIrNodeParam *param;
       
@@ -712,7 +712,7 @@ start_parameter (GMarkupParseContext *context,
   retval = find_attribute ("retval", attribute_names, attribute_values);
   dipper = find_attribute ("dipper", attribute_names, attribute_values);
   optional = find_attribute ("optional", attribute_names, attribute_values);
-  nullok = find_attribute ("null-ok", attribute_names, attribute_values);
+  allow_none = find_attribute ("allow-none", attribute_names, attribute_values);
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
 
   if (name == NULL)
@@ -756,10 +756,10 @@ start_parameter (GMarkupParseContext *context,
   else
     param->optional = FALSE;
 
-  if (nullok && strcmp (nullok, "1") == 0)
-    param->null_ok = TRUE;
+  if (allow_none && strcmp (allow_none, "1") == 0)
+    param->allow_none = TRUE;
   else
-    param->null_ok = FALSE;
+    param->allow_none = FALSE;
 
   parse_param_transfer (param, transfer);
 
