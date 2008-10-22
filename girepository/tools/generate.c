@@ -878,11 +878,13 @@ write_object_info (const gchar  *namespace,
   const gchar *type_name;
   const gchar *type_init;
   gboolean deprecated;
+  gboolean is_abstract;
   GIObjectInfo *pnode;
   gint i;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+  is_abstract = g_object_info_get_abstract (info);
   
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
@@ -895,6 +897,9 @@ write_object_info (const gchar  *namespace,
       write_type_name_attribute (namespace, (GIBaseInfo *)pnode, "parent", file);
       g_base_info_unref ((GIBaseInfo *)pnode);
     }
+
+  if (is_abstract)
+    xml_printf (file, " abstract=\"1\"");
 
   xml_printf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
 
