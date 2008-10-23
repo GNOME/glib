@@ -1,3 +1,20 @@
+2008-10-23  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 528320 - Incorrect icons displayed for files with custom mimetype icons
+	
+        * glocalfileinfo.c:
+        (_g_local_file_info_get):
+	Don't return the fallback icon (text-x-generic) for all files.
+	This is causing problems with theme icon lookup and custom mime
+	icons, as the generic fallback overrides custom mime icons in
+	inherited themes.
+
+	This is a slight change as applications might not get an icon wher
+	they previously did. But there is no guarantee to get on neither before
+	or after this change, so it should not break applications. Changes
+	to nautilus and gtk+ will be done to manually use the generic fallback
+	icon if no icon is found, but this is only required for rare cases.
+
 2008-10-21  Alexander Larsson  <alexl@redhat.com>
 
         * gfileinfo.h:
