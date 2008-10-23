@@ -1577,12 +1577,8 @@ _g_local_file_info_get (const char             *basename,
 
                       if (S_ISDIR (statbuf.st_mode)) 
                         type_icon = "folder";
-                      else if (statbuf.st_mode & S_IXUSR)
-                        type_icon = "application-x-executable";
-                      else
-                        type_icon = "text-x-generic";
-
-                      g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
+                      if (type_icon)
+                        g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
                     }
                 }
 
