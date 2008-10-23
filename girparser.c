@@ -660,30 +660,28 @@ start_function (GMarkupParseContext *context,
 static void
 parse_param_transfer (GIrNodeParam *param, const gchar *transfer)
 {
-  if (transfer && strcmp (transfer, "none") == 0)
+  if (transfer == NULL)
+  {
+    g_warning ("required attribute 'transfer-ownership' missing");
+  }
+  else if (strcmp (transfer, "none") == 0)
     {
       param->transfer = FALSE;
       param->shallow_transfer = FALSE;
     }
-  else if (transfer && strcmp (transfer, "container") == 0)
+  else if (strcmp (transfer, "container") == 0)
     {
       param->transfer = FALSE;
       param->shallow_transfer = TRUE;
     }
+  else if (strcmp (transfer, "full") == 0)
+    {
+      param->transfer = TRUE;
+      param->shallow_transfer = FALSE;
+    }
   else
     {
-      if (transfer)
-	{
-	  if (strcmp (transfer, "full") != 0)
-	    g_warning ("Unknown transfer %s", transfer);
-	  else
-	    param->transfer = TRUE;
-	}
-      else if (param->in && !param->out)
-	param->transfer = FALSE;
-      else
-	param->transfer = TRUE;
-      param->shallow_transfer = FALSE;
+      g_warning ("Unknown transfer-ownership value: %s", transfer);
     }
 }
 
