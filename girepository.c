@@ -84,8 +84,8 @@ init_globals ()
 {
   g_static_mutex_lock (&globals_lock);
 
-  if (default_repository == NULL) 
-    { 
+  if (default_repository == NULL)
+    {
       default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
     }
 
@@ -93,14 +93,37 @@ init_globals ()
     {
       const gchar *const *datadirs;
       const gchar *const *dir;
-      
-      datadirs = g_get_system_data_dirs ();
-      
+      const gchar *type_lib_path_env;
+
+      type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
+
       search_path = NULL;
-      for (dir = datadirs; *dir; dir++) {
-	char *path = g_build_filename (*dir, "girepository", NULL);
-	search_path = g_slist_prepend (search_path, path);
-      }
+      if (type_lib_path_env)
+        {
+          gchar **custom_dirs;
+          gchar **d;
+
+          custom_dirs = g_strsplit (type_lib_path_env, G_SEARCHPATH_SEPARATOR_S, 0);
+
+          d = custom_dirs;
+          while (*d)
+            {
+              search_path = g_slist_prepend (search_path, *d);
+              d++;
+            }
+
+          /* ownership of the array content was passed to the list */
+          g_free (custom_dirs);
+        }
+
+      datadirs = g_get_system_data_dirs ();
+
+      for (dir = datadirs; *dir; dir++)
+        {
+          char *path = g_build_filename (*dir, "girepository", NULL);
+          search_path = g_slist_prepend (search_path, path);
+        }
+
       search_path = g_slist_reverse (search_path);
     }
 
