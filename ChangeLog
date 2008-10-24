@@ -1,5 +1,7 @@
 2008-10-23 Matthias Clasen <mclasen@redhat.com>
 
+	Bug 557210 – g_compute_checksum_for_* asserts with less than 2 bytes
+
 	* glib/gchecksum.c (g_compute_checksum_for_data): Accept 
 	lengths < 2. Patch by Tommi Komulainen
 
