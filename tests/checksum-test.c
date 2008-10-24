@@ -617,10 +617,44 @@ test_checksum (GChecksumType  checksum_type,
     }
 }
 
+static void
+test_checksum_string (GChecksumType   checksum_type,
+                      const gchar    *type,
+                      const gchar   **sums)
+{
+  int length;
+
+  for (length = 0; length <= FIXED_LEN; length++)
+    {
+      const char *expected = sums[length];
+      char *checksum;
+
+      checksum = g_compute_checksum_for_string (checksum_type,
+                                                FIXED_STR,
+                                                length);
+      if (strcmp (checksum, expected) != 0)
+        {
+          g_print ("Invalid %s checksum for `%.*s' (length %d):\n"
+                   "%s (expecting: %s)\n",
+                   type,
+                   length, FIXED_STR, length,
+                   checksum,
+                   expected);
+          exit (1);
+        }
+
+      g_free (checksum);
+    }
+}
+
 #define test(type, length) test_checksum (G_CHECKSUM_##type,	\
                                           #type, \
                                           type##_sums[length], \
                                           length)
+
+#define test_string(type) test_checksum_string (G_CHECKSUM_##type,	\
+                                                #type, \
+                                                type##_sums)
 
 int
 main (int argc, char *argv[])
@@ -633,6 +667,10 @@ main (int argc, char *argv[])
       test (SHA1, length);
       test (SHA256, length);
     }
+
+  test_string (MD5);
+  test_string (SHA1);
+  test_string (SHA256);
 
   return EXIT_SUCCESS;
 }

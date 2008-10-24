@@ -1,5 +1,12 @@
 2008-10-23 Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gchecksum.c (g_compute_checksum_for_data): Accept 
+	lengths < 2. Patch by Tommi Komulainen
+
+	* tests/checksum-test.c: Add a test for this
+
+2008-10-23 Matthias Clasen <mclasen@redhat.com>
+
 	Bug 556921 – gpoll.h breaks hal compilation
 
 	* glib/gpoll.h: Include gtypes.h. Pointed out by Anis Elleuch
