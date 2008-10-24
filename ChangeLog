@@ -1,3 +1,9 @@
+2008-10-23 Matthias Clasen <mclasen@redhat.com>
+
+	Bug 556921 – gpoll.h breaks hal compilation
+
+	* glib/gpoll.h: Include gtypes.h. Pointed out by Anis Elleuch
+
 2008-10-20 Christian Persch <chpe@gnome.org>
 
 	Bug 557087 – mem leak in g_content_types_get_registered

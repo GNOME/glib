@@ -24,6 +24,8 @@
 #ifndef __G_POLL_H__
 #define __G_POLL_H__
 
+#include <glib/gtypes.h>
+
 G_BEGIN_DECLS
 
 /* Any definitions using GPollFD or GPollFunc are primarily
