@@ -46,6 +46,9 @@ void       g_ir_module_free           (GIrModule  *module);
 GTypelib * g_ir_module_build_typelib  (GIrModule  *module,
 				       GList       *modules);
 
+void _g_irnode_init_stats (void);
+void _g_irnode_dump_stats (void);
+
 G_END_DECLS
 
 #endif  /* __G_IR_MODULE_H__ */

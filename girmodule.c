@@ -24,9 +24,6 @@
 #include "girmodule.h"
 #include "girnode.h"
 
-void _g_irnode_init_stats (void);
-void _g_irnode_dump_stats (void);
-
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
