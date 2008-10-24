@@ -1220,6 +1220,7 @@ static void
 g_ir_node_check_unhandled_members (GList         **members,
 				   GIrNodeTypeId   container_type)
 {
+#if 0
   if (*members)
     {
       GList *l;
@@ -1227,7 +1228,6 @@ g_ir_node_check_unhandled_members (GList         **members,
       for (l = *members; l; l = l->next)
 	{
 	  GIrNode *member = (GIrNode *)l->data;
-
 	  g_printerr ("Unhandled '%s' member '%s' type '%s'\n",
 		      g_ir_node_type_to_string (container_type),
 		      member->name,
@@ -1237,10 +1237,12 @@ g_ir_node_check_unhandled_members (GList         **members,
       g_list_free (*members);
       *members = NULL;
 
-      /* Commented out for now to not break the build.
       g_error ("Unhandled members. Aborting.");
-      */
     }
+#else
+  g_list_free (*members);
+  *members = NULL;
+#endif
 }
 
 void
