@@ -1790,7 +1790,7 @@ g_app_info_get_all_for_type (const char *content_type)
 
 /**
  * g_app_info_reset_type_associations:
- * content_type: a content type 
+ * @content_type: a content type 
  *
  * Removes all changes to the type associations done by
  * g_app_info_set_as_default_for_type(), 

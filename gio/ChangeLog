@@ -1,3 +1,7 @@
+2008-10-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* gdesktopappinfo.c (g_app_info_reset_type_associations): Fix docs.
+
 2008-10-23  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 528320 - Incorrect icons displayed for files with custom mimetype icons
