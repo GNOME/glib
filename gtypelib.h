@@ -206,9 +206,13 @@ typedef struct
 
   guint16 zero_terminated :1;
   guint16 has_length      :1;
-  guint16 reserved2       :6;
+  guint16 has_size        :1;
+  guint16 reserved2       :5;
 
-  guint16 length;
+  union {
+    guint16 length;
+    guint16 size;
+  };
 
   SimpleTypeBlob type;
 } ArrayTypeBlob;

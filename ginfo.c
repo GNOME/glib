@@ -830,6 +830,26 @@ g_type_info_get_array_length (GITypeInfo *info)
   return -1;
 }
 
+gint
+g_type_info_get_array_fixed_size (GITypeInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  
+  if (!(type->reserved == 0 && type->reserved2 == 0))
+    {
+      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+
+      if (blob->tag == GI_TYPE_TAG_ARRAY)
+	{
+	  if (blob->has_size)
+	    return blob->size;
+	}
+    }
+
+  return -1;
+}
+
 gboolean
 g_type_info_is_zero_terminated (GITypeInfo *info)
 {

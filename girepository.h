@@ -320,6 +320,7 @@ GITypeInfo *           g_type_info_get_param_type      (GITypeInfo *info,
 						        gint       n);
 GIBaseInfo *           g_type_info_get_interface       (GITypeInfo *info);
 gint                   g_type_info_get_array_length    (GITypeInfo *info);
+gint                   g_type_info_get_array_fixed_size(GITypeInfo *info);
 gboolean               g_type_info_is_zero_terminated  (GITypeInfo *info);
 
 gint                   g_type_info_get_n_error_domains (GITypeInfo *info);

@@ -1514,6 +1514,7 @@ start_type (GMarkupParseContext *context,
     {
       const char *zero;
       const char *len;
+      const char *size;
 
       typenode = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
 
@@ -1523,10 +1524,14 @@ start_type (GMarkupParseContext *context,
       
       zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
       len = find_attribute ("length", attribute_names, attribute_values);
-
+      size = find_attribute ("fixed-size", attribute_names, attribute_values);
+      
       typenode->zero_terminated = !(zero && strcmp (zero, "1") != 0);
       typenode->has_length = len != NULL;
       typenode->length = typenode->has_length ? atoi (len) : -1;
+      
+      typenode->has_size = size != NULL;
+      typenode->size = typenode->has_size ? atoi (size) : -1;
     }
   else
     {

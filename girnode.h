@@ -119,6 +119,8 @@ struct _GIrNodeType
   gboolean zero_terminated;
   gboolean has_length;
   gint length;
+  gboolean has_size;
+  gint size;
   
   GIrNodeType *parameter_type1;
   GIrNodeType *parameter_type2;  

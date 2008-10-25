@@ -1114,6 +1114,8 @@ serialize_type (GIrModule    *module,
 
       if (node->has_length)
 	g_string_append_printf (str, "length=%d", node->length);
+      else if (node->has_size)
+        g_string_append_printf (str, "fixed-size=%d", node->size);
       
       if (node->zero_terminated)
 	g_string_append_printf (str, "%szero-terminated=1", 
@@ -1319,8 +1321,14 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      array->tag = type->tag;
 		      array->zero_terminated = type->zero_terminated;
 		      array->has_length = type->has_length;
+                      array->has_size = type->has_size;
 		      array->reserved2 = 0;
-		      array->length = type->length;
+                      if (array->has_length)
+                        array->length = type->length;
+                      else if (array->has_size)
+                        array->size  = type->size;
+                      else
+                        array->length = -1;
 		      
 		      pos = *offset2 + 4;
 		      *offset2 += 8;
