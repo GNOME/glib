@@ -217,16 +217,19 @@ write_type_info (const gchar *namespace,
     }
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
-      gint length;
-
+      gint length, size;
+      
       xml_start_element (file, "array");
 
       type = g_type_info_get_param_type (info, 0);
 
       length = g_type_info_get_array_length (info);
-      
       if (length >= 0)
-	xml_printf (file, " length=\"%d\"", length);
+        xml_printf (file, " length=\"%d\"", length);
+
+      size = g_type_info_get_array_fixed_size (info);
+      if (size >= 0)
+        xml_printf (file, " fixed-size=\"%d\"", size);
       
       if (g_type_info_is_zero_terminated (info))
 	xml_printf (file, " zero-terminated=\"1\"");
