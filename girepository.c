@@ -31,6 +31,8 @@
 #include "girepository.h"
 #include "gtypelib.h"
 
+#include "config.h"
+
 static GStaticMutex globals_lock = G_STATIC_MUTEX_INIT;
 static GIRepository *default_repository = NULL;
 static GSList *search_path = NULL;
@@ -91,8 +93,8 @@ init_globals ()
 
   if (search_path == NULL)
     {
-      const gchar *const *datadirs;
-      const gchar *const *dir;
+      const char *libdir;
+      char *typelib_dir;
       const gchar *type_lib_path_env;
 
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
@@ -116,13 +118,11 @@ init_globals ()
           g_free (custom_dirs);
         }
 
-      datadirs = g_get_system_data_dirs ();
+      libdir = GOBJECT_INTROSPECTION_LIBDIR;
 
-      for (dir = datadirs; *dir; dir++)
-        {
-          char *path = g_build_filename (*dir, "girepository", NULL);
-          search_path = g_slist_prepend (search_path, path);
-        }
+      typelib_dir = g_build_filename (libdir, "girepository", NULL);
+
+      search_path = g_slist_prepend (search_path, typelib_dir);
 
       search_path = g_slist_reverse (search_path);
     }
