@@ -1029,9 +1029,9 @@ find_namespace_latest (const gchar  *namespace,
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: %TRUE if successful, %NULL otherwise
+ * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
  */
-gboolean
+GTypelib *
 g_irepository_require (GIRepository  *repository,
 		       const gchar   *namespace,
 		       const gchar   *version,
@@ -1039,7 +1039,7 @@ g_irepository_require (GIRepository  *repository,
 		       GError       **error)
 {
   GMappedFile *mfile;
-  gboolean ret = FALSE;
+  GTypelib *ret = NULL;
   Header *header;
   GTypelib *typelib = NULL;
   const gchar *typelib_namespace, *typelib_version;
@@ -1053,9 +1053,10 @@ g_irepository_require (GIRepository  *repository,
 
   repository = get_repository (repository);
 
-  if (get_registered_status (repository, namespace, version, allow_lazy, 
-			     &is_lazy, &version_conflict))
-    return TRUE;
+  typelib = get_registered_status (repository, namespace, version, allow_lazy, 
+                                   &is_lazy, &version_conflict);
+  if (typelib)
+    return typelib;
 
   if (version_conflict != NULL)
     {
@@ -1063,7 +1064,7 @@ g_irepository_require (GIRepository  *repository,
 		   G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT,
 		   "Requiring namespace '%s' version '%s', but '%s' is already loaded",
 		   namespace, version, version_conflict);
-      return FALSE;
+      return NULL;
     }
 
   if (version != NULL)
@@ -1121,7 +1122,7 @@ g_irepository_require (GIRepository  *repository,
       g_typelib_free (typelib);
       goto out;
     }
-  ret = TRUE;
+  ret = typelib;
  out:
   g_free (tmp_version);
   g_free (path);

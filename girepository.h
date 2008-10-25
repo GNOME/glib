@@ -87,7 +87,7 @@ gboolean      g_irepository_is_registered (GIRepository *repository,
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *name);
-gboolean      g_irepository_require       (GIRepository *repository,
+GTypelib *    g_irepository_require       (GIRepository *repository,
 					   const gchar  *namespace,
 					   const gchar  *version,
 					   GIRepositoryLoadFlags flags,
