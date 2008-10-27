@@ -1131,7 +1131,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
  * the #GHashTable, they are used to free the memory allocated for the removed
  * keys and values.
  *
- * See #GHashTableIterator for an alternative way to loop over the 
+ * See #GHashTableIter for an alternative way to loop over the 
  * key/value pairs in the hash table.
  *
  * Return value: the number of key/value pairs removed.
@@ -1157,7 +1157,7 @@ g_hash_table_foreach_remove (GHashTable *hash_table,
  * If the function returns %TRUE, then the key/value pair is removed from the
  * #GHashTable, but no key or value destroy functions are called.
  *
- * See #GHashTableIterator for an alternative way to loop over the 
+ * See #GHashTableIter for an alternative way to loop over the 
  * key/value pairs in the hash table.
  *
  * Return value: the number of key/value pairs removed.

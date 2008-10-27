@@ -1,3 +1,11 @@
+2008-10-27  Joseph Pingenot  <gnomesvn@digitasaru.net>
+
+	* glib/ghash.c: changed "#GHashTableIterator" to "#GHashTableIter"
+	in the documentation-comments above g_hash_table_foreach_remove()
+	and g_hash_table_foreach_steal() to correctly name and link to
+	GHashTableIter.  This affects the GNOME documentation website
+	as well, so further steps are likely necessary beyond this subproject..
+
 2008-10-23 Matthias Clasen <mclasen@redhat.com>
 
 	Bug 557210 – g_compute_checksum_for_* asserts with less than 2 bytes
