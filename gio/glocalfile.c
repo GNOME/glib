@@ -431,6 +431,8 @@ g_local_file_get_parse_name (GFile *file)
 	      g_free (utf8_filename);
 	      utf8_filename = NULL;
 	    }
+
+	  g_free (roundtripped_filename);
 	}
     }
 
