@@ -1,3 +1,9 @@
+2008-10-27  Federico Mena Quintero  <federico@novell.com>
+
+	Merged from trunk:
+
+	* glocalfile.c (g_local_file_get_parse_name): Don't leak roundtripped_filename.
+
 2008-10-27  Tor Lillqvist  <tml@novell.com>
 
 	Bug 557592 - Missing include in gwinhttpfile.c
