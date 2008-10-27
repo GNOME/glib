@@ -254,7 +254,7 @@ g_function_info_invoke (GIFunctionInfo *info,
 	      goto out;
 	    }
 
-	  args[i+offset] = (gpointer)&out_args[out_pos+offset];
+	  args[i+offset] = (gpointer)&out_args[out_pos];
 	  out_pos++;	  
 	  break;
 	case GI_DIRECTION_INOUT:
