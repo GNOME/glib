@@ -1,3 +1,10 @@
+2008-10-27  Tor Lillqvist  <tml@novell.com>
+
+	Bug 557592 - Missing include in gwinhttpfile.c
+
+	* win32/gwinhttpfile.c: Include <wchar.h> to make it compile with
+	MSVC2008.
+
 2008-10-23  Alexander Larsson  <alexl@redhat.com>
 
 	Merged from trunk:
