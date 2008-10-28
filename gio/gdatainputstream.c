@@ -740,7 +740,9 @@ scan_for_newline (GDataInputStream *stream,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: a string with the line that was read in (including the newlines).
- * Set @length to a #gsize to get the length of the read line. Returns %NULL on an error.
+ * Set @length to a #gsize to get the length of the read line.
+ * On an error, it will return %NULL and @error will be set. If there's no
+ * content to read, it will still return %NULL, but @error won't be set.
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream  *stream,

@@ -1,3 +1,10 @@
+2008-10-28  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	reviewed by: Alexander Larsson <alexl@redhat.com>
+
+	* gdatainputstream.c: Make the docs of g_dada_input_stream_read_line ()
+	clearer about the behavior when there's no more content to read.
+
 2008-10-27  Federico Mena Quintero  <federico@novell.com>
 
 	* glocalfile.c (g_local_file_get_parse_name): Don't leak roundtripped_filename.
