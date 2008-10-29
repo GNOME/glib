@@ -96,10 +96,34 @@ does not include <function>string.h</function> for you.
 
 <!-- ##### MACRO G_STRINGIFY ##### -->
 <para>
-Accepts a macro or a string and converts it into a string.
+Accepts a macro or a string and converts it into a string after
+preprocessor argument expansion.
 </para>
 
 @macro_or_string: a macro or a string.
+
+
+<!-- ##### MACRO G_PASTE ##### -->
+<para>
+Yields a new preprocessor pasted identifier 'identifier1identifier2'
+from its expanded arguments 'identifier1' and 'identifier2'.
+</para>
+
+@identifier1: an identifier
+@identifier2: an identifier
+@Since: 2.20
+
+
+<!-- ##### MACRO G_STATIC_ASSERT ##### -->
+<para>
+The G_STATIC_ASSERT macro lets the programmer check a condition at compile time,
+the condition needs to be compile time computable.
+The macro can be used in any place where a <literal>typedef</literal> is valid.
+The macro should only be used once per source code line.
+</para>
+
+@expr: a constant expression.
+@Since: 2.20
 
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->

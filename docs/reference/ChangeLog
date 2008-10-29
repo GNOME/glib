@@ -1,3 +1,9 @@
+2008-10-29 16:04:38  Tim Janik  <timj@gtk.org>
+
+	* glib/tmpl/macros_misc.sgml: Clarified/added docs for
+	G_STRINGIFY, G_PASTE and G_STATIC_ASSERT, based on
+	patches from Christian Persch and  Christian Dywan.
+
 2008-10-21  Alexander Larsson  <alexl@redhat.com>
 
         * gio/gio-sections.txt:
