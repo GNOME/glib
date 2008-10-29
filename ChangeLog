@@ -1,3 +1,9 @@
+2008-10-29 16:11:14  Tim Janik  <timj@gtk.org>
+
+	* glib/gmacros.h: added G_PASTE() and G_STATIC_ASSERT(), based on
+	patches by Christian Persch and Christian Dywan. Fixes:
+	Bug 558381 - Add support for compile time assertions
+
 2008-10-27  Joseph Pingenot  <gnomesvn@digitasaru.net>
 
 	* glib/ghash.c: changed "#GHashTableIterator" to "#GHashTableIter"
