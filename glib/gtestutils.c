@@ -140,13 +140,13 @@ g_test_log_send (guint         n_bytes,
     }
   if (test_debug_log)
     {
-      GTestLogBuffer *lbuffer = g_test_log_buffer_new();
+      GTestLogBuffer *lbuffer = g_test_log_buffer_new ();
       GTestLogMsg *msg;
       guint ui;
       g_test_log_buffer_push (lbuffer, n_bytes, buffer);
       msg = g_test_log_buffer_pop (lbuffer);
-      g_assert (msg != NULL); /* FIXME: should be g_awrn_if_fail */
-      g_assert (lbuffer->data->len == 0); /* FIXME: should be g_awrn_if_fail */
+      g_warn_if_fail (msg != NULL);
+      g_warn_if_fail (lbuffer->data->len == 0);
       g_test_log_buffer_free (lbuffer);
       /* print message */
       g_printerr ("{*LOG(%s)", g_test_log_type_name (msg->log_type));
