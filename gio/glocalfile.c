@@ -592,7 +592,7 @@ g_local_file_get_child_for_display_name (GFile        *file,
 					 const char   *display_name,
 					 GError      **error)
 {
-  GFile *parent, *new_file;
+  GFile *new_file;
   char *basename;
 
   basename = g_filename_from_utf8 (display_name, -1, NULL, NULL, NULL);
@@ -604,9 +604,7 @@ g_local_file_get_child_for_display_name (GFile        *file,
       return NULL;
     }
 
-  parent = g_file_get_parent (file);
   new_file = g_file_get_child (file, basename);
-  g_object_unref (parent);
   g_free (basename);
   
   return new_file;
