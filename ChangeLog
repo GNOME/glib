@@ -1,3 +1,11 @@
+2008-10-31  Grahame Bowland  <grahame@angrygoats.net>
+
+	Bug 558185 – 'parent' variable in g_local_file_get_child_for_display_name() 
+	hits g_object_unref(NULL) assertion
+
+	* gio/glocalfile.c: 
+	- remove unused variable. Patch by Matt Johnston <matt@ucc.asn.au>
+
 2008-10-29 16:11:14  Tim Janik  <timj@gtk.org>
 
 	* glib/gmacros.h: added G_PASTE() and G_STATIC_ASSERT(), based on
