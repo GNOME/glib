@@ -35,11 +35,6 @@ typedef struct {
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
-#if !defined(__Darwin__)
-#  undef SHLIB_SUFFIX
-#  define SHLIB_SUFFIX G_MODULE_SUFFIX 
-#endif
-
 static void
 push_context (ValidateContext *ctx, const char *name)
 {
