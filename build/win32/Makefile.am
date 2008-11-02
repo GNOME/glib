@@ -1,6 +1,7 @@
 SUBDIRS = \
 	dirent \
-	vs8
+	vs8 \
+	vs9
 
 EXTRA_DIST = \
 	make.msc \

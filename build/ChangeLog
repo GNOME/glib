@@ -1,5 +1,9 @@
 2008-11-02  Tor Lillqvist  <tml@novell.com>
 
+	* win32/Makefile.am (SUBDIRS): Add vs9.
+
+2008-11-02  Tor Lillqvist  <tml@novell.com>
+
 	Bug 558153 - Patch for .def files generation
 
 	* win32/{vs8,vs9}/*.vcproj: Add &quot; around paths, making it
