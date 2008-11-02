@@ -383,7 +383,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/gmodule.def &amp;&amp; cl /EP -DG_OS_WIN32 $(InputPath) &gt;&gt; $(InputDir)/gmodule.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
 						Outputs="$(InputDir)/gmodule.def"
 					/>
 				</FileConfiguration>
@@ -393,7 +393,27 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/gmodule.def &amp;&amp; cl /EP -DG_OS_WIN32 $(InputPath) &gt;&gt; $(InputDir)/gmodule.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
+						Outputs="$(InputDir)/gmodule.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gmodule.def"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
+						Outputs="$(InputDir)/gmodule.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gmodule.def"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
 						Outputs="$(InputDir)/gmodule.def"
 					/>
 				</FileConfiguration>
