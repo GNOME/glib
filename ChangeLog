@@ -1,3 +1,7 @@
+2008-11-02  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Expand also build/win32/vs9/Makefile.
+
 2008-10-31  Christian Dywan  <christian@imendio.com>
 
 	Bug 558513 – g_warn_if_fail FIXME in gtestutils
