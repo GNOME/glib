@@ -464,7 +464,17 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gio.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/gio.def &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF $(InputPath) &gt;&gt; $(InputDir)/gio.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gio.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gio.def&quot;&#x0D;&#x0A;"
+						Outputs="$(InputDir)/gio.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gio.def"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gio.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gio.def&quot;&#x0D;&#x0A;"
 						Outputs="$(InputDir)/gio.def"
 					/>
 				</FileConfiguration>

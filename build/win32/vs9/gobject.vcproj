@@ -435,7 +435,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gobject.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/gobject.def &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF $(InputPath) &gt;&gt; $(InputDir)/gobject.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gobject.def&quot;&#x0D;&#x0A;"
 						Outputs="$(InputDir)/gobject.def"
 					/>
 				</FileConfiguration>
@@ -445,7 +445,27 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gobject.def"
-						CommandLine="echo EXPORTS &gt; $(InputDir)/gobject.def &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF $(InputPath) &gt;&gt; $(InputDir)/gobject.def&#x0D;&#x0A;"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gobject.def&quot;&#x0D;&#x0A;"
+						Outputs="$(InputDir)/gobject.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gobject.def"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gobject.def&quot;&#x0D;&#x0A;"
+						Outputs="$(InputDir)/gobject.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gobject.def"
+						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gobject.def&quot;&#x0D;&#x0A;"
 						Outputs="$(InputDir)/gobject.def"
 					/>
 				</FileConfiguration>

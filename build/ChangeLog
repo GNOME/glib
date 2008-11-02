@@ -1,3 +1,14 @@
+2008-11-02  Tor Lillqvist  <tml@novell.com>
+
+	Bug 558153 - Patch for .def files generation
+
+	* win32/{vs8,vs9}/*.vcproj: Add &quot; around paths, making it
+	possible to compile in a directory containing spaces. .def files
+	generation is done for every configuration not only the "Debug"
+	ones.
+
+	Patch by Guillaume Duhamel.
+
 2008-09-16  Tor Lillqvist  <tml@novell.com>
 
 	* win32/vs9: New folder. Project files for use with MSVS9. Based
