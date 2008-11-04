@@ -397,6 +397,10 @@ install_property_internal (GType       g_type,
  * @pspec: the #GParamSpec for the new property
  *
  * Installs a new property. This is usually done in the class initializer.
+ *
+ * Note that it is possible to redefine a property in a derived class,
+ * by installing a property with the same name. This can be useful at times,
+ * e.g. to change the range of allowed values or the default value.
  */
 void
 g_object_class_install_property (GObjectClass *class,

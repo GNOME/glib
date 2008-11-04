@@ -1,3 +1,10 @@
+2008-11-03  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 555935 – Clear the mechanism of overwriting properties
+
+	* gobject.c: Expand the docs of g_object_class_install_property.
+	Proposed by Maciej Piechotka
+
 2008-10-16  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.19.0 ===
