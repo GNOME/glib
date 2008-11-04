@@ -154,6 +154,14 @@ chmod a-w win32.cache   # prevent configure from changing it
          </para>
       </formalpara>
       <formalpara>
+         <title>ac_cv_func_posix_getgrgid_r=[yes/no]</title>
+ 
+         <para>
+            Whether you have a getgrgid_r function that conforms to
+            the POSIX spec.
+         </para>
+      </formalpara>
+      <formalpara>
          <title>glib_cv_use_pid_surrogate=[yes/no]</title>
 
          <para>
