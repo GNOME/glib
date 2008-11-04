@@ -788,15 +788,18 @@ g_hash_table_lookup (GHashTable   *hash_table,
 
 /**
  * g_hash_table_lookup_extended:
- * @hash_table: a #GHashTable.
- * @lookup_key: the key to look up.
- * @orig_key: returns the original key.
- * @value: returns the value associated with the key.
+ * @hash_table: a #GHashTable
+ * @lookup_key: the key to look up
+ * @orig_key: return location for the original key, or %NULL
+ * @value: return location for the value associated with the key, or %NULL
  *
  * Looks up a key in the #GHashTable, returning the original key and the
  * associated value and a #gboolean which is %TRUE if the key was found. This
  * is useful if you need to free the memory allocated for the original key,
  * for example before calling g_hash_table_remove().
+ *
+ * You can actually pass %NULL for @lookup_key to test
+ * whether the %NULL key exists.
  *
  * Return value: %TRUE if the key was found in the #GHashTable.
  **/
