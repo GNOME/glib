@@ -163,7 +163,8 @@ g_function_info_invoke (GIFunctionInfo *info,
   gint n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
-  GError *local_error;
+  GError *local_error = NULL;
+  gpointer error_address = &local_error;
 
   symbol = g_function_info_get_symbol (info);
 
@@ -288,11 +289,9 @@ g_function_info_invoke (GIFunctionInfo *info,
       g_base_info_unref ((GIBaseInfo *)ainfo);
     }
 
-  local_error = NULL;
   if (throws)
     {
-      gpointer address = &local_error;
-      args[n_invoke_args - 1] = &address;
+      args[n_invoke_args - 1] = &error_address;
       atypes[n_invoke_args - 1] = &ffi_type_pointer;
     }
 
