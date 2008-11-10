@@ -623,7 +623,7 @@ g_value_unset (&amp;val);
       <function><link linkend="object-set-property">object_set_property</link></function> which first walks the class hierarchy,
       from bottom, most derived type, to top, fundamental type to find the class
       which registered that property. It then tries to convert the user-provided GValue
-      into a GValue whose type if that of the associated property.
+      into a GValue whose type is that of the associated property.
     </para>
   
     <para>
