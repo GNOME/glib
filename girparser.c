@@ -75,6 +75,7 @@ struct _ParseContext
   gboolean prefix_aliases;
   GList *dependencies;
   GHashTable *aliases;
+  GHashTable *disguised_structures;
 
   const char *namespace;
   GIrModule *current_module;
@@ -94,6 +95,10 @@ start_alias (GMarkupParseContext *context,
 	     ParseContext        *ctx,
 	     GError             **error);
 
+static const gchar *find_attribute (const gchar  *name, 
+				    const gchar **attribute_names,
+				    const gchar **attribute_values);
+
 static void
 firstpass_start_element_handler (GMarkupParseContext *context,
 				 const gchar         *element_name,
@@ -108,6 +113,30 @@ firstpass_start_element_handler (GMarkupParseContext *context,
     {
       start_alias (context, element_name, attribute_names, attribute_values,
 		   ctx, error);
+    }
+  else if (strcmp (element_name, "record") == 0)
+    {
+      const gchar *name;
+      const gchar *disguised;
+
+      name = find_attribute ("name", attribute_names, attribute_values);
+      disguised = find_attribute ("disguised", attribute_names, attribute_values);
+
+      if (disguised && strcmp (disguised, "1") == 0)
+	{
+	  char *key;
+
+	  if (ctx->prefix_aliases)
+	    {
+	      key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+	    }
+	  else
+	    {
+	      key = g_strdup (name);
+	    }
+
+	  g_hash_table_replace (ctx->disguised_structures, key, GINT_TO_POINTER (1));
+	}
     }
 }
 
@@ -1549,6 +1578,13 @@ start_type (GMarkupParseContext *context,
 
       typenode = parse_type (ctx, name);
 
+      /* A 'disguised' structure is one where the c:type is a typedef that
+       * doesn't look like a pointer, but is internally.
+       */
+      if (typenode->tag == GI_TYPE_TAG_INTERFACE &&
+	  g_hash_table_lookup (ctx->disguised_structures, typenode->interface) != NULL)
+	is_pointer = TRUE;
+
       if (is_pointer)
 	typenode->is_pointer = is_pointer;
     }
@@ -1936,12 +1972,14 @@ start_struct (GMarkupParseContext *context,
     {
       const gchar *name;
       const gchar *deprecated;
+      const gchar *disguised;
       const gchar *gtype_name;
       const gchar *gtype_init;
       GIrNodeStruct *struct_;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+      disguised = find_attribute ("disguised", attribute_names, attribute_values);
       gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
       gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
 
@@ -1968,6 +2006,9 @@ start_struct (GMarkupParseContext *context,
 	struct_->deprecated = TRUE;
       else
 	struct_->deprecated = FALSE;
+
+      if (disguised && strcmp (disguised, "1") == 0)
+	struct_->disguised = TRUE;
 
       struct_->gtype_name = g_strdup (gtype_name);
       struct_->gtype_init = g_strdup (gtype_init);
@@ -2102,6 +2143,7 @@ parse_include (GMarkupParseContext *context,
   sub_ctx.prefix_aliases = TRUE;
   sub_ctx.namespace = name;
   sub_ctx.aliases = ctx->aliases;
+  sub_ctx.disguised_structures = ctx->disguised_structures;
   sub_ctx.type_depth = 0;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &sub_ctx, NULL);
@@ -2862,6 +2904,7 @@ g_ir_parse_string (const gchar  *namespace,
   ctx.prefix_aliases = FALSE;
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  ctx.disguised_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   ctx.type_depth = 0;
   ctx.dependencies = NULL;
   ctx.current_module = NULL;
@@ -2886,6 +2929,7 @@ g_ir_parse_string (const gchar  *namespace,
  out:
 
   g_hash_table_destroy (ctx.aliases);
+  g_hash_table_destroy (ctx.disguised_structures);
   
   g_markup_parse_context_free (context);
   

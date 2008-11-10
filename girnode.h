@@ -278,6 +278,7 @@ struct _GIrNodeStruct
   GIrNode node;
 
   gboolean deprecated;
+  gboolean disguised;
 
   gchar *gtype_name;
   gchar *gtype_init;
