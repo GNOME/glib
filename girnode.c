@@ -1354,6 +1354,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	   node->name ? " " : "",
 	   g_ir_node_type_to_string (node->type));
 
+  g_ir_node_compute_offsets (node, module, modules);
+
   switch (node->type)
     {
     case G_IR_NODE_TYPE:
@@ -1525,7 +1527,10 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->writable = field->writable;
 	blob->reserved = 0;
 	blob->bits = 0;
-	blob->struct_offset = field->offset;
+	if (field->offset >= 0)
+	  blob->struct_offset = field->offset;
+	else
+	  blob->struct_offset = 0xFFFF; /* mark as unknown */
 
         g_ir_node_build_typelib ((GIrNode *)field->type, 
 				 module, modules, strings, types,

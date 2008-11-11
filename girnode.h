@@ -271,6 +271,9 @@ struct _GIrNodeBoxed
 
   gchar *gtype_name;
   gchar *gtype_init;
+
+  gint alignment;
+  gint size;
   
   GList *members;
 };
@@ -284,6 +287,9 @@ struct _GIrNodeStruct
 
   gchar *gtype_name;
   gchar *gtype_init;
+
+  gint alignment;
+  gint size;
   
   GList *members;
 };
@@ -299,6 +305,9 @@ struct _GIrNodeUnion
 
   gchar *gtype_name;
   gchar *gtype_init;
+
+  gint alignment;
+  gint size;
 
   gint discriminator_offset;
   GIrNodeType *discriminator_type;
@@ -347,6 +356,13 @@ gboolean g_ir_find_node (GIrModule  *module,
 			 const char *name,
 			 GIrNode   **node_out,
 			 GIrModule **module_out);
+
+/* In giroffsets.c */
+
+void g_ir_node_compute_offsets (GIrNode   *node,
+			        GIrModule *module,
+			        GList     *modules);
+
 
 G_END_DECLS
 

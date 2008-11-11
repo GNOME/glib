@@ -25,6 +25,7 @@ libgirepository_parser_la_SOURCES =		\
 	girmodule.h				\
 	girnode.c				\
 	girnode.h				\
+	giroffsets.c				\
 	girparser.c				\
 	girparser.h
 libgirepository_parser_la_CFLAGS = $(GIREPO_CFLAGS)
