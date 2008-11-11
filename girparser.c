@@ -869,7 +869,6 @@ start_field (GMarkupParseContext *context,
   const gchar *writable;
   const gchar *bits;
   const gchar *branch;
-  const gchar *offset;
   GIrNodeField *field;
 
   switch (ctx->state)
