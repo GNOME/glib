@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include "girepository.h"
+#include "girffi.h"
 #include "gtypelib.h"
 #include "config.h"
 
@@ -41,79 +42,10 @@ g_invoke_error_quark (void)
 static ffi_type *
 get_ffi_type (GITypeInfo *info)
 {
-  ffi_type *rettype;
-
   if (g_type_info_is_pointer (info))
-    rettype = &ffi_type_pointer;
+    return &ffi_type_pointer;
   else
-    switch (g_type_info_get_tag (info))
-      {
-      case GI_TYPE_TAG_VOID:
-	rettype = &ffi_type_void;
-	break;
-      case GI_TYPE_TAG_BOOLEAN:
-	rettype = &ffi_type_uint;
-	break;
-      case GI_TYPE_TAG_INT8:
-	rettype = &ffi_type_sint8;
-	break;
-      case GI_TYPE_TAG_UINT8:
-	rettype = &ffi_type_uint8;
-	break;
-      case GI_TYPE_TAG_INT16:
-	rettype = &ffi_type_sint16;
-	break;
-      case GI_TYPE_TAG_UINT16:
-	rettype = &ffi_type_uint16;
-	break;
-      case GI_TYPE_TAG_INT32:
-	rettype = &ffi_type_sint32;
-	break;
-      case GI_TYPE_TAG_UINT32:
-	rettype = &ffi_type_uint32;
-	break;
-      case GI_TYPE_TAG_INT64:
-	rettype = &ffi_type_sint64;
-	break;
-      case GI_TYPE_TAG_UINT64:
-	rettype = &ffi_type_uint64;
-	break;
-      case GI_TYPE_TAG_INT:
-	rettype = &ffi_type_sint;
-	break;
-      case GI_TYPE_TAG_UINT:
-	rettype = &ffi_type_uint;
-	break;
-      case GI_TYPE_TAG_SSIZE: /* FIXME */
-      case GI_TYPE_TAG_LONG:
-	rettype = &ffi_type_slong;
-	break;
-      case GI_TYPE_TAG_SIZE: /* FIXME */
-      case GI_TYPE_TAG_TIME_T: /* May not be portable */
-      case GI_TYPE_TAG_ULONG:
-	rettype = &ffi_type_ulong;
-	break;
-      case GI_TYPE_TAG_FLOAT:
-	rettype = &ffi_type_float;
-	break;
-      case GI_TYPE_TAG_DOUBLE:
-	rettype = &ffi_type_double;
-	break;
-      case GI_TYPE_TAG_UTF8:
-      case GI_TYPE_TAG_FILENAME:
-      case GI_TYPE_TAG_ARRAY:
-      case GI_TYPE_TAG_INTERFACE:
-      case GI_TYPE_TAG_GLIST:
-      case GI_TYPE_TAG_GSLIST:
-      case GI_TYPE_TAG_GHASH:
-      case GI_TYPE_TAG_ERROR:
-	rettype = &ffi_type_pointer;
-	break;
-      default:
-	g_assert_not_reached ();
-      }
-
-  return rettype;
+    return g_ir_ffi_get_ffi_type (g_type_info_get_tag (info));
 }
 
 /**
