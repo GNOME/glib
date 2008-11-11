@@ -892,7 +892,6 @@ start_field (GMarkupParseContext *context,
   writable = find_attribute ("writable", attribute_names, attribute_values);
   bits = find_attribute ("bits", attribute_names, attribute_values);
   branch = find_attribute ("branch", attribute_names, attribute_values);
-  offset = find_attribute ("offset", attribute_names, attribute_values);
   
   if (name == NULL)
     {
@@ -913,11 +912,6 @@ start_field (GMarkupParseContext *context,
     field->bits = atoi (bits);
   else
     field->bits = 0;
-  
-  if (offset)
-    field->offset = atoi (offset);
-  else
-    field->offset = 0;
   
   switch (ctx->current_node->type)
     {
