@@ -150,6 +150,14 @@ get_interface_size_alignment (GIrNodeField *field,
 	*alignment = struct_->alignment;
 	break;
       }
+    case G_IR_NODE_OBJECT:
+    case G_IR_NODE_INTERFACE:
+      {
+	GIrNodeInterface *interface = (GIrNodeInterface *)iface;
+	*size = interface->size;
+	*alignment = interface->alignment;
+	break;
+      }
     case G_IR_NODE_UNION:
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)iface;
@@ -424,6 +432,19 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	compute_struct_field_offsets (node, struct_->members,
 				      module, modules,
 				      &struct_->size, &struct_->alignment);
+	break;
+      }
+    case G_IR_NODE_OBJECT:
+    case G_IR_NODE_INTERFACE:
+      {
+	GIrNodeInterface *iface = (GIrNodeInterface *)node;
+
+	if (!check_needs_computation (node, module, iface->alignment))
+	  return;
+
+	compute_struct_field_offsets (node, iface->members,
+				      module, modules,
+				      &iface->size, &iface->alignment);
 	break;
       }
     case G_IR_NODE_UNION:

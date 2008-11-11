@@ -228,6 +228,9 @@ struct _GIrNodeInterface
   GList *interfaces;
   GList *prerequisites;
 
+  gint alignment;
+  gint size;
+  
   GList *members;
 };
 
