@@ -111,18 +111,21 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
 }
 
 static gboolean
-get_interface_size_alignment (GIrNodeType *type,
-			      GIrModule   *module,
-			      GList       *modules,
-			      gint        *size,
-			      gint        *alignment)
+get_interface_size_alignment (GIrNodeField *field,
+			      GIrNode      *parent_node,
+			      GIrModule    *module,
+			      GList        *modules,
+			      gint         *size,
+			      gint         *alignment)
 {
+  GIrNodeType *type = field->type;
   GIrNode *iface;
   GIrModule *iface_module;
 
   if (!g_ir_find_node (module, modules, type->interface, &iface, &iface_module))
     {
-      g_warning ("Type for type name '%s' not found", type->interface);
+      g_warning ("Can't resolve type '%s' for field %s.%s.%s",
+		 type->interface, module->name, parent_node->name, ((GIrNode *)field)->name);
       *size = -1;
       *alignment = -1;
       return FALSE;
@@ -168,7 +171,8 @@ get_interface_size_alignment (GIrNodeType *type,
       }
     default:
       {
-	g_warning ("Unexpected non-pointer field of type %s in structure",
+	g_warning ("Field %s.%s.%s has is not a pointer and is of type %s",
+		   module->name, parent_node->name, ((GIrNode *)field)->name,
 		   g_ir_node_type_to_string (iface->type));
 	*size = -1;
 	*alignment = -1;
@@ -181,6 +185,7 @@ get_interface_size_alignment (GIrNodeType *type,
 
 static gboolean
 get_field_size_alignment (GIrNodeField *field,
+			  GIrNode      *parent_node,
 			  GIrModule    *module,
 			  GList        *modules,
 			  gint         *size,
@@ -197,7 +202,7 @@ get_field_size_alignment (GIrNodeField *field,
     {
       if (type->tag == GI_TYPE_TAG_INTERFACE)
 	{
-	  return get_interface_size_alignment (type,
+	  return get_interface_size_alignment (field, parent_node,
 					       module, modules,
 					       size, alignment);
 	}
@@ -207,15 +212,16 @@ get_field_size_alignment (GIrNodeField *field,
 
 	  if (type_ffi == &ffi_type_void)
 	    {
-	      g_warning ("field '%s' has void type", ((GIrNode *)field)->name);
+	      g_warning ("Field %s.%s.%s has void type",
+			 module->name, parent_node->name, ((GIrNode *)field)->name);
 	      *size = -1;
 	      *alignment = -1;
 	      return FALSE;
 	    }
 	  else if (type_ffi == &ffi_type_pointer)
 	    {
-	      g_warning ("non-pointer field '%s' has unhandled type %s",
-			 ((GIrNode *)field)->name,
+	      g_warning ("Field %s.%s.%s has is not a pointer and is of type %s",
+			 module->name, parent_node->name, ((GIrNode *)field)->name,
 			 g_type_tag_to_string (type->tag));
 	      *size = -1;
 	      *alignment = -1;
@@ -234,7 +240,8 @@ get_field_size_alignment (GIrNodeField *field,
 #define ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
 
 static gboolean
-compute_struct_field_offsets (GList       *members,
+compute_struct_field_offsets (GIrNode     *node,
+			      GList       *members,
 			      GIrModule   *module,
 			      GList       *modules,
 			      gint        *size_out,
@@ -260,7 +267,7 @@ compute_struct_field_offsets (GList       *members,
 	      int member_size;
 	      int member_alignment;
 
-	      if (get_field_size_alignment (field,
+	      if (get_field_size_alignment (field, node,
 					    module, modules,
 					    &member_size, &member_alignment))
 		{
@@ -301,7 +308,8 @@ compute_struct_field_offsets (GList       *members,
 }
 
 static gboolean
-compute_union_field_offsets (GList       *members,
+compute_union_field_offsets (GIrNode     *node,
+			     GList       *members,
 			     GIrModule   *module,
 			     GList       *modules,
 			     gint        *size_out,
@@ -327,7 +335,7 @@ compute_union_field_offsets (GList       *members,
 	      int member_size;
 	      int member_alignment;
 
-	      if (get_field_size_alignment (field,
+	      if (get_field_size_alignment (field, node,
 					    module, modules,
 					    &member_size, &member_alignment))
 		{
@@ -401,7 +409,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	if (!check_needs_computation (node, module, boxed->alignment))
 	  return;
 
-	compute_struct_field_offsets (boxed->members,
+	compute_struct_field_offsets (node, boxed->members,
 				      module, modules,
 				      &boxed->size, &boxed->alignment);
 	break;
@@ -413,7 +421,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	if (!check_needs_computation (node, module, struct_->alignment))
 	  return;
 
-	compute_struct_field_offsets (struct_->members,
+	compute_struct_field_offsets (node, struct_->members,
 				      module, modules,
 				      &struct_->size, &struct_->alignment);
 	break;
@@ -425,7 +433,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	if (!check_needs_computation (node, module, union_->alignment))
 	  return;
 
-	compute_union_field_offsets (union_->members,
+	compute_union_field_offsets (node, union_->members,
 				     module, modules,
 				     &union_->size, &union_->alignment);
 	break;
