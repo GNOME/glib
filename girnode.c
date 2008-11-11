@@ -1070,6 +1070,92 @@ find_entry (GIrModule   *module,
   return idx;
 }
 
+static GIrNode *
+find_name_in_module (GIrModule   *module,
+		     const gchar *name)
+{
+  GList *l;
+
+  for (l = module->entries; l; l = l->next)
+    {
+      GIrNode *node = (GIrNode *)l->data;
+
+      if (strcmp (node->name, name) == 0)
+	return node;
+    }
+
+  return NULL;
+}
+
+gboolean
+g_ir_find_node (GIrModule  *module,
+		GList      *modules,
+		const char *name,
+		GIrNode   **node_out,
+		GIrModule **module_out)
+{
+  char **names = g_strsplit (name, ".", 0);
+  gint n_names = g_strv_length (names);
+  GIrNode *node = NULL;
+  GList *l;
+
+  if (n_names == 0)
+    {
+      g_warning ("Name can't be empty");
+      goto out;
+    }
+
+  if (n_names > 2)
+    {
+      g_warning ("Too many name parts in '%s'", name);
+      goto out;
+    }
+
+  if (n_names == 1)
+    {
+      *module_out = module;
+      node = find_name_in_module (module, names[0]);
+    }
+  else if (strcmp (names[0], module->name) == 0)
+    {
+      *module_out = module;
+      node = find_name_in_module (module, names[1]);
+    }
+  else
+    {
+      for (l = module->include_modules; l; l = l->next)
+	{
+	  GIrModule *m = l->data;
+
+	  if (strcmp (names[0], m->name) == 0)
+	    {
+	      *module_out = m;
+	      node = find_name_in_module (m, names[1]);
+	      goto out;
+	    }
+	}
+
+      for (l = modules; l; l = l->next)
+	{
+	  GIrModule *m = l->data;
+
+	  if (strcmp (names[0], m->name) == 0)
+	    {
+	      *module_out = m;
+	      node = find_name_in_module (m, names[1]);
+	      goto out;
+	    }
+	}
+    }
+
+ out:
+  g_strfreev (names);
+
+  *node_out = node;
+
+  return node != NULL;
+}
+
 static void
 serialize_type (GIrModule    *module, 
 		GList        *modules,

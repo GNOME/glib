@@ -72,6 +72,7 @@ struct _ParseContext
   const char * const*includes;
   
   GList *modules;
+  GList *include_modules;
   gboolean prefix_aliases;
   GList *dependencies;
   GHashTable *aliases;
@@ -85,6 +86,34 @@ struct _ParseContext
   GList *type_stack;
   GList *type_parameters;
   int type_depth;
+};
+
+static void start_element_handler (GMarkupParseContext *context,
+				   const gchar         *element_name,
+				   const gchar        **attribute_names,
+				   const gchar        **attribute_values,
+				   gpointer             user_data,
+				   GError             **error);
+static void end_element_handler   (GMarkupParseContext *context,
+				   const gchar         *element_name,
+				   gpointer             user_data,
+				   GError             **error);
+static void text_handler          (GMarkupParseContext *context,
+				   const gchar         *text,
+				   gsize                text_len,
+				   gpointer             user_data,
+				   GError             **error);
+static void cleanup               (GMarkupParseContext *context,
+				   GError              *error,
+				   gpointer             user_data);
+
+static GMarkupParser parser = 
+{
+  start_element_handler,
+  end_element_handler,
+  text_handler,
+  NULL,
+  cleanup
 };
 
 static gboolean
@@ -2116,7 +2145,31 @@ parse_include (GMarkupParseContext *context,
   gchar *buffer;
   gsize length;
   char *girpath;
-  
+  gboolean success = FALSE;
+  GList *l;
+
+  for (l = ctx->include_modules; l; l = l->next)
+    {
+      GIrModule *m = l->data;
+
+      if (strcmp (m->name, name) == 0)
+	{
+	  if (strcmp (m->version, version) == 0)
+	    {
+	      return TRUE;
+	    }
+	  else
+	    {
+	      g_set_error (error,
+			   G_MARKUP_ERROR,
+			   G_MARKUP_ERROR_INVALID_CONTENT,
+			   "Module '%s' imported with conflicting versions '%s' and '%s'",
+			   name, m->version, version);
+	      return FALSE;
+	    }
+	}
+    }
+
   girpath = locate_gir (name, version, ctx->includes);
 
   if (girpath == NULL)
@@ -2147,21 +2200,32 @@ parse_include (GMarkupParseContext *context,
   sub_ctx.type_depth = 0;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &sub_ctx, NULL);
-	  
+
   if (!g_markup_parse_context_parse (context, buffer, length, error))
-    {
-      g_free (buffer);
-      return FALSE;
-    }
-	  
+    goto out;
+
   if (!g_markup_parse_context_end_parse (context, error))
-    {
-      g_free (buffer);
-      return FALSE;
-    }
-	  
+    goto out;
+
   g_markup_parse_context_free (context);
-  return TRUE;
+
+  context = g_markup_parse_context_new (&parser, 0, &sub_ctx, NULL);
+  if (!g_markup_parse_context_parse (context, buffer, length, error))
+    goto out;
+
+  if (!g_markup_parse_context_end_parse (context, error))
+    goto out;
+
+  success = TRUE;
+
+ out:
+  ctx->include_modules = g_list_concat (ctx->include_modules,
+					sub_ctx.modules);
+
+  g_markup_parse_context_free (context);
+  g_free (buffer);
+
+  return success;
 }
   
 extern GLogLevelFlags logged_levels;
@@ -2358,6 +2422,7 @@ start_element_handler (GMarkupParseContext *context,
 	      ctx->current_module = g_ir_module_new (name, version, shared_library);
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 	      ctx->current_module->dependencies = ctx->dependencies;
+	      ctx->current_module->include_modules = g_list_copy (ctx->include_modules);
 
 	      state_switch (ctx, STATE_NAMESPACE);
 	      goto out;
@@ -2818,15 +2883,6 @@ cleanup (GMarkupParseContext *context,
   
   ctx->current_module = NULL;
 }
-
-static GMarkupParser parser = 
-{
-  start_element_handler,
-  end_element_handler,
-  text_handler,
-  NULL,
-  cleanup
-};
 
 static GList *
 post_filter_varargs_functions (GList *list)

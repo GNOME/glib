@@ -62,6 +62,10 @@ g_ir_module_free (GIrModule *module)
   g_list_free (module->entries);
   /* Don't free dependencies, we inherit that from the parser */
 
+  /* FIXME: we leak the included modules themelves; they may be shared
+   * between multiple modules, so we would need refcounting */
+  g_list_free (module->include_modules);
+
   g_free (module);
 }
 

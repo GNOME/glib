@@ -36,6 +36,7 @@ struct _GIrModule
   gchar *shared_library;
   GList *dependencies;
   GList *entries;
+  GList *include_modules;
 };
 
 GIrModule *g_ir_module_new            (const gchar *name,

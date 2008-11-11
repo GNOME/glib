@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+#include "girmodule.h"
+
 G_BEGIN_DECLS
 
 typedef struct _GIrNode GIrNode; 
@@ -339,6 +341,12 @@ guint32   write_string              (const gchar *str,
 
 const gchar * g_ir_node_param_direction_string (GIrNodeParam * node);
 const gchar * g_ir_node_type_to_string         (GIrNodeTypeId type);
+
+gboolean g_ir_find_node (GIrModule  *module,
+			 GList      *modules,
+			 const char *name,
+			 GIrNode   **node_out,
+			 GIrModule **module_out);
 
 G_END_DECLS
 
