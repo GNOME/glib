@@ -478,19 +478,39 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   gpointer orig;
   gpointer value;
   GSList *seen_values = NULL;
+  const char *lookup;
+  char *prefixed;
 
-  seen_values = g_slist_prepend (seen_values, (char*)type);
-  while (g_hash_table_lookup_extended (ctx->aliases, type, &orig, &value))
+  /* If we are in an included module, then we need to qualify the
+   * names of types before resolving them, since they will have
+   * been stored in the aliases qualified.
+   */
+  if (ctx->prefix_aliases && strchr (type, '.') == NULL)
     {
-      g_debug ("Resolved: %s => %s", type, (char*)value);
-      type = value;
-      if (g_slist_find_custom (seen_values, type,
+      prefixed = g_strdup_printf ("%s.%s", ctx->namespace, type);
+      lookup = prefixed;
+    }
+  else
+    lookup = type;
+
+  seen_values = g_slist_prepend (seen_values, (char*)lookup);
+  while (g_hash_table_lookup_extended (ctx->aliases, lookup, &orig, &value))
+    {
+      g_debug ("Resolved: %s => %s\n", lookup, (char*)value);
+      lookup = value;
+      if (g_slist_find_custom (seen_values, lookup,
 			       (GCompareFunc)strcmp) != NULL)
 	break;
-      seen_values = g_slist_prepend (seen_values, (gchar*)type);
+      seen_values = g_slist_prepend (seen_values, (gchar*)lookup);
     }
   g_slist_free (seen_values);
-  return type;
+
+  if (lookup == prefixed)
+    lookup = type;
+  
+  g_free (prefixed);
+  
+  return lookup;
 }
 
 static GIrNodeType *
