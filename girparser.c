@@ -198,14 +198,6 @@ locate_gir (const char *name, const char *version, const char * const* extra_pat
       
   girname = g_strdup_printf ("%s-%s.gir", name, version);
   
-  for (dir = datadirs; *dir; dir++) 
-    {
-      path = g_build_filename (*dir, "gir", girname, NULL);
-      if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
-	return path;
-      g_free (path);
-      path = NULL;
-    }
   if (extra_paths != NULL)
     {
       for (dir = extra_paths; *dir; dir++) 
@@ -216,6 +208,14 @@ locate_gir (const char *name, const char *version, const char * const* extra_pat
 	  g_free (path);
 	  path = NULL;
 	}
+    }
+  for (dir = datadirs; *dir; dir++) 
+    {
+      path = g_build_filename (*dir, "gir", girname, NULL);
+      if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+	return path;
+      g_free (path);
+      path = NULL;
     }
   g_free (girname);
   return path;
