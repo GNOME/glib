@@ -354,8 +354,6 @@ write_field_info (const gchar *namespace,
   if (size)
     xml_printf (file, " bits=\"%d\"", size);
 
-  xml_printf (file, " offset=\"%d\"", offset);
-
   type = g_field_info_get_type (info);
 
   if (branch)
