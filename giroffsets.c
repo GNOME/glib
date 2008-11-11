@@ -176,7 +176,7 @@ get_interface_size_alignment (GIrNodeType *type,
       }
     }
 
-  return *alignment != -1;
+  return *alignment > 0;
 }
 
 static gboolean
@@ -245,6 +245,8 @@ compute_struct_field_offsets (GList       *members,
   GList *l;
   gboolean have_error = FALSE;
 
+  *alignment_out = -2; /* mark to detect recursion */
+
   for (l = members; l; l = l->next)
     {
       GIrNode *member = (GIrNode *)l->data;
@@ -310,6 +312,8 @@ compute_union_field_offsets (GList       *members,
   GList *l;
   gboolean have_error = FALSE;
 
+  *alignment_out = -2; /* mark to detect recursion */
+
   for (l = members; l; l = l->next)
     {
       GIrNode *member = (GIrNode *)l->data;
@@ -353,6 +357,26 @@ compute_union_field_offsets (GList       *members,
   return !have_error;
 }
 
+static gboolean
+check_needs_computation (GIrNode   *node,
+			 GIrModule *module,
+			 gint       alignment)
+{
+  /*
+   *  0: Not yet computed
+   * >0: Previously succeeded
+   * -1: Previously failed
+   * -2: In progress
+   */
+  if (alignment == -2)
+    {
+      g_warning ("Recursion encountered when computing the size of %s.%s",
+		 module->name, node->name);
+    }
+
+  return alignment == 0;
+}
+
 /**
  * g_ir_node_compute_offsets:
  * @node: a #GIrNode
@@ -366,7 +390,7 @@ compute_union_field_offsets (GList       *members,
 void
 g_ir_node_compute_offsets (GIrNode   *node,
 			   GIrModule *module,
-		   GList     *modules)
+			   GList     *modules)
 {
   switch (node->type)
     {
@@ -374,7 +398,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	if (boxed->alignment != 0) /* Already done */
+	if (!check_needs_computation (node, module, boxed->alignment))
 	  return;
 
 	compute_struct_field_offsets (boxed->members,
@@ -386,7 +410,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	if (struct_->alignment != 0)
+	if (!check_needs_computation (node, module, struct_->alignment))
 	  return;
 
 	compute_struct_field_offsets (struct_->members,
@@ -398,7 +422,7 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	if (union_->alignment != 0)
+	if (!check_needs_computation (node, module, union_->alignment))
 	  return;
 
 	compute_union_field_offsets (union_->members,
