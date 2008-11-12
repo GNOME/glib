@@ -2457,7 +2457,16 @@ start_element_handler (GMarkupParseContext *context,
       if (strcmp (element_name, "namespace") == 0 && ctx->state == STATE_REPOSITORY)
 	{
 	  const gchar *name, *version, *shared_library;
-	  
+
+	  if (ctx->current_module != NULL)
+	    {
+	      g_set_error (error,
+			   G_MARKUP_ERROR,
+			   G_MARKUP_ERROR_INVALID_CONTENT,
+			   "Only one <namespace/> element is currently allowed per <repository/>");
+	      goto out;
+	    }
+
 	  name = find_attribute ("name", attribute_names, attribute_values);
 	  version = find_attribute ("version", attribute_names, attribute_values);
 	  shared_library = find_attribute ("shared-library", attribute_names, attribute_values);
@@ -2468,6 +2477,13 @@ start_element_handler (GMarkupParseContext *context,
 	    MISSING_ATTRIBUTE (context, error, element_name, "version");
 	  else
 	    {
+	      if (strcmp (name, ctx->namespace) != 0)
+		g_set_error (error,
+			     G_MARKUP_ERROR,
+			     G_MARKUP_ERROR_INVALID_CONTENT,
+			     "<namespace/> name element '%s' doesn't match file name '%s'",
+			     name, ctx->namespace);
+
 	      ctx->current_module = g_ir_module_new (name, version, shared_library);
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 	      ctx->current_module->dependencies = ctx->dependencies;
@@ -3073,6 +3089,7 @@ g_ir_parser_parse_file (GIrParser   *parser,
   GList *modules;
   GList *iter;
   const char *slash;
+  char *dash;
   char *namespace;
 
   if (!g_str_has_suffix (filename, ".gir"))
@@ -3092,6 +3109,11 @@ g_ir_parser_parse_file (GIrParser   *parser,
   else
     namespace = g_strdup (slash+1);
   namespace[strlen(namespace)-4] = '\0';
+
+  /* Remove version */
+  dash = strstr (namespace, "-");
+  if (dash != NULL)
+    *dash = '\0';
 
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return NULL;
