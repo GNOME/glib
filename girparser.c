@@ -479,7 +479,7 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   gpointer value;
   GSList *seen_values = NULL;
   const char *lookup;
-  char *prefixed;
+  char *prefixed = NULL;
 
   /* If we are in an included module, then we need to qualify the
    * names of types before resolving them, since they will have
