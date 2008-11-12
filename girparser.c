@@ -31,7 +31,7 @@
 struct _GIrParser
 {
   gchar **includes;
-  GList *include_modules; /* All previously parsed include modules */
+  GList *parsed_modules; /* All previously parsed modules */
 };
 
 typedef enum
@@ -145,8 +145,13 @@ g_ir_parser_new (void)
 void
 g_ir_parser_free (GIrParser *parser)
 {
+  GList *l;
+
   if (parser->includes)
     g_strfreev (parser->includes);
+
+  for (l = parser->parsed_modules; l; l = l->next)
+    g_ir_module_free (l->data);
 
   g_slice_free (GIrParser, parser);
 }
@@ -2206,7 +2211,7 @@ parse_include (GMarkupParseContext *context,
   GList *modules;
   GList *l;
 
-  for (l = ctx->include_modules; l; l = l->next)
+  for (l = ctx->parser->parsed_modules; l; l = l->next)
     {
       GIrModule *m = l->data;
 
@@ -2214,6 +2219,8 @@ parse_include (GMarkupParseContext *context,
 	{
 	  if (strcmp (m->version, version) == 0)
 	    {
+	      ctx->include_modules = g_list_prepend (ctx->include_modules, m);
+
 	      return TRUE;
 	    }
 	  else
@@ -3053,6 +3060,9 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   if (!g_markup_parse_context_end_parse (context, error))
     goto out;
+
+  parser->parsed_modules = g_list_concat (g_list_copy (ctx.modules),
+					  parser->parsed_modules);
 
  out:
 
