@@ -169,6 +169,7 @@ main (int argc, char ** argv)
 {
   GOptionContext *context;
   GError *error = NULL;
+  GIrParser *parser;
   GList *m, *modules;
   gint i;
   g_typelib_check_sanity ();
@@ -203,11 +204,15 @@ main (int argc, char ** argv)
     for (i = 0; includedirs[i]; i++)
       g_irepository_prepend_search_path (includedirs[i]);
 
+  parser = g_ir_parser_new ();
+
+  g_ir_parser_set_includes (parser, (const char*const*) includedirs);
+
   modules = NULL;
   for (i = 0; input[i]; i++)
     {
       GList *mods;
-      mods = g_ir_parse_file (input[i], (const char*const*) includedirs, &error);
+      mods = g_ir_parser_parse_file (parser, input[i], &error);
       
       if (mods == NULL) 
 	{
@@ -271,6 +276,11 @@ main (int argc, char ** argv)
     }
 
   g_debug ("[building] done");
+
+#if 0
+  /* No point */
+  g_ir_parser_free (parser);
+#endif  
 
   return 0; 
 }
