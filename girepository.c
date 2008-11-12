@@ -137,6 +137,21 @@ g_irepository_prepend_search_path (const char *directory)
   search_path = g_slist_prepend (search_path, g_strdup (directory));
 }
 
+/**
+ * g_irepository_get_search_path:
+ *
+ * Returns the search path the GIRepository will use when looking for typelibs.
+ * The string is internal to GIRespository and should not be freed, nor should
+ * the elements.
+ *
+ * Return value: (element-type utf8) (transfer none): list of strings
+ */
+GSList *
+g_irepository_get_search_path (void)
+{
+  return search_path;
+}
+
 static char *
 build_typelib_key (const char *name, const char *source)
 {
