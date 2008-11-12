@@ -35,12 +35,61 @@
 
 #include "gioalias.h"
 
+static gboolean lookup_done = FALSE;
+static gboolean funcs_found = FALSE;
+static GWinHttpDllFuncs funcs;
+
+static void
+lookup_funcs (void)
+{
+  HMODULE winhttp;
+
+  if (lookup_done)
+    return;
+
+  winhttp = LoadLibrary ("winhttp.dll");
+  if (winhttp != NULL)
+    {
+      funcs.pWinHttpCloseHandle = (BOOL (WINAPI *) (HINTERNET)) GetProcAddress (winhttp, "WinHttpCloseHandle");
+      funcs.pWinHttpCrackUrl = (BOOL (WINAPI *) (LPCWSTR,DWORD,DWORD,LPURL_COMPONENTS)) GetProcAddress (winhttp, "WinHttpCrackUrl");
+      funcs.pWinHttpConnect = (HINTERNET (WINAPI *) (HINTERNET,LPCWSTR,INTERNET_PORT,DWORD)) GetProcAddress (winhttp, "WinHttpConnect");
+      funcs.pWinHttpCreateUrl = (BOOL (WINAPI *) (LPURL_COMPONENTS,DWORD,LPWSTR,LPDWORD)) GetProcAddress (winhttp, "WinHttpCreateUrl");
+      funcs.pWinHttpOpen = (HINTERNET (WINAPI *) (LPCWSTR,DWORD,LPCWSTR,LPCWSTR,DWORD)) GetProcAddress (winhttp, "WinHttpOpen");
+      funcs.pWinHttpOpenRequest = (HINTERNET (WINAPI *) (HINTERNET,LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR*,DWORD)) GetProcAddress (winhttp, "WinHttpOpenRequest");
+      funcs.pWinHttpQueryDataAvailable = (BOOL (WINAPI *) (HINTERNET,LPDWORD)) GetProcAddress (winhttp, "WinHttpQueryDataAvailable");
+      funcs.pWinHttpQueryHeaders = (BOOL (WINAPI *) (HINTERNET,DWORD,LPCWSTR,LPVOID,LPDWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpQueryHeaders");
+      funcs.pWinHttpReadData = (BOOL (WINAPI *) (HINTERNET,LPVOID,DWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpReadData");
+      funcs.pWinHttpReceiveResponse = (BOOL (WINAPI *) (HINTERNET,LPVOID)) GetProcAddress (winhttp, "WinHttpReceiveResponse");
+      funcs.pWinHttpSendRequest = (BOOL (WINAPI *) (HINTERNET,LPCWSTR,DWORD,LPVOID,DWORD,DWORD,DWORD_PTR)) GetProcAddress (winhttp, "WinHttpSendRequest");
+      funcs.pWinHttpWriteData = (BOOL (WINAPI *) (HINTERNET,LPCVOID,DWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpWriteData");
+
+      if (funcs.pWinHttpCloseHandle &&
+	  funcs.pWinHttpCrackUrl &&
+	  funcs.pWinHttpConnect &&
+	  funcs.pWinHttpCreateUrl &&
+	  funcs.pWinHttpOpen &&
+	  funcs.pWinHttpOpenRequest &&
+	  funcs.pWinHttpQueryDataAvailable &&
+	  funcs.pWinHttpQueryHeaders &&
+	  funcs.pWinHttpReadData &&
+	  funcs.pWinHttpReceiveResponse &&
+	  funcs.pWinHttpSendRequest &&
+	  funcs.pWinHttpWriteData)
+	funcs_found = TRUE;
+    }
+  lookup_done = TRUE;
+}
+
 #define g_winhttp_vfs_get_type _g_winhttp_vfs_get_type
 G_DEFINE_TYPE_WITH_CODE (GWinHttpVfs, g_winhttp_vfs, G_TYPE_VFS,
-                         g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
-                                                         g_define_type_id,
-                                                         "winhttp",
-                                                         10))
+			 {
+			   lookup_funcs ();
+			   if (funcs_found)
+			     g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
+							     g_define_type_id,
+							     "winhttp",
+							     10);
+			 })
 
 static const gchar *winhttp_uri_schemes[] = { "http", "https" };
 
@@ -51,7 +100,7 @@ g_winhttp_vfs_finalize (GObject *object)
 
   vfs = G_WINHTTP_VFS (object);
 
-  (G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpCloseHandle) (vfs->session);
+  (G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpCloseHandle) (vfs->session);
   vfs->session = NULL;
 
   if (vfs->wrapped_vfs)
@@ -73,7 +122,7 @@ g_winhttp_vfs_init (GWinHttpVfs *vfs)
   if (!wagent)
     wagent = g_utf8_to_utf16 ("GWinHttpVfs", -1, NULL, NULL, NULL);
 
-  vfs->session = (G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpOpen)
+  vfs->session = (G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpOpen)
     (wagent,
      WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
      WINHTTP_NO_PROXY_NAME,
@@ -179,7 +228,6 @@ g_winhttp_vfs_class_init (GWinHttpVfsClass *class)
 {
   GObjectClass *object_class;
   GVfsClass *vfs_class;
-  HMODULE winhttp;
 
   object_class = (GObjectClass *) class;
 
@@ -193,22 +241,11 @@ g_winhttp_vfs_class_init (GWinHttpVfsClass *class)
   vfs_class->get_supported_uri_schemes = g_winhttp_vfs_get_supported_uri_schemes;
   vfs_class->parse_name = g_winhttp_vfs_parse_name;
 
-  winhttp = LoadLibrary ("winhttp.dll");
-  if (winhttp != NULL)
-    {
-      class->pWinHttpCloseHandle = (BOOL (WINAPI *) (HINTERNET)) GetProcAddress (winhttp, "WinHttpCloseHandle");
-      class->pWinHttpCrackUrl = (BOOL (WINAPI *) (LPCWSTR,DWORD,DWORD,LPURL_COMPONENTS)) GetProcAddress (winhttp, "WinHttpCrackUrl");
-      class->pWinHttpConnect = (HINTERNET (WINAPI *) (HINTERNET,LPCWSTR,INTERNET_PORT,DWORD)) GetProcAddress (winhttp, "WinHttpConnect");
-      class->pWinHttpCreateUrl = (BOOL (WINAPI *) (LPURL_COMPONENTS,DWORD,LPWSTR,LPDWORD)) GetProcAddress (winhttp, "WinHttpCreateUrl");
-      class->pWinHttpOpen = (HINTERNET (WINAPI *) (LPCWSTR,DWORD,LPCWSTR,LPCWSTR,DWORD)) GetProcAddress (winhttp, "WinHttpOpen");
-      class->pWinHttpOpenRequest = (HINTERNET (WINAPI *) (HINTERNET,LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR*,DWORD)) GetProcAddress (winhttp, "WinHttpOpenRequest");
-      class->pWinHttpQueryDataAvailable = (BOOL (WINAPI *) (HINTERNET,LPDWORD)) GetProcAddress (winhttp, "WinHttpQueryDataAvailable");
-      class->pWinHttpQueryHeaders = (BOOL (WINAPI *) (HINTERNET,DWORD,LPCWSTR,LPVOID,LPDWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpQueryHeaders");
-      class->pWinHttpReadData = (BOOL (WINAPI *) (HINTERNET,LPVOID,DWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpReadData");
-      class->pWinHttpReceiveResponse = (BOOL (WINAPI *) (HINTERNET,LPVOID)) GetProcAddress (winhttp, "WinHttpReceiveResponse");
-      class->pWinHttpSendRequest = (BOOL (WINAPI *) (HINTERNET,LPCWSTR,DWORD,LPVOID,DWORD,DWORD,DWORD_PTR)) GetProcAddress (winhttp, "WinHttpSendRequest");
-      class->pWinHttpWriteData = (BOOL (WINAPI *) (HINTERNET,LPCVOID,DWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpWriteData");
-    }
+  lookup_funcs ();
+  if (funcs_found)
+    class->funcs = &funcs;
+  else
+    class->funcs = NULL;
 }
 
 char *
@@ -297,7 +334,7 @@ _g_winhttp_response (GWinHttpVfs *vfs,
   wchar_t *status_code;
   DWORD status_code_len;
 
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpReceiveResponse (request, NULL))
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpReceiveResponse (request, NULL))
     {
       _g_winhttp_set_error (error, GetLastError (), what);
 
@@ -305,7 +342,7 @@ _g_winhttp_response (GWinHttpVfs *vfs,
     }
 
   status_code_len = 0;
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
       (request,
        WINHTTP_QUERY_STATUS_CODE,
        NULL,
@@ -321,7 +358,7 @@ _g_winhttp_response (GWinHttpVfs *vfs,
 
   status_code = g_malloc (status_code_len);
 
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
       (request,
        WINHTTP_QUERY_STATUS_CODE,
        NULL,
@@ -340,7 +377,7 @@ _g_winhttp_response (GWinHttpVfs *vfs,
       wchar_t *status_text = NULL;
       DWORD status_text_len;
 
-      if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+      if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
           (request,
            WINHTTP_QUERY_STATUS_TEXT,
            NULL,
@@ -351,7 +388,7 @@ _g_winhttp_response (GWinHttpVfs *vfs,
         {
           status_text = g_malloc (status_text_len);
 
-          if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+          if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
               (request,
                WINHTTP_QUERY_STATUS_TEXT,
                NULL,
@@ -388,7 +425,7 @@ _g_winhttp_query_header (GWinHttpVfs *vfs,
 {
   DWORD header_len = 0;
 
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
       (request,
        which_header,
        NULL,
@@ -403,7 +440,7 @@ _g_winhttp_query_header (GWinHttpVfs *vfs,
     }
 
   *header = g_malloc (header_len);
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->pWinHttpQueryHeaders
+  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpQueryHeaders
       (request,
        which_header,
        NULL,
