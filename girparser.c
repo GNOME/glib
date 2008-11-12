@@ -2479,9 +2479,11 @@ start_element_handler (GMarkupParseContext *context,
 	      for (l = ctx->include_modules; l; l = l->next)
 		g_ir_module_add_include_module (ctx->current_module, l->data);
 
+	      g_list_free (ctx->include_modules);
+	      ctx->include_modules = NULL;
+
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 	      ctx->current_module->dependencies = ctx->dependencies;
-	      ctx->current_module->include_modules = g_list_copy (ctx->include_modules);
 
 	      state_switch (ctx, STATE_NAMESPACE);
 	      goto out;
@@ -3028,6 +3030,7 @@ g_ir_parser_parse_string (GIrParser           *parser,
   ctx.parser = parser;
   ctx.state = STATE_START;
   ctx.namespace = namespace;
+  ctx.include_modules = NULL;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.disguised_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   ctx.type_depth = 0;
@@ -3055,12 +3058,14 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   if (ctx.modules == NULL)
     {
-      /* If we have a module, then ownership is transferred to the module */
-
+      /* An error occurred before we created a module, so we haven't
+       * transferred ownership of these hash tables to the module.
+       */
       if (ctx.aliases != NULL)
 	g_hash_table_destroy (ctx.aliases);
       if (ctx.disguised_structures != NULL)
 	g_hash_table_destroy (ctx.disguised_structures);
+      g_list_free (ctx.include_modules);
     }
   
   g_markup_parse_context_free (context);
