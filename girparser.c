@@ -28,6 +28,12 @@
 #include "girnode.h"
 #include "gtypelib.h"
 
+struct _GIrParser
+{
+  gchar **includes;
+  GList *include_modules; /* All previously parsed include modules */
+};
+
 typedef enum
 {
   STATE_START,    
@@ -66,11 +72,11 @@ typedef enum
 typedef struct _ParseContext ParseContext;
 struct _ParseContext
 {
+  GIrParser *parser;
+
   ParseState state;
   ParseState prev_state;
 
-  const char * const*includes;
-  
   GList *modules;
   GList *include_modules;
   gboolean prefix_aliases;
@@ -107,7 +113,7 @@ static void cleanup               (GMarkupParseContext *context,
 				   GError              *error,
 				   gpointer             user_data);
 
-static GMarkupParser parser = 
+static GMarkupParser markup_parser = 
 {
   start_element_handler,
   end_element_handler,
@@ -127,6 +133,34 @@ start_alias (GMarkupParseContext *context,
 static const gchar *find_attribute (const gchar  *name, 
 				    const gchar **attribute_names,
 				    const gchar **attribute_values);
+
+
+GIrParser *
+g_ir_parser_new (void)
+{
+  GIrParser *parser = g_slice_new0 (GIrParser);
+
+  return parser;
+}
+
+void
+g_ir_parser_free (GIrParser *parser)
+{
+  if (parser->includes)
+    g_strfreev (parser->includes);
+
+  g_slice_free (GIrParser, parser);
+}
+
+void
+g_ir_parser_set_includes (GIrParser          *parser,
+			  const gchar *const *includes)
+{
+  if (parser->includes)
+    g_strfreev (parser->includes);
+
+  parser->includes = g_strdupv ((char **)includes);
+}
 
 static void
 firstpass_start_element_handler (GMarkupParseContext *context,
@@ -187,7 +221,9 @@ static GMarkupParser firstpass_parser =
 };
 
 static char *
-locate_gir (const char *name, const char *version, const char * const* extra_paths)
+locate_gir (GIrParser  *parser,
+	    const char *name,
+	    const char *version)
 {
   const gchar *const *datadirs;
   const gchar *const *dir;
@@ -198,9 +234,9 @@ locate_gir (const char *name, const char *version, const char * const* extra_pat
       
   girname = g_strdup_printf ("%s-%s.gir", name, version);
   
-  if (extra_paths != NULL)
+  if (parser->includes != NULL)
     {
-      for (dir = extra_paths; *dir; dir++) 
+      for (dir = (const gchar *const *)parser->includes; *dir; dir++) 
 	{
 	  path = g_build_filename (*dir, girname, NULL);
 	  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
@@ -2183,7 +2219,7 @@ parse_include (GMarkupParseContext *context,
 	}
     }
 
-  girpath = locate_gir (name, version, ctx->includes);
+  girpath = locate_gir (ctx->parser, name, version);
 
   if (girpath == NULL)
     {
@@ -2204,8 +2240,8 @@ parse_include (GMarkupParseContext *context,
     }
   g_free (girpath);
 
+  sub_ctx.parser = ctx->parser;
   sub_ctx.state = STATE_START;
-  sub_ctx.includes = ctx->includes;
   sub_ctx.prefix_aliases = TRUE;
   sub_ctx.namespace = name;
   sub_ctx.aliases = ctx->aliases;
@@ -2222,7 +2258,7 @@ parse_include (GMarkupParseContext *context,
 
   g_markup_parse_context_free (context);
 
-  context = g_markup_parse_context_new (&parser, 0, &sub_ctx, NULL);
+  context = g_markup_parse_context_new (&markup_parser, 0, &sub_ctx, NULL);
   if (!g_markup_parse_context_parse (context, buffer, length, error))
     goto out;
 
@@ -2958,18 +2994,29 @@ post_filter (GIrModule *module)
     }
 }
 
-GList * 
-g_ir_parse_string (const gchar  *namespace,
-		   const gchar *const *includes,
-		   const gchar  *buffer, 
-		   gssize        length,
-		   GError      **error)
+/**
+ * g_ir_parser_parse_string:
+ * @parser: a #GIrParser
+ * @error: return location for a #GError, or %NULL
+ *
+ * Parse a string that holds a complete GIR XML file, and return a list of a
+ * a #GirModule for each &lt;namespace/&gt; element within the file.
+ *
+ * @returns: a newly allocated list of #GIrModule. The modules themselves
+ *  are owned by the #GIrParser and will be freed along with the parser.
+ */
+GList *
+g_ir_parser_parse_string (GIrParser           *parser,
+			  const gchar         *namespace,
+			  const gchar         *buffer,
+			  gssize               length,
+			  GError             **error)
 {
   ParseContext ctx = { 0 };
   GMarkupParseContext *context;
 
+  ctx.parser = parser;
   ctx.state = STATE_START;
-  ctx.includes = includes;
   ctx.prefix_aliases = FALSE;
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
@@ -2988,7 +3035,7 @@ g_ir_parse_string (const gchar  *namespace,
 
   g_markup_parse_context_free (context);
   
-  context = g_markup_parse_context_new (&parser, 0, &ctx, NULL);
+  context = g_markup_parse_context_new (&markup_parser, 0, &ctx, NULL);
   if (!g_markup_parse_context_parse (context, buffer, length, error))
     goto out;
 
@@ -3005,10 +3052,21 @@ g_ir_parse_string (const gchar  *namespace,
   return ctx.modules;
 }
 
+/**
+ * g_ir_parser_parse_file:
+ * @parser: a #GIrParser
+ * @error: return location for a #GError, or %NULL
+ *
+ * Parse GIR XML file, and return a list of a a #GirModule for each
+ * &lt;namespace/&gt; element within the file.
+ *
+ * @returns: a newly allocated list of #GIrModule. The modules themselves
+ *  are owned by the #GIrParser and will be freed along with the parser.
+ */
 GList *
-g_ir_parse_file (const gchar  *filename,
-		 const gchar *const *includes,
-		 GError      **error)
+g_ir_parser_parse_file (GIrParser   *parser,
+			const gchar *filename,
+			GError     **error)
 {
   gchar *buffer;
   gsize length;
@@ -3038,7 +3096,7 @@ g_ir_parse_file (const gchar  *filename,
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return NULL;
   
-  modules = g_ir_parse_string (namespace, includes, buffer, length, error);
+  modules = g_ir_parser_parse_string (parser, namespace, buffer, length, error);
 
   for (iter = modules; iter; iter = iter->next) 
     {

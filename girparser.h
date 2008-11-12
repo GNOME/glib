@@ -25,16 +25,21 @@
 
 G_BEGIN_DECLS
 
+typedef struct _GIrParser GIrParser;
 
-GList *g_ir_parse_string (const gchar *namespace,
-			  const gchar *const *includes,
-                          const gchar *buffer,
-			  gssize        length,
-			  GError      **error);
-GList *g_ir_parse_file   (const gchar  *filename,
-			  const gchar *const *includes,
-			  GError      **error);
+GIrParser *g_ir_parser_new          (void);
+void       g_ir_parser_free         (GIrParser          *parser);
+void       g_ir_parser_set_includes (GIrParser          *parser,
+				     const gchar *const *includes);
 
+GList *g_ir_parser_parse_string (GIrParser    *parser,
+				 const gchar  *namespace,
+				 const gchar  *buffer,
+				 gssize        length,
+				 GError      **error);
+GList *g_ir_parser_parse_file   (GIrParser    *parser,
+				 const gchar  *filename,
+				 GError      **error);
 
 G_END_DECLS
 
