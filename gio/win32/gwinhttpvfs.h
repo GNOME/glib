@@ -44,6 +44,7 @@ G_BEGIN_DECLS
 #define G_WINHTTP_VFS_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_WINHTTP_VFS, GWinHttpVfsClass))
 
 typedef struct _GWinHttpVfs       GWinHttpVfs;
+typedef struct _GWinHttpDllFuncs  GWinHttpDllFuncs;
 typedef struct _GWinHttpVfsClass  GWinHttpVfsClass;
 
 struct _GWinHttpVfs
@@ -54,14 +55,8 @@ struct _GWinHttpVfs
   HINTERNET session;
 };
 
-struct _GWinHttpVfsClass
+struct _GWinHttpDllFuncs
 {
-  GVfsClass parent_class;
-
-  /* As there is no import library for winhttp.dll in mingw, we must
-   * look up the functions we need dynamically. Store the pointers
-   * here.
-   */
   BOOL (WINAPI *pWinHttpCloseHandle) (HINTERNET);
   BOOL (WINAPI *pWinHttpCrackUrl) (LPCWSTR,DWORD,DWORD,LPURL_COMPONENTS);
   HINTERNET (WINAPI *pWinHttpConnect) (HINTERNET,LPCWSTR,INTERNET_PORT,DWORD);
@@ -74,6 +69,17 @@ struct _GWinHttpVfsClass
   BOOL (WINAPI *pWinHttpReceiveResponse) (HINTERNET,LPVOID);
   BOOL (WINAPI *pWinHttpSendRequest) (HINTERNET,LPCWSTR,DWORD,LPVOID,DWORD,DWORD,DWORD_PTR);
   BOOL (WINAPI *pWinHttpWriteData) (HINTERNET,LPCVOID,DWORD,LPDWORD);
+};
+
+struct _GWinHttpVfsClass
+{
+  GVfsClass parent_class;
+
+  /* As there is no import library for winhttp.dll in mingw, and
+   * winhttp.dll isn't present on Windows 2000 anyway, we must look up
+   * the functions we need dynamically. Store the pointers here.
+   */
+  GWinHttpDllFuncs *funcs;
 };
 
 

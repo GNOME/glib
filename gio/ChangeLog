@@ -1,3 +1,23 @@
+2008-11-12  Tor Lillqvist  <tml@novell.com>
+
+	Bug 556415 - Crash on Windows 2000 in g_winhttp_vfs_init()
+
+	* win32/gwinhttpvfs.h: Move the set of function pointers to
+	winhttp.dll into a separate struct GWinHttpDllFuncs. Just have a
+	pointer to that in the GWinHttpVfsClass.
+	
+	* win32/gwinhttpvfs.c: Move the lookup of functions from
+	winhttp.dll into a function of its own, that stores the pointers
+	in a separate GWinHttpDllFuncs variable. Add two bookeeping
+	booleans lookup_done and funcs_found.
+
+	Don't call g_io_extension_point_implement() to register the
+	winhttp extension unless winhttp.dll has been successfully loaded
+	and the required functions found in it.
+
+	* win32/gwinhttp*.c: Adjust calls of the functions looked up from
+	winhttp.dll correspondingly.
+
 2008-10-28  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	reviewed by: Alexander Larsson <alexl@redhat.com>
