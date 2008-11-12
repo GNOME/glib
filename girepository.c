@@ -1015,12 +1015,13 @@ find_namespace_latest (const gchar  *namespace,
       candidates = g_slist_sort (candidates, (GCompareFunc) compare_candidate_reverse);
       
       elected = (struct NamespaceVersionCandidadate *) candidates->data;
-      /* Remove the elected one so we don't try to free it */
+      /* Remove the elected one so we don't try to free its contents */
       candidates = g_slist_delete_link (candidates, candidates);
       
       result = elected->mfile;
       *path_ret = elected->path;
       *version_ret = elected->version;
+      g_free (elected); /* just free the container */
       g_slist_foreach (candidates, (GFunc) free_candidate, NULL);
       g_slist_free (candidates);
     }  
