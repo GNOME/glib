@@ -79,7 +79,6 @@ struct _ParseContext
 
   GList *modules;
   GList *include_modules;
-  gboolean prefix_aliases;
   GList *dependencies;
   GHashTable *aliases;
   GHashTable *disguised_structures;
@@ -189,15 +188,7 @@ firstpass_start_element_handler (GMarkupParseContext *context,
 	{
 	  char *key;
 
-	  if (ctx->prefix_aliases)
-	    {
-	      key = g_strdup_printf ("%s.%s", ctx->namespace, name);
-	    }
-	  else
-	    {
-	      key = g_strdup (name);
-	    }
-
+	  key = g_strdup_printf ("%s.%s", ctx->namespace, name);
 	  g_hash_table_replace (ctx->disguised_structures, key, GINT_TO_POINTER (1));
 	}
     }
@@ -514,23 +505,22 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
   gpointer orig;
   gpointer value;
   GSList *seen_values = NULL;
-  const char *lookup;
-  char *prefixed = NULL;
+  const gchar *lookup;
+  gchar *prefixed;
 
-  /* If we are in an included module, then we need to qualify the
-   * names of types before resolving them, since they will have
-   * been stored in the aliases qualified.
-   */
-  if (ctx->prefix_aliases && strchr (type, '.') == NULL)
+  if (strchr (type, '.') == NULL)
     {
       prefixed = g_strdup_printf ("%s.%s", ctx->namespace, type);
       lookup = prefixed;
     }
   else
-    lookup = type;
+    {
+      lookup = type;
+      prefixed = NULL;
+    }
 
   seen_values = g_slist_prepend (seen_values, (char*)lookup);
-  while (g_hash_table_lookup_extended (ctx->aliases, lookup, &orig, &value))
+  while (g_hash_table_lookup_extended (ctx->current_module->aliases, lookup, &orig, &value))
     {
       g_debug ("Resolved: %s => %s\n", lookup, (char*)value);
       lookup = value;
@@ -543,10 +533,36 @@ resolve_aliases (ParseContext *ctx, const gchar *type)
 
   if (lookup == prefixed)
     lookup = type;
-  
+
   g_free (prefixed);
   
   return lookup;
+}
+
+static gboolean
+is_disguised_structure (ParseContext *ctx, const gchar *type)
+{
+  const gchar *lookup;
+  gchar *prefixed;
+  gboolean result;
+
+  if (strchr (type, '.') == NULL)
+    {
+      prefixed = g_strdup_printf ("%s.%s", ctx->namespace, type);
+      lookup = prefixed;
+    }
+  else
+    {
+      lookup = type;
+      prefixed = NULL;
+    }
+
+  result = g_hash_table_lookup (ctx->current_module->disguised_structures,
+				lookup) != NULL;
+  
+  g_free (prefixed);
+  
+  return result;
 }
 
 static GIrNodeType *
@@ -1062,25 +1078,18 @@ start_alias (GMarkupParseContext *context,
     }
 
   value = g_strdup (target);
-  if (ctx->prefix_aliases)
+  key = g_strdup_printf ("%s.%s", ctx->namespace, name);
+  if (!strchr (target, '.'))
     {
-      key = g_strdup_printf ("%s.%s", ctx->namespace, name);
-      if (!strchr (target, '.'))
+      const BasicTypeInfo *basic = parse_basic (target);
+      if (!basic)
 	{
-	  const BasicTypeInfo *basic = parse_basic (target);
-	  if (!basic)
-	    {
-	      g_free (value);
-	      /* For non-basic types, re-qualify the interface */
-	      value = g_strdup_printf ("%s.%s", ctx->namespace, target);
-	    }
+	  g_free (value);
+	  /* For non-basic types, re-qualify the interface */
+	  value = g_strdup_printf ("%s.%s", ctx->namespace, target);
 	}
     }
-  else
-    {
-      key = g_strdup (name);
-    }
-  g_hash_table_insert (ctx->aliases, key, value);
+  g_hash_table_replace (ctx->aliases, key, value);
 
   return TRUE;
 }
@@ -1660,7 +1669,7 @@ start_type (GMarkupParseContext *context,
        * doesn't look like a pointer, but is internally.
        */
       if (typenode->tag == GI_TYPE_TAG_INTERFACE &&
-	  g_hash_table_lookup (ctx->disguised_structures, typenode->interface) != NULL)
+	  is_disguised_structure (ctx, typenode->interface))
 	is_pointer = TRUE;
 
       if (is_pointer)
@@ -2190,11 +2199,11 @@ parse_include (GMarkupParseContext *context,
 	       const char          *version,
 	       GError             **error)
 {
-  ParseContext sub_ctx = { 0 };
   gchar *buffer;
   gsize length;
   char *girpath;
   gboolean success = FALSE;
+  GList *modules;
   GList *l;
 
   for (l = ctx->include_modules; l; l = l->next)
@@ -2240,38 +2249,12 @@ parse_include (GMarkupParseContext *context,
     }
   g_free (girpath);
 
-  sub_ctx.parser = ctx->parser;
-  sub_ctx.state = STATE_START;
-  sub_ctx.prefix_aliases = TRUE;
-  sub_ctx.namespace = name;
-  sub_ctx.aliases = ctx->aliases;
-  sub_ctx.disguised_structures = ctx->disguised_structures;
-  sub_ctx.type_depth = 0;
+  modules = g_ir_parser_parse_string (ctx->parser, name, buffer, length, error);
+  success = error != NULL;
 
-  context = g_markup_parse_context_new (&firstpass_parser, 0, &sub_ctx, NULL);
-
-  if (!g_markup_parse_context_parse (context, buffer, length, error))
-    goto out;
-
-  if (!g_markup_parse_context_end_parse (context, error))
-    goto out;
-
-  g_markup_parse_context_free (context);
-
-  context = g_markup_parse_context_new (&markup_parser, 0, &sub_ctx, NULL);
-  if (!g_markup_parse_context_parse (context, buffer, length, error))
-    goto out;
-
-  if (!g_markup_parse_context_end_parse (context, error))
-    goto out;
-
-  success = TRUE;
-
- out:
   ctx->include_modules = g_list_concat (ctx->include_modules,
-					sub_ctx.modules);
+					modules);
 
-  g_markup_parse_context_free (context);
   g_free (buffer);
 
   return success;
@@ -2477,6 +2460,8 @@ start_element_handler (GMarkupParseContext *context,
 	    MISSING_ATTRIBUTE (context, error, element_name, "version");
 	  else
 	    {
+	      GList *l;
+
 	      if (strcmp (name, ctx->namespace) != 0)
 		g_set_error (error,
 			     G_MARKUP_ERROR,
@@ -2485,6 +2470,15 @@ start_element_handler (GMarkupParseContext *context,
 			     name, ctx->namespace);
 
 	      ctx->current_module = g_ir_module_new (name, version, shared_library);
+
+	      ctx->current_module->aliases = ctx->aliases;
+	      ctx->aliases = NULL;
+	      ctx->current_module->disguised_structures = ctx->disguised_structures;
+	      ctx->disguised_structures = NULL;
+
+	      for (l = ctx->include_modules; l; l = l->next)
+		g_ir_module_add_include_module (ctx->current_module, l->data);
+
 	      ctx->modules = g_list_append (ctx->modules, ctx->current_module);
 	      ctx->current_module->dependencies = ctx->dependencies;
 	      ctx->current_module->include_modules = g_list_copy (ctx->include_modules);
@@ -3033,7 +3027,6 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   ctx.parser = parser;
   ctx.state = STATE_START;
-  ctx.prefix_aliases = FALSE;
   ctx.namespace = namespace;
   ctx.aliases = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   ctx.disguised_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
@@ -3060,8 +3053,15 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
  out:
 
-  g_hash_table_destroy (ctx.aliases);
-  g_hash_table_destroy (ctx.disguised_structures);
+  if (ctx.modules == NULL)
+    {
+      /* If we have a module, then ownership is transferred to the module */
+
+      if (ctx.aliases != NULL)
+	g_hash_table_destroy (ctx.aliases);
+      if (ctx.disguised_structures != NULL)
+	g_hash_table_destroy (ctx.disguised_structures);
+    }
   
   g_markup_parse_context_free (context);
   

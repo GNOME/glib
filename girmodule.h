@@ -36,13 +36,25 @@ struct _GIrModule
   gchar *shared_library;
   GList *dependencies;
   GList *entries;
+
+  /* All modules that are included directly or indirectly */
   GList *include_modules;
+
+  /* Aliases defined in the module or in included modules */
+  GHashTable *aliases;
+
+  /* Structures with the 'disguised' flag (typedef struct _X *X)
+  * in the module or in included modules */
+  GHashTable *disguised_structures;
 };
 
 GIrModule *g_ir_module_new            (const gchar *name,
 				       const gchar *nsversion,
 				       const gchar *module_filename);
 void       g_ir_module_free           (GIrModule  *module);
+
+void       g_ir_module_add_include_module (GIrModule  *module,
+					   GIrModule  *include_module);
 
 GTypelib * g_ir_module_build_typelib  (GIrModule  *module,
 				       GList       *modules);

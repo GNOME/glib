@@ -46,6 +46,9 @@ g_ir_module_new (const gchar *name,
   module->dependencies = NULL;
   module->entries = NULL;
 
+  module->include_modules = NULL;
+  module->aliases = NULL;
+
   return module;
 }
 
@@ -62,11 +65,48 @@ g_ir_module_free (GIrModule *module)
   g_list_free (module->entries);
   /* Don't free dependencies, we inherit that from the parser */
 
-  /* FIXME: we leak the included modules themelves; they may be shared
-   * between multiple modules, so we would need refcounting */
   g_list_free (module->include_modules);
 
+  g_hash_table_destroy (module->aliases);
+  g_hash_table_destroy (module->disguised_structures);
+
   g_free (module);
+}
+
+static void
+add_alias_foreach (gpointer key,
+		   gpointer value,
+		   gpointer data)
+{
+  GIrModule *module = data;
+
+  g_hash_table_replace (module->aliases, g_strdup (key), g_strdup (value));
+}
+
+static void
+add_disguised_structure_foreach (gpointer key,
+				 gpointer value,
+				 gpointer data)
+{
+  GIrModule *module = data;
+
+  g_hash_table_replace (module->disguised_structures, g_strdup (key), value);
+}
+
+void
+g_ir_module_add_include_module (GIrModule  *module,
+				GIrModule  *include_module)
+{
+  module->include_modules = g_list_prepend (module->include_modules,
+					    include_module);
+
+  g_hash_table_foreach (include_module->aliases,
+			add_alias_foreach,
+			module);
+
+  g_hash_table_foreach (include_module->disguised_structures,
+			add_disguised_structure_foreach,
+			module);
 }
 
 GTypelib *
