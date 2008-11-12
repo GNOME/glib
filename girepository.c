@@ -144,7 +144,7 @@ g_irepository_prepend_search_path (const char *directory)
  * The string is internal to GIRespository and should not be freed, nor should
  * the elements.
  *
- * Return value: (element-type utf8) (transfer none): list of strings
+ * Return value: (element-type filename) (transfer none): list of strings
  */
 GSList *
 g_irepository_get_search_path (void)

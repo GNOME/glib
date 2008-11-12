@@ -1366,7 +1366,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	*offset += 4;
 	
 	if (type->tag < GI_TYPE_TAG_ARRAY ||
-	    type->tag == GI_TYPE_TAG_UTF8)
+	    type->tag == GI_TYPE_TAG_UTF8 ||
+	    type->tag == GI_TYPE_TAG_FILENAME)
 	  { 
 	    blob->reserved = 0;
 	    blob->reserved2 = 0;
