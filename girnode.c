@@ -1216,7 +1216,11 @@ serialize_type (GIrModule    *module,
 
       iface = find_entry_node (module, modules, node->interface, NULL);
       if (iface)
-	name = iface->name;
+        {
+          if (iface->type == G_IR_NODE_XREF)
+            g_string_append_printf (str, "%s.", ((GIrNodeXRef *)iface)->namespace);
+          name = iface->name;
+        }
       else
 	{
 	  g_warning ("Interface for type reference %s not found", node->interface);
