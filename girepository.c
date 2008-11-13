@@ -1145,6 +1145,31 @@ g_irepository_require (GIRepository  *repository,
   return ret; 
 }
 
+static gboolean
+g_irepository_introspect_cb (const char *option_name,
+			     const char *value,
+			     gpointer data,
+			     GError **error)
+{
+  return g_irepository_dump (value, error);
+}
+
+static const GOptionEntry introspection_args[] = {
+  { "introspect-dump", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_CALLBACK,
+    g_irepository_introspect_cb, "Dump introspection information",
+    "infile.txt,outfile.xml" },
+  { NULL }
+};
+
+GOptionGroup *
+g_irepository_get_option_group (void)
+{
+  GOptionGroup *group;
+  group = g_option_group_new ("girepository", "Introspection Options", "Show Introspection Options", NULL, NULL);
+
+  g_option_group_add_entries (group, introspection_args);
+  return group;
+}
 
 GQuark
 g_irepository_error_quark (void)

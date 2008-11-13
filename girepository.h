@@ -110,6 +110,10 @@ const gchar * g_irepository_get_shared_library (GIRepository *repository,
 const gchar * g_irepository_get_version (GIRepository *repository,
 					 const gchar  *namespace);
 
+GOptionGroup * g_irepository_get_option_group (void);
+
+gboolean       g_irepository_dump  (const char *arg, GError **error);
+
 /* Typelib */
 
 GTypelib *   g_typelib_new_from_memory       (guchar       *memory,

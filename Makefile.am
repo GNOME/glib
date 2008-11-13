@@ -13,9 +13,11 @@ libgirepository_la_SOURCES =			\
 	gtypelib.h				\
 	gtypelib.c				\
 	ginfo.c					\
-	ginvoke.c				\
 	girffi.c				\
-	girffi.h
+	girffi.h				\
+	gdump.c					\
+	ginvoke.c
+
 libgirepository_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_la_LIBADD = $(GIREPO_LIBS)
 libgirepository_la_LDFLAGS = -no-undefined
