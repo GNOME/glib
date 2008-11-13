@@ -75,7 +75,7 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
 #elif SIZEOF_TIME_T == 8
       return &ffi_type_sint64;
 #else
-#  error "Unexpected time for time_t: not 4 or 8"
+#  error "Unexpected size for time_t: not 4 or 8"
 #endif
     case GI_TYPE_TAG_ULONG:
       return &ffi_type_ulong;
