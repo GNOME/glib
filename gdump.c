@@ -244,7 +244,6 @@ dump_enum_type (GType type, const char *symbol, GOutputStream *out)
 static void
 dump_type (GType type, const char *symbol, GOutputStream *out)
 {
-  g_printerr ("processing %s\n", g_type_name (type));
   switch (g_type_fundamental (type))
     {
     case G_TYPE_OBJECT:
