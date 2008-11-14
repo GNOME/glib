@@ -1,3 +1,13 @@
+2008-11-14  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	Bug 557210 – g_compute_checksum_for_* asserts with less than 2
+	bytes
+
+	* glib/gchecksum.c (g_compute_checksum_for_data): Accept
+	lengths < 2. Patch by Tommi Komulainen
+
 2008-10-31  Grahame Bowland  <grahame@angrygoats.net>
 
 	Bug 558185 – 'parent' variable in g_local_file_get_child_for_display_name() 

@@ -1389,7 +1389,6 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
 
   g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
   g_return_val_if_fail (data != NULL, NULL);
-  g_return_val_if_fail (length > 1, NULL);
 
   checksum = g_checksum_new (checksum_type);
   if (!checksum)
