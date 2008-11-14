@@ -1,3 +1,35 @@
+Overview of Changes from GLib 2.19.0 to GLib 2.19.1
+===================================================
+
+* GIO: 
+  - g_icon_to_string, g_icon_new_for_string: GIcon serialization support
+  - G_FILE_ATTRIBUTE_PREVIEW_ICON: new file attribute for preview images
+
+* Bugs fixed:
+ 556186 gpoll.h breaks gmain.h inclusion
+ 557087 mem leak in g_content_types_get_registered
+ 556921 gpoll.h breaks hal compilation
+ 557210 g_compute_checksum_for_* asserts with less than 2 bytes
+ 558381 Add support for compile time assertions
+ 558185 'parent' variable in g_local_file_get_child_for_display_name()
+        hits g_object_unref(NULL) assertion
+ 558513 g_warn_if_fail FIXME in gtestutils
+ 558672 NULL key lookup using g_hash_table_lookup_extended() 
+ 555740 gicon serialization
+ 557182 preview functionality
+ 528320 Incorrect icons displayed for files with custom mimetype icons
+ 556910 Memory leak: sub
+ 557592 Missing include in gwinhttpfile.c
+ 556415 Crash on Windows 2000 in g_winhttp_vfs_init()
+ 555935 Clarify the mechanism of overwriting properties
+ 552776 ac_cv_func_posix_getgrgid_r not mentioned
+ 559448 GObject Reference Manual (typo)
+
+* Translation updates:
+ Spanish (es)
+ Ukrainian (uk)
+
+
 Overview of Changes from GLib 2.18.1 to GLib 2.19.0
 ===================================================
 

@@ -1,3 +1,7 @@
+2008-11-14  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-11-04  Christian Dywan  <christian@imendio.com>
 
 	Bug 558672 – NULL key lookup using g_hash_table_lookup_extended()
