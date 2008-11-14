@@ -208,11 +208,6 @@ _fam_sub_add (const gchar* pathname,
   if (!_fam_sub_startup ())
     return NULL;
   
-  sub = g_new0 (fam_sub, 1);
-  sub->pathname = g_strdup (pathname);
-  sub->directory = directory;
-  sub->user_data = user_data;
-  
   G_LOCK (fam_connection);
   /* We need to queue up incoming messages to avoid blocking on write
    *  if there are many monitors being canceled */
@@ -222,6 +217,11 @@ _fam_sub_add (const gchar* pathname,
     G_UNLOCK (fam_connection);
     return NULL;
   }
+  
+  sub = g_new0 (fam_sub, 1);
+  sub->pathname = g_strdup (pathname);
+  sub->directory = directory;
+  sub->user_data = user_data;
   
   if (directory)
     FAMMonitorDirectory (fam_connection, pathname, &sub->request, sub);
