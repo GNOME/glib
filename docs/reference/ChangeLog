@@ -1,5 +1,9 @@
 2008-11-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt: Add G_STATIC_ASSERT and friends
+
+2008-11-14  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/gio-sections.txt: Add G_FILE_ATTRIBUTE_PREVIEW_ICON
 
 2008-11-10  Behdad Esfahbod  <behdad@gnome.org>
