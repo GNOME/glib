@@ -190,6 +190,7 @@
  * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner::group</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail::path</entry><entry>bytestring</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail::failed</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_PREVIEW_ICON</entry><entry>preview::icon</entry><entry>object (#GIcon)</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_SIZE</entry><entry>filesystem::size</entry><entry>uint64</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_FREE</entry><entry>filesystem::free</entry><entry>uint64</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_TYPE</entry><entry>filesystem::type</entry><entry>string</entry></row>
