@@ -1,5 +1,9 @@
 2008-11-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-11-14  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 
 	* glib/ghash.c: Small documentation fix by Joseph Pingenot.
