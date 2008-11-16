@@ -377,6 +377,8 @@ GIConstantInfo *       g_union_info_get_discriminator      (GIUnionInfo *info,
 					                    gint         n);
 GIFunctionInfo *       g_union_info_find_method    (GIUnionInfo *info,
                                                     const gchar *name);
+gsize                  g_union_info_get_size       (GIUnionInfo *info);
+gsize                  g_union_info_get_alignment  (GIUnionInfo *info);
 
 
 /* GIStructInfo */
@@ -388,6 +390,8 @@ GIFunctionInfo *       g_struct_info_get_method    (GIStructInfo *info,
 						    gint         n);
 GIFunctionInfo *       g_struct_info_find_method   (GIStructInfo *info,
 						    const gchar *name);
+gsize                  g_struct_info_get_size      (GIStructInfo *info);
+gsize                  g_struct_info_get_alignment (GIStructInfo *info);
 
 /* GIRegisteredTypeInfo */
 

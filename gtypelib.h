@@ -295,12 +295,15 @@ typedef struct
 
   guint16   deprecated   : 1;
   guint16   unregistered : 1;
-  guint16   reserved     :14;
+  guint16   alignment    : 6;
+  guint16   reserved     : 8;
 
   guint32   name;
 
   guint32   gtype_name;
   guint32   gtype_init;
+
+  guint32   size;
 
   guint16   n_fields;
   guint16   n_methods;
@@ -318,11 +321,14 @@ typedef struct
   guint16      deprecated    : 1;
   guint16      unregistered  : 1;
   guint16      discriminated : 1;
-  guint16      reserved      :13;
+  guint16      alignment     : 6;
+  guint16      reserved      : 7;
   guint32      name;
 
   guint32      gtype_name;
   guint32      gtype_init;
+
+  guint32      size;
 
   guint16      n_fields;
   guint16      n_functions;

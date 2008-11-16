@@ -222,10 +222,10 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->annotation_blob_size = 12;
   header->signature_blob_size = 8;
   header->enum_blob_size = 20;
-  header->struct_blob_size = 20;
+  header->struct_blob_size = 24;
   header->object_blob_size = 32;
   header->interface_blob_size = 28;
-  header->union_blob_size = 28;
+  header->union_blob_size = 32;
 
   /* fill in directory and content */
   entry = (DirEntry *)&data[header->directory];

@@ -1112,6 +1112,24 @@ g_struct_info_find_method (GIStructInfo *info,
   return find_method (base, offset, blob->n_methods, name);
 }
 
+gsize
+g_struct_info_get_size (GIStructInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+
+  return blob->size;
+}
+
+gsize
+g_struct_info_get_alignment (GIStructInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+
+  return blob->alignment;
+}
+
 gint
 g_enum_info_get_n_values (GIEnumInfo *info)
 {
@@ -1887,3 +1905,20 @@ g_union_info_find_method (GIUnionInfo *info,
   return find_method (base, offset, blob->n_functions, name);
 }
 
+gsize
+g_union_info_get_size (GIUnionInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+
+  return blob->size;
+}
+
+gsize
+g_union_info_get_alignment (GIUnionInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+
+  return blob->alignment;
+}

@@ -469,7 +469,7 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	size = 20;
+	size = 24;
 	for (l = struct_->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
       }
@@ -479,7 +479,7 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	size = 20;
+	size = 24;
 	for (l = boxed->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
       }
@@ -517,7 +517,7 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	size = 28;
+	size = 32;
 	for (l = union_->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
@@ -707,7 +707,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	size = 20;
+	size = 24;
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (struct_->gtype_name)
 	  size += ALIGN_VALUE (strlen (struct_->gtype_name) + 1, 4);
@@ -722,7 +722,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	size = 20;
+	size = 24;
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (boxed->gtype_name)
 	  {
@@ -814,7 +814,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	size = 28;
+	size = 32;
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (union_->gtype_name)
 	  size += ALIGN_VALUE (strlen (union_->gtype_name) + 1, 4);
@@ -1789,6 +1789,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->deprecated = struct_->deprecated;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
+	blob->alignment = struct_->alignment;
+	blob->size = struct_->size;
+
 	if (struct_->gtype_name)
 	  {
 	    blob->unregistered = FALSE;
@@ -1805,7 +1808,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_fields = 0;
 	blob->n_methods = 0;
 
-	*offset += 20; 
+	*offset += 24; 
 
 	members = g_list_copy (struct_->members);
 
@@ -1836,11 +1839,13 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->gtype_name = write_string (boxed->gtype_name, strings, data, offset2);
 	blob->gtype_init = write_string (boxed->gtype_init, strings, data, offset2);
+	blob->alignment = boxed->alignment;
+	blob->size = boxed->size;
 
 	blob->n_fields = 0;
 	blob->n_methods = 0;
 
-	*offset += 20; 
+	*offset += 24; 
 
 	members = g_list_copy (boxed->members);
 
@@ -1868,6 +1873,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->deprecated = union_->deprecated;
  	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
+	blob->alignment = union_->alignment;
+	blob->size = union_->size;
 	if (union_->gtype_name)
 	  {
 	    blob->unregistered = FALSE;
@@ -1888,7 +1895,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 
 	if (union_->discriminator_type)
 	  {
-	    *offset += 24;
+	    *offset += 28;
 	    blob->discriminated = TRUE;
 	    g_ir_node_build_typelib ((GIrNode *)union_->discriminator_type, 
 				     module, modules, strings, types,
@@ -1896,7 +1903,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  }
 	else 
 	  {
-	    *offset += 28;
+	    *offset += 32;
 	    blob->discriminated = FALSE;
 	    blob->discriminator_type.offset = 0;
 	  }

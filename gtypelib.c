@@ -168,7 +168,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (ValueBlob, 12);
   CHECK_SIZE (FieldBlob, 12);
   CHECK_SIZE (RegisteredTypeBlob, 16);
-  CHECK_SIZE (StructBlob, 20);
+  CHECK_SIZE (StructBlob, 24);
   CHECK_SIZE (EnumBlob, 20);
   CHECK_SIZE (PropertyBlob, 12);
   CHECK_SIZE (SignalBlob, 12);
@@ -177,7 +177,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (InterfaceBlob, 28);
   CHECK_SIZE (ConstantBlob, 20);
   CHECK_SIZE (AnnotationBlob, 12);
-  CHECK_SIZE (UnionBlob, 28);
+  CHECK_SIZE (UnionBlob, 32);
 #undef CHECK_SIZE
 
   g_assert (size_check_ok);
@@ -320,10 +320,10 @@ validate_header (ValidateContext  *ctx,
       header->annotation_blob_size != 12 ||
       header->signature_blob_size != 8 ||
       header->enum_blob_size != 20 ||
-      header->struct_blob_size != 20 ||
+      header->struct_blob_size != 24 ||
       header->object_blob_size != 32 ||
       header->interface_blob_size != 28 ||
-      header->union_blob_size != 28)
+      header->union_blob_size != 32)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
