@@ -1191,7 +1191,8 @@ serialize_type (GIrModule    *module,
   
   if (node->tag < GI_TYPE_TAG_ARRAY)
     {
-      g_string_append_printf (str, "%s", basic[node->tag]);
+      g_string_append_printf (str, "%s%s", basic[node->tag],
+			      node->is_pointer ? "*" : "");
     }
   else if (node->tag == GI_TYPE_TAG_ARRAY)
     {
@@ -1227,7 +1228,8 @@ serialize_type (GIrModule    *module,
 	  name = node->interface;
 	}
 
-      g_string_append_printf (str, "%s", name);
+      g_string_append_printf (str, "%s%s", name,
+			      node->is_pointer ? "*" : "");
     }
   else if (node->tag == GI_TYPE_TAG_GLIST)
     {
