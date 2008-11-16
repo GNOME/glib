@@ -12,6 +12,7 @@ libgirepository_la_SOURCES =			\
 	girepository.c				\
 	gtypelib.h				\
 	gtypelib.c				\
+	gfield.c				\
 	ginfo.c					\
 	girffi.c				\
 	girffi.h				\

@@ -356,6 +356,12 @@ gint                   g_field_info_get_size       (GIFieldInfo *info);
 gint                   g_field_info_get_offset     (GIFieldInfo *info);
 GITypeInfo *           g_field_info_get_type       (GIFieldInfo *info);
 
+gboolean g_field_info_get_field (GIFieldInfo     *field_info,
+				 gpointer         mem,
+				 GArgument       *value);
+gboolean g_field_info_set_field (GIFieldInfo     *field_info,
+				 gpointer         mem,
+				 const GArgument *value);
 
 /* GIUnionInfo */
 gint                   g_union_info_get_n_fields  (GIUnionInfo *info);
