@@ -1656,18 +1656,26 @@ start_type (GMarkupParseContext *context,
     }
   else
     {
-      gboolean is_pointer;
+      int pointer_depth;
       name = find_attribute ("name", attribute_names, attribute_values);
 
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
       
+      pointer_depth = 0;
       ctype = find_attribute ("c:type", attribute_names, attribute_values);
-      if (ctype != NULL && strchr (ctype, '*'))
-	is_pointer = TRUE;
-      else
-	is_pointer = FALSE;
-
+      if (ctype != NULL)
+        {
+          const char *cp = ctype + strlen(ctype) - 1;
+          while (cp > ctype && *cp-- == '*')
+            pointer_depth++;
+        }
+      
+      if (ctx->current_typed->type == G_IR_NODE_PARAM &&
+          ((GIrNodeParam *)ctx->current_typed)->out &&
+          pointer_depth > 0)
+        pointer_depth--;
+      
       typenode = parse_type (ctx, name);
 
       /* A 'disguised' structure is one where the c:type is a typedef that
@@ -1675,10 +1683,10 @@ start_type (GMarkupParseContext *context,
        */
       if (typenode->tag == GI_TYPE_TAG_INTERFACE &&
 	  is_disguised_structure (ctx, typenode->interface))
-	is_pointer = TRUE;
+	pointer_depth++;
 
-      if (is_pointer)
-	typenode->is_pointer = is_pointer;
+      if (pointer_depth > 0)
+	typenode->is_pointer = TRUE;
     }
 
   ctx->type_parameters = g_list_append (ctx->type_parameters, typenode);
