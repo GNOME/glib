@@ -54,7 +54,7 @@ typedef enum
   STATE_INTERFACE_PROPERTY,   /* 15 */
   STATE_INTERFACE_FIELD,
   STATE_IMPLEMENTS, 
-  STATE_REQUIRES,
+  STATE_PREREQUISITE,
   STATE_BOXED,  
   STATE_BOXED_FIELD, /* 20 */
   STATE_STRUCT,   
@@ -2338,25 +2338,6 @@ start_element_handler (GMarkupParseContext *context,
 			    attribute_names, attribute_values,
 			    ctx, error))
 	goto out;
-      else if (strcmp (element_name, "class") == 0 &&
-	       ctx->state == STATE_REQUIRES)
-	{
-	  const gchar *name;
-
-	  name = find_attribute ("name", attribute_names, attribute_values);
-
-	  if (name == NULL)
-	    MISSING_ATTRIBUTE (context, error, element_name, "name");
-	  else
-	    {  
-	      GIrNodeInterface *iface;
-
-	      iface = (GIrNodeInterface *)ctx->current_node;
-	      iface ->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
-	    }
-
-	  goto out;
-	}
       break;
 
     case 'd':
@@ -2522,7 +2503,26 @@ start_element_handler (GMarkupParseContext *context,
 				attribute_names, attribute_values,
 				ctx, error))
 	goto out;
+      else if (strcmp (element_name, "prerequisite") == 0 &&
+	       ctx->state == STATE_INTERFACE)
+	{
+	  const gchar *name;
 
+	  name = find_attribute ("name", attribute_names, attribute_values);
+
+	  state_switch (ctx, STATE_PREREQUISITE);
+
+	  if (name == NULL)
+	    MISSING_ATTRIBUTE (context, error, element_name, "name");
+	  else
+	    {  
+	      GIrNodeInterface *iface;
+
+	      iface = (GIrNodeInterface *)ctx->current_node;
+	      iface ->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
+	    }
+	  goto out;
+	}
       break;
 
     case 'r':
@@ -2549,13 +2549,6 @@ start_element_handler (GMarkupParseContext *context,
 				   attribute_names, attribute_values,
 				   ctx, error))
 	goto out;      
-      else if (strcmp (element_name, "requires") == 0 &&
-	       ctx->state == STATE_INTERFACE)
-	{
-	  state_switch (ctx, STATE_REQUIRES);
-	  
-	  goto out;
-	}
       else if (start_struct (context, element_name,
 			     attribute_names, attribute_values,
 			     ctx, error))
@@ -2893,8 +2886,8 @@ end_element_handler (GMarkupParseContext *context,
       if (require_end_element (context, ctx, "implements", element_name, error))
         state_switch (ctx, STATE_CLASS);
       break;
-    case STATE_REQUIRES:
-      if (require_end_element (context, ctx, "requires", element_name, error))
+    case STATE_PREREQUISITE:
+      if (require_end_element (context, ctx, "prerequisite", element_name, error))
         state_switch (ctx, STATE_INTERFACE);
       break;
     case STATE_NAMESPACE_CONSTANT:

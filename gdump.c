@@ -186,7 +186,12 @@ dump_interface_type (GType type, const char *symbol, GOutputStream *out)
   for (i = 0; i < n_interfaces; i++)
     {
       GType itype = interfaces[i];
-      escaped_printf (out, "    <extends>%s</extends>\n",
+      if (itype == G_TYPE_OBJECT)
+	{
+	  /* This is implicit */
+	  continue;
+	}
+      escaped_printf (out, "    <prerequisite name=\"%s\"/>\n",
 		      g_type_name (itype));
     }
   dump_properties (type, out);
