@@ -188,7 +188,11 @@ dump_interface_type (GType type, const char *symbol, GOutputStream *out)
       GType itype = interfaces[i];
       if (itype == G_TYPE_OBJECT)
 	{
-	  /* This is implicit */
+	  /* Treat this as implicit for now; in theory GInterfaces are
+	   * supported on things like GstMiniObject, but right now
+	   * the introspection system only supports GObject.
+	   * http://bugzilla.gnome.org/show_bug.cgi?id=559706
+	   */
 	  continue;
 	}
       escaped_printf (out, "    <prerequisite name=\"%s\"/>\n",
