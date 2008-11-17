@@ -447,7 +447,7 @@ g_irepository_is_registered (GIRepository *repository,
  * parameter to mean this default repository, which is usually more
  * convenient for C.
  * 
- * Returns: The global singleton #GIRepository 
+ * Returns: (transfer none): The global singleton #GIRepository 
  */
 GIRepository * 
 g_irepository_get_default (void)
