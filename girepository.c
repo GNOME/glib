@@ -82,7 +82,7 @@ g_irepository_class_init (GIRepositoryClass *class)
 }
 
 static void
-init_globals ()
+init_globals (void)
 {
   g_static_mutex_lock (&globals_lock);
 
@@ -179,13 +179,12 @@ get_typelib_dependencies (GTypelib *typelib)
 static GIRepository *
 get_repository (GIRepository *repository)
 {
+  init_globals ();
+
   if (repository != NULL)
     return repository;
-  else 
-    {
-      init_globals ();
-      return default_repository;
-    }
+  else
+    return default_repository;
 }
 
 static GTypelib *
