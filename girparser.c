@@ -2519,7 +2519,7 @@ start_element_handler (GMarkupParseContext *context,
 	      GIrNodeInterface *iface;
 
 	      iface = (GIrNodeInterface *)ctx->current_node;
-	      iface ->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
+	      iface->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
 	    }
 	  goto out;
 	}
