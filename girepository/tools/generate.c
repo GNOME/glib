@@ -986,24 +986,19 @@ write_interface_info (const gchar     *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
 
   if (g_interface_info_get_n_prerequisites (info) > 0)
     {
-      xml_start_element (file, "requires");
       for (i = 0; i < g_interface_info_get_n_prerequisites (info); i++)
 	{
 	  GIBaseInfo *req = g_interface_info_get_prerequisite (info, i);
-	  
-	  if (g_base_info_get_type (req) == GI_INFO_TYPE_INTERFACE)
-            xml_start_element (file, "interface");
-	  else
-            xml_start_element (file, "object");
+
+	  xml_start_element (file, "prerequisite");
 	  write_type_name_attribute (namespace, req, "name", file);
+
           xml_end_element_unchecked (file);
 	  g_base_info_unref (req);
 	}
-      xml_end_element (file, "requires");
     }
 
   for (i = 0; i < g_interface_info_get_n_methods (info); i++)
