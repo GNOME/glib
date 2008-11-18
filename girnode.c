@@ -1576,8 +1576,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (function->parameters);
 
-	*offset += 16;
-	*offset2 += 8 + n * 12;
+	*offset += sizeof(FunctionBlob);
+	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
 
 	blob->blob_type = BLOB_TYPE_FUNCTION;
 	blob->deprecated = function->deprecated;
@@ -1628,8 +1628,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (function->parameters);
 
-	*offset += 12;
-	*offset2 += 8 + n * 12;
+	*offset += sizeof(CallbackBlob);
+	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
 
 	blob->blob_type = BLOB_TYPE_CALLBACK;
 	blob->deprecated = function->deprecated;
@@ -1671,8 +1671,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (signal->parameters);
 
-	*offset += 12;
-	*offset2 += 8 + n * 12;
+	*offset += sizeof(SignalBlob);
+	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
 
 	blob->deprecated = signal->deprecated;
 	blob->run_first = signal->run_first;
@@ -1722,8 +1722,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (vfunc->parameters);
 
-	*offset += 16;
-	*offset2 += 8 + n * 12;
+	*offset += sizeof(VFuncBlob);
+	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
 
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->must_chain_up = 0; /* FIXME */
