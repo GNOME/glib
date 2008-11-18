@@ -152,6 +152,14 @@ g_typelib_check_sanity (void)
 		  n, sizeof (s));					\
       size_check_ok = FALSE; \
     }
+
+  /* When changing the size of a typelib structure, you are required to update
+   * the hardcoded size here.  Do NOT change these to use sizeof(); these
+   * should match whatever is defined in the text specification and serve as
+   * a sanity check on structure modifications.
+   *
+   * Everything else in the code however should be using sizeof().
+   */
   
   CHECK_SIZE (Header, 108);
   CHECK_SIZE (DirEntry, 12);
