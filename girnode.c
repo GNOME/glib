@@ -1952,6 +1952,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  
 	blob->deprecated = enum_->deprecated;
 	blob->reserved = 0;
+	blob->storage_type = enum_->storage_type;
 	blob->name = write_string (node->name, strings, data, offset2);
 	if (enum_->gtype_name)
 	  {

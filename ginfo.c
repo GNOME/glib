@@ -1152,6 +1152,28 @@ g_enum_info_get_value (GIEnumInfo *info,
   return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, base, base->typelib, offset);
 }
 
+/**
+ * g_enum_info_get_storage_type:
+ * @info: GIEnumInfo
+ *
+ * Gets the tag of the type used for the enum in the C ABI. This will
+ * will be a signed or unsigned integral type.
+
+ * Note that in the current implementation the width of the type is
+ * computed correctly, but the signed or unsigned nature of the type
+ * may not match the sign of the type used by the C compiler.
+ *
+ * Return Value: the storage type for the enumeration
+ */
+GITypeTag
+g_enum_info_get_storage_type (GIEnumInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  EnumBlob *blob = (EnumBlob *)&base->typelib->data[base->offset];
+
+  return blob->storage_type;
+}
+
 /* GIObjectInfo functions */
 GIObjectInfo *
 g_object_info_get_parent (GIObjectInfo *info)

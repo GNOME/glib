@@ -259,6 +259,7 @@ struct _GIrNodeEnum
   GIrNode node;
 
   gboolean deprecated;
+  gint storage_type;
 
   gchar *gtype_name;
   gchar *gtype_init;

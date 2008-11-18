@@ -63,15 +63,15 @@ typedef enum {
 /* etc... */
 #endif
 
-static gboolean
-get_enum_size_alignment (GIrNodeEnum *enum_node,
-			 gint        *size,
-			 gint        *alignment)
+static void
+compute_enum_storage_type (GIrNodeEnum *enum_node)
 {
   GList *l;
   guint32 max_value = 0;
   int width;
-  ffi_type *type_ffi;
+
+  if (enum_node->storage_type != GI_TYPE_TAG_VOID) /* already done */
+    return;
 
   for (l = enum_node->values; l; l = l->next)
     {
@@ -94,15 +94,48 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
     width = sizeof (Enum6);
 
   if (width == 1)
-    type_ffi = &ffi_type_sint8;
+    enum_node->storage_type = GI_TYPE_TAG_UINT8;
   else if (width == 2)
-    type_ffi = &ffi_type_sint16;
+    enum_node->storage_type = GI_TYPE_TAG_UINT16;
   else if (width == 4)
-    type_ffi = &ffi_type_sint32;
+    enum_node->storage_type = GI_TYPE_TAG_UINT32;
   else if (width == 8)
-    type_ffi = &ffi_type_sint64;
+    enum_node->storage_type = GI_TYPE_TAG_UINT64;
   else
     g_error ("Unexpected enum width %d", width);
+}
+
+static gboolean
+get_enum_size_alignment (GIrNodeEnum *enum_node,
+			 gint        *size,
+			 gint        *alignment)
+{
+  ffi_type *type_ffi;
+
+  compute_enum_storage_type (enum_node);
+
+  switch (enum_node->storage_type)
+    {
+    case GI_TYPE_TAG_INT8:
+    case GI_TYPE_TAG_UINT8:
+      type_ffi = &ffi_type_uint8;
+      break;
+    case GI_TYPE_TAG_INT16:
+    case GI_TYPE_TAG_UINT16:
+      type_ffi = &ffi_type_uint16;
+      break;
+    case GI_TYPE_TAG_INT32:
+    case GI_TYPE_TAG_UINT32:
+      type_ffi = &ffi_type_uint32;
+      break;
+    case GI_TYPE_TAG_INT64:
+    case GI_TYPE_TAG_UINT64:
+      type_ffi = &ffi_type_uint64;
+      break;
+    default:
+      g_error ("Unexpected enum storage type %s",
+	       g_type_tag_to_string (enum_node->storage_type));
+    }
 
   *size = type_ffi->size;
   *alignment = type_ffi->alignment;
@@ -457,6 +490,18 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	compute_union_field_offsets (node, union_->members,
 				     module, modules,
 				     &union_->size, &union_->alignment);
+	break;
+      }
+    case G_IR_NODE_ENUM:
+    case G_IR_NODE_FLAGS:
+      {
+	GIrNodeEnum *enum_ = (GIrNodeEnum *)node;
+
+	if (enum_->storage_type != GI_TYPE_TAG_VOID) /* already done */
+	  return;
+
+	compute_enum_storage_type (enum_);
+
 	break;
       }
     default:

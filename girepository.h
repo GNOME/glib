@@ -404,6 +404,7 @@ GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInf
 gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
 GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
 							     gint            n);
+GITypeTag              g_enum_info_get_storage_type         (GIEnumInfo      *info);
 
 /* GIObjectInfo */
 

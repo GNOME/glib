@@ -349,7 +349,8 @@ typedef struct
 
   guint16   deprecated   : 1; 
   guint16   unregistered : 1;
-  guint16   reserved     :14;
+  guint16   storage_type : 5;
+  guint16   reserved     : 9;
 
   guint32   name; 
 

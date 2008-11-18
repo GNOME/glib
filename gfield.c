@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "girepository.h"
+#include "girffi.h"
 
 /**
  * g_field_info_get_field:
@@ -117,11 +120,55 @@ g_field_info_get_field (GIFieldInfo *field_info,
 		  break;
 		case GI_INFO_TYPE_ENUM:
 		case GI_INFO_TYPE_FLAGS:
-		  /* Not yet implemented */
-		  break;
+		  {
+		    /* FIXME: there's a mismatch here between the value->v_int we use
+		     * here and the glong result returned from g_value_info_get_value().
+		     * But to switch this to glong, we'd have to make g_function_info_invoke()
+		     * translate value->v_long to the proper ABI for an enum function
+		     * call parameter, which will usually be int, and then fix up language
+		     * bindings.
+		     */
+		    GITypeTag storage_type = g_enum_info_get_storage_type ((GIEnumInfo *)interface);
+		    switch (storage_type)
+		      {
+		      case GI_TYPE_TAG_INT8:
+		      case GI_TYPE_TAG_UINT8:
+			value->v_int = (gint)G_STRUCT_MEMBER(guint8, mem, offset);
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT16:
+		      case GI_TYPE_TAG_UINT16:
+			value->v_int = (gint)G_STRUCT_MEMBER(guint16, mem, offset);
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT32:
+		      case GI_TYPE_TAG_UINT32:
+		      case GI_TYPE_TAG_INT:
+		      case GI_TYPE_TAG_UINT:
+			value->v_int = (gint)G_STRUCT_MEMBER(guint32, mem, offset);
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT64:
+		      case GI_TYPE_TAG_UINT64:
+			value->v_int = (gint)G_STRUCT_MEMBER(guint64, mem, offset);
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_LONG:
+		      case GI_TYPE_TAG_ULONG:
+			value->v_int = (gint)G_STRUCT_MEMBER(gulong, mem, offset);
+			result = TRUE;
+			break;
+		      default:
+			g_warning("Field %s: Unexpected enum storage type %s",
+				  g_base_info_get_name ((GIBaseInfo *)field_info),
+				  g_type_tag_to_string (storage_type));
+			break;
+		      }
+		    break;
+		  }
 		case GI_INFO_TYPE_VFUNC:
 		case GI_INFO_TYPE_CALLBACK:
-		  g_warning("Field%s: Interface type %d should have is_pointer set",
+		  g_warning("Field %s: Interface type %d should have is_pointer set",
 			    g_base_info_get_name ((GIBaseInfo *)field_info),
 			    g_base_info_get_type (interface));
 		  break;
@@ -269,7 +316,47 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 		  break;
 		case GI_INFO_TYPE_ENUM:
 		case GI_INFO_TYPE_FLAGS:
-		  /* Not yet implemented */
+		  {
+		    /* See FIXME above
+		     */
+		    GITypeTag storage_type = g_enum_info_get_storage_type ((GIEnumInfo *)interface);
+		    switch (storage_type)
+		      {
+		      case GI_TYPE_TAG_INT8:
+		      case GI_TYPE_TAG_UINT8:
+			G_STRUCT_MEMBER(guint8, mem, offset) = (guint8)value->v_int;
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT16:
+		      case GI_TYPE_TAG_UINT16:
+			G_STRUCT_MEMBER(guint16, mem, offset) = (guint16)value->v_int;
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT32:
+		      case GI_TYPE_TAG_UINT32:
+		      case GI_TYPE_TAG_INT:
+		      case GI_TYPE_TAG_UINT:
+			G_STRUCT_MEMBER(guint32, mem, offset) = (guint32)value->v_int;
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_INT64:
+		      case GI_TYPE_TAG_UINT64:
+			G_STRUCT_MEMBER(guint64, mem, offset) = (guint64)value->v_int;
+			result = TRUE;
+			break;
+		      case GI_TYPE_TAG_LONG:
+		      case GI_TYPE_TAG_ULONG:
+			G_STRUCT_MEMBER(gulong, mem, offset) = (gulong)value->v_int;
+			result = TRUE;
+			break;
+		      default:
+			g_warning("Field %s: Unexpected enum storage type %s",
+				  g_base_info_get_name ((GIBaseInfo *)field_info),
+				  g_type_tag_to_string (storage_type));
+			break;
+		      }
+		    break;
+		  }
 		  break;
 		case GI_INFO_TYPE_VFUNC:
 		case GI_INFO_TYPE_CALLBACK:
