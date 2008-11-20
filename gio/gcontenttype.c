@@ -791,6 +791,7 @@ g_content_type_get_icon (const char *type)
   themed_icon = g_themed_icon_new_from_names (icon_names, n);
   
   g_free (xdg_mimetype_icon);
+  g_free (xdg_mimetype_generic_icon);
   g_free (mimetype_icon);
   g_free (legacy_mimetype_icon);
   g_free (generic_mimetype_icon);

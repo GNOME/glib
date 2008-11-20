@@ -1,3 +1,10 @@
+2008-11-21  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	Bug 561352 – Leak of icon description
+
+	* gcontenttype.c: (g_content_type_get_icon): don't leak the XDG mimetype
+	generic icon string.
+
 2008-11-14  Matthias Clasen <mclasen@redhat.com>
 
 	* gfileattribute.c: Add G_FILE_ATTRIBUTE_PREVIEW_ICON to doc table.
