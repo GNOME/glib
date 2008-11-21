@@ -1,5 +1,12 @@
 2008-11-21  Cosimo Cecchi  <cosimoc@gnome.org>
 
+	Bug 561375 – Leaks mountpoint description
+
+	* glocalfile.c: (get_mount_info): don't leak the mountpoint description
+	string.
+
+2008-11-21  Cosimo Cecchi  <cosimoc@gnome.org>
+
 	Bug 561352 – Leak of icon description
 
 	* gcontenttype.c: (g_content_type_get_icon): don't leak the XDG mimetype

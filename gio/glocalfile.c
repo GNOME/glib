@@ -779,7 +779,7 @@ get_mount_info (GFileInfo             *fs_info,
 
       mountpoint = find_mountpoint_for (path, buf.st_dev);
       if (mountpoint == NULL)
-	mountpoint = "/";
+	mountpoint = g_strdup ("/");
 
       mount = g_unix_mount_at (mountpoint, &cache_time);
       if (mount)
@@ -789,6 +789,8 @@ get_mount_info (GFileInfo             *fs_info,
 	  
 	  g_unix_mount_free (mount);
 	}
+
+      g_free (mountpoint);
 
       dev = g_new0 (dev_t, 1);
       *dev = buf.st_dev;
