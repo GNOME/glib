@@ -1,3 +1,8 @@
+2008-11-21  Matthias Clasen <mclasen@redhat.com>
+
+	* configure.in: Bump gtk-doc dependency to 1.11 for
+	nicer index-generation.
+
 2008-11-14  Matthias Clasen <mclasen@redhat.com>
 
 	* NEWS: Updates

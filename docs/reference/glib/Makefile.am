@@ -16,7 +16,7 @@ DOC_SOURCE_DIR=../../..
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS=--sgml-mode --output-format=xml
+MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
 
 # Used for dependencies
 HFILE_GLOB=$(top_srcdir)/glib/*.h $(top_srcdir)/gmodule/*.h

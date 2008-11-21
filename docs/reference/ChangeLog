@@ -1,3 +1,10 @@
+2008-11-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/Makefile.am:
+	* gobject/Makefile.am:
+	* gio/Makefile.am: Use a new gtk-doc feature to generate
+	much nicer indices.
+
 2008-11-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add G_STATIC_ASSERT and friends

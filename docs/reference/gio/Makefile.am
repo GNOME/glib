@@ -85,7 +85,7 @@ GTKDOC_LIBS = \
 	$(NULL)
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS = --output-format=xml --sgml-mode
+MKDB_OPTIONS = --output-format=xml --sgml-mode --name-space=g
 
 # Images to copy into HTML directory
 HTML_IMAGES =			\
