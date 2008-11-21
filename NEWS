@@ -3,13 +3,18 @@ Overview of Changes from GLib 2.18.2 to GLib 2.18.3
 
 * Bugs fixed:
  557087 mem leak in g_content_types_get_registered
-558185 'parent' variable in g_local_file_get_child_for_display_name()
-        hits g_object_unref(NULL) assertion
-557210 g_compute_checksum_for_* asserts with less than 2 bytes
-528320 Incorrect icons displayed for files with custom mimetype icons
-557592 Missing include in gwinhttpfile.c
-556415 Crash on Windows 2000 in g_winhttp_vfs_init()
-556910 Memory leak: sub
+ 558185 'parent' variable in g_local_file_get_child_for_display_name()
+         hits g_object_unref(NULL) assertion
+ 557210 g_compute_checksum_for_* asserts with less than 2 bytes
+ 528320 Incorrect icons displayed for files with custom mimetype icons
+ 557592 Missing include in gwinhttpfile.c
+ 556415 Crash on Windows 2000 in g_winhttp_vfs_init()
+ 556910 Memory leak: sub
+ 561352 Leak of icon description
+ 561375 Leaks mountpoint description
+
+* Updated translations:
+ Arabic (ar)
 
 Overview of Changes from GLib 2.18.1 to GLib 2.18.2
 ===================================================
