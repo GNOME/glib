@@ -1,3 +1,10 @@
+2008-11-21  Christophe Fergeau <teuf@gnome.org>
+
+	Bug 561212 – GFileReadMoreCallback API doc refers to non-existant function
+
+	* gio/giotypes.h: fix name of function referred to in
+	GFileReadMoreCallback API documentation
+
 2008-11-21  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Bump gtk-doc dependency to 1.11 for

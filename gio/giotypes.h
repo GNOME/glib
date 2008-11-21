@@ -144,7 +144,7 @@ typedef void (*GFileProgressCallback) (goffset current_num_bytes,
  * @file_size: the size of the data currently read.
  * @callback_data: data passed to the callback.
  *
- * When loading the partial contents of a file with g_file_read_partial_contents(),
+ * When loading the partial contents of a file with g_file_load_partial_contents_async(),
  * it may become necessary to determine if any more data from the file should be loaded.
  * A #GFileReadMoreCallback function facilitates this by returning %TRUE if more data
  * should be read, or %FALSE otherwise.
