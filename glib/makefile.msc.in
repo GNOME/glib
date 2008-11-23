@@ -8,7 +8,7 @@ TOP = ..\..
 ################################################################
 
 INCLUDES = -FImsvc_recommended_pragmas.h -I . -I ..
-DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG -DPCRE_STATIC
+DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG -DPCRE_STATIC -DG_DISABLE_DEPRECATED
 DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\
@@ -106,8 +106,8 @@ galias.h: glib.symbols
 galiasdef.c: glib.symbols
 	  perl makegalias.pl -def < glib.symbols > galiasdef.c
 
-localcharset.c : libcharset/localcharset.c
-	copy libcharset\localcharset.c localcharset.c
+localcharset.obj : libcharset\localcharset.c
+	$(CC) $(CFLAGS) -DLIBDIR=\".\" -c libcharset\localcharset.c
 
 glib.def: glib.symbols
 	echo EXPORTS > glib.def

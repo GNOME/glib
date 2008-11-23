@@ -1,3 +1,8 @@
+2008-11-23  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in : add -DG_DISABLE_DEPRECTAED; rule for 
+	localcharset.obj
+
 2008-11-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
