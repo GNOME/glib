@@ -1,5 +1,11 @@
 2008-11-23  Christian Persch  <chpe@gnome.org>
 
+	Bug 559413 – g_option_group_set_error_hook docs buglet
+
+	* glib/goption.c: Doc fix.
+
+2008-11-23  Christian Persch  <chpe@gnome.org>
+
 	Bug 560568 – gkeyfile docs buglet
 
 	* glib/gkeyfile.c: Clarify the docs.
