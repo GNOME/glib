@@ -1546,8 +1546,8 @@ g_key_file_get_string_list (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @list: an array of locale string values
- * @length: number of locale string values in @list
+ * @list: an array of string values
+ * @length: number of string values in @list
  *
  * Associates a list of string values for @key under @group_name.
  * If @key cannot be found then it is created.  
