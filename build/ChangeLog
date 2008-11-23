@@ -1,3 +1,9 @@
+2008-11-23  Hans Breuer  <hans@breuer.org>
+
+	* win32/make.msc win32/module.defs : updated to simplify build
+	with prebuilt dependencies. Just extract them to $(TOP)\dev.
+	Also some adaptions to optionally use vc2008 (express).
+
 2008-11-02  Tor Lillqvist  <tml@novell.com>
 
 	Bug 558153 - Patch for .def files generation
