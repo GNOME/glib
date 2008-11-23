@@ -98,6 +98,39 @@ check_string_list_value (GKeyFile    *keyfile,
 }
 
 static void
+check_locale_string_list_value (GKeyFile    *keyfile,
+                                const gchar *group,
+                                const gchar *key,
+                                const gchar *locale,
+                                ...)
+{
+  gint i;
+  gchar *v, **value;
+  va_list args;
+  gsize len;
+  GError *error = NULL;
+
+  value = g_key_file_get_locale_string_list (keyfile, group, key, locale, &len, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+  
+  va_start (args, locale);
+  i = 0;
+  v = va_arg (args, gchar*);
+  while (v)
+    {
+      g_assert (value[i] != NULL);
+      g_assert_cmpstr (v, ==, value[i]);
+      i++;
+      v = va_arg (args, gchar*);
+    }
+
+  va_end (args);
+  
+  g_strfreev (value);
+}
+
+static void
 check_integer_list_value (GKeyFile    *keyfile,
 			  const gchar *group,
 			  const gchar *key,
@@ -695,7 +728,43 @@ test_lists (void)
   g_key_file_free (keyfile);  
 }
 
-static void 
+static void
+test_lists_set_get (void)
+{
+  GKeyFile *keyfile;
+  static const char * const strings[] = { "v1", "v2" };
+  static const char * const locale_strings[] = { "v1-l", "v2-l" };
+  static int integers[] = { 1, -1, 2 };
+  static gdouble doubles[] = { 3.14, 2.71 };
+  
+  keyfile = g_key_file_new ();
+  g_key_file_set_string_list (keyfile, "group0", "key1", strings, G_N_ELEMENTS (strings));
+  g_key_file_set_locale_string_list (keyfile, "group0", "key1", "de", locale_strings, G_N_ELEMENTS (locale_strings));
+  g_key_file_set_integer_list (keyfile, "group0", "key2", integers, G_N_ELEMENTS (integers));
+  g_key_file_set_double_list (keyfile, "group0", "key3", doubles, G_N_ELEMENTS (doubles));
+
+  check_string_list_value (keyfile, "group0", "key1", strings[0], strings[1], NULL);
+  check_locale_string_list_value (keyfile, "group0", "key1", "de", locale_strings[0], locale_strings[1], NULL);
+  check_integer_list_value (keyfile, "group0", "key2", integers[0], integers[1], -100);
+  check_double_list_value (keyfile, "group0", "key3", doubles[0], doubles[1], -100.0);
+  g_key_file_free (keyfile);
+
+  /* and again with a different list separator */
+  keyfile = g_key_file_new ();
+  g_key_file_set_list_separator (keyfile, ',');
+  g_key_file_set_string_list (keyfile, "group0", "key1", strings, G_N_ELEMENTS (strings));
+  g_key_file_set_locale_string_list (keyfile, "group0", "key1", "de", locale_strings, G_N_ELEMENTS (locale_strings));
+  g_key_file_set_integer_list (keyfile, "group0", "key2", integers, G_N_ELEMENTS (integers));
+  g_key_file_set_double_list (keyfile, "group0", "key3", doubles, G_N_ELEMENTS (doubles));
+
+  check_string_list_value (keyfile, "group0", "key1", strings[0], strings[1], NULL);
+  check_locale_string_list_value (keyfile, "group0", "key1", "de", locale_strings[0], locale_strings[1], NULL);
+  check_integer_list_value (keyfile, "group0", "key2", integers[0], integers[1], -100);
+  check_double_list_value (keyfile, "group0", "key3", doubles[0], doubles[1], -100.0);
+  g_key_file_free (keyfile);
+}
+
+static void
 test_group_remove (void)
 {
   GKeyFile *keyfile;
@@ -1178,6 +1247,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/number", test_number);
   g_test_add_func ("/keyfile/locale-string", test_locale_string);
   g_test_add_func ("/keyfile/lists", test_lists);
+  g_test_add_func ("/keyfile/lists-set-get", test_lists_set_get);
   g_test_add_func ("/keyfile/group-remove", test_group_remove);
   g_test_add_func ("/keyfile/key-remove", test_key_remove);
   g_test_add_func ("/keyfile/groups", test_groups);
