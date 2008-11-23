@@ -1,7 +1,9 @@
 2008-11-23  Hans Breuer  <hans@breuer.org>
 
+	* tests/makefile.msc : updated
+
 	* glib/makefile.msc.in : add -DG_DISABLE_DEPRECTAED; rule for 
-	localcharset.obj
+	localcharset.obj; filter out G_GNUC_FORMAT
 
 	* glib/pcre/makefile.msc : unbroken
 

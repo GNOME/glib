@@ -113,7 +113,7 @@ glib.def: glib.symbols
 	echo EXPORTS > glib.def
 	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES \
 		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
-		-DG_GNUC_PRINTF=;G_GNUC_PRINTF glib.symbols >> glib.def
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT glib.symbols >> glib.def
 
 glib.res : glib.rc
 	rc -DBUILDNUMBER=0 -r -fo glib.res glib.rc
