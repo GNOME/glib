@@ -3,6 +3,8 @@
 	* glib/makefile.msc.in : add -DG_DISABLE_DEPRECTAED; rule for 
 	localcharset.obj
 
+	* glib/pcre/makefile.msc : unbroken
+
 2008-11-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
