@@ -197,12 +197,12 @@ local_sources = \
 
 all : \
 	$(PRJ_TOP)\config.h \
-	sub-all	\
 	gioalias.h		\
 	gioaliasdef.c		\
 	gio-marshal.c \
 	gioenumtypes.h		\
 	gioenumtypes.c		\
+	sub-all	\
 	libgio-$(PKG_VER)-0.dll
 
 
@@ -237,7 +237,7 @@ libgio-$(PKG_VER)-0.dll : $(OBJECTS) $(PACKAGE).def $(RESOURCE)
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
 	win32\giowin32.lib \
 	$(INTL_LIBS) \
-	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib mpr.lib $(LDFLAGS) \
+	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib mpr.lib shlwapi.lib $(LDFLAGS) \
 	/implib:gio-2.0.lib /def:$(PACKAGE).def
 
 .c.obj :
