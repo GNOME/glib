@@ -1,3 +1,15 @@
+2008-11-23  Christian Persch  <chpe@gnome.org>
+
+	Bug 560569 – gkeyfile doesn't use the set list_separator in some cases
+
+	* glib/gkeyfile.c: (g_key_file_get_locale_string_list),
+	(g_key_file_set_locale_string_list), (g_key_file_set_integer_list),
+	(g_key_file_set_double_list): Use the key file's list separator character,
+	not the default one.
+
+	* glib/tests/keyfile.c: (test_lists), (test_reload_idempotency): Test
+	this.
+
 2008-11-23  Hans Breuer  <hans@breuer.org>
 
 	* tests/makefile.msc : updated
