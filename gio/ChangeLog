@@ -1,3 +1,9 @@
+2008-11-23  Hans Breuer  <hans@breuer.org>
+
+	* gio.rc.in : version resource as for the other glib dlls
+	* win32/makefile.msc win32/Makefile.am : added, EXTRA_DIST
+	* makefile.msc : updated
+
 2008-11-21  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	Bug 561375 – Leaks mountpoint description

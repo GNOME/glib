@@ -28,3 +28,6 @@ libgiowin32_la_CFLAGS = \
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	\
 	-DGIO_COMPILATION		\
 	-DG_DISABLE_DEPRECATED
+
+EXTRA_DIST += \
+	makefile.msc
