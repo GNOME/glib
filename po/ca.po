@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 17:07-0400\n"
+"POT-Creation-Date: 2008-11-24 01:06-0500\n"
 "PO-Revision-Date: 2008-08-10 13:17+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -569,7 +569,7 @@ msgstr ""
 "el patró conté elements que no estan implementats en les concordances "
 "parcials"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1983
 msgid "internal error"
 msgstr "error intern"
 
@@ -1100,9 +1100,9 @@ msgstr "El nom de la clau no és vàlid: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El fitxer de claus conté la codificació no implementada «%s»"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2494
+#: glib/gkeyfile.c:2562 glib/gkeyfile.c:2697 glib/gkeyfile.c:2832
+#: glib/gkeyfile.c:2985 glib/gkeyfile.c:3172 glib/gkeyfile.c:3233
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El fitxer de claus no té el grup «%s»"
@@ -1117,13 +1117,13 @@ msgstr "El fitxer de claus no té la clau «%s»"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "El fitxer de claus conté la clau «%s» amb el valor «%s» que no és UTF-8"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1898
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2113 glib/gkeyfile.c:2325
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1132,36 +1132,36 @@ msgstr ""
 "El fitxer de claus conté la clau «%s» en el grup «%s», que té un valor no "
 "interpretable."
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2509 glib/gkeyfile.c:2712 glib/gkeyfile.c:3244
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El fitxer de claus no conté una clau «%s» en el grup «%s»"
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3478
 msgid "Key file contains escape character at end of line"
 msgstr "El fitxer de claus conté un caràcter d'escapada al final de línia"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3500
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El fitxer de claus conté una seqüència d'escapada no vàlida «%s»"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no es pot interpretar com a un nombre."
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3656
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor enter «%s» és fora del rang"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3689
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no es pot interpretar com a un nombre en coma flotant."
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3713
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no es pot interpretar com un booleà."
@@ -1178,7 +1178,7 @@ msgstr "El valor de comptatge passat a %s és massa llarg"
 msgid "Stream is already closed"
 msgstr "Ja està tancat el flux"
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "S'ha cancel·lat l'operació"
 
@@ -1247,7 +1247,7 @@ msgstr "la unitat no implementa l'enquesta per si hi ha un medi"
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
 #: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
 #: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "L'operació no està implementada"
 
@@ -1259,12 +1259,12 @@ msgstr "L'operació no està implementada"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "No existeix el punt de muntatge contenidor"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2126
 msgid "Can't copy over directory"
 msgstr "No es pot copiar al directori"
 
@@ -1272,7 +1272,7 @@ msgstr "No es pot copiar al directori"
 msgid "Can't copy directory over directory"
 msgstr "No es pot copiar el directori al directori"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2135
 msgid "Target file exists"
 msgstr "Ja existeix el fitxer de destinació"
 
@@ -1359,109 +1359,109 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "No s'ha pogut trobar el tipus de seguiment de directoris locals predeterminat"
 
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "El nom del fitxer no és vàlid: %s"
 
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr ""
 "S'ha produït un error en obtenir la informació del sistema de fitxers: %s"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "No es pot canviar el nom del directori arrel"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1128
 msgid "Can't rename file, filename already exist"
 msgstr "No es pot canviar el nom del fitxer, ja existeix aquest nom"
 
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
+#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "Nom de fitxer no vàlid"
 
-#: gio/glocalfile.c:1143
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "S'ha produït un error en canviar el nom del fitxer: %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1264
 #, c-format
 msgid "Error opening file: %s"
 msgstr "S'ha produït un error en obrir el fitxer: %s"
 
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1274
 msgid "Can't open directory"
 msgstr "No s'ha pogut obrir el directori"
 
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1334
 #, c-format
 msgid "Error removing file: %s"
 msgstr "S'ha produït un error en suprimir el fitxer: %s"
 
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1698
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "S'ha produït un error en enviar el fitxer a la paperera: %s"
 
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1721
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No s'ha pogut crear el directori de la paperera %s: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1742
 msgid "Unable to find toplevel directory for trash"
 msgstr "No s'ha pogut trobar el directori superior per a la paperera"
 
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
 msgid "Unable to find or create trash directory"
 msgstr "No s'ha pogut trobar o crear el directori de la paperera"
 
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1875
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "No s'ha pogut crear el fitxer d'informació d'enviar a la paperera: %s"
 
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "No s'ha pogut enviar el fitxer a la paperera: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2009
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "S'ha produït un error en crear el directori: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "S'ha produït un error en fer l'enllaç simbòlic: %s"
 
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
 #, c-format
 msgid "Error moving file: %s"
 msgstr "S'ha produït un error en moure el fitxer: %s"
 
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2121
 msgid "Can't move directory over directory"
 msgstr "No s'ha pogut moure el directori al directori"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Ha fallat la creació del fitxer de còpia de seguretat"
 
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2167
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "S'ha produït un error en suprimir el fitxer objectiu: %s"
 
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2181
 msgid "Move between mounts not supported"
 msgstr "No està implementat el moure entre muntatges"
 
@@ -1492,65 +1492,65 @@ msgstr ""
 msgid " (invalid encoding)"
 msgstr " (codificació no vàlida)"
 
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
 "S'ha produït un error en executar la funció «stat()» al descriptor de fitxer: "
 "%s"
 
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava un uint32)"
 
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava un uint64)"
 
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava una cadena de bytes)"
 
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "S'ha produït un error en establir els permisos: %s"
 
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "S'ha produït un error en establir el propietari: %s"
 
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr "l'enllaç simbòlic no pot ser nul"
 
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "S'ha produït un error en establir l'enllaç simbòlic: %s"
 
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "S'ha produït un error en establir l'enllaç simbòlic: el fitxer no és un "
 "enllaç simbòlic"
 
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr "El context del SELinux no pot ser nul"
 
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "S'ha produït un error en establir el context del SELinux: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr "Aquest sistema no té habilitat el SELinux"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "No està implementat establir l'atribut %s"

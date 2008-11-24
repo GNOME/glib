@@ -1,6 +1,8 @@
 Overview of Changes from GLib 2.18.2 to GLib 2.18.3
 ===================================================
 
+* Build with libtool 2.x
+
 * Bugs fixed:
  557087 mem leak in g_content_types_get_registered
  558185 'parent' variable in g_local_file_get_child_for_display_name()
@@ -12,6 +14,9 @@ Overview of Changes from GLib 2.18.2 to GLib 2.18.3
  556910 Memory leak: sub
  561352 Leak of icon description
  561375 Leaks mountpoint description
+ 560569 gkeyfile doesn't use the set list_separator in some cases
+ 560568 gkeyfile docs buglet
+ 559413 g_option_group_set_error_hook docs buglet
 
 * Updated translations:
  Arabic (ar)

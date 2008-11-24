@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 17:07-0400\n"
+"POT-Creation-Date: 2008-11-24 01:06-0500\n"
 "PO-Revision-Date: 2008-08-23 12:13+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -543,7 +543,7 @@ msgstr "バックトラック処理の上限に達しました"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "パターンに含まれているアイテムは部分マッチングをサポートしていません"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1983
 msgid "internal error"
 msgstr "内部エラー"
 
@@ -1060,9 +1060,9 @@ msgstr "キーの名前が無効です: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2494
+#: glib/gkeyfile.c:2562 glib/gkeyfile.c:2697 glib/gkeyfile.c:2832
+#: glib/gkeyfile.c:2985 glib/gkeyfile.c:3172 glib/gkeyfile.c:3233
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "キー・ファイルにグループ '%s' がありません"
@@ -1077,12 +1077,12 @@ msgstr "キー・ファイルにキー '%s' がありません"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1898
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2113 glib/gkeyfile.c:2325
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1090,36 +1090,36 @@ msgid ""
 msgstr ""
 "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2509 glib/gkeyfile.c:2712 glib/gkeyfile.c:3244
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3478
 msgid "Key file contains escape character at end of line"
 msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3500
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "値 '%s' を数値として解釈できません"
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3656
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数値 '%s' は範囲外の値です"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3689
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "値 '%s' を実数値として解釈できません"
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3713
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "値 '%s' を論理値として解釈できません"
@@ -1136,7 +1136,7 @@ msgstr "%s に引き渡した値が大きすぎます"
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "操作がキャンセルされました"
 
@@ -1202,7 +1202,7 @@ msgstr "ドライブ側でポーリングによるメディアの検出を実装
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
 #: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
 #: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
 
@@ -1214,12 +1214,12 @@ msgstr "サポートしていない操作です"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "マウントを含んでいるものはありません"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2126
 msgid "Can't copy over directory"
 msgstr "ディレクトリ全体をコピーできません"
 
@@ -1227,7 +1227,7 @@ msgstr "ディレクトリ全体をコピーできません"
 msgid "Can't copy directory over directory"
 msgstr "ディレクトリからディレクトリへコピーできません"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2135
 msgid "Target file exists"
 msgstr "対象となるファイルが存在しています"
 
@@ -1313,108 +1313,108 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "ローカル・ディレクトリを監視するデフォルト・モニタの種類が見つかりません"
 
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ファイル名が無効です: %s"
 
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ファイルシステムの情報を取得する際にエラー: %s"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "ルート・ディレクトリの名前は変更できません"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1128
 msgid "Can't rename file, filename already exist"
 msgstr "ファイル名を変更できません (既に存在しているため)"
 
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
+#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "無効なファイル名です"
 
-#: gio/glocalfile.c:1143
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ファイル名を変更する際にエラー: %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1264
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ファイルをオープンする際にエラー: %s"
 
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1274
 msgid "Can't open directory"
 msgstr "ディレクトリをオープンできません"
 
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1334
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ファイルを削除する際にエラー: %s"
 
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1698
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ファイルをゴミ箱へ移動する際にエラー: %s"
 
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1721
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ゴミ箱のディレクトリ (%s) の生成に失敗しました: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1742
 msgid "Unable to find toplevel directory for trash"
 msgstr "ゴミ箱のトップレベルなディレクトリが見つかりません"
 
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
 msgid "Unable to find or create trash directory"
 msgstr "ゴミ箱ディレクトリが存在しないか生成できません"
 
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1875
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ゴミ箱の情報ファイルを生成できません: %s"
 
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ファイルをゴミ箱へ移動できません: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2009
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ディレクトリを生成する際にエラー: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "シンボリック・リンクを生成する際にエラー: %s"
 
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ファイルを移動する際にエラー: %s"
 
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2121
 msgid "Can't move directory over directory"
 msgstr "ディレクトリからディレクトリへ移動できません"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "バックアップ・ファイルの生成に失敗しました"
 
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2167
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "対象となるファイルを削除する際にエラー: %s"
 
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2181
 msgid "Move between mounts not supported"
 msgstr "マウント間の移動はサポートしていません"
 
@@ -1444,61 +1444,61 @@ msgstr "'%s' というファイルの状態を取得する際にエラー: %s"
 msgid " (invalid encoding)"
 msgstr " (無効なエンコーディング)"
 
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ファイル・ディスクリプタの状態を取得する際にエラー: %s"
 
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "属性の種類が無効です (uint32 型を想定していた)"
 
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "属性の種類が無効です (uint64 型を想定していた)"
 
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr "属性の種類が無効です (バイト型の文字列を想定していた)"
 
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "アクセス権をセットする際にエラー: %s"
 
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "所有者をセットする際にエラー: %s"
 
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr "シンボリックリンクを NULL にしないで下さい"
 
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "シンボリックリンクをセットする際にエラー: %s"
 
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux のコンテキストを NULL にしないで下さい"
 
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux のコンテキストを指定する際にエラー: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr "このシステムでは SELinux が有効になっていません"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s という属性値はセットできません"

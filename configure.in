@@ -490,6 +490,8 @@ dnl Initialize libtool
 AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
+dnl when using libtool 2.x create libtool early, because it's used in configure
+m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
 if test "x$GCC" = "xyes"; then
   case " $CFLAGS " in

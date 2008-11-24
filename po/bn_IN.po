@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 17:07-0400\n"
+"POT-Creation-Date: 2008-11-24 01:06-0500\n"
 "PO-Revision-Date: 2008-09-09 18:16+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <fedora-trans-bn_IN@redhat.com>\n"
@@ -547,7 +547,7 @@ msgstr "ব্যাক-ট্যাক করার সুনির্দিষ
 msgid "the pattern contains items not supported for partial matching"
 msgstr "উল্লিখিত বিন্যাসটির মধ্যে অন্তর্ভুক্ত সামগ্রী, আংশিক মিল অনুসন্ধানে সমর্থিত নয়"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1983
 msgid "internal error"
 msgstr "অভ্যন্তরীণ সমস্যা"
 
@@ -1057,9 +1057,9 @@ msgstr "কি-র নাম অবৈধ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কি-ফাইলের মধ্যে অসমর্থিত এনকোডিং '%s'"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2494
+#: glib/gkeyfile.c:2562 glib/gkeyfile.c:2697 glib/gkeyfile.c:2832
+#: glib/gkeyfile.c:2985 glib/gkeyfile.c:3172 glib/gkeyfile.c:3233
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো সংকলন অনুপস্থিত '%s'"
@@ -1075,12 +1075,12 @@ msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' মান সহ  '%1$s' কি উপস্থিত রয়েছে যা UTF-8 বিন্যাসে নেই।"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1898
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কি-ফাইলের মধ্যে '%s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2113 glib/gkeyfile.c:2325
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1089,36 +1089,36 @@ msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব "
 "নয়।"
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2509 glib/gkeyfile.c:2712 glib/gkeyfile.c:3244
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত নেই"
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3478
 msgid "Key file contains escape character at end of line"
 msgstr "কি-ফাইলের মধ্যে পংক্তির অবশেষে এস্কেপ অক্ষর উপস্থিত রয়েছে"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3500
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কি-ফাইলের মধ্যে অবৈধ এস্কেপ ধারা উপস্থিত রয়েছে '%s'"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' মান কোনো সংখ্যারূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3656
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' পূর্ণসংখ্যা মান সীমা বহির্ভূত"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3689
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3713
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' মান বুলিয়ান রূপে ব্যাখ্যা করা সম্ভব নয়।"
@@ -1135,7 +1135,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "কর্ম বাতিল করা হয়েছে"
 
@@ -1201,7 +1201,7 @@ msgstr ""
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
 #: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
 #: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "কর্ম সমর্থিত হয় না"
 
@@ -1213,12 +1213,12 @@ msgstr "কর্ম সমর্থিত হয় না"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "ধারণকারী মাউন্ট উপস্থিত নেই"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2126
 msgid "Can't copy over directory"
 msgstr "ডিরেক্টরির উপরে কপি করা যাবে না"
 
@@ -1226,7 +1226,7 @@ msgstr "ডিরেক্টরির উপরে কপি করা যা�
 msgid "Can't copy directory over directory"
 msgstr "ডিরেক্টরির উপর ডিরেক্টরি কপি করা যায়নি"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2135
 msgid "Target file exists"
 msgstr "উদ্দিষ্ট ফাইল উপস্থিত রয়েছে"
 
@@ -1311,109 +1311,109 @@ msgstr "স্ট্রিমের ক্ষেত্রে অসমাপ্�
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ফাইলের নাম অবৈধ: %s"
 
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ফাইল-সিস্টেম সংক্রান্ত তথ্য প্রাপ্ত করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "root ডিরেক্টরির নাম পরিবর্তন করা সম্ভব নয়"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1128
 msgid "Can't rename file, filename already exist"
 msgstr ""
 "ফাইলের নাম পরিবর্তন করা যায়নি, নতুন নামের একটি ফাইলের নাম বর্তমানে উপস্থিত রয়েছে"
 
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
+#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "ফাইলের নাম বৈধ নয়"
 
-#: gio/glocalfile.c:1143
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ফাইলের নাম পরিবর্তনে সমস্যা: %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1264
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ফাইল খুলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1274
 msgid "Can't open directory"
 msgstr "ডিরেক্টরি খুলতে সমস্যা"
 
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1334
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ফাইল মুছে ফেলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1698
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ফাইলটি আবর্জনায় স্থানান্তর করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1721
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "আবর্জনার ডিরেক্টরি %s নির্মাণ করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1742
 msgid "Unable to find toplevel directory for trash"
 msgstr "আবর্জনার ঊর্ধ্বতন ডিরেক্টরি সনাক্ত করতে ব্যর্থ"
 
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
 msgid "Unable to find or create trash directory"
 msgstr "আবর্জনার ডিরেক্টরি সনাক্ত অথবা নির্মাণ করতে ব্যর্থ"
 
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1875
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr ""
 
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ফাইল বর্জন করতে ব্যর্থ: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2009
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ডিরেক্টরি নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "সিম্‌বলিক লিঙ্ক নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ফাইল স্থানান্তর করতে সমস্যা: %s"
 
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2121
 msgid "Can't move directory over directory"
 msgstr "ডিরেক্টরির উপর ডিরেক্টরি স্থানান্তর করা যাবে না"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "ব্যাক-আপ ফাইল নির্মাণ করতে ব্যর্থ"
 
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2167
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "উদ্দিষ্ট ফাইল মুছে ফেলতে সমস্যা: %s"
 
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2181
 msgid "Move between mounts not supported"
 msgstr "মাউন্ট করা অবস্থানের মধ্যে স্থানান্তর করা সম্ভব নয়"
 
@@ -1443,61 +1443,61 @@ msgstr "ফাইল '%s' stat করতে ব্যর্থ: %s"
 msgid " (invalid encoding)"
 msgstr " (অবৈধ এনকোডিং)"
 
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ফাইলের বিবরণ stat করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "অ্যাট্রিবিউটের ধরন বৈধ নয় (প্রত্যাশিত uint32)"
 
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "অ্যাট্রিবিউটের ধরন বৈধ নয় (প্রত্যাশিত uint64)"
 
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "অনুমতি নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "মালিকানা নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr "সিম্‌-লিঙ্ক NULL-ব্যাতীত মান হওয়া আবশ্যক"
 
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "সিম্‌-লিঙ্ক নির্ধারণ করতে সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr "সিম্‌-লিঙ্ক নির্ধারণ করতে ত্রুটি: ফাইলটি সিম্‌-লিঙ্ক নয়"
 
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux কনটেক্সটের NULL-ব্যাতীত মান হওয়া আবশ্যক"
 
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux কনটেক্সট নির্ধারণ করতে ব্যর্থ: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr "এই সিস্টেমে SELinux সক্রিয় করা হয়নি"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s অ্যাট্রিবিউটের মান নির্ধারণ সমর্থিত নয়"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 17:07-0400\n"
+"POT-Creation-Date: 2008-11-24 01:06-0500\n"
 "PO-Revision-Date: 2008-08-18 10:19+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -566,7 +566,7 @@ msgstr "u arrit kufiri i backtracking"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "modeli përmban elementë të pasuportuar për korrispondimin e pjesëshëm"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1983
 msgid "internal error"
 msgstr "gabim i brendshëm"
 
@@ -1154,9 +1154,9 @@ msgstr "Emër i pasaktë kyçi: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "File i kyçit përmban kodifikimin e pasuportuar '%s'"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2494
+#: glib/gkeyfile.c:2562 glib/gkeyfile.c:2697 glib/gkeyfile.c:2832
+#: glib/gkeyfile.c:2985 glib/gkeyfile.c:3172 glib/gkeyfile.c:3233
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "File i kyçit nuk ka grupin '%s'"
@@ -1171,12 +1171,12 @@ msgstr "File i kyçit nuk përmban kyçin '%s'"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "File i kyçit përmban kyçin '%s' me vlerë '%s' që nuk është në UTF-8"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1898
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "File i kyçit përmban kyçin '%s' që ka një vlerë të painterpretueshme."
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2113 glib/gkeyfile.c:2325
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1185,36 +1185,36 @@ msgstr ""
 "File i kyçit përmban kyçin '%s' në grupin '%s' që ka një vlerë të "
 "painterpretueshme."
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2509 glib/gkeyfile.c:2712 glib/gkeyfile.c:3244
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "File i kyçit nuk ka kyçin '%s' në grupin '%s'"
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3478
 msgid "Key file contains escape character at end of line"
 msgstr "File i kyçit përmban simbolin escape në fund të rreshtit"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3500
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "File i kyçit përmban sekuencën e pavlefshme escape '%s'"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3656
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Vlera integruese '%s' është jashtë kufirit"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3689
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër float."
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3713
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
@@ -1234,7 +1234,7 @@ msgid "Stream is already closed"
 msgstr "Stream është i mbyllur rregullisht"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gcancellable.c:295 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "Operacioni është anulluar"
 
@@ -1318,7 +1318,7 @@ msgstr "njësia nuk suporton shqyrtimin e suporteve"
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
 #: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
 #: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "Veprimi nuk suportohet"
 
@@ -1331,13 +1331,13 @@ msgstr "Veprimi nuk suportohet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "Objekti mount i përmbajtur nuk ekziston"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2126
 msgid "Can't copy over directory"
 msgstr "I pamundur kopjimi mbi directory"
 
@@ -1347,7 +1347,7 @@ msgid "Can't copy directory over directory"
 msgstr "I pamundur kopjimi i directory mbi directory"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2135
 msgid "Target file exists"
 msgstr "File objektiv ekziston"
 
@@ -1454,7 +1454,7 @@ msgstr ""
 "E pamundur gjetja e llojit të monitorit të paracaktuar për directory lokale"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Emër file i pasaktë %s"
@@ -1463,24 +1463,24 @@ msgstr "Emër file i pasaktë %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Gabim gjatë marrjes së informacioneve mbi file të sistemit: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "I pamundur riemërtimi i directory root"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1128
 msgid "Can't rename file, filename already exist"
 msgstr "I pamundur riemërtimi i file, emër ekzistues file"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
+#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "Emër i pavlefshëm file"
@@ -1489,7 +1489,7 @@ msgstr "Emër i pavlefshëm file"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1143
+#: gio/glocalfile.c:1145
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Gabim gjatë ndryshimit të emrit të file: %s"
@@ -1498,13 +1498,13 @@ msgstr "Gabim gjatë ndryshimit të emrit të file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1264
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Gabim gjatë hapjes së file: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1274
 msgid "Can't open directory"
 msgstr "E pamundur hapja e directory"
 
@@ -1512,7 +1512,7 @@ msgstr "E pamundur hapja e directory"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1334
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Gabim gjatë fshirjes së file: %s"
@@ -1521,25 +1521,25 @@ msgstr "Gabim gjatë fshirjes së file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1698
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Gabim gjatë hedhjes në kosh të file: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1721
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "I pamundur krijimi i directory koshit \"%s\": %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1742
 msgid "Unable to find toplevel directory for trash"
 msgstr "E pamundur gjetja e directory së sipërme për koshin"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
 msgid "Unable to find or create trash directory"
 msgstr "I pamundur krijimi apo gjetja e directory të koshit"
 
@@ -1547,7 +1547,7 @@ msgstr "I pamundur krijimi apo gjetja e directory të koshit"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1875
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "I pamundur krijimi i një file me informacionet e hedhjes në kosh: %s"
@@ -1556,19 +1556,19 @@ msgstr "I pamundur krijimi i një file me informacionet e hedhjes në kosh: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "E pamundur hedhja në kosh e file: %s"
 
 # (pofilter) variables: translation contains variables not in original: %s, %s
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2009
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Gabim gjatë krijimit të directory: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Gabim gjatë krijimit të lidhjes simbolike: %s"
@@ -1577,18 +1577,18 @@ msgstr "Gabim gjatë krijimit të lidhjes simbolike: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Gabim gjatë lëvizjes së file: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2121
 msgid "Can't move directory over directory"
 msgstr "E pamundur lëvizja e directory mbi directory"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
@@ -1598,13 +1598,13 @@ msgstr "Krijimi i file backup dështoi"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2167
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Gabim gjatë heqjes së file objektiv: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2181
 msgid "Move between mounts not supported"
 msgstr "Lëvizja midis objekteve mount nuk suportohet"
 
@@ -1644,76 +1644,76 @@ msgstr " (kodifikim i pavlefshëm)"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Gabim gjatë kryerjes së stat të përshkruesit të file: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Lloj i pasaktë atributi (pritej uint32)"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Lloj i pasaktë atributi (pritej uint64)"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Lloj i pasaktë atributi (pritej byte string)"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Gabim gjatë caktimit të së drejtave: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Gabim gjatë caktimit të pronarit: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr "symlink duhet të jetë jo-NULL"
 
 # (pofilter) variables: translation contains variables not in original: %d
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Gabim gjatë caktimit të symlink: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Gabim gjatë caktimit të symlink: file nuk është një lidhje simbolike"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr "Konteksti SELinux duhet të jetë non-NULL"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Gabim gjatë përcaktimit të kontekstit SELinux: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nuk është aktivizuar në këtë sistem"
 
 # (pofilter) variables: do not translate: %s
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Caktimi i atributit %s nuk suportohet"

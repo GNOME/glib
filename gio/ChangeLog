@@ -1,3 +1,7 @@
+2008-11-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.18.3 ===
+
 2008-11-23  Hans Breuer  <hans@breuer.org>
 
 	* gio.rc.in : version resource as for the other glib dlls
