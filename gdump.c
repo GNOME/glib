@@ -274,7 +274,11 @@ dump_type (GType type, const char *symbol, GOutputStream *out)
       /* GValue, etc.  Just skip them. */
       break;
     default:
-      g_warning ("unhandled gtype %s", g_type_name (type));
+      /* Other fundamental types such as the once GStreamer and Clutter registers
+       * are not yet interesting from an introspection perspective and should be
+       * ignored
+       */
+      break;
     }
 }
 
