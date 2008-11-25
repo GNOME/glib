@@ -172,10 +172,17 @@ typedef struct
   guint16 wraps_vfunc : 1;
   guint16 throws      : 1;
   guint16 index       :10;
+  /* Note the bits above need to match CommonBlob
+   * and are thus exhausted, extend things using
+   * the reserved block below. */
 
   guint32 name;
   guint32 symbol;
   guint32 signature;
+
+  guint16 is_static   : 1;
+  guint16 reserved    : 15;
+  guint16 reserved2   : 16;
 } FunctionBlob;
 
 typedef struct 

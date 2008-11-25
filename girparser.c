@@ -674,10 +674,12 @@ start_function (GMarkupParseContext *context,
 	       strcmp (element_name, "callback") == 0);
       break;
     case STATE_CLASS:
+      found = strcmp (element_name, "function") == 0;
+	/* fallthrough */
     case STATE_BOXED:
     case STATE_STRUCT:
     case STATE_UNION:
-      found = strcmp (element_name, "constructor") == 0;
+      found = (found || strcmp (element_name, "constructor") == 0);
       /* fallthrough */
     case STATE_INTERFACE:
       found = (found ||

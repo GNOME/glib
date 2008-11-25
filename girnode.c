@@ -415,7 +415,7 @@ g_ir_node_get_size (GIrNode *node)
       break;
 
     case G_IR_NODE_FUNCTION:
-      size = 16; 
+      size = sizeof (FunctionBlob);
       break;
 
     case G_IR_NODE_PARAM:
@@ -1581,6 +1581,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 
 	blob->blob_type = BLOB_TYPE_FUNCTION;
 	blob->deprecated = function->deprecated;
+        blob->is_static = !function->is_method;
 	blob->setter = function->is_setter;
 	blob->getter = function->is_getter;
 	blob->constructor = function->is_constructor;

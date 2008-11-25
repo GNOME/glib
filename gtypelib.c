@@ -167,7 +167,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (ArgBlob, 12);
   CHECK_SIZE (SignatureBlob, 8);
   CHECK_SIZE (CommonBlob, 8);
-  CHECK_SIZE (FunctionBlob, 16);
+  CHECK_SIZE (FunctionBlob, 20);
   CHECK_SIZE (InterfaceTypeBlob, 4);
   CHECK_SIZE (ArrayTypeBlob, 8);
   CHECK_SIZE (ParamTypeBlob, 4);
@@ -315,7 +315,7 @@ validate_header (ValidateContext  *ctx,
     }
 
   if (header->entry_blob_size != 12 ||
-      header->function_blob_size != 16 ||
+      header->function_blob_size != 20 ||
       header->callback_blob_size != 12 ||
       header->signal_blob_size != 12 ||
       header->vfunc_blob_size != 16 ||
@@ -731,7 +731,7 @@ validate_function_blob (ValidateContext *ctx,
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Wrong blob type");
+		   "Wrong blob type %d, expected function", blob->blob_type);
       return FALSE;
     }
 

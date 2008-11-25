@@ -494,7 +494,7 @@ g_function_info_get_flags (GIFunctionInfo *info)
   flags = 0;
 
   /* Make sure we don't flag Constructors as methods */
-  if (base->container != NULL && !blob->constructor)
+  if (!blob->constructor && !blob->is_static)
     flags = flags | GI_FUNCTION_IS_METHOD;
     
   if (blob->constructor)

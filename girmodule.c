@@ -209,7 +209,7 @@ g_ir_module_build_typelib (GIrModule  *module,
                              : 0);
   header->directory = ALIGN_VALUE (header_size, 4);
   header->entry_blob_size = 12;
-  header->function_blob_size = 16;
+  header->function_blob_size = sizeof (FunctionBlob);
   header->callback_blob_size = 12;
   header->signal_blob_size = 12;
   header->vfunc_blob_size = 16;
