@@ -24,13 +24,14 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "girepository.h"
 #include "gtypelib.h"
+#include "ginfo.h"
 
 struct _GIBaseInfo 
 {
   gint type;
   gint ref_count;
+  GIRepository *repository;
   GIBaseInfo *container;
 
   GTypelib *typelib;
@@ -135,12 +136,15 @@ struct _GIUnionInfo
 
 /* info creation */
 GIBaseInfo *
-g_info_new (GIInfoType     type,
-	    GIBaseInfo    *container,
-	    GTypelib     *typelib, 
-	    guint32        offset)
+g_info_new_full (GIInfoType     type,
+		 GIRepository  *repository,
+		 GIBaseInfo    *container,
+		 GTypelib     *typelib, 
+		 guint32        offset)
 {
   GIBaseInfo *info;
+
+  g_return_val_if_fail (container != NULL || repository != NULL, NULL);
 
   info = g_new0 (GIBaseInfo, 1);
 
@@ -153,38 +157,48 @@ g_info_new (GIInfoType     type,
   if (container)
     info->container = g_base_info_ref (container);
 
+  info->repository = g_object_ref (repository);
+
   return info;
 }
 
+GIBaseInfo *
+g_info_new (GIInfoType     type,
+	    GIBaseInfo    *container,
+	    GTypelib     *typelib, 
+	    guint32        offset)
+{
+  return g_info_new_full (type, container->repository, container, typelib, offset);
+}
+
 static GIBaseInfo *
-g_info_from_entry (GTypelib *typelib,
+g_info_from_entry (GIRepository *repository,
+		   GTypelib *typelib,
 		   guint16    index)
 {
   GIBaseInfo *result;
   DirEntry *entry = g_typelib_get_dir_entry (typelib, index);
-  
+
   if (entry->local)
-    result = g_info_new (entry->blob_type, NULL, typelib, entry->offset);
-  else 
+    result = g_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+  else
     {
       const gchar *namespace = g_typelib_get_string (typelib, entry->offset);
       const gchar *name = g_typelib_get_string (typelib, entry->name);
-      
-      GIRepository *repository = g_irepository_get_default ();
-      
+
       result = g_irepository_find_by_name (repository, namespace, name);
       if (result == NULL)
 	{
 	  GIUnresolvedInfo *unresolved;
 
 	  unresolved = g_new0 (GIUnresolvedInfo, 1);
-	  
+
 	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
 	  unresolved->ref_count = 1;
 	  unresolved->container = NULL;
 	  unresolved->name = name;
 	  unresolved->namespace = namespace;
-	  
+
 	  return (GIBaseInfo*)unresolved;
 	}
       return result;
@@ -212,6 +226,8 @@ g_base_info_unref (GIBaseInfo *info)
     {
       if (info->container)
 	g_base_info_unref (info->container);
+
+      g_object_unref (info->repository);
 
       g_free (info);
     }
@@ -804,7 +820,7 @@ g_type_info_get_interface (GITypeInfo *info)
       InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
       
       if (blob->tag == GI_TYPE_TAG_INTERFACE)
-	return g_info_from_entry (base->typelib, blob->interface);
+	return g_info_from_entry (base->repository, base->typelib, blob->interface);
     }
 
   return NULL;
@@ -896,7 +912,8 @@ g_type_info_get_error_domain (GITypeInfo *info,
       ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->typelib->data[base->offset];
 
       if (blob->tag == GI_TYPE_TAG_ERROR)
-	return (GIErrorDomainInfo *) g_info_from_entry (base->typelib, 
+	return (GIErrorDomainInfo *) g_info_from_entry (base->repository,
+							base->typelib,
 							blob->domains[n]);
     }
 
@@ -920,7 +937,8 @@ g_error_domain_info_get_codes (GIErrorDomainInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->typelib->data[base->offset];
   
-  return (GIInterfaceInfo *) g_info_from_entry (base->typelib, blob->error_codes);
+  return (GIInterfaceInfo *) g_info_from_entry (base->repository,
+						base->typelib, blob->error_codes);
 }
 
 
@@ -1182,7 +1200,8 @@ g_object_info_get_parent (GIObjectInfo *info)
   ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
 
   if (blob->parent)
-    return (GIObjectInfo *) g_info_from_entry (base->typelib, blob->parent);
+    return (GIObjectInfo *) g_info_from_entry (base->repository,
+					       base->typelib, blob->parent);
   else
     return NULL;
 }
@@ -1229,7 +1248,8 @@ g_object_info_get_interface (GIObjectInfo *info,
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
 
-  return (GIInterfaceInfo *) g_info_from_entry (base->typelib, blob->interfaces[n]);
+  return (GIInterfaceInfo *) g_info_from_entry (base->repository,
+						base->typelib, blob->interfaces[n]);
 }
 
 gint
@@ -1437,7 +1457,8 @@ g_interface_info_get_prerequisite (GIInterfaceInfo *info,
   GIBaseInfo *base = (GIBaseInfo *)info;
   InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
 
-  return g_info_from_entry (base->typelib, blob->prerequisites[n]);
+  return g_info_from_entry (base->repository,
+			    base->typelib, blob->prerequisites[n]);
 }
 
 

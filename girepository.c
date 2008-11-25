@@ -30,6 +30,7 @@
 #include <gmodule.h>
 #include "girepository.h"
 #include "gtypelib.h"
+#include "ginfo.h"
 
 #include "config.h"
 
@@ -333,6 +334,7 @@ register_internal (GIRepository *repository,
       else
 	key = build_typelib_key (namespace, source);
 
+      g_printerr ("loaded: %s\n", key);
       g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
     }
 
@@ -487,6 +489,7 @@ g_irepository_get_n_infos (GIRepository *repository,
 
 typedef struct
 {
+  GIRepository *repo;
   gint index;
   const gchar *name;
   const gchar *type;
@@ -556,8 +559,9 @@ find_interface (gpointer key,
   if (index != 0)
     {
       entry = g_typelib_get_dir_entry (typelib, index);
-      iface_data->iface = g_info_new (entry->blob_type, NULL,
-				      typelib, entry->offset);
+      iface_data->iface = g_info_new_full (entry->blob_type,
+					   iface_data->repo,
+					   NULL, typelib, entry->offset);
     }
 }
 
@@ -585,6 +589,7 @@ g_irepository_get_info (GIRepository *repository,
 
   repository = get_repository (repository);
 
+  data.repo = repository;
   data.name = NULL;
   data.type = NULL;
   data.index = index + 1;
@@ -621,6 +626,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   repository = get_repository (repository);
 
+  data.repo = repository;
   data.name = NULL;
   data.type = g_type_name (type);
   data.index = -1;
@@ -657,6 +663,7 @@ g_irepository_find_by_name (GIRepository *repository,
 
   repository = get_repository (repository);
 
+  data.repo = repository;
   data.name = name;
   data.type = NULL;
   data.index = -1;
