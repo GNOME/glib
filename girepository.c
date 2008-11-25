@@ -334,7 +334,6 @@ register_internal (GIRepository *repository,
       else
 	key = build_typelib_key (namespace, source);
 
-      g_printerr ("loaded: %s\n", key);
       g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
     }
 
