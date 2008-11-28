@@ -801,7 +801,7 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
   if (length)
     *length = (gsize)found_pos;
   g_warn_if_fail (res == found_pos + newline_len);
-  line[found_pos] = 0;
+  line[found_pos + newline_len] = 0;
   
   return line;
 }
