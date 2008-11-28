@@ -1532,8 +1532,8 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
 }
 
 static gboolean
-g_desktop_app_info_ensure_saved (GDesktopAppInfo *info,
-				 GError **error)
+g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
+				 GError          **error)
 {
   GKeyFile *key_file;
   char *dirname;
@@ -1628,7 +1628,10 @@ g_desktop_app_info_can_delete (GAppInfo *appinfo)
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
   if (info->filename)
-    return g_access (info->filename, W_OK) == 0;
+    {
+      if (strstr (info->filename, "/userapp-"))
+        return g_access (info->filename, W_OK) == 0;
+    }
 
   return FALSE;
 }

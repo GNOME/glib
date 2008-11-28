@@ -1,5 +1,10 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* gdesktopappinfo.c (g_app_info_can_delete): Only allow deleting
+	files that have been created by g_app_info_create_from_commandline.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 541715 – win32 : patch for warnings and signature problems in 
 	recent code
 	
