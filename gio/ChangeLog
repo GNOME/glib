@@ -1,5 +1,13 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 559633 – gtk_image_new_from_gicon does not always work for
+	.desktop files
+
+	* gdesktopappinfo.c (g_desktop_app_info_new_from_keyfile): Ignore
+	extensions on icon names.  Proposed by Axel von Bertoldi.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 548163 – Nautilus displays wrong error message for too long file
 	names
 

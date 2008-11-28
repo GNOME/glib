@@ -267,7 +267,18 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 	  g_object_unref (file);
 	}
       else
-	info->icon = g_themed_icon_new (info->icon_name);
+        {
+          char *p;
+
+          /* Work around a common mistake in desktop files */    
+          if ((p = strrchr (info->icon_name, '.')) != NULL &&
+              (strcmp (p, ".png") == 0 ||
+               strcmp (p, ".xpm") == 0 ||
+               strcmp (p, ".svg") == 0)) 
+            *p = 0;
+
+	  info->icon = g_themed_icon_new (info->icon_name);
+        }
     }
   
   if (info->exec)
