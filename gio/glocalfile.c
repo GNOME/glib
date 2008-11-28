@@ -1116,12 +1116,23 @@ g_local_file_set_display_name (GFile         *file,
   
   if (new_file == NULL)
     return NULL;
-  
   local = G_LOCAL_FILE (file);
   new_local = G_LOCAL_FILE (new_file);
 
-  if (!(g_lstat (new_local->filename, &statbuf) == -1 &&
-	errno == ENOENT))
+  if (g_lstat (new_local->filename, &statbuf) == -1) 
+    {
+      errsv = errno;
+
+      if (errsv != ENOENT)
+        {
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error renaming file: %s"),
+		       g_strerror (errsv));
+          return NULL;
+        }
+    }
+  else
     {
       g_set_error_literal (error, G_IO_ERROR,
                            G_IO_ERROR_EXISTS,

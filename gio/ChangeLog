@@ -1,5 +1,14 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 548163 – Nautilus displays wrong error message for too long file
+	names
+
+	* glocalfile.c (g_local_file_set_display_name): Correctly set
+	error conditions if the new name is e.g. too long. Reported
+	by Leonardo Ferreira Fontenelle.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 547481 – g_data_input_stream_read_line behaves not as stated in
 	the docs
 
