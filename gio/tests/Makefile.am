@@ -22,7 +22,8 @@ TEST_PROGS +=	 		\
 	g-file 			\
 	g-file-info 		\
 	data-input-stream 	\
-	data-output-stream
+	data-output-stream	\
+	buffered-input-stream
 
 if OS_UNIX
 TEST_PROGS += live-g-file
@@ -45,6 +46,9 @@ data_input_stream_LDADD		= $(progs_ldadd)
 
 data_output_stream_SOURCES	= data-output-stream.c
 data_output_stream_LDADD	= $(progs_ldadd)
+
+buffered_input_stream_SOURCES	= buffered-input-stream.c
+buffered_input_stream_LDADD	= $(progs_ldadd)
 
 live_g_file_SOURCES	  = live-g-file.c
 live_g_file_LDADD	  = $(progs_ldadd)
