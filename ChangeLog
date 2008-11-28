@@ -1,3 +1,14 @@
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 562378 – callback return value not respected for callback option
+	with no arg
+
+	* glib/goption.c (parse_long_option): Return the parse_arg return
+	value even for no-arg callbacks. Patch by Christian Persch
+
+	* glib/tests/option-context.c: Add a test for a callback which
+	returns FALSE.
+
 2008-11-23  Christian Persch  <chpe@gnome.org>
 
 	Bug 559413 – g_option_group_set_error_hook docs buglet

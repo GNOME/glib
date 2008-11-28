@@ -1025,6 +1025,82 @@ callback_remaining_test1 (void)
   g_option_context_free (context);
 }
 
+static gboolean
+callback_error (const gchar *option_name, const gchar *value,
+                gpointer data, GError **error)
+{
+  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, "42");
+  return FALSE;
+}
+
+static void
+callback_returns_false (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] =
+    { { "error", 0, 0, G_OPTION_ARG_CALLBACK, callback_error, NULL, NULL },
+      { "error-no-arg", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, callback_error, NULL, NULL },
+      { "error-optional-arg", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, callback_error, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --error value", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (retval == FALSE);
+
+  g_option_context_free (context);
+  g_clear_error (&error);
+
+  /* And again, this time with a no-arg variant */
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  argv = split_string ("program --error-no-arg", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (retval == FALSE);
+
+  g_option_context_free (context);
+  g_clear_error (&error);
+
+  /* And again, this time with a optional arg variant, with argument */
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  argv = split_string ("program --error-optional-arg value", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (retval == FALSE);
+
+  g_option_context_free (context);
+  g_clear_error (&error);
+
+  /* And again, this time with a optional arg variant, without argument */
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  argv = split_string ("program --error-optional-arg", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (retval == FALSE);
+
+  g_option_context_free (context);
+  g_clear_error (&error);
+}
+
+
 void
 ignore_test1 (void)
 {
@@ -1682,6 +1758,9 @@ main (int   argc,
 
   /* Test callback with G_OPTION_REMAINING */
   g_test_add_func ("/arg/remaining/callback", callback_remaining_test1);
+  
+  /* Test callbacks which return FALSE */
+  g_test_add_func ("/arg/remaining/callback-false", callback_returns_false);
   
   /* Test ignoring options */
   g_test_add_func ("/arg/ignore/long", ignore_test1);
