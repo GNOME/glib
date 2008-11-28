@@ -1,5 +1,10 @@
 @008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/keyfile.sgml: Explain locale identifiers in
+	more detail
+
+@008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 562549 – g_byte_array_free should tell how free data
 
 	* glib/tmpl/arrays_byte.sgml: Improve docs, proposed by

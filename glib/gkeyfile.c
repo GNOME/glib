@@ -1589,7 +1589,7 @@ g_key_file_set_string_list (GKeyFile            *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale
+ * @locale: a locale identifier
  * @string: a string
  *
  * Associates a string value for @key and @locale under @group_name.  
@@ -1625,7 +1625,7 @@ extern GSList *_g_compute_locale_variants (const gchar *locale);
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale or %NULL
+ * @locale: a locale identifier or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the value associated with @key under @group_name
@@ -1721,7 +1721,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale
+ * @locale: a locale identifier or %NULL
  * @length: return location for the number of returned strings or %NULL
  * @error: return location for a #GError or %NULL
  *
@@ -1796,7 +1796,7 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale
+ * @locale: a locale identifier
  * @list: a %NULL-terminated array of locale string values
  * @length: the length of @list
  *

@@ -1,5 +1,10 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Refer to @locale parameters as locale identifier
+	in docs.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 557603 – carbon check output misplaced
 
 	* configure.in: Call AC_PROG_CPP early to avoid it messing up

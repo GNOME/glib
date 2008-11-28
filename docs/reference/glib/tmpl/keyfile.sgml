@@ -34,8 +34,9 @@ Name=Key File Example\tthis value shows\nescaping
 # localized strings are stored in multiple key-value pairs
 Welcome=Hello
 Welcome[de]=Hallo
-Welcome[fr]=Bonjour
+Welcome[fr_FR]=Bonjour
 Welcome[it]=Ciao
+Welcome[be@latin]=Hello
 
 [Another Group]
 
@@ -58,7 +59,9 @@ the end of the file. Each key-value pair must be contained in a group.
 <para>
 Key-value pairs generally have the form <literal>key=value</literal>, 
 with the exception of localized strings, which have the form 
-<literal>key[locale]=value</literal>. Space before and after the 
+<literal>key[locale]=value</literal>, with a locale identifier of the form
+<literal>lang_COUNTRY@MODIFIER</literal> where <literal>COUNTRY</literal> and 
+<literal>MODIFIER</literal> are optional. Space before and after the 
 '=' character are ignored. Newline, tab, carriage return and backslash 
 characters in value are escaped as \n, \t, \r, and \\, respectively. 
 To preserve leading spaces in values, these can also be escaped as \s.
