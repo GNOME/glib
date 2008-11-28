@@ -1,3 +1,11 @@
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 561807 – inotify_sub.c :: dup_dirname() fails to remove trailing
+	'/'
+
+	* inotify/inotify-sub.c (dup_dirname): Actually strip the trailing
+	'/' away. Spotted by Dan Williams.
+
 2008-11-21  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	Bug 561375 – Leaks mountpoint description

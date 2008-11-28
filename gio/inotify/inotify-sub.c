@@ -38,8 +38,8 @@ dup_dirname (const gchar *dirname)
   gchar *d_dirname = g_strdup (dirname);
   size_t len = strlen (d_dirname);
   
-  if (d_dirname[len] == '/')
-    d_dirname[len] = '\0';
+  if (d_dirname[len - 1] == '/')
+    d_dirname[len - 1] = '\0';
   
   return d_dirname;
 }
