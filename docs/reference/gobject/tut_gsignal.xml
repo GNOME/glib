@@ -501,7 +501,7 @@ void                  g_signal_emit_by_name (gpointer            instance,
 	  <para>
 		This completely optional filtering mechanism is mainly used as an optimization for signals
 		which are often emitted for many different reasons: the clients can filter out which events they are
-		interested into before the closure's marshalling code runs. For example, this is used extensively
+		interested in before the closure's marshalling code runs. For example, this is used extensively
 		by the <emphasis>notify</emphasis> signal of GObject: whenever a property is modified on a GObject,
 		instead of just emitting the <emphasis>notify</emphasis> signal, GObject associates as a detail to this
 		signal emission the name of the property modified. This allows clients who wish to be notified of changes

@@ -1,5 +1,15 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 559452 – GObject Reference Manual (typo)
+	Bug 559462 – GObject Reference Manual (typo)
+	Bug 559517 – GObject Reference Manual (typo)
+
+	* gobject/tut_howto.xml:
+	* gobject/tut_gsignal.xml: 
+	* gobject/tut_gobject.xml: Fix typos, found by Andrew Feren.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/gio-sections.txt: Add g_app_info_get_commandline
 
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>

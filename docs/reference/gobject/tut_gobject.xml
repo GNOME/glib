@@ -725,7 +725,7 @@ g_object_set (G_OBJECT (foo),
       <para>
         These high level functions have one drawback - they don't provide a return result.
         One should pay attention to the argument types and ranges when using them.
-        A know source of errors is to e.g. pass a gfloat instead of a gdouble and thus
+        A known source of errors is to e.g. pass a gfloat instead of a gdouble and thus
         shifting all subsequent parameters by four bytes. Also forgetting the terminating
         NULL will lead to unexpected behaviour.
       </para>

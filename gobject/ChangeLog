@@ -1,3 +1,10 @@
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 559456 – GObject Reference Manual (typo)
+
+	* gsignal.c (g_signal_newv): Fix a typo in the docs, pointed out
+	by Andrew Feren
+
 2008-11-03  Matthias Clasen <mclasen@redhat.com>
 
 	Bug 555935 – Clear the mechanism of overwriting properties

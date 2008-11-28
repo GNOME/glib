@@ -1480,19 +1480,19 @@ signal_add_class_closure (SignalNode *node,
  * g_signal_newv:
  * @signal_name: the name for the signal
  * @itype: the type this signal pertains to. It will also pertain to
- *  types which are derived from this type.
+ *     types which are derived from this type
  * @signal_flags: a combination of #GSignalFlags specifying detail of when
- *  the default handler is to be invoked. You should at least specify
- *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
- * @class_closure: The closure to invoke on signal emission; may be %NULL.
- * @accumulator: the accumulator for this signal; may be %NULL.
- * @accu_data: user data for the @accumulator.
+ *     the default handler is to be invoked. You should at least specify
+ *     %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST
+ * @class_closure: The closure to invoke on signal emission; may be %NULL
+ * @accumulator: the accumulator for this signal; may be %NULL
+ * @accu_data: user data for the @accumulator
  * @c_marshaller: the function to translate arrays of parameter values to
- *  signal emissions into C language callback invocations.
+ *     signal emissions into C language callback invocations
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
- *  without a return value.
- * @n_params: the length of @param_types.
- * @param_types: an array types, one for each parameter.
+ *     without a return value
+ * @n_params: the length of @param_types
+ * @param_types: an array of types, one for each parameter
  *
  * Creates a new signal. (This is usually done in the class initializer.)
  *

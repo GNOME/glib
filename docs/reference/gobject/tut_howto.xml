@@ -319,7 +319,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT);
 static void
 maman_bar_init (MamanBar *self)
 {
-  self->private = MAMAN_BAR_GET_PRIVATE (self); 
+  self->priv = MAMAN_BAR_GET_PRIVATE (self); 
 
   /* initialize all public and private members to reasonable default values. */
 
