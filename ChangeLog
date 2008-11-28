@@ -1,6 +1,17 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Merged from trunk:
+	
+	Bug 559110 – Do not include libintl.h after glibintl.h
+
+	* glib/glibintl.h: Define bind_textdomain_codeset in the DISABLE_NLS
+	branch. Patch by Peter Kjellerstedt.
+
+	* glib/gutil.c: Don't include libintl.h directly.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
 
 	Bug 562378 – callback return value not respected for callback option
 	with no arg
