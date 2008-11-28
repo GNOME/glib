@@ -1,5 +1,17 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 547481 – g_data_input_stream_read_line behaves not as stated in
+	the docs
+
+	* gdatainputstream.c (g_data_input_stream_read_line): Behave as
+	documented and include the line end in the returned string. 
+	Pointed out by Paul Pogonyshev.
+
+	* tests/data-input-stream.c: Fix the read_line test to test the
+	documented behaviour.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* gdesktopappinfo.c (g_app_info_can_delete): Only allow deleting
 	files that have been created by g_app_info_create_from_commandline.
 
