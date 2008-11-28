@@ -1,3 +1,14 @@
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	Bug 561807 – inotify_sub.c :: dup_dirname() fails to 
+	remove trailing '/'
+
+	* inotify/inotify-sub.c (dup_dirname): Actually strip
+	the trailing '/' away. Spotted by Dan Williams.
+
+
 2008-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.18.3 ===
