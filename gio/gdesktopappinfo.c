@@ -479,6 +479,14 @@ g_desktop_app_info_get_executable (GAppInfo *appinfo)
   return info->binary;
 }
 
+static const char *
+g_desktop_app_info_get_commandline (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+  
+  return info->exec;
+}
+
 static GIcon *
 g_desktop_app_info_get_icon (GAppInfo *appinfo)
 {
@@ -1745,6 +1753,7 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->remove_supports_type = g_desktop_app_info_remove_supports_type;
   iface->can_delete = g_desktop_app_info_can_delete;
   iface->do_delete = g_desktop_app_info_delete;
+  iface->get_commandline = g_desktop_app_info_get_commandline;
 }
 
 static gboolean

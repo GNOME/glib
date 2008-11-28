@@ -249,12 +249,12 @@ g_app_info_get_description (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_executable:
- * @appinfo: a #GAppInfo.
+ * @appinfo: a #GAppInfo
  * 
  * Gets the executable's name for the installed application.
  *
  * Returns: a string containing the @appinfo's application 
- * binary's name.
+ * binary's name
  **/
 const char *
 g_app_info_get_executable (GAppInfo *appinfo)
@@ -268,6 +268,33 @@ g_app_info_get_executable (GAppInfo *appinfo)
   return (* iface->get_executable) (appinfo);
 }
 
+
+/**
+ * g_app_info_get_commandline:
+ * @appinfo: a #GAppInfo
+ * 
+ * Gets the commandline with which the application will be
+ * started.  
+ *
+ * Returns: a string containing the @appinfo's commandline, 
+ *     or %NULL if this information is not available
+ *
+ * Since: 2.20
+ **/
+const char *
+g_app_info_get_commandline (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+  
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), NULL);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->get_commandline)
+    return (* iface->get_commandline) (appinfo);
+ 
+  return NULL;
+}
 
 /**
  * g_app_info_set_as_default_for_type:

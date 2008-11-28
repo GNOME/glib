@@ -1,3 +1,13 @@
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 555486 – No way to recover command line from GAppInfo
+
+	* gio.symbols:
+	* gappinfo.[hc]: Add g_app_info_get_commandline. Requested
+	by Hans Petter Jansson.
+	
+	* gdesktopappinfo.c: And implement it here.
+
 2008-11-28  Christian Dywan  <christian@imendio.com>
 
 	* gappinfo.c: Fix a typo, s/detext/detect. Patch by Enrico Tröger.

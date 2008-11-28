@@ -1,9 +1,13 @@
-@008-11-28  Matthias Clasen  <mclasen@redhat.com>
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/gio-sections.txt: Add g_app_info_get_commandline
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/keyfile.sgml: Explain locale identifiers in
 	more detail
 
-@008-11-28  Matthias Clasen  <mclasen@redhat.com>
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 562549 – g_byte_array_free should tell how free data
 
