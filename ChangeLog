@@ -1,5 +1,13 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	bug 562562 – glib-2-18 branch does not build because g_assert_error 
+	is used in tests
+
+	* glib/tests/option-context.c: Fix the build. Complaint by Wouter
+	Bolsterlee
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 	
 	Bug 559110 – Do not include libintl.h after glibintl.h

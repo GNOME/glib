@@ -426,6 +426,14 @@ assert_no_error (GError *error)
     }
 }
 
+static void
+assert_error (GError *error, 
+              GQuark *domain, 
+              gint    code)
+{
+  g_assert (error && error->domain == domain && error->code == code);
+}
+
 void
 arg_test1 (void)
 {
@@ -1054,7 +1062,7 @@ callback_returns_false (void)
   argv = split_string ("program --error value", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   g_assert (retval == FALSE);
 
   g_option_context_free (context);
@@ -1067,7 +1075,7 @@ callback_returns_false (void)
   argv = split_string ("program --error-no-arg", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   g_assert (retval == FALSE);
 
   g_option_context_free (context);
@@ -1080,7 +1088,7 @@ callback_returns_false (void)
   argv = split_string ("program --error-optional-arg value", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   g_assert (retval == FALSE);
 
   g_option_context_free (context);
@@ -1093,7 +1101,7 @@ callback_returns_false (void)
   argv = split_string ("program --error-optional-arg", &argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   g_assert (retval == FALSE);
 
   g_option_context_free (context);
