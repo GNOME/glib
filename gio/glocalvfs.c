@@ -118,10 +118,6 @@ g_local_vfs_parse_name (GVfs       *vfs,
   char *user_prefix;
   const char *user_start, *user_end;
   char *rest;
-#ifdef HAVE_PWD_H
-  struct passwd *passwd_file_entry;
-  char *user_name;
-#endif
   
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
   g_return_val_if_fail (parse_name != NULL, NULL);
@@ -145,6 +141,9 @@ g_local_vfs_parse_name (GVfs       *vfs,
 	  else
 	    {
 #ifdef HAVE_PWD_H
+              struct passwd *passwd_file_entry;
+              char *user_name;
+
 	      user_name = g_strndup (user_start, user_end - user_start);
 	      passwd_file_entry = getpwnam (user_name);
 	      g_free (user_name);
