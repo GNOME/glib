@@ -878,7 +878,7 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
 
   available = priv->end - priv->pos;
 
-  if (available < 1)
+  if (available != 0)
     {
       g_input_stream_clear_pending (input_stream);
       return priv->buffer[priv->pos++];

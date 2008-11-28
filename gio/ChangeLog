@@ -1,5 +1,16 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 562393 – g_buffered_input_stream_read_byte broken if data
+	available
+
+	* gio/gbufferedinputstream.c (g_buffered_input_stream_read_byte): Fix
+	handling of buffered content.  Patch by Philip Withnall
+
+	* gio/tests/buffered-input-stream.c: Add a testcase for this bug.
+	* gio/tests/Makefile.am: And build it
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 561807 – inotify_sub.c :: dup_dirname() fails to remove trailing
 	'/'
 

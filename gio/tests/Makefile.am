@@ -23,7 +23,8 @@ TEST_PROGS +=	 		\
 	g-file-info 		\
 	data-input-stream 	\
 	data-output-stream 	\
-	g-icon
+	g-icon			\
+	buffered-input-stream
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams desktop-app-info
@@ -49,6 +50,9 @@ data_output_stream_LDADD	= $(progs_ldadd)
 
 g_icon_SOURCES	= g-icon.c
 g_icon_LDADD	= $(progs_ldadd)
+
+buffered_input_stream_SOURCES	= buffered-input-stream.c
+buffered_input_stream_LDADD	= $(progs_ldadd)
 
 live_g_file_SOURCES	  = live-g-file.c
 live_g_file_LDADD	  = $(progs_ldadd)
