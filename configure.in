@@ -247,6 +247,7 @@ fi
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CPP
 
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
 AC_CHECK_PROGS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], [gcc])
