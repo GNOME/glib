@@ -29,6 +29,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str);
 #define dcgettext(Domain,String,Type) (String)
 #define dngettext(Domain,String1,String2,N) ((N) == 1 ? (String1) : (String2))
 #define bindtextdomain(Domain,Directory) (Domain) 
+#define bind_textdomain_codeset(Domain,Codeset)
 #endif
 
 /* not really I18N-related, but also a string marker macro */
