@@ -1343,7 +1343,9 @@ g_key_file_set_value (GKeyFile    *key_file,
  * @key: a key
  * @error: return location for a #GError, or %NULL
  *
- * Returns the value associated with @key under @group_name.  
+ * Returns the string value associated with @key under @group_name.
+ * Unlike g_key_file_get_value(), this function handled escape sequences
+ * like \s.
  *
  * In the event the key cannot be found, %NULL is returned and 
  * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the 

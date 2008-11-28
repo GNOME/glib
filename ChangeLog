@@ -1,5 +1,13 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 562544 – g_key_file_get_string and g_key_file_get_value
+	documentation does not explain the difference
+
+	* glib/gkeyfile.c (g_key_file_get_string): Explain the difference
+	to g_key_file_get_value(). Pointed out by Mart Raudsepp.
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gkeyfile.c: Refer to @locale parameters as locale identifier
 	in docs.
 
