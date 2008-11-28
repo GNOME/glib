@@ -587,7 +587,7 @@ g_app_info_should_show (GAppInfo *appinfo)
  *
  * Utility function that launches the default application 
  * registered to handle the specified uri. Synchronous I/O
- * is done on the uri to detext the type of the file if
+ * is done on the uri to detect the type of the file if
  * required.
  * 
  * Returns: %TRUE on success, %FALSE on error.

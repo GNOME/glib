@@ -1,3 +1,7 @@
+2008-11-28  Christian Dywan  <christian@imendio.com>
+
+	* gappinfo.c: Fix a typo, s/detext/detect. Patch by Enrico Tröger.
+
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 559633 – gtk_image_new_from_gicon does not always work for
