@@ -615,7 +615,7 @@ debug_key_matches (const gchar *key,
 /**
  * g_parse_debug_string:
  * @string: a list of debug options separated by colons, spaces, or
- * commas; or the string "all" to set all flags, or %NULL.
+ * commas, or %NULL.
  * @keys: pointer to an array of #GDebugKey which associate 
  *     strings with bit flags.
  * @nkeys: the number of #GDebugKey<!-- -->s in the array.
@@ -624,6 +624,10 @@ debug_key_matches (const gchar *key,
  * into a %guint containing bit flags. This is used 
  * within GDK and GTK+ to parse the debug options passed on the
  * command line or through environment variables.
+ *
+ * If @string is equal to "all", all flags are set.  If @string
+ * is equal to "help", all the available keys in @keys are printed
+ * out to standard error.
  *
  * Returns: the combined set of bit flags.
  */
@@ -647,6 +651,14 @@ g_parse_debug_string  (const gchar     *string,
     {
       for (i=0; i<nkeys; i++)
 	result |= keys[i].value;
+    }
+  else if (!g_ascii_strcasecmp (string, "help"))
+    {
+      /* using stdio directly for the reason stated above */
+      fprintf (stderr, "Supported debug values: ");
+      for (i=0; i<nkeys; i++)
+	fprintf (stderr, " %s", keys[i].key);
+      fprintf (stderr, "\n");
     }
   else
     {
