@@ -1,5 +1,12 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 547264 – Missing "no flags" flag
+
+	* glib/gregex.c: Mention 0 as value for 'no flags' in some places..
+	Pointed out by Bastien Nocera
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 562544 – g_key_file_get_string and g_key_file_get_value
 	documentation does not explain the difference
 

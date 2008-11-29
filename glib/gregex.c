@@ -1055,8 +1055,8 @@ g_regex_unref (GRegex *regex)
 /** 
  * g_regex_new:
  * @pattern: the regular expression
- * @compile_options: compile options for the regular expression
- * @match_options: match options for the regular expression
+ * @compile_options: compile options for the regular expression, or 0 
+ * @match_options: match options for the regular expression, or 0
  * @error: return location for a #GError
  * 
  * Compiles the regular expression to an internal form, and does 
@@ -1273,8 +1273,8 @@ g_regex_get_capture_count (const GRegex *regex)
  * g_regex_match_simple:
  * @pattern: the regular expression
  * @string: the string to scan for matches
- * @compile_options: compile options for the regular expression
- * @match_options: match options
+ * @compile_options: compile options for the regular expression, or 0
+ * @match_options: match options, or 0
  *
  * Scans for a match in @string for @pattern.
  *
@@ -1287,7 +1287,7 @@ g_regex_get_capture_count (const GRegex *regex)
  * once, it's more efficient to compile the pattern once with
  * g_regex_new() and then use g_regex_match().
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise
+ * Returns: %TRUE if the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -1638,8 +1638,8 @@ g_regex_get_string_number (const GRegex *regex,
  * g_regex_split_simple:
  * @pattern: the regular expression
  * @string: the string to scan for matches
- * @compile_options: compile options for the regular expression
- * @match_options: match options
+ * @compile_options: compile options for the regular expression, or 0
+ * @match_options: match options, or 0
  *
  * Breaks the string on the pattern, and returns an array of 
  * the tokens. If the pattern contains capturing parentheses, 
@@ -1669,7 +1669,7 @@ g_regex_get_string_number (const GRegex *regex,
  * characters. For example splitting "ab c" using as a separator 
  * "\s*", you will get "a", "b" and "c".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
+ * Returns: a %NULL-terminated array of strings. Free it using g_strfreev()
  *
  * Since: 2.14
  **/
