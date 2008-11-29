@@ -1,3 +1,10 @@
+2008-11-28  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 562638 – GDebugKey key member should be const
+
+	* glib/gutils.h: Change GDebugKey key member from gchar * to
+	const gchar *.
+
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 547264 – Missing "no flags" flag

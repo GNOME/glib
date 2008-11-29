@@ -189,8 +189,8 @@ G_CONST_RETURN gchar* g_get_user_special_dir (GUserDirectory directory);
 typedef struct _GDebugKey	GDebugKey;
 struct _GDebugKey
 {
-  gchar *key;
-  guint	 value;
+  const gchar *key;
+  guint	       value;
 };
 
 /* Miscellaneous utility functions
