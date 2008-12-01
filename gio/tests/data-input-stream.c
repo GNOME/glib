@@ -87,12 +87,8 @@ test_read_lines (GDataStreamNewlineType newline_type)
       data = g_data_input_stream_read_line (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
       if (data)
 	{
-          char *expected;
-
-          expected = g_strconcat (lines[line], endl[newline_type], NULL);
-	  g_assert_cmpstr (data, ==, expected);
+	  g_assert_cmpstr (data, ==, lines[line]);
 	  g_assert_no_error (error);
-          g_free (expected);  
 	  line++;
 	}
     }
