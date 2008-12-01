@@ -197,7 +197,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  }
       }
 
-    g_base_info_unref ((GIBaseInfo *)field_info);
+    g_base_info_unref ((GIBaseInfo *)type_info);
 
     return result;
 }
@@ -389,7 +389,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  }
       }
 
-    g_base_info_unref ((GIBaseInfo *)field_info);
+    g_base_info_unref ((GIBaseInfo *)type_info);
 
     return result;
 }
