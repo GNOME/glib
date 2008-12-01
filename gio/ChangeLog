@@ -1,5 +1,9 @@
 2008-12-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.19.2 ===
+
+2008-12-01  Matthias Clasen  <mclasen@redhat.com>
+
 	* gdatainputstream.c (g_data_input_stream_read_line): Revert the
 	behaviour change, and update the docs instead, to avoid breaking
 	existing users.
