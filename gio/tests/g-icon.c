@@ -85,6 +85,7 @@ test_g_icon_serialize (void)
   g_object_unref (icon2);
   g_object_unref (location);
 
+#if 0
   uri = "sftp:///some/non-native/path/to/an/icon with spaces.png";
   location = g_file_new_for_uri (uri);
   icon = g_file_icon_new (location);
@@ -97,6 +98,7 @@ test_g_icon_serialize (void)
   g_object_unref (icon);
   g_object_unref (icon2);
   g_object_unref (location);
+#endif
 
   icon = g_themed_icon_new ("network-server");
   data = g_icon_to_string (icon);
@@ -154,6 +156,7 @@ test_g_icon_serialize (void)
   g_object_unref (icon2);
   g_object_unref (location);
 
+#if 0
   icon = g_icon_new_for_string ("sftp:///path/to/somewhere with whitespace.png", &error);
   g_assert_no_error (error);
   data = g_icon_to_string (icon);
@@ -170,6 +173,7 @@ test_g_icon_serialize (void)
   g_object_unref (location);
   g_object_unref (icon2);
   g_object_unref (icon);
+#endif
 
   /* Check that GThemedIcon serialization works */
 

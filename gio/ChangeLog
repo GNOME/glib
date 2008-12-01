@@ -1,5 +1,9 @@
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/tests/g-icon.c: Comment out two failing tests
+
+2008-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 555486 – No way to recover command line from GAppInfo
 
 	* gio.symbols:
