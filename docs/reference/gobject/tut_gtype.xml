@@ -540,12 +540,6 @@ void           g_type_free_instance   (GTypeInstance *instance);
             initialization of the class structure.
             Finally, the object's interfaces are initialized (we will discuss interface initialization
             in more detail later).
-            <footnote id="class-init">
-              <para>
-                The class initialization process is entirely implemented in 
-                <function>type_class_init_Wm</function> in <filename>gtype.c</filename>.
-              </para>
-            </footnote>
           </para>
 
           <para>
@@ -563,15 +557,9 @@ void           g_type_free_instance   (GTypeInstance *instance);
 
 
           <para>
-            Class destruction
-            <footnote>
-              <para>It is implemented in <function>type_data_finalize_class_U</function> 
-                    (in <filename>gtype.c</filename>.
-              </para>
-            </footnote>
-            (the concept of destruction is sometimes partly referred to as finalization 
-            in GType) is the symmetric process of the initialization: interfaces are 
-            destroyed first. 
+            Class destruction (the concept of destruction is sometimes partly 
+            referred to as finalization in GType) is the symmetric process of 
+            the initialization: interfaces are destroyed first. 
             Then, the most derived 
             class_finalize (<type><link linkend="ClassFinalizeFunc">ClassFinalizeFunc</link></type>) function is invoked. The 
             base_class_finalize (<type><link linkend="GBaseFinalizeFunc">GBaseFinalizeFunc</link></type>) functions are 
@@ -784,13 +772,12 @@ struct _GInterfaceInfo
           <title>Interface Initialization</title>
 
           <para>
-            When an instantiable classed type which registered an interface implementation
-            is created for the first time, its class structure is initialized following the process
-            described in <xref linkend="gtype-instantiable-classed"/>. Once the class structure is 
-              initialized, the function <function>type_class_init_Wm</function> (implemented in <filename>
-              gtype.c</filename>) initializes the interface implementations associated with
-              that type by calling <function>type_iface_vtable_init_Wm</function> for each
-              interface.
+            When an instantiable classed type which registered an interface 
+            implementation is created for the first time, its class structure 
+            is initialized following the process
+            described in <xref linkend="gtype-instantiable-classed"/>. 
+            After that, the interface implementations associated with
+            the type are initialized.
           </para>
 
           <para>
@@ -889,14 +876,15 @@ maman_ibaz_base_init (gpointer g_iface)
           <title>Interface Destruction</title>
 
           <para>
-            When the last instance of an instantiable type which registered an interface implementation
-            is destroyed, the interface's implementations associated to the type are destroyed by
-            <function>type_iface_vtable_finalize_Wm</function> (in <filename>gtype.c</filename>).
+            When the last instance of an instantiable type which registered 
+            an interface implementation is destroyed, the interface's 
+            implementations associated to the type are destroyed.
           </para>
 
           <para>
-            <function>type_iface_vtable_finalize_Wm</function> invokes first the implementation's 
-            <function>interface_finalize</function> function and then the interface's most-derived
+            To destroy an interface implementation, GType first calls the 
+            implementation's <function>interface_finalize</function> function 
+            and then the interface's most-derived 
             <function>base_finalize</function> function.
           </para>
 
@@ -945,14 +933,6 @@ maman_ibaz_base_init (gpointer g_iface)
             </tgroup>
           </table>
         </para>
-          
-        <para>
-          Now that you have read this section, you can forget about it. Please, forget it
-          <emphasis>as soon as possible</emphasis>.
-        </para>
-
       </sect2>
-      
     </sect1>
-    
   </chapter>
