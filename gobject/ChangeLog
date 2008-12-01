@@ -1,3 +1,7 @@
+2008-12-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.19.1 ===
+
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 559456 – GObject Reference Manual (typo)

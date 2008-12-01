@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 18:46-0400\n"
+"POT-Creation-Date: 2008-12-01 09:28-0500\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -541,7 +541,7 @@ msgstr ""
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1994
 msgid "internal error"
 msgstr ""
 
@@ -1016,12 +1016,12 @@ msgstr "བེ་ལུ་གཉིས་བལྟབ་'%s' དེ་%s གི�
 msgid "Error parsing option %s"
 msgstr "གདམ་ཁ་%s མིང་དཔྱད་འབད་ནི་ལུ་འཛོལ་བ།"
 
-#: glib/goption.c:1260 glib/goption.c:1371
+#: glib/goption.c:1260 glib/goption.c:1374
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s གི་དོན་ལུ་ སྒྲུབ་རྟགས་བརླག་སྟོར་ཞུགས་ནུག"
 
-#: glib/goption.c:1766
+#: glib/goption.c:1769
 #, c-format
 msgid "Unknown option %s"
 msgstr "ཤེས་མ་ཚུགས་པའི་གདམ་ཁ་ %s།"
@@ -1064,9 +1064,9 @@ msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ རྒྱབ་སྐྱོར་མེད་པའི་ ཨིན་ཀོ་ཌིང་'%s'ཡོད།"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2496
+#: glib/gkeyfile.c:2564 glib/gkeyfile.c:2699 glib/gkeyfile.c:2834
+#: glib/gkeyfile.c:2987 glib/gkeyfile.c:3174 glib/gkeyfile.c:3235
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ སྡེ་ཚན་ '%s' མིན་འདུག།"
@@ -1076,53 +1076,53 @@ msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ �
 msgid "Key file does not have key '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ ལྡེ་མིག་'%s'མིན་འདུག"
 
-#: glib/gkeyfile.c:1386 glib/gkeyfile.c:1499
+#: glib/gkeyfile.c:1388 glib/gkeyfile.c:1501
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཡུ་ཊི་ཨེཕ་-༨ མེད་པའི་ ལྡེ་མིག་'%s' བེ་ལུ་'%s' དང་བཅསཔ་སྦེ་འདུག"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1408 glib/gkeyfile.c:1521 glib/gkeyfile.c:1900
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ བེ་ལུ་ཡོད་མི་ ལྡེ་མིག་ '%s'འདུག"
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2115 glib/gkeyfile.c:2327
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ ལྡེ་མིག་'%s'སྡེ་ཚན་'%s' ནང་འདུག།"
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2511 glib/gkeyfile.c:2714 glib/gkeyfile.c:3246
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ལུ་ ལྡེ་མིག་'%s' སྡེ་ཚན་'%s' ནང་མིན་འདུག"
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3480
 msgid "Key file contains escape character at end of line"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ གྱལ་རིམ་མཇུག་ལུ་ གྲོས་ཐར་འབད་མི་ཡིག་འབྲུ་འདུག"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3502
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ནུས་མེད་གྲོས་ཐར་འབྱུང་རིམ་ '%s' འདུག"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3644
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "བེ་ལུ་'%s'དེ་ ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3658
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ཧྲིལ་ཨང་བེ་ལུ་ ’%s’ དེ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3691
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "བེ་ལུ་'%s'དེ་ འཕུར་ལྡིང་ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3715
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "བེ་ལུ་'%s'དེ་ བུ་ལིན་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
@@ -1139,7 +1139,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1987 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr ""
 
@@ -1162,34 +1162,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:664
+#: gio/gdesktopappinfo.c:683
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:958
+#: gio/gdesktopappinfo.c:977
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1190
+#: gio/gdesktopappinfo.c:1209
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1194
+#: gio/gdesktopappinfo.c:1213
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1598
+#: gio/gdesktopappinfo.c:1617
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1707
+#: gio/gdesktopappinfo.c:1729
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1202,11 +1202,21 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
+#: gio/gemblem.c:326
+#, c-format
+msgid "Can't handle version %d of GEmblem encoding"
+msgstr ""
+
+#: gio/gemblem.c:336
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
 #: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
 #: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
-#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:428
 #, fuzzy
 msgid "Operation not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1219,12 +1229,12 @@ msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒ�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2137
 msgid "Can't copy over directory"
 msgstr ""
 
@@ -1232,7 +1242,7 @@ msgstr ""
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2146
 msgid "Target file exists"
 msgstr ""
 
@@ -1276,14 +1286,23 @@ msgstr ""
 msgid "File enumerator is already closed"
 msgstr ""
 
-#: gio/gfileicon.c:144
+#: gio/gfileicon.c:145
 msgid "file"
 msgstr ""
 
-#: gio/gfileicon.c:145
+#: gio/gfileicon.c:146
 #, fuzzy
 msgid "The file containing the icon"
 msgstr "ཡུ་ཨར་ཨའི་ ’%s’ གི་ ཧོསཊི་ནེམ་དེ་ ནུས་མེད་ཨིན་པས།"
+
+#: gio/gfileicon.c:237
+#, c-format
+msgid "Can't handle version %d of GFileIcon encoding"
+msgstr ""
+
+#: gio/gfileicon.c:247
+msgid "Malformed input data for GFileIcon"
+msgstr ""
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1300,6 +1319,40 @@ msgstr ""
 
 #: gio/gfileoutputstream.c:460
 msgid "Truncate not supported on stream"
+msgstr ""
+
+#: gio/gicon.c:322
+#, c-format
+msgid "Wrong number of tokens (%d)"
+msgstr ""
+
+#: gio/gicon.c:342
+#, c-format
+msgid "No type for class name %s"
+msgstr ""
+
+#: gio/gicon.c:352
+#, c-format
+msgid "Type %s does not implement the GIcon interface"
+msgstr ""
+
+#: gio/gicon.c:363
+#, c-format
+msgid "Type %s is not classed"
+msgstr ""
+
+#: gio/gicon.c:377
+#, c-format
+msgid "Malformed version number: %s"
+msgstr ""
+
+#: gio/gicon.c:391
+#, c-format
+msgid "Type %s does not implement from_tokens() on the GIcon interface"
+msgstr ""
+
+#: gio/gicon.c:467
+msgid "Can't handle the supplied version the icon encoding"
 msgstr ""
 
 #: gio/ginputstream.c:202
@@ -1320,109 +1373,109 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, fuzzy, c-format
 msgid "Invalid filename %s"
 msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#, fuzzy, c-format
+msgid "Error renaming file: %s"
+msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
+
+#: gio/glocalfile.c:1139
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1152 gio/glocalfile.c:2016 gio/glocalfile.c:2045
+#: gio/glocalfile.c:2199 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 #, fuzzy
 msgid "Invalid filename"
 msgstr "ནུས་མེད་ཀྱི་ ཧོསཊི་ནེམ།"
 
-#: gio/glocalfile.c:1143
-#, fuzzy, c-format
-msgid "Error renaming file: %s"
-msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
-
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1275
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1285
 msgid "Can't open directory"
 msgstr ""
 
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1345
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1709
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1732
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ཡིག་སྣོད་ ’%s’:%s གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1753
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1832 gio/glocalfile.c:1852
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1886
 #, fuzzy, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’:%s གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1911 gio/glocalfile.c:1986 gio/glocalfile.c:1993
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’:%s གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2020
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "སྣོད་ཐོ་ '%s':%s ཁ་ཕྱེ་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2049
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "གདམ་ཁ་%s མིང་དཔྱད་འབད་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2109 gio/glocalfile.c:2203
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2132
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2159 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr ""
 
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2178
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2192
 msgid "Move between mounts not supported"
 msgstr ""
 
@@ -1453,61 +1506,61 @@ msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་�
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ཡིག་སྣོད་ ’%s’: %s ལྷག་ནི་ལུ་འཛོལ་བ།"
 
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "གྱལ་རིམ་ %d་: %s ལུ་འཛོལ་བ།"
 
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "གཞི་བསྒྱུར་གྱི་སྐབས་འཛོལ་བ་ :%s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -1646,31 +1699,36 @@ msgstr ""
 msgid "Source stream is already closed"
 msgstr ""
 
-#: gio/gthemedicon.c:210
+#: gio/gthemedicon.c:211
 msgid "name"
 msgstr ""
 
-#: gio/gthemedicon.c:211
+#: gio/gthemedicon.c:212
 #, fuzzy
 msgid "The name of the icon"
 msgstr "ཡུ་ཨར་ཨའི་ ’%s’ གི་ ཧོསཊི་ནེམ་དེ་ ནུས་མེད་ཨིན་པས།"
 
-#: gio/gthemedicon.c:222
+#: gio/gthemedicon.c:223
 msgid "names"
 msgstr ""
 
-#: gio/gthemedicon.c:223
+#: gio/gthemedicon.c:224
 msgid "An array containing the icon names"
 msgstr ""
 
-#: gio/gthemedicon.c:248
+#: gio/gthemedicon.c:249
 msgid "use default fallbacks"
 msgstr ""
 
-#: gio/gthemedicon.c:249
+#: gio/gthemedicon.c:250
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
+msgstr ""
+
+#: gio/gthemedicon.c:499
+#, c-format
+msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
 #: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215

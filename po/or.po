@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 18:46-0400\n"
+"POT-Creation-Date: 2008-12-01 09:28-0500\n"
 "PO-Revision-Date: 2008-09-09 19:20+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya\n"
@@ -540,7 +540,7 @@ msgstr "ପଶ୍ଚାତ ଅନୁମାର୍ଗଣ ସୀମା ପହଞ୍
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ଏହି ଶୈଳୀ ଆଂଶିକ ମେଳନ ପାଇଁ ସମର୍ଥିତ ନ ଥିବା ବସ୍ତୁ ମାନଙ୍କୁ ଧାରଣ କରିଥାଏ"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1981
+#: glib/gregex.c:154 gio/glocalfile.c:1994
 msgid "internal error"
 msgstr "ଆଭ୍ଯନ୍ତରୀଣ ତୃଟି"
 
@@ -1002,12 +1002,12 @@ msgstr "'%s' ଦ୍ବ୍ଯର୍ଥକ ମୂଲ୍ଯଟି %s ପାଇଁ �
 msgid "Error parsing option %s"
 msgstr "ରୁପାନ୍ତରଣ ର ବିକଲ୍ପ ରେ ତ୍ରୁଟି: %s"
 
-#: glib/goption.c:1260 glib/goption.c:1371
+#: glib/goption.c:1260 glib/goption.c:1374
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ପାଇଁ ସ୍ବତନ୍ତ୍ରଚର ଟି ହଜି ଯାଇଛି"
 
-#: glib/goption.c:1766
+#: glib/goption.c:1769
 #, c-format
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"
@@ -1049,9 +1049,9 @@ msgstr "ଅବୈଧ ଚାବି ନାମ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଗୋଟିଏ ଅସହାୟକ ସଂକେତ '%s' ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2490
-#: glib/gkeyfile.c:2558 glib/gkeyfile.c:2693 glib/gkeyfile.c:2828
-#: glib/gkeyfile.c:2981 glib/gkeyfile.c:3168 glib/gkeyfile.c:3229
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2496
+#: glib/gkeyfile.c:2564 glib/gkeyfile.c:2699 glib/gkeyfile.c:2834
+#: glib/gkeyfile.c:2987 glib/gkeyfile.c:3174 glib/gkeyfile.c:3235
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ସମୂହ ନାହିଁ"
@@ -1061,17 +1061,17 @@ msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌ�
 msgid "Key file does not have key '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା  କୌଣସି ଚାବିକାଠି ନାହିଁ"
 
-#: glib/gkeyfile.c:1386 glib/gkeyfile.c:1499
+#: glib/gkeyfile.c:1388 glib/gkeyfile.c:1501
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ '%s' ଅଟେ, ଯାହାକି ଇଉ-ଟି-ଏଫ୍-୮ ନୁହେଁ"
 
-#: glib/gkeyfile.c:1406 glib/gkeyfile.c:1519 glib/gkeyfile.c:1894
+#: glib/gkeyfile.c:1408 glib/gkeyfile.c:1521 glib/gkeyfile.c:1900
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2109 glib/gkeyfile.c:2321
+#: glib/gkeyfile.c:2115 glib/gkeyfile.c:2327
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1079,36 +1079,36 @@ msgid ""
 msgstr ""
 "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2505 glib/gkeyfile.c:2708 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:2511 glib/gkeyfile.c:2714 glib/gkeyfile.c:3246
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ଚାବିକାଠି '%s' ସମୂହ ରେ ନାହିଁ "
 
-#: glib/gkeyfile.c:3474
+#: glib/gkeyfile.c:3480
 msgid "Key file contains escape character at end of line"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଲାଇନ୍ ର ସମାପ୍ତି ରେ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3502
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ '%s' ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3638
+#: glib/gkeyfile.c:3644
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ସଂଖ୍ଯା ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3652
+#: glib/gkeyfile.c:3658
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ପୂର୍ଣ ମୂଲ୍ଯ '%s' ପରିସର ର ବାହାରେ ଅଛି"
 
-#: glib/gkeyfile.c:3685
+#: glib/gkeyfile.c:3691
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' ମୂଲ୍ଯକୁ ଗୋଟିଏ ଭାସମାନ ସଂଖ୍ଯା ଭାବରେ ବ୍ଯାଖ୍ଯା କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3709
+#: glib/gkeyfile.c:3715
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ବୁଲିଆନ୍ ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"
@@ -1125,7 +1125,7 @@ msgstr "ଅତ୍ୟଧିକ ବଡ଼ ଗଣନା ମୂଲ୍ୟ %sକୁ �
 msgid "Stream is already closed"
 msgstr "ଧାରା ପୂର୍ବରୁ ବନ୍ଦଅଛି"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1974 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1987 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "ପ୍ରୟୋଗଟି ବାତିଲ ହୋଇଛି"
 
@@ -1147,34 +1147,34 @@ msgstr "%s ପ୍ରକାର"
 msgid "Unexpected early end-of-stream"
 msgstr "ଅପ୍ରତ୍ୟାଶିତ ପ୍ରାରମ୍ଭିକ ଧାରାର ଶେଷ"
 
-#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ବେନାମୀ"
 
-#: gio/gdesktopappinfo.c:664
+#: gio/gdesktopappinfo.c:683
 msgid "Desktop file didn't specify Exec field"
 msgstr "ଡେସ୍କଟପ ଫାଇଲ Exec କ୍ଷେତ୍ର ଉଲ୍ଲେଖ କରିନଥିଲା"
 
-#: gio/gdesktopappinfo.c:958
+#: gio/gdesktopappinfo.c:977
 msgid "Unable to find terminal required for application"
 msgstr "ପ୍ରୟୋଗ ପାଇଁ ଆବଶ୍ୟକ ଟର୍ମିନାଲ ଖୋଜିବାରେ ଅସମର୍ଥ"
 
-#: gio/gdesktopappinfo.c:1190
+#: gio/gdesktopappinfo.c:1209
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ଚାଳକ ପ୍ରୟୋଗ ବିନ୍ୟାସ ଫୋଲଡର %s କୁ ନିର୍ମାଣ କରିପାରିବେ ନାହିଁ: %s"
 
-#: gio/gdesktopappinfo.c:1194
+#: gio/gdesktopappinfo.c:1213
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ଚାଳକ MIME ବିନ୍ୟାସିତ ଫୋଲଡର %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ: %s"
 
-#: gio/gdesktopappinfo.c:1598
+#: gio/gdesktopappinfo.c:1617
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ଚାଳକ ଡେସ୍କଟପ ଫାଇଲ %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ"
 
-#: gio/gdesktopappinfo.c:1707
+#: gio/gdesktopappinfo.c:1729
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ପାଇଁ ଇଚ୍ଛାରୂପୀ ପରିଭାଷା"
@@ -1187,11 +1187,21 @@ msgstr "ଡ୍ରାଇଭ ବାହାର କରିବାକୁ କାର୍ଯ
 msgid "drive doesn't implement polling for media"
 msgstr "ଡ୍ରାଇଭ ସଞ୍ଚାର ମାଧ୍ଯମ ପାଇଁ ଚୟନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
+#: gio/gemblem.c:326
+#, c-format
+msgid "Can't handle version %d of GEmblem encoding"
+msgstr ""
+
+#: gio/gemblem.c:336
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
 #: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
 #: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
-#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:427
+#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "ପ୍ରୟୋଗ ସମର୍ଥିତ ନୁହଁ"
 
@@ -1203,12 +1213,12 @@ msgstr "ପ୍ରୟୋଗ ସମର୍ଥିତ ନୁହଁ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1064 gio/glocalfile.c:1075
-#: gio/glocalfile.c:1088
+#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "ଧାରଣ କରିଥିବା ସ୍ଥାପନ ଅବସ୍ଥିତ ନାହିଁ"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2124
+#: gio/gfile.c:1963 gio/glocalfile.c:2137
 msgid "Can't copy over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ନକଲ କରିପାରିବେ ନାହିଁ"
 
@@ -1216,7 +1226,7 @@ msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ନକଲ କରିପାର
 msgid "Can't copy directory over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ଡିରେକ୍ଟୋରୀ ନକଲ କରିପାରିବେ ନାହିଁ"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2133
+#: gio/gfile.c:2031 gio/glocalfile.c:2146
 msgid "Target file exists"
 msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲ ଅବସ୍ଥିତ"
 
@@ -1258,13 +1268,22 @@ msgstr "ଫାଇଲ ଗଣନାକାର ପାଖରେ ଉତ୍କୃଷ୍
 msgid "File enumerator is already closed"
 msgstr "ଫାଇଲ ଗଣନାକାର ପୂର୍ବରୁ ବନ୍ଦ ହୋଇଯାଇଛି"
 
-#: gio/gfileicon.c:144
+#: gio/gfileicon.c:145
 msgid "file"
 msgstr "ଫାଇଲ"
 
-#: gio/gfileicon.c:145
+#: gio/gfileicon.c:146
 msgid "The file containing the icon"
 msgstr "ଚିତ୍ରସଂକେତ ଧାରଣକରିଥିବା ଫାଇଲ"
+
+#: gio/gfileicon.c:237
+#, c-format
+msgid "Can't handle version %d of GFileIcon encoding"
+msgstr ""
+
+#: gio/gfileicon.c:247
+msgid "Malformed input data for GFileIcon"
+msgstr ""
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1282,6 +1301,40 @@ msgstr "ନିବେଶ ଧାରାରେ କାଟିବା ଅନୁମୋଦ
 #: gio/gfileoutputstream.c:460
 msgid "Truncate not supported on stream"
 msgstr "ଧାରାରେ କାଟିବା ଅନୁମୋଦିତ ନୁହଁ"
+
+#: gio/gicon.c:322
+#, c-format
+msgid "Wrong number of tokens (%d)"
+msgstr ""
+
+#: gio/gicon.c:342
+#, c-format
+msgid "No type for class name %s"
+msgstr ""
+
+#: gio/gicon.c:352
+#, c-format
+msgid "Type %s does not implement the GIcon interface"
+msgstr ""
+
+#: gio/gicon.c:363
+#, c-format
+msgid "Type %s is not classed"
+msgstr ""
+
+#: gio/gicon.c:377
+#, c-format
+msgid "Malformed version number: %s"
+msgstr ""
+
+#: gio/gicon.c:391
+#, c-format
+msgid "Type %s does not implement from_tokens() on the GIcon interface"
+msgstr ""
+
+#: gio/gicon.c:467
+msgid "Can't handle the supplied version the icon encoding"
+msgstr ""
 
 #: gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
@@ -1301,108 +1354,108 @@ msgstr "ଧାରା ପାଖରେ ଉତ୍କୃଷ୍ଟ ପ୍ରୟୋଗ
 msgid "Unable to find default local directory monitor type"
 msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ସ୍ଥାନୀୟ ଡିରେକ୍ଟୋରୀ ମନିଟର ପ୍ରକାର ଖୋଜିବାରେ ଅସମର୍ଥ"
 
-#: gio/glocalfile.c:601 gio/win32/gwinhttpfile.c:410
+#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ଅବୈଧ ଫାଇଲ ନାମ %s"
 
-#: gio/glocalfile.c:972
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ଫାଇଲତନ୍ତ୍ର ସୂଚନା ପାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:1108
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "ମୂଳ ଡିରେକ୍ଟୋରୀର ନାମ ବଦଳାଯାଇପାରିବ ନାହିଁ"
 
-#: gio/glocalfile.c:1126
-msgid "Can't rename file, filename already exist"
-msgstr "ଫାଇଲର ନାମ ବଦଳାଯାଇପାରିବ ନାହିଁ, ଫାଇଲ ନାମ ପୂର୍ବରୁ ଅବସ୍ଥିତ"
-
-#: gio/glocalfile.c:1139 gio/glocalfile.c:2003 gio/glocalfile.c:2032
-#: gio/glocalfile.c:2186 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
-msgid "Invalid filename"
-msgstr "ଅବୈଧ ଫାଇଲ ନାମ"
-
-#: gio/glocalfile.c:1143
+#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ଫାଇଲର ନାମ ବଦଳାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:1262
+#: gio/glocalfile.c:1139
+msgid "Can't rename file, filename already exist"
+msgstr "ଫାଇଲର ନାମ ବଦଳାଯାଇପାରିବ ନାହିଁ, ଫାଇଲ ନାମ ପୂର୍ବରୁ ଅବସ୍ଥିତ"
+
+#: gio/glocalfile.c:1152 gio/glocalfile.c:2016 gio/glocalfile.c:2045
+#: gio/glocalfile.c:2199 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
+msgid "Invalid filename"
+msgstr "ଅବୈଧ ଫାଇଲ ନାମ"
+
+#: gio/glocalfile.c:1275
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ଫାଇଲ ଖୋଲିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:1272
+#: gio/glocalfile.c:1285
 msgid "Can't open directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଖୋଲିପାରିବେ ନାହିଁ"
 
-#: gio/glocalfile.c:1332
+#: gio/glocalfile.c:1345
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ଫାଇଲ ଅପସାରଣରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:1696
+#: gio/glocalfile.c:1709
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ଫାଇଲକୁ ବର୍ଜନ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:1719
+#: gio/glocalfile.c:1732
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ଆବର୍ଜନା ପାତ୍ର ଡିରେକ୍ଟୋରୀ %sକୁ ନିର୍ମାଣ କରିବାରେ ଅସମର୍ଥ: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1753
 msgid "Unable to find toplevel directory for trash"
 msgstr "ଆବର୍ଜନା ପାତ୍ର ପାଇଁ ଉଚ୍ଚସ୍ତରୀୟ ଡିରେକ୍ଟୋରୀ ଖୋଜିବାରେ ଅସମର୍ଥ"
 
-#: gio/glocalfile.c:1819 gio/glocalfile.c:1839
+#: gio/glocalfile.c:1832 gio/glocalfile.c:1852
 msgid "Unable to find or create trash directory"
 msgstr "ଆବର୍ଜନା ପାତ୍ର ଡିରେକ୍ଟୋରୀ ଖୋଜିବା ଏବଂ ନିର୍ମାଣ କରିବାରେ ଅସମର୍ଥ"
 
-#: gio/glocalfile.c:1873
+#: gio/glocalfile.c:1886
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ବର୍ଜିତ ସୂଚନା ଫାଇଲ ନିର୍ମାଣରେ ଅସମର୍ଥ : %s"
 
-#: gio/glocalfile.c:1898 gio/glocalfile.c:1973 gio/glocalfile.c:1980
+#: gio/glocalfile.c:1911 gio/glocalfile.c:1986 gio/glocalfile.c:1993
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ଫାଇଲକୁ ବର୍ଜନ କରିବାରେ ଅସମର୍ଥ: %s"
 
-#: gio/glocalfile.c:2007
+#: gio/glocalfile.c:2020
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ଡିରେକ୍ଟୋରି ନିର୍ମାଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2049
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "ପ୍ରତୀକାତ୍ମକ ସମ୍ପର୍କ ନିର୍ମାଣରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:2096 gio/glocalfile.c:2190
+#: gio/glocalfile.c:2109 gio/glocalfile.c:2203
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ଫାଇଲ ଘୁଞ୍ଚାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:2119
+#: gio/glocalfile.c:2132
 msgid "Can't move directory over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ଡିରେକ୍ଟୋରୀକୁ ଘୁଞ୍ଚାଇପାରିବେ ନାହିଁ"
 
-#: gio/glocalfile.c:2146 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2159 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "ନକଲ ସଂରକ୍ଷଣ ଫାଇଲ ନିର୍ମାଣ ଅସଫଳ ହେଲା"
 
-#: gio/glocalfile.c:2165
+#: gio/glocalfile.c:2178
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲ ଘୁଞ୍ଚାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfile.c:2179
+#: gio/glocalfile.c:2192
 msgid "Move between mounts not supported"
 msgstr "ଅସମର୍ଥିତ ସ୍ଥାପନଗୁଡ଼ିକ ମଧ୍ଯରେ ଗତିକରନ୍ତୁ"
 
@@ -1432,61 +1485,61 @@ msgstr "ଫାଇଲ '%s'କୁ ଆରମ୍ଭ କରିବାରେ ତ୍ର�
 msgid " (invalid encoding)"
 msgstr " (ଅବୈଧ ସାଙ୍କେତିକରଣ)"
 
-#: gio/glocalfileinfo.c:1698
+#: gio/glocalfileinfo.c:1694
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ଫାଇଲ ନିରୂପକ ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1743
+#: gio/glocalfileinfo.c:1739
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit32 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1761
+#: gio/glocalfileinfo.c:1757
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit64 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1780 gio/glocalfileinfo.c:1799
+#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (ବାଇଟ ବାକ୍ୟଖଣ୍ଡ ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1821
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ଅନୁମତି ବିନ୍ୟାସକରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1876 gio/glocalfileinfo.c:2044
+#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ମାଲିକ ନିରୁପଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1899
+#: gio/glocalfileinfo.c:1895
 msgid "symlink must be non-NULL"
 msgstr "symlink ନିଶ୍ଚିତ ରୂପେ non-NULL"
 
-#: gio/glocalfileinfo.c:1909 gio/glocalfileinfo.c:1928
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1918
+#: gio/glocalfileinfo.c:1914
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: ଫାଇଲଟି ଗୋଟିଏ symlink ନୁହଁ"
 
-#: gio/glocalfileinfo.c:2067
+#: gio/glocalfileinfo.c:2063
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ପ୍ରସଙ୍ଗଟି ନିଶ୍ଚିତ ରୂପେ non-NULL ଅଟେ"
 
-#: gio/glocalfileinfo.c:2082
+#: gio/glocalfileinfo.c:2078
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ପ୍ରସଙ୍ଗ ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2085
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ଏହି ତନ୍ତ୍ରରେ ସକ୍ରିୟ ହୋଇନାହିଁ"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2146
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ଗୁଣ %s ବିନ୍ୟାସ କରିବା ସମର୍ଥିତ ନୁହଁ"
@@ -1623,33 +1676,38 @@ msgstr "ଫଳାଫଳ ବାକ୍ଯଖଣ୍ଡ ଲେଖିବାକୁ କ
 msgid "Source stream is already closed"
 msgstr "ଉତ୍ସ ବାକ୍ୟଖଣ୍ଡଟି ପୂର୍ବରୁ ବନ୍ଦହୋଇଯାଇଛି"
 
-#: gio/gthemedicon.c:210
+#: gio/gthemedicon.c:211
 msgid "name"
 msgstr "ନାମ"
 
-#: gio/gthemedicon.c:211
+#: gio/gthemedicon.c:212
 msgid "The name of the icon"
 msgstr "ଚିତ୍ରସଂକେତର ନାମ"
 
-#: gio/gthemedicon.c:222
+#: gio/gthemedicon.c:223
 msgid "names"
 msgstr "ନାମଗୁଡ଼ିକ"
 
-#: gio/gthemedicon.c:223
+#: gio/gthemedicon.c:224
 msgid "An array containing the icon names"
 msgstr "ଚିତ୍ରସଂକେତ ନାମଗୁଡ଼ିକୁ ଧାରଣକରିଥିବା ଆରେ"
 
-#: gio/gthemedicon.c:248
+#: gio/gthemedicon.c:249
 msgid "use default fallbacks"
 msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ନିବର୍ତ୍ତନଗୁଡ଼ିକୁ ବ୍ୟବହାର କରନ୍ତୁ"
 
-#: gio/gthemedicon.c:249
+#: gio/gthemedicon.c:250
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
 "'-' ବର୍ଣ୍ଣ ଠାରେ ସଂକ୍ଷିପ୍ତ କରାଯାଇଥିବା ନାମରୁ ମିଳିଥିବା ପୂର୍ବନିର୍ଦ୍ଧାରିତ ଶେଷ ଅବଲମ୍ବନକୁ ବ୍ୟବହାର "
 "କରାଯିବ କି ନାହିଁ. ଏକାଧିକ ନାମ ଦିଆଯାଇଥିଲେ ପ୍ରଥମ ନାମ ପରେଥିବା ନାମଗୁଡ଼ିକୁ ଅଗ୍ରାହ୍ୟ କରେ."
+
+#: gio/gthemedicon.c:499
+#, c-format
+msgid "Can't handle version %d of GThemedIcon encoding"
+msgstr ""
 
 #: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215
 #: gio/gunixinputstream.c:293 gio/gunixoutputstream.c:282

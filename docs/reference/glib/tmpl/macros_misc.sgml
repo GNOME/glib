@@ -114,6 +114,15 @@ from its expanded arguments 'identifier1' and 'identifier2'.
 @Since: 2.20
 
 
+<!-- ##### MACRO G_PASTE_ARGS ##### -->
+<para>
+
+</para>
+
+@identifier1: 
+@identifier2: 
+
+
 <!-- ##### MACRO G_STATIC_ASSERT ##### -->
 <para>
 The G_STATIC_ASSERT macro lets the programmer check a condition at compile time,

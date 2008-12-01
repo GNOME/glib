@@ -5,6 +5,9 @@ Overview of Changes from GLib 2.19.0 to GLib 2.19.1
   - g_icon_to_string, g_icon_new_for_string: GIcon serialization support
   - G_FILE_ATTRIBUTE_PREVIEW_ICON: new file attribute for preview images
   - g_app_info_get_commandline: new function to get the full commandline
+  - g_mount_shadow, g_mount_unshadow, g_mount_is_shadowed: New functions 
+    to 'shadow' mounts (i.e. hide them from the UI when they already
+    have a different representation, like a bookmark) 
 
 * Bugs fixed:
  556186 gpoll.h breaks gmain.h inclusion
