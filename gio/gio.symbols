@@ -727,6 +727,9 @@ g_mount_remount_finish
 g_mount_guess_content_type
 g_mount_guess_content_type_finish
 g_mount_guess_content_type_sync
+g_mount_is_shadowed
+g_mount_shadow
+g_mount_unshadow
 #endif
 #endif
 

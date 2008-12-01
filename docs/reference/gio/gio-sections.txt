@@ -863,6 +863,9 @@ g_mount_eject_finish
 g_mount_guess_content_type
 g_mount_guess_content_type_finish
 g_mount_guess_content_type_sync
+g_mount_is_shadowed
+g_mount_shadow
+g_mount_unshadow
 <SUBSECTION Standard>
 G_IS_MOUNT
 G_MOUNT

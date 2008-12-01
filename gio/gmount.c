@@ -695,5 +695,139 @@ g_mount_guess_content_type_sync (GMount              *mount,
   return (* iface->guess_content_type_sync) (mount, force_rescan, cancellable, error);
 }
 
+G_LOCK_DEFINE_STATIC (priv_lock);
+
+/* only access this structure when holding priv_lock */
+typedef struct
+{
+  gint shadow_ref_count;
+} GMountPrivate;
+
+static void
+free_private (GMountPrivate *private)
+{
+  G_LOCK (priv_lock);
+  g_free (private);
+  G_UNLOCK (priv_lock);
+}
+
+/* may only be called when holding priv_lock */
+static GMountPrivate *
+get_private (GMount *mount)
+{
+  GMountPrivate *private;
+
+  private = g_object_get_data (G_OBJECT (mount), "g-mount-private");
+  if (G_LIKELY (private != NULL))
+    goto out;
+
+  private = g_new0 (GMountPrivate, 1);
+  g_object_set_data_full (G_OBJECT (mount),
+                          "g-mount-private",
+                          private,
+                          (GDestroyNotify) free_private);
+
+ out:
+  return private;
+}
+
+/**
+ * g_mount_is_shadowed:
+ * @mount: A #GMount.
+ *
+ * Determines if @mount is shadowed. Applications or libraries should
+ * avoid displaying @mount in the user interface if it is shadowed.
+ *
+ * A mount is said to be shadowed if there exists one or more user
+ * visible objects (currently #GMount objects) with a root that is
+ * inside the root of @mount.
+ *
+ * One application of shadow mounts is when exposing a single file
+ * system that is used to address several logical volumes. In this
+ * situation, a #GVolumeMonitor implementation would create two
+ * #GVolume objects (for example, one for the camera functionality of
+ * the device and one for a SD card reader on the device) with
+ * activation URIs <literal>gphoto2://[usb:001,002]/store1/</literal>
+ * and <literal>gphoto2://[usb:001,002]/store2/</literal>. When the
+ * underlying mount (with root
+ * <literal>gphoto2://[usb:001,002]/</literal>) is mounted, said
+ * #GVolumeMonitor implementation would create two #GMount objects
+ * (each with their root matching the corresponding volume activation
+ * root) that would shadow the original mount.
+ *
+ * The proxy monitor in GVfs 2.26 and later, automatically creates and
+ * manage shadow mounts (and shadows the underlying mount) if the
+ * activation root on a #GVolume is set.
+ *
+ * Returns: %TRUE if @mount is shadowed.
+ *
+ * Since: 2.20
+ **/
+gboolean
+g_mount_is_shadowed (GMount *mount)
+{
+  GMountPrivate *priv;
+  gboolean ret;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+
+  G_LOCK (priv_lock);
+  priv = get_private (mount);
+  ret = (priv->shadow_ref_count > 0);
+  G_UNLOCK (priv_lock);
+
+  return ret;
+}
+
+/**
+ * g_mount_shadow:
+ * @mount: A #GMount.
+ *
+ * Increments the shadow count on @mount. Usually used by
+ * #GVolumeMonitor implementations when creating a shadow mount for
+ * @mount, see g_mount_is_shadowed() for more information. The caller
+ * will need to emit the #GMount::changed signal on @mount manually.
+ *
+ * Since: 2.20
+ **/
+void
+g_mount_shadow (GMount *mount)
+{
+  GMountPrivate *priv;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+
+  G_LOCK (priv_lock);
+  priv = get_private (mount);
+  priv->shadow_ref_count += 1;
+  G_UNLOCK (priv_lock);
+}
+
+/**
+ * g_mount_unshadow:
+ * @mount: A #GMount.
+ *
+ * Decrements the shadow count on @mount. Usually used by
+ * #GVolumeMonitor implementations when destroying a shadow mount for
+ * @mount, see g_mount_is_shadowed() for more information. The caller
+ * will need to emit the #GMount::changed signal on @mount manually.
+ *
+ * Since: 2.20
+ **/
+void
+g_mount_unshadow (GMount *mount)
+{
+  GMountPrivate *priv;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+
+  G_LOCK (priv_lock);
+  priv = get_private (mount);
+  priv->shadow_ref_count -= 1;
+  if (priv->shadow_ref_count < 0)
+    g_warning ("Shadow ref count on GMount is negative");
+  G_UNLOCK (priv_lock);
+}
+
 #define __G_MOUNT_C__
 #include "gioaliasdef.c"

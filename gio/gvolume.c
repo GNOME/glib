@@ -566,37 +566,9 @@ g_volume_enumerate_identifiers (GVolume *volume)
  *
  * will always be %TRUE.
  *
- * There is a number of possible uses of this function.
- *
- * First, implementations of #GVolumeMonitor can use this method to
- * determine if a #GMount should be adopted in the implementation of
- * g_volume_monitor_adopt_orphan_mount() by testing if the result of
- * this function equals (or has as prefix) the root of the given
- * #GMount. In particular this is useful in the in-process proxy part
- * of an out-of-process volume monitor implementation.
- *
- * Second, applications such as a file manager can use this to
- * navigate to the correct root in response to the user navigating to
- * a server. Now suppose there is a volume monitor for networked
- * servers that creates #GVolume objects corresponding to the
- * "favorite servers" (e.g. set up by the user via some "Connect to
- * Server" dialog). Suppose also that one of the favorite servers is
- * named "public_html @ fd.o" and the URI is
- * <literal>sftp://people.freedesktop.org/home/david/public_html</literal>.
- *
- * Now, due to the way GIO works, when the corresponding #GVolume is
- * mounted then a #GMount (typically adopted by the volume monitor)
- * will appear with the mount root (e.g. the result of
- * g_mount_get_root())
- * <literal>sftp://people.freedesktop.org</literal>. However, this
- * function (g_volume_get_activation_root()) can return a #GFile for
- * the URI
- * <literal>sftp://people.freedesktop.org/home/david/public_html</literal>.
- *
- * All this means that a file manager can use the latter URI for
- * navigating when the user clicks an icon representing the #GVolume
- * (e.g. clicking an icon with the name "public_html @ fd.o" or
- * similar).
+ * Activation roots are typically used in #GVolumeMonitor
+ * implementations to find the underlying mount to shadow, see
+ * g_mount_is_shadowed() for more details.
  *
  * Returns: the activation root of @volume or %NULL. Use
  * g_object_unref() to free.

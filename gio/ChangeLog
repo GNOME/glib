@@ -1,3 +1,12 @@
+2008-12-01  Alexander Larsson  <alexl@redhat.com>
+
+        * gio.symbols:
+        * gmount.[ch]:
+        * gunionvolumemonitor.c:
+        * gvolume.c:
+	Add and document g_mount_is_shadowed plus calls
+	to set/unset a mount as shadowed
+	
 2008-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/tests/g-icon.c: Comment out two failing tests

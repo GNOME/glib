@@ -61,8 +61,8 @@ typedef struct _GMountIface    GMountIface;
  * @guess_content_type: Starts guessing the type of the content of a #GMount.
  *     See g_mount_guess_content_type() for more information on content
  *     type guessing. This operation was added in 2.18.
- * @guess_content_type_finish: Finishes a contenet type guessing operation.
- * @guess_content_type_sync: Synchronous variant of @guess_content_type.
+ * @guess_content_type_finish: Finishes a contenet type guessing operation. Added in 2.18.
+ * @guess_content_type_sync: Synchronous variant of @guess_content_type. Added in 2.18
  *
  * Interface for implementing operations for mounts.
  **/
@@ -179,6 +179,10 @@ gchar    ** g_mount_guess_content_type_sync   (GMount              *mount,
                                                gboolean             force_rescan,
                                                GCancellable        *cancellable,
                                                GError             **error);
+
+gboolean    g_mount_is_shadowed               (GMount              *mount);
+void        g_mount_shadow                    (GMount              *mount);
+void        g_mount_unshadow                  (GMount              *mount);
 
 G_END_DECLS
 

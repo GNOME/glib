@@ -1,3 +1,9 @@
+2008-12-01  Alexander Larsson  <alexl@redhat.com>
+
+        Reviewed by NOBODY (OOPS!).
+
+        * gio/gio-sections.txt:
+
 2008-11-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/running.sgml: Mention all and help special options in
