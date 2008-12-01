@@ -1,3 +1,7 @@
+2008-12-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-11-28  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 562639 – g_parse_debug_flags() parsing "help"

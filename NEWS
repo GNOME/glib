@@ -4,6 +4,7 @@ Overview of Changes from GLib 2.19.0 to GLib 2.19.1
 * GIO: 
   - g_icon_to_string, g_icon_new_for_string: GIcon serialization support
   - G_FILE_ATTRIBUTE_PREVIEW_ICON: new file attribute for preview images
+  - g_app_info_get_commandline: new function to get the full commandline
 
 * Bugs fixed:
  556186 gpoll.h breaks gmain.h inclusion
@@ -24,6 +25,34 @@ Overview of Changes from GLib 2.19.0 to GLib 2.19.1
  555935 Clarify the mechanism of overwriting properties
  552776 ac_cv_func_posix_getgrgid_r not mentioned
  559448 GObject Reference Manual (typo)
+ 561212 GFileReadMoreCallback API doc refers to non-existant function
+ 560569 gkeyfile doesn't use the set list_separator in some cases
+ 560568 gkeyfile docs buglet
+ 559413 g_option_group_set_error_hook docs buglet
+ 562378 callback return value not respected for callback option
+        with no arg
+ 559110 Do not include libintl.h after glibintl.h
+ 557603 carbon check output misplaced
+ 562544 g_key_file_get_string and g_key_file_get_value
+        documentation does not explain the difference
+ 547264 Missing "no flags" flag
+ 562638 GDebugKey key member should be const
+ 562639 g_parse_debug_flags() parsing "help"
+ 562549 g_byte_array_free should tell how free data
+ 559452 GObject Reference Manual (typo)
+ 559462 GObject Reference Manual (typo)
+ 559517 GObject Reference Manual (typo)
+ 562538 GObject interface tutorial shouldn't finalise with
+        "Please forget everything"
+ 561352 Leak of icon description
+ 561375 Leaks mountpoint description
+ 561807 inotify_sub.c: dup_dirname() fails to remove trailing '/'
+ 562393 g_buffered_input_stream_read_byte broken if data available
+ 541715 win32 : patch for warnings and signature problems in recent code
+ 547481 g_data_input_stream_read_line behaves not as stated in the docs
+ 548163 Nautilus displays wrong error message for too long file names
+ 559633 gtk_image_new_from_gicon does not always work for .desktop files
+ 555486 – No way to recover command line from GAppInfo
 
 * Translation updates:
  Spanish (es)
