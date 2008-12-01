@@ -1,5 +1,10 @@
 2008-11-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/running.sgml: Mention all and help special options in
+	debug envvars.
+
+2008-11-30  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 562538 – GObject interface tutorial shouldn't finalise with
 	"Please forget everything"
 

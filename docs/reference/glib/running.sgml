@@ -116,6 +116,8 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
         </listitem>
       </varlistentry>
     </variablelist>
+    The special value all can be used to turn on all debug options. 
+    The special value help can be used to print all available options.  
   </para>
 </formalpara>
 
@@ -168,6 +170,8 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 	      </listitem>
 	    </varlistentry>
 	  </variablelist>
+          The special value all can be used to turn on all options. 
+          The special value help can be used to print all available options.  
 	</para>
 </formalpara>
 
