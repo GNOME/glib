@@ -238,6 +238,8 @@ g_type_module_find_interface_info (GTypeModule *module,
  * 
  * Increases the use count of a #GTypeModule by one. If the
  * use count was zero before, the plugin will be loaded.
+ * If loading the plugin fails, the use count is reset to 
+ * its prior value. 
  * 
  * Returns: %FALSE if the plugin needed to be loaded and
  *  loading the plugin failed.
@@ -267,6 +269,7 @@ g_type_module_use (GTypeModule *module)
 	      g_warning ("plugin '%s' failed to register type '%s'\n",
 			 module->name ? module->name : "(unknown)",
 			 g_type_name (type_info->type));
+	      module->use_count--;
 	      return FALSE;
 	    }
 	  
