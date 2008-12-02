@@ -1237,12 +1237,14 @@ g_key_file_get_groups (GKeyFile *key_file,
  * @key: a key
  * @error: return location for a #GError, or %NULL
  *
- * Returns the value associated with @key under @group_name.  
+ * Returns the raw value associated with @key under @group_name. 
+ * Use g_key_file_get_string() to retrieve an unescaped UTF-8 string. 
  *
  * In the event the key cannot be found, %NULL is returned and 
  * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND.  In the 
  * event that the @group_name cannot be found, %NULL is returned 
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+ *
  *
  * Return value: a newly allocated string or %NULL if the specified 
  *  key cannot be found.
@@ -1294,8 +1296,11 @@ g_key_file_get_value (GKeyFile     *key_file,
  * @value: a string
  *
  * Associates a new value with @key under @group_name.  
- * If @key cannot be found then it is created. 
- * If @group_name cannot be found then it is created.
+ *
+ * If @key cannot be found then it is created. If @group_name cannot 
+ * be found then it is created. To set an UTF-8 string which may contain 
+ * characters that need escaping (such as newlines or spaces), use 
+ * g_key_file_set_string().
  *
  * Since: 2.6
  **/
@@ -1344,7 +1349,7 @@ g_key_file_set_value (GKeyFile    *key_file,
  * @error: return location for a #GError, or %NULL
  *
  * Returns the string value associated with @key under @group_name.
- * Unlike g_key_file_get_value(), this function handled escape sequences
+ * Unlike g_key_file_get_value(), this function handles escape sequences
  * like \s.
  *
  * In the event the key cannot be found, %NULL is returned and 
@@ -1427,6 +1432,8 @@ g_key_file_get_string (GKeyFile     *key_file,
  * Associates a new string value with @key under @group_name.  
  * If @key cannot be found then it is created.  
  * If @group_name cannot be found then it is created.
+ * Unlike g_key_file_set_value(), this function handles characters
+ * that need escaping, such as newlines.
  *
  * Since: 2.6
  **/
