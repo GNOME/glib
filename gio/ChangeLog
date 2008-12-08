@@ -1,3 +1,11 @@
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 526320 – should not list mounts that the user doesn't have 
+	permission to use
+
+	gunixmounts.c: Use g_access() to check accessibility of local devices.
+	Patch by Martin Pitt
+
 2008-12-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.2 ===
