@@ -138,12 +138,20 @@ Values of this type can range from 0 to 255.
 A signed integer guaranteed to be 16 bits on all platforms.
 Values of this type can range from -32,768 to 32,767.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GINT16_MODIFIER and/or %G_GINT16_FORMAT.
+</para>
 
 
 <!-- ##### TYPEDEF guint16 ##### -->
 <para>
 An unsigned integer guaranteed to be 16 bits on all platforms.
 Values of this type can range from 0 to 65,535.
+</para>
+<para>
+To print or scan values of this type, use
+%G_GINT16_MODIFIER and/or %G_GUINT16_FORMAT.
 </para>
 
 
@@ -152,12 +160,20 @@ Values of this type can range from 0 to 65,535.
 A signed integer guaranteed to be 32 bits on all platforms.
 Values of this type can range from -2,147,483,648 to 2,147,483,647.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GINT32_MODIFIER and/or %G_GINT32_FORMAT.
+</para>
 
 
 <!-- ##### TYPEDEF guint32 ##### -->
 <para>
 An unsigned integer guaranteed to be 32 bits on all platforms.
 Values of this type can range from 0 to 4,294,967,295.
+</para>
+<para>
+To print or scan values of this type, use
+%G_GINT32_MODIFIER and/or %G_GUINT32_FORMAT.
 </para>
 
 
@@ -177,12 +193,20 @@ A signed integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from -9,223,372,036,854,775,808 to
 9,223,372,036,854,775,807.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GINT64_MODIFIER and/or %G_GINT64_FORMAT.
+</para>
 
 
 <!-- ##### FUNCTION guint64 ##### -->
 <para>
 An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
+</para>
+<para>
+To print or scan values of this type, use
+%G_GINT64_MODIFIER and/or %G_GUINT64_FORMAT.
 </para>
 
 @Returns: 
@@ -227,11 +251,19 @@ to the size_t type defined in C99. This type is wide enough to hold the numeric
 value of a pointer, so it is usually 32bit wide on a 32bit platform and
 64bit wide on a 64bit platform.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GSIZE_MODIFIER and/or %G_GSIZE_FORMAT.
+</para>
 
 
 <!-- ##### TYPEDEF gssize ##### -->
 <para>
 A signed variant of gsize, corresponding to the ssize_t defined on most platforms.
+</para>
+<para>
+To print or scan values of this type, use
+%G_GSIZE_MODIFIER and/or %G_GSSIZE_FORMAT.
 </para>
 
 

@@ -1,3 +1,13 @@
+2008-12-07  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 563150 – G_GU?INT*_MODIFIER/FORMAT docs
+
+	* glib/tmpl/glib-unused.sgml:
+	* glib/tmpl/macros_misc.sgml:
+	* glib/tmpl/types.sgml:
+	Update docs to mention scanning as well as printing.
+	Cross reference these from their respective types.
+
 2008-12-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.2 ===
