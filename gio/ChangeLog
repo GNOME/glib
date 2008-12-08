@@ -1,5 +1,13 @@
 2008-12-08  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 558298 – Hide ecryptfs mounts
+
+	* gunixmounts.c: (guess_system_internal): Hide ecryptfs mounts, 
+	so that the desktop does not show both the mount and the target 
+	directory. Patch by Martin Pitt
+ 
+2008-12-08  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 555465 – GUnix{Input,Output}Stream lacks fd/close_fd_at_close 
 	property
 
