@@ -18,7 +18,7 @@ the UTF-8, UTF-16 and UCS-4 encodings of Unicode.
 <para>
 The implementations of the Unicode functions in GLib are based
 on the Unicode Character Data tables, which are available from
-<ulink url="http://www.unicode.org">www.unicode.org</ulink>.
+<ulink url="http://www.unicode.org/">www.unicode.org</ulink>.
 GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1,
 GLib 2.12 supports Unicode 5.0, GLib 2.16.3 supports Unicode 5.1.
 </para>
@@ -42,7 +42,33 @@ Convenience functions for converting between UTF-8 and the locale encoding.
 
 <!-- ##### TYPEDEF gunichar ##### -->
 <para>
-A type which can hold any UCS-4 character code. 
+A type which can hold any UTF-32 or UCS-4 character code, also known
+as a Unicode code point.
+</para>
+<para>
+To print/scan values of this type to/from text you need to convert
+to/from UTF-8, using g_utf32_to_utf8()/g_utf8_to_utf32().
+</para>
+<para>
+To print/scan values of this type as integer, use
+%G_GINT32_MODIFIER and/or %G_GUINT32_FORMAT.
+</para>
+<para>
+The notation to express a Unicode code point in running text is as a
+hexadecimal number with four to six digits and uppercase letters, prefixed
+by the string "U+".  Leading zeros are omitted, unless the code point would
+have fewer than four hexadecimal digits.
+For example, "U+0041 LATIN CAPITAL LETTER A".
+To print a code point in the U+-notation, use the format string
+"U+%04"G_GINT32_FORMAT"X".
+To scan, use the format string "U+%06"G_GINT32_FORMAT"X".
+<informalexample>
+<programlisting>
+gunichar c;
+sscanf ("U+0041", "U+%06"G_GINT32_FORMAT"X", &amp;c)
+g_print ("Read U+%04"G_GINT32_FORMAT"X", c);
+</programlisting>
+</informalexample>
 </para>
 
 
@@ -54,6 +80,14 @@ point<footnote id="utf16_surrogate_pairs">UTF-16 also has so called
 BMP as pairs of 16bit numbers. Surrogate pairs cannot be stored in a 
 single gunichar2 field, but all GLib functions accepting gunichar2 arrays 
 will correctly interpret surrogate pairs.</footnote>.
+</para>
+<para>
+To print/scan values of this type to/from text you need to convert
+to/from UTF-8, using g_utf16_to_utf8()/g_utf8_to_utf16().
+</para>
+<para>
+To print/scan values of this type as integer, use
+%G_GINT16_MODIFIER and/or %G_GUINT16_FORMAT.
 </para>
 
 

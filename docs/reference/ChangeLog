@@ -1,5 +1,12 @@
 2008-12-07  Behdad Esfahbod  <behdad@gnome.org>
 
+	Bug 563156 – Document printing and scanning gunichar values
+
+	* glib/tmpl/unicode.sgml: Document printing and scanning gunichar
+	values.
+
+2008-12-07  Behdad Esfahbod  <behdad@gnome.org>
+
 	Bug 563150 – G_GU?INT*_MODIFIER/FORMAT docs
 
 	* glib/tmpl/glib-unused.sgml:
