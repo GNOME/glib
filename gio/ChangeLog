@@ -1,4 +1,11 @@
 2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558458 – Cannot build gio tests on Solaris using SUN cc
+
+	* tests/live-g-file.c: Support compilers that don't understand
+	ISO C varargs macros. Patch by Eric Lamarque
+
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
 	
 	Bug 526320 – should not list mounts that the user doesn't have 
 	permission to use
