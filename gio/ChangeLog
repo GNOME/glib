@@ -1,3 +1,13 @@
+2008-12-08  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 555465 – GUnix{Input,Output}Stream lacks fd/close_fd_at_close 
+	property
+
+	* gio.symbols:
+	* gunixinputstream.[hc]:
+	* gunixoutputstream.[hc]: Add "fd" and "close-fd" properties
+	including getters and setters. Patch by Maciej Piechotka
+
 2008-12-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 558458 – Cannot build gio tests on Solaris using SUN cc

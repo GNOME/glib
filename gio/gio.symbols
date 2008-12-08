@@ -694,6 +694,9 @@ g_unix_is_mount_path_system_internal
 #ifdef G_OS_UNIX
 g_unix_input_stream_get_type  G_GNUC_CONST
 g_unix_input_stream_new 
+g_unix_input_stream_set_close_fd
+g_unix_input_stream_get_close_fd
+g_unix_input_stream_get_fd
 #endif /* G_OS_UNIX */
 #endif
 #endif
@@ -703,6 +706,9 @@ g_unix_input_stream_new
 #ifdef G_OS_UNIX
 g_unix_output_stream_get_type  G_GNUC_CONST
 g_unix_output_stream_new 
+g_unix_output_stream_set_close_fd
+g_unix_output_stream_get_close_fd
+g_unix_output_stream_get_fd
 #endif /* G_OS_UNIX */
 #endif
 #endif

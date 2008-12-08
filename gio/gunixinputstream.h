@@ -64,10 +64,14 @@ struct _GUnixInputStreamClass
   void (*_g_reserved5) (void);
 };
 
-GType          g_unix_input_stream_get_type (void) G_GNUC_CONST;
+GType          g_unix_input_stream_get_type     (void) G_GNUC_CONST;
 
-GInputStream * g_unix_input_stream_new      (int      fd,
-                                             gboolean close_fd_at_close);
+GInputStream * g_unix_input_stream_new          (gint              fd,
+                                                 gboolean          close_fd);
+void           g_unix_input_stream_set_close_fd (GUnixInputStream *stream,
+                                                 gboolean          close_fd);
+gboolean       g_unix_input_stream_get_close_fd (GUnixInputStream *stream);
+gint           g_unix_input_stream_get_fd       (GUnixInputStream *stream);
 
 G_END_DECLS
 

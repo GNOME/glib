@@ -536,6 +536,9 @@ GFilterInputStreamPrivate
 <TITLE>GUnixInputStream</TITLE>
 GUnixInputStream
 g_unix_input_stream_new
+g_unix_input_stream_set_close_fd
+g_unix_input_stream_get_close_fd
+g_unix_input_stream_get_fd
 <SUBSECTION Standard>
 GUnixInputStreamClass
 G_UNIX_INPUT_STREAM
@@ -783,6 +786,9 @@ GDataOutputStreamPrivate
 <TITLE>GUnixOutputStream</TITLE>
 GUnixOutputStream
 g_unix_output_stream_new
+g_unix_output_stream_set_close_fd
+g_unix_output_stream_get_close_fd
+g_unix_output_stream_get_fd
 <SUBSECTION Standard>
 GUnixOutputStreamClass
 G_UNIX_OUTPUT_STREAM

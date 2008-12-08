@@ -51,14 +51,28 @@
  * descriptor must be selectable, so it doesn't work with opened files.
  **/
 
+enum {
+  PROP_0,
+  PROP_FD,
+  PROP_CLOSE_FD
+};
+
 G_DEFINE_TYPE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM);
 
 
 struct _GUnixOutputStreamPrivate {
   int fd;
-  gboolean close_fd_at_close;
+  gboolean close_fd;
 };
 
+static void     g_unix_output_stream_set_property (GObject              *object,
+						   guint                 prop_id,
+						   const GValue         *value,
+						   GParamSpec           *pspec);
+static void     g_unix_output_stream_get_property (GObject              *object,
+						   guint                 prop_id,
+						   GValue               *value,
+						   GParamSpec           *pspec);
 static gssize   g_unix_output_stream_write        (GOutputStream        *stream,
 						   const void           *buffer,
 						   gsize                 count,
@@ -104,7 +118,9 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
   GOutputStreamClass *stream_class = G_OUTPUT_STREAM_CLASS (klass);
   
   g_type_class_add_private (klass, sizeof (GUnixOutputStreamPrivate));
-  
+
+  gobject_class->get_property = g_unix_output_stream_get_property;
+  gobject_class->set_property = g_unix_output_stream_set_property;
   gobject_class->finalize = g_unix_output_stream_finalize;
 
   stream_class->write_fn = g_unix_output_stream_write;
@@ -113,6 +129,83 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
   stream_class->write_finish = g_unix_output_stream_write_finish;
   stream_class->close_async = g_unix_output_stream_close_async;
   stream_class->close_finish = g_unix_output_stream_close_finish;
+
+   /**
+   * GUnixOutputStream:fd:
+   *
+   * The file descriptor that the stream writes to.
+   *
+   * Since: 2.20
+   */
+  g_object_class_install_property (gobject_class,
+				   PROP_FD,
+				   g_param_spec_int ("fd",
+						     _("File descriptor"),
+						     _("The file descriptor to write to"),
+						     G_MININT, G_MAXINT, -1,
+						     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+
+  /**
+   * GUnixOutputStream:close-fd:
+   *
+   * Whether to close the file descriptor when the stream is closed.
+   *
+   * Since: 2.20
+   */
+  g_object_class_install_property (gobject_class,
+				   PROP_CLOSE_FD,
+				   g_param_spec_boolean ("close-fd",
+							 _("Close file descriptor"),
+							 _("Whether to close the file descriptor when the stream is closed"),
+							 TRUE,
+							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+}
+
+static void
+g_unix_output_stream_set_property (GObject         *object,
+				   guint            prop_id,
+				   const GValue    *value,
+				   GParamSpec      *pspec)
+{
+  GUnixOutputStream *unix_stream;
+
+  unix_stream = G_UNIX_OUTPUT_STREAM (object);
+
+  switch (prop_id)
+    {
+    case PROP_FD:
+      unix_stream->priv->fd = g_value_get_int (value);
+      break;
+    case PROP_CLOSE_FD:
+      unix_stream->priv->close_fd = g_value_get_boolean (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_unix_output_stream_get_property (GObject    *object,
+				   guint       prop_id,
+				   GValue     *value,
+				   GParamSpec *pspec)
+{
+  GUnixOutputStream *unix_stream;
+
+  unix_stream = G_UNIX_OUTPUT_STREAM (object);
+
+  switch (prop_id)
+    {
+    case PROP_FD:
+      g_value_set_int (value, unix_stream->priv->fd);
+      break;
+    case PROP_CLOSE_FD:
+      g_value_set_boolean (value, unix_stream->priv->close_fd);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
 }
 
 static void
@@ -121,34 +214,98 @@ g_unix_output_stream_init (GUnixOutputStream *unix_stream)
   unix_stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (unix_stream,
 						   G_TYPE_UNIX_OUTPUT_STREAM,
 						   GUnixOutputStreamPrivate);
-}
 
+  unix_stream->priv->fd = -1;
+  unix_stream->priv->close_fd = TRUE;
+}
 
 /**
  * g_unix_output_stream_new:
- * @fd: unix's file descriptor.
- * @close_fd_at_close: a #gboolean.
+ * @fd: a UNIX file descriptor
+ * @close_fd: %TRUE to close the file descriptor when done
  * 
- * Creates a new unix output stream for @fd. If @close_fd_at_close
- * is %TRUE, the fd will be closed when the output stream is destroyed.
+ * Creates a new #GUnixOutputStream for the given @fd. 
  * 
- * Returns: #GOutputStream. If @close_fd_at_close is %TRUE, then
- * @fd will be closed when the #GOutputStream is closed.
+ * If @close_fd, is %TRUE, the file descriptor will be closed when 
+ * the output stream is destroyed.
+ * 
+ * Returns: a new #GOutputStream
  **/
 GOutputStream *
-g_unix_output_stream_new (int      fd,
-			  gboolean close_fd_at_close)
+g_unix_output_stream_new (gint     fd,
+			  gboolean close_fd)
 {
   GUnixOutputStream *stream;
 
   g_return_val_if_fail (fd != -1, NULL);
 
-  stream = g_object_new (G_TYPE_UNIX_OUTPUT_STREAM, NULL);
-
-  stream->priv->fd = fd;
-  stream->priv->close_fd_at_close = close_fd_at_close;
+  stream = g_object_new (G_TYPE_UNIX_OUTPUT_STREAM,
+			 "fd", fd,
+			 "close-fd", close_fd,
+			 NULL);
   
   return G_OUTPUT_STREAM (stream);
+}
+
+/**
+ * g_unix_output_stream_set_close_fd:
+ * @stream: a #GUnixOutputStream
+ * @close_fd: %TRUE to close the file descriptor when done
+ *
+ * Sets whether the file descriptor of @stream shall be closed
+ * when the stream is closed.
+ *
+ * Since: 2.20
+ */
+void
+g_unix_output_stream_set_close_fd (GUnixOutputStream *stream,
+                                   gboolean           close_fd)
+{
+  g_return_if_fail (G_IS_UNIX_OUTPUT_STREAM (stream));
+
+  close_fd = close_fd != FALSE;
+  if (stream->priv->close_fd != close_fd)
+    {
+      stream->priv->close_fd = close_fd;
+      g_object_notify (G_OBJECT (stream), "close-fd");
+    }
+}
+
+/**
+ * g_unix_output_stream_get_close_fd:
+ * @stream: a #GUnixOutputStream
+ *
+ * Returns whether the file descriptor of @stream will be
+ * closed when the stream is closed.
+ *
+ * Return value: %TRUE if the file descriptor is closed when done
+ *
+ * Since: 2.20
+ */
+gboolean
+g_unix_output_stream_get_close_fd (GUnixOutputStream *stream)
+{
+  g_return_val_if_fail (G_IS_UNIX_OUTPUT_STREAM (stream), FALSE);
+
+  return stream->priv->close_fd;
+}
+
+/**
+ * g_unix_output_stream_get_fd:
+ * @stream: a #GUnixOutputStream
+ *
+ * Return the UNIX file descriptor that the stream writes to.
+ *
+ * Return value: The file descriptor of @stream
+ *
+ * Since: 2.20
+ */
+gint
+g_unix_output_stream_get_fd (GUnixOutputStream *stream)
+{
+  g_return_val_if_fail (G_IS_UNIX_OUTPUT_STREAM (stream), -1);
+
+  return stream->priv->fd;
 }
 
 static gssize
@@ -221,7 +378,7 @@ g_unix_output_stream_close (GOutputStream  *stream,
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
-  if (!unix_stream->priv->close_fd_at_close)
+  if (!unix_stream->priv->close_fd)
     return TRUE;
   
   while (1)
@@ -370,7 +527,7 @@ close_async_cb (CloseAsyncData *data)
 
   unix_stream = G_UNIX_OUTPUT_STREAM (data->stream);
 
-  if (!unix_stream->priv->close_fd_at_close)
+  if (!unix_stream->priv->close_fd)
     {
       result = TRUE;
       goto out;
