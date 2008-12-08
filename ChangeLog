@@ -1,3 +1,11 @@
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 508021 – Add support for the CRIS and CRISv32 architectures
+
+	* configure.in: 
+	* glib/gatomic.c: Add an implementation for the CRIS and CRISv32 
+	architectures, by Peter Kjellerstedt
+
 2008-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Some more documentation additions.

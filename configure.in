@@ -2404,6 +2404,18 @@ if test x"$GCC" = xyes; then
                          [arm atomic implementation])
       glib_memory_barrier_needed=no
       ;;
+    crisv32*|etraxfs*)
+      AC_MSG_RESULT([crisv32])
+      AC_DEFINE_UNQUOTED(G_ATOMIC_CRISV32, 1,
+		   	 [crisv32 atomic implementation])
+      glib_memory_barrier_needed=no
+      ;;
+    cris*|etrax*)
+      AC_MSG_RESULT([cris])
+      AC_DEFINE_UNQUOTED(G_ATOMIC_CRIS, 1,
+			 [cris atomic implementation])
+      glib_memory_barrier_needed=no
+      ;;
     *)
       AC_MSG_RESULT([none])
       glib_memory_barrier_needed=yes

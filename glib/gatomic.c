@@ -651,9 +651,131 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 
   return result;
 }
-# else /* !G_ATOMIC_ARM */
+# elif defined (G_ATOMIC_CRIS) || defined (G_ATOMIC_CRISV32)
+#  ifdef G_ATOMIC_CRIS
+#   define CRIS_ATOMIC_INT_CMP_XCHG(atomic, oldval, newval)		\
+  ({									\
+     gboolean __result;							\
+     __asm__ __volatile__ ("\n"						\
+                           "0:\tclearf\n\t"				\
+                           "cmp.d [%[Atomic]], %[OldVal]\n\t"		\
+                           "bne 1f\n\t"					\
+                           "ax\n\t"					\
+                           "move.d %[NewVal], [%[Atomic]]\n\t"		\
+                           "bwf 0b\n"					\
+                           "1:\tseq %[Result]"				\
+                           : [Result] "=&r" (__result),			\
+                                      "=m" (*(atomic))			\
+                           : [Atomic] "r" (atomic),			\
+                             [OldVal] "r" (oldval),			\
+                             [NewVal] "r" (newval),			\
+                                      "g" (*(gpointer*) (atomic))	\
+                           : "memory");					\
+     __result;								\
+  })
+#  else
+#   define CRIS_ATOMIC_INT_CMP_XCHG(atomic, oldval, newval)		\
+  ({									\
+     gboolean __result;							\
+     __asm__ __volatile__ ("\n"						\
+                           "0:\tclearf p\n\t"				\
+                           "cmp.d [%[Atomic]], %[OldVal]\n\t"		\
+                           "bne 1f\n\t"					\
+                           "ax\n\t"					\
+                           "move.d %[NewVal], [%[Atomic]]\n\t"		\
+                           "bcs 0b\n"					\
+                           "1:\tseq %[Result]"				\
+                           : [Result] "=&r" (__result),			\
+                                      "=m" (*(atomic))			\
+                           : [Atomic] "r" (atomic),			\
+                             [OldVal] "r" (oldval),			\
+                             [NewVal] "r" (newval),			\
+                                      "g" (*(gpointer*) (atomic))	\
+                           : "memory");					\
+     __result;								\
+  })
+#  endif
+
+#define CRIS_CACHELINE_SIZE 32
+#define CRIS_ATOMIC_BREAKS_CACHELINE(atomic) \
+  (((gulong)(atomic) & (CRIS_CACHELINE_SIZE - 1)) > (CRIS_CACHELINE_SIZE - sizeof (atomic)))
+
+gint     __g_atomic_int_exchange_and_add         (volatile gint   *atomic,
+						  gint             val);
+void     __g_atomic_int_add                      (volatile gint   *atomic,
+						  gint             val);
+gboolean __g_atomic_int_compare_and_exchange     (volatile gint   *atomic,
+						  gint             oldval,
+						  gint             newval);
+gboolean __g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+						  gpointer         oldval,
+						  gpointer         newval);
+
+gboolean
+g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+				       gpointer           oldval,
+				       gpointer           newval)
+{
+  if (G_UNLIKELY (CRIS_ATOMIC_BREAKS_CACHELINE (atomic)))
+    return __g_atomic_pointer_compare_and_exchange (atomic, oldval, newval);
+
+  return CRIS_ATOMIC_INT_CMP_XCHG (atomic, oldval, newval);
+}
+
+gboolean
+g_atomic_int_compare_and_exchange (volatile gint *atomic,
+				   gint           oldval,
+				   gint           newval)
+{
+  if (G_UNLIKELY (CRIS_ATOMIC_BREAKS_CACHELINE (atomic)))
+    return __g_atomic_int_compare_and_exchange (atomic, oldval, newval);
+
+  return CRIS_ATOMIC_INT_CMP_XCHG (atomic, oldval, newval);
+}
+
+gint
+g_atomic_int_exchange_and_add (volatile gint *atomic,
+			       gint           val)
+{
+  gint result;
+
+  if (G_UNLIKELY (CRIS_ATOMIC_BREAKS_CACHELINE (atomic)))
+    return __g_atomic_int_exchange_and_add (atomic, val);
+
+  do
+    result = *atomic;
+  while (!CRIS_ATOMIC_INT_CMP_XCHG (atomic, result, result + val));
+
+  return result;
+}
+
+void
+g_atomic_int_add (volatile gint *atomic,
+		  gint           val)
+{
+  gint result;
+
+  if (G_UNLIKELY (CRIS_ATOMIC_BREAKS_CACHELINE (atomic)))
+    return __g_atomic_int_add (atomic, val);
+
+  do
+    result = *atomic;
+  while (!CRIS_ATOMIC_INT_CMP_XCHG (atomic, result, result + val));
+}
+
+/* We need the atomic mutex for atomic operations where the atomic variable
+ * breaks the 32 byte cache line since the CRIS architecture does not support
+ * atomic operations on such variables. Fortunately this should be rare.
+ */
 #  define DEFINE_WITH_MUTEXES
-# endif /* G_ATOMIC_IA64 */
+#  define g_atomic_int_exchange_and_add __g_atomic_int_exchange_and_add
+#  define g_atomic_int_add __g_atomic_int_add
+#  define g_atomic_int_compare_and_exchange __g_atomic_int_compare_and_exchange
+#  define g_atomic_pointer_compare_and_exchange __g_atomic_pointer_compare_and_exchange
+
+# else /* !G_ATOMIC_* */
+#  define DEFINE_WITH_MUTEXES
+# endif /* G_ATOMIC_* */
 #else /* !__GNUC__ */
 # ifdef G_PLATFORM_WIN32
 #  define DEFINE_WITH_WIN32_INTERLOCKED
