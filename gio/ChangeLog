@@ -1,3 +1,15 @@
+2008-12-09  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 515777 - incorrect date&time on copy
+	
+        * glocalfile.c:
+        (g_local_file_class_init):
+	Copy mtime by default
+	
+        * gfile.c:
+	Change docs about G_FILE_COPY_ALL_METADATA to not mention
+	mtime as an example.
+
 2008-12-08  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 558298 – Hide ecryptfs mounts

@@ -2128,9 +2128,10 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
  *
  * Normally only a subset of the file attributes are copied,
  * those that are copies in a normal file copy operation
- * (which for instance does not include e.g. mtime). However
+ * (which for instance does not include e.g. owner). However
  * if #G_FILE_COPY_ALL_METADATA is specified in @flags, then
- * all the metadata that is possible to copy is copied.
+ * all the metadata that is possible to copy is copied. This
+ * is useful when implementing move by copy + delete source.
  *
  * Returns: %TRUE if the attributes were copied successfully, %FALSE otherwise.
  **/

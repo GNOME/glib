@@ -179,11 +179,16 @@ g_local_file_class_init (GLocalFileClass *klass)
   g_file_attribute_info_list_add (list,
 				  G_FILE_ATTRIBUTE_TIME_MODIFIED,
 				  G_FILE_ATTRIBUTE_TYPE_UINT64,
+				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
 				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
 				  G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
 				  G_FILE_ATTRIBUTE_TYPE_UINT32,
+				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
 				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+  /* When copying, the target file is accessed. Replicating
+   * the source access time does not make sense in this case.
+   */
   g_file_attribute_info_list_add (list,
 				  G_FILE_ATTRIBUTE_TIME_ACCESS,
 				  G_FILE_ATTRIBUTE_TYPE_UINT64,
