@@ -42,6 +42,7 @@ struct _GIRepositoryPrivate
 {
   GHashTable *typelibs; /* (string) namespace -> GTypelib */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GTypelib */
+  GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
 };
 
 G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
@@ -57,6 +58,10 @@ g_irepository_init (GIRepository *repository)
 			     (GDestroyNotify) g_typelib_free);
   repository->priv->lazy_typelibs 
     = g_hash_table_new (g_str_hash, g_str_equal);
+  repository->priv->info_by_gtype
+    = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                             (GDestroyNotify) NULL,
+                             (GDestroyNotify) g_base_info_unref);
 }
 
 static void
@@ -66,6 +71,7 @@ g_irepository_finalize (GObject *object)
 
   g_hash_table_destroy (repository->priv->typelibs);
   g_hash_table_destroy (repository->priv->lazy_typelibs);
+  g_hash_table_destroy (repository->priv->info_by_gtype);
   
   (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -625,6 +631,12 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   repository = get_repository (repository);
 
+  data.iface = g_hash_table_lookup (repository->priv->info_by_gtype,
+                                    (gpointer)type);
+
+  if (data.iface)
+    return g_base_info_ref (data.iface);
+
   data.repo = repository;
   data.name = NULL;
   data.type = g_type_name (type);
@@ -633,6 +645,12 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
   g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+
+  if (data.iface)
+    g_hash_table_insert (repository->priv->info_by_gtype,
+                         (gpointer) type,
+                         g_base_info_ref (data.iface));
+
 
   return data.iface;
 }
