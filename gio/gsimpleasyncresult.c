@@ -83,7 +83,9 @@
  * 
  * An asynchronous operation can be made to ignore a cancellation event by 
  * calling g_simple_async_result_set_handle_cancellation() with a 
- * #GSimpleAsyncResult for the operation and %FALSE. 
+ * #GSimpleAsyncResult for the operation and %FALSE. This is useful for
+ * operations that are dangerous to cancel, such as close (which would
+ * cause a leak if cancelled before being run).
  * 
  * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop, 
  * or it can use #GThread<!-- -->s if available. 
@@ -464,6 +466,8 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
   g_return_if_fail (error != NULL);
 
+  if (simple->error)
+    g_error_free (simple->error);
   simple->error = g_error_copy (error);
   simple->failed = TRUE;
 }
@@ -507,6 +511,8 @@ g_simple_async_result_set_error_va (GSimpleAsyncResult *simple,
   g_return_if_fail (domain != 0);
   g_return_if_fail (format != NULL);
 
+  if (simple->error)
+    g_error_free (simple->error);
   simple->error = _g_error_new_valist (domain, code, format, args);
   simple->failed = TRUE;
 }
@@ -544,6 +550,9 @@ g_simple_async_result_set_error (GSimpleAsyncResult *simple,
  * @simple: a #GSimpleAsyncResult.
  * 
  * Completes an asynchronous I/O job.
+ * Must be called in the main thread, as it invokes the callback that
+ * should be called in the main thread. If you are in a different thread
+ * use g_simple_async_result_complete_in_idle().
  **/
 void
 g_simple_async_result_complete (GSimpleAsyncResult *simple)
@@ -593,8 +602,35 @@ g_simple_async_result_complete_in_idle (GSimpleAsyncResult *simple)
 
 typedef struct {
   GSimpleAsyncResult *simple;
+  GCancellable *cancellable;
   GSimpleAsyncThreadFunc func;
 } RunInThreadData;
+
+
+static gboolean
+complete_in_idle_cb_for_thread (gpointer _data)
+{
+  RunInThreadData *data = _data;
+  GSimpleAsyncResult *simple;
+
+  simple = data->simple;
+  
+  if (simple->handle_cancellation &&
+      g_cancellable_is_cancelled (data->cancellable))
+    g_simple_async_result_set_error (simple,
+                                     G_IO_ERROR,
+                                     G_IO_ERROR_CANCELLED,
+                                     "%s", _("Operation was cancelled"));
+  
+  g_simple_async_result_complete (simple);
+
+  if (data->cancellable)
+    g_object_unref (data->cancellable);
+  g_object_unref (data->simple);
+  g_free (data);
+  
+  return FALSE;
+}
 
 static gboolean
 run_in_thread (GIOSchedulerJob *job,
@@ -603,7 +639,9 @@ run_in_thread (GIOSchedulerJob *job,
 {
   RunInThreadData *data = _data;
   GSimpleAsyncResult *simple = data->simple;
-
+  GSource *source;
+  guint id;
+  
   if (simple->handle_cancellation &&
       g_cancellable_is_cancelled (c))
     g_simple_async_result_set_error (simple,
@@ -615,9 +653,12 @@ run_in_thread (GIOSchedulerJob *job,
                 simple->source_object,
                 c);
 
-  g_simple_async_result_complete_in_idle (data->simple);
-  g_object_unref (data->simple);
-  g_free (data);
+  source = g_idle_source_new ();
+  g_source_set_priority (source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source, complete_in_idle_cb_for_thread, data, NULL);
+
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
 
   return FALSE;
 }
@@ -645,6 +686,9 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
   data = g_new (RunInThreadData, 1);
   data->func = func;
   data->simple = g_object_ref (simple);
+  data->cancellable = cancellable;
+  if (cancellable)
+    g_object_ref (cancellable);
   g_io_scheduler_push_job (run_in_thread, data, NULL, io_priority, cancellable);
 }
 

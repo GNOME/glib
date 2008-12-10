@@ -1,3 +1,19 @@
+2008-12-10  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 562452 - Ensure we return G_IO_ERROR_CANCELLED if cancelling
+	g_simple_async_result_run_in_thread
+	
+        * gsimpleasyncresult.c:
+	Make g_simple_async_result_run_in_thread check cancellation before
+	calling out to the user in the callback. This means we guarantee
+	reporting cancels of async operations from the main threads, which
+	is probably more in line with what users expect.
+	
+	Note that there are still no such guarantees for cancelling sync
+	operations or cancelling async operation from outside the main
+	thread. Furthermore, the exact behaviour of async implementations
+	not using run_in_thread may differ.
+
 2008-12-09  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 515777 - incorrect date&time on copy
