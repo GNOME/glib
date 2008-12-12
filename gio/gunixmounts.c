@@ -1054,7 +1054,7 @@ g_unix_mount_at (const char *mount_path,
     {
       mount_entry = l->data;
 
-      if (strcmp (mount_path, mount_entry->mount_path) == 0)
+      if (!found && strcmp (mount_path, mount_entry->mount_path) == 0)
 	found = mount_entry;
       else
 	g_unix_mount_free (mount_entry);
