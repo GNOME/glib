@@ -90,6 +90,13 @@
     	<xi:include href="xml/gemblemedicon.xml"/>
     	<xi:include href="xml/gemblem.xml"/>
     </chapter>
+    <chapter id="networking">
+    	<title>Networking</title>
+        <xi:include href="xml/ginetaddress.xml"/>
+        <xi:include href="xml/gsocketaddress.xml"/>
+        <xi:include href="xml/ginetsocketaddress.xml"/>
+        <xi:include href="xml/gunixsocketaddress.xml"/>
+    </chapter>
     <chapter id="utils">   
     	<title>Utilities</title>
         <xi:include href="xml/gfilenamecompleter.xml"/>

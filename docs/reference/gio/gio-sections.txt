@@ -1312,4 +1312,95 @@ g_io_extension_point_set_required_type
 g_io_extension_ref_class
 </SECTION>
 
+<SECTION>
+<FILE>ginetaddress</FILE>
+<TITLE>GInetAddress</TITLE>
+GInetAddress
+g_inet_address_new_from_string
+g_inet_address_new_from_bytes
+g_inet_address_new_any
+g_inet_address_new_loopback
+g_inet_address_to_bytes
+g_inet_address_to_string
+g_inet_address_get_family
+g_inet_address_get_is_any
+g_inet_address_get_is_link_local
+g_inet_address_get_is_loopback
+g_inet_address_get_is_mc_global
+g_inet_address_get_is_mc_link_local
+g_inet_address_get_is_mc_node_local
+g_inet_address_get_is_mc_org_local
+g_inet_address_get_is_mc_site_local
+g_inet_address_get_is_multicast
+g_inet_address_get_is_site_local
+<SUBSECTION Standard>
+GInetAddressClass
+GInetAddressPrivate
+G_INET_ADDRESS
+G_INET_ADDRESS_CLASS
+G_INET_ADDRESS_GET_CLASS
+G_IS_INET_ADDRESS
+G_IS_INET_ADDRESS_CLASS
+G_TYPE_INET_ADDRESS
+<SUBSECTION Private>
+g_inet_address_get_type
+</SECTION>
 
+<SECTION>
+<FILE>gsocketaddress</FILE>
+<TITLE>GSocketAddress</TITLE>
+GSocketAddress
+GSocketFamily
+g_socket_address_new_from_native
+g_socket_address_get_family
+g_socket_address_to_native
+g_socket_address_get_native_size
+<SUBSECTION Standard>
+GSocketAddressClass
+G_IS_SOCKET_ADDRESS
+G_IS_SOCKET_ADDRESS_CLASS
+G_SOCKET_ADDRESS
+G_SOCKET_ADDRESS_CLASS
+G_SOCKET_ADDRESS_GET_CLASS
+G_TYPE_SOCKET_ADDRESS
+<SUBSECTION Private>
+g_socket_address_get_type
+</SECTION>
+
+<SECTION>
+<FILE>ginetsocketaddress</FILE>
+<TITLE>GInetSocketAddress</TITLE>
+GInetSocketAddress
+g_inet_socket_address_new
+g_inet_socket_address_get_address
+g_inet_socket_address_get_port
+<SUBSECTION Standard>
+GInetSocketAddressClass
+GInetSocketAddressPrivate
+G_INET_SOCKET_ADDRESS
+G_INET_SOCKET_ADDRESS_CLASS
+G_INET_SOCKET_ADDRESS_GET_CLASS
+G_IS_INET_SOCKET_ADDRESS
+G_IS_INET_SOCKET_ADDRESS_CLASS
+G_TYPE_INET_SOCKET_ADDRESS
+<SUBSECTION Private>
+g_inet_socket_address_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gunixsocketaddress</FILE>
+<TITLE>GUnixSocketAddress</TITLE>
+GUnixSocketAddress
+g_unix_socket_address_new
+<SUBSECTION Standard>
+GUnixSocketAddressClass
+GUnixSocketAddressPrivate
+G_IS_UNIX_SOCKET_ADDRESS
+G_IS_UNIX_SOCKET_ADDRESS_CLASS
+G_TYPE_UNIX_SOCKET_ADDRESS
+G_UNIX_SOCKET_ADDRESS
+G_UNIX_SOCKET_ADDRESS_CLASS
+G_UNIX_SOCKET_ADDRESS_GET_CLASS
+<SUBSECTION Private>
+g_unix_socket_address_get_type
+</SECTION>

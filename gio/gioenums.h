@@ -477,6 +477,26 @@ typedef enum  {
 } GEmblemOrigin;
 
 
+/**
+ * GSocketFamily:
+ * @G_SOCKET_FAMILY_INVALID: no address family
+ * @G_SOCKET_FAMILY_IPV4: the IPv4 family
+ * @G_SOCKET_FAMILY_IPV6: the IPv6 family
+ * @G_SOCKET_FAMILY_UNIX: the UNIX domain family
+ *
+ * The protocol family of a #GSocketAddress. (These values are
+ * identical to the system defines %AF_INET, %AF_INET6 and %AF_UNIX,
+ * if available.)
+ */
+typedef enum {
+  G_SOCKET_FAMILY_INVALID,
+#ifdef GLIB_SYSDEF_AF_UNIX
+  G_SOCKET_FAMILY_UNIX = GLIB_SYSDEF_AF_UNIX,
+#endif
+  G_SOCKET_FAMILY_IPV4 = GLIB_SYSDEF_AF_INET,
+  G_SOCKET_FAMILY_IPV6 = GLIB_SYSDEF_AF_INET6
+} GSocketFamily;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

@@ -36,6 +36,8 @@ g_file_type_get_type
 g_filter_input_stream_get_type
 g_filter_output_stream_get_type
 g_icon_get_type
+g_inet_address_get_type
+g_inet_socket_address_get_type
 g_input_stream_get_type
 g_io_error_enum_get_type
 g_io_module_get_type
@@ -55,10 +57,12 @@ g_output_stream_splice_flags_get_type
 g_password_save_get_type
 g_seekable_get_type
 g_simple_async_result_get_type
+g_socket_address_get_type
 g_themed_icon_get_type
 g_unix_input_stream_get_type
 g_unix_mount_monitor_get_type
 g_unix_output_stream_get_type
+g_unix_socket_address_get_type
 g_vfs_get_type
 g_volume_get_type
 g_volume_monitor_get_type

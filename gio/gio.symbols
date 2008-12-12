@@ -833,6 +833,7 @@ g_output_stream_splice_flags_get_type G_GNUC_CONST
 g_ask_password_flags_get_type G_GNUC_CONST
 g_password_save_get_type G_GNUC_CONST
 g_emblem_origin_get_type G_GNUC_CONST
+g_socket_family_get_type G_GNUC_CONST
 #endif
 #endif
 
@@ -857,3 +858,53 @@ g_emblem_get_origin
 #endif
 #endif
 
+#if IN_HEADER(__G_INET_ADDRESS_H__)
+#if IN_FILE(__G_INET_ADDRESS_C__)
+g_inet_address_new_from_string
+g_inet_address_new_from_bytes
+g_inet_address_new_any
+g_inet_address_new_loopback
+g_inet_address_get_family
+g_inet_address_get_type G_GNUC_CONST
+g_inet_address_get_is_any
+g_inet_address_get_is_link_local
+g_inet_address_get_is_loopback
+g_inet_address_get_is_mc_global
+g_inet_address_get_is_mc_link_local
+g_inet_address_get_is_mc_node_local
+g_inet_address_get_is_mc_org_local
+g_inet_address_get_is_mc_site_local
+g_inet_address_get_is_multicast
+g_inet_address_get_is_site_local
+g_inet_address_to_bytes
+g_inet_address_to_string
+#endif
+#endif
+
+#if IN_HEADER(__G_INET_SOCKET_ADDRESS_H__)
+#if IN_FILE(__G_INET_SOCKET_ADDRESS_C__)
+g_inet_socket_address_get_address
+g_inet_socket_address_get_port
+g_inet_socket_address_get_type G_GNUC_CONST
+g_inet_socket_address_new
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_SOCKET_ADDRESS_H__)
+#if IN_FILE(__G_UNIX_SOCKET_ADDRESS_C__)
+#ifdef G_OS_UNIX
+g_unix_socket_address_get_type G_GNUC_CONST
+g_unix_socket_address_new
+#endif
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_ADDRESS_H__)
+#if IN_FILE(__G_SOCKET_ADDRESS_C__)
+g_socket_address_new_from_native
+g_socket_address_get_type G_GNUC_CONST
+g_socket_address_get_family
+g_socket_address_get_native_size
+g_socket_address_to_native
+#endif
+#endif

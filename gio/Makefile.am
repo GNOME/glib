@@ -132,6 +132,7 @@ unix_sources = \
 	gunixmount.h		\
 	gunixmounts.c 		\
 	gunixmounts.h 		\
+	gunixsocketaddress.c	\
 	gunixvolume.c 		\
 	gunixvolume.h 		\
 	gunixvolumemonitor.c 	\
@@ -147,12 +148,13 @@ giounixinclude_HEADERS = \
 	gunixmounts.h 		\
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\
+	gunixsocketaddress.h	\
 	$(NULL)
 endif
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi
+platform_libadd += -lshlwapi -lws2_32
 win32_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
@@ -196,6 +198,8 @@ libgio_2_0_la_SOURCES =		\
 	gfilterinputstream.c 	\
 	gfilteroutputstream.c 	\
 	gicon.c 		\
+	ginetaddress.c		\
+	ginetsocketaddress.c	\
 	ginputstream.c 		\
 	gioenums.h		\
 	gioerror.c 		\
@@ -209,11 +213,13 @@ libgio_2_0_la_SOURCES =		\
 	gmountoperation.c 	\
 	gnativevolumemonitor.c 	\
 	gnativevolumemonitor.h 	\
+	gnetworkingprivate.h	\
 	goutputstream.c 	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
+	gsocketaddress.c	\
 	gthemedicon.c 		\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
@@ -299,6 +305,8 @@ gio_headers =			\
 	gfilterinputstream.h 	\
 	gfilteroutputstream.h 	\
 	gicon.h 		\
+	ginetaddress.h		\
+	ginetsocketaddress.h	\
 	ginputstream.h 		\
 	gio.h			\
 	giotypes.h		\
@@ -315,6 +323,7 @@ gio_headers =			\
 	goutputstream.h 	\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
+	gsocketaddress.h	\
 	gthemedicon.h 		\
 	gvfs.h 			\
 	gvolume.h 		\

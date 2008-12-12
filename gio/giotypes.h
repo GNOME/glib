@@ -75,6 +75,8 @@ typedef struct _GFilenameCompleter            GFilenameCompleter;
 
 
 typedef struct _GIcon                         GIcon; /* Dummy typedef */
+typedef struct _GInetAddress                  GInetAddress;
+typedef struct _GInetSocketAddress            GInetSocketAddress;
 typedef struct _GInputStream                  GInputStream;
 typedef struct _GIOModule                     GIOModule;
 typedef struct _GIOExtensionPoint             GIOExtensionPoint;
@@ -97,9 +99,12 @@ typedef struct _GMemoryOutputStream           GMemoryOutputStream;
  **/
 typedef struct _GMount                        GMount; /* Dummy typedef */
 typedef struct _GMountOperation               GMountOperation;
+typedef struct _GNetworkAddress               GNetworkAddress;
+typedef struct _GNetworkService               GNetworkService;
 typedef struct _GOutputStream                 GOutputStream;
 typedef struct _GSeekable                     GSeekable;
 typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
+typedef struct _GSocketAddress                GSocketAddress;
 typedef struct _GThemedIcon                   GThemedIcon;
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 

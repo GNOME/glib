@@ -250,6 +250,9 @@ union _GSystemThread
  */
 typedef void * GPid;
 
+#define GLIB_SYSDEF_AF_INET 2
+#define GLIB_SYSDEF_AF_INET6 23
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */

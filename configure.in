@@ -954,6 +954,26 @@ AC_CHECK_FUNCS(_NSGetEnviron)
 AC_FUNC_VSNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
 
+# Internet address families
+if test $glib_native_win32 = yes; then
+  glib_inet_includes=["
+#include <winsock2.h>
+  "]
+else
+  glib_inet_includes=["
+#include <sys/socket.h>
+  "]
+fi
+
+glib_failed=false
+GLIB_CHECK_VALUE(AF_INET, $glib_inet_includes, glib_failed=true)
+GLIB_CHECK_VALUE(AF_INET6, $glib_inet_includes, glib_failed=true)
+# winsock defines this even though it doesn't support it
+GLIB_CHECK_VALUE(AF_UNIX, $glib_inet_includes, glib_failed=true)
+if $glib_failed ; then
+  AC_MSG_ERROR([Could not determine values for AF_INET* constants])
+fi
+
 dnl
 dnl if statfs() takes 2 arguments (Posix) or 4 (Solaris)
 dnl
@@ -2986,6 +3006,10 @@ _______EOF
  */
 typedef $g_pid_type GPid;
 
+#define GLIB_SYSDEF_AF_UNIX $g_af_unix
+#define GLIB_SYSDEF_AF_INET $g_af_inet
+#define GLIB_SYSDEF_AF_INET6 $g_af_inet6
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
@@ -3271,6 +3295,10 @@ g_pollpri=$glib_cv_value_POLLPRI
 g_pollhup=$glib_cv_value_POLLHUP
 g_pollerr=$glib_cv_value_POLLERR
 g_pollnval=$glib_cv_value_POLLNVAL
+
+g_af_unix=$glib_cv_value_AF_UNIX
+g_af_inet=$glib_cv_value_AF_INET
+g_af_inet6=$glib_cv_value_AF_INET6
 
 g_stack_grows=$glib_cv_stack_grows
 

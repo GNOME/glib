@@ -49,6 +49,8 @@
 #include <gio/gfilterinputstream.h>
 #include <gio/gfilteroutputstream.h>
 #include <gio/gicon.h>
+#include <gio/ginetaddress.h>
+#include <gio/ginetsocketaddress.h>
 #include <gio/ginputstream.h>
 #include <gio/gioenums.h>
 #include <gio/gioenumtypes.h>
@@ -64,6 +66,7 @@
 #include <gio/goutputstream.h>
 #include <gio/gseekable.h>
 #include <gio/gsimpleasyncresult.h>
+#include <gio/gsocketaddress.h>
 #include <gio/gthemedicon.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
