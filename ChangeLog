@@ -1,3 +1,7 @@
+2008-12-12  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/guniprop.c: Improve g_unichar_iswide_cjk() docs.
+
 2008-12-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 508021 – Add support for the CRIS and CRISv32 architectures

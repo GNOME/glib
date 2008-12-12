@@ -479,6 +479,10 @@ g_unichar_iswide (gunichar c)
  * the converse is not necessarily true.  See the
  * <ulink url="http://www.unicode.org/reports/tr11/">Unicode Standard
  * Annex #11</ulink> for details.
+ *
+ * If a character passes the g_unichar_iswide() test then it will also pass
+ * this test, but not the other way around.  Note that some characters may
+ * pas both this test and g_unichar_iszerowidth().
  * 
  * Return value: %TRUE if the character is wide in legacy East Asian locales
  *
