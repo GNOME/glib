@@ -202,6 +202,8 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
       /* We really only need to escape spaces here, so allow lots of otherwise reserved chars */
       g_string_append_uri_escaped (s, token,
 				   G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, TRUE);
+
+      g_free (token);
     }
   
   g_ptr_array_free (tokens, TRUE);
