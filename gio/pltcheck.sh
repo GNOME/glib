@@ -13,7 +13,7 @@ SKIP='\<g_access\|\<g_array_\|\<g_ascii\|\<g_list_\|\<g_assertion_message\|\<g_w
 
 for so in .libs/lib*.so; do
 	echo Checking $so for local PLT entries
-	readelf -r $so | grep 'JU\?MP_SLOT' | grep '\<g_' | grep -v $SKIP && status=1
+	readelf -r $so | grep 'JU\?MP_SLOT\?' | grep '\<g_' | grep -v $SKIP && status=1
 done
 
 exit $status

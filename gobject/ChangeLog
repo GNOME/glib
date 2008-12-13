@@ -1,3 +1,7 @@
+2008-12-12  Dan Winship  <danw@gnome.org>
+
+	* pltcheck.sh: make this work on x86_64
+
 2008-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 473150 – g_type_module_use inconsistently increases the use

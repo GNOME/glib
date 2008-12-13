@@ -1,3 +1,7 @@
+2008-12-12  Dan Winship  <danw@gnome.org>
+
+	* glib/pltcheck.sh: make this work on x86_64
+ 
 2008-12-12  Ryan Lortie  <desrt@desrt.ca>
 
 	* gio/gicon.c (g_icon_to_string_tokenized): free the tokens when done
