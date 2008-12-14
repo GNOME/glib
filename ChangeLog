@@ -1,3 +1,7 @@
+2008-12-13  Matthias Clasen <mclaesn@redhat.com>
+
+	* NEWS: Updates
+
 2008-12-12  Dan Winship  <danw@gnome.org>
 
 	* glib/pltcheck.sh: make this work on x86_64

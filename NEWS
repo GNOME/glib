@@ -1,3 +1,25 @@
+Overview of Changes from GLib 2.19.1 to GLib 2.19.3
+===================================================
+
+* Bugs fixed:
+ 508021 Add support for the CRIS and CRISv32 architectures
+ 526320 should not list mounts that the user doesn't have permission to use
+ 558458 Cannot build gio tests on Solaris using SUN cc
+ 555465 GUnix{Input,Output}Stream lacks fd/close_fd_at_close property
+ 558298 Hide ecryptfs mounts
+ 515777 incorrect date&time on copy
+ 562452 Ensure we return G_IO_ERROR_CANCELLED if cancelling
+        g_simple_async_result_run_in_thread
+ 473150 g_type_module_use inconsistently increases the use
+        counter in case of error
+ 563150 G_GU?INT*_MODIFIER/FORMAT docs
+ 563156 Document printing and scanning gunichar values
+
+* Updated translations:
+ Hebrew (he)
+ Italian (it)
+ 
+
 Overview of Changes from GLib 2.19.0 to GLib 2.19.1
 ===================================================
 
