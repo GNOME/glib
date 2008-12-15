@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 14:35-0500\n"
+"POT-Creation-Date: 2008-12-15 13:27-0500\n"
 "PO-Revision-Date: 2008-09-04 20:59+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -543,7 +543,7 @@ msgstr "역추적 최대값에 도달했습니다"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "패턴 안에 부분 매치에서 지원하지 않는 항목이 들어 있습니다."
 
-#: glib/gregex.c:154 gio/glocalfile.c:1994
+#: glib/gregex.c:154 gio/glocalfile.c:1999
 msgid "internal error"
 msgstr "내부 오류"
 
@@ -1064,65 +1064,65 @@ msgstr "잘못된 키 이름: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "키 파일에 지원하지 않는 '%s' 인코딩이 들어 있습니다"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2496
-#: glib/gkeyfile.c:2564 glib/gkeyfile.c:2699 glib/gkeyfile.c:2834
-#: glib/gkeyfile.c:2987 glib/gkeyfile.c:3174 glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
+#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "키 파일에 '%s' 그룹이 없습니다"
 
-#: glib/gkeyfile.c:1284
+#: glib/gkeyfile.c:1286
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "키 파일에 '%s' 키가 없습니다"
 
-#: glib/gkeyfile.c:1388 glib/gkeyfile.c:1501
+#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "키 파일에 있는 '%s' 키와 '%s' 값은 UTF-8이 아닙니다"
 
-#: glib/gkeyfile.c:1408 glib/gkeyfile.c:1521 glib/gkeyfile.c:1900
+#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "키 파일에 있는 '%s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2115 glib/gkeyfile.c:2327
+#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2511 glib/gkeyfile.c:2714 glib/gkeyfile.c:3246
+#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2721 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키가 없습니다"
 
-#: glib/gkeyfile.c:3480
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "키 파일의 줄 끝에 이스케이프 문자가 있습니다"
 
-#: glib/gkeyfile.c:3502
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "키 파일에 잘못된 이스케이프 시퀀스 '%s'이(가) 들어 있습니다"
 
-#: glib/gkeyfile.c:3644
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "값 '%s'을(를) 숫자로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3658
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "정수 값 '%s'이(가) 범위를 벗어났습니다"
 
-#: glib/gkeyfile.c:3691
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3715
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."
@@ -1139,7 +1139,8 @@ msgstr "%s에 넘긴 카운트 값이 너무 큽니다"
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1987 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
+#: gio/gsimpleasyncresult.c:650
 msgid "Operation was cancelled"
 msgstr "동작이 취소되었습니다"
 
@@ -1212,10 +1213,10 @@ msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
-#: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
-#: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
-#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
+#: gio/gfile.c:2748 gio/gfile.c:2879 gio/gfile.c:2919 gio/gfile.c:3246
+#: gio/gfile.c:3648 gio/gfile.c:3732 gio/gfile.c:3815 gio/gfile.c:3895
+#: gio/gfile.c:4225 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "동작을 지원하지 않습니다"
 
@@ -1227,12 +1228,12 @@ msgstr "동작을 지원하지 않습니다"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1311 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2137
+#: gio/gfile.c:1963 gio/glocalfile.c:2142
 msgid "Can't copy over directory"
 msgstr "디렉토리를 덮어 써서 복사할 수 없습니다"
 
@@ -1240,7 +1241,7 @@ msgstr "디렉토리를 덮어 써서 복사할 수 없습니다"
 msgid "Can't copy directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 복사할 수 없습니다"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2146
+#: gio/gfile.c:2031 gio/glocalfile.c:2151
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
@@ -1248,24 +1249,24 @@ msgstr "대상 파일이 있습니다"
 msgid "Can't recursively copy directory"
 msgstr "디렉토리를 재귀적으로 복사할 수 없습니다"
 
-#: gio/gfile.c:2868
+#: gio/gfile.c:2869
 msgid "Invalid symlink value given"
 msgstr "잘못된 심볼릭 링크 값이 주어졌습니다"
 
-#: gio/gfile.c:2961
+#: gio/gfile.c:2962
 msgid "Trash not supported"
 msgstr "휴지통을 지원하지 않습니다"
 
-#: gio/gfile.c:3010
+#: gio/gfile.c:3011
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "파일 이름에 '%c' 문자가 들어갈 수 없습니다"
 
-#: gio/gfile.c:4992 gio/gvolume.c:370
+#: gio/gfile.c:4993 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "볼륨이 mount를 구현하지 않았습니다"
 
-#: gio/gfile.c:5100
+#: gio/gfile.c:5101
 msgid "No application is registered as handling this file"
 msgstr "이 파일을 처리하는 프로그램을 아무 것도 등록하지 않았습니다"
 
@@ -1316,37 +1317,37 @@ msgstr "입력 스트림이 truncate를 허용하지 않습니다"
 msgid "Truncate not supported on stream"
 msgstr "스트림에서 truncate를 지원하지 않습니다"
 
-#: gio/gicon.c:322
+#: gio/gicon.c:324
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr ""
 
-#: gio/gicon.c:342
+#: gio/gicon.c:344
 #, c-format
 msgid "No type for class name %s"
 msgstr ""
 
-#: gio/gicon.c:352
+#: gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr ""
 
-#: gio/gicon.c:363
+#: gio/gicon.c:365
 #, c-format
 msgid "Type %s is not classed"
 msgstr ""
 
-#: gio/gicon.c:377
+#: gio/gicon.c:379
 #, c-format
 msgid "Malformed version number: %s"
 msgstr ""
 
-#: gio/gicon.c:391
+#: gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr ""
 
-#: gio/gicon.c:467
+#: gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
 msgstr ""
 
@@ -1368,108 +1369,108 @@ msgstr "스트림에 진행 중인 동작이 있습니다"
 msgid "Unable to find default local directory monitor type"
 msgstr "기본 로컬 디렉토리 모니터 종류를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1115
 msgid "Can't rename root directory"
 msgstr "루트 디렉토리의 이름을 바꿀 수 없습니다"
 
-#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#: gio/glocalfile.c:1135 gio/glocalfile.c:1161
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "파일 이름 바꾸기 오류: %s"
 
-#: gio/glocalfile.c:1139
+#: gio/glocalfile.c:1144
 msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:1152 gio/glocalfile.c:2016 gio/glocalfile.c:2045
-#: gio/glocalfile.c:2199 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1157 gio/glocalfile.c:2021 gio/glocalfile.c:2050
+#: gio/glocalfile.c:2204 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: gio/glocalfile.c:1275
+#: gio/glocalfile.c:1280
 #, c-format
 msgid "Error opening file: %s"
 msgstr "파일 열기 오류: %s"
 
-#: gio/glocalfile.c:1285
+#: gio/glocalfile.c:1290
 msgid "Can't open directory"
 msgstr "디렉토리를 열 수 없습니다"
 
-#: gio/glocalfile.c:1345
+#: gio/glocalfile.c:1350
 #, c-format
 msgid "Error removing file: %s"
 msgstr "파일 지우기 오류: %s"
 
-#: gio/glocalfile.c:1709
+#: gio/glocalfile.c:1714
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "파일 버리기 오류: %s"
 
-#: gio/glocalfile.c:1732
+#: gio/glocalfile.c:1737
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉토리(%s)를 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1753
+#: gio/glocalfile.c:1758
 msgid "Unable to find toplevel directory for trash"
 msgstr "휴지통의 상위 디렉토리를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:1832 gio/glocalfile.c:1852
+#: gio/glocalfile.c:1837 gio/glocalfile.c:1857
 msgid "Unable to find or create trash directory"
 msgstr "휴지통 디렉토리를 찾을 수 없거나 만들 수 없습니다"
 
-#: gio/glocalfile.c:1886
+#: gio/glocalfile.c:1891
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1911 gio/glocalfile.c:1986 gio/glocalfile.c:1993
+#: gio/glocalfile.c:1916 gio/glocalfile.c:1991 gio/glocalfile.c:1998
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: gio/glocalfile.c:2020
+#: gio/glocalfile.c:2025
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "디렉토리를 만드는 데 오류: %s"
 
-#: gio/glocalfile.c:2049
+#: gio/glocalfile.c:2054
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 데 오류: %s"
 
-#: gio/glocalfile.c:2109 gio/glocalfile.c:2203
+#: gio/glocalfile.c:2114 gio/glocalfile.c:2208
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 데 오류: %s"
 
-#: gio/glocalfile.c:2132
+#: gio/glocalfile.c:2137
 msgid "Can't move directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:2159 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2164 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:2178
+#: gio/glocalfile.c:2183
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 지우는 데 오류: %s"
 
-#: gio/glocalfile.c:2192
+#: gio/glocalfile.c:2197
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
 
@@ -1723,23 +1724,44 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
-#: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215
-#: gio/gunixinputstream.c:293 gio/gunixoutputstream.c:282
+#: gio/gunixinputstream.c:157 gio/gunixoutputstream.c:143
+msgid "File descriptor"
+msgstr ""
+
+#: gio/gunixinputstream.c:158
+msgid "The file descriptor to read from"
+msgstr ""
+
+#: gio/gunixinputstream.c:172 gio/gunixoutputstream.c:158
+#, fuzzy
+msgid "Close file descriptor"
+msgstr "파일 디스크립터 정보를 읽는 중 오류: %s"
+
+#: gio/gunixinputstream.c:173 gio/gunixoutputstream.c:159
+msgid "Whether to close the file descriptor when the stream is closed"
+msgstr ""
+
+#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
+#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "유닉스 소켓을 읽는 중 오류: %s"
 
-#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:430
-#: gio/gunixoutputstream.c:237 gio/gunixoutputstream.c:388
+#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
+#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "유닉스 소켓을 닫는 중 오류: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "파일 시스템 루트"
 
-#: gio/gunixoutputstream.c:183 gio/gunixoutputstream.c:204
+#: gio/gunixoutputstream.c:144
+msgid "The file descriptor to write to"
+msgstr ""
+
+#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "유닉스 소켓에 쓰는 중 오류: %s"

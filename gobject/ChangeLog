@@ -1,3 +1,7 @@
+2008-12-15  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.19.3 ===
+
 2008-12-12  Dan Winship  <danw@gnome.org>
 
 	* pltcheck.sh: make this work on x86_64

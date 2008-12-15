@@ -63,3 +63,6 @@ desktop_app_info_LDADD	  = $(progs_ldadd)
 unix_streams_SOURCES	  = unix-streams.c
 unix_streams_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+
+DISTCLEAN_FILES = applications/mimeinfo.cache

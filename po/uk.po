@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 14:35-0500\n"
+"POT-Creation-Date: 2008-12-15 13:27-0500\n"
 "PO-Revision-Date: 2008-11-13 11:56+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -554,7 +554,7 @@ msgstr ""
 "шаблон містить елементи, які не підтримуються при пошуку часткової "
 "відповідності"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1994
+#: glib/gregex.c:154 gio/glocalfile.c:1999
 msgid "internal error"
 msgstr "внутрішня помилка"
 
@@ -1075,31 +1075,31 @@ msgstr "Неправильна назва ключа: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовий фал містить кодування, що не підтримується '%s'"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1272 glib/gkeyfile.c:2496
-#: glib/gkeyfile.c:2564 glib/gkeyfile.c:2699 glib/gkeyfile.c:2834
-#: glib/gkeyfile.c:2987 glib/gkeyfile.c:3174 glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
+#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовий файл не містить групи '%s'"
 
-#: glib/gkeyfile.c:1284
+#: glib/gkeyfile.c:1286
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Ключовий файл не містить ключ '%s'"
 
-#: glib/gkeyfile.c:1388 glib/gkeyfile.c:1501
+#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Ключовий файл містить ключ '%s' зі значенням '%s', кодування якого не UTF-8"
 
-#: glib/gkeyfile.c:1408 glib/gkeyfile.c:1521 glib/gkeyfile.c:1900
+#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ключовий файл містить ключ '%s', що має значення, яке не вдається розібрати."
 
-#: glib/gkeyfile.c:2115 glib/gkeyfile.c:2327
+#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1108,36 +1108,36 @@ msgstr ""
 "Ключовий файл містить '%s' у групі '%s', що має значення, яке неможливо "
 "розібрати."
 
-#: glib/gkeyfile.c:2511 glib/gkeyfile.c:2714 glib/gkeyfile.c:3246
+#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2721 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовий файл не містить ключ '%s' у групі '%s'"
 
-#: glib/gkeyfile.c:3480
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовий файл містить escape-символ наприкінці рядка"
 
-#: glib/gkeyfile.c:3502
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовий файл містить неправильну escape-послідовність '%s'"
 
-#: glib/gkeyfile.c:3644
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Не вдається розібрати значення '%s' як число."
 
-#: glib/gkeyfile.c:3658
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Числове ціле значення '%s' поза межами діапазону"
 
-#: glib/gkeyfile.c:3691
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Значення '%s' не вдається перетворити у число з рухомою комою."
 
-#: glib/gkeyfile.c:3715
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Не вдається розібрати значення '%s' як логічне значення."
@@ -1154,7 +1154,8 @@ msgstr "До %s передано надто велике значення ліч
 msgid "Stream is already closed"
 msgstr "Потік вже закрито"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1987 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
+#: gio/gsimpleasyncresult.c:650
 msgid "Operation was cancelled"
 msgstr "Операцію скасовано"
 
@@ -1227,10 +1228,10 @@ msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Неправильна кількість лексем (%d) у кодуванні GEmblem"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2693
-#: gio/gfile.c:2747 gio/gfile.c:2878 gio/gfile.c:2918 gio/gfile.c:3245
-#: gio/gfile.c:3647 gio/gfile.c:3731 gio/gfile.c:3814 gio/gfile.c:3894
-#: gio/gfile.c:4224 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
+#: gio/gfile.c:2748 gio/gfile.c:2879 gio/gfile.c:2919 gio/gfile.c:3246
+#: gio/gfile.c:3648 gio/gfile.c:3732 gio/gfile.c:3815 gio/gfile.c:3895
+#: gio/gfile.c:4225 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
 
@@ -1242,12 +1243,12 @@ msgstr "Операція не підтримується"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1311 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2137
+#: gio/gfile.c:1963 gio/glocalfile.c:2142
 msgid "Can't copy over directory"
 msgstr "Не вдається копіювати у каталог"
 
@@ -1255,7 +1256,7 @@ msgstr "Не вдається копіювати у каталог"
 msgid "Can't copy directory over directory"
 msgstr "Не вдається копіювати каталог у каталог"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2146
+#: gio/gfile.c:2031 gio/glocalfile.c:2151
 msgid "Target file exists"
 msgstr "Цільовий файл існує"
 
@@ -1263,24 +1264,24 @@ msgstr "Цільовий файл існує"
 msgid "Can't recursively copy directory"
 msgstr "Не вдається рекурсивно скопіювати каталог"
 
-#: gio/gfile.c:2868
+#: gio/gfile.c:2869
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:2961
+#: gio/gfile.c:2962
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:3010
+#: gio/gfile.c:3011
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "назви файлів не можуть містити символ '%c'"
 
-#: gio/gfile.c:4992 gio/gvolume.c:370
+#: gio/gfile.c:4993 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "том не підтримує операцію монтування"
 
-#: gio/gfile.c:5100
+#: gio/gfile.c:5101
 msgid "No application is registered as handling this file"
 msgstr "Не зареєстровано програму для обробки цього файлу"
 
@@ -1331,37 +1332,37 @@ msgstr "Операція урізання не підтримується для
 msgid "Truncate not supported on stream"
 msgstr "Операція урізання не підтримується для потоку"
 
-#: gio/gicon.c:322
+#: gio/gicon.c:324
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Неправильна кількість лексем (%d)"
 
-#: gio/gicon.c:342
+#: gio/gicon.c:344
 #, c-format
 msgid "No type for class name %s"
 msgstr "Відсутній тип назви класу %s"
 
-#: gio/gicon.c:352
+#: gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Для типу %s не реалізовано інтерфейс GIcon"
 
-#: gio/gicon.c:363
+#: gio/gicon.c:365
 #, c-format
 msgid "Type %s is not classed"
 msgstr "Тип %s не класифікований"
 
-#: gio/gicon.c:377
+#: gio/gicon.c:379
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Неправильний номер версії: %s"
 
-#: gio/gicon.c:391
+#: gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Для типу %s не реалізовано from_tokens() у інтерфейсі GIcon"
 
-#: gio/gicon.c:467
+#: gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Неможливо обробити вказану версію кодування значків"
 
@@ -1383,108 +1384,108 @@ msgstr "Для потоку є незавершена операція"
 msgid "Unable to find default local directory monitor type"
 msgstr "Не вдається знайти типовий різновид монітору локального каталогу"
 
-#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Неправильна назва файлу %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Помилка при отриманні інформації з файлової системи: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1115
 msgid "Can't rename root directory"
 msgstr "Не можна перейменовувати кореневий каталог"
 
-#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#: gio/glocalfile.c:1135 gio/glocalfile.c:1161
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Помилка при перейменуванні файлу: %s"
 
-#: gio/glocalfile.c:1139
+#: gio/glocalfile.c:1144
 msgid "Can't rename file, filename already exist"
 msgstr "Не вдається перейменувати файлу, файл з такою назвою вже існує"
 
-#: gio/glocalfile.c:1152 gio/glocalfile.c:2016 gio/glocalfile.c:2045
-#: gio/glocalfile.c:2199 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1157 gio/glocalfile.c:2021 gio/glocalfile.c:2050
+#: gio/glocalfile.c:2204 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "Неправильна назва файлу"
 
-#: gio/glocalfile.c:1275
+#: gio/glocalfile.c:1280
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Помилка при відкриванні файлу: %s"
 
-#: gio/glocalfile.c:1285
+#: gio/glocalfile.c:1290
 msgid "Can't open directory"
 msgstr "Не вдається відкрити каталог"
 
-#: gio/glocalfile.c:1345
+#: gio/glocalfile.c:1350
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Помилка при видаленні файлу: %s"
 
-#: gio/glocalfile.c:1709
+#: gio/glocalfile.c:1714
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Помилка при переміщенні файлу до смітника: %s"
 
-#: gio/glocalfile.c:1732
+#: gio/glocalfile.c:1737
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Помилка при створенні каталогу смітника %s: %s"
 
-#: gio/glocalfile.c:1753
+#: gio/glocalfile.c:1758
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не вдається знайти каталог верхнього рівня для смітника"
 
-#: gio/glocalfile.c:1832 gio/glocalfile.c:1852
+#: gio/glocalfile.c:1837 gio/glocalfile.c:1857
 msgid "Unable to find or create trash directory"
 msgstr "не вдається знайти чи створити каталог смітника"
 
-#: gio/glocalfile.c:1886
+#: gio/glocalfile.c:1891
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Помилка створення файл у смітнику: %s"
 
-#: gio/glocalfile.c:1911 gio/glocalfile.c:1986 gio/glocalfile.c:1993
+#: gio/glocalfile.c:1916 gio/glocalfile.c:1991 gio/glocalfile.c:1998
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не вдається перемістити файл до смітника: %s"
 
-#: gio/glocalfile.c:2020
+#: gio/glocalfile.c:2025
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Помилка при створенні каталогу: %s"
 
-#: gio/glocalfile.c:2049
+#: gio/glocalfile.c:2054
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Помилка при створенні символьного посилання: %s"
 
-#: gio/glocalfile.c:2109 gio/glocalfile.c:2203
+#: gio/glocalfile.c:2114 gio/glocalfile.c:2208
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Помилка при переміщенні файлу: %s"
 
-#: gio/glocalfile.c:2132
+#: gio/glocalfile.c:2137
 msgid "Can't move directory over directory"
 msgstr "Не вдається перемістити каталог у каталог"
 
-#: gio/glocalfile.c:2159 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2164 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Помилка при створенні файлу резервної копії"
 
-#: gio/glocalfile.c:2178
+#: gio/glocalfile.c:2183
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Помилка при зчитуванні цільового файлу: %s"
 
-#: gio/glocalfile.c:2192
+#: gio/glocalfile.c:2197
 msgid "Move between mounts not supported"
 msgstr "Переміщення між різними точками монтування не підтримується"
 
@@ -1744,23 +1745,44 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Версія %d кодування GThemedIcon не підтримується"
 
-#: gio/gunixinputstream.c:195 gio/gunixinputstream.c:215
-#: gio/gunixinputstream.c:293 gio/gunixoutputstream.c:282
+#: gio/gunixinputstream.c:157 gio/gunixoutputstream.c:143
+msgid "File descriptor"
+msgstr ""
+
+#: gio/gunixinputstream.c:158
+msgid "The file descriptor to read from"
+msgstr ""
+
+#: gio/gunixinputstream.c:172 gio/gunixoutputstream.c:158
+#, fuzzy
+msgid "Close file descriptor"
+msgstr "Помилка отримання інформації для дескриптору файлу: %s"
+
+#: gio/gunixinputstream.c:173 gio/gunixoutputstream.c:159
+msgid "Whether to close the file descriptor when the stream is closed"
+msgstr ""
+
+#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
+#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Помилка при зчитуванні unix-сокету: %s"
 
-#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:430
-#: gio/gunixoutputstream.c:237 gio/gunixoutputstream.c:388
+#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
+#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Помилка при закриванні unix-сокету: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "Корінь файлової системи"
 
-#: gio/gunixoutputstream.c:183 gio/gunixoutputstream.c:204
+#: gio/gunixoutputstream.c:144
+msgid "The file descriptor to write to"
+msgstr ""
+
+#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Помилка при записі до unix-сокету: %s"
