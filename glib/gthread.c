@@ -974,5 +974,18 @@ g_thread_foreach (GFunc    thread_func,
     }
 }
 
+/**
+ * g_thread_get_initialized
+ *
+ * Indicates if g_thread_init() has been called.
+ *
+ * Since: 2.20
+ */
+gboolean
+g_thread_get_initialized ()
+{
+  return g_thread_supported ();
+}
+
 #define __G_THREAD_C__
 #include "galiasdef.c"

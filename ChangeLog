@@ -1,3 +1,11 @@
+2008-12-18  Mike Kestner <mkestner@novell.com>
+
+	Bug 560676 - function access for g_threads_supported
+
+	* glib/gthreads.c (g_thread_get_initialized): new accessor for
+	g_threads_supported macro.
+	* glib/gthreads.h: add g_thread_get_initialized
+
 2008-12-15  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Bump version

@@ -134,6 +134,11 @@ void    g_thread_init   (GThreadFunctions       *vtable);
  */
 void    g_thread_init_with_errorcheck_mutexes (GThreadFunctions* vtable);
 
+/* Checks if thread support is initialized.  Identical to the
+ * g_thread_supported macro but provided for language bindings.
+ */
+gboolean g_thread_get_initialized (void);
+
 /* A random number to recognize debug calls to g_mutex_... */
 #define G_MUTEX_DEBUG_MAGIC 0xf8e18ad7
 
