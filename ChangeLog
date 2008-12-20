@@ -24,16 +24,6 @@
 2008-12-12  Dan Winship  <danw@gnome.org>
 
 	* glib/pltcheck.sh: make this work on x86_64
- 
-2008-12-12  Ryan Lortie  <desrt@desrt.ca>
-
-	* gio/gicon.c (g_icon_to_string_tokenized): free the tokens when done
-	with them
-
-2008-12-12  Ryan Lortie  <desrt@desrt.ca>
-
-	* gio/gunixmounts.c (g_unix_mount_at): fix leak that occurs when
-	multiple mount entries match the requested path
 
 2008-12-12  Behdad Esfahbod  <behdad@gnome.org>
 
