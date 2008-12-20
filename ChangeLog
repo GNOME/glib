@@ -1,3 +1,8 @@
+2008-12-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/glib.symbols: Add g_thread_get_initialized here,
+	too. Surround g_test_config_vars with ifdef INCLUDE_VARIABLES.
+
 2008-12-18  Mike Kestner <mkestner@novell.com>
 
 	Bug 560676 - function access for g_threads_supported
