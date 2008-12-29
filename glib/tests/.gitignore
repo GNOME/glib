@@ -1,5 +1,6 @@
 array-test
 fileutils
+hostutils
 keyfile
 markup-subparser
 option-context

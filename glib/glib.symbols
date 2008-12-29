@@ -1637,6 +1637,16 @@ g_win32_locale_filename_from_utf8
 #endif
 #endif
 
+#if IN_HEADER(__G_HOST_UTILS_H__)
+#if IN_FILE(__G_HOST_UTILS_C__)
+g_hostname_is_non_ascii
+g_hostname_is_ascii_encoded
+g_hostname_is_ip_address
+g_hostname_to_ascii
+g_hostname_to_unicode
+#endif
+#endif
+
 #ifdef INCLUDE_VARIABLES
 g_ascii_table
 g_utf8_skip

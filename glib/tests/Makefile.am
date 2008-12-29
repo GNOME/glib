@@ -44,6 +44,9 @@ markup_subparser_LDADD    = $(progs_ldadd)
 TEST_PROGS         += array-test
 array_test_LDADD    = $(progs_ldadd)
 
+TEST_PROGS         += hostutils
+hostutils_LDADD     = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

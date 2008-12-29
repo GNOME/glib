@@ -47,6 +47,7 @@
 #include <glib/gfileutils.h>
 #include <glib/ghash.h>
 #include <glib/ghook.h>
+#include <glib/ghostutils.h>
 #include <glib/giochannel.h>
 #include <glib/gkeyfile.h>
 #include <glib/glist.h>

@@ -2653,3 +2653,16 @@ g_test_log_buffer_push
 g_test_log_buffer_pop
 g_test_log_msg_free
 </SECTION>
+
+
+<SECTION>
+<FILE>ghostutils</FILE>
+<TITLE>Hostname Utilities</TITLE>
+g_hostname_to_ascii
+g_hostname_to_unicode
+<SUBSECTION>
+g_hostname_is_non_ascii
+g_hostname_is_ascii_encoded
+<SUBSECTION>
+g_hostname_is_ip_address
+</SECTION>
