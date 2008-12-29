@@ -98,6 +98,9 @@
         <xi:include href="xml/ginetsocketaddress.xml"/>
         <xi:include href="xml/gunixsocketaddress.xml"/>
         <xi:include href="xml/gsrvtarget.xml"/>
+        <xi:include href="xml/gsocketconnectable.xml"/>
+        <xi:include href="xml/gnetworkaddress.xml"/>
+        <xi:include href="xml/gnetworkservice.xml"/>
     </chapter>
     <chapter id="utils">   
     	<title>Utilities</title>

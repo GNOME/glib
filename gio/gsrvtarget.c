@@ -44,9 +44,12 @@
  * would look up the "xmpp-client" SRV record for "example.com", and
  * then connect to whatever host was pointed to by that record.
  *
- * Use g_resolver_lookup_service() or
+ * You can use g_resolver_lookup_service() or
  * g_resolver_lookup_service_async() to find the #GSrvTarget<!-- -->s
- * for a given service.
+ * for a given service. However, if you are simply planning to connect
+ * to the remote service, you can use #GNetworkService's
+ * #GSocketConnectable interface and not need to worry about
+ * #GSrvTarget at all.
  **/
 
 struct _GSrvTarget {

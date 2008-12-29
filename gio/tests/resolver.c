@@ -41,9 +41,11 @@ static void
 usage (void)
 {
 	fprintf (stderr, "Usage: resolver [-t] [-s] [hostname | IP | service/protocol/domain ] ...\n");
+	fprintf (stderr, "       resolver [-t] [-s] -c [hostname | IP | service/protocol/domain ]\n");
 	fprintf (stderr, "       Use -t to enable threading.\n");
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
 	fprintf (stderr, "       Both together will result in simultaneous lookups in multiple threads\n");
+	fprintf (stderr, "       Use -c (and only a single resolvable argument) to test GSocketConnectable.\n");
 	exit (1);
 }
 
@@ -285,6 +287,125 @@ start_async_lookups (char **argv, int argc)
     }
 }
 
+static void
+print_connectable_sockaddr (GSocketAddress *sockaddr,
+                            GError         *error)
+{
+  char *phys;
+
+  if (error)
+    {
+      printf ("Error:   %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
+    {
+      printf ("Error:   Unexpected sockaddr type '%s'\n", g_type_name_from_instance ((GTypeInstance *)sockaddr));
+      g_object_unref (sockaddr);
+    }
+  else
+    {
+      GInetSocketAddress *isa = G_INET_SOCKET_ADDRESS (sockaddr);
+      phys = g_inet_address_to_string (g_inet_socket_address_get_address (isa));
+      printf ("Address: %s%s%s:%d\n",
+              strchr (phys, ':') ? "[" : "", phys, strchr (phys, ':') ? "]" : "",
+              g_inet_socket_address_get_port (isa));
+      g_free (phys);
+      g_object_unref (sockaddr);
+    }
+}
+
+static void
+do_sync_connectable (GSocketAddressEnumerator *enumerator)
+{
+  GSocketAddress *sockaddr;
+  GError *error = NULL;
+
+  while ((sockaddr = g_socket_address_enumerator_next (enumerator, cancellable, &error)))
+    print_connectable_sockaddr (sockaddr, error);
+
+  g_object_unref (enumerator);
+  done_lookup ();
+}
+
+static void do_async_connectable (GSocketAddressEnumerator *enumerator);
+
+static void
+got_next_async (GObject *source, GAsyncResult *result, gpointer user_data)
+{
+  GSocketAddressEnumerator *enumerator = G_SOCKET_ADDRESS_ENUMERATOR (source);
+  GSocketAddress *sockaddr;
+  GError *error = NULL;
+
+  sockaddr = g_socket_address_enumerator_next_finish (enumerator, result, &error);
+  if (sockaddr || error)
+    print_connectable_sockaddr (sockaddr, error);
+  if (sockaddr)
+    do_async_connectable (enumerator);
+  else
+    {
+      g_object_unref (enumerator);
+      done_lookup ();
+    }
+}
+
+static void
+do_async_connectable (GSocketAddressEnumerator *enumerator)
+{
+  g_socket_address_enumerator_next_async (enumerator, cancellable,
+                                          got_next_async, NULL);
+}
+
+static void
+do_connectable (const char *arg, gboolean synchronous)
+{
+  char **parts;
+  GSocketConnectable *connectable;
+  GSocketAddressEnumerator *enumerator;
+
+  if (strchr (arg, '/'))
+    {
+      /* service/protocol/domain */
+      parts = g_strsplit (arg, "/", 3);
+      if (!parts || !parts[2])
+	usage ();
+
+      connectable = g_network_service_new (parts[0], parts[1], parts[2]);
+    }
+  else
+    {
+      guint16 port;
+
+      parts = g_strsplit (arg, ":", 2);
+      if (parts && parts[1])
+	{
+	  arg = parts[0];
+	  port = strtoul (parts[1], NULL, 10);
+	}
+      else
+	port = 0;
+
+      if (g_hostname_is_ip_address (arg))
+	{
+	  GInetAddress *addr = g_inet_address_new_from_string (arg);
+	  GSocketAddress *sockaddr = g_inet_socket_address_new (addr, port);
+
+	  g_object_unref (addr);
+	  connectable = G_SOCKET_CONNECTABLE (sockaddr);
+	}
+      else
+        connectable = g_network_address_new (arg, port);
+    }
+
+  enumerator = g_socket_connectable_enumerate (connectable);
+  g_object_unref (connectable);
+
+  if (synchronous)
+    do_sync_connectable (enumerator);
+  else
+    do_async_connectable (enumerator);
+}
+
 #ifdef G_OS_UNIX
 static int cancel_fds[2];
 
@@ -307,6 +428,7 @@ int
 main (int argc, char **argv)
 {
   gboolean threaded = FALSE, synchronous = FALSE;
+  gboolean use_connectable = FALSE;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
   guint watch;
@@ -324,6 +446,8 @@ main (int argc, char **argv)
         }
       else if (!strcmp (argv[1], "-s"))
         synchronous = TRUE;
+      else if (!strcmp (argv[1], "-c"))
+        use_connectable = TRUE;
       else
         usage ();
 
@@ -332,7 +456,7 @@ main (int argc, char **argv)
     }
   g_type_init ();
 
-  if (argc < 2)
+  if (argc < 2 || (argc > 2 && use_connectable))
     usage ();
 
   resolver = g_resolver_get_default ();
@@ -358,12 +482,17 @@ main (int argc, char **argv)
   nlookups = argc - 1;
   loop = g_main_loop_new (NULL, TRUE);
 
-  if (threaded && synchronous)
-    start_threaded_lookups (argv + 1, argc - 1);
-  else if (synchronous)
-    start_sync_lookups (argv + 1, argc - 1);
+  if (use_connectable)
+    do_connectable (argv[1], synchronous);
   else
-    start_async_lookups (argv + 1, argc - 1);
+    {
+      if (threaded && synchronous)
+        start_threaded_lookups (argv + 1, argc - 1);
+      else if (synchronous)
+        start_sync_lookups (argv + 1, argc - 1);
+      else
+        start_async_lookups (argv + 1, argc - 1);
+    }
 
   g_main_run (loop);
   g_main_loop_unref (loop);

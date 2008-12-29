@@ -217,7 +217,9 @@ libgio_2_0_la_SOURCES =		\
 	gmountoperation.c 	\
 	gnativevolumemonitor.c 	\
 	gnativevolumemonitor.h 	\
+	gnetworkaddress.c	\
 	gnetworkingprivate.h	\
+	gnetworkservice.c	\
 	goutputstream.c 	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
@@ -225,6 +227,8 @@ libgio_2_0_la_SOURCES =		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
 	gsocketaddress.c	\
+	gsocketaddressenumerator.c \
+	gsocketconnectable.c	\
 	gsrvtarget.c		\
 	gthemedicon.c 		\
 	gthreadedresolver.c	\
@@ -328,11 +332,15 @@ gio_headers =			\
 	gmemoryoutputstream.h 	\
 	gmountoperation.h 	\
 	gnativevolumemonitor.h 	\
+	gnetworkaddress.h	\
+	gnetworkservice.h	\
 	goutputstream.h 	\
 	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
 	gsocketaddress.h	\
+	gsocketaddressenumerator.h \
+	gsocketconnectable.h	\
 	gsrvtarget.h		\
 	gthemedicon.h 		\
 	gvfs.h 			\

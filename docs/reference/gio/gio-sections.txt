@@ -1456,3 +1456,74 @@ G_TYPE_SRV_TARGET
 <SUBSECTION Private>
 g_srv_target_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gsocketconnectable</FILE>
+<TITLE>GSocketConnectable</TITLE>
+GSocketConnectable
+GSocketConnectableIface
+g_socket_connectable_enumerate
+<SUBSECTION>
+GSocketAddressEnumerator
+g_socket_address_enumerator_next
+g_socket_address_enumerator_next_async
+g_socket_address_enumerator_next_finish
+<SUBSECTION Standard>
+G_IS_SOCKET_CONNECTABLE
+G_SOCKET_CONNECTABLE
+G_SOCKET_CONNECTABLE_GET_IFACE
+G_TYPE_SOCKET_CONNECTABLE
+GSocketAddressEnumeratorClass
+G_IS_SOCKET_ADDRESS_ENUMERATOR
+G_IS_SOCKET_ADDRESS_ENUMERATOR_CLASS
+G_SOCKET_ADDRESS_ENUMERATOR
+G_SOCKET_ADDRESS_ENUMERATOR_CLASS
+G_SOCKET_ADDRESS_ENUMERATOR_GET_CLASS
+G_TYPE_SOCKET_ADDRESS_ENUMERATOR
+<SUBSECTION Private>
+g_socket_address_enumerator_get_type
+g_socket_connectable_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gnetworkaddress</FILE>
+<TITLE>GNetworkAddress</TITLE>
+GNetworkAddress
+g_network_address_new
+g_network_address_get_hostname
+g_network_address_get_ascii_name
+g_network_address_get_port
+<SUBSECTION Standard>
+GNetworkAddressClass
+GNetworkAddressPrivate
+G_IS_NETWORK_ADDRESS
+G_IS_NETWORK_ADDRESS_CLASS
+G_NETWORK_ADDRESS
+G_NETWORK_ADDRESS_CLASS
+G_NETWORK_ADDRESS_GET_CLASS
+G_TYPE_NETWORK_ADDRESS
+<SUBSECTION Private>
+g_network_address_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gnetworkservice</FILE>
+<TITLE>GNetworkService</TITLE>
+GNetworkService
+g_network_service_new
+g_network_service_get_service
+g_network_service_get_protocol
+g_network_service_get_domain
+g_network_service_get_expires
+<SUBSECTION Standard>
+GNetworkServiceClass
+GNetworkServicePrivate
+G_IS_NETWORK_SERVICE
+G_IS_NETWORK_SERVICE_CLASS
+G_NETWORK_SERVICE
+G_NETWORK_SERVICE_CLASS
+G_NETWORK_SERVICE_GET_CLASS
+G_TYPE_NETWORK_SERVICE
+<SUBSECTION Private>
+g_network_service_get_type
+</SECTION>

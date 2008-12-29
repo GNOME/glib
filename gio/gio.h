@@ -63,11 +63,15 @@
 #include <gio/gmount.h>
 #include <gio/gmountoperation.h>
 #include <gio/gnativevolumemonitor.h>
+#include <gio/gnetworkaddress.h>
+#include <gio/gnetworkservice.h>
 #include <gio/goutputstream.h>
 #include <gio/gresolver.h>
 #include <gio/gseekable.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gsocketaddress.h>
+#include <gio/gsocketaddressenumerator.h>
+#include <gio/gsocketconnectable.h>
 #include <gio/gsrvtarget.h>
 #include <gio/gthemedicon.h>
 #include <gio/gvfs.h>

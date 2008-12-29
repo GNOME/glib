@@ -965,3 +965,38 @@ g_srv_target_get_weight
 g_srv_target_list_sort
 #endif
 #endif
+
+#if IN_HEADER(__G_NETWORK_ADDRESS_H__)
+#if IN_FILE(__G_NETWORK_ADDRESS_C__)
+g_network_address_get_type G_GNUC_CONST
+g_network_address_get_hostname
+g_network_address_get_port
+g_network_address_new
+#endif
+#endif
+
+#if IN_HEADER(__G_NETWORK_SERVICE_H__)
+#if IN_FILE(__G_NETWORK_SERVICE_C__)
+g_network_service_get_type G_GNUC_CONST
+g_network_service_get_service
+g_network_service_get_protocol
+g_network_service_get_domain
+g_network_service_new
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_CONNECTABLE_H__)
+#if IN_FILE(__G_SOCKET_CONNECTABLE_C__)
+g_socket_connectable_enumerate
+g_socket_connectable_get_type G_GNUC_CONST
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_ADDRESS_ENUMERATOR_H__)
+#if IN_FILE(__G_SOCKET_ADDRESS_ENUMERATOR_C__)
+g_socket_address_enumerator_get_type G_GNUC_CONST
+g_socket_address_enumerator_next
+g_socket_address_enumerator_next_async
+g_socket_address_enumerator_next_finish
+#endif
+#endif

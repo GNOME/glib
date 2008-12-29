@@ -52,6 +52,10 @@
  * resolution, for hostnames (g_resolver_lookup_by_address(),
  * g_resolver_lookup_by_name() and their async variants) and SRV
  * (service) records (g_resolver_lookup_service()).
+ *
+ * #GNetworkAddress and #GNetworkService provide wrappers around
+ * #GResolver functionality that also implement #GSocketConnectable,
+ * making it easy to connect to a remote host/service.
  **/
 
 /**
@@ -168,6 +172,10 @@ g_resolver_set_default (GResolver *resolver)
  * If @cancellable is non-%NULL, it can be used to cancel the
  * operation, in which case @error (if non-%NULL) will be set to
  * %G_IO_ERROR_CANCELLED.
+ *
+ * If you are planning to connect to a socket on the resolved IP
+ * address, it may be easier to create a #GNetworkAddress and use its
+ * #GSocketConnectable interface.
  *
  * Return value: a #GList of #GInetAddress, or %NULL on error. You
  * must unref each of the addresses and free the list when you are
@@ -469,6 +477,10 @@ g_resolver_get_service_rrname (const char *service,
  * If @cancellable is non-%NULL, it can be used to cancel the
  * operation, in which case @error (if non-%NULL) will be set to
  * %G_IO_ERROR_CANCELLED.
+ *
+ * If you are planning to connect to the service, it is usually easier
+ * to create a #GNetworkService and use its #GSocketConnectable
+ * interface.
  *
  * Return value: a #GList of #GSrvTarget, or %NULL on error. You must
  * free each of the targets and the list when you are done with it.
