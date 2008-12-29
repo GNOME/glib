@@ -9,7 +9,7 @@ INCLUDES = 			\
 	-I$(top_srcdir)/gio 	\
 	$(GLIB_DEBUG_FLAGS)
 
-noinst_PROGRAMS = $(TEST_PROGS)
+noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
 progs_ldadd     = 					\
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
@@ -28,6 +28,8 @@ TEST_PROGS +=	 		\
 	sleepy-stream		\
 	filter-streams		\
 	simple-async-result
+
+SAMPLE_PROGS = resolver
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams desktop-app-info
@@ -75,5 +77,9 @@ sleepy_stream_LDADD		= $(progs_ldadd)
 
 filter_streams_SOURCES		= filter-streams.c
 filter_streams_LDADD		= $(progs_ldadd)
+
+resolver_SOURCES	  = resolver.c
+resolver_LDADD		  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
 
 DISTCLEAN_FILES = applications/mimeinfo.cache

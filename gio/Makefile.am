@@ -5,7 +5,7 @@ NULL =
 SUBDIRS=
 
 if OS_UNIX
-SUBDIRS += xdgmime
+SUBDIRS += libasyncns xdgmime
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
@@ -125,13 +125,15 @@ endif
 
 if OS_UNIX
 appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
-platform_libadd += xdgmime/libxdgmime.la
-platform_deps += xdgmime/libxdgmime.la
+platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
+platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 unix_sources = \
 	gunixmount.c		\
 	gunixmount.h		\
 	gunixmounts.c 		\
 	gunixmounts.h 		\
+	gunixresolver.c		\
+	gunixresolver.h		\
 	gunixsocketaddress.c	\
 	gunixvolume.c 		\
 	gunixvolume.h 		\
@@ -154,10 +156,12 @@ endif
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi -lws2_32
+platform_libadd += -lshlwapi -lws2_32 -ldnsapi
 win32_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
+	gwin32resolver.c \
+	gwin32resolver.h \
 	gwin32volumemonitor.c \
 	gwin32volumemonitor.h \
 	$(NULL)
@@ -217,10 +221,14 @@ libgio_2_0_la_SOURCES =		\
 	goutputstream.c 	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
+	gresolver.c		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
 	gsocketaddress.c	\
+	gsrvtarget.c		\
 	gthemedicon.c 		\
+	gthreadedresolver.c	\
+	gthreadedresolver.h	\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
 	gvfs.c 			\
@@ -321,9 +329,11 @@ gio_headers =			\
 	gmountoperation.h 	\
 	gnativevolumemonitor.h 	\
 	goutputstream.h 	\
+	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
 	gsocketaddress.h	\
+	gsrvtarget.h		\
 	gthemedicon.h 		\
 	gvfs.h 			\
 	gvolume.h 		\

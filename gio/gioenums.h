@@ -476,6 +476,20 @@ typedef enum  {
   G_EMBLEM_ORIGIN_TAG
 } GEmblemOrigin;
 
+/**
+ * GResolverError:
+ * @G_RESOLVER_ERROR_NOT_FOUND: the requested name/address/service was not found
+ * @G_RESOLVER_ERROR_TEMPORARY_FAILURE: the requested information could not be looked up due to a network error or similar problem
+ * @G_RESOLVER_ERROR_INTERNAL: unknown error
+ *
+ * An error code used with %G_RESOLVER_ERROR in a #GError returned
+ * from a #GResolver routine.
+ */
+typedef enum {
+  G_RESOLVER_ERROR_NOT_FOUND,
+  G_RESOLVER_ERROR_TEMPORARY_FAILURE,
+  G_RESOLVER_ERROR_INTERNAL
+} GResolverError;
 
 /**
  * GSocketFamily:

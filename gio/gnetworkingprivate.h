@@ -50,4 +50,36 @@
 
 #endif
 
+G_BEGIN_DECLS
+
+extern struct addrinfo _g_resolver_addrinfo_hints;
+
+GList *_g_resolver_addresses_from_addrinfo (const char       *hostname,
+					    struct addrinfo  *res,
+					    gint              gai_retval,
+					    GError          **error);
+
+void   _g_resolver_address_to_sockaddr     (GInetAddress            *address,
+					    struct sockaddr_storage *sa,
+					    gsize                   *sa_len);
+char  *_g_resolver_name_from_nameinfo      (GInetAddress     *address,
+					    const gchar      *name,
+					    gint              gni_retval,
+					    GError          **error);
+
+#if defined(G_OS_UNIX)
+GList *_g_resolver_targets_from_res_query  (const gchar      *rrname,
+					    guchar           *answer,
+					    gint              len,
+					    gint              herr,
+					    GError          **error);
+#elif defined(G_OS_WIN32)
+GList *_g_resolver_targets_from_DnsQuery   (const gchar      *rrname,
+					    DNS_STATUS        status,
+					    DNS_RECORD       *results,
+					    GError          **error);
+#endif
+
+G_END_DECLS
+
 #endif /* __G_NETWORKINGPRIVATE_H__ */

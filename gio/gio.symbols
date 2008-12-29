@@ -834,6 +834,7 @@ g_ask_password_flags_get_type G_GNUC_CONST
 g_password_save_get_type G_GNUC_CONST
 g_emblem_origin_get_type G_GNUC_CONST
 g_socket_family_get_type G_GNUC_CONST
+g_resolver_error_get_type G_GNUC_CONST
 #endif
 #endif
 
@@ -906,5 +907,61 @@ g_socket_address_get_type G_GNUC_CONST
 g_socket_address_get_family
 g_socket_address_get_native_size
 g_socket_address_to_native
+#endif
+#endif
+
+#if IN_HEADER(__G_RESOLVER_H__)
+#if IN_FILE(__G_RESOLVER_C__)
+g_resolver_error_quark
+g_resolver_free_addresses
+g_resolver_free_targets
+g_resolver_get_type G_GNUC_CONST
+g_resolver_get_default
+g_resolver_set_default
+g_resolver_lookup_by_name
+g_resolver_lookup_by_name_async
+g_resolver_lookup_by_name_finish
+g_resolver_lookup_by_address
+g_resolver_lookup_by_address_async
+g_resolver_lookup_by_address_finish
+g_resolver_lookup_service
+g_resolver_lookup_service_async
+g_resolver_lookup_service_finish
+#endif
+#endif
+
+#if IN_HEADER(__G_THREADED_RESOLVER_H__)
+#if IN_FILE(__G_THREADED_RESOLVER_C__)
+g_threaded_resolver_get_type G_GNUC_CONST
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_RESOLVER_H__)
+#if IN_FILE(__G_UNIX_RESOLVER_C__)
+#ifdef G_OS_UNIX
+g_unix_resolver_get_type G_GNUC_CONST
+#endif
+#endif
+#endif
+
+#if IN_HEADER(__G_WIN32_RESOLVER_H__)
+#if IN_FILE(__G_WIN32_RESOLVER_C__)
+#ifdef G_OS_WIN32
+g_win32_resolver_get_type G_GNUC_CONST
+#endif
+#endif
+#endif
+
+#if IN_HEADER(__G_SRV_TARGET_H__)
+#if IN_FILE(__G_SRV_TARGET_C__)
+g_srv_target_get_type G_GNUC_CONST
+g_srv_target_new
+g_srv_target_copy
+g_srv_target_free
+g_srv_target_get_hostname
+g_srv_target_get_port
+g_srv_target_get_priority
+g_srv_target_get_weight
+g_srv_target_list_sort
 #endif
 #endif

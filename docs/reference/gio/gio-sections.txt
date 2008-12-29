@@ -1404,3 +1404,55 @@ G_UNIX_SOCKET_ADDRESS_GET_CLASS
 <SUBSECTION Private>
 g_unix_socket_address_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gresolver</FILE>
+<TITLE>GResolver</TITLE>
+GResolver
+g_resolver_get_default
+g_resolver_set_default
+g_resolver_lookup_by_name
+g_resolver_lookup_by_name_async
+g_resolver_lookup_by_name_finish
+g_resolver_free_addresses
+g_resolver_lookup_by_address
+g_resolver_lookup_by_address_async
+g_resolver_lookup_by_address_finish
+g_resolver_lookup_service
+g_resolver_lookup_service_async
+g_resolver_lookup_service_finish
+g_resolver_free_targets
+<SUBSECTION>
+G_RESOLVER_ERROR
+GResolverError
+<SUBSECTION Standard>
+GResolverClass
+G_IS_RESOLVER
+G_IS_RESOLVER_CLASS
+G_RESOLVER
+G_RESOLVER_CLASS
+G_RESOLVER_GET_CLASS
+G_TYPE_RESOLVER
+<SUBSECTION Private>
+g_resolver_get_type
+g_resolver_error_quark
+</SECTION>
+
+<SECTION>
+<FILE>gsrvtarget</FILE>
+<TITLE>GSrvTarget</TITLE>
+GSrvTarget
+g_srv_target_new
+g_srv_target_copy
+g_srv_target_free
+g_srv_target_get_hostname
+g_srv_target_get_port
+g_srv_target_get_priority
+g_srv_target_get_weight
+g_srv_target_get_expires
+g_srv_target_array_sort
+<SUBSECTION Standard>
+G_TYPE_SRV_TARGET
+<SUBSECTION Private>
+g_srv_target_get_type
+</SECTION>

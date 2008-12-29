@@ -12,3 +12,4 @@ memory-input-stream
 memory-output-stream
 filter-streams
 sleepy-stream
+resolver

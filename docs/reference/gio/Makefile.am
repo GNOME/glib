@@ -43,11 +43,14 @@ IGNORE_HFILES=				\
 	glocalvfs.h			\
 	gnativevolumemonitor.h		\
 	gpollfilemonitor.h		\
+	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\
+	gunixresolver.h			\
 	gunixvolume.h			\
 	gvolumeprivate.h		\
 	gwin32appinfo.h			\
+	gwin32resolver.h		\
 	inotify-diag.h			\
 	inotify-helper.h		\
 	inotify-kernel.h		\
@@ -85,7 +88,8 @@ GTKDOC_LIBS = \
 	$(NULL)
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS = --output-format=xml --sgml-mode --name-space=g
+MKDB_OPTIONS = --output-format=xml --sgml-mode --name-space=g \
+	--ignore-files=libasyncns
 
 # Images to copy into HTML directory
 HTML_IMAGES =			\

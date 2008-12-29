@@ -974,6 +974,30 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for AF_INET* constants])
 fi
 
+# For gio/libasyncns
+if test $glib_native_win32 = no; then
+  AC_CHECK_FUNCS(strndup setresuid setreuid)
+  AC_CHECK_HEADERS(sys/prctl.h arpa/nameser_compat.h)
+  AC_CHECK_FUNC(res_query, ,
+    [AC_CHECK_LIB(resolv, res_query, [ LIBASYNCNS_LIBADD="-lresolv" ],
+      [ save_libs="$LIBS"
+        LIBS="-lresolv $LIBS"
+        AC_MSG_CHECKING([for res_query in -lresolv (alternate version)])
+        AC_LINK_IFELSE(
+          [AC_LANG_PROGRAM([[#include <resolv.h>]], [[res_query(0,0,0,0,0)]])],
+          [ AC_MSG_RESULT(yes)
+  	  LIBASYNCNS_LIBADD="-lresolv" ],
+          [ AC_MSG_RESULT(no)
+            AC_CHECK_LIB(bind, res_query,
+              [ LIBASYNCNS_LIBADD="-lbind" ],
+  	    [ AC_MSG_ERROR(res_query not found) ] ) ] )
+        LIBS="$save_libs"
+      ] )
+    ]
+  )
+  AC_SUBST(LIBASYNCNS_LIBADD)
+fi
+
 dnl
 dnl if statfs() takes 2 arguments (Posix) or 4 (Solaris)
 dnl
@@ -3384,6 +3408,7 @@ gthread/Makefile
 gio/Makefile
 gio/xdgmime/Makefile
 gio/inotify/Makefile
+gio/libasyncns/Makefile
 gio/fen/Makefile
 gio/fam/Makefile
 gio/win32/Makefile
