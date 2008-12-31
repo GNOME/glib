@@ -1409,7 +1409,7 @@ g_bookmark_file_parse (GBookmarkFile  *bookmark,
   if (!buffer)
     return FALSE;
   
-  if (length == -1)
+  if (length == (gsize) -1)
     length = strlen (buffer);
 
   parse_data = parse_data_new ();

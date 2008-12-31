@@ -182,7 +182,6 @@ g_io_error_get_from_g_error (GIOStatus  status,
           }
       default:
         g_assert_not_reached ();
-        return G_IO_ERROR_UNKNOWN; /* Keep the compiler happy */
     }
 }
 

@@ -212,7 +212,7 @@ stack_trace (char **args)
   SELECT_MASK fdset;
   SELECT_MASK readset;
   struct timeval tv;
-  int sel, index, state;
+  int sel, idx, state;
   char buffer[256];
   char c;
 
@@ -249,7 +249,7 @@ stack_trace (char **args)
   write (in_fd[1], "p x = 0\n", 8);
   write (in_fd[1], "quit\n", 5);
 
-  index = 0;
+  idx = 0;
   state = 0;
 
   while (1)
@@ -272,18 +272,18 @@ stack_trace (char **args)
                   if (c == '#')
                     {
                       state = 1;
-                      index = 0;
-                      buffer[index++] = c;
+                      idx = 0;
+                      buffer[idx++] = c;
                     }
                   break;
                 case 1:
-                  buffer[index++] = c;
+                  buffer[idx++] = c;
                   if ((c == '\n') || (c == '\r'))
                     {
-                      buffer[index] = 0;
+                      buffer[idx] = 0;
                       _g_fprintf (stdout, "%s", buffer);
                       state = 0;
-                      index = 0;
+                      idx = 0;
                     }
                   break;
                 default:

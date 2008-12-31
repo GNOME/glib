@@ -2391,8 +2391,6 @@ g_strsplit_set (const gchar *string,
     {
       if (delim_table[*(guchar *)s] && n_tokens + 1 < max_tokens)
 	{
-	  gchar *token;
-
 	  token = g_strndup (current, s - current);
 	  tokens = g_slist_prepend (tokens, token);
 	  ++n_tokens;

@@ -518,11 +518,11 @@ g_file_error_from_errno (gint err_no)
 }
 
 static gboolean
-get_contents_stdio (const gchar *display_filename,
-                    FILE        *f,
-                    gchar      **contents,
-                    gsize       *length,
-                    GError     **error)
+get_contents_stdio (const gchar  *display_filename,
+                    FILE         *f,
+                    gchar       **contents,
+                    gsize        *length,
+                    GError      **error)
 {
   gchar buf[4096];
   gsize bytes;
@@ -620,12 +620,12 @@ get_contents_stdio (const gchar *display_filename,
 #ifndef G_OS_WIN32
 
 static gboolean
-get_contents_regfile (const gchar *display_filename,
-                      struct stat *stat_buf,
-                      gint         fd,
-                      gchar      **contents,
-                      gsize       *length,
-                      GError     **error)
+get_contents_regfile (const gchar  *display_filename,
+                      struct stat  *stat_buf,
+                      gint          fd,
+                      gchar       **contents,
+                      gsize        *length,
+                      GError      **error)
 {
   gchar *buf;
   gsize bytes_read;
@@ -698,10 +698,10 @@ get_contents_regfile (const gchar *display_filename,
 }
 
 static gboolean
-get_contents_posix (const gchar *filename,
-                    gchar      **contents,
-                    gsize       *length,
-                    GError     **error)
+get_contents_posix (const gchar  *filename,
+                    gchar       **contents,
+                    gsize        *length,
+                    GError      **error)
 {
   struct stat stat_buf;
   gint fd;
@@ -786,10 +786,10 @@ get_contents_posix (const gchar *filename,
 #else  /* G_OS_WIN32 */
 
 static gboolean
-get_contents_win32 (const gchar *filename,
-		    gchar      **contents,
-		    gsize       *length,
-		    GError     **error)
+get_contents_win32 (const gchar  *filename,
+		    gchar       **contents,
+		    gsize        *length,
+		    GError      **error)
 {
   FILE *f;
   gboolean retval;
@@ -841,10 +841,10 @@ get_contents_win32 (const gchar *filename,
  * Return value: %TRUE on success, %FALSE if an error occurred
  **/
 gboolean
-g_file_get_contents (const gchar *filename,
-                     gchar      **contents,
-                     gsize       *length,
-                     GError     **error)
+g_file_get_contents (const gchar  *filename,
+                     gchar       **contents,
+                     gsize        *length,
+                     GError      **error)
 {  
   g_return_val_if_fail (filename != NULL, FALSE);
   g_return_val_if_fail (contents != NULL, FALSE);
@@ -867,10 +867,10 @@ g_file_get_contents (const gchar *filename,
 /* Binary compatibility version. Not for newly compiled code. */
 
 gboolean
-g_file_get_contents (const gchar *filename,
-                     gchar      **contents,
-                     gsize       *length,
-                     GError     **error)
+g_file_get_contents (const gchar  *filename,
+                     gchar       **contents,
+                     gsize        *length,
+                     GError      **error)
 {
   gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
   gboolean retval;
@@ -888,9 +888,9 @@ g_file_get_contents (const gchar *filename,
 #endif
 
 static gboolean
-rename_file (const char *old_name,
-	     const char *new_name,
-	     GError **err)
+rename_file (const char  *old_name,
+	     const char  *new_name,
+	     GError     **err)
 {
   errno = 0;
   if (g_rename (old_name, new_name) == -1)
@@ -917,10 +917,10 @@ rename_file (const char *old_name,
 }
 
 static gchar *
-write_to_temp_file (const gchar *contents,
-		    gssize length,
-		    const gchar *template,
-		    GError **err)
+write_to_temp_file (const gchar  *contents,
+		    gssize        length,
+		    const gchar  *template,
+		    GError      **err)
 {
   gchar *tmp_name;
   gchar *display_name;
@@ -1061,10 +1061,10 @@ write_to_temp_file (const gchar *contents,
  * Since: 2.8
  **/
 gboolean
-g_file_set_contents (const gchar *filename,
-		     const gchar *contents,
-		     gssize	     length,
-		     GError	   **error)
+g_file_set_contents (const gchar  *filename,
+		     const gchar  *contents,
+		     gssize	   length,
+		     GError	 **error)
 {
   gchar *tmp_filename;
   gboolean retval;
@@ -1337,13 +1337,13 @@ g_mkstemp (gchar *tmpl)
  * and @error will be set.
  **/
 gint
-g_file_open_tmp (const gchar *tmpl,
-		 gchar      **name_used,
-		 GError     **error)
+g_file_open_tmp (const gchar  *tmpl,
+		 gchar       **name_used,
+		 GError      **error)
 {
   int retval;
   const char *tmpdir;
-  char *sep;
+  const char *sep;
   char *fulltemplate;
   const char *slash;
 
@@ -1424,9 +1424,9 @@ g_file_open_tmp (const gchar *tmpl,
 /* Binary compatibility version. Not for newly compiled code. */
 
 gint
-g_file_open_tmp (const gchar *tmpl,
-		 gchar      **name_used,
-		 GError     **error)
+g_file_open_tmp (const gchar  *tmpl,
+		 gchar       **name_used,
+		 GError      **error)
 {
   gchar *utf8_tmpl = g_locale_to_utf8 (tmpl, -1, NULL, NULL, error);
   gchar *utf8_name_used;
@@ -1880,8 +1880,8 @@ g_format_size_for_display (goffset size)
  * Since: 2.4
  */
 gchar *
-g_file_read_link (const gchar *filename,
-	          GError     **error)
+g_file_read_link (const gchar  *filename,
+	          GError      **error)
 {
 #ifdef HAVE_READLINK
   gchar *buffer;

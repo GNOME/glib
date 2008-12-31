@@ -656,13 +656,13 @@ g_option_context_get_help (GOptionContext *context,
   list = context->groups;
   while (list != NULL)
     {
-      GOptionGroup *group = list->data;
-      for (i = 0; i < group->n_entries; i++)
+      GOptionGroup *g = list->data;
+      for (i = 0; i < g->n_entries; i++)
 	{
-	  entry = &group->entries[i];
+	  entry = &g->entries[i];
 	  if (g_hash_table_lookup (shadow_map, entry->long_name) && 
 	      !(entry->flags & G_OPTION_FLAG_NOALIAS))
-	    entry->long_name = g_strdup_printf ("%s-%s", group->name, entry->long_name);
+	    entry->long_name = g_strdup_printf ("%s-%s", g->name, entry->long_name);
 	  else  
 	    g_hash_table_insert (shadow_map, (gpointer)entry->long_name, entry);
 
@@ -695,14 +695,14 @@ g_option_context_get_help (GOptionContext *context,
 
   while (list != NULL)
     {
-      GOptionGroup *group = list->data;
+      GOptionGroup *g = list->data;
       
       /* First, we check the --help-<groupname> options */
-      len = _g_utf8_strwidth ("--help-", -1) + _g_utf8_strwidth (group->name, -1);
+      len = _g_utf8_strwidth ("--help-", -1) + _g_utf8_strwidth (g->name, -1);
       max_length = MAX (max_length, len);
 
       /* Then we go through the entries */
-      len = calculate_max_length (group);
+      len = calculate_max_length (g);
       max_length = MAX (max_length, len);
       
       list = list->next;
@@ -727,12 +727,12 @@ g_option_context_get_help (GOptionContext *context,
       
       while (list)
 	{
-	  GOptionGroup *group = list->data;
+	  GOptionGroup *g = list->data;
 
-	  if (group_has_visible_entries (context, group, FALSE))
+	  if (group_has_visible_entries (context, g, FALSE))
 	    g_string_append_printf (string, "  --help-%-*s %s\n",
-				    max_length - 5, group->name,
-				    TRANSLATE (group, group->help_description));
+				    max_length - 5, g->name,
+				    TRANSLATE (g, g->help_description));
 	  
 	  list = list->next;
 	}
@@ -761,15 +761,15 @@ g_option_context_get_help (GOptionContext *context,
 
       while (list)
 	{
-	  GOptionGroup *group = list->data;
+	  GOptionGroup *g = list->data;
 
-	  if (group_has_visible_entries (context, group, FALSE))
+	  if (group_has_visible_entries (context, g, FALSE))
 	    {
-	      g_string_append (string, group->description);
+	      g_string_append (string, g->description);
 	      g_string_append (string, "\n");
-	      for (i = 0; i < group->n_entries; i++)
-		if (!(group->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
-		  print_entry (group, max_length, &group->entries[i], string);
+	      for (i = 0; i < g->n_entries; i++)
+		if (!(g->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
+		  print_entry (g, max_length, &g->entries[i], string);
 	  
 	      g_string_append (string, "\n");
 	    }
@@ -794,12 +794,12 @@ g_option_context_get_help (GOptionContext *context,
 
       while (list != NULL)
 	{
-	  GOptionGroup *group = list->data;
+	  GOptionGroup *g = list->data;
 
 	  /* Print main entries from other groups */
-	  for (i = 0; i < group->n_entries; i++)
-	    if (group->entries[i].flags & G_OPTION_FLAG_IN_MAIN)
-	      print_entry (group, max_length, &group->entries[i], string);
+	  for (i = 0; i < g->n_entries; i++)
+	    if (g->entries[i].flags & G_OPTION_FLAG_IN_MAIN)
+	      print_entry (g, max_length, &g->entries[i], string);
 	  
 	  list = list->next;
 	}
@@ -816,6 +816,7 @@ g_option_context_get_help (GOptionContext *context,
   return g_string_free (string, FALSE);
 }
 
+G_GNUC_NORETURN
 static void
 print_help (GOptionContext *context,
 	    gboolean        main_help,
@@ -1199,8 +1200,8 @@ parse_arg (GOptionContext *context,
 static gboolean
 parse_short_option (GOptionContext *context,
 		    GOptionGroup   *group,
-		    gint            index,
-		    gint           *new_index,
+		    gint            idx,
+		    gint           *new_idx,
 		    gchar           arg,
 		    gint           *argc,
 		    gchar        ***argv,
@@ -1222,7 +1223,7 @@ parse_short_option (GOptionContext *context,
 	    value = NULL;
 	  else
 	    {
-	      if (*new_index > index)
+	      if (*new_idx > idx)
 		{
 		  g_set_error (error, 
 			       G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
@@ -1231,27 +1232,27 @@ parse_short_option (GOptionContext *context,
 		  return FALSE;
 		}
 
-	      if (index < *argc - 1)
+	      if (idx < *argc - 1)
 		{
 		  if (!OPTIONAL_ARG (&group->entries[j]))	
 		    {    
-		      value = (*argv)[index + 1];
-		      add_pending_null (context, &((*argv)[index + 1]), NULL);
-		      *new_index = index+1;
+		      value = (*argv)[idx + 1];
+		      add_pending_null (context, &((*argv)[idx + 1]), NULL);
+		      *new_idx = idx + 1;
 		    }
 		  else
 		    {
-                      if ((*argv)[index + 1][0] == '-') 
+                      if ((*argv)[idx + 1][0] == '-') 
 			value = NULL;
 		      else
 		        {
-		          value = (*argv)[index + 1];
-		          add_pending_null (context, &((*argv)[index + 1]), NULL);
-		          *new_index = index + 1;
+		          value = (*argv)[idx + 1];
+		          add_pending_null (context, &((*argv)[idx + 1]), NULL);
+		          *new_idx = idx + 1;
 			}
 	            }
 		}
-	      else if (index >= *argc - 1 && OPTIONAL_ARG (&group->entries[j]))
+	      else if (idx >= *argc - 1 && OPTIONAL_ARG (&group->entries[j]))
 		value = NULL;
 	      else
 		{
@@ -1281,7 +1282,7 @@ parse_short_option (GOptionContext *context,
 static gboolean
 parse_long_option (GOptionContext *context,
 		   GOptionGroup   *group,
-		   gint           *index,
+		   gint           *idx,
 		   gchar          *arg,
 		   gboolean        aliased,
 		   gint           *argc,
@@ -1293,7 +1294,7 @@ parse_long_option (GOptionContext *context,
 
   for (j = 0; j < group->n_entries; j++)
     {
-      if (*index >= *argc)
+      if (*idx >= *argc)
 	return TRUE;
 
       if (aliased && (group->entries[j].flags & G_OPTION_FLAG_NOALIAS))
@@ -1310,7 +1311,7 @@ parse_long_option (GOptionContext *context,
 			      NULL, option_name, error);
 	  g_free(option_name);
 	  
-	  add_pending_null (context, &((*argv)[*index]), NULL);
+	  add_pending_null (context, &((*argv)[*idx]), NULL);
 	  *parsed = TRUE;
 
 	  return retval;
@@ -1325,22 +1326,22 @@ parse_long_option (GOptionContext *context,
 	      gchar *value = NULL;
 	      gchar *option_name;
 
-	      add_pending_null (context, &((*argv)[*index]), NULL);
+	      add_pending_null (context, &((*argv)[*idx]), NULL);
 	      option_name = g_strconcat ("--", group->entries[j].long_name, NULL);
 
 	      if (arg[len] == '=')
 		value = arg + len + 1;
-	      else if (*index < *argc - 1) 
+	      else if (*idx < *argc - 1) 
 		{
 		  if (!(group->entries[j].flags & G_OPTION_FLAG_OPTIONAL_ARG))	
 		    {    
-		      value = (*argv)[*index + 1];
-		      add_pending_null (context, &((*argv)[*index + 1]), NULL);
-		      (*index)++;
+		      value = (*argv)[*idx + 1];
+		      add_pending_null (context, &((*argv)[*idx + 1]), NULL);
+		      (*idx)++;
 		    }
 		  else
 		    {
-                      if ((*argv)[*index + 1][0] == '-') 
+                      if ((*argv)[*idx + 1][0] == '-') 
 		        {
 		          gboolean retval;
 		          retval = parse_arg (context, group, &group->entries[j],
@@ -1351,13 +1352,13 @@ parse_long_option (GOptionContext *context,
 		        }
 		      else
 		        {
-		          value = (*argv)[*index + 1];
-		          add_pending_null (context, &((*argv)[*index + 1]), NULL);
-		          (*index)++;
+		          value = (*argv)[*idx + 1];
+		          add_pending_null (context, &((*argv)[*idx + 1]), NULL);
+		          (*idx)++;
 			}
 	            }
 		}
-	      else if (*index >= *argc - 1 &&
+	      else if (*idx >= *argc - 1 &&
 		       group->entries[j].flags & G_OPTION_FLAG_OPTIONAL_ARG)
 		{
 		    gboolean retval;
@@ -1395,7 +1396,7 @@ parse_long_option (GOptionContext *context,
 static gboolean
 parse_remaining_arg (GOptionContext *context,
 		     GOptionGroup   *group,
-		     gint           *index,
+		     gint           *idx,
 		     gint           *argc,
 		     gchar        ***argv,
 		     GError        **error,
@@ -1405,7 +1406,7 @@ parse_remaining_arg (GOptionContext *context,
 
   for (j = 0; j < group->n_entries; j++)
     {
-      if (*index >= *argc)
+      if (*idx >= *argc)
 	return TRUE;
 
       if (group->entries[j].long_name[0])
@@ -1415,9 +1416,9 @@ parse_remaining_arg (GOptionContext *context,
                             group->entries[j].arg == G_OPTION_ARG_STRING_ARRAY ||
 			    group->entries[j].arg == G_OPTION_ARG_FILENAME_ARRAY, FALSE);
       
-      add_pending_null (context, &((*argv)[*index]), NULL);
+      add_pending_null (context, &((*argv)[*idx]), NULL);
       
-      if (!parse_arg (context, group, &group->entries[j], (*argv)[*index], "", error))
+      if (!parse_arg (context, group, &group->entries[j], (*argv)[*idx], "", error))
 	return FALSE;
       
       *parsed = TRUE;
@@ -1623,8 +1624,6 @@ g_option_context_parse (GOptionContext   *context,
 			print_help (context, FALSE, NULL);		      
 		      else if (strncmp (arg, "help-", 5) == 0)
 			{
-			  GList *list;
-			  
 			  list = context->groups;
 			  
 			  while (list)
@@ -1695,7 +1694,7 @@ g_option_context_parse (GOptionContext   *context,
 		}
 	      else
 		{ /* short option */
-		  gint j, new_i = i, arg_length;
+		  gint new_i = i, arg_length;
 		  gboolean *nulled_out = NULL;
 		  arg = (*argv)[i] + 1;
                   arg_length = strlen (arg);

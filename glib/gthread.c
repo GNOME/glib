@@ -497,10 +497,10 @@ g_static_private_set (GStaticPrivate *private_key,
 void
 g_static_private_free (GStaticPrivate *private_key)
 {
-  guint index = private_key->index;
+  guint idx = private_key->index;
   GRealThread *thread;
 
-  if (!index)
+  if (!idx)
     return;
 
   private_key->index = 0;
@@ -513,27 +513,27 @@ g_static_private_free (GStaticPrivate *private_key)
       GArray *array = thread->private_data;
       thread = thread->next;
 
-      if (array && index <= array->len)
+      if (array && idx <= array->len)
 	{
 	  GStaticPrivateNode *node = &g_array_index (array,
 						     GStaticPrivateNode,
-						     index - 1);
+						     idx - 1);
 	  gpointer ddata = node->data;
 	  GDestroyNotify ddestroy = node->destroy;
 
 	  node->data = NULL;
 	  node->destroy = NULL;
 
-	  if (ddestroy)
-	    {
-	      G_UNLOCK (g_thread);
-	      ddestroy (ddata);
-	      G_LOCK (g_thread);
-	      }
+          if (ddestroy)
+            {
+              G_UNLOCK (g_thread);
+              ddestroy (ddata);
+              G_LOCK (g_thread);
+            }
 	}
     }
   g_thread_free_indeces = g_slist_prepend (g_thread_free_indeces,
-					   GUINT_TO_POINTER (index));
+					   GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
 }
 
@@ -638,13 +638,13 @@ g_thread_create_proxy (gpointer data)
 }
 
 GThread*
-g_thread_create_full (GThreadFunc 		 func,
-		      gpointer 		 data,
-		      gulong 		 stack_size,
-		      gboolean 		 joinable,
-		      gboolean 		 bound,
-		      GThreadPriority 	 priority,
-		      GError                **error)
+g_thread_create_full (GThreadFunc       func,
+		      gpointer          data,
+		      gulong            stack_size,
+		      gboolean          joinable,
+		      gboolean 	        bound,
+		      GThreadPriority   priority,
+		      GError          **error)
 {
   GRealThread* result;
   GError *local_error = NULL;

@@ -3668,8 +3668,8 @@ g_child_watch_source_init_single (void)
   sigaction (SIGCHLD, &action, NULL);
 }
 
-static gpointer
-child_watch_helper_thread (gpointer data)
+G_GNUC_NORETURN static gpointer
+child_watch_helper_thread (gpointer data) 
 {
   while (1)
     {
@@ -3694,8 +3694,6 @@ child_watch_helper_thread (gpointer data)
 	}
       G_UNLOCK (main_context_list);
     }
-
-  return NULL;
 }
 
 static void

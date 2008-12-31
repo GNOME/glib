@@ -1,3 +1,16 @@
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gspawn.c:
+	* glib/gthread.c:
+	* glib/goption.c:
+	* glib/gmain.c:
+	* glib/gkeyfile.c:
+	* glib/gfileutils.c:
+	* glib/gdate.c:
+	* glib/garray.c:
+	* glib/gbookmarkfile.c:
+	* glib/gbacktrace.c: Fix some compiler warnings.
+
 2008-12-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/glib.symbols: Add g_thread_get_initialized here,

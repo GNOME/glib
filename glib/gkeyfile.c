@@ -2526,8 +2526,6 @@ g_key_file_set_key_comment (GKeyFile     *key_file,
   tmp = key_node->next;
   while (tmp != NULL)
     {
-      GKeyFileKeyValuePair *pair;
-
       pair = (GKeyFileKeyValuePair *) tmp->data;
 
       if (pair->key != NULL)
@@ -2748,8 +2746,6 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
 
   while (tmp != key_node)
     {
-      GKeyFileKeyValuePair *pair;
-      
       pair = (GKeyFileKeyValuePair *) tmp->data;
       
       if (string == NULL)
