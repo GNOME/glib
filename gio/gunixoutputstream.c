@@ -49,7 +49,11 @@
  * #GUnixOutputStream implements #GOutputStream for writing to a
  * unix file descriptor, including asynchronous operations. The file
  * descriptor must be selectable, so it doesn't work with opened files.
- **/
+ *
+ * Note that <filename>&lt;gio/gunixoutputstream.h&gt;</filename> belongs 
+ * to the UNIX-specific GIO interfaces, thus you have to use the
+ * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
+ */
 
 enum {
   PROP_0,
