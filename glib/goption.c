@@ -2101,7 +2101,7 @@ g_option_group_set_translation_domain (GOptionGroup *group,
  * (see g_option_context_set_description()).
  *
  * If you are using gettext(), you only need to set the translation
- * domain, see g_context_group_set_translation_domain().
+ * domain, see g_option_context_set_translation_domain().
  *
  * Since: 2.12
  **/
@@ -2154,7 +2154,8 @@ g_option_context_set_translation_domain (GOptionContext *context,
  * program functionality. 
  *
  * Note that the summary is translated (see 
- * g_option_context_set_translate_func(), g_option_context_set_translation_domain()).
+ * g_option_context_set_translate_func() and
+ * g_option_context_set_translation_domain()).
  *
  * Since: 2.12
  */

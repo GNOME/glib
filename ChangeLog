@@ -1,5 +1,13 @@
 2008-12-30  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 565905 – There is no named g_context_group_set_translation_domain()
+	in GOption command line parser
+
+	* glib/goption.c: Fix a wrong reference in the docs, reported by
+	Takeshi Aihana.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gspawn.c:
 	* glib/gthread.c:
 	* glib/goption.c:
