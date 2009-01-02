@@ -882,7 +882,7 @@ maman_ibaz_get_type (void)
                                            &amp;info, 0);
     }
 
-  return type;
+  return iface_type;
 }
 
 void
