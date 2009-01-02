@@ -334,8 +334,8 @@ g_object_do_class_init (GObjectClass *class)
 
   /**
    * GObject::notify:
-   * @pspec: the #GParamSpec of the property which changed
    * @gobject: the object which received the signal.
+   * @pspec: the #GParamSpec of the property which changed.
    *
    * The notify signal is emitted on an object when one of its
    * properties has been changed. Note that getting this signal
