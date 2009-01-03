@@ -455,6 +455,30 @@ write_callable_info (const gchar    *namespace,
       
       if (g_arg_info_is_optional (arg))
 	xml_printf (file, " optional=\"1\"");
+
+      switch (g_arg_info_get_scope (arg))
+        {
+        case GI_SCOPE_TYPE_INVALID:
+          break;
+        case GI_SCOPE_TYPE_CALL:
+          xml_printf (file, " scope=\"call\"");
+          break;
+        case GI_SCOPE_TYPE_OBJECT:
+          xml_printf (file, " scope=\"object\"");
+          break;
+        case GI_SCOPE_TYPE_ASYNC:
+          xml_printf (file, " scope=\"async\"");
+          break;
+        case GI_SCOPE_TYPE_NOTIFIED:
+          xml_printf (file, " scope=\"notified\"");
+          break;
+        }
+      
+      if (g_arg_info_get_closure (arg) >= 0)
+        xml_printf (file, " closure=\"%d\"", g_arg_info_get_closure (arg));
+      
+      if (g_arg_info_get_destroy (arg) >= 0)
+        xml_printf (file, " destroy=\"%d\"", g_arg_info_get_destroy (arg));
       
       type = g_arg_info_get_type (arg);
       write_type_info (namespace, type, file);
