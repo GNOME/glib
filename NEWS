@@ -1,3 +1,18 @@
+Overview of Changes from GLib 2.19.3 to GLib 2.19.4
+===================================================
+
+* Bugs fixed:
+ 560676 function access for g_threads_supported
+ 565905 There is no g_context_group_set_translation_domain
+ 564210 SUN Studio 12 has supported visibility attribute
+ 565136 GObject's "notify" signal parameters are wrong in gtk-doc
+ 565831 error in interface creation sample
+
+* Updated translations:
+ Spanish (es)
+ Norwegian bokmål (nb)
+
+
 Overview of Changes from GLib 2.19.1 to GLib 2.19.3
 ===================================================
 

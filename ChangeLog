@@ -1,3 +1,7 @@
+2009-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2009-01-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gregex.c: Add an example to the g_regex_replace_eval() docs.
