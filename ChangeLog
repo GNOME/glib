@@ -1,3 +1,10 @@
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 564210 – SUN Studio 12 has supported visibility attribute
+
+	* configure.in: Use visibility attribute for new enough sun cc.
+	Patch by Chris Wang
+
 2008-12-30  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 565905 – There is no named g_context_group_set_translation_domain()
