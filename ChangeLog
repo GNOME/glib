@@ -1,5 +1,10 @@
 2009-01-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstrfuncs.c: Move docs inline, adding references to g_free()
+	where appropriate.
+
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 564210 – SUN Studio 12 has supported visibility attribute
 
 	* configure.in: Use visibility attribute for new enough sun cc.

@@ -1,3 +1,7 @@
+2009-01-02  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/tmpl/string_utils.sgml: Move most function docs inline.
+
 2009-01-01  Matthias Clasen <mclasen@redhat.com>
 
 	Bug 565831 – error in interface creation sample

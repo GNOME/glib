@@ -42,13 +42,11 @@ wide characters (see g_unichar_iswide()) into account.
 
 <!-- ##### FUNCTION g_strdup ##### -->
 <para>
-Duplicates a string.
-If @str is %NULL it returns %NULL.
-The returned string should be freed when no longer needed.
+
 </para>
 
-@str: the string to duplicate.
-@Returns: a newly-allocated copy of @str.
+@str: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strndup ##### -->
@@ -153,65 +151,43 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
-Portability wrapper that calls strlcpy() on systems which have it, and emulates
-strlcpy() otherwise. Copies @src to @dest; @dest is guaranteed to be
-nul-terminated; @src must be nul-terminated; @dest_size is the buffer size, not
-the number of chars to copy. Caveat: strlcpy() is supposedly more secure than
-strcpy() or strncpy(), but if you really want to avoid screwups, g_strdup() is
-an even better idea.
+
 </para>
 
-@dest: destination buffer
-@src: source buffer
-@dest_size: length of @dest in bytes
-@Returns: length of @src
+@dest:
+@src:
+@dest_size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strlcat ##### -->
 <para>
-Portability wrapper that calls strlcat() on systems which have it, and emulates it otherwise. 
-Appends nul-terminated @src string to @dest, guaranteeing
-nul-termination for @dest. The total size of @dest won't exceed
-@dest_size. Caveat: this is supposedly a more secure alternative to strcat() or
-strncat(), but for real security g_strconcat() is harder to mess up.
+
 </para>
 
-@dest: destination buffer, already containing one nul-terminated string
-@src: source buffer
-@dest_size: length of @dest buffer in bytes (not length of existing string inside @dest)
-@Returns: length of @src plus initial length of string in @dest
+@dest: 
+@src: 
+@dest_size:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strdup_printf ##### -->
 <para>
-Similar to the standard C sprintf() function
-but safer, since it calculates the maximum space required and allocates
-memory to hold the result.
-The returned string should be freed when no longer needed.
 </para>
 
-@format: a standard printf() format string, but notice 
-  <link linkend="string-precision">string precision pitfalls</link>.
-@Varargs: the parameters to insert into the format string.
-@Returns: a newly-allocated string holding the result.
+@format: 
+@Varargs: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_strdup_vprintf ##### -->
 <para>
-Similar to the standard C vsprintf() function
-but safer, since it calculates the maximum space required and allocates
-memory to hold the result.
-The returned string should be freed when no longer needed.
-</para>
-<para>
-See also g_vasprintf(), which offers the same functionality, but additionally
-returns the length of the allocated string. 
+
 </para>
 
-@format: a standard printf() format string, but notice 
-  <link linkend="string-precision">string precision pitfalls</link>.
-@args: the list of parameters to insert into the format string.
-@Returns: a newly-allocated string holding the result.
+@format:
+@args: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_printf ##### -->
@@ -637,16 +613,11 @@ possibly non-ASCII character in.
 
 <!-- ##### FUNCTION g_strreverse ##### -->
 <para>
-Reverses all of the bytes in a string.
-For example, <literal>g_strreverse ("abcdef")</literal> will result in "fedcba".
-</para>
-<para>
-Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters. 
-For that purpose, use g_utf8_strreverse().
+
 </para>
 
-@string: the string to reverse.
-@Returns: the same pointer passed in as @string.
+@string:
+@Returns:
 
 
 <!-- ##### FUNCTION g_ascii_strtoll ##### -->
@@ -872,43 +843,32 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 
 <!-- ##### FUNCTION g_strconcat ##### -->
 <para>
-Concatenates all of the given strings into one long string.  The returned string
-should be freed when no longer needed.  
+
 </para>
 
-<warning><para>
-The variable argument list <emphasis>must</emphasis> end with %NULL. 
-If you forget the %NULL, g_strconcat() will start appending
-random memory junk to your string.
-</para></warning>
-
-@string1: The first string to add, which must not be %NULL.
-@Varargs: a %NULL-terminated list of strings to append to the string.
-@Returns: a newly-allocated string containing all the string arguments.
+@string1: 
+@Varargs:
+@Returns:
 
 
 <!-- ##### FUNCTION g_strjoin ##### -->
 <para>
-Joins a number of strings together to form one long string, with the optional
-@separator inserted between each of them.
+
 </para>
 
-@separator: a string to insert between each of the strings, or %NULL.
-@Varargs: a %NULL-terminated list of strings to join.
-@Returns: a newly-allocated string containing all of the strings joined
-together, with @separator between them.
+@separator: 
+@Varargs: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_strjoinv ##### -->
 <para>
-Joins a number of strings together to form one long string, with the optional
-@separator inserted between each of them.
+
 </para>
 
-@separator: a string to insert between each of the strings, or %NULL.
-@str_array: a %NULL-terminated array of strings to join.
-@Returns: a newly-allocated string containing all of the strings joined
-together, with @separator between them.
+@separator: 
+@str_array: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_strv_length ##### -->
@@ -922,31 +882,18 @@ together, with @separator between them.
 
 <!-- ##### FUNCTION g_strerror ##### -->
 <para>
-Returns a string corresponding to the given error code, e.g. "no such process".
-You should use this function in preference to strerror(), because it returns a
-string in UTF-8 encoding, and since not all platforms support the 
-strerror() function.
+
 </para>
 
-@errnum: the system error number. See the standard C %errno
-documentation.
-@Returns: a UTF-8 string describing the error code.
-If the error code is unknown, it returns "unknown error (&lt;code&gt;)".
-The string can only be used until the next call to g_strerror().
+@errnum: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strsignal ##### -->
 <para>
-Returns a string describing the given signal, e.g. "Segmentation fault".
-You should use this function in preference to strsignal(), because it returns a
-string in UTF-8 encoding, and since not all platforms support the
-strsignal() function.
+
 </para>
 
-@signum: the signal number. See the <literal>signal</literal>
-documentation.
-@Returns: a UTF-8 string describing the signal.
-If the signal is unknown, it returns "unknown signal (&lt;signum&gt;)".
-The string can only be used until the next call to g_strsignal().
-
+@signum: 
+@Returns:
 

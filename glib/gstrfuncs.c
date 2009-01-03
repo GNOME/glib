@@ -80,6 +80,16 @@ static const guint16 ascii_table_data[256] = {
 
 const guint16 * const g_ascii_table = ascii_table_data;
 
+/**
+ * g_strdup:
+ * @str: the string to duplicate
+ *
+ * Duplicates a string. If @str is %NULL it returns %NULL.
+ * The returned string should be freed with g_free() 
+ * when no longer needed.
+ * 
+ * Returns: a newly-allocated copy of @str
+ */
 gchar*
 g_strdup (const gchar *str)
 {
@@ -209,6 +219,22 @@ g_stpcpy (gchar       *dest,
 #endif
 }
 
+/**
+ * g_strdup_vprintf:
+ * @format: a standard printf() format string, but notice
+ *     <link linkend="string-precision">string precision pitfalls</link>
+ * @args: the list of parameters to insert into the format string
+ * 
+ * Similar to the standard C vsprintf() function but safer, since it 
+ * calculates the maximum space required and allocates memory to hold 
+ * the result. The returned string should be freed with g_free() when 
+ * no longer needed.
+ *
+ * See also g_vasprintf(), which offers the same functionality, but 
+ * additionally returns the length of the allocated string.
+ *
+ * Returns: a newly-allocated string holding the result
+ */
 gchar*
 g_strdup_vprintf (const gchar *format,
 		  va_list      args)
@@ -220,6 +246,19 @@ g_strdup_vprintf (const gchar *format,
   return string;
 }
 
+/**
+ * g_strdup_printf:
+ * format: a standard printf() format string, but notice
+ *     <link linkend="string-precision">string precision pitfalls</link>
+ * @Varargs: the parameters to insert into the format string
+ *
+ * Similar to the standard C sprintf() function but safer, since it 
+ * calculates the maximum space required and allocates memory to hold 
+ * the result. The returned string should be freed with g_free() when no 
+ * longer needed.
+ * 
+ * Returns: a newly-allocated string holding the result
+ */
 gchar*
 g_strdup_printf (const gchar *format,
 		 ...)
@@ -234,6 +273,21 @@ g_strdup_printf (const gchar *format,
   return buffer;
 }
 
+/**
+ * g_strconcat:
+ * @string1: the first string to add, which must not be %NULL
+ * @Varargs: a %NULL-terminated list of strings to append to the string
+ * 
+ * Concatenates all of the given strings into one long string.
+ * The returned string should be freed with g_free() when no longer needed.
+ *
+ *
+ * <warning><para>The variable argument list <emphasis>must</emphasis> end 
+ * with %NULL. If you forget the %NULL, g_strconcat() will start appending
+ * random memory junk to your string.</para></warning>
+ *
+ * Returns: a newly-allocated string containing all the string arguments
+ */
 gchar*
 g_strconcat (const gchar *string1, ...)
 {
@@ -550,7 +604,7 @@ g_ascii_dtostr (gchar       *buffer,
  * string, use g_ascii_dtostr().
  *
  * Return value: The pointer to the buffer with the converted string.
- **/
+ */
 gchar *
 g_ascii_formatd (gchar       *buffer,
 		 gint         buf_len,
@@ -783,7 +837,7 @@ g_parse_long_long (const gchar  *nptr,
  * Return value: the #guint64 value or zero on error.
  *
  * Since: 2.2
- **/
+ */
 guint64
 g_ascii_strtoull (const gchar *nptr,
 		  gchar      **endptr,
@@ -825,7 +879,7 @@ g_ascii_strtoull (const gchar *nptr,
  * Return value: the #gint64 value or zero on error.
  *
  * Since: 2.12
- **/
+ */
 gint64 
 g_ascii_strtoll (const gchar *nptr,
 		 gchar      **endptr,
@@ -852,6 +906,20 @@ g_ascii_strtoll (const gchar *nptr,
     return (gint64) result;
 }
 
+/**
+ * g_strerror:
+ * @errnum: the system error number. See the standard C %errno
+ *     documentation
+ * 
+ * Returns a string corresponding to the given error code, e.g. 
+ * "no such process". You should use this function in preference to 
+ * strerror(), because it returns a string in UTF-8 encoding, and since 
+ * not all platforms support the strerror() function.
+ *
+ * Returns: a UTF-8 string describing the error code. If the error code 
+ *     is unknown, it returns "unknown error (&lt;code&gt;)". The string 
+ *     can only be used until the next call to g_strerror()
+ */
 G_CONST_RETURN gchar*
 g_strerror (gint errnum)
 {
@@ -1319,6 +1387,20 @@ g_strerror (gint errnum)
   return msg;
 }
 
+/**
+ * g_strsignal:
+ * @signum: the signal number. See the <literal>signal</literal>
+ *     documentation
+ *
+ * Returns a string describing the given signal, e.g. "Segmentation fault".
+ * You should use this function in preference to strsignal(), because it 
+ * returns a string in UTF-8 encoding, and since not all platforms support
+ * the strsignal() function.
+ *
+ * Returns: a UTF-8 string describing the signal. If the signal is unknown,
+ *     it returns "unknown signal (&lt;signum&gt;)". The string can only be 
+ *     used until the next call to g_strsignal()
+ */ 
 G_CONST_RETURN gchar*
 g_strsignal (gint signum)
 {
@@ -1499,14 +1581,28 @@ g_strlcat (gchar       *dest,
 }
 
 #else /* ! HAVE_STRLCPY */
-/* g_strlcpy
+/**
+ * g_strlcpy:
+ * @dest: destination buffer
+ * @src: source buffer
+ * @dest_size: length of @dest in bytes
+ * 
+ * Portability wrapper that calls strlcpy() on systems which have it, 
+ * and emulates strlcpy() otherwise. Copies @src to @dest; @dest is 
+ * guaranteed to be nul-terminated; @src must be nul-terminated; 
+ * @dest_size is the buffer size, not the number of chars to copy. 
  *
- * Copy string src to buffer dest (of buffer size dest_size).  At most
- * dest_size-1 characters will be copied.  Always NUL terminates
- * (unless dest_size == 0).  This function does NOT allocate memory.
- * Unlike strncpy, this function doesn't pad dest (so it's often faster).
- * Returns size of attempted result, strlen(src),
- * so if retval >= dest_size, truncation occurred.
+ * At most dest_size - 1 characters will be copied. Always nul-terminates
+ * (unless dest_size == 0). This function does <emphasis>not</emphasis> 
+ * allocate memory. Unlike strncpy(), this function doesn't pad dest (so 
+ * it's often faster). It returns the size of the attempted result, 
+ * strlen (src), so if @retval >= @dest_size, truncation occurred.
+ * 
+ * <note><para>Caveat: strlcpy() is supposedly more secure than
+ * strcpy() or strncpy(), but if you really want to avoid screwups, 
+ * g_strdup() is an even better idea.</para></note>
+ *
+ * Returns: length of @src
  */
 gsize
 g_strlcpy (gchar       *dest,
@@ -1544,10 +1640,19 @@ g_strlcpy (gchar       *dest,
   return s - src - 1;  /* count does not include NUL */
 }
 
-/* g_strlcat
+/**
+ * g_strlcat:
+ * @dest: destination buffer, already containing one nul-terminated string
+ * @src: source buffer
+ * @dest_size: length of @dest buffer in bytes (not length of existing string 
+ *     inside @dest)
  *
- * Appends string src to buffer dest (of buffer size dest_size).
- * At most dest_size-1 characters will be copied.
+ * Portability wrapper that calls strlcat() on systems which have it, 
+ * and emulates it otherwise. Appends nul-terminated @src string to @dest, 
+ * guaranteeing nul-termination for @dest. The total size of @dest won't 
+ * exceed @dest_size. 
+ *
+ * At most dest_size - 1 characters will be copied.
  * Unlike strncat, dest_size is the full size of dest, not the space left over.
  * This function does NOT allocate memory.
  * This always NUL terminates (unless siz == 0 or there were no NUL characters
@@ -1555,6 +1660,11 @@ g_strlcpy (gchar       *dest,
  * Returns size of attempted result, which is
  * MIN (dest_size, strlen (original dest)) + strlen (src),
  * so if retval >= dest_size, truncation occurred.
+ *
+ * <note><para>Caveat: this is supposedly a more secure alternative to 
+ * strcat() or strncat(), but for real security g_strconcat() is harder 
+ * to mess up.</para></note>
+ *
  */
 gsize
 g_strlcat (gchar       *dest,
@@ -1716,6 +1826,20 @@ g_strup (gchar *string)
   return (gchar *) string;
 }
 
+/**
+ * g_strreverse:
+ * @string: the string to reverse 
+ *
+ * Reverses all of the bytes in a string. For example, 
+ * <literal>g_strreverse ("abcdef")</literal> will result 
+ * in "fedcba".
+ * 
+ * Note that g_strreverse() doesn't work on UTF-8 strings 
+ * containing multibyte characters. For that purpose, use 
+ * g_utf8_strreverse().
+ * 
+ * Returns: the same pointer passed in as @string
+ */
 gchar*
 g_strreverse (gchar *string)
 {
@@ -2476,6 +2600,18 @@ g_strdupv (gchar **str_array)
     return NULL;
 }
 
+/**
+ * g_strjoinv:
+ * @separator: a string to insert between each of the strings, or %NULL
+ * @str_array: a %NULL-terminated array of strings to join
+ * 
+ * Joins a number of strings together to form one long string, with the 
+ * optional @separator inserted between each of them. The returned string
+ * should be freed with g_free().
+ *
+ * Returns: a newly-allocated string containing all of the strings joined
+ *     together, with @separator between them
+ */
 gchar*
 g_strjoinv (const gchar  *separator,
 	    gchar       **str_array)
@@ -2516,6 +2652,18 @@ g_strjoinv (const gchar  *separator,
   return string;
 }
 
+/**
+ * g_strjoin:
+ * @separator: a string to insert between each of the strings, or %NULL
+ * @Varargs: a %NULL-terminated list of strings to join
+ *
+ * Joins a number of strings together to form one long string, with the 
+ * optional @separator inserted between each of them. The returned string
+ * should be freed with g_free().
+ *
+ * Returns: a newly-allocated string containing all of the strings joined
+ *     together, with @separator between them
+ */
 gchar*
 g_strjoin (const gchar  *separator,
 	   ...)
