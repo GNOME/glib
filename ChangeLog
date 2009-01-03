@@ -1,5 +1,9 @@
 2009-01-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gregex.c: Add an example to the g_regex_replace_eval() docs.
+
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gstrfuncs.c: Move docs inline, adding references to g_free()
 	where appropriate.
 

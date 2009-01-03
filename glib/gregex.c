@@ -2530,6 +2530,45 @@ g_regex_replace_literal (const GRegex      *regex,
  * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
+ * The following example uses g_regex_replace_eval() to replace multiple
+ * strings at once:
+ * |[
+ * static gboolean 
+ * eval_cb (const GMatchInfo *info,          
+ *          GString          *res,
+ *          gpointer          data)
+ * {
+ *   gchar *match;
+ *   gchar *r;
+ * 
+ *    match = g_match_info_fetch (info, 0);
+ *    r = g_hash_table_lookup ((GHashTable *)data, match);
+ *    g_string_append (res, r);
+ *    g_free (match);
+ * 
+ *    return FALSE;
+ * }
+ * 
+ * /&ast; ... &ast;/
+ * 
+ * GRegex *reg;
+ * GHashTable *h;
+ * gchar *res;
+ *
+ * h = g_hash_table_new (g_str_hash, g_str_equal);
+ * 
+ * g_hash_table_insert (h, "1", "ONE");
+ * g_hash_table_insert (h, "2", "TWO");
+ * g_hash_table_insert (h, "3", "THREE");
+ * g_hash_table_insert (h, "4", "FOUR");
+ * 
+ * reg = g_regex_new ("1|2|3|4", 0, 0, NULL);
+ * res = g_regex_replace_eval (reg, text, -1, 0, 0, eval_cb, h, NULL);
+ * g_hash_table_destroy (h);
+ *
+ * /&ast; ... &ast;/
+ * ]|
+ *
  * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
