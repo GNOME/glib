@@ -132,7 +132,11 @@ typedef struct
   guint          transfer_ownership           : 1;
   guint          transfer_container_ownership : 1;
   guint          return_value                 : 1;
-  guint          reserved                     :24;
+  guint          scope                        : 3;
+  guint          reserved                     :21;
+
+  gint8        closure;
+  gint8        destroy;
 
   SimpleTypeBlob arg_type;
 } ArgBlob;

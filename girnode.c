@@ -582,7 +582,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeParam *param = (GIrNodeParam *)node;
 	
-	size = 12;
+	size = 16;
 	if (node->name)
 	  size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += g_ir_node_get_full_size_internal (node, (GIrNode *)param->type);	
@@ -1764,7 +1764,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	ArgBlob *blob = (ArgBlob *)&data[*offset];
 	GIrNodeParam *param = (GIrNodeParam *)node;
 	
-	*offset += 8;
+	*offset += 12;
 
  	blob->name = write_string (node->name, strings, data, offset2);
  	blob->in = param->in;
@@ -1775,8 +1775,11 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->transfer_ownership = param->transfer;
 	blob->transfer_container_ownership = param->shallow_transfer;
 	blob->return_value = param->retval;
+        blob->scope = param->scope;
 	blob->reserved = 0;
-
+        blob->closure = param->closure;
+        blob->destroy = param->destroy;
+        
         g_ir_node_build_typelib ((GIrNode *)param->type, module, modules, 
 				 strings, types, data, offset, offset2);
       }

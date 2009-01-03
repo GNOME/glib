@@ -837,6 +837,9 @@ start_parameter (GMarkupParseContext *context,
   const gchar *optional;
   const gchar *allow_none;
   const gchar *transfer;
+  const gchar *scope;
+  const gchar *closure;
+  const gchar *destroy;
   GIrNodeParam *param;
       
   if (!(strcmp (element_name, "parameter") == 0 &&
@@ -850,7 +853,10 @@ start_parameter (GMarkupParseContext *context,
   optional = find_attribute ("optional", attribute_names, attribute_values);
   allow_none = find_attribute ("allow-none", attribute_names, attribute_values);
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
-
+  scope = find_attribute ("scope", attribute_names, attribute_values);
+  closure = find_attribute ("closure", attribute_names, attribute_values);
+  destroy = find_attribute ("destroy", attribute_names, attribute_values);
+  
   if (name == NULL)
     name = "unknown";
 
@@ -899,6 +905,20 @@ start_parameter (GMarkupParseContext *context,
 
   parse_param_transfer (param, transfer);
 
+  if (scope && strcmp (scope, "call") == 0)
+    param->scope = GI_SCOPE_TYPE_CALL;
+  else if (scope && strcmp (scope, "object") == 0)
+    param->scope = GI_SCOPE_TYPE_OBJECT;
+  else if (scope && strcmp (scope, "async") == 0)
+    param->scope = GI_SCOPE_TYPE_ASYNC;
+  else if (scope && strcmp (scope, "notified") == 0)
+    param->scope = GI_SCOPE_TYPE_NOTIFIED;
+  else
+    param->scope = GI_SCOPE_TYPE_INVALID;
+  
+  param->closure = closure ? atoi (closure) : -1;
+  param->destroy = destroy ? atoi (destroy) : -1;
+  
   ((GIrNode *)param)->name = g_strdup (name);
 	  
   switch (ctx->current_node->type)

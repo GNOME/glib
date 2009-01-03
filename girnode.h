@@ -143,6 +143,10 @@ struct _GIrNodeParam
   gboolean allow_none;
   gboolean transfer;
   gboolean shallow_transfer;
+  GIScopeType scope;
+  
+  gint8 closure;
+  gint8 destroy;
   
   GIrNodeType *type;
 };

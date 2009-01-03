@@ -164,7 +164,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (Header, 108);
   CHECK_SIZE (DirEntry, 12);
   CHECK_SIZE (SimpleTypeBlob, 4);
-  CHECK_SIZE (ArgBlob, 12);
+  CHECK_SIZE (ArgBlob, 16);
   CHECK_SIZE (SignatureBlob, 8);
   CHECK_SIZE (CommonBlob, 8);
   CHECK_SIZE (FunctionBlob, 20);
@@ -286,7 +286,7 @@ validate_header (ValidateContext  *ctx,
       
     }
 
-  if (header->major_version != 1 || header->minor_version != 0)
+  if (header->major_version != 2 || header->minor_version != 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
@@ -319,7 +319,7 @@ validate_header (ValidateContext  *ctx,
       header->callback_blob_size != 12 ||
       header->signal_blob_size != 12 ||
       header->vfunc_blob_size != 16 ||
-      header->arg_blob_size != 12 ||
+      header->arg_blob_size != 16 ||
       header->property_blob_size != 12 ||
       header->field_blob_size != 12 ||
       header->value_blob_size != 12 ||

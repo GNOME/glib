@@ -269,12 +269,23 @@ typedef enum  {
   GI_DIRECTION_INOUT
 } GIDirection;
 
+typedef enum {
+  GI_SCOPE_TYPE_INVALID,
+  GI_SCOPE_TYPE_CALL,
+  GI_SCOPE_TYPE_OBJECT,
+  GI_SCOPE_TYPE_ASYNC,
+  GI_SCOPE_TYPE_NOTIFIED
+} GIScopeType;
+
 GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
 gboolean               g_arg_info_is_dipper              (GIArgInfo *info);
 gboolean               g_arg_info_is_return_value        (GIArgInfo *info);
 gboolean               g_arg_info_is_optional            (GIArgInfo *info);
 gboolean               g_arg_info_may_be_null            (GIArgInfo *info);
 GITransfer             g_arg_info_get_ownership_transfer (GIArgInfo *info);
+GIScopeType            g_arg_info_get_scope              (GIArgInfo *info);
+gint                   g_arg_info_get_closure            (GIArgInfo *info);
+gint                   g_arg_info_get_destroy            (GIArgInfo *info);
 GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
 
 

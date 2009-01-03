@@ -190,7 +190,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   /* fill in header */
   header = (Header *)data;
   memcpy (header, G_IR_MAGIC, 16);
-  header->major_version = 1;
+  header->major_version = 2;
   header->minor_version = 0;
   header->reserved = 0;
   header->n_entries = n_entries;
@@ -213,7 +213,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->callback_blob_size = 12;
   header->signal_blob_size = 12;
   header->vfunc_blob_size = 16;
-  header->arg_blob_size = 12;
+  header->arg_blob_size = 16;
   header->property_blob_size = 12;
   header->field_blob_size = 12;
   header->value_blob_size = 12;

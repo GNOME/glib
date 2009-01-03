@@ -741,12 +741,39 @@ g_arg_info_get_ownership_transfer (GIArgInfo *info)
     return GI_TRANSFER_NOTHING;
 }
 
+GIScopeType
+g_arg_info_get_scope (GIArgInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+
+  return blob->scope;
+}
+
+gint
+g_arg_info_get_closure (GIArgInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+
+  return blob->closure;
+}
+
+gint
+g_arg_info_get_destroy (GIArgInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+
+  return blob->destroy;
+}
+
 GITypeInfo *
 g_arg_info_get_type (GIArgInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
  
-  return g_type_info_new (base, base->typelib, base->offset + 8);
+  return g_type_info_new (base, base->typelib, base->offset + 12);
 }
 
 /* GITypeInfo functions */
