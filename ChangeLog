@@ -1,3 +1,14 @@
+2009-01-05  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 566348 - g_file_open_tmp uses the wrong g_mkstemp on win32
+
+	* glib/gfileutils.c: Move the binary compatibility versions of
+	g_file_test(), g_file_get_contents(), g_mkstemp() and
+	g_file_open_tmp() last in the file. Remove the restriction that
+	the XXXXXX is last in the template in the binary compatibility
+	version of g_mkstemp(). Thanks to Morten Welinder and Jody
+	Goldberg.
+
 2009-01-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
