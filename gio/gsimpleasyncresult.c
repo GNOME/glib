@@ -693,6 +693,48 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
 }
 
 /**
+ * g_simple_async_result_is_valid:
+ * @result: the #GAsyncResult passed to the _finish function.
+ * @source: the #GObject passed to the _finish function.
+ * @source_tag: the asynchronous function.
+ *
+ * Ensures that the data passed to the _finish function of an async
+ * operation is consistent.  Three checks are performed.
+ * 
+ * First, @result is checked to ensure that it is really a
+ * #GSimpleAsyncResult.  Second, @source is checked to ensure that it
+ * matches the source object of @result.  Third, @source_tag is
+ * checked to ensure that it is equal to the source_tag argument given
+ * to g_simple_async_result_new() (which, by convention, is a pointer
+ * to the _async function corresponding to the _finish function from
+ * which this function is called).
+ *
+ * Returns: #TRUE if all checks passed or #FALSE if any failed.
+ **/ 
+gboolean
+g_simple_async_result_is_valid (GAsyncResult *result,
+                                GObject      *source,
+                                gpointer      source_tag)
+{
+  GSimpleAsyncResult *simple;
+  GObject *cmp_source;
+
+  if (!G_IS_SIMPLE_ASYNC_RESULT (result))
+    return FALSE;
+  simple = (GSimpleAsyncResult *)result;
+
+  cmp_source = g_async_result_get_source_object (result);
+  if (cmp_source != source)
+    {
+      g_object_unref (cmp_source);
+      return FALSE;
+    }
+  g_object_unref (cmp_source);
+
+  return source_tag == g_simple_async_result_get_source_tag (simple);
+}
+
+/**
  * g_simple_async_report_error_in_idle:
  * @object: a #GObject.
  * @callback: a #GAsyncReadyCallback. 

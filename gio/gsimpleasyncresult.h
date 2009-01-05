@@ -102,6 +102,9 @@ void                g_simple_async_result_set_error_va     (GSimpleAsyncResult  
 							    gint                     code,
 							    const char              *format,
 							    va_list                  args);
+gboolean            g_simple_async_result_is_valid         (GAsyncResult            *result,
+                                                            GObject                 *source,
+                                                            gpointer                 source_tag);
 
 void g_simple_async_report_error_in_idle  (GObject            *object,
 					   GAsyncReadyCallback callback,

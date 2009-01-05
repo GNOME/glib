@@ -1,3 +1,11 @@
+2009-01-05  Ryan Lortie  <desrt@desrt.ca>
+
+	* gio.symbols:
+	* ../docs/reference/gio/gio-sections.txt:
+	* gsimpleasyncresult.h:
+	* gsimpleasyncresult.c: Add g_simple_async_result_is_valid().
+	Implementation by Dan Winship.  Closes #566170.
+
 2008-12-31  Matthias Clasen <mclasen@redhat.com>
 
 	* gdesktopappinfo.c:
