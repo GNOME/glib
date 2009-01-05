@@ -1803,8 +1803,6 @@ g_file_test (const gchar *filename,
 
 #undef g_file_get_contents
 
-/* Binary compatibility version. Not for newly compiled code. */
-
 gboolean
 g_file_get_contents (const gchar *filename,
                      gchar      **contents,
