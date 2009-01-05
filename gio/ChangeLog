@@ -1,5 +1,11 @@
 2009-01-05  Ryan Lortie  <desrt@desrt.ca>
 
+	* tests/.gitignore: improve
+	* tests/Makefile.am: add new simple-async-result test
+	* tests/simple-async-result.c: new file to test GSimpleAsyncResult
+
+2009-01-05  Ryan Lortie  <desrt@desrt.ca>
+
 	* gio.symbols:
 	* ../docs/reference/gio/gio-sections.txt:
 	* gsimpleasyncresult.h:
