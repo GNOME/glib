@@ -3,6 +3,9 @@ fileutils
 keyfile
 markup-subparser
 option-context
+printf
+rand
 strfuncs
+string
 testing
 tmpsample.xml
