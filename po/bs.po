@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-15 13:27-0500\n"
+"POT-Creation-Date: 2009-01-05 12:42-0500\n"
 "PO-Revision-Date: 2004-05-17 01:30+0000\n"
 "Last-Translator: Kenan Hadžiavdić <kenanh@frisurf.no>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Neuspješno čitanje simboličkog linka '%s': %s"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1231
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvaranje iz skupa znakova '%s' u '%s' nije podržano"
@@ -96,14 +96,14 @@ msgstr "Pretvaranje iz skupa znakova '%s' u '%s' nije podržano"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nisam mogao pokrenuti pretvaranje iz '%s' u '%s'"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1403
-#: glib/giochannel.c:1445 glib/giochannel.c:2289 glib/gutf8.c:955
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
 #: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nevažeći niz bajtova u ulaznim podacima za pretvaranje"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1410
-#: glib/giochannel.c:2301
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Greška tokom pretvaranja: %s"
@@ -157,123 +157,123 @@ msgstr "Nevažeće ime računara"
 msgid "Error opening directory '%s': %s"
 msgstr "Greška tokom otvaranja direktorija '%s': %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:645
+#: glib/gfileutils.c:532 glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nisam mogao dodijeliti %lu bajtova za čitanje datoteke \"%s\""
 
-#: glib/gfileutils.c:572
+#: glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Greška tokom čitanja datoteke '%s': %s"
 
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr ""
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Neuspješno čitanje datoteke '%s': %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:695 glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Neuspješno otvaranje datoteke '%s': %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Neuspješno preuzimanje osobina datoteke '%s': fstat() neuspješan: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:853
 #, fuzzy, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:947 glib/gfileutils.c:1405
+#: glib/gfileutils.c:895 glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Neuspješno pravljenje datoteke '%s': %s"
 
-#: glib/gfileutils.c:961
+#: glib/gfileutils.c:909
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:986
+#: glib/gfileutils.c:934
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:1005
+#: glib/gfileutils.c:953
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:1123
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1367
+#: glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Nevažeći šablon '%s', ne bi trebao sadržavati '%s'"
 
-#: glib/gfileutils.c:1380
+#: glib/gfileutils.c:1259
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Šablon '%s' ne završava sa XXXXXX"
 
-#: glib/gfileutils.c:1852
+#: glib/gfileutils.c:1698
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1857
+#: glib/gfileutils.c:1703
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1862
+#: glib/gfileutils.c:1708
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1905
+#: glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Neuspješno čitanje simboličkog linka '%s': %s"
 
-#: glib/gfileutils.c:1926
+#: glib/gfileutils.c:1772
 msgid "Symbolic links not supported"
 msgstr "Simbolički linkovi nisu podržani"
 
-#: glib/giochannel.c:1235
+#: glib/giochannel.c:1234
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nisam mogao pokrenuti pretvaranje iz `%s' u `%s': %s"
 
-#: glib/giochannel.c:1580
+#: glib/giochannel.c:1579
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ne mogu čitati sirovo u g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1627 glib/giochannel.c:1885 glib/giochannel.c:1972
+#: glib/giochannel.c:1626 glib/giochannel.c:1884 glib/giochannel.c:1971
 msgid "Leftover unconverted data in read buffer"
 msgstr "Preostali nepretvoreni podaci u baferu za čitanje"
 
-#: glib/giochannel.c:1708 glib/giochannel.c:1785
+#: glib/giochannel.c:1707 glib/giochannel.c:1784
 msgid "Channel terminates in a partial character"
 msgstr "Kanal završava djelimičnim znakom"
 
-#: glib/giochannel.c:1771
+#: glib/giochannel.c:1770
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ne mogu čitati sirovo u g_io_channel_read_to_end"
 
@@ -849,18 +849,18 @@ msgstr "Tekst je bio prazan (ili je sadržavao samo prazna polja)"
 msgid "Failed to read data from child process"
 msgstr "Neuspješno čitanje podataka iz podređenog procesa"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Neuspješno stvaranje cijevi za komuniciranje sa podređenim procesom (%s)"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspješno čitanje iz podređene cijevi (%s)"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspješan prelazak u direktorij '%s' (%s)"
@@ -920,32 +920,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
-#: glib/gspawn.c:1196
+#: glib/gspawn.c:1197
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neuspješan fork (%s)"
 
-#: glib/gspawn.c:1346
+#: glib/gspawn.c:1347
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspješno izvršavanje podređenog procesa \"%s\" (%s)"
 
-#: glib/gspawn.c:1356
+#: glib/gspawn.c:1357
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Neuspješno preusmjeravanje ulaza ili izlaza podređenog procesa (%s)"
 
-#: glib/gspawn.c:1365
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Neuspješno pokretanje fork() za podređeni proces (%s)"
 
-#: glib/gspawn.c:1373
+#: glib/gspawn.c:1374
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška tokom izvršenja podređenog procesa \"%s\""
 
-#: glib/gspawn.c:1395
+#: glib/gspawn.c:1396
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Neuspješno čitanje dovoljno podataka iz podređene pid cijevi (%s)"
@@ -987,37 +987,37 @@ msgstr ""
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:849 glib/goption.c:919
+#: glib/goption.c:850 glib/goption.c:920
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr ""
 
-#: glib/goption.c:859 glib/goption.c:927
+#: glib/goption.c:860 glib/goption.c:928
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:884
+#: glib/goption.c:885
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 
-#: glib/goption.c:892
+#: glib/goption.c:893
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1229
+#: glib/goption.c:1230
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Greška tokom pretvaranja: %s"
 
-#: glib/goption.c:1260 glib/goption.c:1374
+#: glib/goption.c:1261 glib/goption.c:1375
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1769
+#: glib/goption.c:1768
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
@@ -1060,8 +1060,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 
 #: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2841
-#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
+#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
+#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr ""
@@ -1088,36 +1088,36 @@ msgid ""
 "interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2721 glib/gkeyfile.c:3253
+#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3487
+#: glib/gkeyfile.c:3483
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3509
+#: glib/gkeyfile.c:3505
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI '%s' sadrži nevažeće escape znakove"
 
-#: glib/gkeyfile.c:3651
+#: glib/gkeyfile.c:3647
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3665
+#: glib/gkeyfile.c:3661
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr ""
 
-#: glib/gkeyfile.c:3698
+#: glib/gkeyfile.c:3694
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 
-#: glib/gkeyfile.c:3722
+#: glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
@@ -1157,34 +1157,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:683
+#: gio/gdesktopappinfo.c:686
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:977
+#: gio/gdesktopappinfo.c:980
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1209
+#: gio/gdesktopappinfo.c:1212
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1213
+#: gio/gdesktopappinfo.c:1216
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1617
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1729
+#: gio/gdesktopappinfo.c:1732
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1197,12 +1197,12 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gemblem.c:326
+#: gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr ""
 
-#: gio/gemblem.c:336
+#: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
@@ -1473,88 +1473,88 @@ msgstr "Greška tokom čitanja datoteke '%s': %s"
 msgid "Move between mounts not supported"
 msgstr ""
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:730
+#: gio/glocalfileinfo.c:731
 #, fuzzy
 msgid "Invalid extended attribute name"
 msgstr "Neočekivan kraj dokumenta unutar imena osobine"
 
-#: gio/glocalfileinfo.c:770
+#: gio/glocalfileinfo.c:771
 #, fuzzy, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Greška tokom otvaranja direktorija '%s': %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Greška tokom čitanja datoteke '%s': %s"
 
-#: gio/glocalfileinfo.c:1526
+#: gio/glocalfileinfo.c:1532
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1700
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Greška tokom čitanja datoteke '%s': %s"
 
-#: gio/glocalfileinfo.c:1739
+#: gio/glocalfileinfo.c:1745
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1757
+#: gio/glocalfileinfo.c:1763
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1827
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Greška tokom pretvaranja: %s"
 
-#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
+#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Greška tokom pretvaranja: %s"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1901
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
-#: gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
+#: gio/glocalfileinfo.c:1941
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: gio/glocalfileinfo.c:1914
+#: gio/glocalfileinfo.c:1920
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
+#: gio/glocalfileinfo.c:2069
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2084
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Greška tokom pretvaranja: %s"
 
-#: gio/glocalfileinfo.c:2085
+#: gio/glocalfileinfo.c:2091
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2146
+#: gio/glocalfileinfo.c:2152
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Simbolički linkovi nisu podržani"
@@ -1724,44 +1724,44 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
-#: gio/gunixinputstream.c:157 gio/gunixoutputstream.c:143
+#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
 msgid "File descriptor"
 msgstr ""
 
-#: gio/gunixinputstream.c:158
+#: gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
 msgstr ""
 
-#: gio/gunixinputstream.c:172 gio/gunixoutputstream.c:158
+#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
 #, fuzzy
 msgid "Close file descriptor"
 msgstr "Greška tokom čitanja datoteke '%s': %s"
 
-#: gio/gunixinputstream.c:173 gio/gunixoutputstream.c:159
+#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
 msgstr ""
 
-#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
-#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
+#: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
+#: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "Greška tokom čitanja datoteke '%s': %s"
 
-#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
-#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
+#: gio/gunixinputstream.c:411 gio/gunixinputstream.c:593
+#: gio/gunixoutputstream.c:398 gio/gunixoutputstream.c:549
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:144
+#: gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
 msgstr ""
 
-#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
+#: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "Greška tokom pretvaranja: %s"

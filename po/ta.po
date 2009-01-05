@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-15 13:27-0500\n"
+"POT-Creation-Date: 2009-01-05 12:42-0500\n"
 "PO-Revision-Date: 2007-08-13 09:47+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: TAMIL <ubuntu-l10n-tam@lists.ubuntu.com>\n"
@@ -91,7 +91,7 @@ msgstr "'%s' பெயரிலுள்ள பயன்பாடு  '%s'க்
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec வரி '%s'  ஐ யூஆர்ஐ (URI) '%s' உடன் விரிவாக்குதல் தோல்வியுற்றது"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1231
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
@@ -101,14 +101,14 @@ msgstr "வரியுரு வகை `%s' இலிருந்து `%s' �
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' லிருந்து '%s'க்கு மாற்றியை திறக்க முடியவில்லை"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1403
-#: glib/giochannel.c:1445 glib/giochannel.c:2289 glib/gutf8.c:955
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
 #: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1410
-#: glib/giochannel.c:2301
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
@@ -162,123 +162,123 @@ msgstr "பிழையான விருந்தோம்புப்-பெ�
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:645
+#: glib/gfileutils.c:532 glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
 
-#: glib/gfileutils.c:572
+#: glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr ""
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' கோப்பிலிருந்து வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:695 glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s'கோப்பினை '%s'க்கு மறுபெயரிட முடியவில்லை: g_rename() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:947 glib/gfileutils.c:1405
+#: glib/gfileutils.c:895 glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:961
+#: glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: fdopen() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:986
+#: glib/gfileutils.c:934
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' கோப்பினை எழுத முடியவில்லை: fwrite() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:1005
+#: glib/gfileutils.c:953
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s'கோப்பினை மூட முடியவில்லை: fclose() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:1123
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "இருக்கும் கோப்பு '%s' ஐ நீக்க முடியாது: g_unlink() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:1367
+#: glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: glib/gfileutils.c:1380
+#: glib/gfileutils.c:1259
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' படிம அச்சில் XXXXXX இல்லை"
 
-#: glib/gfileutils.c:1852
+#: glib/gfileutils.c:1698
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1857
+#: glib/gfileutils.c:1703
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1862
+#: glib/gfileutils.c:1708
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1905
+#: glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1926
+#: glib/gfileutils.c:1772
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
-#: glib/giochannel.c:1235
+#: glib/giochannel.c:1234
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' லிருந்து'%s'க்கு மாற்றியை திறக்க முடியவில்லை: %s"
 
-#: glib/giochannel.c:1580
+#: glib/giochannel.c:1579
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string இல் மூலமாக வாசிக்க முடியாது"
 
-#: glib/giochannel.c:1627 glib/giochannel.c:1885 glib/giochannel.c:1972
+#: glib/giochannel.c:1626 glib/giochannel.c:1884 glib/giochannel.c:1971
 msgid "Leftover unconverted data in read buffer"
 msgstr "வாசிப்புத் தாங்ககத்தில் மாற்றப்படாத மீதித் தரவுகள்"
 
-#: glib/giochannel.c:1708 glib/giochannel.c:1785
+#: glib/giochannel.c:1707 glib/giochannel.c:1784
 msgid "Channel terminates in a partial character"
 msgstr "வாய்க்கால் பாதி வரியுருவில் முடிவடைகிறது"
 
-#: glib/giochannel.c:1771
+#: glib/giochannel.c:1770
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்க முடியாது"
 
@@ -851,17 +851,17 @@ msgstr "உரை வெற்றா இருந்தது (அல்லத�
 msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
@@ -919,32 +919,32 @@ msgstr "(%s) சேய்-செயலில் இருந்து தரவ�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "(%s) waitpid()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:1196
+#: glib/gspawn.c:1197
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1346
+#: glib/gspawn.c:1347
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn.c:1356
+#: glib/gspawn.c:1357
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "சேய் (%s) செயலகத்தின் வெளியீடலை அல்லது உள்ளடலை திசை-மாற்றும்போது பிழை"
 
-#: glib/gspawn.c:1365
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1373
+#: glib/gspawn.c:1374
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
-#: glib/gspawn.c:1395
+#: glib/gspawn.c:1396
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
@@ -986,37 +986,37 @@ msgstr "அனைத்து உதவி விருப்பங்களை 
 msgid "Application Options:"
 msgstr "பயன்பாடு விருப்பங்கள்:"
 
-#: glib/goption.c:849 glib/goption.c:919
+#: glib/goption.c:850 glib/goption.c:920
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பினை கூறிட முடியாது"
 
-#: glib/goption.c:859 glib/goption.c:927
+#: glib/goption.c:860 glib/goption.c:928
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பு வரையறையை தாண்டியுள்ளது"
 
-#: glib/goption.c:884
+#: glib/goption.c:885
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "இரட்டை மதிப்பு '%s' ஐ %sக்கு கூறிட முடியாது"
 
-#: glib/goption.c:892
+#: glib/goption.c:893
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "இரட்டை மதிப்பு '%s' %sக்கு வரையறையை தாண்டியுள்ளது"
 
-#: glib/goption.c:1229
+#: glib/goption.c:1230
 #, c-format
 msgid "Error parsing option %s"
 msgstr "கூறிடும் போது பிழை: %s"
 
-#: glib/goption.c:1260 glib/goption.c:1374
+#: glib/goption.c:1261 glib/goption.c:1375
 #, c-format
 msgid "Missing argument for %s"
 msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 
-#: glib/goption.c:1769
+#: glib/goption.c:1768
 #, c-format
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
@@ -1060,8 +1060,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "விசை கோப்பு துணையில்லாத குறிமுறையை கொண்டுள்ளது '%s'"
 
 #: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2841
-#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
+#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
+#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "விசை கோப்பு குழுவினை கொண்டிருக்கவில்லை '%s'"
@@ -1090,36 +1090,36 @@ msgstr ""
 "'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற "
 "முடியாது."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2721 glib/gkeyfile.c:3253
+#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' குழுவில் '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:3487
+#: glib/gkeyfile.c:3483
 msgid "Key file contains escape character at end of line"
 msgstr "கடைசி வரியில் விசை கோப்பு விடுபடு எழுத்தினை கொண்டுள்ளது"
 
-#: glib/gkeyfile.c:3509
+#: glib/gkeyfile.c:3505
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "விசை கோப்பு தவறான விடுபடு வரிசையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:3651
+#: glib/gkeyfile.c:3647
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "மதிப்பு '%s' ஒரு எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3665
+#: glib/gkeyfile.c:3661
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "இயல் எண் மதிப்பு '%s' வரையறையை தாண்டியுள்ளது"
 
-#: glib/gkeyfile.c:3698
+#: glib/gkeyfile.c:3694
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3722
+#: glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."
@@ -1160,34 +1160,34 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:683
+#: gio/gdesktopappinfo.c:686
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:977
+#: gio/gdesktopappinfo.c:980
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1209
+#: gio/gdesktopappinfo.c:1212
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1213
+#: gio/gdesktopappinfo.c:1216
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1617
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1729
+#: gio/gdesktopappinfo.c:1732
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1200,12 +1200,12 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gemblem.c:326
+#: gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr ""
 
-#: gio/gemblem.c:336
+#: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
@@ -1477,88 +1477,88 @@ msgstr "'%s' கோப்பு வாசிக்கும் போது ப�
 msgid "Move between mounts not supported"
 msgstr ""
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:730
+#: gio/glocalfileinfo.c:731
 #, fuzzy
 msgid "Invalid extended attribute name"
 msgstr "பண்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: gio/glocalfileinfo.c:770
+#: gio/glocalfileinfo.c:771
 #, fuzzy, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1526
+#: gio/glocalfileinfo.c:1532
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1700
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1739
+#: gio/glocalfileinfo.c:1745
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1757
+#: gio/glocalfileinfo.c:1763
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1827
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
+#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1901
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
-#: gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
+#: gio/glocalfileinfo.c:1941
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "%d வரியில் பிழை: %s"
 
-#: gio/glocalfileinfo.c:1914
+#: gio/glocalfileinfo.c:1920
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2063
+#: gio/glocalfileinfo.c:2069
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2084
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:2085
+#: gio/glocalfileinfo.c:2091
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2146
+#: gio/glocalfileinfo.c:2152
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
@@ -1729,44 +1729,44 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
-#: gio/gunixinputstream.c:157 gio/gunixoutputstream.c:143
+#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
 msgid "File descriptor"
 msgstr ""
 
-#: gio/gunixinputstream.c:158
+#: gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
 msgstr ""
 
-#: gio/gunixinputstream.c:172 gio/gunixoutputstream.c:158
+#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
 #, fuzzy
 msgid "Close file descriptor"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/gunixinputstream.c:173 gio/gunixoutputstream.c:159
+#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
 msgstr ""
 
-#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
-#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
+#: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
+#: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
-#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
+#: gio/gunixinputstream.c:411 gio/gunixinputstream.c:593
+#: gio/gunixoutputstream.c:398 gio/gunixoutputstream.c:549
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "%d வரியில் பிழை: %s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:144
+#: gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
 msgstr ""
 
-#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
+#: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "கூறிடும் போது பிழை: %s"

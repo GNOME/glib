@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-15 13:27-0500\n"
+"POT-Creation-Date: 2009-01-05 12:42-0500\n"
 "PO-Revision-Date: 2008-09-02 14:15+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -86,7 +86,7 @@ msgstr "Никоя програма „%s“ не е регистрирала о
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Неуспех при дописването на реда за изпълнение „%s“ с адреса „%s“"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1231
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразуването от набора знаци „%s“ към „%s“ не се поддържа"
@@ -96,14 +96,14 @@ msgstr "Преобразуването от набора знаци „%s“ к�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1403
-#: glib/giochannel.c:1445 glib/giochannel.c:2289 glib/gutf8.c:955
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
 #: glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1410
-#: glib/giochannel.c:2301
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
@@ -160,133 +160,133 @@ msgstr "Неправилно име на хост"
 msgid "Error opening directory '%s': %s"
 msgstr "Грешка при отваряне на папка „%s“: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:645
+#: glib/gfileutils.c:532 glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Неуспех при заделянето на %lu байта за четене на файла „%s“"
 
-#: glib/gfileutils.c:572
+#: glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Грешка при четене на файл „%s“: %s"
 
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Файлът „%s“ е прекалено голям"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Неуспех при четене от файл „%s“: %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:695 glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Неуспех при отваряне на файл „%s“: %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Неуспех при получаване на атрибутите на файл „%s“: неуспешно изпълнение на "
 "fstat(): %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“: неуспешно изпълнение на fdopen(): %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Неуспех при преименуване на файл „%s“ на „%s“: неуспешно изпълнение на "
 "g_rename(): %s"
 
-#: glib/gfileutils.c:947 glib/gfileutils.c:1405
+#: glib/gfileutils.c:895 glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Неуспех при създаване на файл „%s“: %s"
 
-#: glib/gfileutils.c:961
+#: glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“ за писане: неуспешно изпълнение на fdopen"
 "(): %s"
 
-#: glib/gfileutils.c:986
+#: glib/gfileutils.c:934
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fwrite(): %s"
 
-#: glib/gfileutils.c:1005
+#: glib/gfileutils.c:953
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr ""
 "Неуспех при затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
 
-#: glib/gfileutils.c:1123
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Неуспех при изтриването на съществуващия файл „%s“: неуспешно изпълнение на "
 "g_unlink(): %s"
 
-#: glib/gfileutils.c:1367
+#: glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблонът „%s“ е неправилен, не трябва да съдържа „%s“"
 
-#: glib/gfileutils.c:1380
+#: glib/gfileutils.c:1259
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблонът „%s“ не съдържа XXXXXX"
 
-#: glib/gfileutils.c:1852
+#: glib/gfileutils.c:1698
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1857
+#: glib/gfileutils.c:1703
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1862
+#: glib/gfileutils.c:1708
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1905
+#: glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Неуспех при четене на символната връзка „%s“: %s"
 
-#: glib/gfileutils.c:1926
+#: glib/gfileutils.c:1772
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
-#: glib/giochannel.c:1235
+#: glib/giochannel.c:1234
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“: %s"
 
-#: glib/giochannel.c:1580
+#: glib/giochannel.c:1579
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не може да се чете от g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1627 glib/giochannel.c:1885 glib/giochannel.c:1972
+#: glib/giochannel.c:1626 glib/giochannel.c:1884 glib/giochannel.c:1971
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфера за четене останаха непреобразувани данни"
 
-#: glib/giochannel.c:1708 glib/giochannel.c:1785
+#: glib/giochannel.c:1707 glib/giochannel.c:1784
 msgid "Channel terminates in a partial character"
 msgstr "Каналът прекъсна на непълен знак"
 
-#: glib/giochannel.c:1771
+#: glib/giochannel.c:1770
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не може да се чете от g_io_channel_read_to_end"
 
@@ -864,17 +864,17 @@ msgstr "Текстът е празен (или съдържа само праз�
 msgid "Failed to read data from child process"
 msgstr "Неуспех при четене на данни от дъщерен процес"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1467
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Неуспех при създаването на канал за комуникация с дъщерен процес (%s)"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1131
+#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Неуспех при четене от дъщерен канал (%s)"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1336
+#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Неуспех при промяна към папка „%s“ (%s)"
@@ -933,32 +933,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочаквана грешка в waitpid() (%s)"
 
-#: glib/gspawn.c:1196
+#: glib/gspawn.c:1197
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспешно разклоняване (%s)"
 
-#: glib/gspawn.c:1346
+#: glib/gspawn.c:1347
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Неуспех при изпълнение на дъщерен процес „%s“ (%s)"
 
-#: glib/gspawn.c:1356
+#: glib/gspawn.c:1357
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Неуспех при пренасочване на изхода или входа на дъщерен процес (%s)"
 
-#: glib/gspawn.c:1365
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Неуспех при разклоняване на дъщерен процес (%s)"
 
-#: glib/gspawn.c:1373
+#: glib/gspawn.c:1374
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Неизвестна грешка при изпълнение на дъщерен процес „%s“"
 
-#: glib/gspawn.c:1395
+#: glib/gspawn.c:1396
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -1002,41 +1002,41 @@ msgstr "Показване на всички настройки на помощ�
 msgid "Application Options:"
 msgstr "Настройки на приложението:"
 
-#: glib/goption.c:849 glib/goption.c:919
+#: glib/goption.c:850 glib/goption.c:920
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не може да се анализира целочислената стойност „%s“ за %s"
 
-#: glib/goption.c:859 glib/goption.c:927
+#: glib/goption.c:860 glib/goption.c:928
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 "Целочислената стойност „%s“ за %s е извън интервала на допустимите стойности"
 
-#: glib/goption.c:884
+#: glib/goption.c:885
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 "Не може да се анализира стойността с повишена точност double „%s“ за %s"
 
-#: glib/goption.c:892
+#: glib/goption.c:893
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "Стойността с повишена точност — double „%s“ за %s е извън интервала на "
 "допустимите стойности"
 
-#: glib/goption.c:1229
+#: glib/goption.c:1230
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Грешка при анализа на опцията: %s"
 
-#: glib/goption.c:1260 glib/goption.c:1374
+#: glib/goption.c:1261 glib/goption.c:1375
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Липсва аргумент за %s"
 
-#: glib/goption.c:1769
+#: glib/goption.c:1768
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
@@ -1081,8 +1081,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовият файл съдържа неподдържаното кодиране „%s“"
 
 #: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2841
-#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
+#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
+#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовият файл не съдържа групата „%s“"
@@ -1113,37 +1113,37 @@ msgstr ""
 "Ключовият файл съдържа ключа „%s“ в групата „%s“, чиято стойност не може да "
 "бъде анализирана."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2721 glib/gkeyfile.c:3253
+#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“ в групата „%s“"
 
-#: glib/gkeyfile.c:3487
+#: glib/gkeyfile.c:3483
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовият файл съдържа екранираща последователност в край на ред"
 
-#: glib/gkeyfile.c:3509
+#: glib/gkeyfile.c:3505
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовият файл съдържа грешна екранираща последователност — „%s“"
 
-#: glib/gkeyfile.c:3651
+#: glib/gkeyfile.c:3647
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Стойността „%s“ не може да се интерпретира като число."
 
-#: glib/gkeyfile.c:3665
+#: glib/gkeyfile.c:3661
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целочислената стойност „%s“ е извън интервала на допустими стойности"
 
-#: glib/gkeyfile.c:3698
+#: glib/gkeyfile.c:3694
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Стойността „%s“ не може да се интерпретира като число с плаваща запетая."
 
-#: glib/gkeyfile.c:3722
+#: glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Стойността „%s“ не може да се интерпретира като булева."
@@ -1183,34 +1183,34 @@ msgstr "Вид на %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неочаквано ранен край на поток"
 
-#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без име"
 
-#: gio/gdesktopappinfo.c:683
+#: gio/gdesktopappinfo.c:686
 msgid "Desktop file didn't specify Exec field"
 msgstr "Във файла .desktop липсва поле за изпълнение"
 
-#: gio/gdesktopappinfo.c:977
+#: gio/gdesktopappinfo.c:980
 msgid "Unable to find terminal required for application"
 msgstr "Не може да се открие терминал за приложението"
 
-#: gio/gdesktopappinfo.c:1209
+#: gio/gdesktopappinfo.c:1212
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не може да се създаде папката с потребителските настройки %s: %s"
 
-#: gio/gdesktopappinfo.c:1213
+#: gio/gdesktopappinfo.c:1216
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не може да се създаде папката с настройките за MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1617
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не може да се създаде файл .desktop — „%s“"
 
-#: gio/gdesktopappinfo.c:1729
+#: gio/gdesktopappinfo.c:1732
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Потребителска дефиниция за %s"
@@ -1223,12 +1223,12 @@ msgstr "устройството не поддържа изваждане"
 msgid "drive doesn't implement polling for media"
 msgstr "устройството не поддържа следене за носител"
 
-#: gio/gemblem.c:326
+#: gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr ""
 
-#: gio/gemblem.c:336
+#: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
@@ -1496,87 +1496,87 @@ msgstr "Грешка при премахване на целевия файл: %
 msgid "Move between mounts not supported"
 msgstr "Не се поддържа местене между монтирани местоположения"
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr "Стойността на атрибут не трябва да е NULL"
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr "Неправилен вид на атрибут (очакваше се низ)"
 
-#: gio/glocalfileinfo.c:730
+#: gio/glocalfileinfo.c:731
 msgid "Invalid extended attribute name"
 msgstr "Неправилно име на допълнителен атрибут"
 
-#: gio/glocalfileinfo.c:770
+#: gio/glocalfileinfo.c:771
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Грешка при задаване на допълнителен атрибут „%s“: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Грешка при получаване на състоянието на файл „%s“: %s"
 
-#: gio/glocalfileinfo.c:1526
+#: gio/glocalfileinfo.c:1532
 msgid " (invalid encoding)"
 msgstr " (неправилно кодиране)"
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1700
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Грешка при получаване на състоянието на файловия дескриптор: %s"
 
-#: gio/glocalfileinfo.c:1739
+#: gio/glocalfileinfo.c:1745
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неправилен вид на атрибут (очакваше се uint32)"
 
-#: gio/glocalfileinfo.c:1757
+#: gio/glocalfileinfo.c:1763
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неправилен вид на атрибут (очакваше се uint64)"
 
-#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неправилен вид на атрибут (очакваше се низ от байтове)"
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1827
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Грешка при задаване на правата за достъп: %s"
 
-#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
+#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Грешка при задаване на собственик: %s"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1901
 msgid "symlink must be non-NULL"
 msgstr "символната връзка трябва да не е NULL"
 
-#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
-#: gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
+#: gio/glocalfileinfo.c:1941
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Грешка при задаване на символна връзка: %s"
 
-#: gio/glocalfileinfo.c:1914
+#: gio/glocalfileinfo.c:1920
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Грешка при задаване на символна връзка: файлът не е такава"
 
-#: gio/glocalfileinfo.c:2063
+#: gio/glocalfileinfo.c:2069
 msgid "SELinux context must be non-NULL"
 msgstr "Контекстът на SELinux трябва да не е NULL"
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2084
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Грешка при задаване на контекста на SELinux: %s"
 
-#: gio/glocalfileinfo.c:2085
+#: gio/glocalfileinfo.c:2091
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux не е включен на тази система"
 
-#: gio/glocalfileinfo.c:2146
+#: gio/glocalfileinfo.c:2152
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Не се поддържа задаването на атрибута %s"
@@ -1747,44 +1747,44 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
-#: gio/gunixinputstream.c:157 gio/gunixoutputstream.c:143
+#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
 msgid "File descriptor"
 msgstr ""
 
-#: gio/gunixinputstream.c:158
+#: gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
 msgstr ""
 
-#: gio/gunixinputstream.c:172 gio/gunixoutputstream.c:158
+#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
 #, fuzzy
 msgid "Close file descriptor"
 msgstr "Грешка при получаване на състоянието на файловия дескриптор: %s"
 
-#: gio/gunixinputstream.c:173 gio/gunixoutputstream.c:159
+#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
 msgstr ""
 
-#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
-#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
+#: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
+#: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Грешка при четене от ЮНИКС: %s"
 
-#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
-#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
+#: gio/gunixinputstream.c:411 gio/gunixinputstream.c:593
+#: gio/gunixoutputstream.c:398 gio/gunixoutputstream.c:549
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Грешка при затваряне на ЮНИКС: %s"
 
-#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
+#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
 msgid "Filesystem root"
 msgstr "Коренова папка на файловата система"
 
-#: gio/gunixoutputstream.c:144
+#: gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
 msgstr ""
 
-#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
+#: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Грешка при запис към ЮНИКС: %s"

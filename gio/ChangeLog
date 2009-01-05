@@ -1,3 +1,7 @@
+2009-01-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.19.4 ===
+
 2009-01-05  Dan Winship  <danw@gnome.org>
 
 	* gdesktopappinfo.c (update_mimeapps_list): cast a "char **" to

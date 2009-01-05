@@ -154,8 +154,8 @@ wide characters (see g_unichar_iswide()) into account.
 
 </para>
 
-@dest:
-@src:
+@dest: 
+@src: 
 @dest_size: 
 @Returns: 
 
@@ -167,7 +167,7 @@ wide characters (see g_unichar_iswide()) into account.
 
 @dest: 
 @src: 
-@dest_size:
+@dest_size: 
 @Returns: 
 
 
@@ -177,7 +177,7 @@ wide characters (see g_unichar_iswide()) into account.
 
 @format: 
 @Varargs: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strdup_vprintf ##### -->
@@ -185,9 +185,9 @@ wide characters (see g_unichar_iswide()) into account.
 
 </para>
 
-@format:
+@format: 
 @args: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_printf ##### -->
@@ -616,8 +616,8 @@ possibly non-ASCII character in.
 
 </para>
 
-@string:
-@Returns:
+@string: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_ascii_strtoll ##### -->
@@ -847,8 +847,8 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 </para>
 
 @string1: 
-@Varargs:
-@Returns:
+@Varargs: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strjoin ##### -->
@@ -858,7 +858,7 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 
 @separator: 
 @Varargs: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strjoinv ##### -->
@@ -868,7 +868,7 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 
 @separator: 
 @str_array: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strv_length ##### -->
@@ -895,5 +895,6 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 </para>
 
 @signum: 
-@Returns:
+@Returns: 
+
 
