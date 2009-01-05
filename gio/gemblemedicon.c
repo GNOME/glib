@@ -283,7 +283,6 @@ g_emblemed_icon_from_tokens (gchar  **tokens,
                              GError **error)
 {
   GEmblemedIcon *emblemed_icon;
-  char *s;
   int n;
 
   emblemed_icon = NULL;

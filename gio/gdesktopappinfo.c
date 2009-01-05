@@ -1306,7 +1306,7 @@ update_mimeapps_list (const char  *desktop_id,
 	     add the current list of (not yet listed) apps before it. */
 
 	  list[i] = NULL; /* Terminate current list so we can use it */
-	  system_list =  get_all_desktop_entries_for_mime_type (content_type, list);
+	  system_list =  get_all_desktop_entries_for_mime_type (content_type, (const char **)list);
 	  
 	  list = g_renew (char *, list, 1 + length + g_list_length (system_list) + 1);
 	  

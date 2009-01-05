@@ -906,8 +906,6 @@ xdg_mime_remove_callback (int callback_id)
 const char *
 xdg_mime_get_icon (const char *mime)
 {
-  const char *icon;
-
   xdg_mime_init ();
   
   if (_caches)

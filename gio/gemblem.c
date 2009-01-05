@@ -314,7 +314,6 @@ g_emblem_from_tokens (gchar  **tokens,
   GEmblem *emblem;
   GIcon *icon;
   GEmblemOrigin origin;
-  char *s;
 
   emblem = NULL;
 
