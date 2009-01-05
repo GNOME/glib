@@ -1,3 +1,7 @@
+2009-01-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2009-01-05  Dan Winship  <danw@gnome.org>
 
 	* glib/tests/.gitignore: update

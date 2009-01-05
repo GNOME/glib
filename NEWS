@@ -1,16 +1,26 @@
 Overview of Changes from GLib 2.19.3 to GLib 2.19.4
 ===================================================
 
+* GIO:
+  - Use O_NOATIME when sniffing mimetypes
+  - Add a convenience method to check if a GSimpleAsyncResult
+    is valid
+
 * Bugs fixed:
  560676 function access for g_threads_supported
  565905 There is no g_context_group_set_translation_domain
  564210 SUN Studio 12 has supported visibility attribute
  565136 GObject's "notify" signal parameters are wrong in gtk-doc
  565831 error in interface creation sample
+ 566348 g_file_open_tmp uses the wrong g_mkstemp on win32
+ 566064 Add NOATIME flag to query_info_flags
+ 566170 g_async_result_verify_source_object
 
 * Updated translations:
  Spanish (es)
  Norwegian bokmål (nb)
+ Brazilian Portugese (pt_BR)
+ Simplified Chinese (zh_CN)
 
 
 Overview of Changes from GLib 2.19.1 to GLib 2.19.3
