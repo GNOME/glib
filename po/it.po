@@ -7,9 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
-"PO-Revision-Date: 2008-12-09 10:44+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&component=general\n"
+"POT-Creation-Date: 2009-01-05 18:06+0000\n"
+"PO-Revision-Date: 2009-01-06 12:50+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -17,57 +18,57 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: glib/gbookmarkfile.c:737
+#: ../glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Attributo \"%s\" inatteso per l'elemento \"%s\""
 
-#: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
-#: glib/gbookmarkfile.c:936
+#: ../glib/gbookmarkfile.c:748 ../glib/gbookmarkfile.c:819
+#: ../glib/gbookmarkfile.c:829 ../glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Attributo \"%s\" dell'elemento \"%s\" non trovato"
 
-#: glib/gbookmarkfile.c:1106 glib/gbookmarkfile.c:1171
-#: glib/gbookmarkfile.c:1235 glib/gbookmarkfile.c:1245
+#: ../glib/gbookmarkfile.c:1106 ../glib/gbookmarkfile.c:1171
+#: ../glib/gbookmarkfile.c:1235 ../glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Tag \"%s\" inatteso; atteso il tag \"%s\""
 
-#: glib/gbookmarkfile.c:1131 glib/gbookmarkfile.c:1145
-#: glib/gbookmarkfile.c:1213 glib/gbookmarkfile.c:1265
+#: ../glib/gbookmarkfile.c:1131 ../glib/gbookmarkfile.c:1145
+#: ../glib/gbookmarkfile.c:1213 ../glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Tag \"%s\" inatteso all'interno di \"%s\""
 
-#: glib/gbookmarkfile.c:1793
+#: ../glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
 "Non è stato trovato alcun file di segnalibri valido nelle directory dei dati"
 
 # usate le «» perché forse questa compare nella UI
 #
-#: glib/gbookmarkfile.c:1994
+#: ../glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Esiste già un segnalibro per l'URI «%s»"
 
 # vedi sopra per «»
 #
-#: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
-#: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
-#: glib/gbookmarkfile.c:2448 glib/gbookmarkfile.c:2531
-#: glib/gbookmarkfile.c:2609 glib/gbookmarkfile.c:2688
-#: glib/gbookmarkfile.c:2730 glib/gbookmarkfile.c:2827
-#: glib/gbookmarkfile.c:2953 glib/gbookmarkfile.c:3143
-#: glib/gbookmarkfile.c:3219 glib/gbookmarkfile.c:3384
-#: glib/gbookmarkfile.c:3473 glib/gbookmarkfile.c:3563
-#: glib/gbookmarkfile.c:3691
+#: ../glib/gbookmarkfile.c:2040 ../glib/gbookmarkfile.c:2198
+#: ../glib/gbookmarkfile.c:2283 ../glib/gbookmarkfile.c:2363
+#: ../glib/gbookmarkfile.c:2448 ../glib/gbookmarkfile.c:2531
+#: ../glib/gbookmarkfile.c:2609 ../glib/gbookmarkfile.c:2688
+#: ../glib/gbookmarkfile.c:2730 ../glib/gbookmarkfile.c:2827
+#: ../glib/gbookmarkfile.c:2953 ../glib/gbookmarkfile.c:3143
+#: ../glib/gbookmarkfile.c:3219 ../glib/gbookmarkfile.c:3384
+#: ../glib/gbookmarkfile.c:3473 ../glib/gbookmarkfile.c:3563
+#: ../glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Non è stato trovato alcun segnalibro per l'URI «%s»"
 
-#: glib/gbookmarkfile.c:2372
+#: ../glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Nessuna definizione di tipo MIME nel segnalibro per l'URI \"%s\""
@@ -75,164 +76,164 @@ msgstr "Nessuna definizione di tipo MIME nel segnalibro per l'URI \"%s\""
 # o private è il nome della flag (che quindi diventa opzione)?
 # cercare nel codice... -Luca
 #
-#: glib/gbookmarkfile.c:2457
+#: ../glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 "Non è stata definita alcuna flag privata nel segnalibro per l'URI \"%s\""
 
-#: glib/gbookmarkfile.c:2836
+#: ../glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Nessun gruppo impostato nel segnalibro per l'URI \"%s\""
 
-#: glib/gbookmarkfile.c:3237 glib/gbookmarkfile.c:3394
+#: ../glib/gbookmarkfile.c:3237 ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Nessuna applicazione di nome «%s» ha registrato un segnalibro per «%s»"
 
-#: glib/gbookmarkfile.c:3417
+#: ../glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Espansione della riga exec \"%s\" con l'URI \"%s\" fallita"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
+#: ../glib/gconvert.c:431 ../glib/gconvert.c:509 ../glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
 "La conversione del set di caratteri da \"%s\" a \"%s\" non è supportata"
 
-#: glib/gconvert.c:435 glib/gconvert.c:513
+#: ../glib/gconvert.c:435 ../glib/gconvert.c:513
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Impossibile aprire il convertitore da \"%s\" a \"%s\""
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
-#: glib/gutf8.c:1404
+#: ../glib/gconvert.c:632 ../glib/gconvert.c:1017 ../glib/giochannel.c:1402
+#: ../glib/giochannel.c:1444 ../glib/giochannel.c:2288 ../glib/gutf8.c:955
+#: ../glib/gutf8.c:1404
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequenza di byte non valida nell'ingresso per la conversione"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
-#: glib/giochannel.c:2300
+#: ../glib/gconvert.c:638 ../glib/gconvert.c:944 ../glib/giochannel.c:1409
+#: ../glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errore durante la conversione: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
-#: glib/gutf8.c:1400
+#: ../glib/gconvert.c:669 ../glib/gutf8.c:951 ../glib/gutf8.c:1155
+#: ../glib/gutf8.c:1296 ../glib/gutf8.c:1400
 msgid "Partial character sequence at end of input"
 msgstr "Sequenza di caratteri parziale al termine dei dati in ingresso"
 
 # il primo %s è una 'fallback string' come recita il commento nel codice
-#: glib/gconvert.c:919
+#: ../glib/gconvert.c:919
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Impossibile convertire \"%s\" nel set di caratteri \"%s\""
 
-#: glib/gconvert.c:1737
+#: ../glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "L'URI \"%s\" non è un URI assoluto che utilizza lo schema \"file\""
 
-#: glib/gconvert.c:1747
+#: ../glib/gconvert.c:1747
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "L'URI per il file locale \"%s\" non può includere un '#'"
 
-#: glib/gconvert.c:1764
+#: ../glib/gconvert.c:1764
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI \"%s\" non è valido"
 
-#: glib/gconvert.c:1776
+#: ../glib/gconvert.c:1776
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Il nome dell'host nell'URI \"%s\" non è valido"
 
-#: glib/gconvert.c:1792
+#: ../glib/gconvert.c:1792
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI \"%s\" contiene sequenze di escape non valide"
 
-#: glib/gconvert.c:1887
+#: ../glib/gconvert.c:1887
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Il nome di percorso \"%s\" non è un percorso assoluto"
 
-#: glib/gconvert.c:1897
+#: ../glib/gconvert.c:1897
 msgid "Invalid hostname"
 msgstr "Nome host non valido"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: ../glib/gdir.c:110 ../glib/gdir.c:130
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Errore nell'aprire la directory \"%s\": %s"
 
 # GLIB-2-16
-#: glib/gfileutils.c:532 glib/gfileutils.c:620
+#: ../glib/gfileutils.c:532 ../glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Impossibile allocare %lu byte per leggere il file \"%s\""
 
-#: glib/gfileutils.c:547
+#: ../glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Errore nel leggere il file \"%s\": %s"
 
 # GLIB-2-18
-#: glib/gfileutils.c:561
+#: ../glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Il file \"%s\" è troppo grande"
 
-#: glib/gfileutils.c:644
+#: ../glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lettura dal file \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:695 glib/gfileutils.c:782
+#: ../glib/gfileutils.c:695 ../glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Apertura del file \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:712 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Lettura degli attributi del file \"%s\" fallita: fstat() fallita: %s"
 
-#: glib/gfileutils.c:746
+#: ../glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Apertura del file \"%s\" fallita: fdopen() fallita: %s"
 
-#: glib/gfileutils.c:853
+#: ../glib/gfileutils.c:853
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Cambio di nome del file \"%s\" in \"%s\" fallito: g_rename() fallita: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:1284
+#: ../glib/gfileutils.c:895 ../glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Creazione del file \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:909
+#: ../glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Apertura del file \"%s\" in scrittura fallita: fdopen() fallita: %s"
 
-#: glib/gfileutils.c:934
+#: ../glib/gfileutils.c:934
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Scrittura del file \"%s\" fallita: fwrite() fallita: %s"
 
-#: glib/gfileutils.c:953
+#: ../glib/gfileutils.c:953
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Chiusura del file \"%s\" fallita: fclose() fallita: %s"
 
-#: glib/gfileutils.c:1071
+#: ../glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
@@ -244,92 +245,93 @@ msgstr ""
 #    c[1] = dir_separator;
 #    c[2] = '\0';
 #
-#: glib/gfileutils.c:1246
+#: ../glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Il modello \"%s\" non è valido, non dovrebbe contenere un \"%s\""
 
-#: glib/gfileutils.c:1259
+#: ../glib/gfileutils.c:1259
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Il modello \"%s\" non contiene XXXXXX"
 
 # GLIB-2-16
-#: glib/gfileutils.c:1698
+#: ../glib/gfileutils.c:1698
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kB"
 
 # GLIB-2-16
-#: glib/gfileutils.c:1703
+#: ../glib/gfileutils.c:1703
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 # GLIB-2-16
-#: glib/gfileutils.c:1708
+#: ../glib/gfileutils.c:1708
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1751
+#: ../glib/gfileutils.c:1751
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lettura del collegamento simbolico \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:1772
+#: ../glib/gfileutils.c:1772
 msgid "Symbolic links not supported"
 msgstr "Collegamenti simbolici non supportati"
 
-#: glib/giochannel.c:1234
+#: ../glib/giochannel.c:1234
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Impossibile aprire il convertitore da \"%s\" a \"%s\": %s"
 
-#: glib/giochannel.c:1579
+#: ../glib/giochannel.c:1579
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Impossibile leggere i dati grezzi in g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1884 glib/giochannel.c:1971
+#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1884
+#: ../glib/giochannel.c:1971
 msgid "Leftover unconverted data in read buffer"
 msgstr "Sono rimasti dei dati non convertiti nel buffer di lettura"
 
-#: glib/giochannel.c:1707 glib/giochannel.c:1784
+#: ../glib/giochannel.c:1707 ../glib/giochannel.c:1784
 msgid "Channel terminates in a partial character"
 msgstr "Il canale termina in un carattere parziale"
 
-#: glib/giochannel.c:1770
+#: ../glib/giochannel.c:1770
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Impossibile eseguire una lettura grezza in g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: ../glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Apertura del file \"%s\" fallita: open() fallita: %s"
 
-#: glib/gmappedfile.c:193
+#: ../glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Mappatura del file \"%s\" fallita: mmap() fallita: %s"
 
 # GLIB-2-16
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: ../glib/gmarkup.c:255 ../glib/gmarkup.c:295
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Errore alla riga %d carattere %d: "
 
-#: glib/gmarkup.c:389
+#: ../glib/gmarkup.c:389
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Errore alla riga %d: %s"
 
-#: glib/gmarkup.c:493
+#: ../glib/gmarkup.c:493
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Rilevata entità vuota '&;' (sono entità valide &amp; &quot; &lt; &gt; &apos;)"
 
-#: glib/gmarkup.c:503
+#: ../glib/gmarkup.c:503
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -340,17 +342,17 @@ msgstr ""
 "'&' dà inizio a un'entità; se questo simbolo \"e commerciale\" non vuole "
 "essere l'inizio di una entità, ricorrere a &amp;"
 
-#: glib/gmarkup.c:537
+#: ../glib/gmarkup.c:537
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Il carattere '%s' non è valido all'interno di un nome di entità"
 
-#: glib/gmarkup.c:574
+#: ../glib/gmarkup.c:574
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Il nome di entità '%s' è sconosciuto"
 
-#: glib/gmarkup.c:585
+#: ../glib/gmarkup.c:585
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -359,7 +361,7 @@ msgstr ""
 "utilizzata una \"e commerciale\" senza l'intento di iniziare una entità. In "
 "tal caso ricorrere a \"&amp;\""
 
-#: glib/gmarkup.c:638
+#: ../glib/gmarkup.c:638
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -369,18 +371,18 @@ msgstr ""
 "riferimento a carattere (es. &#234;) - probabilmente il numero è troppo "
 "grande"
 
-#: glib/gmarkup.c:660
+#: ../glib/gmarkup.c:660
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr ""
 "Il riferimento a carattere \"%-.*s\" non codifica un carattere permesso"
 
-#: glib/gmarkup.c:675
+#: ../glib/gmarkup.c:675
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Riferimento a carattere vuoto; dovrebbe includere un numero, come &#454;"
 
-#: glib/gmarkup.c:685
+#: ../glib/gmarkup.c:685
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -390,33 +392,33 @@ msgstr ""
 "si è utilizzato un carattere \"e commerciale\" senza l'intenzione di "
 "iniziare una nuova entità. In tal caso ricorrere a \"&amp;\""
 
-#: glib/gmarkup.c:771
+#: ../glib/gmarkup.c:771
 msgid "Unfinished entity reference"
 msgstr "Riferimento a entità non terminato"
 
-#: glib/gmarkup.c:777
+#: ../glib/gmarkup.c:777
 msgid "Unfinished character reference"
 msgstr "Riferimento a carattere non terminato"
 
-#: glib/gmarkup.c:1063
+#: ../glib/gmarkup.c:1063
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Testo in codifica UTF-8 non valido - sequenza troppo lunga"
 
 # anche gradevole "di apertura" come da discussione su TP
-#: glib/gmarkup.c:1091
+#: ../glib/gmarkup.c:1091
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Testo in codifica UTF-8 non valido - non è un carattere di avvio"
 
-#: glib/gmarkup.c:1130
+#: ../glib/gmarkup.c:1130
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Testo in codifica UTF-8 non valido - '%s' non valido"
 
-#: glib/gmarkup.c:1168
+#: ../glib/gmarkup.c:1168
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Il documento deve iniziare con un elemento (es. <book>)"
 
-#: glib/gmarkup.c:1208
+#: ../glib/gmarkup.c:1208
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -426,7 +428,7 @@ msgstr ""
 "il nome di un elemento"
 
 # GLIB-2-18
-#: glib/gmarkup.c:1276
+#: ../glib/gmarkup.c:1276
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -436,7 +438,7 @@ msgstr ""
 "dell'elemento-vuoto \"%s\""
 
 # GLIB-2-18
-#: glib/gmarkup.c:1365
+#: ../glib/gmarkup.c:1365
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -445,7 +447,7 @@ msgstr ""
 "\"%s\" dell'elemento \"%s\""
 
 # GLIB-2-18
-#: glib/gmarkup.c:1407
+#: ../glib/gmarkup.c:1407
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -457,7 +459,7 @@ msgstr ""
 "Probabilmente è stato usato un carattere non valido nel nome di un attributo"
 
 # GLIB-2-18
-#: glib/gmarkup.c:1493
+#: ../glib/gmarkup.c:1493
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -466,7 +468,7 @@ msgstr ""
 "Carattere '%s' spaiato, atteso un simbolo di quoting aperto dopo il segno di "
 "uguale per attribuire un valore all'attributo \"%s\" dell'elemento \"%s\""
 
-#: glib/gmarkup.c:1635
+#: ../glib/gmarkup.c:1635
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -475,7 +477,7 @@ msgstr ""
 "'%s' non è un carattere valido dopo i caratteri '</'; '%s' non può dare "
 "inizio a un nome di elemento"
 
-#: glib/gmarkup.c:1675
+#: ../glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -484,28 +486,28 @@ msgstr ""
 "'%s' non è un carattere valido per seguire la chiusura del nome "
 "dell'elemento \"%s\"; il carattere permesso è '>'"
 
-#: glib/gmarkup.c:1686
+#: ../glib/gmarkup.c:1686
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "È stato chiuso l'elemento \"%s\", nessun elemento correntemente aperto"
 
-#: glib/gmarkup.c:1695
+#: ../glib/gmarkup.c:1695
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "È stato chiuso l'elemento \"%s\", ma l'elemento correntemente aperto è \"%s\""
 
-#: glib/gmarkup.c:1858
+#: ../glib/gmarkup.c:1858
 msgid "Document was empty or contained only whitespace"
 msgstr "Il documento era vuoto oppure conteneva unicamente spazi"
 
-#: glib/gmarkup.c:1872
+#: ../glib/gmarkup.c:1872
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Il documento è terminato in modo inatteso subito dopo una parentesi angolare "
 "d'apertura '<'"
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: ../glib/gmarkup.c:1880 ../glib/gmarkup.c:1925
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -514,7 +516,7 @@ msgstr ""
 "Il documento è terminato in modo inatteso con elementi ancora aperti - \"%s"
 "\" era l'ultimo elemento aperto"
 
-#: glib/gmarkup.c:1888
+#: ../glib/gmarkup.c:1888
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -523,23 +525,23 @@ msgstr ""
 "Il documento è terminato in modo inatteso, mancando la parentesi angolare di "
 "chiusura per il tag <%s/>"
 
-#: glib/gmarkup.c:1894
+#: ../glib/gmarkup.c:1894
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di elemento"
 
-#: glib/gmarkup.c:1900
+#: ../glib/gmarkup.c:1900
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di attributo"
 
-#: glib/gmarkup.c:1905
+#: ../glib/gmarkup.c:1905
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un tag di apertura "
 "elemento."
 
-#: glib/gmarkup.c:1911
+#: ../glib/gmarkup.c:1911
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -547,20 +549,20 @@ msgstr ""
 "Il documento è terminato in modo inatteso dopo il segno di uguale che segue "
 "un nome di attributo; l'attributo non ha un valore"
 
-#: glib/gmarkup.c:1918
+#: ../glib/gmarkup.c:1918
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un valore di "
 "attributo"
 
-#: glib/gmarkup.c:1934
+#: ../glib/gmarkup.c:1934
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Il documento è terminato inaspettatamente all'interno del tag di chiusura "
 "per l'elemento \"%s\""
 
-#: glib/gmarkup.c:1940
+#: ../glib/gmarkup.c:1940
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un commento o "
@@ -568,77 +570,77 @@ msgstr ""
 
 # GLIB-2-16
 # corrotto sembrava brutto, cfr revisione su TP
-#: glib/gregex.c:131
+#: ../glib/gregex.c:131
 msgid "corrupted object"
 msgstr "oggetto non attendibile"
 
 # GLIB-2-16
-#: glib/gregex.c:133
+#: ../glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "errore interno oppure oggetto non attendibile"
 
-#: glib/gregex.c:135
+#: ../glib/gregex.c:135
 msgid "out of memory"
 msgstr "memoria esaurita"
 
-#: glib/gregex.c:140
+#: ../glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "raggiunto limite di backtracking"
 
-#: glib/gregex.c:152 glib/gregex.c:160
+#: ../glib/gregex.c:152 ../glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "il modello contiene elementi non supportati per la corrispondenza parziale"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1999
+#: ../glib/gregex.c:154 ../gio/glocalfile.c:1999
 msgid "internal error"
 msgstr "errore interno"
 
-#: glib/gregex.c:162
+#: ../glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "per la corrispondenza parziale non sono supportati i riferimenti "
 "all'indietro come condizioni"
 
-#: glib/gregex.c:171
+#: ../glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "raggiunto limite di ricorsione"
 
 # GLIB-2-16
 # oppure lasciare workspace non tradotto?
-#: glib/gregex.c:173
+#: ../glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "raggiunto limite dello spazio di lavoro per sotto-stringhe vuote"
 
-#: glib/gregex.c:175
+#: ../glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "combinazione non valida di flag di fine riga"
 
-#: glib/gregex.c:179
+#: ../glib/gregex.c:179
 msgid "unknown error"
 msgstr "errore sconosciuto"
 
 # GLIB-2-16
-#: glib/gregex.c:199
+#: ../glib/gregex.c:199
 msgid "\\ at end of pattern"
 msgstr "\\ alla fine del modello"
 
 # GLIB-2-16
-#: glib/gregex.c:202
+#: ../glib/gregex.c:202
 msgid "\\c at end of pattern"
 msgstr "\\c alla fine del modello"
 
 # GLIB-2-16
 #
 # che differenza c'è tra "follows" e gli "after" qualche messaggio dopo?
-#: glib/gregex.c:205
+#: ../glib/gregex.c:205
 msgid "unrecognized character follows \\"
 msgstr "carattere non riconosciuto dopo \\"
 
 # GLIB-2-16
 # case --> in tipografia si tradurrebbe cassa, in particolare
 #          lower -, upper -, cassa per lettere minuscole, maiuscole
-#: glib/gregex.c:212
+#: ../glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "gli escape per cambio maiuscolo-minuscolo (\\l, \\L, \\u, \\U) non sono "
@@ -646,66 +648,66 @@ msgstr ""
 
 # GLIB-2-16
 # quantificatore: esiste come termine per log. mat. e gramm.
-#: glib/gregex.c:215
+#: ../glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
 msgstr "numeri fuori ordine nel quantificatore {}"
 
 # GLIB-2-16
-#: glib/gregex.c:218
+#: ../glib/gregex.c:218
 msgid "number too big in {} quantifier"
 msgstr "numero troppo grande nel quantificatore {}"
 
 # GLIB-2-16
-#: glib/gregex.c:221
+#: ../glib/gregex.c:221
 msgid "missing terminating ] for character class"
 msgstr "] terminante mancante per classe di caratteri"
 
 # GLIB-2-16
-#: glib/gregex.c:224
+#: ../glib/gregex.c:224
 msgid "invalid escape sequence in character class"
 msgstr "sequenza di escape non valida nella classe di caratteri"
 
 # GLIB-2-16
 # to put out of order --> guastare, mettere in disordine
-#: glib/gregex.c:227
+#: ../glib/gregex.c:227
 msgid "range out of order in character class"
 msgstr "intervallo disordinato nella classe di caratteri"
 
 # GLIB-2-16
-#: glib/gregex.c:230
+#: ../glib/gregex.c:230
 msgid "nothing to repeat"
 msgstr "nulla da ripetere"
 
 # GLIB-2-16
-#: glib/gregex.c:233
+#: ../glib/gregex.c:233
 msgid "unrecognized character after (?"
 msgstr "carattere non riconosciuto dopo (?"
 
 # GLIB-2-16
-#: glib/gregex.c:237
+#: ../glib/gregex.c:237
 msgid "unrecognized character after (?<"
 msgstr "carattere non riconosciuto dopo (?<"
 
 # GLIB-2-16
-#: glib/gregex.c:241
+#: ../glib/gregex.c:241
 msgid "unrecognized character after (?P"
 msgstr "carattere non riconosciuto dopo (?P"
 
 # GLIB-2-16
 #
 # classi nominate??
-#: glib/gregex.c:244
+#: ../glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
 msgstr ""
 "le classi POSIX nominate sono supportate solo all'interno di una classe"
 
 # GLIB-2-16
-#: glib/gregex.c:247
+#: ../glib/gregex.c:247
 msgid "missing terminating )"
 msgstr ") terminante mancante"
 
 # GLIB-2-16
-#: glib/gregex.c:251
+#: ../glib/gregex.c:251
 msgid ") without opening ("
 msgstr ") senza ( di apertura"
 
@@ -713,135 +715,135 @@ msgstr ") senza ( di apertura"
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: glib/gregex.c:258
+#: ../glib/gregex.c:258
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R o (?[+-]cifre deve essere seguito da )"
 
 # GLIB-2-16
-#: glib/gregex.c:261
+#: ../glib/gregex.c:261
 msgid "reference to non-existent subpattern"
 msgstr "riferimento a sotto-modello non esistente"
 
 # GLIB-2-16
-#: glib/gregex.c:264
+#: ../glib/gregex.c:264
 msgid "missing ) after comment"
 msgstr ") mancante dopo il commento"
 
 # GLIB-2-16
-#: glib/gregex.c:267
+#: ../glib/gregex.c:267
 msgid "regular expression too large"
 msgstr "espressione regolare troppo larga"
 
 # GLIB-2-16
 #
 # get sarebbe ottenere, ma ottenimento è orribile...
-#: glib/gregex.c:270
+#: ../glib/gregex.c:270
 msgid "failed to get memory"
 msgstr "recupero della memoria fallito"
 
 # GLIB-2-16
-#: glib/gregex.c:273
+#: ../glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
 msgstr "l'asserzione lookbehind non ha lunghezza fissata"
 
 # GLIB-2-16
 # malformato si riferisce a entrambi????
-#: glib/gregex.c:276
+#: ../glib/gregex.c:276
 msgid "malformed number or name after (?("
 msgstr "numero o nome malformato dopo (?("
 
 # GLIB-2-16
-#: glib/gregex.c:279
+#: ../glib/gregex.c:279
 msgid "conditional group contains more than two branches"
 msgstr "il gruppo condizionale contiene più di due diramazioni"
 
 # GLIB-2-16
-#: glib/gregex.c:282
+#: ../glib/gregex.c:282
 msgid "assertion expected after (?("
 msgstr "asserzione attesa dopo (?"
 
 # GLIB-2-16
-#: glib/gregex.c:285
+#: ../glib/gregex.c:285
 msgid "unknown POSIX class name"
 msgstr "nome di classe POSIX sconosciuto"
 
 # GLIB-2-16
-#: glib/gregex.c:288
+#: ../glib/gregex.c:288
 msgid "POSIX collating elements are not supported"
 msgstr "gli elementi di collazione non sono supportati"
 
 # GLIB-2-16
-#: glib/gregex.c:291
+#: ../glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
 msgstr "il valore del carattere nella sequenza \\x{...} è troppo largo"
 
 # GLIB-2-16
-#: glib/gregex.c:294
+#: ../glib/gregex.c:294
 msgid "invalid condition (?(0)"
 msgstr "condizione (?(0) non valida"
 
 # GLIB-2-16
-#: glib/gregex.c:297
+#: ../glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C non consentito in asserzione lookbehind"
 
 # GLIB-2-16
-#: glib/gregex.c:300
+#: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
 msgstr "la chiamata ricorsiva potrebbe entrare in loop infinito"
 
 # GLIB-2-16
-#: glib/gregex.c:303
+#: ../glib/gregex.c:303
 msgid "missing terminator in subpattern name"
 msgstr "terminatore mancante nel nome di sotto-modello"
 
 # GLIB-2-16
-#: glib/gregex.c:306
+#: ../glib/gregex.c:306
 msgid "two named subpatterns have the same name"
 msgstr "due sotto-modelli nominati presentano lo stesso nome"
 
 # GLIB-2-16
-#: glib/gregex.c:309
+#: ../glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
 msgstr "sequenza \\P o \\p malformata"
 
 # GLIB-2-16
-#: glib/gregex.c:312
+#: ../glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
 msgstr "nome di proprietà sconosciuto dopo \\P o \\p"
 
 # GLIB-2-16
-#: glib/gregex.c:315
+#: ../glib/gregex.c:315
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "il nome di sotto-modello è troppo lungo (massimo 32 caratteri)"
 
 # GLIB-2-16
-#: glib/gregex.c:318
+#: ../glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "troppi sotto-modelli nominati (massimo 10.000)"
 
 # GLIB-2-16
-#: glib/gregex.c:321
+#: ../glib/gregex.c:321
 msgid "octal value is greater than \\377"
 msgstr "il valore ottale è maggiore di \\377"
 
 # GLIB-2-16
-#: glib/gregex.c:324
+#: ../glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
 msgstr "il gruppo DEFINE contiene più di una diramazione"
 
 # GLIB-2-16
-#: glib/gregex.c:327
+#: ../glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
 msgstr "la ripetizione di un gruppo DEFINE non è consentita"
 
 # GLIB-2-16
-#: glib/gregex.c:330
+#: ../glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
 msgstr "opzione NEWLINE incoerente"
 
 # GLIB-2-16
-#: glib/gregex.c:333
+#: ../glib/gregex.c:333
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
@@ -849,7 +851,7 @@ msgstr ""
 "zero opzionalmente tra parentesi graffe"
 
 # GLIB-2-16
-#: glib/gregex.c:338
+#: ../glib/gregex.c:338
 msgid "unexpected repeat"
 msgstr "ripetizione non attesa"
 
@@ -858,70 +860,70 @@ msgstr "ripetizione non attesa"
 # secondo garzantilinguistica.it eccedenza (di dati) è la
 # traduzione di overflow secondo IBM. La traduzione generica
 # per ambito infomatico è superamento di capacità
-#: glib/gregex.c:342
+#: ../glib/gregex.c:342
 msgid "code overflow"
 msgstr "eccedenza di codice"
 
 # GLIB-2-16
-#: glib/gregex.c:346
+#: ../glib/gregex.c:346
 msgid "overran compiling workspace"
 msgstr "sconfinamento compilando l'area di lavoro"
 
 # GLIB-2-16
-#: glib/gregex.c:350
+#: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
 msgstr "sotto-modello referenziato precedentemente controllato non trovato"
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: ../glib/gregex.c:526 ../glib/gregex.c:1593
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Errore nel cercare corrispondenza per l'espressione regolare %s: %s"
 
-#: glib/gregex.c:1098
+#: ../glib/gregex.c:1098
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La libreria PCRE è compilata senza supporto per UTF-8"
 
-#: glib/gregex.c:1107
+#: ../glib/gregex.c:1107
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "La libreria PCRE è compilata senza supporto per le proprietà UTF-8"
 
-#: glib/gregex.c:1161
+#: ../glib/gregex.c:1161
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "Errore durante la compilazione dell'espressione regolare %s al carattere %d: "
 "%s"
 
-#: glib/gregex.c:1197
+#: ../glib/gregex.c:1197
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Errore durante l'ottimizzazione dell'espressione regolare %s: %s"
 
-#: glib/gregex.c:2021
+#: ../glib/gregex.c:2021
 msgid "hexadecimal digit or '}' expected"
 msgstr "attesa cifra esadecimale o '}'"
 
-#: glib/gregex.c:2037
+#: ../glib/gregex.c:2037
 msgid "hexadecimal digit expected"
 msgstr "attesa cifra esadecimale"
 
-#: glib/gregex.c:2077
+#: ../glib/gregex.c:2077
 msgid "missing '<' in symbolic reference"
 msgstr "'<' mancante nel riferimento simbolico"
 
-#: glib/gregex.c:2086
+#: ../glib/gregex.c:2086
 msgid "unfinished symbolic reference"
 msgstr "riferimento simbolico non terminato"
 
-#: glib/gregex.c:2093
+#: ../glib/gregex.c:2093
 msgid "zero-length symbolic reference"
 msgstr "riferimento simbolico di lunghezza zero"
 
-#: glib/gregex.c:2104
+#: ../glib/gregex.c:2104
 msgid "digit expected"
 msgstr "attesa cifra"
 
-#: glib/gregex.c:2122
+#: ../glib/gregex.c:2122
 msgid "illegal symbolic reference"
 msgstr "riferimento simbolico non lecito"
 
@@ -929,104 +931,106 @@ msgstr "riferimento simbolico non lecito"
 # carattere successivo che manca
 #
 # Quindi "isolato" o "staccato" o al limite "accindetale", "casuale"
-#: glib/gregex.c:2184
+#: ../glib/gregex.c:2184
 msgid "stray final '\\'"
 msgstr "'\\' finale isolato"
 
-#: glib/gregex.c:2188
+#: ../glib/gregex.c:2188
 msgid "unknown escape sequence"
 msgstr "sequenza di escape sconosciuta"
 
 # da sostituire crea confusione...
-#: glib/gregex.c:2198
+#: ../glib/gregex.c:2198
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
 "Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: %"
 "s"
 
-#: glib/gshell.c:70
+#: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Il testo citato non inizia con un carattere di quoting"
 
-#: glib/gshell.c:160
+#: ../glib/gshell.c:160
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Carattere di quoting non accoppiato nella riga di comando o nel testo con "
 "quoting di shell"
 
-#: glib/gshell.c:538
+#: ../glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Il testo è finito subito dopo un carattere '\\' (il testo era \"%s\")."
 
-#: glib/gshell.c:545
+#: ../glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Il testo è finito prima di trovare il carattere di quoting corrispondente "
 "per %c (il testo era \"%s\")."
 
-#: glib/gshell.c:557
+#: ../glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Il testo era vuoto (oppure conteneva unicamente spazi bianchi)"
 
-#: glib/gspawn-win32.c:283
+#: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "Lettura di dati dal processo figlio fallita"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: ../glib/gspawn-win32.c:298 ../glib/gspawn.c:1468
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Creazione della pipe per comunicare con il processo figlio fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: ../glib/gspawn-win32.c:336 ../glib/gspawn-win32.c:344 ../glib/gspawn.c:1132
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lettura dalla pipe figlia fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: ../glib/gspawn-win32.c:367 ../glib/gspawn.c:1337
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Cambio della directory in \"%s\" fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: ../glib/gspawn-win32.c:373 ../glib/gspawn-win32.c:492
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Esecuzione del processo figlio fallita (%s)"
 
-#: glib/gspawn-win32.c:442
+#: ../glib/gspawn-win32.c:442
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Nome programma non valido: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: ../glib/gspawn-win32.c:452 ../glib/gspawn-win32.c:720
+#: ../glib/gspawn-win32.c:1276
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Stringa non valida nel vettore di argomenti a %d: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: ../glib/gspawn-win32.c:463 ../glib/gspawn-win32.c:735
+#: ../glib/gspawn-win32.c:1309
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Stringa non valida nell'ambiente: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: ../glib/gspawn-win32.c:716 ../glib/gspawn-win32.c:1257
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Directory di lavoro non valida: %s"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:781
+#: ../glib/gspawn-win32.c:781
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Esecuzione del programma helper fallita (%s)"
 
-#: glib/gspawn-win32.c:995
+#: ../glib/gspawn-win32.c:995
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -1035,129 +1039,129 @@ msgstr ""
 "processo figlio"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:188
+#: ../glib/gspawn.c:188
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Lettura dei dati dal processo figlio fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:325
+#: ../glib/gspawn.c:325
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Errore inatteso in select() nel leggere i dati da un processo figlio (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:408
+#: ../glib/gspawn.c:408
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Errore inatteso in waitpid() (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:1197
+#: ../glib/gspawn.c:1197
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Esecuzione di fork fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:1347
+#: ../glib/gspawn.c:1347
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Esecuzione del processo figlio \"%s\" fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:1357
+#: ../glib/gspawn.c:1357
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ridirezione dell'output o input del processo figlio fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:1366
+#: ../glib/gspawn.c:1366
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Esecuzione del fork per processo figlio fallita (%s)"
 
-#: glib/gspawn.c:1374
+#: ../glib/gspawn.c:1374
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Errore sconosciuto nell'eseguire il processo figlio \"%s\""
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn.c:1396
+#: ../glib/gspawn.c:1396
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Lettura di una quantità di dati sufficiente dalla pipe del processo figlio "
 "fallita (%s)"
 
-#: glib/gutf8.c:1029
+#: ../glib/gutf8.c:1029
 msgid "Character out of range for UTF-8"
 msgstr "Carattere fuori dall'intervallo per UTF-8"
 
-#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
-#: glib/gutf8.c:1414 glib/gutf8.c:1510
+#: ../glib/gutf8.c:1123 ../glib/gutf8.c:1132 ../glib/gutf8.c:1264
+#: ../glib/gutf8.c:1273 ../glib/gutf8.c:1414 ../glib/gutf8.c:1510
 msgid "Invalid sequence in conversion input"
 msgstr "Sequenza non valida in ingresso per la conversione"
 
-#: glib/gutf8.c:1425 glib/gutf8.c:1521
+#: ../glib/gutf8.c:1425 ../glib/gutf8.c:1521
 msgid "Character out of range for UTF-16"
 msgstr "Carattere fuori dall'intervallo per UTF-16"
 
-#: glib/goption.c:615
+#: ../glib/goption.c:615
 msgid "Usage:"
 msgstr "Uso:"
 
-#: glib/goption.c:615
+#: ../glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[OPZIONE...]"
 
-#: glib/goption.c:719
+#: ../glib/goption.c:719
 msgid "Help Options:"
 msgstr "Opzioni di aiuto:"
 
-#: glib/goption.c:720
+#: ../glib/goption.c:720
 msgid "Show help options"
 msgstr "Mostra le opzioni di aiuto"
 
-#: glib/goption.c:726
+#: ../glib/goption.c:726
 msgid "Show all help options"
 msgstr "Mostra tutte le opzioni di aiuto"
 
-#: glib/goption.c:788
+#: ../glib/goption.c:788
 msgid "Application Options:"
 msgstr "Opzioni dell'applicazione:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: ../glib/goption.c:850 ../glib/goption.c:920
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Impossibile analizzare il valore intero \"%s\" per %s"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: ../glib/goption.c:860 ../glib/goption.c:928
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Il valore intero \"%s\" per %s è fuori dall'intervallo"
 
-#: glib/goption.c:885
+#: ../glib/goption.c:885
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Impossibile analizzare il valore double \"%s\" per %s"
 
-#: glib/goption.c:893
+#: ../glib/goption.c:893
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Il valore double \"%s\" per %s è fuori dall'intervallo"
 
-#: glib/goption.c:1230
+#: ../glib/goption.c:1230
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Errore nell'analizzare l'opzione %s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: ../glib/goption.c:1261 ../glib/goption.c:1375
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argomento mancante per %s"
 
-#: glib/goption.c:1768
+#: ../glib/goption.c:1768
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opzione %s sconosciuta"
@@ -1165,19 +1169,19 @@ msgstr "Opzione %s sconosciuta"
 # key files sono, per glib, file di impostazioni in stile Windows INI
 #
 # Ad esempio i file .themes per i temi del desktop e delle icone.
-#: glib/gkeyfile.c:358
+#: ../glib/gkeyfile.c:358
 msgid "Valid key file could not be found in search dirs"
 msgstr "Impossibile trovare un file chiavi valido nelle directory di ricerca"
 
-#: glib/gkeyfile.c:393
+#: ../glib/gkeyfile.c:393
 msgid "Not a regular file"
 msgstr "Non è un file normale"
 
-#: glib/gkeyfile.c:401
+#: ../glib/gkeyfile.c:401
 msgid "File is empty"
 msgstr "Il file è vuoto"
 
-#: glib/gkeyfile.c:761
+#: ../glib/gkeyfile.c:761
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1185,51 +1189,51 @@ msgstr ""
 "Il file chiavi contiene la riga «%s» che non è una coppia chiave-valore, un "
 "gruppo o un commento valido"
 
-#: glib/gkeyfile.c:821
+#: ../glib/gkeyfile.c:821
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nome gruppo non valido: %s"
 
-#: glib/gkeyfile.c:843
+#: ../glib/gkeyfile.c:843
 msgid "Key file does not start with a group"
 msgstr "Il file chiavi non inizia con un gruppo"
 
-#: glib/gkeyfile.c:869
+#: ../glib/gkeyfile.c:869
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nome chiave non valido: %s"
 
-#: glib/gkeyfile.c:896
+#: ../glib/gkeyfile.c:896
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Il file chiavi contiene la codifica non supportata \"%s\""
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: ../glib/gkeyfile.c:1112 ../glib/gkeyfile.c:1274 ../glib/gkeyfile.c:2503
+#: ../glib/gkeyfile.c:2569 ../glib/gkeyfile.c:2704 ../glib/gkeyfile.c:2837
+#: ../glib/gkeyfile.c:2990 ../glib/gkeyfile.c:3177 ../glib/gkeyfile.c:3238
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Il file chiavi non presenta il gruppo \"%s\""
 
-#: glib/gkeyfile.c:1286
+#: ../glib/gkeyfile.c:1286
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Il file chiavi non presenta la chiave \"%s\""
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: ../glib/gkeyfile.c:1393 ../glib/gkeyfile.c:1508
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Il file chiavi contiene la chiave \"%s\" con il valore \"%s\" che non è UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
+#: ../glib/gkeyfile.c:1413 ../glib/gkeyfile.c:1528 ../glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Il file chiavi contiene la chiave \"%s\" il cui valore non può essere "
 "interpretato."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: ../glib/gkeyfile.c:2122 ../glib/gkeyfile.c:2334
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1238,93 +1242,94 @@ msgstr ""
 "Il file chiavi contiene la chiave \"%s\" nel gruppo \"%s\" il cui valore non "
 "può essere interpretato."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: ../glib/gkeyfile.c:2518 ../glib/gkeyfile.c:2719 ../glib/gkeyfile.c:3249
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Il file chiavi non presenta alcuna chiave \"%s\" nel gruppo \"%s\""
 
-#: glib/gkeyfile.c:3483
+#: ../glib/gkeyfile.c:3483
 msgid "Key file contains escape character at end of line"
 msgstr "Il file chiavi contiene un carattere di escape alla fine della riga"
 
-#: glib/gkeyfile.c:3505
+#: ../glib/gkeyfile.c:3505
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Il file chiavi contiene la sequenza di escape non valida \"%s\""
 
-#: glib/gkeyfile.c:3647
+#: ../glib/gkeyfile.c:3647
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Impossibile interpretare il valore \"%s\" come un numero."
 
-#: glib/gkeyfile.c:3661
+#: ../glib/gkeyfile.c:3661
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Il valore intero \"%s\" è fuori dall'intervallo"
 
-#: glib/gkeyfile.c:3694
+#: ../glib/gkeyfile.c:3694
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Impossibile interpretare il valore \"%s\" come un numero float."
 
-#: glib/gkeyfile.c:3718
+#: ../glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Impossibile interpretare il valore \"%s\" come un booleano."
 
 # GLIB-2-16
 # count (gssize) è un parametro delle funzione
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: ../gio/gbufferedinputstream.c:485 ../gio/ginputstream.c:193
+#: ../gio/ginputstream.c:325 ../gio/ginputstream.c:566
+#: ../gio/ginputstream.c:691 ../gio/goutputstream.c:202
+#: ../gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Valore count troppo largo passato a %s"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
-#: gio/goutputstream.c:1085
+#: ../gio/gbufferedinputstream.c:872 ../gio/ginputstream.c:901
+#: ../gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Lo stream è già chiuso"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
-#: gio/gsimpleasyncresult.c:650
+#: ../gio/gcancellable.c:366 ../gio/glocalfile.c:1992
+#: ../gio/gsimpleasyncresult.c:623 ../gio/gsimpleasyncresult.c:650
 msgid "Operation was cancelled"
 msgstr "L'operazione è stata annullata"
 
-#: gio/gcontenttype.c:180
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Tipo sconosciuto"
 
-#: gio/gcontenttype.c:181
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "Tipo di file %s"
 
-#: gio/gcontenttype.c:678
+#: ../gio/gcontenttype.c:678
 #, c-format
 msgid "%s type"
 msgstr "Tipo %s"
 
-#: gio/gdatainputstream.c:310
+#: ../gio/gdatainputstream.c:310
 msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream prematuro inatteso"
 
 # NdT: nome di applicazione (quando manca)
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:450 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Senza nome"
 
-#: gio/gdesktopappinfo.c:686
+#: ../gio/gdesktopappinfo.c:686
 msgid "Desktop file didn't specify Exec field"
 msgstr "Il file .desktop non specifica il campo Exec"
 
-#: gio/gdesktopappinfo.c:980
+#: ../gio/gdesktopappinfo.c:980
 msgid "Unable to find terminal required for application"
 msgstr "Impossibile trovare il terminale richiesto per l'applicazione"
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1212
+#: ../gio/gdesktopappinfo.c:1212
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1332,47 +1337,48 @@ msgstr ""
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1216
+#: ../gio/gdesktopappinfo.c:1216
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Impossibile creare la cartella utente di configurazione MIME (%s): %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: ../gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossibile creare il file .desktop utente %s"
 
-#: gio/gdesktopappinfo.c:1732
+#: ../gio/gdesktopappinfo.c:1732
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definizione personalizzata per %s"
 
-#: gio/gdrive.c:381
+#: ../gio/gdrive.c:381
 msgid "drive doesn't implement eject"
 msgstr "l'unità non implementa l'espulsione"
 
 # sondaggio ????
-#: gio/gdrive.c:451
+#: ../gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
 msgstr "l'unità non supporta il sondaggio di supporti"
 
 # GLIB-2-20
-#: gio/gemblem.c:325
+#: ../gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr "Impossibile gestire la versione %d della codifica GEmblem"
 
 # GLIB-2-20
-#: gio/gemblem.c:335
+#: ../gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Numero di token malformato (%d) nella codifica GEmblem"
 
-#: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
-#: gio/gfile.c:2748 gio/gfile.c:2879 gio/gfile.c:2919 gio/gfile.c:3246
-#: gio/gfile.c:3648 gio/gfile.c:3732 gio/gfile.c:3815 gio/gfile.c:3895
-#: gio/gfile.c:4225 gio/win32/gwinhttpfile.c:428
+#: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
+#: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2694 ../gio/gfile.c:2748
+#: ../gio/gfile.c:2879 ../gio/gfile.c:2919 ../gio/gfile.c:3246
+#: ../gio/gfile.c:3648 ../gio/gfile.c:3732 ../gio/gfile.c:3815
+#: ../gio/gfile.c:3895 ../gio/gfile.c:4225 ../gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "Operazione non supportata"
 
@@ -1384,143 +1390,146 @@ msgstr "Operazione non supportata"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1071 gio/glocalfile.c:1082
-#: gio/glocalfile.c:1095
+#: ../gio/gfile.c:1311 ../gio/glocalfile.c:1071 ../gio/glocalfile.c:1082
+#: ../gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "L'oggetto mount contenuto non esiste"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2142
+#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2142
 msgid "Can't copy over directory"
 msgstr "Impossibile copiare sopra la directory"
 
-#: gio/gfile.c:2023
+#: ../gio/gfile.c:2023
 msgid "Can't copy directory over directory"
 msgstr "Impossibile copiare la directory sopra la directory"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2151
+#: ../gio/gfile.c:2031 ../gio/glocalfile.c:2151
 msgid "Target file exists"
 msgstr "Il file destinazione esiste"
 
-#: gio/gfile.c:2049
+#: ../gio/gfile.c:2049
 msgid "Can't recursively copy directory"
 msgstr "Impossibile copiare la directory ricorsivamente"
 
-#: gio/gfile.c:2869
+#: ../gio/gfile.c:2869
 msgid "Invalid symlink value given"
 msgstr "Fornito valore di collegamento simbolico non valido"
 
-#: gio/gfile.c:2962
+#: ../gio/gfile.c:2962
 msgid "Trash not supported"
 msgstr "Cestino non supportato"
 
-#: gio/gfile.c:3011
+#: ../gio/gfile.c:3011
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "I nomi di file non possono contenere '%c'"
 
-#: gio/gfile.c:4993 gio/gvolume.c:370
+#: ../gio/gfile.c:4993 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "il volume non implementa il montaggio"
 
-#: gio/gfile.c:5101
+#: ../gio/gfile.c:5101
 msgid "No application is registered as handling this file"
 msgstr "Non risulta registrata alcuna applicazione per gestire questo file"
 
-#: gio/gfileenumerator.c:206
+#: ../gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
 msgstr "L'enumeratore è chiuso"
 
 # una sola ????
-#: gio/gfileenumerator.c:213 gio/gfileenumerator.c:272
-#: gio/gfileenumerator.c:372 gio/gfileenumerator.c:481
+#: ../gio/gfileenumerator.c:213 ../gio/gfileenumerator.c:272
+#: ../gio/gfileenumerator.c:372 ../gio/gfileenumerator.c:481
 msgid "File enumerator has outstanding operation"
 msgstr "L'enumeratore di file presenta un'operazione in sospeso"
 
-#: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
+#: ../gio/gfileenumerator.c:362 ../gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr "L'enumeratore di file è già chiuso"
 
 # GLIB-2-18
-#: gio/gfileicon.c:145
+#: ../gio/gfileicon.c:145
 msgid "file"
 msgstr "file"
 
 # GLIB-2-18
-#: gio/gfileicon.c:146
+#: ../gio/gfileicon.c:146
 msgid "The file containing the icon"
 msgstr "Il file contenente l'icona"
 
 # GLIB-2-20
-#: gio/gfileicon.c:237
+#: ../gio/gfileicon.c:237
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
 msgstr "Impossibile gestire la versione %d della codifica GFileIcon"
 
 # GLIB-2-20
-#: gio/gfileicon.c:247
+#: ../gio/gfileicon.c:247
 msgid "Malformed input data for GFileIcon"
 msgstr "Numero di token malformato (%d) nella codifica GFileIcon"
 
-#: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
-#: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
+#: ../gio/gfileinputstream.c:157 ../gio/gfileinputstream.c:424
+#: ../gio/gfileoutputstream.c:171 ../gio/gfileoutputstream.c:526
 msgid "Stream doesn't support query_info"
 msgstr "Lo stream non supporta query_info"
 
-#: gio/gfileinputstream.c:339 gio/gfileoutputstream.c:384
+#: ../gio/gfileinputstream.c:339 ../gio/gfileoutputstream.c:384
 msgid "Seek not supported on stream"
 msgstr "Posizionamento non supportato sullo stream"
 
-#: gio/gfileinputstream.c:383
+#: ../gio/gfileinputstream.c:383
 msgid "Truncate not allowed on input stream"
 msgstr "Troncamento non consentito sullo stream di input"
 
-#: gio/gfileoutputstream.c:460
+#: ../gio/gfileoutputstream.c:460
 msgid "Truncate not supported on stream"
 msgstr "Troncamento non supportato sullo stream"
 
 # GLIB-2-20
-#: gio/gicon.c:324
+#: ../gio/gicon.c:324
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Numero di token errato (%d)"
 
 # GLIB-2-20
-#: gio/gicon.c:344
+#: ../gio/gicon.c:344
 #, c-format
 msgid "No type for class name %s"
 msgstr "Nessun tipo per il nome di classe %s"
 
 # GLIB-2-20
-#: gio/gicon.c:354
+#: ../gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Il tipo %s non implementa l'interfaccia GIcon"
 
-#: gio/gicon.c:365
-#, c-format
+# GLIB-2-20
+#
+# o non è classificato ?? ma credo classificato abbia una diversa valenza...
+#: ../gio/gicon.c:365
+#, c-format, fuzzy
 msgid "Type %s is not classed"
-msgstr ""
+msgstr "Il tipo %s non presenta una classe"
 
 # GLIB-2-20
-#: gio/gicon.c:379
+#: ../gio/gicon.c:379
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Numero di versione malformato: %s"
 
 # GLIB-2-20
-#: gio/gicon.c:393
+#: ../gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Il tipo %s non implementa from_tokens() sull'interfaccia GIcon"
 
 # GLIB-2-20
 # FIXME c'è qualcosa di sbagliato nell'originale, vero??
-#: gio/gicon.c:469
+#: ../gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Impossibile gestire la versione fornita della codifica di icona"
 
 # o lasciare write ??
-#: gio/ginputstream.c:202
+#: ../gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
 msgstr "Lo stream di input non implementa la lettura"
 
@@ -1531,190 +1540,190 @@ msgstr "Lo stream di input non implementa la lettura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:911 gio/goutputstream.c:1095
+#: ../gio/ginputstream.c:911 ../gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Lo stream presenta un'operazione in sospeso"
 
-#: gio/glocaldirectorymonitor.c:274
+#: ../gio/glocaldirectorymonitor.c:274
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Impossibile trovare il tipo di monitor predefinito per directory locali"
 
-#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
+#: ../gio/glocalfile.c:608 ../gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nome di file %s non valido"
 
-#: gio/glocalfile.c:979
+#: ../gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Errore nell'ottenere informazioni sul file system: %s"
 
-#: gio/glocalfile.c:1115
+#: ../gio/glocalfile.c:1115
 msgid "Can't rename root directory"
 msgstr "Impossibile rinominare la directory root"
 
-#: gio/glocalfile.c:1135 gio/glocalfile.c:1161
+#: ../gio/glocalfile.c:1135 ../gio/glocalfile.c:1161
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Errore nel rinominare il file: %s"
 
-#: gio/glocalfile.c:1144
+#: ../gio/glocalfile.c:1144
 msgid "Can't rename file, filename already exist"
 msgstr "Impossibile rinominare il file, il nome di file esiste già"
 
-#: gio/glocalfile.c:1157 gio/glocalfile.c:2021 gio/glocalfile.c:2050
-#: gio/glocalfile.c:2204 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
+#: ../gio/glocalfile.c:1157 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2050
+#: ../gio/glocalfile.c:2204 ../gio/glocalfileoutputstream.c:505
+#: ../gio/glocalfileoutputstream.c:550 ../gio/glocalfileoutputstream.c:967
 msgid "Invalid filename"
 msgstr "Nome di file non valido"
 
-#: gio/glocalfile.c:1280
+#: ../gio/glocalfile.c:1280
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Errore nell'aprire il file: %s"
 
-#: gio/glocalfile.c:1290
+#: ../gio/glocalfile.c:1290
 msgid "Can't open directory"
 msgstr "Impossibile aprire la directory"
 
-#: gio/glocalfile.c:1350
+#: ../gio/glocalfile.c:1350
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Errore nel rimuovere il file: %s"
 
-#: gio/glocalfile.c:1714
+#: ../gio/glocalfile.c:1714
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Errore nel cestinare il file: %s"
 
-#: gio/glocalfile.c:1737
+#: ../gio/glocalfile.c:1737
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossibile creare la directory cestino \"%s\": %s"
 
-#: gio/glocalfile.c:1758
+#: ../gio/glocalfile.c:1758
 msgid "Unable to find toplevel directory for trash"
 msgstr "Impossibile trovare la directory di livello superiore per il cestino"
 
-#: gio/glocalfile.c:1837 gio/glocalfile.c:1857
+#: ../gio/glocalfile.c:1837 ../gio/glocalfile.c:1857
 msgid "Unable to find or create trash directory"
 msgstr "Impossibile trovare o creare la directory cestino"
 
 # consultare la specifica del cestino di freedesktop.org
 # (in breve per ogni file cestinato viene creata una copia
 # del file e un file di informazioni - data, posizione originaria...)
-#: gio/glocalfile.c:1891
+#: ../gio/glocalfile.c:1891
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Impossibile creare il file informazioni cestinamento: %s"
 
-#: gio/glocalfile.c:1916 gio/glocalfile.c:1991 gio/glocalfile.c:1998
+#: ../gio/glocalfile.c:1916 ../gio/glocalfile.c:1991 ../gio/glocalfile.c:1998
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossibile cestinare il file: %s"
 
 # GLIB-2-18
-#: gio/glocalfile.c:2025
+#: ../gio/glocalfile.c:2025
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Errore nel creare la directory: %s"
 
 # FIXME: all other occurrences are "symlink"
-#: gio/glocalfile.c:2054
+#: ../gio/glocalfile.c:2054
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Errore nel creare il collegamento simbolico: %s"
 
-#: gio/glocalfile.c:2114 gio/glocalfile.c:2208
+#: ../gio/glocalfile.c:2114 ../gio/glocalfile.c:2208
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Errore nello spostare il file: %s"
 
 # ma che senso ha???
-#: gio/glocalfile.c:2137
+#: ../gio/glocalfile.c:2137
 msgid "Can't move directory over directory"
 msgstr "Impossibile spostare la directory sopra la directory"
 
-#: gio/glocalfile.c:2164 gio/glocalfileoutputstream.c:819
-#: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
-#: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
+#: ../gio/glocalfile.c:2164 ../gio/glocalfileoutputstream.c:819
+#: ../gio/glocalfileoutputstream.c:833 ../gio/glocalfileoutputstream.c:848
+#: ../gio/glocalfileoutputstream.c:864 ../gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Creazione del file backup fallita"
 
-#: gio/glocalfile.c:2183
+#: ../gio/glocalfile.c:2183
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Errore nel rimuovare il file destinazione: %s"
 
-#: gio/glocalfile.c:2197
+#: ../gio/glocalfile.c:2197
 msgid "Move between mounts not supported"
 msgstr "Spostamento tra oggetti mount non supportato"
 
-#: gio/glocalfileinfo.c:717
+#: ../gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr "Il valore dell'attributo deve essere non-NULL"
 
-#: gio/glocalfileinfo.c:724
+#: ../gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr "Tipo di attributo non valido (attesa stringa)"
 
-#: gio/glocalfileinfo.c:731
+#: ../gio/glocalfileinfo.c:731
 msgid "Invalid extended attribute name"
 msgstr "Nome di attributo esteso non valido"
 
-#: gio/glocalfileinfo.c:771
+#: ../gio/glocalfileinfo.c:771
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Errore nell'impostare l'attributo esteso \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: ../gio/glocalfileinfo.c:1462 ../gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Impossibile eseguire lo stat del file \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1532
+#: ../gio/glocalfileinfo.c:1532
 msgid " (invalid encoding)"
 msgstr " (codifica non valida)"
 
-#: gio/glocalfileinfo.c:1700
+#: ../gio/glocalfileinfo.c:1700
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Errore nell'eseguire lo stat del descrittore di file: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: ../gio/glocalfileinfo.c:1745
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo di attributo non valido (atteso unit32)"
 
-#: gio/glocalfileinfo.c:1763
+#: ../gio/glocalfileinfo.c:1763
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo di attributo non valido (atteso uint64)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: ../gio/glocalfileinfo.c:1782 ../gio/glocalfileinfo.c:1801
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo di attributo non valido (attesa stringa di byte)"
 
-#: gio/glocalfileinfo.c:1827
+#: ../gio/glocalfileinfo.c:1827
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Errore nell'impostare i permessi: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: ../gio/glocalfileinfo.c:1878 ../gio/glocalfileinfo.c:2046
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errore nell'impostare il proprietario: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: ../gio/glocalfileinfo.c:1901
 msgid "symlink must be non-NULL"
 msgstr "il collegamento simbolico deve essere non-NULL"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: ../gio/glocalfileinfo.c:1911 ../gio/glocalfileinfo.c:1930
+#: ../gio/glocalfileinfo.c:1941
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Errore nell'impostare il collegamento simbolico: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: ../gio/glocalfileinfo.c:1920
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errore nell'impostare il collegamento simbolico: il file non è un "
@@ -1722,134 +1731,134 @@ msgstr ""
 
 # GLIB-2-18
 # lasciata minuscola come per precedente messaggio con symlink
-#: gio/glocalfileinfo.c:2069
+#: ../gio/glocalfileinfo.c:2069
 msgid "SELinux context must be non-NULL"
 msgstr "il contesto SELinux deve essere non-NULL"
 
 # GLIB-2-18
-#: gio/glocalfileinfo.c:2084
+#: ../gio/glocalfileinfo.c:2084
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Errore nell'impostare contesto SELinux: %s"
 
 # GLIB-2-18
-#: gio/glocalfileinfo.c:2091
+#: ../gio/glocalfileinfo.c:2091
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux non è abilitato su questo sistema"
 
 # %s è l'attributo
-#: gio/glocalfileinfo.c:2152
+#: ../gio/glocalfileinfo.c:2152
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Impostazione dell'attributo %s non supportata"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: ../gio/glocalfileinputstream.c:160 ../gio/glocalfileoutputstream.c:603
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Errore nel leggere dal file: %s"
 
-#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:896
+#: ../gio/glocalfileinputstream.c:191 ../gio/glocalfileinputstream.c:203
+#: ../gio/glocalfileinputstream.c:312 ../gio/glocalfileoutputstream.c:405
+#: ../gio/glocalfileoutputstream.c:896
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Errore nel posizionarsi all'interno del file: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: ../gio/glocalfileinputstream.c:233 ../gio/glocalfileoutputstream.c:208
+#: ../gio/glocalfileoutputstream.c:303
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Errore nel chiudere il file: %s"
 
-#: gio/glocalfilemonitor.c:198
+#: ../gio/glocalfilemonitor.c:198
 msgid "Unable to find default local file monitor type"
 msgstr "Impossibile trovare il tipo di monitor predefinito per file locali"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: ../gio/glocalfileoutputstream.c:172 ../gio/glocalfileoutputstream.c:624
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Errore nello scrivere sul file: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: ../gio/glocalfileoutputstream.c:235
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Errore nel rimuovere il vecchio collegamento di backup: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: ../gio/glocalfileoutputstream.c:249 ../gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Errore nel creare la copia di backup: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: ../gio/glocalfileoutputstream.c:280
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Errore nel rinominare temporaneamente il file: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:913
+#: ../gio/glocalfileoutputstream.c:451 ../gio/glocalfileoutputstream.c:913
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Errore nel troncare il file: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:688 gio/glocalfileoutputstream.c:973
+#: ../gio/glocalfileoutputstream.c:511 ../gio/glocalfileoutputstream.c:556
+#: ../gio/glocalfileoutputstream.c:688 ../gio/glocalfileoutputstream.c:973
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Errore nell'aprire il file «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:719
+#: ../gio/glocalfileoutputstream.c:719
 msgid "Target file is a directory"
 msgstr "Il file destinazione è una directory"
 
-#: gio/glocalfileoutputstream.c:724
+#: ../gio/glocalfileoutputstream.c:724
 msgid "Target file is not a regular file"
 msgstr "Il file destinazione non è un file normale"
 
-#: gio/glocalfileoutputstream.c:736
+#: ../gio/glocalfileoutputstream.c:736
 msgid "The file was externally modified"
 msgstr "Il file è stato modificato dall'esterno"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:545
+#: ../gio/gmemoryinputstream.c:487 ../gio/gmemoryoutputstream.c:545
 msgid "Invalid GSeekType supplied"
 msgstr "Fornito GSeekType non valido"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:555
+#: ../gio/gmemoryinputstream.c:497 ../gio/gmemoryoutputstream.c:555
 msgid "Invalid seek request"
 msgstr "Richiesta di posizionamento non valida"
 
-#: gio/gmemoryinputstream.c:521
+#: ../gio/gmemoryinputstream.c:521
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Impossibile troncare GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:288
+#: ../gio/gmemoryoutputstream.c:288
 msgid "Reached maximum data array limit"
 msgstr "Raggiunto il limite massimo dell'array di dati"
 
-#: gio/gmemoryoutputstream.c:323
+#: ../gio/gmemoryoutputstream.c:323
 msgid "Memory output stream not resizable"
 msgstr "Stream di output di memoria non ridimensionabile"
 
-#: gio/gmemoryoutputstream.c:339
+#: ../gio/gmemoryoutputstream.c:339
 msgid "Failed to resize memory output stream"
 msgstr "Ridimensionamento dello stream di output di memoria fallito"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:360
+#: ../gio/gmount.c:360
 msgid "mount doesn't implement unmount"
 msgstr "l'oggetto mount non implementa lo smontaggio"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:435
+#: ../gio/gmount.c:435
 msgid "mount doesn't implement eject"
 msgstr "l'oggetto mount non implementa l'espulsione"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:517
+#: ../gio/gmount.c:517
 msgid "mount doesn't implement remount"
 msgstr "l'oggetto mount non implementa il rimontaggio"
 
@@ -1858,7 +1867,7 @@ msgstr "l'oggetto mount non implementa il rimontaggio"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:601
+#: ../gio/gmount.c:601
 msgid "mount doesn't implement content type guessing"
 msgstr "l'oggetto mount non implementa la supposizione del tipo di contenuto"
 
@@ -1867,40 +1876,40 @@ msgstr "l'oggetto mount non implementa la supposizione del tipo di contenuto"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:690
+#: ../gio/gmount.c:690
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 "l'oggetto mount non implementa la supposizione sincrona del tipo di contenuto"
 
-#: gio/goutputstream.c:211 gio/goutputstream.c:412
+#: ../gio/goutputstream.c:211 ../gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
 msgstr "Lo stream di output non implementa la scrittura"
 
-#: gio/goutputstream.c:372 gio/goutputstream.c:780
+#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "Lo stream sorgente è già chiuso"
 
-#: gio/gthemedicon.c:211
+#: ../gio/gthemedicon.c:211
 msgid "name"
 msgstr "nome"
 
-#: gio/gthemedicon.c:212
+#: ../gio/gthemedicon.c:212
 msgid "The name of the icon"
 msgstr "Il nome dell'icona"
 
-#: gio/gthemedicon.c:223
+#: ../gio/gthemedicon.c:223
 msgid "names"
 msgstr "nomi"
 
-#: gio/gthemedicon.c:224
+#: ../gio/gthemedicon.c:224
 msgid "An array containing the icon names"
 msgstr "Un array contenente i nomi delle icone"
 
-#: gio/gthemedicon.c:249
+#: ../gio/gthemedicon.c:249
 msgid "use default fallbacks"
 msgstr "usare alternative predefinite"
 
-#: gio/gthemedicon.c:250
+#: ../gio/gthemedicon.c:250
 msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
@@ -1910,86 +1919,90 @@ msgstr ""
 "stati forniti più di uno."
 
 # GLIB-2-20
-#: gio/gthemedicon.c:499
+#: ../gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Impossibile gestire la versione %d della codifica GThemedIcon"
 
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
+# GLIB-2-20
+#: ../gio/gunixinputstream.c:161 ../gio/gunixoutputstream.c:147
 msgid "File descriptor"
-msgstr ""
+msgstr "Descrittore di file"
 
-#: gio/gunixinputstream.c:162
+# GLIB-2-20
+#: ../gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
-msgstr ""
+msgstr "Il descrittore di file da cui leggere"
 
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-#, fuzzy
+# GLIB-2-20
+#: ../gio/gunixinputstream.c:176 ../gio/gunixoutputstream.c:162
 msgid "Close file descriptor"
-msgstr "Errore nell'eseguire lo stat del descrittore di file: %s"
+msgstr "Chiude il descrittore di file"
 
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
+# GLIB-2-20
+#: ../gio/gunixinputstream.c:177 ../gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
-msgstr ""
+msgstr "Indica se chiudere il descrittore di file quando si chiude lo stream"
 
-#: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
-#: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
+#: ../gio/gunixinputstream.c:358 ../gio/gunixinputstream.c:378
+#: ../gio/gunixinputstream.c:456 ../gio/gunixoutputstream.c:443
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Errore nel leggere da unix: %s"
 
-#: gio/gunixinputstream.c:411 gio/gunixinputstream.c:593
-#: gio/gunixoutputstream.c:398 gio/gunixoutputstream.c:549
+#: ../gio/gunixinputstream.c:411 ../gio/gunixinputstream.c:593
+#: ../gio/gunixoutputstream.c:398 ../gio/gunixoutputstream.c:549
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Errore nel chiudere unix: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: ../gio/gunixmounts.c:1783 ../gio/gunixmounts.c:1820
 msgid "Filesystem root"
 msgstr "File system radice"
 
-#: gio/gunixoutputstream.c:148
+# GLIB-2-20
+#: ../gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
-msgstr ""
+msgstr "Il descrittore di file su cui scrivere"
 
-#: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
+#: ../gio/gunixoutputstream.c:344 ../gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Errore nello scrivere su unix: %s"
 
-#: gio/gvolume.c:444
+#: ../gio/gvolume.c:444
 msgid "volume doesn't implement eject"
 msgstr "il volume non implementa l'espulsione"
 
-#: gio/gwin32appinfo.c:277
+#: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
 msgstr "Impossibile trovare l'applicazione"
 
-#: gio/gwin32appinfo.c:300
+#: ../gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Errore nel lanciare l'applicazione: %s"
 
-#: gio/gwin32appinfo.c:336
+#: ../gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "URI non supportati"
 
-#: gio/gwin32appinfo.c:358
+#: ../gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr "cambi di associazioni non supportati su win32"
 
-#: gio/gwin32appinfo.c:370
+#: ../gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Creazione di associazioni non supportata su win32"
 
-#: tests/gio-ls.c:27
+#: ../tests/gio-ls.c:27
 msgid "do not hide entries"
 msgstr "non nascondere le voci"
 
-#: tests/gio-ls.c:29
+#: ../tests/gio-ls.c:29
 msgid "use a long listing format"
 msgstr "usare un formato di elencazione esteso"
 
-#: tests/gio-ls.c:37
+#: ../tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
