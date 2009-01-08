@@ -167,7 +167,13 @@ g_io_error_from_errno (gint err_no)
       return G_IO_ERROR_WOULD_BLOCK;
       break;
 #endif
-      
+
+#ifdef EMFILE
+    case EMFILE:
+      return G_IO_ERROR_TOO_MANY_OPEN_FILES;
+      break;
+#endif
+
     default:
       return G_IO_ERROR_FAILED;
       break;

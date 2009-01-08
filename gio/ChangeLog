@@ -1,3 +1,15 @@
+2009-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566770 – error code 0 for Too many open files is useless
+
+	* gioenums.h: Add a G_IO_ERROR_TOO_MANY_OPEN_FILES error code.
+	Requested by Olivier Sessink.
+
+	* gioerror.c: Translate EMFILE to G_IO_ERROR_TOO_MANY_OPEN_FILES.
+
+	* glocalfileenumerator.c: Translate G_FILE_ERROR_MFILE to
+	G_IO_ERROR_TOO_MANY_OPEN_FILES.
+
 2009-01-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.4 ===

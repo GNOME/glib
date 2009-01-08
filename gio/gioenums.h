@@ -328,7 +328,11 @@ typedef enum {
  * @G_IO_ERROR_WOULD_BLOCK: Operation would block.
  * @G_IO_ERROR_HOST_NOT_FOUND: Host couldn't be found (remote operations).
  * @G_IO_ERROR_WOULD_MERGE: Operation would merge files.
- * @G_IO_ERROR_FAILED_HANDLED: Operation failed and a helper program has already interacted with the user. Do not display any error dialog.
+ * @G_IO_ERROR_FAILED_HANDLED: Operation failed and a helper program has 
+ *     already interacted with the user. Do not display any error dialog.
+ * @G_IO_ERROR_TOO_MANY_OPEN_FILES: The current process has too many files 
+ *     open and can't open any more. Duplicate descriptors do count toward 
+ *     this limit. Since 2.20
  *
  * Error codes returned by GIO functions.
  *
@@ -364,7 +368,8 @@ typedef enum {
   G_IO_ERROR_WOULD_BLOCK,
   G_IO_ERROR_HOST_NOT_FOUND,
   G_IO_ERROR_WOULD_MERGE,
-  G_IO_ERROR_FAILED_HANDLED
+  G_IO_ERROR_FAILED_HANDLED,
+  G_IO_ERROR_TOO_MANY_OPEN_FILES
 } GIOErrorEnum;
 
 

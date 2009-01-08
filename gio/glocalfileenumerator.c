@@ -176,6 +176,9 @@ convert_file_to_io_error (GError **error,
         case G_FILE_ERROR_NOTDIR:
           new_code = G_IO_ERROR_NOT_DIRECTORY;
           break;
+        case G_FILE_ERROR_MFILE:
+          new_code = G_IO_ERROR_TOO_MANY_OPEN_FILES;
+          break;
         default:
           break;
         }

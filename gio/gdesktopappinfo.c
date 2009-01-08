@@ -53,9 +53,9 @@
  * #GDesktopAppInfo is an implementation of #GAppInfo based on
  * desktop files.
  * 
- * Note that GDesktopAppInfo belongs to the UNIX-specific GIO interfaces,
- * thus you have to use the <filename>gio-unix-2.0.pc</filename> pkg-config
- * file when using it.
+ * Note that <filename>&lt;gio/gdesktopappinfo.h&gt;</filename> belongs to 
+ * the UNIX-specific GIO interfaces, thus you have to use the 
+ * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  */
 
 #define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
