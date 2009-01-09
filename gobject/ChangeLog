@@ -1,3 +1,14 @@
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+        Bug 473150 – g_type_module_use inconsistently increases the use
+        counter in case of error
+
+        * gtypemodule.c (g_type_module_use): Always reset the use count
+        to its previous value before returning FALSE. Pointed out by
+        Johan Billien.
+
 2008-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.18.3 ===
