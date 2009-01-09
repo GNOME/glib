@@ -2,6 +2,15 @@
 
         Merged from trunk:
 
+        Bug 566064 – Add NOATIME flag to query_info_flags
+
+        * glocalfileinfo.c (get_content_type): Try using O_NOATIME when
+        sniffing for mime types. Based on a patch by A. Walton
+
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+        Merged from trunk:
+
         * gio/gunixmounts.c (g_unix_mount_at): fix leak that occurs when
         multiple mount entries match the requested path (Ryan Lortie)
 

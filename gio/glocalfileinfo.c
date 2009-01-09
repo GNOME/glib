@@ -33,6 +33,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#define _GNU_SOURCE
 #include <fcntl.h>
 #include <errno.h>
 #ifdef HAVE_GRP_H
@@ -1235,7 +1236,11 @@ get_content_type (const char          *basename,
 	  if (sniff_length > 4096)
 	    sniff_length = 4096;
 	  
-	  fd = open (path, O_RDONLY);
+#ifdef O_NOATIME
+          fd = open (path, O_RDONLY | O_NOATIME);
+          if (fd < 0 && errno == EPERM)
+#endif
+	    fd = open (path, O_RDONLY);
 	  if (fd != -1)
 	    {
 	      ssize_t res;
