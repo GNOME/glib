@@ -1,3 +1,27 @@
+Overview of Changes from GLib 2.18.3 to GLib 2.18.3
+===================================================
+
+* Bugs fixed:
+ 562378 callback return value not respected...
+ 559110 Do not include libintl.h after glibintl.h
+ 562562 glib-2-18 branch does not build because...
+ 566348 g_file_open_tmp uses the wrong g_mkstemp on win32
+ 564210 SUN Studio 12 has supported visibility attribute
+ 567138 get_package_directory_from_module() does not free...
+ 561807 inotify_sub.c :: dup_dirname() fails to remove trailing '/'
+ 562393 g_buffered_input_stream_read_byte broken if data available
+ 541715 patch for warnings and signature problems in recent code
+ 547481 g_data_input_stream_read_line behaves not as stated...
+ 548163 Nautilus displays wrong error message for too long filenames
+ 559633 gtk_image_new_from_gicon does not always work...
+ 526320 should not list mounts that the user doesn't have permission
+ 558458 Cannot build gio tests on Solaris using SUN c
+ 558298 Hide ecryptfs mounts
+ 515777 incorrect date&time on copy
+ 566064 Add NOATIME flag to query_info_flags
+ 565484 g_content_type_guess passes non-UTF8 text to XDG functions
+
+
 Overview of Changes from GLib 2.18.2 to GLib 2.18.3
 ===================================================
 

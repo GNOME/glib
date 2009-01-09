@@ -1,3 +1,7 @@
+2008-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2009-01-09  Tor Lillqvist  <tml@iki.fi>
 
 	Bug 567138 - get_package_directory_from_module() does not free its
