@@ -104,7 +104,21 @@ static gboolean write_test;
 static gboolean verbose;
 static gboolean posix_compat;
 
+#ifdef G_HAVE_ISO_VARARGS
+#define log(...) if (verbose)  g_print (__VA_ARGS__)
+#elif defined(G_HAVE_GNUC_VARARGS)
 #define log(msg...) if (verbose)  g_print (msg)
+#else  /* no varargs macros */
+static void
+log (const g_char *format,
+     ...)
+{
+  va_list args;
+  va_start (args, format);
+  if (verbose) g_print (format, args);
+  va_end (args);
+}
+#endif
 
 static GFile *
 create_empty_file (GFile * parent, const char *filename,
