@@ -298,10 +298,11 @@ get_package_directory_from_module (const gchar *module_name)
       hmodule = GetModuleHandleW (wc_module_name);
       g_free (wc_module_name);
 
-      if (!hmodule){
-        G_UNLOCK (module_dirs);
-        return NULL;
-      }
+      if (!hmodule)
+	{
+	  G_UNLOCK (module_dirs);
+	  return NULL;
+	}
     }
 
   fn = g_win32_get_package_installation_directory_of_module (hmodule);
