@@ -2,6 +2,16 @@
 
         Merged from trunk:
 
+        Bug 565484 – g_content_type_guess passes non-UTF8 text to XDG
+        functions in non-UTF8 locale
+
+        * xdgmime/xdgmimecache.c:
+        * xdgmime/xdgmimeglob.c: Don't assume filenames are UTF-8.
+
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+        Merged from trunk:
+
         Bug 566064 – Add NOATIME flag to query_info_flags
 
         * glocalfileinfo.c (get_content_type): Try using O_NOATIME when

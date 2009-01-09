@@ -36,6 +36,7 @@
 #include <assert.h>
 #include <string.h>
 #include <fnmatch.h>
+#include <ctype.h>
 
 #ifndef	FALSE
 #define	FALSE	(0)
@@ -297,7 +298,7 @@ typedef struct {
 
 static int
 _xdg_glob_hash_node_lookup_file_name (XdgGlobHashNode *glob_hash_node,
-				      xdg_unichar_t   *file_name,
+				      const char      *file_name,
 				      int              len,
 				      int              ignore_case,
 				      MimeWeight       mime_types[],
@@ -312,7 +313,7 @@ _xdg_glob_hash_node_lookup_file_name (XdgGlobHashNode *glob_hash_node,
 
   character = file_name[len - 1];
   if (ignore_case)
-    character = _xdg_ucs4_to_lower(character);
+    character = tolower(character);
 
   for (node = glob_hash_node; node && character >= node->character; node = node->next)
     {
@@ -392,15 +393,13 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 	}
     }
 
-  ucs4 = _xdg_convert_to_ucs4 (file_name, &len);
-  n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ucs4, len, FALSE,
+  len = strlen (file_name);
+  n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, FALSE,
 					    mimes, n_mimes);
   if (n == 0)
-    n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, ucs4, len, TRUE,
+    n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, TRUE,
 					      mimes, n_mimes);
-  free(ucs4);
 
-  /* FIXME: Not UTF-8 safe */
   if (n == 0)
     {
       for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
