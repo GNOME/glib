@@ -2,6 +2,16 @@
 
         Merged from trunk:
 
+        Bug 558298 – Hide ecryptfs mounts
+
+        * gunixmounts.c: (guess_system_internal): Hide ecryptfs mounts,
+        so that the desktop does not show both the mount and the target
+        directory. Patch by Martin Pitt
+
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+        Merged from trunk:
+
         Bug 558458 – Cannot build gio tests on Solaris using SUN cc
 
         * tests/live-g-file.c: Support compilers that don't understand
