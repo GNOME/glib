@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -439,7 +440,7 @@ static int
 cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
 			       xdg_uint32_t   n_entries,
 			       xdg_uint32_t   offset,
-			       xdg_unichar_t *file_name,
+			       const char    *file_name,
 			       int            len,
 			       int            ignore_case,
 			       MimeWeight     mime_types[],
@@ -456,7 +457,7 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
 
   character = file_name[len - 1];
   if (ignore_case)
-    character = _xdg_ucs4_to_lower (character);
+    character = tolower (character);
 
   assert (character != 0);
 
@@ -511,11 +512,11 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
 }
 
 static int
-cache_glob_lookup_suffix (xdg_unichar_t *file_name,
-			  int            len,
-			  int            ignore_case,
-			  MimeWeight     mime_types[],
-			  int            n_mime_types)
+cache_glob_lookup_suffix (const char *file_name,
+			  int         len,
+			  int         ignore_case,
+			  MimeWeight  mime_types[],
+			  int         n_mime_types)
 {
   int i, n;
 
@@ -557,7 +558,6 @@ cache_glob_lookup_file_name (const char *file_name,
   MimeWeight mimes[10];
   int n_mimes = 10;
   int i;
-  xdg_unichar_t *ucs4;
   int len;
   
   assert (file_name != NULL && n_mime_types > 0);
@@ -567,12 +567,11 @@ cache_glob_lookup_file_name (const char *file_name,
   if (n > 0)
     return n;
 
-  ucs4 = _xdg_convert_to_ucs4 (file_name, &len);
-  n = cache_glob_lookup_suffix (ucs4, len, FALSE, mimes, n_mimes);
+  len = strlen (file_name);
+  n = cache_glob_lookup_suffix (file_name, len, FALSE, mimes, n_mimes);
 
   if (n == 0)
-    n = cache_glob_lookup_suffix (ucs4, len, TRUE, mimes, n_mimes);
-  free(ucs4);
+    n = cache_glob_lookup_suffix (file_name, len, TRUE, mimes, n_mimes);
   
   /* Last, try fnmatch */
   if (n == 0)

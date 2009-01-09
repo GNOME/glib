@@ -1,5 +1,13 @@
 2009-01-08  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 565484 – g_content_type_guess passes non-UTF8 text to XDG 
+	functions in non-UTF8 locale
+
+	* xdgmime/xdgmimecache.c:
+	* xdgmime/xdgmimeglob.c: Don't assume filenames are UTF-8.
+
+2009-01-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* xdgmime/test-mime.c: Make tests work with current shared-mime-info.
 
 2009-01-07  Matthias Clasen  <mclasen@redhat.com>
