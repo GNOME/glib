@@ -2,7 +2,16 @@
 
         Merged from trunk:
 
+        * gio/gunixmounts.c (g_unix_mount_at): fix leak that occurs when
+        multiple mount entries match the requested path (Ryan Lortie)
+
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+        Merged from trunk:
+
         Bug 515777 - incorrect date&time on copy
+
+	Patch by Alexander Larsson
 
         * glocalfile.c:
         (g_local_file_class_init):
@@ -10,13 +19,15 @@
 
         * gfile.c:
         Change docs about G_FILE_COPY_ALL_METADATA to not mention
-        mtime as an example.
+        mtime as an example. 
 
 2009-01-09  Matthias Clasen  <mclasen@redhat.com>
 
         Merged from trunk:
 
         Bug 558298 – Hide ecryptfs mounts
+	
+	Patch by Martin Pitti
 
         * gunixmounts.c: (guess_system_internal): Hide ecryptfs mounts,
         so that the desktop does not show both the mount and the target
@@ -34,6 +45,8 @@
 2009-01-09  Matthias Clasen  <mclasen@redhat.com>
 
         Merged from trunk:
+
+	Patch by Martin Pitti
 
         Bug 526320 – should not list mounts that the user doesn't have
         permission to use
