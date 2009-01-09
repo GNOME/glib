@@ -1,3 +1,7 @@
+2009-01-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* xdgmime/test-mime.c: Make tests work with current shared-mime-info.
+
 2009-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 566770 – error code 0 for Too many open files is useless

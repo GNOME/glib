@@ -74,7 +74,7 @@ test_alias (const char *mime_a,
 static void
 test_aliasing (void)
 {
-  test_alias ("application/wordperfect", "application/vnd.wordperfect", 1);
+  test_alias ("application/x-wordperfect", "application/vnd.wordperfect", 1);
   test_alias ("application/x-gnome-app-info", "application/x-desktop", 1);
   test_alias ("application/x-wordperfect", "application/vnd.wordperfect", 1);
   test_alias ("application/x-wordperfect", "audio/x-midi", 0);
@@ -151,7 +151,7 @@ test_one_icon (const char *mimetype, const char *expected)
 {
   const char *actual;
 
-  actual = xdg_mime_get_icon (mimetype);
+  actual = xdg_mime_get_generic_icon (mimetype);
 
   if (actual != expected && strcmp (actual, expected) != 0) 
     {
