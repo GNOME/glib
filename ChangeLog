@@ -1,3 +1,12 @@
+2009-01-09  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	Bug 564210 – SUN Studio 12 has supported visibility attribute
+
+	* configure.in: Use visibility attribute for new enough sun cc.
+	Patch by Chris Wang
+
 2009-01-05  Tor Lillqvist  <tml@iki.fi>
 
 	Bug 566348 - g_file_open_tmp uses the wrong g_mkstemp on win32

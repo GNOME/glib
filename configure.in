@@ -2863,13 +2863,15 @@ _______EOF
 _______EOF
 	fi
 		cat >>$outfile <<_______EOF
-#if defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
+#if defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)
+#define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 #define G_GNUC_INTERNAL __hidden
 #elif defined (__GNUC__) && defined (G_HAVE_GNUC_VISIBILITY)
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
 #else
 #define G_GNUC_INTERNAL
-#endif
+#endif 
 _______EOF
 
 
