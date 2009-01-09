@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-24 01:06-0500\n"
+"POT-Creation-Date: 2009-01-09 12:08-0500\n"
 "PO-Revision-Date: 2008-10-06 17:55+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
@@ -158,102 +158,102 @@ msgstr "Ugyldig vertsnavn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:645
+#: glib/gfileutils.c:532 glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
 
-#: glib/gfileutils.c:572
+#: glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Fil «%s» er for stor"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:695 glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Feil under endring av navn på filen «%s» til «%s»: g_rename() feilet: %s"
 
-#: glib/gfileutils.c:947 glib/gfileutils.c:1405
+#: glib/gfileutils.c:895 glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: glib/gfileutils.c:961
+#: glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Feil under åpning av filen «%s» for skriving: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:986
+#: glib/gfileutils.c:934
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Kunne ikke skrive fil «%s»: fwrite() feilet: %s"
 
-#: glib/gfileutils.c:1005
+#: glib/gfileutils.c:953
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Kunne ikke lukke fil «%s»: fclose() feilet: %s"
 
-#: glib/gfileutils.c:1123
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Eksisterende fil «%s» kunne ikke bli fjernet: g_unlink() feilet: %s"
 
-#: glib/gfileutils.c:1367
+#: glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: glib/gfileutils.c:1380
+#: glib/gfileutils.c:1259
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mal «%s» inneholder ikke XXXXXX"
 
-#: glib/gfileutils.c:1849
+#: glib/gfileutils.c:1695
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1700
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1859
+#: glib/gfileutils.c:1705
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1902
+#: glib/gfileutils.c:1748
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: glib/gfileutils.c:1923
+#: glib/gfileutils.c:1769
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -538,7 +538,7 @@ msgstr "grense for liste av funksjonskall nådd"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "mønsteret inneholder oppføringer som ikke støttes for delvise treff"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1983
+#: glib/gregex.c:154 gio/glocalfile.c:2000
 msgid "internal error"
 msgstr "intern feil"
 
@@ -1007,12 +1007,12 @@ msgstr "Double-verdi «%s» for %s er utenfor gyldig område"
 msgid "Error parsing option %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: glib/goption.c:1260 glib/goption.c:1371
+#: glib/goption.c:1260 glib/goption.c:1374
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mangler argument for %s"
 
-#: glib/goption.c:1766
+#: glib/goption.c:1769
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"
@@ -1134,7 +1134,7 @@ msgstr "Tellerverdi gitt til %s er for stor"
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1993 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "Operasjonen ble avbrutt"
 
@@ -1156,34 +1156,34 @@ msgstr "type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Uventet tidlig slutt på strøm"
 
-#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: gio/gdesktopappinfo.c:621
+#: gio/gdesktopappinfo.c:632
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: gio/gdesktopappinfo.c:915
+#: gio/gdesktopappinfo.c:926
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: gio/gdesktopappinfo.c:1147
+#: gio/gdesktopappinfo.c:1158
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: gio/gdesktopappinfo.c:1151
+#: gio/gdesktopappinfo.c:1162
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: gio/gdesktopappinfo.c:1520
+#: gio/gdesktopappinfo.c:1531
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: gio/gdesktopappinfo.c:1595
+#: gio/gdesktopappinfo.c:1606
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
@@ -1197,10 +1197,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "stasjonen implementerer ikke sjekk om medie er satt inn"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
-#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
-#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2687
+#: gio/gfile.c:2741 gio/gfile.c:2872 gio/gfile.c:2912 gio/gfile.c:3239
+#: gio/gfile.c:3641 gio/gfile.c:3725 gio/gfile.c:3808 gio/gfile.c:3888
+#: gio/gfile.c:4218 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
 
@@ -1212,12 +1212,12 @@ msgstr "Operasjonen er ikke støttet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1311 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2126
+#: gio/gfile.c:1963 gio/glocalfile.c:2143
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
@@ -1225,7 +1225,7 @@ msgstr "Kan ikke kopiere over katalog"
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2135
+#: gio/gfile.c:2031 gio/glocalfile.c:2152
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
@@ -1233,24 +1233,24 @@ msgstr "Målfilen eksisterer"
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: gio/gfile.c:2861
+#: gio/gfile.c:2862
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: gio/gfile.c:2954
+#: gio/gfile.c:2955
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: gio/gfile.c:3003
+#: gio/gfile.c:3004
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: gio/gfile.c:4985 gio/gvolume.c:370
+#: gio/gfile.c:4986 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: gio/gfile.c:5093
+#: gio/gfile.c:5094
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1310,192 +1310,192 @@ msgstr "Strømmen har utestående operasjoner"
 msgid "Unable to find default local directory monitor type"
 msgstr "Klarte ikke å finne forvalgt type overvåker for lokal katalog"
 
-#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ugyldig filnavn %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Feil under lesing av informasjon om filsystem: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1115
 msgid "Can't rename root directory"
 msgstr "Kan ikke endre navn på rotkatalogen"
 
-#: gio/glocalfile.c:1128
-msgid "Can't rename file, filename already exist"
-msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
-
-#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
-#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
-msgid "Invalid filename"
-msgstr "Ugyldig filnavn"
-
-#: gio/glocalfile.c:1145
+#: gio/glocalfile.c:1136 gio/glocalfile.c:1162
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Feil under endring av navn på fil: %s"
 
-#: gio/glocalfile.c:1264
+#: gio/glocalfile.c:1145
+msgid "Can't rename file, filename already exist"
+msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
+
+#: gio/glocalfile.c:1158 gio/glocalfile.c:2022 gio/glocalfile.c:2051
+#: gio/glocalfile.c:2205 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
+msgid "Invalid filename"
+msgstr "Ugyldig filnavn"
+
+#: gio/glocalfile.c:1281
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Feil under åpning av fil: %s"
 
-#: gio/glocalfile.c:1274
+#: gio/glocalfile.c:1291
 msgid "Can't open directory"
 msgstr "Kan ikke åpne mappe"
 
-#: gio/glocalfile.c:1334
+#: gio/glocalfile.c:1351
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Feil ved fjerning av fil: %s"
 
-#: gio/glocalfile.c:1698
+#: gio/glocalfile.c:1715
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Feil ved plassering av fil i papirkurv: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1738
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan ikke legge katalog %s i papirkurven: %s"
 
-#: gio/glocalfile.c:1742
+#: gio/glocalfile.c:1759
 msgid "Unable to find toplevel directory for trash"
 msgstr "Kan ikke finne toppnivå for papirkurv"
 
-#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
+#: gio/glocalfile.c:1838 gio/glocalfile.c:1858
 msgid "Unable to find or create trash directory"
 msgstr "Kan ikke finne eller opprette mappe for papirkurv"
 
-#: gio/glocalfile.c:1875
+#: gio/glocalfile.c:1892
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kan ikke opprette informasjonsfil for papirkurv: %s"
 
-#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
+#: gio/glocalfile.c:1917 gio/glocalfile.c:1992 gio/glocalfile.c:1999
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kan ikke legge fil i papirkurven: %s"
 
-#: gio/glocalfile.c:2009
+#: gio/glocalfile.c:2026
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Feil under oppretting av katalog: %s"
 
-#: gio/glocalfile.c:2038
+#: gio/glocalfile.c:2055
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Feil ved oppretting av symbolsk lenke: %s"
 
-#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
+#: gio/glocalfile.c:2115 gio/glocalfile.c:2209
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Feil under flytting av fil: %s"
 
-#: gio/glocalfile.c:2121
+#: gio/glocalfile.c:2138
 msgid "Can't move directory over directory"
 msgstr "Kan ikke flytte katalog over katalog"
 
-#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2165 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Oppretting av sikkerhetskopi feilet"
 
-#: gio/glocalfile.c:2167
+#: gio/glocalfile.c:2184
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Feil under fjerning av målfil: %s"
 
-#: gio/glocalfile.c:2181
+#: gio/glocalfile.c:2198
 msgid "Move between mounts not supported"
 msgstr "Flytting mellom monteringspunkter er ikke støttet"
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr "Attributtverdi må ikke være NULL"
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr "Ugyldig type attributt (streng forventet)"
 
-#: gio/glocalfileinfo.c:730
+#: gio/glocalfileinfo.c:731
 msgid "Invalid extended attribute name"
 msgstr "Ugyldig navn på utvidet attributt"
 
-#: gio/glocalfileinfo.c:770
+#: gio/glocalfileinfo.c:771
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Feil under setting av utvidet attributt «%s»: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1461 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Feil ved henting av informasjon om fil «%s»: %s"
 
-#: gio/glocalfileinfo.c:1526
+#: gio/glocalfileinfo.c:1531
 msgid " (invalid encoding)"
 msgstr " (ugyldig koding)"
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1699
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Feil ved henting av informasjon om fildeskriptor: %s"
 
-#: gio/glocalfileinfo.c:1739
+#: gio/glocalfileinfo.c:1744
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ugyldig type attributt (uint32 forventet)"
 
-#: gio/glocalfileinfo.c:1757
+#: gio/glocalfileinfo.c:1762
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ugyldig type attributt (uint64 forventet)"
 
-#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1781 gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ugyldig type attributt (byte-streng forventet)"
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1826
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Feil ved setting av rettigheter: %s"
 
-#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
+#: gio/glocalfileinfo.c:1877 gio/glocalfileinfo.c:2045
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Feil ved setting av eier: %s"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1900
 msgid "symlink must be non-NULL"
 msgstr "symbolsk lenke kan ikke være NULL"
 
-#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
-#: gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1910 gio/glocalfileinfo.c:1929
+#: gio/glocalfileinfo.c:1940
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Feil ved setting av symbolsk lenke: %s"
 
-#: gio/glocalfileinfo.c:1914
+#: gio/glocalfileinfo.c:1919
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Feil ved setting av symbolsk lenke: filen er ikke en symbolsk lenke"
 
-#: gio/glocalfileinfo.c:2063
+#: gio/glocalfileinfo.c:2068
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-kontekst kan ikke være NULL"
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2083
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Feil ved setting av SELinux-kontekst: %s"
 
-#: gio/glocalfileinfo.c:2085
+#: gio/glocalfileinfo.c:2090
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux er ikke slått på på dette systemet"
 
-#: gio/glocalfileinfo.c:2146
+#: gio/glocalfileinfo.c:2151
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Støtter ikke å sette attributt %s"
@@ -1672,7 +1672,7 @@ msgstr "Feil under lesing fra unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Feil ved lukking av unix: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "Filsystemrot"
 

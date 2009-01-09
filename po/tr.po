@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-24 01:06-0500\n"
+"POT-Creation-Date: 2009-01-09 12:08-0500\n"
 "PO-Revision-Date: 2008-09-13 05:34+0300\n"
 "Last-Translator: Baris Cicek <baris@teamforce.name.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -161,105 +161,105 @@ msgstr "Geçersiz makine adı"
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' dizini açılamadı: %s"
 
-#: glib/gfileutils.c:557 glib/gfileutils.c:645
+#: glib/gfileutils.c:532 glib/gfileutils.c:620
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu bayt \"%s\" dosyasını okumak için ayrılamadı"
 
-#: glib/gfileutils.c:572
+#: glib/gfileutils.c:547
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' dosyası okunurken hata: %s"
 
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:561
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Dosya \"%s\" çok büyük"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' dosyasından okuma başarısız: %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:695 glib/gfileutils.c:782
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' dosyasını açma başarısız: %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "'%s' dosyasının özniteliklerini alma başarısız: fstat() başarısızlığı: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' dosyasını açma başarısız: fdopen() başarısızlığı: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "'%s' dosyasının adı '%s' olarak değiştirilirken hata: g_rename() "
 "başarısızlığı: %s"
 
-#: glib/gfileutils.c:947 glib/gfileutils.c:1405
+#: glib/gfileutils.c:895 glib/gfileutils.c:1284
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' dosyasını oluşturma başarısız: %s"
 
-#: glib/gfileutils.c:961
+#: glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "'%s' dosyası yazma için açılamadı: fdopen() başarısızlığı: %s"
 
-#: glib/gfileutils.c:986
+#: glib/gfileutils.c:934
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' dosyasına yazılamadı: fwrite() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1005
+#: glib/gfileutils.c:953
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' dosyası kapatılamadı: fclose() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1123
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Varolan dosya '%s' silinemedi: g_unlink() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1367
+#: glib/gfileutils.c:1246
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Şablon '%s' geçersiz, '%s' içermemeli"
 
-#: glib/gfileutils.c:1380
+#: glib/gfileutils.c:1259
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Şablon '%s' XXXXXX içermiyor"
 
-#: glib/gfileutils.c:1849
+#: glib/gfileutils.c:1695
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1700
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1859
+#: glib/gfileutils.c:1705
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1902
+#: glib/gfileutils.c:1748
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' sembolik bağını okuma başarısız: %s"
 
-#: glib/gfileutils.c:1923
+#: glib/gfileutils.c:1769
 msgid "Symbolic links not supported"
 msgstr "Sembolik bağlar desteklenmiyor"
 
@@ -549,7 +549,7 @@ msgstr "geri takip sınırına ulaşıldı"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "doku (pattern), kısmi eşleme için desteklenmeyen öğeler içeriyor"
 
-#: glib/gregex.c:154 gio/glocalfile.c:1983
+#: glib/gregex.c:154 gio/glocalfile.c:2000
 msgid "internal error"
 msgstr "dahili hata"
 
@@ -1018,12 +1018,12 @@ msgstr "%2$s için double değeri '%1$s' aralık dışında"
 msgid "Error parsing option %s"
 msgstr "%s seçeneği işlenirken hata"
 
-#: glib/goption.c:1260 glib/goption.c:1371
+#: glib/goption.c:1260 glib/goption.c:1374
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s için parametre eksik"
 
-#: glib/goption.c:1766
+#: glib/goption.c:1769
 #, c-format
 msgid "Unknown option %s"
 msgstr "Bilinmeyen seçenek %s"
@@ -1143,7 +1143,7 @@ msgstr "%s için çok büyük sayaç değeri geçildi"
 msgid "Stream is already closed"
 msgstr "Akış zaten kapalı"
 
-#: gio/gcancellable.c:295 gio/glocalfile.c:1976 gio/gsimpleasyncresult.c:612
+#: gio/gcancellable.c:295 gio/glocalfile.c:1993 gio/gsimpleasyncresult.c:612
 msgid "Operation was cancelled"
 msgstr "İşlem iptal edildi"
 
@@ -1165,34 +1165,34 @@ msgstr "%s türü"
 msgid "Unexpected early end-of-stream"
 msgstr "Beklenmeyen erken akış-sonu"
 
-#: gio/gdesktopappinfo.c:436 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:447 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "İsimlendirilmemiş"
 
-#: gio/gdesktopappinfo.c:621
+#: gio/gdesktopappinfo.c:632
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop dosyası Exec alanı belirtmemiş"
 
-#: gio/gdesktopappinfo.c:915
+#: gio/gdesktopappinfo.c:926
 msgid "Unable to find terminal required for application"
 msgstr "Uygulama için gerekli uçbirim bulunamadı"
 
-#: gio/gdesktopappinfo.c:1147
+#: gio/gdesktopappinfo.c:1158
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kullanıcı uygulaması yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:1151
+#: gio/gdesktopappinfo.c:1162
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kullanıcı MIME yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:1520
+#: gio/gdesktopappinfo.c:1531
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kullanıcı masaüstü dosyası %s oluşturulamıyor"
 
-#: gio/gdesktopappinfo.c:1595
+#: gio/gdesktopappinfo.c:1606
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s için özel tanım"
@@ -1206,10 +1206,10 @@ msgid "drive doesn't implement polling for media"
 msgstr "sürücü ortam için yoklamayı uygulamıyor"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2686
-#: gio/gfile.c:2740 gio/gfile.c:2871 gio/gfile.c:2911 gio/gfile.c:3238
-#: gio/gfile.c:3640 gio/gfile.c:3724 gio/gfile.c:3807 gio/gfile.c:3887
-#: gio/gfile.c:4217 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2687
+#: gio/gfile.c:2741 gio/gfile.c:2872 gio/gfile.c:2912 gio/gfile.c:3239
+#: gio/gfile.c:3641 gio/gfile.c:3725 gio/gfile.c:3808 gio/gfile.c:3888
+#: gio/gfile.c:4218 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "İşlem desteklenmiyor"
 
@@ -1221,12 +1221,12 @@ msgstr "İşlem desteklenmiyor"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1311 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1311 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "Bağlama mevcut değil içeriyor"
 
-#: gio/gfile.c:1963 gio/glocalfile.c:2126
+#: gio/gfile.c:1963 gio/glocalfile.c:2143
 msgid "Can't copy over directory"
 msgstr "Dizin üzerine kopyalanamıyor"
 
@@ -1234,7 +1234,7 @@ msgstr "Dizin üzerine kopyalanamıyor"
 msgid "Can't copy directory over directory"
 msgstr "Dizin dizin üzerine kopyalanamıyor"
 
-#: gio/gfile.c:2031 gio/glocalfile.c:2135
+#: gio/gfile.c:2031 gio/glocalfile.c:2152
 msgid "Target file exists"
 msgstr "Hedef dosya mevcut"
 
@@ -1242,24 +1242,24 @@ msgstr "Hedef dosya mevcut"
 msgid "Can't recursively copy directory"
 msgstr "Dizin iç içe kopyalanamıyor"
 
-#: gio/gfile.c:2861
+#: gio/gfile.c:2862
 msgid "Invalid symlink value given"
 msgstr "Geçersiz sembolik bağ değeri verildi"
 
-#: gio/gfile.c:2954
+#: gio/gfile.c:2955
 msgid "Trash not supported"
 msgstr "Çöp desteklenmiyor"
 
-#: gio/gfile.c:3003
+#: gio/gfile.c:3004
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Dosy adları '%c' içeremez"
 
-#: gio/gfile.c:4985 gio/gvolume.c:370
+#: gio/gfile.c:4986 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "sistem bağlama uygulamıyor"
 
-#: gio/gfile.c:5093
+#: gio/gfile.c:5094
 msgid "No application is registered as handling this file"
 msgstr "Bu dosyayı işlemek için hiçbir uygulama kayıtlı değil"
 
@@ -1319,192 +1319,192 @@ msgstr "Akışın sıradışı işlemi var"
 msgid "Unable to find default local directory monitor type"
 msgstr "Öntanımlı yerel dizin izleme tipi bulunamadı"
 
-#: gio/glocalfile.c:603 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Geçersiz dosya adı %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Dosya sistemi bilgisi alınırken hata: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1115
 msgid "Can't rename root directory"
 msgstr "Kök dizini yeniden adlandırılamıyor"
 
-#: gio/glocalfile.c:1128
-msgid "Can't rename file, filename already exist"
-msgstr "Dosya yeniden adlandırılamıyor, dosya ismi zaten mevcut"
-
-#: gio/glocalfile.c:1141 gio/glocalfile.c:2005 gio/glocalfile.c:2034
-#: gio/glocalfile.c:2188 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
-msgid "Invalid filename"
-msgstr "Geçersiz dosya adı"
-
-#: gio/glocalfile.c:1145
+#: gio/glocalfile.c:1136 gio/glocalfile.c:1162
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Dosya yeniden adlandırılırken hata: %s"
 
-#: gio/glocalfile.c:1264
+#: gio/glocalfile.c:1145
+msgid "Can't rename file, filename already exist"
+msgstr "Dosya yeniden adlandırılamıyor, dosya ismi zaten mevcut"
+
+#: gio/glocalfile.c:1158 gio/glocalfile.c:2022 gio/glocalfile.c:2051
+#: gio/glocalfile.c:2205 gio/glocalfileoutputstream.c:505
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
+msgid "Invalid filename"
+msgstr "Geçersiz dosya adı"
+
+#: gio/glocalfile.c:1281
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Dosya açılırken hata: %s"
 
-#: gio/glocalfile.c:1274
+#: gio/glocalfile.c:1291
 msgid "Can't open directory"
 msgstr "Dizin açılamıyor"
 
-#: gio/glocalfile.c:1334
+#: gio/glocalfile.c:1351
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Dosya silinirken hata: %s"
 
-#: gio/glocalfile.c:1698
+#: gio/glocalfile.c:1715
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Dosya çöpe atılırken hata: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1738
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Çöp dizini %s oluşturulamıyor: %s"
 
-#: gio/glocalfile.c:1742
+#: gio/glocalfile.c:1759
 msgid "Unable to find toplevel directory for trash"
 msgstr "Çöp için en üst seviye dizin bulunamıyor"
 
-#: gio/glocalfile.c:1821 gio/glocalfile.c:1841
+#: gio/glocalfile.c:1838 gio/glocalfile.c:1858
 msgid "Unable to find or create trash directory"
 msgstr "Çöp dizini bulunamıyor ya da oluşturulamıyor"
 
-#: gio/glocalfile.c:1875
+#: gio/glocalfile.c:1892
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Çöp bilgi dosyası oluşturulamıyor: %s"
 
-#: gio/glocalfile.c:1900 gio/glocalfile.c:1975 gio/glocalfile.c:1982
+#: gio/glocalfile.c:1917 gio/glocalfile.c:1992 gio/glocalfile.c:1999
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Dosya çöpe atılamıyor: %s"
 
-#: gio/glocalfile.c:2009
+#: gio/glocalfile.c:2026
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Dizin oluşturulurken hata: %s"
 
-#: gio/glocalfile.c:2038
+#: gio/glocalfile.c:2055
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Sembolik bağ yaparken hata: %s"
 
-#: gio/glocalfile.c:2098 gio/glocalfile.c:2192
+#: gio/glocalfile.c:2115 gio/glocalfile.c:2209
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Dosya taşınırken hata: %s"
 
-#: gio/glocalfile.c:2121
+#: gio/glocalfile.c:2138
 msgid "Can't move directory over directory"
 msgstr "Dizin dizin üzerine taşınamıyor"
 
-#: gio/glocalfile.c:2148 gio/glocalfileoutputstream.c:819
+#: gio/glocalfile.c:2165 gio/glocalfileoutputstream.c:819
 #: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
 #: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
 msgid "Backup file creation failed"
 msgstr "Yedek dosyası oluşturma başarısız oldu"
 
-#: gio/glocalfile.c:2167
+#: gio/glocalfile.c:2184
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Hedef dosya silerken hata: %s"
 
-#: gio/glocalfile.c:2181
+#: gio/glocalfile.c:2198
 msgid "Move between mounts not supported"
 msgstr "Bağlı sistemler arasında taşıma desteklenmiyor"
 
-#: gio/glocalfileinfo.c:716
+#: gio/glocalfileinfo.c:717
 msgid "Attribute value must be non-NULL"
 msgstr "Öznitelik değeri NULL olmamalı"
 
-#: gio/glocalfileinfo.c:723
+#: gio/glocalfileinfo.c:724
 msgid "Invalid attribute type (string expected)"
 msgstr "Geçersiz öznitelik türü (dizgi beklendi)"
 
-#: gio/glocalfileinfo.c:730
+#: gio/glocalfileinfo.c:731
 msgid "Invalid extended attribute name"
 msgstr "Geçersiz genişletilmiş öznitelik ismi"
 
-#: gio/glocalfileinfo.c:770
+#: gio/glocalfileinfo.c:771
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Genişletilmiş öznitelik '%s' atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1456 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1461 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' dosyası durumlandırılırken hata: %s"
 
-#: gio/glocalfileinfo.c:1526
+#: gio/glocalfileinfo.c:1531
 msgid " (invalid encoding)"
 msgstr " (geçersiz kodlama)"
 
-#: gio/glocalfileinfo.c:1694
+#: gio/glocalfileinfo.c:1699
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Dosya tanımlayıcı durumlandırılırken hata: %s"
 
-#: gio/glocalfileinfo.c:1739
+#: gio/glocalfileinfo.c:1744
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Geçersiz öznitelik türü (uint32 beklendi)"
 
-#: gio/glocalfileinfo.c:1757
+#: gio/glocalfileinfo.c:1762
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Geçersiz öznitelik türü (uint64 beklendi)"
 
-#: gio/glocalfileinfo.c:1776 gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1781 gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Geçersiz öznitelik türü (byte dizisi beklendi)"
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1826
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "İzinler atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1872 gio/glocalfileinfo.c:2040
+#: gio/glocalfileinfo.c:1877 gio/glocalfileinfo.c:2045
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Sahip atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1900
 msgid "symlink must be non-NULL"
 msgstr "sembolik bağ NULL olmamalı"
 
-#: gio/glocalfileinfo.c:1905 gio/glocalfileinfo.c:1924
-#: gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1910 gio/glocalfileinfo.c:1929
+#: gio/glocalfileinfo.c:1940
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Sembolik bağ atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1914
+#: gio/glocalfileinfo.c:1919
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Sembolik bağ atanırken hata: dosya bir sembolik bağ değil"
 
-#: gio/glocalfileinfo.c:2063
+#: gio/glocalfileinfo.c:2068
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux bağlamı NULL olmamalı"
 
-#: gio/glocalfileinfo.c:2078
+#: gio/glocalfileinfo.c:2083
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux bağlamı atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2085
+#: gio/glocalfileinfo.c:2090
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux bu sistede etkin değil"
 
-#: gio/glocalfileinfo.c:2146
+#: gio/glocalfileinfo.c:2151
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Öznitelik %s ataması desteklenmiyor"
@@ -1682,7 +1682,7 @@ msgstr "Unix'den okurken hata: %s"
 msgid "Error closing unix: %s"
 msgstr "Unix kapatılırken hata: %s"
 
-#: gio/gunixmounts.c:1779 gio/gunixmounts.c:1816
+#: gio/gunixmounts.c:1780 gio/gunixmounts.c:1817
 msgid "Filesystem root"
 msgstr "Dosya sistemi kök dizini"
 
