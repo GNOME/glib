@@ -1351,6 +1351,10 @@ g_regex_match_simple (const gchar        *pattern,
  * }
  * ]|
  *
+ * @string is not copied and is used in #GMatchInfo internally. If 
+ * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * freeing or modifying @string then the behaviour is undefined.
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
@@ -1478,6 +1482,10 @@ g_regex_match_full (const GRegex      *regex,
  * i.e. you must free it regardless if regular expression actually 
  * matched.
  *
+ * @string is not copied and is used in #GMatchInfo internally. If 
+ * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * freeing or modifying @string then the behaviour is undefined.
+ * 
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
@@ -1535,6 +1543,10 @@ g_regex_match_all (const GRegex      *regex,
  * not %NULL then it is created even if the function returns %FALSE, 
  * i.e. you must free it regardless if regular expression actually 
  * matched.
+ *
+ * @string is not copied and is used in #GMatchInfo internally. If 
+ * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * freeing or modifying @string then the behaviour is undefined.
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *

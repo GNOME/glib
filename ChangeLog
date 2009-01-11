@@ -1,3 +1,10 @@
+2009-01-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566569 – gregex docs clarification
+
+	* glib/gregex.c: Copy the warning about @string to all
+	relevant docs. Proposed by Christian Persch
+
 2009-01-09  Tor Lillqvist  <tml@iki.fi>
 
 	Bug 567138 - get_package_directory_from_module() does not free its
