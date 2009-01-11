@@ -1,5 +1,12 @@
 2009-01-10  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 566573 – g_match_info_fetch_pos docs
+
+	* glib/gregex.c: Mention that positions are in bytes. 
+	Proposed by Christian Persch.
+
+2009-01-10  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 566569 – gregex docs clarification
 
 	* glib/gregex.c: Copy the warning about @string to all

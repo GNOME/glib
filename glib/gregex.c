@@ -794,7 +794,7 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * @start_pos: pointer to location where to store the start position
  * @end_pos: pointer to location where to store the end position
  *
- * Retrieves the position of the @match_num<!-- -->'th capturing 
+ * Retrieves the position in bytes of the @match_num<!-- -->'th capturing 
  * parentheses. 0 is the full text of the match, 1 is the first 
  * paren set, 2 the second, and so on.
  *
@@ -917,7 +917,7 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  * @start_pos: pointer to location where to store the start position
  * @end_pos: pointer to location where to store the end position
  *
- * Retrieves the position of the capturing parentheses named @name.
+ * Retrieves the position in bytes of the capturing parentheses named @name.
  *
  * If @name is a valid sub pattern name but it didn't match anything 
  * (e.g. sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") 
