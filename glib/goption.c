@@ -1150,6 +1150,11 @@ parse_arg (GOptionContext *context,
 
 	retval = (* (GOptionArgFunc) entry->arg_data) (option_name, data, group->user_data, error);
 	
+	if (!retval && error != NULL && *error == NULL)
+	  g_set_error (error, 
+		       G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
+		       _("Error parsing option %s"), option_name);
+
 	g_free (data);
 	
 	return retval;

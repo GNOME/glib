@@ -1,3 +1,8 @@
+2009-01-12  Tor Lillqvist  <tml@novell.com>
+
+	* glib/goption.c (parse_arg): Guard against a mis-written
+	GOptionArgFunc that has returned FALSE but not set the GError.
+
 2009-01-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 566573 – g_match_info_fetch_pos docs
