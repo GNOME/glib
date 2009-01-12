@@ -37,6 +37,7 @@
 static GStaticMutex globals_lock = G_STATIC_MUTEX_INIT;
 static GIRepository *default_repository = NULL;
 static GSList *search_path = NULL;
+static GSList *override_search_path = NULL;
 
 struct _GIRepositoryPrivate 
 {
@@ -104,9 +105,13 @@ init_globals (void)
       char *typelib_dir;
       const gchar *type_lib_path_env;
 
+      /* This variable is intended to take precedence over both the default
+       * search path, as well as anything written into code with g_irepository_prepend_search_path.
+       */
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
 
       search_path = NULL;
+      override_search_path = NULL;
       if (type_lib_path_env)
         {
           gchar **custom_dirs;
@@ -117,7 +122,7 @@ init_globals (void)
           d = custom_dirs;
           while (*d)
             {
-              search_path = g_slist_prepend (search_path, *d);
+              override_search_path = g_slist_prepend (override_search_path, *d);
               d++;
             }
 
@@ -157,6 +162,21 @@ GSList *
 g_irepository_get_search_path (void)
 {
   return search_path;
+}
+
+static
+GSList *
+build_search_path_with_overrides (void)
+{
+	GSList *result;
+	if (override_search_path != NULL) 
+	  {
+		result = g_slist_copy (override_search_path);
+		g_slist_last (result)->next = g_slist_copy (search_path);
+	  } 
+	else
+	  result = g_slist_copy (search_path);
+	return result;
 }
 
 static char *
@@ -843,6 +863,7 @@ find_namespace_version (const gchar  *namespace,
 			const gchar  *version,
 			gchar       **path_ret)
 {
+  GSList *tmp_path;
   GSList *ldir;
   GError *error = NULL;
   GMappedFile *mfile = NULL;
@@ -850,7 +871,8 @@ find_namespace_version (const gchar  *namespace,
  
   fname = g_strdup_printf ("%s-%s.typelib", namespace, version);
 
-  for (ldir = search_path; ldir; ldir = ldir->next)
+  tmp_path = build_search_path_with_overrides ();
+  for (ldir = tmp_path; ldir; ldir = ldir->next)
     {
       char *path = g_build_filename (ldir->data, fname, NULL);
       
@@ -865,6 +887,7 @@ find_namespace_version (const gchar  *namespace,
       break;
     }
   g_free (fname);
+  g_slist_free (tmp_path);
   return mfile;
 }
 
@@ -963,6 +986,7 @@ find_namespace_latest (const gchar  *namespace,
 		       gchar       **version_ret,
 		       gchar       **path_ret)
 {
+  GSList *tmp_path;
   GSList *ldir;
   GError *error = NULL;
   char *namespace_dash;
@@ -978,7 +1002,8 @@ find_namespace_latest (const gchar  *namespace,
   namespace_typelib = g_strdup_printf ("%s.typelib", namespace);
 
   index = 0;
-  for (ldir = search_path; ldir; ldir = ldir->next)
+  tmp_path = build_search_path_with_overrides ();  
+  for (ldir = tmp_path; ldir; ldir = ldir->next)
     {
       GDir *dir;
       const char *dirname;
@@ -1048,9 +1073,9 @@ find_namespace_latest (const gchar  *namespace,
       g_slist_foreach (candidates, (GFunc) free_candidate, NULL);
       g_slist_free (candidates);
     }  
-
   g_free (namespace_dash);
   g_free (namespace_typelib);
+  g_slist_free (tmp_path);  
   return result;
 }
 
