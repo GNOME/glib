@@ -1174,7 +1174,8 @@ g_irepository_introspect_cb (const char *option_name,
 			     gpointer data,
 			     GError **error)
 {
-  return g_irepository_dump (value, error);
+  gboolean ret = g_irepository_dump (value, error);
+  exit (ret ? 0 : 1);
 }
 
 static const GOptionEntry introspection_args[] = {
