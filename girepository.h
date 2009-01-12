@@ -141,6 +141,15 @@ typedef enum
 GQuark g_irepository_error_quark (void);
 
 
+/* Global utility functions */
+
+void gi_cclosure_marshal_generic (GClosure       *closure,
+                                  GValue         *return_gvalue,
+                                  guint           n_param_values,
+                                  const GValue   *param_values,
+                                  gpointer        invocation_hint,
+                                  gpointer        marshal_data);
+
 /* Types of objects registered in the repository */
 
 typedef enum 
