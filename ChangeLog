@@ -1,3 +1,8 @@
+2009-01-12  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gtestutils.c (g_strcmp0): Be more explicit about the NULL
+	handling in the docs.
+
 2009-01-12  Tor Lillqvist  <tml@novell.com>
 
 	* glib/goption.c (parse_arg): Guard against a mis-written

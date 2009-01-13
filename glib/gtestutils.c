@@ -1397,7 +1397,8 @@ g_assertion_message_error (const char     *domain,
  * @str1: a C string or %NULL
  * @str2: another C string or %NULL
  *
- * Compares @str1 and @str2 like strcmp(). Handles %NULL strings gracefully.
+ * Compares @str1 and @str2 like strcmp(). Handles %NULL 
+ * gracefully by sorting it before non-%NULL strings.
  *
  * Returns: -1, 0 or 1, if @str1 is <, == or > than @str2.
  *
