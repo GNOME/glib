@@ -1,3 +1,14 @@
+2009-01-13  Tor Lillqvist  <tml@novell.com>
+
+	* win32/vs8/README
+	* win32/vs9/README: New files. Mention this VS solution and
+	projects are experimental and that https://code.launchpad.net/oah
+	might be a better choice.
+
+	* win32/vs8/Makefile.am
+	* win32/vs9/Makefile.am (EXTRA_DIST): Add the READMEs and two
+	missing vcproj files.
+
 2008-11-02  Tor Lillqvist  <tml@novell.com>
 
 	* win32/Makefile.am (SUBDIRS): Add vs9.
