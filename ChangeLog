@@ -1,3 +1,12 @@
+2009-01-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 564728 Add function to decode base64 encoded data in place
+
+	* glib/glib.symbols:
+	* glib/gbase64.[hc] (g_base64_decode_inplace): New convenience
+	API to decode in place, overwriting the input string. Patch by
+	Sebastian Dröge.
+
 2009-01-12  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/gtestutils.c (g_strcmp0): Be more explicit about the NULL

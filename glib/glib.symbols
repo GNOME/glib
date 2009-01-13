@@ -111,6 +111,7 @@ g_base64_encode_close
 g_base64_encode G_GNUC_MALLOC
 g_base64_decode_step
 g_base64_decode G_GNUC_MALLOC
+g_base64_decode_inplace
 #endif
 #endif
 

@@ -48,6 +48,9 @@ gsize   g_base64_decode_step  (const gchar  *in,
 			       guint        *save);
 guchar *g_base64_decode       (const gchar  *text,
 			       gsize        *out_len) G_GNUC_MALLOC;
+guchar *g_base64_decode_inplace (gchar      *text,
+                                 gsize      *out_len);
+
 
 G_END_DECLS
 

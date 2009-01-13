@@ -18,7 +18,8 @@ for email.
 GLib supports incremental encoding using g_base64_encode_step() and
 g_base64_encode_close(). Incremental decoding can be done with
 g_base64_decode_step(). To encode or decode data in one go, use 
-g_base64_encode() or g_base64_decode(). 
+g_base64_encode() or g_base64_decode(). To avoid memory allocation when
+decoding, you can use g_base64_decode_inplace().
 </para>
 
 <para>

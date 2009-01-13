@@ -374,6 +374,39 @@ g_base64_decode (const gchar *text,
   
   return ret; 
 }
+ 
+/**
+ * g_base64_decode_inplace:
+ * @text: zero-terminated string with base64 text to decode
+ * @out_len: The length of the decoded data is written here
+ *
+ * Decode a sequence of Base-64 encoded text into binary data
+ * by overwriting the input data.
+ *
+ * Return value: The binary data that @text responds. This pointer
+ *               is the same as the input @text.
+ *
+ * Since: 2.20
+ */
+guchar *
+g_base64_decode_inplace (gchar *text,
+                         gsize *out_len)
+{
+  gint input_length, state = 0;
+  guint save = 0;
+  
+  g_return_val_if_fail (text != NULL, NULL);
+  g_return_val_if_fail (out_len != NULL, NULL);
+
+  input_length = strlen (text);
+
+  g_return_val_if_fail (input_length > 1, NULL);
+
+  *out_len = g_base64_decode_step (text, input_length, (guchar *) text, &state, &save);
+  
+  return text; 
+}
+
 
 #define __G_BASE64_C__
 #include "galiasdef.c"
