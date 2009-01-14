@@ -1,3 +1,7 @@
+2009-01-14  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in: Added missing gio/gemblemedicon.c
+
 2009-01-08  Daniel Nylander <po@danielnylander.se>
 
 	* sv.po: Updated Swedish translation.
