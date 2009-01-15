@@ -243,7 +243,7 @@ locate_gir (GIrParser  *parser,
     }
   for (dir = datadirs; *dir; dir++) 
     {
-      path = g_build_filename (*dir, "gir", girname, NULL);
+      path = g_build_filename (*dir, "gir-1.0", girname, NULL);
       if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
 	return path;
       g_free (path);

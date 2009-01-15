@@ -132,7 +132,7 @@ init_globals (void)
 
       libdir = GOBJECT_INTROSPECTION_LIBDIR;
 
-      typelib_dir = g_build_filename (libdir, "girepository", NULL);
+      typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
 
       search_path = g_slist_prepend (search_path, typelib_dir);
 
