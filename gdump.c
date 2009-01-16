@@ -362,7 +362,8 @@ g_irepository_dump (const char *arg, GError **error)
 
       if (type == G_TYPE_INVALID)
 	{
-	  caught_error = TRUE;
+          g_printerr ("Invalid GType: '%s'\n", line);
+          caught_error = TRUE;
 	  g_free (line);
 	  break;
 	}
