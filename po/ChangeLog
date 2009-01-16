@@ -1,3 +1,7 @@
+2009-01-16  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation.
+
 2009-01-14  Luca Ferretti  <elle.uca@libero.it>
 
 	* POTFILES.in: Added missing gio/gemblemedicon.c
