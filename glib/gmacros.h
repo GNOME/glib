@@ -216,7 +216,7 @@
 
 #if defined(__GNUC__)  && __GNUC__ >= 4
 #  define G_STRUCT_OFFSET(struct_type, member) \
-      ((glong) __builtin_offsetof (struct_type, member))
+      ((glong) offsetof (struct_type, member))
 #else
 #  define G_STRUCT_OFFSET(struct_type, member)	\
       ((glong) ((guint8*) &((struct_type*) 0)->member))
