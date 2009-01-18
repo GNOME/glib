@@ -2502,6 +2502,7 @@ esac],
 AM_CONDITIONAL(ENABLE_REGEX, $enable_regex)
 
 if test x$enable_regex = xtrue; then
+  AC_DEFINE(ENABLE_REGEX, [], [include GRegex])
   # Check if we should use the internal or the system-supplied pcre
   AC_ARG_WITH(pcre,
              [AC_HELP_STRING([--with-pcre=@<:@internal/system@:>@],

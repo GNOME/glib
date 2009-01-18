@@ -1,5 +1,14 @@
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 512779 – --disable-regex breaks compilation
+	
+	* configure.in: Define an ENABLE_REGEX macro
+
+	* gobject/gboxed.c: Don't refer to g_regex_ref if ENABLE_REGEX
+	is not defined.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gbsearcharray.h: Quell some compiler warnings.
 
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>

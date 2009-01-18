@@ -263,10 +263,14 @@ GType
 g_regex_get_type (void)
 {
   static GType type_id = 0;
+
+#ifdef ENABLE_REGEX
   if (!type_id)
     type_id = g_boxed_type_register_static (g_intern_static_string ("GRegex"),
 					    (GBoxedCopyFunc) g_regex_ref,
 					    (GBoxedFreeFunc) g_regex_unref);
+#endif
+
   return type_id;
 }
 
