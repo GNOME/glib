@@ -331,7 +331,7 @@ static const char *
 find_error_text(int n)
 {
 const char *s = error_texts;
-for (; n > 0; n--) while (*s++ != 0);
+for (; n > 0; n--) while (*s++ != 0) {};
 return s;
 }
 
@@ -437,7 +437,7 @@ else
       {
       const uschar *p;
       for (p = ptr+2; *p != 0 && *p != '}'; p++)
-        if (*p != '-' && g_ascii_isdigit(*p) == 0) break;
+        if (*p != '-' && g_ascii_isdigit (*p) == 0) break;
       if (*p != 0 && *p != '}')
         {
         c = -ESC_k;
@@ -456,7 +456,7 @@ else
     else negated = FALSE;
 
     c = 0;
-    while (g_ascii_isdigit(ptr[1]) != 0)
+    while (g_ascii_isdigit (ptr[1]) != 0)
       c = c * 10 + *(++ptr) - '0';
 
     if (c < 0)   /* Integer overflow */
@@ -509,7 +509,7 @@ else
       {
       oldptr = ptr;
       c -= '0';
-      while (g_ascii_isdigit(ptr[1]) != 0)
+      while (g_ascii_isdigit (ptr[1]))
         c = c * 10 + *(++ptr) - '0';
       if (c < 0)    /* Integer overflow */
         {
@@ -559,7 +559,7 @@ else
       int count = 0;
 
       c = 0;
-      while (g_ascii_isxdigit(*pt) != 0)
+      while (g_ascii_isxdigit (*pt) != 0)
         {
         register int cc = *pt++;
         if (c == 0 && cc == '0') continue;     /* Leading zeroes */
@@ -588,7 +588,7 @@ else
     /* Read just a single-byte hex-defined char */
 
     c = 0;
-    while (i++ < 2 && g_ascii_isxdigit(ptr[1]) != 0)
+    while (i++ < 2 && g_ascii_isxdigit (ptr[1]) != 0)
       {
       int cc;                               /* Some compilers don't like ++ */
       cc = *(++ptr);                        /* in initializers */
@@ -757,15 +757,15 @@ Returns:    TRUE or FALSE
 static BOOL
 is_counted_repeat(const uschar *p)
 {
-if (g_ascii_isdigit(*p++) == 0) return FALSE;
-while (g_ascii_isdigit(*p) != 0) p++;
+if (g_ascii_isdigit (*p++) == 0) return FALSE;
+while (g_ascii_isdigit (*p) != 0) p++;
 if (*p == '}') return TRUE;
 
 if (*p++ != ',') return FALSE;
 if (*p == '}') return TRUE;
 
-if (g_ascii_isdigit(*p++) == 0) return FALSE;
-while (g_ascii_isdigit(*p) != 0) p++;
+if (g_ascii_isdigit (*p++) == 0) return FALSE;
+while (g_ascii_isdigit (*p) != 0) p++;
 
 return (*p == '}');
 }
@@ -800,7 +800,7 @@ int max = -1;
 /* Read the minimum value and do a paranoid check: a negative value indicates
 an integer overflow. */
 
-while (g_ascii_isdigit(*p) != 0) min = min * 10 + *p++ - '0';
+while (g_ascii_isdigit (*p) != 0) min = min * 10 + *p++ - '0';
 if (min < 0 || min > 65535)
   {
   *errorcodeptr = ERR5;
@@ -815,7 +815,7 @@ if (*p == '}') max = min; else
   if (*(++p) != '}')
     {
     max = 0;
-    while(g_ascii_isdigit(*p) != 0) max = max * 10 + *p++ - '0';
+    while(g_ascii_isdigit (*p) != 0) max = max * 10 + *p++ - '0';
     if (max < 0 || max > 65535)
       {
       *errorcodeptr = ERR5;
@@ -878,7 +878,7 @@ for (; *ptr != 0; ptr++)
     if (*(++ptr) == 0) return -1;
     if (*ptr == 'Q') for (;;)
       {
-      while (*(++ptr) != 0 && *ptr != '\\');
+      while (*(++ptr) != 0 && *ptr != '\\') {};
       if (*ptr == 0) return -1;
       if (*(++ptr) == 'E') break;
       }
@@ -921,7 +921,7 @@ for (; *ptr != 0; ptr++)
         if (*(++ptr) == 0) return -1;
         if (*ptr == 'Q') for (;;)
           {
-          while (*(++ptr) != 0 && *ptr != '\\');
+          while (*(++ptr) != 0 && *ptr != '\\') {};
           if (*ptr == 0) return -1;
           if (*(++ptr) == 'E') break;
           }
@@ -935,7 +935,7 @@ for (; *ptr != 0; ptr++)
 
   if (xmode && *ptr == '#')
     {
-    while (*(++ptr) != 0 && *ptr != '\n');
+    while (*(++ptr) != 0 && *ptr != '\n') {};
     if (*ptr == 0) return -1;
     continue;
     }
@@ -1326,6 +1326,8 @@ for (;;)
       if (code[-1] >= 0xc0) code += _pcre_utf8_table4[code[-1] & 0x3f];
       break;
       }
+#else
+    (void)(utf8);  /* Keep compiler happy by referencing function argument */
 #endif
     }
   }
@@ -1419,6 +1421,8 @@ for (;;)
       if (code[-1] >= 0xc0) code += _pcre_utf8_table4[code[-1] & 0x3f];
       break;
       }
+#else
+    (void)(utf8);  /* Keep compiler happy by referencing function argument */
 #endif
     }
   }
@@ -1891,7 +1895,7 @@ get_othercase_range(unsigned int *cptr, unsigned int d, unsigned int *ocptr,
 unsigned int c, othercase, next;
 
 for (c = *cptr; c <= d; c++)
-  { if ((othercase = _pcre_ucp_othercase(c)) != NOTACHAR) break; }
+  { if ((othercase = UCD_OTHERCASE(c)) != c) break; }
 
 if (c > d) return FALSE;
 
@@ -1900,7 +1904,7 @@ next = othercase + 1;
 
 for (++c; c <= d; c++)
   {
-  if (_pcre_ucp_othercase(c) != next) break;
+  if (UCD_OTHERCASE(c) != next) break;
   next++;
   }
 
@@ -2010,6 +2014,8 @@ if (next >= 0) switch(op_code)
   case OP_CHAR:
 #ifdef SUPPORT_UTF8
   if (utf8 && item > 127) { GETCHAR(item, utf8_char); }
+#else
+  (void)(utf8_char);  /* Keep compiler happy by referencing function argument */
 #endif
   return item != next;
 
@@ -2028,7 +2034,7 @@ if (next >= 0) switch(op_code)
     unsigned int othercase;
     if (next < 128) othercase = cd->fcc[next]; else
 #ifdef SUPPORT_UCP
-    othercase = _pcre_ucp_othercase((unsigned int)next);
+    othercase = UCD_OTHERCASE((unsigned int)next);
 #else
     othercase = NOTACHAR;
 #endif
@@ -2049,7 +2055,7 @@ if (next >= 0) switch(op_code)
     unsigned int othercase;
     if (next < 128) othercase = cd->fcc[next]; else
 #ifdef SUPPORT_UCP
-    othercase = _pcre_ucp_othercase(next);
+    othercase = UCD_OTHERCASE(next);
 #else
     othercase = NOTACHAR;
 #endif
@@ -3215,7 +3221,7 @@ for (;; ptr++)
         if ((options & PCRE_CASELESS) != 0)
           {
           unsigned int othercase;
-          if ((othercase = _pcre_ucp_othercase(c)) != NOTACHAR)
+          if ((othercase = UCD_OTHERCASE(c)) != c)
             {
             *class_utf8data++ = XCL_SINGLE;
             class_utf8data += _pcre_ord2utf8(othercase, class_utf8data);
@@ -4092,7 +4098,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
       const char *vn = verbnames;
       const uschar *name = ++ptr;
       previous = NULL;
-      while ((cd->ctypes[*++ptr] & ctype_letter) != 0);
+      while ((cd->ctypes[*++ptr] & ctype_letter) != 0) {};
       if (*ptr == ':')
         {
         *errorcodeptr = ERR59;   /* Not supported */
@@ -4230,7 +4236,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
         while ((cd->ctypes[*ptr] & ctype_word) != 0)
           {
           if (recno >= 0)
-            recno = (g_ascii_isdigit(*ptr) != 0)?
+            recno = (g_ascii_isdigit (*ptr) != 0)?
               recno * 10 + *ptr - '0' : -1;
           ptr++;
           }
@@ -4315,7 +4321,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
           recno = 0;
           for (i = 1; i < namelen; i++)
             {
-            if (g_ascii_isdigit(name[i]) == 0)
+            if (g_ascii_isdigit (name[i]) == 0)
               {
               *errorcodeptr = ERR15;
               goto FAILED;
@@ -4411,7 +4417,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
         *code++ = OP_CALLOUT;
           {
           int n = 0;
-          while (g_ascii_isdigit(*(++ptr)) != 0)
+          while (g_ascii_isdigit (*(++ptr)) != 0)
             n = n * 10 + *ptr - '0';
           if (*ptr != ')')
             {
@@ -4626,7 +4632,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
           if ((refsign = *ptr) == '+')
             {
             ptr++;
-            if (g_ascii_isdigit(*ptr) == 0)
+            if (g_ascii_isdigit (*ptr) == 0)
               {
               *errorcodeptr = ERR63;
               goto FAILED;
@@ -4634,13 +4640,13 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
             }
           else if (refsign == '-')
             {
-            if (g_ascii_isdigit(ptr[1]) == 0)
+            if (g_ascii_isdigit (ptr[1]) == 0)
               goto OTHER_CHAR_AFTER_QUERY;
             ptr++;
             }
 
           recno = 0;
-          while(g_ascii_isdigit(*ptr) != 0)
+          while(g_ascii_isdigit (*ptr) != 0)
             recno = recno * 10 + *ptr++ - '0';
 
           if (*ptr != terminator)
@@ -4796,10 +4802,8 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
         both phases.
 
         If we are not at the pattern start, compile code to change the ims
-        options if this setting actually changes any of them. We also pass the
-        new setting back so that it can be put at the start of any following
-        branches, and when this group ends (if we are in a group), a resetting
-        item can be compiled. */
+        options if this setting actually changes any of them, and reset the
+        greedy defaults and the case value for firstbyte and reqbyte. */
 
         if (*ptr == ')')
           {
@@ -4807,7 +4811,6 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
                (lengthptr == NULL || *lengthptr == 2 + 2*LINK_SIZE))
             {
             cd->external_options = newoptions;
-            options = *optionsptr = newoptions;
             }
          else
             {
@@ -4816,17 +4819,17 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
               *code++ = OP_OPT;
               *code++ = newoptions & PCRE_IMS;
               }
-
-            /* Change options at this level, and pass them back for use
-            in subsequent branches. Reset the greedy defaults and the case
-            value for firstbyte and reqbyte. */
-
-            *optionsptr = options = newoptions;
             greedy_default = ((newoptions & PCRE_UNGREEDY) != 0);
             greedy_non_default = greedy_default ^ 1;
-            req_caseopt = ((options & PCRE_CASELESS) != 0)? REQ_CASELESS : 0;
+            req_caseopt = ((newoptions & PCRE_CASELESS) != 0)? REQ_CASELESS : 0;
             }
 
+          /* Change options at this level, and pass them back for use
+          in subsequent branches. When not at the start of the pattern, this
+          information is also necessary so that a resetting item can be
+          compiled at the end of a group (if we are in a group). */
+
+          *optionsptr = options = newoptions;
           previous = NULL;       /* This item can't be repeated */
           continue;              /* It is complete */
           }
@@ -5115,7 +5118,7 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
         /* Test a signed number in angle brackets or quotes. */
 
         p = ptr + 2;
-        while (g_ascii_isdigit(*p) != 0) p++;
+        while (g_ascii_isdigit (*p) != 0) p++;
         if (*p != terminator)
           {
           *errorcodeptr = ERR57;
@@ -5820,7 +5823,7 @@ Returns:        pointer to compiled data block, or NULL on error,
                 with errorptr and erroroffset set
 */
 
-PCRE_EXP_DEFN pcre *
+PCRE_EXP_DEFN pcre * PCRE_CALL_CONVENTION
 pcre_compile(const char *pattern, int options, const char **errorptr,
   int *erroroffset, const unsigned char *tables)
 {
@@ -5828,7 +5831,7 @@ return pcre_compile2(pattern, options, NULL, errorptr, erroroffset, tables);
 }
 
 
-PCRE_EXP_DEFN pcre *
+PCRE_EXP_DEFN pcre * PCRE_CALL_CONVENTION
 pcre_compile2(const char *pattern, int options, int *errorcodeptr,
   const char **errorptr, int *erroroffset, const unsigned char *tables)
 {

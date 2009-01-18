@@ -43,58 +43,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /* This module contains code for searching the table of Unicode character
 properties. */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include "pcre_internal.h"
 
 #include "ucp.h"               /* Category definitions */
-#include "ucpinternal.h"       /* Internal table details */
-
-
-/* Table to translate from particular type value to the general value. */
-
-static int ucp_gentype[] = {
-  ucp_C, ucp_C, ucp_C, ucp_C, ucp_C,  /* Cc, Cf, Cn, Co, Cs */
-  ucp_L, ucp_L, ucp_L, ucp_L, ucp_L,  /* Ll, Lu, Lm, Lo, Lt */
-  ucp_M, ucp_M, ucp_M,                /* Mc, Me, Mn */
-  ucp_N, ucp_N, ucp_N,                /* Nd, Nl, No */
-  ucp_P, ucp_P, ucp_P, ucp_P, ucp_P,  /* Pc, Pd, Pe, Pf, Pi */
-  ucp_P, ucp_P,                       /* Ps, Po */
-  ucp_S, ucp_S, ucp_S, ucp_S,         /* Sc, Sk, Sm, So */
-  ucp_Z, ucp_Z, ucp_Z                 /* Zl, Zp, Zs */
-};
-
-
-
-/*************************************************
-*         Search table and return type           *
-*************************************************/
-
-/* Three values are returned: the category is ucp_C, ucp_L, etc. The detailed
-character type is ucp_Lu, ucp_Nd, etc. The script is ucp_Latin, etc.
-
-Arguments:
-  c           the character value
-  type_ptr    the detailed character type is returned here
-  script_ptr  the script is returned here
-
-Returns:      the character type category
-*/
-
-int
-_pcre_ucp_findprop(const unsigned int c, int *type_ptr, int *script_ptr)
-{
-/* Note that the Unicode types have the same values in glib and in
- * PCRE, so ucp_Ll == G_UNICODE_LOWERCASE_LETTER,
- * ucp_Zs == G_UNICODE_SPACE_SEPARATOR, and so on. */
-*type_ptr = g_unichar_type(c);
-*script_ptr = g_unichar_get_script(c);
-return ucp_gentype[*type_ptr];
-}
-
-
 
 
 /*************************************************
@@ -113,7 +64,7 @@ Returns:      the other case or NOTACHAR if none
 unsigned int
 _pcre_ucp_othercase(const unsigned int c)
 {
-int other_case = NOTACHAR;
+unsigned int other_case = NOTACHAR;
 
 if (g_unichar_islower(c))
   other_case = g_unichar_toupper(c);

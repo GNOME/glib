@@ -1,4 +1,3 @@
-#include "config.h"
 #include "pcre_internal.h"
 
 /*

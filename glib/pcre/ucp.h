@@ -125,7 +125,18 @@ enum {
   ucp_Cuneiform = G_UNICODE_SCRIPT_CUNEIFORM,   /* New for Unicode 5.0.0 */
   ucp_Nko = G_UNICODE_SCRIPT_NKO,           	/* New for Unicode 5.0.0 */
   ucp_Phags_Pa = G_UNICODE_SCRIPT_PHAGS_PA,     /* New for Unicode 5.0.0 */
-  ucp_Phoenician = G_UNICODE_SCRIPT_PHOENICIAN  /* New for Unicode 5.0.0 */
+  ucp_Phoenician = G_UNICODE_SCRIPT_PHOENICIAN, /* New for Unicode 5.0.0 */
+  ucp_Carian = G_UNICODE_SCRIPT_CARIAN,         /* New for Unicode 5.1 */
+  ucp_Cham = G_UNICODE_SCRIPT_CHAM,             /* New for Unicode 5.1 */
+  ucp_Kayah_Li = G_UNICODE_SCRIPT_KAYAH_LI,     /* New for Unicode 5.1 */
+  ucp_Lepcha = G_UNICODE_SCRIPT_LEPCHA,         /* New for Unicode 5.1 */
+  ucp_Lycian = G_UNICODE_SCRIPT_LYCIAN,         /* New for Unicode 5.1 */
+  ucp_Lydian = G_UNICODE_SCRIPT_LYDIAN,         /* New for Unicode 5.1 */
+  ucp_Ol_Chiki = G_UNICODE_SCRIPT_OL_CHIKI,     /* New for Unicode 5.1 */
+  ucp_Rejang = G_UNICODE_SCRIPT_REJANG,         /* New for Unicode 5.1 */
+  ucp_Saurashtra = G_UNICODE_SCRIPT_SAURASHTRA, /* New for Unicode 5.1 */
+  ucp_Sundanese = G_UNICODE_SCRIPT_SUNDANESE,   /* New for Unicode 5.1 */
+  ucp_Vai = G_UNICODE_SCRIPT_VAI                /* New for Unicode 5.1 */
 };
 
 #endif
