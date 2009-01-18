@@ -1,5 +1,9 @@
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbsearcharray.h: Quell some compiler warnings.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/pcre: Update to PCRE 7.8
 
 2009-01-17  Matthias Clasen  <mclasen@redhat.com>
