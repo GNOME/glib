@@ -1,5 +1,9 @@
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 512779 – --disable-regex breaks compilation
 	
 	* configure.in: Define an ENABLE_REGEX macro

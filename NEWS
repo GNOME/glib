@@ -1,3 +1,28 @@
+Overview of Changes from GLib 2.19.4 to GLib 2.19.5
+===================================================
+
+* Update included PCRE to 7.8
+
+* g_base64_decode_inplace: New function to do base64 decoding in place
+
+* Bugs fixed:
+ 567138 get_package_directory_from_module() does not free ...
+ 566569 gregex docs clarification
+ 566573 g_match_info_fetch_pos docs
+ 564728 Add function to decode base64 encoded data in place
+ 567838 G_STRUCT_OFFSETOF fails to compile under icc 9.1
+ 567977 textdomain() macro should not return NULL ...
+ 512779 --disable-regex breaks compilation
+ 566770 error code 0 for Too many open files is useless
+ 565484 g_content_type_guess passes non-UTF8 text to XDG ...
+
+* Updated translations:
+ Catalan (ca)
+ Spanish (es)
+ Italian (it)
+ Swedish (sv)
+
+ 
 Overview of Changes from GLib 2.19.3 to GLib 2.19.4
 ===================================================
 
