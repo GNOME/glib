@@ -23,7 +23,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str);
 #define _(String) (String)
 #define N_(String) (String)
 #define P_(String) (String)
-#define textdomain(String) (String)
+#define textdomain(String) ((String) ? (String) : "messages")
 #define gettext(String) (String)
 #define dgettext(Domain,String) (String)
 #define dcgettext(Domain,String,Type) (String)

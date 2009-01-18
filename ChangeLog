@@ -1,5 +1,14 @@
 2009-01-17  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 567977 – textdomain() macro should not return NULL when 
+	ENABLE_NLS is not set
+
+	* glib/glibintl.h: If !ENABLE_NLS, make textomain() macro 
+	return "messages" in case of a NULL argument. Patch by
+	Peter Kjellerstedt.
+
+2009-01-17  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 567838 – G_STRUCT_OFFSETOF fails to compile under icc 9.1
 
 	* glib/gmacros.h (G_STRUCT_OFFSETOF): Use offsetof instead of 
