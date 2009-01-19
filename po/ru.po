@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-03-11 20:54+0300\n"
 "Last-Translator: Nickolay V. Shmyrev <nshmyrev@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -781,7 +781,7 @@ msgstr "переполнение рабочего пространства ко�
 msgid "previously-checked referenced subpattern not found"
 msgstr "не найден ранее проверенный подшаблон со ссылкой "
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
@@ -807,43 +807,43 @@ msgstr ""
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Произошла ошибка при оптимизации регулярного выражения %s: %s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "ожидалась шестнадцатеричная цифра или символ «}»"
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "ожидалась шестнадцатеричная цифра"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "в символьной ссылке отсутствует «<»"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "незаконченная символьная ссылка"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "символьная ссылка нулевой длины"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "ожидалась цифра"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "недопустимая символьная ссылка"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "лишний «\\» в конце"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "неизвестная экранирующая последовательность"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1040,17 +1040,17 @@ msgstr "Не удалось разобрать дробное значение �
 msgid "Double value '%s' for %s out of range"
 msgstr "Дробное значение двойной точности «%s» для %s выходит за пределы"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Произошла ошибка при разборе параметра %s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Отсутствует аргумент для %s"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
@@ -1244,6 +1244,20 @@ msgstr ""
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:295
+#, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:305
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
@@ -1793,7 +1807,7 @@ msgstr "Произошла ошибка при чтении из unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Произошла ошибка при закрытии unix: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 

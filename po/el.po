@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-03-18 03:34+0200\n"
 "Last-Translator: Giannis Katsampirhs <giannis1_86@hotmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -798,7 +798,7 @@ msgstr ""
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
@@ -822,43 +822,43 @@ msgstr "Σφάλμα κατά το compiling κανονικής έκφρασης
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "Ημιτελής συμβολική αναφορά"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1062,17 +1062,17 @@ msgid "Double value '%s' for %s out of range"
 msgstr "Double value '%s' για %s είναι εκτός εύρους"
 
 # gconf/gconftool.c:1181
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Σφάλμα επιλογής ανάλυσης %s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Λείπει όρισμα για %s"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "Άγνωστη επιλογή %s"
@@ -1266,6 +1266,20 @@ msgstr ""
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:295
+#, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:305
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
@@ -1844,7 +1858,7 @@ msgstr "Σφάλμα ανάγνωσης από unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Σφάλμα κλεισίματος unix: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr ""
 

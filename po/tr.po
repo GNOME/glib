@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-09-13 05:34+0300\n"
 "Last-Translator: Baris Cicek <baris@teamforce.name.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -765,7 +765,7 @@ msgstr "derleme çalışma alanı kaplandı"
 msgid "previously-checked referenced subpattern not found"
 msgstr "onceden kontrol edilmiş referanslı alt desen bulunamadı"
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Düzenli ifade %s eşleşirken hata: %s"
@@ -788,43 +788,43 @@ msgstr "Düzenli ifade %s derlenirken karakter %d hatalı: %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Düzenli ifade %s eniyilemesinde (optimization) hata: %s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "onaltılı rakam ya da '}' beklendi"
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "onaltılı rakam beklendi"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "sembolik referansda eksik '<'"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "tamamlanmamış sembolik referans"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "sıfır-uzunlukta sembolik referans"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "rakam beklendi"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "geçersiz sembolik referans"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "son '\\' kayıp"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "geçersiz çıkış dizisi"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Yerine koyma metni \"%s\" işlenirken karakter %lu hatalı: %s"
@@ -1011,17 +1011,17 @@ msgstr "'%2$s' için double değeri '%1$s' ayrıştırılamıyor"
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s için double değeri '%1$s' aralık dışında"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s seçeneği işlenirken hata"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s için parametre eksik"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "Bilinmeyen seçenek %s"
@@ -1212,6 +1212,20 @@ msgstr ""
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:295
+#, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:305
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
@@ -1756,7 +1770,7 @@ msgstr "Unix'den okurken hata: %s"
 msgid "Error closing unix: %s"
 msgstr "Unix kapatılırken hata: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "Dosya sistemi kök dizini"
 

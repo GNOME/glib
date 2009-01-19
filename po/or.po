@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-09-09 19:20+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya\n"
@@ -752,7 +752,7 @@ msgstr "overran ସଙ୍କଳନ କାର୍ଯ୍ୟକ୍ଷେତ୍ର"
 msgid "previously-checked referenced subpattern not found"
 msgstr "ପୂର୍ବରୁ ଯାଞ୍ଚକରାଯାଇଥିବା ଉଲ୍ଲେଖିତ ଉପଢ଼ାଞ୍ଚା ମିଳୁନାହିଁ"
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ମିଳାଇବା ସମୟରେ ତୃଟି: %s"
@@ -775,43 +775,43 @@ msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ %d ଅକ୍ଷ�
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ଅନୁକୂଳତମ କରିବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ କିମ୍ବା '}' ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶରେ '<' ଅନୁପସ୍ଥିତ"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "ଅସମାପ୍ତ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "ଶୂନ୍ଯ ଲମ୍ବ ବିଶିଷ୍ଟ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "ଅବୈଧ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "ପଥଭ୍ରଷ୍ଟ ନିର୍ଣ୍ଣୟ '\\'"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "ଅଜଣା ପଳାୟନ ସଂପ୍ରତୀକ"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "ପରିବର୍ତ୍ତିତ ପାଠ୍ଯ \"%s\" ର %lu ଅକ୍ଷରରେ ବିଶ୍ଳଷଣ କରିବା ସମୟରେ ତୃଟି: %s"
@@ -997,17 +997,17 @@ msgstr "'%s' ଦ୍ବ୍ଯର୍ଥକ ମୂଲ୍ଯକୁ %s ପାଇଁ �
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' ଦ୍ବ୍ଯର୍ଥକ ମୂଲ୍ଯଟି %s ପାଇଁ ପରିସରର ବହିର୍ଭୂତ।"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ରୁପାନ୍ତରଣ ର ବିକଲ୍ପ ରେ ତ୍ରୁଟି: %s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ପାଇଁ ସ୍ବତନ୍ତ୍ରଚର ଟି ହଜି ଯାଇଛି"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"
@@ -1196,6 +1196,20 @@ msgstr ""
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:295
+#, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:305
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
@@ -1739,7 +1753,7 @@ msgstr "unixରୁ ପଢିବାରେ ତ୍ରୁଟି: %s"
 msgid "Error closing unix: %s"
 msgstr "unix ବନ୍ଦକରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "ଫାଇଲତନ୍ତ୍ର ମୂଳସ୍ଥାନ"
 

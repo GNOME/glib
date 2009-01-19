@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-03-03 17:37+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <smc-discuss@googlegroups.com>\n"
@@ -751,7 +751,7 @@ msgstr ""
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "സാധാരണ എക്സ്പ്രെഷന്‍ ആയ %s-നൊപ്പം പൊരുത്തപ്പെടുത്തുമ്പോള്‍ പിശക്: %s"
@@ -774,43 +774,43 @@ msgstr "സാധാരണ എക്സ്പ്രെഷന്‍ ആയ %s ക
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s എന്ന സാധാരണ എക്സ്പ്രെഷന്‍ കൈകാര്യം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "ഹെക്സാ ഡെസിമല്‍ അക്കം അല്ലെങ്കില്‍ '}' ആവശ്യമുണ്ട് "
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "ഹെക്സാ ഡെസിമല്‍ അക്കം ആവശ്യമുണ്ട്"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "സിംപോളിക് സൂചനയില്‍ '<' ലഭ്യമല്ല"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "പൂര്‍ണ്ണമാകാത്ത സിംപോളിക് സൂചനാ"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "zero-length symbolic reference"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "അക്കം ആവശ്യമുണ്ട്"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "തെറ്റായ സിംപോളിക് സൂചനാ"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "stray final '\\'"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "അപരിചിതമായ എസ്കേപ്പ് സീക്വന്‍സ്"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "പകരമായുളള ടെക്സ്റ്റ് ആയ \"%s\" %lu-ല്‍ പാഴ്സ് ചെയ്യുന്നതിനിടയില്‍ പിശക്: %s"
@@ -997,17 +997,17 @@ msgstr "%s-ന് വേണ്ടി ഡബിള്‍ മൂല്ല്യം
 msgid "Double value '%s' for %s out of range"
 msgstr "%s-ന് വേണ്ടിയുളള ഡബിള്‍ മൂല്ല്യം '%s' പരിധിയ്ക്ക് പുറത്താണ്"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s ഉപാധി പാഴ്സ് ചെയ്യുന്നതില്‍ പിശക്"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s-നുളള ആര്‍ഗ്യുമെന്‍റ് ലഭ്യമല്ല"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "അപരിചിതമായ ഉപാധി %s"
@@ -1196,6 +1196,20 @@ msgstr ""
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:295
+#, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:305
+#, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr ""
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
@@ -1741,7 +1755,7 @@ msgstr "യൂണിക്സില്‍ നിന്നും ലഭ്യമ�
 msgid "Error closing unix: %s"
 msgstr "യൂണിക്സ് അടയ്ക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "ഫയല്‍സിസ്റ്റം റൂട്ട്"
 

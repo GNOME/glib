@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2008-08-14 15:30+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -767,7 +767,7 @@ msgstr "käännöksen työalueen koko loppui kesken"
 msgid "previously-checked referenced subpattern not found"
 msgstr "aiemmin tarkistettua ja viitattua alimallia ei löydy"
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Virhe täsmätessä säännöllistä lauseketta %s: %s"
@@ -790,43 +790,43 @@ msgstr "Virhe säännöllisessä lausekkeessa %s kohdassa %d: %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Virhe optimoitaessa säännöllistä lauseketta %s: %s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "odotettiin heksadesimaalista numeroa tai merkkiä \"}\""
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "odotettiin heksadesimaalista numeroa"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "merkki '<' puuttuu symbolisesta viitteestä"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "päättämätön symbolinen viite"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "nollan mittainen symbolinen viite"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "odotettiin numeroa"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "virheellinen symbolinen viite"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "ylimääräinen päättävä '\\'"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "tuntematon escape-jono"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Virhe tulkittaessa korvaavaa tekstia \"%s\" kohdassa %lu: %s"
@@ -1017,17 +1017,17 @@ msgstr "Kokonaislukua \"%s\" ei voida tulkita kohteelle %s"
 msgid "Double value '%s' for %s out of range"
 msgstr "Double-arvo \"%s\" kohteelle %s ylittää sallitun alueen"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Virhe käsiteltäessä valitsinta %s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Puuttuva argumentti kohteelle %s"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "Tuntematon optio %s"
@@ -1222,6 +1222,20 @@ msgstr "GEmblem-koodauksen versiota %d ei voi käsitellä"
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Virheellinen määrä tunnisteita (%d) GEmblem-koodauksessa"
+
+#: gio/gemblemedicon.c:295
+#, fuzzy, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr "GThemeIcon-koodauksen versiota %d ei voi käsitellä"
+
+#: gio/gemblemedicon.c:305
+#, fuzzy, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr "Virheellinen määrä tunnisteita (%d) GEmblem-koodauksessa"
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
+msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
@@ -1766,7 +1780,7 @@ msgstr "Virhe luettaessa UNIX:ilta: %s"
 msgid "Error closing unix: %s"
 msgstr "Virhe suljettaessa UNIX:ia: %s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "Tiedostojärjestelmän juuri"
 

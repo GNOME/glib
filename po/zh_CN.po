@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 12:42-0500\n"
+"POT-Creation-Date: 2009-01-19 02:07-0500\n"
 "PO-Revision-Date: 2009-01-02 15:36+0800\n"
 "Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -728,7 +728,7 @@ msgstr "编译工作区超出正常范围"
 msgid "previously-checked referenced subpattern not found"
 msgstr "未找到之前检查过的引用过的子表达式"
 
-#: glib/gregex.c:526 glib/gregex.c:1593
+#: glib/gregex.c:526 glib/gregex.c:1605
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "匹配正则表达式 %s 出现错误：%s"
@@ -751,43 +751,43 @@ msgstr "编译正则表达式 %s (于字符 %d 处)时出错：%s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "优化正则表达式 %s 时出错：%s"
 
-#: glib/gregex.c:2021
+#: glib/gregex.c:2033
 msgid "hexadecimal digit or '}' expected"
 msgstr "期望十六进制数或 '}'"
 
-#: glib/gregex.c:2037
+#: glib/gregex.c:2049
 msgid "hexadecimal digit expected"
 msgstr "期望十六进制数"
 
-#: glib/gregex.c:2077
+#: glib/gregex.c:2089
 msgid "missing '<' in symbolic reference"
 msgstr "在符号引用中缺少“<”"
 
-#: glib/gregex.c:2086
+#: glib/gregex.c:2098
 msgid "unfinished symbolic reference"
 msgstr "未完成的符号引用"
 
-#: glib/gregex.c:2093
+#: glib/gregex.c:2105
 msgid "zero-length symbolic reference"
 msgstr "零长符号引用"
 
-#: glib/gregex.c:2104
+#: glib/gregex.c:2116
 msgid "digit expected"
 msgstr "期望数字"
 
-#: glib/gregex.c:2122
+#: glib/gregex.c:2134
 msgid "illegal symbolic reference"
 msgstr "非法的符号引用"
 
-#: glib/gregex.c:2184
+#: glib/gregex.c:2196
 msgid "stray final '\\'"
 msgstr "丢失了最后的“\\”"
 
-#: glib/gregex.c:2188
+#: glib/gregex.c:2200
 msgid "unknown escape sequence"
 msgstr "未知的转义序列"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "分析替换文本\"%s\" 时在字符 %lu 处发生错误：%s"
@@ -971,17 +971,17 @@ msgstr "无法处理 %2$s 所用的双精度值“%1$s”"
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s 所用的双精度值“%1$s”超出范围"
 
-#: glib/goption.c:1230
+#: glib/goption.c:1156 glib/goption.c:1235
 #, c-format
 msgid "Error parsing option %s"
 msgstr "分析选项出错：%s"
 
-#: glib/goption.c:1261 glib/goption.c:1375
+#: glib/goption.c:1266 glib/goption.c:1380
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的参数"
 
-#: glib/goption.c:1768
+#: glib/goption.c:1773
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
@@ -1170,6 +1170,20 @@ msgstr "无法处理 GEmblem 编码的版本 %d "
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "GEmblem 编码中有不正确的符号数量(%d)"
+
+#: gio/gemblemedicon.c:295
+#, fuzzy, c-format
+msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgstr "无法处理 GThemedIcon 编码的版本 %d"
+
+#: gio/gemblemedicon.c:305
+#, fuzzy, c-format
+msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
+msgstr "GEmblem 编码中有不正确的符号数量(%d)"
+
+#: gio/gemblemedicon.c:328
+msgid "Expected a GEmblem for GEmblemedIcon"
+msgstr ""
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
@@ -1711,7 +1725,7 @@ msgstr "读取 unix 出错：%s"
 msgid "Error closing unix: %s"
 msgstr "关闭 unix 出错：%s"
 
-#: gio/gunixmounts.c:1783 gio/gunixmounts.c:1820
+#: gio/gunixmounts.c:1781 gio/gunixmounts.c:1818
 msgid "Filesystem root"
 msgstr "文件系统根目录"
 

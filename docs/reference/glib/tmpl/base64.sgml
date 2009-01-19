@@ -93,3 +93,13 @@ Support for Base64 encoding has been added in GLib 2.12.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_base64_decode_inplace ##### -->
+<para>
+
+</para>
+
+@text: 
+@out_len: 
+@Returns: 
+
+

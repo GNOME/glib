@@ -1,3 +1,7 @@
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.19.5 ===
+
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c (g_strdup_printf): Fix a doc typo.
