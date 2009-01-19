@@ -1,3 +1,7 @@
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* gunixmounts.c: Some stylistic fixes.
+
 2009-01-08  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 565484 – g_content_type_guess passes non-UTF8 text to XDG 
