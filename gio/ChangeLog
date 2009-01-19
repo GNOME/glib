@@ -1,5 +1,9 @@
 2009-01-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* gdesktopappinfo.c (g_desktop_app_info_new): Expand the docs.
+
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.19.5 ===
 
 2009-01-19  Matthias Clasen  <mclasen@redhat.com>
