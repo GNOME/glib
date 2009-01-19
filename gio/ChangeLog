@@ -1,5 +1,9 @@
 2009-01-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* gappinfo.h: Document get_commandline vfunc
+
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
 	* gunixmounts.c: Some stylistic fixes.
 
 2009-01-08  Matthias Clasen  <mclasen@redhat.com>

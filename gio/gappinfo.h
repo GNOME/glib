@@ -77,6 +77,7 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @remove_supports_type: Removes a supported application type from a #GAppInfo.
  * @can_delete: Checks if a #GAppInfo can be deleted. Since 2.20
  * @do_delete: Deletes a #GAppInfo. Since 2.20
+ * @get_commandline: Gets the commandline for the #GAppInfo. Since 2.20
  *
  * Application Information interface, for operating system portability.
  */
