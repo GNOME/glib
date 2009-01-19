@@ -248,7 +248,7 @@ g_strdup_vprintf (const gchar *format,
 
 /**
  * g_strdup_printf:
- * format: a standard printf() format string, but notice
+ * @format: a standard printf() format string, but notice
  *     <link linkend="string-precision">string precision pitfalls</link>
  * @Varargs: the parameters to insert into the format string
  *

@@ -1,5 +1,9 @@
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstrfuncs.c (g_strdup_printf): Fix a doc typo.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* NEWS: Updates
 
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
