@@ -3002,7 +3002,7 @@ g_bookmark_file_get_groups (GBookmarkFile  *bookmark,
  * time the application registered this bookmark.
  *
  * If @name is %NULL, the name of the application will be the
- * same returned by g_get_application(); if @exec is %NULL, the
+ * same returned by g_get_application_name(); if @exec is %NULL, the
  * command line will be a composition of the program name as
  * returned by g_get_prgname() and the "%u" modifier, which will be
  * expanded to the bookmark's URI.
