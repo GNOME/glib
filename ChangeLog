@@ -1,3 +1,9 @@
+2009-01-21  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_locale_filename_from_utf8): Drop the code
+	in the else branch of #if GLIB_CHECK_VERSION (2, 19, 0). Drop
+	unused variables.
+
 2009-01-20  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 568294 – A wrong reference in the description of 

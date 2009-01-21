@@ -380,75 +380,11 @@ get_package_directory_from_module (const gchar *module_name)
 g_win32_get_package_installation_directory_utf8 (const gchar *package,
 						 const gchar *dll_name)
 {
-  static GHashTable *package_dirs = NULL;
-  G_LOCK_DEFINE_STATIC (package_dirs);
   gchar *result = NULL;
-  gchar *key;
-  wchar_t *wc_key;
-  HKEY reg_key = NULL;
-  DWORD type;
-  DWORD nbytes;
 
-#if GLIB_CHECK_VERSION (2, 19, 0)
   if (package != NULL)
       g_warning ("Passing a non-NULL package to g_win32_get_package_installation_directory() is deprecated and it is ignored.");
-#else
-  if (package != NULL)
-    {
-      g_warning ("Passing a non-NULL package to g_win32_get_package_installation_directory() is deprecated and will not work in GLib after 2.18.");
 
-      G_LOCK (package_dirs);
-      
-      if (package_dirs == NULL)
-	package_dirs = g_hash_table_new (g_str_hash, g_str_equal);
-      
-      result = g_hash_table_lookup (package_dirs, package);
-      
-      if (result && result[0])
-	{
-	  G_UNLOCK (package_dirs);
-	  return g_strdup (result);
-	}
-      
-      key = g_strconcat ("Software\\", package, NULL);
-      
-      nbytes = 0;
-
-      wc_key = g_utf8_to_utf16 (key, -1, NULL, NULL, NULL);
-      if (((RegOpenKeyExW (HKEY_CURRENT_USER, wc_key, 0,
-			   KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-	    && RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-				 &type, NULL, &nbytes) == ERROR_SUCCESS)
-	   ||
-	   (RegOpenKeyExW (HKEY_LOCAL_MACHINE, wc_key, 0,
-			   KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-	    && RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-				 &type, NULL, &nbytes) == ERROR_SUCCESS))
-	  && type == REG_SZ)
-	{
-	  wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
-	  RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-			    &type, (LPBYTE) wc_temp, &nbytes);
-	  wc_temp[nbytes/2] = '\0';
-	  result = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
-	  g_free (wc_temp);
-	}
-      g_free (wc_key);
-
-      if (reg_key != NULL)
-	RegCloseKey (reg_key);
-      
-      g_free (key);
-
-      if (result)
-	{
-	  g_hash_table_insert (package_dirs, g_strdup (package), result);
-	  G_UNLOCK (package_dirs);
-	  return g_strdup (result);
-	}
-      G_UNLOCK (package_dirs);
-    }
-#endif
   if (dll_name != NULL)
     result = get_package_directory_from_module (dll_name);
 
