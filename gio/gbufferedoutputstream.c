@@ -508,11 +508,14 @@ g_buffered_output_stream_close (GOutputStream  *stream,
 
   res = flush_buffer (bstream, cancellable, error);
 
-  /* report the first error but still close the stream */
-  if (res)
-    res = g_output_stream_close (base_stream, cancellable, error); 
-  else
-    g_output_stream_close (base_stream, cancellable, NULL); 
+  if (g_filter_output_stream_get_close_base_stream (G_FILTER_OUTPUT_STREAM (stream)))
+    {
+      /* report the first error but still close the stream */
+      if (res)
+        res = g_output_stream_close (base_stream, cancellable, error); 
+      else
+        g_output_stream_close (base_stream, cancellable, NULL); 
+    }
 
   return res;
 }
@@ -569,10 +572,13 @@ flush_buffer_thread (GSimpleAsyncResult *result,
       /* if flushing the buffer or the stream returned 
        * an error report that first error but still try 
        * close the stream */
-      if (res == FALSE)
-        g_output_stream_close (base_stream, cancellable, NULL);
-      else 
-        res = g_output_stream_close (base_stream, cancellable, &error);
+      if (g_filter_output_stream_get_close_base_stream (G_FILTER_OUTPUT_STREAM (stream)))
+        {
+          if (res == FALSE)
+            g_output_stream_close (base_stream, cancellable, NULL);
+          else 
+            res = g_output_stream_close (base_stream, cancellable, &error);
+        }
     }
 
   if (res == FALSE)
@@ -758,7 +764,7 @@ g_buffered_output_stream_close_finish (GOutputStream        *stream,
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-            g_buffered_output_stream_flush_async);
+            g_buffered_output_stream_close_async);
 
   return TRUE;
 }

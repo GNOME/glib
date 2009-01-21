@@ -23,6 +23,7 @@
 #include "config.h"
 #include "gfilterinputstream.h"
 #include "ginputstream.h"
+#include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -36,7 +37,8 @@
 
 enum {
   PROP_0,
-  PROP_BASE_STREAM
+  PROP_BASE_STREAM,
+  PROP_CLOSE_BASE
 };
 
 static void     g_filter_input_stream_set_property (GObject      *object,
@@ -93,6 +95,13 @@ static gboolean g_filter_input_stream_close_finish (GInputStream         *stream
 
 G_DEFINE_TYPE (GFilterInputStream, g_filter_input_stream, G_TYPE_INPUT_STREAM)
 
+#define GET_PRIVATE(inst) G_TYPE_INSTANCE_GET_PRIVATE (inst, \
+  G_TYPE_FILTER_INPUT_STREAM, GFilterInputStreamPrivate)
+
+typedef struct
+{
+  gboolean close_base;
+} GFilterInputStreamPrivate;
 
 static void
 g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
@@ -117,6 +126,8 @@ g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
   istream_class->close_async  = g_filter_input_stream_close_async;
   istream_class->close_finish = g_filter_input_stream_close_finish;
 
+  g_type_class_add_private (klass, sizeof (GFilterInputStreamPrivate));
+
   g_object_class_install_property (object_class,
                                    PROP_BASE_STREAM,
                                    g_param_spec_object ("base-stream",
@@ -126,6 +137,13 @@ g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | 
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
+  g_object_class_install_property (object_class,
+                                   PROP_CLOSE_BASE,
+                                   g_param_spec_boolean ("close-base-stream",
+                                                         P_("Close Base Stream"),
+                                                         P_("If the base stream be closed when the filter stream is"),
+                                                         TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | 
+                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
 static void
@@ -144,6 +162,11 @@ g_filter_input_stream_set_property (GObject         *object,
     case PROP_BASE_STREAM:
       obj = g_value_dup_object (value);
       filter_stream->base_stream = G_INPUT_STREAM (obj); 
+      break;
+
+    case PROP_CLOSE_BASE:
+      g_filter_input_stream_set_close_base_stream (filter_stream,
+                                                   g_value_get_boolean (value));
       break;
 
     default:
@@ -167,6 +190,10 @@ g_filter_input_stream_get_property (GObject    *object,
     {
     case PROP_BASE_STREAM:
       g_value_set_object (value, filter_stream->base_stream);
+      break;
+
+    case PROP_CLOSE_BASE:
+      g_value_set_boolean (value, GET_PRIVATE (filter_stream)->close_base);
       break;
 
     default:
@@ -208,6 +235,49 @@ g_filter_input_stream_get_base_stream (GFilterInputStream *stream)
   g_return_val_if_fail (G_IS_FILTER_INPUT_STREAM (stream), NULL);
 
   return stream->base_stream;
+}
+
+/**
+ * g_filter_input_stream_get_close_base_stream:
+ * @stream: a #GFilterInputStream.
+ *
+ * Returns whether the base stream will be closed when @stream is
+ * closed.
+ *
+ * Return value: %TRUE if the base stream will be closed.
+ **/
+gboolean
+g_filter_input_stream_get_close_base_stream (GFilterInputStream *stream)
+{
+  g_return_val_if_fail (G_IS_FILTER_INPUT_STREAM (stream), FALSE);
+
+  return GET_PRIVATE (stream)->close_base;
+}
+
+/**
+ * g_filter_input_stream_set_close_base_stream:
+ * @stream: a #GFilterInputStream.
+ * @close_base: %TRUE to close the base stream.
+ *
+ * Sets whether the base stream will be closed when @stream is closed.
+ **/
+void
+g_filter_input_stream_set_close_base_stream (GFilterInputStream *stream,
+                                             gboolean            close_base)
+{
+  GFilterInputStreamPrivate *priv;
+
+  g_return_if_fail (G_IS_FILTER_INPUT_STREAM (stream));
+
+  close_base = !!close_base;
+ 
+  priv = GET_PRIVATE (stream);
+
+  if (priv->close_base != close_base)
+    {
+      priv->close_base = close_base;
+      g_object_notify (G_OBJECT (stream), "close-base-stream");
+    }
 }
 
 static gssize
@@ -258,16 +328,20 @@ g_filter_input_stream_close (GInputStream  *stream,
                              GCancellable  *cancellable,
                              GError       **error)
 {
-  GFilterInputStream *filter_stream;
-  GInputStream       *base_stream;
-  gboolean            res;
+  gboolean res = TRUE;
 
-  filter_stream = G_FILTER_INPUT_STREAM (stream);
-  base_stream = filter_stream->base_stream;
+  if (GET_PRIVATE (stream)->close_base)
+    {
+      GFilterInputStream *filter_stream;
+      GInputStream       *base_stream;
 
-  res = g_input_stream_close (base_stream,
-                              cancellable,
-                              error);
+      filter_stream = G_FILTER_INPUT_STREAM (stream);
+      base_stream = filter_stream->base_stream;
+
+      res = g_input_stream_close (base_stream,
+                                  cancellable,
+                                  error);
+    }
 
   return res;
 }
@@ -358,23 +432,52 @@ g_filter_input_stream_skip_finish (GInputStream  *stream,
 }
 
 static void
+g_filter_input_stream_close_ready (GObject       *object,
+                                   GAsyncResult  *result,
+                                   gpointer       user_data)
+{
+  GSimpleAsyncResult *simple = user_data;
+  GError *error = NULL;
+
+  g_input_stream_close_finish (G_INPUT_STREAM (object), result, &error);
+
+  if (error)
+    {
+      g_simple_async_result_set_from_error (simple, error);
+      g_error_free (error);
+    }
+
+  g_simple_async_result_complete (simple);
+  g_object_unref (simple);
+}
+
+static void
 g_filter_input_stream_close_async (GInputStream        *stream,
                                    int                  io_priority,
                                    GCancellable        *cancellable,
                                    GAsyncReadyCallback  callback,
                                    gpointer             user_data)
 {
-  GFilterInputStream *filter_stream;
-  GInputStream       *base_stream;
+  GSimpleAsyncResult *simple;
 
-  filter_stream = G_FILTER_INPUT_STREAM (stream);
-  base_stream = filter_stream->base_stream;
+  simple = g_simple_async_result_new (G_OBJECT (stream),
+                                      callback, user_data,
+                                      g_filter_input_stream_close_async);
 
-  g_input_stream_close_async (base_stream,
-                              io_priority,
-                              cancellable,
-                              callback,
-                              user_data);
+  if (GET_PRIVATE (stream)->close_base)
+    {
+      GFilterInputStream *filter_stream = G_FILTER_INPUT_STREAM (stream);
+
+      g_input_stream_close_async (filter_stream->base_stream,
+                                  io_priority, cancellable,
+                                  g_filter_input_stream_close_ready,
+                                  g_object_ref (simple));
+    }
+  else
+    /* do nothing */
+    g_simple_async_result_complete_in_idle (simple);
+
+  g_object_unref (simple);
 }
 
 static gboolean
@@ -382,18 +485,14 @@ g_filter_input_stream_close_finish (GInputStream  *stream,
                                     GAsyncResult  *result,
                                     GError       **error)
 {
-  GFilterInputStream *filter_stream;
-  GInputStream       *base_stream;
-  gboolean res;
+  GSimpleAsyncResult *simple;
 
-  filter_stream = G_FILTER_INPUT_STREAM (stream);
-  base_stream = filter_stream->base_stream;
+  g_return_val_if_fail (g_simple_async_result_is_valid (
+    result, G_OBJECT (stream), g_filter_input_stream_close_async), FALSE);
 
-  res = g_input_stream_close_finish (stream,
-                                     result,
-                                     error);
+  simple = G_SIMPLE_ASYNC_RESULT (result);
 
-  return res;
+  return !g_simple_async_result_propagate_error (simple, error);
 }
 
 #define __G_FILTER_INPUT_STREAM_C__

@@ -44,7 +44,6 @@ G_BEGIN_DECLS
  * A base class for all input streams that work on an underlying stream.
  **/
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;
-typedef struct _GFilterInputStreamPrivate  GFilterInputStreamPrivate;
 
 struct _GFilterInputStream
 {
@@ -66,8 +65,11 @@ struct _GFilterInputStreamClass
 };
 
 
-GType          g_filter_input_stream_get_type        (void) G_GNUC_CONST;
-GInputStream * g_filter_input_stream_get_base_stream (GFilterInputStream *stream);
+GType          g_filter_input_stream_get_type              (void) G_GNUC_CONST;
+GInputStream * g_filter_input_stream_get_base_stream       (GFilterInputStream *stream);
+gboolean       g_filter_input_stream_get_close_base_stream (GFilterInputStream *stream);
+void           g_filter_input_stream_set_close_base_stream (GFilterInputStream *stream,
+                                                            gboolean            close_base);
 
 G_END_DECLS
 

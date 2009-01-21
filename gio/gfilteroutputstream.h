@@ -44,7 +44,6 @@ G_BEGIN_DECLS
  * A base class for all output streams that work on an underlying stream.
  **/
 typedef struct _GFilterOutputStreamClass    GFilterOutputStreamClass;
-typedef struct _GFilterOutputStreamPrivate  GFilterOutputStreamPrivate;
 
 struct _GFilterOutputStream
 {
@@ -66,8 +65,11 @@ struct _GFilterOutputStreamClass
 };
 
 
-GType           g_filter_output_stream_get_type        (void) G_GNUC_CONST;
-GOutputStream * g_filter_output_stream_get_base_stream (GFilterOutputStream *stream);
+GType           g_filter_output_stream_get_type              (void) G_GNUC_CONST;
+GOutputStream * g_filter_output_stream_get_base_stream       (GFilterOutputStream *stream);
+gboolean        g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream);
+void            g_filter_output_stream_set_close_base_stream (GFilterOutputStream *stream,
+                                                              gboolean             close_base);
 
 G_END_DECLS
 

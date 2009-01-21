@@ -10,3 +10,4 @@ g-file-info
 live-g-file
 memory-input-stream
 memory-output-stream
+filter-streams

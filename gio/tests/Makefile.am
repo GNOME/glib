@@ -25,6 +25,7 @@ TEST_PROGS +=	 		\
 	data-output-stream 	\
 	g-icon			\
 	buffered-input-stream	\
+	filter-streams		\
 	simple-async-result
 
 if OS_UNIX
@@ -67,5 +68,8 @@ unix_streams_LDADD	  = $(progs_ldadd) \
 
 simple_async_result_SOURCES	= simple-async-result.c
 simple_async_result_LDADD	= $(progs_ldadd)
+
+filter_streams_SOURCES		= filter-streams.c
+filter_streams_LDADD		= $(progs_ldadd)
 
 DISTCLEAN_FILES = applications/mimeinfo.cache

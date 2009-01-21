@@ -1,3 +1,26 @@
+2009-01-20  Ryan Lortie  <desrt@desrt.ca>
+
+	Bug 568394 – dropping the last reference to a stream filter closes the
+	base stream
+
+	* gfilterinputstream.h:
+	* gfilterinputstream.c: add "close-base-stream" property and only
+	close the base stream if it is true.  issue async close callbacks from
+	correct source object.
+	* gfilteroutputstream.h:
+	* gfilteroutputstream.c: add a "close-base-stream" property and only
+	close the base stream if it is true.  issue async close callbacks from
+	correct source object.
+	* gbufferedoutputstream: check g_filter_output_stream_get_close_base()
+	before closing the base stream.  fix invalid source tag comparison in
+	close_async (was comparing to flush_async).
+	* ../docs/reference/gio/gio-sections.txt:
+	* gio.symbols: add
+	g_filter_{in,out}put_stream_{g,s}et_close_base_stream
+	* tests/filter-streams.c: new test cases
+	* tests/Makefile.am: add new test
+	* tests/.gitignore: add new test
+
 2009-01-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* gdesktopappinfo.c (g_desktop_app_info_new): Expand the docs.
