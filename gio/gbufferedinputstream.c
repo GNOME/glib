@@ -380,6 +380,9 @@ g_buffered_input_stream_new_sized (GInputStream *base_stream,
  * can happen e.g. near the end of a file. Zero is returned on end of file
  * (or if @count is zero),  but never otherwise.
  *
+ * If @count is -1 then the attempted read size is equal to the number of
+ * bytes that are required to fill the buffer.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
@@ -408,6 +411,13 @@ g_buffered_input_stream_fill (GBufferedInputStream  *stream,
   
   input_stream = G_INPUT_STREAM (stream);
   
+  if (count < -1)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Too large count value passed to %s"), G_STRFUNC);
+      return -1;
+    }
+
   if (!g_input_stream_set_pending (input_stream, error))
     return -1;
 
@@ -440,7 +450,7 @@ async_fill_callback_wrapper (GObject      *source_object,
 /**
  * g_buffered_input_stream_fill_async:
  * @stream: #GBufferedInputStream.
- * @count: a #gssize.
+ * @count: the number of bytes that will be read from the stream.
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object
@@ -450,6 +460,9 @@ async_fill_callback_wrapper (GObject      *source_object,
  * Reads data into @stream's buffer asynchronously, up to @count size.
  * @io_priority can be used to prioritize reads. For the synchronous
  * version of this function, see g_buffered_input_stream_fill().
+ *
+ * If @count is -1 then the attempted read size is equal to the number
+ * of bytes that are required to fill the buffer.
  **/
 void
 g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
@@ -476,7 +489,7 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
       return;
     }
   
-  if (((gssize) count) < 0)
+  if (count < -1)
     {
       g_simple_async_report_error_in_idle (G_OBJECT (stream),
 					   callback,

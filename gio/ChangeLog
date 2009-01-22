@@ -1,5 +1,14 @@
 2009-01-22  Ryan Lortie  <desrt@desrt.ca>
 
+	Bug 568723 – g_buffered_input_stream_fill_async doesn't take count == -1
+
+	* gbufferedinputstream.c (g_buffered_input_stream_fill_async,
+	g_buffered_input_stream_fill): check for count < -1 instead of count <
+	0 and copy modified check to non-async version for consistency.
+	document the "count = -1" API.
+
+2009-01-22  Ryan Lortie  <desrt@desrt.ca>
+
 	Bug 568741 – g_buffered_input_stream_fill_async doesn't work
 
 	* gbufferedinputstream.c (fill_async_callback): grow the buffer tail
