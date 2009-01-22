@@ -931,6 +931,19 @@ fill_async_callback (GObject      *source_object,
       g_simple_async_result_set_from_error (simple, error);
       g_error_free (error);
     }
+  else
+    {
+      GBufferedInputStreamPrivate *priv;
+      GObject *object;
+
+      object = g_async_result_get_source_object (G_ASYNC_RESULT (simple));
+      priv = G_BUFFERED_INPUT_STREAM (object)->priv;
+
+      g_assert_cmpint (priv->end + res, <=, priv->len);
+      priv->end += res;
+
+      g_object_unref (object);
+    }
   
   /* Complete immediately, not in idle, since we're already in a mainloop callout */
   g_simple_async_result_complete (simple);
