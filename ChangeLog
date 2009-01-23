@@ -1,3 +1,9 @@
+2009-01-23  Stefan Kost  <ensonic@users.sf.net>
+
+	* docs/reference/glib/Makefile.am:
+	  Add SCAN_OPTIONS=--ignore-decorators="GLIB_VAR" to Makefile.am to fix
+	  on problem with the doc build.
+
 2009-01-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c (g_win32_locale_filename_from_utf8): Drop the code
