@@ -227,7 +227,8 @@ g_base_info_unref (GIBaseInfo *info)
       if (info->container)
 	g_base_info_unref (info->container);
 
-      g_object_unref (info->repository);
+      if (info->repository)
+        g_object_unref (info->repository);
 
       g_free (info);
     }
