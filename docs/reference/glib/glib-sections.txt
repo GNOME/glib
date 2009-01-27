@@ -42,6 +42,10 @@ gssize
 goffset
 G_GOFFSET_CONSTANT
 
+<SUBSECTION>
+gintptr
+guintptr
+
 <SUBSECTION Private>
 GLIB_SIZEOF_VOID_P
 GLIB_SIZEOF_LONG

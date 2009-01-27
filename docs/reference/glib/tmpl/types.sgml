@@ -26,7 +26,8 @@ Types which are easier to use than their standard C counterparts -
 
 <listitem><para>
 Types which correspond exactly to standard C types, but are included
-for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
+for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble,
+#gintptr, #guintptr.
 </para></listitem>
 </itemizedlist>
 
@@ -284,3 +285,19 @@ See also #G_GINT64_CONSTANT.
 Since: 2.20
 
 
+<!-- ##### TYPEDEF gintptr ##### -->
+<para>
+Corresponds to the C99 type <type>intptr_t</type>, a signed integer type that
+can hold any pointer.
+</para>
+
+Since: 2.18
+
+
+<!-- ##### TYPEDEF guintptr ##### -->
+<para>
+Corresponds to the C99 type <type>uintptr_t</type>, an unsigned integer type that
+can hold any pointer.
+</para>
+
+Since: 2.18
