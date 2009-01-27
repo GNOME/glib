@@ -626,4 +626,30 @@ printing values of type #goffset. See also #G_GINT64_FORMAT.
 Since: 2.20
 
 
+<!-- ##### MACRO G_GINTPTR_MODIFIER ##### -->
+<para>
+The platform dependent length modifier for conversion specifiers for scanning
+and printing values of type #gintptr or #guintptr. It is a string literal.
+</para>
+
+@Since: 2.22
+
+
+<!-- ##### MACRO G_GINTPTR_FORMAT ##### -->
+<para>
+This is the platform dependent conversion specifier for scanning and
+printing values of type #gintptr. 
+</para>
+
+@Since: 2.22
+
+
+<!-- ##### MACRO G_GUINTPTR_FORMAT ##### -->
+<para>
+This is the platform dependent conversion specifier for scanning and
+printing values of type #guintptr.
+</para>
+
+@Since: 2.22
+
 

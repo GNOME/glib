@@ -271,6 +271,10 @@ To print or scan values of this type, use
 A signed integer type that is used for file offsets, corresponding to the 
 C99 type off64_t.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GOFFSET_MODIFIER and/or %G_GOFFSET_FORMAT.
+</para>
 
 Since: 2.14
 
@@ -290,6 +294,10 @@ Since: 2.20
 Corresponds to the C99 type <type>intptr_t</type>, a signed integer type that
 can hold any pointer.
 </para>
+<para>
+To print or scan values of this type, use
+%G_GINTPTR_MODIFIER and/or %G_GINTPTR_FORMAT.
+</para>
 
 Since: 2.18
 
@@ -298,6 +306,10 @@ Since: 2.18
 <para>
 Corresponds to the C99 type <type>uintptr_t</type>, an unsigned integer type that
 can hold any pointer.
+</para>
+<para>
+To print or scan values of this type, use
+%G_GINTPTR_MODIFIER and/or %G_GUINTPTR_FORMAT.
 </para>
 
 Since: 2.18
