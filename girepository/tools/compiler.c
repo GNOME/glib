@@ -49,7 +49,7 @@ static gchar *
 format_output (GTypelib *typelib)
 {
   GString *result;
-  gint i;
+  guint i;
 
   result = g_string_sized_new (6 * typelib->len);
 
@@ -75,6 +75,9 @@ format_output (GTypelib *typelib)
 
   if (!no_init)
     {
+      g_string_append_printf (result,
+			      "__attribute__((constructor)) void "
+			      "register_typelib (void);\n\n");
       g_string_append_printf (result,
 			      "__attribute__((constructor)) void\n"
 			      "register_typelib (void)\n"
