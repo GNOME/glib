@@ -1,25 +1,25 @@
 # translation of or.po to Oriya
 # translation of or.po to
 # Oriya translation of glib.glib-2-4.or.pot.
-# Copyright (C) 2004, 2006, 2007, 2008, Free Software Foundation, Inc.
+# Copyright (C) 2004, 2006, 2007, 2008, 2009, Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib.glib-2-4 package.
 # $Id: or.po,v 1.37 2006/08/16 00:43:58 matthiasc Exp $
 #
 # Subhransu Behera <arya_subhransu@yahoo.co.in>, 2004, 2006, 2007.
-# Manoj Kumar Giri <mgiri@redhat.com>, 2008.
+# Manoj Kumar Giri <mgiri@redhat.com>, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-19 02:07-0500\n"
-"PO-Revision-Date: 2008-09-09 19:20+0530\n"
+"PO-Revision-Date: 2009-01-28 14:56+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
-"Language-Team: Oriya\n"
+"Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2;plural=(n!=1)\n"
+"Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -306,8 +306,7 @@ msgid "Error on line %d: %s"
 msgstr "%d ଧାଡ଼ିରେ ତ୍ରୁଟି: %s"
 
 #: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ଖାଲି ବସ୍ତୁ '&;' ଦେଖା ଗଲା; ବୈଧ ବସ୍ତୁଗୁଡ଼ିକ ହେଲା: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:503
@@ -395,8 +394,7 @@ msgstr "ଦଲିଲ ଗୋଟିଏ ଉପାଦାନରେ ଆରମ୍ଭ �
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
-"'<' ଅକ୍ଷର ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; ଏହା ଗୋଟିଏ ବସ୍ତୁର ନାମକୁ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"
+msgstr "'<' ଅକ୍ଷର ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; ଏହା ଗୋଟିଏ ବସ୍ତୁର ନାମକୁ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"
 
 #: glib/gmarkup.c:1276
 #, c-format
@@ -409,10 +407,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1365
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"ବିଚିତ୍ର ଅକ୍ଷର '%1$s', '%3$s' ଉପାଦାନର ଗୋଟିଏ ଗୁଣର ନାମ '%2$s' ପରେ '=' ପ୍ରତ୍ଯାଶିତ ଥିଲା"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "ବିଚିତ୍ର ଅକ୍ଷର '%1$s', '%3$s' ଉପାଦାନର ଗୋଟିଏ ଗୁଣର ନାମ '%2$s' ପରେ '=' ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
 #: glib/gmarkup.c:1407
 #, c-format
@@ -448,8 +444,7 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
-"ବନ୍ଦ ଉପାଦାନ ନାମ '%2$s' ପଛରେ ଆସୁଥିବା '%1$s' ଅକ୍ଷର ବୈଧ ନୁହେଁ;  ଅନୁମତ ଅକ୍ଷର ହେଲା '>'"
+msgstr "ବନ୍ଦ ଉପାଦାନ ନାମ '%2$s' ପଛରେ ଆସୁଥିବା '%1$s' ଅକ୍ଷର ବୈଧ ନୁହେଁ;  ଅନୁମତ ଅକ୍ଷର ହେଲା '>'"
 
 #: glib/gmarkup.c:1686
 #, c-format
@@ -732,8 +727,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "ଅସଂଗତ NEWLINE ବିକଳ୍ପଗୁଡ଼ିକ"
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g ଟି ଗୋଟିଏ ଆବଦ୍ଧ ନାମ ପରେ କିମ୍ବା ଇଚ୍ଛାଧୀନ ଆବଦ୍ଧ ପୂର୍ଣ୍ଣ ସଂଖ୍ୟା ପରେ ନଥାଏ"
 
 #: glib/gregex.c:338
@@ -832,8 +826,7 @@ msgstr "ଗୋଟିଏ '\\' ଅକ୍ଷରର ଠିକ ପରେ ପାଠ୍
 #: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"%c ପାଇଁ ମେଳ ହେଉ ଥିବା ଉଦ୍ଧ୍ରୁତି ଚିହ୍ନ ମିଳିବା ପୂର୍ବରୁ ପାଠ୍ଯ ସମାପ୍ତ ହୋଇ ଗଲା. (ପାଠ୍ଯଟି ଥିଲା: '%s')"
+msgstr "%c ପାଇଁ ମେଳ ହେଉ ଥିବା ଉଦ୍ଧ୍ରୁତି ଚିହ୍ନ ମିଳିବା ପୂର୍ବରୁ ପାଠ୍ଯ ସମାପ୍ତ ହୋଇ ଗଲା. (ପାଠ୍ଯଟି ଥିଲା: '%s')"
 
 #: glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
@@ -1026,8 +1019,7 @@ msgstr "ଫାଇଲ ଟି ଖାଲି ଅଛି"
 
 #: glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ମୁଖ୍ଯ ଫାଇଲ '%s' କୁ ଧାରଣ କରିଛି ଯାହାକି ଗୋଟିଏ ମୁଖ୍ଯ-ଗୁଣ ର ଯୋଡି, ସମୂହ, କିମ୍ବା ବାକ୍ଯ ନୁହେଁ"
 
 #: glib/gkeyfile.c:821
@@ -1076,8 +1068,7 @@ msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚ
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr ""
-"ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
+msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
 #: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
@@ -1191,26 +1182,26 @@ msgstr "ଡ୍ରାଇଭ ସଞ୍ଚାର ମାଧ୍ଯମ ପାଇଁ �
 #: gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
-msgstr ""
+msgstr "GEmblem ସାଙ୍କେତିକରଣର ସଂସ୍କରଣ %dକୁ ନିୟନ୍ତ୍ରଣ କରୁଅଛି"
 
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
-msgstr ""
+msgstr "GEmblem ସାଙ୍କେତିକରଣରେ ତ୍ରୁଟିଯୁକ୍ତ ଟକେନ ସଂଖ୍ୟା (%d)"
 
 #: gio/gemblemedicon.c:295
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
-msgstr ""
+msgstr "GEmblemedIcon ସାଙ୍କେତିକରଣର ସଂସ୍କରଣ %dକୁ ନିୟନ୍ତ୍ରଣ କରିପାରୁ ନାହିଁ"
 
 #: gio/gemblemedicon.c:305
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr ""
+msgstr "GEmblemedIcon ସାଙ୍କେତିକରଣରେ ତ୍ରୁଟିଯୁକ୍ତ ଟକେନ ସଂଖ୍ୟା (%d)"
 
 #: gio/gemblemedicon.c:328
 msgid "Expected a GEmblem for GEmblemedIcon"
-msgstr ""
+msgstr "GEmblemedIcon ପାଇଁ ଗୋଟିଏ GEmblem ଆଶାକରାଯାଉଅଛି"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
 #: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
@@ -1294,11 +1285,11 @@ msgstr "ଚିତ୍ରସଂକେତ ଧାରଣକରିଥିବା ଫା�
 #: gio/gfileicon.c:237
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
-msgstr ""
+msgstr "GFileIcon ସାଙ୍କେତିକରଣର ସଂସ୍କରଣ %d କୁ ନିୟନ୍ତ୍ରଣ କରିପାରିବେ ନାହିଁ"
 
 #: gio/gfileicon.c:247
 msgid "Malformed input data for GFileIcon"
-msgstr ""
+msgstr "GFileIcon ପାଇଁ ତ୍ରୁଟିଯୁକ୍ତ ନିବେଶ ତଥ୍ୟ"
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1320,36 +1311,36 @@ msgstr "ଧାରାରେ କାଟିବା ଅନୁମୋଦିତ ନୁହ
 #: gio/gicon.c:324
 #, c-format
 msgid "Wrong number of tokens (%d)"
-msgstr ""
+msgstr "ଭୁଲ ସଂଖ୍ୟକ ଟକେନ (%d)"
 
 #: gio/gicon.c:344
 #, c-format
 msgid "No type for class name %s"
-msgstr ""
+msgstr "ଶ୍ରେଣୀ ନାମ %s ପାଇଁ କୌଣସି ପ୍ରକାର ନାହିଁ"
 
 #: gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
-msgstr ""
+msgstr "ପ୍ରକାର %s GIcon ଅନ୍ତରାପୃଷ୍ଠକୁ କାର୍ଯ୍ୟକାରି କରେନାହିଁ"
 
 #: gio/gicon.c:365
 #, c-format
 msgid "Type %s is not classed"
-msgstr ""
+msgstr "ପ୍ରକାର %s ଶ୍ରେଣୀଭୁକ୍ତ ନୁହଁ"
 
 #: gio/gicon.c:379
 #, c-format
 msgid "Malformed version number: %s"
-msgstr ""
+msgstr "ତ୍ରୁଟିଯୁକ୍ତ ସଂସ୍କରଣ ସଂଖ୍ୟା: %s"
 
 #: gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
+msgstr "ପ୍ରକାର %s GIcon ଅନ୍ତରାପୃଷ୍ଠରେ ଟକେନ()ରୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
 #: gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
-msgstr ""
+msgstr "ଚିତ୍ରସଂକେତ ସାଙ୍କେତିକରଣର ପ୍ରଦତ୍ତ ସଂସ୍କରଣକୁ ନିୟନ୍ତ୍ରଣ କରାଯାଇପାରିବ ନାହିଁ"
 
 #: gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
@@ -1722,24 +1713,23 @@ msgstr ""
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr ""
+msgstr "GThemedIcon ସାଙ୍କେତିକରଣର ସଂସ୍କରଣ %dକୁ ନିୟନ୍ତ୍ରଣ କରାଯାଇପାରିବ ନାହିଁ"
 
 #: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
 msgid "File descriptor"
-msgstr ""
+msgstr "ଫାଇଲ ବର୍ଣ୍ଣନାକାରୀ"
 
 #: gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
-msgstr ""
+msgstr "ପଢ଼ିବା ପାଇଁ ଫାଇଲ ବର୍ଣ୍ଣନାକାରୀ"
 
 #: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-#, fuzzy
 msgid "Close file descriptor"
-msgstr "ଫାଇଲ ନିରୂପକ ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି: %s"
+msgstr "ଫାଇଲ ବର୍ଣ୍ଣନାକାରୀକୁ ବନ୍ଦ କରନ୍ତୁ"
 
 #: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
-msgstr ""
+msgstr "ଧାରା ବନ୍ଦ ହେବା ପରେ ଫାଇଲ ବର୍ଣ୍ଣନାକାରୀକୁ ବନ୍ଦ କରିବା ଉଚିତ କି ନୁହଁ"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1759,7 +1749,7 @@ msgstr "ଫାଇଲତନ୍ତ୍ର ମୂଳସ୍ଥାନ"
 
 #: gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
-msgstr ""
+msgstr "ଲେଖିବା ପାଇଁ ଫାଇଲ ବର୍ଣ୍ଣନାକାରୀ"
 
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
@@ -1802,3 +1792,4 @@ msgstr "ଲମ୍ବା ତାଲିକାଭୁକ୍ତ ଶୈଳୀ ବ୍ୟ
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
