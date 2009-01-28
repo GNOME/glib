@@ -217,7 +217,7 @@ To print or scan values of this type, use
 This macro is used to insert 64-bit integer literals into the source code.
 </para>
 
-@val: a literal integer value, e.g. 0x1d636b02300a7aa7U.
+@val: a literal integer value, e.g. 0x1d636b02300a7aa7.
 
 
 <!-- ##### MACRO G_GUINT64_CONSTANT ##### -->
@@ -274,5 +274,15 @@ C99 type off64_t.
 </para>
 
 Since: 2.14
+
+
+<!-- ##### MACRO G_GOFFSET_CONSTANT ##### -->
+<para>
+This macro is used to insert #goffset 64-bit integer literals into the source code.
+See also #G_GINT64_CONSTANT.
+</para>
+
+@val: a literal integer value, e.g. 0x1d636b02300a7aa7.
+Since: 2.20
 
 

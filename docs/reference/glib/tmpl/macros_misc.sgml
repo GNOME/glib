@@ -523,7 +523,7 @@ printing values of type #guint32. See also #G_GINT16_FORMAT.
 <!-- ##### MACRO G_GINT64_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for conversion specifiers for scanning
-and printing values of type #gint64 or #guint64. It is a string literal, 
+and printing values of type #gint64 or #guint64. It is a string literal.
 </para>
 
 <note>
@@ -599,4 +599,23 @@ printing values of type #gssize. See also #G_GINT16_FORMAT.
 
 @Since: 2.6
 
+
+<!-- ##### MACRO G_GOFFSET_MODIFIER ##### -->
+<para>
+The platform dependent length modifier for conversion specifiers for scanning
+and printing values of type #goffset. It is a string literal. See also
+#G_GINT64_MODIFIER.
+</para>
+
+@Since: 2.20
+
+
+
+<!-- ##### MACRO G_GOFFSET_FORMAT ##### -->
+<para>
+This is the platform dependent conversion specifier for scanning and
+printing values of type #goffset. See also #G_GINT64_FORMAT.
+</para>
+
+Since: 2.20
 

@@ -1,3 +1,11 @@
+2009-01-27  Christian Persch  <chpe@gnome.org>
+
+	* configure.in:
+	* docs/reference/glib/glib-sections.txt:
+	* docs/reference/macros_misc.sgml:
+	* docs/reference/glib/tmpl/types.sgml: Add
+	G_GOFFSET_FORMAT and friends. Bug #563141.
+
 2009-01-23  Stefan Kost  <ensonic@users.sf.net>
 
 	* docs/reference/glib/Makefile.am:
