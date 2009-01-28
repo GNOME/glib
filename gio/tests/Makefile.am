@@ -25,6 +25,7 @@ TEST_PROGS +=	 		\
 	data-output-stream 	\
 	g-icon			\
 	buffered-input-stream	\
+	sleepy-stream		\
 	filter-streams		\
 	simple-async-result
 
@@ -68,6 +69,9 @@ unix_streams_LDADD	  = $(progs_ldadd) \
 
 simple_async_result_SOURCES	= simple-async-result.c
 simple_async_result_LDADD	= $(progs_ldadd)
+
+sleepy_stream_SOURCES		= sleepy-stream.c
+sleepy_stream_LDADD		= $(progs_ldadd)
 
 filter_streams_SOURCES		= filter-streams.c
 filter_streams_LDADD		= $(progs_ldadd)

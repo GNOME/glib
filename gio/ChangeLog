@@ -1,3 +1,14 @@
+2009-01-28  Ryan Lortie  <desrt@desrt.ca>
+
+	Bug 568575 – _async functions for GDataInputStream
+
+	* gdatainputstream.h:
+	* gdatainputstream.c: add _async versions of read_line and read_until.
+	* gio.symbols:
+	* ../docs/reference/gio/gio-sections.txt: add new functions
+	* tests/sleepy-stream.c: new test case for async read line
+	* tests/Makefile.am: add new test
+
 2009-01-22  Ryan Lortie  <desrt@desrt.ca>
 
 	Bug 568723 – g_buffered_input_stream_fill_async doesn't take count == -1

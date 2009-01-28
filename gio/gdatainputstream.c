@@ -2,6 +2,7 @@
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2007 Jürg Billeter
+ * Copyright © 2009 Codethink Limited
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +24,8 @@
 
 #include "config.h"
 #include "gdatainputstream.h"
+#include "gsimpleasyncresult.h"
+#include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "glibintl.h"
@@ -808,7 +811,6 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
   return line;
 }
 
-
 static gssize
 scan_for_chars (GDataInputStream *stream,
 		gsize            *checked_out,
@@ -926,6 +928,298 @@ g_data_input_stream_read_until (GDataInputStream  *stream,
   data_until[found_pos] = 0;
   
   return data_until;
+}
+
+typedef struct
+{
+  GDataInputStream *stream;
+  GSimpleAsyncResult *simple;
+  gboolean last_saw_cr;
+  gsize checked;
+  gint io_priority;
+  GCancellable *cancellable;
+
+  gchar *stop_chars;
+  gchar *line;
+  gsize length;
+} GDataInputStreamReadData;
+
+static void
+g_data_input_stream_read_complete (GDataInputStreamReadData *data,
+                                   gsize                     read_length,
+                                   gsize                     skip_length,
+                                   gboolean                  need_idle_dispatch)
+{
+  if (read_length || skip_length)
+    {
+      gssize bytes;
+
+      data->length = read_length;
+      data->line = g_malloc (read_length + 1);
+      data->line[read_length] = '\0';
+
+      /* we already checked the buffer.  this shouldn't fail. */
+      bytes = g_input_stream_read (G_INPUT_STREAM (data->stream),
+                                   data->line, read_length, NULL, NULL);
+      g_assert_cmpint (bytes, ==, read_length);
+
+      bytes = g_input_stream_skip (G_INPUT_STREAM (data->stream),
+                                   skip_length, NULL, NULL);
+      g_assert_cmpint (bytes, ==, skip_length);
+    }
+
+  if (need_idle_dispatch)
+    g_simple_async_result_complete_in_idle (data->simple);
+  else
+    g_simple_async_result_complete (data->simple);
+
+  g_object_unref (data->simple);
+}
+
+static void
+g_data_input_stream_read_line_ready (GObject      *object,
+                                     GAsyncResult *result,
+                                     gpointer      user_data)
+{
+  GDataInputStreamReadData *data = user_data;
+  gssize found_pos;
+  gint newline_len;
+
+  if (result)
+    /* this is a callback.  finish the async call. */
+    {
+      GBufferedInputStream *buffer = G_BUFFERED_INPUT_STREAM (data->stream);
+      GError *error = NULL;
+      gssize bytes;
+
+      bytes = g_buffered_input_stream_fill_finish (buffer, result, &error);
+
+      if (bytes <= 0)
+        {
+          if (bytes < 0)
+            /* stream error. */
+            {
+              g_simple_async_result_set_from_error (data->simple, error);
+              g_error_free (error);
+              data->checked = 0;
+            }
+
+          g_data_input_stream_read_complete (data, data->checked, 0, FALSE);
+          return;
+        }
+
+      /* only proceed if we got more bytes... */
+    }
+
+  if (data->stop_chars)
+    {
+      found_pos = scan_for_chars (data->stream,
+                                  &data->checked,
+                                  data->stop_chars);
+      newline_len = 0;
+    }
+  else
+    found_pos = scan_for_newline (data->stream, &data->checked,
+                                  &data->last_saw_cr, &newline_len);
+
+  if (found_pos == -1)
+    /* didn't find a full line; need to buffer some more bytes */
+    {
+      GBufferedInputStream *buffer = G_BUFFERED_INPUT_STREAM (data->stream);
+      gsize size;
+
+      size = g_buffered_input_stream_get_buffer_size (buffer);
+
+      if (g_buffered_input_stream_get_available (buffer) == size)
+        /* need to grow the buffer */
+        g_buffered_input_stream_set_buffer_size (buffer, size * 2);
+
+      /* try again */
+      g_buffered_input_stream_fill_async (buffer, -1, data->io_priority,
+                                          data->cancellable,
+                                          g_data_input_stream_read_line_ready,
+                                          user_data);
+    }
+  else
+    {
+      /* read the line and the EOL.  no error is possible. */
+      g_data_input_stream_read_complete (data, found_pos,
+                                         newline_len, result == NULL);
+    }
+}
+
+static void
+g_data_input_stream_read_data_free (gpointer user_data)
+{
+  GDataInputStreamReadData *data = user_data;
+
+  /* we don't hold a ref to ->simple because it keeps a ref to us.
+   * we are called because it is being finalized.
+   */
+
+  g_free (data->stop_chars);
+  if (data->cancellable)
+    g_object_unref (data->cancellable);
+  g_free (data->line);
+  g_slice_free (GDataInputStreamReadData, data);
+}
+
+static void
+g_data_input_stream_read_async (GDataInputStream    *stream,
+                                const gchar         *stop_chars,
+                                gint                 io_priority,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             user_data,
+                                gpointer             source_tag)
+{
+  GDataInputStreamReadData *data;
+
+  data = g_slice_new (GDataInputStreamReadData);
+  data->stream = stream;
+  if (cancellable)
+    g_object_ref (cancellable);
+  data->cancellable = cancellable;
+  data->stop_chars = g_strdup (stop_chars);
+  data->io_priority = io_priority;
+  data->last_saw_cr = FALSE;
+  data->checked = 0;
+  data->line = NULL;
+
+  data->simple = g_simple_async_result_new (G_OBJECT (stream), callback,
+                                            user_data, source_tag);
+  g_simple_async_result_set_op_res_gpointer (data->simple, data,
+                                             g_data_input_stream_read_data_free);
+  g_data_input_stream_read_line_ready (NULL, NULL, data);
+}
+
+static gchar *
+g_data_input_stream_read_finish (GDataInputStream  *stream,
+                                 GAsyncResult      *result,
+                                 gsize             *length,
+                                 GError           **error)
+{
+  GDataInputStreamReadData *data;
+  GSimpleAsyncResult *simple;
+  gchar *line;
+
+  simple = G_SIMPLE_ASYNC_RESULT (result);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
+  data = g_simple_async_result_get_op_res_gpointer (simple);
+
+  line = data->line;
+  data->line = NULL;
+
+  if (length && line)
+    *length = data->length;
+
+  return line;
+}
+
+/**
+ * g_data_input_stream_read_line_async:
+ * @stream: a given #GDataInputStream.
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
+ * of the request. 
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: callback to call when the request is satisfied.
+ * @user_data: the data to pass to callback function.
+ *
+ * The asynchronous version of g_data_input_stream_read_line().  It is
+ * an error to have two outstanding calls to this function.
+ **/
+void
+g_data_input_stream_read_line_async (GDataInputStream    *stream,
+                                     gint                 io_priority,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             user_data)
+{
+  g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  g_data_input_stream_read_async (stream, NULL, io_priority,
+                                  cancellable, callback, user_data,
+                                  g_data_input_stream_read_line_async);
+}
+
+/**
+ * g_data_input_stream_read_until_async:
+ * @stream: a given #GDataInputStream.
+ * @stop_chars: characters to terminate the read.
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
+ * of the request. 
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: callback to call when the request is satisfied.
+ * @user_data: the data to pass to callback function.
+ *
+ * The asynchronous version of g_data_input_stream_read_until().  It is
+ * an error to have two outstanding calls to this function.
+ **/
+void
+g_data_input_stream_read_until_async (GDataInputStream    *stream,
+                                      const gchar         *stop_chars,
+                                      gint                 io_priority,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
+{
+  g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+  g_return_if_fail (stop_chars != NULL);
+
+  g_data_input_stream_read_async (stream, stop_chars, io_priority,
+                                  cancellable, callback, user_data,
+                                  g_data_input_stream_read_until_async);
+}
+
+/**
+ * g_data_input_stream_read_line_finish:
+ * @stream: a given #GDataInputStream.
+ * @result: the #GAsyncResult that was provided to the callback.
+ * @length: a #gsize to get the length of the data read in.
+ * @error: #GError for error reporting.
+ *
+ * Finish an asynchronous call started by
+ * g_data_input_stream_read_line_async().
+ **/
+gchar *
+g_data_input_stream_read_line_finish (GDataInputStream  *stream,
+                                      GAsyncResult      *result,
+                                      gsize             *length,
+                                      GError           **error)
+{
+  g_return_val_if_fail (
+    g_simple_async_result_is_valid (result, G_OBJECT (stream),
+      g_data_input_stream_read_line_async), NULL);
+
+  return g_data_input_stream_read_finish (stream, result, length, error);
+}
+
+/**
+ * g_data_input_stream_read_until_finish:
+ * @stream: a given #GDataInputStream.
+ * @result: the #GAsyncResult that was provided to the callback.
+ * @length: a #gsize to get the length of the data read in.
+ * @error: #GError for error reporting.
+ *
+ * Finish an asynchronous call started by
+ * g_data_input_stream_read_until_async().
+ **/
+gchar *
+g_data_input_stream_read_until_finish (GDataInputStream  *stream,
+                                       GAsyncResult      *result,
+                                       gsize             *length,
+                                       GError           **error)
+{
+  g_return_val_if_fail (
+    g_simple_async_result_is_valid (result, G_OBJECT (stream),
+      g_data_input_stream_read_until_async), NULL);
+
+  return g_data_input_stream_read_finish (stream, result, length, error);
 }
 
 #define __G_DATA_INPUT_STREAM_C__
