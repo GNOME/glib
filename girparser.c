@@ -2976,80 +2976,26 @@ cleanup (GMarkupParseContext *context,
 }
 
 static GList *
-post_filter_varargs_functions (GList *list, GList ** varargs_callbacks_out)
+post_filter_varargs_functions (GList *list)
 {
   GList *iter;
-  GList *varargs_callbacks = *varargs_callbacks_out;
-  
-  iter = list;
-  while (iter)
-    {
-      GList *link = iter;
-      GIrNode *node = iter->data;
-      
-      iter = iter->next;
-      
-      if (node->type == G_IR_NODE_FUNCTION)
-	{
-	  if (((GIrNodeFunction*)node)->is_varargs)
-	    {
-	      list = g_list_delete_link (list, link);
-	    }
-	}
-      if (node->type == G_IR_NODE_CALLBACK)
-	{
-	  if (((GIrNodeFunction*)node)->is_varargs)
-	    {
-	      varargs_callbacks = g_list_append(varargs_callbacks,
-						node);
-	      list = g_list_delete_link (list, link);
-	    }
-	}
-    }
-  iter = list;
-  while (iter)
-    {
-      GList *link = iter;
-      GIrNode *node = iter->data;
-      
-      iter = iter->next;
-      
-      if (node->type == G_IR_NODE_FUNCTION)
-	{
-	  GList *param;
-	  gboolean function_done = FALSE;
-	  
-	  for (param = ((GIrNodeFunction *)node)->parameters;
-	       param;
-	       param = param->next)
-	    {
-	      GIrNodeParam *node = (GIrNodeParam *)param->data;
-	      
-	      if (function_done)
-		break;
 
-	      if (node->type->is_interface)
-		{
-		  GList *callback;
-		  for (callback = varargs_callbacks;
-		       callback;
-		       callback = callback->next)
-		    {
-		      if (!strcmp(node->type->interface,
-				  ((GIrNode *)varargs_callbacks->data)->name))
-			{
-			  list = g_list_delete_link (list, link);
-			  function_done = TRUE;
-			  break;
-			}
-		    }
-		}
+  iter = list;
+  while (iter)
+    {
+      GList *link = iter;
+      GIrNode *node = iter->data;
+
+      iter = iter->next;
+
+      if (node->type == G_IR_NODE_FUNCTION)
+	{
+	  if (((GIrNodeFunction*)node)->is_varargs)
+	    {
+	      list = g_list_delete_link (list, link);
 	    }
 	}
     }
-  
-  *varargs_callbacks_out = varargs_callbacks;
-  
   return list;
 }
 
@@ -3057,44 +3003,37 @@ static void
 post_filter (GIrModule *module)
 {
   GList *iter;
-  GList *varargs_callbacks = NULL;
-  
-  module->entries = post_filter_varargs_functions (module->entries,
-						   &varargs_callbacks);
+
+  module->entries = post_filter_varargs_functions (module->entries);
   iter = module->entries;
   while (iter)
     {
       GIrNode *node = iter->data;
-      
+
       iter = iter->next;
       
       if (node->type == G_IR_NODE_OBJECT || 
 	  node->type == G_IR_NODE_INTERFACE) 
 	{
 	  GIrNodeInterface *iface = (GIrNodeInterface*)node;
-	  iface->members = post_filter_varargs_functions (iface->members,
-							  &varargs_callbacks);
+	  iface->members = post_filter_varargs_functions (iface->members);
 	}
       else if (node->type == G_IR_NODE_BOXED)
 	{
 	  GIrNodeBoxed *boxed = (GIrNodeBoxed*)node;
-	  boxed->members = post_filter_varargs_functions (boxed->members,
-							  &varargs_callbacks);
+	  boxed->members = post_filter_varargs_functions (boxed->members);
 	}
       else if (node->type == G_IR_NODE_STRUCT)
 	{
 	  GIrNodeStruct *iface = (GIrNodeStruct*)node;
-	  iface->members = post_filter_varargs_functions (iface->members,
-							  &varargs_callbacks);
+	  iface->members = post_filter_varargs_functions (iface->members);
 	}
       else if (node->type == G_IR_NODE_UNION)
 	{
 	  GIrNodeUnion *iface = (GIrNodeUnion*)node;
-	  iface->members = post_filter_varargs_functions (iface->members,
-							  &varargs_callbacks);
+	  iface->members = post_filter_varargs_functions (iface->members);
 	}
     }
-  g_list_free(varargs_callbacks);
 }
 
 /**
