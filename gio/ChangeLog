@@ -1,3 +1,8 @@
+2009-01-29  Ryan Lortie  <desrt@desrt.ca>
+
+	* gioerror.c (g_io_error_from_errno): handle all possible cases of
+	EAGAIN and EWOULDBLOCK being (un)defined and (un)equal.
+
 2009-01-28  Ryan Lortie  <desrt@desrt.ca>
 
 	Bug 568575 – _async functions for GDataInputStream
