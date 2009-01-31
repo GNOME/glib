@@ -419,19 +419,18 @@ g_time_val_to_iso8601 (GTimeVal *time_)
 #ifdef HAVE_GMTIME_R
   struct tm tm_;
 #endif
+  time_t secs;
   
   g_return_val_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC, NULL);
 
+ secs = time_->tv_sec;
 #ifdef _WIN32
-  {
-    time_t secs = time_->tv_sec;
-    tm = gmtime (&secs);
-  }
+ tm = gmtime (&secs);
 #else
 #ifdef HAVE_GMTIME_R
-  tm = gmtime_r (&time_->tv_sec, &tm_);
+  tm = gmtime_r (&secs, &tm_);
 #else
-  tm = gmtime (&time_->tv_sec);
+  tm = gmtime (&secs);
 #endif
 #endif
 
