@@ -506,6 +506,8 @@ get_xattrs (const char            *path,
 		g_free (escaped_attr);
 	      
 	      get_one_xattr (path, info, gio_attr, attr, follow_symlinks);
+
+	      g_free (gio_attr);
 	    }
 	      
 	  len = strlen (attr) + 1;
