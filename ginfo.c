@@ -1061,6 +1061,8 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
   
   if (type_init == NULL)
     return G_TYPE_NONE;
+  else if (!strcmp (type_init, "intern"))
+    return G_TYPE_OBJECT;
   
   get_type_func = NULL;
   if (!g_typelib_symbol (((GIBaseInfo*)info)->typelib,
