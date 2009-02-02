@@ -357,8 +357,9 @@ compute_struct_field_offsets (GIrNode     *node,
 	}
       else if (member->type == G_IR_NODE_CALLBACK)
 	{
-	  size = ffi_type_pointer.size;
-	  alignment = ffi_type_pointer.alignment;
+          size = ALIGN (size, ffi_type_pointer.alignment);
+          alignment = MAX (alignment, ffi_type_pointer.alignment);
+	  size += ffi_type_pointer.size;
 	}
     }
 
