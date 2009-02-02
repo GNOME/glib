@@ -144,21 +144,19 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
 }
 
 static gboolean
-get_interface_size_alignment (GIrNodeField *field,
-			      GIrNode      *parent_node,
-			      GIrModule    *module,
-			      GList        *modules,
-			      gint         *size,
-			      gint         *alignment)
+get_interface_size_alignment (GIrNodeType *type,
+                              GIrModule   *module,
+			      GList       *modules,
+			      gint        *size,
+			      gint        *alignment,
+                              const char  *who)
 {
-  GIrNodeType *type = field->type;
   GIrNode *iface;
   GIrModule *iface_module;
 
   if (!g_ir_find_node (module, modules, type->interface, &iface, &iface_module))
     {
-      g_warning ("Can't resolve type '%s' for field %s.%s.%s",
-		 type->interface, module->name, parent_node->name, ((GIrNode *)field)->name);
+      g_warning ("Can't resolve type '%s' for %s", type->interface, who);
       *size = -1;
       *alignment = -1;
       return FALSE;
@@ -212,8 +210,8 @@ get_interface_size_alignment (GIrNodeField *field,
       }
     default:
       {
-	g_warning ("Field %s.%s.%s has is not a pointer and is of type %s",
-		   module->name, parent_node->name, ((GIrNode *)field)->name,
+	g_warning ("%s has is not a pointer and is of type %s",
+                   who,
 		   g_ir_node_type_to_string (iface->type));
 	*size = -1;
 	*alignment = -1;
@@ -225,17 +223,34 @@ get_interface_size_alignment (GIrNodeField *field,
 }
 
 static gboolean
-get_field_size_alignment (GIrNodeField *field,
-			  GIrNode      *parent_node,
-			  GIrModule    *module,
-			  GList        *modules,
-			  gint         *size,
-			  gint         *alignment)
+get_type_size_alignment (GIrNodeType *type,
+                         GIrModule   *module,
+                         GList       *modules,
+                         gint        *size,
+                         gint        *alignment,
+                         const char  *who)
 {
-  GIrNodeType *type = field->type;
   ffi_type *type_ffi;
 
-  if (type->is_pointer)
+  if (type->tag == GI_TYPE_TAG_ARRAY)
+    {
+      gint elt_size, elt_alignment;
+          
+      if (!type->has_size
+          || !get_type_size_alignment(type->parameter_type1, module, modules,
+                                      &elt_size, &elt_alignment, who))
+        {
+          *size = -1;
+          *alignment = -1;
+          return FALSE;
+        }
+          
+      *size = type->size * elt_size;
+      *alignment = elt_alignment;
+          
+      return TRUE;
+    }
+  else if (type->is_pointer)
     {
       type_ffi = &ffi_type_pointer;
     }
@@ -243,9 +258,7 @@ get_field_size_alignment (GIrNodeField *field,
     {
       if (type->tag == GI_TYPE_TAG_INTERFACE)
 	{
-	  return get_interface_size_alignment (field, parent_node,
-					       module, modules,
-					       size, alignment);
+	  return get_interface_size_alignment (type, module, modules, size, alignment, who);
 	}
       else
 	{
@@ -253,16 +266,15 @@ get_field_size_alignment (GIrNodeField *field,
 
 	  if (type_ffi == &ffi_type_void)
 	    {
-	      g_warning ("Field %s.%s.%s has void type",
-			 module->name, parent_node->name, ((GIrNode *)field)->name);
+	      g_warning ("%s has void type", who);
 	      *size = -1;
 	      *alignment = -1;
 	      return FALSE;
 	    }
 	  else if (type_ffi == &ffi_type_pointer)
 	    {
-	      g_warning ("Field %s.%s.%s has is not a pointer and is of type %s",
-			 module->name, parent_node->name, ((GIrNode *)field)->name,
+	      g_warning ("%s has is not a pointer and is of type %s",
+                         who,
 			 g_type_tag_to_string (type->tag));
 	      *size = -1;
 	      *alignment = -1;
@@ -276,6 +288,25 @@ get_field_size_alignment (GIrNodeField *field,
   *alignment = type_ffi->alignment;
 
   return TRUE;
+}
+
+static gboolean
+get_field_size_alignment (GIrNodeField *field,
+			  GIrNode      *parent_node,
+			  GIrModule    *module,
+			  GList        *modules,
+			  gint         *size,
+			  gint         *alignment)
+{
+  gchar *who;
+  gboolean success;
+  
+  who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIrNode *)field)->name);
+
+  success = get_type_size_alignment (field->type, module, modules, size, alignment, who);
+  g_free (who);
+
+  return success;
 }
 
 #define ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
