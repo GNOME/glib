@@ -1,3 +1,34 @@
+Overview of Changes from GLib 2.19.5 to GLib 2.19.6
+===================================================
+
+* New format macro to print goffset data: G_OFFSET_FORMAT
+
+* GIO: 
+ - Add a GFilter{Input,Output}Stream::close-base-stream properties which
+   determine whether the base stream will be closed when the filter stream
+   is finalized.
+ - g_data_input_stream_read_line and ..._read_until have asynchronous
+   variants now.
+
+* Bugs fixed:
+ 568294 A wrong reference in the description of g_bookmark_file_...
+ 563141 RFE: define G_OFFSET_FORMAT
+ 569105 g_time_val_to_iso8601() assumes time_t==long
+ 568394 dropping the last reference to a stream filter closes...
+ 568741 g_buffered_input_stream_fill_async doesn't work
+ 568723 g_buffered_input_stream_fill_async doesn't take count == -1
+ 568575 _async functions for GDataInputStream
+
+* Updated translations:
+ Bulgarian (bg)
+ Finnish (fi)
+ Hungarian (hu)
+ Oriya (or)
+ Swedish (sv)
+ Traditional Chinese (zh_HK)
+ Traditional Chinese (zy_TW)
+
+
 Overview of Changes from GLib 2.19.4 to GLib 2.19.5
 ===================================================
 

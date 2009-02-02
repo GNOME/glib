@@ -1,5 +1,9 @@
 2009-01-31  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2009-01-31  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 569105 – g_time_val_to_iso8601() assumes time_t==long
 
 	* glib/gtimer.c (g_time_val_to_iso8601): Pass a time_t* to gmtime().
