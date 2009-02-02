@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-12-17 07:11+0530\n"
 "Last-Translator: Amanpreet Singh Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi <punjabi-l10n@users.sf.net>\n"
@@ -1106,14 +1106,14 @@ msgstr "ਮੁੱਲ '%s' ਨੂੰ ਇੱਕ ਦਸ਼ਮਲਵ ਅੰਕ ਦ�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੂਲੀਅਨ ਵਾਂਗ ਇੰਟਰਪਰੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s ਨੂੰ ਬਹੁਤ ਵੱਧ ਗਿਣਤੀ ਪਾਸ ਕੀਤੀ ਗਈ"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "ਸਟਰੀਮ ਪਹਿਲਾਂ ਹੀ ਬੰਦ ਹੈ"
@@ -1137,38 +1137,38 @@ msgstr "%s ਫਾਇਲ-ਟਾਈਪ"
 msgid "%s type"
 msgstr "%s ਟਾਈਪ"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "ਅਚਾਨਕ ਛੇਤੀ ਐਂਡ-ਆਫ਼-ਸਟੀਰਮ"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ਬਿਨ-ਨਾਂ"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "ਡੈਸਕਟਾਪ ਫਾਇਲ ਨੇ Exec ਫੀਲਡ ਨਹੀਂ ਦਿੱਤਾ ਹੈ"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਟਰਮੀਨਲ ਲੋੜ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ ਹੈ"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ ਐਪਲੀਕੇਸ਼ਨ ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ MIME ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ਯੂਜ਼ਰ ਡੈਸਕਟਾਪ ਫਾਇਲ %s ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ਲਈ ਕਸਟਮ ਪਰਿਭਾਸ਼ਾ"
@@ -1467,87 +1467,87 @@ msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲ�
 msgid "Move between mounts not supported"
 msgstr "ਮਾਊਂਟ ਵਿੱਚ ਭੇਜਣਾ ਸਹਿਯੋਗੀ ਨਹੀਂ"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "ਗੁਣ ਮੁੱਲ ਗ਼ੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "ਗਲਤ ਗੁਣ ਟਾਈਪ (ਲਾਈਨ ਦੀ ਲੋੜ ਸੀ)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "ਗਲਤ ਐਕਸਟੈੱਡ ਗੁਣ ਨਾਂ"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "ਐਕਸਟੈੱਡ ਗੁਣ '%s' ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' ਫਾਇਲ ਦੇਣ'ਚ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr "(ਗਲਤ ਇੰਕੋਡਿੰਗ)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ਫਾਇਲ ਡਿਸਕ੍ਰਿਪਟਰ ਸਟੇਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (uint32 ਲੋੜੀਦਾ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (uint64 ਲੋੜੀਦਾ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (ਬਾਈਟ ਲਾਈਨ ਲੋੜੀਦੀ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ਅਧਿਕਾਰ ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ਓਪਨ ਸੈਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "ਸਿਮਲਿੰਕ ਗ਼ੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink ਸੈਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink ਸੈਟਿੰਗ ਗਲਤੀ: ਫਾਇਲ ਇੱਕ symlink ਨਹੀਂ ਹੈ"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ਪਰਸੰਗ ਗੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ਪਰਸੰਗ ਸੈਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "ਇਸ ਸਿਸਟਮ ਉੱਤੇ SELinux ਚਾਲੂ ਨਹੀਂ ਹੈ"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ਗੁਣ %s ਸੈਟਿੰਗ ਸਹਾਇਕ ਨਹੀਂ"

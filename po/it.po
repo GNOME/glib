@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2009-01-06 12:50+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1274,14 +1274,14 @@ msgstr "Impossibile interpretare il valore \"%s\" come un booleano."
 
 # GLIB-2-16
 # count (gssize) è un parametro delle funzione
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Valore count troppo largo passato a %s"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Lo stream è già chiuso"
@@ -1305,26 +1305,26 @@ msgstr "Tipo di file %s"
 msgid "%s type"
 msgstr "Tipo %s"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream prematuro inatteso"
 
 # NdT: nome di applicazione (quando manca)
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Senza nome"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "Il file .desktop non specifica il campo Exec"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "Impossibile trovare il terminale richiesto per l'applicazione"
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1332,17 +1332,17 @@ msgstr ""
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Impossibile creare la cartella utente di configurazione MIME (%s): %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossibile creare il file .desktop utente %s"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definizione personalizzata per %s"
@@ -1670,70 +1670,70 @@ msgstr "Errore nel rimuovare il file destinazione: %s"
 msgid "Move between mounts not supported"
 msgstr "Spostamento tra oggetti mount non supportato"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "Il valore dell'attributo deve essere non-NULL"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Tipo di attributo non valido (attesa stringa)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Nome di attributo esteso non valido"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Errore nell'impostare l'attributo esteso \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Impossibile eseguire lo stat del file \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (codifica non valida)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Errore nell'eseguire lo stat del descrittore di file: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo di attributo non valido (atteso unit32)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo di attributo non valido (atteso uint64)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo di attributo non valido (attesa stringa di byte)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Errore nell'impostare i permessi: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errore nell'impostare il proprietario: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "il collegamento simbolico deve essere non-NULL"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Errore nell'impostare il collegamento simbolico: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errore nell'impostare il collegamento simbolico: il file non è un "
@@ -1741,23 +1741,23 @@ msgstr ""
 
 # GLIB-2-18
 # lasciata minuscola come per precedente messaggio con symlink
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "il contesto SELinux deve essere non-NULL"
 
 # GLIB-2-18
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Errore nell'impostare contesto SELinux: %s"
 
 # GLIB-2-18
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux non è abilitato su questo sistema"
 
 # %s è l'attributo
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Impostazione dell'attributo %s non supportata"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-08-21 13:10+0200\n"
 "Last-Translator: Robert-André Mauchin <zebob.m@pengzone.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1186,14 +1186,14 @@ msgstr ""
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "La valeur « %s » ne peut pas être interprétée comme un booléen."
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "La valeur de comptage fournie à %s est trop grande"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Le flux est déjà fermé"
@@ -1217,42 +1217,42 @@ msgstr "Type de fichier %s"
 msgid "%s type"
 msgstr "Type %s"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "Fin précoce de flux inattendue"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sans nom"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "Le fichier Bureau n'a pas indiqué de champ Exec"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "Impossible de trouver le terminal requis par l'application"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration de l'application %s pour "
 "l'utilisateur : %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration MIME %s pour l'utilisateur : "
 "%s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
@@ -1553,89 +1553,89 @@ msgstr "Erreur lors de la suppression du fichier cible : %s"
 msgid "Move between mounts not supported"
 msgstr "Le déplacement entre des points de montage n'est pas pris en charge"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "La valeur d'attribut ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Type d'attribut non valide (une chaîne est attendue)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Nom d'attribut étendu non valide"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Erreur lors de la définition de l'attribut étendu « %s » : %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Erreur de l'interrogation du fichier « %s » : %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (codage non valide)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erreur de l'interrogation du descripteur de fichier : %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Type d'attribut non valide (uint32 attendu)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Type d'attribut non valide (uint64 attendu)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Type d'attribut non valide (chaîne octet attendu)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erreur lors de la définition du propriétaire : %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "un lien symbolique ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erreur lors de la définition du lien symbolique : %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erreur lors de la définition du lien symbolique : le fichier n'est pas un "
 "lien symbolique"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "Le contexte SELinux ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erreur lors de la définition du contexte SELinux : %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux n'est pas activé sur ce système"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La définition de l'attribut %s n'est pas prise en charge"

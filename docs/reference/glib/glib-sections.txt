@@ -539,6 +539,7 @@ GThreadError
 GThreadFunctions
 g_thread_init
 g_thread_supported
+g_thread_get_initialized
 
 <SUBSECTION>
 GThreadFunc

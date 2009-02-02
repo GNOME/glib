@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-08-23 17:58+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -1091,14 +1091,14 @@ msgstr "ค่า '%s' ไม่สามารถตีความเป็น
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "มีการส่งค่า count ที่สูงเกินไปมาให้ %s"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
@@ -1122,38 +1122,38 @@ msgstr "ชนิดแฟ้ม %s"
 msgid "%s type"
 msgstr "ชนิด %s"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "พบจุดจบสตรีมก่อนกำหนด"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
@@ -1452,87 +1452,87 @@ msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มป
 msgid "Move between mounts not supported"
 msgstr "ไม่รองรับการย้ายแฟ้มข้ามอุปกรณ์"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "ค่าแอตทริบิวต์ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "ชนิดของแอตทริบิวต์ใช้การไม่ได้ (ต้องการสตริง)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "ชื่อแอตทริบิวต์ส่วนขยายเพิ่มใช้การไม่ได้"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดแอตทริบิวต์ส่วนขยาย '%s': %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%s': %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"

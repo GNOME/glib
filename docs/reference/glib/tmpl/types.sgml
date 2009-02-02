@@ -199,7 +199,7 @@ To print or scan values of this type, use
 </para>
 
 
-<!-- ##### FUNCTION guint64 ##### -->
+<!-- ##### TYPEDEF guint64 ##### -->
 <para>
 An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
@@ -208,8 +208,6 @@ Values of this type can range from 0 to 18,446,744,073,709,551,615.
 To print or scan values of this type, use
 %G_GINT64_MODIFIER and/or %G_GUINT64_FORMAT.
 </para>
-
-@Returns: 
 
 
 <!-- ##### MACRO G_GINT64_CONSTANT ##### -->

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1253,14 +1253,14 @@ msgstr ""
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ličbavuju vartaść '%s' niemahčyma interpretavać jak lahičnuju vartaść."
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Funkcyi %s pieradadzieny nadta vialiki ličylnik"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
@@ -1284,39 +1284,39 @@ msgstr "typ fajłaŭ %s"
 msgid "%s type"
 msgstr "typ %s"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "Zaŭčasny kaniec płyni"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Nienazvany"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fajł stała nie akreślivaje pola Exec"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "Niemahčyma znajści terminału, vymahanaha dla aplikacyi"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Niemahčyma stvaryć kanfihuracyjny kataloh %s karystalnika dla aplikacyi: %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Niemahčyma stvaryć kanfihuracyjny kataloh MIME %s dla karystalnika: %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Niemahčyma stvaryć fajł stała %s dla karystalnika"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Asablivaje aznačeńnie dla %s"
@@ -1632,101 +1632,101 @@ msgstr "Pamyłka vydaleńnia metavaha fajłu: %s"
 msgid "Move between mounts not supported"
 msgstr "Pieranos pamiž punktami mantavańnia nie padtrymlivajecca"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "Vartaść atrybutu musić być nia-NULL"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia tekstavy radok)"
 
 # glib/gmarkup.c:1615
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Niapravilnaja nazva pašyranaha atrybutu"
 
 # glib/gdir.c:79
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Pamyłka akreśleńnia pašyranaha atrybutu '%s': %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłu '%s': %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (niapravilnaje kadavańnie)"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłavaha deskryptara: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint32)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint64)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia bajtavy radok)"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Pamyłka akreśleńnia pravoŭ: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Pamyłka akreśleńnia ŭładalnika: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "symbalnaja spasyłka musić być nia-NULL"
 
 # glib/gmarkup.c:303
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Pamyłka akreśleńnia symbalnaj spasyłki: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Pamyłka akreśleńnia symbalnaj spasyłki: fajł nie źjaŭlajecca symbalnaj "
 "spasyłkaj"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "symbalnaja spasyłka musić być nia-NULL"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Pamyłka akreśleńnia ŭładalnika: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Akreśleńnie atrybutu %s nie padtrymlivajecca"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-09-17 19:40+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -1104,14 +1104,14 @@ msgstr "'%s' విలువను ఫ్లోట్ సంఖ్యగా చ�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "%s' విలువను బులియన్ గా చదువుటకు సాధ్యపడదు."
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "చాలపెద్ద లెక్కింపు విలువ %sకు పంపబడింది"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "స్ట్రీమ్ యిప్పటికే మూయబడింది"
@@ -1135,38 +1135,38 @@ msgstr "%s దస్త్రమురకము"
 msgid "%s type"
 msgstr "%s రకము"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "స్ట్రీమ్ యొక్క అనుకోని త్వరిత ముగింపు"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "నామములేని"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1465,87 +1465,87 @@ msgstr "టార్గెట్ దస్త్రమును తొలగి�
 msgid "Move between mounts not supported"
 msgstr "మౌంట్స్‍ మధ్య కదలిక మద్దతీయబడదు"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "యాట్రిబ్యూట్ విలువ తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (స్ట్రింగ్ ఊహించినది)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ చెల్లని నామము"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ అమర్చుటలో దోషము '%s': %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "దస్త్రము '%s'ను ప్రారంభించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (చెల్లని యెన్కోడింగ్)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "దస్త్రము వివరణిని ప్రతిపాదించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint32 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint64 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (బైట్ స్ట్రింగ్ అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "అనుమతులను అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "యజమానిని అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "సిమ్‌లింకు తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: దస్త్రము సిమ్‌లింకు కాదు"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux సందర్భం తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux సందర్భం అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ఈ సిస్టమ్‌పైన చేతనపరచ బడిలేదు"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "యాట్రిబ్యూట్ %sను అమర్చుట మద్దతీయుటలేదు"

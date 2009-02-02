@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2008-08-18 10:19+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -1218,15 +1218,15 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Vlerë count tepër e madhe kaluar tek %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Stream është i mbyllur rregullisht"
@@ -1256,27 +1256,27 @@ msgid "%s type"
 msgstr "Lloj %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream i parakohshëm papritur"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Paemër"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "File .desktop nuk specifikon fushën Exec"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "E pamundur gjetja e terminalit të kërkuar nga aplikativi"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1284,20 +1284,20 @@ msgstr ""
 "(%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "E pamundur gjetja e kartelës së përdoruesit për konfigurimin MIME  (%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "I pamundur krijimi i file .desktop të përdoruesit %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Përcaktimi i personalizuar për %s"
@@ -1675,34 +1675,34 @@ msgid "Move between mounts not supported"
 msgstr "Lëvizja midis objekteve mount nuk suportohet"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "Vlera e atributit duhet të jetë jo-NULL"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Lloj i pasaktë atributi (pritej string)"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Emër i pavlefshëm atributi të zgjeruar"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Gabim gjatë caktimit të atributit të zgjeruar '%s': %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "E pamundur kryerja e stat të file '%s': %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (kodifikim i pavlefshëm)"
 
@@ -1710,76 +1710,76 @@ msgstr " (kodifikim i pavlefshëm)"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Gabim gjatë kryerjes së stat të përshkruesit të file: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Lloj i pasaktë atributi (pritej uint32)"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Lloj i pasaktë atributi (pritej uint64)"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Lloj i pasaktë atributi (pritej byte string)"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Gabim gjatë caktimit të së drejtave: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Gabim gjatë caktimit të pronarit: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "symlink duhet të jetë jo-NULL"
 
 # (pofilter) variables: translation contains variables not in original: %d
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Gabim gjatë caktimit të symlink: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Gabim gjatë caktimit të symlink: file nuk është një lidhje simbolike"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "Konteksti SELinux duhet të jetë non-NULL"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Gabim gjatë përcaktimit të kontekstit SELinux: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nuk është aktivizuar në këtë sistem"
 
 # (pofilter) variables: do not translate: %s
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) printf: checks whether printf format strings match
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Caktimi i atributit %s nuk suportohet"

@@ -610,7 +610,6 @@ and printing values of type #goffset. It is a string literal. See also
 @Since: 2.20
 
 
-
 <!-- ##### MACRO G_GOFFSET_FORMAT ##### -->
 <para>
 This is the platform dependent conversion specifier for scanning and
@@ -618,4 +617,6 @@ printing values of type #goffset. See also #G_GINT64_FORMAT.
 </para>
 
 Since: 2.20
+
+
 

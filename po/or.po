@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 02:07-0500\n"
+"POT-Creation-Date: 2009-02-02 14:45-0500\n"
 "PO-Revision-Date: 2009-01-28 14:56+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
@@ -19,7 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms:  nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -306,7 +307,8 @@ msgid "Error on line %d: %s"
 msgstr "%d ଧାଡ଼ିରେ ତ୍ରୁଟି: %s"
 
 #: glib/gmarkup.c:493
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ଖାଲି ବସ୍ତୁ '&;' ଦେଖା ଗଲା; ବୈଧ ବସ୍ତୁଗୁଡ଼ିକ ହେଲା: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:503
@@ -394,7 +396,8 @@ msgstr "ଦଲିଲ ଗୋଟିଏ ଉପାଦାନରେ ଆରମ୍ଭ �
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "'<' ଅକ୍ଷର ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; ଏହା ଗୋଟିଏ ବସ୍ତୁର ନାମକୁ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"
+msgstr ""
+"'<' ଅକ୍ଷର ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; ଏହା ଗୋଟିଏ ବସ୍ତୁର ନାମକୁ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"
 
 #: glib/gmarkup.c:1276
 #, c-format
@@ -407,8 +410,10 @@ msgstr ""
 
 #: glib/gmarkup.c:1365
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "ବିଚିତ୍ର ଅକ୍ଷର '%1$s', '%3$s' ଉପାଦାନର ଗୋଟିଏ ଗୁଣର ନାମ '%2$s' ପରେ '=' ପ୍ରତ୍ଯାଶିତ ଥିଲା"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"ବିଚିତ୍ର ଅକ୍ଷର '%1$s', '%3$s' ଉପାଦାନର ଗୋଟିଏ ଗୁଣର ନାମ '%2$s' ପରେ '=' ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
 #: glib/gmarkup.c:1407
 #, c-format
@@ -444,7 +449,8 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "ବନ୍ଦ ଉପାଦାନ ନାମ '%2$s' ପଛରେ ଆସୁଥିବା '%1$s' ଅକ୍ଷର ବୈଧ ନୁହେଁ;  ଅନୁମତ ଅକ୍ଷର ହେଲା '>'"
+msgstr ""
+"ବନ୍ଦ ଉପାଦାନ ନାମ '%2$s' ପଛରେ ଆସୁଥିବା '%1$s' ଅକ୍ଷର ବୈଧ ନୁହେଁ;  ଅନୁମତ ଅକ୍ଷର ହେଲା '>'"
 
 #: glib/gmarkup.c:1686
 #, c-format
@@ -727,7 +733,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "ଅସଂଗତ NEWLINE ବିକଳ୍ପଗୁଡ଼ିକ"
 
 #: glib/gregex.c:333
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g ଟି ଗୋଟିଏ ଆବଦ୍ଧ ନାମ ପରେ କିମ୍ବା ଇଚ୍ଛାଧୀନ ଆବଦ୍ଧ ପୂର୍ଣ୍ଣ ସଂଖ୍ୟା ପରେ ନଥାଏ"
 
 #: glib/gregex.c:338
@@ -826,7 +833,8 @@ msgstr "ଗୋଟିଏ '\\' ଅକ୍ଷରର ଠିକ ପରେ ପାଠ୍
 #: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "%c ପାଇଁ ମେଳ ହେଉ ଥିବା ଉଦ୍ଧ୍ରୁତି ଚିହ୍ନ ମିଳିବା ପୂର୍ବରୁ ପାଠ୍ଯ ସମାପ୍ତ ହୋଇ ଗଲା. (ପାଠ୍ଯଟି ଥିଲା: '%s')"
+msgstr ""
+"%c ପାଇଁ ମେଳ ହେଉ ଥିବା ଉଦ୍ଧ୍ରୁତି ଚିହ୍ନ ମିଳିବା ପୂର୍ବରୁ ପାଠ୍ଯ ସମାପ୍ତ ହୋଇ ଗଲା. (ପାଠ୍ଯଟି ଥିଲା: '%s')"
 
 #: glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
@@ -1019,7 +1027,8 @@ msgstr "ଫାଇଲ ଟି ଖାଲି ଅଛି"
 
 #: glib/gkeyfile.c:761
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ମୁଖ୍ଯ ଫାଇଲ '%s' କୁ ଧାରଣ କରିଛି ଯାହାକି ଗୋଟିଏ ମୁଖ୍ଯ-ଗୁଣ ର ଯୋଡି, ସମୂହ, କିମ୍ବା ବାକ୍ଯ ନୁହେଁ"
 
 #: glib/gkeyfile.c:821
@@ -1068,7 +1077,8 @@ msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚ
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
+msgstr ""
+"ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
 #: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
@@ -1104,14 +1114,14 @@ msgstr "'%s' ମୂଲ୍ଯକୁ ଗୋଟିଏ ଭାସମାନ ସଂଖ�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ବୁଲିଆନ୍ ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: gio/gbufferedinputstream.c:485 gio/ginputstream.c:193
-#: gio/ginputstream.c:325 gio/ginputstream.c:566 gio/ginputstream.c:691
-#: gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
+#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
+#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "ଅତ୍ୟଧିକ ବଡ଼ ଗଣନା ମୂଲ୍ୟ %sକୁ ପଠାଯାଇଛି"
 
-#: gio/gbufferedinputstream.c:872 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "ଧାରା ପୂର୍ବରୁ ବନ୍ଦଅଛି"
@@ -1135,38 +1145,38 @@ msgstr "%s ଫାଇଲପ୍ରକାର"
 msgid "%s type"
 msgstr "%s ପ୍ରକାର"
 
-#: gio/gdatainputstream.c:310
+#: gio/gdatainputstream.c:313
 msgid "Unexpected early end-of-stream"
 msgstr "ଅପ୍ରତ୍ୟାଶିତ ପ୍ରାରମ୍ଭିକ ଧାରାର ଶେଷ"
 
-#: gio/gdesktopappinfo.c:450 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:460 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ବେନାମୀ"
 
-#: gio/gdesktopappinfo.c:686
+#: gio/gdesktopappinfo.c:696
 msgid "Desktop file didn't specify Exec field"
 msgstr "ଡେସ୍କଟପ ଫାଇଲ Exec କ୍ଷେତ୍ର ଉଲ୍ଲେଖ କରିନଥିଲା"
 
-#: gio/gdesktopappinfo.c:980
+#: gio/gdesktopappinfo.c:990
 msgid "Unable to find terminal required for application"
 msgstr "ପ୍ରୟୋଗ ପାଇଁ ଆବଶ୍ୟକ ଟର୍ମିନାଲ ଖୋଜିବାରେ ଅସମର୍ଥ"
 
-#: gio/gdesktopappinfo.c:1212
+#: gio/gdesktopappinfo.c:1222
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ଚାଳକ ପ୍ରୟୋଗ ବିନ୍ୟାସ ଫୋଲଡର %s କୁ ନିର୍ମାଣ କରିପାରିବେ ନାହିଁ: %s"
 
-#: gio/gdesktopappinfo.c:1216
+#: gio/gdesktopappinfo.c:1226
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ଚାଳକ MIME ବିନ୍ୟାସିତ ଫୋଲଡର %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ: %s"
 
-#: gio/gdesktopappinfo.c:1620
+#: gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ଚାଳକ ଡେସ୍କଟପ ଫାଇଲ %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ"
 
-#: gio/gdesktopappinfo.c:1732
+#: gio/gdesktopappinfo.c:1742
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ପାଇଁ ଇଚ୍ଛାରୂପୀ ପରିଭାଷା"
@@ -1465,87 +1475,87 @@ msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲ ଘୁଞ୍ଚାଇବାରେ ତ୍
 msgid "Move between mounts not supported"
 msgstr "ଅସମର୍ଥିତ ସ୍ଥାପନଗୁଡ଼ିକ ମଧ୍ଯରେ ଗତିକରନ୍ତୁ"
 
-#: gio/glocalfileinfo.c:717
+#: gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "ଗୁଣର ମୂଲ୍ୟ ନିଶ୍ଚିତରୂପେ non-NULL ହୋଇଥିବା ଉଚିତ"
 
-#: gio/glocalfileinfo.c:724
+#: gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "ଅବୈଧ ଗୁଣର ପ୍ରକାର (ବାକ୍ୟଖଣ୍ଡ ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:731
+#: gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "ଅବୈଧ ବିସ୍ତୃତ ଗୁଣର ନାମ"
 
-#: gio/glocalfileinfo.c:771
+#: gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "ଅନୁଲଗ୍ନ ଗୁଣ '%s'କୁ ବିନ୍ୟାସ କରିବା ସମୟରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1462 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "ଫାଇଲ '%s'କୁ ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1532
+#: gio/glocalfileinfo.c:1534
 msgid " (invalid encoding)"
 msgstr " (ଅବୈଧ ସାଙ୍କେତିକରଣ)"
 
-#: gio/glocalfileinfo.c:1700
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ଫାଇଲ ନିରୂପକ ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1745
+#: gio/glocalfileinfo.c:1747
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit32 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1763
+#: gio/glocalfileinfo.c:1765
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit64 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1782 gio/glocalfileinfo.c:1801
+#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (ବାଇଟ ବାକ୍ୟଖଣ୍ଡ ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1827
+#: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ଅନୁମତି ବିନ୍ୟାସକରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1878 gio/glocalfileinfo.c:2046
+#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ମାଲିକ ନିରୁପଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1901
+#: gio/glocalfileinfo.c:1903
 msgid "symlink must be non-NULL"
 msgstr "symlink ନିଶ୍ଚିତ ରୂପେ non-NULL"
 
-#: gio/glocalfileinfo.c:1911 gio/glocalfileinfo.c:1930
-#: gio/glocalfileinfo.c:1941
+#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1943
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1922
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: ଫାଇଲଟି ଗୋଟିଏ symlink ନୁହଁ"
 
-#: gio/glocalfileinfo.c:2069
+#: gio/glocalfileinfo.c:2071
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ପ୍ରସଙ୍ଗଟି ନିଶ୍ଚିତ ରୂପେ non-NULL ଅଟେ"
 
-#: gio/glocalfileinfo.c:2084
+#: gio/glocalfileinfo.c:2086
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ପ୍ରସଙ୍ଗ ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2093
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ଏହି ତନ୍ତ୍ରରେ ସକ୍ରିୟ ହୋଇନାହିଁ"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ଗୁଣ %s ବିନ୍ୟାସ କରିବା ସମର୍ଥିତ ନୁହଁ"
@@ -1792,4 +1802,3 @@ msgstr "ଲମ୍ବା ତାଲିକାଭୁକ୍ତ ଶୈଳୀ ବ୍ୟ
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
-
