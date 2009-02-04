@@ -144,10 +144,6 @@ g_dummy_file_get_basename (GFile *file)
 static char *
 g_dummy_file_get_path (GFile *file)
 {
-  GDummyFile *dummy = G_DUMMY_FILE (file);
-
-  if (dummy->decoded_uri)
-    return g_strdup (dummy->decoded_uri->path);
   return NULL;
 }
 

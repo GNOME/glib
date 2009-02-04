@@ -1,3 +1,11 @@
+2009-02-04  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 566747 - URIs opened with firefox %u load as local files
+
+	* gdummyfile.c (g_dummy_file_get_path):
+	Dummy files are never used for local paths, so always return NULL
+	in get_path(). 
+
 2009-02-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.6 ===
