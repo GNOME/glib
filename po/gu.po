@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
-"POT-Creation-Date: 2009-02-02 20:09+0000\n"
-"PO-Revision-Date: 2009-02-03 17:24+0530\n"
+"POT-Creation-Date: 2009-02-03 11:56+0000\n"
+"PO-Revision-Date: 2009-02-04 14:19+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -340,7 +340,7 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "વસ્તુ નો સેમીકોલન સાથે અંત થતો નથી; ઘણી વખતે એમપરસંડ(&) અક્ષર ચિન્હ વગર તમે વસ્તુ વાપરી "
-"શકો છો- એમપરસંડ &amp; તરીકે લો."
+"શકો છો- એમપરસંડ &amp; તરીકે લો"
 
 #: ../glib/gmarkup.c:638
 #, c-format
@@ -402,11 +402,11 @@ msgid ""
 msgstr "'%s' એ '<' અક્ષર પછી આવતો યોગ્ય અક્ષર નથી; તે કોઈ વસ્તુના નામથી શરુ થતુ નથી"
 
 #: ../glib/gmarkup.c:1276
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
-msgstr "અસંગત અક્ષર '%s', વસ્તુ '%s' ની શરુઆત ટેગ ને સમાપ્ત કરવા '>' અક્ષર ની આશા છે"
+msgstr "અસંગત અક્ષર '%s', વસ્તુ ટેગ '%s' નાં ખાલી ઘટક ને સમાપ્ત કરવા '>' અક્ષર ની આશા છે"
 
 #: ../glib/gmarkup.c:1365
 #, c-format
@@ -1667,17 +1667,15 @@ msgstr "માઉન્ટ એ પુનઃમાઉન્ટને અમલમ
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:601
-#, fuzzy
 msgid "mount doesn't implement content type guessing"
-msgstr "માઉન્ટ એ અનમાઉન્ટને અમલમાં મૂકતું નથી"
+msgstr "માઉન્ટ એ સમાવિષ્ટ પ્રકાર અંદાજિત કરવાનું અમલીકરમ કરતુ નથી"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:690
-#, fuzzy
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr "માઉન્ટ એ અનમાઉન્ટને અમલમાં મૂકતું નથી"
+msgstr "માઉન્ટ એ સમાવિષ્ટ પ્રકાર અંદાજિત કરવાનું એકી સાથે અમલીકરણ કરતુ નથી"
 
 #: ../gio/goutputstream.c:211 ../gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
@@ -1712,6 +1710,8 @@ msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
+"ક્યાં તો '-' અક્ષરો પર નામ ને ટૂંકું કરવા દ્રારા મૂળભૂત ફોલબેકો ને વાપર્યો હોય. "
+"પહેલા પછીનાં નામો ને અવગણો જો ઘણાબધા નામો આપેલ હોય તો."
 
 #: ../gio/gthemedicon.c:499
 #, c-format
