@@ -2112,7 +2112,10 @@ start_struct (GMarkupParseContext *context,
 	      GError             **error)
 {
   if (strcmp (element_name, "record") == 0 && 
-      ctx->state == STATE_NAMESPACE)
+      (ctx->state == STATE_NAMESPACE ||
+       ctx->state == STATE_UNION ||
+       ctx->state == STATE_STRUCT ||
+       ctx->state == STATE_CLASS))
     {
       const gchar *name;
       const gchar *deprecated;
@@ -2127,7 +2130,7 @@ start_struct (GMarkupParseContext *context,
       gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
       gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
 
-      if (name == NULL)
+      if (name == NULL && ctx->node_stack == NULL)
 	{
 	  MISSING_ATTRIBUTE (context, error, element_name, "name");
 	  return FALSE;
@@ -2145,7 +2148,7 @@ start_struct (GMarkupParseContext *context,
 
       struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT);
       
-      ((GIrNode *)struct_)->name = g_strdup (name);
+      ((GIrNode *)struct_)->name = g_strdup (name ? name : "");
       if (deprecated)
 	struct_->deprecated = TRUE;
       else
@@ -2156,9 +2159,10 @@ start_struct (GMarkupParseContext *context,
 
       struct_->gtype_name = g_strdup (gtype_name);
       struct_->gtype_init = g_strdup (gtype_init);
-      
-      ctx->current_module->entries = 
-	g_list_append (ctx->current_module->entries, struct_);
+
+      if (ctx->node_stack == NULL)
+        ctx->current_module->entries = 
+          g_list_append (ctx->current_module->entries, struct_);
       push_node (ctx, (GIrNode *)struct_);
       
       state_switch (ctx, STATE_STRUCT);
@@ -2176,8 +2180,11 @@ start_union (GMarkupParseContext *context,
 	     ParseContext       *ctx,
 	     GError             **error)
 {
-  if (strcmp (element_name, "union") == 0 && 
-      ctx->state == STATE_NAMESPACE)
+  if (strcmp (element_name, "union") == 0 &&
+      (ctx->state == STATE_NAMESPACE ||
+       ctx->state == STATE_UNION ||
+       ctx->state == STATE_STRUCT ||
+       ctx->state == STATE_CLASS))
     {
       const gchar *name;
       const gchar *deprecated;
@@ -2189,7 +2196,7 @@ start_union (GMarkupParseContext *context,
       typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
       typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
       
-      if (name == NULL)
+      if (name == NULL && ctx->node_stack == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
       else
 	{
@@ -2197,7 +2204,7 @@ start_union (GMarkupParseContext *context,
 
 	  union_ = (GIrNodeUnion *) g_ir_node_new (G_IR_NODE_UNION);
 	  
-	  ((GIrNode *)union_)->name = g_strdup (name);
+	  ((GIrNode *)union_)->name = g_strdup (name ? name : "");
 	  union_->gtype_name = g_strdup (typename);
 	  union_->gtype_init = g_strdup (typeinit);
 	  if (deprecated)
@@ -2205,8 +2212,9 @@ start_union (GMarkupParseContext *context,
 	  else
 	    union_->deprecated = FALSE;
 
-	  ctx->current_module->entries = 
-	    g_list_append (ctx->current_module->entries, union_);
+          if (ctx->node_stack == NULL)
+            ctx->current_module->entries = 
+              g_list_append (ctx->current_module->entries, union_);
 	  push_node (ctx, (GIrNode *)union_);
 	  
 	  state_switch (ctx, STATE_UNION);
@@ -2685,6 +2693,41 @@ require_one_of_end_elements (GMarkupParseContext *context,
 }
 
 static gboolean
+state_switch_end_struct_or_union (GMarkupParseContext *context,
+                                  ParseContext *ctx,
+                                  const gchar *element_name,
+                                  GError **error)
+{
+  pop_node (ctx);
+  if (ctx->node_stack == NULL)
+    {
+      state_switch (ctx, STATE_NAMESPACE);
+    }
+  else 
+    {
+      if (CURRENT_NODE (ctx)->type == G_IR_NODE_STRUCT)
+        state_switch (ctx, STATE_STRUCT);
+      else if (CURRENT_NODE (ctx)->type == G_IR_NODE_UNION)
+        state_switch (ctx, STATE_UNION);
+      else if (CURRENT_NODE (ctx)->type == G_IR_NODE_OBJECT)
+        state_switch (ctx, STATE_CLASS);
+      else
+        {
+          int line_number, char_number;
+          g_markup_parse_context_get_position (context, &line_number, &char_number);
+          g_set_error (error,
+                       G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "Unexpected end tag '%s' on line %d char %d",
+                       element_name,
+                       line_number, char_number);
+          return FALSE;
+        }
+    }
+  return TRUE;
+}
+
+static gboolean
 require_end_element (GMarkupParseContext *context,
 		     ParseContext        *ctx,
 		     const char          *expected_name,
@@ -2897,8 +2940,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_STRUCT:
       if (require_end_element (context, ctx, "record", element_name, error))
 	{
-	  pop_node (ctx);
-	  state_switch (ctx, STATE_NAMESPACE);
+	  state_switch_end_struct_or_union (context, ctx, element_name, error);
 	}
       break;
 
@@ -2914,8 +2956,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_UNION:
       if (require_end_element (context, ctx, "union", element_name, error))
 	{
-	  pop_node (ctx);
-	  state_switch (ctx, STATE_NAMESPACE);
+	  state_switch_end_struct_or_union (context, ctx, element_name, error);
 	}
       break;
     case STATE_IMPLEMENTS:
