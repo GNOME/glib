@@ -85,13 +85,14 @@ struct _ParseContext
 
   const char *namespace;
   GIrModule *current_module;
-  GIrNode *current_node;
+  GSList *node_stack;
   GIrNode *current_typed;
   gboolean is_varargs;
   GList *type_stack;
   GList *type_parameters;
   int type_depth;
 };
+#define CURRENT_NODE(ctx) ((GIrNode *)((ctx)->node_stack->data))
 
 static void start_element_handler (GMarkupParseContext *context,
 				   const gchar         *element_name,
@@ -308,6 +309,27 @@ state_switch (ParseContext *ctx, ParseState newstate)
   g_debug ("State: %d", newstate);
   ctx->prev_state = ctx->state;
   ctx->state = newstate;
+}
+
+static GIrNode *
+pop_node (ParseContext *ctx)
+{
+  g_assert (ctx->node_stack != 0);
+  
+  GSList *top = ctx->node_stack;
+  GIrNode *node = top->data;
+  
+  g_debug ("popping node %d %s", node->type, node->name);
+  ctx->node_stack = top->next;
+  g_slist_free_1 (top);
+  return node;
+}
+
+static void
+push_node (ParseContext *ctx, GIrNode *node)
+{
+  g_debug ("pushing node %d %s", node->type, node->name);
+  ctx->node_stack = g_slist_prepend (ctx->node_stack, node);
 }
 
 static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib,
@@ -643,7 +665,7 @@ start_glib_boxed (GMarkupParseContext *context,
   else
     boxed->deprecated = FALSE;
 	  
-  ctx->current_node = (GIrNode *)boxed;
+  push_node (ctx, (GIrNode *)boxed);
   ctx->current_module->entries = 
     g_list_append (ctx->current_module->entries, boxed);
   
@@ -744,20 +766,20 @@ start_function (GMarkupParseContext *context,
   else
     function->throws = FALSE;
 
-  if (ctx->current_node == NULL)
+  if (ctx->node_stack == NULL)
     {
       ctx->current_module->entries = 
 	g_list_append (ctx->current_module->entries, function);	      
     }
   else
-    switch (ctx->current_node->type)
+    switch (CURRENT_NODE (ctx)->type)
       {
       case G_IR_NODE_INTERFACE:
       case G_IR_NODE_OBJECT:
 	{
 	  GIrNodeInterface *iface;
 	  
-	  iface = (GIrNodeInterface *)ctx->current_node;
+	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, function);
 	}
 	break;
@@ -765,7 +787,7 @@ start_function (GMarkupParseContext *context,
 	{
 	  GIrNodeBoxed *boxed;
 	  
-	  boxed = (GIrNodeBoxed *)ctx->current_node;
+	  boxed = (GIrNodeBoxed *)CURRENT_NODE (ctx);
 	  boxed->members = g_list_append (boxed->members, function);
 	}
 	break;
@@ -773,14 +795,14 @@ start_function (GMarkupParseContext *context,
 	{
 	  GIrNodeStruct *struct_;
 	  
-	  struct_ = (GIrNodeStruct *)ctx->current_node;
+	  struct_ = (GIrNodeStruct *)CURRENT_NODE (ctx);
 	  struct_->members = g_list_append (struct_->members, function);		}
 	break;
       case G_IR_NODE_UNION:
 	{
 	  GIrNodeUnion *union_;
 	  
-	  union_ = (GIrNodeUnion *)ctx->current_node;
+	  union_ = (GIrNodeUnion *)CURRENT_NODE (ctx);
 	  union_->members = g_list_append (union_->members, function);
 	}
 	break;
@@ -788,7 +810,7 @@ start_function (GMarkupParseContext *context,
 	g_assert_not_reached ();
       }
   
-  ctx->current_node = (GIrNode *)function;
+  push_node(ctx, (GIrNode *)function);
   state_switch (ctx, STATE_FUNCTION);
   
   return TRUE;
@@ -921,14 +943,14 @@ start_parameter (GMarkupParseContext *context,
   
   ((GIrNode *)param)->name = g_strdup (name);
 	  
-  switch (ctx->current_node->type)
+  switch (CURRENT_NODE (ctx)->type)
     {
     case G_IR_NODE_FUNCTION:
     case G_IR_NODE_CALLBACK:
       {
 	GIrNodeFunction *func;
 
-	func = (GIrNodeFunction *)ctx->current_node;
+	func = (GIrNodeFunction *)CURRENT_NODE (ctx);
 	func->parameters = g_list_append (func->parameters, param);
       }
       break;
@@ -936,7 +958,7 @@ start_parameter (GMarkupParseContext *context,
       {
 	GIrNodeSignal *signal;
 
-	signal = (GIrNodeSignal *)ctx->current_node;
+	signal = (GIrNodeSignal *)CURRENT_NODE (ctx);
 	signal->parameters = g_list_append (signal->parameters, param);
       }
       break;
@@ -944,7 +966,7 @@ start_parameter (GMarkupParseContext *context,
       {
 	GIrNodeVFunc *vfunc;
 		
-	vfunc = (GIrNodeVFunc *)ctx->current_node;
+	vfunc = (GIrNodeVFunc *)CURRENT_NODE (ctx);
 	vfunc->parameters = g_list_append (vfunc->parameters, param);
       }
       break;
@@ -1011,13 +1033,13 @@ start_field (GMarkupParseContext *context,
   else
     field->bits = 0;
   
-  switch (ctx->current_node->type)
+  switch (CURRENT_NODE (ctx)->type)
     {
     case G_IR_NODE_OBJECT:
       {
 	GIrNodeInterface *iface;
 	
-	iface = (GIrNodeInterface *)ctx->current_node;
+	iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	iface->members = g_list_append (iface->members, field);
 	state_switch (ctx, STATE_CLASS_FIELD);
       }
@@ -1026,7 +1048,7 @@ start_field (GMarkupParseContext *context,
       {
 	GIrNodeInterface *iface;
 	
-	iface = (GIrNodeInterface *)ctx->current_node;
+	iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	iface->members = g_list_append (iface->members, field);
 	state_switch (ctx, STATE_INTERFACE_FIELD);
       }
@@ -1035,7 +1057,7 @@ start_field (GMarkupParseContext *context,
       {
 	GIrNodeBoxed *boxed;
 	
-	boxed = (GIrNodeBoxed *)ctx->current_node;
+	boxed = (GIrNodeBoxed *)CURRENT_NODE (ctx);
 		boxed->members = g_list_append (boxed->members, field);
 		state_switch (ctx, STATE_BOXED_FIELD);
       }
@@ -1044,7 +1066,7 @@ start_field (GMarkupParseContext *context,
       {
 	GIrNodeStruct *struct_;
 	
-	struct_ = (GIrNodeStruct *)ctx->current_node;
+	struct_ = (GIrNodeStruct *)CURRENT_NODE (ctx);
 	struct_->members = g_list_append (struct_->members, field);
 	state_switch (ctx, STATE_STRUCT_FIELD);
       }
@@ -1053,7 +1075,7 @@ start_field (GMarkupParseContext *context,
       {
 	GIrNodeUnion *union_;
 	
-	union_ = (GIrNodeUnion *)ctx->current_node;
+	union_ = (GIrNodeUnion *)CURRENT_NODE (ctx);
 	union_->members = g_list_append (union_->members, field);
 	if (branch)
 	  {
@@ -1160,7 +1182,7 @@ start_enum (GMarkupParseContext *context,
 	  else
 	    enum_->deprecated = FALSE;
 
-	  ctx->current_node = (GIrNode *) enum_;
+	  push_node (ctx, (GIrNode *) enum_);
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, enum_);	      
 	  
@@ -1226,7 +1248,7 @@ start_property (GMarkupParseContext *context,
 	  else
 	    property->construct_only = FALSE;
 
-	  iface = (GIrNodeInterface *)ctx->current_node;
+	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, property);
 
 	  if (ctx->state == STATE_CLASS)
@@ -1302,7 +1324,7 @@ start_member (GMarkupParseContext *context,
 	  else
 	    value_->deprecated = FALSE;
 
-	  enum_ = (GIrNodeEnum *)ctx->current_node;
+	  enum_ = (GIrNodeEnum *)CURRENT_NODE (ctx);
 	  enum_->values = g_list_append (enum_->values, value_);
 	}
       
@@ -1354,7 +1376,7 @@ start_constant (GMarkupParseContext *context,
 
 	  if (ctx->state == STATE_NAMESPACE)
 	    {
-	      ctx->current_node = (GIrNode *) constant;
+	      push_node (ctx, (GIrNode *) constant);
 	      ctx->current_module->entries = 
 		g_list_append (ctx->current_module->entries, constant);
 	    }
@@ -1362,7 +1384,7 @@ start_constant (GMarkupParseContext *context,
 	    {
 	      GIrNodeInterface *iface;
 
-	      iface = (GIrNodeInterface *)ctx->current_node;
+	      iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	      iface->members = g_list_append (iface->members, constant);
 	    }
 
@@ -1430,7 +1452,7 @@ start_errordomain (GMarkupParseContext *context,
 	  else
 	    domain->deprecated = FALSE;
 
-	  ctx->current_node = (GIrNode *) domain;
+	  push_node (ctx, (GIrNode *) domain);
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, domain);
 
@@ -1482,7 +1504,7 @@ start_interface (GMarkupParseContext *context,
 	  else
 	    iface->deprecated = FALSE;
 	  
-	  ctx->current_node = (GIrNode *) iface;
+	  push_node (ctx, (GIrNode *) iface);
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, iface);	      
 	  
@@ -1542,7 +1564,7 @@ start_class (GMarkupParseContext *context,
 
 	  iface->abstract = abstract && strcmp (abstract, "1") == 0;
 
-	  ctx->current_node = (GIrNode *) iface;
+	  push_node (ctx, (GIrNode *) iface);
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, iface);	      
 	  
@@ -1598,18 +1620,18 @@ start_type (GMarkupParseContext *context,
       ctx->type_depth = 1;
       if (is_varargs)
 	{
-	  switch (ctx->current_node->type)
+	  switch (CURRENT_NODE (ctx)->type)
 	    {
 	    case G_IR_NODE_FUNCTION:
 	    case G_IR_NODE_CALLBACK:
 	      {
-		GIrNodeFunction *func = (GIrNodeFunction *)ctx->current_node;
+		GIrNodeFunction *func = (GIrNodeFunction *)CURRENT_NODE (ctx);
 		func->is_varargs = TRUE;
 	      }
 	      break;
 	    case G_IR_NODE_VFUNC:
 	      {
-		GIrNodeVFunc *vfunc = (GIrNodeVFunc *)ctx->current_node;
+		GIrNodeVFunc *vfunc = (GIrNodeVFunc *)CURRENT_NODE (ctx);
 		vfunc->is_varargs = TRUE;
 	      }
 	      break;
@@ -1770,7 +1792,7 @@ end_type_top (ParseContext *ctx)
       }
       break;
     default:
-      g_printerr("current node is %d\n", ctx->current_node->type);
+      g_printerr("current node is %d\n", CURRENT_NODE (ctx)->type);
       g_assert_not_reached ();
     }
   g_list_free (ctx->type_parameters);
@@ -1859,24 +1881,24 @@ start_return_value (GMarkupParseContext *context,
       transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
       parse_param_transfer (param, transfer);
 
-      switch (ctx->current_node->type)
+      switch (CURRENT_NODE (ctx)->type)
 	{
 	case G_IR_NODE_FUNCTION:
 	case G_IR_NODE_CALLBACK:
 	  {
-	    GIrNodeFunction *func = (GIrNodeFunction *)ctx->current_node;
+	    GIrNodeFunction *func = (GIrNodeFunction *)CURRENT_NODE (ctx);
 	    func->result = param;
 	  }
 	  break;
 	case G_IR_NODE_SIGNAL:
 	  {
-	    GIrNodeSignal *signal = (GIrNodeSignal *)ctx->current_node;
+	    GIrNodeSignal *signal = (GIrNodeSignal *)CURRENT_NODE (ctx);
 	    signal->result = param;
 	  }
 	  break;
 	case G_IR_NODE_VFUNC:
 	  {
-	    GIrNodeVFunc *vfunc = (GIrNodeVFunc *)ctx->current_node;
+	    GIrNodeVFunc *vfunc = (GIrNodeVFunc *)CURRENT_NODE (ctx);
 	    vfunc->result = param;
 	  }
 	  break;
@@ -1914,7 +1936,7 @@ start_implements (GMarkupParseContext *context,
       return FALSE;
     }
       
-  iface = (GIrNodeInterface *)ctx->current_node;
+  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
   iface->interfaces = g_list_append (iface->interfaces, g_strdup (name));
 
   return TRUE;
@@ -1990,10 +2012,10 @@ start_glib_signal (GMarkupParseContext *context,
 	  else
 	    signal->has_class_closure = FALSE;
 
-	  iface = (GIrNodeInterface *)ctx->current_node;
+	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, signal);
 
-	  ctx->current_node = (GIrNode *)signal;
+	  push_node (ctx, (GIrNode *)signal);
 	  state_switch (ctx, STATE_FUNCTION);
 	}
       
@@ -2068,10 +2090,10 @@ start_vfunc (GMarkupParseContext *context,
 	  else
 	    vfunc->offset = 0;
 
-	  iface = (GIrNodeInterface *)ctx->current_node;
+	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, vfunc);
 
-	  ctx->current_node = (GIrNode *)vfunc;
+	  push_node (ctx, (GIrNode *)vfunc);
 	  state_switch (ctx, STATE_FUNCTION);
 	}
       
@@ -2135,9 +2157,9 @@ start_struct (GMarkupParseContext *context,
       struct_->gtype_name = g_strdup (gtype_name);
       struct_->gtype_init = g_strdup (gtype_init);
       
-      ctx->current_node = (GIrNode *)struct_;
       ctx->current_module->entries = 
 	g_list_append (ctx->current_module->entries, struct_);
+      push_node (ctx, (GIrNode *)struct_);
       
       state_switch (ctx, STATE_STRUCT);
       return TRUE;
@@ -2183,9 +2205,9 @@ start_union (GMarkupParseContext *context,
 	  else
 	    union_->deprecated = FALSE;
 
-	  ctx->current_node = (GIrNode *)union_;
 	  ctx->current_module->entries = 
 	    g_list_append (ctx->current_module->entries, union_);
+	  push_node (ctx, (GIrNode *)union_);
 	  
 	  state_switch (ctx, STATE_UNION);
 	}
@@ -2215,9 +2237,9 @@ start_discriminator (GMarkupParseContext *context,
       else if (offset == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "offset");
 	{
-	  ((GIrNodeUnion *)ctx->current_node)->discriminator_type 
+	  ((GIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type 
 	    = parse_type (ctx, type);
-	  ((GIrNodeUnion *)ctx->current_node)->discriminator_offset 
+	  ((GIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset 
 	    = atoi (offset);
 	}
       
@@ -2540,7 +2562,7 @@ start_element_handler (GMarkupParseContext *context,
 	    {  
 	      GIrNodeInterface *iface;
 
-	      iface = (GIrNodeInterface *)ctx->current_node;
+	      iface = (GIrNodeInterface *)CURRENT_NODE(ctx);
 	      iface->prerequisites = g_list_append (iface->prerequisites, g_strdup (name));
 	    }
 	  goto out;
@@ -2742,28 +2764,22 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_FUNCTION:
       {
- 	gboolean current_is_toplevel;
-	GList *last = g_list_last (ctx->current_module->entries);
-	
-	current_is_toplevel = ctx->current_node == last->data;	
-
-	if (current_is_toplevel)
+        pop_node (ctx);
+	if (ctx->node_stack == NULL)
 	  {
-	    ctx->current_node = NULL;
 	    state_switch (ctx, STATE_NAMESPACE);
 	  }
 	else 
-	  { 
-	    ctx->current_node = g_list_last (ctx->current_module->entries)->data;
-	    if (ctx->current_node->type == G_IR_NODE_INTERFACE)
+	  {
+	    if (CURRENT_NODE (ctx)->type == G_IR_NODE_INTERFACE)
 	      state_switch (ctx, STATE_INTERFACE);
-	    else if (ctx->current_node->type == G_IR_NODE_OBJECT) 
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_OBJECT) 
 	      state_switch (ctx, STATE_CLASS);
-	    else if (ctx->current_node->type == G_IR_NODE_BOXED)
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_BOXED)
 	      state_switch (ctx, STATE_BOXED);
-	    else if (ctx->current_node->type == G_IR_NODE_STRUCT)
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_STRUCT)
 	      state_switch (ctx, STATE_STRUCT);
-	    else if (ctx->current_node->type == G_IR_NODE_UNION)
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_UNION)
 	      state_switch (ctx, STATE_UNION);
 	    else
 	      {
@@ -2801,7 +2817,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_CLASS:
       if (require_end_element (context, ctx, "class", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2809,7 +2825,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_ERRORDOMAIN:
       if (require_end_element (context, ctx, "errordomain", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2835,7 +2851,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_INTERFACE:
       if (require_end_element (context, ctx, "interface", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2847,7 +2863,7 @@ end_element_handler (GMarkupParseContext *context,
 					    element_name, error, "enumeration", 
 					    "bitfield", NULL))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2855,7 +2871,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_BOXED:
       if (require_end_element (context, ctx, "glib:boxed", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2881,7 +2897,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_STRUCT:
       if (require_end_element (context, ctx, "record", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2898,7 +2914,7 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_UNION:
       if (require_end_element (context, ctx, "union", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -2919,7 +2935,7 @@ end_element_handler (GMarkupParseContext *context,
 	break;
       if (require_end_element (context, ctx, "constant", element_name, error))
 	{
-	  ctx->current_node = NULL;
+	  pop_node (ctx);
 	  switch (ctx->state)
 	    {
 	    case STATE_NAMESPACE_CONSTANT:
