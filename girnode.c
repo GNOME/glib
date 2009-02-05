@@ -654,7 +654,6 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	size += ALIGN_VALUE (strlen (iface->gtype_name) + 1, 4);
 	if (iface->gtype_init)
 	  size += ALIGN_VALUE (strlen (iface->gtype_init) + 1, 4);
-	size += ALIGN_VALUE ( + 1, 4);
 	size += 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
