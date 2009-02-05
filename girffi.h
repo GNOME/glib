@@ -26,7 +26,20 @@
 
 G_BEGIN_DECLS
 
-ffi_type *g_ir_ffi_get_ffi_type (GITypeTag tag);
+typedef void (*GIFFIClosureCallback) (ffi_cif *,
+                                      void *,
+                                      void **,
+                                      void *);
+
+ffi_type *    g_ir_ffi_get_ffi_type               (GITypeTag             tag);
+ffi_type **   g_callable_info_get_ffi_arg_types   (GICallableInfo       *callable_info);
+ffi_type *    g_callable_info_get_ffi_return_type (GICallableInfo       *callable_info);
+ffi_closure * g_callable_info_prepare_closure     (GICallableInfo       *callable_info,
+                                                   ffi_cif              *cif,
+                                                   GIFFIClosureCallback  callback,
+                                                   gpointer              user_data);
+void          g_callable_info_free_closure        (GICallableInfo       *callable_info,
+                                                   ffi_closure          *closure);
 
 G_END_DECLS
 

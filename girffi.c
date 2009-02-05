@@ -19,7 +19,12 @@
  * Boston, MA 02111-1307, USA.
  */
 #include <config.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <unistd.h>
 #include "girffi.h"
+#include "girepository.h"
 
 ffi_type *
 g_ir_ffi_get_ffi_type (GITypeTag tag)
@@ -97,4 +102,138 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
   g_assert_not_reached ();
 
   return NULL;
+}
+
+/**
+ * g_callable_info_get_ffi_arg_types:
+ * @callable_info: a callable info from a typelib
+ *
+ * Return value: an array of ffi_type*. The array itself
+ * should be freed using g_free() after use.
+ */
+ffi_type **
+g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
+{
+    ffi_type **arg_types;
+    gint n_args, i;
+    
+    g_return_val_if_fail (callable_info != NULL, NULL);
+
+    n_args = g_callable_info_get_n_args (callable_info);
+    
+    arg_types = (ffi_type **) g_new0 (ffi_type *, n_args + 1);
+    
+    for (i = 0; i < n_args; ++i)
+      {
+        GIArgInfo *arg_info = g_callable_info_get_arg (callable_info, i);
+        GITypeInfo *arg_type = g_arg_info_get_type (arg_info);
+        GITypeTag type_tag = g_type_info_get_tag (arg_type);
+        arg_types[i] = g_ir_ffi_get_ffi_type (type_tag);
+        g_base_info_unref ((GIBaseInfo *)arg_info);
+        g_base_info_unref ((GIBaseInfo *)arg_type);
+      }
+    arg_types[n_args] = NULL;
+
+    return arg_types;
+}
+
+/**
+ * g_callable_info_get_ffi_return_type:
+ * @callable_info: a callable info from a typelib
+ *
+ * Fetches the ffi_type for a corresponding return value of
+ * a #GICallableInfo
+ * Return value: the ffi_type for the return value
+ */
+ffi_type *
+g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
+{
+  GITypeInfo *return_type;
+  GITypeTag type_tag;
+
+  g_return_val_if_fail (callable_info != NULL, NULL);
+
+  return_type = g_callable_info_get_return_type (callable_info);
+  type_tag = g_type_info_get_tag (return_type);
+  return g_ir_ffi_get_ffi_type (type_tag);
+}
+
+/**
+ * g_callable_info_prepare_closure:
+ * @callable_info: a callable info from a typelib
+ * @cif: a ffi_cif structure
+ * @callback: the ffi callback
+ * @user_data: data to be passed into the callback
+ *
+ * Prepares a callback for ffi invocation.
+ *
+ * Note: this function requires the heap to be executable, which
+ *       might not function properly on systems with SELinux enabled.
+ *
+ * Return value: the ffi_closure or NULL on error.
+ * The return value should be freed by calling g_callable_info_prepare_closure().
+ */
+ffi_closure *
+g_callable_info_prepare_closure (GICallableInfo       *callable_info,
+                                 ffi_cif              *cif,
+                                 GIFFIClosureCallback  callback,
+                                 gpointer              user_data)
+{
+  ffi_closure *closure;
+  ffi_status status;
+    
+  g_return_val_if_fail (callable_info != NULL, FALSE);
+  g_return_val_if_fail (cif != NULL, FALSE);
+  g_return_val_if_fail (callback != NULL, FALSE);
+    
+  closure = mmap (NULL, sizeof (ffi_closure),
+                  PROT_EXEC | PROT_READ | PROT_WRITE,
+                  MAP_ANON | MAP_PRIVATE, -1, sysconf (_SC_PAGE_SIZE));
+  if (!closure)
+    {
+      g_warning("mmap failed: %s\n", strerror(errno));
+      return NULL;
+    }
+
+  status = ffi_prep_cif (cif, FFI_DEFAULT_ABI,
+                         g_callable_info_get_n_args (callable_info),
+                         g_callable_info_get_ffi_return_type (callable_info),
+                         g_callable_info_get_ffi_arg_types (callable_info));
+  if (status != FFI_OK)
+    {
+      g_warning("ffi_prep_cif failed: %d\n", status);
+      munmap(closure, sizeof (closure));
+      return NULL;
+    }
+
+  status = ffi_prep_closure (closure, cif, callback, user_data);
+  if (status != FFI_OK)
+    {
+      g_warning ("ffi_prep_closure failed: %d\n", status);
+      munmap(closure, sizeof (closure));
+      return NULL;
+    }
+
+  if (mprotect(closure, sizeof (closure), PROT_READ | PROT_EXEC) == -1)
+    {
+      g_warning ("ffi_prep_closure failed: %s\n", strerror(errno));
+      munmap(closure, sizeof (closure));
+      return NULL;
+    }
+  
+  return closure;
+}
+
+/**
+ * g_callable_info_prepare_closure:
+ * @callable_info: a callable info from a typelib
+ * @closure: ffi closure
+ *
+ * Frees a ffi_closure returned from g_callable_info_prepare_closure()
+ */
+void
+g_callable_info_free_closure (GICallableInfo *callable_info,
+                              ffi_closure    *closure)
+{
+  munmap(closure, sizeof (closure));
 }
