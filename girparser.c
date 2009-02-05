@@ -36,34 +36,35 @@ struct _GIrParser
 
 typedef enum
 {
-  STATE_START,    
-  STATE_END,        
-  STATE_REPOSITORY, 
-  STATE_INCLUDE,  
-  STATE_NAMESPACE,  
-  STATE_ENUM,      /* 5 */    
-  STATE_BITFIELD,  
-  STATE_FUNCTION,   
-  STATE_FUNCTION_RETURN, 
-  STATE_FUNCTION_PARAMETERS,
-  STATE_FUNCTION_PARAMETER,  /* 10 */
-  STATE_CLASS,  
+  STATE_START,
+  STATE_END,
+  STATE_REPOSITORY,
+  STATE_INCLUDE,
+  STATE_PACKAGE,
+  STATE_NAMESPACE, /* 5 */
+  STATE_ENUM,
+  STATE_BITFIELD,
+  STATE_FUNCTION,
+  STATE_FUNCTION_RETURN,
+  STATE_FUNCTION_PARAMETERS, /* 10 */
+  STATE_FUNCTION_PARAMETER,
+  STATE_CLASS,
   STATE_CLASS_FIELD,
   STATE_CLASS_PROPERTY,
-  STATE_INTERFACE,
-  STATE_INTERFACE_PROPERTY,   /* 15 */
+  STATE_INTERFACE, /* 15 */
+  STATE_INTERFACE_PROPERTY,
   STATE_INTERFACE_FIELD,
-  STATE_IMPLEMENTS, 
+  STATE_IMPLEMENTS,
   STATE_PREREQUISITE,
-  STATE_BOXED,  
-  STATE_BOXED_FIELD, /* 20 */
-  STATE_STRUCT,   
+  STATE_BOXED,   /* 20 */
+  STATE_BOXED_FIELD,
+  STATE_STRUCT,
   STATE_STRUCT_FIELD,
-  STATE_ERRORDOMAIN, 
-  STATE_UNION,
-  STATE_UNION_FIELD, /* 25 */
-  STATE_NAMESPACE_CONSTANT, 
-  STATE_CLASS_CONSTANT, 
+  STATE_ERRORDOMAIN,
+  STATE_UNION, /* 25 */
+  STATE_UNION_FIELD,
+  STATE_NAMESPACE_CONSTANT,
+  STATE_CLASS_CONSTANT,
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS,
   STATE_TYPE,
@@ -2584,6 +2585,12 @@ start_element_handler (GMarkupParseContext *context,
 	    }
 	  goto out;
 	}
+      else if (strcmp (element_name, "package") == 0 &&
+          ctx->state == STATE_REPOSITORY)
+        {
+          state_switch (ctx, STATE_PACKAGE);
+          goto out;
+        }
       break;
 
     case 'r':
@@ -2773,6 +2780,13 @@ end_element_handler (GMarkupParseContext *context,
           state_switch (ctx, STATE_REPOSITORY);
         }
       break;
+      
+    case STATE_PACKAGE:
+      if (require_end_element (context, ctx, "package", element_name, error))
+        {
+          state_switch (ctx, STATE_REPOSITORY);
+        }
+      break;      
 
     case STATE_NAMESPACE:
       if (require_end_element (context, ctx, "namespace", element_name, error))
