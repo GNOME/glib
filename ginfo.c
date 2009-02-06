@@ -1178,6 +1178,24 @@ g_struct_info_get_alignment (GIStructInfo *info)
   return blob->alignment;
 }
 
+/**
+ * g_struct_info_is_class_struct:
+ * @info: GIStructInfo
+ * 
+ * Return true if this structure represents the "class structure" for some
+ * GObject.  This function is mainly useful to hide this kind of structure
+ * from public APIs.
+ *
+ */
+gboolean
+g_struct_info_is_class_struct (GIStructInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+
+  return blob->is_class_struct;
+}
+
 gint
 g_enum_info_get_n_values (GIEnumInfo *info)
 {
@@ -1469,6 +1487,25 @@ g_object_info_get_constant (GIObjectInfo *info,
 					base->typelib, offset);  
 }
 
+/**
+ * g_object_info_get_class_struct:
+ * @info: A #GIObjectInfo to query
+ * 
+ * Every GObject has two structures; an instance structure and a class
+ * structure.  This function returns the metadata for the class structure.
+ */
+GIStructInfo *
+g_object_info_get_class_struct (GIObjectInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+
+  if (blob->class_struct)
+    return (GIStructInfo *) g_info_from_entry (base->repository,
+                                               base->typelib, blob->class_struct);
+  else
+    return NULL;
+}
 
 /* GIInterfaceInfo functions */
 gint

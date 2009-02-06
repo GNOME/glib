@@ -181,7 +181,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (PropertyBlob, 12);
   CHECK_SIZE (SignalBlob, 12);
   CHECK_SIZE (VFuncBlob, 16);
-  CHECK_SIZE (ObjectBlob, 32);
+  CHECK_SIZE (ObjectBlob, 36);
   CHECK_SIZE (InterfaceBlob, 28);
   CHECK_SIZE (ConstantBlob, 20);
   CHECK_SIZE (AnnotationBlob, 12);
@@ -313,6 +313,15 @@ validate_header (ValidateContext  *ctx,
 		   "Typelib size mismatch");
       return FALSE; 
     }
+  
+  /* This is a sanity check for a specific typelib; it
+   * prevents us from loading an incompatible typelib.  It's OK to change
+   * these hardcoded constants to sizeof() as you see fit.
+   * 
+   * We want to keep the hardcoded checks in g_typelib_check_sanity to
+   * protect against inadvertent or buggy changes to the typelib format
+   * itself.
+   */
 
   if (header->entry_blob_size != 12 ||
       header->function_blob_size != 20 ||
@@ -329,7 +338,7 @@ validate_header (ValidateContext  *ctx,
       header->signature_blob_size != 8 ||
       header->enum_blob_size != 20 ||
       header->struct_blob_size != 24 ||
-      header->object_blob_size != 32 ||
+      header->object_blob_size != sizeof(ObjectBlob) ||
       header->interface_blob_size != 28 ||
       header->union_blob_size != 32)
     {
@@ -1435,7 +1444,9 @@ validate_object_blob (ValidateContext *ctx,
     {
       DirEntry *entry;
 
-      entry = g_typelib_get_dir_entry (typelib, blob->parent);
+      entry = get_dir_entry_checked (typelib, blob->parent, error);
+      if (!entry)
+        return FALSE;
       if (entry->blob_type != BLOB_TYPE_OBJECT &&
 	  (entry->local || entry->blob_type != 0))
 	{
@@ -1446,6 +1457,23 @@ validate_object_blob (ValidateContext *ctx,
 	  return FALSE; 
 	}
     }
+  
+  if (blob->class_struct != 0)
+    {
+      DirEntry *entry;
+
+      entry = get_dir_entry_checked (typelib, blob->class_struct, error);
+      if (!entry)
+        return FALSE;
+      if (entry->blob_type != BLOB_TYPE_STRUCT && entry->local)
+        {
+          g_set_error (error,
+                       G_TYPELIB_ERROR,
+                       G_TYPELIB_ERROR_INVALID_BLOB,
+                       "Class struct invalid type or not local");
+          return FALSE; 
+        }
+    }  
   
   if (typelib->len < offset + sizeof (ObjectBlob) + 
             (blob->n_interfaces + blob->n_interfaces % 2) * 2 +
@@ -1481,7 +1509,9 @@ validate_object_blob (ValidateContext *ctx,
 	  return FALSE; 
 	}
       
-      entry = g_typelib_get_dir_entry (typelib, iface);
+      entry = get_dir_entry_checked (typelib, iface, error);
+      if (!entry)
+        return FALSE;
 
       if (entry->blob_type != BLOB_TYPE_INTERFACE &&
 	  (entry->local || entry->blob_type != 0))

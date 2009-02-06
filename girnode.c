@@ -285,7 +285,8 @@ g_ir_node_free (GIrNode *node)
 	g_free (node->name);
 	g_free (iface->gtype_name);
 	g_free (iface->gtype_init);
-	
+
+        g_free (iface->class_struct);	
 	g_free (iface->parent);
 
 	for (l = iface->interfaces; l; l = l->next)
@@ -431,7 +432,7 @@ g_ir_node_get_size (GIrNode *node)
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
 	n = g_list_length (iface->interfaces);
-	size = 32 + 2 * (n + (n % 2));
+	size = sizeof(ObjectBlob) + 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
@@ -647,9 +648,11 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
 	n = g_list_length (iface->interfaces);
-	size = 32;
+	size = sizeof(ObjectBlob);
 	if (iface->parent)
 	  size += ALIGN_VALUE (strlen (iface->parent) + 1, 4);
+        if (iface->class_struct)
+          size += ALIGN_VALUE (strlen (iface->class_struct) + 1, 4);	
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (iface->gtype_name) + 1, 4);
 	if (iface->gtype_init)
@@ -1792,6 +1795,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	
 	blob->blob_type = BLOB_TYPE_STRUCT;
 	blob->deprecated = struct_->deprecated;
+	blob->is_class_struct = struct_->is_gclass_struct;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->alignment = struct_->alignment;
@@ -2001,6 +2005,10 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  blob->parent = find_entry (module, modules, object->parent);
 	else
 	  blob->parent = 0;
+	if (object->class_struct)
+	  blob->class_struct = find_entry (module, modules, object->class_struct);
+	else
+	  blob->class_struct = 0;
 
 	blob->n_interfaces = 0;
 	blob->n_fields = 0;
@@ -2010,7 +2018,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_vfuncs = 0;
 	blob->n_constants = 0;
 	
-	*offset += 32;
+	*offset += sizeof(ObjectBlob);
 	for (l = object->interfaces; l; l = l->next)
 	  {
 	    blob->n_interfaces++;

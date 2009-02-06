@@ -228,6 +228,7 @@ struct _GIrNodeInterface
   gchar *gtype_init;
 
   gchar *parent;
+  gchar *class_struct; /* Only applies to classes */
   
   GList *interfaces;
   GList *prerequisites;
@@ -292,6 +293,7 @@ struct _GIrNodeStruct
 
   gboolean deprecated;
   gboolean disguised;
+  gboolean is_gclass_struct;
 
   gchar *gtype_name;
   gchar *gtype_init;

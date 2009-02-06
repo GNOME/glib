@@ -306,8 +306,9 @@ typedef struct
 
   guint16   deprecated   : 1;
   guint16   unregistered : 1;
-  guint16   alignment    : 6;
-  guint16   reserved     : 8;
+  guint16   is_class_struct : 1;
+  guint16   alignment    : 6;  
+  guint16   reserved     : 7;
 
   guint32   name;
 
@@ -438,6 +439,8 @@ typedef struct
   guint32   gtype_init;
 
   guint16   parent;
+  guint16   class_struct;
+  guint16   reserved2;
 
   guint16   n_interfaces;
   guint16   n_fields;

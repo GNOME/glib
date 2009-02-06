@@ -223,7 +223,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->signature_blob_size = 8;
   header->enum_blob_size = 20;
   header->struct_blob_size = 24;
-  header->object_blob_size = 32;
+  header->object_blob_size = sizeof(ObjectBlob);
   header->interface_blob_size = 28;
   header->union_blob_size = 32;
 
