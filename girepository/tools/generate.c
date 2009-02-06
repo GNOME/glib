@@ -566,6 +566,7 @@ write_struct_info (const gchar  *namespace,
   const gchar *type_name;
   const gchar *type_init;
   gboolean deprecated;
+  gboolean is_class_struct;
   gint i;
   int n_elts;
 
@@ -591,6 +592,10 @@ write_struct_info (const gchar  *namespace,
 	  
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
+  
+  is_class_struct = g_struct_info_is_class_struct (info);
+  if (is_class_struct)
+    xml_printf (file, " glib:is-class-struct=\"1\"");
 	
   n_elts = g_struct_info_get_n_fields (info) + g_struct_info_get_n_methods (info);
   if (n_elts > 0)
@@ -904,6 +909,7 @@ write_object_info (const gchar  *namespace,
   gboolean deprecated;
   gboolean is_abstract;
   GIObjectInfo *pnode;
+  GIStructInfo *class_struct;
   gint i;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
@@ -920,6 +926,13 @@ write_object_info (const gchar  *namespace,
     {
       write_type_name_attribute (namespace, (GIBaseInfo *)pnode, "parent", file);
       g_base_info_unref ((GIBaseInfo *)pnode);
+    }
+  
+  class_struct = g_object_info_get_class_struct (info);
+  if (class_struct)
+    {
+      write_type_name_attribute (namespace, (GIBaseInfo*) class_struct, "glib:class-struct", file);
+      g_base_info_unref ((GIBaseInfo*)class_struct);
     }
 
   if (is_abstract)
