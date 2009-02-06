@@ -30,7 +30,11 @@
 <book id="index">
   <bookinfo>
     <title>GObject Reference Manual</title>
-    <releaseinfo>for GLib &version;</releaseinfo>
+    <releaseinfo>
+      for GObject &version;
+      The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="http://library.gnome.org/devel/gobject/unstable/">http://library.gnome.org/devel/gobject/unstable/</ulink>.
+    </releaseinfo>
   </bookinfo>
 
   <preface>

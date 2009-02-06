@@ -7,7 +7,11 @@
 <title>GIO Reference Manual</title>
   <bookinfo>
     <title>GIO Reference Manual</title>
-    <releaseinfo>for GIO &version;</releaseinfo>
+    <releaseinfo>
+      for GIO &version;
+      The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="http://library.gnome.org/devel/gio/unstable/">http://library.gnome.org/devel/gio/unstable/</ulink>.
+    </releaseinfo>
   </bookinfo>
 
   <xi:include href="xml/overview.xml"/>

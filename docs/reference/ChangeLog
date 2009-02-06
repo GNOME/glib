@@ -1,3 +1,12 @@
+2009-02-06  Stefan Kost  <ensonic@users.sf.net>
+
+	* gio/gio-docs.xml:
+	* glib/glib-docs.sgml:
+	* gobject/gobject-docs.sgml:
+	  Add online urls for library.gnome.org. This allows other docs to do
+          gtkdoc-rebase --online --html-dir=html
+          before publishing docs and have working xrefs.
+
 2009-02-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.6 ===
