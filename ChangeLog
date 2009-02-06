@@ -1,3 +1,12 @@
+2009-02-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* gio/gfilterinputstream.c:
+	* gio/gfilteroutputstream.c: Correct the grammar in some property 
+	documentation.
+	* gio/gdatainputstream.c:
+	* glib/gregex.c: Correct the spelling of 
+	occurrence in documentation.
+
 2009-02-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

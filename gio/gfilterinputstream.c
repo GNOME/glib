@@ -132,7 +132,7 @@ g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
                                    PROP_BASE_STREAM,
                                    g_param_spec_object ("base-stream",
                                                          P_("The Filter Base Stream"),
-                                                         P_("The underlying base stream the io ops will be done on"),
+                                                         P_("The underlying base stream on which the io ops will be done."),
                                                          G_TYPE_INPUT_STREAM,
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | 
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
@@ -141,7 +141,7 @@ g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
                                    PROP_CLOSE_BASE,
                                    g_param_spec_boolean ("close-base-stream",
                                                          P_("Close Base Stream"),
-                                                         P_("If the base stream be closed when the filter stream is"),
+                                                         P_("If the base stream should be closed when the filter stream is closed."),
                                                          TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | 
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }

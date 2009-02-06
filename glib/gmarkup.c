@@ -2930,7 +2930,7 @@ g_markup_collect_attributes (const gchar         *element_name,
             /* duplicate! */
             break;
 
-        /* j is now the first occurance of attribute_names[i] */
+        /* j is now the first occurrence of attribute_names[i] */
         if (i == j)
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,

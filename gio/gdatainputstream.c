@@ -861,7 +861,7 @@ scan_for_chars (GDataInputStream *stream,
  * @error: #GError for error reporting.
  * 
  * Reads a string from the data input stream, up to the first 
- * occurrance of any of the stop characters.
+ * occurrence of any of the stop characters.
  *
  * Returns: a string with the data that was read before encountering 
  * any of the stop characters. Set @length to a #gsize to get the length 

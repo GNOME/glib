@@ -2379,7 +2379,7 @@ interpolation_list_needs_match (GList *list)
  * @match_options: options for the match
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Replaces all occurances of the pattern in @regex with the
+ * Replaces all occurrences of the pattern in @regex with the
  * replacement text. Backreferences of the form '\number' or 
  * '\g&lt;number&gt;' in the replacement text are interpolated by the 
  * number-th captured subexpression of the match, '\g&lt;name&gt;' refers 
@@ -2491,7 +2491,7 @@ literal_replacement (const GMatchInfo *match_info,
  * @match_options: options for the match
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Replaces all occurances of the pattern in @regex with the
+ * Replaces all occurrences of the pattern in @regex with the
  * replacement text. @replacement is replaced literally, to
  * include backreferences use g_regex_replace().
  *
@@ -2535,8 +2535,8 @@ g_regex_replace_literal (const GRegex      *regex,
  * @user_data: user data to pass to the function
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Replaces occurances of the pattern in regex with the output of 
- * @eval for that occurance.
+ * Replaces occurrences of the pattern in regex with the output of 
+ * @eval for that occurrence.
  *
  * Setting @start_position differs from just passing over a shortened 
  * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
