@@ -83,32 +83,32 @@ const char *  g_irepository_load_typelib  (GIRepository *repository,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gboolean      g_irepository_is_registered (GIRepository *repository,
-					   const gchar  *namespace,
+					   const gchar  *namespace_,
 					   const gchar  *version);
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
-					   const gchar  *namespace,
+					   const gchar  *namespace_,
 					   const gchar  *name);
 GTypelib *    g_irepository_require       (GIRepository *repository,
-					   const gchar  *namespace,
+					   const gchar  *namespace_,
 					   const gchar  *version,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,
-					      const gchar  *namespace);
+					      const gchar  *namespace_);
 gchar      ** g_irepository_get_loaded_namespaces (GIRepository *repository);
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
 gint          g_irepository_get_n_infos   (GIRepository *repository,
-					   const gchar  *namespace);
+					   const gchar  *namespace_);
 GIBaseInfo *  g_irepository_get_info      (GIRepository *repository,
-					   const gchar  *namespace,
+					   const gchar  *namespace_,
 					   gint          index);
 const gchar * g_irepository_get_typelib_path   (GIRepository *repository,
-						const gchar  *namespace);
+						const gchar  *namespace_);
 const gchar * g_irepository_get_shared_library (GIRepository *repository,
-						const gchar  *namespace);
+						const gchar  *namespace_);
 const gchar * g_irepository_get_version (GIRepository *repository,
-					 const gchar  *namespace);
+					 const gchar  *namespace_);
 
 GOptionGroup * g_irepository_get_option_group (void);
 
