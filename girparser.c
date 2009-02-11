@@ -66,7 +66,8 @@ typedef enum
   STATE_CLASS_CONSTANT, 
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS,
-  STATE_TYPE
+  STATE_TYPE,
+  STATE_UNKNOWN
 } ParseState;
 
 typedef struct _ParseContext ParseContext;
@@ -75,6 +76,7 @@ struct _ParseContext
   GIrParser *parser;
 
   ParseState state;
+  int unknown_depth;
   ParseState prev_state;
 
   GList *modules;
@@ -2640,15 +2642,15 @@ start_element_handler (GMarkupParseContext *context,
       break;
     }
 
-  g_markup_parse_context_get_position (context, &line_number, &char_number);
-
-  if (error && *error == NULL)
-    g_set_error (error,
-		 G_MARKUP_ERROR,
-		 G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-		 "Unexpected start tag '%s' on line %d char %d; current state=%d",
-		 element_name,
-		 line_number, char_number, ctx->state);
+  if (ctx->state != STATE_UNKNOWN)
+    {
+      state_switch (ctx, STATE_UNKNOWN);
+      ctx->unknown_depth = 1;
+    }
+  else
+    {
+      ctx->unknown_depth += 1;
+    }
   
  out: ;
   if (*error) 
@@ -3008,6 +3010,11 @@ end_element_handler (GMarkupParseContext *context,
 	  end_type (ctx);
 	  break;
 	}
+    case STATE_UNKNOWN:
+      ctx->unknown_depth -= 1;
+      if (ctx->unknown_depth == 0)
+        state_switch (ctx, ctx->prev_state);
+      break;
     default:
       g_error ("Unhandled state %d in end_element_handler\n", ctx->state);
     }
