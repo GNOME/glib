@@ -175,18 +175,18 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (ErrorTypeBlob, 4);
   CHECK_SIZE (ErrorDomainBlob, 16);
   CHECK_SIZE (ValueBlob, 12);
-  CHECK_SIZE (FieldBlob, 12);
+  CHECK_SIZE (FieldBlob, 16);
   CHECK_SIZE (RegisteredTypeBlob, 16);
-  CHECK_SIZE (StructBlob, 24);
-  CHECK_SIZE (EnumBlob, 20);
-  CHECK_SIZE (PropertyBlob, 12);
-  CHECK_SIZE (SignalBlob, 12);
-  CHECK_SIZE (VFuncBlob, 16);
-  CHECK_SIZE (ObjectBlob, 36);
-  CHECK_SIZE (InterfaceBlob, 28);
-  CHECK_SIZE (ConstantBlob, 20);
+  CHECK_SIZE (StructBlob, 32);
+  CHECK_SIZE (EnumBlob, 24);
+  CHECK_SIZE (PropertyBlob, 16);
+  CHECK_SIZE (SignalBlob, 16);
+  CHECK_SIZE (VFuncBlob, 20);
+  CHECK_SIZE (ObjectBlob, 44);
+  CHECK_SIZE (InterfaceBlob, 36);
+  CHECK_SIZE (ConstantBlob, 24);
   CHECK_SIZE (AnnotationBlob, 12);
-  CHECK_SIZE (UnionBlob, 32);
+  CHECK_SIZE (UnionBlob, 40);
 #undef CHECK_SIZE
 
   g_assert (size_check_ok);

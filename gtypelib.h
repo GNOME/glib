@@ -622,7 +622,9 @@ typedef struct {
   guint8         reserved :6;
   guint8         bits;
 
-  guint16        struct_offset;      
+  guint16        struct_offset;
+
+  guint32        reserved2;
 
   SimpleTypeBlob type;
 } FieldBlob;
@@ -678,6 +680,9 @@ typedef struct {
   guint16   n_fields;
   guint16   n_methods;
 
+  guint32   reserved2;
+  guint32   reserved3;
+
 #if 0
   /* variable-length parts of the blob */
   FieldBlob    fields[];   
@@ -719,6 +724,9 @@ typedef struct {
   guint16      n_fields;
   guint16      n_functions;
 
+  guint32      reserved2;
+  guint32      reserved3;
+
   gint32       discriminator_offset; 
   SimpleTypeBlob discriminator_type;
 
@@ -755,6 +763,8 @@ typedef struct {
   guint16   n_values;
   guint16   reserved2;
 
+  guint32   reserved3;
+
   ValueBlob values[];    
 } EnumBlob;
 
@@ -777,8 +787,9 @@ typedef struct {
   guint32        construct_only : 1;
   guint32        reserved       :27;
 
-  SimpleTypeBlob type;
+  guint32        reserved2;
 
+  SimpleTypeBlob type;
 } PropertyBlob;
 
 /**
@@ -815,6 +826,8 @@ typedef struct {
 
   guint32 name;
 
+  guint32 reserved2;
+
   guint32 signature;
 } SignalBlob;
 
@@ -847,6 +860,8 @@ typedef struct {
 
   guint16 struct_offset;
   guint16 reserved2;
+
+  guint32 reserved3;
   guint32 signature;
 } VFuncBlob;
 
@@ -886,7 +901,6 @@ typedef struct {
 
   guint16   parent;
   guint16   class_struct;
-  guint16   reserved2;
 
   guint16   n_interfaces;
   guint16   n_fields;
@@ -895,6 +909,10 @@ typedef struct {
   guint16   n_signals;
   guint16   n_vfuncs;
   guint16   n_constants;
+  guint16   reserved2;
+
+  guint32   reserved3;
+  guint32   reserved4;
 
   guint16   interfaces[];
  
@@ -942,6 +960,9 @@ typedef struct {
   guint16 n_vfuncs;
   guint16 n_constants;  
 
+  guint32 reserved2;
+  guint32 reserved3;
+
   guint16 prerequisites[];
 
 #if 0 
@@ -971,6 +992,8 @@ typedef struct {
 
   guint32        size;
   guint32        offset;
+
+  guint32        reserved2;
 } ConstantBlob;
 
 /**
