@@ -279,11 +279,16 @@ typedef enum  {
 } GIDirection;
 
 typedef enum {
-  GI_SCOPE_TYPE_INVALID,
-  GI_SCOPE_TYPE_CALL,
-  GI_SCOPE_TYPE_OBJECT,
-  GI_SCOPE_TYPE_ASYNC,
-  GI_SCOPE_TYPE_NOTIFIED
+  GI_SCOPE_TYPE_INVALID, /* The argument is not of callback type */
+  GI_SCOPE_TYPE_CALL, /* The callback and associated user_data is only used during the
+                         call to this function */
+  GI_SCOPE_TYPE_OBJECT, /* The callback and associated user_data is used until
+                           the object containing this method is destroyed */
+  GI_SCOPE_TYPE_ASYNC, /* The callback and associated user_data is 
+                          only used until the callback is invoked, and the callback 
+                          is invoked always exactly once. */
+  GI_SCOPE_TYPE_NOTIFIED /* The callback and and associated user_data is
+                            used until the caller is notfied via the destroy_notify */
 } GIScopeType;
 
 GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
