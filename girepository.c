@@ -652,14 +652,14 @@ g_irepository_find_by_gtype (GIRepository *repository,
   repository = get_repository (repository);
 
   data.iface = g_hash_table_lookup (repository->priv->info_by_gtype,
-                                    (gpointer)type);
+                                    (gpointer)gtype);
 
   if (data.iface)
     return g_base_info_ref (data.iface);
 
   data.repo = repository;
   data.name = NULL;
-  data.type = g_type_name (type);
+  data.type = g_type_name (gtype);
   data.index = -1;
   data.iface = NULL;
 
@@ -668,7 +668,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   if (data.iface)
     g_hash_table_insert (repository->priv->info_by_gtype,
-                         (gpointer) type,
+                         (gpointer) gtype,
                          g_base_info_ref (data.iface));
 
 
