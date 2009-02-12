@@ -1282,16 +1282,20 @@ write_repository (const char   *namespace,
   if (TRUE)
     {
       const gchar *shared_library;
+      const gchar *c_prefix;
       const char *ns = namespace;
       const char *version;
 
       version = g_irepository_get_version (repository, ns);
 
       shared_library = g_irepository_get_shared_library (repository, ns);
+      c_prefix = g_irepository_get_c_prefix (repository, ns);
       xml_start_element (xml, "namespace");
       xml_printf (xml, " name=\"%s\" version=\"%s\"", ns, version);
       if (shared_library)
         xml_printf (xml, " shared-library=\"%s\"", shared_library);
+      if (c_prefix)
+        xml_printf (xml, " c:prefix=\"%s\"", c_prefix);
       
       for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
 	{
