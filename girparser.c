@@ -88,6 +88,7 @@ struct _ParseContext
   GHashTable *disguised_structures;
 
   const char *namespace;
+  const char *c_prefix;
   GIrModule *current_module;
   GSList *node_stack;
   GIrNode *current_typed;
@@ -2547,7 +2548,7 @@ start_element_handler (GMarkupParseContext *context,
     case 'n':
       if (strcmp (element_name, "namespace") == 0 && ctx->state == STATE_REPOSITORY)
 	{
-	  const gchar *name, *version, *shared_library;
+	  const gchar *name, *version, *shared_library, *cprefix;
 
 	  if (ctx->current_module != NULL)
 	    {
@@ -2561,6 +2562,7 @@ start_element_handler (GMarkupParseContext *context,
 	  name = find_attribute ("name", attribute_names, attribute_values);
 	  version = find_attribute ("version", attribute_names, attribute_values);
 	  shared_library = find_attribute ("shared-library", attribute_names, attribute_values);
+	  cprefix = find_attribute ("c:prefix", attribute_names, attribute_values);
 
 	  if (name == NULL)
 	    MISSING_ATTRIBUTE (context, error, element_name, "name");
@@ -2577,7 +2579,7 @@ start_element_handler (GMarkupParseContext *context,
 			     "<namespace/> name element '%s' doesn't match file name '%s'",
 			     name, ctx->namespace);
 
-	      ctx->current_module = g_ir_module_new (name, version, shared_library);
+	      ctx->current_module = g_ir_module_new (name, version, shared_library, cprefix);
 
 	      ctx->current_module->aliases = ctx->aliases;
 	      ctx->aliases = NULL;

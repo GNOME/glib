@@ -247,6 +247,7 @@ typedef struct {
   guint32 namespace;
   guint32 nsversion;
   guint32 shared_library;
+  guint32 c_prefix;
 
   guint16 entry_blob_size;
   guint16 function_blob_size;

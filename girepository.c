@@ -517,6 +517,7 @@ typedef struct
   GIRepository *repo;
   gint index;
   const gchar *name;
+  gboolean type_firstpass;
   const gchar *type;
   GIBaseInfo *iface;
 } IfaceData;
@@ -528,6 +529,7 @@ find_interface (gpointer key,
 {
   gint i;
   GTypelib *typelib = (GTypelib *)value;
+  Header *header = (Header *) typelib->data;
   IfaceData *iface_data = (IfaceData *)data;
   gint index;
   gint n_entries;
@@ -553,6 +555,28 @@ find_interface (gpointer key,
     }
   else if (iface_data->type)
     {
+      const char *c_prefix;
+      /* Inside each typelib, we include the "C prefix" which acts as
+       * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
+       * Given the assumption that GTypes for a library also use the
+       * C prefix, we know we can skip examining a typelib if our
+       * target type does not have this typelib's C prefix.
+       *
+       * However, not every class library necessarily conforms to this,
+       * e.g. Clutter has Cogl inside it.  So, we split this into two
+       * passes.  First we try a lookup, skipping things which don't
+       * have the prefix.  If that fails then we try a global lookup,
+       * ignoring the prefix.
+       *
+       * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
+       */
+      c_prefix = g_typelib_get_string (typelib, header->c_prefix);
+      if (iface_data->type_firstpass && c_prefix != NULL)
+        {
+          if (g_ascii_strncasecmp (c_prefix, iface_data->type, strlen (c_prefix)) != 0)
+            return;
+        }
+
       for (i = 1; i <= n_entries; i++)
 	{
 	  RegisteredTypeBlob *blob;
@@ -638,8 +662,8 @@ g_irepository_get_info (GIRepository *repository,
  * in order to locate the metadata, the namespace corresponding to
  * the type must first have been loaded.  There is currently no
  * mechanism for determining the namespace which corresponds to an
- * arbitrary GType - thus, this function will function most reliably
- * when you have expect the GType to be from a known namespace.
+ * arbitrary GType - thus, this function will operate most reliably
+ * when you know the GType to originate from be from a loaded namespace.
  *
  * Returns: #GIBaseInfo representing metadata about @type, or %NULL
  */
@@ -659,6 +683,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   data.repo = repository;
   data.name = NULL;
+  data.type_firstpass = TRUE;
   data.type = g_type_name (gtype);
   data.index = -1;
   data.iface = NULL;
@@ -666,11 +691,18 @@ g_irepository_find_by_gtype (GIRepository *repository,
   g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
   g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
 
+  /* We do two passes; see comment in find_interface */
+  if (!data.iface)
+    {
+      data.type_firstpass = FALSE;
+      g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
+      g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+    }
+
   if (data.iface)
     g_hash_table_insert (repository->priv->info_by_gtype,
                          (gpointer) gtype,
                          g_base_info_ref (data.iface));
-
 
   return data.iface;
 }
@@ -824,7 +856,43 @@ g_irepository_get_shared_library (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_typelib_path:
+ * g_irepository_get_c_prefix
+ * @repository: A #GIRepository, may be %NULL for the default
+ * @namespace: Namespace to inspect
+ *
+ * This function returns the "C prefix", or the C level namespace
+ * associated with the given introspection namespace.  Each C symbol
+ * starts with this prefix, as well each #GType in the library.
+ *
+ * Note: The namespace must have already been loaded using a function
+ * such as #g_irepository_require before calling this function.
+ *
+ * Returns: C namespace prefix, or %NULL if none associated
+ */
+const gchar *
+g_irepository_get_c_prefix (GIRepository *repository,
+                            const gchar  *namespace_)
+{
+  GTypelib *typelib;
+  Header *header;
+
+  g_return_val_if_fail (namespace_ != NULL, NULL);
+
+  repository = get_repository (repository);
+
+  typelib = get_registered (repository, namespace_, NULL);
+
+  g_return_val_if_fail (typelib != NULL, NULL);
+
+  header = (Header *) typelib->data;
+  if (header->shared_library)
+    return g_typelib_get_string (typelib, header->c_prefix);
+  else
+    return NULL;
+}
+
+/**
+ * g_irepository_get_typelib_path
  * @repository: Repository, may be %NULL for the default
  * @namespace_: GI namespace to use, e.g. "Gtk"
  *

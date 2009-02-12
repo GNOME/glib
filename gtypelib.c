@@ -161,7 +161,7 @@ g_typelib_check_sanity (void)
    * Everything else in the code however should be using sizeof().
    */
   
-  CHECK_SIZE (Header, 108);
+  CHECK_SIZE (Header, 112);
   CHECK_SIZE (DirEntry, 12);
   CHECK_SIZE (SimpleTypeBlob, 4);
   CHECK_SIZE (ArgBlob, 16);

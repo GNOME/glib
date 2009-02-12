@@ -31,7 +31,8 @@
 GIrModule *
 g_ir_module_new (const gchar *name, 
 		 const gchar *version,
-		 const gchar *shared_library)
+		 const gchar *shared_library,
+		 const gchar *c_prefix)
 {
   GIrModule *module;
   
@@ -43,6 +44,7 @@ g_ir_module_new (const gchar *name,
       module->shared_library = g_strdup (shared_library);
   else
       module->shared_library = NULL;
+  module->c_prefix = g_strdup (c_prefix);
   module->dependencies = NULL;
   module->entries = NULL;
 
@@ -229,11 +231,13 @@ g_ir_module_build_typelib (GIrModule  *module,
     }
 
   /* Adjust size for strings allocated in header below specially */
-  size += strlen (module->name);
+  size += ALIGN_VALUE (strlen (module->name) + 1, 4);
   if (module->shared_library) 
-    size += strlen (module->shared_library);
+    size += ALIGN_VALUE (strlen (module->shared_library) + 1, 4);
   if (dependencies != NULL)
-    size += strlen (dependencies);
+    size += ALIGN_VALUE (strlen (dependencies) + 1, 4);
+  if (module->c_prefix != NULL)
+    size += ALIGN_VALUE (strlen (module->c_prefix) + 1, 4);
 
   g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n", 
 	  size, header_size, dir_size, size - header_size - dir_size);
@@ -250,6 +254,9 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->n_local_entries = n_local_entries;
   header->n_attributes = 0;
   header->attributes = 0; /* filled in later */
+  /* NOTE: When writing strings to the typelib here, you should also update
+   * the size calculations above.
+   */
   if (dependencies != NULL)
     header->dependencies = write_string (dependencies, strings, data, &header_size);
   else
@@ -260,6 +267,10 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->shared_library = (module->shared_library?
                              write_string (module->shared_library, strings, data, &header_size)
                              : 0);
+  if (module->c_prefix != NULL)
+    header->c_prefix = write_string (module->c_prefix, strings, data, &header_size);
+  else
+    header->c_prefix = 0;
   header->directory = ALIGN_VALUE (header_size, 4);
   header->entry_blob_size = sizeof (DirEntry);
   header->function_blob_size = sizeof (FunctionBlob);

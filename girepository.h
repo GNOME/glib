@@ -108,6 +108,8 @@ const gchar * g_irepository_get_typelib_path   (GIRepository *repository,
 						const gchar  *namespace_);
 const gchar * g_irepository_get_shared_library (GIRepository *repository,
 						const gchar  *namespace_);
+const gchar * g_irepository_get_c_prefix (GIRepository *repository,
+                                          const gchar  *namespace_);
 const gchar * g_irepository_get_version (GIRepository *repository,
 					 const gchar  *namespace_);
 
