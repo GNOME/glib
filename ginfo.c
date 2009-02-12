@@ -775,7 +775,7 @@ g_arg_info_get_type (GIArgInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
  
-  return g_type_info_new (base, base->typelib, base->offset + 12);
+  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }
 
 /* GITypeInfo functions */
@@ -828,7 +828,9 @@ g_type_info_get_param_type (GITypeInfo *info,
 	case GI_TYPE_TAG_GLIST:
 	case GI_TYPE_TAG_GSLIST:
 	case GI_TYPE_TAG_GHASH:
-	  return g_type_info_new (base, base->typelib, base->offset + 4 + 4 * n);
+	  return g_type_info_new (base, base->typelib,
+	                          base->offset + sizeof (ParamTypeBlob)
+	                          + sizeof (SimpleTypeBlob) * n);
 	  break;
 	  
 	default: ;
@@ -1024,7 +1026,7 @@ g_field_info_get_type (GIFieldInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   
-  return g_type_info_new (base, base->typelib, base->offset + 8);
+  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (FieldBlob, type));
 }
 
 /* GIRegisteredTypeInfo functions */
@@ -1722,7 +1724,7 @@ g_property_info_get_type (GIPropertyInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
 
-  return g_type_info_new (base, base->typelib, base->offset + 8);  
+  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
 
