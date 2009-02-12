@@ -1,3 +1,11 @@
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 541225 – Can't compile gio on AIX : duplicate case value in 
+	gioerror.c
+
+	* gioerror.c (g_io_error_from_errno): Cope with EEXIST == ENOTEMPTY. 
+	Reported by Nicolas Joseph 
+
 2009-02-04  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 566747 - URIs opened with firefox %u load as local files
