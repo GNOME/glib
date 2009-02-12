@@ -412,7 +412,7 @@ g_ir_node_get_size (GIrNode *node)
   switch (node->type)
     {
     case G_IR_NODE_CALLBACK:
-      size = 12; 
+      size = sizeof (CallbackBlob);
       break;
 
     case G_IR_NODE_FUNCTION:
@@ -420,11 +420,12 @@ g_ir_node_get_size (GIrNode *node)
       break;
 
     case G_IR_NODE_PARAM:
-      size = 12;
+      /* See the comment in the G_IR_NODE_PARAM/ArgBlob writing below */
+      size = sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
       break;
 
     case G_IR_NODE_TYPE:
-      size = 4;
+      size = sizeof (SimpleTypeBlob);
       break;
 
     case G_IR_NODE_OBJECT:
@@ -432,7 +433,7 @@ g_ir_node_get_size (GIrNode *node)
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
 	n = g_list_length (iface->interfaces);
-	size = sizeof(ObjectBlob) + 2 * (n + (n % 2));
+	size = sizeof (ObjectBlob) + 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
@@ -444,7 +445,7 @@ g_ir_node_get_size (GIrNode *node)
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
 	n = g_list_length (iface->prerequisites);
-	size = 28 + 2 * (n + (n % 2));
+	size = sizeof (InterfaceBlob) + 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
@@ -456,21 +457,21 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeEnum *enum_ = (GIrNodeEnum *)node;
 	
-	size = 20;
+	size = sizeof (EnumBlob);
 	for (l = enum_->values; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
       }
       break;
 
     case G_IR_NODE_VALUE:
-      size = 12;
+      size = sizeof (ValueBlob);
       break;
 
     case G_IR_NODE_STRUCT:
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	size = 24;
+	size = sizeof (StructBlob);
 	for (l = struct_->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
       }
@@ -480,34 +481,34 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	size = 24;
+	size = sizeof (StructBlob);
 	for (l = boxed->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
       }
       break;
 
     case G_IR_NODE_PROPERTY:
-      size = 12;
+      size = sizeof (PropertyBlob);
       break;
 
     case G_IR_NODE_SIGNAL:
-      size = 12;
+      size = sizeof (SignalBlob);
       break;
 
     case G_IR_NODE_VFUNC:
-      size = 16;
+      size = sizeof (VFuncBlob);
       break;
 
     case G_IR_NODE_FIELD:
-      size = 12;
+      size = sizeof (FieldBlob);
       break;
 
     case G_IR_NODE_CONSTANT:
-      size = 20;
+      size = sizeof (ConstantBlob);
       break;
 
     case G_IR_NODE_ERROR_DOMAIN:
-      size = 16;
+      size = sizeof (ErrorDomainBlob);
       break;
 
     case G_IR_NODE_XREF:
@@ -518,7 +519,7 @@ g_ir_node_get_size (GIrNode *node)
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	size = 32;
+	size = sizeof (UnionBlob);
 	for (l = union_->members; l; l = l->next)
 	  size += g_ir_node_get_size ((GIrNode *)l->data);
 	for (l = union_->discriminators; l; l = l->next)
@@ -557,7 +558,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
     case G_IR_NODE_CALLBACK:
       {
 	GIrNodeFunction *function = (GIrNodeFunction *)node;
-	size = 12; 
+	size = sizeof (CallbackBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = function->parameters; l; l = l->next)
 	  {
@@ -570,7 +571,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
     case G_IR_NODE_FUNCTION:
       {
 	GIrNodeFunction *function = (GIrNodeFunction *)node;
-	size = 24;
+	size = sizeof (FunctionBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (function->symbol) + 1, 4);
 	for (l = function->parameters; l; l = l->next)
@@ -583,7 +584,8 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeParam *param = (GIrNodeParam *)node;
 	
-	size = 16;
+	/* See the comment in the G_IR_NODE_PARAM/ArgBlob writing below */
+	size = sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
 	if (node->name)
 	  size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += g_ir_node_get_full_size_internal (node, (GIrNode *)param->type);	
@@ -593,9 +595,8 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
     case G_IR_NODE_TYPE:
       {
 	GIrNodeType *type = (GIrNodeType *)node;
-	if (type->tag < GI_TYPE_TAG_ARRAY) 
-	  size = 4;
-	else
+        size = sizeof (SimpleTypeBlob);
+        if (type->tag >= GI_TYPE_TAG_ARRAY)
 	  {
 	    g_debug ("node %p type tag '%s'", node,
 		     g_type_tag_to_string (type->tag));
@@ -603,21 +604,21 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	    switch (type->tag)
 	      {
 	      case GI_TYPE_TAG_ARRAY:
-		size = 4 + 4;
+		size = sizeof (ArrayTypeBlob);
 		if (type->parameter_type1)
 		  size += g_ir_node_get_full_size_internal (node, (GIrNode *)type->parameter_type1);
 		break;
 	      case GI_TYPE_TAG_INTERFACE:
-		size = 4 + 4;
+		size += sizeof (InterfaceTypeBlob);
 		break;
 	      case GI_TYPE_TAG_GLIST:
 	      case GI_TYPE_TAG_GSLIST:
-		size = 4 + 4;
+		size += sizeof (ParamTypeBlob);
 		if (type->parameter_type1)
 		  size += g_ir_node_get_full_size_internal (node, (GIrNode *)type->parameter_type1);
 		break;
 	      case GI_TYPE_TAG_GHASH:
-		size = 4 + 4 + 4;
+		size += sizeof (ParamTypeBlob) * 2;
 		if (type->parameter_type1)
 		  size += g_ir_node_get_full_size_internal (node, (GIrNode *)type->parameter_type1);
 		if (type->parameter_type2)
@@ -632,7 +633,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 		  else
 		    n = 0;
 
-		  size = 4 + 4 + 2 * (n + n % 2);
+		  size += sizeof (ErrorTypeBlob) + 2 * (n + n % 2);
 		}
 		break;
 	      default:
@@ -669,7 +670,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
 	n = g_list_length (iface->prerequisites);
-	size = 28;
+	size = sizeof (InterfaceBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (iface->gtype_name) + 1, 4);
 	size += ALIGN_VALUE (strlen (iface->gtype_init) + 1, 4);
@@ -685,7 +686,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeEnum *enum_ = (GIrNodeEnum *)node;
 	
-	size = 20;
+	size = sizeof (EnumBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (enum_->gtype_name)
 	  {
@@ -700,7 +701,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 
     case G_IR_NODE_VALUE:
       {
-	size = 12;
+	size = sizeof (ValueBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
       }
       break;
@@ -709,7 +710,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	size = 24;
+	size = sizeof (StructBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (struct_->gtype_name)
 	  size += ALIGN_VALUE (strlen (struct_->gtype_name) + 1, 4);
@@ -724,7 +725,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	size = 24;
+	size = sizeof (StructBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (boxed->gtype_name)
 	  {
@@ -740,7 +741,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeProperty *prop = (GIrNodeProperty *)node;
 	
-	size = 12;
+	size = sizeof (PropertyBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += g_ir_node_get_full_size_internal (node, (GIrNode *)prop->type);	
       }
@@ -750,7 +751,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeSignal *signal = (GIrNodeSignal *)node;
 
-	size = 12;
+	size = sizeof (SignalBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = signal->parameters; l; l = l->next)
 	  size += g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
@@ -762,7 +763,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeVFunc *vfunc = (GIrNodeVFunc *)node;
 
-	size = 16;
+	size = sizeof (VFuncBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	for (l = vfunc->parameters; l; l = l->next)
 	  size += g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
@@ -774,7 +775,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeField *field = (GIrNodeField *)node;
 
-	size = 12;
+	size = sizeof (FieldBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += g_ir_node_get_full_size_internal (node, (GIrNode *)field->type);	
       }
@@ -784,7 +785,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeConstant *constant = (GIrNodeConstant *)node;
 
-	size = 20;
+	size = sizeof (ConstantBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	/* FIXME non-string values */
 	size += ALIGN_VALUE (strlen (constant->value) + 1, 4);
@@ -796,7 +797,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeErrorDomain *domain = (GIrNodeErrorDomain *)node;
 
-	size = 16;
+	size = sizeof (ErrorDomainBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (domain->getquark) + 1, 4);
       }
@@ -816,7 +817,7 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	size = 32;
+	size = sizeof (UnionBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	if (union_->gtype_name)
 	  size += ALIGN_VALUE (strlen (union_->gtype_name) + 1, 4);
@@ -1371,7 +1372,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	GIrNodeType *type = (GIrNodeType *)node;
 	SimpleTypeBlob *blob = (SimpleTypeBlob *)&data[*offset];
 
-	*offset += 4;
+	*offset += sizeof (SimpleTypeBlob);
 	
 	if (type->tag < GI_TYPE_TAG_ARRAY ||
 	    type->tag == GI_TYPE_TAG_UTF8 ||
@@ -1427,8 +1428,8 @@ g_ir_node_build_typelib (GIrNode    *node,
                       else
                         array->length = -1;
 		      
-		      pos = *offset2 + 4;
-		      *offset2 += 8;
+		      pos = *offset2 + G_STRUCT_OFFSET (ArrayTypeBlob, type);
+		      *offset2 += sizeof (ArrayTypeBlob);
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
 					       module, modules, strings, types, 
@@ -1439,7 +1440,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 		  case GI_TYPE_TAG_INTERFACE:
 		    {
 		      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&data[*offset2];
-		      *offset2 += 4;
+		      *offset2 += sizeof (InterfaceTypeBlob);
 
 		      iface->pointer = type->is_pointer;
 		      iface->reserved = 0;
@@ -1462,8 +1463,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      param->reserved2 = 0;
 		      param->n_types = 1;
 		      
-		      pos = *offset2 + 4;
-		      *offset2 += 8;
+		      pos = *offset2 + G_STRUCT_OFFSET (ParamTypeBlob, type);
+		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob);
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
 					       module, modules, strings, types,
@@ -1482,8 +1483,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      param->reserved2 = 0;
 		      param->n_types = 2;
 		      
-		      pos = *offset2 + 4;
-		      *offset2 += 12;
+		      pos = *offset2 + G_STRUCT_OFFSET (ParamTypeBlob, type);
+		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob)*2;
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
 					       module, modules, strings, types, 
@@ -1508,7 +1509,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      else
 			blob->n_domains = 0;
 		      
-		      *offset2 = ALIGN_VALUE (*offset2 + 4 + 2 * blob->n_domains, 4);
+		      *offset2 = ALIGN_VALUE (*offset2 + G_STRUCT_OFFSET (ErrorTypeBlob, domains)
+		                              + 2 * blob->n_domains, 4);
 		      for (i = 0; i < blob->n_domains; i++)
 			blob->domains[i] = find_entry (module, modules, type->errors[i]);
 		    }
@@ -1529,7 +1531,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	FieldBlob *blob;
 
 	blob = (FieldBlob *)&data[*offset];
-	*offset += 8;
+	/* We handle the size member specially below, so subtract it */
+	*offset += sizeof (FieldBlob) - sizeof (SimpleTypeBlob);
 
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->readable = field->readable;
@@ -1551,7 +1554,8 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	GIrNodeProperty *prop = (GIrNodeProperty *)node;
 	PropertyBlob *blob = (PropertyBlob *)&data[*offset];
-	*offset += 8;
+        /* We handle the size member specially below, so subtract it */
+	*offset += sizeof (PropertyBlob) - sizeof (SimpleTypeBlob);
 
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->deprecated = prop->deprecated;
@@ -1578,8 +1582,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (function->parameters);
 
-	*offset += sizeof(FunctionBlob);
-	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
+	*offset += sizeof (FunctionBlob);
+	*offset2 += sizeof (SignatureBlob) + n * sizeof (ArgBlob);
 
 	blob->blob_type = BLOB_TYPE_FUNCTION;
 	blob->deprecated = function->deprecated;
@@ -1631,8 +1635,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (function->parameters);
 
-	*offset += sizeof(CallbackBlob);
-	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
+	*offset += sizeof (CallbackBlob);
+	*offset2 += sizeof (SignatureBlob) + n * sizeof (ArgBlob);
 
 	blob->blob_type = BLOB_TYPE_CALLBACK;
 	blob->deprecated = function->deprecated;
@@ -1674,8 +1678,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (signal->parameters);
 
-	*offset += sizeof(SignalBlob);
-	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
+	*offset += sizeof (SignalBlob);
+	*offset2 += sizeof (SignatureBlob) + n * sizeof (ArgBlob);
 
 	blob->deprecated = signal->deprecated;
 	blob->run_first = signal->run_first;
@@ -1725,8 +1729,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	signature = *offset2;
 	n = g_list_length (vfunc->parameters);
 
-	*offset += sizeof(VFuncBlob);
-	*offset2 += sizeof(SignatureBlob) + n * sizeof(ArgBlob);
+	*offset += sizeof (VFuncBlob);
+	*offset2 += sizeof (SignatureBlob) + n * sizeof (ArgBlob);
 
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->must_chain_up = 0; /* FIXME */
@@ -1765,8 +1769,11 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	ArgBlob *blob = (ArgBlob *)&data[*offset];
 	GIrNodeParam *param = (GIrNodeParam *)node;
-	
-	*offset += 12;
+
+	/* The offset for this one is smaller than the struct because
+	 * we recursively build the simple type inline here below.
+	 */
+	*offset += sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
 
  	blob->name = write_string (node->name, strings, data, offset2);
  	blob->in = param->in;
@@ -1817,7 +1824,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_fields = 0;
 	blob->n_methods = 0;
 
-	*offset += 24; 
+	*offset += sizeof (StructBlob);
 
 	members = g_list_copy (struct_->members);
 
@@ -1854,7 +1861,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_fields = 0;
 	blob->n_methods = 0;
 
-	*offset += 24; 
+	*offset += sizeof (StructBlob);
 
 	members = g_list_copy (boxed->members);
 
@@ -1902,6 +1909,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 
 	blob->discriminator_offset = union_->discriminator_offset;
 
+	/* We don't support Union discriminators right now. */
 	if (union_->discriminator_type)
 	  {
 	    *offset += 28;
@@ -1912,10 +1920,11 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  }
 	else 
 	  {
-	    *offset += 32;
-	    blob->discriminated = FALSE;
-	    blob->discriminator_type.offset = 0;
-	  }
+	*/
+	/* Always do the non-discriminated case */
+	*offset += sizeof (UnionBlob);
+	blob->discriminated = FALSE;
+	blob->discriminator_type.offset = 0;
 	
 	members = g_list_copy (union_->members);
 
@@ -1950,8 +1959,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	EnumBlob *blob = (EnumBlob *)&data[*offset];
 	GIrNodeEnum *enum_ = (GIrNodeEnum *)node;
 
-	*offset += 20; 
-	
+	*offset += sizeof (EnumBlob); 
+
 	if (node->type == G_IR_NODE_ENUM)
 	  blob->blob_type = BLOB_TYPE_ENUM;
 	else
@@ -2083,7 +2092,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->n_vfuncs = 0;
 	blob->n_constants = 0;
 	
-	*offset += 28;
+	*offset += sizeof (InterfaceBlob);
 	for (l = iface->prerequisites; l; l = l->next)
 	  {
 	    blob->n_prerequisites++;
@@ -2129,7 +2138,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	GIrNodeValue *value = (GIrNodeValue *)node;
 	ValueBlob *blob = (ValueBlob *)&data[*offset];
-	*offset += 12;
+	*offset += sizeof (ValueBlob);
 
 	blob->deprecated = value->deprecated;
 	blob->reserved = 0;
@@ -2142,7 +2151,7 @@ g_ir_node_build_typelib (GIrNode    *node,
       {
 	GIrNodeErrorDomain *domain = (GIrNodeErrorDomain *)node;
 	ErrorDomainBlob *blob = (ErrorDomainBlob *)&data[*offset];
-	*offset += 16;
+	*offset += sizeof (ErrorDomainBlob);
 
 	blob->blob_type = BLOB_TYPE_ERROR_DOMAIN;
 	blob->deprecated = domain->deprecated;
@@ -2160,8 +2169,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 	ConstantBlob *blob = (ConstantBlob *)&data[*offset];
 	guint32 pos;
 
-	pos = *offset + 8;
-	*offset += 20;
+	pos = *offset + G_STRUCT_OFFSET (ConstantBlob, type);
+	*offset += sizeof (ConstantBlob);
 
 	blob->blob_type = BLOB_TYPE_CONSTANT;
 	blob->deprecated = constant->deprecated;
