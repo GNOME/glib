@@ -168,6 +168,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (SignatureBlob, 8);
   CHECK_SIZE (CommonBlob, 8);
   CHECK_SIZE (FunctionBlob, 20);
+  CHECK_SIZE (CallbackBlob, 12);
   CHECK_SIZE (InterfaceTypeBlob, 4);
   CHECK_SIZE (ArrayTypeBlob, 8);
   CHECK_SIZE (ParamTypeBlob, 4);
@@ -315,32 +316,31 @@ validate_header (ValidateContext  *ctx,
     }
   
   /* This is a sanity check for a specific typelib; it
-   * prevents us from loading an incompatible typelib.  It's OK to change
-   * these hardcoded constants to sizeof() as you see fit.
+   * prevents us from loading an incompatible typelib.
    * 
-   * We want to keep the hardcoded checks in g_typelib_check_sanity to
+   * The hardcoded checks in g_typelib_check_sanity to
    * protect against inadvertent or buggy changes to the typelib format
    * itself.
    */
 
-  if (header->entry_blob_size != 12 ||
-      header->function_blob_size != 20 ||
-      header->callback_blob_size != 12 ||
-      header->signal_blob_size != 12 ||
-      header->vfunc_blob_size != 16 ||
-      header->arg_blob_size != 16 ||
-      header->property_blob_size != 12 ||
-      header->field_blob_size != 12 ||
-      header->value_blob_size != 12 ||
-      header->constant_blob_size != 20 ||
-      header->error_domain_blob_size != 16 ||
-      header->annotation_blob_size != 12 ||
-      header->signature_blob_size != 8 ||
-      header->enum_blob_size != 20 ||
-      header->struct_blob_size != 24 ||
+  if (header->entry_blob_size != sizeof (DirEntry) ||
+      header->function_blob_size != sizeof (FunctionBlob) ||
+      header->callback_blob_size != sizeof (CallbackBlob) ||
+      header->signal_blob_size != sizeof (SignalBlob) ||
+      header->vfunc_blob_size != sizeof (VFuncBlob) ||
+      header->arg_blob_size != sizeof (ArgBlob) ||
+      header->property_blob_size != sizeof (PropertyBlob) ||
+      header->field_blob_size != sizeof (FieldBlob) ||
+      header->value_blob_size != sizeof (ValueBlob) ||
+      header->constant_blob_size != sizeof (ConstantBlob) ||
+      header->error_domain_blob_size != sizeof (ErrorDomainBlob) ||
+      header->annotation_blob_size != sizeof (AnnotationBlob) ||
+      header->signature_blob_size != sizeof (SignatureBlob) ||
+      header->enum_blob_size != sizeof (EnumBlob) ||
+      header->struct_blob_size != sizeof (StructBlob) ||
       header->object_blob_size != sizeof(ObjectBlob) ||
-      header->interface_blob_size != 28 ||
-      header->union_blob_size != 32)
+      header->interface_blob_size != sizeof (InterfaceBlob) ||
+      header->union_blob_size != sizeof (UnionBlob))
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,

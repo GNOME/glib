@@ -163,7 +163,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
 	     g_list_length (module->dependencies));
   
-  dir_size = n_entries * 12;  
+  dir_size = n_entries * sizeof (DirEntry);
   size = header_size + dir_size;
 
   size += ALIGN_VALUE (strlen (module->name) + 1, 4);
@@ -208,24 +208,24 @@ g_ir_module_build_typelib (GIrModule  *module,
                              write_string (module->shared_library, strings, data, &header_size)
                              : 0);
   header->directory = ALIGN_VALUE (header_size, 4);
-  header->entry_blob_size = 12;
+  header->entry_blob_size = sizeof (DirEntry);
   header->function_blob_size = sizeof (FunctionBlob);
-  header->callback_blob_size = 12;
-  header->signal_blob_size = 12;
-  header->vfunc_blob_size = 16;
-  header->arg_blob_size = 16;
-  header->property_blob_size = 12;
-  header->field_blob_size = 12;
-  header->value_blob_size = 12;
-  header->constant_blob_size = 20;
-  header->error_domain_blob_size = 16;
-  header->annotation_blob_size = 12;
-  header->signature_blob_size = 8;
-  header->enum_blob_size = 20;
-  header->struct_blob_size = 24;
+  header->callback_blob_size = sizeof (CallbackBlob);
+  header->signal_blob_size = sizeof (SignalBlob);
+  header->vfunc_blob_size = sizeof (VFuncBlob);
+  header->arg_blob_size = sizeof (ArgBlob);
+  header->property_blob_size = sizeof (PropertyBlob);
+  header->field_blob_size = sizeof (FieldBlob);
+  header->value_blob_size = sizeof (ValueBlob);
+  header->constant_blob_size = sizeof (ConstantBlob);
+  header->error_domain_blob_size = sizeof (ErrorDomainBlob);
+  header->annotation_blob_size = sizeof (AnnotationBlob);
+  header->signature_blob_size = sizeof (SignatureBlob);
+  header->enum_blob_size = sizeof (EnumBlob);
+  header->struct_blob_size = sizeof (StructBlob);
   header->object_blob_size = sizeof(ObjectBlob);
-  header->interface_blob_size = 28;
-  header->union_blob_size = 32;
+  header->interface_blob_size = sizeof (InterfaceBlob);
+  header->union_blob_size = sizeof (UnionBlob);
 
   /* fill in directory and content */
   entry = (DirEntry *)&data[header->directory];
