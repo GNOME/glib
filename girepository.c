@@ -370,12 +370,12 @@ register_internal (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_dependencies
+ * g_irepository_get_dependencies:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace of interest
+ * @namespace_: Namespace of interest
  *
  * Return an array of all (transitive) dependencies for namespace
- * @namespace, including version.  The returned strings are of the
+ * @namespace_, including version.  The returned strings are of the
  * form <code>namespace-version</code>.
  *
  * Note: The namespace must have already been loaded using a function
@@ -436,10 +436,10 @@ g_irepository_load_typelib (GIRepository *repository,
 }
 
 /**
- * g_irepository_is_registered
+ * g_irepository_is_registered:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace of interest
- * @version: <allow-none>: Required version, may be %NULL for latest
+ * @namespace_: Namespace of interest
+ * @version: (allow-none): Required version, may be %NULL for latest
  *
  * Check whether a particular namespace (and optionally, a specific
  * version thereof) is currently loaded.  This function is likely to
@@ -460,7 +460,7 @@ g_irepository_is_registered (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_default
+ * g_irepository_get_default:
  *
  * Returns the singleton process-global default #GIRepository.  It is
  * not currently supported to have multiple repositories in a
@@ -482,12 +482,12 @@ g_irepository_get_default (void)
 }
 
 /**
- * g_irepository_get_n_infos
+ * g_irepository_get_n_infos:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace to inspect
+ * @namespace_: Namespace to inspect
  *
  * This function returns the number of metadata entries in
- * given namespace @namespace.  The namespace must have
+ * given namespace @namespace_.  The namespace must have
  * already been loaded before calling this function.
  *
  * Returns: number of metadata entries
@@ -591,13 +591,13 @@ find_interface (gpointer key,
 }
 
 /**
- * g_irepository_get_info
+ * g_irepository_get_info:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace to inspect
+ * @namespace_: Namespace to inspect
  * @index: Offset into namespace metadata for entry
  *
  * This function returns a particular metadata entry in the
- * given namespace @namespace.  The namespace must have
+ * given namespace @namespace_.  The namespace must have
  * already been loaded before calling this function.
  *
  * Returns: #GIBaseInfo containing metadata
@@ -630,9 +630,9 @@ g_irepository_get_info (GIRepository *repository,
 }
 
 /**
- * g_irepository_find_by_gtype
+ * g_irepository_find_by_gtype:
  * @repository: A #GIRepository, may be %NULL for the default
- * @type: GType to search for
+ * @gtype: GType to search for
  *
  * Searches all loaded namespaces for a particular #GType.  Note that
  * in order to locate the metadata, the namespace corresponding to
@@ -645,7 +645,7 @@ g_irepository_get_info (GIRepository *repository,
  */
 GIBaseInfo * 
 g_irepository_find_by_gtype (GIRepository *repository,
-			     GType         type)
+			     GType         gtype)
 {
   IfaceData data;
 
@@ -676,9 +676,9 @@ g_irepository_find_by_gtype (GIRepository *repository,
 }
 
 /**
- * g_irepository_find_by_name
+ * g_irepository_find_by_name:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace which will be searched
+ * @namespace_: Namespace which will be searched
  * @name: Entry name to find
  *
  * Searches for a particular entry in a namespace.  Before calling
@@ -726,12 +726,12 @@ collect_namespaces (gpointer key,
 }
 
 /**
- * g_irepository_get_namespaces
+ * g_irepository_get_namespaces:
  * @repository: A #GIRepository, may be %NULL for the default
  *
  * Return the list of currently loaded namespaces.
  *
- * Returns: <utf8,transfer>: List of namespaces
+ * Returns: (utf8) (transfer full): List of namespaces
  */
 gchar ** 
 g_irepository_get_loaded_namespaces (GIRepository *repository)
@@ -755,12 +755,12 @@ g_irepository_get_loaded_namespaces (GIRepository *repository)
 }
 
 /**
- * g_irepository_get_version
+ * g_irepository_get_version:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace to inspect
+ * @namespace_: Namespace to inspect
  *
  * This function returns the loaded version associated with the given
- * namespace @namespace.
+ * namespace @namespace_.
  *
  * Note: The namespace must have already been loaded using a function
  * such as #g_irepository_require before calling this function.
@@ -787,12 +787,12 @@ g_irepository_get_version (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_shared_library
+ * g_irepository_get_shared_library:
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace to inspect
+ * @namespace_: Namespace to inspect
  *
  * This function returns the full path to the shared C library
- * associated with the given namespace @namespace. There may be no
+ * associated with the given namespace @namespace_. There may be no
  * shared library path associated, in which case this function will
  * return %NULL.
  *
@@ -824,17 +824,16 @@ g_irepository_get_shared_library (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_typelib_path
+ * g_irepository_get_typelib_path:
  * @repository: Repository, may be %NULL for the default
- * @namespace: GI namespace to use, e.g. "Gtk"
- * @version: <allow-none>: Version of namespace to use, e.g. "0.8", may be %NULL
+ * @namespace_: GI namespace to use, e.g. "Gtk"
  *
- * If namespace @namespace is loaded, return the full path to the
+ * If namespace @namespace_ is loaded, return the full path to the
  * .typelib file it was loaded from.  If the typelib for 
- * namespace @namespace was included in a shared library, return
- * the special string "<builtin>".
+ * namespace @namespace_ was included in a shared library, return
+ * the special string "$lt;builtin$gt;".
  *
- * Returns: Filesystem path (or <builtin>) if successful, %NULL if namespace is not loaded
+ * Returns: Filesystem path (or $lt;builtin$gt;) if successful, %NULL if namespace is not loaded
  */
 
 const gchar * 
@@ -1080,15 +1079,15 @@ find_namespace_latest (const gchar  *namespace,
 }
 
 /**
- * g_irepository_require
- * @repository: <allow-none>: Repository, may be %NULL for the default
- * @namespace: GI namespace to use, e.g. "Gtk"
- * @version: <allow-none>: Version of namespace, may be %NULL for latest
+ * g_irepository_require:
+ * @repository: (allow-none): Repository, may be %NULL for the default
+ * @namespace_: GI namespace to use, e.g. "Gtk"
+ * @version: (allow-none): Version of namespace, may be %NULL for latest
  * @flags: Set of %GIRepositoryLoadFlags, may be %0
  * @error: a #GError.
  *
- * Force the namespace @namespace to be loaded if it isn't already.
- * If @namespace is not loaded, this function will search for a
+ * Force the namespace @namespace_ to be loaded if it isn't already.
+ * If @namespace_ is not loaded, this function will search for a
  * ".typelib" file using the repository search path.  In addition, a
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.

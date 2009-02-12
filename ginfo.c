@@ -658,6 +658,7 @@ g_callable_info_get_n_args (GICallableInfo *info)
 /**
  * g_callable_info_get_arg:
  * @info: a #GICallableInfo
+ * @n: the argument index to fetch
  *
  * Get information about a particular argument of this callable.
  *
@@ -1186,6 +1187,7 @@ g_struct_info_get_alignment (GIStructInfo *info)
  * GObject.  This function is mainly useful to hide this kind of structure
  * from public APIs.
  *
+ * Returns: TRUE if it's a class struct, otherwise FALSE
  */
 gboolean
 g_struct_info_is_class_struct (GIStructInfo *info)
@@ -1493,6 +1495,8 @@ g_object_info_get_constant (GIObjectInfo *info,
  * 
  * Every GObject has two structures; an instance structure and a class
  * structure.  This function returns the metadata for the class structure.
+ *
+ * Returns: a GIStrucTInfo for the class struct or NULL if none found.
  */
 GIStructInfo *
 g_object_info_get_class_struct (GIObjectInfo *info)

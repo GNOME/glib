@@ -225,7 +225,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
 }
 
 /**
- * g_callable_info_prepare_closure:
+ * g_callable_info_free_closure:
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
