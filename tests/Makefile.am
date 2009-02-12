@@ -212,11 +212,7 @@ uri_test_LDADD = $(progs_ldadd)
 regex_test_LDADD = $(progs_ldadd)
 markup_collect_LDADD = $(progs_ldadd)
 
-lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
-
-# Prevent those libs from being installed
-install-libLTLIBRARIES:
-	:
+noinst_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
 libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
