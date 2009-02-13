@@ -279,20 +279,29 @@ g_utf8_get_char (const gchar *p)
  * g_utf8_offset_to_pointer:
  * @str: a UTF-8 encoded string
  * @offset: a character offset within @str
- * 
+ *
  * Converts from an integer character offset to a pointer to a position
  * within the string.
- * 
+ *
  * Since 2.10, this function allows to pass a negative @offset to
  * step backwards. It is usually worth stepping backwards from the end
- * instead of forwards if @offset is in the last fourth of the string, 
+ * instead of forwards if @offset is in the last fourth of the string,
  * since moving forward is about 3 times faster than moving backward.
- * 
+ *
+ * <note><para>
+ * This function doesn't abort when reaching the end of @str. Therefore
+ * you should be sure that @offset is within string boundaries before
+ * calling that function. Call g_utf8_strlen() when unsure.
+ *
+ * This limitation exists as this function is called frequently during
+ * text rendering and therefore has to be as fast as possible.
+ * </para></note>
+ *
  * Return value: the resulting pointer
  **/
 gchar *
 g_utf8_offset_to_pointer  (const gchar *str,
-			   glong        offset)    
+			   glong        offset)
 {
   const gchar *s = str;
 

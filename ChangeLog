@@ -1,3 +1,10 @@
+2009-02-13  Mathias Hasselmann  <hasselmm@gnome.org>
+
+	Add note about g_utf8_offset_to_pointer() not checking string
+	boundaries.
+
+	* glib/gutf8.c (g_utf8_offset_to_pointer()): See summary.
+
 2999-02-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 523742 – Use noinst for non-installable libraries
