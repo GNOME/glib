@@ -462,7 +462,7 @@ check_needs_computation (GIrNode   *node,
  * g_ir_node_compute_offsets:
  * @node: a #GIrNode
  * @module: Current module being processed
- * @moudles: all currently loaded modules
+ * @modules: all currently loaded modules
  *
  * If a node is a a structure or union, makes sure that the field
  * offsets have been computed, and also computes the overall size and

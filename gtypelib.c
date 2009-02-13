@@ -2124,6 +2124,7 @@ g_typelib_get_namespace (GTypelib *typelib)
 
 /**
  * g_typelib_symbol:
+ * @typelib: the typelib
  * @symbol_name: name of symbol to be loaded
  * @symbol: returns a pointer to the symbol value
  *

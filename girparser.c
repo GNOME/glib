@@ -3202,12 +3202,15 @@ post_filter (GIrModule *module)
 /**
  * g_ir_parser_parse_string:
  * @parser: a #GIrParser
+ * @namespace: the namespace of the string
+ * @buffer: the data containing the XML
+ * @length: length of the data
  * @error: return location for a #GError, or %NULL
  *
  * Parse a string that holds a complete GIR XML file, and return a list of a
  * a #GirModule for each &lt;namespace/&gt; element within the file.
  *
- * @returns: a newly allocated list of #GIrModule. The modules themselves
+ * Returns: a newly allocated list of #GIrModule. The modules themselves
  *  are owned by the #GIrParser and will be freed along with the parser.
  */
 GList *
@@ -3272,12 +3275,13 @@ g_ir_parser_parse_string (GIrParser           *parser,
 /**
  * g_ir_parser_parse_file:
  * @parser: a #GIrParser
+ * @filename: filename to parse
  * @error: return location for a #GError, or %NULL
  *
  * Parse GIR XML file, and return a list of a a #GirModule for each
  * &lt;namespace/&gt; element within the file.
  *
- * @returns: a newly allocated list of #GIrModule. The modules themselves
+ * Returns: a newly allocated list of #GIrModule. The modules themselves
  *  are owned by the #GIrParser and will be freed along with the parser.
  */
 GList *
