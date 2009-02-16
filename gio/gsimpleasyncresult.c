@@ -179,7 +179,8 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
 
 /**
  * g_simple_async_result_new:
- * @source_object: a #GObject the asynchronous function was called with.
+ * @source_object: a #GObject the asynchronous function was called with,
+ * or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @source_tag: the asynchronous function.
@@ -196,11 +197,14 @@ g_simple_async_result_new (GObject             *source_object,
 {
   GSimpleAsyncResult *simple;
 
-  g_return_val_if_fail (G_IS_OBJECT (source_object), NULL);
+  g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
 
   simple = g_object_new (G_TYPE_SIMPLE_ASYNC_RESULT, NULL);
   simple->callback = callback;
-  simple->source_object = g_object_ref (source_object);
+  if (source_object)
+    simple->source_object = g_object_ref (source_object);
+  else
+    simple->source_object = NULL;
   simple->user_data = user_data;
   simple->source_tag = source_tag;
   
@@ -209,7 +213,7 @@ g_simple_async_result_new (GObject             *source_object,
 
 /**
  * g_simple_async_result_new_from_error:
- * @source_object: a #GObject.
+ * @source_object: a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @error: a #GError location.
@@ -226,7 +230,7 @@ g_simple_async_result_new_from_error (GObject             *source_object,
 {
   GSimpleAsyncResult *simple;
 
-  g_return_val_if_fail (G_IS_OBJECT (source_object), NULL);
+  g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
 
   simple = g_simple_async_result_new (source_object,
 				      callback,
@@ -238,7 +242,7 @@ g_simple_async_result_new_from_error (GObject             *source_object,
 
 /**
  * g_simple_async_result_new_error:
- * @source_object: a #GObject.
+ * @source_object: a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: user data passed to @callback.
  * @domain: a #GQuark.
@@ -262,7 +266,7 @@ g_simple_async_result_new_error (GObject             *source_object,
   GSimpleAsyncResult *simple;
   va_list args;
   
-  g_return_val_if_fail (G_IS_OBJECT (source_object), NULL);
+  g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
   g_return_val_if_fail (domain != 0, NULL);
   g_return_val_if_fail (format != NULL, NULL);
 

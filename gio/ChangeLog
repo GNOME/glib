@@ -1,3 +1,10 @@
+2009-02-16  Ryan Lortie  <desrt@desrt.ca>
+
+	Bug 571598 – GAsyncResult with NULL gobject
+
+	* gsimpleasyncresult.c: remove various assertions and add some checks
+	to allow for a NULL source_object in GSimpleAsyncResult.
+
 2009-02-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 541225 – Can't compile gio on AIX : duplicate case value in 
