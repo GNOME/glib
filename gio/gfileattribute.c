@@ -148,6 +148,7 @@
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE</entry><entry>standard::content-type</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE</entry><entry>standard::fast-content-type</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SIZE</entry><entry>standard::size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE</entry><entry>standard::allocated-size</entry><entry>uint64</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET</entry><entry>standard::symlink-target</entry><entry>byte string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_TARGET_URI</entry><entry>standard::target-uri</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER</entry><entry>standard::sort-order</entry><entry>int32</entry></row>

@@ -940,6 +940,8 @@ set_info_from_stat (GFileInfo             *info,
 #endif
 #if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_BLOCKS, statbuf->st_blocks);
+  g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE,
+                                    statbuf->st_blocks * G_GUINT64_CONSTANT (512));
 #endif
   
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_TIME_MODIFIED, statbuf->st_mtime);
