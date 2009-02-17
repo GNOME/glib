@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-02 14:45-0500\n"
+"POT-Creation-Date: 2009-02-16 20:42-0500\n"
 "PO-Revision-Date: 2009-02-01 01:41+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
@@ -104,8 +104,8 @@ msgstr ""
 "meg"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
-#: glib/gutf8.c:1404
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
+#: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 
@@ -115,8 +115,8 @@ msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 msgid "Error during conversion: %s"
 msgstr "Hiba az átalakítás során: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
-#: glib/gutf8.c:1400
+#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "Részleges karaktersorozat a bemenet végén"
 
@@ -971,16 +971,16 @@ msgstr "Ismeretlen hiba a gyermekfolyamat („%s”) végrehajtása közben"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nem sikerült elég adatot kiolvasni a gyermek pid csővezetékből (%s)"
 
-#: glib/gutf8.c:1029
+#: glib/gutf8.c:1038
 msgid "Character out of range for UTF-8"
 msgstr "A karakter az UTF-8 tartományon kívülre esik"
 
-#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
-#: glib/gutf8.c:1414 glib/gutf8.c:1510
+#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
+#: glib/gutf8.c:1423 glib/gutf8.c:1519
 msgid "Invalid sequence in conversion input"
 msgstr "Érvénytelen sorozat az átalakítási bemenetben"
 
-#: glib/gutf8.c:1425 glib/gutf8.c:1521
+#: glib/gutf8.c:1434 glib/gutf8.c:1530
 msgid "Character out of range for UTF-16"
 msgstr "A karakter az UTF-16 tartományon kívülre esik"
 
@@ -1165,8 +1165,8 @@ msgstr "Túl nagy számérték került átadásra ennek: %s"
 msgid "Stream is already closed"
 msgstr "Az adatfolyam már le van zárva"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
-#: gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:627
+#: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "A művelet megszakítva"
 
@@ -1533,70 +1533,70 @@ msgstr "Érvénytelen kiterjesztett attribútumnév"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Hiba a(z) „%s” kiterjesztett attribútum beállításakor: %s"
 
-#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Hiba a(z) „%s” fájl elérése közben: %s"
 
-#: gio/glocalfileinfo.c:1534
+#: gio/glocalfileinfo.c:1536
 msgid " (invalid encoding)"
 msgstr " (érvénytelen kódolás)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Hiba a fájlleíró elérésekor: %s"
 
-#: gio/glocalfileinfo.c:1747
+#: gio/glocalfileinfo.c:1749
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Érvénytelen attribútumtípus (a várt uint32 helyett)"
 
-#: gio/glocalfileinfo.c:1765
+#: gio/glocalfileinfo.c:1767
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Érvénytelen attribútumtípus (a várt uint64 helyett)"
 
-#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Érvénytelen attribútumtípus (a várt bájtkarakterlánc helyett)"
 
-#: gio/glocalfileinfo.c:1829
+#: gio/glocalfileinfo.c:1831
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Hiba a jogosultságok beállításakor: %s"
 
-#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
+#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Hiba a tulajdonos beállításakor: %s"
 
-#: gio/glocalfileinfo.c:1903
+#: gio/glocalfileinfo.c:1905
 msgid "symlink must be non-NULL"
 msgstr "a szimbolikus link nem lehet NULL"
 
-#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
-#: gio/glocalfileinfo.c:1943
+#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
+#: gio/glocalfileinfo.c:1945
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Hiba a szimbolikus link beállításakor: %s"
 
-#: gio/glocalfileinfo.c:1922
+#: gio/glocalfileinfo.c:1924
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Hiba a szimbolikus link beállításakor: a fájl nem szimbolikus link"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2073
 msgid "SELinux context must be non-NULL"
 msgstr "A SELinux környezet nem lehet NULL"
 
-#: gio/glocalfileinfo.c:2086
+#: gio/glocalfileinfo.c:2088
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Hiba a SELinux környezet beállításakor: %s"
 
-#: gio/glocalfileinfo.c:2093
+#: gio/glocalfileinfo.c:2095
 msgid "SELinux is not enabled on this system"
 msgstr "A SELinux nem engedélyezett ezen rendszeren"
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2156
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "A(z) %s attribútum beállítása nem támogatott"

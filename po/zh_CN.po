@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-02 14:45-0500\n"
+"POT-Creation-Date: 2009-02-16 20:42-0500\n"
 "PO-Revision-Date: 2009-01-02 15:36+0800\n"
 "Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -99,8 +99,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
-#: glib/gutf8.c:1404
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
+#: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
@@ -110,8 +110,8 @@ msgstr "转换输入中出现无效字符序列"
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
-#: glib/gutf8.c:1400
+#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
@@ -914,16 +914,16 @@ msgstr "执行子进程“%s”时出现未知错误"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
 
-#: glib/gutf8.c:1029
+#: glib/gutf8.c:1038
 msgid "Character out of range for UTF-8"
 msgstr "字符超出 UTF-8 范围"
 
-#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
-#: glib/gutf8.c:1414 glib/gutf8.c:1510
+#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
+#: glib/gutf8.c:1423 glib/gutf8.c:1519
 msgid "Invalid sequence in conversion input"
 msgstr "转换输入中出现无效序列"
 
-#: glib/gutf8.c:1425 glib/gutf8.c:1521
+#: glib/gutf8.c:1434 glib/gutf8.c:1530
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
@@ -1098,8 +1098,8 @@ msgstr "传递给 %s 的计数值太大了"
 msgid "Stream is already closed"
 msgstr "流已经关闭"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
-#: gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:627
+#: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "操作被取消"
 
@@ -1464,70 +1464,70 @@ msgstr "无效的扩展属性名"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "设置扩展属性“%s”出错：%s"
 
-#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "获取文件“%s”状态出错：%s"
 
-#: gio/glocalfileinfo.c:1534
+#: gio/glocalfileinfo.c:1536
 msgid " (invalid encoding)"
 msgstr " (无效的编码)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "获取文件描述符状态时出错：%s"
 
-#: gio/glocalfileinfo.c:1747
+#: gio/glocalfileinfo.c:1749
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "无效的属性类型(应为 uint32)"
 
-#: gio/glocalfileinfo.c:1765
+#: gio/glocalfileinfo.c:1767
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "无效的属性类型(应为 uint64)"
 
-#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
 msgid "Invalid attribute type (byte string expected)"
 msgstr "无效的属性类型(应为 byte string)"
 
-#: gio/glocalfileinfo.c:1829
+#: gio/glocalfileinfo.c:1831
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
+#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "设置所有者出错：%s"
 
-#: gio/glocalfileinfo.c:1903
+#: gio/glocalfileinfo.c:1905
 msgid "symlink must be non-NULL"
 msgstr "符号链接必须是非空"
 
-#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
-#: gio/glocalfileinfo.c:1943
+#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
+#: gio/glocalfileinfo.c:1945
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "设置符号链接出错：%s"
 
-#: gio/glocalfileinfo.c:1922
+#: gio/glocalfileinfo.c:1924
 msgid "Error setting symlink: file is not a symlink"
 msgstr "设定符号链接出错：文件不是符号链接"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2073
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 上下文必须是非空"
 
-#: gio/glocalfileinfo.c:2086
+#: gio/glocalfileinfo.c:2088
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "设置 SELinux 上下文出错：%s"
 
-#: gio/glocalfileinfo.c:2093
+#: gio/glocalfileinfo.c:2095
 msgid "SELinux is not enabled on this system"
 msgstr "此系统尚未启用 SELinux"
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2156
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支持设置属性 %s"

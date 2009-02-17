@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-02 14:45-0500\n"
+"POT-Creation-Date: 2009-02-16 20:42-0500\n"
 "PO-Revision-Date: 2008-03-18 03:34+0200\n"
 "Last-Translator: Giannis Katsampirhs <giannis1_86@hotmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -113,8 +113,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Δεν ήταν δυνατό το άνοιγμα μετατροπέα από  '%s' σε %s'"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
-#: glib/gutf8.c:1404
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
+#: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "Μή έγκυρη σειρά στην είσοδο μετατροπής"
 
@@ -125,8 +125,8 @@ msgstr "Μή έγκυρη σειρά στην είσοδο μετατροπής"
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
-#: glib/gutf8.c:1400
+#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της εισόδου"
 
@@ -1004,16 +1004,16 @@ msgstr "Άγνωστο σφάλμα κατά την εκτέλεση της θυ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Αποτυχία ανάγνωσης επαρκών δεδομένων από θυγατρική σωλήνωση pid (%s)"
 
-#: glib/gutf8.c:1029
+#: glib/gutf8.c:1038
 msgid "Character out of range for UTF-8"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-8"
 
-#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
-#: glib/gutf8.c:1414 glib/gutf8.c:1510
+#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
+#: glib/gutf8.c:1423 glib/gutf8.c:1519
 msgid "Invalid sequence in conversion input"
 msgstr "Μή έγκυρη σειρά στην είσοδο μεταροπής"
 
-#: glib/gutf8.c:1425 glib/gutf8.c:1521
+#: glib/gutf8.c:1434 glib/gutf8.c:1530
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-16"
 
@@ -1194,8 +1194,8 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
-#: gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:627
+#: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr ""
 
@@ -1580,75 +1580,75 @@ msgid "Error setting extended attribute '%s': %s"
 msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
 
 #
-#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:706
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Σφάλμα ανάγνωσης αρχείου '%s': %s"
 
-#: gio/glocalfileinfo.c:1534
+#: gio/glocalfileinfo.c:1536
 msgid " (invalid encoding)"
 msgstr ""
 
 #
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Σφάλμα ανάγνωσης αρχείου '%s': %s"
 
-#: gio/glocalfileinfo.c:1747
+#: gio/glocalfileinfo.c:1749
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1765
+#: gio/glocalfileinfo.c:1767
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
 # gconf/gconftool.c:1181
-#: gio/glocalfileinfo.c:1829
+#: gio/glocalfileinfo.c:1831
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
 # gconf/gconftool.c:1181
-#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
+#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: gio/glocalfileinfo.c:1903
+#: gio/glocalfileinfo.c:1905
 msgid "symlink must be non-NULL"
 msgstr ""
 
 #
-#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
-#: gio/glocalfileinfo.c:1943
+#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
+#: gio/glocalfileinfo.c:1945
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
-#: gio/glocalfileinfo.c:1922
+#: gio/glocalfileinfo.c:1924
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2073
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
 # gconf/gconftool.c:1181
-#: gio/glocalfileinfo.c:2086
+#: gio/glocalfileinfo.c:2088
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: gio/glocalfileinfo.c:2093
+#: gio/glocalfileinfo.c:2095
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2156
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Οι συμβολικοί δεσμοί δεν υποστηρίζονται"

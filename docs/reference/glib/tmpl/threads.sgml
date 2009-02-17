@@ -252,6 +252,14 @@ you can however use it as if it was a function.
 @Returns: %TRUE, if the thread system is initialized.
 
 
+<!-- ##### FUNCTION g_thread_get_initialized ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION GThreadFunc ##### -->
 <para>
 Specifies the type of the @func functions passed to

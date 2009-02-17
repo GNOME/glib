@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-02 14:45-0500\n"
+"POT-Creation-Date: 2009-02-16 20:42-0500\n"
 "PO-Revision-Date: 2008-09-17 19:40+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -104,8 +104,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' నుండి  '%s' కు పరివర్తించడం సాధ్యం కాదు "
 
 #: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:955
-#: glib/gutf8.c:1404
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
+#: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "ఎగుబడి బైట్ క్రమంను పరివర్తించుట నిస్సారమగును"
 
@@ -115,8 +115,8 @@ msgstr "ఎగుబడి బైట్ క్రమంను పరివర్
 msgid "Error during conversion: %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:951 glib/gutf8.c:1155 glib/gutf8.c:1296
-#: glib/gutf8.c:1400
+#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "చివరి ఎగుబడి నందు పాక్షికముగా అక్షర క్రమము కలదు."
 
@@ -930,17 +930,17 @@ msgstr " \"%s\" శిశుకార్యం నిర్వర్తించ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
 
-#: glib/gutf8.c:1029
+#: glib/gutf8.c:1038
 msgid "Character out of range for UTF-8"
 msgstr "అక్షరము  యుటిఫ్-8 శ్రేణియందు లేదు "
 
-#: glib/gutf8.c:1123 glib/gutf8.c:1132 glib/gutf8.c:1264 glib/gutf8.c:1273
-#: glib/gutf8.c:1414 glib/gutf8.c:1510
+#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
+#: glib/gutf8.c:1423 glib/gutf8.c:1519
 msgid "Invalid sequence in conversion input"
 msgstr "పరివర్తన ఎగుబడి వరుస నిస్సారము "
 
 # ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
-#: glib/gutf8.c:1425 glib/gutf8.c:1521
+#: glib/gutf8.c:1434 glib/gutf8.c:1530
 msgid "Character out of range for UTF-16"
 msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"
 
@@ -1116,8 +1116,8 @@ msgstr "చాలపెద్ద లెక్కింపు విలువ %s�
 msgid "Stream is already closed"
 msgstr "స్ట్రీమ్ యిప్పటికే మూయబడింది"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:623
-#: gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:366 gio/glocalfile.c:1992 gio/gsimpleasyncresult.c:627
+#: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "ఆపరేషన్ రద్దైనది"
 
@@ -1482,70 +1482,70 @@ msgstr "పొడిగించిన యాట్రిబ్యూట్ చ�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ అమర్చుటలో దోషము '%s': %s"
 
-#: gio/glocalfileinfo.c:1464 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:706
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "దస్త్రము '%s'ను ప్రారంభించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1534
+#: gio/glocalfileinfo.c:1536
 msgid " (invalid encoding)"
 msgstr " (చెల్లని యెన్కోడింగ్)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "దస్త్రము వివరణిని ప్రతిపాదించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1747
+#: gio/glocalfileinfo.c:1749
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint32 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1765
+#: gio/glocalfileinfo.c:1767
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint64 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1784 gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
 msgid "Invalid attribute type (byte string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (బైట్ స్ట్రింగ్ అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1829
+#: gio/glocalfileinfo.c:1831
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "అనుమతులను అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1880 gio/glocalfileinfo.c:2048
+#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "యజమానిని అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1903
+#: gio/glocalfileinfo.c:1905
 msgid "symlink must be non-NULL"
 msgstr "సిమ్‌లింకు తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:1913 gio/glocalfileinfo.c:1932
-#: gio/glocalfileinfo.c:1943
+#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
+#: gio/glocalfileinfo.c:1945
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1922
+#: gio/glocalfileinfo.c:1924
 msgid "Error setting symlink: file is not a symlink"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: దస్త్రము సిమ్‌లింకు కాదు"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2073
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux సందర్భం తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:2086
+#: gio/glocalfileinfo.c:2088
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux సందర్భం అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2093
+#: gio/glocalfileinfo.c:2095
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ఈ సిస్టమ్‌పైన చేతనపరచ బడిలేదు"
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2156
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "యాట్రిబ్యూట్ %sను అమర్చుట మద్దతీయుటలేదు"
