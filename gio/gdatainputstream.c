@@ -1130,7 +1130,9 @@ g_data_input_stream_read_finish (GDataInputStream  *stream,
  *
  * The asynchronous version of g_data_input_stream_read_line().  It is
  * an error to have two outstanding calls to this function.
- **/
+ *
+ * Since: 2.20
+ */
 void
 g_data_input_stream_read_line_async (GDataInputStream    *stream,
                                      gint                 io_priority,
@@ -1156,9 +1158,11 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
  * @callback: callback to call when the request is satisfied.
  * @user_data: the data to pass to callback function.
  *
- * The asynchronous version of g_data_input_stream_read_until().  It is
- * an error to have two outstanding calls to this function.
- **/
+ * The asynchronous version of g_data_input_stream_read_until().
+ * It is an error to have two outstanding calls to this function.
+ *
+ * Since: 2.20
+ */
 void
 g_data_input_stream_read_until_async (GDataInputStream    *stream,
                                       const gchar         *stop_chars,
@@ -1185,7 +1189,9 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
  *
  * Finish an asynchronous call started by
  * g_data_input_stream_read_line_async().
- **/
+ *
+ * Since: 2,20
+ */
 gchar *
 g_data_input_stream_read_line_finish (GDataInputStream  *stream,
                                       GAsyncResult      *result,
@@ -1208,7 +1214,9 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
  *
  * Finish an asynchronous call started by
  * g_data_input_stream_read_until_async().
- **/
+ *
+ * Since: 2.20
+ */
 gchar *
 g_data_input_stream_read_until_finish (GDataInputStream  *stream,
                                        GAsyncResult      *result,

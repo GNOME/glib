@@ -172,6 +172,8 @@ g_data_input_stream_read_line
 g_data_input_stream_read_line_async
 g_data_input_stream_read_line_finish
 g_data_input_stream_read_until
+g_data_input_stream_read_until_async
+g_data_input_stream_read_until_finish
 #endif
 #endif
 
