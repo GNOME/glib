@@ -302,6 +302,9 @@ g_file_info_copy_into (GFileInfo *src_info,
       _g_file_attribute_value_set (&dest[i].value, &source[i].value);
     }
 
+  if (dest_info->mask != NO_ATTRIBUTE_MASK)
+    g_file_attribute_matcher_unref (dest_info->mask);
+
   if (src_info->mask == NO_ATTRIBUTE_MASK)
     dest_info->mask = NO_ATTRIBUTE_MASK;
   else

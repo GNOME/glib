@@ -1,3 +1,8 @@
+2009-02-17  Ryan Lortie  <desrt@desrt.ca>
+
+	* gfileinfo.c: unref the destination's attribute matcher before
+	overwriting it.
+
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.8 ===
