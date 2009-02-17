@@ -85,7 +85,10 @@ G_BEGIN_DECLS
  * @get_mount: Gets a #GMount representing the mounted volume. Returns %NULL if the #GVolume is not mounted.
  * @can_mount: Returns %TRUE if the #GVolume can be mounted.
  * @can_eject: Checks if a #GVolume can be ejected.
- * @mount_fn: Mounts a given #GVolume.
+ * @mount_fn: Mounts a given #GVolume. 
+ *     #GVolume implementations must emit the #GMountOperation::aborted 
+ *     signal before completing a mount operation that is aborted while 
+ *     awaiting input from the user through a #GMountOperation instance.
  * @mount_finish: Finishes a mount operation.
  * @eject: Ejects a given #GVolume.
  * @eject_finish: Finishes an eject operation.

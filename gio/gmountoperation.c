@@ -57,6 +57,7 @@ enum {
   ASK_PASSWORD,
   ASK_QUESTION,
   REPLY,
+  ABORTED,
   LAST_SIGNAL
 };
 
@@ -295,6 +296,26 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  g_cclosure_marshal_VOID__ENUM,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_MOUNT_OPERATION_RESULT);
+
+  /**
+   * GMountOperation::aborted:
+   *
+   * Emitted by the backend when e.g. a device becomes unavailable
+   * while a mount operation is in progress. 
+   *
+   * Implementations of GMountOperation should handle this signal
+   * by dismissing open password dialogs.
+   *
+   * Since: 2.20
+   */
+  signals[ABORTED] = 
+    g_signal_new (I_("aborted"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (GMountOperationClass, aborted),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   /**
    * GMountOperation:username:

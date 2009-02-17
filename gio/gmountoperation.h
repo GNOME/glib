@@ -73,6 +73,8 @@ struct _GMountOperationClass
   void (* reply)        (GMountOperation       *op,
 			 GMountOperationResult  result);
 
+  void (* aborted)      (GMountOperation       *op);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -86,7 +88,6 @@ struct _GMountOperationClass
   void (*_g_reserved9) (void);
   void (*_g_reserved10) (void);
   void (*_g_reserved11) (void);
-  void (*_g_reserved12) (void);
 };
 
 GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
