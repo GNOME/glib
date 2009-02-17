@@ -1,5 +1,9 @@
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.19.8 ===
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix strict aliasing warnings and viiolations to make GLib and
 	GLib users buildable with gcc 4.4. Patch by Jakub Jelinek.
 

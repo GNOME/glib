@@ -1,5 +1,9 @@
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.19.8 ===
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio.symbols: Add missing exports for new API
 
 	* gdatainputstream.c: Add missing Since: tags.

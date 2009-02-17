@@ -1,5 +1,9 @@
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.19.8 ===
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
 	* gobject.c: Remove (now) unnecessary cases from g_atomic_int_get 
 	calls.
 

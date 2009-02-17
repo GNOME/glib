@@ -227,12 +227,6 @@ error domains.
 </para>
 
 
-<!-- ##### MACRO G_HAVE_GNUC_VISIBILITY ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO G_HOOK_DEFERRED_DESTROY ##### -->
 <para>
 
