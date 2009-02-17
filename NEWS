@@ -1,3 +1,30 @@
+Overview of Changes from GLib 2.19.6 to GLib 2.19.7
+===================================================
+
+* GIO
+ - GFile gained an attribute for the actual file size in bytes
+ - GMountOperation gained an "aborted' signal that allows to abort
+   a mount operation from the backend side
+
+* Bugs fixed:
+ 523742 Use noinst for non-installable libraries
+ 566747 URIs opened with firefox %u load as local files
+ 541225 Can't compile gio on AIX duplicate case value in gioerror.c
+ 571598 GAsyncResult with NULL gobject
+ 505042 add file attribute for actually used file size in bytes
+
+* Updates translations:
+ Basque (eu)
+ Gujarati (gu)
+ Italian (it)
+ Japanese (ja)
+ Norwegian bokmål (nb)
+ Dutch (nl)
+ Portugese (pt)
+ Thai (th)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.19.5 to GLib 2.19.6
 ===================================================
 
