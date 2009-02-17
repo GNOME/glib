@@ -1,3 +1,16 @@
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix strict aliasing warnings and viiolations to make GLib and
+	GLib users buildable with gcc 4.4. Patch by Jakub Jelinek.
+
+	* glib/gatomic.[hc]: Add G_GNUC_MAY_ALIAS to pointer arguments,
+	fix macro versions to only operate on objects of the same size.
+
+	* glib/gdataset.c:
+	* glib/gthread.[hc]:
+	* glib/gdatasetprivate.h: Remove unnecessary casts in 
+	g_atomic_pointer_get calls.
+	
 2009-02-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

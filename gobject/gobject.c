@@ -807,7 +807,7 @@ g_object_freeze_notify (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
 
-  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
 
   g_object_ref (object);
@@ -830,7 +830,7 @@ g_object_notify (GObject     *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name != NULL);
-  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
@@ -875,7 +875,7 @@ g_object_thaw_notify (GObject *object)
   GObjectNotifyQueue *nqueue;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  if (g_atomic_int_get ((int *)&object->ref_count) == 0)
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
@@ -2377,7 +2377,7 @@ g_object_unref (gpointer _object)
 
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
  retry_atomic_decrement1:
-  old_ref = g_atomic_int_get ((int *)&object->ref_count);
+  old_ref = g_atomic_int_get (&object->ref_count);
   if (old_ref > 1)
     {
       if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))

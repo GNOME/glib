@@ -44,7 +44,7 @@
 
 /* datalist pointer accesses have to be carried out atomically */
 #define G_DATALIST_GET_POINTER(datalist)						\
-  ((GData*) ((gsize) g_atomic_pointer_get ((gpointer*) datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
+  ((GData*) ((gsize) g_atomic_pointer_get (datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
 
 #define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                  \
   gpointer _oldv, _newv;                                                                \
@@ -505,7 +505,7 @@ g_datalist_init (GData **datalist)
 {
   g_return_if_fail (datalist != NULL);
 
-  g_atomic_pointer_set ((gpointer*) datalist, NULL);
+  g_atomic_pointer_set (datalist, NULL);
 }
 
 /**

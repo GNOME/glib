@@ -36,7 +36,7 @@
 /* Adapted from CVS version 1.10 of glibc's sysdeps/i386/i486/bits/atomic.h 
  */
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic, 
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
 {
   gint result;
@@ -48,7 +48,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
  
 void
-g_atomic_int_add (volatile gint *atomic, 
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 		  gint           val)
 {
   __asm__ __volatile__ ("lock; addl %1,%0"
@@ -57,7 +57,7 @@ g_atomic_int_add (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -75,7 +75,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
  * arguments and calling the former function */
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -103,7 +103,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 
 #  if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -116,7 +116,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 }
 #  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -162,7 +162,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
   })
 #  if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -188,7 +188,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 }
 #  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -220,7 +220,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 /* Adapted from CVS version 1.9 of glibc's sysdeps/x86_64/bits/atomic.h 
  */
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic,
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 			       gint           val)
 {
   gint result;
@@ -232,7 +232,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
  
 void
-g_atomic_int_add (volatile gint *atomic, 
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 		  gint           val)
 {
   __asm__ __volatile__ ("lock; addl %1,%0"
@@ -241,7 +241,7 @@ g_atomic_int_add (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -255,7 +255,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -277,7 +277,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 /* Non-optimizing compile bails on the following two asm statements
  * for reasons unknown to the author */
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic, 
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
 {
   gint result, temp;
@@ -303,7 +303,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
  
 /* The same as above, to save a function call repeated here */
 void
-g_atomic_int_add (volatile gint *atomic, 
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 		  gint           val)
 {
   gint result, temp;  
@@ -327,7 +327,7 @@ g_atomic_int_add (volatile gint *atomic,
 }
 #   else /* !__OPTIMIZE__ */
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic, 
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
 {
   gint result;
@@ -339,7 +339,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
  
 void
-g_atomic_int_add (volatile gint *atomic,
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
 {
   gint result;
@@ -351,7 +351,7 @@ g_atomic_int_add (volatile gint *atomic,
 
 #   if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -383,7 +383,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -415,7 +415,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 }
 #   elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic,
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic,
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -449,7 +449,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -489,21 +489,21 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 /* Adapted from CVS version 1.8 of glibc's sysdeps/ia64/bits/atomic.h
  */
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic,
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 			       gint           val)
 {
   return __sync_fetch_and_add (atomic, val);
 }
  
 void
-g_atomic_int_add (volatile gint *atomic, 
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 		  gint val)
 {
   __sync_fetch_and_add (atomic, val);
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic,
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic,
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -511,7 +511,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -534,7 +534,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 
 #  if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 				       gpointer           oldval,
 				       gpointer           newval)
 {
@@ -546,7 +546,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 }
 #  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 				       gpointer           oldval,
 				       gpointer           newval)
 {
@@ -590,7 +590,7 @@ static void atomic_spin_unlock (void)
 }
 
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic, 
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
 {
   gint result;
@@ -604,7 +604,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
 
 void
-g_atomic_int_add (volatile gint *atomic,
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
 {
   atomic_spin_lock();
@@ -613,7 +613,7 @@ g_atomic_int_add (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -633,7 +633,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -700,19 +700,19 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 #define CRIS_ATOMIC_BREAKS_CACHELINE(atomic) \
   (((gulong)(atomic) & (CRIS_CACHELINE_SIZE - 1)) > (CRIS_CACHELINE_SIZE - sizeof (atomic)))
 
-gint     __g_atomic_int_exchange_and_add         (volatile gint   *atomic,
+gint     __g_atomic_int_exchange_and_add         (volatile gint   G_GNUC_MAY_ALIAS *atomic,
 						  gint             val);
-void     __g_atomic_int_add                      (volatile gint   *atomic,
+void     __g_atomic_int_add                      (volatile gint   G_GNUC_MAY_ALIAS *atomic,
 						  gint             val);
-gboolean __g_atomic_int_compare_and_exchange     (volatile gint   *atomic,
+gboolean __g_atomic_int_compare_and_exchange     (volatile gint   G_GNUC_MAY_ALIAS *atomic,
 						  gint             oldval,
 						  gint             newval);
-gboolean __g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+gboolean __g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 						  gpointer         oldval,
 						  gpointer         newval);
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 				       gpointer           oldval,
 				       gpointer           newval)
 {
@@ -723,7 +723,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic,
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic,
 				   gint           oldval,
 				   gint           newval)
 {
@@ -734,7 +734,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic,
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 			       gint           val)
 {
   gint result;
@@ -750,7 +750,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
 
 void
-g_atomic_int_add (volatile gint *atomic,
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
 {
   gint result;
@@ -797,21 +797,21 @@ g_atomic_int_add (volatile gint *atomic,
 # endif
 
 gint32
-g_atomic_int_exchange_and_add (volatile gint32 *atomic,
+g_atomic_int_exchange_and_add (volatile gint32 G_GNUC_MAY_ALIAS *atomic,
 			       gint32           val)
 {
   return InterlockedExchangeAdd (atomic, val);
 }
 
 void     
-g_atomic_int_add (volatile gint32 *atomic, 
+g_atomic_int_add (volatile gint32 G_GNUC_MAY_ALIAS *atomic, 
 		  gint32           val)
 {
   InterlockedExchangeAdd (atomic, val);
 }
 
 gboolean 
-g_atomic_int_compare_and_exchange (volatile gint32 *atomic,
+g_atomic_int_compare_and_exchange (volatile gint32 G_GNUC_MAY_ALIAS *atomic,
 				   gint32           oldval,
 				   gint32           newval)
 {
@@ -827,7 +827,7 @@ g_atomic_int_compare_and_exchange (volatile gint32 *atomic,
 }
 
 gboolean 
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 				       gpointer           oldval,
 				       gpointer           newval)
 {
@@ -848,7 +848,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 static GMutex *g_atomic_mutex; 
 
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic, 
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
 {
   gint result;
@@ -863,7 +863,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 
 
 void
-g_atomic_int_add (volatile gint *atomic,
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
 {
   g_mutex_lock (g_atomic_mutex);
@@ -872,7 +872,7 @@ g_atomic_int_add (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
 				   gint           newval)
 {
@@ -892,7 +892,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gboolean
-g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
@@ -913,7 +913,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 
 #ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 gint
-g_atomic_int_get (volatile gint *atomic)
+(g_atomic_int_get) (volatile gint G_GNUC_MAY_ALIAS *atomic)
 {
   gint result;
 
@@ -925,7 +925,7 @@ g_atomic_int_get (volatile gint *atomic)
 }
 
 void
-g_atomic_int_set (volatile gint *atomic,
+(g_atomic_int_set) (volatile gint G_GNUC_MAY_ALIAS *atomic,
                   gint           newval)
 {
   g_mutex_lock (g_atomic_mutex);
@@ -934,7 +934,7 @@ g_atomic_int_set (volatile gint *atomic,
 }
 
 gpointer
-g_atomic_pointer_get (volatile gpointer *atomic)
+(g_atomic_pointer_get) (volatile gpointer G_GNUC_MAY_ALIAS *atomic)
 {
   gpointer result;
 
@@ -946,7 +946,7 @@ g_atomic_pointer_get (volatile gpointer *atomic)
 }
 
 void
-g_atomic_pointer_set (volatile gpointer *atomic,
+(g_atomic_pointer_set) (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
                       gpointer           newval)
 {
   g_mutex_lock (g_atomic_mutex);
@@ -956,14 +956,14 @@ g_atomic_pointer_set (volatile gpointer *atomic,
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */   
 #elif defined (G_ATOMIC_OP_MEMORY_BARRIER_NEEDED)
 gint
-g_atomic_int_get (volatile gint *atomic)
+(g_atomic_int_get) (volatile gint G_GNUC_MAY_ALIAS *atomic)
 {
   G_ATOMIC_MEMORY_BARRIER;
   return *atomic;
 }
 
 void
-g_atomic_int_set (volatile gint *atomic,
+(g_atomic_int_set) (volatile gint G_GNUC_MAY_ALIAS *atomic,
                   gint           newval)
 {
   *atomic = newval;
@@ -971,14 +971,14 @@ g_atomic_int_set (volatile gint *atomic,
 }
 
 gpointer
-g_atomic_pointer_get (volatile gpointer *atomic)
+(g_atomic_pointer_get) (volatile gpointer G_GNUC_MAY_ALIAS *atomic)
 {
   G_ATOMIC_MEMORY_BARRIER;
   return *atomic;
 }   
 
 void
-g_atomic_pointer_set (volatile gpointer *atomic,
+(g_atomic_pointer_set) (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
                       gpointer           newval)
 {
   *atomic = newval;
@@ -988,7 +988,7 @@ g_atomic_pointer_set (volatile gpointer *atomic,
 
 #ifdef ATOMIC_INT_CMP_XCHG
 gboolean
-g_atomic_int_compare_and_exchange (volatile gint *atomic,
+g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic,
 				   gint           oldval,
 				   gint           newval)
 {
@@ -996,7 +996,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 }
 
 gint
-g_atomic_int_exchange_and_add (volatile gint *atomic,
+g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 			       gint           val)
 {
   gint result;
@@ -1008,7 +1008,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
  
 void
-g_atomic_int_add (volatile gint *atomic,
+g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
 {
   gint result;
@@ -1028,26 +1028,26 @@ _g_atomic_thread_init (void)
 
 #ifndef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 gint
-(g_atomic_int_get) (volatile gint *atomic)
+(g_atomic_int_get) (volatile gint G_GNUC_MAY_ALIAS *atomic)
 {
   return g_atomic_int_get (atomic);
 }
 
 void
-(g_atomic_int_set) (volatile gint *atomic,
+(g_atomic_int_set) (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		    gint           newval)
 {
   g_atomic_int_set (atomic, newval);
 }
 
 gpointer
-(g_atomic_pointer_get) (volatile gpointer *atomic)
+(g_atomic_pointer_get) (volatile gpointer G_GNUC_MAY_ALIAS *atomic)
 {
   return g_atomic_pointer_get (atomic);
 }
 
 void
-(g_atomic_pointer_set) (volatile gpointer *atomic,
+(g_atomic_pointer_set) (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 			gpointer           newval)
 {
   g_atomic_pointer_set (atomic, newval);
