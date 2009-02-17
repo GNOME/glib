@@ -1,3 +1,10 @@
+Overview of Changes from GLib 2.19.7 to GLib 2.19.8
+===================================================
+
+* GIO
+ - Fix missing exports of new API
+
+
 Overview of Changes from GLib 2.19.6 to GLib 2.19.7
 ===================================================
 
