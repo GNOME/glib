@@ -644,6 +644,7 @@ handle_overwrite_open (const char    *filename,
 		       const char    *etag,
 		       gboolean       create_backup,
 		       char         **temp_filename,
+		       GFileCreateFlags flags,
 		       GCancellable  *cancellable,
 		       GError       **error)
 {
@@ -653,6 +654,12 @@ handle_overwrite_open (const char    *filename,
   gboolean is_symlink;
   int open_flags;
   int res;
+  int mode;
+
+  if (flags & G_FILE_CREATE_PRIVATE)
+    mode = 0600;
+  else
+    mode = 0666;
 
   /* We only need read access to the original file if we are creating a backup.
    * We also add O_CREATE to avoid a race if the file was just removed */
@@ -665,16 +672,16 @@ handle_overwrite_open (const char    *filename,
    * when finding out if the file we opened was a symlink */
 #ifdef O_NOFOLLOW
   is_symlink = FALSE;
-  fd = g_open (filename, open_flags | O_NOFOLLOW, 0666);
+  fd = g_open (filename, open_flags | O_NOFOLLOW, mode);
   if (fd == -1 && errno == ELOOP)
     {
       /* Could be a symlink, or it could be a regular ELOOP error,
        * but then the next open will fail too. */
       is_symlink = TRUE;
-      fd = g_open (filename, open_flags, 0666);
+      fd = g_open (filename, open_flags, mode);
     }
 #else
-  fd = g_open (filename, open_flags, 0666);
+  fd = g_open (filename, open_flags, mode);
   /* This is racy, but we do it as soon as possible to minimize the race */
   is_symlink = g_file_test (filename, G_FILE_TEST_IS_SYMLINK);
 #endif
@@ -751,7 +758,8 @@ handle_overwrite_open (const char    *filename,
    * to a backup file and rewrite the contents of the file.
    */
   
-  if (!(original_stat.st_nlink > 1) && !is_symlink)
+  if ((flags & G_FILE_CREATE_REPLACE_DESTINATION) ||
+      (!(original_stat.st_nlink > 1) && !is_symlink))
     {
       char *dirname, *tmp_filename;
       int tmpfd;
@@ -767,16 +775,18 @@ handle_overwrite_open (const char    *filename,
 	  goto fallback_strategy;
 	}
       
-      /* try to keep permissions */
+      /* try to keep permissions (unless replacing) */
 
-      if (
+      if ( ! (flags & G_FILE_CREATE_REPLACE_DESTINATION) &&
+	   (
 #ifdef HAVE_FCHOWN
-	  fchown (tmpfd, original_stat.st_uid, original_stat.st_gid) == -1 ||
+	    fchown (tmpfd, original_stat.st_uid, original_stat.st_gid) == -1 ||
 #endif
 #ifdef HAVE_FCHMOD
-	  fchmod (tmpfd, original_stat.st_mode) == -1 ||
+	    fchmod (tmpfd, original_stat.st_mode) == -1 ||
 #endif
-	  0
+	    0
+	    )
 	  )
 	{
 	  struct stat tmp_statbuf;
@@ -899,26 +909,58 @@ handle_overwrite_open (const char    *filename,
 	}
     }
 
-  /* Truncate the file at the start */
-#ifdef G_OS_WIN32
-  if (g_win32_ftruncate (fd, 0) == -1)
-#else
-  if (ftruncate (fd, 0) == -1)
-#endif
+  if (flags & G_FILE_CREATE_REPLACE_DESTINATION)
     {
-      int errsv = errno;
-
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error truncating file: %s"),
-		   g_strerror (errsv));
-      goto err_out;
+      close (fd);
+      
+      if (g_unlink (filename) != 0)
+	{
+	  int errsv = errno;
+	  
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error removing old file: %s"),
+		       g_strerror (errsv));
+	  goto err_out2;
+	}
+      
+      fd = g_open (filename, O_WRONLY | O_CREAT | O_BINARY, mode);
+      if (fd == -1)
+	{
+	  int errsv = errno;
+	  char *display_name = g_filename_display_name (filename);
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error opening file '%s': %s"),
+		       display_name, g_strerror (errsv));
+	  g_free (display_name);
+	  goto err_out2;
+	}
+    }
+  else
+    {
+      /* Truncate the file at the start */
+#ifdef G_OS_WIN32
+      if (g_win32_ftruncate (fd, 0) == -1)
+#else
+	if (ftruncate (fd, 0) == -1)
+#endif
+	  {
+	    int errsv = errno;
+	    
+	    g_set_error (error, G_IO_ERROR,
+			 g_io_error_from_errno (errsv),
+			 _("Error truncating file: %s"),
+			 g_strerror (errsv));
+	    goto err_out;
+	  }
     }
     
   return fd;
 
  err_out:
   close (fd);
+ err_out2:
   return -1;
 }
 
@@ -952,7 +994,7 @@ _g_local_file_output_stream_replace (const char        *filename,
     {
       /* The file already exists */
       fd = handle_overwrite_open (filename, etag, create_backup, &temp_file,
-				  cancellable, error);
+				  flags, cancellable, error);
       if (fd == -1)
 	return NULL;
     }

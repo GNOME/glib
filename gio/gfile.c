@@ -2342,7 +2342,7 @@ file_copy_fallback (GFile                  *source,
       out = (GOutputStream *)g_file_replace (destination,
 					     NULL,
 					     flags & G_FILE_COPY_BACKUP,
-                                             0,
+                                             G_FILE_CREATE_REPLACE_DESTINATION,
 					     cancellable, error);
     }
   else

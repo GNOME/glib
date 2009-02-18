@@ -1,3 +1,20 @@
+2009-02-18  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 560564 – Replacing a symlink with its linked file truncates the original file
+
+        * gioenums.h:
+	Add G_FILE_CREATE_REPLACE_DESTINATION
+
+        * glocalfileoutputstream.c:
+        (handle_overwrite_open):
+        (_g_local_file_output_stream_replace):
+	Handle G_FILE_CREATE_REPLACE_DESTINATION when overwriting files.
+
+        * gfile.c:
+        (file_copy_fallback):
+	Pass G_FILE_CREATE_REPLACE_DESTINATION to g_file_replace when copying
+	with overwrite.
+
 2009-02-17  Ryan Lortie  <desrt@desrt.ca>
 
 	* gfileinfo.c: unref the destination's attribute matcher before

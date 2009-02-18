@@ -156,12 +156,21 @@ typedef enum {
  * @G_FILE_CREATE_NONE: No flags set.
  * @G_FILE_CREATE_PRIVATE: Create a file that can only be
  *    accessed by the current user.
+ * @G_FILE_CREATE_REPLACE_DESTINATION: Replace the destination
+ *    as if it didn't exist before. Don't try to keep any old
+ *    permissions, replace instead of following links. This
+ *    is generally useful if you're doing a "copy over" 
+ *    rather than a "save new version of" replace operation.
+ *    You can think of it as "unlink destination" before
+ *    writing to it, although the implementation may not
+ *    be exactly like that.
  *
  * Flags used when an operation may create a file.
  */
 typedef enum {
   G_FILE_CREATE_NONE    = 0,
-  G_FILE_CREATE_PRIVATE = (1 << 0)
+  G_FILE_CREATE_PRIVATE = (1 << 0),
+  G_FILE_CREATE_REPLACE_DESTINATION = (1 << 1)
 } GFileCreateFlags;
 
 
