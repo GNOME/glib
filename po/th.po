@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-17 11:17-0500\n"
-"PO-Revision-Date: 2009-02-06 18:11+0700\n"
+"POT-Creation-Date: 2009-02-19 16:11+0700\n"
+"PO-Revision-Date: 2009-02-19 16:14+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1372,7 +1372,7 @@ msgstr "ไม่สามารถเปลี่ยนชื่อแฟ้ม
 
 #: gio/glocalfile.c:1157 gio/glocalfile.c:2021 gio/glocalfile.c:2050
 #: gio/glocalfile.c:2204 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:967
+#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
 msgid "Invalid filename"
 msgstr "ชื่อแฟ้มผิดรูปแบบ"
 
@@ -1437,9 +1437,9 @@ msgstr "เกิดข้อผิดพลาดขณะย้ายแฟ้
 msgid "Can't move directory over directory"
 msgstr "ไม่สามารถย้ายไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/glocalfile.c:2164 gio/glocalfileoutputstream.c:819
-#: gio/glocalfileoutputstream.c:833 gio/glocalfileoutputstream.c:848
-#: gio/glocalfileoutputstream.c:864 gio/glocalfileoutputstream.c:878
+#: gio/glocalfile.c:2164 gio/glocalfileoutputstream.c:829
+#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
+#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
 msgid "Backup file creation failed"
 msgstr "สร้างแฟ้มสำรองไม่สำเร็จ"
 
@@ -1469,7 +1469,7 @@ msgstr "ชื่อแอตทริบิวต์ส่วนขยายเ
 msgid "Error setting extended attribute '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดแอตทริบิวต์ส่วนขยาย '%s': %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:706
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%s': %s"
@@ -1544,7 +1544,7 @@ msgstr "เกิดข้อผิดพลาดขณะอ่านข้อ
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
 #: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:896
+#: gio/glocalfileoutputstream.c:906
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเลื่อนตำแหน่งอ่านเขียนแฟ้ม: %s"
@@ -1579,28 +1579,34 @@ msgstr "เกิดข้อผิดพลาดขณะสร้างสำ
 msgid "Error renaming temporary file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้มสำรอง: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:913
+#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
 
 #: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:688 gio/glocalfileoutputstream.c:973
+#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
+#: gio/glocalfileoutputstream.c:1015
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม '%s': %s"
 
-#: gio/glocalfileoutputstream.c:719
+#: gio/glocalfileoutputstream.c:726
 msgid "Target file is a directory"
 msgstr "แฟ้มปลายทางเป็นไดเรกทอรี"
 
-#: gio/glocalfileoutputstream.c:724
+#: gio/glocalfileoutputstream.c:731
 msgid "Target file is not a regular file"
 msgstr "แฟ้มปลายทางไม่ใช่แฟ้มปกติ"
 
-#: gio/glocalfileoutputstream.c:736
+#: gio/glocalfileoutputstream.c:743
 msgid "The file was externally modified"
 msgstr "แฟ้มถูกแก้ไขโดยโปรแกรมอื่น"
+
+#: gio/glocalfileoutputstream.c:922
+#, c-format
+msgid "Error removing old file: %s"
+msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มเดิม: %s"
 
 #: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:545
 msgid "Invalid GSeekType supplied"
