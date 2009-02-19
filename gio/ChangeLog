@@ -1,25 +1,25 @@
 2009-02-19  Alexander Larsson  <alexl@redhat.com>
 
-        Bug 549298 – impossible to copy files with p (pipe) flag
+	Bug 549298 – impossible to copy files with p (pipe) flag
 
-        * gfile.c:
-        (file_copy_fallback):
+	* gfile.c:
+	(file_copy_fallback):
 	Error out if the source file is a special file
 
 2009-02-18  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 560564 – Replacing a symlink with its linked file truncates the original file
 
-        * gioenums.h:
+	* gioenums.h:
 	Add G_FILE_CREATE_REPLACE_DESTINATION
 
-        * glocalfileoutputstream.c:
-        (handle_overwrite_open):
-        (_g_local_file_output_stream_replace):
+	* glocalfileoutputstream.c:
+	(handle_overwrite_open):
+	(_g_local_file_output_stream_replace):
 	Handle G_FILE_CREATE_REPLACE_DESTINATION when overwriting files.
 
-        * gfile.c:
-        (file_copy_fallback):
+	* gfile.c:
+	(file_copy_fallback):
 	Pass G_FILE_CREATE_REPLACE_DESTINATION to g_file_replace when copying
 	with overwrite.
 
@@ -249,7 +249,7 @@
 	Bug 562452 - Ensure we return G_IO_ERROR_CANCELLED if cancelling
 	g_simple_async_result_run_in_thread
 	
-        * gsimpleasyncresult.c:
+	* gsimpleasyncresult.c:
 	Make g_simple_async_result_run_in_thread check cancellation before
 	calling out to the user in the callback. This means we guarantee
 	reporting cancels of async operations from the main threads, which
@@ -264,11 +264,11 @@
 
 	Bug 515777 - incorrect date&time on copy
 	
-        * glocalfile.c:
-        (g_local_file_class_init):
+	* glocalfile.c:
+	(g_local_file_class_init):
 	Copy mtime by default
 	
-        * gfile.c:
+	* gfile.c:
 	Change docs about G_FILE_COPY_ALL_METADATA to not mention
 	mtime as an example.
 
@@ -321,10 +321,10 @@
 
 2008-12-01  Alexander Larsson  <alexl@redhat.com>
 
-        * gio.symbols:
-        * gmount.[ch]:
-        * gunionvolumemonitor.c:
-        * gvolume.c:
+	* gio.symbols:
+	* gmount.[ch]:
+	* gunionvolumemonitor.c:
+	* gvolume.c:
 	Add and document g_mount_is_shadowed plus calls
 	to set/unset a mount as shadowed
 	
@@ -478,8 +478,8 @@
 
 	Bug 528320 - Incorrect icons displayed for files with custom mimetype icons
 	
-        * glocalfileinfo.c:
-        (_g_local_file_info_get):
+	* glocalfileinfo.c:
+	(_g_local_file_info_get):
 	Don't return the fallback icon (text-x-generic) for all files.
 	This is causing problems with theme icon lookup and custom mime
 	icons, as the generic fallback overrides custom mime icons in
@@ -493,7 +493,7 @@
 
 2008-10-21  Alexander Larsson  <alexl@redhat.com>
 
-        * gfileinfo.h:
+	* gfileinfo.h:
 	Add G_FILE_ATTRIBUTE_PREVIEW_ICON (#557182)
 
 2008-10-21  Alexander Larsson  <alexl@redhat.com>
@@ -501,18 +501,18 @@
 	Bug 555740 - gicon serialization
 	Based on patch from David Zeuthen
 	
-        * gicon.[ch]:
-        * gio.symbols:
+	* gicon.[ch]:
+	* gio.symbols:
 	Add g_icon_to_string() and g_icon_new_for_string().
 	
-        * gemblem.c:
-        * gemblemedicon.c:
-        * gfileicon.c:
-        * gthemedicon.c:
+	* gemblem.c:
+	* gemblemedicon.c:
+	* gfileicon.c:
+	* gthemedicon.c:
 	Implement icon serialization for built-in icon types
 	
-        * tests/Makefile.am:
-        * tests/g-icon.c:
+	* tests/Makefile.am:
+	* tests/g-icon.c:
 	Added GIcon serialization test
 
 2008-10-16  Matthias Clasen <mclasen@redhat.com>
@@ -543,7 +543,7 @@
 
 2008-10-13  Alexander Larsson  <alexl@redhat.com>
 
-        * gdesktopappinfo.c:
+	* gdesktopappinfo.c:
 	When adding an application as handling a mime type (but
 	not as the default), copy the full list of desktop ids handling
 	that type in before adding the new one on the end of the list.
