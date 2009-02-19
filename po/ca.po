@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 14:22+0100\n"
-"PO-Revision-Date: 2009-02-19 14:22+0100\n"
+"POT-Creation-Date: 2009-02-19 20:27+0100\n"
+"PO-Revision-Date: 2009-02-19 20:27+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -1276,10 +1276,10 @@ msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 
 #: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
 #: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
-#: ../gio/gfile.c:1620 ../gio/gfile.c:2694 ../gio/gfile.c:2748
-#: ../gio/gfile.c:2879 ../gio/gfile.c:2919 ../gio/gfile.c:3246
-#: ../gio/gfile.c:3648 ../gio/gfile.c:3732 ../gio/gfile.c:3815
-#: ../gio/gfile.c:3895 ../gio/gfile.c:4225 ../gio/win32/gwinhttpfile.c:428
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2710 ../gio/gfile.c:2764
+#: ../gio/gfile.c:2895 ../gio/gfile.c:2935 ../gio/gfile.c:3262
+#: ../gio/gfile.c:3664 ../gio/gfile.c:3748 ../gio/gfile.c:3831
+#: ../gio/gfile.c:3911 ../gio/gfile.c:4241 ../gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "L'operació no està implementada"
 
@@ -1312,24 +1312,28 @@ msgstr "Ja existeix el fitxer de destinació"
 msgid "Can't recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
-#: ../gio/gfile.c:2869
+#: ../gio/gfile.c:2344
+msgid "Can't copy special file"
+msgstr "No es pot copiar el fitxer especial"
+
+#: ../gio/gfile.c:2885
 msgid "Invalid symlink value given"
 msgstr "El valor donat per a l'enllaç simbòlic no és vàlid"
 
-#: ../gio/gfile.c:2962
+#: ../gio/gfile.c:2978
 msgid "Trash not supported"
 msgstr "No es pot utilitzar la paperera"
 
-#: ../gio/gfile.c:3011
+#: ../gio/gfile.c:3027
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "En els noms de fitxers no pot haver-hi «%c»"
 
-#: ../gio/gfile.c:4993 ../gio/gvolume.c:370
+#: ../gio/gfile.c:5009 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "el volum no implementa el muntatge"
 
-#: ../gio/gfile.c:5101
+#: ../gio/gfile.c:5117
 msgid "No application is registered as handling this file"
 msgstr ""
 "No hi ha cap aplicació que s'hagi registrat per a gestionar aquest fitxer"
