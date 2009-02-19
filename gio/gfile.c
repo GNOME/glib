@@ -2306,19 +2306,22 @@ file_copy_fallback (GFile                  *source,
   GFileInfo *info;
   const char *target;
 
-  /* Maybe copy the symlink? */
-  if (flags & G_FILE_COPY_NOFOLLOW_SYMLINKS)
-    {
-      info = g_file_query_info (source,
-				G_FILE_ATTRIBUTE_STANDARD_TYPE "," G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
-				G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-				cancellable,
-				error);
-      if (info == NULL)
-	return FALSE;
+  /* need to know the file type */
+  info = g_file_query_info (source,
+			    G_FILE_ATTRIBUTE_STANDARD_TYPE "," G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+			    G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+			    cancellable,
+			    error);
 
-      if (g_file_info_get_file_type (info) == G_FILE_TYPE_SYMBOLIC_LINK &&
-	  (target = g_file_info_get_symlink_target (info)) != NULL)
+  if (info == NULL)
+	  return FALSE;
+
+  /* Maybe copy the symlink? */
+  if ((flags & G_FILE_COPY_NOFOLLOW_SYMLINKS) &&
+      g_file_info_get_file_type (info) == G_FILE_TYPE_SYMBOLIC_LINK)
+    {
+      target = g_file_info_get_symlink_target (info);
+      if (target)
 	{
 	  if (!copy_symlink (destination, flags, cancellable, target, error))
 	    {
@@ -2329,10 +2332,23 @@ file_copy_fallback (GFile                  *source,
 	  g_object_unref (info);
 	  goto copied_file;
 	}
-      
-      g_object_unref (info);
+        /* ... else fall back on a regular file copy */
+	g_object_unref (info);
     }
-  
+  /* Handle "special" files (pipes, device nodes, ...)? */
+  else if (g_file_info_get_file_type (info) == G_FILE_TYPE_SPECIAL)
+    {
+      /* FIXME: could try to recreate device nodes and others? */
+
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Can't copy special file"));
+      g_object_unref (info);
+      return FALSE;
+    }
+  /* Everything else should just fall back on a regular copy. */
+  else
+    g_object_unref (info);
+
   in = open_source_for_copy (source, destination, flags, cancellable, error);
   if (in == NULL)
     return FALSE;
