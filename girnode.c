@@ -1910,6 +1910,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->discriminator_offset = union_->discriminator_offset;
 
 	/* We don't support Union discriminators right now. */
+	/*
 	if (union_->discriminator_type)
 	  {
 	    *offset += 28;
@@ -1918,14 +1919,8 @@ g_ir_node_build_typelib (GIrNode    *node,
 				     module, modules, strings, types,
 				     data, offset, offset2);
 	  }
-        /* Always do the non-discriminated case */	
-	/*
 	else
 	  {
-            *offset += 32;
-            blob->discriminated = FALSE;
-            blob->discriminator_type.offset = 0;
-          }  
         */
 	*offset += sizeof (UnionBlob);
 	blob->discriminated = FALSE;
