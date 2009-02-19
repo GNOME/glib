@@ -1918,10 +1918,15 @@ g_ir_node_build_typelib (GIrNode    *node,
 				     module, modules, strings, types,
 				     data, offset, offset2);
 	  }
-	else 
+        /* Always do the non-discriminated case */	
+	/*
+	else
 	  {
-	*/
-	/* Always do the non-discriminated case */
+            *offset += 32;
+            blob->discriminated = FALSE;
+            blob->discriminator_type.offset = 0;
+          }  
+        */
 	*offset += sizeof (UnionBlob);
 	blob->discriminated = FALSE;
 	blob->discriminator_type.offset = 0;
