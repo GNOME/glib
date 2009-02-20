@@ -72,6 +72,7 @@ G_BEGIN_DECLS
 TYPELIB HISTORY
 -----
 Version 1.0
+- Rename class_struct to gtype_struct, add to interfaces
 
 Changes since 0.9:
 - Add padding to structures
@@ -651,7 +652,7 @@ typedef struct {
  * @deprecated: Whether this structure is deprecated
  * @unregistered: If this is set, the type is not registered with GType.
  * @alignment: The byte boundary that the struct is aligned to in memory
- * @is_class_struct: Whether this structure is the "class structure" for a GObject
+ * @is_gtype_struct: Whether this structure is the class or interface layout for a GObject
  * @size: The size of the struct in bytes.
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
@@ -666,7 +667,7 @@ typedef struct {
 
   guint16   deprecated   : 1;
   guint16   unregistered : 1;
-  guint16   is_class_struct : 1;
+  guint16   is_gtype_struct : 1;
   guint16   alignment    : 6;  
   guint16   reserved     : 7;
 
@@ -900,7 +901,7 @@ typedef struct {
   guint32   gtype_init;
 
   guint16   parent;
-  guint16   class_struct;
+  guint16   gtype_struct;
 
   guint16   n_interfaces;
   guint16   n_fields;
@@ -929,6 +930,7 @@ typedef struct {
 
 /**
  * InterfaceBlob:
+ * @gtype_struct: Name of the interface "class" C structure
  * @n_prerequisites: Number of prerequisites
  * @n_properties: Number of properties
  * @n_methods: Number of methods
@@ -952,6 +954,7 @@ typedef struct {
 
   guint32 gtype_name;
   guint32 gtype_init;
+  guint16 gtype_struct;
 
   guint16 n_prerequisites;
   guint16 n_properties;

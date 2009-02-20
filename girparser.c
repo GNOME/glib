@@ -1482,10 +1482,12 @@ start_interface (GMarkupParseContext *context,
       const gchar *typename;
       const gchar *typeinit;
       const gchar *deprecated;
+      const gchar *glib_type_struct;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
       typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
+      glib_type_struct = find_attribute ("glib:type-struct", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
       
       if (name == NULL)
@@ -1502,6 +1504,7 @@ start_interface (GMarkupParseContext *context,
 	  ((GIrNode *)iface)->name = g_strdup (name);
 	  iface->gtype_name = g_strdup (typename);
 	  iface->gtype_init = g_strdup (typeinit);
+          iface->glib_type_struct = g_strdup (glib_type_struct);
 	  if (deprecated)
 	    iface->deprecated = TRUE;
 	  else
@@ -1533,7 +1536,7 @@ start_class (GMarkupParseContext *context,
     {
       const gchar *name;
       const gchar *parent;
-      const gchar *class_struct;      
+      const gchar *glib_type_struct;
       const gchar *typename;
       const gchar *typeinit;
       const gchar *deprecated;
@@ -1541,7 +1544,7 @@ start_class (GMarkupParseContext *context,
       
       name = find_attribute ("name", attribute_names, attribute_values);
       parent = find_attribute ("parent", attribute_names, attribute_values);
-      class_struct = find_attribute ("glib:class-struct", attribute_names, attribute_values);      
+      glib_type_struct = find_attribute ("glib:type-struct", attribute_names, attribute_values);
       typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
       typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
       deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
@@ -1562,7 +1565,7 @@ start_class (GMarkupParseContext *context,
 	  iface->gtype_name = g_strdup (typename);
 	  iface->gtype_init = g_strdup (typeinit);
 	  iface->parent = g_strdup (parent);
-	  iface->class_struct = g_strdup (class_struct);
+	  iface->glib_type_struct = g_strdup (glib_type_struct);
 	  if (deprecated)
 	    iface->deprecated = TRUE;
 	  else
@@ -2128,7 +2131,7 @@ start_struct (GMarkupParseContext *context,
       const gchar *disguised;
       const gchar *gtype_name;
       const gchar *gtype_init;
-      const gchar *gclass_struct;
+      const gchar *gtype_struct;
       GIrNodeStruct *struct_;
       
       name = find_attribute ("name", attribute_names, attribute_values);
@@ -2136,7 +2139,7 @@ start_struct (GMarkupParseContext *context,
       disguised = find_attribute ("disguised", attribute_names, attribute_values);
       gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
       gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
-      gclass_struct = find_attribute ("glib:is-class-struct-for", attribute_names, attribute_values);      
+      gtype_struct = find_attribute ("glib:is-gtype-struct-for", attribute_names, attribute_values);
 
       if (name == NULL && ctx->node_stack == NULL)
 	{
@@ -2165,7 +2168,7 @@ start_struct (GMarkupParseContext *context,
       if (disguised && strcmp (disguised, "1") == 0)
 	struct_->disguised = TRUE;
       
-      struct_->is_gclass_struct = gclass_struct != NULL;
+      struct_->is_gtype_struct = gtype_struct != NULL;
 
       struct_->gtype_name = g_strdup (gtype_name);
       struct_->gtype_init = g_strdup (gtype_init);

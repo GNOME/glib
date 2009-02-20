@@ -417,7 +417,7 @@ GIFunctionInfo *       g_struct_info_find_method   (GIStructInfo *info,
 						    const gchar *name);
 gsize                  g_struct_info_get_size      (GIStructInfo *info);
 gsize                  g_struct_info_get_alignment (GIStructInfo *info);
-gboolean               g_struct_info_is_class_struct (GIStructInfo *info);
+gboolean               g_struct_info_is_gtype_struct (GIStructInfo *info);
 
 /* GIRegisteredTypeInfo */
 
@@ -486,6 +486,8 @@ GIVFuncInfo *          g_interface_info_get_vfunc           (GIInterfaceInfo *in
 gint                   g_interface_info_get_n_constants     (GIInterfaceInfo *info);
 GIConstantInfo *       g_interface_info_get_constant        (GIInterfaceInfo *info,
 							     gint        n);
+
+GIStructInfo *         g_interface_info_get_iface_struct    (GIInterfaceInfo *info);
 
 
 /* GIPropertyInfo  */

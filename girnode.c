@@ -286,7 +286,8 @@ g_ir_node_free (GIrNode *node)
 	g_free (iface->gtype_name);
 	g_free (iface->gtype_init);
 
-        g_free (iface->class_struct);	
+
+	g_free (iface->glib_type_struct);
 	g_free (iface->parent);
 
 	for (l = iface->interfaces; l; l = l->next)
@@ -652,8 +653,8 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	size = sizeof(ObjectBlob);
 	if (iface->parent)
 	  size += ALIGN_VALUE (strlen (iface->parent) + 1, 4);
-        if (iface->class_struct)
-          size += ALIGN_VALUE (strlen (iface->class_struct) + 1, 4);	
+        if (iface->glib_type_struct)
+          size += ALIGN_VALUE (strlen (iface->glib_type_struct) + 1, 4);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
 	size += ALIGN_VALUE (strlen (iface->gtype_name) + 1, 4);
 	if (iface->gtype_init)
@@ -1781,7 +1782,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	
 	blob->blob_type = BLOB_TYPE_STRUCT;
 	blob->deprecated = struct_->deprecated;
-	blob->is_class_struct = struct_->is_gclass_struct;
+	blob->is_gtype_struct = struct_->is_gtype_struct;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->alignment = struct_->alignment;
@@ -1984,10 +1985,10 @@ g_ir_node_build_typelib (GIrNode         *node,
 	  blob->parent = find_entry (module, modules, object->parent);
 	else
 	  blob->parent = 0;
-	if (object->class_struct)
-	  blob->class_struct = find_entry (module, modules, object->class_struct);
+	if (object->glib_type_struct)
+	  blob->gtype_struct = find_entry (module, modules, object->glib_type_struct);
 	else
-	  blob->class_struct = 0;
+	  blob->gtype_struct = 0;
 
 	blob->n_interfaces = 0;
 	blob->n_fields = 0;
@@ -2049,6 +2050,10 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->gtype_name = write_string (iface->gtype_name, strings, data, offset2);
 	blob->gtype_init = write_string (iface->gtype_init, strings, data, offset2);
+	if (iface->glib_type_struct)
+	  blob->gtype_struct = find_entry (module, modules, iface->glib_type_struct);
+	else
+	  blob->gtype_struct = 0;
 	blob->n_prerequisites = 0;
 	blob->n_properties = 0;
 	blob->n_methods = 0;

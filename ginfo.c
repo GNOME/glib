@@ -1182,22 +1182,22 @@ g_struct_info_get_alignment (GIStructInfo *info)
 }
 
 /**
- * g_struct_info_is_class_struct:
+ * g_struct_info_is_gtype_struct:
  * @info: GIStructInfo
  * 
  * Return true if this structure represents the "class structure" for some
- * GObject.  This function is mainly useful to hide this kind of structure
- * from public APIs.
+ * #GObject or #GInterface.  This function is mainly useful to hide this kind of structure
+ * from generated public APIs.
  *
- * Returns: TRUE if it's a class struct, otherwise FALSE
+ * Returns: %TRUE if this is a class struct, %FALSE otherwise
  */
 gboolean
-g_struct_info_is_class_struct (GIStructInfo *info)
+g_struct_info_is_gtype_struct (GIStructInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
 
-  return blob->is_class_struct;
+  return blob->is_gtype_struct;
 }
 
 gint
@@ -1495,10 +1495,10 @@ g_object_info_get_constant (GIObjectInfo *info,
  * g_object_info_get_class_struct:
  * @info: A #GIObjectInfo to query
  * 
- * Every GObject has two structures; an instance structure and a class
+ * Every #GObject has two structures; an instance structure and a class
  * structure.  This function returns the metadata for the class structure.
  *
- * Returns: a GIStrucTInfo for the class struct or NULL if none found.
+ * Returns: a #GIStructInfo for the class struct or %NULL if none found.
  */
 GIStructInfo *
 g_object_info_get_class_struct (GIObjectInfo *info)
@@ -1506,9 +1506,9 @@ g_object_info_get_class_struct (GIObjectInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
 
-  if (blob->class_struct)
+  if (blob->gtype_struct)
     return (GIStructInfo *) g_info_from_entry (base->repository,
-                                               base->typelib, blob->class_struct);
+                                               base->typelib, blob->gtype_struct);
   else
     return NULL;
 }
@@ -1691,8 +1691,26 @@ g_interface_info_get_constant (GIInterfaceInfo *info,
 					base->typelib, offset);  
 }
 
+/**
+ * g_interface_info_get_iface_struct:
+ * @info: A #GIInterfaceInfo to query
+ *
+ * Returns the layout C structure associated with this #GInterface.
+ *
+ * Returns: A #GIStructInfo for the class struct or %NULL if none found.
+ */
+GIStructInfo *
+g_interface_info_get_iface_struct (GIInterfaceInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
 
-
+  if (blob->gtype_struct)
+    return (GIStructInfo *) g_info_from_entry (base->repository,
+                                               base->typelib, blob->gtype_struct);
+  else
+    return NULL;
+}
 
 /* GIPropertyInfo functions */
 GParamFlags

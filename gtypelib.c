@@ -183,7 +183,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (SignalBlob, 16);
   CHECK_SIZE (VFuncBlob, 20);
   CHECK_SIZE (ObjectBlob, 44);
-  CHECK_SIZE (InterfaceBlob, 36);
+  CHECK_SIZE (InterfaceBlob, 40);
   CHECK_SIZE (ConstantBlob, 24);
   CHECK_SIZE (AnnotationBlob, 12);
   CHECK_SIZE (UnionBlob, 40);
@@ -1458,11 +1458,11 @@ validate_object_blob (ValidateContext *ctx,
 	}
     }
   
-  if (blob->class_struct != 0)
+  if (blob->gtype_struct != 0)
     {
       DirEntry *entry;
 
-      entry = get_dir_entry_checked (typelib, blob->class_struct, error);
+      entry = get_dir_entry_checked (typelib, blob->gtype_struct, error);
       if (!entry)
         return FALSE;
       if (entry->blob_type != BLOB_TYPE_STRUCT && entry->local)
