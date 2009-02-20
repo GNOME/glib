@@ -2,6 +2,7 @@
 /* GObject introspection: IDL generator
  *
  * Copyright (C) 2005 Matthias Clasen
+ * Copyright (C) 2008,2009 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -318,6 +319,21 @@ write_type_info (const gchar *namespace,
 }
 
 static void
+write_attributes (Xml *file,
+                   GIBaseInfo *info)
+{
+  GIAttributeIter iter = { 0, };
+  char *name, *value;
+
+  while (g_base_info_iterate_attributes (info, &iter, &name, &value))
+    {
+      xml_start_element (file, "attribute");
+      xml_printf (file, " name=\"%s\" value=\"%s\"", name, value);
+      xml_end_element (file, "attribute");
+    }
+}
+
+static void
 write_constant_value (const gchar *namespace, 
 		      GITypeInfo *info,
 		      GArgument *argument,
@@ -355,6 +371,8 @@ write_field_info (const gchar *namespace,
   if (size)
     xml_printf (file, " bits=\"%d\"", size);
 
+  write_attributes (file, (GIBaseInfo*) info);
+
   type = g_field_info_get_type (info);
 
   if (branch)
@@ -385,6 +403,8 @@ write_callable_info (const gchar    *namespace,
 {
   GITypeInfo *type;
   gint i;
+
+  write_attributes (file, (GIBaseInfo*) info);
 
   type = g_callable_info_get_return_type (info);
 
@@ -604,6 +624,8 @@ write_struct_info (const gchar  *namespace,
   is_gtype_struct = g_struct_info_is_gtype_struct (info);
   if (is_gtype_struct)
     xml_printf (file, " glib:is-gtype-struct=\"1\"");
+
+  write_attributes (file, (GIBaseInfo*) info);
 	
   size = g_struct_info_get_size (info);
   if (show_all && size >= 0)
@@ -650,6 +672,8 @@ write_value_info (const gchar *namespace,
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
   
+  write_attributes (file, (GIBaseInfo*) info);
+
   xml_end_element (file, "member");
 }
 
@@ -746,6 +770,8 @@ write_constant_info (const gchar    *namespace,
 
   write_type_info (namespace, type, file);
 
+  write_attributes (file, (GIBaseInfo*) info);
+
   xml_end_element (file, "constant");
   
   g_base_info_unref ((GIBaseInfo *)type);
@@ -780,7 +806,8 @@ write_enum_info (const gchar *namespace,
   
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
+  write_attributes (file, (GIBaseInfo*) info);
 
   for (i = 0; i < g_enum_info_get_n_values (info); i++)
     {
@@ -902,7 +929,9 @@ write_property_info (const gchar    *namespace,
 
   if (flags & G_PARAM_CONSTRUCT_ONLY)
     xml_printf (file, " construct-only=\"1\"");
-    
+
+  write_attributes (file, (GIBaseInfo*) info);
+
   type = g_property_info_get_type (info);
 
   write_type_info (namespace, type, file);
@@ -954,7 +983,8 @@ write_object_info (const gchar  *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
+  write_attributes (file, (GIBaseInfo*) info);
 
   if (g_object_info_get_n_interfaces (info) > 0)
     {
@@ -1043,6 +1073,8 @@ write_interface_info (const gchar     *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
+
+  write_attributes (file, (GIBaseInfo*) info);
 
   if (g_interface_info_get_n_prerequisites (info) > 0)
     {
@@ -1141,10 +1173,12 @@ write_union_info (const gchar *namespace,
 	  
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
   size = g_union_info_get_size (info);
   if (show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
+
+  write_attributes (file, (GIBaseInfo*) info);
 
   if (g_union_info_is_discriminated (info))
     {
