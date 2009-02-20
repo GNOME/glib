@@ -1,6 +1,7 @@
 /* GObject introspection: Repository implementation
  *
  * Copyright (C) 2005 Matthias Clasen
+ * Copyright (C) 2008,2009 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -402,65 +403,131 @@ g_base_info_is_deprecated (GIBaseInfo *info)
   return FALSE;
 }
 
-static int
-cmp_annotation (const void *av,
-		const void *bv)
+/**
+ * g_base_info_get_attribute:
+ * @info: A #GIBaseInfo
+ * @name: A freeform string naming an attribute
+ *
+ * Retrieve an arbitrary attribute associated with this node.
+ *
+ * Return value: The value of the attribute, or %NULL if no such attribute exists
+ */
+const gchar *
+g_base_info_get_attribute (GIBaseInfo   *info,
+			   const gchar *name)
 {
-  const AnnotationBlob *a = av;
-  const AnnotationBlob *b = bv;
- 
-  if (b->offset < a->offset)
-    return -1;
+  GIAttributeIter iter = { 0, };
+  gchar *curname, *curvalue;
+  while (g_base_info_iterate_attributes (info, &iter, &curname, &curvalue))
+    {
+      if (strcmp (name, curname) == 0)
+        return (const gchar*) curvalue;
+    }
 
-  if (b->offset > a->offset)
-    return 1;
-  
-  return 0;
+  return NULL;
 }
 
-const gchar *
-g_base_info_get_annotation (GIBaseInfo   *info,
-			    const gchar *name)
+static int
+cmp_attribute (const void *av,
+                const void *bv)
+{
+  const AttributeBlob *a = av;
+  const AttributeBlob *b = bv;
+ 
+  if (a->offset < b->offset)
+    return -1;
+  else if (a->offset == b->offset)
+    return 0;
+  else
+    return 1;
+}
+
+static AttributeBlob *
+find_first_attribute (GIBaseInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   Header *header = (Header *)base->typelib->data;
-  AnnotationBlob blob, *first, *after, *res, *next;
-  const gchar *rname;
+  AttributeBlob blob, *first, *res, *previous;
 
   blob.offset = base->offset;
   
-  first = (AnnotationBlob *) &base->typelib->data[header->annotations];
-  after = (AnnotationBlob *) &base->typelib->data[header->annotations + 
-					     header->n_annotations * header->annotation_blob_size];
+  first = (AttributeBlob *) &base->typelib->data[header->attributes];
 
-  res = bsearch (&blob, first, header->n_annotations,
-		 header->annotation_blob_size, cmp_annotation);
-  
+  res = bsearch (&blob, first, header->n_attributes,
+                 header->attribute_blob_size, cmp_attribute);
+
   if (res == NULL)
     return NULL;
 
-  next = res;
-  do 
+  previous = res - 1;
+  while (previous >= first && previous->offset == base->offset)
     {
-      res = next;
-      next = res -= header->annotation_blob_size;
+      res = previous;
+      previous = res - 1;
     }
-  while (next >= first && next->offset == base->offset);
-    
-  next = res;
-  do 
-    {
-      res = next;
-      
-      rname = g_typelib_get_string (base->typelib, res->name);
-      if (strcmp (name, rname) == 0)
-	return g_typelib_get_string (base->typelib, res->value);
 
-      next = res += header->annotation_blob_size;
-    }
-  while (next < after && next->offset == base->offset);
+  return res;
+}
 
-  return NULL;
+/**
+ * g_base_info_iterate_attributes:
+ * @info: A #GIBaseInfo
+ * @iter: A #GIAttributeIter structure, must be initialized; see below
+ * @name: (out) (transfer none): Returned name, must not be freed
+ * @value: (out) (transfer none): Returned name, must not be freed
+ *
+ * Iterate over all attributes associated with this node.  The iterator
+ * structure is typically stack allocated, and must have its first
+ * member initialized to %NULL.
+ *
+ * Both the @name and @value should be treated as constants
+ * and must not be freed.
+ *
+ * <example>
+ * <title>Iterating over attributes</title>
+ * <programlisting>
+ * void
+ * print_attributes (GIBaseInfo *info)
+ * {
+ *   GIAttributeIter iter = { 0, };
+ *   char *name;
+ *   char *value;
+ *   while (g_base_info_iterate_attributes (info, &iter, &name, &value))
+ *     {
+ *       g_print ("attribute name: %s value: %s", name, value);
+ *     }
+ * }
+ * </programlisting>
+ * </example>
+ *
+ * Return value: %TRUE if there are more attributes, %FALSE otherwise
+ */
+gboolean
+g_base_info_iterate_attributes (GIBaseInfo       *info,
+                                 GIAttributeIter *iter,
+                                 gchar           **name,
+                                 gchar           **value)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  Header *header = (Header *)base->typelib->data;
+  AttributeBlob *next, *after;
+
+  after = (AttributeBlob *) &base->typelib->data[header->attributes +
+                                                  header->n_attributes * header->attribute_blob_size];
+
+  if (iter->data != NULL)
+    next = (AttributeBlob *) iter->data;
+  else
+    next = find_first_attribute (info);
+
+  if (next == NULL || next->offset != base->offset || next >= after)
+    return FALSE;
+
+  *name = (gchar*) g_typelib_get_string (base->typelib, next->name);
+  *value = (gchar*) g_typelib_get_string (base->typelib, next->value);
+  iter->data = next + 1;
+
+  return TRUE;
 }
 
 GIBaseInfo *

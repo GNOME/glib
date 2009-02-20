@@ -185,7 +185,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (ObjectBlob, 44);
   CHECK_SIZE (InterfaceBlob, 40);
   CHECK_SIZE (ConstantBlob, 24);
-  CHECK_SIZE (AnnotationBlob, 12);
+  CHECK_SIZE (AttributeBlob, 12);
   CHECK_SIZE (UnionBlob, 40);
 #undef CHECK_SIZE
 
@@ -334,7 +334,7 @@ validate_header (ValidateContext  *ctx,
       header->value_blob_size != sizeof (ValueBlob) ||
       header->constant_blob_size != sizeof (ConstantBlob) ||
       header->error_domain_blob_size != sizeof (ErrorDomainBlob) ||
-      header->annotation_blob_size != sizeof (AnnotationBlob) ||
+      header->attribute_blob_size != sizeof (AttributeBlob) ||
       header->signature_blob_size != sizeof (SignatureBlob) ||
       header->enum_blob_size != sizeof (EnumBlob) ||
       header->struct_blob_size != sizeof (StructBlob) ||
@@ -358,21 +358,21 @@ validate_header (ValidateContext  *ctx,
       return FALSE; 
     }
 
-  if (!is_aligned (header->annotations))
+  if (!is_aligned (header->attributes))
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Misaligned annotations");
+		   "Misaligned attributes");
       return FALSE; 
     }
 
-  if (header->annotations == 0 && header->n_annotations > 0)
+  if (header->attributes == 0 && header->n_attributes > 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Wrong number of annotations");
+		   "Wrong number of attributes");
       return FALSE; 
     }
 
@@ -1860,13 +1860,13 @@ validate_directory (ValidateContext   *ctx,
 }
 
 static gboolean
-validate_annotations (ValidateContext *ctx, 
-		      GError       **error)
+validate_attributes (ValidateContext *ctx,
+		     GError       **error)
 {
   GTypelib *typelib = ctx->typelib;
   Header *header = (Header *)typelib->data;
 
-  if (header->size < header->annotations + header->n_annotations * sizeof (AnnotationBlob))
+  if (header->size < header->attributes + header->n_attributes * sizeof (AttributeBlob))
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
@@ -1926,9 +1926,9 @@ g_typelib_validate (GTypelib     *typelib,
       return FALSE;
     }
 
-  if (!validate_annotations (&ctx, error))
+  if (!validate_attributes (&ctx, error))
     {
-      prefix_with_context (error, "annotations", &ctx);
+      prefix_with_context (error, "attributes", &ctx);
       return FALSE;
     }
 

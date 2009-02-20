@@ -1,6 +1,7 @@
 /* GObject introspection: Repository
  *
  * Copyright (C) 2005 Matthias Clasen
+ * Copyright (C) 2008,2009 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -179,14 +180,25 @@ typedef enum
 
 /* GIBaseInfo */
 
+typedef struct {
+  gpointer data;
+  gpointer data2;
+  gpointer data3;
+  gpointer data4;
+} GIAttributeIter;
+
 GIBaseInfo *           g_base_info_ref              (GIBaseInfo   *info);
 void                   g_base_info_unref            (GIBaseInfo   *info);
 GIInfoType             g_base_info_get_type         (GIBaseInfo   *info);
 const gchar *          g_base_info_get_name         (GIBaseInfo   *info);
 const gchar *          g_base_info_get_namespace    (GIBaseInfo   *info);
 gboolean               g_base_info_is_deprecated    (GIBaseInfo   *info);
-const gchar *          g_base_info_get_annotation   (GIBaseInfo   *info,
+const gchar *          g_base_info_get_attribute    (GIBaseInfo   *info,
                                                      const gchar  *name);
+gboolean               g_base_info_iterate_attributes (GIBaseInfo      *info,
+                                                       GIAttributeIter *iterator,
+                                                       char           **name,
+                                                       char          **value);
 GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
 GTypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
 

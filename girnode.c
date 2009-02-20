@@ -1,6 +1,7 @@
 /* GObject introspection: Typelib creation
  *
  * Copyright (C) 2005 Matthias Clasen
+ * Copyright (C) 2008,2009 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -184,6 +185,9 @@ g_ir_node_new (GIrNodeTypeId type)
     }
 
   node->type = type;
+  node->offset = 0;
+  node->attributes = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                            g_free, g_free);
 
   return node;
 }
@@ -400,6 +404,8 @@ g_ir_node_free (GIrNode *node)
       break;
     } 
 
+  g_hash_table_destroy (node->attributes);
+
   g_free (node);
 }
 
@@ -538,6 +544,18 @@ g_ir_node_get_size (GIrNode *node)
 	   g_ir_node_type_to_string (node->type), size);
 
   return size;
+}
+
+static void
+add_attribute_size (gpointer key, gpointer value, gpointer data)
+{
+  const gchar *key_str = key;
+  const gchar *value_str = value;
+  gint *size_p = data;
+
+  *size_p += sizeof (AttributeBlob);
+  *size_p += ALIGN_VALUE (strlen (key_str) + 1, 4);
+  *size_p += ALIGN_VALUE (strlen (value_str) + 1, 4);
 }
 
 /* returns the full size of the blob including variable-size parts */
@@ -849,6 +867,14 @@ guint32
 g_ir_node_get_full_size (GIrNode *node)
 {
   return g_ir_node_get_full_size_internal (NULL, node);
+}
+
+guint32
+g_ir_node_get_attribute_size (GIrNode *node)
+{
+  guint32 size = 0;
+  g_hash_table_foreach (node->attributes, add_attribute_size, &size);
+  return size;
 }
 
 int
@@ -1363,6 +1389,15 @@ g_ir_node_build_typelib (GIrNode         *node,
 	   g_ir_node_type_to_string (node->type));
 
   g_ir_node_compute_offsets (node, module, modules);
+
+  /* We should only be building each node once.  If we do a typelib expansion, we also
+   * reset the offset in girmodule.c.
+   */
+  g_assert (node->offset == 0);
+  node->offset = *offset;
+  build->offset_ordered_nodes = g_list_prepend (build->offset_ordered_nodes, node);
+
+  build->n_attributes += g_hash_table_size (node->attributes);
 
   switch (node->type)
     {
@@ -2232,7 +2267,8 @@ g_ir_node_build_typelib (GIrNode         *node,
 	   old_offset, *offset, old_offset2, *offset2);
 
   if (*offset2 - old_offset2 + *offset - old_offset > g_ir_node_get_full_size (node))
-    g_error ("exceeding space reservation !!");
+    g_error ("exceeding space reservation; offset: %d (prev %d) offset2: %d (prev %d) nodesize: %d",
+             *offset, old_offset, *offset2, old_offset2, g_ir_node_get_full_size (node));
 }
 
 /* if str is already in the pool, return previous location, otherwise write str

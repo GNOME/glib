@@ -52,14 +52,15 @@ G_BEGIN_DECLS
  * 
  * The typelib has the following general format.
  *
- * typelib ::= header, directory, blobs, annotations
+ * typelib ::= header, directory, blobs, attributes, attributedata
  *
  * directory ::= list of entries
  *
  * entry ::= blob type, name, namespace, offset
  * blob ::= function|callback|struct|boxed|enum|flags|object|interface|constant|errordomain|union
- * annotations ::= list of annotations, sorted by offset 
- * annotation ::= offset, key, value
+ * attributes ::= list of attributes, sorted by offset
+ * attribute ::= offset, key, value
+ * attributedata ::= string data for attributes
  *
  * Details
  * 
@@ -189,8 +190,8 @@ typedef enum {
  * @n_local_entries: The number of entries referring to blobs in this typelib. The
  * local entries must occur before the unresolved entries.
  * @directory: Offset of the directory in the typelib.
- * @n_annotations: Number of annotation blocks
- * @annotations: Offset of the list of annotations in the typelib. 
+ * @n_attributes: Number of attribute blocks
+ * @attributes: Offset of the list of attributes in the typelib.
  * @dependencies: Offset of a single string, which is the list of
  * dependencies, separated by the '|' character.  The
  * dependencies are required in order to avoid having programs
@@ -212,7 +213,7 @@ typedef enum {
  * @property_blob_size: See above.
  * @field_blob_size: See above.
  * @value_blob_size: See above.
- * @annotation_blob_size: See above.
+ * @attribute_blob_size: See above.
  * @constant_blob_size: See above.
  * @object_blob_size: See above.
  * @union_blob_size: See above.
@@ -237,8 +238,8 @@ typedef struct {
   guint16 n_entries;
   guint16 n_local_entries;
   guint32 directory;
-  guint32 n_annotations;
-  guint32 annotations;
+  guint32 n_attributes;
+  guint32 attributes;
 
   guint32 dependencies;
 
@@ -256,7 +257,7 @@ typedef struct {
   guint16 property_blob_size;
   guint16 field_blob_size;
   guint16 value_blob_size;
-  guint16 annotation_blob_size;
+  guint16 attribute_blob_size;
   guint16 constant_blob_size;
   guint16 error_domain_blob_size;
 
@@ -1000,18 +1001,18 @@ typedef struct {
 } ConstantBlob;
 
 /**
- * AnnotationBlob:
- * @offset: The offset of the typelib entry to which this annotation refers.
- * Annotations are kept sorted by offset, so that the annotations
+ * AttributeBlob:
+ * @offset: The offset of the typelib entry to which this attribute refers.
+ * Attributes are kept sorted by offset, so that the attributes
  * of an entry can be found by a binary search.
- * @name: The name of the annotation, a string.
- * @value: The value of the annotation (also a string)
+ * @name: The name of the attribute, a string.
+ * @value: The value of the attribute (also a string)
  */
 typedef struct {
   guint32 offset;
   guint32 name;
   guint32 value;
-} AnnotationBlob;
+} AttributeBlob;
 
 struct _GTypelib {
   guchar *data;

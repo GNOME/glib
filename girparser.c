@@ -68,6 +68,7 @@ typedef enum
   STATE_INTERFACE_CONSTANT,
   STATE_ALIAS,
   STATE_TYPE,
+  STATE_ATTRIBUTE,
   STATE_UNKNOWN
 } ParseState;
 
@@ -1865,6 +1866,44 @@ end_type (ParseContext *ctx)
 }
 
 static gboolean
+start_attribute (GMarkupParseContext *context,
+                 const gchar         *element_name,
+                 const gchar        **attribute_names,
+                 const gchar        **attribute_values,
+                 ParseContext       *ctx,
+                 GError             **error)
+{
+  const gchar *name;
+  const gchar *value;
+  GIrNode *curnode;
+
+  if (strcmp (element_name, "attribute") != 0 || ctx->node_stack == NULL)
+    return FALSE;
+
+  name = find_attribute ("name", attribute_names, attribute_values);
+  value = find_attribute ("value", attribute_names, attribute_values);
+
+  if (name == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "name");
+      return FALSE;
+    }
+  if (value == NULL)
+    {
+      MISSING_ATTRIBUTE (context, error, element_name, "value");
+      return FALSE;
+    }
+
+  state_switch (ctx, STATE_ATTRIBUTE);
+
+  curnode = CURRENT_NODE (ctx);
+
+  g_hash_table_insert (curnode->attributes, g_strdup (name), g_strdup (value));
+
+  return TRUE;
+}
+
+static gboolean
 start_return_value (GMarkupParseContext *context,
 		    const gchar         *element_name,
 		    const gchar        **attribute_names,
@@ -2383,6 +2422,10 @@ start_element_handler (GMarkupParseContext *context,
 		      attribute_names, attribute_values,
 		      ctx, error))
 	goto out;
+      else if (start_attribute (context, element_name,
+                                attribute_names, attribute_values,
+                                ctx, error))
+        goto out;
       break;
     case 'b':
       if (start_enum (context, element_name, 
@@ -2662,7 +2705,7 @@ start_element_handler (GMarkupParseContext *context,
       ctx->unknown_depth += 1;
     }
   
- out: ;
+ out:
   if (*error) 
     {
       g_markup_parse_context_get_position (context, &line_number, &char_number);
@@ -3027,6 +3070,13 @@ end_element_handler (GMarkupParseContext *context,
 	  end_type (ctx);
 	  break;
 	}
+    case STATE_ATTRIBUTE:
+      if (strcmp ("attribute", element_name) == 0)
+        {
+          state_switch (ctx, ctx->prev_state);
+        }
+      break;
+
     case STATE_UNKNOWN:
       ctx->unknown_depth -= 1;
       if (ctx->unknown_depth == 0)

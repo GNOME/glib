@@ -51,6 +51,8 @@ struct _GIrTypelibBuild {
   GList       *modules;
   GHashTable  *strings;
   GHashTable  *types;
+  GList       *offset_ordered_nodes;
+  guint32      n_attributes;
   guchar      *data; 
 };
 
@@ -82,6 +84,10 @@ struct _GIrNode
 {
   GIrNodeTypeId type;
   gchar *name;
+
+  guint32 offset; /* Assigned as we build the typelib */
+
+  GHashTable *attributes;
 };
 
 struct _GIrNodeXRef
@@ -349,6 +355,7 @@ GIrNode * g_ir_node_new             (GIrNodeTypeId type);
 void      g_ir_node_free            (GIrNode    *node);
 guint32   g_ir_node_get_size        (GIrNode    *node);
 guint32   g_ir_node_get_full_size   (GIrNode    *node);
+guint32   g_ir_node_get_attribute_size (GIrNode *node);
 void      g_ir_node_build_typelib   (GIrNode         *node,
                                      GIrNode         *parent,
                                      GIrTypelibBuild *build,

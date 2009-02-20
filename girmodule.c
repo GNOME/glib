@@ -109,6 +109,53 @@ g_ir_module_add_include_module (GIrModule  *module,
 			module);
 }
 
+struct AttributeWriteData
+{
+  guint count;
+  guchar *databuf;
+  GIrNode *node;
+  GHashTable *strings;
+  guint32 *offset;
+  guint32 *offset2;
+};
+
+static void
+write_attribute (gpointer key, gpointer value, gpointer datap)
+{
+  struct AttributeWriteData *data = datap;
+  guint32 old_offset = *(data->offset);
+  AttributeBlob *blob = (AttributeBlob*)&(data->databuf[old_offset]);
+
+  *(data->offset) += sizeof (AttributeBlob);
+
+  blob->offset = data->node->offset;
+  blob->name = write_string ((const char*) key, data->strings, data->databuf, data->offset2);
+  blob->value = write_string ((const char*) value, data->strings, data->databuf, data->offset2);
+
+  data->count++;
+}
+
+static guint
+write_attributes (GIrModule *module,
+                   GIrNode   *node,
+                   GHashTable *strings,
+                   guchar    *data,
+                   guint32   *offset,
+                   guint32   *offset2)
+{
+  struct AttributeWriteData wdata;
+  wdata.count = 0;
+  wdata.databuf = data;
+  wdata.node = node;
+  wdata.offset = offset;
+  wdata.offset2 = offset2;
+  wdata.strings = strings;
+
+  g_hash_table_foreach (node->attributes, write_attribute, &wdata);
+
+  return wdata.count;
+}
+
 GTypelib *
 g_ir_module_build_typelib (GIrModule  *module,
 			     GList       *modules)
@@ -126,6 +173,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   guint32 size, offset, offset2, old_offset;
   GHashTable *strings;
   GHashTable *types;
+  GList *offset_ordered_nodes;
   char *dependencies;
   guchar *data;
 
@@ -158,6 +206,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   _g_irnode_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
   types = g_hash_table_new (g_str_hash, g_str_equal);
+  offset_ordered_nodes = NULL;
   n_entries = g_list_length (module->entries);
 
   g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
@@ -173,6 +222,10 @@ g_ir_module_build_typelib (GIrModule  *module,
       GIrNode *node = e->data;
       
       size += g_ir_node_get_full_size (node);
+      size += g_ir_node_get_attribute_size (node);
+
+      /* Also reset the offset here */
+      node->offset = 0;
     }
 
   /* Adjust size for strings allocated in header below specially */
@@ -195,8 +248,8 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->reserved = 0;
   header->n_entries = n_entries;
   header->n_local_entries = n_local_entries;
-  header->n_annotations = 0;
-  header->annotations = 0; /* filled in later */
+  header->n_attributes = 0;
+  header->attributes = 0; /* filled in later */
   if (dependencies != NULL)
     header->dependencies = write_string (dependencies, strings, data, &header_size);
   else
@@ -219,7 +272,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->value_blob_size = sizeof (ValueBlob);
   header->constant_blob_size = sizeof (ConstantBlob);
   header->error_domain_blob_size = sizeof (ErrorDomainBlob);
-  header->annotation_blob_size = sizeof (AnnotationBlob);
+  header->attribute_blob_size = sizeof (AttributeBlob);
   header->signature_blob_size = sizeof (SignatureBlob);
   header->enum_blob_size = sizeof (EnumBlob);
   header->struct_blob_size = sizeof (StructBlob);
@@ -245,10 +298,17 @@ g_ir_module_build_typelib (GIrModule  *module,
       /* we picked up implicit xref nodes, start over */
       if (i == n_entries)
 	{
+	  GList *link;
 	  g_message ("Found implicit cross references, starting over");
 
 	  g_hash_table_destroy (strings);
 	  g_hash_table_destroy (types);
+
+	  /* Reset the cached offsets */
+	  for (link = offset_ordered_nodes; link; link = link->next)
+	    ((GIrNode *) link->data)->offset = 0;
+
+	  g_list_free (offset_ordered_nodes);
 	  strings = NULL;
 
 	  g_free (data);
@@ -282,8 +342,13 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  build.modules = modules;
 	  build.strings = strings;
 	  build.types = types;
+	  build.offset_ordered_nodes = offset_ordered_nodes;
+	  build.n_attributes = header->n_attributes;
 	  build.data = data;
 	  g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
+
+	  offset_ordered_nodes = build.offset_ordered_nodes;
+	  header->n_attributes = build.n_attributes;
 
 	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
 	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - g_ir_node_get_full_size (node));
@@ -292,9 +357,23 @@ g_ir_module_build_typelib (GIrModule  *module,
       entry++;
     }
 
+  offset_ordered_nodes = g_list_reverse (offset_ordered_nodes);
+
+  g_message ("header: %d entries, %d attributes", header->n_entries, header->n_attributes);
+
   _g_irnode_dump_stats ();
 
-  header->annotations = offset2;
+  /* Write attributes after the blobs */
+  offset = offset2;
+  header->attributes = offset;
+  offset2 = offset + header->n_attributes * header->attribute_blob_size;
+
+  for (e = offset_ordered_nodes; e; e = e->next)
+    {
+      GIrNode *node = e->data;
+
+      write_attributes (module, node, strings, data, &offset, &offset2);
+    }
   
   g_message ("reallocating to %d bytes", offset2);
 
@@ -305,6 +384,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   g_hash_table_destroy (strings);
   g_hash_table_destroy (types);
+  g_list_free (offset_ordered_nodes);
 
   return typelib;
 }
