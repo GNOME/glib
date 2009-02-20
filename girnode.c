@@ -1287,11 +1287,7 @@ static void
 g_ir_node_build_members (GList         **members,
 			 GIrNodeTypeId   type,
 			 guint16        *count,
-			 GIrModule      *module,
-			 GList          *modules,
-			 GHashTable     *strings,
-			 GHashTable     *types,
-			 guchar         *data,
+                         GIrTypelibBuild *build,
 			 guint32        *offset,
 			 guint32        *offset2)
 {
@@ -1305,8 +1301,7 @@ g_ir_node_build_members (GList         **members,
       if (member->type == type)
 	{
 	  (*count)++;
-	  g_ir_node_build_typelib (member, module, modules, strings,
-				   types, data, offset, offset2);
+	  g_ir_node_build_typelib (member, build, offset, offset2);
 	  *members = g_list_delete_link (*members, l);
 	}
       l = next;
@@ -1343,15 +1338,16 @@ g_ir_node_check_unhandled_members (GList         **members,
 }
 
 void
-g_ir_node_build_typelib (GIrNode    *node,
-			 GIrModule  *module,
-			 GList      *modules,
-			 GHashTable *strings,
-			 GHashTable *types,
-			 guchar     *data,
-			 guint32    *offset,
-			 guint32    *offset2)
+g_ir_node_build_typelib (GIrNode         *node,
+                         GIrTypelibBuild *build,
+                         guint32         *offset,
+                         guint32         *offset2)
 {
+  GIrModule *module = build->module;
+  GList *modules = build->modules;
+  GHashTable *strings = build->strings;
+  GHashTable *types = build->types;
+  guchar *data = build->data;
   GList *l;
   guint32 old_offset = *offset;
   guint32 old_offset2 = *offset2;
@@ -1432,8 +1428,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      *offset2 += sizeof (ArrayTypeBlob);
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
-					       module, modules, strings, types, 
-					       data, &pos, offset2);
+					       build, &pos, offset2);
 		    }
 		    break;
 		    
@@ -1467,8 +1462,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob);
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
-					       module, modules, strings, types,
-					       data, &pos, offset2);
+					       build, &pos, offset2);
 		    }
 		    break;
 		    
@@ -1487,11 +1481,9 @@ g_ir_node_build_typelib (GIrNode    *node,
 		      *offset2 += sizeof (ParamTypeBlob) + sizeof (SimpleTypeBlob)*2;
 		      
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type1, 
-					       module, modules, strings, types, 
-					       data, &pos, offset2);
+					       build, &pos, offset2);
 		      g_ir_node_build_typelib ((GIrNode *)type->parameter_type2, 
-					       module, modules, strings, types, 
-					       data, &pos, offset2);
+					       build, &pos, offset2);
 		    }
 		    break;
 		    
@@ -1545,8 +1537,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  blob->struct_offset = 0xFFFF; /* mark as unknown */
 
         g_ir_node_build_typelib ((GIrNode *)field->type, 
-				 module, modules, strings, types,
-				 data, offset, offset2);
+				 build, offset, offset2);
       }
       break;
 
@@ -1566,8 +1557,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->reserved = 0;
 
         g_ir_node_build_typelib ((GIrNode *)prop->type, 
-				 module, modules, strings, types,
-				 data, offset, offset2);
+				 build, offset, offset2);
       }
       break;
 
@@ -1601,8 +1591,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	g_debug ("building function '%s'", function->symbol);
 
         g_ir_node_build_typelib ((GIrNode *)function->result->type, 
-				 module, modules, strings, types,
-				 data, &signature, offset2);
+				 build, &signature, offset2);
 
 	blob2->may_return_null = function->result->allow_none;
 	blob2->caller_owns_return_value = function->result->transfer;
@@ -1616,9 +1605,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  {
 	    GIrNode *param = (GIrNode *)l->data;
 
-	    g_ir_node_build_typelib (param, 
-				     module, modules, strings, types,
-				     data, &signature, offset2);
+	    g_ir_node_build_typelib (param, build, &signature, offset2);
 	  }
 
       }
@@ -1645,8 +1632,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->signature = signature;
 	
         g_ir_node_build_typelib ((GIrNode *)function->result->type, 
-				 module, modules, strings, types,
-				 data, &signature, offset2);
+				 build, &signature, offset2);
 
 	blob2->may_return_null = function->result->allow_none;
 	blob2->caller_owns_return_value = function->result->transfer;
@@ -1660,9 +1646,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  {
 	    GIrNode *param = (GIrNode *)l->data;
 
-	    g_ir_node_build_typelib (param, 
-				     module, modules, strings, types,
-				     data, &signature, offset2);
+	    g_ir_node_build_typelib (param, build, &signature, offset2);
 	  }
       }
       break;
@@ -1697,8 +1681,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->signature = signature;
 	
         g_ir_node_build_typelib ((GIrNode *)signal->result->type, 
-				 module, modules, strings, types,
-				 data, &signature, offset2);
+				 build, &signature, offset2);
 
 	blob2->may_return_null = signal->result->allow_none;
 	blob2->caller_owns_return_value = signal->result->transfer;
@@ -1712,8 +1695,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  {
 	    GIrNode *param = (GIrNode *)l->data;
 
-	    g_ir_node_build_typelib (param, module, modules, strings, types,
-				     data, &signature, offset2);
+	    g_ir_node_build_typelib (param, build, &signature, offset2);
 	  }
       }
       break;
@@ -1744,8 +1726,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	blob->signature = signature;
 	
         g_ir_node_build_typelib ((GIrNode *)vfunc->result->type, 
-				 module, modules, strings, types,
-				 data, &signature, offset2);
+				 build, &signature, offset2);
 
 	blob2->may_return_null = vfunc->result->allow_none;
 	blob2->caller_owns_return_value = vfunc->result->transfer;
@@ -1759,8 +1740,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  {
 	    GIrNode *param = (GIrNode *)l->data;
 
-	    g_ir_node_build_typelib (param, module, modules, strings, 
-				     types, data, &signature, offset2);
+	    g_ir_node_build_typelib (param, build, &signature, offset2);
 	  }
       }
       break;
@@ -1789,8 +1769,7 @@ g_ir_node_build_typelib (GIrNode    *node,
         blob->closure = param->closure;
         blob->destroy = param->destroy;
         
-        g_ir_node_build_typelib ((GIrNode *)param->type, module, modules, 
-				 strings, types, data, offset, offset2);
+        g_ir_node_build_typelib ((GIrNode *)param->type, build, offset, offset2);
       }
       break;
 
@@ -1829,12 +1808,10 @@ g_ir_node_build_typelib (GIrNode    *node,
 	members = g_list_copy (struct_->members);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_check_unhandled_members (&members, node->type);
 
@@ -1866,12 +1843,10 @@ g_ir_node_build_typelib (GIrNode    *node,
 	members = g_list_copy (boxed->members);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_check_unhandled_members (&members, node->type);
 
@@ -1916,8 +1891,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    *offset += 28;
 	    blob->discriminated = TRUE;
 	    g_ir_node_build_typelib ((GIrNode *)union_->discriminator_type, 
-				     module, modules, strings, types,
-				     data, offset, offset2);
+				     build, offset, offset2);
 	  }
 	else
 	  {
@@ -1929,12 +1903,10 @@ g_ir_node_build_typelib (GIrNode    *node,
 	members = g_list_copy (union_->members);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_functions,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_check_unhandled_members (&members, node->type);
 
@@ -1946,8 +1918,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	      {
 		GIrNode *member = (GIrNode *)l->data;
 		
-		g_ir_node_build_typelib (member, module, modules, strings, 
-					 types, data, offset, offset2);
+		g_ir_node_build_typelib (member, build, offset, offset2);
 	      }
 	  }
       }
@@ -1991,8 +1962,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	    GIrNode *value = (GIrNode *)l->data;
 
 	    blob->n_values++;
-	    g_ir_node_build_typelib (value, module, modules, strings, types,
-				     data, offset, offset2);
+	    g_ir_node_build_typelib (value, build, offset, offset2);
 	  }
       }
       break;
@@ -2039,33 +2009,27 @@ g_ir_node_build_typelib (GIrNode    *node,
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_FIELD, &blob->n_fields,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_PROPERTY, &blob->n_properties,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_SIGNAL, &blob->n_signals,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_VFUNC, &blob->n_vfuncs,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_CONSTANT, &blob->n_constants,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_check_unhandled_members (&members, node->type);
 
@@ -2104,28 +2068,23 @@ g_ir_node_build_typelib (GIrNode    *node,
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_PROPERTY, &blob->n_properties,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_FUNCTION, &blob->n_methods,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_SIGNAL, &blob->n_signals,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_VFUNC, &blob->n_vfuncs,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	*offset = ALIGN_VALUE (*offset, 4);
 	g_ir_node_build_members (&members, G_IR_NODE_CONSTANT, &blob->n_constants,
-				 module, modules, strings,
-				 types, data, offset, offset2);
+				 build, offset, offset2);
 
 	g_ir_node_check_unhandled_members (&members, node->type);
 
@@ -2251,8 +2210,7 @@ g_ir_node_build_typelib (GIrNode    *node,
 	  }
 	*offset2 += ALIGN_VALUE (blob->size, 4);
 	
-	g_ir_node_build_typelib ((GIrNode *)constant->type, module, modules, 
-				 strings, types, data, &pos, offset2);
+	g_ir_node_build_typelib ((GIrNode *)constant->type, build, &pos, offset2);
       }
       break;
     default:

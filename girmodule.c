@@ -234,6 +234,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   for (e = module->entries, i = 0; e; e = e->next, i++)
     {
+      GIrTypelibBuild build;
       GIrNode *node = e->data;
 
       if (strchr (node->name, '.'))
@@ -277,8 +278,12 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  entry->offset = offset;
 	  entry->name = write_string (node->name, strings, data, &offset2);
 
-	  g_ir_node_build_typelib (node, module, modules, 
-				     strings, types, data, &offset, &offset2);
+	  build.module = module;
+	  build.modules = modules;
+	  build.strings = strings;
+	  build.types = types;
+	  build.data = data;
+	  g_ir_node_build_typelib (node, &build, &offset, &offset2);
 
 	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
 	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - g_ir_node_get_full_size (node));
