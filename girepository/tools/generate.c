@@ -566,7 +566,7 @@ write_struct_info (const gchar  *namespace,
   const gchar *type_name;
   const gchar *type_init;
   gboolean deprecated;
-  gboolean is_class_struct;
+  gboolean is_gtype_struct;
   gint i;
   int n_elts;
 
@@ -593,9 +593,9 @@ write_struct_info (const gchar  *namespace,
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
   
-  is_class_struct = g_struct_info_is_class_struct (info);
-  if (is_class_struct)
-    xml_printf (file, " glib:is-class-struct=\"1\"");
+  is_gtype_struct = g_struct_info_is_gtype_struct (info);
+  if (is_gtype_struct)
+    xml_printf (file, " glib:is-gtype-struct=\"1\"");
 	
   n_elts = g_struct_info_get_n_fields (info) + g_struct_info_get_n_methods (info);
   if (n_elts > 0)
@@ -931,7 +931,7 @@ write_object_info (const gchar  *namespace,
   class_struct = g_object_info_get_class_struct (info);
   if (class_struct)
     {
-      write_type_name_attribute (namespace, (GIBaseInfo*) class_struct, "glib:class-struct", file);
+      write_type_name_attribute (namespace, (GIBaseInfo*) class_struct, "glib:type-struct", file);
       g_base_info_unref ((GIBaseInfo*)class_struct);
     }
 
@@ -1009,6 +1009,7 @@ write_interface_info (const gchar     *namespace,
   const gchar *name;
   const gchar *type_name;
   const gchar *type_init;
+  GIStructInfo *class_struct;
   gboolean deprecated;
   gint i;
 
@@ -1020,6 +1021,13 @@ write_interface_info (const gchar     *namespace,
   xml_start_element (file, "interface");
   xml_printf (file, " name=\"%s\" glib:type-name=\"%s\" glib:get-type=\"%s\"",
 	     name, type_name, type_init);
+
+  class_struct = g_interface_info_get_iface_struct (info);
+  if (class_struct)
+    {
+      write_type_name_attribute (namespace, (GIBaseInfo*) class_struct, "glib:type-struct", file);
+      g_base_info_unref ((GIBaseInfo*)class_struct);
+    }
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
