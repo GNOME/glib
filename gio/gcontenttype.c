@@ -933,6 +933,16 @@ g_content_type_guess (const char   *filename,
 	  data &&
 	  looks_like_text (data, data_size))
 	sniffed_mimetype = "text/plain";
+
+      /* For security reasons we don't ever want to sniff desktop files
+       * where we know the filename and it doesn't have a .desktop extension.
+       * This is because desktop files allow executing any application and
+       * we don't want to make it possible to hide them looking like something
+       * else.
+       */
+      if (filename != NULL &&
+          strcmp (sniffed_mimetype, "application/x-desktop") == 0)
+        sniffed_mimetype = "text/plain";
     }
   
   if (n_name_mimetypes == 0)

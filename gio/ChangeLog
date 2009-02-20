@@ -1,3 +1,15 @@
+2009-02-20  Alexander Larsson  <alexl@redhat.com>
+
+        * gcontenttype.c:
+        (g_content_type_guess):
+	Don't ever sniff desktop files when the filename is known.
+	In other words, only allow desktop files with the .desktop extension
+	and when the filename isn't known.
+	This is a security precaution since desktop files can execute
+	arbitrary code when launched and we don't want to allow them to
+	try and hide as another type. There is no legit reason to not
+	have the .desktop extension anyway.
+
 2009-02-19  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 549298 – impossible to copy files with p (pipe) flag
