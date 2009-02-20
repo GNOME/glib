@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 16:11+0700\n"
-"PO-Revision-Date: 2009-02-19 16:14+0700\n"
+"POT-Creation-Date: 2009-02-20 12:05+0700\n"
+"PO-Revision-Date: 2009-02-20 12:07+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1191,10 +1191,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "ต้องการข้อมูล GEmblem สำหรับ GEmblemedIcon"
 
 #: gio/gfile.c:825 gio/gfile.c:1055 gio/gfile.c:1190 gio/gfile.c:1426
-#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2694
-#: gio/gfile.c:2748 gio/gfile.c:2879 gio/gfile.c:2919 gio/gfile.c:3246
-#: gio/gfile.c:3648 gio/gfile.c:3732 gio/gfile.c:3815 gio/gfile.c:3895
-#: gio/gfile.c:4225 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:1480 gio/gfile.c:1537 gio/gfile.c:1620 gio/gfile.c:2710
+#: gio/gfile.c:2764 gio/gfile.c:2895 gio/gfile.c:2935 gio/gfile.c:3262
+#: gio/gfile.c:3664 gio/gfile.c:3748 gio/gfile.c:3831 gio/gfile.c:3911
+#: gio/gfile.c:4241 gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
 
@@ -1227,24 +1227,28 @@ msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้
 msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
-#: gio/gfile.c:2869
+#: gio/gfile.c:2344
+msgid "Can't copy special file"
+msgstr "ไม่สามารถคัดลอกแฟ้มพิเศษได้"
+
+#: gio/gfile.c:2885
 msgid "Invalid symlink value given"
 msgstr "ได้รับชื่อ symlink ที่ใช้การไม่ได้"
 
-#: gio/gfile.c:2962
+#: gio/gfile.c:2978
 msgid "Trash not supported"
 msgstr "ไม่รองรับการใช้ถังขยะ"
 
-#: gio/gfile.c:3011
+#: gio/gfile.c:3027
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ได้"
 
-#: gio/gfile.c:4993 gio/gvolume.c:370
+#: gio/gfile.c:5009 gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
-#: gio/gfile.c:5101
+#: gio/gfile.c:5117
 msgid "No application is registered as handling this file"
 msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
 
