@@ -96,6 +96,7 @@ write_out_typelib (gchar *prefix,
 		   GTypelib *typelib)
 {
   FILE *file;
+  gsize written;
 
   if (output == NULL)
     {
@@ -127,7 +128,14 @@ write_out_typelib (gchar *prefix,
     }
 
   if (!code)
-    fwrite (typelib->data, 1, typelib->len, file);
+    {
+      written = fwrite (typelib->data, 1, typelib->len, file);
+      if (written < typelib->len) {
+        g_error ("ERROR: Could not write the whole output: %s",
+                 strerror(errno));
+        return;
+      }
+    }
   else
     {
       gchar *code;
