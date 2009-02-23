@@ -133,16 +133,21 @@ G_CONST_RETURN gchar*    g_get_user_cache_dir     (void);
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_data_dirs   (void);
 
 #ifdef G_OS_WIN32
-G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (gconstpointer address);
+/* This functions is not part of the public GLib API */
+G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (void (*address_of_function)());
 #endif
 
 #if defined (G_OS_WIN32) && defined (G_CAN_INLINE) && !defined (__cplusplus)
+/* This function is not part of the public GLib API either. Just call
+ * g_get_system_data_dirs() in your code, never mind that that is
+ * actually a macro and you will in fact call this inline function.
+ */
 static inline G_CONST_RETURN gchar * G_CONST_RETURN *
-g_win32_get_system_data_dirs (void)
+_g_win32_get_system_data_dirs (void)
 {
-  return g_win32_get_system_data_dirs_for_module ((gconstpointer) &g_win32_get_system_data_dirs);
+  return g_win32_get_system_data_dirs_for_module ((void (*)()) &_g_win32_get_system_data_dirs);
 }
-#define g_get_system_data_dirs g_win32_get_system_data_dirs
+#define g_get_system_data_dirs _g_win32_get_system_data_dirs
 #endif
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);

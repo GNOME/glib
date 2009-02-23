@@ -2578,7 +2578,7 @@ get_module_share_dir (gconstpointer address)
 }
 
 G_CONST_RETURN gchar * G_CONST_RETURN *
-g_win32_get_system_data_dirs_for_module (gconstpointer address)
+g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
 {
   GArray *data_dirs;
   HMODULE hmodule;
@@ -2587,10 +2587,10 @@ g_win32_get_system_data_dirs_for_module (gconstpointer address)
   gchar *p;
   gchar *exe_root;
       
-  if (address)
+  if (address_of_function)
     {
       G_LOCK (g_utils_global);
-      hmodule = get_module_for_address (address);
+      hmodule = get_module_for_address (address_of_function);
       if (hmodule != NULL)
 	{
 	  if (per_module_data_dirs == NULL)
@@ -2628,9 +2628,9 @@ g_win32_get_system_data_dirs_for_module (gconstpointer address)
    * subdirectory of the installation directory for the package
    * our caller is a part of.
    *
-   * The address parameter, if non-NULL, points to a function in the
-   * calling module. Use that to determine that module's installation
-   * folder, and use its "share" subfolder.
+   * The address_of_function parameter, if non-NULL, points to a
+   * function in the calling module. Use that to determine that
+   * module's installation folder, and use its "share" subfolder.
    *
    * Additionally, also use the "share" subfolder of the installation
    * locations of GLib and the .exe file being run.
@@ -2642,7 +2642,7 @@ g_win32_get_system_data_dirs_for_module (gconstpointer address)
    * function.
    */
 
-  p = get_module_share_dir (address);
+  p = get_module_share_dir (address_of_function);
   if (p)
     g_array_append_val (data_dirs, p);
     
@@ -2663,7 +2663,7 @@ g_win32_get_system_data_dirs_for_module (gconstpointer address)
 
   retval = (gchar **) g_array_free (data_dirs, FALSE);
 
-  if (address)
+  if (address_of_function)
     {
       if (hmodule != NULL)
 	g_hash_table_insert (per_module_data_dirs, hmodule, retval);
