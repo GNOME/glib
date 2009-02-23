@@ -619,8 +619,6 @@ g_local_file_get_child_for_display_name (GFile        *file,
 static const char *
 get_fs_type (long f_type)
 {
-  g_print ("get fstype for %ld\n", f_type);
-
   /* filesystem ids taken from linux manpage */
   switch (f_type) 
     {
@@ -947,7 +945,6 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif
   GFileAttributeMatcher *attribute_matcher;
 	
-  g_print ("g_local_file_query_filesystem_info\n");
   no_size = FALSE;
   
 #ifdef USE_STATFS
@@ -1028,10 +1025,8 @@ g_local_file_query_filesystem_info (GFile         *file,
 #ifdef USE_STATFS
 #if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
   fstype = g_strdup(statfs_buffer.f_fstypename);
-  g_print ("using f_fstypename %s\n", fstype);
 #else
   fstype = get_fs_type (statfs_buffer.f_type);
-  g_print ("using f_type %s\n", fstype);
 #endif
 
 #elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
