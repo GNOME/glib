@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-18 18:15+0300\n"
-"PO-Revision-Date: 2009-02-18 18:20+0300\n"
+"POT-Creation-Date: 2009-02-23 16:47+0300\n"
+"PO-Revision-Date: 2009-02-23 16:50+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -197,72 +197,72 @@ msgstr ""
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Tiedoston \"%s\" avaaminen epäonnistui: fdopen() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:853
+#: ../glib/gfileutils.c:854
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Tiedoston \"%s\" uudelleen nimeäminen nimelle \"%s\" epäonnistui: g_rename() "
 "epäonnistui: %s"
 
-#: ../glib/gfileutils.c:895 ../glib/gfileutils.c:1284
+#: ../glib/gfileutils.c:896 ../glib/gfileutils.c:1285
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:909
+#: ../glib/gfileutils.c:910
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Tiedoston \"%s\" avaaminen kirjoitettavaksi epäonnistui: fdopen() "
 "epäonnistui: %s"
 
-#: ../glib/gfileutils.c:934
+#: ../glib/gfileutils.c:935
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Tiedoston \"%s\" kirjoittaminen epäonnistui: fwrite() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:953
+#: ../glib/gfileutils.c:954
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Tiedoston \"%s\" sulkeminen epäonnistui: fclose() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1071
+#: ../glib/gfileutils.c:1072
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Olemassaolevan tiedoston \"%s\" poisto epäonnistui: g_unlink epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1246
+#: ../glib/gfileutils.c:1247
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malli \"%s\" on virheellinen, se ei saa sisältää merkkijonoa \"%s\""
 
-#: ../glib/gfileutils.c:1259
+#: ../glib/gfileutils.c:1260
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Malli \"%s\" ei sisällä merkkijonoa XXXXXX"
 
-#: ../glib/gfileutils.c:1698
+#: ../glib/gfileutils.c:1699
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kt"
 
-#: ../glib/gfileutils.c:1703
+#: ../glib/gfileutils.c:1704
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f Mt"
 
-#: ../glib/gfileutils.c:1708
+#: ../glib/gfileutils.c:1709
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f Gt"
 
-#: ../glib/gfileutils.c:1751
+#: ../glib/gfileutils.c:1752
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Symbolisen linkin \"%s\" lukeminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1772
+#: ../glib/gfileutils.c:1773
 msgid "Symbolic links not supported"
 msgstr "Symbolisia linkkejä ei tueta"
 
@@ -554,7 +554,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "malli sisältää kohtia, jotka eivät ole tuettu osittaisessa täsmäyksessä"
 
-#: ../glib/gregex.c:154 ../gio/glocalfile.c:1999
+#: ../glib/gregex.c:154 ../gio/glocalfile.c:2007
 msgid "internal error"
 msgstr "sisäinen virhe"
 
@@ -1154,7 +1154,7 @@ msgstr "Liian suuri laskuriarvo välitetty kohteelle %s"
 msgid "Stream is already closed"
 msgstr "Virta on jo suljettu"
 
-#: ../gio/gcancellable.c:366 ../gio/glocalfile.c:1992
+#: ../gio/gcancellable.c:366 ../gio/glocalfile.c:2000
 #: ../gio/gsimpleasyncresult.c:627 ../gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "Toiminto oli peruttu"
@@ -1243,10 +1243,10 @@ msgstr "Oletettiin GEmblen kohteelle GEmblemedIcon"
 
 #: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
 #: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
-#: ../gio/gfile.c:1620 ../gio/gfile.c:2694 ../gio/gfile.c:2748
-#: ../gio/gfile.c:2879 ../gio/gfile.c:2919 ../gio/gfile.c:3246
-#: ../gio/gfile.c:3648 ../gio/gfile.c:3732 ../gio/gfile.c:3815
-#: ../gio/gfile.c:3895 ../gio/gfile.c:4225 ../gio/win32/gwinhttpfile.c:428
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2710 ../gio/gfile.c:2764
+#: ../gio/gfile.c:2895 ../gio/gfile.c:2935 ../gio/gfile.c:3262
+#: ../gio/gfile.c:3664 ../gio/gfile.c:3748 ../gio/gfile.c:3831
+#: ../gio/gfile.c:3911 ../gio/gfile.c:4241 ../gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "Toiminto ei ole tuettu"
 
@@ -1258,12 +1258,12 @@ msgstr "Toiminto ei ole tuettu"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1311 ../gio/glocalfile.c:1071 ../gio/glocalfile.c:1082
-#: ../gio/glocalfile.c:1095
+#: ../gio/gfile.c:1311 ../gio/glocalfile.c:1079 ../gio/glocalfile.c:1090
+#: ../gio/glocalfile.c:1103
 msgid "Containing mount does not exist"
 msgstr "Ylläolevaa liitospistettä ei löydy"
 
-#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2142
+#: ../gio/gfile.c:1963 ../gio/glocalfile.c:2150
 msgid "Can't copy over directory"
 msgstr "Kansion päälle ei voi kopioida"
 
@@ -1271,7 +1271,7 @@ msgstr "Kansion päälle ei voi kopioida"
 msgid "Can't copy directory over directory"
 msgstr "Kansiota ei voi kopioida kansion päälle"
 
-#: ../gio/gfile.c:2031 ../gio/glocalfile.c:2151
+#: ../gio/gfile.c:2031 ../gio/glocalfile.c:2159
 msgid "Target file exists"
 msgstr "Kohdetiedosto on olemassa"
 
@@ -1279,24 +1279,28 @@ msgstr "Kohdetiedosto on olemassa"
 msgid "Can't recursively copy directory"
 msgstr "Kansiota ei voi kopioida rekursiivisesti"
 
-#: ../gio/gfile.c:2869
+#: ../gio/gfile.c:2344
+msgid "Can't copy special file"
+msgstr "Erikoistiedostoa ei voi kopioida"
+
+#: ../gio/gfile.c:2885
 msgid "Invalid symlink value given"
 msgstr "Saatiin virheellinen symbolisen linkin arvo"
 
-#: ../gio/gfile.c:2962
+#: ../gio/gfile.c:2978
 msgid "Trash not supported"
 msgstr "Roskakori ei ole tuettu"
 
-#: ../gio/gfile.c:3011
+#: ../gio/gfile.c:3027
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tiedostonimi ei voi sisältää merkkiä \"%c\""
 
-#: ../gio/gfile.c:4993 ../gio/gvolume.c:370
+#: ../gio/gfile.c:5009 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "taltio ei toteuta liittämistä"
 
-#: ../gio/gfile.c:5101
+#: ../gio/gfile.c:5117
 msgid "No application is registered as handling this file"
 msgstr "Tiedoston käsittelyyn ei ole rekisteröity mitään sovellusta"
 
@@ -1404,103 +1408,103 @@ msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
 msgid "Invalid filename %s"
 msgstr "Virheellinen tiedostonimi %s"
 
-#: ../gio/glocalfile.c:979
+#: ../gio/glocalfile.c:985
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
-#: ../gio/glocalfile.c:1115
+#: ../gio/glocalfile.c:1123
 msgid "Can't rename root directory"
 msgstr "Juurikansiota ei voi nimetä uudestaan"
 
-#: ../gio/glocalfile.c:1135 ../gio/glocalfile.c:1161
+#: ../gio/glocalfile.c:1143 ../gio/glocalfile.c:1169
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
 
-#: ../gio/glocalfile.c:1144
+#: ../gio/glocalfile.c:1152
 msgid "Can't rename file, filename already exist"
 msgstr "Tiedostoa ei voi nimetä uudestaan, tiedosto on jo olemassa"
 
-#: ../gio/glocalfile.c:1157 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2050
-#: ../gio/glocalfile.c:2204 ../gio/glocalfileoutputstream.c:505
+#: ../gio/glocalfile.c:1165 ../gio/glocalfile.c:2029 ../gio/glocalfile.c:2058
+#: ../gio/glocalfile.c:2212 ../gio/glocalfileoutputstream.c:505
 #: ../gio/glocalfileoutputstream.c:550 ../gio/glocalfileoutputstream.c:1009
 msgid "Invalid filename"
 msgstr "Virheellinen tiedostonimi"
 
-#: ../gio/glocalfile.c:1280
+#: ../gio/glocalfile.c:1288
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Virhe avattaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1290
+#: ../gio/glocalfile.c:1298
 msgid "Can't open directory"
 msgstr "Kansiota ei voi avata"
 
-#: ../gio/glocalfile.c:1350
+#: ../gio/glocalfile.c:1358
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Virhe poistettaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1714
+#: ../gio/glocalfile.c:1722
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
-#: ../gio/glocalfile.c:1737
+#: ../gio/glocalfile.c:1745
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1758
+#: ../gio/glocalfile.c:1766
 msgid "Unable to find toplevel directory for trash"
 msgstr "Päätasoa roskakoria varten ei löydy"
 
-#: ../gio/glocalfile.c:1837 ../gio/glocalfile.c:1857
+#: ../gio/glocalfile.c:1845 ../gio/glocalfile.c:1865
 msgid "Unable to find or create trash directory"
 msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
-#: ../gio/glocalfile.c:1891
+#: ../gio/glocalfile.c:1899
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1916 ../gio/glocalfile.c:1991 ../gio/glocalfile.c:1998
+#: ../gio/glocalfile.c:1924 ../gio/glocalfile.c:1999 ../gio/glocalfile.c:2006
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: ../gio/glocalfile.c:2025
+#: ../gio/glocalfile.c:2033
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Virhe luotaessa kansiota: %s"
 
-#: ../gio/glocalfile.c:2054
+#: ../gio/glocalfile.c:2062
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Virhe luotaessa symbolista linkkiä: %s"
 
-#: ../gio/glocalfile.c:2114 ../gio/glocalfile.c:2208
+#: ../gio/glocalfile.c:2122 ../gio/glocalfile.c:2216
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Virhe siirrettäessä tiedostoa: %s"
 
-#: ../gio/glocalfile.c:2137
+#: ../gio/glocalfile.c:2145
 msgid "Can't move directory over directory"
 msgstr "Kansiota ei voi siirtää kansion päälle"
 
-#: ../gio/glocalfile.c:2164 ../gio/glocalfileoutputstream.c:829
+#: ../gio/glocalfile.c:2172 ../gio/glocalfileoutputstream.c:829
 #: ../gio/glocalfileoutputstream.c:843 ../gio/glocalfileoutputstream.c:858
 #: ../gio/glocalfileoutputstream.c:874 ../gio/glocalfileoutputstream.c:888
 msgid "Backup file creation failed"
 msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
-#: ../gio/glocalfile.c:2183
+#: ../gio/glocalfile.c:2191
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
-#: ../gio/glocalfile.c:2197
+#: ../gio/glocalfile.c:2205
 msgid "Move between mounts not supported"
 msgstr "Siirto liitospisteiden välillä ei ole tuettu"
 
