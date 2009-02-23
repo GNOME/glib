@@ -1,3 +1,17 @@
+2009-02-23  Tor Lillqvist  <tml@novell.com>
+
+	Bug 570501 - g_win32_get_system_data_dirs uses invalid conversion
+	of function pointer to object pointer
+
+	* glib/gutils.c (g_win32_get_system_data_dirs_for_module): Change
+	the type of the function's parameter to be explicitly a function
+	pointer.
+
+	* glib/gutils.h (_g_win32_get_system_data_dirs): Modify
+	declaration and the only caller, the inline
+	_g_win32_get_system_data_dirs(), accordingly. Add comments
+	pointing out these are internal GLib functions.
+
 2009-01-12  Tor Lillqvist  <tml@novell.com>
 
 	* glib/goption.c (parse_arg): Guard against a mis-written
