@@ -1,5 +1,12 @@
 2009-02-22  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 572464 – Doc for g_file_get_contents
+
+	* glib/gfileutils.c (g_file_get_contents): Improve docs. Pointed
+	out by Øystein Johansen.
+
+2009-02-22  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 572672 – glib/gthread.c: argument is different type
 
 	* glib/gthread.c (g_once_init_leave): Add a necessary cast back.

@@ -798,19 +798,20 @@ get_contents_win32 (const gchar  *filename,
 /**
  * g_file_get_contents:
  * @filename: name of a file to read contents from, in the GLib file name encoding
- * @contents: location to store an allocated string
+ * @contents: location to store an allocated string, use g_free() to free
+ *     the returned string
  * @length: location to store length in bytes of the contents, or %NULL
  * @error: return location for a #GError, or %NULL
- * 
- * Reads an entire file into allocated memory, with good error
- * checking. 
  *
- * If the call was successful, it returns %TRUE and sets @contents to the file 
- * contents and @length to the length of the file contents in bytes. The string 
- * stored in @contents will be nul-terminated, so for text files you can pass 
- * %NULL for the @length argument. If the call was not successful, it returns 
- * %FALSE and sets @error. The error domain is #G_FILE_ERROR. Possible error  
- * codes are those in the #GFileError enumeration. In the error case, 
+ * Reads an entire file into allocated memory, with good error
+ * checking.
+ *
+ * If the call was successful, it returns %TRUE and sets @contents to the file
+ * contents and @length to the length of the file contents in bytes. The string
+ * stored in @contents will be nul-terminated, so for text files you can pass
+ * %NULL for the @length argument. If the call was not successful, it returns
+ * %FALSE and sets @error. The error domain is #G_FILE_ERROR. Possible error
+ * codes are those in the #GFileError enumeration. In the error case,
  * @contents is set to %NULL and @length is set to zero.
  *
  * Return value: %TRUE on success, %FALSE if an error occurred
