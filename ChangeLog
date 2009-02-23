@@ -1,3 +1,10 @@
+2009-02-22  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572672 – glib/gthread.c: argument is different type
+
+	* glib/gthread.c (g_once_init_leave): Add a necessary cast back.
+	Pointed out by Kazuki Iwamoto.
+
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
