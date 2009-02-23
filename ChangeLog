@@ -1,3 +1,8 @@
+2009-02-23  Paolo Borelli  <pborelli@katamail.com>
+
+	* glib/gutf8.c (_g_utf8_make_valid):
+	sanity check the input paramter. 
+
 2009-02-23  Tor Lillqvist  <tml@novell.com>
 
 	Bug 570501 - g_win32_get_system_data_dirs uses invalid conversion

@@ -1833,11 +1833,13 @@ _g_utf8_make_valid (const gchar *name)
   GString *string;
   const gchar *remainder, *invalid;
   gint remaining_bytes, valid_bytes;
-  
+
+  g_return_val_if_fail (name != NULL, NULL);
+
   string = NULL;
   remainder = name;
   remaining_bytes = strlen (name);
-  
+
   while (remaining_bytes != 0) 
     {
       if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
