@@ -334,7 +334,7 @@ typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
  * required to initialize and destruct (finalize) a parameter's class and
  * instances thereof.
  * The initialized structure is passed to the g_param_type_register_static() 
- * The type system will perform a deep copy of this structure, so it's memory 
+ * The type system will perform a deep copy of this structure, so its memory 
  * does not need to be persistent across invocation of 
  * g_param_type_register_static().
  */

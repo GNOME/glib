@@ -1,5 +1,12 @@
 2009-02-22  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 572151 – “it's” and “its” confused in docs and comments
+
+	* Fix "it's" vs "its" confusion throughout the source. Patch
+	by Will Thompson.
+
+2009-02-22  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 572464 – Doc for g_file_get_contents
 
 	* glib/gfileutils.c (g_file_get_contents): Improve docs. Pointed

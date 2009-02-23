@@ -190,7 +190,7 @@ struct	_GFlagsClass
  * @value_name: the name of the value
  * @value_nick: the nickname of the value
  * 
- * A structure which contains a single enum value, it's name, and it's
+ * A structure which contains a single enum value, its name, and its
  * nickname.
  */
 struct _GEnumValue
@@ -205,7 +205,7 @@ struct _GEnumValue
  * @value_name: the name of the value
  * @value_nick: the nickname of the value
  * 
- * A structure which contains a single flags value, it's name, and it's
+ * A structure which contains a single flags value, its name, and its
  * nickname.
  */
 struct _GFlagsValue

@@ -369,7 +369,7 @@ _g_get_unix_mounts (void)
        *
        * We do this to avoid being fooled by --bind mounts, since
        * these have the same device as the location they bind to.
-       * Its not an ideal solution to the problem, but it's likely that
+       * It's not an ideal solution to the problem, but it's likely that
        * the most important mountpoint is first and the --bind ones after
        * that aren't as important. So it should work.
        *

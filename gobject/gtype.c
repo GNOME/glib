@@ -1178,7 +1178,7 @@ type_node_add_iface_entry_W (TypeNode   *node,
       {
 	/* this can happen in two cases:
          * - our parent type already conformed to iface_type and node
-         *   got it's own holder info. here, our children already have
+         *   got its own holder info. here, our children already have
          *   entries and NULL vtables, since this will only work for
          *   uninitialized classes.
 	 * - an interface type is added to an ancestor after it was

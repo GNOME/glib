@@ -619,6 +619,7 @@ g_local_file_get_child_for_display_name (GFile        *file,
 static const char *
 get_fs_type (long f_type)
 {
+  g_print ("get fstype for %ld\n", f_type);
 
   /* filesystem ids taken from linux manpage */
   switch (f_type) 
@@ -635,6 +636,8 @@ get_fs_type (long f_type)
       return "befs";
     case 0x1BADFACE:
       return "bfs";
+    case 0x9123683E:
+      return "btrfs";
     case 0xFF534D42:
       return "cifs";
     case 0x73757245:
@@ -693,6 +696,8 @@ get_fs_type (long f_type)
       return "romfs";
     case 0x517B:
       return "smb";
+    case 0x73717368:
+      return "squashfs";
     case 0x012FF7B6:
       return "sysv2";
     case 0x012FF7B5:
@@ -942,6 +947,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif
   GFileAttributeMatcher *attribute_matcher;
 	
+  g_print ("g_local_file_query_filesystem_info\n");
   no_size = FALSE;
   
 #ifdef USE_STATFS
@@ -1022,8 +1028,10 @@ g_local_file_query_filesystem_info (GFile         *file,
 #ifdef USE_STATFS
 #if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
   fstype = g_strdup(statfs_buffer.f_fstypename);
+  g_print ("using f_fstypename %s\n", fstype);
 #else
   fstype = get_fs_type (statfs_buffer.f_type);
+  g_print ("using f_type %s\n", fstype);
 #endif
 
 #elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
@@ -1340,7 +1348,7 @@ g_local_file_delete (GFile         *file,
       int errsv = errno;
 
       /* Posix allows EEXIST too, but the more sane error
-	 is G_IO_ERROR_NOT_FOUND, and its what nautilus
+	 is G_IO_ERROR_NOT_FOUND, and it's what nautilus
 	 expects */
       if (errsv == EEXIST)
 	errsv = ENOTEMPTY;

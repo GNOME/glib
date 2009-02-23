@@ -45,7 +45,7 @@ static const char base64_alphabet[] =
  * @state: Saved state between steps, initialize to 0
  * @save: Saved state between steps, initialize to 0
  *
- * Incrementally encode a sequence of binary data into it's Base-64 stringified
+ * Incrementally encode a sequence of binary data into its Base-64 stringified
  * representation. By calling this function multiple times you can convert 
  * data in chunks to avoid having to have the full encoded data in memory.
  *

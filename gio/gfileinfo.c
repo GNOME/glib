@@ -410,7 +410,7 @@ g_file_info_find_place (GFileInfo  *info,
 {
   int min, max, med;
   GFileAttribute *attrs;
-  /* Binary search for the place where attribute would be, if its
+  /* Binary search for the place where attribute would be, if it's
      in the array */
 
   min = 0;

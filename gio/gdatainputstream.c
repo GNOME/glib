@@ -315,7 +315,7 @@ read_data (GDataInputStream  *stream,
 	}
     }
   
-  /* This should always succeed, since its in the buffer */
+  /* This should always succeed, since it's in the buffer */
   res = g_input_stream_read (G_INPUT_STREAM (stream),
 			     buffer, size,
 			     NULL, NULL);

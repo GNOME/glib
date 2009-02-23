@@ -1123,7 +1123,7 @@ g_checksum_new (GChecksumType checksum_type)
  * g_checksum_reset:
  * @checksum: the #GChecksum to reset
  *
- * Resets the state of the @checksum back to it's initial state.
+ * Resets the state of the @checksum back to its initial state.
  *
  * Since: 2.18
  **/

@@ -593,7 +593,7 @@ g_io_extension_point_implement (const char *extension_point_name,
       return NULL;
     }      
 
-  /* Its safe to register the same type multiple times */
+  /* It's safe to register the same type multiple times */
   for (l = extension_point->extensions; l != NULL; l = l->next)
     {
       extension = l->data;

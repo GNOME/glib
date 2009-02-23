@@ -679,7 +679,7 @@ main (int   argc,
       /* parse & process file */
       g_scanner_input_file (scanner, fd);
 
-      /* scanning loop, we parse the input untill it's end is reached,
+      /* scanning loop, we parse the input until its end is reached,
        * or our sub routine came across invalid syntax
        */
       do

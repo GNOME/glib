@@ -610,14 +610,14 @@ _g_mount_get_for_mount_path (const char *mount_path,
  *
  * If the return value is not %NULL, the caller must associate the
  * returned #GVolume object with the #GMount. This involves returning
- * it in it's g_mount_get_volume() implementation. The caller must
+ * it in its g_mount_get_volume() implementation. The caller must
  * also listen for the "removed" signal on the returned object
- * and give up it's reference when handling that signal
+ * and give up its reference when handling that signal
  * 
  * Similary, if implementing g_volume_monitor_adopt_orphan_mount(),
  * the implementor must take a reference to @mount and return it in
- * it's g_volume_get_mount() implemented. Also, the implementor must
- * listen for the "unmounted" signal on @mount and give up it's
+ * its g_volume_get_mount() implemented. Also, the implementor must
+ * listen for the "unmounted" signal on @mount and give up its
  * reference upon handling that signal.
  *
  * There are two main use cases for this function.
@@ -625,7 +625,7 @@ _g_mount_get_for_mount_path (const char *mount_path,
  * One is when implementing a user space file system driver that reads
  * blocks of a block device that is already represented by the native
  * volume monitor (for example a CD Audio file system driver). Such
- * a driver will generate it's own #GMount object that needs to be
+ * a driver will generate its own #GMount object that needs to be
  * assoicated with the #GVolume object that represents the volume.
  *
  * The other is for implementing a #GVolumeMonitor whose sole purpose

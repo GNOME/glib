@@ -2512,7 +2512,7 @@ g_object_set_qdata_full (GObject       *object,
  *
  * This function gets back user data pointers stored via
  * g_object_set_qdata() and removes the @data from object
- * without invoking it's destroy() function (if any was
+ * without invoking its destroy() function (if any was
  * set).
  * Usually, calling this function is only required to update
  * user data pointers with a destroy notifier, for example:

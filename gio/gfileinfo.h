@@ -129,7 +129,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * G_FILE_ATTRIBUTE_STANDARD_COPY_NAME:
  *
  * A key in the "standard" namespace for getting the copy name of the file.
- * The copy name is an optional version of the name. If availible its always
+ * The copy name is an optional version of the name. If available it's always
  * in UTF8, and corresponds directly to the original filename (only transcoded to
  * UTF8). This is useful if you want to copy the file to another filesystem that
  * might have a different encoding. If the filename is not a valid string in the

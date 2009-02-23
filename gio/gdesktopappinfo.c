@@ -1300,7 +1300,7 @@ update_mimeapps_list (const char  *desktop_id,
 	        list[i++] = g_strdup (old_list[j]);
 	      else if (add_non_default)
 		{
-		  /* If adding as non-default, and its already in,
+		  /* If adding as non-default, and it's already in,
 		     don't change order of desktop ids */
 		  add_non_default = FALSE;
 		  list[i++] = g_strdup (old_list[j]);

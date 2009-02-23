@@ -527,7 +527,7 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
  * @quark: a #GQuark, naming the user data pointer
  *
  * Gets back user data pointers stored via g_param_spec_set_qdata()
- * and removes the @data from @pspec without invoking it's destroy()
+ * and removes the @data from @pspec without invoking its destroy()
  * function (if any was set).  Usually, calling this function is only
  * required to update user data pointers with a destroy notifier.
  *

@@ -110,7 +110,7 @@ init_scheduler (gpointer arg)
 	  g_thread_pool_set_sort_function (job_thread_pool,
 					   g_io_job_compare,
 					   NULL);
-	  /* Its kinda weird that this is a global setting
+	  /* It's kinda weird that this is a global setting
 	   * instead of per threadpool. However, we really
 	   * want to cache some threads, but not keep around
 	   * those threads forever. */
