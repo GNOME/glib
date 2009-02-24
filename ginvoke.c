@@ -407,18 +407,26 @@ gi_cclosure_marshal_generic (GClosure *closure,
   atypes = g_alloca (sizeof (ffi_type *) * n_args);
   args =  g_alloca (sizeof (gpointer) * n_args);
 
-  if (G_CCLOSURE_SWAP_DATA (closure))
+  if (n_param_values > 0)
     {
-      atypes[n_args-1] = value_to_ffi_type (param_values + 0,  
-                                            &args[n_args-1]);
-      atypes[0] = &ffi_type_pointer;
-      args[0] = &closure->data;
+      if (G_CCLOSURE_SWAP_DATA (closure))
+        {
+          atypes[n_args-1] = value_to_ffi_type (param_values + 0,  
+                                                &args[n_args-1]);
+          atypes[0] = &ffi_type_pointer;
+          args[0] = &closure->data;
+        }
+      else
+        {
+          atypes[0] = value_to_ffi_type (param_values + 0, &args[0]);
+          atypes[n_args-1] = &ffi_type_pointer;
+          args[n_args-1] = &closure->data;
+        }
     }
   else
     {
-      atypes[0] = value_to_ffi_type (param_values + 0, &args[0]);
-      atypes[n_args-1] = &ffi_type_pointer;
-      args[n_args-1] = &closure->data;
+      atypes[0] = &ffi_type_pointer;
+      args[0] = &closure->data;
     }
 
   for (i = 1; i < n_args - 1; i++)
