@@ -1,3 +1,9 @@
+2009-02-25  Paolo Borelli  <pborelli@katamail.com>
+
+	Bug 570069 – wrong preprocessor directive in gio/glocalfileinfo.c
+
+	* glocalfileinfo.c: fix preprocessor condition. Patch by Markus Duft.
+
 2009-02-23  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfile.c:

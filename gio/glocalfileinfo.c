@@ -2171,7 +2171,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
 #ifdef HAVE_UTIMES
   GFileAttributeValue *mtime, *mtime_usec, *atime, *atime_usec;
 #endif
-#if defined (HAVE_CHOWN) && defined (HAVE_UTIMES)
+#if defined (HAVE_CHOWN) || defined (HAVE_UTIMES)
   GFileAttributeStatus status;
 #endif
   gboolean res;
