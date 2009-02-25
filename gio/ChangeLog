@@ -1,3 +1,10 @@
+2009-02-25  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 570073 – Add support for reading filesystems on Interix
+
+	* gunixmounts.c (_g_get_unix_mounts):
+	Support Interix. Patch from  Fabian Groffen 
+
 2009-02-25  Paolo Borelli  <pborelli@katamail.com>
 
 	Bug 570069 – wrong preprocessor directive in gio/glocalfileinfo.c

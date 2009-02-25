@@ -38,6 +38,9 @@
 #ifdef HAVE_POLL_H
 #include <poll.h>
 #endif
+#if HAVE_SYS_STATVFS_H
+#include <sys/statvfs.h>
+#endif
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -45,6 +48,7 @@
 #include <string.h>
 #include <signal.h>
 #include <gstdio.h>
+#include <dirent.h>
 
 #include "gunixmounts.h"
 #include "gfile.h"
@@ -597,6 +601,61 @@ _g_get_unix_mounts (void)
   
   return g_list_reverse (return_list);
 }
+#elif defined(__INTERIX)
+
+static char *
+get_mtab_monitor_file (void)
+{
+  return NULL;
+}
+
+static GList *
+_g_get_unix_mounts (void)
+{
+  DIR *dirp;
+  GList* return_list = NULL;
+  char filename[9 + NAME_MAX];
+
+  dirp = opendir ("/dev/fs");
+  if (!dirp)
+    {
+      g_warning ("unable to read /dev/fs!");
+      return NULL;
+    }
+
+  while (1)
+    {
+      struct statvfs statbuf;
+      struct dirent entry;
+      struct dirent* result;
+      
+      if (readdir_r (dirp, &entry, &result) || result == NULL)
+        break;
+      
+      strcpy (filename, "/dev/fs/");
+      strcat (filename, entry.d_name);
+      
+      if (statvfs (filename, &statbuf) == 0)
+        {
+          GUnixMountEntry* mount_entry = g_new0(GUnixMountEntry, 1);
+          
+          mount_entry->mount_path = g_strdup (statbuf.f_mntonname);
+          mount_entry->device_path = g_strdup (statbuf.f_mntfromname);
+          mount_entry->filesystem_type = g_strdup (statbuf.f_fstypename);
+          
+          if (statbuf.f_flag & ST_RDONLY)
+            mount_entry->is_read_only = TRUE;
+          
+          return_list = g_list_prepend(return_list, mount_entry);
+        }
+    }
+  
+  return_list = g_list_reverse (return_list);
+  
+  closedir (dirp);
+
+  return return_list;
+}
 #else
 #error No _g_get_unix_mounts() implementation for system
 #endif
@@ -974,6 +1033,12 @@ _g_get_unix_mount_points (void)
   endfsent ();
   
   return g_list_reverse (return_list);
+}
+#elif defined(__INTERIX)
+static GList *
+_g_get_unix_mount_points (void)
+{
+  return _g_get_unix_mounts ();
 }
 #else
 #error No g_get_mount_table() implementation for system
