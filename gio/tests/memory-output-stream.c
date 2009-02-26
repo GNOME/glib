@@ -72,6 +72,15 @@ test_data_size (void)
   pos = g_seekable_tell (G_SEEKABLE (mo));
   g_assert_cmpint (pos, ==, 1);
 
+  g_test_bug ("540461");
+  
+  g_seekable_seek (G_SEEKABLE (mo), 0, G_SEEK_SET, NULL, NULL);
+  pos = g_seekable_tell (G_SEEKABLE (mo));
+  g_assert_cmpint (pos, ==, 0);
+  
+  pos = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo));
+  g_assert_cmpint (pos, ==, 1);
+  
   g_object_unref (o);
   g_object_unref (mo);
 }

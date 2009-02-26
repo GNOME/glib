@@ -1,5 +1,14 @@
 2009-02-26  Alexander Larsson  <alexl@redhat.com>
 
+	Bug 540461 – g_memory_output_stream_get_data_size() doesn't behave as document
+        * gmemoryoutputstream.c:
+	Track actual valid size, even if we later seek back.
+
+        * tests/memory-output-stream.c:
+	Add testcase
+
+2009-02-26  Alexander Larsson  <alexl@redhat.com>
+
 	Bug 543183 – Clarify docs for g_file_has_prefix
 
 	* gfile.c: (g_file_has_prefix):

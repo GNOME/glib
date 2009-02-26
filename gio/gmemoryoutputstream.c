@@ -48,6 +48,7 @@ struct _GMemoryOutputStreamPrivate {
   
   gpointer       data;
   gsize          len;
+  gsize          valid_len; /* The part of data that has been written to */
 
   goffset        pos;
 
@@ -205,6 +206,7 @@ g_memory_output_stream_new (gpointer       data,
   priv->destroy = destroy;
 
   priv->pos = 0;
+  priv->valid_len = 0;
 
   return stream;
 }
@@ -271,7 +273,7 @@ g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream)
 {
   g_return_val_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream), 0);
   
-  return ostream->priv->pos;
+  return ostream->priv->valid_len;
 }
 
 
@@ -346,6 +348,9 @@ array_resize (GMemoryOutputStream  *ostream,
   priv->data = data;
   priv->len = size;
   
+  if (priv->len < priv->valid_len)
+    priv->valid_len = priv->len;
+  
   return TRUE;
 }
 
@@ -396,6 +401,9 @@ g_memory_output_stream_write (GOutputStream  *stream,
   dest = (guint8 *)priv->data + priv->pos;
   memcpy (dest, buffer, count); 
   priv->pos += count;
+  
+  if (priv->pos > priv->valid_len)
+    priv->valid_len = priv->pos;
 
   return count;
 }
