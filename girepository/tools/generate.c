@@ -32,6 +32,7 @@
 /* FIXME: Avoid global */
 static gchar *output = NULL;
 gchar **includedirs = NULL;
+static gboolean show_all = FALSE;
 
 typedef struct {
   FILE *file;
@@ -365,6 +366,12 @@ write_field_info (const gchar *namespace,
       xml_printf (file, "\"");
     }
 
+  if (show_all)
+    {
+      if (offset >= 0)
+        xml_printf (file, "offset=\"%d\"", offset);
+    }
+  
   write_type_info (namespace, type, file);
   g_base_info_unref ((GIBaseInfo *)type);
 
@@ -568,6 +575,7 @@ write_struct_info (const gchar  *namespace,
   gboolean deprecated;
   gboolean is_gtype_struct;
   gint i;
+  gint size;
   int n_elts;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
@@ -597,6 +605,10 @@ write_struct_info (const gchar  *namespace,
   if (is_gtype_struct)
     xml_printf (file, " glib:is-gtype-struct=\"1\"");
 	
+  size = g_struct_info_get_size (info);
+  if (show_all && size >= 0)
+    xml_printf (file, " size=\"%d\"", size);
+
   n_elts = g_struct_info_get_n_fields (info) + g_struct_info_get_n_methods (info);
   if (n_elts > 0)
     {
@@ -1113,6 +1125,7 @@ write_union_info (const gchar *namespace,
   const gchar *type_init;
   gboolean deprecated;
   gint i;
+  gint size;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
@@ -1129,6 +1142,9 @@ write_union_info (const gchar *namespace,
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 	
+  size = g_union_info_get_size (info);
+  if (show_all && size >= 0)
+    xml_printf (file, " size=\"%d\"", size);
 
   if (g_union_info_is_discriminated (info))
     {
@@ -1349,7 +1365,8 @@ main (int argc, char *argv[])
     {
       { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
-      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL }, 
+      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
+      { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       { NULL, }
     };
