@@ -685,6 +685,8 @@ g_file_get_child_for_display_name (GFile      *file,
  * 
  * Checks whether @file has the prefix specified by @prefix. In other word, 
  * if the names of inital elements of @file<!-- -->s pathname match @prefix.
+ * Only full pathname elements are matched, so a path like /foo is not
+ * considered a prefix of /foobar, only of /foo/bar.
  * 
  * This call does no i/o, as it works purely on names. As such it can 
  * sometimes return %FALSE even if @file is inside a @prefix (from a 

@@ -1,5 +1,12 @@
 2009-02-26  Alexander Larsson  <alexl@redhat.com>
 
+	Bug 543183 – Clarify docs for g_file_has_prefix
+
+	* gfile.c: (g_file_has_prefix):
+	Clarify how the prefix matching works.
+
+2009-02-26  Alexander Larsson  <alexl@redhat.com>
+
 	* gdesktopappinfo.c:
 	Support desktop file key X-GIO-NoFuse which disables
 	use of fuse pathnames for %u and %U arguments.
