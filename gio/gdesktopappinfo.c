@@ -98,6 +98,7 @@ struct _GDesktopAppInfo
   guint hidden          : 1;
   guint terminal        : 1;
   guint startup_notify  : 1;
+  guint no_fuse         : 1;
   /* FIXME: what about StartupWMClass ? */
 };
 
@@ -256,6 +257,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
   info->terminal = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TERMINAL, NULL) != FALSE;
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
+  info->no_fuse = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GIO-NoFuse", NULL) != FALSE;
   info->hidden = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL) != FALSE;
   
   info->icon = NULL;
@@ -573,20 +575,23 @@ expand_macro (char              macro,
    * running or the URI doesn't have a POSIX file path via FUSE
    * we'll just pass the URI.
    */
-  switch (macro)
+  force_file_uri_macro = macro;
+  force_file_uri = FALSE;
+  if (!info->no_fuse)
     {
-    case 'u':
-      force_file_uri_macro = 'f';
-      force_file_uri = TRUE;
-      break;
-    case 'U':
-      force_file_uri_macro = 'F';
-      force_file_uri = TRUE;
-      break;
-    default:
-      force_file_uri_macro = macro;
-      force_file_uri = FALSE;
-      break;
+      switch (macro)
+	{
+	case 'u':
+	  force_file_uri_macro = 'f';
+	  force_file_uri = TRUE;
+	  break;
+	case 'U':
+	  force_file_uri_macro = 'F';
+	  force_file_uri = TRUE;
+	  break;
+	default:
+	  break;
+	}
     }
 
   switch (macro)
