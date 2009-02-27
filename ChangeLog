@@ -1,3 +1,11 @@
+2009-02-27  Tor Lillqvist  <tml@novell.com>
+
+	Bug 167569 - g_string_append_printf crashes on win32 when used
+	with a NULL argument
+
+	* glib/gnulib/vasnprintf.c (vasnprintf): Add workaround for buggy
+	programs. Patch by Owen.
+
 2009-02-23  Paolo Borelli  <pborelli@katamail.com>
 
 	* glib/gutf8.c (_g_utf8_make_valid):
