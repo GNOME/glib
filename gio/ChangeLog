@@ -1,3 +1,10 @@
+2009-02-27  David Zeuthen  <davidz@redhat.com>
+
+	Bug 540461 – GEmblemedIcon leak
+
+	* gemblemedicon.c (g_emblemed_icon_finalize):
+	Avoid leaking a GList.
+
 2009-02-27  Alexander Larsson  <alexl@redhat.com>
 
         * giomodule-priv.h:
