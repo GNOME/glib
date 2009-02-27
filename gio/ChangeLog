@@ -1,3 +1,14 @@
+2009-02-27  Alexander Larsson  <alexl@redhat.com>
+
+        * giomodule-priv.h:
+        * giomodule.c:
+	Split out the extension point registration code to its
+	own function.
+
+        * glocalvfs.c:
+	Ensure extension points are registered before extending it.
+	It might not have happened yet if g_vfs_get_local() is called.
+
 2009-02-26  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 540461 – g_memory_output_stream_get_data_size() doesn't behave as document

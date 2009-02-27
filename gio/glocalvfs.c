@@ -24,6 +24,7 @@
 #include "glocalvfs.h"
 #include "glocalfile.h"
 #include "giomodule.h"
+#include "giomodule-priv.h"
 #include "gvfs.h"
 #include <gio/gdummyfile.h>
 #include <sys/types.h>
@@ -46,6 +47,7 @@ struct _GLocalVfsClass
 
 #define g_local_vfs_get_type _g_local_vfs_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalVfs, g_local_vfs, G_TYPE_VFS,
+			 _g_io_modules_ensure_extension_points_registered ();
 			 g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
 							 g_define_type_id,
 							 "local",

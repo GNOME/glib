@@ -297,19 +297,17 @@ extern GType g_win32_directory_monitor_get_type (void);
 extern GType _g_winhttp_vfs_get_type (void);
 
 void
-_g_io_modules_ensure_loaded (void)
+_g_io_modules_ensure_extension_points_registered (void)
 {
-  GList *modules, *l;
-  static gboolean loaded_dirs = FALSE;
+  static gboolean registered_extensions = FALSE;
   GIOExtensionPoint *ep;
-  const char *module_path;
 
   G_LOCK (loaded_dirs);
-
-  if (!loaded_dirs)
+  
+  if (!registered_extensions)
     {
-      loaded_dirs = TRUE;
-
+      registered_extensions = TRUE;
+      
 #ifdef G_OS_UNIX
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
@@ -320,7 +318,7 @@ _g_io_modules_ensure_loaded (void)
       
       ep = g_io_extension_point_register (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_FILE_MONITOR);
-
+      
       ep = g_io_extension_point_register (G_VOLUME_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_VOLUME_MONITOR);
       
@@ -329,7 +327,26 @@ _g_io_modules_ensure_loaded (void)
       
       ep = g_io_extension_point_register (G_VFS_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_VFS);
-      
+    }
+  
+  G_UNLOCK (loaded_dirs);
+ }
+
+void
+_g_io_modules_ensure_loaded (void)
+{
+  GList *modules, *l;
+  static gboolean loaded_dirs = FALSE;
+  const char *module_path;
+
+  _g_io_modules_ensure_extension_points_registered ();
+  
+  G_LOCK (loaded_dirs);
+
+  if (!loaded_dirs)
+    {
+      loaded_dirs = TRUE;
+
       modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
 
       module_path = g_getenv ("GIO_EXTRA_MODULES");

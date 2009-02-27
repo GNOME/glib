@@ -27,7 +27,8 @@
 
 G_BEGIN_DECLS
 
-void       _g_io_modules_ensure_loaded (void);
+void _g_io_modules_ensure_extension_points_registered (void);
+void _g_io_modules_ensure_loaded                      (void);
 
 G_END_DECLS
 
