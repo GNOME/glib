@@ -1,3 +1,10 @@
+2009-02-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573421 – Clarify message format in GMountOperation
+
+	* gmountoperation.c: Document that the first line of a
+	multi-line message should be interpreted as a heading.
+
 2009-02-27  David Zeuthen  <davidz@redhat.com>
 
 	Bug 573462 – GEmblemedIcon leak

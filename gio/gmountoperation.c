@@ -248,8 +248,12 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * @default_user: string containing the default user name.
    * @default_domain: string containing the default domain.
    * @flags: a set of #GAskPasswordFlags.
-   * 
+   *
    * Emitted when a mount operation asks the user for a password.
+   *
+   * If the message contains a line break, the first line should be
+   * presented as a heading. For example, it may be used as the
+   * primary text in a #GtkMessageDialog.
    */
   signals[ASK_PASSWORD] =
     g_signal_new (I_("ask-password"),
@@ -266,9 +270,13 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * @op: a #GMountOperation asking a question.
    * @message: string containing a message to display to the user.
    * @choices: an array of strings for each possible choice.
-   * 
-   * Emitted when asking the user a question and gives a list of 
-   * choices for the user to choose from. 
+   *
+   * Emitted when asking the user a question and gives a list of
+   * choices for the user to choose from.
+   *
+   * If the message contains a line break, the first line should be
+   * presented as a heading. For example, it may be used as the
+   * primary text in a #GtkMessageDialog.
    */
   signals[ASK_QUESTION] =
     g_signal_new (I_("ask-question"),
@@ -284,7 +292,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * GMountOperation::reply:
    * @op: a #GMountOperation.
    * @result: a #GMountOperationResult indicating how the request was handled
-   * 
+   *
    * Emitted when the user has replied to the mount operation.
    */
   signals[REPLY] =
@@ -301,14 +309,14 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * GMountOperation::aborted:
    *
    * Emitted by the backend when e.g. a device becomes unavailable
-   * while a mount operation is in progress. 
+   * while a mount operation is in progress.
    *
    * Implementations of GMountOperation should handle this signal
    * by dismissing open password dialogs.
    *
    * Since: 2.20
    */
-  signals[ABORTED] = 
+  signals[ABORTED] =
     g_signal_new (I_("aborted"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
