@@ -1,6 +1,6 @@
 2009-02-27  David Zeuthen  <davidz@redhat.com>
 
-	Bug 540461 – GEmblemedIcon leak
+	Bug 573462 – GEmblemedIcon leak
 
 	* gemblemedicon.c (g_emblemed_icon_finalize):
 	Avoid leaking a GList.
