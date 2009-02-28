@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 14:07+0100\n"
-"PO-Revision-Date: 2009-02-19 14:08+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
+"POT-Creation-Date: 2009-02-19 15:26+0000\n"
+"PO-Revision-Date: 2009-02-28 15:07+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
@@ -1238,10 +1238,10 @@ msgstr "Egy GEmblem kellene a GEmblemedIconhoz"
 
 #: ../gio/gfile.c:825 ../gio/gfile.c:1055 ../gio/gfile.c:1190
 #: ../gio/gfile.c:1426 ../gio/gfile.c:1480 ../gio/gfile.c:1537
-#: ../gio/gfile.c:1620 ../gio/gfile.c:2694 ../gio/gfile.c:2748
-#: ../gio/gfile.c:2879 ../gio/gfile.c:2919 ../gio/gfile.c:3246
-#: ../gio/gfile.c:3648 ../gio/gfile.c:3732 ../gio/gfile.c:3815
-#: ../gio/gfile.c:3895 ../gio/gfile.c:4225 ../gio/win32/gwinhttpfile.c:428
+#: ../gio/gfile.c:1620 ../gio/gfile.c:2710 ../gio/gfile.c:2764
+#: ../gio/gfile.c:2895 ../gio/gfile.c:2935 ../gio/gfile.c:3262
+#: ../gio/gfile.c:3664 ../gio/gfile.c:3748 ../gio/gfile.c:3831
+#: ../gio/gfile.c:3911 ../gio/gfile.c:4241 ../gio/win32/gwinhttpfile.c:428
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
 
@@ -1274,24 +1274,29 @@ msgstr "A célfájl létezik"
 msgid "Can't recursively copy directory"
 msgstr "A könyvtár nem másolható rekurzívan"
 
-#: ../gio/gfile.c:2869
+#: ../gio/gfile.c:2344
+#| msgid "Can't copy over directory"
+msgid "Can't copy special file"
+msgstr "A speciális fájl nem másolható"
+
+#: ../gio/gfile.c:2885
 msgid "Invalid symlink value given"
 msgstr "Érvénytelen szimbolikus link érték került megadásra"
 
-#: ../gio/gfile.c:2962
+#: ../gio/gfile.c:2978
 msgid "Trash not supported"
 msgstr "A Kuka nem támogatott"
 
-#: ../gio/gfile.c:3011
+#: ../gio/gfile.c:3027
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 
-#: ../gio/gfile.c:4993 ../gio/gvolume.c:370
+#: ../gio/gfile.c:5009 ../gio/gvolume.c:370
 msgid "volume doesn't implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: ../gio/gfile.c:5101
+#: ../gio/gfile.c:5117
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
