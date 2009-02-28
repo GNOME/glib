@@ -470,6 +470,8 @@ GISignalInfo *         g_object_info_get_signal             (GIObjectInfo    *in
 gint                   g_object_info_get_n_vfuncs           (GIObjectInfo    *info);
 GIVFuncInfo *          g_object_info_get_vfunc              (GIObjectInfo    *info,
 							     gint            n);
+GIVFuncInfo *          g_object_info_find_vfunc             (GIObjectInfo *info,
+                                                             const gchar *name);
 gint                   g_object_info_get_n_constants        (GIObjectInfo    *info);
 GIConstantInfo *       g_object_info_get_constant           (GIObjectInfo    *info,
 							     gint            n);
@@ -495,6 +497,8 @@ GISignalInfo *         g_interface_info_get_signal          (GIInterfaceInfo *in
 gint                   g_interface_info_get_n_vfuncs        (GIInterfaceInfo *info);
 GIVFuncInfo *          g_interface_info_get_vfunc           (GIInterfaceInfo *info,
 							     gint        n);
+GIVFuncInfo *          g_interface_info_find_vfunc          (GIInterfaceInfo *info,
+                                                             const gchar *name);
 gint                   g_interface_info_get_n_constants     (GIInterfaceInfo *info);
 GIConstantInfo *       g_interface_info_get_constant        (GIInterfaceInfo *info,
 							     gint        n);
@@ -527,6 +531,7 @@ typedef enum
 GIVFuncInfoFlags        g_vfunc_info_get_flags                   (GIVFuncInfo            *info);
 gint                    g_vfunc_info_get_offset                  (GIVFuncInfo            *info);
 GISignalInfo *          g_vfunc_info_get_signal                  (GIVFuncInfo            *info);
+GIFunctionInfo *        g_vfunc_info_get_invoker                 (GIVFuncInfo            *info);
 
 
 /* GIConstantInfo */

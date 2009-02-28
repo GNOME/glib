@@ -265,6 +265,7 @@ g_ir_node_free (GIrNode *node)
 	GIrNodeVFunc *vfunc = (GIrNodeVFunc *)node;
 	
 	g_free (node->name);
+	g_free (vfunc->invoker);
 	for (l = vfunc->parameters; l; l = l->next)
 	  g_ir_node_free ((GIrNode *)l->data);
 	g_list_free (vfunc->parameters);
@@ -1186,6 +1187,30 @@ g_ir_find_node (GIrModule  *module,
   return node != NULL;
 }
 
+static int
+get_index_of_member_type (GIrNodeInterface *node,
+                          GIrNodeTypeId type,
+                          const char *name)
+{
+  guint index = -1;
+  GList *l;
+
+  for (l = node->members; l; l = l->next)
+    {
+      GIrNode *node = l->data;
+
+      if (node->type != type)
+        continue;
+
+      index++;
+
+      if (strcmp (node->name, name) == 0)
+        break;
+    }
+
+  return index;
+}
+
 static void
 serialize_type (GIrModule    *module, 
 		GList        *modules,
@@ -1758,6 +1783,18 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->must_not_be_implemented = 0; /* FIXME */
 	blob->class_closure = 0; /* FIXME */
 	blob->reserved = 0;
+
+	if (vfunc->invoker)
+	  {
+	    int index = get_index_of_member_type ((GIrNodeInterface*)parent, G_IR_NODE_FUNCTION, vfunc->invoker);
+	    if (index == -1)
+	      {
+	        g_error ("Unknown member function %s for vfunc %s", vfunc->invoker, node->name);
+	      }
+            blob->invoker = (guint) index;
+	  }
+	else
+	  blob->invoker = 0x3ff; /* max of 10 bits */
 
 	blob->struct_offset = vfunc->offset;
 	blob->reserved2 = 0;

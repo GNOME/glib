@@ -1527,6 +1527,63 @@ g_object_info_get_vfunc (GIObjectInfo *info,
 				     base->typelib, offset);  
 }
 
+static GIVFuncInfo *
+find_vfunc (GIBaseInfo   *base,
+            guint32       offset,
+            gint          n_vfuncs,
+            const gchar  *name)
+{
+  /* FIXME hash */
+  Header *header = (Header *)base->typelib->data;
+  gint i;
+
+  for (i = 0; i < n_vfuncs; i++)
+    {
+      VFuncBlob *fblob = (VFuncBlob *)&base->typelib->data[offset];
+      const gchar *fname = (const gchar *)&base->typelib->data[fblob->name];
+
+      if (strcmp (name, fname) == 0)
+        return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, base,
+                                           base->typelib, offset);
+
+      offset += header->vfunc_blob_size;
+    }
+
+  return NULL;
+}
+
+/**
+ * g_object_info_find_vfunc:
+ * @info: An #GIObjectInfo
+ * @name: The name of a virtual function to find.
+ *
+ * Locate a virtual function slot with name @name.  Note that the namespace
+ * for virtuals is distinct from that of methods; there may or may not be
+ * a concrete method associated for a virtual.  If there is one, it may
+ * be retrieved using #g_vfunc_info_get_invoker.  See the documentation for
+ * that function for more information on invoking virtuals.
+ *
+ * Return value: (transfer full): A #GIVFuncInfo, or %NULL if none with name @name.
+ */
+GIVFuncInfo *
+g_object_info_find_vfunc (GIObjectInfo *info,
+                          const gchar  *name)
+{
+  gint offset;
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  Header *header = (Header *)base->typelib->data;
+  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+
+  offset = base->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_properties * header->property_blob_size
+    + blob->n_methods * header->function_blob_size
+    + blob->n_signals * header->signal_blob_size;
+
+  return find_vfunc (base, offset, blob->n_vfuncs, name);
+}
+
 gint
 g_object_info_get_n_constants (GIObjectInfo *info)
 {
@@ -1728,6 +1785,34 @@ g_interface_info_get_vfunc (GIInterfaceInfo *info,
 				     base->typelib, offset);  
 }
 
+/**
+ * g_interface_info_find_vfunc:
+ * @info: An #GIObjectInfo
+ * @name: The name of a virtual function to find.
+ *
+ * Locate a virtual function slot with name @name.  See the documentation
+ * for #g_object_info_find_vfunc for more information on virtuals.
+ *
+ * Return value: (transfer full): A #GIVFuncInfo, or %NULL if none with name @name.
+ */
+GIVFuncInfo *
+g_interface_info_find_vfunc (GIInterfaceInfo *info,
+                             const gchar  *name)
+{
+  gint offset;
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  Header *header = (Header *)base->typelib->data;
+  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+
+  offset = base->offset + header->interface_blob_size
+    + (blob->n_prerequisites + blob->n_prerequisites % 2) * 2
+    + blob->n_properties * header->property_blob_size
+    + blob->n_methods * header->function_blob_size
+    + blob->n_signals * header->signal_blob_size;
+
+  return find_vfunc (base, offset, blob->n_vfuncs, name);
+}
+
 gint
 g_interface_info_get_n_constants (GIInterfaceInfo *info)
 {
@@ -1913,6 +1998,37 @@ g_vfunc_info_get_signal (GIVFuncInfo *info)
   return NULL;
 }
 
+/**
+ * g_vfunc_info_get_invoker:
+ * @info: A #GIVFuncInfo
+ *
+ * If this virtual function has an associated invoker method, this
+ * method will return it.  An invoker method is a C entry point.
+ *
+ * Not all virtuals will have invokers.
+ *
+ * Return value: (transfer full): An invoker function, or %NULL if none known
+ */
+GIFunctionInfo *
+g_vfunc_info_get_invoker (GIVFuncInfo *info)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  VFuncBlob *blob = (VFuncBlob *)&base->typelib->data[base->offset];
+  GIBaseInfo *container = base->container;
+  GIInfoType parent_type;
+
+  /* 1023 = 0x3ff is the maximum of the 10 bits for invoker index */
+  if (blob->invoker == 1023)
+    return NULL;
+
+  parent_type = g_base_info_get_type (container);
+  if (parent_type == GI_INFO_TYPE_OBJECT)
+    return g_object_info_get_method ((GIObjectInfo*)container, blob->invoker);
+  else if (parent_type == GI_INFO_TYPE_INTERFACE)
+    return g_interface_info_get_method ((GIInterfaceInfo*)container, blob->invoker);
+  else
+    g_assert_not_reached ();
+}
 
 /* GIConstantInfo functions */
 GITypeInfo *

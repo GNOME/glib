@@ -2080,7 +2080,7 @@ start_vfunc (GMarkupParseContext *context,
 	     ParseContext       *ctx,
 	     GError             **error)
 {
-  if (strcmp (element_name, "vfunc") == 0 && 
+  if (strcmp (element_name, "virtual-method") == 0 &&
       (ctx->state == STATE_CLASS ||
        ctx->state == STATE_INTERFACE))
     {
@@ -2089,12 +2089,14 @@ start_vfunc (GMarkupParseContext *context,
       const gchar *override;
       const gchar *is_class_closure;
       const gchar *offset;
+      const gchar *invoker;
       
       name = find_attribute ("name", attribute_names, attribute_values);
       must_chain_up = find_attribute ("must-chain-up", attribute_names, attribute_values);	  
       override = find_attribute ("override", attribute_names, attribute_values);
       is_class_closure = find_attribute ("is-class-closure", attribute_names, attribute_values);
       offset = find_attribute ("offset", attribute_names, attribute_values);
+      invoker = find_attribute ("invoker", attribute_names, attribute_values);
       
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
@@ -2137,6 +2139,8 @@ start_vfunc (GMarkupParseContext *context,
 	    vfunc->offset = atoi (offset);
 	  else
 	    vfunc->offset = 0;
+
+	  vfunc->invoker = g_strdup (invoker);
 
 	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, vfunc);

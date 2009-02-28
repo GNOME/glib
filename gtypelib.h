@@ -843,9 +843,10 @@ typedef struct {
  * @class_closure: Set if this virtual function is the class closure of a signal.
  * @signal: The index of the signal in the list of signals of the object or 
  * interface to which this virtual function belongs.
- * @struct_offset:
- * The offset of the function pointer in the class struct. The value
+ * @struct_offset: The offset of the function pointer in the class struct. The value
  * 0xFFFF indicates that the struct offset is unknown.
+ * @invoker: If a method invoker for this virtual exists, this is the offset in the
+ * class structure of the method.  If no method is known, this value will be 0x3ff.
  * @signature: 
  * Offset of the SignatureBlob describing the parameter types and the 
  * return value type. 
@@ -861,7 +862,8 @@ typedef struct {
   guint16 signal;
 
   guint16 struct_offset;
-  guint16 reserved2;
+  guint16 invoker : 10; /* Number of bits matches @index in FunctionBlob */
+  guint16 reserved2 : 6;
 
   guint32 reserved3;
   guint32 signature;
