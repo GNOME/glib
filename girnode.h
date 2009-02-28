@@ -350,6 +350,7 @@ void      g_ir_node_free            (GIrNode    *node);
 guint32   g_ir_node_get_size        (GIrNode    *node);
 guint32   g_ir_node_get_full_size   (GIrNode    *node);
 void      g_ir_node_build_typelib   (GIrNode         *node,
+                                     GIrNode         *parent,
                                      GIrTypelibBuild *build,
                                      guint32         *offset,
                                      guint32         *offset2);

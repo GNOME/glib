@@ -283,7 +283,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  build.strings = strings;
 	  build.types = types;
 	  build.data = data;
-	  g_ir_node_build_typelib (node, &build, &offset, &offset2);
+	  g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
 
 	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
 	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - g_ir_node_get_full_size (node));
