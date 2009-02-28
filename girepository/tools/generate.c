@@ -869,6 +869,7 @@ write_vfunc_info (const gchar *namespace,
 {
   GIVFuncInfoFlags flags;
   const gchar *name;
+  GIFunctionInfo *invoker;
   gboolean deprecated;
   gint offset;
 
@@ -876,8 +877,9 @@ write_vfunc_info (const gchar *namespace,
   flags = g_vfunc_info_get_flags (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
   offset = g_vfunc_info_get_offset (info);
+  invoker = g_vfunc_info_get_invoker (info);
 
-  xml_start_element (file, "vfunc");
+  xml_start_element (file, "virtual-method");
   xml_printf (file, " name=\"%s\"", name);
 
   if (deprecated)
@@ -893,9 +895,12 @@ write_vfunc_info (const gchar *namespace,
     
   xml_printf (file, " offset=\"%d\"", offset);
 
+  if (invoker)
+    xml_printf (file, " invoker=\"%s\"", g_base_info_get_name ((GIBaseInfo*)invoker));
+
   write_callable_info (namespace, (GICallableInfo*)info, file);
 
-  xml_end_element (file, "vfunc");
+  xml_end_element (file, "virtual-method");
 }
 
 static void
