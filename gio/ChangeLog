@@ -1,3 +1,7 @@
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* gdatainputstream.c: Fix docs
+
 2009-02-27  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 573421 – Clarify message format in GMountOperation
