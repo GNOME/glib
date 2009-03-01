@@ -1,3 +1,10 @@
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573527 – Wrong shell to run config.status in Makefile.in.in
+
+	* Makefile.in.in: Don't hardcode /bin/sh as shell.
+	Reported by Loïc Minier
+
 2009-02-28  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	* hu.po: Translation updated.
