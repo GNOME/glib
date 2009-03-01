@@ -571,7 +571,7 @@ maman_bar_get_property (GObject    *object,
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (g_class);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
   gobject_class-&gt;set_property = maman_bar_set_property;
@@ -583,7 +583,7 @@ maman_bar_class_init (MamanBarClass *klass)
                                "no-name-set" /* default value */,
                                G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
-                                   PROP_MAMAN_NAME_NAME,
+                                   PROP_MAMAN_NAME,
                                    pspec);
 
   pspec = g_param_spec_uchar ("papa-number",

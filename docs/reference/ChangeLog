@@ -1,3 +1,9 @@
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573128 – A couple of typos in GObject documentation
+
+	* gobject/tut_gobject.xml: Fix some typos. Reported by Dimitri Vorbiev
+
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.8 ===
