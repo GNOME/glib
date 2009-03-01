@@ -1,3 +1,8 @@
+2009-03-01  Matthias Clasen <mclasen@redhat.com>
+
+	* tests/slice-threadinit.c: Change one magazine size from 77 to 81
+	to make distcheck work on x86-64.
+
 2009-02-27  Tor Lillqvist  <tml@novell.com>
 
 	Bug 167569 - g_string_append_printf crashes on win32 when used

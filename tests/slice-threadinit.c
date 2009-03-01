@@ -23,7 +23,7 @@
 #define N_PAGES                 (101)                   /* number of pages to sample */
 #define SAMPLE_SIZE             (7)
 #define PAGE_SIZE               (128)                   /* must be <= minimum GSlice alignment block */
-#define MAGAZINE_PROBES         { 77, 265, 347 }        /* block sizes hopefully unused by g_thread_init */
+#define MAGAZINE_PROBES         { 81, 265, 347 }        /* block sizes hopefully unused by g_thread_init */
 #define MAX_PROBE_TRIALS        (1031)                  /* must be >= maximum magazine size */
 
 #define ALIGN(size, base)       ((base) * (gsize) (((size) + (base) - 1) / (base)))
@@ -130,7 +130,7 @@ main (int   argc,
   /* release magazine probes to be retained across g_thread_init */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
     g_slice_free1 (magazine_probes[j], mps[j]);
-  /* mps[*] now contains pointers to releaed slices */
+  /* mps[*] now contains pointers to released slices */
 
   /* initialize threading (should retain allocator state) */
   g_thread_init (NULL);
