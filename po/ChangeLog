@@ -1,5 +1,10 @@
 2009-03-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* Makefile.in.in: Don't use obsolete calling convention for
+	config.status.
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
 	Bug 573527 – Wrong shell to run config.status in Makefile.in.in
 
 	* Makefile.in.in: Don't hardcode /bin/sh as shell.
