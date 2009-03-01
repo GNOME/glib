@@ -814,6 +814,7 @@ parse_args (gint    *argc_p,
 	  argv[i] = NULL;
 	}
       else if (strcmp ("-h", argv[i]) == 0 ||
+          strcmp ("-?", argv[i]) == 0 ||
 	  strcmp ("--help", argv[i]) == 0)
 	{
 	  print_blurb (stderr, TRUE);
@@ -874,15 +875,18 @@ print_blurb (FILE    *bout,
     }
   else
     {
-      g_fprintf (bout, "Usage: %s [options] [files...]\n", PRG_NAME);
-      g_fprintf (bout, "  --header                   generate C headers\n");
-      g_fprintf (bout, "  --body                     generate C code\n");
-      g_fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
-      g_fprintf (bout, "  --skip-source              skip source location comments\n");
-      g_fprintf (bout, "  --stdinc, --nostdinc       include/use standard marshallers\n");
-      g_fprintf (bout, "  --internal                 mark generated functions as internal\n");
-      g_fprintf (bout, "  -h, --help                 show this help message\n");
-      g_fprintf (bout, "  -v, --version              print version informations\n");
-      g_fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");
+      g_fprintf (bout, "Usage:\n");
+      g_fprintf (bout, "  %s [OPTION...] [FILES...]\n\n", PRG_NAME);
+      g_fprintf (bout, "Help Options:\n");
+      g_fprintf (bout, "  -h, --help                 Show this help message\n\n");
+      g_fprintf (bout, "Utility Options:\n");
+      g_fprintf (bout, "  --header                   Generate C headers\n");
+      g_fprintf (bout, "  --body                     Generate C code\n");
+      g_fprintf (bout, "  --prefix=string            Specify marshaller prefix\n");
+      g_fprintf (bout, "  --skip-source              Skip source location comments\n");
+      g_fprintf (bout, "  --stdinc, --nostdinc       Include/use standard marshallers\n");
+      g_fprintf (bout, "  --internal                 Mark generated functions as internal\n");
+      g_fprintf (bout, "  -v, --version              Print version informations\n");
+      g_fprintf (bout, "  --g-fatal-warnings         Make warnings fatal (abort)\n");
     }
 }

@@ -2,6 +2,7 @@
 
 	Bug 556706 – Inconsistent help arguments -h, -?
 
+	* glib-genmarshal.c:
 	* glib-mkenums.in: Adjust help output, accept -?, capitalize.
 	Patch by Christian Dywan
 
