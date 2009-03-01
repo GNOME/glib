@@ -979,6 +979,8 @@ g_thread_foreach (GFunc    thread_func,
  *
  * Indicates if g_thread_init() has been called.
  *
+ * Returns: %TRUE if threads have been initialized.
+ *
  * Since: 2.20
  */
 gboolean

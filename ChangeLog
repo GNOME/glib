@@ -1,5 +1,9 @@
 2009-03-01  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gthread.c: Fix docs.
+
+2009-03-01  Matthias Clasen <mclasen@redhat.com>
+
 	* tests/slice-threadinit.c: Change one magazine size from 77 to 81
 	to make distcheck work on x86-64.
 
