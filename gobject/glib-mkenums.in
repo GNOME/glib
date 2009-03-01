@@ -133,30 +133,33 @@ sub version {
     exit 0;
 }
 sub usage {
-    print "Usage: glib-mkenums [options] [files...]\n";
-    print "  --fhead <text>             output file header\n";
-    print "  --fprod <text>             per input file production\n";
-    print "  --ftail <text>             output file trailer\n";
-    print "  --eprod <text>             per enum text (produced prior to value itarations)\n";
-    print "  --vhead <text>             value header, produced before iterating over enum values\n";
-    print "  --vprod <text>             value text, produced for each enum value\n";
-    print "  --vtail <text>             value tail, produced after iterating over enum values\n";
-    print "  --comments <text>          comment structure\n";
-    print "  --template file            template file\n";
-    print "  -h, --help                 show this help message\n";
-    print "  -v, --version              print version informations\n";
+    print "Usage:\n";
+    print "  glib-mkenums [OPTION...] [FILES...]\n\n";
+    print "Help Options:\n";
+    print "  -h, --help            Show this help message\n\n";
+    print "Utility Options:\n";
+    print "  --fhead <text>        Output file header\n";
+    print "  --fprod <text>        Per input file production\n";
+    print "  --ftail <text>        Output file trailer\n";
+    print "  --eprod <text>        Per enum text (produced prior to value itarations)\n";
+    print "  --vhead <text>        Value header, produced before iterating over enum values\n";
+    print "  --vprod <text>        Value text, produced for each enum value\n";
+    print "  --vtail <text>        Value tail, produced after iterating over enum values\n";
+    print "  --comments <text>     Comment structure\n";
+    print "  --template file       Template file\n";
+    print "  -v, --version         Print version informations\n\n";
     print "Production text substitutions:\n";
-    print "  \@EnumName\@                 PrefixTheXEnum\n";
-    print "  \@enum_name\@                prefix_the_xenum\n";
-    print "  \@ENUMNAME\@                 PREFIX_THE_XENUM\n";
-    print "  \@ENUMSHORT\@                THE_XENUM\n";
-    print "  \@ENUMPREFIX\@               PREFIX\n";
-    print "  \@VALUENAME\@                PREFIX_THE_XVALUE\n";
-    print "  \@valuenick\@                the-xvalue\n";
-    print "  \@type\@                     either enum or flags\n";
-    print "  \@Type\@                     either Enum or Flags\n";
-    print "  \@TYPE\@                     either ENUM or FLAGS\n";
-    print "  \@filename\@                 name of current input file\n";
+    print "  \@EnumName\@            PrefixTheXEnum\n";
+    print "  \@enum_name\@           prefix_the_xenum\n";
+    print "  \@ENUMNAME\@            PREFIX_THE_XENUM\n";
+    print "  \@ENUMSHORT\@           THE_XENUM\n";
+    print "  \@ENUMPREFIX\@          PREFIX\n";
+    print "  \@VALUENAME\@           PREFIX_THE_XVALUE\n";
+    print "  \@valuenick\@           the-xvalue\n";
+    print "  \@type\@                either enum or flags\n";
+    print "  \@Type\@                either Enum or Flags\n";
+    print "  \@TYPE\@                either ENUM or FLAGS\n";
+    print "  \@filename\@            name of current input file\n";
     exit 0;
 }
 
@@ -220,17 +223,17 @@ if (!defined $ARGV[0]) {
 while ($_=$ARGV[0],/^-/) {
     shift;
     last if /^--$/;
-    if (/^--template$/)              { read_template_file (shift); }
-    elsif (/^--fhead$/)              { $fhead = $fhead . shift }
-    elsif (/^--fprod$/)              { $fprod = $fprod . shift }
-    elsif (/^--ftail$/)              { $ftail = $ftail . shift }
-    elsif (/^--eprod$/)              { $eprod = $eprod . shift }
-    elsif (/^--vhead$/)              { $vhead = $vhead . shift }
-    elsif (/^--vprod$/)              { $vprod = $vprod . shift }
-    elsif (/^--vtail$/)              { $vtail = $vtail . shift }
-    elsif (/^--comments$/)           { $comment_tmpl = shift }
-    elsif (/^--help$/ || /^-h$/)     { usage; }
-    elsif (/^--version$/ || /^-v$/)  { version; }
+    if (/^--template$/)                      { read_template_file (shift); }
+    elsif (/^--fhead$/)                      { $fhead = $fhead . shift }
+    elsif (/^--fprod$/)                      { $fprod = $fprod . shift }
+    elsif (/^--ftail$/)                      { $ftail = $ftail . shift }
+    elsif (/^--eprod$/)                      { $eprod = $eprod . shift }
+    elsif (/^--vhead$/)                      { $vhead = $vhead . shift }
+    elsif (/^--vprod$/)                      { $vprod = $vprod . shift }
+    elsif (/^--vtail$/)                      { $vtail = $vtail . shift }
+    elsif (/^--comments$/)                   { $comment_tmpl = shift }
+    elsif (/^--help$/ || /^-h$/ || /^-h$/)   { usage; }
+    elsif (/^--version$/ || /^-v$/)          { version; }
     else { usage; }
     last if not defined($ARGV[0]);
 }

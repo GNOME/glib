@@ -1,3 +1,10 @@
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556706 – Inconsistent help arguments -h, -?
+
+	* glib-mkenums.in: Adjust help output, accept -?, capitalize.
+	Patch by Christian Dywan
+
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.8 ===
