@@ -4,13 +4,14 @@
 # Sami Pesonen <sampeson@iki.fi>, 2004-2005.
 # Ilkka Tuohela <hile@iki.fi>, 2005-2009.
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2008.
+# Harri Pitkänen <hatapitk [at] iki [dot] fi>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-02 01:13-0500\n"
-"PO-Revision-Date: 2009-02-23 16:50+0300\n"
+"PO-Revision-Date: 2009-03-02 20:52+0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -230,7 +231,7 @@ msgstr "Tiedoston \"%s\" sulkeminen epäonnistui: fclose() epäonnistui: %s"
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Olemassaolevan tiedoston \"%s\" poisto epäonnistui: g_unlink epäonnistui: %s"
+"Olemassa olevan tiedoston \"%s\" poisto epäonnistui: g_unlink epäonnistui: %s"
 
 #: glib/gfileutils.c:1247
 #, c-format
@@ -627,7 +628,7 @@ msgstr "tuntematon merkki (?< jälkeen"
 
 #: glib/gregex.c:241
 msgid "unrecognized character after (?P"
-msgstr "tuntmaton merkki (?P jälkeen"
+msgstr "tuntematon merkki (?P jälkeen"
 
 #: glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
@@ -674,7 +675,7 @@ msgstr "virheellinen numero tai nimi (?( jälkeen"
 
 #: glib/gregex.c:279
 msgid "conditional group contains more than two branches"
-msgstr "ehdollisessa ryhmässä on enenmmän kuin kaksi haaraa"
+msgstr "ehdollisessa ryhmässä on enemmän kuin kaksi haaraa"
 
 #: glib/gregex.c:282
 msgid "assertion expected after (?("
@@ -748,7 +749,7 @@ msgstr "epäyhtenäisiä NEWLINE-valitsimia"
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
-"\\g:n jälkeen ei tule nimeä aaltosulkeissa tai nollasta poikeavaa numeroa "
+"\\g:n jälkeen ei tule nimeä aaltosulkeissa tai nollasta poikkeavaa numeroa "
 "valinnaisesti aaltosulkeissa"
 
 #: glib/gregex.c:338
@@ -829,7 +830,7 @@ msgstr "tuntematon escape-jono"
 #: glib/gregex.c:2210
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "Virhe tulkittaessa korvaavaa tekstia \"%s\" kohdassa %lu: %s"
+msgstr "Virhe tulkittaessa korvaavaa tekstiä \"%s\" kohdassa %lu: %s"
 
 #: glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -1107,7 +1108,7 @@ msgstr ""
 #: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr "AVaintiedostossa ei ole avainta \"%s\" ryhmässä \"%s\""
+msgstr "Avaintiedostossa ei ole avainta \"%s\" ryhmässä \"%s\""
 
 #: glib/gkeyfile.c:3483
 msgid "Key file contains escape character at end of line"
@@ -1136,7 +1137,7 @@ msgstr "Arvoa \"%s\" ei voida tulkita liukuluvuksi."
 #: glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "Arvoa \"%s\" ei voida turkita totuusarvoksi."
+msgstr "Arvoa \"%s\" ei voida tulkita totuusarvoksi."
 
 #: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
 #: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
@@ -1211,7 +1212,7 @@ msgstr "asema ei toteuta aseman avausta"
 
 #: gio/gdrive.c:451
 msgid "drive doesn't implement polling for media"
-msgstr "asema ei toteut median tarkkailua"
+msgstr "asema ei toteuta median tarkkailua"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1256,7 +1257,7 @@ msgstr "Toiminto ei ole tuettu"
 #: gio/gfile.c:1313 gio/glocalfile.c:1074 gio/glocalfile.c:1085
 #: gio/glocalfile.c:1098
 msgid "Containing mount does not exist"
-msgstr "Ylläolevaa liitospistettä ei löydy"
+msgstr "Yllä olevaa liitospistettä ei löydy"
 
 #: gio/gfile.c:1965 gio/glocalfile.c:2145
 msgid "Can't copy over directory"
@@ -1609,7 +1610,7 @@ msgstr "Virhe suljettaessa tiedostoa: %s"
 
 #: gio/glocalfilemonitor.c:198
 msgid "Unable to find default local file monitor type"
-msgstr "Paikallisen tiedostomonitorinnin oletustapaa ei voitu selvittää"
+msgstr "Paikallisen tiedostomonitoroinnin oletustapaa ei voitu selvittää"
 
 #: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
 #, c-format
