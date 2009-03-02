@@ -1,3 +1,7 @@
+2009-03-02  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.19.9 ===
+
 2009-03-01  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 573128 – A couple of typos in GObject documentation
