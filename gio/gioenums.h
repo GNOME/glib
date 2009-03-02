@@ -163,7 +163,7 @@ typedef enum {
  *    rather than a "save new version of" replace operation.
  *    You can think of it as "unlink destination" before
  *    writing to it, although the implementation may not
- *    be exactly like that.
+ *    be exactly like that. Since 2.20
  *
  * Flags used when an operation may create a file.
  */

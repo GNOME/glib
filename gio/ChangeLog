@@ -1,3 +1,7 @@
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* gioenums.h: Add a Since: tag
+
 2009-03-01  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 573658 – Deadlock in giomodule.c
