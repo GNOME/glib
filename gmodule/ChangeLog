@@ -1,3 +1,10 @@
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 71704 - Header file include order
+
+	* gmodule.c: Include gmodule.h before io.h.
+	Pointed out by Kazuki Iwamoto
+
 2009-02-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.19.8 ===

@@ -31,6 +31,7 @@
 #include "config.h"
 
 #include "glib.h"
+#include "gmodule.h"
 
 #include <errno.h>
 #include <string.h>
@@ -46,7 +47,6 @@
 
 #include "gmoduleconf.h"
 #include "gstdio.h"
-#include "gmodule.h"
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support refernce counts on
