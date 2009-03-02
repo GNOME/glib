@@ -1,5 +1,12 @@
 2009-03-01  Matthias Clasen  <mclasen@redhat.com>
 
+	Bug 573658 – Deadlock in giomodule.c
+
+	* giomodule.c: Use a separate lock for extension point registration
+	to avoid deadlock. Discovered by Torsten Schoenfeld
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
 	* gdatainputstream.c: Fix docs
 
 2009-02-27  Matthias Clasen  <mclasen@redhat.com>

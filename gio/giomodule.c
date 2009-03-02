@@ -283,6 +283,7 @@ g_io_modules_load_all_in_directory (const char *dirname)
   return modules;
 }
 
+G_LOCK_DEFINE_STATIC (registered_extensions);
 G_LOCK_DEFINE_STATIC (loaded_dirs);
 
 extern GType _g_fen_directory_monitor_get_type (void);
@@ -302,7 +303,7 @@ _g_io_modules_ensure_extension_points_registered (void)
   static gboolean registered_extensions = FALSE;
   GIOExtensionPoint *ep;
 
-  G_LOCK (loaded_dirs);
+  G_LOCK (registered_extensions);
   
   if (!registered_extensions)
     {
@@ -329,7 +330,7 @@ _g_io_modules_ensure_extension_points_registered (void)
       g_io_extension_point_set_required_type (ep, G_TYPE_VFS);
     }
   
-  G_UNLOCK (loaded_dirs);
+  G_UNLOCK (registered_extensions);
  }
 
 void
