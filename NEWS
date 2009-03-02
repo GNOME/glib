@@ -1,3 +1,55 @@
+Overview of Changes from GLib 2.19.8 to GLib 2.19.9
+===================================================
+
+* GMarkup:
+ - Considerable speedup
+
+* GIO
+ - Add G_FILE_CREATE_REPLACE_DESTINATION flag to allow replacing
+   the destination of a copying operation as if it did not exit before.
+ - Be more careful when classifying files as desktop files
+ - Support desktop file key X-GIO-NoFuse which disables the use
+   of fuse pathnames for %u and %U arguments
+
+* Bugs fixed:
+ 572672 glib/gthread.c: argument is different type
+ 572464 Doc for g_file_get_contents
+ 572151 “it's” and “its” confused in docs and comments
+ 570501 g_win32_get_system_data_dirs uses invalid conversion...
+ 167569 g_string_append_printf crashes on win32 when used...
+ 572508 gmarkup speedup
+ 560564 Replacing a symlink with its linked file truncates... 
+ 549298 impossible to copy files with p (pipe) flag
+ 543183 Clarify docs for g_file_has_prefix
+ 540461 g_memory_output_stream_get_data_size() doesn't behave...
+ 573462 GEmblemedIcon leak
+ 573421 Clarify message format in GMountOperation
+ 573658 Deadlock in giomodule.c
+ 556706 Inconsistent help arguments -h, -?
+ 573527 Wrong shell to run config.status in Makefile.in.in
+ 573128 A couple of typos in GObject documentation
+
+* Updated translations:
+ Catalan (ca)
+ British English (en_GB)
+ Spanish (es)
+ Basque (eu)
+ Finnish (fi)
+ French (fr)
+ Gujarati (gu)
+ Hebrew (he)
+ Hungarian (hu)
+ Korean (ko)
+ Maithili (mai)
+ Norwegian bokmål (nb)
+ Dutch (nl)
+ Portugese (pt)
+ Swedish (sv)
+ Thai (th)
+ Traditional Chinese (zh_HK)
+ Traditional Chinese (zh_TW)
+
+
 Overview of Changes from GLib 2.19.7 to GLib 2.19.8
 ===================================================
 

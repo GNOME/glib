@@ -1,3 +1,17 @@
+2009-03-02  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-03-01  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 572508 – gmarkup speedup ...
+
+	* glib/gmarkup.c: Various optimizations: do less allocations by
+	keeping a pool of GStrings, do in-place unescaping, avoid redundant
+	utf-8 validation. Patch by Michael Meeks
+
+	* tests/markups/fail-36.gmarkup: Adapt
+
 2009-03-01  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/gthread.c: Fix docs.
