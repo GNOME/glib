@@ -9,9 +9,9 @@ dnl ***********************************
 m4_define(glib_configure_in)
 
 #
-# The following version number definitions apply to GLib, GModule, GObject 
-# and GThread as a whole, so if changes occoured in any of them, they are all
-# treated with the same interface and binary age.
+# The following version number definitions apply to GLib, GModule, GObject,
+# GThread and GIO as a whole, so if changes occurred in any of them, they are
+# all treated with the same interface and binary age.
 #
 # Making releases:
 #   glib_micro_version += 1;
@@ -23,7 +23,7 @@ m4_define(glib_configure_in)
 #
 m4_define([glib_major_version], [2])
 m4_define([glib_minor_version], [19])
-m4_define([glib_micro_version], [9])
+m4_define([glib_micro_version], [10])
 m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
