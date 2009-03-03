@@ -70,7 +70,7 @@ static gboolean   g_file_output_stream_seekable_truncate      (GSeekable        
 							       GCancellable         *cancellable,
 							       GError              **error);
 static void       g_file_output_stream_real_query_info_async  (GFileOutputStream    *stream,
-							       char                 *attributes,
+							       const char           *attributes,
 							       int                   io_priority,
 							       GCancellable         *cancellable,
 							       GAsyncReadyCallback   callback,
@@ -143,7 +143,7 @@ g_file_output_stream_init (GFileOutputStream *stream)
  **/
 GFileInfo *
 g_file_output_stream_query_info (GFileOutputStream      *stream,
-				    char                   *attributes,
+				    const char             *attributes,
 				    GCancellable           *cancellable,
 				    GError                **error)
 {
@@ -211,7 +211,7 @@ async_ready_callback_wrapper (GObject *source_object,
  **/
 void
 g_file_output_stream_query_info_async (GFileOutputStream     *stream,
-					  char                 *attributes,
+					  const char           *attributes,
 					  int                   io_priority,
 					  GCancellable         *cancellable,
 					  GAsyncReadyCallback   callback,
@@ -536,7 +536,7 @@ query_info_async_thread (GSimpleAsyncResult *res,
 
 static void
 g_file_output_stream_real_query_info_async (GFileOutputStream     *stream,
-					       char                 *attributes,
+					       const char           *attributes,
 					       int                   io_priority,
 					       GCancellable         *cancellable,
 					       GAsyncReadyCallback   callback,

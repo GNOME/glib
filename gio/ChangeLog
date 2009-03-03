@@ -1,5 +1,14 @@
 2009-03-03  Alexander Larsson  <alexl@redhat.com>
 
+	Bug 562613 – Missing const modifier in string parameters
+
+        * gfileinputstream.[ch]:
+        * gfileoutputstream.[ch]:
+        * glocalfileinfo.[ch]:
+	Make string arguments const if used as such.
+
+2009-03-03  Alexander Larsson  <alexl@redhat.com>
+
 	* glocalfile.c (g_local_file_query_filesystem_info):
 	Handle filesystems no supporting reporting how much is free.
 	This fixes bug 573454 where the filesystem not supporting this

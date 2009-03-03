@@ -69,11 +69,11 @@ struct _GFileInputStreamClass
                                      GCancellable         *cancellable,
                                      GError              **error);
   GFileInfo * (* query_info)        (GFileInputStream     *stream,
-                                     char                 *attributes,
+                                     const char           *attributes,
                                      GCancellable         *cancellable,
                                      GError              **error);
   void        (* query_info_async)  (GFileInputStream     *stream,
-                                     char                 *attributes,
+                                     const char           *attributes,
                                      int                   io_priority,
                                      GCancellable         *cancellable,
                                      GAsyncReadyCallback   callback,
@@ -94,11 +94,11 @@ struct _GFileInputStreamClass
 GType      g_file_input_stream_get_type          (void) G_GNUC_CONST;
 
 GFileInfo *g_file_input_stream_query_info        (GFileInputStream     *stream,
-						  char                 *attributes,
+						  const char           *attributes,
 						  GCancellable         *cancellable,
 						  GError              **error);
 void       g_file_input_stream_query_info_async  (GFileInputStream     *stream,
-						  char                 *attributes,
+						  const char           *attributes,
 						  int                   io_priority,
 						  GCancellable         *cancellable,
 						  GAsyncReadyCallback   callback,

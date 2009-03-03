@@ -1681,9 +1681,9 @@ _g_local_file_info_get (const char             *basename,
 }
 
 GFileInfo *
-_g_local_file_info_get_from_fd (int      fd,
-				char    *attributes,
-				GError **error)
+_g_local_file_info_get_from_fd (int         fd,
+				const char *attributes,
+				GError    **error)
 {
   GLocalFileStat stat_buf;
   GFileAttributeMatcher *matcher;

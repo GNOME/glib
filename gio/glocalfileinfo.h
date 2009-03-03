@@ -60,7 +60,7 @@ GFileInfo *_g_local_file_info_get             (const char             *basename,
                                                GLocalParentFileInfo   *parent_info,
                                                GError                **error);
 GFileInfo *_g_local_file_info_get_from_fd     (int                     fd,
-                                               char                   *attributes,
+                                               const char             *attributes,
                                                GError                **error);
 char *     _g_local_file_info_create_etag     (GLocalFileStat         *statbuf);
 gboolean   _g_local_file_info_set_attribute   (char                   *filename,
