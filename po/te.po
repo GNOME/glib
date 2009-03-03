@@ -1,4 +1,4 @@
-# translation of glib.HEAD.te.po to Telugu
+# translation of te.po to Telugu
 # Telugu translation of glib
 # Copyright (C) 2005 Free Software Foundation, Andhra Pradesh.
 # This file is distributed under the same license as the GLIB package.
@@ -7,20 +7,20 @@
 # విక్రం ఫణీంద్ర <vikramphaneendra@yahoo.co.in>, 2005.
 # దండు ప్రసాద్ <dandu_prasad2000@yahoo.com>, 2005.
 # రమణ సాయి <rmn_sai@yahoo.co.in>, 2005.
-# Krishna Babu K <kkrothap@redhat.com>, 2008.
+# Krishna Babu K <kkrothap@redhat.com>, 2008, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD.te\n"
+"Project-Id-Version: te\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-03-02 01:13-0500\n"
-"PO-Revision-Date: 2008-09-17 19:40+0530\n"
+"PO-Revision-Date: 2009-03-03 14:24+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 
 #: glib/gbookmarkfile.c:737
@@ -305,8 +305,7 @@ msgid "Error on line %d: %s"
 msgstr "%d  వరుసలో దోషం కలదు : %s"
 
 #: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr " ఖాశి వ్యష్టి '&;' చూడబడినది;  వర్తించు వ్యష్టిలు: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:503
@@ -394,8 +393,7 @@ msgstr "పత్రం తప్పనిసరిగా ఒక మూలకం
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
-"  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
+msgstr "  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
 
 #: glib/gmarkup.c:1276
 #, c-format
@@ -406,8 +404,7 @@ msgstr "బేసి అక్షరము '%s', ఖాళీ-మూలకపు
 
 #: glib/gmarkup.c:1365
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
 
 #: glib/gmarkup.c:1407
@@ -425,8 +422,7 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr ""
-"బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
+msgstr "బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
 
 #: glib/gmarkup.c:1635
 #, c-format
@@ -468,16 +464,14 @@ msgstr "పత్రం చివర కోణ కుండలీకరణము
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr ""
-"మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
+msgstr "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
 #: glib/gmarkup.c:1888
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
+msgstr "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
 #: glib/gmarkup.c:1894
 msgid "Document ended unexpectedly inside an element name"
@@ -724,8 +718,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "అస్థిరత్వ NEWLINE ఐచ్చికాలు"
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g బ్రేస్‌డ్ నామముతో లేదా పాక్షికముగా బ్రేస్‌చేయబడివున్న సున్నా-కాని సంఖ్యతో అనుసరింపబడదు"
 
 #: glib/gregex.c:338
@@ -1017,8 +1010,7 @@ msgstr " కాళీ దస్త్రం "
 
 #: glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ఏదైతే మీట-విలువలు , గ్రూప్ ,లేక వ్యాఖ్య కాదో అది మీట దస్త్రంలో లైన్ '%s' కలిగియున్నది"
 
 #: glib/gkeyfile.c:821
@@ -1067,8 +1059,7 @@ msgstr "'%s' మీట దస్త్రం యొక్క మీట ను �
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr ""
-"'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
+msgstr "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
 
 #: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
 #, c-format
@@ -1182,26 +1173,26 @@ msgstr "మాధ్యమం కొరకు ఎన్నికను డ్ర
 #: gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
-msgstr ""
+msgstr "GEmblem ఎన్కోడింగ్ యొక్క వర్షన్ %dను సంభాలించలేదు"
 
 #: gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
-msgstr ""
+msgstr "GEmblem ఎన్కోడింగ్‌నందు టోకెన్సు (%d)యొక్క తప్పుగావున్న సంఖ్య"
 
 #: gio/gemblemedicon.c:296
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
-msgstr ""
+msgstr "GEmblemedIcon ఎన్కోడింగ్ యొక్క వర్షన్ %dను సంభాలించలేదు"
 
 #: gio/gemblemedicon.c:306
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr ""
+msgstr "GEmblemedIcon ఎన్కోడింగ్‌నందు టోకెన్సు (%d)యొక్క తప్పుగావున్న సంఖ్య"
 
 #: gio/gemblemedicon.c:329
 msgid "Expected a GEmblem for GEmblemedIcon"
-msgstr ""
+msgstr "GEmblemedIcon కొరకు GEmblem కావలసివుంది"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
@@ -1241,9 +1232,8 @@ msgid "Can't recursively copy directory"
 msgstr "డైరెక్టరీని పునరావృతముగా నకలుతీయలేదు"
 
 #: gio/gfile.c:2346
-#, fuzzy
 msgid "Can't copy special file"
-msgstr "డైరెక్టరీనందు నకలు తీయలేదు"
+msgstr "ప్రత్యేక దస్త్రమును నకలుతీయలేదు"
 
 #: gio/gfile.c:2887
 msgid "Invalid symlink value given"
@@ -1290,11 +1280,11 @@ msgstr "ప్రతిమను కలిగివున్న దస్త్�
 #: gio/gfileicon.c:237
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
-msgstr ""
+msgstr "GFileIcon ఎన్కోడింగ్ యొక్క వర్షన్ %dను సంభాలించలేదు"
 
 #: gio/gfileicon.c:247
 msgid "Malformed input data for GFileIcon"
-msgstr ""
+msgstr "GFileIcon కొరకు తప్పుగావున్న ఇన్పుట్ డాటా"
 
 #: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
 #: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
@@ -1316,36 +1306,36 @@ msgstr "స్ట్రీమ్‌పైన ట్రంకేట్ మద్�
 #: gio/gicon.c:324
 #, c-format
 msgid "Wrong number of tokens (%d)"
-msgstr ""
+msgstr "తప్పుడు సంఖ్యా టోకెన్లు (%d)"
 
 #: gio/gicon.c:344
 #, c-format
 msgid "No type for class name %s"
-msgstr ""
+msgstr "క్లాస్ నామము %s కొరకు ఏ రకములేదు"
 
 #: gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
-msgstr ""
+msgstr "రకము %s GIcon యింటర్‌ఫేస్‌ను తయారుచేయలేదు"
 
 #: gio/gicon.c:365
 #, c-format
 msgid "Type %s is not classed"
-msgstr ""
+msgstr "రకము %s వర్గీకరించబడలేదు"
 
 #: gio/gicon.c:379
 #, c-format
 msgid "Malformed version number: %s"
-msgstr ""
+msgstr "తప్పుగావున్న వర్షన్ సంఖ్య: %s"
 
 #: gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
+msgstr "GIcon యింటర్ఫేస్ పైన రకము %s అనునది from_tokens()ను తయారుచేయలేదు"
 
 #: gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
-msgstr ""
+msgstr "ప్రతిమ ఎన్కోడింగును పంపిణిచేసిన వర్షన్ సంభాలించలేదు"
 
 #: gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
@@ -1622,9 +1612,9 @@ msgid "The file was externally modified"
 msgstr "ఆ దస్త్రము బహిర్గతముగా మార్చబడినది"
 
 #: gio/glocalfileoutputstream.c:922
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing old file: %s"
-msgstr "దస్త్రమును తొలగించుటలో దోషము: %s"
+msgstr "పాత దస్త్రమును తొలగించుటలో దోషము: %s"
 
 #: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
 msgid "Invalid GSeekType supplied"
@@ -1724,24 +1714,23 @@ msgstr ""
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr ""
+msgstr "GThemedIcon ఎన్కోడింగుయొక్క వర్షన్ %dను సంభాలించలేదు"
 
 #: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
 msgid "File descriptor"
-msgstr ""
+msgstr "దస్త్రము వివరణి"
 
 #: gio/gunixinputstream.c:162
 msgid "The file descriptor to read from"
-msgstr ""
+msgstr "దీనినుండి చదువుటకు దస్త్రము వివరణి"
 
 #: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-#, fuzzy
 msgid "Close file descriptor"
-msgstr "దస్త్రము వివరణిని ప్రతిపాదించుటలో దోషము: %s"
+msgstr "దస్త్రము వివరణిని మూయుము"
 
 #: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
 msgid "Whether to close the file descriptor when the stream is closed"
-msgstr ""
+msgstr "స్ట్రీమ్ మూయబడినప్పుడు దస్త్ర వివరణిను కూడా మూయాలా"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1761,7 +1750,7 @@ msgstr "దస్త్రవ్యవస్థ రూట్"
 
 #: gio/gunixoutputstream.c:148
 msgid "The file descriptor to write to"
-msgstr ""
+msgstr "దీనికి వ్రాయుటకు దస్త్ర వివరణి"
 
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
@@ -1804,3 +1793,4 @@ msgstr "పొడవైన జాబితాకరణ రూపాన్ని 
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
