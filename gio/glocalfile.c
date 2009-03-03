@@ -957,14 +957,13 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif
   block_size = statfs_buffer.f_bsize;
   
-#if defined(__linux__)
-  /* ncpfs does not know the amount of available and free space *
-   * assuming ncpfs is linux specific, if you are on a non-linux platform
-   * where ncpfs is available, please file a bug about it on bugzilla.gnome.org
+  /* Many backends can't report free size (for instance the gvfs fuse
+     backend for backend not supporting this), and set f_bfree to 0,
+     but it can be 0 for real too. We treat the availible == 0 and
+     free == 0 case as "both of these are invalid".
    */
-  if (statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0 &&
-      /* linux/ncp_fs.h: NCP_SUPER_MAGIC == 0x564c */
-      statfs_buffer.f_type == 0x564c)
+#ifndef G_OS_WIN32
+  if (statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
     no_size = TRUE;
 #endif
   

@@ -1,3 +1,10 @@
+2009-03-03  Alexander Larsson  <alexl@redhat.com>
+
+	* glocalfile.c (g_local_file_query_filesystem_info):
+	Handle filesystems no supporting reporting how much is free.
+	This fixes bug 573454 where the filesystem not supporting this
+	is the gvfs smb backend over the fuse filesystem.
+
 2009-03-02  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.19.10 ===
