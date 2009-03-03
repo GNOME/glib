@@ -31,6 +31,7 @@
 #ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
+#include <string.h>
 
 #include "gioalias.h"
 
@@ -90,9 +91,22 @@ g_local_vfs_get_file_for_uri (GVfs       *vfs,
 {
   char *path;
   GFile *file;
+  char *stripped_uri, *hash;
+  
+  if (strchr (uri, '#') != NULL)
+    {
+      stripped_uri = g_strdup (uri);
+      hash = strchr (stripped_uri, '#');
+      *hash = 0;
+    }
+  else
+    stripped_uri = (char *)uri;
+      
+  path = g_filename_from_uri (stripped_uri, NULL, NULL);
 
-  path = g_filename_from_uri (uri, NULL, NULL);
-
+  if (stripped_uri != uri)
+    g_free (stripped_uri);
+  
   if (path != NULL)
     file = _g_local_file_new (path);
   else

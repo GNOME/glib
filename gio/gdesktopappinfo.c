@@ -567,6 +567,7 @@ expand_macro (char              macro,
   char *expanded;
   gboolean force_file_uri;
   char force_file_uri_macro;
+  char *uri;
 
   g_return_if_fail (exec != NULL);
 
@@ -602,15 +603,18 @@ expand_macro (char              macro,
     case 'n':
       if (uris)
 	{
-          if (!force_file_uri)
+	  uri = uris->data;
+          if (!force_file_uri ||
+	      /* Pass URI if it contains an anchor */
+	      strchr (uri, '#') != NULL)
             {
-              expanded = expand_macro_single (macro, uris->data);
+              expanded = expand_macro_single (macro, uri);
             }
           else
             {
-              expanded = expand_macro_single (force_file_uri_macro, uris->data);
+              expanded = expand_macro_single (force_file_uri_macro, uri);
               if (expanded == NULL)
-                expanded = expand_macro_single (macro, uris->data);
+                expanded = expand_macro_single (macro, uri);
             }
 
 	  if (expanded)
@@ -629,15 +633,19 @@ expand_macro (char              macro,
     case 'N':
       while (uris)
 	{
-          if (!force_file_uri)
+	  uri = uris->data;
+	  
+          if (!force_file_uri ||
+	      /* Pass URI if it contains an anchor */
+	      strchr (uri, '#') != NULL)
             {
-              expanded = expand_macro_single (macro, uris->data);
+              expanded = expand_macro_single (macro, uri);
             }
           else
             {
-              expanded = expand_macro_single (force_file_uri_macro, uris->data);
+              expanded = expand_macro_single (force_file_uri_macro, uri);
               if (expanded == NULL)
-                expanded = expand_macro_single (macro, uris->data);
+                expanded = expand_macro_single (macro, uri);
             }
 
 	  if (expanded)

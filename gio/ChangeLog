@@ -1,5 +1,17 @@
 2009-03-03  Alexander Larsson  <alexl@redhat.com>
 
+	Bug 561172 – gnome-open fails on local URIs with anchors
+
+        * gdesktopappinfo.c:
+	Don't force uris to filenames if the uri has an anchor, because
+	that would strip the anchor.
+
+        * glocalvfs.c:
+	Strip anchor from file:// uris when creating GFile, since
+	g_filename_from_uri doesn't handle them.
+
+2009-03-03  Alexander Larsson  <alexl@redhat.com>
+
 	Bug 562613 – Missing const modifier in string parameters
 
         * gfileinputstream.[ch]:
