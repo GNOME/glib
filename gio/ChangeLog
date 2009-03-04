@@ -1,5 +1,12 @@
 2009-03-04  Alexander Larsson  <alexl@redhat.com>
 
+	Bug 573843 – g_get_current_dir returns non-absolute path
+
+	* glocalfile.c (canonicalize_filename):
+	Handle the case where g_get_current_dir() returns a non-absolute path.
+
+2009-03-04  Alexander Larsson  <alexl@redhat.com>
+
 	Bug 573970 – crash in gunixvolumemonitor:update_mounts when unmounting
 
         * gunionvolumemonitor.c:

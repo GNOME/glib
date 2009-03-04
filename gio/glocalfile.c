@@ -244,6 +244,15 @@ canonicalize_filename (const char *filename)
 
   start = (char *)g_path_skip_root (canon);
 
+  if (start == NULL)
+    {
+      /* This shouldn't really happen, as g_get_current_dir() should
+	 return an absolute pathname, but bug 573843 shows this is
+	 not always happening */
+      g_free (canon);
+      return g_build_filename (G_DIR_SEPARATOR_S, filename, NULL);
+    }
+  
   /* POSIX allows double slashes at the start to
    * mean something special (as does windows too).
    * So, "//" != "/", but more than two slashes
