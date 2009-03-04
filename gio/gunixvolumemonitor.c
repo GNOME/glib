@@ -90,6 +90,23 @@ g_unix_volume_monitor_finalize (GObject *object)
   G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->finalize (object);
 }
 
+static void
+g_unix_volume_monitor_dispose (GObject *object)
+{
+  GUnixVolumeMonitor *monitor;
+
+  monitor = G_UNIX_VOLUME_MONITOR (object);
+  g_list_foreach (monitor->volumes, (GFunc)g_object_unref, NULL);
+  g_list_free (monitor->volumes);
+  monitor->volumes = NULL;
+  
+  g_list_foreach (monitor->mounts, (GFunc)g_object_unref, NULL);
+  g_list_free (monitor->mounts);
+  monitor->mounts = NULL;
+  
+  G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->dispose (object);
+}
+
 static GList *
 get_mounts (GVolumeMonitor *volume_monitor)
 {
@@ -170,6 +187,7 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
   GNativeVolumeMonitorClass *native_class = G_NATIVE_VOLUME_MONITOR_CLASS (klass);
   
   gobject_class->finalize = g_unix_volume_monitor_finalize;
+  gobject_class->dispose = g_unix_volume_monitor_dispose;
 
   monitor_class->get_mounts = get_mounts;
   monitor_class->get_volumes = get_volumes;

@@ -1,3 +1,15 @@
+2009-03-04  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 573970 – crash in gunixvolumemonitor:update_mounts when unmounting
+
+        * gunionvolumemonitor.c:
+        (g_union_volume_monitor_dispose):
+	Run dispose on child monitors when disposing.
+
+        * gunixvolumemonitor.c:
+	Remove all volumes and mount on dispose to avoid circular
+	dependencies not freeing the monitor
+
 2009-03-03  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 561172 – gnome-open fails on local URIs with anchors

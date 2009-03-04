@@ -80,11 +80,20 @@ static void
 g_union_volume_monitor_dispose (GObject *object)
 {
   GUnionVolumeMonitor *monitor;
-  
+  GVolumeMonitor *child_monitor;
+  GList *l;
+
   monitor = G_UNION_VOLUME_MONITOR (object);
 
   g_static_rec_mutex_lock (&the_volume_monitor_mutex);
   the_volume_monitor = NULL;
+
+  for (l = monitor->monitors; l != NULL; l = l->next)
+    {
+      child_monitor = l->data;
+      g_object_run_dispose (G_OBJECT (child_monitor));
+    }
+  
   g_static_rec_mutex_unlock (&the_volume_monitor_mutex);
 
   G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->dispose (object);
