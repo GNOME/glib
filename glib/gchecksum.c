@@ -31,6 +31,7 @@
 
 #define IS_VALID_TYPE(type)     ((type) >= G_CHECKSUM_MD5 && (type) <= G_CHECKSUM_SHA256)
 
+/* The fact that these are lower case characters is part of the ABI */
 static const gchar hex_digits[] = "0123456789abcdef";
 
 #define MD5_DATASIZE    64
@@ -1255,6 +1256,8 @@ g_checksum_update (GChecksum    *checksum,
  *
  * Once this function has been called the #GChecksum can no longer be
  * updated with g_checksum_update().
+ * 
+ * The hexadecimal characters will be lower case. 
  *
  * Return value: the hexadecimal representation of the checksum. The
  *   returned string is owned by the checksum and should not be modified
@@ -1373,6 +1376,8 @@ g_checksum_get_digest (GChecksum  *checksum,
  * Computes the checksum for a binary @data of @length. This is a
  * convenience wrapper for g_checksum_new(), g_checksum_get_string()
  * and g_checksum_free().
+ * 
+ * The hexadecimal string returned will be in lower case.
  *
  * Return value: the digest of the binary data as a string in hexadecimal.
  *   The returned string should be freed with g_free() when done using it.
@@ -1408,6 +1413,8 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
  * @length: the length of the string, or -1 if the string is null-terminated.
  *
  * Computes the checksum of a string.
+ * 
+ * The hexadecimal string returned will be in lower case.
  *
  * Return value: the checksum as a hexadecimal string. The returned string
  *   should be freed with g_free() when done using it.

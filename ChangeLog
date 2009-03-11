@@ -1,3 +1,8 @@
+2009-03-11  Stef Walter  <stef@memberwebs.com>
+
+	* glib/gchecksum.c: Document and guarantee hex digests will
+	be returned in lower case. Fixes bug #574019
+
 2009-03-02  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Bump version
