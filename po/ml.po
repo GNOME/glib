@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
 "POT-Creation-Date: 2009-03-02 06:36+0000\n"
-"PO-Revision-Date: 2009-03-10 21:58+0530\n"
-"Last-Translator: Ani Peter <apeter@redhat.com>\n"
-"Language-Team:  Swathanthra Malayalam Computing|സ്വതന്ത്ര മലയാളം കമ്പ്യൂട്ടിങ് <smc-discuss@googlegroups.com>\n"
+"PO-Revision-Date: 2009-03-11 21:25+0530\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -370,11 +370,11 @@ msgstr "പൂര്‍ണ്ണമാകാത്ത അക്ഷര സൂച�
 
 #: ../glib/gmarkup.c:1063
 msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr ""
+msgstr "തെറ്റായ UTF-8 എന്‍കോഡട് വാചകം - ഓവര്‍ലോങ് സീക്വന്‍സ്"
 
 #: ../glib/gmarkup.c:1091
 msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr ""
+msgstr "തെറ്റായ UTF-8 എന്‍കോഡട് വാചകം - ആരംഭിക്കേണ്ട അക്ഷരമല്ല"
 
 #: ../glib/gmarkup.c:1130
 #, c-format
@@ -569,15 +569,15 @@ msgstr "\\-ന് ശേഷം അപരിചിതമായ അക്ഷരം
 
 #: ../glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
+msgstr "കെയിസ്-ചെഞ്ചിങ് എസ്കേപ്പുകള്‍ (\\l, \\L, \\u, \\U) ഇവിടെ അനുവദിക്കുന്നതല്ല"
 
 #: ../glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
-msgstr ""
+msgstr "{} ക്വാണ്ടിഫയറില്‍ നമ്പറുകള്‍ ക്രമത്തിലല്ല"
 
 #: ../glib/gregex.c:218
 msgid "number too big in {} quantifier"
-msgstr ""
+msgstr "{} ക്വാണ്ടിഫയറില്‍ നമ്പര്‍ വളരെ വലുതാണു്"
 
 #: ../glib/gregex.c:221
 msgid "missing terminating ] for character class"
@@ -609,7 +609,7 @@ msgstr "(?P-ന് ശേഷം അപരിചിതമായ ക്യാര�
 
 #: ../glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
-msgstr ""
+msgstr "POSIX named ക്ലാസ്സുകള്‍ക്കു് ഒരു ക്ലാസ്സില്‍ മാത്രമേ പിന്തുണ ലഭ്യമുള്ളൂ"
 
 #: ../glib/gregex.c:247
 msgid "missing terminating )"
@@ -628,7 +628,7 @@ msgstr "(?R അല്ലെങ്കില്‍ (?[+-]digits എന്നിവ
 
 #: ../glib/gregex.c:261
 msgid "reference to non-existent subpattern"
-msgstr ""
+msgstr "നിലവിലില്ലാത്ത ഉപമാതൃകയ്ക്കുള്ള സൂചന"
 
 #: ../glib/gregex.c:264
 msgid "missing ) after comment"
@@ -644,7 +644,7 @@ msgstr "മെമ്മറി ലഭ്യമാക്കുന്നതില�
 
 #: ../glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "lookbehind അസേര്‍ഷന്റെ വ്യാപ്തി സ്ഥിരമല്ല"
 
 #: ../glib/gregex.c:276
 msgid "malformed number or name after (?("
@@ -652,11 +652,11 @@ msgstr "(?(-ന് ശേഷം തെറ്റായ അക്കം അല്�
 
 #: ../glib/gregex.c:279
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "കണ്ടീഷനല്‍ ഗ്രൂപ്പില്‍ രണ്ടു് ബ്രാഞ്ചില്‍ കൂടുതലുണ്ടു്"
 
 #: ../glib/gregex.c:282
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "(?(-നു് ശേഷം അസേര്‍ഷന്‍ പ്രതീക്ഷിക്കുന്നു"
 
 #: ../glib/gregex.c:285
 msgid "unknown POSIX class name"
@@ -664,11 +664,11 @@ msgstr "അപരിചിതമായ പോസിക്സ് ക്ലാസ�
 
 #: ../glib/gregex.c:288
 msgid "POSIX collating elements are not supported"
-msgstr ""
+msgstr "POSIX കോളേറ്റിങ് എലമെന്റുകള്‍ക്കുള്ള പിന്തുണ ലഭ്യമല്ല"
 
 #: ../glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
-msgstr ""
+msgstr "\\x{...}-ലുള്ള അക്ഷര മൂല്ല്യം വളരെ വലുതു്"
 
 #: ../glib/gregex.c:294
 msgid "invalid condition (?(0)"
@@ -676,19 +676,19 @@ msgstr "തെറ്റായ അവസ്ഥ (?(0)"
 
 #: ../glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "\\C not allowed in lookbehind assertion"
 
 #: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
-msgstr ""
+msgstr "റിക്കേര്‍സീവ് കോള്‍ ലൂപില്‍ അനിശ്ചിതമായി പ്രവര്‍ത്തിക്കുന്നു"
 
 #: ../glib/gregex.c:303
 msgid "missing terminator in subpattern name"
-msgstr ""
+msgstr "ഉപമാതൃകയുടെ പേരില്‍ ടെര്‍മിനേറ്റര്‍ ലഭ്യമല്ല"
 
 #: ../glib/gregex.c:306
 msgid "two named subpatterns have the same name"
-msgstr ""
+msgstr "രണ്ടു് named ഉപമാതൃകകള്‍ക്കു് ഒരേ പേരു്"
 
 #: ../glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
@@ -704,7 +704,7 @@ msgstr "ഉപമാതൃക നാമം വളരെ വലുതാണു്
 
 #: ../glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr ""
+msgstr "അവനധി named ഉപമാതൃകകള്‍ (കൂടിയാല്‍ 10,000)"
 
 #: ../glib/gregex.c:321
 msgid "octal value is greater than \\377"
@@ -724,7 +724,7 @@ msgstr "സ്ഥിരതയില്ലാത്ത NEWLINE ഉപാധിക
 
 #: ../glib/gregex.c:333
 msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
+msgstr "\\g is not followed by a braced name or an optionally braced non-zero number"
 
 #: ../glib/gregex.c:338
 msgid "unexpected repeat"
@@ -736,11 +736,11 @@ msgstr "കോഡ് ഓവര്‍ഫ്ലോ"
 
 #: ../glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr ""
+msgstr "overran compiling workspace"
 
 #: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "മുമ്പു് പരിശോധിച്ചിട്ടുള്ള സൂചന ഉപമാതൃകകള്‍ ലഭ്യമല്ല"
 
 #: ../glib/gregex.c:526 ../glib/gregex.c:1605
 #, c-format
@@ -1341,15 +1341,15 @@ msgstr "തെറ്റായ പതിപ്പു്: %s"
 #: ../gio/gicon.c:393
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
+msgstr "GIcon ഇന്റര്‍ഫെയിസില്‍ %s തരത്തിലുള്ളവ from_tokens() ലഭ്യമാക്കുന്നില്ല"
 
 #: ../gio/gicon.c:469
 msgid "Can't handle the supplied version the icon encoding"
-msgstr ""
+msgstr "ലഭ്യമാക്കിയ ചിഹ്നം എന്‍കോഡിങിന്റെ പതിപ്പ് കൈകാര്യം ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
 #: ../gio/ginputstream.c:202
 msgid "Input stream doesn't implement read"
-msgstr ""
+msgstr "ഇന്‍പുട്ട് സ്ട്രീം read ലഭ്യമാക്കുന്നില്ല"
 
 #. Translators: This is an error you get if there is already an
 #. * operation running against this stream when you try to start
@@ -1359,11 +1359,11 @@ msgstr ""
 #. * you try to start one
 #: ../gio/ginputstream.c:911 ../gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "സ്ട്രീമില്‍ തെറ്റായ പ്രക്രിയ"
 
 #: ../gio/glocaldirectorymonitor.c:274
 msgid "Unable to find default local directory monitor type"
-msgstr ""
+msgstr "സ്വതവേയുള്ള ലോക്കല്‍ ഡയറക്ടറി തരത്തിലുള്ള മോണിറ്റര്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
 #: ../gio/glocalfile.c:608 ../gio/win32/gwinhttpfile.c:411
 #, c-format
@@ -1420,7 +1420,7 @@ msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറ�
 
 #: ../gio/glocalfile.c:1761
 msgid "Unable to find toplevel directory for trash"
-msgstr ""
+msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ടോപ് ലവല്‍ ഡയറക്ടറി ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
 #: ../gio/glocalfile.c:1840 ../gio/glocalfile.c:1860
 msgid "Unable to find or create trash directory"
@@ -1499,7 +1499,7 @@ msgstr " (തെറ്റായ എന്‍കോഡിങ്)"
 #: ../gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Error stating file descriptor: %s"
-msgstr ""
+msgstr "ഫയല്‍ വിശദീകരണ സംവിധാനം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
 #: ../gio/glocalfileinfo.c:1749
 msgid "Invalid attribute type (uint32 expected)"
@@ -1655,39 +1655,39 @@ msgstr "മെമ്മറി ഔട്ട്പുട്ട് സ്ട്ര�
 #. * don't implement unmount.
 #: ../gio/gmount.c:360
 msgid "mount doesn't implement unmount"
-msgstr ""
+msgstr "mount unmount അനുവദിക്കുന്നില്ല"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: ../gio/gmount.c:435
 msgid "mount doesn't implement eject"
-msgstr ""
+msgstr "mount eject അനുവദിക്കുന്നില്ല"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: ../gio/gmount.c:517
 msgid "mount doesn't implement remount"
-msgstr ""
+msgstr "mount remount അനുവദിക്കുന്നില്ല"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:601
 msgid "mount doesn't implement content type guessing"
-msgstr ""
+msgstr "mount doesn't implement content type guessing"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:690
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr ""
+msgstr "mount doesn't implement synchronous content type guessing"
 
 #: ../gio/goutputstream.c:211 ../gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
-msgstr ""
+msgstr "ഔട്ട്പുട്ട് സ്ട്രീം റൈറ്റ് ലഭ്യമാക്കുന്നില്ല"
 
 #: ../gio/goutputstream.c:372 ../gio/goutputstream.c:780
 msgid "Source stream is already closed"
@@ -1718,6 +1718,8 @@ msgid ""
 "Whether to use default fallbacks found by shortening the name at '-' "
 "characters. Ignores names after the first if multiple names are given."
 msgstr ""
+"'-' വഴി പേരു് ചെറുതാക്കി സ്വതവേയുള്ള ഫോള്‍ബാക്കുകള്‍ ഉപയോഗിക്കണമോ എന്നു്."
+"അനവധി പേരുകള്‍ ഉണ്ടെങ്കില്‍ ആദ്യത്തേതിനു് ശേഷമുള്ള പേരുകള്‍ വേണ്ടെന്നു് വയ്ക്കുക."
 
 #: ../gio/gthemedicon.c:499
 #, c-format
@@ -1767,7 +1769,7 @@ msgstr "യൂണിക്സിലേക്ക് എഴുതുന്നത�
 
 #: ../gio/gvolume.c:444
 msgid "volume doesn't implement eject"
-msgstr ""
+msgstr "വോള്യം പുറത്തിറക്കല്‍ അനുവദിക്കുന്നില്ല"
 
 #: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
