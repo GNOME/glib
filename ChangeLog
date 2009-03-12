@@ -1,3 +1,8 @@
+2009-03-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbase64.c: Avoid integer overflows in the base64
+	functions. Fixes CVE-2008-4316
+
 2009-03-11  Stef Walter  <stef@memberwebs.com>
 
 	* glib/gchecksum.c: Document and guarantee hex digests will
