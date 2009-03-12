@@ -54,8 +54,9 @@ static const char base64_alphabet[] =
  *
  * The output buffer must be large enough to fit all the data that will
  * be written to it. Due to the way base64 encodes you will need
- * at least: @len * 4 / 3 + 6 bytes. If you enable line-breaking you will
- * need at least: @len * 4 / 3 + @len * 4 / (3 * 72) + 7 bytes.
+ * at least: (@len / 3 + 1) * 4 + 4 bytes (+ 4 may be needed in case of
+ * non-zero state). If you enable line-breaking you will need at least:
+ * ((@len / 3 + 1) * 4 + 4) / 72 + 1 bytes of extra space.
  *
  * @break_lines is typically used when putting base64-encoded data in emails.
  * It breaks the lines at 72 columns instead of putting all of the text on 
@@ -233,8 +234,14 @@ g_base64_encode (const guchar *data,
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail (len > 0, NULL);
 
-  /* We can use a smaller limit here, since we know the saved state is 0 */
-  out = g_malloc (len * 4 / 3 + 4);
+  /* We can use a smaller limit here, since we know the saved state is 0,
+     +1 is needed for trailing \0, also check for unlikely integer overflow */
+  if (len >= ((G_MAXSIZE - 1) / 4 - 1) * 3)
+    g_error("%s: input too large for Base64 encoding (%"G_GSIZE_FORMAT" chars)",
+        G_STRLOC, len);
+
+  out = g_malloc ((len / 3 + 1) * 4 + 1);
+
   outlen = g_base64_encode_step (data, len, FALSE, out, &state, &save);
   outlen += g_base64_encode_close (FALSE, out + outlen, &state, &save);
   out[outlen] = '\0';
@@ -275,7 +282,8 @@ static const unsigned char mime_base64_rank[256] = {
  *
  * The output buffer must be large enough to fit all the data that will
  * be written to it. Since base64 encodes 3 bytes in 4 chars you need
- * at least: @len * 3 / 4 bytes.
+ * at least: (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero
+ * state).
  * 
  * Return value: The number of bytes of output that was written
  *
@@ -358,7 +366,8 @@ g_base64_decode (const gchar *text,
 		 gsize       *out_len)
 {
   guchar *ret;
-  gint input_length, state = 0;
+  gsize input_length;
+  gint state = 0;
   guint save = 0;
   
   g_return_val_if_fail (text != NULL, NULL);
@@ -368,7 +377,9 @@ g_base64_decode (const gchar *text,
 
   g_return_val_if_fail (input_length > 1, NULL);
 
-  ret = g_malloc0 (input_length * 3 / 4);
+  /* We can use a smaller limit here, since we know the saved state is 0,
+     +1 used to avoid calling g_malloc0(0), and hence retruning NULL */
+  ret = g_malloc0 ((input_length / 4) * 3 + 1);
   
   *out_len = g_base64_decode_step (text, input_length, ret, &state, &save);
   

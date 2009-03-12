@@ -1,3 +1,8 @@
+2009-03-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbase64.c: Avoid integer overflows in the base64
+	functions. Fixes CVE-2008-4316
+
 2009-02-23  Tor Lillqvist  <tml@novell.com>
 
 	Bug 570501 - g_win32_get_system_data_dirs uses invalid conversion
