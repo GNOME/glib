@@ -1,3 +1,7 @@
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2009-03-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbase64.c: Avoid integer overflows in the base64

@@ -1,3 +1,31 @@
+Overview of Changes from GLib 2.19.9 to GLib 2.20.0
+===================================================
+
+* Base64 support: Avoid integer overflows. CVE-2008-4316
+
+* Bugs fixed:
+ 574019 GChecksum: document and guarantee hex characters in lower case
+ 573454 Unable copy/move files to directories symlinked to gvfs share
+ 561172 gnome-open fails on local URIs with anchors
+ 573970 crash in gunixvolumemonitor:update_mounts when unmounting
+ 573843 g_get_current_dir returns non-absolute path
+
+* Updated translations:
+ Assamese (as)
+ Bengali (bn_IN)
+ Czech (cs)
+ Hindi (hi)
+ Italian (it)
+ Japanese (ja)
+ Lithuanian (lt)
+ Malayalam (ml)
+ Marathi (mr)
+ Oriya (or)
+ Polish (pl)
+ Romanian (ro)
+ Telugu (te)
+
+
 Overview of Changes from GLib 2.19.8 to GLib 2.19.9
 ===================================================
 
