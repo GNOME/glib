@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-02 01:13-0500\n"
+"POT-Creation-Date: 2009-03-13 01:21-0400\n"
 "PO-Revision-Date: 2009-02-20 12:07+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -520,7 +520,7 @@ msgstr "เกินขอบเขตการถอยคืน"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2002
+#: glib/gregex.c:154 gio/glocalfile.c:2010
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
@@ -1103,7 +1103,7 @@ msgstr "มีการส่งค่า count ที่สูงเกิน�
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1995 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
@@ -1130,30 +1130,30 @@ msgstr "พบจุดจบสตรีมก่อนกำหนด"
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
 
-#: gio/gdesktopappinfo.c:701
+#: gio/gdesktopappinfo.c:709
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: gio/gdesktopappinfo.c:995
+#: gio/gdesktopappinfo.c:1003
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: gio/gdesktopappinfo.c:1227
+#: gio/gdesktopappinfo.c:1235
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1231
+#: gio/gdesktopappinfo.c:1239
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1635
+#: gio/gdesktopappinfo.c:1643
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: gio/gdesktopappinfo.c:1747
+#: gio/gdesktopappinfo.c:1755
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
@@ -1206,12 +1206,12 @@ msgstr "ไม่รองรับการกระทำนี้"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1074 gio/glocalfile.c:1085
-#: gio/glocalfile.c:1098
+#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
+#: gio/glocalfile.c:1106
 msgid "Containing mount does not exist"
 msgstr "ไม่มีจุดเมานท์ที่บรรจุแฟ้มอยู่"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2145
+#: gio/gfile.c:1965 gio/glocalfile.c:2153
 msgid "Can't copy over directory"
 msgstr "ไม่สามารถคัดลอกทับไดเรกทอรี"
 
@@ -1219,7 +1219,7 @@ msgstr "ไม่สามารถคัดลอกทับไดเรกท
 msgid "Can't copy directory over directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2154
+#: gio/gfile.c:2033 gio/glocalfile.c:2162
 msgid "Target file exists"
 msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้ว"
 
@@ -1351,108 +1351,108 @@ msgstr "สตรีมมีการกระทำค้างอยู่"
 msgid "Unable to find default local directory monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองไดเรกทอรีในเครื่อง"
 
-#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ชื่อแฟ้ม %s ผิดรูปแบบ"
 
-#: gio/glocalfile.c:982
+#: gio/glocalfile.c:990
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลของระบบแฟ้ม: %s"
 
-#: gio/glocalfile.c:1118
+#: gio/glocalfile.c:1126
 msgid "Can't rename root directory"
 msgstr "ไม่สามารถเปลี่ยนชื่อไดเรกทอรีราก"
 
-#: gio/glocalfile.c:1138 gio/glocalfile.c:1164
+#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้ม: %s"
 
-#: gio/glocalfile.c:1147
+#: gio/glocalfile.c:1155
 msgid "Can't rename file, filename already exist"
 msgstr "ไม่สามารถเปลี่ยนชื่อแฟ้ม เนื่องจากมีแฟ้มชื่อเดียวกันอยู่ก่อนแล้ว"
 
-#: gio/glocalfile.c:1160 gio/glocalfile.c:2024 gio/glocalfile.c:2053
-#: gio/glocalfile.c:2207 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
+#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
 msgid "Invalid filename"
 msgstr "ชื่อแฟ้มผิดรูปแบบ"
 
-#: gio/glocalfile.c:1283
+#: gio/glocalfile.c:1291
 #, c-format
 msgid "Error opening file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
 
-#: gio/glocalfile.c:1293
+#: gio/glocalfile.c:1301
 msgid "Can't open directory"
 msgstr "ไม่สามารถเปิดไดเรกทอรี"
 
-#: gio/glocalfile.c:1353
+#: gio/glocalfile.c:1361
 #, c-format
 msgid "Error removing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
 
-#: gio/glocalfile.c:1717
+#: gio/glocalfile.c:1725
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะทิ้งแฟ้มลงถังขยะ: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1748
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "สร้างไดเรกทอรีถังขยะ '%s' ไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1761
+#: gio/glocalfile.c:1769
 msgid "Unable to find toplevel directory for trash"
 msgstr "หาไดเรกทอรีระดับบนสุดสำหรับถังขยะไม่สำเร็จ"
 
-#: gio/glocalfile.c:1840 gio/glocalfile.c:1860
+#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
 msgid "Unable to find or create trash directory"
 msgstr "หาหรือสร้างไดเรกทอรีถังขยะไม่สำเร็จ"
 
-#: gio/glocalfile.c:1894
+#: gio/glocalfile.c:1902
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "สร้างแฟ้มข้อมูลการทิ้งขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1919 gio/glocalfile.c:1994 gio/glocalfile.c:2001
+#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:2028
+#: gio/glocalfile.c:2036
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี: %s"
 
-#: gio/glocalfile.c:2057
+#: gio/glocalfile.c:2065
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้าง symbolic link: %s"
 
-#: gio/glocalfile.c:2117 gio/glocalfile.c:2211
+#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
 #, c-format
 msgid "Error moving file: %s"
 msgstr "เกิดข้อผิดพลาดขณะย้ายแฟ้ม: %s"
 
-#: gio/glocalfile.c:2140
+#: gio/glocalfile.c:2148
 msgid "Can't move directory over directory"
 msgstr "ไม่สามารถย้ายไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/glocalfile.c:2167 gio/glocalfileoutputstream.c:829
+#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
 #: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
 #: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
 msgid "Backup file creation failed"
 msgstr "สร้างแฟ้มสำรองไม่สำเร็จ"
 
-#: gio/glocalfile.c:2186
+#: gio/glocalfile.c:2194
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มปลายทาง: %s"
 
-#: gio/glocalfile.c:2200
+#: gio/glocalfile.c:2208
 msgid "Move between mounts not supported"
 msgstr "ไม่รองรับการย้ายแฟ้มข้ามอุปกรณ์"
 

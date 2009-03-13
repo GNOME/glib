@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-02 01:13-0500\n"
+"POT-Creation-Date: 2009-03-13 01:21-0400\n"
 "PO-Revision-Date: 2009-02-26 15:45+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -543,7 +543,7 @@ msgstr "역추적 최대값에 도달했습니다"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "패턴 안에 부분 매치에서 지원하지 않는 항목이 들어 있습니다."
 
-#: glib/gregex.c:154 gio/glocalfile.c:2002
+#: glib/gregex.c:154 gio/glocalfile.c:2010
 msgid "internal error"
 msgstr "내부 오류"
 
@@ -1139,7 +1139,7 @@ msgstr "%s에 넘긴 카운트 값이 너무 큽니다"
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1995 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "동작이 취소되었습니다"
@@ -1166,30 +1166,30 @@ msgstr "예기치 않게 일찍 스트림이 끝났습니다"
 msgid "Unnamed"
 msgstr "이름없음"
 
-#: gio/gdesktopappinfo.c:701
+#: gio/gdesktopappinfo.c:709
 msgid "Desktop file didn't specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
-#: gio/gdesktopappinfo.c:995
+#: gio/gdesktopappinfo.c:1003
 msgid "Unable to find terminal required for application"
 msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1227
+#: gio/gdesktopappinfo.c:1235
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1231
+#: gio/gdesktopappinfo.c:1239
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1635
+#: gio/gdesktopappinfo.c:1643
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1747
+#: gio/gdesktopappinfo.c:1755
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
@@ -1242,12 +1242,12 @@ msgstr "동작을 지원하지 않습니다"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1074 gio/glocalfile.c:1085
-#: gio/glocalfile.c:1098
+#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
+#: gio/glocalfile.c:1106
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2145
+#: gio/gfile.c:1965 gio/glocalfile.c:2153
 msgid "Can't copy over directory"
 msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 
@@ -1255,7 +1255,7 @@ msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 msgid "Can't copy directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 복사할 수 없습니다"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2154
+#: gio/gfile.c:2033 gio/glocalfile.c:2162
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
@@ -1387,108 +1387,108 @@ msgstr "스트림에 진행 중인 동작이 있습니다"
 msgid "Unable to find default local directory monitor type"
 msgstr "기본 로컬 디렉터리 모니터 종류를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"
 
-#: gio/glocalfile.c:982
+#: gio/glocalfile.c:990
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: gio/glocalfile.c:1118
+#: gio/glocalfile.c:1126
 msgid "Can't rename root directory"
 msgstr "루트 디렉터리의 이름을 바꿀 수 없습니다"
 
-#: gio/glocalfile.c:1138 gio/glocalfile.c:1164
+#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "파일 이름 바꾸기 오류: %s"
 
-#: gio/glocalfile.c:1147
+#: gio/glocalfile.c:1155
 msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:1160 gio/glocalfile.c:2024 gio/glocalfile.c:2053
-#: gio/glocalfile.c:2207 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
+#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: gio/glocalfile.c:1283
+#: gio/glocalfile.c:1291
 #, c-format
 msgid "Error opening file: %s"
 msgstr "파일 열기 오류: %s"
 
-#: gio/glocalfile.c:1293
+#: gio/glocalfile.c:1301
 msgid "Can't open directory"
 msgstr "디렉터리를 열 수 없습니다"
 
-#: gio/glocalfile.c:1353
+#: gio/glocalfile.c:1361
 #, c-format
 msgid "Error removing file: %s"
 msgstr "파일 제거 오류: %s"
 
-#: gio/glocalfile.c:1717
+#: gio/glocalfile.c:1725
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "파일 버리기 오류: %s"
 
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1748
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉터리(%s)를 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1761
+#: gio/glocalfile.c:1769
 msgid "Unable to find toplevel directory for trash"
 msgstr "휴지통의 상위 디렉터리를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:1840 gio/glocalfile.c:1860
+#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
 msgid "Unable to find or create trash directory"
 msgstr "휴지통 디렉터리를 찾을 수 없거나 만들 수 없습니다"
 
-#: gio/glocalfile.c:1894
+#: gio/glocalfile.c:1902
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1919 gio/glocalfile.c:1994 gio/glocalfile.c:2001
+#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: gio/glocalfile.c:2028
+#: gio/glocalfile.c:2036
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "디렉터리를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2057
+#: gio/glocalfile.c:2065
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2117 gio/glocalfile.c:2211
+#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 중 오류: %s"
 
-#: gio/glocalfile.c:2140
+#: gio/glocalfile.c:2148
 msgid "Can't move directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:2167 gio/glocalfileoutputstream.c:829
+#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
 #: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
 #: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:2186
+#: gio/glocalfile.c:2194
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 제거하는 중 오류: %s"
 
-#: gio/glocalfile.c:2200
+#: gio/glocalfile.c:2208
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-02 01:13-0500\n"
+"POT-Creation-Date: 2009-03-13 01:21-0400\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -623,7 +623,7 @@ msgstr ""
 "šablon utrymlivaje elementy, jakija nie padtrymvajucca dla častkovaj "
 "adpaviadnaści"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2002
+#: glib/gregex.c:154 gio/glocalfile.c:2010
 msgid "internal error"
 msgstr "unutranaja pamyłka"
 
@@ -1265,7 +1265,7 @@ msgstr "Funkcyi %s pieradadzieny nadta vialiki ličylnik"
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:1995 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "Aperacyja anulavanaja"
@@ -1292,31 +1292,31 @@ msgstr "Zaŭčasny kaniec płyni"
 msgid "Unnamed"
 msgstr "Nienazvany"
 
-#: gio/gdesktopappinfo.c:701
+#: gio/gdesktopappinfo.c:709
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fajł stała nie akreślivaje pola Exec"
 
-#: gio/gdesktopappinfo.c:995
+#: gio/gdesktopappinfo.c:1003
 msgid "Unable to find terminal required for application"
 msgstr "Niemahčyma znajści terminału, vymahanaha dla aplikacyi"
 
-#: gio/gdesktopappinfo.c:1227
+#: gio/gdesktopappinfo.c:1235
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Niemahčyma stvaryć kanfihuracyjny kataloh %s karystalnika dla aplikacyi: %s"
 
-#: gio/gdesktopappinfo.c:1231
+#: gio/gdesktopappinfo.c:1239
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Niemahčyma stvaryć kanfihuracyjny kataloh MIME %s dla karystalnika: %s"
 
-#: gio/gdesktopappinfo.c:1635
+#: gio/gdesktopappinfo.c:1643
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Niemahčyma stvaryć fajł stała %s dla karystalnika"
 
-#: gio/gdesktopappinfo.c:1747
+#: gio/gdesktopappinfo.c:1755
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Asablivaje aznačeńnie dla %s"
@@ -1369,12 +1369,12 @@ msgstr "Aperacyja nie padtrymlivajecca"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1074 gio/glocalfile.c:1085
-#: gio/glocalfile.c:1098
+#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
+#: gio/glocalfile.c:1106
 msgid "Containing mount does not exist"
 msgstr "Źmiaščalnaje mantavańnie nie isnuje"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2145
+#: gio/gfile.c:1965 gio/glocalfile.c:2153
 msgid "Can't copy over directory"
 msgstr "Niemahčyma skapijavać zamiest katalohu"
 
@@ -1382,7 +1382,7 @@ msgstr "Niemahčyma skapijavać zamiest katalohu"
 msgid "Can't copy directory over directory"
 msgstr "Niemahčyma skapijavać kataloh zamiest inšaha katalohu"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2154
+#: gio/gfile.c:2033 gio/glocalfile.c:2162
 msgid "Target file exists"
 msgstr "Metavy fajł isnuje"
 
@@ -1518,122 +1518,122 @@ msgid "Unable to find default local directory monitor type"
 msgstr "Niemahčyma znajści zmoŭčany typ manitora dla lakalnaha katalohu"
 
 # glib/gconvert.c:1729
-#: gio/glocalfile.c:608 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Niapravilnaja nazva fajłu %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:982
+#: gio/glocalfile.c:990
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Pamyłka atrymańnia źviestak ab fajłavaj systemie: %s"
 
-#: gio/glocalfile.c:1118
+#: gio/glocalfile.c:1126
 msgid "Can't rename root directory"
 msgstr "Niemahčyma źmianić nazvu dla karaniovaha katalohu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1138 gio/glocalfile.c:1164
+#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Pamyłka adčytańnia fajłu: %s"
 
-#: gio/glocalfile.c:1147
+#: gio/glocalfile.c:1155
 msgid "Can't rename file, filename already exist"
 msgstr "Niemahčyma źmianić nazvu dla fajłu, taki fajł užo isnuje"
 
 # glib/gconvert.c:1729
-#: gio/glocalfile.c:1160 gio/glocalfile.c:2024 gio/glocalfile.c:2053
-#: gio/glocalfile.c:2207 gio/glocalfileoutputstream.c:505
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
+#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
 #: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
 msgid "Invalid filename"
 msgstr "Niapravilnaja nazva fajłu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1283
+#: gio/glocalfile.c:1291
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Pamyłka adčynieńnia fajłu: %s"
 
-#: gio/glocalfile.c:1293
+#: gio/glocalfile.c:1301
 msgid "Can't open directory"
 msgstr "Niemahčyma adčynić kataloh"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1353
+#: gio/glocalfile.c:1361
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Pamyłka vydaleńnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1717
+#: gio/glocalfile.c:1725
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Pamyłka vykidańnia ŭ śmietnicu fajłu: %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1740
+#: gio/glocalfile.c:1748
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Niemahčyma stvaryć kataloh śmietnicy %s: %s"
 
-#: gio/glocalfile.c:1761
+#: gio/glocalfile.c:1769
 msgid "Unable to find toplevel directory for trash"
 msgstr "Niemahčyma znajści najvyšejšy kataloh dziela śmiećcia"
 
-#: gio/glocalfile.c:1840 gio/glocalfile.c:1860
+#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
 msgid "Unable to find or create trash directory"
 msgstr "Niemahčyma znajści ci stvaryć kataloh dziela śmiećcia"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1894
+#: gio/glocalfile.c:1902
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Niemahčyma stvaryć śmiaćciovy fajł źviestak: %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1919 gio/glocalfile.c:1994 gio/glocalfile.c:2001
+#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Niemahčyma vykinuć u śmietnicu fajł: %s"
 
 # glib/gdir.c:79
-#: gio/glocalfile.c:2028
+#: gio/glocalfile.c:2036
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "Pamyłka pry adčynieńni katalohu '%s': %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfile.c:2057
+#: gio/glocalfile.c:2065
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Pamyłka stvareńnia symbalnaj spasyłki: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:2117 gio/glocalfile.c:2211
+#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Pamyłka pieranosu fajłu: %s"
 
-#: gio/glocalfile.c:2140
+#: gio/glocalfile.c:2148
 msgid "Can't move directory over directory"
 msgstr "Niemahčyma pieranieści kataloh zamiest inšaha katalohu"
 
-#: gio/glocalfile.c:2167 gio/glocalfileoutputstream.c:829
+#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
 #: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
 #: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
 msgid "Backup file creation failed"
 msgstr "Niaŭdałaje stvareńnie zapasnoha fajłu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:2186
+#: gio/glocalfile.c:2194
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Pamyłka vydaleńnia metavaha fajłu: %s"
 
-#: gio/glocalfile.c:2200
+#: gio/glocalfile.c:2208
 msgid "Move between mounts not supported"
 msgstr "Pieranos pamiž punktami mantavańnia nie padtrymlivajecca"
 

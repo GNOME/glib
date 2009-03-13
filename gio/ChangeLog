@@ -1,3 +1,7 @@
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.20.0 ===
+
 2009-03-04  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 573843 – g_get_current_dir returns non-absolute path
