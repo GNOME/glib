@@ -1,3 +1,9 @@
+2009-03-13  Kristian Rietveld  <kris@imendio.com>
+
+	* gsignal.c (signal_lookup_closure): when defaulting to the only
+	item in the array, check if this is indeed the default closure.
+	(patch by Tim Janik).
+
 2009-03-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.20.0 ===

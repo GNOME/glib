@@ -1448,9 +1448,12 @@ signal_lookup_closure (SignalNode    *node,
   ClassClosure *cc;
 
   if (node->class_closure_bsa && g_bsearch_array_get_n_nodes (node->class_closure_bsa) == 1)
-    cc = g_bsearch_array_get_nth (node->class_closure_bsa, &g_class_closure_bconfig, 0);
-  else
-    cc = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
+    {
+      cc = g_bsearch_array_get_nth (node->class_closure_bsa, &g_class_closure_bconfig, 0);
+      if (cc && cc->instance_type == 0) /* check for default closure */
+        return cc->closure;
+    }
+  cc = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
   return cc ? cc->closure : NULL;
 }
 
