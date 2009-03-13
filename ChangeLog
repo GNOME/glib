@@ -1,5 +1,9 @@
 2009-03-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.20.0 ===
 
 	* configure.in: Bump version to 2.20.0
