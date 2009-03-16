@@ -1,3 +1,12 @@
+2009-03-16  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 575555 – Use fsync() when replacing files to avoid data loss on crash
+
+        * glocalfileoutputstream.c:
+        (g_local_file_output_stream_close):
+        (_g_local_file_output_stream_replace):
+	fsync temp file before closing if replacing target file
+
 2009-03-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.20.0 ===

@@ -868,7 +868,7 @@ rename_file (const char  *old_name,
 static gchar *
 write_to_temp_file (const gchar  *contents,
 		    gssize        length,
-		    const gchar  *template,
+		    const gchar  *dest_file,
 		    GError      **err)
 {
   gchar *tmp_name;
@@ -880,7 +880,7 @@ write_to_temp_file (const gchar  *contents,
 
   retval = NULL;
   
-  tmp_name = g_strdup_printf ("%s.XXXXXX", template);
+  tmp_name = g_strdup_printf ("%s.XXXXXX", dest_file);
 
   errno = 0;
   fd = create_temp_file (tmp_name, 0666);
@@ -942,11 +942,54 @@ write_to_temp_file (const gchar  *contents,
 	  goto out;
 	}
     }
-   
+
+  errno = 0;
+  if (fflush (file) != 0)
+    { 
+      save_errno = errno;
+      
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (save_errno),
+		   _("Failed to write file '%s': fflush() failed: %s"),
+		   display_name, 
+		   g_strerror (save_errno));
+
+      g_unlink (tmp_name);
+      
+      goto out;
+    }
+  
+#ifdef HAVE_FSYNC
+  errno = 0;
+  /* If the final destination exists, we want to sync the newly written
+   * file to ensure the data is on disk when we rename over the destination.
+   * otherwise if we get a system crash we can lose both the new and the
+   * old file on some filesystems. (I.E. those that don't guarantee the
+   * data is written to the disk before the metadata.)
+   */
+  if (g_file_test (dest_file, G_FILE_TEST_EXISTS) &&
+      fsync (fileno (file)) != 0)
+    { 
+      save_errno = errno;
+      
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (save_errno),
+		   _("Failed to write file '%s': fsync() failed: %s"),
+		   display_name, 
+		   g_strerror (save_errno));
+
+      g_unlink (tmp_name);
+      
+      goto out;
+    }
+#endif
+  
   errno = 0;
   if (fclose (file) == EOF)
     { 
-      save_errno = 0;
+      save_errno = errno;
       
       g_set_error (err,
 		   G_FILE_ERROR,

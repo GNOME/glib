@@ -1,3 +1,14 @@
+2009-03-16  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 575555 – Use fsync() when replacing files to avoid data loss on crash
+
+        * configure.in:
+	Look for fsync().
+
+        * glib/gfileutils.c:
+        (write_to_temp_file):
+	fsync temp file if destination file exists
+
 2009-03-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

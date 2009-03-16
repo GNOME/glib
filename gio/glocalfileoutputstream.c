@@ -69,6 +69,7 @@ struct _GLocalFileOutputStreamPrivate {
   char *original_filename;
   char *backup_filename;
   char *etag;
+  gboolean sync_on_close;
   int fd;
 };
 
@@ -190,6 +191,20 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 
+#ifdef HAVE_FSYNC
+  if (file->priv->sync_on_close &&
+      fsync (file->priv->fd) != 0)
+    {
+      int errsv = errno;
+      
+      g_set_error (error, G_IO_ERROR,
+		   g_io_error_from_errno (errno),
+		   _("Error writing to file: %s"),
+		   g_strerror (errsv));
+      goto err_out;
+    }
+#endif
+ 
 #ifdef G_OS_WIN32
 
   /* Must close before renaming on Windows, so just do the close first
@@ -976,6 +991,7 @@ _g_local_file_output_stream_replace (const char        *filename,
   int mode;
   int fd;
   char *temp_file;
+  gboolean sync_on_close;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
@@ -986,6 +1002,7 @@ _g_local_file_output_stream_replace (const char        *filename,
     mode = 0600;
   else
     mode = 0666;
+  sync_on_close = FALSE;
 
   /* If the file doesn't exist, create it */
   fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY | O_BINARY, mode);
@@ -997,6 +1014,14 @@ _g_local_file_output_stream_replace (const char        *filename,
 				  flags, cancellable, error);
       if (fd == -1)
 	return NULL;
+
+      /* If the final destination exists, we want to sync the newly written
+       * file to ensure the data is on disk when we rename over the destination.
+       * otherwise if we get a system crash we can lose both the new and the
+       * old file on some filesystems. (I.E. those that don't guarantee the
+       * data is written to the disk before the metadata.)
+       */
+      sync_on_close = TRUE;
     }
   else if (fd == -1)
     {
@@ -1022,6 +1047,7 @@ _g_local_file_output_stream_replace (const char        *filename,
  
   stream = g_object_new (G_TYPE_LOCAL_FILE_OUTPUT_STREAM, NULL);
   stream->priv->fd = fd;
+  stream->priv->sync_on_close = sync_on_close;
   stream->priv->tmp_filename = temp_file;
   if (create_backup)
     stream->priv->backup_filename = create_backup_filename (filename);
