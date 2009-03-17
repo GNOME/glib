@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-16 12:55+0200\n"
-"PO-Revision-Date: 2009-03-16 12:55+0200\n"
+"POT-Creation-Date: 2009-03-17 14:06+0200\n"
+"PO-Revision-Date: 2009-03-17 14:06+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -205,7 +205,7 @@ msgstr ""
 "Неуспех при преименуване на файл „%s“ на „%s“: неуспешно изпълнение на "
 "g_rename(): %s"
 
-#: ../glib/gfileutils.c:896 ../glib/gfileutils.c:1285
+#: ../glib/gfileutils.c:896 ../glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Неуспех при създаване на файл „%s“: %s"
@@ -224,48 +224,58 @@ msgstr "Неуспех при запис на файл „%s“: неуспеш�
 
 #: ../glib/gfileutils.c:954
 #, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fflush(): %s"
+
+#: ../glib/gfileutils.c:979
+#, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fsync(): %s"
+
+#: ../glib/gfileutils.c:997
+#, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr ""
 "Неуспех при затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
 
-#: ../glib/gfileutils.c:1072
+#: ../glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Неуспех при изтриването на съществуващия файл „%s“: неуспешно изпълнение на "
 "g_unlink(): %s"
 
-#: ../glib/gfileutils.c:1247
+#: ../glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблонът „%s“ е неправилен, не трябва да съдържа „%s“"
 
-#: ../glib/gfileutils.c:1260
+#: ../glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблонът „%s“ не съдържа XXXXXX"
 
-#: ../glib/gfileutils.c:1699
+#: ../glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1704
+#: ../glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1709
+#: ../glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1752
+#: ../glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Неуспех при четене на символната връзка „%s“: %s"
 
-#: ../glib/gfileutils.c:1773
+#: ../glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
@@ -1438,8 +1448,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "Файлът не може да се преименува — съществува друг файл с такова име"
 
 #: ../gio/glocalfile.c:1168 ../gio/glocalfile.c:2032 ../gio/glocalfile.c:2061
-#: ../gio/glocalfile.c:2215 ../gio/glocalfileoutputstream.c:505
-#: ../gio/glocalfileoutputstream.c:550 ../gio/glocalfileoutputstream.c:1009
+#: ../gio/glocalfile.c:2215 ../gio/glocalfileoutputstream.c:520
+#: ../gio/glocalfileoutputstream.c:565 ../gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "Неправилно име на файл"
 
@@ -1504,9 +1514,9 @@ msgstr "Грешка при преместване на файл: %s"
 msgid "Can't move directory over directory"
 msgstr "Папка не може да бъде преместена върху папка"
 
-#: ../gio/glocalfile.c:2175 ../gio/glocalfileoutputstream.c:829
-#: ../gio/glocalfileoutputstream.c:843 ../gio/glocalfileoutputstream.c:858
-#: ../gio/glocalfileoutputstream.c:874 ../gio/glocalfileoutputstream.c:888
+#: ../gio/glocalfile.c:2175 ../gio/glocalfileoutputstream.c:844
+#: ../gio/glocalfileoutputstream.c:858 ../gio/glocalfileoutputstream.c:873
+#: ../gio/glocalfileoutputstream.c:889 ../gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "Неуспешно създаване на резервен файл"
 
@@ -1536,7 +1546,7 @@ msgstr "Неправилно име на допълнителен атрибут
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Грешка при задаване на допълнителен атрибут „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1466 ../gio/glocalfileoutputstream.c:713
+#: ../gio/glocalfileinfo.c:1466 ../gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Грешка при получаване на състоянието на файл „%s“: %s"
@@ -1604,20 +1614,20 @@ msgstr "SELinux не е включен на тази система"
 msgid "Setting attribute %s not supported"
 msgstr "Не се поддържа задаването на атрибута %s"
 
-#: ../gio/glocalfileinputstream.c:160 ../gio/glocalfileoutputstream.c:603
+#: ../gio/glocalfileinputstream.c:160 ../gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Грешка при четене от файл: %s"
 
 #: ../gio/glocalfileinputstream.c:191 ../gio/glocalfileinputstream.c:203
-#: ../gio/glocalfileinputstream.c:312 ../gio/glocalfileoutputstream.c:405
-#: ../gio/glocalfileoutputstream.c:906
+#: ../gio/glocalfileinputstream.c:312 ../gio/glocalfileoutputstream.c:420
+#: ../gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Грешка при търсене във файл: %s"
 
-#: ../gio/glocalfileinputstream.c:233 ../gio/glocalfileoutputstream.c:208
-#: ../gio/glocalfileoutputstream.c:303
+#: ../gio/glocalfileinputstream.c:233 ../gio/glocalfileoutputstream.c:223
+#: ../gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Грешка при затваряне на файл: %s"
@@ -1626,51 +1636,52 @@ msgstr "Грешка при затваряне на файл: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Стандартният датчик за локални файлове не може да се открие "
 
-#: ../gio/glocalfileoutputstream.c:172 ../gio/glocalfileoutputstream.c:624
+#: ../gio/glocalfileoutputstream.c:173 ../gio/glocalfileoutputstream.c:202
+#: ../gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Грешка при запис във файл: %s"
 
-#: ../gio/glocalfileoutputstream.c:235
+#: ../gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Грешка при премахване на стара, резервна връзка: %s"
 
-#: ../gio/glocalfileoutputstream.c:249 ../gio/glocalfileoutputstream.c:262
+#: ../gio/glocalfileoutputstream.c:264 ../gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Грешка при създаване на резервно копие: %s"
 
-#: ../gio/glocalfileoutputstream.c:280
+#: ../gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Грешка при преименуване на временен файл: %s"
 
-#: ../gio/glocalfileoutputstream.c:451 ../gio/glocalfileoutputstream.c:953
+#: ../gio/glocalfileoutputstream.c:466 ../gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Грешка при съкращаване на файл: %s"
 
-#: ../gio/glocalfileoutputstream.c:511 ../gio/glocalfileoutputstream.c:556
-#: ../gio/glocalfileoutputstream.c:695 ../gio/glocalfileoutputstream.c:934
-#: ../gio/glocalfileoutputstream.c:1015
+#: ../gio/glocalfileoutputstream.c:526 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfileoutputstream.c:710 ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Грешка при отваряне на файла „%s“: %s"
 
-#: ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "Целевият файл е папка"
 
-#: ../gio/glocalfileoutputstream.c:731
+#: ../gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "Целевият файл не е обикновен файл"
 
-#: ../gio/glocalfileoutputstream.c:743
+#: ../gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "Файлът бе променен от външно приложение"
 
-#: ../gio/glocalfileoutputstream.c:922
+#: ../gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Грешка при изтриване на стар файл: %s"
