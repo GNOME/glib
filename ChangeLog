@@ -2,11 +2,11 @@
 
 	Bug 575555 – Use fsync() when replacing files to avoid data loss on crash
 
-        * configure.in:
+	* configure.in:
 	Look for fsync().
 
-        * glib/gfileutils.c:
-        (write_to_temp_file):
+	* glib/gfileutils.c:
+	(write_to_temp_file):
 	fsync temp file if destination file exists
 
 2009-03-13  Matthias Clasen  <mclasen@redhat.com>
@@ -672,17 +672,17 @@
 
 2008-10-08  Christian Persch  <chpe@gnome.org>
 
-        Bug 555313 – GFileAttribute boxed type get_type function should
-        use usual get_type pattern
+	Bug 555313 – GFileAttribute boxed type get_type function should
+	use usual get_type pattern
 
-        * gio/gfileattribute.c (g_file_attribute_info_list_get_type): Use
-        g_once_init_enter/leave.
+	* gio/gfileattribute.c (g_file_attribute_info_list_get_type): Use
+	g_once_init_enter/leave.
 
 2008-10-08  Christian Persch  <chpe@gnome.org>
 
-        Bug 555314 – mem leak in gmarkup
+	Bug 555314 – mem leak in gmarkup
 
-        * glib/gmarkup.c: (g_markup_parse_context_parse): Plug a mem leak.
+	* glib/gmarkup.c: (g_markup_parse_context_parse): Plug a mem leak.
 
 2008-10-08  Tor Lillqvist  <tml@novell.com>
 

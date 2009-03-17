@@ -3949,7 +3949,7 @@ g_idle_source_new (void)
 /**
  * g_idle_add_full:
  * @priority: the priority of the idle source. Typically this will be in the
- *            range btweeen #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
+ *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @function: function to call
  * @data:     data to pass to @function
  * @notify:   function to call when the idle is removed, or %NULL
