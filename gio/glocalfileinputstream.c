@@ -71,7 +71,7 @@ static gboolean   g_local_file_input_stream_seek       (GFileInputStream  *strea
 							GCancellable      *cancellable,
 							GError           **error);
 static GFileInfo *g_local_file_input_stream_query_info (GFileInputStream  *stream,
-							char              *attributes,
+							const char        *attributes,
 							GCancellable      *cancellable,
 							GError           **error);
 
@@ -319,7 +319,7 @@ g_local_file_input_stream_seek (GFileInputStream  *stream,
 
 static GFileInfo *
 g_local_file_input_stream_query_info (GFileInputStream  *stream,
-				      char              *attributes,
+				      const char        *attributes,
 				      GCancellable      *cancellable,
 				      GError           **error)
 {

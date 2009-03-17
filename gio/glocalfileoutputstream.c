@@ -82,7 +82,7 @@ static gboolean   g_local_file_output_stream_close        (GOutputStream      *s
 							   GCancellable       *cancellable,
 							   GError            **error);
 static GFileInfo *g_local_file_output_stream_query_info   (GFileOutputStream  *stream,
-							   char               *attributes,
+							   const char         *attributes,
 							   GCancellable       *cancellable,
 							   GError            **error);
 static char *     g_local_file_output_stream_get_etag     (GFileOutputStream  *stream);
@@ -474,7 +474,7 @@ g_local_file_output_stream_truncate (GFileOutputStream  *stream,
 
 static GFileInfo *
 g_local_file_output_stream_query_info (GFileOutputStream  *stream,
-				       char               *attributes,
+				       const char         *attributes,
 				       GCancellable       *cancellable,
 				       GError            **error)
 {
