@@ -1,3 +1,11 @@
+2009-03-17  Colin Walters  <walters@redhat.com>
+
+	Bug 575708 - runaway inotify madness ...
+
+	* gfilemonitor.c: Queue up events in a local list and
+	fire one idle, instead of queuing lots of individual
+	idles which has bad performance behavior.
+
 2009-03-17  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfileinputstream.c:

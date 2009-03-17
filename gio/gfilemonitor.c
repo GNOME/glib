@@ -32,6 +32,10 @@
 
 #include "gioalias.h"
 
+struct _FileChange;
+typedef struct _FileChange FileChange;
+static void file_change_free (FileChange *change);
+
 /**
  * SECTION:gfilemonitor
  * @short_description: File Monitor
@@ -72,6 +76,9 @@ struct _GFileMonitorPrivate {
 
   /* Rate limiting change events */
   GHashTable *rate_limiter;
+
+  guint pending_file_change_id;
+  GSList *pending_file_changes; /* FileChange */
 
   GSource *timeout;
   guint32 timeout_fires_at;
@@ -169,8 +176,19 @@ static void
 g_file_monitor_dispose (GObject *object)
 {
   GFileMonitor *monitor;
+  GFileMonitorPrivate *priv;
   
   monitor = G_FILE_MONITOR (object);
+  priv = monitor->priv;
+
+  if (priv->pending_file_change_id)
+    {
+      g_source_remove (priv->pending_file_change_id);
+      priv->pending_file_change_id = 0;
+    }
+  g_slist_foreach (priv->pending_file_changes, (GFunc) file_change_free, NULL);
+  g_slist_free (priv->pending_file_changes);
+  priv->pending_file_changes = NULL;
 
   /* Make sure we cancel on last unref */
   g_file_monitor_cancel (monitor);
@@ -320,31 +338,41 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
     }
 }
 
-typedef struct {
-  GFileMonitor      *monitor;
+struct _FileChange {
   GFile             *child;
   GFile             *other_file;
   GFileMonitorEvent  event_type;
-} FileChange;
-
-static gboolean
-emit_cb (gpointer data)
-{
-  FileChange *change = data;
-  g_signal_emit (change->monitor, signals[CHANGED], 0,
-		 change->child, change->other_file, change->event_type);
-  return FALSE;
-}
+};
 
 static void
 file_change_free (FileChange *change)
 {
-  g_object_unref (change->monitor);
   g_object_unref (change->child);
   if (change->other_file)
     g_object_unref (change->other_file);
   
   g_slice_free (FileChange, change);
+}
+
+static gboolean
+emit_cb (gpointer data)
+{
+  GFileMonitor *monitor = G_FILE_MONITOR (data);
+  GSList *pending, *iter;
+  
+  pending = g_slist_reverse (monitor->priv->pending_file_changes);
+  monitor->priv->pending_file_changes = NULL;
+  monitor->priv->pending_file_change_id = 0;
+
+  for (iter = pending; iter; iter = iter->next)
+    {
+       FileChange *change = iter->data;
+       g_signal_emit (monitor, signals[CHANGED], 0,
+	  	      change->child, change->other_file, change->event_type);
+       file_change_free (change);
+    }
+  g_slist_free (pending);
+  return FALSE;
 }
 
 static void
@@ -355,10 +383,12 @@ emit_in_idle (GFileMonitor      *monitor,
 {
   GSource *source;
   FileChange *change;
+  GFileMonitorPrivate *priv;
+
+  priv = monitor->priv;
 
   change = g_slice_new (FileChange);
 
-  change->monitor = g_object_ref (monitor);
   change->child = g_object_ref (child);
   if (other_file)
     change->other_file = g_object_ref (other_file);
@@ -366,12 +396,20 @@ emit_in_idle (GFileMonitor      *monitor,
     change->other_file = NULL;
   change->event_type = event_type;
 
-  source = g_idle_source_new ();
-  g_source_set_priority (source, 0);
+  if (!priv->pending_file_change_id)
+    {
+      source = g_idle_source_new ();
+      g_source_set_priority (source, 0);
 
-  g_source_set_callback (source, emit_cb, change, (GDestroyNotify)file_change_free);
-  g_source_attach (source, NULL);
-  g_source_unref (source);
+      /* We don't ref here - instead dispose will free any
+       * pending idles.
+       */
+      g_source_set_callback (source, emit_cb, monitor, NULL);
+      priv->pending_file_change_id = g_source_attach (source, NULL);
+      g_source_unref (source);
+    }
+  /* We reverse this in the processor */
+  priv->pending_file_changes = g_slist_prepend (priv->pending_file_changes, change);
 }
 
 static guint32
