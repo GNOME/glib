@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-16 17:49+0200\n"
-"PO-Revision-Date: 2009-03-16 15:23+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
+"POT-Creation-Date: 2009-03-16 16:03+0000\n"
+"PO-Revision-Date: 2009-03-16 20:21+0200\n"
 "Last-Translator: Fotis Tsamis <ftsamis@gmail.com>\n"
 "Language-Team: Greek\n"
 "MIME-Version: 1.0\n"
@@ -52,8 +52,7 @@ msgstr "Απρόσμενη ετικέτα '%s' μέσα σε '%s'"
 
 #: ../glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
-msgstr ""
-"Δεν μπορεί να βρεθεί έγκυρο αρχείο σελιδοδεικτών στους καταλόγους δεδομένων"
+msgstr "Δεν μπορεί να βρεθεί έγκυρο αρχείο σελιδοδεικτών στους καταλόγους δεδομένων"
 
 #: ../glib/gbookmarkfile.c:1994
 #, c-format
@@ -76,8 +75,7 @@ msgstr "Δεν βρέθηκε σελιδοδείκτης για την ιστο�
 #: ../glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr ""
-"Δεν αναγνωρίστηκε κανένας τύπος mime στο σελιδοδείκτη για την ιστοσελίδα '%s'"
+msgstr "Δεν αναγνωρίστηκε κανένας τύπος mime στο σελιδοδείκτη για την ιστοσελίδα '%s'"
 
 #: ../glib/gbookmarkfile.c:2457
 #, c-format
@@ -94,8 +92,7 @@ msgstr "Δεν καθορίστηκαν ομάδες στο σελιδοδείκ
 #: ../glib/gbookmarkfile.c:3237 ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
-"Καμιά εφαρμογή με όνομα '%s' δεν έχει καταχωρήσει σελιδοδείκτη για τη '%s'"
+msgstr "Καμιά εφαρμογή με όνομα '%s' δεν έχει καταχωρήσει σελιδοδείκτη για τη '%s'"
 
 # gconf/gconf-internals.c:2416
 #: ../glib/gbookmarkfile.c:3417
@@ -139,8 +136,7 @@ msgstr "Αδυναμία μετατροπής fallback '%s' σε codeset '%s'"
 #: ../glib/gconvert.c:1737
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr ""
-"Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
+msgstr "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
 
 #: ../glib/gconvert.c:1747
 #, c-format
@@ -225,7 +221,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Αδυναμία μετονομασίας αρχείου%s' σε '%s': g_rename() failed: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:896 ../glib/gfileutils.c:1285
+#: ../glib/gfileutils.c:896 ../glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
@@ -240,53 +236,67 @@ msgstr "Αδυναμία ανοίγματος αρχείου '%s' για εγγ�
 #: ../glib/gfileutils.c:935
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Αδυναμία εγγραφής αρχείου '%s':  fwrite() failed: %s"
+msgstr "Αδυναμία εγγραφής αρχείου '%s':  fwrite() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: ../glib/gfileutils.c:954
 #, c-format
+#| msgid "Failed to write file '%s': fwrite() failed: %s"
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "Αδυναμία εγγραφής αρχείου '%s':  fflush() απέτυχε: %s"
+
+# gconf/gconf-internals.c:2416
+#: ../glib/gfileutils.c:979
+#, c-format
+#| msgid "Failed to write file '%s': fwrite() failed: %s"
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "Αδυναμία εγγραφής αρχείου '%s':  fsync() απέτυχε: %s"
+
+# gconf/gconf-internals.c:2416
+#: ../glib/gfileutils.c:997
+#, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Αδυναμία κλεισίματος αρχείου '%s': fclose() απέτυχε: %s"
 
-#: ../glib/gfileutils.c:1072
+#: ../glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Δεν είναι δυνατή η απομάκρυνση του υπάρχοντος αρχείου '%s': g_unlink() "
 "απέτυχε: %s"
 
-#: ../glib/gfileutils.c:1247
+#: ../glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Το πρότυπο '%s' δεν είναι έγκυρο, θα πρέπει να περιέχει ένα '%s'"
 
-#: ../glib/gfileutils.c:1260
+#: ../glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Το πρότυπο '%s' δεν περιέχει XXXXXX"
 
-#: ../glib/gfileutils.c:1699
+#: ../glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1704
+#: ../glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1709
+#: ../glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:1752
+#: ../glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Αποτυχία ανάγνωσης συμβολικού συνδέσμου '%s': %s"
 
-#: ../glib/gfileutils.c:1773
+#: ../glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "Οι συμβολικοί σύνδεσμοι δεν υποστηρίζονται"
 
@@ -337,8 +347,7 @@ msgid "Error on line %d: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
 #: ../glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Κενή καταχώρηση  '&;' , έγκυρες οντότητες είναι: &amp; &quot; &lt; &gt; "
 "&apos; "
@@ -447,8 +456,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1365
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα  '=' μετά το όνομα γνωρίσματος '%"
 "s' του στοιχείου  '%s'"
@@ -556,8 +564,7 @@ msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα
 #: ../glib/gmarkup.c:1934
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
+msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
 
 #: ../glib/gmarkup.c:1940
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -581,8 +588,7 @@ msgstr "Εξαντλήθηκε το όριο της ανίχνευσης προ�
 
 #: ../glib/gregex.c:152 ../glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
-msgstr ""
-"Το υπόδειγμα περιέχει αντικείμενα που δεν υποστηρίζονται για μερικό ταίριασμα"
+msgstr "Το υπόδειγμα περιέχει αντικείμενα που δεν υποστηρίζονται για μερικό ταίριασμα"
 
 #: ../glib/gregex.c:154 ../gio/glocalfile.c:2010
 msgid "internal error"
@@ -737,8 +743,7 @@ msgstr "δεν επιτρέπεται \\C στο lookbehind assertion"
 
 #: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
-msgstr ""
-"η αναδρομική κλήση μπορεί να οδηγήσει σε επ' άπειρω επανάληψη του βρόγχου"
+msgstr "η αναδρομική κλήση μπορεί να οδηγήσει σε επ' άπειρω επανάληψη του βρόγχου"
 
 #: ../glib/gregex.c:303
 msgid "missing terminator in subpattern name"
@@ -764,8 +769,7 @@ msgstr ""
 
 #: ../glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr ""
-"υπερβολικά μεγάλος αριθμός υπο-υποδειγμάτων (επιτρέπονται μέχρι 10.000)"
+msgstr "υπερβολικά μεγάλος αριθμός υπο-υποδειγμάτων (επιτρέπονται μέχρι 10.000)"
 
 #: ../glib/gregex.c:321
 msgid "octal value is greater than \\377"
@@ -784,8 +788,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "μη συνεκτικές επιλογές NEWLINE"
 
 #: ../glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "το \\g δεν ακολουθείται από όνομα εντός αγκίστρων ή από μη μηδενικό αριθμό "
 "προαιρετικά εντός αγκίστρων"
@@ -817,15 +820,13 @@ msgstr "Η βιβλιοθήκη PCRE έχει μεταγλωττιστεί χω�
 
 #: ../glib/gregex.c:1107
 msgid "PCRE library is compiled without UTF8 properties support"
-msgstr ""
-"Η βιβλιοθήκη PCRE έχει μεταγλωττιστεί χωρίς υποστήριξη των ιδιοτήτων του UTF8"
+msgstr "Η βιβλιοθήκη PCRE έχει μεταγλωττιστεί χωρίς υποστήριξη των ιδιοτήτων του UTF8"
 
 # gconf/gconfd.c:1676
 #: ../glib/gregex.c:1161
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr ""
-"Σφάλμα κατά τη μεταγλώττιση της κανονικής έκφρασης %s στον χαρακτήρα %d: %s"
+msgstr "Σφάλμα κατά τη μεταγλώττιση της κανονικής έκφρασης %s στον χαρακτήρα %d: %s"
 
 #: ../glib/gregex.c:1197
 #, c-format
@@ -1000,8 +1001,7 @@ msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασ�
 #: ../glib/gspawn.c:1357
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
-"Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
+msgstr "Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
 
 #: ../glib/gspawn.c:1366
 #, c-format
@@ -1105,8 +1105,7 @@ msgstr "Το αρχείο είναι κενό"
 
 #: ../glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Το Key file περιέχει την γραμμή '%s' που δεν είναι key-value pair, group, ή "
 "comment"
@@ -1284,8 +1283,7 @@ msgstr "Λανθασμένος αριθμός token (%d) στην κωδικοπ
 #: ../gio/gemblemedicon.c:296
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
-msgstr ""
-"Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GEmblemedIcon"
+msgstr "Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GEmblemedIcon"
 
 #: ../gio/gemblemedicon.c:306
 #, c-format
@@ -1383,8 +1381,7 @@ msgstr "Το αρχείο που περιέχει το εικονίδιο"
 #: ../gio/gfileicon.c:237
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
-msgstr ""
-"Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GFileIcon"
+msgstr "Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GFileIcon"
 
 #: ../gio/gfileicon.c:247
 msgid "Malformed input data for GFileIcon"
@@ -1485,8 +1482,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "Αδύνατη η μετονομασία του αρχείου. Το όνομα αρχείου υπάρχει ήδη"
 
 #: ../gio/glocalfile.c:1168 ../gio/glocalfile.c:2032 ../gio/glocalfile.c:2061
-#: ../gio/glocalfile.c:2215 ../gio/glocalfileoutputstream.c:505
-#: ../gio/glocalfileoutputstream.c:550 ../gio/glocalfileoutputstream.c:1009
+#: ../gio/glocalfile.c:2215 ../gio/glocalfileoutputstream.c:520
+#: ../gio/glocalfileoutputstream.c:565 ../gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "Μη έγκυρο όνομα αρχείου"
 
@@ -1555,9 +1552,9 @@ msgstr "Σφάλμα κατά τη μετακίνηση του αρχείου: %
 msgid "Can't move directory over directory"
 msgstr "Αδύνατη η μετακίνηση καταλόγου επί καταλόγου"
 
-#: ../gio/glocalfile.c:2175 ../gio/glocalfileoutputstream.c:829
-#: ../gio/glocalfileoutputstream.c:843 ../gio/glocalfileoutputstream.c:858
-#: ../gio/glocalfileoutputstream.c:874 ../gio/glocalfileoutputstream.c:888
+#: ../gio/glocalfile.c:2175 ../gio/glocalfileoutputstream.c:844
+#: ../gio/glocalfileoutputstream.c:858 ../gio/glocalfileoutputstream.c:873
+#: ../gio/glocalfileoutputstream.c:889 ../gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "Απέτυχε η δημιουργία αντιγράφου ασφαλείας"
 
@@ -1587,7 +1584,7 @@ msgstr "Μη έγκυρο εκτεταμένο όνομα γνωρίσματος
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Σφάλμα ορισμού εκτεταμένου ονόματος γνωρίσματος '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1466 ../gio/glocalfileoutputstream.c:713
+#: ../gio/glocalfileinfo.c:1466 ../gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Σφάλμα δήλωσης αρχείου '%s': %s"
@@ -1660,20 +1657,20 @@ msgstr "Το SELinux δεν έχει ενεργοποιηθεί στο σύστ�
 msgid "Setting attribute %s not supported"
 msgstr "Δεν υποστηρίζεται ο ορισμός του γνωρίσματος %s"
 
-#: ../gio/glocalfileinputstream.c:160 ../gio/glocalfileoutputstream.c:603
+#: ../gio/glocalfileinputstream.c:160 ../gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Σφάλμα ανάγνωσης από το αρχείο: %s"
 
 #: ../gio/glocalfileinputstream.c:191 ../gio/glocalfileinputstream.c:203
-#: ../gio/glocalfileinputstream.c:312 ../gio/glocalfileoutputstream.c:405
-#: ../gio/glocalfileoutputstream.c:906
+#: ../gio/glocalfileinputstream.c:312 ../gio/glocalfileoutputstream.c:420
+#: ../gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Σφάλμα αναζήτησης στο αρχείο: %s"
 
-#: ../gio/glocalfileinputstream.c:233 ../gio/glocalfileoutputstream.c:208
-#: ../gio/glocalfileoutputstream.c:303
+#: ../gio/glocalfileinputstream.c:233 ../gio/glocalfileoutputstream.c:223
+#: ../gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Σφάλμα κατά το κλείσιμο του αρχείου: %s"
@@ -1682,56 +1679,57 @@ msgstr "Σφάλμα κατά το κλείσιμο του αρχείου: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Δε βρέθηκε ο τύπος monitor του προεπιλεγμένου τοπικού αρχείου"
 
-#: ../gio/glocalfileoutputstream.c:172 ../gio/glocalfileoutputstream.c:624
+#: ../gio/glocalfileoutputstream.c:173 ../gio/glocalfileoutputstream.c:202
+#: ../gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Σφάλμα κατά την εγγραφή στο αρχείο: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileoutputstream.c:235
+#: ../gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Σφάλμα αφαίρεσης παλαιού αντιγράφου συνδέσμου: %s"
 
 #
-#: ../gio/glocalfileoutputstream.c:249 ../gio/glocalfileoutputstream.c:262
+#: ../gio/glocalfileoutputstream.c:264 ../gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Σφάλμα δημιουργίας αντιγράφου ασφαλείας: %s"
 
 #
-#: ../gio/glocalfileoutputstream.c:280
+#: ../gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Σφάλμα μετονομασίας προσωρινού αρχείου: %s"
 
 #
-#: ../gio/glocalfileoutputstream.c:451 ../gio/glocalfileoutputstream.c:953
+#: ../gio/glocalfileoutputstream.c:466 ../gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Σφάλμα κοπής (truncating) αρχείου: %s"
 
 #
-#: ../gio/glocalfileoutputstream.c:511 ../gio/glocalfileoutputstream.c:556
-#: ../gio/glocalfileoutputstream.c:695 ../gio/glocalfileoutputstream.c:934
-#: ../gio/glocalfileoutputstream.c:1015
+#: ../gio/glocalfileoutputstream.c:526 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfileoutputstream.c:710 ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Σφάλμα ανοίγματος αρχείου '%s': %s"
 
-#: ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "Το αρχείο προορισμού είναι κατάλογος"
 
-#: ../gio/glocalfileoutputstream.c:731
+#: ../gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "Το αρχείο προορισμού δεν είναι κανονικό αρχείο"
 
-#: ../gio/glocalfileoutputstream.c:743
+#: ../gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "Το αρχείο τροποποιήθηκε εξωτερικά"
 
-#: ../gio/glocalfileoutputstream.c:922
+#: ../gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Σφάλμα αφαίρεσης παλαιού αρχείου: %s"
@@ -1793,8 +1791,7 @@ msgstr "η προσάρτηση δεν υποστηρίζει το μάντεμ�
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:690
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr ""
-"η προσάρτηση δεν υποστηρίζει το μάντεμα του τύπου σύγχρονων περιεχομένων"
+msgstr "η προσάρτηση δεν υποστηρίζει το μάντεμα του τύπου σύγχρονων περιεχομένων"
 
 #: ../gio/goutputstream.c:211 ../gio/goutputstream.c:412
 msgid "Output stream doesn't implement write"
@@ -1836,8 +1833,7 @@ msgstr ""
 #: ../gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr ""
-"Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GThemedIcon"
+msgstr "Δεν είναι δυνατός ο χειρισμός της έκδοσης %d της κωδικοποίησης GThemedIcon"
 
 #: ../gio/gunixinputstream.c:161 ../gio/gunixoutputstream.c:147
 msgid "File descriptor"
@@ -1920,3 +1916,4 @@ msgstr "χρήση αναπτυγμένης μορφής λιστών"
 #: ../tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[ΑΡΧΕΙΟ...]"
+
