@@ -3051,10 +3051,10 @@ end_element_handler (GMarkupParseContext *context,
 	break;
       if (require_end_element (context, ctx, "constant", element_name, error))
 	{
-	  pop_node (ctx);
 	  switch (ctx->state)
 	    {
 	    case STATE_NAMESPACE_CONSTANT:
+	  	  pop_node (ctx);
 	      state_switch (ctx, STATE_NAMESPACE);
 	      break;
 	    case STATE_CLASS_CONSTANT:
