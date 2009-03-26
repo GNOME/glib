@@ -242,6 +242,7 @@ typedef struct {
   GIOChannel *error_channel;
   guint error_channel_source_id;
   GString *error_string;
+  gchar **argv;
 } UnmountEjectOp;
 
 static void 
@@ -276,6 +277,7 @@ eject_unmount_cb (GPid pid, gint status, gpointer user_data)
   g_source_remove (data->error_channel_source_id);
   g_io_channel_unref (data->error_channel);
   g_string_free (data->error_string, TRUE);
+  g_strfreev (data->argv);
   close (data->error_fd);
   g_spawn_close_pid (pid);
   g_free (data);
@@ -316,27 +318,15 @@ read:
   return TRUE;
 }
 
-static void
-eject_unmount_do (GMount              *mount,
-                  GCancellable        *cancellable,
-                  GAsyncReadyCallback  callback,
-                  gpointer             user_data,
-                  char               **argv)
+static gboolean
+eject_unmount_do_cb (gpointer user_data)
 {
-  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
-  UnmountEjectOp *data;
+  UnmountEjectOp *data = (UnmountEjectOp *) user_data;
   GPid child_pid;
-  GError *error;
-  
-  data = g_new0 (UnmountEjectOp, 1);
-  data->unix_mount = unix_mount;
-  data->callback = callback;
-  data->user_data = user_data;
-  data->cancellable = cancellable;
-  
-  error = NULL;
+  GError *error = NULL;
+
   if (!g_spawn_async_with_pipes (NULL,         /* working dir */
-                                 argv,
+                                 data->argv,
                                  NULL,         /* envp */
                                  G_SPAWN_DO_NOT_REAP_CHILD|G_SPAWN_SEARCH_PATH,
                                  NULL,         /* child_setup */
@@ -376,9 +366,35 @@ handle_error:
     if (data->error_channel != NULL)
       g_io_channel_unref (data->error_channel);
 
+    g_strfreev (data->argv);
     g_error_free (error);
     g_free (data);
   }
+
+  return FALSE;
+}
+
+static void
+eject_unmount_do (GMount              *mount,
+                  GCancellable        *cancellable,
+                  GAsyncReadyCallback  callback,
+                  gpointer             user_data,
+                  char               **argv)
+{
+  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
+  UnmountEjectOp *data;
+
+  data = g_new0 (UnmountEjectOp, 1);
+  data->unix_mount = unix_mount;
+  data->callback = callback;
+  data->user_data = user_data;
+  data->cancellable = cancellable;
+  data->argv = g_strdupv (argv);
+
+  if (unix_mount->volume_monitor != NULL)
+    g_signal_emit_by_name (unix_mount->volume_monitor, "mount-pre-unmount", mount);
+
+  g_timeout_add (500, (GSourceFunc) eject_unmount_do_cb, data);
 }
 
 static void
