@@ -296,8 +296,6 @@ typedef enum {
   GI_SCOPE_TYPE_INVALID, /* The argument is not of callback type */
   GI_SCOPE_TYPE_CALL, /* The callback and associated user_data is only used during the
                          call to this function */
-  GI_SCOPE_TYPE_OBJECT, /* The callback and associated user_data is used until
-                           the object containing this method is destroyed */
   GI_SCOPE_TYPE_ASYNC, /* The callback and associated user_data is 
                           only used until the callback is invoked, and the callback 
                           is invoked always exactly once. */

@@ -934,8 +934,6 @@ start_parameter (GMarkupParseContext *context,
 
   if (scope && strcmp (scope, "call") == 0)
     param->scope = GI_SCOPE_TYPE_CALL;
-  else if (scope && strcmp (scope, "object") == 0)
-    param->scope = GI_SCOPE_TYPE_OBJECT;
   else if (scope && strcmp (scope, "async") == 0)
     param->scope = GI_SCOPE_TYPE_ASYNC;
   else if (scope && strcmp (scope, "notified") == 0)
