@@ -490,9 +490,6 @@ write_callable_info (const gchar    *namespace,
         case GI_SCOPE_TYPE_CALL:
           xml_printf (file, " scope=\"call\"");
           break;
-        case GI_SCOPE_TYPE_OBJECT:
-          xml_printf (file, " scope=\"object\"");
-          break;
         case GI_SCOPE_TYPE_ASYNC:
           xml_printf (file, " scope=\"async\"");
           break;
