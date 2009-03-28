@@ -224,18 +224,14 @@ static GMarkupParser firstpass_parser =
 
 static char *
 locate_gir (GIrParser  *parser,
-	    const char *name,
-	    const char *version)
+	    const char *girname)
 {
   const gchar *const *datadirs;
   const gchar *const *dir;
-  char *girname;
   char *path = NULL;
       
   datadirs = g_get_system_data_dirs ();
       
-  girname = g_strdup_printf ("%s-%s.gir", name, version);
-  
   if (parser->includes != NULL)
     {
       for (dir = (const gchar *const *)parser->includes; *dir; dir++) 
@@ -255,7 +251,6 @@ locate_gir (GIrParser  *parser,
       g_free (path);
       path = NULL;
     }
-  g_free (girname);
   return path;
 }
 
@@ -2321,7 +2316,7 @@ parse_include (GMarkupParseContext *context,
 {
   gchar *buffer;
   gsize length;
-  char *girpath;
+  gchar *girpath, *girname;
   gboolean success = FALSE;
   GList *modules;
   GList *l;
@@ -2350,17 +2345,20 @@ parse_include (GMarkupParseContext *context,
 	}
     }
 
-  girpath = locate_gir (ctx->parser, name, version);
+  girname = g_strdup_printf ("%s-%s.gir", name, version);
+  girpath = locate_gir (ctx->parser, girname);
 
   if (girpath == NULL)
     {
       g_set_error (error,
 		   G_MARKUP_ERROR,
 		   G_MARKUP_ERROR_INVALID_CONTENT,
-		   "Could not find GIR file '%s.gir'; check XDG_DATA_DIRS or use --includedir",
-		   name);
+		   "Could not find GIR file '%s'; check XDG_DATA_DIRS or use --includedir",
+		   girname);
+      g_free (girname);
       return FALSE;
     }
+  g_free (girname);
 
   g_debug ("Parsing include %s", girpath);
 
