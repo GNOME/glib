@@ -1,3 +1,11 @@
+2009-03-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 577137 – g_logv() will crash if given format args and multiple
+	log levels
+
+	* glib/gmessages.c (g_logv): Copy a va_list when using it
+	multiple times. Reported by Wim Lewis.
+
 2009-03-16  Alexander Larsson  <alexl@redhat.com>
 
 	Bug 575555 – Use fsync() when replacing files to avoid data loss on crash
