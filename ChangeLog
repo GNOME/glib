@@ -1,3 +1,9 @@
+=== ChangeLog discontinued ===
+
+	With the move to git, GLib is switching from a ChangeLog file
+	to relying on commit messages to provide change history. Please
+	see README.commits for guidance on the expected message format.
+
 2009-03-29  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 577137 – g_logv() will crash if given format args and multiple

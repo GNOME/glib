@@ -3,7 +3,7 @@ following packages installed:
 
 	- GNU autoconf 2.54
 	- GNU automake 1.7
-	- GNU libtool 1.4 
+	- GNU libtool 1.4
         - GNU gettext 0.10.40
         - gtk-doc
 
@@ -15,7 +15,7 @@ several steps to setup the tree for compilation.  You can do all these
 steps at once by running:
 
         cvsroot/glib# ./autogen.sh
-   
+ 
 Basically this does the following for you:
 
   	cvsroot/glib# aclocal; automake; autoconf
@@ -24,8 +24,8 @@ Basically this does the following for you:
 	can run the configure script in cvsroot/glib to create all
 	the Makefiles.
 
-Before running autogen.sh or configure, make sure you have libtool 
-in your path.  
+Before running autogen.sh or configure, make sure you have libtool
+in your path.
 
 Note that autogen.sh runs configure for you.  If you wish to pass
 options like --prefix=/usr to configure you can give those options

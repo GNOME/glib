@@ -27,7 +27,7 @@ See the file 'INSTALL'
 Notes about GLib 2.20
 =====================
 
-^ The functions for launching applications (e.g. g_app_info_launch() +
+* The functions for launching applications (e.g. g_app_info_launch() +
   friends) now passes a FUSE file:// URI if possible (requires gvfs
   with the FUSE daemon to be running and operational). With gvfs 2.26,
   FUSE file:// URIs will be mapped back to gio URIs in the GFile
@@ -43,17 +43,17 @@ Notes about GLib 2.18
 =====================
 
 * The recommended way of using GLib has always been to only include the
-  toplevel headers glib.h, glib-object.h and gio.h. GLib enforces this by 
-  generating an error when individual headers are directly included. 
-  To help with the transition, the enforcement is not turned on by 
+  toplevel headers glib.h, glib-object.h and gio.h. GLib enforces this by
+  generating an error when individual headers are directly included.
+  To help with the transition, the enforcement is not turned on by
   default for GLib headers (it is turned on for GObject and GIO).
   To turn it on, define the preprocessor symbol G_DISABLE_SINGLE_INCLUDES.
-  
+
 Notes about GLib 2.16
 =====================
 
 * GLib now includes GIO, which adds optional dependencies against libattr
-  and libselinux for extended attribute and SELinux support. Use 
+  and libselinux for extended attribute and SELinux support. Use
   --disable-xattr and --disable-selinux to build without these.
 
 Notes about GLib 2.10
@@ -67,18 +67,18 @@ Notes about GLib 2.10
 * The Unicode support has been updated to Unicode 4.1. This adds several
   new members to the GUnicodeBreakType enumeration.
 
-* The support for Solaris threads has been retired. Solaris has provided 
-  POSIX threads for long enough now to have them available on every 
-  Solaris platform. 
+* The support for Solaris threads has been retired. Solaris has provided
+  POSIX threads for long enough now to have them available on every
+  Solaris platform.
 
-* 'make check' has been changed to validate translations by calling 
-  msgfmt with the -c option. As a result, it may fail on systems with 
-  older gettext implementations (GNU gettext < 0.14.1, or Solaris gettext). 
+* 'make check' has been changed to validate translations by calling
+  msgfmt with the -c option. As a result, it may fail on systems with
+  older gettext implementations (GNU gettext < 0.14.1, or Solaris gettext).
   'make check' will also fail on systems where the C compiler does not
   support ELF visibility attributes.
 
-* The GMemChunk API has been deprecated in favour of a new 'slice 
-  allocator'. See the g_slice documentation for more details. 
+* The GMemChunk API has been deprecated in favour of a new 'slice
+  allocator'. See the g_slice documentation for more details.
 
 * A new type, GInitiallyUnowned, has been introduced, which is
   intended to serve as a common implementation of the 'floating reference'
@@ -117,20 +117,20 @@ Notes about GLib 2.6.0
   consideration, and use the gstdio wrappers to access files whose
   names have been constructed from strings returned from GLib.
 
-* Likewise, g_get_user_name() and g_get_real_name() have been changed 
-  to return UTF-8 on Windows, while keeping the old semantics for 
+* Likewise, g_get_user_name() and g_get_real_name() have been changed
+  to return UTF-8 on Windows, while keeping the old semantics for
   applications compiled against older versions of GLib.
 
 * The GLib uses an '_' prefix to indicate private symbols that
-  must not be used by applications. On some platforms, symbols beginning 
-  with prefixes such as _g will be exported from the library, on others not. 
-  In no case can applications use these private symbols. In addition to that, 
-  GLib+ 2.6 makes several symbols private which were not in any installed 
+  must not be used by applications. On some platforms, symbols beginning
+  with prefixes such as _g will be exported from the library, on others not.
+  In no case can applications use these private symbols. In addition to that,
+  GLib+ 2.6 makes several symbols private which were not in any installed
   header files and were never intended to be exported.
 
-* To reduce code size and improve efficiency, GLib, when compiled 
-  with the GNU toolchain, has separate internal and external entry 
-  points for exported functions. The internal names, which begin with 
+* To reduce code size and improve efficiency, GLib, when compiled
+  with the GNU toolchain, has separate internal and external entry
+  points for exported functions. The internal names, which begin with
   IA__, may be seen when debugging a GLib program.
 
 * On Windows, GLib no longer opens a console window when printing
@@ -139,22 +139,22 @@ Notes about GLib 2.6.0
   stderr if you need to see them.
 
 * The child watch functionality tends to reveal a bug in many
-  thread implementations (in particular the older LinuxThreads 
-  implementation on Linux) where it's not possible to call waitpid() 
-  for a child created in a different thread. For this reason, for 
-  maximum portability, you should structure your code to fork all 
+  thread implementations (in particular the older LinuxThreads
+  implementation on Linux) where it's not possible to call waitpid()
+  for a child created in a different thread. For this reason, for
+  maximum portability, you should structure your code to fork all
   child processes that you want to wait for from the main thread.
 
-* A problem was recently discovered with g_signal_connect_object(); 
-  it doesn't actually disconnect the signal handler once the object being 
-  connected to dies, just disables it. See the API docs for the function 
-  for further details and the correct workaround that will continue to 
+* A problem was recently discovered with g_signal_connect_object();
+  it doesn't actually disconnect the signal handler once the object being
+  connected to dies, just disables it. See the API docs for the function
+  for further details and the correct workaround that will continue to
   work with future versions of GLib.
 
 How to report bugs
 ==================
 
-Bugs should be reported to the GNOME bug tracking system. 
+Bugs should be reported to the GNOME bug tracking system.
 (http://bugzilla.gnome.org, product glib.) You will need
 to create an account for yourself.
 
@@ -167,12 +167,12 @@ In the bug report please include:
 
   And anything else you think is relevant.
 
-* How to reproduce the bug. 
+* How to reproduce the bug.
 
-  If you can reproduce it with one of the test programs that are built 
-  in the tests/ subdirectory, that will be most convenient.  Otherwise, 
-  please include a short test program that exhibits the behavior. 
-  As a last resort, you can also provide a pointer to a larger piece 
+  If you can reproduce it with one of the test programs that are built
+  in the tests/ subdirectory, that will be most convenient.  Otherwise,
+  please include a short test program that exhibits the behavior.
+  As a last resort, you can also provide a pointer to a larger piece
   of software that can be downloaded.
 
 * If the bug was a crash, the exact text that was printed out
@@ -192,7 +192,7 @@ Otherwise, enter a new bug report that describes the patch,
 and attach the patch to that bug report.
 
 Bug reports containing patches should include the PATCH keyword
-in their keyword fields. If the patch adds to or changes the GLib 
+in their keyword fields. If the patch adds to or changes the GLib
 programming interface, the API keyword should also be included.
 
 Patches should be in unified diff form. (The -u option to GNU

@@ -28,6 +28,7 @@ EXTRA_DIST += 			\
 	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
+	README.commits		\
 	README.in		\
 	INSTALL.in		\
 	README.win32		\
