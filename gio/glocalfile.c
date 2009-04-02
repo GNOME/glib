@@ -1921,11 +1921,20 @@ g_local_file_trash (GFile         *file,
       g_free (trashname);
       g_free (infofile);
       g_free (trashfile);
-      
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Unable to trash file: %s"),
-		   g_strerror (errsv));
+
+      if (errsv == EXDEV)
+	/* The trash dir was actually on another fs anyway!?
+	   This can happen when the same device is mounted multiple
+	   times, or with bind mounts of the same fs. */
+	g_set_error (error, G_IO_ERROR,
+		     G_IO_ERROR_NOT_SUPPORTED,
+		     _("Unable to trash file: %s"),
+		     g_strerror (errsv));
+      else
+	g_set_error (error, G_IO_ERROR,
+		     g_io_error_from_errno (errsv),
+		     _("Unable to trash file: %s"),
+		     g_strerror (errsv));
       return FALSE;
     }
 
