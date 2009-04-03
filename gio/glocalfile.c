@@ -662,7 +662,7 @@ get_fs_type (long f_type)
     case 0xEF51:
       return "ext2";
     case 0xEF53:
-      return "ext3";
+      return "ext3/ext4";
     case 0x4244:
       return "hfs";
     case 0xF995E849:
