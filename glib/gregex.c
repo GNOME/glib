@@ -1199,6 +1199,8 @@ g_regex_new (const gchar         *pattern,
                                            regex->pattern,
                                            errmsg);
           g_propagate_error (error, tmp_error);
+
+          g_regex_unref (regex);
           return NULL;
 	}
     }
