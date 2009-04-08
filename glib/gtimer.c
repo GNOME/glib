@@ -367,7 +367,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   time_->tv_sec = mktime_utc (&tm);
   time_->tv_usec = 0;
   
-  if (*iso_date == '.')
+  if (*iso_date == ',' || *iso_date == '.')
     {
       glong mul = 100000;
 
@@ -382,14 +382,14 @@ g_time_val_from_iso8601 (const gchar *iso_date,
     {
       gint sign = (*iso_date == '+') ? -1 : 1;
       
-      val = 60 * strtoul (iso_date + 1, (char **)&iso_date, 10);
+      val = strtoul (iso_date + 1, (char **)&iso_date, 10);
       
       if (*iso_date == ':')
 	val = 60 * val + strtoul (iso_date + 1, (char **)&iso_date, 10);
       else
         val = 60 * (val / 100) + (val % 100);
 
-      time_->tv_sec += (time_t) (val * sign);
+      time_->tv_sec += (time_t) (60 * val * sign);
     }
   else if (*iso_date++ != 'Z')
     return FALSE;
