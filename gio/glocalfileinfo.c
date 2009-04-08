@@ -1500,7 +1500,8 @@ _g_local_file_info_get (const char             *basename,
   if (basename != NULL && basename[0] == '.')
     g_file_info_set_is_hidden (info, TRUE);
 
-  if (basename != NULL && basename[strlen (basename) -1] == '~')
+  if (basename != NULL && basename[strlen (basename) -1] == '~' &&
+      S_ISREG (statbuf.st_mode))
     g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP, TRUE);
 #else
   if (dos_attributes & FILE_ATTRIBUTE_HIDDEN)
