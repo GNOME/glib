@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2009-02-26 15:45+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -199,7 +199,7 @@ msgstr "파일 '%s' 열기 실패: fdopen() 실패: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "파일 '%s'의 이름을 '%s'(으)로 바꾸는 데 실패: g_rename() 실패: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "파일 '%s' 만들기 실패: %s"
@@ -215,46 +215,56 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "파일 '%s' 쓰기 실패: fwrite() 실패: %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "파일 '%s' 쓰기 실패: fwrite() 실패: %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "파일 '%s' 쓰기 실패: fwrite() 실패: %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "파일 '%s' 닫기 실패: fclose() 실패: %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "기존의 '%s' 파일을 지울 수 없습니다: g_unlink() 실패: %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "템플리트 '%s'이(가) 잘못되었습니다, '%s'이(가) 들어 있으면 안 됩니다"
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "템플리트 '%s'에 XXXXXX가 없습니다"
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "심볼릭 링크를 지원하지 않습니다"
 
@@ -543,7 +553,7 @@ msgstr "역추적 최대값에 도달했습니다"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "패턴 안에 부분 매치에서 지원하지 않는 항목이 들어 있습니다."
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr "내부 오류"
 
@@ -758,7 +768,7 @@ msgstr "컴파일 작업 공간을 넘어갔습니다"
 msgid "previously-checked referenced subpattern not found"
 msgstr "이전에 검사한 참조할 서브패턴이 없습니다"
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "정규 표현식 %s을(를) 맞추는 도중 오류가 발생했습니다: %s"
@@ -782,43 +792,43 @@ msgstr ""
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "정규 표현식 %s을(를) 최적화하는 도중 오류 발생: %s"
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr "16 진수 또는 '}'가 있어야 합니다"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr "16 진수가 있어야 합니다"
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr "심볼 참조에 '<' 기호가 없습니다"
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr "심볼 참조가 끝나지 않았습니다"
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr "심볼 참조에 내용이 없습니다"
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr "숫자가 있어야 합니다"
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr "심볼 참조가 잘못되었습니다"
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr "마지막 '\\'가 없습니다"
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr "알 수 없는 이스케이프 시퀀스"
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "\"%s\" 대체 문자열을 읽는 중 %lu번째 문자에서 오류가 발생했습니다: %s"
@@ -1139,7 +1149,7 @@ msgstr "%s에 넘긴 카운트 값이 너무 큽니다"
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "동작이 취소되었습니다"
@@ -1247,7 +1257,7 @@ msgstr "동작을 지원하지 않습니다"
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 
@@ -1255,7 +1265,7 @@ msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 msgid "Can't copy directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 복사할 수 없습니다"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
@@ -1410,9 +1420,9 @@ msgstr "파일 이름 바꾸기 오류: %s"
 msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
@@ -1453,42 +1463,43 @@ msgstr "휴지통 디렉터리를 찾을 수 없거나 만들 수 없습니다"
 msgid "Unable to create trashing info file: %s"
 msgstr "휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "디렉터리를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 중 오류: %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 제거하는 중 오류: %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
 
@@ -1509,88 +1520,88 @@ msgstr "잘못된 확장 에트리뷰트 이름"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "확장 애트리뷰트 '%s' 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' 파일의 정보를 읽는 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr " (잘못된 인코딩)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "파일 디스크립터 정보를 읽는 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "잘못된 애트리뷰트 종류 (uint32 필요)"
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "잘못된 애트리뷰트 종류 (uint64 필요)"
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr "잘못된 애트리뷰트 종류 (바이트 문자열 필요)"
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "권한 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "소유자 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr "심볼릭 링크는 NULL이 아니어야 합니다"
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "심볼릭 링크 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr "심볼릭 링크 설정 중 오류: 파일이 심볼릭 링크가 아닙니다"
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 컨텍스트는 NULL이 아니어야 합니다"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux 컨텍스트 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr "이 시스템은 SELinux를 사용하지 않습니다"
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s 애트리뷰트 설정은 지원하지 않습니다"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "파일을 읽는 중 오류: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "파일에서 seek하는 중 오류: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "파일을 닫는 중 오류: %s"
@@ -1599,51 +1610,52 @@ msgstr "파일을 닫는 중 오류: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "기본 로컬 파일 모니터 종류를 찾을 수 없습니다"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "파일에 쓰는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "예전 백업 링크를 제거하는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "백업 사본을 만드는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "임시 파일의 이름을 바꾸는 오류: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "파일을 자르는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' 파일을 여는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "대상 파일이 디렉터리입니다"
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "대상 파일이 일반 파일이 아닙니다"
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "파일이 외부에서 바뀌었습니다"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "예전 파일을 제거하는 중 오류: %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2009-03-09 19:28+0530\n"
 "Last-Translator: Sandeep Shedmake <sandeep.shedmake@gmail.com>\n"
 "Language-Team: marathi\n"
@@ -198,7 +198,7 @@ msgstr "'%s' फाइल उघडण्यास अपयशी: fdopen() अ
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "फाइलला '%s पासून '%s' असे पुनर्नामांकन करण्यास अपयशी: g_rename() अपयशी: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "फाइल बनविण्यास अपयशी '%s': %s"
@@ -214,46 +214,56 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' फाइलवर लिहण्यास अपयशी: fwrite() अपयशी: %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "'%s' फाइलवर लिहण्यास अपयशी: fwrite() अपयशी: %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "'%s' फाइलवर लिहण्यास अपयशी: fwrite() अपयशी: %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' फाइल बंद करण्यास अपयशी: fclose() अपयशी: %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "उपलब्ध फाइल '%s' काढूण टाकल्या जाऊ शकत नाही: g_unlink() अपयशी: %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "आराखडा '%s' अवैध, '%s' समाविष्टीत नसायला हवे"
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "आराखडा '%s' मध्ये XXXXXX समाविष्टीत नाही"
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "बोधचिन्ह लिंक '%s' वाचण्यास अपयशी: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "बोधचिन्ह लिंक समर्थीत नाही"
 
@@ -525,7 +535,7 @@ msgstr "संयुक्त शोध सीमा पोहचले"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "रचनेत अपूरे जुळवणीकरीता समाविष्टीत घटक जी समर्थित नाही"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr "आंतरीक त्रूटी"
 
@@ -737,7 +747,7 @@ msgstr "उत्पकार्यन्वीत कंपाइल कार�
 msgid "previously-checked referenced subpattern not found"
 msgstr "पूर्वी-तपासलेले संदर्भीत उपरचना आढळले नाही"
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "रेगुलर एक्सप्रेशन %s जुळवणी करतेवेळी त्रूटी: %s"
@@ -760,43 +770,43 @@ msgstr "अक्षर %2$d वरील रेगुलर एक्सप्�
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "रेगुलर एक्सप्रेशन %s अधिक कार्यक्षम करतेवेळी त्रूटी: %s"
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr "हेक्जाडेसीमल अंक किंवा '}' अपेक्षीत"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr "क्जाडेसीमल अंक अपेक्षीत"
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr "बोधचिन्ह संदर्भात '<' आढळले नाही"
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr "अपूरे बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr "शून्य-लांबीचे बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr "अंक अपेक्षीत"
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr "अवैध बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr "अंतिम '\\'"
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr "अपरिचीत निसटती श्रृंखला"
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "अक्षर %2$lu वरील बदलाव पाठ्य \"%1$s\" वाचतेवेळी त्रूटी: %3$s"
@@ -1111,7 +1121,7 @@ msgstr "%s करीता खूप मोठी प्रमाण संख�
 msgid "Stream is already closed"
 msgstr "श्रृंखला आधिपासूनच बंद आहे"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "कार्य रद्द करण्यात आले"
@@ -1219,7 +1229,7 @@ msgstr "कार्य समर्थित नाही"
 msgid "Containing mount does not exist"
 msgstr "समाविष्टीत आरोहन अस्तीत्वात नाही"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr "संचयीकेवर प्रत बनवू शकत नाही"
 
@@ -1227,7 +1237,7 @@ msgstr "संचयीकेवर प्रत बनवू शकत ना�
 msgid "Can't copy directory over directory"
 msgstr "संचयीकेवर संचयीकेची प्रत बनवू शकत नाही"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr "लक्ष्य फाइल अस्तित्वात आहे"
 
@@ -1382,9 +1392,9 @@ msgstr "फाइल पुनःनामांकीत करतेवेळ�
 msgid "Can't rename file, filename already exist"
 msgstr "फाइल पुनःनामांकीत करू शकत नाही, फाइलनाव आधिपासूनच अस्तित्वात आहे"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "अवैध फाइल नाव"
 
@@ -1425,42 +1435,43 @@ msgstr "कचरापेटी करीता उच्चस्थरीय 
 msgid "Unable to create trashing info file: %s"
 msgstr "कचरापेटी माहिती फाइल बनविता आली नाही: %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "कचरापेटीकडे फाइल हलवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "संचयीका बनवितेवेळी त्रूटी आढळली: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "बोधचिन्ह लिंक बनवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, c-format
 msgid "Error moving file: %s"
 msgstr "फाइल स्थानांतरन करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr "संचयीकेवर संचयीका हलवू शकत नाही"
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "प्रतिकृत फाइल निर्माण अपयशी"
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "लक्ष्य फाइल काढून टाकतेवेळी त्रूटी: %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr "आरोहन मधिल स्थानांतरन समर्थीत नाही"
 
@@ -1481,88 +1492,88 @@ msgstr "अवैध विस्तारीत गुणधर्म नाव
 msgid "Error setting extended attribute '%s': %s"
 msgstr "विस्तारीत गुणधर्म निश्चित करतेवेळी त्रूटी '%s': %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "फाइल '%s' सुरू करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr " (अवैध ऐंकोडींग)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "फाइल व्याख्यक निश्चित करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "अवैध गुणधर्म प्रकार (uint32 अपेक्षीत)"
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "अवैध गुणधर्म प्रकार (uint64 अपेक्षीत)"
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr "अवैध गुणधर्म प्रकार (बाईट अक्षरमाळा अपेक्षीत)"
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "परवानगी स्थापित करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "मालक स्थापित करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr "symlink शून्य नसायला हवे"
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink स्थापीत करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink निश्चित करतेवेळी त्रूटी: फाइल symlink नाही"
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux संदर्भ विना-शून्य असायला हवे"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux संदर्भ संयोजीत करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux या प्रणालीवर कार्यान्वीत नाही"
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s गुणधर्म स्थापित करणे समर्थित नाही"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "फाइल पासून वाचतेवेळी त्रूटी: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "फाइल शोधतेवळी त्रूटी: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "फाइल बंद करतेवेळी त्रूटी: %s"
@@ -1571,51 +1582,52 @@ msgstr "फाइल बंद करतेवेळी त्रूटी: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "मुलभूत स्थानीक फाइल मॉनीटर प्रकार शोधता आले नाही"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "फाइलवर लिहीतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "जुने प्रतिकृत लिंक काढून टाकतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "प्रतिकृत प्रत बनवितेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "तातपूरती फाइल पुनःनामांकीत करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "फाइल ट्रंकेट करतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "फाइल '%s' उघडतेवेळी त्रूटी: %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "लक्ष्य फाइल संचयीका आहे"
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "लक्ष्य फाइल सामान्य फाइल नाही"
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "फाइल बाहेरुन संपादित करण्यात आली"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "जुणी फाइल काढूण टाकतेवेळी त्रूटी: %s"

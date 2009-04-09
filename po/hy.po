@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2006-03-03 16:24+0000\n"
 "Last-Translator: Norayr Chilingaryan <norik@freenet.am>\n"
 "Language-Team: Armenian <norik@freenet.am>\n"
@@ -196,7 +196,7 @@ msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ fdopen() խափանվ
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Չի հաջողվել վերանվանել '%s' ֆայլը որպես '%s'՝ g_rename() խափանվեց՝ %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Չի հաջողվել ստեղծել ֆայլ '%s'՝ %s"
@@ -212,46 +212,56 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Չի հաողվել գրել '%s' ֆայլ՝ fwrite() խափանվեց՝ %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "Չի հաողվել գրել '%s' ֆայլ՝ fwrite() խափանվեց՝ %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "Չի հաողվել գրել '%s' ֆայլ՝ fwrite() խափանվեց՝ %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Չի հաջովել փակել '%s' ֆայլը՝ fclose() խափանվեց՝ %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "'%s' ֆայլը չի կարող վերացվել՝ g_unlink() խափանվեց՝ %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr ""
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr ""
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Չի հաջողվել կարդալ '%s' սիմվոլիկ հղումը՝ %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "Սիմվոլիկ հղումները չեն ապահովվում"
 
@@ -507,7 +517,7 @@ msgstr ""
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr ""
 
@@ -720,7 +730,7 @@ msgstr ""
 msgid "previously-checked referenced subpattern not found"
 msgstr ""
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
@@ -743,43 +753,43 @@ msgstr "Սխալ %d տողի %d տառում՝ %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1091,7 +1101,7 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr ""
@@ -1200,7 +1210,7 @@ msgstr "Սիմվոլիկ հղումները չեն ապահովվում"
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr ""
 
@@ -1208,7 +1218,7 @@ msgstr ""
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr ""
 
@@ -1364,9 +1374,9 @@ msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr ""
 
@@ -1407,42 +1417,43 @@ msgstr ""
 msgid "Unable to create trashing info file: %s"
 msgstr "Չի հաջողվել ստեղծել ֆայլ '%s'՝ %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "Չի հաջողվել ստեղծել ֆայլ '%s'՝ %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "'%s' պանակը բացելու սխալ՝ %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Սխալ %d տողում՝ %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr ""
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr ""
 
@@ -1463,88 +1474,88 @@ msgstr ""
 msgid "Error setting extended attribute '%s': %s"
 msgstr "'%s' պանակը բացելու սխալ՝ %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Սխալ %d տողում՝ %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Սխալ %d տողում՝ %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Սխալ %d տողում՝ %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Սիմվոլիկ հղումները չեն ապահովվում"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
@@ -1553,51 +1564,52 @@ msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 msgid "Unable to find default local file monitor type"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, fuzzy, c-format
 msgid "Error creating backup copy: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, fuzzy, c-format
 msgid "Error truncating file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, fuzzy, c-format
 msgid "Error removing old file: %s"
 msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"

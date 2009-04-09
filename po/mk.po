@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2008-02-04 04:11+0100\n"
 "Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <mkde-l10n@lists.sourceforge.net>\n"
@@ -205,7 +205,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Не успеав да ја реименувам датотеката „%s“ во „%s“: g_rename() не успеа: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не успеав да ја креирам датотеката „%s“: %s"
@@ -222,48 +222,58 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Не успеав да запишам во датотеката „%s“: fwrite() не успеа: %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "Не успеав да запишам во датотеката „%s“: fwrite() не успеа: %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "Не успеав да запишам во датотеката „%s“: fwrite() не успеа: %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Не успеав да ја затворам датотeката „%s“: fclose() не успеа: %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Постоечката датотека „%s“ не може да биде отстранета: g_unlink()·не успеа "
 "за: %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Мострата „%s“ е невалидна, не треба да содржи „%s“"
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Мострата „%s“ не содржи со XXXXXX"
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не успеав да ја прочитам симболичката врска „%s“: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "Симболичките врски не се поддржани"
 
@@ -551,7 +561,7 @@ msgstr "ограничувањето за следење е достигнато
 msgid "the pattern contains items not supported for partial matching"
 msgstr "шаблонот содржи предмети кои не се поддржани за парцијално совпаѓање"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr "внатрешна грешка"
 
@@ -766,7 +776,7 @@ msgstr "преминато место за компајлирање"
 msgid "previously-checked referenced subpattern not found"
 msgstr "претходно проверениот референциран подшаблон не е пронајден"
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Грешка при совпаѓањето на регуларни изрази %s: %s"
@@ -789,43 +799,43 @@ msgstr "Грешка при компајлирање на регуларниот
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Грешка во оптимизирањето на регуларниот израз %s: %s"
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr "Се очекува хексдецимална цифра или „}“"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr "Се очекува хексдецимална цифра"
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr "недостасува „<“ во симболичката референца"
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr "Недовршена симболичка референца"
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr "симболичка референца со нулта должина"
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr "се очекува цифра"
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr "нелегална симболичка референца"
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr "занемари го финалното „\\“"
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr "непозната излезна секвенца"
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Грешка при парсирањето на текстот за замена „%s“ на знакот %lu: %s"
@@ -1150,7 +1160,7 @@ msgstr "Преголема бројна вредност дадена на %s"
 msgid "Stream is already closed"
 msgstr "Стримот е веќе затворен"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "Операцијата беше прекината"
@@ -1259,7 +1269,7 @@ msgstr "Операцијата не е поддржана"
 msgid "Containing mount does not exist"
 msgstr "Монтирањето кое се содржи не постои"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr "Не можам да копирам над директориум"
 
@@ -1267,7 +1277,7 @@ msgstr "Не можам да копирам над директориум"
 msgid "Can't copy directory over directory"
 msgstr "Не можам да копирам директориум над директориум"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr "Целната датотека постои"
 
@@ -1424,9 +1434,9 @@ msgstr "Грешка во преименувањето на директоруи
 msgid "Can't rename file, filename already exist"
 msgstr "Не можам да ја преименувам датотеката, името на датотеката веќе постои"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "Невалидно име на датотека"
 
@@ -1468,42 +1478,43 @@ msgid "Unable to create trashing info file: %s"
 msgstr ""
 "Не успеав да креирам датотека со информации за преместувањето во ѓубре: %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не успеав да ја преместам датотеката во ѓубрето: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, fuzzy, c-format
 msgid "Error creating directory: %s"
 msgstr "Грешка при отворање на директориумот „%s“: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Грешка во креирањето на симболичка врска: %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Грешка во преместувањето на датотеката: %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr "Не можам да го преместам директориумот над друг директориум"
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "Не успеа креирањето на бекап датотеката"
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Грешка во отстранувањето на целната датотека: %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr "Движењето меѓу монтирањата не е поддржано"
 
@@ -1524,90 +1535,90 @@ msgstr "Невалидно име на проширениот атрибут"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Грешка во поставувањето на проширениот атрибут „%s“: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Грешка во стартувањето на датотеката „%s“: %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr " (невалидно енкодирање)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Грешка во поставувањето на опишувач на датотека: %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Невалиден тип на атрибут (се очекуваше uint32)"
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Невалиден тип на атрибут (се очекуваше uint64)"
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Невалиден тип на атрибут (се очекуваше низа од бајти)"
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Грешка во поставувањето на пермисиите: %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Грешка при поставувањето на сопственикот: %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr "симболичката врска не треба да е NULL"
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Грешка во поставувањето на симболичката врска: %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Грешка при креирањето на симболичката врска: датотеката не е симболичка врска"
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "симболичката врска не треба да е NULL"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Грешка при поставувањето на сопственикот: %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Поставувањето на атрибутот %s не е поддржано"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Грешка при читањето од датотеката: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Грешка при барањето во датотеката: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Грешка во затворањето на датотеката: %s"
@@ -1616,51 +1627,52 @@ msgstr "Грешка во затворањето на датотеката: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Не можам да го откријам типот на локалниот надгледувач на датотеки"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Грешка во запишувањето во датотеката: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Грешка во отстранувањето на старата бекап врска: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Грешка при креирањето на бекап копија: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Грешка во преименувањето на привремената датотека: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Грешка при скратувањето на датотеката: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Грешка при отворањето на датотеката „%s“: %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "Целната датотека е директориум"
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "Целната датотека не е обична датотека"
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "Датотеката беше надворешно изменета"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, fuzzy, c-format
 msgid "Error removing old file: %s"
 msgstr "Грешка при отстранувањето на датотеката: %s"

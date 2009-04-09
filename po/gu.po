@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2009-02-25 12:08+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -209,7 +209,7 @@ msgstr "'%s' ફાઈલ ખોલવામાં નિષ્ફળતા: fdo
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ફાઈલ '%s' નું નામ '%s' માં બદલવામાં નિષ્ફળ: g_rename() નિષ્ફળ: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' ફાઈલ બનાવવામાં નિષ્ફળતા : %s"
@@ -225,46 +225,56 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ફાઈલ '%s' પર લખવામાં નિષ્ફળ: fwrite() નિષ્ફળ: %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "ફાઈલ '%s' પર લખવામાં નિષ્ફળ: fwrite() નિષ્ફળ: %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "ફાઈલ '%s' પર લખવામાં નિષ્ફળ: fwrite() નિષ્ફળ: %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ફાઈલ '%s' બંધ કરવામાં નિષ્ફળ: fclose() નિષ્ફળ: %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "વર્તમાન ફાઈલ '%s' દૂર કરી શકાઈ નહિં: g_unlink() નિષ્ફળ: %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr " '%s' ટેમ્પલેટ અયોગ્ય છે, તે '%s' ધરાવતું નથી"
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ટેમ્પલેટ '%s' એ XXXXXX સમાવતું નથી"
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' સાંકેતિક કડી વાંચવામાં નિષ્ફળતા: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "સાંકેતિક કડી આધાર આપતી નથી"
 
@@ -535,7 +545,7 @@ msgstr "પાછળ જવાની મર્યાદાએ પહોંચી
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ભાત અંશતઃ જોડણી માટે આધારભૂત વસ્તુઓ સમાવતી નથી"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr "આંતરિક ભૂલ"
 
@@ -748,7 +758,7 @@ msgstr "વધુ પડતું કમ્પાઈલીંગ કાર્ય
 msgid "previously-checked referenced subpattern not found"
 msgstr "પહેલાં-ચકાસાયેલ સંદર્ભવાળી ભાત મળી નહિં"
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "નિયમિત સમીકરણ %s સરખાવતી વખતે ભૂલ: %s"
@@ -771,43 +781,43 @@ msgstr "નિયમિત સમીકરણ %s ને કમ્પાઈલ �
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "નિયમિત સમીકરણ %s શ્રેષ્ઠ બનાવતી વખતે ભૂલ: %s"
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr "હેક્ઝાડેસીમલ અંક અથવા '}' ઈચ્છિત છે"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr "હેક્ઝાડેસીમલ અંક ઈચ્છિત છે"
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr "સંજ્ઞાકીય સંદર્ભમાં '<' ગુમ થયેલ છે"
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr "અપૂર્ણ સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr "શૂન્ય-લંબાઈ સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr "અંક ઈચ્છિત"
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr "અયોગ્ય સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr "સ્ટ્રે અંત '\\'"
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr "અજ્ઞાત એસ્કેપ ક્રમ"
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "બદલી લખાણ \"%s\" નું પદચ્છેદન કરતી વખતે અક્ષર %lu આગળ ભૂલ: %s"
@@ -1121,7 +1131,7 @@ msgstr "%s ને ખૂબ મોટી ગણક કિંમત પસાર 
 msgid "Stream is already closed"
 msgstr "સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગયેલ છે"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "પ્રક્રિયા રદ થઈ ગઈ હતી"
@@ -1229,7 +1239,7 @@ msgstr "પ્રક્રિયા આધારભૂત નથી"
 msgid "Containing mount does not exist"
 msgstr "સમાવનાર માઉન્ટ અસ્તિત્વમાં નથી"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr "ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
@@ -1237,7 +1247,7 @@ msgstr "ડિરેક્ટરી ઉપર નકલ કરી શકતા �
 msgid "Can't copy directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથી"
 
@@ -1392,9 +1402,9 @@ msgstr "ફાઈલનું નામ બદલવામાં ભૂલ: %s"
 msgid "Can't rename file, filename already exist"
 msgstr "ફાઈલનું નામ બદલી શકતા નથી, ફાઈલનામ પહેલાથી જ હાજર છે"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "અયોગ્ય ફાઈલનામ"
 
@@ -1435,42 +1445,43 @@ msgstr "કચરાપેટી ડિરેક્ટરી શોધવામ�
 msgid "Unable to create trashing info file: %s"
 msgstr "કચરાપેટી જાણકારી ફાઈલ બનાવવામાં અસમર્થ: %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ફાઈલને કચરાપેટીમાં મોકલવામાં અસમર્થ: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ડિરેક્ટરી બનાવવામાં ભૂલ: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "સાંકેતિક કડી બનાવવામાં ભૂલ: %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ફાઈલ ખસેડવામાં ભૂલ: %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર ખસેડી શકતા નથી"
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "બેકઅપ ફાઈલ બનાવટ નિષ્ફળ"
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "લક્ષ્ય ફાઈલ દૂર કરવામાં ભૂલ: %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr "માઉન્ટો વચ્ચે ખસેડવાનું આધારભૂત નથી"
 
@@ -1491,88 +1502,88 @@ msgstr "અયોગ્ય વિસ્તૃત લક્ષણ નામ"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "વિસ્તૃત લક્ષણ '%s' સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "ફાઈલ '%s' કહેવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr " (અયોગ્ય સંગ્રહપદ્ધતિ)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ફાઈલ વર્ણનકાર કહેવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint32 ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint64 ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (બાઈટ શબ્દમાળા ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "પરવાનગીઓ સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "માલિક સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr "સાંકેતિક કડી non-NULL જ હોવી જોઈએ"
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: ફાઈલ સાંકેતિક કડી નથી"
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux સંદર્ભ non-NULL જ હોવી જોઈએ"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux સંદર્ભ ને સુયોજન કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux એ આ સિસ્ટમ પર સક્રિય થયેલ નથી"
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "લક્ષણ %s સુયોજીત કરવાનું આધારભૂત નથી"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ફાઈલમાંથી વાંચવામાં ભૂલ: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ફાઈલમાં પહોંચવામાં ભૂલ: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "ફાઈલ બંધ કરવામાં ભૂલ: %s"
@@ -1581,51 +1592,52 @@ msgstr "ફાઈલ બંધ કરવામાં ભૂલ: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "મૂળભૂત સ્થાનિક ફાઈલ મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ફાઈલમાં લખવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "જૂની બેકઅપ કડી દૂર કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "બેકઅપ નકલ બનાવવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "કામચલાઉ ફાઈલનું નામ બદલવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ફાઈલ કાપવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "ફાઈલ '%s' ખોલવામાં ભૂલ: %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "લક્ષ્ય ફાઈલ ડિરેક્ટરી છે"
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "લક્ષ્ય ફાઈલ નિયમિત ફાઈલ નથી"
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "ફાઈલ બાહ્ય રીતે સુધારેલ હતી"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "જૂની ફાઇલને દૂર કરવા દરમ્યાન ભૂલ: %s"

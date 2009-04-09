@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 01:21-0400\n"
+"POT-Creation-Date: 2009-04-09 18:27-0400\n"
 "PO-Revision-Date: 2009-02-20 12:07+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -198,7 +198,7 @@ msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: fdopen() ล�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "เปลี่ยนชื่อแฟ้ม '%s' ไปเป็น '%s' ไม่สำเร็จ: g_rename() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1285
+#: glib/gfileutils.c:896 glib/gfileutils.c:1328
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "สร้างแฟ้ม '%s' ไม่สำเร็จ: %s"
@@ -214,46 +214,56 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
 
 #: glib/gfileutils.c:954
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fflush() failed: %s"
+msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:979
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fsync() failed: %s"
+msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:997
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ปิดแฟ้ม '%s' ไม่สำเร็จ: fclose() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:1072
+#: glib/gfileutils.c:1115
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ไม่สามารถลบแฟ้ม '%s' ที่มีอยู่ได้: g_unlink() ล้มเหลว: %s"
 
-#: glib/gfileutils.c:1247
+#: glib/gfileutils.c:1290
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควรมี '%s'"
 
-#: glib/gfileutils.c:1260
+#: glib/gfileutils.c:1303
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "แม่แบบ '%s' ไม่มี XXXXXX"
 
-#: glib/gfileutils.c:1699
+#: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1704
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1709
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1795
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1816
 msgid "Symbolic links not supported"
 msgstr "ไม่รองรับลิงก์สัญลักษณ์"
 
@@ -520,7 +530,7 @@ msgstr "เกินขอบเขตการถอยคืน"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2010
+#: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
@@ -732,7 +742,7 @@ msgstr "ใช้พื้นที่ทำงานสำหรับการ
 msgid "previously-checked referenced subpattern not found"
 msgstr "ไม่พบแพตเทิร์นย่อยที่ตรวจสอบไปก่อนหน้าที่อ้างถึง"
 
-#: glib/gregex.c:526 glib/gregex.c:1605
+#: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะจับคู่นิพจน์เรกกิวลาร์ %s: %s"
@@ -755,43 +765,43 @@ msgstr "เกิดข้อผิดพลาดขณะแจงนิพจ
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะออปติไมซ์นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:2033
+#: glib/gregex.c:2035
 msgid "hexadecimal digit or '}' expected"
 msgstr "ต้องการเลขฐานสิบหกหรือ '}'"
 
-#: glib/gregex.c:2049
+#: glib/gregex.c:2051
 msgid "hexadecimal digit expected"
 msgstr "ต้องการเลขฐานสิบหก"
 
-#: glib/gregex.c:2089
+#: glib/gregex.c:2091
 msgid "missing '<' in symbolic reference"
 msgstr "ไม่มี '<' ในตัวอ้างอิงสัญลักษณ์"
 
-#: glib/gregex.c:2098
+#: glib/gregex.c:2100
 msgid "unfinished symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่สมบูรณ์"
 
-#: glib/gregex.c:2105
+#: glib/gregex.c:2107
 msgid "zero-length symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์มีความยาวเป็นศูนย์"
 
-#: glib/gregex.c:2116
+#: glib/gregex.c:2118
 msgid "digit expected"
 msgstr "ต้องการตัวเลข"
 
-#: glib/gregex.c:2134
+#: glib/gregex.c:2136
 msgid "illegal symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่ถูกต้อง"
 
-#: glib/gregex.c:2196
+#: glib/gregex.c:2198
 msgid "stray final '\\'"
 msgstr "'\\' ปราศจากข้อมูลอยู่ที่ท้ายสตริง"
 
-#: glib/gregex.c:2200
+#: glib/gregex.c:2202
 msgid "unknown escape sequence"
 msgstr "ลำดับอักขระหลีกไม่รู้จัก"
 
-#: glib/gregex.c:2210
+#: glib/gregex.c:2212
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงข้อความสำหรับแทนที่ \"%s\" ที่อักขระที่ %lu: %s"
@@ -1103,7 +1113,7 @@ msgstr "มีการส่งค่า count ที่สูงเกิน�
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2003 gio/gsimpleasyncresult.c:627
+#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
 #: gio/gsimpleasyncresult.c:654
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
@@ -1211,7 +1221,7 @@ msgstr "ไม่รองรับการกระทำนี้"
 msgid "Containing mount does not exist"
 msgstr "ไม่มีจุดเมานท์ที่บรรจุแฟ้มอยู่"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2153
+#: gio/gfile.c:1965 gio/glocalfile.c:2162
 msgid "Can't copy over directory"
 msgstr "ไม่สามารถคัดลอกทับไดเรกทอรี"
 
@@ -1219,7 +1229,7 @@ msgstr "ไม่สามารถคัดลอกทับไดเรกท
 msgid "Can't copy directory over directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2162
+#: gio/gfile.c:2033 gio/glocalfile.c:2171
 msgid "Target file exists"
 msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้ว"
 
@@ -1374,9 +1384,9 @@ msgstr "เกิดข้อผิดพลาดขณะเปลี่ยน
 msgid "Can't rename file, filename already exist"
 msgstr "ไม่สามารถเปลี่ยนชื่อแฟ้ม เนื่องจากมีแฟ้มชื่อเดียวกันอยู่ก่อนแล้ว"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2032 gio/glocalfile.c:2061
-#: gio/glocalfile.c:2215 gio/glocalfileoutputstream.c:505
-#: gio/glocalfileoutputstream.c:550 gio/glocalfileoutputstream.c:1009
+#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
+#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
+#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
 msgid "Invalid filename"
 msgstr "ชื่อแฟ้มผิดรูปแบบ"
 
@@ -1417,42 +1427,43 @@ msgstr "หาหรือสร้างไดเรกทอรีถังข
 msgid "Unable to create trashing info file: %s"
 msgstr "สร้างแฟ้มข้อมูลการทิ้งขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:1927 gio/glocalfile.c:2002 gio/glocalfile.c:2009
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
+#: gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
 
-#: gio/glocalfile.c:2036
+#: gio/glocalfile.c:2045
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2074
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้าง symbolic link: %s"
 
-#: gio/glocalfile.c:2125 gio/glocalfile.c:2219
+#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
 #, c-format
 msgid "Error moving file: %s"
 msgstr "เกิดข้อผิดพลาดขณะย้ายแฟ้ม: %s"
 
-#: gio/glocalfile.c:2148
+#: gio/glocalfile.c:2157
 msgid "Can't move directory over directory"
 msgstr "ไม่สามารถย้ายไดเรกทอรีทับไดเรกทอรี"
 
-#: gio/glocalfile.c:2175 gio/glocalfileoutputstream.c:829
-#: gio/glocalfileoutputstream.c:843 gio/glocalfileoutputstream.c:858
-#: gio/glocalfileoutputstream.c:874 gio/glocalfileoutputstream.c:888
+#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
+#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
+#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
 msgid "Backup file creation failed"
 msgstr "สร้างแฟ้มสำรองไม่สำเร็จ"
 
-#: gio/glocalfile.c:2194
+#: gio/glocalfile.c:2203
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มปลายทาง: %s"
 
-#: gio/glocalfile.c:2208
+#: gio/glocalfile.c:2217
 msgid "Move between mounts not supported"
 msgstr "ไม่รองรับการย้ายแฟ้มข้ามอุปกรณ์"
 
@@ -1473,88 +1484,88 @@ msgstr "ชื่อแอตทริบิวต์ส่วนขยายเ
 msgid "Error setting extended attribute '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดแอตทริบิวต์ส่วนขยาย '%s': %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:713
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%s': %s"
 
-#: gio/glocalfileinfo.c:1536
+#: gio/glocalfileinfo.c:1537
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1705
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1749
+#: gio/glocalfileinfo.c:1750
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: gio/glocalfileinfo.c:1767
+#: gio/glocalfileinfo.c:1768
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: gio/glocalfileinfo.c:1786 gio/glocalfileinfo.c:1805
+#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:1882 gio/glocalfileinfo.c:2050
+#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1906
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:1915 gio/glocalfileinfo.c:1934
-#: gio/glocalfileinfo.c:1945
+#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1946
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: gio/glocalfileinfo.c:1924
+#: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: gio/glocalfileinfo.c:2073
+#: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2089
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
-#: gio/glocalfileinfo.c:2095
+#: gio/glocalfileinfo.c:2096
 msgid "SELinux is not enabled on this system"
 msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
-#: gio/glocalfileinfo.c:2156
+#: gio/glocalfileinfo.c:2157
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:603
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลจากแฟ้ม: %s"
 
 #: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:405
-#: gio/glocalfileoutputstream.c:906
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
+#: gio/glocalfileoutputstream.c:921
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเลื่อนตำแหน่งอ่านเขียนแฟ้ม: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:208
-#: gio/glocalfileoutputstream.c:303
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
+#: gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error closing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม: %s"
@@ -1563,51 +1574,52 @@ msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม
 msgid "Unable to find default local file monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองแฟ้มในเครื่อง"
 
-#: gio/glocalfileoutputstream.c:172 gio/glocalfileoutputstream.c:624
+#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
+#: gio/glocalfileoutputstream.c:639
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้ม: %s"
 
-#: gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:250
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มสำรองเก่า: %s"
 
-#: gio/glocalfileoutputstream.c:249 gio/glocalfileoutputstream.c:262
+#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างสำเนาสำรอง: %s"
 
-#: gio/glocalfileoutputstream.c:280
+#: gio/glocalfileoutputstream.c:295
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้มสำรอง: %s"
 
-#: gio/glocalfileoutputstream.c:451 gio/glocalfileoutputstream.c:953
+#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
 
-#: gio/glocalfileoutputstream.c:511 gio/glocalfileoutputstream.c:556
-#: gio/glocalfileoutputstream.c:695 gio/glocalfileoutputstream.c:934
-#: gio/glocalfileoutputstream.c:1015
+#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
+#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
+#: gio/glocalfileoutputstream.c:1040
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม '%s': %s"
 
-#: gio/glocalfileoutputstream.c:726
+#: gio/glocalfileoutputstream.c:741
 msgid "Target file is a directory"
 msgstr "แฟ้มปลายทางเป็นไดเรกทอรี"
 
-#: gio/glocalfileoutputstream.c:731
+#: gio/glocalfileoutputstream.c:746
 msgid "Target file is not a regular file"
 msgstr "แฟ้มปลายทางไม่ใช่แฟ้มปกติ"
 
-#: gio/glocalfileoutputstream.c:743
+#: gio/glocalfileoutputstream.c:758
 msgid "The file was externally modified"
 msgstr "แฟ้มถูกแก้ไขโดยโปรแกรมอื่น"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:937
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มเดิม: %s"
