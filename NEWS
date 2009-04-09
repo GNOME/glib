@@ -1,3 +1,47 @@
+Overview of Changes from GLib 2.20.0 to GLib 2.20.1
+===================================================
+
+* Bug fixes:
+ 575555 Use fsync() when replacing files to avoid data loss on
+ 575708 runaway inotify madness
+ 575270 GVolumeMonitor::mount-pre-unmount not being emitted
+ 577128 glib make check Failed to execute child process...
+ 573673 Always show "backup" directories
+ 578369 g_time_val_from_iso8601() parses timezones incorrectly
+ 578002 Fix a small typo in GFile docs
+ 578017 G_DEFINE_TYPE_EXTENDED docs
+
+* Updated translations:
+ Arabic
+ Assamese
+ Basque
+ Bularian
+ Brazilian Portuguese
+ British English
+ Catalan
+ Danish
+ French
+ Galician
+ German
+ Greek
+ Hungarian
+ Italian
+ Japanese
+ Kannada
+ Lithuanian
+ Malayalam
+ Norwegian bokmål
+ Oriya
+ Polish
+ Punjabi
+ Russian
+ Simplified Chinese
+ Slovenian
+ Spanish
+ Swedish
+ Tamil
+
+
 Overview of Changes from GLib 2.19.9 to GLib 2.20.0
 ===================================================
 
