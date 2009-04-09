@@ -1283,21 +1283,21 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
 /**
  * G_DEFINE_TYPE_EXTENDED:
  * @TN: The name of the new type, in Camel case.
- * @t_n: The name of the new type, in lowercase, with words 
- *  separated by '_'.
+ * @t_n: The name of the new type, in lowercase, with words
+ *    separated by '_'.
  * @T_P: The #GType of the parent type.
  * @_f_: #GTypeFlags to pass to g_type_register_static()
  * @_C_: Custom code that gets inserted in the *_get_type() function.
- * 
- * The most general convenience macro for type implementations, on which 
- * G_DEFINE_TYPE(), etc are based. 
- * 
+ *
+ * The most general convenience macro for type implementations, on which
+ * G_DEFINE_TYPE(), etc are based.
+ *
  * |[
- * G_DEFINE_TYPE_EXTENDED (GtkGadget, 
- *                         gtk_gadget, 
+ * G_DEFINE_TYPE_EXTENDED (GtkGadget,
+ *                         gtk_gadget,
  *                         GTK_TYPE_WIDGET,
- *                         0, 
- *                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO, 
+ *                         0,
+ *                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
  *                                                gtk_gadget_gizmo_init));
  * ]|
  * expands to
@@ -1310,39 +1310,36 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  *   gtk_gadget_parent_class = g_type_class_peek_parent (klass);
  *   gtk_gadget_class_init ((GtkGadgetClass*) klass);
  * }
- * 
+ *
  * GType
  * gtk_gadget_get_type (void)
  * {
- *   static GType g_define_type_id = 0; 
- *   if (G_UNLIKELY (g_define_type_id == 0)) 
- *     { 
- *       static const GTypeInfo g_define_type_info = { 
- *         sizeof (GtkGadgetClass), 
- *         (GBaseInitFunc) NULL, 
- *         (GBaseFinalizeFunc) NULL, 
- *         (GClassInitFunc) gtk_gadget_class_intern_init, 
- *         (GClassFinalizeFunc) NULL, 
- *         NULL,   // class_data 
- *         sizeof (GtkGadget), 
- *         0,      // n_preallocs 
- *         (GInstanceInitFunc) gtk_gadget_init, 
- *       }; 
- *       g_define_type_id = g_type_register_static (GTK_TYPE_WIDGET, "GtkGadget", &g_define_type_info, 0); 
+ *   static volatile gsize g_define_type_id__volatile = 0;
+ *   if (g_once_init_enter (&g_define_type_id__volatile))
+ *     {
+ *       GType g_define_type_id =
+ *         g_type_register_static_simple (GTK_TYPE_WIDGET,
+ *                                        g_intern_static_string ("GtkGadget"),
+ *                                        sizeof (GtkGadgetClass),
+ *                                        (GClassInitFunc) gtk_gadget_class_intern_init,
+ *                                        sizeof (GtkGadget),
+ *                                        (GInstanceInitFunc) gtk_gadget_init,
+ *                                        (GTypeFlags) flags);
  *       {
  *         static const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
  *         };
  *         g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
- *       } 
- *     } 
- *   return g_define_type_id; 
+ *       }
+ *       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+ *     }
+ *   return g_define_type_id__volatile;
  * }
  * ]|
- * The only pieces which have to be manually provided are the definitions of the 
- * instance and class structure and the definitions of the instance and class 
- * init functions.
- * 
+ * The only pieces which have to be manually provided are the definitions of
+ * the instance and class structure and the definitions of the instance and
+ * class init functions.
+ *
  * Since: 2.4
  */
 #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)	    _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
@@ -1351,14 +1348,14 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  * G_IMPLEMENT_INTERFACE:
  * @TYPE_IFACE: The #GType of the interface to add
  * @iface_init: The interface init function
- * 
+ *
  * A convenience macro to ease interface addition in the @_C_ section
- * of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE(). 
+ * of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
  * See G_DEFINE_TYPE_EXTENDED() for an example.
- * 
+ *
  * Note that this macro can only be used together with the G_DEFINE_TYPE_*
  * macros, since it depends on variable names from those macros.
- * 
+ *
  * Since: 2.4
  */
 #define G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
