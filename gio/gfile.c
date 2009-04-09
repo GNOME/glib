@@ -3050,7 +3050,7 @@ g_file_set_display_name (GFile         *file,
  * 
  * Asynchronously sets the display name for a given #GFile.
  * 
- * For more details, see g_set_display_name() which is
+ * For more details, see g_file_set_display_name() which is
  * the synchronous version of this call.
  *
  * When the operation is finished, @callback will be called. You can then call
