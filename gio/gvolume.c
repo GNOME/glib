@@ -60,18 +60,24 @@
  * is called, then it will be filled with any error information.
  *
  * <para id="volume-identifier">
- * It is sometimes necessary to directly access the underlying 
+ * It is sometimes necessary to directly access the underlying
  * operating system object behind a volume (e.g. for passing a volume
  * to an application via the commandline). For this purpose, GIO
  * allows to obtain an 'identifier' for the volume. There can be
  * different kinds of identifiers, such as Hal UDIs, filesystem labels,
  * traditional Unix devices (e.g. <filename>/dev/sda2</filename>),
  * uuids. GIO uses predefind strings as names for the different kinds
- * of identifiers: #G_VOLUME_IDENTIFIER_KIND_HAL_UDI, 
- * #G_VOLUME_IDENTIFIER_KIND_LABEL, etc. Use g_volume_get_identifier() 
+ * of identifiers: #G_VOLUME_IDENTIFIER_KIND_HAL_UDI,
+ * #G_VOLUME_IDENTIFIER_KIND_LABEL, etc. Use g_volume_get_identifier()
  * to obtain an identifier for a volume.
  * </para>
- **/
+ *
+ * Note that #G_VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available
+ * when the gvfs hal volume monitor is in use. Other volume monitors
+ * will generally be able to provide the #G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE
+ * identifier, which can be used to obtain a hal device by means of
+ * libhal_manger_find_device_string_match().
+ */
 
 static void g_volume_base_init (gpointer g_class);
 static void g_volume_class_init (gpointer g_class,
