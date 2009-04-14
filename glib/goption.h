@@ -259,6 +259,11 @@ GQuark g_option_error_quark (void);
  *  <listitem><para>%gdouble</para></listitem>
  *  </varlistentry>
  *  </variablelist>
+ *  If @arg type is %G_OPTION_ARG_STRING or %G_OPTION_ARG_FILENAME the location
+ *  will contain a newly allocated string if the option was given. That string
+ *  needs to be freed by the callee using g_free(). Likewise if @arg type is
+ *  %G_OPTION_ARG_STRING_ARRAY or %G_OPTION_ARG_FILENAME_ARRAY, the data should
+ *  be freed using g_strfreev().
  * @description: the description for the option in <option>--help</option>
  *  output. The @description is translated using the @translate_func of the
  *  group, see g_option_group_set_translation_domain().

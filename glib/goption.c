@@ -349,6 +349,9 @@ g_option_context_new (const gchar *parameter_string)
  * Frees context and all the groups which have been 
  * added to it.
  *
+ * Please note that parsed arguments need to be freed separately (see
+ * #GOptionEntry).
+ *
  * Since: 2.6
  */
 void g_option_context_free (GOptionContext *context) 
