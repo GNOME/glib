@@ -18,6 +18,119 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+/**
+ * SECTION:option
+ * @Short_description: parses commandline options
+ * @Title: Commandline option parser
+ * 
+ * The GOption commandline parser is intended to be a simpler replacement for the
+ * popt library. It supports short and long commandline options, as shown in the 
+ * following example:
+ * 
+ * 
+ * <literal>testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2</literal>
+ * 
+ * 
+ * The example demonstrates a number of features of the GOption commandline parser
+ * <itemizedlist>
+ *   Options can be single letters, prefixed by a single dash. Multiple
+ *   short options can be grouped behind a single dash.
+ * </para></listitem>
+ *   Long options are prefixed by two consecutive dashes.
+ * </para></listitem>
+ *   Options can have an extra argument, which can be a number, a string or a 
+ *   filename. For long options, the extra argument can be appended with an 
+ *   equals sign after the option name.
+ * </para></listitem>
+ *   Non-option arguments are returned to the application as rest arguments.
+ * </para></listitem>
+ *   An argument consisting solely of two dashes turns off further parsing, 
+ *   any remaining arguments (even those starting with a dash) are returned 
+ *   to the application as rest arguments.
+ * </para></listitem>
+ * </itemizedlist>
+ * 
+ * 
+ * Another important feature of GOption is that it can automatically generate 
+ * nicely formatted help output. Unless it is explicitly turned off with 
+ * g_option_context_set_help_enabled(), GOption will recognize the 
+ * <option>--help</option>, <option>-?</option>, <option>--help-all</option>
+ * and <option>--help-</option><replaceable>groupname</replaceable> options 
+ * (where <replaceable>groupname</replaceable> is the name of a #GOptionGroup) 
+ * and write a text similar to the one shown in the following example to stdout.
+ * 
+ * 
+ * <informalexample><screen>
+ * Usage:
+ *   testtreemodel [OPTION...] - test tree model performance
+ * 
+ * Help Options:
+ *   -?, --help               Show help options
+ *   --help-all               Show all help options
+ *   --help-gtk               Show GTK+ Options
+ * 
+ * Application Options:
+ *   -r, --repeats=N          Average over N repetitions
+ *   -m, --max-size=M         Test up to 2^M items
+ *   --display=DISPLAY        X display to use
+ *   -v, --verbose            Be verbose
+ *   -b, --beep               Beep when done   
+ *   --rand                   Randomize the data
+ * </screen></informalexample>
+ * 
+ * GOption groups options in #GOptionGroup<!-- -->s, which makes it easy to
+ * incorporate options from multiple sources. The intended use for this is
+ * to let applications collect option groups from the libraries it uses,
+ * add them to their #GOptionContext, and parse all options by a single call
+ * to g_option_context_parse(). See gtk_get_option_group() for an example.
+ * 
+ * 
+ * If an option is declared to be of type string or filename, GOption takes
+ * care of converting it to the right encoding; strings are returned in UTF-8,
+ * filenames are returned in the GLib filename encoding. Note that this only
+ * works if setlocale() has been called before g_option_context_parse().
+ * 
+ * 
+ * Here is a complete example of setting up GOption to parse the example
+ * commandline above and produce the example help output.
+ * 
+ * <informalexample><programlisting>
+ * static gint repeats = 2;
+ * static gint max_size = 8;
+ * static gboolean verbose = FALSE;
+ * static gboolean beep = FALSE;
+ * static gboolean rand = FALSE;
+ * 
+ * static GOptionEntry entries[] = 
+ * {
+ *   { "repeats", 'r', 0, G_OPTION_ARG_INT, &repeats, "Average over N repetitions", "N" },
+ *   { "max-size", 'm', 0, G_OPTION_ARG_INT, &max_size, "Test up to 2^M items", "M" },
+ *   { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "Be verbose", NULL },
+ *   { "beep", 'b', 0, G_OPTION_ARG_NONE, &beep, "Beep when done", NULL },
+ *   { "rand", 0, 0, G_OPTION_ARG_NONE, &rand, "Randomize the data", NULL },
+ *   { NULL }
+ * };
+ * 
+ * int 
+ * main (int argc, char *argv[])
+ * {
+ *   GError *error = NULL;
+ *   GOptionContext *context;
+ * 
+ *   context = g_option_context_new ("- test tree model performance");
+ *   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+ *   g_option_context_add_group (context, gtk_get_option_group (TRUE));
+ *   if (!g_option_context_parse (context, &argc, &argv, &error))
+ *     {
+ *       g_print ("option parsing failed: %s\n", error->message);
+ *       exit (1);
+ *     }
+ * 
+ *   // ...
+ * 
+ * }
+ * </programlisting></informalexample>
+ */
 
 #include "config.h"
 
