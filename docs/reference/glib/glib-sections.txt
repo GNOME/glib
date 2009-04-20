@@ -388,6 +388,7 @@ G_HAVE_GROWING_STACK
 GError
 g_error_new
 g_error_new_literal
+g_error_new_valist
 g_error_free
 g_error_copy
 g_error_matches

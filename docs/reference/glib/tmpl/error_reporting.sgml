@@ -415,6 +415,18 @@ information about an error that has occurred.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_error_new_valist ##### -->
+<para>
+
+</para>
+
+@domain: 
+@code: 
+@format: 
+@args: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_error_free ##### -->
 <para>
 

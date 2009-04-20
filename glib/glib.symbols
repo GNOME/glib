@@ -348,6 +348,7 @@ g_error_free
 g_error_matches
 g_error_new G_GNUC_PRINTF(3,4)
 g_error_new_literal
+g_error_new_valist
 g_propagate_error
 g_set_error G_GNUC_PRINTF(4,5)
 g_set_error_literal

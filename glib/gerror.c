@@ -30,7 +30,21 @@
 #include "galias.h"
 
 
-static GError* 
+/**
+ * g_error_new_valist:
+ * @domain: error domain
+ * @code: error code
+ * @format: printf()-style format for error message
+ * @var_args: #va_list of parameters for the message format
+ *
+ * Creates a new #GError with the given @domain and @code,
+ * and a message formatted with @format.
+ *
+ * Returns: a new #GError
+ *
+ * Since: 2.22
+ **/
+GError*
 g_error_new_valist (GQuark         domain,
                     gint           code,
                     const gchar   *format,
