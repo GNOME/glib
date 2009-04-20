@@ -487,23 +487,6 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
   simple->failed = TRUE;
 }
 
-static GError* 
-_g_error_new_valist (GQuark     domain,
-                    gint        code,
-                    const char *format,
-                    va_list     args)
-{
-  GError *error;
-  char *message;
-
-  message = g_strdup_vprintf (format, args);
-
-  error = g_error_new_literal (domain, code, message);
-  g_free (message);
-  
-  return error;
-}
-
 /**
  * g_simple_async_result_set_error_va:
  * @simple: a #GSimpleAsyncResult.
@@ -528,7 +511,7 @@ g_simple_async_result_set_error_va (GSimpleAsyncResult *simple,
 
   if (simple->error)
     g_error_free (simple->error);
-  simple->error = _g_error_new_valist (domain, code, format, args);
+  simple->error = g_error_new_valist (domain, code, format, args);
   simple->failed = TRUE;
 }
 
