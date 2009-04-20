@@ -134,6 +134,8 @@ g_cancellable_push_current
 g_cancellable_pop_current
 g_cancellable_reset
 g_cancellable_cancel
+g_cancellable_connect
+g_cancellable_disconnect
 #endif
 #endif
 
