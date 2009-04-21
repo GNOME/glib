@@ -25,7 +25,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
     GITypeInfo *type_info;
     gboolean result = FALSE;
 
-    if (!g_field_info_get_flags (field_info) & GI_FIELD_IS_READABLE)
+    if ((g_field_info_get_flags (field_info) & GI_FIELD_IS_READABLE) == 0)
       return FALSE;
 
     offset = g_field_info_get_offset (field_info);
@@ -219,7 +219,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
  * to write fields where memory management would by required. A field
  * with a type such as 'char *' must be set with a setter function.
  *
- * Returns: %TRUE if reading the field succeeded, otherwise %FALSE
+ * Returns: %TRUE if writing the field succeeded, otherwise %FALSE
  */
 gboolean
 g_field_info_set_field (GIFieldInfo     *field_info,
@@ -230,7 +230,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
     GITypeInfo *type_info;
     gboolean result = FALSE;
 
-    if (!g_field_info_get_flags (field_info) & GI_FIELD_IS_WRITABLE)
+    if ((g_field_info_get_flags (field_info) & GI_FIELD_IS_WRITABLE) == 0)
       return FALSE;
 
     offset = g_field_info_get_offset (field_info);
