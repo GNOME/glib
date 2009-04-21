@@ -27,29 +27,25 @@
  * popt library. It supports short and long commandline options, as shown in the 
  * following example:
  * 
- * 
  * <literal>testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2</literal>
  * 
- * 
  * The example demonstrates a number of features of the GOption commandline parser
- * <itemizedlist>
+ * <itemizedlist><listitem><para>
  *   Options can be single letters, prefixed by a single dash. Multiple
  *   short options can be grouped behind a single dash.
- * </para></listitem>
+ * </para></listitem><listitem><para>
  *   Long options are prefixed by two consecutive dashes.
- * </para></listitem>
+ * </para></listitem><listitem><para>
  *   Options can have an extra argument, which can be a number, a string or a 
  *   filename. For long options, the extra argument can be appended with an 
  *   equals sign after the option name.
- * </para></listitem>
+ * </para></listitem><listitem><para>
  *   Non-option arguments are returned to the application as rest arguments.
- * </para></listitem>
+ * </para></listitem><listitem><para>
  *   An argument consisting solely of two dashes turns off further parsing, 
  *   any remaining arguments (even those starting with a dash) are returned 
  *   to the application as rest arguments.
- * </para></listitem>
- * </itemizedlist>
- * 
+ * </para></listitem></itemizedlist>
  * 
  * Another important feature of GOption is that it can automatically generate 
  * nicely formatted help output. Unless it is explicitly turned off with 
@@ -59,16 +55,15 @@
  * (where <replaceable>groupname</replaceable> is the name of a #GOptionGroup) 
  * and write a text similar to the one shown in the following example to stdout.
  * 
- * 
  * <informalexample><screen>
  * Usage:
  *   testtreemodel [OPTION...] - test tree model performance
- * 
+ *  
  * Help Options:
  *   -?, --help               Show help options
  *   --help-all               Show all help options
  *   --help-gtk               Show GTK+ Options
- * 
+ *  
  * Application Options:
  *   -r, --repeats=N          Average over N repetitions
  *   -m, --max-size=M         Test up to 2^M items
@@ -83,13 +78,11 @@
  * to let applications collect option groups from the libraries it uses,
  * add them to their #GOptionContext, and parse all options by a single call
  * to g_option_context_parse(). See gtk_get_option_group() for an example.
- * 
- * 
+ *
  * If an option is declared to be of type string or filename, GOption takes
  * care of converting it to the right encoding; strings are returned in UTF-8,
  * filenames are returned in the GLib filename encoding. Note that this only
  * works if setlocale() has been called before g_option_context_parse().
- * 
  * 
  * Here is a complete example of setting up GOption to parse the example
  * commandline above and produce the example help output.
