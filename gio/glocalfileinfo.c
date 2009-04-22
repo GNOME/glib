@@ -527,7 +527,7 @@ get_xattrs (const char            *path,
 	  attr2 = strchr (attr, ':');
 	  if (attr2)
 	    {
-	      attr2++; /* Skip ':' */
+	      attr2 += 2; /* Skip '::' */
 	      unescaped_attribute = hex_unescape_string (attr2, NULL, &free_unescaped_attribute);
 	      if (user)
 		a = g_strconcat ("user.", unescaped_attribute, NULL);
