@@ -158,8 +158,8 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
   g_object_class_install_property (gobject_class,
 				   PROP_FD,
 				   g_param_spec_int ("fd",
-						     _("File descriptor"),
-						     _("The file descriptor to read from"),
+						     P_("File descriptor"),
+						     P_("The file descriptor to read from"),
 						     G_MININT, G_MAXINT, -1,
 						     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 
@@ -173,8 +173,8 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
   g_object_class_install_property (gobject_class,
 				   PROP_CLOSE_FD,
 				   g_param_spec_boolean ("close-fd",
-							 _("Close file descriptor"),
-							 _("Whether to close the file descriptor when the stream is closed"),
+							 P_("Close file descriptor"),
+							 P_("Whether to close the file descriptor when the stream is closed"),
 							 TRUE,
 							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 }

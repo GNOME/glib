@@ -168,8 +168,8 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_PATH,
                                    g_param_spec_string ("path",
-                                                        _("Path"),
-                                                        _("UNIX socket path"),
+                                                        P_("Path"),
+                                                        P_("UNIX socket path"),
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 }

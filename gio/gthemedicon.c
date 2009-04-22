@@ -208,8 +208,8 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_NAME,
                                    g_param_spec_string ("name",
-                                                        _("name"),
-                                                        _("The name of the icon"),
+                                                        P_("name"),
+                                                        P_("The name of the icon"),
                                                         NULL,
                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 
@@ -220,8 +220,8 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_NAMES,
                                    g_param_spec_boxed ("names",
-                                                       _("names"),
-                                                       _("An array containing the icon names"),
+                                                       P_("names"),
+                                                       P_("An array containing the icon names"),
                                                        G_TYPE_STRV,
                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 
@@ -246,8 +246,8 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_USE_DEFAULT_FALLBACKS,
                                    g_param_spec_boolean ("use-default-fallbacks",
-                                                         _("use default fallbacks"),
-                                                         _("Whether to use default fallbacks found by shortening the name at '-' characters. Ignores names after the first if multiple names are given."),
+                                                         P_("use default fallbacks"),
+                                                         P_("Whether to use default fallbacks found by shortening the name at '-' characters. Ignores names after the first if multiple names are given."),
                                                          FALSE,
                                                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }

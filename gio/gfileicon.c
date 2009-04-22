@@ -142,8 +142,8 @@ g_file_icon_class_init (GFileIconClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_FILE,
                                    g_param_spec_object ("file",
-                                                        _("file"),
-                                                        _("The file containing the icon"),
+                                                        P_("file"),
+                                                        P_("The file containing the icon"),
                                                         G_TYPE_FILE,
                                                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
 }
