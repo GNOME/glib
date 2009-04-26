@@ -530,7 +530,7 @@ g_inet_address_get_is_any (GInetAddress *address)
       return addr4 == INADDR_ANY;
     }
   else
-    return IN6_IS_ADDR_UNSPECIFIED (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_UNSPECIFIED (&address->priv->addr.ipv6);
 }
 
 /**
@@ -556,7 +556,7 @@ g_inet_address_get_is_loopback (GInetAddress *address)
       return ((addr4 & 0xff000000) == 0x7f000000);
     }
   else
-    return IN6_IS_ADDR_LOOPBACK (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_LOOPBACK (&address->priv->addr.ipv6);
 }
 
 /**
@@ -584,7 +584,7 @@ g_inet_address_get_is_link_local (GInetAddress *address)
       return ((addr4 & 0xffff0000) == 0xa9fe0000);
     }
   else
-    return IN6_IS_ADDR_LINKLOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_LINKLOCAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -615,7 +615,7 @@ g_inet_address_get_is_site_local (GInetAddress *address)
 	      (addr4 & 0xffff0000) == 0xc0a80000);
     }
   else
-    return IN6_IS_ADDR_SITELOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_SITELOCAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -640,7 +640,7 @@ g_inet_address_get_is_multicast (GInetAddress *address)
       return IN_MULTICAST (addr4);
     }
   else
-    return IN6_IS_ADDR_MULTICAST (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MULTICAST (&address->priv->addr.ipv6);
 }
 
 /**
@@ -661,7 +661,7 @@ g_inet_address_get_is_mc_global (GInetAddress *address)
   if (address->priv->family == AF_INET)
     return FALSE;
   else
-    return IN6_IS_ADDR_MC_GLOBAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MC_GLOBAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -682,7 +682,7 @@ g_inet_address_get_is_mc_link_local (GInetAddress *address)
   if (address->priv->family == AF_INET)
     return FALSE;
   else
-    return IN6_IS_ADDR_MC_LINKLOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MC_LINKLOCAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -703,7 +703,7 @@ g_inet_address_get_is_mc_node_local (GInetAddress *address)
   if (address->priv->family == AF_INET)
     return FALSE;
   else
-    return IN6_IS_ADDR_MC_NODELOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MC_NODELOCAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -724,7 +724,7 @@ g_inet_address_get_is_mc_org_local  (GInetAddress *address)
   if (address->priv->family == AF_INET)
     return FALSE;
   else
-    return IN6_IS_ADDR_MC_ORGLOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MC_ORGLOCAL (&address->priv->addr.ipv6);
 }
 
 /**
@@ -745,7 +745,7 @@ g_inet_address_get_is_mc_site_local (GInetAddress *address)
   if (address->priv->family == AF_INET)
     return FALSE;
   else
-    return IN6_IS_ADDR_MC_SITELOCAL (&address->priv->addr.ipv6.s6_addr);
+    return IN6_IS_ADDR_MC_SITELOCAL (&address->priv->addr.ipv6);
 }
 
 #define __G_INET_ADDRESS_C__
