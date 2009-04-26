@@ -31,10 +31,12 @@
 
 #else /* !G_OS_WIN32 */
 
-#define BIND_4_COMPAT
-
 #include <arpa/inet.h>
 #include <arpa/nameser.h>
+#if HAVE_ARPA_NAMESER_COMPAT_H
+#include <arpa/nameser_compat.h>
+#endif
+
 /* We're supposed to define _GNU_SOURCE to get EAI_NODATA, but that
  * won't actually work since <features.h> has already been included at
  * this point. So we define __USE_GNU instead.

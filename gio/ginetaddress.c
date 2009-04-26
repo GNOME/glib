@@ -22,6 +22,9 @@
  */
 
 #include <config.h>
+
+#include <string.h>
+
 #include <glib.h>
 
 #include "ginetaddress.h"
