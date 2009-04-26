@@ -2045,6 +2045,10 @@ g_direct_equal
 g_direct_hash
 g_int_equal
 g_int_hash
+g_int64_equal
+g_int64_hash
+g_double_equal
+g_double_hash
 g_str_equal
 g_str_hash
 

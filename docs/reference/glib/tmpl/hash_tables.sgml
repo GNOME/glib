@@ -432,6 +432,44 @@ with g_hash_table_iter_init().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_int64_equal ##### -->
+<para>
+
+</para>
+
+@v1: 
+@v2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_int64_hash ##### -->
+<para>
+
+</para>
+
+@v: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_double_equal ##### -->
+<para>
+
+</para>
+
+@v1: 
+@v2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_double_hash ##### -->
+<para>
+
+</para>
+
+@v: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_str_equal ##### -->
 <para>
 </para>

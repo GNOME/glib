@@ -130,6 +130,14 @@ gboolean g_int_equal (gconstpointer  v1,
                       gconstpointer  v2);
 guint    g_int_hash  (gconstpointer  v);
 
+gboolean g_int64_equal (gconstpointer  v1,
+                        gconstpointer  v2);
+guint    g_int64_hash  (gconstpointer  v);
+
+gboolean g_double_equal (gconstpointer  v1,
+                         gconstpointer  v2);
+guint    g_double_hash  (gconstpointer  v);
+
 /* This "hash" function will just return the key's address as an
  * unsigned integer. Useful for hashing on plain addresses or
  * simple integer values.

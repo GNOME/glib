@@ -461,15 +461,16 @@ g_hash_table_maybe_resize (GHashTable *hash_table)
  * g_hash_table_new:
  * @hash_func: a function to create a hash value from a key.
  *   Hash values are used to determine where keys are stored within the
- *   #GHashTable data structure. The g_direct_hash(), g_int_hash() and
- *   g_str_hash() functions are provided for some common types of keys.
+ *   #GHashTable data structure. The g_direct_hash(), g_int_hash(),
+ *   g_int64_hash(), g_double_hash() and g_str_hash() functions are provided
+ *   for some common types of keys.
  *   If hash_func is %NULL, g_direct_hash() is used.
  * @key_equal_func: a function to check two keys for equality.  This is
  *   used when looking up keys in the #GHashTable.  The g_direct_equal(),
- *   g_int_equal() and g_str_equal() functions are provided for the most
- *   common types of keys. If @key_equal_func is %NULL, keys are compared
- *   directly in a similar fashion to g_direct_equal(), but without the
- *   overhead of a function call.
+ *   g_int_equal(), g_int64_equal(), g_double_equal() and g_str_equal()
+ *   functions are provided for the most common types of keys.
+ *   If @key_equal_func is %NULL, keys are compared directly in a similar
+ *   fashion to g_direct_equal(), but without the overhead of a function call.
  *
  * Creates a new #GHashTable with a reference count of 1.
  *

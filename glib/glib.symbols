@@ -1494,6 +1494,10 @@ glib_gettext G_GNUC_FORMAT(1)
 #if IN_FILE(__G_UTILS_C__)
 g_int_equal
 g_int_hash
+g_int64_equal
+g_int64_hash
+g_double_equal
+g_double_hash
 g_direct_equal G_GNUC_CONST
 g_direct_hash G_GNUC_CONST
 #endif
