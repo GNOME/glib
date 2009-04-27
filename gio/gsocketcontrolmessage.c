@@ -44,14 +44,11 @@
 
 #include "config.h"
 #include "gsocketcontrolmessage.h"
+#include "gnetworkingprivate.h"
 #include "glibintl.h"
 
 #ifndef G_OS_WIN32
 #include "gunixfdmessage.h"
-#include <sys/socket.h>
-#else
-# include <winsock2.h>
-# include <mswsock.h>
 #endif
 
 #include "gioalias.h"

@@ -24,8 +24,6 @@
 #include <config.h>
 #include <glib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 
 #include "gunixsocketaddress.h"
 #include "glibintl.h"

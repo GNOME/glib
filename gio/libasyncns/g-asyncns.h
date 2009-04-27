@@ -21,7 +21,24 @@
 #include "config.h"
 
 #define _GNU_SOURCE
+
+/* We want to build the fork-based version, not the threaded version. */
 #undef HAVE_PTHREAD
+
+/* libasyncns doesn't actually need this include, and it breaks
+ * old OS X. #580301. Remove if asyncns.c stops including
+ * <arpa/nameser_compat.h> in the future.
+ */
+#undef HAVE_ARPA_NAMESER_COMPAT_H
+
+/* Also for old OS X, #580301. Remove if these are added to asyncns.c
+ * in the future.
+ */
+#include <sys/time.h>
+#include <stdint.h>
+
+/* Some BSDs require this for getrlimit */
+#include <sys/resource.h>
 
 #include "asyncns.h"
 

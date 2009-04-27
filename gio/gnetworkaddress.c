@@ -29,18 +29,12 @@
 #include "gasyncresult.h"
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
+#include "gnetworkingprivate.h"
 #include "gresolver.h"
 #include "gsimpleasyncresult.h"
 #include "gsocketaddressenumerator.h"
 #include "gioerror.h"
 #include "gsocketconnectable.h"
-
-#ifdef HAVE_NETDB_H
-#include <netdb.h>
-#endif
-#ifdef HAVE_WINSOCK2_H
-#include <winsock2.h>
-#endif
 
 #include <string.h>
 

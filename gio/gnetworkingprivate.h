@@ -28,13 +28,19 @@
 #undef interface
 #include <ws2tcpip.h>
 #include <windns.h>
+#include <mswsock.h>
 
 #else /* !G_OS_WIN32 */
 
+#include <sys/types.h>
 #include <arpa/inet.h>
 #include <arpa/nameser.h>
-#if HAVE_ARPA_NAMESER_COMPAT_H
+#if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
 #include <arpa/nameser_compat.h>
+#endif
+
+#ifndef T_SRV
+#define T_SRV 33
 #endif
 
 /* We're supposed to define _GNU_SOURCE to get EAI_NODATA, but that

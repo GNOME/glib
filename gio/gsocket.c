@@ -34,15 +34,8 @@
 #include <stdlib.h>
 
 #ifndef G_OS_WIN32
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <netdb.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include <sys/types.h>
-#else
-# include <winsock2.h>
-# include <mswsock.h>
 #endif
 
 #include "gsocket.h"
@@ -53,6 +46,7 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
+#include "gnetworkingprivate.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

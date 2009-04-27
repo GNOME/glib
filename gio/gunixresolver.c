@@ -24,7 +24,6 @@
 #include <glib.h>
 #include "glibintl.h"
 
-#include <resolv.h>
 #include <stdio.h>
 #include <string.h>
 
