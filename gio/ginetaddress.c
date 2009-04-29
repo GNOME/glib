@@ -307,11 +307,11 @@ g_inet_address_init (GInetAddress *address)
 GInetAddress *
 g_inet_address_new_from_string (const gchar *string)
 {
+  volatile GType type;
 #ifdef G_OS_WIN32
   struct sockaddr_storage sa;
   struct sockaddr_in *sin = (struct sockaddr_in *)&sa;
   struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)&sa;
-  volatile GType type;
   gint len;
 #else /* !G_OS_WIN32 */
   struct in_addr in_addr;
