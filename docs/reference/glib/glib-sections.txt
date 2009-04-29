@@ -2117,6 +2117,9 @@ g_string_chunk_free
 GArray
 g_array_new
 g_array_sized_new
+g_array_ref
+g_array_unref
+g_array_get_element_size
 g_array_append_val
 g_array_append_vals
 g_array_prepend_val
@@ -2139,6 +2142,10 @@ g_array_free
 GPtrArray
 g_ptr_array_new
 g_ptr_array_sized_new
+g_ptr_array_new_with_free_func
+g_ptr_array_set_free_func
+g_ptr_array_ref
+g_ptr_array_unref
 g_ptr_array_add
 g_ptr_array_remove
 g_ptr_array_remove_index
@@ -2160,6 +2167,8 @@ g_ptr_array_foreach
 GByteArray
 g_byte_array_new
 g_byte_array_sized_new
+g_byte_array_ref
+g_byte_array_unref
 g_byte_array_append
 g_byte_array_prepend
 g_byte_array_remove_index

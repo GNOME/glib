@@ -63,7 +63,7 @@ added to the #GByteArray.
 
 <!-- ##### FUNCTION g_byte_array_new ##### -->
 <para>
-Creates a new #GByteArray.
+Creates a new #GByteArray with a reference count of 1.
 </para>
 
 @Returns: the new #GByteArray.
@@ -78,6 +78,23 @@ the array. Note however that the size of the array is still 0.
 
 @reserved_size: number of bytes preallocated.
 @Returns: the new #GByteArray.
+
+
+<!-- ##### FUNCTION g_byte_array_ref ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_byte_array_unref ##### -->
+<para>
+
+</para>
+
+@array: 
 
 
 <!-- ##### FUNCTION g_byte_array_append ##### -->
@@ -181,7 +198,9 @@ Sets the size of the #GByteArray, expanding it if necessary.
 <!-- ##### FUNCTION g_byte_array_free ##### -->
 <para>
 Frees the memory allocated by the #GByteArray.
-If @free_segment is %TRUE it frees the actual byte data.
+If @free_segment is %TRUE it frees the actual byte data. If the reference
+count of @array is greater than one, the #GByteArray wrapper is preserved but
+the size of @array will be set to zero.
 </para>
 
 @array: a #GByteArray.

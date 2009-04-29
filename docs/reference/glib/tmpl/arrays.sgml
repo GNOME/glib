@@ -69,7 +69,7 @@ added to the #GArray.
 
 <!-- ##### FUNCTION g_array_new ##### -->
 <para>
-Creates a new #GArray.
+Creates a new #GArray with a reference count of 1.
 </para>
 
 @zero_terminated: %TRUE if the array should have an extra element at the end
@@ -83,9 +83,9 @@ when they are allocated.
 <!-- ##### FUNCTION g_array_sized_new ##### -->
 <para>
 Creates a new #GArray with @reserved_size elements
-preallocated. This avoids frequent reallocation, if you are going to
-add many elements to the array. Note however that the size of the
-array is still 0.
+preallocated and a reference count of 1. This avoids frequent reallocation,
+if you are going to add many elements to the array. Note however that the
+size of the array is still 0.
 </para>
 
 @zero_terminated: %TRUE if the array should have an extra element at the end with all bits cleared.
@@ -93,6 +93,32 @@ array is still 0.
 @element_size: size of each element in the array.
 @reserved_size: number of elements preallocated.
 @Returns: the new #GArray.
+
+
+<!-- ##### FUNCTION g_array_ref ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_array_unref ##### -->
+<para>
+
+</para>
+
+@array: 
+
+
+<!-- ##### FUNCTION g_array_get_element_size ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
 
 
 <!-- ##### MACRO g_array_append_val ##### -->
@@ -292,8 +318,11 @@ If the array was created with @clear_ set to %TRUE, the new elements are set to 
 <para>
 Frees the memory allocated for the #GArray.
 If @free_segment is %TRUE it frees the memory block holding the elements
-as well. Pass %FALSE if you want to free the #GArray wrapper but preserve
-the underlying array for use elsewhere.
+as well and also each element if @array has a @element_free_func set.
+Pass %FALSE if you want to free the #GArray wrapper but preserve
+the underlying array for use elsewhere. If the reference count of @array
+is greater than one, the #GArray wrapper is preserved but the size of
+@array will be set to zero.
 </para>
 <note>
 <para>

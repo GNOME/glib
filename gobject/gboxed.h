@@ -162,6 +162,30 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  * Since: 2.14
  */
 #define	G_TYPE_REGEX (g_regex_get_type ())
+/**
+ * G_TYPE_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GArray reference.
+ *
+ * Since: 2.22
+ */
+#define	G_TYPE_ARRAY (g_array_get_type ())
+/**
+ * G_TYPE_BYTE_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GByteArray reference.
+ *
+ * Since: 2.22
+ */
+#define	G_TYPE_BYTE_ARRAY (g_byte_array_get_type ())
+/**
+ * G_TYPE_PTR_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GPtrArray reference.
+ *
+ * Since: 2.22
+ */
+#define	G_TYPE_PTR_ARRAY (g_ptr_array_get_type ())
 
 
 void    g_value_take_boxed      (GValue		*value,
@@ -177,6 +201,9 @@ GType	g_date_get_type	        (void)	G_GNUC_CONST;
 GType	g_strv_get_type	        (void)	G_GNUC_CONST;
 GType	g_gstring_get_type      (void)	G_GNUC_CONST;
 GType   g_hash_table_get_type   (void)  G_GNUC_CONST;
+GType   g_array_get_type        (void)  G_GNUC_CONST;
+GType   g_byte_array_get_type   (void)  G_GNUC_CONST;
+GType   g_ptr_array_get_type    (void)  G_GNUC_CONST;
 GType   g_regex_get_type        (void)  G_GNUC_CONST;
 
 /**

@@ -55,6 +55,7 @@ struct _GRealArray
   guint   elt_size;
   guint   zero_terminated : 1;
   guint   clear : 1;
+  volatile gint ref_count;
 };
 
 #define g_array_elt_len(array,i) ((array)->elt_size * (i))
@@ -91,6 +92,7 @@ GArray* g_array_sized_new (gboolean zero_terminated,
   array->zero_terminated = (zero_terminated ? 1 : 0);
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
+  array->ref_count       = 1;
 
   if (array->zero_terminated || reserved_size != 0)
     {
@@ -101,13 +103,77 @@ GArray* g_array_sized_new (gboolean zero_terminated,
   return (GArray*) array;
 }
 
+/**
+ * g_array_ref:
+ * @array: A #GArray.
+ *
+ * Atomically increments the reference count of @array by one. This
+ * function is MT-safe and may be called from any thread.
+ *
+ * Returns: The passed in #GArray.
+ *
+ * Since: 2.22
+ **/
+GArray *
+g_array_ref (GArray *array)
+{
+  GRealArray *rarray = (GRealArray*) array;
+  g_return_val_if_fail (g_atomic_int_get (&rarray->ref_count) > 0, array);
+  g_atomic_int_inc (&rarray->ref_count);
+  return array;
+}
+
+/**
+ * g_array_unref:
+ * @array: A #GArray.
+ *
+ * Atomically decrements the reference count of @array by one. If the
+ * reference count drops to 0, all memory allocated by the array is
+ * released. This function is MT-safe and may be called from any
+ * thread.
+ *
+ * Since: 2.22
+ **/
+void
+g_array_unref (GArray *array)
+{
+  GRealArray *rarray = (GRealArray*) array;
+  g_return_if_fail (g_atomic_int_get (&rarray->ref_count) > 0);
+  if (g_atomic_int_dec_and_test (&rarray->ref_count))
+    g_array_free (array, TRUE);
+}
+
+/**
+ * g_array_get_element_size:
+ * @array: A #GArray.
+ *
+ * Gets the size of the elements in @array.
+ *
+ * Returns: Size of each element, in bytes.
+ *
+ * Since: 2.22
+ **/
+guint
+g_array_get_element_size (GArray *array)
+{
+  GRealArray *rarray = (GRealArray*) array;
+  return rarray->elt_size;
+}
+
 gchar*
-g_array_free (GArray   *array,
+g_array_free (GArray   *farray,
 	      gboolean  free_segment)
 {
+  GRealArray *array = (GRealArray*) farray;
   gchar* segment;
+  gboolean preserve_wrapper;
 
   g_return_val_if_fail (array, NULL);
+
+  /* if others are holding a reference, preserve the wrapper but do free/return the data */
+  preserve_wrapper = FALSE;
+  if (g_atomic_int_get (&array->ref_count) > 1)
+    preserve_wrapper = TRUE;
 
   if (free_segment)
     {
@@ -117,7 +183,16 @@ g_array_free (GArray   *array,
   else
     segment = array->data;
 
-  g_slice_free1 (sizeof (GRealArray), array);
+  if (preserve_wrapper)
+    {
+      array->data            = NULL;
+      array->len             = 0;
+      array->alloc           = 0;
+    }
+  else
+    {
+      g_slice_free1 (sizeof (GRealArray), array);
+    }
 
   return segment;
 }
@@ -352,9 +427,11 @@ typedef struct _GRealPtrArray  GRealPtrArray;
 
 struct _GRealPtrArray
 {
-  gpointer *pdata;
-  guint     len;
-  guint     alloc;
+  gpointer     *pdata;
+  guint         len;
+  guint         alloc;
+  volatile gint ref_count;
+  GDestroyNotify element_free_func;
 };
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
@@ -374,6 +451,8 @@ g_ptr_array_sized_new (guint reserved_size)
   array->pdata = NULL;
   array->len = 0;
   array->alloc = 0;
+  array->ref_count = 1;
+  array->element_free_func = NULL;
 
   if (reserved_size != 0)
     g_ptr_array_maybe_expand (array, reserved_size);
@@ -381,23 +460,123 @@ g_ptr_array_sized_new (guint reserved_size)
   return (GPtrArray*) array;  
 }
 
+/**
+ * g_ptr_array_new_with_free_func:
+ * @element_free_func: A function to free elements with destroy @array or %NULL.
+ *
+ * Creates a new #GPtrArray with a reference count of 1 and use @element_free_func
+ * for freeing each element when the array is destroyed either via
+ * g_ptr_array_unref(), when g_ptr_array_free() is called with @free_segment
+ * set to %TRUE or when removing elements.
+ *
+ * Returns: A new #GPtrArray.
+ *
+ * Since: 2.22
+ **/
+GPtrArray *
+g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
+{
+  GPtrArray *array;
+
+  array = g_ptr_array_new ();
+  g_ptr_array_set_free_func (array, element_free_func);
+  return array;
+}
+
+/**
+ * g_ptr_array_set_free_func:
+ * @array: A #GPtrArray.
+ * @element_free_func: A function to free elements with destroy @array or %NULL.
+ *
+ * Sets a function for freeing each element when @array is destroyed
+ * either via g_ptr_array_unref(), when g_ptr_array_free() is called
+ * with @free_segment set to %TRUE or when removing elements.
+ *
+ * Since: 2.22
+ **/
+void
+g_ptr_array_set_free_func (GPtrArray        *array,
+                           GDestroyNotify    element_free_func)
+{
+  GRealPtrArray* rarray = (GRealPtrArray*) array;
+  rarray->element_free_func = element_free_func;
+}
+
+/**
+ * g_ptr_array_ref:
+ * @array: A #GArray.
+ *
+ * Atomically increments the reference count of @array by one. This
+ * function is MT-safe and may be called from any thread.
+ *
+ * Returns: The passed in #GPtrArray.
+ *
+ * Since: 2.22
+ **/
+GPtrArray *
+g_ptr_array_ref (GPtrArray *array)
+{
+  GRealPtrArray *rarray = (GRealPtrArray*) array;
+  g_return_val_if_fail (g_atomic_int_get (&rarray->ref_count) > 0, array);
+  g_atomic_int_inc (&rarray->ref_count);
+  return array;
+}
+
+/**
+ * g_ptr_array_unref:
+ * @array: A #GPtrArray.
+ *
+ * Atomically decrements the reference count of @array by one. If the
+ * reference count drops to 0, the effect is the same as calling
+ * g_ptr_array_free() with @free_segment set to %TRUE. This function
+ * is MT-safe and may be called from any thread.
+ *
+ * Since: 2.22
+ **/
+void
+g_ptr_array_unref (GPtrArray *array)
+{
+  GRealPtrArray *rarray = (GRealPtrArray*) array;
+  g_return_if_fail (g_atomic_int_get (&rarray->ref_count) > 0);
+  if (g_atomic_int_dec_and_test (&rarray->ref_count))
+    g_ptr_array_free (array, TRUE);
+}
+
 gpointer*
-g_ptr_array_free (GPtrArray *array,
+g_ptr_array_free (GPtrArray *farray,
 		  gboolean   free_segment)
 {
+  GRealPtrArray *array = (GRealPtrArray*) farray;
   gpointer* segment;
+  gboolean preserve_wrapper;
 
   g_return_val_if_fail (array, NULL);
 
+  /* if others are holding a reference, preserve the wrapper but do free/return the data */
+  preserve_wrapper = FALSE;
+  if (g_atomic_int_get (&array->ref_count) > 1)
+    preserve_wrapper = TRUE;
+
   if (free_segment)
     {
+      if (array->element_free_func != NULL)
+        g_ptr_array_foreach (farray, (GFunc) array->element_free_func, NULL);
       g_free (array->pdata);
       segment = NULL;
     }
   else
     segment = array->pdata;
 
-  g_slice_free1 (sizeof (GRealPtrArray), array);
+  if (preserve_wrapper)
+    {
+      array->pdata = NULL;
+      array->len = 0;
+      array->alloc = 0;
+    }
+  else
+    {
+      g_slice_free1 (sizeof (GRealPtrArray), array);
+    }
 
   return segment;
 }
@@ -462,9 +641,12 @@ g_ptr_array_remove_index (GPtrArray *farray,
 
   result = array->pdata[index_];
   
+  if (array->element_free_func != NULL)
+    array->element_free_func (array->pdata[index_]);
+
   if (index_ != array->len - 1)
     g_memmove (array->pdata + index_, array->pdata + index_ + 1, 
-	       sizeof (gpointer) * (array->len - index_ - 1));
+               sizeof (gpointer) * (array->len - index_ - 1));
   
   array->len -= 1;
 
@@ -488,7 +670,11 @@ g_ptr_array_remove_index_fast (GPtrArray *farray,
   result = array->pdata[index_];
   
   if (index_ != array->len - 1)
-    array->pdata[index_] = array->pdata[array->len - 1];
+    {
+      if (array->element_free_func != NULL)
+        array->element_free_func (array->pdata[index_]);
+      array->pdata[index_] = array->pdata[array->len - 1];
+    }
 
   array->len -= 1;
 
@@ -504,15 +690,24 @@ g_ptr_array_remove_range (GPtrArray *farray,
                           guint      length)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
+  guint n;
 
   g_return_if_fail (array);
   g_return_if_fail (index_ < array->len);
   g_return_if_fail (index_ + length <= array->len);
 
+  if (array->element_free_func != NULL)
+    {
+      for (n = index_; n < index_ + length; n++)
+        array->element_free_func (array->pdata[n]);
+    }
+
   if (index_ + length != array->len)
-    g_memmove (&array->pdata[index_],
-               &array->pdata[index_ + length], 
-               (array->len - (index_ + length)) * sizeof (gpointer));
+    {
+      g_memmove (&array->pdata[index_],
+                 &array->pdata[index_ + length], 
+                 (array->len - (index_ + length)) * sizeof (gpointer));
+    }
 
   array->len -= length;
   if (G_UNLIKELY (g_mem_gc_friendly))
@@ -644,6 +839,40 @@ guint8*	    g_byte_array_free     (GByteArray *array,
 			           gboolean    free_segment)
 {
   return (guint8*) g_array_free ((GArray*) array, free_segment);
+}
+
+/**
+ * g_byte_array_ref:
+ * @array: A #GByteArray.
+ *
+ * Atomically increments the reference count of @array by one. This
+ * function is MT-safe and may be called from any thread.
+ *
+ * Returns: The passed in #GByteArray.
+ *
+ * Since: 2.22
+ **/
+GByteArray *
+g_byte_array_ref (GByteArray *array)
+{
+  return (GByteArray *) g_array_ref ((GArray *) array);
+}
+
+/**
+ * g_byte_array_unref:
+ * @array: A #GByteArray.
+ *
+ * Atomically decrements the reference count of @array by one. If the
+ * reference count drops to 0, all memory allocated by the array is
+ * released. This function is MT-safe and may be called from any
+ * thread.
+ *
+ * Since: 2.22
+ **/
+void
+g_byte_array_unref (GByteArray *array)
+{
+  g_array_unref ((GArray *) array);
 }
 
 GByteArray* g_byte_array_append   (GByteArray   *array,

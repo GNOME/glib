@@ -274,6 +274,39 @@ g_regex_get_type (void)
   return type_id;
 }
 
+GType
+g_array_get_type (void)
+{
+  static GType type_id = 0;
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GArray"),
+					    (GBoxedCopyFunc) g_array_ref,
+                                            (GBoxedFreeFunc) g_array_unref);
+  return type_id;
+}
+
+GType
+g_ptr_array_get_type (void)
+{
+  static GType type_id = 0;
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GPtrArray"),
+					    (GBoxedCopyFunc) g_ptr_array_ref,
+                                            (GBoxedFreeFunc) g_ptr_array_unref);
+  return type_id;
+}
+
+GType
+g_byte_array_get_type (void)
+{
+  static GType type_id = 0;
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GByteArray"),
+					    (GBoxedCopyFunc) g_byte_array_ref,
+                                            (GBoxedFreeFunc) g_byte_array_unref);
+  return type_id;
+}
+
 static void
 boxed_proxy_value_init (GValue *value)
 {

@@ -73,7 +73,7 @@ Contains the public fields of a pointer array.
 
 <!-- ##### FUNCTION g_ptr_array_new ##### -->
 <para>
-Creates a new #GPtrArray.
+Creates a new #GPtrArray with a reference count of 1.
 </para>
 
 @Returns: the new #GPtrArray.
@@ -82,13 +82,48 @@ Creates a new #GPtrArray.
 <!-- ##### FUNCTION g_ptr_array_sized_new ##### -->
 <para>
 Creates a new #GPtrArray with @reserved_size pointers
-preallocated. This avoids frequent reallocation, if you are going to
-add many pointers to the array. Note however that the size of the
-array is still 0.
+preallocated and a reference count of 1. This avoids frequent reallocation,
+if you are going to add many pointers to the array. Note however that the size
+of the array is still 0.
 </para>
 
 @reserved_size: number of pointers preallocated.
 @Returns: the new #GPtrArray.
+
+
+<!-- ##### FUNCTION g_ptr_array_new_with_free_func ##### -->
+<para>
+
+</para>
+
+@element_free_func: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ptr_array_set_free_func ##### -->
+<para>
+
+</para>
+
+@array: 
+@element_free_func: 
+
+
+<!-- ##### FUNCTION g_ptr_array_ref ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ptr_array_unref ##### -->
+<para>
+
+</para>
+
+@array: 
 
 
 <!-- ##### FUNCTION g_ptr_array_add ##### -->
@@ -105,6 +140,8 @@ The array will grow in size automatically if necessary.
 <para>
 Removes the first occurrence of the given pointer from the pointer array.
 The following elements are moved down one place.
+If @array has a non-%NULL #GDestroyNotify function it is called for
+the removed element.
 </para>
 <para>
 It returns %TRUE if the pointer was removed, or %FALSE if the pointer
@@ -121,6 +158,8 @@ in the array.
 <para>
 Removes the pointer at the given index from the pointer array.
 The following elements are moved down one place.
+If @array has a non-%NULL #GDestroyNotify function it is called for
+the removed element.
 </para>
 
 @array: a #GPtrArray.
@@ -134,6 +173,8 @@ Removes the first occurrence of the given pointer from the pointer array.
 The last element in the array is used to fill in the space, so this function
 does not preserve the order of the array. But it is faster than
 g_ptr_array_remove().
+If @array has a non-%NULL #GDestroyNotify function it is called for
+the removed element.
 </para>
 <para>
 It returns %TRUE if the pointer was removed, or %FALSE if the pointer
@@ -151,6 +192,8 @@ Removes the pointer at the given index from the pointer array.
 The last element in the array is used to fill in the space, so this function
 does not preserve the order of the array. But it is faster than
 g_ptr_array_remove_index().
+If @array has a non-%NULL #GDestroyNotify function it is called for
+the removed element.
 </para>
 
 @array: a #GPtrArray.
@@ -162,6 +205,8 @@ g_ptr_array_remove_index().
 <para>
 Removes the given number of pointers starting at the given index from a
 #GPtrArray.  The following elements are moved to close the gap.
+If @array has a non-%NULL #GDestroyNotify function it is called for
+the removed elements.
 </para>
 
 @array: a @GPtrArray.
@@ -228,14 +273,17 @@ Returns the pointer at the given index of the pointer array.
 <!-- ##### FUNCTION g_ptr_array_free ##### -->
 <para>
 Frees the memory allocated for the #GPtrArray.
-If @free_segment is %TRUE it frees the memory block holding the elements
+If @free_seg is %TRUE it frees the memory block holding the elements
 as well. Pass %FALSE if you want to free the #GPtrArray wrapper but preserve
-the underlying array for use elsewhere.
+the underlying array for use elsewhere. If the reference count of @array
+is greater than one, the #GPtrArray wrapper is preserved but the size of
+@array will be set to zero.
 </para>
 <note>
 <para>
-If array contents point to dynamically-allocated memory, they should be freed
-separately.
+If array contents point to dynamically-allocated memory, they should
+be freed separately if @free_seg is %TRUE and no #GDestroyNotify
+function has been set for @array.
 </para>
 </note>
 

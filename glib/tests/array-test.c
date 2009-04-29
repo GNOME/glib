@@ -73,6 +73,33 @@ array_prepend (void)
 }
 
 static void
+array_ref_count (void)
+{
+  GArray *garray;
+  GArray *garray2;
+  gint i;
+
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  g_assert_cmpint (g_array_get_element_size (garray), ==, sizeof (gint));
+  for (i = 0; i < 100; i++)
+    g_array_prepend_val (garray, i);
+
+  /* check we can ref, unref and still access the array */
+  garray2 = g_array_ref (garray);
+  g_assert (garray == garray2);
+  g_array_unref (garray2);
+  for (i = 0; i < 100; i++)
+    g_assert_cmpint (g_array_index (garray, gint, i), ==, (100 - i - 1));
+
+  /* garray2 should be an empty valid GArray wrapper */
+  garray2 = g_array_ref (garray);
+  g_array_free (garray, TRUE);
+
+  g_assert_cmpint (garray2->len, ==, 0);
+  g_array_unref (garray2);
+}
+
+static void
 pointer_array_add (void)
 {
   GPtrArray *gparray;
@@ -90,6 +117,118 @@ pointer_array_add (void)
   g_assert (sum == 49995000);
 
   g_ptr_array_free (gparray, TRUE);
+}
+
+static void
+pointer_array_ref_count (void)
+{
+  GPtrArray *gparray;
+  GPtrArray *gparray2;
+  gint i;
+  gint sum = 0;
+
+  gparray = g_ptr_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_ptr_array_add (gparray, GINT_TO_POINTER (i));
+
+  /* check we can ref, unref and still access the array */
+  gparray2 = g_ptr_array_ref (gparray);
+  g_assert (gparray == gparray2);
+  g_ptr_array_unref (gparray2);
+  for (i = 0; i < 10000; i++)
+    g_assert (g_ptr_array_index (gparray, i) == GINT_TO_POINTER (i));
+
+  g_ptr_array_foreach (gparray, sum_up, &sum);
+  g_assert (sum == 49995000);
+
+  /* gparray2 should be an empty valid GPtrArray wrapper */
+  gparray2 = g_ptr_array_ref (gparray);
+  g_ptr_array_free (gparray, TRUE);
+
+  g_assert_cmpint (gparray2->len, ==, 0);
+  g_ptr_array_unref (gparray2);
+}
+
+static gint num_free_func_invocations = 0;
+
+static void
+my_free_func (gpointer data)
+{
+  num_free_func_invocations++;
+  g_free (data);
+}
+
+static void
+pointer_array_free_func (void)
+{
+  GPtrArray *gparray;
+  GPtrArray *gparray2;
+  gchar **strv;
+  gchar *s;
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_unref (gparray);
+  g_assert_cmpint (num_free_func_invocations, ==, 0);
+
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_free (gparray, TRUE);
+  g_assert_cmpint (num_free_func_invocations, ==, 0);
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_add (gparray, g_strdup ("foo"));
+  g_ptr_array_add (gparray, g_strdup ("bar"));
+  g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_remove_index (gparray, 0);
+  g_assert_cmpint (num_free_func_invocations, ==, 1);
+  s = g_strdup ("frob");
+  g_ptr_array_add (gparray, s);
+  g_assert (g_ptr_array_remove (gparray, s));
+  g_assert_cmpint (num_free_func_invocations, ==, 2);
+  g_ptr_array_ref (gparray);
+  g_ptr_array_unref (gparray);
+  g_assert_cmpint (num_free_func_invocations, ==, 2);
+  g_ptr_array_unref (gparray);
+  g_assert_cmpint (num_free_func_invocations, ==, 4);
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_add (gparray, g_strdup ("foo"));
+  g_ptr_array_add (gparray, g_strdup ("bar"));
+  g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_add (gparray, NULL);
+  gparray2 = g_ptr_array_ref (gparray);
+  strv = (gchar **) g_ptr_array_free (gparray, FALSE);
+  g_assert_cmpint (num_free_func_invocations, ==, 0);
+  g_strfreev (strv);
+  g_ptr_array_unref (gparray2);
+  g_assert_cmpint (num_free_func_invocations, ==, 0);
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_add (gparray, g_strdup ("foo"));
+  g_ptr_array_add (gparray, g_strdup ("bar"));
+  g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_unref (gparray);
+  g_assert_cmpint (num_free_func_invocations, ==, 3);
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_add (gparray, g_strdup ("foo"));
+  g_ptr_array_add (gparray, g_strdup ("bar"));
+  g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_free (gparray, TRUE);
+  g_assert_cmpint (num_free_func_invocations, ==, 3);
+
+  num_free_func_invocations = 0;
+  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  g_ptr_array_add (gparray, "foo");
+  g_ptr_array_add (gparray, "bar");
+  g_ptr_array_add (gparray, "baz");
+  g_ptr_array_set_free_func (gparray, NULL);
+  g_ptr_array_free (gparray, TRUE);
+  g_assert_cmpint (num_free_func_invocations, ==, 0);
 }
 
 static void
@@ -113,6 +252,35 @@ byte_array_append (void)
   g_byte_array_free (gbarray, TRUE);
 }
 
+static void
+byte_array_ref_count (void)
+{
+  GByteArray *gbarray;
+  GByteArray *gbarray2;
+  gint i;
+
+  gbarray = g_byte_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_byte_array_append (gbarray, (guint8*) "abcd", 4);
+
+  gbarray2 = g_byte_array_ref (gbarray);
+  g_assert (gbarray2 == gbarray);
+  g_byte_array_unref (gbarray2);
+  for (i = 0; i < 10000; i++)
+    {
+      g_assert (gbarray->data[4*i] == 'a');
+      g_assert (gbarray->data[4*i+1] == 'b');
+      g_assert (gbarray->data[4*i+2] == 'c');
+      g_assert (gbarray->data[4*i+3] == 'd');
+    }
+
+  gbarray2 = g_byte_array_ref (gbarray);
+  g_assert (gbarray2 == gbarray);
+  g_byte_array_free (gbarray, TRUE);
+  g_assert_cmpint (gbarray2->len, ==, 0);
+  g_byte_array_unref (gbarray2);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -121,12 +289,16 @@ main (int argc, char *argv[])
   /* array tests */
   g_test_add_func ("/array/append", array_append);
   g_test_add_func ("/array/prepend", array_prepend);
+  g_test_add_func ("/array/ref-count", array_ref_count);
 
   /* pointer arrays */
   g_test_add_func ("/pointerarray/add", pointer_array_add);
+  g_test_add_func ("/pointerarray/ref-count", pointer_array_ref_count);
+  g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
 
   /* byte arrays */
   g_test_add_func ("/bytearray/append", byte_array_append);
+  g_test_add_func ("/bytearray/ref-count", byte_array_ref_count);
 
   return g_test_run ();
 }
