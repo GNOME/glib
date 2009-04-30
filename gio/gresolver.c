@@ -69,8 +69,10 @@ G_DEFINE_TYPE (GResolver, g_resolver, G_TYPE_OBJECT)
 static void
 g_resolver_class_init (GResolverClass *resolver_class)
 {
+  volatile GType type;
+
   /* Make sure _g_networking_init() has been called */
-  (void) g_inet_address_get_type ();
+  type = g_inet_address_get_type ();
 
   /* Initialize _g_resolver_addrinfo_hints */
 #ifdef AI_ADDRCONFIG
