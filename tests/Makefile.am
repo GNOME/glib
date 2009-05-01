@@ -2,18 +2,11 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS=gobject refcount
 
-if ENABLE_REGEX
-enable_regex = -DENABLE_REGEX
-else
-enable_regex =
-endif
-
 AM_CPPFLAGS = 				\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/glib 		\
 	-I$(top_srcdir)/gmodule 	\
-	$(GLIB_DEBUG_FLAGS) 		\
-	$(enable_regex)
+	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = -g
 

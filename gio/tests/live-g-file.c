@@ -458,8 +458,8 @@ test_initial_structure (gconstpointer test_data)
 			     PATTERN_FILE_SIZE, NULL, &error);
       g_assert_no_error (error);
       total_read += read;
-      log ("      read %d bytes, total = %d of %d.\n", read, total_read,
-	   PATTERN_FILE_SIZE);
+      log ("      read %d bytes, total = %d of %d.\n", (int) read,
+	   (int) total_read, PATTERN_FILE_SIZE);
     }
   g_assert_cmpint (total_read, ==, PATTERN_FILE_SIZE);
 

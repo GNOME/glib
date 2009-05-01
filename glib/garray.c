@@ -181,7 +181,7 @@ g_array_free (GArray   *farray,
       segment = NULL;
     }
   else
-    segment = array->data;
+    segment = (gchar*) array->data;
 
   if (preserve_wrapper)
     {

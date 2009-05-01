@@ -415,7 +415,7 @@ g_base64_decode_inplace (gchar *text,
 
   *out_len = g_base64_decode_step (text, input_length, (guchar *) text, &state, &save);
   
-  return text; 
+  return (guchar *) text; 
 }
 
 

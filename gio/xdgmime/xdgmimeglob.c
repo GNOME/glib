@@ -375,7 +375,6 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
   int i, n;
   MimeWeight mimes[10];
   int n_mimes = 10;
-  xdg_unichar_t *ucs4;
   int len;
 
   /* First, check the literals */

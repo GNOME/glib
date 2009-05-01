@@ -20,6 +20,8 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+#include "config.h"
+
 #include <string.h>
 #include <locale.h>
 #include "glib.h"
