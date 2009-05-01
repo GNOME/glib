@@ -26,3 +26,6 @@ glib-gettextize
 glib-zip
 glibconfig.h
 gtk-doc.make
+
+INSTALL
+README
