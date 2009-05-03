@@ -632,8 +632,8 @@ g_input_stream_read_finish (GInputStream  *stream,
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Request an asynchronous skip of @count bytes from the stream into the buffer
- * starting at @buffer. When the operation is finished @callback will be called. 
+ * Request an asynchronous skip of @count bytes from the stream.
+ * When the operation is finished @callback will be called. 
  * You can then call g_input_stream_skip_finish() to get the result of the 
  * operation.
  *
