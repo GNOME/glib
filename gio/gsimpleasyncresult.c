@@ -145,6 +145,15 @@ G_DEFINE_TYPE_WITH_CODE (GSimpleAsyncResult, g_simple_async_result, G_TYPE_OBJEC
 						g_simple_async_result_async_result_iface_init))
 
 static void
+clear_op_res (GSimpleAsyncResult *simple)
+{
+  if (simple->destroy_op_res)
+    simple->destroy_op_res (simple->op_res.v_pointer);
+  simple->destroy_op_res = NULL;
+  simple->op_res.v_ssize = 0;
+}
+
+static void
 g_simple_async_result_finalize (GObject *object)
 {
   GSimpleAsyncResult *simple;
@@ -154,8 +163,7 @@ g_simple_async_result_finalize (GObject *object)
   if (simple->source_object)
     g_object_unref (simple->source_object);
 
-  if (simple->destroy_op_res)
-    simple->destroy_op_res (simple->op_res.v_pointer);
+  clear_op_res (simple);
 
   if (simple->error)
     g_error_free (simple->error);
@@ -375,6 +383,7 @@ g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult *simple,
 {
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
 
+  clear_op_res (simple);
   simple->op_res.v_pointer = op_res;
   simple->destroy_op_res = destroy_op_res;
 }
@@ -407,6 +416,7 @@ g_simple_async_result_set_op_res_gssize (GSimpleAsyncResult *simple,
                                          gssize              op_res)
 {
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
+  clear_op_res (simple);
   simple->op_res.v_ssize = op_res;
 }
 
@@ -437,6 +447,7 @@ g_simple_async_result_set_op_res_gboolean (GSimpleAsyncResult *simple,
                                            gboolean            op_res)
 {
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
+  clear_op_res (simple);
   simple->op_res.v_boolean = !!op_res;
 }
 
