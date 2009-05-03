@@ -29,6 +29,10 @@ Overview of Changes from GLib 2.20.x to GLib 2.21.0
  580301 network: a few issues on old darwin
  580299 network: include sys/types.h before sys/socket.h to insur...
  572508 gmarkup speedup
+ 580546 g_strtoull() referenced in documentation...
+ 580656 g_key_file_set_string_list erroneously asserts list != NULL
+ 579272 leaks in g_simple_async_result_set_op_res_gpointer
+
 
 * Updated translations:
  Catalan (ca)
