@@ -555,8 +555,9 @@ printing values of type #gint64. See also #G_GINT16_FORMAT.
 Some platforms do not support scanning and printing 64 bit integers,
 even though the types are supported. On such platforms #G_GINT64_FORMAT
 is not defined. Note that scanf() may not support 64 bit integers, even
-if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not 
-recommended for parsing anyway; consider using g_strtoull() instead.
+if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
+is not recommended for parsing anyway; consider using g_ascii_strtoull()
+instead.
 </para>
 </note>
 
