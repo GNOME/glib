@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-03 17:49-0400\n"
 "PO-Revision-Date: 2009-03-17 14:06+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -312,54 +312,32 @@ msgstr ""
 "Неуспех при отваряне на файл в паметта „%s“: неуспешно изпълнение на mmap(): "
 "%s"
 
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Грешка на ред %d, знак %d: "
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr "Неправилно кодиран текст в UTF-8 — „%s“ е грешен"
+
+#: glib/gmarkup.c:374
+#, c-format
+msgid "'%s' is not a valid name "
+msgstr ""
+
+#: glib/gmarkup.c:390
+#, c-format
+msgid "'%s' is not a valid name: '%c' "
+msgstr ""
+
+#: glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Грешка на ред %d: %s"
 
-#: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Намерена е празна заместваща последователност: „&;“. Валидни "
-"последователности са: „&amp;“, „&quot;“, „&lt;“, „&gt;“, „&apos;“"
-
-#: glib/gmarkup.c:503
-#, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"Заместваща последователност не може да започва със знака „%s“. Тя трябва да "
-"започва със знака „&“. Ако той не трябва да започва заместваща "
-"последователност, той може да се екранира така: „&amp;“"
-
-#: glib/gmarkup.c:537
-#, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "Знакът „%s“ не може да се съдържа в заместваща последователност"
-
-#: glib/gmarkup.c:574
-#, c-format
-msgid "Entity name '%s' is not known"
-msgstr "Заместващата последователност „%s“ е неизвестна"
-
-#: glib/gmarkup.c:585
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"Заместващата последователност не завършва с „;“. Най-вероятно сте използвали "
-"амперсанд, без той да е начало на заместваща последователност. Представете "
-"амперсанда чрез „&amp;“"
-
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:578
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -368,16 +346,7 @@ msgstr ""
 "Грешка при анализ на „%-.*s“, което трябва да е число в указател на знак "
 "(напр. &#234;). Вероятно числото е твърде голямо"
 
-#: glib/gmarkup.c:660
-#, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Указателят на знак „%-.*s“ не представя разрешен знак при декодиране"
-
-#: glib/gmarkup.c:675
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Празен указател на знак. Трябва да включва число, напр. &#454;"
-
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -387,32 +356,37 @@ msgstr ""
 "без той да е начало на заместваща последователност. Представете амперсанда "
 "чрез „&amp;“"
 
-#: glib/gmarkup.c:771
-msgid "Unfinished entity reference"
-msgstr "Незавършена заместваща последователност"
-
-#: glib/gmarkup.c:777
-msgid "Unfinished character reference"
-msgstr "Незавършен указател на знак"
-
-#: glib/gmarkup.c:1063
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "Неправилно кодиран текст в UTF-8 — прекалено дълга последователност"
-
-#: glib/gmarkup.c:1091
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "Неправилно кодиран текст в UTF-8 — не може да се започва с този знак"
-
-#: glib/gmarkup.c:1130
+#: glib/gmarkup.c:616
 #, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "Неправилно кодиран текст в UTF-8 — „%s“ е грешен"
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Указателят на знак „%-.*s“ не представя разрешен знак при декодиране"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:654
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Намерена е празна заместваща последователност: „&;“. Валидни "
+"последователности са: „&amp;“, „&quot;“, „&lt;“, „&gt;“, „&apos;“"
+
+#: glib/gmarkup.c:662
+#, fuzzy, c-format
+msgid "Entity name '%-.*s' is not known"
+msgstr "Заместващата последователност „%s“ е неизвестна"
+
+#: glib/gmarkup.c:667
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Заместващата последователност не завършва с „;“. Най-вероятно сте използвали "
+"амперсанд, без той да е начало на заместваща последователност. Представете "
+"амперсанда чрез „&amp;“"
+
+#: glib/gmarkup.c:973
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документът трябва да започва с елемент (напр. <book>)"
 
-#: glib/gmarkup.c:1208
+#: glib/gmarkup.c:1013
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -420,7 +394,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „<“. Името на елемент не може да започне с него"
 
-#: glib/gmarkup.c:1276
+#: glib/gmarkup.c:1081
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -429,7 +403,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се етикетът на празния елемент „%s“ да завърши "
 "с „>“"
 
-#: glib/gmarkup.c:1365
+#: glib/gmarkup.c:1165
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -437,7 +411,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се „=“ след името на атрибут „%s“ на елемент „%"
 "s“"
 
-#: glib/gmarkup.c:1407
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -448,7 +422,7 @@ msgstr ""
 "завърши със знак „>“ или „/“, или евентуално да продължи с атрибут. Най-"
 "вероятно използвате неправилен знак в името на атрибут"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1283
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -457,7 +431,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се знакът „\"“ след знака за равенство, когато "
 "се присвоява стойност на атрибута „%s“ на елемент „%s“"
 
-#: glib/gmarkup.c:1635
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -465,7 +439,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „</“. Името на елемент не може да започва с „%s“"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -474,26 +448,26 @@ msgstr ""
 "„%s“ е неправилен знак при завършването на затварящ етикет с име „%s“. "
 "Позволен е знакът „>“"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1464
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елементът „%s“ е затворен, няма текущо отворен елемент"
 
-#: glib/gmarkup.c:1695
+#: glib/gmarkup.c:1473
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елементът „%s“ е затворен, но текущо е отворен елемент „%s“"
 
-#: glib/gmarkup.c:1858
+#: glib/gmarkup.c:1640
 msgid "Document was empty or contained only whitespace"
 msgstr "Документът е празен или съдържа само празни знаци"
 
-#: glib/gmarkup.c:1872
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документът завършва неочаквано веднага след отваряща счупена скоба — „<“"
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -502,7 +476,7 @@ msgstr ""
 "Документът завършва неочаквано — има отворени елементи. Последно отворен е „%"
 "s“"
 
-#: glib/gmarkup.c:1888
+#: glib/gmarkup.c:1670
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -511,19 +485,19 @@ msgstr ""
 "Документът завършва неочаквано, очаква се затваряща счупена скоба да завърши "
 "етикета <%s/>"
 
-#: glib/gmarkup.c:1894
+#: glib/gmarkup.c:1676
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документът завършва неочаквано в името на елемент"
 
-#: glib/gmarkup.c:1900
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документът завършва неочаквано в името на атрибут"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документът завършва неочаквано в отварящ етикет на елемент "
 
-#: glib/gmarkup.c:1911
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -531,16 +505,16 @@ msgstr ""
 "Документът завършва неочаквано след знака за равенство следващ името на "
 "атрибута. Атрибутът няма стойност"
 
-#: glib/gmarkup.c:1918
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документът завършва неочаквано вътре в стойността на атрибут"
 
-#: glib/gmarkup.c:1934
+#: glib/gmarkup.c:1716
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документът завършва неочаквано в затварящия етикет на елемент „%s“"
 
-#: glib/gmarkup.c:1940
+#: glib/gmarkup.c:1722
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документът завършва неочаквано в коментар или инструкция за обработка"
 
@@ -988,65 +962,65 @@ msgstr "Неправилна последователност на входа з
 msgid "Character out of range for UTF-16"
 msgstr "Знак извън обхвата на UTF-16"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "Usage:"
 msgstr "Употреба:"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "[OPTION...]"
 msgstr "[ОПЦИЯ…]"
 
-#: glib/goption.c:719
+#: glib/goption.c:828
 msgid "Help Options:"
 msgstr "Настройки на помощта:"
 
-#: glib/goption.c:720
+#: glib/goption.c:829
 msgid "Show help options"
 msgstr "Показване на настройките на помощта"
 
-#: glib/goption.c:726
+#: glib/goption.c:835
 msgid "Show all help options"
 msgstr "Показване на всички настройки на помощта"
 
-#: glib/goption.c:788
+#: glib/goption.c:897
 msgid "Application Options:"
 msgstr "Настройки на приложението:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: glib/goption.c:959 glib/goption.c:1029
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не може да се анализира целочислената стойност „%s“ за %s"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: glib/goption.c:969 glib/goption.c:1037
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 "Целочислената стойност „%s“ за %s е извън интервала на допустимите стойности"
 
-#: glib/goption.c:885
+#: glib/goption.c:994
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 "Не може да се анализира стойността с повишена точност double „%s“ за %s"
 
-#: glib/goption.c:893
+#: glib/goption.c:1002
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "Стойността с повишена точност — double „%s“ за %s е извън интервала на "
 "допустимите стойности"
 
-#: glib/goption.c:1156 glib/goption.c:1235
+#: glib/goption.c:1265 glib/goption.c:1344
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Грешка при анализа на опцията: %s"
 
-#: glib/goption.c:1266 glib/goption.c:1380
+#: glib/goption.c:1375 glib/goption.c:1489
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Липсва аргумент за %s"
 
-#: glib/goption.c:1773
+#: glib/goption.c:1882
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
@@ -1170,8 +1144,8 @@ msgstr "Подадена е прекалено голяма стойност н�
 msgid "Stream is already closed"
 msgstr "Потокът вече е затворен"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
-#: gio/gsimpleasyncresult.c:654
+#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
+#: gio/gsimpleasyncresult.c:665
 msgid "Operation was cancelled"
 msgstr "Действието е прекратено"
 
@@ -1311,7 +1285,7 @@ msgstr "Не се поддържа кошче"
 msgid "File names cannot contain '%c'"
 msgstr "Файловите имена не могат да съдържат „%c“"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "томът не поддържа монтиране"
 
@@ -1331,14 +1305,6 @@ msgstr "Файловият брояч все още е е привършил"
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr "Файловият брояч вече е затворен"
-
-#: gio/gfileicon.c:145
-msgid "file"
-msgstr "файл"
-
-#: gio/gfileicon.c:146
-msgid "The file containing the icon"
-msgstr "Файлът съдържащ иконата"
 
 #: gio/gfileicon.c:237
 #, c-format
@@ -1749,55 +1715,10 @@ msgstr "Изходният поток не поддържа запис"
 msgid "Source stream is already closed"
 msgstr "Изходният поток вече е затворен"
 
-#: gio/gthemedicon.c:211
-msgid "name"
-msgstr "име"
-
-#: gio/gthemedicon.c:212
-msgid "The name of the icon"
-msgstr "Името на иконата"
-
-#: gio/gthemedicon.c:223
-msgid "names"
-msgstr "имена"
-
-#: gio/gthemedicon.c:224
-msgid "An array containing the icon names"
-msgstr "Масив с имена на икони"
-
-#: gio/gthemedicon.c:249
-msgid "use default fallbacks"
-msgstr "използване на стандартните резервни настройки"
-
-#: gio/gthemedicon.c:250
-msgid ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-msgstr ""
-"Дали да се използват стандартните резервни настройки, които се намират при "
-"съкращаване на името при знаците „-“. Ако са дадени множество имена, се "
-"взема само първото."
-
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Версия %d на кодирането GThemedIcon не се поддържа"
-
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
-msgid "File descriptor"
-msgstr "Файлов дескриптор"
-
-#: gio/gunixinputstream.c:162
-msgid "The file descriptor to read from"
-msgstr "Файловият дескриптор от който да се чете"
-
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-msgid "Close file descriptor"
-msgstr "Затваряне на файловия дескриптор"
-
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
-msgid "Whether to close the file descriptor when the stream is closed"
-msgstr "Дали файловият дескриптор да се затваря със затварянето на потока"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1815,16 +1736,12 @@ msgstr "Грешка при затваряне на ЮНИКС: %s"
 msgid "Filesystem root"
 msgstr "Коренова папка на файловата система"
 
-#: gio/gunixoutputstream.c:148
-msgid "The file descriptor to write to"
-msgstr "Дескрипторът на файла, в който да се записва"
-
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Грешка при запис към ЮНИКС: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "томът не поддържа изваждане"
 
@@ -1860,3 +1777,75 @@ msgstr "ползване на дълъг формат"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[ФАЙЛ…]"
+
+#~ msgid ""
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
+#~ msgstr ""
+#~ "Заместваща последователност не може да започва със знака „%s“. Тя трябва "
+#~ "да започва със знака „&“. Ако той не трябва да започва заместваща "
+#~ "последователност, той може да се екранира така: „&amp;“"
+
+#~ msgid "Character '%s' is not valid inside an entity name"
+#~ msgstr "Знакът „%s“ не може да се съдържа в заместваща последователност"
+
+#~ msgid "Empty character reference; should include a digit such as &#454;"
+#~ msgstr "Празен указател на знак. Трябва да включва число, напр. &#454;"
+
+#~ msgid "Unfinished entity reference"
+#~ msgstr "Незавършена заместваща последователност"
+
+#~ msgid "Unfinished character reference"
+#~ msgstr "Незавършен указател на знак"
+
+#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
+#~ msgstr "Неправилно кодиран текст в UTF-8 — прекалено дълга последователност"
+
+#~ msgid "Invalid UTF-8 encoded text - not a start char"
+#~ msgstr ""
+#~ "Неправилно кодиран текст в UTF-8 — не може да се започва с този знак"
+
+#~ msgid "file"
+#~ msgstr "файл"
+
+#~ msgid "The file containing the icon"
+#~ msgstr "Файлът съдържащ иконата"
+
+#~ msgid "name"
+#~ msgstr "име"
+
+#~ msgid "The name of the icon"
+#~ msgstr "Името на иконата"
+
+#~ msgid "names"
+#~ msgstr "имена"
+
+#~ msgid "An array containing the icon names"
+#~ msgstr "Масив с имена на икони"
+
+#~ msgid "use default fallbacks"
+#~ msgstr "използване на стандартните резервни настройки"
+
+#~ msgid ""
+#~ "Whether to use default fallbacks found by shortening the name at '-' "
+#~ "characters. Ignores names after the first if multiple names are given."
+#~ msgstr ""
+#~ "Дали да се използват стандартните резервни настройки, които се намират "
+#~ "при съкращаване на името при знаците „-“. Ако са дадени множество имена, "
+#~ "се взема само първото."
+
+#~ msgid "File descriptor"
+#~ msgstr "Файлов дескриптор"
+
+#~ msgid "The file descriptor to read from"
+#~ msgstr "Файловият дескриптор от който да се чете"
+
+#~ msgid "Close file descriptor"
+#~ msgstr "Затваряне на файловия дескриптор"
+
+#~ msgid "Whether to close the file descriptor when the stream is closed"
+#~ msgstr "Дали файловият дескриптор да се затваря със затварянето на потока"
+
+#~ msgid "The file descriptor to write to"
+#~ msgstr "Дескрипторът на файла, в който да се записва"

@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2008 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@
  * #GNetworkAddress and #GNetworkService provide wrappers around
  * #GResolver functionality that also implement #GSocketConnectable,
  * making it easy to connect to a remote host/service.
- **/
+ */
 
 /**
  * GResolver:
@@ -89,7 +89,6 @@ g_resolver_class_init (GResolverClass *resolver_class)
 static void
 g_resolver_init (GResolver *resolver)
 {
-  ;
 }
 
 static GResolver *default_resolver;
@@ -141,7 +140,7 @@ g_resolver_get_default (void)
  * itself as the default resolver for all later code to use.
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_set_default (GResolver *resolver)
 {
@@ -184,7 +183,7 @@ g_resolver_set_default (GResolver *resolver)
  * done with it. (You can use g_resolver_free_addresses() to do this.)
  *
  * Since: 2.22
- **/
+ */
 GList *
 g_resolver_lookup_by_name (GResolver     *resolver,
                            const gchar   *hostname,
@@ -223,11 +222,11 @@ g_resolver_lookup_by_name (GResolver     *resolver,
  *
  * Begins asynchronously resolving @hostname to determine its
  * associated IP address(es), and eventually calls @callback, which
- * must call g_resolver_lookup_by_name_finish() to get the result. See
- * g_resolver_lookup_by_name() for more details.
+ * must call g_resolver_lookup_by_name_finish() to get the result.
+ * See g_resolver_lookup_by_name() for more details.
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_lookup_by_name_async (GResolver           *resolver,
                                  const gchar         *hostname,
@@ -285,7 +284,7 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
  * g_resolver_lookup_by_name() for more details.
  *
  * Since: 2.22
- **/
+ */
 GList *
 g_resolver_lookup_by_name_finish (GResolver     *resolver,
                                   GAsyncResult  *result,
@@ -325,7 +324,7 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
  * by hand.)
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_free_addresses (GList *addresses)
 {
@@ -357,7 +356,7 @@ g_resolver_free_addresses (GList *addresses)
  * form), or %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 gchar *
 g_resolver_lookup_by_address (GResolver     *resolver,
                               GInetAddress  *address,
@@ -384,7 +383,7 @@ g_resolver_lookup_by_address (GResolver     *resolver,
  * call g_resolver_lookup_by_address_finish() to get the final result.
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_lookup_by_address_async (GResolver           *resolver,
                                     GInetAddress        *address,
@@ -416,7 +415,7 @@ g_resolver_lookup_by_address_async (GResolver           *resolver,
  * form), or %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 gchar *
 g_resolver_lookup_by_address_finish (GResolver     *resolver,
                                      GAsyncResult  *result,
@@ -489,7 +488,7 @@ g_resolver_get_service_rrname (const char *service,
  * (You can use g_resolver_free_targets() to do this.)
  *
  * Since: 2.22
- **/
+ */
 GList *
 g_resolver_lookup_service (GResolver     *resolver,
                            const gchar   *service,
@@ -532,7 +531,7 @@ g_resolver_lookup_service (GResolver     *resolver,
  * details.
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_lookup_service_async (GResolver           *resolver,
                                  const gchar         *service,
@@ -574,7 +573,7 @@ g_resolver_lookup_service_async (GResolver           *resolver,
  * g_resolver_lookup_service() for more details.
  *
  * Since: 2.22
- **/
+ */
 GList *
 g_resolver_lookup_service_finish (GResolver     *resolver,
                                   GAsyncResult  *result,
@@ -604,7 +603,7 @@ g_resolver_lookup_service_finish (GResolver     *resolver,
  * results by hand.)
  *
  * Since: 2.22
- **/
+ */
 void
 g_resolver_free_targets (GList *targets)
 {
@@ -617,13 +616,13 @@ g_resolver_free_targets (GList *targets)
 
 /**
  * g_resolver_error_quark:
- * 
+ *
  * Gets the #GResolver Error Quark.
  *
  * Return value: a #GQuark.
  *
  * Since: 2.22
- **/
+ */
 GQuark
 g_resolver_error_quark (void)
 {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-03 17:49-0400\n"
 "PO-Revision-Date: 2006-09-04 18:36+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@farsiweb.info>\n"
 "Language-Team: Persian\n"
@@ -297,53 +297,32 @@ msgstr "باز کردن پروندهٔ «‎%s» شکست خورد: open()‎ ش
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "تهیهٔ نقشه از پروندهٔ «‎%s» شکست خورد: mmap()‎ شکست خورد: %s"
 
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, fuzzy, c-format
 msgid "Error on line %d char %d: "
 msgstr "خطا در سطر %Id نویسهٔ %Id:‏ %s"
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
+
+#: glib/gmarkup.c:374
+#, c-format
+msgid "'%s' is not a valid name "
+msgstr ""
+
+#: glib/gmarkup.c:390
+#, c-format
+msgid "'%s' is not a valid name: '%c' "
+msgstr ""
+
+#: glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "خطا در سطر %Id:‏ %s"
 
-#: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"نهاد خالی «‎&;‎» مشاهده شد؛ نهادهای معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; "
-"&apos;‎"
-
-#: glib/gmarkup.c:503
-#, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"نویسهٔ «%s» در ابتدای نام نهادها مجاز نیست؛ نویسهٔ & نهاد را آغاز می‌کند؛ اگر "
-"این علامت & قرار نیست نهاد شود، به‌جای آن از ‎&amp;‎ استفاده کنید"
-
-#: glib/gmarkup.c:537
-#, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "نویسهٔ «%s» داخل نام نهادها مجاز نیست"
-
-#: glib/gmarkup.c:574
-#, c-format
-msgid "Entity name '%s' is not known"
-msgstr "نام نهاد «%s» شناخته نیست"
-
-#: glib/gmarkup.c:585
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"نهاد با یک نقطه‌ویرگول لاتین تمام نشده است؛ به احتمال زیاد بدون این که "
-"بخواهید نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & "
-"از ‎&amp;‎ استفاده کنید"
-
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:578
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -352,16 +331,7 @@ msgstr ""
 "تجزیهٔ «‎%-.*s»، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) می‌بود شکست "
 "خورد - شاید رقم خیلی بزرگ است"
 
-#: glib/gmarkup.c:660
-#, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "ارجاع نویسه‌ای «‎%-.*s» به نویسهٔ مجاز اشاره نمی‌کند"
-
-#: glib/gmarkup.c:675
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "ارجاع نویسه‌ای خالی؛ باید یک رقم داشته باشد، مثل ‎&#454;‎"
-
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -371,34 +341,37 @@ msgstr ""
 "بخواهید نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & "
 "از ‎&amp;‎ استفاده کنید"
 
-#: glib/gmarkup.c:771
-msgid "Unfinished entity reference"
-msgstr "ارجاع نهادی ناتمام"
+#: glib/gmarkup.c:616
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "ارجاع نویسه‌ای «‎%-.*s» به نویسهٔ مجاز اشاره نمی‌کند"
 
-#: glib/gmarkup.c:777
-msgid "Unfinished character reference"
-msgstr "ارجاع نویسه‌ای ناتمام"
+#: glib/gmarkup.c:654
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"نهاد خالی «‎&;‎» مشاهده شد؛ نهادهای معتبر عبارتند از: ‎&amp; &quot; &lt; &gt; "
+"&apos;‎"
 
-#: glib/gmarkup.c:1063
-#, fuzzy
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
-
-#: glib/gmarkup.c:1091
-#, fuzzy
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
-
-#: glib/gmarkup.c:1130
+#: glib/gmarkup.c:662
 #, fuzzy, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
+msgid "Entity name '%-.*s' is not known"
+msgstr "نام نهاد «%s» شناخته نیست"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:667
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"نهاد با یک نقطه‌ویرگول لاتین تمام نشده است؛ به احتمال زیاد بدون این که "
+"بخواهید نهادی را آغاز کنید از نویسهٔ & استفاده کرده‌اید - برای نوشتن علامت & "
+"از ‎&amp;‎ استفاده کنید"
+
+#: glib/gmarkup.c:973
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "نوشتار باید با یک عنصر (مثلاً <book>) شروع شود"
 
-#: glib/gmarkup.c:1208
+#: glib/gmarkup.c:1013
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -406,7 +379,7 @@ msgid ""
 msgstr ""
 "‏«%s» پس از یک نویسهٔ '‎<‎' نویسهٔ مجازی نیست؛ نمی‌شود ابتدای نام یک عنصر باشد"
 
-#: glib/gmarkup.c:1276
+#: glib/gmarkup.c:1081
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -415,14 +388,14 @@ msgstr ""
 "نویسهٔ غیرعادی «%s»، برای پایان دادن به برچسب شروع عنصر «%s» انتظار یک نویسهٔ «‎>‎» "
 "می‌رفت"
 
-#: glib/gmarkup.c:1365
+#: glib/gmarkup.c:1165
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "نویسهٔ غیرعادی «%s»، بعد از نام مشخصهٔ «%s» عنصر «%s» انتظار یک نویسهٔ «=» می‌رفت"
 
-#: glib/gmarkup.c:1407
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -433,7 +406,7 @@ msgstr ""
 "انتظار یک نویسهٔ «‎>‎» یا «/» می‌رفت؛ شاید از یک نویسهٔ نامعتبر در نام مشخصه‌ای "
 "استفاده کرده باشید"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1283
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -442,7 +415,7 @@ msgstr ""
 "نویسهٔ غیرعادی «%s»، هنگام مقدار دادن به مشخصهٔ «%s» از عنصر «%s» پس از علامت "
 "تساوی انتظار یک علامت نقل قول باز می‌رفت"
 
-#: glib/gmarkup.c:1635
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -451,32 +424,32 @@ msgstr ""
 "‏«%s» بعد از نویسه‌های «‎</‎» نویسهٔ معتبری نیست؛ «%s» نمی‌تواند ابتدای نام عناصر "
 "قرار بگیرد"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "‏«%s» نویسهٔ معتبری برای بستن نام عنصر «%s» نیست؛ نویسهٔ مجاز «‎>» است"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1464
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "عنصر «%s» بسته بود، در حال حاضر هیچ عنصری باز نیست"
 
-#: glib/gmarkup.c:1695
+#: glib/gmarkup.c:1473
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "عنصر «%s» بسته بود، ولی عنصری که در حال حاضر باز است «%s» است"
 
-#: glib/gmarkup.c:1858
+#: glib/gmarkup.c:1640
 msgid "Document was empty or contained only whitespace"
 msgstr "نوشتار خالی است یا فقط فاصلهٔ خالی دارد"
 
-#: glib/gmarkup.c:1872
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "نوشتار به‌طور غیرمنتظره‌ای درست بعد از یک علامت کوچکتر '‎<‎' پایان یافت"
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -485,7 +458,7 @@ msgstr ""
 "نوشتار وقتی که هنوز عناصری باز بودند به‌طور غیرمنتظره‌ای پایان یافت ‐ آخرین "
 "عنصر باز شده «%s» بود"
 
-#: glib/gmarkup.c:1888
+#: glib/gmarkup.c:1670
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -494,19 +467,19 @@ msgstr ""
 "نوشتار به‌طور غیرمنتظره‌ای پایان یافت، یک علامت بزرگتر برای بستن برچسب ‎<%s/>‎ "
 "انتظار می‌رفت"
 
-#: glib/gmarkup.c:1894
+#: glib/gmarkup.c:1676
 msgid "Document ended unexpectedly inside an element name"
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل نام یک عنصر به‌پایان رسید"
 
-#: glib/gmarkup.c:1900
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل نام یک مشخصه به‌پایان رسید"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل یک برچسب عنصربازکن پایان یافت."
 
-#: glib/gmarkup.c:1911
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -514,16 +487,16 @@ msgstr ""
 "نوشتار به‌طور غیرمنتظره‌ای بعد از علامت تساوی‌ای که پس از نام مشخصه‌ای آمده بود "
 "تمام شد؛ بدون مقدار برای مشخصه"
 
-#: glib/gmarkup.c:1918
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل مقدار یک مشخصه به‌پایان رسید"
 
-#: glib/gmarkup.c:1934
+#: glib/gmarkup.c:1716
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل برچسب بستن عنصر «%s» پایان یافت"
 
-#: glib/gmarkup.c:1940
+#: glib/gmarkup.c:1722
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "نوشتار به‌طور غیرمنتظره‌ای داخل یک توضیح یا دستورالعمل پردازشی پایان یافت"
@@ -971,61 +944,61 @@ msgstr "دنبالهٔ نامعتبر در ورودی تبدیل"
 msgid "Character out of range for UTF-16"
 msgstr "نویسهٔ خارج از محدوده برای UTF-16"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "Usage:"
 msgstr "روش استفاده:"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "[OPTION...]"
 msgstr "[گزینه...]"
 
-#: glib/goption.c:719
+#: glib/goption.c:828
 msgid "Help Options:"
 msgstr "گزینه‌های راهنما:"
 
-#: glib/goption.c:720
+#: glib/goption.c:829
 msgid "Show help options"
 msgstr "نمایش گزینه‌های راهنما"
 
-#: glib/goption.c:726
+#: glib/goption.c:835
 msgid "Show all help options"
 msgstr "نمایش همهٔ گزینه‌های راهنما"
 
-#: glib/goption.c:788
+#: glib/goption.c:897
 msgid "Application Options:"
 msgstr "گزینه‌های برنامه:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: glib/goption.c:959 glib/goption.c:1029
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "نمی‌توان مقدار صحیح «%s» برای %s را تجزیه کرد"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: glib/goption.c:969 glib/goption.c:1037
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "مقدار صحیح «%s» خارج از محدودهٔ %s است"
 
-#: glib/goption.c:885
+#: glib/goption.c:994
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "نمی‌توان مقدار صحیح با دقت مضاعف «%s» برای %s را تجزیه کرد"
 
-#: glib/goption.c:893
+#: glib/goption.c:1002
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "مقدار صحیح با دقت مضاعف «%s» خارج از محدودهٔ %s است"
 
-#: glib/goption.c:1156 glib/goption.c:1235
+#: glib/goption.c:1265 glib/goption.c:1344
 #, c-format
 msgid "Error parsing option %s"
 msgstr "خطا در تجزیهٔ گزینهٔ %s"
 
-#: glib/goption.c:1266 glib/goption.c:1380
+#: glib/goption.c:1375 glib/goption.c:1489
 #, c-format
 msgid "Missing argument for %s"
 msgstr "‏%s یک آرگومان کم دارد"
 
-#: glib/goption.c:1773
+#: glib/goption.c:1882
 #, c-format
 msgid "Unknown option %s"
 msgstr "گزینهٔ نامعلوم %s"
@@ -1144,8 +1117,8 @@ msgstr ""
 msgid "Stream is already closed"
 msgstr ""
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
-#: gio/gsimpleasyncresult.c:654
+#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
+#: gio/gsimpleasyncresult.c:665
 msgid "Operation was cancelled"
 msgstr ""
 
@@ -1288,7 +1261,7 @@ msgstr "پیوندهای نمادی پشتیبانی نمی‌شوند"
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr ""
 
@@ -1309,15 +1282,6 @@ msgstr ""
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr ""
-
-#: gio/gfileicon.c:145
-msgid "file"
-msgstr ""
-
-#: gio/gfileicon.c:146
-#, fuzzy
-msgid "The file containing the icon"
-msgstr "نام میزبان نشانی اینترنتی «‎%s» نامعتبر است"
 
 #: gio/gfileicon.c:237
 #, c-format
@@ -1731,53 +1695,9 @@ msgstr ""
 msgid "Source stream is already closed"
 msgstr ""
 
-#: gio/gthemedicon.c:211
-msgid "name"
-msgstr ""
-
-#: gio/gthemedicon.c:212
-#, fuzzy
-msgid "The name of the icon"
-msgstr "نام میزبان نشانی اینترنتی «‎%s» نامعتبر است"
-
-#: gio/gthemedicon.c:223
-msgid "names"
-msgstr ""
-
-#: gio/gthemedicon.c:224
-msgid "An array containing the icon names"
-msgstr ""
-
-#: gio/gthemedicon.c:249
-msgid "use default fallbacks"
-msgstr ""
-
-#: gio/gthemedicon.c:250
-msgid ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-msgstr ""
-
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr ""
-
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
-msgid "File descriptor"
-msgstr ""
-
-#: gio/gunixinputstream.c:162
-msgid "The file descriptor to read from"
-msgstr ""
-
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-#, fuzzy
-msgid "Close file descriptor"
-msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
-
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
-msgid "Whether to close the file descriptor when the stream is closed"
 msgstr ""
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
@@ -1796,16 +1716,12 @@ msgstr "خطا در سطر %Id:‏ %s"
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:148
-msgid "The file descriptor to write to"
-msgstr ""
-
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "خطا در تجزیهٔ گزینهٔ %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr ""
 
@@ -1843,6 +1759,46 @@ msgstr ""
 #, fuzzy
 msgid "[FILE...]"
 msgstr "[گزینه...]"
+
+#~ msgid ""
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
+#~ msgstr ""
+#~ "نویسهٔ «%s» در ابتدای نام نهادها مجاز نیست؛ نویسهٔ & نهاد را آغاز می‌کند؛ اگر "
+#~ "این علامت & قرار نیست نهاد شود، به‌جای آن از ‎&amp;‎ استفاده کنید"
+
+#~ msgid "Character '%s' is not valid inside an entity name"
+#~ msgstr "نویسهٔ «%s» داخل نام نهادها مجاز نیست"
+
+#~ msgid "Empty character reference; should include a digit such as &#454;"
+#~ msgstr "ارجاع نویسه‌ای خالی؛ باید یک رقم داشته باشد، مثل ‎&#454;‎"
+
+#~ msgid "Unfinished entity reference"
+#~ msgstr "ارجاع نهادی ناتمام"
+
+#~ msgid "Unfinished character reference"
+#~ msgstr "ارجاع نویسه‌ای ناتمام"
+
+#, fuzzy
+#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
+#~ msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
+
+#, fuzzy
+#~ msgid "Invalid UTF-8 encoded text - not a start char"
+#~ msgstr "متن کدگذاری‌شدهٔ UTF-8 نامعتبر"
+
+#, fuzzy
+#~ msgid "The file containing the icon"
+#~ msgstr "نام میزبان نشانی اینترنتی «‎%s» نامعتبر است"
+
+#, fuzzy
+#~ msgid "The name of the icon"
+#~ msgstr "نام میزبان نشانی اینترنتی «‎%s» نامعتبر است"
+
+#, fuzzy
+#~ msgid "Close file descriptor"
+#~ msgstr "خطا در خواندن پروندهٔ «‎%s»‏: %s"
 
 #, fuzzy
 #~ msgid "Error creating backup link: %s"

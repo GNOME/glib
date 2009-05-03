@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-03 17:49-0400\n"
 "PO-Revision-Date: 2009-02-27 17:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: maithili <maithili.sf.net>\n"
@@ -303,50 +303,32 @@ msgstr "फाइल '%s' खोलबामे असफल: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' फाइल चित्रित करबामे विफल: mmap() विफल: %s"
 
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr ""
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#, c-format
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:374
+#, c-format
+msgid "'%s' is not a valid name "
+msgstr ""
+
+#: glib/gmarkup.c:390
+#, c-format
+msgid "'%s' is not a valid name: '%c' "
+msgstr ""
+
+#: glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "पँक्ति %d पर त्रुटि: %s"
 
-#: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "रिक्त एंटिटी '&;' देखलक; वैध एंटिटी अछि: &amp; &quot; &lt; &gt; &apos;"
-
-#: glib/gmarkup.c:503
-#, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"एकटा एंटिटी क' प्रारंभमे अक्षर '%s' वैध नहि अछि आओर & अक्षर एकटा एंटिटीकेँ प्रारंभ करैत "
-"अछि. जँ ई एम्परसेंड एकटा एंटिटी नहि अछि तँ एकरा एहिना एस्केप करू &amp;"
-
-#: glib/gmarkup.c:537
-#, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "अक्षर '%s' एकटा एंटिटी नाम क' भीतर वैध नहि अछि"
-
-#: glib/gmarkup.c:574
-#, c-format
-msgid "Entity name '%s' is not known"
-msgstr "एंटिटी नाम '%s' ज्ञात नहि अछि"
-
-#: glib/gmarkup.c:585
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"एंटिटी अर्धविराम पर समाप्त नहि होइछ, बेसी संभव अछि जे अहाँ एम्परसेन्ड अक्षर क' प्रयोग "
-"कएनए छी आओर एकटा एंटिटी प्रारंभ नहि कएनाइ चाहैत छी- एम्परसेंड केँ एहिना एस्केप करू: &amp;"
-
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:578
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -355,16 +337,7 @@ msgstr ""
 "'%-.*s' क' विश्लेषण करबामे असफल, जे अक्षर संदर्भ क' भीतर एकटा अँक होनाइ चाही (उदाहरण "
 "क लेल, &#234) - साइत अँक बेसी पैघ अछि"
 
-#: glib/gmarkup.c:660
-#, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "संप्रतीक संदर्भ '%-.*s' एकटा अनुमति प्राप्त संप्रतीक केँ एनकोड नहि करैत अछि"
-
-#: glib/gmarkup.c:675
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "रिक्त अक्षर संदर्भ, अँक जहिना &#454 सम्मिलित अवश्य होएबाक चाही;"
-
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -374,52 +347,54 @@ msgstr ""
 "अक्षर क' उपयोग कएनए छी पर एकटा एंटिटी केँ प्रारंभ कएनाइ नहि चाहैत छी - एम्परसेंड केँ "
 "एस्केप करू एहिना &amp;"
 
-#: glib/gmarkup.c:771
-msgid "Unfinished entity reference"
-msgstr "अपूर्ण एंटिटी संदर्भ"
-
-#: glib/gmarkup.c:777
-msgid "Unfinished character reference"
-msgstr "अपूर्ण अक्षर संदर्भ"
-
-#: glib/gmarkup.c:1063
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr ""
-
-#: glib/gmarkup.c:1091
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr ""
-
-#: glib/gmarkup.c:1130
+#: glib/gmarkup.c:616
 #, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr ""
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "संप्रतीक संदर्भ '%-.*s' एकटा अनुमति प्राप्त संप्रतीक केँ एनकोड नहि करैत अछि"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:654
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "रिक्त एंटिटी '&;' देखलक; वैध एंटिटी अछि: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:662
+#, fuzzy, c-format
+msgid "Entity name '%-.*s' is not known"
+msgstr "एंटिटी नाम '%s' ज्ञात नहि अछि"
+
+#: glib/gmarkup.c:667
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"एंटिटी अर्धविराम पर समाप्त नहि होइछ, बेसी संभव अछि जे अहाँ एम्परसेन्ड अक्षर क' प्रयोग "
+"कएनए छी आओर एकटा एंटिटी प्रारंभ नहि कएनाइ चाहैत छी- एम्परसेंड केँ एहिना एस्केप करू: &amp;"
+
+#: glib/gmarkup.c:973
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "दस्ताबेज एकटा अवयव क' नामसँ प्रारंभ होनाइ चाही (उदाहरण क' लेल- <पुस्तक>)"
 
-#: glib/gmarkup.c:1208
+#: glib/gmarkup.c:1013
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "< क' पश्चात आबल '%s' एकटा वैध वर्ण नहि अछि. ई अवयव नामसँ प्रारंभ नहि होइछ"
 
-#: glib/gmarkup.c:1276
+#: glib/gmarkup.c:1081
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr ""
 
-#: glib/gmarkup.c:1365
+#: glib/gmarkup.c:1165
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "विषम अक्षर '%s', प्रत्याशित अछि एकटा '=' लक्षण नाम '%s' अवयव '%s' क' पश्चात"
 
-#: glib/gmarkup.c:1407
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -430,7 +405,7 @@ msgstr ""
 "प्रत्याशित, अथवा विकल्पतः एकटा गुण; साइत अहाँ गुण नाममे एकटा अमान्य संप्रतीक क' प्रयोग "
 "कएनए छी"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1283
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -439,7 +414,7 @@ msgstr ""
 "पुरान अक्षर '%s', जखन विशेषता '%s', अवयव '%s' क' मान देल जाइत अछि तँ बराबर चिह्नक "
 "बाद एकटा खुलल कोट चिह्न वांछित अछि"
 
-#: glib/gmarkup.c:1635
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -448,7 +423,7 @@ msgstr ""
 "'%s' एकटा वैध अक्षर नहि अछि अक्षर '</' क' बाद; '%s' एकटा अवयव नाम सँ प्रारंभ नहि "
 "होइछ"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -456,25 +431,25 @@ msgid ""
 msgstr ""
 "'%s' एकटा वैध अक्षर नहि अछि क्लोज़ अवयव नाम '%s' क' बाद; स्वीकार्य अक्षर अछि '>'"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1464
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "अवयव '%s' बन्द छला, कोनो अवयव वर्तमानमे खुलल नहि अछि"
 
-#: glib/gmarkup.c:1695
+#: glib/gmarkup.c:1473
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "दस्ताबेज '%s' बन्द छला, मुदा वर्तमान खुलल अवयव अछि '%s'"
 
-#: glib/gmarkup.c:1858
+#: glib/gmarkup.c:1640
 msgid "Document was empty or contained only whitespace"
 msgstr "दस्ताबेज खाली छला अथवा ओकरामे सिर्फ श्वेत रिक्ति छला"
 
-#: glib/gmarkup.c:1872
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूप सँ एकटा खुलल एंगल ब्रेकेट '<' क' पश्चाते भ' गेल"
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -483,7 +458,7 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूप सँ अवयवसभ क' खुलल हए पर भ' गेल - '%s' अंतिम खुलल अवयव "
 "छला"
 
-#: glib/gmarkup.c:1888
+#: glib/gmarkup.c:1670
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -492,19 +467,19 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूप सँ भ' गेल, वांछित छला देखनाइ टैगकेँ बन्द करैत एकटा क्लोज एंगल "
 "ब्रेकेट <%s/>"
 
-#: glib/gmarkup.c:1894
+#: glib/gmarkup.c:1676
 msgid "Document ended unexpectedly inside an element name"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव नाम क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1900
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूप सँ विशेषता नाम क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव-खोलबाक टैगक भीतर भ' गेल."
 
-#: glib/gmarkup.c:1911
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -512,16 +487,16 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूपसँ बराबर क' चिह्न क' बाद एकटा विशेषता नाम क' पश्चात भ' "
 "गेल; कोनो विशेषता मान नहि"
 
-#: glib/gmarkup.c:1918
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ विशेषता मान क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1934
+#: glib/gmarkup.c:1716
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव '%s' लेल बन्द टैग क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1940
+#: glib/gmarkup.c:1722
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ टिप्पणी अथवा प्रक्रिया निर्देश क' भीतर भ' गेल"
 
@@ -957,61 +932,61 @@ msgstr "परिवर्तन इनपुटमे अवैध अनुक
 msgid "Character out of range for UTF-16"
 msgstr "यूटीएफ-16 लेल अक्षर सीमासँ बाहर"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "[OPTION...]"
 msgstr "[विकल्प...]"
 
-#: glib/goption.c:719
+#: glib/goption.c:828
 msgid "Help Options:"
 msgstr "मद्दति विकल्प:"
 
-#: glib/goption.c:720
+#: glib/goption.c:829
 msgid "Show help options"
 msgstr "मद्दति विकल्प देखाबू"
 
-#: glib/goption.c:726
+#: glib/goption.c:835
 msgid "Show all help options"
 msgstr "सभटा मद्दति विकल्प देखाबू"
 
-#: glib/goption.c:788
+#: glib/goption.c:897
 msgid "Application Options:"
 msgstr "अनुप्रयोग विकल्प:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: glib/goption.c:959 glib/goption.c:1029
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "पूर्णांक मान '%s' केँ %s क' लेल विश्लेषण नहि कए सकैत अछि"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: glib/goption.c:969 glib/goption.c:1037
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "पूर्णांक मान '%s' %s क' लेल रेंज क' बाहर अछि"
 
-#: glib/goption.c:885
+#: glib/goption.c:994
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' दोहराएल मान क' विश्लेषण %s क' लेल नहि कए सकैत अछि"
 
-#: glib/goption.c:893
+#: glib/goption.c:1002
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' दोहराएल मान %s क' लेल परिसरसँ बाहर अछि"
 
-#: glib/goption.c:1156 glib/goption.c:1235
+#: glib/goption.c:1265 glib/goption.c:1344
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s विकल्प विश्लेषणमे त्रुटि"
 
-#: glib/goption.c:1266 glib/goption.c:1380
+#: glib/goption.c:1375 glib/goption.c:1489
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s क' लेल गुम तर्क"
 
-#: glib/goption.c:1773
+#: glib/goption.c:1882
 #, c-format
 msgid "Unknown option %s"
 msgstr "अनजान विकल्प %s"
@@ -1130,8 +1105,8 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "स्ट्रीन पहिनेसँ बन्न अछि"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
-#: gio/gsimpleasyncresult.c:654
+#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
+#: gio/gsimpleasyncresult.c:665
 msgid "Operation was cancelled"
 msgstr "ऑपरेशन रद्द छल"
 
@@ -1271,7 +1246,7 @@ msgstr ""
 msgid "File names cannot contain '%c'"
 msgstr "फाइल नाम मे '%c' नहि रहि सकैत अछि"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "आवाज माउंटकेँ लागू नहि करैत अछि"
 
@@ -1291,14 +1266,6 @@ msgstr "File enumerator has outstanding operation"
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr ""
-
-#: gio/gfileicon.c:145
-msgid "file"
-msgstr "फाइल"
-
-#: gio/gfileicon.c:146
-msgid "The file containing the icon"
-msgstr "फाइल जे प्रतीक राखने अछि"
 
 #: gio/gfileicon.c:237
 #, c-format
@@ -1708,54 +1675,10 @@ msgstr "आउटपुट स्ट्रीम लेखन केँ ला�
 msgid "Source stream is already closed"
 msgstr "स्रोत स्ट्रीम पहिनेसँ बन्न अछि"
 
-#: gio/gthemedicon.c:211
-msgid "name"
-msgstr "नाम"
-
-#: gio/gthemedicon.c:212
-msgid "The name of the icon"
-msgstr "प्रतीक कए नाम"
-
-#: gio/gthemedicon.c:223
-msgid "names"
-msgstr "नाम"
-
-#: gio/gthemedicon.c:224
-msgid "An array containing the icon names"
-msgstr "प्रतीक नामक संग सरणी"
-
-#: gio/gthemedicon.c:249
-msgid "use default fallbacks"
-msgstr "पूर्वनिर्धारित फालबैक प्रयोग करू"
-
-#: gio/gthemedicon.c:250
-msgid ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-msgstr ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "%d संस्करण GThemedIcon एन्कोडिंगकेँ नियंत्रित नहि कए सकल"
-
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
-msgid "File descriptor"
-msgstr "फाइल विवरक"
-
-#: gio/gunixinputstream.c:162
-msgid "The file descriptor to read from"
-msgstr "फाइल विवरक जकरासँ पढ़नाइ अछि"
-
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-msgid "Close file descriptor"
-msgstr "फाइल विवरक बन्न करू"
-
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
-msgid "Whether to close the file descriptor when the stream is closed"
-msgstr "फाइल विवरक केँ बन्न कएनाइ अछि जखन स्ट्रीम बन्न अछि"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1773,16 +1696,12 @@ msgstr "unix केँ बन्न करबामे त्रुटि: %s"
 msgid "Filesystem root"
 msgstr "फाइल सिस्टम रूट"
 
-#: gio/gunixoutputstream.c:148
-msgid "The file descriptor to write to"
-msgstr "फाइल विवरक जकरामे लिखनाइ अछि"
-
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "unix मे लिखबामे त्रुटि: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "आवाज बाहर निकालबकेँ लागू नहि करैछ"
 
@@ -1818,3 +1737,66 @@ msgstr "नमहर सूची प्रारूपक प्रयोग �
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[फाइल...]"
+
+#~ msgid ""
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
+#~ msgstr ""
+#~ "एकटा एंटिटी क' प्रारंभमे अक्षर '%s' वैध नहि अछि आओर & अक्षर एकटा एंटिटीकेँ प्रारंभ "
+#~ "करैत अछि. जँ ई एम्परसेंड एकटा एंटिटी नहि अछि तँ एकरा एहिना एस्केप करू &amp;"
+
+#~ msgid "Character '%s' is not valid inside an entity name"
+#~ msgstr "अक्षर '%s' एकटा एंटिटी नाम क' भीतर वैध नहि अछि"
+
+#~ msgid "Empty character reference; should include a digit such as &#454;"
+#~ msgstr "रिक्त अक्षर संदर्भ, अँक जहिना &#454 सम्मिलित अवश्य होएबाक चाही;"
+
+#~ msgid "Unfinished entity reference"
+#~ msgstr "अपूर्ण एंटिटी संदर्भ"
+
+#~ msgid "Unfinished character reference"
+#~ msgstr "अपूर्ण अक्षर संदर्भ"
+
+#~ msgid "file"
+#~ msgstr "फाइल"
+
+#~ msgid "The file containing the icon"
+#~ msgstr "फाइल जे प्रतीक राखने अछि"
+
+#~ msgid "name"
+#~ msgstr "नाम"
+
+#~ msgid "The name of the icon"
+#~ msgstr "प्रतीक कए नाम"
+
+#~ msgid "names"
+#~ msgstr "नाम"
+
+#~ msgid "An array containing the icon names"
+#~ msgstr "प्रतीक नामक संग सरणी"
+
+#~ msgid "use default fallbacks"
+#~ msgstr "पूर्वनिर्धारित फालबैक प्रयोग करू"
+
+#~ msgid ""
+#~ "Whether to use default fallbacks found by shortening the name at '-' "
+#~ "characters. Ignores names after the first if multiple names are given."
+#~ msgstr ""
+#~ "Whether to use default fallbacks found by shortening the name at '-' "
+#~ "characters. Ignores names after the first if multiple names are given."
+
+#~ msgid "File descriptor"
+#~ msgstr "फाइल विवरक"
+
+#~ msgid "The file descriptor to read from"
+#~ msgstr "फाइल विवरक जकरासँ पढ़नाइ अछि"
+
+#~ msgid "Close file descriptor"
+#~ msgstr "फाइल विवरक बन्न करू"
+
+#~ msgid "Whether to close the file descriptor when the stream is closed"
+#~ msgstr "फाइल विवरक केँ बन्न कएनाइ अछि जखन स्ट्रीम बन्न अछि"
+
+#~ msgid "The file descriptor to write to"
+#~ msgstr "फाइल विवरक जकरामे लिखनाइ अछि"

@@ -97,7 +97,7 @@ g_srv_target_get_type (void)
  * Return value: a new #GSrvTarget.
  *
  * Since: 2.22
- **/
+ */
 GSrvTarget *
 g_srv_target_new (const gchar *hostname,
                   guint16      port,
@@ -123,7 +123,7 @@ g_srv_target_new (const gchar *hostname,
  * Return value: a copy of @target
  *
  * Since: 2.22
- **/
+ */
 GSrvTarget *
 g_srv_target_copy (GSrvTarget *target)
 {
@@ -138,7 +138,7 @@ g_srv_target_copy (GSrvTarget *target)
  * Frees @target
  *
  * Since: 2.22
- **/
+ */
 void
 g_srv_target_free (GSrvTarget *target)
 {
@@ -158,7 +158,7 @@ g_srv_target_free (GSrvTarget *target)
  * Return value: @target's hostname
  *
  * Since: 2.22
- **/
+ */
 const gchar *
 g_srv_target_get_hostname (GSrvTarget *target)
 {
@@ -174,7 +174,7 @@ g_srv_target_get_hostname (GSrvTarget *target)
  * Return value: @target's port
  *
  * Since: 2.22
- **/
+ */
 guint16
 g_srv_target_get_port (GSrvTarget *target)
 {
@@ -192,7 +192,7 @@ g_srv_target_get_port (GSrvTarget *target)
  * Return value: @target's priority
  *
  * Since: 2.22
- **/
+ */
 guint16
 g_srv_target_get_priority (GSrvTarget *target)
 {
@@ -210,7 +210,7 @@ g_srv_target_get_priority (GSrvTarget *target)
  * Return value: @target's weight
  *
  * Since: 2.22
- **/
+ */
 guint16
 g_srv_target_get_weight (GSrvTarget *target)
 {
@@ -249,7 +249,7 @@ compare_target (gconstpointer a, gconstpointer b)
  * Return value: the head of the sorted list.
  *
  * Since: 2.22
- **/ 
+ */ 
 GList *
 g_srv_target_list_sort (GList *targets)
 {
