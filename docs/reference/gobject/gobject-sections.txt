@@ -341,6 +341,9 @@ G_TYPE_DATE
 G_TYPE_GSTRING
 G_TYPE_STRV
 G_TYPE_REGEX
+G_TYPE_ARRAY
+G_TYPE_BYTE_ARRAY
+G_TYPE_PTR_ARRAY
 GStrv
 
 <SUBSECTION Standard>
@@ -352,6 +355,9 @@ g_strv_get_type
 g_date_get_type
 g_hash_table_get_type
 g_regex_get_type
+g_array_get_type
+g_byte_array_get_type
+g_ptr_array_get_type
 </SECTION>
 
 <SECTION>
