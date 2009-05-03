@@ -78,7 +78,7 @@ void          g_cancellable_push_current           (GCancellable  *cancellable);
 void          g_cancellable_pop_current            (GCancellable  *cancellable);
 void          g_cancellable_reset                  (GCancellable  *cancellable);
 gulong        g_cancellable_connect                (GCancellable  *cancellable,
-						    GCallback      c_handler,
+						    GCallback      callback,
 						    gpointer       data,
 						    GDestroyNotify data_destroy_func);
 void          g_cancellable_disconnect             (GCancellable  *cancellable,
