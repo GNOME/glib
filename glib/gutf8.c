@@ -1357,14 +1357,14 @@ g_utf16_to_ucs4 (const gunichar2  *str,
 /**
  * g_utf8_to_utf16:
  * @str: a UTF-8 encoded string
- * @len: the maximum length (number of characters) of @str to use. 
+ * @len: the maximum length (number of bytes) of @str to use.
  *       If @len < 0, then the string is nul-terminated.
  * @items_read: location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of <type>gunichar2</type> written, 
+ * @items_written: location to store number of <type>gunichar2</type> written,
  *                 or %NULL.
  *                 The value stored here does not include the trailing 0.
  * @error: location to store the error occuring, or %NULL to ignore
@@ -1373,7 +1373,7 @@ g_utf16_to_ucs4 (const gunichar2  *str,
  *
  * Convert a string from UTF-8 to UTF-16. A 0 character will be
  * added to the result after the converted text.
- * 
+ *
  * Return value: a pointer to a newly allocated UTF-16 string.
  *               This value must be freed with g_free(). If an
  *               error occurs, %NULL will be returned and
@@ -1381,9 +1381,9 @@ g_utf16_to_ucs4 (const gunichar2  *str,
  **/
 gunichar2 *
 g_utf8_to_utf16 (const gchar *str,
-		 glong        len,              
-		 glong       *items_read,       
-		 glong       *items_written,    
+		 glong        len,
+		 glong       *items_read,
+		 glong       *items_written,
 		 GError     **error)
 {
   gunichar2 *result = NULL;
