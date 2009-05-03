@@ -483,7 +483,7 @@ g_cancellable_cancel (GCancellable *cancellable)
   gboolean cancel;
 
   cancel = FALSE;
-  
+
   G_LOCK(cancellable);
   if (cancellable != NULL &&
       !cancellable->cancelled)
@@ -503,14 +503,14 @@ g_cancellable_cancel (GCancellable *cancellable)
       g_signal_emit (cancellable, signals[CANCELLED], 0);
 
       G_LOCK(cancellable);
-      
+
       cancellable->cancelled_running = FALSE;
       if (cancellable->cancelled_running_waiting)
 	g_cond_broadcast (cancellable_cond);
       cancellable->cancelled_running_waiting = FALSE;
-      
+
       G_UNLOCK(cancellable);
-      
+
       g_object_unref (cancellable);
     }
 }
@@ -524,8 +524,8 @@ g_cancellable_cancel (GCancellable *cancellable)
  *
  * Convenience function to connect to the #GCancellable::cancelled
  * signal. Also handles the race condition that may happen
- * if the cancellable is cancelled right before connecting. 
- * 
+ * if the cancellable is cancelled right before connecting.
+ *
  * @callback is called at most once, either directly at the
  * time of the connect if @cancellable is already cancelled,
  * or when @cancellable is cancelled in some thread.
@@ -535,11 +535,11 @@ g_cancellable_cancel (GCancellable *cancellable)
  * cancelled.
  *
  * See #GCancellable::cancelled for details on how to use this.
- * 
+ *
  * Returns: The id of the signal handler or 0 if @cancellable has already
  *          been cancelled.
  *
- * Since: 2.20
+ * Since: 2.22
  */
 gulong
 g_cancellable_connect (GCancellable   *cancellable,
@@ -550,30 +550,30 @@ g_cancellable_connect (GCancellable   *cancellable,
   gulong id;
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
-  
-  G_LOCK(cancellable);
-  
+
+  G_LOCK (cancellable);
+
   if (cancellable->cancelled)
     {
       void (*_callback) (GCancellable *cancellable,
-			 gpointer      user_data);
-      
+                         gpointer      user_data);
+
       _callback = (void *)callback;
       id = 0;
-      
+
       _callback (cancellable, data);
-      
+
       if (data_destroy_func)
-	data_destroy_func (data);
+        data_destroy_func (data);
     }
   else
     {
       id = g_signal_connect_data (cancellable, "cancelled",
-				  callback, data,
-				  (GClosureNotify) data_destroy_func,
-				  0);
+                                  callback, data,
+                                  (GClosureNotify) data_destroy_func,
+                                  0);
     }
-  G_UNLOCK(cancellable);
+  G_UNLOCK (cancellable);
 
   return id;
 }
@@ -585,17 +585,17 @@ g_cancellable_connect (GCancellable   *cancellable,
  *
  * Disconnects a handler from an cancellable instance similar to
  * g_signal_handler_disconnect() but ensures that once this
- * function returns the handler will not run anymore in any thread. 
+ * function returns the handler will not run anymore in any thread.
  *
  * This avoids a race condition where a thread cancels at the
- * same time as the cancellable operation is finished and the 
+ * same time as the cancellable operation is finished and the
  * signal handler is removed. See #GCancellable::cancelled for
  * details on how to use this.
  *
  * If @cancellable is %NULL or @handler_id is %0 this function does
  * nothing.
- * 
- * Since: 2.20
+ *
+ * Since: 2.22
  */
 void
 g_cancellable_disconnect (GCancellable  *cancellable,
@@ -604,16 +604,16 @@ g_cancellable_disconnect (GCancellable  *cancellable,
   if (handler_id == 0 ||  cancellable == NULL)
     return;
 
-  G_LOCK(cancellable);
+  G_LOCK (cancellable);
   while (cancellable->cancelled_running)
     {
-      cancellable->cancelled_running_waiting = TRUE; 
+      cancellable->cancelled_running_waiting = TRUE;
       g_cond_wait (cancellable_cond,
-		   g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
+                   g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
     }
-  
+
   g_signal_handler_disconnect (cancellable, handler_id);
-  G_UNLOCK(cancellable);
+  G_UNLOCK (cancellable);
 }
 
 #define __G_CANCELLABLE_C__

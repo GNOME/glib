@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2008 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -44,10 +44,8 @@ static void
 g_threaded_resolver_init (GThreadedResolver *gtr)
 {
   if (g_thread_supported ())
-    {
-      gtr->thread_pool = g_thread_pool_new (threaded_resolver_thread, gtr,
-					    -1, FALSE, NULL);
-    }
+    gtr->thread_pool = g_thread_pool_new (threaded_resolver_thread, gtr,
+                                          -1, FALSE, NULL);
 }
 
 static void
@@ -311,7 +309,7 @@ threaded_resolver_thread (gpointer thread_data,
   req->resolve_func (req, &req->error);
   g_threaded_resolver_request_complete (req, FALSE);
   g_threaded_resolver_request_unref (req);
-}  
+}
 
 static void
 resolve_sync (GThreadedResolver         *gtr,

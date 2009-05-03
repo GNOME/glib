@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-03 17:49-0400\n"
 "PO-Revision-Date: 2009-03-18 11:59+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
@@ -299,51 +299,32 @@ msgstr "'%s' নথিপত্ৰ খোলোঁতে বিফল: open() �
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' নথিপত্ৰ map কৰোঁতে বিফল: mmap() বিফল: %s"
 
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "%d শাৰীৰ %d আখৰত ভুল:"
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - অৱৈধ '%s'"
+
+#: glib/gmarkup.c:374
+#, c-format
+msgid "'%s' is not a valid name "
+msgstr ""
+
+#: glib/gmarkup.c:390
+#, c-format
+msgid "'%s' is not a valid name: '%c' "
+msgstr ""
+
+#: glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d শাৰীত ভুল: %s"
 
-#: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
-
-#: glib/gmarkup.c:503
-#, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"'%s' আখৰ পদাৰ্থৰ নামৰ আৰম্ভনিৰ বাবে বৈধ নহয়; & আখৰে এটা পদাৰ্থ আৰম্ভ কৰে; যদি এই "
-"এম্পাৰছেন্দ এটা পদাৰ্থ ন'হ'বলাগে, তাক &amp; হিচাপে নিৰ্গমন কৰক"
-
-#: glib/gmarkup.c:537
-#, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "'%s' আখৰ পদাৰ্থৰ নামৰ ভিতৰত বৈধ নহয়"
-
-#: glib/gmarkup.c:574
-#, c-format
-msgid "Entity name '%s' is not known"
-msgstr "পদাৰ্থৰ নাম '%s' অজ্ঞাত"
-
-#: glib/gmarkup.c:585
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"পদাৰ্থ এটা ছেমিকলনেৰে অন্ত ন'হ'ল; পদাৰ্থ এটা আৰম্ভ কৰিব নিবিচাৰিও অতি সম্ভৱ আপুনি "
-"এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে নিৰ্গমন কৰক"
-
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:578
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -352,17 +333,7 @@ msgstr ""
 "'%-.*s' বিশ্লেষণ কৰোঁতে ভুল, যি কোনো আখৰৰ উল্লেখৰ ভিতৰৰ এটা সংখ্যা হ'ব লাগিছিল "
 "(&#২৩৪; যেনে) - হয়তো সংখ্যাটো বৰ ডাঙৰ"
 
-#: glib/gmarkup.c:660
-#, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
-"আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
-
-#: glib/gmarkup.c:675
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "ৰিক্ত আখৰৰ সঙ্কেত; এটা সংখ্যা থাকিব লাগে যেনে &#৪৫৪;"
-
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -371,32 +342,36 @@ msgstr ""
 "আখৰৰ উল্লেখ এটা ছেমিকলনেৰে অন্ত ন'হ'ল; পদাৰ্থ এটা আৰম্ভ কৰিব নিবিচাৰিও অতি সম্ভৱ "
 "আপুনি এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে নিৰ্গমন কৰক"
 
-#: glib/gmarkup.c:771
-msgid "Unfinished entity reference"
-msgstr "অসম্পূৰ্ণ পদাৰ্থৰ উল্লেখ"
-
-#: glib/gmarkup.c:777
-msgid "Unfinished character reference"
-msgstr "অসম্পূৰ্ণ আখৰৰ উল্লেখ"
-
-#: glib/gmarkup.c:1063
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - overlong ক্ৰম"
-
-#: glib/gmarkup.c:1091
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - এটা আৰম্ভৰ আখৰ নহয়"
-
-#: glib/gmarkup.c:1130
+#: glib/gmarkup.c:616
 #, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - অৱৈধ '%s'"
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr ""
+"আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:654
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:662
+#, fuzzy, c-format
+msgid "Entity name '%-.*s' is not known"
+msgstr "পদাৰ্থৰ নাম '%s' অজ্ঞাত"
+
+#: glib/gmarkup.c:667
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"পদাৰ্থ এটা ছেমিকলনেৰে অন্ত ন'হ'ল; পদাৰ্থ এটা আৰম্ভ কৰিব নিবিচাৰিও অতি সম্ভৱ আপুনি "
+"এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে নিৰ্গমন কৰক"
+
+#: glib/gmarkup.c:973
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "প্ৰলেক্ষ এটা পদাৰ্থৰ সৈতে আৰম্ভ হ'ব লাগিব (যেনে <book>)"
 
-#: glib/gmarkup.c:1208
+#: glib/gmarkup.c:1013
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -404,14 +379,14 @@ msgid ""
 msgstr ""
 "'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ ন'হ'বও পাৰে"
 
-#: glib/gmarkup.c:1276
+#: glib/gmarkup.c:1081
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr "ভুল আখৰ '%s', এটা '>' আখৰ প্ৰত্যাশিত ৰিক্ত পদাৰ্থৰ টেগ '%s' শেষ কৰিবলৈ"
 
-#: glib/gmarkup.c:1365
+#: glib/gmarkup.c:1165
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -419,7 +394,7 @@ msgstr ""
 "'%s' অক্ষৰ প্ৰত্যাশিত নহয়, এটা '=' চিহ্ন প্ৰত্যাশিত গুণৰ নাম '%s', পদাৰ্থ '%s' ৰ, "
 "পিছত"
 
-#: glib/gmarkup.c:1407
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -430,7 +405,7 @@ msgstr ""
 "'/' চিহ্ন বা কোনো বৈশিষ্ট্যৰ উপস্থিতি কাম্য; সম্ভৱতঃ কোনো বৈশিষ্ট্যৰ নামত অৱৈধ অক্ষৰ "
 "ব্যৱহৃত হৈছে"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1283
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -439,7 +414,7 @@ msgstr ""
 "'%s' অক্ষৰ অপ্ৰত্যাশিত, '%s' গুণৰ, পদাৰ্থ '%s' ৰ, মান নিৰ্ধাৰণৰ উদ্দেশ্যে সমান চিহ্নৰ "
 "পিছত এটা উদ্ধৃতি চিহ্নৰ প্ৰাৰম্ভিক অংশ উপস্থিতি প্ৰত্যাশিত"
 
-#: glib/gmarkup.c:1635
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -448,7 +423,7 @@ msgstr ""
 "'%s' অক্ষৰৰ ব্যৱহাৰ '</' ৰ পিছত বৈধ নহয়; '%s' দ্বাৰা কোনো পদাৰ্থৰ নাম আৰম্ভ কৰা "
 "নাযাব"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -456,25 +431,25 @@ msgid ""
 msgstr ""
 "'%s' অক্ষৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত অক্ষৰ হ'ল '>'"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1464
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' পদাৰ্থ বদ্ধ অৱস্থাত, বৰ্তমানে কোনো পদাৰ্থ খোলা অৱস্থাত নাই"
 
-#: glib/gmarkup.c:1695
+#: glib/gmarkup.c:1473
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' পদাৰ্থ বদ্ধ অৱস্থাত, বৰ্তমানে '%s' পদাৰ্থ খোলা অৱস্থাত আছে"
 
-#: glib/gmarkup.c:1858
+#: glib/gmarkup.c:1640
 msgid "Document was empty or contained only whitespace"
 msgstr "প্ৰলেক্ষ ৰিক্ত বা অকল ৰিক্ত স্থান আছিলে"
 
-#: glib/gmarkup.c:1872
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "খোলা বন্ধনীৰ প্ৰাৰম্ভিক চিহ্নৰ '<' ঠিক পিছত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -482,7 +457,7 @@ msgid ""
 msgstr ""
 "খোলা পদাৰ্থসহ আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে - '%s' পদাৰ্থ সৰ্বশেষ খোলা হৈছিল"
 
-#: glib/gmarkup.c:1888
+#: glib/gmarkup.c:1670
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -491,19 +466,19 @@ msgstr ""
 "নথি অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে, <%s/> টেগ সমাপ্তিৰ বাবে খোলা বন্ধনী চিহ্নৰ অন্তিম "
 "অংশৰ উপস্থিতি প্ৰত্যাশিত"
 
-#: glib/gmarkup.c:1894
+#: glib/gmarkup.c:1676
 msgid "Document ended unexpectedly inside an element name"
 msgstr "পদাৰ্থৰ নামত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1900
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "বৈশিষ্ট্যৰ নামত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "পদাৰ্থৰ প্ৰাৰম্ভিক টেগত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1911
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -511,16 +486,16 @@ msgstr ""
 "বৈশিষ্ট্যৰ নামৰ পিছত উপস্থিত সমান চিহ্নৰ পিছত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে; "
 "বৈশিষ্ট্যৰ মান অনুপস্থিত"
 
-#: glib/gmarkup.c:1918
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "বৈশিষ্ট্যৰ মানত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1934
+#: glib/gmarkup.c:1716
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' পদাৰ্থৰ অন্তিম টেগত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: glib/gmarkup.c:1940
+#: glib/gmarkup.c:1722
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "কোনো মন্তব্য বা প্ৰক্ৰিয়াকৰণৰ নিৰ্দেশত আলেখ্যন অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
@@ -957,61 +932,61 @@ msgstr "ৰূপান্তৰ কৰাৰ উদ্দেশ্যে প্
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষৰ UTF-16 ৰ আয়ত্বৰ বাহিৰত"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "Usage:"
 msgstr "ব্যৱহাৰপ্ৰণালী:"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:719
+#: glib/goption.c:828
 msgid "Help Options:"
 msgstr "সহায়তা সংক্ৰান্ত বিকল্প:"
 
-#: glib/goption.c:720
+#: glib/goption.c:829
 msgid "Show help options"
 msgstr "সহায়তা সংক্ৰান্ত বিকল্প প্ৰদৰ্শন কৰা হ'ব"
 
-#: glib/goption.c:726
+#: glib/goption.c:835
 msgid "Show all help options"
 msgstr "সহায়তা সংক্ৰান্ত সমস্ত বিকল্প প্ৰদৰ্শন কৰা হ'ব"
 
-#: glib/goption.c:788
+#: glib/goption.c:897
 msgid "Application Options:"
 msgstr "অনুপ্ৰয়োগ সংক্ৰান্ত বিকল্প:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: glib/goption.c:959 glib/goption.c:1029
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' পূৰ্ণসংখ্যাৰ মান %s ৰ বাবে বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: glib/goption.c:969 glib/goption.c:1037
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' পূৰ্ণসংখ্যাৰ মান %s ৰ বাবে সীমাৰ বহিৰ্ভূত"
 
-#: glib/goption.c:885
+#: glib/goption.c:994
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' ৰ দ্বীগুণ মান %s ৰ বাবে বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: glib/goption.c:893
+#: glib/goption.c:1002
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' ৰ দ্বীগুণ মান %s ৰ বাবে সীমা বহিৰ্ভূত"
 
-#: glib/goption.c:1156 glib/goption.c:1235
+#: glib/goption.c:1265 glib/goption.c:1344
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s বিকল্প বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: glib/goption.c:1266 glib/goption.c:1380
+#: glib/goption.c:1375 glib/goption.c:1489
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ৰ তৰ্ক অনুপস্থিত"
 
-#: glib/goption.c:1773
+#: glib/goption.c:1882
 #, c-format
 msgid "Unknown option %s"
 msgstr "অজ্ঞাত বিকল্প %s"
@@ -1128,8 +1103,8 @@ msgstr "%s লৈ বহুত ডাঙৰ count মান দিয়া হৈ�
 msgid "Stream is already closed"
 msgstr "স্ৰোত ইতিমধ্যে বন্ধ"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
-#: gio/gsimpleasyncresult.c:654
+#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
+#: gio/gsimpleasyncresult.c:665
 msgid "Operation was cancelled"
 msgstr "কৰ্ম বাতিল কৰা হৈছে"
 
@@ -1269,7 +1244,7 @@ msgstr "আবৰ্জনা সমৰ্থিত নহয়"
 msgid "File names cannot contain '%c'"
 msgstr "নথিপত্ৰৰ নামত '%c' ব্যৱহাৰ কৰা নাযাব"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
@@ -1289,14 +1264,6 @@ msgstr "নথিপত্ৰ enumerator-ত অসমাপ্ত কৰ্ম 
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr "নথিপত্ৰ enumerator ৰ বন্ধ"
-
-#: gio/gfileicon.c:145
-msgid "file"
-msgstr "নথিপত্ৰ"
-
-#: gio/gfileicon.c:146
-msgid "The file containing the icon"
-msgstr "আইকন ধাৰণকাৰী নথিপত্ৰ"
 
 #: gio/gfileicon.c:237
 #, c-format
@@ -1707,54 +1674,10 @@ msgstr "নিৰ্গমৰ স্ৰোতে লিখা কাৰ্য �
 msgid "Source stream is already closed"
 msgstr "উৎসৰ স্ৰোত ইতিমধ্যে বন্ধ"
 
-#: gio/gthemedicon.c:211
-msgid "name"
-msgstr "নাম"
-
-#: gio/gthemedicon.c:212
-msgid "The name of the icon"
-msgstr "আইকনৰ নাম"
-
-#: gio/gthemedicon.c:223
-msgid "names"
-msgstr "নাম"
-
-#: gio/gthemedicon.c:224
-msgid "An array containing the icon names"
-msgstr "আইকনৰ নাম ধাৰণকাৰী এটা শাৰী"
-
-#: gio/gthemedicon.c:249
-msgid "use default fallbacks"
-msgstr "অবিকল্পিত fallbacks ব্যৱহাৰ কৰক"
-
-#: gio/gthemedicon.c:250
-msgid ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-msgstr ""
-"'-' আখৰত নাম সৰু কৰি পোৱা অবিকল্পিত fallbacks ব্যৱহাৰ কৰা হ'ব নে নহয় । বহুত নাম "
-"দিলে প্ৰথম নামৰ পিছৰ নাম আওকাণ কৰা হয় ।"
-
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon encoding ৰ %d সংস্কৰণ পৰিচালন কৰিব নোৱাৰি"
-
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
-msgid "File descriptor"
-msgstr "নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ"
-
-#: gio/gunixinputstream.c:162
-msgid "The file descriptor to read from"
-msgstr "পঢ়িব লগা নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ"
-
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-msgid "Close file descriptor"
-msgstr "নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ নিৰ্ব্বাচন কৰক"
-
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
-msgid "Whether to close the file descriptor when the stream is closed"
-msgstr "স্ৰোত বন্ধ কৰিলে নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ বন্ধ কৰা হ'ব নে নহয়"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1772,16 +1695,12 @@ msgstr "unix বন্ধ কৰিবলৈ সমস্যা: %s"
 msgid "Filesystem root"
 msgstr "নথিপত্ৰপ্ৰণালীৰ root"
 
-#: gio/gunixoutputstream.c:148
-msgid "The file descriptor to write to"
-msgstr "নথিপত্ৰ দেস্ক্ৰিপ্টৰ য'ত লিখিব লাগে"
-
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "unix লৈ লিখিবলৈ সমস্যা: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "ভলিউম দ্বাৰা ইজেক্ট প্ৰয়োগ কৰা নহয়"
 
@@ -1817,3 +1736,72 @@ msgstr "দীঘল তালিকাৰ আকৃতি ব্যৱহাৰ
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
+#~ msgid ""
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
+#~ msgstr ""
+#~ "'%s' আখৰ পদাৰ্থৰ নামৰ আৰম্ভনিৰ বাবে বৈধ নহয়; & আখৰে এটা পদাৰ্থ আৰম্ভ কৰে; যদি "
+#~ "এই এম্পাৰছেন্দ এটা পদাৰ্থ ন'হ'বলাগে, তাক &amp; হিচাপে নিৰ্গমন কৰক"
+
+#~ msgid "Character '%s' is not valid inside an entity name"
+#~ msgstr "'%s' আখৰ পদাৰ্থৰ নামৰ ভিতৰত বৈধ নহয়"
+
+#~ msgid "Empty character reference; should include a digit such as &#454;"
+#~ msgstr "ৰিক্ত আখৰৰ সঙ্কেত; এটা সংখ্যা থাকিব লাগে যেনে &#৪৫৪;"
+
+#~ msgid "Unfinished entity reference"
+#~ msgstr "অসম্পূৰ্ণ পদাৰ্থৰ উল্লেখ"
+
+#~ msgid "Unfinished character reference"
+#~ msgstr "অসম্পূৰ্ণ আখৰৰ উল্লেখ"
+
+#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
+#~ msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - overlong ক্ৰম"
+
+#~ msgid "Invalid UTF-8 encoded text - not a start char"
+#~ msgstr "অৱৈধ UTF-8 সাঙ্কেতিক লিপি - এটা আৰম্ভৰ আখৰ নহয়"
+
+#~ msgid "file"
+#~ msgstr "নথিপত্ৰ"
+
+#~ msgid "The file containing the icon"
+#~ msgstr "আইকন ধাৰণকাৰী নথিপত্ৰ"
+
+#~ msgid "name"
+#~ msgstr "নাম"
+
+#~ msgid "The name of the icon"
+#~ msgstr "আইকনৰ নাম"
+
+#~ msgid "names"
+#~ msgstr "নাম"
+
+#~ msgid "An array containing the icon names"
+#~ msgstr "আইকনৰ নাম ধাৰণকাৰী এটা শাৰী"
+
+#~ msgid "use default fallbacks"
+#~ msgstr "অবিকল্পিত fallbacks ব্যৱহাৰ কৰক"
+
+#~ msgid ""
+#~ "Whether to use default fallbacks found by shortening the name at '-' "
+#~ "characters. Ignores names after the first if multiple names are given."
+#~ msgstr ""
+#~ "'-' আখৰত নাম সৰু কৰি পোৱা অবিকল্পিত fallbacks ব্যৱহাৰ কৰা হ'ব নে নহয় । বহুত "
+#~ "নাম দিলে প্ৰথম নামৰ পিছৰ নাম আওকাণ কৰা হয় ।"
+
+#~ msgid "File descriptor"
+#~ msgstr "নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ"
+
+#~ msgid "The file descriptor to read from"
+#~ msgstr "পঢ়িব লগা নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ"
+
+#~ msgid "Close file descriptor"
+#~ msgstr "নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ নিৰ্ব্বাচন কৰক"
+
+#~ msgid "Whether to close the file descriptor when the stream is closed"
+#~ msgstr "স্ৰোত বন্ধ কৰিলে নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ বন্ধ কৰা হ'ব নে নহয়"
+
+#~ msgid "The file descriptor to write to"
+#~ msgstr "নথিপত্ৰ দেস্ক্ৰিপ্টৰ য'ত লিখিব লাগে"

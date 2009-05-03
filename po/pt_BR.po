@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-03 17:49-0400\n"
 "PO-Revision-Date: 2009-03-16 17:14-0300\n"
 "Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -308,53 +308,32 @@ msgstr "Falha ao abrir arquivo \"%s\": open() falhou: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Falha ao mapear arquivo \"%s\": mmap() falhou: %s"
 
-#: glib/gmarkup.c:255 glib/gmarkup.c:295
+#: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Erro na linha %d caractere %d: "
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr "Texto codificado em UTF-8 inválido - '%s' não válido"
+
+#: glib/gmarkup.c:374
+#, c-format
+msgid "'%s' is not a valid name "
+msgstr ""
+
+#: glib/gmarkup.c:390
+#, c-format
+msgid "'%s' is not a valid name: '%c' "
+msgstr ""
+
+#: glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Erro na linha %d: %s"
 
-#: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Entidade \"&;\" vazia vista; as entidades válidas são: &amp; &quot; &lt; "
-"&gt; &apos;"
-
-#: glib/gmarkup.c:503
-#, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"Caractere \"%s\" não é válido no início do nome da entidade; o caractere & "
-"inicia uma entidade; se este \"e\" comercial não é suposto ser uma entidade, "
-"escape-o como &amp;"
-
-#: glib/gmarkup.c:537
-#, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "Caractere \"%s\" não é válido dentro de um nome de entidade"
-
-#: glib/gmarkup.c:574
-#, c-format
-msgid "Entity name '%s' is not known"
-msgstr "Nome de entidade \"%s\" não é conhecido"
-
-#: glib/gmarkup.c:585
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"Entidade não termina com um ponto e vírgula; provavelmente você utilizou um "
-"\"e\" comercial sem desejar iniciar uma entidade - escape-o com &amp;"
-
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:578
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -364,17 +343,7 @@ msgstr ""
 "referência de caractere (&#234; por exemplo) - talvez o dígito seja grande "
 "demais"
 
-#: glib/gmarkup.c:660
-#, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Referência de caractere \"%-.*s\" não codifica um caractere permitido"
-
-#: glib/gmarkup.c:675
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
-"Referência de caractere vazia; deveria incluir um dígito tal como &#454;"
-
-#: glib/gmarkup.c:685
+#: glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -384,32 +353,36 @@ msgstr ""
 "utilizou um caractere \"e\" comercial sem desejar iniciar uma entidade - "
 "escape-o com &amp;"
 
-#: glib/gmarkup.c:771
-msgid "Unfinished entity reference"
-msgstr "Referência de entidade inacabada"
-
-#: glib/gmarkup.c:777
-msgid "Unfinished character reference"
-msgstr "Referência de caractere inacabada"
-
-#: glib/gmarkup.c:1063
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "Texto codificado em UTF-8 inválido - seqüência muito extensa"
-
-#: glib/gmarkup.c:1091
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "Texto codificado em UTF-8 inválido - não é um caractere inicial"
-
-#: glib/gmarkup.c:1130
+#: glib/gmarkup.c:616
 #, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "Texto codificado em UTF-8 inválido - '%s' não válido"
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Referência de caractere \"%-.*s\" não codifica um caractere permitido"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:654
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Entidade \"&;\" vazia vista; as entidades válidas são: &amp; &quot; &lt; "
+"&gt; &apos;"
+
+#: glib/gmarkup.c:662
+#, fuzzy, c-format
+msgid "Entity name '%-.*s' is not known"
+msgstr "Nome de entidade \"%s\" não é conhecido"
+
+#: glib/gmarkup.c:667
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Entidade não termina com um ponto e vírgula; provavelmente você utilizou um "
+"\"e\" comercial sem desejar iniciar uma entidade - escape-o com &amp;"
+
+#: glib/gmarkup.c:973
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documento tem de começar com um elemento (ex. <book>)"
 
-#: glib/gmarkup.c:1208
+#: glib/gmarkup.c:1013
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -418,7 +391,7 @@ msgstr ""
 "\"%s\" não é um caractere válido após um caractere \"<\"; não poderá começar "
 "um nome de elemento"
 
-#: glib/gmarkup.c:1276
+#: glib/gmarkup.c:1081
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -427,7 +400,7 @@ msgstr ""
 "Caractere estranho \"%s\", esperado um caractere \">\" para finalizar a "
 "marca \"%s\" de elemento vazio"
 
-#: glib/gmarkup.c:1365
+#: glib/gmarkup.c:1165
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -435,7 +408,7 @@ msgstr ""
 "Caractere estranho \"%s\", esperava-se um \"=\" após o nome do atributo \"%s"
 "\" do elemento \"%s\""
 
-#: glib/gmarkup.c:1407
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -446,7 +419,7 @@ msgstr ""
 "terminar a marca inicial do elemento \"%s\", ou opcionalmente um atributo; "
 "talvez tenha utilizado um caractere inválido no nome de atributo"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1283
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -455,7 +428,7 @@ msgstr ""
 "Caractere estranho \"%s\", esperava-se uma aspa aberta após o sinal de igual "
 "ao atribuir o valor ao atributo \"%s\" do elemento \"%s\""
 
-#: glib/gmarkup.c:1635
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -464,7 +437,7 @@ msgstr ""
 "\"%s\" não é um caractere válido após os caracteres \"</\"; \"%s\" não "
 "poderá começar o nome de um elemento"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1453
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -473,25 +446,25 @@ msgstr ""
 "\"%s\" não é um caractere válido após o nome do elemento de fecho \"%s\"; o "
 "caractere permitido é \">\""
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1464
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elemento \"%s\" foi fechado, nenhum elemento está atualmente aberto"
 
-#: glib/gmarkup.c:1695
+#: glib/gmarkup.c:1473
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elemento \"%s\" foi fechado, mas o elemento atualmente aberto é \"%s\""
 
-#: glib/gmarkup.c:1858
+#: glib/gmarkup.c:1640
 msgid "Document was empty or contained only whitespace"
 msgstr "Documento estava vazio ou apenas continha espaços"
 
-#: glib/gmarkup.c:1872
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Documento terminou inesperadamente logo após um menor que \"<\""
 
-#: glib/gmarkup.c:1880 glib/gmarkup.c:1925
+#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -500,7 +473,7 @@ msgstr ""
 "Documento terminou inesperadamente com elementos ainda abertos - \"%s\" foi "
 "o último elemento aberto"
 
-#: glib/gmarkup.c:1888
+#: glib/gmarkup.c:1670
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -509,21 +482,21 @@ msgstr ""
 "Documento terminou inesperadamente, esperava-se ver um maior que (\">\") "
 "para terminar a marca <%s/>"
 
-#: glib/gmarkup.c:1894
+#: glib/gmarkup.c:1676
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Documento terminou inesperadamente dentro de um nome de elemento"
 
-#: glib/gmarkup.c:1900
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Documento terminou inesperadamente dentro de um nome de atributo"
 
-#: glib/gmarkup.c:1905
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Documento terminou inesperadamente dentro de uma marca de abertura de "
 "elemento."
 
-#: glib/gmarkup.c:1911
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -531,18 +504,18 @@ msgstr ""
 "Documento terminou inesperadamente após o sinal de igual que se seguiu a um "
 "nome de atributo; nenhum valor de atributo"
 
-#: glib/gmarkup.c:1918
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Documento terminou inesperadamente dentro de um valor de atributo"
 
-#: glib/gmarkup.c:1934
+#: glib/gmarkup.c:1716
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Documento terminou inesperadamente dentro da marca de fechamento do elemento "
 "\"%s\""
 
-#: glib/gmarkup.c:1940
+#: glib/gmarkup.c:1722
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documento terminou inesperadamente dentro de um comentário ou instrução de "
@@ -989,62 +962,62 @@ msgstr "Seqüência inválida na conversão da entrada"
 msgid "Character out of range for UTF-16"
 msgstr "Caractere fora do limite para UTF-16"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "Usage:"
 msgstr "Uso:"
 
-#: glib/goption.c:615
+#: glib/goption.c:724
 msgid "[OPTION...]"
 msgstr "[OPÇÕES...]"
 
-#: glib/goption.c:719
+#: glib/goption.c:828
 msgid "Help Options:"
 msgstr "Opções de ajuda:"
 
-#: glib/goption.c:720
+#: glib/goption.c:829
 msgid "Show help options"
 msgstr "Exibir opções de ajuda"
 
-#: glib/goption.c:726
+#: glib/goption.c:835
 msgid "Show all help options"
 msgstr "Exibir todas as opções de ajuda"
 
-#: glib/goption.c:788
+#: glib/goption.c:897
 msgid "Application Options:"
 msgstr "Opções de aplicativo:"
 
-#: glib/goption.c:850 glib/goption.c:920
+#: glib/goption.c:959 glib/goption.c:1029
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Não é possível analisar o valor inteiro \"%s\" para %s"
 
-#: glib/goption.c:860 glib/goption.c:928
+#: glib/goption.c:969 glib/goption.c:1037
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Valor inteiro \"%s\" para %s fora dos limites"
 
-#: glib/goption.c:885
+#: glib/goption.c:994
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 "Não é possível analisar o ponto flutuante com dupla precisão \"%s\" para %s"
 
-#: glib/goption.c:893
+#: glib/goption.c:1002
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Ponto flutuante com dupla precisão \"%s\" para %s fora dos limites"
 
-#: glib/goption.c:1156 glib/goption.c:1235
+#: glib/goption.c:1265 glib/goption.c:1344
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Erro ao ler a opção %s"
 
-#: glib/goption.c:1266 glib/goption.c:1380
+#: glib/goption.c:1375 glib/goption.c:1489
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Falta argumento para %s"
 
-#: glib/goption.c:1773
+#: glib/goption.c:1882
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"
@@ -1168,8 +1141,8 @@ msgstr "Valor muito alto passado para %s"
 msgid "Stream is already closed"
 msgstr "O fluxo já está fechado"
 
-#: gio/gcancellable.c:366 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:627
-#: gio/gsimpleasyncresult.c:654
+#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
+#: gio/gsimpleasyncresult.c:665
 msgid "Operation was cancelled"
 msgstr "A operação foi cancelada"
 
@@ -1310,7 +1283,7 @@ msgstr "Não há suporte para lixeira"
 msgid "File names cannot contain '%c'"
 msgstr "Nomes de arquivo não podem conter \"%c\""
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "volume não implementa montagem"
 
@@ -1330,14 +1303,6 @@ msgstr "O enumerador do arquivo tem operação pendente"
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr "O enumerador do arquivo já está fechado"
-
-#: gio/gfileicon.c:145
-msgid "file"
-msgstr "arquivo"
-
-#: gio/gfileicon.c:146
-msgid "The file containing the icon"
-msgstr "O arquivo contendo o ícone"
 
 #: gio/gfileicon.c:237
 #, c-format
@@ -1748,54 +1713,10 @@ msgstr "Fluxo de saída não implementa escrita"
 msgid "Source stream is already closed"
 msgstr "A fonte do fluxo já está fechada"
 
-#: gio/gthemedicon.c:211
-msgid "name"
-msgstr "nome"
-
-#: gio/gthemedicon.c:212
-msgid "The name of the icon"
-msgstr "O nome do ícone"
-
-#: gio/gthemedicon.c:223
-msgid "names"
-msgstr "nomes"
-
-#: gio/gthemedicon.c:224
-msgid "An array containing the icon names"
-msgstr "Um array contendo os nomes dos ícones"
-
-#: gio/gthemedicon.c:249
-msgid "use default fallbacks"
-msgstr "usa os fallbacks padrões"
-
-#: gio/gthemedicon.c:250
-msgid ""
-"Whether to use default fallbacks found by shortening the name at '-' "
-"characters. Ignores names after the first if multiple names are given."
-msgstr ""
-"Se deve tentar os nomes mais curtos, localizados através do caractere '-'. "
-"Ignora nomes depois do primeiro, de vários foram fornecidos."
-
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Não é possível lidar com a versão %d da codificação GThemedIcon"
-
-#: gio/gunixinputstream.c:161 gio/gunixoutputstream.c:147
-msgid "File descriptor"
-msgstr "Descritor de arquivo"
-
-#: gio/gunixinputstream.c:162
-msgid "The file descriptor to read from"
-msgstr "O descritor de arquivo de onde ler"
-
-#: gio/gunixinputstream.c:176 gio/gunixoutputstream.c:162
-msgid "Close file descriptor"
-msgstr "Fechar descritor de arquivo"
-
-#: gio/gunixinputstream.c:177 gio/gunixoutputstream.c:163
-msgid "Whether to close the file descriptor when the stream is closed"
-msgstr "Fechar ou não o descritor de arquivo quando o fluxo for fechado"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1813,16 +1734,12 @@ msgstr "Erro ao fechar unix: %s"
 msgid "Filesystem root"
 msgstr "Sistema de arquivos root"
 
-#: gio/gunixoutputstream.c:148
-msgid "The file descriptor to write to"
-msgstr "O descritor de arquivo para o qual escrever"
-
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Erro ao escrever para unix: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "volume não implementa ejetar"
 
@@ -1858,6 +1775,77 @@ msgstr "usar um formato de listagem longo"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[ARQUIVO...]"
+
+#~ msgid ""
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
+#~ msgstr ""
+#~ "Caractere \"%s\" não é válido no início do nome da entidade; o caractere "
+#~ "& inicia uma entidade; se este \"e\" comercial não é suposto ser uma "
+#~ "entidade, escape-o como &amp;"
+
+#~ msgid "Character '%s' is not valid inside an entity name"
+#~ msgstr "Caractere \"%s\" não é válido dentro de um nome de entidade"
+
+#~ msgid "Empty character reference; should include a digit such as &#454;"
+#~ msgstr ""
+#~ "Referência de caractere vazia; deveria incluir um dígito tal como &#454;"
+
+#~ msgid "Unfinished entity reference"
+#~ msgstr "Referência de entidade inacabada"
+
+#~ msgid "Unfinished character reference"
+#~ msgstr "Referência de caractere inacabada"
+
+#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
+#~ msgstr "Texto codificado em UTF-8 inválido - seqüência muito extensa"
+
+#~ msgid "Invalid UTF-8 encoded text - not a start char"
+#~ msgstr "Texto codificado em UTF-8 inválido - não é um caractere inicial"
+
+#~ msgid "file"
+#~ msgstr "arquivo"
+
+#~ msgid "The file containing the icon"
+#~ msgstr "O arquivo contendo o ícone"
+
+#~ msgid "name"
+#~ msgstr "nome"
+
+#~ msgid "The name of the icon"
+#~ msgstr "O nome do ícone"
+
+#~ msgid "names"
+#~ msgstr "nomes"
+
+#~ msgid "An array containing the icon names"
+#~ msgstr "Um array contendo os nomes dos ícones"
+
+#~ msgid "use default fallbacks"
+#~ msgstr "usa os fallbacks padrões"
+
+#~ msgid ""
+#~ "Whether to use default fallbacks found by shortening the name at '-' "
+#~ "characters. Ignores names after the first if multiple names are given."
+#~ msgstr ""
+#~ "Se deve tentar os nomes mais curtos, localizados através do caractere "
+#~ "'-'. Ignora nomes depois do primeiro, de vários foram fornecidos."
+
+#~ msgid "File descriptor"
+#~ msgstr "Descritor de arquivo"
+
+#~ msgid "The file descriptor to read from"
+#~ msgstr "O descritor de arquivo de onde ler"
+
+#~ msgid "Close file descriptor"
+#~ msgstr "Fechar descritor de arquivo"
+
+#~ msgid "Whether to close the file descriptor when the stream is closed"
+#~ msgstr "Fechar ou não o descritor de arquivo quando o fluxo for fechado"
+
+#~ msgid "The file descriptor to write to"
+#~ msgstr "O descritor de arquivo para o qual escrever"
 
 #~ msgid "%u byte"
 #~ msgid_plural "%u bytes"
