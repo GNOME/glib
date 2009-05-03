@@ -1,3 +1,41 @@
+Overview of Changes from GLib 2.20.x to GLib 2.21.0
+===================================================
+
+* GIO:
+ - New helper functions g_cancellable_connect/disconnect to avoid
+   race conditions when connecting to the "cancelled" signal on
+   GCancellable.
+ - New types and methods for dealing with IPv4 and IPv6 addresses (and
+   UNIX domain socket addresses under UNIX). This does not include code
+   for actual socket I/O.
+ - GResolver provides asynchronous and cancellable APIs for resolving
+   hostnames, reverse lookup of IP addresses and resolving SRV records.
+
+* Glib now provides hash and comparison functions for int64 and double
+  types, suitable for use with GHashTable.
+
+* GArray, GPtrArray and GByteArray can be ref counted now, and have
+  boxed types.
+
+* Bugs fixed:
+ 572844 Helper for GCancellable::cancelled connect/disconnect
+ 578363 goption docs should be improved
+ 548466 async/cancellable DNS resolver
+ 579830 param spec strings should use P_()
+ 579862 requesting xattr::foo ends up calling getxattr(..., user...
+ 580453 Hash and equal functions for gint64 and gdouble
+ 580450 Reference counting and boxed types for arrays
+ 580194 gresolver doesn't build on Solaris
+ 580301 network: a few issues on old darwin
+ 580299 network: include sys/types.h before sys/socket.h to insur...
+ 572508 gmarkup speedup
+
+* Updated translations:
+ Catalan (ca)
+ Pashto (ps)
+ Spanish (es)
+
+
 Overview of Changes from GLib 2.20.0 to GLib 2.20.1
 ===================================================
 
