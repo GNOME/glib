@@ -417,7 +417,8 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->comment = g_strdup (info->comment);
   new_info->nodisplay = info->nodisplay;
   new_info->icon_name = g_strdup (info->icon_name);
-  new_info->icon = g_object_ref (info->icon);
+  if (info->icon)
+    new_info->icon = g_object_ref (info->icon);
   new_info->only_show_in = g_strdupv (info->only_show_in);
   new_info->not_show_in = g_strdupv (info->not_show_in);
   new_info->try_exec = g_strdup (info->try_exec);
