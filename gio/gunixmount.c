@@ -394,6 +394,8 @@ eject_unmount_do (GMount              *mount,
   if (unix_mount->volume_monitor != NULL)
     g_signal_emit_by_name (unix_mount->volume_monitor, "mount-pre-unmount", mount);
 
+  g_signal_emit_by_name (mount, "pre-unmount", 0);
+
   g_timeout_add (500, (GSourceFunc) eject_unmount_do_cb, data);
 }
 

@@ -126,6 +126,9 @@ struct _GMountIface
                                              gboolean             force_rescan,
                                              GCancellable        *cancellable,
                                              GError             **error);
+
+  /* yet more signals */
+  void        (* pre_unmount)               (GMount              *mount);
 };
 
 GType       g_mount_get_type                  (void) G_GNUC_CONST;
