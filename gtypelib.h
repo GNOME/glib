@@ -492,7 +492,6 @@ typedef struct {
  * @tag: A #GITypeTag
  * @interface: Index of the directory entry for the interface.
  * 
- * Types which are described by an entry in the typelib have a tag value of 21. 
  * If the interface is an enum of flags type, is_pointer is 0, otherwise it is 1.
  */
 typedef struct {
@@ -516,8 +515,7 @@ typedef struct {
  * direction as this one. 
  * @type: The type of the array elements.
  * 
- * Arrays have a tag value of 20. They are passed by reference, thus is_pointer 
- * is always 1.
+ * Arrays are passed by reference, thus is_pointer is always 1.
  */
 typedef struct {
   guint16 pointer         :1;
