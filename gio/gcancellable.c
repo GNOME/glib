@@ -486,8 +486,10 @@ g_cancellable_cancel (GCancellable *cancellable)
       cancel = TRUE;
       cancellable->cancelled = TRUE;
       cancellable->cancelled_running = TRUE;
+#ifdef G_OS_WIN32
       if (cancellable->event)
 	SetEvent(cancellable->event);
+#endif
       if (cancellable->cancel_pipe[1] != -1)
 	write (cancellable->cancel_pipe[1], &ch, 1);
     }
