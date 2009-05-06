@@ -364,6 +364,7 @@ emit_cb (gpointer data)
   monitor->priv->pending_file_changes = NULL;
   monitor->priv->pending_file_change_id = 0;
 
+  g_object_ref (monitor);
   for (iter = pending; iter; iter = iter->next)
     {
        FileChange *change = iter->data;
@@ -372,6 +373,8 @@ emit_cb (gpointer data)
        file_change_free (change);
     }
   g_slist_free (pending);
+  g_object_unref (monitor);
+
   return FALSE;
 }
 
