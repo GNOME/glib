@@ -27,10 +27,7 @@
 #include <fcntl.h>
 #include <gioerror.h>
 #ifdef G_OS_WIN32
-#include <io.h>
-#ifndef pipe
-#define pipe(fds) _pipe(fds, 4096, _O_BINARY)
-#endif
+#include <windows.h>
 #endif
 #include "gcancellable.h"
 #include "glibintl.h"
@@ -63,7 +60,7 @@ struct _GCancellable
   int cancel_pipe[2];
 
 #ifdef G_OS_WIN32
-  GIOChannel *read_channel;
+  HANDLE event;
 #endif
 };
 
@@ -87,8 +84,8 @@ g_cancellable_finalize (GObject *object)
     close (cancellable->cancel_pipe[1]);
 
 #ifdef G_OS_WIN32
-  if (cancellable->read_channel)
-    g_io_channel_unref (cancellable->read_channel);
+  if (cancellable->event)
+    CloseHandle (cancellable->event);
 #endif
 
   G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
@@ -173,6 +170,7 @@ g_cancellable_class_init (GCancellableClass *klass)
   
 }
 
+#ifndef G_OS_WIN32
 static void
 set_fd_nonblocking (int fd)
 {
@@ -204,6 +202,7 @@ g_cancellable_open_pipe (GCancellable *cancellable)
   else
     g_warning ("Failed to create pipe for GCancellable. Out of file descriptors?");
 }
+#endif
 
 static void
 g_cancellable_init (GCancellable *cancellable)
@@ -318,19 +317,15 @@ g_cancellable_reset (GCancellable *cancellable)
       return;
     }
   
-  if (!cancellable->cancelled)
+  if (cancellable->cancelled)
     {
       char ch;
       
     /* Make sure we're not leaving old cancel state around */
       
 #ifdef G_OS_WIN32
-      if (cancellable->read_channel)
-	{
-	  gsize bytes_read;
-	  g_io_channel_read_chars (cancellable->read_channel, &ch, 1,
-				   &bytes_read, NULL);
-	}
+      if (cancellable->event)
+	ResetEvent (cancellable->event);
       else
 #endif
       if (cancellable->cancel_pipe[0] != -1)
@@ -404,17 +399,21 @@ g_cancellable_get_fd (GCancellable *cancellable)
   int fd;
   if (cancellable == NULL)
     return -1;
-  
+
+#ifdef G_OS_WIN32
+  return -1;
+#else
   G_LOCK(cancellable);
   if (!cancellable->allocated_pipe)
     {
       cancellable->allocated_pipe = TRUE;
       g_cancellable_open_pipe (cancellable);
     }
-  
+
   fd = cancellable->cancel_pipe[0];
   G_UNLOCK(cancellable);
-  
+#endif
+
   return fd;
 }
 
@@ -424,7 +423,9 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * @pollfd: a pointer to a #GPollFD
  * 
  * Creates a #GPollFD corresponding to @cancellable; this can be passed
- * to g_poll() and used to poll for cancellation.
+ * to g_poll() and used to poll for cancellation. This is useful both
+ * for unix systems without a native poll and for portability to
+ * windows.
  *
  * You are not supposed to read from the fd yourself, just check for
  * readable status. Reading to unset the readable status is done
@@ -438,23 +439,16 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
   g_return_if_fail (pollfd != NULL);
 
 #ifdef G_OS_WIN32
-  if (!cancellable->read_channel)
+  if (!cancellable->event)
     {
-      int fd = g_cancellable_get_fd (cancellable);
-      cancellable->read_channel = g_io_channel_win32_new_fd (fd);
-      g_io_channel_set_buffered (cancellable->read_channel, FALSE);
-      g_io_channel_set_flags (cancellable->read_channel,
-			      G_IO_FLAG_NONBLOCK, NULL);
-      g_io_channel_set_encoding (cancellable->read_channel, NULL, NULL);
+      /* A manual reset anonymous event, starting unset */
+      cancellable->event = CreateEvent (NULL, TRUE, FALSE, NULL);
     }
-  g_io_channel_win32_make_pollfd (cancellable->read_channel, G_IO_IN, pollfd);
-  /* (We need to keep cancellable->read_channel around, because it's
-   * keeping track of state related to the pollfd.)
-   */
+  pollfd->fd = (gintptr)cancellable->event;
 #else /* !G_OS_WIN32 */
   pollfd->fd = g_cancellable_get_fd (cancellable);
-  pollfd->events = G_IO_IN;
 #endif /* G_OS_WIN32 */
+  pollfd->events = G_IO_IN;
   pollfd->revents = 0;
 }
 
@@ -492,6 +486,8 @@ g_cancellable_cancel (GCancellable *cancellable)
       cancel = TRUE;
       cancellable->cancelled = TRUE;
       cancellable->cancelled_running = TRUE;
+      if (cancellable->event)
+	SetEvent(cancellable->event);
       if (cancellable->cancel_pipe[1] != -1)
 	write (cancellable->cancel_pipe[1], &ch, 1);
     }
