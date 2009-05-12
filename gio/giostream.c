@@ -47,6 +47,12 @@ G_DEFINE_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
  * To do the actual reading and writing you need to get the substreams
  * with g_io_stream_get_input_stream() and g_io_stream_get_output_stream().
  *
+ * The #GIOStream object owns the input and the output streams, not the other
+ * way around, so keeping the substreams alive will not keep the #GIOStream
+ * object alive. If the #GIOStream object is freed it will be closed, thus
+ * closing the substream, so even if the substreams stay alive they will
+ * always just return a %G_IO_ERROR_CLOSED for all operations.
+ *
  * To close a stream use g_io_stream_close() which will close the common
  * stream object and also the individual substreams. You can also close
  * the substreams themselves. In most cases this only marks the
