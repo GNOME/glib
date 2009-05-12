@@ -51,7 +51,6 @@ G_DEFINE_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);
 struct _GOutputStreamPrivate {
   guint closed : 1;
   guint pending : 1;
-  guint cancelled : 1;
   GAsyncReadyCallback outstanding_callback;
 };
 
