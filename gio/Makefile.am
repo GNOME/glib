@@ -199,6 +199,7 @@ libgio_2_0_la_SOURCES =		\
 	gfilemonitor.c 		\
 	gfilenamecompleter.c 	\
 	gfileoutputstream.c 	\
+	gfileiostream.c		\
 	gfilterinputstream.c 	\
 	gfilteroutputstream.c 	\
 	gicon.c 		\
@@ -315,6 +316,7 @@ gio_headers =			\
 	gfilemonitor.h 		\
 	gfilenamecompleter.h 	\
 	gfileoutputstream.h 	\
+	gfileiostream.h		\
 	gfilterinputstream.h 	\
 	gfilteroutputstream.h 	\
 	gicon.h 		\

@@ -96,9 +96,6 @@ g_io_stream_finalize (GObject *object)
 
   stream = G_IO_STREAM (object);
 
-  if (!stream->priv->closed)
-    g_io_stream_close (stream, NULL, NULL);
-
   G_OBJECT_CLASS (g_io_stream_parent_class)->finalize (object);
 }
 

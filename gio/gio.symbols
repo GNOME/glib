@@ -458,6 +458,16 @@ g_file_output_stream_get_etag
 #endif
 #endif
 
+#if IN_HEADER(__G_FILE_IO_STREAM_H__)
+#if IN_FILE(__G_FILE_IO_STREAM_C__)
+g_file_io_stream_get_type  G_GNUC_CONST
+g_file_io_stream_query_info
+g_file_io_stream_query_info_async
+g_file_io_stream_query_info_finish
+g_file_io_stream_get_etag
+#endif
+#endif
+
 #if IN_HEADER(__G_FILTER_INPUT_STREAM_H__)
 #if IN_FILE(__G_FILTER_INPUT_STREAM_C__)
 g_filter_input_stream_get_type  G_GNUC_CONST

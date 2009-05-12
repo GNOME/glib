@@ -70,6 +70,7 @@ typedef struct _GFileAttributeInfo            GFileAttributeInfo;
 typedef struct _GFileAttributeInfoList        GFileAttributeInfoList;
 typedef struct _GFileInputStream              GFileInputStream;
 typedef struct _GFileOutputStream             GFileOutputStream;
+typedef struct _GFileIOStream                 GFileIOStream;
 typedef struct _GFileIcon                     GFileIcon;
 typedef struct _GFilenameCompleter            GFilenameCompleter;
 

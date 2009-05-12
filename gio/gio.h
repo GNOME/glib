@@ -58,6 +58,7 @@
 #include <gio/giomodule.h>
 #include <gio/gioscheduler.h>
 #include <gio/giostream.h>
+#include <gio/gfileiostream.h>
 #include <gio/gloadableicon.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
