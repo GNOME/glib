@@ -102,6 +102,11 @@ typedef gint64 goffset;
 #define G_MINOFFSET	G_MININT64
 #define G_MAXOFFSET	G_MAXINT64
 
+#define G_GOFFSET_MODIFIER      G_GINT64_MODIFIER
+#define G_GOFFSET_FORMAT        G_GINT64_FORMAT
+#define G_GOFFSET_CONSTANT(val) G_GINT64_CONSTANT(val)
+
+
 #ifndef _WIN64
 
 #define GPOINTER_TO_INT(p)	((gint)   (p))
