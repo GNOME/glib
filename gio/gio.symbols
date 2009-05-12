@@ -506,6 +506,21 @@ g_input_stream_clear_pending
 #endif
 #endif
 
+#if IN_HEADER(__G_IO_STREAM_H__)
+#if IN_FILE(__G_IO_STREAM_C__)
+g_io_stream_get_type  G_GNUC_CONST
+g_io_stream_get_input_stream
+g_io_stream_get_output_stream
+g_io_stream_close
+g_io_stream_close_async
+g_io_stream_close_finish
+g_io_stream_is_closed
+g_io_stream_has_pending
+g_io_stream_set_pending
+g_io_stream_clear_pending
+#endif
+#endif
+
 #if IN_HEADER(__G_IO_ERROR_H__)
 #if IN_FILE(__G_IO_ERROR_C__)
 g_io_error_quark 

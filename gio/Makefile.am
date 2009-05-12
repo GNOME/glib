@@ -210,6 +210,7 @@ libgio_2_0_la_SOURCES =		\
 	giomodule.c 		\
 	giomodule-priv.h	\
 	gioscheduler.c 		\
+	giostream.c		\
 	gloadableicon.c 	\
 	gmount.c 		\
 	gmemoryinputstream.c 	\
@@ -326,6 +327,7 @@ gio_headers =			\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
+	giostream.h		\
 	gloadableicon.h 	\
 	gmount.h 		\
 	gmemoryinputstream.h 	\

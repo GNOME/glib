@@ -102,6 +102,7 @@ typedef struct _GMountOperation               GMountOperation;
 typedef struct _GNetworkAddress               GNetworkAddress;
 typedef struct _GNetworkService               GNetworkService;
 typedef struct _GOutputStream                 GOutputStream;
+typedef struct _GIOStream                     GIOStream;
 typedef struct _GResolver                     GResolver;
 typedef struct _GSeekable                     GSeekable;
 typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
