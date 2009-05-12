@@ -94,9 +94,6 @@ g_input_stream_finalize (GObject *object)
   GInputStream *stream;
 
   stream = G_INPUT_STREAM (object);
-  
-  if (!stream->priv->closed)
-    g_input_stream_close (stream, NULL, NULL);
 
   G_OBJECT_CLASS (g_input_stream_parent_class)->finalize (object);
 }
