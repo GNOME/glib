@@ -19,6 +19,7 @@ progs_ldadd     = 					\
 TEST_PROGS +=	 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
+	readwrite		\
 	g-file 			\
 	g-file-info 		\
 	data-input-stream 	\
@@ -43,6 +44,9 @@ memory_output_stream_LDADD	  = $(progs_ldadd)
 
 g_file_SOURCES	  = g-file.c
 g_file_LDADD	  = $(progs_ldadd)
+
+readwrite_SOURCES	  = readwrite.c
+readwrite_LDADD	  = $(progs_ldadd)
 
 g_file_info_SOURCES	= g-file-info.c
 g_file_info_LDADD	= $(progs_ldadd)
