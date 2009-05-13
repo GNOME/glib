@@ -78,6 +78,7 @@
 #include "glocalfileenumerator.h"
 #include "glocalfileinputstream.h"
 #include "glocalfileoutputstream.h"
+#include "glocalfileiostream.h"
 #include "glocaldirectorymonitor.h"
 #include "glocalfilemonitor.h"
 #include "gmountprivate.h"
@@ -1322,6 +1323,7 @@ g_local_file_create (GFile             *file,
 		     GError           **error)
 {
   return _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
+					     FALSE,
 					     flags, cancellable, error);
 }
 
@@ -1334,10 +1336,72 @@ g_local_file_replace (GFile             *file,
 		      GError           **error)
 {
   return _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
+					      FALSE,
 					      etag, make_backup, flags,
 					      cancellable, error);
 }
 
+static GFileIOStream *
+g_local_file_open_readwrite (GFile                      *file,
+			     GCancellable               *cancellable,
+			     GError                    **error)
+{
+  GFileOutputStream *output;
+  GFileIOStream *res;
+
+  output = _g_local_file_output_stream_open (G_LOCAL_FILE (file)->filename,
+					     TRUE,
+					     cancellable, error);
+  if (output == NULL)
+    return NULL;
+
+  res = _g_local_file_io_stream_new (G_LOCAL_FILE_OUTPUT_STREAM (output));
+  g_object_unref (output);
+  return res;
+}
+
+static GFileIOStream *
+g_local_file_create_readwrite (GFile                      *file,
+			       GFileCreateFlags            flags,
+			       GCancellable               *cancellable,
+			       GError                    **error)
+{
+  GFileOutputStream *output;
+  GFileIOStream *res;
+
+  output = _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
+					       TRUE, flags,
+					       cancellable, error);
+  if (output == NULL)
+    return NULL;
+
+  res = _g_local_file_io_stream_new (G_LOCAL_FILE_OUTPUT_STREAM (output));
+  g_object_unref (output);
+  return res;
+}
+
+static GFileIOStream *
+g_local_file_replace_readwrite (GFile                      *file,
+				const char                 *etag,
+				gboolean                    make_backup,
+				GFileCreateFlags            flags,
+				GCancellable               *cancellable,
+				GError                    **error)
+{
+  GFileOutputStream *output;
+  GFileIOStream *res;
+
+  output = _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
+						TRUE,
+						etag, make_backup, flags,
+						cancellable, error);
+  if (output == NULL)
+    return NULL;
+
+  res = _g_local_file_io_stream_new (G_LOCAL_FILE_OUTPUT_STREAM (output));
+  g_object_unref (output);
+  return res;
+}
 
 static gboolean
 g_local_file_delete (GFile         *file,
@@ -2288,6 +2352,9 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->append_to = g_local_file_append_to;
   iface->create = g_local_file_create;
   iface->replace = g_local_file_replace;
+  iface->open_readwrite = g_local_file_open_readwrite;
+  iface->create_readwrite = g_local_file_create_readwrite;
+  iface->replace_readwrite = g_local_file_replace_readwrite;
   iface->delete_file = g_local_file_delete;
   iface->trash = g_local_file_trash;
   iface->make_directory = g_local_file_make_directory;

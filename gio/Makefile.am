@@ -89,6 +89,8 @@ local_sources = \
 	glocalfilemonitor.h 		\
 	glocalfileoutputstream.c 	\
 	glocalfileoutputstream.h 	\
+	glocalfileiostream.c		\
+	glocalfileiostream.h		\
 	glocalvfs.c 			\
 	glocalvfs.h 			\
 	$(NULL)

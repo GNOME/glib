@@ -53,7 +53,10 @@ struct _GLocalFileInputStreamClass
 
 GType              _g_local_file_input_stream_get_type (void) G_GNUC_CONST;
 
-GFileInputStream * _g_local_file_input_stream_new      (int fd);
+GFileInputStream *_g_local_file_input_stream_new          (int                    fd);
+void              _g_local_file_input_stream_set_do_close (GLocalFileInputStream *in,
+							   gboolean               do_close);
+
 
 G_END_DECLS
 
