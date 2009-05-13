@@ -431,6 +431,48 @@ struct _GFileIface
                                                        GFileMonitorFlags     flags,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
+
+  GFileIOStream *     (* open_readwrite)              (GFile                *file,
+                                                       GCancellable         *cancellable,
+                                                       GError              **error);
+  void                (* open_readwrite_async)        (GFile                *file,
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  GFileIOStream *     (* open_readwrite_finish)       (GFile                *file,
+                                                       GAsyncResult         *res,
+                                                       GError              **error);
+  GFileIOStream *     (* create_readwrite)            (GFile                *file,
+						       GFileCreateFlags      flags,
+                                                       GCancellable         *cancellable,
+                                                       GError              **error);
+  void                (* create_readwrite_async)      (GFile                *file,
+						       GFileCreateFlags      flags,
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  GFileIOStream *     (* create_readwrite_finish)      (GFile                *file,
+                                                       GAsyncResult         *res,
+                                                       GError              **error);
+  GFileIOStream *     (* replace_readwrite)           (GFile                *file,
+                                                       const char           *etag,
+                                                       gboolean              make_backup,
+                                                       GFileCreateFlags      flags,
+                                                       GCancellable         *cancellable,
+                                                       GError              **error);
+  void                (* replace_readwrite_async)     (GFile                *file,
+                                                       const char           *etag,
+                                                       gboolean              make_backup,
+                                                       GFileCreateFlags      flags,
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  GFileIOStream *     (* replace_readwrite_finish)    (GFile                *file,
+                                                       GAsyncResult         *res,
+                                                       GError              **error);
 };
 
 GType                   g_file_get_type                   (void) G_GNUC_CONST;
@@ -515,6 +557,47 @@ void                    g_file_replace_async              (GFile                
 							   GAsyncReadyCallback         callback,
 							   gpointer                    user_data);
 GFileOutputStream *     g_file_replace_finish             (GFile                      *file,
+							   GAsyncResult               *res,
+							   GError                    **error);
+GFileIOStream *         g_file_open_readwrite             (GFile                      *file,
+							   GCancellable               *cancellable,
+							   GError                    **error);
+void                    g_file_open_readwrite_async       (GFile                      *file,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+GFileIOStream *         g_file_open_readwrite_finish      (GFile                      *file,
+							   GAsyncResult               *res,
+							   GError                    **error);
+GFileIOStream *         g_file_create_readwrite           (GFile                      *file,
+							   GFileCreateFlags            flags,
+							   GCancellable               *cancellable,
+							   GError                    **error);
+void                    g_file_create_readwrite_async     (GFile                      *file,
+							   GFileCreateFlags            flags,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+GFileIOStream *         g_file_create_readwrite_finish    (GFile                      *file,
+							   GAsyncResult               *res,
+							   GError                    **error);
+GFileIOStream *         g_file_replace_readwrite          (GFile                      *file,
+							   const char                 *etag,
+							   gboolean                    make_backup,
+							   GFileCreateFlags            flags,
+							   GCancellable               *cancellable,
+							   GError                    **error);
+void                    g_file_replace_readwrite_async    (GFile                      *file,
+							   const char                 *etag,
+							   gboolean                    make_backup,
+							   GFileCreateFlags            flags,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+GFileIOStream *         g_file_replace_readwrite_finish   (GFile                      *file,
 							   GAsyncResult               *res,
 							   GError                    **error);
 gboolean                g_file_query_exists               (GFile                      *file,
