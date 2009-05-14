@@ -323,6 +323,15 @@ g_file_load_partial_contents_finish
 g_file_replace_contents
 g_file_replace_contents_async
 g_file_replace_contents_finish
+g_file_create_readwrite
+g_file_create_readwrite_async
+g_file_create_readwrite_finish
+g_file_open_readwrite
+g_file_open_readwrite_async
+g_file_open_readwrite_finish
+g_file_replace_readwrite
+g_file_replace_readwrite_async
+g_file_replace_readwrite_finish
 #endif
 #endif
 
