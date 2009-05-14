@@ -1501,6 +1501,7 @@ g_socket_check_pending_error (GSocket  *socket,
   guint optlen;
   int value;
 
+  optlen = sizeof (value);
   if (getsockopt (socket->priv->fd, SOL_SOCKET, SO_ERROR, (void *)&value, &optlen) != 0)
     {
       int errsv = get_socket_errno ();
