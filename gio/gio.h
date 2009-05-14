@@ -29,6 +29,7 @@
 
 #include <gio/gappinfo.h>
 #include <gio/gasyncresult.h>
+#include <gio/gasyncinitable.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
 #include <gio/gcancellable.h>
@@ -56,6 +57,7 @@
 #include <gio/gioenumtypes.h>
 #include <gio/gioerror.h>
 #include <gio/giomodule.h>
+#include <gio/ginitable.h>
 #include <gio/gioscheduler.h>
 #include <gio/giostream.h>
 #include <gio/gfileiostream.h>
@@ -71,6 +73,8 @@
 #include <gio/gresolver.h>
 #include <gio/gseekable.h>
 #include <gio/gsimpleasyncresult.h>
+#include <gio/gsocket.h>
+#include <gio/gsocketcontrolmessage.h>
 #include <gio/gsocketaddress.h>
 #include <gio/gsocketaddressenumerator.h>
 #include <gio/gsocketconnectable.h>

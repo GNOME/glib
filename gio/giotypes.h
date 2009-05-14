@@ -34,6 +34,7 @@ G_BEGIN_DECLS
 typedef struct _GAppLaunchContext             GAppLaunchContext;
 typedef struct _GAppInfo                      GAppInfo; /* Dummy typedef */
 typedef struct _GAsyncResult                  GAsyncResult; /* Dummy typedef */
+typedef struct _GAsyncInitable                GAsyncInitable;
 typedef struct _GBufferedInputStream          GBufferedInputStream;
 typedef struct _GBufferedOutputStream         GBufferedOutputStream;
 typedef struct _GCancellable                  GCancellable;
@@ -79,6 +80,7 @@ typedef struct _GIcon                         GIcon; /* Dummy typedef */
 typedef struct _GInetAddress                  GInetAddress;
 typedef struct _GInetSocketAddress            GInetSocketAddress;
 typedef struct _GInputStream                  GInputStream;
+typedef struct _GInitable                     GInitable;
 typedef struct _GIOModule                     GIOModule;
 typedef struct _GIOExtensionPoint             GIOExtensionPoint;
 typedef struct _GIOExtension                  GIOExtension;
@@ -107,6 +109,23 @@ typedef struct _GIOStream                     GIOStream;
 typedef struct _GResolver                     GResolver;
 typedef struct _GSeekable                     GSeekable;
 typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
+
+/**
+ * GSocket:
+ *
+ * A lowlevel network socket object.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GSocket                       GSocket;
+
+/**
+ * GSocketControlMessage:
+ *
+ * Base class for socket-type specific control messages that can be sent and
+ * received over #GSocket.
+ **/
+typedef struct _GSocketControlMessage         GSocketControlMessage;
 typedef struct _GSocketAddress                GSocketAddress;
 typedef struct _GSocketAddressEnumerator      GSocketAddressEnumerator;
 typedef struct _GSocketConnectable            GSocketConnectable;
@@ -201,6 +220,46 @@ typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
 typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
                                         GObject *object,
                                         GCancellable *cancellable);
+
+/**
+ * GSocketSourceFunc:
+ * @user_data: data passed in by the user.
+ * @condition: the current condition at the source fired.
+ *
+ * This is the function type of the callback used for the #GSource
+ * returned by g_socket_create_source().
+ *
+ * Since: 2.22
+ */
+typedef gboolean (*GSocketSourceFunc) (gpointer user_data,
+				       GIOCondition condition);
+
+/**
+ * GInputVector:
+ *
+ * Structure used for scatter/gather data input.
+ *
+ * Since: 2.22
+ */
+typedef struct
+{
+  gpointer buffer;
+  gsize size;
+} GInputVector;
+
+/**
+ * GOutputVector:
+ *
+ * Structure used for scatter/gather data output.
+ *
+ * Since: 2.22
+ */
+typedef struct
+{
+  gconstpointer buffer;
+  gsize size;
+} GOutputVector;
+
 
 G_END_DECLS
 

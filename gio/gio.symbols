@@ -868,6 +868,8 @@ g_ask_password_flags_get_type G_GNUC_CONST
 g_password_save_get_type G_GNUC_CONST
 g_emblem_origin_get_type G_GNUC_CONST
 g_socket_family_get_type G_GNUC_CONST
+g_socket_type_get_type G_GNUC_CONST
+g_socket_msg_flags_get_type G_GNUC_CONST
 g_resolver_error_get_type G_GNUC_CONST
 #endif
 #endif
@@ -1033,5 +1035,84 @@ g_socket_address_enumerator_get_type G_GNUC_CONST
 g_socket_address_enumerator_next
 g_socket_address_enumerator_next_async
 g_socket_address_enumerator_next_finish
+#endif
+#endif
+
+#if IN_HEADER(__G_ASYNC_INITABLE_H__)
+#if IN_FILE(__G_ASYNC_INITABLE_C__)
+g_async_initable_get_type G_GNUC_CONST
+g_async_initable_init_async
+g_async_initable_init_finish
+g_async_initable_new_async
+g_async_initable_new_finish
+g_async_initable_new_valist_async
+g_async_initable_newv_async
+#endif
+#endif
+
+#if IN_HEADER(__G_INITABLE_H__)
+#if IN_FILE(__G_INITABLE_C__)
+g_initable_get_type G_GNUC_CONST
+g_initable_init
+g_initable_new
+g_initable_newv
+g_initable_new_valist
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_H__)
+#if IN_FILE(__G_SOCKET_C__)
+g_socket_get_type G_GNUC_CONST
+g_socket_accept
+g_socket_bind
+g_socket_check_pending_error
+g_socket_close
+g_socket_condition_check
+g_socket_condition_wait
+g_socket_connect
+g_socket_create_source
+g_socket_get_blocking
+g_socket_get_family
+g_socket_get_fd
+g_socket_get_keepalive
+g_socket_get_listen_backlog
+g_socket_get_local_address
+g_socket_get_protocol
+g_socket_get_remote_address
+g_socket_get_socket_type
+g_socket_is_closed
+g_socket_is_connected
+g_socket_listen
+g_socket_new
+g_socket_new_from_fd
+g_socket_receive
+g_socket_receive_from
+g_socket_receive_message
+g_socket_send
+g_socket_send_message
+g_socket_send_to
+g_socket_set_blocking
+g_socket_set_keepalive
+g_socket_set_listen_backlog
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_CONTROL_MESSAGE_H__)
+#if IN_FILE(__G_SOCKET_CONTROL_MESSAGE_C__)
+g_socket_control_message_get_type G_GNUC_CONST
+g_socket_control_message_deserialize
+g_socket_control_message_get_level
+g_socket_control_message_get_msg_type
+g_socket_control_message_get_size
+g_socket_control_message_serialize
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_FD_MESSAGE_H__)
+#if IN_FILE(__G_UNIX_FD_MESSAGE_C__)
+g_unix_fd_message_get_type G_GNUC_CONST
+g_unix_fd_message_append_fd
+g_unix_fd_message_new
+g_unix_fd_message_steal_fds
 #endif
 #endif

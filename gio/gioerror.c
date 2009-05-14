@@ -194,6 +194,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef EADDRINUSE
+    case EADDRINUSE:
+      return G_IO_ERROR_ADDRESS_IN_USE;
+      break;
+#endif
+
     default:
       return G_IO_ERROR_FAILED;
       break;

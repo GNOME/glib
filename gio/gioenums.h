@@ -342,6 +342,8 @@ typedef enum {
  * @G_IO_ERROR_TOO_MANY_OPEN_FILES: The current process has too many files 
  *     open and can't open any more. Duplicate descriptors do count toward 
  *     this limit. Since 2.20
+ * @G_IO_ERROR_NOT_INITIALIZED: The object has not been initialized. Since 2.22
+ * @G_IO_ERROR_ADDRESS_IN_USE: The requested address is already in use. Since 2.22
  *
  * Error codes returned by GIO functions.
  *
@@ -378,7 +380,9 @@ typedef enum {
   G_IO_ERROR_HOST_NOT_FOUND,
   G_IO_ERROR_WOULD_MERGE,
   G_IO_ERROR_FAILED_HANDLED,
-  G_IO_ERROR_TOO_MANY_OPEN_FILES
+  G_IO_ERROR_TOO_MANY_OPEN_FILES,
+  G_IO_ERROR_NOT_INITIALIZED,
+  G_IO_ERROR_ADDRESS_IN_USE
 } GIOErrorEnum;
 
 
@@ -510,6 +514,46 @@ typedef enum {
   G_SOCKET_FAMILY_IPV4 = GLIB_SYSDEF_AF_INET,
   G_SOCKET_FAMILY_IPV6 = GLIB_SYSDEF_AF_INET6
 } GSocketFamily;
+
+/**
+ * GSocketType:
+ * @G_SOCKET_TYPE_INVALID: Type unknown or wrong
+ * @G_SOCKET_TYPE_STREAM: Reliable connection-based byte streams (e.g. TCP).
+ * @G_SOCKET_TYPE_DATAGRAM: Connectionless, unreliable datagram passing. (e.g. UDP) 
+ * @G_SOCKET_TYPE_SEQPACKET: Reliable connection-based passing of datagrams of fixed maximum length (e.g. SCTP).
+ *
+ * Flags used when creating a #GSocket. Some protocols may not implement all the socket types.
+ *
+ * Since: 2.22
+ */
+typedef enum
+{
+  G_SOCKET_TYPE_INVALID,
+  G_SOCKET_TYPE_STREAM,
+  G_SOCKET_TYPE_DATAGRAM,
+  G_SOCKET_TYPE_SEQPACKET,
+} GSocketType;
+
+/**
+ * GSocketMsgFlags:
+ * @G_SOCKET_MSG_OOB: Request to send/receive out of band data.
+ * @G_SOCKET_MSG_PEEK: Read data from the socket without removing it from the queue.
+ * @G_SOCKET_MSG_DONTROUTE: Don't use a gateway to send out the packet, only send to hosts on directly connected networks.
+ *
+ * Flags used in g_socket_receive_message() and g_socket_send_message(). The flags listed in the enum are
+ * some commonly available flags, but the values used for them are the same as on the platform, and any other
+ * flags are passed in/out as is. So to use a platform specific flag, just include the right system header and
+ * pass in the flag.
+ *
+ * Since: 2.22
+ */
+typedef enum
+{
+  G_SOCKET_MSG_INVALID,
+  G_SOCKET_MSG_OOB = GLIB_SYSDEF_MSG_OOB,
+  G_SOCKET_MSG_PEEK = GLIB_SYSDEF_MSG_PEEK,
+  G_SOCKET_MSG_DONTROUTE = GLIB_SYSDEF_MSG_DONTROUTE
+} GSocketMsgFlags;
 
 G_END_DECLS
 

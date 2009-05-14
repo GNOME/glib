@@ -130,6 +130,7 @@ appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
 platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 unix_sources = \
+	gunixfdmessage.c	\
 	gunixmount.c		\
 	gunixmount.h		\
 	gunixmounts.c 		\
@@ -150,6 +151,7 @@ giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
 	gdesktopappinfo.h	\
 	gunixmounts.h 		\
+	gunixfdmessage.h	\
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\
 	gunixsocketaddress.h	\
@@ -176,6 +178,7 @@ libgio_2_0_la_SOURCES =		\
 	gappinfo.c 		\
 	gasynchelper.c 		\
 	gasynchelper.h 		\
+	gasyncinitable.c	\
 	gasyncresult.c 		\
 	gbufferedinputstream.c 	\
 	gbufferedoutputstream.c \
@@ -207,6 +210,7 @@ libgio_2_0_la_SOURCES =		\
 	gicon.c 		\
 	ginetaddress.c		\
 	ginetsocketaddress.c	\
+	ginitable.c		\
 	ginputstream.c 		\
 	gioenums.h		\
 	gioerror.c 		\
@@ -230,6 +234,8 @@ libgio_2_0_la_SOURCES =		\
 	gresolver.c		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
+	gsocket.c		\
+	gsocketcontrolmessage.c	\
 	gsocketaddress.c	\
 	gsocketaddressenumerator.c \
 	gsocketconnectable.c	\
@@ -299,6 +305,7 @@ libgio_2_0_la_DEPENDENCIES = $(gio_def) $(platform_deps)
 
 gio_headers =			\
 	gappinfo.h 		\
+	gasyncinitable.h	\
 	gasyncresult.h 		\
 	gbufferedinputstream.h 	\
 	gbufferedoutputstream.h \
@@ -325,6 +332,7 @@ gio_headers =			\
 	ginetaddress.h		\
 	ginetsocketaddress.h	\
 	ginputstream.h 		\
+	ginitable.h		\
 	gio.h			\
 	giotypes.h		\
 	gioenums.h		\
@@ -344,6 +352,8 @@ gio_headers =			\
 	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
+	gsocket.h		\
+	gsocketcontrolmessage.h	\
 	gsocketaddress.h	\
 	gsocketaddressenumerator.h \
 	gsocketconnectable.h	\

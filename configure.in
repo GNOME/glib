@@ -975,6 +975,14 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for AF_INET* constants])
 fi
 
+glib_failed=false
+GLIB_CHECK_VALUE(MSG_PEEK, $glib_inet_includes, glib_failed=true)
+GLIB_CHECK_VALUE(MSG_OOB, $glib_inet_includes, glib_failed=true)
+GLIB_CHECK_VALUE(MSG_DONTROUTE, $glib_inet_includes, glib_failed=true)
+if $glib_failed ; then
+  AC_MSG_ERROR([Could not determine values for MSG_* constants])
+fi
+
 AC_CHECK_FUNCS(getprotobyname_r endservent)
 AC_CHECK_HEADERS([netdb.h winsock2.h mswsock.h])
 
@@ -3038,6 +3046,10 @@ typedef $g_pid_type GPid;
 #define GLIB_SYSDEF_AF_INET $g_af_inet
 #define GLIB_SYSDEF_AF_INET6 $g_af_inet6
 
+#define GLIB_SYSDEF_MSG_OOB $g_msg_oob
+#define GLIB_SYSDEF_MSG_PEEK $g_msg_peek
+#define GLIB_SYSDEF_MSG_DONTROUTE $g_msg_dontroute
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
@@ -3327,6 +3339,10 @@ g_pollnval=$glib_cv_value_POLLNVAL
 g_af_unix=$glib_cv_value_AF_UNIX
 g_af_inet=$glib_cv_value_AF_INET
 g_af_inet6=$glib_cv_value_AF_INET6
+
+g_msg_peek=$glib_cv_value_MSG_PEEK
+g_msg_oob=$glib_cv_value_MSG_OOB
+g_msg_dontroute=$glib_cv_value_MSG_DONTROUTE
 
 g_stack_grows=$glib_cv_stack_grows
 
