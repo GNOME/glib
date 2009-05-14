@@ -2089,8 +2089,9 @@ winsock_dispatch (GSource    *source,
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GWinsockSource *winsock_source = (GWinsockSource *)source;
 
-  return (*func) (user_data,
-		  winsock_source->result_condition & winsock_source->condition);
+  return (*func) (winsock_source->socket,
+		  winsock_source->result_condition & winsock_source->condition,
+		  user_data);
 }
 
 static void
@@ -2190,7 +2191,8 @@ g_socket_create_source (GSocket      *socket,
 #ifdef G_OS_WIN32
   source = winsock_source_new (socket, condition, cancellable);
 #else
-  source =_g_fd_source_new (socket->priv->fd, condition, cancellable);
+  source =_g_fd_source_new_with_object (G_OBJECT (socket), socket->priv->fd,
+					condition, cancellable);
 #endif
   return source;
 }

@@ -223,16 +223,18 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
 
 /**
  * GSocketSourceFunc:
- * @user_data: data passed in by the user.
+ * @socket: the #GSocket
  * @condition: the current condition at the source fired.
+ * @user_data: data passed in by the user.
  *
  * This is the function type of the callback used for the #GSource
  * returned by g_socket_create_source().
  *
  * Since: 2.22
  */
-typedef gboolean (*GSocketSourceFunc) (gpointer user_data,
-				       GIOCondition condition);
+typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
+				       GIOCondition condition,
+				       gpointer user_data);
 
 /**
  * GInputVector:

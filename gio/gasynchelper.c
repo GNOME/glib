@@ -81,6 +81,7 @@ typedef struct
   GPollFD pollfd;
   GCancellable *cancellable;
   gulong cancelled_tag;
+  GObject *object;
 } FDSource;
 
 static gboolean 
@@ -93,7 +94,7 @@ fd_source_prepare (GSource *source,
   return g_cancellable_is_cancelled (fd_source->cancellable);
 }
 
-static gboolean 
+static gboolean
 fd_source_check (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
@@ -110,14 +111,18 @@ fd_source_dispatch (GSource     *source,
 
 {
   GFDSourceFunc func = (GFDSourceFunc)callback;
+  GFDSourceObjectFunc func2 = (GFDSourceObjectFunc)callback;
   FDSource *fd_source = (FDSource *)source;
 
   g_warn_if_fail (func != NULL);
 
-  return (*func) (user_data, fd_source->pollfd.revents, fd_source->pollfd.fd);
+  if (fd_source->object)
+    return (*func2) (fd_source->object, fd_source->pollfd.revents, user_data);
+  else
+    return (*func) (user_data, fd_source->pollfd.revents, fd_source->pollfd.fd);
 }
 
-static void 
+static void
 fd_source_finalize (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
@@ -128,6 +133,9 @@ fd_source_finalize (GSource *source)
 
   if (fd_source->cancellable)
     g_object_unref (fd_source->cancellable);
+
+  if (fd_source->object)
+    g_object_unref (fd_source->object);
 }
 
 static GSourceFuncs fd_source_funcs = {
@@ -147,9 +155,10 @@ fd_source_cancelled_cb (GCancellable *cancellable,
 }
 
 GSource *
-_g_fd_source_new (int           fd,
-		  gushort       events,
-		  GCancellable *cancellable)
+_g_fd_source_new_with_object (GObject      *object,
+			      int           fd,
+			      gushort       events,
+			      GCancellable *cancellable)
 {
   GSource *source;
   FDSource *fd_source;
@@ -159,16 +168,27 @@ _g_fd_source_new (int           fd,
 
   if (cancellable)
     fd_source->cancellable = g_object_ref (cancellable);
-  
+
+  if (object)
+    fd_source->object = g_object_ref (object);
+
   fd_source->pollfd.fd = fd;
   fd_source->pollfd.events = events;
   g_source_add_poll (source, &fd_source->pollfd);
 
   if (cancellable)
     fd_source->cancelled_tag =
-      g_cancellable_connect (cancellable, 
+      g_cancellable_connect (cancellable,
 			     (GCallback)fd_source_cancelled_cb,
 			     NULL, NULL);
-  
+
   return source;
+}
+
+GSource *
+_g_fd_source_new (int           fd,
+		  gushort       events,
+		  GCancellable *cancellable)
+{
+  return _g_fd_source_new_with_object (NULL, fd, events, cancellable);
 }
