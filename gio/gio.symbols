@@ -1006,6 +1006,7 @@ g_network_address_get_type G_GNUC_CONST
 g_network_address_get_hostname
 g_network_address_get_port
 g_network_address_new
+g_network_address_parse
 #endif
 #endif
 

@@ -975,6 +975,9 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for AF_INET* constants])
 fi
 
+AC_CHECK_FUNCS(getprotobyname_r endservent)
+AC_CHECK_HEADERS([netdb.h winsock2.h mswsock.h])
+
 # For gio/libasyncns
 if test $glib_native_win32 = no; then
   AC_CHECK_FUNCS(strndup setresuid setreuid)

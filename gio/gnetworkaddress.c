@@ -31,7 +31,15 @@
 #include "gresolver.h"
 #include "gsimpleasyncresult.h"
 #include "gsocketaddressenumerator.h"
+#include "gioerror.h"
 #include "gsocketconnectable.h"
+
+#ifdef HAVE_NETDB_H
+#include <netdb.h>
+#endif
+#ifdef HAVE_WINSOCK2_H
+#include <winsock2.h>
+#endif
 
 #include <string.h>
 
@@ -233,6 +241,162 @@ g_network_address_new (const gchar *hostname,
                        "hostname", hostname,
                        "port", port,
                        NULL);
+}
+
+/**
+ * g_network_address_parse:
+ * @host_and_port: the hostname and optionally a port
+ * @default_port: the default port if not in @host_and_port
+ * @error: a pointer to a #GError, or %NULL
+ *
+ * Creates a new #GSocketConnectable for connecting to the given
+ * @hostname and @port. May fail and return %NULL in case
+ * parsing @host_and_port fails.
+ *
+ * @host_and_port may be in any of a number of recognised formats: an IPv6
+ * address, an IPv4 address, or a domain name (in which case a DNS
+ * lookup is performed).  Quoting with [] is supported for all address
+ * types.  A port override may be specified in the usual way with a
+ * colon.  Ports may be given as decimal numbers or symbolic names (in
+ * which case an /etc/services lookup is performed).
+ *
+ * If no port is specified in @host_and_port then @default_port will be
+ * used as the port number to connect to.
+ *
+ * In general, @host_and_port is expected to be provided by the user (allowing
+ * them to give the hostname, and a port overide if necessary) and
+ * @default_port is expected to be provided by the application.
+ *
+ * Return value: the new #GNetworkAddress, or %NULL on error
+ *
+ * Since: 2.22
+ **/
+GSocketConnectable *
+g_network_address_parse (const char *host_and_port,
+                         guint16 default_port,
+                         GError **error)
+{
+  GSocketConnectable *connectable;
+  const gchar *port;
+  guint16 portnum;
+  gchar *name;
+
+  g_return_val_if_fail (host_and_port != NULL, NULL);
+
+  port = NULL;
+  if (host_and_port[0] == '[')
+    /* escaped host part (to allow, eg. "[2001:db8::1]:888") */
+    {
+      const gchar *end;
+
+      end = strchr (host_and_port, ']');
+      if (end == NULL)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Hostname '%s' contains '[' but not ']'"), host_and_port);
+          return NULL;
+        }
+
+      if (end[1] == '\0')
+        port = NULL;
+      else if (end[1] == ':')
+        port = &end[2];
+      else
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       "The ']' character (in hostname '%s') must come at the"
+                       " end or be immediately followed by ':' and a port",
+                       host_and_port);
+          return NULL;
+        }
+
+      name = g_strndup (host_and_port + 1, end - host_and_port - 1);
+    }
+
+  else if ((port = strchr (host_and_port, ':')))
+    /* string has a ':' in it */
+    {
+      /* skip ':' */
+      port++;
+
+      if (strchr (port, ':'))
+        /* more than one ':' in string */
+        {
+          /* this is actually an unescaped IPv6 address */
+          name = g_strdup (host_and_port);
+          port = NULL;
+        }
+      else
+        name = g_strndup (host_and_port, port - host_and_port - 1);
+    }
+
+  else
+    /* plain hostname, no port */
+    name = g_strdup (host_and_port);
+
+  if (port != NULL)
+    {
+      if (port[0] == '\0')
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       "If a ':' character is given, it must be followed by a "
+                       "port (in hostname '%s').", host_and_port);
+          g_free (name);
+          return NULL;
+        }
+
+      else if ('0' <= port[0] && port[0] <= '9')
+        {
+          char *end;
+          long value;
+
+          value = strtol (port, &end, 10);
+          if (*end != '\0' || value < 0 || value > G_MAXUINT16)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           "Invalid numeric port '%s' specified in hostname '%s'",
+                           port, host_and_port);
+              g_free (name);
+              return NULL;
+            }
+
+          portnum = value;
+        }
+
+      else
+        {
+          struct servent *entry;
+
+          entry = getservbyname (port, "tcp");
+          if (entry == NULL)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           "Unknown service '%s' specified in hostname '%s'",
+                           port, host_and_port);
+#ifdef HAVE_ENDSERVENT
+              endservent ();
+#endif
+              g_free (name);
+              return NULL;
+            }
+
+          portnum = g_ntohs (entry->s_port);
+
+#ifdef HAVE_ENDSERVENT
+          endservent ();
+#endif
+        }
+    }
+  else
+    {
+      /* No port in host_and_port */
+      portnum = default_port;
+    }
+
+  connectable = g_network_address_new (name, portnum);
+  g_free (name);
+
+  return connectable;
 }
 
 /**
