@@ -24,6 +24,7 @@
 #include <glib.h>
 #include "glibintl.h"
 
+#include <stdlib.h>
 #include "gnetworkaddress.h"
 #include "gasyncresult.h"
 #include "ginetaddress.h"
