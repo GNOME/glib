@@ -319,6 +319,7 @@ resolve_sync (GThreadedResolver         *gtr,
   if (!req->cancellable || !gtr->thread_pool)
     {
       req->resolve_func (req, error);
+      g_mutex_unlock (req->mutex);
       return;
     }
 
