@@ -526,7 +526,6 @@ _g_local_file_output_stream_open  (const char        *filename,
 				   GError           **error)
 {
   GLocalFileOutputStream *stream;
-  int mode;
   int fd;
   int open_flags;
 
