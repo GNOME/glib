@@ -67,11 +67,9 @@
  *
  * #GSocket is the platform independent base upon which the higher level
  * network primitives are based. Applications are not typically meant to
- * use it directly, but rather through classes like #GSocketClient, etc.
- * However there may be cases where direct use of #GSocket is useful.
- *
- * TODO: Add more references to the highlevel API once that is more
- * finalized.
+ * use it directly, but rather through classes like #GSocketClient,
+ * #GSocketService and #GSocketConnection. However there may be cases where
+ * direct use of #GSocket is useful.
  *
  * #GSocket implements the #GInitable interface, so if it is manually constructed
  * by e.g. g_object_new() you must call g_initable_init() and check the
