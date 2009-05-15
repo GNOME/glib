@@ -28,6 +28,8 @@
 #include "config.h"
 
 #include <errno.h>
+#include <string.h>
+#include <stdlib.h>
 
 #ifndef G_OS_WIN32
 # include <netinet/in.h>
@@ -132,7 +134,7 @@ struct _GSocketPrivate
 {
   GSocketFamily   family;
   GSocketType     type;
-  char           *protocol;
+  gint            protocol;
   gint            fd;
   gint            listen_backlog;
   GError         *construct_error;
@@ -404,16 +406,92 @@ g_socket_details_from_fd (GSocket *socket)
 	       socket_strerror (errsv));
 }
 
+static char *
+get_protocol_name (int protocol_id)
+{
+  struct protoent *protoent;
+#ifdef HAVE_GETPROTOBYNUMBER_R
+  char buffer[1024];
+  struct protoent my_protoent;
+#endif
+
+  if (protocol_id == 0)
+    return NULL;
+
+  if (protocol_id == -1)
+    return g_strdup ("unknown");
+
+#ifdef HAVE_GETPROTOBYNUMBER_R
+  protoent = NULL;
+  getprotobynumber_r (protocol_id,
+		      &my_protoent, buffer, sizeof (buffer),
+		      &protoent);
+#else
+  protoent = getprotobynumber (protocol_id);
+#endif
+
+  if (protoent == NULL)
+    return g_strdup_printf ("proto-%d", protocol_id);
+
+  return g_strdup (protoent->p_name);
+}
+
+/**
+ * g_socket_protocol_id_lookup_by_name:
+ * @protocol_name: The name of a protocol, or %NULL
+ *
+ * Tries to look up the protocol id for a given
+ * protocol name. If the protocol name is not known
+ * on this system it returns -1.
+ *
+ * If @protocol_name is %NULL (default protocol) then
+ * 0 is returned.
+ *
+ * Returns: a protocol id, or -1 if unknown
+ *
+ * Since: 2.22
+ **/
+gint
+g_socket_protocol_id_lookup_by_name (const char *protocol_name)
+{
+  struct protoent *protoent;
+  int protocol = 0;
+#ifdef HAVE_GETPROTOBYNAME_R
+  char buffer[1024];
+  struct protoent my_protoent;
+#endif
+
+  if (!protocol_name)
+    return 0;
+
+#ifdef HAVE_GETPROTOBYNAME_R
+  protoent = NULL;
+  getprotobyname_r (protocol_name,
+		    &my_protoent, buffer, sizeof (buffer),
+		    &protoent);
+#else
+  protoent = getprotobyname (protocol_name);
+#endif
+
+  if (protoent == NULL)
+    {
+      if (g_str_has_prefix (protocol_name, "proto-"))
+	return atoi (protocol_name + strlen ("proto-"));
+      return -1;
+    }
+  protocol = protoent->p_proto;
+
+  return protocol;
+}
+
 static gint
 g_socket_create_socket (GSocketFamily   family,
 			GSocketType     type,
-			const char     *protocol_name,
+			int             protocol_id,
 			GError        **error)
 {
   gint native_type;
   gint fd;
-  gint protocol;
-  struct protoent *protoent;
 
   switch (type)
     {
@@ -433,41 +511,24 @@ g_socket_create_socket (GSocketFamily   family,
       g_assert_not_reached ();
     }
 
-  protocol = 0;
-  if (protocol_name)
+  if (protocol_id == -1)
     {
-#ifdef HAVE_GETPROTOBYNAME_R
-      char buffer[1024];
-      struct protoent my_protoent;
-
-      protoent = NULL;
-      getprotobyname_r (protocol_name,
-			&my_protoent, buffer, sizeof (buffer),
-			&protoent);
-#else
-      protoent = getprotobyname (protocol_name);
-#endif
-      if (protoent == NULL)
-	{
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		       _("unable to create socket: Protocol %s not supported"),
-		       protocol_name);
-	  return -1;
-	}
-      protocol = protoent->p_proto;
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+		   _("Unable to create socket: %s"), _("Unknown protocol was specified"));
+      return -1;
     }
 
 #ifdef SOCK_CLOEXEC
   native_type |= SOCK_CLOEXEC;
 #endif
-  fd = socket (family, native_type, protocol);
+  fd = socket (family, native_type, protocol_id);
 
   if (fd < 0)
     {
       int errsv = get_socket_errno ();
 
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("unable to create socket: %s"), socket_strerror (errsv));
+		   _("Unable to create socket: %s"), socket_strerror (errsv));
     }
 
 #ifndef G_OS_WIN32
@@ -533,7 +594,7 @@ g_socket_get_property (GObject    *object,
 	break;
 
       case PROP_PROTOCOL:
-	g_value_set_string (value, socket->priv->protocol);
+	g_value_set_int (value, socket->priv->protocol);
 	break;
 
       case PROP_FD:
@@ -584,7 +645,7 @@ g_socket_set_property (GObject      *object,
 	break;
 
       case PROP_PROTOCOL:
-	socket->priv->protocol = g_value_dup_string (value);
+	socket->priv->protocol = g_value_get_int (value);
 	break;
 
       case PROP_FD:
@@ -618,8 +679,6 @@ g_socket_finalize (GObject *object)
   if (socket->priv->fd != -1 &&
       !socket->priv->closed)
     g_socket_close (socket, NULL);
-
-  g_free (socket->priv->protocol);
 
 #ifdef G_OS_WIN32
   g_assert (socket->priv->requested_conditions == NULL);
@@ -684,11 +743,13 @@ g_socket_class_init (GSocketClass *klass)
 						      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-				   g_param_spec_string ("protocol",
-							P_("Socket protocol"),
-							P_("The name of the protocol to use, or NULL"),
-							NULL,
-							G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+				   g_param_spec_int ("protocol",
+						     P_("Socket protocol"),
+						     P_("The id of the protocol to use, or -1 for unknown"),
+						     G_MININT,
+						     G_MAXINT,
+						     -1,
+						     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_FD,
 				   g_param_spec_int ("fd",
@@ -794,12 +855,20 @@ g_socket_initable_init (GInitable *initable,
  * g_socket_new:
  * @family: the socket family to use, e.g. %G_SOCKET_FAMILY_IPV4.
  * @type: the socket type to use.
- * @protocol: the name of the protocol to use, or %NULL.
+ * @protocol_id: the id of the protocol to use, or 0 for default.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GSocket with the defined family, type and protocol.
  * If @protocol is %NULL the default protocol type for the family and
  * type is used.
+ *
+ * The @protocol is a family and type specific int that specifies what
+ * kind of protocol to use. Many families only support one protocol,
+ * and use 0 for this, others support several and using 0 means
+ * to use the default protocol for the family and type. To use
+ * other protocol, you can use g_socket_protocol_id_lookup_by_name()
+ * to look up the protocol by name, or if you known the system specific
+ * protocol id you can use that.
  *
  * Returns: a #GSocket or %NULL on error.
  *     Free the returned object with g_object_unref().
@@ -809,14 +878,14 @@ g_socket_initable_init (GInitable *initable,
 GSocket *
 g_socket_new (GSocketFamily family,
 	      GSocketType type,
-	      const char *protocol,
+	      int protocol_id,
 	      GError **error)
 {
   return G_SOCKET (g_initable_new (G_TYPE_SOCKET,
 				   NULL, error,
 				   "family", family,
 				   "type", type,
-				   "protocol", protocol,
+				   "protocol", protocol_id,
 				   NULL));
 }
 
@@ -1043,22 +1112,41 @@ g_socket_get_socket_type (GSocket *socket)
 }
 
 /**
- * g_socket_get_protocol:
+ * g_socket_get_protocol_id:
+ * @socket: a #GSocket.
+ *
+ * Gets the socket protocol id the socket was created with.
+ * In case the protocol is unknown, -1 is returned.
+ *
+ * Returns: a protocol id, or -1 if unknown
+ *
+ * Since: 2.22
+ **/
+gint
+g_socket_get_protocol_id (GSocket *socket)
+{
+  g_return_val_if_fail (G_IS_SOCKET (socket), -1);
+
+  return socket->priv->protocol;
+}
+
+/**
+ * g_socket_get_protocol_name:
  * @socket: a #GSocket.
  *
  * Gets the socket protocol type name the socket was created with.
  * This can be %NULL if the socket was created with a NULL protocol.
  *
- * Returns: a string or %NULL, do not free
+ * Returns: a string or %NULL, free with g_free
  *
  * Since: 2.22
  **/
-const char *
-g_socket_get_protocol (GSocket *socket)
+char *
+g_socket_get_protocol_name (GSocket *socket)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
-  return socket->priv->protocol;
+  return get_protocol_name (socket->priv->protocol);
 }
 
 /**
@@ -1388,6 +1476,8 @@ g_socket_accept (GSocket       *socket,
       close (ret);
 #endif
     }
+  else
+    new_socket->priv->protocol = socket->priv->protocol;
 
   return new_socket;
 }

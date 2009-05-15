@@ -1077,7 +1077,9 @@ g_socket_get_fd
 g_socket_get_keepalive
 g_socket_get_listen_backlog
 g_socket_get_local_address
-g_socket_get_protocol
+g_socket_get_protocol_id
+g_socket_get_protocol_name
+g_socket_protocol_id_lookup_by_name
 g_socket_get_remote_address
 g_socket_get_socket_type
 g_socket_is_closed
