@@ -30,7 +30,7 @@ TEST_PROGS +=	 		\
 	filter-streams		\
 	simple-async-result
 
-SAMPLE_PROGS = resolver
+SAMPLE_PROGS = resolver socket-server socket-client
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams desktop-app-info
@@ -84,6 +84,14 @@ filter_streams_LDADD		= $(progs_ldadd)
 
 resolver_SOURCES	  = resolver.c
 resolver_LDADD		  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+
+socket_server_SOURCES	  = socket-server.c
+socket_server_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+
+socket_client_SOURCES	  = socket-client.c
+socket_client_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
