@@ -126,10 +126,60 @@ typedef struct _GSocket                       GSocket;
  * received over #GSocket.
  **/
 typedef struct _GSocketControlMessage         GSocketControlMessage;
+/**
+ * GSocketClient:
+ *
+ * A helper class for network clients to make connections.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GSocketClient                               GSocketClient;
+/**
+ * GSocketConnection:
+ *
+ * A socket connection GIOStream object for connection-oriented sockets.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GSocketConnection                           GSocketConnection;
+/**
+ * GSocketClient:
+ *
+ * A helper class for network servers to listen for and accept connections.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GSocketListener                             GSocketListener;
+/**
+ * GSocketService:
+ *
+ * A helper class for handling accepting incomming connections in the
+ * glib mainloop.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GSocketService                              GSocketService;
 typedef struct _GSocketAddress                GSocketAddress;
 typedef struct _GSocketAddressEnumerator      GSocketAddressEnumerator;
 typedef struct _GSocketConnectable            GSocketConnectable;
 typedef struct _GSrvTarget                    GSrvTarget;
+/**
+ * GTcpConnection:
+ *
+ * A #GSocketConnection for TCP/IP connections.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GTcpConnection                              GTcpConnection;
+/**
+ * GThreadedSocketService:
+ *
+ * A helper class for handling accepting incomming connections in the
+ * glib mainloop and handling them in a thread.
+ *
+ * Since: 2.22
+ **/
+typedef struct _GThreadedSocketService                      GThreadedSocketService;
 typedef struct _GThemedIcon                   GThemedIcon;
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 

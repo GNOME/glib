@@ -1110,6 +1110,88 @@ g_socket_control_message_serialize
 #endif
 #endif
 
+#if IN_HEADER(__G_SOCKET_CLIENT_H__)
+#if IN_FILE(__G_SOCKET_CLIENT_C__)
+g_socket_client_get_type G_GNUC_CONST
+g_socket_client_connect
+g_socket_client_connect_async
+g_socket_client_connect_finish
+g_socket_client_connect_to_host
+g_socket_client_connect_to_host_async
+g_socket_client_connect_to_host_finish
+g_socket_client_get_family
+g_socket_client_get_local_address
+g_socket_client_get_protocol
+g_socket_client_get_socket_type
+g_socket_client_new
+g_socket_client_set_family
+g_socket_client_set_local_address
+g_socket_client_set_protocol
+g_socket_client_set_socket_type
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_CONNECTION_H__)
+#if IN_FILE(__G_SOCKET_CONNECTION_C__)
+g_socket_connection_get_type G_GNUC_CONST
+g_socket_connection_factory_create_connection
+g_socket_connection_factory_lookup_type
+g_socket_connection_factory_register_type
+g_socket_connection_get_local_address
+g_socket_connection_get_remote_address
+g_socket_connection_get_socket
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_LISTENER_H__)
+#if IN_FILE(__G_SOCKET_LISTENER_C__)
+g_socket_listener_get_type G_GNUC_CONST
+g_socket_listener_accept
+g_socket_listener_accept_async
+g_socket_listener_accept_finish
+g_socket_listener_accept_socket
+g_socket_listener_accept_socket_async
+g_socket_listener_accept_socket_finish
+g_socket_listener_add_address
+g_socket_listener_add_inet_port
+g_socket_listener_add_socket
+g_socket_listener_close
+g_socket_listener_new
+g_socket_listener_set_backlog
+#endif
+#endif
+
+#if IN_HEADER(__G_SOCKET_SERVICE_H__)
+#if IN_FILE(__G_SOCKET_SERVICE_C__)
+g_socket_service_get_type G_GNUC_CONST
+g_socket_service_is_active
+g_socket_service_new
+g_socket_service_start
+g_socket_service_stop
+#endif
+#endif
+
+#if IN_HEADER(__G_THREADED_SOCKET_SERVICE_H__)
+#if IN_FILE(__G_THREADED_SOCKET_SERVICE_C__)
+g_threaded_socket_service_get_type G_GNUC_CONST
+g_threaded_socket_service_new
+#endif
+#endif
+
+#if IN_HEADER(__G_TCP_CONNECTION_H__)
+#if IN_FILE(__G_TCP_CONNECTION_C__)
+g_tcp_connection_get_type G_GNUC_CONST
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_CONNECTION_H__)
+#if IN_FILE(__G_UNIX_CONNECTION_C__)
+g_unix_connection_get_type G_GNUC_CONST
+g_unix_connection_receive_fd
+g_unix_connection_send_fd
+#endif
+#endif
+
 #if IN_HEADER(__G_UNIX_FD_MESSAGE_H__)
 #if IN_FILE(__G_UNIX_FD_MESSAGE_C__)
 g_unix_fd_message_get_type G_GNUC_CONST

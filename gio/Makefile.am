@@ -130,6 +130,7 @@ appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
 platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 unix_sources = \
+	gunixconnection.c	\
 	gunixfdmessage.c	\
 	gunixmount.c		\
 	gunixmount.h		\
@@ -150,6 +151,7 @@ unix_sources = \
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
 	gdesktopappinfo.h	\
+	gunixconnection.h	\
 	gunixmounts.h 		\
 	gunixfdmessage.h	\
 	gunixinputstream.h 	\
@@ -235,11 +237,21 @@ libgio_2_0_la_SOURCES =		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
 	gsocket.c		\
-	gsocketcontrolmessage.c	\
 	gsocketaddress.c	\
 	gsocketaddressenumerator.c \
+	gsocketclient.c		\
 	gsocketconnectable.c	\
+	gsocketconnection.c	\
+	gsocketcontrolmessage.c	\
+	gsocketinputstream.c	\
+	gsocketinputstream.h	\
+	gsocketlistener.c	\
+	gsocketoutputstream.c	\
+	gsocketoutputstream.h	\
+	gsocketservice.c	\
 	gsrvtarget.c		\
+	gtcpconnection.c	\
+	gthreadedsocketservice.c\
 	gthemedicon.c 		\
 	gthreadedresolver.c	\
 	gthreadedresolver.h	\
@@ -353,11 +365,17 @@ gio_headers =			\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
 	gsocket.h		\
-	gsocketcontrolmessage.h	\
 	gsocketaddress.h	\
 	gsocketaddressenumerator.h \
+	gsocketclient.h		\
 	gsocketconnectable.h	\
+	gsocketconnection.h	\
+	gsocketcontrolmessage.h	\
+	gsocketlistener.h	\
+	gsocketservice.h	\
 	gsrvtarget.h		\
+	gtcpconnection.h	\
+	gthreadedsocketservice.h\
 	gthemedicon.h 		\
 	gvfs.h 			\
 	gvolume.h 		\

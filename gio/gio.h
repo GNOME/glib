@@ -74,10 +74,16 @@
 #include <gio/gseekable.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gsocket.h>
-#include <gio/gsocketcontrolmessage.h>
 #include <gio/gsocketaddress.h>
 #include <gio/gsocketaddressenumerator.h>
+#include <gio/gsocketclient.h>
 #include <gio/gsocketconnectable.h>
+#include <gio/gsocketconnection.h>
+#include <gio/gsocketcontrolmessage.h>
+#include <gio/gsocketlistener.h>
+#include <gio/gsocketservice.h>
+#include <gio/gtcpconnection.h>
+#include <gio/gthreadedsocketservice.h>
 #include <gio/gsrvtarget.h>
 #include <gio/gthemedicon.h>
 #include <gio/gvfs.h>
