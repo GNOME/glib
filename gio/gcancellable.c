@@ -189,6 +189,20 @@ set_fd_nonblocking (int fd)
 }
 
 static void
+set_fd_close_exec (int fd)
+{
+  int flags;
+
+  flags = fcntl (fd, F_GETFD, 0);
+  if (flags != -1 && (flags & FD_CLOEXEC) == 0)
+    {
+      flags |= FD_CLOEXEC;
+      fcntl (fd, F_SETFD, flags);
+    }
+}
+
+
+static void
 g_cancellable_open_pipe (GCancellable *cancellable)
 {
   if (pipe (cancellable->cancel_pipe) == 0)
@@ -198,6 +212,8 @@ g_cancellable_open_pipe (GCancellable *cancellable)
        */
       set_fd_nonblocking (cancellable->cancel_pipe[0]);
       set_fd_nonblocking (cancellable->cancel_pipe[1]);
+      set_fd_close_exec (cancellable->cancel_pipe[0]);
+      set_fd_close_exec (cancellable->cancel_pipe[1]);
     }
   else
     g_warning ("Failed to create pipe for GCancellable. Out of file descriptors?");
