@@ -603,6 +603,8 @@ async_op_wrapper_new (gpointer object,
   data->object = g_object_ref (object);
   data->callback = callback;
   data->user_data = user_data;
+
+  return data;
 }
 
 static void
