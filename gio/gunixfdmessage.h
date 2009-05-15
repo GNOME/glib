@@ -46,6 +46,12 @@ typedef struct _GUnixFDMessage                              GUnixFDMessage;
 struct _GUnixFDMessageClass
 {
   GSocketControlMessageClass parent_class;
+
+  /*< private >*/
+
+  /* Padding for future expansion */
+  void (*_g_reserved1) (void);
+  void (*_g_reserved2) (void);
 };
 
 struct _GUnixFDMessage
