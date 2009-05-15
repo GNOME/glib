@@ -30,7 +30,7 @@ TEST_PROGS +=	 		\
 	filter-streams		\
 	simple-async-result
 
-SAMPLE_PROGS = resolver socket-server socket-client
+SAMPLE_PROGS = resolver socket-server socket-client echo-server httpd
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams desktop-app-info
@@ -92,6 +92,14 @@ socket_server_LDADD	  = $(progs_ldadd) \
 
 socket_client_SOURCES	  = socket-client.c
 socket_client_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+
+echo_server_SOURCES	  = echo-server.c
+echo_server_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+
+httpd_SOURCES		  = httpd.c
+httpd_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
