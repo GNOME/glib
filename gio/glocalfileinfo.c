@@ -2048,7 +2048,7 @@ set_mtime_atime (char                       *filename,
 
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
-		   _("Error setting owner: %s"),
+		   _("Error setting modification or access time: %s"),
 		   g_strerror (errsv));
 	  return FALSE;
     }
