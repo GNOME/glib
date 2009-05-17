@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.20.1 to GLib 2.20.2
+===================================================
+
+* Bug fixes:
+ 579862 requesting xattr::foo ends up calling getxattr(...
+ 573246 g_desktop_app_info_dup() can access NULL pointer
+
+* Updated translations:
+ Catalan
+ Czech
+ Pashto
+
+
 Overview of Changes from GLib 2.20.0 to GLib 2.20.1
 ===================================================
 
