@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-04-09 13:36+0200\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -1188,34 +1188,34 @@ msgstr "%s-type"
 msgid "Unexpected early end-of-stream"
 msgstr "Uventet tidlig strømafslutning"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Unavngivet"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Skrivebordsfil angav intet Exec-felt"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finde terminal krævet af dette program"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke oprette konfigurationsfolder %s for brugerprogram: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke oprette bruger-MIME-konfigurationsfolder %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke oprette brugerskrivebords-fil %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Tilpasset definition for %s"
@@ -1307,7 +1307,7 @@ msgstr "Affald understøttes ikke"
 msgid "File names cannot contain '%c'"
 msgstr "Filnavne kan ikke indeholder \"%c\""
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "drevet implementerer ikke montering"
 
@@ -1822,7 +1822,7 @@ msgstr "Fildeskriptoren, der skal skrives til"
 msgid "Error writing to unix: %s"
 msgstr "Fejl ved skrivning til unix: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "drev implementerer ikke eject"
 

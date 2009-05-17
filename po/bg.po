@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-17 14:06+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -1193,34 +1193,34 @@ msgstr "Вид на %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неочаквано ранен край на поток"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без име"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Във файла .desktop липсва поле за изпълнение"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Не може да се открие терминал за приложението"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не може да се създаде папката с потребителските настройки %s: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не може да се създаде папката с настройките за MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не може да се създаде файл .desktop — „%s“"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Потребителска дефиниция за %s"
@@ -1311,7 +1311,7 @@ msgstr "Не се поддържа кошче"
 msgid "File names cannot contain '%c'"
 msgstr "Файловите имена не могат да съдържат „%c“"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "томът не поддържа монтиране"
 
@@ -1824,7 +1824,7 @@ msgstr "Дескрипторът на файла, в който да се зап
 msgid "Error writing to unix: %s"
 msgstr "Грешка при запис към ЮНИКС: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "томът не поддържа изваждане"
 

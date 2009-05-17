@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-02-07 19:26+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -1176,34 +1176,34 @@ msgstr "kiểu %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Kết thúc luồng sớm bất thường"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Không có tên"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Tập tin Desktop không ghi rõ trường Exec (thực hiện)"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Không tìm thấy thiết bị cuối cần thiết cho ứng dụng"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Không thể tạo thư mục cấu hình ứng dụng người dùng %s: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Không thể tạo thư mục cấu hình MIME người dùng %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Không thể tạo tập tin desktop %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Lời định nghĩa riêng cho %s"
@@ -1295,7 +1295,7 @@ msgstr "Thùng rác không được hỗ trợ"
 msgid "File names cannot contain '%c'"
 msgstr "Tên tập tin không thể chứa « %c »"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "hàm volume (khối tin) không thực hiện chức năng mount (lắp)"
 
@@ -1808,7 +1808,7 @@ msgstr "Bộ mô tả tập tin vào đó cần ghi"
 msgid "Error writing to unix: %s"
 msgstr "Gặp lỗi khi ghi vào UNIX: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "hàm volume (khối tin) không thực hiện hàm eject (đầy ra)"
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-17 09:21+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1233,38 +1233,38 @@ msgstr "Type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Fin précoce de flux inattendue"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sans nom"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Le fichier Bureau n'a pas indiqué de champ Exec"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Impossible de trouver le terminal requis par l'application"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration de l'application %s pour "
 "l'utilisateur : %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration MIME %s pour l'utilisateur : "
 "%s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
@@ -1355,7 +1355,7 @@ msgstr "La corbeille n'est pas prise en charge"
 msgid "File names cannot contain '%c'"
 msgstr "Les noms de fichiers ne peuvent contenir « %c »"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "le volume n'implémente pas « mount »"
 
@@ -1874,7 +1874,7 @@ msgstr "Le descripteur de fichier à écrire"
 msgid "Error writing to unix: %s"
 msgstr "Erreur lors de l'écriture vers unix : %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "le volume n'implémente pas l'éjection (« eject »)"
 

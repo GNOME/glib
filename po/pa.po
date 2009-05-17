@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-14 16:41+0000\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjab-l10n@list.sf.net>\n"
@@ -1147,34 +1147,34 @@ msgstr "%s ਟਾਈਪ"
 msgid "Unexpected early end-of-stream"
 msgstr "ਅਚਾਨਕ ਛੇਤੀ ਐਂਡ-ਆਫ਼-ਸਟੀਰਮ"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ਬਿਨ-ਨਾਂ"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "ਡੈਸਕਟਾਪ ਫਾਇਲ ਨੇ Exec ਫੀਲਡ ਨਹੀਂ ਦਿੱਤਾ ਹੈ"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਟਰਮੀਨਲ ਲੋੜ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ ਹੈ"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ ਐਪਲੀਕੇਸ਼ਨ ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ MIME ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ਯੂਜ਼ਰ ਡੈਸਕਟਾਪ ਫਾਇਲ %s ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ਲਈ ਕਸਟਮ ਪਰਿਭਾਸ਼ਾ"
@@ -1265,7 +1265,7 @@ msgstr "ਰੱਦ ਸਹਾਇਕ ਨਹੀਂ"
 msgid "File names cannot contain '%c'"
 msgstr "ਫਾਇਲ ਨਾਂ ਵਿੱਚ ' %c' ਮੌਜੂਦ ਨਹੀਂ ਹੋ ਸਕਦਾ"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "ਵਾਲੀਅਮ ਲਈ ਮਾਊਂਟ ਸਥਾਪਤ ਨਹੀਂ ਹੈ"
 
@@ -1776,7 +1776,7 @@ msgstr "ਲਿਖਣ ਲਈ ਫਾਇਲ ਡਿਸਕ੍ਰਿਪਟਰ"
 msgid "Error writing to unix: %s"
 msgstr "unix ਉੱਤੇ ਲਿਖਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "ਵਾਲੀਅਮ ਹਾਲੇ ਬਣਾਇਆ ਨਹੀਂ ਹੈ"
 

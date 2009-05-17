@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-17 18:55+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -1200,35 +1200,35 @@ msgstr "%s mota"
 msgid "Unexpected early end-of-stream"
 msgstr "Ustekabeko korronte-amaiera azkarregia"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Izenbagea"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Mahaigaineko fitxategiak ez du Exec eremua zehaztu"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Ezin da erabiltzailearen MIMEren %s konfigurazio-karpeta sortu: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Ezin da erabiltzailearen mahaigaineko %s fitxategia sortu"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s(r)en definizio pertsonalizatua"
@@ -1319,7 +1319,7 @@ msgstr "Zakarrontzira botatzea ez dago onartuta"
 msgid "File names cannot contain '%c'"
 msgstr "Fitxategi-izenek ezin dute '%c' eduki"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
@@ -1835,7 +1835,7 @@ msgstr "Fitxategi-deskriptorea bertan idazteko"
 msgid "Error writing to unix: %s"
 msgstr "Errorea UNIXen idaztean: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "bolumenak ez dauka egoztea inplementatuta"
 

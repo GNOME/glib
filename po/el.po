@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-04-02 00:15+0200\n"
 "Last-Translator: Thanos Lefteris <alefteris@gmail.com>\n"
 "Language-Team: Greek\n"
@@ -1232,34 +1232,34 @@ msgstr "τύπος %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Μη αναμενόμενο πρόωρο τέλος ροής"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Ανώνυμο"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Το αρχείο επιφάνειας εργασίας δεν αναφέρει συγκεκριμένο πεδίο Exec"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Αδυναμία εύρεσης του τερματικού που απαιτείται για την εφαρμογή"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Αδυναμία δημιουργίας φακέλου ρυθμίσεων εφαρμογής %s: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Αδυναμία δημιουργίας φακέλου ρυθμίσεων MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Αδυναμία δημιουργίας αρχείου επιφάνειας εργασίας %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Προσαρμοσμένος ορισμός του %s"
@@ -1351,7 +1351,7 @@ msgstr "Δεν υποστηρίζεται η ύπαρξη απορριμάτων
 msgid "File names cannot contain '%c'"
 msgstr "Τα ονόματα των αρχείων δεν επιτρέπεται να περιέχουν '%c'"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "ο τόμος δεν υποστηρίζει την προσάρτηση"
 
@@ -1885,7 +1885,7 @@ msgstr "Ο περιγραφέας αρχείου στον οποίο θα γίν
 msgid "Error writing to unix: %s"
 msgstr "Σφάλμα εγγραφής σε unix: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "ο τόμος δεν υποστηρίζει την εξαγωγή"
 

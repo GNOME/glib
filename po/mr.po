@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-09 19:28+0530\n"
 "Last-Translator: Sandeep Shedmake <sandeep.shedmake@gmail.com>\n"
 "Language-Team: marathi\n"
@@ -1144,34 +1144,34 @@ msgstr "%s प्रकार"
 msgid "Unexpected early end-of-stream"
 msgstr "अपरिचीत पूर्वरत end-of-stream"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "अनामीक"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "डेस्कटॉप फाइल मध्ये Exec नोंदणी निश्चित नाही"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "अनुप्रयोगकरीता आवश्यक टर्मिनल आढळले नाही"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "वापरकर्ता अनुप्रयोग संयोजन संचयीका %s बनवू शकले नाही: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "वापरकर्ता MIME संयोजन संचयीका %s बनवू शकले नाही: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "वापरकर्ता डेस्कटॉप फाइल %s बनवू शकत नाही"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s करीता इच्छिक व्याख्या"
@@ -1262,7 +1262,7 @@ msgstr "कचरापेटी समर्थित नाही"
 msgid "File names cannot contain '%c'"
 msgstr "फाइल नावात '%c' असू शकत नाही"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "खंड आरोहन कार्यारत करत नाही"
 
@@ -1773,7 +1773,7 @@ msgstr "लेखनजोगी फाइल डिस्क्रीप्ट�
 msgid "Error writing to unix: %s"
 msgstr "unixकरीता लिहितेवेळी त्रूटी: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "खंड बाहेर कडा कार्यन्वीत होत नाही"
 

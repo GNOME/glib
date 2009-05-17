@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-05 13:18+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
@@ -1153,34 +1153,34 @@ msgstr "%s प्रकार"
 msgid "Unexpected early end-of-stream"
 msgstr "अप्रत्याशित स्ट्रीम का समय से पहले अंत"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "बेनाम"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "डेस्कटॉप फ़ाइल एक्स क्षेत्र को निर्दिष्ट नहीं करता है"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "अनुप्रयोग के लिए जरूरी टर्मिनल ढूँढ़ने में असमर्थ"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "उपयोक्ता अनुप्रयोग विन्यास फ़ोल्डर %s नहीं बना सकता है: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "MIME विन्यास फ़ोल्डर %s नहीं बना सकता है: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "उपयोक्ता डेस्कटॉप फ़ाइल %s नहीं बना सकता है"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s के लिए मनपसंग परिभाषा"
@@ -1271,7 +1271,7 @@ msgstr "रद्दी समर्थित नहीं है"
 msgid "File names cannot contain '%c'"
 msgstr "फ़ाइल नाम में '%c' नहीं हो सकता है"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "आवाज माउंट लागू नहीं कर सकता है"
 
@@ -1782,7 +1782,7 @@ msgstr "फ़ाइल विवरक जिसमें लिखा जा�
 msgid "Error writing to unix: %s"
 msgstr "यूनिक्स में लिखने में त्रुटि: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "आवाज बाहर करें लागू नहीं करता है"
 

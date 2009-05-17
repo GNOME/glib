@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-17 21:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1158,34 +1158,34 @@ msgstr "%s തരത്തിലുള്ള"
 msgid "Unexpected early end-of-stream"
 msgstr "end-of-stream അപ്രതീക്ഷിതമായി സമയത്തിനു് മുമ്പു്"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "പേരിടാത്ത"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "പണിയിട ഫയല്‍ Exec ഫീള്‍ഡ് വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "പ്രയോഗത്തിനു് ആവശ്യമായ ടെര്‍മിനല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനു് പ്രയോഗത്തിനുള്ള ക്രമീകരണ ഫോള്‍ഡര്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "യഥേഷ്ടം %s നിഷ്കര്‍ഷിക്കുക"
@@ -1276,7 +1276,7 @@ msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്ക�
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "വോള്യം മൌണ്ടിനെ ലഭ്യമാക്കുന്നില്ല"
 
@@ -1787,7 +1787,7 @@ msgstr "എഴുതുന്നതിനുള്ള ഫയല്‍ വിശ�
 msgid "Error writing to unix: %s"
 msgstr "യൂണിക്സിലേക്ക് എഴുതുന്നതില്‍ പിശക്: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "വോള്യം പുറത്തിറക്കല്‍ അനുവദിക്കുന്നില്ല"
 

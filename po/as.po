@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-18 11:59+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
@@ -1151,34 +1151,34 @@ msgstr "%s ধৰন"
 msgid "Unexpected early end-of-stream"
 msgstr "স্ৰোতৰ অপ্ৰত্যাশিত আগতীয়া অন্ত ।"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "নামবিহীন"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "ডেস্কটপ নথিপত্ৰত Exec ক্ষেত্ৰ নিৰ্ধাৰিত নহয়"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "অনুপ্ৰয়োগৰ বাবে আৱশ্যক টাৰ্মিনেল পোৱা নাযায়"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ব্যৱহাৰকৰ্তা অনুপ্ৰয়োগৰ বিন্যাস ফোল্ডাৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ব্যৱহাৰকৰ্তা MIME বিন্যাস ফোল্ডাৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ব্যৱহাৰকৰ্তা ডেস্কটপ নথিপত্ৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ৰ বাবে স্বনিৰ্ধাৰত ব্যাখ্যা"
@@ -1269,7 +1269,7 @@ msgstr "আবৰ্জনা সমৰ্থিত নহয়"
 msgid "File names cannot contain '%c'"
 msgstr "নথিপত্ৰৰ নামত '%c' ব্যৱহাৰ কৰা নাযাব"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
@@ -1781,7 +1781,7 @@ msgstr "নথিপত্ৰ দেস্ক্ৰিপ্টৰ য'ত ল�
 msgid "Error writing to unix: %s"
 msgstr "unix লৈ লিখিবলৈ সমস্যা: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "ভলিউম দ্বাৰা ইজেক্ট প্ৰয়োগ কৰা নহয়"
 

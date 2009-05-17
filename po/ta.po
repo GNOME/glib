@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-15 14:04+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1173,34 +1173,34 @@ msgstr "%s வகை"
 msgid "Unexpected early end-of-stream"
 msgstr "எதிர்ப்பார்க்கப்படாத முடிவு ஸ்ட்ரீம்"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "பெயரில்லாதது"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"
@@ -1291,7 +1291,7 @@ msgstr "குப்பை ஆதரவு கிடையாது"
 msgid "File names cannot contain '%c'"
 msgstr "'%c' கோப்பின் பெயர்களை பெற்றிருக்கவில்லை"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "தொகுதி மவுண்டை செயல்படுத்தவில்லை"
 
@@ -1802,7 +1802,7 @@ msgstr "எழுத வேண்டிய கோப்பு விளக்க
 msgid "Error writing to unix: %s"
 msgstr "யுனிக்ஸில் எழுதும் போது பிழை: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "தொகுதி வெளியேற்றத்தை செயல்படுத்தவில்லை"
 

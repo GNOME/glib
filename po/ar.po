@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2008-09-17 05:06+0300\n"
 "Last-Translator: Anas Afif Emad <anas.e87@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -1147,34 +1147,34 @@ msgstr "نوع %s"
 msgid "Unexpected early end-of-stream"
 msgstr "نهاية دَفق غير متوقّعة وغير متوقعة "
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "غير مسمّى"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "ملف سطح المكتب لم يحدد الحقل التنفيدي"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "تعذّر إيجاد الطرفية المطلوبة للتطبيق"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "تعذّر إنشاء مجلد التهيئة الخاص بتطبيق المستخدم %s: ‏%s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "لا يمكن إنشاء مجلد التهيئة MIME %s للمستخدم: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "لا يمكن إنشاء الملف %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "تعريف مخصص لِ %s"
@@ -1266,7 +1266,7 @@ msgstr "المهملات غير مدعومة"
 msgid "File names cannot contain '%c'"
 msgstr "لا يمكن  لأسماء الملفات أن تحتوي على '%c'  "
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "الجهاز لا ينفذ الوَصل"
 
@@ -1778,7 +1778,7 @@ msgstr ""
 msgid "Error writing to unix: %s"
 msgstr "خطأ أثناء الكتابة إلى يونكس: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "الجزء لا يدعم الإخراج"
 

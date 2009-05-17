@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2008-08-18 10:19+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -1273,22 +1273,22 @@ msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream i parakohshëm papritur"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Paemër"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "File .desktop nuk specifikon fushën Exec"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "E pamundur gjetja e terminalit të kërkuar nga aplikativi"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1296,20 +1296,20 @@ msgstr ""
 "(%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "E pamundur gjetja e kartelës së përdoruesit për konfigurimin MIME  (%s): %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "I pamundur krijimi i file .desktop të përdoruesit %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Përcaktimi i personalizuar për %s"
@@ -1414,7 +1414,7 @@ msgid "File names cannot contain '%c'"
 msgstr "Emrat e file nuk mund të përmbajnë '%c'"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "Volumi nuk suporton montimin"
 
@@ -2096,7 +2096,7 @@ msgid "Error writing to unix: %s"
 msgstr "Gabim gjatë shkrimit në unix: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "volumi nuk suporton nxjerrjen jashtë"
 

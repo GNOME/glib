@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-03-16 19:36+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -1174,34 +1174,34 @@ msgstr "%s vrsta"
 msgid "Unexpected early end-of-stream"
 msgstr "Nepričakovan prezgodnji konec pretoka"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Neimenovan"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Namizna datoteka ne vsebuje določenega polja Exec"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Ni mogoče najti terminala, ki ga zahteva program"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti nastavitvene mape uporabnikovega programa %s: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti uporabnikove nastavitvene MIME mape %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Ni mogoče ustvariti uporabnikove datoteke namizja %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Določilo po meri za %s"
@@ -1292,7 +1292,7 @@ msgstr "Smeti niso podprte"
 msgid "File names cannot contain '%c'"
 msgstr "Ni mogoče uporabiti '%c' v imenu datoteke"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "enota ne podpira priklopa"
 
@@ -1804,7 +1804,7 @@ msgstr "Datotečni opisnik kamor naj se izpiše"
 msgid "Error writing to unix: %s"
 msgstr "Napaka med pisanjem na unix: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "medija ni mogoče izvreči"
 

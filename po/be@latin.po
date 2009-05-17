@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1300,35 +1300,35 @@ msgstr "typ %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Zaŭčasny kaniec płyni"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Nienazvany"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fajł stała nie akreślivaje pola Exec"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Niemahčyma znajści terminału, vymahanaha dla aplikacyi"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Niemahčyma stvaryć kanfihuracyjny kataloh %s karystalnika dla aplikacyi: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Niemahčyma stvaryć kanfihuracyjny kataloh MIME %s dla karystalnika: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Niemahčyma stvaryć fajł stała %s dla karystalnika"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Asablivaje aznačeńnie dla %s"
@@ -1420,7 +1420,7 @@ msgstr "Śmietnica nie padtrymlivajacca"
 msgid "File names cannot contain '%c'"
 msgstr "Nazvy fajłaŭ nia mohuć utrymlivać \"%c\""
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "masiŭ nie zaimplementavaŭ mantavańnia (mount)"
 
@@ -1984,7 +1984,7 @@ msgstr ""
 msgid "Error writing to unix: %s"
 msgstr "Pamyłka zapisu ŭ unix: %s"
 
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "masiŭ nie zaimplementavaŭ vysoŭvańnia (eject)"
 

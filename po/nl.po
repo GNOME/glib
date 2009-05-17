@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 18:27-0400\n"
+"POT-Creation-Date: 2009-05-16 23:24-0400\n"
 "PO-Revision-Date: 2009-02-23 14:07+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -1230,35 +1230,35 @@ msgid "Unexpected early end-of-stream"
 msgstr "Voortijdig einde aan gegevensstroom"
 
 # naamloos/zonder naam/onbenoemd
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Zonder naam"
 
 # bureaubladbestand/desktopbestand
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktopbestand bevat geen Exec-veld"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Kan geen terminalvenster vinden voor het uitvoeren van het programma"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan persoonlijke programmaconfiguratiemap %s niet aanmaken: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan persoonlijke MIME-configuratiemap %s niet aanmaken: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan desktopbestand %s niet aanmaken"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Zelfgemaakte definitie voor %s"
@@ -1358,7 +1358,7 @@ msgstr "Prullenbak wordt ondersteund"
 msgid "File names cannot contain '%c'"
 msgstr "Het teken ‘%c’ mag niet in een bestandsnaam voorkomen"
 
-#: gio/gfile.c:5011 gio/gvolume.c:370
+#: gio/gfile.c:5011 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "volumen begrijpt de opdracht ‘aankoppelen’ niet"
 
@@ -1902,7 +1902,7 @@ msgstr "Fout bij schrijven naar unix: %s"
 
 # volumen kan niet uitgeworpen worden/implemeteert 'uitwerpen' niet/
 # begrijpt de opdracht 'uitwerpen' niet
-#: gio/gvolume.c:444
+#: gio/gvolume.c:450
 msgid "volume doesn't implement eject"
 msgstr "volumen begrijpt de opdracht ‘uitwerpen’ niet"
 
