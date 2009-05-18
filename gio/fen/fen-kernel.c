@@ -473,7 +473,7 @@ _event_string (int event)
     }
 }
 
-/**
+/*
  * Get Solaris resouce values.
  *
  */

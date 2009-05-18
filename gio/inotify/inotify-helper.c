@@ -102,7 +102,7 @@ _ih_startup (void)
   return TRUE;
 }
 
-/**
+/*
  * Adds a subscription to be monitored.
  */
 gboolean
@@ -117,7 +117,7 @@ _ih_sub_add (inotify_sub *sub)
   return TRUE;
 }
 
-/**
+/*
  * Cancels a subscription which was being monitored.
  */
 gboolean
