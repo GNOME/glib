@@ -201,12 +201,14 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 /**
  * g_threaded_socket_service_new:
  * @returns: a new #GSocketService.
+ * @max_threads: the maximal number of threads to execute concurrently
+ *   handling incomming clients, -1 means no limit
  *
  * Creates a new #GThreadedSocketService with no listeners.  Listeners
  * must be added with g_socket_service_add_listeners().
  **/
 GSocketService *
-g_threaded_socket_service_new (void)
+g_threaded_socket_service_new (int max_threads)
 {
   return g_object_new (G_TYPE_THREADED_SOCKET_SERVICE, NULL);
 }
