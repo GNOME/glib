@@ -1342,15 +1342,10 @@ g_socket_bind (GSocket         *socket,
      It always allows the unix variant of SO_REUSEADDR anyway */
 #ifndef G_OS_WIN32
   value = (int) !!reuse_address;
-  if (setsockopt (socket->priv->fd, SOL_SOCKET, SO_REUSEADDR,
-		  (gpointer) &value, sizeof (value)) < 0)
-    {
-      int errsv = get_socket_errno ();
-      g_set_error (error,
-		   G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Error setting reuse_address: %s"), socket_strerror (errsv));
-      return FALSE;
-    }
+  /* Ignore errors here, the only likely error is "not supported", and
+     this is a "best effort" thing mainly */
+  setsockopt (socket->priv->fd, SOL_SOCKET, SO_REUSEADDR,
+	      (gpointer) &value, sizeof (value));
 #endif
 
   if (!g_socket_address_to_native (address, addr, sizeof addr, error))
