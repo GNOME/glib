@@ -33,7 +33,7 @@ typedef struct _fen_sub
     gboolean is_mondir;
 } fen_sub;
 
-fen_sub*	fen_sub_new (gpointer udata, gboolean is_mondir);
-void		fen_sub_delete (fen_sub *sub);
+fen_sub*	_fen_sub_new (gpointer udata, gboolean is_mondir);
+void		_fen_sub_delete (fen_sub *sub);
 
 #endif _FEN_SUB_H_

@@ -29,8 +29,8 @@
 
 G_BEGIN_DECLS
 
-extern void missing_add (fdata *f);
-extern void missing_remove (fdata *f);
+extern void _missing_add (fdata *f);
+extern void _missing_remove (fdata *f);
 
 G_END_DECLS
 

@@ -65,20 +65,20 @@ static void scan_children (node_t *f);
 static void scan_known_children (node_t* f);
 
 node_t*
-add_missing_cb (node_t* parent, gpointer user_data)
+_add_missing_cb (node_t* parent, gpointer user_data)
 {
     g_assert (parent);
     FD_W ("%s p:0x%p %s\n", __func__, parent, (gchar*)user_data);
-    return add_node (parent, (gchar*)user_data);
+    return _add_node (parent, (gchar*)user_data);
 }
 
 gboolean
-pre_del_cb (node_t* node, gpointer user_data)
+_pre_del_cb (node_t* node, gpointer user_data)
 {
     fdata* data;
     
     g_assert (node);
-    data = node_get_data (node);
+    data = _node_get_data (node);
     FD_W ("%s node:0x%p %s\n", __func__, node, NODE_NAME(node));
     if (data != NULL) {
         if (!FN_IS_PASSIVE(data)) {
@@ -132,7 +132,7 @@ g_timeval_lt (GTimeVal *val1, GTimeVal *val2)
     return FALSE;
 }
 
-/**
+/*
  * If all active children nodes are ported, then cancel monitor the parent node
  *
  * Unsafe, need lock.
@@ -145,7 +145,7 @@ scan_known_children (node_t* f)
     fdata* pdata;
     
     FD_W ("%s %s [0x%p]\n", __func__, NODE_NAME(f), f);
-    pdata = node_get_data (f);
+    pdata = _node_get_data (f);
     /*
      * Currect fdata must is directly monitored. Be sure it is 1 level monitor.
      */
@@ -162,13 +162,13 @@ scan_known_children (node_t* f)
              * If the node is existed, and isn't ported, then emit created
              * event. Ignore others.
              */
-            childf = children_find (f, basename);
+            childf = _children_find (f, basename);
             if (childf &&
-              (data = node_get_data (childf)) != NULL &&
+              (data = _node_get_data (childf)) != NULL &&
               !FN_IS_PASSIVE (data)) {
                 if (!is_monitoring (data) &&
-                  port_add (&data->fobj, &data->len, data)) {
-                    fdata_emit_events (data, FN_EVENT_CREATED);
+                  _port_add (&data->fobj, &data->len, data)) {
+                    _fdata_emit_events (data, FN_EVENT_CREATED);
                 }
             }
         }
@@ -187,7 +187,7 @@ scan_children (node_t *f)
     fdata* pdata;
     
     FD_W ("%s %s [0x%p]\n", __func__, NODE_NAME(f), f);
-    pdata = node_get_data (f);
+    pdata = _node_get_data (f);
     /*
      * Currect fdata must is directly monitored. Be sure it is 1 level monitor.
      */
@@ -201,26 +201,26 @@ scan_children (node_t *f)
             fdata* data;
 			GList *idx;
 
-            childf = children_find (f, basename);
+            childf = _children_find (f, basename);
             if (childf == NULL) {
                 gchar *filename;
 
                 filename = g_build_filename (NODE_NAME(f), basename, NULL);
-                childf = add_node (f, filename);
+                childf = _add_node (f, filename);
                 g_assert (childf);
-                data = fdata_new (childf, FALSE);
+                data = _fdata_new (childf, FALSE);
                 g_free (filename);
             }
-            if ((data = node_get_data (childf)) == NULL) {
-                data = fdata_new (childf, FALSE);
+            if ((data = _node_get_data (childf)) == NULL) {
+                data = _fdata_new (childf, FALSE);
             }
             /* Be sure data isn't ported and add to port successfully */
             /* Don't need delete it, it will be deleted by the parent */
             if (is_monitoring (data)) {
                 /* Ignored */
-            } else if (/* !is_ported (data) && */
-                port_add (&data->fobj, &data->len, data)) {
-                fdata_emit_events (data, FN_EVENT_CREATED);
+            } else if (/* !_is_ported (data) && */
+                _port_add (&data->fobj, &data->len, data)) {
+                _fdata_emit_events (data, FN_EVENT_CREATED);
             }
         }
 		g_dir_close (dir);
@@ -265,20 +265,20 @@ scan_deleting_data (gpointer data)
 gboolean
 is_monitoring (fdata* data)
 {
-    return is_ported (data) || data->change_update_id > 0;
+    return _is_ported (data) || data->change_update_id > 0;
 }
 
 fdata*
-get_parent_data (fdata* data)
+_get_parent_data (fdata* data)
 {
     if (FN_NODE(data) && !IS_TOPNODE(FN_NODE(data))) {
-        return node_get_data (FN_NODE(data)->parent);
+        return _node_get_data (FN_NODE(data)->parent);
     }
     return NULL;
 }
 
 node_t*
-get_parent_node (fdata* data)
+_get_parent_node (fdata* data)
 {
     if (FN_NODE(data)) {
         return (FN_NODE(data)->parent);
@@ -287,7 +287,7 @@ get_parent_node (fdata* data)
 }
 
 fdata *
-fdata_new (node_t* node, gboolean is_mondir)
+_fdata_new (node_t* node, gboolean is_mondir)
 {
 	fdata *f = NULL;
 
@@ -298,7 +298,7 @@ fdata_new (node_t* node, gboolean is_mondir)
         f->is_dir = is_mondir;
         f->eventq = g_queue_new ();
         FD_W ("[ %s ] 0x%p %s\n", __func__, f, FN_NAME(f));
-        node_set_data (node, f);
+        _node_set_data (node, f);
 	}
 	return f;
 }
@@ -311,11 +311,11 @@ fdata_delete (fdata *f)
     FD_W ("[ TRY %s ] 0x%p id[%4d:%4d] %s\n", __func__, f, f->eventq_id, f->change_update_id, FN_NAME(f));
     g_assert (FN_IS_PASSIVE(f));
 
-    port_remove (f);
-    /* missing_remove (f); */
+    _port_remove (f);
+    /* _missing_remove (f); */
 
     if (f->node != NULL) {
-        node_set_data (f->node, NULL);
+        _node_set_data (f->node, NULL);
         f->node = NULL;
     }
 
@@ -333,7 +333,7 @@ fdata_delete (fdata *f)
     FD_W ("[ %s ] 0x%p %s\n", __func__, f, FN_NAME(f));
 
     while ((ev = g_queue_pop_head (f->eventq)) != NULL) {
-        fnode_event_delete (ev);
+        _fnode_event_delete (ev);
     }
 
     g_queue_free (f->eventq);
@@ -343,14 +343,14 @@ fdata_delete (fdata *f)
 }
 
 void
-fdata_reset (fdata* data)
+_fdata_reset (fdata* data)
 {
     fnode_event_t *ev;
 
     g_assert (data);
 
     while ((ev = g_queue_pop_head (data->eventq)) != NULL) {
-        fnode_event_delete (ev);
+        _fnode_event_delete (ev);
     }
 }
 
@@ -365,7 +365,7 @@ fdata_sub_find (gpointer a, gpointer b)
 }
 
 void
-fdata_sub_add (fdata *f, gpointer sub)
+_fdata_sub_add (fdata *f, gpointer sub)
 {
     FD_W ("[%s] [data: 0x%p ] [s: 0x%p ] %s\n", __func__, f, sub, FN_NAME(f));
     g_assert (g_list_find_custom (f->subs, sub, (GCompareFunc)fdata_sub_find) == NULL);
@@ -373,7 +373,7 @@ fdata_sub_add (fdata *f, gpointer sub)
 }
 
 void
-fdata_sub_remove (fdata *f, gpointer sub)
+_fdata_sub_remove (fdata *f, gpointer sub)
 {
     GList *l;
     FD_W ("[%s] [data: 0x%p ] [s: 0x%p ] %s\n", __func__, f, sub, FN_NAME(f));
@@ -384,42 +384,42 @@ fdata_sub_remove (fdata *f, gpointer sub)
     f->subs = g_list_delete_link (f->subs, l);
 }
 
-/**
+/*
  * Adjust self on failing to Port
  */
 void
-fdata_adjust_deleted (fdata* f)
+_fdata_adjust_deleted (fdata* f)
 {
     node_t* parent;
     fdata* pdata;
-    node_op_t op = {NULL, NULL, pre_del_cb, NULL};
+    node_op_t op = {NULL, NULL, _pre_del_cb, NULL};
 
     /*
      * It's a top node. We move it to missing list.
      */
-    parent = get_parent_node (f);
-    pdata = get_parent_data (f);
+    parent = _get_parent_node (f);
+    pdata = _get_parent_data (f);
     if (!FN_IS_PASSIVE(f) ||
-      children_num (FN_NODE(f)) > 0 ||
+      _children_num (FN_NODE(f)) > 0 ||
       (pdata && !FN_IS_PASSIVE(pdata))) {
         if (parent) {
             if (pdata == NULL) {
-                pdata = fdata_new (parent, FALSE);
+                pdata = _fdata_new (parent, FALSE);
             }
             g_assert (pdata);
-            if (!port_add (&pdata->fobj, &pdata->len, pdata)) {
-                fdata_adjust_deleted (pdata);
+            if (!_port_add (&pdata->fobj, &pdata->len, pdata)) {
+                _fdata_adjust_deleted (pdata);
             }
         } else {
             /* f is root */
             g_assert (IS_TOPNODE(FN_NODE(f)));
-            missing_add (f);
+            _missing_add (f);
         }
     } else {
 #ifdef GIO_COMPILATION
-        pending_remove_node (FN_NODE(f), &op);
+        _pending_remove_node (FN_NODE(f), &op);
 #else
-        remove_node (FN_NODE(f), &op);
+        _remove_node (FN_NODE(f), &op);
 #endif
     }
 }
@@ -433,11 +433,11 @@ fdata_adjust_changed (fdata *f)
     fdata* pdata;
 
     G_LOCK (fen_lock);
-    parent = get_parent_node (f);
-    pdata = get_parent_data (f);
+    parent = _get_parent_node (f);
+    pdata = _get_parent_data (f);
 
     if (!FN_IS_LIVING(f) ||
-      (children_num (FN_NODE(f)) == 0 &&
+      (_children_num (FN_NODE(f)) == 0 &&
         FN_IS_PASSIVE(f) &&
         pdata && FN_IS_PASSIVE(pdata))) {
         f->change_update_id = 0;
@@ -454,10 +454,10 @@ fdata_adjust_changed (fdata *f)
     if (f->len != buf.st_size) {
         /* FD_W ("LEN [%lld:%lld] %s\n", f->len, buf.st_size, FN_NAME(f)); */
         f->len = buf.st_size;
-        ev = fnode_event_new (FILE_MODIFIED, TRUE, f);
+        ev = _fnode_event_new (FILE_MODIFIED, TRUE, f);
         if (ev != NULL) {
             ev->is_pending = TRUE;
-            fdata_add_event (f, ev);
+            _fdata_add_event (f, ev);
         }
         /* Fdata is still changing, so scalable scan */
         f->change_update_id = g_timeout_add (get_scalable_scan_time (f),
@@ -475,19 +475,19 @@ fdata_adjust_changed (fdata *f)
                 scan_children (FN_NODE(f));
             } else {
                 scan_known_children (FN_NODE(f));
-                if ((children_num (FN_NODE(f)) == 0 &&
+                if ((_children_num (FN_NODE(f)) == 0 &&
                       FN_IS_PASSIVE(f) &&
                       pdata && FN_IS_PASSIVE(pdata))) {
-                    port_remove (f);
+                    _port_remove (f);
                     goto L_exit;
                 }
             }
         }
-        if (!port_add_simple (&f->fobj, f)) {
+        if (!_port_add_simple (&f->fobj, f)) {
         L_delete:
-            ev = fnode_event_new (FILE_DELETE, FALSE, f);
+            ev = _fnode_event_new (FILE_DELETE, FALSE, f);
             if (ev != NULL) {
-                fdata_add_event (f, ev);
+                _fdata_add_event (f, ev);
             }
         }
     }
@@ -498,13 +498,13 @@ L_exit:
 }
 
 void
-fdata_emit_events_once (fdata *f, int event, gpointer sub)
+_fdata_emit_events_once (fdata *f, int event, gpointer sub)
 {
     emit_once_cb (f, _event_converter (event), sub);
 }
 
 void
-fdata_emit_events (fdata *f, int event)
+_fdata_emit_events (fdata *f, int event)
 {
     emit_cb (f, _event_converter (event));
 }
@@ -512,7 +512,7 @@ fdata_emit_events (fdata *f, int event)
 static gboolean
 process_events (gpointer udata)
 {
-    node_op_t op = {NULL, NULL, pre_del_cb, NULL};
+    node_op_t op = {NULL, NULL, _pre_del_cb, NULL};
     fdata* f;
     fnode_event_t* ev;
     int e;
@@ -536,13 +536,13 @@ process_events (gpointer udata)
         if (!ev->is_pending) {
 #ifdef GIO_COMPILATION
             if (ev->has_twin) {
-                fdata_emit_events (f, FILE_ATTRIB);
+                _fdata_emit_events (f, FILE_ATTRIB);
             }
 #endif
-            fdata_emit_events (f, ev->e);
+            _fdata_emit_events (f, ev->e);
         }
         
-        fnode_event_delete (ev);
+        _fnode_event_delete (ev);
         ev = NULL;
 
         /* Adjust node state. */
@@ -565,10 +565,10 @@ process_events (gpointer udata)
             break;
         case FILE_ATTRIB:
             g_assert (f->change_update_id == 0);
-            if (!port_add (&f->fobj, &f->len, f)) {
-                ev = fnode_event_new (FILE_DELETE, FALSE, f);
+            if (!_port_add (&f->fobj, &f->len, f)) {
+                ev = _fnode_event_new (FILE_DELETE, FALSE, f);
                 if (ev != NULL) {
-                    fdata_add_event (f, ev);
+                    _fdata_add_event (f, ev);
                 }
             }
             break;
@@ -589,17 +589,17 @@ process_events (gpointer udata)
 }
 
 /**
- * fdata_add_event:
+ * _fdata_add_event:
  *
  */
 void
-fdata_add_event (fdata *f, fnode_event_t *ev)
+_fdata_add_event (fdata *f, fnode_event_t *ev)
 {
-    node_op_t op = {NULL, NULL, pre_del_cb, NULL};
+    node_op_t op = {NULL, NULL, _pre_del_cb, NULL};
     fnode_event_t *tail;
 
     if (!FN_IS_LIVING(f)) {
-        fnode_event_delete (ev);
+        _fnode_event_delete (ev);
         return;
     }
     
@@ -617,7 +617,7 @@ fdata_add_event (fdata *f, fnode_event_t *ev)
     case FILE_RENAME_FROM:
     case FILE_RENAME_TO:
     case FILE_ACCESS:
-        fnode_event_delete (ev);
+        _fnode_event_delete (ev);
         g_assert_not_reached ();
         return;
     case FILE_DELETE:
@@ -629,15 +629,15 @@ fdata_add_event (fdata *f, fnode_event_t *ev)
         if (tail) {
             g_queue_pop_tail (f->eventq);
             do {
-                fnode_event_delete (tail);
+                _fnode_event_delete (tail);
             } while ((tail = (fnode_event_t*)g_queue_pop_tail (f->eventq)) != NULL);
         }
         /*
          * Given a node "f" is deleted, process it ASAP.
          */
-        fdata_emit_events (f, ev->e);
-        fnode_event_delete (ev);
-        fdata_adjust_deleted (f);
+        _fdata_emit_events (f, ev->e);
+        _fnode_event_delete (ev);
+        _fdata_adjust_deleted (f);
         return;
     case FILE_MODIFIED:
     case UNMOUNTED:
@@ -661,17 +661,17 @@ fdata_add_event (fdata *f, fnode_event_t *ev)
                         g_time_val_add (&ev->t, PAIR_EVENTS_INC_TIMEVAL);
                         /* skip the previous event */
                         FD_W ("SKIPPED -- %s\n", _event_string (tail->e));
-                        fnode_event_delete (tail);
+                        _fnode_event_delete (tail);
                     } else {
                         break;
                     }
                 } else if (ev->e == FILE_MODIFIED && tail->e == FILE_ATTRIB) {
                     ev->has_twin = TRUE;
-                    fnode_event_delete (tail);
+                    _fnode_event_delete (tail);
                 } else if (ev->e == FILE_ATTRIB && f->change_update_id > 0) {
                     tail->has_twin = TRUE;
                     /* skip the current event */
-                    fnode_event_delete (ev);
+                    _fnode_event_delete (ev);
                     return;
                 } else {
                     break;
@@ -696,7 +696,7 @@ fdata_add_event (fdata *f, fnode_event_t *ev)
 }
 
 gboolean
-fdata_class_init (void (*user_emit_cb) (fdata*, int),
+_fdata_class_init (void (*user_emit_cb) (fdata*, int),
   void (*user_emit_once_cb) (fdata*, int,  gpointer),
   int (*user_event_converter) (int event))
 {
@@ -714,8 +714,8 @@ fdata_class_init (void (*user_emit_cb) (fdata*, int),
     emit_once_cb = user_emit_once_cb;
     _event_converter = user_event_converter;
     
-    if (!port_class_init (fdata_add_event)) {
-        FD_W ("port_class_init failed.");
+    if (!_port_class_init (_fdata_add_event)) {
+        FD_W ("_port_class_init failed.");
         return FALSE;
     }
     return TRUE;

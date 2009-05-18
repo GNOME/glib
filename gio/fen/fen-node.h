@@ -54,20 +54,20 @@ typedef struct node_op
     gpointer user_data;
 } node_op_t;
 
-node_t* add_node (node_t* parent, const gchar* filename);
-void remove_node (node_t* node, node_op_t* op);
-void pending_remove_node (node_t* node, node_op_t* op);
+node_t* _add_node (node_t* parent, const gchar* filename);
+void _remove_node (node_t* node, node_op_t* op);
+void _pending_remove_node (node_t* node, node_op_t* op);
 
-void travel_nodes (node_t* node, node_op_t* op);
-node_t* find_node_full (const gchar* filename, node_op_t* op);
-node_t* find_node (const gchar *filename);
+void _travel_nodes (node_t* node, node_op_t* op);
+node_t* _find_node_full (const gchar* filename, node_op_t* op);
+node_t* _find_node (const gchar *filename);
 
-node_t* children_find (node_t *f, const gchar *basename);
-guint children_num (node_t *f);
+node_t* _children_find (node_t *f, const gchar *basename);
+guint _children_num (node_t *f);
 
-gpointer node_get_data (node_t* node);
-gpointer node_set_data (node_t* node, gpointer user_data);
+gpointer _node_get_data (node_t* node);
+gpointer _node_set_data (node_t* node, gpointer user_data);
 
-gboolean node_class_init ();
+gboolean _node_class_init ();
 
 #endif /* _FEN_NODE_H_ */

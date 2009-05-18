@@ -58,8 +58,8 @@ g_fen_file_monitor_finalize (GObject *object)
 	GFenFileMonitor *self = G_FEN_FILE_MONITOR (object);
     
     if (self->sub) {
-        fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
-        fen_sub_delete (self->sub);
+        _fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
+        _fen_sub_delete (self->sub);
         self->sub = NULL;
     }
     
@@ -92,15 +92,15 @@ g_fen_file_monitor_constructor (GType type,
 
     /* Will never fail as is_supported() should be called before instanciating
      * anyway */
-    if (!fen_init ())
+    if (!_fen_init ())
         g_assert_not_reached ();
     
     /* FIXME: what to do about errors here? we can't return NULL or another
      * kind of error and an assertion is probably too hard */
-    self->sub = fen_sub_new (self, FALSE);
+    self->sub = _fen_sub_new (self, FALSE);
     g_assert (self->sub);
     
-    fen_add (filename, self->sub, FALSE);
+    _fen_add (filename, self->sub, FALSE);
 
     return obj;
 }
@@ -108,7 +108,7 @@ g_fen_file_monitor_constructor (GType type,
 static gboolean
 g_fen_file_monitor_is_supported (void)
 {
-	return fen_init ();
+	return _fen_init ();
 }
 
 static void
@@ -136,8 +136,8 @@ g_fen_file_monitor_cancel (GFileMonitor* monitor)
     GFenFileMonitor *self = G_FEN_FILE_MONITOR (monitor);
     
     if (self->sub) {
-        fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
-        fen_sub_delete (self->sub);
+        _fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
+        _fen_sub_delete (self->sub);
         self->sub = NULL;
     }
     

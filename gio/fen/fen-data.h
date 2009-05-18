@@ -63,26 +63,26 @@ typedef struct
 } fdata;
 
 /* fdata functions */
-fdata* fdata_new (node_t* node, gboolean is_mondir);
-void fdata_reset (fdata* data);
-void fdata_emit_events_once (fdata *f, int event, gpointer sub);
-void fdata_emit_events (fdata *f, int event);
-void fdata_add_event (fdata *f, fnode_event_t *ev);
-void fdata_adjust_deleted (fdata *f);
-fdata* get_parent_data (fdata* data);
-node_t* get_parent_node (fdata* data);
-gboolean is_monitoring (fdata* data);
+fdata* _fdata_new (node_t* node, gboolean is_mondir);
+void _fdata_reset (fdata* data);
+void _fdata_emit_events_once (fdata *f, int event, gpointer sub);
+void _fdata_emit_events (fdata *f, int event);
+void _fdata_add_event (fdata *f, fnode_event_t *ev);
+void _fdata_adjust_deleted (fdata *f);
+fdata* _get_parent_data (fdata* data);
+node_t* _get_parent_node (fdata* data);
+gboolean _is_monitoring (fdata* data);
 
 /* sub */
-void fdata_sub_add (fdata *f, gpointer sub);
-void fdata_sub_remove (fdata *f, gpointer sub);
+void _fdata_sub_add (fdata *f, gpointer sub);
+void _fdata_sub_remove (fdata *f, gpointer sub);
 
 /* misc */
-node_t* add_missing_cb (node_t* parent, gpointer user_data);
-gboolean pre_del_cb (node_t* node, gpointer user_data);
+node_t* _add_missing_cb (node_t* parent, gpointer user_data);
+gboolean _pre_del_cb (node_t* node, gpointer user_data);
 
 /* init */
-gboolean fdata_class_init (void (*user_emit_cb) (fdata*, int),
+gboolean _fdata_class_init (void (*user_emit_cb) (fdata*, int),
   void (*user_emit_once_cb) (fdata*, int,  gpointer),
   int (*user_event_converter) (int event));
 

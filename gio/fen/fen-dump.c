@@ -51,7 +51,7 @@ dump_node_tree (node_t* node, gpointer user_data)
     GList* i;
     if (G_TRYLOCK (fen_lock)) {
         if (node) {
-            travel_nodes (node, &op);
+            _travel_nodes (node, &op);
         }
         G_UNLOCK (fen_lock);
     }

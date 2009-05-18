@@ -121,7 +121,7 @@ scan_deleting_nodes (gpointer data)
             d = (struct _dnode*)i->data;
             /* Time to free, try only once */
             if (g_timeval_lt (&d->tv, &tv_now)) {
-                if ((node = find_node (d->filename)) != NULL) {
+                if ((node = _find_node (d->filename)) != NULL) {
                     remove_node_internal (node, d->op);
                 }
                 _dnode_free (d);
@@ -146,14 +146,14 @@ scan_deleting_nodes (gpointer data)
 }
 
 gpointer
-node_get_data (node_t* node)
+_node_get_data (node_t* node)
 {
     g_assert (node);
     return node->user_data;
 }
 
 gpointer
-node_set_data (node_t* node, gpointer user_data)
+_node_set_data (node_t* node, gpointer user_data)
 {
     gpointer data = node->user_data;
     g_assert (node);
@@ -162,7 +162,7 @@ node_set_data (node_t* node, gpointer user_data)
 }
 
 void
-travel_nodes (node_t* node, node_op_t* op)
+_travel_nodes (node_t* node, node_op_t* op)
 {
     GList* children;
     GList* i;
@@ -175,7 +175,7 @@ travel_nodes (node_t* node, node_op_t* op)
     children = g_hash_table_get_values (node->children);
     if (children) {
         for (i = children; i; i = i->next) {
-            travel_nodes (i->data, op);
+            _travel_nodes (i->data, op);
         }
         g_list_free (children);
     }
@@ -199,7 +199,7 @@ find_node_internal (node_t* node, const gchar* filename, node_op_t* op)
     if ((token = strtok_r (str, G_DIR_SEPARATOR_S, &lasts)) != NULL) {
         do {
             FN_W ("%s %s + %s\n", __func__, NODE_NAME(parent), token);
-            child = children_find (parent, token);
+            child = _children_find (parent, token);
             if (child) {
                 parent = child;
             } else {
@@ -227,19 +227,19 @@ find_node_internal (node_t* node, const gchar* filename, node_op_t* op)
 }
 
 node_t*
-find_node (const gchar *filename)
+_find_node (const gchar *filename)
 {
     return find_node_internal (_head, filename, NULL);
 }
 
 node_t*
-find_node_full (const gchar* filename, node_op_t* op)
+_find_node_full (const gchar* filename, node_op_t* op)
 {
     return find_node_internal (_head, filename, op);
 }
 
 node_t*
-add_node (node_t* parent, const gchar* filename)
+_add_node (node_t* parent, const gchar* filename)
 {
     gchar* str;
     gchar* token;
@@ -275,18 +275,18 @@ add_node (node_t* parent, const gchar* filename)
     }
 }
 
-/**
+/*
  * delete recursively
  */
 static gboolean
 remove_children (node_t* node, node_op_t* op)
 {
     FN_W ("%s 0x%p %s\n", __func__, node, NODE_NAME(node));
-    if (children_num (node) > 0) {
+    if (_children_num (node) > 0) {
         children_foreach_remove (node, children_remove_cb,
           (gpointer)op);
     }
-    if (children_num (node) == 0) {
+    if (_children_num (node) == 0) {
         return TRUE;
     }
     return FALSE;
@@ -313,7 +313,7 @@ remove_node_internal (node_t* node, node_op_t* op)
             parent = node->parent;
             children_remove (parent, node);
             node_delete (node);
-            if (children_num (parent) == 0) {
+            if (_children_num (parent) == 0) {
                 remove_node_internal (parent, op);
             }
             return TRUE;
@@ -324,7 +324,7 @@ remove_node_internal (node_t* node, node_op_t* op)
 }
 
 void
-pending_remove_node (node_t* node, node_op_t* op)
+_pending_remove_node (node_t* node, node_op_t* op)
 {
     struct _dnode* d;
     GList* l;
@@ -348,7 +348,7 @@ pending_remove_node (node_t* node, node_op_t* op)
 }
 
 void
-remove_node (node_t* node, node_op_t* op)
+_remove_node (node_t* node, node_op_t* op)
 {
     remove_node_internal (node, op);
 }
@@ -405,18 +405,18 @@ children_remove (node_t *p, node_t *f)
 }
 
 guint
-children_num (node_t *f)
+_children_num (node_t *f)
 {
     return g_hash_table_size (f->children);
 }
 
 node_t *
-children_find (node_t *f, const gchar *basename)
+_children_find (node_t *f, const gchar *basename)
 {
     return (node_t *) g_hash_table_lookup (f->children, (gpointer)basename);
 }
 
-/**
+/*
  * depth first delete recursively
  */
 static gboolean
@@ -456,7 +456,7 @@ children_foreach (node_t *f, GHFunc func, gpointer user_data)
 }
 
 gboolean
-node_class_init ()
+_node_class_init ()
 {
     FN_W ("%s\n", __func__);
     if (_head == NULL) {

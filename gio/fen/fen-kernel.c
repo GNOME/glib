@@ -76,7 +76,7 @@ static pnode_t *pnode_new ();
 static void pnode_delete (pnode_t *pn);
 
 gboolean
-is_ported (gpointer f)
+_is_ported (gpointer f)
 {
     _f* fo = g_hash_table_lookup (_obj_fen_hash, f);
     
@@ -185,7 +185,7 @@ port_add_kevent (int e, gpointer f)
         }
     }
     
-    if ((ev = fnode_event_new (e, has_twin, f)) != NULL) {
+    if ((ev = _fnode_event_new (e, has_twin, f)) != NULL) {
         g_queue_push_tail (g_eventq, ev);
     }
 }
@@ -335,7 +335,7 @@ pnode_new ()
 	return pn;
 }
 
-/**
+/*
  * port_add_internal
  *
  * < private >
@@ -401,25 +401,25 @@ port_add_internal (file_obj_t* fobj, off_t* len,
 }
 
 gboolean
-port_add (file_obj_t* fobj, off_t* len, gpointer f)
+_port_add (file_obj_t* fobj, off_t* len, gpointer f)
 {
     return port_add_internal (fobj, len, f, TRUE);
 }
 
 gboolean
-port_add_simple (file_obj_t* fobj, gpointer f)
+_port_add_simple (file_obj_t* fobj, gpointer f)
 {
     return port_add_internal (fobj, NULL, f, FALSE);
 }
 
-/**
- * port_remove
+/*
+ * port_remove:
  *
  * < private >
  * Unsafe, need lock fen_lock.
  */
 void
-port_remove (gpointer f)
+_port_remove (gpointer f)
 {
     _f* fo = NULL;
 
@@ -479,7 +479,7 @@ _event_string (int event)
  */
 
 extern gboolean
-port_class_init (void (*user_add_event) (gpointer, fnode_event_t*))
+_port_class_init (void (*user_add_event) (gpointer, fnode_event_t*))
 {
 	rctlblk_t *rblk;
     FK_W ("%s\n", __func__);
@@ -512,7 +512,7 @@ port_class_init (void (*user_add_event) (gpointer, fnode_event_t*))
 }
 
 fnode_event_t*
-fnode_event_new (int event, gboolean has_twin, gpointer user_data)
+_fnode_event_new (int event, gboolean has_twin, gpointer user_data)
 {
     fnode_event_t *ev;
     
@@ -528,7 +528,7 @@ fnode_event_new (int event, gboolean has_twin, gpointer user_data)
 }
 
 void
-fnode_event_delete (fnode_event_t* ev)
+_fnode_event_delete (fnode_event_t* ev)
 {
     g_free (ev);
 }

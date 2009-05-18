@@ -27,10 +27,10 @@
 #ifndef _FEN_HELPER_H_
 #define _FEN_HELPER_H_
 
-void fen_add (const gchar *filename, gpointer sub, gboolean is_mondir);
-void fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir);
+void _fen_add (const gchar *filename, gpointer sub, gboolean is_mondir);
+void _fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir);
 
 /* FEN subsystem initializing */
-gboolean fen_init ();
+gboolean _fen_init ();
 
 #endif /* _FEN_HELPER_H_ */

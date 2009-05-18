@@ -57,9 +57,9 @@ scan_missing_list (gpointer data)
     for (idx = missing_list; idx; idx = idx->next) {
         f = (fdata*)idx->data;
         
-        if (port_add (&f->fobj, &f->len, f)) {
+        if (_port_add (&f->fobj, &f->len, f)) {
             /* TODO - emit CREATE event */
-            fdata_emit_events (f, FN_EVENT_CREATED);
+            _fdata_emit_events (f, FN_EVENT_CREATED);
             existing_list = g_list_prepend (existing_list, idx);
         }
     }
@@ -85,11 +85,11 @@ scan_missing_list (gpointer data)
  * Unsafe, need lock fen_lock.
  */
 void
-missing_add (fdata *f)
+_missing_add (fdata *f)
 {
     GList *idx;
     
-    g_assert (!is_ported (f));
+    g_assert (!_is_ported (f));
 
     if (g_list_find (missing_list, f) != NULL) {
         FM_W ("%s is ALREADY added %s\n", __func__, FN_NAME(f));
@@ -114,7 +114,7 @@ missing_add (fdata *f)
  * Unsafe, need lock fen_lock.
  */
 void
-missing_remove (fdata *f)
+_missing_remove (fdata *f)
 {
     FM_W ("%s %s\n", __func__, FN_NAME(f));
     missing_list = g_list_remove (missing_list, f);

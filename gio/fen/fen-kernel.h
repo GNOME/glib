@@ -40,15 +40,15 @@ typedef struct fnode_event
     GTimeVal t;
 } fnode_event_t;
 
-gboolean port_add (file_obj_t* fobj, off_t* len, gpointer f);
-gboolean port_add_simple (file_obj_t* fobj, gpointer f);
-void port_remove (gpointer f);
-gboolean is_ported (gpointer f);
+gboolean _port_add (file_obj_t* fobj, off_t* len, gpointer f);
+gboolean _port_add_simple (file_obj_t* fobj, gpointer f);
+void _port_remove (gpointer f);
+gboolean _is_ported (gpointer f);
 
-fnode_event_t* fnode_event_new (int event, gboolean has_twin, gpointer user_data);
-void fnode_event_delete (fnode_event_t* ev);
+fnode_event_t* _fnode_event_new (int event, gboolean has_twin, gpointer user_data);
+void _fnode_event_delete (fnode_event_t* ev);
 const gchar * _event_string (int event);
 
-extern gboolean port_class_init ();
+extern gboolean _port_class_init ();
 
 #endif /* _FEN_KERNEL_H_ */

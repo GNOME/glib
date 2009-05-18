@@ -26,7 +26,7 @@
 #include "fen-sub.h"
 
 fen_sub*
-fen_sub_new (gpointer udata, gboolean is_mondir)
+_fen_sub_new (gpointer udata, gboolean is_mondir)
 {
     fen_sub *sub;
     sub = g_new (fen_sub, 1);
@@ -36,7 +36,7 @@ fen_sub_new (gpointer udata, gboolean is_mondir)
 }
 
 void
-fen_sub_delete (fen_sub *sub)
+_fen_sub_delete (fen_sub *sub)
 {
     g_free (sub);
 }
