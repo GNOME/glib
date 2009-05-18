@@ -243,8 +243,9 @@ g_async_initable_real_init_finish (GAsyncInitable *initable,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the initialization is finished
  * @user_data: the data to pass to callback function
- * @first_property_name: the name of the first property, followed by
- * the value, and other property value pairs, and ended by %NULL.
+ * @first_property_name: the name of the first property, or %NULL if no properties
+ * @...:  the value if the first property, followed by and other property
+ *    value pairs, and ended by %NULL.
  *
  * Helper function for constructing #GAsyncInitiable object. This is
  * similar to g_object_new() but also initializes the object asyncronously.
@@ -313,7 +314,7 @@ g_async_initable_newv_async (GType object_type,
 }
 
 /**
- * g_async_initable_new_async:
+ * g_async_initable_new_valist_async:
  * @object_type: a #GType supporting #GAsyncInitable.
  * @first_property_name: the name of the first property, followed by
  * the value, and other property value pairs, and ended by %NULL.

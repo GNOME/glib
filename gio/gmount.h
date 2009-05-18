@@ -44,6 +44,7 @@ typedef struct _GMountIface    GMountIface;
  * @g_iface: The parent interface.
  * @changed: Changed signal that is emitted when the mount's state has changed.
  * @unmounted: The unmounted signal that is emitted when the #GMount have been unmounted. If the recipient is holding references to the object they should release them so the object can be finalized.
+ * @pre_unmount: The pre_unmout signal that is emitted when the #GMount will soon be emitted. If the recipient is somehow holding the mount open by keeping an open file on it it should close the file.
  * @get_root: Gets a #GFile to the root directory of the #GMount.
  * @get_name: Gets a string containing the name of the #GMount.
  * @get_icon: Gets a #GIcon for the #GMount.

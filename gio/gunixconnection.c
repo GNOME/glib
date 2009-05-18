@@ -19,7 +19,7 @@
 /**
  * SECTION: gunixconnection
  * @title: GUnixConnection
- * @short_description: a TCP #GSocketConnection
+ * @short_description: a Unix domain #GSocketConnection
  * @see_also: #GSocketConnection.
  *
  * This is the subclass of #GSocketConnection that is created

@@ -1779,7 +1779,7 @@ g_file_create_readwrite           (GFile                      *file,
 }
 
 /**
- * g_file_replace:
+ * g_file_replace_readwrite:
  * @file: input #GFile.
  * @etag: an optional <link linkend="gfile-etag">entity tag</link> for the
  *     current #GFile, or #NULL to ignore.

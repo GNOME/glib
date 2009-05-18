@@ -464,7 +464,7 @@ typedef enum {
 /**
  * GEmblemOrigin:
  * @G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
- * @G_EMBLEM_ORIGIN_DEVICE: Embleme adds device-specific information
+ * @G_EMBLEM_ORIGIN_DEVICE: Emblem adds device-specific information
  * @G_EMBLEM_ORIGIN_LIVEMETADATA: Emblem depicts live metadata, such as "readonly"
  * @G_EMBLEM_ORIGIN_TAG: Emblem comes from a user-defined tag, e.g. set by nautilus (in the future)
  *
@@ -536,6 +536,7 @@ typedef enum
 
 /**
  * GSocketMsgFlags:
+ * @G_SOCKET_MSG_NONE: No flags.
  * @G_SOCKET_MSG_OOB: Request to send/receive out of band data.
  * @G_SOCKET_MSG_PEEK: Read data from the socket without removing it from the queue.
  * @G_SOCKET_MSG_DONTROUTE: Don't use a gateway to send out the packet, only send to hosts on directly connected networks.
@@ -549,7 +550,7 @@ typedef enum
  */
 typedef enum
 {
-  G_SOCKET_MSG_INVALID,
+  G_SOCKET_MSG_NONE,
   G_SOCKET_MSG_OOB = GLIB_SYSDEF_MSG_OOB,
   G_SOCKET_MSG_PEEK = GLIB_SYSDEF_MSG_PEEK,
   G_SOCKET_MSG_DONTROUTE = GLIB_SYSDEF_MSG_DONTROUTE

@@ -36,7 +36,7 @@
 
 /**
  * SECTION:gfileiostream
- * @short_description: read write streams for File
+ * @short_description:  File read and write streaming operations
  * @include: gio/gio.h
  * @see_also: #GIOStream, #GFileInputStream, #GFileOutputStream, #GSeekable
  *
@@ -49,13 +49,17 @@
  * operations. In addition to the generic g_seekable_ API,
  * GFileIOStream has its own API for seeking and positioning.
  * To find the position of a file io stream, use
- * g_file_io_stream_tell(). To find out if a file io
- * stream supports seeking, use g_file_io_stream_can_seek().
+ * g_file_io_stream_tell().
+ *
+ * To find out if a file io stream supports seeking, use g_file_io_stream_can_seek().
  * To position a file io stream, use g_file_io_stream_seek().
  * To find out if a file io stream supports truncating, use
  * g_file_io_stream_can_truncate(). To truncate a file io
  * stream, use g_file_io_stream_truncate().
  *
+ * The default implementation of all the #GFileIOStream operations
+ * and the implementation of #GSeekable just call into the same operations
+ * on the output stream.
  * Since: 2.22
  **/
 

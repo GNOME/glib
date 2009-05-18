@@ -41,7 +41,7 @@
 
 /**
  * SECTION:gsocketconnection
- * @short_description: High-level socket connection stream
+ * @short_description: A socket connection
  * @include: gio/gio.h
  * @see_also: #GIOStream, #GSocketClient, #GSocketListener
  *
@@ -113,6 +113,18 @@ g_socket_connection_get_output_stream (GIOStream *io_stream)
   return connection->priv->output_stream;
 }
 
+/**
+ * g_socket_connection_get_socket:
+ * @connection: a #GSocketConnection.
+ *
+ * Gets the underlying #GSocket object of the connection.
+ * This can be useful if you want to do something unusual on it
+ * not supported by the #GSocketConnection APIs.
+ *
+ * Returns: a #GSocketAddress or %NULL on error.
+ *
+ * Since: 2.22
+ **/
 GSocket *
 g_socket_connection_get_socket (GSocketConnection *connection)
 {
@@ -357,11 +369,10 @@ G_LOCK_DEFINE_STATIC(connection_factories);
  * @protocol: a protocol id
  *
  * Looks up the #GType to be used when creating socket connections on
- * sockets with the specified @family,@type and @protocol_id.
+ * sockets with the specified @family,@type and @protocol.
  *
  * If no type is registered, the #GSocketConnection base type is returned.
  *
- * Returns: a #GType
  * Since: 2.22
  **/
 void

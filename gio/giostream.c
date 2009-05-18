@@ -35,14 +35,19 @@
 G_DEFINE_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
 
 /**
- * SECTION:ginputstream
- * @short_description: Base class for implementing readwrite streams
+ * SECTION:giostream
+ * @short_description: Base class for implementing read/write streams
  * @include: gio/gio.h
+ * @see_also: #GInputStream, #GOutputStream
  *
  * GIOStream represents an object that has both read and write streams.
  * Generally the two streams acts as separate input and output streams,
  * but they share some common resources and state. For instance, for
  * seekable streams they may use the same position in both streams.
+ *
+ * Examples of #GIOStream objects are #GSocketConnection which represents
+ * a two-way network connection, and #GFileIOStream which represent a
+ * file handle opened in read-write mode.
  *
  * To do the actual reading and writing you need to get the substreams
  * with g_io_stream_get_input_stream() and g_io_stream_get_output_stream().

@@ -57,7 +57,7 @@
 
 /**
  * SECTION:gsocket
- * @short_description: Low-level network socket handling
+ * @short_description: Low-level socket object
  * @include: gio/gio.h
  * @see_also: #GInitable
  *
@@ -2441,7 +2441,7 @@ g_socket_condition_wait (GSocket       *socket,
 }
 
 /**
- * g_socket_send_to:
+ * g_socket_send_message:
  * @socket: a #GSocket
  * @address: a #GSocketAddress, or %NULL
  * @vectors: an array of #GOutputVector structs

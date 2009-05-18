@@ -54,6 +54,10 @@
          <listitem><para>write data</para></listitem>
        </varlistentry>
        <varlistentry>
+         <term>GIOStream</term>
+         <listitem><para>read and write data</para></listitem>
+       </varlistentry>
+       <varlistentry>
          <term>GSeekable</term>
          <listitem><para>interface optionally implemented by streams to support seeking</para></listitem>
        </varlistentry>
@@ -68,6 +72,30 @@
        <varlistentry>
           <term>GIcon</term>
           <listitem><para>abstract type for file and application icons</para></listitem>
+       </varlistentry>
+    </variablelist>
+    There is support for network programming, including name resolution, lowlevel socket
+    APIs and highlevel client and server helper classes:
+    <variablelist>
+       <varlistentry>
+          <term>GSocket</term>
+          <listitem><para>lowlevel platform independent socket object</para></listitem>
+       </varlistentry>
+       <varlistentry>
+          <term>GResolver</term>
+          <listitem><para>asynchronous and cancellable DNS resolver</para></listitem>
+       </varlistentry>
+       <varlistentry>
+          <term>GSocketClient</term>
+          <listitem><para>high-level network client helper</para></listitem>
+       </varlistentry>
+       <varlistentry>
+          <term>GSocketService</term>
+          <listitem><para>high-level network server helper</para></listitem>
+       </varlistentry>
+       <varlistentry>
+          <term>GSocketConnection</term>
+          <listitem><para>network connection stream</para></listitem>
        </varlistentry>
     </variablelist>
     Beyond these, GIO provides facilities for file monitoring,

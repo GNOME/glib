@@ -348,11 +348,11 @@ g_themed_icon_new_with_default_fallbacks (const char *iconname)
 /**
  * g_themed_icon_get_names:
  * @icon: a #GThemedIcon.
- * 
+ *
  * Gets the names of icons from within @icon.
- * 
+ *
  * Returns: a list of icon names.
- **/
+ */
 const char * const *
 g_themed_icon_get_names (GThemedIcon *icon)
 {

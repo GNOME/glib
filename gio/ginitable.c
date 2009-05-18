@@ -135,9 +135,10 @@ g_initable_init (GInitable     *initable,
  * @object_type: a #GType supporting #GInitable.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to
- * ignore.
- * @first_property_name: the name of the first property, followed by
- * the value, and other property value pairs, and ended by %NULL.
+ *    ignore.
+ * @first_property_name: the name of the first property, or %NULL if no properties
+ * @...:  the value if the first property, followed by and other property
+ *    value pairs, and ended by %NULL.
  *
  * Helper function for constructing #GInitiable object. This is
  * similar to g_object_new() but also initializes the object
@@ -167,7 +168,7 @@ g_initable_new (GType          object_type,
 }
 
 /**
- * g_initable_new:
+ * g_initable_newv:
  * @object_type: a #GType supporting #GInitable.
  * @n_parameters: the number of parameters in @parameters
  * @parameters: the parameters to use to construct the object

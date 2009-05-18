@@ -280,6 +280,8 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
  * This is the function type of the callback used for the #GSource
  * returned by g_socket_create_source().
  *
+ * Returns: it should return FALSE if the source should be removed.
+ *
  * Since: 2.22
  */
 typedef gboolean (*GSocketSourceFunc) (GSocket *socket,

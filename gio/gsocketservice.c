@@ -25,7 +25,7 @@
 /**
  * SECTION: gsocketservice
  * @title: GSocketService
- * @short_description: a high-level object representing a service
+ * @short_description: Make it easy to implement a network service
  * @see_also: #GThreadedSocketService, #GSocketListener.
  *
  * A #GSocketService is an object that represents a service that is
@@ -310,7 +310,6 @@ g_socket_service_ready (GObject      *object,
 
 /**
  * g_socket_service_new:
- * @returns: a new #GSocketService.
  *
  * Creates a new #GSocketService with no sockets to listen for.
  * New listeners can be added with e.g. g_socket_listener_add_address()

@@ -43,7 +43,7 @@
 /**
  * SECTION: gsocketlistener
  * @title: GSocketListener
- * @short_description: a high-level helper object for server sockets
+ * @short_description: Helper for accepting network client connections
  * @see_also: #GThreadedSocketService, #GSocketService.
  *
  * A #GSocketListener is an object that keeps track of a set
@@ -166,7 +166,7 @@ g_socket_listener_init (GSocketListener *listener)
 }
 
 /**
- * g_socket_service_new:
+ * g_socket_listener_new:
  *
  * Creates a new #GSocketListener with no sockets to listen for.
  * New listeners can be added with e.g. g_socket_listener_add_address()
@@ -245,7 +245,7 @@ g_socket_listener_add_socket (GSocketListener *listener,
 }
 
 /**
- * g_socket_listener_add_socket:
+ * g_socket_listener_add_address:
  * @listener: a #GSocketListener
  * @address: a #GSocketAddres
  * @type: a #GSocketType
@@ -693,7 +693,7 @@ g_socket_listener_accept_socket_finish (GSocketListener   *listener,
 }
 
 /**
- * g_socket_listener_accept_socket_async:
+ * g_socket_listener_accept_async:
  * @listener: a #GSocketListener
  * @cancellable: a #GCancellable, or %NULL
  * @callback: a #GAsyncReadyCallback
@@ -755,7 +755,7 @@ g_socket_listener_accept_finish (GSocketListener *listener,
 }
 
 /**
- * g_socket_listener_accept_finish:
+ * g_socket_listener_set_backlog:
  * @listener: a #GSocketListener
  * @listen_backlog: an integer
  *

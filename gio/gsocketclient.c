@@ -43,7 +43,7 @@
 
 /**
  * SECTION:gsocketclient
- * @short_description: High-level client network helper
+ * @short_description: Helper for connecting to a network service
  * @include: gio/gio.h
  * @see_also: #GSocketConnection, #GSocketListener
  *
@@ -223,7 +223,7 @@ g_socket_client_set_property (GObject      *object,
 
 /**
  * g_socket_client_get_family:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  *
  * Gets the socket family of the socket client.
  *
@@ -241,7 +241,7 @@ g_socket_client_get_family (GSocketClient *client)
 
 /**
  * g_socket_client_set_family:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  * @family: a #GSocketFamily
  *
  * Sets the socket family of the socket client.
@@ -268,7 +268,7 @@ g_socket_client_set_family (GSocketClient *client,
 
 /**
  * g_socket_client_get_socket_type:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  *
  * Gets the socket type of the socket client.
  *
@@ -286,7 +286,7 @@ g_socket_client_get_socket_type (GSocketClient *client)
 
 /**
  * g_socket_client_set_socket_type:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  * @type: a #GSocketType
  *
  * Sets the socket type of the socket client.
@@ -311,7 +311,7 @@ g_socket_client_set_socket_type (GSocketClient *client,
 
 /**
  * g_socket_client_get_protocol:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  *
  * Gets the protocol name type of the socket client.
  *
@@ -329,7 +329,7 @@ g_socket_client_get_protocol (GSocketClient *client)
 
 /**
  * g_socket_client_set_protocol:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  * @protocol: a string, or %NULL
  *
  * Sets the protocol of the socket client.
@@ -355,7 +355,7 @@ g_socket_client_set_protocol (GSocketClient        *client,
 
 /**
  * g_socket_client_get_local_address:
- * @socket: a #GSocket.
+ * @client: a #GSocketClient.
  *
  * Gets the local address of the socket client.
  *
@@ -373,8 +373,8 @@ g_socket_client_get_local_address (GSocketClient *client)
 
 /**
  * g_socket_client_set_local_address:
- * @socket: a #GSocket.
- * @addres: a #GSocketAddress, or %NULL
+ * @client: a #GSocketClient.
+ * @address: a #GSocketAddress, or %NULL
  *
  * Sets the local address of the socket client.
  * The sockets created by this object will bound to the
@@ -538,12 +538,11 @@ g_socket_client_connect (GSocketClient       *client,
 
 /**
  * g_socket_client_connect_to_host:
- * @client: a #GTcpClient
+ * @client: a #SocketClient
  * @host_and_port: the name and optionally port of the host to connect to
  * @default_port: the default port to connect to
  * @cancellable: a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
- * @returns: a #GSocketConnection if successful, or %NULL on error
  *
  * This is a helper function for g_socket_client_connect().
  *
@@ -771,7 +770,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 }
 
 /**
- * g_socket_client_connect_to_host_async:
+ * g_socket_client_connect_async:
  * @client: a #GTcpClient
  * @connectable: a #GSocketConnectable specifying the remote address.
  * @cancellable: a #GCancellable, or %NULL

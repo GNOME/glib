@@ -589,7 +589,7 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
  *
  * Returns: the #GFile which is being enumerated.
  *
- * Since: 2.18.
+ * Since: 2.18
  */
 GFile *
 g_file_enumerator_get_container (GFileEnumerator *enumerator)

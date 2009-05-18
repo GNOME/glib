@@ -33,7 +33,7 @@
 
 /**
  * SECTION:gunixsocketaddress
- * @short_description: Unix socket addresses
+ * @short_description: Unix #GSocketAddress
  *
  * Support for UNIX-domain (aka local) sockets.
  **/

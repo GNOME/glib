@@ -148,7 +148,7 @@ g_mount_base_init (gpointer g_class)
       * This signal is emitted when the #GMount is about to be
       * unmounted.
       *
-      * Since: 2.22.
+      * Since: 2.22
       **/
       g_signal_new (I_("pre-unmount"),
                     G_TYPE_MOUNT,

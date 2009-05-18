@@ -83,7 +83,7 @@ void               g_socket_connection_factory_register_type     (GType         
 								  gint           protocol);
 GType              g_socket_connection_factory_lookup_type       (GSocketFamily  family,
 								  GSocketType    type,
-								  gint           protocol);
+								  gint           protocol_id);
 GSocketConnection *g_socket_connection_factory_create_connection (GSocket       *socket);
 
 G_END_DECLS

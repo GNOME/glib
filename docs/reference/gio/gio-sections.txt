@@ -1,4 +1,44 @@
 <SECTION>
+<FILE>ginitable</FILE>
+<TITLE>GInitable</TITLE>
+GInitable
+GInitableIface
+g_initable_init
+g_initable_new
+g_initable_new_valist
+g_initable_newv
+<SUBSECTION Standard>
+G_INITABLE
+G_INITABLE_GET_IFACE
+G_IS_INITABLE
+G_TYPE_INITABLE
+G_TYPE_IS_INITABLE
+<SUBSECTION Private>
+g_initable_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gasyncinitable</FILE>
+<TITLE>GAsyncInitable</TITLE>
+GAsyncInitable
+GAsyncInitableIface
+g_async_initable_init_async
+g_async_initable_init_finish
+g_async_initable_new_async
+g_async_initable_new_finish
+g_async_initable_new_valist_async
+g_async_initable_newv_async
+<SUBSECTION Standard>
+G_ASYNC_INITABLE
+G_ASYNC_INITABLE_GET_IFACE
+G_IS_ASYNC_INITABLE
+G_TYPE_ASYNC_INITABLE
+G_TYPE_IS_ASYNC_INITABLE
+<SUBSECTION Private>
+g_async_initable_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gvfs</FILE>
 <TITLE>GVfs</TITLE>
 GVfs
@@ -125,6 +165,15 @@ g_file_replace_contents
 g_file_replace_contents_async
 g_file_replace_contents_finish
 g_file_copy_attributes
+g_file_create_readwrite
+g_file_create_readwrite_async
+g_file_create_readwrite_finish
+g_file_open_readwrite
+g_file_open_readwrite_async
+g_file_open_readwrite_finish
+g_file_replace_readwrite
+g_file_replace_readwrite_async
+g_file_replace_readwrite_finish
 <SUBSECTION Standard>
 G_FILE
 G_IS_FILE
@@ -453,6 +502,7 @@ g_emblem_new_with_origin
 g_emblem_get_icon
 g_emblem_get_origin
 <SUBSECTION Private>
+GEmblemClass
 g_emblem_get_type
 G_EMBLEM
 G_EMBLEM_CLASS
@@ -530,7 +580,6 @@ G_IS_FILTER_INPUT_STREAM_CLASS
 G_FILTER_INPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_filter_input_stream_get_type
-GFilterInputStreamPrivate
 </SECTION>
 
 <SECTION>
@@ -712,7 +761,6 @@ G_IS_FILTER_OUTPUT_STREAM_CLASS
 G_FILTER_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_filter_output_stream_get_type
-GFilterOutputStreamPrivate
 </SECTION>
 
 <SECTION>
@@ -786,7 +834,6 @@ G_DATA_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_data_output_stream_get_type
 GDataOutputStreamPrivate
-
 </SECTION>
 
 <SECTION>
@@ -808,6 +855,53 @@ G_UNIX_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_unix_output_stream_get_type
 GUnixOutputStreamPrivate
+</SECTION>
+
+<SECTION>
+<FILE>giostream</FILE>
+<TITLE>GIOStream</TITLE>
+GIOStream
+g_io_stream_clear_pending
+g_io_stream_close
+g_io_stream_close_async
+g_io_stream_close_finish
+g_io_stream_get_input_stream
+g_io_stream_get_output_stream
+g_io_stream_has_pending
+g_io_stream_is_closed
+g_io_stream_set_pending
+<SUBSECTION Standard>
+GIOStreamClass
+G_IO_STREAM
+G_IO_STREAM_CLASS
+G_IO_STREAM_GET_CLASS
+G_IS_IO_STREAM
+G_IS_IO_STREAM_CLASS
+G_TYPE_IO_STREAM
+<SUBSECTION Private>
+GIOStreamPrivate
+g_io_stream_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gfileiostream</FILE>
+<TITLE>GFileIOStream</TITLE>
+GFileIOStream
+g_file_io_stream_get_etag
+g_file_io_stream_query_info
+g_file_io_stream_query_info_async
+g_file_io_stream_query_info_finish
+<SUBSECTION Standard>
+GFileIOStreamClass
+G_FILE_IO_STREAM
+G_FILE_IO_STREAM_CLASS
+G_FILE_IO_STREAM_GET_CLASS
+G_IS_FILE_IO_STREAM
+G_IS_FILE_IO_STREAM_CLASS
+G_TYPE_FILE_IO_STREAM
+<SUBSECTION Private>
+GFileIOStreamPrivate
+g_file_io_stream_get_type
 </SECTION>
 
 <SECTION>
@@ -1449,8 +1543,7 @@ g_srv_target_get_hostname
 g_srv_target_get_port
 g_srv_target_get_priority
 g_srv_target_get_weight
-g_srv_target_get_expires
-g_srv_target_array_sort
+g_srv_target_list_sort
 <SUBSECTION Standard>
 G_TYPE_SRV_TARGET
 <SUBSECTION Private>
@@ -1491,8 +1584,8 @@ g_socket_connectable_get_type
 GNetworkAddress
 g_network_address_new
 g_network_address_get_hostname
-g_network_address_get_ascii_name
 g_network_address_get_port
+g_network_address_parse
 <SUBSECTION Standard>
 GNetworkAddressClass
 GNetworkAddressPrivate
@@ -1514,7 +1607,6 @@ g_network_service_new
 g_network_service_get_service
 g_network_service_get_protocol
 g_network_service_get_domain
-g_network_service_get_expires
 <SUBSECTION Standard>
 GNetworkServiceClass
 GNetworkServicePrivate
@@ -1526,4 +1618,248 @@ G_NETWORK_SERVICE_GET_CLASS
 G_TYPE_NETWORK_SERVICE
 <SUBSECTION Private>
 g_network_service_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsocket</FILE>
+<TITLE>GSocket</TITLE>
+GSocket
+GSocketSourceFunc
+GSocketType
+GSocketMsgFlags
+g_socket_new
+g_socket_new_from_fd
+g_socket_bind
+g_socket_listen
+g_socket_accept
+g_socket_connect
+g_socket_check_pending_error
+g_socket_receive
+g_socket_receive_from
+g_socket_receive_message
+g_socket_send
+g_socket_send_to
+g_socket_send_message
+g_socket_close
+g_socket_is_closed
+g_socket_is_connected
+g_socket_create_source
+g_socket_condition_check
+g_socket_condition_wait
+g_socket_set_listen_backlog
+g_socket_get_listen_backlog
+g_socket_get_blocking
+g_socket_set_blocking
+g_socket_get_keepalive
+g_socket_set_keepalive
+g_socket_get_family
+g_socket_get_fd
+g_socket_get_local_address
+g_socket_get_protocol_id
+g_socket_get_protocol_name
+g_socket_get_remote_address
+g_socket_get_socket_type
+g_socket_protocol_id_lookup_by_name
+<SUBSECTION Standard>
+GSocketClass
+G_IS_SOCKET
+G_IS_SOCKET_CLASS
+G_SOCKET
+G_SOCKET_CLASS
+G_TYPE_SOCKET
+G_SOCKET_GET_CLASS
+<SUBSECTION Private>
+g_socket_get_type
+GSocketPrivate
+</SECTION>
+
+<SECTION>
+<FILE>gsocketclient</FILE>
+<TITLE>GSocketClient</TITLE>
+GSocketClient
+g_socket_client_new
+g_socket_client_connect
+g_socket_client_connect_async
+g_socket_client_connect_finish
+g_socket_client_connect_to_host
+g_socket_client_connect_to_host_async
+g_socket_client_connect_to_host_finish
+g_socket_client_set_family
+g_socket_client_set_local_address
+g_socket_client_set_protocol
+g_socket_client_set_socket_type
+g_socket_client_get_family
+g_socket_client_get_local_address
+g_socket_client_get_protocol
+g_socket_client_get_socket_type
+<SUBSECTION Standard>
+GSocketClientClass
+G_IS_SOCKET_CLIENT
+G_IS_SOCKET_CLIENT_CLASS
+G_SOCKET_CLIENT
+G_SOCKET_CLIENT_CLASS
+G_SOCKET_CLIENT_GET_CLASS
+G_TYPE_SOCKET_CLIENT
+<SUBSECTION Private>
+GSocketClientPrivate
+g_socket_client_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsocketconnection</FILE>
+<TITLE>GSocketConnection</TITLE>
+GSocketConnection
+g_socket_connection_get_local_address
+g_socket_connection_get_remote_address
+g_socket_connection_get_socket
+<SUBSECTION>
+GTcpConnection
+<SUBSECTION>
+GUnixConnection
+g_unix_connection_receive_fd
+g_unix_connection_send_fd
+<SUBSECTION>
+g_socket_connection_factory_create_connection
+g_socket_connection_factory_lookup_type
+g_socket_connection_factory_register_type
+<SUBSECTION Standard>
+GSocketConnectionClass
+G_IS_SOCKET_CONNECTION
+G_IS_SOCKET_CONNECTION_CLASS
+G_SOCKET_CONNECTION
+G_SOCKET_CONNECTION_CLASS
+G_SOCKET_CONNECTION_GET_CLASS
+G_TYPE_SOCKET_CONNECTION
+GTcpConnectionClass
+G_IS_TCP_CONNECTION
+G_IS_TCP_CONNECTION_CLASS
+G_TCP_CONNECTION
+G_TCP_CONNECTION_CLASS
+G_TCP_CONNECTION_GET_CLASS
+G_TYPE_TCP_CONNECTION
+GUnixConnectionClass
+G_IS_UNIX_CONNECTION
+G_IS_UNIX_CONNECTION_CLASS
+G_TYPE_UNIX_CONNECTION
+G_UNIX_CONNECTION
+G_UNIX_CONNECTION_CLASS
+G_UNIX_CONNECTION_GET_CLASS
+<SUBSECTION Private>
+GSocketConnectionPrivate
+g_socket_connection_get_type
+GTcpConnectionPrivate
+g_tcp_connection_get_type
+GUnixConnectionPrivate
+g_unix_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsocketcontrolmessage</FILE>
+<TITLE>GSocketControlMessage</TITLE>
+GSocketControlMessage
+g_socket_control_message_deserialize
+g_socket_control_message_get_level
+g_socket_control_message_get_msg_type
+g_socket_control_message_get_size
+g_socket_control_message_serialize
+<SUBSECTION Standard>
+GSocketControlMessageClass
+G_IS_SOCKET_CONTROL_MESSAGE
+G_IS_SOCKET_CONTROL_MESSAGE_CLASS
+G_SOCKET_CONTROL_MESSAGE
+G_SOCKET_CONTROL_MESSAGE_CLASS
+G_SOCKET_CONTROL_MESSAGE_GET_CLASS
+G_TYPE_SOCKET_CONTROL_MESSAGE
+<SUBSECTION Private>
+GSocketControlMessagePrivate
+g_socket_control_message_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsocketlistener</FILE>
+<TITLE>GSocketListener</TITLE>
+GSocketListener
+g_socket_listener_new
+g_socket_listener_add_socket
+g_socket_listener_add_address
+g_socket_listener_add_inet_port
+g_socket_listener_accept
+g_socket_listener_accept_async
+g_socket_listener_accept_finish
+g_socket_listener_accept_socket
+g_socket_listener_accept_socket_async
+g_socket_listener_accept_socket_finish
+g_socket_listener_close
+g_socket_listener_set_backlog
+<SUBSECTION Standard>
+GSocketListenerClass
+G_IS_SOCKET_LISTENER
+G_IS_SOCKET_LISTENER_CLASS
+G_SOCKET_LISTENER
+G_SOCKET_LISTENER_CLASS
+G_SOCKET_LISTENER_GET_CLASS
+G_TYPE_SOCKET_INPUT_STREAM
+G_TYPE_SOCKET_LISTENER
+<SUBSECTION Private>
+GSocketListenerPrivate
+g_socket_listener_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsocketservice</FILE>
+<TITLE>GSocketService</TITLE>
+GSocketService
+g_socket_service_new
+g_socket_service_start
+g_socket_service_stop
+g_socket_service_is_active
+<SUBSECTION Standard>
+GSocketServiceClass
+G_IS_SOCKET_SERVICE
+G_IS_SOCKET_SERVICE_CLASS
+G_SOCKET_SERVICE
+G_SOCKET_SERVICE_CLASS
+G_SOCKET_SERVICE_GET_CLASS
+G_TYPE_SOCKET_SERVICE
+<SUBSECTION Private>
+GSocketServicePrivate
+g_socket_service_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gthreadedsocketservice</FILE>
+<TITLE>GThreadedSocketService</TITLE>
+GThreadedSocketService
+g_threaded_socket_service_new
+<SUBSECTION Standard>
+GThreadedSocketServiceClass
+G_IS_THREADED_SOCKET_SERVICE
+G_IS_THREADED_SOCKET_SERVICE_CLASS
+G_THREADED_SOCKET_SERVICE
+G_THREADED_SOCKET_SERVICE_CLASS
+G_THREADED_SOCKET_SERVICE_GET_CLASS
+G_TYPE_THREADED_SOCKET_SERVICE
+<SUBSECTION Private>
+GThreadedSocketServicePrivate
+g_threaded_socket_service_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gunixfdmessage</FILE>
+<TITLE>GUnixFDMessage</TITLE>
+GUnixFDMessage
+g_unix_fd_message_new
+g_unix_fd_message_append_fd
+g_unix_fd_message_steal_fds
+<SUBSECTION Standard>
+GUnixFDMessageClass
+G_IS_UNIX_FD_MESSAGE
+G_IS_UNIX_FD_MESSAGE_CLASS
+G_TYPE_UNIX_FD_MESSAGE
+G_UNIX_FD_MESSAGE
+G_UNIX_FD_MESSAGE_CLASS
+G_UNIX_FD_MESSAGE_GET_CLASS
+<SUBSECTION Private>
+GUnixFDMessagePrivate
+g_unix_fd_message_get_type
 </SECTION>

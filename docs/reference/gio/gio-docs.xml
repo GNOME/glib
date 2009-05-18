@@ -45,9 +45,11 @@
 
         <xi:include href="xml/ginputstream.xml"/>        
         <xi:include href="xml/goutputstream.xml"/>
+        <xi:include href="xml/giostream.xml"/>
 
         <xi:include href="xml/gfileinputstream.xml"/>
         <xi:include href="xml/gfileoutputstream.xml"/>
+        <xi:include href="xml/gfileiostream.xml"/>
 
         <xi:include href="xml/gfilterinputstream.xml"/>        
         <xi:include href="xml/gfilteroutputstream.xml"/>
@@ -90,19 +92,38 @@
     	<xi:include href="xml/gemblemedicon.xml"/>
     	<xi:include href="xml/gemblem.xml"/>
     </chapter>
-    <chapter id="networking">
-    	<title>Networking</title>
-        <xi:include href="xml/gresolver.xml"/>
-        <xi:include href="xml/ginetaddress.xml"/>
-        <xi:include href="xml/gsocketaddress.xml"/>
-        <xi:include href="xml/ginetsocketaddress.xml"/>
-        <xi:include href="xml/gunixsocketaddress.xml"/>
-        <xi:include href="xml/gsrvtarget.xml"/>
-        <xi:include href="xml/gsocketconnectable.xml"/>
-        <xi:include href="xml/gnetworkaddress.xml"/>
-        <xi:include href="xml/gnetworkservice.xml"/>
+    <chapter id="failable_initialization">
+    	<title>Failable Initialization</title>
+    	<xi:include href="xml/ginitable.xml"/>
+    	<xi:include href="xml/gasyncinitable.xml"/>
     </chapter>
-    <chapter id="utils">   
+    <chapter id="networking">
+      <title>Lowlevel platform-independent network support</title>
+      <xi:include href="xml/gsocket.xml"/>
+      <xi:include href="xml/ginetaddress.xml"/>
+      <xi:include href="xml/gsocketaddress.xml"/>
+      <xi:include href="xml/ginetsocketaddress.xml"/>
+      <xi:include href="xml/gunixsocketaddress.xml"/>
+      <xi:include href="xml/gsocketcontrolmessage.xml"/>
+      <xi:include href="xml/gunixfdmessage.xml"/>
+    </chapter>
+    <chapter id="resolver">
+      <title>DNS resolution</title>
+      <xi:include href="xml/gresolver.xml"/>
+      <xi:include href="xml/gsocketconnectable.xml"/>
+      <xi:include href="xml/gnetworkaddress.xml"/>
+      <xi:include href="xml/gnetworkservice.xml"/>
+      <xi:include href="xml/gsrvtarget.xml"/>
+    </chapter>
+    <chapter id="highlevel-socket">
+      <title>Highlevel network functionallity</title>
+      <xi:include href="xml/gsocketclient.xml"/>
+      <xi:include href="xml/gsocketconnection.xml"/>
+      <xi:include href="xml/gsocketlistener.xml"/>
+      <xi:include href="xml/gsocketservice.xml"/>
+      <xi:include href="xml/gthreadedsocketservice.xml"/>
+    </chapter>
+    <chapter id="utils">
     	<title>Utilities</title>
         <xi:include href="xml/gfilenamecompleter.xml"/>
     </chapter>

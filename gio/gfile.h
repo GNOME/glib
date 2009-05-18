@@ -132,6 +132,15 @@ typedef struct _GFileIface    		GFileIface;
  * @mount_enclosing_volume_finish: Finishes mounting a specified location.
  * @monitor_dir: Creates a #GFileMonitor for the location.
  * @monitor_file: Creates a #GFileMonitor for the location.
+ * @open_readwrite: Open file read/write. Since 2.22.
+ * @open_readwrite_async: Asynchronously opens file read/write. Since 2.22.
+ * @open_readwrite_finish: Finishes an asynchronous open read/write. Since 2.22.
+ * @create_readwrite: Creates file read/write. Since 2.22.
+ * @create_readwrite_async: Asynchronously creates file read/write. Since 2.22.
+ * @create_readwrite_finish: Finishes an asynchronous creates read/write. Since 2.22.
+ * @replace_readwrite: Replaces file read/write. Since 2.22.
+ * @replace_readwrite_async: Asynchronously replaces file read/write. Since 2.22.
+ * @replace_readwrite_finish: Finishes an asynchronous replace read/write. Since 2.22.
  *
  * An interface for writing VFS file handles.
  **/

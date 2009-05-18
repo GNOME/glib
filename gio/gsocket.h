@@ -136,11 +136,6 @@ gssize                 g_socket_send_to                 (GSocket                
 							 const gchar             *buffer,
 							 gsize                    size,
 							 GError                 **error);
-GSocketControlMessage *g_socket_receive_control_message (GSocket                 *socket,
-							 GError                 **error);
-gboolean               g_socket_send_control_message    (GSocket                 *socket,
-							 GSocketControlMessage   *message,
-							 GError                 **error);
 gssize                 g_socket_receive_message         (GSocket                 *socket,
 							 GSocketAddress         **address,
 							 GInputVector            *vectors,
