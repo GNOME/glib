@@ -161,24 +161,29 @@ g_socket_address_get_native_size (GSocketAddress *address)
  * <type>struct sockaddr</type>.
  * @destlen: the size of @dest. Must be at least as large as
  * g_socket_address_get_native_size().
+ * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Converts a #GSocketAddress to a native <type>struct
  * sockaddr</type>, which can be passed to low-level functions like
  * connect() or bind().
  *
- * Returns: %TRUE if @dest was filled in, %FALSE if @address is invalid
- * or @destlen is too small.
+ * If not enough space is availible, a %G_IO_ERROR_NO_SPACE error is
+ * returned. If the address type is not known on the system
+ * then a %G_IO_ERROR_NOT_SUPPORTED error is returned.
+ *
+ * Returns: %TRUE if @dest was filled in, %FALSE on error
  *
  * Since: 2.22
  */
 gboolean
 g_socket_address_to_native (GSocketAddress *address,
 			    gpointer        dest,
-			    gsize           destlen)
+			    gsize           destlen,
+			    GError        **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_ADDRESS (address), FALSE);
 
-  return G_SOCKET_ADDRESS_GET_CLASS (address)->to_native (address, dest, destlen);
+  return G_SOCKET_ADDRESS_GET_CLASS (address)->to_native (address, dest, destlen, error);
 }
 
 /**

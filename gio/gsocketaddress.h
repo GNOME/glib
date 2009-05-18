@@ -56,7 +56,8 @@ struct _GSocketAddressClass
 
   gboolean       (*to_native)       (GSocketAddress *address,
                                      gpointer        dest,
-                                     gsize           destlen);
+                                     gsize           destlen,
+				     GError        **error);
 };
 
 GType                 g_socket_address_get_type        (void) G_GNUC_CONST;
@@ -68,7 +69,8 @@ GSocketAddress *      g_socket_address_new_from_native (gpointer        native,
 
 gboolean              g_socket_address_to_native       (GSocketAddress *address,
                                                         gpointer        dest,
-                                                        gsize           destlen);
+                                                        gsize           destlen,
+							GError        **error);
 
 gssize                g_socket_address_get_native_size (GSocketAddress *address);
 

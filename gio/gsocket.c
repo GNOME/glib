@@ -1353,7 +1353,7 @@ g_socket_bind (GSocket         *socket,
     }
 #endif
 
-  if (!g_socket_address_to_native (address, addr, sizeof addr))
+  if (!g_socket_address_to_native (address, addr, sizeof addr, error))
     return FALSE;
 
   if (bind (socket->priv->fd, (struct sockaddr *) addr,
@@ -1518,7 +1518,8 @@ g_socket_connect (GSocket         *socket,
   if (!check_socket (socket, error))
     return FALSE;
 
-  g_socket_address_to_native (address, buffer, sizeof buffer);
+  if (!g_socket_address_to_native (address, buffer, sizeof buffer, error))
+    return FALSE;
 
   while (1)
     {
@@ -2546,7 +2547,8 @@ g_socket_send_message (GSocket                *socket,
       {
 	msg.msg_namelen = g_socket_address_get_native_size (address);
 	msg.msg_name = g_alloca (msg.msg_namelen);
-	g_socket_address_to_native (address, msg.msg_name, msg.msg_namelen);
+	if (!g_socket_address_to_native (address, msg.msg_name, msg.msg_namelen, error))
+	  return -1;
       }
 
     /* iov */
@@ -2666,7 +2668,8 @@ g_socket_send_message (GSocket                *socket,
     if (address)
       {
 	addrlen = g_socket_address_get_native_size (address);
-	g_socket_address_to_native (address, &addr, sizeof addr);
+	if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
+	  return -1;
       }
 
     while (1)

@@ -28,6 +28,8 @@
 #include "ginetsocketaddress.h"
 #include "ginetaddress.h"
 #include "gnetworkingprivate.h"
+#include "gioerror.h"
+#include "glibintl.h"
 
 #include "gioalias.h"
 
@@ -159,7 +161,8 @@ g_inet_socket_address_get_native_size (GSocketAddress *address)
 static gboolean
 g_inet_socket_address_to_native (GSocketAddress *address,
                                  gpointer        dest,
-				 gsize           destlen)
+				 gsize           destlen,
+				 GError        **error)
 {
   GInetSocketAddress *addr;
   GSocketFamily family;
@@ -174,7 +177,11 @@ g_inet_socket_address_to_native (GSocketAddress *address,
       struct sockaddr_in *sock = (struct sockaddr_in *) dest;
 
       if (destlen < sizeof (*sock))
-	return FALSE;
+	{
+	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+			       _("Not enough space for socket address"));
+	  return FALSE;
+	}
 
       sock->sin_family = AF_INET;
       sock->sin_port = g_htons (addr->priv->port);
@@ -187,7 +194,11 @@ g_inet_socket_address_to_native (GSocketAddress *address,
       struct sockaddr_in6 *sock = (struct sockaddr_in6 *) dest;
 
       if (destlen < sizeof (*sock))
-	return FALSE;
+	{
+	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+			       _("Not enough space for socket address"));
+	  return FALSE;
+	}
 
       memset (sock, 0, sizeof (sock));
       sock->sin6_family = AF_INET6;
@@ -196,7 +207,11 @@ g_inet_socket_address_to_native (GSocketAddress *address,
       return TRUE;
     }
   else
-    return FALSE;
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+			   _("Unsupported socket address"));
+      return FALSE;
+    }
 }
 
 static void

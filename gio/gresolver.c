@@ -697,7 +697,7 @@ _g_resolver_address_to_sockaddr (GInetAddress            *address,
   GSocketAddress *sockaddr;
 
   sockaddr = g_inet_socket_address_new (address, 0);
-  g_socket_address_to_native (sockaddr, (struct sockaddr *)sa, sizeof (*sa));
+  g_socket_address_to_native (sockaddr, (struct sockaddr *)sa, sizeof (*sa), NULL);
   *sa_len = g_socket_address_get_native_size (sockaddr);
   g_object_unref (sockaddr);
 }

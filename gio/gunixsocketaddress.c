@@ -133,13 +133,18 @@ g_unix_socket_address_get_native_size (GSocketAddress *address)
 static gboolean
 g_unix_socket_address_to_native (GSocketAddress *address,
 				 gpointer        dest,
-				 gsize           destlen)
+				 gsize           destlen,
+				 GError        **error)
 {
   GUnixSocketAddress *addr = G_UNIX_SOCKET_ADDRESS (address);
   struct sockaddr_un *sock;
 
   if (destlen < sizeof (*sock))
-    return FALSE;
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+			   _("Not enough space for socket address"));
+      return FALSE;
+    }
 
   sock = (struct sockaddr_un *) dest;
   sock->sun_family = AF_UNIX;
