@@ -92,9 +92,6 @@ GSocketAddress *       g_socket_get_remote_address      (GSocket                
 void                   g_socket_set_blocking            (GSocket                 *socket,
 							 gboolean                 blocking);
 gboolean               g_socket_get_blocking            (GSocket                 *socket);
-void                   g_socket_set_reuse_address       (GSocket                 *socket,
-							 gboolean                 reuse);
-gboolean               g_socket_get_reuse_address       (GSocket                 *socket);
 void                   g_socket_set_keepalive           (GSocket                 *socket,
 							 gboolean                 keepalive);
 gboolean               g_socket_get_keepalive           (GSocket                 *socket);
