@@ -28,6 +28,7 @@
 #include "config.h"
 
 #include <errno.h>
+#include <signal.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -101,6 +102,12 @@
  * specified or received in each I/O operation.
  *
  * All socket file descriptors are set to be close-on-exec.
+ *
+ * Note that creating a #GSocket causes the signal %SIGPIPE to be
+ * ignored for the remainder of the program. If you are writing a
+ * command-line utility that uses #GSocket, you may need to take into
+ * account the fact that your program will not automatically be killed
+ * if it tries to write to %stdout after it has been closed.
  *
  * Since: 2.22
  **/
@@ -615,6 +622,14 @@ g_socket_class_init (GSocketClass *klass)
 
   /* Make sure winsock has been initialized */
   type = g_inet_address_get_type ();
+
+#ifdef SIGPIPE
+  /* There is no portable, thread-safe way to avoid having the process
+   * be killed by SIGPIPE when calling send() or sendmsg(), so we are
+   * forced to simply ignore the signal process-wide.
+   */
+  signal (SIGPIPE, SIG_IGN);
+#endif
 
   g_type_class_add_private (klass, sizeof (GSocketPrivate));
 
