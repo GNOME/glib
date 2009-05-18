@@ -240,6 +240,9 @@ g_socket_address_new_from_native (gpointer native,
     {
       struct sockaddr_un *addr = (struct sockaddr_un *) native;
 
+      if (addr->sun_path[0] == 0)
+	return g_unix_socket_address_new_abstract (addr->sun_path+1,
+						   sizeof (addr->sun_path) - 1);
       return g_unix_socket_address_new (addr->sun_path);
     }
 #endif

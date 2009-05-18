@@ -54,7 +54,14 @@ struct _GUnixSocketAddressClass
 
 GType           g_unix_socket_address_get_type    (void) G_GNUC_CONST;
 
-GSocketAddress *g_unix_socket_address_new         (const gchar *path);
+GSocketAddress *g_unix_socket_address_new             (const gchar        *path);
+GSocketAddress *g_unix_socket_address_new_abstract    (const gchar        *path,
+						       int                 path_len);
+const char *    g_unix_socket_address_get_path        (GUnixSocketAddress *address);
+gsize           g_unix_socket_address_get_path_len    (GUnixSocketAddress *address);
+gboolean        g_unix_socket_address_get_is_abstract (GUnixSocketAddress *address);
+
+gboolean        g_unix_socket_address_abstract_names_supported (void);
 
 G_END_DECLS
 
