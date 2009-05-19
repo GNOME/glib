@@ -141,6 +141,7 @@ struct _GSocketPrivate
   guint           keepalive : 1;
   guint           closed : 1;
   guint           connected : 1;
+  guint           listening : 1;
 #ifdef G_OS_WIN32
   WSAEVENT        event;
   int             current_events;
@@ -1032,6 +1033,9 @@ g_socket_get_listen_backlog  (GSocket                 *socket)
  * connecting to the socket and the application is not handling them
  * on time then the new connections will be refused.
  *
+ * Note that this must be called before g_socket_listen() and has no
+ * effect if called after that.
+ *
  * Since: 2.22
  **/
 void
@@ -1039,6 +1043,7 @@ g_socket_set_listen_backlog (GSocket *socket,
 			     gint backlog)
 {
   g_return_if_fail (G_IS_SOCKET (socket));
+  g_return_if_fail (!socket->priv->listening);
 
   if (backlog != socket->priv->listen_backlog)
     {
@@ -1240,6 +1245,9 @@ g_socket_is_connected (GSocket *socket)
  * Before calling this the socket must be bound to a local address using
  * g_socket_bind().
  *
+ * To set the maximum amount of outstanding clients, use
+ * g_socket_set_listen_backlog().
+ *
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
@@ -1261,6 +1269,8 @@ g_socket_listen (GSocket  *socket,
 		   _("could not listen: %s"), socket_strerror (errsv));
       return FALSE;
     }
+
+  socket->priv->listening = TRUE;
 
   return TRUE;
 }
