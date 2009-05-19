@@ -1649,6 +1649,7 @@ g_socket_send_to
 g_socket_send_message
 g_socket_close
 g_socket_is_closed
+g_socket_shutdown
 g_socket_is_connected
 g_socket_create_source
 g_socket_condition_check

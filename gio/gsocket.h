@@ -154,6 +154,10 @@ gssize                 g_socket_send_message            (GSocket                
 							 GError                 **error);
 gboolean               g_socket_close                   (GSocket                 *socket,
 							 GError                 **error);
+gboolean               g_socket_shutdown                (GSocket                 *socket,
+							 gboolean                 shutdown_read,
+							 gboolean                 shutdown_write,
+							 GError                 **error);
 gboolean               g_socket_is_closed               (GSocket                 *socket);
 GSource *              g_socket_create_source           (GSocket                 *socket,
 							 GIOCondition             condition,

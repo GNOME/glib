@@ -1067,6 +1067,7 @@ g_socket_accept
 g_socket_bind
 g_socket_check_connect_result
 g_socket_close
+g_socket_shutdown
 g_socket_condition_check
 g_socket_condition_wait
 g_socket_connect

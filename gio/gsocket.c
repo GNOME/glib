@@ -1839,6 +1839,79 @@ g_socket_send_to (GSocket      *socket,
 }
 
 /**
+ * g_socket_shutdown:
+ * @socket: a #GSocket
+ * @shutdown_read: whether to shut down the read side
+ * @shutdown_write: whether to shut down the write side
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Shut down part of a full-duplex connection.
+ *
+ * If @shutdown_read is %TRUE then the recieving side of the connection
+ * is shut down, and further reading is disallowed.
+ *
+ * If @shutdown_write is %TRUE then the sending side of the connection
+ * is shut down, and further writing is disallowed.
+ *
+ * It is allowed for both @shutdown_read and @shutdown_write to be %TRUE.
+ *
+ * One example where this is used is graceful disconnect for TCP connections
+ * where you close the sending side, then wait for the other side to close
+ * the connection, thus ensuring that the other side saw all sent data.
+ *
+ * Returns: %TRUE on success, %FALSE on error
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_socket_shutdown (GSocket *socket,
+		   gboolean shutdown_read,
+		   gboolean shutdown_write,
+		   GError **error)
+{
+  int res;
+  int how;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), TRUE);
+
+  if (!check_socket (socket, NULL))
+    return FALSE;
+
+  /* Do nothing? */
+  if (!shutdown_read && !shutdown_write)
+    return TRUE;
+
+#ifndef G_OS_WIN32
+  if (shutdown_read && shutdown_write)
+    how = SHUT_RDWR;
+  else if (shutdown_read)
+    how = SHUT_RD;
+  else
+    how = SHUT_WR;
+#else
+  if (shutdown_read && shutdown_write)
+    how = SD_BOTH;
+  else if (shutdown_read)
+    how = SD_RECEIVE;
+  else
+    how = SD_SEND;
+#endif
+
+  if (shutdown (socket->priv->fd, how) != 0)
+    {
+      int errsv = get_socket_errno ();
+      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+		   _("Unable to create socket: %s"), socket_strerror (errsv));
+      return FALSE;
+    }
+
+  if (shutdown_read && shutdown_write)
+    socket->priv->connected = FALSE;
+
+  return TRUE;
+}
+
+/**
  * g_socket_close:
  * @socket: a #GSocket
  * @error: #GError for error reporting, or %NULL to ignore.
