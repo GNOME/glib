@@ -235,7 +235,6 @@ g_socket_listener_add_socket (GSocketListener *listener,
     }
 
   g_ptr_array_add (listener->priv->sockets, socket);
-  g_socket_set_listen_backlog (socket, listener->priv->listen_backlog);
 
   if (source_object)
     g_object_set_qdata_full (G_OBJECT (socket), source_quark,
@@ -285,6 +284,8 @@ g_socket_listener_add_address (GSocketListener *listener,
 			 g_socket_protocol_id_lookup_by_name (protocol), error);
   if (socket == NULL)
     return FALSE;
+
+  g_socket_set_listen_backlog (socket, listener->priv->listen_backlog);
 
   if (!g_socket_bind (socket, address, TRUE, error) ||
       !g_socket_listen (socket, error) ||
