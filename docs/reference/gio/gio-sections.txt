@@ -1638,7 +1638,7 @@ g_socket_bind
 g_socket_listen
 g_socket_accept
 g_socket_connect
-g_socket_check_pending_error
+g_socket_check_connect_result
 g_socket_receive
 g_socket_receive_from
 g_socket_receive_message

@@ -106,7 +106,7 @@ gboolean               g_socket_bind                    (GSocket                
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,
 							 GError                 **error);
-gboolean               g_socket_check_pending_error     (GSocket                 *socket,
+gboolean               g_socket_check_connect_result    (GSocket                 *socket,
 							 GError                 **error);
 GIOCondition           g_socket_condition_check         (GSocket                 *socket,
 							 GIOCondition             condition);

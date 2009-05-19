@@ -1472,7 +1472,7 @@ g_socket_accept (GSocket       *socket,
  * non-blocking I/O is enabled. Then %G_IO_ERROR_PENDING is returned
  * and the user can be notified of the connection finishing by waiting
  * for the G_IO_OUT condition. The result of the connection can then be
- * checked with g_socket_check_pending_error().
+ * checked with g_socket_check_connect_result().
  *
  * Returns: %TRUE if connected, %FALSE on error.
  *
@@ -1517,7 +1517,7 @@ g_socket_connect (GSocket         *socket,
 	      if (socket->priv->blocking)
 		{
 		  g_socket_condition_wait (socket, G_IO_OUT, NULL, NULL);
-		  if (g_socket_check_pending_error (socket, error))
+		  if (g_socket_check_connect_result (socket, error))
 		    break;
 		  else
 		    g_prefix_error (error, _("Error connecting: "));
@@ -1544,11 +1544,11 @@ g_socket_connect (GSocket         *socket,
 }
 
 /**
- * g_socket_check_pending_error:
+ * g_socket_check_connect_result:
  * @socket: a #GSocket
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Checks and resets the pending error for the socket. This is typically
+ * Checks and resets the pending connect error for the socket. This is
  * used to check for errors when g_socket_connect() is used in non-blocking mode.
  *
  * Returns: %TRUE if no error, %FALSE otherwise, setting @error to the error
@@ -1556,8 +1556,8 @@ g_socket_connect (GSocket         *socket,
  * Since: 2.22
  **/
 gboolean
-g_socket_check_pending_error (GSocket  *socket,
-			      GError  **error)
+g_socket_check_connect_result (GSocket  *socket,
+			       GError  **error)
 {
   guint optlen;
   int value;

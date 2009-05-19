@@ -671,7 +671,7 @@ g_socket_client_socket_callback (GSocket *socket,
   else
     {
       /* socket is ready for writing means connect done, did it succeed? */
-      if (!g_socket_check_pending_error (data->current_socket, &error))
+      if (!g_socket_check_connect_result (data->current_socket, &error))
 	{
 	  set_last_error (data, error);
 
