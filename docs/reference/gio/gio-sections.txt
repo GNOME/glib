@@ -1632,6 +1632,8 @@ GSocket
 GSocketSourceFunc
 GSocketType
 GSocketMsgFlags
+GInputVector
+GOutputVector
 g_socket_new
 g_socket_new_from_fd
 g_socket_bind

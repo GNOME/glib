@@ -290,29 +290,40 @@ typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
 
 /**
  * GInputVector:
+ * @buffer: Pointer to a buffer where data will be written.
+ * @size: the availible size in @buffer.
  *
  * Structure used for scatter/gather data input.
+ * You generally pass in an array of #GInputVector<!-- -->s and the operation
+ * will store the read data starting in the first buffer, switching to
+ * the next as needed.
  *
  * Since: 2.22
  */
-typedef struct
-{
+typedef struct _GInputVector GInputVector;
+
+struct _GInputVector {
   gpointer buffer;
   gsize size;
-} GInputVector;
+};
 
 /**
  * GOutputVector:
+ * @buffer: Pointer to a buffer of data to read.
+ * @size: the size of @buffer.
  *
  * Structure used for scatter/gather data output.
+ * You generally pass in an array of #GOutputVector<!-- -->s and the operation
+ * will use all the buffers as if they were one buffer.
  *
  * Since: 2.22
  */
-typedef struct
-{
+typedef struct _GOutputVector GOutputVector;
+
+struct _GOutputVector {
   gconstpointer buffer;
   gsize size;
-} GOutputVector;
+};
 
 
 G_END_DECLS
