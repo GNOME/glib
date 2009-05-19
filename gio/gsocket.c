@@ -857,10 +857,10 @@ g_socket_initable_init (GInitable *initable,
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GSocket with the defined family, type and protocol.
- * If @protocol is %NULL the default protocol type for the family and
+ * If @protocol_id is 0 the default protocol type for the family and
  * type is used.
  *
- * The @protocol is a family and type specific int that specifies what
+ * The @protocol_id is a family and type specific int that specifies what
  * kind of protocol to use. Many families only support one protocol,
  * and use 0 for this, others support several and using 0 means
  * to use the default protocol for the family and type. To use
