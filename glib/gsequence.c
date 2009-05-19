@@ -576,7 +576,7 @@ g_sequence_move_range (GSequenceIter *dest,
  * @seq: a #GSequence
  * @cmp_func: the #GCompareDataFunc used to sort @seq. This function is
  *       passed two items of @seq and should return 0 if they are equal,
- *       a negative value fi the first comes before the second, and a
+ *       a negative value if the first comes before the second, and a
  *       positive value if the second comes before the first.
  * @cmp_data: user data passed to @cmp_func
  * 
