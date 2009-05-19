@@ -509,8 +509,8 @@ g_socket_client_connect (GSocketClient       *client,
 	      g_propagate_error (error, tmp_error);
 	    }
 	  else
-	    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			 _("Unknown error on connect"));
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                 _("Unknown error on connect"));
 	  break;
 	}
 
@@ -755,8 +755,8 @@ g_socket_client_enumerator_callback (GObject      *object,
       if (tmp_error)
 	set_last_error (data, tmp_error);
       else if (data->last_error == NULL)
-	g_set_error (&data->last_error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		     _("Unknown error on connect"));
+        g_set_error_literal (&data->last_error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                             _("Unknown error on connect"));
 
       g_socket_client_async_connect_complete (data);
       return;

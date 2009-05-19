@@ -274,8 +274,8 @@ check_socket (GSocket *socket,
 {
   if (!socket->priv->inited)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-		   _("Invalid socket, not initialized"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
+                           _("Invalid socket, not initialized"));
       return FALSE;
     }
 
@@ -742,8 +742,8 @@ g_socket_initable_init (GInitable *initable,
 
   if (cancellable != NULL)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		   _("Cancellable initialization not supported"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Cancellable initialization not supported"));
       return FALSE;
     }
 
@@ -1442,8 +1442,8 @@ g_socket_connect (GSocket         *socket,
 		    g_prefix_error (error, _("Error connecting: "));
 		}
 	      else
-		g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-			     _("Connection in progress"));
+                g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+                                     _("Connection in progress"));
 	    }
 	  else
 	    g_set_error (error, G_IO_ERROR,
@@ -1493,8 +1493,8 @@ g_socket_check_connect_result (GSocket  *socket,
 
   if (value != 0)
     {
-      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (value),
-		   "%s", socket_strerror (value));
+      g_set_error_literal (error, G_IO_ERROR, socket_io_error_from_errno (value),
+                           socket_strerror (value));
       return FALSE;
     }
   return TRUE;
@@ -2618,8 +2618,8 @@ g_socket_send_message (GSocket                *socket,
        seem very useful */
     if (num_messages != 0)
       {
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		     _("GSocketControlMessage not supported on windows"));
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                             _("GSocketControlMessage not supported on windows"));
 	return -1;
       }
 
