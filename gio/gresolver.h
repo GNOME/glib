@@ -41,7 +41,8 @@ struct _GResolver {
 
 };
 
-typedef struct {
+typedef struct _GResolverClass GResolverClass;
+struct _GResolverClass {
   GObjectClass parent_class;
 
   GList * ( *lookup_by_name)           (GResolver            *resolver,
@@ -91,7 +92,7 @@ typedef struct {
   void (*_g_reserved5) (void);
   void (*_g_reserved6) (void);
 
-} GResolverClass;
+};
 
 GType      g_resolver_get_type                  (void) G_GNUC_CONST;
 GResolver *g_resolver_get_default               (void);
