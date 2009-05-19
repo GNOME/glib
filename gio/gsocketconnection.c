@@ -141,6 +141,7 @@ g_socket_connection_get_socket (GSocketConnection *connection)
  * Try to get the local address of a socket connection.
  *
  * Returns: a #GSocketAddress or %NULL on error.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  **/
@@ -159,6 +160,7 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  * Try to get the remove address of a socket connection.
  *
  * Returns: a #GSocketAddress or %NULL on error.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  **/

@@ -191,6 +191,7 @@ main (int argc,
 
       g_print ("got a new connection from %s\n",
 	       socket_address_to_string (address));
+      g_object_unref (address);
 
       recv_socket = new_socket;
     }

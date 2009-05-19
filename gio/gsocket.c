@@ -136,12 +136,11 @@ struct _GSocketPrivate
   gint            fd;
   gint            listen_backlog;
   GError         *construct_error;
-  GSocketAddress *local_address;
-  GSocketAddress *remote_address;
   guint           inited : 1;
   guint           blocking : 1;
   guint           keepalive : 1;
   guint           closed : 1;
+  guint           connected : 1;
 #ifdef G_OS_WIN32
   WSAEVENT        event;
   int             current_events;
@@ -373,13 +372,9 @@ g_socket_details_from_fd (GSocket *socket)
 
   if (socket->priv->family != G_SOCKET_FAMILY_INVALID)
     {
-      socket->priv->local_address =
-	g_socket_address_new_from_native (&address, addrlen);
-
       addrlen = sizeof address;
       if (getpeername (fd, (struct sockaddr *) &address, &addrlen) >= 0)
-	socket->priv->remote_address =
-	  g_socket_address_new_from_native (&address, addrlen);
+	socket->priv->connected = TRUE;
     }
 
   optlen = sizeof bool_val;
@@ -580,6 +575,7 @@ g_socket_get_property (GObject    *object,
 		       GParamSpec *pspec)
 {
   GSocket *socket = G_SOCKET (object);
+  GSocketAddress *address;
 
   switch (prop_id)
     {
@@ -612,11 +608,13 @@ g_socket_get_property (GObject    *object,
 	break;
 
       case PROP_LOCAL_ADDRESS:
-	g_value_set_object (value, socket->priv->local_address);
+	address = g_socket_get_local_address (socket, NULL);
+	g_value_take_object (value, address);
 	break;
 
       case PROP_REMOTE_ADDRESS:
-	g_value_set_object (value, socket->priv->remote_address);
+	address = g_socket_get_remote_address (socket, NULL);
+	g_value_take_object (value, address);
 	break;
 
       default:
@@ -687,27 +685,6 @@ g_socket_finalize (GObject *object)
 }
 
 static void
-g_socket_dispose (GObject *object)
-{
-  GSocket *socket = G_SOCKET (object);
-
-  if (socket->priv->local_address)
-    {
-      g_object_unref (socket->priv->local_address);
-      socket->priv->local_address = NULL;
-    }
-
-  if (socket->priv->remote_address)
-    {
-      g_object_unref (socket->priv->remote_address);
-      socket->priv->remote_address = NULL;
-    }
-
-  if (G_OBJECT_CLASS (g_socket_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_socket_parent_class)->dispose) (object);
-}
-
-static void
 g_socket_class_init (GSocketClass *klass)
 {
   GObjectClass *gobject_class G_GNUC_UNUSED = G_OBJECT_CLASS (klass);
@@ -719,7 +696,6 @@ g_socket_class_init (GSocketClass *klass)
   g_type_class_add_private (klass, sizeof (GSocketPrivate));
 
   gobject_class->finalize = g_socket_finalize;
-  gobject_class->dispose = g_socket_dispose;
   gobject_class->constructed = g_socket_constructed;
   gobject_class->set_property = g_socket_set_property;
   gobject_class->get_property = g_socket_get_property;
@@ -811,8 +787,6 @@ g_socket_init (GSocket *socket)
   socket->priv->blocking = TRUE;
   socket->priv->listen_backlog = 10;
   socket->priv->construct_error = NULL;
-  socket->priv->remote_address = NULL;
-  socket->priv->local_address = NULL;
 #ifdef G_OS_WIN32
   socket->priv->event = WSA_INVALID_EVENT;
 #endif
@@ -1175,9 +1149,11 @@ g_socket_get_fd (GSocket *socket)
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Try to get the local address of a bound socket. This is only
- * useful if the socket has been bound to a local address.
+ * useful if the socket has been bound to a local address,
+ * either explicitly or implicitly when connecting.
  *
  * Returns: a #GSocketAddress or %NULL on error.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  **/
@@ -1185,15 +1161,12 @@ GSocketAddress *
 g_socket_get_local_address (GSocket  *socket,
 			    GError  **error)
 {
-  gchar buffer[256];
-  guint32 len = 256;
+  struct sockaddr_storage buffer;
+  guint32 len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
-  if (socket->priv->local_address)
-    return socket->priv->local_address;
-
-  if (getsockname (socket->priv->fd, (struct sockaddr *) buffer, &len) < 0)
+  if (getsockname (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
@@ -1201,8 +1174,7 @@ g_socket_get_local_address (GSocket  *socket,
       return NULL;
     }
 
-  socket->priv->local_address = g_socket_address_new_from_native (buffer, len);
-  return socket->priv->local_address;
+  return g_socket_address_new_from_native (&buffer, len);
 }
 
 /**
@@ -1214,6 +1186,7 @@ g_socket_get_local_address (GSocket  *socket,
  * useful for connection oriented sockets that have been connected.
  *
  * Returns: a #GSocketAddress or %NULL on error.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  **/
@@ -1221,15 +1194,12 @@ GSocketAddress *
 g_socket_get_remote_address (GSocket  *socket,
 			     GError  **error)
 {
-  gchar buffer[256];
-  guint32 len = 256;
+  struct sockaddr_storage buffer;
+  guint32 len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
-  if (socket->priv->remote_address)
-    return socket->priv->remote_address;
-
-  if (getpeername (socket->priv->fd, (struct sockaddr *) buffer, &len) < 0)
+  if (getpeername (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
@@ -1237,8 +1207,7 @@ g_socket_get_remote_address (GSocket  *socket,
       return NULL;
     }
 
-  socket->priv->remote_address = g_socket_address_new_from_native (buffer, len);
-  return socket->priv->remote_address;
+  return g_socket_address_new_from_native (&buffer, len);
 }
 
 /**
@@ -1257,7 +1226,7 @@ g_socket_is_connected (GSocket *socket)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
-  return socket->priv->remote_address != NULL;
+  return socket->priv->connected;
 }
 
 /**
@@ -1330,7 +1299,7 @@ g_socket_bind (GSocket         *socket,
 	       gboolean         reuse_address,
 	       GError         **error)
 {
-  gchar addr[256];
+  struct sockaddr_storage addr;
   int value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && G_IS_SOCKET_ADDRESS (address), FALSE);
@@ -1348,10 +1317,10 @@ g_socket_bind (GSocket         *socket,
 	      (gpointer) &value, sizeof (value));
 #endif
 
-  if (!g_socket_address_to_native (address, addr, sizeof addr, error))
+  if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
     return FALSE;
 
-  if (bind (socket->priv->fd, (struct sockaddr *) addr,
+  if (bind (socket->priv->fd, (struct sockaddr *) &addr,
 	    g_socket_address_get_native_size (address)) < 0)
     {
       int errsv = get_socket_errno ();
@@ -1360,8 +1329,6 @@ g_socket_bind (GSocket         *socket,
 		   _("Error binding to address: %s"), socket_strerror (errsv));
       return FALSE;
     }
-
-  socket->priv->local_address = g_object_ref (address);
 
   return TRUE;
 }
@@ -1506,14 +1473,14 @@ g_socket_connect (GSocket         *socket,
 		  GSocketAddress  *address,
 		  GError         **error)
 {
-  gchar buffer[256];
+  struct sockaddr_storage buffer;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && G_IS_SOCKET_ADDRESS (address), FALSE);
 
   if (!check_socket (socket, error))
     return FALSE;
 
-  if (!g_socket_address_to_native (address, buffer, sizeof buffer, error))
+  if (!g_socket_address_to_native (address, &buffer, sizeof buffer, error))
     return FALSE;
 
   while (1)
@@ -1523,7 +1490,7 @@ g_socket_connect (GSocket         *socket,
 				    G_IO_IN, NULL, error))
 	return FALSE;
 
-      if (connect (socket->priv->fd, (struct sockaddr *) buffer,
+      if (connect (socket->priv->fd, (struct sockaddr *) &buffer,
 		   g_socket_address_get_native_size (address)) < 0)
 	{
 	  int errsv = get_socket_errno ();
@@ -1561,7 +1528,7 @@ g_socket_connect (GSocket         *socket,
 
   win32_unset_event_mask (socket, FD_CONNECT);
 
-  socket->priv->remote_address = g_object_ref (address);
+  socket->priv->connected = TRUE;
 
   return TRUE;
 }
@@ -1928,6 +1895,7 @@ g_socket_close (GSocket *socket,
     }
 #endif
 
+  socket->priv->connected = FALSE;
   socket->priv->closed = TRUE;
 
   return TRUE;
