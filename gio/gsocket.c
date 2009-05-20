@@ -2308,8 +2308,10 @@ winsock_source_new (GSocket      *socket,
  * these conditions will always be reported output if they are true.
  *
  * @cancellable if not %NULL can be used to cancel the source, which will
- * cause the source to trigger, reporting the current condition. You can
- * check for this in the callback using g_cancellable_is_cancelled().
+ * cause the source to trigger, reporting the current condition (which
+ * is likely 0 unless cancellation happened at the same time as a
+ * condition change). You can check for this in the callback using
+ * g_cancellable_is_cancelled().
  *
  * Returns: a newly allocated %GSource, free with g_source_unref().
  *
