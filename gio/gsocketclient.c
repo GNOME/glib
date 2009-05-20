@@ -36,6 +36,7 @@
 #include <gio/gioerror.h>
 #include <gio/gsocket.h>
 #include <gio/gnetworkaddress.h>
+#include <gio/gnetworkservice.h>
 #include <gio/gsocketaddress.h>
 #include "glibintl.h"
 
@@ -596,6 +597,48 @@ g_socket_client_connect_to_host (GSocketClient        *client,
   return connection;
 }
 
+/**
+ * g_socket_client_connect_to_service:
+ * @client: a #GSocketConnection
+ * @domain: a domain name
+ * @service: the name of the service to connect to
+ * @cancellable: a #GCancellable, or %NULL
+ * @error: a pointer to a #GError, or %NULL
+ * @returns: a #GSocketConnection if successful, or %NULL on error
+ *
+ * Attempts to create a TCP connection to a service.
+ *
+ * This call looks up the SRV record for @service at @domain for the
+ * "tcp" protocol.  It then attempts to connect, in turn, to each of
+ * the hosts providing the service until either a connection succeeds
+ * or there are no hosts remaining.
+ *
+ * Upon a successful connection, a new #GSocketConnection is constructed
+ * and returned.  The caller owns this new object and must drop their
+ * reference to it when finished with it.
+ *
+ * In the event of any failure (DNS error, service not found, no hosts
+ * connectable) %NULL is returned and @error (if non-%NULL) is set
+ * accordingly.
+ **/
+GSocketConnection *
+g_socket_client_connect_to_service (GSocketClient  *client,
+				    const char     *domain,
+				    const char     *service,
+				    GCancellable   *cancellable,
+				    GError        **error)
+{
+  GSocketConnectable *connectable;
+  GSocketConnection *connection;
+
+  connectable = g_network_service_new (service, "tcp", domain);
+  connection = g_socket_client_connect (client, connectable,
+					cancellable, error);
+  g_object_unref (connectable);
+
+  return connection;
+}
+
 typedef struct
 {
   GSimpleAsyncResult *result;
@@ -857,6 +900,35 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
 }
 
 /**
+ * g_socket_client_connect_to_service_async:
+ * @client: a #GSocketClient
+ * @domain: a domain name
+ * @service: the name of the service to connect to
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: a #GAsyncReadyCallback
+ * @user_data: user data for the callback
+ *
+ * This is the asynchronous version of
+ * g_socket_client_connect_to_service().
+ **/
+void
+g_socket_client_connect_to_service_async (GSocketClient       *client,
+					  const char          *domain,
+					  const char          *service,
+					  GCancellable        *cancellable,
+					  GAsyncReadyCallback  callback,
+					  gpointer             user_data)
+{
+  GSocketConnectable *connectable;
+
+  connectable = g_network_service_new (service, "tcp", domain);
+  g_socket_client_connect_async (client,
+				 connectable, cancellable,
+				 callback, user_data);
+  g_object_unref (connectable);
+}
+
+/**
  * g_socket_client_connect_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
@@ -899,6 +971,27 @@ GSocketConnection *
 g_socket_client_connect_to_host_finish (GSocketClient        *client,
 					GAsyncResult         *result,
 					GError              **error)
+{
+  return g_socket_client_connect_finish (client, result, error);
+}
+
+/**
+ * g_socket_client_connect_to_service_finish:
+ * @client: a #GSocketClient.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ * ignore.
+ *
+ * Finishes an async connect operation. See g_socket_client_connect_to_service_async()
+ *
+ * Returns: a #GSocketConnection on success, %NULL on error.
+ *
+ * Since: 2.22
+ **/
+GSocketConnection *
+g_socket_client_connect_to_service_finish (GSocketClient        *client,
+					   GAsyncResult         *result,
+					   GError              **error)
 {
   return g_socket_client_connect_finish (client, result, error);
 }
