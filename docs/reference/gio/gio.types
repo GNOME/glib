@@ -15,6 +15,7 @@ g_desktop_app_info_get_type
 g_desktop_app_info_lookup_get_type
 g_drive_get_type
 g_emblem_get_type
+g_emblem_origin_get_type
 g_emblemed_icon_get_type
 g_file_attribute_info_flags_get_type
 g_file_attribute_status_get_type
@@ -61,6 +62,7 @@ g_network_service_get_type
 g_output_stream_get_type
 g_output_stream_splice_flags_get_type
 g_password_save_get_type
+g_resolver_error_get_type
 g_resolver_get_type
 g_seekable_get_type
 g_simple_async_result_get_type
@@ -70,9 +72,13 @@ g_socket_client_get_type
 g_socket_connectable_get_type
 g_socket_connection_get_type
 g_socket_control_message_get_type
+g_socket_family_get_type
 g_socket_get_type
 g_socket_listener_get_type
+g_socket_msg_flags_get_type
+g_socket_protocol_get_type
 g_socket_service_get_type
+g_socket_type_get_type
 g_tcp_connection_get_type
 g_themed_icon_get_type
 g_threaded_socket_service_get_type
