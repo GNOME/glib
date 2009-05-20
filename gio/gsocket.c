@@ -26,6 +26,7 @@
  */
 
 #include "config.h"
+#include "glib.h"
 
 #include <errno.h>
 #include <signal.h>
@@ -1229,7 +1230,6 @@ g_socket_bind (GSocket         *socket,
 	       GError         **error)
 {
   struct sockaddr_storage addr;
-  int value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && G_IS_SOCKET_ADDRESS (address), FALSE);
 
@@ -1239,11 +1239,15 @@ g_socket_bind (GSocket         *socket,
   /* SO_REUSEADDR on windows means something else and is not what we want.
      It always allows the unix variant of SO_REUSEADDR anyway */
 #ifndef G_OS_WIN32
-  value = (int) !!reuse_address;
-  /* Ignore errors here, the only likely error is "not supported", and
-     this is a "best effort" thing mainly */
-  setsockopt (socket->priv->fd, SOL_SOCKET, SO_REUSEADDR,
-	      (gpointer) &value, sizeof (value));
+  {
+    int value;
+
+    value = (int) !!reuse_address;
+    /* Ignore errors here, the only likely error is "not supported", and
+       this is a "best effort" thing mainly */
+    setsockopt (socket->priv->fd, SOL_SOCKET, SO_REUSEADDR,
+		(gpointer) &value, sizeof (value));
+  }
 #endif
 
   if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
@@ -1788,7 +1792,6 @@ g_socket_shutdown (GSocket *socket,
 		   gboolean shutdown_write,
 		   GError **error)
 {
-  int res;
   int how;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), TRUE);
@@ -2632,6 +2635,7 @@ g_socket_send_message (GSocket                *socket,
       }
 
     /* name */
+    addrlen = 0; /* Avoid warning */
     if (address)
       {
 	addrlen = g_socket_address_get_native_size (address);
