@@ -249,8 +249,8 @@ g_cancellable_new (void)
 
 /**
  * g_cancellable_push_current:
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * 
+ * @cancellable: a #GCancellable object
+ *
  * Pushes @cancellable onto the cancellable stack. The current
  * cancllable can then be recieved using g_cancellable_get_current().
  *
@@ -266,7 +266,7 @@ g_cancellable_push_current (GCancellable *cancellable)
   GSList *l;
 
   g_return_if_fail (cancellable != NULL);
-  
+
   l = g_static_private_get (&current_cancellable);
   l = g_slist_prepend (l, cancellable);
   g_static_private_set (&current_cancellable, l, NULL);
@@ -274,18 +274,18 @@ g_cancellable_push_current (GCancellable *cancellable)
 
 /**
  * g_cancellable_pop_current:
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: a #GCancellable object
  *
- * Pops @cancellable off the cancellable stack (verifying that @cancellable 
+ * Pops @cancellable off the cancellable stack (verifying that @cancellable
  * is on the top of the stack).
  **/
 void
 g_cancellable_pop_current (GCancellable *cancellable)
 {
   GSList *l;
-  
+
   l = g_static_private_get (&current_cancellable);
-  
+
   g_return_if_fail (l != NULL);
   g_return_if_fail (l->data == cancellable);
 
@@ -295,17 +295,17 @@ g_cancellable_pop_current (GCancellable *cancellable)
 
 /**
  * g_cancellable_get_current:
- * 
+ *
  * Gets the top cancellable from the stack.
- * 
+ *
  * Returns: a #GCancellable from the top of the stack, or %NULL
- * if the stack is empty. 
+ * if the stack is empty.
  **/
 GCancellable *
 g_cancellable_get_current  (void)
 {
   GSList *l;
-  
+
   l = g_static_private_get (&current_cancellable);
   if (l == NULL)
     return NULL;
