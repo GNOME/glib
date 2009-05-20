@@ -487,7 +487,8 @@ g_unix_volume_get_identifier (GVolume              *volume,
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
 
-  if (strcmp (kind, unix_volume->identifier_type) == 0)
+  if (unix_volume->identifier_type != NULL &&
+      strcmp (kind, unix_volume->identifier_type) == 0)
     return g_strdup (unix_volume->identifier);
   return NULL;
 }
