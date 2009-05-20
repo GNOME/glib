@@ -620,6 +620,9 @@ g_network_service_address_enumerator_next_finish (GSocketAddressEnumerator  *enu
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   GSocketAddress *sockaddr;
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   sockaddr = g_simple_async_result_get_op_res_gpointer (simple);
   return sockaddr ? g_object_ref (sockaddr) : NULL;
 }
