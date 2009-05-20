@@ -154,7 +154,7 @@ g_async_initable_init_async (GAsyncInitable     *initable,
 
   iface = G_ASYNC_INITABLE_GET_IFACE (initable);
 
-  return (* iface->init_async) (initable, io_priority, cancellable, callback, user_data);
+  (* iface->init_async) (initable, io_priority, cancellable, callback, user_data);
 }
 
 /**
