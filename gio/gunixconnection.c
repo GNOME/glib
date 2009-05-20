@@ -43,7 +43,7 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_UNIX,
 					     G_SOCKET_TYPE_STREAM,
-					     0);
+					     G_SOCKET_PROTOCOL_DEFAULT);
 			 );
 
 /**

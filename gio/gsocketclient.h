@@ -76,9 +76,9 @@ void                    g_socket_client_set_family                      (GSocket
 GSocketType             g_socket_client_get_socket_type                 (GSocketClient        *client);
 void                    g_socket_client_set_socket_type                 (GSocketClient        *client,
 									 GSocketType           type);
-const char             *g_socket_client_get_protocol                    (GSocketClient        *client);
+GSocketProtocol         g_socket_client_get_protocol                    (GSocketClient        *client);
 void                    g_socket_client_set_protocol                    (GSocketClient        *client,
-									 const char           *protocol);
+									 GSocketProtocol       protocol);
 GSocketAddress         *g_socket_client_get_local_address               (GSocketClient        *client);
 void                    g_socket_client_set_local_address               (GSocketClient        *client,
 									 GSocketAddress       *address);

@@ -483,7 +483,7 @@ g_socket_connection_factory_create_connection (GSocket *socket)
 
   type = g_socket_connection_factory_lookup_type (g_socket_get_family (socket),
 						  g_socket_get_socket_type (socket),
-						  g_socket_get_protocol_id (socket));
+						  g_socket_get_protocol (socket));
   return g_object_new (type, "socket", socket, NULL);
 }
 

@@ -556,6 +556,30 @@ typedef enum
   G_SOCKET_MSG_DONTROUTE = GLIB_SYSDEF_MSG_DONTROUTE
 } GSocketMsgFlags;
 
+/**
+ * GSocketProtocol:
+ * @G_SOCKET_PROTOCOL_UNKNOWN: The protocol type is unknown
+ * @G_SOCKET_PROTOCOL_DEFAULT: The default protocol for the family/type
+ * @G_SOCKET_PROTOCOL_TCP: Tcp over IP
+ * @G_SOCKET_PROTOCOL_UDP: UDP over IP
+ * @G_SOCKET_PROTOCOL_SCTP: SCTP over IP
+ *
+ * A protocol identifier is specified when creating a #GSocket, which is a family/type
+ * specific identifier, where 0 means the default protocol for the particular family/type.
+ * This enum contains a set of commonly availible and used protocols. You can also
+ * pass any other identifiers handled by the platform in order to use protocols not
+ * listed here.
+ *
+ * Since: 2.22
+ */
+typedef enum {
+  G_SOCKET_PROTOCOL_UNKNOWN = -1,
+  G_SOCKET_PROTOCOL_DEFAULT = 0,
+  G_SOCKET_PROTOCOL_TCP     = 6,
+  G_SOCKET_PROTOCOL_UDP     = 17,
+  G_SOCKET_PROTOCOL_SCTP    = 132
+} GSocketProtocol;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

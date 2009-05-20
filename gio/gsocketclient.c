@@ -77,7 +77,7 @@ struct _GSocketClientPrivate
 {
   GSocketFamily family;
   GSocketType type;
-  char *protocol;
+  GSocketProtocol protocol;
   GSocketAddress *local_address;
 };
 
@@ -88,7 +88,6 @@ create_socket (GSocketClient  *client,
 {
   GSocketFamily family;
   GSocket *socket;
-  int proto;
 
   family = client->priv->family;
   if (family == G_SOCKET_FAMILY_INVALID &&
@@ -97,10 +96,9 @@ create_socket (GSocketClient  *client,
   if (family == G_SOCKET_FAMILY_INVALID)
     family = g_socket_address_get_family (dest_address);
 
-  proto = g_socket_protocol_id_lookup_by_name (client->priv->protocol);
   socket = g_socket_new (family,
 			 client->priv->type,
-			 proto,
+			 client->priv->protocol,
 			 error);
   if (socket == NULL)
     return NULL;
@@ -153,8 +151,6 @@ g_socket_client_finalize (GObject *object)
   if (client->priv->local_address)
     g_object_unref (client->priv->local_address);
 
-  g_free (client->priv->protocol);
-
   if (G_OBJECT_CLASS (g_socket_client_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_socket_client_parent_class)->finalize) (object);
 }
@@ -178,7 +174,7 @@ g_socket_client_get_property (GObject    *object,
 	break;
 
       case PROP_PROTOCOL:
-	g_value_set_string (value, client->priv->protocol);
+	g_value_set_enum (value, client->priv->protocol);
 	break;
 
       case PROP_LOCAL_ADDRESS:
@@ -209,7 +205,7 @@ g_socket_client_set_property (GObject      *object,
       break;
 
     case PROP_PROTOCOL:
-      g_socket_client_set_protocol (client, g_value_get_string (value));
+      g_socket_client_set_protocol (client, g_value_get_enum (value));
       break;
 
     case PROP_LOCAL_ADDRESS:
@@ -317,11 +313,11 @@ g_socket_client_set_socket_type (GSocketClient *client,
  *
  * See g_socket_client_set_protocol() for details.
  *
- * Returns: a string or %NULL. don't free
+ * Returns: a #GSocketProtocol
  *
  * Since: 2.22
  **/
-const char *
+GSocketProtocol
 g_socket_client_get_protocol (GSocketClient *client)
 {
   return client->priv->protocol;
@@ -330,26 +326,25 @@ g_socket_client_get_protocol (GSocketClient *client)
 /**
  * g_socket_client_set_protocol:
  * @client: a #GSocketClient.
- * @protocol: a string, or %NULL
+ * @protocol: a #GSocketProtocol
  *
  * Sets the protocol of the socket client.
  * The sockets created by this object will use of the specified
  * protocol.
  *
- * If @protocol is %NULL that means to use the default
+ * If @protocol is %0 that means to use the default
  * protocol for the socket family and type.
  *
  * Since: 2.22
  **/
 void
-g_socket_client_set_protocol (GSocketClient        *client,
-			      const char           *protocol)
+g_socket_client_set_protocol (GSocketClient *client,
+			      GSocketProtocol protocol)
 {
-  if (g_strcmp0 (client->priv->protocol, protocol) == 0)
+  if (client->priv->protocol == protocol)
     return;
 
-  g_free (client->priv->protocol);
-  client->priv->protocol = g_strdup (protocol);
+  client->priv->protocol = protocol;
   g_object_notify (G_OBJECT (client), "protocol");
 }
 
@@ -429,11 +424,12 @@ g_socket_client_class_init (GSocketClientClass *class)
 						      G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-				   g_param_spec_string ("protocol",
-							P_("Socket protocol"),
-							P_("The protocol to use for socket construction, or %NULL for default"),
-							NULL,
-							G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+				   g_param_spec_enum ("protocol",
+						      P_("Socket protocol"),
+						      P_("The protocol to use for socket construction, or 0 for default"),
+						      G_TYPE_SOCKET_PROTOCOL,
+						      G_SOCKET_PROTOCOL_DEFAULT,
+						      G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
 				   g_param_spec_object ("local-address",

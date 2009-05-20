@@ -41,19 +41,19 @@ G_DEFINE_TYPE_WITH_CODE (GTcpConnection, g_tcp_connection,
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_IPV4,
 					     G_SOCKET_TYPE_STREAM,
-					     0);
+					     G_SOCKET_PROTOCOL_DEFAULT);
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_IPV6,
 					     G_SOCKET_TYPE_STREAM,
-					     0);
+					     G_SOCKET_PROTOCOL_DEFAULT);
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_IPV4,
 					     G_SOCKET_TYPE_STREAM,
-					     g_socket_protocol_id_lookup_by_name ("tcp"));
+					     G_SOCKET_PROTOCOL_TCP);
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_IPV6,
 					     G_SOCKET_TYPE_STREAM,
-					     g_socket_protocol_id_lookup_by_name ("tcp"));
+					     G_SOCKET_PROTOCOL_TCP);
 			 );
 
 static gboolean g_tcp_connection_close       (GIOStream            *stream,

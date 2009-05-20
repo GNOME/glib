@@ -246,9 +246,9 @@ g_socket_listener_add_socket (GSocketListener *listener,
 /**
  * g_socket_listener_add_address:
  * @listener: a #GSocketListener
- * @address: a #GSocketAddres
+ * @address: a #GSocketAddress
  * @type: a #GSocketType
- * @protocol: a protocol name, or %NULL
+ * @protocol: a #GSocketProtocol
  * @source_object: Optional #GObject identifying this source
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -269,7 +269,7 @@ gboolean
 g_socket_listener_add_address (GSocketListener *listener,
 			       GSocketAddress *address,
 			       GSocketType type,
-			       const char *protocol,
+			       GSocketProtocol protocol,
 			       GObject *source_object,
 			       GError **error)
 {
@@ -280,8 +280,7 @@ g_socket_listener_add_address (GSocketListener *listener,
     return FALSE;
 
   family = g_socket_address_get_family (address);
-  socket = g_socket_new (family, type,
-			 g_socket_protocol_id_lookup_by_name (protocol), error);
+  socket = g_socket_new (family, type, protocol, error);
   if (socket == NULL)
     return FALSE;
 
@@ -347,7 +346,7 @@ g_socket_listener_add_inet_port (GSocketListener *listener,
   if (!g_socket_listener_add_address (listener,
 				      address6,
 				      G_SOCKET_TYPE_STREAM,
-				      NULL,
+				      G_SOCKET_PROTOCOL_DEFAULT,
 				      source_object,
 				      NULL))
     {
@@ -356,7 +355,7 @@ g_socket_listener_add_inet_port (GSocketListener *listener,
       res = g_socket_listener_add_address (listener,
 					   address4,
 					   G_SOCKET_TYPE_STREAM,
-					   NULL,
+					   G_SOCKET_PROTOCOL_DEFAULT,
 					   source_object,
 					   error);
     }
@@ -368,7 +367,7 @@ g_socket_listener_add_inet_port (GSocketListener *listener,
       g_socket_listener_add_address (listener,
 				     address4,
 				     G_SOCKET_TYPE_STREAM,
-				     NULL,
+				     G_SOCKET_PROTOCOL_DEFAULT,
 				     source_object,
 				     NULL);
     }

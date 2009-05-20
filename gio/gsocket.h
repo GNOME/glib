@@ -76,15 +76,14 @@ struct _GSocket
 GType                  g_socket_get_type                (void) G_GNUC_CONST;
 GSocket *              g_socket_new                     (GSocketFamily            family,
 							 GSocketType              type,
-							 gint                     protocol_id,
+							 GSocketProtocol          protocol,
 							 GError                 **error);
 GSocket *              g_socket_new_from_fd             (gint                     fd,
 							 GError                 **error);
 int                    g_socket_get_fd                  (GSocket                 *socket);
 GSocketFamily          g_socket_get_family              (GSocket                 *socket);
 GSocketType            g_socket_get_socket_type         (GSocket                 *socket);
-gint                   g_socket_get_protocol_id         (GSocket                 *socket);
-char *                 g_socket_get_protocol_name       (GSocket                 *socket);
+GSocketProtocol        g_socket_get_protocol            (GSocket                 *socket);
 GSocketAddress *       g_socket_get_local_address       (GSocket                 *socket,
 							 GError                 **error);
 GSocketAddress *       g_socket_get_remote_address      (GSocket                 *socket,
@@ -162,8 +161,6 @@ gboolean               g_socket_is_closed               (GSocket                
 GSource *              g_socket_create_source           (GSocket                 *socket,
 							 GIOCondition             condition,
 							 GCancellable            *cancellable);
-
-gint                  g_socket_protocol_id_lookup_by_name (const char            *protocol_name);
 
 G_END_DECLS
 
