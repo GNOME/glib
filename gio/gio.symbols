@@ -869,6 +869,7 @@ g_password_save_get_type G_GNUC_CONST
 g_emblem_origin_get_type G_GNUC_CONST
 g_socket_family_get_type G_GNUC_CONST
 g_socket_type_get_type G_GNUC_CONST
+g_socket_protocol_get_type G_GNUC_CONST
 g_socket_msg_flags_get_type G_GNUC_CONST
 g_resolver_error_get_type G_GNUC_CONST
 #endif
@@ -932,6 +933,11 @@ g_inet_socket_address_new
 #ifdef G_OS_UNIX
 g_unix_socket_address_get_type G_GNUC_CONST
 g_unix_socket_address_new
+g_unix_socket_address_new_abstract
+g_unix_socket_address_abstract_names_supported
+g_unix_socket_address_get_is_abstract
+g_unix_socket_address_get_path
+g_unix_socket_address_get_path_len
 #endif
 #endif
 #endif
