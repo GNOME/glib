@@ -1165,13 +1165,16 @@ close_async_thread (GSimpleAsyncResult *res,
      cancellation, since we want to close things anyway, although
      possibly in a quick-n-dirty way. At least we never want to leak
      open handles */
-  
+
   class = G_INPUT_STREAM_GET_CLASS (object);
-  result = class->close_fn (G_INPUT_STREAM (object), cancellable, &error);
-  if (!result)
+  if (class->close_fn)
     {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
+      result = class->close_fn (G_INPUT_STREAM (object), cancellable, &error);
+      if (!result)
+	{
+	  g_simple_async_result_set_from_error (res, error);
+	  g_error_free (error);
+	}
     }
 }
 

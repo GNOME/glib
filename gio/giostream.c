@@ -569,11 +569,14 @@ close_async_thread (GSimpleAsyncResult *res,
      open handles */
 
   class = G_IO_STREAM_GET_CLASS (object);
-  result = class->close_fn (G_IO_STREAM (object), cancellable, &error);
-  if (!result)
+  if (class->close_fn)
     {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
+      result = class->close_fn (G_IO_STREAM (object), cancellable, &error);
+      if (!result)
+	{
+	  g_simple_async_result_set_from_error (res, error);
+	  g_error_free (error);
+	}
     }
 }
 
