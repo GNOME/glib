@@ -2,10 +2,18 @@
 #include <string.h>
 #include <stdio.h>
 
+GMainLoop *loop;
+
 int cancel_timeout = 0;
+gboolean async = FALSE;
+gboolean graceful = FALSE;
 static GOptionEntry cmd_entries[] = {
   {"cancel", 'c', 0, G_OPTION_ARG_INT, &cancel_timeout,
    "Cancel any op after the specified amount of seconds", NULL},
+  {"async", 'a', 0, G_OPTION_ARG_NONE, &async,
+   "Use async ops", NULL},
+  {"graceful-disconnect", 'g', 0, G_OPTION_ARG_NONE, &graceful,
+   "Use graceful disconnect", NULL},
   {NULL}
 };
 
@@ -35,6 +43,17 @@ socket_address_to_string (GSocketAddress *address)
   return res;
 }
 
+static void
+async_cb (GObject *source_object,
+	  GAsyncResult *res,
+	  gpointer user_data)
+{
+  GAsyncResult **resp = user_data;
+  *resp = g_object_ref (res);
+  g_main_loop_quit (loop);
+}
+
+
 int
 main (int argc, char *argv[])
 {
@@ -63,6 +82,9 @@ main (int argc, char *argv[])
       g_printerr ("%s: %s\n", argv[0], "Need to specify hostname");
       return 1;
     }
+
+  if (async)
+    loop = g_main_loop_new (NULL, FALSE);
 
   if (cancel_timeout)
     {
@@ -96,6 +118,9 @@ main (int argc, char *argv[])
 	   socket_address_to_string (address));
   g_object_unref (address);
 
+  if (graceful)
+    g_tcp_connection_set_graceful_disconnect (G_TCP_CONNECTION (connection), TRUE);
+
   out = g_io_stream_get_output_stream (G_IO_STREAM (connection));
 
   while (fgets(buffer, sizeof (buffer), stdin) != NULL)
@@ -110,10 +135,28 @@ main (int argc, char *argv[])
     }
 
   g_print ("closing stream\n");
-  if (!g_io_stream_close (G_IO_STREAM (connection), cancellable, &error))
+  if (async)
     {
-      g_warning ("close error: %s\n",  error->message);
-      return 1;
+      GAsyncResult *res;
+      g_io_stream_close_async (G_IO_STREAM (connection),
+			       0, cancellable, async_cb, &res);
+      g_main_loop_run (loop);
+      if (!g_io_stream_close_finish (G_IO_STREAM (connection),
+				     res, &error))
+	{
+	  g_object_unref (res);
+	  g_warning ("close error: %s\n",  error->message);
+	  return 1;
+	}
+      g_object_unref (res);
+    }
+  else
+    {
+      if (!g_io_stream_close (G_IO_STREAM (connection), cancellable, &error))
+	{
+	  g_warning ("close error: %s\n",  error->message);
+	  return 1;
+	}
     }
 
   return 0;

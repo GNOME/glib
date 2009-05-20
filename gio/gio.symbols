@@ -1182,6 +1182,8 @@ g_threaded_socket_service_new
 #if IN_HEADER(__G_TCP_CONNECTION_H__)
 #if IN_FILE(__G_TCP_CONNECTION_C__)
 g_tcp_connection_get_type G_GNUC_CONST
+g_tcp_connection_set_graceful_disconnect
+g_tcp_connection_get_graceful_disconnect
 #endif
 #endif
 

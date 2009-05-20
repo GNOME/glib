@@ -1722,6 +1722,8 @@ g_socket_connection_get_remote_address
 g_socket_connection_get_socket
 <SUBSECTION>
 GTcpConnection
+g_tcp_connection_set_graceful_disconnect
+g_tcp_connection_get_graceful_disconnect
 <SUBSECTION>
 GUnixConnection
 g_unix_connection_receive_fd
