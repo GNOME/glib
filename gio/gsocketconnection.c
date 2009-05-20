@@ -291,11 +291,15 @@ g_socket_connection_close_async (GIOStream        *stream,
 				 gpointer          user_data)
 {
   GSimpleAsyncResult *res;
+  GIOStreamClass *class;
   GError *error;
+
+  class = G_IO_STREAM_GET_CLASS (stream);
 
   /* socket close is not blocked, just do it! */
   error = NULL;
-  if (!g_io_stream_close (stream, cancellable, &error))
+  if (class->close_fn &&
+      !class->close_fn (stream, cancellable, &error))
     {
       g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
 					    callback, user_data,
