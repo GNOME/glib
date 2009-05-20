@@ -48,6 +48,7 @@
 #include "config.h"
 #include "gsocketconnection.h"
 #include "gthreadedsocketservice.h"
+#include "glibintl.h"
 
 #include "gio-marshal.h"
 
@@ -56,8 +57,15 @@
 static guint g_threaded_socket_service_run_signal;
 
 G_DEFINE_TYPE (GThreadedSocketService,
-               g_threaded_socket_service,
-               G_TYPE_SOCKET_SERVICE);
+	       g_threaded_socket_service,
+	       G_TYPE_SOCKET_SERVICE);
+
+enum
+{
+  PROP_0,
+  PROP_MAX_THREADS
+};
+
 
 G_LOCK_DEFINE_STATIC(job_count);
 
@@ -162,6 +170,44 @@ g_threaded_socket_service_finalize (GObject *object)
     ->finalize (object);
 }
 
+static void
+g_threaded_socket_service_get_property (GObject    *object,
+					guint       prop_id,
+					GValue     *value,
+					GParamSpec *pspec)
+{
+  GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
+
+  switch (prop_id)
+    {
+      case PROP_MAX_THREADS:
+	g_value_set_int (value, service->priv->max_threads);
+	break;
+
+      default:
+	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+g_threaded_socket_service_set_property (GObject      *object,
+					guint         prop_id,
+					const GValue *value,
+					GParamSpec   *pspec)
+{
+  GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
+
+  switch (prop_id)
+    {
+      case PROP_MAX_THREADS:
+	service->priv->max_threads = g_value_get_int (value);
+	break;
+
+      default:
+	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
 
 static void
 g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
@@ -173,6 +219,8 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 
   gobject_class->constructed = g_threaded_socket_service_constructed;
   gobject_class->finalize = g_threaded_socket_service_finalize;
+  gobject_class->set_property = g_threaded_socket_service_set_property;
+  gobject_class->get_property = g_threaded_socket_service_get_property;
 
   ss_class->incoming = g_threaded_socket_service_incoming;
 
@@ -192,10 +240,19 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    **/
   g_threaded_socket_service_run_signal =
     g_signal_new ("run", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
-                  g_signal_accumulator_true_handled, NULL,
-                  _gio_marshal_BOOLEAN__OBJECT_OBJECT, G_TYPE_BOOLEAN,
-                  2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
+		  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
+		  g_signal_accumulator_true_handled, NULL,
+		  _gio_marshal_BOOLEAN__OBJECT_OBJECT, G_TYPE_BOOLEAN,
+		  2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
+
+  g_object_class_install_property (gobject_class, PROP_MAX_THREADS,
+				   g_param_spec_int ("max-threads",
+						     P_("Max threads"),
+						     P_("The max number of threads handling clients for this service"),
+						     -1,
+						     G_MAXINT,
+						     10,
+						     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -210,7 +267,9 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 GSocketService *
 g_threaded_socket_service_new (int max_threads)
 {
-  return g_object_new (G_TYPE_THREADED_SOCKET_SERVICE, NULL);
+  return g_object_new (G_TYPE_THREADED_SOCKET_SERVICE,
+		       "max-threads", max_threads,
+		       NULL);
 }
 
 #define __G_THREADED_SOCKET_SERVICE_C__
