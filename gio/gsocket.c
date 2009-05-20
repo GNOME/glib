@@ -1418,11 +1418,6 @@ g_socket_connect (GSocket         *socket,
 
   while (1)
     {
-      if (socket->priv->blocking &&
-	  !g_socket_condition_wait (socket,
-				    G_IO_IN, NULL, error))
-	return FALSE;
-
       if (connect (socket->priv->fd, (struct sockaddr *) &buffer,
 		   g_socket_address_get_native_size (address)) < 0)
 	{
@@ -1434,7 +1429,7 @@ g_socket_connect (GSocket         *socket,
 #ifndef G_OS_WIN32
 	  if (errsv == EINPROGRESS)
 #else
-	  if (errsv == WSAEINPROGRESS)
+	  if (errsv == WSAEWOULDBLOCK)
 #endif
 	    {
 	      if (socket->priv->blocking)
