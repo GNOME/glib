@@ -381,7 +381,6 @@ g_unix_socket_address_get_is_abstract (GUnixSocketAddress *address)
 
 /**
  * g_unix_socket_address_abstract_names_supported:
- * @address: a #GInetSocketAddress
  *
  * Checks if abstract unix domain socket names are supported.
  *
