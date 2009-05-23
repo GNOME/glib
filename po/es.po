@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-05-17 12:23+0000\n"
-"PO-Revision-Date: 2009-05-18 20:18+0200\n"
+"POT-Creation-Date: 2009-05-23 16:02+0000\n"
+"PO-Revision-Date: 2009-05-23 19:59+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -858,7 +858,7 @@ msgstr "El texto está vacío (o sólo contiene espacios en blanco)"
 msgid "Failed to read data from child process"
 msgstr "Falló al leer los datos desde un proceso hijo"
 
-#: ../glib/gspawn-win32.c:298 ../glib/gspawn.c:1468
+#: ../glib/gspawn-win32.c:298 ../glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -1092,12 +1092,22 @@ msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1413 ../glib/gkeyfile.c:1528 ../glib/gkeyfile.c:1907
+#: ../glib/gkeyfile.c:1413 ../glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no puede "
 "interpretarse."
+
+#: ../glib/gkeyfile.c:1528
+#, c-format
+#| msgid ""
+#| "Key file contains key '%s' which has value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
+msgstr ""
+"El archivo de claves contiene la clave «%s» que tiene un valor que no se "
+"puede interpretar."
 
 #: ../glib/gkeyfile.c:2122 ../glib/gkeyfile.c:2334
 #, c-format
@@ -1146,18 +1156,18 @@ msgstr "El valor «%s» no puede interpretarse como un booleano."
 #: ../gio/gbufferedinputstream.c:417 ../gio/gbufferedinputstream.c:498
 #: ../gio/ginputstream.c:190 ../gio/ginputstream.c:322
 #: ../gio/ginputstream.c:563 ../gio/ginputstream.c:688
-#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:655
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "El valor de conteo pasado a %s es demasiado largo"
 
 #: ../gio/gbufferedinputstream.c:885 ../gio/ginputstream.c:898
-#: ../gio/goutputstream.c:1084
+#: ../gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
 #: ../gio/gcancellable.c:388 ../gio/glocalfile.c:2076
-#: ../gio/gsimpleasyncresult.c:638 ../gio/gsimpleasyncresult.c:665
+#: ../gio/gsimpleasyncresult.c:621 ../gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
 
@@ -1394,7 +1404,7 @@ msgstr "El flujo de entrada no implementa la lectura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:908 ../gio/goutputstream.c:1094
+#: ../gio/ginputstream.c:908 ../gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
@@ -1583,7 +1593,6 @@ msgstr ""
 
 #: ../gio/glocalfileinfo.c:2051
 #, c-format
-#| msgid "Error setting permissions: %s"
 msgid "Error setting modification or access time: %s"
 msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 
@@ -1743,7 +1752,7 @@ msgstr ""
 msgid "Output stream doesn't implement write"
 msgstr "El flujo de salida no implementa la escritura"
 
-#: ../gio/goutputstream.c:371 ../gio/goutputstream.c:779
+#: ../gio/goutputstream.c:371 ../gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "El flujo de origen ya está cerrado"
 
