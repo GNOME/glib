@@ -889,20 +889,23 @@ g_socket_get_blocking (GSocket *socket)
 /**
  * g_socket_set_keepalive:
  * @socket: a #GSocket.
- * @keepalive: Whether to use try to keep the connection alive or not.
+ * @keepalive: Value for the keepalive flag
  *
- * Setting @keepalive to %TRUE enables the sending of periodic ping requests
- * on idle connections in order to keep the connection alive. This is only
- * useful for connection oriented sockets. The exact period used between
- * each ping is system and protocol dependent.
+ * Sets or unsets the %SO_KEEPALIVE flag on the underlying socket. When
+ * this flag is set on a socket, the system will attempt to verify that the
+ * remote socket endpoint is still present if a sufficiently long period of
+ * time passes with no data being exchanged. If the system is unable to
+ * verify the presence of the remote endpoint, it will automatically close
+ * the connection.
  *
- * Sending keepalive requests like this has a few disadvantages. For instance,
- * it uses more network bandwidth, and it makes your application more sensitive
- * to temporary outages in the network (i.e. if a cable is pulled your otherwise
- * idle connection could be terminated, whereas otherwise it would survive unless
- * actually used before the cable was reinserted). However, it is sometimes
- * useful to ensure that connections are eventually terminated if e.g. the
- * remote side is disconnected, so as to avoid leaking resources forever.
+ * This option is only functional on certain kinds of sockets. (Notably,
+ * %G_SOCKET_PROTOCOL_TCP sockets.)
+ *
+ * The exact time between pings is system- and protocol-dependent, but will
+ * normally be at least two hours. Most commonly, you would set this flag
+ * on a server socket if you want to allow clients to remain idle for long
+ * periods of time, but also want to ensure that connections are eventually
+ * garbage-collected if clients crash or become unreachable.
  *
  * Since: 2.22
  */
@@ -1215,16 +1218,17 @@ g_socket_listen (GSocket  *socket,
  *
  * It is generally required to bind to a local address before you can
  * receive connections. (See g_socket_listen() and g_socket_accept() ).
+ * In certain situations, you may also want to bind a socket that will be
+ * used to initiate connections, though this is not normally required.
  *
- * If @allow_reuse is %TRUE this allows the bind call to succeed in some
- * situation where it would otherwise return a %G_IO_ERROR_ADDRESS_IN_USE
- * error. The main example is for a TCP server socket where there are
- * outstanding connections in the WAIT state, which are generally safe
- * to ignore. However, setting it to %TRUE doesn't mean the call will
- * succeed if there is a socket actively bound to the address.
- *
- * In general, pass %TRUE if the socket will be used to accept connections,
- * otherwise pass %FALSE.
+ * @allow_reuse should be %TRUE for server sockets (sockets that you will
+ * eventually call g_socket_accept() on), and %FALSE for client sockets.
+ * (Specifically, if it is %TRUE, then g_socket_bind() will set the
+ * %SO_REUSEADDR flag on the socket, allowing it to bind @address even if
+ * that address was previously used by another socket that has not yet been
+ * fully cleaned-up by the kernel. Failing to set this flag on a server
+ * socket may cause the bind call to return %G_IO_ERROR_ADDRESS_IN_USE if
+ * the server program is stopped and then immediately restarted.)
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
@@ -1513,21 +1517,29 @@ g_socket_check_connect_result (GSocket  *socket,
  * @socket: a #GSocket
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
- * @size: the number of bytes that will be read from the stream
+ * @size: the number of bytes you want to read from the socket
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket. This is mainly used by
- * connection oriented sockets, it is identical to g_socket_receive_from()
+ * connection-oriented sockets; it is identical to g_socket_receive_from()
  * with @address set to %NULL.
  *
- * If a message is too long to fit in @buffer, excess bytes may be discarded
- * depending on the type of socket the message is received from.
+ * For %G_SOCKET_TYPE_DATAGRAM and %G_SOCKET_TYPE_SEQPACKET sockets,
+ * g_socket_receive() will always read either 0 or 1 complete messages from
+ * the socket. If the received message is too large to fit in @buffer, then
+ * the data beyond @size bytes will be discarded, without any explicit
+ * indication that this has occurred.
+ *
+ * For %G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any
+ * number of bytes, up to @size. If more than @size bytes have been
+ * received, the additional data will be returned in future calls to
+ * g_socket_receive().
  *
  * If the socket is in blocking mode the call will block until there is
  * some data to receive or there is an error. If there is no data available
- * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available data, wait for the %G_IO_IN
- * condition.
+ * and the socket is in non-blocking mode, a %G_IO_ERROR_WOULD_BLOCK error
+ * will be returned. To be notified when data is available, wait for the
+ * %G_IO_IN condition.
  *
  * On error -1 is returned and @error is set accordingly.
  *
@@ -1596,7 +1608,7 @@ g_socket_receive (GSocket  *socket,
  * @address: a pointer to a #GSocketAddress pointer, or %NULL
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
- * @size: the number of bytes that will be read from the stream
+ * @size: the number of bytes you want to read from the socket
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket.
@@ -1605,13 +1617,7 @@ g_socket_receive (GSocket  *socket,
  * source address of the received packet.
  * @address is owned by the caller.
  *
- * If the socket is in blocking mode the call will block until there is
- * some data to receive or there is an error. If there is no data available
- * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available data, wait for the %G_IO_IN
- * condition.
- *
- * On error -1 is returned and @error is set accordingly.
+ * See g_socket_receive() for additional information.
  *
  * Returns: Number of bytes read, or -1 on error
  *
@@ -1643,24 +1649,23 @@ g_socket_receive_from (GSocket         *socket,
  * @size: the number of bytes to send
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Tries to send @size bytes from @buffer on the socket.
- * This is mainly used by connection oriented sockets, it is identical
- * to g_socket_send_to() with @address set to %NULL.
+ * Tries to send @size bytes from @buffer on the socket. This is
+ * mainly used by connection-oriented sockets; it is identical to
+ * g_socket_send_to() with @address set to %NULL.
  *
  * If the socket is in blocking mode the call will block until there is
  * space for the data in the socket queue. If there is no space available
  * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available space, wait for the
- * %G_IO_OUT condition.
- *
- * Note that on Windows you can't rely on a %G_IO_OUT condition
- * not producing a %G_IO_ERROR_WOULD_BLOCK error, as this is how Winsock
- * write notification works. However, robust apps should always be able to
- * handle this since it can easily appear in other cases too.
+ * will be returned. To be notified when space is available, wait for the
+ * %G_IO_OUT condition. Note though that you may still receive
+ * %G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+ * notified of a %G_IO_OUT condition. (On Windows in particular, this is
+ * very common due to the way the underlying APIs work.)
  *
  * On error -1 is returned and @error is set accordingly.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
  *
  * Since: 2.22
  */
@@ -1731,20 +1736,10 @@ g_socket_send (GSocket      *socket,
  * %NULL then the message is sent to the default receiver (set by
  * g_socket_connect()).
  *
- * If the socket is in blocking mode the call will block until there is
- * space for the data in the socket queue. If there is no space available
- * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available space, wait for the %G_IO_OUT
- * condition.
+ * See g_socket_send() for additional information.
  *
- * Note that on Windows you can't rely on a %G_IO_OUT condition
- * not producing a %G_IO_ERROR_WOULD_BLOCK error, as this is how Winsock
- * write notification works. However, robust apps should always be able to
- * handle this since it can easily appear in other cases too.
- *
- * On error -1 is returned and @error is set accordingly.
- *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
  *
  * Since: 2.22
  */
@@ -1851,12 +1846,28 @@ g_socket_shutdown (GSocket   *socket,
  * to complete even if the close returns with no error.
  *
  * Once the socket is closed, all other operations will return
- * %G_IO_ERROR_CLOSED. Closing a stream multiple times will not
+ * %G_IO_ERROR_CLOSED. Closing a socket multiple times will not
  * return an error.
  *
  * Sockets will be automatically closed when the last reference
  * is dropped, but you might want to call this function to make sure
  * resources are released as early as possible.
+ *
+ * Beware that due to the way that TCP works, it is possible for
+ * recently-sent data to be lost if either you close a socket while the
+ * %G_IO_IN condition is set, or else if the remote connection tries to
+ * send something to you after you close the socket but before it has
+ * finished reading all of the data you sent. There is no easy generic
+ * way to avoid this problem; the easiest fix is to design the network
+ * protocol such that the client will never send data "out of turn".
+ * Another solution is for the server to half-close the connection by
+ * calling g_socket_shutdown() with only the @shutdown_write flag set,
+ * and then wait for the client to notice this and close its side of the
+ * connection, after which the server can safely call g_socket_close().
+ * (This is what #GTcpConnection does if you call
+ * g_tcp_connection_set_graceful_disconnect(). But of course, this
+ * only works if the client will close its connection after the server
+ * does.)
  *
  * Returns: %TRUE on success, %FALSE on error
  *
@@ -2437,11 +2448,14 @@ g_socket_condition_wait (GSocket       *socket,
  * If @address is %NULL then the message is sent to the default receiver
  * (set by g_socket_connect()).
  *
- * @vector must point to an array of #GOutputVector structs and
- * @num_vectors must be the length of this array.  These structs
- * describe the buffers that the sent data will be gathered from.
- * If @num_vector is -1, then @vector is assumed to be terminated
- * by a #GOutputVector with a %NULL buffer pointer.
+ * @vectors must point to an array of #GOutputVector structs and
+ * @num_vectors must be the length of this array. (If @num_vectors is -1,
+ * then @vectors is assumed to be terminated by a #GOutputVector with a
+ * %NULL buffer pointer.) The #GOutputVector structs describe the buffers
+ * that the sent data will be gathered from. Using multiple
+ * #GOutputVector<!-- -->s is more memory-efficient than manually copying
+ * data from multiple sources into a single buffer, and more
+ * network-efficient than making multiple calls to g_socket_send().
  *
  * @messages, if non-%NULL, is taken to point to an array of @num_messages
  * #GSocketControlMessage instances. These correspond to the control
@@ -2449,25 +2463,24 @@ g_socket_condition_wait (GSocket       *socket,
  * If @num_messages is -1 then @messages is treated as a %NULL-terminated
  * array.
  *
- * @flags modify how the message sent. The commonly available arguments
- * for this is available in the #GSocketMsgFlags enum, but the
+ * @flags modify how the message is sent. The commonly available arguments
+ * for this are available in the #GSocketMsgFlags enum, but the
  * values there are the same as the system values, and the flags
- * are passed in as-is, so you can pass in system specific flags too.
+ * are passed in as-is, so you can pass in system-specific flags too.
  *
  * If the socket is in blocking mode the call will block until there is
  * space for the data in the socket queue. If there is no space available
  * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available space, wait for the %G_IO_OUT
- * condition.
- *
- * Note that on Windows you can't rely on a %G_IO_OUT condition
- * not producing a %G_IO_ERROR_WOULD_BLOCK error, as this is how Winsock
- * write notification works. However, robust apps should always be able to
- * handle this since it can easily appear in other cases too.
+ * will be returned. To be notified when space is available, wait for the
+ * %G_IO_OUT condition. Note though that you may still receive
+ * %G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+ * notified of a %G_IO_OUT condition. (On Windows in particular, this is
+ * very common due to the way the underlying APIs work.)
  *
  * On error -1 is returned and @error is set accordingly.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
  *
  * Since: 2.22
  */
@@ -2720,21 +2733,21 @@ g_socket_send_message (GSocket                *socket,
  * @vector must point to an array of #GInputVector structs and
  * @num_vectors must be the length of this array.  These structs
  * describe the buffers that received data will be scattered into.
- * If @num_vector is -1, then @vector is assumed to be terminated
+ * If @num_vectors is -1, then @vectors is assumed to be terminated
  * by a #GInputVector with a %NULL buffer pointer.
  *
- * As a special case, if the size of the array is zero (in which case,
- * @vectors may of course be %NULL), then a single byte is received
- * and discarded.  This is to facilitate the common practice of
- * sending a single '\0' byte for the purposes of transferring
- * ancillary data.
+ * As a special case, if @num_vectors is 0 (in which case, @vectors
+ * may of course be %NULL), then a single byte is received and
+ * discarded. This is to facilitate the common practice of sending a
+ * single '\0' byte for the purposes of transferring ancillary data.
  *
- * @messages, if non-%NULL, is taken to point to a pointer that will
- * be set to point to a newly-allocated array of
- * #GSocketControlMessage instances.  These correspond to the control
- * messages received from the kernel, one #GSocketControlMessage per
- * message from the kernel.  This array is %NULL-terminated and must be
- * freed by the caller using g_free().
+ * @messages, if non-%NULL, will be set to point to a newly-allocated
+ * array of #GSocketControlMessage instances. These correspond to the
+ * control messages received from the kernel, one
+ * #GSocketControlMessage per message from the kernel. This array is
+ * %NULL-terminated and must be freed by the caller using g_free(). If
+ * @messages is %NULL, any control messages received will be
+ * discarded.
  *
  * @num_messages, if non-%NULL, will be set to the number of control
  * messages received.
@@ -2744,15 +2757,24 @@ g_socket_send_message (GSocket                *socket,
  * in @messages (ie: not including the %NULL terminator).
  *
  * @flags is an in/out parameter. The commonly available arguments
- * for this is available in the #GSocketMsgFlags enum, but the
+ * for this are available in the #GSocketMsgFlags enum, but the
  * values there are the same as the system values, and the flags
- * are passed in as-is, so you can pass in system specific flags too.
+ * are passed in as-is, so you can pass in system-specific flags too
+ * (and g_socket_receive_message() may pass system-specific flags out).
  *
- * If the socket is in blocking mode the call will block until there is
- * some data to receive or there is an error. If there is no data available
- * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available data, wait for the %G_IO_IN
- * condition.
+ * As with g_socket_receive(), data may be discarded if @socket is
+ * %G_SOCKET_TYPE_DATAGRAM or %G_SOCKET_TYPE_SEQPACKET and you do not
+ * provide enough buffer space to read a complete message. You can pass
+ * %G_SOCKET_MSG_PEEK in @flags to peek at the current message without
+ * removing it from the receive queue, but there is no portable way to find
+ * out the length of the message other than by reading it into a
+ * sufficiently-large buffer.
+ *
+ * If the socket is in blocking mode the call will block until there
+ * is some data to receive or there is an error. If there is no data
+ * available and the socket is in non-blocking mode, a
+ * %G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when
+ * data is available, wait for the %G_IO_IN condition.
  *
  * On error -1 is returned and @error is set accordingly.
  *
