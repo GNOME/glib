@@ -446,6 +446,8 @@ struct _GKeyFile
   GKeyFileFlags flags;
 
   gchar **locales;
+
+  volatile gint ref_count;
 };
 
 typedef struct _GKeyFileKeyValuePair GKeyFileKeyValuePair;
@@ -602,8 +604,11 @@ g_key_file_clear (GKeyFile *key_file)
       g_key_file_remove_group_node (key_file, group_node);
     }
 
-  g_hash_table_destroy (key_file->group_hash);
-  key_file->group_hash = NULL;
+  if (key_file->group_hash != NULL)
+    {
+      g_hash_table_destroy (key_file->group_hash);
+      key_file->group_hash = NULL;
+    }
 
   g_warn_if_fail (key_file->groups == NULL);
 }
@@ -627,6 +632,7 @@ g_key_file_new (void)
   GKeyFile *key_file;
 
   key_file = g_slice_new0 (GKeyFile);
+  key_file->ref_count = 1;
   g_key_file_init (key_file);
 
   return key_file;
@@ -1055,10 +1061,32 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
 }
 
 /**
+ * g_key_file_ref:
+ * @key_file: a #GKeyFile
+ *
+ * Increases the reference count of @key_file.
+ *
+ * Returns: the same @key_file.
+ *
+ * Since: 2.32
+ **/
+GKeyFile *
+g_key_file_ref (GKeyFile *key_file)
+{
+  g_return_val_if_fail (key_file != NULL, NULL);
+
+  g_atomic_int_inc (&key_file->ref_count);
+
+  return key_file;
+}
+
+/**
  * g_key_file_free:
  * @key_file: a #GKeyFile
  *
- * Frees a #GKeyFile.
+ * Clears all keys and groups from @key_file, and decreases the
+ * reference count by 1. If the reference count reaches zero,
+ * frees the key file and all its allocated memory.
  *
  * Since: 2.6
  **/
@@ -1066,9 +1094,30 @@ void
 g_key_file_free (GKeyFile *key_file)
 {
   g_return_if_fail (key_file != NULL);
-  
+
   g_key_file_clear (key_file);
-  g_slice_free (GKeyFile, key_file);
+  g_key_file_unref (key_file);
+}
+
+/**
+ * g_key_file_unref:
+ * @key_file: a #GKeyFile
+ *
+ * Decreases the reference count of @key_file by 1. If the reference count
+ * reaches zero, frees the key file and all its allocated memory.
+ *
+ * Since: 2.32
+ **/
+void
+g_key_file_unref (GKeyFile *key_file)
+{
+  g_return_if_fail (key_file != NULL);
+
+  if (g_atomic_int_dec_and_test (&key_file->ref_count))
+    {
+      g_key_file_clear (key_file);
+      g_slice_free (GKeyFile, key_file);
+    }
 }
 
 /* If G_KEY_FILE_KEEP_TRANSLATIONS is not set, only returns

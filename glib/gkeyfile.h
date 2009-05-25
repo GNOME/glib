@@ -55,6 +55,8 @@ typedef enum
 } GKeyFileFlags;
 
 GKeyFile *g_key_file_new                    (void);
+GKeyFile *g_key_file_ref                    (GKeyFile             *key_file);
+void      g_key_file_unref                  (GKeyFile             *key_file);
 void      g_key_file_free                   (GKeyFile             *key_file);
 void      g_key_file_set_list_separator     (GKeyFile             *key_file,
 					     gchar                 separator);
