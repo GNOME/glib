@@ -1415,6 +1415,7 @@ g_inet_address_new_from_bytes
 g_inet_address_new_any
 g_inet_address_new_loopback
 g_inet_address_to_bytes
+g_inet_address_get_native_size
 g_inet_address_to_string
 g_inet_address_get_family
 g_inet_address_get_is_any

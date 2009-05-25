@@ -73,6 +73,8 @@ gchar *               g_inet_address_to_string            (GInetAddress         
 
 const guint8 *        g_inet_address_to_bytes             (GInetAddress         *address);
 
+gsize                 g_inet_address_get_native_size      (GInetAddress         *address);
+
 GSocketFamily         g_inet_address_get_family           (GInetAddress         *address);
 
 gboolean              g_inet_address_get_is_any           (GInetAddress         *address);

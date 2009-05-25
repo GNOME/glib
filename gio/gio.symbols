@@ -915,6 +915,7 @@ g_inet_address_get_is_mc_site_local
 g_inet_address_get_is_multicast
 g_inet_address_get_is_site_local
 g_inet_address_to_bytes
+g_inet_address_get_native_size
 g_inet_address_to_string
 #endif
 #endif

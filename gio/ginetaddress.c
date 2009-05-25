@@ -482,7 +482,8 @@ g_inet_address_to_string (GInetAddress *address)
  * Gets the raw binary address data from @address.
  *
  * Returns: a pointer to an internal array of the bytes in @address,
- * which should not be modified, stored, or freed.
+ * which should not be modified, stored, or freed. The size of this
+ * array can be gotten with g_inet_address_get_native_size().
  *
  * Since: 2.22
  */
@@ -492,6 +493,25 @@ g_inet_address_to_bytes (GInetAddress *address)
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), NULL);
 
   return (guint8 *)&address->priv->addr;
+}
+
+/**
+ * g_inet_address_get_native_size:
+ * @address: a #GInetAddress
+ *
+ * Gets the size of the native raw binary address for @address. This
+ * is the size of the data that you get from g_inet_address_to_bytes().
+ *
+ * Returns: the number of bytes used for the native version of @address.
+ *
+ * Since: 2.22
+ */
+gsize
+g_inet_address_get_native_size (GInetAddress *address)
+{
+  if (address->priv->family == AF_INET)
+    return sizeof (address->priv->addr.ipv4);
+  return sizeof (address->priv->addr.ipv6);
 }
 
 /**
