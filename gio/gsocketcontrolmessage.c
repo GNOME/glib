@@ -137,7 +137,7 @@ g_socket_control_message_serialize (GSocketControlMessage *message,
 {
   g_return_if_fail (G_IS_SOCKET_CONTROL_MESSAGE (message));
 
-  return G_SOCKET_CONTROL_MESSAGE_GET_CLASS (message)->serialize (message, data);
+  G_SOCKET_CONTROL_MESSAGE_GET_CLASS (message)->serialize (message, data);
 }
 
 
