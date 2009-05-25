@@ -46,16 +46,16 @@
  * GFileIOStream implements #GSeekable, which allows the io
  * stream to jump to arbitrary positions in the file and to truncate
  * the file, provided the filesystem of the file supports these
- * operations. In addition to the generic g_seekable_ API,
- * GFileIOStream has its own API for seeking and positioning.
- * To find the position of a file io stream, use
- * g_file_io_stream_tell().
+ * operations.
  *
- * To find out if a file io stream supports seeking, use g_file_io_stream_can_seek().
- * To position a file io stream, use g_file_io_stream_seek().
+ * To find the position of a file io stream, use
+ * g_seekable_tell().
+ *
+ * To find out if a file io stream supports seeking, use g_seekable_can_seek().
+ * To position a file io stream, use g_seekable_seek().
  * To find out if a file io stream supports truncating, use
- * g_file_io_stream_can_truncate(). To truncate a file io
- * stream, use g_file_io_stream_truncate().
+ * g_seekable_can_truncate(). To truncate a file io
+ * stream, use g_seekable_truncate().
  *
  * The default implementation of all the #GFileIOStream operations
  * and the implementation of #GSeekable just call into the same operations
