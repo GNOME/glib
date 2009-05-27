@@ -24,6 +24,7 @@
 
 #include "config.h"
 
+#include <stdio.h>
 #include <string.h>
 #include <wchar.h>
 
@@ -59,6 +60,8 @@ g_winhttp_file_finalize (GObject *object)
   g_free (file->url.lpszPassword);
   g_free (file->url.lpszUrlPath);
   g_free (file->url.lpszExtraInfo);
+
+  g_object_unref (file->vfs);
 
   G_OBJECT_CLASS (g_winhttp_file_parent_class)->finalize (object);
 }
@@ -96,7 +99,7 @@ _g_winhttp_file_new (GWinHttpVfs *vfs,
     return NULL;
 
   file = g_object_new (G_TYPE_WINHTTP_FILE, NULL);
-  file->vfs = vfs;
+  file->vfs = g_object_ref (vfs);
 
   memset (&file->url, 0, sizeof (file->url));
   file->url.dwStructSize = sizeof (file->url);
