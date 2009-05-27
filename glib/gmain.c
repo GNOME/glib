@@ -2382,33 +2382,30 @@ g_main_context_iterate (GMainContext *context,
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
-  
+
   UNLOCK_CONTEXT (context);
 
 #ifdef G_THREADS_ENABLED
   if (!g_main_context_acquire (context))
     {
       gboolean got_ownership;
-      
+
+      LOCK_CONTEXT (context);
+
       g_return_val_if_fail (g_thread_supported (), FALSE);
 
       if (!block)
 	return FALSE;
 
-      LOCK_CONTEXT (context);
-      
       if (!context->cond)
 	context->cond = g_cond_new ();
-          
+
       got_ownership = g_main_context_wait (context,
 					   context->cond,
 					   g_static_mutex_get_mutex (&context->mutex));
 
       if (!got_ownership)
-	{
-	  UNLOCK_CONTEXT (context);
-	  return FALSE;
-	}
+	return FALSE;
     }
   else
     LOCK_CONTEXT (context);
