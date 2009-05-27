@@ -57,6 +57,10 @@ static gssize g_winhttp_file_input_stream_read (GInputStream    *stream,
                                                 GCancellable    *cancellable,
                                                 GError         **error);
 
+static gboolean g_winhttp_file_input_stream_close (GInputStream  *stream,
+						   GCancellable  *cancellable,
+						   GError       **error);
+
 static void
 g_winhttp_file_input_stream_finalize (GObject *object)
 {
@@ -68,6 +72,9 @@ g_winhttp_file_input_stream_finalize (GObject *object)
     G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->request);
   if (winhttp_stream->connection != NULL)
     G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->connection);
+
+  g_object_unref (winhttp_stream->file);
+  winhttp_stream->file = NULL;
 
   G_OBJECT_CLASS (g_winhttp_file_input_stream_parent_class)->finalize (object);
 }
@@ -81,6 +88,7 @@ g_winhttp_file_input_stream_class_init (GWinHttpFileInputStreamClass *klass)
   gobject_class->finalize = g_winhttp_file_input_stream_finalize;
 
   stream_class->read_fn = g_winhttp_file_input_stream_read;
+  stream_class->close_fn = g_winhttp_file_input_stream_close;
 }
 
 static void
@@ -105,7 +113,7 @@ _g_winhttp_file_input_stream_new (GWinHttpFile *file,
 
   stream = g_object_new (G_TYPE_WINHTTP_FILE_INPUT_STREAM, NULL);
 
-  stream->file = file;
+  stream->file = g_object_ref (file);
   stream->request_sent = FALSE;
   stream->connection = connection;
   stream->request = request;
@@ -155,4 +163,17 @@ g_winhttp_file_input_stream_read (GInputStream  *stream,
     }
 
   return bytes_read;
+}
+
+static gboolean 
+g_winhttp_file_input_stream_close (GInputStream         *stream,
+				   GCancellable         *cancellable,
+				   GError              **error)
+{
+  GWinHttpFileInputStream *winhttp_stream = G_WINHTTP_FILE_INPUT_STREAM (stream);
+
+  if (winhttp_stream->connection != NULL)
+    G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->connection);
+  winhttp_stream->connection = NULL;
+  return TRUE;
 }
