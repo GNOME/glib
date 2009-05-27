@@ -51,7 +51,7 @@ typedef struct _GSocketServiceClass                         GSocketServiceClass;
 /**
  * GSocketServiceClass:
  * @incomming: signal emitted when new connections are accepted
- **/
+ */
 struct _GSocketServiceClass
 {
   GSocketListenerClass parent_class;

@@ -38,7 +38,7 @@ G_BEGIN_DECLS
  * GSocketConnectable:
  *
  * Interface for objects that contain or generate #GSocketAddress<!-- -->es.
- **/
+ */
 typedef struct _GSocketConnectableIface GSocketConnectableIface;
 
 /**
@@ -47,7 +47,7 @@ typedef struct _GSocketConnectableIface GSocketConnectableIface;
  * @enumerate: Creates a #GSocketAddressEnumerator
  *
  * Provides an interface for returning a #GSocketAddressEnumerator
- **/
+ */
 struct _GSocketConnectableIface
 {
   GTypeInterface g_iface;

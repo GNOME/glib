@@ -60,7 +60,7 @@
  * it will be a #GTcpConnection.
  *
  * Since: 2.22
- **/
+ */
 
 
 G_DEFINE_TYPE (GSocketClient, g_socket_client, G_TYPE_OBJECT);
@@ -137,7 +137,7 @@ g_socket_client_init (GSocketClient *client)
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocketClient *
 g_socket_client_new (void)
 {
@@ -229,7 +229,7 @@ g_socket_client_set_property (GObject      *object,
  * Returns: a #GSocketFamily
  *
  * Since: 2.22
- **/
+ */
 GSocketFamily
 g_socket_client_get_family (GSocketClient *client)
 {
@@ -251,10 +251,10 @@ g_socket_client_get_family (GSocketClient *client)
  * be an ipv6 mapped to ipv4 address.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_client_set_family (GSocketClient *client,
-			    GSocketFamily family)
+			    GSocketFamily  family)
 {
   if (client->priv->family == family)
     return;
@@ -274,7 +274,7 @@ g_socket_client_set_family (GSocketClient *client,
  * Returns: a #GSocketFamily
  *
  * Since: 2.22
- **/
+ */
 GSocketType
 g_socket_client_get_socket_type (GSocketClient *client)
 {
@@ -294,10 +294,10 @@ g_socket_client_get_socket_type (GSocketClient *client)
  * as GSocketClient is used for connection oriented services.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_client_set_socket_type (GSocketClient *client,
-				 GSocketType type)
+				 GSocketType    type)
 {
   if (client->priv->type == type)
     return;
@@ -308,7 +308,7 @@ g_socket_client_set_socket_type (GSocketClient *client,
 
 /**
  * g_socket_client_get_protocol:
- * @client: a #GSocketClient.
+ * @client: a #GSocketClient
  *
  * Gets the protocol name type of the socket client.
  *
@@ -317,7 +317,7 @@ g_socket_client_set_socket_type (GSocketClient *client,
  * Returns: a #GSocketProtocol
  *
  * Since: 2.22
- **/
+ */
 GSocketProtocol
 g_socket_client_get_protocol (GSocketClient *client)
 {
@@ -337,10 +337,10 @@ g_socket_client_get_protocol (GSocketClient *client)
  * protocol for the socket family and type.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_client_set_protocol (GSocketClient *client,
-			      GSocketProtocol protocol)
+g_socket_client_set_protocol (GSocketClient   *client,
+			      GSocketProtocol  protocol)
 {
   if (client->priv->protocol == protocol)
     return;
@@ -360,7 +360,7 @@ g_socket_client_set_protocol (GSocketClient *client,
  * Returns: a #GSocketAddres or %NULL. don't free
  *
  * Since: 2.22
- **/
+ */
 GSocketAddress *
 g_socket_client_get_local_address (GSocketClient *client)
 {
@@ -381,10 +381,10 @@ g_socket_client_get_local_address (GSocketClient *client)
  * a specific interface.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_client_set_local_address (GSocketClient        *client,
-				   GSocketAddress       *address)
+g_socket_client_set_local_address (GSocketClient  *client,
+				   GSocketAddress *address)
 {
   if (address)
   g_object_ref (address);
@@ -414,7 +414,9 @@ g_socket_client_class_init (GSocketClientClass *class)
 						      P_("The sockets address family to use for socket construction"),
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_TYPE,
 				   g_param_spec_enum ("type",
@@ -422,7 +424,9 @@ g_socket_client_class_init (GSocketClientClass *class)
 						      P_("The sockets type to use for socket construction"),
 						      G_TYPE_SOCKET_TYPE,
 						      G_SOCKET_TYPE_STREAM,
-						      G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
 				   g_param_spec_enum ("protocol",
@@ -430,14 +434,18 @@ g_socket_client_class_init (GSocketClientClass *class)
 						      P_("The protocol to use for socket construction, or 0 for default"),
 						      G_TYPE_SOCKET_PROTOCOL,
 						      G_SOCKET_PROTOCOL_DEFAULT,
-						      G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
 				   g_param_spec_object ("local-address",
 							P_("Local address"),
 							P_("The local address constructed sockets will be bound to"),
 							G_TYPE_SOCKET_ADDRESS,
-							G_PARAM_CONSTRUCT | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+							G_PARAM_CONSTRUCT |
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -469,7 +477,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
 g_socket_client_connect (GSocketClient       *client,
 			 GSocketConnectable  *connectable,
@@ -558,7 +566,7 @@ g_socket_client_connect (GSocketClient       *client,
  * In general, @host_and_port is expected to be provided by the user (allowing
  * them to give the hostname, and a port overide if necessary) and
  * @default_port is expected to be provided by the application.
-
+ *
  * In the case that an IP address is given, a single connection
  * attempt is made.  In the case that a name is given, multiple
  * connection attempts may be made, in turn and according to the
@@ -575,13 +583,13 @@ g_socket_client_connect (GSocketClient       *client,
  Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
-g_socket_client_connect_to_host (GSocketClient        *client,
-				 const char           *host_and_port,
-				 int                   default_port,
-				 GCancellable         *cancellable,
-				 GError              **error)
+g_socket_client_connect_to_host (GSocketClient  *client,
+				 const gchar    *host_and_port,
+				 gint            default_port,
+				 GCancellable   *cancellable,
+				 GError        **error)
 {
   GSocketConnectable *connectable;
   GSocketConnection *connection;
@@ -620,11 +628,11 @@ g_socket_client_connect_to_host (GSocketClient        *client,
  * In the event of any failure (DNS error, service not found, no hosts
  * connectable) %NULL is returned and @error (if non-%NULL) is set
  * accordingly.
- **/
+ */
 GSocketConnection *
 g_socket_client_connect_to_service (GSocketClient  *client,
-				    const char     *domain,
-				    const char     *service,
+				    const gchar    *domain,
+				    const gchar    *service,
 				    GCancellable   *cancellable,
 				    GError        **error)
 {
@@ -823,7 +831,7 @@ g_socket_client_enumerator_callback (GObject      *object,
  * the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_client_connect_async (GSocketClient       *client,
 			       GSocketConnectable  *connectable,
@@ -869,11 +877,11 @@ g_socket_client_connect_async (GSocketClient       *client,
  * the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_client_connect_to_host_async (GSocketClient        *client,
-				       const char           *host_and_port,
-				       int                   default_port,
+				       const gchar          *host_and_port,
+				       gint                  default_port,
 				       GCancellable         *cancellable,
 				       GAsyncReadyCallback   callback,
 				       gpointer              user_data)
@@ -910,11 +918,13 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
  *
  * This is the asynchronous version of
  * g_socket_client_connect_to_service().
- **/
+ *
+ * Since: 2.22
+ */
 void
 g_socket_client_connect_to_service_async (GSocketClient       *client,
-					  const char          *domain,
-					  const char          *service,
+					  const gchar         *domain,
+					  const gchar         *service,
 					  GCancellable        *cancellable,
 					  GAsyncReadyCallback  callback,
 					  gpointer             user_data)
@@ -940,7 +950,7 @@ g_socket_client_connect_to_service_async (GSocketClient       *client,
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
 g_socket_client_connect_finish (GSocketClient  *client,
 				GAsyncResult   *result,
@@ -966,11 +976,11 @@ g_socket_client_connect_finish (GSocketClient  *client,
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
-g_socket_client_connect_to_host_finish (GSocketClient        *client,
-					GAsyncResult         *result,
-					GError              **error)
+g_socket_client_connect_to_host_finish (GSocketClient  *client,
+					GAsyncResult   *result,
+					GError        **error)
 {
   return g_socket_client_connect_finish (client, result, error);
 }
@@ -987,11 +997,11 @@ g_socket_client_connect_to_host_finish (GSocketClient        *client,
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
-g_socket_client_connect_to_service_finish (GSocketClient        *client,
-					   GAsyncResult         *result,
-					   GError              **error)
+g_socket_client_connect_to_service_finish (GSocketClient  *client,
+					   GAsyncResult   *result,
+					   GError        **error)
 {
   return g_socket_client_connect_finish (client, result, error);
 }

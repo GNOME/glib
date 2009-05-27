@@ -38,14 +38,14 @@
  * @short_description: Unix #GSocketAddress
  *
  * Support for UNIX-domain (aka local) sockets.
- **/
+ */
 
 /**
  * GUnixSocketAddress:
  *
  * A UNIX-domain (local) socket address, corresponding to a
  * <type>struct sockaddr_un</type>.
- **/
+ */
 G_DEFINE_TYPE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS);
 
 enum

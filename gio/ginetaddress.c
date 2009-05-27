@@ -49,13 +49,13 @@
  * To actually connect to a remote host, you will need a
  * #GInetSocketAddress (which includes a #GInetAddress as well as a
  * port number).
- **/
+ */
 
 /**
  * GInetAddress:
  *
  * An IPv4 or IPv6 internet address.
- **/
+ */
 
 /* Networking initialization function, called from inside the g_once of
  * g_inet_address_get_type()
@@ -107,7 +107,7 @@ g_inet_address_set_property (GObject      *object,
 {
   GInetAddress *address = G_INET_ADDRESS (object);
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_FAMILY:
       address->priv->family = g_value_get_enum (value);
@@ -206,83 +206,178 @@ g_inet_address_class_init (GInetAddressClass *klass)
 						      P_("The address family (IPv4 or IPv6)"),
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+						      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_BYTES,
                                    g_param_spec_pointer ("bytes",
 							 P_("Bytes"),
 							 P_("The raw address data"),
-							 G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-any:
+   *
+   * Whether this is the "any" address for its family.
+   * See g_inet_address_get_is_any().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_ANY,
                                    g_param_spec_boolean ("is-any",
                                                          P_("Is any"),
-                                                         P_("See g_inet_address_get_is_any()"),
+                                                         P_("Whether this is the \"any\" address for its family"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-link-local:
+   *
+   * Whether this is a link-local address.
+   * See g_inet_address_get_is_link_local().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_LINK_LOCAL,
                                    g_param_spec_boolean ("is-link-local",
                                                          P_("Is link-local"),
-                                                         P_("See g_inet_address_get_is_link_local()"),
+                                                         P_("Whether this is a link-local address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-loopback:
+   *
+   * Whether this is the loopback address for its family.
+   * See g_inet_address_get_is_loopback().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_LOOPBACK,
                                    g_param_spec_boolean ("is-loopback",
                                                          P_("Is loopback"),
-                                                         P_("See g_inet_address_get_is_loopback()"),
+                                                         P_("Whether this is the loopback address for its family"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-site-local:
+   *
+   * Whether this is a site-local address.
+   * See g_inet_address_get_is_loopback().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_SITE_LOCAL,
                                    g_param_spec_boolean ("is-site-local",
                                                          P_("Is site-local"),
-                                                         P_("See g_inet_address_get_is_site_local()"),
+                                                         P_("Whether this is a site-local address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-multicast:
+   *
+   * Whether this is a multicast address.
+   * See g_inet_address_get_is_multicast().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MULTICAST,
                                    g_param_spec_boolean ("is-multicast",
                                                          P_("Is multicast"),
-                                                         P_("See g_inet_address_get_is_multicast()"),
+                                                         P_("Whether this is a multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-mc-global:
+   *
+   * Whether this is a global multicast address.
+   * See g_inet_address_get_is_mc_global().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MC_GLOBAL,
                                    g_param_spec_boolean ("is-mc-global",
                                                          P_("Is multicast global"),
-                                                         P_("See g_inet_address_get_is_mc_global()"),
+                                                         P_("Whether this is a global multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+
+  /**
+   * GInetAddress:is-mc-link-local:
+   *
+   * Whether this is a link-local multicast address.
+   * See g_inet_address_get_is_mc_link_local().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MC_LINK_LOCAL,
                                    g_param_spec_boolean ("is-mc-link-local",
                                                          P_("Is multicast link-local"),
-                                                         P_("See g_inet_address_get_is_mc_link_local()"),
+                                                         P_("Whether this is a link-local multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-mc-node-local:
+   *
+   * Whether this is a node-local multicast address.
+   * See g_inet_address_get_is_mc_node_local().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MC_NODE_LOCAL,
                                    g_param_spec_boolean ("is-mc-node-local",
                                                          P_("Is multicast node-local"),
-                                                         P_("See g_inet_address_get_is_mc_node_local()"),
+                                                         P_("Whether this is a node-local multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-mc-org-local:
+   *
+   * Whether this is an organization-local multicast address.
+   * See g_inet_address_get_is_mc_org_local().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MC_ORG_LOCAL,
                                    g_param_spec_boolean ("is-mc-org-local",
                                                          P_("Is multicast org-local"),
-                                                         P_("See g_inet_address_get_is_mc_org_local()"),
+                                                         P_("Whether this is an organization-local multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GInetAddress:is-mc-site-local:
+   *
+   * Whether this is a site-local multicast address.
+   * See g_inet_address_get_is_mc_site_local().
+   *
+   * Since: 2.22
+   */
   g_object_class_install_property (gobject_class, PROP_IS_MC_SITE_LOCAL,
                                    g_param_spec_boolean ("is-mc-site-local",
                                                          P_("Is multicast site-local"),
-                                                         P_("See g_inet_address_get_is_mc_site_local()"),
+                                                         P_("Whether this is a site-local multicast address"),
                                                          FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 static void

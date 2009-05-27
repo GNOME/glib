@@ -69,9 +69,9 @@ g_socket_address_enumerator_class_init (GSocketAddressEnumeratorClass *enumerato
  * ignored.
  *
  * Return value: a #GSocketAddress (owned by the caller), or %NULL on
- * error (in which case *@error will be set) or if there are no more
- * addresses.
- **/
+ *     error (in which case *@error will be set) or if there are no
+ *     more addresses.
+ */
 GSocketAddress *
 g_socket_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 				  GCancellable              *cancellable,
@@ -91,10 +91,10 @@ g_socket_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
  * and so the synchronous method will never block.
  */
 static void
-g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator  *enumerator,
-					     GCancellable              *cancellable,
-					     GAsyncReadyCallback        callback,
-					     gpointer                   user_data)
+g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerator,
+					     GCancellable             *cancellable,
+					     GAsyncReadyCallback       callback,
+					     gpointer                  user_data)
 {
   GSimpleAsyncResult *result;
   GSocketAddress *address;
@@ -125,12 +125,12 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator  *enumerat
  * Asynchronously retrieves the next #GSocketAddress from @enumerator
  * and then calls @callback, which must call
  * g_socket_address_enumerator_next_finish() to get the result.
- **/
+ */
 void
-g_socket_address_enumerator_next_async (GSocketAddressEnumerator  *enumerator,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data)
+g_socket_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
+					GCancellable             *cancellable,
+					GAsyncReadyCallback       callback,
+					gpointer                  user_data)
 {
   GSocketAddressEnumeratorClass *klass;
 
@@ -161,8 +161,8 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
 /**
  * g_socket_address_enumerator_next_finish:
  * @enumerator: a #GSocketAddressEnumerator
- * @result: a #GAsyncResult.
- * @error: a #GError.
+ * @result: a #GAsyncResult
+ * @error: a #GError
  *
  * Retrieves the result of a completed call to
  * g_socket_address_enumerator_next_async(). See
@@ -170,9 +170,9 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
  * error handling.
  *
  * Return value: a #GSocketAddress (owned by the caller), or %NULL on
- * error (in which case *@error will be set) or if there are no more
- * addresses.
- **/
+ *     error (in which case *@error will be set) or if there are no
+ *     more addresses.
+ */
 GSocketAddress *
 g_socket_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
 					 GAsyncResult              *result,

@@ -482,12 +482,16 @@ typedef enum  {
 
 /**
  * GResolverError:
- * @G_RESOLVER_ERROR_NOT_FOUND: the requested name/address/service was not found
- * @G_RESOLVER_ERROR_TEMPORARY_FAILURE: the requested information could not be looked up due to a network error or similar problem
+ * @G_RESOLVER_ERROR_NOT_FOUND: the requested name/address/service was not
+ *     found
+ * @G_RESOLVER_ERROR_TEMPORARY_FAILURE: the requested information could not
+ *     be looked up due to a network error or similar problem
  * @G_RESOLVER_ERROR_INTERNAL: unknown error
  *
  * An error code used with %G_RESOLVER_ERROR in a #GError returned
  * from a #GResolver routine.
+ *
+ * Since: 2.22
  */
 typedef enum {
   G_RESOLVER_ERROR_NOT_FOUND,
@@ -505,6 +509,8 @@ typedef enum {
  * The protocol family of a #GSocketAddress. (These values are
  * identical to the system defines %AF_INET, %AF_INET6 and %AF_UNIX,
  * if available.)
+ *
+ * Since: 2.22
  */
 typedef enum {
   G_SOCKET_FAMILY_INVALID,
@@ -519,10 +525,13 @@ typedef enum {
  * GSocketType:
  * @G_SOCKET_TYPE_INVALID: Type unknown or wrong
  * @G_SOCKET_TYPE_STREAM: Reliable connection-based byte streams (e.g. TCP).
- * @G_SOCKET_TYPE_DATAGRAM: Connectionless, unreliable datagram passing. (e.g. UDP) 
- * @G_SOCKET_TYPE_SEQPACKET: Reliable connection-based passing of datagrams of fixed maximum length (e.g. SCTP).
+ * @G_SOCKET_TYPE_DATAGRAM: Connectionless, unreliable datagram passing.
+ *     (e.g. UDP)
+ * @G_SOCKET_TYPE_SEQPACKET: Reliable connection-based passing of datagrams
+ *     of fixed maximum length (e.g. SCTP).
  *
- * Flags used when creating a #GSocket. Some protocols may not implement all the socket types.
+ * Flags used when creating a #GSocket. Some protocols may not implement
+ * all the socket types.
  *
  * Since: 2.22
  */
@@ -538,13 +547,16 @@ typedef enum
  * GSocketMsgFlags:
  * @G_SOCKET_MSG_NONE: No flags.
  * @G_SOCKET_MSG_OOB: Request to send/receive out of band data.
- * @G_SOCKET_MSG_PEEK: Read data from the socket without removing it from the queue.
- * @G_SOCKET_MSG_DONTROUTE: Don't use a gateway to send out the packet, only send to hosts on directly connected networks.
+ * @G_SOCKET_MSG_PEEK: Read data from the socket without removing it from
+ *     the queue.
+ * @G_SOCKET_MSG_DONTROUTE: Don't use a gateway to send out the packet,
+ *     only send to hosts on directly connected networks.
  *
- * Flags used in g_socket_receive_message() and g_socket_send_message(). The flags listed in the enum are
- * some commonly available flags, but the values used for them are the same as on the platform, and any other
- * flags are passed in/out as is. So to use a platform specific flag, just include the right system header and
- * pass in the flag.
+ * Flags used in g_socket_receive_message() and g_socket_send_message().
+ * The flags listed in the enum are some commonly available flags, but the
+ * values used for them are the same as on the platform, and any other flags
+ * are passed in/out as is. So to use a platform specific flag, just include
+ * the right system header and pass in the flag.
  *
  * Since: 2.22
  */
@@ -560,15 +572,17 @@ typedef enum
  * GSocketProtocol:
  * @G_SOCKET_PROTOCOL_UNKNOWN: The protocol type is unknown
  * @G_SOCKET_PROTOCOL_DEFAULT: The default protocol for the family/type
- * @G_SOCKET_PROTOCOL_TCP: Tcp over IP
+ * @G_SOCKET_PROTOCOL_TCP: TCP over IP
  * @G_SOCKET_PROTOCOL_UDP: UDP over IP
  * @G_SOCKET_PROTOCOL_SCTP: SCTP over IP
  *
- * A protocol identifier is specified when creating a #GSocket, which is a family/type
- * specific identifier, where 0 means the default protocol for the particular family/type.
- * This enum contains a set of commonly availible and used protocols. You can also
- * pass any other identifiers handled by the platform in order to use protocols not
- * listed here.
+ * A protocol identifier is specified when creating a #GSocket, which is a
+ * family/type specific identifier, where 0 means the default protocol for
+ * the particular family/type.
+ *
+ * This enum contains a set of commonly available and used protocols. You
+ * can also pass any other identifiers handled by the platform in order to
+ * use protocols not listed here.
  *
  * Since: 2.22
  */

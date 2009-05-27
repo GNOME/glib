@@ -280,7 +280,7 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
  * This is the function type of the callback used for the #GSource
  * returned by g_socket_create_source().
  *
- * Returns: it should return FALSE if the source should be removed.
+ * Returns: it should return %FALSE if the source should be removed.
  *
  * Since: 2.22
  */
@@ -291,12 +291,12 @@ typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
 /**
  * GInputVector:
  * @buffer: Pointer to a buffer where data will be written.
- * @size: the availible size in @buffer.
+ * @size: the available size in @buffer.
  *
  * Structure used for scatter/gather data input.
- * You generally pass in an array of #GInputVector<!-- -->s and the operation
- * will store the read data starting in the first buffer, switching to
- * the next as needed.
+ * You generally pass in an array of #GInputVector<!-- -->s
+ * and the operation will store the read data starting in the
+ * first buffer, switching to the next as needed.
  *
  * Since: 2.22
  */
@@ -313,8 +313,9 @@ struct _GInputVector {
  * @size: the size of @buffer.
  *
  * Structure used for scatter/gather data output.
- * You generally pass in an array of #GOutputVector<!-- -->s and the operation
- * will use all the buffers as if they were one buffer.
+ * You generally pass in an array of #GOutputVector<!-- -->s
+ * and the operation will use all the buffers as if they were
+ * one buffer.
  *
  * Since: 2.22
  */

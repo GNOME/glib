@@ -66,7 +66,7 @@ G_DEFINE_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
  * is actually shut down.
  *
  * Since: 2.22
- **/
+ */
 
 enum
 {
@@ -204,14 +204,14 @@ g_io_stream_class_init (GIOStreamClass *klass)
 
 /**
  * g_io_stream_is_closed:
- * @stream: a #GIOStream.
+ * @stream: a #GIOStream
  *
  * Checks if a stream is closed.
  *
  * Returns: %TRUE if the stream is closed.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_io_stream_is_closed (GIOStream *stream)
 {
@@ -222,56 +222,56 @@ g_io_stream_is_closed (GIOStream *stream)
 
 /**
  * g_io_stream_get_input_stream:
- * @stream: input #GIOStream.
+ * @stream: a #GIOStream
  *
  * Gets the input stream for this object. This is used
  * for reading.
  *
- * Returns: a #GInputStream, owned by the #GIOStream do not free.
+ * Returns: a #GInputStream, owned by the #GIOStream. Do not free.
  *
  * Since: 2.22
- **/
+ */
 GInputStream *
-g_io_stream_get_input_stream (GIOStream *io_stream)
+g_io_stream_get_input_stream (GIOStream *stream)
 {
   GIOStreamClass *klass;
 
-  klass = G_IO_STREAM_GET_CLASS (io_stream);
+  klass = G_IO_STREAM_GET_CLASS (stream);
 
   g_assert (klass->get_input_stream != NULL);
 
-  return klass->get_input_stream (io_stream);
+  return klass->get_input_stream (stream);
 }
 
 /**
  * g_io_stream_get_output_stream:
- * @stream: input #GIOStream.
+ * @stream: a #GIOStream
  *
  * Gets the output stream for this object. This is used for
  * writing.
  *
- * Returns: a #GOutputStream, owned by the #GIOStream do not free.
+ * Returns: a #GOutputStream, owned by the #GIOStream. Do not free.
  *
  * Since: 2.22
- **/
+ */
 GOutputStream *
-g_io_stream_get_output_stream (GIOStream *io_stream)
+g_io_stream_get_output_stream (GIOStream *stream)
 {
   GIOStreamClass *klass;
 
-  klass = G_IO_STREAM_GET_CLASS (io_stream);
+  klass = G_IO_STREAM_GET_CLASS (stream);
 
   g_assert (klass->get_output_stream != NULL);
-  return klass->get_output_stream (io_stream);
+  return klass->get_output_stream (stream);
 }
 
 /**
  * g_io_stream_has_pending:
- * @stream: a #GIOStream.
+ * @stream: a #GIOStream
  *
  * Checks if a stream has pending actions.
  *
- * Returns: %TRUE if @stream has pending actions. 
+ * Returns: %TRUE if @stream has pending actions.
  *
  * Since: 2.22
  **/
@@ -285,9 +285,9 @@ g_io_stream_has_pending (GIOStream *stream)
 
 /**
  * g_io_stream_set_pending:
- * @stream: a #GIOStream.
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @stream: a #GIOStream
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore
  *
  * Sets @stream to have actions pending. If the pending flag is
  * already set or @stream is closed, it will return %FALSE and set
@@ -296,10 +296,10 @@ g_io_stream_has_pending (GIOStream *stream)
  * Return value: %TRUE if pending was previously unset and is now set.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_io_stream_set_pending (GIOStream *stream,
-			 GError **error)
+g_io_stream_set_pending (GIOStream  *stream,
+			 GError    **error)
 {
   g_return_val_if_fail (G_IS_IO_STREAM (stream), FALSE);
 
@@ -326,12 +326,12 @@ g_io_stream_set_pending (GIOStream *stream,
 
 /**
  * g_io_stream_clear_pending:
- * @stream: output stream
+ * @stream: a #GIOStream
  *
  * Clears the pending flag on @stream.
  *
  * Since: 2.22
- **/
+ */
 void
 g_io_stream_clear_pending (GIOStream *stream)
 {
@@ -341,9 +341,9 @@ g_io_stream_clear_pending (GIOStream *stream)
 }
 
 static gboolean
-g_io_stream_real_close (GIOStream            *stream,
-			GCancellable         *cancellable,
-			GError              **error)
+g_io_stream_real_close (GIOStream     *stream,
+			GCancellable  *cancellable,
+			GError       **error)
 {
   gboolean res;
 
@@ -363,33 +363,34 @@ g_io_stream_real_close (GIOStream            *stream,
 
 /**
  * g_io_stream_close:
- * @stream: A #GIOStream.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @stream: a #GIOStream
+ * @cancellable: optional #GCancellable object, %NULL to ignore
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it. This will also
  * closes the individual input and output streams, if they are not already
  * closed.
  *
- * Once the stream is closed, all other operations will return %G_IO_ERROR_CLOSED.
- * Closing a stream multiple times will not return an error.
+ * Once the stream is closed, all other operations will return
+ * %G_IO_ERROR_CLOSED. Closing a stream multiple times will not
+ * return an error.
  *
- * Closing a stream will automatically flush any outstanding buffers in the
- * stream.
+ * Closing a stream will automatically flush any outstanding buffers
+ * in the stream.
  *
  * Streams will be automatically closed when the last reference
  * is dropped, but you might want to call this function to make sure
  * resources are released as early as possible.
  *
- * Some streams might keep the backing store of the stream (e.g. a file descriptor)
- * open after the stream is closed. See the documentation for the individual
- * stream for details.
+ * Some streams might keep the backing store of the stream (e.g. a file
+ * descriptor) open after the stream is closed. See the documentation for
+ * the individual stream for details.
  *
- * On failure the first error that happened will be reported, but the close
- * operation will finish as much as possible. A stream that failed to
- * close will still return %G_IO_ERROR_CLOSED for all operations. Still, it
- * is important to check and report the error to the user, otherwise
- * there might be a loss of data as all data might not be written.
+ * On failure the first error that happened will be reported, but the
+ * close operation will finish as much as possible. A stream that failed
+ * to close will still return %G_IO_ERROR_CLOSED for all operations.
+ * Still, it is important to check and report the error to the user,
+ * otherwise there might be a loss of data as all data might not be written.
  *
  * If @cancellable is not NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -403,9 +404,9 @@ g_io_stream_real_close (GIOStream            *stream,
  * Return value: %TRUE on success, %FALSE on failure
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_io_stream_close (GIOStream  *stream,
+g_io_stream_close (GIOStream     *stream,
 		   GCancellable  *cancellable,
 		   GError       **error)
 {
@@ -454,8 +455,8 @@ async_ready_close_callback_wrapper (GObject      *source_object,
 
 /**
  * g_io_stream_close_async:
- * @stream: A #GIOStream.
- * @io_priority: the io priority of the request.
+ * @stream: a #GIOStream
+ * @io_priority: the io priority of the request
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  * @cancellable: optional cancellable object
@@ -467,12 +468,12 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  *
  * For behaviour details see g_io_stream_close().
  *
- * The asyncronous methods have a default fallback that uses threads
+ * The asynchronous methods have a default fallback that uses threads
  * to implement asynchronicity, so they are optional for inheriting
  * classes. However, if you override one you must override all.
  *
  * Since: 2.22
- **/
+ */
 void
 g_io_stream_close_async (GIOStream           *stream,
 			 int                  io_priority,
@@ -516,21 +517,21 @@ g_io_stream_close_async (GIOStream           *stream,
 
 /**
  * g_io_stream_close_finish:
- * @stream: a #GIOStream.
- * @result: a #GAsyncResult.
+ * @stream: a #GIOStream
+ * @result: a #GAsyncResult
  * @error: a #GError location to store the error occuring, or %NULL to
- * ignore.
+ *    ignore
  *
  * Closes a stream.
  *
  * Returns: %TRUE if stream was successfully closed, %FALSE otherwise.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_io_stream_close_finish (GIOStream  *stream,
-			  GAsyncResult   *result,
-			  GError        **error)
+g_io_stream_close_finish (GIOStream     *stream,
+			  GAsyncResult  *result,
+			  GError       **error)
 {
   GSimpleAsyncResult *simple;
   GIOStreamClass *class;
@@ -563,11 +564,10 @@ close_async_thread (GSimpleAsyncResult *res,
   GError *error = NULL;
   gboolean result;
 
-  /* Auto handling of cancelation disabled, and ignore
-     cancellation, since we want to close things anyway, although
-     possibly in a quick-n-dirty way. At least we never want to leak
-     open handles */
-
+  /* Auto handling of cancelation disabled, and ignore cancellation,
+   * since we want to close things anyway, although possibly in a
+   * quick-n-dirty way. At least we never want to leak open handles
+   */
   class = G_IO_STREAM_GET_CLASS (object);
   if (class->close_fn)
     {
@@ -581,11 +581,11 @@ close_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_io_stream_real_close_async (GIOStream        *stream,
-			      int               io_priority,
-			      GCancellable     *cancellable,
-			      GAsyncReadyCallback callback,
-			      gpointer          user_data)
+g_io_stream_real_close_async (GIOStream           *stream,
+			      int                  io_priority,
+			      GCancellable        *cancellable,
+			      GAsyncReadyCallback  callback,
+			      gpointer             user_data)
 {
   GSimpleAsyncResult *res;
 
@@ -604,7 +604,7 @@ g_io_stream_real_close_async (GIOStream        *stream,
 }
 
 static gboolean
-g_io_stream_real_close_finish (GIOStream  *stream,
+g_io_stream_real_close_finish (GIOStream     *stream,
 			       GAsyncResult  *result,
 			       GError       **error)
 {

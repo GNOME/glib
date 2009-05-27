@@ -27,7 +27,7 @@
  * For an easier way to send and receive file descriptors over
  * stream-oriented UNIX sockets, see g_unix_connection_send_fd() and
  * g_unix_connection_receive_fd().
- **/
+ */
 
 #include "config.h"
 
@@ -72,9 +72,9 @@ g_unix_fd_message_get_msg_type (GSocketControlMessage *message)
 }
 
 static GSocketControlMessage *
-g_unix_fd_message_deserialize (int level,
-			       int type,
-			       gsize size,
+g_unix_fd_message_deserialize (int      level,
+			       int      type,
+			       gsize    size,
 			       gpointer data)
 {
   GUnixFDMessage *message;
@@ -145,10 +145,13 @@ g_unix_fd_message_class_init (GUnixFDMessageClass *class)
 
 /**
  * g_unix_fd_message_new:
- * @returns: a new #GUnixFDMessage
  *
  * Creates a new #GUnixFDMessage containing no file descriptors.
- **/
+ *
+ * Returns: a new #GUnixFDMessage
+ *
+ * Since: 2.22
+ */
 GSocketControlMessage *
 g_unix_fd_message_new (void)
 {
@@ -159,13 +162,12 @@ g_unix_fd_message_new (void)
  * g_unix_fd_message_steal_fds:
  * @message: a #GUnixFDMessage
  * @length: pointer to the length of the returned array, or %NULL
- * @returns: an array of file descriptors
  *
  * Returns the array of file descriptors that is contained in this
  * object.
  *
  * After this call, the descriptors are no longer contained in
- * @message.  Further calls will return an empty list (unless more
+ * @message. Further calls will return an empty list (unless more
  * descriptors have been added).
  *
  * The return result of this function must be freed with g_free().
@@ -173,15 +175,19 @@ g_unix_fd_message_new (void)
  * descriptors.
  *
  * If @length is non-%NULL then it is set to the number of file
- * descriptors in the returned array.  The returned array is also
+ * descriptors in the returned array. The returned array is also
  * terminated with -1.
  *
- * This function never returns NULL.  In case there are no file
+ * This function never returns %NULL. In case there are no file
  * descriptors contained in @message, an empty array is returned.
- **/
+ *
+ * Returns: an array of file descriptors
+ *
+ * Since: 2.22
+ */
 gint *
 g_unix_fd_message_steal_fds (GUnixFDMessage *message,
-                               gint             *length)
+                             gint           *length)
 {
   gint *result;
 
@@ -210,21 +216,24 @@ g_unix_fd_message_steal_fds (GUnixFDMessage *message,
  * @message: a #GUnixFDMessage
  * @fd: a valid open file descriptor
  * @error: a #GError pointer
- * @returns: %TRUE in case of success, else %FALSE (and @error is set)
  *
  * Adds a file descriptor to @message.
  *
- * The file descriptor is duplicated using dup().  You keep your copy
+ * The file descriptor is duplicated using dup(). You keep your copy
  * of the descriptor and the copy contained in @message will be closed
  * when @message is finalized.
  *
  * A possible cause of failure is exceeding the per-process or
  * system-wide file descriptor limit.
- **/
+ *
+ * Returns: %TRUE in case of success, else %FALSE (and @error is set)
+ *
+ * Since: 2.22
+ */
 gboolean
 g_unix_fd_message_append_fd (GUnixFDMessage  *message,
-                               gint               fd,
-                               GError           **error)
+                             gint             fd,
+                             GError         **error)
 {
   gint new_fd;
 

@@ -38,16 +38,15 @@
  * in all ways except that initialization is asynchronous. For more details
  * see the descriptions on #GInitable.
  *
- * A class may implement both the #GInitable and #GAsyncInitable interfaces
- * or both.
+ * A class may implement both the #GInitable and #GAsyncInitable interfaces.
  *
- * Users of objects implementing this are not intended to use
- * the interface method directly, instead it will be used automatically
- * in various ways. For C applications you generally just call
- * g_async_initable_new() directly, or indirectly via a foo_thing_new_async() wrapper.
- * This will call g_async_initable_init() under the cover, calling back with %NULL and
+ * Users of objects implementing this are not intended to use the interface
+ * method directly, instead it will be used automatically in various ways.
+ * For C applications you generally just call g_async_initable_new() directly,
+ * or indirectly via a foo_thing_new_async() wrapper. This will call
+ * g_async_initable_init() under the cover, calling back with %NULL and
  * a set %GError on failure.
- **/
+ */
 
 static void     g_async_initable_base_init        (gpointer              g_iface);
 static void     g_async_initable_real_init_async  (GAsyncInitable       *initable,
@@ -108,17 +107,18 @@ g_async_initable_base_init (gpointer g_iface)
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Starts asynchronous initialization of the object implementing the interface.
- * This must be done before any real use of the object after initial construction.
- * If the object also implements #GInitable you can optionally call g_initable_init()
- * instead.
+ * Starts asynchronous initialization of the object implementing the
+ * interface. This must be done before any real use of the object after
+ * initial construction. If the object also implements #GInitable you can
+ * optionally call g_initable_init() instead.
  *
- * When the initialization is finished, @callback will be called. You can then call
- * g_async_initable_init_finish() to get the result of the initialization.
+ * When the initialization is finished, @callback will be called. You can
+ * then call g_async_initable_init_finish() to get the result of the
+ * initialization.
  *
- * Implementations may also support cancellation. If @cancellable is not %NULL,
- * then initialization can be cancelled by triggering the cancellable object
- * from another thread. If the operation was cancelled, the error
+ * Implementations may also support cancellation. If @cancellable is not
+ * %NULL, then initialization can be cancelled by triggering the cancellable
+ * object from another thread. If the operation was cancelled, the error
  * %G_IO_ERROR_CANCELLED will be returned. If @cancellable is not %NULL and
  * the object doesn't support cancellable initialization the error
  * %G_IO_ERROR_NOT_SUPPORTED will be returned.
@@ -140,13 +140,13 @@ g_async_initable_base_init (gpointer g_iface)
  * any interface methods.
  *
  * Since: 2.22
- **/
+ */
 void
-g_async_initable_init_async (GAsyncInitable     *initable,
-			     int                 io_priority,
-			     GCancellable       *cancellable,
-			     GAsyncReadyCallback callback,
-			     gpointer            user_data)
+g_async_initable_init_async (GAsyncInitable      *initable,
+			     int                  io_priority,
+			     GCancellable        *cancellable,
+			     GAsyncReadyCallback  callback,
+			     gpointer             user_data)
 {
   GAsyncInitableIface *iface;
 
@@ -167,16 +167,15 @@ g_async_initable_init_async (GAsyncInitable     *initable,
  * Finishes asynchronous initialization and returns the result.
  * See g_async_initable_init_async().
  *
- * Returns: %TRUE if successful. If an error
- *     has occurred, this function will return %FALSE and set @error
- *     appropriately if present.
+ * Returns: %TRUE if successful. If an error has occurred, this function
+ * will return %FALSE and set @error appropriately if present.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_async_initable_init_finish (GAsyncInitable       *initable,
-			      GAsyncResult         *res,
-			      GError              **error)
+g_async_initable_init_finish (GAsyncInitable  *initable,
+			      GAsyncResult    *res,
+			      GError         **error)
 {
   GAsyncInitableIface *iface;
 
@@ -210,11 +209,11 @@ async_init_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_async_initable_real_init_async (GAsyncInitable     *initable,
-				  int                 io_priority,
-				  GCancellable       *cancellable,
-				  GAsyncReadyCallback callback,
-				  gpointer            user_data)
+g_async_initable_real_init_async (GAsyncInitable      *initable,
+				  int                  io_priority,
+				  GCancellable        *cancellable,
+				  GAsyncReadyCallback  callback,
+				  gpointer             user_data)
 {
   GSimpleAsyncResult *res;
 
@@ -228,9 +227,9 @@ g_async_initable_real_init_async (GAsyncInitable     *initable,
 }
 
 static gboolean
-g_async_initable_real_init_finish (GAsyncInitable *initable,
-				   GAsyncResult *res,
-				   GError **error)
+g_async_initable_real_init_finish (GAsyncInitable  *initable,
+				   GAsyncResult    *res,
+				   GError         **error)
 {
   return TRUE; /* Errors handled by base impl */
 }
@@ -241,27 +240,30 @@ g_async_initable_real_init_finish (GAsyncInitable *initable,
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  *     of the operation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the initialization is finished
+ * @callback: a #GAsyncReadyCallback to call when the initialization is
+ *     finished
  * @user_data: the data to pass to callback function
- * @first_property_name: the name of the first property, or %NULL if no properties
+ * @first_property_name: the name of the first property, or %NULL if no
+ *     properties
  * @...:  the value if the first property, followed by and other property
  *    value pairs, and ended by %NULL.
  *
  * Helper function for constructing #GAsyncInitiable object. This is
  * similar to g_object_new() but also initializes the object asyncronously.
  *
- * When the initialization is finished, @callback will be called. You can then call
- * g_async_initable_new_finish() to get new object and check for any errors.
+ * When the initialization is finished, @callback will be called. You can
+ * then call g_async_initable_new_finish() to get new object and check for
+ * any errors.
  *
  * Since: 2.22
- **/
+ */
 void
-g_async_initable_new_async (GType object_type,
-			    int io_priority,
-			    GCancellable  *cancellable,
-			    GAsyncReadyCallback callback,
-			    gpointer user_data,
-			    const gchar *first_property_name,
+g_async_initable_new_async (GType                object_type,
+			    int                  io_priority,
+			    GCancellable        *cancellable,
+			    GAsyncReadyCallback  callback,
+			    gpointer             user_data,
+			    const gchar         *first_property_name,
 			    ...)
 {
   va_list var_args;
@@ -282,25 +284,27 @@ g_async_initable_new_async (GType object_type,
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  *     of the operation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the initialization is finished
+ * @callback: a #GAsyncReadyCallback to call when the initialization is
+ *     finished
  * @user_data: the data to pass to callback function
  *
  * Helper function for constructing #GAsyncInitiable object. This is
  * similar to g_object_newv() but also initializes the object asyncronously.
  *
- * When the initialization is finished, @callback will be called. You can then call
- * g_async_initable_new_finish() to get new object and check for any errors.
+ * When the initialization is finished, @callback will be called. You can
+ * then call g_async_initable_new_finish() to get new object and check for
+ * any errors.
  *
  * Since: 2.22
- **/
+ */
 void
-g_async_initable_newv_async (GType object_type,
-			     guint n_parameters,
-			     GParameter *parameters,
-			     int io_priority,
-			     GCancellable *cancellable,
-			     GAsyncReadyCallback callback,
-			     gpointer user_data)
+g_async_initable_newv_async (GType                object_type,
+			     guint                n_parameters,
+			     GParameter          *parameters,
+			     int                  io_priority,
+			     GCancellable        *cancellable,
+			     GAsyncReadyCallback  callback,
+			     gpointer             user_data)
 {
   GObject *obj;
 
@@ -322,25 +326,28 @@ g_async_initable_newv_async (GType object_type,
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  *     of the operation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the initialization is finished
+ * @callback: a #GAsyncReadyCallback to call when the initialization is
+ *     finished
  * @user_data: the data to pass to callback function
  *
  * Helper function for constructing #GAsyncInitiable object. This is
- * similar to g_object_new_valist() but also initializes the object asyncronously.
+ * similar to g_object_new_valist() but also initializes the object
+ * asyncronously.
  *
- * When the initialization is finished, @callback will be called. You can then call
- * g_async_initable_new_finish() to get new object and check for any errors.
+ * When the initialization is finished, @callback will be called. You can
+ * then call g_async_initable_new_finish() to get new object and check for
+ * any errors.
  *
  * Since: 2.22
- **/
+ */
 void
-g_async_initable_new_valist_async (GType object_type,
-				   const gchar *first_property_name,
-				   va_list var_args,
-				   int io_priority,
-				   GCancellable *cancellable,
-				   GAsyncReadyCallback callback,
-				   gpointer user_data)
+g_async_initable_new_valist_async (GType                object_type,
+				   const gchar         *first_property_name,
+				   va_list              var_args,
+				   int                  io_priority,
+				   GCancellable        *cancellable,
+				   GAsyncReadyCallback  callback,
+				   gpointer             user_data)
 {
   GObject *obj;
 
@@ -355,24 +362,26 @@ g_async_initable_new_valist_async (GType object_type,
 			       callback, user_data);
   g_object_unref (obj); /* Passed ownership to async call */
 }
+
 /**
  * g_async_initable_new_finish:
  * @initable: the #GAsyncInitable from the callback
  * @res: the #GAsyncResult.from the callback
  * @error: a #GError location to store the error occuring, or %NULL to
- * ignore.
+ *     ignore.
  *
  * Finishes the async construction for the various g_async_initable_new calls,
  * returning the created object or %NULL on error.
  *
- * Returns: a newly created #GObject, or %NULL on error. Free with g_object_unref().
+ * Returns: a newly created #GObject, or %NULL on error. Free with
+ *     g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GObject *
-g_async_initable_new_finish (GAsyncInitable       *initable,
-			     GAsyncResult         *res,
-			     GError              **error)
+g_async_initable_new_finish (GAsyncInitable  *initable,
+			     GAsyncResult    *res,
+			     GError         **error)
 {
   if (g_async_initable_init_finish (initable, res, error))
     return g_object_ref (initable);

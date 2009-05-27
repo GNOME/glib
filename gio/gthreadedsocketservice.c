@@ -41,8 +41,8 @@
  * The service automatically stops the #GSocketService from accepting
  * new connections when all threads are busy.
  *
- * As with #GSocketService, you may connect to ::run, or subclass and
- * override the default handler.
+ * As with #GSocketService, you may connect to #GThreadedSocketService:run,
+ * or subclass and override the default handler.
  */
 
 #include "config.h"
@@ -229,15 +229,14 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    * @service: the #GThreadedSocketService.
    * @connection: a new #GSocketConnection object.
    * @source_object: the source_object passed to g_socket_listener_add_address().
-   * @returns: %TRUE if @connection has been handled.
    *
    * The ::run signal is emitted in a worker thread in response to an
-   * incoming connection.  This thread is dedicated to handling
-   * @connection and may perform blocking IO.  The signal handler need
+   * incoming connection. This thread is dedicated to handling
+   * @connection and may perform blocking IO. The signal handler need
    * not return until the connection is closed.
    *
-   * If %TRUE is returned then no other handlers are called.
-   **/
+   * Returns: %TRUE to stope further signal handlers from being called
+   */
   g_threaded_socket_service_run_signal =
     g_signal_new ("run", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
@@ -257,13 +256,16 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 
 /**
  * g_threaded_socket_service_new:
- * @returns: a new #GSocketService.
  * @max_threads: the maximal number of threads to execute concurrently
- *   handling incomming clients, -1 means no limit
+ *   handling incoming clients, -1 means no limit
  *
- * Creates a new #GThreadedSocketService with no listeners.  Listeners
+ * Creates a new #GThreadedSocketService with no listeners. Listeners
  * must be added with g_socket_service_add_listeners().
- **/
+ *
+ * Returns: a new #GSocketService.
+ *
+ * Since: 2.22
+ */
 GSocketService *
 g_threaded_socket_service_new (int max_threads)
 {

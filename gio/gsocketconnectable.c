@@ -89,7 +89,7 @@
  *     }
  * }
  * ]|
- **/
+ */
 
 GType
 g_socket_connectable_get_type (void)
@@ -131,7 +131,7 @@ g_socket_connectable_get_type (void)
  * Return value: a new #GSocketAddressEnumerator.
  *
  * Since: 2.22
- **/
+ */
 GSocketAddressEnumerator *
 g_socket_connectable_enumerate (GSocketConnectable *connectable)
 {

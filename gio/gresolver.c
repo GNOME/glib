@@ -101,10 +101,10 @@ static GResolver *default_resolver;
  * many threads/processes, etc it should allocate for concurrent DNS
  * resolutions.
  *
- * Return value: the #GResolver.
+ * Return value: the default #GResolver.
  *
  * Since: 2.22
- **/
+ */
 GResolver *
 g_resolver_get_default (void)
 {
@@ -353,7 +353,7 @@ g_resolver_free_addresses (GList *addresses)
  * %G_IO_ERROR_CANCELLED.
  *
  * Return value: a hostname (either ASCII-only, or in ASCII-encoded
- * form), or %NULL on error.
+ *     form), or %NULL on error.
  *
  * Since: 2.22
  */

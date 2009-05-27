@@ -175,7 +175,7 @@ g_socket_listener_init (GSocketListener *listener)
  * Returns: a new #GSocketListener.
  *
  * Since: 2.22
- **/
+ */
 GSocketListener *
 g_socket_listener_new (void)
 {
@@ -215,12 +215,12 @@ check_listener (GSocketListener *listener,
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_socket_listener_add_socket (GSocketListener *listener,
-			      GSocket *socket,
-			      GObject *source_object,
-			      GError **error)
+g_socket_listener_add_socket (GSocketListener  *listener,
+			      GSocket          *socket,
+			      GObject          *source_object,
+			      GError          **error)
 {
   if (!check_listener (listener, error))
     return FALSE;
@@ -264,14 +264,14 @@ g_socket_listener_add_socket (GSocketListener *listener,
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_socket_listener_add_address (GSocketListener *listener,
-			       GSocketAddress *address,
-			       GSocketType type,
-			       GSocketProtocol protocol,
-			       GObject *source_object,
-			       GError **error)
+g_socket_listener_add_address (GSocketListener  *listener,
+			       GSocketAddress   *address,
+			       GSocketType       type,
+			       GSocketProtocol   protocol,
+			       GObject          *source_object,
+			       GError          **error)
 {
   GSocketFamily family;
   GSocket *socket;
@@ -321,12 +321,12 @@ g_socket_listener_add_address (GSocketListener *listener,
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_socket_listener_add_inet_port (GSocketListener *listener,
-				 int port,
-				 GObject *source_object,
-				 GError **error)
+g_socket_listener_add_inet_port (GSocketListener  *listener,
+				 int               port,
+				 GObject          *source_object,
+				 GError          **error)
 {
   GSocketAddress *address4, *address6;
   GInetAddress *inet_address;
@@ -379,11 +379,11 @@ g_socket_listener_add_inet_port (GSocketListener *listener,
 }
 
 static GList *
-add_sources (GSocketListener *listener,
-	     GSocketSourceFunc callback,
-	     gpointer callback_data,
-	     GCancellable *cancellable,
-	     GMainContext *context)
+add_sources (GSocketListener   *listener,
+	     GSocketSourceFunc  callback,
+	     gpointer           callback_data,
+	     GCancellable      *cancellable,
+	     GMainContext      *context)
 {
   GSocket *socket;
   GSource *source;
@@ -426,9 +426,9 @@ struct AcceptData {
 };
 
 static gboolean
-accept_callback (GSocket *socket,
-		 GIOCondition condition,
-		 gpointer user_data)
+accept_callback (GSocket      *socket,
+		 GIOCondition  condition,
+		 gpointer      user_data)
 {
   struct AcceptData *data = user_data;
 
@@ -456,14 +456,14 @@ accept_callback (GSocket *socket,
  * object specified when the corresponding socket or address was added
  * to the listener.
  *
- * If @cancellable is not NULL, then the operation can be cancelled by
+ * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
  * Returns: a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocket *
 g_socket_listener_accept_socket (GSocketListener  *listener,
 				 GObject         **source_object,
@@ -530,14 +530,14 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
  * object specified when the corresponding socket or address was added
  * to the listener.
  *
- * If @cancellable is not NULL, then the operation can be cancelled by
+ * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
 g_socket_listener_accept (GSocketListener  *listener,
 			  GObject         **source_object,
@@ -567,9 +567,9 @@ struct AcceptAsyncData {
 };
 
 static gboolean
-accept_ready (GSocket *accept_socket,
-	      GIOCondition condition,
-	      gpointer _data)
+accept_ready (GSocket      *accept_socket,
+	      GIOCondition  condition,
+	      gpointer      _data)
 {
   struct AcceptAsyncData *data = _data;
   GError *error = NULL;
@@ -617,16 +617,16 @@ accept_ready (GSocket *accept_socket,
  * This is the asynchronous version of g_socket_listener_accept_socket().
  *
  * When the operation is finished @callback will be
- * called. You can then call g_socket_listener_accept_socket_finish() to get
- * the result of the operation.
+ * called. You can then call g_socket_listener_accept_socket_finish()
+ * to get the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_listener_accept_socket_async (GSocketListener      *listener,
-				       GCancellable         *cancellable,
-				       GAsyncReadyCallback   callback,
-				       gpointer              user_data)
+g_socket_listener_accept_socket_async (GSocketListener     *listener,
+				       GCancellable        *cancellable,
+				       GAsyncReadyCallback  callback,
+				       gpointer             user_data)
 {
   struct AcceptAsyncData *data;
   GError *error = NULL;
@@ -665,12 +665,12 @@ g_socket_listener_accept_socket_async (GSocketListener      *listener,
  * Returns: a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocket *
-g_socket_listener_accept_socket_finish (GSocketListener   *listener,
-					GAsyncResult      *result,
-					GObject          **source_object,
-					GError           **error)
+g_socket_listener_accept_socket_finish (GSocketListener  *listener,
+					GAsyncResult     *result,
+					GObject         **source_object,
+					GError          **error)
 {
   GSocket *socket;
   GSimpleAsyncResult *simple;
@@ -702,11 +702,11 @@ g_socket_listener_accept_socket_finish (GSocketListener   *listener,
  * This is the asynchronous version of g_socket_listener_accept().
  *
  * When the operation is finished @callback will be
- * called. You can then call g_socket_listener_accept_socket() to get
- * the result of the operation.
+ * called. You can then call g_socket_listener_accept_socket()
+ * to get the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_listener_accept_async (GSocketListener     *listener,
                                 GCancellable        *cancellable,
@@ -732,12 +732,12 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  * Returns: a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
-g_socket_listener_accept_finish (GSocketListener *listener,
-				 GAsyncResult *result,
-				 GObject **source_object,
-				 GError **error)
+g_socket_listener_accept_finish (GSocketListener  *listener,
+				 GAsyncResult     *result,
+				 GObject         **source_object,
+				 GError          **error)
 {
   GSocket *socket;
   GSocketConnection *connection;
@@ -764,10 +764,10 @@ g_socket_listener_accept_finish (GSocketListener *listener,
  * See g_socket_set_listen_backlog() for details
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_listener_set_backlog (GSocketListener *listener,
-			       int listen_backlog)
+			       int              listen_backlog)
 {
   GSocket *socket;
   int i;
@@ -791,7 +791,7 @@ g_socket_listener_set_backlog (GSocketListener *listener,
  * Closes all the sockets in the listener.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_listener_close (GSocketListener *listener)
 {

@@ -41,7 +41,7 @@ G_BEGIN_DECLS
  *
  * Enumerator type for objects that contain or generate
  * #GSocketAddress<!-- -->es.
- **/
+ */
 typedef struct _GSocketAddressEnumeratorClass GSocketAddressEnumeratorClass;
 
 struct _GSocketAddressEnumerator

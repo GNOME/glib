@@ -57,14 +57,14 @@
  *
  * See #GSocketConnectable for and example of using the connectable
  * interface.
- **/
+ */
 
 /**
  * GNetworkAddress:
  *
  * A #GSocketConnectable for resolving a hostname and connecting to
  * that host.
- **/
+ */
 
 struct _GNetworkAddressPrivate {
   gchar *hostname;
@@ -129,13 +129,17 @@ g_network_address_class_init (GNetworkAddressClass *klass)
                                                         P_("Hostname"),
                                                         P_("Hostname to resolve"),
                                                         NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_PORT,
                                    g_param_spec_uint ("port",
                                                       P_("Port"),
                                                       P_("Network port"),
                                                       0, 65535, 0,
-                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -159,7 +163,7 @@ g_network_address_set_property (GObject      *object,
 {
   GNetworkAddress *addr = G_NETWORK_ADDRESS (object);
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_HOSTNAME:
       if (addr->priv->hostname)
@@ -187,7 +191,7 @@ g_network_address_get_property (GObject    *object,
   GNetworkAddress *addr = G_NETWORK_ADDRESS (object);
 
   switch (prop_id)
-    { 
+    {
     case PROP_HOSTNAME:
       g_value_set_string (value, addr->priv->hostname);
       break;
@@ -233,7 +237,7 @@ g_network_address_set_addresses (GNetworkAddress *addr,
  * Return value: the new #GNetworkAddress
  *
  * Since: 2.22
- **/
+ */
 GSocketConnectable *
 g_network_address_new (const gchar *hostname,
                        guint16      port)
@@ -256,26 +260,26 @@ g_network_address_new (const gchar *hostname,
  *
  * @host_and_port may be in any of a number of recognised formats: an IPv6
  * address, an IPv4 address, or a domain name (in which case a DNS
- * lookup is performed).  Quoting with [] is supported for all address
- * types.  A port override may be specified in the usual way with a
- * colon.  Ports may be given as decimal numbers or symbolic names (in
+ * lookup is performed). Quoting with [] is supported for all address
+ * types. A port override may be specified in the usual way with a
+ * colon. Ports may be given as decimal numbers or symbolic names (in
  * which case an /etc/services lookup is performed).
  *
  * If no port is specified in @host_and_port then @default_port will be
  * used as the port number to connect to.
  *
- * In general, @host_and_port is expected to be provided by the user (allowing
- * them to give the hostname, and a port overide if necessary) and
- * @default_port is expected to be provided by the application.
+ * In general, @host_and_port is expected to be provided by the user
+ * (allowing them to give the hostname, and a port overide if necessary)
+ * and @default_port is expected to be provided by the application.
  *
  * Return value: the new #GNetworkAddress, or %NULL on error
  *
  * Since: 2.22
- **/
+ */
 GSocketConnectable *
-g_network_address_parse (const char *host_and_port,
-                         guint16 default_port,
-                         GError **error)
+g_network_address_parse (const gchar  *host_and_port,
+                         guint16       default_port,
+                         GError      **error)
 {
   GSocketConnectable *connectable;
   const gchar *port;
@@ -410,7 +414,7 @@ g_network_address_parse (const char *host_and_port,
  * Return value: @addr's hostname
  *
  * Since: 2.22
- **/
+ */
 const gchar *
 g_network_address_get_hostname (GNetworkAddress *addr)
 {
@@ -425,10 +429,10 @@ g_network_address_get_hostname (GNetworkAddress *addr)
  *
  * Gets @addr's port number
  *
- * Return value: @addr's port (which may be %0)
+ * Return value: @addr's port (which may be 0)
  *
  * Since: 2.22
- **/
+ */
 guint16
 g_network_address_get_port (GNetworkAddress *addr)
 {

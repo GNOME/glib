@@ -25,7 +25,7 @@
  * Eventually, some TCP-specific socket stuff will be added.
  *
  * Since: 2.22
- **/
+ */
 
 #include "config.h"
 #include "gtcpconnection.h"
@@ -149,9 +149,9 @@ g_tcp_connection_class_init (GTcpConnectionClass *class)
 }
 
 static gboolean
-g_tcp_connection_close (GIOStream            *stream,
-			GCancellable         *cancellable,
-			GError              **error)
+g_tcp_connection_close (GIOStream     *stream,
+			GCancellable  *cancellable,
+			GError       **error)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (stream);
   GSocket *socket;
@@ -223,7 +223,9 @@ close_async_data_free (CloseAsyncData *data)
 }
 
 static void
-async_close_finish (CloseAsyncData *data, GError *error, gboolean in_mainloop)
+async_close_finish (CloseAsyncData *data,
+                    GError         *error,
+                    gboolean        in_mainloop)
 {
   GIOStreamClass *parent = G_IO_STREAM_CLASS (g_tcp_connection_parent_class);
   GIOStream *stream;
@@ -255,8 +257,8 @@ async_close_finish (CloseAsyncData *data, GError *error, gboolean in_mainloop)
 }
 
 static gboolean
-close_read_ready (GSocket *socket,
-		  GIOCondition condition,
+close_read_ready (GSocket        *socket,
+		  GIOCondition    condition,
 		  CloseAsyncData *data)
 {
   GError *error = NULL;
@@ -295,11 +297,11 @@ close_read_ready (GSocket *socket,
 
 
 static void
-g_tcp_connection_close_async (GIOStream        *stream,
-			      int               io_priority,
-			      GCancellable     *cancellable,
-			      GAsyncReadyCallback callback,
-			      gpointer          user_data)
+g_tcp_connection_close_async (GIOStream           *stream,
+			      int                  io_priority,
+			      GCancellable        *cancellable,
+			      GAsyncReadyCallback  callback,
+			      gpointer             user_data)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (stream);
   CloseAsyncData *data;
@@ -363,7 +365,7 @@ g_tcp_connection_close_async (GIOStream        *stream,
  * take a while. For this reason it is disabled by default.
  *
  * Since: 2.22
- **/
+ */
 void
 g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection,
 					  gboolean        graceful_disconnect)
@@ -386,7 +388,7 @@ g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection,
  * Returns: %TRUE if graceful disconnect is used on close, %FALSE otherwise
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_tcp_connection_get_graceful_disconnect (GTcpConnection *connection)
 {

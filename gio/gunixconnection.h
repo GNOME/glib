@@ -46,7 +46,7 @@ G_BEGIN_DECLS
  * A #GSocketConnection for UNIX domain socket connections.
  *
  * Since: 2.22
- **/
+ */
 typedef struct _GUnixConnection                             GUnixConnection;
 typedef struct _GUnixConnectionPrivate                      GUnixConnectionPrivate;
 typedef struct _GUnixConnectionClass                        GUnixConnectionClass;

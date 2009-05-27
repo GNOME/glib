@@ -50,7 +50,7 @@
  * exceptions the binding could check for objects implemention %GInitable
  * during normal construction and automatically initialize them, throwing
  * an exception on failure.
- **/
+ */
 
 GType
 g_initable_get_type (void)
@@ -110,12 +110,11 @@ g_initable_get_type (void)
  * of the first call. This is so that its safe to implement the singleton
  * pattern in the GObject constructor function.
  *
- * Returns: %TRUE if successful. If an error
- *     has occurred, this function will return %FALSE and set @error
- *     appropriately if present.
+ * Returns: %TRUE if successful. If an error has occurred, this function will
+ *     return %FALSE and set @error appropriately if present.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_initable_init (GInitable     *initable,
 		 GCancellable  *cancellable,
@@ -136,7 +135,8 @@ g_initable_init (GInitable     *initable,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to
  *    ignore.
- * @first_property_name: the name of the first property, or %NULL if no properties
+ * @first_property_name: the name of the first property, or %NULL if no
+ *     properties
  * @...:  the value if the first property, followed by and other property
  *    value pairs, and ended by %NULL.
  *
@@ -147,7 +147,7 @@ g_initable_init (GInitable     *initable,
  * Return value: a newly allocated #GObject, or %NULL on error
  *
  * Since: 2.22
- **/
+ */
 gpointer
 g_initable_new (GType          object_type,
 		GCancellable  *cancellable,
@@ -174,7 +174,7 @@ g_initable_new (GType          object_type,
  * @parameters: the parameters to use to construct the object
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to
- * ignore.
+ *     ignore.
  *
  * Helper function for constructing #GInitiable object. This is
  * similar to g_object_newv() but also initializes the object
@@ -183,7 +183,7 @@ g_initable_new (GType          object_type,
  * Return value: a newly allocated #GObject, or %NULL on error
  *
  * Since: 2.22
- **/
+ */
 gpointer
 g_initable_newv (GType          object_type,
 		 guint          n_parameters,
@@ -214,7 +214,7 @@ g_initable_newv (GType          object_type,
  * @var_args: The var args list generated from @first_property_name.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to
- * ignore.
+ *     ignore.
  *
  * Helper function for constructing #GInitiable object. This is
  * similar to g_object_new_valist() but also initializes the object
@@ -223,7 +223,7 @@ g_initable_newv (GType          object_type,
  * Return value: a newly allocated #GObject, or %NULL on error
  *
  * Since: 2.22
- **/
+ */
 GObject*
 g_initable_new_valist (GType          object_type,
 		       const gchar   *first_property_name,

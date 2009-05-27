@@ -1717,10 +1717,10 @@ g_file_open_readwrite (GFile                      *file,
 
 /**
  * g_file_create_readwrite:
- * @file: input #GFile.
- * @flags: a set of #GFileCreateFlags.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError, or %NULL
+ * @file: a #GFile
+ * @flags: a set of #GFileCreateFlags
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @error: return location for a #GError, or %NULL
  *
  * Creates a new file and returns a stream for reading and writing to it.
  * The file must not already exist.
@@ -1734,29 +1734,26 @@ g_file_open_readwrite (GFile                      *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * If a file or directory with this name already exists the G_IO_ERROR_EXISTS
- * error will be returned.
- * Some file systems don't allow all file names, and may
- * return an G_IO_ERROR_INVALID_FILENAME error, and if the name
- * is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
- * Other errors are possible too, and depend on what kind of
- * filesystem the file is on.
+ * If a file or directory with this name already exists the %G_IO_ERROR_EXISTS
+ * error will be returned. Some file systems don't allow all file names,
+ * and may return an %G_IO_ERROR_INVALID_FILENAME error, and if the name
+ * is too long, %G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors
+ * are possible too, and depend on what kind of filesystem the file is on.
  *
- * Note that in many non-local file cases read and write streams are not supported,
- * so make sure you really need to do read and write streaming, rather than
- * just opening for reading or writing.
+ * Note that in many non-local file cases read and write streams are not
+ * supported, so make sure you really need to do read and write streaming,
+ * rather than just opening for reading or writing.
  *
- * Returns: a #GFileIOStream for the newly created file, or
- *     %NULL on error.
+ * Returns: a #GFileIOStream for the newly created file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GFileIOStream *
-g_file_create_readwrite           (GFile                      *file,
-                                   GFileCreateFlags            flags,
-                                   GCancellable               *cancellable,
-                                   GError                    **error)
+g_file_create_readwrite (GFile             *file,
+                         GFileCreateFlags   flags,
+                         GCancellable      *cancellable,
+                         GError           **error)
 {
   GFileIface *iface;
 
@@ -1780,37 +1777,37 @@ g_file_create_readwrite           (GFile                      *file,
 
 /**
  * g_file_replace_readwrite:
- * @file: input #GFile.
+ * @file: a #GFile
  * @etag: an optional <link linkend="gfile-etag">entity tag</link> for the
- *     current #GFile, or #NULL to ignore.
- * @make_backup: %TRUE if a backup should be created.
- * @flags: a set of #GFileCreateFlags.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError, or %NULL
+ *     current #GFile, or #NULL to ignore
+ * @make_backup: %TRUE if a backup should be created
+ * @flags: a set of #GFileCreateFlags
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @error: return location for a #GError, or %NULL
  *
  * Returns an output stream for overwriting the file in readwrite mode,
- * possibly creating a backup copy of the file first. If the file doesn't exist,
- * it will be created.
+ * possibly creating a backup copy of the file first. If the file doesn't
+ * exist, it will be created.
  *
  * For details about the behaviour, see g_file_replace() which does the same
  * thing but returns an output stream only.
  *
- * Note that in many non-local file cases read and write streams are not supported,
- * so make sure you really need to do read and write streaming, rather than
- * just opening for reading or writing.
+ * Note that in many non-local file cases read and write streams are not
+ * supported, so make sure you really need to do read and write streaming,
+ * rather than just opening for reading or writing.
  *
  * Returns: a #GFileIOStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GFileIOStream *
-g_file_replace_readwrite (GFile                      *file,
-                          const char                 *etag,
-                          gboolean                    make_backup,
-                          GFileCreateFlags            flags,
-                          GCancellable               *cancellable,
-                          GError                    **error)
+g_file_replace_readwrite (GFile             *file,
+                          const char        *etag,
+                          gboolean           make_backup,
+                          GFileCreateFlags   flags,
+                          GCancellable      *cancellable,
+                          GError           **error)
 {
   GFileIface *iface;
 
@@ -1834,9 +1831,9 @@ g_file_replace_readwrite (GFile                      *file,
 
 /**
  * g_file_read_async:
- * @file: input #GFile.
- * @io_priority: the <link linkend="io-priority">I/O priority</link> 
- *     of the request. 
+ * @file: input #GFile
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -2203,32 +2200,32 @@ g_file_open_readwrite_finish (GFile                      *file,
 
 /**
  * g_file_create_readwrite_async:
- * @file: input #GFile.
- * @flags: a set of #GFileCreateFlags.
+ * @file: input #GFile
+ * @flags: a set of #GFileCreateFlags
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
- *     of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ *     of the request
+ * @cancellable: optional #GCancellable object, %NULL to ignore
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Asynchronously creates a new file and returns a stream for reading and writing
- * to it. The file must not already exist.
+ * Asynchronously creates a new file and returns a stream for reading and
+ * writing to it. The file must not already exist.
  *
  * For more details, see g_file_create_readwrite() which is
  * the synchronous version of this call.
  *
- * When the operation is finished, @callback will be called. You can then call
- * g_file_create_readwrite_finish() to get the result of the operation.
+ * When the operation is finished, @callback will be called. You can then
+ * call g_file_create_readwrite_finish() to get the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
-g_file_create_readwrite_async (GFile                      *file,
-                               GFileCreateFlags            flags,
-                               int                         io_priority,
-                               GCancellable               *cancellable,
-                               GAsyncReadyCallback         callback,
-                               gpointer                    user_data)
+g_file_create_readwrite_async (GFile               *file,
+                               GFileCreateFlags     flags,
+                               int                  io_priority,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -2245,8 +2242,8 @@ g_file_create_readwrite_async (GFile                      *file,
 
 /**
  * g_file_create_readwrite_finish:
- * @file: input #GFile.
- * @res: a #GAsyncResult.
+ * @file: input #GFile
+ * @res: a #GAsyncResult
  * @error: a #GError, or %NULL
  *
  * Finishes an asynchronous file create operation started with
@@ -2258,9 +2255,9 @@ g_file_create_readwrite_async (GFile                      *file,
  * Since: 2.22
  **/
 GFileIOStream *
-g_file_create_readwrite_finish (GFile                      *file,
-                                GAsyncResult               *res,
-                                GError                    **error)
+g_file_create_readwrite_finish (GFile         *file,
+                                GAsyncResult  *res,
+                                GError       **error)
 {
   GFileIface *iface;
 
@@ -2291,26 +2288,26 @@ g_file_create_readwrite_finish (GFile                      *file,
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Asynchronously overwrites the file in read-write mode, replacing the contents,
- * possibly creating a backup copy of the file first.
+ * Asynchronously overwrites the file in read-write mode, replacing the
+ * contents, possibly creating a backup copy of the file first.
  *
  * For more details, see g_file_replace_readwrite() which is
  * the synchronous version of this call.
  *
- * When the operation is finished, @callback will be called. You can then call
- * g_file_replace_readwrite_finish() to get the result of the operation.
+ * When the operation is finished, @callback will be called. You can then
+ * call g_file_replace_readwrite_finish() to get the result of the operation.
  *
  * Since: 2.22
- **/
+ */
 void
-g_file_replace_readwrite_async (GFile                      *file,
-                                const char                 *etag,
-                                gboolean                    make_backup,
-                                GFileCreateFlags            flags,
-                                int                         io_priority,
-                                GCancellable               *cancellable,
-                                GAsyncReadyCallback         callback,
-                                gpointer                    user_data)
+g_file_replace_readwrite_async (GFile               *file,
+                                const char          *etag,
+                                gboolean             make_backup,
+                                GFileCreateFlags     flags,
+                                int                  io_priority,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -2340,11 +2337,11 @@ g_file_replace_readwrite_async (GFile                      *file,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GFileIOStream *
-g_file_replace_readwrite_finish (GFile                      *file,
-                                 GAsyncResult               *res,
-                                 GError                    **error)
+g_file_replace_readwrite_finish (GFile         *file,
+                                 GAsyncResult  *res,
+                                 GError       **error)
 {
   GFileIface *iface;
 

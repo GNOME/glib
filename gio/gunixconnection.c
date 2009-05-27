@@ -29,7 +29,7 @@
  * functionallity like passing file descriptors.
  *
  * Since: 2.22
- **/
+ */
 
 #include <gio/gsocketcontrolmessage.h>
 #include <gio/gunixfdmessage.h>
@@ -48,7 +48,7 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
 
 /**
  * g_unix_connection_send_fd:
- * @connection: a #GUnixConnection.
+ * @connection: a #GUnixConnection
  * @fd: a file descriptor
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -64,7 +64,7 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
  * Returns: a %TRUE on success, %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_unix_connection_send_fd (GUnixConnection  *connection,
                            gint              fd,
@@ -104,13 +104,13 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
 
 /**
  * g_unix_connection_receive_fd:
- * @connection: a #GUnixConnection.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: #GError for error reporting, or %NULL to ignore.
+ * @connection: a #GUnixConnection
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @error: #GError for error reporting, or %NULL to ignore
  *
- * Recieves a file descriptor from the sending end of the
- * connection. The sending end has to call g_unix_connection_send_fd()
- * for this to work.
+ * Receives a file descriptor from the sending end of the connection.
+ * The sending end has to call g_unix_connection_send_fd() for this
+ * to work.
  *
  * As well as reading the fd this also reads a single byte from the
  * stream, as this is required for fd passing to work on some
@@ -119,7 +119,7 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
  * Returns: a file descriptor on success, -1 on error.
  *
  * Since: 2.22
- **/
+ */
 gint
 g_unix_connection_receive_fd (GUnixConnection  *connection,
                               GCancellable     *cancellable,

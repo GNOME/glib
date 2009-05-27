@@ -72,19 +72,19 @@ struct _GSocketConnection
 
 GType              g_socket_connection_get_type                  (void) G_GNUC_CONST;
 
-GSocket           *g_socket_connection_get_socket                (GSocketConnection *connection);
-GSocketAddress    *g_socket_connection_get_local_address         (GSocketConnection *connection,
-								  GError                 **error);
-GSocketAddress    *g_socket_connection_get_remote_address        (GSocketConnection *connection,
-								  GError                 **error);
-void               g_socket_connection_factory_register_type     (GType          g_type,
-								  GSocketFamily  family,
-								  GSocketType    type,
-								  gint           protocol);
-GType              g_socket_connection_factory_lookup_type       (GSocketFamily  family,
-								  GSocketType    type,
-								  gint           protocol_id);
-GSocketConnection *g_socket_connection_factory_create_connection (GSocket       *socket);
+GSocket           *g_socket_connection_get_socket                (GSocketConnection  *connection);
+GSocketAddress    *g_socket_connection_get_local_address         (GSocketConnection  *connection,
+								  GError            **error);
+GSocketAddress    *g_socket_connection_get_remote_address        (GSocketConnection  *connection,
+								  GError            **error);
+void               g_socket_connection_factory_register_type     (GType               g_type,
+								  GSocketFamily       family,
+								  GSocketType         type,
+								  gint                protocol);
+GType              g_socket_connection_factory_lookup_type       (GSocketFamily       family,
+								  GSocketType         type,
+								  gint                protocol_id);
+GSocketConnection *g_socket_connection_factory_create_connection (GSocket            *socket);
 
 G_END_DECLS
 

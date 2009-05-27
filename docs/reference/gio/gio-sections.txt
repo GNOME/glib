@@ -861,15 +861,15 @@ GUnixOutputStreamPrivate
 <FILE>giostream</FILE>
 <TITLE>GIOStream</TITLE>
 GIOStream
-g_io_stream_clear_pending
+g_io_stream_get_input_stream
+g_io_stream_get_output_stream
 g_io_stream_close
 g_io_stream_close_async
 g_io_stream_close_finish
-g_io_stream_get_input_stream
-g_io_stream_get_output_stream
-g_io_stream_has_pending
 g_io_stream_is_closed
+g_io_stream_has_pending
 g_io_stream_set_pending
+g_io_stream_clear_pending
 <SUBSECTION Standard>
 GIOStreamClass
 G_IO_STREAM
@@ -1419,15 +1419,15 @@ g_inet_address_get_native_size
 g_inet_address_to_string
 g_inet_address_get_family
 g_inet_address_get_is_any
-g_inet_address_get_is_link_local
 g_inet_address_get_is_loopback
-g_inet_address_get_is_mc_global
+g_inet_address_get_is_link_local
+g_inet_address_get_is_site_local
+g_inet_address_get_is_multicast
 g_inet_address_get_is_mc_link_local
 g_inet_address_get_is_mc_node_local
-g_inet_address_get_is_mc_org_local
 g_inet_address_get_is_mc_site_local
-g_inet_address_get_is_multicast
-g_inet_address_get_is_site_local
+g_inet_address_get_is_mc_org_local
+g_inet_address_get_is_mc_global
 <SUBSECTION Standard>
 GInetAddressClass
 GInetAddressPrivate

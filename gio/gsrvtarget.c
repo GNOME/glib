@@ -50,7 +50,7 @@
  * to the remote service, you can use #GNetworkService's
  * #GSocketConnectable interface and not need to worry about
  * #GSrvTarget at all.
- **/
+ */
 
 struct _GSrvTarget {
   gchar   *hostname;
@@ -249,7 +249,7 @@ compare_target (gconstpointer a, gconstpointer b)
  * Return value: the head of the sorted list.
  *
  * Since: 2.22
- */ 
+ */
 GList *
 g_srv_target_list_sort (GList *targets)
 {

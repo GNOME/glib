@@ -111,7 +111,7 @@
  * if it tries to write to %stdout after it has been closed.
  *
  * Since: 2.22
- **/
+ */
 
 static void     g_socket_initable_iface_init (GInitableIface  *iface);
 static gboolean g_socket_initable_init       (GInitable       *initable,
@@ -645,7 +645,9 @@ g_socket_class_init (GSocketClass *klass)
 						      P_("The sockets address family"),
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_TYPE,
 				   g_param_spec_enum ("type",
@@ -653,15 +655,19 @@ g_socket_class_init (GSocketClass *klass)
 						      P_("The sockets type"),
 						      G_TYPE_SOCKET_TYPE,
 						      G_SOCKET_TYPE_STREAM,
-						      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
 				   g_param_spec_enum ("protocol",
-						     P_("Socket protocol"),
-						     P_("The id of the protocol to use, or -1 for unknown"),
+						      P_("Socket protocol"),
+						      P_("The id of the protocol to use, or -1 for unknown"),
 						      G_TYPE_SOCKET_PROTOCOL,
 						      G_SOCKET_PROTOCOL_UNKNOWN,
-						     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_FD,
 				   g_param_spec_int ("fd",
@@ -670,44 +676,51 @@ g_socket_class_init (GSocketClass *klass)
 						     G_MININT,
 						     G_MAXINT,
 						     -1,
-						     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						     G_PARAM_CONSTRUCT_ONLY |
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_BLOCKING,
 				   g_param_spec_boolean ("blocking",
 							 P_("blocking"),
 							 P_("Whether or not I/O on this socket is blocking"),
 							 TRUE,
-							 G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_LISTEN_BACKLOG,
 				   g_param_spec_int ("listen-backlog",
 						     P_("Listen backlog"),
-						     P_("outstanding connections in the listen queue"),
+						     P_("Outstanding connections in the listen queue"),
 						     0,
 						     SOMAXCONN,
 						     10,
-						     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+						     G_PARAM_READWRITE |
+                                                     G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_KEEPALIVE,
 				   g_param_spec_boolean ("keepalive",
 							 P_("Keep connection alive"),
 							 P_("Keep connection alive by sending periodic pings"),
 							 FALSE,
-							 G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
 				   g_param_spec_object ("local-address",
 							P_("Local address"),
 							P_("The local address the socket is bound to"),
 							G_TYPE_SOCKET_ADDRESS,
-							G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+							G_PARAM_READABLE |
+                                                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_REMOTE_ADDRESS,
 				   g_param_spec_object ("remote-address",
 							P_("Remote address"),
 							P_("The remote address the socket is connected to"),
 							G_TYPE_SOCKET_ADDRESS,
-							G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+							G_PARAM_READABLE |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -786,12 +799,12 @@ g_socket_initable_init (GInitable *initable,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocket *
-g_socket_new (GSocketFamily family,
-	      GSocketType type,
-	      GSocketProtocol protocol,
-	      GError **error)
+g_socket_new (GSocketFamily     family,
+	      GSocketType       type,
+	      GSocketProtocol   protocol,
+	      GError          **error)
 {
   return G_SOCKET (g_initable_new (G_TYPE_SOCKET,
 				   NULL, error,
@@ -818,9 +831,9 @@ g_socket_new (GSocketFamily family,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocket *
-g_socket_new_from_fd (gint fd,
+g_socket_new_from_fd (gint     fd,
 		      GError **error)
 {
   return G_SOCKET (g_initable_new (G_TYPE_SOCKET,
@@ -844,7 +857,7 @@ g_socket_new_from_fd (gint fd,
  * is a GSocket level feature.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_set_blocking (GSocket  *socket,
 		       gboolean  blocking)
@@ -870,7 +883,7 @@ g_socket_set_blocking (GSocket  *socket,
  * Returns: %TRUE if blocking I/O is used, %FALSE otherwise.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_get_blocking (GSocket *socket)
 {
@@ -898,10 +911,10 @@ g_socket_get_blocking (GSocket *socket)
  * remote side is disconnected, so as to avoid leaking resources forever.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_set_keepalive (GSocket *socket,
-			gboolean keepalive)
+g_socket_set_keepalive (GSocket  *socket,
+			gboolean  keepalive)
 {
   int value;
 
@@ -934,7 +947,7 @@ g_socket_set_keepalive (GSocket *socket,
  * Returns: %TRUE if keepalive is active, %FALSE otherwise.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_get_keepalive (GSocket *socket)
 {
@@ -953,9 +966,9 @@ g_socket_get_keepalive (GSocket *socket)
  * Returns: the maximum number of pending connections.
  *
  * Since: 2.22
- **/
+ */
 gint
-g_socket_get_listen_backlog  (GSocket                 *socket)
+g_socket_get_listen_backlog  (GSocket *socket)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), 0);
 
@@ -976,10 +989,10 @@ g_socket_get_listen_backlog  (GSocket                 *socket)
  * effect if called after that.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_set_listen_backlog (GSocket *socket,
-			     gint backlog)
+			     gint     backlog)
 {
   g_return_if_fail (G_IS_SOCKET (socket));
   g_return_if_fail (!socket->priv->listening);
@@ -1000,7 +1013,7 @@ g_socket_set_listen_backlog (GSocket *socket,
  * Returns: a #GSocketFamily
  *
  * Since: 2.22
- **/
+ */
 GSocketFamily
 g_socket_get_family (GSocket *socket)
 {
@@ -1018,7 +1031,7 @@ g_socket_get_family (GSocket *socket)
  * Returns: a #GSocketType
  *
  * Since: 2.22
- **/
+ */
 GSocketType
 g_socket_get_socket_type (GSocket *socket)
 {
@@ -1037,7 +1050,7 @@ g_socket_get_socket_type (GSocket *socket)
  * Returns: a protocol id, or -1 if unknown
  *
  * Since: 2.22
- **/
+ */
 GSocketProtocol
 g_socket_get_protocol (GSocket *socket)
 {
@@ -1059,7 +1072,7 @@ g_socket_get_protocol (GSocket *socket)
  * Returns: the file descriptor of the socket.
  *
  * Since: 2.22
- **/
+ */
 int
 g_socket_get_fd (GSocket *socket)
 {
@@ -1081,7 +1094,7 @@ g_socket_get_fd (GSocket *socket)
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocketAddress *
 g_socket_get_local_address (GSocket  *socket,
 			    GError  **error)
@@ -1114,7 +1127,7 @@ g_socket_get_local_address (GSocket  *socket,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocketAddress *
 g_socket_get_remote_address (GSocket  *socket,
 			     GError  **error)
@@ -1145,7 +1158,7 @@ g_socket_get_remote_address (GSocket  *socket,
  * Returns: %TRUE if socket is connected, %FALSE otherwise.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_is_connected (GSocket *socket)
 {
@@ -1171,7 +1184,7 @@ g_socket_is_connected (GSocket *socket)
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_listen (GSocket  *socket,
 		 GError  **error)
@@ -1222,7 +1235,7 @@ g_socket_listen (GSocket  *socket,
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_bind (GSocket         *socket,
 	       GSocketAddress  *address,
@@ -1286,7 +1299,7 @@ g_socket_bind (GSocket         *socket,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocket *
 g_socket_accept (GSocket       *socket,
 		 GError       **error)
@@ -1299,7 +1312,7 @@ g_socket_accept (GSocket       *socket,
   if (!check_socket (socket, error))
     return NULL;
 
-  while (1)
+  while (TRUE)
     {
       if (socket->priv->blocking &&
 	  !g_socket_condition_wait (socket,
@@ -1388,8 +1401,9 @@ g_socket_accept (GSocket       *socket,
  * the default address for g_socket_send() and discards all incoming datagrams
  * from other sources.
  *
- * Generally connection oriented sockets can only connect once, but connection-less
- * sockets can connect multiple times to change the default address.
+ * Generally connection oriented sockets can only connect once, but
+ * connection-less sockets can connect multiple times to change the
+ * default address.
  *
  * If the connect call needs to do network I/O it will block, unless
  * non-blocking I/O is enabled. Then %G_IO_ERROR_PENDING is returned
@@ -1400,7 +1414,7 @@ g_socket_accept (GSocket       *socket,
  * Returns: %TRUE if connected, %FALSE on error.
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_connect (GSocket         *socket,
 		  GSocketAddress  *address,
@@ -1466,13 +1480,14 @@ g_socket_connect (GSocket         *socket,
  * @socket: a #GSocket
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Checks and resets the pending connect error for the socket. This is
- * used to check for errors when g_socket_connect() is used in non-blocking mode.
+ * Checks and resets the pending connect error for the socket.
+ * This is used to check for errors when g_socket_connect() is
+ * used in non-blocking mode.
  *
  * Returns: %TRUE if no error, %FALSE otherwise, setting @error to the error
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_check_connect_result (GSocket  *socket,
 			       GError  **error)
@@ -1502,7 +1517,8 @@ g_socket_check_connect_result (GSocket  *socket,
 /**
  * g_socket_receive:
  * @socket: a #GSocket
- * @buffer: a buffer to read data into (which should be at least count bytes long).
+ * @buffer: a buffer to read data into (which should be at least @size
+ *     bytes long).
  * @size: the number of bytes that will be read from the stream
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -1524,12 +1540,12 @@ g_socket_check_connect_result (GSocket  *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
-g_socket_receive (GSocket       *socket,
-		  gchar         *buffer,
-		  gsize          size,
-		  GError       **error)
+g_socket_receive (GSocket  *socket,
+		  gchar    *buffer,
+		  gsize     size,
+		  GError  **error)
 {
   gssize ret;
 
@@ -1584,7 +1600,8 @@ g_socket_receive (GSocket       *socket,
  * g_socket_receive_from:
  * @socket: a #GSocket
  * @address: a pointer to a #GSocketAddress pointer, or %NULL
- * @buffer: a buffer to read data into (which should be at least count bytes long).
+ * @buffer: a buffer to read data into (which should be at least @size
+ *     bytes long).
  * @size: the number of bytes that will be read from the stream
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -1605,13 +1622,13 @@ g_socket_receive (GSocket       *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
-g_socket_receive_from (GSocket       *socket,
-		       GSocketAddress  **address,
-		       gchar         *buffer,
-		       gsize          size,
-		       GError       **error)
+g_socket_receive_from (GSocket         *socket,
+		       GSocketAddress **address,
+		       gchar           *buffer,
+		       gsize            size,
+		       GError         **error)
 {
   GInputVector v;
 
@@ -1632,15 +1649,15 @@ g_socket_receive_from (GSocket       *socket,
  * @size: the number of bytes to send
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Tries to send @size bytes from @buffer on the socket. This is mainly used by
- * connection oriented sockets, it is identical to g_socket_send_to()
- * with @address set to %NULL.
+ * Tries to send @size bytes from @buffer on the socket.
+ * This is mainly used by connection oriented sockets, it is identical
+ * to g_socket_send_to() with @address set to %NULL.
  *
  * If the socket is in blocking mode the call will block until there is
  * space for the data in the socket queue. If there is no space available
  * and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified of available space, wait for the %G_IO_OUT
- * condition.
+ * will be returned. To be notified of available space, wait for the
+ * %G_IO_OUT condition.
  *
  * Note that on Windows you can't rely on a %G_IO_OUT condition
  * not producing a %G_IO_ERROR_WOULD_BLOCK error, as this is how Winsock
@@ -1652,7 +1669,7 @@ g_socket_receive_from (GSocket       *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
 g_socket_send (GSocket      *socket,
 	       const gchar  *buffer,
@@ -1736,13 +1753,13 @@ g_socket_send (GSocket      *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
-g_socket_send_to (GSocket      *socket,
-		  GSocketAddress *address,
-		  const gchar  *buffer,
-		  gsize         size,
-		  GError      **error)
+g_socket_send_to (GSocket         *socket,
+		  GSocketAddress  *address,
+		  const gchar     *buffer,
+		  gsize            size,
+		  GError         **error)
 {
   GOutputVector v;
 
@@ -1780,12 +1797,12 @@ g_socket_send_to (GSocket      *socket,
  * Returns: %TRUE on success, %FALSE on error
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_socket_shutdown (GSocket *socket,
-		   gboolean shutdown_read,
-		   gboolean shutdown_write,
-		   GError **error)
+g_socket_shutdown (GSocket   *socket,
+		   gboolean   shutdown_read,
+		   gboolean   shutdown_write,
+		   GError   **error)
 {
   int how;
 
@@ -1835,12 +1852,13 @@ g_socket_shutdown (GSocket *socket,
  *
  * Closes the socket, shutting down any active connection.
  *
- * Closing a socket does not wait for all outstanding I/O operations to finish,
- * so the caller should not rely on them to be guaranteed to complete even
- * if the close returns with no error.
+ * Closing a socket does not wait for all outstanding I/O operations
+ * to finish, so the caller should not rely on them to be guaranteed
+ * to complete even if the close returns with no error.
  *
- * Once the socket is closed, all other operations will return %G_IO_ERROR_CLOSED.
- * Closing a stream multiple times will not return an error.
+ * Once the socket is closed, all other operations will return
+ * %G_IO_ERROR_CLOSED. Closing a stream multiple times will not
+ * return an error.
  *
  * Sockets will be automatically closed when the last reference
  * is dropped, but you might want to call this function to make sure
@@ -1849,10 +1867,10 @@ g_socket_shutdown (GSocket *socket,
  * Returns: %TRUE on success, %FALSE on error
  *
  * Since: 2.22
- **/
+ */
 gboolean
-g_socket_close (GSocket *socket,
-		GError **error)
+g_socket_close (GSocket  *socket,
+		GError  **error)
 {
   int res;
 
@@ -1910,7 +1928,7 @@ g_socket_close (GSocket *socket,
  * Returns: %TRUE if socket is closed, %FALSE otherwise
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_is_closed (GSocket *socket)
 {
@@ -1920,22 +1938,22 @@ g_socket_is_closed (GSocket *socket)
 #ifdef G_OS_WIN32
 /* Broken source, used on errors */
 static gboolean
-broken_prepare  (GSource  *source,
-		 gint     *timeout)
+broken_prepare  (GSource *source,
+		 gint    *timeout)
 {
   return FALSE;
 }
 
 static gboolean
-broken_check    (GSource  *source)
+broken_check (GSource *source)
 {
   return FALSE;
 }
 
 static gboolean
-broken_dispatch (GSource    *source,
-		 GSourceFunc callback,
-		 gpointer    user_data)
+broken_dispatch (GSource     *source,
+		 GSourceFunc  callback,
+		 gpointer     user_data)
 {
   return TRUE;
 }
@@ -2002,7 +2020,7 @@ update_select_events (GSocket *socket)
 }
 
 static void
-add_condition_watch (GSocket *socket,
+add_condition_watch (GSocket      *socket,
 		     GIOCondition *condition)
 {
   g_assert (g_list_find (socket->priv->requested_conditions, condition) == NULL);
@@ -2014,7 +2032,7 @@ add_condition_watch (GSocket *socket,
 }
 
 static void
-remove_condition_watch (GSocket *socket,
+remove_condition_watch (GSocket      *socket,
 			GIOCondition *condition)
 {
   g_assert (g_list_find (socket->priv->requested_conditions, condition) != NULL);
@@ -2087,8 +2105,8 @@ typedef struct {
 } GWinsockSource;
 
 static gboolean
-winsock_prepare (GSource  *source,
-		 gint     *timeout)
+winsock_prepare (GSource *source,
+		 gint    *timeout)
 {
   GWinsockSource *winsock_source = (GWinsockSource *)source;
   GIOCondition current_condition;
@@ -2111,7 +2129,7 @@ winsock_prepare (GSource  *source,
 }
 
 static gboolean
-winsock_check (GSource  *source)
+winsock_check (GSource *source)
 {
   GWinsockSource *winsock_source = (GWinsockSource *)source;
   GIOCondition current_condition;
@@ -2134,9 +2152,9 @@ winsock_check (GSource  *source)
 }
 
 static gboolean
-winsock_dispatch (GSource    *source,
-		  GSourceFunc callback,
-		  gpointer    user_data)
+winsock_dispatch (GSource     *source,
+		  GSourceFunc  callback,
+		  gpointer     user_data)
 {
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GWinsockSource *winsock_source = (GWinsockSource *)source;
@@ -2233,7 +2251,7 @@ winsock_source_new (GSocket      *socket,
  * Returns: a newly allocated %GSource, free with g_source_unref().
  *
  * Since: 2.22
- **/
+ */
 GSource *
 g_socket_create_source (GSocket      *socket,
 			GIOCondition  condition,
@@ -2256,9 +2274,9 @@ g_socket_create_source (GSocket      *socket,
  * @socket: a #GSocket
  * @condition: a #GIOCondition mask to check
  *
- * Checks on the readiness of @socket to perform operations.  The
- * operations specified in @condition are checked for and masked
- * against the currently-satisfied conditions on @socket.  The result
+ * Checks on the readiness of @socket to perform operations.
+ * The operations specified in @condition are checked for and masked
+ * against the currently-satisfied conditions on @socket. The result
  * is returned.
  *
  * It is meaningless to specify %G_IO_ERR or %G_IO_HUP in condition;
@@ -2269,10 +2287,10 @@ g_socket_create_source (GSocket      *socket,
  * Returns: the @GIOCondition mask of the current state
  *
  * Since: 2.22
- **/
+ */
 GIOCondition
-g_socket_condition_check (GSocket       *socket,
-			  GIOCondition   condition)
+g_socket_condition_check (GSocket      *socket,
+			  GIOCondition  condition)
 {
   if (!check_socket (socket, NULL))
     return 0;
@@ -2311,16 +2329,16 @@ g_socket_condition_check (GSocket       *socket,
  * @cancellable: a #GCancellable, or %NULL
  * @error: a #GError pointer, or %NULL
  *
- * Waits for @condition to become true on @socket.  When the condition
- * becomes true, %TRUE is returned.
+ * Waits for @condition to become true on @socket. When the condition
+ * is met, %TRUE is returned.
  *
- * If @cancellable is cancelled before the condition becomes true then
- * %FALSE is returned and @error, if non-%NULL, is set to %G_IO_ERROR_CANCELLED.
+ * If @cancellable is cancelled before the condition is met then %FALSE
+ * is returned and @error, if non-%NULL, is set to %G_IO_ERROR_CANCELLED.
  *
  * Returns: %TRUE if the condition was met, %FALSE otherwise
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_condition_wait (GSocket       *socket,
 			 GIOCondition   condition,
@@ -2431,7 +2449,6 @@ g_socket_condition_wait (GSocket       *socket,
  * If @num_vector is -1, then @vector is assumed to be terminated
  * by a #GOutputVector with a %NULL buffer pointer.
  *
- *
  * @messages, if non-%NULL, is taken to point to an array of @num_messages
  * #GSocketControlMessage instances. These correspond to the control
  * messages to be sent on the socket.
@@ -2459,7 +2476,7 @@ g_socket_condition_wait (GSocket       *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
 g_socket_send_message (GSocket                *socket,
 		       GSocketAddress         *address,
@@ -2748,7 +2765,7 @@ g_socket_send_message (GSocket                *socket,
  * Returns: Number of bytes read, or -1 on error
  *
  * Since: 2.22
- **/
+ */
 gssize
 g_socket_receive_message (GSocket                 *socket,
 			  GSocketAddress         **address,

@@ -88,13 +88,13 @@ GSocketConnection *     g_socket_client_connect                         (GSocket
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GSocketConnection *     g_socket_client_connect_to_host                 (GSocketClient        *client,
-									 const char           *host_and_port,
-									 int                   default_port,
+									 const gchar          *host_and_port,
+									 gint                  default_port,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GSocketConnection *     g_socket_client_connect_to_service              (GSocketClient        *client,
-									 const char           *domain,
-									 const char           *service,
+									 const gchar          *domain,
+									 const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 void                    g_socket_client_connect_async                   (GSocketClient        *client,
@@ -106,8 +106,8 @@ GSocketConnection *     g_socket_client_connect_finish                  (GSocket
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
 void                    g_socket_client_connect_to_host_async           (GSocketClient        *client,
-									 const char           *host_and_port,
-									 int                   default_port,
+									 const gchar          *host_and_port,
+									 gint                  default_port,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
@@ -116,8 +116,8 @@ GSocketConnection *     g_socket_client_connect_to_host_finish          (GSocket
                                                                          GError              **error);
 
 void                    g_socket_client_connect_to_service_async        (GSocketClient        *client,
-									 const char           *domain,
-									 const char           *service,
+									 const gchar          *domain,
+									 const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);

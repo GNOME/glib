@@ -48,14 +48,14 @@
  * in the BSD sockets API. This is an abstract class; use
  * #GInetSocketAddress for internet sockets, or #GUnixSocketAddress
  * for UNIX domain sockets.
- **/
+ */
 
 /**
  * GSocketAddress:
  *
  * A socket endpoint address, corresponding to <type>struct sockaddr</type>
  * or one of its subtypes.
- **/
+ */
 
 enum
 {
@@ -118,7 +118,8 @@ g_socket_address_class_init (GSocketAddressClass *klass)
 						      P_("The family of the socket address"),
 						      G_TYPE_SOCKET_FAMILY,
 						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_READABLE | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NAME));
+						      G_PARAM_READABLE |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -142,7 +143,7 @@ g_socket_address_init (GSocketAddress *address)
  * g_socket_address_to_native().
  *
  * Returns: the size of the native <type>struct sockaddr</type> that
- * @address represents
+ *     @address represents
  *
  * Since: 2.22
  */
@@ -176,10 +177,10 @@ g_socket_address_get_native_size (GSocketAddress *address)
  * Since: 2.22
  */
 gboolean
-g_socket_address_to_native (GSocketAddress *address,
-			    gpointer        dest,
-			    gsize           destlen,
-			    GError        **error)
+g_socket_address_to_native (GSocketAddress  *address,
+			    gpointer         dest,
+			    gsize            destlen,
+			    GError         **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_ADDRESS (address), FALSE);
 

@@ -151,7 +151,7 @@ void       g_resolver_free_targets              (GList                *targets);
  * Error domain for #GResolver. Errors in this domain will be from the
  * #GResolverError enumeration. See #GError for more information on
  * error domains.
- **/
+ */
 #define G_RESOLVER_ERROR (g_resolver_error_quark ())
 GQuark g_resolver_error_quark (void);
 

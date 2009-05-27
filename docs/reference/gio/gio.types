@@ -79,6 +79,7 @@ g_socket_msg_flags_get_type
 g_socket_protocol_get_type
 g_socket_service_get_type
 g_socket_type_get_type
+g_srv_target_get_type
 g_tcp_connection_get_type
 g_themed_icon_get_type
 g_threaded_socket_service_get_type

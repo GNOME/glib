@@ -53,14 +53,14 @@
  * See #GSrvTarget for more information about SRV records, and see
  * #GSocketConnectable for and example of using the connectable
  * interface.
- **/
+ */
 
 /**
  * GNetworkService:
  *
  * A #GSocketConnectable for resolving a SRV record and connecting to
  * that service.
- **/
+ */
 
 struct _GNetworkServicePrivate
 {
@@ -122,19 +122,25 @@ g_network_service_class_init (GNetworkServiceClass *klass)
                                                         P_("Service"),
                                                         P_("Service name, eg \"ldap\""),
                                                         NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
                                    g_param_spec_string ("protocol",
                                                         P_("Protocol"),
                                                         P_("Network protocol, eg \"tcp\""),
                                                         NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_DOMAIN,
                                    g_param_spec_string ("domain",
-                                                        P_("domain"),
+                                                        P_("Domain"),
                                                         P_("Network domain, eg, \"example.com\""),
                                                         NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -158,7 +164,7 @@ g_network_service_set_property (GObject      *object,
 {
   GNetworkService *srv = G_NETWORK_SERVICE (object);
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_SERVICE:
       srv->priv->service = g_value_dup_string (value);
@@ -176,7 +182,6 @@ g_network_service_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
 
 static void
@@ -188,7 +193,7 @@ g_network_service_get_property (GObject    *object,
   GNetworkService *srv = G_NETWORK_SERVICE (object);
 
   switch (prop_id)
-    { 
+    {
     case PROP_SERVICE:
       g_value_set_string (value, g_network_service_get_service (srv));
       break;
@@ -205,7 +210,6 @@ g_network_service_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
 
 /**
@@ -221,7 +225,7 @@ g_network_service_get_property (GObject    *object,
  * Return value: a new #GNetworkService
  *
  * Since: 2.22
- **/
+ */
 GSocketConnectable *
 g_network_service_new (const gchar *service,
                        const gchar *protocol,
@@ -243,7 +247,7 @@ g_network_service_new (const gchar *service,
  * Return value: @srv's service name
  *
  * Since: 2.22
- **/
+ */
 const gchar *
 g_network_service_get_service (GNetworkService *srv)
 {
@@ -261,7 +265,7 @@ g_network_service_get_service (GNetworkService *srv)
  * Return value: @srv's protocol name
  *
  * Since: 2.22
- **/
+ */
 const gchar *
 g_network_service_get_protocol (GNetworkService *srv)
 {
@@ -280,7 +284,7 @@ g_network_service_get_protocol (GNetworkService *srv)
  * Return value: @srv's domain name
  *
  * Since: 2.22
- **/
+ */
 const gchar *
 g_network_service_get_domain (GNetworkService *srv)
 {

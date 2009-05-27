@@ -39,14 +39,14 @@
  *
  * An IPv4 or IPv6 socket address; that is, the combination of a
  * #GInetAddress and a port number.
- **/
+ */
 
 /**
  * GInetSocketAddress:
  *
  * An IPv4 or IPv6 socket address, corresponding to a <type>struct
  * sockaddr_in</type> or <type>struct sockaddr_in6</type>.
- **/
+ */
 G_DEFINE_TYPE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS);
 
 enum {
@@ -159,10 +159,10 @@ g_inet_socket_address_get_native_size (GSocketAddress *address)
 }
 
 static gboolean
-g_inet_socket_address_to_native (GSocketAddress *address,
-                                 gpointer        dest,
-				 gsize           destlen,
-				 GError        **error)
+g_inet_socket_address_to_native (GSocketAddress  *address,
+                                 gpointer         dest,
+				 gsize            destlen,
+				 GError         **error)
 {
   GInetSocketAddress *addr;
   GSocketFamily family;
@@ -233,19 +233,23 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
 
   g_object_class_install_property (gobject_class, PROP_ADDRESS,
                                    g_param_spec_object ("address",
-                                                        "address",
-                                                        "address",
+                                                        P_("Address"),
+                                                        P_("The address"),
                                                         G_TYPE_INET_ADDRESS,
-                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_PORT,
                                    g_param_spec_uint ("port",
-                                                      "port",
-                                                      "port",
+                                                      P_("Port"),
+                                                      P_("The port"),
                                                       0,
                                                       65535,
                                                       0,
-                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB | G_PARAM_STATIC_NICK));
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void

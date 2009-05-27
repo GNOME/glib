@@ -19,7 +19,7 @@
  * @see_also: #GSocket.
  *
  * A #GSocketControlMessage is a special-purpose utility message that
- * can be sent to or received from a #GSocket.  These types of
+ * can be sent to or received from a #GSocket. These types of
  * messages are often called "ancillary data".
  *
  * The message can represent some sort of special instruction to or
@@ -40,7 +40,7 @@
  * g_socket_receive_message() to read such a message.
  *
  * Since: 2.22
- **/
+ */
 
 #include "config.h"
 #include "gsocketcontrolmessage.h"
@@ -70,7 +70,7 @@ G_DEFINE_ABSTRACT_TYPE (GSocketControlMessage,
  * Returns: The number of bytes required.
  *
  * Since: 2.22
- **/
+ */
 gsize
 g_socket_control_message_get_size (GSocketControlMessage *message)
 {
@@ -86,10 +86,10 @@ g_socket_control_message_get_size (GSocketControlMessage *message)
  * Returns the "level" (i.e. the originating protocol) of the control message.
  * This is often SOL_SOCKET.
  *
- * Returns: and int describing the level
+ * Returns: an integer describing the level
  *
  * Since: 2.22
- **/
+ */
 int
 g_socket_control_message_get_level (GSocketControlMessage *message)
 {
@@ -102,13 +102,13 @@ g_socket_control_message_get_level (GSocketControlMessage *message)
  * g_socket_control_message_get_msg_type:
  * @message: a #GSocketControlMessage
  *
- * Returns the protocol specify type  of the control message.
- * For instance, for unix fd passing this would be SCM_RIGHTS.
+ * Returns the protocol specific type of the control message.
+ * For instance, for UNIX fd passing this would be SCM_RIGHTS.
  *
- * Returns: and int describing the level
+ * Returns: an integer describing the type of control message
  *
  * Since: 2.22
- **/
+ */
 int
 g_socket_control_message_get_msg_type (GSocketControlMessage *message)
 {
@@ -130,7 +130,7 @@ g_socket_control_message_get_msg_type (GSocketControlMessage *message)
  * object.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_control_message_serialize (GSocketControlMessage *message,
 				    gpointer               data)
@@ -151,11 +151,22 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
 {
 }
 
+/**
+ * g_socket_control_message_deserialize:
+ * @level:
+ * @type:
+ * @size:
+ * @data:
+ *
+ * Returns: the deserialized message
+ *
+ * Since: 2.22
+ */
 GSocketControlMessage *
-g_socket_control_message_deserialize  (int                    level,
-				       int                    type,
-				       gsize                  size,
-				       gpointer               data)
+g_socket_control_message_deserialize (int      level,
+				      int      type,
+				      gsize    size,
+				      gpointer data)
 {
   GSocketControlMessageClass *klass;
   GSocketControlMessage *message;

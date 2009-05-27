@@ -30,27 +30,28 @@
  *
  * A #GSocketService is an object that represents a service that is
  * provided to the network or over local sockets.  When a new
- * connection is made to the service the ::incoming signal is emitted.
+ * connection is made to the service the #GSocketService:incoming
+ * signal is emitted.
  *
  * A #GSocketService is a subclass of #GSocketListener and you need
  * to add the addresses you want to accept connections on to the
  * with the #GSocketListener APIs.
  *
  * There are two options for implementing a network service based on
- * #GSocketService.  The first is to create the service using
- * g_socket_service_new() and to connect to the ::incoming signal.
- * The second is to subclass #GSocketService and override the default
- * signal handler implementation.
+ * #GSocketService. The first is to create the service using
+ * g_socket_service_new() and to connect to the #GSocketService:incoming
+ * signal. The second is to subclass #GSocketService and override the
+ * default signal handler implementation.
  *
  * In either case, the handler must immediately return, or else it
- * will block additional incoming connections from being serviced.  If
- * you are interested in writing connection handlers that contain
+ * will block additional incoming connections from being serviced.
+ * If you are interested in writing connection handlers that contain
  * blocking code then see #GThreadedSocketService.
  *
  * The socket service runs on the main loop in the main thread, and is
  * not threadsafe in general. However, the calls to start and stop
  * the service are threadsafe so these can be used from threads that
- * handle incomming clients.
+ * handle incoming clients.
  *
  * Since: 2.22
  */
@@ -154,7 +155,7 @@ g_socket_service_changed (GSocketListener *listener)
  * Returns: %TRUE if the service is active, %FALSE otherwise
  *
  * Since: 2.22
- **/
+ */
 gboolean
 g_socket_service_is_active (GSocketService *service)
 {
@@ -177,7 +178,7 @@ g_socket_service_is_active (GSocketService *service)
  * handling an incomming client request.
  *
  * Since: 2.22
- **/
+ */
 void
 g_socket_service_start (GSocketService *service)
 {
@@ -207,9 +208,9 @@ g_socket_service_start (GSocketService *service)
  * handling an incomming client request.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_service_stop (GSocketService  *service)
+g_socket_service_stop (GSocketService *service)
 {
   G_LOCK (active);
 
@@ -257,12 +258,14 @@ g_socket_service_class_init (GSocketServiceClass *class)
    * @returns: %TRUE if @connection has been handled.
    *
    * The ::incoming signal is emitted when a new incoming connection
-   * to @service needs to be handled.  The handler must initiate the
+   * to @service needs to be handled. The handler must initiate the
    * handling of @connection, but may not block; in essence,
    * asynchronous operations must be used.
    *
-   * If %TRUE is returned then no other handlers are called.
-   **/
+   * Returns: %TRUE to stop other handlers from being called
+   *
+   * Since: 2.22
+   */
   g_socket_service_incoming_signal =
     g_signal_new ("incoming", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSocketServiceClass, incoming),
@@ -318,7 +321,7 @@ g_socket_service_ready (GObject      *object,
  * Returns: a new #GSocketService.
  *
  * Since: 2.22
- **/
+ */
 GSocketService *
 g_socket_service_new (void)
 {

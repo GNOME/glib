@@ -63,10 +63,10 @@ struct _GUnixFDMessage
 GType                   g_unix_fd_message_get_type                      (void) G_GNUC_CONST;
 GSocketControlMessage * g_unix_fd_message_new                           (void);
 gint *                  g_unix_fd_message_steal_fds                     (GUnixFDMessage  *message,
-                                                                         gint              *length);
+                                                                         gint            *length);
 gboolean                g_unix_fd_message_append_fd                     (GUnixFDMessage  *message,
-                                                                         gint               fd,
-                                                                         GError           **error);
+                                                                         gint             fd,
+                                                                         GError         **error);
 
 G_END_DECLS
 

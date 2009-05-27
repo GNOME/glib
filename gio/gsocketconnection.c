@@ -49,17 +49,17 @@
  * can be created either by #GSocketClient when connecting to a host,
  * or by #GSocketListener when accepting a new client.
  *
- * The type of the #GSocketConnection object returned from these calls depends
- * on the type of the underlying socket that is in use. For instance, for a
- * TCP/IP connection it will be a #GTcpConnection.
+ * The type of the #GSocketConnection object returned from these calls
+ * depends on the type of the underlying socket that is in use. For
+ * instance, for a TCP/IP connection it will be a #GTcpConnection.
  *
- * Chosing what type of object to construct is done with the socket connection
- * factory, and it is possible for 3rd parties to register custom socket connection
- * types for specific combination of socket family/type/protocol using
- * g_socket_connection_factory_register_type().
+ * Chosing what type of object to construct is done with the socket
+ * connection factory, and it is possible for 3rd parties to register
+ * custom socket connection types for specific combination of socket
+ * family/type/protocol using g_socket_connection_factory_register_type().
  *
  * Since: 2.22
- **/
+ */
 
 G_DEFINE_TYPE (GSocketConnection,
 	       g_socket_connection, G_TYPE_IO_STREAM);
@@ -115,7 +115,7 @@ g_socket_connection_get_output_stream (GIOStream *io_stream)
 
 /**
  * g_socket_connection_get_socket:
- * @connection: a #GSocketConnection.
+ * @connection: a #GSocketConnection
  *
  * Gets the underlying #GSocket object of the connection.
  * This can be useful if you want to do something unusual on it
@@ -124,7 +124,7 @@ g_socket_connection_get_output_stream (GIOStream *io_stream)
  * Returns: a #GSocketAddress or %NULL on error.
  *
  * Since: 2.22
- **/
+ */
 GSocket *
 g_socket_connection_get_socket (GSocketConnection *connection)
 {
@@ -135,7 +135,7 @@ g_socket_connection_get_socket (GSocketConnection *connection)
 
 /**
  * g_socket_connection_get_local_address:
- * @connection: a #GSocketConnection.
+ * @connection: a #GSocketConnection
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Try to get the local address of a socket connection.
@@ -144,17 +144,17 @@ g_socket_connection_get_socket (GSocketConnection *connection)
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocketAddress *
 g_socket_connection_get_local_address (GSocketConnection  *connection,
-				       GError  **error)
+				       GError            **error)
 {
   return g_socket_get_local_address (connection->priv->socket, error);
 }
 
 /**
  * g_socket_connection_get_remote_address:
- * @connection: a #GSocketConnection.
+ * @connection: a #GSocketConnection
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Try to get the remove address of a socket connection.
@@ -163,17 +163,19 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
- **/
+ */
 GSocketAddress *
 g_socket_connection_get_remote_address (GSocketConnection  *connection,
-					GError  **error)
+					GError            **error)
 {
   return g_socket_get_remote_address (connection->priv->socket, error);
 }
 
 static void
-g_socket_connection_get_property (GObject *object, guint prop_id,
-                                  GValue *value, GParamSpec *pspec)
+g_socket_connection_get_property (GObject    *object,
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GSocketConnection *connection = G_SOCKET_CONNECTION (object);
 
@@ -189,8 +191,10 @@ g_socket_connection_get_property (GObject *object, guint prop_id,
 }
 
 static void
-g_socket_connection_set_property (GObject *object, guint prop_id,
-                                  const GValue *value, GParamSpec *pspec)
+g_socket_connection_set_property (GObject      *object,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GSocketConnection *connection = G_SOCKET_CONNECTION (object);
 
@@ -249,12 +253,15 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
   stream_class->close_async = g_socket_connection_close_async;
   stream_class->close_finish = g_socket_connection_close_finish;
 
-  g_object_class_install_property (gobject_class, PROP_SOCKET,
-    g_param_spec_object ("socket",
-			 P_("Socket"),
-			 P_("The underlying GSocket"),
-                         G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_class,
+                                   PROP_SOCKET,
+                                   g_param_spec_object ("socket",
+			                                P_("Socket"),
+			                                P_("The underlying GSocket"),
+                                                        G_TYPE_SOCKET,
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -266,9 +273,9 @@ g_socket_connection_init (GSocketConnection *connection)
 }
 
 static gboolean
-g_socket_connection_close (GIOStream            *stream,
-			   GCancellable         *cancellable,
-			   GError              **error)
+g_socket_connection_close (GIOStream     *stream,
+			   GCancellable  *cancellable,
+			   GError       **error)
 {
   GSocketConnection *connection = G_SOCKET_CONNECTION (stream);
 
@@ -284,11 +291,11 @@ g_socket_connection_close (GIOStream            *stream,
 
 
 static void
-g_socket_connection_close_async (GIOStream        *stream,
-				 int               io_priority,
-				 GCancellable     *cancellable,
-				 GAsyncReadyCallback callback,
-				 gpointer          user_data)
+g_socket_connection_close_async (GIOStream           *stream,
+				 int                  io_priority,
+				 GCancellable        *cancellable,
+				 GAsyncReadyCallback  callback,
+				 gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   GIOStreamClass *class;
@@ -317,7 +324,7 @@ g_socket_connection_close_async (GIOStream        *stream,
 }
 
 static gboolean
-g_socket_connection_close_finish (GIOStream  *stream,
+g_socket_connection_close_finish (GIOStream     *stream,
 				  GAsyncResult  *result,
 				  GError       **error)
 {
@@ -369,8 +376,8 @@ G_LOCK_DEFINE_STATIC(connection_factories);
 
 /**
  * g_socket_connection_factory_register_type:
- * @g_type: a #GType, inheriting from G_SOCKET_CONNECTION
- * @family: a #GSocketFamily.
+ * @g_type: a #GType, inheriting from %G_TYPE_SOCKET_CONNECTION
+ * @family: a #GSocketFamily
  * @type: a #GSocketType
  * @protocol: a protocol id
  *
@@ -380,12 +387,12 @@ G_LOCK_DEFINE_STATIC(connection_factories);
  * If no type is registered, the #GSocketConnection base type is returned.
  *
  * Since: 2.22
- **/
+ */
 void
-g_socket_connection_factory_register_type (GType g_type,
+g_socket_connection_factory_register_type (GType         g_type,
 					   GSocketFamily family,
-					   GSocketType type,
-					   gint protocol)
+					   GSocketType   type,
+					   gint          protocol)
 {
   ConnectionFactory *factory;
 
@@ -423,7 +430,7 @@ init_builtin_types (void)
 
 /**
  * g_socket_connection_factory_lookup_type:
- * @family: a #GSocketFamily.
+ * @family: a #GSocketFamily
  * @type: a #GSocketType
  * @protocol_id: a protocol id
  *
@@ -433,12 +440,13 @@ init_builtin_types (void)
  * If no type is registered, the #GSocketConnection base type is returned.
  *
  * Returns: a #GType
+ *
  * Since: 2.22
- **/
+ */
 GType
 g_socket_connection_factory_lookup_type (GSocketFamily family,
-					 GSocketType type,
-					 gint protocol_id)
+					 GSocketType   type,
+					 gint          protocol_id)
 {
   ConnectionFactory *factory, key;
   GType g_type;
@@ -467,7 +475,7 @@ g_socket_connection_factory_lookup_type (GSocketFamily family,
 
 /**
  * g_socket_connection_factory_create_connection:
- * @socket: a #GSocket.
+ * @socket: a #GSocket
  *
  * Creates a #GSocketConnection subclass of the right type for
  * @socket.
@@ -475,7 +483,7 @@ g_socket_connection_factory_lookup_type (GSocketFamily family,
  * Returns: a #GSocketConnection
  *
  * Since: 2.22
- **/
+ */
 GSocketConnection *
 g_socket_connection_factory_create_connection (GSocket *socket)
 {
