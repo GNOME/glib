@@ -1010,6 +1010,14 @@ if test $glib_native_win32 = no; then
   AC_SUBST(LIBASYNCNS_LIBADD)
 fi
 
+case $host in
+  *-*-solaris* )
+     AC_DEFINE(_XOPEN_SOURCE_EXTENDED, 1, Needed to get declarations for msg_control and msg_controllen on Solaris)
+     AC_DEFINE(_XOPEN_SOURCE,          2, Needed to get declarations for msg_control and msg_controllen on Solaris)
+     AC_DEFINE(__EXTENSIONS__,         1, Needed to get declarations for msg_control and msg_controllen on Solaris)
+     ;;
+esac
+
 dnl
 dnl if statfs() takes 2 arguments (Posix) or 4 (Solaris)
 dnl
