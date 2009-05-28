@@ -1,3 +1,43 @@
+Overview of Changes from GLib 2.21.0 to GLib 2.21.1
+===================================================
+
+* GIO:
+ - Support for network IO has been added, including a low-level
+   socket API and a high-level API for network connections and
+   services.
+ - Support for read-write access with GIOStream and its subclasses.
+ - GMount gained a pre-unmount signal.
+
+* Bug fixes:
+ 576104Implement GMount::pre-unmount
+ 578769 implement GWinHttpFileInputStream::close_fn
+ 582856	gsocket.c doesn't compile on Solaris
+ 569375	g[u]intptr undocumented
+ 573246	[FIX] g_desktop_app_info_dup() can access NULL pointer
+ 575013	g_cancellable_push_current() does not allow NULL
+ 577884	live-g-file.c:461: error: format ‘%d’ expects type ...
+ 578499	g_output_stream_splice and stream closing with gnio strea...
+ 579558	Application employing gvfs crashes with only libgvfscommo...
+ 583001	SIGPIPE (grr!)
+ 583061	Please add convenience function to connect to machines by...
+ 583198	typo in error message
+ 583206	use g_set_error_literal where appropriate
+ 583229	void function g_async_initable_init_async returns value
+ 583324	locking problem in g_main_context_iterate()
+ 583408	void function g_socket_control_message_serialize returns ...
+ 578786	wrong and confusing error message
+ 583205	g_inet_address_to_bytes has no length outparam
+ 583196	mem leak in keyfile test
+ 583663	GSocketType enum ends with a comma
+ 569024	Make g_error_new_valist public
+ 569376	missing G_G[U]INTPTR_FORMAT
+
+* Updated translations:
+ Oriya
+ Spanish
+ Valencian-Catalan
+
+
 Overview of Changes from GLib 2.20.x to GLib 2.21.0
 ===================================================
 
