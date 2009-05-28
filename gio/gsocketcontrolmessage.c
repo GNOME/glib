@@ -195,7 +195,7 @@ g_socket_control_message_deserialize (int      level,
   message = NULL;
   for (i = 0; i < n_message_types; i++)
     {
-      klass = (GSocketControlMessageClass *)g_type_class_ref (type);
+      klass = (GSocketControlMessageClass *)g_type_class_ref (message_types[i]);
 
       if (klass && klass->deserialize)
 	{
