@@ -153,12 +153,20 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
 
 /**
  * g_socket_control_message_deserialize:
- * @level:
- * @type:
- * @size:
- * @data:
+ * @level: a socket level
+ * @type: a socket control message type for the given @level
+ * @size: the size of the data in bytes
+ * @data: pointer to the message data
  *
- * Returns: the deserialized message
+ * Tries to deserialize a socket control message of a given
+ * @level and @type. This will ask all known (to GType) subclasses
+ * of #GSocketControlMessage if they can understand this kind
+ * of message and if so deserialize it into a #GSocketControlMessage.
+ *
+ * If there is no implementation for this kind of control message, %NULL
+ * will be returned.
+ *
+ * Returns: the deserialized message or %NULL
  *
  * Since: 2.22
  */
