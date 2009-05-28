@@ -26,7 +26,7 @@
 
 /**
  * SECTION:gsocketconnectable
- * @short_description: Interface for potential socket endpoints.
+ * @short_description: Interface for potential socket endpoints
  *
  * Objects that describe one or more potential socket endpoints
  * implement #GSocketConnectable. Callers can then use

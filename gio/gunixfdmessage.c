@@ -15,7 +15,7 @@
 /**
  * SECTION: gunixfdmessage
  * @title: GUnixFDMessage
- * @short_description: a #GSocketControlMessage containing a list of
+ * @short_description: A GSocketControlMessage containing a list of
  * file descriptors
  * @see_also: #GUnixConnection
  *

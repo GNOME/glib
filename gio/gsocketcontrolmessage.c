@@ -15,7 +15,7 @@
 /**
  * SECTION: gsocketcontrolmessage
  * @title: GSocketControlMessage
- * @short_description: a #GSocket control message
+ * @short_description: A GSocket control message
  * @see_also: #GSocket.
  *
  * A #GSocketControlMessage is a special-purpose utility message that

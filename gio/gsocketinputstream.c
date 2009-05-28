@@ -30,6 +30,8 @@
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gcancellable.h>
 
+#include "gioalias.h"
+
 #define g_socket_input_stream_get_type _g_socket_input_stream_get_type
 G_DEFINE_TYPE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM);
 
@@ -257,3 +259,6 @@ _g_socket_input_stream_new (GSocket *socket)
 {
   return G_SOCKET_INPUT_STREAM (g_object_new (G_TYPE_SOCKET_INPUT_STREAM, "socket", socket, NULL));
 }
+
+#define __G_SOCKET_INPUT_STREAM_C__
+#include "gioaliasdef.c"

@@ -25,7 +25,7 @@
 /**
  * SECTION: gthreadedsocketservice
  * @title: GThreadedSocketService
- * @short_description: a threaded #GSocketService
+ * @short_description: A threaded GSocketService
  * @see_also: #GSocketService.
  *
  * A #GThreadedSocketService is a simple subclass of #GSocketService

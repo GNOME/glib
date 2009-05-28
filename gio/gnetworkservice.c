@@ -41,7 +41,7 @@
 
 /**
  * SECTION:gnetworkservice
- * @short_description: a #GSocketConnectable for resolving SRV records
+ * @short_description: A GSocketConnectable for resolving SRV records
  * @include: gio/gio.h
  *
  * Like #GNetworkAddress does with hostnames, #GNetworkService

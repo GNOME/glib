@@ -35,7 +35,7 @@
 
 /**
  * SECTION:gunixsocketaddress
- * @short_description: Unix #GSocketAddress
+ * @short_description: UNIX GSocketAddress
  *
  * Support for UNIX-domain (aka local) sockets.
  */

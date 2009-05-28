@@ -48,7 +48,7 @@
 
 /**
  * SECTION:gnetworkaddress
- * @short_description: a #GSocketConnectable for resolving hostnames
+ * @short_description: A GSocketConnectable for resolving hostnames
  * @include: gio/gio.h
  *
  * #GNetworkAddress provides an easy way to resolve a hostname and
