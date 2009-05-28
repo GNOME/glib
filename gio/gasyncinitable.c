@@ -42,9 +42,9 @@
  *
  * Users of objects implementing this are not intended to use the interface
  * method directly, instead it will be used automatically in various ways.
- * For C applications you generally just call g_async_initable_new() directly,
- * or indirectly via a foo_thing_new_async() wrapper. This will call
- * g_async_initable_init() under the cover, calling back with %NULL and
+ * For C applications you generally just call g_async_initable_new_async()
+ * directly, or indirectly via a foo_thing_new_async() wrapper. This will call
+ * g_async_initable_init_async() under the cover, calling back with %NULL and
  * a set %GError on failure.
  */
 
