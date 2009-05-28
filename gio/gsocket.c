@@ -65,7 +65,7 @@
  *
  * A #GSocket is a low-level networking primitive. It is a more or less
  * direct mapping of the BSD socket API in a portable GObject based API.
- * It supports both the unix socket implementations and winsock2 on Windows.
+ * It supports both the UNIX socket implementations and winsock2 on Windows.
  *
  * #GSocket is the platform independent base upon which the higher level
  * network primitives are based. Applications are not typically meant to
