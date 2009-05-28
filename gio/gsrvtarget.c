@@ -229,12 +229,7 @@ compare_target (gconstpointer a, gconstpointer b)
        * that all those with weight 0 are placed at the beginning of
        * the list"
        */
-      if (ta->weight == 0)
-        return -1;
-      else if (tb->weight == 0)
-        return 1;
-      else
-        return g_random_int_range (-1, 1);
+      return ta->weight - tb->weight;
     }
   else
     return ta->priority - tb->priority;
@@ -253,10 +248,9 @@ compare_target (gconstpointer a, gconstpointer b)
 GList *
 g_srv_target_list_sort (GList *targets)
 {
-  gint sum, val, priority, weight;
-  GList *first, *last, *n;
+  gint sum, num, val, priority, weight;
+  GList *t, *out, *tail;
   GSrvTarget *target;
-  gpointer tmp;
 
   if (!targets)
     return NULL;
@@ -275,62 +269,62 @@ g_srv_target_list_sort (GList *targets)
         }
     }
 
-  /* Sort by priority, and partly by weight */
-  targets = g_list_sort (targets, compare_target);
-
-  /* For each group of targets with the same priority, rebalance them
-   * according to weight.
+  /* Sort input list by priority, and put the 0-weight targets first
+   * in each priority group. Initialize output list to %NULL.
    */
-  for (first = targets; first; first = last->next)
+  targets = g_list_sort (targets, compare_target);
+  out = tail = NULL;
+
+  /* For each group of targets with the same priority, remove them
+   * from @targets and append them to @out in a valid order.
+   */
+  while (targets)
     {
-      /* Skip @first to a non-0-weight target. */
-      while (first && ((GSrvTarget *)first->data)->weight == 0)
-        first = first->next;
-      if (!first)
-        break;
+      priority = ((GSrvTarget *)targets->data)->priority;
 
-      /* Skip @last to the last target of the same priority. */
-      priority = ((GSrvTarget *)first->data)->priority;
-      last = first;
-      while (last->next &&
-             ((GSrvTarget *)last->next->data)->priority == priority)
-        last = last->next;
-
-      /* If there's only one non-0 weight target at this priority,
-       * we can move on to the next priority level.
+      /* Count the number of targets at this priority level, and
+       * compute the sum of their weights.
        */
-      if (last == first)
-        continue;
-
-      /* Randomly reorder the non-0 weight targets, giving precedence
-       * to the ones with higher weight. RFC 2782 describes this in
-       * terms of assigning a running sum to each target and building
-       * a new list. We do things slightly differently, but should get
-       * the same result.
-       */
-      for (n = first, sum = 0; n != last->next; n = n->next)
-        sum += ((GSrvTarget *)n->data)->weight;
-      while (first != last)
+      sum = num = 0;
+      for (t = targets; t; t = t->next)
         {
-          val = g_random_int_range (0, sum);
-          for (n = first; n != last; n = n->next)
+          target = (GSrvTarget *)t->data;
+          if (target->priority != priority)
+            break;
+          sum += target->weight;
+          num++;
+        }
+
+      /* While there are still targets at this priority level... */
+      while (num)
+        {
+          /* Randomly select from the targets at this priority level,
+           * giving precedence to the ones with higher weight,
+           * according to the rules from RFC 2782.
+           */
+          val = g_random_int_range (0, sum + 1);
+          for (t = targets; ; t = t->next)
             {
-              weight = ((GSrvTarget *)n->data)->weight;
-              if (val < weight)
+              weight = ((GSrvTarget *)t->data)->weight;
+              if (weight >= val)
                 break;
               val -= weight;
             }
 
-          tmp = first->data;
-          first->data = n->data;
-          n->data = tmp;
+          targets = g_list_remove_link (targets, t);
+
+          if (!out)
+            out = t;
+          else
+            tail->next = t;
+          tail = t;
 
           sum -= weight;
-          first = first->next;
+          num--;
         }
     }
 
-  return targets;
+  return out;
 }
 
 #define __G_SRV_TARGET_C__

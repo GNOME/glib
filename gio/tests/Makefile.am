@@ -28,7 +28,8 @@ TEST_PROGS +=	 		\
 	buffered-input-stream	\
 	sleepy-stream		\
 	filter-streams		\
-	simple-async-result
+	simple-async-result	\
+	srvtarget
 
 SAMPLE_PROGS = resolver socket-server socket-client echo-server httpd send-data
 
@@ -105,5 +106,8 @@ httpd_LDADD		  = $(progs_ldadd) \
 send_data_SOURCES	  = send-data.c
 send_data_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+srvtarget_SOURCES	  = srvtarget.c
+srvtarget_LDADD		  = $(progs_ldadd)
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
