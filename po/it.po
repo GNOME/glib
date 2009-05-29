@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-03 17:49-0400\n"
+"POT-Creation-Date: 2009-05-28 23:29-0400\n"
 "PO-Revision-Date: 2009-03-16 22:09+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -579,7 +579,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "il modello contiene elementi non supportati per la corrispondenza parziale"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2019
+#: glib/gregex.c:154 gio/glocalfile.c:2083
 msgid "internal error"
 msgstr "errore interno"
 
@@ -915,7 +915,7 @@ msgid "Failed to read data from child process"
 msgstr "Lettura di dati dal processo figlio non riuscita"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -1161,9 +1161,17 @@ msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Il file chiavi contiene la chiave \"%s\" con il valore \"%s\" che non è UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+"Il file chiavi contiene la chiave \"%s\" il cui valore non può essere "
+"interpretato."
+
+#: glib/gkeyfile.c:1528
+#, fuzzy, c-format
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Il file chiavi contiene la chiave \"%s\" il cui valore non può essere "
 "interpretato."
@@ -1213,19 +1221,19 @@ msgstr "Impossibile interpretare il valore \"%s\" come un booleano."
 
 # count (gssize) è un parametro delle funzione
 #: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
-#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/ginputstream.c:190 gio/ginputstream.c:322 gio/ginputstream.c:563
+#: gio/ginputstream.c:688 gio/goutputstream.c:201 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Valore count troppo grande passato a %s"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Lo stream è già chiuso"
 
-#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
-#: gio/gsimpleasyncresult.c:665
+#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "L'operazione è stata annullata"
 
@@ -1248,21 +1256,21 @@ msgid "Unexpected early end-of-stream"
 msgstr "End-of-stream prematuro inatteso"
 
 # NdT: nome di applicazione (quando manca)
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Senza nome"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Il file .desktop non specifica il campo Exec"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Impossibile trovare il terminale richiesto per l'applicazione"
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
@@ -1270,17 +1278,17 @@ msgstr ""
 
 # NdT il primo %s è il percorso alla cartella .local/share/application
 # messo tra parentesi per scelta stilistica...
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Impossibile creare la cartella utente di configurazione MIME (%s): %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossibile creare il file .desktop utente %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definizione personalizzata per %s"
@@ -1318,11 +1326,12 @@ msgstr "Numero di token malformato (%d) nella codifica GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Atteso un GEmblem per GEmblemedIcon"
 
-#: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
+#: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
+#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
+#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
+#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Operazione non supportata"
 
@@ -1334,49 +1343,49 @@ msgstr "Operazione non supportata"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
-#: gio/glocalfile.c:1106
+#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
+#: gio/glocalfile.c:1107
 msgid "Containing mount does not exist"
 msgstr "L'oggetto mount contenuto non esiste"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2162
+#: gio/gfile.c:2399 gio/glocalfile.c:2226
 msgid "Can't copy over directory"
 msgstr "Impossibile copiare sopra la directory"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2459
 msgid "Can't copy directory over directory"
 msgstr "Impossibile copiare la directory sopra la directory"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2171
+#: gio/gfile.c:2467 gio/glocalfile.c:2235
 msgid "Target file exists"
 msgstr "Il file destinazione esiste"
 
-#: gio/gfile.c:2051
+#: gio/gfile.c:2485
 msgid "Can't recursively copy directory"
 msgstr "Impossibile copiare la directory ricorsivamente"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2780
 msgid "Can't copy special file"
 msgstr "Impossibile copiare il file speciale"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:3321
 msgid "Invalid symlink value given"
 msgstr "Fornito valore di collegamento simbolico non valido"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:3414
 msgid "Trash not supported"
 msgstr "Cestino non supportato"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3463
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "I nomi di file non possono contenere '%c'"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5674 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "il volume non implementa il montaggio"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5782
 msgid "No application is registered as handling this file"
 msgstr "Non risulta registrata alcuna applicazione per gestire questo file"
 
@@ -1403,20 +1412,20 @@ msgstr "Impossibile gestire la versione %d della codifica GFileIcon"
 msgid "Malformed input data for GFileIcon"
 msgstr "Dati di input malformati per GFileIcon"
 
-#: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
-#: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
+#: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
+#: gio/gfileoutputstream.c:170 gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "Lo stream non supporta query_info"
 
-#: gio/gfileinputstream.c:339 gio/gfileoutputstream.c:384
+#: gio/gfileinputstream.c:337 gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "Posizionamento non supportato sullo stream"
 
-#: gio/gfileinputstream.c:383
+#: gio/gfileinputstream.c:381
 msgid "Truncate not allowed on input stream"
 msgstr "Troncamento non consentito sullo stream di input"
 
-#: gio/gfileoutputstream.c:460
+#: gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "Troncamento non supportato sullo stream"
 
@@ -1456,7 +1465,7 @@ msgstr "Il tipo %s non implementa from_tokens() sull'interfaccia GIcon"
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Impossibile gestire la versione fornita della codifica di icona"
 
-#: gio/ginputstream.c:202
+#: gio/ginputstream.c:199
 msgid "Input stream doesn't implement read"
 msgstr "Lo stream di input non implementa la lettura"
 
@@ -1467,7 +1476,7 @@ msgstr "Lo stream di input non implementa la lettura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:911 gio/goutputstream.c:1095
+#: gio/ginputstream.c:908 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Lo stream presenta un'operazione in sospeso"
 
@@ -1476,114 +1485,115 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Impossibile trovare il tipo di monitor predefinito per directory locali"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nome di file %s non valido"
 
-#: gio/glocalfile.c:990
+#: gio/glocalfile.c:991
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Errore nell'ottenere informazioni sul file system: %s"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1127
 msgid "Can't rename root directory"
 msgstr "Impossibile rinominare la directory root"
 
-#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
+#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Errore nel rinominare il file: %s"
 
-#: gio/glocalfile.c:1155
+#: gio/glocalfile.c:1156
 msgid "Can't rename file, filename already exist"
 msgstr "Impossibile rinominare il file, il nome di file esiste già"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
-#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
-#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
+#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
+#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
+#: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Nome di file non valido"
 
-#: gio/glocalfile.c:1291
+#: gio/glocalfile.c:1292
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Errore nell'aprire il file: %s"
 
-#: gio/glocalfile.c:1301
+#: gio/glocalfile.c:1302
 msgid "Can't open directory"
 msgstr "Impossibile aprire la directory"
 
-#: gio/glocalfile.c:1361
+#: gio/glocalfile.c:1425
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Errore nel rimuovere il file: %s"
 
-#: gio/glocalfile.c:1725
+#: gio/glocalfile.c:1789
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Errore nel cestinare il file: %s"
 
-#: gio/glocalfile.c:1748
+#: gio/glocalfile.c:1812
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossibile creare la directory cestino \"%s\": %s"
 
-#: gio/glocalfile.c:1769
+#: gio/glocalfile.c:1833
 msgid "Unable to find toplevel directory for trash"
 msgstr "Impossibile trovare la directory di livello superiore per il cestino"
 
-#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
+#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
 msgid "Unable to find or create trash directory"
 msgstr "Impossibile trovare o creare la directory cestino"
 
 # consultare la specifica del cestino di freedesktop.org
 # (in breve per ogni file cestinato viene creata una copia
 # del file e un file di informazioni - data, posizione originaria...)
-#: gio/glocalfile.c:1902
+#: gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Impossibile creare il file informazioni cestinamento: %s"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
+#: gio/glocalfile.c:2082
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossibile cestinare il file: %s"
 
-#: gio/glocalfile.c:2045
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Errore nel creare la directory: %s"
 
 # FIXME: all other occurrences are "symlink"
-#: gio/glocalfile.c:2074
+#: gio/glocalfile.c:2138
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Errore nel creare il collegamento simbolico: %s"
 
-#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
+#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Errore nello spostare il file: %s"
 
 # ma che senso ha???
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2221
 msgid "Can't move directory over directory"
 msgstr "Impossibile spostare la directory sopra la directory"
 
-#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
-#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
-#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
+#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
+#: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Creazione del file backup non riuscita"
 
-#: gio/glocalfile.c:2203
+#: gio/glocalfile.c:2267
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Errore nel rimuovere il file destinazione: %s"
 
-#: gio/glocalfile.c:2217
+#: gio/glocalfile.c:2281
 msgid "Move between mounts not supported"
 msgstr "Spostamento tra oggetti mount non supportato"
 
@@ -1604,7 +1614,7 @@ msgstr "Nome di attributo esteso non valido"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Errore nell'impostare l'attributo esteso \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Errore nell'eseguire lo stat del file \"%s\": %s"
@@ -1635,7 +1645,7 @@ msgstr "Tipo di attributo non valido (attesa stringa di byte)"
 msgid "Error setting permissions: %s"
 msgstr "Errore nell'impostare i permessi: %s"
 
-#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:1883
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errore nell'impostare il proprietario: %s"
@@ -1655,6 +1665,11 @@ msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errore nell'impostare il collegamento simbolico: il file non è un "
 "collegamento"
+
+#: gio/glocalfileinfo.c:2051
+#, fuzzy, c-format
+msgid "Error setting modification or access time: %s"
+msgstr "Errore nell'impostare i permessi: %s"
 
 # lasciata minuscola come per precedente messaggio
 #   "symlink must be non-NULL"
@@ -1677,20 +1692,20 @@ msgstr "SELinux non è abilitato su questo sistema"
 msgid "Setting attribute %s not supported"
 msgstr "Impostazione dell'attributo %s non supportata"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
+#: gio/glocalfileinputstream.c:169 gio/glocalfileoutputstream.c:701
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Errore nel leggere dal file: %s"
 
-#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
-#: gio/glocalfileoutputstream.c:921
+#: gio/glocalfileinputstream.c:200 gio/glocalfileinputstream.c:212
+#: gio/glocalfileinputstream.c:324 gio/glocalfileoutputstream.c:449
+#: gio/glocalfileoutputstream.c:1005
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Errore nel posizionarsi all'interno del file: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
-#: gio/glocalfileoutputstream.c:318
+#: gio/glocalfileinputstream.c:245 gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:330
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Errore nel chiudere il file: %s"
@@ -1699,52 +1714,52 @@ msgstr "Errore nel chiudere il file: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Impossibile trovare il tipo di monitor predefinito per file locali"
 
-#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
-#: gio/glocalfileoutputstream.c:639
+#: gio/glocalfileoutputstream.c:181 gio/glocalfileoutputstream.c:214
+#: gio/glocalfileoutputstream.c:722
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Errore nello scrivere sul file: %s"
 
-#: gio/glocalfileoutputstream.c:250
+#: gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Errore nel rimuovere il vecchio collegamento di backup: %s"
 
-#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
+#: gio/glocalfileoutputstream.c:276 gio/glocalfileoutputstream.c:289
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Errore nel creare la copia di backup: %s"
 
-#: gio/glocalfileoutputstream.c:295
+#: gio/glocalfileoutputstream.c:307
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Errore nel rinominare il file temporaneo: %s"
 
-#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
+#: gio/glocalfileoutputstream.c:495 gio/glocalfileoutputstream.c:1056
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Errore nel troncare il file: %s"
 
-#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
-#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
-#: gio/glocalfileoutputstream.c:1040
+#: gio/glocalfileoutputstream.c:556 gio/glocalfileoutputstream.c:609
+#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:794
+#: gio/glocalfileoutputstream.c:1037 gio/glocalfileoutputstream.c:1136
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Errore nell'aprire il file «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:741
+#: gio/glocalfileoutputstream.c:825
 msgid "Target file is a directory"
 msgstr "Il file destinazione è una directory"
 
-#: gio/glocalfileoutputstream.c:746
+#: gio/glocalfileoutputstream.c:830
 msgid "Target file is not a regular file"
 msgstr "Il file destinazione non è un file normale"
 
-#: gio/glocalfileoutputstream.c:758
+#: gio/glocalfileoutputstream.c:842
 msgid "The file was externally modified"
 msgstr "Il file è stato modificato dall'esterno"
 
-#: gio/glocalfileoutputstream.c:937
+#: gio/glocalfileoutputstream.c:1021
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Errore nel rimuovere il vecchio file: %s"
@@ -1776,21 +1791,21 @@ msgstr "Ridimensionamento dello stream di output di memoria non riuscito"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:360
+#: gio/gmount.c:376
 msgid "mount doesn't implement unmount"
 msgstr "l'oggetto mount non implementa lo smontaggio"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:435
+#: gio/gmount.c:451
 msgid "mount doesn't implement eject"
 msgstr "l'oggetto mount non implementa l'espulsione"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:517
+#: gio/gmount.c:533
 msgid "mount doesn't implement remount"
 msgstr "l'oggetto mount non implementa il rimontaggio"
 
@@ -1798,7 +1813,7 @@ msgstr "l'oggetto mount non implementa il rimontaggio"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:601
+#: gio/gmount.c:617
 msgid "mount doesn't implement content type guessing"
 msgstr "l'oggetto mount non implementa la supposizione del tipo di contenuto"
 
@@ -1806,16 +1821,16 @@ msgstr "l'oggetto mount non implementa la supposizione del tipo di contenuto"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:690
+#: gio/gmount.c:706
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 "l'oggetto mount non implementa la supposizione sincrona del tipo di contenuto"
 
-#: gio/goutputstream.c:211 gio/goutputstream.c:412
+#: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Lo stream di output non implementa la scrittura"
 
-#: gio/goutputstream.c:372 gio/goutputstream.c:780
+#: gio/goutputstream.c:371 gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "Lo stream sorgente è già chiuso"
 

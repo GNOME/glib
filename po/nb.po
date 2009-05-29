@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.16.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-03 17:49-0400\n"
+"POT-Creation-Date: 2009-05-28 23:29-0400\n"
 "PO-Revision-Date: 2009-03-17 09:17+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
@@ -522,7 +522,7 @@ msgstr "grense for liste av funksjonskall nådd"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "mønsteret inneholder oppføringer som ikke støttes for delvise treff"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2019
+#: glib/gregex.c:154 gio/glocalfile.c:2083
 msgid "internal error"
 msgstr "intern feil"
 
@@ -829,7 +829,7 @@ msgstr "Teksten var tom (eller inneholdt kun blanke tegn)"
 msgid "Failed to read data from child process"
 msgstr "Feil under lesing av data fra underprosess"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
@@ -1055,9 +1055,16 @@ msgstr "Nøkkelfil har ikke nøkkelen «%s»"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Nøkkelfilen inneholder nøkkelen «%s» med verdi «%s» som ikke er UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+"Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli tolket"
+
+#: glib/gkeyfile.c:1528
+#, fuzzy, c-format
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli tolket"
 
@@ -1105,19 +1112,19 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
 
 #: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
-#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/ginputstream.c:190 gio/ginputstream.c:322 gio/ginputstream.c:563
+#: gio/ginputstream.c:688 gio/goutputstream.c:201 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Tellerverdi gitt til %s er for stor"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
-#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
-#: gio/gsimpleasyncresult.c:665
+#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "Operasjonen ble avbrutt"
 
@@ -1139,34 +1146,34 @@ msgstr "type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Uventet tidlig slutt på strøm"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
@@ -1203,11 +1210,12 @@ msgstr "Feil antall tegn (%d) i GEmblemedIcon-koding"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Ventet et GEmblem for GEmblemedIcon"
 
-#: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
+#: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
+#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
+#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
+#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
 
@@ -1219,49 +1227,49 @@ msgstr "Operasjonen er ikke støttet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
-#: gio/glocalfile.c:1106
+#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
+#: gio/glocalfile.c:1107
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2162
+#: gio/gfile.c:2399 gio/glocalfile.c:2226
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2459
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2171
+#: gio/gfile.c:2467 gio/glocalfile.c:2235
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
-#: gio/gfile.c:2051
+#: gio/gfile.c:2485
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2780
 msgid "Can't copy special file"
 msgstr "Kan ikke kopiere spesiell fil"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:3321
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:3414
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3463
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5674 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5782
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1287,20 +1295,20 @@ msgstr "Kan ikke håndtere versjon %d av GFileIcon-koding"
 msgid "Malformed input data for GFileIcon"
 msgstr "Feil inndata for GFileIcon"
 
-#: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
-#: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
+#: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
+#: gio/gfileoutputstream.c:170 gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "Strømmen støtter ikke query_info"
 
-#: gio/gfileinputstream.c:339 gio/gfileoutputstream.c:384
+#: gio/gfileinputstream.c:337 gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "Søking ikke støttet på strøm"
 
-#: gio/gfileinputstream.c:383
+#: gio/gfileinputstream.c:381
 msgid "Truncate not allowed on input stream"
 msgstr "Avkorting er ikke tillatt på en inndatastrøm"
 
-#: gio/gfileoutputstream.c:460
+#: gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "Avkorting er ikke støttet på strømmen"
 
@@ -1338,7 +1346,7 @@ msgstr "Type %s implementerer ikke from_tokens() på GIcon-grensesnittet"
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Kan ikke håndtere oppgitt versjon i ikon-koding"
 
-#: gio/ginputstream.c:202
+#: gio/ginputstream.c:199
 msgid "Input stream doesn't implement read"
 msgstr "Inndatastrøm implementerer ikke lesing"
 
@@ -1348,7 +1356,7 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:911 gio/goutputstream.c:1095
+#: gio/ginputstream.c:908 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
@@ -1356,109 +1364,110 @@ msgstr "Strømmen har utestående operasjoner"
 msgid "Unable to find default local directory monitor type"
 msgstr "Klarte ikke å finne forvalgt type overvåker for lokal katalog"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ugyldig filnavn %s"
 
-#: gio/glocalfile.c:990
+#: gio/glocalfile.c:991
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Feil under lesing av informasjon om filsystem: %s"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1127
 msgid "Can't rename root directory"
 msgstr "Kan ikke endre navn på rotkatalogen"
 
-#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
+#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Feil under endring av navn på fil: %s"
 
-#: gio/glocalfile.c:1155
+#: gio/glocalfile.c:1156
 msgid "Can't rename file, filename already exist"
 msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
-#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
-#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
+#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
+#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
+#: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Ugyldig filnavn"
 
-#: gio/glocalfile.c:1291
+#: gio/glocalfile.c:1292
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Feil under åpning av fil: %s"
 
-#: gio/glocalfile.c:1301
+#: gio/glocalfile.c:1302
 msgid "Can't open directory"
 msgstr "Kan ikke åpne mappe"
 
-#: gio/glocalfile.c:1361
+#: gio/glocalfile.c:1425
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Feil ved fjerning av fil: %s"
 
-#: gio/glocalfile.c:1725
+#: gio/glocalfile.c:1789
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Feil ved plassering av fil i papirkurv: %s"
 
-#: gio/glocalfile.c:1748
+#: gio/glocalfile.c:1812
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan ikke legge katalog %s i papirkurven: %s"
 
-#: gio/glocalfile.c:1769
+#: gio/glocalfile.c:1833
 msgid "Unable to find toplevel directory for trash"
 msgstr "Kan ikke finne toppnivå for papirkurv"
 
-#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
+#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
 msgid "Unable to find or create trash directory"
 msgstr "Kan ikke finne eller opprette mappe for papirkurv"
 
-#: gio/glocalfile.c:1902
+#: gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kan ikke opprette informasjonsfil for papirkurv: %s"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
+#: gio/glocalfile.c:2082
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kan ikke legge fil i papirkurven: %s"
 
-#: gio/glocalfile.c:2045
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Feil under oppretting av katalog: %s"
 
-#: gio/glocalfile.c:2074
+#: gio/glocalfile.c:2138
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Feil ved oppretting av symbolsk lenke: %s"
 
-#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
+#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Feil under flytting av fil: %s"
 
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2221
 msgid "Can't move directory over directory"
 msgstr "Kan ikke flytte katalog over katalog"
 
-#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
-#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
-#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
+#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
+#: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Oppretting av sikkerhetskopi feilet"
 
-#: gio/glocalfile.c:2203
+#: gio/glocalfile.c:2267
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Feil under fjerning av målfil: %s"
 
-#: gio/glocalfile.c:2217
+#: gio/glocalfile.c:2281
 msgid "Move between mounts not supported"
 msgstr "Flytting mellom monteringspunkter er ikke støttet"
 
@@ -1479,7 +1488,7 @@ msgstr "Ugyldig navn på utvidet attributt"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Feil under setting av utvidet attributt «%s»: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Feil ved henting av informasjon om fil «%s»: %s"
@@ -1510,7 +1519,7 @@ msgstr "Ugyldig type attributt (byte-streng forventet)"
 msgid "Error setting permissions: %s"
 msgstr "Feil ved setting av rettigheter: %s"
 
-#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:1883
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Feil ved setting av eier: %s"
@@ -1528,6 +1537,11 @@ msgstr "Feil ved setting av symbolsk lenke: %s"
 #: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Feil ved setting av symbolsk lenke: filen er ikke en symbolsk lenke"
+
+#: gio/glocalfileinfo.c:2051
+#, fuzzy, c-format
+msgid "Error setting modification or access time: %s"
+msgstr "Feil ved setting av rettigheter: %s"
 
 #: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
@@ -1547,20 +1561,20 @@ msgstr "SELinux er ikke slått på på dette systemet"
 msgid "Setting attribute %s not supported"
 msgstr "Støtter ikke å sette attributt %s"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
+#: gio/glocalfileinputstream.c:169 gio/glocalfileoutputstream.c:701
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Feil under lesing fra fil: %s"
 
-#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
-#: gio/glocalfileoutputstream.c:921
+#: gio/glocalfileinputstream.c:200 gio/glocalfileinputstream.c:212
+#: gio/glocalfileinputstream.c:324 gio/glocalfileoutputstream.c:449
+#: gio/glocalfileoutputstream.c:1005
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Feil under søking i fil: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
-#: gio/glocalfileoutputstream.c:318
+#: gio/glocalfileinputstream.c:245 gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:330
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Feil under lukking av fil: %s"
@@ -1569,52 +1583,52 @@ msgstr "Feil under lukking av fil: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Kan ikke finne forvalgt lokal filovervåkingstype"
 
-#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
-#: gio/glocalfileoutputstream.c:639
+#: gio/glocalfileoutputstream.c:181 gio/glocalfileoutputstream.c:214
+#: gio/glocalfileoutputstream.c:722
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Feil under skriving til fil: %s"
 
-#: gio/glocalfileoutputstream.c:250
+#: gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Feil ved fjerning av gammel sikkerhetskopi av lenke: %s"
 
-#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
+#: gio/glocalfileoutputstream.c:276 gio/glocalfileoutputstream.c:289
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Feil under oppretting av sikkerhetskopi: %s"
 
-#: gio/glocalfileoutputstream.c:295
+#: gio/glocalfileoutputstream.c:307
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Feil ved endring av navn på midlertidig fil: %s"
 
-#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
+#: gio/glocalfileoutputstream.c:495 gio/glocalfileoutputstream.c:1056
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Feil under avkorting av fil: «%s»"
 
-#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
-#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
-#: gio/glocalfileoutputstream.c:1040
+#: gio/glocalfileoutputstream.c:556 gio/glocalfileoutputstream.c:609
+#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:794
+#: gio/glocalfileoutputstream.c:1037 gio/glocalfileoutputstream.c:1136
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:741
+#: gio/glocalfileoutputstream.c:825
 msgid "Target file is a directory"
 msgstr "Målfilen er en katalog"
 
-#: gio/glocalfileoutputstream.c:746
+#: gio/glocalfileoutputstream.c:830
 msgid "Target file is not a regular file"
 msgstr "Målfilen er ikke en vanlig fil"
 
-#: gio/glocalfileoutputstream.c:758
+#: gio/glocalfileoutputstream.c:842
 msgid "The file was externally modified"
 msgstr "Filen ble endret eksternt"
 
-#: gio/glocalfileoutputstream.c:937
+#: gio/glocalfileoutputstream.c:1021
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Feil ved fjerning av gammel fil: %s"
@@ -1646,43 +1660,43 @@ msgstr "Klarte ikke å endre størrelse på utdatastrøm for minne"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:360
+#: gio/gmount.c:376
 msgid "mount doesn't implement unmount"
 msgstr "monteringspunktet implementerer ikke avmontering"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:435
+#: gio/gmount.c:451
 msgid "mount doesn't implement eject"
 msgstr "montering implementerer ikke utløsing"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:517
+#: gio/gmount.c:533
 msgid "mount doesn't implement remount"
 msgstr "montering implementerer ikke remontering"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:601
+#: gio/gmount.c:617
 msgid "mount doesn't implement content type guessing"
 msgstr "montering implementerer ikke gjetting av innholdstype"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:690
+#: gio/gmount.c:706
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "montering implementerer ikke synkron gjetting av innholdstype"
 
-#: gio/goutputstream.c:211 gio/goutputstream.c:412
+#: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Ut-strømmen implementerer ikke skriving"
 
-#: gio/goutputstream.c:372 gio/goutputstream.c:780
+#: gio/goutputstream.c:371 gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-03 17:49-0400\n"
+"POT-Creation-Date: 2009-05-28 23:29-0400\n"
 "PO-Revision-Date: 2009-04-26 20:18+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -549,7 +549,7 @@ msgstr ""
 "el patró conté elements que no estan implementats en les concordances "
 "parcials"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2019
+#: glib/gregex.c:154 gio/glocalfile.c:2083
 msgid "internal error"
 msgstr "error intern"
 
@@ -864,7 +864,7 @@ msgstr "El text era buit (o només contenia espais en blanc)"
 msgid "Failed to read data from child process"
 msgstr "No s'ha pogut llegir dades del procés fill"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -1095,9 +1095,16 @@ msgstr "El fitxer de claus no té la clau «%s»"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "El fitxer de claus conté la clau «%s» amb el valor «%s» que no és UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1528 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+"El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
+
+#: glib/gkeyfile.c:1528
+#, fuzzy, c-format
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
 
@@ -1145,19 +1152,19 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no es pot interpretar com un booleà."
 
 #: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
-#: gio/ginputstream.c:691 gio/goutputstream.c:202 gio/goutputstream.c:656
+#: gio/ginputstream.c:190 gio/ginputstream.c:322 gio/ginputstream.c:563
+#: gio/ginputstream.c:688 gio/goutputstream.c:201 gio/goutputstream.c:656
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "El valor de comptatge passat a %s és massa llarg"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:901
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "Ja està tancat el flux"
 
-#: gio/gcancellable.c:377 gio/glocalfile.c:2012 gio/gsimpleasyncresult.c:638
-#: gio/gsimpleasyncresult.c:665
+#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "S'ha cancel·lat l'operació"
 
@@ -1179,37 +1186,37 @@ msgstr "tipus %s"
 msgid "Unexpected early end-of-stream"
 msgstr "No s'esperava un final de flux tant aviat"
 
-#: gio/gdesktopappinfo.c:462 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sense nom"
 
-#: gio/gdesktopappinfo.c:709
+#: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
 msgstr "El fitxer d'escriptori no especificava el camp d'execució"
 
-#: gio/gdesktopappinfo.c:1003
+#: gio/gdesktopappinfo.c:1004
 msgid "Unable to find terminal required for application"
 msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 
-#: gio/gdesktopappinfo.c:1235
+#: gio/gdesktopappinfo.c:1236
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari %"
 "s: %s"
 
-#: gio/gdesktopappinfo.c:1239
+#: gio/gdesktopappinfo.c:1240
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració MIME de l'usuari %s: %s"
 
-#: gio/gdesktopappinfo.c:1643
+#: gio/gdesktopappinfo.c:1644
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No s'ha pogut crear el fitxer d'escriptori de l'usuari %s"
 
-#: gio/gdesktopappinfo.c:1755
+#: gio/gdesktopappinfo.c:1756
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definició personalitzada per a %s"
@@ -1250,11 +1257,12 @@ msgstr ""
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 
-#: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
+#: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
+#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
+#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
+#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "L'operació no està implementada"
 
@@ -1266,49 +1274,49 @@ msgstr "L'operació no està implementada"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1313 gio/glocalfile.c:1082 gio/glocalfile.c:1093
-#: gio/glocalfile.c:1106
+#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
+#: gio/glocalfile.c:1107
 msgid "Containing mount does not exist"
 msgstr "No existeix el punt de muntatge contenidor"
 
-#: gio/gfile.c:1965 gio/glocalfile.c:2162
+#: gio/gfile.c:2399 gio/glocalfile.c:2226
 msgid "Can't copy over directory"
 msgstr "No es pot copiar al directori"
 
-#: gio/gfile.c:2025
+#: gio/gfile.c:2459
 msgid "Can't copy directory over directory"
 msgstr "No es pot copiar el directori al directori"
 
-#: gio/gfile.c:2033 gio/glocalfile.c:2171
+#: gio/gfile.c:2467 gio/glocalfile.c:2235
 msgid "Target file exists"
 msgstr "Ja existeix el fitxer de destinació"
 
-#: gio/gfile.c:2051
+#: gio/gfile.c:2485
 msgid "Can't recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2780
 msgid "Can't copy special file"
 msgstr "No es pot copiar el fitxer especial"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:3321
 msgid "Invalid symlink value given"
 msgstr "El valor donat per a l'enllaç simbòlic no és vàlid"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:3414
 msgid "Trash not supported"
 msgstr "No es pot utilitzar la paperera"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3463
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "En els noms de fitxers no pot haver-hi «%c»"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5674 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "el volum no implementa el muntatge"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5782
 msgid "No application is registered as handling this file"
 msgstr ""
 "No hi ha cap aplicació que s'hagi registrat per a gestionar aquest fitxer"
@@ -1335,20 +1343,20 @@ msgstr "No es pot gestionar la versió %d de la codificació del GFileIcon"
 msgid "Malformed input data for GFileIcon"
 msgstr "Les dades d'entrada pel GFileIcon no són formades correctament"
 
-#: gio/gfileinputstream.c:157 gio/gfileinputstream.c:424
-#: gio/gfileoutputstream.c:171 gio/gfileoutputstream.c:526
+#: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
+#: gio/gfileoutputstream.c:170 gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "El flux no implementa «query_info»"
 
-#: gio/gfileinputstream.c:339 gio/gfileoutputstream.c:384
+#: gio/gfileinputstream.c:337 gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "No està implementada la cerca en el flux"
 
-#: gio/gfileinputstream.c:383
+#: gio/gfileinputstream.c:381
 msgid "Truncate not allowed on input stream"
 msgstr "No es permet truncar en els fluxs d'entrada"
 
-#: gio/gfileoutputstream.c:460
+#: gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "No es permet trucar en els fluxs"
 
@@ -1387,7 +1395,7 @@ msgid "Can't handle the supplied version the icon encoding"
 msgstr ""
 "No es pot gestionar la versió proporcionada de la codificació de la icona"
 
-#: gio/ginputstream.c:202
+#: gio/ginputstream.c:199
 msgid "Input stream doesn't implement read"
 msgstr "El flux d'entrada no té implementada la lectura"
 
@@ -1397,7 +1405,7 @@ msgstr "El flux d'entrada no té implementada la lectura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:911 gio/goutputstream.c:1095
+#: gio/ginputstream.c:908 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "El flux té una operació pendent"
 
@@ -1406,110 +1414,111 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "No s'ha pogut trobar el tipus de seguiment de directoris locals predeterminat"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "El nom del fitxer no és vàlid: %s"
 
-#: gio/glocalfile.c:990
+#: gio/glocalfile.c:991
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr ""
 "S'ha produït un error en obtenir la informació del sistema de fitxers: %s"
 
-#: gio/glocalfile.c:1126
+#: gio/glocalfile.c:1127
 msgid "Can't rename root directory"
 msgstr "No es pot canviar el nom del directori arrel"
 
-#: gio/glocalfile.c:1146 gio/glocalfile.c:1172
+#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "S'ha produït un error en canviar el nom del fitxer: %s"
 
-#: gio/glocalfile.c:1155
+#: gio/glocalfile.c:1156
 msgid "Can't rename file, filename already exist"
 msgstr "No es pot canviar el nom del fitxer, ja existeix aquest nom"
 
-#: gio/glocalfile.c:1168 gio/glocalfile.c:2041 gio/glocalfile.c:2070
-#: gio/glocalfile.c:2224 gio/glocalfileoutputstream.c:520
-#: gio/glocalfileoutputstream.c:565 gio/glocalfileoutputstream.c:1034
+#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
+#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
+#: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Nom de fitxer no vàlid"
 
-#: gio/glocalfile.c:1291
+#: gio/glocalfile.c:1292
 #, c-format
 msgid "Error opening file: %s"
 msgstr "S'ha produït un error en obrir el fitxer: %s"
 
-#: gio/glocalfile.c:1301
+#: gio/glocalfile.c:1302
 msgid "Can't open directory"
 msgstr "No s'ha pogut obrir el directori"
 
-#: gio/glocalfile.c:1361
+#: gio/glocalfile.c:1425
 #, c-format
 msgid "Error removing file: %s"
 msgstr "S'ha produït un error en suprimir el fitxer: %s"
 
-#: gio/glocalfile.c:1725
+#: gio/glocalfile.c:1789
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "S'ha produït un error en enviar el fitxer a la paperera: %s"
 
-#: gio/glocalfile.c:1748
+#: gio/glocalfile.c:1812
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No s'ha pogut crear el directori de la paperera %s: %s"
 
-#: gio/glocalfile.c:1769
+#: gio/glocalfile.c:1833
 msgid "Unable to find toplevel directory for trash"
 msgstr "No s'ha pogut trobar el directori superior per a la paperera"
 
-#: gio/glocalfile.c:1848 gio/glocalfile.c:1868
+#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
 msgid "Unable to find or create trash directory"
 msgstr "No s'ha pogut trobar o crear el directori de la paperera"
 
-#: gio/glocalfile.c:1902
+#: gio/glocalfile.c:1966
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "No s'ha pogut crear el fitxer d'informació d'enviar a la paperera: %s"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1936 gio/glocalfile.c:2011
-#: gio/glocalfile.c:2018
+#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
+#: gio/glocalfile.c:2082
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "No s'ha pogut enviar el fitxer a la paperera: %s"
 
-#: gio/glocalfile.c:2045
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "S'ha produït un error en crear el directori: %s"
 
-#: gio/glocalfile.c:2074
+#: gio/glocalfile.c:2138
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "S'ha produït un error en fer l'enllaç simbòlic: %s"
 
-#: gio/glocalfile.c:2134 gio/glocalfile.c:2228
+#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
 #, c-format
 msgid "Error moving file: %s"
 msgstr "S'ha produït un error en moure el fitxer: %s"
 
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2221
 msgid "Can't move directory over directory"
 msgstr "No s'ha pogut moure el directori al directori"
 
-#: gio/glocalfile.c:2184 gio/glocalfileoutputstream.c:844
-#: gio/glocalfileoutputstream.c:858 gio/glocalfileoutputstream.c:873
-#: gio/glocalfileoutputstream.c:889 gio/glocalfileoutputstream.c:903
+#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
+#: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Ha fallat la creació del fitxer de còpia de seguretat"
 
-#: gio/glocalfile.c:2203
+#: gio/glocalfile.c:2267
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "S'ha produït un error en suprimir el fitxer objectiu: %s"
 
-#: gio/glocalfile.c:2217
+#: gio/glocalfile.c:2281
 msgid "Move between mounts not supported"
 msgstr "No està implementat el moure entre muntatges"
 
@@ -1530,7 +1539,7 @@ msgstr "El nom de l'atribut estés no és vàlid"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "S'ha produït un error en establir l'atribut estés «%s»: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:728
+#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr ""
@@ -1564,7 +1573,7 @@ msgstr "Tipus d'atribut no vàlid (s'esperava una cadena de bytes)"
 msgid "Error setting permissions: %s"
 msgstr "S'ha produït un error en establir els permisos: %s"
 
-#: gio/glocalfileinfo.c:1883 gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:1883
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "S'ha produït un error en establir el propietari: %s"
@@ -1585,6 +1594,11 @@ msgstr ""
 "S'ha produït un error en establir l'enllaç simbòlic: el fitxer no és un "
 "enllaç simbòlic"
 
+#: gio/glocalfileinfo.c:2051
+#, fuzzy, c-format
+msgid "Error setting modification or access time: %s"
+msgstr "S'ha produït un error en establir els permisos: %s"
+
 #: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
 msgstr "El context del SELinux no pot ser nul"
@@ -1603,20 +1617,20 @@ msgstr "Aquest sistema no té habilitat el SELinux"
 msgid "Setting attribute %s not supported"
 msgstr "No està implementat establir l'atribut %s"
 
-#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:618
+#: gio/glocalfileinputstream.c:169 gio/glocalfileoutputstream.c:701
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "S'ha produït un error en llegir des del fitxer: %s"
 
-#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
-#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:420
-#: gio/glocalfileoutputstream.c:921
+#: gio/glocalfileinputstream.c:200 gio/glocalfileinputstream.c:212
+#: gio/glocalfileinputstream.c:324 gio/glocalfileoutputstream.c:449
+#: gio/glocalfileoutputstream.c:1005
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "S'ha produït un error en cercar en el fitxer: %s"
 
-#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:223
-#: gio/glocalfileoutputstream.c:318
+#: gio/glocalfileinputstream.c:245 gio/glocalfileoutputstream.c:235
+#: gio/glocalfileoutputstream.c:330
 #, c-format
 msgid "Error closing file: %s"
 msgstr "S'ha produït un error en tancar el fitxer: %s"
@@ -1626,53 +1640,53 @@ msgid "Unable to find default local file monitor type"
 msgstr ""
 "No s'ha pogut trobar el tipus de monitorització de fitxer local predeterminat"
 
-#: gio/glocalfileoutputstream.c:173 gio/glocalfileoutputstream.c:202
-#: gio/glocalfileoutputstream.c:639
+#: gio/glocalfileoutputstream.c:181 gio/glocalfileoutputstream.c:214
+#: gio/glocalfileoutputstream.c:722
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "S'ha produït un error en escriure al fitxer: %s"
 
-#: gio/glocalfileoutputstream.c:250
+#: gio/glocalfileoutputstream.c:262
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr ""
 "S'ha produït un error en suprimir l'enllaç de còpia de seguretat antic: %s"
 
-#: gio/glocalfileoutputstream.c:264 gio/glocalfileoutputstream.c:277
+#: gio/glocalfileoutputstream.c:276 gio/glocalfileoutputstream.c:289
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "S'ha produït un error en crear la còpia de seguretat: %s"
 
-#: gio/glocalfileoutputstream.c:295
+#: gio/glocalfileoutputstream.c:307
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "S'ha produït un error en canviar el nom del fitxer temporal: %s"
 
-#: gio/glocalfileoutputstream.c:466 gio/glocalfileoutputstream.c:968
+#: gio/glocalfileoutputstream.c:495 gio/glocalfileoutputstream.c:1056
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "S'ha produït un error en truncar el fitxer: %s"
 
-#: gio/glocalfileoutputstream.c:526 gio/glocalfileoutputstream.c:571
-#: gio/glocalfileoutputstream.c:710 gio/glocalfileoutputstream.c:949
-#: gio/glocalfileoutputstream.c:1040
+#: gio/glocalfileoutputstream.c:556 gio/glocalfileoutputstream.c:609
+#: gio/glocalfileoutputstream.c:654 gio/glocalfileoutputstream.c:794
+#: gio/glocalfileoutputstream.c:1037 gio/glocalfileoutputstream.c:1136
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "S'ha produït un error en obrir el fitxer «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:741
+#: gio/glocalfileoutputstream.c:825
 msgid "Target file is a directory"
 msgstr "El fitxer objectiu és un directori"
 
-#: gio/glocalfileoutputstream.c:746
+#: gio/glocalfileoutputstream.c:830
 msgid "Target file is not a regular file"
 msgstr "El fitxer objectiu no és un fitxer regular"
 
-#: gio/glocalfileoutputstream.c:758
+#: gio/glocalfileoutputstream.c:842
 msgid "The file was externally modified"
 msgstr "El fitxer ha estat modificat des d'alguna aplicació externa"
 
-#: gio/glocalfileoutputstream.c:937
+#: gio/glocalfileoutputstream.c:1021
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "S'ha produït un error en suprimir el fitxer vell: %s"
@@ -1704,43 +1718,43 @@ msgstr "Ha fallat el redimensionament de la memòria del flux de sortida"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:360
+#: gio/gmount.c:376
 msgid "mount doesn't implement unmount"
 msgstr "el muntatge no implementa el desmuntatge"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:435
+#: gio/gmount.c:451
 msgid "mount doesn't implement eject"
 msgstr "el muntatge no implementa l'expulsió"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:517
+#: gio/gmount.c:533
 msgid "mount doesn't implement remount"
 msgstr "el muntatge no implementa el tornar-se a muntar"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:601
+#: gio/gmount.c:617
 msgid "mount doesn't implement content type guessing"
 msgstr "el muntatge no implementa l'estimació de tipus de contingut"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:690
+#: gio/gmount.c:706
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "el muntatge no implementa l'estimació de tipus de contingut síncron"
 
-#: gio/goutputstream.c:211 gio/goutputstream.c:412
+#: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "El flux de sortida no implementa l'escriptura"
 
-#: gio/goutputstream.c:372 gio/goutputstream.c:780
+#: gio/goutputstream.c:371 gio/goutputstream.c:780
 msgid "Source stream is already closed"
 msgstr "El flux font ja està tancat"
 
