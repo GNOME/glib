@@ -31,6 +31,7 @@ Overview of Changes from GLib 2.21.0 to GLib 2.21.1
  583663	GSocketType enum ends with a comma
  569024	Make g_error_new_valist public
  569376	missing G_G[U]INTPTR_FORMAT
+ 580347 off-by-1 bug in GWinHttpFile
 
 * Updated translations:
  Oriya
