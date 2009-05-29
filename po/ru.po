@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-03-14 16:16+0300\n"
 "Last-Translator: Yuriy Penkin <yuriy.penkin@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -890,7 +890,7 @@ msgstr "Текст был пуст (или содержал только про�
 msgid "Failed to read data from child process"
 msgstr "Не удалось прочитать данные из процесса-потомка"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Не удалось создать канал для сообщения с процессом-потомком (%s)"
@@ -1274,7 +1274,7 @@ msgstr "Для GEmblemedIcon ожидается GEmblem"
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
@@ -1431,7 +1431,7 @@ msgstr "Поток имеет незавершённое действие"
 msgid "Unable to find default local directory monitor type"
 msgstr "Не удалось найти тип монитора локальных каталогов по умолчанию"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Недопустимое имя файла %s"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-02-27 17:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: maithili <maithili.sf.net>\n"
@@ -847,7 +847,7 @@ msgstr "पाठ रिक्त छला (अथवा ओकरामे स
 msgid "Failed to read data from child process"
 msgstr "शिशु प्रक्रियासँ आँकड़ा पढ़बामे असफल"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "शिशु प्रक्रिया (%s) सँ संचारण लेल पाइप बनाबैमे असफल"
@@ -1221,7 +1221,7 @@ msgstr "GEmblem प्रत्याशित GEmblemedIcon केँ लेल
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "ऑपरेशन समर्थित नहि अछि"
 
@@ -1378,7 +1378,7 @@ msgstr "स्ट्रीमकेँ संग बचल आपरेशन �
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "अवैध फाइलनाम %s"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-03-09 12:38+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <discuss@lists.ankur.org.in>\n"
@@ -861,7 +861,7 @@ msgstr "টেক্সট ফাঁকা (অথবা শুধুমাত�
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্রসেস থেকে তথ্য পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্রসেসের সাথে যোগাযোগের উদ্দেশ্যে পাইপ নির্মাণে ব্যর্থ (%s)"
@@ -1236,7 +1236,7 @@ msgstr "GEmblemedIcon-র জন্য একটি GEmblem প্রত্য�
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "কর্ম সমর্থিত হয় না"
 
@@ -1393,7 +1393,7 @@ msgstr "স্ট্রিমের ক্ষেত্রে অসমাপ্�
 msgid "Unable to find default local directory monitor type"
 msgstr "স্থানীয় ডিরেক্টরি নিয়ন্ত্রণের ডিফল্ট ধরন সন্ধান করতে ব্যর্থ"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ফাইলের নাম অবৈধ: %s"

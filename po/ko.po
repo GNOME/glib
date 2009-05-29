@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-02-26 15:45+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -864,7 +864,7 @@ msgstr "텍스트가 비어 있음 (또는 공백만 들어 있음)"
 msgid "Failed to read data from child process"
 msgstr "자식 프로세스에서 데이터 읽기 실패"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "자식 프로세스와 통신을 위한 파이프를 만드는 중 실패 (%s)"
@@ -1240,7 +1240,7 @@ msgstr "GEmblemedIcon에 GEmblem이 없습니다"
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "동작을 지원하지 않습니다"
 
@@ -1397,7 +1397,7 @@ msgstr "스트림에 진행 중인 동작이 있습니다"
 msgid "Unable to find default local directory monitor type"
 msgstr "기본 로컬 디렉터리 모니터 종류를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"

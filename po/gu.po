@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-02-25 12:08+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -848,7 +848,7 @@ msgstr "વાક્ય ખાલી છે (અથવા તેમાં ફક
 msgid "Failed to read data from child process"
 msgstr "બાળ-પ્રક્રિયા માંથી માહિતી વાંચવા માં નિષ્ફળ છે"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) બાળપ્રક્રિયા સાથે સંપર્ક માટે પાઈપ બનાવવામાં નિષ્ફળ"
@@ -1222,7 +1222,7 @@ msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
 
@@ -1379,7 +1379,7 @@ msgstr "સ્ટ્રીમને ભરપૂર પ્રક્રિયા 
 msgid "Unable to find default local directory monitor type"
 msgstr "મૂળભૂત સ્થાનિક ડિરેક્ટરી મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "અયોગ્ય ફાઈલનામ %s"

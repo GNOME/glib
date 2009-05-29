@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2005-05-30 01:07-0800\n"
 "Last-Translator: Бадрал <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -877,7 +877,7 @@ msgstr "Текст хоосон байв (эсвэл зөвхөн цагаан �
 msgid "Failed to read data from child process"
 msgstr "Өгөгдөл хүү процессоор уншигдсангүй"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Хүү процесстой (%s) холбогдох шугам үүсгэж чадсангүй"
@@ -1259,7 +1259,7 @@ msgstr ""
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 #, fuzzy
 msgid "Operation not supported"
 msgstr "Символик холбоос дэмжигдээгүй"
@@ -1419,7 +1419,7 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, fuzzy, c-format
 msgid "Invalid filename %s"
 msgstr "Хүчингүй хостын нэр"

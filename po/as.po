@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-03-18 11:59+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
@@ -847,7 +847,7 @@ msgstr "টেক্সট ৰিক্ত (বা অকল শূণ্যস�
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ পৰা তথ্য পঢ়িবলৈ ব্যৰ্থ"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ সৈতে যোগাযোগৰ উদ্দেশ্যে পাইপ নিৰ্মাণত ব্যৰ্থ (%s)"
@@ -1219,7 +1219,7 @@ msgstr "GEmblemedIcon ৰ কাৰণে এটা GEmblem প্ৰত্য�
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "কাৰ্য্য সমৰ্থিত নহয়"
 
@@ -1376,7 +1376,7 @@ msgstr "স্ৰোতৰ ক্ষেত্ৰত অসমাপ্ত কৰ
 msgid "Unable to find default local directory monitor type"
 msgstr "অবিকল্পিত স্থানীয় পঞ্জিকাৰ মনিটৰৰ ধৰন পোৱা ন'গ'ল"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "নথিপত্ৰৰ নাম অৱৈধ: %s"

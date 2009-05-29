@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 23:24-0400\n"
+"POT-Creation-Date: 2009-05-29 13:00-0400\n"
 "PO-Revision-Date: 2009-03-17 21:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -851,7 +851,7 @@ msgstr "വാചകം ശൂന്യമായിരുന്നു (അല്
 msgid "Failed to read data from child process"
 msgstr "ചൈള്‍ഡ് പ്രക്രിയയില്‍ നിന്നും വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1468
+#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ചൈള്‍ഡ് പ്രക്രിയയുമായി ബന്ധപ്പെടുന്നതിനുളള പൈപ്പ് ഉണ്ടാക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
@@ -1226,7 +1226,7 @@ msgstr "GEmblemedIcon-നു് ഒരു GEmblem പ്രതീക്ഷിച
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
 #: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
 #: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:428
+#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1383,7 +1383,7 @@ msgstr "സ്ട്രീമില്‍ തെറ്റായ പ്രക്�
 msgid "Unable to find default local directory monitor type"
 msgstr "സ്വതവേയുള്ള ലോക്കല്‍ ഡയറക്ടറി തരത്തിലുള്ള മോണിറ്റര്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:411
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "തെറ്റായ ഫയല്‍ നാമം %s "
