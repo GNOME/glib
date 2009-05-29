@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.20.2 to GLib 2.20.3
+===================================================
+
+* Bug fixes:
+ 578769 implement GWinHttpFileInputStream::close_fn
+ 580347 off-by-1 bug in GWinHttpFile
+ 579558 Application employing gvfs crashes with only libgvfs...
+ 581879 GFileMonitor crash: emit_cb not handling monitor disposal...
+ 583324 locking problem in g_main_context_iterate
+
+* Updated translations:
+ Valencian-Catalan
+
+
 Overview of Changes from GLib 2.20.1 to GLib 2.20.2
 ===================================================
 
