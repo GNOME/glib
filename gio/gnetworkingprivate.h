@@ -23,7 +23,7 @@
 
 #ifdef G_OS_WIN32
 
-#define WINVER 0x0501 // FIXME?
+#define _WIN32_WINNT 0x0500
 #include <winsock2.h>
 #undef interface
 #include <ws2tcpip.h>
