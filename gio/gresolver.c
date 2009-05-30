@@ -636,7 +636,9 @@ g_resolver_error_from_addrinfo_error (gint err)
   switch (err)
     {
     case EAI_FAIL:
+#ifndef G_OS_WIN32 /* defined as NONAME claiming it is removed from rfc2553bis  */
     case EAI_NODATA:
+#endif
     case EAI_NONAME:
       return G_RESOLVER_ERROR_NOT_FOUND;
 
