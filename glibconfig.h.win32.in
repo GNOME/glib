@@ -255,8 +255,13 @@ union _GSystemThread
  */
 typedef void * GPid;
 
+#define GLIB_SYSDEF_AF_UNIX 1
 #define GLIB_SYSDEF_AF_INET 2
 #define GLIB_SYSDEF_AF_INET6 23
+
+#define GLIB_SYSDEF_MSG_OOB       1
+#define GLIB_SYSDEF_MSG_PEEK      2
+#define GLIB_SYSDEF_MSG_DONTROUTE 4
 
 G_END_DECLS
 

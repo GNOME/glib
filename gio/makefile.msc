@@ -5,7 +5,7 @@ PACKAGE = gio
 PKG_VER = 2.0
 !INCLUDE $(TOP)\glib\build\win32\make.msc
 
-# SUBDIRS = fam
+SUBDIRS = win32
 
 sub-all: 
 	for %d in ($(SUBDIRS)) do nmake -nologo -f makefile.msc sub-one THIS=%d
@@ -38,6 +38,7 @@ gio_headers =			\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
+	gemblem.h		\
 	gemblemedicon.h		\
 	gfile.h 		\
 	gfileattribute.h 	\
@@ -76,6 +77,7 @@ gio_headers =			\
 OBJECTS = \
 	gappinfo.obj \
 	gasynchelper.obj \
+	gasyncinitable.obj \
 	gasyncresult.obj \
 	gbufferedinputstream.obj \
 	gbufferedoutputstream.obj \
@@ -86,6 +88,7 @@ OBJECTS = \
 #	gdesktopappinfo.obj \
 	gdrive.obj \
 	gdummyfile.obj \
+	gemblem.obj \
 	gemblemedicon.obj \
 	gfile.obj \
 	gfileattribute.obj \
@@ -93,29 +96,51 @@ OBJECTS = \
 	gfileicon.obj \
 	gfileinfo.obj \
 	gfileinputstream.obj \
+	gfileiostream.obj \
 	gfilemonitor.obj \
 	gfilenamecompleter.obj \
 	gfileoutputstream.obj \
 	gfilterinputstream.obj \
 	gfilteroutputstream.obj \
 	gicon.obj \
+	ginetaddress.obj \
+	ginetsocketaddress.obj \
+	ginitable.obj \
 	ginputstream.obj \
 	gioenumtypes.obj \
 	gioerror.obj \
 	giomodule.obj \
 	gioscheduler.obj \
+	giostream.obj \
 	gloadableicon.obj \
+	glocalfileiostream.obj \
 	gmemoryinputstream.obj \
 	gmemoryoutputstream.obj \
 	gmount.obj \
 	gmountoperation.obj \
 	gnativevolumemonitor.obj \
+	gnetworkaddress.obj \
+	gnetworkservice.obj \
 	goutputstream.obj \
 	gpollfilemonitor.obj \
+	gresolver.obj \
 	gseekable.obj \
 	gsimpleasyncresult.obj \
-#	gsocketinputstream.obj \
-#	gsocketoutputstream.obj \
+	gsocket.obj \
+	gsocketaddress.obj \
+	gsocketaddressenumerator.obj \
+	gsocketclient.obj \
+	gsocketconnectable.obj \
+	gsocketconnection.obj \
+	gsocketcontrolmessage.obj \
+	gsocketlistener.obj \
+	gsocketservice.obj \
+	gsocketinputstream.obj \
+	gsocketoutputstream.obj \
+	gsrvtarget.obj \
+	gtcpconnection.obj \
+	gthreadedresolver.obj \
+	gthreadedsocketservice.obj \
 	gthemedicon.obj \
 	gunionvolumemonitor.obj \
 	gvfs.obj \
@@ -133,10 +158,9 @@ OBJECTS = \
 	gwin32appinfo.obj \
 	\
 	gio-marshal.obj \
-	gwin32directorymonitor.obj \
 	gwin32mount.obj \
-#	gwin32volume.obj \
-	gwin32volumemonitor.obj
+	gwin32volumemonitor.obj \
+	gwin32resolver.obj 
 
 libgio_2_0_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la \
@@ -159,38 +183,8 @@ unix_sources = \
 	gunixvolumemonitor.h \
 	$(NULL)
 
-NULL = \
-	
-
-libgio_2_0_la_LDFLAG = \
-	-export-dynamic \
-	$(no_undefined) \
-	-export-symbols-regex \
-	'^g_.*'
-
-giounixincludedi = \
-	$(includedir)/gio-unix-2.0/gio
-
-platform_libadd = \
-	-lshlwapi
-
 marshal_sources = \
 	gio-marshal.h gio-marshal.c $(NULL)
-
-gioincludedi = \
-	$(includedir)/glib-2.0/gio/
-
-EXTRA_DIST = \
-	gio-marshal.list $(NULL)
-
-CLEANFILES = \
-	$(marshal_sources) $(NULL)
-
-no_undefined = \
-	-no-undefined
-
-giounixinclude_HEADERS = \
-	gunixmounts.h $(NULL)
 
 GLIB_GEN_MARSHAL = ..\gobject\glib-genmarshal.exe 
 
@@ -226,12 +220,13 @@ local_sources = \
 
 all : \
 	$(PRJ_TOP)\config.h \
+	sub-all	\
 	gioalias.h		\
 	gioaliasdef.c		\
 	gio-marshal.c \
 	gioenumtypes.h		\
 	gioenumtypes.c		\
-	libgio-$(PKG_VER).dll
+	libgio-$(PKG_VER)-0.dll
 
 
 $(PRJ_TOP)\config.h: $(PRJ_TOP)\config.h.win32
@@ -255,16 +250,17 @@ gio.def: gio.symbols
 		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
 		-DG_GNUC_PRINTF=;G_GNUC_PRINTF gio.symbols >> gio.def
 
-gwin32directorymonitor.obj : win32\gwin32directorymonitor.c 
-	$(CC) $(CFLAGS) -I win32 -c win32\gwin32directorymonitor.c
-
 RESOURCE = $(PACKAGE).res
 
-libgio-$(PKG_VER).dll : $(OBJECTS) $(PACKAGE).def
-	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER).dll $(OBJECTS) \
+$(PACKAGE).res : $(PACKAGE).rc
+	rc -DBUILDNUMBER=0 -r -fo $(PACKAGE).res $(PACKAGE).rc
+
+libgio-$(PKG_VER)-0.dll : $(OBJECTS) win32\giowin32.lib $(PACKAGE).def $(RESOURCE)
+	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER)-0.dll $(OBJECTS) $(RESOURCE) \
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
+	win32\giowin32.lib \
 	$(INTL_LIBS) \
-	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib mpr.lib $(LDFLAGS) \
+	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib ws2_32.lib dnsapi.lib mpr.lib $(LDFLAGS) \
 	/implib:gio-2.0.lib /def:$(PACKAGE).def
 
 .c.obj :

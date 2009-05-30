@@ -8,7 +8,11 @@ TOP = ..\..
 ################################################################
 
 INCLUDES = -FImsvc_recommended_pragmas.h -I . -I ..
-DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG -DPCRE_STATIC
+DEFINES = \
+	-DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" \
+	-DG_ENABLE_DEBUG -DPCRE_STATIC -DG_DISABLE_DEPRECATED \
+	-DDLL_EXPORT=1
+
 DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\
@@ -21,6 +25,7 @@ all :				\
 	libglib-2.0-0.dll \
 	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	gspawn-win32-helper.exe	\
+	gspawn-win32-helper-console.exe	\
 
 
 gnulib\gnulib.lib :
@@ -39,56 +44,58 @@ glib_OBJECTS =			\
 	gatomic.obj	\
 	gbacktrace.obj		\
 	gbase64.obj	\
-	gbookmarkfile.obj 	\
-	gcache.obj		\
+	gbookmarkfile.obj \
+	gcache.obj \
 	gchecksum.obj	\
-	gcompletion.obj		\
-	gconvert.obj		\
-	gdataset.obj		\
-	gdate.obj		\
-	gdir.obj	\
-	gerror.obj		\
-	gfileutils.obj		\
-	ghash.obj		\
-	ghook.obj		\
-	giochannel.obj		\
-	giowin32.obj		\
-	gkeyfile.obj		\
-	glist.obj		\
-	gmain.obj		\
+	gcompletion.obj	\
+	gconvert.obj \
+	gdataset.obj \
+	gdate.obj \
+	gdir.obj \
+	gerror.obj \
+	gfileutils.obj \
+	ghash.obj \
+	ghostutils.obj \
+	ghook.obj \
+	giochannel.obj \
+	giowin32.obj \
+	gpoll.obj \
+	gkeyfile.obj \
+	glist.obj \
+	gmain.obj \
 	gmappedfile.obj	\
-	gmarkup.obj		\
-	gmem.obj		\
-	gmessages.obj		\
-	gnode.obj		\
-	goption.obj	\
-	gpattern.obj	\
-	gprimes.obj		\
-	gprintf.obj	\
-	gqsort.obj		\
-	gqueue.obj		\
-	grand.obj		\
-	gregex.obj		\
-	grel.obj		\
-	gscanner.obj		\
-	gsequence.obj	\
-	gshell.obj		\
-	gslice.obj	\
-	gslist.obj		\
-	gspawn-win32.obj	\
-	gstdio.obj	\
-	gstrfuncs.obj		\
-	gstring.obj		\
-	gtestutils.obj	\
-	gthread.obj		\
-	gthreadpool.obj		\
-	gtimer.obj		\
-	gtree.obj		\
-	gunibreak.obj		\
-	gunicollate.obj		\
-	gunidecomp.obj		\
-	guniprop.obj		\
-	gurifuncs.obj	\
+	gmarkup.obj \
+	gmem.obj \
+	gmessages.obj \
+	gnode.obj \
+	goption.obj \
+	gpattern.obj \
+	gprimes.obj \
+	gprintf.obj \
+	gqsort.obj \
+	gqueue.obj \
+	grand.obj \
+	gregex.obj \
+	grel.obj \
+	gscanner.obj \
+	gsequence.obj \
+	gshell.obj \
+	gslice.obj \
+	gslist.obj \
+	gspawn-win32.obj \
+	gstdio.obj \
+	gstrfuncs.obj \
+	gstring.obj \
+	gtestutils.obj \
+	gthread.obj \
+	gthreadpool.obj \
+	gtimer.obj \
+	gtree.obj \
+	gunibreak.obj \
+	gunicollate.obj \
+	gunidecomp.obj \
+	guniprop.obj \
+	gurifuncs.obj \
 	gutf8.obj		\
 	gutils.obj		\
 	gwin32.obj		\
@@ -106,14 +113,14 @@ galias.h: glib.symbols
 galiasdef.c: glib.symbols
 	  perl makegalias.pl -def < glib.symbols > galiasdef.c
 
-localcharset.c : libcharset/localcharset.c
-	copy libcharset\localcharset.c localcharset.c
+localcharset.obj : libcharset\localcharset.c
+	$(CC) $(CFLAGS) -DLIBDIR=\".\" -c libcharset\localcharset.c
 
 glib.def: glib.symbols
 	echo EXPORTS > glib.def
 	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES \
 		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
-		-DG_GNUC_PRINTF=;G_GNUC_PRINTF glib.symbols >> glib.def
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT glib.symbols >> glib.def
 
 glib.res : glib.rc
 	rc -DBUILDNUMBER=0 -r -fo glib.res glib.rc
@@ -132,6 +139,9 @@ libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib glib.def gli
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:windows user32.lib
+
+gspawn-win32-helper-console.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
+	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:console user32.lib
 
 ################ other stuff
 

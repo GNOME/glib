@@ -161,14 +161,14 @@ reference manual) for more information.
 Building with MSVC
 ==================
 
-If you are building from a SVN snapshot, you will not have any
+If you are building from a GIT snapshot, you will not have all
 makefile.msc files. You should copy the corresponding makefile.msc.in
 file to that name, and replace any @...@ strings with the correct
-value.
+value (or use the python script de-in.py from http://hans.breuer.org/gtk/de-in.py).
 
 This is done automatically when an official GLib source distribution
 package is built, so if you get GLib from a source distribution
-package, there should be makefile.msc files ready to use (after some
+package, there should be makefile.msc files ready to use (possibly after some
 editing).
 
 The hand-written makefile.msc files, and the stuff in the "build"
@@ -180,7 +180,12 @@ you want to use the VC-UI you can simply create wrapper .dsp makefiles
 (read the VC docs how to do so).
 
 Some modules may require Perl to auto-generate files. The goal (at
-least Hans's) is to not require any more tools.
+least Hans's) is to not require any more tools. Of course you need
+the Microsoft Platform SDK in a recent enough - but not too recent - version.
+The last PSDK for Visual Studio 6 is:
+  http://www.microsoft.com/msdownload/platformsdk/sdkupdate/psdk-full.htm
+At least install the Core SDK, maybe also the "Tablet PC SDK".
+
 
 Build with:
 
