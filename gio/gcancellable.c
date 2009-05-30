@@ -28,6 +28,7 @@
 #include <gioerror.h>
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <io.h>
 #endif
 #include "gcancellable.h"
 #include "glibintl.h"
