@@ -164,7 +164,7 @@ g_threaded_socket_service_finalize (GObject *object)
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
-  g_object_unref (service->priv->thread_pool);
+  g_thread_pool_free (service->priv->thread_pool, FALSE, TRUE);
 
   G_OBJECT_CLASS (g_threaded_socket_service_parent_class)
     ->finalize (object);
