@@ -37,6 +37,11 @@
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <io.h>
+
+#ifdef _MSC_VER
+#define fstat(a,b) _fstat(a,b)
+#endif
+
 #endif
 
 #include "gconvert.h"

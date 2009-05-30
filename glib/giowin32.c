@@ -81,6 +81,10 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+#ifdef _MSC_VER
+#define fstat(a,b) _fstat(a,b)
+#endif
+
 #include "gstdio.h"
 #include "glibintl.h"
 
