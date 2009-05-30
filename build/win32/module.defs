@@ -8,6 +8,9 @@
 
 MODULE_DEFS_INCLUDED=1
 
+# fallback if a specifc library is not contained in TOP (i.e. not self-compiled)
+DEVTOP=$(TOP)\..\other\dev
+
 ################
 # The version macros define what versions of libraries to use.
 
@@ -36,7 +39,7 @@ MODULE_DEFS_INCLUDED=1
 # built using libtool.
 
 ATK_VER = 1.0
-CAIRO_VER = 0.3
+CAIRO_VER = 1.4
 FREETYPE2_VER = 2.0
 GIMP_VER = 1.2
 GDK_PIXBUF_VER = 2.0
@@ -59,8 +62,10 @@ RSVG_VER = 2.4
 # In alphabetical order.
 
 ATK = $(TOP)/atk
-CAIRO = $(TOP)\cairo
+BABL = $(TOP)/babl
+CAIRO = d:\devel\from-svn\other\cairo-1.8.4
 GIMP = $(TOP)/gimp
+GEGL = $(TOP)/gegl
 GLIB = $(TOP)/glib
 GNOMECANVAS = $(TOP)\libgnomecanvas
 GNOMECANVAS_VER = 2.9
@@ -70,11 +75,13 @@ GNOMECANVAS_VER = 2.9
 GTK = $(TOP)/gtk+p
 # GTK+ 2.0
 GTK2 = $(TOP)/gtk+
+GTKSOURCEVIEW = $(TOP)/gtksourceview
 GNOMEPRINT = $(TOP)\libgnomeprint
 GNOMEPRINT_VER = 2.8
-GDK_PIXBUF = $(GTK)
 LIBGLADE = $(TOP)/libglade
 LIBXML = $(TOP)/libxml-$(LIBXML_VER)
+LIBXML2 = $(TOP)/libxml2
+#PANGO = $(TOP)/pango-1-8
 PANGO = $(TOP)/pango
 
 GNOMEPRINTUI = $(TOP)\libgnomeprintui
@@ -93,21 +100,25 @@ GLIB_GENMARSHAL = $(GLIB)/gobject/glib-genmarshal
 # mentioned here too literally, use the latest version you can find,
 # or the ones the current GTK+ 2.0 for Windows uses.
 
-FREETYPE2 = $(TOP)/freetype2
+#FREETYPE2 = $(TOP)/freetype2
 GTKEXTRA = $(TOP)/gtk+extra
 GTKGLAREA = $(TOP)/gtkglarea
-INTL = $(TOP)/gettext-0.10.40/intl
-JPEG = $(TOP)/jpeg-6b
+#INTL = d:/devel/from-svn/other/intl-tml
+JPEG = d:/devel/from-svn/other/jpeg-6b
+LCMS = d:/devel/other/lcms-1.15
 LIBART = $(TOP)/libart_lgpl
 LIBICONV = $(TOP)/libiconv-$(LIBICONV_VER)
 LIBXSLT = $(TOP)/libxslt
-PNG = $(TOP)/libpng-1.2.0
+#PNG = d:/devel/from-svn/other/lpng1224
 RSVG = $(TOP)\librsvg
 SVG = $(TOP)\libsvg
-TIFF = $(TOP)/tiff-v3.4
-ZLIB = $(TOP)/zlib-1.1.3
+#TIFF = d:/devel/from-svn/other/tiff-3.7.2
+#ZLIB = d:/devel/from-svn/other/zlib123
 
 # Headers from Microsoft's PlatformSDK (that aren't present in
 # mingw) are needed by a just a few packages when compiling with gcc.
 # This is just where tml has it installed.
 PLATFORMSDK = i:/src/psdk
+
+# 
+WTKIT = d:/devel/from-svn/other\wtkit126
