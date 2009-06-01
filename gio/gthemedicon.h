@@ -56,7 +56,7 @@ void   g_themed_icon_prepend_name               (GThemedIcon *icon,
 void   g_themed_icon_append_name                (GThemedIcon *icon,
                                                  const char  *iconname);
 
-const char * const *g_themed_icon_get_names     (GThemedIcon *icon);
+const gchar* const * g_themed_icon_get_names     (GThemedIcon *icon);
 
 G_END_DECLS
 
