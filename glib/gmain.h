@@ -158,6 +158,11 @@ void     g_main_context_remove_poll (GMainContext *context,
 gint     g_main_depth               (void);
 GSource *g_main_current_source      (void);
 
+/* GMainContexts for other threads
+ */
+void          g_main_context_push_thread_default (GMainContext *context);
+void          g_main_context_pop_thread_default  (GMainContext *context);
+GMainContext *g_main_context_get_thread_default  (void);
 
 /* GMainLoop: */
 

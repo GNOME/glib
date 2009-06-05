@@ -529,11 +529,12 @@ g_main_context_new (void)
 /**
  * g_main_context_default:
  * 
- * Returns the default main context. This is the main context used
- * for main loop functions when a main loop is not explicitly
- * specified.
+ * Returns the global default main context. This is the main context
+ * used for main loop functions when a main loop is not explicitly
+ * specified, and corresponds to the "main" main loop. See also
+ * g_main_context_get_thread_default().
  * 
- * Return value: the default main context.
+ * Return value: the global default main context.
  **/
 GMainContext *
 g_main_context_default (void)
@@ -554,6 +555,141 @@ g_main_context_default (void)
   G_UNLOCK (main_loop);
 
   return default_main_context;
+}
+
+static GStaticPrivate thread_context_stack = G_STATIC_PRIVATE_INIT;
+
+static void
+free_context_stack (gpointer data)
+{
+  GQueue *stack = data;
+  GMainContext *context;
+
+  while (!g_queue_is_empty (stack))
+    {
+      context = g_queue_pop_head (stack);
+      g_main_context_release (context);
+      if (context)
+	g_main_context_unref (context);
+    }
+  g_queue_free (stack);
+}
+
+/**
+ * g_main_context_push_thread_default:
+ * @context: a #GMainContext, or %NULL for the global default context
+ *
+ * Acquires @context and sets it as the thread-default context for the
+ * current thread. This will cause certain asynchronous operations
+ * (such as most <link linkend="gio">gio</link>-based I/O) which are
+ * started in this thread to run under @context and deliver their
+ * results to its main loop, rather than running under the global
+ * default context in the main thread. Note that calling this function
+ * changes the context returned by
+ * g_main_context_get_thread_default(), <emphasis>not</emphasis> the
+ * one returned by g_main_context_default(), so it does not affect the
+ * context used by functions like g_idle_add().
+ *
+ * Normally you would call this function shortly after creating a new
+ * thread, passing it a #GMainContext which will be run by a
+ * #GMainLoop in that thread, to set a new default context for all
+ * async operations in that thread. (In this case, you don't need to
+ * ever call g_main_context_pop_thread_default().) In some cases
+ * however, you may want to schedule a single operation in a
+ * non-default context, or temporarily use a non-default context in
+ * the main thread. In that case, you can wrap the call to the
+ * asynchronous operation inside a
+ * g_main_context_push_thread_default() /
+ * g_main_context_pop_thread_default() pair, but it is up to you to
+ * ensure that no other asynchronous operations accidentally get
+ * started while the non-default context is active.
+ *
+ * Beware that libraries that predate this function may not correctly
+ * handle being used from a thread with a thread-default context. Eg,
+ * see g_file_supports_thread_contexts().
+ *
+ * Since: 2.22
+ **/
+void
+g_main_context_push_thread_default (GMainContext *context)
+{
+  GQueue *stack;
+  gboolean acquired_context;
+
+  acquired_context = g_main_context_acquire (context);
+  g_return_if_fail (acquired_context);
+
+  if (context == g_main_context_default ())
+    context = NULL;
+  else if (context)
+    g_main_context_ref (context);
+
+  stack = g_static_private_get (&thread_context_stack);
+  if (!stack)
+    {
+      stack = g_queue_new ();
+      g_static_private_set (&thread_context_stack, stack,
+			    free_context_stack);
+    }
+
+  g_queue_push_head (stack, context);
+}
+
+/**
+ * g_main_context_pop_thread_default:
+ * @context: a #GMainContext object, or %NULL
+ *
+ * Pops @context off the thread-default context stack (verifying that
+ * it was on the top of the stack).
+ *
+ * Since: 2.22
+ **/
+void
+g_main_context_pop_thread_default (GMainContext *context)
+{
+  GQueue *stack;
+
+  if (context == g_main_context_default ())
+    context = NULL;
+
+  stack = g_static_private_get (&thread_context_stack);
+
+  g_return_if_fail (stack != NULL);
+  g_return_if_fail (g_queue_peek_head (stack) == context);
+
+  g_queue_pop_head (stack);
+
+  g_main_context_release (context);
+  if (context)
+    g_main_context_unref (context);
+}
+
+/**
+ * g_main_context_get_thread_default:
+ *
+ * Gets the thread-default #GMainContext for this thread. Asynchronous
+ * operations that want to be able to be run in contexts other than
+ * the default one should call this method to get a #GMainContext to
+ * add their #GSource<!-- -->s to. (Note that even in single-threaded
+ * programs applications may sometimes want to temporarily push a
+ * non-default context, so it is not safe to assume that this will
+ * always return %NULL if threads are not initialized.)
+ *
+ * Returns: the thread-default #GMainContext, or %NULL if the
+ * thread-default context is the global default context.
+ *
+ * Since: 2.22
+ **/
+GMainContext *
+g_main_context_get_thread_default (void)
+{
+  GQueue *stack;
+
+  stack = g_static_private_get (&thread_context_stack);
+  if (stack)
+    return g_queue_peek_head (stack);
+  else
+    return NULL;
 }
 
 /* Hooks for adding to the main loop */

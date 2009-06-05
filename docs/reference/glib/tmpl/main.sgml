@@ -545,6 +545,30 @@ for the default main context.
 @Deprecated: 2.2: Use g_main_context_set_poll_func() instead.
 
 
+<!-- ##### FUNCTION g_main_context_get_thread_default ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_push_thread_default ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_pop_thread_default ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
 <!-- ##### FUNCTION g_timeout_source_new ##### -->
 <para>
 
