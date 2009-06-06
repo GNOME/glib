@@ -134,7 +134,7 @@ static GBSearchArray *transform_array = NULL;
 static GBSearchConfig transform_bconfig = {
   sizeof (TransformEntry),
   transform_entries_cmp,
-  0,
+  G_BSEARCH_ARRAY_ALIGN_POWER2,
 };
 
 
