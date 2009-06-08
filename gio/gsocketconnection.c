@@ -157,7 +157,7 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  * @connection: a #GSocketConnection
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Try to get the remove address of a socket connection.
+ * Try to get the remote address of a socket connection.
  *
  * Returns: a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
