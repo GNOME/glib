@@ -2210,27 +2210,31 @@ copy_stream_with_progress (GInputStream           *in,
   GFileInfo *info;
 
   total_size = -1;
-  info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (in),
-					 G_FILE_ATTRIBUTE_STANDARD_SIZE,
-					 cancellable, NULL);
-  if (info)
+  /* avoid performance impact of querying total size when it's not needed */
+  if (progress_callback)
     {
-      if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
-        total_size = g_file_info_get_size (info);
-      g_object_unref (info);
-    }
-
-  if (total_size == -1)
-    {
-      info = g_file_query_info (source, 
-                                G_FILE_ATTRIBUTE_STANDARD_SIZE,
-                                G_FILE_QUERY_INFO_NONE,
-                                cancellable, NULL);
+      info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (in),
+                                             G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                             cancellable, NULL);
       if (info)
         {
           if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
             total_size = g_file_info_get_size (info);
           g_object_unref (info);
+        }
+
+      if (total_size == -1)
+        {
+          info = g_file_query_info (source, 
+                                    G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                    G_FILE_QUERY_INFO_NONE,
+                                    cancellable, NULL);
+          if (info)
+            {
+              if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
+                total_size = g_file_info_get_size (info);
+              g_object_unref (info);
+            }
         }
     }
 
