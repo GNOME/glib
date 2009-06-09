@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <gio/gio.h>
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -97,34 +98,38 @@ write_out_typelib (gchar *prefix,
 {
   FILE *file;
   gsize written;
+  GFile *file_obj;
+  gchar *filename;
+  GFile *tmp_file_obj;
+  gchar *tmp_filename;
+  GError *error = NULL;
 
   if (output == NULL)
     {
       file = stdout;
+      filename = NULL;
+      tmp_filename = NULL;
 #ifdef G_OS_WIN32
       setmode (fileno (file), _O_BINARY);
 #endif
     }
   else
     {
-      gchar *filename;
-
       if (prefix)
 	filename = g_strdup_printf ("%s-%s", prefix, output);  
       else
 	filename = g_strdup (output);
-      file = g_fopen (filename, "wb");
+      file_obj = g_file_new_for_path (filename);
+      tmp_filename = g_strdup_printf ("%s.tmp", filename);
+      tmp_file_obj = g_file_new_for_path (tmp_filename);
+      file = g_fopen (tmp_filename, "wb");
 
       if (file == NULL)
 	{
 	  g_fprintf (stderr, "failed to open '%s': %s\n",
-		     filename, g_strerror (errno));
-	  g_free (filename);
-
-	  return;
+		     tmp_filename, g_strerror (errno));
+	  goto out;
 	}
-
-      g_free (filename);
     }
 
   if (!code)
@@ -133,7 +138,7 @@ write_out_typelib (gchar *prefix,
       if (written < typelib->len) {
         g_error ("ERROR: Could not write the whole output: %s",
                  strerror(errno));
-        return;
+        goto out;
       }
     }
   else
@@ -146,7 +151,18 @@ write_out_typelib (gchar *prefix,
     }
 
   if (output != NULL)
-    fclose (file);    
+    fclose (file);
+  if (tmp_filename != NULL)
+    {
+      if (!g_file_move (tmp_file_obj, file_obj, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error))
+        {
+          g_error ("ERROR: failed to rename %s to %s: %s", tmp_filename, filename, error->message);
+          g_clear_error (&error);
+        }
+    }
+out:
+  g_free (filename);
+  g_free (tmp_filename);
 }
 
 GLogLevelFlags logged_levels;
