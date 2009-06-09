@@ -891,6 +891,47 @@ clear_attributes (GMarkupParseContext *context)
   g_assert (context->attr_values == NULL ||
 	    context->attr_values[0] == NULL);
 }
+
+/* This has to be a separate function to ensure the alloca's
+   are unwound on exit - otherwise we grow & blow the stack
+   with large documents */
+static inline void
+emit_start_element (GMarkupParseContext *context, GError **error)
+{
+  int i;
+  const gchar *start_name;
+  const gchar **attr_names;
+  const gchar **attr_values;
+  GError *tmp_error;
+  
+  attr_names = g_newa (const gchar *, context->cur_attr + 2);
+  attr_values = g_newa (const gchar *, context->cur_attr + 2);
+  for (i = 0; i < context->cur_attr + 1; i++)
+    {
+      attr_names[i] = context->attr_names[i]->str;
+      attr_values[i] = context->attr_values[i]->str;
+    }
+  attr_names[i] = NULL;
+  attr_values[i] = NULL;
+  
+  /* Call user callback for element start */
+  tmp_error = NULL;
+  start_name = current_element (context);
+  
+  if (context->parser->start_element &&
+      name_validate (context, start_name, error))
+    (* context->parser->start_element) (context,
+					start_name,
+					(const gchar **)attr_names,
+					(const gchar **)attr_values,
+					context->user_data,
+					&tmp_error);
+  clear_attributes (context);
+  
+  if (tmp_error != NULL)
+    propagate_error (context, error, tmp_error);
+}
+
 /**
  * g_markup_parse_context_parse:
  * @context: a #GMarkupParseContext
@@ -1217,40 +1258,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                */
               if (context->state == STATE_AFTER_ELISION_SLASH ||
                   context->state == STATE_AFTER_CLOSE_ANGLE)
-                {
-		  int i;
-		  const gchar *start_name;
-                  const gchar **attr_names;
-                  const gchar **attr_values;
-                  GError *tmp_error;
-
-		  attr_names = g_newa (const gchar *, context->cur_attr + 2);
-		  attr_values = g_newa (const gchar *, context->cur_attr + 2);
-		  for (i = 0; i < context->cur_attr + 1; i++)
-		    {
-		      attr_names[i] = context->attr_names[i]->str;
-		      attr_values[i] = context->attr_values[i]->str;
-		    }
-		  attr_names[i] = NULL;
-		  attr_values[i] = NULL;
-
-                  /* Call user callback for element start */
-                  tmp_error = NULL;
-		  start_name = current_element (context);
-
-                  if (context->parser->start_element &&
-		      name_validate (context, start_name, error))
-                    (* context->parser->start_element) (context,
-							start_name,
-                                                        (const gchar **)attr_names,
-                                                        (const gchar **)attr_values,
-                                                        context->user_data,
-                                                        &tmp_error);
-		  clear_attributes (context);
-                  
-                  if (tmp_error != NULL)
-                    propagate_error (context, error, tmp_error);
-                }
+		emit_start_element (context, error);
             }
           break;
 
