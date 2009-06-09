@@ -327,11 +327,11 @@ g_cancellable_reset (GCancellable *cancellable)
 
   G_LOCK(cancellable);
   
-  if (cancellable->cancelled_running)
+  while (cancellable->cancelled_running)
     {
-      g_critical ("Can't reset a cancellable during an active operation");
-      G_UNLOCK(cancellable);
-      return;
+      cancellable->cancelled_running_waiting = TRUE;
+      g_cond_wait (cancellable_cond,
+                   g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
     }
   
   if (cancellable->cancelled)
