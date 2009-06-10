@@ -823,125 +823,6 @@ prepend_terminal_to_vector (int    *argc,
 #endif /* G_OS_WIN32 */
 }
 
-/* '=' is the new '\0'.
- * DO NOT CALL unless at least one string ends with '='
- */
-static gboolean
-is_env (const char *a,
-	const char *b)
-{
-  while (*a == *b)
-  {
-    if (*a == 0 || *b == 0)
-      return FALSE;
-    
-    if (*a == '=')
-      return TRUE;
-
-    a++;
-    b++;
-  }
-
-  return FALSE;
-}
-
-/* free with g_strfreev */
-static char **
-replace_env_var (char       **old_environ,
-		 const char  *env_var,
-		 const char  *new_value)
-{
-  int length, new_length;
-  int index, new_index;
-  char **new_environ;
-  int i, new_i;
-
-  /* do two things at once:
-   *  - discover the length of the environment ('length')
-   *  - find the location (if any) of the env var ('index')
-   */
-  index = -1;
-  for (length = 0; old_environ[length]; length++)
-    {
-      /* if we already have it in our environment, replace */
-      if (is_env (old_environ[length], env_var))
-	index = length;
-    }
-
-  
-  /* no current env var, no desired env value.
-   * this is easy :)
-   */
-  if (new_value == NULL && index == -1)
-    return old_environ;
-
-  /* in all cases now, we will be using a modified environment.
-   * determine its length and allocated it.
-   * 
-   * after this block:
-   *   new_index   = location to insert, if any
-   *   new_length  = length of the new array
-   *   new_environ = the pointer array for the new environment
-   */
-  
-  if (new_value == NULL && index >= 0)
-    {
-      /* in this case, we will be removing an entry */
-      new_length = length - 1;
-      new_index = -1;
-    }
-  else if (new_value != NULL && index < 0)
-    {
-      /* in this case, we will be adding an entry to the end */
-      new_length = length + 1;
-      new_index = length;
-    }
-  else
-    /* in this case, we will be replacing the existing entry */
-    {
-      new_length = length;
-      new_index = index;
-    }
-
-  new_environ = g_malloc (sizeof (char *) * (new_length + 1));
-  new_environ[new_length] = NULL;
-
-  /* now we do the copying.
-   * for each entry in the new environment, we decide what to do
-   */
-  
-  i = 0;
-  for (new_i = 0; new_i < new_length; new_i++)
-    {
-      if (new_i == new_index)
-	{
-	  /* insert our new item */
-	  new_environ[new_i] = g_strconcat (env_var,
-					    "=",
-					    new_value,
-					    NULL);
-	  
-	  /* if we had an old entry, skip it now */
-	  if (index >= 0)
-	    i++;
-	}
-      else
-	{
-	  /* if this is the old DESKTOP_STARTUP_ID, skip it */
-	  if (i == index)
-	    i++;
-	  
-	  /* copy an old item */
-	  new_environ[new_i] = g_strdup (old_environ[i]);
-	  i++;
-	}
-    }
-
-  g_strfreev (old_environ);
-  
-  return new_environ;
-}
-
 static GList *
 uri_list_segment_to_files (GList *start,
 			   GList *end)
@@ -960,15 +841,27 @@ uri_list_segment_to_files (GList *start,
   return g_list_reverse (res);
 }
 
-#ifdef HAVE__NSGETENVIRON
-#define environ (*_NSGetEnviron())
-#elif !defined(G_OS_WIN32)
+typedef struct
+{
+  const char *display;
+  const char *sn_id;
+} ChildSetupData;
 
-/* According to the Single Unix Specification, environ is not in 
- *  * any system header, although unistd.h often declares it.
- *   */
-extern char **environ;
-#endif
+static void
+child_setup (gpointer user_data)
+{
+  ChildSetupData *data = user_data;
+
+  if (data->display)
+    g_setenv ("DISPLAY", data->display, TRUE);
+  else
+    g_unsetenv ("DISPLAY");
+
+  if (data->sn_id)
+    g_setenv ("DESKTOP_STARTUP_ID", data->sn_id, TRUE);
+  else
+    g_unsetenv ("DESKTOP_STARTUP_ID");
+}
 
 static gboolean
 g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
@@ -980,18 +873,15 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
   gboolean completed = FALSE;
   GList *old_uris;
   GList *launched_files;
-  char **envp;
   char **argv;
   int argc;
-  char *display;
-  char *sn_id;
+  ChildSetupData data;
 
   g_return_val_if_fail (appinfo != NULL, FALSE);
 
   argv = NULL;
-  envp = NULL;
-      
-  do 
+
+  do
     {
       old_uris = uris;
       if (!expand_application_parameters (info, &uris,
@@ -1005,70 +895,47 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 	  goto out;
 	}
 
-      sn_id = NULL;
+      data.display = NULL;
+      data.sn_id = NULL;
+
       if (launch_context)
 	{
 	  launched_files = uri_list_segment_to_files (old_uris, uris);
-	  
-	  display = g_app_launch_context_get_display (launch_context,
-						      appinfo,
-						      launched_files);
 
-	  sn_id = NULL;
+	  data.display = g_app_launch_context_get_display (launch_context,
+						           appinfo,
+						           launched_files);
+
 	  if (info->startup_notify)
-	    sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
-								appinfo,
-								launched_files);
-	  
-	  if (display || sn_id)
-	    {
-#ifdef G_OS_WIN32
-	      /* FIXME */
-	      envp = g_new0 (char *, 1);
-#else
-	      envp = g_strdupv (environ);
-#endif
-	      
-	      if (display)
-		envp = replace_env_var (envp,
-					"DISPLAY",
-					display);
-	      
-	      if (sn_id)
-		envp = replace_env_var (envp,
-					"DESKTOP_STARTUP_ID",
-					sn_id);
-	    }
-
-	  g_free (display);
-	  
+	    data.sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
+								     appinfo,
+								     launched_files);
 	  g_list_foreach (launched_files, (GFunc)g_object_unref, NULL);
 	  g_list_free (launched_files);
 	}
-      
-      if (!g_spawn_async (info->path,  /* working directory */
+
+      if (!g_spawn_async (info->path,
 			  argv,
-			  envp,
-			  G_SPAWN_SEARCH_PATH /* flags */,
-			  NULL /* child_setup */,
-			  NULL /* data */,
-			  NULL /* child_pid */,
+			  NULL,
+			  G_SPAWN_SEARCH_PATH,
+			  child_setup,
+			  &data,
+			  NULL,
 			  error))
 	{
-	  if (sn_id)
-	    {
-	      g_app_launch_context_launch_failed (launch_context, sn_id);
-	      g_free (sn_id);
-	    }
+	  if (data.sn_id)
+	    g_app_launch_context_launch_failed (launch_context, data.sn_id);
+
+	  g_free (data.sn_id);
+	  g_free (data.display);
+
 	  goto out;
 	}
 
-      
-      g_free (sn_id);
-      
-      g_strfreev (envp);
+      g_free (data.sn_id);
+      g_free (data.display);
+
       g_strfreev (argv);
-      envp = NULL;
       argv = NULL;
     }
   while (uris != NULL);
@@ -1077,7 +944,6 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
  out:
   g_strfreev (argv);
-  g_strfreev (envp);
 
   return completed;
 }
