@@ -50,6 +50,28 @@ test_string_chunks (void)
 }
 
 static void
+test_string_chunk_insert (void)
+{
+  const gchar s0[] = "Testing GStringChunk";
+  const gchar s1[] = "a\0b\0c\0d\0";
+  const gchar s2[] = "Hello, world";
+  GStringChunk *chunk;
+  gchar *str[3];
+
+  chunk = g_string_chunk_new (512);
+
+  str[0] = g_string_chunk_insert (chunk, s0);
+  str[1] = g_string_chunk_insert_len (chunk, s1, 8);
+  str[2] = g_string_chunk_insert (chunk, s2);
+
+  g_assert (memcmp (s0, str[0], sizeof s0) == 0);
+  g_assert (memcmp (s1, str[1], sizeof s1) == 0);
+  g_assert (memcmp (s2, str[2], sizeof s2) == 0);
+
+  g_string_chunk_free (chunk);
+}
+
+static void
 test_string_new (void)
 {
   GString *string1, *string2;
@@ -376,6 +398,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/string/test-string-chunks", test_string_chunks);
+  g_test_add_func ("/string/test-string-chunk-insert", test_string_chunk_insert);
   g_test_add_func ("/string/test-string-new", test_string_new);
   g_test_add_func ("/string/test-string-printf", test_string_printf);
   g_test_add_func ("/string/test-string-assign", test_string_assign);

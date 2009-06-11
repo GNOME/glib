@@ -247,22 +247,22 @@ g_string_chunk_insert (GStringChunk *chunk,
  * g_string_chunk_insert_const:
  * @chunk: a #GStringChunk
  * @string: the string to add
- * 
- * Adds a copy of @string to the #GStringChunk, unless the same 
- * string has already been added to the #GStringChunk with 
+ *
+ * Adds a copy of @string to the #GStringChunk, unless the same
+ * string has already been added to the #GStringChunk with
  * g_string_chunk_insert_const().
- * 
- * This function is useful if you need to copy a large number 
- * of strings but do not want to waste space storing duplicates. 
- * But you must remember that there may be several pointers to 
- * the same string, and so any changes made to the strings 
+ *
+ * This function is useful if you need to copy a large number
+ * of strings but do not want to waste space storing duplicates.
+ * But you must remember that there may be several pointers to
+ * the same string, and so any changes made to the strings
  * should be done very carefully.
- * 
- * Note that g_string_chunk_insert_const() will not return a 
- * pointer to a string added with g_string_chunk_insert(), even 
+ *
+ * Note that g_string_chunk_insert_const() will not return a
+ * pointer to a string added with g_string_chunk_insert(), even
  * if they do match.
- * 
- * Returns: a pointer to the new or existing copy of @string 
+ *
+ * Returns: a pointer to the new or existing copy of @string
  *          within the #GStringChunk
  */
 gchar*
@@ -291,26 +291,26 @@ g_string_chunk_insert_const (GStringChunk *chunk,
  * g_string_chunk_insert_len:
  * @chunk: a #GStringChunk
  * @string: bytes to insert
- * @len: number of bytes of @string to insert, or -1 to insert a 
- *     nul-terminated string 
- * 
- * Adds a copy of the first @len bytes of @string to the #GStringChunk. 
+ * @len: number of bytes of @string to insert, or -1 to insert a
+ *     nul-terminated string
+ *
+ * Adds a copy of the first @len bytes of @string to the #GStringChunk.
  * The copy is nul-terminated.
- * 
+ *
  * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @string has at least @len addressable 
+ * responsibility to ensure that @string has at least @len addressable
  * bytes.
  *
- * The characters in the returned string can be changed, if necessary, 
+ * The characters in the returned string can be changed, if necessary,
  * though you should not change anything after the end of the string.
- * 
+ *
  * Return value: a pointer to the copy of @string within the #GStringChunk
- * 
+ *
  * Since: 2.4
- **/
+ */
 gchar*
 g_string_chunk_insert_len (GStringChunk *chunk,
-			   const gchar  *string, 
+			   const gchar  *string,
 			   gssize        len)
 {
   gssize size;
@@ -322,7 +322,7 @@ g_string_chunk_insert_len (GStringChunk *chunk,
     size = strlen (string);
   else
     size = len;
-  
+
   if ((chunk->storage_next + size + 1) > chunk->this_size)
     {
       gsize new_size = nearest_power (chunk->default_size, size + 1);
@@ -338,9 +338,7 @@ g_string_chunk_insert_len (GStringChunk *chunk,
 
   *(pos + size) = '\0';
 
-  strncpy (pos, string, size);
-  if (len > 0)
-    size = strlen (pos);
+  memcpy (pos, string, size);
 
   chunk->storage_next += size + 1;
 
