@@ -854,13 +854,9 @@ child_setup (gpointer user_data)
 
   if (data->display)
     g_setenv ("DISPLAY", data->display, TRUE);
-  else
-    g_unsetenv ("DISPLAY");
 
   if (data->sn_id)
     g_setenv ("DESKTOP_STARTUP_ID", data->sn_id, TRUE);
-  else
-    g_unsetenv ("DESKTOP_STARTUP_ID");
 }
 
 static gboolean
