@@ -107,8 +107,10 @@ write_out_typelib (gchar *prefix,
   if (output == NULL)
     {
       file = stdout;
+      file_obj = NULL;
       filename = NULL;
       tmp_filename = NULL;
+      tmp_file_obj = NULL;
 #ifdef G_OS_WIN32
       setmode (fileno (file), _O_BINARY);
 #endif
