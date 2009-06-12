@@ -87,14 +87,14 @@ gboolean                g_socket_listener_add_socket                    (GSocket
                                                                          GSocket             *socket,
 									 GObject             *source_object,
 									 GError             **error);
-gboolean                g_socket_listener_add_address                   (GSocketListener      *listener,
+gboolean                g_socket_listener_add_address                   (GSocketListener     *listener,
                                                                          GSocketAddress      *address,
 									 GSocketType          type,
 									 GSocketProtocol      protocol,
 									 GObject             *source_object,
 									 GError             **error);
-gboolean                g_socket_listener_add_inet_port                 (GSocketListener      *listener,
-                                                                         int                  port,
+gboolean                g_socket_listener_add_inet_port                 (GSocketListener     *listener,
+                                                                         guint16              port,
 									 GObject             *source_object,
 									 GError             **error);
 
