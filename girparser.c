@@ -29,6 +29,10 @@
 #include "gtypelib.h"
 #include "config.h"
 
+#if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
+# include <execinfo.h>
+#endif
+
 struct _GIrParser
 {
   gchar **includes;
@@ -276,9 +280,8 @@ backtrace_stderr (void)
 {
 #if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
   void *array[50];
-  int size;
+  int size, i;
   char **strings;
-  size_t i;
 
   size = backtrace (array, 50);
   strings = (char**) backtrace_symbols (array, size);
@@ -288,7 +291,7 @@ backtrace_stderr (void)
   for (i = 0; i < size; i++)
     fprintf (stderr, "%s\n", strings[i]);
 
-  fprintf (stderr, "--- END BACKTRACE ---\n", size);
+  fprintf (stderr, "--- END BACKTRACE ---\n");
 
   free (strings);
 #endif
