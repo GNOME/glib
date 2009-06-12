@@ -1102,6 +1102,7 @@ g_socket_send_to
 g_socket_set_blocking
 g_socket_set_keepalive
 g_socket_set_listen_backlog
+g_socket_speaks_ipv4
 #endif
 #endif
 

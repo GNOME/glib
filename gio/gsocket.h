@@ -161,6 +161,7 @@ gboolean               g_socket_is_closed               (GSocket                
 GSource *              g_socket_create_source           (GSocket                 *socket,
 							 GIOCondition             condition,
 							 GCancellable            *cancellable);
+gboolean               g_socket_speaks_ipv4             (GSocket                 *socket);
 
 G_END_DECLS
 

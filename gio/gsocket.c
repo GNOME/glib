@@ -1278,6 +1278,54 @@ g_socket_bind (GSocket         *socket,
 }
 
 /**
+ * g_socket_speaks_ipv4:
+ * @socket: a #GSocket
+ *
+ * Checks if a socket is capable of speaking IPv4.
+ *
+ * IPv4 sockets are capable of speaking IPv4.  On some operating systems
+ * and under some combinations of circumstances IPv6 sockets are also
+ * capable of speaking IPv4.  See RFC 3493 section 3.7 for more
+ * information.
+ *
+ * No other types of sockets are currently considered as being capable
+ * of speaking IPv4.
+ *
+ * Returns: %TRUE if this socket can be used with IPv4.
+ *
+ * Since: 2.22.
+ **/
+gboolean
+g_socket_speaks_ipv4 (GSocket *socket)
+{
+  switch (socket->priv->family)
+    {
+    case G_SOCKET_FAMILY_IPV4:
+      return TRUE;
+
+    case G_SOCKET_FAMILY_IPV6:
+#if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
+      {
+        guint sizeof_int = sizeof (int);
+        gint v6_only;
+
+        if (getsockopt (socket->priv->fd,
+                        IPPROTO_IPV6, IPV6_V6ONLY,
+                        &v6_only, &sizeof_int) != 0)
+          return FALSE;
+
+        return !v6_only;
+      }
+#else
+      return FALSE;
+#endif
+
+    default:
+      return FALSE;
+    }
+}
+
+/**
  * g_socket_accept:
  * @socket: a #GSocket.
  * @error: #GError for error reporting, or %NULL to ignore.

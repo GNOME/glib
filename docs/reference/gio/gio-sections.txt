@@ -1668,6 +1668,7 @@ g_socket_get_local_address
 g_socket_get_protocol
 g_socket_get_remote_address
 g_socket_get_socket_type
+g_socket_speaks_ipv4
 <SUBSECTION Standard>
 GSocketClass
 G_IS_SOCKET
