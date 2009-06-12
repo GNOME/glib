@@ -843,8 +843,8 @@ uri_list_segment_to_files (GList *start,
 
 typedef struct
 {
-  const char *display;
-  const char *sn_id;
+  char *display;
+  char *sn_id;
 } ChildSetupData;
 
 static void
