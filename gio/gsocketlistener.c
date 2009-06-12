@@ -256,6 +256,11 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * it to @address and adds it to the set of sockets we're accepting
  * sockets from.
  *
+ * Note that adding an IPv6 address, depending on the platform,
+ * may or may not result in a listener that also accepts IPv4
+ * connections.  For more determinstic behaviour, see
+ * g_socket_listener_add_inet_port().
+ *
  * @source_object will be passed out in the various calls
  * to accept to identify this particular source, which is
  * useful if you're listening on multiple addresses and do
@@ -305,7 +310,7 @@ g_socket_listener_add_address (GSocketListener  *listener,
 /**
  * g_socket_listener_add_inet_port:
  * @listener: a #GSocketListener
- * @port: an ip port number
+ * @port: an IP port number (non-zero)
  * @source_object: Optional #GObject identifying this source
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -328,54 +333,137 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
 				 GObject          *source_object,
 				 GError          **error)
 {
-  GSocketAddress *address4, *address6;
-  GInetAddress *inet_address;
-  gboolean res;
+  gboolean need_ipv4_socket = TRUE;
+  GSocket *socket4 = NULL;
+  GSocket *socket6;
+
+  g_return_val_if_fail (listener != NULL, FALSE);
+  g_return_val_if_fail (port != 0, FALSE);
 
   if (!check_listener (listener, error))
     return FALSE;
 
-  inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
-  address4 = g_inet_socket_address_new (inet_address, port);
-  g_object_unref (inet_address);
+  /* first try to create an IPv6 socket */
+  socket6 = g_socket_new (G_SOCKET_FAMILY_IPV6,
+                          G_SOCKET_TYPE_STREAM,
+                          G_SOCKET_PROTOCOL_DEFAULT,
+                          NULL);
 
-  inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV6);
-  address6 = g_inet_socket_address_new (inet_address, port);
-  g_object_unref (inet_address);
-
-  if (!g_socket_listener_add_address (listener,
-				      address6,
-				      G_SOCKET_TYPE_STREAM,
-				      G_SOCKET_PROTOCOL_DEFAULT,
-				      source_object,
-				      NULL))
+  if (socket6 != NULL)
+    /* IPv6 is supported on this platform, so if we fail now it is
+     * a result of being unable to bind to our port.  Don't fail
+     * silently as a result of this!
+     */
     {
-      /* Failed, to create ipv6, socket, just use ipv4,
-	 return any error */
-      res = g_socket_listener_add_address (listener,
-					   address4,
-					   G_SOCKET_TYPE_STREAM,
-					   G_SOCKET_PROTOCOL_DEFAULT,
-					   source_object,
-					   error);
+      GInetAddress *inet_address;
+      GSocketAddress *address;
+      gboolean result;
+
+      inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV6);
+      address = g_inet_socket_address_new (inet_address, port);
+      g_object_unref (inet_address);
+
+      g_socket_set_listen_backlog (socket6, listener->priv->listen_backlog);
+
+      result = g_socket_bind (socket6, address, TRUE, error) &&
+               g_socket_listen (socket6, error);
+
+      g_object_unref (address);
+
+      if (!result)
+        {
+          g_object_unref (socket6);
+
+          return FALSE;
+        }
+
+      if (source_object)
+        g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
+                                 g_object_ref (source_object),
+                                 g_object_unref);
+
+      /* If this socket already speaks IPv4 then we are done. */
+      if (g_socket_speaks_ipv4 (socket6))
+        need_ipv4_socket = FALSE;
     }
-  else
+
+  if (need_ipv4_socket)
+    /* We are here for exactly one of the following reasons:
+     *
+     *   - our platform doesn't support IPv6
+     *   - we successfully created an IPv6 socket but it's V6ONLY
+     *
+     * In either case, we need to go ahead and create an IPv4 socket
+     * and fail the call if we can't bind to it.
+     */
     {
-      /* Succeeded with ipv6, also try ipv4 in case its ipv6 only,
-	 but ignore errors here */
-      res = TRUE;
-      g_socket_listener_add_address (listener,
-				     address4,
-				     G_SOCKET_TYPE_STREAM,
-				     G_SOCKET_PROTOCOL_DEFAULT,
-				     source_object,
-				     NULL);
+      socket4 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                              G_SOCKET_TYPE_STREAM,
+                              G_SOCKET_PROTOCOL_DEFAULT,
+                              error);
+
+      if (socket4 != NULL)
+        /* IPv4 is supported on this platform, so if we fail now it is
+         * a result of being unable to bind to our port.  Don't fail
+         * silently as a result of this!
+         */
+        {
+          GInetAddress *inet_address;
+          GSocketAddress *address;
+          gboolean result;
+
+          inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+          address = g_inet_socket_address_new (inet_address, port);
+          g_object_unref (inet_address);
+
+          g_socket_set_listen_backlog (socket4,
+                                       listener->priv->listen_backlog);
+
+          result = g_socket_bind (socket4, address, TRUE, error) &&
+                   g_socket_listen (socket4, error);
+
+          g_object_unref (address);
+
+          if (!result)
+            {
+              g_object_unref (socket4);
+
+              if (socket6 != NULL)
+                g_object_unref (socket6);
+
+              return FALSE;
+            }
+
+          if (source_object)
+            g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
+                                     g_object_ref (source_object),
+                                     g_object_unref);
+        }
+      else
+        /* Ok.  So IPv4 is not supported on this platform.  If we
+         * succeeded at creating an IPv6 socket then that's OK, but
+         * otherwise we need to tell the user we failed.
+         */
+        {
+          if (socket6 != NULL)
+            g_clear_error (error);
+          else
+            return FALSE;
+        }
     }
 
-  g_object_unref (address4);
-  g_object_unref (address6);
+  g_assert (socket6 != NULL || socket4 != NULL);
 
-  return res;
+  if (socket6 != NULL)
+    g_ptr_array_add (listener->priv->sockets, socket6);
+
+  if (socket4 != NULL)
+    g_ptr_array_add (listener->priv->sockets, socket4);
+
+  if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
+    G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
+
+  return TRUE;
 }
 
 static GList *
