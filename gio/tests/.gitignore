@@ -14,3 +14,10 @@ filter-streams
 sleepy-stream
 resolver
 connectable
+echo-server
+httpd
+readwrite
+send-data
+socket-client
+socket-server
+srvtarget
