@@ -38,6 +38,8 @@
 # include <unistd.h>
 #endif
 
+#include <sys/uio.h>
+
 #include "gsocket.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
