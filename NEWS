@@ -1,3 +1,50 @@
+Overview of Changes from GLib 2.21.1 to GLib 2.21.2
+===================================================
+
+* GIO:
+  - g_socket_speaks_ipv4 is a new function to check if a socket can
+    speak IPv4.
+  - g_socket_listener_add_address gained a new effective_address out
+    parameter.
+  - GIO now returns special icons for XDG user directories, by the
+    name folder-music, folder-documents, etc.
+  - GIO gained support for starting/stopping of drives, which can be used
+    in connection with external hard disk enclosures, disk arrays, iSCSI
+    devices, etc. See g_file_start/stop_mountable.
+
+* GLib:
+ - g_reload_user_special_dirs_cache is a new function to force GLib to
+   reload the XDG user directory mapping from disk.
+
+* Bug fixes:
+ 584574 glib compile failure on Mac OS X with gunixresolver.c and...
+ 585566	GSocketListener API issues
+ 584255	Incorrect freeing of thread pool in GThreadedSocketService
+ 585088	g_string_chunk_insert_len stops at nul bytes
+ 585360	Monitor fontconfig configuration files using gio causes m...
+ 580103	Terminal starts on Display :0.0 when started on :0.1 in D...
+ 580301	network: a few issues on old darwin
+ 583398	SRV weight sorting is incorrect
+ 584176	build fixes on FreeBSD
+ 585189	g_cancellable_reset() must be called in same thread as g_...
+ 585280	compilation dies on gio/gsocket.c, needs sys/uio.h to con...
+ 585281	gio/gunixfdmessage.c needs sys/types.h for platforms that...
+ 585478	don't leak the inotify fd
+ 585575	g_socket_listener_add_inet_port() doesn't do the right thing
+ 585599	g_socket_listener_add_socket() consumes the socket
+ 585676	GEmblem doesn't reference its 'icon' if that is set as a ...
+ 585717	"bytes" nautilus translation to french is not shown in th...
+ 541276	XDG directories should have their own icons
+ 585726	Grammatical error in GList documentation
+ 585520	Wrong warning option in documentation
+ 585673	GNOME Goal: Remove deprecated glib symbols
+ 585591	Starting/stopping drives
+
+* Updated translations:
+ Bengali India
+ Norwegian bokmål
+
+
 Overview of Changes from GLib 2.21.0 to GLib 2.21.1
 ===================================================
 
