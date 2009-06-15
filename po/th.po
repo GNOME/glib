@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-02-20 12:07+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -183,7 +183,7 @@ msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำ
 msgid "Failed to open file '%s': %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
@@ -243,6 +243,12 @@ msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควร�
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "แม่แบบ '%s' ไม่มี XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u ไบต์"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -288,12 +294,12 @@ msgstr "แชนเนลจบด้วยข้อมูลไม่เต็
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: open() ล้มเหลว: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "แม็ปแฟ้ม '%s' ไม่สำเร็จ: mmap() ล้มเหลว: %s"
@@ -364,32 +370,32 @@ msgstr ""
 "เอนทิตีไม่ได้ปิดด้วยอัฒภาค เป็นไปได้สูงที่คุณอาจใช้ ampersand โดยไม่ได้จงใจให้เริ่มเอนทิตี ถ้าใช่ "
 "ก็จงหลีก ampersand โดยแทนด้วย &amp; เสีย"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "เอกสารต้องเริ่มด้วยอิลิเมนต์ (เช่น <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กอิลิเมนต์เปล่า '%s'"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '=' หลังชื่อแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -399,7 +405,7 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '>' หรือ '/' ที่จะมาปิดแท็กตั้งต้นของอิลิเมนต์ '%"
 "s' หรือไม่ก็เป็นแอตทริบิวต์ เป็นไปได้ว่าคุณกำลังใช้อักขระที่ใช้ไม่ได้ในชื่อแอตทริบิวต์"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -408,80 +414,80 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหาอัญประกาศเปิดหลัง '=' "
 "ในการกำหนดค่าให้กับแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' ไม่ใช่อักขระที่ตามหลัง '</' ได้ '%s' ไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลังชื่ออิลิเมนต์ '%s' ในแท็กปิดได้ อักขระเดียวที่อนุญาตคือ '>'"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่ไม่มีอิลิเมนต์ใดเปิดอยู่"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่อิลิเมนต์ที่เปิดอยู่คือ '%s'"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "เอกสารว่างเปล่า หรือมีแต่อักขระช่องว่าง"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "เอกสารจบแบบผิดปกติหลังจากวงเล็บแหลม '<'"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "เอกสารจบแบบผิดปกติ โดยยังมีอิลิเมนต์เปิดอยู่ - '%s' คืออิลิเมนต์ที่เปิดล่าสุด"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "เอกสารจบแบบผิดปกติ ในขณะที่กำลังมองหาวงเล็บแหลมที่จะมาปิดแท็ก <%s/>"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่ออิลิเมนต์"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่อแอตทริบิวต์"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กเปิดอิลิเมนต์"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "เอกสารจบแบบผิดปกติหลังจากเครื่องหมาย '=' หลังชื่อแอตทริบิวต์ โดยไม่มีค่าของแอตทริบิวต์"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางค่าแอตทริบิวต์"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กปิดสำหรับอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
@@ -976,108 +982,108 @@ msgstr "ขาดอาร์กิวเมนต์สำหรับ %s"
 msgid "Unknown option %s"
 msgstr "ไม่รู้จักตัวเลือก %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "ไม่พบแฟ้มคีย์ที่ใช้การได้ในไดเรกทอรีแหล่งค้นหา"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "ไม่ใช่แฟ้มปกติ"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "แฟ้มว่างเปล่า"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "แฟ้มคีย์มีบรรทัด '%s' ซึ่งไม่ใช่รูปแบบคู่คีย์-ค่า, กลุ่ม, หรือหมายเหตุ ที่ถูกต้อง"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "ชื่อกลุ่มผิดรูปแบบ: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "แฟ้มคีย์ไม่ได้ขึ้นต้นด้วยกลุ่ม"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "ชื่อคีย์ผิดรูปแบบ: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "แฟ้มคีย์มีเนื้อหาเป็นรหัสอักขระ '%s' ซึ่งไม่รองรับ"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "แฟ้มคีย์ไม่มีกลุ่ม '%s'"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "แฟ้มคีย์ไม่มีคีย์ '%s'"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่า '%s' ซึ่งไม่ใช่รูปแบบ UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ในกลุ่ม '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "แฟ้มคีย์ไม่มีคีย์ '%s' ในกลุ่ม '%s'"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "แฟ้มคีย์มีอักขระหลีกที่ท้ายบรรทัด"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "แฟ้มคีย์มีลำดับหลีก '%s' ที่ไม่ถูกต้อง"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลข float ได้"
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
@@ -1094,7 +1100,7 @@ msgstr "มีการส่งค่า count ที่สูงเกิน�
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
@@ -1125,37 +1131,47 @@ msgstr "ไม่มีชื่อ"
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งตรวจสอบสื่อได้"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1183,10 +1199,11 @@ msgstr "ต้องการข้อมูล GEmblem สำหรับ GEmbl
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
 
@@ -1219,28 +1236,28 @@ msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้
 msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "ไม่สามารถคัดลอกแฟ้มพิเศษได้"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "ได้รับชื่อ symlink ที่ใช้การไม่ได้"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "ไม่รองรับการใช้ถังขยะ"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ได้"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
 
@@ -1331,7 +1348,7 @@ msgstr "สตรีมข้อมูลเข้ายังไม่รอง
 msgid "Stream has outstanding operation"
 msgstr "สตรีมมีการกระทำค้างอยู่"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองไดเรกทอรีในเครื่อง"
 
@@ -1468,66 +1485,66 @@ msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"
@@ -1802,10 +1819,6 @@ msgstr "[FILE...]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "File descriptor ที่จะเขียน"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u ไบต์"
 
 #~ msgid "Error creating backup link: %s"
 #~ msgstr "เกิดข้อผิดพลาดขณะสร้างลิงก์สำรอง: %s"

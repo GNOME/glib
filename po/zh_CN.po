@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-03-27 14:56+0800\n"
 "Last-Translator: Ray Wang <wanglei1123@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
@@ -186,7 +186,7 @@ msgstr "读取文件“%s”失败：%s"
 msgid "Failed to open file '%s': %s"
 msgstr "打开文件“%s”失败：%s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "获得文件“%s”的属性失败：fstat() 失败：%s"
@@ -246,6 +246,12 @@ msgstr "模板“%s”无效，不应该包含“%s”"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "模板“%s”的不包含 XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u 字节"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -291,12 +297,12 @@ msgstr "通道终止于未尽字符"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "打开文件“%s”失败：open() 失败：%s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "映射文件“%s”失败：mmap() 失败：%s"
@@ -365,31 +371,31 @@ msgstr ""
 "实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
 "&amp;"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "文档必须以一个元素开始(例如 <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "“%s”出现在字符“<”后是无效字符；它不能作为元素名的开头"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr "字符“%s”无效，应该以字符“>”来结束空元素标记“%s”"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "字符“%s”无效，在属性名“%s”(元素“%s”)的后应该是字符“=”"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -399,87 +405,87 @@ msgstr ""
 "字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能"
 "您在属性名中使用了无效字符"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr "字符“%s”无效，在给属性“%s”(元素“%s”)赋值时，在等号后应该是引号"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "“%s”出现在字符“</”后无效；“%s”不能作为元素名的开头"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "“%s”出现在结束的元素名“%s”后无效；允许的字符是“>”"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "元素“%s”已经结束，没有未结束的元素"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "元素“%s”已经结束，当前未结束的元素是“%s”"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "文档为空或仅含空白字符"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "文档在一个打开的尖括号“<”后意外结束"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "文档在还存在未结束元素时意外结束 - 最后的未结束元素是“%s”"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "文档意外结束，应该以右尖括号“>”来结束标记 <%s/>"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "文档在元素名中意外结束"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "文档在属性名中意外结束"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "文档在元素起始标记中意外结束"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "文档在跟在属性名后的等号后意外结束；没有属性值"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "文档在属性值中意外结束"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "文档在元素“%s”结束标记中意外结束"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "文档在注释或处理指令中意外结束"
 
@@ -973,108 +979,108 @@ msgstr "缺少 %s 的参数"
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "在搜索目录中无法找到有效的键文件"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "不是普通文件"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "文件为空"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "键文件中的行“%s”不是键-值对、组或注释"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "无效的组名：%s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "键文件不以组开始"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "无效的键名：%s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "键文件包含不支持的编码“%s”"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "键文件没有组“%s”"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "键文件没有键“%s”"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "键文件包含“%s”，其值“%s”不是 UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "键文件包含键“%s”，其值无法解释。"
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "键文件包含键“%s”，其值无法解释。"
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "键文件在“%2$s”中包含“%1$s”，其值无法解释。"
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "键文件的组“%2$s”中不包含键“%1$s”"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "键文件在行尾含有转义字符"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "键文件中包含无效的转义序列“%s”"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "无法将值“%s”解释为数值。"
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数值“%s”超出范围"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "无法将值“%s”解释为浮点数。"
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "无法将值“%s”解释为布尔值。"
@@ -1091,7 +1097,7 @@ msgstr "传递给 %s 的计数值太大了"
 msgid "Stream is already closed"
 msgstr "流已经关闭"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "操作被取消"
@@ -1122,37 +1128,47 @@ msgstr "未命名"
 msgid "Desktop file didn't specify Exec field"
 msgstr "桌面文件未指定 Exec 区域"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "无法找到应用程序需要的终端"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "无法创建用户应用程序配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "无法创建用户 MIME 配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "无法创建用户桌面文件 %s"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s 的自制定定义"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "驱动未实现探出"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "驱动未实现媒体轮询"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "驱动未实现探出"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "驱动未实现探出"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1180,10 +1196,11 @@ msgstr "GEmblemedIcon 中应为 GEmblem"
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "不支持该操作"
 
@@ -1216,28 +1233,28 @@ msgstr "目标文件已存在"
 msgid "Can't recursively copy directory"
 msgstr "无法递归复制目录"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "无法复制特殊文件"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "给出的符号链接值无效"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "不支持垃圾箱"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "文件名不能包含“%c”"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "卷未实现挂载"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "没有注册为处理此文件的应用程序"
 
@@ -1328,7 +1345,7 @@ msgstr "输入流未实现读取"
 msgid "Stream has outstanding operation"
 msgstr "流有异常操作"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "无法找默认的本地目录监视器类型"
 
@@ -1465,66 +1482,66 @@ msgstr "获取文件“%s”状态出错：%s"
 msgid " (invalid encoding)"
 msgstr " (无效的编码)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "获取文件描述符状态时出错：%s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "无效的属性类型(应为 uint32)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "无效的属性类型(应为 uint64)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "无效的属性类型(应为 byte string)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "设置所有者出错：%s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "符号链接必须是非空"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "设置符号链接出错：%s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "设定符号链接出错：文件不是符号链接"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 上下文必须是非空"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "设置 SELinux 上下文出错：%s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "此系统尚未启用 SELinux"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支持设置属性 %s"
@@ -1799,10 +1816,6 @@ msgstr "[文件...]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "要写入的文件描述符"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u 字节"
 
 #~ msgid "Error creating backup link: %s"
 #~ msgstr "创建备份链接：%s"

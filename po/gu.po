@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-02-25 12:08+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -194,7 +194,7 @@ msgstr "'%s' ફાઈલમાંથી વાંચવામા નિષ્�
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' ફાઈલ ખોલવામાં નિષ્ફળતા : %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' ફાઈલની લાક્ષણિકતા મેળવતી વખતે નિષ્ફળતા: fstate() નિષ્ફળ: %s"
@@ -254,6 +254,13 @@ msgstr " '%s' ટેમ્પલેટ અયોગ્ય છે, તે '%s' �
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ટેમ્પલેટ '%s' એ XXXXXX સમાવતું નથી"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -300,12 +307,12 @@ msgstr "માધ્યમ અપુર્ણ અક્ષરથી અંત �
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end માં આડી હરોળ વાંચી શકાતી નથી"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ફાઈલ '%s' ખોલવામાં નિષ્ફળ: open() નિષ્ફળ: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ફાઈલ '%s' નો નકશો કરવામાં નિષ્ફળ: mmap() નિષ્ફળ: %s"
@@ -376,31 +383,31 @@ msgstr ""
 "વસ્તુ નો સેમીકોલન સાથે અંત થતો નથી; ઘણી વખતે એમપરસંડ (&) અક્ષર ચિન્હ વગર તમે વસ્તુ વાપરી "
 "શકો છો - એમપરસંડ &amp; તરીકે લો"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "દસ્તાવેજ કોઈ વસ્તુ સાથે શરુ થાય તે જરુરી છે(ઉદાહરણ <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' એ '<' અક્ષર પછી આવતો યોગ્ય અક્ષર નથી; તે કોઈ વસ્તુના નામથી શરુ થતુ નથી"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr "અસંગત અક્ષર '%s', વસ્તુ ટેગ '%s' નાં ખાલી ઘટક ને સમાપ્ત કરવા '>' અક્ષર ની આશા છે"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -410,7 +417,7 @@ msgstr ""
 "અસંગત અક્ષર '%s': '%s' વસ્તુના અંતમાં '>' અથવા '/' અથવા પરીમાણનો વિકલ્પ જરુરી છે; તમે "
 "કદાય અયોગ્ય અક્ષર લાક્ષણિકતાના નામો વાપર્યો છે"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -419,46 +426,46 @@ msgstr ""
 "અસંગત અક્ષર '%s,  '%s' વસ્તુ માટે '%s' લાક્ષણિકતાના મુલ્ય આપતી વખતે બરાબરની નિશાની "
 "પછી શરુ થતો અવતરણ ચિહ્ન જરુરી છે"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' એ '<' અક્ષર પછીનો યોગ્ય અક્ષર નથી ; '%s' ક્દાચ વસ્તુ નામ સાથે શરુ થતુ નથી"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' એ '%s' વસ્તુનામ પછીનો બંધ કરવાનો યોગ્ય અક્ષર નથી; '>' એ યોગ્ય અક્ષર છે. "
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' વસ્તુ બંધ હતી, અત્યારે એક પણ વસ્તુ ખુલ્લી નથી"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' વસ્તુ બંધ હતી, પણ અત્યારે '%s'એ ખુલ્લી વસ્તુ છે"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "દસ્તાવેજ ખાલી છે અથવા ફક્ત ખાલી જ્ગ્યા ધરાવે છે"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' ચિન્હ વાપરતા પછી દસ્તાવેજનો અણધારી રીતે અંત આવે છે"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "વસ્તુ ખુલ્લી હોવા છતાં દસ્તાવેજનો અણધારી રીતે અંત આવે છે- છેલ્લે ખોલેલ વસ્તુ '%s' છે"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -467,19 +474,19 @@ msgstr ""
 "દસ્તાવેજનો અણધારી રીતે અંત થાય છે, તે  અંતિમ ટેગ  <%s/> માં કૌંસને બંધ કરતુ ખૂણાનુ ચિન્હ "
 "જોવા માગે છે"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "વસ્તુ નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "લાક્ષણિકતાના નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "વસ્તુની શરુઆતની ટેગમા દસ્તાવેજનો અણધારી રીતે અંત થાય છે."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -487,16 +494,16 @@ msgstr ""
 "લાક્ષણિકતા નામ પછીની બરાબરની નિશાની પછી દસ્તાવેજ નો અણધારી રીતે અંત થાય છે. "
 "લાક્ષણિકતાના મુલ્ય નથી"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "લાક્ષણિકતા મુલ્ય અંદર હોવા છતાં દસ્તાવેજ નો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' વસ્તુના બંદ ટેગની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ટિપ્પણી અથવા પ્રક્રિયા સુચનાની અંદર અણધારી રીતે દસ્તાવેજનો અંત થાય છે"
 
@@ -992,72 +999,72 @@ msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "શોધ ડિરેક્ટરીઓમાં માન્ય કી ફાઈલ શોધી શક્યા નહિં"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "નિયમિત ફાઈલ નથી"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "ફાઈલ ખાલી છે"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "કી ફાઈલ વાક્ય '%s' સમાવે છે કે જે કી-કિંમત જોડ, જૂથ, અથવા ટિપ્પણી નથી"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "અયોગ્ય જૂથ નામ: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "કી ફાઈલ જૂથ સાથે શરૂ થતી નથી"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "અયોગ્ય કી નામ: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "કી ફાઈલ બિનઆધારભૂત અક્ષર સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "કી ફાઈલ પાસે જૂથ '%s' નથી"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' નથી"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "કી ફાઈલ '%s' કીને કિંમત '%s' સાથે સમાવે છે કે જે UTF-8 નથી"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1066,36 +1073,36 @@ msgstr ""
 "કી ફાઈલ '%s' કી જૂથ '%s' માં સમાવે છે કે જેની પાસે કિંમત છે કે જે ઈન્ટરપ્રીટ કરી શકાતી "
 "નથી."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "કી ફાઈલ એસ્કેપ અક્ષર વાક્યના અંતે સમાવે છે"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "કી ફાઈલ અયોગ્ય એસ્કેપ ક્રમ '%s' સમાવે છે"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "કિંમત '%s' નંબર તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ મર્યાદાની બહાર છે"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "કિંમત '%s' એ અપૂર્ણાંક સંખ્યા તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "કિંમત '%s' બુલિયન તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
@@ -1112,7 +1119,7 @@ msgstr "%s ને ખૂબ મોટી ગણક કિંમત પસાર 
 msgid "Stream is already closed"
 msgstr "સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગયેલ છે"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "પ્રક્રિયા રદ થઈ ગઈ હતી"
@@ -1143,37 +1150,47 @@ msgstr "શીર્ષકવીહિન"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ડેસ્કટોપ ફાઈલે Exec ક્ષેત્ર સ્પષ્ટ કરેલ નથી"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "કાર્યક્રમ માટે જરૂરી ટર્મિનલ શોધવામાં અસમર્થ"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "વપરાશકર્તા કાર્યક્રમ રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "વપરાશકર્તા MIME રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "વપરાશકર્તા ડેસ્કટોપ ફાઈલ %s બનાવી શકતા નથી"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s માટે વૈવિધ્યપૂર્ણ વ્યાખ્યા"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "ડ્રાઈવર બહાર કાઢો અમલમાં મૂકતું નથી"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "ડ્રાઈવ મીડિયા માટે પોલીંગને અમલમાં મૂકતું નથી"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "ડ્રાઈવર બહાર કાઢો અમલમાં મૂકતું નથી"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "ડ્રાઈવર બહાર કાઢો અમલમાં મૂકતું નથી"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1201,10 +1218,11 @@ msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
 
@@ -1237,28 +1255,28 @@ msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથ
 msgid "Can't recursively copy directory"
 msgstr "પુનરાવર્તિત રીતે ડિરેક્ટરીની નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "વિશિષ્ટ ફાઇલ ની નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
 
@@ -1349,7 +1367,7 @@ msgstr "ઈનપુટ સ્ટ્રીમ વાંચનને અમલમ
 msgid "Stream has outstanding operation"
 msgstr "સ્ટ્રીમને ભરપૂર પ્રક્રિયા છે"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "મૂળભૂત સ્થાનિક ડિરેક્ટરી મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 
@@ -1486,66 +1504,66 @@ msgstr "ફાઈલ '%s' કહેવામાં ભૂલ: %s"
 msgid " (invalid encoding)"
 msgstr " (અયોગ્ય સંગ્રહપદ્ધતિ)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ફાઈલ વર્ણનકાર કહેવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint32 ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint64 ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (બાઈટ શબ્દમાળા ઈચ્છિત)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "પરવાનગીઓ સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "માલિક સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "સાંકેતિક કડી non-NULL જ હોવી જોઈએ"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: ફાઈલ સાંકેતિક કડી નથી"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "પરવાનગીઓ સુયોજીત કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux સંદર્ભ non-NULL જ હોવી જોઈએ"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux સંદર્ભ ને સુયોજન કરવામાં ભૂલ: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux એ આ સિસ્ટમ પર સક્રિય થયેલ નથી"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "લક્ષણ %s સુયોજીત કરવાનું આધારભૂત નથી"

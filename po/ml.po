@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-03-17 21:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -185,7 +185,7 @@ msgstr "ഫയല്‍ '%s'-ല്‍ നിന്നും വായിക്�
 msgid "Failed to open file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‍‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "%s-ന്‍റെ വിശേഷതകള്‍ കണ്ടെത്തുന്നതില്‍ പരാജയം: fstat() പരാജയപ്പെട്ടു: %s"
@@ -246,6 +246,13 @@ msgstr "ടെംപ്ളേറ്റ് \"%s\" അസാധുവാണ്,ഇ
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ടെംപ്ളേറ്റ് \"%s\"-ല്‍ XXXXXX ലഭ്യമല്ല"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -291,12 +298,12 @@ msgstr "ചാനല്‍ അവസാനിക്കുന്നത് ഭാ�
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end-ല്‍ റോ വായന സാധ്യമല്ല"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ഫയല്‍ '%s' തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു: open() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ഫയല്‍ '%s' മാപ്പ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു: mmap() പരാജയപ്പെട്ടു: %s"
@@ -369,11 +376,11 @@ msgstr ""
 "എന്‍റിന്‍റി ഒരു അര്ദ്ധവിരാമത്തില് അവസാനിക്കുന്നില്ല.  & എന്ന അക്ഷരം അറിയാതെ ഉള്‍ക്കൊളളാന്‍ "
 "ഇടയായോ? & ഒരു എന്‍റിന്‍റി അല്ലെങ്കില്‍ &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "രേഖ തുടങ്ങേണ്ടത് ഒരു എലമെന്‍റിലാണ് (ഉദാ <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -381,7 +388,7 @@ msgid ""
 msgstr ""
 "'<' അക്ഷരത്തിന് പിന്നിലുളള '%s' ഒരു അസാധുവായ അക്ഷരമാണ്; ഇത് ഒരു എലമെന്‍റ് പേര് തുടങ്ങില്ല"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -389,14 +396,14 @@ msgid ""
 msgstr ""
 "ഓഡ് അക്ഷരം '%s', '%s' എന്ന ശൂന്യ-എലമെന്റ് റ്റാഗ് അവസാനിപ്പിക്കുന്നതിനായി '>'  പ്രതീക്ഷിച്ചു"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "ഓഡ് അക്ഷരം '%s', എലമെന്‍റ് '%s'-ന്‍റെ സവിശേഷത നാമം '%s'-ന് ശേഷം ഒരു '=' പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -407,7 +414,7 @@ msgstr ""
 "ആട്റിബ്യൂട്ട് ആണ് '%s' എന്ന എലമെന്‍റിന്‍റെ ആരംഭത്തിലുളള ടാഗ് അവസാനിപ്പിക്കുന്നതിന് പ്രതീക്ഷിച്ചത്; "
 "ഒരു പക്ഷേ, ആട്റിബ്യൂട്ടിന്‍റെ പേരില്‍ നിങ്ങള്‍ തെറ്റായ അക്ഷരം ആവാം ഉപയോഗിച്ചത്"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -416,7 +423,7 @@ msgstr ""
 "'%s' ഒരു ഓഡ് അക്ഷരം ആണ്, '%s' എന്ന എലമെന്‍റിന്‍റെ ആട്റിബ്യൂട്ട് ആയ '%s'-നുളള മൂല്ല്യം നല്‍കുമ്പോള്‍ "
 "സമം‌ എന്ന ചിഹ്നത്തിന് ശേഷം ഒരു തുറന്ന കോട്ട് ആണ് പ്റതീക്ഷിച്ചത്"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -424,7 +431,7 @@ msgid ""
 msgstr ""
 "'</' അക്ഷരങ്ങള്‍ക്ക് ശേഷം ഉളള '%s', അസാധുവായ അക്ഷരമാണ്; '%s' ഒരു എലമെന്‍റ് നാമം തുടങ്ങുന്നില്ല"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -432,25 +439,25 @@ msgid ""
 msgstr ""
 "എലമെന്‍റ് നാമം '%s'-ന് ശേഷം ഉളള '%s', ഒരു അസാധുവായ അക്ഷരമാണ്; '>' അക്ഷരമാണ് അനുവദിക്കുന്നത്"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, ഒരു എലമെന്‍റുകളും നിലവില്‍ തുറന്നിട്ടില്ല"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "എലമെന്‍റ് '%s' അടച്ചിരിക്കുന്നു, പക്ഷേ നിലവില്‍ ലഭ്യമായ എലമെന്‍റ് '%s' ആണ്"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "രേഖ ശൂന്യമാണ് അല്ലെങ്കില്‍ അതില്‍ വയിറ്റ് സ്പെയിസ് മാത്രമേ ഉള്ളൂ"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ഒരു '<' ബ്രാക്കറ്റിന് ശേഷം രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചിരിക്കുന്നു "
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -459,7 +466,7 @@ msgstr ""
 "എലമെന്‍റുകള്‍ തുറന്നു കിടക്കുന്പോള്‍ തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു - ഒടുവില്‍ തുറന്ന എലമെന്‍റ് "
 "'%s' ആണ്"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -468,19 +475,19 @@ msgstr ""
 "തന്നെ രേഖ അപ്രതീക്ഷമായ അടഞ്ഞിരിക്കുന്നു, ടാഗ് <%s/>-ന് അവസാനമായി ഒരു ക്ളോസ് ആങ്കില്‍ ബ്രാക്കറ്റ് "
 "പ്രതീക്ഷിക്കുന്നു"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ഒരു എലമെന്‍റിന്‍റെ നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ഒരു എലമെന്‍റ്-ഓപ്പണിങ് ടാഗിനുളളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -488,16 +495,16 @@ msgstr ""
 "സമം ചിഹ്നത്തിന് ശേഷം ഒരു ആട്റിബ്യൂട്ടിന്‍റെ പേര് ആയതിനാല്‍ അപ്റതീക്ഷിതമായി ഡോക്യുമെന്‍റ് "
 "അവസാനിച്ചു; ആട്റിബ്യൂട്ടിന് മൂല്ല്യം ലഭ്യമല്ല"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ഒരു സവിശേഷത നാമത്തിനുളളില്‍ വച്ച് രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "എലമെന്‍റ് '%s'-ന്‍റെ ക്ളോസ് ടാഗിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ഒരു അഭിപ്രായം അല്ലെങ്കില്‍ ഒരു പ്രക്രിയ നടത്തുന്ന നിര്‍ദ്ദേശത്തിനുള്ളില്‍ രേഖ അപ്രതീക്ഷിതമായി "
@@ -997,109 +1004,109 @@ msgstr "%s-നുളള ആര്‍ഗ്യുമെന്‍റ് ലഭ്�
 msgid "Unknown option %s"
 msgstr "അപരിചിതമായ ഉപാധി %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "തിരച്ചില്‍ നടത്തിയ ഡയറക്ടറികളില്‍ സാധുതയുളള കീ ഫയല്‍ ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "ഒരു സാധാരണ ഫയല്‍ അല്ല"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "ഫയല്‍ ശൂന്യമാണ്"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "കീ ഫയലില്‍ ഉളള '%s' എന്ന വരി ഒരു കീ-മൂല്ല്യം ജോടി അല്ലെങ്കില്‍ ഒരു ഗ്റൂപ്പോ അഭിപ്റായമോ അല്ല"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "അസാധുവായ ഗ്രൂപ്പ് നാമം: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "കീ ഫയല്‍ ആരംഭിക്കുന്നത് ഒരു ഗ്രൂപ്പിലല്ല"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "അസാധുവായ കീ നാമം: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "പിന്തുണയ്ക്കാത്ത രഹസ്യ ഭാഷ '%s' കീ ഫയല്‍ പിന്തുണയ്ക്കുന്നു"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന ഗ്രൂപ്പില്ല"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന കീയില്ല"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "UTF-8 അല്ലാത്ത '%s' മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s', '%s' എന്ന ഗ്രൂപ്പില്‍ കീ ഫയലിലുണ്ട്."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ഗ്രൂപ്പ് '%s'-ല്‍ കീ ഫയലിന് കീ '%s' ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "കീ ഫയലിന്‍റെ വരിയുടെ അവസാനം എസ്കെയിപ്പ് അക്ഷരം ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "കീ ഫയലില്‍ അസാധുവായ എസ്കെയിപ്പ് സീക്വന്‍സ് '%s' ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "മൂല്ല്യം '%s' ഒരു അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ഇന്‍റിജര്‍ മൂല്ല്യം '%s' പരിധിയ്ക്ക് പുറത്ത്"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "മൂല്ല്യം '%s' ഒരു ഫ്ളോട്ട് അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "മൂല്ല്യം '%s' ഒരു ബൂളിയനായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
@@ -1116,7 +1123,7 @@ msgstr "വളരെ വലിയ കൌണ്ട് മൂല്ല്യം %s
 msgid "Stream is already closed"
 msgstr "സ്ട്രീം നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "പ്രക്രിയ റദ്ദാക്കിയിരിക്കുന്നു"
@@ -1147,37 +1154,47 @@ msgstr "പേരിടാത്ത"
 msgid "Desktop file didn't specify Exec field"
 msgstr "പണിയിട ഫയല്‍ Exec ഫീള്‍ഡ് വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "പ്രയോഗത്തിനു് ആവശ്യമായ ടെര്‍മിനല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനു് പ്രയോഗത്തിനുള്ള ക്രമീകരണ ഫോള്‍ഡര്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "യഥേഷ്ടം %s നിഷ്കര്‍ഷിക്കുക"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "ഡ്രൈവില്‍ നിന്നും ഡിസ്ക് പുറത്തെടുക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "ഡ്രൈവില്‍ മീഡിയ തെരഞ്ഞെടുക്കല്‍ സാധ്യമല്ല"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "ഡ്രൈവില്‍ നിന്നും ഡിസ്ക് പുറത്തെടുക്കുവാന്‍ സാധ്യമല്ല"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "ഡ്രൈവില്‍ നിന്നും ഡിസ്ക് പുറത്തെടുക്കുവാന്‍ സാധ്യമല്ല"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1205,10 +1222,11 @@ msgstr "GEmblemedIcon-നു് ഒരു GEmblem പ്രതീക്ഷിച
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1241,28 +1259,28 @@ msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ �
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "പ്രത്യേക ഫയല്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "തെറ്റായ symlink മൂല്ല്യം"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "വോള്യം മൌണ്ടിനെ ലഭ്യമാക്കുന്നില്ല"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "ഈ ഫയല്‍ കൈകാര്യം ചെയ്യുന്നതിനായി ഒരു പ്രയോഗവും രജിസ്ടര്‍ ചെയ്തിട്ടില്ല"
 
@@ -1353,7 +1371,7 @@ msgstr "ഇന്‍പുട്ട് സ്ട്രീം read ലഭ്യ�
 msgid "Stream has outstanding operation"
 msgstr "സ്ട്രീമില്‍ തെറ്റായ പ്രക്രിയ"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "സ്വതവേയുള്ള ലോക്കല്‍ ഡയറക്ടറി തരത്തിലുള്ള മോണിറ്റര്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
@@ -1490,66 +1508,66 @@ msgstr "'%s' എന്ന ഫയല്‍ സ്റ്റാറ്റ് ചെ�
 msgid " (invalid encoding)"
 msgstr " (തെറ്റായ എന്‍കോഡിങ്)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ഫയല്‍ വിശദീകരണ സംവിധാനം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint32 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint64 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (ബൈറ്റ് സ്ട്രിങ് പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "സിംലിങ്ക് ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink സജ്ജീകരണത്തില്‍ പിശക്: ഫയല്‍ ഒരു symlink അല്ല"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് സജ്ജാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ഈ സിസ്റ്റത്തില്‍ സജ്ജമല്ല"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ആട്രിബ്യൂട്ട് ക്രമികരണം പിന്തുണയ്ക്കുന്നില്ല"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-03-17 13:08+0100\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -193,7 +193,7 @@ msgstr "Es konnte nicht aus der Datei »%s« gelesen werden: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -264,6 +264,13 @@ msgstr "Vorlage »%s« ungültig, sollte kein »%s« enthalten"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Vorlage »%s« enthält nicht XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u Byte"
+msgstr[1] "%u Bytes"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -309,12 +316,12 @@ msgstr "Kanal endet mit einem Teilzeichen"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: open() ist gescheitert: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Datei »%s« konnte nicht gemappt werden: mmap() ist gescheitert: %s"
@@ -390,11 +397,11 @@ msgstr ""
 "benutzt, ohne eine Entity beginnen zu wollen - umschreiben Sie das Et als "
 "&amp;"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -403,7 +410,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen nach einem »<«-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -412,14 +419,14 @@ msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »=« erwartet nach Attributname »%s« des Elements »%s«"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -430,7 +437,7 @@ msgstr ""
 "erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
 "Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -439,7 +446,7 @@ msgstr ""
 "Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elemente "
 "»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -448,7 +455,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
 "keinen Elementnamen beginnen"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -457,25 +464,25 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
 "folgt; das erlaubte Zeichen ist »>«"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -484,7 +491,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - »%s« war das letzte "
 "offene Element"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -493,19 +500,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
 "> schließt, erwartet"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -513,18 +520,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "
@@ -1043,20 +1050,20 @@ msgstr "Für %s wird ein Argument benötigt"
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Es wurde keine gültige Schlüsselwertedatei in den Suchverzeichnissen gefunden"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "Keine reguläre Datei"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "Datei ist leer"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1064,52 +1071,52 @@ msgstr ""
 "Die Schlüsselwertedatei enthält die Zeile »%s«, welche kein zulässiges "
 "Schlüssel-Wert-Paar, keine Gruppe und kein Kommentar ist."
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Ungültiger Gruppenname: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Die Schlüsselwertedatei beginnt nicht mit einer Gruppe"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Ungültiger Schlüsselname: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Die Schlüsselwertedatei enthält die nicht unterstützte Kodierung »%s«"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Die Schlüsselwertedatei enthält nicht die Gruppe »%s«"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Die Schlüsselwertedatei enthält nicht den Schlüssel »%s«"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit dem Wert »%s«, der "
 "nicht in UTF-8 kodiert ist"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit einem Wert der nicht "
 "interpretiert werden konnte."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1117,7 +1124,7 @@ msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit einem Wert der nicht "
 "interpretiert werden konnte."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1126,37 +1133,37 @@ msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« in der Gruppe »%s« mit "
 "einem Wert der nicht interpretiert werden konnte."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Die Schlüsselwertedatei hat keinen Schlüssel »%s« in der Gruppe »%s«"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "Die Schlüsselwertedatei enthält ein Escape-Zeichen am Zeilenende"
 
 # CHECK
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Die Schlüsselwertedatei enthält das ungültige Escape-Zeichen »%s«"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Der Wert »%s« konnte nicht als Zahl interpretiert werden."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Ganzzahliger Wert »%s« ist außerhalb des Wertebereiches."
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Der Wert »%s« konnte nicht als Gleitkommazahl interpretiert werden."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
@@ -1174,7 +1181,7 @@ msgstr "Zu großer Zählwert an %s übermittelt"
 msgid "Stream is already closed"
 msgstr "Datenstrom ist bereits geschlossen"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "Vorgang wurde abgebrochen"
@@ -1205,40 +1212,50 @@ msgstr "Unbenannt"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "Laufwerk unterstützt Auswerfen nicht"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "Laufwerk unterstützt Prüfen auf Datenträger nicht"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "Laufwerk unterstützt Auswerfen nicht"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "Laufwerk unterstützt Auswerfen nicht"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1266,10 +1283,11 @@ msgstr "Es wurde ein GEmblem für GEmblemedIcon erwartet"
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Vorgang nicht unterstützt"
 
@@ -1302,28 +1320,28 @@ msgstr "Zieldatei existiert"
 msgid "Can't recursively copy directory"
 msgstr "Verzeichnis kann nicht rekursiv kopiert werden"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "Spezielle Datei kann nicht kopiert werden"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "Ungültiger Wert für Symbolische Verknüpfung angegeben"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "Müll nicht unterstützt"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Dateinamen dürfen kein »%c« enthalten"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "Es wurde keine Anwendung gefunden, die diese Datei verarbeiten kann"
 
@@ -1414,7 +1432,7 @@ msgstr "Eingabedatenstrom unterstützt kein Lesen"
 msgid "Stream has outstanding operation"
 msgstr "Datenstrom hat noch einen ausstehenden Vorgang"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Vorgegebener Überwachungstyp für lokale Ordner konnte nicht gefunden werden"
@@ -1552,68 +1570,68 @@ msgstr "Fehler beim Untersuchen der Datei %s mit fstat(): %s"
 msgid " (invalid encoding)"
 msgstr " (ungültige Kodierung)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Fehler beim Untersuchen des Datei-Deskriptors mit fstat(): %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ungültiger Attributtyp (»uint32« erwartet)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ungültiger Attributtyp (»uint64« erwartet)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ungültiger Attributtyp (»byte string« erwartet)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Fehler beim Setzen der Zugriffsrechte: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Fehler beim Setzen des Besitzers: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "Symbolische Verknüpfung darf nicht NULL sein"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Fehler beim Setzen der Symbolischen Verknüpfung: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Fehler beim Setzen der Symbolischen Verknüpfung: Datei ist keine Symbolische "
 "Verknüpfung"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Fehler beim Setzen der Zugriffsrechte: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-Kontext darf nicht NULL sein"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Fehler beim Setzen des SELinux-Kontexts: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ist auf diesem System nicht aktiviert"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setzen des Attributs %s nicht unterstützt"
@@ -1893,11 +1911,6 @@ msgstr "[DATEI …]]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "Der zu schreibende Datei-Deskriptor"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u Byte"
-#~ msgstr[1] "%u Bytes"
 
 #~ msgid "Can't load just created desktop file"
 #~ msgstr "Erzeugte Desktop-Datei kann nicht geladen werden"

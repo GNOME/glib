@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-04-26 20:18+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -189,7 +189,7 @@ msgstr "No s'ha pogut llegir del fitxer «%s»: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -257,6 +257,13 @@ msgstr "La plantilla «%s» no és vàlida, no hauria de tenir cap «%s»"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no conté XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u byte"
+msgstr[1] "%u bytes"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -302,12 +309,12 @@ msgstr "El canal acaba en un caràcter parcial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: ha fallat la funció open(): %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "No s'ha pogut mapejar el fitxer «%s»: ha fallat la funció mmap(): %s"
@@ -382,11 +389,11 @@ msgstr ""
 "L'entitat no acaba amb un punt i coma. Segurament heu utilitzat un caràcter "
 "«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per &amp;"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El document ha de començar amb un element (p.ex. <llibre>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -395,7 +402,7 @@ msgstr ""
 "«%s» no és un caràcter vàlid després d'un caràcter «<». No pot començar un nom "
 "d'element"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -404,7 +411,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany «%s». S'esperava el caràcter «>» per acabar "
 "l'etiqueta d'element buit «%s»"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -412,7 +419,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany «%s». S'esperava un «=» després del nom "
 "d'atribut «%s» de l'element «%s»"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -423,7 +430,7 @@ msgstr ""
 "finalitzar l'etiqueta d'inici de l'element «%s», o opcionalment un atribut. "
 "Potser heu utilitzat un caràcter no vàlid en un nom d'atribut"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -432,7 +439,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany «%s». S'esperaven unes cometes d'obertura "
 "després del signe «=» en donar valor a l'atribut «%s» de l'element «%s»"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -441,7 +448,7 @@ msgstr ""
 "«%s» no és un caràcter vàlid després dels caracters «</»; «%s» no hauria "
 "d'iniciar un nom d'element"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -450,27 +457,27 @@ msgstr ""
 "«%s» no és un caràcter vàlid després del nom d'element de tancament «%s». El "
 "caràcter permès és «>»"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "L'element «%s» estava tancat. Actualment no hi ha cap element obert"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "L'element «%s» estava tancat. L'element obert actualment és «%s»"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "El document era buit o només contenia espais en blanc"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "El document ha acabat de manera inesperada immediatament després del símbol "
 "«<»"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -479,7 +486,7 @@ msgstr ""
 "El document ha acabat de manera inesperada amb elements encara oberts. «%s» "
 "era l'últim element obert"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -488,21 +495,21 @@ msgstr ""
 "El document ha acabat de manera inesperada. S'esperava trobar un símbol «>» "
 "que acabés l'etiqueta <%s/>"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'element"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'atribut"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'una etiqueta d'obertura "
 "d'un element."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -510,18 +517,18 @@ msgstr ""
 "El document ha acabat de manera inesperada després d'un signe d'igual "
 "després d'un nom d'atribut. No hi ha cap valor d'atribut"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El document ha acabat de manera inesperada enmig d'un valor d'atribut"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El document ha acabat de manera inesperada enmig de l'etiqueta de tancament "
 "de l'element «%s»"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'un comentari o una "
@@ -1039,19 +1046,19 @@ msgstr "Manca un argument per a %s"
 msgid "Unknown option %s"
 msgstr "Es desconeix l'opció %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "No s'ha pogut trobar cap fitxer de claus vàlid als directoris de cerca"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "No és un fitxer regular"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "El fitxer és buit"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1059,56 +1066,56 @@ msgstr ""
 "El fitxer de claus conté la línia «%s» que no és una parella clau-valor, grup "
 "o comentari"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "El nom del grup no és vàlid: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "El fitxer de claus no comença amb un grup"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "El nom de la clau no és vàlid: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El fitxer de claus conté la codificació no implementada «%s»"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El fitxer de claus no té el grup «%s»"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El fitxer de claus no té la clau «%s»"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "El fitxer de claus conté la clau «%s» amb el valor «%s» que no és UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1117,36 +1124,36 @@ msgstr ""
 "El fitxer de claus conté la clau «%s» en el grup «%s», que té un valor no "
 "interpretable."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El fitxer de claus no conté una clau «%s» en el grup «%s»"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "El fitxer de claus conté un caràcter d'escapada al final de línia"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El fitxer de claus conté una seqüència d'escapada no vàlida «%s»"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no es pot interpretar com a un nombre."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor enter «%s» és fora del rang"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no es pot interpretar com a un nombre en coma flotant."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no es pot interpretar com un booleà."
@@ -1163,7 +1170,7 @@ msgstr "El valor de comptatge passat a %s és massa llarg"
 msgid "Stream is already closed"
 msgstr "Ja està tancat el flux"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "S'ha cancel·lat l'operació"
@@ -1194,40 +1201,50 @@ msgstr "Sense nom"
 msgid "Desktop file didn't specify Exec field"
 msgstr "El fitxer d'escriptori no especificava el camp d'execució"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari %"
 "s: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració MIME de l'usuari %s: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No s'ha pogut crear el fitxer d'escriptori de l'usuari %s"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definició personalitzada per a %s"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "la unitat no implementa l'expulsió"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "la unitat no implementa l'enquesta per si hi ha un medi"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "la unitat no implementa l'expulsió"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "la unitat no implementa l'expulsió"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1259,10 +1276,11 @@ msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "L'operació no està implementada"
 
@@ -1295,28 +1313,28 @@ msgstr "Ja existeix el fitxer de destinació"
 msgid "Can't recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "No es pot copiar el fitxer especial"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "El valor donat per a l'enllaç simbòlic no és vàlid"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "No es pot utilitzar la paperera"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "En els noms de fitxers no pot haver-hi «%c»"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "el volum no implementa el muntatge"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr ""
 "No hi ha cap aplicació que s'hagi registrat per a gestionar aquest fitxer"
@@ -1409,7 +1427,7 @@ msgstr "El flux d'entrada no té implementada la lectura"
 msgid "Stream has outstanding operation"
 msgstr "El flux té una operació pendent"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 "No s'ha pogut trobar el tipus de seguiment de directoris locals predeterminat"
@@ -1549,70 +1567,70 @@ msgstr ""
 msgid " (invalid encoding)"
 msgstr " (codificació no vàlida)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
 "S'ha produït un error en executar la funció «stat()» al descriptor de fitxer: "
 "%s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava un uint32)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava un uint64)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipus d'atribut no vàlid (s'esperava una cadena de bytes)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "S'ha produït un error en establir els permisos: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "S'ha produït un error en establir el propietari: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "l'enllaç simbòlic no pot ser nul"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "S'ha produït un error en establir l'enllaç simbòlic: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "S'ha produït un error en establir l'enllaç simbòlic: el fitxer no és un "
 "enllaç simbòlic"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "S'ha produït un error en establir els permisos: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "El context del SELinux no pot ser nul"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "S'ha produït un error en establir el context del SELinux: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "Aquest sistema no té habilitat el SELinux"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "No està implementat establir l'atribut %s"
@@ -1898,11 +1916,6 @@ msgstr "[FITXER...]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "El descriptor de fitxer al qual escriure"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u byte"
-#~ msgstr[1] "%u bytes"
 
 #~ msgid "Error creating backup link: %s"
 #~ msgstr "S'ha produït un error en crear l'enllaç de còpia de seguretat: %s"

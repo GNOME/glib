@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2008-02-24 17:33+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -184,7 +184,7 @@ msgstr "Klarte ikkje å lesa frå fila «%s»: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Klarte ikkje å opna fila «%s»: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Klarte ikkje å få tak i eigenskapar for fila «%s»: fstat() feila: %s"
@@ -244,6 +244,13 @@ msgstr "Malen «%s» er ugyldig, kan ikkje ikkje innehalda ein «%s»"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Malfila «%s» inneheld ikkje XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u byte"
+msgstr[1] "%u byte"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -289,12 +296,12 @@ msgstr "Kanalen avsluttar på eit delvis teikn"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikkje lesa rått i g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Klarte ikkje å opna fila «%s»: open() feila: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Klarte ikkje å kopiera fila «%s» til minnet: mmap() feila: %s"
@@ -365,11 +372,11 @@ msgstr ""
 "Entiteten slutta ikkje med eit semikolon. Du brukte truleg eit et-teikn utan "
 "å meina å opna ein entitet. Skriv et-teikn som «&amp;»."
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet må byrja med eit element (t.d. <book>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -378,7 +385,7 @@ msgstr ""
 "«%s» er ikkje eit gyldig teikn etter ein «<»-teikn. Det kan ikkje vera det "
 "fyrste teiknet i eit elementnamn"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -387,14 +394,14 @@ msgstr ""
 "Merkeleg teikn «%s», venta eit «>»-teikn for å avslutta startmerket av "
 "elementet «%s»"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%s»"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -405,7 +412,7 @@ msgstr ""
 "startmerket av elementet «%s», eller ein valfri attributt. Kan henda du "
 "brukte eit ugyldig teikn i attributtnamnet"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -414,7 +421,7 @@ msgstr ""
 "Merkeleg teikn «%s», venta eit ope siteringsmerke etter likskapsteiknet for å "
 "gje ein verdi for attributten «%s» av elementet «%s»"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -423,7 +430,7 @@ msgstr ""
 "«%s» er ikkje eit gyldig teikn etter teikna «<» eller «/». «%s» kan ikkje starta "
 "eit elementnamn"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -432,25 +439,25 @@ msgstr ""
 "«%s» er ikkje eit gyldig teikn etter avsluttande merket «%s»; det tillatne "
 "teiknet er «>»"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementet «%s» vart lukka. Det er ingen opne element no"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elementet «%s» vart avslutta, men det opne elementet er «%s»"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller innheldt berre tomme teikn"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument avslutta uventa rett etter ei open vinkelhake «<»"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -459,7 +466,7 @@ msgstr ""
 "Dokumentet slutta uventa med element framleis opne. «%s» var det siste "
 "elementet som vart opna"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -468,20 +475,20 @@ msgstr ""
 "Dokumentet slutta uventa, venta å sjå at ei vinkelhake lukka det avsluttande "
 "merket <%s/>"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentet tok uventa slutt inni eit elementnamn"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentet tok uventa slutt inni eit attributtnamn"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -489,16 +496,16 @@ msgstr ""
 "Dokumentet slutta uventa etter likskapsteiknet etter attributtnamnet; ingen "
 "attributtverdi"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentet avslutta uventa medan det var inne i ein attributtverdi"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumentet avslutta uventa i eit lukkemerke for elementet «%s»"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
@@ -1000,19 +1007,19 @@ msgstr "Argument manglar for %s"
 msgid "Unknown option %s"
 msgstr "Ukjend val «%s»"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "Klarte ikkje å finna gyldig nøkkelfil i søkjemappene"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "Ikkje ei vanleg fil"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "Fila er tom"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1020,54 +1027,54 @@ msgstr ""
 "Nøkkelfila inneheld linja «%s» som ikkje er eit nøkkel-verdi-par, ei gruppe "
 "eller ein kommentar"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Ugyldig gruppenamn: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Nøkkelfila startar ikkje med ei gruppe"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Ugyldig nøkkelnamn: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nøkkelfila inneheld den ikkje støtta kodinga «%s»"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nøkkelfila manglar gruppa «%s»"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Nøkkelfila manglar nøkkelen «%s»"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Nøkkelfila har nøkkelen «%s» med verdien «%s», som ikkje er UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Nøkkelfila har nøkkelen «%s» med ein verdi som ikkje kan tolkast."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Nøkkelfila har nøkkelen «%s» med ein verdi som ikkje kan tolkast."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1075,36 +1082,36 @@ msgid ""
 msgstr ""
 "Nøkkelfila har feil i nøkkelen «%s» i gruppa «%s». Verdien kan ikkje tolkast."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nøkkelfila har ikkje nøkkelen «%s» i gruppa «%s»"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "Nøkkelfila inneheld escape-teikn på slutten av linja"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nøkkelfila inneheld ugyldig escape-sekvens «%s»"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Verdien «%s» kan ikkje tolkast som eit tal."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heiltalsverdien «%s» er utanfor gyldig område"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Verdien «%s» kan ikkje tolkast som eit flyttal."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdien «%s» kan ikkje tolkast som ein boolsk verdi."
@@ -1121,7 +1128,7 @@ msgstr "For stor teljingsverdi sendt til %s"
 msgid "Stream is already closed"
 msgstr "Straumen er allereie stengt"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "Operasjonen vart avbroten"
@@ -1152,37 +1159,47 @@ msgstr "Utan namn"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Skrivebordfila oppgav ikkje Exec-felt"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "Klarte ikkje å finna terminalen programmet krev"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikkje laga programoppsettmappe %s for brukaren: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikkje laga MIME-oppsettmappe %s: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikkje laga skrivebordfila %s for brukaren"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Sjølvvald definisjon av %s"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "stasjonen støttar ikkje å løysa ut"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "stasjonen støttar ikkje å spørja etter media"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "stasjonen støttar ikkje å løysa ut"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "stasjonen støttar ikkje å løysa ut"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1210,10 +1227,11 @@ msgstr ""
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Operasjonen er ikkje støtta"
 
@@ -1246,29 +1264,29 @@ msgstr "Målfila finst"
 msgid "Can't recursively copy directory"
 msgstr "Kan ikkje kopiera katalog rekursivt"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 #, fuzzy
 msgid "Can't copy special file"
 msgstr "Kan ikkje skriva over mappe"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "Ugyldig symlink-verdi oppgjeven"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "Papirkorg er ikkje støtta"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnamn kan ikkje innehalda «%c»"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "volumet støttar ikkje montering"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "Ingen program er registrert til å handtera denne fila"
 
@@ -1359,7 +1377,7 @@ msgstr "Innstraumen støttar ikkje lesing"
 msgid "Stream has outstanding operation"
 msgstr "Straumen har ventande operasjon"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "Klarer ikkje å finna typen standard lokal mappeovervakar"
 
@@ -1496,68 +1514,68 @@ msgstr "Feil under lesing av informasjon om fila «%s»: %s"
 msgid " (invalid encoding)"
 msgstr "(ugyldig teiknkoding)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Feil under lesing av info om fildeskriptoren: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ugyldig attributtype (venta uint32)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ugyldig attributtype (venta uint64)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ugyldig attributtype (venta byte-streng)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Feil endring av løyve: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Feil under eigarskifte: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "symbolsk lenkje må vera ikkje-NULL"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Fil under oppretting av symbolsk lenkje: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Fil under oppretting av symbolsk lenkje: Fila er ikkje ei symbolsk lenkje"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Feil endring av løyve: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "symbolsk lenkje må vera ikkje-NULL"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Feil under eigarskifte: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Å setja attributten %s er ikkje støtta"
@@ -1812,8 +1830,3 @@ msgstr "[FIL ...]"
 #, fuzzy
 #~ msgid "Close file descriptor"
 #~ msgstr "Feil under lesing av info om fildeskriptoren: %s"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u byte"
-#~ msgstr[1] "%u byte"

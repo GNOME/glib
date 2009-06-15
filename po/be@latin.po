@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -210,7 +210,7 @@ msgid "Failed to open file '%s': %s"
 msgstr "Niemahčyma adčynić fajł '%s': %s"
 
 # glib/gfileutils.c:479
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -285,6 +285,14 @@ msgstr "Šablon '%s' niapravilny, u im nie pavinna być '%s'"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "U šablonie '%s' niama XXXXXX"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u bajt"
+msgstr[1] "%u bajty"
+msgstr[2] "%u bajtaŭ"
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -340,13 +348,13 @@ msgstr ""
 "Niemahčyma vykanać niepasrednaje čytańnie ŭ funkcyi g_io_channel_read_to_end"
 
 # glib/gfileutils.c:505
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Niemahčyma adčynić fajł '%s': funkcyja open() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Niemahčyma zmapavać fajł '%s': funkcyja mmap() vyvieła: %s"
@@ -428,12 +436,12 @@ msgstr ""
 "nia mieŭ aznačać pačatku adzinki — zamianicie jaho na &amp;"
 
 # glib/gmarkup.c:932
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dakument musić pačynacca z elementu (naprykład <book>)"
 
 # glib/gmarkup.c:970
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -443,7 +451,7 @@ msgstr ""
 "pačynać nazvy adzinki"
 
 # glib/gmarkup.c:1033
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -452,7 +460,7 @@ msgstr ""
 "Dziŭny znak '%s', čakaŭsia znak '>' dla zakančeńnia značnika elementu '%s'"
 
 # glib/gmarkup.c:1120
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -460,7 +468,7 @@ msgstr ""
 "Dziŭny znak '%s', čakaŭsia znak '=' paśla nazvy atrybutu '%s' elementu '%s'"
 
 # glib/gmarkup.c:1161
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -472,7 +480,7 @@ msgstr ""
 "niedapuščalny znak u nazovie atrybutu"
 
 # glib/gmarkup.c:1244
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -482,7 +490,7 @@ msgstr ""
 "nadajecca značeńnie atrybutu '%s' elementu '%s'"
 
 # glib/gmarkup.c:1384
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -492,7 +500,7 @@ msgstr ""
 "pačynać nazovu elementu"
 
 # glib/gmarkup.c:1422
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -502,29 +510,29 @@ msgstr ""
 "dapuščalnym znakam źjaŭlajecca '>'"
 
 # glib/gmarkup.c:1433
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' byŭ začynieny, dziejna niama adčynienych elementaŭ"
 
 # glib/gmarkup.c:1442
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' byŭ začynieny, ale dziejna adčynieny '%s'"
 
 # glib/gmarkup.c:1574
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "Dakument byŭ pusty albo ŭtrymlivaŭ tolki prabieły"
 
 # glib/gmarkup.c:1588
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Adrazu paśla znaku '%s' dakument niečakana skončyŭsia"
 
 # glib/gmarkup.c:1596 glib/gmarkup.c:1640
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -534,7 +542,7 @@ msgstr ""
 "— '%s' byŭ apošnim adčynienym elementam"
 
 # glib/gmarkup.c:1604
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -544,22 +552,22 @@ msgstr ""
 "značnik <%s/>"
 
 # glib/gmarkup.c:1610
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dakument niečakana skončyŭsia ŭnutry nazvy elementu"
 
 # glib/gmarkup.c:1615
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dakument niečakana skončyŭsia ŭnutry nazvy atrybutu"
 
 # glib/gmarkup.c:1620
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dakument niečakana skončyŭsia ŭnutry elementu, jaki adkryvaje značnik."
 
 # glib/gmarkup.c:1626
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -568,18 +576,18 @@ msgstr ""
 "atrybutu: niama vartaści atrybutu"
 
 # glib/gmarkup.c:1633
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dakument niečakana skončyŭsia ŭnutry vartaści atrybutu"
 
 # glib/gmarkup.c:1648
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dakument niečakana skončyŭsia ŭnutry značnika zamykańnia elementu '%s'"
 
 # glib/gmarkup.c:1654
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dakument niečakana skončyŭsia ŭnutry kamentara albo instrukcyi"
 
@@ -1123,19 +1131,19 @@ msgstr "Adsutny parametar dla %s"
 msgid "Unknown option %s"
 msgstr "Nieviadomaja opcyja %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "Niemahčyma znajści pravilnaha fajłu kluča ŭ katalohach pošuku"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "Heta nie zvyčajny fajł"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "Fajł pusty"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1144,59 +1152,59 @@ msgstr ""
 "hrupaj, albo kamentarom"
 
 # glib/gconvert.c:1729
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Niapravilnaja nazva hrupy: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Fajł kluča nie pačynajecca ad hrupy"
 
 # glib/gconvert.c:1729
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Niapravilnaja nazva kluča: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Fajł kluča ŭtrymlivaje kadavańnie '%s', jakoje nie absłuhoŭvajecca"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Fajł kluča nie ŭklučaje ŭ siabie hrupy '%s'"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Fajł kluča nie ŭklučaje ŭ siabie kluča '%s'"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' z vartaściu '%s', nie zapisanaj jak "
 "UTF-8"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' ź nieinterpretavalnaj vartaściu."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' ź nieinterpretavalnaj vartaściu."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1205,39 +1213,39 @@ msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' u hrupie '%s', jaki maje "
 "nieinterpretavalnuju vartaść."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Fajł kluča nia maje kluča '%s' u hrupie '%s'"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "Fajł kluča maje ŭ sabie cytavany znak na kancy radka"
 
 # glib/gconvert.c:1648
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Fajł kluča maje ŭ sabie niedapuščalny cytavalny łancužok '%s'"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nielha interpretavać '%s' jak ličbavuju vartaść."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Ličbavaja vartaść '%s' pa-za dapuščalnymi miežami"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Niemahčyma interpretavać značeńnie '%s' jak ličbavuju vartaść ź "
 "niefiksavanaj koskaj."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ličbavuju vartaść '%s' niemahčyma interpretavać jak lahičnuju vartaść."
@@ -1254,7 +1262,7 @@ msgstr "Funkcyi %s pieradadzieny nadta vialiki ličylnik"
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "Aperacyja anulavanaja"
@@ -1285,38 +1293,48 @@ msgstr "Nienazvany"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fajł stała nie akreślivaje pola Exec"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "Niemahčyma znajści terminału, vymahanaha dla aplikacyi"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Niemahčyma stvaryć kanfihuracyjny kataloh %s karystalnika dla aplikacyi: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Niemahčyma stvaryć kanfihuracyjny kataloh MIME %s dla karystalnika: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Niemahčyma stvaryć fajł stała %s dla karystalnika"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Asablivaje aznačeńnie dla %s"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "pryłada nie zaimplementavała vysoŭvańnia (eject)"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "pryłada nie zaimplementavała apytańnia nośbitaŭ (poll)"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "pryłada nie zaimplementavała vysoŭvańnia (eject)"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "pryłada nie zaimplementavała vysoŭvańnia (eject)"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1344,10 +1362,11 @@ msgstr ""
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Aperacyja nie padtrymlivajecca"
 
@@ -1380,29 +1399,29 @@ msgstr "Metavy fajł isnuje"
 msgid "Can't recursively copy directory"
 msgstr "Niemahčyma rekursiŭna skapijavać kataloh"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 #, fuzzy
 msgid "Can't copy special file"
 msgstr "Niemahčyma skapijavać zamiest katalohu"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "Padadzienaja niapravilnaja vartaść symbalnaj spasyłki"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "Śmietnica nie padtrymlivajacca"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nazvy fajłaŭ nia mohuć utrymlivać \"%c\""
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "masiŭ nie zaimplementavaŭ mantavańnia (mount)"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "Nivodnaja aplikacyja nie zarehistravanaja dla pracy z hetym fajłam"
 
@@ -1493,7 +1512,7 @@ msgstr "Uvachodnaja płyń nie zaimplementavała čytańnia (read)"
 msgid "Stream has outstanding operation"
 msgstr "Dla płyni jość važkaja aperacyja"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "Niemahčyma znajści zmoŭčany typ manitora dla lakalnaha katalohu"
 
@@ -1649,49 +1668,49 @@ msgid " (invalid encoding)"
 msgstr " (niapravilnaje kadavańnie)"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłavaha deskryptara: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint32)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint64)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia bajtavy radok)"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Pamyłka akreśleńnia pravoŭ: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Pamyłka akreśleńnia ŭładalnika: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "symbalnaja spasyłka musić być nia-NULL"
 
 # glib/gmarkup.c:303
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Pamyłka akreśleńnia symbalnaj spasyłki: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Pamyłka akreśleńnia symbalnaj spasyłki: fajł nie źjaŭlajecca symbalnaj "
@@ -1699,28 +1718,28 @@ msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Pamyłka akreśleńnia pravoŭ: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "symbalnaja spasyłka musić być nia-NULL"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Pamyłka akreśleńnia ŭładalnika: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Akreśleńnie atrybutu %s nie padtrymlivajecca"
@@ -2002,12 +2021,6 @@ msgstr "[FAJŁ...]"
 #, fuzzy
 #~ msgid "Close file descriptor"
 #~ msgstr "Pamyłka atrymańnia stat() dla fajłavaha deskryptara: %s"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u bajt"
-#~ msgstr[1] "%u bajty"
-#~ msgstr[2] "%u bajtaŭ"
 
 #~ msgid "Can't load just created desktop file"
 #~ msgstr "Niemahčyma zahruzić tolki što stvorany fajł stała"

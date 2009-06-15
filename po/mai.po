@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-02-27 17:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: maithili <maithili.sf.net>\n"
@@ -188,7 +188,7 @@ msgstr "फाइल '%s' सँ पढ़एमे असफल: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' फाइल खोलबामे असफल :%s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "फाइल '%s' क विशेषतासभ पता करबामे असफल: fstat() असफल: %s"
@@ -248,6 +248,13 @@ msgstr "टैम्पलेट '%s' अवैध अछि. एहिमे '%
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "टैम्पलेट '%s' मे XXXXXX समाहित नहि अछि"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -293,12 +300,12 @@ msgstr "आंशिक अक्षर मे चैनल समाप्त �
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "यहाँ एकटा रा रीड नहि कए सकैत - g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "फाइल '%s' खोलबामे असफल: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' फाइल चित्रित करबामे विफल: mmap() विफल: %s"
@@ -370,31 +377,31 @@ msgstr ""
 "एंटिटी अर्धविराम पर समाप्त नहि होइछ, बेसी संभव अछि जे अहाँ एम्परसेन्ड अक्षर क' प्रयोग "
 "कएनए छी आओर एकटा एंटिटी प्रारंभ नहि कएनाइ चाहैत छी- एम्परसेंड केँ एहिना एस्केप करू: &amp;"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "दस्ताबेज एकटा अवयव क' नामसँ प्रारंभ होनाइ चाही (उदाहरण क' लेल- <पुस्तक>)"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "< क' पश्चात आबल '%s' एकटा वैध वर्ण नहि अछि. ई अवयव नामसँ प्रारंभ नहि होइछ"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr ""
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "विषम अक्षर '%s', प्रत्याशित अछि एकटा '=' लक्षण नाम '%s' अवयव '%s' क' पश्चात"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -405,7 +412,7 @@ msgstr ""
 "प्रत्याशित, अथवा विकल्पतः एकटा गुण; साइत अहाँ गुण नाममे एकटा अमान्य संप्रतीक क' प्रयोग "
 "कएनए छी"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -414,7 +421,7 @@ msgstr ""
 "पुरान अक्षर '%s', जखन विशेषता '%s', अवयव '%s' क' मान देल जाइत अछि तँ बराबर चिह्नक "
 "बाद एकटा खुलल कोट चिह्न वांछित अछि"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -423,7 +430,7 @@ msgstr ""
 "'%s' एकटा वैध अक्षर नहि अछि अक्षर '</' क' बाद; '%s' एकटा अवयव नाम सँ प्रारंभ नहि "
 "होइछ"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -431,25 +438,25 @@ msgid ""
 msgstr ""
 "'%s' एकटा वैध अक्षर नहि अछि क्लोज़ अवयव नाम '%s' क' बाद; स्वीकार्य अक्षर अछि '>'"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "अवयव '%s' बन्द छला, कोनो अवयव वर्तमानमे खुलल नहि अछि"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "दस्ताबेज '%s' बन्द छला, मुदा वर्तमान खुलल अवयव अछि '%s'"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "दस्ताबेज खाली छला अथवा ओकरामे सिर्फ श्वेत रिक्ति छला"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूप सँ एकटा खुलल एंगल ब्रेकेट '<' क' पश्चाते भ' गेल"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -458,7 +465,7 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूप सँ अवयवसभ क' खुलल हए पर भ' गेल - '%s' अंतिम खुलल अवयव "
 "छला"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -467,19 +474,19 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूप सँ भ' गेल, वांछित छला देखनाइ टैगकेँ बन्द करैत एकटा क्लोज एंगल "
 "ब्रेकेट <%s/>"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव नाम क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूप सँ विशेषता नाम क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव-खोलबाक टैगक भीतर भ' गेल."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -487,16 +494,16 @@ msgstr ""
 "दस्ताबेज क' अंत अप्रत्याशित रूपसँ बराबर क' चिह्न क' बाद एकटा विशेषता नाम क' पश्चात भ' "
 "गेल; कोनो विशेषता मान नहि"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ विशेषता मान क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ अवयव '%s' लेल बन्द टैग क' भीतर भ' गेल"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "दस्ताबेज क' अंत अप्रत्याशित रूपसँ टिप्पणी अथवा प्रक्रिया निर्देश क' भीतर भ' गेल"
 
@@ -991,73 +998,73 @@ msgstr "%s क' लेल गुम तर्क"
 msgid "Unknown option %s"
 msgstr "अनजान विकल्प %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "एकटा सामान्य फाइल नहि"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "फाइल खाली अछि"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "कुंजी फाइलमे '%s' पंक्ति समाहित अछि जे एकटा कुँजी मान जोड़ा, समूह, अथवा टिप्पणी नहि अछि"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "अवैध समूह नाम: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "कुंजी फाइल एकटा समूहक सँग शुरू नहि होइछ"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "अवैध कुँजी नाम: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "कुँजी फाइल मे असमर्थित एनकोडिंग '%s' समाहित अछि"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "कुँजी फाइल मे '%s' समूह नहि अछि"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "कुँजी फाइलमे '%s' कुँजी नहि अछि"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "कुँजी फाइलमे '%s' कुँजी समाहित अछि '%s' मान क' सँग जे UTF-8 नहि अछि"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "कुँजी फाइलमे '%s' कुँजी अछि जकरा मान क' विश्लेषण नहि कएल जाए सकैत अछि."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "कुँजी फाइलमे '%s' कुँजी अछि जकरा मान क' विश्लेषण नहि कएल जाए सकैत अछि."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1065,36 +1072,36 @@ msgid ""
 msgstr ""
 "कुँजी फाइलमे '%s' कुँजी अछि '%s' समूह मे जकर मान क' विश्लेषण नहि कएल जाए सकैत अछि."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "कुँजी फाइलमे '%s' कुँजी नहि अछि '%s' समूहमे"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "कुँजी फाइलमे पँक्ति क' अंतमे एस्केप संप्रतीक रहैत अछि"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुँजी फाइल मे '%s' अमान्य श्रृंखला समाहित अछि"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान '%s' केँ एकटा सँख्याक तरह नहि विश्लेषित कएल जाए सकैत अछि."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "पूर्णांक मान '%s' रेंज क' बाहर अछि"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "मान '%s' केँ एकटा फ्लोट सँख्याक तरह नहि विश्लेषित कएल जाए सकैत अछि."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' केँ बुलियन क' तौर पर विश्लेषित नहि कएल जाए सकैत अछि."
@@ -1111,7 +1118,7 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "स्ट्रीन पहिनेसँ बन्न अछि"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "ऑपरेशन रद्द छल"
@@ -1142,37 +1149,47 @@ msgstr "बेनाम"
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "प्रयोक्ता डेस्कटाप फाइल %s नहि बनाए सकैत अछि"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s कए लेल पसंदीदा परिभाषित"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr ""
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr ""
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "आवाज माउंटकेँ लागू नहि करैत अछि"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "आवाज माउंटकेँ लागू नहि करैत अछि"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1200,10 +1217,11 @@ msgstr "GEmblem प्रत्याशित GEmblemedIcon केँ लेल
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "ऑपरेशन समर्थित नहि अछि"
 
@@ -1236,28 +1254,28 @@ msgstr "लक्षित फाइल मोजुद अछि"
 msgid "Can't recursively copy directory"
 msgstr "निर्देशिकाकेँ बेरबेर सँ नहि कापी कए सकैछ"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "विशेष फाइलकेँ कापी नहि कए सकल"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr ""
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "फाइल नाम मे '%c' नहि रहि सकैत अछि"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "आवाज माउंटकेँ लागू नहि करैत अछि"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "कोनो अनुप्रयोग ई फाइलकेँ नियंत्रणकेँ लेल पंजीकृत नहि अछि"
 
@@ -1348,7 +1366,7 @@ msgstr ""
 msgid "Stream has outstanding operation"
 msgstr "स्ट्रीमकेँ संग बचल आपरेशन अछि"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
@@ -1485,66 +1503,66 @@ msgstr "'%s' फाइल बताबैमे त्रुटि: %s"
 msgid " (invalid encoding)"
 msgstr " (अमान्य एन्कोडिंग)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "फाइल विवरण कथित करने मे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "अमान्य गुण प्रकार (uint32 expected)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "अमान्य गुण प्रकार (uint64 expected)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "अमान्य गुण प्रकार (byte string expected)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "अनुमति सेटिंग मे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "स्वामी सेटिंग मे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "symlink जरूर गैर-NULL होबा चाही"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink सेटिंग मे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink सेटिंग मे त्रुटि: फाइल एकटा symlink नहि अछि"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "अनुमति सेटिंग मे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux संदर्भ गैर-NULL होबा चाही"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux संदर्भ सेट करबामे त्रुटि: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ई सिस्टम पर सक्रिय नहि अछि"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "सेटिंग गुण %s समर्थित नहि"

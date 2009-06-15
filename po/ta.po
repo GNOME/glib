@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-28 23:29-0400\n"
+"POT-Creation-Date: 2009-06-15 12:58-0400\n"
 "PO-Revision-Date: 2009-03-15 14:04+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -195,7 +195,7 @@ msgstr "'%s' கோப்பிலிருந்து வாசிக்க �
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:133
+#: glib/gfileutils.c:712 glib/gmappedfile.c:138
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() செயலிழந்தது: %s"
@@ -255,6 +255,13 @@ msgstr "'%s' படிம அச்சு செல்லுபடியாக�
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' படிம அச்சில் XXXXXX இல்லை"
 
+#: glib/gfileutils.c:1734
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: glib/gfileutils.c:1742
 #, c-format
 msgid "%.1f KB"
@@ -300,12 +307,12 @@ msgstr "வாய்க்கால் பாதி வரியுருவி�
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்க முடியாது"
 
-#: glib/gmappedfile.c:116
+#: glib/gmappedfile.c:121
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: open() செயலிழந்தது: %s"
 
-#: glib/gmappedfile.c:193
+#: glib/gmappedfile.c:198
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' கோப்பினை ஒப்பிட முடியவில்லை: mmap() செயலிழந்தது: %s"
@@ -378,11 +385,11 @@ msgstr ""
 "பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் '&' "
 "பயன்படுத்தி இருக்கலாம் - '&'சை &amp ஆக விடுவி;"
 
-#: glib/gmarkup.c:973
+#: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ஆவணம் ஓர் உறுப்புடன் (உதாரணம்: <book>) தொடங்க வேண்டும்"
 
-#: glib/gmarkup.c:1013
+#: glib/gmarkup.c:1054
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -391,7 +398,7 @@ msgstr ""
 "'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் "
 "தொடங்க முடியாது"
 
-#: glib/gmarkup.c:1081
+#: glib/gmarkup.c:1122
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
@@ -400,7 +407,7 @@ msgstr ""
 "ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் "
 "என்று எதிர்பார்த்தது"
 
-#: glib/gmarkup.c:1165
+#: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -408,7 +415,7 @@ msgstr ""
 "'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
 "வரியுரு"
 
-#: glib/gmarkup.c:1206
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -419,7 +426,7 @@ msgstr ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 
-#: glib/gmarkup.c:1283
+#: glib/gmarkup.c:1291
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -428,7 +435,7 @@ msgstr ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -437,7 +444,7 @@ msgstr ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 
-#: glib/gmarkup.c:1453
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -446,25 +453,25 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1464
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, தற்பொது ஒரு உறுப்பும் திறந்து இல்லை"
 
-#: glib/gmarkup.c:1473
+#: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, அனால் தற்பொது திறந்திறுக்கும் உறுப்பு '%s'"
 
-#: glib/gmarkup.c:1640
+#: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "வெற்றான ஆவணம் அல்லது ஆவணத்தில் இறுப்பது அனைத்தும் வெண்வெளி"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' பிறகு ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1662 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -473,7 +480,7 @@ msgstr ""
 "உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட "
 "உறுப்பு '%s'"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1678
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -482,19 +489,19 @@ msgstr ""
 "ஆவணம் திடீரென முடிவடைந்தது, அடையாள ஒட்டு <%s/> முடிவில் ஓர் '}' இருக்கும் என "
 "எதிர்பார்த்தது"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "உறுப்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "பண்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "உறுப்பு-தொடங்களின் அடையாள ஒட்டு  உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -502,16 +509,16 @@ msgstr ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "பண்பு பெயர் உள்ளிறுக்கும் போது ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' என்னும் மூடு-அடையாள ஒட்டு உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ஆவணம் திடீரென குறிப்புரையுல் அல்லது செயலாக்கம் ஆணையுல் முடிவடைந்தது"
 
@@ -1010,73 +1017,73 @@ msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
 
-#: glib/gkeyfile.c:358
+#: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "தேடல் அடைவுகளில் சரியான விசை கோப்பினை காண முடியவில்லை"
 
-#: glib/gkeyfile.c:393
+#: glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "ஒரு முறையான கோப்பில்லை"
 
-#: glib/gkeyfile.c:401
+#: glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "கோப்பு வெற்றாக உள்ளது"
 
-#: glib/gkeyfile.c:761
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "செல்லுபடியாகாத குழு பெயர்: %s"
 
-#: glib/gkeyfile.c:843
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "விசை கோப்பு ஒரு குழுவாக ஆரம்பமாகாது"
 
-#: glib/gkeyfile.c:869
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "செல்லுபடியாகாத விசை பெயர்: %s"
 
-#: glib/gkeyfile.c:896
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "விசை கோப்பு துணையில்லாத குறிமுறையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:1112 glib/gkeyfile.c:1274 glib/gkeyfile.c:2503
-#: glib/gkeyfile.c:2569 glib/gkeyfile.c:2704 glib/gkeyfile.c:2837
-#: glib/gkeyfile.c:2990 glib/gkeyfile.c:3177 glib/gkeyfile.c:3238
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
+#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "விசை கோப்பு குழுவினை கொண்டிருக்கவில்லை '%s'"
 
-#: glib/gkeyfile.c:1286
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr " '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:1393 glib/gkeyfile.c:1508
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr " '%s'மதிப்பினை உடைய '%s'விசை விசை கோப்பு கொண்டுள்ளது, இது UTF-8 அல்ல"
 
-#: glib/gkeyfile.c:1413 glib/gkeyfile.c:1907
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: glib/gkeyfile.c:1528
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: glib/gkeyfile.c:2122 glib/gkeyfile.c:2334
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1085,36 +1092,36 @@ msgstr ""
 "'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற "
 "முடியாது."
 
-#: glib/gkeyfile.c:2518 glib/gkeyfile.c:2719 glib/gkeyfile.c:3249
+#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' குழுவில் '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:3483
+#: glib/gkeyfile.c:3487
 msgid "Key file contains escape character at end of line"
 msgstr "கடைசி வரியில் விசை கோப்பு விடுபடு எழுத்தினை கொண்டுள்ளது"
 
-#: glib/gkeyfile.c:3505
+#: glib/gkeyfile.c:3509
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "விசை கோப்பு தவறான விடுபடு வரிசையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:3647
+#: glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "மதிப்பு '%s' ஒரு எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3661
+#: glib/gkeyfile.c:3665
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "இயல் எண் மதிப்பு '%s' வரையறையை தாண்டியுள்ளது"
 
-#: glib/gkeyfile.c:3694
+#: glib/gkeyfile.c:3698
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3718
+#: glib/gkeyfile.c:3722
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."
@@ -1131,7 +1138,7 @@ msgstr "%sக்கு மிகப்பெரிய எண்ணிக்க�
 msgid "Stream is already closed"
 msgstr "ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
-#: gio/gcancellable.c:388 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
+#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
 #: gio/gsimpleasyncresult.c:648
 msgid "Operation was cancelled"
 msgstr "செயல்பாடு ரத்து செய்யப்பட்டது"
@@ -1162,37 +1169,47 @@ msgstr "பெயரில்லாதது"
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"
 
-#: gio/gdrive.c:381
+#: gio/gdrive.c:407
 msgid "drive doesn't implement eject"
 msgstr "இயக்கி வெளியேற்றம் செயல்படுத்தப்படுவில்லை"
 
-#: gio/gdrive.c:451
+#: gio/gdrive.c:477
 msgid "drive doesn't implement polling for media"
 msgstr "இயக்கி ஊடகத்தில் பதிவு செய்யப்படவில்லை"
+
+#: gio/gdrive.c:657
+#, fuzzy
+msgid "drive doesn't implement start"
+msgstr "இயக்கி வெளியேற்றம் செயல்படுத்தப்படுவில்லை"
+
+#: gio/gdrive.c:757
+#, fuzzy
+msgid "drive doesn't implement stop"
+msgstr "இயக்கி வெளியேற்றம் செயல்படுத்தப்படுவில்லை"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1220,10 +1237,11 @@ msgstr "GEmblemedIcon க்காக ஒரு GEmblem எதிர்பார
 
 #: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3146 gio/gfile.c:3200
-#: gio/gfile.c:3331 gio/gfile.c:3371 gio/gfile.c:3698 gio/gfile.c:4100
-#: gio/gfile.c:4184 gio/gfile.c:4267 gio/gfile.c:4347 gio/gfile.c:4677
-#: gio/gfile.c:4957 gio/gfile.c:5026 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
+#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
+#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
+#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "செயல்பாட்டிற்கு ஆதரவு கிடையாது"
 
@@ -1256,28 +1274,28 @@ msgstr "இலக்கு கோப்பு வெளியேற்றப்�
 msgid "Can't recursively copy directory"
 msgstr "அடைவை மீண்டும் நகலெடுக்க முடியவில்லை"
 
-#: gio/gfile.c:2780
+#: gio/gfile.c:2784
 msgid "Can't copy special file"
 msgstr "சிறப்பு கோப்பை நகலெடுக்க முடியவில்லை"
 
-#: gio/gfile.c:3321
+#: gio/gfile.c:3325
 msgid "Invalid symlink value given"
 msgstr "தவறான symlink மதிப்பு கொடுக்கப்பட்டுள்ளது"
 
-#: gio/gfile.c:3414
+#: gio/gfile.c:3418
 msgid "Trash not supported"
 msgstr "குப்பை ஆதரவு கிடையாது"
 
-#: gio/gfile.c:3463
+#: gio/gfile.c:3467
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "'%c' கோப்பின் பெயர்களை பெற்றிருக்கவில்லை"
 
-#: gio/gfile.c:5674 gio/gvolume.c:376
+#: gio/gfile.c:5678 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "தொகுதி மவுண்டை செயல்படுத்தவில்லை"
 
-#: gio/gfile.c:5782
+#: gio/gfile.c:5786
 msgid "No application is registered as handling this file"
 msgstr "இந்த கோப்பைக் கையாள எந்த பதிவு செய்யப்பட்ட விண்ணப்பமும் இல்லை"
 
@@ -1368,7 +1386,7 @@ msgstr "உள்ளீடு ஸ்ட்ரீம் வாசிப்பை 
 msgid "Stream has outstanding operation"
 msgstr "ஸ்ட்ரீம் சிறந்த செயல்பாட்டை கொண்டுள்ளது"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "முன்னிருப்பு உள்ளமை அடைவு மானிட்டர் வகையை தேட முடியவில்லை"
 
@@ -1505,66 +1523,66 @@ msgstr "'%s' கோப்பை துவக்குவதில் பிழ�
 msgid " (invalid encoding)"
 msgstr " (தவறான குறிமுறை)"
 
-#: gio/glocalfileinfo.c:1705
+#: gio/glocalfileinfo.c:1719
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "கோப்பு விவரிப்பவரை துவக்குவதில் பிழை: %s"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1764
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "தவறான அளவுரு வகை (uint32 எதிர்ப்பார்க்கப்பட்டது)"
 
-#: gio/glocalfileinfo.c:1768
+#: gio/glocalfileinfo.c:1782
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "தவறான அளவுரு வகை (uint64 எதிர்பார்க்கப்பட்டது)"
 
-#: gio/glocalfileinfo.c:1787 gio/glocalfileinfo.c:1806
+#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
 msgid "Invalid attribute type (byte string expected)"
 msgstr "தவறான அளவுரு வகை (பைட் சரம் எதிர்பார்க்கப்பட்டது)"
 
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1846
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "பிழை அமைப்பதில் அனுமதி: %s"
 
-#: gio/glocalfileinfo.c:1883
+#: gio/glocalfileinfo.c:1897
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: gio/glocalfileinfo.c:1906
+#: gio/glocalfileinfo.c:1920
 msgid "symlink must be non-NULL"
 msgstr "symlink பூஜ்ஜியமாக இருக்கக்கூடாது"
 
-#: gio/glocalfileinfo.c:1916 gio/glocalfileinfo.c:1935
-#: gio/glocalfileinfo.c:1946
+#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
+#: gio/glocalfileinfo.c:1960
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink: %s கை அமைப்பதில் பிழை"
 
-#: gio/glocalfileinfo.c:1925
+#: gio/glocalfileinfo.c:1939
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink அமைப்பதில் பிழை: கோப்பு ஒரு symlinkஆக இல்லை"
 
-#: gio/glocalfileinfo.c:2051
+#: gio/glocalfileinfo.c:2065
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "பிழை அமைப்பதில் அனுமதி: %s"
 
-#: gio/glocalfileinfo.c:2074
+#: gio/glocalfileinfo.c:2088
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux சூழல் பூஜ்ஜியமாக இருக்கக்கூடாது"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2103
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux சூழலை அமைப்பதில் பிழை: %s"
 
-#: gio/glocalfileinfo.c:2096
+#: gio/glocalfileinfo.c:2110
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux இந்த கணினியில் செயல்படுத்தப்படவில்லை"
 
-#: gio/glocalfileinfo.c:2157
+#: gio/glocalfileinfo.c:2171
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "அளவுரு %s ஐ அமைப்பதில் ஆதரவு கிடையாது"
