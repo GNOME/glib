@@ -45,6 +45,7 @@ struct _GLocalDirectoryMonitor
   GFileMonitor parent_instance;
 
   gchar             *dirname;
+  GFileMonitorFlags  flags;
   /* For mount emulation */
   GUnixMountMonitor *mount_monitor;
   gboolean           was_mounted;
