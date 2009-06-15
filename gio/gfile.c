@@ -6572,5 +6572,184 @@ g_file_replace_contents_finish (GFile         *file,
   return TRUE;
 }
 
+/**
+ * g_file_start_mountable:
+ * @file: input #GFile.
+ * @flags: flags affecting the operation
+ * @start_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
+ * @user_data: the data to pass to callback function
+ *
+ * Starts a file of type G_FILE_TYPE_MOUNTABLE.
+ * Using @start_operation, you can request callbacks when, for instance,
+ * passwords are needed during authentication.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_mount_mountable_finish() to get the result of the operation.
+ *
+ * Since: 2.22
+ */
+void
+g_file_start_mountable (GFile                      *file,
+                        GDriveStartFlags            flags,
+                        GMountOperation            *start_operation,
+                        GCancellable               *cancellable,
+                        GAsyncReadyCallback         callback,
+                        gpointer                    user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->start_mountable == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (file),
+					   callback,
+					   user_data,
+					   G_IO_ERROR,
+					   G_IO_ERROR_NOT_SUPPORTED,
+					   _("Operation not supported"));
+      return;
+    }
+
+  (* iface->start_mountable) (file,
+			      flags,
+			      start_operation,
+			      cancellable,
+			      callback,
+			      user_data);
+}
+
+/**
+ * g_file_start_mountable_finish:
+ * @file: input #GFile.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes a start operation. See g_file_start_mountable() for details.
+ *
+ * Finish an asynchronous start operation that was started
+ * with g_file_start_mountable().
+ *
+ * Returns: %TRUE if the operation finished successfully. %FALSE
+ * otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_file_start_mountable_finish (GFile                      *file,
+                               GAsyncResult               *result,
+                               GError                    **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->start_mountable_finish) (file, result, error);
+}
+
+/**
+ * g_file_stop_mountable:
+ * @file: input #GFile.
+ * @flags: flags affecting the operation
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
+ * @user_data: the data to pass to callback function
+ *
+ * Stops a file of type G_FILE_TYPE_MOUNTABLE.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_stop_mountable_finish() to get the result of the operation.
+ *
+ * Since: 2.22
+ */
+void
+g_file_stop_mountable (GFile                      *file,
+                       GMountUnmountFlags          flags,
+                       GCancellable               *cancellable,
+                       GAsyncReadyCallback         callback,
+                       gpointer                    user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->stop_mountable == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (file),
+					   callback,
+					   user_data,
+					   G_IO_ERROR,
+					   G_IO_ERROR_NOT_SUPPORTED,
+					   _("Operation not supported"));
+      return;
+    }
+
+  (* iface->stop_mountable) (file,
+                             flags,
+                             cancellable,
+                             callback,
+                             user_data);
+}
+
+/**
+ * g_file_stop_mountable_finish:
+ * @file: input #GFile.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an stop operation, see g_file_stop_mountable() for details.
+ *
+ * Finish an asynchronous stop operation that was started
+ * with g_file_stop_mountable().
+ *
+ * Returns: %TRUE if the operation finished successfully. %FALSE
+ * otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_file_stop_mountable_finish (GFile                      *file,
+                              GAsyncResult               *result,
+                              GError                    **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->stop_mountable_finish) (file, result, error);
+}
+
 #define __G_FILE_C__
 #include "gioaliasdef.c"

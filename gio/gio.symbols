@@ -214,6 +214,13 @@ g_drive_poll_for_media
 g_drive_poll_for_media_finish
 g_drive_get_identifier
 g_drive_enumerate_identifiers
+g_drive_get_start_stop_type
+g_drive_can_start
+g_drive_start
+g_drive_start_finish
+g_drive_can_stop
+g_drive_stop
+g_drive_stop_finish
 #endif
 #endif
 
@@ -332,6 +339,10 @@ g_file_open_readwrite_finish
 g_file_replace_readwrite
 g_file_replace_readwrite_async
 g_file_replace_readwrite_finish
+g_file_start_mountable
+g_file_start_mountable_finish
+g_file_stop_mountable
+g_file_stop_mountable_finish
 #endif
 #endif
 
@@ -863,6 +874,8 @@ g_filesystem_preview_type_get_type G_GNUC_CONST
 g_io_error_enum_get_type G_GNUC_CONST
 g_mount_mount_flags_get_type G_GNUC_CONST
 g_mount_operation_result_get_type G_GNUC_CONST
+g_drive_start_flags_get_type G_GNUC_CONST
+g_drive_start_stop_type_get_type G_GNUC_CONST
 g_output_stream_splice_flags_get_type G_GNUC_CONST
 g_ask_password_flags_get_type G_GNUC_CONST
 g_password_save_get_type G_GNUC_CONST

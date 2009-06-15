@@ -32,12 +32,12 @@
 
 /**
  * SECTION:gdrive
- * @short_description: Virtual File System drive management
+ * @short_description: Drive management
  * @include: gio/gio.h
- * 
+ *
  * #GDrive - this represent a piece of hardware connected to the machine.
  * It's generally only created for removable hardware or hardware with
- * removable media. 
+ * removable media.
  *
  * #GDrive is a container class for #GVolume objects that stem from
  * the same piece of media. As such, #GDrive abstracts a drive with
@@ -49,6 +49,15 @@
  * can poll for media; typically one should not do this periodically
  * as a poll for media operation is potententially expensive and may
  * spin up the drive creating noise.
+ *
+ * #GDrive supports starting and stopping drives with authentication
+ * support for the former. This can be used to support a diverse set
+ * of use cases including connecting/disconnecting iSCSI devices,
+ * powering down external disk enclosures and starting/stopping
+ * multi-disk devices such as RAID devices. Note that the actual
+ * semantics and side-effects of starting/stopping a #GDrive may vary
+ * according to implementation. To choose the correct verbs in e.g. a
+ * file manager, use g_drive_get_start_stop_type().
  *
  * For porting from GnomeVFS note that there is no equivalent of
  * #GDrive in that API.
@@ -144,6 +153,23 @@ g_drive_base_init (gpointer g_class)
                     G_TYPE_DRIVE,
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GDriveIface, eject_button),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+      /**
+      * GDrive::stop-button:
+      * @drive: a #GDrive.
+      *
+      * Emitted when the physical stop button (if any) of a drive has
+      * been pressed.
+      *
+      * Since: 2.22
+      **/
+      g_signal_new (I_("stop-button"),
+                    G_TYPE_DRIVE,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GDriveIface, stop_button),
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
@@ -542,6 +568,233 @@ g_drive_enumerate_identifiers (GDrive *drive)
   return (* iface->enumerate_identifiers) (drive);
 }
 
+/**
+ * g_drive_get_start_stop_type:
+ * @drive: a #GDrive.
+ *
+ * Gets a hint about how a drive can be started/stopped.
+ *
+ * Returns: A value from the #GDriveStartStopType enumeration.
+ *
+ * Since: 2.22
+ */
+GDriveStartStopType
+g_drive_get_start_stop_type (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->get_start_stop_type == NULL)
+    return G_DRIVE_START_STOP_TYPE_UNKNOWN;
+
+  return (* iface->get_start_stop_type) (drive);
+}
+
+
+/**
+ * g_drive_can_start:
+ * @drive: a #GDrive.
+ *
+ * Checks if a drive can be started.
+ *
+ * Returns: %TRUE if the @drive can be started, %FALSE otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_drive_can_start (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->can_start == NULL)
+    return FALSE;
+
+  return (* iface->can_start) (drive);
+}
+
+/**
+ * g_drive_start:
+ * @drive: a #GDrive.
+ * @flags: flags affecting the start operation.
+ * @start_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data to pass to @callback
+ *
+ * Asynchronously starts a drive.
+ *
+ * When the operation is finished, @callback will be called.
+ * You can then call g_drive_start_finish() to obtain the
+ * result of the operation.
+ *
+ * Since: 2.22
+ */
+void
+g_drive_start (GDrive              *drive,
+               GDriveStartFlags     flags,
+               GMountOperation     *start_operation,
+               GCancellable        *cancellable,
+               GAsyncReadyCallback  callback,
+               gpointer             user_data)
+{
+  GDriveIface *iface;
+
+  g_return_if_fail (G_IS_DRIVE (drive));
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->start == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (drive), callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("drive doesn't implement start"));
+      return;
+    }
+
+  (* iface->start) (drive, flags, start_operation, cancellable, callback, user_data);
+}
+
+/**
+ * g_drive_start_finish:
+ * @drive: a #GDrive.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes starting a drive.
+ *
+ * Returns: %TRUE if the drive has been started successfully,
+ *     %FALSE otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_drive_start_finish (GDrive         *drive,
+                      GAsyncResult   *result,
+                      GError        **error)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  return (* iface->start_finish) (drive, result, error);
+}
+
+/**
+ * g_drive_can_stop:
+ * @drive: a #GDrive.
+ *
+ * Checks if a drive can be stopped.
+ *
+ * Returns: %TRUE if the @drive can be stopped, %FALSE otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_drive_can_stop (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->can_stop == NULL)
+    return FALSE;
+
+  return (* iface->can_stop) (drive);
+}
+
+/**
+ * g_drive_stop:
+ * @drive: a #GDrive.
+ * @flags: flags affecting the unmount if required for stopping.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data to pass to @callback
+ *
+ * Asynchronously stops a drive.
+ *
+ * When the operation is finished, @callback will be called.
+ * You can then call g_drive_stop_finish() to obtain the
+ * result of the operation.
+ *
+ * Since: 2.22
+ */
+void
+g_drive_stop (GDrive               *drive,
+              GMountUnmountFlags    flags,
+              GCancellable         *cancellable,
+              GAsyncReadyCallback   callback,
+              gpointer              user_data)
+{
+  GDriveIface *iface;
+
+  g_return_if_fail (G_IS_DRIVE (drive));
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->stop == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (drive), callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("drive doesn't implement stop"));
+      return;
+    }
+
+  (* iface->stop) (drive, flags, cancellable, callback, user_data);
+}
+
+/**
+ * g_drive_stop_finish:
+ * @drive: a #GDrive.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes stopping a drive.
+ *
+ * Returns: %TRUE if the drive has been stopped successfully,
+ *     %FALSE otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_drive_stop_finish (GDrive        *drive,
+                     GAsyncResult  *result,
+                     GError       **error)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  return (* iface->stop_finish) (drive, result, error);
+}
 
 #define __G_DRIVE_C__
 #include "gioaliasdef.c"

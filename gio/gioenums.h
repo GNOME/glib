@@ -198,6 +198,45 @@ typedef enum {
   G_MOUNT_UNMOUNT_FORCE = (1 << 0)
 } GMountUnmountFlags;
 
+/**
+ * GDriveStartFlags:
+ * @G_DRIVE_START_NONE: No flags set.
+ *
+ * Flags used when starting a drive.
+ *
+ * Since: 2.22
+ */
+typedef enum {
+  G_DRIVE_START_NONE = 0
+} GDriveStartFlags;
+
+/**
+ * GDriveStartStopType:
+ * @G_DRIVE_START_STOP_TYPE_UNKNOWN: Unknown or drive doesn't support
+ *    start/stop.
+ * @G_DRIVE_START_STOP_TYPE_SHUTDOWN: The stop method will physically
+ *    shut down the drive and e.g. power down the port the drive is
+ *    attached to.
+ * @G_DRIVE_START_STOP_TYPE_NETWORK: The start/stop methods are used
+ *    for connecting/disconnect to the drive over the network.
+ * @G_DRIVE_START_STOP_TYPE_MULTIDISK: The start/stop methods will
+ *    assemble/disassemble a virtual drive from several physical
+ *    drives.
+ * @G_DRIVE_START_STOP_TYPE_PASSWORD: The start/stop methods will
+ *    unlock/lock the disk (for example using the ATA <quote>SECURITY
+ *    UNLOCK DEVICE</quote> command)
+ *
+ * Enumeration describing how a drive can be started/stopped.
+ *
+ * Since: 2.22
+ */
+typedef enum {
+  G_DRIVE_START_STOP_TYPE_UNKNOWN,
+  G_DRIVE_START_STOP_TYPE_SHUTDOWN,
+  G_DRIVE_START_STOP_TYPE_NETWORK,
+  G_DRIVE_START_STOP_TYPE_MULTIDISK,
+  G_DRIVE_START_STOP_TYPE_PASSWORD
+} GDriveStartStopType;
 
 /**
  * GFileCopyFlags:

@@ -141,6 +141,10 @@ typedef struct _GFileIface    		GFileIface;
  * @replace_readwrite: Replaces file read/write. Since 2.22.
  * @replace_readwrite_async: Asynchronously replaces file read/write. Since 2.22.
  * @replace_readwrite_finish: Finishes an asynchronous replace read/write. Since 2.22.
+ * @start_mountable: Starts a mountable object. Since 2.22.
+ * @start_mountable_finish: Finishes an start operation. Since 2.22.
+ * @stop_mountable: Stops a mountable. Since 2.22.
+ * @stop_mountable_finish: Finishes an stop operation. Since 2.22.
  *
  * An interface for writing VFS file handles.
  **/
@@ -481,6 +485,25 @@ struct _GFileIface
                                                        gpointer              user_data);
   GFileIOStream *     (* replace_readwrite_finish)    (GFile                *file,
                                                        GAsyncResult         *res,
+                                                       GError              **error);
+
+  void                (* start_mountable)             (GFile                *file,
+                                                       GDriveStartFlags      flags,
+                                                       GMountOperation      *start_operation,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  gboolean            (* start_mountable_finish)      (GFile                *file,
+                                                       GAsyncResult         *result,
+                                                       GError              **error);
+
+  void                (* stop_mountable)              (GFile                *file,
+                                                       GMountUnmountFlags    flags,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
+  gboolean            (* stop_mountable_finish)       (GFile                *file,
+                                                       GAsyncResult         *result,
                                                        GError              **error);
 };
 
@@ -842,6 +865,24 @@ GFileMonitor*           g_file_monitor                    (GFile                
 							   GFileMonitorFlags       flags,
 							   GCancellable           *cancellable,
 							   GError                **error);
+
+void                    g_file_start_mountable            (GFile                      *file,
+							   GDriveStartFlags            flags,
+							   GMountOperation            *start_operation,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+gboolean                g_file_start_mountable_finish     (GFile                      *file,
+							   GAsyncResult               *result,
+							   GError                    **error);
+void                    g_file_stop_mountable             (GFile                      *file,
+							   GMountUnmountFlags          flags,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+gboolean                g_file_stop_mountable_finish      (GFile                      *file,
+							   GAsyncResult               *result,
+							   GError                    **error);
 
 
 /* Utilities */

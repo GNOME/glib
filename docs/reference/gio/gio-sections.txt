@@ -151,6 +151,10 @@ g_file_unmount_mountable
 g_file_unmount_mountable_finish
 g_file_eject_mountable
 g_file_eject_mountable_finish
+g_file_start_mountable
+g_file_start_mountable_finish
+g_file_stop_mountable
+g_file_stop_mountable_finish
 g_file_mount_enclosing_volume
 g_file_mount_enclosing_volume_finish
 g_file_monitor_directory
@@ -246,6 +250,9 @@ G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT
 G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT
 G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE
 G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI
+G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START
+G_FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP
+G_FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE
 G_FILE_ATTRIBUTE_TIME_MODIFIED
 G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC
 G_FILE_ATTRIBUTE_TIME_ACCESS
@@ -1022,11 +1029,16 @@ g_volume_get_type
 <TITLE>GDrive</TITLE>
 GDrive
 GDriveIface
+GDriveStartFlags
+GDriveStartStopType
 g_drive_get_name
 g_drive_get_icon
 g_drive_has_volumes
 g_drive_get_volumes
 g_drive_can_eject
+g_drive_get_start_stop_type
+g_drive_can_start
+g_drive_can_stop
 g_drive_can_poll_for_media
 g_drive_poll_for_media
 g_drive_poll_for_media_finish
@@ -1035,6 +1047,10 @@ g_drive_is_media_check_automatic
 g_drive_is_media_removable
 g_drive_eject
 g_drive_eject_finish
+g_drive_start
+g_drive_start_finish
+g_drive_stop
+g_drive_stop_finish
 g_drive_enumerate_identifiers
 g_drive_get_identifier
 <SUBSECTION Standard>

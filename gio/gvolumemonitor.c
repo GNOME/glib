@@ -57,6 +57,7 @@ enum {
   DRIVE_DISCONNECTED,
   DRIVE_CHANGED,
   DRIVE_EJECT_BUTTON,
+  DRIVE_STOP_BUTTON,
   LAST_SIGNAL
 };
 
@@ -246,6 +247,23 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                               NULL, NULL,
                                               g_cclosure_marshal_VOID__OBJECT,
                                               G_TYPE_NONE, 1, G_TYPE_DRIVE);
+
+  /**
+   * GVolumeMonitor::drive-stop-button:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @drive: the drive where the stop button was pressed
+   *
+   * Emitted when the stop button is pressed on @drive.
+   *
+   * Since: 2.22
+   **/
+  signals[DRIVE_STOP_BUTTON] = g_signal_new (I_("drive-stop-button"),
+                                             G_TYPE_VOLUME_MONITOR,
+                                             G_SIGNAL_RUN_LAST,
+                                             G_STRUCT_OFFSET (GVolumeMonitorClass, drive_stop_button),
+                                             NULL, NULL,
+                                             g_cclosure_marshal_VOID__OBJECT,
+                                             G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
 }
 

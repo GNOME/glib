@@ -370,6 +370,37 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI "mountable::hal-udi"         /* string */
 
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START:
+ *
+ * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.22
+ */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START "mountable::can-start"     /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP:
+ *
+ * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be stopped.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ *
+ * Since: 2.22
+ */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP "mountable::can-stop"      /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE:
+ *
+ * A key in the "mountable" namespace for getting the #GDriveStartStopType.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.22
+ */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE "mountable::start-stop-type" /* uint32 (GDriveStartStopType) */
+
+
 /* Time attributes */
 
 /**

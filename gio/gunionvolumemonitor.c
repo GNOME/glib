@@ -363,6 +363,16 @@ child_drive_eject_button (GVolumeMonitor      *child_monitor,
 }
 
 static void
+child_drive_stop_button (GVolumeMonitor      *child_monitor,
+                         GDrive             *child_drive,
+                         GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+                         "drive-stop-button",
+                         child_drive);
+}
+
+static void
 g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
                                     GVolumeMonitor      *volume_monitor)
 {
@@ -384,6 +394,7 @@ g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
   g_signal_connect (volume_monitor, "drive-disconnected", (GCallback)child_drive_disconnected, union_monitor);
   g_signal_connect (volume_monitor, "drive-changed", (GCallback)child_drive_changed, union_monitor);
   g_signal_connect (volume_monitor, "drive-eject-button", (GCallback)child_drive_eject_button, union_monitor);
+  g_signal_connect (volume_monitor, "drive-stop-button", (GCallback)child_drive_stop_button, union_monitor);
 }
 
 static void
@@ -409,6 +420,7 @@ g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_disconnected, union_monitor);
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_changed, union_monitor);
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_eject_button, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_drive_stop_button, union_monitor);
 }
 
 static GType
