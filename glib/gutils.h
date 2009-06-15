@@ -127,6 +127,7 @@ void                  g_set_prgname          (const gchar *prgname);
 G_CONST_RETURN gchar* g_get_application_name (void);
 void                  g_set_application_name (const gchar *application_name);
 
+void    g_reload_user_special_dirs_cache     (void);
 G_CONST_RETURN gchar*    g_get_user_data_dir      (void);
 G_CONST_RETURN gchar*    g_get_user_config_dir    (void);
 G_CONST_RETURN gchar*    g_get_user_cache_dir     (void);

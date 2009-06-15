@@ -2471,6 +2471,59 @@ load_user_special_dirs (void)
 
 #endif /* G_OS_UNIX && !HAVE_CARBON */
 
+
+/**
+ * g_reload_user_special_dirs_cache:
+ *
+ * Resets the cache used for g_get_user_special_dir(), so
+ * that the latest on-disk version is used. Call this only
+ * if you just changed the data on disk yourself.
+ *
+ * Due to threadsafety issues this may cause leaking of strings
+ * that were previously returned from g_get_user_special_dir()
+ * that can't be freed. We ensure to only leak the data for
+ * the directories that actually changed value though.
+ *
+ * Since: 2.22
+ */
+void
+g_reload_user_special_dirs_cache (void)
+{
+  int i;
+
+  G_LOCK (g_utils_global);
+
+  if (g_user_special_dirs != NULL)
+    {
+      /* save a copy of the pointer, to check if some memory can be preserved */
+      char **old_g_user_special_dirs = g_user_special_dirs;
+      char *old_val;
+
+      /* recreate and reload our cache */
+      g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
+      load_user_special_dirs ();
+
+      /* only leak changed directories */
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        {
+	  old_val = old_g_user_special_dirs[i];
+	  if (g_strcmp0 (old_val, g_user_special_dirs[i]) == 0)
+            {
+	      /* don't leak */
+	      g_free (g_user_special_dirs[i]);
+	      g_user_special_dirs[i] = old_val;
+            }
+	  else
+            g_free (old_val);
+        }
+
+      /* free the old array */
+      g_free (old_g_user_special_dirs);
+    }
+
+  G_UNLOCK (g_utils_global);
+}
+
 /**
  * g_get_user_special_dir:
  * @directory: the logical id of special directory
