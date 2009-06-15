@@ -344,7 +344,7 @@ g_slist_foreach().
 
 <!-- ##### MACRO g_list_previous ##### -->
 <para>
-A convenience macro to gets the previous element in a #GList.
+A convenience macro to get the previous element in a #GList.
 </para>
 
 @list: an element in a #GList.
@@ -353,7 +353,7 @@ A convenience macro to gets the previous element in a #GList.
 
 <!-- ##### MACRO g_list_next ##### -->
 <para>
-A convenience macro to gets the next element in a #GList.
+A convenience macro to get the next element in a #GList.
 </para>
 
 @list: an element in a #GList.
