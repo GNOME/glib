@@ -1577,9 +1577,23 @@ _g_local_file_info_get (const char             *basename,
 
               if (strcmp (path, g_get_home_dir ()) == 0)
                 icon = g_themed_icon_new ("user-home");
-              else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0) 
+              else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0)
                 icon = g_themed_icon_new ("user-desktop");
-              else 
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-documents");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-download");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_MUSIC)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-music");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PICTURES)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-pictures");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-publicshare");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-templates");
+              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS)) == 0)
+                icon = g_themed_icon_new_with_default_fallbacks ("folder-videos");
+              else
                 {
                   icon = g_content_type_get_icon (content_type);
                   if (G_IS_THEMED_ICON (icon))
