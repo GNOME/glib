@@ -241,6 +241,10 @@ g_socket_listener_add_socket (GSocketListener  *listener,
     g_object_set_qdata_full (G_OBJECT (socket), source_quark,
 			     g_object_ref (source_object), g_object_unref);
 
+
+  if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
+    G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
+
   return TRUE;
 }
 
@@ -333,9 +337,6 @@ g_socket_listener_add_address (GSocketListener  *listener,
     *effective_address = local_address;
 
   g_object_unref (socket); /* add_socket refs this */
-
-  if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
-    G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
 
   return TRUE;
 }
