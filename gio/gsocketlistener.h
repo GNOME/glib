@@ -98,6 +98,9 @@ gboolean                g_socket_listener_add_inet_port                 (GSocket
                                                                          guint16              port,
 									 GObject             *source_object,
 									 GError             **error);
+guint16                 g_socket_listener_add_any_inet_port             (GSocketListener     *listener,
+									 GObject             *source_object,
+									 GError             **error);
 
 GSocket *               g_socket_listener_accept_socket                 (GSocketListener      *listener,
 									 GObject             **source_object,

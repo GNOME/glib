@@ -1840,6 +1840,7 @@ g_socket_listener_new
 g_socket_listener_add_socket
 g_socket_listener_add_address
 g_socket_listener_add_inet_port
+g_socket_listener_add_any_inet_port
 g_socket_listener_accept
 g_socket_listener_accept_async
 g_socket_listener_accept_finish

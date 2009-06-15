@@ -927,5 +927,230 @@ g_socket_listener_close (GSocketListener *listener)
   listener->priv->closed = TRUE;
 }
 
+/**
+ * g_socket_listener_add_any_inet_port:
+ * @listener: a #GSocketListener
+ * @source_object: Optional #GObject identifying this source
+ * @error: a #GError location to store the error occuring, or %NULL to
+ * ignore.
+ *
+ * Listens for TCP connections on any available port number for both
+ * IPv6 and IPv4 (if each are available).
+ *
+ * This is useful if you need to have a socket for incoming connections
+ * but don't care about the specific port number.
+ *
+ * @source_object will be passed out in the various calls
+ * to accept to identify this particular source, which is
+ * useful if you're listening on multiple addresses and do
+ * different things depending on what address is connected to.
+ *
+ * Returns: the port number, or 0 in case of failure.
+ *
+ * Since: 2.22
+ **/
+guint16
+g_socket_listener_add_any_inet_port (GSocketListener  *listener,
+				     GObject          *source_object,
+                                     GError          **error)
+{
+  GSList *sockets_to_close = NULL;
+  guint16 candidate_port = 0;
+  GSocket *socket6 = NULL;
+  GSocket *socket4 = NULL;
+  gint attempts = 37;
+
+  /*
+   * multi-step process:
+   *  - first, create an IPv6 socket.
+   *  - if that fails, create an IPv4 socket and bind it to port 0 and
+   *    that's it.  no retries if that fails (why would it?).
+   *  - if our IPv6 socket also speaks IPv4 then we are done.
+   *  - if not, then we need to create a IPv4 socket with the same port
+   *    number.  this might fail, of course.  so we try this a bunch of
+   *    times -- leaving the old IPv6 sockets open so that we get a
+   *    different port number to try each time.
+   *  - if all that fails then just give up.
+   */
+
+  while (attempts--)
+    {
+      GInetAddress *inet_address;
+      GSocketAddress *address;
+      gboolean result;
+
+      g_assert (socket6 == NULL);
+      socket6 = g_socket_new (G_SOCKET_FAMILY_IPV6,
+                              G_SOCKET_TYPE_STREAM,
+                              G_SOCKET_PROTOCOL_DEFAULT,
+                              NULL);
+
+      if (socket6 != NULL)
+        {
+          inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV6);
+          address = g_inet_socket_address_new (inet_address, 0);
+          g_object_unref (inet_address);
+          result = g_socket_bind (socket6, address, TRUE, error);
+          g_object_unref (address);
+
+          if (!result ||
+              !(address = g_socket_get_local_address (socket6, error)))
+            {
+              g_object_unref (socket6);
+              socket6 = NULL;
+              break;
+            }
+
+          g_assert (G_IS_INET_SOCKET_ADDRESS (address));
+          candidate_port =
+            g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
+          g_assert (candidate_port != 0);
+          g_object_unref (address);
+
+          if (g_socket_speaks_ipv4 (socket6))
+            break;
+        }
+
+      g_assert (socket4 == NULL);
+      socket4 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                              G_SOCKET_TYPE_STREAM,
+                              G_SOCKET_PROTOCOL_DEFAULT,
+                              socket6 ? NULL : error);
+
+      if (socket4 == NULL)
+        /* IPv4 not supported.
+         * if IPv6 is supported then candidate_port will be non-zero
+         *   (and the error parameter above will have been NULL)
+         * if IPv6 is unsupported then candidate_port will be zero
+         *   (and error will have been set by the above call)
+         */
+        break;
+
+      inet_address = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+      address = g_inet_socket_address_new (inet_address, candidate_port);
+      g_object_unref (inet_address);
+      /* a note on the 'error' clause below:
+       *
+       * if candidate_port is 0 then we report the error right away
+       * since it is strange that this binding would fail at all.
+       * otherwise, we ignore the error message (ie: NULL).
+       *
+       * the exception to this rule is the last time through the loop
+       * (ie: attempts == 0) in which case we want to set the error
+       * because failure here means that the entire call will fail and
+       * we need something to show to the user.
+       *
+       * an english summary of the situation:  "if we gave a candidate
+       * port number AND we have more attempts to try, then ignore the
+       * error for now".
+       */
+      result = g_socket_bind (socket4, address, TRUE,
+                              (candidate_port && attempts) ? NULL : error);
+      g_object_unref (address);
+
+      if (candidate_port)
+        {
+          g_assert (socket6 != NULL);
+
+          if (result)
+            /* got our candidate port successfully */
+            break;
+
+          else
+            /* we failed to bind to the specified port.  try again. */
+            {
+              g_object_unref (socket4);
+              socket4 = NULL;
+
+              /* keep this open so we get a different port number */
+              sockets_to_close = g_slist_prepend (sockets_to_close,
+                                                  socket6);
+              candidate_port = 0;
+              socket6 = NULL;
+            }
+        }
+      else
+        /* we didn't tell it a port.  this means two things.
+         *  - if we failed, then something really bad happened.
+         *  - if we succeeded, then we need to find out the port number.
+         */
+        {
+          g_assert (socket6 == NULL);
+
+          if (!result ||
+              !(address = g_socket_get_local_address (socket4, error)))
+            {
+              g_object_unref (socket4);
+              socket4 = NULL;
+              break;
+            }
+
+            g_assert (G_IS_INET_SOCKET_ADDRESS (address));
+            candidate_port =
+              g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
+            g_assert (candidate_port != 0);
+            g_object_unref (address);
+            break;
+        }
+    }
+
+  /* should only be non-zero if we have a socket */
+  g_assert ((candidate_port != 0) == (socket4 || socket6));
+
+  while (sockets_to_close)
+    {
+      g_object_unref (sockets_to_close->data);
+      sockets_to_close = g_slist_delete_link (sockets_to_close,
+                                              sockets_to_close);
+    }
+
+  /* now we actually listen() the sockets and add them to the listener */
+  if (socket6 != NULL)
+    {
+      g_socket_set_listen_backlog (socket6, listener->priv->listen_backlog);
+      if (!g_socket_listen (socket6, error))
+        {
+          g_object_unref (socket6);
+          if (socket4)
+            g_object_unref (socket4);
+
+          return 0;
+        }
+
+      if (source_object)
+        g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
+                                 g_object_ref (source_object),
+                                 g_object_unref);
+
+      g_ptr_array_add (listener->priv->sockets, socket6);
+    }
+
+   if (socket4 != NULL)
+    {
+      g_socket_set_listen_backlog (socket4, listener->priv->listen_backlog);
+      if (!g_socket_listen (socket4, error))
+        {
+          g_object_unref (socket4);
+          if (socket6)
+            g_object_unref (socket6);
+
+          return 0;
+        }
+
+      if (source_object)
+        g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
+                                 g_object_ref (source_object),
+                                 g_object_unref);
+
+      g_ptr_array_add (listener->priv->sockets, socket4);
+    }
+
+  if ((socket4 != NULL || socket6 != NULL) &&
+      G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
+    G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
+
+  return candidate_port;
+}
+
 #define __G_SOCKET_LISTENER_C__
 #include "gioaliasdef.c"
