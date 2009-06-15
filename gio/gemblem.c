@@ -82,6 +82,7 @@ g_emblem_get_property (GObject    *object,
     {
       case PROP_ICON:
         g_value_set_object (value, emblem->icon);
+	break;
 
       case PROP_ORIGIN:
         g_value_set_enum (value, emblem->origin);
@@ -104,7 +105,7 @@ g_emblem_set_property (GObject      *object,
   switch (prop_id)
     {
       case PROP_ICON:
-        emblem->icon = g_value_get_object (value);
+        emblem->icon = g_value_dup_object (value);
         break;
 
       case PROP_ORIGIN:
