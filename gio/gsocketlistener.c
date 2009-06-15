@@ -234,6 +234,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
       return FALSE;
     }
 
+  g_object_ref (socket);
   g_ptr_array_add (listener->priv->sockets, socket);
 
   if (source_object)
@@ -301,15 +302,13 @@ g_socket_listener_add_address (GSocketListener  *listener,
   g_socket_set_listen_backlog (socket, listener->priv->listen_backlog);
 
   if (!g_socket_bind (socket, address, TRUE, error) ||
-      !g_socket_listen (socket, error) ||
-      !g_socket_listener_add_socket (listener, socket,
-				     source_object,
-				     error))
+      !g_socket_listen (socket, error))
     {
       g_object_unref (socket);
       return FALSE;
     }
 
+  local_address = NULL;
   if (effective_address)
     {
       local_address = g_socket_get_local_address (socket, error);
@@ -318,8 +317,22 @@ g_socket_listener_add_address (GSocketListener  *listener,
 	  g_object_unref (socket);
 	  return FALSE;
 	}
-      *effective_address = local_address;
     }
+
+  if (!g_socket_listener_add_socket (listener, socket,
+				     source_object,
+				     error))
+    {
+      if (local_address)
+	g_object_unref (local_address);
+      g_object_unref (socket);
+      return FALSE;
+    }
+
+  if (effective_address)
+    *effective_address = local_address;
+
+  g_object_unref (socket); /* add_socket refs this */
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
