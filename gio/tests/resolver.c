@@ -494,7 +494,7 @@ main (int argc, char **argv)
         start_async_lookups (argv + 1, argc - 1);
     }
 
-  g_main_run (loop);
+  g_main_loop_run (loop);
   g_main_loop_unref (loop);
 
 #ifdef G_OS_UNIX
