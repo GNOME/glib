@@ -250,6 +250,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * @type: a #GSocketType
  * @protocol: a #GSocketProtocol
  * @source_object: Optional #GObject identifying this source
+ * @effective_address: location to store the address that was bound to, or %NULL.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a socket of type @type and protocol @protocol, binds
@@ -266,6 +267,12 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * useful if you're listening on multiple addresses and do
  * different things depending on what address is connected to.
  *
+ * If successful and @effective_address is non-%NULL then it will
+ * be set to the address that the binding actually occured at.  This
+ * is helpful for determining the port number that was used for when
+ * requesting a binding to port 0 (ie: "any port").  This address, if
+ * requested, belongs to the caller and must be freed.
+ *
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
@@ -276,8 +283,10 @@ g_socket_listener_add_address (GSocketListener  *listener,
 			       GSocketType       type,
 			       GSocketProtocol   protocol,
 			       GObject          *source_object,
+                               GSocketAddress  **effective_address,
 			       GError          **error)
 {
+  GSocketAddress *local_address;
   GSocketFamily family;
   GSocket *socket;
 
@@ -299,6 +308,17 @@ g_socket_listener_add_address (GSocketListener  *listener,
     {
       g_object_unref (socket);
       return FALSE;
+    }
+
+  if (effective_address)
+    {
+      local_address = g_socket_get_local_address (socket, error);
+      if (local_address == NULL)
+	{
+	  g_object_unref (socket);
+	  return FALSE;
+	}
+      *effective_address = local_address;
     }
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)

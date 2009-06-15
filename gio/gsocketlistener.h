@@ -92,6 +92,7 @@ gboolean                g_socket_listener_add_address                   (GSocket
 									 GSocketType          type,
 									 GSocketProtocol      protocol,
 									 GObject             *source_object,
+                                                                         GSocketAddress     **effective_address,
 									 GError             **error);
 gboolean                g_socket_listener_add_inet_port                 (GSocketListener     *listener,
                                                                          guint16              port,
