@@ -44,7 +44,7 @@
  *
  * To get the next file's information from a #GFileEnumerator, use 
  * g_file_enumerator_next_file() or its asynchronous version, 
- * g_file_enumerator_next_file_async(). Note that the asynchronous 
+ * g_file_enumerator_next_files_async(). Note that the asynchronous 
  * version will return a list of #GFileInfo<!---->s, whereas the 
  * synchronous will only return the next file in the enumerator.
  *
