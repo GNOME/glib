@@ -1710,6 +1710,12 @@ start_type (GMarkupParseContext *context,
       
       typenode->has_size = size != NULL;
       typenode->size = typenode->has_size ? atoi (size) : -1;
+
+      if (zero)
+        typenode->zero_terminated = strcmp(zero, "1") == 0;
+      else
+        /* If neither zero-terminated nor length nor fixed-size is given, assume zero-terminated. */
+        typenode->zero_terminated = !(typenode->has_length || typenode->has_size);
     }
   else
     {
