@@ -36,41 +36,6 @@
  *
  **/
 
-static void
-async_result_free (gpointer data)
-{
-  GAsyncResultData *res = data;
-
-  if (res->error)
-    g_error_free (res->error);
-
-  g_object_unref (res->async_object);
-  
-  g_free (res);
-}
-
-void
-_g_queue_async_result (GAsyncResultData *result,
-		       gpointer          async_object,
-		       GError           *error,
-		       gpointer          user_data,
-		       GSourceFunc       source_func)
-{
-  GSource *source;
-
-  g_return_if_fail (G_IS_OBJECT (async_object));
-  
-  result->async_object = g_object_ref (async_object);
-  result->user_data = user_data;
-  result->error = error;
-
-  source = g_idle_source_new ();
-  g_source_set_priority (source, G_PRIORITY_DEFAULT);
-  g_source_set_callback (source, source_func, result, async_result_free);
-  g_source_attach (source, NULL);
-  g_source_unref (source);
-}
-
 /*************************************************************************
  *             fd source                                                 *
  ************************************************************************/
