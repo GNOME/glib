@@ -765,7 +765,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
 			       accept_ready,
 			       data,
 			       cancellable,
-			       NULL);
+			       g_main_context_get_thread_default ());
 }
 
 /**

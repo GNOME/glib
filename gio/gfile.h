@@ -505,6 +505,7 @@ struct _GFileIface
   gboolean            (* stop_mountable_finish)       (GFile                *file,
                                                        GAsyncResult         *result,
                                                        GError              **error);
+  gboolean            supports_thread_contexts;
 };
 
 GType                   g_file_get_type                   (void) G_GNUC_CONST;
@@ -939,6 +940,8 @@ gboolean g_file_replace_contents_finish      (GFile                  *file,
 					      GAsyncResult           *res,
 					      char                  **new_etag,
 					      GError                **error);
+
+gboolean g_file_supports_thread_contexts     (GFile                  *file);
 
 G_END_DECLS
 

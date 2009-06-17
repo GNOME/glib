@@ -420,11 +420,11 @@ eject_mount_do (GVolume             *volume,
   data->error_channel_source = g_io_create_watch (data->error_channel, G_IO_IN);
   g_source_set_callback (data->error_channel_source,
                          (GSourceFunc) eject_mount_read_error, data, NULL);
-  g_source_attach (data->error_channel_source, NULL);
+  g_source_attach (data->error_channel_source, g_main_context_get_thread_default ());
 
   child_watch = g_child_watch_source_new (child_pid);
   g_source_set_callback (child_watch, (GSourceFunc) eject_mount_cb, data, NULL);
-  g_source_attach (child_watch, NULL);
+  g_source_attach (child_watch, g_main_context_get_thread_default ());
   g_source_unref (child_watch);
 
 handle_error:

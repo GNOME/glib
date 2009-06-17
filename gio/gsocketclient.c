@@ -796,7 +796,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 	  g_source_set_callback (source,
 				 (GSourceFunc) g_socket_client_socket_callback,
 				 data, NULL);
-	  g_source_attach (source, NULL);
+	  g_source_attach (source, g_main_context_get_thread_default ());
 	  g_source_unref (source);
 
 	  g_object_unref (address);

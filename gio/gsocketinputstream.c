@@ -188,7 +188,7 @@ g_socket_input_stream_read_async (GInputStream        *stream,
       g_source_set_callback (source,
                              (GSourceFunc) g_socket_input_stream_read_ready,
                              g_object_ref (input_stream), g_object_unref);
-      g_source_attach (source, NULL);
+      g_source_attach (source, g_main_context_get_thread_default ());
       g_source_unref (source);
     }
   else

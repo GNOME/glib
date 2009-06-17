@@ -321,7 +321,7 @@ g_tcp_connection_close_async (GIOStream           *stream,
       g_source_set_callback (source,
 			     (GSourceFunc) close_read_ready,
 			     data, (GDestroyNotify)close_async_data_free);
-      g_source_attach (source, NULL);
+      g_source_attach (source, g_main_context_get_thread_default ());
       g_source_unref (source);
 
       return;

@@ -89,11 +89,13 @@
  * 
  * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop, 
  * or it can use #GThread<!-- -->s if available. 
- * g_simple_async_result_complete() will finish an I/O task directly within 
- * the main event loop. g_simple_async_result_complete_in_idle() will 
- * integrate the I/O task into the main event loop as an idle function and 
- * g_simple_async_result_run_in_thread() will run the job in a separate 
- * thread.
+ * g_simple_async_result_complete() will finish an I/O task directly
+ * from the point where it is called. g_simple_async_result_complete_in_idle()
+ * will finish it from an idle handler in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * context</link>. g_simple_async_result_run_in_thread() will run the
+ * job in a separate thread and then deliver the result to the
+ * thread-default main context.
  * 
  * To set the results of an asynchronous function, 
  * g_simple_async_result_set_op_res_gpointer(), 
@@ -119,6 +121,7 @@ struct _GSimpleAsyncResult
   GObject *source_object;
   GAsyncReadyCallback callback;
   gpointer user_data;
+  GMainContext *context;
   GError *error;
   gboolean failed;
   gboolean handle_cancellation;
@@ -163,6 +166,9 @@ g_simple_async_result_finalize (GObject *object)
   if (simple->source_object)
     g_object_unref (simple->source_object);
 
+  if (simple->context)
+    g_main_context_unref (simple->context);
+
   clear_op_res (simple);
 
   if (simple->error)
@@ -183,6 +189,10 @@ static void
 g_simple_async_result_init (GSimpleAsyncResult *simple)
 {
   simple->handle_cancellation = TRUE;
+
+  simple->context = g_main_context_get_thread_default ();
+  if (simple->context)
+    g_main_context_ref (simple->context);
 }
 
 /**
@@ -547,15 +557,34 @@ g_simple_async_result_set_error (GSimpleAsyncResult *simple,
  * g_simple_async_result_complete:
  * @simple: a #GSimpleAsyncResult.
  * 
- * Completes an asynchronous I/O job.
- * Must be called in the main thread, as it invokes the callback that
- * should be called in the main thread. If you are in a different thread
- * use g_simple_async_result_complete_in_idle().
+ * Completes an asynchronous I/O job immediately. Must be called in
+ * the thread where the asynchronous result was to be delivered, as it
+ * invokes the callback directly. If you are in a different thread use
+ * g_simple_async_result_complete_in_idle().
  **/
 void
 g_simple_async_result_complete (GSimpleAsyncResult *simple)
 {
+#ifndef G_DISABLE_CHECKS
+  GSource *current_source;
+  GMainContext *current_context;
+#endif
+
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
+
+#ifndef G_DISABLE_CHECKS
+  current_source = g_main_current_source ();
+  if (current_source)
+    {
+      current_context = g_source_get_context (current_source);
+      if (current_context == g_main_context_default ())
+	current_context = NULL;
+      if (simple->context != current_context)
+	g_warning ("g_simple_async_result_complete() called from wrong context!");
+    }
+  else
+    g_warning ("g_simple_async_result_complete() called from outside main loop!");
+#endif
 
   if (simple->callback)
     simple->callback (simple->source_object,
@@ -577,14 +606,14 @@ complete_in_idle_cb (gpointer data)
  * g_simple_async_result_complete_in_idle:
  * @simple: a #GSimpleAsyncResult.
  * 
- * Completes an asynchronous function in the main event loop using 
- * an idle function.
+ * Completes an asynchronous function in an idle handler in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * loop</link> of the thread that @simple was initially created in.
  **/
 void
 g_simple_async_result_complete_in_idle (GSimpleAsyncResult *simple)
 {
   GSource *source;
-  guint id;
   
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
   
@@ -594,7 +623,7 @@ g_simple_async_result_complete_in_idle (GSimpleAsyncResult *simple)
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, complete_in_idle_cb, simple, g_object_unref);
 
-  id = g_source_attach (source, NULL);
+  g_source_attach (source, simple->context);
   g_source_unref (source);
 }
 
@@ -638,7 +667,6 @@ run_in_thread (GIOSchedulerJob *job,
   RunInThreadData *data = _data;
   GSimpleAsyncResult *simple = data->simple;
   GSource *source;
-  guint id;
   
   if (simple->handle_cancellation &&
       g_cancellable_is_cancelled (c))
@@ -655,7 +683,7 @@ run_in_thread (GIOSchedulerJob *job,
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, complete_in_idle_cb_for_thread, data, NULL);
 
-  id = g_source_attach (source, NULL);
+  g_source_attach (source, simple->context);
   g_source_unref (source);
 
   return FALSE;
@@ -668,7 +696,9 @@ run_in_thread (GIOSchedulerJob *job,
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * 
- * Runs the asynchronous job in a separated thread.
+ * Runs the asynchronous job in a separate thread and then calls
+ * g_simple_async_result_complete_in_idle() on @simple to return
+ * the result to the appropriate main loop.
  **/
 void
 g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,

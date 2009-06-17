@@ -6751,5 +6751,30 @@ g_file_stop_mountable_finish (GFile                      *file,
   return (* iface->stop_mountable_finish) (file, result, error);
 }
 
+/**
+ * g_file_supports_thread_contexts:
+ * @file: a #GFile.
+ *
+ * Checks if @file supports <link
+ * linkend="g-main-context-push-thread-default-context">thread-default
+ * contexts</link>. If this returns %FALSE, you cannot perform
+ * asynchronous operations on @file in a thread that has a
+ * thread-default context.
+ *
+ * Returns: Whether or not @file supports thread-default contexts.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_file_supports_thread_contexts (GFile *file)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+
+  iface = G_FILE_GET_IFACE (file);
+  return iface->supports_thread_contexts;
+}
+
 #define __G_FILE_C__
 #include "gioaliasdef.c"

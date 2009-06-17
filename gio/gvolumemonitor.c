@@ -41,7 +41,12 @@
  * #GVolumeMonitor is for listing the user interesting devices and volumes
  * on the computer. In other words, what a file selector or file manager
  * would show in a sidebar. 
-**/
+ *
+ * #GVolumeMonitor is not <link
+ * linkend="g-main-context-push-thread-default">thread-default-context
+ * aware</link>, and so should not be used other than from the main
+ * thread, with no thread-default-context active.
+ **/
 
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
 

@@ -7,7 +7,8 @@ INCLUDES = 			\
 	-I$(top_srcdir)/gmodule	\
 	-I$(top_srcdir)/gobject	\
 	-I$(top_srcdir)/gio 	\
-	$(GLIB_DEBUG_FLAGS)
+	$(GLIB_DEBUG_FLAGS)	\
+	-DSRCDIR=\""$(srcdir)"\"
 
 noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
 progs_ldadd     = 					\
@@ -29,7 +30,8 @@ TEST_PROGS +=	 		\
 	sleepy-stream		\
 	filter-streams		\
 	simple-async-result	\
-	srvtarget
+	srvtarget		\
+	contexts
 
 SAMPLE_PROGS = resolver socket-server socket-client echo-server httpd send-data
 
@@ -109,5 +111,9 @@ send_data_LDADD		  = $(progs_ldadd) \
 
 srvtarget_SOURCES	  = srvtarget.c
 srvtarget_LDADD		  = $(progs_ldadd)
+
+contexts_SOURCES	  = contexts.c
+contexts_LDADD		  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
 
 DISTCLEAN_FILES = applications/mimeinfo.cache

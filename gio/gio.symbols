@@ -343,6 +343,7 @@ g_file_start_mountable
 g_file_start_mountable_finish
 g_file_stop_mountable
 g_file_stop_mountable_finish
+g_file_supports_thread_contexts
 #endif
 #endif
 

@@ -234,7 +234,7 @@ request_cancelled (GCancellable *cancellable,
   req->cancelled_idle = g_idle_source_new ();
   g_source_set_callback (req->cancelled_idle,
                          (GSourceFunc)request_cancelled_idle, req, NULL);
-  g_source_attach (req->cancelled_idle, NULL);
+  g_source_attach (req->cancelled_idle, g_main_context_get_thread_default ());
 }
 
 static DWORD WINAPI
@@ -479,7 +479,7 @@ g_win32_handle_source_add (HANDLE      handle,
   g_source_add_poll (source, &hsource->pollfd);
 
   g_source_set_callback (source, callback, user_data, NULL);
-  g_source_attach (source, NULL);
+  g_source_attach (source, g_main_context_get_thread_default ());
   return source;
 }
 

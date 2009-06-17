@@ -2392,4 +2392,6 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->move = g_local_file_move;
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
+
+  iface->supports_thread_contexts = TRUE;
 }

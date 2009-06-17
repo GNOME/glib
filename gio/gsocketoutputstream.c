@@ -190,7 +190,7 @@ g_socket_output_stream_write_async (GOutputStream        *stream,
       g_source_set_callback (source,
                              (GSourceFunc) g_socket_output_stream_write_ready,
                              g_object_ref (output_stream), g_object_unref);
-      g_source_attach (source, NULL);
+      g_source_attach (source, g_main_context_get_thread_default ());
       g_source_unref (source);
     }
   else

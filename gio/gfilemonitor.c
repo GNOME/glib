@@ -47,8 +47,14 @@ static void file_change_free (FileChange *change);
  * g_file_monitor(), g_file_monitor_file(), or
  * g_file_monitor_directory().
  *
- * To get informed about changes to the file or directory you
- * are monitoring, connect to the #GFileMonitor::changed signal.
+ * To get informed about changes to the file or directory you are
+ * monitoring, connect to the #GFileMonitor::changed signal. The
+ * signal will be emitted in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * context</link> of the thread that the monitor was created in
+ * (though if the global default main context is blocked, this may
+ * cause notifications to be blocked even if the thread-default
+ * context is still running).
  **/
 
 G_LOCK_DEFINE_STATIC(cancelled);
@@ -82,6 +88,8 @@ struct _GFileMonitorPrivate {
 
   GSource *timeout;
   guint32 timeout_fires_at;
+
+  GMainContext *context;
 };
 
 enum {
@@ -168,6 +176,9 @@ g_file_monitor_finalize (GObject *object)
     }
 
   g_hash_table_destroy (monitor->priv->rate_limiter);
+
+  if (monitor->priv->context)
+    g_main_context_unref (monitor->priv->context);
 
   G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize (object);
 }
@@ -258,6 +269,7 @@ g_file_monitor_init (GFileMonitor *monitor)
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);
+  monitor->priv->context = g_main_context_get_thread_default ();
 }
 
 /**
@@ -414,7 +426,7 @@ emit_in_idle (GFileMonitor      *monitor,
        * pending idles.
        */
       g_source_set_callback (source, emit_cb, monitor, NULL);
-      g_source_attach (source, NULL);
+      g_source_attach (source, monitor->priv->context);
     }
   /* We reverse this in the processor */
   priv->pending_file_changes = g_slist_prepend (priv->pending_file_changes, change);
@@ -570,7 +582,7 @@ rate_limiter_timeout (gpointer timeout_data)
     {
       source = g_timeout_source_new (data.min_time + 1); /* + 1 to make sure we've really passed the time */
       g_source_set_callback (source, rate_limiter_timeout, monitor, NULL);
-      g_source_attach (source, NULL);
+      g_source_attach (source, monitor->priv->context);
       
       monitor->priv->timeout = source;
       monitor->priv->timeout_fires_at = data.time_now + data.min_time; 
@@ -622,7 +634,7 @@ update_rate_limiter_timeout (GFileMonitor *monitor,
     {
       source = g_timeout_source_new (data.min_time + 1);  /* + 1 to make sure we've really passed the time */
       g_source_set_callback (source, rate_limiter_timeout, monitor, NULL);
-      g_source_attach (source, NULL);
+      g_source_attach (source, monitor->priv->context);
       
       monitor->priv->timeout = source;
       monitor->priv->timeout_fires_at = data.time_now + data.min_time; 
@@ -640,7 +652,9 @@ update_rate_limiter_timeout (GFileMonitor *monitor,
  * has taken place. Should be called from file monitor 
  * implementations only.
  *
- * The signal will be emitted from an idle handler.
+ * The signal will be emitted from an idle handler (in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * context</link>).
  **/
 void
 g_file_monitor_emit_event (GFileMonitor      *monitor,

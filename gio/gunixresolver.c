@@ -84,21 +84,16 @@ g_unix_resolver_finalize (GObject *object)
  *      a. The resolution completes: g_unix_resolver_watch() sees that
  *         the request has completed, and calls
  *         g_unix_resolver_request_complete(), which detaches the
- *         "cancelled" signal handler (if it was present) and then
- *         immediately completes the async_result (since
- *         g_unix_resolver_watch() is already run from main-loop
- *         time.) After completing the async_result, it unrefs it,
- *         causing the req to be freed as well.
+ *         "cancelled" signal handler (if it was present), queues the
+ *         async_result to be completed, and then unrefs it.
  *
  *      b. The resolution is cancelled: request_cancelled() calls
  *         _g_asyncns_cancel() to cancel the resolution. Then it calls
  *         g_unix_resolver_request_complete(), which detaches the
  *         signal handler, and queues async_result to complete in an
- *         idle handler. It then unrefs the async_result to ensure
- *         that after its callback runs, it will be destroyed, in turn
- *         causing the req to be freed. Because the asyncns resolution
- *         was cancelled, g_unix_resolver_watch() will never be
- *         triggered for this req.
+ *         idle handler. Because the asyncns resolution was cancelled,
+ *         g_unix_resolver_watch() will never be triggered for this
+ *         req.
  *
  *    Since there's only a single thread, it's not possible for the
  *    request to both complete and be cancelled "at the same time",
@@ -108,18 +103,29 @@ g_unix_resolver_finalize (GObject *object)
  */
 
 typedef struct _GUnixResolverRequest GUnixResolverRequest;
-typedef void (*GUnixResolverFreeFunc) (GUnixResolverRequest *);
+typedef void (*GUnixResolverFunc) (GUnixResolverRequest *);
 
 struct _GUnixResolverRequest {
   GUnixResolver *gur;
 
   _g_asyncns_query_t *qy;
   union {
-    gchar *hostname;
-    GInetAddress *address;
-    gchar *service;
+    struct {
+      gchar *hostname;
+      GList *addresses;
+    } name;
+
+    struct {
+      GInetAddress *address;
+      gchar *hostname;
+    } address;
+
+    struct {
+      gchar *service;
+      GList *targets;
+    } service;
   } u;
-  GUnixResolverFreeFunc free_func;
+  GUnixResolverFunc process_func, free_func;
 
   GCancellable *cancellable;
   GSimpleAsyncResult *async_result;
@@ -133,7 +139,8 @@ static void request_cancelled (GCancellable *cancellable,
 static GUnixResolverRequest *
 g_unix_resolver_request_new (GUnixResolver         *gur,
                              _g_asyncns_query_t    *qy,
-                             GUnixResolverFreeFunc  free_func,
+                             GUnixResolverFunc      process_func,
+                             GUnixResolverFunc      free_func,
                              GCancellable          *cancellable,
                              GSimpleAsyncResult    *async_result)
 {
@@ -142,6 +149,7 @@ g_unix_resolver_request_new (GUnixResolver         *gur,
   req = g_slice_new0 (GUnixResolverRequest);
   req->gur = g_object_ref (gur);
   req->qy = qy;
+  req->process_func = process_func;
   req->free_func = free_func;
 
   if (cancellable)
@@ -161,9 +169,8 @@ g_unix_resolver_request_new (GUnixResolver         *gur,
 static void
 g_unix_resolver_request_free (GUnixResolverRequest *req)
 {
-  /* If the user didn't call _finish the qy will still be around. */
-  if (req->qy)
-    _g_asyncns_cancel (req->gur->asyncns, req->qy);
+  req->free_func (req);
+  g_object_unref (req->gur);
 
   /* We don't have to free req->cancellable and req->async_result,
    * since they must already have been freed if we're here.
@@ -173,8 +180,7 @@ g_unix_resolver_request_free (GUnixResolverRequest *req)
 }
 
 static void
-g_unix_resolver_request_complete (GUnixResolverRequest *req,
-                                  gboolean              need_idle)
+g_unix_resolver_request_complete (GUnixResolverRequest *req)
 {
   if (req->cancellable)
     {
@@ -183,16 +189,11 @@ g_unix_resolver_request_complete (GUnixResolverRequest *req,
       req->cancellable = NULL;
     }
 
-  if (need_idle)
-    g_simple_async_result_complete_in_idle (req->async_result);
-  else
-    g_simple_async_result_complete (req->async_result);
-
-  /* If we completed_in_idle, that will have taken an extra ref on
-   * req->async_result; if not, then we're already done. Either way we
-   * need to unref the async_result to make sure it eventually is
-   * destroyed, causing req to be freed.
+  /* We always complete_in_idle, even if we were called from
+   * g_unix_resolver_watch(), since we might have been started under a
+   * non-default g_main_context_get_thread_default().
    */
+  g_simple_async_result_complete_in_idle (req->async_result);
   g_object_unref (req->async_result);
 }
 
@@ -210,7 +211,7 @@ request_cancelled (GCancellable *cancellable,
   g_simple_async_result_set_from_error (req->async_result, error);
   g_error_free (error);
 
-  g_unix_resolver_request_complete (req, TRUE);
+  g_unix_resolver_request_complete (req);
 }
 
 static gboolean
@@ -234,7 +235,8 @@ g_unix_resolver_watch (GIOChannel   *iochannel,
          (qy = _g_asyncns_getnext (gur->asyncns)) != NULL)
     {
       req = _g_asyncns_getuserdata (gur->asyncns, qy);
-      g_unix_resolver_request_complete (req, FALSE);
+      req->process_func (req);
+      g_unix_resolver_request_complete (req);
     }
 
   return TRUE;
@@ -243,7 +245,8 @@ g_unix_resolver_watch (GIOChannel   *iochannel,
 static GUnixResolverRequest *
 resolve_async (GUnixResolver         *gur,
                _g_asyncns_query_t    *qy,
-               GUnixResolverFreeFunc  free_func,
+               GUnixResolverFunc      process_func,
+               GUnixResolverFunc      free_func,
                GCancellable          *cancellable,
                GAsyncReadyCallback    callback,
                gpointer               user_data,
@@ -253,7 +256,8 @@ resolve_async (GUnixResolver         *gur,
   GUnixResolverRequest *req;
 
   result = g_simple_async_result_new (G_OBJECT (gur), callback, user_data, tag);
-  req = g_unix_resolver_request_new (gur, qy, free_func, cancellable, result);
+  req = g_unix_resolver_request_new (gur, qy, process_func, free_func,
+                                     cancellable, result);
   g_object_unref (result);
   _g_asyncns_setuserdata (gur->asyncns, qy, req);
 
@@ -261,9 +265,32 @@ resolve_async (GUnixResolver         *gur,
 }
 
 static void
+lookup_by_name_process (GUnixResolverRequest *req)
+{
+  struct addrinfo *res;
+  gint retval;
+  GError *error = NULL;
+
+  retval = _g_asyncns_getaddrinfo_done (req->gur->asyncns, req->qy, &res);
+  req->u.name.addresses =
+    _g_resolver_addresses_from_addrinfo (req->u.name.hostname,
+                                         res, retval, &error);
+  if (res)
+    freeaddrinfo (res);
+
+  if (error)
+    {
+      g_simple_async_result_set_from_error (req->async_result, error);
+      g_error_free (error);
+    }
+}
+
+static void
 lookup_by_name_free (GUnixResolverRequest *req)
 {
-  g_free (req->u.hostname);
+  g_free (req->u.name.hostname);
+  if (req->u.name.addresses)
+    g_resolver_free_addresses (req->u.name.addresses);
 }
 
 static void
@@ -279,9 +306,9 @@ lookup_by_name_async (GResolver           *resolver,
 
   qy = _g_asyncns_getaddrinfo (gur->asyncns, hostname, NULL,
                                &_g_resolver_addrinfo_hints);
-  req = resolve_async (gur, qy, lookup_by_name_free, cancellable,
-                       callback, user_data, lookup_by_name_async);
-  req->u.hostname = g_strdup (hostname);
+  req = resolve_async (gur, qy, lookup_by_name_process, lookup_by_name_free,
+                       cancellable, callback, user_data, lookup_by_name_async);
+  req->u.name.hostname = g_strdup (hostname);
 }
 
 static GList *
@@ -291,28 +318,48 @@ lookup_by_name_finish (GResolver     *resolver,
 {
   GSimpleAsyncResult *simple;
   GUnixResolverRequest *req;
-  struct addrinfo *res;
-  gint retval;
   GList *addresses;
 
   g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_name_async), FALSE);
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   req = g_simple_async_result_get_op_res_gpointer (simple);
-  retval = _g_asyncns_getaddrinfo_done (req->gur->asyncns, req->qy, &res);
-  req->qy = NULL;
-  addresses = _g_resolver_addresses_from_addrinfo (req->u.hostname, res, retval, error);
-  if (res)
-    freeaddrinfo (res);
+  addresses = req->u.name.addresses;
+  req->u.name.addresses = NULL;
 
   return addresses;
 }
 
 
 static void
+lookup_by_address_process (GUnixResolverRequest *req)
+{
+  gchar host[NI_MAXHOST];
+  gint retval;
+  GError *error = NULL;
+
+  retval = _g_asyncns_getnameinfo_done (req->gur->asyncns, req->qy,
+                                        host, sizeof (host), NULL, 0);
+  req->u.address.hostname =
+    _g_resolver_name_from_nameinfo (req->u.address.address,
+                                    host, retval, &error);
+
+  if (error)
+    {
+      g_simple_async_result_set_from_error (req->async_result, error);
+      g_error_free (error);
+    }
+}
+
+static void
 lookup_by_address_free (GUnixResolverRequest *req)
 {
-  g_object_unref (req->u.address);
+  g_object_unref (req->u.address.address);
+  if (req->u.address.hostname)
+    g_free (req->u.address.hostname);
 }
 
 static void
@@ -332,9 +379,10 @@ lookup_by_address_async (GResolver           *resolver,
   qy = _g_asyncns_getnameinfo (gur->asyncns,
                                (struct sockaddr *)&sockaddr, sockaddr_size,
                                NI_NAMEREQD, TRUE, FALSE);
-  req = resolve_async (gur, qy, lookup_by_address_free, cancellable,
+  req = resolve_async (gur, qy, lookup_by_address_process,
+                       lookup_by_address_free, cancellable,
                        callback, user_data, lookup_by_address_async);
-  req->u.address = g_object_ref (address);
+  req->u.address.address = g_object_ref (address);
 }
 
 static gchar *
@@ -344,26 +392,53 @@ lookup_by_address_finish (GResolver     *resolver,
 {
   GSimpleAsyncResult *simple;
   GUnixResolverRequest *req;
-  gchar host[NI_MAXHOST], *name;
-  gint retval;
+  gchar *name;
 
   g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_address_async), FALSE);
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   req = g_simple_async_result_get_op_res_gpointer (simple);
-  retval = _g_asyncns_getnameinfo_done (req->gur->asyncns, req->qy,
-                                        host, sizeof (host), NULL, 0);
-  req->qy = NULL;
-  name = _g_resolver_name_from_nameinfo (req->u.address, host, retval, error);
+  name = req->u.address.hostname;
+  req->u.address.hostname = NULL;
 
   return name;
 }
 
 
 static void
+lookup_service_process (GUnixResolverRequest *req)
+{
+  guchar *answer;
+  gint len, herr;
+  GError *error = NULL;
+
+  len = _g_asyncns_res_done (req->gur->asyncns, req->qy, &answer);
+  if (len < 0)
+    herr = h_errno;
+  else
+    herr = 0;
+
+  req->u.service.targets =
+    _g_resolver_targets_from_res_query (req->u.service.service,
+                                        answer, len, herr, &error);
+  _g_asyncns_freeanswer (answer);
+
+  if (error)
+    {
+      g_simple_async_result_set_from_error (req->async_result, error);
+      g_error_free (error);
+    }
+}
+
+static void
 lookup_service_free (GUnixResolverRequest *req)
 {
-  g_free (req->u.service);
+  g_free (req->u.service.service);
+  if (req->u.service.targets)
+    g_resolver_free_targets (req->u.service.targets);
 }
 
 static void
@@ -378,9 +453,9 @@ lookup_service_async (GResolver           *resolver,
   _g_asyncns_query_t *qy;
 
   qy = _g_asyncns_res_query (gur->asyncns, rrname, C_IN, T_SRV);
-  req = resolve_async (gur, qy, lookup_service_free, cancellable,
-                       callback, user_data, lookup_service_async);
-  req->u.service = g_strdup (rrname);
+  req = resolve_async (gur, qy, lookup_service_process, lookup_service_free,
+                       cancellable, callback, user_data, lookup_service_async);
+  req->u.service.service = g_strdup (rrname);
 }
 
 static GList *
@@ -390,23 +465,17 @@ lookup_service_finish (GResolver     *resolver,
 {
   GSimpleAsyncResult *simple;
   GUnixResolverRequest *req;
-  guchar *answer;
-  gint len, herr;
   GList *targets;
 
   g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_service_async), FALSE);
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
-  req = g_simple_async_result_get_op_res_gpointer (simple);
-  len = _g_asyncns_res_done (req->gur->asyncns, req->qy, &answer);
-  req->qy = NULL;
-  if (len < 0)
-    herr = h_errno;
-  else
-    herr = 0;
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
-  targets = _g_resolver_targets_from_res_query (req->u.service, answer, len, herr, error);
-  _g_asyncns_freeanswer (answer);
+  req = g_simple_async_result_get_op_res_gpointer (simple);
+  targets = req->u.service.targets;
+  req->u.service.targets = NULL;
 
   return targets;
 }

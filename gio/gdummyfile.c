@@ -425,6 +425,8 @@ g_dummy_file_file_iface_init (GFileIface *iface)
   iface->get_relative_path = g_dummy_file_get_relative_path;
   iface->resolve_relative_path = g_dummy_file_resolve_relative_path;
   iface->get_child_for_display_name = g_dummy_file_get_child_for_display_name;
+
+  iface->supports_thread_contexts = TRUE;
 }
 
 /* Uri handling helper functions: */

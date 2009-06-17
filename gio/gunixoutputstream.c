@@ -494,7 +494,7 @@ g_unix_output_stream_write_async (GOutputStream       *stream,
 			     cancellable);
   
   g_source_set_callback (source, (GSourceFunc)write_async_cb, data, g_free);
-  g_source_attach (source, NULL);
+  g_source_attach (source, g_main_context_get_thread_default ());
   
   g_source_unref (source);
 }
@@ -591,7 +591,7 @@ g_unix_output_stream_close_async (GOutputStream        *stream,
   
   idle = g_idle_source_new ();
   g_source_set_callback (idle, (GSourceFunc)close_async_cb, data, g_free);
-  g_source_attach (idle, NULL);
+  g_source_attach (idle, g_main_context_get_thread_default ());
   g_source_unref (idle);
 }
 
