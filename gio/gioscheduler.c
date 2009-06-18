@@ -257,7 +257,7 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
       /* Threads not available, instead do the i/o sync inside a
        * low prio idle handler
        */
-      job->idle_tag = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE + 1 + io_priority / 10,
+      job->idle_tag = g_idle_add_full (io_priority,
 				       run_job_at_idle,
 				       job, job_destroy);
     }
