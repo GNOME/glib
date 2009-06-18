@@ -110,7 +110,7 @@
 static void g_local_file_file_iface_init (GFileIface *iface);
 
 static GFileAttributeInfoList *local_writable_attributes = NULL;
-static GFileAttributeInfoList *local_writable_namespaces = NULL;
+static /* GFileAttributeInfoList * */ gsize local_writable_namespaces = 0;
 
 struct _GLocalFile
 {
@@ -201,24 +201,6 @@ g_local_file_class_init (GLocalFileClass *klass)
 #endif
 
   local_writable_attributes = list;
-
-  /* Writable namespaces: */
-  
-  list = g_file_attribute_info_list_new ();
-
-#ifdef HAVE_XATTR
-  g_file_attribute_info_list_add (list,
-				  "xattr",
-				  G_FILE_ATTRIBUTE_TYPE_STRING,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
-  g_file_attribute_info_list_add (list,
-				  "xattr-sys",
-				  G_FILE_ATTRIBUTE_TYPE_STRING,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
-#endif
-
-  local_writable_namespaces = list;
 }
 
 static void
@@ -1204,6 +1186,8 @@ g_local_file_query_info (GFile                *file,
 				 matcher, flags, &parent_info,
 				 error);
   
+
+  _g_local_file_info_free_parent_info (&parent_info);
   g_free (basename);
 
   g_file_attribute_matcher_unref (matcher);
@@ -1224,7 +1208,38 @@ g_local_file_query_writable_namespaces (GFile         *file,
 					GCancellable  *cancellable,
 					GError       **error)
 {
-  return g_file_attribute_info_list_ref (local_writable_namespaces);
+  GFileAttributeInfoList *list;
+  GVfsClass *class;
+  GVfs *vfs;
+
+  if (g_once_init_enter (&local_writable_namespaces))
+    {
+      /* Writable namespaces: */
+
+      list = g_file_attribute_info_list_new ();
+
+#ifdef HAVE_XATTR
+      g_file_attribute_info_list_add (list,
+				      "xattr",
+				      G_FILE_ATTRIBUTE_TYPE_STRING,
+				      G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+				      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+      g_file_attribute_info_list_add (list,
+				      "xattr-sys",
+				      G_FILE_ATTRIBUTE_TYPE_STRING,
+				      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+#endif
+
+      vfs = g_vfs_get_default ();
+      class = G_VFS_GET_CLASS (vfs);
+      if (class->add_writable_namespaces)
+	class->add_writable_namespaces (vfs, list);
+
+      g_once_init_leave (&local_writable_namespaces, (gsize)list);
+    }
+  list = (GFileAttributeInfoList *)local_writable_namespaces;
+
+  return g_file_attribute_info_list_ref (list);
 }
 
 static gboolean
@@ -1409,7 +1424,9 @@ g_local_file_delete (GFile         *file,
 		     GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
-  
+  GVfsClass *class;
+  GVfs *vfs;
+
   if (g_remove (local->filename) == -1)
     {
       int errsv = errno;
@@ -1426,7 +1443,12 @@ g_local_file_delete (GFile         *file,
 		   g_strerror (errsv));
       return FALSE;
     }
-  
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_removed)
+    class->local_file_removed (vfs, local->filename);
+
   return TRUE;
 }
 
@@ -2176,7 +2198,9 @@ g_local_file_move (GFile                  *source,
   char *backup_name;
   int res;
   off_t source_size;
-  
+  GVfsClass *class;
+  GVfs *vfs;
+
   if (!G_IS_LOCAL_FILE (source) ||
       !G_IS_LOCAL_FILE (destination))
     {
@@ -2293,6 +2317,11 @@ g_local_file_move (GFile                  *source,
 		     g_strerror (errsv));
       return FALSE;
     }
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_moved)
+    class->local_file_moved (vfs, local_source->filename, local_destination->filename);
 
   /* Make sure we send full copied size */
   if (progress_callback)

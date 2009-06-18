@@ -116,6 +116,8 @@ g_local_file_enumerator_finalize (GObject *object)
 
   local = G_LOCAL_FILE_ENUMERATOR (object);
 
+  if (local->got_parent_info)
+    _g_local_file_info_free_parent_info (&local->parent_info);
   g_free (local->filename);
   g_file_attribute_matcher_unref (local->matcher);
   if (local->dir)

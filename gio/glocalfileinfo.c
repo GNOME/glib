@@ -60,6 +60,7 @@
 
 #include <glib/gstdio.h>
 #include <gfileattribute-priv.h>
+#include <gvfs.h>
 
 #include "glibintl.h"
 
@@ -791,7 +792,9 @@ _g_local_file_info_get_parent_info (const char            *dir,
    */
   struct stat statbuf;
   int res;
-  
+
+  parent_info->extra_data = NULL;
+  parent_info->free_extra_data = NULL;
   parent_info->writable = FALSE;
   parent_info->is_sticky = FALSE;
   parent_info->has_trash_dir = FALSE;
@@ -831,6 +834,14 @@ _g_local_file_info_get_parent_info (const char            *dir,
             parent_info->has_trash_dir = _g_local_file_has_trash_dir (dir, statbuf.st_dev);
 	}
     }
+}
+
+void
+_g_local_file_info_free_parent_info (GLocalParentFileInfo *parent_info)
+{
+  if (parent_info->extra_data &&
+      parent_info->free_extra_data)
+    parent_info->free_extra_data (parent_info->extra_data);
 }
 
 static void
@@ -1417,6 +1428,9 @@ _g_local_file_info_get (const char             *basename,
 #ifdef G_OS_WIN32
   DWORD dos_attributes;
 #endif
+  char *symlink_target;
+  GVfs *vfs;
+  GVfsClass *class;
 
   info = g_file_info_new ();
 
@@ -1514,16 +1528,15 @@ _g_local_file_info_get (const char             *basename,
     g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_DOS_IS_SYSTEM, TRUE);
 #endif
 
-#ifdef S_ISLNK
-  if (is_symlink &&
-      g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET))
+  symlink_target = NULL;
+  if (is_symlink)
     {
-      char *link = read_link (path);
-      g_file_info_set_symlink_target (info, link);
-      g_free (link);
+      symlink_target = read_link (path);
+      if (symlink_target &&
+          g_file_attribute_matcher_matches (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET))
+        g_file_info_set_symlink_target (info, symlink_target);
     }
-#endif
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
@@ -1689,8 +1702,33 @@ _g_local_file_info_get (const char             *basename,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_THUMBNAIL_PATH))
     get_thumbnail_attributes (path, info);
-  
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_add_info)
+    {
+      const char *extra_target;
+
+      extra_target = path;
+      if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) &&
+          is_symlink &&
+          !symlink_broken &&
+          symlink_target != NULL)
+        extra_target = symlink_target;
+
+      class->local_file_add_info (vfs,
+                                  extra_target,
+                                  statbuf.st_dev,
+                                  attribute_matcher,
+                                  info,
+                                  NULL,
+                                  &parent_info->extra_data,
+                                  &parent_info->free_extra_data);
+    }
+
   g_file_info_unset_attribute_mask (info);
+
+  g_free (symlink_target);
 
   return info;
 }
@@ -2126,6 +2164,8 @@ _g_local_file_info_set_attribute (char                 *filename,
 				  GError              **error)
 {
   GFileAttributeValue value = { 0 };
+  GVfsClass *class;
+  GVfs *vfs;
 
   _g_file_attribute_value_set_from_pointer (&value, type, value_p, FALSE);
   
@@ -2166,7 +2206,36 @@ _g_local_file_info_set_attribute (char                 *filename,
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_SELINUX_CONTEXT) == 0)
     return set_selinux_context (filename, &value, error);
 #endif
-  
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_set_attributes)
+    {
+      GFileInfo *info;
+
+      info = g_file_info_new ();
+      g_file_info_set_attribute (info,
+                                 attribute,
+                                 type,
+                                 value_p);
+      if (!class->local_file_set_attributes (vfs, filename,
+                                             info,
+                                             flags, cancellable,
+                                             error))
+        {
+          g_object_unref (info);
+	  return FALSE;
+        }
+
+      if (g_file_info_get_attribute_status (info, attribute) == G_FILE_ATTRIBUTE_STATUS_SET)
+        {
+          g_object_unref (info);
+          return TRUE;
+        }
+
+      g_object_unref (info);
+    }
+
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 	       _("Setting attribute %s not supported"), attribute);
   return FALSE;
@@ -2190,6 +2259,8 @@ _g_local_file_info_set_attributes  (char                 *filename,
   GFileAttributeStatus status;
 #endif
   gboolean res;
+  GVfsClass *class;
+  GVfs *vfs;
   
   /* Handles setting multiple specified data in a single set, and takes care
      of ordering restrictions when setting attributes */
@@ -2309,6 +2380,21 @@ _g_local_file_info_set_attributes  (char                 *filename,
     }
   }
 #endif
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_set_attributes)
+    {
+      if (!class->local_file_set_attributes (vfs, filename,
+                                             info,
+                                             flags, cancellable,
+                                             error))
+        {
+	  res = FALSE;
+	  /* Don't set error multiple times */
+	  error = NULL;
+        }
+    }
 
   return res;
 }

@@ -39,6 +39,8 @@ typedef struct
   gboolean has_trash_dir;
   int      owner;
   dev_t    device;
+  gpointer extra_data;
+  GDestroyNotify free_extra_data;
 } GLocalParentFileInfo;
 
 #ifdef G_OS_WIN32
@@ -53,6 +55,7 @@ gboolean   _g_local_file_has_trash_dir        (const char             *dirname,
 void       _g_local_file_info_get_parent_info (const char             *dir,
                                                GFileAttributeMatcher  *attribute_matcher,
                                                GLocalParentFileInfo   *parent_info);
+void       _g_local_file_info_free_parent_info (GLocalParentFileInfo   *parent_info);
 GFileInfo *_g_local_file_info_get             (const char             *basename,
                                                const char             *path,
                                                GFileAttributeMatcher  *attribute_matcher,
