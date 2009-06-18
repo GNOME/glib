@@ -199,8 +199,7 @@ check_listener (GSocketListener *listener,
 /**
  * g_socket_listener_add_socket:
  * @listener: a #GSocketListener
- * @socket: a listening #GSocket, this function takes ownership
- *          of the reference
+ * @socket: a listening #GSocket
  * @source_object: Optional #GObject identifying this source
  * @error: #GError for error reporting, or %NULL to ignore.
  *
