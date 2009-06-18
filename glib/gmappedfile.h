@@ -37,7 +37,12 @@ GMappedFile *g_mapped_file_new          (const gchar  *filename,
 				         GError      **error) G_GNUC_MALLOC;
 gsize        g_mapped_file_get_length   (GMappedFile  *file);
 gchar       *g_mapped_file_get_contents (GMappedFile  *file);
+GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
+void         g_mapped_file_unref        (GMappedFile  *file);
+
+#ifndef G_DISABLE_DEPRECATED
 void         g_mapped_file_free         (GMappedFile  *file);
+#endif
 
 G_END_DECLS
 

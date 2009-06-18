@@ -683,7 +683,11 @@ g_timeout_source_new_seconds
 g_mapped_file_new G_GNUC_MALLOC
 g_mapped_file_get_length
 g_mapped_file_get_contents
+g_mapped_file_ref
+g_mapped_file_unref
+#ifndef G_DISABLE_DEPRECATED
 g_mapped_file_free
+#endif
 #endif
 #endif
 

@@ -1114,6 +1114,8 @@ g_dir_close
 <SUBSECTION>
 GMappedFile
 g_mapped_file_new
+g_mapped_file_ref
+g_mapped_file_unref
 g_mapped_file_free
 g_mapped_file_get_length
 g_mapped_file_get_contents
