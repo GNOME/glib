@@ -289,7 +289,7 @@ typedef struct {
   GCancellable *cancellable;
   int error_fd;
   GIOChannel *error_channel;
-  guint error_channel_source_id;
+  GSource *error_channel_source;
   GString *error_string;
 } EjectMountOp;
 
@@ -322,7 +322,11 @@ eject_mount_cb (GPid pid, gint status, gpointer user_data)
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
 
-  g_source_remove (data->error_channel_source_id);
+  if (data->error_channel_source)
+    {
+      g_source_destroy (data->error_channel_source);
+      g_source_unref (data->error_channel_source);
+    }
   g_io_channel_unref (data->error_channel);
   g_string_free (data->error_string, TRUE);
   close (data->error_fd);
@@ -359,6 +363,12 @@ read:
 
       g_string_append (data->error_string, error->message);
       g_error_free (error);
+
+      if (data->error_channel_source)
+        {
+          g_source_unref (data->error_channel_source);
+          data->error_channel_source = NULL;
+        }
       return FALSE;
     }
 
@@ -375,6 +385,7 @@ eject_mount_do (GVolume             *volume,
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
   EjectMountOp *data;
   GPid child_pid;
+  GSource *child_watch;
   GError *error;
   
   data = g_new0 (EjectMountOp, 1);
@@ -406,8 +417,15 @@ eject_mount_do (GVolume             *volume,
   if (error != NULL)
     goto handle_error;
 
-  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, eject_mount_read_error, data);
-  g_child_watch_add (child_pid, eject_mount_cb, data);
+  data->error_channel_source = g_io_create_watch (data->error_channel, G_IO_IN);
+  g_source_set_callback (data->error_channel_source,
+                         (GSourceFunc) eject_mount_read_error, data, NULL);
+  g_source_attach (data->error_channel_source, NULL);
+
+  child_watch = g_child_watch_source_new (child_pid);
+  g_source_set_callback (child_watch, (GSourceFunc) eject_mount_cb, data, NULL);
+  g_source_attach (child_watch, NULL);
+  g_source_unref (child_watch);
 
 handle_error:
   if (error != NULL) {

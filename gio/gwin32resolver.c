@@ -95,7 +95,7 @@ struct GWin32ResolverRequest {
   HANDLE *event;
   GSimpleAsyncResult *async_result;
   gboolean complete;
-  guint cancelled_idle;
+  GSource *cancelled_idle;
 
   union {
     struct {
@@ -167,8 +167,9 @@ request_completed (gpointer user_data)
   /* Clean up cancellation-related stuff first */
   if (req->cancelled_idle)
     {
-      g_source_remove (req->cancelled_idle);
-      req->cancelled_idle = 0;
+      g_source_destroy (req->cancelled_idle);
+      g_source_unref (req->cancelled_idle);
+      req->cancelled_idle = NULL;
     }
   if (req->cancellable)
     {
@@ -197,7 +198,8 @@ request_cancelled_idle (gpointer user_data)
   GWin32ResolverRequest *req = user_data;
   GError *error = NULL;
 
-  req->cancelled_idle = 0;
+  g_source_unref (req->cancelled_idle);
+  req->cancelled_idle = NULL;
 
   g_cancellable_set_error_if_cancelled (req->cancellable, &error);
   g_simple_async_result_set_from_error (req->async_result, error);
@@ -226,9 +228,13 @@ request_cancelled (GCancellable *cancellable,
 
   /* We need to wait until main-loop-time to actually complete the
    * result; we don't use _complete_in_idle() here because we need to
-   * keep track of the source id.
+   * keep track of the source so we can potentially cancel it before
+   * it runs.
    */
-  req->cancelled_idle = g_idle_add (request_cancelled_idle, req);
+  req->cancelled_idle = g_idle_source_new ();
+  g_source_set_callback (req->cancelled_idle,
+                         (GSourceFunc)request_cancelled_idle, req, NULL);
+  g_source_attach (req->cancelled_idle, NULL);
 }
 
 static DWORD WINAPI

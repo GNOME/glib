@@ -77,7 +77,7 @@ struct _GFileMonitorPrivate {
   /* Rate limiting change events */
   GHashTable *rate_limiter;
 
-  guint pending_file_change_id;
+  GSource *pending_file_change_source;
   GSList *pending_file_changes; /* FileChange */
 
   GSource *timeout;
@@ -181,10 +181,11 @@ g_file_monitor_dispose (GObject *object)
   monitor = G_FILE_MONITOR (object);
   priv = monitor->priv;
 
-  if (priv->pending_file_change_id)
+  if (priv->pending_file_change_source)
     {
-      g_source_remove (priv->pending_file_change_id);
-      priv->pending_file_change_id = 0;
+      g_source_destroy (priv->pending_file_change_source);
+      g_source_unref (priv->pending_file_change_source);
+      priv->pending_file_change_source = NULL;
     }
   g_slist_foreach (priv->pending_file_changes, (GFunc) file_change_free, NULL);
   g_slist_free (priv->pending_file_changes);
@@ -362,7 +363,11 @@ emit_cb (gpointer data)
   
   pending = g_slist_reverse (monitor->priv->pending_file_changes);
   monitor->priv->pending_file_changes = NULL;
-  monitor->priv->pending_file_change_id = 0;
+  if (monitor->priv->pending_file_change_source)
+    {
+      g_source_unref (monitor->priv->pending_file_change_source);
+      monitor->priv->pending_file_change_source = NULL;
+    }
 
   g_object_ref (monitor);
   for (iter = pending; iter; iter = iter->next)
@@ -399,17 +404,17 @@ emit_in_idle (GFileMonitor      *monitor,
     change->other_file = NULL;
   change->event_type = event_type;
 
-  if (!priv->pending_file_change_id)
+  if (!priv->pending_file_change_source)
     {
       source = g_idle_source_new ();
+      priv->pending_file_change_source = source;
       g_source_set_priority (source, 0);
 
-      /* We don't ref here - instead dispose will free any
+      /* We don't ref monitor here - instead dispose will free any
        * pending idles.
        */
       g_source_set_callback (source, emit_cb, monitor, NULL);
-      priv->pending_file_change_id = g_source_attach (source, NULL);
-      g_source_unref (source);
+      g_source_attach (source, NULL);
     }
   /* We reverse this in the processor */
   priv->pending_file_changes = g_slist_prepend (priv->pending_file_changes, change);
