@@ -1321,6 +1321,10 @@ g_type_tag_to_string (GITypeTag type)
       return "int64";
     case GI_TYPE_TAG_UINT64:
       return "uint64";
+    case GI_TYPE_TAG_SHORT:
+      return "short";
+    case GI_TYPE_TAG_USHORT:
+      return "ushort";
     case GI_TYPE_TAG_INT:
       return "int";
     case GI_TYPE_TAG_UINT:

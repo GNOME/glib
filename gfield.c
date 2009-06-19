@@ -55,6 +55,8 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	    break;
 	  case GI_TYPE_TAG_INT16:
 	  case GI_TYPE_TAG_UINT16:
+	  case GI_TYPE_TAG_SHORT:
+	  case GI_TYPE_TAG_USHORT:
 	    value->v_uint16 = G_STRUCT_MEMBER(guint16, mem, offset);
 	    result = TRUE;
 	    break;
@@ -138,6 +140,8 @@ g_field_info_get_field (GIFieldInfo *field_info,
 			break;
 		      case GI_TYPE_TAG_INT16:
 		      case GI_TYPE_TAG_UINT16:
+		      case GI_TYPE_TAG_SHORT:
+		      case GI_TYPE_TAG_USHORT:
 			value->v_int = (gint)G_STRUCT_MEMBER(guint16, mem, offset);
 			result = TRUE;
 			break;
@@ -251,6 +255,8 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	    break;
 	  case GI_TYPE_TAG_INT16:
 	  case GI_TYPE_TAG_UINT16:
+	  case GI_TYPE_TAG_SHORT:
+	  case GI_TYPE_TAG_USHORT:
 	    G_STRUCT_MEMBER(guint16, mem, offset) = value->v_uint16;
 	    result = TRUE;
 	    break;
@@ -329,6 +335,8 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 			break;
 		      case GI_TYPE_TAG_INT16:
 		      case GI_TYPE_TAG_UINT16:
+		      case GI_TYPE_TAG_SHORT:
+		      case GI_TYPE_TAG_USHORT:
 			G_STRUCT_MEMBER(guint16, mem, offset) = (guint16)value->v_int;
 			result = TRUE;
 			break;

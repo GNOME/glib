@@ -904,6 +904,8 @@ validate_constant_blob (GTypelib     *typelib,
     4, /* UINT32 */
     8, /* INT64 */
     8, /* UINT64 */
+    sizeof (gshort),
+    sizeof (gushort),
     sizeof (gint),
     sizeof (guint),
     sizeof (glong),

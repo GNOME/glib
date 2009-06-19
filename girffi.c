@@ -51,6 +51,10 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
       return &ffi_type_sint64;
     case GI_TYPE_TAG_UINT64:
       return &ffi_type_uint64;
+    case GI_TYPE_TAG_SHORT:
+      return &ffi_type_sshort;
+    case GI_TYPE_TAG_USHORT:
+      return &ffi_type_ushort;
     case GI_TYPE_TAG_INT:
       return &ffi_type_sint;
     case GI_TYPE_TAG_UINT:

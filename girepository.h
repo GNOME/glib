@@ -240,6 +240,8 @@ typedef union
   guint64  v_uint64;
   gfloat   v_float;
   gdouble  v_double;
+  gshort   v_short;
+  gushort  v_ushort;
   gint     v_int;
   guint    v_uint;
   glong    v_long;
@@ -329,25 +331,27 @@ typedef enum {
   GI_TYPE_TAG_UINT32    =  7,
   GI_TYPE_TAG_INT64     =  8,
   GI_TYPE_TAG_UINT64    =  9,
-  GI_TYPE_TAG_INT       = 10,
-  GI_TYPE_TAG_UINT      = 11,
-  GI_TYPE_TAG_LONG      = 12,
-  GI_TYPE_TAG_ULONG     = 13,
-  GI_TYPE_TAG_SSIZE     = 14,
-  GI_TYPE_TAG_SIZE      = 15,
-  GI_TYPE_TAG_FLOAT     = 16,
-  GI_TYPE_TAG_DOUBLE    = 17,
-  GI_TYPE_TAG_TIME_T    = 18,
-  GI_TYPE_TAG_GTYPE     = 19,
-  GI_TYPE_TAG_UTF8      = 20,
-  GI_TYPE_TAG_FILENAME  = 21,
+  GI_TYPE_TAG_SHORT     = 10,
+  GI_TYPE_TAG_USHORT    = 11,
+  GI_TYPE_TAG_INT       = 12,
+  GI_TYPE_TAG_UINT      = 13,
+  GI_TYPE_TAG_LONG      = 14,
+  GI_TYPE_TAG_ULONG     = 15,
+  GI_TYPE_TAG_SSIZE     = 16,
+  GI_TYPE_TAG_SIZE      = 17,
+  GI_TYPE_TAG_FLOAT     = 18,
+  GI_TYPE_TAG_DOUBLE    = 19,
+  GI_TYPE_TAG_TIME_T    = 20,
+  GI_TYPE_TAG_GTYPE     = 21,
+  GI_TYPE_TAG_UTF8      = 22,
+  GI_TYPE_TAG_FILENAME  = 23,
   /* Non-basic types */
-  GI_TYPE_TAG_ARRAY     = 22,
-  GI_TYPE_TAG_INTERFACE = 23,
-  GI_TYPE_TAG_GLIST     = 24,
-  GI_TYPE_TAG_GSLIST    = 25,
-  GI_TYPE_TAG_GHASH     = 26,
-  GI_TYPE_TAG_ERROR     = 27
+  GI_TYPE_TAG_ARRAY     = 24,
+  GI_TYPE_TAG_INTERFACE = 25,
+  GI_TYPE_TAG_GLIST     = 26,
+  GI_TYPE_TAG_GSLIST    = 27,
+  GI_TYPE_TAG_GHASH     = 28,
+  GI_TYPE_TAG_ERROR     = 29
   /* Note - there is only room currently for 32 tags.
    * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;

@@ -364,6 +364,8 @@ static BasicTypeInfo basic_types[] = {
     { "uint32",   GI_TYPE_TAG_UINT32,  0 },
     { "int64",    GI_TYPE_TAG_INT64,   0 },
     { "uint64",   GI_TYPE_TAG_UINT64,  0 },
+    { "short",    GI_TYPE_TAG_SHORT,   0 },
+    { "ushort",   GI_TYPE_TAG_USHORT,  0 },
     { "int",      GI_TYPE_TAG_INT,     0 },
     { "uint",     GI_TYPE_TAG_UINT,    0 },
     { "long",     GI_TYPE_TAG_LONG,    0 },
