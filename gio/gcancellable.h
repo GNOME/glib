@@ -44,6 +44,15 @@ G_BEGIN_DECLS
  * Allows actions to be cancelled.
  */
 typedef struct _GCancellableClass   GCancellableClass;
+typedef struct _GCancellablePrivate GCancellablePrivate;
+
+struct _GCancellable
+{
+  GObject parent_instance;
+
+  /*< private >*/
+  GCancellablePrivate *priv;
+};
 
 struct _GCancellableClass
 {
