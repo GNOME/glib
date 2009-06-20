@@ -46,6 +46,8 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
+#define _GNU_SOURCE  /* for pipe2 */
+
 #include "glib.h"
 #include "gthreadprivate.h"
 #include <signal.h>
@@ -402,12 +404,20 @@ g_main_context_init_pipe (GMainContext *context)
 # ifndef G_OS_WIN32
   if (context->wake_up_pipe[0] != -1)
     return;
-  if (pipe (context->wake_up_pipe) < 0)
-    g_error ("Cannot create pipe main loop wake-up: %s\n",
-	     g_strerror (errno));
+
+#ifdef HAVE_PIPE2
+  /* if this fails, we fall through and try pipe */
+  pipe2 (context->wake_up_pipe, O_CLOEXEC);
+#endif
+  if (context->wake_up_pipe[0] == -1)
+    {
+      if (pipe (context->wake_up_pipe) < 0)
+        g_error ("Cannot create pipe main loop wake-up: %s\n",
+  	         g_strerror (errno));
  
-  fcntl (context->wake_up_pipe[0], F_SETFD, FD_CLOEXEC);
-  fcntl (context->wake_up_pipe[1], F_SETFD, FD_CLOEXEC);
+      fcntl (context->wake_up_pipe[0], F_SETFD, FD_CLOEXEC);
+      fcntl (context->wake_up_pipe[1], F_SETFD, FD_CLOEXEC);
+    }
 
   context->wake_up_rec.fd = context->wake_up_pipe[0];
   context->wake_up_rec.events = G_IO_IN;
