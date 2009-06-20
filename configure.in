@@ -559,15 +559,8 @@ AC_HEADER_STDC
 # Checks for library functions.
 AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS(mmap)
-AC_CHECK_FUNCS(posix_memalign)
-AC_CHECK_FUNCS(memalign)
-AC_CHECK_FUNCS(valloc)
-AC_CHECK_FUNCS(fsync)
-
-AC_CHECK_FUNCS(atexit on_exit)
-
-AC_CHECK_FUNCS(timegm gmtime_r)
+AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
+AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
 
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
