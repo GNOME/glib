@@ -38,7 +38,9 @@
 # include <unistd.h>
 #endif
 
+#ifdef HAVE_SYS_UIO_H
 #include <sys/uio.h>
+#endif
 
 #include "gsocket.h"
 #include "gcancellable.h"
