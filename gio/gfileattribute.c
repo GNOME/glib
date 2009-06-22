@@ -243,6 +243,9 @@ _g_file_attribute_value_clear (GFileAttributeValue *attr)
       attr->type == G_FILE_ATTRIBUTE_TYPE_BYTE_STRING)
     g_free (attr->u.string);
   
+  if (attr->type == G_FILE_ATTRIBUTE_TYPE_STRINGV)
+    g_strfreev (attr->u.stringv);
+
   if (attr->type == G_FILE_ATTRIBUTE_TYPE_OBJECT &&
       attr->u.obj != NULL)
     g_object_unref (attr->u.obj);
@@ -271,6 +274,9 @@ _g_file_attribute_value_set (GFileAttributeValue        *attr,
       attr->type == G_FILE_ATTRIBUTE_TYPE_BYTE_STRING)
     attr->u.string = g_strdup (attr->u.string);
   
+  if (attr->type == G_FILE_ATTRIBUTE_TYPE_STRINGV)
+    attr->u.stringv = g_strdupv (attr->u.stringv);
+
   if (attr->type == G_FILE_ATTRIBUTE_TYPE_OBJECT &&
       attr->u.obj != NULL)
     g_object_ref (attr->u.obj);
@@ -300,6 +306,8 @@ _g_file_attribute_value_peek_as_pointer (GFileAttributeValue *attr)
   case G_FILE_ATTRIBUTE_TYPE_STRING:
   case G_FILE_ATTRIBUTE_TYPE_BYTE_STRING:
     return attr->u.string;
+  case G_FILE_ATTRIBUTE_TYPE_STRINGV:
+    return attr->u.stringv;
   case G_FILE_ATTRIBUTE_TYPE_OBJECT:
     return attr->u.obj;
   default:
@@ -408,6 +416,8 @@ escape_byte_string (const char *str)
 char *
 _g_file_attribute_value_as_string (const GFileAttributeValue *attr)
 {
+  GString *s;
+  int i;
   char *str;
 
   g_return_val_if_fail (attr != NULL, NULL);
@@ -416,6 +426,17 @@ _g_file_attribute_value_as_string (const GFileAttributeValue *attr)
     {
     case G_FILE_ATTRIBUTE_TYPE_STRING:
       str = g_strdup (attr->u.string);
+      break;
+    case G_FILE_ATTRIBUTE_TYPE_STRINGV:
+      s = g_string_new ("[");
+      for (i = 0; attr->u.stringv[i] != NULL; i++)
+	{
+	  g_string_append (s, attr->u.stringv[i]);
+	  if (attr->u.stringv[i+1] != NULL)
+	    g_string_append (s, ", ");
+	}
+      g_string_append (s, "]");
+      str = g_string_free (s, FALSE);
       break;
     case G_FILE_ATTRIBUTE_TYPE_BYTE_STRING:
       str = escape_byte_string (attr->u.string);
@@ -487,6 +508,17 @@ _g_file_attribute_value_get_byte_string (const GFileAttributeValue *attr)
   g_return_val_if_fail (attr->type == G_FILE_ATTRIBUTE_TYPE_BYTE_STRING, NULL);
 
   return attr->u.string;
+}
+
+char **
+_g_file_attribute_value_get_stringv (const GFileAttributeValue *attr)
+{
+  if (attr == NULL)
+    return NULL;
+
+  g_return_val_if_fail (attr->type == G_FILE_ATTRIBUTE_TYPE_STRINGV, NULL);
+
+  return attr->u.stringv;
 }
 
 /*
@@ -628,6 +660,13 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
 	value->u.string = value_p;
       break;
 
+    case G_FILE_ATTRIBUTE_TYPE_STRINGV:
+      if (dup)
+	value->u.stringv = g_strdupv (value_p);
+      else
+	value->u.stringv = value_p;
+      break;
+
     case G_FILE_ATTRIBUTE_TYPE_OBJECT:
       if (dup)
 	value->u.obj = g_object_ref (value_p);
@@ -697,6 +736,19 @@ _g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
   attr->type = G_FILE_ATTRIBUTE_TYPE_BYTE_STRING;
   attr->u.string = g_strdup (string);
 }
+
+void
+_g_file_attribute_value_set_stringv (GFileAttributeValue *attr,
+				     char               **value)
+{
+  g_return_if_fail (attr != NULL);
+  g_return_if_fail (value != NULL);
+
+  _g_file_attribute_value_clear (attr);
+  attr->type = G_FILE_ATTRIBUTE_TYPE_STRINGV;
+  attr->u.stringv = g_strdupv (value);
+}
+
 
 /*
  * _g_file_attribute_value_set_boolean:

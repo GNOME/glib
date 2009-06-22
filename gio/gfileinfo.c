@@ -752,6 +752,30 @@ g_file_info_get_attribute_byte_string (GFileInfo  *info,
 }
 
 /**
+ * g_file_info_get_attribute_stringv:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ *
+ * Gets the value of a stringv attribute. If the attribute does
+ * not contain a stringv, %NULL will be returned.
+ *
+ * Returns: the contents of the @attribute value as a stringv, or
+ * %NULL otherwise. Do not free.
+ **/
+char **
+g_file_info_get_attribute_stringv (GFileInfo  *info,
+				   const char *attribute)
+{
+  GFileAttributeValue *value;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+  g_return_val_if_fail (attribute != NULL && *attribute != '\0', NULL);
+
+  value = g_file_info_find_value_by_name (info, attribute);
+  return _g_file_attribute_value_get_stringv (value);
+}
+
+/**
  * g_file_info_get_attribute_boolean:
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
@@ -958,6 +982,33 @@ g_file_info_set_attribute_object (GFileInfo  *info,
   value = g_file_info_create_value_by_name (info, attribute);
   if (value)
     _g_file_attribute_value_set_object (value, attr_value);
+}
+
+/**
+ * g_file_info_set_attribute_stringv:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a %NULL terminated string array
+ *
+ * Sets the @attribute to contain the given @attr_value,
+ * if possible.
+ *
+ * Sinze: 2.22
+ **/
+void
+g_file_info_set_attribute_stringv (GFileInfo  *info,
+				   const char *attribute,
+				   char      **attr_value)
+{
+  GFileAttributeValue *value;
+
+  g_return_if_fail (G_IS_FILE_INFO (info));
+  g_return_if_fail (attribute != NULL && *attribute != '\0');
+  g_return_if_fail (attr_value != NULL);
+
+  value = g_file_info_create_value_by_name (info, attribute);
+  if (value)
+    _g_file_attribute_value_set_stringv (value, attr_value);
 }
 
 /**

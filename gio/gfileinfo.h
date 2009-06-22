@@ -780,6 +780,8 @@ gint64             g_file_info_get_attribute_int64       (GFileInfo  *info,
 							  const char *attribute);
 GObject *          g_file_info_get_attribute_object      (GFileInfo  *info,
 							  const char *attribute);
+char **            g_file_info_get_attribute_stringv     (GFileInfo  *info,
+							  const char *attribute);
 
 void               g_file_info_set_attribute             (GFileInfo  *info,
 							  const char *attribute,
@@ -809,6 +811,9 @@ void               g_file_info_set_attribute_int64       (GFileInfo  *info,
 void               g_file_info_set_attribute_object      (GFileInfo  *info,
 							  const char *attribute,
 							  GObject    *attr_value);
+void               g_file_info_set_attribute_stringv     (GFileInfo  *info,
+							  const char *attribute,
+							  char      **attr_value);
 
 void               g_file_info_clear_status              (GFileInfo  *info);
 

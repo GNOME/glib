@@ -39,6 +39,7 @@ typedef struct  {
     guint64 uint64;
     char *string;
     GObject *obj;
+    char **stringv;
   } u;
 } GFileAttributeValue;
 
@@ -60,6 +61,7 @@ gint32               _g_file_attribute_value_get_int32       (const GFileAttribu
 guint64              _g_file_attribute_value_get_uint64      (const GFileAttributeValue *attr);
 gint64               _g_file_attribute_value_get_int64       (const GFileAttributeValue *attr);
 GObject *            _g_file_attribute_value_get_object      (const GFileAttributeValue *attr);
+char **              _g_file_attribute_value_get_stringv     (const GFileAttributeValue *attr);
 
 void                 _g_file_attribute_value_set_from_pointer(GFileAttributeValue *attr,
 							      GFileAttributeType   type,
@@ -81,6 +83,8 @@ void                 _g_file_attribute_value_set_int64       (GFileAttributeValu
 							      gint64               value);
 void                 _g_file_attribute_value_set_object      (GFileAttributeValue *attr,
 							      GObject             *obj);
+void                 _g_file_attribute_value_set_stringv     (GFileAttributeValue *attr,
+							      char               **value);
 
 
 GFileAttributeValue *_g_file_info_get_attribute_value (GFileInfo  *info,

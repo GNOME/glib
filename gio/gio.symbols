@@ -391,6 +391,7 @@ g_file_info_get_attribute_int32
 g_file_info_get_attribute_uint64 
 g_file_info_get_attribute_int64 
 g_file_info_get_attribute_object 
+g_file_info_get_attribute_stringv
 g_file_info_set_attribute 
 g_file_info_set_attribute_string 
 g_file_info_set_attribute_byte_string 
@@ -400,6 +401,7 @@ g_file_info_set_attribute_int32
 g_file_info_set_attribute_uint64 
 g_file_info_set_attribute_int64 
 g_file_info_set_attribute_object 
+g_file_info_set_attribute_stringv
 g_file_info_clear_status 
 g_file_info_get_file_type 
 g_file_info_get_is_hidden 

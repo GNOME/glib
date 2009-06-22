@@ -92,6 +92,7 @@ typedef enum {
  * @G_FILE_ATTRIBUTE_TYPE_UINT64: an unsigned 8-byte/64-bit integer.
  * @G_FILE_ATTRIBUTE_TYPE_INT64: a signed 8-byte/64-bit integer.
  * @G_FILE_ATTRIBUTE_TYPE_OBJECT: a #GObject.
+ * @G_FILE_ATTRIBUTE_TYPE_STRINGV: a %NULL terminated char **. Since 2.22
  *
  * The data types for file attributes.
  **/
@@ -104,7 +105,8 @@ typedef enum {
   G_FILE_ATTRIBUTE_TYPE_INT32,
   G_FILE_ATTRIBUTE_TYPE_UINT64,
   G_FILE_ATTRIBUTE_TYPE_INT64,
-  G_FILE_ATTRIBUTE_TYPE_OBJECT
+  G_FILE_ATTRIBUTE_TYPE_OBJECT,
+  G_FILE_ATTRIBUTE_TYPE_STRINGV
 } GFileAttributeType;
 
 
