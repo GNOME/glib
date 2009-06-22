@@ -92,3 +92,11 @@ install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
+if HAVE_GLIB_RUNTIME_LIBDIR
+install-data-hook:
+	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgthread-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgthread-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	rm -f $(DESTDIR)$(libdir)/libgthread-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libgthread-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libgthread-2.0.so
+endif

@@ -234,6 +234,9 @@ How to compile GLib itself
             <arg>--disable-selinux</arg>
             <arg>--enable-selinux</arg>
           </group>
+          <group>
+            <arg>--with-runtime-libdir=RELPATH</arg>
+          </group>
         </cmdsynopsis>
       </para>
 
@@ -555,6 +558,24 @@ How to compile GLib itself
 	  be included.
         </para>
      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-runtime-libdir=RELPATH</systemitem></title>
+
+        <para>
+          Allows specifying a relative path to where to install the runtime
+          libraries (meaning library files used for running, not developing,
+          GLib applications). This can be used in operating system setups where
+          programs using GLib needs to run before e.g. <filename>/usr</filename>
+          is mounted.
+          For example, if LIBDIR is <filename>/usr/lib</filename> and
+          <filename>../../lib</filename> is passed to
+          <systemitem>--with-runtime-libdir</systemitem> then the
+          runtime libraries are installed into <filename>/lib</filename> rather
+          than <filename>/usr/lib</filename>.
+        </para>
+      </formalpara>
+
    </refsect1>
 
 </refentry>

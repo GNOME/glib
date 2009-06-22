@@ -424,3 +424,12 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
+
+if HAVE_GLIB_RUNTIME_LIBDIR
+install-data-hook:
+	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgio-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgio-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	rm -f $(DESTDIR)$(libdir)/libgio-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libgio-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libgio-2.0.so
+endif

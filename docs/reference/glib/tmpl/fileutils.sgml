@@ -294,6 +294,23 @@ not be accessed directly.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_mapped_file_ref ##### -->
+<para>
+
+</para>
+
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mapped_file_unref ##### -->
+<para>
+
+</para>
+
+@file: 
+
+
 <!-- ##### FUNCTION g_mapped_file_free ##### -->
 <para>
 

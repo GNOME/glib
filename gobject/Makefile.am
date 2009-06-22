@@ -260,3 +260,12 @@ distclean-local:
 	if test $(srcdir) = .; then :; else \
 	    rm -f $(BUILT_EXTRA_DIST); \
 	fi
+
+if HAVE_GLIB_RUNTIME_LIBDIR
+install-data-hook:
+	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgobject-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgobject-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	rm -f $(DESTDIR)$(libdir)/libgobject-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libgobject-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libgobject-2.0.so
+endif

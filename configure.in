@@ -245,6 +245,17 @@ else
   AC_MSG_RESULT([yes])
 fi
 
+dnl location to install runtime libraries, e.g. ../../lib to install
+dnl to /lib if libdir is /usr/lib
+AC_ARG_WITH(runtime-libdir,
+           [AC_HELP_STRING([--with-runtime-libdir=RELPATH],
+                           [Install runtime libraries relative to libdir])],
+           [],
+	   [with_runtime_libdir=""])
+GLIB_RUNTIME_LIBDIR=$with_runtime_libdir
+AC_SUBST(GLIB_RUNTIME_LIBDIR)
+AM_CONDITIONAL(HAVE_GLIB_RUNTIME_LIBDIR, [test "x$with_runtime_libdir" != "x"])
+
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP

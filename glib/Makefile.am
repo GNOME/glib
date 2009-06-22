@@ -364,3 +364,12 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
+
+if HAVE_GLIB_RUNTIME_LIBDIR
+install-data-hook:
+	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	rm -f $(DESTDIR)$(libdir)/libglib-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libglib-2.0.so
+endif
