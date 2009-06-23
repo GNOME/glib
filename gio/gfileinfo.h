@@ -764,6 +764,9 @@ void               g_file_info_remove_attribute          (GFileInfo  *info,
 							  const char *attribute);
 GFileAttributeStatus g_file_info_get_attribute_status    (GFileInfo  *info,
 							  const char *attribute);
+gboolean           g_file_info_set_attribute_status      (GFileInfo  *info,
+							  const char *attribute,
+							  GFileAttributeStatus status);
 char *             g_file_info_get_attribute_as_string   (GFileInfo  *info,
 							  const char *attribute);
 const char *       g_file_info_get_attribute_string      (GFileInfo  *info,

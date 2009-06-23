@@ -679,6 +679,42 @@ g_file_info_get_attribute_status (GFileInfo  *info,
   return G_FILE_ATTRIBUTE_STATUS_UNSET;
 }
 
+/**
+ * g_file_info_set_attribute_status:
+ * @info: a #GFileInfo
+ * @attribute: a file attribute key
+ * @status: a #GFileAttributeStatus
+ *
+ * Sets the attribute status for an attribute key. This is only
+ * needed by external code that implement g_file_set_attributes_from_info()
+ * or similar functions.
+ *
+ * The attribute must exist in @info for this to work. Otherwise %FALSE
+ * is returned and @info is unchanged.
+ *
+ * Returns: %TRUE if the status was changed, %FALSE if the key was not set.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_file_info_set_attribute_status (GFileInfo  *info,
+				  const char *attribute,
+				  GFileAttributeStatus status)
+{
+  GFileAttributeValue *val;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), 0);
+  g_return_val_if_fail (attribute != NULL && *attribute != '\0', 0);
+
+  val = g_file_info_find_value_by_name (info, attribute);
+  if (val)
+    {
+      val->status = status;
+      return TRUE;
+    }
+
+  return FALSE;
+}
 
 GFileAttributeValue *
 _g_file_info_get_attribute_value (GFileInfo  *info,
