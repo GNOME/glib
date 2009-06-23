@@ -377,6 +377,7 @@ g_file_info_new
 g_file_info_dup 
 g_file_info_copy_into 
 g_file_info_has_attribute 
+g_file_info_has_namespace
 g_file_info_list_attributes 
 g_file_info_get_attribute_type 
 g_file_info_remove_attribute 

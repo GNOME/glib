@@ -749,6 +749,8 @@ void               g_file_info_copy_into                 (GFileInfo  *src_info,
 							  GFileInfo  *dest_info);
 gboolean           g_file_info_has_attribute             (GFileInfo  *info,
 							  const char *attribute);
+gboolean           g_file_info_has_namespace             (GFileInfo  *info,
+							  const char *name_space);
 char **            g_file_info_list_attributes           (GFileInfo  *info,
 							  const char *name_space);
 gboolean           g_file_info_get_attribute_data        (GFileInfo  *info,

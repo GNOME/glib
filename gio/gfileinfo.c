@@ -485,6 +485,42 @@ g_file_info_has_attribute (GFileInfo  *info,
 }
 
 /**
+ * g_file_info_has_namespace:
+ * @info: a #GFileInfo.
+ * @name_space: a file attribute namespace.
+ *
+ * Checks if a file info structure has an attribute in the
+ * specified @name_space.
+ *
+ * Returns: %TRUE if @Ginfo has an attribute in @name_space,
+ *     %FALSE otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_file_info_has_namespace (GFileInfo  *info,
+			   const char *name_space)
+{
+  GFileAttribute *attrs;
+  guint32 ns_id;
+  int i;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
+  g_return_val_if_fail (name_space != NULL, FALSE);
+
+  ns_id = lookup_namespace (name_space);
+
+  attrs = (GFileAttribute *)info->attributes->data;
+  for (i = 0; i < info->attributes->len; i++)
+    {
+      if (GET_NS (attrs[i].attribute) == ns_id)
+	return TRUE;
+    }
+
+  return FALSE;
+}
+
+/**
  * g_file_info_list_attributes:
  * @info: a #GFileInfo.
  * @name_space: a file attribute key's namespace.
