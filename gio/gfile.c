@@ -2544,7 +2544,7 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
 		g_string_append_c (s, ',');
 		
 	      g_string_append (s, namespaces->infos[i].name);
-	      g_string_append (s, ":*");
+	      g_string_append (s, "::*");
 	    }
 	}
     }
