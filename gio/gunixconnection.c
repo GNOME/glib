@@ -86,8 +86,7 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
     }
 
   g_object_get (connection, "socket", &socket, NULL);
-  if (!g_socket_condition_wait (socket, G_IO_OUT, cancellable, error) ||
-      g_socket_send_message (socket, NULL, NULL, 0, &scm, 1, 0, error) != 1)
+  if (g_socket_send_message (socket, NULL, NULL, 0, &scm, 1, 0, cancellable, error) != 1)
     /* XXX could it 'fail' with zero? */
     {
       g_object_unref (socket);
@@ -133,9 +132,8 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
   g_return_val_if_fail (G_IS_UNIX_CONNECTION (connection), -1);
 
   g_object_get (connection, "socket", &socket, NULL);
-  if (!g_socket_condition_wait (socket, G_IO_IN, cancellable, error) ||
-      g_socket_receive_message (socket, NULL, NULL, 0,
-                                &scms, &nscm, NULL, error) != 1)
+  if (g_socket_receive_message (socket, NULL, NULL, 0,
+                                &scms, &nscm, NULL, cancellable, error) != 1)
     /* XXX it _could_ 'fail' with zero. */
     {
       g_object_unref (socket);

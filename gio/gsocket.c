@@ -1332,6 +1332,7 @@ g_socket_speaks_ipv4 (GSocket *socket)
 /**
  * g_socket_accept:
  * @socket: a #GSocket.
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Accept incoming connections on a connection-based socket. This removes
@@ -1352,6 +1353,7 @@ g_socket_speaks_ipv4 (GSocket *socket)
  */
 GSocket *
 g_socket_accept (GSocket       *socket,
+		 GCancellable  *cancellable,
 		 GError       **error)
 {
   GSocket *new_socket;
@@ -1366,7 +1368,7 @@ g_socket_accept (GSocket       *socket,
     {
       if (socket->priv->blocking &&
 	  !g_socket_condition_wait (socket,
-				    G_IO_IN, NULL, error))
+				    G_IO_IN, cancellable, error))
 	return NULL;
 
       if ((ret = accept (socket->priv->fd, NULL, 0)) < 0)
@@ -1442,6 +1444,7 @@ g_socket_accept (GSocket       *socket,
  * g_socket_connect:
  * @socket: a #GSocket.
  * @address: a #GSocketAddress specifying the remote address.
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Connect the socket to the specified remote address.
@@ -1468,6 +1471,7 @@ g_socket_accept (GSocket       *socket,
 gboolean
 g_socket_connect (GSocket         *socket,
 		  GSocketAddress  *address,
+		  GCancellable    *cancellable,
 		  GError         **error)
 {
   struct sockaddr_storage buffer;
@@ -1498,11 +1502,12 @@ g_socket_connect (GSocket         *socket,
 	    {
 	      if (socket->priv->blocking)
 		{
-		  g_socket_condition_wait (socket, G_IO_OUT, NULL, NULL);
-		  if (g_socket_check_connect_result (socket, error))
-		    break;
-		  else
-		    g_prefix_error (error, _("Error connecting: "));
+		  if (g_socket_condition_wait (socket, G_IO_OUT, cancellable, error))
+		    {
+		      if (g_socket_check_connect_result (socket, error))
+			break;
+		    }
+		  g_prefix_error (error, _("Error connecting: "));
 		}
 	      else
                 g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
@@ -1570,6 +1575,7 @@ g_socket_check_connect_result (GSocket  *socket,
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
  * @size: the number of bytes you want to read from the socket
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket. This is mainly used by
@@ -1600,10 +1606,11 @@ g_socket_check_connect_result (GSocket  *socket,
  * Since: 2.22
  */
 gssize
-g_socket_receive (GSocket  *socket,
-		  gchar    *buffer,
-		  gsize     size,
-		  GError  **error)
+g_socket_receive (GSocket       *socket,
+		  gchar         *buffer,
+		  gsize          size,
+		  GCancellable  *cancellable,
+		  GError       **error)
 {
   gssize ret;
 
@@ -1612,11 +1619,14 @@ g_socket_receive (GSocket  *socket,
   if (!check_socket (socket, error))
     return -1;
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return -1;
+
   while (1)
     {
       if (socket->priv->blocking &&
 	  !g_socket_condition_wait (socket,
-				    G_IO_IN, NULL, error))
+				    G_IO_IN, cancellable, error))
 	return -1;
 
       if ((ret = recv (socket->priv->fd, buffer, size, 0)) < 0)
@@ -1661,6 +1671,7 @@ g_socket_receive (GSocket  *socket,
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
  * @size: the number of bytes you want to read from the socket
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket.
@@ -1680,6 +1691,7 @@ g_socket_receive_from (GSocket         *socket,
 		       GSocketAddress **address,
 		       gchar           *buffer,
 		       gsize            size,
+		       GCancellable    *cancellable,
 		       GError         **error)
 {
   GInputVector v;
@@ -1691,6 +1703,7 @@ g_socket_receive_from (GSocket         *socket,
 				   address,
 				   &v, 1,
 				   NULL, 0, NULL,
+				   cancellable,
 				   error);
 }
 
@@ -1699,6 +1712,7 @@ g_socket_receive_from (GSocket         *socket,
  * @socket: a #GSocket
  * @buffer: the buffer containing the data to send.
  * @size: the number of bytes to send
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to send @size bytes from @buffer on the socket. This is
@@ -1722,10 +1736,11 @@ g_socket_receive_from (GSocket         *socket,
  * Since: 2.22
  */
 gssize
-g_socket_send (GSocket      *socket,
-	       const gchar  *buffer,
-	       gsize         size,
-	       GError      **error)
+g_socket_send (GSocket       *socket,
+	       const gchar   *buffer,
+	       gsize          size,
+	       GCancellable  *cancellable,
+	       GError       **error)
 {
   gssize ret;
 
@@ -1734,11 +1749,14 @@ g_socket_send (GSocket      *socket,
   if (!check_socket (socket, error))
     return -1;
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return -1;
+
   while (1)
     {
       if (socket->priv->blocking &&
 	  !g_socket_condition_wait (socket,
-				    G_IO_OUT, NULL, error))
+				    G_IO_OUT, cancellable, error))
 	return -1;
 
       if ((ret = send (socket->priv->fd, buffer, size, 0)) < 0)
@@ -1782,6 +1800,7 @@ g_socket_send (GSocket      *socket,
  * @address: a #GSocketAddress, or %NULL
  * @buffer: the buffer containing the data to send.
  * @size: the number of bytes to send
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to send @size bytes from @buffer to @address. If @address is
@@ -1800,6 +1819,7 @@ g_socket_send_to (GSocket         *socket,
 		  GSocketAddress  *address,
 		  const gchar     *buffer,
 		  gsize            size,
+		  GCancellable    *cancellable,
 		  GError         **error)
 {
   GOutputVector v;
@@ -1811,7 +1831,9 @@ g_socket_send_to (GSocket         *socket,
 				address,
 				&v, 1,
 				NULL, 0,
-				0, error);
+				0,
+				cancellable,
+				error);
 }
 
 /**
@@ -2491,6 +2513,7 @@ g_socket_condition_wait (GSocket       *socket,
  *   %NULL.
  * @num_messages: number of elements in @messages, or -1.
  * @flags: an int containing #GSocketMsgFlags flags
+ * @cancellable: a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Send data to @address on @socket.  This is the most complicated and
@@ -2544,12 +2567,16 @@ g_socket_send_message (GSocket                *socket,
 		       GSocketControlMessage **messages,
 		       gint                    num_messages,
 		       gint                    flags,
+		       GCancellable           *cancellable,
 		       GError                **error)
 {
   GOutputVector one_vector;
   char zero;
 
   if (!check_socket (socket, error))
+    return -1;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return -1;
 
   if (num_vectors == -1)
@@ -2650,7 +2677,7 @@ g_socket_send_message (GSocket                *socket,
       {
 	if (socket->priv->blocking &&
 	    !g_socket_condition_wait (socket,
-				      G_IO_OUT, NULL, error))
+				      G_IO_OUT, cancellable, error))
 	  return -1;
 
 	result = sendmsg (socket->priv->fd, &msg, flags);
@@ -2718,7 +2745,7 @@ g_socket_send_message (GSocket                *socket,
       {
 	if (socket->priv->blocking &&
 	    !g_socket_condition_wait (socket,
-				      G_IO_OUT, NULL, error))
+				      G_IO_OUT, cancellable, error))
 	  return -1;
 
 	if (address)
@@ -2772,6 +2799,7 @@ g_socket_send_message (GSocket                *socket,
  * @num_messages: a pointer which will be filled with the number of
  *    elements in @messages, or %NULL
  * @flags: a pointer to an int containing #GSocketMsgFlags flags
+ * @cancellable: a %GCancellable or %NULL
  * @error: a #GError pointer, or %NULL
  *
  * Receive data from a socket.  This is the most complicated and
@@ -2842,12 +2870,16 @@ g_socket_receive_message (GSocket                 *socket,
 			  GSocketControlMessage ***messages,
 			  gint                    *num_messages,
 			  gint                    *flags,
+			  GCancellable            *cancellable,
 			  GError                 **error)
 {
   GInputVector one_vector;
   char one_byte;
 
   if (!check_socket (socket, error))
+    return -1;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return -1;
 
   if (num_vectors == -1)
@@ -2927,7 +2959,7 @@ g_socket_receive_message (GSocket                 *socket,
       {
 	if (socket->priv->blocking &&
 	    !g_socket_condition_wait (socket,
-				      G_IO_IN, NULL, error))
+				      G_IO_IN, cancellable, error))
 	  return -1;
 
 	result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
@@ -3055,7 +3087,7 @@ g_socket_receive_message (GSocket                 *socket,
       {
 	if (socket->priv->blocking &&
 	    !g_socket_condition_wait (socket,
-				      G_IO_IN, NULL, error))
+				      G_IO_IN, cancellable, error))
 	  return -1;
 
 	addrlen = sizeof addr;

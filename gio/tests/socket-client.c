@@ -172,7 +172,7 @@ main (int argc,
 	  return 1;
 	}
 
-      if (g_socket_connect (socket, address, &error))
+      if (g_socket_connect (socket, address, cancellable, &error))
 	break;
       g_printerr ("%s: Connection to %s failed: %s, trying next\n", argv[0], socket_address_to_string (address), error->message);
       g_error_free (error);
@@ -215,9 +215,11 @@ main (int argc,
 	  ensure_condition (socket, "send", cancellable, G_IO_OUT);
 	  if (use_udp)
 	    size = g_socket_send_to (socket, address,
-				     buffer, to_send, &error);
+				     buffer, to_send,
+				     cancellable, &error);
 	  else
-	    size = g_socket_send (socket, buffer, to_send, &error);
+	    size = g_socket_send (socket, buffer, to_send,
+				  cancellable, &error);
 
 	  if (size < 0)
 	    {
@@ -252,9 +254,11 @@ main (int argc,
       ensure_condition (socket, "receive", cancellable, G_IO_IN);
       if (use_udp)
 	size = g_socket_receive_from (socket, &src_address,
-				      buffer, sizeof buffer, &error);
+				      buffer, sizeof buffer,
+				      cancellable, &error);
       else
-	size = g_socket_receive (socket, buffer, sizeof buffer, &error);
+	size = g_socket_receive (socket, buffer, sizeof buffer,
+				 cancellable, &error);
 
       if (size < 0)
 	{

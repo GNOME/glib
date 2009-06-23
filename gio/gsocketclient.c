@@ -528,7 +528,7 @@ g_socket_client_connect (GSocketClient       *client,
       socket = create_socket (client, address, &last_error);
       if (socket != NULL)
 	{
-	  if (g_socket_connect (socket, address, &last_error))
+	  if (g_socket_connect (socket, address, cancellable, &last_error))
 	    connection = g_socket_connection_factory_create_connection (socket);
 
 	  g_object_unref (socket);
@@ -776,7 +776,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   if (socket != NULL)
     {
       g_socket_set_blocking (socket, FALSE);
-      if (g_socket_connect (socket, address, &tmp_error))
+      if (g_socket_connect (socket, address, data->cancellable, &tmp_error))
 	{
 	  data->current_socket = socket;
 	  g_socket_client_async_connect_complete (data);

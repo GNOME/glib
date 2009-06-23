@@ -104,6 +104,7 @@ gboolean               g_socket_bind                    (GSocket                
 							 GError                 **error);
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gboolean               g_socket_check_connect_result    (GSocket                 *socket,
 							 GError                 **error);
@@ -114,26 +115,31 @@ gboolean               g_socket_condition_wait          (GSocket                
 							 GCancellable            *cancellable,
 							 GError                 **error);
 GSocket *              g_socket_accept                  (GSocket                 *socket,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gboolean               g_socket_listen                  (GSocket                 *socket,
 							 GError                 **error);
 gssize                 g_socket_receive                 (GSocket                 *socket,
 							 gchar                   *buffer,
 							 gsize                    size,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gssize                 g_socket_receive_from            (GSocket                 *socket,
 							 GSocketAddress         **address,
 							 gchar                   *buffer,
 							 gsize                    size,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gssize                 g_socket_send                    (GSocket                 *socket,
 							 const gchar             *buffer,
 							 gsize                    size,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gssize                 g_socket_send_to                 (GSocket                 *socket,
 							 GSocketAddress          *address,
 							 const gchar             *buffer,
 							 gsize                    size,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gssize                 g_socket_receive_message         (GSocket                 *socket,
 							 GSocketAddress         **address,
@@ -142,6 +148,7 @@ gssize                 g_socket_receive_message         (GSocket                
 							 GSocketControlMessage ***messages,
 							 gint                    *num_messages,
 							 gint                    *flags,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gssize                 g_socket_send_message            (GSocket                 *socket,
 							 GSocketAddress          *address,
@@ -150,6 +157,7 @@ gssize                 g_socket_send_message            (GSocket                
 							 GSocketControlMessage  **messages,
 							 gint                     num_messages,
 							 gint                     flags,
+							 GCancellable            *cancellable,
 							 GError                 **error);
 gboolean               g_socket_close                   (GSocket                 *socket,
 							 GError                 **error);

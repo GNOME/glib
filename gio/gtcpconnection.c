@@ -175,17 +175,9 @@ g_tcp_connection_close (GIOStream     *stream,
 	{
 	  while (TRUE)
 	    {
-	      if (!g_socket_condition_wait (socket,
-					    G_IO_IN, cancellable, error))
-		{
-		  had_error = TRUE;
-		  error = NULL;
-		  break;
-		}
-
 	      my_error = NULL;
 	      ret = g_socket_receive (socket,  buffer, sizeof (buffer),
-				      &my_error);
+				      cancellable, &my_error);
 	      if (ret < 0)
 		{
 		  if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
@@ -265,15 +257,8 @@ close_read_ready (GSocket        *socket,
   char buffer[1024];
   gssize ret;
 
-  if (g_cancellable_set_error_if_cancelled (data->cancellable,
-					    &error))
-    {
-      async_close_finish (data, error, TRUE);
-      g_error_free (error);
-      return FALSE;
-    }
-
-  ret = g_socket_receive (socket,  buffer, sizeof (buffer), &error);
+  ret = g_socket_receive (socket,  buffer, sizeof (buffer),
+			  data->cancellable, &error);
   if (ret < 0)
     {
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))

@@ -170,7 +170,7 @@ main (int argc,
       g_print ("listening on port %d...\n", port);
 
       ensure_condition (socket, "accept", cancellable, G_IO_IN);
-      new_socket = g_socket_accept (socket, &error);
+      new_socket = g_socket_accept (socket, cancellable, &error);
       if (!new_socket)
 	{
 	  g_printerr ("Error accepting socket: %s\n",
@@ -211,9 +211,11 @@ main (int argc,
       ensure_condition (recv_socket, "receive", cancellable, G_IO_IN);
       if (use_udp)
 	size = g_socket_receive_from (recv_socket, &address,
-				      buffer, sizeof buffer, &error);
+				      buffer, sizeof buffer,
+				      cancellable, &error);
       else
-	size = g_socket_receive (recv_socket, buffer, sizeof buffer, &error);
+	size = g_socket_receive (recv_socket, buffer, sizeof buffer,
+				 cancellable, &error);
 
       if (size < 0)
 	{
@@ -243,9 +245,10 @@ main (int argc,
 	  ensure_condition (recv_socket, "send", cancellable, G_IO_OUT);
 	  if (use_udp)
 	    size = g_socket_send_to (recv_socket, address,
-				     buffer, to_send, &error);
+				     buffer, to_send, cancellable, &error);
 	  else
-	    size = g_socket_send (recv_socket, buffer, to_send, &error);
+	    size = g_socket_send (recv_socket, buffer, to_send,
+				  cancellable, &error);
 
 	  if (size < 0)
 	    {

@@ -628,7 +628,7 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
       g_main_loop_unref (loop);
     }
 
-  if (!(socket = g_socket_accept (accept_socket, error)))
+  if (!(socket = g_socket_accept (accept_socket, cancellable, error)))
     return NULL;
 
   if (source_object)
@@ -695,27 +695,21 @@ accept_ready (GSocket      *accept_socket,
 {
   struct AcceptAsyncData *data = _data;
   GError *error = NULL;
+  GSocket *socket;
+  GObject *source_object;
 
-  if (!g_cancellable_set_error_if_cancelled (data->cancellable,
-                                             &error))
+  socket = g_socket_accept (accept_socket, data->cancellable, &error);
+  if (socket)
     {
-      GSocket *socket;
-      GObject *source_object;
-
-      socket = g_socket_accept (accept_socket, &error);
-      if (socket)
-	{
-	  g_simple_async_result_set_op_res_gpointer (data->simple, socket,
-						     g_object_unref);
-	  source_object = g_object_get_qdata (G_OBJECT (accept_socket), source_quark);
-	  if (source_object)
-	    g_object_set_qdata_full (G_OBJECT (data->simple),
-				     source_quark,
-				     g_object_ref (source_object), g_object_unref);
-	}
+      g_simple_async_result_set_op_res_gpointer (data->simple, socket,
+						 g_object_unref);
+      source_object = g_object_get_qdata (G_OBJECT (accept_socket), source_quark);
+      if (source_object)
+	g_object_set_qdata_full (G_OBJECT (data->simple),
+				 source_quark,
+				 g_object_ref (source_object), g_object_unref);
     }
-
-  if (error)
+  else
     {
       g_simple_async_result_set_from_error (data->simple, error);
       g_error_free (error);
