@@ -245,14 +245,12 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
   if (addr)
     {
       GSimpleAsyncResult *simple;
-      GList *addrs;
 
       simple = g_simple_async_result_new (G_OBJECT (resolver),
                                           callback, user_data,
                                           g_resolver_lookup_by_name_async);
 
-      addrs = g_list_append (NULL, addr);
-      g_simple_async_result_set_op_res_gpointer (simple, addrs, (GDestroyNotify)g_resolver_free_addresses);
+      g_simple_async_result_set_op_res_gpointer (simple, addr, g_object_unref);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
       return;
@@ -302,11 +300,10 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
       /* Handle the stringified-IP-addr case */
       if (g_simple_async_result_get_source_tag (simple) == g_resolver_lookup_by_name_async)
         {
-          GList *addrs;
+          GInetAddress *addr;
 
-          addrs = g_simple_async_result_get_op_res_gpointer (simple);
-          g_simple_async_result_set_op_res_gpointer (simple, NULL, NULL);
-          return addrs;
+          addr = g_simple_async_result_get_op_res_gpointer (simple);
+          return g_list_append (NULL, g_object_ref (addr));
         }
     }
 
