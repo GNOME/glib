@@ -1437,11 +1437,11 @@ g_ir_node_build_typelib (GIrNode         *node,
 	    type->tag == GI_TYPE_TAG_UTF8 ||
 	    type->tag == GI_TYPE_TAG_FILENAME)
 	  { 
-	    blob->reserved = 0;
-	    blob->reserved2 = 0;
-	    blob->pointer = type->is_pointer;
-	    blob->reserved3 = 0;
-	    blob->tag = type->tag;
+	    blob->flags.reserved = 0;
+	    blob->flags.reserved2 = 0;
+	    blob->flags.pointer = type->is_pointer;
+	    blob->flags.reserved3 = 0;
+	    blob->flags.tag = type->tag;
 	  }
 	else 
 	  {
@@ -1481,11 +1481,11 @@ g_ir_node_build_typelib (GIrNode         *node,
                       array->has_size = type->has_size;
 		      array->reserved2 = 0;
                       if (array->has_length)
-                        array->length = type->length;
+                        array->dimensions.length = type->length;
                       else if (array->has_size)
-                        array->size  = type->size;
+                        array->dimensions.size  = type->size;
                       else
-                        array->length = -1;
+                        array->dimensions.length = -1;
 		      
 		      pos = *offset2 + G_STRUCT_OFFSET (ArrayTypeBlob, type);
 		      *offset2 += sizeof (ArrayTypeBlob);

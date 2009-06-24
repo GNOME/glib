@@ -116,13 +116,13 @@ get_type_blob (GTypelib *typelib,
       return FALSE;
     }
 
-  if (simple->reserved == 0 && simple->reserved2 == 0)
+  if (simple->flags.reserved == 0 && simple->flags.reserved2 == 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID,
 		   "Expected non-basic type but got %d",
-		   simple->tag);
+		   simple->flags.tag);
       return FALSE;
     }
 
@@ -547,10 +547,10 @@ validate_type_blob (GTypelib     *typelib,
   
   simple = (SimpleTypeBlob *)&typelib->data[offset];
 
-  if (simple->reserved == 0 && 
-      simple->reserved2 == 0)
+  if (simple->flags.reserved == 0 && 
+      simple->flags.reserved2 == 0)
     {
-      if (simple->tag >= GI_TYPE_TAG_ARRAY)
+      if (simple->flags.tag >= GI_TYPE_TAG_ARRAY)
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
@@ -559,13 +559,13 @@ validate_type_blob (GTypelib     *typelib,
 	  return FALSE;
 	}
       
-      if (simple->tag >= GI_TYPE_TAG_UTF8 &&
-	  !simple->pointer)
+      if (simple->flags.tag >= GI_TYPE_TAG_UTF8 &&
+	  !simple->flags.pointer)
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
 		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Pointer type exected for tag %d", simple->tag);
+		       "Pointer type exected for tag %d", simple->flags.tag);
 	  return FALSE;	  
 	}
 
@@ -965,9 +965,9 @@ validate_constant_blob (GTypelib     *typelib,
     }
   
   type = (SimpleTypeBlob *)&typelib->data[offset + G_STRUCT_OFFSET (ConstantBlob, type)];
-  if (type->reserved == 0 && type->reserved2 == 0)
+  if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     {
-      if (type->tag == 0)
+      if (type->flags.tag == 0)
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
@@ -976,8 +976,8 @@ validate_constant_blob (GTypelib     *typelib,
 	  return FALSE;
 	}
 
-      if (value_size[type->tag] != 0 &&
-	  blob->size != value_size[type->tag])
+      if (value_size[type->flags.tag] != 0 &&
+	  blob->size != value_size[type->flags.tag])
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,

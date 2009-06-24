@@ -313,7 +313,7 @@ typedef union
     guint pointer    : 1;
     guint reserved3  : 2;
     guint tag        : 5;    
-  };
+  } flags;
   guint32    offset;
 } SimpleTypeBlob;
 
@@ -530,7 +530,7 @@ typedef struct {
   union {
     guint16 length;
     guint16 size;
-  };
+  } dimensions;
 
   SimpleTypeBlob type;
 } ArrayTypeBlob;
