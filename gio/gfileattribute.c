@@ -461,6 +461,9 @@ _g_file_attribute_value_as_string (const GFileAttributeValue *attr)
                                           ((GTypeInstance *) attr->u.obj),
                                       attr->u.obj);
       break;
+    case G_FILE_ATTRIBUTE_TYPE_INVALID:
+      str = g_strdup ("<unset>");
+      break;
     default:
       g_warning ("Invalid type in GFileInfo attribute");
       str = g_strdup ("<invalid>");
@@ -693,6 +696,10 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
     case G_FILE_ATTRIBUTE_TYPE_INT64:
       value->u.int64 = *(gint64 *)value_p;
       break;
+
+    case G_FILE_ATTRIBUTE_TYPE_INVALID:
+      break;
+
     default:
       g_warning ("Unknown type specified in g_file_info_set_attribute\n");
       break;

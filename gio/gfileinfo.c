@@ -566,7 +566,7 @@ g_file_info_list_attributes (GFileInfo  *info,
  * Gets the attribute type for an attribute key.
  * 
  * Returns: a #GFileAttributeType for the given @attribute, or 
- * %G_FILE_ATTRIBUTE_TYPE_INVALID if the key is invalid.
+ * %G_FILE_ATTRIBUTE_TYPE_INVALID if the key is not set.
  **/
 GFileAttributeType
 g_file_info_get_attribute_type (GFileInfo  *info,
