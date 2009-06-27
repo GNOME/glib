@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.20.3 to GLib 2.20.4
+===================================================
+
+* Bug fixes:
+ 579449	FileChoosers no longer work if an idle handler is active
+ 579933 mainloop FD_CLOEXEC has a race condition
+ 585088 g_string_chunk_insert_len stops at nul bytes
+ 585360	Monitor fontconfig configuration files using gio causes m...
+ 585478	don't leak the inotify fd
+ 585520 Wrong warning option in documentation
+ 585676 GEmblem doesn't reference its 'icon' if that is set as a ...
+ 585726 Grammatical error in GList documentation
+ 586868 g_filename_complete_get_completions doesn't always return...
+
+* Updated translations:
+ Bengali India
+ Punjabi
+
+
 Overview of Changes from GLib 2.20.2 to GLib 2.20.3
 ===================================================
 
