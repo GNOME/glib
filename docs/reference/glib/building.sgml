@@ -40,9 +40,9 @@ How to compile GLib itself
         the standard options.
       </para>
       <para>
-        The GTK+ documentation contains 
-        <ulink url="../gtk/gtk-building.html">further details</ulink> 
-	about the build process and ways to influence it. 
+        The GTK+ documentation contains
+        <ulink url="../gtk/gtk-building.html">further details</ulink>
+	about the build process and ways to influence it.
       </para>
     </refsect1>
     <refsect1 id="dependencies">
@@ -62,11 +62,11 @@ How to compile GLib itself
 	    url="http://www.freedesktop.org/software/pkgconfig/">pkg-config</ulink>
 	    is a tool for tracking the compilation flags needed for
 	    libraries that are used by the GLib library. (For each
-	    library, a small <literal>.pc</literal> text file is 
-            installed in a standard location that contains the compilation 
-            flags needed for that library along with version number 
-            information.)  The version of <command>pkg-config</command> 
-            needed to build GLib is mirrored in the 
+	    library, a small <literal>.pc</literal> text file is
+            installed in a standard location that contains the compilation
+            flags needed for that library along with version number
+            information.)  The version of <command>pkg-config</command>
+            needed to build GLib is mirrored in the
 	    <filename>dependencies</filename> directory
 	    on the <ulink url="ftp://ftp.gtk.org/pub/gtk/v2.2/">GTK+ FTP
 	    site.</ulink>
@@ -95,27 +95,27 @@ How to compile GLib itself
 	  system doesn't have the <function>iconv()</function>
 	  function for doing conversion between character
 	  encodings. Most modern systems should have
-	  <function>iconv()</function>, however many older systems lack 
-	  an <function>iconv()</function> implementation. On such systems, 
+	  <function>iconv()</function>, however many older systems lack
+	  an <function>iconv()</function> implementation. On such systems,
 	  you must install the libiconv library. This can be found at:
-	  <ulink url="http://www.gnu.org/software/libiconv">http://www.gnu.org/software/libiconv</ulink>.	  
+	  <ulink url="http://www.gnu.org/software/libiconv">http://www.gnu.org/software/libiconv</ulink>.
 	</para>
         <para>
 	  If your system has an <function>iconv()</function> implementation but
 	  you want to use libiconv instead, you can pass the
 	  --with-libiconv option to configure. This forces
-	  libiconv to be used.  
+	  libiconv to be used.
 	</para>
         <para>
 	  Note that if you have libiconv installed in your default include
 	  search path (for instance, in <filename>/usr/local/</filename>), but
 	  don't enable it, you will get an error while compiling GLib because
 	  the <filename>iconv.h</filename> that libiconv installs hides the
-	  system iconv. 
+	  system iconv.
 	</para>
 	<para>
 	  If you are using the native iconv implementation on Solaris
-	  instead of libiconv, you'll need to make sure that you have 
+	  instead of libiconv, you'll need to make sure that you have
 	  the converters between locale encodings and UTF-8 installed.
 	  At a minimum you'll need the SUNWuiu8 package. You probably
 	  should also install the SUNWciu8, SUNWhiu8, SUNWjiu8, and
@@ -143,7 +143,7 @@ How to compile GLib itself
 	  A thread implementation is needed, unless you want to compile GLib
 	  without thread support, which is not recommended. The thread support
 	  in GLib can be based upon several native thread implementations,
-	  e.g. POSIX threads, DCE threads or Solaris threads. 
+	  e.g. POSIX threads, DCE threads or Solaris threads.
 	</para>
       </listitem>
       <listitem>
@@ -158,17 +158,17 @@ How to compile GLib itself
       </listitem>
       <listitem>
         <para>
-          The optional extended attribute support in GIO requires the 
-          getxattr() family of functions that may be provided by glibc or 
-          by the standalone libattr library. To build GLib without extended 
-          attribute support, use the <option>--disable-xattr</option> 
+          The optional extended attribute support in GIO requires the
+          getxattr() family of functions that may be provided by glibc or
+          by the standalone libattr library. To build GLib without extended
+          attribute support, use the <option>--disable-xattr</option>
           configure option.
         </para>
       </listitem>
       <listitem>
         <para>
-          The optional SELinux support in GIO requires libselinux. To build 
-          GLib without SELinux support, use the 
+          The optional SELinux support in GIO requires libselinux. To build
+          GLib without SELinux support, use the
           <option>--disable-selinux</option> configure option.
         </para>
       </listitem>
@@ -289,7 +289,7 @@ How to compile GLib itself
         </listitem>
         <listitem>
 	  <para>
-	    When growing a GArray, Glib will clear the new chunk of memory.  
+	    When growing a GArray, Glib will clear the new chunk of memory.
 	    Grow an array from 7 bytes to 10 bytes, and the last 3 bytes will be cleared.
 	  </para>
         </listitem>
@@ -301,7 +301,7 @@ How to compile GLib itself
         <listitem>
 	  <para>
 	    When freeing a node from a GHashTable, Glib will first clear
-	    the node, which used to have pointers to the key and the value 
+	    the node, which used to have pointers to the key and the value
 	    stored at that node.
 	  </para>
         </listitem>
@@ -328,16 +328,16 @@ How to compile GLib itself
         For sparse memory systems this behaviour is often inferior, so
         memory pools can be disabled to avoid excessive caching and force
         atomic maintenance of chunks through the <function>g_malloc()</function>
-        and <function>g_free()</function> functions. Code currently affected by 
+        and <function>g_free()</function> functions. Code currently affected by
         this:
         <itemizedlist>
         <listitem>
         <para>
          <structname>GList</structname>, <structname>GSList</structname>,
-         <structname>GNode</structname>, <structname>GHash</structname> 
-         allocations. The functions g_list_push_allocator(), 
-         g_list_pop_allocator(), g_slist_push_allocator(), 
-         g_slist_pop_allocator(), g_node_push_allocator() and 
+         <structname>GNode</structname>, <structname>GHash</structname>
+         allocations. The functions g_list_push_allocator(),
+         g_list_pop_allocator(), g_slist_push_allocator(),
+         g_slist_pop_allocator(), g_node_push_allocator() and
          g_node_pop_allocator() are not available
         </para>
         </listitem>
@@ -348,20 +348,20 @@ How to compile GLib itself
         </listitem>
         <listitem>
         <para>
-         <structname>GSignal</structname> disables all caching (potentially 
+         <structname>GSignal</structname> disables all caching (potentially
          very slow)
         </para>
         </listitem>
         <listitem>
         <para>
-         <structname>GType</structname> doesn't honour the 
-         <structname>GTypeInfo</structname> 
+         <structname>GType</structname> doesn't honour the
+         <structname>GTypeInfo</structname>
          <structfield>n_preallocs</structfield> field anymore
         </para>
         </listitem>
         <listitem>
         <para>
-         the <structname>GBSearchArray</structname> flag 
+         the <structname>GBSearchArray</structname> flag
          <literal>G_BSEARCH_ALIGN_POWER2</literal> becomes non-functional
         </para>
         </listitem>
@@ -467,12 +467,12 @@ How to compile GLib itself
         <para>
           By default the <command>configure</command> script will try
           to auto-detect whether the C library provides a suitable set
-	  of <function>printf()</function> functions. In detail, 
+	  of <function>printf()</function> functions. In detail,
 	  <command>configure</command> checks that the semantics of
           <function>snprintf()</function> are as specified by C99 and
 	  that positional parameters as specified in the Single Unix
 	  Specification are supported. If this not the case, GLib will
-	  include an implementation of the <function>printf()</function> 
+	  include an implementation of the <function>printf()</function>
           family.
           These options can be used to explicitly control whether
           an implementation fo the <function>printf()</function> family
@@ -488,11 +488,11 @@ How to compile GLib itself
           By default, GLib uses ELF visibility attributes to optimize
           PLT table entries if the compiler supports ELF visibility
           attributes. A side-effect of the way in which this is currently
-          implemented is that any  header change forces a full 
-          recompilation, and missing includes may go unnoticed. 
+          implemented is that any  header change forces a full
+          recompilation, and missing includes may go unnoticed.
           Therefore, it makes sense to turn this feature off while
           doing GLib development, even if the compiler supports ELF
-          visibility attributes. The <option>--disable-visibility</option> 
+          visibility attributes. The <option>--disable-visibility</option>
           option allows to do that.
         </para>
       </formalpara>
@@ -521,12 +521,12 @@ How to compile GLib itself
 
         <para>
           By default the <command>configure</command> script will try
-          to auto-detect whether <application>xsltproc</application> 
+          to auto-detect whether <application>xsltproc</application>
           and the necessary Docbook stylesheets are installed.  If
           they are, then it will use them to rebuild the included
-          man pages from the XML sources.  These options can be used 
+          man pages from the XML sources.  These options can be used
           to explicitly control whether man pages should be rebuilt
-          used or not. The distribution includes pre-generated man 
+          used or not. The distribution includes pre-generated man
           pages.
         </para>
       </formalpara>
@@ -540,7 +540,7 @@ How to compile GLib itself
           to auto-detect whether the getxattr() family of functions
           is available. If it is, then extended attribute support
           will be included in GIO. These options can be used to
-          explicitly control whether extended attribute support 
+          explicitly control whether extended attribute support
           should be included or not. getxattr() and friends can
           be provided by glibc or by the standalone libattr library.
         </para>
@@ -554,7 +554,7 @@ How to compile GLib itself
           By default the <command>configure</command> script will
           auto-detect if libselinux is available and include
           SELinux support in GIO if it is. These options can be
-          used to explicitly control whether SELinxu support should
+          used to explicitly control whether SELinux support should
 	  be included.
         </para>
      </formalpara>
