@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-03-17 21:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1166,26 +1166,26 @@ msgstr "പേരിടാത്ത"
 msgid "Desktop file didn't specify Exec field"
 msgstr "പണിയിട ഫയല്‍ Exec ഫീള്‍ഡ് വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "പ്രയോഗത്തിനു് ആവശ്യമായ ടെര്‍മിനല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനു് പ്രയോഗത്തിനുള്ള ക്രമീകരണ ഫോള്‍ഡര്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "യഥേഷ്ടം %s നിഷ്കര്‍ഷിക്കുക"
@@ -1223,10 +1223,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon-നു് ഒരു GEmblem പ്രതീക്ഷിച്ചു"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1259,28 +1259,28 @@ msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ �
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "പ്രത്യേക ഫയല്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "തെറ്റായ symlink മൂല്ല്യം"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "വോള്യം മൌണ്ടിനെ ലഭ്യമാക്കുന്നില്ല"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "ഈ ഫയല്‍ കൈകാര്യം ചെയ്യുന്നതിനായി ഒരു പ്രയോഗവും രജിസ്ടര്‍ ചെയ്തിട്ടില്ല"
 
@@ -1379,7 +1379,7 @@ msgstr "ഇന്‍പുട്ട് സ്ട്രീം read ലഭ്യ�
 msgid "Stream has outstanding operation"
 msgstr "സ്ട്രീമില്‍ തെറ്റായ പ്രക്രിയ"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "സ്വതവേയുള്ള ലോക്കല്‍ ഡയറക്ടറി തരത്തിലുള്ള മോണിറ്റര്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 

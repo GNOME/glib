@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-02-25 20:26+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
@@ -1142,26 +1142,26 @@ msgstr "未命名的"
 msgid "Desktop file didn't specify Exec field"
 msgstr "桌面(Desktop)檔案未指定 Exec 欄位"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "無法找到應用程式要求的終端機"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "不能建立使用者應用程式組態資料夾 %s：%s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "不能建立使用者 MIME 組態資料夾 %s：%s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "不能建立使用者桌面檔案 %s"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "自選 %s 的定義"
@@ -1199,10 +1199,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "預期為 GEmblemedIcon 的 GEmblem"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "不支援的操作"
 
@@ -1235,28 +1235,28 @@ msgstr "目標檔案已存在"
 msgid "Can't recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "儲存裝置尚未實作掛載功能"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -1355,7 +1355,7 @@ msgstr "輸入串流尚未實作讀取"
 msgid "Stream has outstanding operation"
 msgstr "串流有異常操作"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "無法找到預設的本地端目錄監視器類型"
 

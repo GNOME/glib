@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-02-25 12:08+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -1162,26 +1162,26 @@ msgstr "શીર્ષકવીહિન"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ડેસ્કટોપ ફાઈલે Exec ક્ષેત્ર સ્પષ્ટ કરેલ નથી"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "કાર્યક્રમ માટે જરૂરી ટર્મિનલ શોધવામાં અસમર્થ"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "વપરાશકર્તા કાર્યક્રમ રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "વપરાશકર્તા MIME રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "વપરાશકર્તા ડેસ્કટોપ ફાઈલ %s બનાવી શકતા નથી"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s માટે વૈવિધ્યપૂર્ણ વ્યાખ્યા"
@@ -1219,10 +1219,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
 
@@ -1255,28 +1255,28 @@ msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથ
 msgid "Can't recursively copy directory"
 msgstr "પુનરાવર્તિત રીતે ડિરેક્ટરીની નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "વિશિષ્ટ ફાઇલ ની નકલ કરી શકતા નથી"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
 
@@ -1375,7 +1375,7 @@ msgstr "ઈનપુટ સ્ટ્રીમ વાંચનને અમલમ
 msgid "Stream has outstanding operation"
 msgstr "સ્ટ્રીમને ભરપૂર પ્રક્રિયા છે"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "મૂળભૂત સ્થાનિક ડિરેક્ટરી મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 

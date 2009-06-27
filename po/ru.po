@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-03-14 16:16+0300\n"
 "Last-Translator: Yuriy Penkin <yuriy.penkin@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -1214,26 +1214,26 @@ msgstr "Без имени"
 msgid "Desktop file didn't specify Exec field"
 msgstr "В desktop-файле не указано поле Exec"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек приложения %s: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не удалось создать пользовательский desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Особое определение для %s"
@@ -1271,10 +1271,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Для GEmblemedIcon ожидается GEmblem"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
@@ -1307,28 +1307,28 @@ msgstr "Целевой файл существует"
 msgid "Can't recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "Нельзя скопировать специальный файл"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "том не поддерживает присоединение"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -1427,7 +1427,7 @@ msgstr "Входной поток не поддерживает чтение"
 msgid "Stream has outstanding operation"
 msgstr "Поток имеет незавершённое действие"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "Не удалось найти тип монитора локальных каталогов по умолчанию"
 

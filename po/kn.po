@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-03-26 11:04+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -1174,26 +1174,26 @@ msgstr "ಹೆಸರಿಸಲಾಗದ"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "ಅನ್ವಯಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಟರ್ಮಿನಲ್‍ ಅನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ ಅನ್ವಯ ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -1231,10 +1231,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon ಗಾಗಿ GEmblem ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
@@ -1267,28 +1267,28 @@ msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿ�
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "ವಿಶೇಷ ಕಡತವನ್ನು ಕಾಪಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
 
@@ -1387,7 +1387,7 @@ msgstr "ಆದಾನ ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಓದುವು�
 msgid "Stream has outstanding operation"
 msgstr "ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಕಾರ್ಯವು ಬಾಕಿ ಇದೆ"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಕೋಶ ಮೇಲ್ವಿಚಾರಕ ಬಗೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ"
 

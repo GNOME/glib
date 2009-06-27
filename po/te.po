@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-29 13:00-0400\n"
+"POT-Creation-Date: 2009-06-27 01:04-0400\n"
 "PO-Revision-Date: 2009-03-03 14:24+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -1158,26 +1158,26 @@ msgstr "నామములేని"
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: gio/gdesktopappinfo.c:1004
+#: gio/gdesktopappinfo.c:890
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: gio/gdesktopappinfo.c:1236
+#: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1240
+#: gio/gdesktopappinfo.c:1102
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1644
+#: gio/gdesktopappinfo.c:1506
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: gio/gdesktopappinfo.c:1756
+#: gio/gdesktopappinfo.c:1618
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1215,10 +1215,10 @@ msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon కొరకు GEmblem కావలసివుంది"
 
 #: gio/gfile.c:827 gio/gfile.c:1057 gio/gfile.c:1192 gio/gfile.c:1428
-#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2712
-#: gio/gfile.c:2766 gio/gfile.c:2897 gio/gfile.c:2937 gio/gfile.c:3264
-#: gio/gfile.c:3666 gio/gfile.c:3750 gio/gfile.c:3833 gio/gfile.c:3913
-#: gio/gfile.c:4243 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
+#: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
+#: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
 
@@ -1251,28 +1251,28 @@ msgstr "లక్ష్యపు దస్త్రము వుంది"
 msgid "Can't recursively copy directory"
 msgstr "డైరెక్టరీని పునరావృతముగా నకలుతీయలేదు"
 
-#: gio/gfile.c:2346
+#: gio/gfile.c:2350
 msgid "Can't copy special file"
 msgstr "ప్రత్యేక దస్త్రమును నకలుతీయలేదు"
 
-#: gio/gfile.c:2887
+#: gio/gfile.c:2891
 msgid "Invalid symlink value given"
 msgstr "చెల్లని సిమ్‌లింక్ విలువ యివ్వబడినది"
 
-#: gio/gfile.c:2980
+#: gio/gfile.c:2984
 msgid "Trash not supported"
 msgstr "ట్రాష్ మద్దతీయలేదు"
 
-#: gio/gfile.c:3029
+#: gio/gfile.c:3033
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "దస్త్రము నామములు '%c'ని కలిగిలేవు"
 
-#: gio/gfile.c:5011 gio/gvolume.c:376
+#: gio/gfile.c:5015 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "వాల్యూమ్ మౌంట్‌ను చేయలేకపోయింది"
 
-#: gio/gfile.c:5119
+#: gio/gfile.c:5123
 msgid "No application is registered as handling this file"
 msgstr "ఈ దస్త్రము సంబాలించుతున్నట్లు యెటువంటి అనువర్తనము నమోదుకాలేదు"
 
@@ -1371,7 +1371,7 @@ msgstr "ఇన్‌పుట్ స్ట్రీమ్ చదువుటన�
 msgid "Stream has outstanding operation"
 msgstr "ఈ స్ట్రీమ్ యిప్పటికే వొక ఆపరేషన్‌ను కలిగివుంది"
 
-#: gio/glocaldirectorymonitor.c:274
+#: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr "అప్రమేయ స్థానిక మానిటర్ రకమును కనుగొనలేక పోయింది"
 
