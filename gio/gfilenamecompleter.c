@@ -470,7 +470,7 @@ g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
  **/
 char **
 g_filename_completer_get_completions (GFilenameCompleter *completer,
-				      const char *initial_text)
+				      const char         *initial_text)
 {
   GList *possible_matches, *l;
   char *prefix;
@@ -486,14 +486,16 @@ g_filename_completer_get_completions (GFilenameCompleter *completer,
   for (l = possible_matches; l != NULL; l = l->next)
     {
       possible_match = l->data;
-      
+
       if (g_str_has_prefix (possible_match, prefix))
 	g_ptr_array_add (res,
 			 g_strconcat (initial_text, possible_match + strlen (prefix), NULL));
     }
 
   g_free (prefix);
-  
+
+  g_ptr_array_add (res, NULL);
+
   return (char**)g_ptr_array_free (res, FALSE);
 }
 
