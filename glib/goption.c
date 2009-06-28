@@ -60,7 +60,7 @@
  *   testtreemodel [OPTION...] - test tree model performance
  *  
  * Help Options:
- *   -?, --help               Show help options
+ *   -h, --help               Show help options
  *   --help-all               Show all help options
  *   --help-gtk               Show GTK+ Options
  *  
@@ -378,7 +378,8 @@ void g_option_context_free (GOptionContext *context)
  *
  * Enables or disables automatic generation of <option>--help</option> 
  * output. By default, g_option_context_parse() recognizes
- * <option>--help</option>, <option>-?</option>, <option>--help-all</option>
+ * <option>--help</option>, <option>-h</option>,
+ * <option>-?</option>, <option>--help-all</option>
  * and <option>--help-</option><replaceable>groupname</replaceable> and creates
  * suitable output to stdout. 
  *
@@ -671,6 +672,35 @@ group_list_has_visible_entires (GOptionContext *context,
   return FALSE;
 }
 
+static gboolean
+context_has_h_entry (GOptionContext *context)
+{
+  gsize i;
+  GList *list;
+
+  if (context->main_group)
+    {
+      for (i = 0; i < context->main_group->n_entries; i++)
+        {
+          if (context->main_group->entries[i].short_name == 'h')
+            return TRUE;
+        }
+    }
+
+  for (list = context->groups; list != NULL; list = g_list_next (list))
+    {
+     GOptionGroup *group;
+
+      group = (GOptionGroup*)list->data;
+      for (i = 0; i < group->n_entries; i++)
+        {
+          if (group->entries[i].short_name == 'h')
+            return TRUE;
+        }
+    }
+  return FALSE;
+}
+
 /**
  * g_option_context_get_help: 
  * @context: a #GOptionContext
@@ -702,6 +732,7 @@ g_option_context_get_help (GOptionContext *context,
   gboolean seen[256];
   const gchar *rest_description;
   GString *string;
+  guchar token;
 
   string = g_string_sized_new (1024);
 
@@ -823,9 +854,11 @@ g_option_context_get_help (GOptionContext *context,
   if (!group)
     {
       list = context->groups;
-      
+
+      token = context_has_h_entry (context) ? '?' : 'h';
+
       g_string_append_printf (string, "%s\n  -%c, --%-*s %s\n", 
-	                      _("Help Options:"), '?', max_length - 4, "help", 
+	                      _("Help Options:"), token, max_length - 4, "help", 
 	                      _("Show help options"));
       
       /* We only want --help-all when there are groups */
@@ -1810,15 +1843,17 @@ g_option_context_parse (GOptionContext   *context,
 		{ /* short option */
 		  gint new_i = i, arg_length;
 		  gboolean *nulled_out = NULL;
+                  gboolean has_h_entry = context_has_h_entry (context);
 		  arg = (*argv)[i] + 1;
                   arg_length = strlen (arg);
                   nulled_out = g_newa (gboolean, arg_length);
                   memset (nulled_out, 0, arg_length * sizeof (gboolean));
 		  for (j = 0; j < arg_length; j++)
 		    {
-		      if (context->help_enabled && arg[j] == '?')
-			print_help (context, TRUE, NULL);
-		      parsed = FALSE;
+		      if (context->help_enabled && (arg[j] == '?' ||
+                        (arg[j] == 'h' && !has_h_entry)))
+                        print_help (context, TRUE, NULL);
+                      parsed = FALSE;
 		      if (context->main_group &&
 			  !parse_short_option (context, context->main_group,
 					       i, &new_i, arg[j],
