@@ -140,6 +140,16 @@ _lookup_namespace (const char *namespace)
   return ns_info;
 }
 
+static void
+ensure_attribute_hash (void)
+{
+  if (attribute_hash != NULL)
+    return;
+
+  ns_hash = g_hash_table_new (g_str_hash, g_str_equal);
+  attribute_hash = g_hash_table_new (g_str_hash, g_str_equal);
+}
+
 static guint32
 lookup_namespace (const char *namespace)
 {
@@ -148,11 +158,7 @@ lookup_namespace (const char *namespace)
   
   G_LOCK (attribute_hash);
   
-  if (attribute_hash == NULL)
-    {
-      ns_hash = g_hash_table_new (g_str_hash, g_str_equal);
-      attribute_hash = g_hash_table_new (g_str_hash, g_str_equal);
-    }
+  ensure_attribute_hash ();
 
   ns_info = _lookup_namespace (namespace);
   id = 0;
@@ -183,11 +189,7 @@ lookup_attribute (const char *attribute)
   NSInfo *ns_info;
   
   G_LOCK (attribute_hash);
-  if (attribute_hash == NULL)
-    {
-      ns_hash = g_hash_table_new (g_str_hash, g_str_equal);
-      attribute_hash = g_hash_table_new (g_str_hash, g_str_equal);
-    }
+  ensure_attribute_hash ();
 
   attr_id = GPOINTER_TO_UINT (g_hash_table_lookup (attribute_hash, attribute));
 
