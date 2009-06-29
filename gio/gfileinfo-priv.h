@@ -96,4 +96,9 @@
 #define G_FILE_ATTRIBUTE_ID_SELINUX_CONTEXT (14680064 + 1)
 #define G_FILE_ATTRIBUTE_ID_TRASH_ITEM_COUNT (15728640 + 1)
 
+
+gboolean        _g_file_attribute_matcher_matches_id    (GFileAttributeMatcher *matcher,
+                                                         guint32                id);
+
+
 #endif /* __G_FILE_INFO_PRIV_H__ */

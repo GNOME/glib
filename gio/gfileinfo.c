@@ -86,9 +86,6 @@ struct _GFileInfoClass
 };
 
 
-static gboolean g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
-						     guint32 id);
-
 G_DEFINE_TYPE (GFileInfo, g_file_info, G_TYPE_OBJECT);
 
 typedef struct {
@@ -445,7 +442,7 @@ g_file_info_set_attribute_mask (GFileInfo             *info,
       for (i = 0; i < info->attributes->len; i++)
 	{
 	  attr = &g_array_index (info->attributes, GFileAttribute, i);
-	  if (!g_file_attribute_matcher_matches_id (mask,
+	  if (!_g_file_attribute_matcher_matches_id (mask,
 						    attr->attribute))
 	    {
 	      _g_file_attribute_value_clear (&attr->value);
@@ -1062,7 +1059,7 @@ g_file_info_create_value (GFileInfo *info,
   int i;
 
   if (info->mask != NO_ATTRIBUTE_MASK &&
-      !g_file_attribute_matcher_matches_id (info->mask, attr_id))
+      !_g_file_attribute_matcher_matches_id (info->mask, attr_id))
     return NULL;
   
   i = g_file_info_find_place (info, attr_id);
@@ -2244,9 +2241,9 @@ matcher_matches_id (GFileAttributeMatcher *matcher,
   return FALSE;
 }
 
-static gboolean
-g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
-                                     guint32                id)
+gboolean
+_g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
+                                      guint32                id)
 {
   /* We return a NULL matcher for an empty match string, so handle this */
   if (matcher == NULL)
