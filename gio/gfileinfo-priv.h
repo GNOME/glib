@@ -97,8 +97,40 @@
 #define G_FILE_ATTRIBUTE_ID_TRASH_ITEM_COUNT (15728640 + 1)
 
 
-gboolean        _g_file_attribute_matcher_matches_id    (GFileAttributeMatcher *matcher,
-                                                         guint32                id);
+gboolean           _g_file_attribute_matcher_matches_id         (GFileAttributeMatcher *matcher,
+                                                                 guint32                id);
+
+void               _g_file_info_set_attribute_by_id             (GFileInfo             *info,
+                                                                 guint32                attribute,
+                                                                 GFileAttributeType     type,
+                                                                 gpointer               value_p);
+void               _g_file_info_set_attribute_string_by_id      (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         const char            *attr_value);
+void               _g_file_info_set_attribute_byte_string_by_id (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         const char            *attr_value);
+void               _g_file_info_set_attribute_boolean_by_id     (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         gboolean               attr_value);
+void               _g_file_info_set_attribute_uint32_by_id      (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         guint32                attr_value);
+void               _g_file_info_set_attribute_int32_by_id       (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         gint32                 attr_value);
+void               _g_file_info_set_attribute_uint64_by_id      (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         guint64                attr_value);
+void               _g_file_info_set_attribute_int64_by_id       (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         gint64                 attr_value);
+void               _g_file_info_set_attribute_object_by_id      (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         GObject               *attr_value);
+void               _g_file_info_set_attribute_stringv_by_id     (GFileInfo             *info,
+                                                                 guint32                attribute,
+							         char                 **attr_value);
 
 
 #endif /* __G_FILE_INFO_PRIV_H__ */

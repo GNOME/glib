@@ -1079,15 +1079,18 @@ g_file_info_create_value (GFileInfo *info,
     }
 }
 
-static GFileAttributeValue *
-g_file_info_create_value_by_name (GFileInfo *info,
-				  const char *attribute)
+void
+_g_file_info_set_attribute_by_id (GFileInfo                 *info,
+                                  guint32                    attribute,
+                                  GFileAttributeType         type,
+                                  gpointer                   value_p)
 {
-  guint32 attr_id;
+  GFileAttributeValue *value;
 
-  attr_id = lookup_attribute (attribute);
+  value = g_file_info_create_value (info, attribute);
 
-  return g_file_info_create_value (info, attr_id);
+  if (value)
+    _g_file_attribute_value_set_from_pointer (value, type, value_p, TRUE);
 }
 
 /**
@@ -1105,15 +1108,22 @@ g_file_info_set_attribute (GFileInfo                 *info,
 			   GFileAttributeType         type,
 			   gpointer                   value_p)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_by_id (info, lookup_attribute (attribute), type, value_p);
+}
 
+void
+_g_file_info_set_attribute_object_by_id (GFileInfo *info,
+                                         guint32    attribute,
+				         GObject   *attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_from_pointer (value, type, value_p, TRUE);
+    _g_file_attribute_value_set_object (value, attr_value);
 }
 
 /**
@@ -1130,15 +1140,25 @@ g_file_info_set_attribute_object (GFileInfo  *info,
 				  const char *attribute,
 				  GObject    *attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
   g_return_if_fail (G_IS_OBJECT (attr_value));
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_object_by_id (info,
+                                           lookup_attribute (attribute),
+                                           attr_value);
+}
+
+void
+_g_file_info_set_attribute_stringv_by_id (GFileInfo *info,
+                                          guint32    attribute,
+				          char     **attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_object (value, attr_value);
+    _g_file_attribute_value_set_stringv (value, attr_value);
 }
 
 /**
@@ -1157,15 +1177,25 @@ g_file_info_set_attribute_stringv (GFileInfo  *info,
 				   const char *attribute,
 				   char      **attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
   g_return_if_fail (attr_value != NULL);
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_stringv_by_id (info, 
+                                            lookup_attribute (attribute),
+                                            attr_value);
+}
+
+void
+_g_file_info_set_attribute_string_by_id (GFileInfo  *info,
+                                         guint32     attribute,
+				         const char *attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_stringv (value, attr_value);
+    _g_file_attribute_value_set_string (value, attr_value);
 }
 
 /**
@@ -1182,15 +1212,25 @@ g_file_info_set_attribute_string (GFileInfo  *info,
 				  const char *attribute,
 				  const char *attr_value)
 {
-  GFileAttributeValue *value;
-  
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
   g_return_if_fail (attr_value != NULL);
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_string_by_id (info,
+                                           lookup_attribute (attribute),
+                                           attr_value);
+}
+
+void
+_g_file_info_set_attribute_byte_string_by_id (GFileInfo  *info,
+                                              guint32     attribute,
+				              const char *attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_string (value, attr_value);
+    _g_file_attribute_value_set_byte_string (value, attr_value);
 }
 
 /**
@@ -1207,15 +1247,25 @@ g_file_info_set_attribute_byte_string (GFileInfo  *info,
 				       const char *attribute,
 				       const char *attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
   g_return_if_fail (attr_value != NULL);
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_byte_string_by_id (info,
+                                                lookup_attribute (attribute),
+                                                attr_value);
+}
+
+void
+_g_file_info_set_attribute_boolean_by_id (GFileInfo *info,
+                                          guint32    attribute,
+				          gboolean   attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_byte_string (value, attr_value);
+    _g_file_attribute_value_set_boolean (value, attr_value);
 }
 
 /**
@@ -1232,14 +1282,24 @@ g_file_info_set_attribute_boolean (GFileInfo  *info,
 				   const char *attribute,
 				   gboolean    attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_boolean_by_id (info,
+                                            lookup_attribute (attribute),
+                                            attr_value);
+}
+
+void
+_g_file_info_set_attribute_uint32_by_id (GFileInfo *info,
+                                         guint32    attribute,
+				         guint32    attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_boolean (value, attr_value);
+    _g_file_attribute_value_set_uint32 (value, attr_value);
 }
 
 /**
@@ -1256,16 +1316,25 @@ g_file_info_set_attribute_uint32 (GFileInfo  *info,
 				  const char *attribute,
 				  guint32     attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
-  if (value)
-    _g_file_attribute_value_set_uint32 (value, attr_value);
+  _g_file_info_set_attribute_uint32_by_id (info,
+                                           lookup_attribute (attribute),
+                                           attr_value);
 }
 
+void
+_g_file_info_set_attribute_int32_by_id (GFileInfo *info,
+                                        guint32    attribute,
+				        gint32     attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
+  if (value)
+    _g_file_attribute_value_set_int32 (value, attr_value);
+}
 
 /**
  * g_file_info_set_attribute_int32:
@@ -1281,14 +1350,24 @@ g_file_info_set_attribute_int32 (GFileInfo  *info,
                                  const char *attribute,
                                  gint32      attr_value)
 {
-  GFileAttributeValue *value;
- 
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_int32_by_id (info,
+                                          lookup_attribute (attribute),
+                                          attr_value);
+}
+
+void
+_g_file_info_set_attribute_uint64_by_id (GFileInfo *info,
+                                         guint32    attribute,
+				         guint64    attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_int32 (value, attr_value);
+    _g_file_attribute_value_set_uint64 (value, attr_value);
 }
 
 /**
@@ -1305,14 +1384,24 @@ g_file_info_set_attribute_uint64 (GFileInfo  *info,
 				  const char *attribute,
 				  guint64     attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
+  _g_file_info_set_attribute_uint64_by_id (info,
+                                           lookup_attribute (attribute),
+                                           attr_value);
+}
+
+void
+_g_file_info_set_attribute_int64_by_id (GFileInfo *info,
+                                        guint32    attribute,
+				        gint64     attr_value)
+{
+  GFileAttributeValue *value;
+
+  value = g_file_info_create_value (info, attribute);
   if (value)
-    _g_file_attribute_value_set_uint64 (value, attr_value);
+    _g_file_attribute_value_set_int64 (value, attr_value);
 }
 
 /**
@@ -1330,14 +1419,12 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
 				  const char *attribute,
 				  gint64      attr_value)
 {
-  GFileAttributeValue *value;
-
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');
 
-  value = g_file_info_create_value_by_name (info, attribute);
-  if (value)
-    _g_file_attribute_value_set_int64 (value, attr_value);
+  _g_file_info_set_attribute_int64_by_id (info,
+                                          lookup_attribute (attribute),
+                                          attr_value);
 }
 
 /* Helper getters */
