@@ -222,11 +222,11 @@ cleanup_dir_recurse (GFile *parent, GFile *root)
 }
 
 static void
-cleanup_subdirs (const char *basedir)
+cleanup_subdirs (const char *base_dir)
 {
   GFile *base, *file;
  
-  base = g_file_new_for_path (basedir);  
+  base = g_file_new_for_path (base_dir);  
   file = g_file_get_child (base, "applications");
   cleanup_dir_recurse (file, file);
   g_object_unref (file);

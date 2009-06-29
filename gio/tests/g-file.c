@@ -128,7 +128,7 @@ test_g_file_new_for_path (void)
       {"/UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88", TRUE, 0, "/UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88/"}
     };
 
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (cmp_paths); i++)
     {
       gboolean equal = compare_two_files (FALSE, cmp_paths[i].path1, cmp_paths[i].path2);
@@ -157,7 +157,7 @@ test_g_file_new_for_uri (void)
     {"file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88", TRUE, 0, "file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88/"}
   };
   
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (cmp_uris); i++)
     {
       gboolean equal = compare_two_files (TRUE, cmp_uris[i].path1, cmp_uris[i].path2);
@@ -205,7 +205,7 @@ test_g_file_dup (void)
       {"file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88", 0, TRUE, ""},
     };
   
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (dup_paths); i++)
     {
       gboolean equal = dup_equals (dup_paths[i].use_uri, dup_paths[i].path1);
@@ -268,7 +268,7 @@ test_g_file_get_parse_name_utf8 (void)
       {"file:///invalid%08/UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88/", 0, TRUE, "file:///invalid%08/UTF-8%20p\xc5\x99\xc3\xadli\xc5\xa1%20\xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd%20k\xc5\xaf\xc5\x88"},
     };
 
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (strings); i++)
     {
       gboolean equal = parse_check_utf8 (strings[i].use_uri, strings[i].path1, strings[i].path2);
@@ -328,7 +328,7 @@ test_g_file_new_for_commandline_arg (void)
   GFile *file;
   char *resolved;
   char *cwd;
-  int i;
+  guint i;
   
   for (i = 0; i < G_N_ELEMENTS (arg_data); i++)
     {
@@ -422,7 +422,7 @@ test_g_file_has_prefix (void)
 #endif
     };
   
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (dirs); i++)
     {
       char *s = get_relative_path (dirs[i].use_uri, dirs[i].equal, dirs[i].path1, dirs[i].path2);
@@ -437,7 +437,7 @@ roundtrip_parent_child (const gboolean use_uri, const gboolean under_root_descen
 			const char *path, const char *dir_holder)
 {
   GFile *files[6] = {NULL};
-  int i;
+  guint i;
   
   if (use_uri)
     {
@@ -497,7 +497,7 @@ test_g_file_get_parent_child (void)
       {"dav://www.gtk.org/plan/meetings", FALSE, TRUE, "meetings"},
     };
 
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (paths); i++)
     roundtrip_parent_child (paths[i].use_uri, paths[i].equal, paths[i].path1, paths[i].path2);
 }

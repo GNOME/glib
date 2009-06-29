@@ -173,14 +173,14 @@ enum TestDataType {
   TEST_DATA_UINT64
 };
 
-#define TEST_DATA_RETYPE_BUFF(a, v)	\
-	 (a == TEST_DATA_BYTE	? *(guchar*)v : \
-	 (a == TEST_DATA_INT16	? *(gint16*)v :	 \
-	 (a == TEST_DATA_UINT16	? *(guint16*)v : \
-	 (a == TEST_DATA_INT32	? *(gint32*)v :	 \
-	 (a == TEST_DATA_UINT32	? *(guint32*)v : \
-	 (a == TEST_DATA_INT64	? *(gint64*)v :	 \
-	 *(guint64*)v )))))) 
+#define TEST_DATA_RETYPE_BUFF(a, t, v)	\
+	 (a == TEST_DATA_BYTE	? (t) *(guchar*)v : \
+	 (a == TEST_DATA_INT16	? (t) *(gint16*)v :	 \
+	 (a == TEST_DATA_UINT16	? (t) *(guint16*)v : \
+	 (a == TEST_DATA_INT32	? (t) *(gint32*)v :	 \
+	 (a == TEST_DATA_UINT32	? (t) *(guint32*)v : \
+	 (a == TEST_DATA_INT64	? (t) *(gint64*)v :	 \
+	 (t) *(guint64*)v )))))) 
 
 
 static void
@@ -216,6 +216,9 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
     case TEST_DATA_UINT64:
       data_size = 8;
       break; 
+    default:
+      g_assert_not_reached ();
+      break;
     }
 
   /*  Set flag to swap bytes if needed */
@@ -260,9 +263,12 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
 	  if (swap)
 	    data = (guint64)GUINT64_SWAP_LE_BE((guint64)data);
 	  break;
+        default:
+          g_assert_not_reached ();
+          break;
 	}
       if ((data) && (! error))  
-	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)buffer + pos)));
+	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, gint64, ((guchar*)buffer + pos)));
       
       pos += data_size;
     }
@@ -276,11 +282,11 @@ test_read_int (void)
 {
   GInputStream *stream;
   GInputStream *base_stream;
-  GRand *rand;
+  GRand *randomizer;
   int i;
   gpointer buffer;
   
-  rand = g_rand_new ();
+  randomizer = g_rand_new ();
   buffer = g_malloc0 (MAX_BYTES);
   
   /*  Fill in some random data */
@@ -288,7 +294,7 @@ test_read_int (void)
     {
       guchar x = 0;
       while (! x)
-	x = (guchar)g_rand_int (rand);
+	x = (guchar)g_rand_int (randomizer);
       *(guchar*)((guchar*)buffer + sizeof(guchar) * i) = x; 
     }
 
@@ -308,7 +314,7 @@ test_read_int (void)
 
   g_object_unref (base_stream);
   g_object_unref (stream);
-  g_rand_free (rand);
+  g_rand_free (randomizer);
   g_free (buffer);
 }
 

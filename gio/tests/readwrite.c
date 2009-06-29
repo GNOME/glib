@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 
-static char *original_data = "This is some test data that we can put in a file...";
-static char *new_data = "new data..";
+static const char *original_data = "This is some test data that we can put in a file...";
+static const char *new_data = "new data..";
 
 static void
 verify_pos (GIOStream *iostream, goffset expected_pos)
@@ -123,7 +123,7 @@ verify_iostream (GFileIOStream *file_iostream)
 static void
 test_g_file_open_readwrite (void)
 {
-  char *tmpfile;
+  char *tmp_file;
   int fd;
   gboolean res;
   GFileIOStream *file_iostream;
@@ -132,11 +132,11 @@ test_g_file_open_readwrite (void)
   GError *error;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmpfile, NULL);
+			&tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
-  res = g_file_set_contents (tmpfile,
+  res = g_file_set_contents (tmp_file,
 			     original_data, -1, NULL);
   g_assert (res);
 
@@ -150,7 +150,7 @@ test_g_file_open_readwrite (void)
   g_error_free (error);
   g_object_unref (file);
 
-  file = g_file_new_for_path (tmpfile);
+  file = g_file_new_for_path (tmp_file);
   error = NULL;
   file_iostream = g_file_open_readwrite (file, NULL, &error);
   g_assert (file_iostream != NULL);
@@ -159,14 +159,14 @@ test_g_file_open_readwrite (void)
 
   g_object_unref (file_iostream);
 
-  g_unlink (tmpfile);
+  g_unlink (tmp_file);
   g_free (tmpfile);
 }
 
 static void
 test_g_file_create_readwrite (void)
 {
-  char *tmpfile;
+  char *tmp_file;
   int fd;
   gboolean res;
   GFileIOStream *file_iostream;
@@ -176,17 +176,17 @@ test_g_file_create_readwrite (void)
   gsize n_bytes;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmpfile, NULL);
+			&tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
-  file = g_file_new_for_path (tmpfile);
+  file = g_file_new_for_path (tmp_file);
   error = NULL;
   file_iostream = g_file_create_readwrite (file, 0, NULL, &error);
   g_assert (file_iostream == NULL);
   g_assert (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_EXISTS));
 
-  g_unlink (tmpfile);
+  g_unlink (tmp_file);
   file_iostream = g_file_create_readwrite (file, 0, NULL, &error);
   g_assert (file_iostream != NULL);
 
@@ -205,14 +205,14 @@ test_g_file_create_readwrite (void)
 
   g_object_unref (file_iostream);
 
-  g_unlink (tmpfile);
-  g_free (tmpfile);
+  g_unlink (tmp_file);
+  g_free (tmp_file);
 }
 
 static void
 test_g_file_replace_readwrite (void)
 {
-  char *tmpfile, *backup, *data;
+  char *tmp_file, *backup, *data;
   int fd;
   gboolean res;
   GFileIOStream *file_iostream;
@@ -224,15 +224,15 @@ test_g_file_replace_readwrite (void)
   gsize n_bytes;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmpfile, NULL);
+			&tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
-  res = g_file_set_contents (tmpfile,
+  res = g_file_set_contents (tmp_file,
 			     new_data, -1, NULL);
   g_assert (res);
 
-  file = g_file_new_for_path (tmpfile);
+  file = g_file_new_for_path (tmp_file);
   error = NULL;
   file_iostream = g_file_replace_readwrite (file, NULL,
 					    TRUE, 0, NULL, &error);
@@ -260,7 +260,7 @@ test_g_file_replace_readwrite (void)
 
   g_object_unref (file_iostream);
 
-  backup = g_strconcat (tmpfile, "~", NULL);
+  backup = g_strconcat (tmp_file, "~", NULL);
   res = g_file_get_contents (backup,
 			     &data,
 			     NULL, NULL);
@@ -270,8 +270,8 @@ test_g_file_replace_readwrite (void)
   g_unlink (backup);
   g_free (backup);
 
-  g_unlink (tmpfile);
-  g_free (tmpfile);
+  g_unlink (tmp_file);
+  g_free (tmp_file);
 }
 
 

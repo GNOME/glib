@@ -37,7 +37,7 @@ static GCancellable *cancellable;
 static GMainLoop *loop;
 static int nlookups = 0;
 
-static void
+static void G_GNUC_NORETURN
 usage (void)
 {
 	fprintf (stderr, "Usage: resolver [-t] [-s] [hostname | IP | service/protocol/domain ] ...\n");
@@ -417,9 +417,9 @@ interrupted (int sig)
 }
 
 static gboolean
-async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancellable)
+async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancel)
 {
-  g_cancellable_cancel (cancellable);
+  g_cancellable_cancel (cancel);
   return FALSE;
 }
 #endif

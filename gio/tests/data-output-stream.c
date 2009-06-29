@@ -109,23 +109,14 @@ enum TestDataType {
   TEST_DATA_UINT64
 };
 
-#define TEST_DATA_RETYPE(a, v)	\
-	(a == TEST_DATA_BYTE	? (guchar)v : \
-	(a == TEST_DATA_INT16	? (gint16)v : \
-	(a == TEST_DATA_UINT16	? (guint16)v : \
-	(a == TEST_DATA_INT32	? (gint32)v : \
-	(a == TEST_DATA_UINT32	? (guint32)v : \
-	(a == TEST_DATA_INT64	? (gint64)v : \
-	 (guint64)v )))))) 
-
-#define TEST_DATA_RETYPE_BUFF(a, v)	\
-	(a == TEST_DATA_BYTE	? *(guchar*)v : \
-	(a == TEST_DATA_INT16	? *(gint16*)v : \
-	(a == TEST_DATA_UINT16	? *(guint16*)v : \
-	(a == TEST_DATA_INT32	? *(gint32*)v : \
-	(a == TEST_DATA_UINT32	? *(guint32*)v : \
-	(a == TEST_DATA_INT64	? *(gint64*)v : \
-	 *(guint64*)v )))))) 
+#define TEST_DATA_RETYPE_BUFF(a, t, v)	\
+	(a == TEST_DATA_BYTE	? (t) *(guchar*)v : \
+	(a == TEST_DATA_INT16	? (t) *(gint16*)v : \
+	(a == TEST_DATA_UINT16	? (t) *(guint16*)v : \
+	(a == TEST_DATA_INT32	? (t) *(gint32*)v : \
+	(a == TEST_DATA_UINT32	? (t) *(guint32*)v : \
+	(a == TEST_DATA_INT64	? (t) *(gint64*)v : \
+	 (t) *(guint64*)v )))))) 
 
 
 
@@ -171,6 +162,9 @@ test_data_array (gpointer buffer, int len,
     case TEST_DATA_UINT64:
       data_size = 8;
       break; 
+    default:
+      g_assert_not_reached ();
+      break;
     }
 	
   /*  Set flag to swap bytes if needed */
@@ -184,26 +178,29 @@ test_data_array (gpointer buffer, int len,
       switch (data_type)
 	{
 	case TEST_DATA_BYTE:
-	  res = g_data_output_stream_put_byte (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_byte (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, guchar, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT16:
-	  res = g_data_output_stream_put_int16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, gint16, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT16:
-	  res = g_data_output_stream_put_uint16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, guint16, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT32:
-	  res = g_data_output_stream_put_int32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, gint32, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT32:
-	  res = g_data_output_stream_put_uint32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, guint32, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT64:
-	  res = g_data_output_stream_put_int64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, gint64, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT64:
-	  res = g_data_output_stream_put_uint64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, guint64, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
+        default:
+          g_assert_not_reached ();
+          break;
 	}
       g_assert_no_error (error);
       g_assert_cmpint (res, ==, TRUE);
@@ -216,7 +213,7 @@ test_data_array (gpointer buffer, int len,
   data = 0;
   while (pos < len)
     {
-      data = TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)stream_data + pos));
+      data = TEST_DATA_RETYPE_BUFF(data_type, guint64, ((guchar*)stream_data + pos));
       if (swap)
 	{
 	  switch (data_type)
@@ -225,19 +222,22 @@ test_data_array (gpointer buffer, int len,
 	      break;
 	    case TEST_DATA_UINT16:
 	    case TEST_DATA_INT16:
-	      data = TEST_DATA_RETYPE(data_type, GUINT16_SWAP_LE_BE(TEST_DATA_RETYPE(data_type, data)));
+	      data = GUINT16_SWAP_LE_BE((guint16) data);
 	      break;
 	    case TEST_DATA_UINT32:
 	    case TEST_DATA_INT32:
-	      data = TEST_DATA_RETYPE(data_type, GUINT32_SWAP_LE_BE(TEST_DATA_RETYPE(data_type, data)));
+	      data = GUINT32_SWAP_LE_BE((guint32) data);
 	      break;
 	    case TEST_DATA_UINT64:
 	    case TEST_DATA_INT64:
-	      data = TEST_DATA_RETYPE(data_type, GUINT64_SWAP_LE_BE(TEST_DATA_RETYPE(data_type, data)));
+	      data = GUINT64_SWAP_LE_BE((guint64) data);
 	      break;
+            default:
+              g_assert_not_reached ();
+              break;
 	    }
 	}
-      g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)buffer + pos)));
+      g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, guint64, ((guchar*)buffer + pos)));
       break;
       
       pos += data_size;
@@ -251,18 +251,18 @@ test_data_array (gpointer buffer, int len,
 static void
 test_read_int (void)
 {
-  GRand *rand;
+  GRand *randomizer;
   gpointer buffer;
   int i;
   
-  rand = g_rand_new ();
+  randomizer = g_rand_new ();
   buffer = g_malloc0(MAX_BYTES_BINARY);
   
   /*  Fill in some random data */
   for (i = 0; i < MAX_BYTES_BINARY; i++)
     {
       guchar x = 0;
-      while (! x)  x = (guchar)g_rand_int (rand);
+      while (! x)  x = (guchar)g_rand_int (randomizer);
       *(guchar*)((guchar*)buffer + sizeof (guchar) * i) = x; 
     }
 
@@ -273,7 +273,7 @@ test_read_int (void)
 	test_data_array (buffer, MAX_BYTES_BINARY, j, i);
     }
   
-  g_rand_free (rand);
+  g_rand_free (randomizer);
   g_free (buffer);
 }
 

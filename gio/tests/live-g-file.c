@@ -181,7 +181,7 @@ test_create_structure (gconstpointer test_data)
   GError *error;
   GFileOutputStream *outs;
   GDataOutputStream *outds;
-  int i;
+  guint i;
   struct StructureItem item;
 
   g_assert (test_data != NULL);
@@ -220,6 +220,10 @@ test_create_structure (gconstpointer test_data)
 	       item.link_to);
 	  child = create_symlink (root, item.filename, item.link_to);
 	  break;
+        case G_FILE_TYPE_UNKNOWN:
+        case G_FILE_TYPE_SPECIAL:
+        case G_FILE_TYPE_SHORTCUT:
+        case G_FILE_TYPE_MOUNTABLE:
 	default:
 	  break;
 	}
@@ -385,7 +389,7 @@ test_initial_structure (gconstpointer test_data)
   gboolean res;
   GError *error;
   GFileInputStream *ins;
-  int i;
+  guint i;
   GFileInfo *info;
   guint32 size;
   guchar *buffer;
@@ -486,7 +490,7 @@ traverse_recurse_dirs (GFile * parent, GFile * root)
   GFileInfo *info;
   GFile *descend;
   char *relative_path;
-  int i;
+  guint i;
   gboolean found;
 
   g_assert (root != NULL);
@@ -571,7 +575,7 @@ test_enumerate (gconstpointer test_data)
   GError *error;
   GFileEnumerator *enumerator;
   GFileInfo *info;
-  int i;
+  guint i;
   struct StructureItem item;
 
 
@@ -735,7 +739,7 @@ test_copy_move (gconstpointer test_data)
 {
   GFile *root;
   gboolean res;
-  int i;
+  guint i;
   struct StructureItem item;
 
   log ("\n");
@@ -799,7 +803,7 @@ test_create (gconstpointer test_data)
   GFile *root, *child;
   gboolean res;
   GError *error;
-  int i;
+  guint i;
   struct StructureItem item;
   GFileOutputStream *os;
 
@@ -885,7 +889,7 @@ test_open (gconstpointer test_data)
   GFile *root, *child;
   gboolean res;
   GError *error;
-  int i;
+  guint i;
   struct StructureItem item;
   GFileInputStream *input_stream;
 
@@ -956,7 +960,7 @@ test_delete (gconstpointer test_data)
   GFile *child;
   gboolean res;
   GError *error;
-  int i;
+  guint i;
   struct StructureItem item;
 
   g_assert (test_data != NULL);
@@ -1092,7 +1096,7 @@ int
 main (int argc, char *argv[])
 {
   static gboolean only_create_struct;
-  static char *target_path;
+  const char *target_path;
   GError *error;
   GOptionContext *context;
 

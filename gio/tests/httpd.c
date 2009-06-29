@@ -12,7 +12,7 @@ static GOptionEntry cmd_entries[] = {
 static void
 send_error (GOutputStream *out,
 	    int error_code,
-	    char *reason)
+	    const char *reason)
 {
   char *res;
 

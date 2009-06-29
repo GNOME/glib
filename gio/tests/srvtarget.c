@@ -94,7 +94,8 @@ test_srv_target_ordering (void)
 {
   GList *targets, *sorted, *t;
   char result[7], *p;
-  int i, o;
+  int i;
+  guint o;
 
   targets = NULL;
   /*                                 name, port, priority, weight */

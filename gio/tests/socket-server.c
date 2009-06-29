@@ -35,12 +35,12 @@ socket_address_to_string (GSocketAddress *address)
 {
   GInetAddress *inet_address;
   char *str, *res;
-  int port;
+  int the_port;
 
   inet_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (address));
   str = g_inet_address_to_string (inet_address);
-  port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
-  res = g_strdup_printf ("%s:%d", str, port);
+  the_port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
+  res = g_strdup_printf ("%s:%d", str, the_port);
   g_free (str);
   return res;
 }

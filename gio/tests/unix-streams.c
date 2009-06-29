@@ -48,7 +48,7 @@ writer_thread (gpointer user_data)
       g_usleep (10);
 
       offset = 0;
-      while (offset < sizeof (DATA))
+      while (offset < (gssize) sizeof (DATA))
 	{
 	  nwrote = g_output_stream_write (out, DATA + offset,
 					  sizeof (DATA) - offset,
@@ -86,7 +86,7 @@ reader_thread (gpointer user_data)
   do
     {
       total = 0;
-      while (total < sizeof (DATA))
+      while (total < (gssize) sizeof (DATA))
 	{
 	  nread = g_input_stream_read (in, buf + total, sizeof (buf) - total,
 				       reader_cancel, &err);

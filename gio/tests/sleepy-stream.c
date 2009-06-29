@@ -21,7 +21,7 @@ static gchar *
 cook_piece (void)
 {
   char buffer[MAX_PIECE_SIZE * 2];
-  gint symbols, index = 0;
+  gint symbols, i = 0;
 
   symbols = g_test_rand_int_range (1, MAX_PIECE_SIZE + 1);
 
@@ -32,26 +32,26 @@ cook_piece (void)
       switch (c)
         {
          case 26:
-          buffer[index++] = '\n';
+          buffer[i++] = '\n';
          case 27:
-          buffer[index++] = '\r';
+          buffer[i++] = '\r';
           break;
 
          case 28:
-          buffer[index++] = '\r';
+          buffer[i++] = '\r';
          case 29:
-          buffer[index++] = '\n';
+          buffer[i++] = '\n';
           break;
 
          default:
-          buffer[index++] = c + 'a';
+          buffer[i++] = c + 'a';
           break;
         }
 
-      g_assert_cmpint (index, <=, sizeof buffer);
+      g_assert_cmpint (i, <=, sizeof buffer);
     }
 
-  return g_strndup (buffer, index);
+  return g_strndup (buffer, i);
 }
 
 static gchar **
@@ -82,6 +82,8 @@ typedef struct
 } SleepyStream;
 
 typedef GInputStreamClass SleepyStreamClass;
+
+GType sleepy_stream_get_type (void);
 
 G_DEFINE_TYPE (SleepyStream, sleepy_stream, G_TYPE_INPUT_STREAM)
 
@@ -149,7 +151,7 @@ sleepy_stream_class_init (SleepyStreamClass *class)
    */
 }
 
-SleepyStream *
+static SleepyStream *
 sleepy_stream_new (void)
 {
   return g_object_new (sleepy_stream_get_type (), NULL);
@@ -197,7 +199,7 @@ build_comparison (GString      *str,
 }
 
 
-void
+static void
 test (void)
 {
   SleepyStream *stream = sleepy_stream_new ();
@@ -259,7 +261,7 @@ asynch_ready (GObject      *object,
 }
 
 
-void
+static void
 asynch (void)
 {
   SleepyStream *sleepy = sleepy_stream_new ();
