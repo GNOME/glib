@@ -342,11 +342,8 @@ g_tcp_connection_close_async (GIOStream           *stream,
       return;
     }
 
- out:
   return G_IO_STREAM_CLASS (g_tcp_connection_parent_class)
     ->close_async (stream, io_priority, cancellable, callback, user_data);
-
-
 }
 
 /**
