@@ -202,6 +202,7 @@ libgio_2_0_la_SOURCES =		\
 	gfileenumerator.c 	\
 	gfileicon.c 		\
 	gfileinfo.c 		\
+	gfileinfo-priv.h 	\
 	gfileinputstream.c 	\
 	gfilemonitor.c 		\
 	gfilenamecompleter.c 	\
