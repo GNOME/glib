@@ -140,6 +140,39 @@ _lookup_namespace (const char *namespace)
   return ns_info;
 }
 
+static guint32
+_lookup_attribute (const char *attribute)
+{
+  guint32 attr_id, id;
+  char *ns;
+  const char *colon;
+  NSInfo *ns_info;
+  
+  attr_id = GPOINTER_TO_UINT (g_hash_table_lookup (attribute_hash, attribute));
+
+  if (attr_id != 0)
+    return attr_id;
+
+  colon = strstr (attribute, "::");
+  if (colon)
+    ns = g_strndup (attribute, colon - attribute);
+  else
+    ns = g_strdup ("");
+
+  ns_info = _lookup_namespace (ns);
+  g_free (ns);
+
+  id = ++ns_info->attribute_id_counter;
+  attributes[ns_info->id] = g_realloc (attributes[ns_info->id], (id + 1) * sizeof (char *));
+  attributes[ns_info->id][id] = g_strdup (attribute);
+  
+  attr_id = MAKE_ATTR_ID (ns_info->id, id);
+
+  g_hash_table_insert (attribute_hash, attributes[ns_info->id][id], GUINT_TO_POINTER (attr_id));
+
+  return attr_id;
+}
+
 static void
 ensure_attribute_hash (void)
 {
@@ -148,6 +181,8 @@ ensure_attribute_hash (void)
 
   ns_hash = g_hash_table_new (g_str_hash, g_str_equal);
   attribute_hash = g_hash_table_new (g_str_hash, g_str_equal);
+
+
 }
 
 static guint32
@@ -183,38 +218,12 @@ get_attribute_for_id (int attribute)
 static guint32
 lookup_attribute (const char *attribute)
 {
-  guint32 attr_id, id;
-  char *ns;
-  const char *colon;
-  NSInfo *ns_info;
+  guint32 attr_id;
   
   G_LOCK (attribute_hash);
   ensure_attribute_hash ();
 
-  attr_id = GPOINTER_TO_UINT (g_hash_table_lookup (attribute_hash, attribute));
-
-  if (attr_id != 0)
-    {
-      G_UNLOCK (attribute_hash);
-      return attr_id;
-    }
-
-  colon = strstr (attribute, "::");
-  if (colon)
-    ns = g_strndup (attribute, colon - attribute);
-  else
-    ns = g_strdup ("");
-
-  ns_info = _lookup_namespace (ns);
-  g_free (ns);
-
-  id = ++ns_info->attribute_id_counter;
-  attributes[ns_info->id] = g_realloc (attributes[ns_info->id], (id + 1) * sizeof (char *));
-  attributes[ns_info->id][id] = g_strdup (attribute);
-  
-  attr_id = MAKE_ATTR_ID (ns_info->id, id);
-
-  g_hash_table_insert (attribute_hash, attributes[ns_info->id][id], GUINT_TO_POINTER (attr_id));
+  attr_id = _lookup_attribute (attribute);
   
   G_UNLOCK (attribute_hash);
   
