@@ -160,7 +160,7 @@ test_g_file_open_readwrite (void)
   g_object_unref (file_iostream);
 
   g_unlink (tmp_file);
-  g_free (tmpfile);
+  g_free (tmp_file);
 }
 
 static void
