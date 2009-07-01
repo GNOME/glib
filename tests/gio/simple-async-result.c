@@ -56,30 +56,54 @@ callback_func (GObject      *source,
   got_user_data = user_data;
 }
 
-static void
-test_simple_async (void)
+static gboolean
+test_simple_async_idle (gpointer user_data)
 {
   GSimpleAsyncResult *result;
   GObject *a, *b, *c;
+  gboolean *ran = user_data;
 
   a = g_object_new (G_TYPE_OBJECT, NULL);
   b = g_object_new (G_TYPE_OBJECT, NULL);
   c = g_object_new (G_TYPE_OBJECT, NULL);
 
-  result = g_simple_async_result_new (a, callback_func, b, test_simple_async);
+  result = g_simple_async_result_new (a, callback_func, b, test_simple_async_idle);
   check (NULL, NULL, NULL);
   g_simple_async_result_complete (result);
   check (a, result, b);
   g_object_unref (result);
 
-  g_assert (g_simple_async_result_is_valid (got_result, a, test_simple_async));
-  g_assert (!g_simple_async_result_is_valid (got_result, b, test_simple_async));
-  g_assert (!g_simple_async_result_is_valid (got_result, c, test_simple_async));
+  g_assert (g_simple_async_result_is_valid (got_result, a, test_simple_async_idle));
+  g_assert (!g_simple_async_result_is_valid (got_result, b, test_simple_async_idle));
+  g_assert (!g_simple_async_result_is_valid (got_result, c, test_simple_async_idle));
   g_assert (!g_simple_async_result_is_valid (got_result, b, callback_func));
   g_assert (!g_simple_async_result_is_valid ((gpointer) a, NULL, NULL));
   reset ();
   reset ();
   reset ();
+
+  ensure_destroyed (a);
+  ensure_destroyed (b);
+  ensure_destroyed (c);
+
+  *ran = TRUE;
+  return FALSE;
+}
+
+static void
+test_simple_async (void)
+{
+  GSimpleAsyncResult *result;
+  GObject *a, *b;
+  gboolean ran_test_in_idle = FALSE;
+
+  g_idle_add (test_simple_async_idle, &ran_test_in_idle);
+  g_main_context_iteration (NULL, FALSE);
+
+  g_assert (ran_test_in_idle);
+
+  a = g_object_new (G_TYPE_OBJECT, NULL);
+  b = g_object_new (G_TYPE_OBJECT, NULL);
 
   result = g_simple_async_result_new (a, callback_func, b, test_simple_async);
   check (NULL, NULL, NULL);
@@ -92,7 +116,6 @@ test_simple_async (void)
 
   ensure_destroyed (a);
   ensure_destroyed (b);
-  ensure_destroyed (c);
 }
 
 int
