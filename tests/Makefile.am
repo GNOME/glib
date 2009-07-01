@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS=gobject refcount
+SUBDIRS=gobject refcount gio
 
 AM_CPPFLAGS = 				\
 	-I$(top_srcdir) 		\
