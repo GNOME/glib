@@ -8,15 +8,15 @@
 # Allan Sims <allsi@eau.ee>, 2002.
 # Ivar Smolin <okul@linux.ee>, 2005-2009.
 # Priit Laes <amd@store20.com>, 2005, 2007.
-#
+# Mattias Põldaru <mahfiaz gmail com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: GLib HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-06-24 09:54+0000\n"
-"PO-Revision-Date: 2009-06-26 09:04+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"POT-Creation-Date: 2009-06-26 07:39+0000\n"
+"PO-Revision-Date: 2009-06-28 19:48+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -439,22 +439,22 @@ msgid "unknown error"
 msgstr "tundmatu viga"
 
 msgid "\\ at end of pattern"
-msgstr "\\ mustri alguses"
+msgstr "\\ mustri lõpus"
 
 msgid "\\c at end of pattern"
 msgstr "\\c mustri lõpus"
 
 msgid "unrecognized character follows \\"
-msgstr ""
+msgstr "\\ järel on tundmatu märk"
 
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
+msgstr "tõstumuutmise märgid (\\l, \\L, \\u, \\U) pole siin lubatud"
 
 msgid "numbers out of order in {} quantifier"
-msgstr ""
+msgstr "{} kvantori numbrid pole järjekorras"
 
 msgid "number too big in {} quantifier"
-msgstr ""
+msgstr "{} kvantori number liiga suur"
 
 msgid "missing terminating ] for character class"
 msgstr "märgiklassil puudub sulgev ]"
@@ -463,7 +463,7 @@ msgid "invalid escape sequence in character class"
 msgstr "märgiklassis on vigane paojada"
 
 msgid "range out of order in character class"
-msgstr ""
+msgstr "märgiklassi vahemik pole järjekorras"
 
 msgid "nothing to repeat"
 msgstr "pole midagi korrata"
@@ -490,7 +490,7 @@ msgstr ") ilma algussuluta ("
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
 msgid "(?R or (?[+-]digits must be followed by )"
-msgstr ""
+msgstr "(?R või (?[+-]digits järel peab olema )"
 
 msgid "reference to non-existent subpattern"
 msgstr "viide olematule alammustrile"
@@ -508,10 +508,10 @@ msgid "lookbehind assertion is not fixed length"
 msgstr ""
 
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "vigane number või nimi pärast (?("
 
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "tingimusgrupp sisaldab rohkem kui kahte haru"
 
 msgid "assertion expected after (?("
 msgstr ""
@@ -556,7 +556,7 @@ msgid "octal value is greater than \\377"
 msgstr "kaheksandväärtus on suurem kui \\377"
 
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "DEFINE grupp sisaldab rohkem kui ühte haru"
 
 msgid "repeating a DEFINE group is not allowed"
 msgstr "DEFINE grupi kordused pole lubatud"
@@ -578,7 +578,7 @@ msgid "overran compiling workspace"
 msgstr ""
 
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "varem kontrollitud viidatud alammustrid ei leitud"
 
 #, c-format
 msgid "Error while matching regular expression %s: %s"
@@ -874,7 +874,7 @@ msgstr "Väärtust '%s' pole võimalik tõeväärtusena kasutada."
 
 #, c-format
 msgid "Too large count value passed to %s"
-msgstr ""
+msgstr "%s-le edastati liiga suur loendi väärtus"
 
 msgid "Stream is already closed"
 msgstr "Voog on juba suletud"
@@ -920,7 +920,7 @@ msgstr "Kasutaja töölauafaili %s pole võimalik luua"
 
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "%s oma definitsioon"
 
 msgid "drive doesn't implement eject"
 msgstr "seade ei toeta väljastamist"
@@ -936,22 +936,22 @@ msgstr "seade ei toeta seiskamist"
 
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
-msgstr ""
+msgstr "GEmblem'i kodeeringu versioonid %d pole võimalik käsitseda"
 
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
-msgstr ""
+msgstr "Vigane märgiste arv (%d) GEmblem'i kodeeringus"
 
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
-msgstr ""
+msgstr "GEmblemedIcon'i kodeeringu versiooni %d pole võimalik käsitseda"
 
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr ""
+msgstr "Vigane märgiste arv (%d) GEmblemedIcon'i kodeeringus"
 
 msgid "Expected a GEmblem for GEmblemedIcon"
-msgstr ""
+msgstr "Oodati GEmblem'i GEmblemedIcon'i jaoks"
 
 msgid "Operation not supported"
 msgstr "Operatsioon ei ole toetatud"
@@ -965,13 +965,13 @@ msgstr "Operatsioon ei ole toetatud"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 msgid "Containing mount does not exist"
-msgstr ""
+msgstr "Sisalduvat haaget ei eksisteeri"
 
 msgid "Can't copy over directory"
-msgstr ""
+msgstr "Kataloogi peale pole võimalik kopeerida"
 
 msgid "Can't copy directory over directory"
-msgstr ""
+msgstr "Kataloogi pole võimalik kataloogi peale kopeerida"
 
 msgid "Target file exists"
 msgstr "Sihtfail on olemas"
@@ -986,14 +986,14 @@ msgid "Invalid symlink value given"
 msgstr "Määrati vigane nimeviida väärtus"
 
 msgid "Trash not supported"
-msgstr ""
+msgstr "Prügikast pole toetatud"
 
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Failinimed ei tohi sisaldada märki '%c'"
 
 msgid "volume doesn't implement mount"
-msgstr ""
+msgstr "köide ei toeta haakimist"
 
 msgid "No application is registered as handling this file"
 msgstr "Selle faili käsitlemiseks pole rakendust registreeritud"
@@ -1002,14 +1002,14 @@ msgid "Enumerator is closed"
 msgstr "Nummerdaja on suletud"
 
 msgid "File enumerator has outstanding operation"
-msgstr ""
+msgstr "Failide nummerdajat kasutatakse väljastpoolt"
 
 msgid "File enumerator is already closed"
 msgstr "Failinummerdaja on juba suletud"
 
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
-msgstr ""
+msgstr "GFileIcon'i kodeeringu versioonid %d pole võimalik käsitseda"
 
 msgid "Malformed input data for GFileIcon"
 msgstr "Vigaselt vormindatud andmed GFileIcon'i jaoks"
@@ -1018,7 +1018,7 @@ msgid "Stream doesn't support query_info"
 msgstr "Voog ei toeta query_info't"
 
 msgid "Seek not supported on stream"
-msgstr ""
+msgstr "Voogu pole võimalik kerida"
 
 msgid "Truncate not allowed on input stream"
 msgstr "Sisendvoo kärpimine pole lubatud"
@@ -1028,7 +1028,7 @@ msgstr "Andmevoo kärpimine pole toetatud"
 
 #, c-format
 msgid "Wrong number of tokens (%d)"
-msgstr ""
+msgstr "Vale arv märgiseid (%d)"
 
 #, c-format
 msgid "No type for class name %s"
@@ -1040,7 +1040,7 @@ msgstr "Tüüp %s ei toeta GIcon liidest"
 
 #, c-format
 msgid "Type %s is not classed"
-msgstr ""
+msgstr "Liik %s pole klassifitseeritud"
 
 #, c-format
 msgid "Malformed version number: %s"
@@ -1048,10 +1048,10 @@ msgstr "Vigaselt vormindatud versiooninumber: %s"
 
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
+msgstr "Tüüp %s ei toeta from_tokens() funktsiooni GIcon liidese jaoks"
 
 msgid "Can't handle the supplied version the icon encoding"
-msgstr ""
+msgstr "Antud ikooni kodeerimise versiooni pole võimalik käsitseda"
 
 msgid "Input stream doesn't implement read"
 msgstr "Sisendvoog ei toeta lugemist"
@@ -1063,10 +1063,10 @@ msgstr "Sisendvoog ei toeta lugemist"
 #. * already an operation running against this stream when
 #. * you try to start one
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "Voogu juba kasutatakse väljastpoolt"
 
 msgid "Unable to find default local directory monitor type"
-msgstr ""
+msgstr "Vaikimisi kohalikku kataloogimonitori liigi pole võimalik leida"
 
 #, c-format
 msgid "Invalid filename %s"
@@ -1116,11 +1116,11 @@ msgstr "Prügikasti kataloogi pole võimalik leida või luua"
 
 #, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr ""
+msgstr "Prügiinfo faili pole võimalik luua: %s"
 
 #, c-format
 msgid "Unable to trash file: %s"
-msgstr ""
+msgstr "Faili pole võimalik prügikasti visata: %s"
 
 #, c-format
 msgid "Error creating directory: %s"
@@ -1135,7 +1135,7 @@ msgid "Error moving file: %s"
 msgstr "Viga faili ümbertõstmisel: %s"
 
 msgid "Can't move directory over directory"
-msgstr ""
+msgstr "Kataloogi pole võimalik kataloogi peale liigutada"
 
 msgid "Backup file creation failed"
 msgstr "Tõrge varufaili loomisel"
@@ -1145,7 +1145,7 @@ msgid "Error removing target file: %s"
 msgstr "Viga sihtfaili eemaldamisel: %s"
 
 msgid "Move between mounts not supported"
-msgstr ""
+msgstr "Erinevate haakeseadmete vahel liigutamine pole toetatud"
 
 msgid "Attribute value must be non-NULL"
 msgstr "Rekvisiidi väärtus ei tohi olla NULL"
@@ -1222,7 +1222,7 @@ msgstr "Viga failist lugemisel: %s"
 
 #, c-format
 msgid "Error seeking in file: %s"
-msgstr ""
+msgstr "Viga faili kerimisel: %s"
 
 #, c-format
 msgid "Error closing file: %s"
@@ -1262,17 +1262,17 @@ msgid "Target file is not a regular file"
 msgstr "Sihtfail pole tavaline fail"
 
 msgid "The file was externally modified"
-msgstr ""
+msgstr "Faili muudeti väljaspool"
 
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Viga vana faili eemaldamisel: %s"
 
 msgid "Invalid GSeekType supplied"
-msgstr ""
+msgstr "Pakutud GSeekType pole sobiv"
 
 msgid "Invalid seek request"
-msgstr ""
+msgstr "Sobimatu kerimise päring"
 
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream'i pole võimalik kärpida"
@@ -1281,10 +1281,10 @@ msgid "Reached maximum data array limit"
 msgstr "Masiivi suurima suuruse piir ületati"
 
 msgid "Memory output stream not resizable"
-msgstr ""
+msgstr "Mäluväljundi voo suurus pole muudetav"
 
 msgid "Failed to resize memory output stream"
-msgstr ""
+msgstr "Mäluväljundi voo suuruse muutmine nurjus"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1324,7 +1324,7 @@ msgstr "Lähtevoog on juba suletud"
 
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr ""
+msgstr "GThemedIcon kodeeringu versiooni %d pole võimalik käsitseda"
 
 #, c-format
 msgid "Error reading from unix: %s"
