@@ -227,6 +227,13 @@ The same as <literal>@type@</literal> with all letters uppercased (e.g. FLAGS).
 The name of the input file currently being processed (e.g. foo.h).
 </para></listitem>
 </varlistentry>
+
+<varlistentry>
+<term>@basename@</term>
+<listitem><para>
+The base name of the input file currently being processed (e.g. foo.h). (Since: 2.22)
+</para></listitem>
+</varlistentry>
 </variablelist>
 </para>
 </refsect2>
