@@ -514,27 +514,27 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 void
 g_cancellable_cancel (GCancellable *cancellable)
 {
+  static const char ch = 'x';
   gboolean cancel;
   GCancellablePrivate *priv;
+
+  if (cancellable == NULL ||
+      priv->cancelled)
+    return;
 
   priv = cancellable->priv;
   cancel = FALSE;
 
   G_LOCK(cancellable);
-  if (cancellable != NULL &&
-      !priv->cancelled)
-    {
-      char ch = 'x';
-      cancel = TRUE;
-      priv->cancelled = TRUE;
-      priv->cancelled_running = TRUE;
+  cancel = TRUE;
+  priv->cancelled = TRUE;
+  priv->cancelled_running = TRUE;
 #ifdef G_OS_WIN32
-      if (priv->event)
-	SetEvent(priv->event);
+  if (priv->event)
+    SetEvent(priv->event);
 #endif
-      if (priv->cancel_pipe[1] != -1)
-	write (priv->cancel_pipe[1], &ch, 1);
-    }
+  if (priv->cancel_pipe[1] != -1)
+    write (priv->cancel_pipe[1], &ch, 1);
   G_UNLOCK(cancellable);
 
   if (cancel)
