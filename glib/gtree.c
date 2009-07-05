@@ -47,6 +47,7 @@ struct _GTree
   GDestroyNotify    value_destroy_func;
   gpointer          key_compare_data;
   guint             nnodes;
+  gint              ref_count;
 };
 
 struct _GTreeNode
@@ -177,13 +178,14 @@ g_tree_new_full (GCompareDataFunc key_compare_func,
   
   g_return_val_if_fail (key_compare_func != NULL, NULL);
   
-  tree = g_new (GTree, 1);
+  tree = g_slice_new (GTree);
   tree->root               = NULL;
   tree->key_compare        = key_compare_func;
   tree->key_destroy_func   = key_destroy_func;
   tree->value_destroy_func = value_destroy_func;
   tree->key_compare_data   = key_compare_data;
   tree->nnodes             = 0;
+  tree->ref_count          = 1;
   
   return tree;
 }
@@ -231,18 +233,9 @@ g_tree_node_next (GTreeNode *node)
 
   return tmp;
 }
-		  
-/**
- * g_tree_destroy:
- * @tree: a #GTree.
- * 
- * Destroys the #GTree. If keys and/or values are dynamically allocated, you 
- * should either free them first or create the #GTree using g_tree_new_full().
- * In the latter case the destroy functions you supplied will be called on 
- * all keys and values before destroying the #GTree.
- **/
-void
-g_tree_destroy (GTree *tree)
+
+static void
+g_tree_remove_all (GTree *tree)
 {
   GTreeNode *node;
   GTreeNode *next;
@@ -250,7 +243,7 @@ g_tree_destroy (GTree *tree)
   g_return_if_fail (tree != NULL);
 
   node = g_tree_first_node (tree);
-  
+
   while (node)
     {
       next = g_tree_node_next (node);
@@ -264,7 +257,72 @@ g_tree_destroy (GTree *tree)
       node = next;
     }
 
-  g_free (tree);
+}
+
+/**
+ * g_tree_ref:
+ * @tree: a #GTree.
+ *
+ * Increments the reference count of @tree by one.  It is safe to call
+ * this function from any thread.
+ *
+ * Return value: the passed in #GTree.
+ *
+ * Since: 2.22
+ **/
+GTree *
+g_tree_ref (GTree *tree)
+{
+  g_return_val_if_fail (tree != NULL, NULL);
+
+  g_atomic_int_inc (&tree->ref_count);
+
+  return tree;
+}
+
+/**
+ * g_tree_unref:
+ * @tree: a #GTree.
+ *
+ * Decrements the reference count of @tree by one.  If the reference count
+ * drops to 0, all keys and values will be destroyed (if destroy
+ * functions were specified) and all memory allocated by @tree will be
+ * released.
+ *
+ * It is safe to call this function from any thread.
+ *
+ * Since: 2.22
+ **/
+void
+g_tree_unref (GTree *tree)
+{
+  g_return_if_fail (tree != NULL);
+
+  if (g_atomic_int_dec_and_test (&tree->ref_count))
+    {
+      g_tree_remove_all (tree);
+      g_slice_free (GTree, tree);
+    }
+}
+
+/**
+ * g_tree_destroy:
+ * @tree: a #GTree.
+ * 
+ * Removes all keys and values from the #GTree and decreases its
+ * reference count by one. If keys and/or values are dynamically
+ * allocated, you should either free them first or create the #GTree
+ * using g_tree_new_full().  In the latter case the destroy functions
+ * you supplied will be called on all keys and values before destroying
+ * the #GTree.
+ **/
+void
+g_tree_destroy (GTree *tree)
+{
+  g_return_if_fail (tree != NULL);
+
+  g_tree_remove_all (tree);
+  g_tree_unref (tree);
 }
 
 /**

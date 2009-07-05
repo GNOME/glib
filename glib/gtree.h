@@ -50,6 +50,8 @@ GTree*   g_tree_new_full        (GCompareDataFunc  key_compare_func,
                                  gpointer          key_compare_data,
                                  GDestroyNotify    key_destroy_func,
                                  GDestroyNotify    value_destroy_func);
+GTree*   g_tree_ref             (GTree            *tree);
+void     g_tree_unref           (GTree            *tree);
 void     g_tree_destroy         (GTree            *tree);
 void     g_tree_insert          (GTree            *tree,
                                  gpointer          key,
