@@ -1229,6 +1229,8 @@ serialize_type (GIrModule    *module,
     "uint32", 
     "int64", 
     "uint64", 
+    "short",
+    "ushort",
     "int",
     "uint",
     "long",
@@ -1237,11 +1239,10 @@ serialize_type (GIrModule    *module,
     "size",
     "float", 
     "double",
+    "time_t",
+    "GType",
     "utf8", 
     "filename",
-    "string",
-    "sequence",
-    "any"
   };
   
   if (node->tag < GI_TYPE_TAG_ARRAY)
