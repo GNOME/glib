@@ -145,6 +145,7 @@ typedef struct _GFileIface    		GFileIface;
  * @start_mountable_finish: Finishes an start operation. Since 2.22.
  * @stop_mountable: Stops a mountable. Since 2.22.
  * @stop_mountable_finish: Finishes an stop operation. Since 2.22.
+ * @supports_thread_contexts: a boolean that indicates whether the #GFile implementation supports thread-default contexts. Since 2.22.
  * @unmount_mountable_with_operation: Unmounts a mountable object using a #GMountOperation. Since 2.22.
  * @unmount_mountable_with_operation_finish: Finishes an unmount operation using a #GMountOperation. Since 2.22.
  * @eject_mountable_with_operation: Ejects a mountable object using a #GMountOperation. Since 2.22.
