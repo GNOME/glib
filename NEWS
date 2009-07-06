@@ -1,3 +1,38 @@
+Overview of Changes from GLib 2.21.2 to GLib 2.21.3
+===================================================
+
+* GMappedFile is refcounted now
+
+* Mainloop: It is now possible to set per-thread default contexts,
+  with g_main_context_push_thread_default.
+
+* glib-mkenums supports a @basename@ substitution, in addition
+  to @filename@.
+
+* GIO:
+ - Vfs implementations can support storing of per-file metadata.
+ - GCancellable can now be subclassed.
+ - Unmount and eject methods now optionally allow interaction, via
+   variants that take a GMountOperation object.
+
+* Bugs fixed:
+ 556706 Inconsistent help arguments -h, -?
+ 579449 FileChoosers no longer work if an idle handler is active
+ 579933 mainloop FD_CLOEXEC has a race condition
+ 579984 alternate GMainContext support
+ 585937 gio/gsocket.c (glib 2.21.2) does not compile (Windows/mingw)
+ 586675 Runtime library location
+ 586797 Add GCancellables to GSocket ops
+ 586868 g_filename_complete_get_completions doesn't always return...
+ 587415 g_resolver_lookup_by_name_finish returns a freed list
+ 587434 regression tests fail, at least on x86_64
+ 586928 Avoid g++ warning in g_error()
+
+* Updated translations:
+ Estonian
+ Hebrew
+
+
 Overview of Changes from GLib 2.21.1 to GLib 2.21.2
 ===================================================
 
