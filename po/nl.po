@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 12:58-0400\n"
+"POT-Creation-Date: 2009-07-06 00:13-0400\n"
 "PO-Revision-Date: 2009-02-23 14:07+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -200,7 +200,7 @@ msgstr "Lezen uit bestand ‘%s’ is mislukt: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Openen van bestand ‘%s’ is mislukt: %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:138
+#: glib/gfileutils.c:712 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvragen gegevens van bestand ‘%s’ is mislukt: fstat() is mislukt: %s"
@@ -321,12 +321,12 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:121
+#: glib/gmappedfile.c:123
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Openen van bestand ‘%s’ is mislukt: open() is mislukt: %s"
 
-#: glib/gmappedfile.c:198
+#: glib/gmappedfile.c:201
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Openen van bestand ‘%s’ is mislukt: mmap() is mislukt: %s"
@@ -560,7 +560,7 @@ msgstr "limiet voor backtracking bereikt"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "het patroon bevat niet-ondersteunde tekens"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2083
+#: glib/gregex.c:154 gio/glocalfile.c:2105
 msgid "internal error"
 msgstr "interne fout"
 
@@ -1005,62 +1005,62 @@ msgstr "Ongeldige reeks in conversieinvoer"
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten het bereik van UTF-16"
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
-#: glib/goption.c:828
+#: glib/goption.c:861
 msgid "Help Options:"
 msgstr "Hulpopties:"
 
-#: glib/goption.c:829
+#: glib/goption.c:862
 msgid "Show help options"
 msgstr "Deze hulptekst tonen"
 
-#: glib/goption.c:835
+#: glib/goption.c:868
 msgid "Show all help options"
 msgstr "Alle hulpteksten tonen"
 
-#: glib/goption.c:897
+#: glib/goption.c:930
 msgid "Application Options:"
 msgstr "Programmaopties:"
 
-#: glib/goption.c:959 glib/goption.c:1029
+#: glib/goption.c:992 glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan het geheel getal ‘%s’ voor %s niet verwerken"
 
-#: glib/goption.c:969 glib/goption.c:1037
+#: glib/goption.c:1002 glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Het geheel getal ‘%s’ voor %s valt buiten het bereik"
 
 # integer-double
-#: glib/goption.c:994
+#: glib/goption.c:1027
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan het lange geheel getal ‘%s’ voor %s niet verwerken"
 
-#: glib/goption.c:1002
+#: glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Het lange geheel getal ‘%s’ voor %s valt buiten het bereik"
 
-#: glib/goption.c:1265 glib/goption.c:1344
+#: glib/goption.c:1298 glib/goption.c:1377
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fout bij verwerken van optie %s"
 
-#: glib/goption.c:1375 glib/goption.c:1489
+#: glib/goption.c:1408 glib/goption.c:1522
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: glib/goption.c:1882
+#: glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
@@ -1195,8 +1195,8 @@ msgstr "De telwaarde die aan %s werd gegeven is te groot"
 msgid "Stream is already closed"
 msgstr "De stroom is al gesloten"
 
-#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
-#: gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "De bewerking werd afgebroken"
 
@@ -1253,20 +1253,28 @@ msgstr "Kan desktopbestand %s niet aanmaken"
 msgid "Custom definition for %s"
 msgstr "Zelfgemaakte definitie voor %s"
 
-#: gio/gdrive.c:407
+#: gio/gdrive.c:409
 msgid "drive doesn't implement eject"
 msgstr "dit station begrijpt de opdracht ‘uitwerpen’ niet"
 
-#: gio/gdrive.c:477
+#. Translators: This is an error
+#. * message for drive objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gdrive.c:489
+#, fuzzy
+msgid "drive doesn't implement eject or eject_with_operation"
+msgstr "dit station begrijpt de opdracht ‘uitwerpen’ niet"
+
+#: gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
 msgstr "dit station kan niet onderzocht worden op de aanwezigheid van media"
 
-#: gio/gdrive.c:657
+#: gio/gdrive.c:771
 #, fuzzy
 msgid "drive doesn't implement start"
 msgstr "dit station begrijpt de opdracht ‘uitwerpen’ niet"
 
-#: gio/gdrive.c:757
+#: gio/gdrive.c:873
 #, fuzzy
 msgid "drive doesn't implement stop"
 msgstr "dit station begrijpt de opdracht ‘uitwerpen’ niet"
@@ -1300,8 +1308,9 @@ msgstr "GEmblem voor GEmblemedIcon verwacht"
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
 #: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
-#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
-#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
+#: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
+#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
 #: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "De bewerking is niet mogelijk"
@@ -1315,12 +1324,12 @@ msgstr "De bewerking is niet mogelijk"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
-#: gio/glocalfile.c:1107
+#: gio/gfile.c:1347 gio/glocalfile.c:1065 gio/glocalfile.c:1076
+#: gio/glocalfile.c:1089
 msgid "Containing mount does not exist"
 msgstr "Het koppelpunt hiervan bestaat niet"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2226
+#: gio/gfile.c:2399 gio/glocalfile.c:2250
 msgid "Can't copy over directory"
 msgstr "Kan niet over map kopiëren"
 
@@ -1331,7 +1340,7 @@ msgstr "Kan map niet over map kopiëren"
 # er is al een bestand met die naam?
 # Het doelbestand bestaat (al)
 # er was ook een msgid: Target file already exists
-#: gio/gfile.c:2467 gio/glocalfile.c:2235
+#: gio/gfile.c:2467 gio/glocalfile.c:2259
 msgid "Target file exists"
 msgstr "Doelbestand bestaat al"
 
@@ -1360,11 +1369,11 @@ msgstr "Prullenbak wordt ondersteund"
 msgid "File names cannot contain '%c'"
 msgstr "Het teken ‘%c’ mag niet in een bestandsnaam voorkomen"
 
-#: gio/gfile.c:5678 gio/gvolume.c:376
+#: gio/gfile.c:5884 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "volumen begrijpt de opdracht ‘aankoppelen’ niet"
 
-#: gio/gfile.c:5786
+#: gio/gfile.c:5992
 msgid "No application is registered as handling this file"
 msgstr "Er is geen programma toegewezen om dit bestand te openen"
 
@@ -1464,212 +1473,212 @@ msgstr "Datastroom is nog bezig"
 msgid "Unable to find default local directory monitor type"
 msgstr "Kon de standaard ‘directory monitor type’ niet vinden"
 
-#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ongeldige bestandsnaam: %s"
 
-#: gio/glocalfile.c:991
+#: gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Fout bij het ophalen van informatie over bestandssysteem: %s"
 
-#: gio/glocalfile.c:1127
+#: gio/glocalfile.c:1109
 msgid "Can't rename root directory"
 msgstr "Kan de root-map niet hernoemen"
 
-#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
+#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Fout bij het hernoemen van bestand: %s"
 
-#: gio/glocalfile.c:1156
+#: gio/glocalfile.c:1138
 msgid "Can't rename file, filename already exist"
 msgstr "Kan het bestand niet hernoemen, de bestandsnaam bestaat al"
 
 # ongeldige naam voor bestand/ongeldige bestandsnaam
-#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
-#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1151 gio/glocalfile.c:2127 gio/glocalfile.c:2156
+#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Ongeldige bestandsnaam"
 
 # openen/lezen
-#: gio/glocalfile.c:1292
+#: gio/glocalfile.c:1307
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: gio/glocalfile.c:1302
+#: gio/glocalfile.c:1317
 msgid "Can't open directory"
 msgstr "Kan map niet openen"
 
 # volledig verwijderen/definitief verwijderen/verwijderen
-#: gio/glocalfile.c:1425
+#: gio/glocalfile.c:1442
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Fout bij het verwijderen van bestand: %s"
 
 # naar prullenbak verplaatsen/verwijderen
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Fout bij het verplaatsen naar de prullenbak van bestand: %s"
 
-#: gio/glocalfile.c:1812
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan de prullenbakmap %s niet aanmaken: %s"
 
-#: gio/glocalfile.c:1833
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "Kan de bovenliggende map voor de prullenbak niet vinden"
 
-#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "Kan prullenbakmap niet vinden of aanmaken"
 
-#: gio/glocalfile.c:1966
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kan prullenbak-informatiebestand ‘%s’ niet aanmaken"
 
-#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
-#: gio/glocalfile.c:2082
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2097
+#: gio/glocalfile.c:2104
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kan het bestand ‘%s’ niet naar de prullenbak verplaatsen"
 
-#: gio/glocalfile.c:2109
+#: gio/glocalfile.c:2131
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Fout bij het aanmaken van map: %s"
 
-#: gio/glocalfile.c:2138
+#: gio/glocalfile.c:2160
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Fout bij het maken van symbolische verwijzing: %s"
 
-#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
+#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Fout bij het verplaatsen van bestand: %s"
 
-#: gio/glocalfile.c:2221
+#: gio/glocalfile.c:2245
 msgid "Can't move directory over directory"
 msgstr "Kan map niet over map verplaatsen"
 
-#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Aanmaken van backupbestand is mislukt"
 
-#: gio/glocalfile.c:2267
+#: gio/glocalfile.c:2291
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Fout bij het verwijderen doelbestand: %s"
 
 # (nog) niet mogelijk/niet ondersteund
-#: gio/glocalfile.c:2281
+#: gio/glocalfile.c:2305
 msgid "Move between mounts not supported"
 msgstr "Verplaatsen tussen aankoppelpunten is niet mogelijk"
 
 # technotalk
-#: gio/glocalfileinfo.c:719
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "Attribuutwaarde moet niet-NULL zijn"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "Ongeldig attribuuttype (hoort een tekenreeks te zijn)"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "Ongeldige uitgebreide attribuutnaam"
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Fout bij het instellen van uitgebreid attribuut ‘%s’: %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Fout bij het benaderen van bestand ‘%s’: %s"
 
-#: gio/glocalfileinfo.c:1537
+#: gio/glocalfileinfo.c:1551
 msgid " (invalid encoding)"
 msgstr " (ongeldige codering)"
 
-#: gio/glocalfileinfo.c:1719
+#: gio/glocalfileinfo.c:1758
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Fout bij het benaderen van bestandsdescriptor: %s"
 
-#: gio/glocalfileinfo.c:1764
+#: gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ongeldig attribuuttype (hoort een uint32 te zijn)"
 
-#: gio/glocalfileinfo.c:1782
+#: gio/glocalfileinfo.c:1821
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ongeldig attribuuttype (hoort een uint64 te zijn)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
+#: gio/glocalfileinfo.c:1840 gio/glocalfileinfo.c:1859
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ongeldig attribuuttype (hoort een byte-tekenreeks te zijn)"
 
-#: gio/glocalfileinfo.c:1846
+#: gio/glocalfileinfo.c:1885
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Fout bij instellen toegangsrechten: %s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Fout bij instellen eigenaar: %s"
 
 # technotalk
 # symlink/symbolische verwijzing
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1959
 msgid "symlink must be non-NULL"
 msgstr "symbolische verwijzing moet niet-NULL zijn"
 
-#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
-#: gio/glocalfileinfo.c:1960
+#: gio/glocalfileinfo.c:1969 gio/glocalfileinfo.c:1988
+#: gio/glocalfileinfo.c:1999
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Fout bij instellen symbolische verwijzing: %s"
 
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1978
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Fout bij instellen symbolische verwijzing: bestand is geen symbolische "
 "verwijzing"
 
-#: gio/glocalfileinfo.c:2065
+#: gio/glocalfileinfo.c:2104
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Fout bij instellen toegangsrechten: %s"
 
 # technotalk
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2127
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-context moet niet-NULL zijn"
 
-#: gio/glocalfileinfo.c:2103
+#: gio/glocalfileinfo.c:2142
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Fout bij instellen SELinux-context: %s"
 
 # geactiveerd/aangezet
 # systeem/computer
-#: gio/glocalfileinfo.c:2110
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux is niet geactiveerd op dit systeem"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2241
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Instellen van attribuut %s is niet mogelijk"
@@ -1777,35 +1786,54 @@ msgstr "Wijzigen van geheugenruimte uitvoerdatastroom is mislukt"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:376
+#: gio/gmount.c:378
 msgid "mount doesn't implement unmount"
 msgstr "ontkoppelen niet ondersteund door koppeling"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:451
+#: gio/gmount.c:457
 msgid "mount doesn't implement eject"
+msgstr "uitwerpen niet ondersteund door koppeling"
+
+# ontkoppelen is op deze koppeling niet mogelijk/niet geimplementeerd
+# ontkoppelen is bij deze koppeling/bij dit aangekoppelde object
+# dit aangekoppelde object kan niet worden ontkoppeld/losgemaakt/vrijgemaakt
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement any of unmount or unmount_with_operation.
+#: gio/gmount.c:537
+#, fuzzy
+msgid "mount doesn't implement unmount or unmount_with_operation"
+msgstr "ontkoppelen niet ondersteund door koppeling"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gmount.c:624
+#, fuzzy
+msgid "mount doesn't implement eject or eject_with_operation"
 msgstr "uitwerpen niet ondersteund door koppeling"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:533
+#: gio/gmount.c:713
 msgid "mount doesn't implement remount"
 msgstr "opnieuw koppelen niet ondersteund door koppeling"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:617
+#: gio/gmount.c:797
 msgid "mount doesn't implement content type guessing"
 msgstr "inhoudstype raden niet ondersteund door koppeling"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:706
+#: gio/gmount.c:886
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "op synchrone wijze inhoudstype raden niet ondersteund door koppeling"
 
@@ -1848,8 +1876,18 @@ msgstr "Fout bij schrijven naar unix: %s"
 
 # volumen kan niet uitgeworpen worden/implemeteert 'uitwerpen' niet/
 # begrijpt de opdracht 'uitwerpen' niet
-#: gio/gvolume.c:450
+#: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
+msgstr "volumen begrijpt de opdracht ‘uitwerpen’ niet"
+
+# volumen kan niet uitgeworpen worden/implemeteert 'uitwerpen' niet/
+# begrijpt de opdracht 'uitwerpen' niet
+#. Translators: This is an error
+#. * message for volume objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gvolume.c:531
+#, fuzzy
+msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "volumen begrijpt de opdracht ‘uitwerpen’ niet"
 
 #: gio/gwin32appinfo.c:277

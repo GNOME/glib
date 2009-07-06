@@ -93,3 +93,12 @@ URI Functions
 @Returns: 
 
 
+<!-- ##### FUNCTION g_uri_list_extract_uris ##### -->
+<para>
+
+</para>
+
+@uri_list: 
+@Returns: 
+
+

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 12:58-0400\n"
+"POT-Creation-Date: 2009-07-06 00:13-0400\n"
 "PO-Revision-Date: 2009-03-27 14:56+0800\n"
 "Last-Translator: Ray Wang <wanglei1123@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
@@ -186,7 +186,7 @@ msgstr "读取文件“%s”失败：%s"
 msgid "Failed to open file '%s': %s"
 msgstr "打开文件“%s”失败：%s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:138
+#: glib/gfileutils.c:712 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "获得文件“%s”的属性失败：fstat() 失败：%s"
@@ -297,12 +297,12 @@ msgstr "通道终止于未尽字符"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
-#: glib/gmappedfile.c:121
+#: glib/gmappedfile.c:123
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "打开文件“%s”失败：open() 失败：%s"
 
-#: glib/gmappedfile.c:198
+#: glib/gmappedfile.c:201
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "映射文件“%s”失败：mmap() 失败：%s"
@@ -509,7 +509,7 @@ msgstr "达到回溯上限"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "表达式包含不被部分匹配支持的项"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2083
+#: glib/gregex.c:154 gio/glocalfile.c:2105
 msgid "internal error"
 msgstr "内部错误"
 
@@ -920,61 +920,61 @@ msgstr "转换输入中出现无效序列"
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "Usage:"
 msgstr "用法："
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "[OPTION...]"
 msgstr "[选项...]"
 
-#: glib/goption.c:828
+#: glib/goption.c:861
 msgid "Help Options:"
 msgstr "帮助选项："
 
-#: glib/goption.c:829
+#: glib/goption.c:862
 msgid "Show help options"
 msgstr "显示帮助选项"
 
-#: glib/goption.c:835
+#: glib/goption.c:868
 msgid "Show all help options"
 msgstr "显示全部帮助选项"
 
-#: glib/goption.c:897
+#: glib/goption.c:930
 msgid "Application Options:"
 msgstr "应用程序选项："
 
-#: glib/goption.c:959 glib/goption.c:1029
+#: glib/goption.c:992 glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "无法处理 %2$s 所用的整数值“%1$s”"
 
-#: glib/goption.c:969 glib/goption.c:1037
+#: glib/goption.c:1002 glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s 所用的整数值“%1$s”超出范围"
 
-#: glib/goption.c:994
+#: glib/goption.c:1027
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "无法处理 %2$s 所用的双精度值“%1$s”"
 
-#: glib/goption.c:1002
+#: glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s 所用的双精度值“%1$s”超出范围"
 
-#: glib/goption.c:1265 glib/goption.c:1344
+#: glib/goption.c:1298 glib/goption.c:1377
 #, c-format
 msgid "Error parsing option %s"
 msgstr "分析选项出错：%s"
 
-#: glib/goption.c:1375 glib/goption.c:1489
+#: glib/goption.c:1408 glib/goption.c:1522
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的参数"
 
-#: glib/goption.c:1882
+#: glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
@@ -1097,8 +1097,8 @@ msgstr "传递给 %s 的计数值太大了"
 msgid "Stream is already closed"
 msgstr "流已经关闭"
 
-#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
-#: gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "操作被取消"
 
@@ -1152,20 +1152,28 @@ msgstr "无法创建用户桌面文件 %s"
 msgid "Custom definition for %s"
 msgstr "%s 的自制定定义"
 
-#: gio/gdrive.c:407
+#: gio/gdrive.c:409
 msgid "drive doesn't implement eject"
 msgstr "驱动未实现探出"
 
-#: gio/gdrive.c:477
+#. Translators: This is an error
+#. * message for drive objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gdrive.c:489
+#, fuzzy
+msgid "drive doesn't implement eject or eject_with_operation"
+msgstr "驱动未实现探出"
+
+#: gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
 msgstr "驱动未实现媒体轮询"
 
-#: gio/gdrive.c:657
+#: gio/gdrive.c:771
 #, fuzzy
 msgid "drive doesn't implement start"
 msgstr "驱动未实现探出"
 
-#: gio/gdrive.c:757
+#: gio/gdrive.c:873
 #, fuzzy
 msgid "drive doesn't implement stop"
 msgstr "驱动未实现探出"
@@ -1198,8 +1206,9 @@ msgstr "GEmblemedIcon 中应为 GEmblem"
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
 #: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
-#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
-#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
+#: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
+#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
 #: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "不支持该操作"
@@ -1212,12 +1221,12 @@ msgstr "不支持该操作"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
-#: gio/glocalfile.c:1107
+#: gio/gfile.c:1347 gio/glocalfile.c:1065 gio/glocalfile.c:1076
+#: gio/glocalfile.c:1089
 msgid "Containing mount does not exist"
 msgstr "包含的挂载不存在"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2226
+#: gio/gfile.c:2399 gio/glocalfile.c:2250
 msgid "Can't copy over directory"
 msgstr "无法复制目录"
 
@@ -1225,7 +1234,7 @@ msgstr "无法复制目录"
 msgid "Can't copy directory over directory"
 msgstr "无法将目录复制到目录"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2235
+#: gio/gfile.c:2467 gio/glocalfile.c:2259
 msgid "Target file exists"
 msgstr "目标文件已存在"
 
@@ -1250,11 +1259,11 @@ msgstr "不支持垃圾箱"
 msgid "File names cannot contain '%c'"
 msgstr "文件名不能包含“%c”"
 
-#: gio/gfile.c:5678 gio/gvolume.c:376
+#: gio/gfile.c:5884 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "卷未实现挂载"
 
-#: gio/gfile.c:5786
+#: gio/gfile.c:5992
 msgid "No application is registered as handling this file"
 msgstr "没有注册为处理此文件的应用程序"
 
@@ -1349,199 +1358,199 @@ msgstr "流有异常操作"
 msgid "Unable to find default local directory monitor type"
 msgstr "无法找默认的本地目录监视器类型"
 
-#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "无效的文件名名：%s"
 
-#: gio/glocalfile.c:991
+#: gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "读取文件系统信息出错：%s"
 
-#: gio/glocalfile.c:1127
+#: gio/glocalfile.c:1109
 msgid "Can't rename root directory"
 msgstr "无法重命名根目录"
 
-#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
+#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "重命名文件出错：%s"
 
-#: gio/glocalfile.c:1156
+#: gio/glocalfile.c:1138
 msgid "Can't rename file, filename already exist"
 msgstr "无法重命名文件，该文件名已存在"
 
-#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
-#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1151 gio/glocalfile.c:2127 gio/glocalfile.c:2156
+#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "无效的文件名"
 
-#: gio/glocalfile.c:1292
+#: gio/glocalfile.c:1307
 #, c-format
 msgid "Error opening file: %s"
 msgstr "打开文件出错：%s"
 
-#: gio/glocalfile.c:1302
+#: gio/glocalfile.c:1317
 msgid "Can't open directory"
 msgstr "无法打开目录"
 
-#: gio/glocalfile.c:1425
+#: gio/glocalfile.c:1442
 #, c-format
 msgid "Error removing file: %s"
 msgstr "移除文件出错：%s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "将文件放到垃圾箱出错：%s"
 
-#: gio/glocalfile.c:1812
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "创建垃圾箱目录 %s 失败：%s"
 
-#: gio/glocalfile.c:1833
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "无法找到垃圾箱的顶级目录"
 
-#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "无法找到或创建垃圾箱目录"
 
-#: gio/glocalfile.c:1966
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "创建垃圾信息文件失败：%s"
 
-#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
-#: gio/glocalfile.c:2082
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2097
+#: gio/glocalfile.c:2104
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "无法将文件移动到回收站：%s"
 
-#: gio/glocalfile.c:2109
+#: gio/glocalfile.c:2131
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "创建目录出错：%s"
 
-#: gio/glocalfile.c:2138
+#: gio/glocalfile.c:2160
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "创建符号链接出错：%s"
 
-#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
+#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
 #, c-format
 msgid "Error moving file: %s"
 msgstr "移动文件出错：%s"
 
-#: gio/glocalfile.c:2221
+#: gio/glocalfile.c:2245
 msgid "Can't move directory over directory"
 msgstr "无法将目录移动到目录"
 
-#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "备份文件创建失败"
 
-#: gio/glocalfile.c:2267
+#: gio/glocalfile.c:2291
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "移除目标文件出错：%s"
 
-#: gio/glocalfile.c:2281
+#: gio/glocalfile.c:2305
 msgid "Move between mounts not supported"
 msgstr "不支持在挂载之间移动"
 
-#: gio/glocalfileinfo.c:719
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "属性值必须为非空"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "无效的属性类型(应为 string)"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "无效的扩展属性名"
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "设置扩展属性“%s”出错：%s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "获取文件“%s”状态出错：%s"
 
-#: gio/glocalfileinfo.c:1537
+#: gio/glocalfileinfo.c:1551
 msgid " (invalid encoding)"
 msgstr " (无效的编码)"
 
-#: gio/glocalfileinfo.c:1719
+#: gio/glocalfileinfo.c:1758
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "获取文件描述符状态时出错：%s"
 
-#: gio/glocalfileinfo.c:1764
+#: gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "无效的属性类型(应为 uint32)"
 
-#: gio/glocalfileinfo.c:1782
+#: gio/glocalfileinfo.c:1821
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "无效的属性类型(应为 uint64)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
+#: gio/glocalfileinfo.c:1840 gio/glocalfileinfo.c:1859
 msgid "Invalid attribute type (byte string expected)"
 msgstr "无效的属性类型(应为 byte string)"
 
-#: gio/glocalfileinfo.c:1846
+#: gio/glocalfileinfo.c:1885
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "设置所有者出错：%s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1959
 msgid "symlink must be non-NULL"
 msgstr "符号链接必须是非空"
 
-#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
-#: gio/glocalfileinfo.c:1960
+#: gio/glocalfileinfo.c:1969 gio/glocalfileinfo.c:1988
+#: gio/glocalfileinfo.c:1999
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "设置符号链接出错：%s"
 
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1978
 msgid "Error setting symlink: file is not a symlink"
 msgstr "设定符号链接出错：文件不是符号链接"
 
-#: gio/glocalfileinfo.c:2065
+#: gio/glocalfileinfo.c:2104
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2127
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 上下文必须是非空"
 
-#: gio/glocalfileinfo.c:2103
+#: gio/glocalfileinfo.c:2142
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "设置 SELinux 上下文出错：%s"
 
-#: gio/glocalfileinfo.c:2110
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux is not enabled on this system"
 msgstr "此系统尚未启用 SELinux"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2241
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支持设置属性 %s"
@@ -1645,35 +1654,51 @@ msgstr "改变内存输出流大小失败"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:376
+#: gio/gmount.c:378
 msgid "mount doesn't implement unmount"
 msgstr "挂载未实现卸载"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:451
+#: gio/gmount.c:457
 msgid "mount doesn't implement eject"
 msgstr "挂载未实现弹出"
 
 #. Translators: This is an error
 #. * message for mount objects that
+#. * don't implement any of unmount or unmount_with_operation.
+#: gio/gmount.c:537
+#, fuzzy
+msgid "mount doesn't implement unmount or unmount_with_operation"
+msgstr "挂载未实现卸载"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gmount.c:624
+#, fuzzy
+msgid "mount doesn't implement eject or eject_with_operation"
+msgstr "挂载未实现弹出"
+
+#. Translators: This is an error
+#. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:533
+#: gio/gmount.c:713
 msgid "mount doesn't implement remount"
 msgstr "挂载没有实现重新挂载"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:617
+#: gio/gmount.c:797
 msgid "mount doesn't implement content type guessing"
 msgstr "挂载未实现内容类型猜测"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:706
+#: gio/gmount.c:886
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "挂载未实现同步内容类型猜测"
 
@@ -1711,8 +1736,16 @@ msgstr "文件系统根目录"
 msgid "Error writing to unix: %s"
 msgstr "写入 unix 出错：%s"
 
-#: gio/gvolume.c:450
+#: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
+msgstr "卷未实现弹出"
+
+#. Translators: This is an error
+#. * message for volume objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gvolume.c:531
+#, fuzzy
+msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "卷未实现弹出"
 
 #: gio/gwin32appinfo.c:277

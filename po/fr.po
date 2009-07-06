@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 12:58-0400\n"
+"POT-Creation-Date: 2009-07-06 00:13-0400\n"
 "PO-Revision-Date: 2009-03-17 09:21+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -194,7 +194,7 @@ msgstr "La lecture depuis le fichier « %s » a échoué : %s"
 msgid "Failed to open file '%s': %s"
 msgstr "L'ouverture du fichier « %s » a échoué : %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:138
+#: glib/gfileutils.c:712 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -315,12 +315,12 @@ msgstr "La canal se termine avec un caractère partiel"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Impossible de faire une lecture brute dans g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:121
+#: glib/gmappedfile.c:123
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "L'ouverture du fichier « %s » a échoué : open() a échoué : %s"
 
-#: glib/gmappedfile.c:198
+#: glib/gmappedfile.c:201
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Le mappage du fichier « %s » a échoué : mmap() a échoué : %s"
@@ -570,7 +570,7 @@ msgstr ""
 "le motif contient des éléments non pris en charge par la correspondance "
 "partielle"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2083
+#: glib/gregex.c:154 gio/glocalfile.c:2105
 msgid "internal error"
 msgstr "erreur interne"
 
@@ -1005,61 +1005,61 @@ msgstr "Séquence non valide dans l'entrée du convertisseur"
 msgid "Character out of range for UTF-16"
 msgstr "Caractère hors plage pour UTF-16"
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "Usage:"
 msgstr "Utilisation :"
 
-#: glib/goption.c:724
+#: glib/goption.c:755
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:828
+#: glib/goption.c:861
 msgid "Help Options:"
 msgstr "Options de l'aide :"
 
-#: glib/goption.c:829
+#: glib/goption.c:862
 msgid "Show help options"
 msgstr "Affiche les options de l'aide"
 
-#: glib/goption.c:835
+#: glib/goption.c:868
 msgid "Show all help options"
 msgstr "Affiche toutes les options de l'aide"
 
-#: glib/goption.c:897
+#: glib/goption.c:930
 msgid "Application Options:"
 msgstr "Options de l'application :"
 
-#: glib/goption.c:959 glib/goption.c:1029
+#: glib/goption.c:992 glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Impossible d'analyser la valeur entière « %s » pour %s"
 
-#: glib/goption.c:969 glib/goption.c:1037
+#: glib/goption.c:1002 glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "La valeur entière « %s » pour %s est hors plage"
 
-#: glib/goption.c:994
+#: glib/goption.c:1027
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Impossible d'analyser la valeur double « %s » pour %s"
 
-#: glib/goption.c:1002
+#: glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "La valeur double « %s » pour %s est hors plage"
 
-#: glib/goption.c:1265 glib/goption.c:1344
+#: glib/goption.c:1298 glib/goption.c:1377
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Erreur lors de l'analyse de l'option %s"
 
-#: glib/goption.c:1375 glib/goption.c:1489
+#: glib/goption.c:1408 glib/goption.c:1522
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argument manquant pour %s"
 
-#: glib/goption.c:1882
+#: glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
 msgstr "Option inconnue %s"
@@ -1198,8 +1198,8 @@ msgstr "La valeur de comptage fournie à %s est trop grande"
 msgid "Stream is already closed"
 msgstr "Le flux est déjà fermé"
 
-#: gio/gcancellable.c:389 gio/glocalfile.c:2076 gio/gsimpleasyncresult.c:621
-#: gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "L'opération a été annulée"
 
@@ -1257,20 +1257,28 @@ msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
 
-#: gio/gdrive.c:407
+#: gio/gdrive.c:409
 msgid "drive doesn't implement eject"
 msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
 
-#: gio/gdrive.c:477
+#. Translators: This is an error
+#. * message for drive objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gdrive.c:489
+#, fuzzy
+msgid "drive doesn't implement eject or eject_with_operation"
+msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
+
+#: gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
 msgstr "le lecteur n'implémente pas la scrutation du média (« polling »)"
 
-#: gio/gdrive.c:657
+#: gio/gdrive.c:771
 #, fuzzy
 msgid "drive doesn't implement start"
 msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
 
-#: gio/gdrive.c:757
+#: gio/gdrive.c:873
 #, fuzzy
 msgid "drive doesn't implement stop"
 msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
@@ -1303,8 +1311,9 @@ msgstr "Un GEmblem est attendu pour le GEmblemedIcon"
 #: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
 #: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
-#: gio/gfile.c:4188 gio/gfile.c:4271 gio/gfile.c:4351 gio/gfile.c:4681
-#: gio/gfile.c:4961 gio/gfile.c:5030 gio/gfile.c:6618 gio/gfile.c:6706
+#: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
+#: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
+#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
 #: gio/win32/gwinhttpfile.c:431
 msgid "Operation not supported"
 msgstr "Opération non prise en charge"
@@ -1317,12 +1326,12 @@ msgstr "Opération non prise en charge"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1083 gio/glocalfile.c:1094
-#: gio/glocalfile.c:1107
+#: gio/gfile.c:1347 gio/glocalfile.c:1065 gio/glocalfile.c:1076
+#: gio/glocalfile.c:1089
 msgid "Containing mount does not exist"
 msgstr "Le point de montage conteneur n'existe pas"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2226
+#: gio/gfile.c:2399 gio/glocalfile.c:2250
 msgid "Can't copy over directory"
 msgstr "Impossible de copier par dessus un répertoire"
 
@@ -1330,7 +1339,7 @@ msgstr "Impossible de copier par dessus un répertoire"
 msgid "Can't copy directory over directory"
 msgstr "Impossible de copier un répertoire par dessus un autre"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2235
+#: gio/gfile.c:2467 gio/glocalfile.c:2259
 msgid "Target file exists"
 msgstr "Le fichier cible existe"
 
@@ -1355,11 +1364,11 @@ msgstr "La corbeille n'est pas prise en charge"
 msgid "File names cannot contain '%c'"
 msgstr "Les noms de fichiers ne peuvent contenir « %c »"
 
-#: gio/gfile.c:5678 gio/gvolume.c:376
+#: gio/gfile.c:5884 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "le volume n'implémente pas « mount »"
 
-#: gio/gfile.c:5786
+#: gio/gfile.c:5992
 msgid "No application is registered as handling this file"
 msgstr "Aucune application n'est enregistrée pour gérer ce fichier"
 
@@ -1456,202 +1465,202 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Impossible de trouver le type de moniteur de répertoire local par défaut"
 
-#: gio/glocalfile.c:618 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nom de fichier non valide : %s"
 
-#: gio/glocalfile.c:991
+#: gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Impossible d'obtenir les informations du système de fichiers : %s"
 
-#: gio/glocalfile.c:1127
+#: gio/glocalfile.c:1109
 msgid "Can't rename root directory"
 msgstr "Impossible de renommer le répertoire racine"
 
-#: gio/glocalfile.c:1147 gio/glocalfile.c:1173
+#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Erreur au renommage du fichier : %s"
 
-#: gio/glocalfile.c:1156
+#: gio/glocalfile.c:1138
 msgid "Can't rename file, filename already exist"
 msgstr "Impossible de renommer le fichier car ce nom est déjà utilisé"
 
-#: gio/glocalfile.c:1169 gio/glocalfile.c:2105 gio/glocalfile.c:2134
-#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1151 gio/glocalfile.c:2127 gio/glocalfile.c:2156
+#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Nom de fichier non valide"
 
-#: gio/glocalfile.c:1292
+#: gio/glocalfile.c:1307
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Erreur à l'ouverture du fichier : %s"
 
-#: gio/glocalfile.c:1302
+#: gio/glocalfile.c:1317
 msgid "Can't open directory"
 msgstr "Impossible d'ouvrir le répertoire"
 
-#: gio/glocalfile.c:1425
+#: gio/glocalfile.c:1442
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Erreur à la suppression du fichier : %s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Erreur à la mise à la corbeille du fichier : %s"
 
-#: gio/glocalfile.c:1812
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossible de créer le répertoire de la corbeille %s : %s"
 
-#: gio/glocalfile.c:1833
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "Impossible de trouver le répertoire racine pour la corbeille"
 
-#: gio/glocalfile.c:1912 gio/glocalfile.c:1932
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "Impossible de trouver ou créer le répertoire de la corbeille"
 
-#: gio/glocalfile.c:1966
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr ""
 "Impossible de créer le fichier d'informations de mise à la corbeille : %s"
 
-#: gio/glocalfile.c:1995 gio/glocalfile.c:2000 gio/glocalfile.c:2075
-#: gio/glocalfile.c:2082
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2097
+#: gio/glocalfile.c:2104
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossible de mettre à la corbeille le fichier : %s"
 
-#: gio/glocalfile.c:2109
+#: gio/glocalfile.c:2131
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Erreur à la création du répertoire : %s"
 
-#: gio/glocalfile.c:2138
+#: gio/glocalfile.c:2160
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Erreur lors de la création du lien symbolique : %s"
 
-#: gio/glocalfile.c:2198 gio/glocalfile.c:2292
+#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Erreur lors du déplacement du fichier : %s"
 
-#: gio/glocalfile.c:2221
+#: gio/glocalfile.c:2245
 msgid "Can't move directory over directory"
 msgstr "Impossible de déplacer un répertoire par dessus un autre"
 
-#: gio/glocalfile.c:2248 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "La création du fichier de sauvegarde a échoué"
 
-#: gio/glocalfile.c:2267
+#: gio/glocalfile.c:2291
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Erreur lors de la suppression du fichier cible : %s"
 
-#: gio/glocalfile.c:2281
+#: gio/glocalfile.c:2305
 msgid "Move between mounts not supported"
 msgstr "Le déplacement entre des points de montage n'est pas pris en charge"
 
-#: gio/glocalfileinfo.c:719
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "La valeur d'attribut ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "Type d'attribut non valide (une chaîne est attendue)"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "Nom d'attribut étendu non valide"
 
-#: gio/glocalfileinfo.c:773
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Erreur lors de la définition de l'attribut étendu « %s » : %s"
 
-#: gio/glocalfileinfo.c:1466 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Erreur de l'interrogation du fichier « %s » : %s"
 
-#: gio/glocalfileinfo.c:1537
+#: gio/glocalfileinfo.c:1551
 msgid " (invalid encoding)"
 msgstr " (codage non valide)"
 
-#: gio/glocalfileinfo.c:1719
+#: gio/glocalfileinfo.c:1758
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erreur de l'interrogation du descripteur de fichier : %s"
 
-#: gio/glocalfileinfo.c:1764
+#: gio/glocalfileinfo.c:1803
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Type d'attribut non valide (uint32 attendu)"
 
-#: gio/glocalfileinfo.c:1782
+#: gio/glocalfileinfo.c:1821
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Type d'attribut non valide (uint64 attendu)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileinfo.c:1820
+#: gio/glocalfileinfo.c:1840 gio/glocalfileinfo.c:1859
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Type d'attribut non valide (chaîne octet attendu)"
 
-#: gio/glocalfileinfo.c:1846
+#: gio/glocalfileinfo.c:1885
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:1897
+#: gio/glocalfileinfo.c:1936
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erreur lors de la définition du propriétaire : %s"
 
-#: gio/glocalfileinfo.c:1920
+#: gio/glocalfileinfo.c:1959
 msgid "symlink must be non-NULL"
 msgstr "un lien symbolique ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:1930 gio/glocalfileinfo.c:1949
-#: gio/glocalfileinfo.c:1960
+#: gio/glocalfileinfo.c:1969 gio/glocalfileinfo.c:1988
+#: gio/glocalfileinfo.c:1999
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erreur lors de la définition du lien symbolique : %s"
 
-#: gio/glocalfileinfo.c:1939
+#: gio/glocalfileinfo.c:1978
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erreur lors de la définition du lien symbolique : le fichier n'est pas un "
 "lien symbolique"
 
-#: gio/glocalfileinfo.c:2065
+#: gio/glocalfileinfo.c:2104
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2127
 msgid "SELinux context must be non-NULL"
 msgstr "Le contexte SELinux ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:2103
+#: gio/glocalfileinfo.c:2142
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erreur lors de la définition du contexte SELinux : %s"
 
-#: gio/glocalfileinfo.c:2110
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux n'est pas activé sur ce système"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2241
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La définition de l'attribut %s n'est pas prise en charge"
@@ -1755,35 +1764,51 @@ msgstr "Le redimensionnement du flux de sortie mémoire a échoué"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:376
+#: gio/gmount.c:378
 msgid "mount doesn't implement unmount"
 msgstr "mount n'implémente pas le démontage (« unmount »)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:451
+#: gio/gmount.c:457
 msgid "mount doesn't implement eject"
 msgstr "mount n'implémente pas l'éjection"
 
 #. Translators: This is an error
 #. * message for mount objects that
+#. * don't implement any of unmount or unmount_with_operation.
+#: gio/gmount.c:537
+#, fuzzy
+msgid "mount doesn't implement unmount or unmount_with_operation"
+msgstr "mount n'implémente pas le démontage (« unmount »)"
+
+#. Translators: This is an error
+#. * message for mount objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gmount.c:624
+#, fuzzy
+msgid "mount doesn't implement eject or eject_with_operation"
+msgstr "mount n'implémente pas l'éjection"
+
+#. Translators: This is an error
+#. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:533
+#: gio/gmount.c:713
 msgid "mount doesn't implement remount"
 msgstr "mount n'implémente pas le remontage (« remount »)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:617
+#: gio/gmount.c:797
 msgid "mount doesn't implement content type guessing"
 msgstr "mount n'implémente pas l'estimation du type de contenu"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:706
+#: gio/gmount.c:886
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "mount n'implémente pas l'estimation du type de contenu synchrone"
 
@@ -1821,8 +1846,16 @@ msgstr "Racine du système de fichiers"
 msgid "Error writing to unix: %s"
 msgstr "Erreur lors de l'écriture vers unix : %s"
 
-#: gio/gvolume.c:450
+#: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
+msgstr "le volume n'implémente pas l'éjection (« eject »)"
+
+#. Translators: This is an error
+#. * message for volume objects that
+#. * don't implement any of eject or eject_with_operation.
+#: gio/gvolume.c:531
+#, fuzzy
+msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "le volume n'implémente pas l'éjection (« eject »)"
 
 #: gio/gwin32appinfo.c:277
