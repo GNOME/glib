@@ -519,7 +519,7 @@ g_cancellable_cancel (GCancellable *cancellable)
   GCancellablePrivate *priv;
 
   if (cancellable == NULL ||
-      priv->cancelled)
+      cancellable->priv->cancelled)
     return;
 
   priv = cancellable->priv;
