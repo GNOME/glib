@@ -74,7 +74,6 @@ struct _GVfsClass
                                                        const char *parse_name);
 
   /*< private >*/
-  /* Padding for future expansion */
   void                  (* local_file_add_info)       (GVfs       *vfs,
 						       const char *filename,
 						       guint64     device,
@@ -96,6 +95,7 @@ struct _GVfsClass
   void                  (* local_file_moved)          (GVfs       *vfs,
 						       const char *source,
 						       const char *dest);
+  /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
   void (*_g_reserved3) (void);
