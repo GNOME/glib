@@ -30,6 +30,7 @@ IGNORE_HFILES=				\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
 	gfileattribute-priv.h		\
+	gfileinfo-priv.h		\
 	ginotifydirectorymonitor.h	\
 	ginotifyfilemonitor.h		\
 	gio-marshal.h			\
