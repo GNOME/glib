@@ -99,6 +99,8 @@ G_BEGIN_DECLS
  * @should_automount: Returns %TRUE if the #GVolume should be automatically mounted.
  * @get_activation_root: Returns the activation root for the #GVolume if it is known in advance or %NULL if
  *   it is not known.
+ * @eject_with_operation: Starts ejecting a #GVolume using a #GMountOperation. Since 2.22.
+ * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  *
  * Interface for implementing operations for mountable volumes.
  **/
@@ -148,6 +150,15 @@ struct _GVolumeIface
 
   GFile     * (* get_activation_root)   (GVolume             *volume);
 
+  void        (* eject_with_operation)      (GVolume             *volume,
+                                             GMountUnmountFlags   flags,
+                                             GMountOperation     *mount_operation,
+                                             GCancellable        *cancellable,
+                                             GAsyncReadyCallback  callback,
+                                             gpointer             user_data);
+  gboolean    (* eject_with_operation_finish) (GVolume           *volume,
+                                             GAsyncResult        *result,
+                                             GError             **error);
 };
 
 GType    g_volume_get_type              (void) G_GNUC_CONST;
@@ -169,6 +180,7 @@ void     g_volume_mount                 (GVolume              *volume,
 gboolean g_volume_mount_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
+#ifndef G_DISABLE_DEPRECATED
 void     g_volume_eject                 (GVolume              *volume,
 					 GMountUnmountFlags    flags,
 					 GCancellable         *cancellable,
@@ -177,11 +189,22 @@ void     g_volume_eject                 (GVolume              *volume,
 gboolean g_volume_eject_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
+#endif
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
 
 GFile *  g_volume_get_activation_root   (GVolume              *volume);
+
+void        g_volume_eject_with_operation     (GVolume             *volume,
+                                               GMountUnmountFlags   flags,
+                                               GMountOperation     *mount_operation,
+                                               GCancellable        *cancellable,
+                                               GAsyncReadyCallback  callback,
+                                               gpointer             user_data);
+gboolean    g_volume_eject_with_operation_finish (GVolume          *volume,
+                                               GAsyncResult        *result,
+                                               GError             **error);
 
 G_END_DECLS
 

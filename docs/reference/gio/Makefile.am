@@ -83,9 +83,11 @@ INCLUDES = \
 	-I$(top_srcdir)			\
 	-I$(top_srcdir)/glib		\
 	-I$(top_srcdir)/gobject		\
+	-I$(top_srcdir)/gio		\
 	-I$(top_builddir)		\
 	-I$(top_builddir)/glib		\
 	-I$(top_builddir)/gobject	\
+	-I$(top_builddir)/gio		\
 	$(GLIB_DEBUG_FLAGS)
 
 GTKDOC_LIBS = \

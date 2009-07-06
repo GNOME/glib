@@ -65,9 +65,12 @@ G_BEGIN_DECLS
  * @stop: Stops a #GDrive. Since 2.22.
  * @stop_finish: Finishes a stop operation. Since 2.22.
  * @can_start: Returns %TRUE if a #GDrive can be started. Since 2.22.
+ * @can_start_degraded: Returns %TRUE if a #GDrive can be started degraded. Since 2.22.
  * @start: Starts a #GDrive. Since 2.22.
  * @start_finish: Finishes a start operation. Since 2.22.
  * @stop_button: Signal emitted when the physical stop button (if any) of a drive have been pressed. Since 2.22.
+ * @eject_with_operation: Starts ejecting a #GDrive using a #GMountOperation. Since 2.22.
+ * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  *
  * Interface for creating #GDrive implementations.
  */
@@ -115,9 +118,10 @@ struct _GDriveIface
   GDriveStartStopType (* get_start_stop_type) (GDrive        *drive);
 
   gboolean (* can_start)                (GDrive              *drive);
+  gboolean (* can_start_degraded)       (GDrive              *drive);
   void     (* start)                    (GDrive              *drive,
                                          GDriveStartFlags     flags,
-                                         GMountOperation     *start_operation,
+                                         GMountOperation     *mount_operation,
                                          GCancellable        *cancellable,
                                          GAsyncReadyCallback  callback,
                                          gpointer             user_data);
@@ -128,6 +132,7 @@ struct _GDriveIface
   gboolean (* can_stop)                 (GDrive              *drive);
   void     (* stop)                     (GDrive              *drive,
                                          GMountUnmountFlags   flags,
+                                         GMountOperation     *mount_operation,
                                          GCancellable        *cancellable,
                                          GAsyncReadyCallback  callback,
                                          gpointer             user_data);
@@ -137,6 +142,15 @@ struct _GDriveIface
   /* signal, not VFunc */
   void     (* stop_button)              (GDrive              *drive);
 
+  void        (* eject_with_operation)      (GDrive              *drive,
+                                             GMountUnmountFlags   flags,
+                                             GMountOperation     *mount_operation,
+                                             GCancellable        *cancellable,
+                                             GAsyncReadyCallback  callback,
+                                             gpointer             user_data);
+  gboolean    (* eject_with_operation_finish) (GDrive            *drive,
+                                             GAsyncResult        *result,
+                                             GError             **error);
 };
 
 GType    g_drive_get_type                 (void) G_GNUC_CONST;
@@ -150,6 +164,7 @@ gboolean g_drive_has_media                (GDrive               *drive);
 gboolean g_drive_is_media_check_automatic (GDrive               *drive);
 gboolean g_drive_can_poll_for_media       (GDrive               *drive);
 gboolean g_drive_can_eject                (GDrive               *drive);
+#ifndef G_DISABLE_DEPRECATED
 void     g_drive_eject                    (GDrive               *drive,
 					   GMountUnmountFlags    flags,
                                            GCancellable         *cancellable,
@@ -158,6 +173,7 @@ void     g_drive_eject                    (GDrive               *drive,
 gboolean g_drive_eject_finish             (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
+#endif
 void     g_drive_poll_for_media           (GDrive               *drive,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
@@ -172,9 +188,10 @@ char **  g_drive_enumerate_identifiers    (GDrive              *drive);
 GDriveStartStopType g_drive_get_start_stop_type (GDrive        *drive);
 
 gboolean g_drive_can_start                (GDrive              *drive);
+gboolean g_drive_can_start_degraded       (GDrive              *drive);
 void     g_drive_start                    (GDrive              *drive,
                                            GDriveStartFlags     flags,
-                                           GMountOperation     *start_operation,
+                                           GMountOperation     *mount_operation,
                                            GCancellable        *cancellable,
                                            GAsyncReadyCallback  callback,
                                            gpointer             user_data);
@@ -185,12 +202,23 @@ gboolean g_drive_start_finish             (GDrive               *drive,
 gboolean g_drive_can_stop                 (GDrive               *drive);
 void     g_drive_stop                     (GDrive               *drive,
 					   GMountUnmountFlags    flags,
+                                           GMountOperation      *mount_operation,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
                                            gpointer              user_data);
 gboolean g_drive_stop_finish              (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
+
+void        g_drive_eject_with_operation      (GDrive              *drive,
+                                               GMountUnmountFlags   flags,
+                                               GMountOperation     *mount_operation,
+                                               GCancellable        *cancellable,
+                                               GAsyncReadyCallback  callback,
+                                               gpointer             user_data);
+gboolean    g_drive_eject_with_operation_finish (GDrive            *drive,
+                                               GAsyncResult        *result,
+                                               GError             **error);
 
 G_END_DECLS
 

@@ -386,6 +386,8 @@ g_drive_can_poll_for_media (GDrive *drive)
  * When the operation is finished, @callback will be called.
  * You can then call g_drive_eject_finish() to obtain the
  * result of the operation.
+ *
+ * Deprecated: 2.22: Use g_drive_eject_with_operation() instead.
  **/
 void
 g_drive_eject (GDrive              *drive,
@@ -422,6 +424,8 @@ g_drive_eject (GDrive              *drive,
  * 
  * Returns: %TRUE if the drive has been ejected successfully,
  *     %FALSE otherwise.
+ *
+ * Deprecated: 2.22: Use g_drive_eject_with_operation_finish() instead.
  **/
 gboolean
 g_drive_eject_finish (GDrive        *drive,
@@ -443,6 +447,91 @@ g_drive_eject_finish (GDrive        *drive,
   iface = G_DRIVE_GET_IFACE (drive);
   
   return (* iface->eject_finish) (drive, result, error);
+}
+
+/**
+ * g_drive_eject_with_operation:
+ * @drive: a #GDrive.
+ * @flags: flags affecting the unmount if required for eject
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data passed to @callback.
+ *
+ * Ejects a drive. This is an asynchronous operation, and is
+ * finished by calling g_drive_eject_with_operation_finish() with the @drive
+ * and #GAsyncResult data returned in the @callback.
+ *
+ * Since: 2.22
+ **/
+void
+g_drive_eject_with_operation (GDrive              *drive,
+                              GMountUnmountFlags   flags,
+                              GMountOperation     *mount_operation,
+                              GCancellable        *cancellable,
+                              GAsyncReadyCallback  callback,
+                              gpointer             user_data)
+{
+  GDriveIface *iface;
+
+  g_return_if_fail (G_IS_DRIVE (drive));
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->eject == NULL && iface->eject_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (drive),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for drive objects that
+					    * don't implement any of eject or eject_with_operation. */
+					   _("drive doesn't implement eject or eject_with_operation"));
+      return;
+    }
+
+  if (iface->eject_with_operation != NULL)
+    (* iface->eject_with_operation) (drive, flags, mount_operation, cancellable, callback, user_data);
+  else
+    (* iface->eject) (drive, flags, cancellable, callback, user_data);
+}
+
+/**
+ * g_drive_eject_with_operation_finish:
+ * @drive: a #GDrive.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore.
+ *
+ * Finishes ejecting a drive. If any errors occurred during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
+ *
+ * Returns: %TRUE if the drive was successfully ejected. %FALSE otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_drive_eject_with_operation_finish (GDrive        *drive,
+                                     GAsyncResult  *result,
+                                     GError       **error)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+
+  iface = G_DRIVE_GET_IFACE (drive);
+  if (iface->eject_with_operation_finish != NULL)
+    return (* iface->eject_with_operation_finish) (drive, result, error);
+  else
+    return (* iface->eject_finish) (drive, result, error);
 }
 
 /**
@@ -620,10 +709,35 @@ g_drive_can_start (GDrive *drive)
 }
 
 /**
+ * g_drive_can_start_degraded:
+ * @drive: a #GDrive.
+ *
+ * Checks if a drive can be started degraded.
+ *
+ * Returns: %TRUE if the @drive can be started degraded, %FALSE otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_drive_can_start_degraded (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->can_start_degraded == NULL)
+    return FALSE;
+
+  return (* iface->can_start_degraded) (drive);
+}
+
+/**
  * g_drive_start:
  * @drive: a #GDrive.
  * @flags: flags affecting the start operation.
- * @start_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
@@ -639,7 +753,7 @@ g_drive_can_start (GDrive *drive)
 void
 g_drive_start (GDrive              *drive,
                GDriveStartFlags     flags,
-               GMountOperation     *start_operation,
+               GMountOperation     *mount_operation,
                GCancellable        *cancellable,
                GAsyncReadyCallback  callback,
                gpointer             user_data)
@@ -658,7 +772,7 @@ g_drive_start (GDrive              *drive,
       return;
     }
 
-  (* iface->start) (drive, flags, start_operation, cancellable, callback, user_data);
+  (* iface->start) (drive, flags, mount_operation, cancellable, callback, user_data);
 }
 
 /**
@@ -725,6 +839,7 @@ g_drive_can_stop (GDrive *drive)
  * g_drive_stop:
  * @drive: a #GDrive.
  * @flags: flags affecting the unmount if required for stopping.
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
@@ -740,6 +855,7 @@ g_drive_can_stop (GDrive *drive)
 void
 g_drive_stop (GDrive               *drive,
               GMountUnmountFlags    flags,
+              GMountOperation      *mount_operation,
               GCancellable         *cancellable,
               GAsyncReadyCallback   callback,
               gpointer              user_data)
@@ -758,7 +874,7 @@ g_drive_stop (GDrive               *drive,
       return;
     }
 
-  (* iface->stop) (drive, flags, cancellable, callback, user_data);
+  (* iface->stop) (drive, flags, mount_operation, cancellable, callback, user_data);
 }
 
 /**

@@ -31,25 +31,27 @@
 
 #include "gioalias.h"
 
-/** 
+/**
  * SECTION:gmountoperation
- * @short_description: Authentication methods for mountable locations
+ * @short_description: Object used for authentication and user interaction
  * @include: gio/gio.h
  *
- * #GMountOperation provides a mechanism for authenticating mountable 
- * operations, such as loop mounting files, hard drive partitions or 
- * server locations. 
+ * #GMountOperation provides a mechanism for interacting with the user.
+ * It can be used for authenticating mountable operations, such as loop
+ * mounting files, hard drive partitions or server locations. It can
+ * also be used to ask the user questions or show a list of applications
+ * preventing unmount or eject operations from completing.
  *
- * Mounting operations are handed a #GMountOperation that then can use 
- * if they require any privileges or authentication for their volumes 
- * to be mounted (e.g. a hard disk partition or an encrypted filesystem), 
- * or if they are implementing a remote server protocol which requires 
- * user credentials such as FTP or WebDAV.
+ * Note that #GMountOperation is used for more than just #GMount
+ * objects – for example it is also used in g_drive_start() and
+ * g_drive_stop().
  *
- * Users should instantiate a subclass of this that implements all
- * the various callbacks to show the required dialogs, such as 
- * #GtkMountOperation.
- **/
+ * Users should instantiate a subclass of this that implements all the
+ * various callbacks to show the required dialogs, such as
+ * #GtkMountOperation. If no user interaction is desired (for example
+ * when automounting filesystems at login time), usually %NULL can be
+ * passed, see each method taking a #GMountOperation for details.
+ */
 
 G_DEFINE_TYPE (GMountOperation, g_mount_operation, G_TYPE_OBJECT);
 
@@ -58,6 +60,7 @@ enum {
   ASK_QUESTION,
   REPLY,
   ABORTED,
+  SHOW_PROCESSES,
   LAST_SIGNAL
 };
 
@@ -227,6 +230,18 @@ ask_question (GMountOperation *op,
 }
 
 static void
+show_processes (GMountOperation      *op,
+                const gchar          *message,
+                GArray               *processes,
+                const gchar          *choices[])
+{
+  g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+		   reply_non_handled_in_idle,
+		   g_object_ref (op),
+		   g_object_unref);
+}
+
+static void
 g_mount_operation_class_init (GMountOperationClass *klass)
 {
   GObjectClass *object_class;
@@ -240,6 +255,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   
   klass->ask_password = ask_password;
   klass->ask_question = ask_question;
+  klass->show_processes = show_processes;
   
   /**
    * GMountOperation::ask-password:
@@ -324,6 +340,38 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+
+  /**
+   * GMountOperation::show-processes:
+   * @op: a #GMountOperation.
+   * @message: string containing a message to display to the user.
+   * @processes: an array of #GPid for processes blocking the operation.
+   * @choices: an array of strings for each possible choice.
+   *
+   * Emitted when one or more processes are blocking an operation
+   * e.g. unmounting/ejecting a #GMount or stopping a #GDrive.
+   *
+   * Note that this signal may be emitted several times to update the
+   * list of blocking processes as processes close files. The
+   * application should only respond with g_mount_operation_reply() to
+   * the latest signal (setting #GMountOperation:choice to the choice
+   * the user made).
+   *
+   * If the message contains a line break, the first line should be
+   * presented as a heading. For example, it may be used as the
+   * primary text in a #GtkMessageDialog.
+   *
+   * Since: 2.22
+   */
+  signals[SHOW_PROCESSES] =
+    g_signal_new (I_("show-processes"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (GMountOperationClass, show_processes),
+		  NULL, NULL,
+		  _gio_marshal_VOID__STRING_BOXED_BOXED,
+		  G_TYPE_NONE, 3,
+		  G_TYPE_STRING, G_TYPE_ARRAY, G_TYPE_STRV);
 
   /**
    * GMountOperation:username:

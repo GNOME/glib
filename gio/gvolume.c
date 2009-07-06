@@ -429,6 +429,8 @@ g_volume_mount_finish (GVolume       *volume,
  * Ejects a volume. This is an asynchronous operation, and is
  * finished by calling g_volume_eject_finish() with the @volume
  * and #GAsyncResult returned in the @callback.
+ *
+ * Deprecated: 2.22: Use g_volume_eject_with_operation() instead.
  **/
 void
 g_volume_eject (GVolume             *volume,
@@ -465,6 +467,8 @@ g_volume_eject (GVolume             *volume,
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE, %FALSE if operation failed.
+ *
+ * Deprecated: 2.22: Use g_volume_eject_with_operation_finish() instead.
  **/
 gboolean
 g_volume_eject_finish (GVolume       *volume,
@@ -485,6 +489,91 @@ g_volume_eject_finish (GVolume       *volume,
   
   iface = G_VOLUME_GET_IFACE (volume);
   return (* iface->eject_finish) (volume, result, error);
+}
+
+/**
+ * g_volume_eject_with_operation:
+ * @volume: a #GVolume.
+ * @flags: flags affecting the unmount if required for eject
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data passed to @callback.
+ *
+ * Ejects a volume. This is an asynchronous operation, and is
+ * finished by calling g_volume_eject_with_operation_finish() with the @volume
+ * and #GAsyncResult data returned in the @callback.
+ *
+ * Since: 2.22
+ **/
+void
+g_volume_eject_with_operation (GVolume              *volume,
+                               GMountUnmountFlags   flags,
+                               GMountOperation     *mount_operation,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data)
+{
+  GVolumeIface *iface;
+
+  g_return_if_fail (G_IS_VOLUME (volume));
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->eject == NULL && iface->eject_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (volume),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for volume objects that
+					    * don't implement any of eject or eject_with_operation. */
+					   _("volume doesn't implement eject or eject_with_operation"));
+      return;
+    }
+
+  if (iface->eject_with_operation != NULL)
+    (* iface->eject_with_operation) (volume, flags, mount_operation, cancellable, callback, user_data);
+  else
+    (* iface->eject) (volume, flags, cancellable, callback, user_data);
+}
+
+/**
+ * g_volume_eject_with_operation_finish:
+ * @volume: a #GVolume.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore.
+ *
+ * Finishes ejecting a volume. If any errors occurred during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
+ *
+ * Returns: %TRUE if the volume was successfully ejected. %FALSE otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_volume_eject_with_operation_finish (GVolume        *volume,
+                                      GAsyncResult  *result,
+                                      GError       **error)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+
+  iface = G_VOLUME_GET_IFACE (volume);
+  if (iface->eject_with_operation_finish != NULL)
+    return (* iface->eject_with_operation_finish) (volume, result, error);
+  else
+    return (* iface->eject_finish) (volume, result, error);
 }
 
 /**

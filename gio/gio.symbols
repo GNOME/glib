@@ -208,19 +208,24 @@ g_drive_has_media
 g_drive_is_media_check_automatic
 g_drive_can_poll_for_media
 g_drive_can_eject
-g_drive_eject
-g_drive_eject_finish
+g_drive_eject_with_operation
+g_drive_eject_with_operation_finish
 g_drive_poll_for_media
 g_drive_poll_for_media_finish
 g_drive_get_identifier
 g_drive_enumerate_identifiers
 g_drive_get_start_stop_type
 g_drive_can_start
+g_drive_can_start_degraded
 g_drive_start
 g_drive_start_finish
 g_drive_can_stop
 g_drive_stop
 g_drive_stop_finish
+#ifndef G_DISABLE_DEPRECATED
+g_drive_eject
+g_drive_eject_finish
+#endif
 #endif
 #endif
 
@@ -313,10 +318,10 @@ g_file_mount_enclosing_volume
 g_file_mount_enclosing_volume_finish
 g_file_mount_mountable
 g_file_mount_mountable_finish
-g_file_unmount_mountable
-g_file_unmount_mountable_finish
-g_file_eject_mountable
-g_file_eject_mountable_finish
+g_file_unmount_mountable_with_operation
+g_file_unmount_mountable_with_operation_finish
+g_file_eject_mountable_with_operation
+g_file_eject_mountable_with_operation_finish
 g_file_copy_attributes
 g_file_monitor_directory
 g_file_monitor_file
@@ -344,6 +349,14 @@ g_file_start_mountable_finish
 g_file_stop_mountable
 g_file_stop_mountable_finish
 g_file_supports_thread_contexts
+g_file_poll_mountable
+g_file_poll_mountable_finish
+#ifndef G_DISABLE_DEPRECATED
+g_file_unmount_mountable
+g_file_unmount_mountable_finish
+g_file_eject_mountable
+g_file_eject_mountable_finish
+#endif
 #endif
 #endif
 
@@ -785,10 +798,10 @@ g_mount_get_volume
 g_mount_get_drive 
 g_mount_can_unmount 
 g_mount_can_eject 
-g_mount_unmount 
-g_mount_unmount_finish 
-g_mount_eject 
-g_mount_eject_finish 
+g_mount_unmount_with_operation
+g_mount_unmount_with_operation_finish
+g_mount_eject_with_operation
+g_mount_eject_with_operation_finish
 g_mount_remount 
 g_mount_remount_finish 
 g_mount_guess_content_type
@@ -797,6 +810,12 @@ g_mount_guess_content_type_sync
 g_mount_is_shadowed
 g_mount_shadow
 g_mount_unshadow
+#ifndef G_DISABLE_DEPRECATED
+g_mount_unmount 
+g_mount_unmount_finish 
+g_mount_eject 
+g_mount_eject_finish 
+#endif
 #endif
 #endif
 
@@ -813,11 +832,15 @@ g_volume_can_mount
 g_volume_can_eject
 g_volume_mount 
 g_volume_mount_finish 
-g_volume_eject 
-g_volume_eject_finish
+g_volume_eject_with_operation
+g_volume_eject_with_operation_finish
 g_volume_get_identifier
 g_volume_enumerate_identifiers
 g_volume_get_activation_root
+#ifndef G_DISABLE_DEPRECATED
+g_volume_eject 
+g_volume_eject_finish
+#endif
 #endif
 #endif
 

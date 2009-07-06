@@ -109,8 +109,8 @@
  * take a very long time to finish, and blocking may leave an application
  * unusable. Notable cases include:
  * g_file_mount_mountable() to mount a mountable file.
- * g_file_unmount_mountable() to unmount a mountable file.
- * g_file_eject_mountable() to eject a mountable file.
+ * g_file_unmount_mountable_with_operation() to unmount a mountable file.
+ * g_file_eject_mountable_with_operation() to eject a mountable file.
  * 
  * <para id="gfile-etag"><indexterm><primary>entity tag</primary></indexterm>
  * One notable feature of #GFile<!-- -->s are entity tags, or "etags" for 
@@ -4164,6 +4164,8 @@ g_file_mount_mountable_finish (GFile         *file,
  *
  * When the operation is finished, @callback will be called. You can then call
  * g_file_unmount_mountable_finish() to get the result of the operation.
+ *
+ * Deprecated: 2.22: Use g_file_unmount_mountable_with_operation() instead.
  **/
 void
 g_file_unmount_mountable (GFile               *file,
@@ -4209,6 +4211,8 @@ g_file_unmount_mountable (GFile               *file,
  *
  * Returns: %TRUE if the operation finished successfully. %FALSE
  * otherwise.
+ *
+ * Deprecated: 2.22: Use g_file_unmount_mountable_with_operation_finish() instead.
  **/
 gboolean
 g_file_unmount_mountable_finish (GFile         *file,
@@ -4232,6 +4236,106 @@ g_file_unmount_mountable_finish (GFile         *file,
 }
 
 /**
+ * g_file_unmount_mountable_with_operation:
+ * @file: input #GFile.
+ * @flags: flags affecting the operation
+ * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
+ * @user_data: the data to pass to callback function
+ *
+ * Unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_unmount_mountable_finish() to get the result of the operation.
+ *
+ * Since: 2.22
+ **/
+void
+g_file_unmount_mountable_with_operation (GFile               *file,
+                                         GMountUnmountFlags   flags,
+                                         GMountOperation     *mount_operation,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->unmount_mountable == NULL && iface->unmount_mountable_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (file),
+					   callback,
+					   user_data,
+					   G_IO_ERROR,
+					   G_IO_ERROR_NOT_SUPPORTED,
+					   _("Operation not supported"));
+      return;
+    }
+
+  if (iface->unmount_mountable_with_operation != NULL)
+    (* iface->unmount_mountable_with_operation) (file,
+                                                 flags,
+                                                 mount_operation,
+                                                 cancellable,
+                                                 callback,
+                                                 user_data);
+  else
+    (* iface->unmount_mountable) (file,
+                                  flags,
+                                  cancellable,
+                                  callback,
+                                  user_data);
+}
+
+/**
+ * g_file_unmount_mountable_with_operation_finish:
+ * @file: input #GFile.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an unmount operation, see g_file_unmount_mountable_with_operation() for details.
+ *
+ * Finish an asynchronous unmount operation that was started
+ * with g_file_unmount_mountable_with_operation().
+ *
+ * Returns: %TRUE if the operation finished successfully. %FALSE
+ * otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_file_unmount_mountable_with_operation_finish (GFile         *file,
+                                                GAsyncResult  *result,
+                                                GError       **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_FILE_GET_IFACE (file);
+  if (iface->unmount_mountable_with_operation_finish != NULL)
+    return (* iface->unmount_mountable_with_operation_finish) (file, result, error);
+  else
+    return (* iface->unmount_mountable_finish) (file, result, error);
+}
+
+/**
  * g_file_eject_mountable:
  * @file: input #GFile.
  * @flags: flags affecting the operation
@@ -4247,6 +4351,8 @@ g_file_unmount_mountable_finish (GFile         *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ *
+ * Deprecated: 2.22: Use g_file_eject_mountable_with_operation() instead.
  **/
 void
 g_file_eject_mountable (GFile               *file,
@@ -4290,6 +4396,8 @@ g_file_eject_mountable (GFile               *file,
  * 
  * Returns: %TRUE if the @file was ejected successfully. %FALSE 
  * otherwise.
+ *
+ * Deprecated: 2.22: Use g_file_eject_mountable_with_operation_finish() instead.
  **/
 gboolean
 g_file_eject_mountable_finish (GFile         *file,
@@ -4310,6 +4418,104 @@ g_file_eject_mountable_finish (GFile         *file,
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->eject_mountable_finish) (file, result, error);
+}
+
+/**
+ * g_file_eject_mountable_with_operation:
+ * @file: input #GFile.
+ * @flags: flags affecting the operation
+ * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
+ * @user_data: the data to pass to callback function
+ *
+ * Starts an asynchronous eject on a mountable.
+ * When this operation has completed, @callback will be called with
+ * @user_user data, and the operation can be finalized with
+ * g_file_eject_mountable_with_operation_finish().
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
+ * Since: 2.22
+ **/
+void
+g_file_eject_mountable_with_operation (GFile               *file,
+                                       GMountUnmountFlags   flags,
+                                       GMountOperation     *mount_operation,
+                                       GCancellable        *cancellable,
+                                       GAsyncReadyCallback  callback,
+                                       gpointer             user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->eject_mountable == NULL && iface->eject_mountable_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (file),
+					   callback,
+					   user_data,
+					   G_IO_ERROR,
+					   G_IO_ERROR_NOT_SUPPORTED,
+					   _("Operation not supported"));
+      return;
+    }
+
+  if (iface->eject_mountable_with_operation != NULL)
+    (* iface->eject_mountable_with_operation) (file,
+                                               flags,
+                                               mount_operation,
+                                               cancellable,
+                                               callback,
+                                               user_data);
+  else
+    (* iface->eject_mountable) (file,
+                                flags,
+                                cancellable,
+                                callback,
+                                user_data);
+}
+
+/**
+ * g_file_eject_mountable_with_operation_finish:
+ * @file: input #GFile.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous eject operation started by
+ * g_file_eject_mountable_with_operation().
+ *
+ * Returns: %TRUE if the @file was ejected successfully. %FALSE
+ * otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_file_eject_mountable_with_operation_finish (GFile         *file,
+                                              GAsyncResult  *result,
+                                              GError       **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_FILE_GET_IFACE (file);
+  if (iface->eject_mountable_with_operation_finish != NULL)
+    return (* iface->eject_mountable_with_operation_finish) (file, result, error);
+  else
+    return (* iface->eject_mountable_finish) (file, result, error);
 }
 
 /**
@@ -6668,6 +6874,7 @@ g_file_start_mountable_finish (GFile                      *file,
  * g_file_stop_mountable:
  * @file: input #GFile.
  * @flags: flags affecting the operation
+ * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
@@ -6686,6 +6893,7 @@ g_file_start_mountable_finish (GFile                      *file,
 void
 g_file_stop_mountable (GFile                      *file,
                        GMountUnmountFlags          flags,
+                       GMountOperation            *mount_operation,
                        GCancellable               *cancellable,
                        GAsyncReadyCallback         callback,
                        gpointer                    user_data)
@@ -6709,6 +6917,7 @@ g_file_stop_mountable (GFile                      *file,
 
   (* iface->stop_mountable) (file,
                              flags,
+                             mount_operation,
                              cancellable,
                              callback,
                              user_data);
@@ -6752,6 +6961,90 @@ g_file_stop_mountable_finish (GFile                      *file,
 }
 
 /**
+ * g_file_poll_mountable:
+ * @file: input #GFile.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
+ * @user_data: the data to pass to callback function
+ *
+ * Polls a file of type G_FILE_TYPE_MOUNTABLE.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_mount_mountable_finish() to get the result of the operation.
+ *
+ * Since: 2.22
+ */
+void
+g_file_poll_mountable (GFile                      *file,
+                       GCancellable               *cancellable,
+                       GAsyncReadyCallback         callback,
+                       gpointer                    user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->poll_mountable == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (file),
+					   callback,
+					   user_data,
+					   G_IO_ERROR,
+					   G_IO_ERROR_NOT_SUPPORTED,
+					   _("Operation not supported"));
+      return;
+    }
+
+  (* iface->poll_mountable) (file,
+                             cancellable,
+                             callback,
+                             user_data);
+}
+
+/**
+ * g_file_poll_mountable_finish:
+ * @file: input #GFile.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes a poll operation. See g_file_poll_mountable() for details.
+ *
+ * Finish an asynchronous poll operation that was polled
+ * with g_file_poll_mountable().
+ *
+ * Returns: %TRUE if the operation finished successfully. %FALSE
+ * otherwise.
+ *
+ * Since: 2.22
+ */
+gboolean
+g_file_poll_mountable_finish (GFile                      *file,
+                              GAsyncResult               *result,
+                              GError                    **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->poll_mountable_finish) (file, result, error);
+}
+
+/**
  * g_file_supports_thread_contexts:
  * @file: a #GFile.
  *
@@ -6768,12 +7061,12 @@ g_file_stop_mountable_finish (GFile                      *file,
 gboolean
 g_file_supports_thread_contexts (GFile *file)
 {
-  GFileIface *iface;
+ GFileIface *iface;
 
-  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+ g_return_val_if_fail (G_IS_FILE (file), FALSE);
 
-  iface = G_FILE_GET_IFACE (file);
-  return iface->supports_thread_contexts;
+ iface = G_FILE_GET_IFACE (file);
+ return iface->supports_thread_contexts;
 }
 
 #define __G_FILE_C__

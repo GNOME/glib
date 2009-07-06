@@ -24,8 +24,8 @@
         <xi:include href="xml/gfileattribute.xml"/>
     	<xi:include href="xml/gfileinfo.xml"/>
 	<xi:include href="xml/gfileenumerator.xml"/>
-	<xi:include href="xml/gmountoperation.xml"/>
 	<xi:include href="xml/gioerror.xml"/>
+	<xi:include href="xml/gmountoperation.xml"/>
     </chapter>
     <chapter id="file_mon">
     	<title>File System Monitoring</title>
@@ -144,6 +144,9 @@
   
   <index>
     <title id="index-all">Index</title>
+  </index>
+  <index role="deprecated">
+    <title>Index of deprecated symbols</title>
   </index>
   <index role="2.18">
     <title>Index of new symbols in 2.18</title>

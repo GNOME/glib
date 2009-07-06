@@ -53,13 +53,13 @@
  * Unmounting a #GMount instance is an asynchronous operation. For
  * more information about asynchronous operations, see #GAsyncReady
  * and #GSimpleAsyncReady. To unmount a #GMount instance, first call
- * g_mount_unmount() with (at least) the #GMount instance and a
+ * g_mount_unmount_with_operation() with (at least) the #GMount instance and a
  * #GAsyncReadyCallback.  The callback will be fired when the
  * operation has resolved (either with success or failure), and a
  * #GAsyncReady structure will be passed to the callback.  That
- * callback should then call g_mount_unmount_finish() with the #GMount
+ * callback should then call g_mount_unmount_with_operation_finish() with the #GMount
  * and the #GAsyncReady data to see if the operation was completed
- * successfully.  If an @error is present when g_mount_unmount_finish() 
+ * successfully.  If an @error is present when g_mount_unmount_with_operation_finish() 
  * is called, then it will be filled with any error information.
  **/
 
@@ -351,6 +351,8 @@ g_mount_can_eject (GMount *mount)
  * Unmounts a mount. This is an asynchronous operation, and is 
  * finished by calling g_mount_unmount_finish() with the @mount 
  * and #GAsyncResult data returned in the @callback.
+ *
+ * Deprecated: 2.22: Use g_mount_unmount_with_operation() instead.
  **/
 void
 g_mount_unmount (GMount              *mount,
@@ -392,6 +394,8 @@ g_mount_unmount (GMount              *mount,
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE if the mount was successfully unmounted. %FALSE otherwise.
+ *
+ * Deprecated: 2.22: Use g_mount_unmount_with_operation_finish() instead.
  **/
 gboolean
 g_mount_unmount_finish (GMount        *mount,
@@ -426,6 +430,8 @@ g_mount_unmount_finish (GMount        *mount,
  * Ejects a mount. This is an asynchronous operation, and is 
  * finished by calling g_mount_eject_finish() with the @mount 
  * and #GAsyncResult data returned in the @callback.
+ *
+ * Deprecated: 2.22: Use g_mount_eject_with_operation() instead.
  **/
 void
 g_mount_eject (GMount              *mount,
@@ -467,6 +473,8 @@ g_mount_eject (GMount              *mount,
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE if the mount was successfully ejected. %FALSE otherwise.
+ *
+ * Deprecated: 2.22: Use g_mount_eject_with_operation_finish() instead.
  **/
 gboolean
 g_mount_eject_finish (GMount        *mount,
@@ -487,6 +495,178 @@ g_mount_eject_finish (GMount        *mount,
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->eject_finish) (mount, result, error);
+}
+
+/**
+ * g_mount_unmount_with_operation:
+ * @mount: a #GMount.
+ * @flags: flags affecting the operation
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data passed to @callback.
+ *
+ * Unmounts a mount. This is an asynchronous operation, and is
+ * finished by calling g_mount_unmount_with_operation_finish() with the @mount 
+ * and #GAsyncResult data returned in the @callback.
+ *
+ * Since: 2.22
+ **/
+void
+g_mount_unmount_with_operation (GMount              *mount,
+                                GMountUnmountFlags   flags,
+                                GMountOperation     *mount_operation,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             user_data)
+{
+  GMountIface *iface;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->unmount == NULL && iface->unmount_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for mount objects that
+					    * don't implement any of unmount or unmount_with_operation. */
+					   _("mount doesn't implement unmount or unmount_with_operation"));
+
+      return;
+    }
+
+  if (iface->unmount_with_operation != NULL)
+    (* iface->unmount_with_operation) (mount, flags, mount_operation, cancellable, callback, user_data);
+  else
+    (* iface->unmount) (mount, flags, cancellable, callback, user_data);
+}
+
+/**
+ * g_mount_unmount_with_operation_finish:
+ * @mount: a #GMount.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore.
+ *
+ * Finishes unmounting a mount. If any errors occurred during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
+ *
+ * Returns: %TRUE if the mount was successfully unmounted. %FALSE otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_mount_unmount_with_operation_finish (GMount        *mount,
+                                       GAsyncResult  *result,
+                                       GError       **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+
+  iface = G_MOUNT_GET_IFACE (mount);
+  if (iface->unmount_with_operation_finish != NULL)
+    return (* iface->unmount_with_operation_finish) (mount, result, error);
+  else
+    return (* iface->unmount_finish) (mount, result, error);
+}
+
+
+/**
+ * g_mount_eject_with_operation:
+ * @mount: a #GMount.
+ * @flags: flags affecting the unmount if required for eject
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @user_data: user data passed to @callback.
+ *
+ * Ejects a mount. This is an asynchronous operation, and is
+ * finished by calling g_mount_eject_with_operation_finish() with the @mount
+ * and #GAsyncResult data returned in the @callback.
+ *
+ * Since: 2.22
+ **/
+void
+g_mount_eject_with_operation (GMount              *mount,
+                              GMountUnmountFlags   flags,
+                              GMountOperation     *mount_operation,
+                              GCancellable        *cancellable,
+                              GAsyncReadyCallback  callback,
+                              gpointer             user_data)
+{
+  GMountIface *iface;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->eject == NULL && iface->eject_with_operation == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   /* Translators: This is an error
+					    * message for mount objects that
+					    * don't implement any of eject or eject_with_operation. */
+					   _("mount doesn't implement eject or eject_with_operation"));
+      return;
+    }
+
+  if (iface->eject_with_operation != NULL)
+    (* iface->eject_with_operation) (mount, flags, mount_operation, cancellable, callback, user_data);
+  else
+    (* iface->eject) (mount, flags, cancellable, callback, user_data);
+}
+
+/**
+ * g_mount_eject_with_operation_finish:
+ * @mount: a #GMount.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ *     ignore.
+ *
+ * Finishes ejecting a mount. If any errors occurred during the operation,
+ * @error will be set to contain the errors and %FALSE will be returned.
+ *
+ * Returns: %TRUE if the mount was successfully ejected. %FALSE otherwise.
+ *
+ * Since: 2.22
+ **/
+gboolean
+g_mount_eject_with_operation_finish (GMount        *mount,
+                                     GAsyncResult  *result,
+                                     GError       **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+
+  iface = G_MOUNT_GET_IFACE (mount);
+  if (iface->eject_with_operation_finish != NULL)
+    return (* iface->eject_with_operation_finish) (mount, result, error);
+  else
+    return (* iface->eject_finish) (mount, result, error);
 }
 
 /**
