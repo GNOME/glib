@@ -257,6 +257,8 @@ g_tree_remove_all (GTree *tree)
       node = next;
     }
 
+  tree->root = NULL;
+  tree->nnodes = 0;
 }
 
 /**
