@@ -1530,6 +1530,7 @@ _g_local_file_info_get (const char             *basename,
 #endif
 
   symlink_target = NULL;
+#ifdef S_ISLNK
   if (is_symlink)
     {
       symlink_target = read_link (path);
@@ -1538,7 +1539,7 @@ _g_local_file_info_get (const char             *basename,
                                                 G_FILE_ATTRIBUTE_ID_STANDARD_SYMLINK_TARGET))
         g_file_info_set_symlink_target (info, symlink_target);
     }
-
+#endif
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
     {
