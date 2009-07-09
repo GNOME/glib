@@ -139,7 +139,8 @@ Flags specifying compile-time options.
 </para>
 
 @G_REGEX_CASELESS: Letters in the pattern match both upper and lower case
-letters. It be changed within a pattern by a "(?i)" option setting.
+letters. This option can be changed within a pattern by a "(?i)" option
+setting.
 @G_REGEX_MULTILINE: By default, GRegex treats the strings as consisting
 of a single line of characters (even if it actually contains newlines).
 The "start of line" metacharacter ("^") matches only at the start of the
