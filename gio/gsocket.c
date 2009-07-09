@@ -45,12 +45,14 @@
 #include "gsocket.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
+#include "ginetaddress.h"
 #include "ginitable.h"
-#include "gasynchelper.h"
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
 #include "gnetworkingprivate.h"
+#include "gsocketaddress.h"
+#include "gsocketcontrolmessage.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -2188,6 +2190,7 @@ update_condition (GSocket *socket)
 
   return condition;
 }
+#endif
 
 typedef struct {
   GSource       source;
@@ -2196,103 +2199,87 @@ typedef struct {
   GIOCondition  condition;
   GCancellable *cancellable;
   GPollFD       cancel_pollfd;
-  GIOCondition  result_condition;
-} GWinsockSource;
+} GSocketSource;
 
 static gboolean
-winsock_prepare (GSource *source,
-		 gint    *timeout)
+socket_source_prepare (GSource *source,
+		       gint    *timeout)
 {
-  GWinsockSource *winsock_source = (GWinsockSource *)source;
-  GIOCondition current_condition;
+  GSocketSource *socket_source = (GSocketSource *)source;
 
-  current_condition = update_condition (winsock_source->socket);
+#ifdef G_OS_WIN32
+  socket_source->pollfd.revents = update_condition (socket_source->socket);
+#endif
+  *timeout = -1;
 
-  if (g_cancellable_is_cancelled (winsock_source->cancellable))
-    {
-      winsock_source->result_condition = current_condition;
-      return TRUE;
-    }
+  if (g_cancellable_is_cancelled (socket_source->cancellable))
+    return TRUE;
 
-  if ((winsock_source->condition & current_condition) != 0)
-    {
-      winsock_source->result_condition = current_condition;
-      return TRUE;
-    }
+  if ((socket_source->condition & socket_source->pollfd.revents) != 0)
+    return TRUE;
 
   return FALSE;
 }
 
 static gboolean
-winsock_check (GSource *source)
+socket_source_check (GSource *source)
 {
-  GWinsockSource *winsock_source = (GWinsockSource *)source;
-  GIOCondition current_condition;
+  int timeout;
 
-  current_condition = update_condition (winsock_source->socket);
-
-  if (g_cancellable_is_cancelled (winsock_source->cancellable))
-    {
-      winsock_source->result_condition = current_condition;
-      return TRUE;
-    }
-
-  if ((winsock_source->condition & current_condition) != 0)
-    {
-      winsock_source->result_condition = current_condition;
-      return TRUE;
-    }
-
-  return FALSE;
+  return socket_source_prepare (source, &timeout);
 }
 
 static gboolean
-winsock_dispatch (GSource     *source,
-		  GSourceFunc  callback,
-		  gpointer     user_data)
+socket_source_dispatch (GSource     *source,
+			GSourceFunc  callback,
+			gpointer     user_data)
 {
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
-  GWinsockSource *winsock_source = (GWinsockSource *)source;
+  GSocketSource *socket_source = (GSocketSource *)source;
 
-  return (*func) (winsock_source->socket,
-		  winsock_source->result_condition & winsock_source->condition,
+  return (*func) (socket_source->socket,
+		  socket_source->pollfd.revents & socket_source->condition,
 		  user_data);
 }
 
 static void
-winsock_finalize (GSource *source)
+socket_source_finalize (GSource *source)
 {
-  GWinsockSource *winsock_source = (GWinsockSource *)source;
+  GSocketSource *socket_source = (GSocketSource *)source;
   GSocket *socket;
 
-  socket = winsock_source->socket;
+  socket = socket_source->socket;
 
-  remove_condition_watch (socket, &winsock_source->condition);
+#ifdef G_OS_WIN32
+  remove_condition_watch (socket, &socket_source->condition);
+#endif
+
   g_object_unref (socket);
 
-  if (winsock_source->cancellable)
+  if (socket_source->cancellable)
     {
-      g_cancellable_release_fd (winsock_source->cancellable);
-      g_object_unref (winsock_source->cancellable);
+      g_cancellable_release_fd (socket_source->cancellable);
+      g_object_unref (socket_source->cancellable);
     }
 }
 
-static GSourceFuncs winsock_funcs =
+static GSourceFuncs socket_source_funcs =
 {
-  winsock_prepare,
-  winsock_check,
-  winsock_dispatch,
-  winsock_finalize
+  socket_source_prepare,
+  socket_source_check,
+  socket_source_dispatch,
+  socket_source_finalize
 };
 
 static GSource *
-winsock_source_new (GSocket      *socket,
-		    GIOCondition  condition,
-		    GCancellable *cancellable)
+socket_source_new (GSocket      *socket,
+		   GIOCondition  condition,
+		   GCancellable *cancellable)
 {
   GSource *source;
-  GWinsockSource *winsock_source;
+  GSocketSource *socket_source;
 
+#ifdef G_OS_WIN32
   ensure_event (socket);
 
   if (socket->priv->event == WSA_INVALID_EVENT)
@@ -2300,30 +2287,36 @@ winsock_source_new (GSocket      *socket,
       g_warning ("Failed to create WSAEvent");
       return g_source_new (&broken_funcs, sizeof (GSource));
     }
+#endif
 
   condition |= G_IO_HUP | G_IO_ERR;
 
-  source = g_source_new (&winsock_funcs, sizeof (GWinsockSource));
-  winsock_source = (GWinsockSource *)source;
+  source = g_source_new (&socket_source_funcs, sizeof (GSocketSource));
+  socket_source = (GSocketSource *)source;
 
-  winsock_source->socket = g_object_ref (socket);
-  winsock_source->condition = condition;
-  add_condition_watch (socket, &winsock_source->condition);
+  socket_source->socket = g_object_ref (socket);
+  socket_source->condition = condition;
 
   if (g_cancellable_make_pollfd (cancellable,
-                                 &winsock_source->cancel_pollfd))
+                                 &socket_source->cancel_pollfd))
     {
-      winsock_source->cancellable = g_object_ref (cancellable);
-      g_source_add_poll (source, &winsock_source->cancel_pollfd);
+      socket_source->cancellable = g_object_ref (cancellable);
+      g_source_add_poll (source, &socket_source->cancel_pollfd);
     }
 
-  winsock_source->pollfd.fd = (gintptr) socket->priv->event;
-  winsock_source->pollfd.events = condition;
-  g_source_add_poll (source, &winsock_source->pollfd);
+#ifdef G_OS_WIN32
+  add_condition_watch (socket, &socket_source->condition);
+  socket_source->pollfd.fd = (gintptr) socket->priv->event;
+#else
+  socket_source->pollfd.fd = socket->priv->fd;
+#endif
+
+  socket_source->pollfd.events = condition;
+  socket_source->pollfd.revents = 0;
+  g_source_add_poll (source, &socket_source->pollfd);
 
   return source;
 }
-#endif
 
 /**
  * g_socket_create_source:
@@ -2336,7 +2329,7 @@ winsock_source_new (GSocket      *socket,
  *
  * The callback on the source is of the #GSocketSourceFunc type.
  *
- * It is meaningless to specify %G_IO_ERR or %G_IO_HUP in condition;
+ * It is meaningless to specify %G_IO_ERR or %G_IO_HUP in @condition;
  * these conditions will always be reported output if they are true.
  *
  * @cancellable if not %NULL can be used to cancel the source, which will
@@ -2354,16 +2347,9 @@ g_socket_create_source (GSocket      *socket,
 			GIOCondition  condition,
 			GCancellable *cancellable)
 {
-  GSource *source;
   g_return_val_if_fail (G_IS_SOCKET (socket) && (cancellable == NULL || G_IS_CANCELLABLE (cancellable)), NULL);
 
-#ifdef G_OS_WIN32
-  source = winsock_source_new (socket, condition, cancellable);
-#else
-  source =_g_fd_source_new_with_object (G_OBJECT (socket), socket->priv->fd,
-					condition, cancellable);
-#endif
-  return source;
+  return socket_source_new (socket, condition, cancellable);
 }
 
 /**
