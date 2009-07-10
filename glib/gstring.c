@@ -60,10 +60,14 @@ struct _GStringChunk
  * g_str_equal:
  * @v1: a key
  * @v2: a key to compare with @v1
- * 
- * Compares two strings for byte-by-byte equality and returns %TRUE 
- * if they are equal. It can be passed to g_hash_table_new() as the 
+ *
+ * Compares two strings for byte-by-byte equality and returns %TRUE
+ * if they are equal. It can be passed to g_hash_table_new() as the
  * @key_equal_func parameter, when using strings as keys in a #GHashTable.
+ *
+ * Note that this function is primarily meant as a hash table comparison
+ * function. For a general-purpose, %NULL-safe string comparison function,
+ * see g_strcmp0().
  *
  * Returns: %TRUE if the two keys match
  */
