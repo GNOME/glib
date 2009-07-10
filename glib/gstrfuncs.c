@@ -1032,7 +1032,7 @@ g_strerror (gint errnum)
 #if defined(EDEADLK) && (!defined(EWOULDBLOCK) || (EDEADLK != EWOULDBLOCK))
     case EDEADLK: return "resource deadlock avoided";
 #endif
-#ifdef EDEADLOCK
+#if defined(EDEADLOCK) && (!defined(EDEADLK) || (EDEADLOCK != EDEADLK))
     case EDEADLOCK: return "resource deadlock avoided";
 #endif
 #ifdef EDESTADDRREQ
