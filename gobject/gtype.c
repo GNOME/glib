@@ -582,7 +582,7 @@ type_lookup_prerequisite_L (TypeNode *iface,
   return FALSE;
 }
 
-static gchar*
+static const gchar*
 type_descriptive_name_I (GType type)
 {
   if (type)
