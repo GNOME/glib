@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.21.3 to GLib 2.21.4
+===================================================
+
+* GTree is now refcounted
+
+* Bugs fixed:
+ 587938 Undocumented limitation for g_str_equal
+ 587773 refcounts for GTree
+
+* Updated translations:
+ French
+ Hebrew
+ Norwegian bokmål
+ Spanish
+ Swedish
+ Traditional Chinese
+ Ukrainian
+
+
 Overview of Changes from GLib 2.21.2 to GLib 2.21.3
 ===================================================
 
