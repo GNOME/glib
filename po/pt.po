@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.26\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 00:13-0400\n"
+"POT-Creation-Date: 2009-07-17 19:34-0400\n"
 "PO-Revision-Date: 2009-02-25 00:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -1142,7 +1142,7 @@ msgstr "Incapaz de interpretar o valor '%s' como uma boleana."
 msgid "Too large count value passed to %s"
 msgstr "Valor de contagem demasiado grande passado para %s"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898 gio/giostream.c:309
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "O fluxo já se encontra fechado"
@@ -1341,11 +1341,13 @@ msgid "Malformed input data for GFileIcon"
 msgstr "Dados de entrada mal-formados para o GFileIcon"
 
 #: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
-#: gio/gfileoutputstream.c:170 gio/gfileoutputstream.c:525
+#: gio/gfileiostream.c:171 gio/gfileoutputstream.c:170
+#: gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "Fluxo não suporta query_info"
 
-#: gio/gfileinputstream.c:337 gio/gfileoutputstream.c:383
+#: gio/gfileinputstream.c:337 gio/gfileiostream.c:389
+#: gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "Fluxo não suporta procura"
 
@@ -1353,7 +1355,7 @@ msgstr "Fluxo não suporta procura"
 msgid "Truncate not allowed on input stream"
 msgstr "Fluxo de entrada não permite truncar"
 
-#: gio/gfileoutputstream.c:459
+#: gio/gfileiostream.c:465 gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "Fluxo não suporta truncar"
 
@@ -1401,9 +1403,18 @@ msgstr "Fluxo de entrada não implementa a leitura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:908 gio/goutputstream.c:1095
+#: gio/ginputstream.c:908 gio/giostream.c:319 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "Fluxo tem uma operação por terminar"
+
+#: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
+#: gio/gunixsocketaddress.c:174
+msgid "Not enough space for socket address"
+msgstr ""
+
+#: gio/ginetsocketaddress.c:212
+msgid "Unsupported socket address"
+msgstr ""
 
 #: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
@@ -1538,70 +1549,70 @@ msgstr "Erro ao definir o atributo extendido '%s': %s"
 msgid "Error stating file '%s': %s"
 msgstr "Erro ao verificar o ficheiro '%s': %s"
 
-#: gio/glocalfileinfo.c:1551
+#: gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
 msgstr " (codificação inválida)"
 
-#: gio/glocalfileinfo.c:1758
+#: gio/glocalfileinfo.c:1759
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erro ao verificar o descritor do ficheiro: %s"
 
-#: gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1804
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo inválido (esperado um uint32)"
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1822
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo inválido (esperado um uint64)"
 
-#: gio/glocalfileinfo.c:1840 gio/glocalfileinfo.c:1859
+#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo inválido (esperado uma expressão byte)"
 
-#: gio/glocalfileinfo.c:1885
+#: gio/glocalfileinfo.c:1886
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erro ao definir as permissões: %s"
 
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1937
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erro ao definir o dono: %s"
 
-#: gio/glocalfileinfo.c:1959
+#: gio/glocalfileinfo.c:1960
 msgid "symlink must be non-NULL"
 msgstr "atalho tem de ser não-NULL"
 
-#: gio/glocalfileinfo.c:1969 gio/glocalfileinfo.c:1988
-#: gio/glocalfileinfo.c:1999
+#: gio/glocalfileinfo.c:1970 gio/glocalfileinfo.c:1989
+#: gio/glocalfileinfo.c:2000
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erro ao definir o atalho: %s"
 
-#: gio/glocalfileinfo.c:1978
+#: gio/glocalfileinfo.c:1979
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Erro ao definir o atalho: ficheiro não é um atalho"
 
-#: gio/glocalfileinfo.c:2104
+#: gio/glocalfileinfo.c:2105
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Erro ao definir as permissões: %s"
 
-#: gio/glocalfileinfo.c:2127
+#: gio/glocalfileinfo.c:2128
 msgid "SELinux context must be non-NULL"
 msgstr "O contexto SELinux tem de ser não-NULL"
 
-#: gio/glocalfileinfo.c:2142
+#: gio/glocalfileinfo.c:2143
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erro ao definir o contexto SELinux: %s"
 
-#: gio/glocalfileinfo.c:2149
+#: gio/glocalfileinfo.c:2150
 msgid "SELinux is not enabled on this system"
 msgstr "O SELinux não está activo neste sistema"
 
-#: gio/glocalfileinfo.c:2241
+#: gio/glocalfileinfo.c:2242
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Não é suportada a definição do atributo %s"
@@ -1753,6 +1764,11 @@ msgstr "montar não implementa detecção do tipo de conteúdo"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "montar não implementa detecção síncrona do tipo de conteúdo"
 
+#: gio/gnetworkaddress.c:295
+#, c-format
+msgid "Hostname '%s' contains '[' but not ']'"
+msgstr ""
+
 #: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Fluxo de saída não implementa a escrita"
@@ -1761,10 +1777,180 @@ msgstr "Fluxo de saída não implementa a escrita"
 msgid "Source stream is already closed"
 msgstr "Fluxo de origem já está fechado"
 
+#: gio/gresolver.c:668
+#, fuzzy, c-format
+msgid "Error resolving '%s': %s"
+msgstr "Erro ao ler o ficheiro '%s': %s"
+
+#: gio/gresolver.c:718
+#, fuzzy, c-format
+msgid "Error reverse-resolving '%s': %s"
+msgstr "Erro ao ler o ficheiro '%s': %s"
+
+#: gio/gresolver.c:753 gio/gresolver.c:831
+#, c-format
+msgid "No service record for '%s'"
+msgstr ""
+
+#: gio/gresolver.c:758 gio/gresolver.c:836
+#, c-format
+msgid "Temporarily unable to resolve '%s'"
+msgstr ""
+
+#: gio/gresolver.c:763 gio/gresolver.c:841
+#, fuzzy, c-format
+msgid "Error resolving '%s'"
+msgstr "Erro ao remover o ficheiro: %s"
+
+#: gio/gsocket.c:277
+msgid "Invalid socket, not initialized"
+msgstr ""
+
+#: gio/gsocket.c:284
+#, c-format
+msgid "Invalid socket, initialization failed due to: %s"
+msgstr ""
+
+#: gio/gsocket.c:292
+#, fuzzy
+msgid "Socket is already closed"
+msgstr "Fluxo de origem já está fechado"
+
+#: gio/gsocket.c:405
+#, fuzzy, c-format
+msgid "creating GSocket from fd: %s"
+msgstr "Erro ao ler do ficheiro: %s"
+
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
+#, fuzzy, c-format
+msgid "Unable to create socket: %s"
+msgstr "Incapaz de criar o directório de Lixo %s: %s"
+
+#: gio/gsocket.c:439
+msgid "Unknown protocol was specified"
+msgstr ""
+
+#: gio/gsocket.c:758
+#, fuzzy
+msgid "Cancellable initialization not supported"
+msgstr "Operação não suportada"
+
+#: gio/gsocket.c:1112
+#, c-format
+msgid "could not get local address: %s"
+msgstr ""
+
+#: gio/gsocket.c:1145
+#, fuzzy, c-format
+msgid "could not get remote address: %s"
+msgstr "Incapaz de alterar o modo do ficheiro: falha no waitpid(): %s"
+
+#: gio/gsocket.c:1203
+#, c-format
+msgid "could not listen: %s"
+msgstr ""
+
+#: gio/gsocket.c:1277
+#, fuzzy, c-format
+msgid "Error binding to address: %s"
+msgstr "Erro ao escrever no ficheiro: %s"
+
+#: gio/gsocket.c:1397
+#, fuzzy, c-format
+msgid "Error accepting connection: %s"
+msgstr "Erro durante a conversão: %s"
+
+#: gio/gsocket.c:1510
+#, fuzzy
+msgid "Error connecting: "
+msgstr "Erro ao truncar ficheiro: %s"
+
+#: gio/gsocket.c:1514
+msgid "Connection in progress"
+msgstr ""
+
+#: gio/gsocket.c:1519
+#, fuzzy, c-format
+msgid "Error connecting: %s"
+msgstr "Erro ao abrir o ficheiro: %s"
+
+#: gio/gsocket.c:1559
+#, fuzzy, c-format
+msgid "Unable to get pending error: %s"
+msgstr "Incapaz de enviar o ficheiro para o Lixo: %s"
+
+#: gio/gsocket.c:1655
+#, fuzzy, c-format
+msgid "Error receiving data: %s"
+msgstr "Erro ao remover o ficheiro: %s"
+
+#: gio/gsocket.c:1788
+#, fuzzy, c-format
+msgid "Error sending data: %s"
+msgstr "Erro ao abrir o ficheiro: %s"
+
+#: gio/gsocket.c:1980
+#, fuzzy, c-format
+msgid "Error closing socket: %s"
+msgstr "Erro ao fechar o ficheiro: %s"
+
+#: gio/gsocket.c:2466
+#, c-format
+msgid "Waiting for socket condition: %s"
+msgstr ""
+
+#: gio/gsocket.c:2698 gio/gsocket.c:2779
+#, fuzzy, c-format
+msgid "Error sending message: %s"
+msgstr "Erro ao abrir o ficheiro: %s"
+
+#: gio/gsocket.c:2723
+#, fuzzy
+msgid "GSocketControlMessage not supported on windows"
+msgstr "alterações de associação não são suportadas em win32"
+
+#: gio/gsocket.c:2981 gio/gsocket.c:3120
+#, fuzzy, c-format
+msgid "Error receiving message: %s"
+msgstr "Erro ao remover o ficheiro: %s"
+
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
+#, fuzzy
+msgid "Unknown error on connect"
+msgstr "erro desconhecido"
+
+#: gio/gsocketlistener.c:192
+#, fuzzy
+msgid "Listener is already closed"
+msgstr "O fluxo já se encontra fechado"
+
+#: gio/gsocketlistener.c:233
+msgid "Added socket is closed"
+msgstr ""
+
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Incapaz de manipular a versão %d da codificação GThemedIcon"
+
+#: gio/gunixconnection.c:151
+#, c-format
+msgid "Expecting 1 control message, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:164
+#, fuzzy
+msgid "Unexpected type of ancillary data"
+msgstr "Final precoce de fluxo inesperado"
+
+#: gio/gunixconnection.c:182
+#, c-format
+msgid "Expecting one fd, but got %d\n"
+msgstr ""
+
+#: gio/gunixconnection.c:198
+msgid "Received invalid fd"
+msgstr ""
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1786,6 +1972,10 @@ msgstr "Raiz do sistema de ficheiros"
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Erro ao escrever no unix: %s"
+
+#: gio/gunixsocketaddress.c:182
+msgid "Abstract unix domain socket addresses not supported on this system"
+msgstr ""
 
 #: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
@@ -1935,9 +2125,6 @@ msgstr "[FICHEIRO...]"
 
 #~ msgid "Could not change file mode: fork() failed: %s"
 #~ msgstr "Incapaz de alterar o modo do ficheiro: falha no fork(): %s"
-
-#~ msgid "Could not change file mode: waitpid() failed: %s"
-#~ msgstr "Incapaz de alterar o modo do ficheiro: falha no waitpid(): %s"
 
 #~ msgid "Could not change file mode: chmod() failed: %s"
 #~ msgstr "Incapaz de alterar o modo do ficheiro: falha no chmod(): %s"

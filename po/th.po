@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 00:13-0400\n"
+"POT-Creation-Date: 2009-07-17 19:34-0400\n"
 "PO-Revision-Date: 2009-02-20 12:07+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -1095,7 +1095,7 @@ msgstr "ค่า '%s' ไม่สามารถตีความเป็น
 msgid "Too large count value passed to %s"
 msgstr "มีการส่งค่า count ที่สูงเกินไปมาให้ %s"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898
+#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898 gio/giostream.c:309
 #: gio/goutputstream.c:1085
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
@@ -1293,11 +1293,13 @@ msgid "Malformed input data for GFileIcon"
 msgstr "ข้อมูลเข้าของ GFileIcon ไม่ถูกต้อง"
 
 #: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
-#: gio/gfileoutputstream.c:170 gio/gfileoutputstream.c:525
+#: gio/gfileiostream.c:171 gio/gfileoutputstream.c:170
+#: gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "สตรีมไม่รองรับ query_info"
 
-#: gio/gfileinputstream.c:337 gio/gfileoutputstream.c:383
+#: gio/gfileinputstream.c:337 gio/gfileiostream.c:389
+#: gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "สตรีมไม่รองรับการเลื่อนตำแหน่งอ่านเขียน"
 
@@ -1305,7 +1307,7 @@ msgstr "สตรีมไม่รองรับการเลื่อนต
 msgid "Truncate not allowed on input stream"
 msgstr "สตรีมข้อมูลเข้าไม่สามารถตัดท้ายทิ้งได้"
 
-#: gio/gfileoutputstream.c:459
+#: gio/gfileiostream.c:465 gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "สตรีมไม่รองรับการตัดท้ายทิ้ง"
 
@@ -1353,9 +1355,18 @@ msgstr "สตรีมข้อมูลเข้ายังไม่รอง
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:908 gio/goutputstream.c:1095
+#: gio/ginputstream.c:908 gio/giostream.c:319 gio/goutputstream.c:1095
 msgid "Stream has outstanding operation"
 msgstr "สตรีมมีการกระทำค้างอยู่"
+
+#: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
+#: gio/gunixsocketaddress.c:174
+msgid "Not enough space for socket address"
+msgstr ""
+
+#: gio/ginetsocketaddress.c:212
+msgid "Unsupported socket address"
+msgstr ""
 
 #: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
@@ -1490,70 +1501,70 @@ msgstr "เกิดข้อผิดพลาดขณะกำหนดแอ
 msgid "Error stating file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat แฟ้ม '%s': %s"
 
-#: gio/glocalfileinfo.c:1551
+#: gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: gio/glocalfileinfo.c:1758
+#: gio/glocalfileinfo.c:1759
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะ stat file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1803
+#: gio/glocalfileinfo.c:1804
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: gio/glocalfileinfo.c:1821
+#: gio/glocalfileinfo.c:1822
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: gio/glocalfileinfo.c:1840 gio/glocalfileinfo.c:1859
+#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: gio/glocalfileinfo.c:1885
+#: gio/glocalfileinfo.c:1886
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:1936
+#: gio/glocalfileinfo.c:1937
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: gio/glocalfileinfo.c:1959
+#: gio/glocalfileinfo.c:1960
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:1969 gio/glocalfileinfo.c:1988
-#: gio/glocalfileinfo.c:1999
+#: gio/glocalfileinfo.c:1970 gio/glocalfileinfo.c:1989
+#: gio/glocalfileinfo.c:2000
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: gio/glocalfileinfo.c:1978
+#: gio/glocalfileinfo.c:1979
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: gio/glocalfileinfo.c:2104
+#: gio/glocalfileinfo.c:2105
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: gio/glocalfileinfo.c:2127
+#: gio/glocalfileinfo.c:2128
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: gio/glocalfileinfo.c:2142
+#: gio/glocalfileinfo.c:2143
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
-#: gio/glocalfileinfo.c:2149
+#: gio/glocalfileinfo.c:2150
 msgid "SELinux is not enabled on this system"
 msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
-#: gio/glocalfileinfo.c:2241
+#: gio/glocalfileinfo.c:2242
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"
@@ -1705,6 +1716,11 @@ msgstr "การเมานท์นี้ยังไม่รองรับ
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหาแบบซิงโครนัส"
 
+#: gio/gnetworkaddress.c:295
+#, c-format
+msgid "Hostname '%s' contains '[' but not ']'"
+msgstr ""
+
 #: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "สตรีมข้อมูลออกยังไม่รองรับการเขียนข้อมูล"
@@ -1713,10 +1729,180 @@ msgstr "สตรีมข้อมูลออกยังไม่รองร
 msgid "Source stream is already closed"
 msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
 
+#: gio/gresolver.c:668
+#, fuzzy, c-format
+msgid "Error resolving '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
+
+#: gio/gresolver.c:718
+#, fuzzy, c-format
+msgid "Error reverse-resolving '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
+
+#: gio/gresolver.c:753 gio/gresolver.c:831
+#, c-format
+msgid "No service record for '%s'"
+msgstr ""
+
+#: gio/gresolver.c:758 gio/gresolver.c:836
+#, c-format
+msgid "Temporarily unable to resolve '%s'"
+msgstr ""
+
+#: gio/gresolver.c:763 gio/gresolver.c:841
+#, fuzzy, c-format
+msgid "Error resolving '%s'"
+msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+
+#: gio/gsocket.c:277
+msgid "Invalid socket, not initialized"
+msgstr ""
+
+#: gio/gsocket.c:284
+#, c-format
+msgid "Invalid socket, initialization failed due to: %s"
+msgstr ""
+
+#: gio/gsocket.c:292
+#, fuzzy
+msgid "Socket is already closed"
+msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
+
+#: gio/gsocket.c:405
+#, fuzzy, c-format
+msgid "creating GSocket from fd: %s"
+msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลจากแฟ้ม: %s"
+
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
+#, fuzzy, c-format
+msgid "Unable to create socket: %s"
+msgstr "สร้างไดเรกทอรีถังขยะ '%s' ไม่สำเร็จ: %s"
+
+#: gio/gsocket.c:439
+msgid "Unknown protocol was specified"
+msgstr ""
+
+#: gio/gsocket.c:758
+#, fuzzy
+msgid "Cancellable initialization not supported"
+msgstr "ไม่รองรับการกระทำนี้"
+
+#: gio/gsocket.c:1112
+#, c-format
+msgid "could not get local address: %s"
+msgstr ""
+
+#: gio/gsocket.c:1145
+#, fuzzy, c-format
+msgid "could not get remote address: %s"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: waitpid() ล้มเหลว: %s"
+
+#: gio/gsocket.c:1203
+#, c-format
+msgid "could not listen: %s"
+msgstr ""
+
+#: gio/gsocket.c:1277
+#, fuzzy, c-format
+msgid "Error binding to address: %s"
+msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้ม: %s"
+
+#: gio/gsocket.c:1397
+#, fuzzy, c-format
+msgid "Error accepting connection: %s"
+msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
+
+#: gio/gsocket.c:1510
+#, fuzzy
+msgid "Error connecting: "
+msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
+
+#: gio/gsocket.c:1514
+msgid "Connection in progress"
+msgstr ""
+
+#: gio/gsocket.c:1519
+#, fuzzy, c-format
+msgid "Error connecting: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+
+#: gio/gsocket.c:1559
+#, fuzzy, c-format
+msgid "Unable to get pending error: %s"
+msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
+
+#: gio/gsocket.c:1655
+#, fuzzy, c-format
+msgid "Error receiving data: %s"
+msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+
+#: gio/gsocket.c:1788
+#, fuzzy, c-format
+msgid "Error sending data: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+
+#: gio/gsocket.c:1980
+#, fuzzy, c-format
+msgid "Error closing socket: %s"
+msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม: %s"
+
+#: gio/gsocket.c:2466
+#, c-format
+msgid "Waiting for socket condition: %s"
+msgstr ""
+
+#: gio/gsocket.c:2698 gio/gsocket.c:2779
+#, fuzzy, c-format
+msgid "Error sending message: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+
+#: gio/gsocket.c:2723
+#, fuzzy
+msgid "GSocketControlMessage not supported on windows"
+msgstr "ไม่รองรับการเปลี่ยนแปลงการเชื่อมโยงสำหรับ win32"
+
+#: gio/gsocket.c:2981 gio/gsocket.c:3120
+#, fuzzy, c-format
+msgid "Error receiving message: %s"
+msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
+#, fuzzy
+msgid "Unknown error on connect"
+msgstr "ข้อผิดพลาดไม่ทราบสาเหตุ"
+
+#: gio/gsocketlistener.c:192
+#, fuzzy
+msgid "Listener is already closed"
+msgstr "สตรีมถูกปิดไปแล้ว"
+
+#: gio/gsocketlistener.c:233
+msgid "Added socket is closed"
+msgstr ""
+
 #: gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของ GThemedIcon รุ่น %d ได้"
+
+#: gio/gunixconnection.c:151
+#, c-format
+msgid "Expecting 1 control message, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:164
+#, fuzzy
+msgid "Unexpected type of ancillary data"
+msgstr "พบจุดจบสตรีมก่อนกำหนด"
+
+#: gio/gunixconnection.c:182
+#, c-format
+msgid "Expecting one fd, but got %d\n"
+msgstr ""
+
+#: gio/gunixconnection.c:198
+msgid "Received invalid fd"
+msgstr ""
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1738,6 +1924,10 @@ msgstr "รากระบบแฟ้ม"
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้มยูนิกซ์: %s"
+
+#: gio/gunixsocketaddress.c:182
+msgid "Abstract unix domain socket addresses not supported on this system"
+msgstr ""
 
 #: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
@@ -1879,9 +2069,6 @@ msgstr "[FILE...]"
 
 #~ msgid "Could not change file mode: fork() failed: %s"
 #~ msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: fork() ล้มเหลว: %s"
-
-#~ msgid "Could not change file mode: waitpid() failed: %s"
-#~ msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: waitpid() ล้มเหลว: %s"
 
 #~ msgid "Could not change file mode: chmod() failed: %s"
 #~ msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: chmod() ล้มเหลว: %s"

@@ -60,6 +60,23 @@ It should be accessed only by using the following functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_tree_ref ##### -->
+<para>
+
+</para>
+
+@tree: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_tree_unref ##### -->
+<para>
+
+</para>
+
+@tree: 
+
+
 <!-- ##### FUNCTION g_tree_new_with_data ##### -->
 <para>
 
