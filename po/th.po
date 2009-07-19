@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-17 19:34-0400\n"
-"PO-Revision-Date: 2009-02-20 12:07+0700\n"
+"PO-Revision-Date: 2009-07-19 16:29+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -214,14 +214,14 @@ msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
 
 #: glib/gfileutils.c:954
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
+msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fflush() ล้มเหลว: %s"
 
 #: glib/gfileutils.c:979
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
+msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fsync() ล้มเหลว: %s"
 
 #: glib/gfileutils.c:997
 #, c-format
@@ -310,19 +310,19 @@ msgid "Error on line %d char %d: "
 msgstr "มีข้อผิดพลาดที่บรรทัด %d อักขระที่ %d: "
 
 #: glib/gmarkup.c:363 glib/gmarkup.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
-msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง - ข้อความที่ผิด: '%s'"
+msgstr "พบข้อความลงรหัส UTF-8 ไม่ถูกต้องในชื่อ - ข้อความที่ผิด: '%s'"
 
 #: glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr ""
+msgstr "'%s' ไม่ใช่ชื่อที่ใช้ได้ "
 
 #: glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr ""
+msgstr "'%s' ไม่ใช่ชื่อที่ใช้ได้: '%c' "
 
 #: glib/gmarkup.c:494
 #, c-format
@@ -350,17 +350,17 @@ msgstr ""
 #: glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "ตัวอ้างอิงอักขระ '%-.*s' ไม่ได้เข้ารหัสอักขระที่เป็นไปได้"
+msgstr "ตัวอ้างอิงอักขระ '%-.*s' ไม่ได้ลงรหัสอักขระที่อนุญาตให้ใช้ได้"
 
 #: glib/gmarkup.c:654
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "พบเอนทิตี '&;' ซึ่งไม่ถูกต้อง ค่าที่ใช้ได้คือ: &amp; &quot; &lt; &gt; &apos;"
+msgstr "พบเอนทิตีว่างเปล่า '&;' ซึ่งไม่ถูกต้อง ค่าที่ใช้ได้คือ: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
-#, fuzzy, c-format
+#, c-format
 msgid "Entity name '%-.*s' is not known"
-msgstr "ไม่รู้จักเอนทิตีชื่อ '%s'"
+msgstr "ไม่รู้จักเอนทิตีชื่อ '%-.*s'"
 
 #: glib/gmarkup.c:667
 msgid ""
@@ -1042,7 +1042,7 @@ msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
 #: glib/gkeyfile.c:1532
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
@@ -1157,29 +1157,26 @@ msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
 
 #: gio/gdrive.c:409
 msgid "drive doesn't implement eject"
-msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
+msgstr "ไดรว์ไม่รองรับคำสั่งดันแผ่นออก"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gdrive.c:489
-#, fuzzy
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
+msgstr "ไดรว์ไม่รองรับคำสั่ง eject หรือ eject_with_operation"
 
 #: gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
-msgstr "ไดรว์ไม่สามารถใช้คำสั่งตรวจสอบสื่อได้"
+msgstr "ไดรว์ไม่รองรับคำสั่งวนตรวจสื่อ"
 
 #: gio/gdrive.c:771
-#, fuzzy
 msgid "drive doesn't implement start"
-msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
+msgstr "ไดรว์ไม่รองรับคำสั่ง start"
 
 #: gio/gdrive.c:873
-#, fuzzy
 msgid "drive doesn't implement stop"
-msgstr "ไดรว์ไม่สามารถใช้คำสั่งดันแผ่นออกได้"
+msgstr "ไดรว์ไม่รองรับคำสั่ง stop"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1362,11 +1359,11 @@ msgstr "สตรีมมีการกระทำค้างอยู่"
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
 #: gio/gunixsocketaddress.c:174
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "มีที่ว่างไม่พอสำหรับที่อยู่ซ็อกเก็ต"
 
 #: gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "ไม่รองรับที่อยู่ซ็อกเก็ต"
 
 #: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
@@ -1547,9 +1544,9 @@ msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
 #: gio/glocalfileinfo.c:2105
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting modification or access time: %s"
-msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
+msgstr "เกิดข้อผิดพลาดขณะกำหนดเวลาเปลี่ยนแปลงหรือเข้าถึง: %s"
 
 #: gio/glocalfileinfo.c:2128
 msgid "SELinux context must be non-NULL"
@@ -1683,17 +1680,15 @@ msgstr "การเมานท์นี้ยังไม่รองรับ
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:537
-#, fuzzy
 msgid "mount doesn't implement unmount or unmount_with_operation"
-msgstr "การเมานท์นี้ยังไม่รองรับการเลิกเมานท์"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง unmount หรือ unmount_with_operation"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:624
-#, fuzzy
 msgid "mount doesn't implement eject or eject_with_operation"
-msgstr "การเมานท์นี้ยังไม่รองรับการดันสื่อออก"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง eject หรือ eject_with_operation"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1719,7 +1714,7 @@ msgstr "การเมานท์นี้ยังไม่รองรับ
 #: gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "ชื่อโฮสต์ '%s' มี '[' แต่ไม่มี ']'"
 
 #: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
@@ -1730,155 +1725,149 @@ msgid "Source stream is already closed"
 msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
 
 #: gio/gresolver.c:668
-#, fuzzy, c-format
+#, c-format
 msgid "Error resolving '%s': %s"
-msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s': %s"
 
 #: gio/gresolver.c:718
-#, fuzzy, c-format
+#, c-format
 msgid "Error reverse-resolving '%s': %s"
-msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s' ย้อนกลับ: %s"
 
 #: gio/gresolver.c:753 gio/gresolver.c:831
 #, c-format
 msgid "No service record for '%s'"
-msgstr ""
+msgstr "ไม่มีข้อมูลบริการสำหรับ '%s'"
 
 #: gio/gresolver.c:758 gio/gresolver.c:836
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr ""
+msgstr "ไม่สามารถเปิดหาที่อยู่ '%s' ได้ชั่วคราว"
 
 #: gio/gresolver.c:763 gio/gresolver.c:841
-#, fuzzy, c-format
+#, c-format
 msgid "Error resolving '%s'"
-msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s'"
 
 #: gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
-msgstr ""
+msgstr "ซ็อกเก็ตผิดพลาด ยังไม่ได้ตั้งค่าเริ่มต้น"
 
 #: gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr ""
+msgstr "ซ็อกเก็ตผิดพลาด ตั้งค่าเริ่มต้นไม่สำเร็จเนื่องจาก: %s"
 
 #: gio/gsocket.c:292
-#, fuzzy
 msgid "Socket is already closed"
-msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
+msgstr "ซ็อกเก็ตถูกปิดไปแล้ว"
 
 #: gio/gsocket.c:405
-#, fuzzy, c-format
+#, c-format
 msgid "creating GSocket from fd: %s"
-msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลจากแฟ้ม: %s"
+msgstr "ขณะสร้าง GSocket จาก fd: %s"
 
 #: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create socket: %s"
-msgstr "สร้างไดเรกทอรีถังขยะ '%s' ไม่สำเร็จ: %s"
+msgstr "สร้างซ็อกเก็ตไม่สำเร็จ: %s"
 
 #: gio/gsocket.c:439
 msgid "Unknown protocol was specified"
-msgstr ""
+msgstr "มีการระบุโพรโทคอลที่ไม่รู้จัก"
 
 #: gio/gsocket.c:758
-#, fuzzy
 msgid "Cancellable initialization not supported"
-msgstr "ไม่รองรับการกระทำนี้"
+msgstr "ไม่รองรับการตั้งค่าเริ่มต้นแบบยกเลิกได้"
 
 #: gio/gsocket.c:1112
 #, c-format
 msgid "could not get local address: %s"
-msgstr ""
+msgstr "ไม่สามารถหาที่อยู่ฝั่งนี้ได้: %s"
 
 #: gio/gsocket.c:1145
-#, fuzzy, c-format
+#, c-format
 msgid "could not get remote address: %s"
-msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: waitpid() ล้มเหลว: %s"
+msgstr "ไม่สามารถหาที่อยู่ฝั่งโน้นได้: %s"
 
 #: gio/gsocket.c:1203
 #, c-format
 msgid "could not listen: %s"
-msgstr ""
+msgstr "ไม่สามารถ listen: %s"
 
 #: gio/gsocket.c:1277
-#, fuzzy, c-format
+#, c-format
 msgid "Error binding to address: %s"
-msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะ bind กับที่อยู่: %s"
 
 #: gio/gsocket.c:1397
-#, fuzzy, c-format
+#, c-format
 msgid "Error accepting connection: %s"
-msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
+msgstr "เกิดข้อผิดพลาดขณะรับการเชื่อมต่อ: %s"
 
 #: gio/gsocket.c:1510
-#, fuzzy
 msgid "Error connecting: "
-msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
+msgstr "เกิดข้อผิดพลาดขณะเชื่อมต่อ: "
 
 #: gio/gsocket.c:1514
 msgid "Connection in progress"
-msgstr ""
+msgstr "กำลังอยู่ระหว่างเชื่อมต่อ"
 
 #: gio/gsocket.c:1519
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting: %s"
-msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะเชื่อมต่อ: %s"
 
 #: gio/gsocket.c:1559
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get pending error: %s"
-msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
+msgstr "ไม่สามารถอ่านข้อผิดพลาดที่คั่งค้างอยู่ได้: %s"
 
 #: gio/gsocket.c:1655
-#, fuzzy, c-format
+#, c-format
 msgid "Error receiving data: %s"
-msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะรับข้อมูล: %s"
 
 #: gio/gsocket.c:1788
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending data: %s"
-msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะล่งข้อมูล: %s"
 
 #: gio/gsocket.c:1980
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing socket: %s"
-msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะปิดซ็อกเก็ต: %s"
 
 #: gio/gsocket.c:2466
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr ""
+msgstr "กำลังรอเงื่อนไขของซ็อกเก็ต: %s"
 
 #: gio/gsocket.c:2698 gio/gsocket.c:2779
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message: %s"
-msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะส่งข้อความ: %s"
 
 #: gio/gsocket.c:2723
-#, fuzzy
 msgid "GSocketControlMessage not supported on windows"
-msgstr "ไม่รองรับการเปลี่ยนแปลงการเชื่อมโยงสำหรับ win32"
+msgstr "ไม่รองรับ GSocketControlMessage บนวินโดวส์"
 
 #: gio/gsocket.c:2981 gio/gsocket.c:3120
-#, fuzzy, c-format
+#, c-format
 msgid "Error receiving message: %s"
-msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะรับข้อความ: %s"
 
 #: gio/gsocketclient.c:521 gio/gsocketclient.c:767
-#, fuzzy
 msgid "Unknown error on connect"
-msgstr "ข้อผิดพลาดไม่ทราบสาเหตุ"
+msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุขณะเชื่อมต่อ"
 
 #: gio/gsocketlistener.c:192
-#, fuzzy
 msgid "Listener is already closed"
-msgstr "สตรีมถูกปิดไปแล้ว"
+msgstr "Listener ถูกปิดไปแล้ว"
 
 #: gio/gsocketlistener.c:233
 msgid "Added socket is closed"
-msgstr ""
+msgstr "ซ็อกเก็ตที่เพิ่มถูกปิดไปแล้ว"
 
 #: gio/gthemedicon.c:499
 #, c-format
@@ -1888,21 +1877,20 @@ msgstr "ไม่สามารถจัดการกับรหัสขอ
 #: gio/gunixconnection.c:151
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr ""
+msgstr "ต้องการข้อความควบคุม 1 ข้อความ แต่ได้รับ %d ข้อความ"
 
 #: gio/gunixconnection.c:164
-#, fuzzy
 msgid "Unexpected type of ancillary data"
-msgstr "พบจุดจบสตรีมก่อนกำหนด"
+msgstr "พบข้อมูลช่วยเป็นชนิดที่ไม่คาดหมาย"
 
 #: gio/gunixconnection.c:182
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "ต้องการ fd หนึ่งรายการ แต่ได้รับ %d รายการ\n"
 
 #: gio/gunixconnection.c:198
 msgid "Received invalid fd"
-msgstr ""
+msgstr "ได้รับ fd ที่ไม่ถูกต้อง"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1927,7 +1915,7 @@ msgstr "เกิดข้อผิดพลาดขณะเขียนข้
 
 #: gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
+msgstr "ระบบนี้ไม่รองรับที่อยู่ unix domain socket แบบ abstract"
 
 #: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
@@ -1937,9 +1925,8 @@ msgstr "โวลุมยังไม่รองรับการดันส
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gvolume.c:531
-#, fuzzy
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr "โวลุมยังไม่รองรับการดันสื่อออก"
+msgstr "โวลุมยังไม่รองรับคำสั่ง eject หรือ eject_with_operation"
 
 #: gio/gwin32appinfo.c:277
 msgid "Can't find application"
