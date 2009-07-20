@@ -514,7 +514,7 @@ g_socket_client_connect (GSocketClient       *client,
 	    }
 	  else if (last_error)
 	    {
-	      g_propagate_error (error, tmp_error);
+	      g_propagate_error (error, last_error);
 	    }
 	  else
             g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
