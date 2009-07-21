@@ -65,7 +65,7 @@ Contains the public fields of an <link linkend="glib-arrays">Array</link>.
 
 @data: a pointer to the element data. The data may be moved as elements are
 added to the #GArray.
-@len: the number of elements in the #GArray.
+@len: the number of elements in the #GArray not including the possible terminating zero element.
 
 <!-- ##### FUNCTION g_array_new ##### -->
 <para>
