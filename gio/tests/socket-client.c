@@ -181,6 +181,7 @@ main (int argc,
       g_object_unref (address);
     }
   g_object_unref (enumerator);
+  g_object_unref (connectable);
 
   g_print ("Connected to %s\n",
 	   socket_address_to_string (address));
@@ -293,6 +294,7 @@ main (int argc,
     }
 
   g_object_unref (G_OBJECT (socket));
+  g_object_unref (G_OBJECT (address));
 
   return 0;
 }

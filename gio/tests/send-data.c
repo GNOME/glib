@@ -97,15 +97,29 @@ main (int argc, char *argv[])
     }
 
   client = g_socket_client_new ();
-  connection = g_socket_client_connect_to_host (client,
-						argv[1],
-						7777,
-						cancellable, &error);
+
+  if (async)
+    {
+      GAsyncResult *res;
+      g_socket_client_connect_to_host_async (client, argv[1], 7777,
+					     cancellable, async_cb, &res);
+      g_main_loop_run (loop);
+      connection = g_socket_client_connect_to_host_finish (client, res, &error);
+      g_object_unref (res);
+    }
+  else
+    {
+      connection = g_socket_client_connect_to_host (client,
+						    argv[1],
+						    7777,
+						    cancellable, &error);
+    }
   if (connection == NULL)
     {
       g_printerr ("%s can't connect: %s\n", argv[0], error->message);
       return 1;
     }
+  g_object_unref (client);
 
   address = g_socket_connection_get_remote_address (connection, &error);
   if (!address)
@@ -125,6 +139,7 @@ main (int argc, char *argv[])
 
   while (fgets(buffer, sizeof (buffer), stdin) != NULL)
     {
+      /* FIXME if (async) */
       if (!g_output_stream_write_all (out, buffer, strlen (buffer),
 				      NULL, cancellable, &error))
 	{
@@ -158,6 +173,8 @@ main (int argc, char *argv[])
 	  return 1;
 	}
     }
+
+  g_object_unref (connection);
 
   return 0;
 }

@@ -158,6 +158,7 @@ main (int argc,
       g_printerr ("Can't bind socket: %s\n", error->message);
       return 1;
     }
+  g_object_unref (src_address);
 
   if (!use_udp)
     {

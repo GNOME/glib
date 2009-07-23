@@ -320,6 +320,9 @@ resolve_sync (GThreadedResolver         *gtr,
     {
       req->resolve_func (req, error);
       g_mutex_unlock (req->mutex);
+
+      g_threaded_resolver_request_complete (req, FALSE);
+      g_threaded_resolver_request_unref (req);
       return;
     }
 
@@ -344,7 +347,8 @@ resolve_async (GThreadedResolver        *gtr,
 {
   req->async_result = g_simple_async_result_new (G_OBJECT (gtr),
                                                  callback, user_data, tag);
-  g_simple_async_result_set_op_res_gpointer (req->async_result, req, NULL);
+  g_simple_async_result_set_op_res_gpointer (req->async_result, req,
+                                             (GDestroyNotify)g_threaded_resolver_request_unref);
   g_thread_pool_push (gtr->thread_pool, req, NULL);
   g_mutex_unlock (req->mutex);
 }

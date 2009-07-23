@@ -676,6 +676,7 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
       g_socket_set_blocking (data->current_socket, TRUE);
 
       connection = g_socket_connection_factory_create_connection (data->current_socket);
+      g_object_unref (data->current_socket);
       g_simple_async_result_set_op_res_gpointer (data->result,
 						 connection,
 						 g_object_unref);
@@ -683,6 +684,8 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
 
   g_simple_async_result_complete (data->result);
   g_object_unref (data->result);
+  g_object_unref (data->enumerator);
+  g_slice_free (GSocketClientAsyncConnectData, data);
 }
 
 
