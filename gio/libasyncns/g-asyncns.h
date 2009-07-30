@@ -28,11 +28,17 @@
 /* For old OS X, #580301. Remove if these are added to asyncns.c
  * in the future.
  */
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
+#endif
 
 /* Some BSDs require this for getrlimit */
+#ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
+#endif
 
 #include "asyncns.h"
 
