@@ -693,6 +693,12 @@ called, and, in that case, will do nothing.
 Destroys @mutex.
 </para>
 
+<note>
+<para>
+Calling g_mutex_free() on a locked mutex may result in undefined behaviour.
+</para>
+</note>
+
 @mutex: a #GMutex.
 
 
@@ -836,6 +842,12 @@ unbounded lifetime, i.e. objects declared 'static', but if you have a
 #GStaticMutex as a member of a structure and the structure is freed,
 you should also free the #GStaticMutex.
 </para>
+
+<note>
+<para>
+Calling g_static_mutex_free() on a locked mutex may result in undefined behaviour.
+</para>
+</note>
 
 @mutex: a #GStaticMutex to be freed.
 
