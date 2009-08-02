@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.16.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-22 18:55+0200\n"
-"PO-Revision-Date: 2009-07-22 18:58+0200\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2009-08-03 00:12+0200\n"
+"PO-Revision-Date: 2009-08-03 00:16+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -1389,11 +1389,11 @@ msgstr "Strømmen har utestående operasjoner"
 #: ../gio/ginetsocketaddress.c:182 ../gio/ginetsocketaddress.c:199
 #: ../gio/gunixsocketaddress.c:174
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "Ikke nok plass til adresse for plugg"
 
 #: ../gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "Adresse for plugg er ikke støttet"
 
 #: ../gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
@@ -1745,7 +1745,7 @@ msgstr "montering implementerer ikke synkron gjetting av innholdstype"
 #: ../gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "Vertsnavn «%s» inneholder «[» men ikke «]»"
 
 #: ../gio/goutputstream.c:210 ../gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
@@ -1808,9 +1808,8 @@ msgid "Unknown protocol was specified"
 msgstr "Ukjent protokoll ble oppgitt"
 
 #: ../gio/gsocket.c:758
-#, fuzzy
 msgid "Cancellable initialization not supported"
-msgstr "Operasjonen er ikke støttet"
+msgstr "Avbrytbar initiering er ikke støttet"
 
 #: ../gio/gsocket.c:1112
 #, c-format
@@ -1828,14 +1827,14 @@ msgid "could not listen: %s"
 msgstr "kunne ikke lytte: %s"
 
 #: ../gio/gsocket.c:1277
-#, fuzzy, c-format
+#, c-format
 msgid "Error binding to address: %s"
-msgstr "Feil under skriving til fil: %s"
+msgstr "Feil ved binding til adresse: %s"
 
 #: ../gio/gsocket.c:1397
-#, fuzzy, c-format
+#, c-format
 msgid "Error accepting connection: %s"
-msgstr "Feil under konvertering: %s"
+msgstr "Feil ved godkjenning av tilkobling: %s"
 
 #: ../gio/gsocket.c:1510
 msgid "Error connecting: "
@@ -1851,9 +1850,9 @@ msgid "Error connecting: %s"
 msgstr "Feil under tilkobling: %s"
 
 #: ../gio/gsocket.c:1559
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get pending error: %s"
-msgstr "Kan ikke legge fil i papirkurven: %s"
+msgstr "Kan ikke hente utestående feil: %s"
 
 #: ../gio/gsocket.c:1655
 #, c-format
@@ -1873,7 +1872,7 @@ msgstr "Feil ved lukking av plugg: %s"
 #: ../gio/gsocket.c:2466
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr ""
+msgstr "Venter på tilstand for plugg: %s"
 
 #: ../gio/gsocket.c:2698 ../gio/gsocket.c:2779
 #, c-format
@@ -1881,27 +1880,25 @@ msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
 #: ../gio/gsocket.c:2723
-#, fuzzy
 msgid "GSocketControlMessage not supported on windows"
-msgstr "endringer i assosiasjon er ikke støttet på win32"
+msgstr "GSocketControlMessage er ikke støttet på windows"
 
 #: ../gio/gsocket.c:2981 ../gio/gsocket.c:3120
-#, fuzzy, c-format
+#, c-format
 msgid "Error receiving message: %s"
-msgstr "Feil ved fjerning av fil: %s"
+msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocketclient.c:521 ../gio/gsocketclient.c:767
+#: ../gio/gsocketclient.c:521 ../gio/gsocketclient.c:770
 msgid "Unknown error on connect"
 msgstr "Ukjent feil ved tilkobling"
 
 #: ../gio/gsocketlistener.c:192
-#, fuzzy
 msgid "Listener is already closed"
-msgstr "Strømmen er allerede lukket"
+msgstr "Lytter er allerede lukket"
 
 #: ../gio/gsocketlistener.c:233
 msgid "Added socket is closed"
-msgstr ""
+msgstr "Tillagt plugg er lukket"
 
 #: ../gio/gthemedicon.c:499
 #, c-format
@@ -1911,21 +1908,20 @@ msgstr "Kan ikke håndtere versjon %d av GThemedIcon-koding"
 #: ../gio/gunixconnection.c:151
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr ""
+msgstr "Ventet 1 kontrollmelding, fikk %d"
 
 #: ../gio/gunixconnection.c:164
-#, fuzzy
 msgid "Unexpected type of ancillary data"
-msgstr "Uventet tidlig slutt på strøm"
+msgstr "Uventet type data"
 
 #: ../gio/gunixconnection.c:182
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "Ventet en fd, men fikk %d\n"
 
 #: ../gio/gunixconnection.c:198
 msgid "Received invalid fd"
-msgstr ""
+msgstr "Mottok ugyldig fd"
 
 #: ../gio/gunixinputstream.c:358 ../gio/gunixinputstream.c:378
 #: ../gio/gunixinputstream.c:456 ../gio/gunixoutputstream.c:443
@@ -1950,7 +1946,7 @@ msgstr "Feil ved skriving til unix: %s"
 
 #: ../gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
+msgstr "Abstrakte unix domenepluggadresser er ikke støttet på dette systemet"
 
 #: ../gio/gvolume.c:452
 msgid "volume doesn't implement eject"
