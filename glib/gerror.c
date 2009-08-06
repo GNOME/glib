@@ -166,12 +166,13 @@ g_error_copy (const GError *error)
 
 /**
  * g_error_matches:
- * @error: a #GError
+ * @error: a #GError or %NULL
  * @domain: an error domain
  * @code: an error code
  *
  * Returns %TRUE if @error matches @domain and @code, %FALSE
- * otherwise.
+ * otherwise. In particular, when @error is %NULL, %FALSE will
+ * be returned.
  *
  * Return value: whether @error has @domain and @code
  */
