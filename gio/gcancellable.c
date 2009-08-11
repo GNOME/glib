@@ -226,6 +226,7 @@ set_fd_close_exec (int fd)
 static void
 g_cancellable_open_pipe (GCancellable *cancellable)
 {
+  const char ch = 'x';
   GCancellablePrivate *priv;
 
   priv = cancellable->priv;
@@ -238,6 +239,9 @@ g_cancellable_open_pipe (GCancellable *cancellable)
       set_fd_nonblocking (priv->cancel_pipe[1]);
       set_fd_close_exec (priv->cancel_pipe[0]);
       set_fd_close_exec (priv->cancel_pipe[1]);
+      
+      if (priv->cancelled)
+        write (priv->cancel_pipe[1], &ch, 1);
     }
 }
 #endif
@@ -371,7 +375,6 @@ g_cancellable_reset (GCancellable *cancellable)
 #ifdef G_OS_WIN32
       if (priv->event)
 	ResetEvent (priv->event);
-      else
 #endif
       if (priv->cancel_pipe[0] != -1)
 	read (priv->cancel_pipe[0], &ch, 1);
@@ -520,8 +523,9 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
           G_UNLOCK(cancellable);
           return FALSE;
         }
+      if (priv->cancelled)
+        SetEvent(priv->event);
     }
-
   priv->fd_refcount++;
   G_UNLOCK(cancellable);
 
