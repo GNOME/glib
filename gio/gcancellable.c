@@ -52,11 +52,11 @@ enum {
 
 struct _GCancellablePrivate
 {
-  GObject parent_instance;
-
   guint cancelled : 1;
   guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
+
+  guint fd_refcount;
   int cancel_pipe[2];
 
 #ifdef G_OS_WIN32
@@ -73,23 +73,39 @@ G_LOCK_DEFINE_STATIC(cancellable);
 static GCond *cancellable_cond = NULL;
   
 static void
-g_cancellable_finalize (GObject *object)
+g_cancellable_close_pipe (GCancellable *cancellable)
 {
-  GCancellable *cancellable = G_CANCELLABLE (object);
   GCancellablePrivate *priv;
-
+  
   priv = cancellable->priv;
 
   if (priv->cancel_pipe[0] != -1)
-    close (priv->cancel_pipe[0]);
+    {
+      close (priv->cancel_pipe[0]);
+      priv->cancel_pipe[0] = -1;
+    }
   
   if (priv->cancel_pipe[1] != -1)
-    close (priv->cancel_pipe[1]);
+    {
+      close (priv->cancel_pipe[1]);
+      priv->cancel_pipe[1] = -1;
+    }
 
 #ifdef G_OS_WIN32
   if (priv->event)
-    CloseHandle (priv->event);
+    {
+      CloseHandle (priv->event);
+      priv->event = NULL;
+    }
 #endif
+}
+
+static void
+g_cancellable_finalize (GObject *object)
+{
+  GCancellable *cancellable = G_CANCELLABLE (object);
+
+  g_cancellable_close_pipe (cancellable);
 
   G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
 }
@@ -430,8 +446,8 @@ int
 g_cancellable_get_fd (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
-
   int fd;
+
   if (cancellable == NULL)
     return -1;
 
@@ -443,8 +459,9 @@ g_cancellable_get_fd (GCancellable *cancellable)
   G_LOCK(cancellable);
   if (priv->cancel_pipe[0] == -1)
     g_cancellable_open_pipe (cancellable);
-
   fd = priv->cancel_pipe[0];
+  if (fd != -1)
+    priv->fd_refcount++;
   G_UNLOCK(cancellable);
 #endif
 
@@ -484,7 +501,6 @@ gboolean
 g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 {
   GCancellablePrivate *priv;
-  int fd;
 
   g_return_val_if_fail (pollfd != NULL, FALSE);
   if (cancellable == NULL)
@@ -494,22 +510,34 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
   priv = cancellable->priv;
 
 #ifdef G_OS_WIN32
-  if (!priv->event)
+  G_LOCK(cancellable);
+  if (priv->event == NULL)
     {
       /* A manual reset anonymous event, starting unset */
       priv->event = CreateEvent (NULL, TRUE, FALSE, NULL);
       if (priv->event == NULL)
-        return FALSE;
+        {
+          G_UNLOCK(cancellable);
+          return FALSE;
+        }
     }
+
+  priv->fd_refcount++;
+  G_UNLOCK(cancellable);
+
   pollfd->fd = (gintptr)priv->event;
 #else /* !G_OS_WIN32 */
-  fd = g_cancellable_get_fd (cancellable);
-  if (fd == -1)
-    return -1;
-  pollfd->fd = fd;
+  {
+    int fd = g_cancellable_get_fd (cancellable);
+    if (fd == -1)
+      return FALSE;
+    pollfd->fd = fd;
+  }
 #endif /* G_OS_WIN32 */
   pollfd->events = G_IO_IN;
   pollfd->revents = 0;
+
+  return TRUE;
 }
 
 /**
@@ -531,7 +559,18 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 void
 g_cancellable_release_fd (GCancellable *cancellable)
 {
+  GCancellablePrivate *priv;
+
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
+  g_return_if_fail (cancellable->priv->fd_refcount > 0);
+
+  priv = cancellable->priv;
+
+  G_LOCK (cancellable);
+  priv->fd_refcount--;
+  if (priv->fd_refcount == 0)
+    g_cancellable_close_pipe (cancellable);
+  G_UNLOCK (cancellable);
 }
 
 /**
@@ -556,7 +595,7 @@ g_cancellable_release_fd (GCancellable *cancellable)
 void
 g_cancellable_cancel (GCancellable *cancellable)
 {
-  static const char ch = 'x';
+  const char ch = 'x';
   gboolean cancel;
   GCancellablePrivate *priv;
 
@@ -573,7 +612,7 @@ g_cancellable_cancel (GCancellable *cancellable)
   priv->cancelled_running = TRUE;
 #ifdef G_OS_WIN32
   if (priv->event)
-    SetEvent(priv->event);
+    SetEvent (priv->event);
 #endif
   if (priv->cancel_pipe[1] != -1)
     write (priv->cancel_pipe[1], &ch, 1);
