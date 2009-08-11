@@ -961,29 +961,34 @@ write_to_temp_file (const gchar  *contents,
     }
   
 #ifdef HAVE_FSYNC
-  errno = 0;
-  /* If the final destination exists, we want to sync the newly written
-   * file to ensure the data is on disk when we rename over the destination.
-   * otherwise if we get a system crash we can lose both the new and the
-   * old file on some filesystems. (I.E. those that don't guarantee the
-   * data is written to the disk before the metadata.)
-   */
-  if (g_file_test (dest_file, G_FILE_TEST_EXISTS) &&
-      fsync (fileno (file)) != 0)
-    { 
-      save_errno = errno;
-      
-      g_set_error (err,
-		   G_FILE_ERROR,
-		   g_file_error_from_errno (save_errno),
-		   _("Failed to write file '%s': fsync() failed: %s"),
-		   display_name, 
-		   g_strerror (save_errno));
+  {
+    struct stat statbuf;
 
-      g_unlink (tmp_name);
-      
-      goto out;
-    }
+    errno = 0;
+    /* If the final destination exists and is > 0 bytes, we want to sync the
+     * newly written file to ensure the data is on disk when we rename over
+     * the destination. Otherwise if we get a system crash we can lose both
+     * the new and the old file on some filesystems. (I.E. those that don't
+     * guarantee the data is written to the disk before the metadata.)
+     */
+    if (g_lstat (dest_file, &statbuf) == 0 &&
+	statbuf.st_size > 0 &&
+	fsync (fileno (file)) != 0)
+      {
+	save_errno = errno;
+
+	g_set_error (err,
+		     G_FILE_ERROR,
+		     g_file_error_from_errno (save_errno),
+		     _("Failed to write file '%s': fsync() failed: %s"),
+		     display_name,
+		     g_strerror (save_errno));
+
+	g_unlink (tmp_name);
+
+	goto out;
+      }
+  }
 #endif
   
   errno = 0;
