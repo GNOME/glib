@@ -347,7 +347,8 @@ g_unix_input_stream_read (GInputStream  *stream,
       do
 	poll_ret = g_poll (poll_fds, 2, -1);
       while (poll_ret == -1 && errno == EINTR);
-      
+      g_cancellable_release_fd (cancellable);
+
       if (poll_ret == -1)
 	{
           int errsv = errno;

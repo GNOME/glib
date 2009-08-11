@@ -333,6 +333,7 @@ g_unix_output_stream_write (GOutputStream  *stream,
       do
 	poll_ret = g_poll (poll_fds, 2, -1);
       while (poll_ret == -1 && errno == EINTR);
+      g_cancellable_release_fd (cancellable);
       
       if (poll_ret == -1)
 	{

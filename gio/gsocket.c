@@ -2255,7 +2255,10 @@ winsock_finalize (GSource *source)
   g_object_unref (socket);
 
   if (winsock_source->cancellable)
-    g_object_unref (winsock_source->cancellable);
+    {
+      g_cancellable_release_fd (winsock_source->cancellable);
+      g_object_unref (winsock_source->cancellable);
+    }
 }
 
 static GSourceFuncs winsock_funcs =
@@ -2470,6 +2473,8 @@ g_socket_condition_wait (GSocket       *socket,
 	current_condition = update_condition (socket);
       }
     remove_condition_watch (socket, &condition);
+    if (num_events > 1)
+      g_cancellable_release_fd (cancellable);
 
     return (condition & current_condition) != 0;
   }
@@ -2489,6 +2494,9 @@ g_socket_condition_wait (GSocket       *socket,
     do
       result = g_poll (poll_fd, num, -1);
     while (result == -1 && get_socket_errno () == EINTR);
+    
+    if (num > 1)
+      g_cancellable_release_fd (cancellable);
 
     return cancellable == NULL ||
       !g_cancellable_set_error_if_cancelled (cancellable, error);
