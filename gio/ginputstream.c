@@ -508,7 +508,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * You can then call g_input_stream_read_finish() to get the result of the 
  * operation.
  *
- * During an async request no other sync and async calls are allowed, and will
+ * During an async request no other sync and async calls are allowed on @stream, and will
  * result in %G_IO_ERROR_PENDING errors. 
  *
  * A value of @count larger than %G_MAXSSIZE will cause a %G_IO_ERROR_INVALID_ARGUMENT error.

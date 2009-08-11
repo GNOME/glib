@@ -417,6 +417,10 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
  * readable status. Reading to unset the readable status is done
  * with g_cancellable_reset().
  * 
+ * After a successful return from this function, you should use 
+ * g_cancellable_release_fd() to free up resources allocated for 
+ * the returned file descriptor.
+ *
  * See also g_cancellable_make_pollfd().
  *
  * Returns: A valid file descriptor. %-1 if the file descriptor 
@@ -456,6 +460,10 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * to g_poll() and used to poll for cancellation. This is useful both
  * for unix systems without a native poll and for portability to
  * windows.
+ *
+ * When this function returns %TRUE, you should use 
+ * g_cancellable_release_fd() to free up resources allocated for the 
+ * @pollfd. After a %FALSE return, do not call g_cancellable_release_fd().
  *
  * If this function returns %FALSE, either no @cancellable was given or
  * resource limits prevent this function from allocating the necessary 
@@ -502,6 +510,28 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 #endif /* G_OS_WIN32 */
   pollfd->events = G_IO_IN;
   pollfd->revents = 0;
+}
+
+/**
+ * g_cancellable_release_fd:
+ * @cancellable: a #GCancellable
+ *
+ * Releases a resources previously allocated by g_cancellable_get_fd()
+ * or g_cancellable_make_pollfd().
+ *
+ * For compatibility reasons with older releases, calling this function 
+ * is not strictly required, the resources will be automatically freed
+ * when the @cancellable is finalized. However, the @cancellable will
+ * block scarce file descriptors until it is finalized if this function
+ * is not called. This can cause the application to run out of file 
+ * descriptors when many #GCancellables are used at the same time.
+ * 
+ * @Since: 2.22
+ **/
+void
+g_cancellable_release_fd (GCancellable *cancellable)
+{
+  g_return_if_fail (G_IS_CANCELLABLE (cancellable));
 }
 
 /**

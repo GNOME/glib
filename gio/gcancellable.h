@@ -81,6 +81,7 @@ gboolean      g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
 int           g_cancellable_get_fd                 (GCancellable  *cancellable);
 gboolean      g_cancellable_make_pollfd            (GCancellable  *cancellable,
 						    GPollFD       *pollfd);
+void          g_cancellable_release_fd             (GCancellable  *cancellable);
 
 GCancellable *g_cancellable_get_current            (void);
 void          g_cancellable_push_current           (GCancellable  *cancellable);

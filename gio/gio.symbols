@@ -129,6 +129,7 @@ g_cancellable_is_cancelled
 g_cancellable_set_error_if_cancelled
 g_cancellable_get_fd
 g_cancellable_make_pollfd
+g_cancellable_release_fd
 g_cancellable_get_current
 g_cancellable_push_current
 g_cancellable_pop_current
