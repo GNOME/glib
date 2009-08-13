@@ -1997,8 +1997,10 @@ _g_typelib_init (GTypelib *typelib)
 	          g_string_append (shlib_full, ".la");
 	          module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
 	          if (module == NULL)
-	            g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
-	          module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+		    {
+		      g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
+		      module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+		    }
 
 	          g_string_free (shlib_full, TRUE);
 	        }
