@@ -2291,11 +2291,10 @@ winsock_source_new (GSocket      *socket,
   winsock_source->condition = condition;
   add_condition_watch (socket, &winsock_source->condition);
 
-  if (cancellable)
+  if (g_cancellable_make_pollfd (cancellable,
+                                 &winsock_source->cancel_pollfd))
     {
       winsock_source->cancellable = g_object_ref (cancellable);
-      g_cancellable_make_pollfd (cancellable,
-				 &winsock_source->cancel_pollfd);
       g_source_add_poll (source, &winsock_source->cancel_pollfd);
     }
 
@@ -2446,11 +2445,8 @@ g_socket_condition_wait (GSocket       *socket,
     num_events = 0;
     events[num_events++] = socket->priv->event;
 
-    if (cancellable)
-      {
-	g_cancellable_make_pollfd (cancellable, &cancel_fd);
-	events[num_events++] = (WSAEVENT)cancel_fd.fd;
-      }
+    if (g_cancellable_make_pollfd (cancellable, &cancel_fd))
+      events[num_events++] = (WSAEVENT)cancel_fd.fd;
 
     current_condition = update_condition (socket);
     while ((condition & current_condition) == 0)
@@ -2487,11 +2483,8 @@ g_socket_condition_wait (GSocket       *socket,
     poll_fd[0].events = condition;
     num = 1;
 
-    if (cancellable)
-      {
-	g_cancellable_make_pollfd (cancellable, &poll_fd[1]);
-	num++;
-      }
+    if (g_cancellable_make_pollfd (cancellable, &poll_fd[1]))
+      num++;
 
     do
       result = g_poll (poll_fd, num, -1);

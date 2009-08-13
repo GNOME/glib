@@ -79,7 +79,7 @@ gboolean      g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
 						    GError       **error);
 
 int           g_cancellable_get_fd                 (GCancellable  *cancellable);
-void          g_cancellable_make_pollfd            (GCancellable  *cancellable,
+gboolean      g_cancellable_make_pollfd            (GCancellable  *cancellable,
 						    GPollFD       *pollfd);
 
 GCancellable *g_cancellable_get_current            (void);

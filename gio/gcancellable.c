@@ -55,7 +55,6 @@ struct _GCancellablePrivate
   GObject parent_instance;
 
   guint cancelled : 1;
-  guint allocated_pipe : 1;
   guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
   int cancel_pipe[2];
@@ -224,8 +223,6 @@ g_cancellable_open_pipe (GCancellable *cancellable)
       set_fd_close_exec (priv->cancel_pipe[0]);
       set_fd_close_exec (priv->cancel_pipe[1]);
     }
-  else
-    g_warning ("Failed to create pipe for GCancellable. Out of file descriptors?");
 }
 #endif
 
@@ -440,11 +437,8 @@ g_cancellable_get_fd (GCancellable *cancellable)
   return -1;
 #else
   G_LOCK(cancellable);
-  if (!priv->allocated_pipe)
-    {
-      priv->allocated_pipe = TRUE;
-      g_cancellable_open_pipe (cancellable);
-    }
+  if (priv->cancel_pipe[0] == -1)
+    g_cancellable_open_pipe (cancellable);
 
   fd = priv->cancel_pipe[0];
   G_UNLOCK(cancellable);
@@ -455,7 +449,7 @@ g_cancellable_get_fd (GCancellable *cancellable)
 
 /**
  * g_cancellable_make_pollfd:
- * @cancellable: a #GCancellable.
+ * @cancellable: a #GCancellable or %NULL
  * @pollfd: a pointer to a #GPollFD
  * 
  * Creates a #GPollFD corresponding to @cancellable; this can be passed
@@ -463,18 +457,31 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * for unix systems without a native poll and for portability to
  * windows.
  *
+ * If this function returns %FALSE, either no @cancellable was given or
+ * resource limits prevent this function from allocating the necessary 
+ * structures for polling. (On Linux, you will likely have reached 
+ * the maximum number of file descriptors.) The suggested way to handle
+ * these cases is to ignore the @cancellable.
+ *
  * You are not supposed to read from the fd yourself, just check for
  * readable status. Reading to unset the readable status is done
  * with g_cancellable_reset().
+ *
+ * @Returns: %TRUE if @pollfd was successfully initialized, %FALSE on 
+ *           failure to prepare the cancellable.
  * 
+ * @Since: 2.22
  **/
-void
+gboolean
 g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 {
   GCancellablePrivate *priv;
+  int fd;
 
-  g_return_if_fail (G_IS_CANCELLABLE (cancellable));
-  g_return_if_fail (pollfd != NULL);
+  g_return_val_if_fail (pollfd != NULL, FALSE);
+  if (cancellable == NULL)
+    return FALSE;
+  g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), FALSE);
 
   priv = cancellable->priv;
 
@@ -483,10 +490,15 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
     {
       /* A manual reset anonymous event, starting unset */
       priv->event = CreateEvent (NULL, TRUE, FALSE, NULL);
+      if (priv->event == NULL)
+        return FALSE;
     }
   pollfd->fd = (gintptr)priv->event;
 #else /* !G_OS_WIN32 */
-  pollfd->fd = g_cancellable_get_fd (cancellable);
+  fd = g_cancellable_get_fd (cancellable);
+  if (fd == -1)
+    return -1;
+  pollfd->fd = fd;
 #endif /* G_OS_WIN32 */
   pollfd->events = G_IO_IN;
   pollfd->revents = 0;

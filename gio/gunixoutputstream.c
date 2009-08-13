@@ -326,11 +326,10 @@ g_unix_output_stream_write (GOutputStream  *stream,
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
-  if (cancellable)
+  if (g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
     {
       poll_fds[0].fd = unix_stream->priv->fd;
       poll_fds[0].events = G_IO_OUT;
-      g_cancellable_make_pollfd (cancellable, &poll_fds[1]);
       do
 	poll_ret = g_poll (poll_fds, 2, -1);
       while (poll_ret == -1 && errno == EINTR);
