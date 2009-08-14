@@ -5,9 +5,9 @@
 # Copyright (C) 2007-2009 The GNOME Project.
 # This file is distributed under the same license as the GLib package.
 #
-# Allan Sims <allsi@eau.ee>, 2002.
-# Ivar Smolin <okul@linux.ee>, 2005-2009.
-# Priit Laes <amd@store20.com>, 2005, 2007.
+# Allan Sims <allsi eau ee>, 2002.
+# Ivar Smolin <okul linux ee>, 2005-2009.
+# Priit Laes <plaes plaes org>, 2005, 2007, 2009
 # Mattias Põldaru <mahfiaz gmail com>, 2009.
 #
 msgid ""
@@ -15,9 +15,9 @@ msgstr ""
 "Project-Id-Version: GLib HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-07-18 00:32+0000\n"
-"PO-Revision-Date: 2009-08-05 11:00+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"POT-Creation-Date: 2009-08-10 14:31+0000\n"
+"PO-Revision-Date: 2009-08-14 22:00+0300\n"
+"Last-Translator: Priit Laes <plaes plaes org>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -506,7 +506,7 @@ msgid "failed to get memory"
 msgstr "tõrge mälu hankimisel"
 
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "tagasivaate esitus ei oma kindlat suurust"
 
 msgid "malformed number or name after (?("
 msgstr "vigane number või nimi pärast (?("
@@ -515,7 +515,7 @@ msgid "conditional group contains more than two branches"
 msgstr "tingimusgrupp sisaldab rohkem kui kahte haru"
 
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "(?( järel oodatakse esitust"
 
 msgid "unknown POSIX class name"
 msgstr "tundmatu POSIX-klassi nimi"
@@ -530,7 +530,7 @@ msgid "invalid condition (?(0)"
 msgstr "vigane tingimus (?(0)"
 
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "\\C ei ole tagasivaate esituses lubatud"
 
 msgid "recursive call could loop indefinitely"
 msgstr "rekursiivne kutsung võib jääda lõpmatusse tsüklisse"
@@ -888,11 +888,11 @@ msgstr "Tundmatu tüüp"
 
 #, c-format
 msgid "%s filetype"
-msgstr ""
+msgstr "%s failitüüp"
 
 #, c-format
 msgid "%s type"
-msgstr ""
+msgstr "%s tüüp"
 
 msgid "Unexpected early end-of-stream"
 msgstr "Ootamatult varajane voolõpp"
@@ -929,12 +929,11 @@ msgstr "seade ei toeta väljastamist"
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#, fuzzy
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr "seade ei toeta väljastamist"
+msgstr "seade ei toeta ei väljastamist ega väljastamist koos operatsiooniga"
 
 msgid "drive doesn't implement polling for media"
-msgstr "seade ei toeta meediumi olemasolu pollimist"
+msgstr "seade ei toeta meediumi olemasolu pärimist"
 
 msgid "drive doesn't implement start"
 msgstr "seade ei toeta käivitamist"
@@ -1074,10 +1073,10 @@ msgid "Stream has outstanding operation"
 msgstr "Voogu juba kasutatakse väljastpoolt"
 
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "Sokliaadressi jaoks ei ole piisavalt vaba ruumi"
 
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "Toetamata sokliaadress"
 
 msgid "Unable to find default local directory monitor type"
 msgstr "Vaikimisi kohalikku kataloogimonitori liigi pole võimalik leida"
@@ -1304,114 +1303,113 @@ msgstr "Mäluväljundi voo suuruse muutmine nurjus"
 #. * message for mount objects that
 #. * don't implement unmount.
 msgid "mount doesn't implement unmount"
-msgstr ""
+msgstr "haage ei toeta lahtihaakimist"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 msgid "mount doesn't implement eject"
-msgstr ""
+msgstr "haage ei toeta väljastamist"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 msgid "mount doesn't implement unmount or unmount_with_operation"
-msgstr ""
+msgstr "haage ei toeta ei lahtihaakimist ega lahtihaakimist koos toiminguga"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 msgid "mount doesn't implement eject or eject_with_operation"
-msgstr ""
+msgstr "haage ei toeta ei väljastamist ega väljastamist koos toiminguga"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 msgid "mount doesn't implement remount"
-msgstr ""
+msgstr "haage ei toeta taashaakimist"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 msgid "mount doesn't implement content type guessing"
-msgstr ""
+msgstr "haage ei toeta sisuliigi arvamist"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr ""
+msgstr "haage ei toeta sünkroonset sisutüübi arvamist"
 
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "Hostinimi '%s' sisaldab '[' aga mitte ']'"
 
 msgid "Output stream doesn't implement write"
-msgstr ""
+msgstr "Väljundvoog ei toeta kirjutusoperatsiooni"
 
 msgid "Source stream is already closed"
 msgstr "Lähtevoog on juba suletud"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error resolving '%s': %s"
-msgstr "Viga failist '%s' lugemisel: %s"
+msgstr "Viga '%s' lahendamisel: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error reverse-resolving '%s': %s"
-msgstr "Viga failist '%s' lugemisel: %s"
+msgstr "Viga '%s' pöördlahendamisel: %s"
 
 #, c-format
 msgid "No service record for '%s'"
-msgstr ""
+msgstr "'%s' teenuskirje puudub"
 
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr ""
+msgstr "Ajutiselt ei suudeta '%s' lahendada"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error resolving '%s'"
-msgstr "Viga faili eemaldamisel: %s"
+msgstr "Viga '%s' lahendamisel"
 
 msgid "Invalid socket, not initialized"
-msgstr ""
+msgstr "Vigane sokkel, käivitamata"
 
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr ""
+msgstr "Vigane sokkel, käivitamine nurjus kuna: %s"
 
 msgid "Socket is already closed"
 msgstr "Sokkel on juba suletud"
 
-#, fuzzy, c-format
+#, c-format
 msgid "creating GSocket from fd: %s"
-msgstr "Viga failist lugemisel: %s"
+msgstr "GSocketi loomine fd-st: %s"
 
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Soklit pole võimalik luua: %s"
 
 msgid "Unknown protocol was specified"
-msgstr ""
+msgstr "Etteantud protokoll on tundmatu"
 
-#, fuzzy
 msgid "Cancellable initialization not supported"
-msgstr "Operatsioon ei ole toetatud"
+msgstr "Tühistatav käivitamine ei ole toetatud"
 
 #, c-format
 msgid "could not get local address: %s"
-msgstr ""
+msgstr "kohalikku aadressi ei suudeta määrata: %s"
 
 #, c-format
 msgid "could not get remote address: %s"
-msgstr ""
+msgstr "kaugaadressi ei suudeta määrata: %s"
 
 #, c-format
 msgid "could not listen: %s"
-msgstr ""
+msgstr "pole võimalik kuulata: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error binding to address: %s"
-msgstr "Viga faili kirjutamisel: %s"
+msgstr "Viga aadressile sidumisel: %s"
 
 #, c-format
 msgid "Error accepting connection: %s"
@@ -1421,15 +1419,15 @@ msgid "Error connecting: "
 msgstr "Viga ühendumisel: "
 
 msgid "Connection in progress"
-msgstr ""
+msgstr "Ühendumise edenemine"
 
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Viga ühendumisel: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get pending error: %s"
-msgstr "Faili pole võimalik prügikasti visata: %s"
+msgstr "Aktiivset viga pole võimalik saada: %s"
 
 #, c-format
 msgid "Error receiving data: %s"
@@ -1445,15 +1443,14 @@ msgstr "Viga sokli sulgemisel: %s"
 
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr ""
+msgstr "Sokli ülesseadmise ootamine: %s"
 
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Viga sõnumi saatmisel: %s"
 
-#, fuzzy
 msgid "GSocketControlMessage not supported on windows"
-msgstr "seose muutmine pole win32 keskkonnas toetatud"
+msgstr "GSocketControlMessage pole windows-platvormil toetatud"
 
 #, c-format
 msgid "Error receiving message: %s"
@@ -1462,9 +1459,8 @@ msgstr "Viga sõnumi vastuvõtmisel: %s"
 msgid "Unknown error on connect"
 msgstr "Tundmatu viga ühendumisel"
 
-#, fuzzy
 msgid "Listener is already closed"
-msgstr "Voog on juba suletud"
+msgstr "Kuulaja on juba suletud"
 
 msgid "Added socket is closed"
 msgstr "Lisatud sokkel on suletud"
@@ -1475,18 +1471,17 @@ msgstr "GThemedIcon kodeeringu versiooni %d pole võimalik käsitseda"
 
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr ""
+msgstr "Eeldati ühte kontrollsõnumit, aga saadi %d"
 
-#, fuzzy
 msgid "Unexpected type of ancillary data"
-msgstr "Ootamatult varajane voolõpp"
+msgstr "Ootamatu kõrvalteabe tüüp"
 
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "Eeldati ühte fd-d, aga saadi %d\n"
 
 msgid "Received invalid fd"
-msgstr ""
+msgstr "Saadi vigane fd"
 
 #, c-format
 msgid "Error reading from unix: %s"
@@ -1504,17 +1499,16 @@ msgid "Error writing to unix: %s"
 msgstr "Viga unix'isse kirjutamisel: %s"
 
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
+msgstr "Abstraktse unix-domeeni sokliaadressid ei ole sellel süsteemil toetatud"
 
 msgid "volume doesn't implement eject"
-msgstr ""
+msgstr "kõide ei toeta lahtihaakimist"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#, fuzzy
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr "köide ei toeta haakimist"
+msgstr "köide ei toeta haakimist või haakimist koos tegevusega"
 
 msgid "Can't find application"
 msgstr "Rakendust pole võimalik leida"
