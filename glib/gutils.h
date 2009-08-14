@@ -135,7 +135,7 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_data_dirs   (void);
 
 #ifdef G_OS_WIN32
 /* This functions is not part of the public GLib API */
-G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (void (*address_of_function)());
+G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void));
 #endif
 
 #if defined (G_OS_WIN32) && defined (G_CAN_INLINE) && !defined (__cplusplus)
@@ -146,7 +146,7 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (
 static inline G_CONST_RETURN gchar * G_CONST_RETURN *
 _g_win32_get_system_data_dirs (void)
 {
-  return g_win32_get_system_data_dirs_for_module ((void (*)()) &_g_win32_get_system_data_dirs);
+  return g_win32_get_system_data_dirs_for_module ((void (*)(void)) &_g_win32_get_system_data_dirs);
 }
 #define g_get_system_data_dirs _g_win32_get_system_data_dirs
 #endif
