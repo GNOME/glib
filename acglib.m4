@@ -117,7 +117,7 @@ AS_IF([_AC_EVAL_STDERR($ac_compile) &&
       [$2],
       [echo "$as_me: failed program was:" >&AS_MESSAGE_LOG_FD
 cat conftest.$ac_ext >&AS_MESSAGE_LOG_FD
-m4_ifvaln([$3],[$3])dnl])dnl
+m4_ifvaln([$3],[$3])dnl])
 ac_compile="$glib_ac_compile_save"
 rm -f conftest.$ac_objext conftest.err m4_ifval([$1], [conftest.$ac_ext])[]dnl
 ])# GLIB_CHECK_COMPILE_WARNINGS
