@@ -375,9 +375,19 @@ g_winhttp_file_resolve_relative_path (GFile      *file,
 
   if (*wnew_path != '/')
     {
-      wchar_t *tmp = g_new (wchar_t, wcslen (winhttp_file->url.lpszUrlPath) + 1 + wcslen (wnew_path) + 1);
-      wcscpy (tmp, winhttp_file->url.lpszUrlPath);
-      wcscat (tmp, L"/");
+      wchar_t *tmp = NULL;
+      int trailing_slash = winhttp_file->url.lpszUrlPath[winhttp_file->url.dwUrlPathLength-1] == L'/'? 1 : 0;
+      if (trailing_slash)
+	{
+	  tmp = g_new (wchar_t, wcslen (winhttp_file->url.lpszUrlPath) + wcslen (wnew_path) + 1);
+	  wcscpy (tmp, winhttp_file->url.lpszUrlPath);
+	}
+      else
+	{
+	  tmp = g_new (wchar_t, wcslen (winhttp_file->url.lpszUrlPath) + 1 + wcslen (wnew_path) + 1);
+	  wcscpy (tmp, winhttp_file->url.lpszUrlPath);
+	  wcscat (tmp, L"/");
+	}
       wcscat (tmp, wnew_path);
 
       g_free (wnew_path);
