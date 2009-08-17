@@ -200,7 +200,7 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
 	  return FALSE;
 	}
 
-      memset (sock, 0, sizeof (sock));
+      memset (sock, 0, sizeof (*sock));
       sock->sin6_family = AF_INET6;
       sock->sin6_port = g_htons (addr->priv->port);
       memcpy (&(sock->sin6_addr.s6_addr), g_inet_address_to_bytes (addr->priv->address), sizeof (sock->sin6_addr));
