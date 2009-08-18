@@ -1021,6 +1021,7 @@ struct _GTypelib {
   gboolean owns_memory;
   GMappedFile *mfile;
   GList *modules;
+  gboolean open_attempted;
 };
 
 DirEntry *g_typelib_get_dir_entry (GTypelib *typelib,

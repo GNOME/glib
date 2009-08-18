@@ -1946,86 +1946,99 @@ g_typelib_error_quark (void)
   return quark;
 }
 
-static inline void
-_g_typelib_init (GTypelib *typelib)
+static void
+_g_typelib_do_dlopen (GTypelib *typelib)
 {
   Header *header;
-
+  const char *shlib_str;
+  
   header = (Header *) typelib->data;
+  /* note that NULL shlib means to open the main app, which is allowed */
   if (header->shared_library)
+    shlib_str = g_typelib_get_string (typelib, header->shared_library);
+  else
+    shlib_str = NULL;
+
+  if (shlib_str != NULL && shlib_str[0] != '\0')
     {
-      const gchar *shlib_str;
-      GModule *app_module = NULL;
+      gchar **shlibs;
+      gint i;
 
-      shlib_str = g_typelib_get_string (typelib, header->shared_library);
-      /* note that NULL shlib means to open the main app, which is allowed */
+      /* shared-library is a comma-separated list of libraries */
+      shlibs = g_strsplit (shlib_str, ",", 0);
 
-      if (shlib_str != NULL)
+       /* We load all passed libs unconditionally as if the same library is loaded
+        * again with dlopen(), the same file handle will be returned. See bug:
+        * http://bugzilla.gnome.org/show_bug.cgi?id=555294
+        */
+      for (i = 0; shlibs[i]; i++)
         {
-          gchar **shlibs;
-          gint i;
+          GModule *module;
 
-          /* shared-library is a comma-separated list of libraries */
-          shlibs = g_strsplit (shlib_str, ",", 0);
-
-          /* We load all passed libs unconditionally as if the same library is loaded
-           * again with dlopen(), the same file handle will be returned. See bug:
-           * http://bugzilla.gnome.org/show_bug.cgi?id=555294
+          /* Glade's autoconnect feature and OpenGL's extension mechanism
+           * as used by Clutter rely on dlopen(NULL) to work as a means of
+           * accessing the app's symbols. This keeps us from using
+           * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
+           * in general libraries are not expecting multiple copies of
+           * themselves and are not expecting to be unloaded. So we just
+           * load modules globally for now.
            */
-          for (i = 0; shlibs[i]; i++)
+
+          module = g_module_open (shlibs[i], G_MODULE_BIND_LAZY);
+
+          if (module == NULL)
             {
-              GModule *module;
+              GString *shlib_full = g_string_new (shlibs[i]);
 
-              /* Glade's autoconnect feature and OpenGL's extension mechanism
-               * as used by Clutter rely on dlopen(NULL) to work as a means of
-               * accessing the app's symbols. This keeps us from using
-               * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
-               * in general libraries are not expecting multiple copies of
-               * themselves and are not expecting to be unloaded. So we just
-               * load modules globally for now.
-               */
-
-	      module = g_module_open (shlibs[i], G_MODULE_BIND_LAZY);
-
-	      if (module == NULL)
-	        {
-	          GString *shlib_full = g_string_new (shlibs[i]);
-
-	          /* Prefix with "lib", try both .la and .so */
-	          if (!g_str_has_prefix (shlib_full->str, "lib"))
-	            g_string_prepend (shlib_full, "lib");
-	          g_string_append (shlib_full, ".la");
-	          module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
-	          if (module == NULL)
-		    {
-		      g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
-		      module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
-		    }
-
-	          g_string_free (shlib_full, TRUE);
-	        }
-
-	      if (module == NULL)
+              /* Prefix with "lib", try both .la and .so */
+              if (!g_str_has_prefix (shlib_full->str, "lib"))
+                g_string_prepend (shlib_full, "lib");
+              g_string_append (shlib_full, ".la");
+              module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
+              if (module == NULL)
                 {
-                  g_warning ("Failed to load shared library '%s' referenced by the typelib: %s",
-                             shlibs[i], g_module_error ());
+                  g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
+                  module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
                 }
-              else
-                {
-                  typelib->modules = g_list_append (typelib->modules, module);
-                }
-          }
 
-          g_strfreev (shlibs);
-        }
+              g_string_free (shlib_full, TRUE);
+            }
 
-        /* we should make sure the app_module in the end of list so that
-         * it's last symbol source when loading any symbols from modules.
-         * See comments in g_typelib_symbol */
-        app_module = g_module_open (NULL, G_MODULE_BIND_LAZY);
-        if (app_module)
-          typelib->modules = g_list_append (typelib->modules, app_module);
+          if (module == NULL)
+            {
+              g_warning ("Failed to load shared library '%s' referenced by the typelib: %s",
+                         shlibs[i], g_module_error ());
+            }
+          else
+            {
+              typelib->modules = g_list_append (typelib->modules, module);
+            }
+       }
+
+      g_strfreev (shlibs);
     }
+  else
+    {
+      /* If there's no shared-library entry for this module, assume that
+       * the module is for the application.  Some of the hand-written .gir files
+       * in gobject-introspection don't have shared-library entries, but no one
+       * is really going to be calling g_module_symbol on them either.
+       */
+      GModule *module = g_module_open (NULL, 0);
+      if (module == NULL)
+        g_warning ("gtypelib.c: Failed to g_module_open (NULL): %s", g_module_error ());
+      else
+        typelib->modules = g_list_prepend (typelib->modules, module);
+    }
+}
+
+static inline void
+_g_typelib_ensure_open (GTypelib *typelib)
+{
+  if (typelib->open_attempted)
+    return;
+  typelib->open_attempted = TRUE;
+  _g_typelib_do_dlopen (typelib);
 }
 
 /**
@@ -2049,7 +2062,7 @@ g_typelib_new_from_memory (guchar *memory, gsize len)
   meta->len = len;
   meta->owns_memory = TRUE;
   meta->modules = NULL;
-  _g_typelib_init (meta);
+
   return meta;
 }
 
@@ -2072,7 +2085,7 @@ g_typelib_new_from_const_memory (const guchar *memory, gsize len)
   meta->len = len;
   meta->owns_memory = FALSE;
   meta->modules = NULL;
-  _g_typelib_init (meta);
+
   return meta;
 }
 
@@ -2094,7 +2107,7 @@ g_typelib_new_from_mapped_file (GMappedFile *mfile)
   meta->owns_memory = FALSE;
   meta->data = (guchar *) g_mapped_file_get_contents (mfile);
   meta->len = g_mapped_file_get_length (mfile);
-  _g_typelib_init (meta);
+
   return meta;
 }
 
@@ -2140,21 +2153,19 @@ gboolean
 g_typelib_symbol (GTypelib *typelib, const char *symbol_name, gpointer *symbol)
 {
   GList *l;
+  
+  _g_typelib_ensure_open (typelib);
 
   /*
-   * We want to be able to add symbols to an app or an auxiliary
-   * library to fill in gaps in an introspected library. However,
-   * normally we would only look for symbols in the main library
-   * (the first items in typelib->modules).
-   *
-   * A more elaborate solution is probably possible, but as a
-   * simple approach for now, if we fail to find a symbol we look
-   * for it in the global module (the last item in type->modules).
-   *
-   * This would not be very efficient if it happened often, since
-   * we always do the failed lookup above first, but very few
-   * symbols should be outside of the main libraries in
-   * typelib->modules so it doesn't matter.
+   * The reason for having multiple modules dates from gir-repository
+   * when it was desired to inject code (accessors, etc.) into an
+   * existing library.  In that situation, the first module listed
+   * will be the custom one, which overrides the main one.  A bit
+   * inefficient, but the problem will go away when gir-repository
+   * does.
+   * 
+   * For modules with no shared library, we dlopen'd the current
+   * process above.  
    */
   for (l = typelib->modules; l; l = l->next)
     {
