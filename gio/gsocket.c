@@ -1707,6 +1707,16 @@ g_socket_receive_from (GSocket         *socket,
 				   error);
 }
 
+/* Although we ignore SIGPIPE, gdb will still stop if the app receives
+ * one, which can be confusing and annoying. So if possible, we want
+ * to suppress the signal entirely.
+ */
+#ifdef MSG_NOSIGNAL
+#define G_SOCKET_DEFAULT_SEND_FLAGS MSG_NOSIGNAL
+#else
+#define G_SOCKET_DEFAULT_SEND_FLAGS 0
+#endif
+
 /**
  * g_socket_send:
  * @socket: a #GSocket
@@ -1759,7 +1769,7 @@ g_socket_send (GSocket       *socket,
 				    G_IO_OUT, cancellable, error))
 	return -1;
 
-      if ((ret = send (socket->priv->fd, buffer, size, 0)) < 0)
+      if ((ret = send (socket->priv->fd, buffer, size, G_SOCKET_DEFAULT_SEND_FLAGS)) < 0)
 	{
 	  int errsv = get_socket_errno ();
 
@@ -2681,7 +2691,7 @@ g_socket_send_message (GSocket                *socket,
 				      G_IO_OUT, cancellable, error))
 	  return -1;
 
-	result = sendmsg (socket->priv->fd, &msg, flags);
+	result = sendmsg (socket->priv->fd, &msg, flags | G_SOCKET_DEFAULT_SEND_FLAGS);
 	if (result < 0)
 	  {
 	    int errsv = get_socket_errno ();
