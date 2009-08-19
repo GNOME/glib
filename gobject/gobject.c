@@ -113,6 +113,9 @@
     ((G_DATALIST_GET_FLAGS (&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
 #define OBJECT_FLOATING_FLAG 0x2
 
+#define CLASS_HAS_PROPS_FLAG 0x1
+#define CLASS_HAS_PROPS(class) \
+    ((class)->flags & CLASS_HAS_PROPS_FLAG)
 
 /* --- signals --- */
 enum {
@@ -409,6 +412,9 @@ g_object_class_install_property (GObjectClass *class,
 {
   g_return_if_fail (G_IS_OBJECT_CLASS (class));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+
+  class->flags |= CLASS_HAS_PROPS_FLAG;
+
   if (pspec->flags & G_PARAM_WRITABLE)
     g_return_if_fail (class->set_property != NULL);
   if (pspec->flags & G_PARAM_READABLE)
