@@ -41,21 +41,12 @@ G_DEFINE_TYPE (GUnixResolver, g_unix_resolver, G_TYPE_THREADED_RESOLVER)
 static gboolean g_unix_resolver_watch (GIOChannel   *iochannel,
                                        GIOCondition  condition,
                                        gpointer      user_data);
+static void g_unix_resolver_reload (GResolver *resolver);
 
 static void
 g_unix_resolver_init (GUnixResolver *gur)
 {
-  gint fd;
-  GIOChannel *io;
-
-  /* FIXME: how many workers? */
-  gur->asyncns = _g_asyncns_new (2);
-
-  fd = _g_asyncns_fd (gur->asyncns);
-  io = g_io_channel_unix_new (fd);
-  gur->watch = g_io_add_watch (io, G_IO_IN | G_IO_HUP | G_IO_ERR,
-                               g_unix_resolver_watch, gur);
-  g_io_channel_unref (io);
+  g_unix_resolver_reload (G_RESOLVER (gur));
 }
 
 static void
@@ -68,6 +59,33 @@ g_unix_resolver_finalize (GObject *object)
   _g_asyncns_free (gur->asyncns);
 
   G_OBJECT_CLASS (g_unix_resolver_parent_class)->finalize (object);
+}
+
+static void
+g_unix_resolver_reload (GResolver *resolver)
+{
+  GUnixResolver *gur = G_UNIX_RESOLVER (resolver);
+  gint fd;
+  GIOChannel *io;
+
+  if (gur->asyncns)
+    {
+      if (_g_asyncns_getnqueries (gur->asyncns) == 0)
+        {
+          g_source_remove (gur->watch);
+          _g_asyncns_free (gur->asyncns);
+        }
+      /* else, we will free it later from g_unix_resolver_watch */
+    }
+
+  /* FIXME: how many workers? */
+  gur->asyncns = _g_asyncns_new (2);
+
+  fd = _g_asyncns_fd (gur->asyncns);
+  io = g_io_channel_unix_new (fd);
+  gur->watch = g_io_add_watch (io, G_IO_IN | G_IO_HUP | G_IO_ERR,
+                               g_unix_resolver_watch, gur->asyncns);
+  g_io_channel_unref (io);
 }
 
 /* The various request possibilities:
@@ -107,6 +125,7 @@ typedef void (*GUnixResolverFunc) (GUnixResolverRequest *);
 
 struct _GUnixResolverRequest {
   GUnixResolver *gur;
+  _g_asyncns_t *asyncns;
 
   _g_asyncns_query_t *qy;
   union {
@@ -148,6 +167,7 @@ g_unix_resolver_request_new (GUnixResolver         *gur,
 
   req = g_slice_new0 (GUnixResolverRequest);
   req->gur = g_object_ref (gur);
+  req->asyncns = gur->asyncns;
   req->qy = qy;
   req->process_func = process_func;
   req->free_func = free_func;
@@ -170,12 +190,17 @@ static void
 g_unix_resolver_request_free (GUnixResolverRequest *req)
 {
   req->free_func (req);
-  g_object_unref (req->gur);
 
   /* We don't have to free req->cancellable and req->async_result,
    * since they must already have been freed if we're here.
    */
 
+  /* Check if this was the last request remaining on an old asyncns. */
+  if (req->asyncns != req->gur->asyncns &&
+      _g_asyncns_getnqueries (req->asyncns) == 0)
+    _g_asyncns_free (req->asyncns);
+
+  g_object_unref (req->gur);
   g_slice_free (GUnixResolverRequest, req);
 }
 
@@ -204,7 +229,7 @@ request_cancelled (GCancellable *cancellable,
   GUnixResolverRequest *req = user_data;
   GError *error = NULL;
 
-  _g_asyncns_cancel (req->gur->asyncns, req->qy);
+  _g_asyncns_cancel (req->asyncns, req->qy);
   req->qy = NULL;
 
   g_cancellable_set_error_if_cancelled (cancellable, &error);
@@ -219,22 +244,22 @@ g_unix_resolver_watch (GIOChannel   *iochannel,
                        GIOCondition  condition,
                        gpointer      user_data)
 {
-  GUnixResolver *gur = user_data;
+  _g_asyncns_t *asyncns = user_data;
   _g_asyncns_query_t *qy;
   GUnixResolverRequest *req;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
     {
-      /* Shouldn't happen. Should we create a new asyncns? FIXME */
-      g_warning ("asyncns died");
-      gur->watch = 0;
+      /* Will happen if we reload, and then eventually kill the old
+       * _g_asyncns_t when it's done processing requests.
+       */
       return FALSE;
     }
 
-  while (_g_asyncns_wait (gur->asyncns, FALSE) == 0 &&
-         (qy = _g_asyncns_getnext (gur->asyncns)) != NULL)
+  while (_g_asyncns_wait (asyncns, FALSE) == 0 &&
+         (qy = _g_asyncns_getnext (asyncns)) != NULL)
     {
-      req = _g_asyncns_getuserdata (gur->asyncns, qy);
+      req = _g_asyncns_getuserdata (asyncns, qy);
       req->process_func (req);
       g_unix_resolver_request_complete (req);
     }
@@ -271,7 +296,7 @@ lookup_by_name_process (GUnixResolverRequest *req)
   gint retval;
   GError *error = NULL;
 
-  retval = _g_asyncns_getaddrinfo_done (req->gur->asyncns, req->qy, &res);
+  retval = _g_asyncns_getaddrinfo_done (req->asyncns, req->qy, &res);
   req->u.name.addresses =
     _g_resolver_addresses_from_addrinfo (req->u.name.hostname,
                                          res, retval, &error);
@@ -341,7 +366,7 @@ lookup_by_address_process (GUnixResolverRequest *req)
   gint retval;
   GError *error = NULL;
 
-  retval = _g_asyncns_getnameinfo_done (req->gur->asyncns, req->qy,
+  retval = _g_asyncns_getnameinfo_done (req->asyncns, req->qy,
                                         host, sizeof (host), NULL, 0);
   req->u.address.hostname =
     _g_resolver_name_from_nameinfo (req->u.address.address,
@@ -415,7 +440,7 @@ lookup_service_process (GUnixResolverRequest *req)
   gint len, herr;
   GError *error = NULL;
 
-  len = _g_asyncns_res_done (req->gur->asyncns, req->qy, &answer);
+  len = _g_asyncns_res_done (req->asyncns, req->qy, &answer);
   if (len < 0)
     herr = h_errno;
   else
@@ -487,6 +512,7 @@ g_unix_resolver_class_init (GUnixResolverClass *unix_class)
   GResolverClass *resolver_class = G_RESOLVER_CLASS (unix_class);
   GObjectClass *object_class = G_OBJECT_CLASS (unix_class);
 
+  resolver_class->reload                   = g_unix_resolver_reload;
   resolver_class->lookup_by_name_async     = lookup_by_name_async;
   resolver_class->lookup_by_name_finish    = lookup_by_name_finish;
   resolver_class->lookup_by_address_async  = lookup_by_address_async;

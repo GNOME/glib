@@ -34,6 +34,7 @@
 
 #ifdef G_OS_UNIX
 #include "gunixresolver.h"
+#include <sys/stat.h>
 #endif
 #ifdef G_OS_WIN32
 #include "gwin32resolver.h"
@@ -58,6 +59,21 @@
  * making it easy to connect to a remote host/service.
  */
 
+enum {
+  RELOAD,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
+struct _GResolverPrivate {
+#ifdef G_OS_UNIX
+  time_t resolv_conf_timestamp;
+#else
+  int dummy;
+#endif
+};
+
 /**
  * GResolver:
  *
@@ -70,6 +86,8 @@ static void
 g_resolver_class_init (GResolverClass *resolver_class)
 {
   volatile GType type;
+
+  g_type_class_add_private (resolver_class, sizeof (GResolverPrivate));
 
   /* Make sure _g_networking_init() has been called */
   type = g_inet_address_get_type ();
@@ -84,11 +102,37 @@ g_resolver_class_init (GResolverClass *resolver_class)
    */
   _g_resolver_addrinfo_hints.ai_socktype = SOCK_STREAM;
   _g_resolver_addrinfo_hints.ai_protocol = IPPROTO_TCP;
+
+  /**
+   * GResolver::reload:
+   * @resolver: a #GResolver
+   *
+   * Emitted when the resolver notices that the system resolver
+   * configuration has changed.
+   **/
+  signals[RELOAD] =
+    g_signal_new (I_("reload"),
+		  G_TYPE_RESOLVER,
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (GResolverClass, reload),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 }
 
 static void
 g_resolver_init (GResolver *resolver)
 {
+#ifdef G_OS_UNIX
+  struct stat st;
+#endif
+
+  resolver->priv = G_TYPE_INSTANCE_GET_PRIVATE (resolver, G_TYPE_RESOLVER, GResolverPrivate);
+
+#ifdef G_OS_UNIX
+  if (stat (_PATH_RESCONF, &st) == 0)
+    resolver->priv->resolv_conf_timestamp = st.st_mtime;
+#endif
 }
 
 static GResolver *default_resolver;
@@ -150,6 +194,24 @@ g_resolver_set_default (GResolver *resolver)
 }
 
 
+static void
+g_resolver_maybe_reload (GResolver *resolver)
+{
+#ifdef G_OS_UNIX
+  struct stat st;
+
+  if (stat (_PATH_RESCONF, &st) == 0)
+    {
+      if (st.st_mtime != resolver->priv->resolv_conf_timestamp)
+        {
+          resolver->priv->resolv_conf_timestamp = st.st_mtime;
+          res_init ();
+          g_signal_emit (resolver, signals[RELOAD], 0);
+        }
+    }
+#endif
+}
+
 /**
  * g_resolver_lookup_by_name:
  * @resolver: a #GResolver
@@ -205,6 +267,7 @@ g_resolver_lookup_by_name (GResolver     *resolver,
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
 
+  g_resolver_maybe_reload (resolver);
   addrs = G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_name (resolver, hostname, cancellable, error);
 
@@ -259,6 +322,7 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
 
+  g_resolver_maybe_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_name_async (resolver, hostname, cancellable, callback, user_data);
 
@@ -363,6 +427,7 @@ g_resolver_lookup_by_address (GResolver     *resolver,
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), NULL);
 
+  g_resolver_maybe_reload (resolver);
   return G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address (resolver, address, cancellable, error);
 }
@@ -391,6 +456,7 @@ g_resolver_lookup_by_address_async (GResolver           *resolver,
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (G_IS_INET_ADDRESS (address));
 
+  g_resolver_maybe_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address_async (resolver, address, cancellable, callback, user_data);
 }
@@ -504,6 +570,7 @@ g_resolver_lookup_service (GResolver     *resolver,
 
   rrname = g_resolver_get_service_rrname (service, protocol, domain);
 
+  g_resolver_maybe_reload (resolver);
   targets = G_RESOLVER_GET_CLASS (resolver)->
     lookup_service (resolver, rrname, cancellable, error);
 
@@ -547,6 +614,7 @@ g_resolver_lookup_service_async (GResolver           *resolver,
 
   rrname = g_resolver_get_service_rrname (service, protocol, domain);
 
+  g_resolver_maybe_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
     lookup_service_async (resolver, rrname, cancellable, callback, user_data);
 

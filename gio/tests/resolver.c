@@ -284,6 +284,9 @@ start_async_lookups (char **argv, int argc)
                                            lookup_by_name_callback,
                                            argv[i]);
 	}
+
+      /* Stress-test the reloading code */
+      g_signal_emit_by_name (resolver, "reload");
     }
 }
 

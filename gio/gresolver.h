@@ -36,15 +36,22 @@ G_BEGIN_DECLS
 #define G_IS_RESOLVER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_RESOLVER))
 #define G_RESOLVER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_RESOLVER, GResolverClass))
 
+typedef struct _GResolverPrivate GResolverPrivate;
+typedef struct _GResolverClass   GResolverClass;
+
 struct _GResolver {
   GObject parent_instance;
 
+  GResolverPrivate *priv;
 };
 
-typedef struct _GResolverClass GResolverClass;
 struct _GResolverClass {
   GObjectClass parent_class;
 
+  /* Signals */
+  void    ( *reload)                   (GResolver            *resolver);
+
+  /* Virtual methods */
   GList * ( *lookup_by_name)           (GResolver            *resolver,
 					const gchar          *hostname,
 					GCancellable         *cancellable,

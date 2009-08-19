@@ -56,6 +56,10 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+#ifndef _PATH_RESCONF
+#define _PATH_RESCONF "/etc/resolv.conf"
+#endif
+
 #endif
 
 G_BEGIN_DECLS
