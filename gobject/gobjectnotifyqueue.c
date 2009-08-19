@@ -48,11 +48,7 @@ struct _GObjectNotifyQueue
   GSList               *pspecs;
   guint16               n_pspecs;
   guint16               freeze_count;
-  /* currently, this structure abuses the GList allocation chain and thus
-   * must be <= sizeof (GList)
-   */
 };
-
 
 /* --- functions --- */
 static void
@@ -61,7 +57,7 @@ g_object_notify_queue_free (gpointer data)
   GObjectNotifyQueue *nqueue = data;
 
   g_slist_free (nqueue->pspecs);
-  g_list_free_1 ((void*) nqueue);
+  g_slice_free (GObjectNotifyQueue, nqueue);
 }
 
 static inline GObjectNotifyQueue*
@@ -73,8 +69,7 @@ g_object_notify_queue_freeze (GObject		   *object,
   nqueue = g_datalist_id_get_data (&object->qdata, context->quark_notify_queue);
   if (!nqueue)
     {
-      nqueue = (void*) g_list_alloc ();
-      memset (nqueue, 0, sizeof (*nqueue));
+      nqueue = g_slice_new0 (GObjectNotifyQueue);
       nqueue->context = context;
       g_datalist_id_set_data_full (&object->qdata, context->quark_notify_queue,
 				   nqueue, g_object_notify_queue_free);
