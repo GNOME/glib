@@ -138,7 +138,8 @@ enum {
 static void	g_object_base_class_init		(GObjectClass	*class);
 static void	g_object_base_class_finalize		(GObjectClass	*class);
 static void	g_object_do_class_init			(GObjectClass	*class);
-static void	g_object_init				(GObject	*object);
+static void	g_object_init				(GObject	*object,
+							 GObjectClass	*class);
 static GObject*	g_object_constructor			(GType                  type,
 							 guint                  n_construct_properties,
 							 GObjectConstructParam *construct_params);
@@ -702,13 +703,18 @@ g_object_interface_list_properties (gpointer      g_iface,
 }
 
 static void
-g_object_init (GObject *object)
+g_object_init (GObject		*object,
+	       GObjectClass	*class)
 {
   object->ref_count = 1;
   g_datalist_init (&object->qdata);
-  
-  /* freeze object's notification queue, g_object_newv() preserves pairedness */
-  g_object_notify_queue_freeze (object, &property_notify_context);
+
+  if (CLASS_HAS_PROPS (class))
+    {
+      /* freeze object's notification queue, g_object_newv() preserves pairedness */
+      g_object_notify_queue_freeze (object, &property_notify_context);
+    }
+
   /* enter construction list for notify_queue_thaw() and to allow construct-only properties */
   G_LOCK (construction_mutex);
   construction_objects = g_slist_prepend (construction_objects, object);
@@ -1243,10 +1249,14 @@ g_object_newv (GType       object_type,
   G_LOCK (construction_mutex);
   newly_constructed = slist_maybe_remove (&construction_objects, object);
   G_UNLOCK (construction_mutex);
-  if (newly_constructed || n_oparams)
-    nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
-  if (newly_constructed)
-    g_object_notify_queue_thaw (object, nqueue);
+
+  if (CLASS_HAS_PROPS (class))
+    {
+      if (newly_constructed || n_oparams)
+	nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+      if (newly_constructed)
+	g_object_notify_queue_thaw (object, nqueue);
+    }
 
   /* run 'constructed' handler if there is one */
   if (newly_constructed && class->constructed)
@@ -1257,9 +1267,12 @@ g_object_newv (GType       object_type,
     object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
   g_free (oparams);
 
-  /* release our own freeze count and handle notifications */
-  if (newly_constructed || n_oparams)
-    g_object_notify_queue_thaw (object, nqueue);
+  if (CLASS_HAS_PROPS (class))
+    {
+      /* release our own freeze count and handle notifications */
+      if (newly_constructed || n_oparams)
+	g_object_notify_queue_thaw (object, nqueue);
+    }
 
   if (unref_class)
     g_type_class_unref (unref_class);
