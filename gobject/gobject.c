@@ -1139,7 +1139,7 @@ g_object_newv (GType       object_type,
 	       guint       n_parameters,
 	       GParameter *parameters)
 {
-  GObjectConstructParam *cparams, *oparams;
+  GObjectConstructParam *cparams = NULL, *oparams;
   GObjectNotifyQueue *nqueue = NULL; /* shouldn't be initialized, just to silence compiler */
   GObject *object;
   GObjectClass *class, *unref_class = NULL;
@@ -1159,6 +1159,17 @@ g_object_newv (GType       object_type,
     {
       clist = g_list_prepend (clist, slist->data);
       n_total_cparams += 1;
+    }
+
+  if (n_parameters == 0 && n_total_cparams == 0)
+    {
+      /* This is a simple object with no construct properties, and
+       * no properties are being set, so short circuit the parameter
+       * handling. This speeds up simple object construction.
+       */
+      oparams = NULL;
+      object = class->constructor (object_type, 0, NULL);
+      goto did_construction;
     }
 
   /* collect parameters, sort into construction and normal ones */
@@ -1245,6 +1256,7 @@ g_object_newv (GType       object_type,
     g_value_unset (cvalues + n_cvalues);
   g_free (cvalues);
 
+ did_construction:
   /* adjust freeze_count according to g_object_init() and remaining properties */
   G_LOCK (construction_mutex);
   newly_constructed = slist_maybe_remove (&construction_objects, object);
