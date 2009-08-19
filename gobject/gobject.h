@@ -344,8 +344,10 @@ struct  _GObjectClass
   void	     (*constructed)		(GObject	*object);
 
   /*< private >*/
+  gsize		flags;
+
   /* padding */
-  gpointer	pdummy[7];
+  gpointer	pdummy[6];
 };
 /**
  * GObjectConstructParam:
