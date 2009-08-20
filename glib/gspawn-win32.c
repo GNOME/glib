@@ -294,9 +294,11 @@ make_pipe (gint     p[2],
 {
   if (_pipe (p, 4096, _O_BINARY) < 0)
     {
+      int errsv = errno;
+
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
                    _("Failed to create pipe for communicating with child process (%s)"),
-                   g_strerror (errno));
+                   g_strerror (errsv));
       return FALSE;
     }
   else
@@ -330,11 +332,12 @@ read_helper_report (int      fd,
           
       if (chunk < 0)
         {
+          int errsv = errno;
+
           /* Some weird shit happened, bail out */
-              
           g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
                        _("Failed to read from child pipe (%s)"),
-                       g_strerror (errno));
+                       g_strerror (errsv));
 
           return FALSE;
         }

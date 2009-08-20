@@ -633,10 +633,13 @@ g_convert_with_iconv (const gchar *str,
 	      have_error = TRUE;
 	      break;
 	    default:
-	      if (error)
-		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-			     _("Error during conversion: %s"),
-			     g_strerror (errno));
+              {
+                int errsv = errno;
+                
+                g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                             _("Error during conversion: %s"),
+                             g_strerror (errsv));
+              }
 	      have_error = TRUE;
 	      break;
 	    }
@@ -940,9 +943,14 @@ g_convert_with_fallback (const gchar *str,
 		}
 	      /* fall thru if p is NULL */
 	    default:
-	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-			   _("Error during conversion: %s"),
-			   g_strerror (errno));
+              {
+                int errsv = errno;
+
+                g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                             _("Error during conversion: %s"),
+                             g_strerror (errsv));
+              }
+
 	      have_error = TRUE;
 	      break;
 	    }

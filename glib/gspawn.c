@@ -182,11 +182,13 @@ read_data (GString *str,
     goto again;
   else if (bytes < 0)
     {
+      int errsv = errno;
+
       g_set_error (error,
                    G_SPAWN_ERROR,
                    G_SPAWN_ERROR_READ,
                    _("Failed to read data from child process (%s)"),
-                   g_strerror (errno));
+                   g_strerror (errsv));
       
       return READ_FAILED;
     }
@@ -317,13 +319,15 @@ g_spawn_sync (const gchar          *working_directory,
 
       if (ret < 0 && errno != EINTR)
         {
+          int errsv = errno;
+
           failed = TRUE;
 
           g_set_error (error,
                        G_SPAWN_ERROR,
                        G_SPAWN_ERROR_READ,
                        _("Unexpected error in select() reading data from a child process (%s)"),
-                       g_strerror (errno));
+                       g_strerror (errsv));
               
           break;
         }
@@ -400,13 +404,15 @@ g_spawn_sync (const gchar          *working_directory,
         {
           if (!failed) /* avoid error pileups */
             {
+              int errsv = errno;
+
               failed = TRUE;
                   
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_READ,
                            _("Unexpected error in waitpid() (%s)"),
-                           g_strerror (errno));
+                           g_strerror (errsv));
             }
         }
     }
@@ -1124,13 +1130,14 @@ read_ints (int      fd,
           
       if (chunk < 0)
         {
+          int errsv = errno;
+
           /* Some weird shit happened, bail out */
-              
           g_set_error (error,
                        G_SPAWN_ERROR,
                        G_SPAWN_ERROR_FAILED,
                        _("Failed to read from child pipe (%s)"),
-                       g_strerror (errno));
+                       g_strerror (errsv));
 
           return FALSE;
         }
@@ -1190,12 +1197,14 @@ fork_exec_with_pipes (gboolean              intermediate_child,
   pid = fork ();
 
   if (pid < 0)
-    {      
+    {
+      int errsv = errno;
+
       g_set_error (error,
                    G_SPAWN_ERROR,
                    G_SPAWN_ERROR_FORK,
                    _("Failed to fork (%s)"),
-                   g_strerror (errno));
+                   g_strerror (errsv));
 
       goto cleanup_and_fail;
     }
@@ -1390,11 +1399,13 @@ fork_exec_with_pipes (gboolean              intermediate_child,
 
           if (n_ints < 1)
             {
+              int errsv = errno;
+
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,
                            _("Failed to read enough data from child pid pipe (%s)"),
-                           g_strerror (errno));
+                           g_strerror (errsv));
               goto cleanup_and_fail;
             }
           else
