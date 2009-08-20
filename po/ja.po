@@ -1,17 +1,17 @@
 # Japanese translation of glib.
 # Copyright (C) 2001-2009 Free Software Foundation, Inc.
-# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2001-2002.
+# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2001-2002, 2009.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2004-2009.
 # Ryoichi INAGAKI <ryo1@bc.wakwak.com>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib trunk\n"
+"Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-17 19:34-0400\n"
-"PO-Revision-Date: 2009-03-17 22:18+0900\n"
-"Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
+"POT-Creation-Date: 2009-08-20 23:30+0900\n"
+"PO-Revision-Date: 2009-08-21 00:11+0900\n"
+"Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -202,7 +202,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "'%s' から '%s' にファイル名を変更できません: g_rename() に失敗しました: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' というファイルを生成できませんでした: %s"
@@ -222,61 +222,61 @@ msgstr "'%s' への書き込みに失敗しました: fwrite() に失敗しま�
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "'%s' への書き込みに失敗しました: fflush() に失敗しました: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' への書き込みに失敗しました: fsync() に失敗しました: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' をクローズできません: fclose() に失敗しました: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: %"
 "s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' というテンプレートは間違っています ('%s' を含めないこと)"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' というテンプレートに XXXXXX が含まれていません"
 
-#: glib/gfileutils.c:1734
+#: glib/gfileutils.c:1739
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u バイト"
+msgstr[1] "%u バイト"
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "シンボリック・リンクはサポートしていません"
 
@@ -317,19 +317,19 @@ msgid "Error on line %d char %d: "
 msgstr "%d 行の %d 文字目でエラー:"
 
 #: glib/gmarkup.c:363 glib/gmarkup.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
-msgstr "UTF-8 として正しくない文字列です ('%s' は妥当ではありません)"
+msgstr "名前はUTF-8として正しくない文字列です - '%s' は妥当ではありません"
 
 #: glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr ""
+msgstr "'%s' は妥当な名前ではありません"
 
 #: glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr ""
+msgstr "'%s' は妥当な名前ではありません: '%c'"
 
 #: glib/gmarkup.c:494
 #, c-format
@@ -368,9 +368,9 @@ msgstr ""
 "&gt; &apos;"
 
 #: glib/gmarkup.c:662
-#, fuzzy, c-format
+#, c-format
 msgid "Entity name '%-.*s' is not known"
-msgstr "エンティティ名 '%s' というのは不明です"
+msgstr "エンティティ名 '%-.*s' というのは不明です"
 
 #: glib/gmarkup.c:667
 msgid ""
@@ -1075,10 +1075,10 @@ msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
 #: glib/gkeyfile.c:1532
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
+msgstr "キー・ファイルに解釈できない値を持つキー '%s' が含まれています。"
 
 #: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
 #, c-format
@@ -1134,7 +1134,7 @@ msgstr "%s に引き渡した値が大きすぎます"
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:420 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
 #: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "操作がキャンセルされました"
@@ -1197,23 +1197,22 @@ msgstr "ドライブ側で取り出しの操作を実装していません"
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gdrive.c:489
-#, fuzzy
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr "ドライブ側で取り出しの操作を実装していません"
+msgstr ""
+"ドライブは「取り出し」あるいは「アンマウント操作での取り出し」を実装していま"
+"せん"
 
 #: gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
 msgstr "ドライブ側でポーリングによるメディアの検出を実装していません"
 
 #: gio/gdrive.c:771
-#, fuzzy
 msgid "drive doesn't implement start"
-msgstr "ドライブ側で取り出しの操作を実装していません"
+msgstr "ドライブは「開始」を実装していません。"
 
 #: gio/gdrive.c:873
-#, fuzzy
 msgid "drive doesn't implement stop"
-msgstr "ドライブ側で取り出しの操作を実装していません"
+msgstr "ドライブは「停止」を実装していません"
 
 #: gio/gemblem.c:325
 #, c-format
@@ -1248,7 +1247,7 @@ msgstr "GEmblemedIcon に対する GEmblem を想定していました"
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
 #: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
-#: gio/win32/gwinhttpfile.c:431
+#: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
 
@@ -1399,18 +1398,18 @@ msgstr "Stream has outstanding operation"
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
 #: gio/gunixsocketaddress.c:174
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "ソケット・アドレスを作成するために充分な空きがありません"
 
 #: gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "サポートしていないソケット・アドレスです"
 
 #: gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 "ローカル・ディレクトリを監視するデフォルト・モニタの種類が見つかりません"
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ファイル名が無効です: %s"
@@ -1585,9 +1584,9 @@ msgid "Error setting symlink: file is not a symlink"
 msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
 #: gio/glocalfileinfo.c:2105
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting modification or access time: %s"
-msgstr "アクセス権をセットする際にエラー: %s"
+msgstr "最終更新日時、あるい最終アクセス日時をセットする際にエラー: %s"
 
 #: gio/glocalfileinfo.c:2128
 msgid "SELinux context must be non-NULL"
@@ -1721,17 +1720,19 @@ msgstr "mount は取り出しを実装していません"
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:537
-#, fuzzy
 msgid "mount doesn't implement unmount or unmount_with_operation"
-msgstr "mount はアンマウントを実装していません"
+msgstr ""
+"mount は「アンマウント」あるいは「アンマウント操作による取り出し」を実装して"
+"いません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:624
-#, fuzzy
 msgid "mount doesn't implement eject or eject_with_operation"
-msgstr "mount は取り出しを実装していません"
+msgstr ""
+"mount は「取り出し」あるいは「アンマウント操作による取り出し」を実装していま"
+"せん"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1757,7 +1758,7 @@ msgstr "mount には同期させてメディアの種類を推測するような
 #: gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "ホスト名 '%s' に '[' が含まれていますが ']' がありません"
 
 #: gio/goutputstream.c:210 gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
@@ -1767,156 +1768,150 @@ msgstr "出力ストリームは書き込みを実装していません"
 msgid "Source stream is already closed"
 msgstr "ソース・ストリームは既に閉じています"
 
-#: gio/gresolver.c:668
-#, fuzzy, c-format
+#: gio/gresolver.c:736
+#, c-format
 msgid "Error resolving '%s': %s"
-msgstr "'%s' の読み出し中にエラー: %s"
+msgstr "'%s' の解決中にエラー: %s"
 
-#: gio/gresolver.c:718
-#, fuzzy, c-format
+#: gio/gresolver.c:786
+#, c-format
 msgid "Error reverse-resolving '%s': %s"
-msgstr "'%s' の読み出し中にエラー: %s"
+msgstr "'%s' の逆引き中にエラー: %s"
 
-#: gio/gresolver.c:753 gio/gresolver.c:831
+#: gio/gresolver.c:821 gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
-msgstr ""
+msgstr "'%s' に対応するサービスレコードがありません"
 
-#: gio/gresolver.c:758 gio/gresolver.c:836
+#: gio/gresolver.c:826 gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr ""
+msgstr "一時的に '%s' を解決することができません"
 
-#: gio/gresolver.c:763 gio/gresolver.c:841
-#, fuzzy, c-format
+#: gio/gresolver.c:831 gio/gresolver.c:909
+#, c-format
 msgid "Error resolving '%s'"
-msgstr "ファイルを削除する際にエラー: %s"
+msgstr "'%s' の解決時にエラー"
 
 #: gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
-msgstr ""
+msgstr "無効なソケットです。初期化されていません"
 
 #: gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr ""
+msgstr "無効なソケットです。初期化に失敗しました: %s"
 
 #: gio/gsocket.c:292
-#, fuzzy
 msgid "Socket is already closed"
-msgstr "ソース・ストリームは既に閉じています"
+msgstr "ソースは既に閉じられています"
 
 #: gio/gsocket.c:405
-#, fuzzy, c-format
+#, c-format
 msgid "creating GSocket from fd: %s"
-msgstr "ファイルから読み込む際にエラー: %s"
+msgstr "ファイルディスクリプタ GSocket を作成: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
-#, fuzzy, c-format
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#, c-format
 msgid "Unable to create socket: %s"
-msgstr "ゴミ箱のディレクトリ (%s) の生成に失敗しました: %s"
+msgstr "ソケットを作成できません: %s"
 
 #: gio/gsocket.c:439
 msgid "Unknown protocol was specified"
-msgstr ""
+msgstr "不明なプロトコルが指定されました"
 
 #: gio/gsocket.c:758
-#, fuzzy
 msgid "Cancellable initialization not supported"
-msgstr "サポートしていない操作です"
+msgstr "キャンセル可能な初期化はサポートされていません"
 
 #: gio/gsocket.c:1112
 #, c-format
 msgid "could not get local address: %s"
-msgstr ""
+msgstr "ローカルのアドレスを取得できませんでした: %s"
 
 #: gio/gsocket.c:1145
 #, c-format
 msgid "could not get remote address: %s"
-msgstr ""
+msgstr "リモートのアドレスを取得できませんでした: %s"
 
 #: gio/gsocket.c:1203
 #, c-format
 msgid "could not listen: %s"
-msgstr ""
+msgstr "listen できませんでした: %s"
 
 #: gio/gsocket.c:1277
-#, fuzzy, c-format
+#, c-format
 msgid "Error binding to address: %s"
-msgstr "ファイルに書き込む際ににエラー: %s"
+msgstr "アドレスに bind 時にエラー: %s"
 
 #: gio/gsocket.c:1397
-#, fuzzy, c-format
+#, c-format
 msgid "Error accepting connection: %s"
-msgstr "変換中にエラー: %s"
+msgstr "接続を accept する時にエラー: %s"
 
 #: gio/gsocket.c:1510
-#, fuzzy
 msgid "Error connecting: "
-msgstr "ファイルを切りつめる際にエラー: %s"
+msgstr "接続エラー: "
 
 #: gio/gsocket.c:1514
 msgid "Connection in progress"
-msgstr ""
+msgstr "接続中"
 
 #: gio/gsocket.c:1519
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting: %s"
-msgstr "ファイルをオープンする際にエラー: %s"
+msgstr "接続中にエラー: %s"
 
 #: gio/gsocket.c:1559
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get pending error: %s"
-msgstr "ファイルをゴミ箱へ移動できません: %s"
+msgstr "エラーをペンディングできません： %s"
 
 #: gio/gsocket.c:1655
-#, fuzzy, c-format
+#, c-format
 msgid "Error receiving data: %s"
-msgstr "ファイルを削除する際にエラー: %s"
+msgstr "データの受信時にエラー: %s"
 
-#: gio/gsocket.c:1788
-#, fuzzy, c-format
+#: gio/gsocket.c:1798
+#, c-format
 msgid "Error sending data: %s"
-msgstr "ファイルをオープンする際にエラー: %s"
+msgstr "データの送信時にエラー: %s"
 
-#: gio/gsocket.c:1980
-#, fuzzy, c-format
+#: gio/gsocket.c:1990
+#, c-format
 msgid "Error closing socket: %s"
-msgstr "ファイルを閉じる際にエラー: %s"
+msgstr "ソケットを閉じる際にエラー: %s"
 
-#: gio/gsocket.c:2466
+#: gio/gsocket.c:2475
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr ""
+msgstr "ソケットの指定された状態を wait: %s"
 
-#: gio/gsocket.c:2698 gio/gsocket.c:2779
-#, fuzzy, c-format
+#: gio/gsocket.c:2709 gio/gsocket.c:2790
+#, c-format
 msgid "Error sending message: %s"
-msgstr "ファイルをオープンする際にエラー: %s"
+msgstr "メッセージを送信中にエラー： %s"
 
-#: gio/gsocket.c:2723
-#, fuzzy
+#: gio/gsocket.c:2734
 msgid "GSocketControlMessage not supported on windows"
-msgstr "win32 で組み合わせの変更はサポートしていません"
+msgstr "GSocketControlMessage は Windows ではサポートされていません"
 
-#: gio/gsocket.c:2981 gio/gsocket.c:3120
-#, fuzzy, c-format
+#: gio/gsocket.c:2992 gio/gsocket.c:3131
+#, c-format
 msgid "Error receiving message: %s"
-msgstr "ファイルを削除する際にエラー: %s"
+msgstr "メッセージを受信中にエラー: %s"
 
-#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
-#, fuzzy
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:770
 msgid "Unknown error on connect"
-msgstr "原因不明のエラー"
+msgstr "接続時に原因不明のエラー"
 
 #: gio/gsocketlistener.c:192
-#, fuzzy
 msgid "Listener is already closed"
-msgstr "既にストリームは閉じています"
+msgstr "受信を待つ Listener は既に閉じています"
 
 #: gio/gsocketlistener.c:233
 msgid "Added socket is closed"
-msgstr ""
+msgstr "追加されたソケットは閉じています"
 
 #: gio/gthemedicon.c:499
 #, c-format
@@ -1926,21 +1921,20 @@ msgstr "バージョン %d の GThemedIcon のエンコーディングはサポ�
 #: gio/gunixconnection.c:151
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr ""
+msgstr "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
 
 #: gio/gunixconnection.c:164
-#, fuzzy
 msgid "Unexpected type of ancillary data"
-msgstr "想定していたよりも早くストリームの最後に到達しました"
+msgstr "想定してない種類の補助データです"
 
 #: gio/gunixconnection.c:182
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "ファイルディスクリプタを一つ待ち受けていましたが、%d 受信しました\n"
 
 #: gio/gunixconnection.c:198
 msgid "Received invalid fd"
-msgstr ""
+msgstr "無効なファイルディスクリプタを受けとりました"
 
 #: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
 #: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
@@ -1961,23 +1955,26 @@ msgstr "ファイルシステムのルート"
 #: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
 #, c-format
 msgid "Error writing to unix: %s"
-msgstr "unix に書き込む際にエラー: %s"
+msgstr "UNIXストリームに書き込む際にエラー: %s"
 
 #: gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
+"抽象化されたUNIXドメインソケットのアドレスはこのシステムではサポートされてい"
+"ません"
 
 #: gio/gvolume.c:452
 msgid "volume doesn't implement eject"
-msgstr "ボリュームは取り出しを実装していません"
+msgstr "ボリュームは「取り出し」を実装していません"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gvolume.c:531
-#, fuzzy
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr "ボリュームは取り出しを実装していません"
+msgstr ""
+"ボリュームは「取り出し」あるいは「アンマウント操作での取り出し」を実装してい"
+"ません"
 
 #: gio/gwin32appinfo.c:277
 msgid "Can't find application"
