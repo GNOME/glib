@@ -1,3 +1,49 @@
+Overview of Changes from GLib 2.21.4 to GLib 2.21.5
+===================================================
+
+* A performance problem with trashing of many files has been fixed
+
+* GResolver now invalidates the libc resolv.conf cache as needed
+
+* Minor api additions:
+ - g_cancellable_make_pollfd returns a boolean now. And there is a
+   new function g_cancellable_release_fd that can be used to released
+   the resources used by a GCancellable.
+
+* Bugs fixed:
+ 589988 Compilation error on Solaris 9 (missing stdint.h)
+ 588901 gtcpconnection.c won't compile
+ 584246 GResolver needs to call res_init() when network state changes
+ 591714 Figure out failure handling for g_cancellable_make_pollfd()
+ 591532 redundent '/' returned from g_file_resolve_relative_path
+ 591378 Use MSG_NOSIGNAL in GSocket if it's available
+ 589649 API documentation migration for Base64 Encoding
+ 591840 configure fails with autoconf 2.64
+
+* Updated translations:
+ Basque
+ Brazilian Portuguese
+ Bulgarian
+ Danish
+ Estonian
+ Finnish
+ Galician
+ Gujarati
+ Hndi
+ Irish
+ Japanese
+ Korean
+ Norwegian bokmål
+ Polish
+ Portuguese
+ Punjabi
+ Spanish
+ Swedish
+ Telugu
+ Traditional Chinese
+ Thai
+
+
 Overview of Changes from GLib 2.21.3 to GLib 2.21.4
 ===================================================
 
