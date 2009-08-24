@@ -184,6 +184,7 @@ g_file_open_readwrite_finish
 g_file_replace_readwrite
 g_file_replace_readwrite_async
 g_file_replace_readwrite_finish
+g_file_supports_thread_contexts
 <SUBSECTION Standard>
 G_FILE
 G_IS_FILE
@@ -302,6 +303,7 @@ g_file_info_new
 g_file_info_dup
 g_file_info_copy_into
 g_file_info_has_attribute
+g_file_info_has_namespace
 g_file_info_list_attributes
 g_file_info_get_attribute_type
 g_file_info_remove_attribute
@@ -309,6 +311,7 @@ g_file_info_get_attribute_as_string
 g_file_info_get_attribute_data
 g_file_info_get_attribute_status
 g_file_info_get_attribute_string
+g_file_info_get_attribute_stringv
 g_file_info_get_attribute_byte_string
 g_file_info_get_attribute_boolean
 g_file_info_get_attribute_uint32
@@ -317,7 +320,9 @@ g_file_info_get_attribute_uint64
 g_file_info_get_attribute_int64
 g_file_info_get_attribute_object
 g_file_info_set_attribute
+g_file_info_set_attribute_status
 g_file_info_set_attribute_string
+g_file_info_set_attribute_stringv
 g_file_info_set_attribute_byte_string
 g_file_info_set_attribute_boolean
 g_file_info_set_attribute_uint32

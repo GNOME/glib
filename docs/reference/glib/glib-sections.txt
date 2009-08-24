@@ -1443,6 +1443,7 @@ GUserDirectory
 g_get_user_special_dir
 g_get_system_data_dirs
 g_get_system_config_dirs
+g_reload_user_special_dirs_cache
 
 <SUBSECTION>
 g_get_host_name

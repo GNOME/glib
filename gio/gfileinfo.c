@@ -922,6 +922,8 @@ g_file_info_get_attribute_byte_string (GFileInfo  *info,
  *
  * Returns: the contents of the @attribute value as a stringv, or
  * %NULL otherwise. Do not free.
+ *
+ * Since: 2.22
  **/
 char **
 g_file_info_get_attribute_stringv (GFileInfo  *info,
