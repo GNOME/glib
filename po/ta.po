@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-17 19:34-0400\n"
+"POT-Creation-Date: 2009-08-24 13:37-0400\n"
 "PO-Revision-Date: 2009-03-15 14:04+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -109,63 +109,63 @@ msgstr "வரியுரு வகை `%s' இலிருந்து `%s' �
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' லிருந்து '%s'க்கு மாற்றியை திறக்க முடியவில்லை"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
 #: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "உள்ளீடின் முடிவில் பூர்த்தியாகாத வரியுரு வரிசைமுறை"
 
-#: glib/gconvert.c:919
+#: glib/gconvert.c:922
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "பின்னடைப்பு '%s', '%s' குறிக் கணமிற்கு மாற்ற முடியவில்லை"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"கோப்பு\"திட்டத்தை பயன்படுத்தும் முழுமையான URI அல்ல"
 
-#: glib/gconvert.c:1747
+#: glib/gconvert.c:1755
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "உள்ளமைக் கோப்பு வலை முகவரி `%s' இல் ஓர் `#' இல்லாமல் இருக்கலாம்"
 
-#: glib/gconvert.c:1764
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' செல்லுபடியாகாத வலை முகவரி"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1784
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
 
-#: glib/gconvert.c:1792
+#: glib/gconvert.c:1800
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1895
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' பாதைப்-பெயர் ஓர் தனிப் பாதை அல்ல"
 
-#: glib/gconvert.c:1897
+#: glib/gconvert.c:1905
 msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
@@ -210,7 +210,7 @@ msgstr "'%s' கோப்பை திறக்க முடியவில்�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s'கோப்பினை '%s'க்கு மறுபெயரிட முடியவில்லை: g_rename() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
@@ -230,59 +230,59 @@ msgstr "'%s' கோப்பினை எழுத முடியவில்�
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "'%s' கோப்பினை எழுத முடியவில்லை: fwrite() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' கோப்பினை எழுத முடியவில்லை: fwrite() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s'கோப்பினை மூட முடியவில்லை: fclose() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "இருக்கும் கோப்பு '%s' ஐ நீக்க முடியாது: g_unlink() செயலிழந்தது: %s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' படிம அச்சில் XXXXXX இல்லை"
 
-#: glib/gfileutils.c:1734
+#: glib/gfileutils.c:1739
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
@@ -847,52 +847,52 @@ msgstr "உரை வெற்றா இருந்தது (அல்லத�
 msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
+#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "தவறான நிரல் பெயர்: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%dல் மதிப்பரு வெக்டாரில் தவறான சரம்: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "சூழலில் தவறான சரம்: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "தவறான பணி செய்யும் அடைவு: %s"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "உதவியாளர் நிலையை இயக்க முடியவில்லை (%s)"
 
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -900,47 +900,47 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: glib/gspawn.c:188
+#: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn.c:325
+#: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்கும் போது, select()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:408
+#: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "(%s) waitpid()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1347
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn.c:1357
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "சேய் (%s) செயலகத்தின் வெளியீடலை அல்லது உள்ளடலை திசை-மாற்றும்போது பிழை"
 
-#: glib/gspawn.c:1366
+#: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1374
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
-#: glib/gspawn.c:1396
+#: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
@@ -1138,7 +1138,7 @@ msgstr "%sக்கு மிகப்பெரிய எண்ணிக்க�
 msgid "Stream is already closed"
 msgstr "ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
-#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:420 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
 #: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "செயல்பாடு ரத்து செய்யப்பட்டது"
@@ -1250,7 +1250,7 @@ msgstr "GEmblemedIcon க்காக ஒரு GEmblem எதிர்பார
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
 #: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
-#: gio/win32/gwinhttpfile.c:431
+#: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "செயல்பாட்டிற்கு ஆதரவு கிடையாது"
 
@@ -1410,7 +1410,7 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr "முன்னிருப்பு உள்ளமை அடைவு மானிட்டர் வகையை தேட முடியவில்லை"
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "செல்லுபடியாகாத கோப்பு பெயர் %s"
@@ -1767,27 +1767,27 @@ msgstr "வெளிப்பாடு ஸ்ட்ரீம் எழுது�
 msgid "Source stream is already closed"
 msgstr "மூல ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
-#: gio/gresolver.c:668
+#: gio/gresolver.c:736
 #, fuzzy, c-format
 msgid "Error resolving '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/gresolver.c:718
+#: gio/gresolver.c:786
 #, fuzzy, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: gio/gresolver.c:753 gio/gresolver.c:831
+#: gio/gresolver.c:821 gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
 msgstr ""
 
-#: gio/gresolver.c:758 gio/gresolver.c:836
+#: gio/gresolver.c:826 gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr ""
 
-#: gio/gresolver.c:763 gio/gresolver.c:841
+#: gio/gresolver.c:831 gio/gresolver.c:909
 #, fuzzy, c-format
 msgid "Error resolving '%s'"
 msgstr "கோப்பு நீக்கும் போது பிழை: %s"
@@ -1811,7 +1811,7 @@ msgstr "மூல ஸ்ட்ரீம் ஏற்கனவே மூடப்
 msgid "creating GSocket from fd: %s"
 msgstr "கோப்பிலிருந்து வாசிக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "குப்பை அடைவு %sஐ உருவாக்க முடியவில்லை: %s"
@@ -1874,37 +1874,37 @@ msgstr "கோப்பை இழுக்க முடியவில்லை:
 msgid "Error receiving data: %s"
 msgstr "கோப்பு நீக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1788
+#: gio/gsocket.c:1798
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "கோப்பு திறக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1980
+#: gio/gsocket.c:1990
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "கோப்பை முடிக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:2466
+#: gio/gsocket.c:2475
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gsocket.c:2698 gio/gsocket.c:2779
+#: gio/gsocket.c:2709 gio/gsocket.c:2790
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "கோப்பு திறக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:2723
+#: gio/gsocket.c:2734
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "win32இல் அமைப்பு மாற்றங்கள் துணைபுரிவதில்லை"
 
-#: gio/gsocket.c:2981 gio/gsocket.c:3120
+#: gio/gsocket.c:2992 gio/gsocket.c:3131
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "கோப்பு நீக்கும் போது பிழை: %s"
 
-#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:770
 #, fuzzy
 msgid "Unknown error on connect"
 msgstr "தெரியாத தவறு"

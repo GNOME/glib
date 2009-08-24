@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-17 19:34-0400\n"
+"POT-Creation-Date: 2009-08-24 13:37-0400\n"
 "PO-Revision-Date: 2009-03-26 15:52+0200\n"
 "Last-Translator: Vytautas Rėkus <v.rekus@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
@@ -101,63 +101,63 @@ msgstr "Keitimas iš koduotės „%s“ į koduotę „%s“ nepalaikomas"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nepavyko atverti keitiklio iš „%s“ į „%s“"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "Klaidinga baitų seka keitimo įvedime"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Klaida keitimo metu: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
 #: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "Nepilna simbolio seka įvedimo pabaigoje"
 
-#: glib/gconvert.c:919
+#: glib/gconvert.c:922
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Negalima keisti atgalinio varianto „%s“ į koduotę „%s“"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresas „%s“ nėra absoliutus adresas naudojantis „file“ schemą"
 
-#: glib/gconvert.c:1747
+#: glib/gconvert.c:1755
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Vietinio failo adresas „%s“ negali turėti simbolio „#“"
 
-#: glib/gconvert.c:1764
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresas „%s“ yra klaidingas"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1784
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Kompiuterio vardas „%s“ adrese yra klaidingas"
 
-#: glib/gconvert.c:1792
+#: glib/gconvert.c:1800
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adrese „%s“ yra klaidingai perkoduoti symboliai"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1895
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Kelias „%s“ nėra absoliutus"
 
-#: glib/gconvert.c:1897
+#: glib/gconvert.c:1905
 msgid "Invalid hostname"
 msgstr "Klaidingas kompiuterio vardas"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Klaida atidarant aplanką „%s“: %s"
@@ -202,7 +202,7 @@ msgstr "Nepavyko atverti failo „%s“: fdopen() klaida: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Nepavyko pervadinti failo „%s“ į „%s“: g_rename() klaida: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepavyko sukurti failo „%s“: %s"
@@ -222,32 +222,32 @@ msgstr "Nepavyko įrašyti failo „%s“: fwrite() klaida: %s"
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: fflush() klaida: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: fsync() klaida: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Nepavyko užverti failo „%s“: fclose() klaida: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Nepavyko pašalinti egzistuojančio failo „%s“: g_unlink() failed: %s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablonas „%s“ klaidingas, jame negali būti „%s“"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Šablone „%s“ nėra XXXXXX"
 
-#: glib/gfileutils.c:1734
+#: glib/gfileutils.c:1739
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -255,27 +255,27 @@ msgstr[0] "%u baitas"
 msgstr[1] "%u baitai"
 msgstr[2] "%u baitų"
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepavyko perskaityti simbolinės nuorodos „%s“: %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
@@ -846,54 +846,54 @@ msgstr "Tekstas buvo tuščias arba turėjo vien tik tarpo simbolius)"
 msgid "Failed to read data from child process"
 msgstr "Nepavyko gauti duomenų iš antrinio proceso"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
+#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nepavyko sukurti konvejerio skirto keistis duomenimis su antriniu procesu (%"
 "s)"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepavyko perskaityti duomenų iš antrinio konvejerio (%s)"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nepavyko pakeisti į aplanką „%s“ (%s)"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nepavyko paleisti antrinio proceso (%s)"
 
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Netinkamas programos pavadinimas: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Netinkama seka argumento vektoriuje, pozicijoje %d: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Netinka seka aplinkoje: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Netinkamas darbinis aplankas: %s"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Nepavyko paleisti pagalbinės programos (%s)"
 
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -901,49 +901,49 @@ msgstr ""
 "Netikėta klaida tarp g_io_channel_win32_poll() funkcijos duomenų skaitymo iš "
 "antrinio proceso metu"
 
-#: glib/gspawn.c:188
+#: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nepavyko gauti duomenis iš antrinio proceso (%s)"
 
-#: glib/gspawn.c:325
+#: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Netikėta klaida tarp select() funkcijos duomenų gavimo iš antrinio proceso (%"
 "s) metu"
 
-#: glib/gspawn.c:408
+#: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Netikėta klaida iš waitpid() (%s)"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nepavyko atskirti (%s)"
 
-#: glib/gspawn.c:1347
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 
-#: glib/gspawn.c:1357
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nepavyko perimti antrinio proceso (%s) išvedimo arba įvedimo"
 
-#: glib/gspawn.c:1366
+#: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nepavyko atskirti antrinio proceso (%s)"
 
-#: glib/gspawn.c:1374
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nežinoma klaida vykdant antrinį procesą „%s“"
 
-#: glib/gspawn.c:1396
+#: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -1146,7 +1146,7 @@ msgstr "Per didelė skaičiavimo reikšmė perduota %s"
 msgid "Stream is already closed"
 msgstr "Srautas jau užvertas"
 
-#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:420 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
 #: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "Operacija nutraukta"
@@ -1258,7 +1258,7 @@ msgstr "Tikėtasi GEmblem skirto GEmblemedIcon"
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
 #: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
-#: gio/win32/gwinhttpfile.c:431
+#: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Operacija nepalaikoma"
 
@@ -1418,7 +1418,7 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr "Nepavyko rasti įprasto vietinių aplankų stebėjimo tipo"
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Netaisyklingas failo vardas %s"
@@ -1775,27 +1775,27 @@ msgstr "Išvedimo srautas nepalaiko rašymo"
 msgid "Source stream is already closed"
 msgstr "Šaltinio srautas jau užvertas"
 
-#: gio/gresolver.c:668
+#: gio/gresolver.c:736
 #, fuzzy, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Klaida skaitant failą „%s“: %s"
 
-#: gio/gresolver.c:718
+#: gio/gresolver.c:786
 #, fuzzy, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Klaida skaitant failą „%s“: %s"
 
-#: gio/gresolver.c:753 gio/gresolver.c:831
+#: gio/gresolver.c:821 gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
 msgstr ""
 
-#: gio/gresolver.c:758 gio/gresolver.c:836
+#: gio/gresolver.c:826 gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr ""
 
-#: gio/gresolver.c:763 gio/gresolver.c:841
+#: gio/gresolver.c:831 gio/gresolver.c:909
 #, fuzzy, c-format
 msgid "Error resolving '%s'"
 msgstr "Klaida trinant failą: %s"
@@ -1819,7 +1819,7 @@ msgstr "Šaltinio srautas jau užvertas"
 msgid "creating GSocket from fd: %s"
 msgstr "Klaida skaitant failą: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nepavyko sukurti šiukšlių aplanko %s: %s"
@@ -1882,37 +1882,37 @@ msgstr "Nepavyko į šiukšles perkelti failo: %s"
 msgid "Error receiving data: %s"
 msgstr "Klaida trinant failą: %s"
 
-#: gio/gsocket.c:1788
+#: gio/gsocket.c:1798
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Klaida atveriant failą: %s"
 
-#: gio/gsocket.c:1980
+#: gio/gsocket.c:1990
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Klaida užveriant failą: %s"
 
-#: gio/gsocket.c:2466
+#: gio/gsocket.c:2475
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gsocket.c:2698 gio/gsocket.c:2779
+#: gio/gsocket.c:2709 gio/gsocket.c:2790
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Klaida atveriant failą: %s"
 
-#: gio/gsocket.c:2723
+#: gio/gsocket.c:2734
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "saitų keitimai win32 sistemose nepalaikomi"
 
-#: gio/gsocket.c:2981 gio/gsocket.c:3120
+#: gio/gsocket.c:2992 gio/gsocket.c:3131
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Klaida trinant failą: %s"
 
-#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:770
 #, fuzzy
 msgid "Unknown error on connect"
 msgstr "nežinoma klaida"

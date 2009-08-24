@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-17 19:34-0400\n"
+"POT-Creation-Date: 2009-08-24 13:37-0400\n"
 "PO-Revision-Date: 2009-02-27 17:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: maithili <maithili.sf.net>\n"
@@ -102,63 +102,63 @@ msgstr "अक्षर समूह '%s' सँ '%s' मे परिवर्�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' सँ '%s' परिवर्तक नहि खोलल जाए सकल"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "परिवर्तन इनपुटमे अवैध बाइट अनुक्रम"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "परिवर्तनक दौरान त्रुटि: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
 #: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "इनपुट क' अंतमे आंशिक अक्षर अनुक्रम"
 
-#: glib/gconvert.c:919
+#: glib/gconvert.c:922
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "फालबैक '%s' केँ कोड सेट '%s' मे बदएल नहि कए सकल"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"file\" योजना क' उपयोग करैबला URI '%s' एकटा निरपेक्ष यूआरआई नहि अछि"
 
-#: glib/gconvert.c:1747
+#: glib/gconvert.c:1755
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "स्थानीय फाइल यूआरआई '%s' मे एकटा '#' सम्मिलित नहि अछि"
 
-#: glib/gconvert.c:1764
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "यूआरआई '%s' अवैध अछि"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1784
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "यूआरआई '%s' क' होस्टनाम अवैध अछि"
 
-#: glib/gconvert.c:1792
+#: glib/gconvert.c:1800
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "यूआरआई '%s' मे अवैध एस्केप्ड अक्षर सम्मिलित अछि"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1895
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "पथनाम '%s' एकटा निरपेक्ष पथ नहि अछि"
 
-#: glib/gconvert.c:1897
+#: glib/gconvert.c:1905
 msgid "Invalid hostname"
 msgstr "अवैध होस्ट-नाम"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "निर्देशिका '%s' केँ खोलबामे त्रुटि: %s"
@@ -203,7 +203,7 @@ msgstr "फाइल '%s': fdopen() खोलबामे असफल: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "फाइल '%s' केँ '%s' मे नाम बदलए मे विफल: g_rename() विफल: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "फाइल '%s' बनाबैमे असफल: %s"
@@ -223,59 +223,59 @@ msgstr "'%s' फाइलकेँ लिखबामे विफल: fwrite() 
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "'%s' फाइलकेँ लिखबामे विफल: fwrite() विफल: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' फाइलकेँ लिखबामे विफल: fwrite() विफल: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' फाइल बन्न करबामे विफल: fclose() विफल: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "'%s' मोजुदा फाइल हटाएल नहि जा सकैत अछि: g_unlink() विफल: %s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "टैम्पलेट '%s' अवैध अछि. एहिमे '%s' सामिल नहि अछि"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "टैम्पलेट '%s' मे XXXXXX समाहित नहि अछि"
 
-#: glib/gfileutils.c:1734
+#: glib/gfileutils.c:1739
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f कि.बा."
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f मे.बा."
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f गी.बा."
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "सिंबालिक लिंक '%s' सँ थीम पढ़बामे असफल %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "सिंबालिक लिंक समर्थित नहि अछि"
 
@@ -829,99 +829,99 @@ msgstr "पाठ रिक्त छला (अथवा ओकरामे स
 msgid "Failed to read data from child process"
 msgstr "शिशु प्रक्रियासँ आँकड़ा पढ़बामे असफल"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
+#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "शिशु प्रक्रिया (%s) सँ संचारण लेल पाइप बनाबैमे असफल"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "चाइल्ड पाइप (%s) सँ पढ़बामे असफल"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "निर्देशिका '%s' (%s) पर बदलबामे असफल"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "शिशु प्रक्रिया (%s) कार्यान्वित करबामे असफल"
 
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "अवैध प्रोग्राम नाम: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d पर तर्क सदिशमे अवैध स्ट्रिंग: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "वातावरणमे अवैध स्ट्रिंग: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "अवैध कार्यशील निर्देशिका: %s"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "हेल्पर प्रोग्राम (%s) कार्यान्वित करबामे असफल"
 
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "एकटा शिशु प्रक्रिया सँ आँकड़ा पढ़बामे g_io_channel_win32_poll() मे अप्रत्याशित त्रुटि"
 
-#: glib/gspawn.c:188
+#: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "शिशु प्रक्रिया (%s) सँ आँकड़ा पढ़बामे असफल"
 
-#: glib/gspawn.c:325
+#: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "एकटा चाइल्ड प्रक्रिया (%s) सँ चुनें() पढ़बाक आँकड़ामे अप्रत्याशित त्रुटि हुई"
 
-#: glib/gspawn.c:408
+#: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) मे अप्रत्याशित त्रुटि"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) फोर्क करबामे असफल"
 
-#: glib/gspawn.c:1347
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "शिशु प्रक्रिया \"%s\" (%s) कार्यान्वित करबामे असफल"
 
-#: glib/gspawn.c:1357
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "आउटपुट अथवा शिशु प्रक्रिया (%s) क' इनपुट केँ अनुप्रेषित करब मे असफल"
 
-#: glib/gspawn.c:1366
+#: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "शिशु प्रक्रिया (%s) फॉर्क करब मे असफल"
 
-#: glib/gspawn.c:1374
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "शिशु प्रक्रिया \"%s\" कार्यान्वित करबामे अज्ञात त्रुटि"
 
-#: glib/gspawn.c:1396
+#: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "शिशु पीआईडी पाइप (%s) सँ पर्याप्त आँकड़ा पढ़बामे असफल"
@@ -1118,7 +1118,7 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "स्ट्रीन पहिनेसँ बन्न अछि"
 
-#: gio/gcancellable.c:404 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
+#: gio/gcancellable.c:420 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
 #: gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
 msgstr "ऑपरेशन रद्द छल"
@@ -1230,7 +1230,7 @@ msgstr "GEmblem प्रत्याशित GEmblemedIcon केँ लेल
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
 #: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
-#: gio/win32/gwinhttpfile.c:431
+#: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ऑपरेशन समर्थित नहि अछि"
 
@@ -1390,7 +1390,7 @@ msgstr ""
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "अवैध फाइलनाम %s"
@@ -1747,27 +1747,27 @@ msgstr "आउटपुट स्ट्रीम लेखन केँ ला�
 msgid "Source stream is already closed"
 msgstr "स्रोत स्ट्रीम पहिनेसँ बन्न अछि"
 
-#: gio/gresolver.c:668
+#: gio/gresolver.c:736
 #, fuzzy, c-format
 msgid "Error resolving '%s': %s"
 msgstr "'%s' फाइल केँ पढ़बामे त्रुटि: %s"
 
-#: gio/gresolver.c:718
+#: gio/gresolver.c:786
 #, fuzzy, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' फाइल केँ पढ़बामे त्रुटि: %s"
 
-#: gio/gresolver.c:753 gio/gresolver.c:831
+#: gio/gresolver.c:821 gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
 msgstr ""
 
-#: gio/gresolver.c:758 gio/gresolver.c:836
+#: gio/gresolver.c:826 gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr ""
 
-#: gio/gresolver.c:763 gio/gresolver.c:841
+#: gio/gresolver.c:831 gio/gresolver.c:909
 #, fuzzy, c-format
 msgid "Error resolving '%s'"
 msgstr "फाइल हटाबै मे त्रुटि: %s"
@@ -1791,7 +1791,7 @@ msgstr "स्रोत स्ट्रीम पहिनेसँ बन्न
 msgid "creating GSocket from fd: %s"
 msgstr "फाइल पढबामे त्रुटि: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1901
+#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "ट्रैश निर्देशिका %s बनाबैमे त्रुटि: %s"
@@ -1854,37 +1854,37 @@ msgstr "फाइलकेँ रद्दीमे भेजबामे त्
 msgid "Error receiving data: %s"
 msgstr "फाइल हटाबै मे त्रुटि: %s"
 
-#: gio/gsocket.c:1788
+#: gio/gsocket.c:1798
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "फाइलकेँ खोलबामे त्रुटि: %s"
 
-#: gio/gsocket.c:1980
+#: gio/gsocket.c:1990
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "फाइल बन्न करबामे त्रुटि: %s"
 
-#: gio/gsocket.c:2466
+#: gio/gsocket.c:2475
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gsocket.c:2698 gio/gsocket.c:2779
+#: gio/gsocket.c:2709 gio/gsocket.c:2790
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "फाइलकेँ खोलबामे त्रुटि: %s"
 
-#: gio/gsocket.c:2723
+#: gio/gsocket.c:2734
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "संयोजन परिवर्तन win32 पर समर्थित नहि अछि"
 
-#: gio/gsocket.c:2981 gio/gsocket.c:3120
+#: gio/gsocket.c:2992 gio/gsocket.c:3131
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "फाइल हटाबै मे त्रुटि: %s"
 
-#: gio/gsocketclient.c:521 gio/gsocketclient.c:767
+#: gio/gsocketclient.c:521 gio/gsocketclient.c:770
 #, fuzzy
 msgid "Unknown error on connect"
 msgstr "अज्ञात त्रुटि"
