@@ -12,7 +12,7 @@
 #
 # Stream rimane stream (consultare le API reference di GIO)
 # Seek è tradotto posizionare
-#
+# Polling - proviamo con controllo sistematico (MS lo lascia non tradotto)
 #
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2009-08-22 13:09+0000\n"
-"PO-Revision-Date: 2009-08-20 10:23+0200\n"
+"PO-Revision-Date: 2009-08-26 22:04+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -1308,10 +1308,9 @@ msgstr "l'unità non implementa l'azione eject"
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "l'unità non implementa l'azione eject o eject_with_operation"
 
-# sondaggio ????
 #: ../gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
-msgstr "l'unità non implementa il sondaggio di supporti"
+msgstr "l'unità non implementa il controllo sistematico dei supporti"
 
 #: ../gio/gdrive.c:771
 msgid "drive doesn't implement start"
