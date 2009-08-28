@@ -210,7 +210,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
       int errsv = errno;
       
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error writing to file: %s"),
 		   g_strerror (errsv));
       goto err_out;
