@@ -181,6 +181,7 @@ g_rand_new (void)
 	{
 	  int r;
 
+	  setvbuf (dev_urandom, NULL, _IONBF, 0);
 	  do
 	    {
 	      errno = 0;
