@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.20.4 to GLib 2.20.5
+===================================================
+
+* Fix a performance problem when trashing multiple files
+
+* Bug fixes:
+ 593232 g_rand_new: read no more than requested from /dev/urandom
+ 592457 preserve errno
+ 591995 use saved errno
+ 591532 redundent '/' returned from g_file_resolve_relative_path
+
+* Updates translations:
+ Catalan (Valencian)
+ Galician
+
+
 Overview of Changes from GLib 2.20.3 to GLib 2.20.4
 ===================================================
 
