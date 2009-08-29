@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-27 01:04-0400\n"
+"POT-Creation-Date: 2009-08-28 21:03-0400\n"
 "PO-Revision-Date: 2009-06-18 06:13+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjab-l10n@list.sf.net>\n"
@@ -101,63 +101,63 @@ msgstr "ਕਰੈਕਟਰ ਸਮੂਹ %s ਤੋਂ %s ਵਿੱਚ ਬਦਲ�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ਤੋੱ '%s' ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "ਬਦਲਣ ਲਈ ਦਿੱਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ਤਬਦੀਲੀ ਦੌਰਾਨ ਗਲਤੀ  %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
 #: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "ਸਤਰ ਦੇ ਅਖੀਰ ਤੇ ਅੱਖਰਾਂ ਦਾ ਸਰੂਪ ਅਧੂਰਾ ਹੈ"
 
-#: glib/gconvert.c:919
+#: glib/gconvert.c:922
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ਕੋਡ ਸਮੂਹ %s ਤੋਂ %s ਵਿੱਚ ਤਬਦੀਲੀ ਸੰਭਵ ਨਹੀਂ"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"file\" ਸਕੀਮ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਅਸਲ URI ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:1747
+#: glib/gconvert.c:1755
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ਲੋਕਲ ਫਾਇਲ URI %s ਵਿੱਚ ਇਹ ਨਿਸ਼ਾਨ # ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:1764
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ਜਾਇਜ਼ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1784
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' ਦੇ ਮੇਜ਼ਬਾਨ ਦਾ ਨਾਂ ਜਾਇਜ਼ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:1792
+#: glib/gconvert.c:1800
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1895
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ਮਾਰਗ-ਨਾਂ %s ਇਕ ਅਸਲੀ (absolute) ਮਾਰਗ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:1897
+#: glib/gconvert.c:1905
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਮੇਜ਼ਬਾਨ ਨਾਂ"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਖੋਲ੍ਹਣ ਲਈ ਗਲਤੀ: %s"
@@ -202,7 +202,7 @@ msgstr "ਫਾਇਲ '%s' ਖੋਲ੍ਹਣ ਵਿੱਚ ਫੇਲ੍ਹ: fdope
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਦਾ ਨਾਂ '%s' ਬਦਲਣ 'ਚ ਅਸਫ਼ਲ: g_rename() ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ਫਾਇਲ %s' ਬਣਾਉਣ ਵਿੱਚ ਫੇਲ੍ਹ: %s"
@@ -222,52 +222,52 @@ msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਫੇਲ੍ਹ: fwrite(
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਫੇਲ੍ਹ: fflush() ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਫੇਲ੍ਹ: fsync() ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਬੰਦ ਕਰਨ 'ਚ ਫੇਲ੍ਹ: fdopen() ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ਮੌਜੂਦਾ ਫਾਇਲ '%s' ਨੂੰ ਹਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: g_unlink() ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ਟੈਪਲੇਟ '%s' ਸਹੀਂ ਨਹੀਂ ਹੈ, ਇਸ ਕੋਲ '%s' ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ਟੈਂਪਲੇਟ '%s' XXXXXX ਨਹੀਂ ਰੱਖਦਾ ਹੈ"
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ '%s' ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ: %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ ਮੱਦਦ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ"
 
@@ -842,99 +842,99 @@ msgstr "ਟੈਕਸਟ ਖਾਲੀ ਸੀ (ਜਾਂ ਸਾਫ ਥਾਂ ਹ�
 msgid "Failed to read data from child process"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈੱਸ ਤੋਂ ਡਾਟਾ ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
+#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ (%s) ਨਾਲ ਕਮਿਊਨੀਕੇਸ਼ਨ ਲਈ ਪਾਇਪ ਬਣਾਉਣ ਵਿੱਚ ਫੇਲ੍ਹ"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ਚਾਈਲਡ ਪਾਈਪ (%s) ਤੋਂ ਡਾਟਾ ਖੋਲ੍ਹਣ ਵਿੱਚ ਫੇਲ੍ਹ ਹੈ"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਬਦਲਣ ਵਿੱਚ ਫੇਲ੍ਹ (%s)"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ਚਾਈਲਡ ਕਾਰਵਾਈ (%s) ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਫੇਲ੍ਹ"
 
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "ਗਲਤ ਪ੍ਰੋਗਰਾਮ ਨਾਂ: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d ਉੱਤੇ ਮੁੱਲ ਵੈਕਟਰ ਵਿੱਚ ਗਲਤ ਲਾਈਨ: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "ਇੰਵਾਇਰਨਮਿੰਟ ਵਿੱਚ ਗਲਤ ਲਾਈਨ: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "ਗਲਤ ਵਰਕਿੰਗ ਡਾਇਰੈਕਟਰੀ: %s"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ਮੱਦਦ ਪਰੋਗਰਾਮ (%s) ਸ਼ੁਰੂ ਕਰਨ 'ਚ ਫੇਲ੍ਹ"
 
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "ਇੱਕ ਚਾਈਲਡ ਪਰੋਸੈਸ ਤੋਂ ਡਾਟਾ ਪੜ੍ਹਨ ਦੌਰਾਨ g_io_channel_win32_poll() ਵਿੱਚ ਅਚਾਨਕ ਗਲਤੀ"
 
-#: glib/gspawn.c:188
+#: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ (%s) ਤੋਂ ਡਾਟਾ ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: glib/gspawn.c:325
+#: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ (%s) ਤੋਂ ਡਾਟਾ ਖੋਲ੍ਹਣ ਲਈ select() ਵਿੱਚ ਅਚਾਨਕ ਗਲਤੀ"
 
-#: glib/gspawn.c:408
+#: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) ਵਿੱਚ ਅਚਾਨਕ ਗਲਤੀ"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ਫੋਰਕ (%s) ਲਈ ਫੇਲ੍ਹ"
 
-#: glib/gspawn.c:1347
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ \"%s\" (%s) ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ"
 
-#: glib/gspawn.c:1357
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ (%s) ਦੀ ਆਉਟਪੁੱਟ ਜਾਂ ਇੰਪੁੱਟ ਦੀ ਦਿਸ਼ਾ ਬਦਲਣ 'ਚ ਫੇਲ੍ਹ"
 
-#: glib/gspawn.c:1366
+#: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ (%s) ਫੋਰਕ ਕਰਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: glib/gspawn.c:1374
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ਚਾਈਲਡ ਪਰੋਸੈਸ \"%s\" ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਅਣਜਾਣੀ ਗਲਤੀ"
 
-#: glib/gspawn.c:1396
+#: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ਚਾਈਲਡ pid ਪਾਇਪ (%s) ਤੋਂ ਚਾਹੀਦਾ ਡਾਟਾ ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ"
@@ -1215,7 +1215,7 @@ msgstr "GEmblemedIcon ਲਈ GEmblem ਦੀ ਲੋੜ ਸੀ"
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
 #: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
 #: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
-#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ਓਪਰੇਸ਼ਨ ਸਹਾਇਕ ਨਹੀਂ"
 
@@ -1372,7 +1372,7 @@ msgstr "ਸਟਰੀਮ ਪਹਿਲਾਂ ਹੀ ਕਾਰਵਾਈ ਅਧੀ�
 msgid "Unable to find default local directory monitor type"
 msgstr "ਡਿਫਾਲਟ ਲੋਕਲ ਡਾਇਰੈਕਟਰੀ ਮਾਨੀਟਰ ਟਾਈਪ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ਗਲਤ ਫਾਇਲ ਨਾਂ %s"

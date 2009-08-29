@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-27 01:04-0400\n"
+"POT-Creation-Date: 2009-08-28 21:03-0400\n"
 "PO-Revision-Date: 2009-03-26 11:04+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -97,63 +97,63 @@ msgstr "'%s' ಅಕ್ಷರಗಳಿಂದ '%s' ಗೆ ಪರಿವರ್ತಿ
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ನಿಂದ '%s'ಗೆ ಪರಿವರ್ತಕವನ್ನು ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1402
+#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
 msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ ಅನುಕ್ರಮ ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1409
+#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ಪರಿವರ್ತಿಸುವಾಗ ದೋಷ: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
 #: glib/gutf8.c:1409
 msgid "Partial character sequence at end of input"
 msgstr "ಆದಾನದ ಕೊನೆಯಲ್ಲಿ ಆಂಶಿಕ ಅಕ್ಷರ ಅನುಕ್ರಮಣೆ"
 
-#: glib/gconvert.c:919
+#: glib/gconvert.c:922
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' ಅನ್ನು ಸಂಕೇತಸೆಟ್ '%s' ಗೆ ಪರಿವರ್ತಿಸಲಾಗಿಲ್ಲ"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"ಕಡತ\" ವಿಧಾನವನ್ನು ಬಳಸುವ ಒಂದು ಪರಿಪೂರ್ಣವಾದ URI ಅಲ್ಲ"
 
-#: glib/gconvert.c:1747
+#: glib/gconvert.c:1755
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ಸ್ಥಳೀಯ ಕಡತ URI '%s' ಒಂದು '#' ಅನ್ನು ಹೊಂದಿಲ್ಲದಿರಬಹುದು"
 
-#: glib/gconvert.c:1764
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1784
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' ನ ಅತಿಥೇಯದ ಹೆಸರು ಸರಿಯಿಲ್ಲ"
 
-#: glib/gconvert.c:1792
+#: glib/gconvert.c:1800
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' ಅಮಾನ್ಯವಾಗಿ ನುಣುಚಿಕೊಂಡ ಚಿಹ್ನೆಗಳನ್ನು ಒಳಗೊಂಡಿದೆ"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1895
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ಪಥದ ಹೆಸರು '%s' ಒಂದು ಪರಿಪೂರ್ಣವಾದ ಪಥವಲ್ಲ"
 
-#: glib/gconvert.c:1897
+#: glib/gconvert.c:1905
 msgid "Invalid hostname"
 msgstr "ಅಮಾನ್ಯವಾದ ಅತಿಥೇಯದ ಹೆಸರು"
 
-#: glib/gdir.c:110 glib/gdir.c:130
+#: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ಕಡತ ಕೋಶ '%s' ವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
@@ -198,7 +198,7 @@ msgstr "'%s' ಕಡತವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲತ�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' ಕಡತವನ್ನು '%s' ಕ್ಕೆ ಪುನರ್ ನಾಮಕರಣ ಮಾಡುವಲ್ಲಿ: g_rename() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1328
+#: glib/gfileutils.c:896 glib/gfileutils.c:1333
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' ಕಡತವನ್ನು ರಚಿಸುವಲ್ಲಿ ವಿಫಲತೆ: %s"
@@ -219,53 +219,53 @@ msgstr "ಕಡತ '%s'ವನ್ನು ಬರೆಯುವಲ್ಲಿ ವಿಫ�
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "ಕಡತ '%s'ವನ್ನು ಬರೆಯುವಲ್ಲಿ ವಿಫಲತೆ: fflush() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gfileutils.c:979
+#: glib/gfileutils.c:983
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "ಕಡತ '%s'ವನ್ನು ಬರೆಯುವಲ್ಲಿ ವಿಫಲತೆ: fsync()) ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gfileutils.c:997
+#: glib/gfileutils.c:1002
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ಕಡತ '%s' ವನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ವಿಫಲತೆ: fclose() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gfileutils.c:1115
+#: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ '%s' ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕಲಾಗುವುದಿಲ್ಲ: g_unlink() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gfileutils.c:1290
+#: glib/gfileutils.c:1295
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ಮಾದರಿ '%s' ಅಮಾನ್ಯವಾಗಿದೆ, ಅದು ಒಂದು '%s' ಅನ್ನು ಹೊಂದಿರುವಂತಿಲ್ಲ"
 
-#: glib/gfileutils.c:1303
+#: glib/gfileutils.c:1308
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ಮಾದರಿ '%s' ಯು XXXXXX ಅನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: glib/gfileutils.c:1742
+#: glib/gfileutils.c:1747
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1752
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1757
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1795
+#: glib/gfileutils.c:1800
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕ್ '%s' ಅನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲತೆ: %s"
 
-#: glib/gfileutils.c:1816
+#: glib/gfileutils.c:1821
 msgid "Symbolic links not supported"
 msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕುಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
@@ -856,52 +856,52 @@ msgstr "ಪಠ್ಯವು ಖಾಲಿಯಾಗಿತ್ತು (ಅಥವ ಕ�
 msgid "Failed to read data from child process"
 msgstr "child ಪ್ರಕ್ರಿಯೆಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
 
-#: glib/gspawn-win32.c:298 glib/gspawn.c:1469
+#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ಉಪ ಪ್ರಕ್ರಿಯೆಯೊಂದಿಗೆ ಸಂವಹನಕ್ಕೆ ಪೈಪನ್ನು ರಚಿಸುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ (%s)"
 
-#: glib/gspawn-win32.c:336 glib/gspawn-win32.c:344 glib/gspawn.c:1132
+#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "child pipe (%s) ನಿಂದ ಓದುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: glib/gspawn-win32.c:367 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ಕೋಶಕ್ಕೆ ಬದಲಾಯಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ (%s)"
 
-#: glib/gspawn-win32.c:373 glib/gspawn-win32.c:492
+#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ (%s) ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "ಅಮಾನ್ಯವಾದ ಪ್ರೋಗ್ರಾಂ ಹೆಸರು: %s"
 
-#: glib/gspawn-win32.c:452 glib/gspawn-win32.c:720 glib/gspawn-win32.c:1276
+#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d ದಲ್ಲಿರುವ ಆರ್ಗ್ಯುಮೆಂಟ್ ವೆಕ್ಟರಿನಲ್ಲಿನ ಅಮಾನ್ಯ ಸಾಲು: %s"
 
-#: glib/gspawn-win32.c:463 glib/gspawn-win32.c:735 glib/gspawn-win32.c:1309
+#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "ಪರಿಸರದಲ್ಲಿನ ಅಮಾನ್ಯ ಸಾಲು: %s"
 
-#: glib/gspawn-win32.c:716 glib/gspawn-win32.c:1257
+#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "ಅಮಾನ್ಯ ಕಾರ್ಯಕಾರಿ ಕೋಶ: %s"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ಸಹಾಯಕ ಪ್ರೊಗ್ರಾಂ (%s) ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
 
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -909,48 +909,48 @@ msgstr ""
 "child ಪ್ರಕ್ರಿಯೆ ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಾಗ g_io_channel_win32_poll() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ "
 "ದೋಷ"
 
-#: glib/gspawn.c:188
+#: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ (%s) ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲ"
 
-#: glib/gspawn.c:325
+#: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ (%s) ಯಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದುವಾಗ select() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ ದೋಷ"
 
-#: glib/gspawn.c:408
+#: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() ನಲ್ಲಿ ಅನಪೇಕ್ಷಿತ ದೋಷ (%s)"
 
-#: glib/gspawn.c:1197
+#: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ಕವಲೊಡೆಸುವಲ್ಲಿ ವಿಫಲತೆ (%s)"
 
-#: glib/gspawn.c:1347
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆ \"%s\" (%s) ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
 
-#: glib/gspawn.c:1357
+#: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "child ಪ್ರಕ್ರಿಯೆಯ ಆದಾನ ಅಥವ ಪ್ರದಾನವನ್ನು ಪುನರ್ನಿರ್ದೇಶಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ (%s)"
 
-#: glib/gspawn.c:1366
+#: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "child ಪ್ರಕ್ರಿಯೆಯನ್ನು ಕವಲೊಡೆಯಲು ವಿಫಲಗೊಂಡಿದೆ (%s)"
 
-#: glib/gspawn.c:1374
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "child ಪ್ರಕ್ರಿಯೆ \"%s\" ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಾಗ ಗೊತ್ತಿರದ ದೋಷ"
 
-#: glib/gspawn.c:1396
+#: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "child pid pipe (%s) ಇಂದ ಸಾಕಷ್ಟು ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
@@ -1234,7 +1234,7 @@ msgstr "GEmblemedIcon ಗಾಗಿ GEmblem ಅನ್ನು ನಿರೀಕ್ಷ
 #: gio/gfile.c:1482 gio/gfile.c:1539 gio/gfile.c:1622 gio/gfile.c:2716
 #: gio/gfile.c:2770 gio/gfile.c:2901 gio/gfile.c:2941 gio/gfile.c:3268
 #: gio/gfile.c:3670 gio/gfile.c:3754 gio/gfile.c:3837 gio/gfile.c:3917
-#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:431
+#: gio/gfile.c:4247 gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
@@ -1391,7 +1391,7 @@ msgstr "ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಕಾರ್ಯವು ಬಾ�
 msgid "Unable to find default local directory monitor type"
 msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಕೋಶ ಮೇಲ್ವಿಚಾರಕ ಬಗೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:414
+#: gio/glocalfile.c:617 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು %s"
