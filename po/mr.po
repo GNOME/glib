@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
 "POT-Creation-Date: 2009-08-29 19:05+0000\n"
-"PO-Revision-Date: 2009-08-31 20:28+0530\n"
+"PO-Revision-Date: 2009-08-31 20:45+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -313,12 +313,12 @@ msgstr "नावातील अवैध UTF-8 ऐनकोड मजकूर
 #: ../glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr ""
+msgstr "'%s' वैध नाव नाही "
 
 #: ../glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr ""
+msgstr "'%s' वैध नाव नाही: '%c' "
 
 #: ../glib/gmarkup.c:494
 #, c-format
@@ -1156,26 +1156,26 @@ msgstr "%s करीता इच्छिक व्याख्या"
 
 #: ../gio/gdrive.c:409
 msgid "drive doesn't implement eject"
-msgstr "ड्राइव्ह बाहेर कडा कार्यान्वीत करत नाही"
+msgstr "ड्राइव्ह बाहेर पडा लागू करत नाही"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:489
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr ""
+msgstr "ड्राइव्ह eject किंवा eject_with_operation लागू करत नाही"
 
 #: ../gio/gdrive.c:566
 msgid "drive doesn't implement polling for media"
-msgstr "ड्राइव्ह मिडीयाकरीता पोलींग कार्यान्वीत करत नाही"
+msgstr "ड्राइव्ह मिडीयाकरीता पोलींग लागू करत नाही"
 
 #: ../gio/gdrive.c:771
 msgid "drive doesn't implement start"
-msgstr ""
+msgstr "ड्राइव्ह start लागू करत नाही"
 
 #: ../gio/gdrive.c:873
 msgid "drive doesn't implement stop"
-msgstr ""
+msgstr "ड्राइव्ह stop लागू करत नाही"
 
 #: ../gio/gemblem.c:325
 #, c-format
@@ -1365,7 +1365,7 @@ msgstr "सॉकेट पत्त्यांकरीता अतिरी�
 
 #: ../gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "असमर्थीत सॉकेट पत्ता"
 
 #: ../gio/glocaldirectorymonitor.c:295
 msgid "Unable to find default local directory monitor type"
@@ -1683,14 +1683,14 @@ msgstr "आरोहन बाहेर पडा कार्यान्वी
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:537
 msgid "mount doesn't implement unmount or unmount_with_operation"
-msgstr ""
+msgstr "mount unmount किंवा unmount_with_operation लागू करत नाही"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:624
 msgid "mount doesn't implement eject or eject_with_operation"
-msgstr ""
+msgstr "mount eject किंवा eject_with_operation लागू करत नाही"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1716,7 +1716,7 @@ msgstr "माउन्ट समजुळवणी अनुक्रम प्
 #: ../gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "यजमाननाव '%s' मध्ये '[' समाविष्टीत आहे परंतु ']' समाविष्टीत नाही"
 
 #: ../gio/goutputstream.c:210 ../gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
@@ -1734,17 +1734,17 @@ msgstr "'%s' च्या निर्धारणवेळी त्रुट�
 #: ../gio/gresolver.c:786
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
-msgstr ""
+msgstr "'%s'च्या उलट-निर्धारणवेळी त्रुटी: %s"
 
 #: ../gio/gresolver.c:821 ../gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
-msgstr ""
+msgstr "'%s' करीता सर्व्हीस रेकॉर्ड आढळले नाही"
 
 #: ../gio/gresolver.c:826 ../gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr ""
+msgstr "तात्पुर्ते '%s'चे निर्धारण करण्यास अशक्य"
 
 #: ../gio/gresolver.c:831 ../gio/gresolver.c:909
 #, c-format
@@ -1753,12 +1753,12 @@ msgstr "त्रुटीच्या निर्धारणवेळी त�
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
-msgstr ""
+msgstr "अवैध सॉकेट, सुरू केले नाही"
 
 #: ../gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr ""
+msgstr "अवैध सॉकेट, कारणास्तव अपयशी: %s"
 
 #: ../gio/gsocket.c:292
 msgid "Socket is already closed"
@@ -1776,26 +1776,26 @@ msgstr "सॉकेट निर्माण करणे अशक्य: %s"
 
 #: ../gio/gsocket.c:439
 msgid "Unknown protocol was specified"
-msgstr ""
+msgstr "अपरिचीत प्रोटोकॉल निर्देशीत केले"
 
 #: ../gio/gsocket.c:758
 msgid "Cancellable initialization not supported"
-msgstr ""
+msgstr "रद्द करण्याजोगी प्रारंभ समर्थीत नाही"
 
 #: ../gio/gsocket.c:1112
 #, c-format
 msgid "could not get local address: %s"
-msgstr ""
+msgstr "स्थानीय पत्ता प्राप्त करण्यास अशक्य: %s"
 
 #: ../gio/gsocket.c:1145
 #, c-format
 msgid "could not get remote address: %s"
-msgstr ""
+msgstr "दूरस्थ पत्ता प्राप्त करण्यास अशक्य: %s"
 
 #: ../gio/gsocket.c:1203
 #, c-format
 msgid "could not listen: %s"
-msgstr ""
+msgstr "ऐकणे अशक्य: %s"
 
 #: ../gio/gsocket.c:1277
 #, c-format
@@ -1813,7 +1813,7 @@ msgstr "जुळवणीवेळी त्रुटी: "
 
 #: ../gio/gsocket.c:1514
 msgid "Connection in progress"
-msgstr ""
+msgstr "जुळवणी चालू आहे"
 
 #: ../gio/gsocket.c:1519
 #, c-format
@@ -1823,7 +1823,7 @@ msgstr "जुळवणीवेळी त्रुटी: %s"
 #: ../gio/gsocket.c:1559
 #, c-format
 msgid "Unable to get pending error: %s"
-msgstr ""
+msgstr "स्थागीत त्रुटी प्राप्त करणे अशक्य: %s"
 
 #: ../gio/gsocket.c:1655
 #, c-format
@@ -1843,7 +1843,7 @@ msgstr "सॉकेट बंद करतेवेळी त्रुटी: %
 #: ../gio/gsocket.c:2475
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr ""
+msgstr "सॉकेट अटची प्रतिक्षा करत आहे: %s"
 
 #: ../gio/gsocket.c:2709 ../gio/gsocket.c:2790
 #, c-format
@@ -1852,7 +1852,7 @@ msgstr "फाइल पाठवतेवेळी त्रुटी: %s"
 
 #: ../gio/gsocket.c:2734
 msgid "GSocketControlMessage not supported on windows"
-msgstr ""
+msgstr "GSocketControlMessage windows वर समर्थीत नाही"
 
 #: ../gio/gsocket.c:2992 ../gio/gsocket.c:3131
 #, c-format
@@ -1865,11 +1865,11 @@ msgstr "जुळवणीनंतर अपरिचीत त्रुटी 
 
 #: ../gio/gsocketlistener.c:192
 msgid "Listener is already closed"
-msgstr ""
+msgstr "Listener आधिपासूनच बंद आहे"
 
 #: ../gio/gsocketlistener.c:233
 msgid "Added socket is closed"
-msgstr ""
+msgstr "समावेश केलेले सॉकेट बंद आहे"
 
 #: ../gio/gthemedicon.c:499
 #, c-format
@@ -1879,20 +1879,20 @@ msgstr "GThemedIcon एनकोडींगची आवृत्ती %d ह�
 #: ../gio/gunixconnection.c:151
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr ""
+msgstr "1 कंट्रोल संदेश अपेक्षीत, %d प्राप्त झाले"
 
 #: ../gio/gunixconnection.c:164
 msgid "Unexpected type of ancillary data"
-msgstr ""
+msgstr "ancillary डाटाचा अनपेक्षीत प्रकार"
 
 #: ../gio/gunixconnection.c:182
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "एक fd अपेक्षीत, परंतु %d प्राप्त\n"
 
 #: ../gio/gunixconnection.c:198
 msgid "Received invalid fd"
-msgstr ""
+msgstr "अवैध fd प्राप्त झाले"
 
 #: ../gio/gunixinputstream.c:358 ../gio/gunixinputstream.c:378
 #: ../gio/gunixinputstream.c:456 ../gio/gunixoutputstream.c:443
@@ -1917,7 +1917,7 @@ msgstr "unixकरीता लिहितेवेळी त्रूटी: %
 
 #: ../gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
+msgstr "Abstract unix क्षेत्र सॉकेट पत्ते या प्रणालीवर समर्थीत नाही"
 
 #: ../gio/gvolume.c:452
 msgid "volume doesn't implement eject"
@@ -1928,7 +1928,7 @@ msgstr "खंड बाहेर कडा कार्यन्वीत ह�
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gvolume.c:531
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr ""
+msgstr "खंड eject किंवा eject_with_operation लागू करत नाही"
 
 #: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
