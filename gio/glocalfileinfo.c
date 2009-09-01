@@ -1815,15 +1815,40 @@ get_string (const GFileAttributeValue  *value,
 
 static gboolean
 set_unix_mode (char                       *filename,
+               GFileQueryInfoFlags         flags,
 	       const GFileAttributeValue  *value,
 	       GError                    **error)
 {
   guint32 val;
+  int res = 0;
   
   if (!get_uint32 (value, &val, error))
     return FALSE;
-  
-  if (g_chmod (filename, val) == -1)
+
+#ifdef HAVE_SYMLINK
+  if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
+#ifdef HAVE_LCHMOD
+    res = lchmod (filename, val);
+#else
+    struct stat statbuf;
+    /* Calling chmod on a symlink changes permissions on the symlink.
+     * We don't want to do this, so we need to check for a symlink */
+    res = g_lstat (filename, &statbuf);
+    if (res == 0 && S_ISLNK (statbuf.st_mode))
+      {
+        g_set_error_literal (error, G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("Operation not supported"));
+        return FALSE;
+      }
+    else if (res == 0)
+      res = g_chmod (filename, val);
+#endif
+  } else
+#endif
+    res = g_chmod (filename, val);
+
+  if (res == -1)
     {
       int errsv = errno;
 
@@ -2116,7 +2141,7 @@ _g_local_file_info_set_attribute (char                 *filename,
   _g_file_attribute_value_set_from_pointer (&value, type, value_p, FALSE);
   
   if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_MODE) == 0)
-    return set_unix_mode (filename, &value, error);
+    return set_unix_mode (filename, flags, &value, error);
   
 #ifdef HAVE_CHOWN
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_UID) == 0)
@@ -2229,7 +2254,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
   value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_UNIX_MODE);
   if (value)
     {
-      if (!set_unix_mode (filename, value, error))
+      if (!set_unix_mode (filename, flags, value, error))
 	{
 	  value->status = G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING;
 	  res = FALSE;
