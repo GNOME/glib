@@ -1869,6 +1869,7 @@ get_string (const GFileAttributeValue  *value,
 
 static gboolean
 set_unix_mode (char                       *filename,
+               GFileQueryInfoFlags         flags,
 	       const GFileAttributeValue  *value,
 	       GError                    **error)
 {
@@ -1877,6 +1878,13 @@ set_unix_mode (char                       *filename,
   if (!get_uint32 (value, &val, error))
     return FALSE;
   
+  if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
+    g_set_error_literal (error, G_IO_ERROR,
+                         G_IO_ERROR_NOT_SUPPORTED,
+                         _("Cannot set permissions on symlinks"));
+    return FALSE;
+  }
+
   if (g_chmod (filename, val) == -1)
     {
       int errsv = errno;
@@ -2172,7 +2180,7 @@ _g_local_file_info_set_attribute (char                 *filename,
   _g_file_attribute_value_set_from_pointer (&value, type, value_p, FALSE);
   
   if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_MODE) == 0)
-    return set_unix_mode (filename, &value, error);
+    return set_unix_mode (filename, flags, &value, error);
   
 #ifdef HAVE_CHOWN
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_UID) == 0)
@@ -2316,7 +2324,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
   value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_UNIX_MODE);
   if (value)
     {
-      if (!set_unix_mode (filename, value, error))
+      if (!set_unix_mode (filename, flags, value, error))
 	{
 	  value->status = G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING;
 	  res = FALSE;
