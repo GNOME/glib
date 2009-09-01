@@ -1874,20 +1874,31 @@ set_unix_mode (char                       *filename,
 	       GError                    **error)
 {
   guint32 val;
+  int res = 0;
   
   if (!get_uint32 (value, &val, error))
     return FALSE;
 
 #ifdef HAVE_SYMLINK
   if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
-    g_set_error_literal (error, G_IO_ERROR,
-                         G_IO_ERROR_NOT_SUPPORTED,
-                         _("Cannot set permissions on symlinks"));
-    return FALSE;
+    struct stat statbuf;
+    /* Calling chmod on a symlink changes permissions on the symlink.
+     * We don't want to do this, so we need to check for a symlink */
+    res = g_lstat (filename, &statbuf);
+    if (res == 0 && S_ISLNK (statbuf.st_mode))
+      {
+        g_set_error_literal (error, G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("Cannot set permissions on symlinks"));
+        return FALSE;
+      }
   }
 #endif
 
-  if (g_chmod (filename, val) == -1)
+  if (res == 0)
+    res = g_chmod (filename, val);
+
+  if (res == -1)
     {
       int errsv = errno;
 
