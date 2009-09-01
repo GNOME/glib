@@ -16,10 +16,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.19.x\n"
+"Project-Id-Version: glib 2.21.x\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-08-22 13:09+0000\n"
+"POT-Creation-Date: 2009-09-01 10:27+0000\n"
 "PO-Revision-Date: 2009-08-26 22:04+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1674,54 +1674,58 @@ msgstr "Tipo di attributo non valido (atteso uint64)"
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo di attributo non valido (attesa stringa di byte)"
 
-#: ../gio/glocalfileinfo.c:1886
+#: ../gio/glocalfileinfo.c:1884
+msgid "Cannot set permissions on symlinks"
+msgstr "Impossibile impostare i permessi sui collegamenti simbolici"
+
+#: ../gio/glocalfileinfo.c:1894
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Errore nell'impostare i permessi: %s"
 
-#: ../gio/glocalfileinfo.c:1937
+#: ../gio/glocalfileinfo.c:1945
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errore nell'impostare il proprietario: %s"
 
-#: ../gio/glocalfileinfo.c:1960
+#: ../gio/glocalfileinfo.c:1968
 msgid "symlink must be non-NULL"
 msgstr "il collegamento simbolico deve essere non-NULL"
 
-#: ../gio/glocalfileinfo.c:1970 ../gio/glocalfileinfo.c:1989
-#: ../gio/glocalfileinfo.c:2000
+#: ../gio/glocalfileinfo.c:1978 ../gio/glocalfileinfo.c:1997
+#: ../gio/glocalfileinfo.c:2008
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Errore nell'impostare il collegamento simbolico: %s"
 
-#: ../gio/glocalfileinfo.c:1979
+#: ../gio/glocalfileinfo.c:1987
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errore nell'impostare il collegamento simbolico: il file non è un "
 "collegamento"
 
-#: ../gio/glocalfileinfo.c:2105
+#: ../gio/glocalfileinfo.c:2113
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Errore nell'impostare l'ora di modifica o accesso: %s"
 
 # lasciata minuscola come per precedente messaggio
 #   "symlink must be non-NULL"
-#: ../gio/glocalfileinfo.c:2128
+#: ../gio/glocalfileinfo.c:2136
 msgid "SELinux context must be non-NULL"
 msgstr "il contesto SELinux deve essere non-NULL"
 
-#: ../gio/glocalfileinfo.c:2143
+#: ../gio/glocalfileinfo.c:2151
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Errore nell'impostare il contesto SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2150
+#: ../gio/glocalfileinfo.c:2158
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux non è abilitato su questo sistema"
 
 # %s è l'attributo
-#: ../gio/glocalfileinfo.c:2242
+#: ../gio/glocalfileinfo.c:2250
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Impostazione dell'attributo %s non supportata"
