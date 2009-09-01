@@ -364,7 +364,6 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       tm.tm_hour = val / 10000;
     }
 
-  time_->tv_sec = mktime_utc (&tm);
   time_->tv_usec = 0;
   
   if (*iso_date == ',' || *iso_date == '.')
@@ -378,7 +377,13 @@ g_time_val_from_iso8601 (const gchar *iso_date,
         }
     }
     
-  if (*iso_date == '+' || *iso_date == '-')
+  /* Now parse the offset and convert tm to a time_t */
+  if (*iso_date == 'Z')
+    {
+      iso_date++;
+      time_->tv_sec = mktime_utc (&tm);
+    }
+  else if (*iso_date == '+' || *iso_date == '-')
     {
       gint sign = (*iso_date == '+') ? -1 : 1;
       
@@ -389,10 +394,13 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       else
         val = 60 * (val / 100) + (val % 100);
 
-      time_->tv_sec += (time_t) (60 * val * sign);
+      time_->tv_sec = mktime_utc (&tm) + (time_t) (60 * val * sign);
     }
-  else if (*iso_date++ != 'Z')
-    return FALSE;
+  else
+    {
+      /* No "Z" or offset, so local time */
+      time_->tv_sec = mktime (&tm);
+    }
 
   while (g_ascii_isspace (*iso_date))
     iso_date++;
