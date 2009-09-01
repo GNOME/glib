@@ -1881,6 +1881,9 @@ set_unix_mode (char                       *filename,
 
 #ifdef HAVE_SYMLINK
   if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
+#ifdef HAVE_LCHMOD
+    res = lchmod (filename, val);
+#else
     struct stat statbuf;
     /* Calling chmod on a symlink changes permissions on the symlink.
      * We don't want to do this, so we need to check for a symlink */
@@ -1892,10 +1895,11 @@ set_unix_mode (char                       *filename,
                              _("Cannot set permissions on symlinks"));
         return FALSE;
       }
-  }
+    else if (res == 0)
+      res = g_chmod (filename, val);
 #endif
-
-  if (res == 0)
+  } else
+#endif
     res = g_chmod (filename, val);
 
   if (res == -1)
