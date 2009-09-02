@@ -543,7 +543,6 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
   GNetworkAddressAddressEnumerator *addr_enum =
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
   GSimpleAsyncResult *simple;
-  GSocketAddress *sockaddr;
 
   simple = g_simple_async_result_new (G_OBJECT (enumerator),
                                       callback, user_data,
@@ -561,10 +560,6 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
     }
   else
     {
-      sockaddr = g_network_address_address_enumerator_next (enumerator, NULL, NULL);
-      if (sockaddr)
-        g_simple_async_result_set_op_res_gpointer (simple, sockaddr, g_object_unref);
-
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
     }
