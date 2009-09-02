@@ -486,7 +486,7 @@ g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult *simple)
  **/
 void
 g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
-                                      GError             *error)
+                                      const GError       *error)
 {
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
   g_return_if_fail (error != NULL);

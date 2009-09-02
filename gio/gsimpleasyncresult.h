@@ -89,7 +89,7 @@ void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult  
 							    int                      io_priority,
 							    GCancellable            *cancellable);
 void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
-							    GError                  *error);
+							    const GError            *error);
 gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
 							    GError                 **dest);
 void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
