@@ -165,6 +165,13 @@ These are portable utility functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_reload_user_special_dirs_cache ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION g_get_host_name ##### -->
 <para>
 

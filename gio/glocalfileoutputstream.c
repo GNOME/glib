@@ -867,7 +867,7 @@ handle_overwrite_open (const char    *filename,
       tmp_filename = g_build_filename (dirname, ".goutputstream-XXXXXX", NULL);
       g_free (dirname);
 
-      tmpfd = g_mkstemp (tmp_filename);
+      tmpfd = g_mkstemp_full (tmp_filename, (readable ? O_RDWR : O_WRONLY) | O_BINARY, mode);
       if (tmpfd == -1)
 	{
 	  g_free (tmp_filename);
