@@ -99,6 +99,9 @@ gchar   *g_file_read_link    (const gchar  *filename,
 
 /* Wrapper / workalike for mkstemp() */
 gint    g_mkstemp            (gchar        *tmpl);
+gint    g_mkstemp_full       (gchar        *tmpl,
+                              int           flags,
+                              int           mode);
 
 /* Wrapper for g_mkstemp */
 gint    g_file_open_tmp      (const gchar  *tmpl,

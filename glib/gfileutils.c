@@ -54,9 +54,6 @@
 
 #include "galias.h"
 
-static gint create_temp_file (gchar *tmpl, 
-			      int    permissions);
-
 /**
  * g_mkdir_with_parents:
  * @pathname: a pathname in the GLib file name encoding
@@ -883,7 +880,7 @@ write_to_temp_file (const gchar  *contents,
   tmp_name = g_strdup_printf ("%s.XXXXXX", dest_file);
 
   errno = 0;
-  fd = create_temp_file (tmp_name, 0666);
+  fd = g_mkstemp_full (tmp_name, O_RDWR | O_BINARY, 0666);
   save_errno = errno;
 
   display_name = g_filename_display_name (tmp_name);
@@ -1144,13 +1141,37 @@ g_file_set_contents (const gchar  *filename,
   return retval;
 }
 
+/**
+ * g_mkstemp_full:
+ * @tmpl: template filename
+ * @flags: flags to pass to an open() call in addition to O_EXCL and 
+ *         O_CREAT, which are passed automatically
+ * @mode: permissios to create the temporary file with
+ *
+ * Opens a temporary file. See the mkstemp() documentation
+ * on most UNIX-like systems. 
+ *
+ * The parameter is a string that should follow the rules for
+ * mkstemp() templates, i.e. contain the string "XXXXXX". 
+ * g_mkstemp_full() is slightly more flexible than mkstemp()
+ * in that the sequence does not have to occur at the very end of the 
+ * template and you can pass a @mode and additional @flags. The X 
+ * string will be modified to form the name of a file that didn't exist.
+ * The string should be in the GLib file name encoding. Most importantly, 
+ * on Windows it should be in UTF-8.
+ *
+ * Return value: A file handle (as from open()) to the file
+ * opened for reading and writing. The file handle should be
+ * closed with close(). In case of errors, -1 is returned.  
+ */ 
 /*
- * create_temp_file based on the mkstemp implementation from the GNU C library.
+ * g_mkstemp_full based on the mkstemp implementation from the GNU C library.
  * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
  */
-static gint
-create_temp_file (gchar *tmpl, 
-		  int    permissions)
+gint
+g_mkstemp_full (gchar *tmpl, 
+                int    flags,
+		int    mode)
 {
   char *XXXXXX;
   int count, fd;
@@ -1160,6 +1181,9 @@ create_temp_file (gchar *tmpl,
   glong value;
   GTimeVal tv;
   static int counter = 0;
+
+  g_return_val_if_fail (tmpl != NULL, -1);
+
 
   /* find the last occurrence of "XXXXXX" */
   XXXXXX = g_strrstr (tmpl, "XXXXXX");
@@ -1192,7 +1216,7 @@ create_temp_file (gchar *tmpl,
       XXXXXX[5] = letters[v % NLETTERS];
 
       /* tmpl is in UTF-8 on Windows, thus use g_open() */
-      fd = g_open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, permissions);
+      fd = g_open (tmpl, flags | O_CREAT | O_EXCL, mode);
 
       if (fd >= 0)
 	return fd;
@@ -1232,7 +1256,7 @@ create_temp_file (gchar *tmpl,
 gint
 g_mkstemp (gchar *tmpl)
 {
-  return create_temp_file (tmpl, 0600);
+  return g_mkstemp_full (tmpl, O_RDWR | O_BINARY, 0600);
 }
 
 /**
