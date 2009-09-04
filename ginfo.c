@@ -30,10 +30,13 @@
 
 struct _GIBaseInfo 
 {
+  /* Keep this part in sync with GIUnresolvedInfo below */
   gint type;
   gint ref_count;
   GIRepository *repository;
   GIBaseInfo *container;
+
+  /* Resolved specific */
 
   GTypelib *typelib;
   guint32 offset;
@@ -41,9 +44,13 @@ struct _GIBaseInfo
 
 struct _GIUnresolvedInfo
 {
+  /* Keep this part in sync with GIBaseInfo above */
   gint type;
   gint ref_count;
+  GIRepository *repository;
   GIBaseInfo *container;
+
+  /* Unresolved specific */
 
   const gchar *name;
   const gchar *namespace;
@@ -196,6 +203,7 @@ g_info_from_entry (GIRepository *repository,
 
 	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
 	  unresolved->ref_count = 1;
+	  unresolved->repository = repository;
 	  unresolved->container = NULL;
 	  unresolved->name = name;
 	  unresolved->namespace = namespace;
