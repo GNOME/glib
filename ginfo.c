@@ -203,7 +203,7 @@ g_info_from_entry (GIRepository *repository,
 
 	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
 	  unresolved->ref_count = 1;
-	  unresolved->repository = repository;
+	  unresolved->repository = g_object_ref (repository);
 	  unresolved->container = NULL;
 	  unresolved->name = name;
 	  unresolved->namespace = namespace;
