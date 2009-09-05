@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 13:37-0400\n"
+"POT-Creation-Date: 2009-09-04 20:42-0400\n"
 "PO-Revision-Date: 2006-06-29 19:38+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -158,119 +158,119 @@ msgstr "Enw gwesteiwr annilys"
 msgid "Error opening directory '%s': %s"
 msgstr "Gwall y cyfeiriadur '%s': %s"
 
-#: glib/gfileutils.c:532 glib/gfileutils.c:620
+#: glib/gfileutils.c:529 glib/gfileutils.c:617
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Methwyd canfod %lu beit er mwyn darllen y ffeil \"%s\""
 
-#: glib/gfileutils.c:547
+#: glib/gfileutils.c:544
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Gwall wrth ddarllen ffeil '%s': %s "
 
-#: glib/gfileutils.c:561
+#: glib/gfileutils.c:558
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr ""
 
-#: glib/gfileutils.c:644
+#: glib/gfileutils.c:641
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Methwyd darllen o'r ffeil '%s': %s"
 
-#: glib/gfileutils.c:695 glib/gfileutils.c:782
+#: glib/gfileutils.c:692 glib/gfileutils.c:779
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Methwyd agor y ffeil '%s': %s"
 
-#: glib/gfileutils.c:712 glib/gmappedfile.c:141
+#: glib/gfileutils.c:709 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Methwyd darllen agweddau ffeil '%s': methiant fstat(): %s"
 
-#: glib/gfileutils.c:746
+#: glib/gfileutils.c:743
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Methwyd agor y ffeil '%s': methiant yn fdopen(): %s"
 
-#: glib/gfileutils.c:854
+#: glib/gfileutils.c:851
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Methwyd ail-enwi'r ffeil'%s' i '%s': methodd g_rename(): %s"
 
-#: glib/gfileutils.c:896 glib/gfileutils.c:1333
+#: glib/gfileutils.c:893 glib/gfileutils.c:1359
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Methwyd creu'r ffeil '%s': %s"
 
-#: glib/gfileutils.c:910
+#: glib/gfileutils.c:907
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Methu agor y ffeil '%s' er mwyn ysgrifennu iddi: methodd fdopen(): %s"
 
-#: glib/gfileutils.c:935
+#: glib/gfileutils.c:932
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Methwyd ysgrifennu i'r ffeil '%s': methodd fwrite(): %s"
 
-#: glib/gfileutils.c:954
+#: glib/gfileutils.c:951
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Methwyd ysgrifennu i'r ffeil '%s': methodd fwrite(): %s"
 
-#: glib/gfileutils.c:983
+#: glib/gfileutils.c:980
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Methwyd ysgrifennu i'r ffeil '%s': methodd fwrite(): %s"
 
-#: glib/gfileutils.c:1002
+#: glib/gfileutils.c:999
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Methwyd cau'r ffeil '%s': methodd fclose(): %s"
 
-#: glib/gfileutils.c:1120
+#: glib/gfileutils.c:1117
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Methu tynnu'r ffeil '%s' oedd eisoes yn bodoli: methodd g_unlink(): %s"
 
-#: glib/gfileutils.c:1295
+#: glib/gfileutils.c:1321
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mae'r patrymlun '%s' yn annilys: ni ddylai gynnwys '%s'"
 
-#: glib/gfileutils.c:1308
+#: glib/gfileutils.c:1334
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Nid yw'r patrymlun '%s' yn cynnwys XXXXXX"
 
-#: glib/gfileutils.c:1739
+#: glib/gfileutils.c:1765
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: glib/gfileutils.c:1747
+#: glib/gfileutils.c:1773
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: glib/gfileutils.c:1752
+#: glib/gfileutils.c:1778
 #, c-format
 msgid "%.1f MB"
 msgstr ""
 
-#: glib/gfileutils.c:1757
+#: glib/gfileutils.c:1783
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: glib/gfileutils.c:1800
+#: glib/gfileutils.c:1826
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Methwyd darllen y cyswllt symbolaidd '%s': %s"
 
-#: glib/gfileutils.c:1821
+#: glib/gfileutils.c:1847
 msgid "Symbolic links not supported"
 msgstr "Ni chynhelir cysylltion symbolaidd"
 
@@ -1562,49 +1562,54 @@ msgstr ""
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1886
+#: gio/glocalfileinfo.c:1895
+#, fuzzy
+msgid "Cannot set permissions on symlinks"
+msgstr "Gwall wrth drawsnewid: %s"
+
+#: gio/glocalfileinfo.c:1911
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: gio/glocalfileinfo.c:1937
+#: gio/glocalfileinfo.c:1962
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: gio/glocalfileinfo.c:1960
+#: gio/glocalfileinfo.c:1985
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1970 gio/glocalfileinfo.c:1989
-#: gio/glocalfileinfo.c:2000
+#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
+#: gio/glocalfileinfo.c:2025
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Gwall ar linell %d: %s"
 
-#: gio/glocalfileinfo.c:1979
+#: gio/glocalfileinfo.c:2004
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2105
+#: gio/glocalfileinfo.c:2130
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: gio/glocalfileinfo.c:2128
+#: gio/glocalfileinfo.c:2153
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2143
+#: gio/glocalfileinfo.c:2168
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: gio/glocalfileinfo.c:2150
+#: gio/glocalfileinfo.c:2175
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2242
+#: gio/glocalfileinfo.c:2267
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Ni chynhelir cysylltion symbolaidd"
