@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-04 20:42-0400\n"
-"PO-Revision-Date: 2009-08-21 00:11+0900\n"
+"POT-Creation-Date: 2009-09-05 22:31+0900\n"
+"PO-Revision-Date: 2009-09-05 22:30+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -1560,9 +1560,8 @@ msgid "Invalid attribute type (byte string expected)"
 msgstr "属性の種類が無効です (バイト型の文字列を想定していた)"
 
 #: gio/glocalfileinfo.c:1895
-#, fuzzy
 msgid "Cannot set permissions on symlinks"
-msgstr "アクセス権をセットする際にエラー: %s"
+msgstr "シンボリックリンクにはアクセス権をセットできません"
 
 #: gio/glocalfileinfo.c:1911
 #, c-format
