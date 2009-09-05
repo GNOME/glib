@@ -1,3 +1,38 @@
+Overview of Changes from GLib 2.21.5 to GLib 2.21.6
+===================================================
+
+* Minor API additions:
+  g_mkstemp_full is a variant of g_mkstemp that allows to specify flags
+  and permissions
+
+* Bugs fixed:
+ 593232 g_rand_new: read no more than requested from /dev/urandom
+ 591995 use saved errno
+ 589491 g_time_val_from_iso8601 doesn't handle some cases
+ 593406 Permissions set to 777 after copying via Nautilus
+ 594034 Add g_mkstemp_full()
+
+* Updated translations:
+ Assamese
+ Basque
+ Brazilian Portuguese
+ Czech
+ Estonian
+ French
+ German
+ Hungarian
+ Italian
+ Kannada
+ Malayalam
+ Marathi
+ Norwegian bokmål
+ Oriya
+ Portuguese
+ Swedish
+ Tamil
+ Turkish
+
+
 Overview of Changes from GLib 2.21.4 to GLib 2.21.5
 ===================================================
 
