@@ -618,12 +618,8 @@ g_ptr_array_set_size  (GPtrArray *farray,
       for (i = array->len; i < length; i++)
 	array->pdata[i] = NULL;
     }
-  if (G_UNLIKELY (g_mem_gc_friendly) && length < array->len)
-    {
-      int i;
-      for (i = length; i < array->len; i++)
-	array->pdata[i] = NULL;
-    }
+  else if (length < array->len)
+    g_ptr_array_remove_range (farray, length, array->len - length);
 
   array->len = length;
 }

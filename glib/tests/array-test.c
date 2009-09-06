@@ -186,9 +186,11 @@ pointer_array_free_func (void)
   g_ptr_array_add (gparray, s);
   g_assert (g_ptr_array_remove (gparray, s));
   g_assert_cmpint (num_free_func_invocations, ==, 2);
+  g_ptr_array_set_size (gparray, 1);
+  g_assert_cmpint (num_free_func_invocations, ==, 3);
   g_ptr_array_ref (gparray);
   g_ptr_array_unref (gparray);
-  g_assert_cmpint (num_free_func_invocations, ==, 2);
+  g_assert_cmpint (num_free_func_invocations, ==, 3);
   g_ptr_array_unref (gparray);
   g_assert_cmpint (num_free_func_invocations, ==, 4);
 
