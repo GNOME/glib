@@ -323,7 +323,7 @@ hex_escape_string (const char *str,
 	  *p++ = hex_digits[c & 0xf];
 	}
     }
-  *p++ = 0;
+  *p = 0;
 
   *free_return = TRUE;
   return escaped_str;
