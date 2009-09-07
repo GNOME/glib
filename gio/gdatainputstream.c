@@ -117,13 +117,11 @@ g_data_input_stream_set_property (GObject      *object,
 				  const GValue *value,
 				  GParamSpec   *pspec)
 {
-  GDataInputStreamPrivate *priv;
   GDataInputStream        *dstream;
 
   dstream = G_DATA_INPUT_STREAM (object);
-  priv = dstream->priv;
 
-   switch (prop_id) 
+   switch (prop_id)
     {
     case PROP_BYTE_ORDER:
       g_data_input_stream_set_byte_order (dstream, g_value_get_enum (value));
