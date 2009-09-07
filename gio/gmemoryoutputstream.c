@@ -590,11 +590,7 @@ g_memory_output_stream_truncate (GSeekable     *seekable,
                                  GCancellable  *cancellable,
                                  GError       **error)
 {
-  GMemoryOutputStream *ostream;
-  GMemoryOutputStreamPrivate *priv;
-
-  ostream = G_MEMORY_OUTPUT_STREAM (seekable);
-  priv = ostream->priv;
+  GMemoryOutputStream *ostream = G_MEMORY_OUTPUT_STREAM (seekable);
  
   if (!array_resize (ostream, offset, FALSE, error))
     return FALSE;
