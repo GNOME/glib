@@ -247,13 +247,11 @@ g_buffered_input_stream_set_property (GObject      *object,
                                       const GValue *value,
                                       GParamSpec   *pspec)
 {
-  GBufferedInputStreamPrivate *priv;
   GBufferedInputStream        *bstream;
 
   bstream = G_BUFFERED_INPUT_STREAM (object);
-  priv = bstream->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_BUFSIZE:
       g_buffered_input_stream_set_buffer_size (bstream, g_value_get_uint (value));
