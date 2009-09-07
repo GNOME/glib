@@ -72,10 +72,6 @@ static guint signals[LAST_SIGNAL] = { 0 };
 static void
 g_volume_monitor_finalize (GObject *object)
 {
-  GVolumeMonitor *monitor;
-
-  monitor = G_VOLUME_MONITOR (object);
-
   G_OBJECT_CLASS (g_volume_monitor_parent_class)->finalize (object);
 }
 
