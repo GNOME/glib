@@ -582,8 +582,6 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
       if (simple->context != current_context)
 	g_warning ("g_simple_async_result_complete() called from wrong context!");
     }
-  else
-    g_warning ("g_simple_async_result_complete() called from outside main loop!");
 #endif
 
   if (simple->callback)
