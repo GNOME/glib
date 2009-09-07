@@ -955,7 +955,8 @@ g_local_file_query_filesystem_info (GFile         *file,
      free == 0 case as "both of these are invalid".
    */
 #ifndef G_OS_WIN32
-  if (statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
+  if (statfs_result == 0 &&
+      statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
     no_size = TRUE;
 #endif
   
