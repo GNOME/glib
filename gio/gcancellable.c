@@ -510,9 +510,8 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
     return FALSE;
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), FALSE);
 
-  priv = cancellable->priv;
-
 #ifdef G_OS_WIN32
+  priv = cancellable->priv;
   G_LOCK(cancellable);
   if (priv->event == NULL)
     {
