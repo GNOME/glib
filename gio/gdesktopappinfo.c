@@ -1852,6 +1852,7 @@ get_apps_from_dir (GHashTable *apps,
 	      if (!g_hash_table_lookup_extended (apps, desktop_id, NULL, NULL))
 		{
 		  appinfo = g_desktop_app_info_new_from_filename (filename);
+                  hidden = FALSE;
 
 		  if (appinfo && g_desktop_app_info_get_is_hidden (appinfo))
 		    {
