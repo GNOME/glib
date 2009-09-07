@@ -288,7 +288,7 @@ GIcon *
 g_themed_icon_new_from_names (char **iconnames,
                               int    len)
 {
-  GIcon *icon = icon;
+  GIcon *icon;
 
   g_return_val_if_fail (iconnames != NULL, NULL);
 
