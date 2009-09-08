@@ -252,8 +252,11 @@ the array.
 
 <!-- ##### FUNCTION g_ptr_array_set_size ##### -->
 <para>
-Sets the size of the array, expanding it if necessary.
-New elements are set to %NULL.
+Sets the size of the array. When making the array larger, newly-added
+elements will be set to %NULL. When making it smaller, if @array has a
+non-%NULL #GDestroyNotify function then it will be called for the
+removed elements.
+
 </para>
 
 @array: a #GPtrArray.
