@@ -116,10 +116,6 @@ static gboolean g_unix_input_stream_close_finish (GInputStream         *stream,
 static void
 g_unix_input_stream_finalize (GObject *object)
 {
-  GUnixInputStream *stream;
-  
-  stream = G_UNIX_INPUT_STREAM (object);
-
   G_OBJECT_CLASS (g_unix_input_stream_parent_class)->finalize (object);
 }
 

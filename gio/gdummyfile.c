@@ -690,16 +690,13 @@ is_valid (char c, const char *reserved_chars_allowed)
 }
 
 static void
-g_string_append_encoded (GString    *string, 
+g_string_append_encoded (GString    *string,
                          const char *encoded,
 			 const char *reserved_chars_allowed)
 {
   unsigned char c;
-  const char *end;
   static const gchar hex[16] = "0123456789ABCDEF";
 
-  end = encoded + strlen (encoded);
-  
   while ((c = *encoded) != 0)
     {
       if (is_valid (c, reserved_chars_allowed))

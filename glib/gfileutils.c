@@ -1418,8 +1418,7 @@ g_build_path_va (const gchar  *separator,
 
       if (separator_len)
 	{
-	  while (start &&
-		 strncmp (start, separator, separator_len) == 0)
+	  while (strncmp (start, separator, separator_len) == 0)
 	    start += separator_len;
       	}
 

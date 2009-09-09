@@ -108,10 +108,6 @@ static gboolean g_unix_output_stream_close_finish (GOutputStream        *stream,
 static void
 g_unix_output_stream_finalize (GObject *object)
 {
-  GUnixOutputStream *stream;
-  
-  stream = G_UNIX_OUTPUT_STREAM (object);
-
   G_OBJECT_CLASS (g_unix_output_stream_parent_class)->finalize (object);
 }
 

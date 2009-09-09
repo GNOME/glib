@@ -79,10 +79,6 @@ static GFileInfo *g_local_file_input_stream_query_info (GFileInputStream  *strea
 static void
 g_local_file_input_stream_finalize (GObject *object)
 {
-  GLocalFileInputStream *file;
-  
-  file = G_LOCAL_FILE_INPUT_STREAM (object);
-
   G_OBJECT_CLASS (g_local_file_input_stream_parent_class)->finalize (object);
 }
 

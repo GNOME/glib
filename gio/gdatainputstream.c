@@ -815,21 +815,16 @@ scan_for_chars (GDataInputStream *stream,
 		const char       *stop_chars)
 {
   GBufferedInputStream *bstream;
-  GDataInputStreamPrivate *priv;
   const char *buffer;
   gsize start, end, peeked;
   int i;
-  gssize found_pos;
   gsize available, checked;
   const char *stop_char;
 
-  priv = stream->priv;
-  
   bstream = G_BUFFERED_INPUT_STREAM (stream);
 
   checked = *checked_out;
-  found_pos = -1;
-  
+
   start = checked;
   buffer = (const char *)g_buffered_input_stream_peek_buffer (bstream, &available) + start;
   end = available;

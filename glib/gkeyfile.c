@@ -413,7 +413,6 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
     }
   key_file->flags = flags;
 
-  bytes_read = 0;
   do
     {
       bytes_read = read (fd, read_buf, 4096);
@@ -432,7 +431,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
           return FALSE;
         }
 
-      g_key_file_parse_data (key_file, 
+      g_key_file_parse_data (key_file,
 			     read_buf, bytes_read,
 			     &key_file_error);
     }

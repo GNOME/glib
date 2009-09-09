@@ -498,7 +498,6 @@ gboolean
 g_match_info_next (GMatchInfo  *match_info,
 		   GError     **error)
 {
-  gint opts;
   gint prev_match_start;
   gint prev_match_end;
 
@@ -506,8 +505,6 @@ g_match_info_next (GMatchInfo  *match_info,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail (match_info->pos >= 0, FALSE);
 
-  opts = match_info->regex->match_opts | match_info->match_opts;
- 
   prev_match_start = match_info->offsets[0];
   prev_match_end = match_info->offsets[1];
 
@@ -516,8 +513,7 @@ g_match_info_next (GMatchInfo  *match_info,
 				   match_info->string,
 				   match_info->string_len,
 				   match_info->pos,
-				   match_info->regex->match_opts |
-				   match_info->match_opts,
+				   match_info->regex->match_opts | match_info->match_opts,
 				   match_info->offsets,
                                    match_info->n_offsets);
   if (IS_PCRE_ERROR (match_info->matches))

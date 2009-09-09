@@ -91,10 +91,6 @@ static gboolean g_input_stream_real_close_finish (GInputStream         *stream,
 static void
 g_input_stream_finalize (GObject *object)
 {
-  GInputStream *stream;
-
-  stream = G_INPUT_STREAM (object);
-
   G_OBJECT_CLASS (g_input_stream_parent_class)->finalize (object);
 }
 
@@ -352,8 +348,6 @@ g_input_stream_real_skip (GInputStream  *stream,
   char buffer[8192];
   GError *my_error;
 
-  class = G_INPUT_STREAM_GET_CLASS (stream);
-
   if (G_IS_SEEKABLE (stream) && g_seekable_can_seek (G_SEEKABLE (stream)))
     {
       if (g_seekable_seek (G_SEEKABLE (stream),
@@ -367,14 +361,14 @@ g_input_stream_real_skip (GInputStream  *stream,
   /* If not seekable, or seek failed, fall back to reading data: */
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
-  
+
   read_bytes = 0;
   while (1)
     {
       my_error = NULL;
 
       ret = class->read_fn (stream, buffer, MIN (sizeof (buffer), count),
-			 cancellable, &my_error);
+                            cancellable, &my_error);
       if (ret == -1)
 	{
 	  if (read_bytes > 0 &&
@@ -384,16 +378,16 @@ g_input_stream_real_skip (GInputStream  *stream,
 	      g_error_free (my_error);
 	      return read_bytes;
 	    }
-	  
+
 	  g_propagate_error (error, my_error);
 	  return -1;
 	}
 
       count -= ret;
       read_bytes += ret;
-      
+
       if (ret == 0 || count == 0)
-	return read_bytes;
+        return read_bytes;
     }
 }
 

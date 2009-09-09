@@ -474,12 +474,10 @@ g_buffered_output_stream_flush (GOutputStream  *stream,
                                 GError        **error)
 {
   GBufferedOutputStream *bstream;
-  GBufferedOutputStreamPrivate *priv;
   GOutputStream                *base_stream;
   gboolean res;
 
   bstream = G_BUFFERED_OUTPUT_STREAM (stream);
-  priv = bstream->priv;
   base_stream = G_FILTER_OUTPUT_STREAM (stream)->base_stream;
 
   res = flush_buffer (bstream, cancellable, error);
@@ -498,23 +496,20 @@ g_buffered_output_stream_close (GOutputStream  *stream,
                                 GError        **error)
 {
   GBufferedOutputStream        *bstream;
-  GBufferedOutputStreamPrivate *priv;
   GOutputStream                *base_stream;
   gboolean                      res;
 
   bstream = G_BUFFERED_OUTPUT_STREAM (stream);
-  priv = bstream->priv;
   base_stream = G_FILTER_OUTPUT_STREAM (bstream)->base_stream;
-
   res = flush_buffer (bstream, cancellable, error);
 
   if (g_filter_output_stream_get_close_base_stream (G_FILTER_OUTPUT_STREAM (stream)))
     {
       /* report the first error but still close the stream */
       if (res)
-        res = g_output_stream_close (base_stream, cancellable, error); 
+        res = g_output_stream_close (base_stream, cancellable, error);
       else
-        g_output_stream_close (base_stream, cancellable, NULL); 
+        g_output_stream_close (base_stream, cancellable, NULL);
     }
 
   return res;

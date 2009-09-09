@@ -99,10 +99,6 @@ static gboolean g_output_stream_real_close_finish  (GOutputStream             *s
 static void
 g_output_stream_finalize (GObject *object)
 {
-  GOutputStream *stream;
-
-  stream = G_OUTPUT_STREAM (object);
-
   G_OBJECT_CLASS (g_output_stream_parent_class)->finalize (object);
 }
 
@@ -344,13 +340,14 @@ g_output_stream_flush (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @source: a #GInputStream.
  * @flags: a set of #GOutputStreamSpliceFlags.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError location to store the error occuring, or %NULL to
  * ignore.
  *
  * Splices an input stream into an output stream.
  *
- * Returns: a #gssize containing the size of the data spliced.
+ * Returns: a #gssize containing the size of the data spliced, or
+ *     -1 if an error occurred.
  **/
 gssize
 g_output_stream_splice (GOutputStream             *stream,
@@ -360,7 +357,7 @@ g_output_stream_splice (GOutputStream             *stream,
 			GError                   **error)
 {
   GOutputStreamClass *class;
-  gboolean res;
+  gssize bytes_copied;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
   g_return_val_if_fail (G_IS_INPUT_STREAM (source), -1);
@@ -374,21 +371,20 @@ g_output_stream_splice (GOutputStream             *stream,
 
   if (!g_output_stream_set_pending (stream, error))
     return -1;
-  
+
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
 
-  res = TRUE;
   if (cancellable)
     g_cancellable_push_current (cancellable);
-      
-  res = class->splice (stream, source, flags, cancellable, error);
-      
+
+  bytes_copied = class->splice (stream, source, flags, cancellable, error);
+
   if (cancellable)
     g_cancellable_pop_current (cancellable);
-  
+
   g_output_stream_clear_pending (stream);
 
-  return res;
+  return bytes_copied;
 }
 
 static gssize
@@ -405,16 +401,16 @@ g_output_stream_real_splice (GOutputStream             *stream,
   gboolean res;
 
   bytes_copied = 0;
-  if (class->write_fn == NULL) 
+  if (class->write_fn == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                            _("Output stream doesn't implement write"));
       res = FALSE;
       goto notsupported;
     }
-  
+
   res = TRUE;
-  do 
+  do
     {
       n_read = g_input_stream_read (source, buffer, sizeof (buffer), cancellable, error);
       if (n_read == -1)
@@ -422,7 +418,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
 	  res = FALSE;
 	  break;
 	}
-	
+
       if (n_read == 0)
 	break;
 

@@ -97,10 +97,6 @@ static gboolean g_io_stream_real_close_finish (GIOStream            *stream,
 static void
 g_io_stream_finalize (GObject *object)
 {
-  GIOStream *stream;
-
-  stream = G_IO_STREAM (object);
-
   G_OBJECT_CLASS (g_io_stream_parent_class)->finalize (object);
 }
 
