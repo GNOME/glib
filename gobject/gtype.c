@@ -245,6 +245,7 @@ struct _TypeNode
 #define SIZEOF_BASE_TYPE_NODE()			(G_STRUCT_OFFSET (TypeNode, supers))
 #define MAX_N_SUPERS				(255)
 #define MAX_N_CHILDREN				(4095)
+#define	MAX_N_INTERFACES			(255) /* Limited by offsets being 8 bits */
 #define	MAX_N_PREREQUISITES			(511)
 #define NODE_TYPE(node)				(node->supers[0])
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
@@ -281,7 +282,7 @@ struct _IFaceEntry
 };
 
 struct _IFaceEntries {
-  guint offset_index; /* not used yet */
+  guint offset_index;
   IFaceEntry entry[1];
 };
 
@@ -304,6 +305,7 @@ struct _IFaceData
   GClassFinalizeFunc dflt_finalize;
   gconstpointer      dflt_data;
   gpointer           dflt_vtable;
+  GAtomicArray       offsets;
 };
 
 struct _ClassData
@@ -528,36 +530,44 @@ type_node_new_W (TypeNode    *pnode,
 }
 
 static inline IFaceEntry*
-lookup_iface_entry_I (IFaceEntries *entries,
+lookup_iface_entry_I (volatile IFaceEntries *entries,
 		      TypeNode *iface_node)
 {
-  if (entries != NULL)
-    {
-      IFaceEntry *ifaces = &entries->entry[-1];
-      guint n_ifaces = IFACE_ENTRIES_N_ENTRIES (entries);
-      GType iface_type = NODE_TYPE (iface_node);
+  guint8 *offsets;
+  guint offset_index;
+  IFaceEntry *check;
+  int index;
+  IFaceEntry *entry;
 
-      do
-	{
-	  guint i;
-	  IFaceEntry *check;
-	  
-	  i = (n_ifaces + 1) >> 1;
-	  check = ifaces + i;
-	  if (iface_type == check->iface_type)
-	    return check;
-	  else if (iface_type > check->iface_type)
-	    {
-	      n_ifaces -= i;
-	      ifaces = check;
-	    }
-	  else /* if (iface_type < check->iface_type) */
-	    n_ifaces = i - 1;
-	}
-      while (n_ifaces);
-    }
-  
-  return NULL;
+  if (entries == NULL)
+    return NULL;
+
+  G_ATOMIC_ARRAY_DO_TRANSACTION
+    (&iface_node->data->iface.offsets, guint8,
+
+     entry = NULL;
+     offsets = transaction_data;
+     offset_index = entries->offset_index;
+     if (offsets != NULL &&
+	 offset_index < G_ATOMIC_ARRAY_DATA_SIZE(offsets))
+       {
+	 index = offsets[offset_index];
+	 if (index > 0)
+	   {
+	     /* zero means unset, subtract one to get real index */
+	     index -= 1;
+
+	     if (index < IFACE_ENTRIES_N_ENTRIES (entries))
+	       {
+		 check = (IFaceEntry *)&entries->entry[index];
+		 if (check->iface_type == NODE_TYPE (iface_node))
+		   entry = check;
+	       }
+	   }
+       }
+     );
+
+ return entry;
 }
 
 static inline IFaceEntry*
@@ -1215,6 +1225,88 @@ type_data_unref_WmREC (TypeNode *node,
     }
 }
 
+static gboolean
+iface_node_has_available_offset_L (TypeNode *iface_node,
+				   int offset,
+				   int for_index)
+{
+  guint8 *offsets;
+
+  offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->data->iface.offsets, guint8);
+  if (offsets == NULL)
+    return TRUE;
+
+  if (G_ATOMIC_ARRAY_DATA_SIZE (offsets) <= offset)
+    return TRUE;
+
+  if (offsets[offset] == 0 ||
+      offsets[offset] == for_index+1)
+    return TRUE;
+
+  return FALSE;
+}
+
+static int
+find_free_iface_offset_L (IFaceEntries *entries)
+{
+  IFaceEntry *entry;
+  TypeNode *iface_node;
+  int offset;
+  int i;
+  int n_entries;
+
+  n_entries = IFACE_ENTRIES_N_ENTRIES (entries);
+  offset = -1;
+  do
+    {
+      offset++;
+      for (i = 0; i < n_entries; i++)
+	{
+	  entry = &entries->entry[i];
+	  iface_node = lookup_type_node_I (entry->iface_type);
+
+	  if (!iface_node_has_available_offset_L (iface_node, offset, i))
+	    break;
+	}
+    }
+  while (i != n_entries);
+
+  return offset;
+}
+
+static void
+iface_node_set_offset_L (TypeNode *iface_node,
+			 int offset,
+			 int index)
+{
+  guint8 *offsets, *old_offsets;
+  int new_size, old_size;
+  int i;
+
+  old_offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->data->iface.offsets, guint8);
+  if (old_offsets == NULL)
+    old_size = 0;
+  else
+    {
+      old_size = G_ATOMIC_ARRAY_DATA_SIZE (old_offsets);
+      if (offset < old_size &&
+	  old_offsets[offset] == index + 1)
+	return; /* Already set to this index, return */
+    }
+  new_size = MAX (old_size, offset + 1);
+
+  offsets = _g_atomic_array_copy (&iface_node->data->iface.offsets,
+				  0, new_size - old_size);
+
+  /* Mark new area as unused */
+  for (i = old_size; i < new_size; i++)
+    offsets[i] = 0;
+
+  offsets[offset] = index + 1;
+
+  _g_atomic_array_update (&iface_node->data->iface.offsets, offsets);
+}
+
 static void
 type_node_add_iface_entry_W (TypeNode   *node,
 			     GType       iface_type,
@@ -1222,16 +1314,18 @@ type_node_add_iface_entry_W (TypeNode   *node,
 {
   IFaceEntries *entries;
   IFaceEntry *entry;
-  guint i;
+  TypeNode *iface_node;
+  guint i, j;
   int num_entries;
 
   g_assert (node->is_instantiatable);
 
   entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
-  i = 0;
   if (entries != NULL)
     {
       num_entries = IFACE_ENTRIES_N_ENTRIES (entries);
+
+      g_assert (num_entries < MAX_N_INTERFACES);
 
       for (i = 0; i < num_entries; i++)
 	{
@@ -1256,8 +1350,6 @@ type_node_add_iface_entry_W (TypeNode   *node,
 		}
 	      return;
 	    }
-	  else if (entry->iface_type > iface_type)
-	    break;
 	}
     }
 
@@ -1265,8 +1357,9 @@ type_node_add_iface_entry_W (TypeNode   *node,
 				  IFACE_ENTRIES_HEADER_SIZE,
 				  sizeof (IFaceEntry));
   num_entries = IFACE_ENTRIES_N_ENTRIES (entries);
-  g_memmove (&entries->entry[i + 1], &entries->entry[i],
-	     sizeof (IFaceEntry) * (num_entries - i - 1));
+  i = num_entries - 1;
+  if (i == 0)
+    entries->offset_index = 0;
   entries->entry[i].iface_type = iface_type;
   entries->entry[i].vtable = NULL;
   entries->entry[i].init_state = UNINITIALIZED;
@@ -1278,6 +1371,30 @@ type_node_add_iface_entry_W (TypeNode   *node,
           entries->entry[i].init_state = INITIALIZED;
           entries->entry[i].vtable = parent_entry->vtable;
         }
+    }
+
+  /* Update offsets in iface */
+  iface_node = lookup_type_node_I (iface_type);
+
+  if (iface_node_has_available_offset_L (iface_node,
+					 entries->offset_index,
+					 i))
+    {
+      iface_node_set_offset_L (iface_node,
+			       entries->offset_index, i);
+    }
+  else
+   {
+      entries->offset_index =
+	find_free_iface_offset_L (entries);
+      for (j = 0; j < IFACE_ENTRIES_N_ENTRIES (entries); j++)
+	{
+	  entry = &entries->entry[j];
+	  iface_node =
+	    lookup_type_node_I (entry->iface_type);
+	  iface_node_set_offset_L (iface_node,
+				   entries->offset_index, j);
+	}
     }
 
   _g_atomic_array_update (CLASSED_NODE_IFACES_ENTRIES (node), entries);
