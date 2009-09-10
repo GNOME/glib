@@ -1122,6 +1122,7 @@ test_case_run (GTestCase *tc)
       void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
+      g_test_log_set_fatal_handler (NULL, NULL);
       g_timer_start (test_run_timer);
       fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
       test_run_seed (test_run_seedstr);

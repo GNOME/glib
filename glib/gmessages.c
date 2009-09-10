@@ -86,6 +86,8 @@ static GPrivate	     *g_log_depth = NULL;
 static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
+static GTestLogFatalFunc fatal_log_func = NULL;
+static gpointer          fatal_log_data;
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
@@ -346,6 +348,39 @@ g_log_set_default_handler (GLogFunc log_func,
   return old_log_func;
 }
 
+/**
+ * g_test_log_set_fatal_handler:
+ * @log_func: the log handler function.
+ * @user_data: data passed to the log handler.
+ *
+ * Installs a non-error fatal log handler which can be
+ * used to decide whether log messages which are counted
+ * as fatal abort the program.
+ *
+ * The use case here is that you are running a test case
+ * that depends on particular libraries or circumstances
+ * and cannot prevent certain known critical or warning
+ * messages. So you install a handler that compares the
+ * domain and message to precisely not abort in such a case.
+ *
+ * Note that the handler is reset at the beginning of
+ * any test case, so you have to set it inside each test
+ * function which needs the special behavior.
+ *
+ * This handler has no effect on g_error messages.
+ *
+ * Since: 2.22
+ **/
+void
+g_test_log_set_fatal_handler (GTestLogFatalFunc log_func,
+                              gpointer          user_data)
+{
+  g_mutex_lock (g_messages_lock);
+  fatal_log_func = log_func;
+  fatal_log_data = user_data;
+  g_mutex_unlock (g_messages_lock);
+}
+
 void
 g_log_remove_handler (const gchar *log_domain,
 		      guint	   handler_id)
@@ -456,6 +491,7 @@ g_logv (const gchar   *log_domain,
 		}
 	    }
 
+          gboolean masquerade_fatal = FALSE;
 	  if (test_level & G_LOG_FLAG_RECURSION)
 	    {
 	      /* we use a stack buffer of fixed size, since we're likely
@@ -482,11 +518,18 @@ g_logv (const gchar   *log_domain,
 
 	      log_func (log_domain, test_level, msg, data);
 
+              if ((test_level & G_LOG_FLAG_FATAL)
+                && !(test_level & G_LOG_LEVEL_ERROR))
+                {
+                  masquerade_fatal = fatal_log_func
+                    && !fatal_log_func (log_domain, test_level, msg, data);
+                }
+
 	      g_free (msg);
 	    }
 
-	  if (test_level & G_LOG_FLAG_FATAL)
-	    {
+	  if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
+            {
 #ifdef G_OS_WIN32
 	      gchar *locale_msg = g_locale_from_utf8 (fatal_msg_buf, -1, NULL, NULL, NULL);
 	      

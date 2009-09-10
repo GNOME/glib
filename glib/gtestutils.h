@@ -262,6 +262,27 @@ void            g_test_log_buffer_push  (GTestLogBuffer *tbuffer,
 GTestLogMsg*    g_test_log_buffer_pop   (GTestLogBuffer *tbuffer);
 void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
 
+/**
+ * GTestLogFatalFunc:
+ * @log_domain: the log domain of the message
+ * @log_level: the log level of the message (including the fatal and recursion flags)
+ * @message: the message to process
+ * @user_data: user data, set in g_test_log_set_fatal_handler()
+ *
+ * Specifies the prototype of fatal log handler functions.
+ *
+ * Return value: %TRUE if the program should abort, %FALSE otherwise
+ *
+ * Since: 2.22
+ */
+typedef gboolean        (*GTestLogFatalFunc)    (const gchar    *log_domain,
+                                                 GLogLevelFlags  log_level,
+                                                 const gchar    *message,
+                                                 gpointer        user_data);
+void
+g_test_log_set_fatal_handler            (GTestLogFatalFunc log_func,
+                                         gpointer          user_data);
+
 G_END_DECLS
 
 #endif /* __G_TEST_UTILS_H__ */

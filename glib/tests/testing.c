@@ -191,6 +191,32 @@ test_random_conversions (void)
   g_free (str);
 }
 
+static gboolean
+fatal_handler (const gchar    *log_domain,
+               GLogLevelFlags  log_level,
+               const gchar    *message,
+               gpointer        user_data)
+{
+  return FALSE;
+}
+
+static void
+test_log_handler (void)
+{
+  g_test_log_set_fatal_handler (fatal_handler, NULL);
+  g_str_has_prefix (NULL, "file://");
+  g_critical ("Test passing");
+
+  g_test_log_set_fatal_handler (NULL, NULL);
+  if (g_test_trap_fork (0, 0))
+    g_error ("Test failing");
+  g_test_trap_assert_failed ();
+
+  if (g_test_trap_fork (0, 0))
+    g_str_has_prefix (NULL, "file://");
+  g_test_trap_assert_failed ();
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -209,6 +235,7 @@ main (int   argc,
   g_test_add_func ("/forking/patterns", test_fork_patterns);
   if (g_test_slow())
     g_test_add_func ("/forking/timeout", test_fork_timeout);
+  g_test_add_func ("/misc/log-handler", test_log_handler);
 
   return g_test_run();
 }

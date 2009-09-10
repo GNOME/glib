@@ -1332,6 +1332,9 @@ g_thread_pool_set_sort_function
 #endif
 
 #if IN_HEADER(__G_TEST_UTILS_H__)
+#if IN_FILE(__G_MESSAGES_C__)
+g_test_log_set_fatal_handler
+#endif
 #if IN_FILE(__G_TEST_UTILS_C__)
 g_assertion_message G_GNUC_NORETURN
 g_assertion_message_cmpnum G_GNUC_NORETURN
