@@ -2629,6 +2629,11 @@ g_socket_send_message (GSocket                *socket,
 	if (!g_socket_address_to_native (address, msg.msg_name, msg.msg_namelen, error))
 	  return -1;
       }
+    else
+      {
+	msg.msg_name = NULL;
+	msg.msg_namelen = 0;
+      }
 
     /* iov */
     {
