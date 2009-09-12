@@ -1196,7 +1196,7 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
  *     On an error, it will return %NULL and @error will be set. If there's no
  *     content to read, it will still return %NULL, but @error won't be set.
  *
- * Since: 2,20
+ * Since: 2.20
  */
 gchar *
 g_data_input_stream_read_line_finish (GDataInputStream  *stream,
