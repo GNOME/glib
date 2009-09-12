@@ -235,7 +235,7 @@ while ($_=$ARGV[0],/^-/) {
     elsif (/^--vprod$/)                      { $vprod = $vprod . shift }
     elsif (/^--vtail$/)                      { $vtail = $vtail . shift }
     elsif (/^--comments$/)                   { $comment_tmpl = shift }
-    elsif (/^--help$/ || /^-h$/ || /^-h$/)   { usage; }
+    elsif (/^--help$/ || /^-h$/ || /^-\?$/)  { usage; }
     elsif (/^--version$/ || /^-v$/)          { version; }
     else { usage; }
     last if not defined($ARGV[0]);
