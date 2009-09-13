@@ -1663,9 +1663,9 @@ app_info_in_list (GAppInfo *info,
  * g_app_info_get_all_for_type:
  * @content_type: the content type to find a #GAppInfo for
  * 
- * Gets a list of all #GAppInfo s for a given content type.
+ * Gets a list of all #GAppInfo<!-- -->s for a given content type.
  *
- * Returns: #GList of #GAppInfo s for given @content_type
+ * Returns: #GList of #GAppInfo<!-- -->s for given @content_type
  *    or %NULL on error.
  **/
 GList *
@@ -1707,7 +1707,7 @@ g_app_info_get_all_for_type (const char *content_type)
  * Removes all changes to the type associations done by
  * g_app_info_set_as_default_for_type(), 
  * g_app_info_set_as_default_for_extension(), 
- * g_app_info_add_supports_type() of g_app_info_remove_supports_type().
+ * g_app_info_add_supports_type() or g_app_info_remove_supports_type().
  *
  * Since: 2.20
  */
@@ -1723,7 +1723,7 @@ g_app_info_reset_type_associations (const char *content_type)
  * @must_support_uris: if %TRUE, the #GAppInfo is expected to
  *     support URIs
  * 
- * Gets the #GAppInfo that correspond to a given content type.
+ * Gets the #GAppInfo that corresponds to a given content type.
  *
  * Returns: #GAppInfo for given @content_type or %NULL on error.
  **/

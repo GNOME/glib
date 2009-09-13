@@ -159,7 +159,7 @@ g_app_info_dup (GAppInfo *appinfo)
  * @appinfo1: the first #GAppInfo.  
  * @appinfo2: the second #GAppInfo.
  * 
- * Checks if two #GAppInfos are equal.
+ * Checks if two #GAppInfo<!-- -->s are equal.
  *
  * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
  **/
@@ -254,7 +254,7 @@ g_app_info_get_description (GAppInfo *appinfo)
  * Gets the executable's name for the installed application.
  *
  * Returns: a string containing the @appinfo's application 
- * binary's name
+ * binaries name
  **/
 const char *
 g_app_info_get_executable (GAppInfo *appinfo)
@@ -328,7 +328,7 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
  * @extension: a string containing the file extension (without the dot).
  * @error: a #GError.
  * 
- * Sets the application as the default handler for the given file extention.
+ * Sets the application as the default handler for the given file extension.
  *
  * Returns: %TRUE on success, %FALSE on error.
  **/
@@ -653,7 +653,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
  * g_app_info_can_delete:
  * @appinfo: a #GAppInfo
  *
- * Obtains the information whether the GAppInfo can be deleted.
+ * Obtains the information whether the #GAppInfo can be deleted.
  * See g_app_info_delete().
  *
  * Returns: %TRUE if @appinfo can be deleted
@@ -680,7 +680,7 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * g_app_info_delete:
  * @appinfo: a #GAppInfo
  *
- * Tries to delete an #GAppInfo. 
+ * Tries to delete a #GAppInfo.
  *
  * On some platforms, there may be a difference between user-defined
  * #GAppInfo<!-- -->s which can be deleted, and system-wide ones which
