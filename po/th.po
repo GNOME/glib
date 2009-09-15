@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-04 20:42-0400\n"
-"PO-Revision-Date: 2009-07-19 16:29+0700\n"
+"PO-Revision-Date: 2009-09-15 14:29+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1520,9 +1520,8 @@ msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
 #: gio/glocalfileinfo.c:1895
-#, fuzzy
 msgid "Cannot set permissions on symlinks"
-msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
+msgstr "ไม่สามารถกำหนดสิทธิ์ให้กับ symlink ได้"
 
 #: gio/glocalfileinfo.c:1911
 #, c-format
