@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-04 20:42-0400\n"
-"PO-Revision-Date: 2009-08-26 16:24+0530\n"
-"Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
+"PO-Revision-Date: 2009-09-15 12:48+0530\n"
+"Last-Translator: \n"
 "Language-Team: Assamese <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -248,8 +248,8 @@ msgstr "'%s' টেমপ্লেটত XXXXXX নাই"
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u byte"
+msgstr[1] "%u bytes"
 
 #: glib/gfileutils.c:1773
 #, c-format
@@ -352,14 +352,11 @@ msgstr ""
 #: glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
-"আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
+msgstr "আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
 #: glib/gmarkup.c:654
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
 #, c-format
@@ -383,8 +380,7 @@ msgstr "প্ৰলেক্ষ এটা পদাৰ্থৰ সৈতে �
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
-"'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ ন'হ'বও পাৰে"
+msgstr "'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ ন'হ'বও পাৰে"
 
 #: glib/gmarkup.c:1122
 #, c-format
@@ -395,8 +391,7 @@ msgstr "ভুল আখৰ '%s', এটা '>' আখৰ প্ৰত্যা�
 
 #: glib/gmarkup.c:1206
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' অক্ষৰ প্ৰত্যাশিত নহয়, এটা '=' চিহ্ন প্ৰত্যাশিত গুণৰ নাম '%s', পদাৰ্থ '%s' ৰ, "
 "পিছত"
@@ -435,8 +430,7 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
-"'%s' অক্ষৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত অক্ষৰ হ'ল '>'"
+msgstr "'%s' অক্ষৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত অক্ষৰ হ'ল '>'"
 
 #: glib/gmarkup.c:1472
 #, c-format
@@ -718,10 +712,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "বিসংগত NEWLINE বিকল্প"
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g ৰ পিছত এটা brace থকা নাম বা এটা বৈকল্পিক brace থকা শুণ্য নোহোৱা সংখ্যা নাই"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "\\g ৰ পিছত এটা brace থকা নাম বা এটা বৈকল্পিক brace থকা শুণ্য নোহোৱা সংখ্যা নাই"
 
 #: glib/gregex.c:338
 msgid "unexpected repeat"
@@ -1012,8 +1004,7 @@ msgstr "নথিপত্ৰ ৰিক্ত"
 
 #: glib/gkeyfile.c:765
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "চাবি নথিপত্ৰত '%s' পংক্তি আছে যি চাবি-মানৰ জোৰা, সমষ্টি বা মন্তব্য নহয়"
 
 #: glib/gkeyfile.c:825
@@ -1059,8 +1050,7 @@ msgstr "চাবি নথিপত্ৰত '%s' চাবি উপস্থ�
 
 #: glib/gkeyfile.c:1532
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "চাবি নথিপত্ৰত '%s' চাবি উপস্থিত আছে যাৰ মান বুজিব পৰা নাযায় ।"
 
 #: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
@@ -1537,9 +1527,8 @@ msgid "Invalid attribute type (byte string expected)"
 msgstr "গুণৰ ধৰন বৈধ নহয় (প্ৰত্যাশিত byte স্ট্ৰিং)"
 
 #: gio/glocalfileinfo.c:1895
-#, fuzzy
 msgid "Cannot set permissions on symlinks"
-msgstr "অনুমতি নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
+msgstr "symlinks ত সন্মতি নিৰ্ধাৰণ কৰিব নোৱাৰি"
 
 #: gio/glocalfileinfo.c:1911
 #, c-format
@@ -2051,3 +2040,4 @@ msgstr "[FILE...]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "নথিপত্ৰ দেস্ক্ৰিপ্টৰ য'ত লিখিব লাগে"
+
