@@ -1268,19 +1268,30 @@ g_static_mutex_init (GStaticMutex *mutex)
 GMutex *
 g_static_mutex_get_mutex_impl (GMutex** mutex)
 {
+  GMutex *result;
+
   if (!g_thread_supported ())
     return NULL;
 
-  g_assert (g_once_mutex);
+  result = g_atomic_pointer_get (mutex);
 
-  g_mutex_lock (g_once_mutex);
+  if (!result)
+    {
+      g_assert (g_once_mutex);
 
-  if (!(*mutex))
-    g_atomic_pointer_set (mutex, g_mutex_new());
+      g_mutex_lock (g_once_mutex);
 
-  g_mutex_unlock (g_once_mutex);
+      result = *mutex;
+      if (!result)
+        {
+          result = g_mutex_new ();
+          g_atomic_pointer_set (mutex, result);
+        }
 
-  return *mutex;
+      g_mutex_unlock (g_once_mutex);
+    }
+
+  return result;
 }
 
 /* IMPLEMENTATION NOTE:
