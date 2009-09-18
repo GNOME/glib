@@ -225,6 +225,7 @@ testgobject_LDADD = $(progs_LDADD)
 EXTRA_DIST += 			\
 	makefile.msc.in 	\
 	gobject.rc.in		\
+	libgobject-gdb.py.in	\
 	glib-genmarshal.1	\
 	glib-mkenums.in		\
 	glib-mkenums.1		\
@@ -261,8 +262,17 @@ distclean-local:
 	    rm -f $(BUILT_EXTRA_DIST); \
 	fi
 
+# install gdb scripts
+gdbdir = $(datadir)/glib-2.0/gdb
+gdb_SCRIPTS = gobject.py
+
+libgobject-gdb.py: libgobject-gdb.py.in
+	sed -e "s|\@datadir\@|$(datadir)|" libgobject-gdb.py.in > libgobject-gdb.py
+
+install-data-hook: libgobject-gdb.py
+	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load${libdir}
+	$(INSTALL) libgobject-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load${libdir}/libgobject-2.0.so.0.$(LT_CURRENT).0-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
-install-data-hook:
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libgobject-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libgobject-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)

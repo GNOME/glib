@@ -70,6 +70,7 @@ EXTRA_DIST += 			\
 	gregex.c		\
 	gregex.h		\
 	win_iconv.c		\
+	libglib-gdb.py.in	\
 	$(MIRRORING_TAB_SOURCE)
 
 # These may be in the builddir too
@@ -365,8 +366,18 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
 
+# install gdb scripts
+gdbdir = $(datadir)/glib-2.0/gdb
+gdb_SCRIPTS = glib.py
+
+libglib-gdb.py: libglib-gdb.py.in
+	sed -e "s|\@datadir\@|$(datadir)|" libglib-gdb.py.in > libglib-gdb.py
+
+
+install-data-hook: libglib-gdb.py
+	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load${libdir}
+	$(INSTALL) libglib-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load${libdir}/libglib-2.0.so.0.$(LT_CURRENT).0-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
-install-data-hook:
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
