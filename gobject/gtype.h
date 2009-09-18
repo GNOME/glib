@@ -1475,7 +1475,9 @@ G_GNUC_INTERNAL void    g_signal_init           (void); /* sync with gsignal.c *
 #ifdef	__GNUC__
 #  define _G_TYPE_CIT(ip, gt)             (G_GNUC_EXTENSION ({ \
   GTypeInstance *__inst = (GTypeInstance*) ip; GType __t = gt; gboolean __r; \
-  if (__inst && __inst->g_class && __inst->g_class->g_type == __t) \
+  if (!__inst) \
+    __r = FALSE; \
+  else if (__inst->g_class && __inst->g_class->g_type == __t) \
     __r = TRUE; \
   else \
     __r = g_type_check_instance_is_a (__inst, __t); \
@@ -1483,7 +1485,9 @@ G_GNUC_INTERNAL void    g_signal_init           (void); /* sync with gsignal.c *
 }))
 #  define _G_TYPE_CCT(cp, gt)             (G_GNUC_EXTENSION ({ \
   GTypeClass *__class = (GTypeClass*) cp; GType __t = gt; gboolean __r; \
-  if (__class && __class->g_type == __t) \
+  if (!__class) \
+    __r = FALSE; \
+  else if (__class->g_type == __t) \
     __r = TRUE; \
   else \
     __r = g_type_check_class_is_a (__class, __t); \
@@ -1491,7 +1495,9 @@ G_GNUC_INTERNAL void    g_signal_init           (void); /* sync with gsignal.c *
 }))
 #  define _G_TYPE_CVH(vl, gt)             (G_GNUC_EXTENSION ({ \
   GValue *__val = (GValue*) vl; GType __t = gt; gboolean __r; \
-  if (__val && __val->g_type == __t) \
+  if (!__val) \
+    __r = FALSE; \
+  if (__val->g_type == __t) \
     __r = TRUE; \
   else \
     __r = g_type_check_value_holds (__val, __t); \
