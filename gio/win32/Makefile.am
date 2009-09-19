@@ -20,6 +20,7 @@ libgiowin32_la_SOURCES =			\
 
 libgiowin32_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"	\
+	-I$(top_builddir)/gio		\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/glib 		\
 	-I$(top_srcdir)/gmodule		\
