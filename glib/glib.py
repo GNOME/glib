@@ -166,3 +166,87 @@ def register (obj):
         obj = gdb
 
     obj.pretty_printers.append(pretty_printer_lookup)
+
+class ForeachCommand (gdb.Command):
+    """Foreach on list"""
+
+    def __init__ (self):
+        super (ForeachCommand, self).__init__ ("gforeach",
+                                               gdb.COMMAND_DATA,
+                                               gdb.COMPLETE_SYMBOL)
+
+    def valid_name (self, name):
+        if not name[0].isalpha():
+            return False
+        return True
+
+    def parse_args (self, arg):
+        i = arg.find(" ")
+        if i <= 0:
+            raise Exception ("No var specified")
+        var = arg[:i]
+        if not self.valid_name(var):
+            raise Exception ("Invalid variable name")
+
+        while i < len (arg) and arg[i].isspace():
+            i = i + 1
+
+        if arg[i:i+2] != "in":
+            raise Exception ("Invalid syntax, missing in")
+
+        i = i + 2
+
+        while i < len (arg) and arg[i].isspace():
+            i = i + 1
+
+        colon = arg.find (":", i)
+        if colon == -1:
+            raise Exception ("Invalid syntax, missing colon")
+
+        val = arg[i:colon]
+
+        colon = colon + 1
+        while colon < len (arg) and arg[colon].isspace():
+            colon = colon + 1
+
+        command = arg[colon:]
+
+        return (var, val, command)
+
+    def do_iter(self, arg, item, command):
+        item.cast (gdb.lookup_type("void").pointer())
+        item = long(item)
+        to_eval = "set $%s = (void *)0x%x\n"%(arg, item)
+        gdb.execute(to_eval)
+        gdb.execute(command)
+
+    def slist_iterator (self, arg, container, command):
+        l = container.cast (gdb.lookup_type("GSList").pointer())
+        while long(l) != 0:
+            self.do_iter (arg, l["data"], command)
+            l = l["next"]
+
+    def list_iterator (self, arg, container, command):
+        l = container.cast (gdb.lookup_type("GList").pointer())
+        while long(l) != 0:
+            self.do_iter (arg, l["data"], command)
+            l = l["next"]
+
+    def pick_iterator (self, container):
+        t = container.type.unqualified()
+        if t.code == gdb.TYPE_CODE_PTR:
+            t = t.target().unqualified()
+            t = str(t)
+            if t == "GSList":
+                return self.slist_iterator
+            if t == "GList":
+                return self.list_iterator
+        raise Exception("Invalid container type %s"%(str(container.type)))
+
+    def invoke (self, arg, from_tty):
+        (var, container, command) = self.parse_args(arg)
+        container = gdb.parse_and_eval (container)
+        func = self.pick_iterator(container)
+        func(var, container, command)
+
+ForeachCommand ()
