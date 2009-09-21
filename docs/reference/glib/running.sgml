@@ -268,6 +268,40 @@ is 20.
 </refsect2>
 
 <refsect2>
+<title>Gdb debugging macros</title>
+
+<para>
+glib ships with a set of python macros for the gdb debugger. These includes pretty
+printers for lists, hashtables and gobject types. It also has a backtrace filter
+that makes backtraces with signal emissions easier to read.
+</para>
+
+<para>
+To use this you need a recent enough gdb that supports python scripting. Gdb 7.0
+should be recent enough, but branches of the "archer" gdb tree as used in Fedora 11
+and Fedora 12 should work too. You then need to install glib in the same prefix as
+gdb so that the python gdb autoloaded files get installed in the right place for
+gdb to pick up.
+</para>
+
+<para>
+General pretty printing should just happen without having to do anything special.
+To get the signal emission filtered backtrace you must use the "new-backtrace" command
+instead of the standard one.
+</para>
+
+<para>
+There is also a new command called gforeach that can be used to apply a command
+on each item in a list. E.g. you can do
+<programlisting>
+gforeach i in some_list_variable: print *(GtkWidget *)l
+</programlisting>
+Which would print the contents of each widget in a list of widgets.
+</para>
+
+</refsect2>
+
+<refsect2>
 <title>Memory statistics</title>
 
 <para>
