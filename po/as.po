@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-04 20:42-0400\n"
+"POT-Creation-Date: 2009-09-22 12:51-0400\n"
 "PO-Revision-Date: 2009-09-15 12:48+0530\n"
 "Last-Translator: \n"
 "Language-Team: Assamese <>\n"
@@ -244,34 +244,34 @@ msgstr "'%s' টেমপ্লেট অৱৈধ, এটা '%s' থাকি�
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' টেমপ্লেটত XXXXXX নাই"
 
-#: glib/gfileutils.c:1765
+#: glib/gfileutils.c:1764
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1772
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1778
+#: glib/gfileutils.c:1777
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1783
+#: glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1826
+#: glib/gfileutils.c:1825
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "সাঙ্কেতিক সংযোগ পঢ়াত বিফল '%s': %s"
 
-#: glib/gfileutils.c:1847
+#: glib/gfileutils.c:1846
 msgid "Symbolic links not supported"
 msgstr "সাঙ্কেতিক সংযোগ সমৰ্থিত নহয়"
 
@@ -352,11 +352,14 @@ msgstr ""
 #: glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
+msgstr ""
+"আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
 #: glib/gmarkup.c:654
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
 #, c-format
@@ -380,7 +383,8 @@ msgstr "প্ৰলেক্ষ এটা পদাৰ্থৰ সৈতে �
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ ন'হ'বও পাৰে"
+msgstr ""
+"'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ ন'হ'বও পাৰে"
 
 #: glib/gmarkup.c:1122
 #, c-format
@@ -391,7 +395,8 @@ msgstr "ভুল আখৰ '%s', এটা '>' আখৰ প্ৰত্যা�
 
 #: glib/gmarkup.c:1206
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' অক্ষৰ প্ৰত্যাশিত নহয়, এটা '=' চিহ্ন প্ৰত্যাশিত গুণৰ নাম '%s', পদাৰ্থ '%s' ৰ, "
 "পিছত"
@@ -430,7 +435,8 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "'%s' অক্ষৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত অক্ষৰ হ'ল '>'"
+msgstr ""
+"'%s' অক্ষৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত অক্ষৰ হ'ল '>'"
 
 #: glib/gmarkup.c:1472
 #, c-format
@@ -520,7 +526,7 @@ msgstr "backtracking ৰ সুনিৰ্দিষ্ট সীমা পূ�
 msgid "the pattern contains items not supported for partial matching"
 msgstr "উল্লিখিত বিন্যাসত অন্তৰ্ভুক্ত সামগ্ৰী, আংশিক মিল অনুসন্ধানত সমৰ্থিত নহয়"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2105
+#: glib/gregex.c:154 gio/glocalfile.c:2102
 msgid "internal error"
 msgstr "অভ্যন্তৰীণ সমস্যা"
 
@@ -712,8 +718,10 @@ msgid "inconsistent NEWLINE options"
 msgstr "বিসংগত NEWLINE বিকল্প"
 
 #: glib/gregex.c:333
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr "\\g ৰ পিছত এটা brace থকা নাম বা এটা বৈকল্পিক brace থকা শুণ্য নোহোৱা সংখ্যা নাই"
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr ""
+"\\g ৰ পিছত এটা brace থকা নাম বা এটা বৈকল্পিক brace থকা শুণ্য নোহোৱা সংখ্যা নাই"
 
 #: glib/gregex.c:338
 msgid "unexpected repeat"
@@ -731,66 +739,66 @@ msgstr "overran compiling workspace"
 msgid "previously-checked referenced subpattern not found"
 msgstr "আগতে পৰীক্ষা কৰা সন্দৰ্ভ থকা subpattern পোৱা ন'গ'ল"
 
-#: glib/gregex.c:526 glib/gregex.c:1607
+#: glib/gregex.c:522 glib/gregex.c:1603
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "ৰেগুলাৰ এক্সপ্ৰেশন %s ৰ মিল অনুসন্ধানত সমস্যা: %s"
 
-#: glib/gregex.c:1098
+#: glib/gregex.c:1094
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE লাইব্ৰেৰি UTF8 সমৰ্থন নোহোৱাকে কম্পাইল কৰা হৈছে"
 
-#: glib/gregex.c:1107
+#: glib/gregex.c:1103
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE লাইব্ৰেৰি UTF8 বৈশিষ্ট্যৰ সমৰ্থন নোহোৱাকে কম্পাইল কৰা হৈছে"
 
-#: glib/gregex.c:1161
+#: glib/gregex.c:1157
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "ৰেগুলাৰ এক্সপ্ৰেশন %s, %d অক্ষৰত কম্পাইল কৰিবলৈ সমস্যা: %s"
 
-#: glib/gregex.c:1197
+#: glib/gregex.c:1193
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "ৰেগুলাৰ এক্সপ্ৰেশন %s ৰ সৰ্বোত্তম ব্যৱহাৰত সমস্যা: %s"
 
-#: glib/gregex.c:2035
+#: glib/gregex.c:2031
 msgid "hexadecimal digit or '}' expected"
 msgstr "hexadecimal সংখ্যা বা '}' প্ৰত্যাশিত"
 
-#: glib/gregex.c:2051
+#: glib/gregex.c:2047
 msgid "hexadecimal digit expected"
 msgstr "hexadecimal সংখ্যা প্ৰত্যাশিত"
 
-#: glib/gregex.c:2091
+#: glib/gregex.c:2087
 msgid "missing '<' in symbolic reference"
 msgstr "সাঙ্কেতিক ৰেফাৰেন্সত '<' অনুপস্থিত"
 
-#: glib/gregex.c:2100
+#: glib/gregex.c:2096
 msgid "unfinished symbolic reference"
 msgstr "সাঙ্কেতিক ৰেফাৰেন্স অসম্পূৰ্ণ"
 
-#: glib/gregex.c:2107
+#: glib/gregex.c:2103
 msgid "zero-length symbolic reference"
 msgstr "সাঙ্কেতিক ৰেফাৰেন্সত অক্ষৰ সংখ্যা শূণ্য"
 
-#: glib/gregex.c:2118
+#: glib/gregex.c:2114
 msgid "digit expected"
 msgstr "সংখ্যা প্ৰত্যাশিত"
 
-#: glib/gregex.c:2136
+#: glib/gregex.c:2132
 msgid "illegal symbolic reference"
 msgstr "অৱৈধ সাঙ্কেতিক ৰেফাৰেন্স"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2194
 msgid "stray final '\\'"
 msgstr "অন্তত অপ্ৰত্যাশিত '\\'"
 
-#: glib/gregex.c:2202
+#: glib/gregex.c:2198
 msgid "unknown escape sequence"
 msgstr "অজ্ঞাত এস্কেপ ক্ৰম"
 
-#: glib/gregex.c:2212
+#: glib/gregex.c:2208
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "প্ৰতিস্থাপনৰ টেক্সট \"%s\", %lu অক্ষৰত বিশ্লেষণ কৰিবলৈ সমস্যা: %s"
@@ -1002,112 +1010,114 @@ msgstr "সাধাৰণ নথিপত্ৰ নহয়"
 msgid "File is empty"
 msgstr "নথিপত্ৰ ৰিক্ত"
 
-#: glib/gkeyfile.c:765
+#: glib/gkeyfile.c:764
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "চাবি নথিপত্ৰত '%s' পংক্তি আছে যি চাবি-মানৰ জোৰা, সমষ্টি বা মন্তব্য নহয়"
 
-#: glib/gkeyfile.c:825
+#: glib/gkeyfile.c:824
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "দলৰ নাম অৱৈধ: %s"
 
-#: glib/gkeyfile.c:847
+#: glib/gkeyfile.c:846
 msgid "Key file does not start with a group"
 msgstr "চাবি-নথিপত্ৰৰ আৰম্ভত কোনো সমষ্টি উল্লিখিত নাই"
 
-#: glib/gkeyfile.c:873
+#: glib/gkeyfile.c:872
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "চাবিৰ নাম অৱৈধ: %s"
 
-#: glib/gkeyfile.c:900
+#: glib/gkeyfile.c:899
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "চাবি নথিপত্ৰত অসমৰ্থিত এনকোডিং '%s'"
 
-#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2507
-#: glib/gkeyfile.c:2573 glib/gkeyfile.c:2708 glib/gkeyfile.c:2841
-#: glib/gkeyfile.c:2994 glib/gkeyfile.c:3181 glib/gkeyfile.c:3242
+#: glib/gkeyfile.c:1115 glib/gkeyfile.c:1277 glib/gkeyfile.c:2506
+#: glib/gkeyfile.c:2572 glib/gkeyfile.c:2707 glib/gkeyfile.c:2840
+#: glib/gkeyfile.c:2993 glib/gkeyfile.c:3180 glib/gkeyfile.c:3241
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "চাবি নথিপত্ৰত কোনো সমষ্টি অনুপস্থিত '%s'"
 
-#: glib/gkeyfile.c:1290
+#: glib/gkeyfile.c:1289
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "চাবি নথিপত্ৰত কোনো চাবি উপস্থিত নাই '%s'"
 
-#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
+#: glib/gkeyfile.c:1396 glib/gkeyfile.c:1511
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "চাবি নথিপত্ৰত '%s' চাবি আছে '%s' মান সহ যি UTF-8 বিন্যাসত  নাই ।"
 
-#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
+#: glib/gkeyfile.c:1416 glib/gkeyfile.c:1910
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "চাবি নথিপত্ৰত '%s' চাবি উপস্থিত আছে যাৰ মান বুজিব পৰা নাযায় ।"
 
-#: glib/gkeyfile.c:1532
+#: glib/gkeyfile.c:1531
 #, c-format
-msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "চাবি নথিপত্ৰত '%s' চাবি উপস্থিত আছে যাৰ মান বুজিব পৰা নাযায় ।"
 
-#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2338
+#: glib/gkeyfile.c:2125 glib/gkeyfile.c:2337
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "চাবি নথিপত্ৰত '%s'  চাবি আছে '%s' সমষ্টিত যাৰ মান বুজিব পৰা নাযায় ।"
 
-#: glib/gkeyfile.c:2522 glib/gkeyfile.c:2723 glib/gkeyfile.c:3253
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2722 glib/gkeyfile.c:3252
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "চাবি নথিপত্ৰত '%s' চাবি '%s' সমষ্টিত নাই"
 
-#: glib/gkeyfile.c:3487
+#: glib/gkeyfile.c:3486
 msgid "Key file contains escape character at end of line"
 msgstr "চাবি নথিপত্ৰত পংক্তিৰ অৱশেষত এস্কেপ অক্ষৰ উপস্থিত আছে"
 
-#: glib/gkeyfile.c:3509
+#: glib/gkeyfile.c:3508
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "চাবি নথিপত্ৰত অৱৈধ এস্কেপ ধাৰা উপস্থিত আছে '%s'"
 
-#: glib/gkeyfile.c:3651
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' মান কোনো সংখ্যাৰূপে বুজিব পৰা নাযায় ।"
 
-#: glib/gkeyfile.c:3665
+#: glib/gkeyfile.c:3664
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' পূৰ্ণসংখ্যা মান সীমা বহিৰ্ভূত"
 
-#: glib/gkeyfile.c:3698
+#: glib/gkeyfile.c:3697
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' মান float সংখ্যা ৰূপে বুজিব পৰা নাযায় ।"
 
-#: glib/gkeyfile.c:3722
+#: glib/gkeyfile.c:3721
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' মান বুলিয়েন ৰূপে বুজিব পৰা নাযায় ।"
 
-#: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:190 gio/ginputstream.c:322 gio/ginputstream.c:563
-#: gio/ginputstream.c:688 gio/goutputstream.c:201 gio/goutputstream.c:656
+#: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
+#: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
+#: gio/ginputstream.c:682 gio/goutputstream.c:197 gio/goutputstream.c:652
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s লৈ বহুত ডাঙৰ count মান দিয়া হৈছে"
 
-#: gio/gbufferedinputstream.c:885 gio/ginputstream.c:898 gio/giostream.c:309
-#: gio/goutputstream.c:1085
+#: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
+#: gio/goutputstream.c:1081
 msgid "Stream is already closed"
 msgstr "স্ৰোত ইতিমধ্যে বন্ধ"
 
-#: gio/gcancellable.c:420 gio/glocalfile.c:2098 gio/gsimpleasyncresult.c:650
-#: gio/gsimpleasyncresult.c:676
+#: gio/gcancellable.c:420 gio/glocalfile.c:2095 gio/gsimpleasyncresult.c:648
+#: gio/gsimpleasyncresult.c:674
 msgid "Operation was cancelled"
 msgstr "কৰ্ম বাতিল কৰা হৈছে"
 
@@ -1125,7 +1135,7 @@ msgstr "%s নথিপত্ৰৰ ধৰন"
 msgid "%s type"
 msgstr "%s ধৰন"
 
-#: gio/gdatainputstream.c:313
+#: gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "স্ৰোতৰ অপ্ৰত্যাশিত আগতীয়া অন্ত ।"
 
@@ -1227,12 +1237,12 @@ msgstr "কাৰ্য্য সমৰ্থিত নহয়"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1065 gio/glocalfile.c:1076
-#: gio/glocalfile.c:1089
+#: gio/gfile.c:1347 gio/glocalfile.c:1066 gio/glocalfile.c:1077
+#: gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "ধাৰণকাৰী মাউন্ট উপস্থিত নাই"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2250
+#: gio/gfile.c:2399 gio/glocalfile.c:2247
 msgid "Can't copy over directory"
 msgstr "পঞ্জিকাৰ ওপৰতত নকল কৰা নাযাব"
 
@@ -1240,7 +1250,7 @@ msgstr "পঞ্জিকাৰ ওপৰতত নকল কৰা নায�
 msgid "Can't copy directory over directory"
 msgstr "পঞ্জিকাৰ ওপৰত পঞ্জিকা নকল কৰা নাযায়"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2259
+#: gio/gfile.c:2467 gio/glocalfile.c:2256
 msgid "Target file exists"
 msgstr "লক্ষ্য নথিপত্ৰ উপস্থিত আছে"
 
@@ -1348,7 +1358,7 @@ msgstr "%s ধৰণে from_tokens() প্ৰণয়ন নকৰে GIcon স�
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "আইকন এন্‌কোডিংৰ দিয়া সংস্কৰণৰ পৰিচালন কৰিব নোৱাৰি"
 
-#: gio/ginputstream.c:199
+#: gio/ginputstream.c:195
 msgid "Input stream doesn't implement read"
 msgstr "নিবেশ স্ৰোতে পঢ়া কাৰ্য ৰূপায়ন নকৰে"
 
@@ -1358,7 +1368,7 @@ msgstr "নিবেশ স্ৰোতে পঢ়া কাৰ্য ৰূপ�
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:908 gio/giostream.c:319 gio/goutputstream.c:1095
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1091
 msgid "Stream has outstanding operation"
 msgstr "স্ৰোতৰ ক্ষেত্ৰত অসমাপ্ত কৰ্ম উপস্থিত আছে"
 
@@ -1380,106 +1390,106 @@ msgstr "অবিকল্পিত স্থানীয় পঞ্জিকা�
 msgid "Invalid filename %s"
 msgstr "নথিপত্ৰৰ নাম অৱৈধ: %s"
 
-#: gio/glocalfile.c:973
+#: gio/glocalfile.c:974
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "নথিপত্ৰপ্ৰণালী সংক্ৰান্ত তথ্য প্ৰাপ্ত কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:1109
+#: gio/glocalfile.c:1110
 msgid "Can't rename root directory"
 msgstr "root পঞ্জিকাৰ নাম পৰিবৰ্তন কৰা সম্ভৱ নহয়"
 
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
+#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "নথিপত্ৰৰ নাম পৰিবৰ্তনত সমস্যা: %s"
 
-#: gio/glocalfile.c:1138
+#: gio/glocalfile.c:1139
 msgid "Can't rename file, filename already exist"
 msgstr ""
 "নথিপত্ৰৰ নাম পৰিবৰ্তন কৰা নাযায়, নতুন নামৰ এটা নথিপত্ৰৰ নাম বৰ্তমানে উপস্থিত আছে"
 
-#: gio/glocalfile.c:1151 gio/glocalfile.c:2127 gio/glocalfile.c:2156
-#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1152 gio/glocalfile.c:2124 gio/glocalfile.c:2153
+#: gio/glocalfile.c:2309 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "নথিপত্ৰৰ নাম অবৈধ"
 
-#: gio/glocalfile.c:1307
+#: gio/glocalfile.c:1308
 #, c-format
 msgid "Error opening file: %s"
 msgstr "নথিপত্ৰ খুলিবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:1317
+#: gio/glocalfile.c:1318
 msgid "Can't open directory"
 msgstr "পঞ্জিকা খুলিবলৈ সমস্যা"
 
-#: gio/glocalfile.c:1442
+#: gio/glocalfile.c:1443
 #, c-format
 msgid "Error removing file: %s"
 msgstr "নথিপত্ৰ আঁতৰাবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:1811
+#: gio/glocalfile.c:1808
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "নথিপত্ৰ আবৰ্জনালৈ স্থানান্তৰ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:1834
+#: gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "আবৰ্জনাৰ পঞ্জিকা %s নিৰ্মাণ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
 msgstr "আবৰ্জনাৰ ঊৰ্ধ্বতন পঞ্জিকা সনাক্ত কৰিবলৈ ব্যৰ্থ"
 
-#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
+#: gio/glocalfile.c:1931 gio/glocalfile.c:1951
 msgid "Unable to find or create trash directory"
 msgstr "আবৰ্জনাৰ পঞ্জিকা সনাক্ত বা নিৰ্মাণ কৰিবলৈ ব্যৰ্থ"
 
-#: gio/glocalfile.c:1988
+#: gio/glocalfile.c:1985
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "trashing তথ্যৰ নথিপত্ৰ সৃষ্টি কৰিব নোৱাৰি: %s"
 
-#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2097
-#: gio/glocalfile.c:2104
+#: gio/glocalfile.c:2014 gio/glocalfile.c:2019 gio/glocalfile.c:2094
+#: gio/glocalfile.c:2101
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "নথিপত্ৰ বৰ্জন কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/glocalfile.c:2131
+#: gio/glocalfile.c:2128
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "পঞ্জিকা নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/glocalfile.c:2160
+#: gio/glocalfile.c:2157
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "সাঙ্কেতিক সংযোগ নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
+#: gio/glocalfile.c:2219 gio/glocalfile.c:2313
 #, c-format
 msgid "Error moving file: %s"
 msgstr "নথিপত্ৰ স্থানান্তৰ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2242
 msgid "Can't move directory over directory"
 msgstr "পঞ্জিকাৰ ওপৰত পঞ্জিকা স্থানান্তৰ কৰা নাযাব"
 
-#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2269 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "বেক-আপ নথিপত্ৰ নিৰ্মাণ কৰিবলৈ ব্যৰ্থ"
 
-#: gio/glocalfile.c:2291
+#: gio/glocalfile.c:2288
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "লক্ষ্য নথিপত্ৰ আঁতৰাবলৈ সমস্যা: %s"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2302
 msgid "Move between mounts not supported"
 msgstr "মাউন্ট কৰা অৱস্থানত স্থানান্তৰ কৰা সম্ভৱ নহয়"
 
@@ -1577,19 +1587,19 @@ msgstr "এই ব্যৱস্থাপ্ৰণালীত SELinux সক�
 msgid "Setting attribute %s not supported"
 msgstr "%s গুণৰ মান নিৰ্ধাৰণ সমৰ্থিত নহয়"
 
-#: gio/glocalfileinputstream.c:169 gio/glocalfileoutputstream.c:701
+#: gio/glocalfileinputstream.c:165 gio/glocalfileoutputstream.c:701
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "নথিপত্ৰৰ পৰা পঢ়িবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinputstream.c:200 gio/glocalfileinputstream.c:212
-#: gio/glocalfileinputstream.c:324 gio/glocalfileoutputstream.c:449
+#: gio/glocalfileinputstream.c:196 gio/glocalfileinputstream.c:208
+#: gio/glocalfileinputstream.c:320 gio/glocalfileoutputstream.c:449
 #: gio/glocalfileoutputstream.c:1005
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "নথিপত্ৰত seek কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinputstream.c:245 gio/glocalfileoutputstream.c:235
+#: gio/glocalfileinputstream.c:241 gio/glocalfileoutputstream.c:235
 #: gio/glocalfileoutputstream.c:330
 #, c-format
 msgid "Error closing file: %s"
@@ -1727,11 +1737,11 @@ msgstr "mount দ্বাৰা সুসংগতভাবে সামগ্�
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "গৃহস্থৰনাম  '%s' ত  '[' আছে কিন্তু ']' নাই"
 
-#: gio/goutputstream.c:210 gio/goutputstream.c:411
+#: gio/goutputstream.c:206 gio/goutputstream.c:407
 msgid "Output stream doesn't implement write"
 msgstr "নিৰ্গমৰ স্ৰোতে লিখা কাৰ্য ৰূপায়ন নকৰে"
 
-#: gio/goutputstream.c:371 gio/goutputstream.c:780
+#: gio/goutputstream.c:368 gio/goutputstream.c:776
 msgid "Source stream is already closed"
 msgstr "উৎসৰ স্ৰোত ইতিমধ্যে বন্ধ"
 
@@ -1854,16 +1864,16 @@ msgstr "ছকেট বন্ধ কৰোঁতে ভুল: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "ছকেট অৱস্থাৰ কাৰণে প্ৰতীক্ষা কৰা হৈছে: %s"
 
-#: gio/gsocket.c:2709 gio/gsocket.c:2790
+#: gio/gsocket.c:2714 gio/gsocket.c:2795
 #, c-format
 msgid "Error sending message: %s"
 msgstr "সম্বাদ পঠিয়াওঁতে ভুল: %s"
 
-#: gio/gsocket.c:2734
+#: gio/gsocket.c:2739
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage ক  windows ত সমৰ্থিত নহয়"
 
-#: gio/gsocket.c:2992 gio/gsocket.c:3131
+#: gio/gsocket.c:2997 gio/gsocket.c:3136
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "সম্বাদ পাওঁতে ভুল: %s"
@@ -1903,14 +1913,14 @@ msgstr "এটা fd প্ৰত্যাশিত, কিন্তু %d প�
 msgid "Received invalid fd"
 msgstr "অবৈধ fd পোৱা গ'ল"
 
-#: gio/gunixinputstream.c:358 gio/gunixinputstream.c:378
-#: gio/gunixinputstream.c:456 gio/gunixoutputstream.c:443
+#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
+#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "unix ৰ পৰা পঢ়িবলৈ সমস্যা: %s"
 
-#: gio/gunixinputstream.c:411 gio/gunixinputstream.c:593
-#: gio/gunixoutputstream.c:398 gio/gunixoutputstream.c:549
+#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
+#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "unix বন্ধ কৰিবলৈ সমস্যা: %s"
@@ -1919,7 +1929,7 @@ msgstr "unix বন্ধ কৰিবলৈ সমস্যা: %s"
 msgid "Filesystem root"
 msgstr "নথিপত্ৰপ্ৰণালীৰ root"
 
-#: gio/gunixoutputstream.c:344 gio/gunixoutputstream.c:365
+#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "unix লৈ লিখিবলৈ সমস্যা: %s"
@@ -2040,4 +2050,3 @@ msgstr "[FILE...]"
 
 #~ msgid "The file descriptor to write to"
 #~ msgstr "নথিপত্ৰ দেস্ক্ৰিপ্টৰ য'ত লিখিব লাগে"
-

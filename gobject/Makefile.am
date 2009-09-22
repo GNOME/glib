@@ -255,19 +255,23 @@ dist-hook: $(BUILT_EXTRA_DIST)
 
 install-data-local: install-ms-lib install-def-file
 
-uninstall-local: uninstall-ms-lib uninstall-def-file
+uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
 
 distclean-local:
 	if test $(srcdir) = .; then :; else \
 	    rm -f $(BUILT_EXTRA_DIST); \
+	    rm -f libgobject-gdb.py; \
 	fi
 
 # install gdb scripts
 gdbdir = $(datadir)/glib-2.0/gdb
-gdb_SCRIPTS = gobject.py
+dist_gdb_SCRIPTS = gobject.py
 
 libgobject-gdb.py: libgobject-gdb.py.in
-	sed -e "s|\@datadir\@|$(datadir)|" libgobject-gdb.py.in > libgobject-gdb.py
+	sed -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > libgobject-gdb.py
+
+uninstall-gdb:
+	-rm -r $(DESTDIR)$(datadir)/gdb
 
 install-data-hook: libgobject-gdb.py
 	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load${libdir}

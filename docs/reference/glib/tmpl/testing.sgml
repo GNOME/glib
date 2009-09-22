@@ -203,6 +203,27 @@ Returns %TRUE if tests are run in quiet mode.
 @bug_uri_snippet: 
 
 
+<!-- ##### USER_FUNCTION GTestLogFatalFunc ##### -->
+<para>
+
+</para>
+
+@log_domain: 
+@log_level: 
+@message: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_test_log_set_fatal_handler ##### -->
+<para>
+
+</para>
+
+@log_func: 
+@user_data: 
+
+
 <!-- ##### FUNCTION g_test_timer_start ##### -->
 <para>
 

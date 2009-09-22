@@ -769,6 +769,13 @@ you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
 @Returns: 
 
 
+<!-- ##### MACRO G_POLLFD_FORMAT ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GSource ##### -->
 <para>
 The <structname>GSource</structname> struct is an opaque data type representing

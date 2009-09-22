@@ -366,12 +366,17 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
 
+distclean-local:
+	if test $(srcdir) = .; then :; else \
+	    rm -f libglib-gdb.py; \
+	fi
+
 # install gdb scripts
 gdbdir = $(datadir)/glib-2.0/gdb
-gdb_SCRIPTS = glib.py
+dist_gdb_SCRIPTS = glib.py
 
 libglib-gdb.py: libglib-gdb.py.in
-	sed -e "s|\@datadir\@|$(datadir)|" libglib-gdb.py.in > libglib-gdb.py
+	sed -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > libglib-gdb.py
 
 
 install-data-hook: libglib-gdb.py

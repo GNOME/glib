@@ -34,7 +34,7 @@ Notes about GLib 2.22
 Notes about GLib 2.20
 =====================
 
-^ The functions for launching applications (e.g. g_app_info_launch() +
+* The functions for launching applications (e.g. g_app_info_launch() +
   friends) now passes a FUSE file:// URI if possible (requires gvfs
   with the FUSE daemon to be running and operational). With gvfs 2.26,
   FUSE file:// URIs will be mapped back to gio URIs in the GFile
