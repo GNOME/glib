@@ -491,6 +491,7 @@ g_child_watch_add_full
 <SUBSECTION>
 GPollFD
 g_poll
+G_POLLFD_FORMAT
 
 <SUBSECTION>
 GSource
@@ -2618,6 +2619,8 @@ g_test_add
 g_test_message
 g_test_bug_base
 g_test_bug
+GTestLogFatalFunc
+g_test_log_set_fatal_handler
 
 g_test_timer_start
 g_test_timer_elapsed
