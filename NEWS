@@ -1,3 +1,53 @@
+Overview of Changes from GLib 2.21.6 to GLib 2.22.0
+===================================================
+
+* Add gdb python macros to make gobject debugging more pleasant
+
+* Bugs fixed:
+ 579050 Allow making selected critical and warning messages non-fatal
+ 594759 g_socket_send_message fails due to invalid sendmsg params
+ 593941 GNetworkAddress skipping addresses when enumerating
+ 594597 Fix build with srcdir != builddir
+ 595619 Include gdb pretty printers
+
+* Changes that might affect bindings:
+ - The error parameter of g_simple_async_result_set_from_error has been
+   made const.
+
+* Updated translations:
+ Assamese
+ Bengali India
+ British English
+ Bulgarian
+ Catalan
+ Czech
+ Danish
+ Finnish
+ Galician
+ Greek
+ Gujarati
+ Hindi
+ Japanese
+ Kannada
+ Malayalam
+ Marathi
+ Norwegian bokmål
+ Oriya
+ Polish
+ Punjabi
+ Romanian
+ Serbian
+ Simplified Chinese
+ Slovenian
+ Spanish
+ Tamil
+ Telugu
+ Thai
+ Traditional Chinese
+ Ukrainian
+ Vietnamese
+
+
 Overview of Changes from GLib 2.21.5 to GLib 2.21.6
 ===================================================
 
