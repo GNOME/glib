@@ -807,7 +807,7 @@ msgstr "dấu xuyệc ngược kết thúc rải rác « \\ »"
 
 #: glib/gregex.c:2202
 msgid "unknown escape sequence"
-msgstr "dãy thoạt lạ"
+msgstr "dãy thoát lạ"
 
 #: glib/gregex.c:2212
 #, c-format
