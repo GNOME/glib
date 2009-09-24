@@ -252,6 +252,7 @@ struct _TypeNode
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
 #define NODE_FUNDAMENTAL_TYPE(node)		(node->supers[node->n_supers])
 #define NODE_NAME(node)				(g_quark_to_string (node->qname))
+#define NODE_REFCOUNT(node)                     (node->ref_count)
 #define	NODE_IS_IFACE(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_INTERFACE)
 #define	CLASSED_NODE_IFACES_ENTRIES(node)	(&(node)->_prot.iface_entries)
 #define	CLASSED_NODE_IFACES_ENTRIES_LOCKED(node)(G_ATOMIC_ARRAY_GET_LOCKED(CLASSED_NODE_IFACES_ENTRIES((node)), IFaceEntries))
@@ -1196,7 +1197,7 @@ type_data_ref_Wm (TypeNode *node)
     }
   else
     {
-      g_assert (node->ref_count > 0);
+      g_assert (NODE_REFCOUNT (node) > 0);
       
       node->ref_count += 1;
     }
@@ -2199,7 +2200,7 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
   guint i;
   IFaceEntries *entries;
 
-  g_assert (node->is_instantiatable && node->data && node->data->class.class && node->ref_count == 0);
+  g_assert (node->is_instantiatable && node->data && node->data->class.class && NODE_REFCOUNT (node) == 0);
 
  reiterate:
   entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
@@ -2232,7 +2233,7 @@ type_data_finalize_class_U (TypeNode  *node,
   GTypeClass *class = cdata->class;
   TypeNode *bnode;
   
-  g_assert (cdata->class && node->ref_count == 0);
+  g_assert (cdata->class && NODE_REFCOUNT (node) == 0);
   
   if (cdata->class_finalize)
     cdata->class_finalize (class, (gpointer) cdata->class_data);
@@ -2254,7 +2255,7 @@ type_data_last_unref_Wm (TypeNode *node,
 {
   g_return_if_fail (node != NULL && node->plugin != NULL);
   
-  if (!node->data || node->ref_count == 0)
+  if (!node->data || NODE_REFCOUNT (node) == 0)
     {
       g_warning ("cannot drop last reference to unreferenced type `%s'",
 		 NODE_NAME (node));
@@ -2277,7 +2278,7 @@ type_data_last_unref_Wm (TypeNode *node,
 	  G_READ_UNLOCK (&type_rw_lock);
 	  need_break = cache_func (cache_data, node->data->class.class);
 	  G_READ_LOCK (&type_rw_lock);
-	  if (!node->data || node->ref_count == 0)
+	  if (!node->data || NODE_REFCOUNT (node) == 0)
 	    INVALID_RECURSION ("GType class cache function ", cache_func, NODE_NAME (node));
 	  if (need_break)
 	    break;
@@ -2286,14 +2287,12 @@ type_data_last_unref_Wm (TypeNode *node,
       G_WRITE_LOCK (&type_rw_lock);
     }
   
-  if (node->ref_count > 1)	/* may have been re-referenced meanwhile */
-    node->ref_count -= 1;
-  else
+  /* may have been re-referenced meanwhile */
+  node->ref_count -= 1;
+  if (NODE_REFCOUNT (node) == 0)
     {
       GType ptype = NODE_PARENT_TYPE (node);
       TypeData *tdata;
-      
-      node->ref_count = 0;
       
       if (node->is_instantiatable)
 	{
@@ -2349,8 +2348,8 @@ static inline void
 type_data_unref_WmREC (TypeNode *node,
                        gboolean  uncached)
 {
-  g_assert (node->data && node->ref_count);
-  if (node->ref_count > 1)
+  g_assert (node->data && NODE_REFCOUNT (node) > 0);
+  if (NODE_REFCOUNT (node) > 1)
     node->ref_count -= 1;
   else
     {
@@ -2825,7 +2824,7 @@ g_type_class_ref (GType type)
       return node->data->class.class;
     }
   if (!node || !node->is_classed ||
-      (node->data && node->ref_count < 1))
+      (node->data && NODE_REFCOUNT (node) == 0))
     {
       G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve class for invalid (unclassed) type `%s'",
@@ -2879,7 +2878,7 @@ g_type_class_unref (gpointer g_class)
   node = lookup_type_node_I (class->g_type);
   G_WRITE_LOCK (&type_rw_lock);
   if (node && node->is_classed && node->data &&
-      node->data->class.class == class && node->ref_count > 0)
+      node->data->class.class == class && NODE_REFCOUNT (node) > 0)
     type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
@@ -2907,7 +2906,7 @@ g_type_class_unref_uncached (gpointer g_class)
   G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (class->g_type);
   if (node && node->is_classed && node->data &&
-      node->data->class.class == class && node->ref_count > 0)
+      node->data->class.class == class && NODE_REFCOUNT (node) > 0)
     type_data_unref_WmREC (node, TRUE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
@@ -3114,7 +3113,7 @@ g_type_default_interface_ref (GType g_type)
 
   node = lookup_type_node_I (g_type);
   if (!node || !NODE_IS_IFACE (node) ||
-      (node->data && node->ref_count < 1))
+      (node->data && NODE_REFCOUNT (node) == 0))
     {
       G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve default vtable for invalid or non-interface type '%s'",
@@ -3196,7 +3195,7 @@ g_type_default_interface_unref (gpointer g_iface)
   G_WRITE_LOCK (&type_rw_lock);
   if (node && NODE_IS_IFACE (node) &&
       node->data->iface.dflt_vtable == g_iface &&
-      node->ref_count > 0)
+      NODE_REFCOUNT (node) > 0)
     type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference invalid interface default vtable for '%s'",
@@ -4027,7 +4026,7 @@ type_check_is_value_type_U (GType type)
  restart_check:
   if (node)
     {
-      if (node->data && node->ref_count > 0 &&
+      if (node->data && NODE_REFCOUNT (node) > 0 &&
 	  node->data->common.value_table->value_init)
 	tflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
       else if (NODE_IS_IFACE (node))
@@ -4102,7 +4101,7 @@ g_type_value_table_peek (GType type)
   G_READ_LOCK (&type_rw_lock);
   
  restart_table_peek:
-  has_refed_data = node && node->data && node->ref_count;
+  has_refed_data = node && node->data && NODE_REFCOUNT (node) > 0;
   has_table = has_refed_data && node->data->common.value_table->value_init;
   if (has_refed_data)
     {
@@ -4413,7 +4412,7 @@ g_type_instance_get_private (GTypeInstance *instance,
   if (NODE_PARENT_TYPE (private_node))
     {
       parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
-      g_assert (parent_node->data && parent_node->ref_count);
+      g_assert (parent_node->data && NODE_REFCOUNT (parent_node) > 0);
 
       if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
 	{
