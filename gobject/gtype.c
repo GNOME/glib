@@ -2346,11 +2346,12 @@ static inline void
 type_data_unref_U (TypeNode *node,
                    gboolean  uncached)
 {
-  G_WRITE_LOCK (&type_rw_lock);
-  g_assert (node->data && NODE_REFCOUNT (node) > 0);
-  if (NODE_REFCOUNT (node) > 1)
-    g_atomic_int_add ((int *) &node->ref_count, -1);
-  else
+  guint current;
+
+  do {
+    current = NODE_REFCOUNT (node);
+
+    if (current <= 1)
     {
       if (!node->plugin)
 	{
@@ -2358,13 +2359,17 @@ type_data_unref_U (TypeNode *node,
 		     NODE_NAME (node));
 	  return;
 	}
-      G_WRITE_UNLOCK (&type_rw_lock);
+
+      g_assert (current > 0);
+
       g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
       G_WRITE_LOCK (&type_rw_lock);
       type_data_last_unref_Wm (node, uncached);
+      G_WRITE_UNLOCK (&type_rw_lock);
       g_static_rec_mutex_unlock (&class_init_rec_mutex);
+      return;
     }
-  G_WRITE_UNLOCK (&type_rw_lock);
+  } while (!g_atomic_int_compare_and_exchange ((int *) &node->ref_count, current, current - 1));
 }
 
 /**
