@@ -2818,24 +2818,21 @@ g_type_class_ref (GType type)
   GType ptype;
 
   /* optimize for common code path */
-  G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (type);
-  if (node && node->is_classed && node->data &&
-      g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
+  if (!node || !node->is_classed)
     {
-      type_data_ref_Wm (node);
-      G_WRITE_UNLOCK (&type_rw_lock);
-      return node->data->class.class;
-    }
-  if (!node || !node->is_classed ||
-      (node->data && NODE_REFCOUNT (node) == 0))
-    {
-      G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve class for invalid (unclassed) type `%s'",
 		 type_descriptive_name_I (type));
       return NULL;
     }
+
+  G_WRITE_LOCK (&type_rw_lock);
   type_data_ref_Wm (node);
+  if (g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
+    {
+      G_WRITE_UNLOCK (&type_rw_lock);
+      return node->data->class.class;
+    }
   ptype = NODE_PARENT_TYPE (node);
   G_WRITE_UNLOCK (&type_rw_lock);
 
