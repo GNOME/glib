@@ -185,7 +185,7 @@ static	      void			type_data_make_W		(TypeNode		*node,
 									 const GTypeInfo	*info,
 									 const GTypeValueTable	*value_table);
 static inline void			type_data_ref_Wm		(TypeNode		*node);
-static inline void			type_data_unref_WmREC		(TypeNode		*node,
+static inline void			type_data_unref_U               (TypeNode		*node,
 									 gboolean		 uncached);
 static void				type_data_last_unref_Wm		(TypeNode *              node,
 									 gboolean		 uncached);
@@ -1680,9 +1680,8 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
       
       G_WRITE_UNLOCK (&type_rw_lock);
       g_type_plugin_unuse (iholder->plugin);
+      type_data_unref_U (iface, FALSE);
       G_WRITE_LOCK (&type_rw_lock);
-      
-      type_data_unref_WmREC (iface, FALSE);
     }
 }
 
@@ -2338,16 +2337,17 @@ type_data_last_unref_Wm (TypeNode *node,
       
       G_WRITE_UNLOCK (&type_rw_lock);
       g_type_plugin_unuse (node->plugin);
-      G_WRITE_LOCK (&type_rw_lock);
       if (ptype)
-	type_data_unref_WmREC (lookup_type_node_I (ptype), FALSE);
+	type_data_unref_U (lookup_type_node_I (ptype), FALSE);
+      G_WRITE_LOCK (&type_rw_lock);
     }
 }
 
 static inline void
-type_data_unref_WmREC (TypeNode *node,
-                       gboolean  uncached)
+type_data_unref_U (TypeNode *node,
+                   gboolean  uncached)
 {
+  G_WRITE_LOCK (&type_rw_lock);
   g_assert (node->data && NODE_REFCOUNT (node) > 0);
   if (NODE_REFCOUNT (node) > 1)
     node->ref_count -= 1;
@@ -2365,6 +2365,7 @@ type_data_unref_WmREC (TypeNode *node,
       type_data_last_unref_Wm (node, uncached);
       g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
+  G_WRITE_UNLOCK (&type_rw_lock);
 }
 
 /**
@@ -2876,14 +2877,11 @@ g_type_class_unref (gpointer g_class)
   g_return_if_fail (g_class != NULL);
   
   node = lookup_type_node_I (class->g_type);
-  G_WRITE_LOCK (&type_rw_lock);
-  if (node && node->is_classed && node->data &&
-      node->data->class.class == class && NODE_REFCOUNT (node) > 0)
-    type_data_unref_WmREC (node, FALSE);
+  if (node && node->is_classed && NODE_REFCOUNT (node))
+    type_data_unref_U (node, FALSE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
 	       type_descriptive_name_I (class->g_type));
-  G_WRITE_UNLOCK (&type_rw_lock);
 }
 
 /**
@@ -2903,15 +2901,12 @@ g_type_class_unref_uncached (gpointer g_class)
   
   g_return_if_fail (g_class != NULL);
   
-  G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (class->g_type);
-  if (node && node->is_classed && node->data &&
-      node->data->class.class == class && NODE_REFCOUNT (node) > 0)
-    type_data_unref_WmREC (node, TRUE);
+  if (node && node->is_classed && NODE_REFCOUNT (node))
+    type_data_unref_U (node, TRUE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
 	       type_descriptive_name_I (class->g_type));
-  G_WRITE_UNLOCK (&type_rw_lock);
 }
 
 /**
@@ -3192,15 +3187,11 @@ g_type_default_interface_unref (gpointer g_iface)
   g_return_if_fail (g_iface != NULL);
   
   node = lookup_type_node_I (vtable->g_type);
-  G_WRITE_LOCK (&type_rw_lock);
-  if (node && NODE_IS_IFACE (node) &&
-      node->data->iface.dflt_vtable == g_iface &&
-      NODE_REFCOUNT (node) > 0)
-    type_data_unref_WmREC (node, FALSE);
+  if (node && NODE_IS_IFACE (node))
+    type_data_unref_U (node, FALSE);
   else
     g_warning ("cannot unreference invalid interface default vtable for '%s'",
 	       type_descriptive_name_I (vtable->g_type));
-  G_WRITE_UNLOCK (&type_rw_lock);
 }
 
 /**
