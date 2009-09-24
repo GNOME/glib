@@ -380,8 +380,8 @@ libglib-gdb.py: libglib-gdb.py.in
 
 
 install-data-hook: libglib-gdb.py
-	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load${libdir}
-	$(INSTALL) libglib-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load${libdir}/libglib-2.0.so.0.$(LT_CURRENT).0-gdb.py
+	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)
+	$(INSTALL) libglib-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).0-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)

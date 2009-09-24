@@ -256,8 +256,10 @@ AC_ARG_WITH(runtime-libdir,
                            [Install runtime libraries relative to libdir])],
            [],
 	   [with_runtime_libdir=""])
-GLIB_RUNTIME_LIBDIR=$with_runtime_libdir
+GLIB_RUNTIME_LIBDIR="$with_runtime_libdir"
+ABS_GLIB_RUNTIME_LIBDIR="`readlink -f $libdir/$with_runtime_libdir`"
 AC_SUBST(GLIB_RUNTIME_LIBDIR)
+AC_SUBST(ABS_GLIB_RUNTIME_LIBDIR)
 AM_CONDITIONAL(HAVE_GLIB_RUNTIME_LIBDIR, [test "x$with_runtime_libdir" != "x"])
 
 dnl Checks for programs.
