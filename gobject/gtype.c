@@ -187,7 +187,7 @@ static	      void			type_data_make_W		(TypeNode		*node,
 static inline void			type_data_ref_Wm		(TypeNode		*node);
 static inline void			type_data_unref_WmREC		(TypeNode		*node,
 									 gboolean		 uncached);
-static void				type_data_last_unref_Wm		(GType			 type,
+static void				type_data_last_unref_Wm		(TypeNode *              node,
 									 gboolean		 uncached);
 static inline gpointer			type_get_qdata_L		(TypeNode		*node,
 									 GQuark			 quark);
@@ -1198,30 +1198,6 @@ type_data_ref_Wm (TypeNode *node)
       g_assert (node->ref_count > 0);
       
       node->ref_count += 1;
-    }
-}
-
-static inline void
-type_data_unref_WmREC (TypeNode *node,
-                       gboolean  uncached)
-{
-  g_assert (node->data && node->ref_count);
-  if (node->ref_count > 1)
-    node->ref_count -= 1;
-  else
-    {
-      GType node_type = NODE_TYPE (node);
-      if (!node->plugin)
-	{
-	  g_warning ("static type `%s' unreferenced too often",
-		     NODE_NAME (node));
-	  return;
-	}
-      G_WRITE_UNLOCK (&type_rw_lock);
-      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
-      G_WRITE_LOCK (&type_rw_lock);
-      type_data_last_unref_Wm (node_type, uncached);
-      g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
 }
 
@@ -2272,17 +2248,15 @@ type_data_finalize_class_U (TypeNode  *node,
 }
 
 static void
-type_data_last_unref_Wm (GType    type,
-			 gboolean uncached)
+type_data_last_unref_Wm (TypeNode *node,
+			 gboolean  uncached)
 {
-  TypeNode *node = lookup_type_node_I (type);
-  
   g_return_if_fail (node != NULL && node->plugin != NULL);
   
   if (!node->data || node->ref_count == 0)
     {
       g_warning ("cannot drop last reference to unreferenced type `%s'",
-		 type_descriptive_name_I (type));
+		 NODE_NAME (node));
       return;
     }
 
@@ -2367,6 +2341,29 @@ type_data_last_unref_Wm (GType    type,
       G_WRITE_LOCK (&type_rw_lock);
       if (ptype)
 	type_data_unref_WmREC (lookup_type_node_I (ptype), FALSE);
+    }
+}
+
+static inline void
+type_data_unref_WmREC (TypeNode *node,
+                       gboolean  uncached)
+{
+  g_assert (node->data && node->ref_count);
+  if (node->ref_count > 1)
+    node->ref_count -= 1;
+  else
+    {
+      if (!node->plugin)
+	{
+	  g_warning ("static type `%s' unreferenced too often",
+		     NODE_NAME (node));
+	  return;
+	}
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+      G_WRITE_LOCK (&type_rw_lock);
+      type_data_last_unref_Wm (node, uncached);
+      g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
 }
 
