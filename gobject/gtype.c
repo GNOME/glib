@@ -252,7 +252,7 @@ struct _TypeNode
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
 #define NODE_FUNDAMENTAL_TYPE(node)		(node->supers[node->n_supers])
 #define NODE_NAME(node)				(g_quark_to_string (node->qname))
-#define NODE_REFCOUNT(node)                     (node->ref_count)
+#define NODE_REFCOUNT(node)                     ((guint) g_atomic_int_get ((int *) &(node)->ref_count))
 #define	NODE_IS_IFACE(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_INTERFACE)
 #define	CLASSED_NODE_IFACES_ENTRIES(node)	(&(node)->_prot.iface_entries)
 #define	CLASSED_NODE_IFACES_ENTRIES_LOCKED(node)(G_ATOMIC_ARRAY_GET_LOCKED(CLASSED_NODE_IFACES_ENTRIES((node)), IFaceEntries))
@@ -1159,7 +1159,7 @@ type_data_make_W (TypeNode              *node,
   
   g_assert (node->data->common.value_table != NULL); /* paranoid */
 
-  node->ref_count = 1;
+  g_atomic_int_set ((int *) &node->ref_count, 1);
 }
 
 static inline void
@@ -1199,7 +1199,7 @@ type_data_ref_Wm (TypeNode *node)
     {
       g_assert (NODE_REFCOUNT (node) > 0);
       
-      node->ref_count += 1;
+      g_atomic_int_inc ((int *) &node->ref_count);
     }
 }
 
@@ -2287,8 +2287,7 @@ type_data_last_unref_Wm (TypeNode *node,
     }
   
   /* may have been re-referenced meanwhile */
-  node->ref_count -= 1;
-  if (NODE_REFCOUNT (node) == 0)
+  if (g_atomic_int_dec_and_test ((int *) &node->ref_count))
     {
       GType ptype = NODE_PARENT_TYPE (node);
       TypeData *tdata;
@@ -2350,7 +2349,7 @@ type_data_unref_U (TypeNode *node,
   G_WRITE_LOCK (&type_rw_lock);
   g_assert (node->data && NODE_REFCOUNT (node) > 0);
   if (NODE_REFCOUNT (node) > 1)
-    node->ref_count -= 1;
+    g_atomic_int_add ((int *) &node->ref_count, -1);
   else
     {
       if (!node->plugin)
