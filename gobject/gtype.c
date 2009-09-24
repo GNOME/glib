@@ -1127,7 +1127,6 @@ type_data_make_W (TypeNode              *node,
     }
   
   node->data = data;
-  node->ref_count = 1;
   
   if (vtable_size)
     {
@@ -1158,6 +1157,8 @@ type_data_make_W (TypeNode              *node,
 				   GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags))));
   
   g_assert (node->data->common.value_table != NULL); /* paranoid */
+
+  node->ref_count = 1;
 }
 
 static inline void
