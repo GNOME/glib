@@ -224,6 +224,7 @@ typedef enum
 /* --- structures --- */
 struct _TypeNode
 {
+  guint volatile ref_count;
   GTypePlugin *plugin;
   guint        n_children; /* writable with lock */
   guint        n_supers : 8;
@@ -291,7 +292,6 @@ struct _IFaceEntries {
 
 struct _CommonData
 {
-  guint             ref_count;
   GTypeValueTable  *value_table;
 };
 
@@ -1127,7 +1127,7 @@ type_data_make_W (TypeNode              *node,
     }
   
   node->data = data;
-  node->data->common.ref_count = 1;
+  node->ref_count = 1;
   
   if (vtable_size)
     {
@@ -1195,9 +1195,9 @@ type_data_ref_Wm (TypeNode *node)
     }
   else
     {
-      g_assert (node->data->common.ref_count > 0);
+      g_assert (node->ref_count > 0);
       
-      node->data->common.ref_count += 1;
+      node->ref_count += 1;
     }
 }
 
@@ -1205,9 +1205,9 @@ static inline void
 type_data_unref_WmREC (TypeNode *node,
                        gboolean  uncached)
 {
-  g_assert (node->data && node->data->common.ref_count);
-  if (node->data->common.ref_count > 1)
-    node->data->common.ref_count -= 1;
+  g_assert (node->data && node->ref_count);
+  if (node->ref_count > 1)
+    node->ref_count -= 1;
   else
     {
       GType node_type = NODE_TYPE (node);
@@ -2222,7 +2222,7 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
   guint i;
   IFaceEntries *entries;
 
-  g_assert (node->is_instantiatable && node->data && node->data->class.class && node->data->common.ref_count == 0);
+  g_assert (node->is_instantiatable && node->data && node->data->class.class && node->ref_count == 0);
 
  reiterate:
   entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
@@ -2255,7 +2255,7 @@ type_data_finalize_class_U (TypeNode  *node,
   GTypeClass *class = cdata->class;
   TypeNode *bnode;
   
-  g_assert (cdata->class && cdata->common.ref_count == 0);
+  g_assert (cdata->class && node->ref_count == 0);
   
   if (cdata->class_finalize)
     cdata->class_finalize (class, (gpointer) cdata->class_data);
@@ -2279,7 +2279,7 @@ type_data_last_unref_Wm (GType    type,
   
   g_return_if_fail (node != NULL && node->plugin != NULL);
   
-  if (!node->data || node->data->common.ref_count == 0)
+  if (!node->data || node->ref_count == 0)
     {
       g_warning ("cannot drop last reference to unreferenced type `%s'",
 		 type_descriptive_name_I (type));
@@ -2302,7 +2302,7 @@ type_data_last_unref_Wm (GType    type,
 	  G_READ_UNLOCK (&type_rw_lock);
 	  need_break = cache_func (cache_data, node->data->class.class);
 	  G_READ_LOCK (&type_rw_lock);
-	  if (!node->data || node->data->common.ref_count == 0)
+	  if (!node->data || node->ref_count == 0)
 	    INVALID_RECURSION ("GType class cache function ", cache_func, NODE_NAME (node));
 	  if (need_break)
 	    break;
@@ -2311,14 +2311,14 @@ type_data_last_unref_Wm (GType    type,
       G_WRITE_LOCK (&type_rw_lock);
     }
   
-  if (node->data->common.ref_count > 1)	/* may have been re-referenced meanwhile */
-    node->data->common.ref_count -= 1;
+  if (node->ref_count > 1)	/* may have been re-referenced meanwhile */
+    node->ref_count -= 1;
   else
     {
       GType ptype = NODE_PARENT_TYPE (node);
       TypeData *tdata;
       
-      node->data->common.ref_count = 0;
+      node->ref_count = 0;
       
       if (node->is_instantiatable)
 	{
@@ -2827,7 +2827,7 @@ g_type_class_ref (GType type)
       return node->data->class.class;
     }
   if (!node || !node->is_classed ||
-      (node->data && node->data->common.ref_count < 1))
+      (node->data && node->ref_count < 1))
     {
       G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve class for invalid (unclassed) type `%s'",
@@ -2881,7 +2881,7 @@ g_type_class_unref (gpointer g_class)
   node = lookup_type_node_I (class->g_type);
   G_WRITE_LOCK (&type_rw_lock);
   if (node && node->is_classed && node->data &&
-      node->data->class.class == class && node->data->common.ref_count > 0)
+      node->data->class.class == class && node->ref_count > 0)
     type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
@@ -2909,7 +2909,7 @@ g_type_class_unref_uncached (gpointer g_class)
   G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (class->g_type);
   if (node && node->is_classed && node->data &&
-      node->data->class.class == class && node->data->common.ref_count > 0)
+      node->data->class.class == class && node->ref_count > 0)
     type_data_unref_WmREC (node, TRUE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
@@ -2937,7 +2937,7 @@ g_type_class_peek (GType type)
   
   node = lookup_type_node_I (type);
   G_READ_LOCK (&type_rw_lock);
-  if (node && node->is_classed && node->data && node->data->class.class) /* common.ref_count _may_ be 0 */
+  if (node && node->is_classed && node->data && node->data->class.class) /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
@@ -2967,7 +2967,7 @@ g_type_class_peek_static (GType type)
   G_READ_LOCK (&type_rw_lock);
   if (node && node->is_classed && node->data &&
       /* peek only static types: */ node->plugin == NULL &&
-      node->data->class.class) /* common.ref_count _may_ be 0 */
+      node->data->class.class) /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
@@ -3116,7 +3116,7 @@ g_type_default_interface_ref (GType g_type)
 
   node = lookup_type_node_I (g_type);
   if (!node || !NODE_IS_IFACE (node) ||
-      (node->data && node->data->common.ref_count < 1))
+      (node->data && node->ref_count < 1))
     {
       G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve default vtable for invalid or non-interface type '%s'",
@@ -3198,7 +3198,7 @@ g_type_default_interface_unref (gpointer g_iface)
   G_WRITE_LOCK (&type_rw_lock);
   if (node && NODE_IS_IFACE (node) &&
       node->data->iface.dflt_vtable == g_iface &&
-      node->data->common.ref_count > 0)
+      node->ref_count > 0)
     type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference invalid interface default vtable for '%s'",
@@ -4029,7 +4029,7 @@ type_check_is_value_type_U (GType type)
  restart_check:
   if (node)
     {
-      if (node->data && node->data->common.ref_count > 0 &&
+      if (node->data && node->ref_count > 0 &&
 	  node->data->common.value_table->value_init)
 	tflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
       else if (NODE_IS_IFACE (node))
@@ -4104,7 +4104,7 @@ g_type_value_table_peek (GType type)
   G_READ_LOCK (&type_rw_lock);
   
  restart_table_peek:
-  has_refed_data = node && node->data && node->data->common.ref_count;
+  has_refed_data = node && node->data && node->ref_count;
   has_table = has_refed_data && node->data->common.value_table->value_init;
   if (has_refed_data)
     {
@@ -4415,7 +4415,7 @@ g_type_instance_get_private (GTypeInstance *instance,
   if (NODE_PARENT_TYPE (private_node))
     {
       parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
-      g_assert (parent_node->data && parent_node->data->common.ref_count);
+      g_assert (parent_node->data && parent_node->ref_count);
 
       if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
 	{
