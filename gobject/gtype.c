@@ -2950,7 +2950,7 @@ g_type_class_peek (GType type)
   gpointer class;
   
   node = lookup_type_node_I (type);
-  if (node && node->is_classed && NODE_REFCOUNT (node) > 0 &&
+  if (node && node->is_classed && NODE_REFCOUNT (node) &&
       g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
     /* ref_count _may_ be 0 */
     class = node->data->class.class;
@@ -3175,12 +3175,10 @@ g_type_default_interface_peek (GType g_type)
   gpointer vtable;
   
   node = lookup_type_node_I (g_type);
-  G_READ_LOCK (&type_rw_lock);
-  if (node && NODE_IS_IFACE (node) && node->data && node->data->iface.dflt_vtable)
+  if (node && NODE_IS_IFACE (node) && NODE_REFCOUNT (node))
     vtable = node->data->iface.dflt_vtable;
   else
     vtable = NULL;
-  G_READ_UNLOCK (&type_rw_lock);
   
   return vtable;
 }
@@ -4101,14 +4099,9 @@ g_type_value_table_peek (GType type)
   GTypeValueTable *vtable = NULL;
   TypeNode *node = lookup_type_node_I (type);
   gboolean has_refed_data, has_table;
-  TypeData *data;
 
-  /* speed up common code path, we're not 100% safe here,
-   * but we should only get called with referenced types anyway
-   */
-  data = node ? node->data : NULL;
-  if (node && node->mutatable_check_cache)
-    return data->common.value_table;
+  if (node && NODE_REFCOUNT (node) && node->mutatable_check_cache)
+    return node->data->common.value_table;
 
   G_READ_LOCK (&type_rw_lock);
   
