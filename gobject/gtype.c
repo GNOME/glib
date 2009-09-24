@@ -2950,14 +2950,12 @@ g_type_class_peek (GType type)
   gpointer class;
   
   node = lookup_type_node_I (type);
-  G_READ_LOCK (&type_rw_lock);
-  if (node && node->is_classed && node->data &&
+  if (node && node->is_classed && NODE_REFCOUNT (node) > 0 &&
       g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
     /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
-  G_READ_UNLOCK (&type_rw_lock);
   
   return class;
 }
@@ -2980,15 +2978,13 @@ g_type_class_peek_static (GType type)
   gpointer class;
   
   node = lookup_type_node_I (type);
-  G_READ_LOCK (&type_rw_lock);
-  if (node && node->is_classed && node->data &&
+  if (node && node->is_classed && NODE_REFCOUNT (node) &&
       /* peek only static types: */ node->plugin == NULL &&
       g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
     /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
-  G_READ_UNLOCK (&type_rw_lock);
   
   return class;
 }
