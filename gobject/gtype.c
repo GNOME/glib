@@ -1203,6 +1203,21 @@ type_data_ref_Wm (TypeNode *node)
     }
 }
 
+static inline gboolean
+type_data_ref_U (TypeNode *node)
+{
+  guint current;
+
+  do {
+    current = NODE_REFCOUNT (node);
+
+    if (current < 1)
+      return FALSE;
+  } while (!g_atomic_int_compare_and_exchange ((int *) &node->ref_count, current, current + 1));
+
+  return TRUE;
+}
+
 static gboolean
 iface_node_has_available_offset_L (TypeNode *iface_node,
 				   int offset,
@@ -2816,6 +2831,8 @@ g_type_class_ref (GType type)
 {
   TypeNode *node;
   GType ptype;
+  gboolean holds_ref;
+  GTypeClass *pclass;
 
   /* optimize for common code path */
   node = lookup_type_node_I (type);
@@ -2826,34 +2843,39 @@ g_type_class_ref (GType type)
       return NULL;
     }
 
-  G_WRITE_LOCK (&type_rw_lock);
-  type_data_ref_Wm (node);
-  if (g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
+  if (G_LIKELY (type_data_ref_U (node)))
     {
-      G_WRITE_UNLOCK (&type_rw_lock);
-      return node->data->class.class;
+      if (G_LIKELY (g_atomic_int_get (&node->data->class.init_state) == INITIALIZED))
+        return node->data->class.class;
+      holds_ref = TRUE;
     }
-  ptype = NODE_PARENT_TYPE (node);
-  G_WRITE_UNLOCK (&type_rw_lock);
-
-  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+  else
+    holds_ref = FALSE;
+  
   /* here, we either have node->data->class.class == NULL, or a recursive
    * call to g_type_class_ref() with a partly initialized class, or
    * node->data->class.init_state == INITIALIZED, because any
    * concurrently running initialization was guarded by class_init_rec_mutex.
    */
+  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+
+  /* we need an initialized parent class for initializing derived classes */
+  ptype = NODE_PARENT_TYPE (node);
+  pclass = ptype ? g_type_class_ref (ptype) : NULL;
+
+  G_WRITE_LOCK (&type_rw_lock);
+
+  if (!holds_ref)
+    type_data_ref_Wm (node);
+
   if (!node->data->class.class) /* class uninitialized */
-    {
-      /* we need an initialized parent class for initializing derived classes */
-      GTypeClass *pclass = ptype ? g_type_class_ref (ptype) : NULL;
-      G_WRITE_LOCK (&type_rw_lock);
-      if (node->data->class.class) /* class was initialized during parent class initialization? */
-        INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
-      type_class_init_Wm (node, pclass);
-      G_WRITE_UNLOCK (&type_rw_lock);
-      if (pclass)
-        g_type_class_unref (pclass);
-    }
+    type_class_init_Wm (node, pclass);
+
+  G_WRITE_UNLOCK (&type_rw_lock);
+
+  if (pclass)
+    g_type_class_unref (pclass);
+
   g_static_rec_mutex_unlock (&class_init_rec_mutex);
 
   return node->data->class.class;
