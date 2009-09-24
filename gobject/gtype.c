@@ -313,7 +313,7 @@ struct _ClassData
 {
   CommonData         common;
   guint16            class_size;
-  guint              init_state : 4;
+  int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
   GClassInitFunc     class_init;
@@ -326,7 +326,7 @@ struct _InstanceData
 {
   CommonData         common;
   guint16            class_size;
-  guint              init_state : 4;
+  int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
   GClassInitFunc     class_init;
@@ -2057,7 +2057,7 @@ type_class_init_Wm (TypeNode   *node,
 
   class = g_malloc0 (node->data->class.class_size);
   node->data->class.class = class;
-  node->data->class.init_state = BASE_CLASS_INIT;
+  g_atomic_int_set (&node->data->class.init_state, BASE_CLASS_INIT);
   
   if (pclass)
     {
@@ -2094,7 +2094,7 @@ type_class_init_Wm (TypeNode   *node,
   
   G_WRITE_LOCK (&type_rw_lock);
 
-  node->data->class.init_state = BASE_IFACE_INIT;
+  g_atomic_int_set (&node->data->class.init_state, BASE_IFACE_INIT);
   
   /* Before we initialize the class, base initialize all interfaces, either
    * from parent, or through our holder info
@@ -2150,7 +2150,7 @@ type_class_init_Wm (TypeNode   *node,
       i++;
     }
   
-  node->data->class.init_state = CLASS_INIT;
+  g_atomic_int_set (&node->data->class.init_state, CLASS_INIT);
   
   G_WRITE_UNLOCK (&type_rw_lock);
 
@@ -2159,7 +2159,7 @@ type_class_init_Wm (TypeNode   *node,
   
   G_WRITE_LOCK (&type_rw_lock);
   
-  node->data->class.init_state = IFACE_INIT;
+  g_atomic_int_set (&node->data->class.init_state, IFACE_INIT);
   
   /* finish initializing the interfaces through our holder info.
    * inherited interfaces are already init_state == INITIALIZED, because
@@ -2190,7 +2190,7 @@ type_class_init_Wm (TypeNode   *node,
       i++;
     }
   
-  node->data->class.init_state = INITIALIZED;
+  g_atomic_int_set (&node->data->class.init_state, INITIALIZED);
 }
 
 static void
@@ -2821,8 +2821,7 @@ g_type_class_ref (GType type)
   G_WRITE_LOCK (&type_rw_lock);
   node = lookup_type_node_I (type);
   if (node && node->is_classed && node->data &&
-      node->data->class.class &&
-      node->data->class.init_state == INITIALIZED)
+      g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
     {
       type_data_ref_Wm (node);
       G_WRITE_UNLOCK (&type_rw_lock);
@@ -2933,7 +2932,9 @@ g_type_class_peek (GType type)
   
   node = lookup_type_node_I (type);
   G_READ_LOCK (&type_rw_lock);
-  if (node && node->is_classed && node->data && node->data->class.class) /* ref_count _may_ be 0 */
+  if (node && node->is_classed && node->data &&
+      g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
+    /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
@@ -2963,7 +2964,8 @@ g_type_class_peek_static (GType type)
   G_READ_LOCK (&type_rw_lock);
   if (node && node->is_classed && node->data &&
       /* peek only static types: */ node->plugin == NULL &&
-      node->data->class.class) /* ref_count _may_ be 0 */
+      g_atomic_int_get (&node->data->class.init_state) == INITIALIZED)
+    /* ref_count _may_ be 0 */
     class = node->data->class.class;
   else
     class = NULL;
