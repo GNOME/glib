@@ -214,7 +214,7 @@ class ForeachCommand (gdb.Command):
         return (var, val, command)
 
     def do_iter(self, arg, item, command):
-        item.cast (gdb.lookup_type("void").pointer())
+        item = item.cast (gdb.lookup_type("void").pointer())
         item = long(item)
         to_eval = "set $%s = (void *)0x%x\n"%(arg, item)
         gdb.execute(to_eval)
