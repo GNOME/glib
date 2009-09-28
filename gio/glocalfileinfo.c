@@ -1709,17 +1709,8 @@ _g_local_file_info_get (const char             *basename,
   class = G_VFS_GET_CLASS (vfs);
   if (class->local_file_add_info)
     {
-      const char *extra_target;
-
-      extra_target = path;
-      if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) &&
-          is_symlink &&
-          !symlink_broken &&
-          symlink_target != NULL)
-        extra_target = symlink_target;
-
       class->local_file_add_info (vfs,
-                                  extra_target,
+                                  path,
                                   statbuf.st_dev,
                                   attribute_matcher,
                                   info,
