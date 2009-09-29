@@ -574,7 +574,7 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
 
 #ifndef G_DISABLE_CHECKS
   current_source = g_main_current_source ();
-  if (current_source)
+  if (current_source && !g_source_is_destroyed (current_source))
     {
       current_context = g_source_get_context (current_source);
       if (current_context == g_main_context_default ())
