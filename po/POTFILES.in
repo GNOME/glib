@@ -96,4 +96,3 @@ gio/gvolume.c
 gio/gvolumemonitor.c
 gio/gwin32appinfo.c
 gio/win32/gwinhttpfile.c
-tests/gio-ls.c
