@@ -176,12 +176,13 @@ g_async_result_get_user_data (GAsyncResult *res)
 
 /**
  * g_async_result_get_source_object:
- * @res: a #GAsyncResult.
- * 
+ * @res: a #GAsyncResult
+ *
  * Gets the source object from a #GAsyncResult.
- * 
- * Returns: the source object for the @res.
- **/
+ *
+ * Returns: a new reference to the source object for the @res,
+ *    or %NULL if there is none.
+ */
 GObject *
 g_async_result_get_source_object (GAsyncResult *res)
 {
