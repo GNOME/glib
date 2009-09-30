@@ -435,11 +435,11 @@ g_logv (const gchar   *log_domain,
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
     return;
-  
+
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
       register GLogLevelFlags test_level;
-      
+
       test_level = 1 << i;
       if (log_level & test_level)
 	{
@@ -448,6 +448,7 @@ g_logv (const gchar   *log_domain,
 	  GLogFunc log_func;
 	  GLogLevelFlags domain_fatal_mask;
 	  gpointer data = NULL;
+          gboolean masquerade_fatal = FALSE;
 
 	  if (was_fatal)
 	    test_level |= G_LOG_FLAG_FATAL;
@@ -491,7 +492,6 @@ g_logv (const gchar   *log_domain,
 		}
 	    }
 
-          gboolean masquerade_fatal = FALSE;
 	  if (test_level & G_LOG_FLAG_RECURSION)
 	    {
 	      /* we use a stack buffer of fixed size, since we're likely
