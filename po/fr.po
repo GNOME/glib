@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-04 00:08+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -107,7 +107,7 @@ msgstr "Impossible d'ouvrir le convertisseur de « %s » vers « %s »"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Séquence d'octets non valide en entrée du convertisseur"
 
@@ -117,8 +117,8 @@ msgstr "Séquence d'octets non valide en entrée du convertisseur"
 msgid "Error during conversion: %s"
 msgstr "Erreur lors de la conversion : %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Séquence partielle de caractères à la fin de l'entrée"
 
@@ -996,12 +996,12 @@ msgstr ""
 msgid "Character out of range for UTF-8"
 msgstr "Caractère hors plage pour UTF-8"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Séquence non valide dans l'entrée du convertisseur"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Caractère hors plage pour UTF-16"
 
@@ -1608,73 +1608,73 @@ msgstr "Erreur de l'interrogation du fichier « %s » : %s"
 msgid " (invalid encoding)"
 msgstr " (codage non valide)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erreur de l'interrogation du descripteur de fichier : %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Type d'attribut non valide (uint32 attendu)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Type d'attribut non valide (uint64 attendu)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Type d'attribut non valide (chaîne octet attendu)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Impossible de définir des permissions sur les liens symboliques"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erreur lors de la définition du propriétaire : %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "un lien symbolique ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erreur lors de la définition du lien symbolique : %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erreur lors de la définition du lien symbolique : le fichier n'est pas un "
 "lien symbolique"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 "Erreur lors de la définition de l'heure de modification ou d'accès : %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "Le contexte SELinux ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erreur lors de la définition du contexte SELinux : %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux n'est pas activé sur ce système"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La définition de l'attribut %s n'est pas prise en charge"
@@ -2069,14 +2069,11 @@ msgstr ""
 msgid "Association creation not supported on win32"
 msgstr "La création d'association n'est pas prise en charge sur win32"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "ne masque pas de lignes"
+#~ msgid "do not hide entries"
+#~ msgstr "ne masque pas de lignes"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "utilise le format de liste détaillé"
+#~ msgid "use a long listing format"
+#~ msgstr "utilise le format de liste détaillé"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[FICHIER...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[FICHIER...]"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-15 16:20+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
@@ -113,7 +113,7 @@ msgstr "'%s'ରୁ '%s'ର ରୁପାନ୍ତରକ ଖୋଲି ହେଲା
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇଟ୍ ଅନୁକ୍ରମ"
 
@@ -123,8 +123,8 @@ msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇ
 msgid "Error during conversion: %s"
 msgstr "ରୁପାନ୍ତରଣରେ ତ୍ରୁଟି: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "ନିବେଶର ସମାପ୍ତିରେ ଆଶିଂକ ଅକ୍ଷର ଅନୁକ୍ରମ"
 
@@ -943,12 +943,12 @@ msgstr "ନିର୍ଭରକ ପି.ଆଇ.ଡି. ପାଇପ୍  ରୁ ପ�
 msgid "Character out of range for UTF-8"
 msgstr "ଇ.ଉ.ଟିଏଫ୍.-୮ ପାଇଁ ଅକ୍ଷରଟି ପରିସର ବାହାରେ"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ଅନୁକ୍ରମ"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "ଇ.ଉ.ଟିଏଫ୍.-୧୬ ପାଇଁ ଅକ୍ଷରଟି ପରିସର ବାହାରେ"
 
@@ -1532,70 +1532,70 @@ msgstr "ଫାଇଲ '%s'କୁ ଆରମ୍ଭ କରିବାରେ ତ୍ର�
 msgid " (invalid encoding)"
 msgstr " (ଅବୈଧ ସାଙ୍କେତିକରଣ)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ଫାଇଲ ନିରୂପକ ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit32 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (unit64 ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ଅବୈଧ ଗୁଣ ପ୍ରକାର (ବାଇଟ ବାକ୍ୟଖଣ୍ଡ ଆଶାକରାଯାଉଛି)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "symlinks ରେ ଅନୁମତିଗୁଡ଼ିକୁ ସେଟ କରିପାରିବେ ନାହିଁ"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ଅନୁମତି ବିନ୍ୟାସକରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ମାଲିକ ନିରୁପଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "symlink ନିଶ୍ଚିତ ରୂପେ non-NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: ଫାଇଲଟି ଗୋଟିଏ symlink ନୁହଁ"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "ପରିବର୍ତ୍ତନ ଅଥବା ଅଭିଗମ୍ୟତା ସମୟ ବିନ୍ୟାସକରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ପ୍ରସଙ୍ଗଟି ନିଶ୍ଚିତ ରୂପେ non-NULL ଅଟେ"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ପ୍ରସଙ୍ଗ ବିନ୍ୟାସ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ଏହି ତନ୍ତ୍ରରେ ସକ୍ରିୟ ହୋଇନାହିଁ"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ଗୁଣ %s ବିନ୍ୟାସ କରିବା ସମର୍ଥିତ ନୁହଁ"
@@ -1983,14 +1983,11 @@ msgstr "win32 ରେ ସଂସ୍ଥା ପରିବର୍ତ୍ତନ ସମର
 msgid "Association creation not supported on win32"
 msgstr "win32 ରେ ସଂସ୍ଥା ନିର୍ମାଣ ସମର୍ଥିତ ନୁହଁ"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "ଭରଣଗୁଡ଼ିକୁ ଲୁଚାନ୍ତୁ ନାହିଁ"
+#~ msgid "do not hide entries"
+#~ msgstr "ଭରଣଗୁଡ଼ିକୁ ଲୁଚାନ୍ତୁ ନାହିଁ"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "ଲମ୍ବା ତାଲିକାଭୁକ୍ତ ଶୈଳୀ ବ୍ୟବହାର କରନ୍ତୁ"
+#~ msgid "use a long listing format"
+#~ msgstr "ଲମ୍ବା ତାଲିକାଭୁକ୍ତ ଶୈଳୀ ବ୍ୟବହାର କରନ୍ତୁ"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[FILE...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[FILE...]"

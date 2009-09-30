@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -102,7 +102,7 @@ msgstr "'%s'-ല്‍ നിന്നും '%s'-ലേക്ക് വേര�
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട്ടില്‍ തെറ്റായ ബൈറ്റ് ക്രമം"
 
@@ -112,8 +112,8 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Error during conversion: %s"
 msgstr "മാറ്റം വരുത്തുന്നതില്‍ പരാജയം : %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "ഇന്‍പുട്ടിന്റെ അവസാനം ഭാഗികമായ അക്ഷര ക്രമം"
 
@@ -937,12 +937,12 @@ msgstr "ചൈള്‍ഡ് pid പൈപ്പിന്‍ നിന്നു
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "ഇന്‍പുട്ട് വേര്‍തിരിക്കുന്നതില്‍ അസാധുവായ ക്രമം"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
@@ -1526,70 +1526,70 @@ msgstr "'%s' എന്ന ഫയല്‍ സ്റ്റാറ്റ് ചെ�
 msgid " (invalid encoding)"
 msgstr " (തെറ്റായ എന്‍കോഡിങ്)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ഫയല്‍ വിശദീകരണ സംവിധാനം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint32 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint64 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (ബൈറ്റ് സ്ട്രിങ് പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "സിംലിങ്കുകള്‍ക്കുള്ള അനുമതികള്‍ സജ്ജമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "സിംലിങ്ക് ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink സജ്ജീകരണത്തില്‍ പിശക്: ഫയല്‍ ഒരു symlink അല്ല"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "മാറ്റങ്ങള്‍ അല്ലെങ്കില്‍ ആക്സസ് സമയം സജ്ജമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് സജ്ജാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ഈ സിസ്റ്റത്തില്‍ സജ്ജമല്ല"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ആട്രിബ്യൂട്ട് ക്രമികരണം പിന്തുണയ്ക്കുന്നില്ല"
@@ -1977,14 +1977,11 @@ msgstr "win32-ല്‍ അസോസിയേഷന്‍ സൃഷ്ടി പ
 msgid "Association creation not supported on win32"
 msgstr "win32-ല്‍ അസോസിയേഷന്‍ സൃഷ്ടി പിന്തുണയ്ക്കുന്നില്ല"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "എന്‍ട്രികള്‍ അദൃശ്യമാക്കരുതു്"
+#~ msgid "do not hide entries"
+#~ msgstr "എന്‍ട്രികള്‍ അദൃശ്യമാക്കരുതു്"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "ലോങ് ലിസ്റ്റിങ് ഫോര്‍മാറ്റ് ഉപയോഗിക്കുക"
+#~ msgid "use a long listing format"
+#~ msgstr "ലോങ് ലിസ്റ്റിങ് ഫോര്‍മാറ്റ് ഉപയോഗിക്കുക"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[FILE...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[FILE...]"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2007-09-06 21:11+0100\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
@@ -108,7 +108,7 @@ msgstr "Не могу да покренем претварање из „%s“ �
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неисправан низ бајтова у улазу који претварам"
 
@@ -118,8 +118,8 @@ msgstr "Неисправан низ бајтова у улазу који пре
 msgid "Error during conversion: %s"
 msgstr "Грешка при претварању: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Непотпун низ знакова на крају улаза"
 
@@ -951,12 +951,12 @@ msgstr "Није успео да прочита довољно података 
 msgid "Character out of range for UTF-8"
 msgstr "Знак ван опсега за УТФ-8"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Није исправан низ у уносу за претварање"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Знак ван опсега за УТФ-16"
 
@@ -1543,70 +1543,70 @@ msgstr "Грешка приликом постављања стања датот
 msgid " (invalid encoding)"
 msgstr " (неисправно кодирање)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Грешка приликом постављања стања описивача датотеке: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Није исправна врста особине (очекивана је uint32)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Није исправна врста особине (очекивана је uint64)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Није исправна врста особине (очекивана је ниска битова)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Не могу да поставим овлашћења за симболичке везе"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Грешка приликом постављања овлашћења: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Грешка приликом постављања власника: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "симболичке везе морају бити различите од NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Грешка приликом постављања симболичке везе: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Грешка при постављању симболичке везе: датотека није симболичка веза"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Грешка при постављању датума измене или приступа: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux контекст не сме бити NULL"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Грешка приликом постављања SELinux контекста: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux није укључен на вашем систему"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Није подржано постављање особине %s"
@@ -1994,17 +1994,14 @@ msgstr "нису подржане промене придруживања за w
 msgid "Association creation not supported on win32"
 msgstr "Нису подржане промене придруживања за win32"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "не сакривај уносе"
+#~ msgid "do not hide entries"
+#~ msgstr "не сакривај уносе"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "користи дуги формат списка"
+#~ msgid "use a long listing format"
+#~ msgstr "користи дуги формат списка"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[ДАТОТЕКА...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[ДАТОТЕКА...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2005-08-27 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -99,7 +99,7 @@ msgstr "Could not open converter from '%s' to '%s'"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
@@ -109,8 +109,8 @@ msgstr "Invalid byte sequence in conversion input"
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
 
@@ -934,12 +934,12 @@ msgstr "Failed to read enough data from child pid pipe (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
@@ -1529,72 +1529,72 @@ msgstr "Error stating file '%s': %s"
 msgid " (invalid encoding)"
 msgstr " (invalid encoding)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Error stating file descriptor: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Invalid attribute type (uint32 expected)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Invalid attribute type (uint64 expected)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Invalid attribute type (byte string expected)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 #, fuzzy
 msgid "Cannot set permissions on symlinks"
 msgstr "Error setting permissions: %s"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error setting permissions: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error setting owner: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "symlink must be non-NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error setting symlink: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error setting symlink: file is not a symlink"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error setting permissions: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "symlink must be non-NULL"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error setting owner: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setting attribute %s not supported"
@@ -1994,17 +1994,14 @@ msgstr "association changes not supported on win32"
 msgid "Association creation not supported on win32"
 msgstr "Association creation not supported on win32"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "do not hide entries"
+#~ msgid "do not hide entries"
+#~ msgstr "do not hide entries"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "use a long listing format"
+#~ msgid "use a long listing format"
+#~ msgstr "use a long listing format"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[FILE...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[FILE...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "
