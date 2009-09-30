@@ -398,8 +398,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
-"njime početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
+"početi"
 
 #: glib/gmarkup.c:1122
 #, c-format
@@ -451,8 +451,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
-"znak je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
+"je „>“"
 
 #: glib/gmarkup.c:1472
 #, c-format
@@ -1025,8 +1025,7 @@ msgstr "Nepoznata opcija %s"
 #: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
-"Ne mogu da nađem ispravnu datoteku sa ključevima među direktorijumima "
-"pretrage"
+"Ne mogu da nađem ispravnu datoteku sa ključevima među direktorijumima pretrage"
 
 #: glib/gkeyfile.c:397
 msgid "Not a regular file"
