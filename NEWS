@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.22.0 to GLib 2.22.1
+=================================================
+
+* Bugs fixed:
+ 596064 Test file marked for translation
+ 595972 possibly invalid search in mime_info_cache_dir_add_...
+ 596561 C99 style of declaration of variable in gmessages.c
+ 596314 g_utf16_to_utf8 returns an invalid UTF8 string
+ 596748 g_async_result_get_source_object returns a new ref
+ 593809 Nautilus does not restore the position of the icons...
+ 593775 uses inotify_init1 unconditionally
+
+* Updated translations:
+ Bengali
+ Hebrew
+
+
 Overview of Changes from GLib 2.21.6 to GLib 2.22.0
 ===================================================
 
