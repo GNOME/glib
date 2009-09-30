@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-18 00:17+0300\n"
 "Last-Translator: Mișu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -100,7 +100,7 @@ msgstr "Nu s-a putut iniția conversia de la „%s” la „%s”"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvență de octeți incorectă în inputul conversiei"
 
@@ -110,8 +110,8 @@ msgstr "Secvență de octeți incorectă în inputul conversiei"
 msgid "Error during conversion: %s"
 msgstr "Eroare în timpul conversiei: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Secvență parțială de caractere la sfârșitul inputului"
 
@@ -957,12 +957,12 @@ msgstr "Nu s-au putut citi date suficiente de la procesul copil (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Caracter în afara limitelor standardului UTF-8"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Secvență incorectă în inputul conversiei"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Caracter în afara limitelor standardului UTF-16"
 
@@ -1552,71 +1552,71 @@ msgstr "Eroare la citirea detaliilor fișierului „%s”: %s"
 msgid " (invalid encoding)"
 msgstr " (codare incorectă)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Eroare la citirea descriptorilor fișierului: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint32)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint64)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir de octeți)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Nu se pot defini drepturi pentru legături simbolice"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Eroare la definirea drepturilor: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Eroare la definirea deținătorului: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "linkul simbolic trebuie să fie diferit de NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Eroare la definirea linkului simbolic: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Eroare la definirea linkului simbolic: fișierul nu este un link simbolic"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Eroare la schimbarea datei de acces ori modificare: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "Contextul SELinux trebuie să fie diferit de NULL"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Eroare la definirea contextului SELinux: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nu este activat pentru acest sistem"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Definirea atributului %s nu este implementată"
@@ -2008,17 +2008,14 @@ msgstr "editarea asocierilor de fișiere nu e implementată în Windows"
 msgid "Association creation not supported on win32"
 msgstr "Crearea asocierilor de fișiere nu este implementată în Windows"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "nu ascunde intrările"
+#~ msgid "do not hide entries"
+#~ msgstr "nu ascunde intrările"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "utilizează un format detaliat de listare"
+#~ msgid "use a long listing format"
+#~ msgstr "utilizează un format detaliat de listare"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[FIȘIER...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[FIȘIER...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "

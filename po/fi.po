@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-12 19:10+0300\n"
 "Last-Translator: Tommi Vainikainen <thv@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -102,7 +102,7 @@ msgstr "Muunninta merkistöstä ”%s” merkistöön ”%s” ei voitu avata"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Virheellinen tavusarja muunnettavassa syötteessä"
 
@@ -112,8 +112,8 @@ msgstr "Virheellinen tavusarja muunnettavassa syötteessä"
 msgid "Error during conversion: %s"
 msgstr "Virhe muunnoksen aikana: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Osittainen tavusarja syötteen lopussa"
 
@@ -953,12 +953,12 @@ msgstr "Lapsiprosessin pid-putkesta ei voitu lukea riittävästi dataa (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Merkki on sallitun UTF-8-välin ulkopuolella"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Virheellinen sarja muunnettavassa syötteessä"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Merkki on sallitun UTF-16-välin ulkopuolella"
 
@@ -1548,71 +1548,71 @@ msgstr "Virhe tarkkailtaessa tiedostoa ”%s”: %s"
 msgid " (invalid encoding)"
 msgstr " (virheellinen merkistökoodaus)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Virhe tarkkailtaessa tiedostokuvaajaa: %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla uint32)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla uint64)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla tavujono)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Symbolisille linkeille ei voi asettaa oikeuksia"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Virhe asetettaessa oikeuksia: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Virhe asetettaessa omistajaa: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "symbolinen linkki ei voi olla NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Virhe asetettaessa symbolista linkkiä: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Virhe asetettaessa symbolista linkkiä: tiedosto ei ole symbolinen linkki"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Virhe asetettaessa muokkaus- tai käyttöaikaa: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-konteksti ei voi olla NULL"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Virhe asetettaessa SELinux-kontekstia: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ei ole käytössä tässä tietokoneessa"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Ominaisuuden %s asetus ei ole tuettu"
@@ -2002,17 +2002,14 @@ msgstr "assosiaation muutokset eivät ole tuettu win32-alustalla"
 msgid "Association creation not supported on win32"
 msgstr "Assosiaation luonti ei ole tuettu win32-alustalla"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "älä piilota kohtia"
+#~ msgid "do not hide entries"
+#~ msgstr "älä piilota kohtia"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "käytä pitkää listausmuotoa"
+#~ msgid "use a long listing format"
+#~ msgstr "käytä pitkää listausmuotoa"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[TIEDOSTO...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[TIEDOSTO...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "

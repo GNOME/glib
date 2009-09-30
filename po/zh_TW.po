@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.21.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2009-09-19 21:30+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
@@ -101,7 +101,7 @@ msgstr "無法將‘%s’轉換至‘%s’"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "轉換輸入資料時遇到不正確的位元組組合"
 
@@ -111,8 +111,8 @@ msgstr "轉換輸入資料時遇到不正確的位元組組合"
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "輸入資料結束時字元仍未完整"
 
@@ -912,12 +912,12 @@ msgstr "無法從 child pid pipe 讀取足夠的資料 (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "字元不在 UTF-8 範圍之內"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "轉換輸入資料時出現無效的字元次序"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
 
@@ -1500,70 +1500,70 @@ msgstr "取得檔案「%s」狀態時發生錯誤：%s"
 msgid " (invalid encoding)"
 msgstr "（無效的編碼）"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "取得檔案描述狀態時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "無效的屬性類型（應為 uint32 值）"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "無效的屬性類型（應為 uint64 值）"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "無效的屬性類型（應為 byte string 值）"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "不能設定符號連結的權限"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "設定權限時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "設定擁有者時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "符號連結必須為非-NULL"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "設定符號連結時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "設定符號連結時發生錯誤：檔案不是符號連結"
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "設定修改或存取時刻時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 關聯必須為非-NULL"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "設定 SELinux 關聯時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux 在這個系統上並未啟用"
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支援設定屬性 %s"
@@ -1951,17 +1951,14 @@ msgstr "關聯變更在 win32 上不支援"
 msgid "Association creation not supported on win32"
 msgstr "關聯建立在 win32 上不支援"
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr "不要隱藏項目"
+#~ msgid "do not hide entries"
+#~ msgstr "不要隱藏項目"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "使用長式表列格式"
+#~ msgid "use a long listing format"
+#~ msgstr "使用長式表列格式"
 
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[檔案...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[檔案...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "

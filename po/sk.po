@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 12:51-0400\n"
+"POT-Creation-Date: 2009-09-29 21:42-0400\n"
 "PO-Revision-Date: 2008-03-15 15:01+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -102,7 +102,7 @@ msgstr "Nepodarilo sa otvoriť program na prevod z '%s' do '%s'"
 
 #: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1413
+#: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 
@@ -112,8 +112,8 @@ msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 msgid "Error during conversion: %s"
 msgstr "Chyba počas prevodu: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1164 glib/gutf8.c:1305
-#: glib/gutf8.c:1409
+#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Čiastočná sekvencia znakov na konci vstupu"
 
@@ -941,12 +941,12 @@ msgstr "Nepodarilo sa prečítať dostatok dát z rúry potomka (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Znak mimo rozsah UTF-8"
 
-#: glib/gutf8.c:1132 glib/gutf8.c:1141 glib/gutf8.c:1273 glib/gutf8.c:1282
-#: glib/gutf8.c:1423 glib/gutf8.c:1519
+#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
+#: glib/gutf8.c:1429 glib/gutf8.c:1525
 msgid "Invalid sequence in conversion input"
 msgstr "Neplatná sekvencia na vstupe prevodu"
 
-#: glib/gutf8.c:1434 glib/gutf8.c:1530
+#: glib/gutf8.c:1440 glib/gutf8.c:1536
 msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
 
@@ -1543,72 +1543,72 @@ msgstr "Chyba pri čítaní súboru '%s': %s"
 msgid " (invalid encoding)"
 msgstr " (neplatné kódovanie)"
 
-#: gio/glocalfileinfo.c:1759
+#: gio/glocalfileinfo.c:1750
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: gio/glocalfileinfo.c:1804
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neplatný typ vlastnosti (očakávané uint32)"
 
-#: gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neplatný typ vlastnosti (očakávané uint64)"
 
-#: gio/glocalfileinfo.c:1841 gio/glocalfileinfo.c:1860
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neplatný typ vlastnosti (očakávaný bajtový reťazec)"
 
-#: gio/glocalfileinfo.c:1895
+#: gio/glocalfileinfo.c:1886
 #, fuzzy
 msgid "Cannot set permissions on symlinks"
 msgstr "Chyba počas prevodu: %s"
 
-#: gio/glocalfileinfo.c:1911
+#: gio/glocalfileinfo.c:1902
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Chyba počas prevodu: %s"
 
-#: gio/glocalfileinfo.c:1962
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Chyba pri nastavovaní vlastníka: %s"
 
-#: gio/glocalfileinfo.c:1985
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "symbolický odkaz nesmie byť prázdny"
 
-#: gio/glocalfileinfo.c:1995 gio/glocalfileinfo.c:2014
-#: gio/glocalfileinfo.c:2025
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Chyba pri nastavovaní symbolického odkazu: %s"
 
-#: gio/glocalfileinfo.c:2004
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2130
+#: gio/glocalfileinfo.c:2121
 #, fuzzy, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Chyba počas prevodu: %s"
 
-#: gio/glocalfileinfo.c:2153
+#: gio/glocalfileinfo.c:2144
 #, fuzzy
 msgid "SELinux context must be non-NULL"
 msgstr "symbolický odkaz nesmie byť prázdny"
 
-#: gio/glocalfileinfo.c:2168
+#: gio/glocalfileinfo.c:2159
 #, fuzzy, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Chyba pri nastavovaní vlastníka: %s"
 
-#: gio/glocalfileinfo.c:2175
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2267
+#: gio/glocalfileinfo.c:2258
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Symbolické odkazy nepodporované"
@@ -2006,17 +2006,11 @@ msgstr ""
 msgid "Association creation not supported on win32"
 msgstr ""
 
-#: tests/gio-ls.c:27
-msgid "do not hide entries"
-msgstr ""
+#~ msgid "use a long listing format"
+#~ msgstr "použiť dlhý formát výpisu"
 
-#: tests/gio-ls.c:29
-msgid "use a long listing format"
-msgstr "použiť dlhý formát výpisu"
-
-#: tests/gio-ls.c:37
-msgid "[FILE...]"
-msgstr "[SÚBOR...]"
+#~ msgid "[FILE...]"
+#~ msgstr "[SÚBOR...]"
 
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "
