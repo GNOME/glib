@@ -430,7 +430,7 @@ if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libgio-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
-	mv $(DESTDIR)$(libdir)/libgio-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libgio-2.0.so.0.$(LT_CURRENT).$(LT_REVISION) $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	rm -f $(DESTDIR)$(libdir)/libgio-2.0.so
-	ln -s $(GLIB_RUNTIME_LIBDIR)/libgio-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libgio-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libgio-2.0.so.0.$(LT_CURRENT).$(LT_REVISION) $(DESTDIR)$(libdir)/libgio-2.0.so
 endif

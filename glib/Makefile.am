@@ -385,7 +385,7 @@ install-data-hook: libglib-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
-	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
+	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0.$(LT_CURRENT).$(LT_REVISION) $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	rm -f $(DESTDIR)$(libdir)/libglib-2.0.so
-	ln -s $(GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).0 $(DESTDIR)$(libdir)/libglib-2.0.so
+	ln -s $(GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).$(LT_REVISION) $(DESTDIR)$(libdir)/libglib-2.0.so
 endif
