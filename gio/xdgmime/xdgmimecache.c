@@ -173,7 +173,7 @@ cache_magic_matchlet_compare_to_data (XdgMimeCache *cache,
   
   int i, j;
 
-  for (i = range_start; i <= range_start + range_length; i++)
+  for (i = range_start; i < range_start + range_length; i++)
     {
       int valid_matchlet = TRUE;
       
