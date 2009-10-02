@@ -36,7 +36,6 @@
 #include <assert.h>
 #include <string.h>
 #include <fnmatch.h>
-#include <ctype.h>
 
 #ifndef	FALSE
 #define	FALSE	(0)
