@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="gmodule"
 	ProjectGUID="{4214047C-F5C1-40B3-8369-5DCED8C32770}"
 	RootNamespace="gmodule"

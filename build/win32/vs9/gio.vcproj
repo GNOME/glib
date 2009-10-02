@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="gio"
 	ProjectGUID="{F3D1583C-5613-4809-BD98-7CC1C1276F92}"
 	RootNamespace="gio"
@@ -228,7 +228,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib"
+				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib Dnsapi.lib"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../dependencies/$(PlatformName)/proxy-libintl-20080916/lib"
@@ -308,7 +308,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib"
+				AdditionalDependencies="intl.lib Ws2_32.lib shlwapi.lib Dnsapi.lib"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../../dependencies/$(PlatformName)/proxy-libintl-20080916/lib"
@@ -359,6 +359,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gasynchelper.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gasyncinitable.c"
 				>
 			</File>
 			<File
@@ -430,6 +434,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\gfileiostream.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\gfilemonitor.c"
 				>
 			</File>
@@ -451,6 +459,18 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gicon.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\ginetaddress.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\ginetsocketaddress.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\ginitable.c"
 				>
 			</File>
 			<File
@@ -482,6 +502,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\giostream.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\gloadableicon.c"
 				>
 			</File>
@@ -503,6 +527,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\glocalfileinputstream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\glocalfileiostream.c"
 				>
 			</File>
 			<File
@@ -538,11 +566,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\gnetworkaddress.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gnetworkservice.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\goutputstream.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gpollfilemonitor.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gresolver.c"
 				>
 			</File>
 			<File
@@ -554,7 +594,67 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\gsocket.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketaddress.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketaddressenumerator.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketclient.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketconnectable.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketconnection.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketcontrolmessage.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketinputstream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketlistener.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketoutputstream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsocketservice.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gsrvtarget.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gtcpconnection.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\gthemedicon.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gthreadedresolver.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gthreadedsocketservice.c"
 				>
 			</File>
 			<File
@@ -583,6 +683,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gwin32mount.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gwin32resolver.c"
 				>
 			</File>
 			<File

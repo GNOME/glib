@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="glib"
 	ProjectGUID="{12BCA020-EABF-429E-876A-A476BC9C10C0}"
 	RootNamespace="glib"
@@ -427,6 +427,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\glib\ghostutils.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\glib\giochannel.c"
 				>
 			</File>
@@ -472,6 +476,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\glib\gpattern.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\glib\gpoll.c"
 				>
 			</File>
 			<File

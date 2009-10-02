@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="gobject"
 	ProjectGUID="{F172EFFC-E30F-4593-809E-DB2024B1E753}"
 	RootNamespace="gobject"
