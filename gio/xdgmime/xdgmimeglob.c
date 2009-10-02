@@ -493,7 +493,8 @@ void
 _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
 			    const char  *glob,
 			    const char  *mime_type,
-			    int          weight)
+			    int          weight,
+			    int          case_sensitive)
 {
   XdgGlobType type;
 
@@ -555,10 +556,12 @@ _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
 
 void
 _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
-			       const char  *file_name)
+			       const char  *file_name,
+			       int          version_two)
 {
   FILE *glob_file;
   char line[255];
+  char *p;
 
   glob_file = fopen (file_name, "r");
 
@@ -569,33 +572,67 @@ _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
    * Blah */
   while (fgets (line, 255, glob_file) != NULL)
     {
-      char *colon, *colon2;
-      char *mimetype, *glob;
+      char *colon;
+      char *mimetype, *glob, *end;
       int weight;
+      int case_sensitive;
 
-      if (line[0] == '#')
+      if (line[0] == '#' || line[0] == 0)
 	continue;
 
-      colon = strchr (line, ':');
+      end = line + strlen(line) - 1;
+      if (*end == '\n')
+	*end = 0;
+
+      p = line;
+      if (version_two)
+	{
+	  colon = strchr (p, ':');
+	  if (colon == NULL)
+	    continue;
+	  *colon = 0;
+          weight = atoi (p);
+	  p = colon + 1;
+	}
+      else
+	weight = 50;
+
+      colon = strchr (p, ':');
       if (colon == NULL)
 	continue;
-      *(colon++) = '\0';
-      colon[strlen (colon) -1] = '\0';
-      colon2 = strchr (colon, ':');
-      if (colon2) 
-        {
-          *(colon2++) = '\000';
-          weight = atoi (line);
-          mimetype = colon;
-          glob = colon2;
-        }
-      else 
-        {
-          weight = 50;
-          mimetype = line;
-          glob = colon;
-        }
-      _xdg_glob_hash_append_glob (glob_hash, glob, mimetype, weight);
+      *colon = 0;
+
+      mimetype = p;
+      p = colon + 1;
+      glob = p;
+      case_sensitive = FALSE;
+
+      colon = strchr (p, ':');
+      if (version_two && colon != NULL)
+	{
+	  char *flag;
+
+	  /* We got flags */
+	  *colon = 0;
+	  p = colon + 1;
+
+	  /* Flags end at next colon */
+	  colon = strchr (p, ':');
+	  if (colon != NULL)
+	    *colon = 0;
+
+	  flag = strstr (p, "cs");
+	  if (flag != NULL &&
+	      /* Start or after comma */
+	      (flag == p ||
+	       flag[-1] == ',') &&
+	      /* ends with comma or end of string */
+	      (flag[2] == 0 ||
+	       flag[2] == ','))
+	    case_sensitive = TRUE;
+	}
+
+      _xdg_glob_hash_append_glob (glob_hash, glob, mimetype, weight, case_sensitive);
     }
 
   fclose (glob_file);
