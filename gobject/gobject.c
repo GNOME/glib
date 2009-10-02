@@ -117,6 +117,10 @@
 #define CLASS_HAS_PROPS(class) \
     ((class)->flags & CLASS_HAS_PROPS_FLAG)
 
+#define CLASS_HAS_DERIVED_CLASS_FLAG 0x2
+#define CLASS_HAS_DERIVED_CLASS(class) \
+    ((class)->flags & CLASS_HAS_DERIVED_CLASS_FLAG)
+
 /* --- signals --- */
 enum {
   NOTIFY,
@@ -280,6 +284,12 @@ g_object_base_class_init (GObjectClass *class)
 {
   GObjectClass *pclass = g_type_class_peek_parent (class);
 
+  /* Don't inherit HAS_DERIVED_CLASS flag from parent class */
+  class->flags &= ~CLASS_HAS_DERIVED_CLASS_FLAG;
+
+  if (pclass)
+    pclass->flags |= CLASS_HAS_DERIVED_CLASS_FLAG;
+
   /* reset instance specific fields and methods that don't get inherited */
   class->construct_properties = pclass ? g_slist_copy (pclass->construct_properties) : NULL;
   class->get_property = NULL;
@@ -412,6 +422,10 @@ g_object_class_install_property (GObjectClass *class,
 {
   g_return_if_fail (G_IS_OBJECT_CLASS (class));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+
+  if (CLASS_HAS_DERIVED_CLASS (class))
+    g_error ("Attempt to add property %s::%s to class after it was derived",
+	     G_OBJECT_CLASS_NAME (class), pspec->name);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
 
