@@ -361,7 +361,8 @@ typedef struct {
 static int
 cache_glob_lookup_literal (const char *file_name,
 			   const char *mime_types[],
-			   int         n_mime_types)
+			   int         n_mime_types,
+			   int         case_sensitive_check)
 {
   const char *ptr;
   int i, min, max, mid, cmp;
@@ -382,17 +383,25 @@ cache_glob_lookup_literal (const char *file_name,
 	  offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * mid);
 	  ptr = cache->buffer + offset;
 	  cmp = strcmp (ptr, file_name);
-	  
+
 	  if (cmp < 0)
 	    min = mid + 1;
 	  else if (cmp > 0)
 	    max = mid - 1;
 	  else
 	    {
-	      offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * mid + 4);
-	      mime_types[0] = (const char *)(cache->buffer + offset);
-	      
-	      return 1;
+	      int weight = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * mid + 8);
+	      int case_sensitive = weight & 0x100;
+	      weight = weight & 0xff;
+
+	      if (case_sensitive_check || !case_sensitive)
+		{
+		  offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * mid + 4);
+		  mime_types[0] = (const char *)(cache->buffer + offset);
+
+		  return 1;
+		}
+	      return 0;
 	    }
 	}
     }
@@ -423,6 +432,7 @@ cache_glob_lookup_fnmatch (const char *file_name,
 	  xdg_uint32_t offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * j);
 	  xdg_uint32_t mimetype_offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * j + 4);
 	  int weight = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * j + 8);
+	  weight = weight & 0xff;
 	  ptr = cache->buffer + offset;
 	  mime_type = cache->buffer + mimetype_offset;
 
@@ -448,7 +458,7 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
 			       xdg_uint32_t   offset,
 			       const char    *file_name,
 			       int            len,
-			       int            ignore_case,
+			       int            case_sensitive_check,
 			       MimeWeight     mime_types[],
 			       int            n_mime_types)
 {
@@ -458,12 +468,11 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
   xdg_uint32_t n_children;
   xdg_uint32_t child_offset; 
   int weight;
+  int case_sensitive;
 
   int min, max, mid, n, i;
 
   character = file_name[len - 1];
-  if (ignore_case)
-    character = tolower (character);
 
   assert (character != 0);
 
@@ -489,7 +498,7 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
               n = cache_glob_node_lookup_suffix (cache, 
                                                  n_children, child_offset,
                                                  file_name, len, 
-                                                 ignore_case,
+                                                 case_sensitive_check,
                                                  mime_types,
                                                  n_mime_types);
             }
@@ -504,10 +513,15 @@ cache_glob_node_lookup_suffix (XdgMimeCache  *cache,
 
 		  mimetype_offset = GET_UINT32 (cache->buffer, child_offset + 12 * i + 4);
 		  weight = GET_UINT32 (cache->buffer, child_offset + 12 * i + 8);
+		  case_sensitive = weight & 0x100;
+		  weight = weight & 0xff;
 
-		  mime_types[n].mime = cache->buffer + mimetype_offset;
-		  mime_types[n].weight = weight;
-		  n++;
+		  if (case_sensitive_check || !case_sensitive)
+		    {
+		      mime_types[n].mime = cache->buffer + mimetype_offset;
+		      mime_types[n].weight = weight;
+		      n++;
+		    }
 		  i++;
 		}
 	    }
@@ -555,6 +569,22 @@ static int compare_mime_weight (const void *a, const void *b)
   return aa->weight - bb->weight;
 }
 
+#define ISUPPER(c)		((c) >= 'A' && (c) <= 'Z')
+static char *
+ascii_tolower (const char *str)
+{
+  char *p, *lower;
+
+  lower = strdup (str);
+  p = lower;
+  while (*p != 0)
+    {
+      char c = *p;
+      *p++ = ISUPPER (c) ? c - 'A' + 'a' : c;
+    }
+  return lower;
+}
+
 static int
 cache_glob_lookup_file_name (const char *file_name, 
 			     const char *mime_types[],
@@ -565,20 +595,36 @@ cache_glob_lookup_file_name (const char *file_name,
   int n_mimes = 10;
   int i;
   int len;
-  
+  char *lower_case;
+  int try_lower_case;
+
   assert (file_name != NULL && n_mime_types > 0);
 
   /* First, check the literals */
-  n = cache_glob_lookup_literal (file_name, mime_types, n_mime_types);
+
+  lower_case = ascii_tolower (file_name);
+
+  n = cache_glob_lookup_literal (lower_case, mime_types, n_mime_types, FALSE);
   if (n > 0)
-    return n;
+    {
+      free (lower_case);
+      return n;
+    }
+
+  n = cache_glob_lookup_literal (file_name, mime_types, n_mime_types, TRUE);
+  if (n > 0)
+    {
+      free (lower_case);
+      return n;
+    }
 
   len = strlen (file_name);
-  n = cache_glob_lookup_suffix (file_name, len, FALSE, mimes, n_mimes);
-
+  n = cache_glob_lookup_suffix (lower_case, len, FALSE, mimes, n_mimes);
   if (n == 0)
     n = cache_glob_lookup_suffix (file_name, len, TRUE, mimes, n_mimes);
-  
+
+  free (lower_case);
+
   /* Last, try fnmatch */
   if (n == 0)
     n = cache_glob_lookup_fnmatch (file_name, mimes, n_mimes);
