@@ -1497,7 +1497,7 @@ G_GNUC_INTERNAL void    g_signal_init           (void); /* sync with gsignal.c *
   GValue *__val = (GValue*) vl; GType __t = gt; gboolean __r; \
   if (!__val) \
     __r = FALSE; \
-  if (__val->g_type == __t) \
+  else if (__val->g_type == __t)		\
     __r = TRUE; \
   else \
     __r = g_type_check_value_holds (__val, __t); \
