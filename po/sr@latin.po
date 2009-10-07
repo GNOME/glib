@@ -12,11 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 21:42-0400\n"
-"PO-Revision-Date: 2007-09-06 21:11+0100\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2009-09-05 01:22+0000\n"
+"POT-Creation-Date: 2009-10-07 09:51-0400\n"
 "PO-Revision-Date: 2009-09-30 02:59+0000\n"
 "Last-Translator: Miloš Popović <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnome@prevod.org>\n"
@@ -395,8 +391,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
-"početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
+"njime početi"
 
 #: glib/gmarkup.c:1122
 #, c-format
@@ -448,8 +444,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
-"je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
+"znak je „>“"
 
 #: glib/gmarkup.c:1472
 #, c-format
@@ -1022,7 +1018,8 @@ msgstr "Nepoznata opcija %s"
 #: glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
-"Ne mogu da nađem ispravnu datoteku sa ključevima među direktorijumima pretrage"
+"Ne mogu da nađem ispravnu datoteku sa ključevima među direktorijumima "
+"pretrage"
 
 #: glib/gkeyfile.c:397
 msgid "Not a regular file"

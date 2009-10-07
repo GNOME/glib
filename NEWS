@@ -2,8 +2,10 @@ Overview of Changes from GLib 2.22.1 to GLib 2.22.2
 ===================================================
 
 * GIO:
- - Support case insensitive globs in the shared mime database,
-   including support for the newer cache format that allows these
+ - Support case-sensitive globs in the shared mime database,
+   including support for the newer cache format that allows these.
+   Case-sensitive globs have been introduced in shared-mime-info
+   version 0.70
 
 * GObject:
  - Speed up creation of simple objects
