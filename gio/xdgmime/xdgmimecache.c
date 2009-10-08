@@ -565,7 +565,7 @@ static int compare_mime_weight (const void *a, const void *b)
   const MimeWeight *aa = (const MimeWeight *)a;
   const MimeWeight *bb = (const MimeWeight *)b;
 
-  return aa->weight - bb->weight;
+  return bb->weight - aa->weight;
 }
 
 #define ISUPPER(c)		((c) >= 'A' && (c) <= 'Z')
