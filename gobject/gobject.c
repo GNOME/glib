@@ -116,6 +116,8 @@
 #define CLASS_HAS_PROPS_FLAG 0x1
 #define CLASS_HAS_PROPS(class) \
     ((class)->flags & CLASS_HAS_PROPS_FLAG)
+#define CLASS_HAS_CUSTOM_CONSTRUCTOR(class) \
+    ((class)->constructor != g_object_constructor)
 
 #define CLASS_HAS_DERIVED_CLASS_FLAG 0x2
 #define CLASS_HAS_DERIVED_CLASS(class) \
@@ -715,10 +717,13 @@ g_object_init (GObject		*object,
       g_object_notify_queue_freeze (object, &property_notify_context);
     }
 
-  /* enter construction list for notify_queue_thaw() and to allow construct-only properties */
-  G_LOCK (construction_mutex);
-  construction_objects = g_slist_prepend (construction_objects, object);
-  G_UNLOCK (construction_mutex);
+  if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
+    {
+      /* enter construction list for notify_queue_thaw() and to allow construct-only properties */
+      G_LOCK (construction_mutex);
+      construction_objects = g_slist_prepend (construction_objects, object);
+      G_UNLOCK (construction_mutex);
+    }
 
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (OBJECTS)
@@ -1257,10 +1262,15 @@ g_object_newv (GType       object_type,
   g_free (cvalues);
 
  did_construction:
-  /* adjust freeze_count according to g_object_init() and remaining properties */
-  G_LOCK (construction_mutex);
-  newly_constructed = slist_maybe_remove (&construction_objects, object);
-  G_UNLOCK (construction_mutex);
+  if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
+    {
+      /* adjust freeze_count according to g_object_init() and remaining properties */
+      G_LOCK (construction_mutex);
+      newly_constructed = slist_maybe_remove (&construction_objects, object);
+      G_UNLOCK (construction_mutex);
+    }
+  else
+    newly_constructed = TRUE;
 
   if (CLASS_HAS_PROPS (class))
     {
