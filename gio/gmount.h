@@ -68,6 +68,7 @@ typedef struct _GMountIface    GMountIface;
  * @unmount_with_operation_finish: Finishes an unmounting operation using a #GMountOperation. Since 2.22.
  * @eject_with_operation: Starts ejecting a #GMount using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
+ * @get_default_location: Gets a #GFile indication a start location that can be use as the entry point for this mount. Since 2.24.
  *
  * Interface for implementing operations for mounts.
  **/
@@ -154,11 +155,13 @@ struct _GMountIface
   gboolean    (* eject_with_operation_finish) (GMount            *mount,
                                              GAsyncResult        *result,
                                              GError             **error);
+  GFile     * (* get_default_location)      (GMount              *mount);
 };
 
 GType       g_mount_get_type                  (void) G_GNUC_CONST;
 
 GFile     * g_mount_get_root                  (GMount              *mount);
+GFile     * g_mount_get_default_location      (GMount              *mount);
 char      * g_mount_get_name                  (GMount              *mount);
 GIcon     * g_mount_get_icon                  (GMount              *mount);
 char      * g_mount_get_uuid                  (GMount              *mount);

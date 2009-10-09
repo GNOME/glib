@@ -185,6 +185,37 @@ g_mount_get_root (GMount *mount)
 }
 
 /**
+ * g_mount_get_default_location:
+ * @mount: a #GMount.
+ *
+ * Gets the default location of @mount. The default location of the given
+ * @mount is a path that reflects the main entry point for the user (e.g.
+ * the home directory, or the root of the volume).
+ *
+ * Returns: a #GFile.
+ *      The returned object should be unreffed with
+ *      g_object_unref() when no longer needed.
+ **/
+GFile *
+g_mount_get_default_location (GMount *mount)
+{
+  GMountIface *iface;
+  GFile       *file;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+  
+  /* Fallback to get_root when default_location () is not available */
+  if (iface->get_default_location)
+    file = (* iface->get_default_location) (mount);
+  else
+    file = (* iface->get_root) (mount);
+
+  return file;
+}
+
+/**
  * g_mount_get_name:
  * @mount: a #GMount.
  * 
