@@ -192,14 +192,15 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_STANDARD_SIZE "standard::size"                     /* uint64 */
 
 /**
- * G_FILE_ATTRIBUTE_ALLOCATED_SIZE:
+ * G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE:
  *
  * A key in the "standard" namespace for getting the amount of disk space
  * that is consumed by the file (in bytes).  This will generally be larger
  * than the file size (due to block size overhead) but can occasionally be
  * smaller (for example, for sparse files).
- *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ *
+ * Since: 2.20.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE "standard::allocated-size" /* uint64 */
 

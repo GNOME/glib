@@ -165,6 +165,7 @@
  * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</entry><entry>mountable::can-unmount</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</entry><entry>mountable::can-eject</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</entry><entry>mountable::unix-device</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE</entry><entry>mountable::unix-device-file</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</entry><entry>mountable::hal-udi</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED</entry><entry>time::modified</entry><entry>uint64</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC</entry><entry>time::modified-usec</entry><entry>uint32</entry></row>
