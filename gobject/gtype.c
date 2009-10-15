@@ -2652,13 +2652,15 @@ g_type_class_ref (GType type)
    */
   if (!node->data->class.class) /* class uninitialized */
     {
-      /* acquire reference on parent class */
+      /* we need an initialized parent class for initializing derived classes */
       GTypeClass *pclass = ptype ? g_type_class_ref (ptype) : NULL;
       G_WRITE_LOCK (&type_rw_lock);
       if (node->data->class.class) /* class was initialized during parent class initialization? */
         INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
       type_class_init_Wm (node, pclass);
       G_WRITE_UNLOCK (&type_rw_lock);
+      if (pclass)
+        g_type_class_unref (pclass);
     }
   g_static_rec_mutex_unlock (&class_init_rec_mutex);
 
