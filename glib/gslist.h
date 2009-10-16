@@ -49,6 +49,8 @@ GSList*  g_slist_alloc                   (void) G_GNUC_WARN_UNUSED_RESULT;
 void     g_slist_free                    (GSList           *list);
 void     g_slist_free_1                  (GSList           *list);
 #define	 g_slist_free1		         g_slist_free_1
+void     g_slist_free_full               (GSList           *list,
+					  GDestroyNotify    free_func);
 GSList*  g_slist_append                  (GSList           *list,
 					  gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
 GSList*  g_slist_prepend                 (GSList           *list,

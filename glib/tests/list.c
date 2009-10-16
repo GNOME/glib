@@ -294,6 +294,68 @@ test_list_insert (void)
   g_list_free (list);
 }
 
+typedef struct
+{
+  gboolean freed;
+  int x;
+} ListItem;
+
+static void
+free_func (gpointer data)
+{
+  ListItem *item = data;
+
+  item->freed = TRUE;
+}
+
+static ListItem *
+new_item (int x)
+{
+  ListItem *item;
+
+  item = g_slice_new (ListItem);
+  item->freed = FALSE;
+  item->x = x;
+
+  return item;
+}
+
+static void
+test_free_full (void)
+{
+  ListItem *one, *two, *three;
+  GSList *slist = NULL;
+  GList *list = NULL;
+
+  slist = g_slist_prepend (slist, one = new_item (1));
+  slist = g_slist_prepend (slist, two = new_item (2));
+  slist = g_slist_prepend (slist, three = new_item (3));
+  g_assert (!one->freed);
+  g_assert (!two->freed);
+  g_assert (!three->freed);
+  g_slist_free_full (slist, free_func);
+  g_assert (one->freed);
+  g_assert (two->freed);
+  g_assert (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+
+  list = g_list_prepend (list, one = new_item (1));
+  list = g_list_prepend (list, two = new_item (2));
+  list = g_list_prepend (list, three = new_item (3));
+  g_assert (!one->freed);
+  g_assert (!two->freed);
+  g_assert (!three->freed);
+  g_list_free_full (list, free_func);
+  g_assert (one->freed);
+  g_assert (two->freed);
+  g_assert (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -316,6 +378,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/remove-all", test_list_remove_all);
   g_test_add_func ("/list/first-last", test_list_first_last);
   g_test_add_func ("/list/insert", test_list_insert);
+  g_test_add_func ("/list/free-full", test_free_full);
 
   return g_test_run ();
 }
