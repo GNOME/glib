@@ -154,7 +154,27 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
   escaped_printf (out, "  <class name=\"%s\" get-type=\"%s\"",
 		  g_type_name (type), symbol);
   if (type != G_TYPE_OBJECT)
-    escaped_printf (out, " parent=\"%s\"", g_type_name (g_type_parent (type)));
+    {
+      GString *parent_str;
+      GType parent;
+      gboolean first = TRUE;
+      
+      parent = type;
+      parent_str = g_string_new ("");
+      do
+        {
+          parent = g_type_parent (parent);
+          if (first)
+            first = FALSE;
+          else
+            g_string_append_c (parent_str, ',');
+          g_string_append (parent_str, g_type_name (parent));
+        } while (parent != G_TYPE_OBJECT && parent != G_TYPE_INVALID);
+   
+      escaped_printf (out, " parents=\"%s\"", parent_str->str);
+      
+      g_string_free (parent_str, TRUE);
+    }
 
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
