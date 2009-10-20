@@ -385,6 +385,8 @@ typedef enum {
  *     this limit. Since 2.20
  * @G_IO_ERROR_NOT_INITIALIZED: The object has not been initialized. Since 2.22
  * @G_IO_ERROR_ADDRESS_IN_USE: The requested address is already in use. Since 2.22
+ * @G_IO_ERROR_PARTIAL_INPUT: Need more input to finish operation. Since 2.24
+ * @G_IO_ERROR_INVALID_DATA: There input data was invalid. Since 2.24
  *
  * Error codes returned by GIO functions.
  *
@@ -423,7 +425,9 @@ typedef enum {
   G_IO_ERROR_FAILED_HANDLED,
   G_IO_ERROR_TOO_MANY_OPEN_FILES,
   G_IO_ERROR_NOT_INITIALIZED,
-  G_IO_ERROR_ADDRESS_IN_USE
+  G_IO_ERROR_ADDRESS_IN_USE,
+  G_IO_ERROR_PARTIAL_INPUT,
+  G_IO_ERROR_INVALID_DATA
 } GIOErrorEnum;
 
 
