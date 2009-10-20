@@ -108,6 +108,118 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
   return NULL;
 }
 
+GArgument *
+g_ir_ffi_convert_arguments(GICallableInfo *callable_info, void **args)
+{
+  gint num_args, i;
+  GIArgInfo *arg_info;
+  GITypeInfo *arg_type;
+  GITypeTag tag;
+  GArgument *g_args;
+
+  num_args = g_callable_info_get_n_args (callable_info);
+  g_args = g_new0 (GArgument, num_args);
+
+  for (i = 0; i < num_args; i++)
+    {
+      arg_info = g_callable_info_get_arg (callable_info, i);
+      arg_type = g_arg_info_get_type (arg_info);
+      tag = g_type_info_get_tag (arg_type);
+
+      switch (tag)
+        {
+        case GI_TYPE_TAG_BOOLEAN:
+          g_args[i].v_boolean = *(gboolean *) args[i];
+          break;
+        case GI_TYPE_TAG_INT8:
+          g_args[i].v_int8 = *(gint8 *) args[i];
+          break;
+        case GI_TYPE_TAG_UINT8:
+          g_args[i].v_uint8 = *(guint8 *) args[i];
+          break;
+        case GI_TYPE_TAG_INT16:
+          g_args[i].v_int16 = *(gint16 *) args[i];
+          break;
+        case GI_TYPE_TAG_UINT16:
+          g_args[i].v_uint16 = *(guint16 *) args[i];
+          break;
+        case GI_TYPE_TAG_INT32:
+          g_args[i].v_int32 = *(gint32 *) args[i];
+          break;
+        case GI_TYPE_TAG_UINT32:
+          g_args[i].v_uint32 = *(guint32 *) args[i];
+          break;
+        case GI_TYPE_TAG_LONG:
+        case GI_TYPE_TAG_INT64:
+          g_args[i].v_int64 = *(glong *) args[i];
+          break;
+        case GI_TYPE_TAG_ULONG:
+        case GI_TYPE_TAG_UINT64:
+          g_args[i].v_uint64 = *(glong *) args[i];
+          break;
+        case GI_TYPE_TAG_INT:
+        case GI_TYPE_TAG_SSIZE:
+        case GI_TYPE_TAG_SIZE:
+          g_args[i].v_int32 = *(gint *) args[i];
+          break;
+        case GI_TYPE_TAG_UINT:
+          g_args[i].v_uint32 = *(guint *) args[i];
+          break;
+        case GI_TYPE_TAG_FLOAT:
+          g_args[i].v_float = *(gfloat *) args[i];
+          break;
+        case GI_TYPE_TAG_DOUBLE:
+          g_args[i].v_double = *(gdouble *) args[i];
+          break;
+        case GI_TYPE_TAG_UTF8:
+          g_args[i].v_string = *(gchar **) args[i];
+          break;
+        case GI_TYPE_TAG_INTERFACE:
+          {
+            GIBaseInfo *interface;
+            GIInfoType interface_type;
+
+            interface = g_type_info_get_interface (arg_type);
+            interface_type = g_base_info_get_type (interface);
+
+            if (interface_type == GI_INFO_TYPE_OBJECT ||
+                interface_type == GI_INFO_TYPE_INTERFACE)
+              {
+                g_args[i].v_pointer = *(gpointer *) args[i];
+                g_base_info_unref (interface);
+                break;
+              }
+
+            else if (interface_type == GI_INFO_TYPE_ENUM ||
+                     interface_type == GI_INFO_TYPE_FLAGS)
+              {
+                g_args[i].v_double = *(double *) args[i];
+                g_base_info_unref (interface);
+                break;
+              }
+            else if (interface_type == GI_INFO_TYPE_STRUCT)
+              {
+                g_args[i].v_pointer = *(gpointer *) args[i];
+                g_base_info_unref (interface);
+                break;
+              }
+
+            g_base_info_unref (interface);
+          }
+        case GI_TYPE_TAG_GLIST:
+        case GI_TYPE_TAG_GSLIST:
+          g_args[i].v_pointer = *(gpointer *) args[i];
+          break;
+        default:
+          g_args[i].v_pointer = 0;
+        }
+
+      g_base_info_unref ((GIBaseInfo *) arg_info);
+      g_base_info_unref ((GIBaseInfo *) arg_type);
+    }
+  return g_args;
+}
+
 /**
  * g_callable_info_get_ffi_arg_types:
  * @callable_info: a callable info from a typelib
