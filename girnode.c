@@ -53,6 +53,13 @@ _g_irnode_dump_stats (void)
   g_message ("%lu types (%lu before sharing)", unique_types_count, types_count);
 }
 
+#define DO_ALIGNED_COPY(dest_addr, value, type) \
+do {                                            \
+	type tmp_var;	                        \
+	tmp_var = value;		        \
+	memcpy(dest_addr, &tmp_var, sizeof(type));	\
+} while(0)
+
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
@@ -2271,11 +2278,11 @@ g_ir_node_build_typelib (GIrNode         *node,
 	    break;
 	  case GI_TYPE_TAG_INT64:
 	    blob->size = 8;
-	    *(gint64*)&data[blob->offset] = (gint64) parse_int_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_int_value (constant->value), gint64);
 	    break;
 	  case GI_TYPE_TAG_UINT64:
 	    blob->size = 8;
-	    *(guint64*)&data[blob->offset] = (guint64) parse_uint_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_uint_value (constant->value), guint64);
 	    break;
 	  case GI_TYPE_TAG_SHORT:
 	    blob->size = sizeof (gshort);
@@ -2296,21 +2303,21 @@ g_ir_node_build_typelib (GIrNode         *node,
 	  case GI_TYPE_TAG_SSIZE: /* FIXME */
 	  case GI_TYPE_TAG_LONG:
 	    blob->size = sizeof (glong);
-	    *(glong*)&data[blob->offset] = (glong) parse_int_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_int_value (constant->value), glong);
 	    break;
 	  case GI_TYPE_TAG_SIZE: /* FIXME */
 	  case GI_TYPE_TAG_TIME_T: 
 	  case GI_TYPE_TAG_ULONG:
 	    blob->size = sizeof (gulong);
-	    *(gulong*)&data[blob->offset] = (gulong) parse_uint_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_uint_value (constant->value), gulong);
 	    break;
 	  case GI_TYPE_TAG_FLOAT:
 	    blob->size = sizeof (gfloat);
-	    *(gfloat*)&data[blob->offset] = (gfloat) parse_float_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_float_value (constant->value), gfloat);
 	    break;
 	  case GI_TYPE_TAG_DOUBLE:
 	    blob->size = sizeof (gdouble);
-	    *(gdouble*)&data[blob->offset] = (gdouble) parse_float_value (constant->value);
+	    DO_ALIGNED_COPY(&data[blob->offset], parse_float_value (constant->value), gdouble);
 	    break;
 	  case GI_TYPE_TAG_UTF8:
 	  case GI_TYPE_TAG_FILENAME:
