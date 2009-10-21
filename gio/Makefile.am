@@ -187,6 +187,7 @@ libgio_2_0_la_SOURCES =		\
 	gcancellable.c 		\
 	gcontenttype.c 		\
 	gcontenttypeprivate.h 	\
+	gcharsetconverter.c	\
 	gconverter.c		\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
@@ -325,6 +326,7 @@ gio_headers =			\
 	gbufferedoutputstream.h \
 	gcancellable.h 		\
 	gcontenttype.h 		\
+	gcharsetconverter.h	\
 	gconverter.h		\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\

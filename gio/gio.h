@@ -35,6 +35,7 @@
 #include <gio/gcancellable.h>
 #include <gio/gcontenttype.h>
 #include <gio/gconverter.h>
+#include <gio/gcharsetconverter.h>
 #include <gio/gdatainputstream.h>
 #include <gio/gdataoutputstream.h>
 #include <gio/gdrive.h>
