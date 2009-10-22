@@ -64,9 +64,29 @@ g_win32_directory_monitor_finalize (GObject *base)
 {
   GWin32DirectoryMonitor *self;
   self = G_WIN32_DIRECTORY_MONITOR (base);
-  
-  g_free (self->priv->file_notify_buffer);
-  g_free (self->priv);
+
+  if (self->priv->hDirectory == INVALID_HANDLE_VALUE)
+    {
+      /* If we don't have a directory handle we can free
+       * self->priv->file_notify_buffer and self->priv here. The
+       * callback won't be called obviously any more (and presumably
+       * never has been called).
+       */
+      g_free (self->priv->file_notify_buffer);
+      self->priv->file_notify_buffer = NULL;
+      g_free (self->priv);
+    }
+  else
+    {
+      /* If we have a directory handle, the OVERLAPPED struct is
+       * passed once more to the callback as a result of the
+       * CloseHandle() done in the cancel method, so self->priv has to
+       * be kept around. The GWin32DirectoryMonitor object is
+       * disappearing, so can't leave a pointer to it in
+       * self->priv->self.
+       */
+      self->priv->self = NULL;
+    }
 
   if (G_OBJECT_CLASS (g_win32_directory_monitor_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_win32_directory_monitor_parent_class)->finalize) (base);
@@ -78,7 +98,13 @@ g_win32_directory_monitor_cancel (GFileMonitor *base)
   GWin32DirectoryMonitor *self;
   self = G_WIN32_DIRECTORY_MONITOR (base);
 
-  /* This triggers a last callback() with nBytes=0 */ 
+  /* This triggers a last callback() with nBytes==0. */
+
+  /* Actually I am not so sure about that, it seems to trigger a last
+   * callback allright, but the way to recognize that it is the final
+   * one is not to check for nBytes==0, I think that was a
+   * misunderstanding.
+   */ 
   if (self->priv->hDirectory != INVALID_HANDLE_VALUE)
     CloseHandle (self->priv->hDirectory);
 
@@ -94,7 +120,7 @@ g_win32_directory_monitor_callback (DWORD        error,
 {
   gulong offset;
   PFILE_NOTIFY_INFORMATION pfile_notify_walker;
-  gulong file_name_len;
+  glong file_name_len;
   gchar *file_name;
   gchar *path;
   GFile *file;
@@ -110,23 +136,30 @@ g_win32_directory_monitor_callback (DWORD        error,
       G_FILE_MONITOR_EVENT_CREATED, /* FILE_ACTION_RENAMED_NEW_NAME */
     };
 
-  if (!nBytes) /* Monitor was cancelled/finalized */
-    return;
-
-  if (g_file_monitor_is_cancelled (G_FILE_MONITOR (priv->self)))
-    return; /* and ReadDirectoryChangesW doesn't get called this time */
+  /* If priv->self is NULL the GWin32DirectoryMonitor object has been destroyed. */
+  if (priv->self == NULL ||
+      g_file_monitor_is_cancelled (priv->self) ||
+      priv->file_notify_buffer == NULL)
+    {
+      g_free (priv->file_notify_buffer);
+      g_free (priv);
+      return;
+    }
 
   offset = 0;
   do {
     pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)(priv->file_notify_buffer + offset);
+    if (pfile_notify_walker->Action > 0)
+      {
+	file_name = g_utf16_to_utf8 (pfile_notify_walker->FileName, pfile_notify_walker->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
+	path = g_build_filename(G_LOCAL_DIRECTORY_MONITOR (priv->self)->dirname, file_name, NULL);
+	file = g_file_new_for_path (path);
+	g_file_monitor_emit_event (priv->self, file, NULL, events [pfile_notify_walker->Action]);
+	g_object_unref (file);
+	g_free (path);
+	g_free (file_name);
+      }
     offset += pfile_notify_walker->NextEntryOffset;
-    file_name = g_utf16_to_utf8 (pfile_notify_walker->FileName, pfile_notify_walker->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
-    path = g_build_filename(G_LOCAL_DIRECTORY_MONITOR (priv->self)->dirname, file_name, NULL);
-    file = g_file_new_for_path (path);
-    g_file_monitor_emit_event (priv->self, file, NULL, events [pfile_notify_walker->Action]);
-    g_object_unref (file);
-    g_free (path);
-    g_free (file_name);
   } while (pfile_notify_walker->NextEntryOffset);
 
   ReadDirectoryChangesW (priv->hDirectory,
