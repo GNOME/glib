@@ -189,6 +189,7 @@ libgio_2_0_la_SOURCES =		\
 	gcontenttypeprivate.h 	\
 	gcharsetconverter.c	\
 	gconverter.c		\
+	gconverterinputstream.c	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
 	gdrive.c 		\
@@ -328,6 +329,7 @@ gio_headers =			\
 	gcontenttype.h 		\
 	gcharsetconverter.h	\
 	gconverter.h		\
+	gconverterinputstream.h	\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
