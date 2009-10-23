@@ -23,6 +23,7 @@ TEST_PROGS +=	 		\
 	readwrite		\
 	g-file 			\
 	g-file-info 		\
+	converter-stream	\
 	data-input-stream 	\
 	data-output-stream 	\
 	g-icon			\
@@ -53,6 +54,9 @@ readwrite_LDADD	  = $(progs_ldadd)
 
 g_file_info_SOURCES	= g-file-info.c
 g_file_info_LDADD	= $(progs_ldadd)
+
+converter_stream_SOURCES	= converter-stream.c
+converter_stream_LDADD		= $(progs_ldadd)
 
 data_input_stream_SOURCES	= data-input-stream.c
 data_input_stream_LDADD		= $(progs_ldadd)
