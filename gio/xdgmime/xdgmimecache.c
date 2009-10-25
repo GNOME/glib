@@ -428,11 +428,11 @@ cache_glob_lookup_fnmatch (const char *file_name,
 	    }
 	}
 
-      if (n > 0)
-	return n;
+      if (n == n_mime_types)
+	break;
     }
-  
-  return 0;
+
+  return n;
 }
 
 static int
@@ -524,6 +524,7 @@ cache_glob_lookup_suffix (const char *file_name,
 {
   int i, n;
 
+  n = 0;
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
@@ -570,7 +571,35 @@ ascii_tolower (const char *str)
 }
 
 static int
-cache_glob_lookup_file_name (const char *file_name, 
+filter_out_dupes (MimeWeight mimes[], int n_mimes)
+{
+  int last;
+  int i, j;
+
+  last = n_mimes;
+
+  for (i = 0; i < last; i++)
+    {
+      j = i + 1;
+      while (j < last)
+        {
+          if (strcmp (mimes[i].mime, mimes[j].mime) == 0)
+            {
+              mimes[i].weight = MAX (mimes[i].weight, mimes[j].weight);
+              last--;
+              mimes[j].mime = mimes[last].mime;
+              mimes[j].weight = mimes[last].weight;
+            }
+          else
+            j++;
+        }
+    }
+
+  return last;
+}
+
+static int
+cache_glob_lookup_file_name (const char *file_name,
 			     const char *mime_types[],
 			     int         n_mime_types)
 {
@@ -603,14 +632,16 @@ cache_glob_lookup_file_name (const char *file_name,
 
   len = strlen (file_name);
   n = cache_glob_lookup_suffix (lower_case, len, FALSE, mimes, n_mimes);
-  if (n == 0)
-    n = cache_glob_lookup_suffix (file_name, len, TRUE, mimes, n_mimes);
+  if (n < 2)
+    n += cache_glob_lookup_suffix (file_name, len, TRUE, mimes + n, n_mimes - n);
 
   /* Last, try fnmatch */
   if (n == 0)
     n = cache_glob_lookup_fnmatch (lower_case, mimes, n_mimes, FALSE);
-  if (n == 0)
-    n = cache_glob_lookup_fnmatch (file_name, mimes, n_mimes, TRUE);
+  if (n < 2)
+    n += cache_glob_lookup_fnmatch (file_name, mimes + n, n_mimes - n, TRUE);
+
+  n = filter_out_dupes (mimes, n);
 
   free (lower_case);
 
