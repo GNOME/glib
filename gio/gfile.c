@@ -5956,11 +5956,14 @@ g_file_query_default_handler (GFile                  *file,
   char *path;
   
   uri_scheme = g_file_get_uri_scheme (file);
-  appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
-  g_free (uri_scheme);
+  if (uri_scheme)
+    {
+      appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
+      g_free (uri_scheme);
 
-  if (appinfo != NULL)
-    return appinfo;
+      if (appinfo != NULL)
+        return appinfo;
+    }
 
   info = g_file_query_info (file,
 			    G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
