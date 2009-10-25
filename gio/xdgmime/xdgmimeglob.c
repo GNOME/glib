@@ -37,6 +37,10 @@
 #include <string.h>
 #include <fnmatch.h>
 
+#ifndef MAX
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+
 #ifndef	FALSE
 #define	FALSE	(0)
 #endif
@@ -400,6 +404,34 @@ ascii_tolower (const char *str)
   return lower;
 }
 
+static int
+filter_out_dupes (MimeWeight mimes[], int n_mimes)
+{
+  int last;
+  int i, j;
+
+  last = n_mimes;
+
+  for (i = 0; i < last; i++)
+    {
+      j = i + 1;
+      while (j < last)
+        {
+          if (strcmp (mimes[i].mime, mimes[j].mime) == 0)
+            {
+              mimes[i].weight = MAX (mimes[i].weight, mimes[j].weight);
+              last--;
+              mimes[j].mime = mimes[last].mime;
+              mimes[j].weight = mimes[last].weight;
+            }
+          else
+            j++;
+        }
+    }
+
+  return last;
+}
+
 int
 _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 				 const char  *file_name,
@@ -412,7 +444,6 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
   int n_mimes = 10;
   int len;
   char *lower_case;
-  int try_lower_case;
 
   /* First, check the literals */
 
@@ -447,11 +478,11 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
   len = strlen (file_name);
   n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, lower_case, len, FALSE,
 					    mimes, n_mimes);
-  if (n == 0)
-    n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, TRUE,
-					      mimes, n_mimes);
+  if (n < 2)
+    n += _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, TRUE,
+					       mimes + n, n_mimes - n);
 
-  if (n == 0)
+  if (n < 2)
     {
       for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
         {
@@ -464,6 +495,8 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
         }
     }
   free (lower_case);
+
+  n = filter_out_dupes (mimes, n);
 
   qsort (mimes, n, sizeof (MimeWeight), compare_mime_weight);
 
