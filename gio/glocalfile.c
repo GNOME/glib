@@ -2151,6 +2151,10 @@ g_local_file_make_symbolic_link (GFile         *file,
 	g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
+      else if (errsv == EPERM)
+	g_set_error (error, G_IO_ERROR,
+		     G_IO_ERROR_NOT_SUPPORTED,
+		     _("Filesystem does not support symbolic links"));
       else
 	g_set_error (error, G_IO_ERROR,
 		     g_io_error_from_errno (errsv),
