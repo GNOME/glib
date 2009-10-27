@@ -566,8 +566,16 @@ close_converter (GIConv cd)
  * </footnote>. 
  *
  * Return value: If the conversion was successful, a newly allocated
- *               nul-terminated string, which must be freed with
- *               g_free(). Otherwise %NULL and @error will be set.
+ *               nul-terminated<footnote id="nul-returns">
+ *                <para>
+ *                 Nul-terminated return values from conversion functions
+ *                 are terminated by a single 0 byte only. This means that
+ *                 for multibyte character sets like UTF-16, they must be
+ *                 treated as not nul-terminated.
+ *                </para>
+ *               </footnote> 
+ *               string, which must be freed with g_free(). Otherwise %NULL 
+ *               and @error will be set.
  **/
 gchar*
 g_convert_with_iconv (const gchar *str,
@@ -719,8 +727,9 @@ g_convert_with_iconv (const gchar *str,
  * conversions<footnoteref linkend="streaming-state"/>.
  *
  * Return value: If the conversion was successful, a newly allocated
- *               nul-terminated string, which must be freed with
- *               g_free(). Otherwise %NULL and @error will be set.
+ *               nul-terminated<footnoteref linkend="nul-returns"/> string,
+ *               which must be freed with g_free(). Otherwise %NULL and
+ *               @error will be set.
  **/
 gchar*
 g_convert (const gchar *str,
@@ -794,8 +803,9 @@ g_convert (const gchar *str,
  * conversions<footnoteref linkend="streaming-state"/>.
  *
  * Return value: If the conversion was successful, a newly allocated
- *               nul-terminated string, which must be freed with
- *               g_free(). Otherwise %NULL and @error will be set.
+ *               nul-terminated<footnoteref linkend="nul-returns"/> string,
+ *               which must be freed with g_free(). Otherwise %NULL and
+ *               @error will be set.
  **/
 gchar*
 g_convert_with_fallback (const gchar *str,
