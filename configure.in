@@ -267,7 +267,7 @@ AC_PROG_CC
 AC_PROG_CPP
 
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
-AC_CHECK_PROGS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], [gcc])
+AC_CHECK_TOOLS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], [gcc])
 AC_LANG_SAVE
 AC_LANG_CPLUSPLUS
 AC_TRY_COMPILE(,[class a { int b; } c;], ,CXX=)
