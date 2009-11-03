@@ -204,19 +204,26 @@ g_file_test (const gchar *filename,
     return TRUE;
       
   if (test & G_FILE_TEST_IS_REGULAR)
-    return (attributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_DEVICE)) == 0;
+    {
+      if ((attributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_DEVICE)) == 0)
+	return TRUE;
+    }
 
   if (test & G_FILE_TEST_IS_DIR)
-    return (attributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+    {
+      if ((attributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+	return TRUE;
+    }
 
-  if (test & G_FILE_TEST_IS_EXECUTABLE)
+  /* "while" so that we can exit this "loop" with a simple "break" */
+  while (test & G_FILE_TEST_IS_EXECUTABLE)
     {
       const gchar *lastdot = strrchr (filename, '.');
       const gchar *pathext = NULL, *p;
       int extlen;
 
       if (lastdot == NULL)
-	return FALSE;
+        break;
 
       if (_stricmp (lastdot, ".exe") == 0 ||
 	  _stricmp (lastdot, ".cmd") == 0 ||
@@ -228,7 +235,7 @@ g_file_test (const gchar *filename,
 
       pathext = g_getenv ("PATHEXT");
       if (pathext == NULL)
-	return FALSE;
+        break;
 
       pathext = g_utf8_casefold (pathext, -1);
 
@@ -256,7 +263,7 @@ g_file_test (const gchar *filename,
 
       g_free ((gchar *) pathext);
       g_free ((gchar *) lastdot);
-      return FALSE;
+      break;
     }
 
   return FALSE;
