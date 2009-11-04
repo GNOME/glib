@@ -303,6 +303,20 @@ typedef struct {
  * @offset:  Offset relative to header->types that points to a TypeBlob. 
  * Unlike other offsets, this is in words (ie 32bit units) rather
  * than bytes.
+ *
+ * The SimpleTypeBlob is the general purpose "reference to a type" construct, used
+ * in method parameters, returns, callback definitions, fields, constants, etc.
+ * It's actually just a 32 bit integer which you can see from the union definition.
+ * This is for efficiency reasons, since there are so many references to types.
+ *
+ * SimpleTypeBlob is divided into two cases; first, if "reserved" and "reserved2", the
+ * type tag for a basic type is embedded in the "tag" bits.  This allows e.g.
+ * GI_TYPE_TAG_UTF8, GI_TYPE_TAG_INT and the like to be embedded directly without
+ * taking up extra space.
+ *
+ * References to "interfaces" (objects, interfaces) are more complicated;  In this case,
+ * the integer is actually an offset into the directory (see above).  Because the header
+ * is larger than 2^8=256 bits, all offsets will have one of the upper 24 bits set.
  */
 typedef union
 {
