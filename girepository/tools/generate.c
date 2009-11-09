@@ -340,6 +340,11 @@ write_constant_value (const gchar *namespace,
 		      Xml *file);
 
 static void
+write_callback_info (const gchar    *namespace,
+		     GICallbackInfo *info,
+		     Xml            *file);
+
+static void
 write_field_info (const gchar *namespace,
 		  GIFieldInfo *info,
 		  GIConstantInfo *branch,
@@ -350,6 +355,7 @@ write_field_info (const gchar *namespace,
   gint size;
   gint offset;
   GITypeInfo *type;
+  GIBaseInfo *interface;
   GArgument value; 
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
@@ -389,8 +395,16 @@ write_field_info (const gchar *namespace,
       if (offset >= 0)
         xml_printf (file, "offset=\"%d\"", offset);
     }
-  
-  write_type_info (namespace, type, file);
+
+  interface = g_type_info_get_interface (type);
+  if (interface && g_base_info_get_type(interface) == GI_INFO_TYPE_CALLBACK)
+    write_callback_info (namespace, (GICallbackInfo *)interface, file);
+  else
+    write_type_info (namespace, type, file);
+
+  if (interface)
+    g_base_info_unref (interface);
+
   g_base_info_unref ((GIBaseInfo *)type);
 
   xml_end_element (file, "field");
