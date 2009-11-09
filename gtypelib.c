@@ -1016,10 +1016,12 @@ validate_value_blob (GTypelib     *typelib,
 }
 
 static gboolean
-validate_field_blob (GTypelib     *typelib,
+validate_field_blob (ValidateContext *ctx,
 		     guint32        offset,
 		     GError       **error)
 {
+  GTypelib *typelib = ctx->typelib;
+  Header *header = (Header *)typelib->data;
   FieldBlob *blob;
 
   if (typelib->len < offset + sizeof (FieldBlob))
@@ -1035,10 +1037,15 @@ validate_field_blob (GTypelib     *typelib,
   
   if (!validate_name (typelib, "field", typelib->data, blob->name, error))
     return FALSE; 
-  
-  if (!validate_type_blob (typelib,
-			   offset + G_STRUCT_OFFSET (FieldBlob, type), 
-			   0, FALSE, error))
+
+  if (blob->has_embedded_type)
+    {
+      if (!validate_callback_blob (ctx, offset + header->field_blob_size, error))
+        return FALSE;
+    }
+  else if (!validate_type_blob (typelib,
+			        offset + G_STRUCT_OFFSET (FieldBlob, type), 
+			        0, FALSE, error))
     return FALSE;
 
   return TRUE;
@@ -1209,6 +1216,7 @@ validate_struct_blob (ValidateContext *ctx,
   GTypelib *typelib = ctx->typelib;
   StructBlob *blob;
   gint i;
+  guint32 field_offset;
 
   if (typelib->len < offset + sizeof (StructBlob))
     {
@@ -1266,20 +1274,25 @@ validate_struct_blob (ValidateContext *ctx,
       return FALSE;
     }
 
+  field_offset = offset + sizeof (StructBlob);
   for (i = 0; i < blob->n_fields; i++)
     {
-      if (!validate_field_blob (typelib, 
-				offset + sizeof (StructBlob) + 
-				i * sizeof (FieldBlob), 
+      FieldBlob *blob = (FieldBlob*) &typelib->data[field_offset];
+
+      if (!validate_field_blob (ctx,
+				field_offset,
 				error))
 	return FALSE;
+
+      field_offset += sizeof (FieldBlob);
+      if (blob->has_embedded_type)
+        field_offset += sizeof (CallbackBlob);
     }
 
   for (i = 0; i < blob->n_methods; i++)
     {
       if (!validate_function_blob (ctx, 
-				   offset + sizeof (StructBlob) + 
-				   blob->n_fields * sizeof (FieldBlob) + 
+				   field_offset + 
 				   i * sizeof (FunctionBlob), 
 				   blob_type,
 				   error))
@@ -1532,7 +1545,7 @@ validate_object_blob (ValidateContext *ctx,
   
   for (i = 0; i < blob->n_fields; i++, offset2 += sizeof (FieldBlob))
     {
-      if (!validate_field_blob (typelib, offset2, error))
+      if (!validate_field_blob (ctx, offset2, error))
 	return FALSE;
     }
 

@@ -279,6 +279,7 @@ g_ir_node_free (GIrNode *node)
 	
 	g_free (node->name);
 	g_ir_node_free ((GIrNode *)field->type);
+	g_ir_node_free ((GIrNode *)field->callback);
       }
       break;
 
@@ -508,7 +509,13 @@ g_ir_node_get_size (GIrNode *node)
       break;
 
     case G_IR_NODE_FIELD:
-      size = sizeof (FieldBlob);
+      {
+	GIrNodeField *field = (GIrNodeField *)node;
+
+        size = sizeof (FieldBlob);
+        if (field->callback)
+          size += g_ir_node_get_size ((GIrNode *)field->callback);
+      }
       break;
 
     case G_IR_NODE_CONSTANT:
@@ -797,7 +804,10 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 
 	size = sizeof (FieldBlob);
 	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
-	size += g_ir_node_get_full_size_internal (node, (GIrNode *)field->type);	
+	if (field->callback)
+          size += g_ir_node_get_full_size_internal (node, (GIrNode *)field->callback);
+	else
+          size += g_ir_node_get_full_size_internal (node, (GIrNode *)field->type);
       }
       break;
 
@@ -1587,8 +1597,6 @@ g_ir_node_build_typelib (GIrNode         *node,
 	FieldBlob *blob;
 
 	blob = (FieldBlob *)&data[*offset];
-	/* We handle the size member specially below, so subtract it */
-	*offset += sizeof (FieldBlob) - sizeof (SimpleTypeBlob);
 
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->readable = field->readable;
@@ -1600,8 +1608,22 @@ g_ir_node_build_typelib (GIrNode         *node,
 	else
 	  blob->struct_offset = 0xFFFF; /* mark as unknown */
 
-        g_ir_node_build_typelib ((GIrNode *)field->type, 
-				 node, build, offset, offset2);
+        if (field->callback)
+          {
+            blob->has_embedded_type = TRUE;
+            blob->type.offset = GI_INFO_TYPE_CALLBACK;
+	    *offset += sizeof (FieldBlob);
+            g_ir_node_build_typelib ((GIrNode *)field->callback,
+			             node, build, offset, offset2);
+          }
+        else
+          {
+            blob->has_embedded_type = FALSE;
+            /* We handle the size member specially below, so subtract it */
+	    *offset += sizeof (FieldBlob) - sizeof (SimpleTypeBlob);
+            g_ir_node_build_typelib ((GIrNode *)field->type,
+				     node, build, offset, offset2);
+          }
       }
       break;
 

@@ -303,7 +303,14 @@ get_field_size_alignment (GIrNodeField *field,
   
   who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIrNode *)field)->name);
 
-  success = get_type_size_alignment (field->type, module, modules, size, alignment, who);
+  if (field->callback)
+    {
+      *size = ffi_type_pointer.size;
+      *alignment = ffi_type_pointer.alignment;
+      success = TRUE;
+    }
+  else
+    success = get_type_size_alignment (field->type, module, modules, size, alignment, who);
   g_free (who);
 
   return success;

@@ -622,6 +622,7 @@ typedef struct {
  * @name: The name of the field.
  * @readable:
  * @writable: How the field may be accessed.
+ * @has_embedded_type: An anonymous type follows the FieldBlob.
  * @bits: If this field is part of a bitfield, the number of bits which it
  * uses, otherwise 0.
  * @struct_offset:
@@ -634,7 +635,8 @@ typedef struct {
 
   guint8         readable :1; 
   guint8         writable :1;
-  guint8         reserved :6;
+  guint8         has_embedded_type :1;
+  guint8         reserved :5;
   guint8         bits;
 
   guint16        struct_offset;

@@ -101,6 +101,7 @@ struct _ParseContext
   GList *type_stack;
   GList *type_parameters;
   int type_depth;
+  gboolean in_embedded_type;
 };
 #define CURRENT_NODE(ctx) ((GIrNode *)((ctx)->node_stack->data))
 
@@ -719,6 +720,10 @@ start_function (GMarkupParseContext *context,
 	       strcmp (element_name, "method") == 0 ||
 	       strcmp (element_name, "callback") == 0);
       break;
+    case STATE_STRUCT_FIELD:
+      ctx->in_embedded_type = TRUE;
+      found = (found || strcmp (element_name, "callback") == 0);
+      break;
     default:
       break;
     }
@@ -781,6 +786,13 @@ start_function (GMarkupParseContext *context,
     {
       ctx->current_module->entries = 
 	g_list_append (ctx->current_module->entries, function);	      
+    }
+  else if (ctx->current_typed)
+    {
+      GIrNodeField *field;
+
+      field = (GIrNodeField *)ctx->current_typed;
+      field->callback = function;
     }
   else
     switch (CURRENT_NODE (ctx)->type)
@@ -2902,7 +2914,13 @@ end_element_handler (GMarkupParseContext *context,
 	  }
 	else 
 	  {
-	    if (CURRENT_NODE (ctx)->type == G_IR_NODE_INTERFACE)
+            g_debug("case STATE_FUNCTION %d", CURRENT_NODE (ctx)->type);
+            if (ctx->in_embedded_type)
+              {
+                ctx->in_embedded_type = FALSE;
+                state_switch (ctx, STATE_STRUCT_FIELD);
+              }
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_INTERFACE)
 	      state_switch (ctx, STATE_INTERFACE);
 	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_OBJECT) 
 	      state_switch (ctx, STATE_CLASS);

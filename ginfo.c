@@ -134,6 +134,7 @@ struct _GIArgInfo
 struct _GITypeInfo
 {
   GIBaseInfo base;
+  gboolean   is_embedded;
 };
 
 struct _GIUnionInfo
@@ -154,7 +155,10 @@ g_info_new_full (GIInfoType     type,
 
   g_return_val_if_fail (container != NULL || repository != NULL, NULL);
 
-  info = g_new0 (GIBaseInfo, 1);
+  if (type == GI_INFO_TYPE_TYPE)
+    info = (GIBaseInfo *)g_new0 (GITypeInfo, 1);
+  else
+    info = g_new0 (GIBaseInfo, 1);
 
   info->ref_count = 1;
   info->type = type;
@@ -643,9 +647,13 @@ g_type_info_new (GIBaseInfo    *container,
 		 guint32        offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
+  GITypeInfo *type_info;
 
-  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib, 
+  type_info = (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib, 
 				    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+  type_info->is_embedded = FALSE;
+
+  return type_info;
 }
 
 /**
@@ -876,7 +884,9 @@ g_type_info_get_tag (GITypeInfo *info)
   GIBaseInfo *base = (GIBaseInfo *)info;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
 
-  if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
+  if (info->is_embedded)
+    return GI_TYPE_TAG_INTERFACE;
+  else if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     return type->flags.tag;
   else
     {
@@ -920,7 +930,11 @@ g_type_info_get_interface (GITypeInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
-  
+
+  if (info->is_embedded)
+    return (GIBaseInfo *) g_info_new (type->offset, base, base->typelib,
+				      base->offset);
+
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
       InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
@@ -1100,8 +1114,21 @@ GITypeInfo *
 g_field_info_get_type (GIFieldInfo *info)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  
-  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (FieldBlob, type));
+  Header *header = (Header *)base->typelib->data;
+  FieldBlob *blob = (FieldBlob *)&base->typelib->data[base->offset];
+  GITypeInfo *type_info;
+
+  if (blob->has_embedded_type)
+    {
+      type_info = (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE,
+                                             (GIBaseInfo*)info, base->typelib,
+                                             base->offset + header->field_blob_size);
+      type_info->is_embedded = TRUE;
+    }
+  else
+    return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (FieldBlob, type));
+
+  return type_info;
 }
 
 /* GIRegisteredTypeInfo functions */
@@ -1161,16 +1188,35 @@ g_struct_info_get_n_fields (GIStructInfo *info)
   return blob->n_fields;
 }
 
+static gint32
+g_struct_get_field_offset (GIStructInfo *info,
+			   gint         n)
+{
+  GIBaseInfo *base = (GIBaseInfo *)info;
+  Header *header = (Header *)base->typelib->data;
+  guint32 offset = base->offset + header->struct_blob_size;
+  gint i;
+  FieldBlob *field_blob;
+
+  for (i = 0; i < n; i++)
+    {
+      field_blob = (FieldBlob *)&base->typelib->data[offset];
+      offset += header->field_blob_size;
+      if (field_blob->has_embedded_type)
+        offset += header->callback_blob_size;
+    }
+
+  return offset;
+}
+
 GIFieldInfo *
 g_struct_info_get_field (GIStructInfo *info,
 			 gint         n)
 {
   GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
  
   return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base, base->typelib, 
-				     base->offset + header->struct_blob_size + 
-				     n * header->field_blob_size);
+				     g_struct_get_field_offset (info, n));
 }
 
 gint
@@ -1191,8 +1237,7 @@ g_struct_info_get_method (GIStructInfo *info,
   Header *header = (Header *)base->typelib->data;  
   gint offset;
 
-  offset = base->offset + header->struct_blob_size 
-    + blob->n_fields * header->field_blob_size 
+  offset = g_struct_get_field_offset (info, blob->n_fields)
     + n * header->function_blob_size;
   return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
 					base->typelib, offset);

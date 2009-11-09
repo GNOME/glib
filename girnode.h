@@ -230,6 +230,7 @@ struct _GIrNodeField
   gboolean writable;
   gint bits;
   gint offset;
+  GIrNodeFunction *callback;
   
   GIrNodeType *type;
 };
