@@ -287,7 +287,9 @@ void	g_atexit		(GVoidFunc    func);
  * wants the function to be called when it *itself* exits (or is
  * detached, in case the caller, too, is a DLL).
  */
+#if defined(__MINGW_H) && !defined(_STDLIB_H_)
 int atexit (void (*)(void));
+#endif
 #define g_atexit(func) atexit(func)
 #endif
 
