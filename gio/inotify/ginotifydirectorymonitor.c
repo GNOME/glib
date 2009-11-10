@@ -76,6 +76,7 @@ g_inotify_directory_monitor_constructor (GType type,
   GInotifyDirectoryMonitor *inotify_monitor;
   const gchar *dirname = NULL;
   inotify_sub *sub = NULL;
+  gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */ 
   
   klass = G_INOTIFY_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_INOTIFY_DIRECTORY_MONITOR));
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
@@ -90,13 +91,18 @@ g_inotify_directory_monitor_constructor (GType type,
 
   /* Will never fail as is_supported() should be called before instanciating
    * anyway */
-  g_assert (_ih_startup ());
+  /* assert on return value */
+  ret_ih_startup = _ih_startup();
+  g_assert (ret_ih_startup);
 
   sub = _ih_sub_new (dirname, NULL, inotify_monitor);
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard */
   g_assert (sub != NULL);
-  g_assert (_ih_sub_add (sub));
+  
+  /* _ih_sub_add allways returns TRUE, see gio/inotify/inotify-helper.c line 109
+   * g_assert (_ih_sub_add (sub)); */
+  _ih_sub_add(sub);
 
   inotify_monitor->sub = sub;
 
