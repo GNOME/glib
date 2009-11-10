@@ -31,12 +31,12 @@ bin/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 bin/libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll
 EOF
 
-zip -r $ZIP share/locale/*/LC_MESSAGES/glib20.mo
+zip $ZIP share/locale/*/LC_MESSAGES/glib20.mo
 
-zip -r $ZIP share/doc/glib-@GLIB_VERSION@
+zip -r -D $ZIP share/doc/glib-@GLIB_VERSION@
 
 rm $DEVZIP
-zip -r $DEVZIP -@ <<EOF
+zip -r -D $DEVZIP -@ <<EOF
 bin/glib-genmarshal.exe
 bin/glib-gettextize
 bin/glib-mkenums
@@ -67,8 +67,7 @@ lib/pkgconfig/gio-2.0.pc
 share/aclocal/glib-2.0.m4
 share/aclocal/glib-gettext.m4
 share/glib-2.0
-share/gtk-doc/html/glib
-share/gtk-doc/html/gobject
+share/gtk-doc/html
 share/man/man1/glib-mkenums.1
 share/man/man1/glib-genmarshal.1
 share/man/man1/gobject-query.1
