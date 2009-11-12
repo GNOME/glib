@@ -3038,9 +3038,8 @@ g_socket_receive_message (GSocket                 *socket,
 	  if (index == allocated)
 	    {
 	      /* estimated 99% case: exactly 1 control message */
-	      allocated = MIN (allocated * 2, 1);
+	      allocated = MAX (allocated * 2, 1);
 	      my_messages = g_new (GSocketControlMessage *, (allocated + 1));
-	      allocated = 1;
 	    }
 
 	  my_messages[index++] = message;
