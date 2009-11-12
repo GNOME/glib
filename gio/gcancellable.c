@@ -24,6 +24,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <errno.h>
 #include <fcntl.h>
 #include <gioerror.h>
 #ifdef G_OS_WIN32
@@ -226,7 +227,6 @@ set_fd_close_exec (int fd)
 static void
 g_cancellable_open_pipe (GCancellable *cancellable)
 {
-  const char ch = 'x';
   GCancellablePrivate *priv;
 
   priv = cancellable->priv;
@@ -241,7 +241,14 @@ g_cancellable_open_pipe (GCancellable *cancellable)
       set_fd_close_exec (priv->cancel_pipe[1]);
       
       if (priv->cancelled)
-        write (priv->cancel_pipe[1], &ch, 1);
+        {
+          const char ch = 'x';
+          gssize c;
+
+          do
+            c = write (priv->cancel_pipe[1], &ch, 1);
+          while (c == -1 && errno == EINTR);
+        }
     }
 }
 #endif
@@ -368,8 +375,6 @@ g_cancellable_reset (GCancellable *cancellable)
   
   if (priv->cancelled)
     {
-      char ch;
-      
     /* Make sure we're not leaving old cancel state around */
       
 #ifdef G_OS_WIN32
@@ -377,7 +382,15 @@ g_cancellable_reset (GCancellable *cancellable)
 	ResetEvent (priv->event);
 #endif
       if (priv->cancel_pipe[0] != -1)
-	read (priv->cancel_pipe[0], &ch, 1);
+        {
+          gssize c;
+          char ch;
+
+          do
+            c = read (priv->cancel_pipe[0], &ch, 1);
+          while (c == -1 && errno == EINTR);
+        }
+
       priv->cancelled = FALSE;
     }
   G_UNLOCK(cancellable);
@@ -600,7 +613,6 @@ g_cancellable_release_fd (GCancellable *cancellable)
 void
 g_cancellable_cancel (GCancellable *cancellable)
 {
-  const char ch = 'x';
   gboolean cancel;
   GCancellablePrivate *priv;
 
@@ -620,7 +632,14 @@ g_cancellable_cancel (GCancellable *cancellable)
     SetEvent (priv->event);
 #endif
   if (priv->cancel_pipe[1] != -1)
-    write (priv->cancel_pipe[1], &ch, 1);
+    {
+      const char ch = 'x';
+      gssize c;
+
+      do
+        c = write (priv->cancel_pipe[1], &ch, 1);
+      while (c == -1 && errno == EINTR);
+    }
   G_UNLOCK(cancellable);
 
   if (cancel)
