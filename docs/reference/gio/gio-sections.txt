@@ -1450,6 +1450,27 @@ g_io_extension_ref_class
 </SECTION>
 
 <SECTION>
+<FILE>gunixfdlist</FILE>
+<TITLE>GUnixFDList</TITLE>
+GUnixFDList
+g_unix_fd_list_new_from_array
+g_unix_fd_list_new
+g_unix_fd_list_get_length
+g_unix_fd_list_get
+g_unix_fd_list_peek_fds
+g_unix_fd_list_steal_fds
+g_unix_fd_list_append
+<SUBSECTION Standard>
+GUnixFDListClass
+g_unix_fd_list_get_type
+G_UNIX_FD_LIST
+G_UNIX_FD_LIST_CLASS
+G_IS_UNIX_FD_LIST
+G_IS_UNIX_FD_LIST_CLASS
+G_UNIX_FD_LIST_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>ginetaddress</FILE>
 <TITLE>GInetAddress</TITLE>
 GInetAddress
@@ -1906,7 +1927,9 @@ g_threaded_socket_service_get_type
 <FILE>gunixfdmessage</FILE>
 <TITLE>GUnixFDMessage</TITLE>
 GUnixFDMessage
+g_unix_fd_message_new_with_fd_list
 g_unix_fd_message_new
+g_unix_fd_message_get_fd_list
 g_unix_fd_message_append_fd
 g_unix_fd_message_steal_fds
 <SUBSECTION Standard>

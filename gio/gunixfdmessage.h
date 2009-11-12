@@ -23,7 +23,8 @@
 #ifndef __G_UNIX_FD_MESSAGE_H__
 #define __G_UNIX_FD_MESSAGE_H__
 
-#include <gio/gsocketcontrolmessage.h>
+#include <gio/gunixfdlist.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -61,7 +62,11 @@ struct _GUnixFDMessage
 };
 
 GType                   g_unix_fd_message_get_type                      (void) G_GNUC_CONST;
+GSocketControlMessage * g_unix_fd_message_new_with_fd_list              (GUnixFDList     *fd_list);
 GSocketControlMessage * g_unix_fd_message_new                           (void);
+
+GUnixFDList *           g_unix_fd_message_get_fd_list                   (GUnixFDMessage  *message);
+
 gint *                  g_unix_fd_message_steal_fds                     (GUnixFDMessage  *message,
                                                                          gint            *length);
 gboolean                g_unix_fd_message_append_fd                     (GUnixFDMessage  *message,

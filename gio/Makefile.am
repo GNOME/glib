@@ -131,6 +131,7 @@ platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 unix_sources = \
 	gunixconnection.c	\
+	gunixfdlist.c		\
 	gunixfdmessage.c	\
 	gunixmount.c		\
 	gunixmount.h		\
@@ -153,6 +154,7 @@ giounixinclude_HEADERS = \
 	gdesktopappinfo.h	\
 	gunixconnection.h	\
 	gunixmounts.h 		\
+	gunixfdlist.h		\
 	gunixfdmessage.h	\
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\

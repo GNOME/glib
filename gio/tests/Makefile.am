@@ -38,7 +38,7 @@ TEST_PROGS +=	 		\
 SAMPLE_PROGS = resolver socket-server socket-client echo-server httpd send-data
 
 if OS_UNIX
-TEST_PROGS += live-g-file unix-streams desktop-app-info
+TEST_PROGS += live-g-file unix-streams desktop-app-info unix-fd
 endif
 
 memory_input_stream_SOURCES	  = memory-input-stream.c
@@ -83,6 +83,9 @@ desktop_app_info_LDADD	  = $(progs_ldadd)
 unix_streams_SOURCES	  = unix-streams.c
 unix_streams_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+unix_fd_SOURCES	  = unix-fd.c
+unix_fd_LDADD	  = $(progs_ldadd)
 
 simple_async_result_SOURCES	= simple-async-result.c
 simple_async_result_LDADD	= $(progs_ldadd)

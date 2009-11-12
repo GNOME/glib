@@ -84,6 +84,7 @@ g_tcp_connection_get_type
 g_themed_icon_get_type
 g_threaded_socket_service_get_type
 g_unix_connection_get_type
+g_unix_fd_list_get_type
 g_unix_fd_message_get_type
 g_unix_input_stream_get_type
 g_unix_mount_monitor_get_type

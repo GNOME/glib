@@ -15,19 +15,19 @@
 /**
  * SECTION: gunixfdmessage
  * @title: GUnixFDMessage
- * @short_description: A GSocketControlMessage containing a list of
- * file descriptors
- * @see_also: #GUnixConnection
+ * @short_description: A GSocketControlMessage containing a #GUnixFDList
+ * @see_also: #GUnixConnection, #GUnixFDList, #GSocketControlMessage
  *
- * This #GSocketControlMessage contains a list of file descriptors.
- * It may be sent using g_socket_send_message() and received using
+ * This #GSocketControlMessage contains a #GUnixFDList.  It may be sent
+ * using g_socket_send_message() and received using
  * g_socket_receive_message() over UNIX sockets (ie: sockets in the
- * %G_SOCKET_ADDRESS_UNIX family).
+ * %G_SOCKET_ADDRESS_UNIX family).  The file descriptors are copied
+ * between processes by the kernel.
  *
  * For an easier way to send and receive file descriptors over
  * stream-oriented UNIX sockets, see g_unix_connection_send_fd() and
  * g_unix_connection_receive_fd().
- */
+ **/
 
 #include "config.h"
 
@@ -35,6 +35,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 #include <errno.h>
 
 #include "gunixfdmessage.h"
@@ -48,8 +49,7 @@ G_DEFINE_TYPE (GUnixFDMessage, g_unix_fd_message,
 
 struct _GUnixFDMessagePrivate
 {
-  gint *fds;
-  gint nfd;
+  GUnixFDList *list;
 };
 
 static gsize
@@ -57,7 +57,7 @@ g_unix_fd_message_get_size (GSocketControlMessage *message)
 {
   GUnixFDMessage *fd_message = G_UNIX_FD_MESSAGE (message);
 
-  return fd_message->priv->nfd * sizeof (gint);
+  return g_unix_fd_list_get_length (fd_message->priv->list) * sizeof (gint);
 }
 
 static int
@@ -78,7 +78,10 @@ g_unix_fd_message_deserialize (int      level,
 			       gsize    size,
 			       gpointer data)
 {
-  GUnixFDMessage *message;
+  GSocketControlMessage *message;
+  GUnixFDList *list;
+  gint n, s, i;
+  gint *fds;
 
   if (level != SOL_SOCKET ||
       level != SCM_RIGHTS)
@@ -90,13 +93,28 @@ g_unix_fd_message_deserialize (int      level,
       return NULL;
     }
 
-  message = g_object_new (G_TYPE_UNIX_FD_MESSAGE, NULL);
-  message->priv->nfd = size / sizeof (gint);
-  message->priv->fds = g_new (gint, message->priv->nfd + 1);
-  memcpy (message->priv->fds, data, size);
-  message->priv->fds[message->priv->nfd] = -1;
+  fds = data;
+  n = size / sizeof (gint);
 
-  return G_SOCKET_CONTROL_MESSAGE (message);
+  for (i = 0; i < n; i++)
+    {
+      do
+        s = fcntl (fds[i], F_SETFD, FD_CLOEXEC);
+      while (s < 0 && errno == EINTR);
+
+      if (s < 0)
+        {
+          g_warning ("Error setting close-on-exec flag on incoming fd: %s",
+                     g_strerror (errno));
+          return NULL;
+        }
+    }
+
+  list = g_unix_fd_list_new_from_array (fds, n);
+  message = g_unix_fd_message_new_with_fd_list (list);
+  g_object_unref (list);
+
+  return message;
 }
 
 static void
@@ -104,9 +122,57 @@ g_unix_fd_message_serialize (GSocketControlMessage *message,
 			     gpointer               data)
 {
   GUnixFDMessage *fd_message = G_UNIX_FD_MESSAGE (message);
-  memcpy (data, fd_message->priv->fds,
-	  sizeof (gint) * fd_message->priv->nfd);
+  const gint *fds;
+  gint n_fds;
+
+  fds = g_unix_fd_list_peek_fds (fd_message->priv->list, &n_fds);
+  memcpy (data, fds, sizeof (gint) * n_fds);
 }
+
+static void
+g_unix_fd_message_set_property (GObject *object, guint prop_id,
+                                const GValue *value, GParamSpec *pspec)
+{
+  GUnixFDMessage *message = G_UNIX_FD_MESSAGE (object);
+
+  g_assert (message->priv->list == NULL);
+  g_assert_cmpint (prop_id, ==, 1);
+
+  message->priv->list = g_value_dup_object (value);
+
+  if (message->priv->list == NULL)
+    message->priv->list = g_unix_fd_list_new ();
+}
+
+/**
+ * g_unix_fd_message_get_fd_list:
+ * @message: a #GUnixFDMessage
+ *
+ * Gets the #GUnixFDList contained in @message.  This function does not
+ * return a reference to the caller, but the returned list is valid for
+ * the lifetime of @message.
+ *
+ * Returns: the #GUnixFDList from @message
+ *
+ * Since: 2.24
+ **/
+GUnixFDList *
+g_unix_fd_message_get_fd_list (GUnixFDMessage *message)
+{
+  return message->priv->list;
+}
+
+static void
+g_unix_fd_message_get_property (GObject *object, guint prop_id,
+                                GValue *value, GParamSpec *pspec)
+{
+  GUnixFDMessage *message = G_UNIX_FD_MESSAGE (object);
+
+  g_assert_cmpint (prop_id, ==, 1);
+
+  g_value_set_object (value, g_unix_fd_message_get_fd_list (message));
+}
+
 static void
 g_unix_fd_message_init (GUnixFDMessage *message)
 {
@@ -119,11 +185,8 @@ static void
 g_unix_fd_message_finalize (GObject *object)
 {
   GUnixFDMessage *message = G_UNIX_FD_MESSAGE (object);
-  gint i;
 
-  for (i = 0; i < message->priv->nfd; i++)
-    close (message->priv->fds[i]);
-  g_free (message->priv->fds);
+  g_object_unref (message->priv->list);
 
   G_OBJECT_CLASS (g_unix_fd_message_parent_class)
     ->finalize (object);
@@ -142,21 +205,48 @@ g_unix_fd_message_class_init (GUnixFDMessageClass *class)
   scm_class->serialize = g_unix_fd_message_serialize;
   scm_class->deserialize = g_unix_fd_message_deserialize;
   object_class->finalize = g_unix_fd_message_finalize;
+  object_class->set_property = g_unix_fd_message_set_property;
+  object_class->get_property = g_unix_fd_message_get_property;
+
+  g_object_class_install_property (object_class, 1,
+    g_param_spec_object ("fd-list", "file descriptor list",
+                         "The GUnixFDList object to send with the message",
+                         G_TYPE_UNIX_FD_LIST, G_PARAM_STATIC_STRINGS |
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 /**
  * g_unix_fd_message_new:
  *
- * Creates a new #GUnixFDMessage containing no file descriptors.
+ * Creates a new #GUnixFDMessage containing an empty file descriptor
+ * list.
  *
  * Returns: a new #GUnixFDMessage
  *
  * Since: 2.22
- */
+ **/
 GSocketControlMessage *
 g_unix_fd_message_new (void)
 {
   return g_object_new (G_TYPE_UNIX_FD_MESSAGE, NULL);
+}
+
+/**
+ * g_unix_fd_message_new_with_fd_list:
+ * @fd_list: a #GUnixFDList
+ *
+ * Creates a new #GUnixFDMessage containing @list.
+ *
+ * Returns: a new #GUnixFDMessage
+ *
+ * Since: 2.24
+ **/
+GSocketControlMessage *
+g_unix_fd_message_new_with_fd_list (GUnixFDList *fd_list)
+{
+  return g_object_new (G_TYPE_UNIX_FD_MESSAGE,
+                       "fd-list", fd_list,
+                       NULL);
 }
 
 /**
@@ -185,31 +275,14 @@ g_unix_fd_message_new (void)
  * Returns: an array of file descriptors
  *
  * Since: 2.22
- */
+ **/
 gint *
 g_unix_fd_message_steal_fds (GUnixFDMessage *message,
                              gint           *length)
 {
-  gint *result;
+  g_return_val_if_fail (G_UNIX_FD_MESSAGE (message), FALSE);
 
-  g_return_val_if_fail (G_IS_UNIX_FD_MESSAGE (message), NULL);
-
-  /* will be true for fresh object or if we were just called */
-  if (message->priv->fds == NULL)
-    {
-      message->priv->fds = g_new (gint, 1);
-      message->priv->fds[0] = -1;
-      message->priv->nfd = 0;
-    }
-
-  if (length)
-    *length = message->priv->nfd;
-  result = message->priv->fds;
-
-  message->priv->fds = NULL;
-  message->priv->nfd = 0;
-
-  return result;
+  return g_unix_fd_list_steal_fds (message->priv->list, length);
 }
 
 /**
@@ -230,39 +303,15 @@ g_unix_fd_message_steal_fds (GUnixFDMessage *message,
  * Returns: %TRUE in case of success, else %FALSE (and @error is set)
  *
  * Since: 2.22
- */
+ **/
 gboolean
 g_unix_fd_message_append_fd (GUnixFDMessage  *message,
                              gint             fd,
                              GError         **error)
 {
-  gint new_fd;
+  g_return_val_if_fail (G_UNIX_FD_MESSAGE (message), FALSE);
 
-  g_return_val_if_fail (G_IS_UNIX_FD_MESSAGE (message), FALSE);
-  g_return_val_if_fail (fd >= 0, FALSE);
-
-  do
-    new_fd = dup (fd);
-  while (new_fd < 0 && (errno == EINTR));
-
-  if (fd < 0)
-    {
-      int saved_errno = errno;
-
-      g_set_error (error, G_IO_ERROR,
-                   g_io_error_from_errno (saved_errno),
-                   "dup: %s", g_strerror (saved_errno));
-
-      return FALSE;
-    }
-
-  message->priv->fds = g_realloc (message->priv->fds,
-                                  sizeof (gint) *
-                                   (message->priv->nfd + 2));
-  message->priv->fds[message->priv->nfd++] = new_fd;
-  message->priv->fds[message->priv->nfd] = -1;
-
-  return TRUE;
+  return g_unix_fd_list_append (message->priv->list, fd, error) > 0;
 }
 
 #define __G_UNIX_FD_MESSAGE_C__
