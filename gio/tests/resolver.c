@@ -415,8 +415,11 @@ static int cancel_fds[2];
 static void
 interrupted (int sig)
 {
+  gssize c;
+
   signal (SIGINT, SIG_DFL);
-  write (cancel_fds[1], "x", 1);
+  c = write (cancel_fds[1], "x", 1);
+  g_assert_cmpint(c, ==, 1);
 }
 
 static gboolean
