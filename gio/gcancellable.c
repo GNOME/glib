@@ -707,9 +707,12 @@ g_cancellable_connect (GCancellable   *cancellable,
  * @cancellable: A #GCancellable or %NULL.
  * @handler_id: Handler id of the handler to be disconnected, or %0.
  *
- * Disconnects a handler from an cancellable instance similar to
- * g_signal_handler_disconnect() but ensures that once this
- * function returns the handler will not run anymore in any thread.
+ * Disconnects a handler from a cancellable instance similar to
+ * g_signal_handler_disconnect().  Additionally, in the event that a
+ * signal handler is currently running, this call will block until the
+ * handler has finished.  Calling this function from a
+ * #GCancellable::cancelled signal handler will therefore result in a
+ * deadlock.
  *
  * This avoids a race condition where a thread cancels at the
  * same time as the cancellable operation is finished and the
