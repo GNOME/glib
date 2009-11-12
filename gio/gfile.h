@@ -560,6 +560,8 @@ char *                  g_file_get_path                   (GFile                
 char *                  g_file_get_uri                    (GFile                      *file);
 char *                  g_file_get_parse_name             (GFile                      *file);
 GFile *                 g_file_get_parent                 (GFile                      *file);
+gboolean                g_file_has_parent                 (GFile                      *file,
+                                                           GFile                      *parent);
 GFile *                 g_file_get_child                  (GFile                      *file,
 							   const char                 *name);
 GFile *                 g_file_get_child_for_display_name (GFile                      *file,

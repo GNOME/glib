@@ -654,6 +654,49 @@ g_file_get_parent (GFile *file)
 }
 
 /**
+ * g_file_has_parent:
+ * @file: input #GFile
+ * @parent: the parent to check for, or %NULL
+ *
+ * Checks if @file has a parent, and optionally, if it is @parent.
+ *
+ * If @parent is %NULL then this function returns %TRUE if @file has any
+ * parent at all.  If @parent is non-%NULL then %TRUE is only returned
+ * if @file is a child of @parent.
+ *
+ * Returns: %TRUE if @file is a child of @parent (or any parent in the
+ *          case that @parent is %NULL).
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_file_has_parent (GFile *file,
+                   GFile *parent)
+{
+  GFile *actual_parent;
+  gboolean result;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (parent == NULL || G_IS_FILE (parent), FALSE);
+
+  actual_parent = g_file_get_parent (file);
+
+  if (actual_parent != NULL)
+    {
+      if (parent != NULL)
+        result = g_file_equal (parent, actual_parent);
+      else
+        result = TRUE;
+
+      g_object_unref (actual_parent);
+    }
+  else
+    result = FALSE;
+
+  return result;
+}
+
+/**
  * g_file_get_child:
  * @file: input #GFile.
  * @name: string containing the child's basename.

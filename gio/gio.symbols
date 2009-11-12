@@ -257,6 +257,7 @@ g_file_get_path
 g_file_get_uri
 g_file_get_parse_name
 g_file_get_parent
+g_file_has_parent
 g_file_get_child
 g_file_get_child_for_display_name
 g_file_has_prefix
