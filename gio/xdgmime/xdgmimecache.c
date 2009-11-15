@@ -624,7 +624,6 @@ cache_glob_lookup_file_name (const char *file_name,
   int i;
   int len;
   char *lower_case;
-  int try_lower_case;
 
   assert (file_name != NULL && n_mime_types > 0);
 
