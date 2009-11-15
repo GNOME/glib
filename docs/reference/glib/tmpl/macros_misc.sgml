@@ -328,7 +328,7 @@ Expands to "" on all modern compilers, and to <literal>__FUNCTION__</literal>
 on <command>gcc</command> version 2.x. Don't use it.
 </para>
 
-@Deprecated: 2.16
+@Deprecated: 2.16: Use #G_STRFUNC instead.
 
 
 <!-- ##### MACRO G_GNUC_PRETTY_FUNCTION ##### -->
@@ -338,7 +338,7 @@ Expands to "" on all modern compilers, and to
 Don't use it.
 </para>
 
-@Deprecated: 2.16
+@Deprecated: 2.16: Use #G_STRFUNC instead.
 
 
 <!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
