@@ -2356,7 +2356,7 @@ mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
   
   for (i = 0; new_desktop_file_ids[i] != NULL; i++)
     {
-      if (!g_list_find_custom (desktop_file_ids, new_desktop_file_ids[i], strcmp))
+      if (!g_list_find_custom (desktop_file_ids, new_desktop_file_ids[i], (GCompareFunc) strcmp))
 	desktop_file_ids = g_list_append (desktop_file_ids,
 					  g_strdup (new_desktop_file_ids[i]));
     }
