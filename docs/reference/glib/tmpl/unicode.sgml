@@ -46,8 +46,8 @@ A type which can hold any UTF-32 or UCS-4 character code, also known
 as a Unicode code point.
 </para>
 <para>
-To print/scan values of this type to/from text you need to convert
-to/from UTF-8, using g_utf32_to_utf8()/g_utf8_to_utf32().
+If you want to produce the UTF-8 representation of a #gunichar,
+use g_ucs4_to_utf8(). See also g_utf8_to_ucs4() for the reverse process.
 </para>
 <para>
 To print/scan values of this type as integer, use
