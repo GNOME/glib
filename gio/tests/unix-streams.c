@@ -77,7 +77,7 @@ static gpointer
 reader_thread (gpointer user_data)
 {
   GInputStream *in;
-  gssize nread, total;
+  gssize nread = 0, total;
   GError *err = NULL;
   char buf[sizeof (DATA)];
 
