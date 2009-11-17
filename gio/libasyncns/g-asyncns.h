@@ -25,19 +25,9 @@
 /* We want to build the fork-based version, not the threaded version. */
 #undef HAVE_PTHREAD
 
-/* For old OS X, #580301. Remove if these are added to asyncns.c
- * in the future.
- */
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif
-
-/* Some BSDs require this for getrlimit */
-#ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
+/* asyncns.c removed this for #580301, but that appears to have been wrong */
+#if HAVE_ARPA_NAMESER_COMPAT_H
+#include <arpa/nameser_compat.h>
 #endif
 
 #include "asyncns.h"

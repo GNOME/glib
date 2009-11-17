@@ -40,10 +40,9 @@
 #include <arpa/nameser.h>
 #include <resolv.h>
 #include <dirent.h>
-
-#if HAVE_ARPA_NAMESER_COMPAT_H
-#include <arpa/nameser_compat.h>
-#endif
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <stdint.h>
 
 #ifdef HAVE_SYS_PRCTL_H
 #include <sys/prctl.h>
@@ -165,19 +164,29 @@ typedef struct nameinfo_response {
     int _h_errno;
 } nameinfo_response_t;
 
-typedef struct res_query_request {
+typedef struct res_request {
     struct rheader header;
     int class;
     int type;
     size_t dname_len;
 } res_request_t;
 
-typedef struct res_query_response {
+typedef struct res_response {
     struct rheader header;
     int ret;
     int _errno;
     int _h_errno;
 } res_response_t;
+
+typedef union packet {
+    rheader_t rheader;
+    addrinfo_request_t addrinfo_request;
+    addrinfo_response_t addrinfo_response;
+    nameinfo_request_t nameinfo_request;
+    nameinfo_response_t nameinfo_response;
+    res_request_t res_request;
+    res_response_t res_response;
+} packet_t;
 
 #ifndef HAVE_STRNDUP
 
@@ -204,7 +213,7 @@ static char *strndup(const char *s, size_t l) {
 
 static int close_allv(const int except_fds[]) {
     struct rlimit rl;
-    int fd;
+    int fd, maxfd;
 
 #ifdef __linux__
 
@@ -274,18 +283,23 @@ static int close_allv(const int except_fds[]) {
 
 #endif
 
-    if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
-        return -1;
+    if (getrlimit(RLIMIT_NOFILE, &rl) > 0)
+        maxfd = (int) rl.rlim_max;
+    else
+        maxfd = sysconf(_SC_OPEN_MAX);
 
-    for (fd = 0; fd < (int) rl.rlim_max; fd++) {
-        int i;
+    for (fd = 3; fd < maxfd; fd++) {
+        int i, found;
 
-        if (fd <= 3)
-            continue;
-
+        found = 0;
         for (i = 0; except_fds[i] >= 0; i++)
-            if (except_fds[i] == fd)
+            if (except_fds[i] == fd) {
+                found = 1;
                 continue;
+            }
+
+        if (found)
+            continue;
 
         if (close(fd) < 0 && errno != EBADF)
             return -1;
@@ -509,16 +523,20 @@ static int send_res_reply(int out_fd, unsigned id, const unsigned char *answer, 
     return send(out_fd, resp, resp->header.length, MSG_NOSIGNAL);
 }
 
-static int handle_request(int out_fd, const rheader_t *req, size_t length) {
+static int handle_request(int out_fd, const packet_t *packet, size_t length) {
+    const rheader_t *req;
     assert(out_fd >= 0);
+
+    req = &packet->rheader;
     assert(req);
     assert(length >= sizeof(rheader_t));
     assert(length == req->length);
 
     switch (req->type) {
+
         case REQUEST_ADDRINFO: {
             struct addrinfo ai, *result = NULL;
-            const addrinfo_request_t *ai_req = (const addrinfo_request_t*) req;
+            const addrinfo_request_t *ai_req = &packet->addrinfo_request;
             const char *node, *service;
             int ret;
 
@@ -531,8 +549,8 @@ static int handle_request(int out_fd, const rheader_t *req, size_t length) {
             ai.ai_socktype = ai_req->ai_socktype;
             ai.ai_protocol = ai_req->ai_protocol;
 
-            node = ai_req->node_len ? (const char*) req + sizeof(addrinfo_request_t) : NULL;
-            service = ai_req->service_len ? (const char*) req + sizeof(addrinfo_request_t) + ai_req->node_len : NULL;
+            node = ai_req->node_len ? (const char*) ai_req + sizeof(addrinfo_request_t) : NULL;
+            service = ai_req->service_len ? (const char*) ai_req + sizeof(addrinfo_request_t) + ai_req->node_len : NULL;
 
             ret = getaddrinfo(node, service,
                               ai_req->hints_is_null ? NULL : &ai,
@@ -544,14 +562,14 @@ static int handle_request(int out_fd, const rheader_t *req, size_t length) {
 
         case REQUEST_NAMEINFO: {
             int ret;
-            const nameinfo_request_t *ni_req = (const nameinfo_request_t*) req;
+            const nameinfo_request_t *ni_req = &packet->nameinfo_request;
             char hostbuf[NI_MAXHOST], servbuf[NI_MAXSERV];
             struct sockaddr_storage sa;
 
             assert(length >= sizeof(nameinfo_request_t));
             assert(length == sizeof(nameinfo_request_t) + ni_req->sockaddr_len);
 
-            memcpy(&sa, (const uint8_t *)req + sizeof(nameinfo_request_t), ni_req->sockaddr_len);
+            memcpy(&sa, (const uint8_t *) ni_req + sizeof(nameinfo_request_t), ni_req->sockaddr_len);
 
             ret = getnameinfo((struct sockaddr *)&sa, ni_req->sockaddr_len,
                               ni_req->gethost ? hostbuf : NULL, ni_req->gethost ? sizeof(hostbuf) : 0,
@@ -568,7 +586,7 @@ static int handle_request(int out_fd, const rheader_t *req, size_t length) {
         case REQUEST_RES_SEARCH: {
             int ret;
             HEADER answer[BUFSIZE/sizeof(HEADER) + 1];
-            const res_request_t *res_req = (const res_request_t *)req;
+            const res_request_t *res_req = &packet->res_request;
             const char *dname;
 
             assert(length >= sizeof(res_request_t));
@@ -667,7 +685,7 @@ static int process_worker(int in_fd, int out_fd) {
         fd_nonblock(in_fd);
 
     while (getppid() > 1) { /* if the parent PID is 1 our parent process died. */
-        rheader_t buf[BUFSIZE/sizeof(rheader_t) + 1];
+        packet_t buf[BUFSIZE/sizeof(packet_t) + 1];
         ssize_t length;
 
         if (!have_death_sig) {
@@ -716,7 +734,7 @@ static void* thread_worker(void *p) {
     pthread_sigmask(SIG_BLOCK, &fullset, NULL);
 
     while (!asyncns->dead) {
-        rheader_t buf[BUFSIZE/sizeof(rheader_t) + 1];
+        packet_t buf[BUFSIZE/sizeof(packet_t) + 1];
         ssize_t length;
 
         if ((length = recv(asyncns->fds[REQUEST_RECV_FD], buf, sizeof(buf), 0)) <= 0) {
@@ -901,7 +919,7 @@ static void complete_query(_g_asyncns_t *asyncns, _g_asyncns_query_t *q) {
     q->done_next = NULL;
 }
 
-static void *unserialize_addrinfo(void *p, struct addrinfo **ret_ai, size_t *length) {
+static const void *unserialize_addrinfo(const void *p, struct addrinfo **ret_ai, size_t *length) {
     addrinfo_serialization_t s;
     size_t l;
     struct addrinfo *ai;
@@ -938,15 +956,15 @@ static void *unserialize_addrinfo(void *p, struct addrinfo **ret_ai, size_t *len
     ai->ai_addrlen = s.ai_addrlen;
 
     if (ai->ai_addr)
-        memcpy(ai->ai_addr, (uint8_t*) p + sizeof(addrinfo_serialization_t), s.ai_addrlen);
+        memcpy(ai->ai_addr, (const uint8_t*) p + sizeof(addrinfo_serialization_t), s.ai_addrlen);
 
     if (ai->ai_canonname)
-        memcpy(ai->ai_canonname, (uint8_t*) p + sizeof(addrinfo_serialization_t) + s.ai_addrlen, s.canonname_len);
+        memcpy(ai->ai_canonname, (const uint8_t*) p + sizeof(addrinfo_serialization_t) + s.ai_addrlen, s.canonname_len);
 
     *length -= l;
     *ret_ai = ai;
 
-    return (uint8_t*) p + l;
+    return (const uint8_t*) p + l;
 
 
 fail:
@@ -956,9 +974,13 @@ fail:
     return NULL;
 }
 
-static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length) {
+static int handle_response(_g_asyncns_t *asyncns, const packet_t *packet, size_t length) {
+    const rheader_t *resp;
     _g_asyncns_query_t *q;
+
     assert(asyncns);
+
+    resp = &packet->rheader;
     assert(resp);
     assert(length >= sizeof(rheader_t));
     assert(length == resp->length);
@@ -973,8 +995,8 @@ static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length
 
     switch (resp->type) {
         case RESPONSE_ADDRINFO: {
-            const addrinfo_response_t *ai_resp = (addrinfo_response_t*) resp;
-            void *p;
+            const addrinfo_response_t *ai_resp = &packet->addrinfo_response;
+            const void *p;
             size_t l;
             struct addrinfo *prev = NULL;
 
@@ -985,7 +1007,7 @@ static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length
             q->_errno = ai_resp->_errno;
             q->_h_errno = ai_resp->_h_errno;
             l = length - sizeof(addrinfo_response_t);
-            p = (uint8_t*) resp + sizeof(addrinfo_response_t);
+            p = (const uint8_t*) resp + sizeof(addrinfo_response_t);
 
             while (l > 0 && p) {
                 struct addrinfo *ai = NULL;
@@ -1009,7 +1031,7 @@ static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length
         }
 
         case RESPONSE_NAMEINFO: {
-            const nameinfo_response_t *ni_resp = (nameinfo_response_t*) resp;
+            const nameinfo_response_t *ni_resp = &packet->nameinfo_response;
 
             assert(length >= sizeof(nameinfo_response_t));
             assert(q->type == REQUEST_NAMEINFO);
@@ -1031,7 +1053,7 @@ static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length
         }
 
         case RESPONSE_RES: {
-            const res_response_t *res_resp = (res_response_t *)resp;
+            const res_response_t *res_resp = &packet->res_response;
 
             assert(length >= sizeof(res_response_t));
             assert(q->type == REQUEST_RES_QUERY || q->type == REQUEST_RES_SEARCH);
@@ -1045,7 +1067,7 @@ static int handle_response(_g_asyncns_t *asyncns, rheader_t *resp, size_t length
                     q->ret = -1;
                     q->_errno = ENOMEM;
                 } else
-                    memcpy(q->serv, (char *)resp + sizeof(res_response_t), res_resp->ret);
+                    memcpy(q->serv, (const char *)resp + sizeof(res_response_t), res_resp->ret);
             }
 
             complete_query(asyncns, q);
@@ -1064,7 +1086,7 @@ int _g_asyncns_wait(_g_asyncns_t *asyncns, int block) {
     assert(asyncns);
 
     for (;;) {
-        rheader_t buf[BUFSIZE/sizeof(rheader_t) + 1];
+        packet_t buf[BUFSIZE/sizeof(packet_t) + 1];
         ssize_t l;
 
         if (asyncns->dead) {
