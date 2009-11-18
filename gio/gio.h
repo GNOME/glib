@@ -34,6 +34,7 @@
 #include <gio/gbufferedoutputstream.h>
 #include <gio/gcancellable.h>
 #include <gio/gcontenttype.h>
+#include <gio/gconverter.h>
 #include <gio/gdatainputstream.h>
 #include <gio/gdataoutputstream.h>
 #include <gio/gdrive.h>

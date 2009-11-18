@@ -46,6 +46,40 @@ typedef enum {
   G_APP_INFO_CREATE_SUPPORTS_URIS  = (1 << 1)   /*< nick=supports-uris >*/
 } GAppInfoCreateFlags;
 
+/**
+ * GConverterFlags:
+ * @G_CONVERTER_NO_FLAGS: No flags.
+ * @G_CONVERTER_INPUT_AT_END: At end of input data
+ * @G_CONVERTER_FLUSH: Flush data
+ *
+ * Flags used when calling a g_converter_convert().
+ *
+ * Since: 2.24
+ */
+typedef enum {
+  G_CONVERTER_NO_FLAGS     = 0,         /*< nick=none >*/
+  G_CONVERTER_INPUT_AT_END = (1 << 0),  /*< nick=input-at-end >*/
+  G_CONVERTER_FLUSH        = (1 << 1),  /*< nick=flush >*/
+} GConverterFlags;
+
+/**
+ * GConverterResult:
+ * @G_CONVERTER_ERROR: There was an error during conversion.
+ * @G_CONVERTER_CONVERTED: Some data was consumed or produced
+ * @G_CONVERTER_FINISHED: The conversion is finished
+ * @G_CONVERTER_FLUSHED: Flushing is finished
+ *
+ * Results returned from g_converter_convert().
+ *
+ * Since: 2.24
+ */
+typedef enum {
+  G_CONVERTER_ERROR     = 0, /*< nick=error >*/
+  G_CONVERTER_CONVERTED = 1,  /*< nick=converted >*/
+  G_CONVERTER_FINISHED  = 2,  /*< nick=finished >*/
+  G_CONVERTER_FLUSHED   = 3,  /*< nick=flushed >*/
+} GConverterResult;
+
 
 /**
  * GDataStreamByteOrder:

@@ -38,6 +38,7 @@ typedef struct _GAsyncInitable                GAsyncInitable;
 typedef struct _GBufferedInputStream          GBufferedInputStream;
 typedef struct _GBufferedOutputStream         GBufferedOutputStream;
 typedef struct _GCancellable                  GCancellable;
+typedef struct _GConverter                    GConverter;
 typedef struct _GDataInputStream              GDataInputStream;
 
 /**
