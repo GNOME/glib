@@ -26,6 +26,7 @@ TEST_PROGS +=	 		\
 	converter-stream	\
 	data-input-stream 	\
 	data-output-stream 	\
+	filter-cat		\
 	g-icon			\
 	buffered-input-stream	\
 	sleepy-stream		\
@@ -63,6 +64,9 @@ data_input_stream_LDADD		= $(progs_ldadd)
 
 data_output_stream_SOURCES	= data-output-stream.c
 data_output_stream_LDADD	= $(progs_ldadd)
+
+filter_cat_SOURCES	= filter-cat.c
+filter_cat_LDADD	= $(progs_ldadd)
 
 g_icon_SOURCES	= g-icon.c
 g_icon_LDADD	= $(progs_ldadd)
