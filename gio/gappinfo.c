@@ -227,6 +227,33 @@ g_app_info_get_name (GAppInfo *appinfo)
 }
 
 /**
+ * g_app_info_get_display_name:
+ * @appinfo: a #GAppInfo.
+ *
+ * Gets the display name of the application. The display name is often more
+ * descriptive to the user than the name itself.
+ *
+ * Returns: the display name of the application for @appinfo, or the name if
+ * no display name is available.
+ *
+ * Since: 2.24
+ **/
+const char *
+g_app_info_get_display_name (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), NULL);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->get_display_name == NULL)
+    return (* iface->get_name) (appinfo);
+
+  return (* iface->get_display_name) (appinfo);
+}
+
+/**
  * g_app_info_get_description:
  * @appinfo: a #GAppInfo.
  * 

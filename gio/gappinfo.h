@@ -126,6 +126,7 @@ struct _GAppInfoIface
   gboolean     (* can_delete)                   (GAppInfo           *appinfo);
   gboolean     (* do_delete)                    (GAppInfo           *appinfo);
   const char * (* get_commandline)              (GAppInfo           *appinfo);
+  const char * (* get_display_name)             (GAppInfo           *appinfo);
 };
 
 GType       g_app_info_get_type                     (void) G_GNUC_CONST;
@@ -138,6 +139,7 @@ gboolean    g_app_info_equal                        (GAppInfo             *appin
 						     GAppInfo             *appinfo2);
 const char *g_app_info_get_id                       (GAppInfo             *appinfo);
 const char *g_app_info_get_name                     (GAppInfo             *appinfo);
+const char *g_app_info_get_display_name             (GAppInfo             *appinfo);
 const char *g_app_info_get_description              (GAppInfo             *appinfo);
 const char *g_app_info_get_executable               (GAppInfo             *appinfo);
 const char *g_app_info_get_commandline              (GAppInfo             *appinfo);

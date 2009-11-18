@@ -62,6 +62,7 @@
 #define ADDED_ASSOCIATIONS_GROUP    "Added Associations" 
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations" 
 #define MIME_CACHE_GROUP            "MIME Cache"
+#define FULL_NAME_KEY               "X-GNOME-FullName"
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
 static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type,
@@ -84,6 +85,7 @@ struct _GDesktopAppInfo
 
   char *name;
   /* FIXME: what about GenericName ? */
+  char *fullname;
   char *comment;
   char *icon_name;
   GIcon *icon;
@@ -147,6 +149,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->desktop_id);
   g_free (info->filename);
   g_free (info->name);
+  g_free (info->fullname);
   g_free (info->comment);
   g_free (info->icon_name);
   if (info->icon)
@@ -247,6 +250,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   info->filename = NULL;
 
   info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+  info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
   info->comment = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
   info->nodisplay = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) != FALSE;
   info->icon_name =  g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL, NULL);
@@ -414,6 +418,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->desktop_id = g_strdup (info->desktop_id);
   
   new_info->name = g_strdup (info->name);
+  new_info->fullname = g_strdup (info->fullname);
   new_info->comment = g_strdup (info->comment);
   new_info->nodisplay = info->nodisplay;
   new_info->icon_name = g_strdup (info->icon_name);
@@ -462,6 +467,16 @@ g_desktop_app_info_get_name (GAppInfo *appinfo)
   if (info->name == NULL)
     return _("Unnamed");
   return info->name;
+}
+
+static const char *
+g_desktop_app_info_get_display_name (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+
+  if (info->fullname == NULL)
+    return g_desktop_app_info_get_name (appinfo);
+  return info->fullname;
 }
 
 /**
@@ -1482,6 +1497,10 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			 G_KEY_FILE_DESKTOP_KEY_NAME, info->name);
 
+  if (info->fullname != NULL)
+    g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			   FULL_NAME_KEY, info->fullname);
+
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			 G_KEY_FILE_DESKTOP_KEY_COMMENT, info->comment);
   
@@ -1643,6 +1662,7 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->can_delete = g_desktop_app_info_can_delete;
   iface->do_delete = g_desktop_app_info_delete;
   iface->get_commandline = g_desktop_app_info_get_commandline;
+  iface->get_display_name = g_desktop_app_info_get_display_name;
 }
 
 static gboolean
