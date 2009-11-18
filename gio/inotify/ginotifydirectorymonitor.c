@@ -96,7 +96,7 @@ g_inotify_directory_monitor_constructor (GType type,
 
   pair_moves = G_LOCAL_DIRECTORY_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
 
-  sub = _ih_sub_new (dirname, NULL, pair_moves, inotify_monitor);
+  sub = _ih_sub_new (dirname, NULL, pair_moves, FALSE, inotify_monitor);
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard */
   g_assert (sub != NULL);

@@ -4845,6 +4845,12 @@ g_file_eject_mountable_with_operation_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
+ * It does not make sense for @flags to contain
+ * %G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
+ * directories.  It is not possible to monitor all the files in a
+ * directory for changes made via hard links; if you want to do this then
+ * you must register individual watches with g_file_monitor().
+ *
  * Virtual: monitor_dir
  * Returns: (transfer full): a #GFileMonitor for the given @file,
  *     or %NULL on error.
@@ -4859,6 +4865,7 @@ g_file_monitor_directory (GFile              *file,
   GFileIface *iface;
 
   g_return_val_if_fail (G_IS_FILE (file), NULL);
+  g_return_val_if_fail (~flags & G_FILE_MONITOR_WATCH_HARD_LINKS, NULL);
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
@@ -4891,6 +4898,14 @@ g_file_monitor_directory (GFile              *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
+ * If @flags contains %G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor
+ * will also attempt to report changes made to the file via another
+ * filename (ie, a hard link). Without this flag, you can only rely on
+ * changes made through the filename contained in @file to be
+ * reported. Using this flag may result in an increase in resource
+ * usage, and may not have any effect depending on the #GFileMonitor
+ * backend and/or filesystem type.
+ * 
  * Returns: (transfer full): a #GFileMonitor for the given @file,
  *     or %NULL on error.
  *     Free the returned object with g_object_unref().
@@ -4951,7 +4966,9 @@ g_file_monitor (GFile              *file,
                 GError            **error)
 {
   if (g_file_query_file_type (file, 0, cancellable) == G_FILE_TYPE_DIRECTORY)
-    return g_file_monitor_directory (file, flags, cancellable, error);
+    return g_file_monitor_directory (file,
+                                     flags & ~G_FILE_MONITOR_WATCH_HARD_LINKS,
+                                     cancellable, error);
   else
     return g_file_monitor_file (file, flags, cancellable, error);
 }

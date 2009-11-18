@@ -40,7 +40,9 @@
 static gboolean ih_debug_enabled = FALSE;
 #define IH_W if (ih_debug_enabled) g_warning 
 
-static void ih_event_callback (ik_event_t *event, inotify_sub *sub);
+static void ih_event_callback (ik_event_t  *event,
+			       inotify_sub *sub,
+			       gboolean     file_event);
 static void ih_not_missing_callback (inotify_sub *sub);
 
 /* We share this lock with inotify-kernel.c and inotify-missing.c
@@ -133,11 +135,15 @@ _ih_sub_cancel (inotify_sub *sub)
 }
 
 static char *
-_ih_fullpath_from_event (ik_event_t *event, const char *dirname)
+_ih_fullpath_from_event (ik_event_t *event,
+			 const char *dirname,
+			 const char *filename)
 {
   char *fullpath;
 
-  if (event->name)
+  if (filename)
+    fullpath = g_strdup_printf ("%s/%s", dirname, filename);
+  else if (event->name)
     fullpath = g_strdup_printf ("%s/%s", dirname, event->name);
   else
     fullpath = g_strdup_printf ("%s/", dirname);
@@ -161,7 +167,8 @@ ih_event_is_paired_move (ik_event_t *event)
 
 static void
 ih_event_callback (ik_event_t  *event, 
-                   inotify_sub *sub)
+                   inotify_sub *sub,
+		   gboolean     file_event)
 {
   gchar *fullpath;
   GFileMonitorEvent eflags;
@@ -169,14 +176,15 @@ ih_event_callback (ik_event_t  *event,
   GFile* other;
 
   eflags = ih_mask_to_EventFlags (event->mask);
-  fullpath = _ih_fullpath_from_event (event, sub->dirname);
+  fullpath = _ih_fullpath_from_event (event, sub->dirname,
+				      file_event ? sub->filename : NULL);
   child = g_file_new_for_path (fullpath);
   g_free (fullpath);
 
   if (ih_event_is_paired_move (event) && sub->pair_moves)
     {
       const char *parent_dir = (char *) _ip_get_path_for_wd (event->pair->wd);
-      fullpath = _ih_fullpath_from_event (event->pair, parent_dir);
+      fullpath = _ih_fullpath_from_event (event->pair, parent_dir, NULL);
       other = g_file_new_for_path (fullpath);
       g_free (fullpath);
       eflags = G_FILE_MONITOR_EVENT_MOVED;

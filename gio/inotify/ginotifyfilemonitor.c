@@ -88,6 +88,7 @@ g_inotify_file_monitor_constructor (GType                  type,
   GObjectClass *parent_class;
   GInotifyFileMonitor *inotify_monitor;
   const gchar *filename = NULL;
+  gboolean watch_hardlinks;
   inotify_sub *sub = NULL;
   gboolean pair_moves;
   gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */    
@@ -114,10 +115,12 @@ g_inotify_file_monitor_constructor (GType                  type,
   g_assert (ret_ih_startup);
 
   pair_moves = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
+  watch_hardlinks = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_WATCH_HARDLINKS;
 
   sub = _ih_sub_new (inotify_monitor->dirname,
 		     inotify_monitor->filename,
 		     pair_moves,
+		     watch_hardlinks,
 		     inotify_monitor);
  
   /* FIXME: what to do about errors here? we can't return NULL or another

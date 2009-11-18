@@ -308,13 +308,16 @@ typedef enum {
  *   event instead (NB: not supported on all backends; the default
  *   behaviour -without specifying this flag- is to send single DELETED
  *   and CREATED events).
+ * @G_FILE_MONITOR_WATCH_HARD_LINKS: Watch for changes to the file made
+ *   via another hard link.
  *
  * Flags used to set what a #GFileMonitor will watch for.
  */
 typedef enum {
-  G_FILE_MONITOR_NONE         = 0,
-  G_FILE_MONITOR_WATCH_MOUNTS = (1 << 0),
-  G_FILE_MONITOR_SEND_MOVED   = (1 << 1)
+  G_FILE_MONITOR_NONE             = 0,
+  G_FILE_MONITOR_WATCH_MOUNTS     = (1 << 0),
+  G_FILE_MONITOR_SEND_MOVED       = (1 << 1),
+  G_FILE_MONITOR_WATCH_HARD_LINKS = (1 << 2)
 } GFileMonitorFlags;
 
 
