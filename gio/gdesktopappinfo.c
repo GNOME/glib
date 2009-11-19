@@ -1607,6 +1607,8 @@ g_app_info_create_from_commandline (const char           *commandline,
   char *basename;
   GDesktopAppInfo *info;
 
+  g_return_val_if_fail (commandline, NULL);
+
   info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
 
   info->filename = NULL;
@@ -1628,7 +1630,7 @@ g_app_info_create_from_commandline (const char           *commandline,
     {
       /* FIXME: this should be more robust. Maybe g_shell_parse_argv and use argv[0] */
       split = g_strsplit (commandline, " ", 2);
-      basename = g_path_get_basename (split[0]);
+      basename = split[0] ? g_path_get_basename (split[0]) : NULL;
       g_strfreev (split);
       info->name = basename;
       if (info->name == NULL)
