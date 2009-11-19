@@ -5999,7 +5999,7 @@ g_file_query_default_handler (GFile                  *file,
   char *path;
   
   uri_scheme = g_file_get_uri_scheme (file);
-  if (uri_scheme)
+  if (uri_scheme && uri_scheme[0] != '\0')
     {
       appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
       g_free (uri_scheme);
