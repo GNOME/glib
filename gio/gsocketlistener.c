@@ -947,7 +947,7 @@ g_socket_listener_close (GSocketListener *listener)
  *
  * Returns: the port number, or 0 in case of failure.
  *
- * Since: 2.22
+ * Since: 2.24
  **/
 guint16
 g_socket_listener_add_any_inet_port (GSocketListener  *listener,
