@@ -458,6 +458,17 @@ AC_MSG_RESULT($enable_iconv_cache)
 
 
 dnl
+dnl zlib support
+dnl
+found_zlib=no
+AC_CHECK_LIB(z, inflate, [AC_CHECK_HEADER(zlib.h, found_zlib=yes)])
+
+if test "x$found_zlib" = "xno" ; then
+   AC_MSG_ERROR([*** Working zlib library and headers not found ***])
+fi
+ZLIB_LIBS='-lz'
+AC_SUBST(ZLIB_LIBS)
+dnl
 dnl gettext support
 dnl
 

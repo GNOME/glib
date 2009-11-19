@@ -284,6 +284,7 @@ libgio_2_0_la_LIBADD = \
 	$(top_builddir)/gobject/libgobject-2.0.la 	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(platform_libadd) 				\
+	$(ZLIB_LIBS)					\
 	$(SELINUX_LIBS) 				\
 	$(GLIB_LIBS) 					\
 	$(XATTR_LIBS) 					\
