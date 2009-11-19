@@ -265,6 +265,7 @@ libgio_2_0_la_SOURCES =		\
 	gvfs.c 			\
 	gvolume.c 		\
 	gvolumemonitor.c 	\
+	gzlibdecompressor.c	\
 	gmountprivate.h 	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
@@ -390,6 +391,7 @@ gio_headers =			\
 	gvfs.h 			\
 	gvolume.h 		\
 	gvolumemonitor.h 	\
+	gzlibdecompressor.h	\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/

@@ -673,6 +673,21 @@ typedef enum {
   G_SOCKET_PROTOCOL_SCTP    = 132
 } GSocketProtocol;
 
+/**
+ * GZlibCompressorFormat:
+ * @G_ZLIB_COMRESSOR_FORMAT_RAW: Raw zlib compression data
+ * @G_ZLIB_COMRESSOR_FORMAT_GZIP: gzip file format
+ *
+ * Used to select the type of data format to use for #GZlibDecompressor
+ * and #GZlibCompressor.
+ *
+ * Since: 2.24
+ */
+typedef enum {
+  G_ZLIB_COMPRESSOR_FORMAT_RAW,
+  G_ZLIB_COMPRESSOR_FORMAT_GZIP
+} GZlibCompressorFormat;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

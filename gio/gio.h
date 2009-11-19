@@ -93,6 +93,7 @@
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>
+#include <gio/gzlibdecompressor.h>
 
 #undef __GIO_GIO_H_INSIDE__
 
