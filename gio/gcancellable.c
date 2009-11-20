@@ -503,40 +503,42 @@ g_cancellable_get_fd (GCancellable *cancellable)
 gboolean
 g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 {
-  GCancellablePrivate *priv;
-
   g_return_val_if_fail (pollfd != NULL, FALSE);
   if (cancellable == NULL)
     return FALSE;
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), FALSE);
 
-#ifdef G_OS_WIN32
-  priv = cancellable->priv;
-  G_LOCK(cancellable);
-  if (priv->event == NULL)
-    {
-      /* A manual reset anonymous event, starting unset */
-      priv->event = CreateEvent (NULL, TRUE, FALSE, NULL);
-      if (priv->event == NULL)
-        {
-          G_UNLOCK(cancellable);
-          return FALSE;
-        }
-      if (priv->cancelled)
-        SetEvent(priv->event);
-    }
-  priv->fd_refcount++;
-  G_UNLOCK(cancellable);
-
-  pollfd->fd = (gintptr)priv->event;
-#else /* !G_OS_WIN32 */
   {
+#ifdef G_OS_WIN32
+    GCancellablePrivate *priv;
+
+    priv = cancellable->priv;
+    G_LOCK(cancellable);
+    if (priv->event == NULL)
+      {
+        /* A manual reset anonymous event, starting unset */
+        priv->event = CreateEvent (NULL, TRUE, FALSE, NULL);
+        if (priv->event == NULL)
+          {
+            G_UNLOCK(cancellable);
+            return FALSE;
+          }
+        if (priv->cancelled)
+          SetEvent(priv->event);
+      }
+    priv->fd_refcount++;
+    G_UNLOCK(cancellable);
+
+    pollfd->fd = (gintptr)priv->event;
+#else /* !G_OS_WIN32 */
     int fd = g_cancellable_get_fd (cancellable);
+
     if (fd == -1)
       return FALSE;
     pollfd->fd = fd;
-  }
 #endif /* G_OS_WIN32 */
+  }
+
   pollfd->events = G_IO_IN;
   pollfd->revents = 0;
 
