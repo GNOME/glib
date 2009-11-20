@@ -223,13 +223,13 @@ typedef enum
 struct _TypeNode
 {
   GTypePlugin *plugin;
-  guint        n_children : 12;
+  guint        n_children; /* writable with lock */
   guint        n_supers : 8;
   guint        _prot_n_ifaces_prerequisites : 9;
   guint        is_classed : 1;
   guint        is_instantiatable : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
-  GType       *children;
+  GType       *children; /* writable with lock */
   TypeData * volatile data;
   GQuark       qname;
   GData       *global_gdata;
