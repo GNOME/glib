@@ -295,7 +295,7 @@ looks_like_text (const guchar *data,
   for (i = 0; i < data_size; i++)
     {
       c = data[i];
-      if (g_ascii_iscntrl (c) && !g_ascii_isspace (c))
+      if (g_ascii_iscntrl (c) && !g_ascii_isspace (c) && c != '\b')
 	return FALSE;
     }
   return TRUE;
@@ -832,7 +832,8 @@ looks_like_text (const guchar *data, gsize data_size)
       c = data[i];
       
       if (g_ascii_iscntrl (c) &&
-	  !g_ascii_isspace (c))
+	  !g_ascii_isspace (c) &&
+	  c != '\b')
 	return FALSE;
     }
   return TRUE;
