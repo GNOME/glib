@@ -203,6 +203,8 @@ gboolean               g_base_info_iterate_attributes (GIBaseInfo      *info,
                                                        char          **value);
 GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
 GTypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
+gboolean               g_base_info_equal            (GIBaseInfo   *info1,
+                                                     GIBaseInfo   *info2);
 
 GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     GIBaseInfo   *container,

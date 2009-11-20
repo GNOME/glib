@@ -554,6 +554,26 @@ g_base_info_get_typelib (GIBaseInfo *info)
   return info->typelib;
 }
 
+/*
+ * g_base_info_equal:
+ * @info1: A #GIBaseInfo
+ * @info2: A #GIBaseInfo
+ *
+ * Compare two #GIBaseInfo.
+ *
+ * Using pointer comparison is not practical since many functions return
+ * different instances of #GIBaseInfo that refers to the same part of the
+ * TypeLib; use this function instead to do #GIBaseInfo comparisons.
+ *
+ * Return value: TRUE if and only if @info1 equals @info2.
+ */
+gboolean
+g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
+{
+  /* Compare the TypeLib pointers, which are mmapped. */
+  return info1->typelib->data + info1->offset == info2->typelib->data + info2->offset;
+}
+
 /* GIFunctionInfo functions */
 const gchar *
 g_function_info_get_symbol (GIFunctionInfo *info)
