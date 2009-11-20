@@ -265,6 +265,7 @@ libgio_2_0_la_SOURCES =		\
 	gvfs.c 			\
 	gvolume.c 		\
 	gvolumemonitor.c 	\
+	gzlibcompressor.c	\
 	gzlibdecompressor.c	\
 	gmountprivate.h 	\
 	gioenumtypes.h		\
@@ -391,6 +392,7 @@ gio_headers =			\
 	gvfs.h 			\
 	gvolume.h 		\
 	gvolumemonitor.h 	\
+	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
 	$(NULL)
 
