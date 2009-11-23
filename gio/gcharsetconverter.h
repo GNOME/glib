@@ -46,6 +46,9 @@ GType              g_charset_converter_get_type      (void) G_GNUC_CONST;
 GCharsetConverter *g_charset_converter_new            (const gchar  *to_charset,
 						       const gchar  *from_charset,
 						       GError **error);
+void               g_charset_converter_set_use_fallback (GCharsetConverter *converter,
+							 gboolean use_fallback);
+gboolean           g_charset_converter_get_use_fallback (GCharsetConverter *converter);
 
 G_END_DECLS
 

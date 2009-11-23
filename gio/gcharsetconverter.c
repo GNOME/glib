@@ -36,7 +36,8 @@
 enum {
   PROP_0,
   PROP_FROM_CHARSET,
-  PROP_TO_CHARSET
+  PROP_TO_CHARSET,
+  PROP_USE_FALLBACK
 };
 
 /**
@@ -63,6 +64,8 @@ struct _GCharsetConverter
   char *from;
   char *to;
   GIConv iconv;
+  gboolean use_fallback;
+  guint n_fallback_errors;
 };
 
 G_DEFINE_TYPE_WITH_CODE (GCharsetConverter, g_charset_converter, G_TYPE_OBJECT,
@@ -108,6 +111,10 @@ g_charset_converter_set_property (GObject      *object,
       conv->from = g_value_dup_string (value);
       break;
 
+    case PROP_USE_FALLBACK:
+      conv->use_fallback = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -133,6 +140,10 @@ g_charset_converter_get_property (GObject    *object,
 
     case PROP_FROM_CHARSET:
       g_value_set_string (value, conv->from);
+      break;
+
+    case PROP_USE_FALLBACK:
+      g_value_set_boolean (value, conv->use_fallback);
       break;
 
     default:
@@ -166,7 +177,15 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
 							NULL,
 							G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
-
+  g_object_class_install_property (gobject_class,
+				   PROP_USE_FALLBACK,
+				   g_param_spec_boolean ("use-fallback",
+							 P_("Fallback enabled"),
+							 P_("Use fallback (of form \\<hexval>) for invalid bytes"),
+							 FALSE,
+							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT |
+							 G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -215,6 +234,7 @@ g_charset_converter_reset (GConverter *converter)
     }
 
   g_iconv (conv->iconv, NULL, NULL, NULL, NULL);
+  conv->n_fallback_errors = 0;
 }
 
 static GConverterResult
@@ -292,8 +312,29 @@ g_charset_converter_convert (GConverter *converter,
 
 	case EILSEQ:
 	  /* Invalid code sequence */
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
-			       _("Invalid byte sequence in conversion input"));
+	  if (conv->use_fallback)
+	    {
+	      if (outbuf_size < 3)
+		g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+				     _("Not enough space in destination"));
+	      else
+		{
+		  const char hex[] = "0123456789ABCDEF";
+		  guint8 v = *(guint8 *)inbuf;
+		  guint8 *out = (guint8 *)outbuf;
+		  out[0] = '\\';
+		  out[1] = hex[(v & 0xf0) >> 4];
+		  out[2] = hex[(v & 0x0f) >> 0];
+		  *bytes_read = 1;
+		  *bytes_written = 3;
+		  in_left--;
+		  conv->n_fallback_errors++;
+		  goto ok;
+		}
+	    }
+	  else
+	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
+				 _("Invalid byte sequence in conversion input"));
 	  break;
 
 	default:
@@ -306,6 +347,7 @@ g_charset_converter_convert (GConverter *converter,
     }
   else
     {
+    ok:
       ret = G_CONVERTER_CONVERTED;
 
       if (in_left == 0 &&
@@ -317,6 +359,31 @@ g_charset_converter_convert (GConverter *converter,
     }
 
   return ret;
+}
+
+void
+g_charset_converter_set_use_fallback (GCharsetConverter *converter,
+				      gboolean use_fallback)
+{
+  use_fallback = !!use_fallback;
+
+  if (converter->use_fallback != use_fallback)
+    {
+      converter->use_fallback = use_fallback;
+      g_object_notify (G_OBJECT (converter), "use-fallback");
+    }
+}
+
+gboolean
+g_charset_converter_get_use_fallback (GCharsetConverter *converter)
+{
+  return converter->use_fallback;
+}
+
+guint
+g_charset_converter_get_num_fallbacks (GCharsetConverter *converter)
+{
+  return converter->n_fallback_errors;
 }
 
 static void
