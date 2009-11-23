@@ -2,6 +2,7 @@
 
 #include "girepository.h"
 #include "girffi.h"
+#include "config.h"
 
 /**
  * g_field_info_get_field:
@@ -92,7 +93,13 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	    result = TRUE;
 	    break;
 	  case GI_TYPE_TAG_TIME_T:
-	    value->v_long = G_STRUCT_MEMBER(time_t, mem, offset);
+#if SIZEOF_TIME_T == 4
+	    value->v_int32 = G_STRUCT_MEMBER(time_t, mem, offset);
+#elif SIZEOF_TIME_T == 8
+	    value->v_int64 = G_STRUCT_MEMBER(time_t, mem, offset);
+#else
+#  error "Unexpected size for time_t: not 4 or 8"
+#endif
 	    result = TRUE;
 	    break;
 	  case GI_TYPE_TAG_UTF8:
@@ -292,7 +299,13 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	    result = TRUE;
 	    break;
 	  case GI_TYPE_TAG_TIME_T:
-	    G_STRUCT_MEMBER(time_t, mem, offset) = value->v_long;
+#if SIZEOF_TIME_T == 4
+            G_STRUCT_MEMBER(time_t, mem, offset) = value->v_int32;
+#elif SIZEOF_TIME_T == 8
+            G_STRUCT_MEMBER(time_t, mem, offset) = value->v_int64;
+#else
+#  error "Unexpected size for time_t: not 4 or 8"
+#endif
 	    result = TRUE;
 	    break;
 	  case GI_TYPE_TAG_UTF8:

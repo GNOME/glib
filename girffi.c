@@ -152,20 +152,28 @@ g_ir_ffi_convert_arguments(GICallableInfo *callable_info, void **args)
           g_args[i].v_uint32 = *(guint32 *) args[i];
           break;
         case GI_TYPE_TAG_LONG:
+          g_args[i].v_long = *(glong *) args[i];
+          break;
         case GI_TYPE_TAG_INT64:
-          g_args[i].v_int64 = *(glong *) args[i];
+          g_args[i].v_int64 = *(gint64 *) args[i];
           break;
         case GI_TYPE_TAG_ULONG:
+          g_args[i].v_ulong = *(gulong *) args[i];
+          break;
         case GI_TYPE_TAG_UINT64:
-          g_args[i].v_uint64 = *(glong *) args[i];
+          g_args[i].v_uint64 = *(guint64 *) args[i];
           break;
         case GI_TYPE_TAG_INT:
+          g_args[i].v_int = *(gint *) args[i];
+          break;
         case GI_TYPE_TAG_SSIZE:
+          g_args[i].v_ssize = *(gssize *) args[i];
+          break;
         case GI_TYPE_TAG_SIZE:
-          g_args[i].v_int32 = *(gint *) args[i];
+          g_args[i].v_size = *(gsize *) args[i];
           break;
         case GI_TYPE_TAG_UINT:
-          g_args[i].v_uint32 = *(guint *) args[i];
+          g_args[i].v_uint = *(guint *) args[i];
           break;
         case GI_TYPE_TAG_FLOAT:
           g_args[i].v_float = *(gfloat *) args[i];
