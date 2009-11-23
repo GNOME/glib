@@ -672,7 +672,7 @@ main (int    argc,
 
   close (log_fd);
 
-  return 0;
+  return testcase_fail_count == 0 ? 0 : 1;
 }
 
 static void
