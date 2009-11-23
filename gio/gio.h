@@ -36,6 +36,7 @@
 #include <gio/gcontenttype.h>
 #include <gio/gconverter.h>
 #include <gio/gconverterinputstream.h>
+#include <gio/gconverteroutputstream.h>
 #include <gio/gcharsetconverter.h>
 #include <gio/gdatainputstream.h>
 #include <gio/gdataoutputstream.h>

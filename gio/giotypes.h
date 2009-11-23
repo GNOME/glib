@@ -41,6 +41,7 @@ typedef struct _GCancellable                  GCancellable;
 typedef struct _GCharsetConverter             GCharsetConverter;
 typedef struct _GConverter                    GConverter;
 typedef struct _GConverterInputStream         GConverterInputStream;
+typedef struct _GConverterOutputStream        GConverterOutputStream;
 typedef struct _GDataInputStream              GDataInputStream;
 
 /**

@@ -190,6 +190,7 @@ libgio_2_0_la_SOURCES =		\
 	gcharsetconverter.c	\
 	gconverter.c		\
 	gconverterinputstream.c	\
+	gconverteroutputstream.c	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
 	gdrive.c 		\
@@ -330,6 +331,7 @@ gio_headers =			\
 	gcharsetconverter.h	\
 	gconverter.h		\
 	gconverterinputstream.h	\
+	gconverteroutputstream.h	\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\
