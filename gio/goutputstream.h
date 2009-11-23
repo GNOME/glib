@@ -195,6 +195,7 @@ gboolean g_output_stream_close_finish  (GOutputStream             *stream,
 					GError                   **error);
 
 gboolean g_output_stream_is_closed     (GOutputStream             *stream);
+gboolean g_output_stream_is_closing    (GOutputStream             *stream);
 gboolean g_output_stream_has_pending   (GOutputStream             *stream);
 gboolean g_output_stream_set_pending   (GOutputStream             *stream,
 					GError                   **error);
