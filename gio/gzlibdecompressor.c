@@ -144,7 +144,12 @@ g_zlib_decompressor_constructed (GObject *object)
       /* + 16 for gzip */
       res = inflateInit2 (&decompressor->zstream, MAX_WBITS + 16);
     }
-  else
+  else if (decompressor->format == G_ZLIB_COMPRESSOR_FORMAT_RAW)
+    {
+      /* Negative for gzip */
+      res = inflateInit2 (&decompressor->zstream, -MAX_WBITS);
+    }
+  else /* ZLIB */
     res = inflateInit (&decompressor->zstream);
 
   if (res == Z_MEM_ERROR )
@@ -170,7 +175,7 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
 						      P_("compression format"),
 						      P_("The format of the compressed data"),
 						      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
-						      G_ZLIB_COMPRESSOR_FORMAT_RAW,
+						      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
 						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
 						      G_PARAM_STATIC_STRINGS));
 }

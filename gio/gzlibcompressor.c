@@ -157,7 +157,15 @@ g_zlib_compressor_constructed (GObject *object)
 			  MAX_WBITS + 16, 8,
 			  Z_DEFAULT_STRATEGY);
     }
-  else
+  else if (compressor->format == G_ZLIB_COMPRESSOR_FORMAT_RAW)
+    {
+      /* negative wbits for raw */
+      res = deflateInit2 (&compressor->zstream,
+			  compressor->level, Z_DEFLATED,
+			  -MAX_WBITS, 8,
+			  Z_DEFAULT_STRATEGY);
+    }
+  else /* ZLIB */
     res = deflateInit (&compressor->zstream, compressor->level);
 
   if (res == Z_MEM_ERROR )
@@ -183,7 +191,7 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
 						      P_("compression format"),
 						      P_("The format of the compressed data"),
 						      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
-						      G_ZLIB_COMPRESSOR_FORMAT_RAW,
+						      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
 						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
 						      G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class,

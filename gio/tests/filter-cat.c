@@ -76,7 +76,7 @@ cat (GFile * file)
   if (decompress)
     {
       GInputStream *old;
-      conv = (GConverter *)g_zlib_decompressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_RAW);
+      conv = (GConverter *)g_zlib_decompressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
       g_object_unref (conv);
@@ -108,7 +108,7 @@ cat (GFile * file)
   if (compress)
     {
       GInputStream *old;
-      conv = (GConverter *)g_zlib_compressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_RAW, -1);
+      conv = (GConverter *)g_zlib_compressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB, -1);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
       g_object_unref (conv);
