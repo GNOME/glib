@@ -119,8 +119,8 @@ struct _GTypeModuleClass
  *                                 gtk_gadget,
  *                                 GTK_TYPE_THING,
  *                                 0,
- *                                 G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
- *                                                        gtk_gadget_gizmo_init));
+ *                                 G_IMPLEMENT_INTERFACE_DYNAMIC (TYPE_GIZMO,
+ *                                                                gtk_gadget_gizmo_init));
  * ]|
  * expands to
  * |[
@@ -167,7 +167,7 @@ struct _GTypeModuleClass
  *     const GInterfaceInfo g_implement_interface_info = {
  *       (GInterfaceInitFunc) gtk_gadget_gizmo_init
  *     };
- *     g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
+ *     g_type_module_add_interface (type_module, g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
  *   }
  * }
  * ]|
@@ -215,6 +215,27 @@ type_name##_register_type (GTypeModule *type_module) \
   { CODE ; } \
 }
 
+/**
+ * G_IMPLEMENT_INTERFACE_DYNAMIC:
+ * @TYPE_IFACE: The #GType of the interface to add
+ * @iface_init: The interface init function
+ *
+ * A convenience macro to ease interface addition in the @_C_ section
+ * of G_DEFINE_DYNAMIC_TYPE_EXTENDED(). See G_DEFINE_DYNAMIC_TYPE_EXTENDED()
+ * for an example.
+ *
+ * Note that this macro can only be used together with the
+ * G_DEFINE_DYNAMIC_TYPE_EXTENDED macros, since it depends on variable
+ * names from that macro.
+ *
+ * Since: 2.24
+ */
+#define G_IMPLEMENT_INTERFACE_DYNAMIC(TYPE_IFACE, iface_init)       { \
+  const GInterfaceInfo g_implement_interface_info = { \
+    iface_init, NULL, NULL \
+  }; \
+  g_type_module_add_interface (type_module, g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
+}
 
 GType    g_type_module_get_type       (void) G_GNUC_CONST;
 gboolean g_type_module_use            (GTypeModule          *module);
