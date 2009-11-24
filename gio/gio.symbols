@@ -34,6 +34,7 @@ g_app_info_dup
 g_app_info_equal
 g_app_info_get_id
 g_app_info_get_name
+g_app_info_get_display_name
 g_app_info_get_description
 g_app_info_get_executable
 g_app_info_get_commandline
@@ -153,6 +154,40 @@ g_content_type_from_mime_type
 g_content_type_guess
 g_content_type_guess_for_tree
 g_content_types_get_registered
+#endif
+#endif
+
+#if IN_HEADER(__G_CONVERTER_H__)
+#if IN_FILE(__G_CONVERTER_C__)
+g_converter_get_type G_GNUC_CONST
+g_converter_reset
+g_converter_convert
+#endif
+#endif
+
+#if IN_HEADER(__G_CONVERTER_INPUT_STREAM_H__)
+#if IN_FILE(__G_CONVERTER_INPUT_STREAM_C__)
+g_converter_input_stream_get_type
+g_converter_input_stream_new
+g_converter_input_stream_get_converter
+#endif
+#endif
+
+#if IN_HEADER(__G_CONVERTER_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_CONVERTER_OUTPUT_STREAM_C__)
+g_converter_output_stream_get_type
+g_converter_output_stream_new
+g_converter_output_stream_get_converter
+#endif
+#endif
+
+#if IN_HEADER(__G_CHARSET_CONVERTER_H__)
+#if IN_FILE(__G_CHARSET_CONVERTER_C__)
+g_charset_converter_get_type
+g_charset_converter_new
+g_charset_converter_get_num_fallbacks
+g_charset_converter_get_use_fallback
+g_charset_converter_set_use_fallback
 #endif
 #endif
 
@@ -671,6 +706,7 @@ g_output_stream_flush_finish
 g_output_stream_close_async 
 g_output_stream_close_finish 
 g_output_stream_is_closed 
+g_output_stream_is_closing
 g_output_stream_has_pending 
 g_output_stream_set_pending 
 g_output_stream_clear_pending
@@ -889,6 +925,8 @@ g_local_directory_monitor_get_type  G_GNUC_CONST
 #if IN_FILE(__GIO_ENUM_TYPES_C__)
 g_mount_unmount_flags_get_type G_GNUC_CONST
 g_app_info_create_flags_get_type G_GNUC_CONST
+g_converter_flags_get_type G_GNUC_CONST
+g_converter_result_get_type G_GNUC_CONST
 g_data_stream_byte_order_get_type G_GNUC_CONST
 g_data_stream_newline_type_get_type G_GNUC_CONST
 g_file_attribute_info_flags_get_type G_GNUC_CONST
@@ -915,6 +953,7 @@ g_socket_type_get_type G_GNUC_CONST
 g_socket_protocol_get_type G_GNUC_CONST
 g_socket_msg_flags_get_type G_GNUC_CONST
 g_resolver_error_get_type G_GNUC_CONST
+g_zlib_compressor_format_get_type
 #endif
 #endif
 
@@ -1258,5 +1297,19 @@ g_unix_fd_message_append_fd
 g_unix_fd_message_new
 g_unix_fd_message_steal_fds
 #endif
+#endif
+#endif
+
+#if IN_HEADER(__G_ZLIB_COMPRESSOR_H__)
+#if IN_FILE(__G_ZLIB_COMPRESSOR_C__)
+g_zlib_compressor_get_type
+g_zlib_compressor_new
+#endif
+#endif
+
+#if IN_HEADER(__G_ZLIB_DECOMPRESSOR_H__)
+#if IN_FILE(__G_ZLIB_DECOMPRESSOR_C__)
+g_zlib_decompressor_get_type
+g_zlib_decompressor_new
 #endif
 #endif
