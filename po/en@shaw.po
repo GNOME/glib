@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the GLib package.
 # Thomas Thurman <tthurman@gnome.org>, 2009.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
