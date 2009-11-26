@@ -225,7 +225,6 @@ g_zlib_decompressor_convert (GConverter *converter,
 			     GError    **error)
 {
   GZlibDecompressor *decompressor;
-  gsize header_size;
   int res;
 
   decompressor = G_ZLIB_DECOMPRESSOR (converter);
