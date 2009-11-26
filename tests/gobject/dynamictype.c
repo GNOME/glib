@@ -93,8 +93,7 @@ dynamic_object_class_finalize (DynamicObjectClass *class)
 }
 
 static void
-dynamic_object_iface_init (gpointer g_iface,
-			   gpointer iface_data)
+dynamic_object_iface_init (TestIface *iface)
 {
 }
 

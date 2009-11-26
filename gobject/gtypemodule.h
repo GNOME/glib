@@ -232,7 +232,7 @@ type_name##_register_type (GTypeModule *type_module) \
  */
 #define G_IMPLEMENT_INTERFACE_DYNAMIC(TYPE_IFACE, iface_init)       { \
   const GInterfaceInfo g_implement_interface_info = { \
-    iface_init, NULL, NULL \
+    (GInterfaceInitFunc) iface_init, NULL, NULL      \
   }; \
   g_type_module_add_interface (type_module, g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
