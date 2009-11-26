@@ -1432,6 +1432,7 @@ _g_local_file_info_get (const char             *basename,
   char *symlink_target;
   GVfs *vfs;
   GVfsClass *class;
+  guint64 device;
 
   info = g_file_info_new ();
 
@@ -1483,7 +1484,9 @@ _g_local_file_info_get (const char             *basename,
       g_free (display_name);
       return NULL;
     }
-  
+
+  device = statbuf.st_dev;
+
 #ifdef S_ISLNK
   is_symlink = S_ISLNK (statbuf.st_mode);
 #else
@@ -1711,7 +1714,7 @@ _g_local_file_info_get (const char             *basename,
     {
       class->local_file_add_info (vfs,
                                   path,
-                                  statbuf.st_dev,
+                                  device,
                                   attribute_matcher,
                                   info,
                                   NULL,
