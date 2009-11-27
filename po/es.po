@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-11-05 14:59+0000\n"
-"PO-Revision-Date: 2009-11-06 21:45+0100\n"
+"POT-Creation-Date: 2009-11-26 17:16+0000\n"
+"PO-Revision-Date: 2009-11-27 01:31+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -250,27 +250,45 @@ msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no contiene XXXXXX"
 
-#: ../glib/gfileutils.c:1779
+#: ../glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:1784
+#: ../glib/gfileutils.c:1787
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:1789
+#: ../glib/gfileutils.c:1792
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:1832
+#: ../glib/gfileutils.c:1797
+#, c-format
+#| msgid "%.1f KB"
+msgid "%.1f TB"
+msgstr "%.1f TiB"
+
+#: ../glib/gfileutils.c:1802
+#, c-format
+#| msgid "%.1f KB"
+msgid "%.1f PB"
+msgstr "%.1f PiB"
+
+#: ../glib/gfileutils.c:1807
+#, c-format
+#| msgid "%.1f KB"
+msgid "%.1f EB"
+msgstr "%.1f EiB"
+
+#: ../glib/gfileutils.c:1850
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falló al leer el enlace simbólico «%s»: %s"
 
-#: ../glib/gfileutils.c:1853
+#: ../glib/gfileutils.c:1871
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
@@ -1154,17 +1172,17 @@ msgstr "El valor «%s» no puede interpretarse como un booleano."
 #: ../gio/gbufferedinputstream.c:415 ../gio/gbufferedinputstream.c:496
 #: ../gio/ginputstream.c:186 ../gio/ginputstream.c:318
 #: ../gio/ginputstream.c:557 ../gio/ginputstream.c:682
-#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:652
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:657
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "El valor de conteo pasado a %s es demasiado largo"
 
 #: ../gio/gbufferedinputstream.c:883 ../gio/ginputstream.c:892
-#: ../gio/giostream.c:305 ../gio/goutputstream.c:1081
+#: ../gio/giostream.c:305 ../gio/goutputstream.c:1108
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
-#: ../gio/gcancellable.c:420 ../gio/glocalfile.c:2095
+#: ../gio/gcancellable.c:433 ../gio/glocalfile.c:2095
 #: ../gio/gsimpleasyncresult.c:648 ../gio/gsimpleasyncresult.c:674
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
@@ -1187,36 +1205,36 @@ msgstr "tipo %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de flujo inesperadamente prematuro"
 
-#: ../gio/gdesktopappinfo.c:463 ../gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:468 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sin nombre"
 
-#: ../gio/gdesktopappinfo.c:710
+#: ../gio/gdesktopappinfo.c:725
 msgid "Desktop file didn't specify Exec field"
 msgstr "El archivo de escritorio no especificó el campo Exec"
 
-#: ../gio/gdesktopappinfo.c:890
+#: ../gio/gdesktopappinfo.c:905
 msgid "Unable to find terminal required for application"
 msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: ../gio/gdesktopappinfo.c:1098
+#: ../gio/gdesktopappinfo.c:1113
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No se puede crear la carpeta de configuración de la aplicación %s del "
 "usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1102
+#: ../gio/gdesktopappinfo.c:1117
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1506
+#: ../gio/gdesktopappinfo.c:1525
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:1618
+#: ../gio/gdesktopappinfo.c:1639
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -1268,15 +1286,15 @@ msgstr "Número de tokens (%d) mal formados en la codificación GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 
-#: ../gio/gfile.c:861 ../gio/gfile.c:1091 ../gio/gfile.c:1226
-#: ../gio/gfile.c:1462 ../gio/gfile.c:1516 ../gio/gfile.c:1573
-#: ../gio/gfile.c:1656 ../gio/gfile.c:1711 ../gio/gfile.c:1771
-#: ../gio/gfile.c:1825 ../gio/gfile.c:3150 ../gio/gfile.c:3204
-#: ../gio/gfile.c:3335 ../gio/gfile.c:3375 ../gio/gfile.c:3702
-#: ../gio/gfile.c:4104 ../gio/gfile.c:4190 ../gio/gfile.c:4279
-#: ../gio/gfile.c:4377 ../gio/gfile.c:4464 ../gio/gfile.c:4557
-#: ../gio/gfile.c:4887 ../gio/gfile.c:5167 ../gio/gfile.c:5236
-#: ../gio/gfile.c:6827 ../gio/gfile.c:6917 ../gio/gfile.c:7003
+#: ../gio/gfile.c:903 ../gio/gfile.c:1133 ../gio/gfile.c:1268
+#: ../gio/gfile.c:1504 ../gio/gfile.c:1558 ../gio/gfile.c:1615
+#: ../gio/gfile.c:1698 ../gio/gfile.c:1753 ../gio/gfile.c:1813
+#: ../gio/gfile.c:1867 ../gio/gfile.c:3192 ../gio/gfile.c:3246
+#: ../gio/gfile.c:3377 ../gio/gfile.c:3417 ../gio/gfile.c:3744
+#: ../gio/gfile.c:4146 ../gio/gfile.c:4232 ../gio/gfile.c:4321
+#: ../gio/gfile.c:4419 ../gio/gfile.c:4506 ../gio/gfile.c:4599
+#: ../gio/gfile.c:4929 ../gio/gfile.c:5209 ../gio/gfile.c:5278
+#: ../gio/gfile.c:6869 ../gio/gfile.c:6959 ../gio/gfile.c:7045
 #: ../gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1289,49 +1307,49 @@ msgstr "Operación no soportada"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1347 ../gio/glocalfile.c:1066 ../gio/glocalfile.c:1077
+#: ../gio/gfile.c:1389 ../gio/glocalfile.c:1066 ../gio/glocalfile.c:1077
 #: ../gio/glocalfile.c:1090
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: ../gio/gfile.c:2399 ../gio/glocalfile.c:2251
+#: ../gio/gfile.c:2441 ../gio/glocalfile.c:2251
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre el directorio"
 
-#: ../gio/gfile.c:2459
+#: ../gio/gfile.c:2501
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar directorio sobre directorio"
 
-#: ../gio/gfile.c:2467 ../gio/glocalfile.c:2260
+#: ../gio/gfile.c:2509 ../gio/glocalfile.c:2260
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:2485
+#: ../gio/gfile.c:2527
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2784
+#: ../gio/gfile.c:2826
 msgid "Can't copy special file"
 msgstr "No se puede copiar el archivo especial"
 
-#: ../gio/gfile.c:3325
+#: ../gio/gfile.c:3367
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:3418
+#: ../gio/gfile.c:3460
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:3467
+#: ../gio/gfile.c:3509
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:5884 ../gio/gvolume.c:376
+#: ../gio/gfile.c:5926 ../gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:5995
+#: ../gio/gfile.c:6037
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -1422,7 +1440,7 @@ msgstr "El flujo de entrada no implementa la lectura"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:902 ../gio/giostream.c:315
-#: ../gio/goutputstream.c:1091
+#: ../gio/goutputstream.c:1118
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
@@ -1522,7 +1540,6 @@ msgstr "Error al crear el directorio: %s"
 
 #: ../gio/glocalfile.c:2157
 #, c-format
-#| msgid "Failed to read the symbolic link '%s': %s"
 msgid "Filesystem does not support symbolic links"
 msgstr "El sistema de archivos no soporta enlaces simbólicos"
 
@@ -1572,81 +1589,81 @@ msgstr "Nombre extendido del atributo no válido"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error al establecer el atributo extendido «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1481 ../gio/glocalfileoutputstream.c:812
+#: ../gio/glocalfileinfo.c:1482 ../gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Error al mostrar información del estado del archivo «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1552
+#: ../gio/glocalfileinfo.c:1555
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: ../gio/glocalfileinfo.c:1750
+#: ../gio/glocalfileinfo.c:1753
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
 "Error al mostrar la información del estado del descriptor del archivo: %s"
 
-#: ../gio/glocalfileinfo.c:1795
+#: ../gio/glocalfileinfo.c:1798
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
-#: ../gio/glocalfileinfo.c:1813
+#: ../gio/glocalfileinfo.c:1816
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
-#: ../gio/glocalfileinfo.c:1832 ../gio/glocalfileinfo.c:1851
+#: ../gio/glocalfileinfo.c:1835 ../gio/glocalfileinfo.c:1854
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
-#: ../gio/glocalfileinfo.c:1886
+#: ../gio/glocalfileinfo.c:1889
 msgid "Cannot set permissions on symlinks"
 msgstr "No se pueden establecer permisos en enlaces simbólicos"
 
-#: ../gio/glocalfileinfo.c:1902
+#: ../gio/glocalfileinfo.c:1905
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error al establecer permisos: %s"
 
-#: ../gio/glocalfileinfo.c:1953
+#: ../gio/glocalfileinfo.c:1956
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error al establecer el propietario: %s"
 
-#: ../gio/glocalfileinfo.c:1976
+#: ../gio/glocalfileinfo.c:1979
 msgid "symlink must be non-NULL"
 msgstr "el enlace simbólico debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:1986 ../gio/glocalfileinfo.c:2005
-#: ../gio/glocalfileinfo.c:2016
+#: ../gio/glocalfileinfo.c:1989 ../gio/glocalfileinfo.c:2008
+#: ../gio/glocalfileinfo.c:2019
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error al establecer el enlace simbólico: %s"
 
-#: ../gio/glocalfileinfo.c:1995
+#: ../gio/glocalfileinfo.c:1998
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
-#: ../gio/glocalfileinfo.c:2121
+#: ../gio/glocalfileinfo.c:2124
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 
-#: ../gio/glocalfileinfo.c:2144
+#: ../gio/glocalfileinfo.c:2147
 msgid "SELinux context must be non-NULL"
 msgstr "El contexto SELinux debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:2159
+#: ../gio/glocalfileinfo.c:2162
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error al establecer el contexto SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2166
+#: ../gio/glocalfileinfo.c:2169
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux no está activado en este sistema"
 
-#: ../gio/glocalfileinfo.c:2258
+#: ../gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -1752,51 +1769,61 @@ msgstr "Falló al redimensionar el flujo de salida de la memoria"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: ../gio/gmount.c:378
-msgid "mount doesn't implement unmount"
+#: ../gio/gmount.c:409
+#, fuzzy
+#| msgid "mount doesn't implement unmount"
+msgid "mount doesn't implement \"unmount\""
 msgstr "el punto de montaje no implementa desmontado"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: ../gio/gmount.c:457
-msgid "mount doesn't implement eject"
+#: ../gio/gmount.c:488
+#, fuzzy
+#| msgid "mount doesn't implement eject"
+msgid "mount doesn't implement \"eject\""
 msgstr "el punto de montaje no implementa la expulsión"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:537
-msgid "mount doesn't implement unmount or unmount_with_operation"
+#: ../gio/gmount.c:568
+#, fuzzy
+#| msgid "mount doesn't implement unmount or unmount_with_operation"
+msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "el punto de montaje no implementa desmontado o desmontado con operación"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:624
-msgid "mount doesn't implement eject or eject_with_operation"
+#: ../gio/gmount.c:655
+#, fuzzy
+#| msgid "mount doesn't implement eject or eject_with_operation"
+msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 "el punto de montaje no implementa la expulsión o expulsión con operación"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:713
-msgid "mount doesn't implement remount"
+#: ../gio/gmount.c:744
+#, fuzzy
+#| msgid "mount doesn't implement remount"
+msgid "mount doesn't implement \"remount\""
 msgstr "el punto de montaje no implementa remontado"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:797
+#: ../gio/gmount.c:828
 msgid "mount doesn't implement content type guessing"
 msgstr "el punto de montaje no implementa averiguación del tipo de contenido"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:886
+#: ../gio/gmount.c:917
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 "el punto de montaje no implementa averiguación del tipo de contenido síncrona"
@@ -1806,11 +1833,11 @@ msgstr ""
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "El nombre del equipo «%s» contiene «[» pero no «]»"
 
-#: ../gio/goutputstream.c:206 ../gio/goutputstream.c:407
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
 msgstr "El flujo de salida no implementa la escritura"
 
-#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:776
+#: ../gio/goutputstream.c:369 ../gio/goutputstream.c:781
 msgid "Source stream is already closed"
 msgstr "El flujo de origen ya está cerrado"
 
@@ -1942,7 +1969,7 @@ msgstr "Error al enviar el mensaje: %s"
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage no está soportado en win32"
 
-#: ../gio/gsocket.c:2997 ../gio/gsocket.c:3136
+#: ../gio/gsocket.c:2997 ../gio/gsocket.c:3135
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error al recibir el mensaje: %s"
