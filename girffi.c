@@ -31,8 +31,6 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
 {
   switch (tag)
     {
-    case GI_TYPE_TAG_VOID:
-      return &ffi_type_void;
     case GI_TYPE_TAG_BOOLEAN:
       return &ffi_type_uint;
     case GI_TYPE_TAG_INT8:
@@ -100,6 +98,7 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
     case GI_TYPE_TAG_GSLIST:
     case GI_TYPE_TAG_GHASH:
     case GI_TYPE_TAG_ERROR:
+    case GI_TYPE_TAG_VOID:
       return &ffi_type_pointer;
     }
 
