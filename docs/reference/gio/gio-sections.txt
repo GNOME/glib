@@ -713,6 +713,24 @@ GBufferedInputStreamPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gutf8inputstream</FILE>
+<TITLE>GUtf8InputStream</TITLE>
+GUtf8InputStream
+g_utf8_input_stream_new
+<SUBSECTION Standard>
+GUtf8InputStreamClass
+G_UTF8_INPUT_STREAM
+G_IS_UTF8_INPUT_STREAM
+G_TYPE_UTF8_INPUT_STREAM
+G_UTF8_INPUT_STREAM_CLASS
+G_IS_UTF8_INPUT_STREAM_CLASS
+G_UTF8_INPUT_STREAM_GET_CLASS
+<SUBSECTION Private>
+g_utf8_input_stream_get_type
+GUtf8InputStreamPrivate
+</SECTION>
+
+<SECTION>
 <FILE>goutputstream</FILE>
 <TITLE>GOutputStream</TITLE>
 GOutputStreamSpliceFlags

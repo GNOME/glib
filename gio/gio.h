@@ -90,6 +90,7 @@
 #include <gio/gthreadedsocketservice.h>
 #include <gio/gsrvtarget.h>
 #include <gio/gthemedicon.h>
+#include <gio/gutf8inputstream.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>
