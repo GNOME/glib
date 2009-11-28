@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2009-11-26 17:16+0000\n"
-"PO-Revision-Date: 2009-11-27 01:31+0100\n"
+"POT-Creation-Date: 2009-11-27 00:38+0000\n"
+"PO-Revision-Date: 2009-11-28 13:25+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -267,19 +267,16 @@ msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:1797
 #, c-format
-#| msgid "%.1f KB"
 msgid "%.1f TB"
 msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:1802
 #, c-format
-#| msgid "%.1f KB"
 msgid "%.1f PB"
 msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:1807
 #, c-format
-#| msgid "%.1f KB"
 msgid "%.1f EB"
 msgstr "%.1f EiB"
 
@@ -1770,48 +1767,45 @@ msgstr "Falló al redimensionar el flujo de salida de la memoria"
 #. * message for mount objects that
 #. * don't implement unmount.
 #: ../gio/gmount.c:409
-#, fuzzy
 #| msgid "mount doesn't implement unmount"
 msgid "mount doesn't implement \"unmount\""
-msgstr "el punto de montaje no implementa desmontado"
+msgstr "el punto de montaje no implementa el desmontado («unmount»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: ../gio/gmount.c:488
-#, fuzzy
 #| msgid "mount doesn't implement eject"
 msgid "mount doesn't implement \"eject\""
-msgstr "el punto de montaje no implementa la expulsión"
+msgstr "el punto de montaje no implementa la expulsión («eject»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:568
-#, fuzzy
 #| msgid "mount doesn't implement unmount or unmount_with_operation"
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
-"el punto de montaje no implementa desmontado o desmontado con operación"
+"el punto de montaje no implementa desmontado («umount») o desmontado con "
+"operación («unmount_with_operation»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:655
-#, fuzzy
 #| msgid "mount doesn't implement eject or eject_with_operation"
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
-"el punto de montaje no implementa la expulsión o expulsión con operación"
+"el punto de montaje no implementa la expulsión («eject») o expulsión con "
+"operación («eject_with_operation»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: ../gio/gmount.c:744
-#, fuzzy
 #| msgid "mount doesn't implement remount"
 msgid "mount doesn't implement \"remount\""
-msgstr "el punto de montaje no implementa remontado"
+msgstr "el punto de montaje no implementa el remontado («remount»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
