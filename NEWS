@@ -1,3 +1,63 @@
+Overview of Changes from GLib 2.22.x to GLib 2.23.0
+===================================================
+
+* GIO:
+ - GConverter: a generic interface for stateful conversions of data,
+   suitable for charset conversion, compression, decompression, regexp
+   replacement. Concrete implementations are GCharsetConverter,
+   GZlibCompressor and GZlibDecompressor. GConverterInputStream,
+   GConverterOutputStream are stream implementations that convert data
+   while loading or saving it.
+ - GMounts can now have a 'default location': a path that reflects
+   the main entry point for the user (e.g. the home directory).
+ - As a consequence of the compression support, GIO depends on zlib now.
+
+* GObject:
+ - G_IMPLEMENT_INTERFACE_DYNAMIC: a convenience macro for adding
+   interfaces to dynamic types.
+
+* GModule:
+ - The -pthread flag has been added to all gmodule .pc files, because
+   it is not generally permissible to load modules that are linked
+   against libpthread if the program has not been compiled with threading
+   support.
+
+* Bugs fixed:
+ 601637 GUnixFDMessage should contain a GUnixFDList
+ 585566 GSocketListener API issues
+ 572252 Bug in g_file_test() function.
+ 600550 g_app_info_create_from_commandline doesn't treat arguments properly
+ 541236 not detecting exact content type
+ 350200 [PATCH] GTypeModule derived class unref does not unload plugin
+ 589631 Please enclose literal values with double quotes
+ 577711 cross compile check for g++ broken
+ 600620 Support X-GNOME-FullName in GAppInfo
+ 598899 GWin32DirectoryMonitor is broken
+ 593809 Nautilus does not restore the position of the icons on the desktop...
+ 563627 g_get_prgname() threadsafety
+ 600141 Add -pthread to gmodule pkg-config
+ 593856 file and directory monitors don't work when glib is compiled...
+ 324930 Nautilus should disallow copying of symlink to FAT drive early
+ 587300 Deadlock when calling g_cancellable_disconnect in a...
+ 595138 GFile not robust with invalid input
+ 591216 Warning building resolver.o
+ 590016 Does not compile under MinGW32 + Wine
+ 591214 Warnings building gcancellable.o
+ 561998 Have specific entry points (paths) for mounts...
+ 508157 Add G_IMPLEMENT_INTERFACE_DYNAMIC
+ 535159 g_file_has_parent
+
+* Updated translations:
+ Brazilian Portuguese
+ Estonian
+ Galician
+ Norwegian bokmål
+ Shavian
+ Slovenian
+ Spanish
+ Swedish
+
+
 Overview of Changes from GLib 2.22.1 to GLib 2.22.2
 ===================================================
 
