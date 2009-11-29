@@ -192,8 +192,8 @@ g_converter_output_stream_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
+
 static void
 g_converter_output_stream_init (GConverterOutputStream *stream)
 {
@@ -208,13 +208,13 @@ g_converter_output_stream_init (GConverterOutputStream *stream)
  *
  * Creates a new converter output stream for the @base_stream.
  *
- * Returns: a new #GConverterOutputStream.
+ * Returns: a new #GOutputStream.
  **/
-GConverterOutputStream *
+GOutputStream *
 g_converter_output_stream_new (GOutputStream *base_stream,
-			      GConverter *converter)
+                               GConverter    *converter)
 {
-  GConverterOutputStream *stream;
+  GOutputStream *stream;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (base_stream), NULL);
 

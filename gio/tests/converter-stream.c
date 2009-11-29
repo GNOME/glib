@@ -298,10 +298,8 @@ test_expander (void)
   gsize total_read;
   gssize res;
   GConverterResult cres;
-  GInputStream *mem;
-  GConverterInputStream *cstream;
-  GOutputStream *mem_out;
-  GConverterOutputStream *cstream_out;
+  GInputStream *mem, *cstream;
+  GOutputStream *mem_out, *cstream_out;
   GConverter *expander;
   GError *error;
   int i;
@@ -334,7 +332,7 @@ test_expander (void)
   while (TRUE)
     {
       error = NULL;
-      res = g_input_stream_read (G_INPUT_STREAM (cstream),
+      res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
       g_assert (res != -1);
@@ -356,7 +354,7 @@ test_expander (void)
   for (i = 0; i < sizeof(unexpanded_data); i++)
     {
       error = NULL;
-      res = g_output_stream_write (G_OUTPUT_STREAM (cstream_out),
+      res = g_output_stream_write (cstream_out,
 				   unexpanded_data + i, 1,
 				   NULL, &error);
       g_assert (res != -1);
@@ -368,7 +366,7 @@ test_expander (void)
       g_assert (res == 1);
     }
 
-  g_output_stream_close (G_OUTPUT_STREAM (cstream_out), NULL, NULL);
+  g_output_stream_close (cstream_out, NULL, NULL);
 
   g_assert (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mem_out)) == n_written);
   g_assert (memcmp (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mem_out)),
@@ -390,10 +388,8 @@ test_compressor (void)
   gsize total_read;
   gssize res;
   GConverterResult cres;
-  GInputStream *mem;
-  GOutputStream *mem_out;
-  GConverterInputStream *cstream;
-  GConverterOutputStream *cstream_out;
+  GInputStream *mem, *cstream;
+  GOutputStream *mem_out, *cstream_out;
   GConverter *expander, *compressor;
   GError *error;
   int i;
@@ -424,7 +420,7 @@ test_compressor (void)
   while (TRUE)
     {
       error = NULL;
-      res = g_input_stream_read (G_INPUT_STREAM (cstream),
+      res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
       g_assert (res != -1);
@@ -448,7 +444,7 @@ test_compressor (void)
   for (i = 0; i < expanded_size; i++)
     {
       error = NULL;
-      res = g_output_stream_write (G_OUTPUT_STREAM (cstream_out),
+      res = g_output_stream_write (cstream_out,
 				   expanded + i, 1,
 				   NULL, &error);
       g_assert (res != -1);
@@ -460,7 +456,7 @@ test_compressor (void)
       g_assert (res == 1);
     }
 
-  g_output_stream_close (G_OUTPUT_STREAM (cstream_out), NULL, NULL);
+  g_output_stream_close (cstream_out, NULL, NULL);
 
   g_assert (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mem_out)) == n_read - 1); /* Last 2 zeros are combined */
   g_assert (memcmp (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mem_out)),
@@ -484,7 +480,7 @@ test_compressor (void)
   while (TRUE)
     {
       error = NULL;
-      res = g_input_stream_read (G_INPUT_STREAM (cstream),
+      res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
       g_assert (res != -1);
@@ -508,7 +504,7 @@ test_compressor (void)
   while (TRUE)
     {
       error = NULL;
-      res = g_input_stream_read (G_INPUT_STREAM (cstream),
+      res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
       g_assert (res != -1);
@@ -537,7 +533,7 @@ test_compressor (void)
   while (TRUE)
     {
       error = NULL;
-      res = g_input_stream_read (G_INPUT_STREAM (cstream),
+      res = g_input_stream_read (cstream,
 				 ptr, 1,
 				 NULL, &error);
       if (res == -1)

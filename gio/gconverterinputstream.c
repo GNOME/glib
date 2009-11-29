@@ -191,13 +191,13 @@ g_converter_input_stream_init (GConverterInputStream *stream)
  *
  * Creates a new converter input stream for the @base_stream.
  *
- * Returns: a new #GConverterInputStream.
+ * Returns: a new #GInputStream.
  **/
-GConverterInputStream *
+GInputStream *
 g_converter_input_stream_new (GInputStream *base_stream,
-			      GConverter *converter)
+                              GConverter   *converter)
 {
-  GConverterInputStream *stream;
+  GInputStream *stream;
 
   g_return_val_if_fail (G_IS_INPUT_STREAM (base_stream), NULL);
 

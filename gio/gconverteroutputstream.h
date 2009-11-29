@@ -71,8 +71,8 @@ struct _GConverterOutputStreamClass
 };
 
 GType                   g_converter_output_stream_get_type      (void) G_GNUC_CONST;
-GConverterOutputStream *g_converter_output_stream_new           (GOutputStream         *base_stream,
-								 GConverter            *converter);
+GOutputStream          *g_converter_output_stream_new           (GOutputStream         *base_stream,
+                                                                 GConverter            *converter);
 GConverter             *g_converter_output_stream_get_converter (GConverterOutputStream *converter_stream);
 
 G_END_DECLS
