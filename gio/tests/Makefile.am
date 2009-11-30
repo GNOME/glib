@@ -26,7 +26,6 @@ TEST_PROGS +=	 		\
 	converter-stream	\
 	data-input-stream 	\
 	data-output-stream 	\
-	filter-cat		\
 	g-icon			\
 	buffered-input-stream	\
 	sleepy-stream		\
@@ -35,7 +34,14 @@ TEST_PROGS +=	 		\
 	srvtarget		\
 	contexts
 
-SAMPLE_PROGS = resolver socket-server socket-client echo-server httpd send-data
+SAMPLE_PROGS = 			\
+	resolver		\
+	socket-server		\
+	socket-client		\
+	echo-server		\
+	httpd			\
+	send-data		\
+	filter-cat
 
 if OS_UNIX
 TEST_PROGS += live-g-file unix-streams desktop-app-info unix-fd
