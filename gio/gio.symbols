@@ -424,112 +424,112 @@ g_file_icon_get_file
 #if IN_HEADER(__G_FILE_INFO_H__)
 #if IN_FILE(__G_FILE_INFO_C__)
 g_file_info_get_type  G_GNUC_CONST
-g_file_info_new 
-g_file_info_dup 
-g_file_info_copy_into 
-g_file_info_has_attribute 
+g_file_info_new
+g_file_info_dup
+g_file_info_copy_into
+g_file_info_has_attribute
 g_file_info_has_namespace
-g_file_info_list_attributes 
-g_file_info_get_attribute_type 
-g_file_info_remove_attribute 
-g_file_info_get_attribute_status 
-g_file_info_get_attribute_data 
-g_file_info_get_attribute_as_string 
-g_file_info_get_attribute_string 
-g_file_info_get_attribute_byte_string 
-g_file_info_get_attribute_boolean 
-g_file_info_get_attribute_uint32 
-g_file_info_get_attribute_int32 
-g_file_info_get_attribute_uint64 
-g_file_info_get_attribute_int64 
-g_file_info_get_attribute_object 
+g_file_info_list_attributes
+g_file_info_get_attribute_type
+g_file_info_remove_attribute
+g_file_info_get_attribute_status
+g_file_info_get_attribute_data
+g_file_info_get_attribute_as_string
+g_file_info_get_attribute_string
+g_file_info_get_attribute_byte_string
+g_file_info_get_attribute_boolean
+g_file_info_get_attribute_uint32
+g_file_info_get_attribute_int32
+g_file_info_get_attribute_uint64
+g_file_info_get_attribute_int64
+g_file_info_get_attribute_object
 g_file_info_get_attribute_stringv
 g_file_info_set_attribute_status
-g_file_info_set_attribute 
-g_file_info_set_attribute_string 
-g_file_info_set_attribute_byte_string 
-g_file_info_set_attribute_boolean 
-g_file_info_set_attribute_uint32 
-g_file_info_set_attribute_int32 
-g_file_info_set_attribute_uint64 
-g_file_info_set_attribute_int64 
-g_file_info_set_attribute_object 
+g_file_info_set_attribute
+g_file_info_set_attribute_string
+g_file_info_set_attribute_byte_string
+g_file_info_set_attribute_boolean
+g_file_info_set_attribute_uint32
+g_file_info_set_attribute_int32
+g_file_info_set_attribute_uint64
+g_file_info_set_attribute_int64
+g_file_info_set_attribute_object
 g_file_info_set_attribute_stringv
-g_file_info_clear_status 
-g_file_info_get_file_type 
-g_file_info_get_is_hidden 
-g_file_info_get_is_backup 
-g_file_info_get_is_symlink 
-g_file_info_get_name 
-g_file_info_get_display_name 
-g_file_info_get_edit_name 
-g_file_info_get_icon 
-g_file_info_get_content_type 
-g_file_info_get_size 
-g_file_info_get_modification_time 
-g_file_info_get_symlink_target 
-g_file_info_get_etag 
-g_file_info_get_sort_order 
-g_file_info_set_attribute_mask 
-g_file_info_unset_attribute_mask 
-g_file_info_set_file_type 
-g_file_info_set_is_hidden 
-g_file_info_set_is_symlink 
-g_file_info_set_name 
-g_file_info_set_display_name 
-g_file_info_set_edit_name 
-g_file_info_set_icon 
-g_file_info_set_content_type 
-g_file_info_set_size 
-g_file_info_set_modification_time 
-g_file_info_set_symlink_target 
-g_file_info_set_sort_order 
-g_file_attribute_matcher_new 
-g_file_attribute_matcher_ref 
-g_file_attribute_matcher_unref 
-g_file_attribute_matcher_matches 
-g_file_attribute_matcher_matches_only 
-g_file_attribute_matcher_enumerate_namespace 
-g_file_attribute_matcher_enumerate_next 
+g_file_info_clear_status
+g_file_info_get_file_type
+g_file_info_get_is_hidden
+g_file_info_get_is_backup
+g_file_info_get_is_symlink
+g_file_info_get_name
+g_file_info_get_display_name
+g_file_info_get_edit_name
+g_file_info_get_icon
+g_file_info_get_content_type
+g_file_info_get_size
+g_file_info_get_modification_time
+g_file_info_get_symlink_target
+g_file_info_get_etag
+g_file_info_get_sort_order
+g_file_info_set_attribute_mask
+g_file_info_unset_attribute_mask
+g_file_info_set_file_type
+g_file_info_set_is_hidden
+g_file_info_set_is_symlink
+g_file_info_set_name
+g_file_info_set_display_name
+g_file_info_set_edit_name
+g_file_info_set_icon
+g_file_info_set_content_type
+g_file_info_set_size
+g_file_info_set_modification_time
+g_file_info_set_symlink_target
+g_file_info_set_sort_order
+g_file_attribute_matcher_new
+g_file_attribute_matcher_ref
+g_file_attribute_matcher_unref
+g_file_attribute_matcher_matches
+g_file_attribute_matcher_matches_only
+g_file_attribute_matcher_enumerate_namespace
+g_file_attribute_matcher_enumerate_next
 #endif
 #endif
 
 #if IN_HEADER(__G_FILE_INPUT_STREAM_H__)
 #if IN_FILE(__G_FILE_INPUT_STREAM_C__)
 g_file_input_stream_get_type  G_GNUC_CONST
-g_file_input_stream_query_info 
-g_file_input_stream_query_info_async 
-g_file_input_stream_query_info_finish 
+g_file_input_stream_query_info
+g_file_input_stream_query_info_async
+g_file_input_stream_query_info_finish
 #endif
 #endif
 
 #if IN_HEADER(__G_FILE_MONITOR_H__)
 #if IN_FILE(__G_FILE_MONITOR_C__)
 g_file_monitor_get_type  G_GNUC_CONST
-g_file_monitor_cancel 
-g_file_monitor_is_cancelled 
-g_file_monitor_set_rate_limit 
-g_file_monitor_emit_event 
+g_file_monitor_cancel
+g_file_monitor_is_cancelled
+g_file_monitor_set_rate_limit
+g_file_monitor_emit_event
 #endif
 #endif
 
 #if IN_HEADER(__G_FILENAME_COMPLETER_H__)
 #if IN_FILE(__G_FILENAME_COMPLETER_C__)
 g_filename_completer_get_type  G_GNUC_CONST
-g_filename_completer_new 
-g_filename_completer_get_completion_suffix 
-g_filename_completer_get_completions 
-g_filename_completer_set_dirs_only 
+g_filename_completer_new
+g_filename_completer_get_completion_suffix
+g_filename_completer_get_completions
+g_filename_completer_set_dirs_only
 #endif
 #endif
 
 #if IN_HEADER(__G_FILE_OUTPUT_STREAM_H__)
 #if IN_FILE(__G_FILE_OUTPUT_STREAM_C__)
 g_file_output_stream_get_type  G_GNUC_CONST
-g_file_output_stream_query_info 
-g_file_output_stream_query_info_async 
-g_file_output_stream_query_info_finish 
-g_file_output_stream_get_etag 
+g_file_output_stream_query_info
+g_file_output_stream_query_info_async
+g_file_output_stream_query_info_finish
+g_file_output_stream_get_etag
 #endif
 #endif
 
@@ -546,7 +546,7 @@ g_file_io_stream_get_etag
 #if IN_HEADER(__G_FILTER_INPUT_STREAM_H__)
 #if IN_FILE(__G_FILTER_INPUT_STREAM_C__)
 g_filter_input_stream_get_type  G_GNUC_CONST
-g_filter_input_stream_get_base_stream 
+g_filter_input_stream_get_base_stream
 g_filter_input_stream_get_close_base_stream
 g_filter_input_stream_set_close_base_stream
 #endif
@@ -555,7 +555,7 @@ g_filter_input_stream_set_close_base_stream
 #if IN_HEADER(__G_FILTER_OUTPUT_STREAM_H__)
 #if IN_FILE(__G_FILTER_OUTPUT_STREAM_C__)
 g_filter_output_stream_get_type  G_GNUC_CONST
-g_filter_output_stream_get_base_stream 
+g_filter_output_stream_get_base_stream
 g_filter_output_stream_get_close_base_stream
 g_filter_output_stream_set_close_base_stream
 #endif
@@ -564,8 +564,8 @@ g_filter_output_stream_set_close_base_stream
 #if IN_HEADER(__G_ICON_H__)
 #if IN_FILE(__G_ICON_C__)
 g_icon_get_type  G_GNUC_CONST
-g_icon_hash 
-g_icon_equal 
+g_icon_hash
+g_icon_equal
 g_icon_to_string
 g_icon_new_for_string
 #endif
@@ -574,19 +574,19 @@ g_icon_new_for_string
 #if IN_HEADER(__G_INPUT_STREAM_H__)
 #if IN_FILE(__G_INPUT_STREAM_C__)
 g_input_stream_get_type  G_GNUC_CONST
-g_input_stream_read 
-g_input_stream_read_all 
-g_input_stream_skip 
-g_input_stream_close 
-g_input_stream_read_async 
-g_input_stream_read_finish 
-g_input_stream_skip_async 
-g_input_stream_skip_finish 
-g_input_stream_close_async 
-g_input_stream_close_finish 
-g_input_stream_is_closed 
-g_input_stream_has_pending 
-g_input_stream_set_pending 
+g_input_stream_read
+g_input_stream_read_all
+g_input_stream_skip
+g_input_stream_close
+g_input_stream_read_async
+g_input_stream_read_finish
+g_input_stream_skip_async
+g_input_stream_skip_finish
+g_input_stream_close_async
+g_input_stream_close_finish
+g_input_stream_is_closed
+g_input_stream_has_pending
+g_input_stream_set_pending
 g_input_stream_clear_pending
 #endif
 #endif
@@ -608,15 +608,15 @@ g_io_stream_clear_pending
 
 #if IN_HEADER(__G_IO_ERROR_H__)
 #if IN_FILE(__G_IO_ERROR_C__)
-g_io_error_quark 
-g_io_error_from_errno 
+g_io_error_quark
+g_io_error_from_errno
 #endif
 #endif
 
 #if IN_HEADER(__G_IO_MODULE_H__)
 #if IN_FILE(__G_IO_MODULE_C__)
 g_io_module_get_type  G_GNUC_CONST
-g_io_module_new 
+g_io_module_new
 g_io_modules_load_all_in_directory
 g_io_extension_point_register
 g_io_extension_point_lookup
@@ -644,9 +644,9 @@ g_io_scheduler_job_send_to_mainloop_async
 #if IN_HEADER(__G_LOADABLE_ICON_H__)
 #if IN_FILE(__G_LOADABLE_ICON_C__)
 g_loadable_icon_get_type  G_GNUC_CONST
-g_loadable_icon_load 
-g_loadable_icon_load_async 
-g_loadable_icon_load_finish 
+g_loadable_icon_load
+g_loadable_icon_load_async
+g_loadable_icon_load_finish
 #endif
 #endif
 
@@ -654,16 +654,16 @@ g_loadable_icon_load_finish
 #if IN_FILE(__G_MEMORY_INPUT_STREAM_C__)
 g_memory_input_stream_get_type  G_GNUC_CONST
 g_memory_input_stream_new
-g_memory_input_stream_new_from_data 
-g_memory_input_stream_add_data 
+g_memory_input_stream_new_from_data
+g_memory_input_stream_add_data
 #endif
 #endif
 
 #if IN_HEADER(__G_MEMORY_OUTPUT_STREAM_H__)
 #if IN_FILE(__G_MEMORY_OUTPUT_STREAM_C__)
 g_memory_output_stream_get_type  G_GNUC_CONST
-g_memory_output_stream_new 
-g_memory_output_stream_get_data 
+g_memory_output_stream_new
+g_memory_output_stream_get_data
 g_memory_output_stream_get_data_size
 g_memory_output_stream_get_size
 #endif
@@ -672,43 +672,43 @@ g_memory_output_stream_get_size
 #if IN_HEADER(__G_MOUNT_OPERATION_H__)
 #if IN_FILE(__G_MOUNT_OPERATION_C__)
 g_mount_operation_get_type  G_GNUC_CONST
-g_mount_operation_new 
-g_mount_operation_get_username 
-g_mount_operation_set_username 
-g_mount_operation_get_password 
-g_mount_operation_set_password 
-g_mount_operation_get_anonymous 
-g_mount_operation_set_anonymous 
-g_mount_operation_get_domain 
-g_mount_operation_set_domain 
-g_mount_operation_get_password_save 
-g_mount_operation_set_password_save 
-g_mount_operation_get_choice 
-g_mount_operation_set_choice 
-g_mount_operation_reply 
+g_mount_operation_new
+g_mount_operation_get_username
+g_mount_operation_set_username
+g_mount_operation_get_password
+g_mount_operation_set_password
+g_mount_operation_get_anonymous
+g_mount_operation_set_anonymous
+g_mount_operation_get_domain
+g_mount_operation_set_domain
+g_mount_operation_get_password_save
+g_mount_operation_set_password_save
+g_mount_operation_get_choice
+g_mount_operation_set_choice
+g_mount_operation_reply
 #endif
 #endif
 
 #if IN_HEADER(__G_OUTPUT_STREAM_H__)
 #if IN_FILE(__G_OUTPUT_STREAM_C__)
 g_output_stream_get_type  G_GNUC_CONST
-g_output_stream_write 
-g_output_stream_write_all 
-g_output_stream_splice 
-g_output_stream_flush 
-g_output_stream_close 
-g_output_stream_write_async 
-g_output_stream_write_finish 
-g_output_stream_splice_async 
-g_output_stream_splice_finish 
-g_output_stream_flush_async 
-g_output_stream_flush_finish 
-g_output_stream_close_async 
-g_output_stream_close_finish 
-g_output_stream_is_closed 
+g_output_stream_write
+g_output_stream_write_all
+g_output_stream_splice
+g_output_stream_flush
+g_output_stream_close
+g_output_stream_write_async
+g_output_stream_write_finish
+g_output_stream_splice_async
+g_output_stream_splice_finish
+g_output_stream_flush_async
+g_output_stream_flush_finish
+g_output_stream_close_async
+g_output_stream_close_finish
+g_output_stream_is_closed
 g_output_stream_is_closing
-g_output_stream_has_pending 
-g_output_stream_set_pending 
+g_output_stream_has_pending
+g_output_stream_set_pending
 g_output_stream_clear_pending
 #endif
 #endif
@@ -716,38 +716,38 @@ g_output_stream_clear_pending
 #if IN_HEADER(__G_SEEKABLE_H__)
 #if IN_FILE(__G_SEEKABLE_C__)
 g_seekable_get_type  G_GNUC_CONST
-g_seekable_tell 
-g_seekable_can_seek 
-g_seekable_seek 
-g_seekable_can_truncate 
-g_seekable_truncate 
+g_seekable_tell
+g_seekable_can_seek
+g_seekable_seek
+g_seekable_can_truncate
+g_seekable_truncate
 #endif
 #endif
 
 #if IN_HEADER(__G_SIMPLE_ASYNC_RESULT_H__)
 #if IN_FILE(__G_SIMPLE_ASYNC_RESULT_C__)
 g_simple_async_result_get_type  G_GNUC_CONST
-g_simple_async_result_new 
-g_simple_async_result_new_error 
-g_simple_async_result_new_from_error 
-g_simple_async_result_set_op_res_gpointer 
-g_simple_async_result_get_op_res_gpointer 
-g_simple_async_result_set_op_res_gssize 
-g_simple_async_result_get_op_res_gssize 
-g_simple_async_result_set_op_res_gboolean 
-g_simple_async_result_get_op_res_gboolean 
-g_simple_async_result_get_source_tag 
-g_simple_async_result_set_handle_cancellation 
-g_simple_async_result_complete 
-g_simple_async_result_complete_in_idle 
-g_simple_async_result_run_in_thread 
-g_simple_async_result_set_from_error 
-g_simple_async_result_propagate_error 
-g_simple_async_result_set_error 
-g_simple_async_result_set_error_va 
+g_simple_async_result_new
+g_simple_async_result_new_error
+g_simple_async_result_new_from_error
+g_simple_async_result_set_op_res_gpointer
+g_simple_async_result_get_op_res_gpointer
+g_simple_async_result_set_op_res_gssize
+g_simple_async_result_get_op_res_gssize
+g_simple_async_result_set_op_res_gboolean
+g_simple_async_result_get_op_res_gboolean
+g_simple_async_result_get_source_tag
+g_simple_async_result_set_handle_cancellation
+g_simple_async_result_complete
+g_simple_async_result_complete_in_idle
+g_simple_async_result_run_in_thread
+g_simple_async_result_set_from_error
+g_simple_async_result_propagate_error
+g_simple_async_result_set_error
+g_simple_async_result_set_error_va
 g_simple_async_result_is_valid
-g_simple_async_report_error_in_idle 
-g_simple_async_report_gerror_in_idle 
+g_simple_async_report_error_in_idle
+g_simple_async_report_gerror_in_idle
 #endif
 #endif
 
@@ -766,36 +766,36 @@ g_themed_icon_append_name
 #if IN_HEADER(__G_UNIX_MOUNTS_H__)
 #if IN_FILE(__G_UNIX_MOUNTS_C__)
 #ifdef G_OS_UNIX
-g_unix_mount_free 
-g_unix_mount_point_free 
-g_unix_mount_compare 
-g_unix_mount_get_mount_path 
-g_unix_mount_get_device_path 
-g_unix_mount_get_fs_type 
-g_unix_mount_is_readonly 
-g_unix_mount_is_system_internal 
+g_unix_mount_free
+g_unix_mount_point_free
+g_unix_mount_compare
+g_unix_mount_get_mount_path
+g_unix_mount_get_device_path
+g_unix_mount_get_fs_type
+g_unix_mount_is_readonly
+g_unix_mount_is_system_internal
 g_unix_mount_guess_can_eject
 g_unix_mount_guess_should_display
-g_unix_mount_guess_name 
+g_unix_mount_guess_name
 g_unix_mount_guess_icon
-g_unix_mount_point_compare 
-g_unix_mount_point_get_mount_path 
-g_unix_mount_point_get_device_path 
-g_unix_mount_point_get_fs_type 
-g_unix_mount_point_is_readonly 
-g_unix_mount_point_is_user_mountable 
-g_unix_mount_point_is_loopback 
+g_unix_mount_point_compare
+g_unix_mount_point_get_mount_path
+g_unix_mount_point_get_device_path
+g_unix_mount_point_get_fs_type
+g_unix_mount_point_is_readonly
+g_unix_mount_point_is_user_mountable
+g_unix_mount_point_is_loopback
 g_unix_mount_point_guess_can_eject
 g_unix_mount_point_guess_name
 g_unix_mount_point_guess_icon
 g_unix_mount_points_get
 g_unix_mounts_get
-g_unix_mount_at 
-g_unix_mounts_changed_since 
-g_unix_mount_points_changed_since 
+g_unix_mount_at
+g_unix_mounts_changed_since
+g_unix_mount_points_changed_since
 g_unix_mount_monitor_get_type  G_GNUC_CONST
-g_unix_mount_monitor_new 
-g_unix_mount_monitor_set_rate_limit 
+g_unix_mount_monitor_new
+g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal
 #endif /* G_OS_UNIX */
 #endif
@@ -805,7 +805,7 @@ g_unix_is_mount_path_system_internal
 #if IN_FILE(__G_UNIX_INPUT_STREAM_C__)
 #ifdef G_OS_UNIX
 g_unix_input_stream_get_type  G_GNUC_CONST
-g_unix_input_stream_new 
+g_unix_input_stream_new
 g_unix_input_stream_set_close_fd
 g_unix_input_stream_get_close_fd
 g_unix_input_stream_get_fd
@@ -817,7 +817,7 @@ g_unix_input_stream_get_fd
 #if IN_FILE(__G_UNIX_OUTPUT_STREAM_C__)
 #ifdef G_OS_UNIX
 g_unix_output_stream_get_type  G_GNUC_CONST
-g_unix_output_stream_new 
+g_unix_output_stream_new
 g_unix_output_stream_set_close_fd
 g_unix_output_stream_get_close_fd
 g_unix_output_stream_get_fd
@@ -828,20 +828,21 @@ g_unix_output_stream_get_fd
 #if IN_HEADER(__G_MOUNT_H__)
 #if IN_FILE(__G_MOUNT_C__)
 g_mount_get_type  G_GNUC_CONST
-g_mount_get_root 
-g_mount_get_name 
-g_mount_get_icon 
-g_mount_get_uuid 
+g_mount_get_root
+g_mount_get_name
+g_mount_get_icon
+g_mount_get_uuid
 g_mount_get_volume
-g_mount_get_drive 
-g_mount_can_unmount 
-g_mount_can_eject 
+g_mount_get_drive
+g_mount_can_unmount
+g_mount_can_eject
 g_mount_unmount_with_operation
 g_mount_unmount_with_operation_finish
 g_mount_eject_with_operation
 g_mount_eject_with_operation_finish
-g_mount_remount 
-g_mount_remount_finish 
+g_mount_get_default_location
+g_mount_remount
+g_mount_remount_finish
 g_mount_guess_content_type
 g_mount_guess_content_type_finish
 g_mount_guess_content_type_sync
@@ -849,10 +850,10 @@ g_mount_is_shadowed
 g_mount_shadow
 g_mount_unshadow
 #ifndef G_DISABLE_DEPRECATED
-g_mount_unmount 
-g_mount_unmount_finish 
-g_mount_eject 
-g_mount_eject_finish 
+g_mount_unmount
+g_mount_unmount_finish
+g_mount_eject
+g_mount_eject_finish
 #endif
 #endif
 #endif
@@ -860,23 +861,23 @@ g_mount_eject_finish
 #if IN_HEADER(__G_VOLUME_H__)
 #if IN_FILE(__G_VOLUME_C__)
 g_volume_get_type  G_GNUC_CONST
-g_volume_get_name 
-g_volume_get_icon 
-g_volume_get_uuid 
-g_volume_get_drive 
+g_volume_get_name
+g_volume_get_icon
+g_volume_get_uuid
+g_volume_get_drive
 g_volume_get_mount
 g_volume_should_automount
 g_volume_can_mount
 g_volume_can_eject
-g_volume_mount 
-g_volume_mount_finish 
+g_volume_mount
+g_volume_mount_finish
 g_volume_eject_with_operation
 g_volume_eject_with_operation_finish
 g_volume_get_identifier
 g_volume_enumerate_identifiers
 g_volume_get_activation_root
 #ifndef G_DISABLE_DEPRECATED
-g_volume_eject 
+g_volume_eject
 g_volume_eject_finish
 #endif
 #endif
@@ -885,14 +886,14 @@ g_volume_eject_finish
 #if IN_HEADER(__G_VOLUME_MONITOR_H__)
 #if IN_FILE(__G_VOLUME_MONITOR_C__)
 g_volume_monitor_get_type  G_GNUC_CONST
-g_volume_monitor_get_connected_drives 
+g_volume_monitor_get_connected_drives
 g_volume_monitor_get_volume_for_uuid
-g_volume_monitor_get_volumes 
+g_volume_monitor_get_volumes
 g_volume_monitor_get_mounts
 g_volume_monitor_get_mount_for_uuid
 #endif
 #if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
-g_volume_monitor_get 
+g_volume_monitor_get
 #ifndef G_DISABLE_DEPRECATED
 g_volume_monitor_adopt_orphan_mount
 #endif
@@ -1296,6 +1297,23 @@ g_unix_fd_message_get_type G_GNUC_CONST
 g_unix_fd_message_append_fd
 g_unix_fd_message_new
 g_unix_fd_message_steal_fds
+g_unix_fd_message_get_fd_list
+g_unix_fd_message_new_with_fd_list
+#endif
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_FD_LIST_H__)
+#if IN_FILE(__G_UNIX_FD_LIST_C__)
+#ifndef G_OS_WIN32
+g_unix_fd_list_append
+g_unix_fd_list_get
+g_unix_fd_list_get_length
+g_unix_fd_list_get_type G_GNUC_CONST
+g_unix_fd_list_new
+g_unix_fd_list_new_from_array
+g_unix_fd_list_peek_fds
+g_unix_fd_list_steal_fds
 #endif
 #endif
 #endif
