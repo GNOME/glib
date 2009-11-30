@@ -72,8 +72,7 @@ struct _DynamicObjectClass
   guint val;
 };
 
-static void dynamic_object_iface_init (gpointer g_iface,
-				       gpointer iface_data);
+static void dynamic_object_iface_init (TestIface *iface);
 
 G_DEFINE_DYNAMIC_TYPE_EXTENDED(DynamicObject, dynamic_object, G_TYPE_OBJECT, 0,
 			       G_IMPLEMENT_INTERFACE_DYNAMIC (TEST_TYPE_IFACE,
