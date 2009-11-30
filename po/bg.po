@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 09:51-0400\n"
+"POT-Creation-Date: 2009-11-29 23:30-0500\n"
 "PO-Revision-Date: 2009-09-08 07:40+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -86,72 +86,72 @@ msgstr "Никоя програма „%s“ не е регистрирала о
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Неуспех при дописването на реда за изпълнение „%s“ с адреса „%s“"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразуването от набора знаци „%s“ към „%s“ не се поддържа"
 
-#: glib/gconvert.c:435 glib/gconvert.c:513
+#: glib/gconvert.c:441 glib/gconvert.c:519
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
 #: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Непълна знакова последователност в края на входните данни"
 
-#: glib/gconvert.c:922
+#: glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Заместващият знак „%s“ не може да бъде преобразуван към знак от набора „%s“"
 
-#: glib/gconvert.c:1745
+#: glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Адресът „%s“ не е абсолютен при използване на схемата „file“ (файлова "
 "система)"
 
-#: glib/gconvert.c:1755
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адресът „%s“ на локален файл не може да включва „#“"
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адресът „%s“ е неправилен"
 
-#: glib/gconvert.c:1784
+#: glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хоста в адреса „%s“ е неправилно"
 
-#: glib/gconvert.c:1800
+#: glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адресът „%s“ съдържа грешни екраниращи последователности"
 
-#: glib/gconvert.c:1895
+#: glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят „%s“ не е абсолютен"
 
-#: glib/gconvert.c:1905
+#: glib/gconvert.c:1911
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
 
@@ -160,129 +160,144 @@ msgstr "Неправилно име на хост"
 msgid "Error opening directory '%s': %s"
 msgstr "Грешка при отваряне на папка „%s“: %s"
 
-#: glib/gfileutils.c:529 glib/gfileutils.c:617
+#: glib/gfileutils.c:536 glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Неуспех при заделянето на %lu байта за четене на файла „%s“"
 
-#: glib/gfileutils.c:544
+#: glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Грешка при четене на файл „%s“: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Файлът „%s“ е прекалено голям"
 
-#: glib/gfileutils.c:641
+#: glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Неуспех при четене от файл „%s“: %s"
 
-#: glib/gfileutils.c:692 glib/gfileutils.c:779
+#: glib/gfileutils.c:699 glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Неуспех при отваряне на файл „%s“: %s"
 
-#: glib/gfileutils.c:709 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Неуспех при получаване на атрибутите на файл „%s“: неуспешно изпълнение на "
 "fstat(): %s"
 
-#: glib/gfileutils.c:743
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“: неуспешно изпълнение на fdopen(): %s"
 
-#: glib/gfileutils.c:851
+#: glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Неуспех при преименуване на файл „%s“ на „%s“: неуспешно изпълнение на "
 "g_rename(): %s"
 
-#: glib/gfileutils.c:893 glib/gfileutils.c:1359
+#: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Неуспех при създаване на файл „%s“: %s"
 
-#: glib/gfileutils.c:907
+#: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“ за писане: неуспешно изпълнение на fdopen"
 "(): %s"
 
-#: glib/gfileutils.c:932
+#: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fwrite(): %s"
 
-#: glib/gfileutils.c:951
+#: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fflush(): %s"
 
-#: glib/gfileutils.c:980
+#: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fsync(): %s"
 
-#: glib/gfileutils.c:999
+#: glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr ""
 "Неуспех при затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
 
-#: glib/gfileutils.c:1117
+#: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Неуспех при изтриването на съществуващия файл „%s“: неуспешно изпълнение на "
 "g_unlink(): %s"
 
-#: glib/gfileutils.c:1321
+#: glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблонът „%s“ е неправилен, не трябва да съдържа „%s“"
 
-#: glib/gfileutils.c:1334
+#: glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблонът „%s“ не съдържа XXXXXX"
 
-#: glib/gfileutils.c:1764
+#: glib/gfileutils.c:1774
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u B"
 msgstr[1] "%u B"
 
-#: glib/gfileutils.c:1772
+#: glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1777
+#: glib/gfileutils.c:1787
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1782
+#: glib/gfileutils.c:1792
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1825
+#: glib/gfileutils.c:1797
+#, fuzzy, c-format
+msgid "%.1f TB"
+msgstr "%.1f KB"
+
+#: glib/gfileutils.c:1802
+#, fuzzy, c-format
+msgid "%.1f PB"
+msgstr "%.1f KB"
+
+#: glib/gfileutils.c:1807
+#, fuzzy, c-format
+msgid "%.1f EB"
+msgstr "%.1f KB"
+
+#: glib/gfileutils.c:1850
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Неуспех при четене на символната връзка „%s“: %s"
 
-#: glib/gfileutils.c:1846
+#: glib/gfileutils.c:1871
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
@@ -546,7 +561,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "шаблонът съдържа елементи, които не се поддържат при частично съвпадение"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2102
+#: glib/gregex.c:154 gio/glocalfile.c:2096
 msgid "internal error"
 msgstr "вътрешна грешка"
 
@@ -1149,17 +1164,17 @@ msgstr "Стойността „%s“ не може да се интерпрет
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:197 gio/goutputstream.c:652
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Подадена е прекалено голяма стойност на %s"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1081
+#: gio/goutputstream.c:1108
 msgid "Stream is already closed"
 msgstr "Потокът вече е затворен"
 
-#: gio/gcancellable.c:420 gio/glocalfile.c:2095 gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
 #: gio/gsimpleasyncresult.c:674
 msgid "Operation was cancelled"
 msgstr "Действието е прекратено"
@@ -1182,34 +1197,34 @@ msgstr "Вид на %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неочаквано ранен край на поток"
 
-#: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:468 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без име"
 
-#: gio/gdesktopappinfo.c:710
+#: gio/gdesktopappinfo.c:725
 msgid "Desktop file didn't specify Exec field"
 msgstr "Във файла .desktop липсва поле за изпълнение"
 
-#: gio/gdesktopappinfo.c:890
+#: gio/gdesktopappinfo.c:905
 msgid "Unable to find terminal required for application"
 msgstr "Не може да се открие терминал за приложението"
 
-#: gio/gdesktopappinfo.c:1098
+#: gio/gdesktopappinfo.c:1113
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не може да се създаде папката с потребителските настройки %s: %s"
 
-#: gio/gdesktopappinfo.c:1102
+#: gio/gdesktopappinfo.c:1117
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не може да се създаде папката с настройките за MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1506
+#: gio/gdesktopappinfo.c:1525
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не може да се създаде файл .desktop — „%s“"
 
-#: gio/gdesktopappinfo.c:1618
+#: gio/gdesktopappinfo.c:1639
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Потребителска дефиниция за %s"
@@ -1261,13 +1276,13 @@ msgstr "Неправилен брой лексеми (%d) в кодиранет�
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Очакваше се GEmblem за GEmblemedIcon"
 
-#: gio/gfile.c:861 gio/gfile.c:1091 gio/gfile.c:1226 gio/gfile.c:1462
-#: gio/gfile.c:1516 gio/gfile.c:1573 gio/gfile.c:1656 gio/gfile.c:1711
-#: gio/gfile.c:1771 gio/gfile.c:1825 gio/gfile.c:3150 gio/gfile.c:3204
-#: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
-#: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
-#: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
-#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
+#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
+#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
+#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
+#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
+#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
+#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
+#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Действието не се поддържа"
@@ -1280,49 +1295,49 @@ msgstr "Действието не се поддържа"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "Съдържащият монтиран обект не съществува"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2247
+#: gio/gfile.c:2441 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr "Не може да се копира върху папка"
 
-#: gio/gfile.c:2459
+#: gio/gfile.c:2501
 msgid "Can't copy directory over directory"
 msgstr "Папка не може да се копира върху папка"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2256
+#: gio/gfile.c:2509 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr "Целевият файл съществува"
 
-#: gio/gfile.c:2485
+#: gio/gfile.c:2527
 msgid "Can't recursively copy directory"
 msgstr "Папката не може да се копира рекурсивно"
 
-#: gio/gfile.c:2784
+#: gio/gfile.c:2826
 msgid "Can't copy special file"
 msgstr "Не може да се копира специален файл"
 
-#: gio/gfile.c:3325
+#: gio/gfile.c:3367
 msgid "Invalid symlink value given"
 msgstr "Зададена е неправилна стойност на символна връзка"
 
-#: gio/gfile.c:3418
+#: gio/gfile.c:3460
 msgid "Trash not supported"
 msgstr "Не се поддържа кошче"
 
-#: gio/gfile.c:3467
+#: gio/gfile.c:3509
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Файловите имена не могат да съдържат „%c“"
 
-#: gio/gfile.c:5884 gio/gvolume.c:376
+#: gio/gfile.c:5926 gio/gvolume.c:376
 msgid "volume doesn't implement mount"
 msgstr "томът не поддържа монтиране"
 
-#: gio/gfile.c:5992
+#: gio/gfile.c:6037
 msgid "No application is registered as handling this file"
 msgstr "Не е регистрирано приложение за обработка на този вид файлове"
 
@@ -1411,7 +1426,7 @@ msgstr "Входният поток не поддържа четене"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1091
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
 msgid "Stream has outstanding operation"
 msgstr "Действията върху потока не са привършили"
 
@@ -1424,115 +1439,120 @@ msgstr "Няма достатъчно място за адреса на гнез
 msgid "Unsupported socket address"
 msgstr "Неподдържан адрес на гнездо"
 
-#: gio/glocaldirectorymonitor.c:295
+#: gio/glocaldirectorymonitor.c:288
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Стандартният датчик за монтиране на локални папки не може да се открие "
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:594 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Неправилно име на файл: %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:968
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Грешка при получаване на информация за файловата система: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1104
 msgid "Can't rename root directory"
 msgstr "Кореновата папка не може да се преименува"
 
-#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#: gio/glocalfile.c:1124 gio/glocalfile.c:1150
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Грешка при преименуване на файл: %s"
 
-#: gio/glocalfile.c:1139
+#: gio/glocalfile.c:1133
 msgid "Can't rename file, filename already exist"
 msgstr "Файлът не може да се преименува — съществува друг файл с такова име"
 
-#: gio/glocalfile.c:1152 gio/glocalfile.c:2124 gio/glocalfile.c:2153
-#: gio/glocalfile.c:2309 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1146 gio/glocalfile.c:2118 gio/glocalfile.c:2147
+#: gio/glocalfile.c:2307 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Неправилно име на файл"
 
-#: gio/glocalfile.c:1308
+#: gio/glocalfile.c:1302
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Грешка при отваряне на файл: %s"
 
-#: gio/glocalfile.c:1318
+#: gio/glocalfile.c:1312
 msgid "Can't open directory"
 msgstr "Папката не може да бъде отворена"
 
-#: gio/glocalfile.c:1443
+#: gio/glocalfile.c:1437
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Грешка при изтриване на файл: %s"
 
-#: gio/glocalfile.c:1808
+#: gio/glocalfile.c:1802
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Грешка при преместване на файл в кошчето: %s"
 
-#: gio/glocalfile.c:1831
+#: gio/glocalfile.c:1825
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Неуспех при създаване на папката за кошче „%s“: %s"
 
-#: gio/glocalfile.c:1852
+#: gio/glocalfile.c:1846
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не може да се открие най-горната папка за кошче"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1951
+#: gio/glocalfile.c:1925 gio/glocalfile.c:1945
 msgid "Unable to find or create trash directory"
 msgstr "Не може да се създаде папката за кошче"
 
-#: gio/glocalfile.c:1985
+#: gio/glocalfile.c:1979
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Неуспех при създаване на файл с информация за кошчето: %s"
 
-#: gio/glocalfile.c:2014 gio/glocalfile.c:2019 gio/glocalfile.c:2094
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2008 gio/glocalfile.c:2013 gio/glocalfile.c:2088
+#: gio/glocalfile.c:2095
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Неуспех при преместване на файл в кошчето: %s"
 
-#: gio/glocalfile.c:2128
+#: gio/glocalfile.c:2122
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Грешка при създаване на папка: %s"
 
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2151
+#, fuzzy, c-format
+msgid "Filesystem does not support symbolic links"
+msgstr "Неуспех при четене на символната връзка „%s“: %s"
+
+#: gio/glocalfile.c:2155
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Грешка при създаване на символна връзка: %s"
 
-#: gio/glocalfile.c:2219 gio/glocalfile.c:2313
+#: gio/glocalfile.c:2217 gio/glocalfile.c:2311
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Грешка при преместване на файл: %s"
 
-#: gio/glocalfile.c:2242
+#: gio/glocalfile.c:2240
 msgid "Can't move directory over directory"
 msgstr "Папка не може да бъде преместена върху папка"
 
-#: gio/glocalfile.c:2269 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2267 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Неуспешно създаване на резервен файл"
 
-#: gio/glocalfile.c:2288
+#: gio/glocalfile.c:2286
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Грешка при премахване на целевия файл: %s"
 
-#: gio/glocalfile.c:2302
+#: gio/glocalfile.c:2300
 msgid "Move between mounts not supported"
 msgstr "Не се поддържа местене между монтирани местоположения"
 
@@ -1553,102 +1573,102 @@ msgstr "Неправилно име на допълнителен атрибут
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Грешка при задаване на допълнителен атрибут „%s“: %s"
 
-#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Грешка при получаване на състоянието на файл „%s“: %s"
 
-#: gio/glocalfileinfo.c:1552
+#: gio/glocalfileinfo.c:1555
 msgid " (invalid encoding)"
 msgstr " (неправилно кодиране)"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1753
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Грешка при получаване на състоянието на файловия дескриптор: %s"
 
-#: gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1798
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неправилен вид на атрибут (очакваше се uint32)"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1816
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неправилен вид на атрибут (очакваше се uint64)"
 
-#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
+#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неправилен вид на атрибут (очакваше се низ от байтове)"
 
-#: gio/glocalfileinfo.c:1886
+#: gio/glocalfileinfo.c:1889
 msgid "Cannot set permissions on symlinks"
 msgstr "Грешка при задаване на правата за достъп на символната връзка"
 
-#: gio/glocalfileinfo.c:1902
+#: gio/glocalfileinfo.c:1905
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Грешка при задаване на правата за достъп: %s"
 
-#: gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1956
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Грешка при задаване на собственик: %s"
 
-#: gio/glocalfileinfo.c:1976
+#: gio/glocalfileinfo.c:1979
 msgid "symlink must be non-NULL"
 msgstr "символната връзка трябва да не е NULL"
 
-#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
-#: gio/glocalfileinfo.c:2016
+#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:2019
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Грешка при задаване на символна връзка: %s"
 
-#: gio/glocalfileinfo.c:1995
+#: gio/glocalfileinfo.c:1998
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Грешка при задаване на символна връзка: файлът не е такава"
 
-#: gio/glocalfileinfo.c:2121
+#: gio/glocalfileinfo.c:2124
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Грешка при задаване на времето на промяна или достъп: %s"
 
-#: gio/glocalfileinfo.c:2144
+#: gio/glocalfileinfo.c:2147
 msgid "SELinux context must be non-NULL"
 msgstr "Контекстът на SELinux трябва да не е NULL"
 
-#: gio/glocalfileinfo.c:2159
+#: gio/glocalfileinfo.c:2162
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Грешка при задаване на контекста на SELinux: %s"
 
-#: gio/glocalfileinfo.c:2166
+#: gio/glocalfileinfo.c:2169
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux не е включен на тази система"
 
-#: gio/glocalfileinfo.c:2258
+#: gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Не се поддържа задаването на атрибута %s"
 
-#: gio/glocalfileinputstream.c:165 gio/glocalfileoutputstream.c:701
+#: gio/glocalfileinputstream.c:159 gio/glocalfileoutputstream.c:701
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Грешка при четене от файл: %s"
 
-#: gio/glocalfileinputstream.c:196 gio/glocalfileinputstream.c:208
-#: gio/glocalfileinputstream.c:320 gio/glocalfileoutputstream.c:449
+#: gio/glocalfileinputstream.c:190 gio/glocalfileinputstream.c:202
+#: gio/glocalfileinputstream.c:314 gio/glocalfileoutputstream.c:449
 #: gio/glocalfileoutputstream.c:1005
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Грешка при търсене във файл: %s"
 
-#: gio/glocalfileinputstream.c:241 gio/glocalfileoutputstream.c:235
+#: gio/glocalfileinputstream.c:235 gio/glocalfileoutputstream.c:235
 #: gio/glocalfileoutputstream.c:330
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Грешка при затваряне на файл: %s"
 
-#: gio/glocalfilemonitor.c:198
+#: gio/glocalfilemonitor.c:191
 msgid "Unable to find default local file monitor type"
 msgstr "Стандартният датчик за локални файлове не може да се открие "
 
@@ -1729,51 +1749,56 @@ msgstr "Неуспех при преоразмеряването на изход
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:378
-msgid "mount doesn't implement unmount"
+#: gio/gmount.c:409
+#, fuzzy
+msgid "mount doesn't implement \"unmount\""
 msgstr "монтираният обект не поддържа демонтиране"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:457
-msgid "mount doesn't implement eject"
+#: gio/gmount.c:488
+#, fuzzy
+msgid "mount doesn't implement \"eject\""
 msgstr "монтираният обект не поддържа изваждане"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:537
-msgid "mount doesn't implement unmount or unmount_with_operation"
+#: gio/gmount.c:568
+#, fuzzy
+msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "монтираният обект не поддържа нито демонтиране, нито демонтиране с действие"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:624
-msgid "mount doesn't implement eject or eject_with_operation"
+#: gio/gmount.c:655
+#, fuzzy
+msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 "монтираният обект не поддържа нито изваждане, нито изваждане с действие"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:713
-msgid "mount doesn't implement remount"
+#: gio/gmount.c:744
+#, fuzzy
+msgid "mount doesn't implement \"remount\""
 msgstr "монтираният обект не поддържа повторно монтиране"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:797
+#: gio/gmount.c:828
 msgid "mount doesn't implement content type guessing"
 msgstr "монтираният обект не поддържа откриване на вида"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:886
+#: gio/gmount.c:917
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "монтираният обект не поддържа синхронно откриване на вида"
 
@@ -1782,11 +1807,11 @@ msgstr "монтираният обект не поддържа синхронн
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Името на хоста „%s“ съдържа „[“, но липсва „]“"
 
-#: gio/goutputstream.c:206 gio/goutputstream.c:407
+#: gio/goutputstream.c:207 gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
 msgstr "Изходният поток не поддържа запис"
 
-#: gio/goutputstream.c:368 gio/goutputstream.c:776
+#: gio/goutputstream.c:369 gio/goutputstream.c:781
 msgid "Source stream is already closed"
 msgstr "Изходният поток вече е затворен"
 
@@ -1918,7 +1943,7 @@ msgstr "Грешка при изпращане на съобщение: %s"
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не се поддържа под Уиндоус"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3136
+#: gio/gsocket.c:2997 gio/gsocket.c:3135
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при изпращане на съобщение: %s"
