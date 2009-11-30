@@ -361,9 +361,18 @@ g_charset_converter_convert (GConverter *converter,
   return ret;
 }
 
+/**
+ * g_charset_converter_set_use_fallback:
+ * @converter: a #GCharsetConverter
+ * @use_fallback: %TRUE to use fallbacks
+ *
+ * Sets the #GCharsetConverter:use-fallback property.
+ *
+ * Since: 2.24
+ */
 void
 g_charset_converter_set_use_fallback (GCharsetConverter *converter,
-				      gboolean use_fallback)
+				      gboolean           use_fallback)
 {
   use_fallback = !!use_fallback;
 
@@ -374,12 +383,32 @@ g_charset_converter_set_use_fallback (GCharsetConverter *converter,
     }
 }
 
+/**
+ * g_charset_converter_get_use_fallback:
+ * @converter: a #GCharsetConverter
+ *
+ * Gets the #GCharsetConverter:use-fallback property.
+ *
+ * Returns: %TRUE if fallbacks are used by @converter
+ *
+ * Since: 2.24
+ */
 gboolean
 g_charset_converter_get_use_fallback (GCharsetConverter *converter)
 {
   return converter->use_fallback;
 }
 
+/**
+ * g_charset_converter_get_num_fallbacks:
+ * @converter: a #GCharsetConverter
+ *
+ * Gets the number of fallbacks that @converter has applied so far.
+ *
+ * Returns: the number of fallbacks that @converter has applied
+ *
+ * Since: 2.24
+ */
 guint
 g_charset_converter_get_num_fallbacks (GCharsetConverter *converter)
 {

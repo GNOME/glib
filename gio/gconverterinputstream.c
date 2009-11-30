@@ -187,7 +187,8 @@ g_converter_input_stream_init (GConverterInputStream *stream)
 
 /**
  * g_converter_input_stream_new:
- * @base_stream: a #GInputStream.
+ * @base_stream: a #GInputStream
+ * @converter: a #GConverter
  *
  * Creates a new converter input stream for the @base_stream.
  *
@@ -534,6 +535,16 @@ g_converter_input_stream_read (GInputStream *stream,
   g_assert_not_reached ();
 }
 
+/**
+ * g_converter_input_stream_get_converter:
+ * @converter_stream: a #GConverterInputStream
+ *
+ * Gets the #GConverter that is used by @converter_stream.
+ *
+ * Returns: the converter of the converter input stream
+ *
+ * Since: 2.24
+ */
 GConverter *
 g_converter_input_stream_get_converter (GConverterInputStream *converter_stream)
 {

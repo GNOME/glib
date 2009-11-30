@@ -85,14 +85,14 @@ g_winhttp_file_output_stream_init (GWinHttpFileOutputStream *info)
 {
 }
 
-/**
+/*
  * g_winhttp_file_output_stream_new:
  * @file: the GWinHttpFile being read
  * @connection: handle to the HTTP connection, as from WinHttpConnect()
  * @request: handle to the HTTP request, as from WinHttpOpenRequest
  *
  * Returns: #GFileOutputStream for the given request
- **/
+ */
 GFileOutputStream *
 _g_winhttp_file_output_stream_new (GWinHttpFile *file,
                                    HINTERNET     connection)

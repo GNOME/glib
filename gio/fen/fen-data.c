@@ -588,10 +588,6 @@ process_events (gpointer udata)
     return FALSE;
 }
 
-/**
- * _fdata_add_event:
- *
- */
 void
 _fdata_add_event (fdata *f, fnode_event_t *ev)
 {

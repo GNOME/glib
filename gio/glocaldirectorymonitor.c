@@ -266,13 +266,6 @@ get_default_local_directory_monitor (gpointer data)
     return (gpointer)G_TYPE_INVALID;
 }
 
-/**
- * _g_local_directory_monitor_new:
- * @dirname: filename of the directory to monitor.
- * @flags: #GFileMonitorFlags.
- * 
- * Returns: new #GFileMonitor for the given @dirname.
- **/
 GFileMonitor*
 _g_local_directory_monitor_new (const char         *dirname,
 				GFileMonitorFlags   flags,

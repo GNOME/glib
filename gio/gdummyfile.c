@@ -105,12 +105,6 @@ g_dummy_file_init (GDummyFile *dummy)
 {
 }
 
-/**
- * g_dummy_file_new:
- * @uri: Universal Resource Identifier for the dummy file object.
- * 
- * Returns: a new #GFile. 
- **/
 GFile *
 _g_dummy_file_new (const char *uri)
 {

@@ -104,13 +104,6 @@ g_unix_volume_init (GUnixVolume *unix_volume)
 {
 }
 
-/**
- * g_unix_volume_new:
- * @volume_monitor: a #GVolumeMonitor.
- * @mountpoint: a #GUnixMountPoint.
- * 
- * Returns: a #GUnixVolume for the given #GUnixMountPoint.
- **/
 GUnixVolume *
 _g_unix_volume_new (GVolumeMonitor  *volume_monitor,
                     GUnixMountPoint *mountpoint)
@@ -156,11 +149,6 @@ _g_unix_volume_new (GVolumeMonitor  *volume_monitor,
   return volume;
 }
 
-/**
- * g_unix_volume_disconnected:
- * @volume:
- * 
- **/
 void
 _g_unix_volume_disconnected (GUnixVolume *volume)
 {
@@ -171,15 +159,9 @@ _g_unix_volume_disconnected (GUnixVolume *volume)
     }
 }
 
-/**
- * g_unix_volume_set_mount:
- * @volume:
- * @mount:
- *  
- **/
 void
-_g_unix_volume_set_mount (GUnixVolume  *volume,
-                          GUnixMount *mount)
+_g_unix_volume_set_mount (GUnixVolume *volume,
+                          GUnixMount  *mount)
 {
   if (volume->mount == mount)
     return;
@@ -195,12 +177,6 @@ _g_unix_volume_set_mount (GUnixVolume  *volume,
     g_signal_emit_by_name (volume->volume_monitor, "volume-changed", volume);
 }
 
-/**
- * g_unix_volume_unset_mount:
- * @volume:
- * @mount:
- *
- **/
 void
 _g_unix_volume_unset_mount (GUnixVolume  *volume,
                             GUnixMount *mount)
@@ -252,7 +228,8 @@ static gboolean
 g_unix_volume_should_automount (GVolume *volume)
 {
   /* We automount all local volumes because we don't even
-     make the internal stuff visible */
+   * make the internal stuff visible
+   */
   return TRUE;
 }
 
@@ -276,7 +253,7 @@ g_unix_volume_get_mount (GVolume *volume)
 
 gboolean
 _g_unix_volume_has_mount_path (GUnixVolume *volume,
-                                         const char  *mount_path)
+                               const char  *mount_path)
 {
   return strcmp (volume->mount_path, mount_path) == 0;
 }
@@ -293,8 +270,10 @@ typedef struct {
   GString *error_string;
 } EjectMountOp;
 
-static void 
-eject_mount_cb (GPid pid, gint status, gpointer user_data)
+static void
+eject_mount_cb (GPid     pid,
+                gint     status,
+                gpointer user_data)
 {
   EjectMountOp *data = user_data;
   GSimpleAsyncResult *simple;
@@ -335,9 +314,9 @@ eject_mount_cb (GPid pid, gint status, gpointer user_data)
 }
 
 static gboolean
-eject_mount_read_error (GIOChannel *channel,
-                  GIOCondition condition,
-                  gpointer user_data)
+eject_mount_read_error (GIOChannel   *channel,
+                        GIOCondition  condition,
+                        gpointer      user_data)
 {
   EjectMountOp *data = user_data;
   char buf[BUFSIZ];
@@ -405,10 +384,11 @@ eject_mount_do (GVolume             *volume,
                                  NULL,           /* standard_input */
                                  NULL,           /* standard_output */
                                  &(data->error_fd),
-                                 &error)) {
-    g_assert (error != NULL);
-    goto handle_error;
-  }
+                                 &error))
+    {
+      g_assert (error != NULL);
+      goto handle_error;
+    }
 
   data->error_string = g_string_new ("");
 
@@ -428,29 +408,30 @@ eject_mount_do (GVolume             *volume,
   g_source_unref (child_watch);
 
 handle_error:
-  if (error != NULL) {
-    GSimpleAsyncResult *simple;
-    simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
-                                                   data->callback,
-                                                   data->user_data,
-                                                   error);
-    g_simple_async_result_complete (simple);
-    g_object_unref (simple);
+  if (error != NULL)
+    {
+      GSimpleAsyncResult *simple;
+      simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
+                                                     data->callback,
+                                                     data->user_data,
+                                                     error);
+      g_simple_async_result_complete (simple);
+      g_object_unref (simple);
 
-    if (data->error_string != NULL)
-      g_string_free (data->error_string, TRUE);
+      if (data->error_string != NULL)
+        g_string_free (data->error_string, TRUE);
 
-    if (data->error_channel != NULL)
-      g_io_channel_unref (data->error_channel);
+      if (data->error_channel != NULL)
+        g_io_channel_unref (data->error_channel);
 
-    g_error_free (error);
-    g_free (data);
-  }
+      g_error_free (error);
+      g_free (data);
+    }
 }
 
 
 static void
-g_unix_volume_mount (GVolume    *volume,
+g_unix_volume_mount (GVolume            *volume,
                      GMountMountFlags    flags,
                      GMountOperation     *mount_operation,
                      GCancellable        *cancellable,
@@ -458,7 +439,7 @@ g_unix_volume_mount (GVolume    *volume,
                      gpointer             user_data)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  char *argv[] = {"mount", NULL, NULL};
+  char *argv[] = { "mount", NULL, NULL };
 
   if (unix_volume->mount_path != NULL)
     argv[1] = unix_volume->mount_path;
@@ -470,21 +451,21 @@ g_unix_volume_mount (GVolume    *volume,
 
 static gboolean
 g_unix_volume_mount_finish (GVolume        *volume,
-                           GAsyncResult  *result,
-                           GError       **error)
+                            GAsyncResult  *result,
+                            GError       **error)
 {
   return TRUE;
 }
 
 static void
-g_unix_volume_eject (GVolume    *volume,
+g_unix_volume_eject (GVolume             *volume,
                      GMountUnmountFlags   flags,
                      GCancellable        *cancellable,
                      GAsyncReadyCallback  callback,
                      gpointer             user_data)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  char *argv[] = {"eject", NULL, NULL};
+  char *argv[] = { "eject", NULL, NULL };
 
   argv[1] = unix_volume->device_path;
 
@@ -492,40 +473,41 @@ g_unix_volume_eject (GVolume    *volume,
 }
 
 static gboolean
-g_unix_volume_eject_finish (GVolume        *volume,
+g_unix_volume_eject_finish (GVolume       *volume,
                             GAsyncResult  *result,
                             GError       **error)
 {
   return TRUE;
 }
 
-static char *
-g_unix_volume_get_identifier (GVolume              *volume,
-                              const char          *kind)
+static gchar *
+g_unix_volume_get_identifier (GVolume     *volume,
+                              const gchar *kind)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
 
   if (unix_volume->identifier_type != NULL &&
       strcmp (kind, unix_volume->identifier_type) == 0)
     return g_strdup (unix_volume->identifier);
+
   return NULL;
 }
 
-static char **
+static gchar **
 g_unix_volume_enumerate_identifiers (GVolume *volume)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  char **res;
+  gchar **res;
 
   if (unix_volume->identifier_type)
     {
-      res = g_new (char *, 2);
+      res = g_new (gchar *, 2);
       res[0] = g_strdup (unix_volume->identifier_type);
       res[1] = NULL;
     }
   else
     {
-      res = g_new (char *, 1);
+      res = g_new (gchar *, 1);
       res[0] = NULL;
     }
 

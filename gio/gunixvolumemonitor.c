@@ -239,11 +239,6 @@ g_unix_volume_monitor_init (GUnixVolumeMonitor *unix_monitor)
   update_mounts (unix_monitor);
 }
 
-/**
- * g_unix_volume_monitor_new:
- * 
- * Returns:  a new #GVolumeMonitor.
- **/
 GVolumeMonitor *
 _g_unix_volume_monitor_new (void)
 {
@@ -298,13 +293,6 @@ diff_sorted_lists (GList         *list1,
     }
 }
 
-/**
- * _g_unix_volume_monitor_lookup_volume_for_mount_path: 
- * @monitor:
- * @mount_path:
- * 
- * Returns:  #GUnixVolume for the given @mount_path.
- **/
 GUnixVolume *
 _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,
                                                      const char         *mount_path)

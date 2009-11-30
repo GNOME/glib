@@ -118,12 +118,6 @@ g_local_file_input_stream_init (GLocalFileInputStream *info)
   info->priv->do_close = TRUE;
 }
 
-/**
- * g_local_file_input_stream_new:
- * @fd: File Descriptor.
- * 
- * Returns: #GFileInputStream for the given file descriptor.
- **/
 GFileInputStream *
 _g_local_file_input_stream_new (int fd)
 {

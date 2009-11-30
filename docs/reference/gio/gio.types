@@ -7,6 +7,12 @@ g_async_result_get_type
 g_buffered_input_stream_get_type
 g_buffered_output_stream_get_type
 g_cancellable_get_type
+g_charset_converter_get_type
+g_converter_get_type
+g_converter_flags_get_type
+g_converter_input_stream_get_type
+g_converter_output_stream_get_type
+g_converter_result_get_type
 g_data_input_stream_get_type
 g_data_output_stream_get_type
 g_data_stream_byte_order_get_type
@@ -93,3 +99,6 @@ g_unix_socket_address_get_type
 g_vfs_get_type
 g_volume_get_type
 g_volume_monitor_get_type
+g_zlib_compressor_get_type
+g_zlib_compressor_format_get_type
+g_zlib_decompressor_get_type

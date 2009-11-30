@@ -64,9 +64,9 @@ g_win32_volume_monitor_finalize (GObject *object)
     (*G_OBJECT_CLASS (g_win32_volume_monitor_parent_class)->finalize) (object);
 }
 
-/**
+/*
  * get_viewable_logical_drives:
- * 
+ *
  * Returns the list of logical and viewable drives as defined by
  * GetLogicalDrives() and the registry keys
  * Software\Microsoft\Windows\CurrentVersion\Policies\Explorer under
@@ -74,7 +74,7 @@ g_win32_volume_monitor_finalize (GObject *object)
  * GetLogicalDrives() is returned.
  *
  * Return value: bitmask with same meaning as returned by GetLogicalDrives()
-**/
+ */
 static guint32 
 get_viewable_logical_drives (void)
 {

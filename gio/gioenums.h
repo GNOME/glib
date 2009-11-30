@@ -675,9 +675,9 @@ typedef enum {
 
 /**
  * GZlibCompressorFormat:
- * @G_ZLIB_COMRESSOR_FORMAT_ZLIB: deflate compression with zlib header
- * @G_ZLIB_COMRESSOR_FORMAT_GZIP: gzip file format
- * @G_ZLIB_COMRESSOR_FORMAT_RAW: deflate compression with no header
+ * @G_ZLIB_COMPRESSOR_FORMAT_ZLIB: deflate compression with zlib header
+ * @G_ZLIB_COMPRESSOR_FORMAT_GZIP: gzip file format
+ * @G_ZLIB_COMPRESSOR_FORMAT_RAW: deflate compression with no header
  *
  * Used to select the type of data format to use for #GZlibDecompressor
  * and #GZlibCompressor.

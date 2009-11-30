@@ -169,13 +169,6 @@ get_default_local_file_monitor (gpointer data)
     return (gpointer)G_TYPE_INVALID;
 }
 
-/**
- * g_local_file_monitor_new:
- * @pathname: path name to monitor.
- * @flags: #GFileMonitorFlags.
- * 
- * Returns: a new #GFileMonitor for the given @pathname. 
- **/
 GFileMonitor*
 _g_local_file_monitor_new (const char         *pathname,
 			   GFileMonitorFlags   flags,

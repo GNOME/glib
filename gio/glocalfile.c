@@ -303,12 +303,6 @@ canonicalize_filename (const char *filename)
   return canon;
 }
 
-/**
- * _g_local_file_new:
- * @filename: filename of the file to create.
- * 
- * Returns: new local #GFile.
- **/
 GFile *
 _g_local_file_new (const char *filename)
 {

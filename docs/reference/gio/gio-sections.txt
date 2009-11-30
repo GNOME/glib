@@ -730,6 +730,7 @@ g_output_stream_flush_async
 g_output_stream_flush_finish
 g_output_stream_close_async
 g_output_stream_close_finish
+g_output_stream_is_closing
 g_output_stream_is_closed
 g_output_stream_has_pending
 g_output_stream_set_pending
@@ -982,6 +983,7 @@ g_mount_get_icon
 g_mount_get_drive
 g_mount_get_root
 g_mount_get_volume
+g_mount_get_default_location
 g_mount_can_unmount
 GMountMountFlags
 GMountUnmountFlags
@@ -1221,6 +1223,7 @@ g_app_info_dup
 g_app_info_equal
 g_app_info_get_id
 g_app_info_get_name
+g_app_info_get_display_name
 g_app_info_get_description
 g_app_info_get_executable
 g_app_info_get_commandline
@@ -1943,4 +1946,114 @@ G_UNIX_FD_MESSAGE_GET_CLASS
 <SUBSECTION Private>
 GUnixFDMessagePrivate
 g_unix_fd_message_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gconverter</FILE>
+<TITLE>GConverter</TITLE>
+GConverter
+GConverterIface
+GConverterResult
+g_converter_convert
+g_converter_reset
+<SUBSECTION Standard>
+G_TYPE_CONVERTER
+G_CONVERTER
+G_IS_CONVERTER
+G_CONVERTER_GET_IFACE
+<SUBSECTION Private>
+g_converter_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gcharsetconverter</FILE>
+<TITLE>GCharsetConverter</TITLE>
+GCharsetConverter
+g_charset_converter_new
+g_charset_converter_set_use_fallback
+g_charset_converter_get_use_fallback
+g_charset_converter_get_num_fallbacks
+<SUBSECTION Standard>
+GCharsetConverterClass
+G_TYPE_CHARSET_CONVERTER
+G_CHARSET_CONVERTER
+G_IS_CHARSET_CONVERTER
+G_CHARSET_CONVERTER_CLASS
+G_IS_CHARSET_CONVERTER_CLASS
+G_CHARSET_CONVERTER_GET_CLASS
+<SUBSECTION Private>
+g_charset_converter_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gconverterinputstream</FILE>
+<TITLE>GConverterInputstream</TITLE>
+GConverterInputStream
+g_converter_input_stream_new
+g_converter_input_stream_get_converter
+<SUBSECTION Standard>
+GConverterInputStreamClass
+G_TYPE_CONVERTER_INPUT_STREAM
+G_CONVERTER_INPUT_STREAM
+G_IS_CONVERTER_INPUT_STREAM
+G_CONVERTER_INPUT_STREAM_CLASS
+G_IS_CONVERTER_INPUT_STREAM_CLASS
+G_CONVERTER_INPUT_STREAM_GET_CLASS
+<SUBSECTION Private>
+GConverterInputStreamPrivate
+g_converter_input_stream_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gconverteroutputstream</FILE>
+<TITLE>GConverterOutputstream</TITLE>
+GConverterOutputStream
+g_converter_output_stream_new
+g_converter_output_stream_get_converter
+<SUBSECTION Standard>
+GConverterOutputStreamClass
+G_TYPE_CONVERTER_OUTPUT_STREAM
+G_CONVERTER_OUTPUT_STREAM
+G_IS_CONVERTER_OUTPUT_STREAM
+G_CONVERTER_OUTPUT_STREAM_CLASS
+G_IS_CONVERTER_OUTPUT_STREAM_CLASS
+G_CONVERTER_OUTPUT_STREAM_GET_CLASS
+<SUBSECTION Private>
+GConverterOutputStreamPrivate
+g_converter_output_stream_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gzcompressor</FILE>
+<TITLE>GZlibCompressor</TITLE>
+GZLibCompressor
+GZlibCompressorFormat
+g_zlib_compressor_new
+<SUBSECTION Standard>
+GZlibCompressorClass
+G_TYPE_ZLIB_COMPRESSOR
+G_ZLIB_COMPRESSOR
+G_IS_ZLIB_COMPRESSOR
+G_ZLIB_COMPRESSOR_CLASS
+G_IS_ZLIB_COMPRESSOR_CLASS
+G_ZLIB_COMPRESSOR_GET_CLASS
+<SUBSECTION Private>
+g_zlib_compressor_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gzdecompressor</FILE>
+<TITLE>GZlibDecompressor</TITLE>
+GZLibDecompressor
+g_zlib_decompressor_new
+<SUBSECTION Standard>
+GZlibDecompressorClass
+G_TYPE_ZLIB_DECOMPRESSOR
+G_ZLIB_DECOMPRESSOR
+G_IS_ZLIB_DECOMPRESSOR
+G_ZLIB_DECOMPRESSOR_CLASS
+G_IS_ZLIB_DECOMPRESSOR_CLASS
+G_ZLIB_DECOMPRESSOR_GET_CLASS
+<SUBSECTION Private>
+g_zlib_decompressor_get_type
 </SECTION>

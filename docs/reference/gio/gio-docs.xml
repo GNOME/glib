@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -38,43 +38,41 @@
         <xi:include href="xml/gioscheduler.xml"/>
 	<xi:include href="xml/gsimpleasyncresult.xml"/>
     </chapter>
-    
+    <chapter id="conversion">
+        <title>Data conversion</title>
+        <xi:include href="xml/gconverter.xml"/>
+        <xi:include href="xml/gcharsetconverter.xml"/>
+        <xi:include href="xml/gzcompressor.xml"/>
+        <xi:include href="xml/gzdecompressor.xml"/>
+    </chapter>
     <chapter id="streaming">
         <title>Streaming I/O</title>
 	<xi:include href="xml/gseekable.xml"/>
-
-        <xi:include href="xml/ginputstream.xml"/>        
+        <xi:include href="xml/ginputstream.xml"/>
         <xi:include href="xml/goutputstream.xml"/>
         <xi:include href="xml/giostream.xml"/>
-
         <xi:include href="xml/gfileinputstream.xml"/>
         <xi:include href="xml/gfileoutputstream.xml"/>
         <xi:include href="xml/gfileiostream.xml"/>
-
-        <xi:include href="xml/gfilterinputstream.xml"/>        
+        <xi:include href="xml/gfilterinputstream.xml"/>
         <xi:include href="xml/gfilteroutputstream.xml"/>
-	
-        <xi:include href="xml/gmemoryinputstream.xml"/>        
+        <xi:include href="xml/gmemoryinputstream.xml"/>
         <xi:include href="xml/gmemoryoutputstream.xml"/>
-        
         <xi:include href="xml/gbufferedinputstream.xml"/>
         <xi:include href="xml/gbufferedoutputstream.xml"/>
-	
         <xi:include href="xml/gdatainputstream.xml"/>
         <xi:include href="xml/gdataoutputstream.xml"/>
-        
         <xi:include href="xml/gunixinputstream.xml"/>
         <xi:include href="xml/gunixoutputstream.xml"/>
-
+        <xi:include href="xml/gconverterinputstream.xml"/>
+        <xi:include href="xml/gconverteroutputstream.xml"/>
     </chapter>
-
     <chapter id="types">
         <title>File types and applications</title>
         <xi:include href="xml/gcontenttype.xml"/>
 	<xi:include href="xml/gappinfo.xml"/>
 	<xi:include href="xml/gdesktopappinfo.xml"/>
     </chapter>
-    
     <chapter id="volume_mon">
     	<title>Volumes and Drives</title>
         <xi:include href="xml/gvolumemonitor.xml"/>
@@ -157,5 +155,8 @@
   </index>
   <index role="2.22">
     <title>Index of new symbols in 2.22</title>
+  </index>
+  <index role="2.24">
+    <title>Index of new symbols in 2.24</title>
   </index>
 </book>

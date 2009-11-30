@@ -204,7 +204,8 @@ g_converter_output_stream_init (GConverterOutputStream *stream)
 
 /**
  * g_converter_output_stream_new:
- * @base_stream: a #GOutputStream.
+ * @base_stream: a #GOutputStream
+ * @converter: a #GConverter
  *
  * Creates a new converter output stream for the @base_stream.
  *
@@ -585,6 +586,16 @@ g_converter_output_stream_flush (GOutputStream  *stream,
   return TRUE;
 }
 
+/**
+ * g_converter_output_stream_get_converter:
+ * @converter_stream: a #GConverterOutputStream
+ *
+ * Gets the #GConverter that is used by @converter_stream.
+ *
+ * Returns: the converter of the converter output stream
+ *
+ * Since: 2.24
+ */
 GConverter *
 g_converter_output_stream_get_converter (GConverterOutputStream *converter_stream)
 {

@@ -580,15 +580,8 @@ g_volume_monitor_get (void)
   return vm;
 }
 
-/**
- * _g_mount_get_for_mount_path:
- * @mountpoint: a string.
- * @cancellable: a #GCancellable, or %NULL
- * 
- * Returns: a #GMount for given @mount_path or %NULL.  
- **/
 GMount *
-_g_mount_get_for_mount_path (const char *mount_path,
+_g_mount_get_for_mount_path (const gchar  *mount_path,
 			     GCancellable *cancellable)
 {
   GNativeVolumeMonitorClass *klass;

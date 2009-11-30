@@ -78,6 +78,7 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @can_delete: Checks if a #GAppInfo can be deleted. Since 2.20
  * @do_delete: Deletes a #GAppInfo. Since 2.20
  * @get_commandline: Gets the commandline for the #GAppInfo. Since 2.20
+ * @get_display_name: Gets the display name for the #GAppInfo. Since 2.24
  *
  * Application Information interface, for operating system portability.
  */
