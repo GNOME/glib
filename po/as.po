@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 09:51-0400\n"
+"POT-Creation-Date: 2009-12-01 00:15-0500\n"
 "PO-Revision-Date: 2009-09-15 12:48+0530\n"
 "Last-Translator: \n"
 "Language-Team: Assamese <>\n"
@@ -88,69 +88,69 @@ msgstr "'%s' নামৰ কোনো অনুপ্ৰয়োগে '%s' ৰ �
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec শাৰী '%s', য'ত URI '%s' আছে, বিস্তৃত কৰাত বিফল"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "আখৰৰ গোট '%s' ৰ পৰা '%s' লৈ সলনি কৰাৰ সমৰ্থন নাই"
 
-#: glib/gconvert.c:435 glib/gconvert.c:513
+#: glib/gconvert.c:441 glib/gconvert.c:519
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ৰ পৰা '%s' লৈ সলনি কৰা যন্ত্ৰক খুলিব নোৱাৰি"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "সলনি কৰাৰ নিবেশত অৱৈধ byte ক্ৰম"
 
-#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "সলনি কৰাৰ সময়ত ভুল: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
 #: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "নিবেশৰ অন্তত অসম্পূৰ্ণ আখৰৰ গোট"
 
-#: glib/gconvert.c:922
+#: glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' ক codeset '%s' লৈ সলনি কৰিব নোৱাৰি"
 
-#: glib/gconvert.c:1745
+#: glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"file\" আঁচনি ব্যৱহাৰ কৰি URI '%s' এটা সম্পূৰ্ণ URI নহয়"
 
-#: glib/gconvert.c:1755
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানিক নথিপত্ৰৰ URI '%s' ত এটা '#' থাকিব নোৱাৰে"
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' অৱৈধ"
 
-#: glib/gconvert.c:1784
+#: glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' ৰ গৃহস্থৰনাম অৱৈধ"
 
-#: glib/gconvert.c:1800
+#: glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' ত অৱৈধভাবে মুক্তি পোৱা আখৰ আছে"
 
-#: glib/gconvert.c:1895
+#: glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' পথৰ নাম এটা সম্পূৰ্ণ পথৰ নাম নহয়"
 
-#: glib/gconvert.c:1905
+#: glib/gconvert.c:1911
 msgid "Invalid hostname"
 msgstr "অৱৈধ গৃহস্থৰনাম"
 
@@ -159,119 +159,119 @@ msgstr "অৱৈধ গৃহস্থৰনাম"
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' পঞ্জিকা খোলোঁতে ভুল: %s"
 
-#: glib/gfileutils.c:529 glib/gfileutils.c:617
+#: glib/gfileutils.c:536 glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu bytes বিতৰণ কৰিব পৰা ন'গ'ল নথিপত্ৰ \"%s\" পঢ়িবলৈ "
 
-#: glib/gfileutils.c:544
+#: glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "নথিপত্ৰ '%s' পঢ়োঁতে ভুল: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "\"%s\" নথিপত্ৰ বৰ ডাঙৰ"
 
-#: glib/gfileutils.c:641
+#: glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' নথিপত্ৰৰ পৰা পঢ়োঁতে বিফল: %s"
 
-#: glib/gfileutils.c:692 glib/gfileutils.c:779
+#: glib/gfileutils.c:699 glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' নথিপত্ৰ খোলোঁতে ভুল: %s"
 
-#: glib/gfileutils.c:709 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' নথিপত্ৰৰ গুণ পাওঁতে বিফল: fstat() বিফল: %s"
 
-#: glib/gfileutils.c:743
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' নথিপত্ৰ খোলোঁতে ভুল: fdopen() বিফল: %s"
 
-#: glib/gfileutils.c:851
+#: glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' নথিপত্ৰক '%s' লৈ পুনঃনামকৰণ কৰোঁতে বিফল: g_rename() বিফল: %s"
 
-#: glib/gfileutils.c:893 glib/gfileutils.c:1359
+#: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' নথিপত্ৰ সৃষ্টি কৰোঁতে বিফল: %s"
 
-#: glib/gfileutils.c:907
+#: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "'%s' নথিপত্ৰ লিখিবৰ বাবে খোলাত বিফল: fdopen() বিফল: %s"
 
-#: glib/gfileutils.c:932
+#: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' নথিপত্ৰ লিখাত বিফল: fwrite() বিফল: %s"
 
-#: glib/gfileutils.c:951
+#: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "'%s' নথিপত্ৰ লিখাত বিফল: fflush() বিফল: %s"
 
-#: glib/gfileutils.c:980
+#: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' নথিপত্ৰ লিখাত বিফল: fsync() বিফল: %s"
 
-#: glib/gfileutils.c:999
+#: glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' নথিপত্ৰ বন্ধ কৰাত বিফল: fclose() বিফল: %s"
 
-#: glib/gfileutils.c:1117
+#: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "বৰ্ত্তমানে থকা নথিপত্ৰ '%s' আঁতৰাব পৰা ন'গ'ল: g_unlink() বিফল: %s"
 
-#: glib/gfileutils.c:1321
+#: glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' টেমপ্লেট অৱৈধ, এটা '%s' থাকিব নালাগে"
 
-#: glib/gfileutils.c:1334
+#: glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' টেমপ্লেটত XXXXXX নাই"
 
-#: glib/gfileutils.c:1764
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gfileutils.c:1772
+#: glib/gfileutils.c:1779
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1777
+#: glib/gfileutils.c:1784
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1782
+#: glib/gfileutils.c:1789
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1825
+#: glib/gfileutils.c:1832
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "সাঙ্কেতিক সংযোগ পঢ়াত বিফল '%s': %s"
 
-#: glib/gfileutils.c:1846
+#: glib/gfileutils.c:1853
 msgid "Symbolic links not supported"
 msgstr "সাঙ্কেতিক সংযোগ সমৰ্থিত নহয়"
 
@@ -1224,7 +1224,7 @@ msgstr "GEmblemedIcon ৰ কাৰণে এটা GEmblem প্ৰত্য�
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
-#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
+#: gio/gfile.c:6827 gio/gfile.c:6917 gio/gfile.c:7003
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "কাৰ্য্য সমৰ্থিত নহয়"
@@ -1279,7 +1279,7 @@ msgstr "নথিপত্ৰৰ নামত '%c' ব্যৱহাৰ কৰ�
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
-#: gio/gfile.c:5992
+#: gio/gfile.c:5995
 msgid "No application is registered as handling this file"
 msgstr "চিহ্নিত নথিপত্ৰ ব্যৱস্থাপনাৰ উদ্দেশ্যে কোনো অনুপ্ৰয়োগ নিবন্ধিত নহয়"
 
@@ -1510,79 +1510,79 @@ msgstr "অবৈধ সম্প্ৰসাৰিত গুণৰ নাম"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "সম্প্ৰসাৰিত গুণ নিৰ্ধাৰণ কৰোঁতে ভুল '%s': %s"
 
-#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "নথিপত্ৰ '%s' stat কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/glocalfileinfo.c:1552
+#: gio/glocalfileinfo.c:1555
 msgid " (invalid encoding)"
 msgstr " (অৱৈধ এনকোডিং)"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1753
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "নথিপত্ৰৰ দেস্ক্ৰিপ্টৰ stat কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1798
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "গুণৰ ধৰন বৈধ নহয় (প্ৰত্যাশিত uint32)"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1816
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "গুণৰ ধৰন বৈধ নহয় (প্ৰত্যাশিত uint64)"
 
-#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
+#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
 msgid "Invalid attribute type (byte string expected)"
 msgstr "গুণৰ ধৰন বৈধ নহয় (প্ৰত্যাশিত byte স্ট্ৰিং)"
 
-#: gio/glocalfileinfo.c:1886
+#: gio/glocalfileinfo.c:1889
 msgid "Cannot set permissions on symlinks"
 msgstr "symlinks ত সন্মতি নিৰ্ধাৰণ কৰিব নোৱাৰি"
 
-#: gio/glocalfileinfo.c:1902
+#: gio/glocalfileinfo.c:1905
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "অনুমতি নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1956
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "গৰাকী নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1976
+#: gio/glocalfileinfo.c:1979
 msgid "symlink must be non-NULL"
 msgstr "সাঙ্কেতিক সংযোগ NULL হ'ব নোৱাৰে"
 
-#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
-#: gio/glocalfileinfo.c:2016
+#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:2019
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "সাঙ্কেতিক সংযোগ নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:1995
+#: gio/glocalfileinfo.c:1998
 msgid "Error setting symlink: file is not a symlink"
 msgstr "সাঙ্কেতিক সংযোগ নিৰ্ধাৰণ কৰিবলৈ ত্ৰুটি: নথিপত্ৰ সাঙ্কেতিক সংযোগ নহয়"
 
-#: gio/glocalfileinfo.c:2121
+#: gio/glocalfileinfo.c:2124
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "সাল সলনি বা অভিগমৰ সময় নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: gio/glocalfileinfo.c:2144
+#: gio/glocalfileinfo.c:2147
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ৰ সন্দৰ্ভ NULL হ'ব নোৱাৰে"
 
-#: gio/glocalfileinfo.c:2159
+#: gio/glocalfileinfo.c:2162
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ৰ সন্দৰ্ভ নিৰ্ধাৰণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/glocalfileinfo.c:2166
+#: gio/glocalfileinfo.c:2169
 msgid "SELinux is not enabled on this system"
 msgstr "এই ব্যৱস্থাপ্ৰণালীত SELinux সক্ৰিয় কৰা নহয়"
 
-#: gio/glocalfileinfo.c:2258
+#: gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s গুণৰ মান নিৰ্ধাৰণ সমৰ্থিত নহয়"

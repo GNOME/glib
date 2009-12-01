@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 09:51-0400\n"
+"POT-Creation-Date: 2009-12-01 00:15-0500\n"
 "PO-Revision-Date: 2009-09-09 20:48+0800\n"
 "Last-Translator: Hinker <hinkerliu@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
@@ -90,69 +90,69 @@ msgstr "没有名为“%s”的应用程序为“%s”注册书签"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "用 URI “%2$s”展开 exec 行“%1$s”失败"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
-#: glib/gconvert.c:435 glib/gconvert.c:513
+#: glib/gconvert.c:441 glib/gconvert.c:519
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
-#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
 #: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
-#: glib/gconvert.c:922
+#: glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
-#: glib/gconvert.c:1745
+#: glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI“%s”不是“file”格式的绝对 URI"
 
-#: glib/gconvert.c:1755
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: glib/gconvert.c:1784
+#: glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI中的主机名“%s”无效"
 
-#: glib/gconvert.c:1800
+#: glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: glib/gconvert.c:1895
+#: glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: glib/gconvert.c:1905
+#: glib/gconvert.c:1911
 msgid "Invalid hostname"
 msgstr "无效的主机名"
 
@@ -161,118 +161,118 @@ msgstr "无效的主机名"
 msgid "Error opening directory '%s': %s"
 msgstr "打开目录“%s”时发生错误：%s"
 
-#: glib/gfileutils.c:529 glib/gfileutils.c:617
+#: glib/gfileutils.c:536 glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "无法分配 %lu 字节以读取文件“%s”"
 
-#: glib/gfileutils.c:544
+#: glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "读取文件“%s”出错：%s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "文件“%s”太大"
 
-#: glib/gfileutils.c:641
+#: glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "读取文件“%s”失败：%s"
 
-#: glib/gfileutils.c:692 glib/gfileutils.c:779
+#: glib/gfileutils.c:699 glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "打开文件“%s”失败：%s"
 
-#: glib/gfileutils.c:709 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "获得文件“%s”的属性失败：fstat() 失败：%s"
 
-#: glib/gfileutils.c:743
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "打开文件“%s”失败：fdopen() 失败：%s"
 
-#: glib/gfileutils.c:851
+#: glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "将文件“%s”重命名为“%s”失败：g_rename() 失败：%s"
 
-#: glib/gfileutils.c:893 glib/gfileutils.c:1359
+#: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "创建文件“%s”失败：%s"
 
-#: glib/gfileutils.c:907
+#: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "打开文件“%s”写入失败：fdopen() 失败：%s"
 
-#: glib/gfileutils.c:932
+#: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "写入文件“%s”失败：fwrite() 失败：%s"
 
-#: glib/gfileutils.c:951
+#: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "写入文件“%s”失败：fflush() 失败：%s"
 
-#: glib/gfileutils.c:980
+#: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "写入文件“%s”失败：fsync() 失败：%s"
 
-#: glib/gfileutils.c:999
+#: glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "关闭文件“%s”失败：fclose() 失败：%s"
 
-#: glib/gfileutils.c:1117
+#: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "无法删除已有文件“%s”：g_unlink() 失败：%s"
 
-#: glib/gfileutils.c:1321
+#: glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: glib/gfileutils.c:1334
+#: glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "模板“%s”的不包含 XXXXXX"
 
-#: glib/gfileutils.c:1764
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u 字节"
 
-#: glib/gfileutils.c:1772
+#: glib/gfileutils.c:1779
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1777
+#: glib/gfileutils.c:1784
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1782
+#: glib/gfileutils.c:1789
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1825
+#: glib/gfileutils.c:1832
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "读取符号链接“%s”失败：%s"
 
-#: glib/gfileutils.c:1846
+#: glib/gfileutils.c:1853
 msgid "Symbolic links not supported"
 msgstr "不支持符号链接"
 
@@ -1208,7 +1208,7 @@ msgstr "GEmblemedIcon 中应为 GEmblem"
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
-#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
+#: gio/gfile.c:6827 gio/gfile.c:6917 gio/gfile.c:7003
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "不支持该操作"
@@ -1263,7 +1263,7 @@ msgstr "文件名不能包含“%c”"
 msgid "volume doesn't implement mount"
 msgstr "卷未实现挂载"
 
-#: gio/gfile.c:5992
+#: gio/gfile.c:5995
 msgid "No application is registered as handling this file"
 msgstr "没有注册为处理此文件的应用程序"
 
@@ -1493,79 +1493,79 @@ msgstr "无效的扩展属性名"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "设置扩展属性“%s”出错：%s"
 
-#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "获取文件“%s”状态出错：%s"
 
-#: gio/glocalfileinfo.c:1552
+#: gio/glocalfileinfo.c:1555
 msgid " (invalid encoding)"
 msgstr " (无效的编码)"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1753
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "获取文件描述符状态时出错：%s"
 
-#: gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1798
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "无效的属性类型(应为 uint32)"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1816
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "无效的属性类型(应为 uint64)"
 
-#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
+#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
 msgid "Invalid attribute type (byte string expected)"
 msgstr "无效的属性类型(应为 byte string)"
 
-#: gio/glocalfileinfo.c:1886
+#: gio/glocalfileinfo.c:1889
 msgid "Cannot set permissions on symlinks"
 msgstr "无法为符号链设置权限"
 
-#: gio/glocalfileinfo.c:1902
+#: gio/glocalfileinfo.c:1905
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "设置访问权限出错：%s"
 
-#: gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1956
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "设置所有者出错：%s"
 
-#: gio/glocalfileinfo.c:1976
+#: gio/glocalfileinfo.c:1979
 msgid "symlink must be non-NULL"
 msgstr "符号链接必须是非空"
 
-#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
-#: gio/glocalfileinfo.c:2016
+#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:2019
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "设置符号链接出错：%s"
 
-#: gio/glocalfileinfo.c:1995
+#: gio/glocalfileinfo.c:1998
 msgid "Error setting symlink: file is not a symlink"
 msgstr "设定符号链接出错：文件不是符号链接"
 
-#: gio/glocalfileinfo.c:2121
+#: gio/glocalfileinfo.c:2124
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "错误设置修改或访问时间：%s"
 
-#: gio/glocalfileinfo.c:2144
+#: gio/glocalfileinfo.c:2147
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux 上下文必须是非空"
 
-#: gio/glocalfileinfo.c:2159
+#: gio/glocalfileinfo.c:2162
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "设置 SELinux 上下文出错：%s"
 
-#: gio/glocalfileinfo.c:2166
+#: gio/glocalfileinfo.c:2169
 msgid "SELinux is not enabled on this system"
 msgstr "此系统尚未启用 SELinux"
 
-#: gio/glocalfileinfo.c:2258
+#: gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "不支持设置属性 %s"

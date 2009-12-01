@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 09:51-0400\n"
+"POT-Creation-Date: 2009-12-01 00:15-0500\n"
 "PO-Revision-Date: 2009-09-02 18:19+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -91,70 +91,70 @@ msgstr "'%s' izeneko aplikaziorik ez du erregistratu laster-markarik '%s'(e)n"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Huts egin du '%s' exekuzioko lerroa '%s' URIarekin hedatzean"
 
-#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1230
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1230
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "'%s' karaktere-multzoa '%s' bihurtzea ez da onartzen"
 
-#: glib/gconvert.c:435 glib/gconvert.c:513
+#: glib/gconvert.c:441 glib/gconvert.c:519
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ezin izan da '%s'(e)tik %s(e)rako bihurtzailea ireki"
 
-#: glib/gconvert.c:632 glib/gconvert.c:1025 glib/giochannel.c:1402
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1419
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byten sekuentzia baliogabea bihurketa-sarreran"
 
-#: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea bihurtzean: %s"
 
-#: glib/gconvert.c:672 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
+#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
 #: glib/gutf8.c:1415
 msgid "Partial character sequence at end of input"
 msgstr "Karaktere-sekuentzia partziala sarreraren amaieran"
 
-#: glib/gconvert.c:922
+#: glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin da '%s' atzerapena '%s' kode-multzo bihurtu"
 
-#: glib/gconvert.c:1745
+#: glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' URIa ez da \"fitxategi\"-eskema erabiltzen duen URI absolutua"
 
-#: glib/gconvert.c:1755
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Baliteke '%s' URI fitxategi lokalak '#' ez edukitzea"
 
-#: glib/gconvert.c:1772
+#: glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' URI baliogabea da"
 
-#: glib/gconvert.c:1784
+#: glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "'%s' URIaren ostalari-izena baliogabea da"
 
-#: glib/gconvert.c:1800
+#: glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
 
-#: glib/gconvert.c:1895
+#: glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' bide-izena ez da bide-izen absolutua"
 
 #
-#: glib/gconvert.c:1905
+#: glib/gconvert.c:1911
 msgid "Invalid hostname"
 msgstr "Ostalari-izen baliogabea"
 
@@ -163,130 +163,130 @@ msgstr "Ostalari-izen baliogabea"
 msgid "Error opening directory '%s': %s"
 msgstr "Errorea '%s' direktorioa irekitzean: %s "
 
-#: glib/gfileutils.c:529 glib/gfileutils.c:617
+#: glib/gfileutils.c:536 glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ezin izan dira %lu byte esleitu \"%s\" fitxategia irakurtzeko"
 
-#: glib/gfileutils.c:544
+#: glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Errorea '%s' fitxategia irakurtzean: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "\"%s\" fitxategia handiegia da"
 
-#: glib/gfileutils.c:641
+#: glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ezin izan da '%s' fitxategitik irakurri: %s"
 
-#: glib/gfileutils.c:692 glib/gfileutils.c:779
+#: glib/gfileutils.c:699 glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ezin izan da '%s' fitxategia ireki: %s "
 
-#: glib/gfileutils.c:709 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:141
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Ezin izan dira '%s' fitxategiko atributuak lortu, fstat() funtzioak huts "
 "egin du: %s"
 
-#: glib/gfileutils.c:743
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr ""
 "Ezin izan da '%s' fitxategia ireki, fdopen() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:851
+#: glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Ezin izan da '%s' fitxategia '%s' gisa berrizendatu, g_rename() funtzioak "
 "huts egin du: %s"
 
-#: glib/gfileutils.c:893 glib/gfileutils.c:1359
+#: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ezin izan da '%s' fitxategia sortu: %s"
 
-#: glib/gfileutils.c:907
+#: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Ezin izan da '%s' fitxategia idazteko ireki, fdopen() funtzioak huts egin "
 "du: %s"
 
-#: glib/gfileutils.c:932
+#: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr ""
 "Ezin izan da '%s' fitxategia idatzi, fwrite() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:951
+#: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr ""
 "Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:980
+#: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr ""
 "Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:999
+#: glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Ezin izan da '%s' fitxategia itxi, fclose() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1117
+#: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1321
+#: glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' txantiloia baliogabea da, ez luke '%s' eduki behar"
 
-#: glib/gfileutils.c:1334
+#: glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' txantiloiak ez dauka: XXXXXX"
 
-#: glib/gfileutils.c:1764
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: glib/gfileutils.c:1772
+#: glib/gfileutils.c:1779
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1777
+#: glib/gfileutils.c:1784
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1782
+#: glib/gfileutils.c:1789
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1825
+#: glib/gfileutils.c:1832
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ezin izan da '%s' esteka sinbolikorik irakurri: %s"
 
-#: glib/gfileutils.c:1846
+#: glib/gfileutils.c:1853
 msgid "Symbolic links not supported"
 msgstr "Esteka sinbolikoak ez dira onartzen"
 
@@ -1274,7 +1274,7 @@ msgstr "GEmblen espero zen GEmblemedIcon-entzako"
 #: gio/gfile.c:3335 gio/gfile.c:3375 gio/gfile.c:3702 gio/gfile.c:4104
 #: gio/gfile.c:4190 gio/gfile.c:4279 gio/gfile.c:4377 gio/gfile.c:4464
 #: gio/gfile.c:4557 gio/gfile.c:4887 gio/gfile.c:5167 gio/gfile.c:5236
-#: gio/gfile.c:6824 gio/gfile.c:6914 gio/gfile.c:7000
+#: gio/gfile.c:6827 gio/gfile.c:6917 gio/gfile.c:7003
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
@@ -1329,7 +1329,7 @@ msgstr "Fitxategi-izenek ezin dute '%c' eduki"
 msgid "volume doesn't implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
-#: gio/gfile.c:5992
+#: gio/gfile.c:5995
 msgid "No application is registered as handling this file"
 msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
@@ -1561,80 +1561,80 @@ msgstr "Atributu hedatuaren izen baliogabea"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Errorea '%s' atributu hedatua ezartzean: %s"
 
-#: gio/glocalfileinfo.c:1481 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Errorea '%s' fitxategiaren egoera irakurtzean: %s"
 
-#: gio/glocalfileinfo.c:1552
+#: gio/glocalfileinfo.c:1555
 msgid " (invalid encoding)"
 msgstr " (baliogabeko kodeketa)"
 
-#: gio/glocalfileinfo.c:1750
+#: gio/glocalfileinfo.c:1753
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Errorea fitxategiaren deskriptorearen egoera irakurtzean: %s "
 
-#: gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1798
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Baliogabeko atributu mota (uint32 espero zen)"
 
-#: gio/glocalfileinfo.c:1813
+#: gio/glocalfileinfo.c:1816
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Baliogabeko atributu mota (uint64 espero zen)"
 
-#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
+#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Baliogabeko atributu mota (byte katea espero zen)"
 
-#: gio/glocalfileinfo.c:1886
+#: gio/glocalfileinfo.c:1889
 msgid "Cannot set permissions on symlinks"
 msgstr "Ezin da baimenik ezarri esteka sinbolikoetan"
 
-#: gio/glocalfileinfo.c:1902
+#: gio/glocalfileinfo.c:1905
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Errorea baimenak ezartzean: %s"
 
-#: gio/glocalfileinfo.c:1953
+#: gio/glocalfileinfo.c:1956
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errorea jabea ezartzean: %s"
 
-#: gio/glocalfileinfo.c:1976
+#: gio/glocalfileinfo.c:1979
 msgid "symlink must be non-NULL"
 msgstr "esteka sinbolikoak NULL-en desberdina izan behar du"
 
-#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
-#: gio/glocalfileinfo.c:2016
+#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
+#: gio/glocalfileinfo.c:2019
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Errorea esteka sinbolikoa ezartzean: %s"
 
-#: gio/glocalfileinfo.c:1995
+#: gio/glocalfileinfo.c:1998
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
 
-#: gio/glocalfileinfo.c:2121
+#: gio/glocalfileinfo.c:2124
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Errorea eraldaketa edo atzipen ordua ezartzean: %s"
 
-#: gio/glocalfileinfo.c:2144
+#: gio/glocalfileinfo.c:2147
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux testuinguruak NULL-en desberdina izan behar du"
 
-#: gio/glocalfileinfo.c:2159
+#: gio/glocalfileinfo.c:2162
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Errorea SELinux testuingurua ezartzean: %s"
 
-#: gio/glocalfileinfo.c:2166
+#: gio/glocalfileinfo.c:2169
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ez dago gaituta sistema honetan"
 
-#: gio/glocalfileinfo.c:2258
+#: gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s atributuaren ezarpena ez dago onartuta"
