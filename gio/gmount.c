@@ -63,103 +63,58 @@
  * is called, then it will be filled with any error information.
  **/
 
-static void g_mount_base_init (gpointer g_class);
-static void g_mount_class_init (gpointer g_class,
-                                gpointer class_data);
-
-GType
-g_mount_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo mount_info =
-      {
-        sizeof (GMountIface), /* class_size */
-	g_mount_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_mount_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GMount"),
-				&mount_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GMountIface GMountInterface;
+G_DEFINE_INTERFACE (GMount, g_mount, G_TYPE_OBJECT)
 
 static void
-g_mount_class_init (gpointer g_class,
-                    gpointer class_data)
+g_mount_default_init (GMountInterface *iface)
 {
-}
+  /**
+   * GMount::changed:
+   * @mount: the object on which the signal is emitted
+   *
+   * Emitted when the mount has been changed.
+   **/
+  g_signal_new (I_("changed"),
+                G_TYPE_MOUNT,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GMountIface, changed),
+                NULL, NULL,
+                g_cclosure_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
 
-static void
-g_mount_base_init (gpointer g_class)
-{
-  static gboolean initialized = FALSE;
-
-  if (! initialized)
-    {
-     /**
-      * GMount::changed:
-      * @mount: the object on which the signal is emitted
-      * 
-      * Emitted when the mount has been changed.
-      **/
-      g_signal_new (I_("changed"),
-                    G_TYPE_MOUNT,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GMountIface, changed),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-     /**
-      * GMount::unmounted:
-      * @mount: the object on which the signal is emitted
-      * 
-      * This signal is emitted when the #GMount have been
-      * unmounted. If the recipient is holding references to the
-      * object they should release them so the object can be
-      * finalized.
-      **/
-      g_signal_new (I_("unmounted"),
-                    G_TYPE_MOUNT,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GMountIface, unmounted),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-     /**
-      * GMount::pre-unmount:
-      * @mount: the object on which the signal is emitted
-      *
-      * This signal is emitted when the #GMount is about to be
-      * unmounted.
-      *
-      * Since: 2.22
-      **/
-      g_signal_new (I_("pre-unmount"),
-                    G_TYPE_MOUNT,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GMountIface, pre_unmount),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-      initialized = TRUE;
-    }
+  /**
+   * GMount::unmounted:
+   * @mount: the object on which the signal is emitted
+   *
+   * This signal is emitted when the #GMount have been
+   * unmounted. If the recipient is holding references to the
+   * object they should release them so the object can be
+   * finalized.
+   **/
+  g_signal_new (I_("unmounted"),
+                G_TYPE_MOUNT,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GMountIface, unmounted),
+                NULL, NULL,
+                g_cclosure_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
+  /**
+   * GMount::pre-unmount:
+   * @mount: the object on which the signal is emitted
+   *
+   * This signal is emitted when the #GMount is about to be
+   * unmounted.
+   *
+   * Since: 2.22
+   **/
+  g_signal_new (I_("pre-unmount"),
+                G_TYPE_MOUNT,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GMountIface, pre_unmount),
+                NULL, NULL,
+                g_cclosure_marshal_VOID__VOID,
+                G_TYPE_NONE, 0);
 }
 
 /**

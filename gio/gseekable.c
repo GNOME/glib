@@ -37,43 +37,11 @@
  * 
  **/
 
-
-static void g_seekable_base_init (gpointer g_class);
-
-
-GType
-g_seekable_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo seekable_info =
-      {
-        sizeof (GSeekableIface), /* class_size */
-	g_seekable_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	NULL,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GSeekable"),
-				&seekable_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GSeekableIface GSeekableInterface;
+G_DEFINE_INTERFACE (GSeekable, g_seekable, G_TYPE_OBJECT)
 
 static void
-g_seekable_base_init (gpointer g_class)
+g_seekable_default_init (GSeekableInterface *iface)
 {
 }
 

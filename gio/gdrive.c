@@ -63,119 +63,74 @@
  * #GDrive in that API.
  **/
 
-static void g_drive_base_init (gpointer g_class);
-static void g_drive_class_init (gpointer g_class,
-				 gpointer class_data);
-
-GType
-g_drive_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo drive_info =
-      {
-        sizeof (GDriveIface), /* class_size */
-	g_drive_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_drive_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GDrive"),
-				&drive_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GDriveIface GDriveInterface;
+G_DEFINE_INTERFACE(GDrive, g_drive, G_TYPE_OBJECT)
 
 static void
-g_drive_class_init (gpointer g_class,
-                    gpointer class_data)
+g_drive_default_init (GDriveInterface *iface)
 {
-}
+  /**
+   * GDrive::changed:
+   * @drive: a #GDrive.
+   *
+   * Emitted when the drive's state has changed.
+   **/
+  g_signal_new (I_("changed"),
+		G_TYPE_DRIVE,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GDriveIface, changed),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 
-static void
-g_drive_base_init (gpointer g_class)
-{
-  static gboolean initialized = FALSE;
+  /**
+   * GDrive::disconnected:
+   * @drive: a #GDrive.
+   *
+   * This signal is emitted when the #GDrive have been
+   * disconnected. If the recipient is holding references to the
+   * object they should release them so the object can be
+   * finalized.
+   **/
+  g_signal_new (I_("disconnected"),
+		G_TYPE_DRIVE,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GDriveIface, disconnected),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 
-  if (! initialized)
-    {
-      /**
-      * GDrive::changed:
-      * @drive: a #GDrive.
-      * 
-      * Emitted when the drive's state has changed.
-      **/
-      g_signal_new (I_("changed"),
-                    G_TYPE_DRIVE,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GDriveIface, changed),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
+  /**
+   * GDrive::eject-button:
+   * @drive: a #GDrive.
+   *
+   * Emitted when the physical eject button (if any) of a drive has
+   * been pressed.
+   **/
+  g_signal_new (I_("eject-button"),
+		G_TYPE_DRIVE,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GDriveIface, eject_button),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 
-      /**
-      * GDrive::disconnected:
-      * @drive: a #GDrive.
-      * 
-      * This signal is emitted when the #GDrive have been
-      * disconnected. If the recipient is holding references to the
-      * object they should release them so the object can be
-      * finalized.
-      **/
-      g_signal_new (I_("disconnected"),
-                    G_TYPE_DRIVE,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GDriveIface, disconnected),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-      /**
-      * GDrive::eject-button:
-      * @drive: a #GDrive.
-      * 
-      * Emitted when the physical eject button (if any) of a drive has
-      * been pressed.
-      **/
-      g_signal_new (I_("eject-button"),
-                    G_TYPE_DRIVE,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GDriveIface, eject_button),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-      /**
-      * GDrive::stop-button:
-      * @drive: a #GDrive.
-      *
-      * Emitted when the physical stop button (if any) of a drive has
-      * been pressed.
-      *
-      * Since: 2.22
-      **/
-      g_signal_new (I_("stop-button"),
-                    G_TYPE_DRIVE,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GDriveIface, stop_button),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-      initialized = TRUE;
-    }
+  /**
+   * GDrive::stop-button:
+   * @drive: a #GDrive.
+   *
+   * Emitted when the physical stop button (if any) of a drive has
+   * been pressed.
+   *
+   * Since: 2.22
+   **/
+  g_signal_new (I_("stop-button"),
+		G_TYPE_DRIVE,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GDriveIface, stop_button),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 }
 
 /**

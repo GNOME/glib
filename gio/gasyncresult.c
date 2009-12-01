@@ -108,49 +108,11 @@
  * truly need asynchronous operations, make sure to initialize #GThread.
  **/
 
-static void g_async_result_base_init (gpointer g_class);
-static void g_async_result_class_init (gpointer g_class,
-				       gpointer class_data);
-
-GType
-g_async_result_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo async_result_info =
-      {
-        sizeof (GAsyncResultIface), /* class_size */
-	g_async_result_base_init,   /* base_init */
-	NULL,		            /* base_finalize */
-	g_async_result_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GAsyncResult"),
-				&async_result_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GAsyncResultIface GAsyncResultInterface;
+G_DEFINE_INTERFACE (GAsyncResult, g_async_result, G_TYPE_OBJECT)
 
 static void
-g_async_result_class_init (gpointer g_class,
-			   gpointer class_data)
-{
-}
-
-static void
-g_async_result_base_init (gpointer g_class)
+g_async_result_default_init (GAsyncResultInterface *iface)
 {
 }
 

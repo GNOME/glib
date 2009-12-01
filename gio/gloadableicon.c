@@ -48,54 +48,15 @@ static GInputStream *g_loadable_icon_real_load_finish (GLoadableIcon        *ico
 						       GAsyncResult         *res,
 						       char                **type,
 						       GError              **error);
-static void          g_loadable_icon_base_init        (gpointer              g_class);
-static void          g_loadable_icon_class_init       (gpointer              g_class,
-						       gpointer              class_data);
 
-GType
-g_loadable_icon_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo loadable_icon_info =
-	{
-        sizeof (GLoadableIconIface), /* class_size */
-	g_loadable_icon_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_loadable_icon_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GLoadableIcon"),
-				&loadable_icon_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_ICON);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GLoadableIconIface GLoadableIconInterface;
+G_DEFINE_INTERFACE(GLoadableIcon, g_loadable_icon, G_TYPE_ICON)
 
 static void
-g_loadable_icon_class_init (gpointer g_class,
-			    gpointer class_data)
+g_loadable_icon_default_init (GLoadableIconIface *iface)
 {
-  GLoadableIconIface *iface = g_class;
-
   iface->load_async = g_loadable_icon_real_load_async;
   iface->load_finish = g_loadable_icon_real_load_finish;
-}
-
-static void
-g_loadable_icon_base_init (gpointer g_class)
-{
 }
 
 /**

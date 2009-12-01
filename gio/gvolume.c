@@ -79,84 +79,39 @@
  * libhal_manger_find_device_string_match().
  */
 
-static void g_volume_base_init (gpointer g_class);
-static void g_volume_class_init (gpointer g_class,
-                                 gpointer class_data);
-
-GType
-g_volume_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo volume_info =
-      {
-        sizeof (GVolumeIface), /* class_size */
-	g_volume_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_volume_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GVolume"),
-				&volume_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GVolumeIface GVolumeInterface;
+G_DEFINE_INTERFACE(GVolume, g_volume, G_TYPE_OBJECT)
 
 static void
-g_volume_class_init (gpointer g_class,
-                     gpointer class_data)
+g_volume_default_init (GVolumeInterface *iface)
 {
-}
+  /**
+   * GVolume::changed:
+   * 
+   * Emitted when the volume has been changed.
+   **/
+  g_signal_new (I_("changed"),
+		G_TYPE_VOLUME,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GVolumeIface, changed),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 
-static void
-g_volume_base_init (gpointer g_class)
-{
-  static gboolean initialized = FALSE;
-
-  if (! initialized)
-    {
-     /**
-      * GVolume::changed:
-      * 
-      * Emitted when the volume has been changed.
-      **/
-      g_signal_new (I_("changed"),
-                    G_TYPE_VOLUME,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GVolumeIface, changed),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-     /**
-      * GVolume::removed:
-      * 
-      * This signal is emitted when the #GVolume have been removed. If
-      * the recipient is holding references to the object they should
-      * release them so the object can be finalized.
-      **/
-      g_signal_new (I_("removed"),
-                    G_TYPE_VOLUME,
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GVolumeIface, removed),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
-
-      initialized = TRUE;
-    }
+  /**
+   * GVolume::removed:
+   * 
+   * This signal is emitted when the #GVolume have been removed. If
+   * the recipient is holding references to the object they should
+   * release them so the object can be finalized.
+   **/
+  g_signal_new (I_("removed"),
+		G_TYPE_VOLUME,
+		G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GVolumeIface, removed),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 }
 
 /**

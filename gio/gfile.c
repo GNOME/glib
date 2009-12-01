@@ -121,10 +121,6 @@
  * </para>
  **/
 
-static void g_file_base_init (gpointer g_class);
-static void g_file_class_init (gpointer g_class,
-			       gpointer class_data);
-
 static void               g_file_real_query_info_async            (GFile                  *file,
 								   const char             *attributes,
 								   GFileQueryInfoFlags     flags,
@@ -265,43 +261,12 @@ static gboolean           g_file_real_copy_finish                 (GFile        
 								   GAsyncResult           *res,
 								   GError                **error);
 
-GType
-g_file_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo file_info =
-      {
-        sizeof (GFileIface), /* class_size */
-	g_file_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_file_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GFile"),
-				&file_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GFileIface GFileInterface;
+G_DEFINE_INTERFACE (GFile, g_file, G_TYPE_OBJECT)
 
 static void
-g_file_class_init (gpointer g_class,
-		   gpointer class_data)
+g_file_default_init (GFileIface *iface)
 {
-  GFileIface *iface = g_class;
-
   iface->enumerate_children_async = g_file_real_enumerate_children_async;
   iface->enumerate_children_finish = g_file_real_enumerate_children_finish;
   iface->set_display_name_async = g_file_real_set_display_name_async;
@@ -331,11 +296,6 @@ g_file_class_init (gpointer g_class,
   iface->set_attributes_from_info = g_file_real_set_attributes_from_info;
   iface->copy_async = g_file_real_copy_async;
   iface->copy_finish = g_file_real_copy_finish;
-}
-
-static void
-g_file_base_init (gpointer g_class)
-{
 }
 
 

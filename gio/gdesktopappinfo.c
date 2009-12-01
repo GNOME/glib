@@ -2639,49 +2639,11 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type,
 
 /* GDesktopAppInfoLookup interface: */
 
-static void g_desktop_app_info_lookup_base_init (gpointer g_class);
-static void g_desktop_app_info_lookup_class_init (gpointer g_class,
-						  gpointer class_data);
-
-GType
-g_desktop_app_info_lookup_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo desktop_app_info_lookup_info =
-      {
-        sizeof (GDesktopAppInfoLookupIface), /* class_size */
-	g_desktop_app_info_lookup_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	g_desktop_app_info_lookup_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GDesktopAppInfoLookup"),
-				&desktop_app_info_lookup_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GDesktopAppInfoLookupIface GDesktopAppInfoLookupInterface;
+G_DEFINE_INTERFACE (GDesktopAppInfoLookup, g_desktop_app_info_lookup, G_TYPE_OBJECT)
 
 static void
-g_desktop_app_info_lookup_class_init (gpointer g_class,
-				      gpointer class_data)
-{
-}
-
-static void
-g_desktop_app_info_lookup_base_init (gpointer g_class)
+g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
 {
 }
 
