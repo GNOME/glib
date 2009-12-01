@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.22.2 to GLib 2.22.3
+===================================================
+
+* Bugs fixed:
+ 350200 GTypeModule derived class unref does not unload plugin
+ 598899 GWin32DirectoryMonitor is broken
+ 563627 g_get_prgname() threadsafety
+ 572252 Bug in g_file_test() function.
+ 577711 cross compile check for g++ broken
+ 598712 can't detect text file with backspace
+ 541236 not detecting exact content type
+ 593856 file and directory monitors don't work with --disable-debug
+ 593809 Nautilus does not restore the position of the icons...
+
+* Updated translations:
+ Catalan Valencian
+ Estonian
+
+
 Overview of Changes from GLib 2.22.1 to GLib 2.22.2
 ===================================================
 
