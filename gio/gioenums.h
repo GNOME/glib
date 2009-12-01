@@ -59,7 +59,7 @@ typedef enum {
 typedef enum {
   G_CONVERTER_NO_FLAGS     = 0,         /*< nick=none >*/
   G_CONVERTER_INPUT_AT_END = (1 << 0),  /*< nick=input-at-end >*/
-  G_CONVERTER_FLUSH        = (1 << 1),  /*< nick=flush >*/
+  G_CONVERTER_FLUSH        = (1 << 1)   /*< nick=flush >*/
 } GConverterFlags;
 
 /**
@@ -74,10 +74,10 @@ typedef enum {
  * Since: 2.24
  */
 typedef enum {
-  G_CONVERTER_ERROR     = 0, /*< nick=error >*/
+  G_CONVERTER_ERROR     = 0,  /*< nick=error >*/
   G_CONVERTER_CONVERTED = 1,  /*< nick=converted >*/
   G_CONVERTER_FINISHED  = 2,  /*< nick=finished >*/
-  G_CONVERTER_FLUSHED   = 3,  /*< nick=flushed >*/
+  G_CONVERTER_FLUSHED   = 3   /*< nick=flushed >*/
 } GConverterResult;
 
 
