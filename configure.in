@@ -3057,6 +3057,10 @@ _______EOF
 #define GUINT_TO_LE(val)	((guint) GUINT${gintbits}_TO_LE (val))
 #define GINT_TO_BE(val)		((gint) GINT${gintbits}_TO_BE (val))
 #define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
+#define GSIZE_TO_LE(val)	((gsize) GUINT${gsizebits}_TO_LE (val))
+#define GSSIZE_TO_LE(val)	((gssize) GINT${gsizebits}_TO_LE (val))
+#define GSIZE_TO_BE(val)	((gsize) GUINT${gsizebits}_TO_BE (val))
+#define GSSIZE_TO_BE(val)	((gssize) GINT${gsizebits}_TO_BE (val))
 #define G_BYTE_ORDER $g_byte_order
 
 #define GLIB_SYSDEF_POLLIN =$g_pollin
@@ -3256,6 +3260,7 @@ esac
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`
 glongbits=`expr $ac_cv_sizeof_long \* 8`
+gsizebits=`expr $ac_cv_sizeof_size_t \* 8`
 
 case $ac_cv_sizeof_void_p in
 $ac_cv_sizeof_int)

@@ -335,6 +335,11 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define GINT_FROM_BE(val)	(GINT_TO_BE (val))
 #define GUINT_FROM_BE(val)	(GUINT_TO_BE (val))
 
+#define GSIZE_FROM_LE(val)	(GSIZE_TO_LE (val))
+#define GSSIZE_FROM_LE(val)	(GSSIZE_TO_LE (val))
+#define GSIZE_FROM_BE(val)	(GSIZE_TO_BE (val))
+#define GSSIZE_FROM_BE(val)	(GSSIZE_TO_BE (val))
+
 
 /* Portable versions of host-network order stuff
  */

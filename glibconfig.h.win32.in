@@ -239,6 +239,10 @@ union _GSystemThread
 #define GUINT_TO_LE(val)	((guint) GUINT32_TO_LE (val))
 #define GINT_TO_BE(val)		((gint) GINT32_TO_BE (val))
 #define GUINT_TO_BE(val)	((guint) GUINT32_TO_BE (val))
+#define GSIZE_TO_LE(val)	((gsize) GUINT32_TO_LE (val))
+#define GSSIZE_TO_LE(val)	((gssize) GINT32_TO_LE (val))
+#define GSIZE_TO_BE(val)	((gsize) GUINT32_TO_BE (val))
+#define GSSIZE_TO_BE(val)	((gssize) GINT32_TO_BE (val))
 #define G_BYTE_ORDER G_LITTLE_ENDIAN
 
 #define GLIB_SYSDEF_POLLIN =1

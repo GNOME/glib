@@ -265,6 +265,78 @@ Converts a #gulong value from host byte order to little-endian.
 @Returns: @val converted to little-endian.
 
 
+<!-- ##### MACRO GSIZE_FROM_BE ##### -->
+<para>
+Converts a #gsize value from big-endian to the host byte order.
+</para>
+
+@val: a #gsize value in big-endian byte order.
+@Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GSIZE_FROM_LE ##### -->
+<para>
+Converts a #gsize value from little-endian to host byte order.
+</para>
+
+@val: a #gsize value in little-endian byte order.
+@Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GSIZE_TO_BE ##### -->
+<para>
+Converts a #gsize value from host byte order to big-endian.
+</para>
+
+@val: a #gsize value in host byte order.
+@Returns: @val converted to big-endian byte order.
+
+
+<!-- ##### MACRO GSIZE_TO_LE ##### -->
+<para>
+Converts a #gsize value from host byte order to little-endian.
+</para>
+
+@val: a #gsize value in host byte order.
+@Returns: @val converted to little-endian.
+
+
+<!-- ##### MACRO GSSIZE_FROM_BE ##### -->
+<para>
+Converts a #gssize value from big-endian to host byte order.
+</para>
+
+@val: a #gssize value in big-endian byte order.
+@Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GSSIZE_FROM_LE ##### -->
+<para>
+Converts a #gssize value from little-endian to host byte order.
+</para>
+
+@val: a #gssize value in little-endian byte order.
+@Returns: @val converted to host byte order.
+
+
+<!-- ##### MACRO GSSIZE_TO_BE ##### -->
+<para>
+Converts a #gssize value from host byte order to big-endian.
+</para>
+
+@val: a #gssize value in host byte order.
+@Returns: @val converted to big-endian.
+
+
+<!-- ##### MACRO GSSIZE_TO_LE ##### -->
+<para>
+Converts a #gssize value from host byte order to little-endian.
+</para>
+
+@val: a #gssize value in host byte order.
+@Returns: @val converted to little-endian.
+
+
 <!-- ##### MACRO GINT16_FROM_BE ##### -->
 <para>
 Converts a #gint16 value from big-endian to host byte order.
