@@ -271,6 +271,9 @@ g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
 
   return_type = g_callable_info_get_return_type (callable_info);
   type_tag = g_type_info_get_tag (return_type);
+
+  g_base_info_unref((GIBaseInfo*)return_type);
+
   return g_ir_ffi_get_ffi_type (type_tag);
 }
 
