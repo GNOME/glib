@@ -1980,13 +1980,11 @@ g_signal_chain_from_overridden_handler (gpointer instance,
           GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
           gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
 
-          param_values[i].g_type = 0;
           SIGNAL_UNLOCK ();
-          g_value_init (param_values + i, ptype);
-          G_VALUE_COLLECT (param_values + i,
-                           var_args,
-                           static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
-                           &error);
+          G_VALUE_COLLECT_INIT (param_values + i, ptype,
+				var_args,
+				static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
+				&error);
           if (error)
             {
               g_warning ("%s: %s", G_STRLOC, error);
@@ -2949,13 +2947,11 @@ g_signal_emit_valist (gpointer instance,
       GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
 
-      param_values[i].g_type = 0;
       SIGNAL_UNLOCK ();
-      g_value_init (param_values + i, ptype);
-      G_VALUE_COLLECT (param_values + i,
-		       var_args,
-		       static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
-		       &error);
+      G_VALUE_COLLECT_INIT (param_values + i, ptype,
+			    var_args,
+			    static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
+			    &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
