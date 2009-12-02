@@ -18,10 +18,13 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include <sys/types.h>
+#include <sys/mman.h>
+
 #include <config.h>
 #include <errno.h>
 #include <string.h>
-#include <sys/mman.h>
 #include <unistd.h>
 #include "girffi.h"
 #include "girepository.h"
