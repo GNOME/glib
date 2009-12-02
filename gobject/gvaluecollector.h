@@ -68,9 +68,10 @@ union _GTypeCValue
 };
 
 /**
- * G_VALUE_COLLECT:
- * @value: a #GValue return location. @value is supposed to be initialized 
- *  according to the value type to be collected
+ * G_VALUE_COLLECT_INIT:
+ * @value: a #GValue return location. @value is supposed to be clean (freshly
+ * initialized and/or freed).
+ * @_value_type: the #GType to use for @value.
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the collect_value() function of
  *  the #GTypeValueTable of @value.
@@ -80,21 +81,19 @@ union _GTypeCValue
  * Collects a variable argument value from a va_list. We have to
  * implement the varargs collection as a macro, because on some systems
  * va_list variables cannot be passed by reference.
+ *
+ * Since: 2.23.1
  */
-#define G_VALUE_COLLECT(value, var_args, flags, __error)				\
+#define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error)		\
 G_STMT_START {										\
   GValue *_value = (value);								\
   guint _flags = (flags);								\
-  GType _value_type = G_VALUE_TYPE (_value);						\
   GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
   gchar *_collect_format = _vtable->collect_format;					\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\
                                                                                         \
-  if (_vtable->value_free)								\
-    _vtable->value_free (_value);							\
   _value->g_type = _value_type;		/* value_meminit() from gvalue.c */		\
-  memset (_value->data, 0, sizeof (_value->data));					\
   while (*_collect_format)								\
     {											\
       GTypeCValue *_cvalue = _cvalues + _n_values++;					\
@@ -126,6 +125,35 @@ G_STMT_START {										\
 				       _flags);						\
 } G_STMT_END
 
+/**
+ * G_VALUE_COLLECT:
+ * @value: a #GValue return location. @value is supposed to be initialized
+ *  according to the value type to be collected
+ * @var_args: the va_list variable; it may be evaluated multiple times
+ * @flags: flags which are passed on to the collect_value() function of
+ *  the #GTypeValueTable of @value.
+ * @__error: a #gchar** variable that will be modified to hold a g_new()
+ *  allocated error messages if something fails
+ *
+ * Collects a variable argument value from a va_list. We have to
+ * implement the varargs collection as a macro, because on some systems
+ * va_list variables cannot be passed by reference.
+ *
+ * Note: If you are creating the @value argument just before calling this macro,
+ * you should use the #G_VALUE_COLLECT_FULL variant and pass the unitialized
+ * #GValue. That variant is faster than #G_VALUE_COLLECT.
+ */
+#define G_VALUE_COLLECT(value, var_args, flags, __error) G_STMT_START {			\
+  GValue *_value = (value);								\
+  GType _value_type = G_VALUE_TYPE (_value);						\
+  GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
+											\
+  if (_vtable->value_free)								\
+    _vtable->value_free (_value);							\
+  memset (_value->data, 0, sizeof (_value->data));					\
+											\
+  G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error);			\
+} G_STMT_END
 
 /**
  * G_VALUE_LCOPY:
