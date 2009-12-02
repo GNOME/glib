@@ -301,7 +301,7 @@ gboolean
 g_time_val_from_iso8601 (const gchar *iso_date,
 			 GTimeVal    *time_)
 {
-  struct tm tm;
+  struct tm tm = {0};
   long val;
 
   g_return_val_if_fail (iso_date != NULL, FALSE);
@@ -328,7 +328,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       tm.tm_mon = strtoul (iso_date, (char **)&iso_date, 10) - 1;
       
       if (*iso_date++ != '-')
-       	return FALSE;
+        return FALSE;
       
       tm.tm_mday = strtoul (iso_date, (char **)&iso_date, 10);
     }
@@ -390,7 +390,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       val = strtoul (iso_date + 1, (char **)&iso_date, 10);
       
       if (*iso_date == ':')
-	val = 60 * val + strtoul (iso_date + 1, (char **)&iso_date, 10);
+        val = 60 * val + strtoul (iso_date + 1, (char **)&iso_date, 10);
       else
         val = 60 * (val / 100) + (val % 100);
 
@@ -399,6 +399,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   else
     {
       /* No "Z" or offset, so local time */
+      tm.tm_isdst = -1; /* locale selects DST */
       time_->tv_sec = mktime (&tm);
     }
 
