@@ -1361,9 +1361,8 @@ g_object_new_valist (GType	  object_type,
 	  params = g_renew (GParameter, params, n_alloced_params);
 	}
       params[n_params].name = name;
-      params[n_params].value.g_type = 0;
-      g_value_init (&params[n_params].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-      G_VALUE_COLLECT (&params[n_params].value, var_args, 0, &error);
+      G_VALUE_COLLECT_INIT (&params[n_params].value, G_PARAM_SPEC_VALUE_TYPE (pspec),
+			    var_args, 0, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRFUNC, error);
@@ -1476,9 +1475,8 @@ g_object_set_valist (GObject	 *object,
           break;
         }
 
-      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-      
-      G_VALUE_COLLECT (&value, var_args, 0, &error);
+      G_VALUE_COLLECT_INIT (&value, G_PARAM_SPEC_VALUE_TYPE (pspec), var_args,
+			    0, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRFUNC, error);
