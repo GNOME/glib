@@ -9,16 +9,17 @@ lib_LTLIBRARIES = libgirepository-1.0.la
 noinst_LTLIBRARIES = libgirepository-parser.la
 
 libgirepository_1_0_la_SOURCES =		\
-	girepository.c				\
-	gtypelib.h				\
-	gtypelib.c				\
-	gfield.c				\
-	ginfo.h					\
-	ginfo.c					\
-	girffi.c				\
-	girffi.h				\
 	gdump.c					\
-	ginvoke.c
+	gfield.c				\
+	ginfo.c                                 \
+	ginfo.h                                 \
+	ginvoke.c				\
+	girepository.c				\
+	girffi.c                                \
+	girffi.h                                \
+	glib-compat.h                           \
+	gtypelib.c				\
+	gtypelib.h
 
 libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_1_0_la_LIBADD = $(GIREPO_LIBS)

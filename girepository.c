@@ -31,6 +31,7 @@
 #include "girepository.h"
 #include "gtypelib.h"
 #include "ginfo.h"
+#include "glib-compat.h"
 
 #include "config.h"
 
@@ -1039,7 +1040,7 @@ compare_candidate_reverse (struct NamespaceVersionCandidadate *c1,
 static void
 free_candidate (struct NamespaceVersionCandidadate *candidate)
 {
-  g_mapped_file_free (candidate->mfile);
+  g_mapped_file_unref (candidate->mfile);
   g_free (candidate->path);
   g_free (candidate->version);
   g_free (candidate);

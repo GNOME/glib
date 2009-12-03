@@ -26,6 +26,7 @@
 
 #include "config.h"
 #include "gtypelib.h"
+#include "glib-compat.h"
 
 typedef struct {
   GTypelib *typelib;
@@ -2134,7 +2135,7 @@ void
 g_typelib_free (GTypelib *typelib)
 {
   if (typelib->mfile)
-    g_mapped_file_free (typelib->mfile);
+    g_mapped_file_unref (typelib->mfile);
   else
     if (typelib->owns_memory)
       g_free (typelib->data);
