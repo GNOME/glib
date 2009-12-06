@@ -392,7 +392,7 @@ gio_headers =			\
 	gtcpconnection.h	\
 	gthreadedsocketservice.h\
 	gthemedicon.h 		\
-	gutf8inputstream.c	\
+	gutf8inputstream.h	\
 	gvfs.h 			\
 	gvolume.h 		\
 	gvolumemonitor.h 	\
