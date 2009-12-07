@@ -28,11 +28,19 @@
 #include "gtypelib.h"
 #include "ginfo.h"
 
-struct _GIBaseInfo 
+typedef struct _GIRealInfo GIRealInfo;
+
+/**
+ * We just use one structure for all of the info object
+ * types; in general, we should be reading data directly
+ * from the typelib, and not having computed data in
+ * per-type structures.
+ */
+struct _GIRealInfo
 {
   /* Keep this part in sync with GIUnresolvedInfo below */
-  gint type;
-  gint ref_count;
+  gint32 type;
+  gint32 ref_count;
   GIRepository *repository;
   GIBaseInfo *container;
 
@@ -40,13 +48,18 @@ struct _GIBaseInfo
 
   GTypelib *typelib;
   guint32 offset;
+  
+  guint32 type_is_embedded : 1; /* Used by GITypeInfo */
+  guint32 reserved : 31;
+  
+  gpointer reserved2[4];
 };
 
 struct _GIUnresolvedInfo
 {
   /* Keep this part in sync with GIBaseInfo above */
-  gint type;
-  gint ref_count;
+  gint32 type;
+  gint32 ref_count;
   GIRepository *repository;
   GIBaseInfo *container;
 
@@ -56,137 +69,68 @@ struct _GIUnresolvedInfo
   const gchar *namespace;
 };
 
-struct _GICallableInfo
+static void
+g_info_init (GIRealInfo     *info,
+             GIInfoType      type,
+             GIRepository   *repository,
+             GIBaseInfo     *container,
+             GTypelib       *typelib, 
+             guint32         offset)
 {
-  GIBaseInfo base;
-};
+  memset (info, 0, sizeof (GIRealInfo));
 
-struct _GIFunctionInfo
-{
-  GICallableInfo callable;
-};
-
-struct _GICallbackInfo
-{
-  GICallableInfo callable;
-};
-
-struct _GIRegisteredTypeInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GIStructInfo
-{
-  GIRegisteredTypeInfo registered;
-};
-
-struct _GIEnumInfo
-{
-  GIRegisteredTypeInfo registered;
-};
-
-struct _GIObjectInfo
-{
-  GIRegisteredTypeInfo registered;
-};
-
-struct _GIInterfaceInfo
-{
-  GIRegisteredTypeInfo registered;
-};
-
-struct _GIConstantInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GIValueInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GISignalInfo
-{
-  GICallableInfo callable;
-};
-
-struct _GIVFuncInfo
-{
-  GICallableInfo callable;
-};
-
-struct _GIPropertyInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GIFieldInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GIArgInfo
-{
-  GIBaseInfo base;
-};
-
-struct _GITypeInfo
-{
-  GIBaseInfo base;
-  gboolean   is_embedded;
-};
-
-struct _GIUnionInfo
-{
-  GIRegisteredTypeInfo registered;
-};
-
-
-/* info creation */
-GIBaseInfo *
-g_info_new_full (GIInfoType     type,
-		 GIRepository  *repository,
-		 GIBaseInfo    *container,
-		 GTypelib     *typelib, 
-		 guint32        offset)
-{
-  GIBaseInfo *info;
-
-  g_return_val_if_fail (container != NULL || repository != NULL, NULL);
-
-  if (type == GI_INFO_TYPE_TYPE)
-    info = (GIBaseInfo *)g_new0 (GITypeInfo, 1);
-  else
-    info = g_new0 (GIBaseInfo, 1);
-
-  info->ref_count = 1;
+  /* Invalid refcount used to flag stack-allocated infos */
+  info->ref_count = 0xFFFF;
   info->type = type;
 
   info->typelib = typelib;
   info->offset = offset;
 
   if (container)
-    info->container = g_base_info_ref (container);
+    info->container = container;
 
-  info->repository = g_object_ref (repository);
+  g_assert (G_IS_IREPOSITORY (repository));
+  info->repository = repository;
+}
 
-  return info;
+/* info creation */
+GIBaseInfo *
+g_info_new_full (GIInfoType     type,
+                 GIRepository  *repository,
+                 GIBaseInfo    *container,
+                 GTypelib      *typelib, 
+                 guint32        offset)
+{
+  GIRealInfo *info;
+
+  g_return_val_if_fail (container != NULL || repository != NULL, NULL);
+
+  info = g_new (GIRealInfo, 1);
+    
+  g_info_init (info, type, repository, container, typelib, offset);
+  info->ref_count = 1;
+
+  if (container && ((GIRealInfo *) container)->ref_count != 0xFFFF)
+    g_base_info_ref (info->container);
+
+  g_object_ref (info->repository);
+
+  return (GIBaseInfo*)info;
 }
 
 GIBaseInfo *
 g_info_new (GIInfoType     type,
-	    GIBaseInfo    *container,
-	    GTypelib     *typelib, 
-	    guint32        offset)
+            GIBaseInfo    *container,
+            GTypelib      *typelib, 
+            guint32        offset)
 {
-  return g_info_new_full (type, container->repository, container, typelib, offset);
+  return g_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
 
 static GIBaseInfo *
 g_info_from_entry (GIRepository *repository,
-		   GTypelib *typelib,
-		   guint16    index)
+                   GTypelib     *typelib,
+                   guint16       index)
 {
   GIBaseInfo *result;
   DirEntry *entry = g_typelib_get_dir_entry (typelib, index);
@@ -200,31 +144,34 @@ g_info_from_entry (GIRepository *repository,
 
       result = g_irepository_find_by_name (repository, namespace, name);
       if (result == NULL)
-	{
-	  GIUnresolvedInfo *unresolved;
+        {
+          GIUnresolvedInfo *unresolved;
 
-	  unresolved = g_new0 (GIUnresolvedInfo, 1);
+          unresolved = g_new0 (GIUnresolvedInfo, 1);
 
-	  unresolved->type = GI_INFO_TYPE_UNRESOLVED;
-	  unresolved->ref_count = 1;
-	  unresolved->repository = g_object_ref (repository);
-	  unresolved->container = NULL;
-	  unresolved->name = name;
-	  unresolved->namespace = namespace;
+          unresolved->type = GI_INFO_TYPE_UNRESOLVED;
+          unresolved->ref_count = 1;
+          unresolved->repository = g_object_ref (repository);
+          unresolved->container = NULL;
+          unresolved->name = name;
+          unresolved->namespace = namespace;
 
-	  return (GIBaseInfo*)unresolved;
-	}
-      return result;
+          return (GIBaseInfo *)unresolved;
+	    }
+      return (GIBaseInfo *)result;
     }
 
-  return result;
+  return (GIBaseInfo *)result;
 }
 
 /* GIBaseInfo functions */
 GIBaseInfo *
 g_base_info_ref (GIBaseInfo *info)
 {
-  info->ref_count++;
+  GIRealInfo *rinfo = (GIRealInfo*)info;
+
+  g_assert (rinfo->ref_count != 0xFFFF);
+  ((GIRealInfo*)info)->ref_count++;
 
   return info;
 }
@@ -232,18 +179,20 @@ g_base_info_ref (GIBaseInfo *info)
 void
 g_base_info_unref (GIBaseInfo *info)
 {
-  g_assert (info->ref_count > 0);
-  info->ref_count--;
+  GIRealInfo *rinfo = (GIRealInfo*)info;
 
-  if (!info->ref_count)
+  g_assert (rinfo->ref_count > 0 && rinfo->ref_count != 0xFFFF);
+  rinfo->ref_count--;
+
+  if (!rinfo->ref_count)
     {
-      if (info->container)
-	g_base_info_unref (info->container);
+      if (rinfo->container && ((GIRealInfo *) rinfo->container)->ref_count != 0xFFFF)
+        g_base_info_unref (rinfo->container);
 
-      if (info->repository)
-        g_object_unref (info->repository);
+      if (rinfo->repository)
+        g_object_unref (rinfo->repository);
 
-      g_free (info);
+      g_free (rinfo);
     }
 }
 
@@ -251,14 +200,15 @@ GIInfoType
 g_base_info_get_type (GIBaseInfo *info)
 {
   
-  return info->type;
+  return ((GIRealInfo*)info)->type;
 }
 
 const gchar *
 g_base_info_get_name (GIBaseInfo *info)
 {
-  g_assert (info->ref_count > 0);
-  switch (info->type)
+  GIRealInfo *rinfo = (GIRealInfo*)info;
+  g_assert (rinfo->ref_count > 0);
+  switch (rinfo->type)
     {
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:
@@ -272,64 +222,64 @@ g_base_info_get_name (GIBaseInfo *info)
     case GI_INFO_TYPE_ERROR_DOMAIN:
     case GI_INFO_TYPE_UNION:
       {
-	CommonBlob *blob = (CommonBlob *)&info->typelib->data[info->offset];
+        CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_VALUE:
       {
-	ValueBlob *blob = (ValueBlob *)&info->typelib->data[info->offset];
+        ValueBlob *blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_SIGNAL:
       {
-	SignalBlob *blob = (SignalBlob *)&info->typelib->data[info->offset];
+        SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_PROPERTY:
       {
-	PropertyBlob *blob = (PropertyBlob *)&info->typelib->data[info->offset];
+        PropertyBlob *blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_VFUNC:
       {
-	VFuncBlob *blob = (VFuncBlob *)&info->typelib->data[info->offset];
+        VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_FIELD:
       {
-	FieldBlob *blob = (FieldBlob *)&info->typelib->data[info->offset];
+        FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
 	
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
 
     case GI_INFO_TYPE_ARG:
       {
-	ArgBlob *blob = (ArgBlob *)&info->typelib->data[info->offset];
+        ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 	
-	return g_typelib_get_string (info->typelib, blob->name);
+        return g_typelib_get_string (rinfo->typelib, blob->name);
       }
       break;
     case GI_INFO_TYPE_UNRESOLVED:
       {
-	GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
+        GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
 
-	return unresolved->name;
+        return unresolved->name;
       }
       break;
     case GI_INFO_TYPE_TYPE:
@@ -344,24 +294,26 @@ g_base_info_get_name (GIBaseInfo *info)
 const gchar *
 g_base_info_get_namespace (GIBaseInfo *info)
 {
-  Header *header = (Header *)info->typelib->data;
+  GIRealInfo *rinfo = (GIRealInfo*) info;
+  Header *header = (Header *)rinfo->typelib->data;
 
-  g_assert (info->ref_count > 0);
+  g_assert (rinfo->ref_count > 0);
 
-  if (info->type == GI_INFO_TYPE_UNRESOLVED)
+  if (rinfo->type == GI_INFO_TYPE_UNRESOLVED)
     {
       GIUnresolvedInfo *unresolved = (GIUnresolvedInfo *)info;
       
       return unresolved->namespace;
     }
 
-  return g_typelib_get_string (info->typelib, header->namespace);
+  return g_typelib_get_string (rinfo->typelib, header->namespace);
 }
 
 gboolean 
 g_base_info_is_deprecated (GIBaseInfo *info)
 {
-  switch (info->type)
+  GIRealInfo *rinfo = (GIRealInfo*) info;
+  switch (rinfo->type)
     {
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:
@@ -374,33 +326,33 @@ g_base_info_is_deprecated (GIBaseInfo *info)
     case GI_INFO_TYPE_CONSTANT:
     case GI_INFO_TYPE_ERROR_DOMAIN:
       {
-	CommonBlob *blob = (CommonBlob *)&info->typelib->data[info->offset];
+        CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return blob->deprecated;
+        return blob->deprecated;
       }
       break;
 
     case GI_INFO_TYPE_VALUE:
       {
-	ValueBlob *blob = (ValueBlob *)&info->typelib->data[info->offset];
+        ValueBlob *blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return blob->deprecated;
+        return blob->deprecated;
       }
       break;
 
     case GI_INFO_TYPE_SIGNAL:
       {
-	SignalBlob *blob = (SignalBlob *)&info->typelib->data[info->offset];
+        SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return blob->deprecated;
+        return blob->deprecated;
       }
       break;
 
     case GI_INFO_TYPE_PROPERTY:
       {
-	PropertyBlob *blob = (PropertyBlob *)&info->typelib->data[info->offset];
+        PropertyBlob *blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
 
-	return blob->deprecated;
+        return blob->deprecated;
       }
       break;
 
@@ -426,7 +378,7 @@ g_base_info_is_deprecated (GIBaseInfo *info)
  */
 const gchar *
 g_base_info_get_attribute (GIBaseInfo   *info,
-			   const gchar *name)
+                           const gchar  *name)
 {
   GIAttributeIter iter = { 0, };
   gchar *curname, *curvalue;
@@ -455,15 +407,14 @@ cmp_attribute (const void *av,
 }
 
 static AttributeBlob *
-find_first_attribute (GIBaseInfo *info)
+find_first_attribute (GIRealInfo *rinfo)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
+  Header *header = (Header *)rinfo->typelib->data;
   AttributeBlob blob, *first, *res, *previous;
 
-  blob.offset = base->offset;
+  blob.offset = rinfo->offset;
   
-  first = (AttributeBlob *) &base->typelib->data[header->attributes];
+  first = (AttributeBlob *) &rinfo->typelib->data[header->attributes];
 
   res = bsearch (&blob, first, header->n_attributes,
                  header->attribute_blob_size, cmp_attribute);
@@ -472,7 +423,7 @@ find_first_attribute (GIBaseInfo *info)
     return NULL;
 
   previous = res - 1;
-  while (previous >= first && previous->offset == base->offset)
+  while (previous >= first && previous->offset == rinfo->offset)
     {
       res = previous;
       previous = res - 1;
@@ -520,23 +471,23 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
                                  gchar           **name,
                                  gchar           **value)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
   AttributeBlob *next, *after;
 
-  after = (AttributeBlob *) &base->typelib->data[header->attributes +
+  after = (AttributeBlob *) &rinfo->typelib->data[header->attributes +
                                                   header->n_attributes * header->attribute_blob_size];
 
   if (iter->data != NULL)
     next = (AttributeBlob *) iter->data;
   else
-    next = find_first_attribute (info);
+    next = find_first_attribute (rinfo);
 
-  if (next == NULL || next->offset != base->offset || next >= after)
+  if (next == NULL || next->offset != rinfo->offset || next >= after)
     return FALSE;
 
-  *name = (gchar*) g_typelib_get_string (base->typelib, next->name);
-  *value = (gchar*) g_typelib_get_string (base->typelib, next->value);
+  *name = (gchar*) g_typelib_get_string (rinfo->typelib, next->name);
+  *value = (gchar*) g_typelib_get_string (rinfo->typelib, next->value);
   iter->data = next + 1;
 
   return TRUE;
@@ -545,13 +496,13 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
 GIBaseInfo *
 g_base_info_get_container (GIBaseInfo *info)
 {
-  return info->container;
+  return ((GIRealInfo*)info)->container;
 }
 
 GTypelib *
 g_base_info_get_typelib (GIBaseInfo *info)
 {
-  return info->typelib;
+  return ((GIRealInfo*)info)->typelib;
 }
 
 /*
@@ -571,25 +522,27 @@ gboolean
 g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
 {
   /* Compare the TypeLib pointers, which are mmapped. */
-  return info1->typelib->data + info1->offset == info2->typelib->data + info2->offset;
+  GIRealInfo *rinfo1 = (GIRealInfo*)info1;
+  GIRealInfo *rinfo2 = (GIRealInfo*)info2;
+  return rinfo1->typelib->data + rinfo1->offset == rinfo2->typelib->data + rinfo2->offset;
 }
 
 /* GIFunctionInfo functions */
 const gchar *
 g_function_info_get_symbol (GIFunctionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FunctionBlob *blob = (FunctionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FunctionBlob *blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_typelib_get_string (base->typelib, blob->symbol);
+  return g_typelib_get_string (rinfo->typelib, blob->symbol);
 }
 
 GIFunctionInfoFlags
 g_function_info_get_flags (GIFunctionInfo *info)
 {
   GIFunctionInfoFlags flags;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FunctionBlob *blob = (FunctionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FunctionBlob *blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   flags = 0;
 
@@ -618,9 +571,9 @@ g_function_info_get_flags (GIFunctionInfo *info)
 GIPropertyInfo *
 g_function_info_get_property (GIFunctionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FunctionBlob *blob = (FunctionBlob *)&base->typelib->data[base->offset];
-  GIInterfaceInfo *container = (GIInterfaceInfo *)base->container;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FunctionBlob *blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
+  GIInterfaceInfo *container = (GIInterfaceInfo *)rinfo->container;
   
   return g_interface_info_get_property (container, blob->index);  
 }
@@ -628,20 +581,21 @@ g_function_info_get_property (GIFunctionInfo *info)
 GIVFuncInfo *
 g_function_info_get_vfunc (GIFunctionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FunctionBlob *blob = (FunctionBlob *)&base->typelib->data[base->offset];
-  GIInterfaceInfo *container = (GIInterfaceInfo *)base->container;
+  GIRealInfo *rinfo = (GIRealInfo*)info;
+  FunctionBlob *blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
+  GIInterfaceInfo *container = (GIInterfaceInfo *)rinfo->container;
   
   return g_interface_info_get_vfunc (container, blob->index);  
 }
-
 
 /* GICallableInfo functions */
 static guint32
 signature_offset (GICallableInfo *info)
 {
+  GIRealInfo *rinfo = (GIRealInfo*)info;
   int sigoff = -1;
-  switch (info->base.type)
+
+  switch (rinfo->type)
     {
     case GI_INFO_TYPE_FUNCTION:
       sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
@@ -657,23 +611,32 @@ signature_offset (GICallableInfo *info)
       break;
     }
   if (sigoff >= 0)
-    return *(guint32 *)&info->base.typelib->data[info->base.offset + sigoff];
+    return *(guint32 *)&rinfo->typelib->data[rinfo->offset + sigoff];
   return 0;
 }
 
 GITypeInfo *
 g_type_info_new (GIBaseInfo    *container,
-		 GTypelib     *typelib,
-		 guint32        offset)
+            	 GTypelib      *typelib,
+		         guint32        offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
-  GITypeInfo *type_info;
 
-  type_info = (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib, 
-				    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
-  type_info->is_embedded = FALSE;
+  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib,
+                                    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+}
 
-  return type_info;
+static void
+g_type_info_init (GIBaseInfo *info,
+                  GIBaseInfo *container,
+                  GTypelib   *typelib,
+                  guint32     offset)
+{
+  GIRealInfo *rinfo = (GIRealInfo*)container;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
+  
+  g_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
+               (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
 /**
@@ -689,12 +652,36 @@ g_type_info_new (GIBaseInfo    *container,
 GITypeInfo *
 g_callable_info_get_return_type (GICallableInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
   guint32 offset;
 
   offset = signature_offset (info);
 
-  return g_type_info_new (base, base->typelib, offset);
+  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
+}
+
+
+/**
+ * g_callable_info_load_return_type:
+ * @info: a #GICallableInfo
+ * @type: (out caller-allocates): Initialized with return type of @info
+ *
+ * Get information about a return value of callable; this
+ * function is a variant of g_callable_info_get_return_type() designed for stack
+ * allocation.
+ *
+ * The initialized @type must not be referenced after @info is deallocated.
+ */
+void
+g_callable_info_load_return_type (GICallableInfo *info,
+                                  GITypeInfo     *type)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  guint32 offset;
+
+  offset = signature_offset (info);
+
+  g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -708,8 +695,8 @@ g_callable_info_get_return_type (GICallableInfo *info)
 gboolean
 g_callable_info_may_return_null (GICallableInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SignatureBlob *blob = (SignatureBlob *)&base->typelib->data[signature_offset (info)];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SignatureBlob *blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
 
   return blob->may_return_null;
 }
@@ -726,8 +713,8 @@ g_callable_info_may_return_null (GICallableInfo *info)
 GITransfer
 g_callable_info_get_caller_owns (GICallableInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SignatureBlob *blob = (SignatureBlob *)&base->typelib->data[signature_offset (info)];
+  GIRealInfo *rinfo = (GIRealInfo*) info;
+  SignatureBlob *blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
 
   if (blob->caller_owns_return_value)
     return GI_TRANSFER_EVERYTHING;
@@ -748,12 +735,12 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
 gint 
 g_callable_info_get_n_args (GICallableInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
   gint offset;
   SignatureBlob *blob;
 
   offset = signature_offset (info);
-  blob = (SignatureBlob *)&base->typelib->data[offset];
+  blob = (SignatureBlob *)&rinfo->typelib->data[offset];
 
   return blob->n_arguments;
 }
@@ -769,24 +756,51 @@ g_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 g_callable_info_get_arg (GICallableInfo *info,
-			 gint           n)
+              			 gint           n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
   gint offset;
 
   offset = signature_offset (info);
   
-  return (GIArgInfo *) g_info_new (GI_INFO_TYPE_ARG, base, base->typelib, 
-				   offset + header->signature_blob_size + n * header->arg_blob_size);
+  return (GIArgInfo *) g_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib, 
+                				   offset + header->signature_blob_size + n * header->arg_blob_size);
+}
+
+/**
+ * g_callable_info_load_arg:
+ * @info: a #GICallableInfo
+ * @n: the argument index to fetch
+ * @arg: (out caller-allocates): Initialize with argument number @n
+ *
+ * Get information about a particular argument of this callable; this
+ * function is a variant of g_callable_info_get_arg() designed for stack
+ * allocation.
+ *
+ * The initialized @arg must not be referenced after @info is deallocated.
+ */
+void
+g_callable_info_load_arg (GICallableInfo *info,
+                          gint            n,
+                          GIArgInfo     *arg)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  gint offset;
+
+  offset = signature_offset (info);
+  
+  g_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib, 
+			   offset + header->signature_blob_size + n * header->arg_blob_size);  
 }
 
 /* GIArgInfo function */
 GIDirection
 g_arg_info_get_direction (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (blob->in && blob->out)
     return GI_DIRECTION_INOUT;
@@ -799,8 +813,8 @@ g_arg_info_get_direction (GIArgInfo *info)
 gboolean
 g_arg_info_is_return_value (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->return_value;
 }
@@ -808,8 +822,8 @@ g_arg_info_is_return_value (GIArgInfo *info)
 gboolean
 g_arg_info_is_dipper (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->dipper;
 }
@@ -817,8 +831,8 @@ g_arg_info_is_dipper (GIArgInfo *info)
 gboolean
 g_arg_info_is_optional (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->optional;
 }
@@ -826,8 +840,8 @@ g_arg_info_is_optional (GIArgInfo *info)
 gboolean
 g_arg_info_may_be_null (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->allow_none;
 }
@@ -835,8 +849,8 @@ g_arg_info_may_be_null (GIArgInfo *info)
 GITransfer
 g_arg_info_get_ownership_transfer (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->transfer_ownership)
     return GI_TRANSFER_EVERYTHING;
@@ -849,8 +863,8 @@ g_arg_info_get_ownership_transfer (GIArgInfo *info)
 GIScopeType
 g_arg_info_get_scope (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->scope;
 }
@@ -858,8 +872,8 @@ g_arg_info_get_scope (GIArgInfo *info)
 gint
 g_arg_info_get_closure (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->closure;
 }
@@ -867,32 +881,57 @@ g_arg_info_get_closure (GIArgInfo *info)
 gint
 g_arg_info_get_destroy (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ArgBlob *blob = (ArgBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->destroy;
 }
 
+/**
+ * g_arg_info_get_type:
+ * @info: A #GIArgInfo
+ *
+ * Returns: (transfer full): Information about the type of argument @info
+ */
 GITypeInfo *
 g_arg_info_get_type (GIArgInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
  
-  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+}
+
+/**
+ * g_arg_info_load_type:
+ * @info: A #GIArgInfo
+ * @type: (out caller-allocates): Initialized with information about type of @info
+ *
+ * Get information about a the type of given argument @info; this
+ * function is a variant of g_arg_info_get_type() designed for stack
+ * allocation.
+ *
+ * The initialized @type must not be referenced after @info is deallocated.
+ */
+void
+g_arg_info_load_type (GIArgInfo *info,
+                      GITypeInfo *type)
+{
+  GIRealInfo *rinfo = (GIRealInfo*) info;
+  g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type)); 
 }
 
 /* GITypeInfo functions */
 gboolean
 g_type_info_is_pointer (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     return type->flags.pointer;
   else
     {
-      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
       
       return iface->pointer;
     }
@@ -901,16 +940,16 @@ g_type_info_is_pointer (GITypeInfo *info)
 GITypeTag
 g_type_info_get_tag (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  if (info->is_embedded)
+  if (rinfo->type_is_embedded)
     return GI_TYPE_TAG_INTERFACE;
   else if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     return type->flags.tag;
   else
     {
-      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+      InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       return iface->tag;
     }
@@ -918,49 +957,58 @@ g_type_info_get_tag (GITypeInfo *info)
 
 GITypeInfo *
 g_type_info_get_param_type (GITypeInfo *info,
-			    gint       n)
+                            gint       n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ParamTypeBlob *param = (ParamTypeBlob *)&base->typelib->data[base->offset];
+      ParamTypeBlob *param = (ParamTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       switch (param->tag)
-	{
-	case GI_TYPE_TAG_ARRAY: 
-	case GI_TYPE_TAG_GLIST:
-	case GI_TYPE_TAG_GSLIST:
-	case GI_TYPE_TAG_GHASH:
-	  return g_type_info_new (base, base->typelib,
-	                          base->offset + sizeof (ParamTypeBlob)
-	                          + sizeof (SimpleTypeBlob) * n);
-	  break;
-	  
-	default: ;
-	}
+        {
+          case GI_TYPE_TAG_ARRAY: 
+          case GI_TYPE_TAG_GLIST:
+          case GI_TYPE_TAG_GSLIST:
+          case GI_TYPE_TAG_GHASH:
+            return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
+                                    rinfo->offset + sizeof (ParamTypeBlob)
+                                    + sizeof (SimpleTypeBlob) * n);
+            break;
+          default:
+            break;
+        }
     }
-      
+
   return NULL;
 }
 
+/**
+ * g_type_info_get_interface:
+ * @info: A #GITypeInfo
+ *
+ * For types which have #GI_TYPE_TAG_INTERFACE such as GObjects and boxed values,
+ * this function returns full information about the referenced type.  You can then
+ * inspect the type of the returned #GIBaseInfo to further query whether it is
+ * a concrete GObject, a GInterface, a structure, etc. using g_base_info_get_type().
+ */
 GIBaseInfo *
 g_type_info_get_interface (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  if (info->is_embedded)
-    return (GIBaseInfo *) g_info_new (type->offset, base, base->typelib,
-				      base->offset);
+  if (rinfo->type_is_embedded)
+    return (GIBaseInfo *) g_info_new (type->offset, (GIBaseInfo*)info, rinfo->typelib,
+                                      rinfo->offset);
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+      InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
       
       if (blob->tag == GI_TYPE_TAG_INTERFACE)
-	return g_info_from_entry (base->repository, base->typelib, blob->interface);
+        return g_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
     }
 
   return NULL;
@@ -969,12 +1017,12 @@ g_type_info_get_interface (GITypeInfo *info)
 gint
 g_type_info_get_array_length (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+      ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
 	{
@@ -989,12 +1037,12 @@ g_type_info_get_array_length (GITypeInfo *info)
 gint
 g_type_info_get_array_fixed_size (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+      ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
 	{
@@ -1009,12 +1057,12 @@ g_type_info_get_array_fixed_size (GITypeInfo *info)
 gboolean
 g_type_info_is_zero_terminated (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+      ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ARRAY)
 	return blob->zero_terminated;
@@ -1026,12 +1074,12 @@ g_type_info_is_zero_terminated (GITypeInfo *info)
 gint
 g_type_info_get_n_error_domains (GITypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->typelib->data[base->offset];
+      ErrorTypeBlob *blob = (ErrorTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ERROR)
 	return blob->n_domains;
@@ -1042,19 +1090,19 @@ g_type_info_get_n_error_domains (GITypeInfo *info)
 
 GIErrorDomainInfo *
 g_type_info_get_error_domain (GITypeInfo *info,
-			      gint       n)
+                              gint        n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->typelib->data[base->offset];
+      ErrorTypeBlob *blob = (ErrorTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
       if (blob->tag == GI_TYPE_TAG_ERROR)
-	return (GIErrorDomainInfo *) g_info_from_entry (base->repository,
-							base->typelib,
-							blob->domains[n]);
+        return (GIErrorDomainInfo *) g_info_from_entry (rinfo->repository,
+                                                        rinfo->typelib,
+                                                        blob->domains[n]);
     }
 
   return NULL;
@@ -1065,20 +1113,20 @@ g_type_info_get_error_domain (GITypeInfo *info,
 const gchar *
 g_error_domain_info_get_quark (GIErrorDomainInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ErrorDomainBlob *blob = (ErrorDomainBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_typelib_get_string (base->typelib, blob->get_quark);
+  return g_typelib_get_string (rinfo->typelib, blob->get_quark);
 }
 
 GIInterfaceInfo *
 g_error_domain_info_get_codes (GIErrorDomainInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ErrorDomainBlob *blob = (ErrorDomainBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ErrorDomainBlob *blob = (ErrorDomainBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  return (GIInterfaceInfo *) g_info_from_entry (base->repository,
-						base->typelib, blob->error_codes);
+  return (GIInterfaceInfo *) g_info_from_entry (rinfo->repository,
+						rinfo->typelib, blob->error_codes);
 }
 
 
@@ -1086,8 +1134,8 @@ g_error_domain_info_get_codes (GIErrorDomainInfo *info)
 glong
 g_value_info_get_value (GIValueInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ValueBlob *blob = (ValueBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ValueBlob *blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return (glong)blob->value;
 }
@@ -1098,8 +1146,8 @@ g_field_info_get_flags (GIFieldInfo *info)
 {
   GIFieldInfoFlags flags;
 
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FieldBlob *blob = (FieldBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
 
   flags = 0;
 
@@ -1115,8 +1163,8 @@ g_field_info_get_flags (GIFieldInfo *info)
 gint
 g_field_info_get_size (GIFieldInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FieldBlob *blob = (FieldBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->bits;
 }
@@ -1124,8 +1172,8 @@ g_field_info_get_size (GIFieldInfo *info)
 gint
 g_field_info_get_offset (GIFieldInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  FieldBlob *blob = (FieldBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->struct_offset;
 }
@@ -1133,33 +1181,33 @@ g_field_info_get_offset (GIFieldInfo *info)
 GITypeInfo *
 g_field_info_get_type (GIFieldInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
-  FieldBlob *blob = (FieldBlob *)&base->typelib->data[base->offset];
-  GITypeInfo *type_info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  FieldBlob *blob = (FieldBlob *)&rinfo->typelib->data[rinfo->offset];
+  GIRealInfo *type_info;
 
   if (blob->has_embedded_type)
     {
-      type_info = (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE,
-                                             (GIBaseInfo*)info, base->typelib,
-                                             base->offset + header->field_blob_size);
-      type_info->is_embedded = TRUE;
+      type_info = (GIRealInfo *) g_info_new (GI_INFO_TYPE_TYPE,
+                                                (GIBaseInfo*)info, rinfo->typelib,
+                                                rinfo->offset + header->field_blob_size);
+      type_info->type_is_embedded = TRUE;
     }
   else
-    return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (FieldBlob, type));
+    return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
 
-  return type_info;
+  return (GIBaseInfo*)type_info;
 }
 
 /* GIRegisteredTypeInfo functions */
 const gchar *
 g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_name)
-    return g_typelib_get_string (base->typelib, blob->gtype_name);
+    return g_typelib_get_string (rinfo->typelib, blob->gtype_name);
 
   return NULL;
 }
@@ -1167,11 +1215,11 @@ g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 const gchar *
 g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_init)
-    return g_typelib_get_string (base->typelib, blob->gtype_init);
+    return g_typelib_get_string (rinfo->typelib, blob->gtype_init);
 
   return NULL;
 }
@@ -1181,6 +1229,7 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
 {
   const char *type_init;
   GType (* get_type_func) (void);
+  GIRealInfo *rinfo = (GIRealInfo*)info;
 
   type_init = g_registered_type_info_get_type_init (info);  
   
@@ -1190,7 +1239,7 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
     return G_TYPE_OBJECT;
   
   get_type_func = NULL;
-  if (!g_typelib_symbol (((GIBaseInfo*)info)->typelib,
+  if (!g_typelib_symbol (rinfo->typelib,
                          type_init,
                          (void**) &get_type_func))
     return G_TYPE_NONE;
@@ -1202,8 +1251,8 @@ g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
 gint
 g_struct_info_get_n_fields (GIStructInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_fields;
 }
@@ -1212,15 +1261,15 @@ static gint32
 g_struct_get_field_offset (GIStructInfo *info,
 			   gint         n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
-  guint32 offset = base->offset + header->struct_blob_size;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  guint32 offset = rinfo->offset + header->struct_blob_size;
   gint i;
   FieldBlob *field_blob;
 
   for (i = 0; i < n; i++)
     {
-      field_blob = (FieldBlob *)&base->typelib->data[offset];
+      field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
       offset += header->field_blob_size;
       if (field_blob->has_embedded_type)
         offset += header->callback_blob_size;
@@ -1231,19 +1280,19 @@ g_struct_get_field_offset (GIStructInfo *info,
 
 GIFieldInfo *
 g_struct_info_get_field (GIStructInfo *info,
-			 gint         n)
+                         gint          n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
  
-  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base, base->typelib, 
-				     g_struct_get_field_offset (info, n));
+  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib, 
+                                     g_struct_get_field_offset (info, n));
 }
 
 gint
 g_struct_info_get_n_methods (GIStructInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_methods;
 }
@@ -1252,35 +1301,35 @@ GIFunctionInfo *
 g_struct_info_get_method (GIStructInfo *info,
 			  gint         n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
-  Header *header = (Header *)base->typelib->data;  
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header = (Header *)rinfo->typelib->data;  
   gint offset;
 
-  offset = g_struct_get_field_offset (info, blob->n_fields)
-    + n * header->function_blob_size;
-  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
-					base->typelib, offset);
+  offset = g_struct_get_field_offset (info, blob->n_fields) + n * header->function_blob_size;
+  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info, 
+                                        rinfo->typelib, offset);
 }
 
 static GIFunctionInfo *
 find_method (GIBaseInfo   *base,
-	     guint32       offset,
-	     gint          n_methods,
-	     const gchar  *name)
+             guint32       offset,
+             gint          n_methods,
+             const gchar  *name)
 {
   /* FIXME hash */
-  Header *header = (Header *)base->typelib->data;  
+  GIRealInfo *rinfo = (GIRealInfo*)base;
+  Header *header = (Header *)rinfo->typelib->data;  
   gint i;
 
   for (i = 0; i < n_methods; i++)
     {
-      FunctionBlob *fblob = (FunctionBlob *)&base->typelib->data[offset];
-      const gchar *fname = (const gchar *)&base->typelib->data[fblob->name];
+      FunctionBlob *fblob = (FunctionBlob *)&rinfo->typelib->data[offset];
+      const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
-	return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
-					      base->typelib, offset);  
+        return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
+	                        			      rinfo->typelib, offset);  
       
       offset += header->function_blob_size;
     }
@@ -1293,21 +1342,21 @@ g_struct_info_find_method (GIStructInfo *info,
 			   const gchar  *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->struct_blob_size
+  offset = rinfo->offset + header->struct_blob_size
     + blob->n_fields * header->field_blob_size;
 
-  return find_method (base, offset, blob->n_methods, name);
+  return find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 gsize
 g_struct_info_get_size (GIStructInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->size;
 }
@@ -1315,8 +1364,8 @@ g_struct_info_get_size (GIStructInfo *info)
 gsize
 g_struct_info_get_alignment (GIStructInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->alignment;
 }
@@ -1334,8 +1383,8 @@ g_struct_info_get_alignment (GIStructInfo *info)
 gboolean
 g_struct_info_is_gtype_struct (GIStructInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  StructBlob *blob = (StructBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->is_gtype_struct;
 }
@@ -1343,8 +1392,8 @@ g_struct_info_is_gtype_struct (GIStructInfo *info)
 gint
 g_enum_info_get_n_values (GIEnumInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  EnumBlob *blob = (EnumBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_values;
 }
@@ -1353,13 +1402,13 @@ GIValueInfo *
 g_enum_info_get_value (GIEnumInfo *info,
 		       gint            n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
   gint offset;
 
-  offset = base->offset + header->enum_blob_size 
+  offset = rinfo->offset + header->enum_blob_size 
     + n * header->value_blob_size;
-  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, base, base->typelib, offset);
+  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 /**
@@ -1378,8 +1427,8 @@ g_enum_info_get_value (GIEnumInfo *info,
 GITypeTag
 g_enum_info_get_storage_type (GIEnumInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  EnumBlob *blob = (EnumBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->storage_type;
 }
@@ -1388,12 +1437,12 @@ g_enum_info_get_storage_type (GIEnumInfo *info)
 GIObjectInfo *
 g_object_info_get_parent (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->parent)
-    return (GIObjectInfo *) g_info_from_entry (base->repository,
-					       base->typelib, blob->parent);
+    return (GIObjectInfo *) g_info_from_entry (rinfo->repository,
+					       rinfo->typelib, blob->parent);
   else
     return NULL;
 }
@@ -1401,34 +1450,34 @@ g_object_info_get_parent (GIObjectInfo *info)
 gboolean
 g_object_info_get_abstract (GIObjectInfo    *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   return blob->abstract != 0;
 }
 
 const gchar *
 g_object_info_get_type_name (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_typelib_get_string (base->typelib, blob->gtype_name);
+  return g_typelib_get_string (rinfo->typelib, blob->gtype_name);
 }
 
 const gchar *
 g_object_info_get_type_init (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_typelib_get_string (base->typelib, blob->gtype_init);
+  return g_typelib_get_string (rinfo->typelib, blob->gtype_init);
 }
 
 gint
 g_object_info_get_n_interfaces (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_interfaces;
 }
@@ -1437,18 +1486,18 @@ GIInterfaceInfo *
 g_object_info_get_interface (GIObjectInfo *info,
 			     gint          n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return (GIInterfaceInfo *) g_info_from_entry (base->repository,
-						base->typelib, blob->interfaces[n]);
+  return (GIInterfaceInfo *) g_info_from_entry (rinfo->repository,
+						rinfo->typelib, blob->interfaces[n]);
 }
 
 gint
 g_object_info_get_n_fields (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_fields;
 }
@@ -1458,22 +1507,22 @@ g_object_info_get_field (GIObjectInfo *info,
 			 gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + n * header->field_blob_size;
   
-  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base, base->typelib, offset);
+  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib, offset);
 }
 
 gint
 g_object_info_get_n_properties (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_properties;  
 }
@@ -1483,24 +1532,24 @@ g_object_info_get_property (GIObjectInfo *info,
 			    gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + n * header->property_blob_size;
 
-  return (GIPropertyInfo *) g_info_new (GI_INFO_TYPE_PROPERTY, base, 
-					base->typelib, offset);
+  return (GIPropertyInfo *) g_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);
 }
 
 gint
 g_object_info_get_n_methods (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_methods;
 }
@@ -1510,18 +1559,18 @@ g_object_info_get_method (GIObjectInfo *info,
 			  gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + blob->n_properties * header->property_blob_size
     + n * header->function_blob_size;
 
-    return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
-					  base->typelib, offset);  
+    return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info, 
+					  rinfo->typelib, offset);  
 }
 
 GIFunctionInfo *
@@ -1529,23 +1578,23 @@ g_object_info_find_method (GIObjectInfo *info,
 			   const gchar  *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size +
     + blob->n_properties * header->property_blob_size;
 
-  return find_method (base, offset, blob->n_methods, name);
+  return find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 gint
 g_object_info_get_n_signals (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_signals;
 }
@@ -1555,26 +1604,26 @@ g_object_info_get_signal (GIObjectInfo *info,
 			  gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size 
     + n * header->signal_blob_size;
 
-  return (GISignalInfo *) g_info_new (GI_INFO_TYPE_SIGNAL, base, 
-				      base->typelib, offset);  
+  return (GISignalInfo *) g_info_new (GI_INFO_TYPE_SIGNAL, (GIBaseInfo*)info, 
+				      rinfo->typelib, offset);  
 }
 
 gint
 g_object_info_get_n_vfuncs (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_vfuncs;
 }
@@ -1584,11 +1633,11 @@ g_object_info_get_vfunc (GIObjectInfo *info,
 			 gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + blob->n_properties * header->property_blob_size
@@ -1596,28 +1645,28 @@ g_object_info_get_vfunc (GIObjectInfo *info,
     + blob->n_signals * header->signal_blob_size 
     + n * header->vfunc_blob_size;
 
-  return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, base, 
-				     base->typelib, offset);  
+  return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*)info, 
+				     rinfo->typelib, offset);  
 }
 
 static GIVFuncInfo *
-find_vfunc (GIBaseInfo   *base,
+find_vfunc (GIRealInfo   *rinfo,
             guint32       offset,
             gint          n_vfuncs,
             const gchar  *name)
 {
   /* FIXME hash */
-  Header *header = (Header *)base->typelib->data;
+  Header *header = (Header *)rinfo->typelib->data;
   gint i;
 
   for (i = 0; i < n_vfuncs; i++)
     {
-      VFuncBlob *fblob = (VFuncBlob *)&base->typelib->data[offset];
-      const gchar *fname = (const gchar *)&base->typelib->data[fblob->name];
+      VFuncBlob *fblob = (VFuncBlob *)&rinfo->typelib->data[offset];
+      const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
 
       if (strcmp (name, fname) == 0)
-        return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, base,
-                                           base->typelib, offset);
+        return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*) rinfo,
+                                           rinfo->typelib, offset);
 
       offset += header->vfunc_blob_size;
     }
@@ -1643,25 +1692,25 @@ g_object_info_find_vfunc (GIObjectInfo *info,
                           const gchar  *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
 
-  return find_vfunc (base, offset, blob->n_vfuncs, name);
+  return find_vfunc (rinfo, offset, blob->n_vfuncs, name);
 }
 
 gint
 g_object_info_get_n_constants (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_constants;
 }
@@ -1671,11 +1720,11 @@ g_object_info_get_constant (GIObjectInfo *info,
 			    gint          n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->object_blob_size
+  offset = rinfo->offset + header->object_blob_size
     + (blob->n_interfaces + blob->n_interfaces % 2) * 2
     + blob->n_fields * header->field_blob_size
     + blob->n_properties * header->property_blob_size
@@ -1684,8 +1733,8 @@ g_object_info_get_constant (GIObjectInfo *info,
     + blob->n_vfuncs * header->vfunc_blob_size 
     + n * header->constant_blob_size;
 
-  return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, base, 
-					base->typelib, offset);  
+  return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);  
 }
 
 /**
@@ -1700,12 +1749,12 @@ g_object_info_get_constant (GIObjectInfo *info,
 GIStructInfo *
 g_object_info_get_class_struct (GIObjectInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ObjectBlob *blob = (ObjectBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_struct)
-    return (GIStructInfo *) g_info_from_entry (base->repository,
-                                               base->typelib, blob->gtype_struct);
+    return (GIStructInfo *) g_info_from_entry (rinfo->repository,
+                                               rinfo->typelib, blob->gtype_struct);
   else
     return NULL;
 }
@@ -1714,8 +1763,8 @@ g_object_info_get_class_struct (GIObjectInfo *info)
 gint
 g_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_prerequisites;
 }
@@ -1724,19 +1773,19 @@ GIBaseInfo *
 g_interface_info_get_prerequisite (GIInterfaceInfo *info,
 				   gint            n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return g_info_from_entry (base->repository,
-			    base->typelib, blob->prerequisites[n]);
+  return g_info_from_entry (rinfo->repository,
+			    rinfo->typelib, blob->prerequisites[n]);
 }
 
 
 gint
 g_interface_info_get_n_properties (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_properties;  
 }
@@ -1746,23 +1795,23 @@ g_interface_info_get_property (GIInterfaceInfo *info,
 			       gint            n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->interface_blob_size
+  offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + n * header->property_blob_size;
 
-  return (GIPropertyInfo *) g_info_new (GI_INFO_TYPE_PROPERTY, base, 
-					base->typelib, offset);
+  return (GIPropertyInfo *) g_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);
 }
 
 gint
 g_interface_info_get_n_methods (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_methods;
 }
@@ -1772,17 +1821,17 @@ g_interface_info_get_method (GIInterfaceInfo *info,
 			     gint            n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->interface_blob_size
+  offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size 
     + n * header->function_blob_size;
   
-  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
-					base->typelib, offset);  
+  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);  
 }
 
 GIFunctionInfo *
@@ -1790,22 +1839,22 @@ g_interface_info_find_method (GIInterfaceInfo *info,
 			      const gchar     *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->interface_blob_size
+  offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size;
 
-  return find_method (base, offset, blob->n_methods, name);
+  return find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
 gint
 g_interface_info_get_n_signals (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_signals;
 }
@@ -1815,25 +1864,25 @@ g_interface_info_get_signal (GIInterfaceInfo *info,
 			     gint            n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->interface_blob_size 
+  offset = rinfo->offset + header->interface_blob_size 
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size 
     + blob->n_methods * header->function_blob_size 
     + n * header->signal_blob_size;
   
-  return (GISignalInfo *) g_info_new (GI_INFO_TYPE_SIGNAL, base, 
-				      base->typelib, offset);  
+  return (GISignalInfo *) g_info_new (GI_INFO_TYPE_SIGNAL, (GIBaseInfo*)info, 
+				      rinfo->typelib, offset);  
 }
 
 gint
 g_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_vfuncs;
 }
@@ -1843,19 +1892,19 @@ g_interface_info_get_vfunc (GIInterfaceInfo *info,
 			    gint            n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->interface_blob_size 
+  offset = rinfo->offset + header->interface_blob_size 
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size 
     + blob->n_methods * header->function_blob_size 
     + blob->n_signals * header->signal_blob_size
     + n * header->vfunc_blob_size;
   
-  return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, base, 
-				     base->typelib, offset);  
+  return (GIVFuncInfo *) g_info_new (GI_INFO_TYPE_VFUNC, (GIBaseInfo*)info, 
+				     rinfo->typelib, offset);  
 }
 
 /**
@@ -1873,24 +1922,24 @@ g_interface_info_find_vfunc (GIInterfaceInfo *info,
                              const gchar  *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->interface_blob_size
+  offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + blob->n_prerequisites % 2) * 2
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
 
-  return find_vfunc (base, offset, blob->n_vfuncs, name);
+  return find_vfunc (rinfo, offset, blob->n_vfuncs, name);
 }
 
 gint
 g_interface_info_get_n_constants (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_constants;
 }
@@ -1900,11 +1949,11 @@ g_interface_info_get_constant (GIInterfaceInfo *info,
 			       gint             n)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
   
-  offset = base->offset + header->interface_blob_size
+  offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size 
@@ -1912,8 +1961,8 @@ g_interface_info_get_constant (GIInterfaceInfo *info,
     + blob->n_vfuncs * header->vfunc_blob_size 
     + n * header->constant_blob_size;
 
-  return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, base, 
-					base->typelib, offset);  
+  return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);  
 }
 
 /**
@@ -1927,12 +1976,12 @@ g_interface_info_get_constant (GIInterfaceInfo *info,
 GIStructInfo *
 g_interface_info_get_iface_struct (GIInterfaceInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_struct)
-    return (GIStructInfo *) g_info_from_entry (base->repository,
-                                               base->typelib, blob->gtype_struct);
+    return (GIStructInfo *) g_info_from_entry (rinfo->repository,
+                                               rinfo->typelib, blob->gtype_struct);
   else
     return NULL;
 }
@@ -1942,8 +1991,8 @@ GParamFlags
 g_property_info_get_flags (GIPropertyInfo *info)
 {
   GParamFlags flags;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  PropertyBlob *blob = (PropertyBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  PropertyBlob *blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
   
   flags = 0;
 
@@ -1965,9 +2014,9 @@ g_property_info_get_flags (GIPropertyInfo *info)
 GITypeInfo *
 g_property_info_get_type (GIPropertyInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return g_type_info_new (base, base->typelib, base->offset + G_STRUCT_OFFSET (PropertyBlob, type));
+  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
 
@@ -1977,8 +2026,8 @@ g_signal_info_get_flags (GISignalInfo *info)
 {
   GSignalFlags flags;
 
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   flags = 0;
 
@@ -2009,11 +2058,11 @@ g_signal_info_get_flags (GISignalInfo *info)
 GIVFuncInfo *
 g_signal_info_get_class_closure (GISignalInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->has_class_closure)
-    return g_interface_info_get_vfunc ((GIInterfaceInfo *)base->container, blob->class_closure);
+    return g_interface_info_get_vfunc ((GIInterfaceInfo *)rinfo->container, blob->class_closure);
 
   return NULL;
 }
@@ -2021,8 +2070,8 @@ g_signal_info_get_class_closure (GISignalInfo *info)
 gboolean
 g_signal_info_true_stops_emit (GISignalInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->true_stops_emit;
 }
@@ -2033,8 +2082,8 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
 {
   GIVFuncInfoFlags flags;
 
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   flags = 0;
 
@@ -2053,8 +2102,8 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
 gint
 g_vfunc_info_get_offset (GIVFuncInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->struct_offset;
 }
@@ -2062,11 +2111,11 @@ g_vfunc_info_get_offset (GIVFuncInfo *info)
 GISignalInfo *
 g_vfunc_info_get_signal (GIVFuncInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->class_closure)
-    return g_interface_info_get_signal ((GIInterfaceInfo *)base->container, blob->signal);
+    return g_interface_info_get_signal ((GIInterfaceInfo *)rinfo->container, blob->signal);
   
   return NULL;
 }
@@ -2085,9 +2134,9 @@ g_vfunc_info_get_signal (GIVFuncInfo *info)
 GIFunctionInfo *
 g_vfunc_info_get_invoker (GIVFuncInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&base->typelib->data[base->offset];
-  GIBaseInfo *container = base->container;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
+  GIBaseInfo *container = rinfo->container;
   GIInfoType parent_type;
 
   /* 1023 = 0x3ff is the maximum of the 10 bits for invoker index */
@@ -2107,80 +2156,80 @@ g_vfunc_info_get_invoker (GIVFuncInfo *info)
 GITypeInfo *
 g_constant_info_get_type (GIConstantInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
   
-  return g_type_info_new (base, base->typelib, base->offset + 8);
+  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
 }
 
 gint
 g_constant_info_get_value (GIConstantInfo *info, 
 			   GArgument      *value)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  ConstantBlob *blob = (ConstantBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ConstantBlob *blob = (ConstantBlob *)&rinfo->typelib->data[rinfo->offset];
 
   /* FIXME non-basic types ? */
   if (blob->type.flags.reserved == 0 && blob->type.flags.reserved2 == 0)
     {
       if (blob->type.flags.pointer)
-	value->v_pointer = g_memdup (&base->typelib->data[blob->offset], blob->size);
+	value->v_pointer = g_memdup (&rinfo->typelib->data[blob->offset], blob->size);
       else
 	{
 	  switch (blob->type.flags.tag)
 	    {
 	    case GI_TYPE_TAG_BOOLEAN:
-	      value->v_boolean = *(gboolean*)&base->typelib->data[blob->offset];
+	      value->v_boolean = *(gboolean*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_INT8:
-	      value->v_int8 = *(gint8*)&base->typelib->data[blob->offset];
+	      value->v_int8 = *(gint8*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_UINT8:
-	      value->v_uint8 = *(guint8*)&base->typelib->data[blob->offset];
+	      value->v_uint8 = *(guint8*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_INT16:
-	      value->v_int16 = *(gint16*)&base->typelib->data[blob->offset];
+	      value->v_int16 = *(gint16*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_UINT16:
-	      value->v_uint16 = *(guint16*)&base->typelib->data[blob->offset];
+	      value->v_uint16 = *(guint16*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_INT32:
-	      value->v_int32 = *(gint32*)&base->typelib->data[blob->offset];
+	      value->v_int32 = *(gint32*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_UINT32:
-	      value->v_uint32 = *(guint32*)&base->typelib->data[blob->offset];
+	      value->v_uint32 = *(guint32*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_INT64:
-	      value->v_int64 = *(gint64*)&base->typelib->data[blob->offset];
+	      value->v_int64 = *(gint64*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_UINT64:
-	      value->v_uint64 = *(guint64*)&base->typelib->data[blob->offset];
+	      value->v_uint64 = *(guint64*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_FLOAT:
-	      value->v_float = *(gfloat*)&base->typelib->data[blob->offset];
+	      value->v_float = *(gfloat*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_DOUBLE:
-	      value->v_double = *(gdouble*)&base->typelib->data[blob->offset];
+	      value->v_double = *(gdouble*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_TIME_T:
-	      value->v_long = *(long*)&base->typelib->data[blob->offset];
+	      value->v_long = *(long*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_SHORT:
-	      value->v_short = *(gshort*)&base->typelib->data[blob->offset];
+	      value->v_short = *(gshort*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_USHORT:
-	      value->v_ushort = *(gushort*)&base->typelib->data[blob->offset];
+	      value->v_ushort = *(gushort*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_INT:
-	      value->v_int = *(gint*)&base->typelib->data[blob->offset];
+	      value->v_int = *(gint*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_UINT:
-	      value->v_uint = *(guint*)&base->typelib->data[blob->offset];
+	      value->v_uint = *(guint*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_LONG:
-	      value->v_long = *(glong*)&base->typelib->data[blob->offset];
+	      value->v_long = *(glong*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    case GI_TYPE_TAG_ULONG:
-	      value->v_ulong = *(gulong*)&base->typelib->data[blob->offset];
+	      value->v_ulong = *(gulong*)&rinfo->typelib->data[blob->offset];
 	      break;
 	    }
 	}
@@ -2193,8 +2242,8 @@ g_constant_info_get_value (GIConstantInfo *info,
 gint
 g_union_info_get_n_fields  (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_fields;
 }
@@ -2203,19 +2252,19 @@ GIFieldInfo *
 g_union_info_get_field (GIUnionInfo *info,
 			gint         n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;  
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;  
  
-  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, base, base->typelib, 
-				     base->offset + header->union_blob_size + 
+  return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib, 
+				     rinfo->offset + header->union_blob_size + 
 				     n * header->field_blob_size);
 }
 
 gint
 g_union_info_get_n_methods (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->n_functions;
 }
@@ -2224,23 +2273,23 @@ GIFunctionInfo *
 g_union_info_get_method (GIUnionInfo *info,
 			 gint         n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
-  Header *header = (Header *)base->typelib->data;  
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header = (Header *)rinfo->typelib->data;  
   gint offset;
 
-  offset = base->offset + header->union_blob_size 
+  offset = rinfo->offset + header->union_blob_size 
     + blob->n_fields * header->field_blob_size 
     + n * header->function_blob_size;
-  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base, 
-					base->typelib, offset);
+  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info, 
+					rinfo->typelib, offset);
 }
 
 gboolean
 g_union_info_is_discriminated (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->discriminated;
 }
@@ -2248,8 +2297,8 @@ g_union_info_is_discriminated (GIUnionInfo *info)
 gint
 g_union_info_get_discriminator_offset (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   return blob->discriminator_offset;
 }
@@ -2257,30 +2306,30 @@ g_union_info_get_discriminator_offset (GIUnionInfo *info)
 GITypeInfo *
 g_union_info_get_discriminator_type (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
  
-  return g_type_info_new (base, base->typelib, base->offset + 24);
+  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
 }
 
 GIConstantInfo *
 g_union_info_get_discriminator (GIUnionInfo *info,
 				gint         n)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   
   if (blob->discriminated)
     {
-      Header *header = (Header *)base->typelib->data;  
+      Header *header = (Header *)rinfo->typelib->data;  
       gint offset;
 
-      offset = base->offset + header->union_blob_size 
+      offset = rinfo->offset + header->union_blob_size 
 	+ blob->n_fields * header->field_blob_size 
 	+ blob->n_functions * header->function_blob_size
 	+ n * header->constant_blob_size;
       
-      return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, base, 
-					    base->typelib, offset);  
+      return (GIConstantInfo *) g_info_new (GI_INFO_TYPE_CONSTANT, (GIBaseInfo*)info, 
+					    rinfo->typelib, offset);  
     }
 
   return NULL;
@@ -2291,21 +2340,21 @@ g_union_info_find_method (GIUnionInfo *info,
                           const gchar *name)
 {
   gint offset;
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  Header *header = (Header *)base->typelib->data;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = base->offset + header->union_blob_size
+  offset = rinfo->offset + header->union_blob_size
     + blob->n_fields * header->field_blob_size;
 
-  return find_method (base, offset, blob->n_functions, name);
+  return find_method ((GIBaseInfo*)info, offset, blob->n_functions, name);
 }
 
 gsize
 g_union_info_get_size (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->size;
 }
@@ -2313,8 +2362,8 @@ g_union_info_get_size (GIUnionInfo *info)
 gsize
 g_union_info_get_alignment (GIUnionInfo *info)
 {
-  GIBaseInfo *base = (GIBaseInfo *)info;
-  UnionBlob *blob = (UnionBlob *)&base->typelib->data[base->offset];
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->alignment;
 }

@@ -27,37 +27,55 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_IREPOSITORY      (g_irepository_get_type ())
-#define G_IREPOSITORY(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_IREPOSITORY, GIRepository))
+#define G_TYPE_IREPOSITORY              (g_irepository_get_type ())
+#define G_IREPOSITORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_IREPOSITORY, GIRepository))
+#define G_IREPOSITORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_IREPOSITORY, GIRepositoryClass))
+#define G_IS_IREPOSITORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_IREPOSITORY))
+#define G_IS_IREPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_IREPOSITORY))
+#define G_IREPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_IREPOSITORY, GIRepositoryClass))
 
 typedef struct _GIRepository         GIRepository; 
 typedef struct _GIRepositoryClass    GIRepositoryClass; 
 typedef struct _GIRepositoryPrivate  GIRepositoryPrivate; 
-typedef struct _GIBaseInfo           GIBaseInfo;
-typedef struct _GICallableInfo       GICallableInfo;
-typedef struct _GIFunctionInfo       GIFunctionInfo;
-typedef struct _GICallbackInfo       GICallbackInfo;
-typedef struct _GIRegisteredTypeInfo GIRegisteredTypeInfo;
-typedef struct _GIStructInfo         GIStructInfo;
-typedef struct _GIUnionInfo          GIUnionInfo;
-typedef struct _GIEnumInfo           GIEnumInfo;
-typedef struct _GIObjectInfo         GIObjectInfo;
-typedef struct _GIInterfaceInfo      GIInterfaceInfo;
-typedef struct _GIConstantInfo       GIConstantInfo;
-typedef struct _GIValueInfo          GIValueInfo;
-typedef struct _GISignalInfo         GISignalInfo;
-typedef struct _GIVFuncInfo          GIVFuncInfo;
-typedef struct _GIPropertyInfo       GIPropertyInfo;
-typedef struct _GIFieldInfo          GIFieldInfo;
-typedef struct _GIArgInfo            GIArgInfo;
-typedef struct _GITypeInfo           GITypeInfo;
-typedef struct _GIErrorDomainInfo    GIErrorDomainInfo;
+
+typedef struct _GIBaseInfoStub       GIBaseInfo;
+
+struct _GIBaseInfoStub {
+  gint32 dummy1;
+  gint32 dummy2;
+  gpointer dummy3;
+  gpointer dummy4;
+  gpointer dummy5;
+  guint32  dummy6;
+  guint32  dummy7;
+  gpointer padding[4];
+};
+
+typedef GIBaseInfo GICallableInfo;
+typedef GIBaseInfo GIFunctionInfo;
+typedef GIBaseInfo GICallbackInfo;
+typedef GIBaseInfo GIRegisteredTypeInfo;
+typedef GIBaseInfo GIStructInfo;
+typedef GIBaseInfo GIUnionInfo;
+typedef GIBaseInfo GIEnumInfo;
+typedef GIBaseInfo GIObjectInfo;
+typedef GIBaseInfo GIInterfaceInfo;
+typedef GIBaseInfo GIConstantInfo;
+typedef GIBaseInfo GIValueInfo;
+typedef GIBaseInfo GISignalInfo;
+typedef GIBaseInfo GIVFuncInfo;
+typedef GIBaseInfo GIPropertyInfo;
+typedef GIBaseInfo GIFieldInfo;
+typedef GIBaseInfo GIArgInfo;
+typedef GIBaseInfo GITypeInfo;
+typedef GIBaseInfo GIErrorDomainInfo;
+
 typedef struct _GIUnresolvedInfo     GIUnresolvedInfo;
 typedef struct _GTypelib            GTypelib;
 
 struct _GIRepository 
 { 
-  GObject parent; 
+  GObject parent;
 
   /*< private >*/
   GIRepositoryPrivate *priv;
@@ -282,11 +300,16 @@ typedef enum {
 } GITransfer;
 
 GITypeInfo *           g_callable_info_get_return_type (GICallableInfo *info);
+void                   g_callable_info_load_return_type (GICallableInfo *info,
+                                                         GITypeInfo     *type);
 GITransfer             g_callable_info_get_caller_owns (GICallableInfo *info);
 gboolean               g_callable_info_may_return_null (GICallableInfo *info);
 gint                   g_callable_info_get_n_args      (GICallableInfo *info);
 GIArgInfo *            g_callable_info_get_arg         (GICallableInfo *info,
-							gint           n);
+                                                        gint            n);
+void                   g_callable_info_load_arg        (GICallableInfo *info,
+                                                        gint            n,
+                                                        GIArgInfo      *arg);
 
 /* GIArgInfo */
 
@@ -317,6 +340,8 @@ GIScopeType            g_arg_info_get_scope              (GIArgInfo *info);
 gint                   g_arg_info_get_closure            (GIArgInfo *info);
 gint                   g_arg_info_get_destroy            (GIArgInfo *info);
 GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
+void                   g_arg_info_load_type              (GIArgInfo *info,
+                                                          GITypeInfo *type);
 
 
 /* GITypeInfo */
