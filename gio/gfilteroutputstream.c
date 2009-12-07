@@ -64,34 +64,6 @@ static gboolean g_filter_output_stream_flush        (GOutputStream    *stream,
 static gboolean g_filter_output_stream_close        (GOutputStream  *stream,
                                                      GCancellable   *cancellable,
                                                      GError        **error);
-static void     g_filter_output_stream_write_async  (GOutputStream        *stream,
-                                                     const void           *buffer,
-                                                     gsize                 count,
-                                                     int                   io_priority,
-                                                     GCancellable         *cancellable,
-                                                     GAsyncReadyCallback   callback,
-                                                     gpointer              data);
-static gssize   g_filter_output_stream_write_finish (GOutputStream        *stream,
-                                                     GAsyncResult         *result,
-                                                     GError              **error);
-static void     g_filter_output_stream_flush_async  (GOutputStream        *stream,
-                                                     int                   io_priority,
-                                                     GCancellable         *cancellable,
-                                                     GAsyncReadyCallback   callback,
-                                                     gpointer              data);
-static gboolean g_filter_output_stream_flush_finish (GOutputStream        *stream,
-                                                     GAsyncResult         *result,
-                                                     GError              **error);
-static void     g_filter_output_stream_close_async  (GOutputStream        *stream,
-                                                     int                   io_priority,
-                                                     GCancellable         *cancellable,
-                                                     GAsyncReadyCallback   callback,
-                                                     gpointer              data);
-static gboolean g_filter_output_stream_close_finish (GOutputStream        *stream,
-                                                     GAsyncResult         *result,
-                                                     GError              **error);
-
-
 
 G_DEFINE_TYPE (GFilterOutputStream, g_filter_output_stream, G_TYPE_OUTPUT_STREAM)
 
@@ -118,12 +90,6 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
   ostream_class->write_fn = g_filter_output_stream_write;
   ostream_class->flush = g_filter_output_stream_flush;
   ostream_class->close_fn = g_filter_output_stream_close;
-  ostream_class->write_async  = g_filter_output_stream_write_async;
-  ostream_class->write_finish = g_filter_output_stream_write_finish;
-  ostream_class->flush_async  = g_filter_output_stream_flush_async;
-  ostream_class->flush_finish = g_filter_output_stream_flush_finish;
-  ostream_class->close_async  = g_filter_output_stream_close_async;
-  ostream_class->close_finish = g_filter_output_stream_close_finish;
 
   g_type_class_add_private (klass, sizeof (GFilterOutputStreamPrivate));
 
@@ -340,145 +306,6 @@ g_filter_output_stream_close (GOutputStream  *stream,
     }
 
   return res;
-}
-
-static void
-g_filter_output_stream_write_async (GOutputStream       *stream,
-                                    const void          *buffer,
-                                    gsize                count,
-                                    int                  io_priority,
-                                    GCancellable        *cancellable,
-                                    GAsyncReadyCallback  callback,
-                                    gpointer             data)
-{
-  GFilterOutputStream *filter_stream;
-
-  filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-
-  g_output_stream_write_async (filter_stream->base_stream,
-                               buffer,
-                               count,
-                               io_priority,
-                               cancellable,
-                               callback,
-                               data);
-
-}
-
-static gssize
-g_filter_output_stream_write_finish (GOutputStream  *stream,
-                                     GAsyncResult   *result,
-                                     GError        **error)
-{
-  GFilterOutputStream *filter_stream;
-  gssize nwritten;
-
-  filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-
-  nwritten = g_output_stream_write_finish (filter_stream->base_stream,
-                                           result,
-                                           error);
-
-  return nwritten;
-}
-
-static void
-g_filter_output_stream_flush_async (GOutputStream       *stream,
-                                    int                  io_priority,
-                                    GCancellable        *cancellable,
-                                    GAsyncReadyCallback  callback,
-                                    gpointer             data)
-{
-  GFilterOutputStream *filter_stream;
-
-  filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-
-  g_output_stream_flush_async (filter_stream->base_stream,
-                               io_priority,
-                               cancellable,
-                               callback,
-                               data);
-}
-
-static gboolean
-g_filter_output_stream_flush_finish (GOutputStream  *stream,
-                                     GAsyncResult   *result,
-                                     GError        **error)
-{
-  GFilterOutputStream *filter_stream;
-  gboolean res;
-
-  filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-
-  res = g_output_stream_flush_finish (filter_stream->base_stream,
-                                      result,
-                                      error);
-
-  return res;
-}
-
-static void
-g_filter_output_stream_close_ready (GObject       *object,
-                                    GAsyncResult  *result,
-                                    gpointer       user_data)
-{
-  GSimpleAsyncResult *simple = user_data;
-  GError *error = NULL;
-
-  g_output_stream_close_finish (G_OUTPUT_STREAM (object), result, &error);
-
-  if (error)
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
-
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-}
-
-static void
-g_filter_output_stream_close_async (GOutputStream       *stream,
-                                    int                  io_priority,
-                                    GCancellable        *cancellable,
-                                    GAsyncReadyCallback  callback,
-                                    gpointer             user_data)
-{
-  GSimpleAsyncResult *simple;
-
-  simple = g_simple_async_result_new (G_OBJECT (stream),
-                                      callback, user_data,
-                                      g_filter_output_stream_close_async);
-
-  if (GET_PRIVATE (stream)->close_base)
-    {
-      GFilterOutputStream *filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-
-      g_output_stream_close_async (filter_stream->base_stream,
-                                  io_priority, cancellable,
-                                  g_filter_output_stream_close_ready,
-                                  g_object_ref (simple));
-    }
-  else
-    /* do nothing */
-    g_simple_async_result_complete_in_idle (simple);
-
-  g_object_unref (simple);
-}
-
-static gboolean
-g_filter_output_stream_close_finish (GOutputStream  *stream,
-                                     GAsyncResult   *result,
-                                     GError        **error)
-{
-  GSimpleAsyncResult *simple;
-
-  g_return_val_if_fail (g_simple_async_result_is_valid (
-    result, G_OBJECT (stream), g_filter_output_stream_close_async), FALSE);
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  return !g_simple_async_result_propagate_error (simple, error);
 }
 
 #define __G_FILTER_OUTPUT_STREAM_C__
