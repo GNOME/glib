@@ -30,12 +30,11 @@
 #include "girepository.h"
 
 ffi_type *
-g_ir_ffi_get_ffi_type (GITypeTag tag)
+g_ir_ffi_get_ffi_type (GITypeTag   tag,
+                       gboolean    is_pointer)
 {
   switch (tag)
     {
-    case GI_TYPE_TAG_VOID:
-      return &ffi_type_void;
     case GI_TYPE_TAG_BOOLEAN:
       return &ffi_type_uint;
     case GI_TYPE_TAG_INT8:
@@ -104,131 +103,28 @@ g_ir_ffi_get_ffi_type (GITypeTag tag)
     case GI_TYPE_TAG_GHASH:
     case GI_TYPE_TAG_ERROR:
       return &ffi_type_pointer;
+    case GI_TYPE_TAG_VOID:
+      if (is_pointer)
+        return &ffi_type_pointer;
+      else
+        return &ffi_type_void;
     }
 
   g_assert_not_reached ();
 
   return NULL;
-}
+}  
 
-GArgument *
-g_ir_ffi_convert_arguments(GICallableInfo *callable_info, void **args)
+/**
+ * g_type_info_get_ffi_type:
+ * @info: A #GITypeInfo
+ *
+ * Returns: A #ffi_type corresponding to the platform default C ABI for @info.
+ */
+ffi_type *
+g_type_info_get_ffi_type (GITypeInfo *info)
 {
-  gint num_args, i;
-  GIArgInfo *arg_info;
-  GITypeInfo *arg_type;
-  GITypeTag tag;
-  GArgument *g_args;
-
-  num_args = g_callable_info_get_n_args (callable_info);
-  g_args = g_new0 (GArgument, num_args);
-
-  for (i = 0; i < num_args; i++)
-    {
-      arg_info = g_callable_info_get_arg (callable_info, i);
-      arg_type = g_arg_info_get_type (arg_info);
-      tag = g_type_info_get_tag (arg_type);
-
-      switch (tag)
-        {
-        case GI_TYPE_TAG_BOOLEAN:
-          g_args[i].v_boolean = *(gboolean *) args[i];
-          break;
-        case GI_TYPE_TAG_INT8:
-          g_args[i].v_int8 = *(gint8 *) args[i];
-          break;
-        case GI_TYPE_TAG_UINT8:
-          g_args[i].v_uint8 = *(guint8 *) args[i];
-          break;
-        case GI_TYPE_TAG_INT16:
-          g_args[i].v_int16 = *(gint16 *) args[i];
-          break;
-        case GI_TYPE_TAG_UINT16:
-          g_args[i].v_uint16 = *(guint16 *) args[i];
-          break;
-        case GI_TYPE_TAG_INT32:
-          g_args[i].v_int32 = *(gint32 *) args[i];
-          break;
-        case GI_TYPE_TAG_UINT32:
-          g_args[i].v_uint32 = *(guint32 *) args[i];
-          break;
-        case GI_TYPE_TAG_LONG:
-          g_args[i].v_long = *(glong *) args[i];
-          break;
-        case GI_TYPE_TAG_INT64:
-          g_args[i].v_int64 = *(gint64 *) args[i];
-          break;
-        case GI_TYPE_TAG_ULONG:
-          g_args[i].v_ulong = *(gulong *) args[i];
-          break;
-        case GI_TYPE_TAG_UINT64:
-          g_args[i].v_uint64 = *(guint64 *) args[i];
-          break;
-        case GI_TYPE_TAG_INT:
-          g_args[i].v_int = *(gint *) args[i];
-          break;
-        case GI_TYPE_TAG_SSIZE:
-          g_args[i].v_ssize = *(gssize *) args[i];
-          break;
-        case GI_TYPE_TAG_SIZE:
-          g_args[i].v_size = *(gsize *) args[i];
-          break;
-        case GI_TYPE_TAG_UINT:
-          g_args[i].v_uint = *(guint *) args[i];
-          break;
-        case GI_TYPE_TAG_FLOAT:
-          g_args[i].v_float = *(gfloat *) args[i];
-          break;
-        case GI_TYPE_TAG_DOUBLE:
-          g_args[i].v_double = *(gdouble *) args[i];
-          break;
-        case GI_TYPE_TAG_UTF8:
-          g_args[i].v_string = *(gchar **) args[i];
-          break;
-        case GI_TYPE_TAG_INTERFACE:
-          {
-            GIBaseInfo *interface;
-            GIInfoType interface_type;
-
-            interface = g_type_info_get_interface (arg_type);
-            interface_type = g_base_info_get_type (interface);
-
-            if (interface_type == GI_INFO_TYPE_OBJECT ||
-                interface_type == GI_INFO_TYPE_INTERFACE)
-              {
-                g_args[i].v_pointer = *(gpointer *) args[i];
-                g_base_info_unref (interface);
-                break;
-              }
-
-            else if (interface_type == GI_INFO_TYPE_ENUM ||
-                     interface_type == GI_INFO_TYPE_FLAGS)
-              {
-                g_args[i].v_double = *(double *) args[i];
-                g_base_info_unref (interface);
-                break;
-              }
-            else if (interface_type == GI_INFO_TYPE_STRUCT)
-              {
-                g_args[i].v_pointer = *(gpointer *) args[i];
-                g_base_info_unref (interface);
-                break;
-              }
-
-            g_base_info_unref (interface);
-          }
-        case GI_TYPE_TAG_GLIST:
-        case GI_TYPE_TAG_GSLIST:
-          g_args[i].v_pointer = *(gpointer *) args[i];
-          break;
-        default:
-          g_args[i].v_pointer = 0;
-        }
-
-      g_base_info_unref ((GIBaseInfo *) arg_info);
-      g_base_info_unref ((GIBaseInfo *) arg_type);
-    }
-  return g_args;
+  return g_ir_ffi_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
 }
 
 /**
@@ -238,7 +134,7 @@ g_ir_ffi_convert_arguments(GICallableInfo *callable_info, void **args)
  * Return value: an array of ffi_type*. The array itself
  * should be freed using g_free() after use.
  */
-ffi_type **
+static ffi_type **
 g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
 {
     ffi_type **arg_types;
@@ -254,8 +150,7 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
       {
         GIArgInfo *arg_info = g_callable_info_get_arg (callable_info, i);
         GITypeInfo *arg_type = g_arg_info_get_type (arg_info);
-        GITypeTag type_tag = g_type_info_get_tag (arg_type);
-        arg_types[i] = g_ir_ffi_get_ffi_type (type_tag);
+        arg_types[i] = g_type_info_get_ffi_type (arg_type);
         g_base_info_unref ((GIBaseInfo *)arg_info);
         g_base_info_unref ((GIBaseInfo *)arg_type);
       }
@@ -272,20 +167,133 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
  * a #GICallableInfo
  * Return value: the ffi_type for the return value
  */
-ffi_type *
+static ffi_type *
 g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
 {
   GITypeInfo *return_type;
   GITypeTag type_tag;
+  ffi_type *return_ffi_type;
 
   g_return_val_if_fail (callable_info != NULL, NULL);
 
   return_type = g_callable_info_get_return_type (callable_info);
   type_tag = g_type_info_get_tag (return_type);
-
+  return_ffi_type = g_type_info_get_ffi_type (return_type);
   g_base_info_unref((GIBaseInfo*)return_type);
+  
+  return return_ffi_type;
+}
 
-  return g_ir_ffi_get_ffi_type (type_tag);
+/**
+ * g_function_info_prep_invoker:
+ * @info: A #GIFunctionInfo
+ * @invoker: Output invoker structure
+ * @error: A #GError
+ *
+ * Initialize the caller-allocated @invoker structure with a cache
+ * of information needed to invoke the C function corresponding to
+ * @info with the platform's default ABI.
+ *
+ * A primary intent of this function is that a dynamic structure allocated
+ * by a language binding could contain a #GIFunctionInvoker structure
+ * inside the binding's function mapping.
+ */
+gboolean
+g_function_info_prep_invoker (GIFunctionInfo       *info,
+                              GIFunctionInvoker    *invoker,
+                              GError              **error)
+{
+  const char *symbol;
+  ffi_type *rtype;
+  ffi_type **atypes;
+  GITypeInfo *tinfo;
+  GIArgInfo *ainfo;
+  gboolean is_method;
+  gboolean throws;
+  gint n_args, n_invoke_args, i;
+  
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (invoker != NULL, FALSE);
+  
+  symbol = g_function_info_get_symbol ((GIFunctionInfo*) info);
+  
+  if (!g_typelib_symbol (g_base_info_get_typelib((GIBaseInfo *) info),
+                         symbol, &(invoker->native_address)))
+    {
+      g_set_error (error,
+                   G_INVOKE_ERROR,
+                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   "Could not locate %s: %s", symbol, g_module_error ());
+
+      return FALSE;
+    }
+
+  is_method = (g_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
+    && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
+  throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
+
+  tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
+  rtype = g_type_info_get_ffi_type (tinfo);
+  g_base_info_unref ((GIBaseInfo *)tinfo);
+
+  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
+  if (is_method)
+    n_invoke_args = n_args+1;
+  else
+    n_invoke_args = n_args;
+
+  if (throws)
+    /* Add an argument for the GError */
+    n_invoke_args ++;
+
+  /* TODO: avoid malloc here? */
+  atypes = g_malloc0 (sizeof (ffi_type*) * n_invoke_args);
+  
+  if (is_method)
+    {
+      atypes[0] = &ffi_type_pointer;
+    }
+  for (i = 0; i < n_args; i++)
+    {
+      int offset = (is_method ? 1 : 0);
+      ainfo = g_callable_info_get_arg ((GICallableInfo *)info, i);
+      switch (g_arg_info_get_direction (ainfo))
+        {
+          case GI_DIRECTION_IN:
+            tinfo = g_arg_info_get_type (ainfo);
+            atypes[i+offset] = g_type_info_get_ffi_type (tinfo);
+            g_base_info_unref ((GIBaseInfo *)tinfo);
+            break;
+          case GI_DIRECTION_OUT:
+          case GI_DIRECTION_INOUT:
+            atypes[i+offset] = &ffi_type_pointer;
+    	    break;
+          default:
+            g_assert_not_reached ();
+        }
+      g_base_info_unref ((GIBaseInfo *)ainfo);
+    }
+
+  if (throws)
+    {
+      atypes[n_invoke_args - 1] = &ffi_type_pointer;
+    }
+
+  return ffi_prep_cif (&(invoker->cif), FFI_DEFAULT_ABI, n_invoke_args, rtype, atypes) == FFI_OK;
+}
+
+/**
+ * g_function_info_invoker_destroy:
+ * @invoker: A #GIFunctionInvoker
+ * 
+ * Release all resources allocated for the internals of @invoker; callers
+ * are responsible for freeing any resources allocated for the structure
+ * itself however.
+ */
+void
+g_function_invoker_destroy (GIFunctionInvoker    *invoker)
+{
+  g_free (invoker->cif.arg_types);
 }
 
 /**

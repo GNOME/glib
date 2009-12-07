@@ -37,17 +37,6 @@ g_invoke_error_quark (void)
   return quark;
 }
 
-#include "ffi.h"
-
-static ffi_type *
-get_ffi_type (GITypeInfo *info)
-{
-  if (g_type_info_is_pointer (info))
-    return &ffi_type_pointer;
-  else
-    return g_ir_ffi_get_ffi_type (g_type_info_get_tag (info));
-}
-
 /**
  * g_function_info_invoke:
  * @info: a #GIFunctionInfo describing the function to invoke
@@ -116,7 +105,7 @@ g_function_info_invoke (GIFunctionInfo *info,
   throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
 
   tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
-  rtype = get_ffi_type (tinfo);
+  rtype = g_type_info_get_ffi_type (tinfo);
   g_base_info_unref ((GIBaseInfo *)tinfo);
 
   in_pos = 0;
@@ -159,7 +148,7 @@ g_function_info_invoke (GIFunctionInfo *info,
 	{
 	case GI_DIRECTION_IN:
 	  tinfo = g_arg_info_get_type (ainfo);
-	  atypes[i+offset] = get_ffi_type (tinfo);
+	  atypes[i+offset] = g_type_info_get_ffi_type (tinfo);
 	  g_base_info_unref ((GIBaseInfo *)tinfo);
 
 	  if (in_pos >= n_in_args)

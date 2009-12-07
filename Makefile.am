@@ -17,6 +17,7 @@ libgirepository_1_0_la_SOURCES =		\
 	girepository.c				\
 	girffi.c                                \
 	girffi.h                                \
+	girffi-private.h                        \
 	glib-compat.h                           \
 	gtypelib.c				\
 	gtypelib.h

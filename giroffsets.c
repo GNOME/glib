@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "girffi.h"
+#include "girffi-private.h"
 #include "girnode.h"
 
 /* The C standard specifies that an enumeration can be any char or any signed
@@ -262,7 +262,7 @@ get_type_size_alignment (GIrNodeType *type,
 	}
       else
 	{
-	  type_ffi = g_ir_ffi_get_ffi_type (type->tag);
+	  type_ffi = g_ir_ffi_get_ffi_type (type->tag, type->is_pointer);
 
 	  if (type_ffi == &ffi_type_void)
 	    {
