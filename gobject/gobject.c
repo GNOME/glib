@@ -951,11 +951,11 @@ object_set_property (GObject             *object,
     pspec = redirect;
 
   /* provide a copy to work from, convert (if necessary) and validate */
-  g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  g_value_init (&tmp_value, pspec->value_type);
   if (!g_value_transform (value, &tmp_value))
     g_warning ("unable to set property `%s' of type `%s' from value of type `%s'",
 	       pspec->name,
-	       g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
+	       g_type_name (pspec->value_type),
 	       G_VALUE_TYPE_NAME (value));
   else if (g_param_value_validate (pspec, &tmp_value) && !(pspec->flags & G_PARAM_LAX_VALIDATION))
     {
@@ -965,7 +965,7 @@ object_set_property (GObject             *object,
 		 contents,
 		 G_VALUE_TYPE_NAME (value),
 		 pspec->name,
-		 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+		 g_type_name (pspec->value_type));
       g_free (contents);
     }
   else
@@ -1017,8 +1017,8 @@ object_interface_check_properties (gpointer func_data,
        * by only checking the value type, not the G_PARAM_SPEC_TYPE.
        */
       if (class_pspec &&
-	  !g_type_is_a (G_PARAM_SPEC_VALUE_TYPE (pspecs[n]),
-			G_PARAM_SPEC_VALUE_TYPE (class_pspec)))
+	  !g_type_is_a (pspecs[n]->value_type,
+			class_pspec->value_type))
 	{
 	  g_critical ("Property '%s' on class '%s' has type '%s' "
 		      "which is different from the type '%s', "
@@ -1246,7 +1246,7 @@ g_object_newv (GType       object_type,
       GValue *value = cvalues + n_total_cparams - n_cparams - 1;
 
       value->g_type = 0;
-      g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      g_value_init (value, pspec->value_type);
       g_param_value_set_default (pspec, value);
 
       cparams[n_cparams].pspec = pspec;
@@ -1361,7 +1361,7 @@ g_object_new_valist (GType	  object_type,
 	  params = g_renew (GParameter, params, n_alloced_params);
 	}
       params[n_params].name = name;
-      G_VALUE_COLLECT_INIT (&params[n_params].value, G_PARAM_SPEC_VALUE_TYPE (pspec),
+      G_VALUE_COLLECT_INIT (&params[n_params].value, pspec->value_type,
 			    var_args, 0, &error);
       if (error)
 	{
@@ -1475,7 +1475,7 @@ g_object_set_valist (GObject	 *object,
           break;
         }
 
-      G_VALUE_COLLECT_INIT (&value, G_PARAM_SPEC_VALUE_TYPE (pspec), var_args,
+      G_VALUE_COLLECT_INIT (&value, pspec->value_type, var_args,
 			    0, &error);
       if (error)
 	{
@@ -1550,7 +1550,7 @@ g_object_get_valist (GObject	 *object,
 	  break;
 	}
       
-      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      g_value_init (&value, pspec->value_type);
       
       object_get_property (object, pspec, &value);
       
@@ -1740,23 +1740,23 @@ g_object_get_property (GObject	   *object,
       
       /* auto-conversion of the callers value type
        */
-      if (G_VALUE_TYPE (value) == G_PARAM_SPEC_VALUE_TYPE (pspec))
+      if (G_VALUE_TYPE (value) == pspec->value_type)
 	{
 	  g_value_reset (value);
 	  prop_value = value;
 	}
-      else if (!g_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
+      else if (!g_value_type_transformable (pspec->value_type, G_VALUE_TYPE (value)))
 	{
 	  g_warning ("%s: can't retrieve property `%s' of type `%s' as value of type `%s'",
 		     G_STRFUNC, pspec->name,
-		     g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
+		     g_type_name (pspec->value_type),
 		     G_VALUE_TYPE_NAME (value));
 	  g_object_unref (object);
 	  return;
 	}
       else
 	{
-	  g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+	  g_value_init (&tmp_value, pspec->value_type);
 	  prop_value = &tmp_value;
 	}
       object_get_property (object, pspec, prop_value);
