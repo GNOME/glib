@@ -840,11 +840,14 @@ start_function (GMarkupParseContext *context,
 }
 
 static void
-parse_param_transfer (GIrNodeParam *param, const gchar *transfer)
+parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *name)
 {
   if (transfer == NULL)
   {
-    g_warning ("required attribute 'transfer-ownership' missing");
+    if (!name)
+      g_warning ("required attribute 'transfer-ownership' missing");
+    else
+      g_warning ("required attribute 'transfer-ownership' for function '%s'", name);
   }
   else if (strcmp (transfer, "none") == 0)
     {
@@ -948,7 +951,7 @@ start_parameter (GMarkupParseContext *context,
   else
     param->allow_none = FALSE;
 
-  parse_param_transfer (param, transfer);
+  parse_param_transfer (param, transfer, name);
 
   if (scope && strcmp (scope, "call") == 0)
     param->scope = GI_SCOPE_TYPE_CALL;
@@ -1950,7 +1953,7 @@ start_return_value (GMarkupParseContext *context,
       state_switch (ctx, STATE_FUNCTION_RETURN);
 
       transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
-      parse_param_transfer (param, transfer);
+      parse_param_transfer (param, transfer, NULL);
 
       switch (CURRENT_NODE (ctx)->type)
 	{
