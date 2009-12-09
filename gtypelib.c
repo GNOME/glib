@@ -251,7 +251,7 @@ validate_name (GTypelib   *typelib,
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID,
-		   "The %s is contains invalid characters: %s",
+		   "The %s contains invalid characters: '%s'",
 		   msg, name);
       return FALSE;
     }
