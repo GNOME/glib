@@ -247,6 +247,7 @@ g_function_info_invoke (GIFunctionInfo *info,
   if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_invoke_args, rtype, atypes) != FFI_OK)
     goto out;
 
+  g_return_val_if_fail (return_value, FALSE);
   ffi_call (&cif, func, return_value, args);
 
   if (local_error)
@@ -435,6 +436,7 @@ gi_cclosure_marshal_generic (GClosure *closure,
   if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
     return;
 
+  g_return_val_if_fail (rvalue, FALSE);
   ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
 
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
