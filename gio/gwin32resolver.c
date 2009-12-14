@@ -34,6 +34,14 @@
 #include "gsimpleasyncresult.h"
 #include "gsocketaddress.h"
 
+#ifdef HAVE_WSPIAPI_H
+/* <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
+ * inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
+ * they aren't present at run-time (on Windows 2000).
+ */
+#include <wspiapi.h>
+#endif
+
 #include "gioalias.h"
 
 G_DEFINE_TYPE (GWin32Resolver, g_win32_resolver, G_TYPE_THREADED_RESOLVER)

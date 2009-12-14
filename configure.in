@@ -995,7 +995,7 @@ if $glib_failed ; then
 fi
 
 AC_CHECK_FUNCS(getprotobyname_r endservent)
-AC_CHECK_HEADERS([netdb.h winsock2.h mswsock.h])
+AC_CHECK_HEADERS([netdb.h winsock2.h mswsock.h wspiapi.h])
 
 # For gio/libasyncns
 if test $glib_native_win32 = no; then
