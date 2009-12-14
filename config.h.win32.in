@@ -598,9 +598,6 @@
 /* Define to 1 if you have the `wcslen' function. */
 #define HAVE_WCSLEN 1
 
-/* We are not checking for windows.h, why this? */
-#define HAVE_WINSOCK2_H 1
-
 /* Define if you have the 'wint_t' type. */
 #define HAVE_WINT_T 1
 
