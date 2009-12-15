@@ -23,8 +23,7 @@
 #ifndef __G_UNIX_CONNECTION_H__
 #define __G_UNIX_CONNECTION_H__
 
-#include <gio/gsocketconnection.h>
-#include <gio/giotypes.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
