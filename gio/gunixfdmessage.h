@@ -23,7 +23,7 @@
 #ifndef __G_UNIX_FD_MESSAGE_H__
 #define __G_UNIX_FD_MESSAGE_H__
 
-#include <gio/gsocketcontrolmessage.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
