@@ -349,7 +349,7 @@ typedef union
  * add another level of indirection to the parameter type. Ie if
  * the type is uint32 in an out parameter, the function actually
  * takes an uint32*.
- * @dipper: The parameter is a pointer to a struct or object that will
+ * @caller_allocates: The parameter is a pointer to a struct or object that will
  * receive an output of the function.
  * @allow_none: Only meaningful for types which are passed as pointers.
  * For an in parameter, indicates if it is ok to pass NULL in, for
@@ -388,7 +388,7 @@ typedef struct {
 
   guint          in                           : 1;
   guint          out                          : 1;
-  guint          dipper                       : 1;
+  guint          caller_allocates             : 1;
   guint          allow_none                   : 1;
   guint          optional                     : 1;
   guint          transfer_ownership           : 1;
@@ -397,7 +397,7 @@ typedef struct {
   guint          scope                        : 3;
   /* <private> */
   guint          reserved                     :21;
-  /* <public> */
+
   gint8        closure;
   gint8        destroy;
 

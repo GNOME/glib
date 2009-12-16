@@ -1864,7 +1864,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->in = param->in;
 	blob->out = param->out;
-	blob->dipper = param->dipper;
+	blob->caller_allocates = param->caller_allocates;
 	blob->allow_none = param->allow_none;
 	blob->optional = param->optional;
 	blob->transfer_ownership = param->transfer;

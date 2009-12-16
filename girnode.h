@@ -153,7 +153,7 @@ struct _GIrNodeParam
 
   gboolean in;
   gboolean out;
-  gboolean dipper;
+  gboolean caller_allocates;
   gboolean optional;
   gboolean retval;
   gboolean allow_none;

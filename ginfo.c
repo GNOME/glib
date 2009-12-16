@@ -1021,21 +1021,23 @@ g_arg_info_is_return_value (GIArgInfo *info)
 }
 
 /**
- * g_arg_info_is_dipper:
+ * g_arg_info_is_caller_allocates:
  * @info: a #GIArgInfo
  *
  * Obtain if the argument is a pointer to a struct or object that will
- * receive an output of a function.
+ * receive an output of a function.  The default assumption for
+ * %GI_DIRECTION_OUT arguments which have allocation is that the
+ * callee allocates; if this is %TRUE, then the caller must allocate.
  *
- * Returns: %TRUE if it is a dipper argument
+ * Returns: %TRUE if caller is required to have allocated the argument
  */
 gboolean
-g_arg_info_is_dipper (GIArgInfo *info)
+g_arg_info_is_caller_allocates (GIArgInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ArgBlob *blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return blob->dipper;
+  return blob->caller_allocates;
 }
 
 /**

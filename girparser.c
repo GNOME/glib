@@ -881,8 +881,8 @@ start_parameter (GMarkupParseContext *context,
   const gchar *name;
   const gchar *direction;
   const gchar *retval;
-  const gchar *dipper;
   const gchar *optional;
+  const gchar *caller_allocates;
   const gchar *allow_none;
   const gchar *transfer;
   const gchar *scope;
@@ -897,9 +897,9 @@ start_parameter (GMarkupParseContext *context,
   name = find_attribute ("name", attribute_names, attribute_values);
   direction = find_attribute ("direction", attribute_names, attribute_values);
   retval = find_attribute ("retval", attribute_names, attribute_values);
-  dipper = find_attribute ("dipper", attribute_names, attribute_values);
   optional = find_attribute ("optional", attribute_names, attribute_values);
   allow_none = find_attribute ("allow-none", attribute_names, attribute_values);
+  caller_allocates = find_attribute ("caller-allocates", attribute_names, attribute_values);
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
   scope = find_attribute ("scope", attribute_names, attribute_values);
   closure = find_attribute ("closure", attribute_names, attribute_values);
@@ -919,27 +919,33 @@ start_parameter (GMarkupParseContext *context,
     {
       param->in = FALSE;
       param->out = TRUE;
+      if (caller_allocates == NULL)
+        {
+          g_set_error (error,
+		       G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "caller-allocates attribute required on out parameters");
+          return FALSE;
+        }
+      param->caller_allocates = strcmp (caller_allocates, "1") == 0;
     }
   else if (direction && strcmp (direction, "inout") == 0)
     {
       param->in = TRUE;
       param->out = TRUE;
+      param->caller_allocates = FALSE;
     }
   else
     {
       param->in = TRUE;
       param->out = FALSE;
+      param->caller_allocates = FALSE;
     }
 
   if (retval && strcmp (retval, "1") == 0)
     param->retval = TRUE;
   else
     param->retval = FALSE;
-
-  if (dipper && strcmp (dipper, "1") == 0)
-    param->dipper = TRUE;
-  else
-    param->dipper = FALSE;
 
   if (optional && strcmp (optional, "1") == 0)
     param->optional = TRUE;
