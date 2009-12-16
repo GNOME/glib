@@ -479,7 +479,8 @@ write_callable_info (const gchar    *namespace,
 	case GI_DIRECTION_IN:
 	  break;
 	case GI_DIRECTION_OUT:
-	  xml_printf (file, " direction=\"out\"");
+	  xml_printf (file, " direction=\"out\" caller-allocates=\"%s\"",
+	              g_arg_info_is_caller_allocates (arg) ? "1" : "0");
 	  break;
 	case GI_DIRECTION_INOUT:
 	  xml_printf (file, " direction=\"inout\"");
@@ -488,9 +489,6 @@ write_callable_info (const gchar    *namespace,
 
       if (g_arg_info_may_be_null (arg))
 	xml_printf (file, " allow-none=\"1\"");
-
-      if (g_arg_info_is_dipper (arg))
-	xml_printf (file, " dipper=\"1\"");
 
       if (g_arg_info_is_return_value (arg))
 	xml_printf (file, " retval=\"1\"");
