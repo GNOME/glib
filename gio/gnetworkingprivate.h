@@ -73,7 +73,7 @@ GList *_g_resolver_addresses_from_addrinfo (const char       *hostname,
 
 void   _g_resolver_address_to_sockaddr     (GInetAddress            *address,
 					    struct sockaddr_storage *sa,
-					    gsize                   *sa_len);
+					    gsize                   *len);
 char  *_g_resolver_name_from_nameinfo      (GInetAddress     *address,
 					    const gchar      *name,
 					    gint              gni_retval,
