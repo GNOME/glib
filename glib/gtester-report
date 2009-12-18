@@ -241,7 +241,7 @@ class ReportWriter (TreeProcess):
         txt = node_as_text (perf)
         txt = re.sub (r'&', r'&amp;', txt)
         txt = re.sub (r'<', r'&gt;', txt)
-        txt = '<strong>Performace(' + (pmin and '<em>minimized</em>' or '<em>maximized</em>') + '):</strong> ' + txt.strip() + '<br />\n'
+        txt = '<strong>Performance(' + (pmin and '<em>minimized</em>' or '<em>maximized</em>') + '):</strong> ' + txt.strip() + '<br />\n'
         txt = re.sub (r'"', r'\\"', txt)
         txt = re.sub (r'\n', r'\\n', txt)
         presults += [ (pval, txt) ]
