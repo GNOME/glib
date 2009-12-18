@@ -36,6 +36,7 @@
 
 #include "glib.h"
 #include "gdatasetprivate.h"
+#include "glib_trace.h"
 #include "galias.h"
 
 /**
@@ -1047,7 +1048,10 @@ g_quark_from_string_internal (const gchar *string,
     quark = GPOINTER_TO_UINT (g_hash_table_lookup (g_quark_ht, string));
   
   if (!quark)
-    quark = g_quark_new (duplicate ? quark_strdup (string) : (gchar *)string);
+    {
+      quark = g_quark_new (duplicate ? quark_strdup (string) : (gchar *)string);
+      TRACE(GLIB_QUARK_NEW(string, quark));
+    }
 
   return quark;
 }

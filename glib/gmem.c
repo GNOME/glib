@@ -39,6 +39,7 @@
 #include "gbacktrace.h"
 #include "gtestutils.h"
 #include "gthread.h"
+#include "glib_trace.h"
 
 #include "galias.h"
 
@@ -121,7 +122,6 @@ static GMemVTable glib_mem_vtable = {
   standard_try_realloc,
 };
 
-
 /* --- functions --- */
 gpointer
 g_malloc (gsize n_bytes)
@@ -133,12 +133,15 @@ g_malloc (gsize n_bytes)
       gpointer mem;
 
       mem = glib_mem_vtable.malloc (n_bytes);
+      TRACE (GLIB_MEM_ALLOC((void*) mem, (unsigned int) n_bytes, 0, 0));
       if (mem)
 	return mem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
     }
+
+  TRACE(GLIB_MEM_ALLOC((void*) NULL, (int) n_bytes, 0, 0));
 
   return NULL;
 }
@@ -153,12 +156,15 @@ g_malloc0 (gsize n_bytes)
       gpointer mem;
 
       mem = glib_mem_vtable.calloc (1, n_bytes);
+      TRACE (GLIB_MEM_ALLOC((void*) mem, (unsigned int) n_bytes, 1, 0));
       if (mem)
 	return mem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
     }
+
+  TRACE(GLIB_MEM_ALLOC((void*) NULL, (int) n_bytes, 1, 0));
 
   return NULL;
 }
@@ -167,13 +173,16 @@ gpointer
 g_realloc (gpointer mem,
 	   gsize    n_bytes)
 {
+  gpointer newmem;
+
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
   if (G_LIKELY (n_bytes))
     {
-      mem = glib_mem_vtable.realloc (mem, n_bytes);
-      if (mem)
-	return mem;
+      newmem = glib_mem_vtable.realloc (mem, n_bytes);
+      TRACE (GLIB_MEM_REALLOC((void*) newmem, (void*)mem, (unsigned int) n_bytes, 0));
+      if (newmem)
+	return newmem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
@@ -181,6 +190,8 @@ g_realloc (gpointer mem,
 
   if (mem)
     glib_mem_vtable.free (mem);
+
+  TRACE (GLIB_MEM_REALLOC((void*) NULL, (void*)mem, 0, 0));
 
   return NULL;
 }
@@ -192,17 +203,24 @@ g_free (gpointer mem)
     g_mem_init_nomessage();
   if (G_LIKELY (mem))
     glib_mem_vtable.free (mem);
+  TRACE(GLIB_MEM_FREE((void*) mem));
 }
 
 gpointer
 g_try_malloc (gsize n_bytes)
 {
+  gpointer mem;
+
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
   if (G_LIKELY (n_bytes))
-    return glib_mem_vtable.try_malloc (n_bytes);
+    mem = glib_mem_vtable.try_malloc (n_bytes);
   else
-    return NULL;
+    mem = NULL;
+
+  TRACE (GLIB_MEM_ALLOC((void*) mem, (unsigned int) n_bytes, 0, 1));
+
+  return mem;
 }
 
 gpointer
@@ -210,7 +228,12 @@ g_try_malloc0 (gsize n_bytes)
 {
   gpointer mem;
 
-  mem = g_try_malloc (n_bytes);
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
+    mem = glib_mem_vtable.try_malloc (n_bytes);
+  else
+    mem = NULL;
 
   if (mem)
     memset (mem, 0, n_bytes);
@@ -222,15 +245,22 @@ gpointer
 g_try_realloc (gpointer mem,
 	       gsize    n_bytes)
 {
+  gpointer newmem;
+
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
   if (G_LIKELY (n_bytes))
-    return glib_mem_vtable.try_realloc (mem, n_bytes);
+    newmem = glib_mem_vtable.try_realloc (mem, n_bytes);
+  else
+    {
+      newmem = NULL;
+      if (mem)
+	glib_mem_vtable.free (mem);
+    }
 
-  if (mem)
-    glib_mem_vtable.free (mem);
+  TRACE (GLIB_MEM_REALLOC((void*) newmem, (void*)mem, (unsigned int) n_bytes, 1));
 
-  return NULL;
+  return newmem;
 }
 
 

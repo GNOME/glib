@@ -176,6 +176,19 @@ How to compile GLib itself
           <option>--disable-selinux</option> configure option.
         </para>
       </listitem>
+      <listitem>
+        <para>
+          The optional support for DTrace requires the <filename>sys/sdt.h</filename> header,
+          which is provided by SystemTap on Linux.  To build GLib without DTrace, use the
+          <option>--disable-dtrace</option> configure option.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The optional support for <ulink url="http://sourceware.org/systemtap/">SystemTap</ulink> can be disabled with the
+          <option>--disable-systemtap</option> configure option.
+        </para>
+      </listitem>
     </itemizedlist>
 
     </refsect1>
@@ -237,6 +250,14 @@ How to compile GLib itself
           <group>
             <arg>--disable-selinux</arg>
             <arg>--enable-selinux</arg>
+          </group>
+          <group>
+            <arg>--disable-dtrace</arg>
+            <arg>--enable-dtrace</arg>
+          </group>
+            <group>
+            <arg>--disable-systemtap</arg>
+            <arg>--enable-systemtap</arg>
           </group>
           <group>
             <arg>--with-runtime-libdir=RELPATH</arg>
@@ -560,6 +581,27 @@ How to compile GLib itself
           SELinux support in GIO if it is. These options can be
           used to explicitly control whether SELinux support should
 	  be included.
+        </para>
+     </formalpara>
+     
+     <formalpara>
+        <title><systemitem>--disable-dtrace</systemitem> and
+          <systemitem>--enable-dtrace</systemitem></title>
+
+        <para>
+          By default the <command>configure</command> script will
+          detect if DTrace support is available, and use it.
+        </para>
+     </formalpara>
+
+     <formalpara>
+        <title><systemitem>--disable-systemtap</systemitem> and
+          <systemitem>--enable-systemtap</systemitem></title>
+
+        <para>
+          This option requires DTrace support.  If it is available, then
+	  the <command>configure</command> script will also check for
+	  the presence of SystemTap.
         </para>
      </formalpara>
 

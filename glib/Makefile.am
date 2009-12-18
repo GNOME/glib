@@ -1,6 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
+CLEANFILES=
+
 if HAVE_GOOD_PRINTF
 else
 PRINTF_SUBDIR = gnulib
@@ -104,6 +106,7 @@ uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
 libglib_2_0_la_SOURCES = 	\
+	glib_probes.d		\
 	garray.c		\
 	gasyncqueue.c		\
 	$(gatomic_c)		\
@@ -130,6 +133,7 @@ libglib_2_0_la_SOURCES = 	\
 	giochannel.c    	\
 	gkeyfile.c        	\
 	glibintl.h		\
+	glib_trace.h		\
 	glist.c			\
 	gmain.c         	\
 	gmappedfile.c		\
@@ -324,6 +328,25 @@ libglib_2_0_la_LDFLAGS = \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
 INSTALL_PROGS=
+
+
+if ENABLE_DTRACE
+glib_probes.h: glib_probes.d Makefile
+	$(DTRACE) -C -h -s $< -o $@.tmp
+	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+glib_probes.o: glib_probes.d Makefile
+	$(DTRACE) -G -s $< -o $@
+BUILT_SOURCES += glib_probes.h glib_probes.o
+CLEANFILES += glib_probes.h glib_probes.h.tmp
+libglib_2_0_la_LIBADD += glib_probes.o
+endif
+
+if ENABLE_SYSTEMTAP
+tapset_in_files = glib.stp.in
+tapsetdir   = $(DESTDIR)@ABS_TAPSET_DIR@
+tapset_DATA = $(tapset_in_files:.stp.in=.stp)
+EXTRA_DIST += $(tapset_in_files)
+endif
 
 gspawn-win32-helper-console.c:
 	echo '#define HELPER_CONSOLE' >$@

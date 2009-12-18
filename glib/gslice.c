@@ -35,6 +35,7 @@
 #include "gmem.h"               /* gslice.h */
 #include "gthreadprivate.h"
 #include "glib.h"
+#include "glib_trace.h"
 #include "galias.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>             /* sysconf() */
@@ -836,6 +837,9 @@ g_slice_alloc (gsize mem_size)
     mem = g_malloc (mem_size);
   if (G_UNLIKELY (allocator->config.debug_blocks))
     smc_notify_alloc (mem, mem_size);
+
+  TRACE (GLIB_SLICE_ALLOC((void*)mem, mem_size));
+
   return mem;
 }
 
@@ -897,6 +901,7 @@ g_slice_free1 (gsize    mem_size,
         memset (mem_block, 0, mem_size);
       g_free (mem_block);
     }
+  TRACE (GLIB_SLICE_FREE((void*)mem_block, mem_size));
 }
 
 void
