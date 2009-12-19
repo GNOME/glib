@@ -124,14 +124,14 @@
     else \
       g_error ("%s()%s`%s'", _fname, _action, _tname); \
 }G_STMT_END
-#define	g_return_val_if_uninitialized(condition, init_function, return_value) G_STMT_START{	\
-  if (!(condition))										\
-    {												\
-      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,						\
-	     "%s: initialization assertion failed, use %s() prior to this function",		\
-	     G_STRLOC, G_STRINGIFY (init_function));						\
-      return (return_value);									\
-    }												\
+#define g_return_val_if_type_system_uninitialized(return_value) G_STMT_START{ \
+    if (G_UNLIKELY (!static_quark_type_flags))                                \
+      {                                                                       \
+        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,                            \
+               "%s: You forgot to call g_type_init()",                        \
+               G_STRLOC);                                                     \
+        return (return_value);                                                \
+      }                                                                       \
 }G_STMT_END
 
 #ifdef  G_ENABLE_DEBUG
@@ -2555,7 +2555,7 @@ g_type_register_fundamental (GType                       type_id,
 {
   TypeNode *node;
   
-  g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, 0);
+  g_return_val_if_type_system_uninitialized (0);
   g_return_val_if_fail (type_id > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -2666,7 +2666,7 @@ g_type_register_static (GType            parent_type,
   TypeNode *pnode, *node;
   GType type = 0;
   
-  g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, 0);
+  g_return_val_if_type_system_uninitialized (0);
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -2721,7 +2721,7 @@ g_type_register_dynamic (GType        parent_type,
   TypeNode *pnode, *node;
   GType type;
   
-  g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, 0);
+  g_return_val_if_type_system_uninitialized (0);
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (plugin != NULL, 0);
@@ -3230,7 +3230,7 @@ g_type_name (GType type)
 {
   TypeNode *node;
   
-  g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, NULL);
+  g_return_val_if_type_system_uninitialized (NULL);
   
   node = lookup_type_node_I (type);
   
