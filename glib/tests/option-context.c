@@ -1770,13 +1770,11 @@ main (int   argc,
   g_test_add_func ("/context/add", add_test1);
 
   /* Test parsing empty args */
-#if 0
   /* This test relies on the ability to call g_set_prgname() more
    * than once (without incurring a g_warning), which is no longer
    * the case.
    */
   g_test_add_func ("/context/empty1", empty_test1);
-#endif
   g_test_add_func ("/context/empty2", empty_test2);
   g_test_add_func ("/context/empty3", empty_test3);
 
