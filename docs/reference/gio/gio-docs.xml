@@ -125,6 +125,15 @@
       <xi:include href="xml/gsocketservice.xml"/>
       <xi:include href="xml/gthreadedsocketservice.xml"/>
     </chapter>
+    <chapter id="tls">
+      <title>TLS (SSL) support</title>
+      <xi:include href="xml/gtls.xml"/>
+      <xi:include href="xml/gtlscertificate.xml"/>
+      <xi:include href="xml/gtlsconnection.xml"/>
+      <xi:include href="xml/gtlsclientconnection.xml"/>
+      <xi:include href="xml/gtlsserverconnection.xml"/>
+      <xi:include href="xml/gtlsbackend.xml"/>
+    </chapter>
     <chapter id="resolver">
       <title>DNS resolution</title>
       <xi:include href="xml/gresolver.xml"/>

@@ -109,6 +109,7 @@ typedef struct _GIOExtension                  GIOExtension;
  * Opaque class for definining and scheduling IO jobs.
  **/
 typedef struct _GIOSchedulerJob               GIOSchedulerJob;
+typedef struct _GIOStreamAdapter              GIOStreamAdapter;
 typedef struct _GLoadableIcon                 GLoadableIcon; /* Dummy typedef */
 typedef struct _GMemoryInputStream            GMemoryInputStream;
 typedef struct _GMemoryOutputStream           GMemoryOutputStream;
@@ -202,6 +203,13 @@ typedef struct _GTcpWrapperConnection                       GTcpWrapperConnectio
  **/
 typedef struct _GThreadedSocketService                      GThreadedSocketService;
 typedef struct _GThemedIcon                   GThemedIcon;
+typedef struct _GTlsCertificate               GTlsCertificate;
+typedef struct _GTlsClientConnection          GTlsClientConnection; /* Dummy typedef */
+typedef struct _GTlsClientContext             GTlsClientContext; /* Dummy typedef */
+typedef struct _GTlsConnection                GTlsConnection;
+typedef struct _GTlsContext                   GTlsContext;
+typedef struct _GTlsServerConnection          GTlsServerConnection; /* Dummy typedef */
+typedef struct _GTlsServerContext             GTlsServerContext; /* Dummy typedef */
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 
 /**

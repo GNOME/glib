@@ -120,6 +120,11 @@
 #include <gio/gtcpwrapperconnection.h>
 #include <gio/gthemedicon.h>
 #include <gio/gthreadedsocketservice.h>
+#include <gio/gtlsbackend.h>
+#include <gio/gtlscertificate.h>
+#include <gio/gtlsclientconnection.h>
+#include <gio/gtlsconnection.h>
+#include <gio/gtlsserverconnection.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>

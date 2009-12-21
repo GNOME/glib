@@ -35,6 +35,7 @@
 #include "gsocks4proxy.h"
 #include "gsocks4aproxy.h"
 #include "gsocks5proxy.h"
+#include "gtlsbackend.h"
 #include "gvfs.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
@@ -480,6 +481,7 @@ extern GType g_win32_directory_monitor_get_type (void);
 extern GType _g_winhttp_vfs_get_type (void);
 
 extern GType _g_dummy_proxy_resolver_get_type (void);
+extern GType _g_dummy_tls_backend_get_type (void);
 
 #ifdef G_PLATFORM_WIN32
 
@@ -556,6 +558,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register (G_PROXY_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_PROXY);
+
+      ep = g_io_extension_point_register (G_TLS_BACKEND_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_TLS_BACKEND);
     }
   
   G_UNLOCK (registered_extensions);
@@ -618,6 +623,7 @@ _g_io_modules_ensure_loaded (void)
       _g_socks4a_proxy_get_type ();
       _g_socks4_proxy_get_type ();
       _g_socks5_proxy_get_type ();
+      _g_dummy_tls_backend_get_type ();
     }
 
   G_UNLOCK (loaded_dirs);
