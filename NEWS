@@ -1,3 +1,40 @@
+Overview of Changes from GLib 2.23.0 to GLib 2.23.1
+===================================================
+
+* GObject performance work has landed:
+ - Construction of simple objects is much faster
+ - Interface lookup is lock-free and constant-time now
+ - Reduced locking overhead when dealing with types
+
+* GType now has a G_DEFINE_INTERFACE convenience macro
+
+* GIO gained GUtf8InputStream, an input stream that
+  performs utf-8 validation
+
+* GLib now has byte-swap macros for gsize and gssize
+
+* Bugs fixed:
+557151 Determining the newly_constructed boolean in gobject.c...
+557100 Performance improvements for GObjectClasses that don't...
+501166 Warning message says IA__g_type_init instead of g_type_init
+585375 Performance and Contention problems with g_type_class_ref...
+587892 Race in GType when instantiating the same class for the...
+603270 Input Stream validating utf8
+603476 gioenums.h:62: error: comma at end of enumerator list
+603540 g_time_val_from_iso8601 uses uninitialised variable
+603982 Stack overflow when reading file async with filter
+604645 G_DEFINE_INTERFACE_* documentation is not generated
+604875 Use of sa_len conflicts with system header
+320482 provide G_DEFINE_TYPE like macros for interfaces
+
+* Updated translations:
+ Estonian
+ Hebrew
+ Norwegian bokmål
+ Vietnamese
+ Welsh
+
+
 Overview of Changes from GLib 2.22.x to GLib 2.23.0
 ===================================================
 
