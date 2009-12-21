@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-29 23:30-0500\n"
+"POT-Creation-Date: 2009-12-21 10:32-0500\n"
 "PO-Revision-Date: 2003-07-01 15:10-0500\n"
 "Last-Translator: Charles Voelger <cvoelger@dweasel.com>\n"
 "Language-Team: Esperanto <LL@li.org>\n"
@@ -1194,26 +1194,26 @@ msgstr ""
 msgid "Custom definition for %s"
 msgstr ""
 
-#: gio/gdrive.c:409
+#: gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr ""
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:489
+#: gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr ""
 
-#: gio/gdrive.c:566
+#: gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gdrive.c:771
+#: gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr ""
 
-#: gio/gdrive.c:873
+#: gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr ""
 
@@ -1241,13 +1241,13 @@ msgstr ""
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr ""
 
-#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
-#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
-#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
-#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
-#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
-#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
-#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
+#: gio/gfile.c:863 gio/gfile.c:1093 gio/gfile.c:1228 gio/gfile.c:1464
+#: gio/gfile.c:1518 gio/gfile.c:1575 gio/gfile.c:1658 gio/gfile.c:1713
+#: gio/gfile.c:1773 gio/gfile.c:1827 gio/gfile.c:3152 gio/gfile.c:3206
+#: gio/gfile.c:3337 gio/gfile.c:3377 gio/gfile.c:3704 gio/gfile.c:4106
+#: gio/gfile.c:4192 gio/gfile.c:4281 gio/gfile.c:4379 gio/gfile.c:4466
+#: gio/gfile.c:4559 gio/gfile.c:4889 gio/gfile.c:5169 gio/gfile.c:5238
+#: gio/gfile.c:6829 gio/gfile.c:6919 gio/gfile.c:7005
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr ""
@@ -1260,49 +1260,49 @@ msgstr ""
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
 #: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:2441 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr ""
 
-#: gio/gfile.c:2501
+#: gio/gfile.c:2461
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:2509 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr ""
 
-#: gio/gfile.c:2527
+#: gio/gfile.c:2487
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2786
 msgid "Can't copy special file"
 msgstr ""
 
-#: gio/gfile.c:3367
+#: gio/gfile.c:3327
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:3460
+#: gio/gfile.c:3420
 msgid "Trash not supported"
 msgstr ""
 
-#: gio/gfile.c:3509
+#: gio/gfile.c:3469
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:5926 gio/gvolume.c:376
+#: gio/gfile.c:5886 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr ""
 
-#: gio/gfile.c:6037
+#: gio/gfile.c:5997
 msgid "No application is registered as handling this file"
 msgstr ""
 
@@ -1347,37 +1347,37 @@ msgstr ""
 msgid "Truncate not supported on stream"
 msgstr ""
 
-#: gio/gicon.c:324
+#: gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr ""
 
-#: gio/gicon.c:344
+#: gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr ""
 
-#: gio/gicon.c:354
+#: gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr ""
 
-#: gio/gicon.c:365
+#: gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr ""
 
-#: gio/gicon.c:379
+#: gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr ""
 
-#: gio/gicon.c:393
+#: gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr ""
 
-#: gio/gicon.c:469
+#: gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr ""
 
@@ -1717,49 +1717,49 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:409
+#: gio/gmount.c:364
 msgid "mount doesn't implement \"unmount\""
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:488
+#: gio/gmount.c:443
 msgid "mount doesn't implement \"eject\""
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:568
+#: gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:655
+#: gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:744
+#: gio/gmount.c:699
 msgid "mount doesn't implement \"remount\""
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:828
+#: gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:917
+#: gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 
@@ -1970,14 +1970,14 @@ msgstr "Eraro dum konverto: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 
-#: gio/gvolume.c:452
+#: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr ""
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:531
+#: gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr ""
 

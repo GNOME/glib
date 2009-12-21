@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.21.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-29 23:30-0500\n"
+"POT-Creation-Date: 2009-12-21 10:32-0500\n"
 "PO-Revision-Date: 2009-09-21 20:53+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
@@ -1168,26 +1168,26 @@ msgstr "不能建立使用者桌面檔案 %s"
 msgid "Custom definition for %s"
 msgstr "自選 %s 的定義"
 
-#: gio/gdrive.c:409
+#: gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr "裝置無法實作退出功能(eject)"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:489
+#: gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "裝置無法實作退出功能(eject) 或 eject_with_operation"
 
-#: gio/gdrive.c:566
+#: gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "裝置無法實作媒體的輪詢"
 
-#: gio/gdrive.c:771
+#: gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr "裝置無法實作啟動功能(start)"
 
-#: gio/gdrive.c:873
+#: gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr "裝置無法實作停止功能(stop)"
 
@@ -1215,13 +1215,13 @@ msgstr "GEmblemedIcon 編碼中記號 (%d) 的數量格式不正確"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "預期為 GEmblemedIcon 的 GEmblem"
 
-#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
-#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
-#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
-#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
-#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
-#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
-#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
+#: gio/gfile.c:863 gio/gfile.c:1093 gio/gfile.c:1228 gio/gfile.c:1464
+#: gio/gfile.c:1518 gio/gfile.c:1575 gio/gfile.c:1658 gio/gfile.c:1713
+#: gio/gfile.c:1773 gio/gfile.c:1827 gio/gfile.c:3152 gio/gfile.c:3206
+#: gio/gfile.c:3337 gio/gfile.c:3377 gio/gfile.c:3704 gio/gfile.c:4106
+#: gio/gfile.c:4192 gio/gfile.c:4281 gio/gfile.c:4379 gio/gfile.c:4466
+#: gio/gfile.c:4559 gio/gfile.c:4889 gio/gfile.c:5169 gio/gfile.c:5238
+#: gio/gfile.c:6829 gio/gfile.c:6919 gio/gfile.c:7005
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -1234,49 +1234,49 @@ msgstr "不支援的操作"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
 #: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "包含了不存在的掛載點"
 
-#: gio/gfile.c:2441 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr "不能複製整個目錄"
 
-#: gio/gfile.c:2501
+#: gio/gfile.c:2461
 msgid "Can't copy directory over directory"
 msgstr "不能將目錄複製到目錄上"
 
-#: gio/gfile.c:2509 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr "目標檔案已存在"
 
-#: gio/gfile.c:2527
+#: gio/gfile.c:2487
 msgid "Can't recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2786
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: gio/gfile.c:3367
+#: gio/gfile.c:3327
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:3460
+#: gio/gfile.c:3420
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: gio/gfile.c:3509
+#: gio/gfile.c:3469
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:5926 gio/gvolume.c:376
+#: gio/gfile.c:5886 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: gio/gfile.c:6037
+#: gio/gfile.c:5997
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -1321,37 +1321,37 @@ msgstr "在輸入串流中不允許截短(truncate)"
 msgid "Truncate not supported on stream"
 msgstr "在串流中不支援截短(truncate)"
 
-#: gio/gicon.c:324
+#: gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "記號數量 (%d) 錯誤"
 
-#: gio/gicon.c:344
+#: gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr "類別名稱 %s 沒有類型"
 
-#: gio/gicon.c:354
+#: gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "類型 %s 沒有實作 GIcon 介面"
 
-#: gio/gicon.c:365
+#: gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr "類型 %s 尚未歸類"
 
-#: gio/gicon.c:379
+#: gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "格式不良的版本號碼：%s"
 
-#: gio/gicon.c:393
+#: gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "類型 %s 沒有實作 GIcon 介面的 from_tokens()"
 
-#: gio/gicon.c:469
+#: gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "不能處理提供的圖示編碼版本"
 
@@ -1687,7 +1687,7 @@ msgstr "改變記憶體輸出串流的大小失敗"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:409
+#: gio/gmount.c:364
 #, fuzzy
 msgid "mount doesn't implement \"unmount\""
 msgstr "掛載點尚未實作卸載"
@@ -1695,7 +1695,7 @@ msgstr "掛載點尚未實作卸載"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:488
+#: gio/gmount.c:443
 #, fuzzy
 msgid "mount doesn't implement \"eject\""
 msgstr "掛載點尚未實作退出"
@@ -1703,7 +1703,7 @@ msgstr "掛載點尚未實作退出"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:568
+#: gio/gmount.c:523
 #, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr "掛載點尚未實作卸載(umount)或 umount_with_operation"
@@ -1711,7 +1711,7 @@ msgstr "掛載點尚未實作卸載(umount)或 umount_with_operation"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:655
+#: gio/gmount.c:610
 #, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr "掛載點尚未實作退出(eject) 或 eject_with_operation"
@@ -1719,7 +1719,7 @@ msgstr "掛載點尚未實作退出(eject) 或 eject_with_operation"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:744
+#: gio/gmount.c:699
 #, fuzzy
 msgid "mount doesn't implement \"remount\""
 msgstr "掛載點尚未實作重新掛載"
@@ -1727,14 +1727,14 @@ msgstr "掛載點尚未實作重新掛載"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:828
+#: gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr "掛載點尚未實作內容類型預測"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:917
+#: gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "掛載點尚未實作同步內容類型預測"
 
@@ -1944,14 +1944,14 @@ msgstr "寫入至 unix 時發生錯誤：%s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "這個系統不支授抽象 unix 網域 socket 位址"
 
-#: gio/gvolume.c:452
+#: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "儲存區尚未實作退出(eject)"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:531
+#: gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "儲存區尚未實作退出(eject) 或 eject_with_operation"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-29 23:30-0500\n"
+"POT-Creation-Date: 2009-12-21 10:32-0500\n"
 "PO-Revision-Date: 2009-09-10 12:23+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -1201,26 +1201,26 @@ msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s 
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
 
-#: gio/gdrive.c:409
+#: gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr "ಹೊರತಳ್ಳುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:489
+#: gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "ಡ್ರೈವ್ ಹೊರತಳ್ಳುವುದನ್ನು ಅಥವ eject_with_operation ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gdrive.c:566
+#: gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "ಮಾಧ್ಯಮಕ್ಕಾಗಿ ಪೋಲ್ ಮಾಡುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gdrive.c:771
+#: gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr "ಆರಂಭಿಸುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gdrive.c:873
+#: gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr "ನಿಲ್ಲಿಸುವುದನ್ನು ಡ್ರೈವ್ ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
@@ -1248,13 +1248,13 @@ msgstr "GEmblemedIcon ಎನ್ಕೋಡಿಂಗಿನಲ್ಲಿ ತಪ್ಪ
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon ಗಾಗಿ GEmblem ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
-#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
-#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
-#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
-#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
-#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
-#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
+#: gio/gfile.c:863 gio/gfile.c:1093 gio/gfile.c:1228 gio/gfile.c:1464
+#: gio/gfile.c:1518 gio/gfile.c:1575 gio/gfile.c:1658 gio/gfile.c:1713
+#: gio/gfile.c:1773 gio/gfile.c:1827 gio/gfile.c:3152 gio/gfile.c:3206
+#: gio/gfile.c:3337 gio/gfile.c:3377 gio/gfile.c:3704 gio/gfile.c:4106
+#: gio/gfile.c:4192 gio/gfile.c:4281 gio/gfile.c:4379 gio/gfile.c:4466
+#: gio/gfile.c:4559 gio/gfile.c:4889 gio/gfile.c:5169 gio/gfile.c:5238
+#: gio/gfile.c:6829 gio/gfile.c:6919 gio/gfile.c:7005
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1267,49 +1267,49 @@ msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
 #: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "ಹೊಂದಿರುವ ಮೌಂಟ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:2441 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr "ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2501
+#: gio/gfile.c:2461
 msgid "Can't copy directory over directory"
 msgstr "ಕೋಶವನ್ನು ಕೋಶಕ್ಕೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2509 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr "ಸೂಚಿತ ಕಡತವು ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ"
 
-#: gio/gfile.c:2527
+#: gio/gfile.c:2487
 msgid "Can't recursively copy directory"
 msgstr "ಕೋಶವನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2786
 msgid "Can't copy special file"
 msgstr "ವಿಶೇಷ ಕಡತವನ್ನು ಕಾಪಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:3367
+#: gio/gfile.c:3327
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:3460
+#: gio/gfile.c:3420
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:3509
+#: gio/gfile.c:3469
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:5926 gio/gvolume.c:376
+#: gio/gfile.c:5886 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:6037
+#: gio/gfile.c:5997
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
 
@@ -1354,37 +1354,37 @@ msgstr "ಆದಾನ ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಕಡಿತಗ�
 msgid "Truncate not supported on stream"
 msgstr "ಸ್ಟ್ರೀಮ್‍ನಲ್ಲಿ ಕಡಿತಗೊಳಿಸಲು ಅನುಮತಿಯ ಇಲ್ಲ"
 
-#: gio/gicon.c:324
+#: gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "ಟೋಕನ್‌ಗಳ ತಪ್ಪಾದ ಸಂಖ್ಯೆ (%d)"
 
-#: gio/gicon.c:344
+#: gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr "ವರ್ಗದ ಹೆಸರು %s ಗೆ ಪ್ರಕಾರವಿಲ್ಲ"
 
-#: gio/gicon.c:354
+#: gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "ಪ್ರಕಾರ %s ವು GIcon ಸಂಪರ್ಕಸಾಧನವನ್ನು ಅನ್ವಯಿಸುವುದಿಲ್ಲ"
 
-#: gio/gicon.c:365
+#: gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
 
-#: gio/gicon.c:379
+#: gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "ತಪ್ಪಾದ ಆವೃತ್ತಿ ಸಂಖ್ಯೆ: %s"
 
-#: gio/gicon.c:393
+#: gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "ಪ್ರಕಾರ %s ವು from_tokens() ಅನ್ನು GIcon ಸಂಪರ್ಕಸಾಧನದ ಮೇಲೆ ಅನ್ವಯಿಸುವುದಿಲ್ಲ"
 
-#: gio/gicon.c:469
+#: gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "ಒದಗಿಸಲಾದ ಚಿಹ್ನೆಯ ಎನ್ಕೋಡಿಂಗ್ ಅನ್ನು ನಿಭಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
@@ -1720,7 +1720,7 @@ msgstr "ಮೆಮೊರಿ ಪ್ರದಾನ ಸ್ಟ್ರೀಮ್ ಅನ್
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:409
+#: gio/gmount.c:364
 #, fuzzy
 msgid "mount doesn't implement \"unmount\""
 msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
@@ -1728,7 +1728,7 @@ msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಕಾರ್ಯ�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:488
+#: gio/gmount.c:443
 #, fuzzy
 msgid "mount doesn't implement \"eject\""
 msgstr "ಆರೋಹಣವು ಹೊರತೆಗೆಯುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
@@ -1736,7 +1736,7 @@ msgstr "ಆರೋಹಣವು ಹೊರತೆಗೆಯುವುದನ್ನು �
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:568
+#: gio/gmount.c:523
 #, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಅಥವ unmount_with_operation ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
@@ -1744,7 +1744,7 @@ msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಅಥವ unmoun
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:655
+#: gio/gmount.c:610
 #, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
@@ -1753,7 +1753,7 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:744
+#: gio/gmount.c:699
 #, fuzzy
 msgid "mount doesn't implement \"remount\""
 msgstr "ಆರೋಹಣವು ಪುನಃ ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
@@ -1761,14 +1761,14 @@ msgstr "ಆರೋಹಣವು ಪುನಃ ಆರೋಹಿಸುವುದನ್�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:828
+#: gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr "ಆರೋಹಣವು ವಿಷಯದ ಬಗೆಯ ಊಹೆಯನ್ನು ಅನ್ವಯಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:917
+#: gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "ಆರೋಹಣವು ಹೊಂದಿಕೊಳ್ಳುವ ವಿಷಯದ ಬಗೆಯ ಊಹೆಯನ್ನು ಅನ್ವಯಿಸುವುದಿಲ್ಲ"
 
@@ -1978,14 +1978,14 @@ msgstr "ಯುನಿಕ್ಸ್‍ಗೆ ಬರೆಯುವಲ್ಲೆ ದೋ�
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "ಅಬ್‌ಸ್ಟ್ರಾಕ್ಟ್ ಯುನಿಕ್ಸ್ ಡೊಮೈನ್ ಸಾಕೆಟ್ ವಿಳಾಸಗಳಿಗೆ ಈ ವ್ಯವಸ್ಥೆಯಲ್ಲಿ ಬೆಂಬಲವಿಲ್ಲ"
 
-#: gio/gvolume.c:452
+#: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "ಪರಿಮಾಣವು ಹೊರ ತಳ್ಳುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:531
+#: gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "ಪರಿಮಾಣವು ಹೊರ ತಳ್ಳುವುದನ್ನು ಅಥವ eject_with_operation ಅನ್ನು ಅನ್ವಯಿಸುವುದಿಲ್ಲ"
 

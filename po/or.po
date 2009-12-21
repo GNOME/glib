@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-29 23:30-0500\n"
+"POT-Creation-Date: 2009-12-21 10:32-0500\n"
 "PO-Revision-Date: 2009-09-15 16:20+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
@@ -1200,26 +1200,26 @@ msgstr "ଚାଳକ ଡେସ୍କଟପ ଫାଇଲ %s ନିର୍ମାଣ
 msgid "Custom definition for %s"
 msgstr "%s ପାଇଁ ଇଚ୍ଛାରୂପୀ ପରିଭାଷା"
 
-#: gio/gdrive.c:409
+#: gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr "ଡ୍ରାଇଭ ବାହାର କରିବାକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:489
+#: gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "ଡ୍ରାଇଭ ବାହାର କରିବା କିମ୍ବା eject_with_operation କୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
-#: gio/gdrive.c:566
+#: gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "ଡ୍ରାଇଭ ସଞ୍ଚାର ମାଧ୍ଯମ ପାଇଁ ଚୟନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
-#: gio/gdrive.c:771
+#: gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr "ଡ୍ରାଇଭ ଆରମ୍ଭ କରିବାକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
-#: gio/gdrive.c:873
+#: gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr "ଡ୍ରାଇଭ ବନ୍ଦ କରିବାକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
@@ -1247,13 +1247,13 @@ msgstr "GEmblemedIcon ସାଙ୍କେତିକରଣରେ ତ୍ରୁଟି
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon ପାଇଁ ଗୋଟିଏ GEmblem ଆଶାକରାଯାଉଅଛି"
 
-#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
-#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
-#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
-#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
-#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
-#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
-#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
+#: gio/gfile.c:863 gio/gfile.c:1093 gio/gfile.c:1228 gio/gfile.c:1464
+#: gio/gfile.c:1518 gio/gfile.c:1575 gio/gfile.c:1658 gio/gfile.c:1713
+#: gio/gfile.c:1773 gio/gfile.c:1827 gio/gfile.c:3152 gio/gfile.c:3206
+#: gio/gfile.c:3337 gio/gfile.c:3377 gio/gfile.c:3704 gio/gfile.c:4106
+#: gio/gfile.c:4192 gio/gfile.c:4281 gio/gfile.c:4379 gio/gfile.c:4466
+#: gio/gfile.c:4559 gio/gfile.c:4889 gio/gfile.c:5169 gio/gfile.c:5238
+#: gio/gfile.c:6829 gio/gfile.c:6919 gio/gfile.c:7005
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ପ୍ରୟୋଗ ସମର୍ଥିତ ନୁହଁ"
@@ -1266,49 +1266,49 @@ msgstr "ପ୍ରୟୋଗ ସମର୍ଥିତ ନୁହଁ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
 #: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "ଧାରଣ କରିଥିବା ସ୍ଥାପନ ଅବସ୍ଥିତ ନାହିଁ"
 
-#: gio/gfile.c:2441 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ନକଲ କରିପାରିବେ ନାହିଁ"
 
-#: gio/gfile.c:2501
+#: gio/gfile.c:2461
 msgid "Can't copy directory over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ଡିରେକ୍ଟୋରୀ ନକଲ କରିପାରିବେ ନାହିଁ"
 
-#: gio/gfile.c:2509 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲ ଅବସ୍ଥିତ"
 
-#: gio/gfile.c:2527
+#: gio/gfile.c:2487
 msgid "Can't recursively copy directory"
 msgstr "ପୁନରାବର୍ତ୍ତୀ ଭାବରେ ଡିରେକ୍ଟୋରୀ ନକଲ କରିପାରିବେ ନାହିଁ"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2786
 msgid "Can't copy special file"
 msgstr "ବିଶେଷ ଫାଇଲକୁ ନକଲ କରିପାରିବେ ନାହିଁ"
 
-#: gio/gfile.c:3367
+#: gio/gfile.c:3327
 msgid "Invalid symlink value given"
 msgstr "ଅବୈଧ symlink ମୂଲ୍ୟ ପ୍ରଦାନ କରାଯାଇଛି"
 
-#: gio/gfile.c:3460
+#: gio/gfile.c:3420
 msgid "Trash not supported"
 msgstr "ଆବର୍ଜନା ପାତ୍ର ସମର୍ଥିତ ନୁହଁ"
 
-#: gio/gfile.c:3509
+#: gio/gfile.c:3469
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ଫାଇଲ ନାମଗୁଡ଼ିକ '%c' ଧାରଣ କରିପାରେ ନାହିଁ"
 
-#: gio/gfile.c:5926 gio/gvolume.c:376
+#: gio/gfile.c:5886 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "ଆକାର ସ୍ଥାପନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
-#: gio/gfile.c:6037
+#: gio/gfile.c:5997
 msgid "No application is registered as handling this file"
 msgstr "ଏହି ଫାଇଲକୁ ନିୟନ୍ତ୍ରମ କରିବା ଫଳରେ କୌଣସି ପ୍ରୟୋଗ ପଞ୍ଜିକୃତ ହୋଇନାହିଁ"
 
@@ -1353,37 +1353,37 @@ msgstr "ନିବେଶ ଧାରାରେ କାଟିବା ଅନୁମୋଦ
 msgid "Truncate not supported on stream"
 msgstr "ଧାରାରେ କାଟିବା ଅନୁମୋଦିତ ନୁହଁ"
 
-#: gio/gicon.c:324
+#: gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "ଭୁଲ ସଂଖ୍ୟକ ଟକେନ (%d)"
 
-#: gio/gicon.c:344
+#: gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr "ଶ୍ରେଣୀ ନାମ %s ପାଇଁ କୌଣସି ପ୍ରକାର ନାହିଁ"
 
-#: gio/gicon.c:354
+#: gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "ପ୍ରକାର %s GIcon ଅନ୍ତରାପୃଷ୍ଠକୁ କାର୍ଯ୍ୟକାରି କରେନାହିଁ"
 
-#: gio/gicon.c:365
+#: gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr "ପ୍ରକାର %s ଶ୍ରେଣୀଭୁକ୍ତ ନୁହଁ"
 
-#: gio/gicon.c:379
+#: gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "ତ୍ରୁଟିଯୁକ୍ତ ସଂସ୍କରଣ ସଂଖ୍ୟା: %s"
 
-#: gio/gicon.c:393
+#: gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "ପ୍ରକାର %s GIcon ଅନ୍ତରାପୃଷ୍ଠରେ ଟକେନ()ରୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
-#: gio/gicon.c:469
+#: gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "ଚିତ୍ରସଂକେତ ସାଙ୍କେତିକରଣର ପ୍ରଦତ୍ତ ସଂସ୍କରଣକୁ ନିୟନ୍ତ୍ରଣ କରାଯାଇପାରିବ ନାହିଁ"
 
@@ -1719,7 +1719,7 @@ msgstr "ସ୍ମୃତି ଫଳାଫଳ ବାକ୍ଯଖଣ୍ଡର ଆକ
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:409
+#: gio/gmount.c:364
 #, fuzzy
 msgid "mount doesn't implement \"unmount\""
 msgstr "ସ୍ଥାପନ ବିସ୍ଥାପନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
@@ -1727,7 +1727,7 @@ msgstr "ସ୍ଥାପନ ବିସ୍ଥାପନକୁ କାର୍ଯ୍ୟ�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:488
+#: gio/gmount.c:443
 #, fuzzy
 msgid "mount doesn't implement \"eject\""
 msgstr "ସ୍ଥାପନ ବାହାର କରିବାକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
@@ -1735,7 +1735,7 @@ msgstr "ସ୍ଥାପନ ବାହାର କରିବାକୁ କାର୍ଯ
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:568
+#: gio/gmount.c:523
 #, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr "ସ୍ଥାପନ କ୍ରିୟା ବିସ୍ଥାପନ କ୍ରିୟା ଅଥବା unmount_with_operation କୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
@@ -1743,7 +1743,7 @@ msgstr "ସ୍ଥାପନ କ୍ରିୟା ବିସ୍ଥାପନ କ୍ର
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:655
+#: gio/gmount.c:610
 #, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr "ସ୍ଥାପନ ବାହାର କରିବା ଅଥବା eject_with_operation କୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
@@ -1751,7 +1751,7 @@ msgstr "ସ୍ଥାପନ ବାହାର କରିବା ଅଥବା eject_wi
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:744
+#: gio/gmount.c:699
 #, fuzzy
 msgid "mount doesn't implement \"remount\""
 msgstr "ସ୍ଥାପନ ପୁନଃସ୍ଥାପନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
@@ -1759,14 +1759,14 @@ msgstr "ସ୍ଥାପନ ପୁନଃସ୍ଥାପନକୁ କାର୍ଯ�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:828
+#: gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr "ସ୍ଥାପନ ସୂଚୀପତ୍ର ପ୍ରକାର ଅନୁମାନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:917
+#: gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "ସ୍ଥାପନ ସମକାଳୀନ ସୂଚୀପତ୍ର ପ୍ରକାର ଅନୁମାନକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
@@ -1976,14 +1976,14 @@ msgstr "unixରେ ଲେଖିବାରେ ତ୍ରୁଟି: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "ଅବ୍ୟବହାରିକ unix ପରିସର ସକେଟ ଠିକଣା ଏହି ତନ୍ତ୍ରରେ ସମର୍ଥିତ ନୁହଁ"
 
-#: gio/gvolume.c:452
+#: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "ଆକାର ବାହାର କରିବାକୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:531
+#: gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "ଆକାର ବାହାର କରିବା ଅଥବା eject_with_operation କୁ କାର୍ଯ୍ୟକାରୀ କରେନାହିଁ"
 

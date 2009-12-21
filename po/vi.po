@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-29 23:30-0500\n"
+"POT-Creation-Date: 2009-12-21 10:32-0500\n"
 "PO-Revision-Date: 2009-12-18 14:59+0700\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -410,16 +410,15 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' để kết thúc thẻ rỗng '%"
-"s'"
+"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' để kết thúc thẻ rỗng '%s'"
 
 #: glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu bằng '=' nằm sau tên thuộc tính '%s' của "
-"yếu tố '%s'"
+"Ký tự lạ '%s', mong đợi một dấu bằng '=' nằm sau tên thuộc tính '%s' của yếu "
+"tố '%s'"
 
 #: glib/gmarkup.c:1247
 #, c-format
@@ -428,9 +427,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' hay dấu xuyệc '/' để "
-"kết thúc thẻ khởi đầu của yếu tố '%s', hay tùy ý một thuộc tính; có lẽ bạn "
-"đã dùng một ký tự không hợp lệ trong một tên thuộc tính."
+"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' hay dấu xuyệc '/' để kết "
+"thúc thẻ khởi đầu của yếu tố '%s', hay tùy ý một thuộc tính; có lẽ bạn đã "
+"dùng một ký tự không hợp lệ trong một tên thuộc tính."
 
 #: glib/gmarkup.c:1291
 #, c-format
@@ -438,8 +437,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu nháy kép mở nằm sau dấu bằng khi đưa giá "
-"trị cho thuộc tính '%s' của yếu tố '%s'"
+"Ký tự lạ '%s', mong đợi một dấu nháy kép mở nằm sau dấu bằng khi đưa giá trị "
+"cho thuộc tính '%s' của yếu tố '%s'"
 
 #: glib/gmarkup.c:1425
 #, c-format
@@ -447,8 +446,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' không phải là một ký tự hợp lệ nằm theo các ký tự '</' ; không cho "
-"phép '%s' bắt đầu một tên yếu tố"
+"'%s' không phải là một ký tự hợp lệ nằm theo các ký tự '</' ; không cho phép "
+"'%s' bắt đầu một tên yếu tố"
 
 #: glib/gmarkup.c:1461
 #, c-format
@@ -1049,8 +1048,8 @@ msgstr "Tập tin rỗng"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Tập tin khóa chứa dòng '%s' mà không phải là một cặp giá trị khóa, nhóm, "
-"hay chú thích"
+"Tập tin khóa chứa dòng '%s' mà không phải là một cặp giá trị khóa, nhóm, hay "
+"chú thích"
 
 #: glib/gkeyfile.c:824
 #, c-format
@@ -1091,8 +1090,7 @@ msgstr "Tập tin khóa chứa khóa '%s' với giá trị '%s' mà không phả
 #: glib/gkeyfile.c:1416 glib/gkeyfile.c:1910
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
-"Tập tin khóa chứa khóa '%s' mà có giá trị không có khả năng giải dịch."
+msgstr "Tập tin khóa chứa khóa '%s' mà có giá trị không có khả năng giải dịch."
 
 #: glib/gkeyfile.c:1531
 #, c-format
@@ -1106,8 +1104,8 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"Tập tin khóa chứa khóa '%s' trong nhóm '%s' mà có giá trị không có khả "
-"năng giải dịch."
+"Tập tin khóa chứa khóa '%s' trong nhóm '%s' mà có giá trị không có khả năng "
+"giải dịch."
 
 #: glib/gkeyfile.c:2521 glib/gkeyfile.c:2722 glib/gkeyfile.c:3252
 #, c-format
@@ -1210,26 +1208,27 @@ msgstr "Không thể tạo tập tin desktop %s"
 msgid "Custom definition for %s"
 msgstr "Lời định nghĩa riêng cho %s"
 
-#: gio/gdrive.c:409
+#: gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr "ổ đĩa không thực hiện chức năng đẩy ra"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:489
+#: gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr "ổ đĩa không thực hiện chức năng đẩy ra (eject hoặc eject_with_operation)"
+msgstr ""
+"ổ đĩa không thực hiện chức năng đẩy ra (eject hoặc eject_with_operation)"
 
-#: gio/gdrive.c:566
+#: gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "ổ đĩa không thực hiện chức năng thăm dò có phương tiện không"
 
-#: gio/gdrive.c:771
+#: gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr "ổ đĩa không thực hiện chức năng chạy (start)"
 
-#: gio/gdrive.c:873
+#: gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr "ổ đĩa không thực hiện chức năng dừng (stop)"
 
@@ -1257,13 +1256,13 @@ msgstr "Bảng mã GEmblemedIcon chứa số các hiệu bài dạng sai (%d)"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Mong đợi một GEmblem cho GEmblemedIcon"
 
-#: gio/gfile.c:903 gio/gfile.c:1133 gio/gfile.c:1268 gio/gfile.c:1504
-#: gio/gfile.c:1558 gio/gfile.c:1615 gio/gfile.c:1698 gio/gfile.c:1753
-#: gio/gfile.c:1813 gio/gfile.c:1867 gio/gfile.c:3192 gio/gfile.c:3246
-#: gio/gfile.c:3377 gio/gfile.c:3417 gio/gfile.c:3744 gio/gfile.c:4146
-#: gio/gfile.c:4232 gio/gfile.c:4321 gio/gfile.c:4419 gio/gfile.c:4506
-#: gio/gfile.c:4599 gio/gfile.c:4929 gio/gfile.c:5209 gio/gfile.c:5278
-#: gio/gfile.c:6869 gio/gfile.c:6959 gio/gfile.c:7045
+#: gio/gfile.c:863 gio/gfile.c:1093 gio/gfile.c:1228 gio/gfile.c:1464
+#: gio/gfile.c:1518 gio/gfile.c:1575 gio/gfile.c:1658 gio/gfile.c:1713
+#: gio/gfile.c:1773 gio/gfile.c:1827 gio/gfile.c:3152 gio/gfile.c:3206
+#: gio/gfile.c:3337 gio/gfile.c:3377 gio/gfile.c:3704 gio/gfile.c:4106
+#: gio/gfile.c:4192 gio/gfile.c:4281 gio/gfile.c:4379 gio/gfile.c:4466
+#: gio/gfile.c:4559 gio/gfile.c:4889 gio/gfile.c:5169 gio/gfile.c:5238
+#: gio/gfile.c:6829 gio/gfile.c:6919 gio/gfile.c:7005
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Thao tác không được hỗ trợ"
@@ -1276,49 +1275,49 @@ msgstr "Thao tác không được hỗ trợ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1389 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
 #: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "Bộ lắp chứa không tồn tại"
 
-#: gio/gfile.c:2441 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2245
 msgid "Can't copy over directory"
 msgstr "Không thể sao chép đè lên thư mục"
 
-#: gio/gfile.c:2501
+#: gio/gfile.c:2461
 msgid "Can't copy directory over directory"
 msgstr "Không thể sao chép thư mục đè lên thư mục"
 
-#: gio/gfile.c:2509 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2254
 msgid "Target file exists"
 msgstr "Tập tin đích đã có"
 
-#: gio/gfile.c:2527
+#: gio/gfile.c:2487
 msgid "Can't recursively copy directory"
 msgstr "Không thể sao chép đệ quy thư mục"
 
-#: gio/gfile.c:2826
+#: gio/gfile.c:2786
 msgid "Can't copy special file"
 msgstr "Không thể sao chép tập tin đặc biệt"
 
-#: gio/gfile.c:3367
+#: gio/gfile.c:3327
 msgid "Invalid symlink value given"
 msgstr "Đưa ra giá trị liên kết tượng trưng không hợp lệ"
 
-#: gio/gfile.c:3460
+#: gio/gfile.c:3420
 msgid "Trash not supported"
 msgstr "Thùng rác không được hỗ trợ"
 
-#: gio/gfile.c:3509
+#: gio/gfile.c:3469
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tên tập tin không thể chứa '%c'"
 
-#: gio/gfile.c:5926 gio/gvolume.c:376
+#: gio/gfile.c:5886 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "hàm volume (khối tin) không thực hiện chức năng mount (lắp)"
 
-#: gio/gfile.c:6037
+#: gio/gfile.c:5997
 msgid "No application is registered as handling this file"
 msgstr "Không có ứng dụng đăng ký xử lý tập tin này"
 
@@ -1363,37 +1362,37 @@ msgstr "Không cho phép cắt ngắn luồng nhập vào"
 msgid "Truncate not supported on stream"
 msgstr "Không cho phép cắt ngắn luồng"
 
-#: gio/gicon.c:324
+#: gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Số các hiệu bài không đúng (%d)"
 
-#: gio/gicon.c:344
+#: gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr "Không có kiểu cho tên hạng %s"
 
-#: gio/gicon.c:354
+#: gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Kiểu %s không thực hiện giao diện GIcon"
 
-#: gio/gicon.c:365
+#: gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr "Kiểu %s không được đặt hạng"
 
-#: gio/gicon.c:379
+#: gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Số thứ tự phiên bản dạng sai: %s"
 
-#: gio/gicon.c:393
+#: gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Kiểu %s không thực hiện 'from_tokens()' trên giao diện GIcon"
 
-#: gio/gicon.c:469
+#: gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Không thể quản lý phiên bản đã cung cấp của bảng mã biểu tượng"
 
@@ -1731,49 +1730,53 @@ msgstr "Lỗi thay đổi kích thước luồng ra bộ nhớ"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:409
+#: gio/gmount.c:364
 msgid "mount doesn't implement \"unmount\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"unmount\" (bỏ lắp)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:488
+#: gio/gmount.c:443
 msgid "mount doesn't implement \"eject\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"eject\" (đầy ra)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:568
+#: gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "hàm mount (lắp) không thực hiện hàm \"unmount\" hoặc \"unmount_with_operation\" (bỏ lắp)"
+msgstr ""
+"hàm mount (lắp) không thực hiện hàm \"unmount\" hoặc \"unmount_with_operation"
+"\" (bỏ lắp)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:655
+#: gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "hàm mount (lắp) không thực hiện hàm \"eject\" hoặc \"eject_with_operation\" (đầy ra)"
+msgstr ""
+"hàm mount (lắp) không thực hiện hàm \"eject\" hoặc \"eject_with_operation"
+"\" (đầy ra)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:744
+#: gio/gmount.c:699
 msgid "mount doesn't implement \"remount\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"remount\" (lắp lại)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:828
+#: gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr "hàm mount (lắp) không thực hiện đoán nội dung"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:917
+#: gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "hàm mount (lắp) không thực hiện đoán nội dung đồng bộ"
 
@@ -1983,16 +1986,18 @@ msgstr "Gặp lỗi khi ghi vào UNIX: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Socket Unix không được hỗ trợ trên hệ thống này"
 
-#: gio/gvolume.c:452
+#: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "hàm volume (khối tin) không thực hiện hàm eject (đầy ra)"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:531
+#: gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr "hàm volume (khối tin) không thực hiện hàm \"eject\" hoặc \"eject_with_operation\" (đầy ra)"
+msgstr ""
+"hàm volume (khối tin) không thực hiện hàm \"eject\" hoặc "
+"\"eject_with_operation\" (đầy ra)"
 
 #: gio/gwin32appinfo.c:277
 msgid "Can't find application"
