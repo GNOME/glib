@@ -1359,7 +1359,7 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  * name <literal>t_n ## _default_init</literal>, and the interface
  * structure to have the name <literal>TN ## Interface</literal>.
  *
- * Since: 2.20
+ * Since: 2.24
  */
 #define G_DEFINE_INTERFACE(TN, t_n, T_P)		    G_DEFINE_INTERFACE_WITH_CODE(TN, t_n, T_P, ;)
 
@@ -1378,7 +1378,7 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  * G_DEFINE_TYPE_EXTENDED() for a similar example using
  * G_DEFINE_TYPE_WITH_CODE().
  *
- * Since: 2.20
+ * Since: 2.24
  */
 #define G_DEFINE_INTERFACE_WITH_CODE(TN, t_n, T_P, _C_)     _G_DEFINE_INTERFACE_EXTENDED_BEGIN(TN, t_n, T_P) {_C_;} _G_DEFINE_INTERFACE_EXTENDED_END()
 
