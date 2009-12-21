@@ -102,7 +102,11 @@ ChangeLog:
 	fi
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc gio-2.0.pc gio-unix-2.0.pc
+pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc gio-2.0.pc
+
+if OS_UNIX
+pkgconfig_DATA += gio-unix-2.0.pc
+endif
 
 $(pkgconfig_DATA): config.status
 
