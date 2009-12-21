@@ -1968,17 +1968,10 @@ g_get_prgname (void)
 void
 g_set_prgname (const gchar *prgname)
 {
-  gboolean already_set = FALSE;
-
   G_LOCK (g_prgname);
-  if (g_prgname)
-    already_set = TRUE;
-  else
-    g_prgname = g_strdup (prgname);
+  g_free (g_prgname);
+  g_prgname = g_strdup (prgname);
   G_UNLOCK (g_prgname);
-
-  if (already_set)
-    g_warning ("g_set_prgname() called multiple times");
 }
 
 G_LOCK_DEFINE_STATIC (g_application_name);
