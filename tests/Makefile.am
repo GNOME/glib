@@ -64,7 +64,8 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	unicode-normalize 	\
 	unicode-collate 	\
 	$(timeloop) 		\
-	errorcheck-mutex-test
+	errorcheck-mutex-test	\
+	assert-msg-test
 
 TEST_PROGS              += scannerapi
 scannerapi_SOURCES       = scannerapi.c
@@ -82,6 +83,7 @@ testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
 unicode_normalize_LDADD = $(libglib)
 errorcheck_mutex_test_LDADD = $(libglib) $(libgthread) $(G_THREAD_LIBS) 
+assert_msg_test_LDADD = $(libglib)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)
@@ -136,7 +138,7 @@ test_programs =					\
 	uri-test				\
 	regex-test
 
-test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh
+test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
 
 test_script_support_programs = markup-test unicode-collate bookmarkfile-test
 
