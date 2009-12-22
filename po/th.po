@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-21 10:32-0500\n"
-"PO-Revision-Date: 2009-09-15 14:29+0700\n"
+"PO-Revision-Date: 2009-12-22 23:38+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -265,19 +265,19 @@ msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #: glib/gfileutils.c:1797
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TB"
-msgstr "%.1f KB"
+msgstr "%.1f TB"
 
 #: glib/gfileutils.c:1802
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PB"
-msgstr "%.1f KB"
+msgstr "%.1f PB"
 
 #: glib/gfileutils.c:1807
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EB"
-msgstr "%.1f KB"
+msgstr "%.1f EB"
 
 #: glib/gfileutils.c:1850
 #, c-format
@@ -1463,14 +1463,14 @@ msgid "Error creating directory: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี: %s"
 
 #: gio/glocalfile.c:2151
-#, fuzzy, c-format
+#, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
+msgstr "ระบบแฟ้มไม่รองรับลิงก์สัญลักษณ์"
 
 #: gio/glocalfile.c:2155
 #, c-format
 msgid "Error making symbolic link: %s"
-msgstr "เกิดข้อผิดพลาดขณะสร้าง symbolic link: %s"
+msgstr "เกิดข้อผิดพลาดขณะสร้างลิงก์สัญลักษณ์: %s"
 
 #: gio/glocalfile.c:2217 gio/glocalfile.c:2311
 #, c-format
@@ -1690,41 +1690,36 @@ msgstr "เปลี่ยนขนาดสตรีมข้อมูลออ
 #. * message for mount objects that
 #. * don't implement unmount.
 #: gio/gmount.c:364
-#, fuzzy
 msgid "mount doesn't implement \"unmount\""
-msgstr "การเมานท์นี้ยังไม่รองรับการเลิกเมานท์"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"unmount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:443
-#, fuzzy
 msgid "mount doesn't implement \"eject\""
-msgstr "การเมานท์นี้ยังไม่รองรับการดันสื่อออก"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"eject\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:523
-#, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง unmount หรือ unmount_with_operation"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"unmount\" หรือ \"unmount_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:610
-#, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง eject หรือ eject_with_operation"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"eject\" หรือ \"eject_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:699
-#, fuzzy
 msgid "mount doesn't implement \"remount\""
-msgstr "การเมานท์นี้ยังไม่รองรับการเมานท์ซ้ำ"
+msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"remount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
