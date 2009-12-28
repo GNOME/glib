@@ -372,7 +372,7 @@ get_package_directory_from_module (const gchar *module_name)
  * i.e. UTF-8. The return value should be freed with g_free() when not
  * needed any longer. If the function fails %NULL is returned.
  *
- * @Deprecated:2.18: Pass the HMODULE of a DLL or EXE to
+ * Deprecated: 2.18: Pass the HMODULE of a DLL or EXE to
  * g_win32_get_package_installation_directory_of_module() instead.
  **/
 
@@ -450,7 +450,7 @@ g_win32_get_package_installation_directory (const gchar *package,
  * freed with g_free() when no longer needed. If something goes wrong,
  * %NULL is returned.
  *
- * @Deprecated:2.18: Pass the HMODULE of a DLL or EXE to
+ * Deprecated: 2.18: Pass the HMODULE of a DLL or EXE to
  * g_win32_get_package_installation_directory_of_module() instead, and
  * then construct a subdirectory pathname with g_build_filename().
  **/
