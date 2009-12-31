@@ -271,7 +271,7 @@ g_utf8_input_stream_read (GInputStream *stream,
   base_stream = g_filter_input_stream_get_base_stream (G_FILTER_INPUT_STREAM (stream));
 
   nread = g_input_stream_read (base_stream,
-                               buffer + oldread,
+                               (char *)buffer + oldread,
                                count - oldread,
                                cancellable,
                                error);
@@ -289,7 +289,7 @@ g_utf8_input_stream_read (GInputStream *stream,
     goto error;
 
   /* validate */
-  valid = g_utf8_validate (buffer + offset, nread - offset, &end);
+  valid = g_utf8_validate ((char *)buffer + offset, nread - offset, &end);
   nvalid = end - (char *)buffer;
 
   if (valid)
