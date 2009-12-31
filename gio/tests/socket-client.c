@@ -14,6 +14,7 @@ gboolean non_blocking = FALSE;
 gboolean use_udp = FALSE;
 gboolean use_source = FALSE;
 int cancel_timeout = 0;
+int read_timeout = 0;
 gboolean unix_socket = FALSE;
 
 static GOptionEntry cmd_entries[] = {
@@ -31,6 +32,8 @@ static GOptionEntry cmd_entries[] = {
   {"unix", 'U', 0, G_OPTION_ARG_NONE, &unix_socket,
    "Use a unix socket instead of IP", NULL},
 #endif
+  {"timeout", 't', 0, G_OPTION_ARG_INT, &read_timeout,
+   "Time out reads after the specified number of seconds", NULL},
   {NULL}
 };
 
@@ -150,6 +153,9 @@ main (int argc,
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;
     }
+
+  if (read_timeout)
+    g_socket_set_timeout (socket, read_timeout);
 
   if (unix_socket)
     {

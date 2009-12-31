@@ -97,6 +97,9 @@ gboolean               g_socket_get_keepalive           (GSocket                
 gint                   g_socket_get_listen_backlog      (GSocket                 *socket);
 void                   g_socket_set_listen_backlog      (GSocket                 *socket,
 							 gint                     backlog);
+guint                  g_socket_get_timeout             (GSocket                 *socket);
+void                   g_socket_set_timeout             (GSocket                 *socket,
+							 guint                    timeout);
 gboolean               g_socket_is_connected            (GSocket                 *socket);
 gboolean               g_socket_bind                    (GSocket                 *socket,
 							 GSocketAddress          *address,

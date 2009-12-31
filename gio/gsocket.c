@@ -133,7 +133,8 @@ enum
   PROP_LISTEN_BACKLOG,
   PROP_KEEPALIVE,
   PROP_LOCAL_ADDRESS,
-  PROP_REMOTE_ADDRESS
+  PROP_REMOTE_ADDRESS,
+  PROP_TIMEOUT
 };
 
 struct _GSocketPrivate
@@ -143,6 +144,7 @@ struct _GSocketPrivate
   GSocketProtocol protocol;
   gint            fd;
   gint            listen_backlog;
+  guint           timeout;
   GError         *construct_error;
   guint           inited : 1;
   guint           blocking : 1;
@@ -150,6 +152,7 @@ struct _GSocketPrivate
   guint           closed : 1;
   guint           connected : 1;
   guint           listening : 1;
+  guint           timed_out : 1;
 #ifdef G_OS_WIN32
   WSAEVENT        event;
   int             current_events;
@@ -294,6 +297,15 @@ check_socket (GSocket *socket,
 			   _("Socket is already closed"));
       return FALSE;
     }
+
+  if (socket->priv->timed_out)
+    {
+      socket->priv->timed_out = FALSE;
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+			   _("Socket I/O timed out"));
+      return FALSE;
+    }
+
   return TRUE;
 }
 
@@ -556,6 +568,10 @@ g_socket_get_property (GObject    *object,
 	g_value_take_object (value, address);
 	break;
 
+      case PROP_TIMEOUT:
+	g_value_set_uint (value, socket->priv->timeout);
+	break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -597,6 +613,10 @@ g_socket_set_property (GObject      *object,
 
       case PROP_KEEPALIVE:
 	g_socket_set_keepalive (socket, g_value_get_boolean (value));
+	break;
+
+      case PROP_TIMEOUT:
+	g_socket_set_timeout (socket, g_value_get_uint (value));
 	break;
 
       default:
@@ -735,6 +755,23 @@ g_socket_class_init (GSocketClass *klass)
 							G_TYPE_SOCKET_ADDRESS,
 							G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocket:timeout:
+   *
+   * The timeout in seconds on socket I/O
+   *
+   * Since: 2.26
+   */
+  g_object_class_install_property (gobject_class, PROP_TIMEOUT,
+				   g_param_spec_uint ("timeout",
+						      P_("Timeout"),
+						      P_("The timeout in seconds on socket I/O"),
+						      0,
+						      G_MAXUINT,
+						      0,
+						      G_PARAM_READWRITE |
+						      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -1018,6 +1055,66 @@ g_socket_set_listen_backlog (GSocket *socket,
     {
       socket->priv->listen_backlog = backlog;
       g_object_notify (G_OBJECT (socket), "listen-backlog");
+    }
+}
+
+/**
+ * g_socket_get_timeout:
+ * @socket: a #GSocket.
+ *
+ * Gets the timeout setting of the socket. For details on this, see
+ * g_socket_set_timeout().
+ *
+ * Returns: the timeout in seconds
+ *
+ * Since: 2.26
+ */
+guint
+g_socket_get_timeout (GSocket *socket)
+{
+  g_return_val_if_fail (G_IS_SOCKET (socket), 0);
+
+  return socket->priv->timeout;
+}
+
+/**
+ * g_socket_set_timeout:
+ * @socket: a #GSocket.
+ * @timeout: the timeout for @socket, in seconds, or 0 for none
+ *
+ * Sets the time in seconds after which I/O operations on @socket will
+ * time out if they have not yet completed.
+ *
+ * On a blocking socket, this means that any blocking #GSocket
+ * operation will time out after @timeout seconds of inactivity,
+ * returning %G_IO_ERROR_TIMED_OUT.
+ *
+ * On a non-blocking socket, calls to g_socket_condition_wait() will
+ * also fail with %G_IO_ERROR_TIMED_OUT after the given time. Sources
+ * created with g_socket_create_source() will trigger after
+ * @timeout seconds of inactivity, with the requested condition
+ * set, at which point calling g_socket_receive(), g_socket_send(),
+ * g_socket_check_connect_result(), etc, will fail with
+ * %G_IO_ERROR_TIMED_OUT.
+ *
+ * If @timeout is 0 (the default), operations will never time out
+ * on their own.
+ *
+ * Note that if an I/O operation is interrupted by a signal, this may
+ * cause the timeout to be reset.
+ *
+ * Since: 2.26
+ */
+void
+g_socket_set_timeout (GSocket *socket,
+		      guint    timeout)
+{
+  g_return_if_fail (G_IS_SOCKET (socket));
+
+  if (timeout != socket->priv->timeout)
+    {
+      socket->priv->timeout = timeout;
+      g_object_notify (G_OBJECT (socket), "timeout");
     }
 }
 
@@ -1565,6 +1662,9 @@ g_socket_check_connect_result (GSocket  *socket,
 {
   guint optlen;
   int value;
+
+  if (!check_socket (socket, error))
+    return FALSE;
 
   optlen = sizeof (value);
   if (getsockopt (socket->priv->fd, SOL_SOCKET, SO_ERROR, (void *)&value, &optlen) != 0)
@@ -2199,6 +2299,7 @@ typedef struct {
   GIOCondition  condition;
   GCancellable *cancellable;
   GPollFD       cancel_pollfd;
+  GTimeVal      timeout_time;
 } GSocketSource;
 
 static gboolean
@@ -2207,13 +2308,29 @@ socket_source_prepare (GSource *source,
 {
   GSocketSource *socket_source = (GSocketSource *)source;
 
+  if (g_cancellable_is_cancelled (socket_source->cancellable))
+    return TRUE;
+
+  if (socket_source->timeout_time.tv_sec)
+    {
+      GTimeVal now;
+
+      g_source_get_current_time (source, &now);
+      *timeout = ((socket_source->timeout_time.tv_sec - now.tv_sec) * 1000 +
+		  (socket_source->timeout_time.tv_usec - now.tv_usec) / 1000);
+      if (*timeout < 0)
+	{
+	  socket_source->socket->priv->timed_out = TRUE;
+	  socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
+	  return TRUE;
+	}
+    }
+  else
+    *timeout = -1;
+
 #ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
 #endif
-  *timeout = -1;
-
-  if (g_cancellable_is_cancelled (socket_source->cancellable))
-    return TRUE;
 
   if ((socket_source->condition & socket_source->pollfd.revents) != 0)
     return TRUE;
@@ -2315,6 +2432,17 @@ socket_source_new (GSocket      *socket,
   socket_source->pollfd.revents = 0;
   g_source_add_poll (source, &socket_source->pollfd);
 
+  if (socket->priv->timeout)
+    {
+      g_get_current_time (&socket_source->timeout_time);
+      socket_source->timeout_time.tv_sec += socket->priv->timeout;
+    }
+  else
+    {
+      socket_source->timeout_time.tv_sec = 0;
+      socket_source->timeout_time.tv_usec = 0;
+    }
+
   return source;
 }
 
@@ -2337,6 +2465,12 @@ socket_source_new (GSocket      *socket,
  * is likely 0 unless cancellation happened at the same time as a
  * condition change). You can check for this in the callback using
  * g_cancellable_is_cancelled().
+ *
+ * If @socket has a timeout set, and it is reached before @condition
+ * occurs, the source will then trigger anyway, reporting %G_IO_IN or
+ * %G_IO_OUT depending on @condition. However, @socket will have been
+ * marked as having had a timeout, and so the next #GSocket I/O method
+ * you call will then fail with a %G_IO_ERROR_TIMED_OUT.
  *
  * Returns: a newly allocated %GSource, free with g_source_unref().
  *
@@ -2415,8 +2549,11 @@ g_socket_condition_check (GSocket      *socket,
  * Waits for @condition to become true on @socket. When the condition
  * is met, %TRUE is returned.
  *
- * If @cancellable is cancelled before the condition is met then %FALSE
- * is returned and @error, if non-%NULL, is set to %G_IO_ERROR_CANCELLED.
+ * If @cancellable is cancelled before the condition is met, or if the
+ * socket has a timeout set and it is reached before the condition is
+ * met, then %FALSE is returned and @error, if non-%NULL, is set to
+ * the appropriate value (%G_IO_ERROR_CANCELLED or
+ * %G_IO_ERROR_TIMED_OUT).
  *
  * Returns: %TRUE if the condition was met, %FALSE otherwise
  *
@@ -2438,7 +2575,7 @@ g_socket_condition_wait (GSocket       *socket,
   {
     GIOCondition current_condition;
     WSAEVENT events[2];
-    DWORD res;
+    DWORD res, timeout;
     GPollFD cancel_fd;
     int num_events;
 
@@ -2453,11 +2590,16 @@ g_socket_condition_wait (GSocket       *socket,
     if (g_cancellable_make_pollfd (cancellable, &cancel_fd))
       events[num_events++] = (WSAEVENT)cancel_fd.fd;
 
+    if (socket->priv->timeout)
+      timeout = socket->priv->timeout * 1000;
+    else
+      timeout = WSA_INFINITE;
+
     current_condition = update_condition (socket);
     while ((condition & current_condition) == 0)
       {
 	res = WSAWaitForMultipleEvents(num_events, events,
-				       FALSE, WSA_INFINITE, FALSE);
+				       FALSE, timeout, FALSE);
 	if (res == WSA_WAIT_FAILED)
 	  {
 	    int errsv = get_socket_errno ();
@@ -2466,6 +2608,12 @@ g_socket_condition_wait (GSocket       *socket,
 			 socket_io_error_from_errno (errsv),
 			 _("Waiting for socket condition: %s"),
 			 socket_strerror (errsv));
+	    break;
+	  }
+	else if (res == WSA_WAIT_TIMEOUT)
+	  {
+	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+				 _("Socket I/O timed out"));
 	    break;
 	  }
 
@@ -2485,6 +2633,7 @@ g_socket_condition_wait (GSocket       *socket,
     GPollFD poll_fd[2];
     gint result;
     gint num;
+    gint timeout;
 
     poll_fd[0].fd = socket->priv->fd;
     poll_fd[0].events = condition;
@@ -2493,15 +2642,26 @@ g_socket_condition_wait (GSocket       *socket,
     if (g_cancellable_make_pollfd (cancellable, &poll_fd[1]))
       num++;
 
+    if (socket->priv->timeout)
+      timeout = socket->priv->timeout * 1000;
+    else
+      timeout = -1;
+
     do
-      result = g_poll (poll_fd, num, -1);
+      result = g_poll (poll_fd, num, timeout);
     while (result == -1 && get_socket_errno () == EINTR);
     
     if (num > 1)
       g_cancellable_release_fd (cancellable);
 
-    return cancellable == NULL ||
-      !g_cancellable_set_error_if_cancelled (cancellable, error);
+    if (result == 0)
+      {
+	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+			     _("Socket I/O timed out"));
+	return FALSE;
+      }
+
+    return !g_cancellable_set_error_if_cancelled (cancellable, error);
   }
   #endif
 }

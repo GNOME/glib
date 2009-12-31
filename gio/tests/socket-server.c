@@ -15,6 +15,8 @@ gboolean non_blocking = FALSE;
 gboolean use_udp = FALSE;
 gboolean use_source = FALSE;
 int cancel_timeout = 0;
+int read_timeout = 0;
+int delay = 0;
 gboolean unix_socket = FALSE;
 
 static GOptionEntry cmd_entries[] = {
@@ -36,6 +38,10 @@ static GOptionEntry cmd_entries[] = {
   {"unix", 'U', 0, G_OPTION_ARG_NONE, &unix_socket,
    "Use a unix socket instead of IP", NULL},
 #endif
+  {"delay", 'd', 0, G_OPTION_ARG_INT, &delay,
+   "Delay responses by the specified number of seconds", NULL},
+  {"timeout", 't', 0, G_OPTION_ARG_INT, &read_timeout,
+   "Time out reads after the specified number of seconds", NULL},
   {NULL}
 };
 
@@ -210,6 +216,8 @@ main (int argc,
 
       if (non_blocking)
 	g_socket_set_blocking (new_socket, FALSE);
+      if (read_timeout)
+	g_socket_set_timeout (new_socket, read_timeout);
 
       address = g_socket_get_remote_address (new_socket, &error);
       if (!address)
@@ -270,6 +278,13 @@ main (int argc,
 		 (int)size, buffer);
 
       to_send = size;
+
+      if (delay)
+	{
+	  if (verbose)
+	    g_print ("delaying %d seconds before response\n", delay);
+	  g_usleep (1000 * 1000 * delay);
+	}
 
       while (to_send > 0)
 	{

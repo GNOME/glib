@@ -1202,6 +1202,7 @@ g_socket_create_source
 g_socket_get_blocking
 g_socket_get_family
 g_socket_get_fd
+g_socket_get_timeout
 g_socket_get_keepalive
 g_socket_get_listen_backlog
 g_socket_get_local_address
@@ -1220,6 +1221,7 @@ g_socket_send
 g_socket_send_message
 g_socket_send_to
 g_socket_set_blocking
+g_socket_set_timeout
 g_socket_set_keepalive
 g_socket_set_listen_backlog
 g_socket_speaks_ipv4
