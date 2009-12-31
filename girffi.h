@@ -23,7 +23,6 @@
 
 #include <ffi.h>
 #include "girepository.h"
-#include "girffi-private.h"
 
 G_BEGIN_DECLS
 

@@ -27,6 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "girffi.h"
+#include "girffi-private.h"
 #include "girepository.h"
 
 ffi_type *
