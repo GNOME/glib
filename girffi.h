@@ -21,8 +21,9 @@
 #ifndef __GIRFFI_H__
 #define __GIRFFI_H__
 
-#include "girepository.h"
 #include <ffi.h>
+#include "girepository.h"
+#include "girffi-private.h"
 
 G_BEGIN_DECLS
 
