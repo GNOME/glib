@@ -3592,6 +3592,7 @@ glib/tests/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile
+gobject/gobject.stp
 gobject/glib-mkenums
 gobject/tests/Makefile
 gthread/Makefile

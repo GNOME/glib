@@ -36,6 +36,7 @@
 #include "gboxed.h"
 #include "gobject.h"
 #include "genums.h"
+#include "gobject_trace.h"
 #include "gobjectalias.h"
 
 
@@ -1608,6 +1609,8 @@ g_signal_newv (const gchar       *signal_name,
       node->name = g_intern_string (name);
       key.quark = g_quark_from_string (name);
       g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
+
+      TRACE(GOBJECT_SIGNAL_NEW(signal_id, name, itype));
     }
   node->destroyed = FALSE;
   node->test_class_offset = 0;
@@ -3124,7 +3127,9 @@ signal_emit_unlocked_R (SignalNode   *node,
 	G_BREAKPOINT ();
     }
 #endif	/* G_ENABLE_DEBUG */
-  
+
+  TRACE(GOBJECT_SIGNAL_EMIT(node->signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
+
   SIGNAL_LOCK ();
   signal_id = node->signal_id;
   if (node->flags & G_SIGNAL_NO_RECURSE)
@@ -3382,7 +3387,9 @@ signal_emit_unlocked_R (SignalNode   *node,
   SIGNAL_UNLOCK ();
   if (accumulator)
     g_value_unset (&accu);
-  
+
+  TRACE(GOBJECT_SIGNAL_EMIT_END(node->signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
+
   return return_value_altered;
 }
 

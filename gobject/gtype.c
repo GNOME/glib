@@ -32,6 +32,7 @@
 #include "gbsearcharray.h"
 #include "gobjectalias.h"
 #include "gatomicarray.h"
+#include "gobject_trace.h"
 
 
 /**
@@ -481,7 +482,9 @@ type_node_any_new_W (TypeNode             *pnode,
       pnode->children = g_renew (GType, pnode->children, pnode->n_children);
       pnode->children[i] = type;
     }
-  
+
+  TRACE(GOBJECT_TYPE_NEW(name, node->supers[1], type));
+
   node->plugin = plugin;
   node->n_children = 0;
   node->children = NULL;
@@ -1883,7 +1886,9 @@ g_type_create_instance (GType type)
   instance->g_class = class;
   if (node->data->instance.instance_init)
     node->data->instance.instance_init (instance, class);
-  
+
+  TRACE(GOBJECT_OBJECT_NEW(instance, type));
+
   return instance;
 }
 

@@ -6,6 +6,8 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS = . tests
 
+CLEANFILES=
+
 if HAVE_THREADS
 THREAD_FLAGS=-DG_THREADS_MANDATORY
 endif
@@ -120,11 +122,13 @@ gobject_private_h_sources =     \
 
 # GObject library C sources to build the library from
 gobject_c_sources = \
+	gobject_probes.d	\
 	gatomicarray.c		\
 	gboxed.c		\
 	gclosure.c		\
 	genums.c		\
 	gobject.c		\
+	gobject_trace.h		\
 	gparam.c		\
 	gparamspecs.c		\
 	gsignal.c		\
@@ -139,6 +143,24 @@ gobject_c_sources = \
 
 # these sources (also mentioned above) are generated.
 BUILT_SOURCES = gmarshal.h gmarshal.c gobjectalias.h gobjectaliasdef.c
+
+if ENABLE_DTRACE
+gobject_probes.h: gobject_probes.d Makefile
+	$(DTRACE) -C -h -s $< -o $@.tmp
+	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+gobject_probes.o: gobject_probes.d Makefile
+	$(DTRACE) -G -s $< -o $@
+BUILT_SOURCES += gobject_probes.h gobject_probes.o
+CLEANFILES += gobject_probes.h
+libgobject_2_0_la_LIBADD += gobject_probes.o
+endif
+
+if ENABLE_SYSTEMTAP
+tapset_in_files = gobject.stp.in
+tapsetdir   = $(DESTDIR)@ABS_TAPSET_DIR@
+tapset_DATA = $(tapset_in_files:.stp.in=.stp)
+EXTRA_DIST += $(tapset_in_files)
+endif
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have

@@ -33,6 +33,7 @@
 #include "gsignal.h"
 #include "gparamspecs.h"
 #include "gvaluetypes.h"
+#include "gobject_trace.h"
 #include "gobjectalias.h"
 
 /* This should be included after gobjectalias.h (or pltcheck.sh will fail) */
@@ -817,7 +818,9 @@ g_object_run_dispose (GObject *object)
   g_return_if_fail (object->ref_count > 0);
 
   g_object_ref (object);
+  TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
   G_OBJECT_GET_CLASS (object)->dispose (object);
+  TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
   g_object_unref (object);
 }
 
@@ -2406,7 +2409,9 @@ g_object_ref (gpointer _object)
 
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
-  
+
+  TRACE (GOBJECT_OBJECT_REF(object,G_TYPE_FROM_INSTANCE(object),old_val));
+
   return object;
 }
 
@@ -2422,7 +2427,6 @@ g_object_unref (gpointer _object)
 {
   GObject *object = _object;
   gint old_ref;
-  gboolean is_zero;
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count > 0);
@@ -2443,6 +2447,8 @@ g_object_unref (gpointer _object)
       if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
 	goto retry_atomic_decrement1;
 
+      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
+
       /* if we went from 2->1 we need to notify toggle refs if any */
       if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
 	toggle_refs_notify (object, TRUE);
@@ -2450,7 +2456,9 @@ g_object_unref (gpointer _object)
   else
     {
       /* we are about tp remove the last reference */
+      TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
       G_OBJECT_GET_CLASS (object)->dispose (object);
+      TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 1));
 
       /* may have been re-referenced meanwhile */
     retry_atomic_decrement2:
@@ -2463,25 +2471,33 @@ g_object_unref (gpointer _object)
           if (!g_atomic_int_compare_and_exchange ((int *)&object->ref_count, old_ref, old_ref - 1))
 	    goto retry_atomic_decrement2;
 
+	  TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
+
           /* if we went from 2->1 we need to notify toggle refs if any */
           if (old_ref == 2 && has_toggle_ref) /* The last ref being held in this case is owned by the toggle_ref */
 	    toggle_refs_notify (object, TRUE);
 
 	  return;
 	}
-      
+
       /* we are still in the process of taking away the last ref */
       g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
       
       /* decrement the last reference */
-      is_zero = g_atomic_int_dec_and_test ((int *)&object->ref_count);
-      
+      old_ref = g_atomic_int_exchange_and_add ((int *)&object->ref_count, -1);
+
+      TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
+
       /* may have been re-referenced meanwhile */
-      if (G_LIKELY (is_zero)) 
+      if (G_LIKELY (old_ref == 1))
 	{
+	  TRACE (GOBJECT_OBJECT_FINALIZE(object,G_TYPE_FROM_INSTANCE(object)));
           G_OBJECT_GET_CLASS (object)->finalize (object);
+
+	  TRACE (GOBJECT_OBJECT_FINALIZE_END(object,G_TYPE_FROM_INSTANCE(object)));
+
 #ifdef	G_ENABLE_DEBUG
           IF_DEBUG (OBJECTS)
 	    {
