@@ -1087,6 +1087,10 @@ g_object_new (GType	   object_type,
   
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
   
+  /* short circuit for calls supplying no properties */
+  if (!first_property_name)
+    return g_object_newv (object_type, 0, NULL);
+
   va_start (var_args, first_property_name);
   object = g_object_new_valist (object_type, first_property_name, var_args);
   va_end (var_args);
