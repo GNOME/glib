@@ -34,11 +34,9 @@
 /**
  * SECTION:enumerations_flags
  * @short_description: Enumeration and flags types
- * @see_also:#GParamSpecEnum, #GParamSpecFlags, g_param_spec_enum(),
- * g_param_spec_flags(),
- *
- * <link linkend="glib-mkenums">glib-mkenums</link>
  * @title: Enumeration and Flag Types
+ * @see_also:#GParamSpecEnum, #GParamSpecFlags, g_param_spec_enum(),
+ * g_param_spec_flags()
  *
  * The GLib type system provides fundamental types for enumeration and
  * flags types. (Flags types are like enumerations, but allow their
