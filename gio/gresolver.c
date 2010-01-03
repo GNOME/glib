@@ -146,8 +146,6 @@ g_resolver_real_lookup_service_finish (GResolver            *resolver,
 static void
 g_resolver_class_init (GResolverClass *resolver_class)
 {
-  volatile GType type;
-
   /* Automatically pass these over to the lookup_records methods */
   resolver_class->lookup_service = g_resolver_real_lookup_service;
   resolver_class->lookup_service_async = g_resolver_real_lookup_service_async;
@@ -156,8 +154,7 @@ g_resolver_class_init (GResolverClass *resolver_class)
   g_type_class_add_private (resolver_class, sizeof (GResolverPrivate));
 
   /* Make sure _g_networking_init() has been called */
-  type = g_inet_address_get_type ();
-  (type); /* To avoid -Wunused-but-set-variable */
+  g_type_ensure (G_TYPE_INET_ADDRESS);
 
   /* Initialize _g_resolver_addrinfo_hints */
 #ifdef AI_ADDRCONFIG

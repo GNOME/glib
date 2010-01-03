@@ -742,11 +742,9 @@ static void
 g_socket_class_init (GSocketClass *klass)
 {
   GObjectClass *gobject_class G_GNUC_UNUSED = G_OBJECT_CLASS (klass);
-  volatile GType type;
 
   /* Make sure winsock has been initialized */
-  type = g_inet_address_get_type ();
-  (type); /* To avoid -Wunused-but-set-variable */
+  g_type_ensure (G_TYPE_INET_ADDRESS);
 
 #ifdef SIGPIPE
   /* There is no portable, thread-safe way to avoid having the process

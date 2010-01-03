@@ -375,12 +375,10 @@ g_icon_new_from_tokens (char   **tokens,
 static void
 ensure_builtin_icon_types (void)
 {
-  static volatile GType t;
-  t = g_themed_icon_get_type ();
-  t = g_file_icon_get_type ();
-  t = g_emblemed_icon_get_type ();
-  t = g_emblem_get_type ();
-  (t); /* To avoid -Wunused-but-set-variable */
+  g_type_ensure (G_TYPE_THEMED_ICON);
+  g_type_ensure (G_TYPE_FILE_ICON);
+  g_type_ensure (G_TYPE_EMBLEMED_ICON);
+  g_type_ensure (G_TYPE_EMBLEM);
 }
 
 /**

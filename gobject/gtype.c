@@ -4275,7 +4275,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
-  volatile GType votype;
+  GType type;
 
   G_LOCK (type_init_lock);
   
@@ -4316,16 +4316,16 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   /* void type G_TYPE_NONE
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
-  votype = NODE_TYPE (node);
-  g_assert (votype == G_TYPE_NONE);
+  type = NODE_TYPE (node);
+  g_assert (type == G_TYPE_NONE);
   
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
    */
   memset (&info, 0, sizeof (info));
   node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
-  votype = NODE_TYPE (node);
+  type = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
-  g_assert (votype == G_TYPE_INTERFACE);
+  g_assert (type == G_TYPE_INTERFACE);
   
   G_WRITE_UNLOCK (&type_rw_lock);
   
@@ -4333,7 +4333,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 
   /* G_TYPE_TYPE_PLUGIN
    */
-  votype = g_type_plugin_get_type ();
+  g_type_ensure (g_type_plugin_get_type ());
   
   /* G_TYPE_* value types
    */
@@ -4652,4 +4652,35 @@ g_type_class_get_private (GTypeClass *klass,
     }
 
   return G_STRUCT_MEMBER_P (klass, offset);
+}
+
+/**
+ * g_type_ensure:
+ * @type: a #GType.
+ *
+ * Ensures that the indicated @type has been registered with the
+ * type system, and its _class_init() method has been run.
+ *
+ * In theory, simply calling the type's _get_type() method (or using
+ * the corresponding macro) is supposed take care of this. However,
+ * _get_type() methods are often marked %G_GNUC_CONST for performance
+ * reasons, even though this is technically incorrect (since
+ * %G_GNUC_CONST requires that the function not have side effects,
+ * which _get_type() methods do on the first call). As a result, if
+ * you write a bare call to a _get_type() macro, it may get optimized
+ * out by the compiler. Using g_type_ensure() guarantees that the
+ * type's _get_type() method is called.
+ *
+ * Since: 2.34
+ */
+void
+g_type_ensure (GType type)
+{
+  /* In theory, @type has already been resolved and so there's nothing
+   * to do here. But this protects us in the case where the function
+   * gets inlined (as it might in g_type_init_with_debug_flags()
+   * above).
+   */
+  if (G_UNLIKELY (type == (GType)-1))
+    g_error ("can't happen");
 }

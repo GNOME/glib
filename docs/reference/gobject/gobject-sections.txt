@@ -98,6 +98,7 @@ g_type_add_interface_check
 g_type_remove_interface_check
 GTypeInterfaceCheckFunc
 g_type_value_table_peek
+g_type_ensure
 
 G_DEFINE_TYPE
 G_DEFINE_TYPE_WITH_CODE

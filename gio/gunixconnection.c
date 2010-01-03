@@ -473,7 +473,6 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
   gint nscm;
   GSocket *socket;
   gint n;
-  volatile GType credentials_message_gtype;
   gssize num_bytes_read;
 #ifdef __linux__
   gboolean turn_off_so_passcreds;
@@ -543,9 +542,7 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
   }
 #endif
 
-  /* ensure the type of GUnixCredentialsMessage has been registered with the type system */
-  credentials_message_gtype = G_TYPE_UNIX_CREDENTIALS_MESSAGE;
-  (credentials_message_gtype); /* To avoid -Wunused-but-set-variable */
+  g_type_ensure (G_TYPE_UNIX_CREDENTIALS_MESSAGE);
   num_bytes_read = g_socket_receive_message (socket,
                                              NULL, /* GSocketAddress **address */
                                              NULL,

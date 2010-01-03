@@ -909,39 +909,39 @@ _g_io_modules_ensure_loaded (void)
       g_io_module_scope_free (scope);
 
       /* Initialize types from built-in "modules" */
-      g_null_settings_backend_get_type ();
-      g_memory_settings_backend_get_type ();
+      g_type_ensure (g_null_settings_backend_get_type ());
+      g_type_ensure (g_memory_settings_backend_get_type ());
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
-      _g_inotify_directory_monitor_get_type ();
-      _g_inotify_file_monitor_get_type ();
+      g_type_ensure (_g_inotify_directory_monitor_get_type ());
+      g_type_ensure (_g_inotify_file_monitor_get_type ());
 #endif
 #if defined(HAVE_FEN)
-      _g_fen_directory_monitor_get_type ();
-      _g_fen_file_monitor_get_type ();
+      g_type_ensure (_g_fen_directory_monitor_get_type ());
+      g_type_ensure (_g_fen_file_monitor_get_type ());
 #endif
 #ifdef G_OS_WIN32
-      _g_win32_volume_monitor_get_type ();
-      g_win32_directory_monitor_get_type ();
-      g_registry_backend_get_type ();
+      g_type_ensure (_g_win32_volume_monitor_get_type ());
+      g_type_ensure (g_win32_directory_monitor_get_type ());
+      g_type_ensure (g_registry_backend_get_type ());
 #endif
 #ifdef HAVE_CARBON
       g_nextstep_settings_backend_get_type ();
 #endif
 #ifdef G_OS_UNIX
-      _g_unix_volume_monitor_get_type ();
+      g_type_ensure (_g_unix_volume_monitor_get_type ());
 #endif
 #ifdef G_OS_WIN32
-      _g_winhttp_vfs_get_type ();
+      g_type_ensure (_g_winhttp_vfs_get_type ());
 #endif
-      _g_local_vfs_get_type ();
-      _g_dummy_proxy_resolver_get_type ();
-      _g_socks4a_proxy_get_type ();
-      _g_socks4_proxy_get_type ();
-      _g_socks5_proxy_get_type ();
-      _g_dummy_tls_backend_get_type ();
-      g_network_monitor_base_get_type ();
+      g_type_ensure (_g_local_vfs_get_type ());
+      g_type_ensure (_g_dummy_proxy_resolver_get_type ());
+      g_type_ensure (_g_socks4a_proxy_get_type ());
+      g_type_ensure (_g_socks4_proxy_get_type ());
+      g_type_ensure (_g_socks5_proxy_get_type ());
+      g_type_ensure (_g_dummy_tls_backend_get_type ());
+      g_type_ensure (g_network_monitor_base_get_type ());
 #ifdef HAVE_NETLINK
-      _g_network_monitor_netlink_get_type ();
+      g_type_ensure (_g_network_monitor_netlink_get_type ());
 #endif
     }
 

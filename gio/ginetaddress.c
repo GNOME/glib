@@ -401,7 +401,6 @@ g_inet_address_init (GInetAddress *address)
 GInetAddress *
 g_inet_address_new_from_string (const gchar *string)
 {
-  volatile GType type;
 #ifdef G_OS_WIN32
   struct sockaddr_storage sa;
   struct sockaddr_in *sin = (struct sockaddr_in *)&sa;
@@ -413,8 +412,7 @@ g_inet_address_new_from_string (const gchar *string)
 #endif
 
   /* Make sure _g_networking_init() has been called */
-  type = g_inet_address_get_type ();
-  (type); /* To avoid -Wunused-but-set-variable */
+  g_type_ensure (G_TYPE_INET_ADDRESS);
 
 #ifdef G_OS_WIN32
   memset (&sa, 0, sizeof (sa));

@@ -336,6 +336,7 @@ g_type_default_interface_peek
 g_type_default_interface_ref
 g_type_default_interface_unref
 g_type_depth
+g_type_ensure
 g_type_free_instance
 g_type_from_name
 g_type_fundamental
