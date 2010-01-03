@@ -42,19 +42,19 @@
  * filled with the details of the operation's success or failure, the
  * object the asynchronous function was started for and any error codes
  * returned. The asynchronous callback function is then expected to call
- * the corresponding "_finish()" function with the object the function
- * was called for, and the #GAsyncResult instance, and optionally,
+ * the corresponding "_finish()" function, passing the object the
+ * function was called for, the #GAsyncResult instance, and (optionally)
  * an @error to grab any error conditions that may have occurred.
  *
- * The purpose of the "_finish()" function is to take the generic
- * result of type #GAsyncResult and return the specific result
- * that the operation in question yields (e.g. a #GFileEnumerator for
- * a "enumerate children" operation). If the result or error status
- * of the operation is not needed, there is no need to call the
- * "_finish()" function, GIO will take care of cleaning up the
- * result and error information after the #GAsyncReadyCallback
- * returns. It is also allowed to take a reference to the #GAsyncResult
- * and call "_finish()" later.
+ * The "_finish()" function for an operation takes the generic result
+ * (of type #GAsyncResult) and returns the specific result that the
+ * operation in question yields (e.g. a #GFileEnumerator for a
+ * "enumerate children" operation). If the result or error status of the
+ * operation is not needed, there is no need to call the "_finish()"
+ * function; GIO will take care of cleaning up the result and error
+ * information after the #GAsyncReadyCallback returns. Applications may
+ * also take a reference to the #GAsyncResult and call "_finish()"
+ * later; however, the "_finish()" function may be called at most once.
  *
  * Example of a typical asynchronous operation flow:
  * |[
