@@ -227,7 +227,7 @@ g_converter_reset (GConverter *converter)
 
   iface = G_CONVERTER_GET_IFACE (converter);
 
-  return (* iface->reset) (converter);
+  (* iface->reset) (converter);
 }
 
 #define __G_CONVERTER_C__
