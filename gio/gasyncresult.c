@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -31,35 +31,35 @@
  * @short_description: Asynchronous Function Results
  * @include: gio/gio.h
  * @see_also: #GSimpleAsyncResult
- * 
+ *
  * Provides a base class for implementing asynchronous function results.
- * 
+ *
  * Asynchronous operations are broken up into two separate operations
  * which are chained together by a #GAsyncReadyCallback. To begin
- * an asynchronous operation, provide a #GAsyncReadyCallback to the 
- * asynchronous function. This callback will be triggered when the 
- * operation has completed, and will be passed a #GAsyncResult instance 
- * filled with the details of the operation's success or failure, the 
- * object the asynchronous function was started for and any error codes 
- * returned. The asynchronous callback function is then expected to call 
- * the corresponding "_finish()" function with the object the function 
- * was called for, and the #GAsyncResult instance, and optionally, 
+ * an asynchronous operation, provide a #GAsyncReadyCallback to the
+ * asynchronous function. This callback will be triggered when the
+ * operation has completed, and will be passed a #GAsyncResult instance
+ * filled with the details of the operation's success or failure, the
+ * object the asynchronous function was started for and any error codes
+ * returned. The asynchronous callback function is then expected to call
+ * the corresponding "_finish()" function with the object the function
+ * was called for, and the #GAsyncResult instance, and optionally,
  * an @error to grab any error conditions that may have occurred.
- * 
- * The purpose of the "_finish()" function is to take the generic 
+ *
+ * The purpose of the "_finish()" function is to take the generic
  * result of type #GAsyncResult and return the specific result
  * that the operation in question yields (e.g. a #GFileEnumerator for
  * a "enumerate children" operation). If the result or error status
  * of the operation is not needed, there is no need to call the
  * "_finish()" function, GIO will take care of cleaning up the
- * result and error information after the #GAsyncReadyCallback 
- * returns. It is also allowed to take a reference to the #GAsyncResult and
- * call "_finish()" later.
- * 
+ * result and error information after the #GAsyncReadyCallback
+ * returns. It is also allowed to take a reference to the #GAsyncResult
+ * and call "_finish()" later.
+ *
  * Example of a typical asynchronous operation flow:
  * |[
- * void _theoretical_frobnitz_async (Theoretical         *t, 
- *                                   GCancellable        *c, 
+ * void _theoretical_frobnitz_async (Theoretical         *t,
+ *                                   GCancellable        *c,
  *                                   GAsyncReadyCallback *cb,
  *                                   gpointer             u);
  *
@@ -67,9 +67,9 @@
  *                                        GAsyncResult  *res,
  *                                        GError       **e);
  *
- * static void 
- * frobnitz_result_func (GObject      *source_object, 
- *			 GAsyncResult *res, 
+ * static void
+ * frobnitz_result_func (GObject      *source_object,
+ *			 GAsyncResult *res,
  *			 gpointer      user_data)
  * {
  *   gboolean success = FALSE;
@@ -78,7 +78,7 @@
  *
  *   if (success)
  *     g_printf ("Hurray!\n");
- *   else 
+ *   else
  *     g_printf ("Uh oh!\n");
  *
  *   /<!-- -->* ... *<!-- -->/
@@ -89,9 +89,9 @@
  * {
  *    /<!-- -->* ... *<!-- -->/
  *
- *    _theoretical_frobnitz_async (theoretical_data, 
- *                                 NULL, 
- *                                 frobnitz_result_func, 
+ *    _theoretical_frobnitz_async (theoretical_data,
+ *                                 NULL,
+ *                                 frobnitz_result_func,
  *                                 NULL);
  *
  *    /<!-- -->* ... *<!-- -->/
@@ -101,11 +101,12 @@
  * The callback for an asynchronous operation is called only once, and is
  * always called, even in the case of a cancelled operation. On cancellation
  * the result is a %G_IO_ERROR_CANCELLED error.
- * 
- * Some ascynchronous operations are implemented using synchronous calls. These
- * are run in a separate thread, if #GThread has been initialized, but otherwise they
- * are sent to the Main Event Loop and processed in an idle function. So, if you
- * truly need asynchronous operations, make sure to initialize #GThread.
+ *
+ * Some asynchronous operations are implemented using synchronous calls.
+ * These are run in a separate thread, if #GThread has been initialized, but
+ * otherwise they are sent to the Main Event Loop and processed in an idle
+ * function. So, if you truly need asynchronous operations, make sure to
+ * initialize #GThread.
  **/
 
 typedef GAsyncResultIface GAsyncResultInterface;
@@ -119,10 +120,10 @@ g_async_result_default_init (GAsyncResultInterface *iface)
 /**
  * g_async_result_get_user_data:
  * @res: a #GAsyncResult.
- * 
+ *
  * Gets the user data from a #GAsyncResult.
- * 
- * Returns: the user data for @res. 
+ *
+ * Returns: the user data for @res.
  **/
 gpointer
 g_async_result_get_user_data (GAsyncResult *res)
