@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -46,49 +46,49 @@
  * @include: gio/gio.h
  * @see_also: #GAsyncResult
  *
- * Implements #GAsyncResult for simple cases. Most of the time, this 
- * will be all an application needs, and will be used transparently. 
- * Because of this, #GSimpleAsyncResult is used throughout GIO for 
- * handling asynchronous functions. 
- * 
- * GSimpleAsyncResult handles #GAsyncReadyCallback<!-- -->s, error 
- * reporting, operation cancellation and the final state of an operation, 
- * completely transparent to the application. Results can be returned 
- * as a pointer e.g. for functions that return data that is collected 
- * asynchronously, a boolean value for checking the success or failure 
- * of an operation, or a #gssize for operations which return the number 
- * of bytes modified by the operation; all of the simple return cases 
+ * Implements #GAsyncResult for simple cases. Most of the time, this
+ * will be all an application needs, and will be used transparently.
+ * Because of this, #GSimpleAsyncResult is used throughout GIO for
+ * handling asynchronous functions.
+ *
+ * GSimpleAsyncResult handles #GAsyncReadyCallback<!-- -->s, error
+ * reporting, operation cancellation and the final state of an operation,
+ * completely transparent to the application. Results can be returned
+ * as a pointer e.g. for functions that return data that is collected
+ * asynchronously, a boolean value for checking the success or failure
+ * of an operation, or a #gssize for operations which return the number
+ * of bytes modified by the operation; all of the simple return cases
  * are covered.
- * 
- * Most of the time, an application will not need to know of the details 
- * of this API; it is handled transparently, and any necessary operations 
- * are handled by #GAsyncResult's interface. However, if implementing a 
- * new GIO module, for writing language bindings, or for complex 
- * applications that need better control of how asynchronous operations 
+ *
+ * Most of the time, an application will not need to know of the details
+ * of this API; it is handled transparently, and any necessary operations
+ * are handled by #GAsyncResult's interface. However, if implementing a
+ * new GIO module, for writing language bindings, or for complex
+ * applications that need better control of how asynchronous operations
  * are completed, it is important to understand this functionality.
- * 
- * GSimpleAsyncResults are tagged with the calling function to ensure 
- * that asynchronous functions and their finishing functions are used 
+ *
+ * GSimpleAsyncResults are tagged with the calling function to ensure
+ * that asynchronous functions and their finishing functions are used
  * together correctly.
- * 
- * To create a new #GSimpleAsyncResult, call g_simple_async_result_new(). 
- * If the result needs to be created for a #GError, use 
- * g_simple_async_result_new_from_error(). If a #GError is not available 
- * (e.g. the asynchronous operation's doesn't take a #GError argument), 
+ *
+ * To create a new #GSimpleAsyncResult, call g_simple_async_result_new().
+ * If the result needs to be created for a #GError, use
+ * g_simple_async_result_new_from_error(). If a #GError is not available
+ * (e.g. the asynchronous operation's doesn't take a #GError argument),
  * but the result still needs to be created for an error condition, use
  * g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
- * if your application or binding requires passing a variable argument list 
- * directly), and the error can then be propegated through the use of 
+ * if your application or binding requires passing a variable argument list
+ * directly), and the error can then be propegated through the use of
  * g_simple_async_result_propagate_error().
- * 
- * An asynchronous operation can be made to ignore a cancellation event by 
- * calling g_simple_async_result_set_handle_cancellation() with a 
+ *
+ * An asynchronous operation can be made to ignore a cancellation event by
+ * calling g_simple_async_result_set_handle_cancellation() with a
  * #GSimpleAsyncResult for the operation and %FALSE. This is useful for
  * operations that are dangerous to cancel, such as close (which would
  * cause a leak if cancelled before being run).
- * 
- * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop, 
- * or it can use #GThread<!-- -->s if available. 
+ *
+ * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop,
+ * or it can use #GThread<!-- -->s if available.
  * g_simple_async_result_complete() will finish an I/O task directly
  * from the point where it is called. g_simple_async_result_complete_in_idle()
  * will finish it from an idle handler in the <link
@@ -96,19 +96,19 @@
  * context</link>. g_simple_async_result_run_in_thread() will run the
  * job in a separate thread and then deliver the result to the
  * thread-default main context.
- * 
- * To set the results of an asynchronous function, 
- * g_simple_async_result_set_op_res_gpointer(), 
- * g_simple_async_result_set_op_res_gboolean(), and 
+ *
+ * To set the results of an asynchronous function,
+ * g_simple_async_result_set_op_res_gpointer(),
+ * g_simple_async_result_set_op_res_gboolean(), and
  * g_simple_async_result_set_op_res_gssize()
- * are provided, setting the operation's result to a gpointer, gboolean, or 
+ * are provided, setting the operation's result to a gpointer, gboolean, or
  * gssize, respectively.
- * 
- * Likewise, to get the result of an asynchronous function, 
+ *
+ * Likewise, to get the result of an asynchronous function,
  * g_simple_async_result_get_op_res_gpointer(),
- * g_simple_async_result_get_op_res_gboolean(), and 
- * g_simple_async_result_get_op_res_gssize() are 
- * provided, getting the operation's result as a gpointer, gboolean, and 
+ * g_simple_async_result_get_op_res_gboolean(), and
+ * g_simple_async_result_get_op_res_gssize() are
+ * provided, getting the operation's result as a gpointer, gboolean, and
  * gssize, respectively.
  **/
 
@@ -181,7 +181,7 @@ static void
 g_simple_async_result_class_init (GSimpleAsyncResultClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
+ 
   gobject_class->finalize = g_simple_async_result_finalize;
 }
 
@@ -202,9 +202,9 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @source_tag: the asynchronous function.
- * 
+ *
  * Creates a #GSimpleAsyncResult.
- * 
+ *
  * Returns: a #GSimpleAsyncResult.
  **/
 GSimpleAsyncResult *
@@ -225,7 +225,7 @@ g_simple_async_result_new (GObject             *source_object,
     simple->source_object = NULL;
   simple->user_data = user_data;
   simple->source_tag = source_tag;
-  
+ 
   return simple;
 }
 
@@ -235,9 +235,9 @@ g_simple_async_result_new (GObject             *source_object,
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @error: a #GError location.
- * 
+ *
  * Creates a #GSimpleAsyncResult from an error condition.
- * 
+ *
  * Returns: a #GSimpleAsyncResult.
  **/
 GSimpleAsyncResult *
@@ -261,15 +261,15 @@ g_simple_async_result_new_from_error (GObject             *source_object,
 /**
  * g_simple_async_result_new_error:
  * @source_object: a #GObject, or %NULL.
- * @callback: a #GAsyncReadyCallback. 
+ * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @domain: a #GQuark.
  * @code: an error code.
  * @format: a string with format characters.
  * @...: a list of values to insert into @format.
- * 
+ *
  * Creates a new #GSimpleAsyncResult with a set error.
- * 
+ *
  * Returns: a #GSimpleAsyncResult.
  **/
 GSimpleAsyncResult *
@@ -283,7 +283,7 @@ g_simple_async_result_new_error (GObject             *source_object,
 {
   GSimpleAsyncResult *simple;
   va_list args;
-  
+ 
   g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
   g_return_val_if_fail (domain != 0, NULL);
   g_return_val_if_fail (format != NULL, NULL);
@@ -295,7 +295,7 @@ g_simple_async_result_new_error (GObject             *source_object,
   va_start (args, format);
   g_simple_async_result_set_error_va (simple, domain, code, format, args);
   va_end (args);
-  
+ 
   return simple;
 }
 
@@ -325,9 +325,9 @@ g_simple_async_result_async_result_iface_init (GAsyncResultIface *iface)
  * g_simple_async_result_set_handle_cancellation:
  * @simple: a #GSimpleAsyncResult.
  * @handle_cancellation: a #gboolean.
- * 
+ *
  * Sets whether to handle cancellation within the asynchronous operation.
- * 
+ *
  **/
 void
 g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult *simple,
@@ -340,9 +340,9 @@ g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_get_source_tag:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Gets the source tag for the #GSimpleAsyncResult.
- * 
+ *
  * Returns: a #gpointer to the source object for the #GSimpleAsyncResult.
  **/
 gpointer
@@ -356,10 +356,10 @@ g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple)
  * g_simple_async_result_propagate_error:
  * @simple: a #GSimpleAsyncResult.
  * @dest: a location to propegate the error to.
- * 
+ *
  * Propagates an error from within the simple asynchronous result to
  * a given destination.
- * 
+ *
  * Returns: %TRUE if the error was propegated to @dest. %FALSE otherwise.
  **/
 gboolean
@@ -383,7 +383,7 @@ g_simple_async_result_propagate_error (GSimpleAsyncResult  *simple,
  * @simple: a #GSimpleAsyncResult.
  * @op_res: a pointer result from an asynchronous function.
  * @destroy_op_res: a #GDestroyNotify function.
- * 
+ *
  * Sets the operation result within the asynchronous result to a pointer.
  **/
 void
@@ -401,9 +401,9 @@ g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_get_op_res_gpointer:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Gets a pointer result as returned by the asynchronous function.
- * 
+ *
  * Returns: a pointer from the result.
  **/
 gpointer
@@ -417,9 +417,9 @@ g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult *simple)
  * g_simple_async_result_set_op_res_gssize:
  * @simple: a #GSimpleAsyncResult.
  * @op_res: a #gssize.
- * 
- * Sets the operation result within the asynchronous result to 
- * the given @op_res. 
+ *
+ * Sets the operation result within the asynchronous result to
+ * the given @op_res.
  **/
 void
 g_simple_async_result_set_op_res_gssize (GSimpleAsyncResult *simple,
@@ -433,9 +433,9 @@ g_simple_async_result_set_op_res_gssize (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_get_op_res_gssize:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Gets a gssize from the asynchronous result.
- * 
+ *
  * Returns: a gssize returned from the asynchronous function.
  **/
 gssize
@@ -449,7 +449,7 @@ g_simple_async_result_get_op_res_gssize (GSimpleAsyncResult *simple)
  * g_simple_async_result_set_op_res_gboolean:
  * @simple: a #GSimpleAsyncResult.
  * @op_res: a #gboolean.
- * 
+ *
  * Sets the operation result to a boolean within the asynchronous result.
  **/
 void
@@ -464,11 +464,11 @@ g_simple_async_result_set_op_res_gboolean (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_get_op_res_gboolean:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Gets the operation result boolean from within the asynchronous result.
- * 
- * Returns: %TRUE if the operation's result was %TRUE, %FALSE 
- *     if the operation's result was %FALSE. 
+ *
+ * Returns: %TRUE if the operation's result was %TRUE, %FALSE
+ *     if the operation's result was %FALSE.
  **/
 gboolean
 g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult *simple)
@@ -481,8 +481,8 @@ g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult *simple)
  * g_simple_async_result_set_from_error:
  * @simple: a #GSimpleAsyncResult.
  * @error: #GError.
- * 
- * Sets the result from a #GError. 
+ *
+ * Sets the result from a #GError.
  **/
 void
 g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
@@ -503,9 +503,9 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
  * @domain: a #GQuark (usually #G_IO_ERROR).
  * @code: an error code.
  * @format: a formatted error reporting string.
- * @args: va_list of arguments. 
- * 
- * Sets an error within the asynchronous result without a #GError. 
+ * @args: va_list of arguments.
+ *
+ * Sets an error within the asynchronous result without a #GError.
  * Unless writing a binding, see g_simple_async_result_set_error().
  **/
 void
@@ -532,7 +532,7 @@ g_simple_async_result_set_error_va (GSimpleAsyncResult *simple,
  * @code: an error code.
  * @format: a formatted error reporting string.
  * @...: a list of variables to fill in @format.
- * 
+ *
  * Sets an error within the asynchronous result without a #GError.
  **/
 void
@@ -556,7 +556,7 @@ g_simple_async_result_set_error (GSimpleAsyncResult *simple,
 /**
  * g_simple_async_result_complete:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Completes an asynchronous I/O job immediately. Must be called in
  * the thread where the asynchronous result was to be delivered, as it
  * invokes the callback directly. If you are in a different thread use
@@ -603,20 +603,23 @@ complete_in_idle_cb (gpointer data)
 /**
  * g_simple_async_result_complete_in_idle:
  * @simple: a #GSimpleAsyncResult.
- * 
+ *
  * Completes an asynchronous function in an idle handler in the <link
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread that @simple was initially created in.
- **/
+ *
+ * Calling this function takes a reference to @simple for as long as
+ * is needed to complete the call.
+ */
 void
 g_simple_async_result_complete_in_idle (GSimpleAsyncResult *simple)
 {
   GSource *source;
-  
+
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
-  
+
   g_object_ref (simple);
-  
+ 
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, complete_in_idle_cb, simple, g_object_unref);
@@ -639,21 +642,21 @@ complete_in_idle_cb_for_thread (gpointer _data)
   GSimpleAsyncResult *simple;
 
   simple = data->simple;
-  
+ 
   if (simple->handle_cancellation &&
       g_cancellable_is_cancelled (data->cancellable))
     g_simple_async_result_set_error (simple,
                                      G_IO_ERROR,
                                      G_IO_ERROR_CANCELLED,
                                      "%s", _("Operation was cancelled"));
-  
+ 
   g_simple_async_result_complete (simple);
 
   if (data->cancellable)
     g_object_unref (data->cancellable);
   g_object_unref (data->simple);
   g_free (data);
-  
+ 
   return FALSE;
 }
 
@@ -665,7 +668,7 @@ run_in_thread (GIOSchedulerJob *job,
   RunInThreadData *data = _data;
   GSimpleAsyncResult *simple = data->simple;
   GSource *source;
-  
+ 
   if (simple->handle_cancellation &&
       g_cancellable_is_cancelled (c))
     g_simple_async_result_set_error (simple,
@@ -692,20 +695,23 @@ run_in_thread (GIOSchedulerJob *job,
  * @simple: a #GSimpleAsyncResult.
  * @func: a #GSimpleAsyncThreadFunc.
  * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * 
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ *
  * Runs the asynchronous job in a separate thread and then calls
  * g_simple_async_result_complete_in_idle() on @simple to return
  * the result to the appropriate main loop.
- **/
+ *
+ * Calling this function takes a reference to @simple for as long as
+ * is needed to run the job and report its completion.
+ */
 void
 g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
                                      GSimpleAsyncThreadFunc  func,
-                                     int                     io_priority, 
+                                     int                     io_priority,
                                      GCancellable           *cancellable)
 {
   RunInThreadData *data;
-  
+
   g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
   g_return_if_fail (func != NULL);
 
@@ -726,7 +732,7 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  *
  * Ensures that the data passed to the _finish function of an async
  * operation is consistent.  Three checks are performed.
- * 
+ *
  * First, @result is checked to ensure that it is really a
  * #GSimpleAsyncResult.  Second, @source is checked to ensure that it
  * matches the source object of @result.  Third, @source_tag is
@@ -736,7 +742,7 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  * which this function is called).
  *
  * Returns: #TRUE if all checks passed or #FALSE if any failed.
- **/ 
+ **/
 gboolean
 g_simple_async_result_is_valid (GAsyncResult *result,
                                 GObject      *source,
@@ -763,14 +769,14 @@ g_simple_async_result_is_valid (GAsyncResult *result,
 /**
  * g_simple_async_report_error_in_idle:
  * @object: a #GObject.
- * @callback: a #GAsyncReadyCallback. 
+ * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @domain: a #GQuark containing the error domain (usually #G_IO_ERROR).
  * @code: a specific error code.
  * @format: a formatted error reporting string.
  * @...: a list of variables to fill in @format.
- * 
- * Reports an error in an asynchronous function in an idle function by 
+ *
+ * Reports an error in an asynchronous function in an idle function by
  * directly setting the contents of the #GAsyncResult with the given error
  * information.
  **/
@@ -785,7 +791,7 @@ g_simple_async_report_error_in_idle (GObject             *object,
 {
   GSimpleAsyncResult *simple;
   va_list args;
-  
+ 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (domain != 0);
   g_return_if_fail (format != NULL);
@@ -804,12 +810,12 @@ g_simple_async_report_error_in_idle (GObject             *object,
 /**
  * g_simple_async_report_gerror_in_idle:
  * @object: a #GObject.
- * @callback: a #GAsyncReadyCallback. 
+ * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @error: the #GError to report
- * 
- * Reports an error in an idle function. Similar to 
- * g_simple_async_report_error_in_idle(), but takes a #GError rather 
+ *
+ * Reports an error in an idle function. Similar to
+ * g_simple_async_report_error_in_idle(), but takes a #GError rather
  * than building a new one.
  **/
 void
@@ -819,7 +825,7 @@ g_simple_async_report_gerror_in_idle (GObject *object,
 				      GError *error)
 {
   GSimpleAsyncResult *simple;
-  
+ 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (error != NULL);
 
