@@ -2471,7 +2471,7 @@ g_markup_parse_boolean (const char  *string,
  *                           and the attribute isn't present then the
  *                           pointer will be set to %NULL.
  * @G_MARKUP_COLLECT_STRDUP: as with %G_MARKUP_COLLECT_STRING, but
- *                           expects a paramter of type (char **) and
+ *                           expects a parameter of type (char **) and
  *                           g_strdup()s the returned pointer.  The
  *                           pointer must be freed with g_free().
  * @G_MARKUP_COLLECT_BOOLEAN: expects a parameter of type (gboolean *)
