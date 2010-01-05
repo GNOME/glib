@@ -716,16 +716,18 @@ expand_application_parameters (GDesktopAppInfo   *info,
 {
   GList *uri_list = *uris;
   const char *p = info->exec;
-  GString *expanded_exec = g_string_new (NULL);
+  GString *expanded_exec;
   gboolean res;
-  
+
   if (info->exec == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            _("Desktop file didn't specify Exec field"));
       return FALSE;
     }
-  
+
+  expanded_exec = g_string_new (NULL);
+
   while (*p)
     {
       if (p[0] == '%' && p[1] != '\0')
@@ -735,10 +737,10 @@ expand_application_parameters (GDesktopAppInfo   *info,
 	}
       else
 	g_string_append_c (expanded_exec, *p);
-      
+
       p++;
     }
-  
+
   /* No file substitutions */
   if (uri_list == *uris && uri_list != NULL)
     {
@@ -746,7 +748,7 @@ expand_application_parameters (GDesktopAppInfo   *info,
       g_string_append_c (expanded_exec, ' ');
       expand_macro ('f', expanded_exec, info, uris);
     }
-  
+
   res = g_shell_parse_argv (expanded_exec->str, argc, argv, error);
   g_string_free (expanded_exec, TRUE);
   return res;
