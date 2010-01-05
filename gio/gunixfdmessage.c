@@ -81,7 +81,7 @@ g_unix_fd_message_deserialize (int      level,
   GUnixFDMessage *message;
 
   if (level != SOL_SOCKET ||
-      level != SCM_RIGHTS)
+      type != SCM_RIGHTS)
     return NULL;
   
   if (size % 4 > 0)
