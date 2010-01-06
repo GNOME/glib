@@ -417,7 +417,7 @@ g_local_file_get_parse_name (GFile *file)
 					     charset, "UTF-8", NULL, NULL, NULL);
 	  
 	  if (roundtripped_filename == NULL ||
-	      strcmp (utf8_filename, roundtripped_filename) != 0)
+	      strcmp (filename, roundtripped_filename) != 0)
 	    {
 	      g_free (utf8_filename);
 	      utf8_filename = NULL;
