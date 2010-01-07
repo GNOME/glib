@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.22.3 to GLib 2.22.4
+===================================================
+
+* Bugs fixed:
+ 603982,603540,603527,563627,604875,605977
+ 603527 programs linked against glib-2.22 won't run on MS Win
+ 603540 g_time_val_from_iso8601 uses uninitialised variable
+ 603982 Stack overflow when reading file async with filter
+ 604875 Use of sa_len conflicts with system header
+ 605977 invalid utf-8 conversion in g_local_file_get_parse_name
+ 563627 g_get_prgname() threadsafety
+
+
 Overview of Changes from GLib 2.22.2 to GLib 2.22.3
 ===================================================
 
