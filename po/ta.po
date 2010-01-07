@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-01 00:15-0500\n"
+"POT-Creation-Date: 2010-01-06 20:29-0500\n"
 "PO-Revision-Date: 2009-09-17 15:47+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1172,26 +1172,26 @@ msgstr "பெயரில்லாதது"
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: gio/gdesktopappinfo.c:890
+#: gio/gdesktopappinfo.c:892
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: gio/gdesktopappinfo.c:1098
+#: gio/gdesktopappinfo.c:1100
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1102
+#: gio/gdesktopappinfo.c:1104
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1506
+#: gio/gdesktopappinfo.c:1508
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: gio/gdesktopappinfo.c:1618
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"

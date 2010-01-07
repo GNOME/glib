@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-01 00:15-0500\n"
+"POT-Creation-Date: 2010-01-06 20:29-0500\n"
 "PO-Revision-Date: 2009-09-15 12:48+0530\n"
 "Last-Translator: \n"
 "Language-Team: Assamese <>\n"
@@ -1147,26 +1147,26 @@ msgstr "নামবিহীন"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ডেস্কটপ নথিপত্ৰত Exec ক্ষেত্ৰ নিৰ্ধাৰিত নহয়"
 
-#: gio/gdesktopappinfo.c:890
+#: gio/gdesktopappinfo.c:892
 msgid "Unable to find terminal required for application"
 msgstr "অনুপ্ৰয়োগৰ বাবে আৱশ্যক টাৰ্মিনেল পোৱা নাযায়"
 
-#: gio/gdesktopappinfo.c:1098
+#: gio/gdesktopappinfo.c:1100
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ব্যৱহাৰকৰ্তা অনুপ্ৰয়োগৰ বিন্যাস ফোল্ডাৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/gdesktopappinfo.c:1102
+#: gio/gdesktopappinfo.c:1104
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ব্যৱহাৰকৰ্তা MIME বিন্যাস ফোল্ডাৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: gio/gdesktopappinfo.c:1506
+#: gio/gdesktopappinfo.c:1508
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ব্যৱহাৰকৰ্তা ডেস্কটপ নথিপত্ৰ %s নিৰ্মাণ কৰিবলৈ ব্যৰ্থ"
 
-#: gio/gdesktopappinfo.c:1618
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ৰ বাবে স্বনিৰ্ধাৰত ব্যাখ্যা"

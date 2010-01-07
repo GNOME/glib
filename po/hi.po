@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-01 00:15-0500\n"
+"POT-Creation-Date: 2010-01-06 20:29-0500\n"
 "PO-Revision-Date: 2009-09-11 15:59+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
@@ -1152,26 +1152,26 @@ msgstr "बेनाम"
 msgid "Desktop file didn't specify Exec field"
 msgstr "डेस्कटॉप फ़ाइल एक्स क्षेत्र को निर्दिष्ट नहीं करता है"
 
-#: gio/gdesktopappinfo.c:890
+#: gio/gdesktopappinfo.c:892
 msgid "Unable to find terminal required for application"
 msgstr "अनुप्रयोग के लिए जरूरी टर्मिनल ढूँढ़ने में असमर्थ"
 
-#: gio/gdesktopappinfo.c:1098
+#: gio/gdesktopappinfo.c:1100
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "उपयोक्ता अनुप्रयोग विन्यास फ़ोल्डर %s नहीं बना सकता है: %s"
 
-#: gio/gdesktopappinfo.c:1102
+#: gio/gdesktopappinfo.c:1104
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "MIME विन्यास फ़ोल्डर %s नहीं बना सकता है: %s"
 
-#: gio/gdesktopappinfo.c:1506
+#: gio/gdesktopappinfo.c:1508
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "उपयोक्ता डेस्कटॉप फ़ाइल %s नहीं बना सकता है"
 
-#: gio/gdesktopappinfo.c:1618
+#: gio/gdesktopappinfo.c:1620
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s के लिए मनपसंग परिभाषा"

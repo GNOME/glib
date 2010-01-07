@@ -54,6 +54,33 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_CLOSURE: 
 @G_TYPE_PARAM_OBJECT: 
 
+<!-- ##### MACRO G_DEFINE_INTERFACE ##### -->
+<para>
+
+</para>
+
+@TN: 
+@t_n: 
+@T_P: 
+
+<!-- ##### MACRO G_DEFINE_INTERFACE_WITH_CODE ##### -->
+<para>
+
+</para>
+
+@TN: 
+@t_n: 
+@T_P: 
+@_C_: 
+
+<!-- ##### MACRO G_IMPLEMENT_INTERFACE_DYNAMIC ##### -->
+<para>
+
+</para>
+
+@TYPE_IFACE: 
+@iface_init: 
+
 <!-- ##### FUNCTION g_type_check_flags ##### -->
 <para>
 Determines whether a given set of #GTypeFlags and #GTypeFundamentalFlags
