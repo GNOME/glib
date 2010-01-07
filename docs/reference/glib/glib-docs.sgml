@@ -1,85 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY glib-Basic-Types SYSTEM "xml/types.xml">
-<!ENTITY glib-Limits-of-Basic-Types SYSTEM "xml/limits.xml">
-<!ENTITY glib-Standard-Macros SYSTEM "xml/macros.xml">
-<!ENTITY glib-Type-Conversion-Macros SYSTEM "xml/type_conversion.xml">
-<!ENTITY glib-Byte-Order-Macros SYSTEM "xml/byte_order.xml">
-<!ENTITY glib-Numerical-Definitions SYSTEM "xml/numerical.xml">
-<!ENTITY glib-Miscellaneous-Macros SYSTEM "xml/macros_misc.xml">
-<!ENTITY glib-Atomic-Operations SYSTEM "xml/atomic_operations.xml">
-<!ENTITY glib-Memory-Allocation SYSTEM "xml/memory.xml">
-<!ENTITY glib-Error-Reporting SYSTEM "xml/error_reporting.xml">
-<!ENTITY glib-Warnings-and-Assertions SYSTEM "xml/warnings.xml">
-<!ENTITY glib-Message-Logging SYSTEM "xml/messages.xml">
-<!ENTITY glib-Pattern-Matching SYSTEM "xml/patterns.xml">
-<!ENTITY glib-Timers SYSTEM "xml/timers.xml">
-<!ENTITY glib-String-Utility-Functions SYSTEM "xml/string_utils.xml">
-<!ENTITY glib-Character-Set-Conversion SYSTEM "xml/conversions.xml">
-<!ENTITY glib-Unicode-Manipulation SYSTEM "xml/unicode.xml">
-<!ENTITY glib-Random-Numbers SYSTEM "xml/random_numbers.xml">
-<!ENTITY glib-Miscellaneous-Utility-Functions SYSTEM "xml/misc_utils.xml">
-<!ENTITY glib-Date-and-Time-Functions SYSTEM "xml/date.xml">
-<!ENTITY glib-The-Main-Event-Loop SYSTEM "xml/main.xml">
-<!ENTITY glib-Threads SYSTEM "xml/threads.xml">
-<!ENTITY glib-Thread-Pools SYSTEM "xml/thread_pools.xml">
-<!ENTITY glib-Async-Queues SYSTEM "xml/async_queues.xml">
-<!ENTITY glib-IO-Channels SYSTEM "xml/iochannels.xml">
-<!ENTITY glib-Hook-Functions SYSTEM "xml/hooks.xml">
-<!ENTITY glib-Lexical-Scanner SYSTEM "xml/scanner.xml">
-<!ENTITY glib-Dynamic-Loading-of-Modules SYSTEM "xml/modules.xml">
-<!ENTITY glib-Automatic-String-Completion SYSTEM "xml/completion.xml">
-<!ENTITY glib-Windows-Compatibility-Functions SYSTEM "xml/windows.xml">
-<!ENTITY glib-Memory-Chunks SYSTEM "xml/memory_chunks.xml">
-<!ENTITY glib-Memory-Slices SYSTEM "xml/memory_slices.xml">
-<!ENTITY glib-Doubly-Linked-Lists SYSTEM "xml/linked_lists_double.xml">
-<!ENTITY glib-Singly-Linked-Lists SYSTEM "xml/linked_lists_single.xml">
-<!ENTITY glib-Double-ended-Queues SYSTEM "xml/queue.xml">
-<!ENTITY glib-Sequences SYSTEM "xml/sequence.xml">
-<!ENTITY glib-Trash-Stacks SYSTEM "xml/trash_stack.xml">
-<!ENTITY glib-Hash-Tables SYSTEM "xml/hash_tables.xml">
-<!ENTITY glib-Strings SYSTEM "xml/strings.xml">
-<!ENTITY glib-String-Chunks SYSTEM "xml/string_chunks.xml">
-<!ENTITY glib-Arrays SYSTEM "xml/arrays.xml">
-<!ENTITY glib-Pointer-Arrays SYSTEM "xml/arrays_pointer.xml">
-<!ENTITY glib-Byte-Arrays SYSTEM "xml/arrays_byte.xml">
-<!ENTITY glib-Balanced-Binary-Trees SYSTEM "xml/trees-binary.xml">
-<!ENTITY glib-N-ary-Trees SYSTEM "xml/trees-nary.xml">
-<!ENTITY glib-Quarks SYSTEM "xml/quarks.xml">
-<!ENTITY glib-Keyed-Data-Lists SYSTEM "xml/datalist.xml">
-<!ENTITY glib-Datasets SYSTEM "xml/datasets.xml">
-<!ENTITY glib-Relations-and-Tuples SYSTEM "xml/relations.xml">
-<!ENTITY glib-Caches SYSTEM "xml/caches.xml">
-<!ENTITY glib-Memory-Allocators SYSTEM "xml/allocators.xml">
-<!ENTITY glib-Spawn SYSTEM "xml/spawn.xml">
-<!ENTITY glib-Fileutils SYSTEM "xml/fileutils.xml">
-<!ENTITY glib-Shell SYSTEM "xml/shell.xml">
-<!ENTITY glib-Option SYSTEM "xml/option.xml">
-<!ENTITY glib-Markup SYSTEM "xml/markup.xml">
-<!ENTITY glib-Keyfile SYSTEM "xml/keyfile.xml">
-<!ENTITY glib-Bookmarkfile SYSTEM "xml/bookmarkfile.xml">
-<!ENTITY glib-Base64 SYSTEM "xml/base64.xml">
-<!ENTITY glib-Checksum SYSTEM "xml/checksum.xml">
-<!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
-<!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
-<!ENTITY glib-Version SYSTEM "xml/version.xml">
-<!ENTITY glib-Uri SYSTEM "xml/gurifuncs.xml">
-<!ENTITY glib-Testing SYSTEM "xml/testing.xml">
-<!ENTITY glib-Hostutils SYSTEM "xml/ghostutils.xml">
-
-<!ENTITY glib-Compiling SYSTEM "compiling.sgml">
-<!ENTITY glib-Building SYSTEM "building.sgml">
-<!ENTITY glib-Cross SYSTEM "cross.sgml">
-<!ENTITY glib-Running SYSTEM "running.sgml">
-<!ENTITY glib-Resources SYSTEM "resources.sgml">
-<!ENTITY glib-Changes SYSTEM "changes.sgml">
-<!ENTITY glib-RegexSyntax SYSTEM "regex-syntax.sgml">
-
-<!ENTITY glib-gettextize SYSTEM "glib-gettextize.xml">
-<!ENTITY gtester SYSTEM "gtester.xml">
-<!ENTITY gtester-report SYSTEM "gtester-report.xml">
-
 <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -109,104 +30,102 @@ manipulating the <emphasis>same</emphasis> data structure, they must use a lock 
 synchronize their operation.
     </para>
 
-    &glib-Building;
-    &glib-Cross;
-    &glib-Compiling;
-    &glib-Running;
-    &glib-Changes;
-    &glib-RegexSyntax;
-    &glib-Resources;
+    <xi:include href="building.sgml" />
+    <xi:include href="cross.sgml" />
+    <xi:include href="running.sgml" />
+    <xi:include href="changes.sgml" />
+    <xi:include href="regex-syntax.sgml" />
+    <xi:include href="resources.sgml" />
  
   </chapter> 
 
   <chapter id="glib-fundamentals">
     <title>GLib Fundamentals</title>
-    &glib-Version;
-    &glib-Basic-Types;
-    &glib-Limits-of-Basic-Types;
-    &glib-Standard-Macros;
-    &glib-Type-Conversion-Macros;
-    &glib-Byte-Order-Macros;
-    &glib-Numerical-Definitions;
-    &glib-Miscellaneous-Macros;
-    &glib-Atomic-Operations;
+    <xi:include href="xml/version.xml" />
+    <xi:include href="xml/types.xml" />
+    <xi:include href="xml/limits.xml" />
+    <xi:include href="xml/macros.xml" />
+    <xi:include href="xml/type_conversion.xml" />
+    <xi:include href="xml/byte_order.xml" />
+    <xi:include href="xml/numerical.xml" />
+    <xi:include href="xml/macros_misc.xml" />
+    <xi:include href="xml/atomic_operations.xml" />
   </chapter>
 
   <chapter id="glib-core">
     <title>GLib Core Application Support</title>
-    &glib-The-Main-Event-Loop;
-    &glib-Threads;
-    &glib-Thread-Pools;
-    &glib-Async-Queues;
-    &glib-Dynamic-Loading-of-Modules;
-    &glib-Memory-Allocation;
-    &glib-IO-Channels;
-    &glib-Error-Reporting;
-    &glib-Warnings-and-Assertions;
-    &glib-Message-Logging;
+    <xi:include href="xml/main.xml" />
+    <xi:include href="xml/threads.xml" />
+    <xi:include href="xml/thread_pools.xml" />
+    <xi:include href="xml/async_queues.xml" />
+    <xi:include href="xml/modules.xml" />
+    <xi:include href="xml/memory.xml" />
+    <xi:include href="xml/iochannels.xml" />
+    <xi:include href="xml/error_reporting.xml" />
+    <xi:include href="xml/warnings.xml" />
+    <xi:include href="xml/messages.xml" />
   </chapter>
 
   <chapter id="glib-utilities">
     <title>GLib Utilities</title>
-    &glib-String-Utility-Functions;
-    &glib-Character-Set-Conversion;
-    &glib-Unicode-Manipulation;
-    &glib-Base64;
-    &glib-Checksum;
-    &glib-i18n;
-    &glib-Date-and-Time-Functions;
-    &glib-Random-Numbers;   
-    &glib-Hook-Functions;
-    &glib-Miscellaneous-Utility-Functions;
-    &glib-Lexical-Scanner;
-    &glib-Automatic-String-Completion;
-    &glib-Timers;
-    &glib-Spawn;
-    &glib-Fileutils;
-    &glib-Uri;
-    &glib-Hostutils;
-    &glib-Shell;
-    &glib-Option;
-    &glib-Pattern-Matching;
-    &glib-Regex;
-    &glib-Markup;
-    &glib-Keyfile;
-    &glib-Bookmarkfile;
-    &glib-Testing;
-    &glib-Windows-Compatibility-Functions;
+      <xi:include href="xml/string_utils.xml" />
+      <xi:include href="xml/conversions.xml" />
+      <xi:include href="xml/unicode.xml" />
+      <xi:include href="xml/base64.xml" />
+      <xi:include href="xml/checksum.xml" />
+      <xi:include href="xml/i18n.xml" />
+      <xi:include href="xml/date.xml" />
+      <xi:include href="xml/random_numbers.xml" />
+      <xi:include href="xml/hooks.xml" />
+      <xi:include href="xml/misc_utils.xml" />
+      <xi:include href="xml/scanner.xml" />
+      <xi:include href="xml/completion.xml" />
+      <xi:include href="xml/timers.xml" />
+      <xi:include href="xml/spawn.xml" />
+      <xi:include href="xml/fileutils.xml" />
+      <xi:include href="xml/gurifuncs.xml" />
+      <xi:include href="xml/ghostutils.xml" />
+      <xi:include href="xml/shell.xml" />
+      <xi:include href="xml/option.xml" />
+      <xi:include href="xml/patterns.xml" />
+      <xi:include href="xml/gregex.xml" />
+      <xi:include href="xml/markup.xml" />
+      <xi:include href="xml/keyfile.xml" />
+      <xi:include href="xml/bookmarkfile.xml" />
+      <xi:include href="xml/testing.xml" />
+      <xi:include href="xml/windows.xml" />
   </chapter>
 
   <chapter id="glib-data-types">
     <title>GLib Data Types</title>
-    &glib-Memory-Slices;
-    &glib-Memory-Chunks;
-    &glib-Doubly-Linked-Lists;
-    &glib-Singly-Linked-Lists;
-    &glib-Double-ended-Queues;
-    &glib-Sequences;
-    &glib-Trash-Stacks;
-    &glib-Hash-Tables;
-    &glib-Strings;
-    &glib-String-Chunks;
-    &glib-Arrays;
-    &glib-Pointer-Arrays;
-    &glib-Byte-Arrays;
-    &glib-Balanced-Binary-Trees;
-    &glib-N-ary-Trees;
-    &glib-Quarks;
-    &glib-Keyed-Data-Lists;
-    &glib-Datasets;
-    &glib-Relations-and-Tuples;
-    &glib-Caches;
-    &glib-Memory-Allocators;
+      <xi:include href="xml/memory_slices.xml" />
+      <xi:include href="xml/memory_chunks.xml" />
+      <xi:include href="xml/linked_lists_double.xml" />
+      <xi:include href="xml/linked_lists_single.xml" />
+      <xi:include href="xml/queue.xml" />
+      <xi:include href="xml/sequence.xml" />
+      <xi:include href="xml/trash_stack.xml" />
+      <xi:include href="xml/hash_tables.xml" />
+      <xi:include href="xml/strings.xml" />
+      <xi:include href="xml/string_chunks.xml" />
+      <xi:include href="xml/arrays.xml" />
+      <xi:include href="xml/arrays_pointer.xml" />
+      <xi:include href="xml/arrays_byte.xml" />
+      <xi:include href="xml/trees-binary.xml" />
+      <xi:include href="xml/trees-nary.xml" />
+      <xi:include href="xml/quarks.xml" />
+      <xi:include href="xml/datalist.xml" />
+      <xi:include href="xml/datasets.xml" />
+      <xi:include href="xml/relations.xml" />
+      <xi:include href="xml/caches.xml" />
+      <xi:include href="xml/allocators.xml" />
   </chapter>
 
   <chapter id="tools">
     <title>GLib Tools</title>
-
-    &glib-gettextize;
-    &gtester;
-    &gtester-report;
+    <xi:include href="glib-gettextize.xml" />
+    <xi:include href="gtester.xml" />
+    <xi:include href="gtester-report.xml" />
   </chapter>
 
   <index id="api-index-full">

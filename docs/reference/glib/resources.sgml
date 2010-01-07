@@ -1,3 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
 <refentry id="glib-resources" revision="17 Jan 2002">
 <refmeta>
 <refentrytitle>Mailing lists and bug reports</refentrytitle>
