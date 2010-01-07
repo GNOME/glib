@@ -1,11 +1,16 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
-<partintro>
-  <para>
-    This chapter tries to answer the real-life questions of users and presents
-    the most common scenario use cases I could come up with.
-    The use cases are presented from most likely to less likely.
-  </para>
-</partintro>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<part label="IV">
+  <title>Tutorial</title>
+  <partintro>
+    <para>
+      This chapter tries to answer the real-life questions of users and presents
+      the most common scenario use cases I could come up with.
+      The use cases are presented from most likely to less likely.
+    </para>
+  </partintro>
 
 <chapter id="howto-gobject">
   <title>How to define and implement a new GObject</title>
@@ -1712,4 +1717,4 @@ g_object_do_class_init (GObjectClass *class)
 
     </sect2>
 -->
-
+</part>

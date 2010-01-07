@@ -1,4 +1,7 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
   <chapter id="chapter-gtype">
     <title>The GLib Dynamic Type System</title>
 
@@ -900,7 +903,7 @@ maman_ibaz_base_init (gpointer g_iface)
           
         <para>
           The above process can be summarized as follows:
-          <table id="ginterface-init-table">
+          <table id="ginterface-fini-table">
             <title>Interface Finalization</title>
             <tgroup cols="3">
               <colspec colwidth="*" colnum="1" align="left"/>

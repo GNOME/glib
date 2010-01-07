@@ -1,29 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY gobject-GType SYSTEM "xml/gtype.xml">
-<!ENTITY gobject-GTypePlugin SYSTEM "xml/gtypeplugin.xml">
-<!ENTITY gobject-GTypeModule SYSTEM "xml/gtypemodule.xml">
-<!ENTITY gobject-The-Base-Object-Type SYSTEM "xml/objects.xml">
-<!ENTITY gobject-Enumeration-and-Flag-Types SYSTEM "xml/enumerations_flags.xml">
-<!ENTITY gobject-Boxed-Types SYSTEM "xml/gboxed.xml">
-<!ENTITY gobject-Generic-values SYSTEM "xml/generic_values.xml">
-<!ENTITY gobject-param-value-types SYSTEM "xml/param_value_types.xml">
-<!ENTITY gobject-GParamSpec SYSTEM "xml/gparamspec.xml">
-<!ENTITY gobject-Varargs-Value-Collection SYSTEM "xml/value_collection.xml">
-<!ENTITY gobject-Signals SYSTEM "xml/signals.xml">
-<!ENTITY gobject-Closures SYSTEM "xml/gclosure.xml">
-<!ENTITY gobject-Value-Arrays SYSTEM "xml/value_arrays.xml">
-<!ENTITY glib-mkenums SYSTEM "glib-mkenums.xml">
-<!ENTITY glib-genmarshal SYSTEM "glib-genmarshal.xml">
-<!ENTITY gobject-query SYSTEM "gobject-query.xml">
-
-<!ENTITY tutorial-Intro SYSTEM "tut_intro.xml">
-<!ENTITY tutorial-GType SYSTEM "tut_gtype.xml">
-<!ENTITY tutorial-GObject SYSTEM "tut_gobject.xml">
-<!ENTITY tutorial-GSignal SYSTEM "tut_gsignal.xml">
-<!ENTITY tutorial-HowTo SYSTEM "tut_howto.xml">
-<!ENTITY tutorial-Tools SYSTEM "tut_tools.xml">
 
 <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
 <!ENTITY version SYSTEM "version.xml">
@@ -85,46 +62,38 @@
   <part label="I">
     <title>Concepts</title>
 
-    &tutorial-Intro;
-    &tutorial-GType;
-    &tutorial-GObject;
-    &tutorial-GSignal;
+    <xi:include href="tut_intro.xml" />
+    <xi:include href="tut_gtype.xml" />
+    <xi:include href="tut_gobject.xml" />
+    <xi:include href="tut_gsignal.xml" />
   </part>
   <reference label="II">
     <title>API Reference</title>
-    
-      &gobject-GType;
-      &gobject-GTypePlugin;
-      &gobject-GTypeModule;
-      &gobject-The-Base-Object-Type;
-      &gobject-Enumeration-and-Flag-Types;
-      &gobject-Boxed-Types;
-      &gobject-Generic-values;
-      &gobject-param-value-types;
-      &gobject-Varargs-Value-Collection;
-      &gobject-GParamSpec;
-      &gobject-Signals;
-      &gobject-Closures;
-      &gobject-Value-Arrays;
-      
+
+      <xi:include href="xml/gtype.xml" />
+      <xi:include href="xml/gtypeplugin.xml" />
+      <xi:include href="xml/gtypemodule.xml" />
+      <xi:include href="xml/objects.xml" />
+      <xi:include href="xml/enumerations_flags.xml" />
+      <xi:include href="xml/gboxed.xml" />
+      <xi:include href="xml/generic_values.xml" />
+      <xi:include href="xml/param_value_types.xml" />
+      <xi:include href="xml/gparamspec.xml" />
+      <xi:include href="xml/value_collection.xml" />
+      <xi:include href="xml/signals.xml" />
+      <xi:include href="xml/gclosure.xml" />
+      <xi:include href="xml/value_arrays.xml" />
   </reference>
   <reference label="III">
     <title>Tools Reference</title>
 
-    &glib-mkenums;
-    &glib-genmarshal;
-    &gobject-query;
+    <xi:include href="glib-mkenums.xml" />
+    <xi:include href="glib-genmarshal.xml" />
+    <xi:include href="gobject-query.xml" />
   </reference>
-  <part label="IV">
-    <title>Tutorial</title>
 
-    &tutorial-HowTo;
-  </part>
-  <part label="V">
-    <title>Related Tools</title>
-
-    &tutorial-Tools;
-  </part>
+  <xi:include href="tut_howto.xml" />
+  <xi:include href="tut_tools.xml" />
 
   <index id="api-index-full">
     <title>Index</title>
