@@ -997,18 +997,38 @@ GIBaseInfo *
 g_type_info_get_interface (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
+  /* For embedded types, the given offset is a pointer to the actual blob,
+   * after the end of the field.  In that case we know it's a "subclass" of
+   * CommonBlob, so use that to determine the info type.
+   */
   if (rinfo->type_is_embedded)
-    return (GIBaseInfo *) g_info_new (type->offset, (GIBaseInfo*)info, rinfo->typelib,
-                                      rinfo->offset);
-
-  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
-      InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
-      
-      if (blob->tag == GI_TYPE_TAG_INTERFACE)
-        return g_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
+      CommonBlob *common = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
+      GIInfoType info_type;
+
+      switch (common->blob_type)
+        {
+          case BLOB_TYPE_CALLBACK:
+            info_type = GI_INFO_TYPE_CALLBACK;
+            break;
+          default:
+            g_assert_not_reached ();
+            return NULL;
+        }
+      return (GIBaseInfo *) g_info_new (info_type, (GIBaseInfo*)info, rinfo->typelib,
+                                        rinfo->offset);
+    }
+  else
+    {
+      SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+      if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+        {
+          InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+
+          if (blob->tag == GI_TYPE_TAG_INTERFACE)
+            return g_info_from_entry (rinfo->repository, rinfo->typelib, blob->interface);
+        }
     }
 
   return NULL;
