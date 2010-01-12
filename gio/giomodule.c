@@ -534,7 +534,6 @@ _g_io_modules_ensure_extension_points_registered (void)
 void
 _g_io_modules_ensure_loaded (void)
 {
-  GList *modules, *l;
   static gboolean loaded_dirs = FALSE;
   const char *module_path;
 
@@ -546,24 +545,22 @@ _g_io_modules_ensure_loaded (void)
     {
       loaded_dirs = TRUE;
 
-      modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
+      g_io_modules_scan_all_in_directory (GIO_MODULE_DIR);
 
       module_path = g_getenv ("GIO_EXTRA_MODULES");
 
       if (module_path)
-        {
-          int i = 0;
-          gchar **paths;
-          paths = g_strsplit (module_path, ":", 0);
-    
-          while (paths[i] != NULL)
-            { 
-              modules = g_list_concat (modules, g_io_modules_load_all_in_directory (paths[i]));
-              i++;
-            }
+	{
+	  gchar **paths;
+	  int i;
 
-          g_strfreev (paths);
-        }
+	  paths = g_strsplit (module_path, ":", 0);
+
+	  for (i = 0; paths[i] != NULL; i++)
+	    g_io_modules_scan_all_in_directory (paths[i]);
+
+	  g_strfreev (paths);
+	}
 
       /* Initialize types from built-in "modules" */
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
@@ -585,11 +582,6 @@ _g_io_modules_ensure_loaded (void)
       _g_winhttp_vfs_get_type ();
 #endif
       _g_local_vfs_get_type ();
-    
-      for (l = modules; l != NULL; l = l->next)
-	g_type_module_unuse (G_TYPE_MODULE (l->data));
-      
-      g_list_free (modules);
     }
 
   G_UNLOCK (loaded_dirs);
