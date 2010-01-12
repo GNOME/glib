@@ -443,6 +443,16 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
+bin_PROGRAMS = gio-querymodules
+gio_querymodules_SOURCES = gio-querymodules.c
+gio_querymodules_LDADD	 = \
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la	\
+	libgio-2.0.la					\
+	$(NULL)
+
+
 if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
