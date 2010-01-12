@@ -6,12 +6,17 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS = . tests
 
+if HAVE_THREADS
+THREAD_FLAGS=-DG_THREADS_MANDATORY
+endif
+
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/glib			\
 	-I$(top_builddir)			\
 	$(GLIB_DEBUG_FLAGS)			\
+	$(THREAD_FLAGS)				\
 	-DG_DISABLE_DEPRECATED			\
 	-DGOBJECT_COMPILATION			\
 	-DG_DISABLE_CONST_RETURNS

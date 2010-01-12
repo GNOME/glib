@@ -41,6 +41,10 @@ TESTS = abicheck.sh pltcheck.sh
 endif
 endif
 
+if HAVE_THREADS
+THREAD_FLAGS=-DG_THREADS_MANDATORY
+endif
+
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"			\
 	-I$(top_builddir)				\
@@ -48,6 +52,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/glib				\
 	-I$(top_srcdir)/gmodule				\
 	$(GLIB_DEBUG_FLAGS)				\
+	$(THREAD_FLAGS)					\
 	-DG_DISABLE_DEPRECATED				\
 	-DGIO_COMPILATION				\
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	

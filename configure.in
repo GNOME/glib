@@ -2349,6 +2349,7 @@ case $host in
     ;;
 esac
 
+AM_CONDITIONAL(HAVE_THREADS, [test "$have_threads" != "none"])
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
 		   [Source file containing theread implementation])
 AC_SUBST(G_THREAD_CFLAGS)
