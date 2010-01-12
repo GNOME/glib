@@ -2,7 +2,7 @@ include $(top_srcdir)/Makefile.decl
 
 NULL =
 
-module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symbols-regex '^g_io_module_(load|unload)'
+module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symbols-regex '^g_io_module_(load|unload|query)'
 
 giomodule_LTLIBRARIES = libgiofam.la
 giomoduledir = $(GIO_MODULE_DIR)
@@ -37,3 +37,16 @@ libgiofam_la_LIBADD = \
 		$(FAM_LIBS) \
 		$(NULL)
 
+if CROSS_COMPILING
+RUN_QUERY_MODULES=false
+else
+RUN_QUERY_MODULES=true
+endif
+
+install-data-hook:
+	if $(RUN_QUERY_MODULES) && test -z "$(DESTDIR)" ; then					\
+		$(top_builddir)/gio/gio-querymodules$(EXEEXT) $(DESTDIR)$(GIO_MODULE_DIR) ;	\
+	fi
+
+uninstall-local:
+	$(RM) $(DESTDIR)$(GIO_MODULE_DIR)/giomodules.cache
