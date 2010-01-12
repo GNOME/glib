@@ -49,6 +49,14 @@ threads, so doing this should be avoided if possible.
 </para>
 
 <para>
+Please note that since version 2.24 the GObject initialization
+function g_type_init() initializes threads (with a %NULL argument), so
+most applications, including those using Gtk+ will run with threads
+enabled. If you want a special thread implementation, make sure you
+call g_thread_init() before g_type_init() is called.
+</para>
+
+<para>
 After calling g_thread_init(), GLib is completely
 thread safe (all global data is automatically locked), but individual
 data structure instances are not automatically locked for performance
