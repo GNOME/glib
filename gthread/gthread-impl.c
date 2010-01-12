@@ -294,7 +294,12 @@ g_thread_init (GThreadFunctions* init)
   gboolean supported;
 
   if (thread_system_already_initialized)
-    g_error ("GThread system may only be initialized once.");
+    {
+      if (init != NULL)
+	g_warning ("GThread system already initialized, ignoring custom thread implementation.");
+
+      return;
+    }
 
   thread_system_already_initialized = TRUE;
 

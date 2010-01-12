@@ -33,25 +33,22 @@ primitives to portably create and manage threads (#GThread).
 </para>
 
 <para>
-You must call g_thread_init() before executing any other GLib
-functions (except g_mem_set_vtable()) in a GLib program if
-g_thread_init() will be called at all. This is a requirement even if
-no threads are in fact ever created by the process. It is enough that
-g_thread_init() is called. If other GLib functions have been called
-before that, the behaviour of the program is undefined. An exception
-is g_mem_set_vtable() which may be called before g_thread_init().
+The threading system is initialized with g_thread_init(), which takes
+an optional custom thread implementation or %NULL for the default implementation.
+If you want to call g_thread_init() with a non-%NULL argument this must be done
+before executing any other GLib functions (except g_mem_set_vtable()). This is a
+requirement even if no threads are in fact ever created by the process.
+</para>
 
-Failing this requirement can lead to hangs or crashes, apparently more
-easily on Windows than on Linux, for example.
+<para>
+Calling g_thread_init() with a %NULL argument is somewhat more relaxed. You
+may call any other glib functions in the main thread before g_thread_init() as
+long as g_thread_init() is not called from a glib callback, or with any locks held.
+However, many libraries above glib does not support late initialization of
+threads, so doing this should be avoided if possible.
+</para>
 
-Please note that if you call functions in some GLib-using library, in
-particular those above the GTK+ stack, that library might well call
-g_thread_init() itself, or call some other library that calls
-g_thread_init(). Thus, if you use some GLib-based library that is
-above the GTK+ stack, it is safest to call g_thread_init() in your
-application's main() before calling any GLib functions or functions in
-GLib-using libraries.
-
+<para>
 After calling g_thread_init(), GLib is completely
 thread safe (all global data is automatically locked), but individual
 data structure instances are not automatically locked for performance
@@ -198,24 +195,10 @@ may report unreliable times.
 </para></note>
 
 <para>
-g_thread_init() might only be called once. On the second call
-it will abort with an error. If you want to make sure that the thread
-system is initialized, you can do this:
-</para>
-
-<para>
-<informalexample>
-<programlisting>
-if (!g_thread_supported (<!-- -->)) g_thread_init (NULL);
-</programlisting>
-</informalexample>
-</para>
-
-<para>
-After that line, either the thread system is initialized or, if no
-thread system is available in GLib (i.e. either #G_THREADS_ENABLED is
-not defined or #G_THREADS_IMPL_NONE is defined), the program will
-abort.
+Calling g_thread_init() multiple times is allowed (since version
+2.24), but nothing happens except for the first call. If the argument
+is non-%NULL on such a call a warning will be printed, but otherwise
+the argument is ignored.
 </para>
 
 <para>
