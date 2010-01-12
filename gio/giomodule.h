@@ -49,6 +49,7 @@ typedef struct _GIOModuleClass GIOModuleClass;
 GType              g_io_module_get_type                       (void) G_GNUC_CONST;
 GIOModule         *g_io_module_new                            (const gchar       *filename);
 
+void               g_io_modules_scan_all_in_directory         (const char        *dirname);
 GList             *g_io_modules_load_all_in_directory         (const gchar       *dirname);
 
 GIOExtensionPoint *g_io_extension_point_register              (const char        *name);
@@ -91,6 +92,36 @@ void   g_io_module_load   (GIOModule *module);
  * to finalize the module.
  **/
 void   g_io_module_unload (GIOModule *module);
+
+/**
+ * g_io_module_query:
+ *
+ * Optional API for GIO modules to implement.
+ *
+ * Should return a list of all the extension points that may be
+ * implemented in this module.
+ *
+ * This method will not be called in normal use, however it may be
+ * called when probing existing modules and recording which extension
+ * points that this modle is used for. This means we won't have to
+ * load and initialze this module unless its needed
+ *
+ * If this function is not implemented by the module the module will
+ * always be loaded, initialized and then unloaded on application startup
+ * so that it can register its extension points during init.
+ *
+ * Note that a module need not actually implement all the extension points
+ * that g_io_module_query returns, since the exact list of extension may
+ * depend on runtime issues. However all extension points actually implemented
+ * must be returned by g_io_module_query (if defined).
+ *
+ * When installing a module that implements g_io_module_query you must
+ * run gio-querymodules in order to build the cache files required for
+ * lazy loading.
+ *
+ * Since: 2.24
+ **/
+char **g_io_module_query (void);
 
 G_END_DECLS
 

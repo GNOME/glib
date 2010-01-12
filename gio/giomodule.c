@@ -34,6 +34,7 @@
 #include "gdesktopappinfo.h"
 #endif
 #include "gioalias.h"
+#include <glib/gstdio.h>
 
 /**
  * SECTION:giomodule
@@ -92,10 +93,11 @@
  */
 struct _GIOModule {
   GTypeModule parent_instance;
-  
+
   gchar       *filename;
   GModule     *library;
-  
+  gboolean     initialized; /* The module was loaded at least once */
+
   void (* load)   (GIOModule *module);
   void (* unload) (GIOModule *module);
 };
@@ -109,6 +111,22 @@ struct _GIOModuleClass
 static void      g_io_module_finalize      (GObject      *object);
 static gboolean  g_io_module_load_module   (GTypeModule  *gmodule);
 static void      g_io_module_unload_module (GTypeModule  *gmodule);
+
+struct _GIOExtension {
+  char *name;
+  GType type;
+  gint priority;
+};
+
+struct _GIOExtensionPoint {
+  GType required_type;
+  char *name;
+  GList *extensions;
+  GList *lazy_load_modules;
+};
+
+static GHashTable *extension_points = NULL;
+G_LOCK_DEFINE_STATIC(extension_points);
 
 G_DEFINE_TYPE (GIOModule, g_io_module, G_TYPE_TYPE_MODULE);
 
@@ -174,6 +192,7 @@ g_io_module_load_module (GTypeModule *gmodule)
 
   /* Initialize the loaded module */
   module->load (module);
+  module->initialized = TRUE;
 
   return TRUE;
 }
@@ -228,10 +247,153 @@ is_valid_module_name (const gchar *basename)
 }
 
 /**
+ * g_io_modules_scan_all_in_directory:
+ * @dirname: pathname for a directory containing modules to scan.
+ *
+ * Scans all the modules in the specified directory, ensuring that
+ * any extension point implemented by a module is registered.
+ *
+ * This may not actually load and initialize all the types in each
+ * module, some modules may be lazily loaded and initialized when
+ * an extension point it implementes is used with e.g.
+ * g_io_extension_point_get_extensions() or
+ * g_io_extension_point_get_extension_by_name().
+ *
+ * If you need to guarantee that all types are loaded in all the modules,
+ * use g_io_modules_scan_all_in_directory().
+ *
+ * Since: 2.24
+ **/
+void
+g_io_modules_scan_all_in_directory (const char *dirname)
+{
+  const gchar *name;
+  char *filename;
+  GDir *dir;
+  struct stat statbuf;
+  char *data;
+  time_t cache_mtime;
+  GHashTable *cache;
+
+  if (!g_module_supported ())
+    return;
+
+  dir = g_dir_open (dirname, 0, NULL);
+  if (!dir)
+    return;
+
+  filename = g_build_filename (dirname, "giomodule.cache", NULL);
+
+  cache = g_hash_table_new_full (g_str_hash, g_str_equal,
+				 g_free, (GDestroyNotify)g_strfreev);
+
+  cache_mtime = 0;
+  if (g_stat (filename, &statbuf) == 0 &&
+      g_file_get_contents (filename, &data, NULL, NULL))
+    {
+      char **lines;
+      int i;
+
+      /* Cache mtime is the time the cache file was created, any file
+       * that has a ctime before this was created then and not modified
+       * since then (userspace can't change ctime). Its possible to change
+       * the ctime forward without changing the file content, by e.g.
+       * chmoding the file, but this is uncommon and will only cause us
+       * to not use the cache so will not cause bugs.
+       */
+      cache_mtime = statbuf.st_mtime;
+
+      lines = g_strsplit (data, "\n", -1);
+      g_free (data);
+
+      for (i = 0;  lines[i] != NULL; i++)
+	{
+	  char *line = lines[i];
+	  char *file;
+	  char *colon;
+	  char **extension_points;
+
+	  if (line[0] == '#')
+	    continue;
+
+	  colon = strchr (line, ':');
+	  if (colon == NULL || line == colon)
+	    continue; /* Invalid line, ignore */
+
+	  *colon = 0; /* terminate filename */
+	  file = strdup (line);
+	  colon++; /* after colon */
+
+	  while (g_ascii_isspace (*colon))
+	    colon++;
+
+	  extension_points = g_strsplit (colon, ",", -1);
+	  g_hash_table_insert (cache, g_strdup (file), extension_points);
+	}
+      g_strfreev (lines);
+    }
+
+  while ((name = g_dir_read_name (dir)))
+    {
+      if (is_valid_module_name (name))
+	{
+	  GIOExtensionPoint *extension_point;
+	  GIOModule *module;
+	  gchar *path;
+	  char **extension_points;
+	  int i;
+
+	  path = g_build_filename (dirname, name, NULL);
+	  module = g_io_module_new (path);
+
+	  extension_points = g_hash_table_lookup (cache, name);
+	  if (extension_points != NULL &&
+	      g_stat (path, &statbuf) == 0 &&
+	      statbuf.st_ctime <= cache_mtime)
+	    {
+	      /* Lazy load/init the library when first required */
+	      for (i = 0; extension_points[i] != NULL; i++)
+		{
+		  extension_point =
+		    g_io_extension_point_register (extension_points[i]);
+		  extension_point->lazy_load_modules =
+		    g_list_prepend (extension_point->lazy_load_modules,
+				    module);
+		}
+	    }
+	  else
+	    {
+	      /* Try to load and init types */
+	      if (g_type_module_use (G_TYPE_MODULE (module)))
+		g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
+	      else
+		{ /* Failure to load */
+		  g_printerr ("Failed to load module: %s\n", path);
+		  g_object_unref (module);
+		  g_free (path);
+		  continue;
+		}
+	    }
+
+	  g_free (path);
+	}
+    }
+
+  g_dir_close (dir);
+
+  g_hash_table_destroy (cache);
+}
+
+
+/**
  * g_io_modules_load_all_in_directory:
  * @dirname: pathname for a directory containing modules to load.
  *
  * Loads all the modules in the specified directory.
+ *
+ * If don't require all modules to be initialized (and thus registering
+ * all gtypes) then you can use g_io_modules_scan_all_in_directory()
+ * which allows delayed/lazy loading of modules.
  *
  * Returns: a list of #GIOModules loaded from the directory,
  *      All the modules are loaded into memory, if you want to
@@ -433,22 +595,6 @@ _g_io_modules_ensure_loaded (void)
   G_UNLOCK (loaded_dirs);
 }
 
-struct _GIOExtension {
-  char *name;
-  GType type;
-  gint priority;
-};
-
-struct _GIOExtensionPoint {
-  GType required_type;
-  char *name;
-  GList *extensions;
-};
-
-static GHashTable *extension_points = NULL;
-G_LOCK_DEFINE_STATIC(extension_points);
-
-
 static void
 g_io_extension_point_free (GIOExtensionPoint *ep)
 {
@@ -477,11 +623,11 @@ g_io_extension_point_register (const char *name)
 					      NULL,
 					      (GDestroyNotify)g_io_extension_point_free);
 
-  if (g_hash_table_lookup (extension_points, name) != NULL)
+  ep = g_hash_table_lookup (extension_points, name);
+  if (ep != NULL)
     {
-      g_warning ("Extension point %s registered multiple times", name);
       G_UNLOCK (extension_points);
-      return NULL;
+      return ep;
     }
 
   ep = g_new0 (GIOExtensionPoint, 1);
@@ -549,6 +695,27 @@ g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)
   return extension_point->required_type;
 }
 
+void
+lazy_load_modules (GIOExtensionPoint *extension_point)
+{
+  GIOModule *module;
+  GList *l;
+
+  for (l = extension_point->lazy_load_modules; l != NULL; l = l->next)
+    {
+      module = l->data;
+
+      if (!module->initialized)
+	{
+	  if (g_type_module_use (G_TYPE_MODULE (module)))
+	    g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
+	  else
+	    g_printerr ("Failed to load module: %s\n",
+			module->filename);
+	}
+    }
+}
+
 /**
  * g_io_extension_point_get_extensions:
  * @extension_point: a #GIOExtensionPoint
@@ -562,6 +729,7 @@ g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)
 GList *
 g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
 {
+  lazy_load_modules (extension_point);
   return extension_point->extensions;
 }
 
@@ -581,6 +749,7 @@ g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
 {
   GList *l;
 
+  lazy_load_modules (extension_point);
   for (l = extension_point->extensions; l != NULL; l = l->next)
     {
       GIOExtension *e = l->data;

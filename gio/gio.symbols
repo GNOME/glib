@@ -617,6 +617,7 @@ g_io_error_from_errno
 #if IN_FILE(__G_IO_MODULE_C__)
 g_io_module_get_type  G_GNUC_CONST
 g_io_module_new
+g_io_modules_scan_all_in_directory
 g_io_modules_load_all_in_directory
 g_io_extension_point_register
 g_io_extension_point_lookup
