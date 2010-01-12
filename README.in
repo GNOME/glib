@@ -27,6 +27,14 @@ See the file 'INSTALL'
 Notes about GLib 2.24
 =====================
 
+* It is now allowed to call g_thread_init(NULL) multiple times, and
+  to call glib functions before g_thread_init(NULL) is called
+  (although the later is mainly a change in docs as this worked before
+  too). See the GThread reference documentation for the details.
+
+* GObject now links to GThread and threads are enabled automatically
+  when g_type_init() is called.
+
 * GObject no longer allows to call g_object_set() on construct-only properties
   while an object is being initialized. If this behavior is needed, setting a
   custom constructor that just chains up will re-enable this functionality.
