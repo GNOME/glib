@@ -254,6 +254,7 @@ g_charset_converter_convert (GConverter *converter,
   gchar *inbufp, *outbufp;
   gsize in_left, out_left;
   int errsv;
+  gboolean reset;
 
   conv = G_CHARSET_CONVERTER (converter);
 
@@ -264,29 +265,37 @@ g_charset_converter_convert (GConverter *converter,
       return G_CONVERTER_ERROR;
     }
 
-  /* Iconv never produces output with no input, so handle this
-     specially */
-  if (inbuf_size == 0)
-    {
-      if (flags & G_CONVERTER_INPUT_AT_END)
-	return G_CONVERTER_FINISHED;
-
-      if (flags & G_CONVERTER_FLUSH)
-	return G_CONVERTER_FLUSHED;
-
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
-			   _("Incomplete multibyte sequence in input"));
-      return G_CONVERTER_ERROR;
-    }
-
   inbufp = (char *)inbuf;
   outbufp = (char *)outbuf;
   in_left = inbuf_size;
   out_left = outbuf_size;
+  reset = FALSE;
 
-  res = g_iconv (conv->iconv,
-		 &inbufp, &in_left,
-		 &outbufp, &out_left);
+  /* if there is not input try to flush the data */
+  if (inbuf_size == 0)
+    {
+      if (flags & G_CONVERTER_INPUT_AT_END ||
+          flags & G_CONVERTER_FLUSH)
+        {
+          reset = TRUE;
+        }
+      else
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
+                               _("Incomplete multibyte sequence in input"));
+          return G_CONVERTER_ERROR;
+        }
+    }
+
+  if (reset)
+    /* call g_iconv with NULL inbuf to cleanup shift state */
+    res = g_iconv (conv->iconv,
+                   NULL, &in_left,
+                   &outbufp, &out_left);
+  else
+    res = g_iconv (conv->iconv,
+                   &inbufp, &in_left,
+                   &outbufp, &out_left);
 
   *bytes_read = inbufp - (char *)inbuf;
   *bytes_written = outbufp - (char *)outbuf;
@@ -350,12 +359,12 @@ g_charset_converter_convert (GConverter *converter,
     ok:
       ret = G_CONVERTER_CONVERTED;
 
-      if (in_left == 0 &&
+      if (reset &&
 	  (flags & G_CONVERTER_INPUT_AT_END))
-	ret = G_CONVERTER_FINISHED;
-      else if (in_left == 0 &&
+        ret = G_CONVERTER_FINISHED;
+      else if (reset &&
 	       (flags & G_CONVERTER_FLUSH))
-	ret = G_CONVERTER_FLUSHED;
+        ret = G_CONVERTER_FLUSHED;
     }
 
   return ret;
