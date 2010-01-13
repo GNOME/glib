@@ -32,14 +32,11 @@
 #define TARGET_ROUND_TIME 0.004
 
 static gboolean verbose = FALSE;
-static gboolean init_threads = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
 
 static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
    "Print extra information", NULL},
-  {"threads", 't', 0, G_OPTION_ARG_NONE, &init_threads,
-   "Initialize threads", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
   {NULL}
@@ -712,9 +709,6 @@ main (int   argc,
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;
     }
-
-  if (init_threads)
-    g_thread_init (NULL);
 
   if (argc > 1)
     {
