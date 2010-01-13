@@ -67,9 +67,9 @@ struct _GRealArray
     g_array_elt_zero ((array), (array)->len, 1);			\
 }G_STMT_END
 
-static gint g_nearest_pow        (gint        num) G_GNUC_CONST;
-static void g_array_maybe_expand (GRealArray *array,
-				  gint        len);
+static guint g_nearest_pow        (gint        num) G_GNUC_CONST;
+static void  g_array_maybe_expand (GRealArray *array,
+				   gint        len);
 
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -387,16 +387,18 @@ g_array_sort_with_data (GArray           *farray,
 		     user_data);
 }
 
-
-static gint
+/* Returns the smallest power of 2 greater than n, or n if
+ * such power does not fit in a guint
+ */
+static guint
 g_nearest_pow (gint num)
 {
-  gint n = 1;
+  guint n = 1;
 
-  while (n < num)
+  while (n < num && n > 0)
     n <<= 1;
 
-  return n;
+  return n ? n : num;
 }
 
 static void
