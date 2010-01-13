@@ -28,6 +28,7 @@
 #undef G_LOG_DOMAIN
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "glib.h"
 
@@ -97,6 +98,26 @@ array_ref_count (void)
 
   g_assert_cmpint (garray2->len, ==, 0);
   g_array_unref (garray2);
+}
+
+static void
+array_large_size (void)
+{
+  GArray* array;
+
+  g_test_bug ("568760");
+
+  array = g_array_new (TRUE, TRUE, sizeof (char));
+
+  /* it might take really long until the allocation happens */
+  if (g_test_trap_fork (10 /* s */ * 1000 /* ms */ * 1000 /* µs */, 0))
+    {
+      g_array_set_size (array, 1073750016);
+      exit (0); /* success */
+    }
+  g_test_trap_assert_passed ();
+
+  g_array_free (array, TRUE);
 }
 
 static void
@@ -288,10 +309,13 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_bug_base ("http://bugs.gnome.org/%s");
+
   /* array tests */
   g_test_add_func ("/array/append", array_append);
   g_test_add_func ("/array/prepend", array_prepend);
   g_test_add_func ("/array/ref-count", array_ref_count);
+  g_test_add_func ("/array/large-size", array_large_size);
 
   /* pointer arrays */
   g_test_add_func ("/pointerarray/add", pointer_array_add);
