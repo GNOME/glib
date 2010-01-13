@@ -218,6 +218,7 @@ GArray *
 g_array_ref (GArray *array)
 {
   GRealArray *rarray = (GRealArray*) array;
+  g_return_val_if_fail (array, NULL);
   g_return_val_if_fail (g_atomic_int_get (&rarray->ref_count) > 0, array);
   g_atomic_int_inc (&rarray->ref_count);
   return array;
@@ -238,6 +239,7 @@ void
 g_array_unref (GArray *array)
 {
   GRealArray *rarray = (GRealArray*) array;
+  g_return_if_fail (array);
   g_return_if_fail (g_atomic_int_get (&rarray->ref_count) > 0);
   if (g_atomic_int_dec_and_test (&rarray->ref_count))
     g_array_free (array, TRUE);
@@ -257,6 +259,9 @@ guint
 g_array_get_element_size (GArray *array)
 {
   GRealArray *rarray = (GRealArray*) array;
+
+  g_return_val_if_fail (array, 0);
+
   return rarray->elt_size;
 }
 
@@ -344,6 +349,8 @@ g_array_append_vals (GArray       *farray,
 {
   GRealArray *array = (GRealArray*) farray;
 
+  g_return_val_if_fail (array, NULL);
+
   g_array_maybe_expand (array, len);
 
   memcpy (g_array_elt_pos (array, array->len), data, 
@@ -394,6 +401,8 @@ g_array_prepend_vals (GArray        *farray,
 {
   GRealArray *array = (GRealArray*) farray;
 
+  g_return_val_if_fail (array, NULL);
+
   g_array_maybe_expand (array, len);
 
   g_memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0), 
@@ -439,6 +448,8 @@ g_array_insert_vals (GArray        *farray,
 {
   GRealArray *array = (GRealArray*) farray;
 
+  g_return_val_if_fail (array, NULL);
+
   g_array_maybe_expand (array, len);
 
   g_memmove (g_array_elt_pos (array, len + index_), 
@@ -468,6 +479,9 @@ g_array_set_size (GArray *farray,
 		  guint   length)
 {
   GRealArray *array = (GRealArray*) farray;
+
+  g_return_val_if_fail (array, NULL);
+
   if (length > array->len)
     {
       g_array_maybe_expand (array, length - array->len);
@@ -838,6 +852,9 @@ g_ptr_array_set_free_func (GPtrArray        *array,
                            GDestroyNotify    element_free_func)
 {
   GRealPtrArray* rarray = (GRealPtrArray*) array;
+
+  g_return_if_fail (array);
+
   rarray->element_free_func = element_free_func;
 }
 
@@ -856,6 +873,8 @@ GPtrArray *
 g_ptr_array_ref (GPtrArray *array)
 {
   GRealPtrArray *rarray = (GRealPtrArray*) array;
+
+  g_return_val_if_fail (array, NULL);
   g_return_val_if_fail (g_atomic_int_get (&rarray->ref_count) > 0, array);
   g_atomic_int_inc (&rarray->ref_count);
   return array;
@@ -876,6 +895,8 @@ void
 g_ptr_array_unref (GPtrArray *array)
 {
   GRealPtrArray *rarray = (GRealPtrArray*) array;
+
+  g_return_if_fail (array);
   g_return_if_fail (g_atomic_int_get (&rarray->ref_count) > 0);
   if (g_atomic_int_dec_and_test (&rarray->ref_count))
     g_ptr_array_free (array, TRUE);
