@@ -1015,12 +1015,18 @@ if test $glib_native_win32 = no; then
 
   # We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
   AC_MSG_CHECKING([for res_query])
-  AC_TRY_LINK([#include <resolv.h>],
+  AC_TRY_LINK([#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/nameser.h>
+#include <resolv.h>],
               [res_query("test", 0, 0, (void *)0, 0);],
               [AC_MSG_RESULT([yes])],
               [save_libs="$LIBS"
                LIBS="-lresolv $LIBS"
-               AC_TRY_LINK([#include <resolv.h>],
+               AC_TRY_LINK([#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/nameser.h>
+#include <resolv.h>],
                            [res_query("test", 0, 0, (void *)0, 0);],
                            [AC_MSG_RESULT([in -lresolv])
                             LIBASYNCNS_LIBADD="-lresolv"],
