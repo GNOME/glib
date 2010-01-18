@@ -69,8 +69,7 @@ union _GTypeCValue
 
 /**
  * G_VALUE_COLLECT_INIT:
- * @value: a #GValue return location. @value is supposed to be clean (freshly
- * initialized and/or freed).
+ * @value: a #GValue return location. @value must contain only 0 bytes.
  * @_value_type: the #GType to use for @value.
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the collect_value() function of

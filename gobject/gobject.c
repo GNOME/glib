@@ -1338,7 +1338,7 @@ g_object_new_valist (GType	  object_type,
 
   class = g_type_class_ref (object_type);
 
-  params = g_new (GParameter, n_alloced_params);
+  params = g_new0 (GParameter, n_alloced_params);
   name = first_property_name;
   while (name)
     {

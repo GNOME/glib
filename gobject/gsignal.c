@@ -1971,7 +1971,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
       va_start (var_args, instance);
 
       signal_return_type = node->return_type;
-      instance_and_params = g_slice_alloc (sizeof (GValue) * (n_params + 1));
+      instance_and_params = g_slice_alloc0 (sizeof (GValue) * (n_params + 1));
       param_values = instance_and_params + 1;
 
       for (i = 0; i < node->n_params; i++)
@@ -2938,7 +2938,7 @@ g_signal_emit_valist (gpointer instance,
 
   n_params = node->n_params;
   signal_return_type = node->return_type;
-  instance_and_params = g_slice_alloc (sizeof (GValue) * (n_params + 1));
+  instance_and_params = g_slice_alloc0 (sizeof (GValue) * (n_params + 1));
   param_values = instance_and_params + 1;
 
   for (i = 0; i < node->n_params; i++)
