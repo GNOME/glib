@@ -114,7 +114,10 @@ gobject_public_h_sources = \
 	gmarshal.h
 
 # GObject library header files that don't get installed
-gobject_private_h_sources = gatomicarray.h
+gobject_private_h_sources =     \
+	gatomicarray.h		\
+	gtype-private.h
+
 # GObject library C sources to build the library from
 gobject_c_sources = \
 	gatomicarray.c		\

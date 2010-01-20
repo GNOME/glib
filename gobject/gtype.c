@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "gtype.h"
+#include "gtype-private.h"
 #include "gtypeplugin.h"
 #include "gvaluecollector.h"
 #include "gbsearcharray.h"
@@ -168,6 +169,7 @@
 /* --- typedefs --- */
 typedef struct _TypeNode        TypeNode;
 typedef struct _CommonData      CommonData;
+typedef struct _BoxedData       BoxedData;
 typedef struct _IFaceData       IFaceData;
 typedef struct _ClassData       ClassData;
 typedef struct _InstanceData    InstanceData;
@@ -253,6 +255,7 @@ struct _TypeNode
 #define NODE_FUNDAMENTAL_TYPE(node)		(node->supers[node->n_supers])
 #define NODE_NAME(node)				(g_quark_to_string (node->qname))
 #define NODE_REFCOUNT(node)                     ((guint) g_atomic_int_get ((int *) &(node)->ref_count))
+#define	NODE_IS_BOXED(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_BOXED)
 #define	NODE_IS_IFACE(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_INTERFACE)
 #define	CLASSED_NODE_IFACES_ENTRIES(node)	(&(node)->_prot.iface_entries)
 #define	CLASSED_NODE_IFACES_ENTRIES_LOCKED(node)(G_ATOMIC_ARRAY_GET_LOCKED(CLASSED_NODE_IFACES_ENTRIES((node)), IFaceEntries))
@@ -294,6 +297,13 @@ struct _IFaceEntries {
 struct _CommonData
 {
   GTypeValueTable  *value_table;
+};
+
+struct _BoxedData
+{
+  CommonData         data;
+  GBoxedCopyFunc     copy_func;
+  GBoxedFreeFunc     free_func;
 };
 
 struct _IFaceData
@@ -342,6 +352,7 @@ struct _InstanceData
 union _TypeData
 {
   CommonData         common;
+  BoxedData          boxed;
   IFaceData          iface;
   ClassData          class;
   InstanceData       instance;
@@ -1119,6 +1130,12 @@ type_data_make_W (TypeNode              *node,
       data->iface.dflt_finalize = info->class_finalize;
       data->iface.dflt_data = info->class_data;
       data->iface.dflt_vtable = NULL;
+    }
+  else if (NODE_IS_BOXED (node))
+    {
+      data = g_malloc0 (sizeof (BoxedData) + vtable_size);
+      if (vtable_size)
+	vtable = G_STRUCT_MEMBER_P (data, sizeof (BoxedData));
     }
   else
     {
@@ -4163,6 +4180,34 @@ g_type_name_from_class (GTypeClass *g_class)
     return g_type_name (g_class->g_type);
 }
 
+
+/* --- private api for gboxed.c --- */
+gpointer
+_g_type_boxed_copy (GType type, gpointer value)
+{
+  TypeNode *node = lookup_type_node_I (type);
+
+  return node->data->boxed.copy_func (value);
+}
+
+void
+_g_type_boxed_free (GType type, gpointer value)
+{
+  TypeNode *node = lookup_type_node_I (type);
+
+  node->data->boxed.free_func (value);
+}
+
+void
+_g_type_boxed_init (GType          type,
+                    GBoxedCopyFunc copy_func,
+                    GBoxedFreeFunc free_func)
+{
+  TypeNode *node = lookup_type_node_I (type);
+
+  node->data->boxed.copy_func = copy_func;
+  node->data->boxed.free_func = free_func;
+}
 
 /* --- initialization --- */
 /**
