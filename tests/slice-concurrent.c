@@ -42,7 +42,7 @@ thread_func (void *arg)
 {
   struct ThreadData *td = arg;
   int i;
-  // g_print ("Thread %d starting\n", td->thread_id);
+/*   g_print ("Thread %d starting\n", td->thread_id); */
   for (i = 0; i < N_ALLOCS; i++)
     {
       if (rand() % (N_ALLOCS / 20) == 0)

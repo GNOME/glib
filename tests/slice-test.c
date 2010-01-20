@@ -22,7 +22,7 @@
 #include <string.h>
 
 #define quick_rand32()  (rand_accu = 1664525 * rand_accu + 1013904223, rand_accu)
-static guint    prime_size = 1021; // 769; // 509
+static guint    prime_size = 1021; /* 769; 509 */
 static gboolean clean_memchunks = FALSE;
 static guint    number_of_blocks = 10000;          /* total number of blocks allocated */
 static guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */

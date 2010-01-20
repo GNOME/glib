@@ -34,9 +34,9 @@ call_counter_init (gpointer tclass)
   for (i = 0; i < NUM_COUNTER_INCREMENTS; i++)
     {
       int saved_unsafe_call_counter = unsafe_call_counter;
-      g_atomic_int_add (&mtsafe_call_counter, 1); // real call count update
-      g_thread_yield(); // let concurrent threads corrupt the unsafe_call_counter state
-      unsafe_call_counter = 1 + saved_unsafe_call_counter; // non-atomic counter update
+      g_atomic_int_add (&mtsafe_call_counter, 1); /* real call count update */
+      g_thread_yield(); /* let concurrent threads corrupt the unsafe_call_counter state */
+      unsafe_call_counter = 1 + saved_unsafe_call_counter; /* non-atomic counter update */
     }
 }
 
@@ -139,7 +139,7 @@ static void
 prop_tester_init (PropTester* t)
 {
   if (t->name == NULL)
-    ; // neds unit test framework initialization: g_test_bug ("race initializing properties");
+    ; /* neds unit test framework initialization: g_test_bug ("race initializing properties"); */
 }
 static void
 prop_tester_set_property (GObject        *object,
