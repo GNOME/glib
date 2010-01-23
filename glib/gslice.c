@@ -325,14 +325,24 @@ g_slice_init_nomessage (void)
   /* we can only align to system page size */
   allocator->max_page_size = sys_page_size;
 #endif
+  if (allocator->config.always_malloc)
+    {
+      allocator->contention_counters = NULL;
+      allocator->magazines = NULL;
+      allocator->slab_stack = NULL;
+    }
+  else
+    {
+      allocator->contention_counters = g_new0 (guint, MAX_SLAB_INDEX (allocator));
+      allocator->magazines = g_new0 (ChunkLink*, MAX_SLAB_INDEX (allocator));
+      allocator->slab_stack = g_new0 (SlabInfo*, MAX_SLAB_INDEX (allocator));
+    }
+
   allocator->magazine_mutex = NULL;     /* _g_slice_thread_init_nomessage() */
-  allocator->magazines = g_new0 (ChunkLink*, MAX_SLAB_INDEX (allocator));
-  allocator->contention_counters = g_new0 (guint, MAX_SLAB_INDEX (allocator));
   allocator->mutex_counter = 0;
   allocator->stamp_counter = MAX_STAMP_COUNTER; /* force initial update */
   allocator->last_stamp = 0;
   allocator->slab_mutex = NULL;         /* _g_slice_thread_init_nomessage() */
-  allocator->slab_stack = g_new0 (SlabInfo*, MAX_SLAB_INDEX (allocator));
   allocator->color_accu = 0;
   magazine_cache_update_stamp();
   /* values cached for performance reasons */
