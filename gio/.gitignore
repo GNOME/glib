@@ -1,3 +1,4 @@
+gio-querymodules
 gio-marshal.[ch]
 gioenumtypes.[ch]
 gioalias.h
