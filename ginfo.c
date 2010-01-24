@@ -69,6 +69,8 @@ struct _GIUnresolvedInfo
   const gchar *namespace;
 };
 
+#define INVALID_REFCOUNT 0x7FFFFFFF
+
 static void
 g_info_init (GIRealInfo     *info,
              GIInfoType      type,
@@ -80,7 +82,7 @@ g_info_init (GIRealInfo     *info,
   memset (info, 0, sizeof (GIRealInfo));
 
   /* Invalid refcount used to flag stack-allocated infos */
-  info->ref_count = 0xFFFF;
+  info->ref_count = INVALID_REFCOUNT;
   info->type = type;
 
   info->typelib = typelib;
@@ -110,7 +112,7 @@ g_info_new_full (GIInfoType     type,
   g_info_init (info, type, repository, container, typelib, offset);
   info->ref_count = 1;
 
-  if (container && ((GIRealInfo *) container)->ref_count != 0xFFFF)
+  if (container && ((GIRealInfo *) container)->ref_count != INVALID_REFCOUNT)
     g_base_info_ref (info->container);
 
   g_object_ref (info->repository);
@@ -170,7 +172,7 @@ g_base_info_ref (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
 
-  g_assert (rinfo->ref_count != 0xFFFF);
+  g_assert (rinfo->ref_count != INVALID_REFCOUNT);
   ((GIRealInfo*)info)->ref_count++;
 
   return info;
@@ -181,12 +183,12 @@ g_base_info_unref (GIBaseInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
 
-  g_assert (rinfo->ref_count > 0 && rinfo->ref_count != 0xFFFF);
+  g_assert (rinfo->ref_count > 0 && rinfo->ref_count != INVALID_REFCOUNT);
   rinfo->ref_count--;
 
   if (!rinfo->ref_count)
     {
-      if (rinfo->container && ((GIRealInfo *) rinfo->container)->ref_count != 0xFFFF)
+      if (rinfo->container && ((GIRealInfo *) rinfo->container)->ref_count != INVALID_REFCOUNT)
         g_base_info_unref (rinfo->container);
 
       if (rinfo->repository)
