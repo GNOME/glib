@@ -20,6 +20,10 @@ Overview of Changes from GLib 2.23.1 to GLib 2.23.2
 * GObject:
  - Another bunch of performance work has landed
 
+* GVariant:
+ - GVariantType has been merged, with the rest of the GVariant
+   API to follow.
+
 * Bugs fixed:
  568760 nautilus freezes due to a bug in garray.c:322
  602417 Document lifecycles of GSimpleAsyncResult and friends
