@@ -1,3 +1,56 @@
+Overview of Changes from GLib 2.23.1 to GLib 2.23.2
+===================================================
+
+* We are now using gcc builtins for atomic operations when available
+
+* g_assert() grew the ability to store assertions in core dumps
+
+* GIO supports lazy loading of GIO modules, and there is a new
+  gio-querymodule utility that goes along with this.
+  Packagers will need to adapt to this.
+
+* Threading changes:
+ - The requirements for g_thread_init() have been relaxed slightly,
+   it can be called multiple times, and does not have to be the first
+   call.
+ - GObject now links to GThread and threads are enabled automatically
+   when g_type_init() is called.
+ - Thread-safety issues with boxed types in GObject have been fixed.
+
+* GObject:
+ - Another bunch of performance work has landed
+
+* Bugs fixed:
+ 568760 nautilus freezes due to a bug in garray.c:322
+ 602417 Document lifecycles of GSimpleAsyncResult and friends
+ 604824 crash in Epiphany: Selecting my Slashdot bo...
+ 448888 don't init g_slice for always-malloc
+ 531902 Use GCC atomic buildins for g_atomic*
+ 554887 boxed type registration is not thread safe
+ 586150 unresolved symbols when building glib 2.21.2 on OS X Tiger
+ 589176 row gvalue transform array exponentially
+ 594872 Support storing assertion messages into core dump
+ 602240 Upgrade libasyncns to 0.8
+ 603590 Speed up G_VALUE_COLLECT
+ 604457 gutf8inputstream.c: increasing unknown size pointer
+ 605686 GCharsetConverter doesn't flush
+ 605733 g_memory_output_stream_new violates GObject standards
+ 605883 g_object_new() processes varargs even when there are none
+ 605977 invalid utf-8 conversion in g_local_file_get_parse_name(...
+ 606775 Enable threads by default in gobject
+
+* Translation updates:
+ Asturian
+ Basque
+ Bengali
+ Bulgarian
+ Estonian
+ Norwegian bokmål
+ Spanish
+ Thai
+ Ukrainian
+
+
 Overview of Changes from GLib 2.23.0 to GLib 2.23.1
 ===================================================
 
