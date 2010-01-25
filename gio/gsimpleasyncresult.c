@@ -78,7 +78,7 @@
  * but the result still needs to be created for an error condition, use
  * g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
  * if your application or binding requires passing a variable argument list
- * directly), and the error can then be propegated through the use of
+ * directly), and the error can then be propagated through the use of
  * g_simple_async_result_propagate_error().
  *
  * An asynchronous operation can be made to ignore a cancellation event by
@@ -360,7 +360,7 @@ g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple)
  * Propagates an error from within the simple asynchronous result to
  * a given destination.
  *
- * Returns: %TRUE if the error was propegated to @dest. %FALSE otherwise.
+ * Returns: %TRUE if the error was propagated to @dest. %FALSE otherwise.
  **/
 gboolean
 g_simple_async_result_propagate_error (GSimpleAsyncResult  *simple,
