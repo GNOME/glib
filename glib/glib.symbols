@@ -1644,6 +1644,40 @@ g_match_info_fetch_all
 #endif
 #endif
 
+#if IN_HEADER(__G_VARIANT_TYPE_H__)
+#if IN_FILE(__G_VARIANT_TYPE_C__)
+g_variant_type_string_is_valid
+g_variant_type_string_scan
+g_variant_type_free
+g_variant_type_copy
+g_variant_type_new
+g_variant_type_get_string_length
+g_variant_type_peek_string
+g_variant_type_dup_string
+g_variant_type_is_definite
+g_variant_type_is_container
+g_variant_type_is_basic
+g_variant_type_is_maybe
+g_variant_type_is_array
+g_variant_type_is_tuple
+g_variant_type_is_dict_entry
+g_variant_type_hash
+g_variant_type_equal
+g_variant_type_is_subtype_of
+g_variant_type_element
+g_variant_type_first
+g_variant_type_next
+g_variant_type_n_items
+g_variant_type_key
+g_variant_type_value
+g_variant_type_new_array
+g_variant_type_new_maybe
+g_variant_type_new_tuple
+g_variant_type_new_dict_entry
+g_variant_type_checked_
+#endif
+#endif
+
 #if IN_HEADER(__G_WIN32_H__)
 #if IN_FILE(__G_WIN32_H__)
 #ifdef G_OS_WIN32
