@@ -1438,6 +1438,7 @@ g_desktop_app_info_lookup_get_type
 GIOModule
 g_io_module_new
 g_io_modules_load_all_in_directory
+g_io_modules_scan_all_in_directory
 g_io_module_load
 g_io_module_unload
 <SUBSECTION Standard>
