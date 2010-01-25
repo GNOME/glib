@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2009-09-15 18:31+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
@@ -1147,8 +1147,8 @@ msgstr "%s-র জন্য উল্লিখিত গণনার মান �
 msgid "Stream is already closed"
 msgstr "স্ট্রিম বর্তমান বন্ধ হয়েছে"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "কর্ম বাতিল করা হয়েছে"
 
@@ -1178,26 +1178,26 @@ msgstr "নামবিহীন"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ডেস্কটপ ফাইলের মধ্যে Exec ফিল্ড"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "অ্যাপ্লিকেশনের জন্য আবশ্যক টার্মিনাল পাওয়া যায়নি"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "উইজার অ্যাপ্লিকেশনের কনফিগারেশন ফোল্ডার %s নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ইউজার MIME কনফিগারেশন ফোল্ডার %s নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ইউজার ডেস্কটপ ফাইল %s নির্মাণ করতে ব্যর্থ"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s-র জন্য স্বনির্ধারত ব্যাখ্যা"
@@ -1695,11 +1695,11 @@ msgstr "ফাইলটি স্বতন্ত্ররূপে পরিব�
 msgid "Error removing old file: %s"
 msgstr "পুরোনো ফাইল মুছে ফেলতে সমস্যা: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "অবৈধ GSeekType উল্লিখিত হয়েছে"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "অবৈধ seek-র অনুরোধ"
 
@@ -1707,17 +1707,27 @@ msgstr "অবৈধ seek-র অনুরোধ"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream ট্রানকেট করতে ব্যর্থ"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "ডাটা অ্যারের সর্বাধিক সীমা উপস্থিত হয়েছে"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "মেমরি আউটপুট স্ট্রিমের মাপ পরিবর্তনযোগ্য নয়"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "মেমরি আউটপুট স্ট্রিমের মাপ পরিবর্তন করতে ব্যর্থ"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2012,6 +2022,9 @@ msgstr "সংসর্গ সম্বন্ধীয় পরিবর্তন�
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "সংসর্গ নির্ধারণ win32-র মধ্যে সমর্থিত নয়"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "ডাটা অ্যারের সর্বাধিক সীমা উপস্থিত হয়েছে"
 
 #~ msgid "do not hide entries"
 #~ msgstr "এন্ট্রি আড়াল করা হবে না"

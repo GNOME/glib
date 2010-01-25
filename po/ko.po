@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2009-08-23 00:49+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -1149,8 +1149,8 @@ msgstr "%s에 넘긴 카운트 값이 너무 큽니다"
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "동작이 취소되었습니다"
 
@@ -1180,26 +1180,26 @@ msgstr "이름없음"
 msgid "Desktop file didn't specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
@@ -1697,11 +1697,11 @@ msgstr "파일이 외부에서 바뀌었습니다"
 msgid "Error removing old file: %s"
 msgstr "예전 파일을 제거하는 중 오류: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "잘못된 GSeekType이 주어졌습니다"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "잘못된 seek 요청"
 
@@ -1709,17 +1709,27 @@ msgstr "잘못된 seek 요청"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream은 자를 수 없습니다"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "최대 데이터 배열 한계에 도달했습니다"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "메모리 출력 스트림은 크기를 바꿀 수 없습니다"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "출력 스트림의 크기를 바꾸는데 실패했습니다"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2014,6 +2024,9 @@ msgstr "연결 프로그램 바꾸기는 WIN32에서 지원하지 않습니다"
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "연결 프로그램 만들기는 WIN32에서 지원하지 않습니다"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "최대 데이터 배열 한계에 도달했습니다"
 
 #~ msgid "do not hide entries"
 #~ msgstr "엔트리를 숨기지 않습니다"

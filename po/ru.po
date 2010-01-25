@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2009-10-06 12:38+0400\n"
 "Last-Translator: Anisimov Victor <vicanis@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -1182,8 +1182,8 @@ msgstr "Слишком большое значение количества пе
 msgid "Stream is already closed"
 msgstr "Поток уже закрыт"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Действие было отменено"
 
@@ -1213,26 +1213,26 @@ msgstr "Без имени"
 msgid "Desktop file didn't specify Exec field"
 msgstr "В desktop-файле не указано поле Exec"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек приложения %s: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не удалось создать пользовательский desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Особое определение для %s"
@@ -1731,11 +1731,11 @@ msgstr "Файл был изменён извне"
 msgid "Error removing old file: %s"
 msgstr "Произошла ошибка при удалении старого файла: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "Передан недопустимый GSeekType"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "Недопустимый запрос на переход"
 
@@ -1743,17 +1743,27 @@ msgstr "Недопустимый запрос на переход"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Нельзя усечь GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "Достигнут максимальный предел массива данных"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "Невозможно изменить размер выходного потока в память"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "Не удалось изменить размер выходного потока в память"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2051,6 +2061,9 @@ msgstr "смена ассоциаций не поддерживается в Win
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Создание ассоциаций не поддерживается в Win32"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "Достигнут максимальный предел массива данных"
 
 #~ msgid "do not hide entries"
 #~ msgstr "не прятать записи"

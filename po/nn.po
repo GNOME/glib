@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2008-02-24 17:33+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -1143,8 +1143,8 @@ msgstr "For stor teljingsverdi sendt til %s"
 msgid "Stream is already closed"
 msgstr "Straumen er allereie stengt"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Operasjonen vart avbroten"
 
@@ -1174,26 +1174,26 @@ msgstr "Utan namn"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Skrivebordfila oppgav ikkje Exec-felt"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "Klarte ikkje å finna terminalen programmet krev"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikkje laga programoppsettmappe %s for brukaren: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikkje laga MIME-oppsettmappe %s: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikkje laga skrivebordfila %s for brukaren"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Sjølvvald definisjon av %s"
@@ -1697,11 +1697,11 @@ msgstr "Fila vart endra utanfrå"
 msgid "Error removing old file: %s"
 msgstr "Feil under fjerning av fila: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "Ugyldig GSeekType sendt med"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "Ugyldig søkeførespurnad"
 
@@ -1709,17 +1709,27 @@ msgstr "Ugyldig søkeførespurnad"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Kan ikkje trunkera GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "Nådd maksgrensa for dataarray"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "Utstraumen frå minnet kan ikkje endra storleik"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "Klarte ikkje å endra storleik på utstraumen frå minnet"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2022,6 +2032,9 @@ msgstr "å endra assosiasjonar er ikkje støtta på win32"
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Å laga assosiasjonar er ikkje støtta på win32"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "Nådd maksgrensa for dataarray"
 
 #~ msgid "do not hide entries"
 #~ msgstr "ikkje gøym oppføringar"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2009-02-27 17:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: maithili <maithili.sf.net>\n"
@@ -1133,8 +1133,8 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "स्ट्रीन पहिनेसँ बन्न अछि"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "ऑपरेशन रद्द छल"
 
@@ -1164,26 +1164,26 @@ msgstr "बेनाम"
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "प्रयोक्ता डेस्कटाप फाइल %s नहि बनाए सकैत अछि"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s कए लेल पसंदीदा परिभाषित"
@@ -1684,11 +1684,11 @@ msgstr "फाइल बाहरी रूपेँ बदलल अछि"
 msgid "Error removing old file: %s"
 msgstr "पुरान फाइल केँ पढ़बामे त्रुटि: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "अमान्य GSeekType कए आपूर्ति"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "अमान्य प्राप्ति आग्रह"
 
@@ -1696,17 +1696,27 @@ msgstr "अमान्य प्राप्ति आग्रह"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream केँ काटि नहि सकल"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "अधिकतम आंकड़ा सरणी सीमा तकि पहुँचि गेल"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "स्मृति आउटपुट स्ट्रीमकेँ फेर आकार देनाइ संभव नहि"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "स्मृति आउटपुट स्ट्रीमकेँ फेर आकार देनाइ विफल"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2006,6 +2016,9 @@ msgstr "संयोजन परिवर्तन win32 पर समर्थ
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "संयोजन निर्माण win32 पर समर्थित नहि अछि"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "अधिकतम आंकड़ा सरणी सीमा तकि पहुँचि गेल"
 
 #~ msgid "do not hide entries"
 #~ msgstr "प्रविष्टि नहि नुकाउ"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
 "Language-Team: Shavian <ubuntu-l10n-en-shaw@lists.launchpad.net>\n"
@@ -1129,8 +1129,8 @@ msgstr "𐑑𐑵 𐑤𐑸𐑡 𐑒𐑬𐑯𐑑 𐑝𐑨𐑤𐑿 𐑐𐑭𐑕𐑑
 msgid "Stream is already closed"
 msgstr "𐑕𐑑𐑮𐑰𐑥 𐑦𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑒𐑤𐑴𐑟𐑛"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "𐑪𐑐𐑼𐑱𐑖𐑩𐑯 𐑢𐑪𐑟 𐑒𐑨𐑯𐑕𐑩𐑤𐑛"
 
@@ -1160,26 +1160,26 @@ msgstr "𐑩𐑯𐑯𐑱𐑥𐑛"
 msgid "Desktop file didn't specify Exec field"
 msgstr "𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑓𐑲𐑤 𐑛𐑦𐑛𐑯𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 Exec 𐑓𐑰𐑤𐑛"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "𐑳𐑯𐑱𐑚𐑩𐑤 𐑑 𐑓𐑲𐑯𐑛 𐑑𐑻𐑥𐑦𐑯𐑩𐑤 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑓𐑹 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑓𐑴𐑤𐑛𐑼 %s: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 MIME 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑓𐑴𐑤𐑛𐑼 %s: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑓𐑲𐑤 %s"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "𐑒𐑳𐑕𐑑𐑩𐑥 𐑛𐑧𐑓𐑩𐑯𐑦𐑖𐑩𐑯 𐑓𐑹 %s"
@@ -1676,11 +1676,11 @@ msgstr "𐑞 𐑓𐑲𐑤 𐑢𐑪𐑟 𐑦𐑒𐑕𐑑𐑻𐑯𐑩𐑤𐑦 𐑥
 msgid "Error removing old file: %s"
 msgstr "𐑻𐑼 𐑮𐑦𐑥𐑵𐑝𐑦𐑙 𐑴𐑤𐑛 𐑓𐑲𐑤: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 GSeekType 𐑕𐑩𐑐𐑤𐑲𐑛"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑕𐑰𐑒 𐑮𐑦𐑒𐑢𐑧𐑕𐑑"
 
@@ -1688,17 +1688,27 @@ msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑕𐑰𐑒 𐑮𐑦𐑒𐑢𐑧𐑕𐑑"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "𐑒𐑨𐑯𐑪𐑑 𐑑𐑮𐑩𐑙𐑒𐑱𐑑 GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "𐑮𐑰𐑗𐑑 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑛𐑱𐑑𐑩 𐑼𐑱 𐑤𐑦𐑥𐑦𐑑"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "𐑥𐑧𐑥𐑼𐑦 𐑬𐑑𐑐𐑫𐑑 𐑕𐑑𐑮𐑰𐑥 𐑯𐑪𐑑 𐑮𐑧𐑕𐑲𐑟𐑩𐑚𐑩𐑤"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑕𐑲𐑟 𐑥𐑧𐑥𐑼𐑦 𐑬𐑑𐑐𐑫𐑑 𐑕𐑑𐑮𐑰𐑥"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1991,3 +2001,6 @@ msgstr "𐑩𐑕𐑴𐑕𐑦𐑱𐑖𐑩𐑯 𐑗𐑱𐑯𐑡𐑩𐑟 𐑯𐑪�
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "𐑩𐑕𐑴𐑕𐑦𐑱𐑖𐑩𐑯 𐑒𐑮𐑰𐑱𐑖𐑩𐑯 𐑯𐑪𐑑 𐑕𐑩𐑐𐑹𐑑𐑩𐑛 𐑪𐑯 win32"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "𐑮𐑰𐑗𐑑 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑛𐑱𐑑𐑩 𐑼𐑱 𐑤𐑦𐑥𐑦𐑑"

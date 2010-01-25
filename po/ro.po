@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-21 10:32-0500\n"
+"POT-Creation-Date: 2010-01-25 12:50-0500\n"
 "PO-Revision-Date: 2009-09-18 00:17+0300\n"
 "Last-Translator: Mișu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -1162,8 +1162,8 @@ msgstr "S-a pasat o valoare prea mare către %s"
 msgid "Stream is already closed"
 msgstr "Flux deja închis"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:648
-#: gio/gsimpleasyncresult.c:674
+#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Operațiunea a fost anulată"
 
@@ -1193,27 +1193,27 @@ msgstr "Nedenumit"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fișierul desktop nu are specificat un câmp „Exec”"
 
-#: gio/gdesktopappinfo.c:905
+#: gio/gdesktopappinfo.c:907
 msgid "Unable to find terminal required for application"
 msgstr "Nu s-a găsit un terminal pentru pornirea aplicației"
 
-#: gio/gdesktopappinfo.c:1113
+#: gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Nu se poate crea pentru utilizator directorul cu opțiunile aplicației %s: %s"
 
-#: gio/gdesktopappinfo.c:1117
+#: gio/gdesktopappinfo.c:1119
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nu se poate crea pentru utilizator directorul cu opțiunile MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1525
+#: gio/gdesktopappinfo.c:1527
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nu se poate crea fișierul desktop %s"
 
-#: gio/gdesktopappinfo.c:1639
+#: gio/gdesktopappinfo.c:1641
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definiție personalizată pentru %s"
@@ -1713,11 +1713,11 @@ msgstr "Fișierul a fost modificat de o terță parte"
 msgid "Error removing old file: %s"
 msgstr "Eroare la ștergerea vechiului fișier: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:553
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
 msgid "Invalid GSeekType supplied"
 msgstr "S-a primit un „GSeekType” nevalid"
 
-#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:563
+#: gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "Cerere nevalidă de căutare"
 
@@ -1725,17 +1725,27 @@ msgstr "Cerere nevalidă de căutare"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Nu se poate trunchia GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:290
-msgid "Reached maximum data array limit"
-msgstr "S-a atins limita maximă a matricii de date"
-
-#: gio/gmemoryoutputstream.c:325
+#: gio/gmemoryoutputstream.c:429
 msgid "Memory output stream not resizable"
 msgstr "Fluxul de ieșire al memoriei nu poate fi redimensionat"
 
-#: gio/gmemoryoutputstream.c:341
+#: gio/gmemoryoutputstream.c:445
 msgid "Failed to resize memory output stream"
 msgstr "Nu s-a putut redimensiona fluxul de ieșire al memoriei"
+
+#: gio/gmemoryoutputstream.c:533
+msgid ""
+"Amount of memory required to process the write is larger than available "
+"address space"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:689
+msgid "Requested seek before the beginning of the stream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:698
+msgid "Requested seek beyond the end of the stream"
+msgstr ""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2032,6 +2042,9 @@ msgstr "editarea asocierilor de fișiere nu e implementată în Windows"
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Crearea asocierilor de fișiere nu este implementată în Windows"
+
+#~ msgid "Reached maximum data array limit"
+#~ msgstr "S-a atins limita maximă a matricii de date"
 
 #~ msgid "do not hide entries"
 #~ msgstr "nu ascunde intrările"
