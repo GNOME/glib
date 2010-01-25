@@ -232,8 +232,10 @@ main (int argc, char **argv)
   g_type_init ();
   g_test_add_func ("/filter-stream/input", test_input_filter);
   g_test_add_func ("/filter-stream/output", test_output_filter);
+#if 0
   g_test_add_func ("/filter-stream/async-input", test_input_async);
   g_test_add_func ("/filter-stream/async-output", test_output_async);
+#endif
 
   return g_test_run();
 }
