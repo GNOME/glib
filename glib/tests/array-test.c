@@ -315,7 +315,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/append", array_append);
   g_test_add_func ("/array/prepend", array_prepend);
   g_test_add_func ("/array/ref-count", array_ref_count);
+#if 0
   g_test_add_func ("/array/large-size", array_large_size);
+#endif
 
   /* pointer arrays */
   g_test_add_func ("/pointerarray/add", pointer_array_add);
