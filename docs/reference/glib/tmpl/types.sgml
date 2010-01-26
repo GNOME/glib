@@ -11,7 +11,9 @@ GLib defines a number of commonly used types, which can be divided into
 
 <itemizedlist>
 <listitem><para>
-New types which are not part of standard C - #gboolean, #gsize, #gssize.
+New types which are not part of standard C (but are defined
+in various C standard library header files) -
+#gboolean, #gsize, #gssize, #goffset, #gintptr, #guintptr.
 </para></listitem>
 
 <listitem><para>
@@ -26,8 +28,7 @@ Types which are easier to use than their standard C counterparts -
 
 <listitem><para>
 Types which correspond exactly to standard C types, but are included
-for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble,
-#gintptr, #guintptr.
+for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
 </para></listitem>
 </itemizedlist>
 
@@ -123,21 +124,23 @@ Values of this type can range from 0 to #G_MAXULONG.
 <!-- ##### TYPEDEF gint8 ##### -->
 <para>
 A signed integer guaranteed to be 8 bits on all platforms.
-Values of this type can range from -128 to 127.
+Values of this type can range from #G_MININT8 (= -128) to
+#G_MAXINT8 (= 127).
 </para>
 
 
 <!-- ##### TYPEDEF guint8 ##### -->
 <para>
 An unsigned integer guaranteed to be 8 bits on all platforms.
-Values of this type can range from 0 to 255.
+Values of this type can range from 0 to #G_MAXUINT8 (= 255).
 </para>
 
 
 <!-- ##### TYPEDEF gint16 ##### -->
 <para>
 A signed integer guaranteed to be 16 bits on all platforms.
-Values of this type can range from -32,768 to 32,767.
+Values of this type can range from #G_MININT16 (= -32,768) to
+#G_MAXINT16 (= 32,767).
 </para>
 <para>
 To print or scan values of this type, use
@@ -148,7 +151,7 @@ To print or scan values of this type, use
 <!-- ##### TYPEDEF guint16 ##### -->
 <para>
 An unsigned integer guaranteed to be 16 bits on all platforms.
-Values of this type can range from 0 to 65,535.
+Values of this type can range from 0 to #G_MAXUINT16 (= 65,535).
 </para>
 <para>
 To print or scan values of this type, use
@@ -159,7 +162,8 @@ To print or scan values of this type, use
 <!-- ##### TYPEDEF gint32 ##### -->
 <para>
 A signed integer guaranteed to be 32 bits on all platforms.
-Values of this type can range from -2,147,483,648 to 2,147,483,647.
+Values of this type can range from #G_MININT32 (= -2,147,483,648) to
+#G_MAXINT32 (= 2,147,483,647).
 </para>
 <para>
 To print or scan values of this type, use
@@ -170,7 +174,7 @@ To print or scan values of this type, use
 <!-- ##### TYPEDEF guint32 ##### -->
 <para>
 An unsigned integer guaranteed to be 32 bits on all platforms.
-Values of this type can range from 0 to 4,294,967,295.
+Values of this type can range from 0 to #G_MAXUINT32 (= 4,294,967,295).
 </para>
 <para>
 To print or scan values of this type, use
@@ -191,8 +195,8 @@ on the platform.
 <!-- ##### TYPEDEF gint64 ##### -->
 <para>
 A signed integer guaranteed to be 64 bits on all platforms.
-Values of this type can range from -9,223,372,036,854,775,808 to
-9,223,372,036,854,775,807.
+Values of this type can range from #G_MININT64 (= -9,223,372,036,854,775,808) to
+#G_MAXINT64 (= 9,223,372,036,854,775,807).
 </para>
 <para>
 To print or scan values of this type, use
@@ -203,7 +207,7 @@ To print or scan values of this type, use
 <!-- ##### TYPEDEF guint64 ##### -->
 <para>
 An unsigned integer guaranteed to be 64 bits on all platforms.
-Values of this type can range from 0 to 18,446,744,073,709,551,615.
+Values of this type can range from 0 to #G_MAXUINT64 (= 18,446,744,073,709,551,615).
 </para>
 <para>
 To print or scan values of this type, use
@@ -249,6 +253,7 @@ An unsigned integer type of the result of the sizeof operator, corresponding
 to the size_t type defined in C99. This type is wide enough to hold the numeric
 value of a pointer, so it is usually 32bit wide on a 32bit platform and
 64bit wide on a 64bit platform.
+Values of this type can range from 0 to #G_MAXSIZE.
 </para>
 <para>
 To print or scan values of this type, use
@@ -259,6 +264,7 @@ To print or scan values of this type, use
 <!-- ##### TYPEDEF gssize ##### -->
 <para>
 A signed variant of gsize, corresponding to the ssize_t defined on most platforms.
+Values of this type can range from #G_MINSSIZE to #G_MAXSSIZE.
 </para>
 <para>
 To print or scan values of this type, use
@@ -270,6 +276,7 @@ To print or scan values of this type, use
 <para>
 A signed integer type that is used for file offsets, corresponding to the 
 C99 type off64_t.
+Values of this type can range from #G_MINOFFSET to #G_MAXOFFSET.
 </para>
 <para>
 To print or scan values of this type, use
