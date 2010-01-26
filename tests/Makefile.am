@@ -138,7 +138,7 @@ test_programs =					\
 	uri-test				\
 	regex-test
 
-test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh
+test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
 
 test_script_support_programs = markup-test unicode-collate bookmarkfile-test
 

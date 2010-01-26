@@ -41,18 +41,11 @@
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
  
-/* if we have a recent enough glibc, use its __abort_msg variable for storing
- * assertion messages (just like assert()). If not, declare our own variable,
- * so that platforms with older glibc or different libc implementations can use
- * this feature for debugging as well.
- */
-#ifdef HAVE_LIBC_ABORT_MSG
-extern char *__abort_msg;
-#define ASSERT_MESSAGE_STORE __abort_msg
-#else
+/* Global variable for storing assertion messages; this is the counterpart to
+ * glibc's (private) __abort_msg variable, and allows developers and crash
+ * analysis systems like Apport and ABRT to fish out assertion messages from
+ * core dumps, instead of having to catch them on screen output. */
 char *__glib_assert_msg = NULL;
-#define ASSERT_MESSAGE_STORE __glib_assert_msg
-#endif
 
 /* --- structures --- */
 struct GTestCase
@@ -1312,13 +1305,12 @@ g_assertion_message (const char     *domain,
   g_printerr ("**\n%s\n", s);
 
   /* store assertion message in global variable, so that it can be found in a
-   * core dump; also, use standard C allocation here for compatiblity with
-   * glibc's __abort_msg variable */
-  if (ASSERT_MESSAGE_STORE != NULL)
+   * core dump */
+  if (__glib_assert_msg != NULL)
       /* free the old one */
-      free (ASSERT_MESSAGE_STORE);
-  ASSERT_MESSAGE_STORE = (char*) malloc (strlen (s) + 1);
-  strcpy (ASSERT_MESSAGE_STORE, s);
+      free (__glib_assert_msg);
+  __glib_assert_msg = (char*) malloc (strlen (s) + 1);
+  strcpy (__glib_assert_msg, s);
 
   g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
   g_free (s);

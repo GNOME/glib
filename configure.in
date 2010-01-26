@@ -2704,20 +2704,6 @@ int error = EILSEQ;
 ], have_eilseq=yes, have_eilseq=no);
 AC_MSG_RESULT($have_eilseq)
 
-dnl **********************************************************************
-dnl *** Check whether glibc has global variable for assertion messages ***
-dnl **********************************************************************
-
-AC_MSG_CHECKING(if libc has __abort_msg)
-AC_LINK_IFELSE([
-extern char *__abort_msg;
-int main() { return __abort_msg == (char*) 0; }
-], [libc_has_abort_msg=yes], [libc_has_abort_msg=no])
-AC_MSG_RESULT($libc_has_abort_msg)
-if test "$libc_has_abort_msg" = "yes"; then
-    AC_DEFINE(HAVE_LIBC_ABORT_MSG,1,[Whether libc defines __abort_msg])
-fi
-
 dnl ******************************************************************
 dnl *** Look for glib-genmarshal in PATH if we are cross-compiling ***
 dnl ******************************************************************
