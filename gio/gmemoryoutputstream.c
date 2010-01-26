@@ -147,6 +147,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
   ostream_class->close_async  = g_memory_output_stream_close_async;
   ostream_class->close_finish = g_memory_output_stream_close_finish;
 
+  /**
+   * GMemoryOutputStream:data:
+   *
+   * Pointer to buffer where data will be written.
+   *
+   * Since: 2.24
+   **/
   g_object_class_install_property (gobject_class,
                                    PROP_DATA,
                                    g_param_spec_pointer ("data",
@@ -155,6 +162,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GMemoryOutputStream:size:
+   *
+   * Current size of the data buffer.
+   *
+   * Since: 2.24
+   **/
   g_object_class_install_property (gobject_class,
                                    PROP_SIZE,
                                    g_param_spec_ulong ("size",
@@ -164,6 +178,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                        G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GMemoryOutputStream:data-size:
+   *
+   * Size of data written to the buffer.
+   *
+   * Since: 2.24
+   **/
   g_object_class_install_property (gobject_class,
                                    PROP_DATA_SIZE,
                                    g_param_spec_ulong ("data-size",
@@ -173,6 +194,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                        G_PARAM_READABLE |
                                                        G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GMemoryOutputStream:realloc-function:
+   *
+   * Function with realloc semantics called to enlarge the buffer.
+   *
+   * Since: 2.24
+   **/
   g_object_class_install_property (gobject_class,
                                    PROP_REALLOC_FUNCTION,
                                    g_param_spec_pointer ("realloc-function",
@@ -181,6 +209,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GMemoryOutputStream:destroy-function:
+   *
+   * Function called with the buffer as argument when the stream is destroyed.
+   *
+   * Since: 2.24
+   **/
   g_object_class_install_property (gobject_class,
                                    PROP_DESTROY_FUNCTION,
                                    g_param_spec_pointer ("destroy-function",
