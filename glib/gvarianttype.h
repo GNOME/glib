@@ -26,6 +26,17 @@
 #include <glib/gmessages.h>
 #include <glib/gtypes.h>
 
+G_BEGIN_DECLS
+
+/**
+ * GVariantType:
+ *
+ * A type in the GVariant type system.
+ *
+ * Two types may not be compared by value; use g_variant_type_equal() or
+ * g_variant_type_is_subtype().  May be copied using
+ * g_variant_type_copy() and freed using g_variant_type_free().
+ **/
 typedef struct _GVariantType GVariantType;
 
 /**
@@ -216,13 +227,24 @@ typedef struct _GVariantType GVariantType;
  **/
 #define G_VARIANT_TYPE_DICTIONARY           ((const GVariantType *) "a{?*}")
 
+/**
+ * G_VARIANT_TYPE:
+ * @type_string: a well-formed #GVariantType type string
+ *
+ * Converts a string to a const #GVariantType.  Depending on the
+ * current debugging level, this function may perform a runtime check
+ * to ensure that @string is a valid GVariant type string.
+ *
+ * It is always a programmer error to use this macro with an invalid
+ * type string.
+ *
+ * Since 2.24
+ **/
 #ifndef G_DISABLE_CHECKS
-# define G_VARIANT_TYPE(str)                (g_variant_type_checked_ ((str)))
+# define G_VARIANT_TYPE(type_string)            (g_variant_type_checked_ ((type_string)))
 #else
-# define G_VARIANT_TYPE(str)                ((const GVariantType *) (str))
+# define G_VARIANT_TYPE(type_string)            ((const GVariantType *) (type_string))
 #endif
-
-G_BEGIN_DECLS
 
 /* type string checking */
 gboolean                        g_variant_type_string_is_valid          (const gchar         *type_string);
