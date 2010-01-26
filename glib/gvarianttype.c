@@ -671,6 +671,8 @@ g_variant_type_copy (const GVariantType *type)
  *
  * It is a programmer error to call this function with an invalid type
  * string.  Use g_variant_type_string_is_valid() if you are unsure.
+ *
+ * Since: 2.24
  */
 GVariantType *
 g_variant_type_new (const gchar *type_string)
