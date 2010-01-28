@@ -109,6 +109,7 @@ libglib_2_0_la_SOURCES = 	\
 	$(gatomic_c)		\
 	gbacktrace.c		\
 	gbase64.c		\
+	gbitlock.c		\
 	gbookmarkfile.c 	\
 	gbsearcharray.h		\
 	gcache.c		\
@@ -196,6 +197,7 @@ glibsubinclude_HEADERS =   \
 	gatomic.h	\
 	gbacktrace.h	\
 	gbase64.h	\
+	gbitlock.h	\
 	gbookmarkfile.h \
 	gcache.h	\
 	gchecksum.h	\

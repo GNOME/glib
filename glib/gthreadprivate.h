@@ -58,6 +58,7 @@ G_GNUC_INTERNAL void _g_rand_thread_init (void);
 G_GNUC_INTERNAL void _g_main_thread_init (void);
 G_GNUC_INTERNAL void _g_atomic_thread_init (void);
 G_GNUC_INTERNAL void _g_utils_thread_init (void);
+G_GNUC_INTERNAL void _g_futex_thread_init (void);
 
 #ifdef G_OS_WIN32
 G_GNUC_INTERNAL void _g_win32_thread_init (void);

@@ -2544,6 +2544,32 @@ fi
 AM_CONDITIONAL(HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS,
 	       [test $glib_cv_gcc_has_builtin_atomic_operations = yes])
 
+dnl ************************
+dnl ** Check for futex(2) **
+dnl ************************
+AC_MSG_CHECKING([for futex(2) system call])
+AC_COMPILE_IFELSE([ 
+#include <linux/futex.h>
+#include <syscall.h>
+#include <unistd.h>
+
+int
+main (void)
+{
+  /* it's not like this actually runs or anything... */
+  syscall (SYS_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
+  return 0;
+}
+],
+[
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(HAVE_FUTEX, [test "$have_futex" = "yes"],
+            [we have the futex(2) system call])
+],
+[
+  AC_MSG_RESULT(no)
+])
+
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************

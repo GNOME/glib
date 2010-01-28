@@ -35,6 +35,7 @@
 #include <glib/gatomic.h>
 #include <glib/gbacktrace.h>
 #include <glib/gbase64.h>
+#include <glib/gbitlock.h>
 #include <glib/gbookmarkfile.h>
 #include <glib/gcache.h>
 #include <glib/gchecksum.h>

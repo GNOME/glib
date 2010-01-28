@@ -1264,6 +1264,14 @@ g_str_hash
 #endif
 #endif
 
+#if IN_HEADER(__G_BITLOCK_H__)
+#if IN_FILE(__G_BITLOCK_C__)
+g_bit_lock
+g_bit_trylock
+g_bit_unlock
+#endif
+#endif
+
 #if IN_HEADER(__G_THREAD_H__)
 #if IN_FILE(__G_THREAD_C__)
 g_once_impl
