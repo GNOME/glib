@@ -39,6 +39,11 @@ Notes about GLib 2.24
   while an object is being initialized. If this behavior is needed, setting a
   custom constructor that just chains up will re-enable this functionality.
 
+* GMappedFile on an empty file now returns NULL for the contents instead of
+  returning an empty string. The documentation specifically states that code
+  may not rely on nul-termination here so any breakage caused by this change
+  is a bug in application code.
+
 Notes about GLib 2.22
 =====================
 

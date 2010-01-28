@@ -148,7 +148,7 @@ g_mapped_file_new (const gchar  *filename,
   if (st.st_size == 0)
     {
       file->length = 0;
-      file->contents = "";
+      file->contents = NULL;
       close (fd);
       return file;
     }
@@ -242,7 +242,9 @@ g_mapped_file_get_length (GMappedFile *file)
  * Note that the contents may not be zero-terminated,
  * even if the #GMappedFile is backed by a text file.
  *
- * Returns: the contents of @file.
+ * If the file is empty then %NULL is returned.
+ *
+ * Returns: the contents of @file, or %NULL.
  *
  * Since: 2.8
  */
