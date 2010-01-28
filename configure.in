@@ -3531,6 +3531,7 @@ gobject/Makefile
 gobject/glib-mkenums
 gobject/tests/Makefile
 gthread/Makefile
+gthread/tests/Makefile
 gio/Makefile
 gio/xdgmime/Makefile
 gio/inotify/Makefile

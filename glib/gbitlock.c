@@ -31,6 +31,10 @@
 
 #include "galias.h"
 
+#ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
+#undef HAVE_FUTEX
+#endif
+
 #ifndef HAVE_FUTEX
 static GSList *g_futex_address_list = NULL;
 static GMutex *g_futex_mutex = NULL;
