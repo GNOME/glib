@@ -202,6 +202,8 @@ static volatile gint g_bit_lock_contended[CONTENTION_CLASSES];
  * This function accesses @address atomically.  All other accesses to
  * @address must be atomic in order for this function to work
  * reliably.
+ *
+ * Since: 2.24
  **/
 void
 g_bit_lock (volatile gint *address,
@@ -244,6 +246,8 @@ g_bit_lock (volatile gint *address,
  * This function accesses @address atomically.  All other accesses to
  * @address must be atomic in order for this function to work
  * reliably.
+ *
+ * Since: 2.24
  **/
 gboolean
 g_bit_trylock (volatile gint *address,
@@ -275,6 +279,8 @@ g_bit_trylock (volatile gint *address,
  * This function accesses @address atomically.  All other accesses to
  * @address must be atomic in order for this function to work
  * reliably.
+ *
+ * Since: 2.24
  **/
 void
 g_bit_unlock (volatile gint *address,
