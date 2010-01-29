@@ -1,3 +1,5 @@
+makefile.msc
+
 assert-msg-test
 asyncqueue-test
 atomic-test

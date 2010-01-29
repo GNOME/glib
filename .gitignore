@@ -9,6 +9,7 @@ Makefile
 *.pc
 .*.swp
 .sw?
+*.rc
 
 # autofoo stuff here
 compile
@@ -26,6 +27,8 @@ glib-gettextize
 glib-zip
 glibconfig.h
 gtk-doc.make
+glibconfig.h.win32
 
 INSTALL
 README
+ChangeLog

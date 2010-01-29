@@ -2,3 +2,7 @@ galias.h
 galiasdef.c
 gtester
 libglib-gdb.py
+makefile.msc
+gspawn-win32-helper-console.c
+gspawn-win64-helper-console.c
+gspawn-win64-helper.c
