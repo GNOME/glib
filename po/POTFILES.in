@@ -5,6 +5,7 @@ glib/gdir.c
 glib/gfileutils.c
 glib/giochannel.c
 glib/giowin32.c
+glib/glib.py
 glib/gmappedfile.c
 glib/gmarkup.c
 glib/gregex.c
@@ -21,7 +22,11 @@ gio/gasyncresult.c
 gio/gbufferedinputstream.c
 gio/gbufferedoutputstream.c
 gio/gcancellable.c
+gio/gcharsetconverter.c
 gio/gcontenttype.c
+gio/gconverter.c
+gio/gconverterinputstream.c
+gio/gconverteroutputstream.c
 gio/gdatainputstream.c
 gio/gdataoutputstream.c
 gio/gdesktopappinfo.c
@@ -91,8 +96,11 @@ gio/gunixoutputstream.c
 gio/gunixsocketaddress.c
 gio/gunixvolume.c
 gio/gunixvolumemonitor.c
+gio/gutf8inputstream.c
 gio/gvfs.c
 gio/gvolume.c
 gio/gvolumemonitor.c
 gio/gwin32appinfo.c
+gio/gzlibcompressor.c
+gio/gzlibdecompressor.c
 gio/win32/gwinhttpfile.c
