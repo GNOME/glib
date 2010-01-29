@@ -35,6 +35,120 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: hash_tables
+ * @title: Hash Tables
+ * @short_description: associations between keys and values so that
+ *                     given a key the value can be found quickly
+ *
+ * A #GHashTable provides associations between keys and values which is
+ * optimized so that given a key, the associated value can be found
+ * very quickly.
+ *
+ * Note that neither keys nor values are copied when inserted into the
+ * #GHashTable, so they must exist for the lifetime of the #GHashTable.
+ * This means that the use of static strings is OK, but temporary
+ * strings (i.e. those created in buffers and those returned by GTK+
+ * widgets) should be copied with g_strdup() before being inserted.
+ *
+ * If keys or values are dynamically allocated, you must be careful to
+ * ensure that they are freed when they are removed from the
+ * #GHashTable, and also when they are overwritten by new insertions
+ * into the #GHashTable. It is also not advisable to mix static strings
+ * and dynamically-allocated strings in a #GHashTable, because it then
+ * becomes difficult to determine whether the string should be freed.
+ *
+ * To create a #GHashTable, use g_hash_table_new().
+ *
+ * To insert a key and value into a #GHashTable, use
+ * g_hash_table_insert().
+ *
+ * To lookup a value corresponding to a given key, use
+ * g_hash_table_lookup() and g_hash_table_lookup_extended().
+ *
+ * To remove a key and value, use g_hash_table_remove().
+ *
+ * To call a function for each key and value pair use
+ * g_hash_table_foreach() or use a iterator to iterate over the
+ * key/value pairs in the hash table, see #GHashTableIter.
+ *
+ * To destroy a #GHashTable use g_hash_table_destroy().
+ **/
+
+/**
+ * GHashTable:
+ *
+ * The #GHashTable struct is an opaque data structure to represent a
+ * <link linkend="glib-Hash-Tables">Hash Table</link>. It should only be
+ * accessed via the following functions.
+ **/
+
+/**
+ * GHashFunc:
+ * @key: a key.
+ * @Returns: the hash value corresponding to the key.
+ *
+ * Specifies the type of the hash function which is passed to
+ * g_hash_table_new() when a #GHashTable is created.
+ *
+ * The function is passed a key and should return a #guint hash value.
+ * The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
+ * hash functions which can be used when the key is a #gpointer, #gint,
+ * and #gchar* respectively.
+ *
+ * <!-- FIXME: Need more here. --> The hash values should be evenly
+ * distributed over a fairly large range? The modulus is taken with the
+ * hash table size (a prime number) to find the 'bucket' to place each
+ * key into. The function should also be very fast, since it is called
+ * for each key lookup.
+ **/
+
+/**
+ * GHFunc:
+ * @key: a key.
+ * @value: the value corresponding to the key.
+ * @user_data: user data passed to g_hash_table_foreach().
+ *
+ * Specifies the type of the function passed to g_hash_table_foreach().
+ * It is called with each key/value pair, together with the @user_data
+ * parameter which is passed to g_hash_table_foreach().
+ **/
+
+/**
+ * GHRFunc:
+ * @key: a key.
+ * @value: the value associated with the key.
+ * @user_data: user data passed to g_hash_table_remove().
+ * @Returns: %TRUE if the key/value pair should be removed from the
+ *           #GHashTable.
+ *
+ * Specifies the type of the function passed to
+ * g_hash_table_foreach_remove(). It is called with each key/value
+ * pair, together with the @user_data parameter passed to
+ * g_hash_table_foreach_remove(). It should return %TRUE if the
+ * key/value pair should be removed from the #GHashTable.
+ **/
+
+/**
+ * GEqualFunc:
+ * @a: a value.
+ * @b: a value to compare with.
+ * @Returns: %TRUE if @a = @b; %FALSE otherwise.
+ *
+ * Specifies the type of a function used to test two values for
+ * equality. The function should return %TRUE if both values are equal
+ * and %FALSE otherwise.
+ **/
+
+/**
+ * GHashTableIter:
+ *
+ * A GHashTableIter structure represents an iterator that can be used
+ * to iterate over the elements of a #GHashTable. GHashTableIter
+ * structures are typically allocated on the stack and then initialized
+ * with g_hash_table_iter_init().
+ **/
+
 #define HASH_TABLE_MIN_SHIFT 3  /* 1 << 3 == 8 buckets */
 
 typedef struct _GHashNode      GHashNode;
