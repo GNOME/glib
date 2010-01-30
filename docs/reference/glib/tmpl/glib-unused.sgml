@@ -48,30 +48,6 @@ Desktop Entry Parser
 
 
 
-<!-- ##### SECTION ./tmpl/gvariant.sgml:Long_Description ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/gvariant.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/gvariant.sgml:Short_Description ##### -->
-
-
-
-<!-- ##### SECTION ./tmpl/gvariant.sgml:Stability_Level ##### -->
-
-
-
-<!-- ##### SECTION ./tmpl/gvariant.sgml:Title ##### -->
-GVariant
-
-
 <!-- ##### SECTION ./tmpl/testutils.sgml:Long_Description ##### -->
 <para>
 
@@ -230,45 +206,6 @@ the end of the string.
 @G_MATCH_EXACT: a pattern matching exactly one string.
 @G_MATCH_LAST: 
 
-<!-- ##### STRUCT GVariant ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT GVariantBuilder ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ENUM GVariantBuilderError ##### -->
-<para>
-
-</para>
-
-@G_VARIANT_BUILDER_ERROR_TOO_MANY: 
-@G_VARIANT_BUILDER_ERROR_TOO_FEW: 
-@G_VARIANT_BUILDER_ERROR_INFER: 
-@G_VARIANT_BUILDER_ERROR_TYPE: 
-
-<!-- ##### ENUM GVariantFlags ##### -->
-<para>
-
-</para>
-
-@G_VARIANT_LITTLE_ENDIAN: 
-@G_VARIANT_BIG_ENDIAN: 
-@G_VARIANT_TRUSTED: 
-@G_VARIANT_LAZY_BYTESWAP: 
-
-<!-- ##### STRUCT GVariantIter ##### -->
-<para>
-
-</para>
-
-@priv: 
-
 <!-- ##### USER_FUNCTION GWarningFunc ##### -->
 <para>
 Specifies the type of function passed to g_set_warning_handler().
@@ -325,12 +262,6 @@ not work.
 
 
 <!-- ##### MACRO G_IO_CHANNEL_UNIX_LINE_TERM ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO G_VARIANT_BUILDER_ERROR ##### -->
 <para>
 
 </para>
@@ -946,771 +877,6 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
-<!-- ##### FUNCTION g_variant_builder_add ##### -->
-<para>
-
-</para>
-
-@builder: 
-@format_string: 
-@Varargs: 
-
-<!-- ##### FUNCTION g_variant_builder_add_value ##### -->
-<para>
-
-</para>
-
-@builder: 
-@value: 
-
-<!-- ##### FUNCTION g_variant_builder_cancel ##### -->
-<para>
-
-</para>
-
-@builder: 
-
-<!-- ##### FUNCTION g_variant_builder_check_add ##### -->
-<para>
-
-</para>
-
-@builder: 
-@type: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_builder_check_end ##### -->
-<para>
-
-</para>
-
-@builder: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_builder_close ##### -->
-<para>
-
-</para>
-
-@child: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_builder_end ##### -->
-<para>
-
-</para>
-
-@builder: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_builder_new ##### -->
-<para>
-
-</para>
-
-@type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_builder_open ##### -->
-<para>
-
-</para>
-
-@parent: 
-@type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_dup_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_dup_strv ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_flatten ##### -->
-<para>
-
-</para>
-
-@value: 
-
-<!-- ##### FUNCTION g_variant_format_string_scan ##### -->
-<para>
-
-</para>
-
-@string: 
-@limit: 
-@endptr: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_from_data ##### -->
-<para>
-
-</para>
-
-@type: 
-@data: 
-@size: 
-@flags: 
-@notify: 
-@user_data: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_from_file ##### -->
-<para>
-
-</para>
-
-@type: 
-@filename: 
-@flags: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_from_slice ##### -->
-<para>
-
-</para>
-
-@type: 
-@slice: 
-@size: 
-@flags: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get ##### -->
-<para>
-
-</para>
-
-@value: 
-@format_string: 
-@Varargs: 
-
-<!-- ##### FUNCTION g_variant_get_boolean ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_byte ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_child ##### -->
-<para>
-
-</para>
-
-@value: 
-@index: 
-@format_string: 
-@Varargs: 
-
-<!-- ##### FUNCTION g_variant_get_child_value ##### -->
-<para>
-
-</para>
-
-@value: 
-@index: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_data ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_double ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_fixed ##### -->
-<para>
-
-</para>
-
-@value: 
-@size: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_fixed_array ##### -->
-<para>
-
-</para>
-
-@value: 
-@elem_size: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_handle ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_int16 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_int32 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_int64 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_size ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_strv ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_type ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_type_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_uint16 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_uint32 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_uint64 ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_va ##### -->
-<para>
-
-</para>
-
-@value: 
-@must_be_null: 
-@format_string: 
-@endptr: 
-@app: 
-
-<!-- ##### FUNCTION g_variant_get_variant ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_has_type ##### -->
-<para>
-
-</para>
-
-@value: 
-@pattern: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_is_basic ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_is_container ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_is_object_path ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_is_signature ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_iter_cancel ##### -->
-<para>
-
-</para>
-
-@iter: 
-
-<!-- ##### FUNCTION g_variant_iter_init ##### -->
-<para>
-
-</para>
-
-@iter: 
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_iter_next ##### -->
-<para>
-
-</para>
-
-@iter: 
-@format_string: 
-@Varargs: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_iter_next_value ##### -->
-<para>
-
-</para>
-
-@iter: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_iter_was_cancelled ##### -->
-<para>
-
-</para>
-
-@iter: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_load ##### -->
-<para>
-
-</para>
-
-@type: 
-@data: 
-@size: 
-@flags: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_lookup ##### -->
-<para>
-
-</para>
-
-@dictionary: 
-@key: 
-@format_string: 
-@Varargs: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_lookup_value ##### -->
-<para>
-
-</para>
-
-@dictionary: 
-@key: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_parse ##### -->
-<para>
-
-</para>
-
-@text: 
-@text_len: 
-@type: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_parse_context_end ##### -->
-<para>
-
-</para>
-
-@context: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_parse_context_new ##### -->
-<para>
-
-</para>
-
-@flags: 
-@type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_print ##### -->
-<para>
-
-</para>
-
-@value: 
-@newlines: 
-@indentation: 
-@tabstop: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_print_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@string: 
-@newlines: 
-@indentation: 
-@tabstop: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_subparser_end ##### -->
-<para>
-
-</para>
-
-@context: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_markup_subparser_start ##### -->
-<para>
-
-</para>
-
-@context: 
-@type: 
-
-<!-- ##### FUNCTION g_variant_n_children ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new ##### -->
-<para>
-
-</para>
-
-@format_string: 
-@Varargs: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_boolean ##### -->
-<para>
-
-</para>
-
-@boolean: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_byte ##### -->
-<para>
-
-</para>
-
-@byte: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_double ##### -->
-<para>
-
-</para>
-
-@floating: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_handle ##### -->
-<para>
-
-</para>
-
-@handle: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_int16 ##### -->
-<para>
-
-</para>
-
-@int16: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_int32 ##### -->
-<para>
-
-</para>
-
-@int32: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_int64 ##### -->
-<para>
-
-</para>
-
-@int64: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_object_path ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_parsed ##### -->
-<para>
-
-</para>
-
-@format: 
-@Varargs: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_parsed_va ##### -->
-<para>
-
-</para>
-
-@format: 
-@app: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_signature ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_string ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_strv ##### -->
-<para>
-
-</para>
-
-@strv: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_uint16 ##### -->
-<para>
-
-</para>
-
-@uint16: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_uint32 ##### -->
-<para>
-
-</para>
-
-@uint32: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_uint64 ##### -->
-<para>
-
-</para>
-
-@uint64: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_va ##### -->
-<para>
-
-</para>
-
-@must_be_null: 
-@format_string: 
-@endptr: 
-@app: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_variant ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_parse ##### -->
-<para>
-
-</para>
-
-@text: 
-@text_length: 
-@type: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_parse_full ##### -->
-<para>
-
-</para>
-
-@text: 
-@limit: 
-@endptr: 
-@type: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_print ##### -->
-<para>
-
-</para>
-
-@value: 
-@type_annotate: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_print_string ##### -->
-<para>
-
-</para>
-
-@value: 
-@string: 
-@type_annotate: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_ref ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_ref_sink ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_store ##### -->
-<para>
-
-</para>
-
-@value: 
-@data: 
-
-<!-- ##### FUNCTION g_variant_unref ##### -->
-<para>
-
-</para>
-
-@value: 
-
 <!-- ##### FUNCTION g_warn_message ##### -->
 <para>
 
@@ -1731,6 +897,73 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 <!-- ##### MACRO getpid ##### -->
 <para>
 
+</para>
+
+
+<!-- ##### VARIABLE glib_binary_age ##### -->
+<para>
+This is the binary age passed to <application>libtool</application>. If 
+<application>libtool</application> means nothing to you, don't worry 
+about it. ;-)
+</para>
+
+
+<!-- ##### FUNCTION glib_check_version ##### -->
+<para>
+
+</para>
+
+@required_major: 
+@required_minor: 
+@required_micro: 
+@Returns: 
+
+<!-- ##### VARIABLE glib_interface_age ##### -->
+<para>
+This is the interface age passed to <application>libtool</application>. If 
+<application>libtool</application> means nothing to you, don't worry 
+about it. ;-)
+</para>
+
+
+<!-- ##### VARIABLE glib_major_version ##### -->
+<para>
+The major version number of the GLib library. 
+(e.g. in GLib version 1.2.5 this is 1.)
+</para>
+
+<para>
+This variable is in the library, so represents the
+GLib library you have linked against. Contrast with the
+#GLIB_MAJOR_VERSION macro, which represents the major version of the
+GLib headers you have included.
+</para>
+
+
+<!-- ##### VARIABLE glib_micro_version ##### -->
+<para>
+The micro version number of the GLib library.
+(e.g. in GLib version 1.2.5 this is 5.)
+</para>
+
+<para>
+This variable is in the library, so represents the GLib library you
+have linked against. Contrast with the #GLIB_MICRO_VERSION macro, which
+represents the micro version of the GLib headers you have included.
+</para>
+
+
+<!-- ##### VARIABLE glib_minor_version ##### -->
+<para>
+The minor version number of the GLib library.
+(e.g. in GLib version 1.2.5 this is 2.)
+</para>
+
+<para>
+This variable is in the library, so represents the
+GLib library you have linked against. Contrast with the
+#GLIB_MINOR_VERSION macro, which represents the minor version of the
+GLib headers you have included.
 </para>
 
 

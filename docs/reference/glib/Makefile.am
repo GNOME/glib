@@ -27,7 +27,6 @@ IGNORE_HFILES=			\
 	build			\
 	gobject 		\
 	gio			\
-	asynchs.h		\
 	config.h 		\
 	gdatasetprivate.h	\
 	glibintl.h		\
