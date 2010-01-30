@@ -1297,7 +1297,7 @@ g_socket_bind (GSocket         *socket,
  *
  * Returns: %TRUE if this socket can be used with IPv4.
  *
- * Since: 2.22.
+ * Since: 2.22
  **/
 gboolean
 g_socket_speaks_ipv4 (GSocket *socket)

@@ -200,7 +200,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * smaller (for example, for sparse files).
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  *
- * Since: 2.20.
+ * Since: 2.20
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE "standard::allocated-size" /* uint64 */
 
@@ -369,7 +369,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * A key in the "mountable" namespace for getting the unix device file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  *
- * Since: 2.22.
+ * Since: 2.22
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE "mountable::unix-device-file" /* string */
 
