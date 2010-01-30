@@ -458,14 +458,14 @@ A table of functions used to handle different types of #GIOChannel
 in a generic way.
 </para>
 
-@io_read: 
-@io_write: 
-@io_seek: 
-@io_close: 
-@io_create_watch: 
-@io_free: 
-@io_set_flags: 
-@io_get_flags: 
+@io_read: reads raw bytes from the channel.  This is called from various functions such as g_io_channel_read_chars() to read raw bytes from the channel.  Encoding and buffering issues are dealt with at a higher level.
+@io_write: writes raw bytes to the channel.  This is called from various functions such as g_io_channel_write_chars() to write raw bytes to the channel.  Encoding and buffering issues are dealt with at a higher level.
+@io_seek: (optional) seeks the channel.  This is called from g_io_channel_seek() on channels that support it.
+@io_close: closes the channel.  This is called from g_io_channel_close() after flushing the buffers.
+@io_create_watch: creates a watch on the channel.  This call corresponds directly to g_io_create_watch().
+@io_free: called from g_io_channel_unref() when the channel needs to be freed.  This function must free the memory associated with the channel, including freeing the #GIOChannel structure itself.  The channel buffers have been flushed and possibly @io_close has been called by the time this function is called.
+@io_set_flags: sets the #GIOFlags on the channel.  This is called from g_io_channel_set_flags() with all flags except for %G_IO_FLAG_APPEND and %G_IO_FLAG_NONBLOCK masked out.
+@io_get_flags: gets the #GIOFlags for the channel.  This function need only return the %G_IO_FLAG_APPEND and %G_IO_FLAG_NONBLOCK flags; g_io_channel_get_flags() automatically adds the others as appropriate.
 
 <!-- ##### FUNCTION g_io_channel_get_buffer_size ##### -->
 <para>
@@ -533,9 +533,9 @@ g_io_channel_set_flags().
 @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable, 
   i.e. that g_io_channel_seek_position() can be used on it. 
   This flag can not be changed.
-@G_IO_FLAG_MASK: 
-@G_IO_FLAG_GET_MASK: 
-@G_IO_FLAG_SET_MASK: 
+@G_IO_FLAG_MASK: the mask that specifies all the valid flags.
+@G_IO_FLAG_GET_MASK: the mask of the flags that are returned from g_io_channel_get_flags().
+@G_IO_FLAG_SET_MASK: the mask of the flags that the user can modify with g_io_channel_set_flags().
 
 <!-- ##### FUNCTION g_io_channel_get_line_term ##### -->
 <para>
