@@ -1379,7 +1379,6 @@ g_date_sunday_week_of_year
 g_date_days_in_month
 g_date_monday_weeks_in_year
 g_date_sunday_weeks_in_year
-tm
 </SECTION>
 
 <SECTION>
@@ -2693,7 +2692,6 @@ g_assertion_message_error
 
 g_test_add_vtable
 GTestConfig
-g_test_config_vars
 GTestLogType
 GTestLogMsg
 GTestLogBuffer
