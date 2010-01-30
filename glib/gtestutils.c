@@ -19,6 +19,7 @@
  */
 #include "config.h"
 #include "gtestutils.h"
+#include <glib.h>
 #include "galias.h"
 #include <sys/types.h>
 #ifdef G_OS_UNIX

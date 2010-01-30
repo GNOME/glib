@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include "gurifuncs.h"
+#include <glib.h>
 #include "string.h"
 
 #include "galias.h"

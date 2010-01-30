@@ -27,7 +27,7 @@
 #ifndef __G_URI_FUNCS_H__
 #define __G_URI_FUNCS_H__
 
-#include <glib.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

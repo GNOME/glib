@@ -1259,8 +1259,6 @@ g_string_vprintf
  /* these are not internal, but we don't want to alias them */
 g_string_append_c
 #endif
-g_str_equal
-g_str_hash
 #endif
 #endif
 
@@ -1531,6 +1529,10 @@ g_double_equal
 g_double_hash
 g_direct_equal G_GNUC_CONST
 g_direct_hash G_GNUC_CONST
+#endif
+#if IN_FILE(__G_STRING_C__)
+g_str_equal
+g_str_hash
 #endif
 #endif
 

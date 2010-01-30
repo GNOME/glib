@@ -25,7 +25,11 @@
 #ifndef __G_TEST_UTILS_H__
 #define __G_TEST_UTILS_H__
 
-#include <glib.h>
+#include <glib/gmessages.h>
+#include <glib/gstring.h>
+#include <glib/gtypes.h>
+#include <glib/gerror.h>
+#include <glib/gslist.h>
 
 G_BEGIN_DECLS
 

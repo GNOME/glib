@@ -23,6 +23,7 @@
 #include "gvarianttype.h"
 
 #include <glib/gtestutils.h>
+#include <glib/gstrfuncs.h>
 
 #include <string.h>
 
