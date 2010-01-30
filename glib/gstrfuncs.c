@@ -1657,14 +1657,14 @@ g_strlcpy (gchar       *dest,
  * This function does NOT allocate memory.
  * This always NUL terminates (unless siz == 0 or there were no NUL characters
  * in the dest_size characters of dest to start with).
- * Returns size of attempted result, which is
- * MIN (dest_size, strlen (original dest)) + strlen (src),
- * so if retval >= dest_size, truncation occurred.
  *
  * <note><para>Caveat: this is supposedly a more secure alternative to 
  * strcat() or strncat(), but for real security g_strconcat() is harder 
  * to mess up.</para></note>
  *
+ * Returns size of attempted result, which is
+ * MIN (dest_size, strlen (original dest)) + strlen (src),
+ * so if retval >= dest_size, truncation occurred.
  */
 gsize
 g_strlcat (gchar       *dest,
