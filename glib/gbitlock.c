@@ -233,6 +233,7 @@ g_bit_lock (volatile gint *address,
  * g_bit_trylock:
  * @address: a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
+ * @returns: %TRUE if the lock was acquired
  *
  * Sets the indicated @lock_bit in @address, returning %TRUE if
  * successful.  If the bit is already set, returns %FALSE immediately.

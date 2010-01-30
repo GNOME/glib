@@ -31,11 +31,11 @@
 
 G_BEGIN_DECLS
 
-void      g_bit_lock                      (volatile gint *lock,
+void      g_bit_lock                      (volatile gint *address,
                                            gint           lock_bit);
-gboolean  g_bit_trylock                   (volatile gint *lock,
+gboolean  g_bit_trylock                   (volatile gint *address,
                                            gint           lock_bit);
-void      g_bit_unlock                    (volatile gint *lock,
+void      g_bit_unlock                    (volatile gint *address,
                                            gint           lock_bit);
 
 G_END_DECLS
