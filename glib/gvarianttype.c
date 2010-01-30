@@ -581,7 +581,7 @@ g_variant_type_string_scan (const gchar  *string,
 gboolean
 g_variant_type_string_is_valid (const gchar *type_string)
 {
-  gchar *endptr;
+  const gchar *endptr;
 
   g_return_val_if_fail (type_string != NULL, FALSE);
 
