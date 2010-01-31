@@ -85,14 +85,14 @@ union _GTypeCValue
  */
 #define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error)		\
 G_STMT_START {										\
-  GValue *_value = (value);								\
+  GValue *__value = (value);								\
   guint _flags = (flags);								\
-  GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
-  gchar *_collect_format = _vtable->collect_format;					\
+  GTypeValueTable *__vtable = g_type_value_table_peek (_value_type);			\
+  gchar *_collect_format = __vtable->collect_format;					\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\
                                                                                         \
-  _value->g_type = _value_type;		/* value_meminit() from gvalue.c */		\
+  __value->g_type = _value_type;		/* value_meminit() from gvalue.c */	\
   while (*_collect_format)								\
     {											\
       GTypeCValue *_cvalue = _cvalues + _n_values++;					\
@@ -118,7 +118,7 @@ G_STMT_START {										\
 	  g_assert_not_reached ();							\
 	}										\
     }											\
-  *(__error) = _vtable->collect_value (_value,						\
+  *(__error) = __vtable->collect_value (__value,					\
 				       _n_values,					\
 				       _cvalues,					\
 				       _flags);						\
