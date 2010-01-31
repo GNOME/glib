@@ -175,11 +175,12 @@ g_timer_reset (GTimer *timer)
 /**
  * g_timer_continue:
  * @timer: a #GTimer.
- * @Since: 2.4
  *
  * Resumes a timer that has previously been stopped with
  * g_timer_stop(). g_timer_stop() must be called before using this
  * function.
+ *
+ * Since: 2.4
  **/
 void
 g_timer_continue (GTimer *timer)

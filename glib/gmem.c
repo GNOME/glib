@@ -599,10 +599,158 @@ GMemVTable *glib_mem_profiler_table = &profiler_table;
 #endif	/* !G_DISABLE_CHECKS */
 
 /* --- MemChunks --- */
+/**
+ * SECTION: allocators
+ * @title: Memory Allocators
+ * @short_description: deprecated way to allocate chunks of memory for
+ *                     GList, GSList and GNode
+ *
+ * Prior to 2.10, #GAllocator was used as an efficient way to allocate
+ * small pieces of memory for use with the #GList, #GSList and #GNode
+ * data structures. Since 2.10, it has been completely replaced by the
+ * <link linkend="glib-Memory-Slices">slice allocator</link> and
+ * deprecated.
+ **/
+
+/**
+ * SECTION: memory_chunks
+ * @title: Memory Chunks
+ * @short_description: deprecated way to allocate groups of equal-sized
+ *                     chunks of memory
+ *
+ * Memory chunks provide an space-efficient way to allocate equal-sized
+ * pieces of memory, called atoms. However, due to the administrative
+ * overhead (in particular for #G_ALLOC_AND_FREE, and when used from
+ * multiple threads), they are in practise often slower than direct use
+ * of g_malloc(). Therefore, memory chunks have been deprecated in
+ * favor of the <link linkend="glib-Memory-Slices">slice
+ * allocator</link>, which has been added in 2.10. All internal uses of
+ * memory chunks in GLib have been converted to the
+ * <literal>g_slice</literal> API.
+ *
+ * There are two types of memory chunks, #G_ALLOC_ONLY, and
+ * #G_ALLOC_AND_FREE. <itemizedlist> <listitem><para> #G_ALLOC_ONLY
+ * chunks only allow allocation of atoms. The atoms can never be freed
+ * individually. The memory chunk can only be free in its entirety.
+ * </para></listitem> <listitem><para> #G_ALLOC_AND_FREE chunks do
+ * allow atoms to be freed individually. The disadvantage of this is
+ * that the memory chunk has to keep track of which atoms have been
+ * freed. This results in more memory being used and a slight
+ * degradation in performance. </para></listitem> </itemizedlist>
+ *
+ * To create a memory chunk use g_mem_chunk_new() or the convenience
+ * macro g_mem_chunk_create().
+ *
+ * To allocate a new atom use g_mem_chunk_alloc(),
+ * g_mem_chunk_alloc0(), or the convenience macros g_chunk_new() or
+ * g_chunk_new0().
+ *
+ * To free an atom use g_mem_chunk_free(), or the convenience macro
+ * g_chunk_free(). (Atoms can only be freed if the memory chunk is
+ * created with the type set to #G_ALLOC_AND_FREE.)
+ *
+ * To free any blocks of memory which are no longer being used, use
+ * g_mem_chunk_clean(). To clean all memory chunks, use g_blow_chunks().
+ *
+ * To reset the memory chunk, freeing all of the atoms, use
+ * g_mem_chunk_reset().
+ *
+ * To destroy a memory chunk, use g_mem_chunk_destroy().
+ *
+ * To help debug memory chunks, use g_mem_chunk_info() and
+ * g_mem_chunk_print().
+ *
+ * <example>
+ *  <title>Using a #GMemChunk</title>
+ *  <programlisting>
+ *   GMemChunk *mem_chunk;
+ *   gchar *mem[10000];
+ *   gint i;
+ *
+ *   /<!-- -->* Create a GMemChunk with atoms 50 bytes long, and memory
+ *      blocks holding 100 bytes. Note that this means that only 2 atoms
+ *      fit into each memory block and so isn't very efficient. *<!-- -->/
+ *   mem_chunk = g_mem_chunk_new ("test mem chunk", 50, 100, G_ALLOC_AND_FREE);
+ *   /<!-- -->* Now allocate 10000 atoms. *<!-- -->/
+ *   for (i = 0; i &lt; 10000; i++)
+ *     {
+ *       mem[i] = g_chunk_new (gchar, mem_chunk);
+ *       /<!-- -->* Fill in the atom memory with some junk. *<!-- -->/
+ *       for (j = 0; j &lt; 50; j++)
+ *         mem[i][j] = i * j;
+ *     }
+ *   /<!-- -->* Now free all of the atoms. Note that since we are going to
+ *      destroy the GMemChunk, this wouldn't normally be used. *<!-- -->/
+ *   for (i = 0; i &lt; 10000; i++)
+ *     {
+ *       g_mem_chunk_free (mem_chunk, mem[i]);
+ *     }
+ *   /<!-- -->* We are finished with the GMemChunk, so we destroy it. *<!-- -->/
+ *   g_mem_chunk_destroy (mem_chunk);
+ *  </programlisting>
+ * </example>
+ *
+ * <example>
+ *  <title>Using a #GMemChunk with data structures</title>
+ *  <programlisting>
+ *    GMemChunk *array_mem_chunk;
+ *    GRealArray *array;
+ *    /<!-- -->* Create a GMemChunk to hold GRealArray structures, using
+ *       the g_mem_chunk_create(<!-- -->) convenience macro. We want 1024 atoms in each
+ *       memory block, and we want to be able to free individual atoms. *<!-- -->/
+ *    array_mem_chunk = g_mem_chunk_create (GRealArray, 1024, G_ALLOC_AND_FREE);
+ *    /<!-- -->* Allocate one atom, using the g_chunk_new(<!-- -->) convenience macro. *<!-- -->/
+ *    array = g_chunk_new (GRealArray, array_mem_chunk);
+ *    /<!-- -->* We can now use array just like a normal pointer to a structure. *<!-- -->/
+ *    array->data            = NULL;
+ *    array->len             = 0;
+ *    array->alloc           = 0;
+ *    array->zero_terminated = (zero_terminated ? 1 : 0);
+ *    array->clear           = (clear ? 1 : 0);
+ *    array->elt_size        = elt_size;
+ *    /<!-- -->* We can free the element, so it can be reused. *<!-- -->/
+ *    g_chunk_free (array, array_mem_chunk);
+ *    /<!-- -->* We destroy the GMemChunk when we are finished with it. *<!-- -->/
+ *    g_mem_chunk_destroy (array_mem_chunk);
+ *  </programlisting>
+ * </example>
+ **/
+
 #ifndef G_ALLOC_AND_FREE
+
+/**
+ * GAllocator:
+ *
+ * The #GAllocator struct contains private data. and should only be
+ * accessed using the following functions.
+ **/
 typedef struct _GAllocator GAllocator;
+
+/**
+ * GMemChunk:
+ *
+ * The #GMemChunk struct is an opaque data structure representing a
+ * memory chunk. It should be accessed only through the use of the
+ * following functions.
+ **/
 typedef struct _GMemChunk  GMemChunk;
+
+/**
+ * G_ALLOC_ONLY:
+ *
+ * Specifies the type of a #GMemChunk. Used in g_mem_chunk_new() and
+ * g_mem_chunk_create() to specify that atoms will never be freed
+ * individually.
+ **/
 #define G_ALLOC_ONLY	  1
+
+/**
+ * G_ALLOC_AND_FREE:
+ *
+ * Specifies the type of a #GMemChunk. Used in g_mem_chunk_new() and
+ * g_mem_chunk_create() to specify that atoms will be freed
+ * individually.
+ **/
 #define G_ALLOC_AND_FREE  2
 #endif
 
@@ -610,6 +758,27 @@ struct _GMemChunk {
   guint alloc_size;           /* the size of an atom */
 };
 
+/**
+ * g_mem_chunk_new:
+ * @name: a string to identify the #GMemChunk. It is not copied so it
+ *        should be valid for the lifetime of the #GMemChunk. It is
+ *        only used in g_mem_chunk_print(), which is used for debugging.
+ * @atom_size: the size, in bytes, of each element in the #GMemChunk.
+ * @area_size: the size, in bytes, of each block of memory allocated to
+ *             contain the atoms.
+ * @type: the type of the #GMemChunk.  #G_ALLOC_AND_FREE is used if the
+ *        atoms will be freed individually.  #G_ALLOC_ONLY should be
+ *        used if atoms will never be freed individually.
+ *        #G_ALLOC_ONLY is quicker, since it does not need to track
+ *        free atoms, but it obviously wastes memory if you no longer
+ *        need many of the atoms.
+ * @Returns: the new #GMemChunk.
+ *
+ * Creates a new #GMemChunk.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 GMemChunk*
 g_mem_chunk_new (const gchar  *name,
 		 gint          atom_size,
@@ -624,6 +793,15 @@ g_mem_chunk_new (const gchar  *name,
   return mem_chunk;
 }
 
+/**
+ * g_mem_chunk_destroy:
+ * @mem_chunk: a #GMemChunk.
+ *
+ * Frees all of the memory allocated for a #GMemChunk.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void
 g_mem_chunk_destroy (GMemChunk *mem_chunk)
 {
@@ -632,6 +810,15 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
   g_slice_free (GMemChunk, mem_chunk);
 }
 
+/**
+ * g_mem_chunk_alloc:
+ * @mem_chunk: a #GMemChunk.
+ * @Returns: a pointer to the allocated atom.
+ *
+ * Allocates an atom of memory from a #GMemChunk.
+ *
+ * Deprecated:2.10: Use g_slice_alloc() instead
+ **/
 gpointer
 g_mem_chunk_alloc (GMemChunk *mem_chunk)
 {
@@ -640,6 +827,16 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
   return g_slice_alloc (mem_chunk->alloc_size);
 }
 
+/**
+ * g_mem_chunk_alloc0:
+ * @mem_chunk: a #GMemChunk.
+ * @Returns: a pointer to the allocated atom.
+ *
+ * Allocates an atom of memory from a #GMemChunk, setting the memory to
+ * 0.
+ *
+ * Deprecated:2.10: Use g_slice_alloc0() instead
+ **/
 gpointer
 g_mem_chunk_alloc0 (GMemChunk *mem_chunk)
 {
@@ -648,6 +845,17 @@ g_mem_chunk_alloc0 (GMemChunk *mem_chunk)
   return g_slice_alloc0 (mem_chunk->alloc_size);
 }
 
+/**
+ * g_mem_chunk_free:
+ * @mem_chunk: a #GMemChunk.
+ * @mem: a pointer to the atom to free.
+ *
+ * Frees an atom in a #GMemChunk. This should only be called if the
+ * #GMemChunk was created with #G_ALLOC_AND_FREE. Otherwise it will
+ * simply return.
+ *
+ * Deprecated:2.10: Use g_slice_free1() instead
+ **/
 void
 g_mem_chunk_free (GMemChunk *mem_chunk,
 		  gpointer   mem)
@@ -657,12 +865,148 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
   g_slice_free1 (mem_chunk->alloc_size, mem);
 }
 
+/**
+ * g_mem_chunk_clean:
+ * @mem_chunk: a #GMemChunk.
+ *
+ * Frees any blocks in a #GMemChunk which are no longer being used.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void	g_mem_chunk_clean	(GMemChunk *mem_chunk)	{}
+
+/**
+ * g_mem_chunk_reset:
+ * @mem_chunk: a #GMemChunk.
+ *
+ * Resets a GMemChunk to its initial state. It frees all of the
+ * currently allocated blocks of memory.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void	g_mem_chunk_reset	(GMemChunk *mem_chunk)	{}
+
+
+/**
+ * g_mem_chunk_print:
+ * @mem_chunk: a #GMemChunk.
+ *
+ * Outputs debugging information for a #GMemChunk. It outputs the name
+ * of the #GMemChunk (set with g_mem_chunk_new()), the number of bytes
+ * used, and the number of blocks of memory allocated.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void	g_mem_chunk_print	(GMemChunk *mem_chunk)	{}
+
+
+/**
+ * g_mem_chunk_info:
+ *
+ * Outputs debugging information for all #GMemChunk objects currently
+ * in use. It outputs the number of #GMemChunk objects currently
+ * allocated, and calls g_mem_chunk_print() to output information on
+ * each one.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void	g_mem_chunk_info	(void)			{}
+
+/**
+ * g_blow_chunks:
+ *
+ * Calls g_mem_chunk_clean() on all #GMemChunk objects.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void	g_blow_chunks		(void)			{}
 
+/**
+ * g_chunk_new0:
+ * @type: the type of the #GMemChunk atoms, typically a structure name.
+ * @chunk: a #GMemChunk.
+ * @Returns: a pointer to the allocated atom, cast to a pointer to
+ *           @type.
+ *
+ * A convenience macro to allocate an atom of memory from a #GMemChunk.
+ * It calls g_mem_chunk_alloc0() and casts the returned atom to a
+ * pointer to the given type, avoiding a type cast in the source code.
+ *
+ * Deprecated:2.10: Use g_slice_new0() instead
+ **/
+
+/**
+ * g_chunk_free:
+ * @mem: a pointer to the atom to be freed.
+ * @mem_chunk: a #GMemChunk.
+ *
+ * A convenience macro to free an atom of memory from a #GMemChunk. It
+ * simply switches the arguments and calls g_mem_chunk_free() It is
+ * included simply to complement the other convenience macros,
+ * g_chunk_new() and g_chunk_new0().
+ *
+ * Deprecated:2.10: Use g_slice_free() instead
+ **/
+
+/**
+ * g_chunk_new:
+ * @type: the type of the #GMemChunk atoms, typically a structure name.
+ * @chunk: a #GMemChunk.
+ * @Returns: a pointer to the allocated atom, cast to a pointer to
+ *           @type.
+ *
+ * A convenience macro to allocate an atom of memory from a #GMemChunk.
+ * It calls g_mem_chunk_alloc() and casts the returned atom to a
+ * pointer to the given type, avoiding a type cast in the source code.
+ *
+ * Deprecated:2.10: Use g_slice_new() instead
+ **/
+
+/**
+ * g_mem_chunk_create:
+ * @type: the type of the atoms, typically a structure name.
+ * @pre_alloc: the number of atoms to store in each block of memory.
+ * @alloc_type: the type of the #GMemChunk.  #G_ALLOC_AND_FREE is used
+ *              if the atoms will be freed individually.  #G_ALLOC_ONLY
+ *              should be used if atoms will never be freed
+ *              individually.  #G_ALLOC_ONLY is quicker, since it does
+ *              not need to track free atoms, but it obviously wastes
+ *              memory if you no longer need many of the atoms.
+ * @Returns: the new #GMemChunk.
+ *
+ * A convenience macro for creating a new #GMemChunk. It calls
+ * g_mem_chunk_new(), using the given type to create the #GMemChunk
+ * name. The atom size is determined using
+ * <function>sizeof()</function>, and the area size is calculated by
+ * multiplying the @pre_alloc parameter with the atom size.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
+
+
+/**
+ * g_allocator_new:
+ * @name: the name of the #GAllocator. This name is used to set the
+ *        name of the #GMemChunk used by the #GAllocator, and is only
+ *        used for debugging.
+ * @n_preallocs: the number of elements in each block of memory
+ *               allocated.  Larger blocks mean less calls to
+ *               g_malloc(), but some memory may be wasted.  (GLib uses
+ *               128 elements per block by default.) The value must be
+ *               between 1 and 65535.
+ * @Returns: a new #GAllocator.
+ *
+ * Creates a new #GAllocator.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 GAllocator*
 g_allocator_new (const gchar *name,
 		 guint        n_preallocs)
@@ -682,6 +1026,15 @@ g_allocator_new (const gchar *name,
   return (void*) &dummy;
 }
 
+/**
+ * g_allocator_free:
+ * @allocator: a #GAllocator.
+ *
+ * Frees all of the memory allocated by the #GAllocator.
+ *
+ * Deprecated:2.10: Use the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link> instead
+ **/
 void
 g_allocator_free (GAllocator *allocator)
 {
