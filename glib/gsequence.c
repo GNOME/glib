@@ -23,8 +23,77 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: sequence
+ * @title: Sequences
+ * @short_description: scalable lists
+ *
+ * The #GSequence data structure has the API of a list, but is
+ * implemented internally with a balanced binary tree. This means that
+ * it is possible to maintain a sorted list of n elements in time O(n
+ * log n). The data contained in each element can be either integer
+ * values, by using of the <link
+ * linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>,
+ * or simply pointers to any type of data.
+ *
+ * A #GSequence is accessed through <firstterm>iterators</firstterm>,
+ * represented by a #GSequenceIter. An iterator represents a position
+ * between two elements of the sequence. For example, the
+ * <firstterm>begin</firstterm> iterator represents the gap immediately
+ * before the first element of the sequence, and the
+ * <firstterm>end</firstterm> iterator represents the gap immediately
+ * after the last element. In an empty sequence, the begin and end
+ * iterators are the same.
+ *
+ * Some methods on #GSequence operate on ranges of items. For example
+ * g_sequence_foreach_range() will call a user-specified function on
+ * each element with the given range. The range is delimited by the
+ * gaps represented by the passed-in iterators, so if you pass in the
+ * begin and end iterators, the range in question is the entire
+ * sequence.
+ *
+ * The function g_sequence_get() is used with an iterator to access the
+ * element immediately following the gap that the iterator represents.
+ * The iterator is said to <firstterm>point</firstterm> to that element.
+ *
+ * Iterators are stable across most operations on a #GSequence. For
+ * example an iterator pointing to some element of a sequence will
+ * continue to point to that element even after the sequence is sorted.
+ * Even moving an element to another sequence using for example
+ * g_sequence_move_range() will not invalidate the iterators pointing
+ * to it. The only operation that will invalidate an iterator is when
+ * the element it points to is removed from any sequence.
+ **/
+
+/**
+ * GSequenceIter:
+ *
+ * The #GSequenceIter struct is an opaque data type representing an
+ * iterator pointing into a #GSequence.
+ **/
+
+/**
+ * GSequenceIterCompareFunc:
+ * @a: a #GSequenceIter
+ * @b: a #GSequenceIter
+ * @data: user data
+ * @Returns: zero if the iterators are equal, a negative value if @a
+ *           comes before @b, and a positive value if @b comes before
+ *           @a.
+ *
+ * A #GSequenceIterCompareFunc is a function used to compare iterators.
+ * It must return zero if the iterators compare equal, a negative value
+ * if @a comes before @b, and a positive value if @b comes before @a.
+ **/
+
 typedef struct _GSequenceNode GSequenceNode;
 
+/**
+ * GSequence:
+ *
+ * The #GSequence struct is an opaque data type representing a
+ * <link linkend="glib-Sequences">Sequence</link> data type.
+ **/
 struct _GSequence
 {
   GSequenceNode *       end_node;
