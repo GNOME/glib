@@ -1,5 +1,7 @@
 allocators.sgml
 base64.sgml
+datasets.sgml
+datalist.sgml
 ghostutils.sgml
 gurifuncs.sgml
 gvarianttype.sgml
@@ -7,6 +9,7 @@ hash_tables.sgml
 memory_chunks.sgml
 option.sgml
 patterns.sgml 
+quarks.sgml
 random_numbers.sgml
 sequence.sgml
 shell.sgml

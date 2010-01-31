@@ -38,6 +38,95 @@
 #include "gdatasetprivate.h"
 #include "galias.h"
 
+/**
+ * SECTION: datasets
+ * @title: Datasets
+ * @short_description: associate groups of data elements with
+ *                     particular memory locations
+ *
+ * Datasets associate groups of data elements with particular memory
+ * locations. These are useful if you need to associate data with a
+ * structure returned from an external library. Since you cannot modify
+ * the structure, you use its location in memory as the key into a
+ * dataset, where you can associate any number of data elements with it.
+ *
+ * There are two forms of most of the dataset functions. The first form
+ * uses strings to identify the data elements associated with a
+ * location. The second form uses #GQuark identifiers, which are
+ * created with a call to g_quark_from_string() or
+ * g_quark_from_static_string(). The second form is quicker, since it
+ * does not require looking up the string in the hash table of #GQuark
+ * identifiers.
+ *
+ * There is no function to create a dataset. It is automatically
+ * created as soon as you add elements to it.
+ *
+ * To add data elements to a dataset use g_dataset_id_set_data(),
+ * g_dataset_id_set_data_full(), g_dataset_set_data() and
+ * g_dataset_set_data_full().
+ *
+ * To get data elements from a dataset use g_dataset_id_get_data() and
+ * g_dataset_get_data().
+ *
+ * To iterate over all data elements in a dataset use
+ * g_dataset_foreach() (not thread-safe).
+ *
+ * To remove data elements from a dataset use
+ * g_dataset_id_remove_data() and g_dataset_remove_data().
+ *
+ * To destroy a dataset, use g_dataset_destroy().
+ **/
+
+/**
+ * SECTION: datalist
+ * @title: Keyed Data Lists
+ * @short_description: lists of data elements which are accessible by a
+ *                     string or GQuark identifier
+ *
+ * Keyed data lists provide lists of arbitrary data elements which can
+ * be accessed either with a string or with a #GQuark corresponding to
+ * the string.
+ *
+ * The #GQuark methods are quicker, since the strings have to be
+ * converted to #GQuarks anyway.
+ *
+ * Data lists are used for associating arbitrary data with #GObjects,
+ * using g_object_set_data() and related functions.
+ *
+ * To create a datalist, use g_datalist_init().
+ *
+ * To add data elements to a datalist use g_datalist_id_set_data(),
+ * g_datalist_id_set_data_full(), g_datalist_set_data() and
+ * g_datalist_set_data_full().
+ *
+ * To get data elements from a datalist use g_datalist_id_get_data()
+ * and g_datalist_get_data().
+ *
+ * To iterate over all data elements in a datalist use
+ * g_datalist_foreach() (not thread-safe).
+ *
+ * To remove data elements from a datalist use
+ * g_datalist_id_remove_data() and g_datalist_remove_data().
+ *
+ * To remove all data elements from a datalist, use g_datalist_clear().
+ **/
+
+/**
+ * GData:
+ *
+ * The #GData struct is an opaque data structure to represent a <link
+ * linkend="glib-Keyed-Data-Lists">Keyed Data List</link>. It should
+ * only be accessed via the following functions.
+ **/
+
+/**
+ * GDestroyNotify:
+ * @data: the data element.
+ *
+ * Specifies the type of function which is called when a data element
+ * is destroyed. It is passed the pointer to the data element and
+ * should free any memory and resources allocated for it.
+ **/
 
 /* --- defines --- */
 #define	G_QUARK_BLOCK_SIZE			(512)
@@ -125,6 +214,13 @@ g_datalist_clear_i (GData **datalist)
     }
 }
 
+/**
+ * g_datalist_clear:
+ * @datalist: a datalist.
+ *
+ * Frees all the data elements of the datalist. The data elements'
+ * destroy functions are called if they have been set.
+ **/
 void
 g_datalist_clear (GData **datalist)
 {
@@ -178,6 +274,13 @@ g_dataset_destroy_internal (GDataset *dataset)
     }
 }
 
+/**
+ * g_dataset_destroy:
+ * @dataset_location: the location identifying the dataset.
+ *
+ * Destroys the dataset, freeing all memory allocated, and calling any
+ * destroy functions set for data elements.
+ **/
 void
 g_dataset_destroy (gconstpointer  dataset_location)
 {
@@ -300,6 +403,67 @@ g_data_set_internal (GData	  **datalist,
   return NULL;
 }
 
+/**
+ * g_dataset_id_set_data_full:
+ * @dataset_location: the location identifying the dataset.
+ * @key_id: the #GQuark id to identify the data element.
+ * @data: the data element.
+ * @destroy_func: the function to call when the data element is
+ *                removed. This function will be called with the data
+ *                element and can be used to free any memory allocated
+ *                for it.
+ *
+ * Sets the data element associated with the given #GQuark id, and also
+ * the function to call when the data element is destroyed. Any
+ * previous data with the same key is removed, and its destroy function
+ * is called.
+ **/
+/**
+ * g_dataset_set_data_full:
+ * @l: the location identifying the dataset.
+ * @k: the string to identify the data element.
+ * @d: the data element.
+ * @f: the function to call when the data element is removed. This
+ *     function will be called with the data element and can be used to
+ *     free any memory allocated for it.
+ *
+ * Sets the data corresponding to the given string identifier, and the
+ * function to call when the data element is destroyed.
+ **/
+/**
+ * g_dataset_id_set_data:
+ * @l: the location identifying the dataset.
+ * @k: the #GQuark id to identify the data element.
+ * @d: the data element.
+ *
+ * Sets the data element associated with the given #GQuark id. Any
+ * previous data with the same key is removed, and its destroy function
+ * is called.
+ **/
+/**
+ * g_dataset_set_data:
+ * @l: the location identifying the dataset.
+ * @k: the string to identify the data element.
+ * @d: the data element.
+ *
+ * Sets the data corresponding to the given string identifier.
+ **/
+/**
+ * g_dataset_id_remove_data:
+ * @l: the location identifying the dataset.
+ * @k: the #GQuark id identifying the data element.
+ *
+ * Removes a data element from a dataset. The data element's destroy
+ * function is called if it has been set.
+ **/
+/**
+ * g_dataset_remove_data:
+ * @l: the location identifying the dataset.
+ * @k: the string identifying the data element.
+ *
+ * Removes a data element corresponding to a string. Its destroy
+ * function is called if it has been set.
+ **/
 void
 g_dataset_id_set_data_full (gconstpointer  dataset_location,
 			    GQuark         key_id,
@@ -338,6 +502,72 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
   G_UNLOCK (g_dataset_global);
 }
 
+/**
+ * g_datalist_id_set_data_full:
+ * @datalist: a datalist.
+ * @key_id: the #GQuark to identify the data element.
+ * @data: the data element or %NULL to remove any previous element
+ *        corresponding to @key_id.
+ * @destroy_func: the function to call when the data element is
+ *                removed. This function will be called with the data
+ *                element and can be used to free any memory allocated
+ *                for it. If @data is %NULL, then @destroy_func must
+ *                also be %NULL.
+ *
+ * Sets the data corresponding to the given #GQuark id, and the
+ * function to be called when the element is removed from the datalist.
+ * Any previous data with the same key is removed, and its destroy
+ * function is called.
+ **/
+/**
+ * g_datalist_set_data_full:
+ * @dl: a datalist.
+ * @k: the string to identify the data element.
+ * @d: the data element, or %NULL to remove any previous element
+ *     corresponding to @k.
+ * @f: the function to call when the data element is removed. This
+ *     function will be called with the data element and can be used to
+ *     free any memory allocated for it. If @d is %NULL, then @f must
+ *     also be %NULL.
+ *
+ * Sets the data element corresponding to the given string identifier,
+ * and the function to be called when the data element is removed.
+ **/
+/**
+ * g_datalist_id_set_data:
+ * @dl: a datalist.
+ * @q: the #GQuark to identify the data element.
+ * @d: the data element, or %NULL to remove any previous element
+ *     corresponding to @q.
+ *
+ * Sets the data corresponding to the given #GQuark id. Any previous
+ * data with the same key is removed, and its destroy function is
+ * called.
+ **/
+/**
+ * g_datalist_set_data:
+ * @dl: a datalist.
+ * @k: the string to identify the data element.
+ * @d: the data element, or %NULL to remove any previous element
+ *     corresponding to @k.
+ *
+ * Sets the data element corresponding to the given string identifier.
+ **/
+/**
+ * g_datalist_id_remove_data:
+ * @dl: a datalist.
+ * @q: the #GQuark identifying the data element.
+ *
+ * Removes an element, using its #GQuark identifier.
+ **/
+/**
+ * g_datalist_remove_data:
+ * @dl: a datalist.
+ * @k: the string identifying the data element.
+ *
+ * Removes an element using its string identifier. The data element's
+ * destroy function is called if it has been set.
+ **/
 void
 g_datalist_id_set_data_full (GData	  **datalist,
 			     GQuark         key_id,
@@ -363,6 +593,22 @@ g_datalist_id_set_data_full (GData	  **datalist,
   G_UNLOCK (g_dataset_global);
 }
 
+/**
+ * g_dataset_id_remove_no_notify:
+ * @dataset_location: the location identifying the dataset.
+ * @key_id: the #GQuark ID identifying the data element.
+ * @Returns: the data previously stored at @key_id, or %NULL if none.
+ *
+ * Removes an element, without calling its destroy notification
+ * function.
+ **/
+/**
+ * g_dataset_remove_no_notify:
+ * @l: the location identifying the dataset.
+ * @k: the string identifying the data element.
+ *
+ * Removes an element, without calling its destroy notifier.
+ **/
 gpointer
 g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
 			       GQuark         key_id)
@@ -385,6 +631,22 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
   return ret_data;
 }
 
+/**
+ * g_datalist_id_remove_no_notify:
+ * @datalist: a datalist.
+ * @key_id: the #GQuark identifying a data element.
+ * @Returns: the data previously stored at @key_id, or %NULL if none.
+ *
+ * Removes an element, without calling its destroy notification
+ * function.
+ **/
+/**
+ * g_datalist_remove_no_notify:
+ * @dl: a datalist.
+ * @k: the string identifying the data element.
+ *
+ * Removes an element, without calling its destroy notifier.
+ **/
 gpointer
 g_datalist_id_remove_no_notify (GData	**datalist,
 				GQuark    key_id)
@@ -401,6 +663,24 @@ g_datalist_id_remove_no_notify (GData	**datalist,
   return ret_data;
 }
 
+/**
+ * g_dataset_id_get_data:
+ * @dataset_location: the location identifying the dataset.
+ * @key_id: the #GQuark id to identify the data element.
+ * @Returns: the data element corresponding to the #GQuark, or %NULL if
+ *           it is not found.
+ *
+ * Gets the data element corresponding to a #GQuark.
+ **/
+/**
+ * g_dataset_get_data:
+ * @l: the location identifying the dataset.
+ * @k: the string identifying the data element.
+ * @Returns: the data element corresponding to the string, or %NULL if
+ *           it is not found.
+ *
+ * Gets the data element corresponding to a string.
+ **/
 gpointer
 g_dataset_id_get_data (gconstpointer  dataset_location,
 		       GQuark         key_id)
@@ -430,6 +710,24 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
   return NULL;
 }
 
+/**
+ * g_datalist_id_get_data:
+ * @datalist: a datalist.
+ * @key_id: the #GQuark identifying a data element.
+ * @Returns: the data element, or %NULL if it is not found.
+ *
+ * Retrieves the data element corresponding to @key_id.
+ **/
+/**
+ * g_datalist_get_data:
+ * @dl: a datalist.
+ * @k: the string identifying a data element.
+ * @Returns: the data element, or %NULL if it is not found.
+ *
+ * Gets a data element, using its string identifer. This is slower than
+ * g_datalist_id_get_data() because the string is first converted to a
+ * #GQuark.
+ **/
 gpointer
 g_datalist_id_get_data (GData	 **datalist,
 			GQuark     key_id)
@@ -451,6 +749,28 @@ g_datalist_id_get_data (GData	 **datalist,
   return data;
 }
 
+/**
+ * GDataForeachFunc:
+ * @key_id: the #GQuark id to identifying the data element.
+ * @data: the data element.
+ * @user_data: user data passed to g_dataset_foreach().
+ *
+ * Specifies the type of function passed to g_dataset_foreach(). It is
+ * called with each #GQuark id and associated data element, together
+ * with the @user_data parameter supplied to g_dataset_foreach().
+ **/
+
+/**
+ * g_dataset_foreach:
+ * @dataset_location: the location identifying the dataset.
+ * @func: the function to call for each data element.
+ * @user_data: user data to pass to the function.
+ *
+ * Calls the given function for each data element which is associated
+ * with the given location. Note that this function is NOT thread-safe.
+ * So unless @datalist can be protected from any modifications during
+ * invocation of this function, it should not be called.
+ **/
 void
 g_dataset_foreach (gconstpointer    dataset_location,
 		   GDataForeachFunc func,
@@ -483,6 +803,19 @@ g_dataset_foreach (gconstpointer    dataset_location,
     }
 }
 
+/**
+ * g_datalist_foreach:
+ * @datalist: a datalist.
+ * @func: the function to call for each data element.
+ * @user_data: user data to pass to the function.
+ *
+ * Calls the given function for each data element of the datalist. The
+ * function is called with each data element's #GQuark id and data,
+ * together with the given @user_data parameter. Note that this
+ * function is NOT thread-safe. So unless @datalist can be protected
+ * from any modifications during invocation of this function, it should
+ * not be called.
+ **/
 void
 g_datalist_foreach (GData	   **datalist,
 		    GDataForeachFunc func,
@@ -500,6 +833,13 @@ g_datalist_foreach (GData	   **datalist,
     }
 }
 
+/**
+ * g_datalist_init:
+ * @datalist: a pointer to a pointer to a datalist.
+ *
+ * Resets the datalist to %NULL. It does not free any memory or call
+ * any destroy functions.
+ **/
 void
 g_datalist_init (GData **datalist)
 {
@@ -600,6 +940,56 @@ g_data_initialize (void)
   g_dataset_cached = NULL;
 }
 
+/**
+ * SECTION: quarks
+ * @title: Quarks
+ * @short_description: a 2-way association between a string and a
+ *                     unique integer identifier
+ *
+ * Quarks are associations between strings and integer identifiers.
+ * Given either the string or the #GQuark identifier it is possible to
+ * retrieve the other.
+ *
+ * Quarks are used for both <link
+ * linkend="glib-datasets">Datasets</link> and <link
+ * linkend="glib-keyed-data-lists">Keyed Data Lists</link>.
+ *
+ * To create a new quark from a string, use g_quark_from_string() or
+ * g_quark_from_static_string().
+ *
+ * To find the string corresponding to a given #GQuark, use
+ * g_quark_to_string().
+ *
+ * To find the #GQuark corresponding to a given string, use
+ * g_quark_try_string().
+ *
+ * Another use for the string pool maintained for the quark functions
+ * is string interning, using g_intern_string() or
+ * g_intern_static_string(). An interned string is a canonical
+ * representation for a string. One important advantage of interned
+ * strings is that they can be compared for equality by a simple
+ * pointer comparision, rather than using strcmp().
+ **/
+
+/**
+ * GQuark:
+ *
+ * A GQuark is a non-zero integer which uniquely identifies a
+ * particular string. A GQuark value of zero is associated to %NULL.
+ **/
+
+/**
+ * g_quark_try_string:
+ * @string: a string.
+ * @Returns: the #GQuark associated with the string, or 0 if @string is
+ *           %NULL or there is no #GQuark associated with it.
+ *
+ * Gets the #GQuark associated with the given string, or 0 if string is
+ * %NULL or it has no associated #GQuark.
+ *
+ * If you want the GQuark to be created if it doesn't already exist,
+ * use g_quark_from_string() or g_quark_from_static_string().
+ **/
 GQuark
 g_quark_try_string (const gchar *string)
 {
@@ -630,6 +1020,16 @@ g_quark_from_string_internal (const gchar *string,
   return quark;
 }
 
+/**
+ * g_quark_from_string:
+ * @string: a string.
+ * @Returns: the #GQuark identifying the string, or 0 if @string is
+ *           %NULL.
+ *
+ * Gets the #GQuark identifying the given string. If the string does
+ * not currently have an associated #GQuark, a new #GQuark is created,
+ * using a copy of the string.
+ **/
 GQuark
 g_quark_from_string (const gchar *string)
 {
@@ -645,6 +1045,25 @@ g_quark_from_string (const gchar *string)
   return quark;
 }
 
+/**
+ * g_quark_from_static_string:
+ * @string: a string.
+ * @Returns: the #GQuark identifying the string, or 0 if @string is
+ *           %NULL.
+ *
+ * Gets the #GQuark identifying the given (static) string. If the
+ * string does not currently have an associated #GQuark, a new #GQuark
+ * is created, linked to the given string.
+ *
+ * Note that this function is identical to g_quark_from_string() except
+ * that if a new #GQuark is created the string itself is used rather
+ * than a copy. This saves memory, but can only be used if the string
+ * will <emphasis>always</emphasis> exist. It can be used with
+ * statically allocated strings in the main program, but not with
+ * statically allocated memory in dynamically loaded modules, if you
+ * expect to ever unload the module again (e.g. do not use this
+ * function in GTK+ theme engines).
+ **/
 GQuark
 g_quark_from_static_string (const gchar *string)
 {
@@ -660,6 +1079,13 @@ g_quark_from_static_string (const gchar *string)
   return quark;
 }
 
+/**
+ * g_quark_to_string:
+ * @quark: a #GQuark.
+ * @Returns: the string associated with the #GQuark.
+ *
+ * Gets the string associated with the given #GQuark.
+ **/
 G_CONST_RETURN gchar*
 g_quark_to_string (GQuark quark)
 {
@@ -752,8 +1178,6 @@ g_intern_static_string (const gchar *string)
 
   return result;
 }
-
-
 
 #define __G_DATASET_C__
 #include "galiasdef.c"
