@@ -35,9 +35,82 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: completion
+ * @title: Automatic String Completion
+ * @short_description: support for automatic completion using a group
+ *                     of target strings
+ *
+ * #GCompletion provides support for automatic completion of a string
+ * using any group of target strings. It is typically used for file
+ * name completion as is common in many UNIX shells.
+ *
+ * A #GCompletion is created using g_completion_new(). Target items are
+ * added and removed with g_completion_add_items(),
+ * g_completion_remove_items() and g_completion_clear_items(). A
+ * completion attempt is requested with g_completion_complete() or
+ * g_completion_complete_utf8(). When no longer needed, the
+ * #GCompletion is freed with g_completion_free().
+ *
+ * Items in the completion can be simple strings (e.g. filenames), or
+ * pointers to arbitrary data structures. If data structures are used
+ * you must provide a #GCompletionFunc in g_completion_new(), which
+ * retrieves the item's string from the data structure. You can change
+ * the way in which strings are compared by setting a different
+ * #GCompletionStrncmpFunc in g_completion_set_compare().
+ **/
+
+/**
+ * GCompletion:
+ * @items: list of target items (strings or data structures).
+ * @func: function which is called to get the string associated with a
+ *        target item. It is %NULL if the target items are strings.
+ * @prefix: the last prefix passed to g_completion_complete() or
+ *          g_completion_complete_utf8().
+ * @cache: the list of items which begin with @prefix.
+ * @strncmp_func: The function to use when comparing strings.  Use
+ *                g_completion_set_compare() to modify this function.
+ *
+ * The data structure used for automatic completion.
+ **/
+
+/**
+ * GCompletionFunc:
+ * @Param1: the completion item.
+ * @Returns: the string corresponding to the item.
+ *
+ * Specifies the type of the function passed to g_completion_new(). It
+ * should return the string corresponding to the given target item.
+ * This is used when you use data structures as #GCompletion items.
+ **/
+
+/**
+ * GCompletionStrncmpFunc:
+ * @s1: string to compare with @s2.
+ * @s2: string to compare with @s1.
+ * @n: maximal number of bytes to compare.
+ * @Returns: an integer less than, equal to, or greater than zero if
+ *           the first @n bytes of @s1 is found, respectively, to be
+ *           less than, to match, or to be greater than the first @n
+ *           bytes of @s2.
+ *
+ * Specifies the type of the function passed to
+ * g_completion_set_compare(). This is used when you use strings as
+ * #GCompletion items.
+ **/
+
 static void completion_check_cache (GCompletion* cmp,
 				    gchar**	 new_prefix);
 
+/**
+ * g_completion_new:
+ * @func: the function to be called to return the string representing
+ *        an item in the #GCompletion, or %NULL if strings are going to
+ *        be used as the #GCompletion items.
+ * @Returns: the new #GCompletion.
+ *
+ * Creates a new #GCompletion.
+ **/
 GCompletion* 
 g_completion_new (GCompletionFunc func)
 {
@@ -53,6 +126,13 @@ g_completion_new (GCompletionFunc func)
   return gcomp;
 }
 
+/**
+ * g_completion_add_items:
+ * @cmp: the #GCompletion.
+ * @items: the list of items to add.
+ *
+ * Adds items to the #GCompletion.
+ **/
 void 
 g_completion_add_items (GCompletion* cmp,
 			GList*	     items)
@@ -82,6 +162,13 @@ g_completion_add_items (GCompletion* cmp,
     }
 }
 
+/**
+ * g_completion_remove_items:
+ * @cmp: the #GCompletion.
+ * @items: the items to remove.
+ *
+ * Removes items from a #GCompletion.
+ **/
 void 
 g_completion_remove_items (GCompletion* cmp,
 			   GList*	items)
@@ -105,6 +192,12 @@ g_completion_remove_items (GCompletion* cmp,
     }
 }
 
+/**
+ * g_completion_clear_items:
+ * @cmp: the #GCompletion.
+ *
+ * Removes all items from the #GCompletion.
+ **/
 void 
 g_completion_clear_items (GCompletion* cmp)
 {
@@ -213,6 +306,21 @@ g_completion_complete_utf8 (GCompletion  *cmp,
   return list;
 }
 
+/**
+ * g_completion_complete:
+ * @cmp: the #GCompletion.
+ * @prefix: the prefix string, typically typed by the user, which is
+ *          compared with each of the items.
+ * @new_prefix: if non-%NULL, returns the longest prefix which is
+ *              common to all items that matched @prefix, or %NULL if
+ *              no items matched @prefix.  This string should be freed
+ *              when no longer needed.
+ * @Returns: the list of items whose strings begin with @prefix. This
+ *           should not be changed.
+ *
+ * Attempts to complete the string @prefix using the #GCompletion
+ * target items.
+ **/
 GList* 
 g_completion_complete (GCompletion* cmp,
 		       const gchar* prefix,
@@ -275,6 +383,12 @@ g_completion_complete (GCompletion* cmp,
   return *prefix ? cmp->cache : cmp->items;
 }
 
+/**
+ * g_completion_free:
+ * @cmp: the #GCompletion.
+ *
+ * Frees all memory used by the #GCompletion.
+ **/
 void 
 g_completion_free (GCompletion* cmp)
 {
@@ -284,6 +398,14 @@ g_completion_free (GCompletion* cmp)
   g_free (cmp);
 }
 
+/**
+ * g_completion_set_compare:
+ * @cmp: a #GCompletion.
+ * @strncmp_func: the string comparison function.
+ *
+ * Sets the function to use for string comparisons. The default string
+ * comparison function is strncmp().
+ **/
 void
 g_completion_set_compare(GCompletion *cmp,
 			 GCompletionStrncmpFunc strncmp_func)
