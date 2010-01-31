@@ -569,6 +569,32 @@ g_io_channel_new_file (const gchar *filename,
   return channel;
 }
 
+/**
+ * g_io_channel_unix_new:
+ * @fd: a file descriptor.
+ * @Returns: a new #GIOChannel.
+ *
+ * Creates a new #GIOChannel given a file descriptor. On UNIX systems
+ * this works for plain files, pipes, and sockets.
+ *
+ * The returned #GIOChannel has a reference count of 1.
+ *
+ * The default encoding for #GIOChannel is UTF-8. If your application
+ * is reading output from a command using via pipe, you may need to set
+ * the encoding to the encoding of the current locale (see
+ * g_get_charset()) with the g_io_channel_set_encoding() function.
+ *
+ * If you want to read raw binary data without interpretation, then
+ * call the g_io_channel_set_encoding() function with %NULL for the
+ * encoding argument.
+ *
+ * This function is available in GLib on Windows, too, but you should
+ * avoid using it on Windows. The domain of file descriptors and
+ * sockets overlap. There is no way for GLib to know which one you mean
+ * in case the argument you pass to this function happens to be both a
+ * valid file descriptor and socket. If that happens a warning is
+ * issued, and GLib assumes that it is the file descriptor you mean.
+ **/
 GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
@@ -598,6 +624,16 @@ g_io_channel_unix_new (gint fd)
   return channel;
 }
 
+/**
+ * g_io_channel_unix_get_fd:
+ * @channel: a #GIOChannel, created with g_io_channel_unix_new().
+ * @Returns: the file descriptor of the #GIOChannel.
+ *
+ * Returns the file descriptor of the #GIOChannel.
+ *
+ * On Windows this function returns the file descriptor or socket of
+ * the #GIOChannel.
+ **/
 gint
 g_io_channel_unix_get_fd (GIOChannel *channel)
 {

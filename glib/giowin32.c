@@ -1973,6 +1973,16 @@ static GIOFuncs win32_channel_sock_funcs = {
   g_io_win32_sock_get_flags,
 };
 
+/**
+ * g_io_channel_win32_new_messages:
+ * @hwnd: a window handle.
+ * @Returns: a new #GIOChannel.
+ *
+ * Creates a new #GIOChannel given a window handle on Windows.
+ *
+ * This function creates a #GIOChannel that can be used to poll for
+ * Windows messages for the window in question.
+ **/
 GIOChannel *
 #if GLIB_SIZEOF_VOID_P == 8
 g_io_channel_win32_new_messages (gsize hwnd)
@@ -2036,6 +2046,34 @@ g_io_channel_win32_new_fd_internal (gint         fd,
   return channel;
 }
 
+/**
+ * g_io_channel_win32_new_fd:
+ * @fd: a C library file descriptor.
+ * @Returns: a new #GIOChannel.
+ *
+ * Creates a new #GIOChannel given a file descriptor on Windows. This
+ * works for file descriptors from the C runtime.
+ *
+ * This function works for file descriptors as returned by the open(),
+ * creat(), pipe() and fileno() calls in the Microsoft C runtime. In
+ * order to meaningfully use this function your code should use the
+ * same C runtime as GLib uses, which is msvcrt.dll. Note that in
+ * current Microsoft compilers it is near impossible to convince it to
+ * build code that would use msvcrt.dll. The last Microsoft compiler
+ * version that supported using msvcrt.dll as the C runtime was version
+ * 6. The GNU compiler and toolchain for Windows, also known as Mingw,
+ * fully supports msvcrt.dll.
+ *
+ * If you have created a #GIOChannel for a file descriptor and started
+ * watching (polling) it, you shouldn't call read() on the file
+ * descriptor. This is because adding polling for a file descriptor is
+ * implemented in GLib on Windows by starting a thread that sits
+ * blocked in a read() from the file descriptor most of the time. All
+ * reads from the file descriptor should be done by this internal GLib
+ * thread. Your code should call only g_io_channel_read().
+ *
+ * This function is available only in GLib on Windows.
+ **/
 GIOChannel *
 g_io_channel_win32_new_fd (gint fd)
 {
@@ -2058,6 +2096,20 @@ g_io_channel_win32_get_fd (GIOChannel *channel)
   return win32_channel->fd;
 }
 
+/**
+ * g_io_channel_win32_new_socket:
+ * @socket: a Winsock socket
+ * @Returns: a new #GIOChannel
+ *
+ * Creates a new #GIOChannel given a socket on Windows.
+ *
+ * This function works for sockets created by Winsock. It's available
+ * only in GLib on Windows.
+ *
+ * Polling a #GSource created to watch a channel for a socket puts the
+ * socket in non-blocking mode. This is a side-effect of the
+ * implementation and unavoidable.
+ **/
 GIOChannel *
 g_io_channel_win32_new_socket (int socket)
 {
