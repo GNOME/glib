@@ -36,7 +36,87 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: trees-nary
+ * @title: N-ary Trees
+ * @short_description: trees of data with any number of branches
+ *
+ * The #GNode struct and its associated functions provide a N-ary tree
+ * data structure, where nodes in the tree can contain arbitrary data.
+ *
+ * To create a new tree use g_node_new().
+ *
+ * To insert a node into a tree use g_node_insert(),
+ * g_node_insert_before(), g_node_append() and g_node_prepend().
+ *
+ * To create a new node and insert it into a tree use
+ * g_node_insert_data(), g_node_insert_data_before(),
+ * g_node_append_data() and g_node_prepend_data().
+ *
+ * To reverse the children of a node use g_node_reverse_children().
+ *
+ * To find a node use g_node_get_root(), g_node_find(),
+ * g_node_find_child(), g_node_child_index(), g_node_child_position(),
+ * g_node_first_child(), g_node_last_child(), g_node_nth_child(),
+ * g_node_first_sibling(), g_node_prev_sibling(), g_node_next_sibling()
+ * or g_node_last_sibling().
+ *
+ * To get information about a node or tree use G_NODE_IS_LEAF(),
+ * G_NODE_IS_ROOT(), g_node_depth(), g_node_n_nodes(),
+ * g_node_n_children(), g_node_is_ancestor() or g_node_max_height().
+ *
+ * To traverse a tree, calling a function for each node visited in the
+ * traversal, use g_node_traverse() or g_node_children_foreach().
+ *
+ * To remove a node or subtree from a tree use g_node_unlink() or
+ * g_node_destroy().
+ **/
+
+/**
+ * GNode:
+ * @data: contains the actual data of the node.
+ * @next: points to the node's next sibling (a sibling is another
+ *        #GNode with the same parent).
+ * @prev: points to the node's previous sibling.
+ * @parent: points to the parent of the #GNode, or is %NULL if the
+ *          #GNode is the root of the tree.
+ * @children: points to the first child of the #GNode.  The other
+ *            children are accessed by using the @next pointer of each
+ *            child.
+ *
+ * The #GNode struct represents one node in a
+ * <link linkend="glib-N-ary-Trees">N-ary Tree</link>. fields
+ **/
+
+/**
+ * g_node_push_allocator:
+ * @dummy: the #GAllocator to use when allocating #GNode elements.
+ *
+ * Sets the allocator to use to allocate #GNode elements. Use
+ * g_node_pop_allocator() to restore the previous allocator.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated:2.10: It does nothing, since #GNode has been converted to
+ *                  the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link>
+ **/
 void g_node_push_allocator (gpointer dummy) { /* present for binary compat only */ }
+
+/**
+ * g_node_pop_allocator:
+ *
+ * Restores the previous #GAllocator, used when allocating #GNode
+ * elements.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated:2.10: It does nothing, since #GNode has been converted to
+ *                  the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link>
+ **/
 void g_node_pop_allocator  (void)           { /* present for binary compat only */ }
 
 #define g_node_alloc0()         g_slice_new0 (GNode)
@@ -767,6 +847,33 @@ g_node_depth_traverse_level (GNode             *node,
  * It calls the given function for each node visited.
  * The traversal can be halted at any point by returning %TRUE from @func.
  */
+/**
+ * GTraverseFlags:
+ * @G_TRAVERSE_LEAVES: only leaf nodes should be visited. This name has
+ *                     been introduced in 2.6, for older version use
+ *                     %G_TRAVERSE_LEAFS.
+ * @G_TRAVERSE_NON_LEAVES: only non-leaf nodes should be visited. This
+ *                         name has been introduced in 2.6, for older
+ *                         version use %G_TRAVERSE_NON_LEAFS.
+ * @G_TRAVERSE_ALL: all nodes should be visited.
+ * @G_TRAVERSE_MASK: a mask of all traverse flags.
+ * @G_TRAVERSE_LEAFS: identical to %G_TRAVERSE_LEAVES.
+ * @G_TRAVERSE_NON_LEAFS: identical to %G_TRAVERSE_NON_LEAVES.
+ *
+ * Specifies which nodes are visited during several of the tree
+ * functions, including g_node_traverse() and g_node_find().
+ **/
+/**
+ * GNodeTraverseFunc:
+ * @node: a #GNode.
+ * @data: user data passed to g_node_traverse().
+ * @Returns: %TRUE to stop the traversal.
+ *
+ * Specifies the type of function passed to g_node_traverse(). The
+ * function is called with each of the nodes visited, together with the
+ * user data passed to g_node_traverse(). If the function returns
+ * %TRUE, then the traversal is stopped.
+ **/
 void
 g_node_traverse (GNode		  *root,
 		 GTraverseType	   order,
@@ -1131,6 +1238,15 @@ g_node_last_sibling (GNode *node)
  * Calls a function for each of the children of a #GNode.
  * Note that it doesn't descend beneath the child nodes.
  */
+/**
+ * GNodeForeachFunc:
+ * @node: a #GNode.
+ * @data: user data passed to g_node_children_foreach().
+ *
+ * Specifies the type of function passed to g_node_children_foreach().
+ * The function is called with each child node, together with the user
+ * data passed to g_node_children_foreach().
+ **/
 void
 g_node_children_foreach (GNode		  *node,
 			 GTraverseFlags	   flags,

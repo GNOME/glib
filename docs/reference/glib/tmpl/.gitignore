@@ -20,4 +20,6 @@ shell.sgml
 string_chunks.sgml
 thread_pools.sgml
 threads.sgml
+trees-binary.sgml
+trees-nary.sgml
 timers.sgml
