@@ -1,4 +1,7 @@
 allocators.sgml
+arrays.sgml
+arrays_byte.sgml
+arrays_pointer.sgml
 base64.sgml
 caches.sgml
 checksum.sgml
