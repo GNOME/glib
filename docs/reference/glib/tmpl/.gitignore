@@ -9,5 +9,6 @@ option.sgml
 random_numbers.sgml
 sequence.sgml
 shell.sgml
+string_chunks.sgml
 threads.sgml
 timers.sgml
