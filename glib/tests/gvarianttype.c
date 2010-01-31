@@ -27,20 +27,22 @@ randomly (gdouble prob)
 }
 
 /* corecursion */
-static GVariantType *append_tuple_type_string (GString *, GString *, gint);
+static GVariantType *
+append_tuple_type_string (GString *, GString *, gboolean, gint);
 
 /* append a random GVariantType to a GString
  * append a description of the type to another GString
  * return what the type is
  */
 static GVariantType *
-append_type_string (GString *string,
-                    GString *description,
-                    gint     depth)
+append_type_string (GString  *string,
+                    GString  *description,
+                    gboolean  definite,
+                    gint      depth)
 {
   if (!depth-- || randomly (0.3))
     {
-      gchar b = BASIC[g_test_rand_int_range (0, N_BASIC)];
+      gchar b = BASIC[g_test_rand_int_range (0, N_BASIC - definite)];
       g_string_append_c (string, b);
       g_string_append_c (description, b);
 
@@ -82,7 +84,7 @@ append_type_string (GString *string,
     {
       GVariantType *result;
 
-      switch (g_test_rand_int_range (0, 7))
+      switch (g_test_rand_int_range (0, definite ? 5 : 7))
         {
         case 0:
           {
@@ -90,7 +92,8 @@ append_type_string (GString *string,
 
             g_string_append_c (string, 'a');
             g_string_append (description, "a of ");
-            element = append_type_string (string, description, depth);
+            element = append_type_string (string, description,
+                                          definite, depth);
             result = g_variant_type_new_array (element);
             g_variant_type_free (element);
           }
@@ -104,7 +107,8 @@ append_type_string (GString *string,
 
             g_string_append_c (string, 'm');
             g_string_append (description, "m of ");
-            element = append_type_string (string, description, depth);
+            element = append_type_string (string, description,
+                                          definite, depth);
             result = g_variant_type_new_maybe (element);
             g_variant_type_free (element);
           }
@@ -113,7 +117,8 @@ append_type_string (GString *string,
           break;
 
         case 2:
-          result = append_tuple_type_string (string, description, depth);
+          result = append_tuple_type_string (string, description,
+                                             definite, depth);
 
           g_assert (g_variant_type_is_tuple (result));
           break;
@@ -124,9 +129,9 @@ append_type_string (GString *string,
 
             g_string_append_c (string, '{');
             g_string_append (description, "e of [");
-            key = append_type_string (string, description, 0);
+            key = append_type_string (string, description, definite, 0);
             g_string_append (description, ", ");
-            value = append_type_string (string, description, depth);
+            value = append_type_string (string, description, definite, depth);
             g_string_append_c (description, ']');
             g_string_append_c (string, '}');
             result = g_variant_type_new_dict_entry (key, value);
@@ -167,9 +172,10 @@ append_type_string (GString *string,
 }
 
 static GVariantType *
-append_tuple_type_string (GString *string,
-                          GString *description,
-                          gint     depth)
+append_tuple_type_string (GString  *string,
+                          GString  *description,
+                          gboolean  definite,
+                          gint      depth)
 {
   GVariantType *result, *other_result;
   GVariantType **types;
@@ -184,7 +190,7 @@ append_tuple_type_string (GString *string,
 
   for (i = 0; i < size; i++)
     {
-      types[i] = append_type_string (string, description, depth);
+      types[i] = append_type_string (string, description, definite, depth);
 
       if (i < size - 1)
         g_string_append (description, ", ");
@@ -493,13 +499,13 @@ generate_subtype (const gchar *type_string)
 
   /* then store the replacement in the GString */
   if (type_string[l] == 'r')
-    replacement = append_tuple_type_string (result, junk, 3);
+    replacement = append_tuple_type_string (result, junk, FALSE, 3);
 
   else if (type_string[l] == '?')
-    replacement = append_type_string (result, junk, 0);
+    replacement = append_type_string (result, junk, FALSE, 0);
 
   else if (type_string[l] == '*')
-    replacement = append_type_string (result, junk, 3);
+    replacement = append_type_string (result, junk, FALSE, 3);
 
   else
     g_assert_not_reached ();
@@ -584,7 +590,7 @@ test_gvarianttype (void)
        *
        * exercises type constructor functions and g_variant_type_copy()
        */
-      type = append_type_string (type_string, description, 6);
+      type = append_type_string (type_string, description, FALSE, 6);
 
       /* convert the type string to a type and ensure that it is equal
        * to the one produced with the type constructor routines
@@ -630,12 +636,394 @@ test_gvarianttype (void)
       /* concatenate another type to the type string and ensure that
        * the result is recognised as being invalid
        */
-      other_type = append_type_string (type_string, description, 2);
+      other_type = append_type_string (type_string, description, FALSE, 2);
 
       g_string_free (description, TRUE);
       g_string_free (type_string, TRUE);
       g_variant_type_free (other_type);
       g_variant_type_free (type);
+    }
+}
+
+#undef  G_GNUC_INTERNAL
+#define G_GNUC_INTERNAL static
+
+#define DISABLE_VISIBILITY
+#include <glib/gvarianttypeinfo.c>
+
+#define ALIGNED(x, y)   (((x + (y - 1)) / y) * y)
+
+/* do our own calculation of the fixed_size and alignment of a type
+ * using a simple algorithm to make sure the "fancy" one in the
+ * implementation is correct.
+ */
+static void
+calculate_type_info (const GVariantType *type,
+                     gsize              *fixed_size,
+                     guint              *alignment)
+{
+  if (g_variant_type_is_array (type) ||
+      g_variant_type_is_maybe (type))
+    {
+      calculate_type_info (g_variant_type_element (type), NULL, alignment);
+
+      if (fixed_size)
+        *fixed_size = 0;
+    }
+  else if (g_variant_type_is_tuple (type) ||
+           g_variant_type_is_dict_entry (type))
+    {
+      if (g_variant_type_n_items (type))
+        {
+          const GVariantType *sub;
+          gboolean variable;
+          gsize size;
+          guint al;
+
+          variable = FALSE;
+          size = 0;
+          al = 0;
+
+          sub = g_variant_type_first (type);
+          do
+            {
+              gsize this_fs;
+              guint this_al;
+
+              calculate_type_info (sub, &this_fs, &this_al);
+
+              al = MAX (al, this_al);
+
+              if (!this_fs)
+                {
+                  variable = TRUE;
+                  size = 0;
+                }
+
+              if (!variable)
+                {
+                  size = ALIGNED (size, this_al);
+                  size += this_fs;
+                }
+            }
+          while ((sub = g_variant_type_next (sub)));
+
+          size = ALIGNED (size, al);
+
+          if (alignment)
+            *alignment = al;
+
+          if (fixed_size)
+            *fixed_size = size;
+        }
+      else
+        {
+          if (fixed_size)
+            *fixed_size = 1;
+
+          if (alignment)
+            *alignment = 1;
+        }
+    }
+  else
+    {
+      gint fs, al;
+
+      if (g_variant_type_equal (type, G_VARIANT_TYPE_BOOLEAN) ||
+          g_variant_type_equal (type, G_VARIANT_TYPE_BYTE))
+        {
+          al = fs = 1;
+        }
+
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT16) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_UINT16))
+        {
+          al = fs = 2;
+        }
+
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT32) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_UINT32) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
+        {
+          al = fs = 4;
+        }
+
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT64) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_UINT64) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_DOUBLE))
+        {
+          al = fs = 8;
+        }
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_OBJECT_PATH) ||
+               g_variant_type_equal (type, G_VARIANT_TYPE_SIGNATURE))
+        {
+          al = 1;
+          fs = 0;
+        }
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE_VARIANT))
+        {
+          al = 8;
+          fs = 0;
+        }
+      else
+        g_assert_not_reached ();
+
+      if (fixed_size)
+        *fixed_size = fs;
+
+      if (alignment)
+        *alignment = al;
+    }
+}
+
+/* same as the describe_type() function above, but iterates over
+ * typeinfo instead of types.
+ */
+static gchar *
+describe_info (GVariantTypeInfo *info)
+{
+  gchar *result;
+
+  switch (g_variant_type_info_get_type_char (info))
+    {
+    case G_VARIANT_TYPE_INFO_CHAR_MAYBE:
+      {
+        gchar *element;
+
+        element = describe_info (g_variant_type_info_element (info));
+        result = g_strdup_printf ("m of %s", element);
+        g_free (element);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_ARRAY:
+      {
+        gchar *element;
+
+        element = describe_info (g_variant_type_info_element (info));
+        result = g_strdup_printf ("a of %s", element);
+        g_free (element);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_TUPLE:
+      {
+        const gchar *sep = "";
+        GString *string;
+        gint length;
+        gint i;
+
+        string = g_string_new ("t of [");
+        length = g_variant_type_info_n_members (info);
+
+        for (i = 0; i < length; i++)
+          {
+            const GVariantMemberInfo *minfo;
+            gchar *subtype;
+
+            g_string_append (string, sep);
+            sep = ", ";
+
+            minfo = g_variant_type_info_member_info (info, i);
+            subtype = describe_info (minfo->type);
+            g_string_append (string, subtype);
+            g_free (subtype);
+          }
+
+        g_string_append_c (string, ']');
+
+        result = g_string_free (string, FALSE);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_DICT_ENTRY:
+      {
+        const GVariantMemberInfo *keyinfo, *valueinfo;
+        gchar *key, *value;
+
+        g_assert_cmpint (g_variant_type_info_n_members (info), ==, 2);
+        keyinfo = g_variant_type_info_member_info (info, 0);
+        valueinfo = g_variant_type_info_member_info (info, 1);
+        key = describe_info (keyinfo->type);
+        value = describe_info (valueinfo->type);
+        result = g_strjoin ("", "e of [", key, ", ", value, "]", NULL);
+        g_free (key);
+        g_free (value);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_VARIANT:
+      result = g_strdup ("V");
+      break;
+
+    default:
+      result = g_strdup (g_variant_type_info_get_type_string (info));
+      g_assert_cmpint (strlen (result), ==, 1);
+      break;
+    }
+
+  return result;
+}
+
+/* check that the O(1) method of calculating offsets meshes with the
+ * results of simple iteration.
+ */
+static void
+check_offsets (GVariantTypeInfo   *info,
+               const GVariantType *type)
+{
+  gint flavour;
+  gint length;
+
+  length = g_variant_type_info_n_members (info);
+  g_assert_cmpint (length, ==, g_variant_type_n_items (type));
+
+  /* the 'flavour' is the low order bits of the ending point of
+   * variable-size items in the tuple.  this lets us test that the type
+   * info is correct for various starting alignments.
+   */
+  for (flavour = 0; flavour < 8; flavour++)
+    {
+      const GVariantType *subtype;
+      gsize last_offset_index;
+      gsize last_offset;
+      gsize position;
+      gint i;
+
+      subtype = g_variant_type_first (type);
+      last_offset_index = -1;
+      last_offset = 0;
+      position = 0;
+
+      /* go through the tuple, keeping track of our position */
+      for (i = 0; i < length; i++)
+        {
+          gsize fixed_size;
+          guint alignment;
+
+          calculate_type_info (subtype, &fixed_size, &alignment);
+
+          position = ALIGNED (position, alignment);
+
+          /* compare our current aligned position (ie: the start of this
+           * item) to the start offset that would be calculated if we
+           * used the type info
+           */
+          {
+            const GVariantMemberInfo *member;
+            gsize start;
+
+            member = g_variant_type_info_member_info (info, i);
+            g_assert_cmpint (member->i, ==, last_offset_index);
+
+            /* do the calculation using the typeinfo */
+            start = last_offset;
+            start += member->a;
+            start &= member->b;
+            start |= member->c;
+
+            /* did we reach the same spot? */
+            g_assert_cmpint (start, ==, position);
+          }
+
+          if (fixed_size)
+            {
+              /* fixed size.  add that size. */
+              position += fixed_size;
+            }
+          else
+            {
+              /* variable size.  do the flavouring. */
+              while ((position & 0x7) != flavour)
+                position++;
+
+              /* and store the offset, just like it would be in the
+               * serialised data.
+               */
+              last_offset = position;
+              last_offset_index++;
+            }
+
+          /* next type */
+          subtype = g_variant_type_next (subtype);
+        }
+
+      /* make sure we used up exactly all the types */
+      g_assert (subtype == NULL);
+    }
+}
+
+static void
+test_gvarianttypeinfo (void)
+{
+  gint i;
+
+  for (i = 0; i < 2000; i++)
+    {
+      GString *type_string, *description;
+      gsize fixed_size1, fixed_size2;
+      guint alignment1, alignment2;
+      GVariantTypeInfo *info;
+      GVariantType *type;
+      gchar *desc;
+
+      type_string = g_string_new (NULL);
+      description = g_string_new (NULL);
+
+      /* random type */
+      type = append_type_string (type_string, description, TRUE, 6);
+
+      /* create a typeinfo for it */
+      info = g_variant_type_info_get (type);
+
+      /* make sure the typeinfo has the right type string */
+      g_assert_cmpstr (g_variant_type_info_get_type_string (info), ==,
+                       type_string->str);
+
+      /* calculate the alignment and fixed size, compare to the
+       * typeinfo's calculations
+       */
+      calculate_type_info (type, &fixed_size1, &alignment1);
+      g_variant_type_info_query (info, &alignment2, &fixed_size2);
+      g_assert_cmpint (fixed_size1, ==, fixed_size2);
+      g_assert_cmpint (alignment1, ==, alignment2 + 1);
+
+      /* test the iteration functions over typeinfo structures by
+       * "describing" the typeinfo and verifying equality.
+       */
+      desc = describe_info (info);
+      g_assert_cmpstr (desc, ==, description->str);
+
+      /* do extra checks for containers */
+      if (g_variant_type_is_array (type) ||
+          g_variant_type_is_maybe (type))
+        {
+          const GVariantType *element;
+          gsize efs1, efs2;
+          guint ea1, ea2;
+
+          element = g_variant_type_element (type);
+          calculate_type_info (element, &efs1, &ea1);
+          g_variant_type_info_query_element (info, &ea2, &efs2);
+          g_assert_cmpint (efs1, ==, efs2);
+          g_assert_cmpint (ea1, ==, ea2 + 1);
+
+          g_assert_cmpint (ea1, ==, alignment1);
+          g_assert_cmpint (0, ==, fixed_size1);
+        }
+      else if (g_variant_type_is_tuple (type) ||
+               g_variant_type_is_dict_entry (type))
+        {
+          /* make sure the "magic constants" are working */
+          check_offsets (info, type);
+        }
+
+      g_string_free (type_string, TRUE);
+      g_string_free (description, TRUE);
+      g_variant_type_info_unref (info);
+      g_variant_type_free (type);
+      g_free (desc);
     }
 }
 
@@ -645,6 +1033,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gvariant/type", test_gvarianttype);
+  g_test_add_func ("/gvariant/typeinfo", test_gvarianttypeinfo);
 
   return g_test_run ();
 }

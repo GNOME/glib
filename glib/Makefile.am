@@ -172,6 +172,8 @@ libglib_2_0_la_SOURCES = 	\
 	gunicodeprivate.h	\
 	gurifuncs.c 		\
 	gutils.c		\
+	gvarianttypeinfo.h	\
+	gvarianttypeinfo.c	\
 	gvarianttype.c		\
 	gdebug.h		\
 	gprintf.c		\
