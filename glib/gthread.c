@@ -169,12 +169,25 @@
  * <function>give_me_next_number()</function> example using the
  * %G_LOCK_* macros:
  *
- * <example> <title>Using the %G_LOCK_* convenience macros</title>
- * <programlisting> G_LOCK_DEFINE (current_number); int
- * give_me_next_number (<!-- -->) { static int current_number = 0; int
- * ret_val; G_LOCK (current_number); ret_val = current_number =
- * calc_next_number (current_number); G_UNLOCK (current_number); return
- * ret_val; } </programlisting> </example>
+ * <example>
+ *  <title>Using the %G_LOCK_* convenience macros</title>
+ *  <programlisting>
+ *   G_LOCK_DEFINE (current_number);
+ *
+ *   int
+ *   give_me_next_number (void)
+ *   {
+ *     static int current_number = 0;
+ *     int ret_val;
+ *
+ *     G_LOCK (current_number);
+ *     ret_val = current_number = calc_next_number (current_number);
+ *     G_UNLOCK (current_number);
+ *
+ *     return ret_val;
+ *   }
+ *  </programlisting>
+ * </example>
  **/
 
 /**
@@ -351,9 +364,9 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  *   {
  *     static int current_number = 0;
  *
- *     /&#x2a; now do a very complicated calculation to calculate the new
+ *     /<!-- -->* now do a very complicated calculation to calculate the new
  *      * number, this might for example be a random number generator
- *      &#x2a;/
+ *      *<!-- -->/
  *     current_number = calc_next_number (current_number);
  *
  *     return current_number;
@@ -396,11 +409,11 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  *  <programlisting>
  *   static GMutex *give_me_next_number_mutex = NULL;
  *
- *   /&#x2a; this function must be called before any call to
+ *   /<!-- -->* this function must be called before any call to
  *    * give_me_next_number(<!-- -->)
  *    *
  *    * it must be called exactly once.
- *    &#x2a;/
+ *    *<!-- -->/
  *   void
  *   init_give_me_next_number (void)
  *   {
@@ -525,8 +538,8 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  *   Using GCond to block a thread until a condition is satisfied
  *  </title>
  *  <programlisting>
- *   GCond* data_cond = NULL; /&#x2a; Must be initialized somewhere &#x2a;/
- *   GMutex* data_mutex = NULL; /&#x2a; Must be initialized somewhere &#x2a;/
+ *   GCond* data_cond = NULL; /<!-- -->* Must be initialized somewhere *<!-- -->/
+ *   GMutex* data_mutex = NULL; /<!-- -->* Must be initialized somewhere *<!-- -->/
  *   gpointer current_data = NULL;
  *
  *   void
@@ -668,8 +681,8 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  * <example>
  *  <title>Using GPrivate for per-thread data</title>
  *  <programlisting>
- *   GPrivate* current_number_key = NULL; /&#x2a; Must be initialized somewhere
- *                                           with g_private_new (g_free); &#2a;/
+ *   GPrivate* current_number_key = NULL; /<!-- -->* Must be initialized somewhere
+ *                                           with g_private_new (g_free); *<!-- -->/
  *
  *   int
  *   give_me_next_number (void)
@@ -956,9 +969,11 @@ g_thread_init_glib (void)
  *
  * A #GOnce must be initialized with this macro before it can be used.
  *
- * <informalexample><programlisting>
+ * <informalexample>
+ *  <programlisting>
  *   GOnce my_once = G_ONCE_INIT;
- * </programlisting></informalexample>
+ *  </programlisting>
+ * </informalexample>
  *
  * Since: 2.4
  **/
@@ -996,13 +1011,19 @@ g_thread_init_glib (void)
  * <note><para>Calling g_once() recursively on the same #GOnce struct in
  * @func will lead to a deadlock.</para></note>
  *
- * <informalexample><programlisting>
- *   gpointer get_debug_flags () {
+ * <informalexample>
+ *  <programlisting>
+ *   gpointer
+ *   get_debug_flags (void)
+ *   {
  *     static GOnce my_once = G_ONCE_INIT;
+ *
  *     g_once (&my_once, parse_debug_flags, NULL);
+ *
  *     return my_once.retval;
  *   }
- * </programlisting></informalexample>
+ *  </programlisting>
+ * </informalexample>
  *
  * Since: 2.4
  **/
@@ -1056,12 +1077,12 @@ g_once_impl (GOnce       *once,
  *
  *   if (g_once_init_enter (&amp;initialization_value))
  *     {
- *       gsize setup_value = 42; /&#x2a; initialization code here &#x2a;/
+ *       gsize setup_value = 42; /<!-- -->* initialization code here *<!-- -->/
  *
  *       g_once_init_leave (&amp;initialization_value, setup_value);
  *     }
  *
- *   /&#x2a; use initialization_value here &#x2a;/
+ *   /<!-- -->* use initialization_value here *<!-- -->/
  *  </programlisting>
  * </informalexample>
  *
@@ -1128,13 +1149,27 @@ g_once_init_leave (volatile gsize *value_location,
  * safer version of our <function>give_me_next_number()</function>
  * example:
  *
- * <example> <title>Using <structname>GStaticMutex</structname> to
- * simplify thread-safe programming</title> <programlisting> int
- * give_me_next_number (<!-- -->) { static int current_number = 0; int
- * ret_val; static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
- * g_static_mutex_lock (&amp;mutex); ret_val = current_number =
- * calc_next_number (current_number); g_static_mutex_unlock
- * (&amp;mutex); return ret_val; } </programlisting> </example>
+ * <example>
+ *  <title>
+ *   Using <structname>GStaticMutex</structname>
+ *   to simplify thread-safe programming
+ *  </title>
+ *  <programlisting>
+ *   int
+ *   give_me_next_number (void)
+ *   {
+ *     static int current_number = 0;
+ *     int ret_val;
+ *     static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
+ *
+ *     g_static_mutex_lock (&amp;mutex);
+ *     ret_val = current_number = calc_next_number (current_number);
+ *     g_static_mutex_unlock (&amp;mutex);
+ *
+ *     return ret_val;
+ *   }
+ *  </programlisting>
+ * </example>
  *
  * Sometimes you would like to dynamically create a mutex. If you don't
  * want to require prior calling to g_thread_init(), because your code
@@ -1168,8 +1203,11 @@ g_once_init_leave (volatile gsize *value_location,
  * cannot be assigned to a variable. In that case you have to use
  * g_static_mutex_init().
  *
- * <informalexample> <programlisting> GStaticMutex my_mutex =
- * G_STATIC_MUTEX_INIT; </programlisting> </informalexample>
+ * <informalexample>
+ *  <programlisting>
+ *   GStaticMutex my_mutex = G_STATIC_MUTEX_INIT;
+ *  </programlisting>
+ * </informalexample>
  **/
 
 /**
@@ -1328,8 +1366,11 @@ g_static_mutex_free (GStaticMutex* mutex)
  * cannot be assigned to a variable. In that case you have to use
  * g_static_rec_mutex_init().
  *
- * <informalexample> <programlisting> GStaticRecMutex my_mutex =
- * G_STATIC_REC_MUTEX_INIT; </programlisting> </informalexample>
+ * <informalexample>
+ *  <programlisting>
+ *   GStaticRecMutex my_mutex = G_STATIC_REC_MUTEX_INIT;
+ * </programlisting>
+ </informalexample>
  **/
 
 /**
@@ -1542,14 +1583,28 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  * look at our <function>give_me_next_number()</function> example with
  * #GStaticPrivate:
  *
- * <example> <title>Using GStaticPrivate for per-thread data</title>
- * <programlisting> int give_me_next_number (<!-- -->) { static
- * GStaticPrivate current_number_key = G_STATIC_PRIVATE_INIT; int
- * *current_number = g_static_private_get (&amp;current_number_key); if
- * (!current_number) { current_number = g_new (int,1); *current_number
- * = 0; g_static_private_set (&amp;current_number_key, current_number,
- * g_free); } *current_number = calc_next_number (*current_number);
- * return *current_number; } </programlisting> </example>
+ * <example>
+ *  <title>Using GStaticPrivate for per-thread data</title>
+ *  <programlisting>
+ *   int
+ *   give_me_next_number (<!-- -->)
+ *   {
+ *     static GStaticPrivate current_number_key = G_STATIC_PRIVATE_INIT;
+ *     int *current_number = g_static_private_get (&amp;current_number_key);
+ *
+ *     if (!current_number)
+ *       {
+ *         current_number = g_new (int,1);
+ *         *current_number = 0;
+ *         g_static_private_set (&amp;current_number_key, current_number, g_free);
+ *       }
+ *
+ *     *current_number = calc_next_number (*current_number);
+ *
+ *     return *current_number;
+ *   }
+ *  </programlisting>
+ * </example>
  **/
 
 /**
@@ -1558,8 +1613,11 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  * Every #GStaticPrivate must be initialized with this macro, before it
  * can be used.
  *
- * <informalexample> <programlisting> GStaticPrivate my_private =
- * G_STATIC_PRIVATE_INIT; </programlisting> </informalexample>
+ * <informalexample>
+ *  <programlisting>
+ *   GStaticPrivate my_private = G_STATIC_PRIVATE_INIT;
+ *  </programlisting>
+ * </informalexample>
  **/
 
 /**
@@ -1932,15 +1990,14 @@ g_thread_create_full (GThreadFunc       func,
  * of g_thread_join(). If the current thread is not joinable, @retval
  * is ignored. Calling
  *
- * <informalexample> <programlisting> g_thread_exit (retval);
- * </programlisting> </informalexample>
- *
- * is equivalent to calling
- *
- * <informalexample> <programlisting> return retval; </programlisting>
+ * <informalexample>
+ *  <programlisting>
+ *   g_thread_exit (retval);
+ *  </programlisting>
  * </informalexample>
  *
- * in the function @func, as given to g_thread_create().
+ * is equivalent to returning @retval from the function @func, as given
+ * to g_thread_create().
  *
  * <note><para>Never call g_thread_exit() from within a thread of a
  * #GThreadPool, as that will mess up the bookkeeping and lead to funny
@@ -2088,18 +2145,46 @@ g_thread_self (void)
  * read from, while others also write. In such situations it is
  * desirable that several readers can read at once, whereas of course
  * only one writer may write at a time. Take a look at the following
- * example: <example> <title>An array with access functions</title>
- * <programlisting> GStaticRWLock rwlock = G_STATIC_RW_LOCK_INIT;
- * GPtrArray *array; gpointer my_array_get (guint index) { gpointer
- * retval = NULL; if (!array) return NULL; g_static_rw_lock_reader_lock
- * (&amp;rwlock); if (index &lt; array->len) retval = g_ptr_array_index
- * (array, index); g_static_rw_lock_reader_unlock (&amp;rwlock); return
- * retval; } void my_array_set (guint index, gpointer data) {
- * g_static_rw_lock_writer_lock (&amp;rwlock); if (!array) array =
- * g_ptr_array_new (<!-- -->); if (index >= array->len)
- * g_ptr_array_set_size (array, index+1); g_ptr_array_index (array,
- * index) = data; g_static_rw_lock_writer_unlock (&amp;rwlock); }
- * </programlisting> </example>
+ * example:
+ *
+ * <example>
+ *  <title>An array with access functions</title>
+ *  <programlisting>
+ *   GStaticRWLock rwlock = G_STATIC_RW_LOCK_INIT;
+ *   GPtrArray *array;
+ *
+ *   gpointer
+ *   my_array_get (guint index)
+ *   {
+ *     gpointer retval = NULL;
+ *
+ *     if (!array)
+ *       return NULL;
+ *
+ *     g_static_rw_lock_reader_lock (&amp;rwlock);
+ *     if (index &lt; array->len)
+ *       retval = g_ptr_array_index (array, index);
+ *     g_static_rw_lock_reader_unlock (&amp;rwlock);
+ *
+ *     return retval;
+ *   }
+ *
+ *   void
+ *   my_array_set (guint index, gpointer data)
+ *   {
+ *     g_static_rw_lock_writer_lock (&amp;rwlock);
+ *
+ *     if (!array)
+ *       array = g_ptr_array_new (<!-- -->);
+ *
+ *     if (index >= array->len)
+ *       g_ptr_array_set_size (array, index+1);
+ *     g_ptr_array_index (array, index) = data;
+ *
+ *     g_static_rw_lock_writer_unlock (&amp;rwlock);
+ *   }
+ *  </programlisting>
+ * </example>
  *
  * This example shows an array which can be accessed by many readers
  * (the <function>my_array_get()</function> function) simultaneously,
@@ -2143,8 +2228,11 @@ g_thread_self (void)
  * cannot be assigned to a variable. In that case you have to use
  * g_static_rw_lock_init().
  *
- * <informalexample> <programlisting> GStaticRWLock my_lock =
- * G_STATIC_RW_LOCK_INIT; </programlisting> </informalexample>
+ * <informalexample>
+ *  <programlisting>
+ *   GStaticRWLock my_lock = G_STATIC_RW_LOCK_INIT;
+ *  </programlisting>
+ * </informalexample>
  **/
 
 /**
