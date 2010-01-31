@@ -35,9 +35,58 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: relations
+ * @title: Relations and Tuples
+ * @short_description: tables of data which can be indexed on any
+ *                     number of fields
+ *
+ * A #GRelation is a table of data which can be indexed on any number
+ * of fields, rather like simple database tables. A #GRelation contains
+ * a number of records, called tuples. Each record contains a number of
+ * fields. Records are not ordered, so it is not possible to find the
+ * record at a particular index.
+ *
+ * Note that #GRelation tables are currently limited to 2 fields.
+ *
+ * To create a GRelation, use g_relation_new().
+ *
+ * To specify which fields should be indexed, use g_relation_index().
+ * Note that this must be called before any tuples are added to the
+ * #GRelation.
+ *
+ * To add records to a #GRelation use g_relation_insert().
+ *
+ * To determine if a given record appears in a #GRelation, use
+ * g_relation_exists(). Note that fields are compared directly, so
+ * pointers must point to the exact same position (i.e. different
+ * copies of the same string will not match.)
+ *
+ * To count the number of records which have a particular value in a
+ * given field, use g_relation_count().
+ *
+ * To get all the records which have a particular value in a given
+ * field, use g_relation_select(). To access fields of the resulting
+ * records, use g_tuples_index(). To free the resulting records use
+ * g_tuples_destroy().
+ *
+ * To delete all records which have a particular value in a given
+ * field, use g_relation_delete().
+ *
+ * To destroy the #GRelation, use g_relation_destroy().
+ *
+ * To help debug #GRelation objects, use g_relation_print().
+ **/
 
 typedef struct _GRealTuples        GRealTuples;
 
+/**
+ * GRelation:
+ *
+ * The #GRelation struct is an opaque data structure to represent a
+ * <link linkend="glib-Relations-and-Tuples">Relation</link>. It should
+ * only be accessed via the following functions.
+ **/
 struct _GRelation
 {
   gint fields;
@@ -49,6 +98,15 @@ struct _GRelation
   gint count;
 };
 
+/**
+ * GTuples:
+ * @len: the number of records that matched.
+ *
+ * The #GTuples struct is used to return records (or tuples) from the
+ * #GRelation by g_relation_select(). It only contains one public
+ * member - the number of records that matched. To access the matched
+ * records, you must use g_tuples_index().
+ **/
 struct _GRealTuples
 {
   gint      len;
@@ -112,6 +170,14 @@ tuple_equal (gint fields)
   return NULL;
 }
 
+/**
+ * g_relation_new:
+ * @fields: the number of fields.
+ * @Returns: a new #GRelation.
+ *
+ * Creates a new #GRelation with the given number of fields. Note that
+ * currently the number of fields must be 2.
+ **/
 GRelation*
 g_relation_new (gint fields)
 {
@@ -140,6 +206,14 @@ g_relation_free_array (gpointer key, gpointer value, gpointer user_data)
   g_hash_table_destroy ((GHashTable*) value);
 }
 
+/**
+ * g_relation_destroy:
+ * @relation: a #GRelation.
+ *
+ * Destroys the #GRelation, freeing all memory allocated. However, it
+ * does not free memory allocated for the tuple data, so you should
+ * free that first if appropriate.
+ **/
 void
 g_relation_destroy (GRelation *relation)
 {
@@ -164,6 +238,16 @@ g_relation_destroy (GRelation *relation)
     }
 }
 
+/**
+ * g_relation_index:
+ * @relation: a #GRelation.
+ * @field: the field to index, counting from 0.
+ * @hash_func: a function to produce a hash value from the field data.
+ * @key_equal_func: a function to compare two values of the given field.
+ *
+ * Creates an index on the given field. Note that this must be called
+ * before any records are added to the #GRelation.
+ **/
 void
 g_relation_index (GRelation   *relation,
 		  gint         field,
@@ -177,6 +261,15 @@ g_relation_index (GRelation   *relation,
   relation->hashed_tuple_tables[field] = g_hash_table_new (hash_func, key_equal_func);
 }
 
+/**
+ * g_relation_insert:
+ * @relation: a #GRelation.
+ * @Varargs: the fields of the record to add. These must match the
+ *           number of fields in the #GRelation, and of type #gpointer
+ *           or #gconstpointer.
+ *
+ * Inserts a record into a #GRelation.
+ **/
 void
 g_relation_insert (GRelation   *relation,
 		   ...)
@@ -257,6 +350,16 @@ g_relation_delete_tuple (gpointer tuple_key,
   relation->count -= 1;
 }
 
+/**
+ * g_relation_delete:
+ * @relation: a #GRelation.
+ * @key: the value to compare with.
+ * @field: the field of each record to match.
+ * @Returns: the number of records deleted.
+ *
+ * Deletes any records from a #GRelation that have the given key value
+ * in the given field.
+ **/
 gint
 g_relation_delete  (GRelation     *relation,
 		    gconstpointer  key,
@@ -309,6 +412,17 @@ g_relation_select_tuple (gpointer tuple_key,
   tuples->len += 1;
 }
 
+/**
+ * g_relation_select:
+ * @relation: a #GRelation.
+ * @key: the value to compare with.
+ * @field: the field of each record to match.
+ * @Returns: the records (tuples) that matched.
+ *
+ * Returns all of the tuples which have the given key in the given
+ * field. Use g_tuples_index() to access the returned records. The
+ * returned records should be freed with g_tuples_destroy().
+ **/
 GTuples*
 g_relation_select (GRelation     *relation,
 		   gconstpointer  key,
@@ -343,6 +457,16 @@ g_relation_select (GRelation     *relation,
   return (GTuples*)tuples;
 }
 
+/**
+ * g_relation_count:
+ * @relation: a #GRelation.
+ * @key: the value to compare with.
+ * @field: the field of each record to match.
+ * @Returns: the number of matches.
+ *
+ * Returns the number of tuples in a #GRelation that have the given
+ * value in the given field.
+ **/
 gint
 g_relation_count (GRelation     *relation,
 		  gconstpointer  key,
@@ -365,6 +489,17 @@ g_relation_count (GRelation     *relation,
   return g_hash_table_size (key_table);
 }
 
+/**
+ * g_relation_exists:
+ * @relation: a #GRelation.
+ * @Varargs: the fields of the record to compare. The number must match
+ *           the number of fields in the #GRelation.
+ * @Returns: %TRUE if a record matches.
+ *
+ * Returns %TRUE if a record with the given values exists in a
+ * #GRelation. Note that the values are compared directly, so that, for
+ * example, two copies of the same string will not match.
+ **/
 gboolean
 g_relation_exists (GRelation   *relation, ...)
 {
@@ -387,6 +522,15 @@ g_relation_exists (GRelation   *relation, ...)
   return result;
 }
 
+/**
+ * g_tuples_destroy:
+ * @tuples: the tuple data to free.
+ *
+ * Frees the records which were returned by g_relation_select(). This
+ * should always be called after g_relation_select() when you are
+ * finished with the records. The records are not removed from the
+ * #GRelation.
+ **/
 void
 g_tuples_destroy (GTuples *tuples0)
 {
@@ -399,6 +543,17 @@ g_tuples_destroy (GTuples *tuples0)
     }
 }
 
+/**
+ * g_tuples_index:
+ * @tuples: the tuple data, returned by g_relation_select().
+ * @index_: the index of the record.
+ * @field: the field to return.
+ * @Returns: the field of the record.
+ *
+ * Gets a field from the records returned by g_relation_select(). It
+ * returns the given field of the record at the given index. The
+ * returned value should not be changed.
+ **/
 gpointer
 g_tuples_index (GTuples     *tuples0,
 		gint         index,
@@ -455,6 +610,13 @@ g_relation_print_index (gpointer tuple_key,
 			rel);
 }
 
+/**
+ * g_relation_print:
+ * @relation: a #GRelation.
+ *
+ * Outputs information about all records in a #GRelation, as well as
+ * the indexes. It is for debugging.
+ **/
 void
 g_relation_print (GRelation *relation)
 {
