@@ -51,10 +51,33 @@
 #include "gthread.h"
 #include "galias.h"
 
+/**
+ * SECTION: timers
+ * @title: Timers
+ * @short_description: keep track of elapsed time
+ *
+ * #GTimer records a start time, and counts microseconds elapsed since
+ * that time. This is done somewhat differently on different platforms,
+ * and can be tricky to get exactly right, so #GTimer provides a
+ * portable/convenient interface.
+ *
+ * <note><para>
+ *  #GTimer uses a higher-quality clock when thread support is available.
+ *  Therefore, calling g_thread_init() while timers are running may lead to
+ *  unreliable results. It is best to call g_thread_init() before starting any
+ *  timers, if you are using threads at all.
+ * </para></note>
+ **/
+
 #define G_NSEC_PER_SEC 1000000000
 
 #define GETTIME(v) (v = g_thread_gettime ())
 
+/**
+ * GTimer:
+ *
+ * Opaque datatype that records a start time.
+ **/
 struct _GTimer
 {
   guint64 start;
@@ -63,7 +86,13 @@ struct _GTimer
   guint active : 1;
 };
 
-
+/**
+ * g_timer_new:
+ * @Returns: a new #GTimer.
+ *
+ * Creates a new timer, and starts timing (i.e. g_timer_start() is
+ * implicitly called for you).
+ **/
 GTimer*
 g_timer_new (void)
 {
@@ -77,6 +106,12 @@ g_timer_new (void)
   return timer;
 }
 
+/**
+ * g_timer_destroy:
+ * @timer: a #GTimer to destroy.
+ *
+ * Destroys a timer, freeing associated resources.
+ **/
 void
 g_timer_destroy (GTimer *timer)
 {
@@ -85,6 +120,15 @@ g_timer_destroy (GTimer *timer)
   g_free (timer);
 }
 
+/**
+ * g_timer_start:
+ * @timer: a #GTimer.
+ *
+ * Marks a start time, so that future calls to g_timer_elapsed() will
+ * report the time since g_timer_start() was called. g_timer_new()
+ * automatically marks the start time, so no need to call
+ * g_timer_start() immediately after creating the timer.
+ **/
 void
 g_timer_start (GTimer *timer)
 {
@@ -95,6 +139,13 @@ g_timer_start (GTimer *timer)
   GETTIME (timer->start);
 }
 
+/**
+ * g_timer_stop:
+ * @timer: a #GTimer.
+ *
+ * Marks an end time, so calls to g_timer_elapsed() will return the
+ * difference between this end time and the start time.
+ **/
 void
 g_timer_stop (GTimer *timer)
 {
@@ -105,6 +156,14 @@ g_timer_stop (GTimer *timer)
   GETTIME (timer->end);
 }
 
+/**
+ * g_timer_reset:
+ * @timer: a #GTimer.
+ *
+ * This function is useless; it's fine to call g_timer_start() on an
+ * already-started timer to reset the start time, so g_timer_reset()
+ * serves no purpose.
+ **/
 void
 g_timer_reset (GTimer *timer)
 {
@@ -113,6 +172,15 @@ g_timer_reset (GTimer *timer)
   GETTIME (timer->start);
 }
 
+/**
+ * g_timer_continue:
+ * @timer: a #GTimer.
+ * @Since: 2.4
+ *
+ * Resumes a timer that has previously been stopped with
+ * g_timer_stop(). g_timer_stop() must be called before using this
+ * function.
+ **/
 void
 g_timer_continue (GTimer *timer)
 {
@@ -135,6 +203,27 @@ g_timer_continue (GTimer *timer)
   timer->active = TRUE;
 }
 
+/**
+ * g_timer_elapsed:
+ * @timer: a #GTimer.
+ * @microseconds: return location for the fractional part of seconds
+ *                elapsed, in microseconds (that is, the total number
+ *                of microseconds elapsed, modulo 1000000), or %NULL
+ * @Returns: seconds elapsed as a floating point value, including any
+ *           fractional part.
+ *
+ * If @timer has been started but not stopped, obtains the time since
+ * the timer was started. If @timer has been stopped, obtains the
+ * elapsed time between the time it was started and the time it was
+ * stopped. The return value is the number of seconds elapsed,
+ * including any fractional part. The @microseconds out parameter is
+ * essentially useless.
+ *
+ * <warning><para>
+ *  Calling initialization functions, in particular g_thread_init(), while a
+ *  timer is running will cause invalid return values from this function.
+ * </para></warning>
+ **/
 gdouble
 g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)
