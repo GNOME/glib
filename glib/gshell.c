@@ -33,6 +33,28 @@
 #include "glibintl.h"
 #include "galias.h"
 
+/**
+ * SECTION: shell
+ * @title: Shell-related Utilities
+ * @short_description: shell-like commandline handling
+ **/
+
+/**
+ * G_SHELL_ERROR:
+ *
+ * Error domain for shell functions. Errors in this domain will be from
+ * the #GShellError enumeration. See #GError for information on error
+ * domains.
+ **/
+
+/**
+ * GShellError:
+ * @G_SHELL_ERROR_BAD_QUOTING: Mismatched or otherwise mangled quoting.
+ * @G_SHELL_ERROR_EMPTY_STRING: String to be parsed was empty.
+ * @G_SHELL_ERROR_FAILED: Some other error.
+ *
+ * Error codes returned by shell functions.
+ **/
 GQuark
 g_shell_error_quark (void)
 {
