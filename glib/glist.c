@@ -33,14 +33,129 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: linked_lists_double
+ * @title: Doubly-Linked Lists
+ * @short_description: linked lists containing integer values or
+ *                     pointers to data, with the ability to iterate
+ *                     over the list in both directions
+ *
+ * The #GList structure and its associated functions provide a standard
+ * doubly-linked list data structure.
+ *
+ * Each element in the list contains a piece of data, together with
+ * pointers which link to the previous and next elements in the list.
+ * Using these pointers it is possible to move through the list in both
+ * directions (unlike the <link
+ * linkend="glib-Singly-Linked-lists">Singly-Linked Lists</link> which
+ * only allows movement through the list in the forward direction).
+ *
+ * The data contained in each element can be either integer values, by
+ * using one of the <link linkend="glib-Type-Conversion-Macros">Type
+ * Conversion Macros</link>, or simply pointers to any type of data.
+ *
+ * List elements are allocated from the <link
+ * linkend="glib-Memory-Slices">slice allocator</link>, which is more
+ * efficient than allocating elements individually.
+ *
+ * Note that most of the #GList functions expect to be passed a pointer
+ * to the first element in the list. The functions which insert
+ * elements return the new start of the list, which may have changed.
+ *
+ * There is no function to create a #GList. %NULL is considered to be
+ * the empty list so you simply set a #GList* to %NULL.
+ *
+ * To add elements, use g_list_append(), g_list_prepend(),
+ * g_list_insert() and g_list_insert_sorted().
+ *
+ * To remove elements, use g_list_remove().
+ *
+ * To find elements in the list use g_list_first(), g_list_last(),
+ * g_list_next(), g_list_previous(), g_list_nth(), g_list_nth_data(),
+ * g_list_find() and g_list_find_custom().
+ *
+ * To find the index of an element use g_list_position() and
+ * g_list_index().
+ *
+ * To call a function for each element in the list use g_list_foreach().
+ *
+ * To free the entire list, use g_list_free().
+ **/
 
+/**
+ * GList:
+ * @data: holds the element's data, which can be a pointer to any kind
+ *        of data, or any integer value using the <link
+ *        linkend="glib-Type-Conversion-Macros">Type Conversion
+ *        Macros</link>.
+ * @next: contains the link to the next element in the list.
+ * @prev: contains the link to the previous element in the list.
+ *
+ * The #GList struct is used for each element in a doubly-linked list.
+ **/
+
+/**
+ * g_list_previous:
+ * @list: an element in a #GList.
+ * @Returns: the previous element, or %NULL if there are no previous
+ *           elements.
+ *
+ * A convenience macro to get the previous element in a #GList.
+ **/
+
+/**
+ * g_list_next:
+ * @list: an element in a #GList.
+ * @Returns: the next element, or %NULL if there are no more elements.
+ *
+ * A convenience macro to get the next element in a #GList.
+ **/
+
+
+
+/**
+ * g_list_push_allocator:
+ * @allocator: the #GAllocator to use when allocating #GList elements.
+ *
+ * Sets the allocator to use to allocate #GList elements. Use
+ * g_list_pop_allocator() to restore the previous allocator.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated:2.10: It does nothing, since #GList has been converted
+ *                  to the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link>
+ **/
 void g_list_push_allocator (gpointer dummy) { /* present for binary compat only */ }
+
+/**
+ * g_list_pop_allocator:
+ *
+ * Restores the previous #GAllocator, used when allocating #GList
+ * elements.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated:2.10: It does nothing, since #GList has been converted
+ *                  to the <link linkend="glib-Memory-Slices">slice
+ *                  allocator</link>
+ **/
 void g_list_pop_allocator  (void)           { /* present for binary compat only */ }
 
 #define _g_list_alloc()         g_slice_new (GList)
 #define _g_list_alloc0()        g_slice_new0 (GList)
 #define _g_list_free1(list)     g_slice_free (GList, list)
 
+/**
+ * g_list_alloc:
+ * @Returns: a pointer to the newly-allocated #GList element.
+ *
+ * Allocates space for one #GList element. It is called by
+ * g_list_append(), g_list_prepend(), g_list_insert() and
+ * g_list_insert_sorted() and so is rarely used on its own.
+ **/
 GList*
 g_list_alloc (void)
 {
@@ -72,6 +187,11 @@ g_list_free (GList *list)
  * Frees one #GList element.
  * It is usually used after g_list_remove_link().
  */
+/**
+ * g_list_free1:
+ *
+ * Another name for g_list_free_1().
+ **/
 void
 g_list_free_1 (GList *list)
 {
@@ -778,6 +898,15 @@ g_list_length (GList *list)
  *
  * Calls a function for each element of a #GList.
  */
+/**
+ * GFunc:
+ * @data: the element's data.
+ * @user_data: user data passed to g_list_foreach() or
+ *             g_slist_foreach().
+ *
+ * Specifies the type of functions passed to g_list_foreach() and
+ * g_slist_foreach().
+ **/
 void
 g_list_foreach (GList	 *list,
 		GFunc	  func,
@@ -968,6 +1097,18 @@ g_list_sort_real (GList    *list,
  *
  * Returns: the start of the sorted #GList
  */
+/**
+ * GCompareFunc:
+ * @a: a value.
+ * @b: a value to compare with.
+ * @Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ *           value if @a > @b.
+ *
+ * Specifies the type of a comparison function used to compare two
+ * values.  The function should return a negative integer if the first
+ * value comes before the second, 0 if they are equal, or a positive
+ * integer if the first value comes after the second.
+ **/
 GList *
 g_list_sort (GList        *list,
 	     GCompareFunc  compare_func)
@@ -987,6 +1128,19 @@ g_list_sort (GList        *list,
  *
  * Returns: the new head of @list
  */
+/**
+ * GCompareDataFunc:
+ * @a: a value.
+ * @b: a value to compare with.
+ * @user_data: user data to pass to comparison function.
+ * @Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ *           value if @a > @b.
+ *
+ * Specifies the type of a comparison function used to compare two
+ * values.  The function should return a negative integer if the first
+ * value comes before the second, 0 if they are equal, or a positive
+ * integer if the first value comes after the second.
+ **/
 GList *
 g_list_sort_with_data (GList            *list,
 		       GCompareDataFunc  compare_func,

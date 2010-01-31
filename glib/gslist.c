@@ -33,14 +33,120 @@
 #include "glib.h"
 #include "galias.h"
 
+/**
+ * SECTION: linked_lists_single
+ * @title: Singly-Linked Lists
+ * @short_description: linked lists containing integer values or
+ *                     pointers to data, limited to iterating over the
+ *                     list in one direction
+ *
+ * The #GSList structure and its associated functions provide a
+ * standard singly-linked list data structure.
+ *
+ * Each element in the list contains a piece of data, together with a
+ * pointer which links to the next element in the list. Using this
+ * pointer it is possible to move through the list in one direction
+ * only (unlike the <link
+ * linkend="glib-Doubly-Linked-lists">Doubly-Linked Lists</link> which
+ * allow movement in both directions).
+ *
+ * The data contained in each element can be either integer values, by
+ * using one of the <link linkend="glib-Type-Conversion-Macros">Type
+ * Conversion Macros</link>, or simply pointers to any type of data.
+ *
+ * List elements are allocated from the <link
+ * linkend="glib-Memory-Slices">slice allocator</link>, which is more
+ * efficient than allocating elements individually.
+ *
+ * Note that most of the #GSList functions expect to be passed a
+ * pointer to the first element in the list. The functions which insert
+ * elements return the new start of the list, which may have changed.
+ *
+ * There is no function to create a #GSList. %NULL is considered to be
+ * the empty list so you simply set a #GSList* to %NULL.
+ *
+ * To add elements, use g_slist_append(), g_slist_prepend(),
+ * g_slist_insert() and g_slist_insert_sorted().
+ *
+ * To remove elements, use g_slist_remove().
+ *
+ * To find elements in the list use g_slist_last(), g_slist_next(),
+ * g_slist_nth(), g_slist_nth_data(), g_slist_find() and
+ * g_slist_find_custom().
+ *
+ * To find the index of an element use g_slist_position() and
+ * g_slist_index().
+ *
+ * To call a function for each element in the list use
+ * g_slist_foreach().
+ *
+ * To free the entire list, use g_slist_free().
+ **/
 
+/**
+ * GSList:
+ * @data: holds the element's data, which can be a pointer to any kind
+ *        of data, or any integer value using the <link
+ *        linkend="glib-Type-Conversion-Macros">Type Conversion
+ *        Macros</link>.
+ * @next: contains the link to the next element in the list.
+ *
+ * The #GSList struct is used for each element in the singly-linked
+ * list.
+ **/
+
+/**
+ * g_slist_next:
+ * @slist: an element in a #GSList.
+ * @Returns: the next element, or %NULL if there are no more elements.
+ *
+ * A convenience macro to get the next element in a #GSList.
+ **/
+
+
+/**
+ * g_slist_push_allocator:
+ * @dummy: the #GAllocator to use when allocating #GSList elements.
+ *
+ * Sets the allocator to use to allocate #GSList elements. Use
+ * g_slist_pop_allocator() to restore the previous allocator.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated: 2.10: It does nothing, since #GSList has been converted
+ *                   to the <link linkend="glib-Memory-Slices">slice
+ *                   allocator</link>
+ **/
 void g_slist_push_allocator (gpointer dummy) { /* present for binary compat only */ }
+
+/**
+ * g_slist_pop_allocator:
+ *
+ * Restores the previous #GAllocator, used when allocating #GSList
+ * elements.
+ *
+ * Note that this function is not available if GLib has been compiled
+ * with <option>--disable-mem-pools</option>
+ *
+ * Deprecated: 2.10: It does nothing, since #GSList has been converted
+ *                   to the <link linkend="glib-Memory-Slices">slice
+ *                   allocator</link>
+ **/
 void g_slist_pop_allocator  (void)           { /* present for binary compat only */ }
 
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
 #define _g_slist_alloc()        g_slice_new (GSList)
 #define _g_slist_free1(slist)   g_slice_free (GSList, slist)
 
+/**
+ * g_slist_alloc:
+ * @Returns: a pointer to the newly-allocated #GSList element.
+ *
+ * Allocates space for one #GSList element. It is called by the
+ * g_slist_append(), g_slist_prepend(), g_slist_insert() and
+ * g_slist_insert_sorted() functions and so is rarely used on its own.
+ **/
 GSList*
 g_slist_alloc (void)
 {
@@ -67,6 +173,13 @@ g_slist_free (GSList *list)
  * Frees one #GSList element.
  * It is usually used after g_slist_remove_link().
  */
+/**
+ * g_slist_free1:
+ *
+ * A macro which does the same as g_slist_free_1().
+ *
+ * Since: 2.10
+ **/
 void
 g_slist_free_1 (GSList *list)
 {

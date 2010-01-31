@@ -10,6 +10,8 @@ gurifuncs.sgml
 gvarianttype.sgml
 hash_tables.sgml
 iochannels.sgml
+linked_lists_double.sgml
+linked_lists_single.sgml
 memory_chunks.sgml
 option.sgml
 patterns.sgml
