@@ -111,7 +111,7 @@
  * for example you must coordinate accesses to the same #GHashTable
  * from multiple threads.  The two notable exceptions from this rule
  * are #GMainLoop and #GAsyncQueue, which <emphasis>are</emphasis>
- * threadsafe and needs no further application-level locking to be
+ * threadsafe and need no further application-level locking to be
  * accessed from multiple threads.
  *
  * To help debugging problems in multithreaded applications, GLib
