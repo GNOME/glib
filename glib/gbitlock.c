@@ -111,9 +111,6 @@ typedef struct
   GCond               *wait_queue;
 } WaitAddress;
 
-static GSList *g_futex_address_list;
-static GMutex *g_futex_mutex;
-
 static WaitAddress *
 g_futex_find_address (const volatile gint *address)
 {
