@@ -344,6 +344,9 @@ nameprep (const gchar *hostname,
   g_free (tmp);
   tmp = name;
 
+  if (!name)
+    return NULL;
+
   /* KC normalization may have created more capital letters (eg,
    * angstrom -> capital A with ring). So we have to lowercasify a
    * second time. (This is more-or-less how the nameprep algorithm
@@ -398,8 +401,11 @@ g_hostname_to_ascii (const gchar *hostname)
   gssize llen, oldlen;
   gboolean unicode;
 
-  out = g_string_new (NULL);
   label = name = nameprep (hostname, -1);
+  if (!name)
+    return NULL;
+
+  out = g_string_new (NULL);
 
   do
     {
@@ -591,6 +597,11 @@ g_hostname_to_unicode (const gchar *hostname)
         {
           gchar *canonicalized = nameprep (hostname, llen);
 
+          if (!canonicalized)
+            {
+              g_string_free (out, TRUE);
+              return NULL;
+            }
           g_string_append (out, canonicalized);
           g_free (canonicalized);
         }

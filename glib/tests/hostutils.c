@@ -48,6 +48,13 @@ static const struct {
 };
 static const gint num_idn_test_domains = G_N_ELEMENTS (idn_test_domains);
 
+static const gchar *bad_names[] = {
+  "disallowed\xef\xbf\xbd" "character",
+  "non-utf\x88",
+  "xn--mixed-\xc3\xbcp"
+};
+static const gint num_bad_names = G_N_ELEMENTS (bad_names);
+
 static void
 test_to_ascii (void)
 {
@@ -64,6 +71,12 @@ test_to_ascii (void)
       ascii = g_hostname_to_ascii (idn_test_domains[i].ascii_name);
       g_assert_cmpstr (idn_test_domains[i].ascii_name, ==, ascii);
       g_free (ascii);
+    }
+
+  for (i = 0; i < num_bad_names; i++)
+    {
+      ascii = g_hostname_to_ascii (bad_names[i]);
+      g_assert_cmpstr (ascii, ==, NULL);
     }
 }
 
@@ -83,6 +96,12 @@ test_to_unicode (void)
       unicode = g_hostname_to_unicode (idn_test_domains[i].unicode_name);
       g_assert_cmpstr (idn_test_domains[i].unicode_name, ==, unicode);
       g_free (unicode);
+    }
+
+  for (i = 0; i < num_bad_names; i++)
+    {
+      unicode = g_hostname_to_unicode (bad_names[i]);
+      g_assert_cmpstr (unicode, ==, NULL);
     }
 }
 
