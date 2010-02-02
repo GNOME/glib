@@ -9,4 +9,5 @@ EXTRA_DIST = \
 	gspawn-win32-helper-console.vcproj \
 	gspawn-win32-helper.vcproj \
 	gthread.vcproj \
+	testglib.vcproj \
 	install.vcproj
