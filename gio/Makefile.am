@@ -293,6 +293,9 @@ if OS_WIN32_AND_DLL_COMPILATION
 export_symbols = -export-symbols gio.def
 gio_def = gio.def
 
+gio_win32_res = gio-win32-res.o
+gio_win32_res_ldflag = -Wl,$(gio_win32_res)
+
 install-def-file:
 	$(INSTALL) gio.def $(DESTDIR)$(libdir)/gio-2.0.def
 
@@ -311,10 +314,14 @@ install-data-local: install-ms-lib install-def-file
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
 libgio_2_0_la_LDFLAGS = \
+	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgio_2_0_la_DEPENDENCIES = $(gio_def) $(platform_deps)
+libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
+
+gio-win32-res.o: gio.rc
+	$(WINDRES) gio.rc $@
 
 gio_headers =			\
 	gappinfo.h 		\
@@ -407,7 +414,11 @@ EXTRA_DIST += 			\
 	makegioalias.pl		\
 	abicheck.sh		\
 	pltcheck.sh		\
+	gio.rc.in		\
 	$(NULL)
+
+BUILT_EXTRA_DIST = 		\
+	gio.rc
 
 CLEANFILES = 			\
 	$(marshal_sources)	\
@@ -425,6 +436,12 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done
 
 if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:
