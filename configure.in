@@ -3577,6 +3577,7 @@ if false; then
     gobject/gobject.rc
     gthread/makefile.msc
     gthread/gthread.rc
+    gio/gio.rc
     tests/makefile.msc
   ])
 fi
