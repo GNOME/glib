@@ -48,40 +48,102 @@ typedef struct _GMemVTable GMemVTable;
 
 /* Memory allocation functions
  */
+
+void	 g_free	          (gpointer	 mem);
+
 gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_realloc        (gpointer	 mem,
 			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
-void	 g_free	          (gpointer	 mem);
 gpointer g_try_malloc     (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_try_malloc0    (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_try_realloc    (gpointer	 mem,
 			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
+gpointer g_malloc_n       (gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
+gpointer g_malloc0_n      (gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
+gpointer g_realloc_n      (gpointer	 mem,
+			   gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
+gpointer g_try_malloc_n   (gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
+gpointer g_try_malloc0_n  (gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
+gpointer g_try_realloc_n  (gpointer	 mem,
+			   gsize	 n_blocks,
+			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
+
+
+/* avoid the overflow check if we can determine at compile-time that no
+ * overflow happens. */
+#if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
+#  define _G_MALLOC_N(n_blocks, n_block_bytes, func_1, func_n) \
+	(__extension__ ({					\
+	  gsize __a = (gsize) (n_blocks);			\
+	  gsize __b = (gsize) (n_block_bytes);			\
+	  gpointer __p;						\
+	  if (__builtin_constant_p (__a) && __a == 1)		\
+	    __p = func_1 (__b);					\
+	  else if (__builtin_constant_p (__b) && __b == 1)	\
+	    __p = func_1 (__a);					\
+	  else if (__builtin_constant_p (__a) &&		\
+		   __builtin_constant_p (__b) &&		\
+		   __a <= G_MAXSIZE / __b)			\
+	    __p = func_1 (__a * __b);				\
+	  else							\
+	    __p = func_n (__a, __b);				\
+	  __p;							\
+	}))
+#  define _G_REALLOC_N(mem, n_blocks, n_block_bytes, func_1, func_n) \
+	(__extension__ ({					\
+	  gsize __a = (gsize) (n_blocks);			\
+	  gsize __b = (gsize) (n_block_bytes);			\
+	  gpointer __p = (gpointer) (mem);			\
+	  if (__builtin_constant_p (__a) && __a == 1)		\
+	    __p = func_1 (__p, __b);				\
+	  else if (__builtin_constant_p (__b) && __b == 1)	\
+	    __p = func_1 (__p, __a);				\
+	  else if (__builtin_constant_p (__a) &&		\
+		   __builtin_constant_p (__b) &&		\
+		   __a <= G_MAXSIZE / __b)			\
+	    __p = func_1 (__p, __a * __b);			\
+	  else							\
+	    __p = func_n (__p, __a, __b);			\
+	  __p;							\
+	}))
+
+#  define g_malloc_n(n_blocks,n_block_bytes)		_G_MALLOC_N (n_blocks, n_block_bytes, g_malloc, g_malloc_n)
+#  define g_malloc0_n(n_blocks,n_block_bytes)		_G_MALLOC_N (n_blocks, n_block_bytes, g_malloc0, g_malloc0_n)
+#  define g_realloc_n(mem,n_blocks,n_block_bytes)	_G_REALLOC_N (mem, n_blocks, n_block_bytes, g_realloc, g_realloc_n)
+#  define g_try_malloc_n(n_blocks,n_block_bytes)	_G_MALLOC_N (n_blocks, n_block_bytes, g_try_malloc, g_try_malloc_n)
+#  define g_try_malloc0_n(n_blocks,n_block_bytes)	_G_MALLOC_N (n_blocks, n_block_bytes, g_try_malloc0, g_try_malloc0_n)
+#  define g_try_realloc_n(mem,n_blocks,n_block_bytes)	_G_REALLOC_N (mem, n_blocks, n_block_bytes, g_try_realloc, g_try_realloc_n)
+#endif
+
 
 /* Convenience memory allocators
  */
-#define g_new(struct_type, n_structs)		\
-    ((struct_type *) g_malloc (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
-#define g_new0(struct_type, n_structs)		\
-    ((struct_type *) g_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
-#define g_renew(struct_type, mem, n_structs)	\
-    ((struct_type *) g_realloc ((mem), ((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
 
-#define g_try_new(struct_type, n_structs)		\
-    ((struct_type *) g_try_malloc (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
-#define g_try_new0(struct_type, n_structs)		\
-    ((struct_type *) g_try_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
-#define g_try_renew(struct_type, mem, n_structs)	\
-    ((struct_type *) g_try_realloc ((mem), ((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define _G_NEW(struct_type, n_structs, _g_malloc_n)	\
+	((struct_type *) _g_malloc_n ((n_structs), sizeof (struct_type)))
+#define _G_RENEW(struct_type, mem, n_structs, _g_realloc_n)	\
+	((struct_type *) _g_realloc_n ((mem), (n_structs), sizeof (struct_type)))
+
+#define g_new(struct_type, n_structs)			_G_NEW (struct_type, n_structs, g_malloc_n)
+#define g_new0(struct_type, n_structs)			_G_NEW (struct_type, n_structs, g_malloc0_n)
+#define g_renew(struct_type, mem, n_structs)		_G_RENEW (struct_type, mem, n_structs, g_realloc_n)
+#define g_try_new(struct_type, n_structs)		_G_NEW (struct_type, n_structs, g_try_malloc_n)
+#define g_try_new0(struct_type, n_structs)		_G_NEW (struct_type, n_structs, g_try_malloc0_n)
+#define g_try_renew(struct_type, mem, n_structs)	_G_RENEW (struct_type, mem, n_structs, g_try_realloc_n)
 
 
 /* Memory allocation virtualization for debugging purposes
  * g_mem_set_vtable() has to be the very first GLib function called
  * if being used
  */
-struct _GMemVTable
-{
+struct _GMemVTable {
   gpointer (*malloc)      (gsize    n_bytes);
   gpointer (*realloc)     (gpointer mem,
 			   gsize    n_bytes);

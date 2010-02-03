@@ -853,6 +853,12 @@ g_realloc
 g_try_malloc
 g_try_malloc0
 g_try_realloc
+g_malloc_n
+g_malloc0_n
+g_realloc_n
+g_try_malloc_n
+g_try_malloc0_n
+g_try_realloc_n
 
 <SUBSECTION>
 g_free

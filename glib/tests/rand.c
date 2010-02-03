@@ -1,4 +1,4 @@
-/* Unit tests for gstring
+/* Unit tests for grand
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This work is provided "as is"; redistribution and modification

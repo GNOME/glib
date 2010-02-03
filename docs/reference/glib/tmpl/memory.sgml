@@ -39,6 +39,7 @@ g_mem_set_vtable().
 Allocates @n_structs elements of type @struct_type.
 The returned pointer is cast to a pointer to the given type.
 If @n_structs is 0 it returns %NULL.
+Care is taken to avoid overflow when calculating the size of the allocated block.
 </para>
 <para>
 Since the returned pointer is already casted to the right type,
@@ -56,6 +57,7 @@ so might hide memory allocation errors.
 Allocates @n_structs elements of type @struct_type, initialized to 0's.
 The returned pointer is cast to a pointer to the given type.
 If @n_structs is 0 it returns %NULL.
+Care is taken to avoid overflow when calculating the size of the allocated block.
 </para>
 <para>
 Since the returned pointer is already casted to the right type,
@@ -73,6 +75,7 @@ so might hide memory allocation errors.
 Reallocates the memory pointed to by @mem, so that it now has space for
 @n_structs elements of type @struct_type. It returns the new address of 
 the memory, which may have been moved.
+Care is taken to avoid overflow when calculating the size of the allocated block.
 </para>
 
 @struct_type: the type of the elements to allocate
@@ -86,7 +89,7 @@ the memory, which may have been moved.
 Attempts to allocate @n_structs elements of type @struct_type, and returns 
 %NULL on failure. Contrast with g_new(), which aborts the program on failure.
 The returned pointer is cast to a pointer to the given type. 
-If @n_structs is 0 it returns %NULL.
+The function returns %NULL when @n_structs is 0 of if an overflow occurs.
 </para>
 
 @struct_type: the type of the elements to allocate
@@ -101,7 +104,7 @@ Attempts to allocate @n_structs elements of type @struct_type, initialized
 to 0's, and returns %NULL on failure. Contrast with g_new0(), which aborts 
 the program on failure.
 The returned pointer is cast to a pointer to the given type.
-The function returns %NULL when @n_structs is 0.
+The function returns %NULL when @n_structs is 0 of if an overflow occurs.
 </para>
 
 @struct_type: the type of the elements to allocate
@@ -116,6 +119,7 @@ Attempts to reallocate the memory pointed to by @mem, so that it now has
 space for @n_structs elements of type @struct_type, and returns %NULL on 
 failure. Contrast with g_renew(), which aborts the program on failure.
 It returns the new address of the memory, which may have been moved.
+The function returns %NULL if an overflow occurs.
 </para>
 
 @struct_type: the type of the elements to allocate
@@ -190,6 +194,80 @@ on failure. If @mem is %NULL, behaves the same as g_try_malloc().
 @mem: previously-allocated memory, or %NULL.
 @n_bytes: number of bytes to allocate.
 @Returns: the allocated memory, or %NULL.
+
+
+<!-- ##### FUNCTION g_malloc_n ##### -->
+<para>
+This function is similar to g_malloc(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: a pointer to the allocated memory
+@Since: 2.24
+
+
+<!-- ##### FUNCTION g_malloc0_n ##### -->
+<para>
+This function is similar to g_malloc0(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: a pointer to the allocated memory
+@Since: 2.24
+
+
+<!-- ##### FUNCTION g_realloc_n ##### -->
+<para>
+This function is similar to g_realloc(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@mem: the memory to reallocate
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: the new address of the allocated memory
+@Since: 2.24
+
+
+<!-- ##### FUNCTION g_try_malloc_n ##### -->
+<para>
+This function is similar to g_try_malloc(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: the allocated memory, or %NULL.
+@Since: 2.24
+
+
+<!-- ##### FUNCTION g_try_malloc0_n ##### -->
+<para>
+This function is similar to g_try_malloc0(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: the allocated memory, or %NULL
+@Since: 2.24
+
+
+<!-- ##### FUNCTION g_try_realloc_n ##### -->
+<para>
+This function is similar to g_try_realloc(), allocating (@n_blocks * @n_block_bytes) bytes,
+but care is taken to detect possible overflow during multiplication.
+</para>
+
+@mem: previously-allocated memory, or %NULL.
+@n_blocks: the number of blocks to allocate
+@n_block_bytes: the size of each block in bytes
+@Returns: the allocated memory, or %NULL.
+@Since: 2.24
 
 
 <!-- ##### FUNCTION g_free ##### -->
