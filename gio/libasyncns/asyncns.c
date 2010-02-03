@@ -28,7 +28,11 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
+
+#ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -40,7 +44,11 @@
 #include <arpa/nameser.h>
 #include <resolv.h>
 #include <dirent.h>
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+
 #include <sys/resource.h>
 #include <stdint.h>
 
