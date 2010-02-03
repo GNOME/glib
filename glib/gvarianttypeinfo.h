@@ -95,15 +95,34 @@ typedef struct _GVariantTypeInfo GVariantTypeInfo;
  *
  * For details about how 'a', 'b' and 'c' are calculated, see the
  * comments at the point of the implementation in gvariantypeinfo.c.
+ *
+ * The end address of the item is then determined in one of three ways,
+ * according to the 'end_type' field.
+ *
+ *   - FIXED: For fixed sized items, the end address is equal to the
+ *     start address plus the fixed size.
+ *
+ *   - LAST: For the last variable sized item in the tuple, the end
+ *     address is equal to the end address of the tuple, minus the size
+ *     of the offset array.
+ *
+ *   - OFFSET: For other variable sized items, the next index past 'i'
+ *     (ie: 'i + 1') must be consulted to find the end of this item.
  */
 
 typedef struct
 {
-  GVariantTypeInfo *type;
+  GVariantTypeInfo *type_info;
 
   gsize i, a;
   gint8 b, c;
+
+  guint8 ending_type;
 } GVariantMemberInfo;
+
+#define G_VARIANT_MEMBER_ENDING_FIXED   0
+#define G_VARIANT_MEMBER_ENDING_LAST    1
+#define G_VARIANT_MEMBER_ENDING_OFFSET  2
 
 /* query */
 G_GNUC_INTERNAL

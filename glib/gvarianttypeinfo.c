@@ -336,7 +336,7 @@ tuple_info_free (GVariantTypeInfo *info)
   tuple_info = (TupleInfo *) info;
 
   for (i = 0; i < tuple_info->n_members; i++)
-    g_variant_type_info_unref (tuple_info->members[i].type);
+    g_variant_type_info_unref (tuple_info->members[i].type_info);
 
   g_slice_free1 (sizeof (GVariantMemberInfo) * tuple_info->n_members,
                  tuple_info->members);
@@ -357,8 +357,17 @@ tuple_allocate_members (const GVariantType  *type,
   item_type = g_variant_type_first (type);
   while (item_type)
     {
-      (*members)[i++].type = g_variant_type_info_get (item_type);
+      GVariantMemberInfo *member = &(*members)[i++];
+
+      member->type_info = g_variant_type_info_get (item_type);
       item_type = g_variant_type_next (item_type);
+
+      if (item_type == NULL)
+        member->ending_type = G_VARIANT_MEMBER_ENDING_LAST;
+      else if (member->type_info->fixed_size)
+        member->ending_type = G_VARIANT_MEMBER_ENDING_FIXED;
+      else
+        member->ending_type = G_VARIANT_MEMBER_ENDING_OFFSET;
     }
 
   g_assert (i == *n_members);
@@ -377,8 +386,8 @@ tuple_get_item (TupleInfo          *info,
   if (&info->members[info->n_members] == item)
     return FALSE;
 
-  *d = item->type->alignment;
-  *e = item->type->fixed_size;
+  *d = item->type_info->alignment;
+  *e = item->type_info->fixed_size;
   return TRUE;
 }
 
@@ -591,7 +600,7 @@ tuple_set_base_info (TupleInfo *info)
         /* can find the max of a list of "one less than" powers of two
          * by 'or'ing them
          */
-        base->alignment |= m->type->alignment;
+        base->alignment |= m->type_info->alignment;
 
       m--; /* take 'm' back to the last item */
 
@@ -599,7 +608,7 @@ tuple_set_base_info (TupleInfo *info)
        * offsets are stored and the last item is fixed-sized too (since
        * an offset is never stored for the last item).
        */
-      if (m->i == -1 && m->type->fixed_size)
+      if (m->i == -1 && m->type_info->fixed_size)
         /* in that case, the fixed size can be found by finding the
          * start of the last item (in the usual way) and adding its
          * fixed size.
@@ -609,7 +618,7 @@ tuple_set_base_info (TupleInfo *info)
          * easier) so we round up to that here.
          */
         base->fixed_size =
-          tuple_align (((m->a & m->b) | m->c) + m->type->fixed_size,
+          tuple_align (((m->a & m->b) | m->c) + m->type_info->fixed_size,
                        base->alignment);
       else
         /* else, the tuple is not fixed size */

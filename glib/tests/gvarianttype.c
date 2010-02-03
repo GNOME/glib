@@ -826,7 +826,7 @@ describe_info (GVariantTypeInfo *info)
             sep = ", ";
 
             minfo = g_variant_type_info_member_info (info, i);
-            subtype = describe_info (minfo->type);
+            subtype = describe_info (minfo->type_info);
             g_string_append (string, subtype);
             g_free (subtype);
           }
@@ -845,8 +845,8 @@ describe_info (GVariantTypeInfo *info)
         g_assert_cmpint (g_variant_type_info_n_members (info), ==, 2);
         keyinfo = g_variant_type_info_member_info (info, 0);
         valueinfo = g_variant_type_info_member_info (info, 1);
-        key = describe_info (keyinfo->type);
-        value = describe_info (valueinfo->type);
+        key = describe_info (keyinfo->type_info);
+        value = describe_info (valueinfo->type_info);
         result = g_strjoin ("", "e of [", key, ", ", value, "]", NULL);
         g_free (key);
         g_free (value);
