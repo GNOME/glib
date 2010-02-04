@@ -50,7 +50,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
@@ -94,7 +94,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
@@ -142,7 +142,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
@@ -186,7 +186,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
