@@ -1,5 +1,5 @@
 EXTRA_DIST = \
-	README \
+	README.txt \
 	glib.sln \
 	glib.vsprops \
 	glib.vcproj \
