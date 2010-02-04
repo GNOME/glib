@@ -1025,6 +1025,8 @@ test_gvarianttypeinfo (void)
       g_variant_type_free (type);
       g_free (desc);
     }
+
+  assert_no_type_infos ();
 }
 
 int
