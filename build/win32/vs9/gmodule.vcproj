@@ -67,8 +67,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)"
+			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -114,8 +113,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -161,8 +159,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
