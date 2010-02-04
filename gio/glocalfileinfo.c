@@ -96,6 +96,11 @@
 
 #include "gioalias.h"
 
+/* See gstdio.h */
+#ifndef G_OS_WIN32
+#define _g_stat_struct stat
+#endif
+
 struct ThumbMD5Context {
 	guint32 buf[4];
 	guint32 bits[2];
@@ -788,10 +793,7 @@ _g_local_file_info_get_parent_info (const char            *dir,
 				    GFileAttributeMatcher *attribute_matcher,
 				    GLocalParentFileInfo  *parent_info)
 {
-  /* Use plain struct stat for now as long as we only look at the
-   * S_ISVTX bit which doesn't exist on Win32 anyway.
-   */
-  struct stat statbuf;
+  struct _g_stat_struct statbuf;
   int res;
 
   parent_info->extra_data = NULL;
