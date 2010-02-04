@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
-			OutputDirectory="..\..\..\..\dependencies\$(PlatformName)\vs9"
+			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
 			DeleteExtensionsOnClean=""
@@ -35,7 +35,7 @@
 		<Configuration
 			Name="Debug|x64"
 			InheritedPropertySheets=".\glib.vsprops"
-			OutputDirectory="..\..\..\..\dependencies\$(PlatformName)\vs9"
+			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
 			DeleteExtensionsOnClean=""
@@ -48,7 +48,7 @@
 		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
-			OutputDirectory="..\..\..\..\dependencies\$(PlatformName)\vs9"
+			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -62,7 +62,7 @@
 		<Configuration
 			Name="Release|x64"
 			InheritedPropertySheets=".\glib.vsprops"
-			OutputDirectory="..\..\..\..\dependencies\$(PlatformName)\vs9"
+			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
