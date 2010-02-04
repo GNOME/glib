@@ -738,9 +738,6 @@ test_info (void)
   
   if (g_test_verbose())
     {
-#ifdef G_PLATFORM_WIN32
-      gchar *glib_dll;
-#endif
       const gchar *charset;
       if (g_get_charset ((G_CONST_RETURN char**)&charset))
         g_print ("current charset is UTF-8: %s\n", charset);
@@ -748,28 +745,7 @@ test_info (void)
         g_print ("current charset is not UTF-8: %s\n", charset);
 
 #ifdef G_PLATFORM_WIN32
-#ifdef G_OS_WIN32
-      /* Can't calculate GLib DLL name at runtime. */
-      glib_dll = "libglib-2.0-0.dll";
-#endif
-#ifdef G_WITH_CYGWIN
-      glib_dll = "cygglib-2.0-0.dll";
-#endif
-
       g_print ("current locale: %s\n", g_win32_getlocale ());
-      g_print ("GLib DLL name tested for: %s\n", glib_dll);
-
-      g_print ("GLib installation directory, from Registry entry for %s if available: %s\n",
-               GETTEXT_PACKAGE,
-               g_win32_get_package_installation_directory (GETTEXT_PACKAGE, NULL));
-      g_print ("Ditto, or from GLib DLL name: %s\n",
-               g_win32_get_package_installation_directory (GETTEXT_PACKAGE, glib_dll));
-      g_print ("Ditto, only from GLib DLL name: %s\n",
-               g_win32_get_package_installation_directory (NULL, glib_dll));
-      g_print ("locale subdirectory of GLib installation directory: %s\n",
-               g_win32_get_package_installation_subdirectory (NULL, glib_dll, "lib\\locale"));
-      g_print ("GTK+ 2.0 installation directory, if available: %s\n",
-               g_win32_get_package_installation_directory ("gtk20", NULL));
 
       g_print ("found more.com as %s\n", g_find_program_in_path ("more.com"));
       g_print ("found regedit as %s\n", g_find_program_in_path ("regedit"));
