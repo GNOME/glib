@@ -52,7 +52,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
@@ -98,7 +98,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
@@ -148,7 +148,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
@@ -194,7 +194,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
-				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"

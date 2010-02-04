@@ -37,7 +37,7 @@ copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#
 		Name="GlibDoInstall"
 		Value="
 mkdir $(OutDir)\bin&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2-vs9.dll $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.exe $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win32-helper*.exe $(OutDir)\bin&#x0D;&#x0A;
 
@@ -192,5 +192,31 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2.0.lib $(OutDir)\
 	<UserMacro
 		Name="GlibGenerateGioDef"
 		Value="echo EXPORTS &gt;&quot;$(IntDir)\gio.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gio\gio.symbols &gt;&gt;&quot;$(IntDir)\gio.def&quot;"
+	/>
+	<UserMacro
+		Name="GlibLibtoolCompatibleDllPrefix"
+		Value="lib"
+	/>
+	<UserMacro
+		Name="GlibLibtoolCompatibleDllSuffix"
+		Value="-2.0-0"
+	/>
+	<UserMacro
+		Name="GlibSeparateVS9DllPrefix"
+		Value=""
+	/>
+	<UserMacro
+		Name="GlibSeparateVS9DllSuffix"
+		Value="-2-vs9"
+	/>
+	<!-- Change these two to GlibLibtoolCompatibleDllPrefix and
+	GlibLibtoolCompatibleDllSuffix if that is what you want -->
+	<UserMacro
+		Name="GlibDllPrefix"
+		Value="$(GlibSeparateVS9DllPrefix)"
+	/>
+	<UserMacro
+		Name="GlibDllSuffix"
+		Value="$(GlibSeparateVS9DllSuffix)"
 	/>
 </VisualStudioPropertySheet>
