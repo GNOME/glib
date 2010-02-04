@@ -51,6 +51,10 @@
 #error Please port this to your operating system
 #endif
 
+#if defined (_MSC_VER) && !defined(_WIN64)
+#undef _wstat
+#define _wstat _wstat32
+#endif
 
 /**
  * g_access:
@@ -442,8 +446,13 @@ g_chdir (const gchar *path)
  * Since: 2.6
  */
 int
-g_stat (const gchar *filename,
-	struct stat *buf)
+g_stat (const gchar           *filename,
+#ifdef G_OS_WIN32
+	struct _g_stat_struct *buf
+#else
+	struct stat           *buf
+#endif
+				  )
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -464,7 +473,7 @@ g_stat (const gchar *filename,
       (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
     wfilename[len] = '\0';
 
-  retval = _wstat (wfilename, (struct _stat *) buf);
+  retval = _wstat (wfilename, buf);
   save_errno = errno;
 
   g_free (wfilename);
@@ -496,8 +505,13 @@ g_stat (const gchar *filename,
  * Since: 2.6
  */
 int
-g_lstat (const gchar *filename,
-	 struct stat *buf)
+g_lstat (const gchar           *filename,
+#ifdef G_OS_WIN32
+	 struct _g_stat_struct *buf
+#else
+	 struct stat           *buf
+#endif
+				   )
 {
 #ifdef HAVE_LSTAT
   /* This can't be Win32, so don't do the widechar dance. */
