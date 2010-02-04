@@ -362,10 +362,10 @@ tuple_allocate_members (const GVariantType  *type,
       member->type_info = g_variant_type_info_get (item_type);
       item_type = g_variant_type_next (item_type);
 
-      if (item_type == NULL)
-        member->ending_type = G_VARIANT_MEMBER_ENDING_LAST;
-      else if (member->type_info->fixed_size)
+      if (member->type_info->fixed_size)
         member->ending_type = G_VARIANT_MEMBER_ENDING_FIXED;
+      else if (item_type == NULL)
+        member->ending_type = G_VARIANT_MEMBER_ENDING_LAST;
       else
         member->ending_type = G_VARIANT_MEMBER_ENDING_OFFSET;
     }
@@ -848,3 +848,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
         }
     }
 }
+
+/* used from the test cases */
+#define assert_no_type_infos() \
+  g_assert_cmpint (g_hash_table_size (g_variant_type_info_table), ==, 0)
