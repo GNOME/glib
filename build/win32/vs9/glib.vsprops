@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="glibprops"
+	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin"
+	IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="../../..;../../../glib;../../../../dependencies/$(PlatformName)/proxy-libintl/include"
+		PreprocessorDefinitions="HAVE_CONFIG_H;G_DISABLE_DEPRECATED"
+		ForcedIncludeFiles="msvc_recommended_pragmas.h"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="intl.lib"
+		AdditionalLibraryDirectories="../../../../dependencies/$(PlatformName)/proxy-libintl/lib"
+	/>
+	<Tool
+		Name="VCPreBuildEventTool"
+		CommandLine="
+if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
+copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
+:DONE_CONFIG_H&#x0D;&#x0A;
+
+if exist ..\..\..\glibconfig.h goto DONE_GLIBCONFIG_H&#x0D;&#x0A;
+copy ..\..\..\glibconfig.h.win32 ..\..\..\glibconfig.h&#x0D;&#x0A;
+:DONE_GLIBCONFIG_H&#x0D;&#x0A;
+
+if exist ..\..\..\gmodule\gmoduleconf.h goto DONE_GMODULECONF_H&#x0D;&#x0A;
+copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;
+:DONE_GMODULECONF_H&#x0D;&#x0A;
+"
+	/>
+	<UserMacro
+		Name="GlibDoInstall"
+		Value="
+mkdir $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2-vs9.dll $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.exe $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win32-helper*.exe $(OutDir)\bin&#x0D;&#x0A;
+
+mkdir $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\glib.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
+copy ..\..\..\gmodule\gmodule.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
+copy ..\..\..\glib\glib-object.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
+copy ..\..\..\glib\galloca.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\garray.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gasyncqueue.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gatomic.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gbacktrace.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gbase64.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gcache.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gcompletion.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gdataset.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gdate.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gdir.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gerror.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gfileutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\ghash.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\ghook.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\ghostutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gi18n-lib.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gi18n.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\giochannel.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gkeyfile.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\glist.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmacros.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmain.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmappedfile.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmarkup.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmem.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gmessages.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gnode.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\goption.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gpattern.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gprimes.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gprintf.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gqsort.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gquark.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gqueue.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\grand.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gregex.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\grel.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gscanner.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gsequence.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gshell.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gslice.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gslist.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gspawn.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gstdio.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gstrfuncs.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gstring.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtestutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gthread.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gthreadpool.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtimer.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtree.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtypes.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gunicode.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gurifuncs.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+
+mkdir $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gboxed.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gclosure.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\genums.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gmarshal.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gobject.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gobjectnotifyqueue.c $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gparam.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gparamspecs.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gsignal.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gsourceclosure.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gtype.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gtypemodule.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gtypeplugin.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gvalue.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gvaluearray.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gvaluecollector.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gvaluetypes.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+
+mkdir $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gappinfo.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gbufferedinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gbufferedoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gcancellable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gcontenttype.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdatainputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdataoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdrive.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gemblem.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gemblemedicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfile.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileattribute.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileenumerator.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileinfo.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfilemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfilenamecompleter.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfileoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfilterinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gfilteroutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\ginputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gio.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gioenums.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gioenumtypes.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gioerror.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\giomodule.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gioscheduler.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\giotypes.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gloadableicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmemoryinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmemoryoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmount.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmountoperation.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gnativevolumemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\goutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gseekable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gsimpleasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gthemedicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gvfs.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gvolume.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gvolumemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+
+mkdir $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
+copy ..\..\..\glibconfig.h $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
+
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2.0.lib $(OutDir)\lib&#x0D;&#x0A;
+"
+	/>
+	<UserMacro
+		Name="GlibGenerateGlibDef"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\glib.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;&quot;$(IntDir)\glib.def&quot;"
+	/>
+	<UserMacro
+		Name="GlibGenerateGmoduleDef"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 ..\..\..\gmodule\gmodule.symbols &gt;&gt;&quot;$(IntDir)\gmodule.def&quot;"
+	/>
+	<UserMacro
+		Name="GlibGenerateGobjectDef"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gobject\gobject.symbols &gt;&gt;&quot;$(IntDir)\gobject.def&quot;"
+	/>
+	<UserMacro
+		Name="GlibGenerateGioDef"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\gio.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gio\gio.symbols &gt;&gt;&quot;$(IntDir)\gio.def&quot;"
+	/>
+</VisualStudioPropertySheet>

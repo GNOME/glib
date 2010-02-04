@@ -1,13 +1,14 @@
 EXTRA_DIST = \
 	README \
-	gio.vcproj \
-	glib-genmarshal.vcproj \
 	glib.sln \
+	glib.vsprops \
 	glib.vcproj \
-	gmodule.vcproj \
-	gobject.vcproj \
+	glib-genmarshal.vcproj \
 	gspawn-win32-helper-console.vcproj \
 	gspawn-win32-helper.vcproj \
+	gmodule.vcproj \
+	gobject.vcproj \
 	gthread.vcproj \
+	gio.vcproj \
 	testglib.vcproj \
 	install.vcproj

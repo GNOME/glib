@@ -21,32 +21,17 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)"
+			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="if exist ..\..\..\gmodule\gmoduleconf.h goto END&#x0D;&#x0A;copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;:END&#x0D;&#x0A;"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -54,7 +39,6 @@
 				WarningLevel="3"
 				DebugInformationFormat="4"
 				CompileAs="1"
-				ForcedIncludeFiles="msvc_recommended_pragmas.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -69,31 +53,13 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="../../../gmodule/gmodule.def"
+				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -109,30 +75,15 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="if exist ..\..\..\gmodule\gmoduleconf.h goto END&#x0D;&#x0A;copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;:END&#x0D;&#x0A;"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
-				ForcedIncludeFiles="msvc_recommended_pragmas.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -147,7 +98,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="../../../gmodule/gmodule.def"
+				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -156,24 +107,6 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -188,26 +121,11 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="if exist ..\..\..\gmodule\gmoduleconf.h goto END&#x0D;&#x0A;copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;:END&#x0D;&#x0A;"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -215,7 +133,6 @@
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
-				ForcedIncludeFiles="msvc_recommended_pragmas.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -230,31 +147,13 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="../../../gmodule/gmodule.def"
+				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -270,31 +169,15 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="if exist ..\..\..\gmodule\gmoduleconf.h goto END&#x0D;&#x0A;copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;:END&#x0D;&#x0A;"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
-				ForcedIncludeFiles="msvc_recommended_pragmas.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -309,7 +192,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)-2-vs9.dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="../../../gmodule/gmodule.def"
+				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -318,24 +201,6 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -367,10 +232,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\..\gmodule\gmodule.def"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\gmodule\gmodule.rc"
 				>
 			</File>
@@ -383,8 +244,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
-						Outputs="$(InputDir)/gmodule.def"
+						CommandLine="$(GlibGenerateGmoduleDef)"
+						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -393,8 +254,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
-						Outputs="$(InputDir)/gmodule.def"
+						CommandLine="$(GlibGenerateGmoduleDef)"
+						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -403,8 +264,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
-						Outputs="$(InputDir)/gmodule.def"
+						CommandLine="$(GlibGenerateGmoduleDef)"
+						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -413,8 +274,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="echo EXPORTS &gt; &quot;$(InputDir)/gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 &quot;$(InputPath)&quot; &gt;&gt; &quot;$(InputDir)/gmodule.def&quot;&#x0D;&#x0A;"
-						Outputs="$(InputDir)/gmodule.def"
+						CommandLine="$(GlibGenerateGmoduleDef)"
+						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
 			</File>
