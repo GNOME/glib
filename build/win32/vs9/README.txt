@@ -15,15 +15,23 @@ builds. Set up the source tree as follows under some arbitrary top
 folder <root>:
 
 <root>\glib\<this-glib-source-tree>
-<root>\glib\dependencies\<PlatformName>\proxy-libintl
+<root>\vs9\<PlatformName>
 
 *this* file you are now reading is thus located at
 <root>\glib\<this-glib-source-tree>\build\win32\vs9\README.
 
 <PlatformName> is either Win32 or x64, as in VS9 project files.
 
-<root>\glib\dependencies\<PlatformName>\proxy-libintl contains the
-unpacked proxy-libintl zip file, so that for instance libintl.h is at
-<root>\glib\dependencies\<PlatformName>\proxy-libintl\include\libintl.h.
+You should unpack the proxy-libintl-dev zip file into
+<root>\vs9\<PlatformName>, so that for instance libintl.h end up at
+<root>\vs9\<PlatformName>\include\libintl.h.
+
+The "install" project will copy build results and headers into their
+appropriate location under <root>\vs9\<PlatformName>. For instance,
+built DLLs go into <root>\vs9\<PlatformName>\bin, built LIBs into
+<root>\vs9\<PlatformName>\lib and GLib headers into
+<root>\vs9\<PlatformName>\include\glib-2.0. This is then from where
+project files higher in the stack are supposed to look for them, not
+from a specific GLib source tree.
 
 --Tor Lillqvist <tml@iki.fi>
