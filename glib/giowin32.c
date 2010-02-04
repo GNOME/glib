@@ -81,10 +81,6 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-#ifdef _MSC_VER
-#define fstat(a,b) _fstat(a,b)
-#endif
-
 #include "gstdio.h"
 #include "glibintl.h"
 
@@ -1795,8 +1791,8 @@ g_io_win32_unimpl_set_flags (GIOChannel *channel,
 }
 
 static GIOFlags
-g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
-				  struct stat *st)
+g_io_win32_fd_get_flags_internal (GIOChannel      *channel,
+				  struct _stati64 *st)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gchar c;
@@ -1828,13 +1824,13 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
 static GIOFlags
 g_io_win32_fd_get_flags (GIOChannel *channel)
 {
-  struct stat st;
+  struct _stati64 st;
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   g_return_val_if_fail (win32_channel != NULL, 0);
   g_return_val_if_fail (win32_channel->type == G_IO_WIN32_FILE_DESC, 0);
 
-  if (0 == fstat (win32_channel->fd, &st))
+  if (0 == _fstati64 (win32_channel->fd, &st))
     return g_io_win32_fd_get_flags_internal (channel, &st);
   else
     return 0;
@@ -2002,8 +1998,8 @@ g_io_channel_win32_new_messages (guint hwnd)
 }
 
 static GIOChannel *
-g_io_channel_win32_new_fd_internal (gint         fd,
-				    struct stat *st)
+g_io_channel_win32_new_fd_internal (gint             fd,
+				    struct _stati64 *st)
 {
   GIOWin32Channel *win32_channel;
   GIOChannel *channel;
@@ -2039,9 +2035,9 @@ g_io_channel_win32_new_fd_internal (gint         fd,
 GIOChannel *
 g_io_channel_win32_new_fd (gint fd)
 {
-  struct stat st;
+  struct _stati64 st;
 
-  if (fstat (fd, &st) == -1)
+  if (_fstati64 (fd, &st) == -1)
     {
       g_warning ("g_io_channel_win32_new_fd: %d isn't an open file descriptor in the C library GLib uses.", fd);
       return NULL;
@@ -2084,10 +2080,10 @@ GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
   gboolean is_fd, is_socket;
-  struct stat st;
+  struct _stati64 st;
   int optval, optlen;
 
-  is_fd = (fstat (fd, &st) == 0);
+  is_fd = (_fstati64 (fd, &st) == 0);
 
   optlen = sizeof (optval);
   is_socket = (getsockopt (fd, SOL_SOCKET, SO_TYPE, (char *) &optval, &optlen) != SOCKET_ERROR);

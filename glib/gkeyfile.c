@@ -39,9 +39,8 @@
 #ifdef G_OS_WIN32
 #include <io.h>
 
-#ifdef _MSC_VER
-#define fstat(a,b) _fstat(a,b)
-#endif
+#define fstat(a,b) _fstati64(a,b)
+#define stat _stati64
 
 #ifndef S_ISREG
 #define S_ISREG(mode) ((mode)&_S_IFREG)

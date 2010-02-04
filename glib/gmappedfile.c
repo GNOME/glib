@@ -38,9 +38,8 @@
 #include <windows.h>
 #include <io.h>
 
-#ifdef _MSC_VER
-#define fstat(a,b) _fstat(a,b)
-#endif
+#define fstat(a,b) _fstati64(a,b)
+#define stat _stati64
 
 #endif
 
