@@ -47,8 +47,8 @@ array_test_LDADD    = $(progs_ldadd)
 TEST_PROGS         += hostutils
 hostutils_LDADD     = $(progs_ldadd)
 
-TEST_PROGS         += gvarianttype
-gvarianttype_LDADD  = $(progs_ldadd)
+TEST_PROGS         += gvariant
+gvariant_LDADD      = $(progs_ldadd)
 
 if OS_UNIX
 
