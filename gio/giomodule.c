@@ -382,6 +382,8 @@ g_io_modules_scan_all_in_directory (const char *dirname)
   g_dir_close (dir);
 
   g_hash_table_destroy (cache);
+
+  g_free (filename);
 }
 
 
