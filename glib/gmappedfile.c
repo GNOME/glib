@@ -52,6 +52,7 @@
 #include "gstdio.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
+#include "gbuffer.h"
 
 #include "glibintl.h"
 
@@ -67,13 +68,31 @@
 
 struct _GMappedFile 
 {
-  gsize  length;
   gchar *contents;
+  gsize  length;
+  gpointer free_func;
   int    ref_count;
 #ifdef G_OS_WIN32
   HANDLE mapping;
 #endif
 };
+
+static void
+g_mapped_file_destroy (GMappedFile *file)
+{
+  if (file->length)
+    {
+#ifdef HAVE_MMAP
+      munmap (file->contents, file->length);
+#endif
+#ifdef G_OS_WIN32
+      UnmapViewOfFile (file->contents);
+      CloseHandle (file->mapping);
+#endif
+    }
+
+  g_slice_free (GMappedFile, file);
+}
 
 /**
  * g_mapped_file_new:
@@ -110,6 +129,15 @@ g_mapped_file_new (const gchar  *filename,
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (!error || *error == NULL, NULL);
 
+  g_assert (G_STRUCT_OFFSET (GMappedFile, contents) ==
+            G_STRUCT_OFFSET (GBuffer, data));
+  g_assert (G_STRUCT_OFFSET (GMappedFile, length) ==
+            G_STRUCT_OFFSET (GBuffer, size));
+  g_assert (G_STRUCT_OFFSET (GMappedFile, ref_count) ==
+            G_STRUCT_OFFSET (GBuffer, ref_count));
+  g_assert (G_STRUCT_OFFSET (GMappedFile, free_func) ==
+            G_STRUCT_OFFSET (GBuffer, free_func));
+
   fd = g_open (filename, (writable ? O_RDWR : O_RDONLY) | _O_BINARY, 0);
   if (fd == -1)
     {
@@ -128,6 +156,7 @@ g_mapped_file_new (const gchar  *filename,
 
   file = g_slice_new0 (GMappedFile);
   file->ref_count = 1;
+  file->free_func = g_mapped_file_destroy;
 
   if (fstat (fd, &st) == -1)
     {
@@ -311,20 +340,7 @@ g_mapped_file_unref (GMappedFile *file)
   g_return_if_fail (file->ref_count > 0);
 
   if (g_atomic_int_dec_and_test (&file->ref_count))
-    {
-      if (file->length)
-        {
-#ifdef HAVE_MMAP
-          munmap (file->contents, file->length);
-#endif
-#ifdef G_OS_WIN32
-          UnmapViewOfFile (file->contents);
-          CloseHandle (file->mapping);
-#endif
-        }
-
-      g_slice_free (GMappedFile, file);
-    }
+    g_mapped_file_destroy (file);
 }
 
 #define __G_MAPPED_FILE_C__
