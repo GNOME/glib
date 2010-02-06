@@ -112,6 +112,8 @@ libglib_2_0_la_SOURCES = 	\
 	gbitlock.c		\
 	gbookmarkfile.c 	\
 	gbsearcharray.h		\
+	gbuffer.c		\
+	gbuffer.h		\
 	gcache.c		\
 	gchecksum.c		\
 	gcompletion.c		\
