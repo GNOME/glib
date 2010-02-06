@@ -41,15 +41,6 @@
 				CompileAs="1"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
@@ -61,9 +52,6 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
@@ -88,15 +76,6 @@
 				CompileAs="1"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
@@ -108,9 +87,6 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
@@ -133,15 +109,6 @@
 				CompileAs="1"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
@@ -155,9 +122,6 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
@@ -180,15 +144,6 @@
 				CompileAs="1"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
@@ -203,9 +158,6 @@
 				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
 				TargetMachine="17"
 			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -218,244 +170,184 @@
 			>
 			<File
 				RelativePath="..\..\..\glib\garray.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gasyncqueue.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gatomic.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gbacktrace.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gbase64.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gbookmarkfile.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gcache.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gchecksum.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gcompletion.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gconvert.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gdataset.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gdate.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gdir.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gerror.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gfileutils.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\ghash.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\ghook.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\ghostutils.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\giochannel.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\giowin32.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gkeyfile.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\glist.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gmain.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gmappedfile.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gmarkup.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gmem.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gmessages.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gnode.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\goption.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gpattern.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gpoll.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gprimes.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gprintf.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gqsort.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gqueue.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\grand.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gregex.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\grel.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gscanner.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gsequence.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gshell.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gslice.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gslist.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gspawn-win32.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gstdio.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gstrfuncs.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gstring.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gtestutils.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gthread.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gthreadpool.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gtimer.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gtree.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gunibreak.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gunicollate.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gunidecomp.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\guniprop.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gurifuncs.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gutf8.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gutils.c"
-				>
-			</File>
+			/>
 			<File
 				RelativePath="..\..\..\glib\gwin32.c"
-				>
-			</File>
+			/>
 			<Filter
 				Name="libcharset"
 				>
@@ -666,6 +558,4 @@
 			</File>
 		</Filter>
 	</Files>
-	<Globals>
-	</Globals>
 </VisualStudioProject>
