@@ -969,6 +969,7 @@ AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link statvfs statfs utimes getg
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getmntinfo)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(nanosleep nsleep)
+AC_CHECK_FUNCS(splice)
 
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
