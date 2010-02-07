@@ -20,11 +20,16 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#include "config.h"
 #include "gurifuncs.h"
-#include <glib.h>
+
+#include <glib/gstrfuncs.h>
+#include <glib/gmessages.h>
+#include <glib/gstring.h>
+#include <glib/gmem.h>
+
 #include <string.h>
 
+#include "config.h"
 #include "galias.h"
 
 /**

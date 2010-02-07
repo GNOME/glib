@@ -21,7 +21,10 @@
  */
 
 #include "gvarianttypeinfo.h"
-#include <glib.h>
+
+#include <glib/gtestutils.h>
+#include <glib/gthread.h>
+#include <glib/ghash.h>
 
 #include "galias.h"
 
