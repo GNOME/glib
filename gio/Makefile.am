@@ -157,6 +157,7 @@ unix_sources = \
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
 	gdesktopappinfo.h	\
+	gfiledescriptorbased.h  \
 	gunixconnection.h	\
 	gunixmounts.h 		\
 	gunixfdlist.h		\
@@ -210,6 +211,8 @@ libgio_2_0_la_SOURCES =		\
 	gfile.c 		\
 	gfileattribute.c 	\
 	gfileattribute-priv.h 	\
+	gfiledescriptorbased.h  \
+	gfiledescriptorbased.c  \
 	gfileenumerator.c 	\
 	gfileicon.c 		\
 	gfileinfo.c 		\
