@@ -27,6 +27,7 @@
 #include "glibintl.h"
 #include "gioerror.h"
 #include "gcancellable.h"
+#include "gfiledescriptorbased.h"
 #include "glocalfileiostream.h"
 #include "glocalfileinputstream.h"
 #include "glocalfileinfo.h"
@@ -58,7 +59,7 @@ _g_local_file_io_stream_new (GLocalFileOutputStream *output_stream)
   stream = g_object_new (G_TYPE_LOCAL_FILE_IO_STREAM, NULL);
   stream->output_stream = g_object_ref (output_stream);
   _g_local_file_output_stream_set_do_close (output_stream, FALSE);
-  fd = _g_local_file_output_stream_get_fd (output_stream);
+  fd = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (output_stream));
   stream->input_stream = (GInputStream *)_g_local_file_input_stream_new (fd);
   _g_local_file_input_stream_set_do_close (G_LOCAL_FILE_INPUT_STREAM (stream->input_stream),
 					   FALSE);

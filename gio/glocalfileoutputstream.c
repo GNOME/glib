@@ -36,6 +36,7 @@
 #include "glibintl.h"
 #include "gioerror.h"
 #include "gcancellable.h"
+#include "gfiledescriptorbased.h"
 #include "glocalfileoutputstream.h"
 #include "glocalfileinfo.h"
 
@@ -55,8 +56,12 @@
 
 #include "gioalias.h"
 
+static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
 #define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
-G_DEFINE_TYPE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM);
+G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+						g_file_descriptor_based_iface_init));
+
 
 /* Some of the file replacement code was based on the code from gedit,
  * relicenced to LGPL with permissions from the authors.
@@ -99,6 +104,7 @@ static gboolean   g_local_file_output_stream_truncate     (GFileOutputStream  *s
 							   goffset             size,
 							   GCancellable       *cancellable,
 							   GError            **error);
+static int        g_local_file_output_stream_get_fd       (GFileDescriptorBased *stream);
 
 static void
 g_local_file_output_stream_finalize (GObject *object)
@@ -114,6 +120,7 @@ g_local_file_output_stream_finalize (GObject *object)
 
   G_OBJECT_CLASS (g_local_file_output_stream_parent_class)->finalize (object);
 }
+
 
 static void
 g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
@@ -138,18 +145,18 @@ g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
 }
 
 static void
+g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
+{
+  iface->get_fd = g_local_file_output_stream_get_fd;
+}
+
+static void
 g_local_file_output_stream_init (GLocalFileOutputStream *stream)
 {
   stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
 					      G_TYPE_LOCAL_FILE_OUTPUT_STREAM,
 					      GLocalFileOutputStreamPrivate);
   stream->priv->do_close = TRUE;
-}
-
-int
-_g_local_file_output_stream_get_fd (GLocalFileOutputStream *out)
-{
-  return out->priv->fd;
 }
 
 static gssize
@@ -1151,3 +1158,12 @@ _g_local_file_output_stream_replace (const char        *filename,
   
   return G_FILE_OUTPUT_STREAM (stream);
 }
+
+static int
+g_local_file_output_stream_get_fd (GFileDescriptorBased *fd_based)
+{
+  GLocalFileOutputStream *stream = G_LOCAL_FILE_OUTPUT_STREAM (fd_based);
+
+  return stream->priv->fd;
+}
+
