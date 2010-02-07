@@ -1927,6 +1927,8 @@ struct stack_iter
   gsize magic;
 };
 
+G_STATIC_ASSERT (sizeof (struct stack_iter) <= sizeof (GVariantIter));
+
 struct heap_iter
 {
   struct stack_iter iter;
@@ -1993,8 +1995,6 @@ gsize
 g_variant_iter_init (GVariantIter *iter,
                      GVariant     *value)
 {
-  g_assert (sizeof (struct stack_iter) <= sizeof (GVariantIter));
-
   GVSI(iter)->magic = GVSI_MAGIC;
   GVSI(iter)->value = value;
   GVSI(iter)->n = g_variant_n_children (value);
@@ -2182,6 +2182,8 @@ struct stack_builder
 
   gsize magic;
 };
+
+G_STATIC_ASSERT (sizeof (struct stack_builder) <= sizeof (GVariantBuilder));
 
 struct heap_builder
 {
@@ -2371,7 +2373,6 @@ g_variant_builder_init (GVariantBuilder    *builder,
   g_return_if_fail (type != NULL);
   g_return_if_fail (g_variant_type_is_container (type));
 
-  g_assert (sizeof (struct stack_builder) <= sizeof (GVariantBuilder));
   memset (builder, 0, sizeof (GVariantBuilder));
 
   GVSB(builder)->type = g_variant_type_copy (type);
@@ -3220,6 +3221,10 @@ g_variant_valist_new_leaf (const gchar **str,
     }
 }
 
+/* The code below assumes this */
+G_STATIC_ASSERT (sizeof (gboolean) == sizeof (guint32));
+G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
+
 static void
 g_variant_valist_get_leaf (const gchar **str,
                            GVariant     *value,
@@ -3313,14 +3318,12 @@ g_variant_valist_get_leaf (const gchar **str,
         case 'u':
         case 'h':
         case 'b':
-          g_assert (sizeof (gboolean) == sizeof (guint32));
           *(guint32 *) ptr = 0;
           return;
 
         case 'x':
         case 't':
         case 'd':
-          g_assert (sizeof (gdouble) == sizeof (guint64));
           *(guint64 *) ptr = 0;
           return;
         }
