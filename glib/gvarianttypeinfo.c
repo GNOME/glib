@@ -833,6 +833,11 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
           g_static_rec_mutex_lock (&g_variant_type_info_lock);
           g_hash_table_remove (g_variant_type_info_table,
                                container->type_string);
+          if (g_hash_table_size (g_variant_type_info_table) == 0)
+            {
+              g_hash_table_unref (g_variant_type_info_table);
+              g_variant_type_info_table = NULL;
+            }
           g_static_rec_mutex_unlock (&g_variant_type_info_lock);
 
           g_free (container->type_string);
@@ -851,4 +856,4 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
 
 /* used from the test cases */
 #define assert_no_type_infos() \
-  g_assert_cmpint (g_hash_table_size (g_variant_type_info_table), ==, 0)
+  g_assert (g_variant_type_info_table == NULL)
