@@ -20,6 +20,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gvarianttypeinfo.h"
 
 #include <glib/gtestutils.h>

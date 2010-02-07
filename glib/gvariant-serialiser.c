@@ -21,6 +21,8 @@
  */
 
 /* Prologue {{{1 */
+#include "config.h"
+
 #include "gvariant-serialiser.h"
 
 #include <glib/gtestutils.h>

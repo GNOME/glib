@@ -20,6 +20,8 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
+#include "config.h"
+
 #include "gurifuncs.h"
 
 #include <glib/gstrfuncs.h>
