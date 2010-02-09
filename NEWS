@@ -1,3 +1,29 @@
+Overview of Changes from GLib 2.23.2 to GLib 2.23.3
+===================================================
+
+* GLib now has a facility for locks that consume only one bit of
+  storage inside an integer: g_bit_lock()
+
+* GVariant: The serializer has been merged, with more API to follow
+
+* Bugs fixed
+ 548967 1 bit mutex lock
+ 604967 2.22.3 libasyncns build fails on HP-UX 11.11
+ 608602 G_VALUE_COLLECT_INIT variables shadow those in G_VALUE_COLLECT
+ 608743 Crash in g_hostname_to_ascii visiting certain website in epiphany
+ 599197 array ref and unref functions crash on NULL array.
+ 608159 mem leak in g_io_modules_scan_all_in_directory
+
+* Translation updates
+ Brazilian Portuguese
+ Czech
+ French
+ Norwegian bokmål
+ Slovenian
+ Spanish
+ Thai
+
+
 Overview of Changes from GLib 2.23.1 to GLib 2.23.2
 ===================================================
 
