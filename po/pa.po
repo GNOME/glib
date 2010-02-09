@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-25 12:50-0500\n"
+"POT-Creation-Date: 2010-02-09 09:31-0500\n"
 "PO-Revision-Date: 2009-09-13 08:57+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -91,24 +91,25 @@ msgstr "ਕਿਸੇ ਕਾਰਜ ਨੇ '%2$s' ਲਈ '%1$s' ਨਾਂ ਨਾ�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec ਲਾਈਨ '%s' ਨੂੰ URI '%s' ਨਾਲ ਫੈਲਾਉਣ ਲਈ ਫੇਲ੍ਹ ਹੋਇਆ"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1230
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ਕਰੈਕਟਰ ਸਮੂਹ %s ਤੋਂ %s ਵਿੱਚ ਬਦਲਣ ਇਸ ਵੇਲੇ ਸੰਭਵ ਨਹੀਂ"
 
-#: glib/gconvert.c:441 glib/gconvert.c:519
+#: glib/gconvert.c:441 glib/gconvert.c:519 gio/gcharsetconverter.c:463
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ਤੋੱ '%s' ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1419
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
+#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:964
+#: glib/gutf8.c:1419 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "ਬਦਲਣ ਲਈ ਦਿੱਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀਂ ਹੈ"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1409
-#: glib/giochannel.c:2300
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
+#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ਤਬਦੀਲੀ ਦੌਰਾਨ ਗਲਤੀ  %s"
@@ -187,7 +188,7 @@ msgstr "ਫਾਇਲ '%s' ਤੋਂ ਪੜ੍ਹਨ 'ਚ ਅਸਫ਼ਲ: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' ਫਾਇਲ ਖੋਲ੍ਹ 'ਚ ਗਲਤੀ %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਦੀਆਂ ਵਿਸ਼ੇਸਤਾ ਖੋਲ੍ਹਣ 'ਚ ਫੇਲ੍ਹ: fstat() ਫੇਲ੍ਹ: %s"
@@ -293,33 +294,33 @@ msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ '%s' ਪੜ੍ਹਨ ਲਈ ਫੇ
 msgid "Symbolic links not supported"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ ਮੱਦਦ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ"
 
-#: glib/giochannel.c:1234
+#: glib/giochannel.c:1409
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' ਤੋਂ '%s' ਬਦਲਣ ਵਾਲਾ ਖੋਲ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: %s"
 
-#: glib/giochannel.c:1579
+#: glib/giochannel.c:1754
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string ਵਿੱਚ ਰਾਅ ਪੜ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1884 glib/giochannel.c:1971
+#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
 msgid "Leftover unconverted data in read buffer"
 msgstr "ਕੁਝ ਅਣ-ਬਦਲਿਆ ਡਾਟਾ ਬਫਰ ਵਿੱਚ ਪਿਆ ਹੈ"
 
-#: glib/giochannel.c:1707 glib/giochannel.c:1784
+#: glib/giochannel.c:1882 glib/giochannel.c:1959
 msgid "Channel terminates in a partial character"
 msgstr "ਇਕ ਅੱਧ ਪਚਦੇ ਅੱਖਰ ਉੱਤੇ ਚੈਨਲ ਬੰਦ ਹੋ ਗਿਆ"
 
-#: glib/giochannel.c:1770
+#: glib/giochannel.c:1945
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end ਵਿੱਚ ਰਾਅ ਪੜ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: glib/gmappedfile.c:123
+#: glib/gmappedfile.c:150
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ਫਾਇਲ '%s': ਖੋਲ੍ਹਣ ਵਿੱਚ ਫੇਲ੍ਹ: fdopen() ਫੇਲ੍ਹ: %s"
 
-#: glib/gmappedfile.c:201
+#: glib/gmappedfile.c:229
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਮਿਲਾਉਣ ਵਿੱਚ ਫੇਲ੍ਹ: mmap() ਫੇਲ੍ਹ ਹੋਇਆ: %s"
@@ -537,7 +538,7 @@ msgstr "ਬੈਕ-ਟਰੈਕਿੰਗ ਲਿਸਟ ਆ ਗਈ"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ਪੈਟਰਨ ਵਿੱਚ ਆਈਟਮਾਂ ਹਨ, ਜੋ ਕਿ ਅਧੂਰੀ ਮੈਂਚਿੰਗ ਲਈ ਸਹਾਇਕ ਨਹੀਂ।"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2096
+#: glib/gregex.c:154 gio/glocalfile.c:2101
 msgid "internal error"
 msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ"
 
@@ -813,25 +814,25 @@ msgstr "ਅਣਜਾਣ ਇਸਕੇਪ ਕਰਮ"
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "ਬਦਲਣ ਟੈਕਸਟ \"%s\" ਨੂੰ ਪਾਰਸ ਕਰਨ ਦੌਰਾਨ ਅੱਖਰ %lu ਉੱਤੇ ਗਲਤੀ: %s"
 
-#: glib/gshell.c:70
+#: glib/gshell.c:92
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "ਹਵਾਲਾ ਟੈਕਸਟ ਇਕ ਹਵਾਲਾ ਮਾਰਕ ਨਾਲ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਹੈ"
 
-#: glib/gshell.c:160
+#: glib/gshell.c:182
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "ਕਮਾਂਡ ਲਾਈਨ ਜਾਂ ਸੈੱਲ ਟੈਕਸਟ ਵਿੱਚ ਬੇਮੇਲ ਹਵਾਲਾ ਮਾਰਕ ਹੈ"
 
-#: glib/gshell.c:538
+#: glib/gshell.c:560
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "ਇੱਕ '\\' ਅੱਖਰ ਮਗਰੋਂ ਟੈਕਸਟ ਖਤਮ ਹੋਣੇ ਹਨ (ਟੈਕਸਟ ਸੀ '%s')"
 
-#: glib/gshell.c:545
+#: glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "%c ਲਈ ਹਵਾਲਾ ਲੱਭਣ ਤੋਂ ਪਹਿਲਾਂ ਟੈਕਸਟ ਖਤਮ ਹੈ। (ਟੈਕਸਟ ਸੀ '%s')"
 
-#: glib/gshell.c:557
+#: glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ਟੈਕਸਟ ਖਾਲੀ ਸੀ (ਜਾਂ ਸਾਫ ਥਾਂ ਹੀ ਹੈ)"
 
@@ -1008,72 +1009,72 @@ msgstr "%s ਲਈ ਆਰਗੂਮੈਂਟ ਗੁੰਮ ਹੈ"
 msgid "Unknown option %s"
 msgstr "ਅਣਜਾਣ ਚੋਣ %s"
 
-#: glib/gkeyfile.c:362
+#: glib/gkeyfile.c:361
 msgid "Valid key file could not be found in search dirs"
 msgstr "ਖੋਜ ਡਾਇਰੈਕਟਰੀਆਂ ਵਿੱਚ ਠੀਕ ਕੁੰਜੀ ਫਾਇਲ ਨਹੀਂ ਖੋਜੀ ਜਾ ਸਕੀ"
 
-#: glib/gkeyfile.c:397
+#: glib/gkeyfile.c:396
 msgid "Not a regular file"
 msgstr "ਇੱਕ ਰੈਗੂਲਰ ਫਾਇਲ ਨਹੀਂ"
 
-#: glib/gkeyfile.c:405
+#: glib/gkeyfile.c:404
 msgid "File is empty"
 msgstr "ਫਾਇਲ ਖਾਲੀ ਹੈ"
 
-#: glib/gkeyfile.c:764
+#: glib/gkeyfile.c:763
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਲਾਈਨ '%s' ਰੱਖਦੀ ਹੈ, ਜੋ ਕਿ ਕੁੰਜੀ-ਮੁੱਲ ਜੋੜਾ, ਗਰੁੱਪ ਜਾਂ ਟਿੱਪਣੀ ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:824
+#: glib/gkeyfile.c:823
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "ਗਲਤ ਗਰੁੱਪ ਨਾਂ: %s"
 
-#: glib/gkeyfile.c:846
+#: glib/gkeyfile.c:845
 msgid "Key file does not start with a group"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਗਰੁੱਪ ਨਾਲ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋ ਸਕਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:872
+#: glib/gkeyfile.c:871
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "ਗਲਤ ਕੁੰਜੀ ਨਾਂ: %s"
 
-#: glib/gkeyfile.c:899
+#: glib/gkeyfile.c:898
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਨਾ-ਸਹਾਇਕ ਇੰਕੋਡਿੰਗ '%s' ਰੱਖਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:1115 glib/gkeyfile.c:1277 glib/gkeyfile.c:2506
-#: glib/gkeyfile.c:2572 glib/gkeyfile.c:2707 glib/gkeyfile.c:2840
-#: glib/gkeyfile.c:2993 glib/gkeyfile.c:3180 glib/gkeyfile.c:3241
+#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
+#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਦਾ ਗਰੁੱਪ '%s' ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1289
+#: glib/gkeyfile.c:1288
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ '%s' ਕੁੰਜੀ ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1396 glib/gkeyfile.c:1511
+#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਦਾ ਮੁੱਲ '%s' ਹੈ, ਜੋ ਕਿ UTF-8 ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1416 glib/gkeyfile.c:1910
+#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ '%s' ਕੁੰਜੀ ਹੈ, ਜਿਸ ਤੇ ਕਾਰਵਾਈ ਨਹੀਂ ਹੋ ਸਕਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:1531
+#: glib/gkeyfile.c:1530
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ '%s' ਕੁੰਜੀ ਹੈ, ਜਿਸ ਵਿੱਚ ਮੁੱਲ ਹੈ, ਜਿਸ ਉੱਤੇ ਕਾਰਵਾਈ ਨਹੀਂ ਹੋ ਸਕਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:2125 glib/gkeyfile.c:2337
+#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1081,36 +1082,36 @@ msgid ""
 msgstr ""
 "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਗਰੁੱਪ '%s' ਵਿੱਚ ਹੈ, ਜਿਸ ਦੇ ਮੁੱਲ ਨੂੰ ਇੰਟਰਪਰੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2722 glib/gkeyfile.c:3252
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਕੁੰਜੀ '%s' ਗਰੁੱਪ '%s' ਵਿੱਚ ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:3486
+#: glib/gkeyfile.c:3485
 msgid "Key file contains escape character at end of line"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਲਾਈਨ ਦੇ ਅੰਤ ਵਿੱਚ ਇਸਕੇਪ ਅੱਖਰ ਹੈ"
 
-#: glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3507
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਗਲਤ ਇਸਕੇਪ ਕ੍ਰਮ '%s' ਹੈ"
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਇੱਕ ਅੰਕ ਦੇ ਤੌਰ 'ਤੇ ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ ਹੈ।"
 
-#: glib/gkeyfile.c:3664
+#: glib/gkeyfile.c:3663
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ਪੂਰਨ ਅੰਕ '%s' ਰੇਜ਼ ਤੋਂ ਬਾਹਰ ਹੈ"
 
-#: glib/gkeyfile.c:3697
+#: glib/gkeyfile.c:3696
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਇੱਕ ਦਸ਼ਮਲਵ ਅੰਕ ਦੇ ਤੌਰ 'ਤੇ ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ ਹੈ।"
 
-#: glib/gkeyfile.c:3721
+#: glib/gkeyfile.c:3720
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੂਲੀਅਨ ਵਾਂਗ ਇੰਟਰਪਰੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
@@ -1127,10 +1128,29 @@ msgstr "%s ਨੂੰ ਬਹੁਤ ਵੱਧ ਗਿਣਤੀ ਪਾਸ ਕੀਤ�
 msgid "Stream is already closed"
 msgstr "ਸਟਰੀਮ ਪਹਿਲਾਂ ਹੀ ਬੰਦ ਹੈ"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2089 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2094 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "ਓਪਰੇਸ਼ਨ ਰੱਦ ਕੀਤਾ ਗਿਆ"
+
+#: gio/gcharsetconverter.c:264
+#, fuzzy
+msgid "Invalid object, not initialized"
+msgstr "ਗਲਤ ਸਾਕਟ, ਸ਼ੁਰੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
+
+#: gio/gcharsetconverter.c:285 gio/gcharsetconverter.c:313
+#, fuzzy
+msgid "Incomplete multibyte sequence in input"
+msgstr "ਬਦਲਣ ਲਈ ਦਿੱਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀਂ ਹੈ"
+
+#: gio/gcharsetconverter.c:319 gio/gcharsetconverter.c:328
+#, fuzzy
+msgid "Not enough space in destination"
+msgstr "ਸਾਕਟ ਐਡਰੈੱਸ ਲਈ ਲੋੜੀਦੀ ਥਾਂ ਨਹੀਂ"
+
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+msgid "Cancellable initialization not supported"
+msgstr "ਰੱਦਕਰਨਯੋਗ ਸ਼ੁਰੂ ਲਈ ਸਹਾਇਕ ਨਹੀਂ"
 
 #: gio/gcontenttype.c:180
 msgid "Unknown type"
@@ -1248,12 +1268,12 @@ msgstr "ਓਪਰੇਸ਼ਨ ਸਹਾਇਕ ਨਹੀਂ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1349 gio/glocalfile.c:1060 gio/glocalfile.c:1071
-#: gio/glocalfile.c:1084
+#: gio/gfile.c:1349 gio/glocalfile.c:1065 gio/glocalfile.c:1076
+#: gio/glocalfile.c:1089
 msgid "Containing mount does not exist"
 msgstr "ਰੱਖਣ ਵਾਲਾ ਮਾਊਂਟ ਮੌਜੂਦ ਨਹੀਂ"
 
-#: gio/gfile.c:2401 gio/glocalfile.c:2245
+#: gio/gfile.c:2401 gio/glocalfile.c:2250
 msgid "Can't copy over directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਕਾਪੀ ਨਹੀਂ ਹੋ ਸਕਦਾ"
 
@@ -1261,7 +1281,7 @@ msgstr "ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਕਾਪੀ ਨਹੀਂ ਹ�
 msgid "Can't copy directory over directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਕਾਪੀ ਨਹੀਂ ਹੋ ਸਕਦੀ"
 
-#: gio/gfile.c:2469 gio/glocalfile.c:2254
+#: gio/gfile.c:2469 gio/glocalfile.c:2259
 msgid "Target file exists"
 msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਮੌਜੂਦ ਹੈ"
 
@@ -1396,208 +1416,208 @@ msgstr "ਗ਼ੈਰ-ਸਹਾਇਕ ਸਾਕਟ ਐਡਰੈੱਸ"
 msgid "Unable to find default local directory monitor type"
 msgstr "ਡਿਫਾਲਟ ਲੋਕਲ ਡਾਇਰੈਕਟਰੀ ਮਾਨੀਟਰ ਟਾਈਪ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:594 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:599 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ਗਲਤ ਫਾਇਲ ਨਾਂ %s"
 
-#: gio/glocalfile.c:968
+#: gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਜਾਣਕਾਰੀ ਲੈਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1104
+#: gio/glocalfile.c:1109
 msgid "Can't rename root directory"
 msgstr "ਰੂਟ ਡਾਇਰੈਕਟਰੀ ਦਾ ਨਾਂ ਨਹੀਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ"
 
-#: gio/glocalfile.c:1124 gio/glocalfile.c:1150
+#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ਫਾਇਲ ਨਾਂ ਬਦਲਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1133
+#: gio/glocalfile.c:1138
 msgid "Can't rename file, filename already exist"
 msgstr "ਫਾਇਲ ਦਾ ਨਾਂ ਨਹੀਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ, ਫਾਇਲ ਨਾਂ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ"
 
-#: gio/glocalfile.c:1146 gio/glocalfile.c:2118 gio/glocalfile.c:2147
-#: gio/glocalfile.c:2307 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1151 gio/glocalfile.c:2123 gio/glocalfile.c:2152
+#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "ਗਲਤ ਫਾਇਲ ਨਾਂ"
 
-#: gio/glocalfile.c:1302
+#: gio/glocalfile.c:1307
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ਫਾਇਲ ਖੋਲ੍ਹਣ ਦੌਰਾਨ ਗਲਤੀ: %s  "
 
-#: gio/glocalfile.c:1312
+#: gio/glocalfile.c:1317
 msgid "Can't open directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ"
 
-#: gio/glocalfile.c:1437
+#: gio/glocalfile.c:1442
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1807
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ਫਾਇਲ ਰੱਦੀ 'ਚ ਭੇਜਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1825
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ਰੱਦੀ ਡਾਇਰੈਕਟਰੀ %s ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ: %s"
 
-#: gio/glocalfile.c:1846
+#: gio/glocalfile.c:1851
 msgid "Unable to find toplevel directory for trash"
 msgstr "ਰੱਦੀ ਲਈ ਟਾਪ-ਲੈਵਲ ਡਾਇਰੈਕਟਰੀ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:1925 gio/glocalfile.c:1945
+#: gio/glocalfile.c:1930 gio/glocalfile.c:1950
 msgid "Unable to find or create trash directory"
 msgstr "ਰੱਦੀ ਡਾਇਰੈਕਟਰੀ ਲੱਭਣ ਜਾਂ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:1979
+#: gio/glocalfile.c:1984
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ਰੱਦੀ 'ਚ ਭੇਜੀ ਫਾਇਲ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ: %s"
 
-#: gio/glocalfile.c:2008 gio/glocalfile.c:2013 gio/glocalfile.c:2088
-#: gio/glocalfile.c:2095
+#: gio/glocalfile.c:2013 gio/glocalfile.c:2018 gio/glocalfile.c:2093
+#: gio/glocalfile.c:2100
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ਫਾਇਲ ਰੱਦੀ 'ਚ ਭੇਜਣ ਲਈ ਅਸਮਰੱਥ: %s"
 
-#: gio/glocalfile.c:2122
+#: gio/glocalfile.c:2127
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਬਣਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:2151
+#: gio/glocalfile.c:2156
 #, fuzzy, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ '%s' ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ: %s"
 
-#: gio/glocalfile.c:2155
+#: gio/glocalfile.c:2160
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "ਸਿਬੋਲਿਕ ਲਿੰਕ ਬਣਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:2217 gio/glocalfile.c:2311
+#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ਫਾਇਲ ਭੇਜਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:2240
+#: gio/glocalfile.c:2245
 msgid "Can't move directory over directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਨੂੰ ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਭੇਜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: gio/glocalfile.c:2267 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "ਬੈਕਅੱਪ ਫਾਇਲ ਬਣਾਉਣ ਲਈ ਫੇਲ੍ਹ"
 
-#: gio/glocalfile.c:2286
+#: gio/glocalfile.c:2291
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:2300
+#: gio/glocalfile.c:2305
 msgid "Move between mounts not supported"
 msgstr "ਮਾਊਂਟ ਵਿੱਚ ਭੇਜਣਾ ਸਹਿਯੋਗੀ ਨਹੀਂ"
 
-#: gio/glocalfileinfo.c:721
+#: gio/glocalfileinfo.c:726
 msgid "Attribute value must be non-NULL"
 msgstr "ਗੁਣ ਮੁੱਲ ਗ਼ੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:728
+#: gio/glocalfileinfo.c:733
 msgid "Invalid attribute type (string expected)"
 msgstr "ਗਲਤ ਗੁਣ ਟਾਈਪ (ਲਾਈਨ ਦੀ ਲੋੜ ਸੀ)"
 
-#: gio/glocalfileinfo.c:735
+#: gio/glocalfileinfo.c:740
 msgid "Invalid extended attribute name"
 msgstr "ਗਲਤ ਐਕਸਟੈੱਡ ਗੁਣ ਨਾਂ"
 
-#: gio/glocalfileinfo.c:775
+#: gio/glocalfileinfo.c:780
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "ਐਕਸਟੈੱਡ ਗੁਣ '%s' ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' ਫਾਇਲ ਦੇਣ'ਚ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1555
+#: gio/glocalfileinfo.c:1557
 msgid " (invalid encoding)"
 msgstr "(ਗਲਤ ਇੰਕੋਡਿੰਗ)"
 
-#: gio/glocalfileinfo.c:1753
+#: gio/glocalfileinfo.c:1755
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ਫਾਇਲ ਡਿਸਕ੍ਰਿਪਟਰ ਸਟੇਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (uint32 ਲੋੜੀਦਾ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1816
+#: gio/glocalfileinfo.c:1818
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (uint64 ਲੋੜੀਦਾ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
+#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ਗਲਤ ਐਟਰੀਬਿਊਟ ਟਾਈਪ (ਬਾਈਟ ਲਾਈਨ ਲੋੜੀਦੀ ਸੀ)"
 
-#: gio/glocalfileinfo.c:1889
+#: gio/glocalfileinfo.c:1891
 msgid "Cannot set permissions on symlinks"
 msgstr "ਸਿਮਲਿੰਕਲਈ ਅਧਿਕਾਰ ਨਹੀਂ ਸੈੱਟ ਕੀਤੇ ਜਾ ਸਕਦੇ"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1907
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ਅਧਿਕਾਰ ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1956
+#: gio/glocalfileinfo.c:1958
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ਓਪਨ ਸੈਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1979
+#: gio/glocalfileinfo.c:1981
 msgid "symlink must be non-NULL"
 msgstr "ਸਿਮਲਿੰਕ ਗ਼ੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
-#: gio/glocalfileinfo.c:2019
+#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
+#: gio/glocalfileinfo.c:2021
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink ਸੈਟਿੰਗ ਗਲਤੀ: %s "
 
-#: gio/glocalfileinfo.c:1998
+#: gio/glocalfileinfo.c:2000
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink ਸੈਟਿੰਗ ਗਲਤੀ: ਫਾਇਲ ਇੱਕ symlink ਨਹੀਂ ਹੈ"
 
-#: gio/glocalfileinfo.c:2124
+#: gio/glocalfileinfo.c:2126
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "ਸੋਧਣ ਜਾਂ ਵਰਤਣ ਸਮਾਂ ਸੈੱਟ ਕਰਨ ਲਈ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ਪਰਸੰਗ ਗੈਰ-ਨਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: gio/glocalfileinfo.c:2162
+#: gio/glocalfileinfo.c:2164
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ਪਰਸੰਗ ਸੈਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:2169
+#: gio/glocalfileinfo.c:2171
 msgid "SELinux is not enabled on this system"
 msgstr "ਇਸ ਸਿਸਟਮ ਉੱਤੇ SELinux ਚਾਲੂ ਨਹੀਂ ਹੈ"
 
-#: gio/glocalfileinfo.c:2261
+#: gio/glocalfileinfo.c:2263
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ਗੁਣ %s ਸੈਟਿੰਗ ਸਹਾਇਕ ਨਹੀਂ"
@@ -1674,7 +1694,7 @@ msgstr "ਫਾਇਲ ਬਾਹਰੋਂ ਸੋਧੀ ਗਈ ਸੀ"
 msgid "Error removing old file: %s"
 msgstr "ਪੁਰਾਣੀ ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:679
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:714
 msgid "Invalid GSeekType supplied"
 msgstr "ਗਲਤ GSeekType ਦਿੱਤੀ ਗਈ"
 
@@ -1686,25 +1706,25 @@ msgstr "ਸੀਕ ਮੰਗ ਗਲਤ ਹੈ"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream ਛੋਟੀ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ ਹੈ"
 
-#: gio/gmemoryoutputstream.c:429
+#: gio/gmemoryoutputstream.c:464
 msgid "Memory output stream not resizable"
 msgstr "ਮੈਮੋਰੀ ਆਉਟਪੁੱਟ ਸਟਰੀਮ ਮੁੜ-ਅਕਾਰ ਯੋਗ ਨਹੀਂ"
 
-#: gio/gmemoryoutputstream.c:445
+#: gio/gmemoryoutputstream.c:480
 msgid "Failed to resize memory output stream"
 msgstr "ਮੈਮੋਰੀ ਆਉਟਪੁੱਟ ਸਟਰੀਮ ਮੁੜ-ਸਾਈਜ਼ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ"
 
-#: gio/gmemoryoutputstream.c:533
+#: gio/gmemoryoutputstream.c:568
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:689
+#: gio/gmemoryoutputstream.c:724
 msgid "Requested seek before the beginning of the stream"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:698
+#: gio/gmemoryoutputstream.c:733
 msgid "Requested seek beyond the end of the stream"
 msgstr ""
 
@@ -1826,10 +1846,6 @@ msgstr "ਸਾਕਟ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ: %s"
 #: gio/gsocket.c:439
 msgid "Unknown protocol was specified"
 msgstr "ਅਣਜਾਣ ਪਰੋਟੋਕਾਲ ਦਿੱਤਾ ਗਿਆ"
-
-#: gio/gsocket.c:758
-msgid "Cancellable initialization not supported"
-msgstr "ਰੱਦਕਰਨਯੋਗ ਸ਼ੁਰੂ ਲਈ ਸਹਾਇਕ ਨਹੀਂ"
 
 #: gio/gsocket.c:1112
 #, c-format
@@ -1968,6 +1984,11 @@ msgstr "unix ਉੱਤੇ ਲਿਖਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "ਯੂਨੈਕਸ ਡੋਮੇਨ ਸਾਕਟ ਐਡਰੈੱਸ ਇਹ ਸਿਸਟਮ ਵਲੋਂ ਸਹਾਇਕ ਨਹੀਂ ਹੈ"
 
+#: gio/gutf8inputstream.c:322
+#, fuzzy, c-format
+msgid "Invalid UTF-8 sequence in input"
+msgstr "ਬਦਲਾਉ ਇੰਪੁੱਟ ਵਿੱਚ ਤਰਤੀਬ ਜਾਇਜ਼ ਨਹੀਂ ਹੈ"
+
 #: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "ਵਾਲੀਅਮ ਹਾਲੇ ਬਣਾਇਆ ਨਹੀਂ ਹੈ"
@@ -1999,6 +2020,25 @@ msgstr "ਸਬੰਧ ਬਦਲਣਾ win32 ਲਈ ਸਹਾਇਕ ਨਹੀਂ �
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "ਸਬੰਧ ਬਣਾਉਣਾ win32 ਲਈ ਸਹਾਇਕ ਨਹੀਂ ਹੈ"
+
+#: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
+#, fuzzy
+msgid "Not enough memory"
+msgstr "ਮੈਮੋਰੀ ਖਤਮ ਹੋਈ"
+
+#: gio/gzlibcompressor.c:286 gio/gzlibdecompressor.c:257
+#, fuzzy, c-format
+msgid "Internal error: %s"
+msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ"
+
+#: gio/gzlibcompressor.c:299 gio/gzlibdecompressor.c:271
+msgid "Need more input"
+msgstr ""
+
+#: gio/gzlibdecompressor.c:243
+#, fuzzy
+msgid "Invalid compressed data"
+msgstr "ਗਲਤ ਹੋਸਟ-ਨਾਂ"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "ਵੱਧੋ-ਵੱਧ ਡਾਟਾ ਅਰੇ ਲਿਮਟ ਆ ਗਈ"

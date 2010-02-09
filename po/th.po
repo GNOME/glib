@@ -7,9 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2010-02-06 08:42+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-09 09:31-0500\n"
 "PO-Revision-Date: 2010-02-08 09:55+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -185,7 +184,7 @@ msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำ
 msgid "Failed to open file '%s': %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:140
+#: glib/gfileutils.c:716 glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
@@ -244,6 +243,12 @@ msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควร�
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "แม่แบบ '%s' ไม่มี XXXXXX"
+
+#: glib/gfileutils.c:1774
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u ไบต์"
 
 #: glib/gfileutils.c:1782
 #, c-format
@@ -305,12 +310,12 @@ msgstr "แชนเนลจบด้วยข้อมูลไม่เต็
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:122
+#: glib/gmappedfile.c:150
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: open() ล้มเหลว: %s"
 
-#: glib/gmappedfile.c:200
+#: glib/gmappedfile.c:229
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "แม็ปแฟ้ม '%s' ไม่สำเร็จ: mmap() ล้มเหลว: %s"
@@ -2012,10 +2017,6 @@ msgstr "ต้องการข้อมูลเข้าเพิ่มเต
 #: gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "ข้อมูลบีบอัดผิดรูปแบบ"
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "%u ไบต์"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "มาถึงขีดจำกัดสูงสุดของแอร์เรย์ข้อมูลแล้ว"
