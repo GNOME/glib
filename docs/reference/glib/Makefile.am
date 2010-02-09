@@ -42,6 +42,8 @@ IGNORE_HFILES=			\
 	galias.h		\
 	gmirroringtable.h	\
 	gscripttable.h		\
+	gvariant-serialiser.h	\
+	gvarianttypeinfo.h	\
 	glib-mirroring-tab	\
 	gnulib			\
 	pcre			\
