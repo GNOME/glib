@@ -11,6 +11,12 @@ libgthread = $(top_builddir)/gthread/libgthread-2.0.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
 libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
+
+# libtool dependency tracking seems broken.  this is currently
+# required to get the tests to dynamic link against the in-tree
+# libglib instead of the system one
+libgobject += $(libglib)
+
 ########################################################################
 
 noinst_LTLIBRARIES = libtestgobject.la
@@ -45,7 +51,7 @@ CLEANFILES = stamp-testmarshal.h
 
 ########################################################################
 
-LDADD = libtestgobject.la $(libgobject) 
+LDADD = libtestgobject.la $(libgobject)
 
 test_programs =					\
 	deftype					\
