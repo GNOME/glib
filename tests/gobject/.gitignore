@@ -8,5 +8,7 @@ ifaceinit
 ifaceproperties
 override
 paramspec-test
+performance
+performance-threaded
 references
 singleton
