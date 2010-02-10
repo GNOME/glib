@@ -2776,6 +2776,24 @@ g_variant_type_value
 </SECTION>
 
 <SECTION>
+<TITLE>GVariant</TITLE>
+<FILE>gvariant</FILE>
+GVariant
+g_variant_unref
+g_variant_ref
+g_variant_ref_sink
+
+<SUBSECTION>
+g_variant_n_children
+g_variant_get_child_value
+
+<SUBSECTION>
+g_variant_get_size
+g_variant_get_data
+g_variant_store
+</SECTION>
+
+<SECTION>
 <FILE>ghostutils</FILE>
 <TITLE>Hostname Utilities</TITLE>
 g_hostname_to_ascii

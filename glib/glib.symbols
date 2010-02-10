@@ -1688,6 +1688,19 @@ g_variant_type_checked_
 #endif
 #endif
 
+#if IN_HEADER(__G_VARIANT_H__)
+#if IN_FILE(__G_VARIANT_CORE_C__)
+g_variant_unref
+g_variant_ref
+g_variant_ref_sink
+g_variant_n_children
+g_variant_get_child_value
+g_variant_get_size
+g_variant_get_data
+g_variant_store
+#endif
+#endif
+
 #if IN_HEADER(__G_WIN32_H__)
 #if IN_FILE(__G_WIN32_H__)
 #ifdef G_OS_WIN32

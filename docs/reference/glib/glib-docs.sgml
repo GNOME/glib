@@ -120,6 +120,7 @@ synchronize their operation.
       <xi:include href="xml/caches.xml" />
       <xi:include href="xml/allocators.xml" />
       <xi:include href="xml/gvarianttype.xml"/>
+      <xi:include href="xml/gvariant.xml"/>
   </chapter>
 
   <chapter id="tools">

@@ -347,6 +347,7 @@ G_TYPE_REGEX
 G_TYPE_ARRAY
 G_TYPE_BYTE_ARRAY
 G_TYPE_PTR_ARRAY
+G_TYPE_VARIANT
 GStrv
 
 <SUBSECTION Standard>
@@ -361,6 +362,7 @@ g_regex_get_type
 g_array_get_type
 g_byte_array_get_type
 g_ptr_array_get_type
+g_variant_get_gtype
 </SECTION>
 
 <SECTION>

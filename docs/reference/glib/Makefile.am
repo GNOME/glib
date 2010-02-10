@@ -42,12 +42,13 @@ IGNORE_HFILES=			\
 	galias.h		\
 	gmirroringtable.h	\
 	gscripttable.h		\
-	gvariant-serialiser.h	\
-	gvarianttypeinfo.h	\
 	glib-mirroring-tab	\
 	gnulib			\
 	pcre			\
-	update-pcre
+	update-pcre		\
+	gvariant-serialiser.h	\
+	gvariant-core.h		\
+	gvarianttypeinfo.h
 
 # Images to copy into HTML directory
 HTML_IMAGES =  				\

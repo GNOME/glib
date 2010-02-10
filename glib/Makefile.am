@@ -174,6 +174,8 @@ libglib_2_0_la_SOURCES = 	\
 	gunicodeprivate.h	\
 	gurifuncs.c 		\
 	gutils.c		\
+	gvariant-core.c		\
+	gvariant-private.h	\
 	gvariant-serialiser.h	\
 	gvariant-serialiser.c	\
 	gvarianttypeinfo.h	\
@@ -182,6 +184,7 @@ libglib_2_0_la_SOURCES = 	\
 	gdebug.h		\
 	gprintf.c		\
 	gprintfint.h
+
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
@@ -258,6 +261,7 @@ glibsubinclude_HEADERS =   \
 	gurifuncs.h 		\
 	gutils.h	\
 	gvarianttype.h	\
+	gvariant.h	\
 	gwin32.h	\
 	gprintf.h
 
