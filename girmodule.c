@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "girmodule.h"
 #include "girnode.h"
@@ -73,6 +74,39 @@ g_ir_module_free (GIrModule *module)
   g_hash_table_destroy (module->disguised_structures);
 
   g_free (module);
+}
+
+/**
+ * g_ir_module_fatal:
+ * @module: Current module
+ * @line: Origin line number, or 0 if unknown
+ * @msg: printf-format string
+ * @args: Remaining arguments
+ *
+ * Report a fatal error, then exit.
+ */
+void
+g_ir_module_fatal (GIrModule  *module,
+                   guint       line,
+                   const char *msg,
+                   ...)
+{
+  char *formatted;
+
+  va_list args;
+  
+  va_start (args, msg);
+  
+  formatted = g_strdup_vprintf (msg, args);
+  
+  if (line)
+    g_printerr ("%s-%s.gir:%d: error: %s\n", module->name, module->version, line, formatted);
+  else
+    g_printerr ("%s-%s.gir: error: %s\n", module->name, module->version, formatted);
+    
+  exit (1);
+  
+  va_end (args);
 }
 
 static void

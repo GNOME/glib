@@ -156,7 +156,7 @@ get_interface_size_alignment (GIrNodeType *type,
 
   if (!g_ir_find_node (module, modules, type->interface, &iface, &iface_module))
     {
-      g_warning ("Can't resolve type '%s' for %s", type->interface, who);
+      g_ir_module_fatal (module, 0, "Can't resolve type '%s' for %s", type->interface, who);
       *size = -1;
       *alignment = -1;
       return FALSE;

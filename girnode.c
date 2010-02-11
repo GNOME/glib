@@ -1090,7 +1090,7 @@ find_entry_node (GIrModule   *module,
       goto out;
     }
 
-  g_warning ("Entry '%s' not found", name);
+  g_ir_module_fatal (module, 0, "Type reference '%s' not found", name);
 
  out:
 

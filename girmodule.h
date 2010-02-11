@@ -61,6 +61,8 @@ void       g_ir_module_add_include_module (GIrModule  *module,
 GTypelib * g_ir_module_build_typelib  (GIrModule  *module,
 				       GList       *modules);
 
+void       g_ir_module_fatal (GIrModule  *module, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+
 void _g_irnode_init_stats (void);
 void _g_irnode_dump_stats (void);
 
