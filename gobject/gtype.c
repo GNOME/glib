@@ -230,7 +230,7 @@ struct _TypeNode
   GTypePlugin *plugin;
   guint        n_children; /* writable with lock */
   guint        n_supers : 8;
-  guint        _prot_n_prerequisites : 9;
+  guint        n_prerequisites : 9;
   guint        is_classed : 1;
   guint        is_instantiatable : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
@@ -240,8 +240,8 @@ struct _TypeNode
   GData       *global_gdata;
   union {
     GAtomicArray iface_entries;		/* for !iface types */
-    GType       *prerequisistes;
   } _prot;
+  GType       *prerequisites;
   GType        supers[1]; /* flexible array */
 };
 
@@ -259,8 +259,8 @@ struct _TypeNode
 #define	NODE_IS_IFACE(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_INTERFACE)
 #define	CLASSED_NODE_IFACES_ENTRIES(node)	(&(node)->_prot.iface_entries)
 #define	CLASSED_NODE_IFACES_ENTRIES_LOCKED(node)(G_ATOMIC_ARRAY_GET_LOCKED(CLASSED_NODE_IFACES_ENTRIES((node)), IFaceEntries))
-#define	IFACE_NODE_N_PREREQUISITES(node)	((node)->_prot_n_prerequisites)
-#define	IFACE_NODE_PREREQUISITES(node)		((node)->_prot.prerequisistes)
+#define	IFACE_NODE_N_PREREQUISITES(node)	((node)->n_prerequisites)
+#define	IFACE_NODE_PREREQUISITES(node)		((node)->prerequisites)
 #define	iface_node_get_holders_L(node)		((IFaceHolder*) type_get_qdata_L ((node), static_quark_iface_holder))
 #define	iface_node_set_holders_W(node, holders)	(type_set_qdata_W ((node), static_quark_iface_holder, (holders)))
 #define	iface_node_get_dependants_array_L(n)	((GType*) type_get_qdata_L ((n), static_quark_dependants_array))
