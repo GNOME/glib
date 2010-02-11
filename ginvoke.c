@@ -425,7 +425,6 @@ gi_cclosure_marshal_generic (GClosure *closure,
   if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
     return;
 
-  g_return_if_fail (rvalue != NULL);
   ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
 
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
