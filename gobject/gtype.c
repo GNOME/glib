@@ -240,6 +240,7 @@ struct _TypeNode
   GData       *global_gdata;
   union {
     GAtomicArray iface_entries;		/* for !iface types */
+    GAtomicArray offsets;
   } _prot;
   GType       *prerequisites;
   GType        supers[1]; /* flexible array */
@@ -316,7 +317,6 @@ struct _IFaceData
   GClassFinalizeFunc dflt_finalize;
   gconstpointer      dflt_data;
   gpointer           dflt_vtable;
-  GAtomicArray       offsets;
 };
 
 struct _ClassData
@@ -555,7 +555,7 @@ lookup_iface_entry_I (volatile IFaceEntries *entries,
     return NULL;
 
   G_ATOMIC_ARRAY_DO_TRANSACTION
-    (&iface_node->data->iface.offsets, guint8,
+    (&iface_node->_prot.offsets, guint8,
 
      entry = NULL;
      offsets = transaction_data;
@@ -1242,7 +1242,7 @@ iface_node_has_available_offset_L (TypeNode *iface_node,
 {
   guint8 *offsets;
 
-  offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->data->iface.offsets, guint8);
+  offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->_prot.offsets, guint8);
   if (offsets == NULL)
     return TRUE;
 
@@ -1293,7 +1293,7 @@ iface_node_set_offset_L (TypeNode *iface_node,
   int new_size, old_size;
   int i;
 
-  old_offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->data->iface.offsets, guint8);
+  old_offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->_prot.offsets, guint8);
   if (old_offsets == NULL)
     old_size = 0;
   else
@@ -1305,7 +1305,7 @@ iface_node_set_offset_L (TypeNode *iface_node,
     }
   new_size = MAX (old_size, offset + 1);
 
-  offsets = _g_atomic_array_copy (&iface_node->data->iface.offsets,
+  offsets = _g_atomic_array_copy (&iface_node->_prot.offsets,
 				  0, new_size - old_size);
 
   /* Mark new area as unused */
@@ -1314,7 +1314,7 @@ iface_node_set_offset_L (TypeNode *iface_node,
 
   offsets[offset] = index + 1;
 
-  _g_atomic_array_update (&iface_node->data->iface.offsets, offsets);
+  _g_atomic_array_update (&iface_node->_prot.offsets, offsets);
 }
 
 static void
