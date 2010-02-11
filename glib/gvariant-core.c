@@ -595,6 +595,8 @@ g_variant_unref (GVariant *value)
         g_critical ("attempting to free a locked GVariant instance.  "
                     "This should never happen.");
 
+      value->state |= STATE_LOCKED;
+
       g_variant_type_info_unref (value->type_info);
 
       if (value->state & STATE_SERIALISED)
