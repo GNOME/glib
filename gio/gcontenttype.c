@@ -327,6 +327,9 @@ g_content_type_guess (const char   *filename,
 
   type = NULL;
 
+  if (result_uncertain)
+    *result_uncertain = FALSE;
+
   if (filename)
     {
       basename = g_path_get_basename (filename);
