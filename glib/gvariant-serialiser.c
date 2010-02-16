@@ -1114,7 +1114,6 @@ gvs_variant_get_child (GVariantSerialised value,
   /* NOTE: not O(1) and impossible for it to be... */
   if (value.size)
     {
-
       /* find '\0' character */
       for (child.size = value.size - 1; child.size; child.size--)
         if (value.data[child.size] == '\0')
