@@ -1622,9 +1622,11 @@ g_type_interface_prerequisites (GType  interface_type,
 	{
 	  GType prerequisite = IFACE_NODE_PREREQUISITES (iface)[i];
 	  TypeNode *node = lookup_type_node_I (prerequisite);
-	  if (node->is_instantiatable &&
-	      (!inode || type_node_is_a_L (node, inode)))
-	    inode = node;
+	  if (node->is_instantiatable)
+            {
+              if (!inode || type_node_is_a_L (node, inode))
+	        inode = node;
+            }
 	  else
 	    types[n++] = NODE_TYPE (node);
 	}
