@@ -301,12 +301,18 @@ typedef enum {
  * GFileMonitorFlags:
  * @G_FILE_MONITOR_NONE: No flags set.
  * @G_FILE_MONITOR_WATCH_MOUNTS: Watch for mount events.
+ * @G_FILE_MONITOR_SEND_MOVED: Pair DELETED and CREATED events caused
+ *   by file renames (moves) and send a single G_FILE_MONITOR_EVENT_MOVED
+ *   event instead (NB: not supported on all backends; the default
+ *   behaviour -without specifying this flag- is to send single DELETED
+ *   and CREATED events).
  *
  * Flags used to set what a #GFileMonitor will watch for.
  */
 typedef enum {
   G_FILE_MONITOR_NONE         = 0,
-  G_FILE_MONITOR_WATCH_MOUNTS = (1 << 0)
+  G_FILE_MONITOR_WATCH_MOUNTS = (1 << 0),
+  G_FILE_MONITOR_SEND_MOVED   = (1 << 1)
 } GFileMonitorFlags;
 
 
@@ -361,6 +367,7 @@ typedef enum {
  * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: a file attribute was changed.
  * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: the file location will soon be unmounted.
  * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was unmounted.
+ * @G_FILE_MONITOR_EVENT_MOVED: the file was moved.
  *
  * Specifies what type of event a monitor event is.
  **/
@@ -371,7 +378,8 @@ typedef enum {
   G_FILE_MONITOR_EVENT_CREATED,
   G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED,
   G_FILE_MONITOR_EVENT_PRE_UNMOUNT,
-  G_FILE_MONITOR_EVENT_UNMOUNTED
+  G_FILE_MONITOR_EVENT_UNMOUNTED,
+  G_FILE_MONITOR_EVENT_MOVED
 } GFileMonitorEvent;
 
 
