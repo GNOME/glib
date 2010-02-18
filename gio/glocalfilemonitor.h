@@ -43,6 +43,7 @@ struct _GLocalFileMonitor
   GFileMonitor parent_instance;
 
   gchar *filename;
+  GFileMonitorFlags flags;
 };
 
 struct _GLocalFileMonitorClass
