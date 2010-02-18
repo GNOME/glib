@@ -76,7 +76,8 @@ g_inotify_directory_monitor_constructor (GType type,
   GInotifyDirectoryMonitor *inotify_monitor;
   const gchar *dirname = NULL;
   inotify_sub *sub = NULL;
-  gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */ 
+  gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */
+  gboolean pair_moves;
   
   klass = G_INOTIFY_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_INOTIFY_DIRECTORY_MONITOR));
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
@@ -95,7 +96,9 @@ g_inotify_directory_monitor_constructor (GType type,
   ret_ih_startup = _ih_startup();
   g_assert (ret_ih_startup);
 
-  sub = _ih_sub_new (dirname, NULL, inotify_monitor);
+  pair_moves = G_LOCAL_DIRECTORY_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
+
+  sub = _ih_sub_new (dirname, NULL, pair_moves, inotify_monitor);
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard */
   g_assert (sub != NULL);

@@ -138,6 +138,32 @@ _ih_sub_cancel (inotify_sub *sub)
   return TRUE;
 }
 
+static char *
+_ih_fullpath_from_event (ik_event_t *event, char *dirname)
+{
+  char *fullpath;
+
+  if (event->name)
+    fullpath = g_strdup_printf ("%s/%s", dirname, event->name);
+  else
+    fullpath = g_strdup_printf ("%s/", dirname);
+
+   return fullpath;
+}
+
+
+static gboolean
+ih_event_is_paired_move (ik_event_t *event)
+{
+  if (event->pair)
+    {
+      ik_event_t *paired = event->pair;
+      /* intofiy(7): IN_MOVE == IN_MOVED_FROM | IN_MOVED_TO */
+      return (event->mask | paired->mask) & IN_MOVE;
+    }
+
+    return FALSE;
+}
 
 static void
 ih_event_callback (ik_event_t  *event, 
@@ -147,22 +173,33 @@ ih_event_callback (ik_event_t  *event,
   GFileMonitorEvent eflags;
   GFile* parent;
   GFile* child;
+  GFile* other;
   
   eflags = ih_mask_to_EventFlags (event->mask);
   parent = g_file_new_for_path (sub->dirname);
-  if (event->name)
-    fullpath = g_strdup_printf ("%s/%s", sub->dirname, event->name);
-  else
-    fullpath = g_strdup_printf ("%s/", sub->dirname);
-  
+  fullpath = _ih_fullpath_from_event (event, sub->dirname);
   child = g_file_new_for_path (fullpath);
   g_free (fullpath);
 
+  if (ih_event_is_paired_move (event) && sub->pair_moves)
+    {
+      char *parent_dir = _ip_get_path_for_wd (event->pair->wd);
+      fullpath = _ih_fullpath_from_event (event->pair, parent_dir);
+      other = g_file_new_for_path (fullpath);
+      g_free (fullpath);
+      eflags = G_FILE_MONITOR_EVENT_MOVED;
+      event->pair = NULL; /* prevents the paired event to be emitted as well */
+    }
+  else
+    other = NULL;
+
   g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-			     child, NULL, eflags);
+			     child, other, eflags);
 
   g_object_unref (child);
   g_object_unref (parent);
+  if (other)
+    g_object_unref (other);
 }
 
 static void

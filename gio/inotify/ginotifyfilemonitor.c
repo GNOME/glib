@@ -39,6 +39,7 @@ struct _GInotifyFileMonitor
   gchar *filename;
   gchar *dirname;
   inotify_sub *sub;
+  gboolean pair_moves;
 };
 
 static gboolean g_inotify_file_monitor_cancel (GFileMonitor* monitor);
@@ -90,6 +91,7 @@ g_inotify_file_monitor_constructor (GType                  type,
   GInotifyFileMonitor *inotify_monitor;
   const gchar *filename = NULL;
   inotify_sub *sub = NULL;
+  gboolean pair_moves;
   gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */    
   
   klass = G_INOTIFY_FILE_MONITOR_CLASS (g_type_class_peek (G_TYPE_INOTIFY_FILE_MONITOR));
@@ -113,7 +115,12 @@ g_inotify_file_monitor_constructor (GType                  type,
   ret_ih_startup = _ih_startup();
   g_assert (ret_ih_startup);
 
-  sub = _ih_sub_new (inotify_monitor->dirname, inotify_monitor->filename, inotify_monitor);
+  pair_moves = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
+
+  sub = _ih_sub_new (inotify_monitor->dirname,
+		     inotify_monitor->filename,
+		     pair_moves,
+		     inotify_monitor);
  
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard */

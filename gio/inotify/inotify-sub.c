@@ -46,7 +46,8 @@ dup_dirname (const gchar *dirname)
 
 inotify_sub*
 _ih_sub_new (const gchar *dirname, 
-             const gchar *filename, 
+             const gchar *filename,
+	     gboolean     pair_moves,
              gpointer     user_data)
 {
   inotify_sub *sub = NULL;
@@ -54,8 +55,9 @@ _ih_sub_new (const gchar *dirname,
   sub = g_new0 (inotify_sub, 1);
   sub->dirname = dup_dirname (dirname);
   sub->filename = g_strdup (filename);
+  sub->pair_moves = pair_moves;
   sub->user_data = user_data;
-  
+
   IS_W ("new subscription for %s being setup\n", sub->dirname);
   
   return sub;

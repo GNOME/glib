@@ -420,3 +420,21 @@ ip_event_callback (ik_event_t *event)
   
   _ik_event_free (event);
 }
+
+const char *
+_ip_get_path_for_wd (gint32 wd)
+{
+  GList *dir_list;
+  ip_watched_dir_t *dir;
+
+  g_assert (wd >= 0);
+  dir_list = g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (wd));
+  if (dir_list)
+    {
+      dir = dir_list->data;
+      if (dir)
+	return dir->path;
+    }
+
+  return NULL;
+}

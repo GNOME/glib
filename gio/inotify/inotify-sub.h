@@ -30,9 +30,10 @@ typedef struct
 	gchar*   filename;
 	gboolean cancelled;
 	gpointer user_data;
+        gboolean pair_moves;
 } inotify_sub;
 
-inotify_sub* _ih_sub_new (const gchar* dirname, const gchar* filename, gpointer user_data);
+inotify_sub* _ih_sub_new (const gchar* dirname, const gchar* filename, gboolean pair_moves, gpointer user_data);
 void         _ih_sub_free (inotify_sub* sub);
 
 #endif /* __INOTIFY_SUB_H */
