@@ -49,6 +49,8 @@
  *
  * #GVariant is an opaque data structure and can only be accessed
  * using the following functions.
+ *
+ * Since: 2.24
  **/
 struct _GVariant
 /* see below for field member documentation */
@@ -585,6 +587,8 @@ g_variant_is_trusted (GVariant *value)
  *
  * Decreases the reference count of @value.  When its reference count
  * drops to 0, the memory used by the variant is freed.
+ *
+ * Since: 2.24
  **/
 void
 g_variant_unref (GVariant *value)
@@ -614,6 +618,8 @@ g_variant_unref (GVariant *value)
  * @returns: the same @value
  *
  * Increases the reference count of @value.
+ *
+ * Since: 2.24
  **/
 GVariant *
 g_variant_ref (GVariant *value)
@@ -650,6 +656,8 @@ g_variant_ref (GVariant *value)
  * makes certain common styles of programming much easier while still
  * maintaining normal refcounting semantics in situations where values
  * are not floating.
+ *
+ * Since: 2.24
  **/
 GVariant *
 g_variant_ref_sink (GVariant *value)
@@ -682,6 +690,8 @@ g_variant_ref_sink (GVariant *value)
  * then this function is O(1).  Otherwise, the size is calculated, an
  * operation which is approximately O(n) in the number of values
  * involved.
+ *
+ * Since: 2.24
  **/
 gsize
 g_variant_get_size (GVariant *value)
@@ -714,6 +724,8 @@ g_variant_get_size (GVariant *value)
  * is O(1).  If the value is not already in serialised form,
  * serialisation occurs implicitly and is approximately O(n) in the size
  * of the result.
+ *
+ * Since: 2.24
  **/
 gconstpointer
 g_variant_get_data (GVariant *value)
@@ -741,6 +753,8 @@ g_variant_get_data (GVariant *value)
  * only on the type).  For dictionary entries, it is always 2
  *
  * This function is O(1).
+ *
+ * Since: 2.24
  **/
 gsize
 g_variant_n_children (GVariant *value)
@@ -782,6 +796,8 @@ g_variant_n_children (GVariant *value)
  * in the container.  See g_variant_n_children().
  *
  * This function is O(1).
+ *
+ * Since: 2.24
  **/
 GVariant *
 g_variant_get_child_value (GVariant *value,
@@ -837,6 +853,8 @@ g_variant_get_child_value (GVariant *value,
  * g_variant_normalise() for a solution.
  *
  * This function is approximately O(n) in the size of @data.
+ *
+ * Since: 2.24
  **/
 void
 g_variant_store (GVariant *value,

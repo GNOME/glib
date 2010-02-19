@@ -174,6 +174,7 @@ libglib_2_0_la_SOURCES = 	\
 	gunicodeprivate.h	\
 	gurifuncs.c 		\
 	gutils.c		\
+	gvariant.c		\
 	gvariant-core.c		\
 	gvariant-private.h	\
 	gvariant-serialiser.h	\

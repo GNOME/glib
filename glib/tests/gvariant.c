@@ -1833,6 +1833,7 @@ struct _TreeInstance
 
   union {
     guint64 integer;
+    gdouble floating;
     gchar string[32];
   } data;
   gsize data_size;
@@ -1876,8 +1877,8 @@ make_random_string (gchar              *string,
 }
 
 static TreeInstance *
-make_tree_instance (const GVariantType *type,
-                    int                 depth)
+tree_instance_new (const GVariantType *type,
+                   int                 depth)
 {
   const GVariantType *child_type = NULL;
   GVariantType *mytype = NULL;
@@ -1961,7 +1962,7 @@ make_tree_instance (const GVariantType *type,
 
       for (i = 0; i < instance->n_children; i++)
         {
-          instance->children[i] = make_tree_instance (child_type, depth - 1);
+          instance->children[i] = tree_instance_new (child_type, depth - 1);
 
           if (is_tuple_type)
             child_type = g_variant_type_next (child_type);
@@ -2158,7 +2159,7 @@ test_byteswap (void)
   GVariantSerialised one, two;
   TreeInstance *tree;
 
-  tree = make_tree_instance (NULL, 3);
+  tree = tree_instance_new (NULL, 3);
   serialise_tree (tree, &one);
 
   i_am_writing_byteswapped = TRUE;
@@ -2193,7 +2194,7 @@ test_fuzz (gdouble *fuzziness)
   TreeInstance *tree;
 
   /* make an instance */
-  tree = make_tree_instance (NULL, 3);
+  tree = tree_instance_new (NULL, 3);
 
   /* serialise it */
   serialise_tree (tree, &serialised);
@@ -2256,6 +2257,173 @@ test_fuzzes (gpointer data)
   assert_no_type_infos ();
 }
 
+static GVariant *
+tree_instance_get_gvariant (TreeInstance *tree)
+{
+  const GVariantType *type;
+  GVariant *result;
+
+  type = (GVariantType *) g_variant_type_info_get_type_string (tree->info);
+
+  switch (g_variant_type_info_get_type_char (tree->info))
+    {
+    case G_VARIANT_TYPE_INFO_CHAR_MAYBE:
+      {
+        GVariant *child;
+
+        if (tree->n_children)
+          child = tree_instance_get_gvariant (tree->children[0]);
+        else
+          child = NULL;
+
+        result = g_variant_new_maybe (g_variant_type_element (type), child);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_ARRAY:
+      {
+        GVariant **children;
+        gint i;
+
+        children = g_new (GVariant *, tree->n_children);
+        for (i = 0; i < tree->n_children; i++)
+          children[i] = tree_instance_get_gvariant (tree->children[i]);
+
+        result = g_variant_new_array (g_variant_type_element (type),
+                                      children, tree->n_children);
+        g_free (children);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_TUPLE:
+      {
+        GVariant **children;
+        gint i;
+
+        children = g_new (GVariant *, tree->n_children);
+        for (i = 0; i < tree->n_children; i++)
+          children[i] = tree_instance_get_gvariant (tree->children[i]);
+
+        result = g_variant_new_tuple (children, tree->n_children);
+        g_free (children);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_DICT_ENTRY:
+      {
+        GVariant *key, *val;
+
+        g_assert (tree->n_children == 2);
+
+        key = tree_instance_get_gvariant (tree->children[0]);
+        val = tree_instance_get_gvariant (tree->children[1]);
+
+        result = g_variant_new_dict_entry (key, val);
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_VARIANT:
+      {
+        GVariant *value;
+
+        g_assert (tree->n_children == 1);
+
+        value = tree_instance_get_gvariant (tree->children[0]);
+        result = g_variant_new_variant (value);
+      }
+      break;
+
+    case 'b':
+      result = g_variant_new_boolean (tree->data.integer > 0);
+      break;
+
+    case 'y':
+      result = g_variant_new_byte (tree->data.integer);
+      break;
+
+    case 'n':
+      result = g_variant_new_int16 (tree->data.integer);
+      break;
+
+    case 'q':
+      result = g_variant_new_uint16 (tree->data.integer);
+      break;
+
+    case 'i':
+      result = g_variant_new_int32 (tree->data.integer);
+      break;
+
+    case 'u':
+      result = g_variant_new_uint32 (tree->data.integer);
+      break;
+
+    case 'x':
+      result = g_variant_new_int64 (tree->data.integer);
+      break;
+
+    case 't':
+      result = g_variant_new_uint64 (tree->data.integer);
+      break;
+
+    case 'h':
+      result = g_variant_new_handle (tree->data.integer);
+      break;
+
+    case 'd':
+      result = g_variant_new_double (tree->data.floating);
+      break;
+
+    case 's':
+      result = g_variant_new_string (tree->data.string);
+      break;
+
+    case 'o':
+      result = g_variant_new_object_path (tree->data.string);
+      break;
+
+    case 'g':
+      result = g_variant_new_signature (tree->data.string);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  return result;
+}
+
+static void
+test_constructor (void)
+{
+  TreeInstance *tree;
+  GVariant *value;
+  gchar *s1, *s2;
+
+  tree = tree_instance_new (NULL, 3);
+  value = g_variant_ref_sink (tree_instance_get_gvariant (tree));
+
+  s1 = g_variant_print (value, TRUE);
+  g_variant_get_data (value);
+  s2 = g_variant_print (value, TRUE);
+
+  g_assert_cmpstr (s1, ==, s2);
+  tree_instance_free (tree);
+  g_variant_unref (value);
+  g_free (s2);
+  g_free (s1);
+}
+
+static void
+test_constructors (void)
+{
+  gint i;
+
+  for (i = 0; i < 1000; i++)
+    {
+      test_constructor ();
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2271,6 +2439,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/variant", test_variants);
   g_test_add_func ("/gvariant/serialiser/strings", test_strings);
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
+  g_test_add_func ("/gvariant/constructors", test_constructors);
 
   for (i = 1; i <= 20; i += 4)
     {
