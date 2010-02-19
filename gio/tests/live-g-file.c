@@ -23,6 +23,8 @@
 #include <glib/glib.h>
 #include <gio/gio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <string.h>
 #include <sys/stat.h>
 
@@ -100,6 +102,7 @@ static const struct StructureItem sample_struct[] = {
 	{"lost_symlink",		"nowhere",	G_FILE_TYPE_SYMBOLIC_LINK, G_FILE_CREATE_NONE, 0, 0, TEST_COPY | TEST_DELETE_NORMAL | TEST_OPEN | TEST_INVALID_SYMLINK},
   };
 
+static gboolean test_suite;
 static gboolean write_test;
 static gboolean verbose;
 static gboolean posix_compat;
@@ -715,8 +718,17 @@ do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
   else if (((item.extra_flags & TEST_NO_ACCESS) == TEST_NO_ACCESS) ||
 	   (extra_flags == TEST_NO_ACCESS))
     {
-      g_assert_cmpint (res, ==, FALSE);
-      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
+      /* This works for root, see bug #552912 */
+      if (test_suite && getuid () == 0)
+	{
+	  g_assert_cmpint (res, ==, TRUE);
+	  g_assert_no_error (error);
+	}
+      else
+	{
+	  g_assert_cmpint (res, ==, FALSE);
+	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
+	}
     }
   /*  no error should be found, all exceptions defined above  */
   else
@@ -1111,6 +1123,7 @@ main (int argc, char *argv[])
     {NULL}
   };
 
+  test_suite = FALSE;
   verbose = FALSE;
   write_test = FALSE;
   only_create_struct = FALSE;
@@ -1124,6 +1137,7 @@ main (int argc, char *argv[])
   /*  no extra parameters specified, assume we're executed from glib test suite  */ 
   if (argc < 2)
     {
+	  test_suite = TRUE;
 	  verbose = TRUE;
 	  write_test = TRUE;
 	  only_create_struct = FALSE;
