@@ -41,13 +41,13 @@ typedef struct _GOptionContext GOptionContext;
 
 /**
  * GOptionGroup:
- * 
+ *
  * A <structname>GOptionGroup</structname> struct defines the options in a single
- * group. The struct has only private fields and should not be directly accessed. 
- * 
- * All options in a group share the same translation function. Libaries which
+ * group. The struct has only private fields and should not be directly accessed.
+ *
+ * All options in a group share the same translation function. Libraries which
  * need to parse commandline options are expected to provide a function for
- * getting a <structname>GOptionGroup</structname> holding their options, which 
+ * getting a <structname>GOptionGroup</structname> holding their options, which
  * the application can then add to its #GOptionContext.
  */
 typedef struct _GOptionGroup   GOptionGroup;
