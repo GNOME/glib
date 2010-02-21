@@ -115,7 +115,11 @@ array_large_size (void)
       g_array_set_size (array, 1073750016);
       exit (0); /* success */
     }
-  g_test_trap_assert_passed ();
+
+  if (!g_test_trap_has_passed ())
+    {
+      g_test_trap_assert_stderr ("*failed to allocate 2147483648 bytes*");
+    }
 
   g_array_free (array, TRUE);
 }
