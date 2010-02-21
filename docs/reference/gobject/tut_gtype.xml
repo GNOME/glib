@@ -770,6 +770,13 @@ struct _GInterfaceInfo
 };
 </programlisting>
         </para>
+        <para>
+        When having no special requirements you also can use the <function>G_DEFINE_INTERFACE</function> macro:
+<programlisting>
+G_DEFINE_INTERFACE (MamanBaz, maman_baz, G_TYPE_OBJECT)
+</programlisting>
+        </para>
+
 
         <sect2 id="gtype-non-instantiable-classed-init">
           <title>Interface Initialization</title>
