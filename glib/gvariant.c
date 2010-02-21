@@ -1846,7 +1846,7 @@ g_variant_equal (gconstpointer one,
 
       strone = g_variant_print ((GVariant *) one, FALSE);
       strtwo = g_variant_print ((GVariant *) two, FALSE);
-      equal = strcmp (strone, strtwo);
+      equal = strcmp (strone, strtwo) == 0;
       g_free (strone);
       g_free (strtwo);
     }
