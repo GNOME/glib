@@ -185,14 +185,18 @@ g_base64_encode_step (const guchar *in,
  *
  * Flush the status from a sequence of calls to g_base64_encode_step().
  *
+ * The output buffer must be large enough to fit all the data that will
+ * be written to it. It will need up to 4 bytes, or up to 5 bytes if
+ * line-breaking is enabled.
+ *
  * Return value: The number of bytes of output that was written
  *
  * Since: 2.12
  */
 gsize
 g_base64_encode_close (gboolean  break_lines,
-		       gchar    *out, 
-		       gint     *state, 
+		       gchar    *out,
+		       gint     *state,
 		       gint     *save)
 {
   int c1, c2;
