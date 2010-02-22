@@ -1321,21 +1321,28 @@ g_unix_fd_list_steal_fds
 
 #if IN_HEADER(__G_UTF8_INPUT_STREAM_H__)
 #if IN_FILE(__G_UTF8_INPUT_STREAM_C__)
-g_utf8_input_stream_get_type
+g_utf8_input_stream_get_type G_GNUC_CONST
 g_utf8_input_stream_new
 #endif
 #endif
 
 #if IN_HEADER(__G_ZLIB_COMPRESSOR_H__)
 #if IN_FILE(__G_ZLIB_COMPRESSOR_C__)
-g_zlib_compressor_get_type
+g_zlib_compressor_get_type G_GNUC_CONST
 g_zlib_compressor_new
 #endif
 #endif
 
 #if IN_HEADER(__G_ZLIB_DECOMPRESSOR_H__)
 #if IN_FILE(__G_ZLIB_DECOMPRESSOR_C__)
-g_zlib_decompressor_get_type
+g_zlib_decompressor_get_type G_GNUC_CONST
 g_zlib_decompressor_new
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_DESCRIPTOR_BASED_H__)
+#if IN_FILE(__G_FILE_DESCRIPTOR_BASED_C__)
+g_file_descriptor_based_get_type G_GNUC_CONST
+g_file_descriptor_based_get_fd
 #endif
 #endif
