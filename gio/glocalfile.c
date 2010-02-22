@@ -1099,6 +1099,8 @@ g_local_file_set_display_name (GFile         *file,
   GLocalFile *local, *new_local;
   GFile *new_file, *parent;
   struct _g_stat_struct statbuf;
+  GVfsClass *class;
+  GVfs *vfs;
   int errsv;
 
   parent = g_file_get_parent (file);
@@ -1157,7 +1159,12 @@ g_local_file_set_display_name (GFile         *file,
       g_object_unref (new_file);
       return NULL;
     }
-  
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_moved)
+    class->local_file_moved (vfs, local->filename, new_local->filename);
+
   return new_file;
 }
 
@@ -1797,7 +1804,9 @@ g_local_file_trash (GFile         *file,
   int fd;
   struct _g_stat_struct trash_stat, global_stat;
   char *dirname, *globaldir;
-  
+  GVfsClass *class;
+  GVfs *vfs;
+
   if (g_lstat (local->filename, &file_stat) != 0)
     {
       int errsv = errno;
@@ -2019,6 +2028,11 @@ g_local_file_trash (GFile         *file,
 		     g_strerror (errsv));
       return FALSE;
     }
+
+  vfs = g_vfs_get_default ();
+  class = G_VFS_GET_CLASS (vfs);
+  if (class->local_file_moved)
+    class->local_file_moved (vfs, local->filename, trashfile);
 
   g_free (trashfile);
 
