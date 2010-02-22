@@ -4,7 +4,7 @@ Overview of Changes from GLib 2.23.3 to GLib 2.23.4
 * GVariant: The core of GVariant has been merged now, with some
  API still to follow.
 
-*GIO:
+* GIO:
  - There is a new interface GFileDescriptorBased for file descriptor
    based IO. GLocalFile{Input,Output}Stream implement it
  - Use splice(2) to transfer data between file descriptors without
@@ -15,6 +15,12 @@ Overview of Changes from GLib 2.23.3 to GLib 2.23.4
  609143 *result_uncertain is never assigned in g_content_type_guess
  604086 Use splice(2) when doing local file copies
  547890 No move events for GFileMonitorEvent?
+ 568760 nautilus freezes due to a bug in garray.c:322
+ 609962 Add info about the use of G_DEFINE_INTERFACE
+ 609564 g_base64_encode_close docs should mention outbuf size...
+ 610484 g_variant_equal bug
+ 610131 libasyncns does not compile on Solaris 8
+ 609530 missing single header include guards
 
 * Updated translations:
  Czech
