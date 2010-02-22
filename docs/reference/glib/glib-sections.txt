@@ -2847,7 +2847,12 @@ g_variant_store
 <SUBSECTION>
 g_variant_hash
 g_variant_equal
+
+<SUBSECTION>
+g_variant_print
+g_variant_print_string
 </SECTION>
+
 
 <SECTION>
 <FILE>ghostutils</FILE>
