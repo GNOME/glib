@@ -28,6 +28,7 @@ g_file_attribute_status_get_type
 g_file_attribute_type_get_type
 g_file_copy_flags_get_type
 g_file_create_flags_get_type
+g_file_descriptor_based_get_type
 g_file_enumerator_get_type
 g_file_get_type
 g_file_icon_get_type

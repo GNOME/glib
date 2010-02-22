@@ -27,8 +27,8 @@
 #include "gioalias.h"
 
 /**
- * SECTION:gfile_descriptor_based
- * @short_description: Stream seeking interface
+ * SECTION:gfiledescriptorbased
+ * @short_description: Interface for file descriptor based IO
  * @include: gio/gio.h
  * @see_also: #GInputStream, #GOutputStream
  *

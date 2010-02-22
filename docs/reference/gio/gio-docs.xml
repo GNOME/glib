@@ -55,6 +55,7 @@
         <xi:include href="xml/gfileinputstream.xml"/>
         <xi:include href="xml/gfileoutputstream.xml"/>
         <xi:include href="xml/gfileiostream.xml"/>
+        <xi:include href="xml/gfiledescriptorbased.xml"/>
         <xi:include href="xml/gfilterinputstream.xml"/>
         <xi:include href="xml/gfilteroutputstream.xml"/>
         <xi:include href="xml/gmemoryinputstream.xml"/>
