@@ -24,10 +24,6 @@
 #ifndef __G_SLICE_H__
 #define __G_SLICE_H__
 
-#ifndef __G_MEM_H__
-#error Include <glib.h> instead of <gslice.h>
-#endif
-
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
