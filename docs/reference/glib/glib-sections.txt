@@ -2754,6 +2754,7 @@ g_variant_type_is_maybe
 g_variant_type_is_array
 g_variant_type_is_tuple
 g_variant_type_is_dict_entry
+g_variant_type_is_variant
 
 <SUBSECTION>
 g_variant_type_hash
@@ -2851,6 +2852,27 @@ g_variant_equal
 <SUBSECTION>
 g_variant_print
 g_variant_print_string
+
+<SUBSECTION>
+GVariantIter
+g_variant_iter_copy
+g_variant_iter_free
+g_variant_iter_init
+g_variant_iter_n_children
+g_variant_iter_new
+g_variant_iter_next_value
+g_variant_iter_next
+g_variant_iter_loop
+
+<SUBSECTION>
+GVariantBuilder
+g_variant_builder_unref
+g_variant_builder_ref
+g_variant_builder_new
+g_variant_builder_add_value
+g_variant_builder_end
+g_variant_builder_open
+g_variant_builder_close
 </SECTION>
 
 

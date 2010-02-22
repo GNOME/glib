@@ -270,6 +270,7 @@ gboolean                        g_variant_type_is_maybe                 (const G
 gboolean                        g_variant_type_is_array                 (const GVariantType  *type);
 gboolean                        g_variant_type_is_tuple                 (const GVariantType  *type);
 gboolean                        g_variant_type_is_dict_entry            (const GVariantType  *type);
+gboolean                        g_variant_type_is_variant               (const GVariantType  *type);
 
 /* for hash tables */
 guint                           g_variant_type_hash                     (gconstpointer        type);

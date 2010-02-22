@@ -20,6 +20,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+/* Prologue {{{1 */
+
 #include "config.h"
 
 #include <glib/gvariant-serialiser.h>
@@ -285,6 +287,7 @@
     return val;                                                   \
   }
 
+/* Numeric Type Constructor/Getters {{{1 */
 /* < private >
  * g_variant_new_from_trusted:
  * @type: the #GVariantType
@@ -583,83 +586,7 @@ NUMERIC_TYPE (HANDLE, handle, gint32)
  **/
 NUMERIC_TYPE (DOUBLE, double, gdouble)
 
-/**
- * g_variant_get_type:
- * @value: a #GVariant
- * @returns: a #GVariantType
- *
- * Determines the type of @value.
- *
- * The return value is valid for the lifetime of @value and must not
- * be freed.
- *
- * Since: 2.24
- **/
-const GVariantType *
-g_variant_get_type (GVariant *value)
-{
-  GVariantTypeInfo *type_info;
-
-  g_return_val_if_fail (value != NULL, NULL);
-
-  type_info = g_variant_get_type_info (value);
-
-  return (GVariantType *) g_variant_type_info_get_type_string (type_info);
-}
-
-/**
- * g_variant_get_type_string:
- * @value: a #GVariant
- * @returns: the type string for the type of @value
- *
- * Returns the type string of @value.  Unlike the result of calling
- * g_variant_type_peek_string(), this string is nul-terminated.  This
- * string belongs to #GVariant and must not be freed.
- *
- * Since: 2.24
- **/
-const gchar *
-g_variant_get_type_string (GVariant *value)
-{
-  GVariantTypeInfo *type_info;
-
-  g_return_val_if_fail (value != NULL, NULL);
-
-  type_info = g_variant_get_type_info (value);
-
-  return g_variant_type_info_get_type_string (type_info);
-}
-
-/**
- * g_variant_is_of_type:
- * @value: a #GVariant instance
- * @type: a #GVariantType
- * @returns: %TRUE if the type of @value matches @type
- *
- * Checks if a value has a type matching the provided type.
- *
- * Since: 2.24
- **/
-gboolean
-g_variant_is_of_type (GVariant           *value,
-                      const GVariantType *type)
-{
-  return g_variant_type_is_subtype_of (g_variant_get_type (value), type);
-}
-
-/**
- * g_variant_is_container:
- * @value: a #GVariant instance
- * @returns: %TRUE if @value is a container
- *
- * Checks if @value is a container.
- */
-gboolean
-g_variant_is_container (GVariant *value)
-{
-  return g_variant_type_is_container (g_variant_get_type (value));
-}
-
+/* Container type Constructor / Deconstructors {{{1 */
 /**
  * g_variant_new_maybe:
  * @child_type: the #GVariantType of the child
@@ -773,6 +700,259 @@ g_variant_get_variant (GVariant *value)
 }
 
 /**
+ * g_variant_new_array:
+ * @child_type: the element type of the new array
+ * @children: an array of #GVariant pointers, the children
+ * @n_children: the length of @children
+ * @returns: a new #GVariant array
+ *
+ * Creates a new #GVariant array from @children.
+ *
+ * @child_type must be non-%NULL if @n_children is zero.  Otherwise, the
+ * child type is determined by inspecting the first element of the
+ * @children array.  If @child_type is non-%NULL then it must be a
+ * definite type.
+ *
+ * The items of the array are taken from the @children array.  No entry
+ * in the @children array may be %NULL.
+ *
+ * All items in the array must have the same type, which must be the
+ * same as @child_type, if given.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new_array (const GVariantType *child_type,
+                     GVariant * const   *children,
+                     gsize               n_children)
+{
+  GVariantType *array_type;
+  GVariant **my_children;
+  gboolean trusted;
+  GVariant *value;
+  gsize i;
+
+  g_return_val_if_fail (n_children > 0 || child_type != NULL, NULL);
+  g_return_val_if_fail (n_children == 0 || children != NULL, NULL);
+  g_return_val_if_fail (child_type == NULL ||
+                        g_variant_type_is_definite (child_type), NULL);
+
+  my_children = g_new (GVariant *, n_children);
+  trusted = TRUE;
+
+  if (child_type == NULL)
+    child_type = g_variant_get_type (children[0]);
+  array_type = g_variant_type_new_array (child_type);
+
+  for (i = 0; i < n_children; i++)
+    {
+      TYPE_CHECK (children[i], child_type, NULL);
+      my_children[i] = g_variant_ref_sink (children[i]);
+      trusted &= g_variant_is_trusted (children[i]);
+    }
+
+  value = g_variant_new_from_children (array_type, my_children,
+                                       n_children, trusted);
+  g_variant_type_free (array_type);
+
+  return value;
+}
+
+/*< private >
+ * g_variant_make_tuple_type:
+ * @children: an array of GVariant *
+ * @n_children: the length of @children
+ *
+ * Return the type of a tuple containing @children as its items.
+ **/
+static GVariantType *
+g_variant_make_tuple_type (GVariant * const *children,
+                           gsize             n_children)
+{
+  const GVariantType **types;
+  GVariantType *type;
+  gsize i;
+
+  types = g_new (const GVariantType *, n_children);
+
+  for (i = 0; i < n_children; i++)
+    types[i] = g_variant_get_type (children[i]);
+
+  type = g_variant_type_new_tuple (types, n_children);
+  g_free (types);
+
+  return type;
+}
+
+/**
+ * g_variant_new_tuple:
+ * @children: the items to make the tuple out of
+ * @n_children: the length of @children
+ * @returns: a new #GVariant tuple
+ *
+ * Creates a new tuple #GVariant out of the items in @children.  The
+ * type is determined from the types of @children.  No entry in the
+ * @children array may be %NULL.
+ *
+ * If @n_children is 0 then the unit tuple is constructed.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new_tuple (GVariant * const *children,
+                     gsize             n_children)
+{
+  GVariantType *tuple_type;
+  GVariant **my_children;
+  gboolean trusted;
+  GVariant *value;
+  gsize i;
+
+  g_return_val_if_fail (n_children == 0 || children != NULL, NULL);
+
+  my_children = g_new (GVariant *, n_children);
+  trusted = TRUE;
+
+  for (i = 0; i < n_children; i++)
+    {
+      my_children[i] = g_variant_ref_sink (children[i]);
+      trusted &= g_variant_is_trusted (children[i]);
+    }
+
+  tuple_type = g_variant_make_tuple_type (children, n_children);
+  value = g_variant_new_from_children (tuple_type, my_children,
+                                       n_children, trusted);
+  g_variant_type_free (tuple_type);
+
+  return value;
+}
+
+/*< private >
+ * g_variant_make_dict_entry_type:
+ * @key: a #GVariant, the key
+ * @val: a #GVariant, the value
+ *
+ * Return the type of a dictionary entry containing @key and @val as its
+ * children.
+ **/
+static GVariantType *
+g_variant_make_dict_entry_type (GVariant *key,
+                                GVariant *val)
+{
+  return g_variant_type_new_dict_entry (g_variant_get_type (key),
+                                        g_variant_get_type (val));
+}
+
+/**
+ * g_variant_new_dict_entry:
+ * @key: a basic #GVariant, the key
+ * @value: a #GVariant, the value
+ * @returns: a new dictionary entry #GVariant
+ *
+ * Creates a new dictionary entry #GVariant.  @key and @value must be
+ * non-%NULL.
+ *
+ * @key must be a value of a basic type (ie: not a container).
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new_dict_entry (GVariant *key,
+                          GVariant *value)
+{
+  GVariantType *dict_type;
+  GVariant **children;
+  gboolean trusted;
+
+  g_return_val_if_fail (key != NULL && value != NULL, NULL);
+  g_return_val_if_fail (!g_variant_is_container (key), NULL);
+
+  children = g_new (GVariant *, 2);
+  children[0] = g_variant_ref_sink (key);
+  children[1] = g_variant_ref_sink (value);
+  trusted = g_variant_is_trusted (key) && g_variant_is_trusted (value);
+
+  dict_type = g_variant_make_dict_entry_type (key, value);
+  value = g_variant_new_from_children (dict_type, children, 2, trusted);
+  g_variant_type_free (dict_type);
+
+  return value;
+}
+
+/**
+ * g_variant_get_fixed_array:
+ * @value: a #GVariant array with fixed-sized elements
+ * @n_elements: a pointer to the location to store the number of items
+ * @element_size: the size of each element
+ * @returns: a pointer to the fixed array
+ *
+ * Provides access to the serialised data for an array of fixed-sized
+ * items.
+ *
+ * @value must be an array with fixed-sized elements.  Numeric types are
+ * fixed-size as are tuples containing only other fixed-sized types.
+ *
+ * @element_size must be the size of a single element in the array.  For
+ * example, if calling this function for an array of 32 bit integers,
+ * you might say <code>sizeof (gint32)</code>.  This value isn't used
+ * except for the purpose of a double-check that the form of the
+ * seralised data matches the caller's expectation.
+ *
+ * @n_elements, which must be non-%NULL is set equal to the number of
+ * items in the array.
+ *
+ * Since: 2.24
+ **/
+gconstpointer
+g_variant_get_fixed_array (GVariant *value,
+                           gsize    *n_elements,
+                           gsize     element_size)
+{
+  GVariantTypeInfo *array_info;
+  gsize array_element_size;
+  gconstpointer data;
+  gsize size;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_ARRAY, NULL);
+
+  g_return_val_if_fail (n_elements != NULL, NULL);
+  g_return_val_if_fail (element_size > 0, NULL);
+
+  array_info = g_variant_get_type_info (value);
+  g_variant_type_info_query_element (array_info, NULL, &array_element_size);
+
+  g_return_val_if_fail (array_element_size, NULL);
+
+  if G_UNLIKELY (array_element_size != element_size)
+    {
+      if (array_element_size)
+        g_critical ("g_variant_get_fixed_array: assertion "
+                    "`g_variant_array_has_fixed_size (value, element_size)' "
+                    "failed: array size %"G_GSIZE_FORMAT" does not match "
+                    "given element_size %"G_GSIZE_FORMAT".",
+                    array_element_size, element_size);
+      else
+        g_critical ("g_variant_get_fixed_array: assertion "
+                    "`g_variant_array_has_fixed_size (value, element_size)' "
+                    "failed: array does not have fixed size.");
+    }
+
+  data = g_variant_get_data (value);
+  size = g_variant_get_size (value);
+
+  if (size % element_size)
+    *n_elements = 0;
+  else
+    *n_elements = size / element_size;
+
+  if (*n_elements)
+    return data;
+
+  return NULL;
+}
+
+/* String type constructor/getters/validation {{{1 */
+/**
  * g_variant_new_string:
  * @string: a normal C nul-terminated string
  * @returns: a new string #GVariant instance
@@ -833,7 +1013,6 @@ g_variant_is_object_path (const gchar *string)
 
   return g_variant_serialiser_is_object_path (string, strlen (string) + 1);
 }
-
 
 /**
  * g_variant_new_signature:
@@ -1100,220 +1279,84 @@ g_variant_dup_strv (GVariant *value,
   return strv;
 }
 
+/* Type checking and querying {{{1 */
 /**
- * g_variant_new_array:
- * @child_type: the element type of the new array
- * @children: an array of #GVariant pointers, the children
- * @n_children: the length of @children
- * @returns: a new #GVariant array
+ * g_variant_get_type:
+ * @value: a #GVariant
+ * @returns: a #GVariantType
  *
- * Creates a new #GVariant array from @children.
+ * Determines the type of @value.
  *
- * @child_type must be non-%NULL if @n_children is zero.  Otherwise, the
- * child type is determined by inspecting the first element of the
- * @children array.  If @child_type is non-%NULL then it must be a
- * definite type.
- *
- * The items of the array are taken from the @children array.  No entry
- * in the @children array may be %NULL.
- *
- * All items in the array must have the same type, which must be the
- * same as @child_type, if given.
+ * The return value is valid for the lifetime of @value and must not
+ * be freed.
  *
  * Since: 2.24
  **/
-GVariant *
-g_variant_new_array (const GVariantType *child_type,
-                     GVariant * const   *children,
-                     gsize               n_children)
+const GVariantType *
+g_variant_get_type (GVariant *value)
 {
-  GVariantType *array_type;
-  GVariant **my_children;
-  gboolean trusted;
-  GVariant *value;
-  gsize i;
+  GVariantTypeInfo *type_info;
 
-  g_return_val_if_fail (n_children > 0 || child_type != NULL, NULL);
-  g_return_val_if_fail (n_children == 0 || children != NULL, NULL);
-  g_return_val_if_fail (child_type == NULL ||
-                        g_variant_type_is_definite (child_type), NULL);
+  g_return_val_if_fail (value != NULL, NULL);
 
-  my_children = g_new (GVariant *, n_children);
-  trusted = TRUE;
+  type_info = g_variant_get_type_info (value);
 
-  if (child_type == NULL)
-    child_type = g_variant_get_type (children[0]);
-  array_type = g_variant_type_new_array (child_type);
-
-  for (i = 0; i < n_children; i++)
-    {
-      TYPE_CHECK (children[i], child_type, NULL);
-      my_children[i] = g_variant_ref_sink (children[i]);
-      trusted &= g_variant_is_trusted (children[i]);
-    }
-
-  value = g_variant_new_from_children (array_type, my_children,
-                                       n_children, trusted);
-  g_variant_type_free (array_type);
-
-  return value;
+  return (GVariantType *) g_variant_type_info_get_type_string (type_info);
 }
 
 /**
- * g_variant_new_tuple:
- * @children: the items to make the tuple out of
- * @n_children: the length of @children
- * @returns: a new #GVariant tuple
+ * g_variant_get_type_string:
+ * @value: a #GVariant
+ * @returns: the type string for the type of @value
  *
- * Creates a new tuple #GVariant out of the items in @children.  The
- * type is determined from the types of @children.  No entry in the
- * @children array may be %NULL.
- *
- * If @n_children is 0 then the unit tuple is constructed.
+ * Returns the type string of @value.  Unlike the result of calling
+ * g_variant_type_peek_string(), this string is nul-terminated.  This
+ * string belongs to #GVariant and must not be freed.
  *
  * Since: 2.24
  **/
-GVariant *
-g_variant_new_tuple (GVariant * const *children,
-                     gsize             n_children)
+const gchar *
+g_variant_get_type_string (GVariant *value)
 {
-  const GVariantType **types;
-  GVariantType *tuple_type;
-  GVariant **my_children;
-  gboolean trusted;
-  GVariant *value;
-  gsize i;
+  GVariantTypeInfo *type_info;
 
-  g_return_val_if_fail (n_children == 0 || children != NULL, NULL);
+  g_return_val_if_fail (value != NULL, NULL);
 
-  types = g_new (const GVariantType *, n_children);
-  my_children = g_new (GVariant *, n_children);
-  trusted = TRUE;
+  type_info = g_variant_get_type_info (value);
 
-  for (i = 0; i < n_children; i++)
-    {
-      types[i] = g_variant_get_type (children[i]);
-      my_children[i] = g_variant_ref_sink (children[i]);
-      trusted &= g_variant_is_trusted (children[i]);
-    }
-
-  tuple_type = g_variant_type_new_tuple (types, n_children);
-  value = g_variant_new_from_children (tuple_type, my_children,
-                                       n_children, trusted);
-  g_variant_type_free (tuple_type);
-  g_free (types);
-
-  return value;
+  return g_variant_type_info_get_type_string (type_info);
 }
 
 /**
- * g_variant_new_dict_entry:
- * @key: a basic #GVariant, the key
- * @value: a #GVariant, the value
- * @returns: a new dictionary entry #GVariant
+ * g_variant_is_of_type:
+ * @value: a #GVariant instance
+ * @type: a #GVariantType
+ * @returns: %TRUE if the type of @value matches @type
  *
- * Creates a new dictionary entry #GVariant.  @key and @value must be
- * non-%NULL.
- *
- * @key must be a value of a basic type (ie: not a container).
+ * Checks if a value has a type matching the provided type.
  *
  * Since: 2.24
  **/
-GVariant *
-g_variant_new_dict_entry (GVariant *key,
-                          GVariant *value)
+gboolean
+g_variant_is_of_type (GVariant           *value,
+                      const GVariantType *type)
 {
-  GVariantType *dict_type;
-  GVariant **children;
-  gboolean trusted;
-
-  g_return_val_if_fail (key != NULL && value != NULL, NULL);
-  g_return_val_if_fail (!g_variant_is_container (key), NULL);
-
-  children = g_new (GVariant *, 2);
-  children[0] = g_variant_ref_sink (key);
-  children[1] = g_variant_ref_sink (value);
-  trusted = g_variant_is_trusted (key) && g_variant_is_trusted (value);
-
-  dict_type = g_variant_type_new_dict_entry (g_variant_get_type (key),
-                                             g_variant_get_type (value));
-  value = g_variant_new_from_children (dict_type, children, 2, trusted);
-  g_variant_type_free (dict_type);
-
-  return value;
+  return g_variant_type_is_subtype_of (g_variant_get_type (value), type);
 }
 
 /**
- * g_variant_get_fixed_array:
- * @value: a #GVariant array with fixed-sized elements
- * @n_elements: a pointer to the location to store the number of items
- * @element_size: the size of each element
- * @returns: a pointer to the fixed array
+ * g_variant_is_container:
+ * @value: a #GVariant instance
+ * @returns: %TRUE if @value is a container
  *
- * Provides access to the serialised data for an array of fixed-sized
- * items.
- *
- * @value must be an array with fixed-sized elements.  Numeric types are
- * fixed-size as are tuples containing only other fixed-sized types.
- *
- * @element_size must be the size of a single element in the array.  For
- * example, if calling this function for an array of 32 bit integers,
- * you might say <code>sizeof (gint32)</code>.  This value isn't used
- * except for the purpose of a double-check that the form of the
- * seralised data matches the caller's expectation.
- *
- * @n_elements, which must be non-%NULL is set equal to the number of
- * items in the array.
- *
- * Since: 2.24
- **/
-gconstpointer
-g_variant_get_fixed_array (GVariant *value,
-                           gsize    *n_elements,
-                           gsize     element_size)
+ * Checks if @value is a container.
+ */
+gboolean
+g_variant_is_container (GVariant *value)
 {
-  GVariantTypeInfo *array_info;
-  gsize array_element_size;
-  gconstpointer data;
-  gsize size;
-
-  TYPE_CHECK (value, G_VARIANT_TYPE_ARRAY, NULL);
-
-  g_return_val_if_fail (n_elements != NULL, NULL);
-  g_return_val_if_fail (element_size > 0, NULL);
-
-  array_info = g_variant_get_type_info (value);
-  g_variant_type_info_query_element (array_info, NULL, &array_element_size);
-
-  g_return_val_if_fail (array_element_size, NULL);
-
-  if G_UNLIKELY (array_element_size != element_size)
-    {
-      if (array_element_size)
-        g_critical ("g_variant_get_fixed_array: assertion "
-                    "`g_variant_array_has_fixed_size (value, element_size)' "
-                    "failed: array size %"G_GSIZE_FORMAT" does not match "
-                    "given element_size %"G_GSIZE_FORMAT".",
-                    array_element_size, element_size);
-      else
-        g_critical ("g_variant_get_fixed_array: assertion "
-                    "`g_variant_array_has_fixed_size (value, element_size)' "
-                    "failed: array does not have fixed size.");
-    }
-
-  data = g_variant_get_data (value);
-  size = g_variant_get_size (value);
-
-  if (size % element_size)
-    *n_elements = 0;
-  else
-    *n_elements = size / element_size;
-
-  if (*n_elements)
-    return data;
-
-  return NULL;
+  return g_variant_type_is_container (g_variant_get_type (value));
 }
+
 
 /**
  * g_variant_classify:
@@ -1359,6 +1402,7 @@ g_variant_classify (GVariant *value)
   return *g_variant_get_type_string (value);
 }
 
+/* Pretty printer {{{1 */
 /**
  * g_variant_print_string:
  * @value: a #GVariant
@@ -1703,6 +1747,7 @@ g_variant_print (GVariant *value,
                         FALSE);
 };
 
+/* Hash, Equal {{{1 */
 /**
  * g_variant_hash:
  * @value: a basic #GVariant value as a #gconstpointer
@@ -1854,5 +1899,833 @@ g_variant_equal (gconstpointer one,
   return equal;
 }
 
+/* GVariantIter {{{1 */
+/**
+ * GVariantIter:
+ *
+ * #GVariantIter is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+struct stack_iter
+{
+  GVariant *value;
+  gssize n, i;
+
+  const gchar *loop_format;
+
+  gsize padding[3];
+  gsize magic;
+};
+
+struct heap_iter
+{
+  struct stack_iter iter;
+
+  GVariant *value_ref;
+  gsize magic;
+};
+
+#define GVSI(i)                 ((struct stack_iter *) (i))
+#define GVHI(i)                 ((struct heap_iter *) (i))
+#define GVSI_MAGIC              ((gsize) 3579507750u)
+#define GVHI_MAGIC              ((gsize) 1450270775u)
+#define is_valid_iter(i)        (GVSI(i)->magic == GVSI_MAGIC)
+#define is_valid_heap_iter(i)   (GVHI(i)->magic == GVHI_MAGIC && \
+                                 is_valid_iter(i))
+
+/**
+ * g_variant_iter_new:
+ * @value: a container #GVariant
+ * @returns: a new heap-allocated #GVariantIter
+ *
+ * Creates a heap-allocated #GVariantIter for iterating over the items
+ * in @value.
+ *
+ * Use g_variant_iter_free() to free the return value when you no longer
+ * need it.
+ *
+ * A reference is taken to @value and will be released only when
+ * g_variant_iter_free() is called.
+ *
+ * Since: 2.24
+ **/
+GVariantIter *
+g_variant_iter_new (GVariant *value)
+{
+  GVariantIter *iter;
+
+  iter = (GVariantIter *) g_slice_new (struct heap_iter);
+  GVHI(iter)->value_ref = g_variant_ref (value);
+  GVHI(iter)->magic = GVHI_MAGIC;
+
+  g_variant_iter_init (iter, value);
+
+  return iter;
+}
+
+/**
+ * g_variant_iter_init:
+ * @iter: a pointer to a #GVariantIter
+ * @value: a container #GVariant
+ * @returns: the number of items in @value
+ *
+ * Initialises (without allocating) a #GVariantIter.  @iter may be
+ * completely uninitialised prior to this call; its old value is
+ * ignored.
+ *
+ * The iterator remains valid for as long as @value exists, and need not
+ * be freed in any way.
+ *
+ * Since: 2.24
+ **/
+gsize
+g_variant_iter_init (GVariantIter *iter,
+                     GVariant     *value)
+{
+  g_assert (sizeof (GVariantIter) == sizeof (struct stack_iter));
+
+  GVSI(iter)->magic = GVSI_MAGIC;
+  GVSI(iter)->value = value;
+  GVSI(iter)->n = g_variant_n_children (value);
+  GVSI(iter)->i = -1;
+  GVSI(iter)->loop_format = NULL;
+
+  return GVSI(iter)->n;
+}
+
+/**
+ * g_variant_iter_copy:
+ * @iter: a #GVariantIter
+ * @returns: a new heap-allocated #GVariantIter
+ *
+ * Creates a new heap-allocated #GVariantIter to iterate over the
+ * container that was being iterated over by @iter.  Iteration begins on
+ * the new iterator from the current position of the old iterator but
+ * the two copies are independent past that point.
+ *
+ * Use g_variant_iter_free() to free the return value when you no longer
+ * need it.
+ *
+ * A reference is taken to the container that @iter is iterating over
+ * and will be releated only when g_variant_iter_free() is called.
+ *
+ * Since: 2.24
+ **/
+GVariantIter *
+g_variant_iter_copy (GVariantIter *iter)
+{
+  GVariantIter *copy;
+
+  g_return_val_if_fail (is_valid_iter (iter), 0);
+
+  copy = g_variant_iter_new (GVSI(iter)->value);
+  GVSI(copy)->i = GVSI(iter)->i;
+
+  return copy;
+}
+
+/**
+ * g_variant_iter_n_children:
+ * @iter: a #GVariantIter
+ * @returns: the number of children in the container
+ *
+ * Queries the number of child items in the container that we are
+ * iterating over.  This is the total number of items -- not the number
+ * of items remaining.
+ *
+ * This function might be useful for preallocation of arrays.
+ *
+ * Since: 2.24
+ **/
+gsize
+g_variant_iter_n_children (GVariantIter *iter)
+{
+  g_return_val_if_fail (is_valid_iter (iter), 0);
+
+  return GVSI(iter)->n;
+}
+
+/**
+ * g_variant_iter_free:
+ * @iter: a heap-allocated #GVariantIter
+ *
+ * Frees a heap-allocated #GVariantIter.  Only call this function on
+ * iterators that were returned by g_variant_iter_new() or
+ * g_variant_iter_copy().
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_iter_free (GVariantIter *iter)
+{
+  g_return_if_fail (is_valid_heap_iter (iter));
+
+  g_variant_unref (GVHI(iter)->value_ref);
+  GVHI(iter)->magic = 0;
+
+  g_slice_free (struct heap_iter, GVHI(iter));
+}
+
+/**
+ * g_variant_iter_next_value:
+ * @iter: a #GVariantIter
+ * @returns: a #GVariant, or %NULL
+ *
+ * Gets the next item in the container.  If no more items remain then
+ * %NULL is returned.
+ *
+ * Use g_variant_unref() to drop your reference on the return value when
+ * you no longer need it.
+ *
+ * <example>
+ *  <title>Iterating with g_variant_iter_next_value()</title>
+ *  <programlisting>
+ *   /<!-- -->* recursively iterate a container *<!-- -->/
+ *   void
+ *   iterate_container_recursive (GVariant *container)
+ *   {
+ *     GVariantIter iter;
+ *     GVariant *child;
+ *
+ *     g_variant_iter_init (&iter, dictionary);
+ *     while ((child = g_variant_iter_next_value (&iter)))
+ *       {
+ *         g_print ("type '%s'\n", g_variant_get_type_string (child));
+ *
+ *         if (g_variant_is_container (child))
+ *           iterate_container_recursive (child);
+ *
+ *         g_variant_unref (child);
+ *       }
+ *   }
+ * </programlisting>
+ * </example>
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_iter_next_value (GVariantIter *iter)
+{
+  g_return_val_if_fail (is_valid_iter (iter), FALSE);
+
+  if G_UNLIKELY (GVSI(iter)->i >= GVSI(iter)->n)
+    {
+      g_critical ("g_variant_iter_next_value: must not be called again "
+                  "after NULL has already been returned.");
+      return NULL;
+    }
+
+  GVSI(iter)->i++;
+
+  if (GVSI(iter)->i < GVSI(iter)->n)
+    return g_variant_get_child_value (GVSI(iter)->value, GVSI(iter)->i);
+
+  return NULL;
+}
+
+/**
+ * g_variant_iter_loop:
+ * @iter: a #GVariantIter
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
+ *           value
+ *
+ * Gets the next item in the container and unpacks it into the variable
+ * argument list according to @format_string, returning %TRUE.
+ *
+ * If no more items remain then %FALSE is returned.
+ *
+ * On the first call to this function, the pointers appearing on the
+ * variable argument list are assumed to point at uninitialised memory.
+ * On the second and later calls, it is assumed that the same pointers
+ * will be given and that they will point to the memory as set by the
+ * previous call to this function.  This allows the previous values to
+ * be freed, as appropriate.
+ *
+ * This function is intended to be used with a while loop as
+ * demonstrated in the following example.  This function can only be
+ * used when iterating over an array.  It is only valid to call this
+ * function with a string constant for the format string and the same
+ * string constant must be used each time.  Mixing calls to this
+ * function and g_variant_iter_next() or g_variant_iter_next_value() on
+ * the same iterator is not recommended.
+ *
+ * <example>
+ *  <title>Memory management with g_variant_iter_loop()</title>
+ *  <programlisting>
+ *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ *   void
+ *   iterate_dictionary (GVariant *dictionary)
+ *   {
+ *     GVariantIter iter;
+ *     GVariant *value;
+ *     gchar *key;
+ *
+ *     g_variant_iter_init (&iter, dictionary);
+ *     while (g_variant_iter_loop (&iter, "{sv}", &key, &value))
+ *       {
+ *         g_print ("Item '%s' has type '%s'\n", key,
+ *                  g_variant_get_type_string (value));
+ *
+ *         /<!-- -->* no need to free 'key' and 'value' here *<!-- -->/
+ *       }
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * If you want a slightly less magical alternative that requires more
+ * typing, see g_variant_iter_next().
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_variant_iter_loop (GVariantIter *iter,
+                     const gchar  *format_string,
+                     ...)
+{
+  gboolean first_time = GVSI(iter)->loop_format == NULL;
+  GVariant *value;
+
+  g_return_val_if_fail (first_time ||
+                        format_string == GVSI(iter)->loop_format,
+                        FALSE);
+
+  if (first_time)
+    {
+      TYPE_CHECK (GVSI(iter)->value, G_VARIANT_TYPE_ARRAY, FALSE);
+      GVSI(iter)->loop_format = format_string;
+    }
+
+  value = g_variant_iter_next_value (iter);
+
+  if (value != NULL)
+    {
+      va_list ap;
+
+      va_start (ap, format_string);
+      /* varargs get stuff */
+      va_end (ap);
+
+      g_variant_unref (value);
+    }
+
+  return value != NULL;
+}
+
+/**
+ * g_variant_iter_next:
+ * @iter: a #GVariantIter
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
+ *           value
+ *
+ * Gets the next item in the container and unpacks it into the variable
+ * argument list according to @format_string, returning %TRUE.
+ *
+ * If no more items remain then %FALSE is returned.
+ *
+ * All of the pointers given on the variable arguments list of this
+ * function are assumed to point at uninitialised memory.  It is the
+ * responsibility of the caller to free all of the values returned by
+ * the unpacking process.
+ *
+ * <example>
+ *  <title>Memory management with g_variant_iter_next()</title>
+ *  <programlisting>
+ *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ *   void
+ *   iterate_dictionary (GVariant *dictionary)
+ *   {
+ *     GVariantIter iter;
+ *     GVariant *value;
+ *     gchar *key;
+ *
+ *     g_variant_iter_init (&iter, dictionary);
+ *     while (g_variant_iter_next (&iter, "{sv}", &key, &value))
+ *       {
+ *         g_print ("Item '%s' has type '%s'\n", key,
+ *                  g_variant_get_type_string (value));
+ *
+ *         /<!-- -->* must free data for ourselves *<!-- -->/
+ *         g_variant_unref (value);
+ *         g_free (key);
+ *       }
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * For a solution that is likely to be more convenient to C programmers,
+ * see g_variant_iter_loop().
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_variant_iter_next (GVariantIter *iter,
+                     const gchar  *format_string,
+                     ...)
+{
+  GVariant *value;
+
+  value = g_variant_iter_next_value (iter);
+
+  if (value != NULL)
+    {
+      va_list ap;
+
+      va_start (ap, format_string);
+      /* varargs get stuff */
+      va_end (ap);
+
+      g_variant_unref (value);
+    }
+
+  return value != NULL;
+}
+
+/* GVariantBuilder {{{1 */
+
+/**
+ * GVariantBuilder:
+ *
+ * A utility class for constructing container-type #GVariant instances.
+ *
+ * This is an opaque structure and may only be accessed using the
+ * following functions.
+ *
+ * #GVariantBuilder is not threadsafe in any way.  Do not attempt to
+ * access it from more than one thread.
+ **/
+struct _GVariantBuilder
+{
+  GVariantBuilder *parent;
+  GVariantType *type;
+
+  /* type constraint explicitly specified by 'type'.
+   * for tuple types, this moves along as we add more items.
+   */
+  const GVariantType *expected_type;
+
+  /* type constraint implied by previous array item.
+   */
+  const GVariantType *prev_item_type;
+
+  /* constraints on the number of children.  max = -1 for unlimited. */
+  gsize min_items;
+  gsize max_items;
+
+  /* dynamically-growing pointer array */
+  GVariant **children;
+  gsize allocated_children;
+  gsize offset;
+
+  /* set to '1' if all items in the container will have the same type
+   * (ie: maybe, array, variant) '0' if not (ie: tuple, dict entry)
+   */
+  guint uniform_item_types : 1;
+
+  /* set to '1' until _end() or _close() is called. */
+  guint is_active : 1;
+
+  /* set to '1' by _open() until _close() is called */
+  guint has_child : 1;
+
+  /* set to '1' initially and changed to '0' if an untrusted value is
+   * added
+   */
+  guint trusted : 1;
+
+  gint ref_count;
+};
+
+/**
+ * g_variant_builder_new:
+ * @type: a container type
+ * @returns: a #GVariantBuilder
+ *
+ * Creates a new #GVariantBuilder.
+ *
+ * @type must be non-%NULL.  It specifies the type of container to
+ * construct.  It can be an indefinite type such as
+ * %G_VARIANT_TYPE_ARRAY or a definite type such as "as" or "(ii)".
+ * Maybe, array, tuple, dictionary entry and variants may be
+ * constructed.
+ *
+ * After the builder is created, values are added using
+ * g_variant_builder_add_value() or g_variant_builder_add().
+ *
+ * After all the child values are added, g_variant_builder_end() frees
+ * the builder and returns the #GVariant that was created.
+ **/
+GVariantBuilder *
+g_variant_builder_new (const GVariantType *type)
+{
+  GVariantBuilder *builder;
+
+  g_return_val_if_fail (type != NULL, NULL);
+  g_return_val_if_fail (g_variant_type_is_container (type), NULL);
+
+  builder = g_slice_new (GVariantBuilder);
+  builder->parent = NULL;
+  builder->offset = 0;
+
+  builder->has_child = FALSE;
+  builder->is_active = TRUE;
+  builder->trusted = TRUE;
+
+  builder->type = g_variant_type_copy (type);
+  builder->prev_item_type = NULL;
+
+  builder->ref_count = 1;
+
+  switch (*(const gchar *) type)
+    {
+    case G_VARIANT_CLASS_VARIANT:
+      builder->uniform_item_types = TRUE;
+      builder->allocated_children = 1;
+      builder->expected_type = NULL;
+      builder->min_items = 1;
+      builder->max_items = 1;
+      break;
+
+    case G_VARIANT_CLASS_ARRAY:
+      builder->uniform_item_types = TRUE;
+      builder->allocated_children = 8;
+      builder->expected_type = g_variant_type_element (builder->type);
+      builder->min_items = 0;
+      builder->max_items = -1;
+      break;
+
+    case G_VARIANT_CLASS_MAYBE:
+      builder->uniform_item_types = TRUE;
+      builder->allocated_children = 1;
+      builder->expected_type = g_variant_type_element (builder->type);
+      builder->min_items = 0;
+      builder->max_items = 1;
+      break;
+
+    case G_VARIANT_CLASS_DICT_ENTRY:
+      builder->uniform_item_types = FALSE;
+      builder->allocated_children = 2;
+      builder->expected_type = g_variant_type_key (builder->type);
+      builder->min_items = 2;
+      builder->max_items = 2;
+      break;
+
+    case 'r': /* G_VARIANT_TYPE_TUPLE was given */
+      builder->uniform_item_types = FALSE;
+      builder->allocated_children = 8;
+      builder->expected_type = NULL;
+      builder->min_items = 0;
+      builder->max_items = -1;
+      break;
+
+    case G_VARIANT_CLASS_TUPLE: /* a definite tuple type was given */
+      builder->allocated_children = g_variant_type_n_items (type);
+      builder->expected_type = g_variant_type_first (builder->type);
+      builder->min_items = builder->allocated_children;
+      builder->max_items = builder->allocated_children;
+      builder->uniform_item_types = FALSE;
+      break;
+
+    default:
+      g_assert_not_reached ();
+   }
+
+  builder->children = g_new (GVariant *, builder->allocated_children);
+
+  return builder;
+}
+
+/**
+ * g_variant_builder_unref:
+ * @builder: a #GVariantBuilder
+ *
+ * Reduces the reference count on @builder.  If no other references are
+ * held, the builder is freed.  If the builder was created using
+ * g_variant_builder_open() then this may result in the destruction of
+ * the parent builder too (if no other references are held on it).
+ **/
+void
+g_variant_builder_unref (GVariantBuilder *builder)
+{
+  GVariantBuilder *parent;
+  gsize i;
+
+  if (--builder->ref_count)
+    return;
+
+  for (i = 0; i < builder->offset; i++)
+    g_variant_unref (builder->children[i]);
+
+  g_free (builder->children);
+
+  parent = builder->parent;
+  g_slice_free (GVariantBuilder, builder);
+
+  g_variant_builder_unref (parent);
+}
+
+/**
+ * g_variant_builder_ref;
+ * @builder: a #GVariantBuilder
+ * @returns: the same #GVariantBuilder
+ *
+ * Increases the reference count on @builder by 1.
+ **/
+GVariantBuilder *
+g_variant_builder_ref (GVariantBuilder *builder)
+{
+  builder->ref_count++;
+
+  return builder;
+}
+
+static void
+g_variant_builder_make_room (GVariantBuilder *builder)
+{
+  if (builder->offset == builder->allocated_children)
+    {
+      builder->allocated_children *= 2;
+      builder->children = g_renew (GVariant *, builder->children,
+                                   builder->allocated_children);
+    }
+}
+
+/**
+ * g_variant_builder_add_value:
+ * @builder: a #GVariantBuilder
+ * @value: a #GVariant
+ *
+ * Adds @value to @builder.
+ *
+ * It is an error to call this function in any way that would create an
+ * inconsistent value to be constructed.  Some examples of this are
+ * putting different types of items into an array, putting the wrong
+ * types or number of items in a tuple, putting more than one value into
+ * a variant, etc.
+ **/
+void
+g_variant_builder_add_value (GVariantBuilder *builder,
+                             GVariant        *value)
+{
+  g_return_if_fail (builder != NULL && value != NULL);
+  g_return_if_fail (builder->is_active && !builder->has_child);
+  g_return_if_fail (builder->offset < builder->max_items);
+  g_return_if_fail (builder->expected_type &&
+                    g_variant_is_of_type (value, builder->expected_type));
+  g_return_if_fail (builder->prev_item_type &&
+                    g_variant_is_of_type (value, builder->prev_item_type));
+
+  builder->trusted &= g_variant_is_trusted (value);
+
+  if (!builder->uniform_item_types)
+    {
+      /* advance our expected type pointers */
+      if (builder->expected_type)
+        builder->expected_type =
+          g_variant_type_next (builder->expected_type);
+
+      if (builder->prev_item_type)
+        builder->prev_item_type =
+          g_variant_type_next (builder->prev_item_type);
+    }
+  else
+    builder->prev_item_type = g_variant_get_type (value);
+
+  g_variant_builder_make_room (builder);
+
+  builder->children[builder->offset++] = g_variant_ref_sink (value);
+}
+
+/**
+ * g_variant_builder_open:
+ * @builder: a #GVariantBuilder
+ * @type: a #GVariantType
+ * @returns: a new #GVariantBuilder
+ *
+ * Opens a subcontainer inside the given @builder.
+ *
+ * This call consumes the caller's reference to @builder.
+ * g_variant_builder_close() returns the reference.
+ *
+ * Even if additional references are held, it is not permissible to use
+ * @builder in any way (except for further reference counting
+ * operations) until g_variant_builder_close() is called on the return
+ * value of this function.
+ *
+ * It is an error to call this function in any way that would create an
+ * inconsistent value to be constructed.
+ **/
+GVariantBuilder *
+g_variant_builder_open (GVariantBuilder    *builder,
+                        const GVariantType *type)
+{
+  GVariantBuilder *child;
+
+  g_return_val_if_fail (builder != NULL && type != NULL, NULL);
+  g_return_val_if_fail (builder->is_active && !builder->has_child, NULL);
+  g_return_val_if_fail (builder->offset < builder->max_items, NULL);
+  g_return_val_if_fail (builder->expected_type &&
+                        g_variant_type_is_subtype_of (type,
+                                                      builder->expected_type),
+                        NULL);
+  g_return_val_if_fail (builder->prev_item_type &&
+                        g_variant_type_is_subtype_of (builder->prev_item_type,
+                                                      type), NULL);
+  child = g_variant_builder_new (type);
+  builder->has_child = TRUE;
+  child->parent = builder;
+
+  /* push the prev_item_type down into the subcontainer */
+  if (builder->prev_item_type)
+    {
+      if (!child->uniform_item_types)
+        /* tuples and dict entries */
+        child->prev_item_type =
+          g_variant_type_first (builder->prev_item_type);
+
+      else if (!g_variant_type_is_variant (child->type))
+        /* maybes and arrays */
+        child->prev_item_type =
+          g_variant_type_element (builder->prev_item_type);
+    }
+
+  return child;
+}
+
+/**
+ * g_variant_builder_close:
+ * @builder: a #GVariantBuilder
+ * @returns: the original parent of @builder
+ *
+ * This function closes a builder that was created with a call to
+ * g_variant_builder_open().
+ *
+ * This function consumes the caller's reference to @builder and drops
+ * it.  The return result is the reference to the parent
+ * #GVariantBuilder that was originally taken from the caller by
+ * g_variant_builder_open().
+ *
+ * Even if additional references are held, it is not permissible to use
+ * @builder in any way after this call except for further reference
+ * counting operations.
+ *
+ * It is an error to call this function in any way that would create an
+ * inconsistent value to be constructed (ie: insufficient number of
+ * items added to a container with a specific number of children
+ * required).  It is also an error to call this function if the builder
+ * was created with an indefinite array or maybe type and no children
+ * have been added; in this case it is impossible to infer the type of
+ * the empty array.
+ **/
+GVariantBuilder *
+g_variant_builder_close (GVariantBuilder *builder)
+{
+  GVariantBuilder *parent;
+
+  g_return_val_if_fail (builder != NULL, NULL);
+  g_return_val_if_fail (builder->parent != NULL, NULL);
+  g_assert (builder->parent->has_child);
+
+  /* steal reference so _end() doesn't free it. */
+  parent = builder->parent;
+  builder->parent = NULL;
+
+  parent->has_child = FALSE;
+
+  g_variant_builder_add_value (parent, g_variant_builder_end (builder));
+
+  return parent;
+}
+
+/*< private >
+ * g_variant_make_maybe_type:
+ * @element: a #GVariant
+ *
+ * Return the type of a maybe containing @element.
+ */
+static GVariantType *
+g_variant_make_maybe_type (GVariant *element)
+{
+  return g_variant_type_new_maybe (g_variant_get_type (element));
+}
+
+/*< private >
+ * g_variant_make_array_type:
+ * @element: a #GVariant
+ *
+ * Return the type of an array containing @element.
+ */
+static GVariantType *
+g_variant_make_array_type (GVariant *element)
+{
+  return g_variant_type_new_array (g_variant_get_type (element));
+}
+
+/**
+ * g_variant_builder_end:
+ * @builder: a #GVariantBuilder
+ * @returns: a new, floating, #GVariant
+ *
+ * Ends the builder process and returns the constructed value.
+ *
+ * It is an error to call this function on a #GVariantBuilder created
+ * by a call to g_variant_builder_open().  It is an error to call this
+ * function if @builder has an outstanding child.  It is an error to
+ * call this function in any case that g_variant_builder_check_end()
+ * would return %FALSE.
+ **/
+GVariant *
+g_variant_builder_end (GVariantBuilder *builder)
+{
+  GVariantType *my_type;
+  GVariant *value;
+
+  g_return_val_if_fail (builder != NULL, NULL);
+  g_return_val_if_fail (builder->is_active && !builder->has_child, NULL);
+  g_return_val_if_fail (builder->offset >= builder->min_items, NULL);
+  g_return_val_if_fail (!builder->uniform_item_types ||
+                        builder->prev_item_type != NULL ||
+                        g_variant_type_is_definite (builder->type), NULL);
+
+  if (g_variant_type_is_definite (builder->type))
+    my_type = g_variant_type_copy (builder->type);
+
+  else if (g_variant_type_is_maybe (builder->type))
+    my_type = g_variant_make_maybe_type (builder->children[0]);
+
+  else if (g_variant_type_is_array (builder->type))
+    my_type = g_variant_make_array_type (builder->children[0]);
+
+  else if (g_variant_type_is_tuple (builder->type))
+    my_type = g_variant_make_tuple_type (builder->children, builder->offset);
+
+  else if (g_variant_type_is_dict_entry (builder->type))
+    my_type = g_variant_make_dict_entry_type (builder->children[0],
+                                              builder->children[1]);
+  else
+    g_assert_not_reached ();
+
+  value = g_variant_new_from_children (my_type,
+                                       g_renew (GVariant *,
+                                                builder->children,
+                                                builder->offset),
+                                       builder->offset,
+                                       builder->trusted);
+  builder->is_active = FALSE;
+  builder->children = NULL;
+
+  g_variant_type_free (builder->type);
+  g_slice_free (GVariantBuilder, builder);
+  g_variant_type_free (my_type);
+
+  return value;
+}
+
+/* Epilogue {{{1 */
 #define __G_VARIANT_C__
 #include "galiasdef.c"
+
+/* vim:set foldmethod=marker: */

@@ -1671,6 +1671,7 @@ g_variant_type_is_maybe
 g_variant_type_is_array
 g_variant_type_is_tuple
 g_variant_type_is_dict_entry
+g_variant_type_is_variant
 g_variant_type_hash
 g_variant_type_equal
 g_variant_type_is_subtype_of
@@ -1754,6 +1755,23 @@ g_variant_print_string
 
 g_variant_hash
 g_variant_equal
+
+g_variant_iter_copy
+g_variant_iter_free
+g_variant_iter_init
+g_variant_iter_n_children
+g_variant_iter_new
+g_variant_iter_next
+g_variant_iter_loop
+g_variant_iter_next_value
+
+g_variant_builder_add_value
+g_variant_builder_close
+g_variant_builder_end
+g_variant_builder_new
+g_variant_builder_open
+g_variant_builder_ref
+g_variant_builder_unref
 #endif
 #endif
 

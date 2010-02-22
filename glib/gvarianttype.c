@@ -960,6 +960,23 @@ g_variant_type_is_dict_entry (const GVariantType *type)
 }
 
 /**
+ * g_variant_type_is_variant:
+ * @type: a #GVariantType
+ * @returns: %TRUE if @type is the variant type
+ *
+ * Determines if the given @type is the variant type.
+ *
+ * Since 2.24
+ **/
+gboolean
+g_variant_type_is_variant (const GVariantType *type)
+{
+  g_return_val_if_fail (g_variant_type_check (type), FALSE);
+
+  return g_variant_type_peek_string (type)[0] == 'v';
+}
+
+/**
  * g_variant_type_hash:
  * @type: a #GVariantType
  * @returns: the hash value

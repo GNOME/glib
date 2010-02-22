@@ -135,6 +135,42 @@ guint                           g_variant_hash                          (gconstp
 gboolean                        g_variant_equal                         (gconstpointer         one,
                                                                          gconstpointer         two);
 
+typedef struct _GVariantIter GVariantIter;
+struct _GVariantIter {
+  /*< private >*/
+  gsize x[8];
+};
+
+GVariantIter *                  g_variant_iter_new                      (GVariant             *value);
+gsize                           g_variant_iter_init                     (GVariantIter         *iter,
+                                                                         GVariant             *value);
+GVariantIter *                  g_variant_iter_copy                     (GVariantIter         *iter);
+gsize                           g_variant_iter_n_children               (GVariantIter         *iter);
+void                            g_variant_iter_free                     (GVariantIter         *iter);
+GVariant *                      g_variant_iter_next_value               (GVariantIter         *iter);
+gboolean                        g_variant_iter_next                     (GVariantIter         *iter,
+                                                                         const gchar          *format_string,
+                                                                         ...);
+gboolean                        g_variant_iter_loop                     (GVariantIter         *iter,
+                                                                         const gchar          *format_string,
+                                                                         ...);
+
+
+typedef struct _GVariantBuilder GVariantBuilder;
+
+void                            g_variant_builder_unref                 (GVariantBuilder      *builder);
+GVariantBuilder *               g_variant_builder_ref                   (GVariantBuilder      *builder);
+GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
+GVariant *                      g_variant_builder_end                   (GVariantBuilder      *builder);
+GVariantBuilder *               g_variant_builder_open                  (GVariantBuilder      *builder,
+                                                                         const GVariantType   *type);
+GVariantBuilder *               g_variant_builder_close                 (GVariantBuilder      *builder);
+void                            g_variant_builder_add_value             (GVariantBuilder      *builder,
+                                                                         GVariant             *value);
+void                            g_variant_builder_add                   (GVariantBuilder      *builder,
+                                                                         const gchar          *format_string,
+                                                                         ...);
+
 G_END_DECLS
 
 #endif /* __G_VARIANT_H__ */
