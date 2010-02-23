@@ -140,7 +140,7 @@ test_g_file_open_readwrite (void)
 			     original_data, -1, NULL);
   g_assert (res);
 
-  path = g_build_filename (g_get_home_dir (), "g-a-nonexisting-file", NULL);
+  path = g_build_filename (g_get_tmp_dir (), "g-a-nonexisting-file", NULL);
   file = g_file_new_for_path (path);
   g_free (path);
   error = NULL;
