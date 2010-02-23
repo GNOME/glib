@@ -2513,9 +2513,9 @@ g_variant_builder_add_value (GVariantBuilder *builder,
   g_return_if_fail (builder != NULL && value != NULL);
   g_return_if_fail (builder->is_active && !builder->has_child);
   g_return_if_fail (builder->offset < builder->max_items);
-  g_return_if_fail (builder->expected_type &&
+  g_return_if_fail (!builder->expected_type ||
                     g_variant_is_of_type (value, builder->expected_type));
-  g_return_if_fail (builder->prev_item_type &&
+  g_return_if_fail (!builder->prev_item_type ||
                     g_variant_is_of_type (value, builder->prev_item_type));
 
   builder->trusted &= g_variant_is_trusted (value);
@@ -2567,11 +2567,11 @@ g_variant_builder_open (GVariantBuilder    *builder,
   g_return_val_if_fail (builder != NULL && type != NULL, NULL);
   g_return_val_if_fail (builder->is_active && !builder->has_child, NULL);
   g_return_val_if_fail (builder->offset < builder->max_items, NULL);
-  g_return_val_if_fail (builder->expected_type &&
+  g_return_val_if_fail (!builder->expected_type ||
                         g_variant_type_is_subtype_of (type,
                                                       builder->expected_type),
                         NULL);
-  g_return_val_if_fail (builder->prev_item_type &&
+  g_return_val_if_fail (!builder->prev_item_type ||
                         g_variant_type_is_subtype_of (builder->prev_item_type,
                                                       type), NULL);
   child = g_variant_builder_new (type);
