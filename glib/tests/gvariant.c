@@ -2269,6 +2269,7 @@ tree_instance_get_gvariant (TreeInstance *tree)
     {
     case G_VARIANT_TYPE_INFO_CHAR_MAYBE:
       {
+        const GVariantType *child_type;
         GVariant *child;
 
         if (tree->n_children)
@@ -2276,12 +2277,18 @@ tree_instance_get_gvariant (TreeInstance *tree)
         else
           child = NULL;
 
-        result = g_variant_new_maybe (g_variant_type_element (type), child);
+        child_type = g_variant_type_element (type);
+
+        if (child != NULL && randomly (0.5))
+          child_type = NULL;
+
+        result = g_variant_new_maybe (child_type, child);
       }
       break;
 
     case G_VARIANT_TYPE_INFO_CHAR_ARRAY:
       {
+        const GVariantType *child_type;
         GVariant **children;
         gint i;
 
@@ -2289,8 +2296,12 @@ tree_instance_get_gvariant (TreeInstance *tree)
         for (i = 0; i < tree->n_children; i++)
           children[i] = tree_instance_get_gvariant (tree->children[i]);
 
-        result = g_variant_new_array (g_variant_type_element (type),
-                                      children, tree->n_children);
+        child_type = g_variant_type_element (type);
+
+        if (i > 0 && randomly (0.5))
+          child_type = NULL;
+
+        result = g_variant_new_array (child_type, children, tree->n_children);
         g_free (children);
       }
       break;
@@ -2392,8 +2403,202 @@ tree_instance_get_gvariant (TreeInstance *tree)
   return result;
 }
 
+static gboolean
+tree_instance_check_gvariant (TreeInstance *tree,
+                              GVariant     *value)
+{
+  const GVariantType *type;
+
+  type = (GVariantType *) g_variant_type_info_get_type_string (tree->info);
+  g_assert (g_variant_is_of_type (value, type));
+
+  switch (g_variant_type_info_get_type_char (tree->info))
+    {
+    case G_VARIANT_TYPE_INFO_CHAR_MAYBE:
+      {
+        GVariant *child;
+        gboolean equal;
+
+        child = g_variant_get_maybe (value);
+
+        if (child != NULL && tree->n_children == 1)
+          equal = tree_instance_check_gvariant (tree->children[0], child);
+        else if (child == NULL && tree->n_children == 0)
+          equal = TRUE;
+        else
+          equal = FALSE;
+
+        if (child != NULL)
+          g_variant_unref (child);
+
+        return equal;
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_ARRAY:
+    case G_VARIANT_TYPE_INFO_CHAR_TUPLE:
+    case G_VARIANT_TYPE_INFO_CHAR_DICT_ENTRY:
+      {
+        gsize i;
+
+        if (g_variant_n_children (value) != tree->n_children)
+          return FALSE;
+
+        for (i = 0; i < tree->n_children; i++)
+          {
+            GVariant *child;
+            gboolean equal;
+
+            child = g_variant_get_child_value (value, i);
+            equal = tree_instance_check_gvariant (tree->children[i], child);
+            g_variant_unref (child);
+
+            if (!equal)
+              return FALSE;
+          }
+
+        return TRUE;
+      }
+      break;
+
+    case G_VARIANT_TYPE_INFO_CHAR_VARIANT:
+      {
+        const gchar *str1, *str2;
+        GVariant *child;
+        gboolean equal;
+
+        child = g_variant_get_variant (value);
+        str1 = g_variant_get_type_string (child);
+        str2 = g_variant_type_info_get_type_string (tree->children[0]->info);
+
+        /* can't pointer-compare str1 and str2 since one comes from the
+         * real GVariantTypeInfo and one comes from our private copy...
+         */
+        equal = strcmp (str1, str2) == 0 &&
+                tree_instance_check_gvariant (tree->children[0], child);
+
+        g_variant_unref (child);
+
+        return equal;
+      }
+      break;
+
+    case 'b':
+      return g_variant_get_boolean (value) == tree->data.integer;
+
+    case 'y':
+      return g_variant_get_byte (value) == (guchar) tree->data.integer;
+
+    case 'n':
+      return g_variant_get_int16 (value) == (gint16) tree->data.integer;
+
+    case 'q':
+      return g_variant_get_uint16 (value) == (guint16) tree->data.integer;
+
+    case 'i':
+      return g_variant_get_int32 (value) == (gint32) tree->data.integer;
+
+    case 'u':
+      return g_variant_get_uint32 (value) == (guint32) tree->data.integer;
+
+    case 'x':
+      return g_variant_get_int64 (value) == (gint64) tree->data.integer;
+
+    case 't':
+      return g_variant_get_uint64 (value) == (guint64) tree->data.integer;
+
+    case 'h':
+      return g_variant_get_handle (value) == (gint32) tree->data.integer;
+
+    case 'd':
+      {
+        gdouble floating = g_variant_get_double (value);
+
+        return memcmp (&floating, &tree->data.floating, sizeof floating) == 0;
+      }
+
+    case 's':
+    case 'o':
+    case 'g':
+      return strcmp (g_variant_get_string (value, NULL),
+                     tree->data.string) == 0;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 static void
-test_constructor (void)
+tree_instance_build_gvariant (TreeInstance    *tree,
+                              GVariantBuilder *builder)
+{
+  const GVariantType *type;
+
+  type = (GVariantType *) g_variant_type_info_get_type_string (tree->info);
+
+  if (g_variant_type_is_container (type))
+    {
+      gsize i;
+
+      builder = g_variant_builder_open (builder, type);
+
+      for (i = 0; i < tree->n_children; i++)
+        tree_instance_build_gvariant (tree->children[i], builder);
+
+      g_variant_builder_close (builder);
+    }
+  else
+    g_variant_builder_add_value (builder, tree_instance_get_gvariant (tree));
+}
+
+
+static gboolean
+tree_instance_check_iter (TreeInstance *tree,
+                          GVariantIter *iter)
+{
+  GVariant *value;
+
+  value = g_variant_iter_next_value (iter);
+
+  if (g_variant_is_container (value))
+    {
+      gsize i;
+
+      iter = g_variant_iter_new (value);
+      g_variant_unref (value);
+
+      if (g_variant_iter_n_children (iter) != tree->n_children)
+        {
+          g_variant_iter_free (iter);
+          return FALSE;
+        }
+
+      for (i = 0; i < tree->n_children; i++)
+        if (!tree_instance_check_iter (tree->children[i], iter))
+          {
+            g_variant_iter_free (iter);
+            return FALSE;
+          }
+
+      g_assert (g_variant_iter_next_value (iter) == NULL);
+      g_variant_iter_free (iter);
+
+      return TRUE;
+    }
+
+  else
+    {
+      gboolean equal;
+
+      equal = tree_instance_check_gvariant (tree, value);
+      g_variant_unref (value);
+
+      return equal;
+    }
+}
+
+static void
+test_container (void)
 {
   TreeInstance *tree;
   GVariant *value;
@@ -2403,10 +2608,42 @@ test_constructor (void)
   value = g_variant_ref_sink (tree_instance_get_gvariant (tree));
 
   s1 = g_variant_print (value, TRUE);
+  g_assert (tree_instance_check_gvariant (tree, value));
+
   g_variant_get_data (value);
+
   s2 = g_variant_print (value, TRUE);
+  g_assert (tree_instance_check_gvariant (tree, value));
 
   g_assert_cmpstr (s1, ==, s2);
+
+  if (g_variant_is_container (value))
+    {
+      GVariantBuilder *builder;
+      GVariantIter iter;
+      GVariant *built;
+      GVariant *val;
+      gchar *s3;
+
+      builder = g_variant_builder_new (G_VARIANT_TYPE_VARIANT);
+      tree_instance_build_gvariant (tree, builder);
+      built = g_variant_builder_end (builder);
+      g_variant_ref_sink (built);
+      g_variant_get_data (built);
+      val = g_variant_get_variant (built);
+
+      s3 = g_variant_print (val, TRUE);
+      g_assert_cmpstr (s1, ==, s3);
+
+      g_variant_iter_init (&iter, built);
+      g_assert (tree_instance_check_iter (tree, &iter));
+      g_assert (g_variant_iter_next_value (&iter) == NULL);
+
+      g_variant_unref (built);
+      g_variant_unref (val);
+      g_free (s3);
+    }
+
   tree_instance_free (tree);
   g_variant_unref (value);
   g_free (s2);
@@ -2414,13 +2651,13 @@ test_constructor (void)
 }
 
 static void
-test_constructors (void)
+test_containers (void)
 {
   gint i;
 
-  for (i = 0; i < 1000; i++)
+  for (i = 0; i < 100; i++)
     {
-      test_constructor ();
+      test_container ();
     }
 }
 
@@ -2439,7 +2676,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/variant", test_variants);
   g_test_add_func ("/gvariant/serialiser/strings", test_strings);
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
-  g_test_add_func ("/gvariant/constructors", test_constructors);
+  g_test_add_func ("/gvariant/containers", test_containers);
 
   for (i = 1; i <= 20; i += 4)
     {
