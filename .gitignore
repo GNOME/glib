@@ -10,6 +10,9 @@ Makefile
 .*.swp
 .sw?
 *.rc
+*.gcno
+*.gcda
+*.gcov
 
 # autofoo stuff here
 compile
