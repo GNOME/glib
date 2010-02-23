@@ -23,7 +23,7 @@
 #ifndef __G_FILE_DESCRIPTOR_BASED_H__
 #define __G_FILE_DESCRIPTOR_BASED_H__
 
-#include <gio/giotypes.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
