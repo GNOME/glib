@@ -2027,7 +2027,7 @@ g_converter_output_stream_get_type
 <SECTION>
 <FILE>gzcompressor</FILE>
 <TITLE>GZlibCompressor</TITLE>
-GZLibCompressor
+GZlibCompressor
 GZlibCompressorFormat
 g_zlib_compressor_new
 <SUBSECTION Standard>
@@ -2045,7 +2045,7 @@ g_zlib_compressor_get_type
 <SECTION>
 <FILE>gzdecompressor</FILE>
 <TITLE>GZlibDecompressor</TITLE>
-GZLibDecompressor
+GZlibDecompressor
 g_zlib_decompressor_new
 <SUBSECTION Standard>
 GZlibDecompressorClass

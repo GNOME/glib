@@ -46,8 +46,8 @@ enum {
  * @short_description: Zlib compressor
  * @include: gio/gio.h
  *
- * #GZlibCompressor is an implementation of #GCompressor that
- * decompresses data compressed with zlib.
+ * #GZlibCompressor is an implementation of #GConverter that
+ * compresses data using zlib.
  */
 
 static void g_zlib_compressor_iface_init          (GConverterIface *iface);

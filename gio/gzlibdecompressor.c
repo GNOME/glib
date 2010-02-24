@@ -45,7 +45,7 @@ enum {
  * @short_description: Zlib decompressor
  * @include: gio/gio.h
  *
- * #GZlibDecompressor is an implementation of #GDecompressor that
+ * #GZlibDecompressor is an implementation of #GConverter that
  * decompresses data compressed with zlib.
  */
 
