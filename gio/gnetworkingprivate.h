@@ -68,6 +68,17 @@
 #define _PATH_RESCONF "/etc/resolv.conf"
 #endif
 
+#ifndef CMSG_LEN
+/* CMSG_LEN and CMSG_SPACE are defined by RFC 2292, but missing on
+ * some older platforms.
+ */
+#define CMSG_LEN(len) ((size_t)CMSG_DATA((struct cmsghdr *)NULL) + (len))
+
+/* CMSG_SPACE must add at least as much padding as CMSG_NXTHDR()
+ * adds. We overestimate here.
+ */
+#define ALIGN_TO_SIZEOF(len, obj) (((len) + sizeof (obj) - 1) & ~(sizeof (obj) - 1))
+#define CMSG_SPACE(len) ALIGN_TO_SIZEOF (CMSG_LEN (len), struct cmsghdr)
 #endif
 
 G_BEGIN_DECLS
