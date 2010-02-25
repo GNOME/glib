@@ -739,13 +739,13 @@ g_variant_type_info_get (const GVariantType *type)
       GVariantTypeInfo *info;
       gchar *type_string;
 
-      if G_UNLIKELY (g_variant_type_info_table == NULL)
-        g_variant_type_info_table = g_hash_table_new (g_str_hash,
-                                                      g_str_equal);
-
       type_string = g_variant_type_dup_string (type);
 
       g_static_rec_mutex_lock (&g_variant_type_info_lock);
+
+      if (g_variant_type_info_table == NULL)
+        g_variant_type_info_table = g_hash_table_new (g_str_hash,
+                                                      g_str_equal);
       info = g_hash_table_lookup (g_variant_type_info_table, type_string);
 
       if (info == NULL)
@@ -833,9 +833,9 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
     {
       ContainerInfo *container = (ContainerInfo *) info;
 
+      g_static_rec_mutex_lock (&g_variant_type_info_lock);
       if (g_atomic_int_dec_and_test (&container->ref_count))
         {
-          g_static_rec_mutex_lock (&g_variant_type_info_lock);
           g_hash_table_remove (g_variant_type_info_table,
                                container->type_string);
           if (g_hash_table_size (g_variant_type_info_table) == 0)
@@ -856,6 +856,8 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
           else
             g_assert_not_reached ();
         }
+      else
+        g_static_rec_mutex_unlock (&g_variant_type_info_lock);
     }
 }
 
