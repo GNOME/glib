@@ -96,7 +96,6 @@ gio/gunixoutputstream.c
 gio/gunixsocketaddress.c
 gio/gunixvolume.c
 gio/gunixvolumemonitor.c
-gio/gutf8inputstream.c
 gio/gvfs.c
 gio/gvolume.c
 gio/gvolumemonitor.c

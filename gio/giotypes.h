@@ -43,7 +43,6 @@ typedef struct _GConverter                    GConverter;
 typedef struct _GConverterInputStream         GConverterInputStream;
 typedef struct _GConverterOutputStream        GConverterOutputStream;
 typedef struct _GDataInputStream              GDataInputStream;
-typedef struct _GUtf8InputStream              GUtf8InputStream;
 typedef struct _GZlibCompressor               GZlibCompressor;
 typedef struct _GZlibDecompressor             GZlibDecompressor;
 
