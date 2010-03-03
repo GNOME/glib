@@ -2348,8 +2348,7 @@ struct heap_builder
 #define GVHB_MAGIC               ((gsize) 3087242682u)
 #define is_valid_builder(b)      (b != NULL && \
                                   GVSB(b)->magic == GVSB_MAGIC)
-#define is_valid_heap_builder(b) (GVHB(b)->magic == GVHB_MAGIC && \
-                                  is_valid_builder(b))
+#define is_valid_heap_builder(b) (GVHB(b)->magic == GVHB_MAGIC)
 
 /**
  * g_variant_builder_new:
