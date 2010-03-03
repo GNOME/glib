@@ -30,6 +30,14 @@
 #include <windns.h>
 #include <mswsock.h>
 
+#ifdef HAVE_WSPIAPI_H
+/* <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
+ * inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
+ * they aren't present at run-time (on Windows 2000).
+ */
+#include <wspiapi.h>
+#endif
+
 #else /* !G_OS_WIN32 */
 
 #include <sys/types.h>
