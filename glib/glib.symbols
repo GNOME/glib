@@ -1766,12 +1766,14 @@ g_variant_iter_loop
 g_variant_iter_next_value
 
 g_variant_builder_add_value
+g_variant_builder_init
+g_variant_builder_clear
+g_variant_builder_open
 g_variant_builder_close
 g_variant_builder_end
 g_variant_builder_new
-g_variant_builder_open
-g_variant_builder_ref
 g_variant_builder_unref
+g_variant_builder_ref
 #endif
 #endif
 

@@ -2540,7 +2540,7 @@ tree_instance_build_gvariant (TreeInstance    *tree,
     {
       gsize i;
 
-      builder = g_variant_builder_open (builder, type);
+      g_variant_builder_open (builder, type);
 
       for (i = 0; i < tree->n_children; i++)
         tree_instance_build_gvariant (tree->children[i], builder);
@@ -2619,15 +2619,15 @@ test_container (void)
 
   if (g_variant_is_container (value))
     {
-      GVariantBuilder *builder;
+      GVariantBuilder builder;
       GVariantIter iter;
       GVariant *built;
       GVariant *val;
       gchar *s3;
 
-      builder = g_variant_builder_new (G_VARIANT_TYPE_VARIANT);
-      tree_instance_build_gvariant (tree, builder);
-      built = g_variant_builder_end (builder);
+      g_variant_builder_init (&builder, G_VARIANT_TYPE_VARIANT);
+      tree_instance_build_gvariant (tree, &builder);
+      built = g_variant_builder_end (&builder);
       g_variant_ref_sink (built);
       g_variant_get_data (built);
       val = g_variant_get_variant (built);
@@ -2676,7 +2676,6 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/variant", test_variants);
   g_test_add_func ("/gvariant/serialiser/strings", test_strings);
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
-  g_test_add_func ("/gvariant/containers", test_containers);
 
   for (i = 1; i <= 20; i += 4)
     {
@@ -2687,6 +2686,8 @@ main (int argc, char **argv)
                             (gpointer) test_fuzzes);
       g_free (testname);
     }
+
+  g_test_add_func ("/gvariant/containers", test_containers);
 
   return g_test_run ();
 }

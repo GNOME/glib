@@ -1619,7 +1619,7 @@ g_variant_print_string (GVariant *value,
         const gchar *str = g_variant_get_string (value, NULL);
         gchar *escaped = g_strescape (str, NULL);
 
-        g_string_append_printf (string, "\"%s\"", escaped);
+        g_string_append_printf (string, "\'%s\'", escaped);
 
         g_free (escaped);
       }
@@ -1709,14 +1709,14 @@ g_variant_print_string (GVariant *value,
     case G_VARIANT_CLASS_OBJECT_PATH:
       if (type_annotate)
         g_string_append (string, "objectpath ");
-      g_string_append_printf (string, "\"%s\"",
+      g_string_append_printf (string, "\'%s\'",
                               g_variant_get_string (value, NULL));
       break;
 
     case G_VARIANT_CLASS_SIGNATURE:
       if (type_annotate)
         g_string_append (string, "signature ");
-      g_string_append_printf (string, "\"%s\"",
+      g_string_append_printf (string, "\'%s\'",
                               g_variant_get_string (value, NULL));
       break;
 
@@ -1929,7 +1929,8 @@ struct heap_iter
 #define GVHI(i)                 ((struct heap_iter *) (i))
 #define GVSI_MAGIC              ((gsize) 3579507750u)
 #define GVHI_MAGIC              ((gsize) 1450270775u)
-#define is_valid_iter(i)        (GVSI(i)->magic == GVSI_MAGIC)
+#define is_valid_iter(i)        (i != NULL && \
+                                 GVSI(i)->magic == GVSI_MAGIC)
 #define is_valid_heap_iter(i)   (GVHI(i)->magic == GVHI_MAGIC && \
                                  is_valid_iter(i))
 
@@ -2285,11 +2286,10 @@ g_variant_iter_next (GVariantIter *iter,
 }
 
 /* GVariantBuilder {{{1 */
-
 /**
  * GVariantBuilder:
  *
- * A utility class for constructing container-type #GVariant instances.
+ * A utility type for constructing container-type #GVariant instances.
  *
  * This is an opaque structure and may only be accessed using the
  * following functions.
@@ -2297,7 +2297,8 @@ g_variant_iter_next (GVariantIter *iter,
  * #GVariantBuilder is not threadsafe in any way.  Do not attempt to
  * access it from more than one thread.
  **/
-struct _GVariantBuilder
+
+struct stack_builder
 {
   GVariantBuilder *parent;
   GVariantType *type;
@@ -2325,165 +2326,274 @@ struct _GVariantBuilder
    */
   guint uniform_item_types : 1;
 
-  /* set to '1' until _end() or _close() is called. */
-  guint is_active : 1;
-
-  /* set to '1' by _open() until _close() is called */
-  guint has_child : 1;
-
   /* set to '1' initially and changed to '0' if an untrusted value is
    * added
    */
   guint trusted : 1;
 
+  gsize magic;
+};
+
+struct heap_builder
+{
+  GVariantBuilder builder;
+  gsize magic;
+
   gint ref_count;
 };
+
+#define GVSB(b)                  ((struct stack_builder *) (b))
+#define GVHB(b)                  ((struct heap_builder *) (b))
+#define GVSB_MAGIC               ((gsize) 1033660112u)
+#define GVHB_MAGIC               ((gsize) 3087242682u)
+#define is_valid_builder(b)      (b != NULL && \
+                                  GVSB(b)->magic == GVSB_MAGIC)
+#define is_valid_heap_builder(b) (GVHB(b)->magic == GVHB_MAGIC && \
+                                  is_valid_builder(b))
 
 /**
  * g_variant_builder_new:
  * @type: a container type
  * @returns: a #GVariantBuilder
  *
- * Creates a new #GVariantBuilder.
+ * Allocates and initialises a new #GVariantBuilder.
  *
- * @type must be non-%NULL.  It specifies the type of container to
- * construct.  It can be an indefinite type such as
- * %G_VARIANT_TYPE_ARRAY or a definite type such as "as" or "(ii)".
- * Maybe, array, tuple, dictionary entry and variants may be
- * constructed.
+ * You should call g_variant_builder_unref() on the return value when it
+ * is no longer needed.  The memory will not be automatically freed by
+ * any other call.
  *
- * After the builder is created, values are added using
- * g_variant_builder_add_value() or g_variant_builder_add().
+ * In most cases it is easier to place a #GVariantBuilder directly on
+ * the stack of the calling function and initialise it with
+ * g_variant_builder_init().
  *
- * After all the child values are added, g_variant_builder_end() frees
- * the builder and returns the #GVariant that was created.
+ * Since: 2.24
  **/
 GVariantBuilder *
 g_variant_builder_new (const GVariantType *type)
 {
   GVariantBuilder *builder;
 
-  g_return_val_if_fail (type != NULL, NULL);
-  g_return_val_if_fail (g_variant_type_is_container (type), NULL);
-
-  builder = g_slice_new (GVariantBuilder);
-  builder->parent = NULL;
-  builder->offset = 0;
-
-  builder->has_child = FALSE;
-  builder->is_active = TRUE;
-  builder->trusted = TRUE;
-
-  builder->type = g_variant_type_copy (type);
-  builder->prev_item_type = NULL;
-
-  builder->ref_count = 1;
-
-  switch (*(const gchar *) type)
-    {
-    case G_VARIANT_CLASS_VARIANT:
-      builder->uniform_item_types = TRUE;
-      builder->allocated_children = 1;
-      builder->expected_type = NULL;
-      builder->min_items = 1;
-      builder->max_items = 1;
-      break;
-
-    case G_VARIANT_CLASS_ARRAY:
-      builder->uniform_item_types = TRUE;
-      builder->allocated_children = 8;
-      builder->expected_type = g_variant_type_element (builder->type);
-      builder->min_items = 0;
-      builder->max_items = -1;
-      break;
-
-    case G_VARIANT_CLASS_MAYBE:
-      builder->uniform_item_types = TRUE;
-      builder->allocated_children = 1;
-      builder->expected_type = g_variant_type_element (builder->type);
-      builder->min_items = 0;
-      builder->max_items = 1;
-      break;
-
-    case G_VARIANT_CLASS_DICT_ENTRY:
-      builder->uniform_item_types = FALSE;
-      builder->allocated_children = 2;
-      builder->expected_type = g_variant_type_key (builder->type);
-      builder->min_items = 2;
-      builder->max_items = 2;
-      break;
-
-    case 'r': /* G_VARIANT_TYPE_TUPLE was given */
-      builder->uniform_item_types = FALSE;
-      builder->allocated_children = 8;
-      builder->expected_type = NULL;
-      builder->min_items = 0;
-      builder->max_items = -1;
-      break;
-
-    case G_VARIANT_CLASS_TUPLE: /* a definite tuple type was given */
-      builder->allocated_children = g_variant_type_n_items (type);
-      builder->expected_type = g_variant_type_first (builder->type);
-      builder->min_items = builder->allocated_children;
-      builder->max_items = builder->allocated_children;
-      builder->uniform_item_types = FALSE;
-      break;
-
-    default:
-      g_assert_not_reached ();
-   }
-
-  builder->children = g_new (GVariant *, builder->allocated_children);
+  builder = (GVariantBuilder *) g_slice_new (struct heap_builder);
+  g_variant_builder_init (builder, type);
+  GVHB(builder)->magic = GVHB_MAGIC;
+  GVHB(builder)->ref_count = 1;
 
   return builder;
 }
 
 /**
  * g_variant_builder_unref:
- * @builder: a #GVariantBuilder
+ * @builder: a #GVariantBuilder allocated by g_variant_builder_new()
  *
- * Reduces the reference count on @builder.  If no other references are
- * held, the builder is freed.  If the builder was created using
- * g_variant_builder_open() then this may result in the destruction of
- * the parent builder too (if no other references are held on it).
+ * Decreases the reference count on @builder.
+ *
+ * In the event that there are no more references, releases all memory
+ * associated with the #GVariantBuilder.
+ *
+ * Don't call this on stack-allocated #GVariantBuilder instances or bad
+ * things will happen.
+ *
+ * Since: 2.24
  **/
 void
 g_variant_builder_unref (GVariantBuilder *builder)
 {
-  GVariantBuilder *parent;
-  gsize i;
+  g_return_if_fail (is_valid_heap_builder (builder));
 
-  if (--builder->ref_count)
+  if (--GVHB(builder)->ref_count)
     return;
 
-  for (i = 0; i < builder->offset; i++)
-    g_variant_unref (builder->children[i]);
+  g_variant_builder_clear (builder);
+  GVHB(builder)->magic = 0;
 
-  g_free (builder->children);
-
-  parent = builder->parent;
-  g_slice_free (GVariantBuilder, builder);
-
-  g_variant_builder_unref (parent);
+  g_slice_free (struct heap_builder, GVHB(builder));
 }
 
 /**
- * g_variant_builder_ref;
- * @builder: a #GVariantBuilder
- * @returns: the same #GVariantBuilder
+ * g_variant_builder_ref:
+ * @builder: a #GVariantBuilder allocated by g_variant_builder_new()
+ * @returns: a new reference to @builder
  *
- * Increases the reference count on @builder by 1.
+ * Increases the reference count on @builder.
+ *
+ * Don't call this on stack-allocated #GVariantBuilder instances or bad
+ * things will happen.
+ *
+ * Since: 2.24
  **/
 GVariantBuilder *
 g_variant_builder_ref (GVariantBuilder *builder)
 {
-  builder->ref_count++;
+  g_return_val_if_fail (is_valid_heap_builder (builder), NULL);
+
+  GVHB(builder)->ref_count++;
 
   return builder;
 }
 
+/**
+ * g_variant_builder_clear:
+ * @builder: a #GVariantBuilder
+ *
+ * Releases all memory associated with a #GVariantBuilder without
+ * freeing the #GVariantBuilder structure itself.
+ *
+ * It typically only makes sense to do this on a stack-allocated
+ * #GVariantBuilder if you want to abort building the value part-way
+ * through.  This function need not be called if you call
+ * g_variant_builder_end() and it also doesn't need to be called on
+ * builders allocated with g_variant_builder_new (see
+ * g_variant_builder_free() for that).
+ *
+ * This function leaves the #GVariantBuilder structure set to all-zeros.
+ * It is valid to call this function on either an initialised
+ * #GVariantBuilder or one that is set to all-zeros but it is not valid
+ * to call this function on uninitialised memory.
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_builder_clear (GVariantBuilder *builder)
+{
+  gsize i;
+
+  if (GVSB(builder)->magic == 0)
+    /* all-zeros case */
+    return;
+
+  g_return_if_fail (is_valid_builder (builder));
+
+  g_variant_type_free (GVSB(builder)->type);
+
+  for (i = 0; i < GVSB(builder)->offset; i++)
+    g_variant_unref (GVSB(builder)->children[i]);
+
+  g_free (GVSB(builder)->children);
+
+  if (GVSB(builder)->parent)
+    {
+      g_variant_builder_clear (GVSB(builder)->parent);
+      g_slice_free (GVariantBuilder, GVSB(builder)->parent);
+    }
+
+  memset (builder, 0, sizeof (GVariantBuilder));
+}
+
+/**
+ * g_variant_builder_init:
+ * @builder: a #GVariantBuilder
+ * @type: a container type
+ *
+ * Initialises a #GVariantBuilder structure.
+ *
+ * @type must be non-%NULL.  It specifies the type of container to
+ * construct.  It can be an indefinite type such as
+ * %G_VARIANT_TYPE_ARRAY or a definite type such as "as" or "(ii)".
+ * Maybe, array, tuple, dictionary entry and variant-typed values may be
+ * constructed.
+ *
+ * After the builder is initialised, values are added using
+ * g_variant_builder_add_value() or g_variant_builder_add().
+ *
+ * After all the child values are added, g_variant_builder_end() frees
+ * the memory associated with the builder and returns the #GVariant that
+ * was created.
+ *
+ * This function completely ignores the previous contents of @builder.
+ * On one hand this means that it is valid to pass in completely
+ * uninitialised memory.  On the other hand, this means that if you are
+ * initialising over top of an existing #GVariantBuilder you need to
+ * first call g_variant_builder_clear() in order to avoid leaking
+ * memory.
+ *
+ * You must not call g_variant_builder_ref() or
+ * g_variant_builder_unref() on a #GVariantBuilder that was initialised
+ * with this function.  If you ever pass a reference to a
+ * #GVariantBuilder outside of the control of your own code then you
+ * should assume that the person receiving that reference may try to use
+ * reference counting; you should use g_variant_builder_new() instead of
+ * this function.
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_builder_init (GVariantBuilder    *builder,
+                        const GVariantType *type)
+{
+  g_return_if_fail (type != NULL);
+  g_return_if_fail (g_variant_type_is_container (type));
+
+  g_assert (sizeof (struct stack_builder) < sizeof (GVariantBuilder));
+  memset (builder, 0, sizeof (GVariantBuilder));
+
+  GVSB(builder)->type = g_variant_type_copy (type);
+  GVSB(builder)->magic = GVSB_MAGIC;
+  GVSB(builder)->trusted = TRUE;
+
+  switch (*(const gchar *) type)
+    {
+    case G_VARIANT_CLASS_VARIANT:
+      GVSB(builder)->uniform_item_types = TRUE;
+      GVSB(builder)->allocated_children = 1;
+      GVSB(builder)->expected_type = NULL;
+      GVSB(builder)->min_items = 1;
+      GVSB(builder)->max_items = 1;
+      break;
+
+    case G_VARIANT_CLASS_ARRAY:
+      GVSB(builder)->uniform_item_types = TRUE;
+      GVSB(builder)->allocated_children = 8;
+      GVSB(builder)->expected_type =
+        g_variant_type_element (GVSB(builder)->type);
+      GVSB(builder)->min_items = 0;
+      GVSB(builder)->max_items = -1;
+      break;
+
+    case G_VARIANT_CLASS_MAYBE:
+      GVSB(builder)->uniform_item_types = TRUE;
+      GVSB(builder)->allocated_children = 1;
+      GVSB(builder)->expected_type =
+        g_variant_type_element (GVSB(builder)->type);
+      GVSB(builder)->min_items = 0;
+      GVSB(builder)->max_items = 1;
+      break;
+
+    case G_VARIANT_CLASS_DICT_ENTRY:
+      GVSB(builder)->uniform_item_types = FALSE;
+      GVSB(builder)->allocated_children = 2;
+      GVSB(builder)->expected_type =
+        g_variant_type_key (GVSB(builder)->type);
+      GVSB(builder)->min_items = 2;
+      GVSB(builder)->max_items = 2;
+      break;
+
+    case 'r': /* G_VARIANT_TYPE_TUPLE was given */
+      GVSB(builder)->uniform_item_types = FALSE;
+      GVSB(builder)->allocated_children = 8;
+      GVSB(builder)->expected_type = NULL;
+      GVSB(builder)->min_items = 0;
+      GVSB(builder)->max_items = -1;
+      break;
+
+    case G_VARIANT_CLASS_TUPLE: /* a definite tuple type was given */
+      GVSB(builder)->allocated_children = g_variant_type_n_items (type);
+      GVSB(builder)->expected_type =
+        g_variant_type_first (GVSB(builder)->type);
+      GVSB(builder)->min_items = GVSB(builder)->allocated_children;
+      GVSB(builder)->max_items = GVSB(builder)->allocated_children;
+      GVSB(builder)->uniform_item_types = FALSE;
+      break;
+
+    default:
+      g_assert_not_reached ();
+   }
+
+  GVSB(builder)->children = g_new (GVariant *,
+                                   GVSB(builder)->allocated_children);
+}
+
 static void
-g_variant_builder_make_room (GVariantBuilder *builder)
+g_variant_builder_make_room (struct stack_builder *builder)
 {
   if (builder->offset == builder->allocated_children)
     {
@@ -2505,139 +2615,120 @@ g_variant_builder_make_room (GVariantBuilder *builder)
  * putting different types of items into an array, putting the wrong
  * types or number of items in a tuple, putting more than one value into
  * a variant, etc.
+ *
+ * Since: 2.24
  **/
 void
 g_variant_builder_add_value (GVariantBuilder *builder,
                              GVariant        *value)
 {
-  g_return_if_fail (builder != NULL && value != NULL);
-  g_return_if_fail (builder->is_active && !builder->has_child);
-  g_return_if_fail (builder->offset < builder->max_items);
-  g_return_if_fail (!builder->expected_type ||
-                    g_variant_is_of_type (value, builder->expected_type));
-  g_return_if_fail (!builder->prev_item_type ||
-                    g_variant_is_of_type (value, builder->prev_item_type));
+  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
+  g_return_if_fail (!GVSB(builder)->expected_type ||
+                    g_variant_is_of_type (value,
+                                          GVSB(builder)->expected_type));
+  g_return_if_fail (!GVSB(builder)->prev_item_type ||
+                    g_variant_is_of_type (value,
+                                          GVSB(builder)->prev_item_type));
 
-  builder->trusted &= g_variant_is_trusted (value);
+  GVSB(builder)->trusted &= g_variant_is_trusted (value);
 
-  if (!builder->uniform_item_types)
+  if (!GVSB(builder)->uniform_item_types)
     {
       /* advance our expected type pointers */
-      if (builder->expected_type)
-        builder->expected_type =
-          g_variant_type_next (builder->expected_type);
+      if (GVSB(builder)->expected_type)
+        GVSB(builder)->expected_type =
+          g_variant_type_next (GVSB(builder)->expected_type);
 
-      if (builder->prev_item_type)
-        builder->prev_item_type =
-          g_variant_type_next (builder->prev_item_type);
+      if (GVSB(builder)->prev_item_type)
+        GVSB(builder)->prev_item_type =
+          g_variant_type_next (GVSB(builder)->prev_item_type);
     }
   else
-    builder->prev_item_type = g_variant_get_type (value);
+    GVSB(builder)->prev_item_type = g_variant_get_type (value);
 
-  g_variant_builder_make_room (builder);
+  g_variant_builder_make_room (GVSB(builder));
 
-  builder->children[builder->offset++] = g_variant_ref_sink (value);
+  GVSB(builder)->children[GVSB(builder)->offset++] =
+    g_variant_ref_sink (value);
 }
 
 /**
  * g_variant_builder_open:
  * @builder: a #GVariantBuilder
  * @type: a #GVariantType
- * @returns: a new #GVariantBuilder
  *
- * Opens a subcontainer inside the given @builder.
+ * Opens a subcontainer inside the given @builder.  When done adding
+ * items to the subcontainer, g_variant_builder_close() must be called.
  *
- * This call consumes the caller's reference to @builder.
- * g_variant_builder_close() returns the reference.
+ * It is an error to call this function in any way that would cause an
+ * inconsistent value to be constructed (ie: adding too many values or
+ * a value of an incorrect type).
  *
- * Even if additional references are held, it is not permissible to use
- * @builder in any way (except for further reference counting
- * operations) until g_variant_builder_close() is called on the return
- * value of this function.
- *
- * It is an error to call this function in any way that would create an
- * inconsistent value to be constructed.
+ * Since: 2.24
  **/
-GVariantBuilder *
+void
 g_variant_builder_open (GVariantBuilder    *builder,
                         const GVariantType *type)
 {
-  GVariantBuilder *child;
+  GVariantBuilder *parent;
 
-  g_return_val_if_fail (builder != NULL && type != NULL, NULL);
-  g_return_val_if_fail (builder->is_active && !builder->has_child, NULL);
-  g_return_val_if_fail (builder->offset < builder->max_items, NULL);
-  g_return_val_if_fail (!builder->expected_type ||
-                        g_variant_type_is_subtype_of (type,
-                                                      builder->expected_type),
-                        NULL);
-  g_return_val_if_fail (!builder->prev_item_type ||
-                        g_variant_type_is_subtype_of (builder->prev_item_type,
-                                                      type), NULL);
-  child = g_variant_builder_new (type);
-  builder->has_child = TRUE;
-  child->parent = builder;
+  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
+  g_return_if_fail (!GVSB(builder)->expected_type ||
+                    g_variant_type_is_subtype_of (type,
+                                                  GVSB(builder)->expected_type));
+  g_return_if_fail (!GVSB(builder)->prev_item_type ||
+                    g_variant_type_is_subtype_of (GVSB(builder)->prev_item_type,
+                                                  type));
+
+  parent = g_slice_dup (GVariantBuilder, builder);
+  g_variant_builder_init (builder, type);
+  GVSB(builder)->parent = parent;
 
   /* push the prev_item_type down into the subcontainer */
-  if (builder->prev_item_type)
+  if (GVSB(parent)->prev_item_type)
     {
-      if (!child->uniform_item_types)
+      if (!GVSB(builder)->uniform_item_types)
         /* tuples and dict entries */
-        child->prev_item_type =
-          g_variant_type_first (builder->prev_item_type);
+        GVSB(builder)->prev_item_type =
+          g_variant_type_first (GVSB(parent)->prev_item_type);
 
-      else if (!g_variant_type_is_variant (child->type))
+      else if (!g_variant_type_is_variant (GVSB(builder)->type))
         /* maybes and arrays */
-        child->prev_item_type =
-          g_variant_type_element (builder->prev_item_type);
+        GVSB(builder)->prev_item_type =
+          g_variant_type_element (GVSB(parent)->prev_item_type);
     }
-
-  return child;
 }
 
 /**
  * g_variant_builder_close:
  * @builder: a #GVariantBuilder
- * @returns: the original parent of @builder
  *
- * This function closes a builder that was created with a call to
- * g_variant_builder_open().
- *
- * This function consumes the caller's reference to @builder and drops
- * it.  The return result is the reference to the parent
- * #GVariantBuilder that was originally taken from the caller by
- * g_variant_builder_open().
- *
- * Even if additional references are held, it is not permissible to use
- * @builder in any way after this call except for further reference
- * counting operations.
+ * Closes the subcontainer inside the given @builder that was opened by
+ * the most recent call to g_variant_builder_open().
  *
  * It is an error to call this function in any way that would create an
- * inconsistent value to be constructed (ie: insufficient number of
- * items added to a container with a specific number of children
- * required).  It is also an error to call this function if the builder
- * was created with an indefinite array or maybe type and no children
- * have been added; in this case it is impossible to infer the type of
- * the empty array.
+ * inconsistent value to be constructed (ie: too few values added to the
+ * subcontainer).
+ *
+ * Since: 2.24
  **/
-GVariantBuilder *
+void
 g_variant_builder_close (GVariantBuilder *builder)
 {
   GVariantBuilder *parent;
 
-  g_return_val_if_fail (builder != NULL, NULL);
-  g_return_val_if_fail (builder->parent != NULL, NULL);
-  g_assert (builder->parent->has_child);
+  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (GVSB(builder)->parent != NULL);
 
-  /* steal reference so _end() doesn't free it. */
-  parent = builder->parent;
-  builder->parent = NULL;
-
-  parent->has_child = FALSE;
+  parent = GVSB(builder)->parent;
+  GVSB(builder)->parent = NULL;
 
   g_variant_builder_add_value (parent, g_variant_builder_end (builder));
+  *builder = *parent;
 
-  return parent;
+  g_slice_free (GVariantBuilder, parent);
 }
 
 /*< private >
@@ -2671,11 +2762,24 @@ g_variant_make_array_type (GVariant *element)
  *
  * Ends the builder process and returns the constructed value.
  *
- * It is an error to call this function on a #GVariantBuilder created
- * by a call to g_variant_builder_open().  It is an error to call this
- * function if @builder has an outstanding child.  It is an error to
- * call this function in any case that g_variant_builder_check_end()
- * would return %FALSE.
+ * This call automatically reduces the reference count on @builder by
+ * one, unless it has previously had g_variant_builder_no_autofree()
+ * called on it.  Unless you've taken other actions, this is usually
+ * sufficient to free @builder.
+ *
+ * Even if additional references are held, it is not permissible to use
+ * @builder in any way after this call except for further reference
+ * counting operations.
+ *
+ * It is an error to call this function in any way that would create an
+ * inconsistent value to be constructed (ie: insufficient number of
+ * items added to a container with a specific number of children
+ * required).  It is also an error to call this function if the builder
+ * was created with an indefinite array or maybe type and no children
+ * have been added; in this case it is impossible to infer the type of
+ * the empty array.
+ *
+ * Since: 2.24
  **/
 GVariant *
 g_variant_builder_end (GVariantBuilder *builder)
@@ -2683,42 +2787,43 @@ g_variant_builder_end (GVariantBuilder *builder)
   GVariantType *my_type;
   GVariant *value;
 
-  g_return_val_if_fail (builder != NULL, NULL);
-  g_return_val_if_fail (builder->is_active && !builder->has_child, NULL);
-  g_return_val_if_fail (builder->offset >= builder->min_items, NULL);
-  g_return_val_if_fail (!builder->uniform_item_types ||
-                        builder->prev_item_type != NULL ||
-                        g_variant_type_is_definite (builder->type), NULL);
+  g_return_val_if_fail (is_valid_builder (builder), NULL);
+  g_return_val_if_fail (GVSB(builder)->offset >= GVSB(builder)->min_items,
+                        NULL);
+  g_return_val_if_fail (!GVSB(builder)->uniform_item_types ||
+                        GVSB(builder)->prev_item_type != NULL ||
+                        g_variant_type_is_definite (GVSB(builder)->type),
+                        NULL);
 
-  if (g_variant_type_is_definite (builder->type))
-    my_type = g_variant_type_copy (builder->type);
+  if (g_variant_type_is_definite (GVSB(builder)->type))
+    my_type = g_variant_type_copy (GVSB(builder)->type);
 
-  else if (g_variant_type_is_maybe (builder->type))
-    my_type = g_variant_make_maybe_type (builder->children[0]);
+  else if (g_variant_type_is_maybe (GVSB(builder)->type))
+    my_type = g_variant_make_maybe_type (GVSB(builder)->children[0]);
 
-  else if (g_variant_type_is_array (builder->type))
-    my_type = g_variant_make_array_type (builder->children[0]);
+  else if (g_variant_type_is_array (GVSB(builder)->type))
+    my_type = g_variant_make_array_type (GVSB(builder)->children[0]);
 
-  else if (g_variant_type_is_tuple (builder->type))
-    my_type = g_variant_make_tuple_type (builder->children, builder->offset);
+  else if (g_variant_type_is_tuple (GVSB(builder)->type))
+    my_type = g_variant_make_tuple_type (GVSB(builder)->children,
+                                         GVSB(builder)->offset);
 
-  else if (g_variant_type_is_dict_entry (builder->type))
-    my_type = g_variant_make_dict_entry_type (builder->children[0],
-                                              builder->children[1]);
+  else if (g_variant_type_is_dict_entry (GVSB(builder)->type))
+    my_type = g_variant_make_dict_entry_type (GVSB(builder)->children[0],
+                                              GVSB(builder)->children[1]);
   else
     g_assert_not_reached ();
 
   value = g_variant_new_from_children (my_type,
                                        g_renew (GVariant *,
-                                                builder->children,
-                                                builder->offset),
-                                       builder->offset,
-                                       builder->trusted);
-  builder->is_active = FALSE;
-  builder->children = NULL;
+                                                GVSB(builder)->children,
+                                                GVSB(builder)->offset),
+                                       GVSB(builder)->offset,
+                                       GVSB(builder)->trusted);
+  GVSB(builder)->children = NULL;
+  GVSB(builder)->offset = 0;
 
-  g_variant_type_free (builder->type);
-  g_slice_free (GVariantBuilder, builder);
+  g_variant_builder_clear (builder);
   g_variant_type_free (my_type);
 
   return value;

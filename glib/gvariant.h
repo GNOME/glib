@@ -157,14 +157,21 @@ gboolean                        g_variant_iter_loop                     (GVarian
 
 
 typedef struct _GVariantBuilder GVariantBuilder;
+struct _GVariantBuilder {
+  /*< private >*/
+  gsize x[16];
+};
 
+GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
 void                            g_variant_builder_unref                 (GVariantBuilder      *builder);
 GVariantBuilder *               g_variant_builder_ref                   (GVariantBuilder      *builder);
-GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
-GVariant *                      g_variant_builder_end                   (GVariantBuilder      *builder);
-GVariantBuilder *               g_variant_builder_open                  (GVariantBuilder      *builder,
+void                            g_variant_builder_init                  (GVariantBuilder      *builder,
                                                                          const GVariantType   *type);
-GVariantBuilder *               g_variant_builder_close                 (GVariantBuilder      *builder);
+GVariant *                      g_variant_builder_end                   (GVariantBuilder      *builder);
+void                            g_variant_builder_clear                 (GVariantBuilder      *builder);
+void                            g_variant_builder_open                  (GVariantBuilder      *builder,
+                                                                         const GVariantType   *type);
+void                            g_variant_builder_close                 (GVariantBuilder      *builder);
 void                            g_variant_builder_add_value             (GVariantBuilder      *builder,
                                                                          GVariant             *value);
 void                            g_variant_builder_add                   (GVariantBuilder      *builder,
