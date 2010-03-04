@@ -2752,7 +2752,7 @@ retry:
         goto retry;
       else if (errsv == ENOSYS || errsv == EINVAL)
         g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                             "Splice not supported");
+                             _("Splice not supported"));
       else
         g_set_error (error, G_IO_ERROR,
                      g_io_error_from_errno (errsv),
