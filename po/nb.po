@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.23.5\n"
-"Report-Msgid-Bugs-To:\n"
-"POT-Creation-Date: 2010-03-03 13:48+0100\n"
-"PO-Revision-Date: 2010-03-03 13:48+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-04 22:55+0100\n"
+"PO-Revision-Date: 2010-03-04 22:56+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -1312,10 +1312,14 @@ msgstr "Målfilen eksisterer"
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Splice er ikke støttet"
+
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
-msgstr "Feil under spleising av fil: %s"
+msgstr "Feil under splice(2) på fil: %s"
 
 #: ../gio/gfile.c:2905
 msgid "Can't copy special file"
