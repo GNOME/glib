@@ -36,6 +36,15 @@
 
 #include "glib.h"
 #include "gthreadprivate.h"
+
+/* Undef the macros before including galias.h */
+#undef g_malloc_n
+#undef g_malloc0_n
+#undef g_realloc_n
+#undef g_try_malloc_n
+#undef g_try_malloc0_n
+#undef g_try_realloc_n
+
 #include "galias.h"
 
 #define MEM_PROFILE_TABLE_SIZE 4096
@@ -232,7 +241,6 @@ g_try_realloc (gpointer mem,
 
 #define SIZE_OVERFLOWS(a,b) (G_UNLIKELY ((a) > G_MAXSIZE / (b)))
 
-#undef g_malloc_n
 gpointer
 g_malloc_n (gsize n_blocks,
 	    gsize n_block_bytes)
@@ -249,7 +257,6 @@ g_malloc_n (gsize n_blocks,
   return g_malloc (n_blocks * n_block_bytes);
 }
 
-#undef g_malloc0_n
 gpointer
 g_malloc0_n (gsize n_blocks,
 	     gsize n_block_bytes)
@@ -266,7 +273,6 @@ g_malloc0_n (gsize n_blocks,
   return g_malloc0 (n_blocks * n_block_bytes);
 }
 
-#undef g_realloc_n
 gpointer
 g_realloc_n (gpointer mem,
 	     gsize    n_blocks,
@@ -284,7 +290,6 @@ g_realloc_n (gpointer mem,
   return g_realloc (mem, n_blocks * n_block_bytes);
 }
 
-#undef g_try_malloc_n
 gpointer
 g_try_malloc_n (gsize n_blocks,
 		gsize n_block_bytes)
@@ -295,7 +300,6 @@ g_try_malloc_n (gsize n_blocks,
   return g_try_malloc (n_blocks * n_block_bytes);
 }
 
-#undef g_try_malloc0_n
 gpointer
 g_try_malloc0_n (gsize n_blocks,
 		 gsize n_block_bytes)
@@ -306,7 +310,6 @@ g_try_malloc0_n (gsize n_blocks,
   return g_try_malloc0 (n_blocks * n_block_bytes);
 }
 
-#undef g_try_realloc_n
 gpointer
 g_try_realloc_n (gpointer mem,
 		 gsize    n_blocks,
