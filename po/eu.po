@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-02 12:35+0100\n"
-"PO-Revision-Date: 2010-03-02 12:39+0100\n"
+"POT-Creation-Date: 2010-03-04 21:27+0100\n"
+"PO-Revision-Date: 2010-03-04 21:31+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -1321,6 +1321,10 @@ msgstr "Helburuko fitxategia existitzen da"
 #: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "Ezin da direktorioa errekurtsiboki kopiatu"
+
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Lotura ez da onartzen"
 
 #: ../gio/gfile.c:2759
 #, c-format
