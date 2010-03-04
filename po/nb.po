@@ -1319,7 +1319,7 @@ msgstr "Splice er ikke støttet"
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
-msgstr "Feil under splice(2) på fil: %s"
+msgstr "Feil ved bruk av  splice(2) på fil: %s"
 
 #: ../gio/gfile.c:2905
 msgid "Can't copy special file"
