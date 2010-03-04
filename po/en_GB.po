@@ -3,18 +3,19 @@
 # This file is distributed under the same licence as the GLIB package.
 # Gareth Owen <gowen72@yahoo.com> 2004
 # Bruce Cowan <bcowan@fastmail.co.uk>, 2009, 2010.
+# Philip Withnall <philip@tecnocode.co.uk>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-24 15:25+0000\n"
+"POT-Creation-Date: 2010-03-04 23:53+0000\n"
 "PO-Revision-Date: 2010-02-24 15:27+0100\n"
-"Last-Translator: Bruce Cowan <bcowan@fastmail.co.uk>\n"
+"Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: British English <en@li.org>\n"
-"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.5.2\n"
 
@@ -1306,6 +1307,10 @@ msgstr "Target file exists"
 msgid "Can't recursively copy directory"
 msgstr "Can't recursively copy directory"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Splice not supported"
+
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
@@ -2004,11 +2009,6 @@ msgstr "Error writing to Unix: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Abstract Unix domain socket addresses not supported on this system"
 
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Invalid UTF-8 sequence in input"
-
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "volume doesn't implement eject"
@@ -2057,6 +2057,9 @@ msgstr "Need more input"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Invalid compressed data"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "Invalid UTF-8 sequence in input"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "Reached maximum data array limit"
