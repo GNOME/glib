@@ -118,6 +118,10 @@ typedef gint64 goffset;
 typedef signed int gintptr;
 typedef unsigned int guintptr;
 
+#define G_GINTPTR_MODIFIER      ""
+#define G_GINTPTR_FORMAT        "i"
+#define G_GUINTPTR_FORMAT       "u"
+
 #else
 
 #define GPOINTER_TO_INT(p)	((gint)  (gint64) (p))
@@ -133,6 +137,10 @@ typedef unsigned long long guintptr;
 typedef signed __int64 gintptr;
 typedef unsigned __int64 guintptr;
 #endif
+
+#define G_GINTPTR_MODIFIER      "I64"
+#define G_GINTPTR_FORMAT        "I64i"
+#define G_GUINTPTR_FORMAT       "I64u"
 
 #endif
 
