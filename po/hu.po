@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-02 17:18+0100\n"
-"PO-Revision-Date: 2010-03-02 17:18+0100\n"
+"POT-Creation-Date: 2010-03-05 22:01+0100\n"
+"PO-Revision-Date: 2010-03-05 22:02+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -82,14 +82,12 @@ msgstr "Nincsenek csoportok beállítva a következő URI könyvjelzőjéhez: �
 #: ../glib/gbookmarkfile.c:3237 ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
-"Nincs „%s” nevű alkalmazás regisztrálva a következő könyvjelzőjéhez: „%s”"
+msgstr "Nincs „%s” nevű alkalmazás regisztrálva a következő könyvjelzőjéhez: „%s”"
 
 #: ../glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr ""
-"Nem sikerült kiterjeszteni a(z) „%s” végrehajtási sort a(z) „%s” URL címmel"
+msgstr "Nem sikerült kiterjeszteni a(z) „%s” végrehajtási sort a(z) „%s” URL címmel"
 
 #: ../glib/gconvert.c:437 ../glib/gconvert.c:515 ../glib/giochannel.c:1405
 #: ../gio/gcharsetconverter.c:459
@@ -150,8 +148,7 @@ msgstr "A(z) „%s” gépneve érvénytelen"
 #: ../glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
-"A(z) „%s” URI érvénytelen, escape sorozatként megadott karaktereket tartalmaz"
+msgstr "A(z) „%s” URI érvénytelen, escape sorozatként megadott karaktereket tartalmaz"
 
 #: ../glib/gconvert.c:1901
 #, c-format
@@ -195,8 +192,7 @@ msgstr "Nem sikerült megnyitni a(z) „%s” fájlt: %s"
 #: ../glib/gfileutils.c:716 ../glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
-"Nem sikerült lekérni a(z) „%s” fájl attribútumait. Az fstat() sikertelen: %s"
+msgstr "Nem sikerült lekérni a(z) „%s” fájl attribútumait. Az fstat() sikertelen: %s"
 
 #: ../glib/gfileutils.c:750
 #, c-format
@@ -218,8 +214,7 @@ msgstr "Nem sikerült létrehozni a(z) „%s” fájlt: %s"
 #: ../glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr ""
-"Nem sikerült írásra megnyitni a(z) „%s” fájlt: Az fdopen() sikertelen: %s"
+msgstr "Nem sikerült írásra megnyitni a(z) „%s” fájlt: Az fdopen() sikertelen: %s"
 
 #: ../glib/gfileutils.c:939
 #, c-format
@@ -309,8 +304,7 @@ msgstr "Az átalakító a(z) „%s” elemről „%s” elemre nem nyitható meg
 
 #: ../glib/giochannel.c:1754
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
+msgstr "Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
 
 #: ../glib/giochannel.c:1801 ../glib/giochannel.c:2059
 #: ../glib/giochannel.c:2146
@@ -384,10 +378,8 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "A(z) „%-.*s” karakterhivatkozás nem engedélyezett karaktert kódol"
 
 #: ../glib/gmarkup.c:654
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Üres „&;” entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Üres „&;” entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:662
 #, c-format
@@ -411,8 +403,7 @@ msgstr "A dokumentumnak egy elemmel kell kezdődnie (például: <book>)"
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
-"„%s” nem érvényes karakter a „<” karakter után; elem neve nem kezdődhet vele"
+msgstr "„%s” nem érvényes karakter a „<” karakter után; elem neve nem kezdődhet vele"
 
 #: ../glib/gmarkup.c:1122
 #, c-format
@@ -425,8 +416,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1206
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Furcsa karakter („%s”) - „=” karakternek kellett volna jönnie a(z) „%s” elem "
 "„%s” attribútumneve után"
@@ -485,8 +475,7 @@ msgstr "A dokumentum üres volt, vagy csak üres hely karaktereket tartalmazott"
 
 #: ../glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
-"A dokumentum váratlanul véget ért egy nyitott hegyes zárójel („<”) után"
+msgstr "A dokumentum váratlanul véget ért egy nyitott hegyes zárójel („<”) után"
 
 #: ../glib/gmarkup.c:1670 ../glib/gmarkup.c:1715
 #, c-format
@@ -559,8 +548,7 @@ msgstr "a visszakövetési korlát elérve"
 
 #: ../glib/gregex.c:152 ../glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
-msgstr ""
-"a minta a részleges mintaillesztés esetén nem támogatott elemeket tartalmaz"
+msgstr "a minta a részleges mintaillesztés esetén nem támogatott elemeket tartalmaz"
 
 #: ../glib/gregex.c:154 ../gio/glocalfile.c:2115
 msgid "internal error"
@@ -758,8 +746,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "inkonzisztens NEWLINE beállítások"
 
 #: ../glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "a \\g után nem egy zárójelezett név vagy opcionálisan zárójelezett nem nulla "
 "szám áll"
@@ -791,14 +778,12 @@ msgstr "A PRCE programkönyvtár UTF-8 támogatás nélkül lett fordítva"
 
 #: ../glib/gregex.c:1103
 msgid "PCRE library is compiled without UTF8 properties support"
-msgstr ""
-"A PRCE programkönyvtár az UTF-8 tulajdonságok támogatása nélkül lett fordítva"
+msgstr "A PRCE programkönyvtár az UTF-8 tulajdonságok támogatása nélkül lett fordítva"
 
 #: ../glib/gregex.c:1157
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr ""
-"Hiba a(z) „%s” reguláris kifejezés fordításakor a(z) %d. karakternél: %s"
+msgstr "Hiba a(z) „%s” reguláris kifejezés fordításakor a(z) %d. karakternél: %s"
 
 #: ../glib/gregex.c:1193
 #, c-format
@@ -844,8 +829,7 @@ msgstr "ismeretlen escape sorozat"
 #: ../glib/gregex.c:2208
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
-"Hiba a(z) „%s” helyettesítőszöveg elemzésekor a(z) %lu. karakternél: %s"
+msgstr "Hiba a(z) „%s” helyettesítőszöveg elemzésekor a(z) %lu. karakternél: %s"
 
 #: ../glib/gshell.c:92
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -865,13 +849,11 @@ msgstr "A szöveg egy „\\” karakter után véget ért. (A szöveg: „%s”)
 #: ../glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"A szöveg véget ért, mielőtt %c idézőjelpárja meglett volna. (A szöveg: „%s”)"
+msgstr "A szöveg véget ért, mielőtt %c idézőjelpárja meglett volna. (A szöveg: „%s”)"
 
 #: ../glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
-"A szöveg üres volt (vagy legfeljebb üres hely karaktereket tartalmazott)"
+msgstr "A szöveg üres volt (vagy legfeljebb üres hely karaktereket tartalmazott)"
 
 #: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
@@ -1069,8 +1051,7 @@ msgstr "A fájl üres"
 
 #: ../glib/gkeyfile.c:763
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” sort, amelyik nem egy kulcs-érték pár, "
 "csoport, vagy megjegyzés"
@@ -1122,10 +1103,8 @@ msgstr ""
 
 #: ../glib/gkeyfile.c:1530
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr ""
-"A kulcsfájl tartalmazza a(z) „%s” kulcsot, amelynek értéke nem értelmezhető."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgstr "A kulcsfájl tartalmazza a(z) „%s” kulcsot, amelynek értéke nem értelmezhető."
 
 #: ../glib/gkeyfile.c:2124 ../glib/gkeyfile.c:2336
 #, c-format
@@ -1237,8 +1216,7 @@ msgstr "Nem található az alkalmazáshoz szükséges terminál"
 #: ../gio/gdesktopappinfo.c:1115
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
-"Nem hozható létre a(z) %s felhasználói alkalmazáskonfigurációs mappa: %s"
+msgstr "Nem hozható létre a(z) %s felhasználói alkalmazáskonfigurációs mappa: %s"
 
 #: ../gio/gdesktopappinfo.c:1119
 #, c-format
@@ -1264,8 +1242,7 @@ msgstr "a meghajtó nem valósítja meg a kiadást"
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr ""
-"a meghajtó nem valósítja meg a kiadást vagy az eject_with_operation függvényt"
+msgstr "a meghajtó nem valósítja meg a kiadást vagy az eject_with_operation függvényt"
 
 #: ../gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
@@ -1344,6 +1321,10 @@ msgstr "A célfájl létezik"
 #: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "A könyvtár nem másolható rekurzívan"
+
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "A fájlillesztés nem támogatott"
 
 #: ../gio/gfile.c:2759
 #, c-format
@@ -1444,8 +1425,7 @@ msgstr "Rosszul formált verziószám: %s"
 #: ../gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
-"A típus (%s) nem valósítja meg a from_tokens() függvényt a GIcon felületen"
+msgstr "A típus (%s) nem valósítja meg a from_tokens() függvényt a GIcon felületen"
 
 #: ../gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
@@ -2046,8 +2026,7 @@ msgstr "Hiba a unix írásakor: %s"
 
 #: ../gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
-"Az absztrakt unix tartományfoglalat-címek nem támogatottak ezen a rendszeren"
+msgstr "Az absztrakt unix tartományfoglalat-címek nem támogatottak ezen a rendszeren"
 
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
@@ -2058,8 +2037,7 @@ msgstr "a kötet nem valósítja meg a kiadást"
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr ""
-"a kötet nem valósítja meg a kiadást vagy a eject_with_operation függvényt"
+msgstr "a kötet nem valósítja meg a kiadást vagy a eject_with_operation függvényt"
 
 #: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
@@ -2098,3 +2076,4 @@ msgstr "További bemenet szükséges"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Érvénytelen tömörített adatok"
+
