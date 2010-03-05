@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-23 23:45+0200\n"
-"PO-Revision-Date: 2010-02-23 23:45+0200\n"
+"POT-Creation-Date: 2010-03-05 11:16+0200\n"
+"PO-Revision-Date: 2010-03-05 11:16+0200\n"
 "Last-Translator: Rimas Kudelis <rq@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -1328,10 +1328,14 @@ msgstr "Nurodytas failas jau egzistuoja"
 msgid "Can't recursively copy directory"
 msgstr "Negalima rekursyviai kopijuoti aplanko"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Skaidymas nepalaikomas"
+
 #: ../gio/gfile.c:2759
-#, fuzzy, c-format
+#, c-format
 msgid "Error splicing file: %s"
-msgstr "Klaida sujungiant failą: %s"
+msgstr "Klaida skaidant failą: %s"
 
 #: ../gio/gfile.c:2905
 msgid "Can't copy special file"
@@ -1932,7 +1936,7 @@ msgid "Error connecting: %s"
 msgstr "Klaida prisijungiant: %s"
 
 #: ../gio/gsocket.c:1559
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Nepavyko gauti laukiančios klaidos: %s"
 
@@ -2030,11 +2034,6 @@ msgstr "Klaida rašant į unix: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Abstrakčiųjų unix srities lizdų adresai šioje sistemoje nepalaikomi"
 
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Klaidinga UTF-8 seka įvestyje"
-
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "skirsnis nerealizuoja išstūmimo"
@@ -2083,6 +2082,9 @@ msgstr "Reikia daugiau įvesties"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Netinkami suspausti duomenys"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "Klaidinga UTF-8 seka įvestyje"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "Pasiekta viršutinė duomenų masyvo riba"
