@@ -61,8 +61,8 @@ mem_overflow (void)
   CHECK_FAIL (g_try_renew (X, q, b));
   free (p);
 
-#undef CHECK_EQ
-#undef CHECK_NEQ
+#undef CHECK_FAIL
+#undef CHECK_PASS
 
 #define CHECK_FAIL(P)	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) { p = (P); exit (0); } g_test_trap_assert_failed();
 #define CHECK_PASS(P)	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) { p = (P); exit (0); } g_test_trap_assert_passed();
