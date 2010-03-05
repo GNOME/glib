@@ -1,3 +1,4 @@
+# translation of ru.po to Russian
 # Copyright (C) 1998-2002, 2004, 2006, 2008, 2010 Free Software Foundation, Inc.
 #
 # Valek Filippov <frob@df.ru>, 2001-2002.
@@ -11,14 +12,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-24 10:47+0200\n"
-"PO-Revision-Date: 2010-02-24 10:48+0200\n"
+"POT-Creation-Date: 2010-03-05 15:49+0200\n"
+"PO-Revision-Date: 2010-03-05 15:48+0200\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../glib/gbookmarkfile.c:737
@@ -118,7 +120,8 @@ msgstr "Произошла ошибка при преобразовании: %s"
 #: ../glib/gconvert.c:678 ../glib/gutf8.c:976 ../glib/gutf8.c:1186
 #: ../glib/gutf8.c:1327 ../glib/gutf8.c:1431
 msgid "Partial character sequence at end of input"
-msgstr "Неполная символьная последовательность содержится в конце входных данных"
+msgstr ""
+"Неполная символьная последовательность содержится в конце входных данных"
 
 #: ../glib/gconvert.c:928
 #, c-format
@@ -128,7 +131,8 @@ msgstr "Невозможно корректно преобразовать си�
 #: ../glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI «%s» не является абсолютным идентификатором при использовании схемы «file»"
+msgstr ""
+"URI «%s» не является абсолютным идентификатором при использовании схемы «file»"
 
 #: ../glib/gconvert.c:1761
 #, c-format
@@ -237,7 +241,8 @@ msgstr "Не удалось закрыть файл «%s»: сбой в функ
 #: ../glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
+msgstr ""
+"Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
 #: ../glib/gfileutils.c:1328
 #, c-format
@@ -382,7 +387,8 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Ссылка на символ «%-.*s» не определяет допустимый символ"
 
 #: ../glib/gmarkup.c:654
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая конструкция «&;»; допустимыми конструкциями являются: &amp; "
 "&quot; &lt; &gt; &apos;"
@@ -425,7 +431,8 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1206
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Встретился лишний символ «%s», ожидался символ «=» после имени атрибута «%s» "
 "элемента «%s»"
@@ -476,7 +483,8 @@ msgstr "Элемент «%s» был закрыт, ни один элемент 
 #: ../glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Элемент «%s» был закрыт, но открытым в настоящий момент является элемент «%s»"
+msgstr ""
+"Элемент «%s» был закрыт, но открытым в настоящий момент является элемент «%s»"
 
 #: ../glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
@@ -484,7 +492,8 @@ msgstr "Документ был пуст или содержал только п
 
 #: ../glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Документ неожиданно окончился сразу же после открывающей угловой скобки «<»"
+msgstr ""
+"Документ неожиданно окончился сразу же после открывающей угловой скобки «<»"
 
 #: ../glib/gmarkup.c:1670 ../glib/gmarkup.c:1715
 #, c-format
@@ -500,7 +509,8 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Документ неожиданно окончился, ожидалась закрывающая тэг <%s/> угловая скобка"
+msgstr ""
+"Документ неожиданно окончился, ожидалась закрывающая тэг <%s/> угловая скобка"
 
 #: ../glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
@@ -533,7 +543,8 @@ msgstr "Документ неожиданно окончился внутри т
 
 #: ../glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документ неожиданно окончился внутри комментария или инструкции обработки"
+msgstr ""
+"Документ неожиданно окончился внутри комментария или инструкции обработки"
 
 #: ../glib/gregex.c:131
 msgid "corrupted object"
@@ -597,7 +608,8 @@ msgstr "неопознанный символ следует за \\"
 
 #: ../glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr "экранирование, изменяющее регистр (\\l, \\L, \\u, \\U), здесь запрещено"
+msgstr ""
+"экранирование, изменяющее регистр (\\l, \\L, \\u, \\U), здесь запрещено"
 
 #: ../glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
@@ -751,7 +763,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "противоречивые параметры NEWLINE"
 
 #: ../glib/gregex.c:333
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "за \\g не следует имя в скобках или неотрицательное число (возможно, в "
 "скобках)"
@@ -775,7 +788,8 @@ msgstr "не найден ранее проверенный подшаблон �
 #: ../glib/gregex.c:522 ../glib/gregex.c:1603
 #, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr "Во время поиска совпадений с регулярным выражением %s возникла ошибка: %s"
+msgstr ""
+"Во время поиска совпадений с регулярным выражением %s возникла ошибка: %s"
 
 #: ../glib/gregex.c:1094
 msgid "PCRE library is compiled without UTF8 support"
@@ -970,7 +984,8 @@ msgstr "Произошла неизвестная ошибка при выпол
 #: ../glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Не удалось прочитать нужное количество данных из канала процесса-потомка (%s)"
+msgstr ""
+"Не удалось прочитать нужное количество данных из канала процесса-потомка (%s)"
 
 #: ../glib/gutf8.c:1054
 msgid "Character out of range for UTF-8"
@@ -1060,7 +1075,8 @@ msgstr "Файл пуст"
 
 #: ../glib/gkeyfile.c:763
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Файл ключей содержит строку «%s», которая не является парой «ключ-значение», "
 "группой или комментарием"
@@ -1099,17 +1115,21 @@ msgstr "Файл ключей не содержит ключ «%s»"
 #: ../glib/gkeyfile.c:1395 ../glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Файл ключей содержит ключ «%s», значение которого «%s» не в кодировке UTF-8"
+msgstr ""
+"Файл ключей содержит ключ «%s», значение которого «%s» не в кодировке UTF-8"
 
 #: ../glib/gkeyfile.c:1415 ../glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Файл ключей содержит ключ «%s», значение которого не удалось распознать."
+msgstr ""
+"Файл ключей содержит ключ «%s», значение которого не удалось распознать."
 
 #: ../glib/gkeyfile.c:1530
 #, c-format
-msgid "Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr "Файл ключей содержит ключ «%s», значение которого не удалось интерпретировать."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
+msgstr ""
+"Файл ключей содержит ключ «%s», значение которого не удалось интерпретировать."
 
 #: ../glib/gkeyfile.c:2124 ../glib/gkeyfile.c:2336
 #, c-format
@@ -1326,6 +1346,10 @@ msgstr "Целевой файл существует"
 #: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
+
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Соединение не поддерживается"
 
 #: ../gio/gfile.c:2759
 #, c-format
@@ -1804,7 +1828,8 @@ msgstr ""
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "точка монтирования не поддерживает «извлечение» или «извлечение_с_операцией»"
+msgstr ""
+"точка монтирования не поддерживает «извлечение» или «извлечение_с_операцией»"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1818,7 +1843,8 @@ msgstr "точка монтирования не поддерживает «пе
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
-msgstr "точка монтирования не поддерживает возможность определения типа содержимого"
+msgstr ""
+"точка монтирования не поддерживает возможность определения типа содержимого"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2029,12 +2055,8 @@ msgstr "Произошла ошибка при записи в unix: %s"
 
 #: ../gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr "Абстрактные адреса unix domain сокетов не поддерживаются на этой системе"
-
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Неверная последовательность UTF-8 во входных данных"
+msgstr ""
+"Абстрактные адреса unix domain сокетов не поддерживаются на этой системе"
 
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
@@ -2084,4 +2106,3 @@ msgstr "Требуется больше входных данных"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Неправильные сжатые данные"
-
