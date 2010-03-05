@@ -676,6 +676,8 @@ g_variant_new_variant (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
 
+  g_variant_ref_sink (value);
+
   return g_variant_new_from_children (G_VARIANT_TYPE_VARIANT,
                                       g_memdup (&value, sizeof value),
                                       1, g_variant_is_trusted (value));
@@ -1172,11 +1174,11 @@ g_variant_new_strv (const gchar * const *strv,
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
   if (length < 0)
-    for (length = 0; strv[length]; length++);
+    length = g_strv_length ((gchar **) strv);
 
   strings = g_new (GVariant *, length);
   for (i = 0; i < length; i++)
-    strings[i] = g_variant_new_string (strv[i]);
+    strings[i] = g_variant_ref_sink (g_variant_new_string (strv[i]));
 
   return g_variant_new_from_children (G_VARIANT_TYPE ("as"),
                                       strings, length, TRUE);
@@ -1561,6 +1563,7 @@ g_variant_print_string (GVariant *value,
             element = g_variant_get_child_value (value, i);
             g_variant_print_string (element, string, type_annotate);
             g_string_append (string, ", ");
+            g_variant_unref (element);
           }
 
         /* for >1 item:  remove final ", "
