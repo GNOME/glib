@@ -41,10 +41,10 @@ AM_CPPFLAGS = 				\
 glib.def: glib.symbols
 	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
 
-galias.h: glib.symbols
+galias.h: $(srcdir)/makegalias.pl glib.symbols
 	  $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
 
-galiasdef.c: glib.symbols
+galiasdef.c: $(srcdir)/makegalias.pl glib.symbols
 	  $(PERL) $(srcdir)/makegalias.pl -def < $(srcdir)/glib.symbols > galiasdef.c
 
 if OS_LINUX
