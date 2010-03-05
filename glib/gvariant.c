@@ -1211,7 +1211,10 @@ g_variant_get_strv (GVariant *value,
   gsize n;
   gsize i;
 
-  TYPE_CHECK (value, G_VARIANT_TYPE ("as"), NULL);
+  g_return_val_if_fail (g_variant_is_of_type (value, G_VARIANT_TYPE ("as")) ||
+                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ao")) ||
+                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ag")),
+                        NULL);
 
   g_variant_get_data (value);
   n = g_variant_n_children (value);
@@ -1260,7 +1263,10 @@ g_variant_dup_strv (GVariant *value,
   gsize n;
   gsize i;
 
-  TYPE_CHECK (value, G_VARIANT_TYPE ("as"), NULL);
+  g_return_val_if_fail (g_variant_is_of_type (value, G_VARIANT_TYPE ("as")) ||
+                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ao")) ||
+                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ag")),
+                        NULL);
 
   n = g_variant_n_children (value);
   strv = g_new (gchar *, n + 1);
