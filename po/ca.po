@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-28 18:55+0100\n"
-"PO-Revision-Date: 2010-02-28 18:55+0100\n"
+"POT-Creation-Date: 2010-03-06 13:34+0100\n"
+"PO-Revision-Date: 2010-03-05 23:26+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -1350,10 +1350,14 @@ msgstr "Ja existeix el fitxer de destinació"
 msgid "Can't recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "No es pot empalmar"
+
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
-msgstr "S'ha produït un error en ajuntar el fitxer: %s"
+msgstr "S'ha produït un error en empalmar el fitxer: %s"
 
 #: ../gio/gfile.c:2905
 msgid "Can't copy special file"
@@ -2064,11 +2068,6 @@ msgstr "S'ha produït un error en escriure a UNIX: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Aquest sistema no admet adreces de sòcol de domini UNIX abstractes"
 
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "La seqüència UTF-8 de l'entrada no és vàlida"
-
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "el volum no implementa l'expulsió"
@@ -2117,6 +2116,9 @@ msgstr "Fan falta més dades d'entrada"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Les dades comprimides no són vàlides"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "La seqüència UTF-8 de l'entrada no és vàlida"
 
 #~ msgid "%u byte"
 #~ msgid_plural "%u bytes"
