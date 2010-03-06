@@ -161,7 +161,7 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
         This Python marshaller transforms the input GValue list representing the function 
         parameters into a Python tuple which is the equivalent structure in Python (you can
         look in <function>pyg_closure_marshal</function> in <filename>pygtype.c</filename>
-        in the <emphasis>pygobject</emphasis> module in the GNOME Subversion server).
+        in the <emphasis>pygobject</emphasis> module in the GNOME source code repository).
       </para>
 
     </sect2>
