@@ -1285,7 +1285,7 @@ g_signal_query (guint         signal_id,
  *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
  * @class_offset: The offset of the function pointer in the class structure
  *  for this type. Used to invoke a class method generically. Pass 0 to
- *  not associate a class method with this signal.
+ *  not associate a class method slot with this signal.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
  * @c_marshaller: the function to translate arrays of parameter values to
@@ -1304,6 +1304,11 @@ g_signal_query (guint         signal_id,
  *
  * When registering a signal and looking up a signal, either separator can
  * be used, but they cannot be mixed.
+ *
+ * If 0 is used for @class_offset subclasses cannot override the class handler
+ * in their <code>class_init</code> method by doing
+ * <code>super_class->signal_handler = my_signal_handler</code>. Instead they
+ * will have to use g_signal_override_class_handler().
  *
  * Returns: the signal id
  */
