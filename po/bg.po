@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-23 09:30+0200\n"
-"PO-Revision-Date: 2010-02-23 09:30+0200\n"
+"POT-Creation-Date: 2010-03-06 20:22+0200\n"
+"PO-Revision-Date: 2010-03-06 20:22+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -1341,6 +1341,10 @@ msgstr "Целевият файл съществува"
 msgid "Can't recursively copy directory"
 msgstr "Папката не може да се копира рекурсивно"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Не се поддържа разделяне"
+
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
@@ -2042,11 +2046,6 @@ msgstr "Грешка при запис към ЮНИКС: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 "Тази система не поддържа абстрактни адреси на гнезда за домейни в ЮНИКС"
-
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Неправилна последователност в UTF-8 от входа"
 
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
