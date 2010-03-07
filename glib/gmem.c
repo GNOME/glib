@@ -37,14 +37,6 @@
 #include "glib.h"
 #include "gthreadprivate.h"
 
-/* Undef the macros before including galias.h */
-#undef g_malloc_n
-#undef g_malloc0_n
-#undef g_realloc_n
-#undef g_try_malloc_n
-#undef g_try_malloc0_n
-#undef g_try_realloc_n
-
 #include "galias.h"
 
 #define MEM_PROFILE_TABLE_SIZE 4096

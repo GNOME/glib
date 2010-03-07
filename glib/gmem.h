@@ -76,67 +76,54 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
 
-/* avoid the overflow check if we can determine at compile-time that no
- * overflow happens. */
+/* Optimise: avoid the call to the (slower) _n function if we can
+ * determine at compile-time that no overflow happens.
+ */
 #if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
-#  define _G_MALLOC_N(n_blocks, n_block_bytes, func_1, func_n) \
-	(__extension__ ({					\
-	  gsize __a = (gsize) (n_blocks);			\
-	  gsize __b = (gsize) (n_block_bytes);			\
+#  define _G_NEW(struct_type, n_structs, func) \
+	(struct_type *) (__extension__ ({			\
+	  gsize __n = (gsize) (n_structs);			\
 	  gpointer __p;						\
-	  if (__builtin_constant_p (__a) && __a == 1)		\
-	    __p = func_1 (__b);					\
-	  else if (__builtin_constant_p (__b) && __b == 1)	\
-	    __p = func_1 (__a);					\
-	  else if (__builtin_constant_p (__a) &&		\
-		   __builtin_constant_p (__b) &&		\
-		   __a <= G_MAXSIZE / __b)			\
-	    __p = func_1 (__a * __b);				\
+	  if (sizeof (struct_type) == 1)			\
+	    __p = g_##func (__n);				\
+	  else if (__builtin_constant_p (__n) &&		\
+	           __n <= G_MAXSIZE / sizeof (struct_type))	\
+	    __p = g_##func (__n * sizeof (struct_type));	\
 	  else							\
-	    __p = func_n (__a, __b);				\
+	    __p = g_##func##_n (__n, sizeof (struct_type));	\
 	  __p;							\
 	}))
-#  define _G_REALLOC_N(mem, n_blocks, n_block_bytes, func_1, func_n) \
-	(__extension__ ({					\
-	  gsize __a = (gsize) (n_blocks);			\
-	  gsize __b = (gsize) (n_block_bytes);			\
+#  define _G_RENEW(struct_type, mem, n_structs, func) \
+	(struct_type *) (__extension__ ({			\
+	  gsize __n = (gsize) (n_structs);			\
 	  gpointer __p = (gpointer) (mem);			\
-	  if (__builtin_constant_p (__a) && __a == 1)		\
-	    __p = func_1 (__p, __b);				\
-	  else if (__builtin_constant_p (__b) && __b == 1)	\
-	    __p = func_1 (__p, __a);				\
-	  else if (__builtin_constant_p (__a) &&		\
-		   __builtin_constant_p (__b) &&		\
-		   __a <= G_MAXSIZE / __b)			\
-	    __p = func_1 (__p, __a * __b);			\
+	  if (sizeof (struct_type) == 1)			\
+	    __p = g_##func (__p, __n);				\
+	  else if (__builtin_constant_p (__n) &&		\
+	           __n <= G_MAXSIZE / sizeof (struct_type))	\
+	    __p = g_##func (__p, __n * sizeof (struct_type));	\
 	  else							\
-	    __p = func_n (__p, __a, __b);			\
+	    __p = g_##func##_n (__p, __n, sizeof (struct_type));\
 	  __p;							\
 	}))
 
-#  define g_malloc_n(n_blocks,n_block_bytes)		_G_MALLOC_N (n_blocks, n_block_bytes, g_malloc, g_malloc_n)
-#  define g_malloc0_n(n_blocks,n_block_bytes)		_G_MALLOC_N (n_blocks, n_block_bytes, g_malloc0, g_malloc0_n)
-#  define g_realloc_n(mem,n_blocks,n_block_bytes)	_G_REALLOC_N (mem, n_blocks, n_block_bytes, g_realloc, g_realloc_n)
-#  define g_try_malloc_n(n_blocks,n_block_bytes)	_G_MALLOC_N (n_blocks, n_block_bytes, g_try_malloc, g_try_malloc_n)
-#  define g_try_malloc0_n(n_blocks,n_block_bytes)	_G_MALLOC_N (n_blocks, n_block_bytes, g_try_malloc0, g_try_malloc0_n)
-#  define g_try_realloc_n(mem,n_blocks,n_block_bytes)	_G_REALLOC_N (mem, n_blocks, n_block_bytes, g_try_realloc, g_try_realloc_n)
+#else
+
+/* Unoptimised version: always call the _n() function. */
+
+#define _G_NEW(struct_type, n_structs, func) \
+        ((struct_type *) g_##func##_n ((n_structs), sizeof (struct_type)))
+#define _G_RENEW(struct_type, mem, n_structs, func) \
+        ((struct_type *) g_##func##_n (mem, (n_structs), sizeof (struct_type)))
+
 #endif
 
-
-/* Convenience memory allocators
- */
-
-#define _G_NEW(struct_type, n_structs, _g_malloc_n)	\
-	((struct_type *) _g_malloc_n ((n_structs), sizeof (struct_type)))
-#define _G_RENEW(struct_type, mem, n_structs, _g_realloc_n)	\
-	((struct_type *) _g_realloc_n ((mem), (n_structs), sizeof (struct_type)))
-
-#define g_new(struct_type, n_structs)			_G_NEW (struct_type, n_structs, g_malloc_n)
-#define g_new0(struct_type, n_structs)			_G_NEW (struct_type, n_structs, g_malloc0_n)
-#define g_renew(struct_type, mem, n_structs)		_G_RENEW (struct_type, mem, n_structs, g_realloc_n)
-#define g_try_new(struct_type, n_structs)		_G_NEW (struct_type, n_structs, g_try_malloc_n)
-#define g_try_new0(struct_type, n_structs)		_G_NEW (struct_type, n_structs, g_try_malloc0_n)
-#define g_try_renew(struct_type, mem, n_structs)	_G_RENEW (struct_type, mem, n_structs, g_try_realloc_n)
+#define g_new(struct_type, n_structs)			_G_NEW (struct_type, n_structs, malloc)
+#define g_new0(struct_type, n_structs)			_G_NEW (struct_type, n_structs, malloc0)
+#define g_renew(struct_type, mem, n_structs)		_G_RENEW (struct_type, mem, n_structs, realloc)
+#define g_try_new(struct_type, n_structs)		_G_NEW (struct_type, n_structs, try_malloc)
+#define g_try_new0(struct_type, n_structs)		_G_NEW (struct_type, n_structs, try_malloc0)
+#define g_try_renew(struct_type, mem, n_structs)	_G_RENEW (struct_type, mem, n_structs, try_realloc)
 
 
 /* Memory allocation virtualization for debugging purposes
