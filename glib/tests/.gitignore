@@ -4,6 +4,7 @@ gvariant
 hostutils
 keyfile
 markup-subparser
+mem-overflow
 option-context
 printf
 rand
