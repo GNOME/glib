@@ -321,14 +321,14 @@ g_io_modules_scan_all_in_directory (const char *dirname)
 	    continue; /* Invalid line, ignore */
 
 	  *colon = 0; /* terminate filename */
-	  file = strdup (line);
+	  file = g_strdup (line);
 	  colon++; /* after colon */
 
 	  while (g_ascii_isspace (*colon))
 	    colon++;
 
 	  extension_points = g_strsplit (colon, ",", -1);
-	  g_hash_table_insert (cache, g_strdup (file), extension_points);
+	  g_hash_table_insert (cache, file, extension_points);
 	}
       g_strfreev (lines);
     }
