@@ -46,6 +46,7 @@ IGNORE_HFILES=			\
 	gnulib			\
 	pcre			\
 	update-pcre		\
+	gbuffer.h		\
 	gvariant-serialiser.h	\
 	gvariant-core.h		\
 	gvarianttypeinfo.h
