@@ -178,6 +178,7 @@ libglib_2_0_la_SOURCES = 	\
 	gvariant.c		\
 	gvariant-core.h		\
 	gvariant-core.c		\
+	gvariant-internal.h	\
 	gvariant-serialiser.h	\
 	gvariant-serialiser.c	\
 	gvarianttypeinfo.h	\
