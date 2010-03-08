@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.30\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-25 01:56+0000\n"
-"PO-Revision-Date: 2010-02-25 02:00+0000\n"
+"POT-Creation-Date: 2010-03-08 02:30+0000\n"
+"PO-Revision-Date: 2010-03-08 02:30+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1322,6 +1322,10 @@ msgstr "Ficheiro de destino já existe"
 msgid "Can't recursively copy directory"
 msgstr "Incapaz de copiar directório recursivamente"
 
+#: ../gio/gfile.c:2755
+msgid "Splice not supported"
+msgstr "Dividir ficheiros não é suportado"
+
 #: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
@@ -1758,8 +1762,8 @@ msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
-"Quantidade de memória necessária para processar a escrita é maior do que "
-"o espaço de endereçamento disponível"
+"Quantidade de memória necessária para processar a escrita é maior do que o "
+"espaço de endereçamento disponível"
 
 #: ../gio/gmemoryoutputstream.c:724
 msgid "Requested seek before the beginning of the stream"
@@ -1788,14 +1792,16 @@ msgstr "Dispositivo montado não implementa \"eject\""
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "Dispositivo montado não implementa \"unmount\" ou \"unmount_with_operation\""
+msgstr ""
+"Dispositivo montado não implementa \"unmount\" ou \"unmount_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "Dispositivo montado não implementa \"eject\" ou \"eject_with_operation\""
+msgstr ""
+"Dispositivo montado não implementa \"eject\" ou \"eject_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1816,7 +1822,8 @@ msgstr "Dispositivo montado não implementa detecção do tipo de conteúdo"
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
-msgstr "Dispositivo montado não implementa detecção síncrona do tipo de conteúdo"
+msgstr ""
+"Dispositivo montado não implementa detecção síncrona do tipo de conteúdo"
 
 #: ../gio/gnetworkaddress.c:295
 #, c-format
@@ -2022,11 +2029,6 @@ msgstr ""
 "Endereços abstractos de sockets de domínio unix não são suportados neste "
 "sistema"
 
-#: ../gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Sequência UTF-8 inválida na entrada"
-
 #: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "unidade não implementa a ejecção"
@@ -2075,6 +2077,9 @@ msgstr "Necessita de mais dados"
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Dados comprimidos inválidos"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "Sequência UTF-8 inválida na entrada"
 
 #~ msgid "%u byte"
 #~ msgid_plural "%u bytes"
