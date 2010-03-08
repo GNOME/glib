@@ -83,27 +83,29 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 #  define _G_NEW(struct_type, n_structs, func) \
 	(struct_type *) (__extension__ ({			\
 	  gsize __n = (gsize) (n_structs);			\
+	  gsize __s = sizeof (struct_type);			\
 	  gpointer __p;						\
-	  if (sizeof (struct_type) == 1)			\
+	  if (__s == 1)			\
 	    __p = g_##func (__n);				\
 	  else if (__builtin_constant_p (__n) &&		\
-	           __n <= G_MAXSIZE / sizeof (struct_type))	\
-	    __p = g_##func (__n * sizeof (struct_type));	\
+	           __n <= G_MAXSIZE / __s)			\
+	    __p = g_##func (__n * __s);				\
 	  else							\
-	    __p = g_##func##_n (__n, sizeof (struct_type));	\
+	    __p = g_##func##_n (__n, __s);			\
 	  __p;							\
 	}))
 #  define _G_RENEW(struct_type, mem, n_structs, func) \
 	(struct_type *) (__extension__ ({			\
 	  gsize __n = (gsize) (n_structs);			\
+	  gsize __s = sizeof (struct_type);			\
 	  gpointer __p = (gpointer) (mem);			\
-	  if (sizeof (struct_type) == 1)			\
+	  if (__s == 1)						\
 	    __p = g_##func (__p, __n);				\
 	  else if (__builtin_constant_p (__n) &&		\
-	           __n <= G_MAXSIZE / sizeof (struct_type))	\
-	    __p = g_##func (__p, __n * sizeof (struct_type));	\
+	           __n <= G_MAXSIZE / __s)			\
+	    __p = g_##func (__p, __n * __s);			\
 	  else							\
-	    __p = g_##func##_n (__p, __n, sizeof (struct_type));\
+	    __p = g_##func##_n (__p, __n, __s);			\
 	  __p;							\
 	}))
 
