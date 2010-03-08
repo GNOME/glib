@@ -783,6 +783,30 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  **/
 #define G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT "trash::item-count"     /* uint32 */
 
+/**
+ * G_FILE_ATTRIBUTE_TRASH_ORIG_PATH:
+ *
+ * A key in the "trash" namespace.  When requested against
+ * items in "trash:///", will return the original path to the file before it
+ * was trashed. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_STRING.
+ *
+ * Since: 2.24.
+ **/
+#define G_FILE_ATTRIBUTE_TRASH_ORIG_PATH "trash::orig-path"     /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_TRASH_DELETION_DATE:
+ *
+ * A key in the "trash" namespace.  When requested against
+ * items in "trash:///", will return the date and time when the file
+ * was trashed. The format of the returned string is YYYY-MM-DDThh:mm:ss.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ *
+ * Since: 2.24.
+ **/
+#define G_FILE_ATTRIBUTE_TRASH_DELETION_DATE "trash::deletion-date"  /* string */
+
 GType              g_file_info_get_type                  (void) G_GNUC_CONST;
 
 GFileInfo *        g_file_info_new                       (void);

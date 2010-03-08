@@ -25,30 +25,30 @@
  * @short_description: File Information and Attributes
  * @include: gio/gio.h
  * @see_also: #GFile, <link linkend="gio-GFileAttribute">GFileAttribute</link>
- * 
+ *
  * Functionality for manipulating basic metadata for files. #GFileInfo
- * implements methods for getting information that all files should 
- * contain, and allows for manipulation of extended attributes. 
+ * implements methods for getting information that all files should
+ * contain, and allows for manipulation of extended attributes.
  *
  * See <link linkend="gio-GFileAttribute">GFileAttribute</link> for more
  * information on how GIO handles file attributes.
  *
- * To obtain a #GFileInfo for a #GFile, use g_file_query_info() (or its 
- * async variant). To obtain a #GFileInfo for a file input or output 
- * stream, use g_file_input_stream_query_info() or 
+ * To obtain a #GFileInfo for a #GFile, use g_file_query_info() (or its
+ * async variant). To obtain a #GFileInfo for a file input or output
+ * stream, use g_file_input_stream_query_info() or
  * g_file_output_stream_query_info() (or their async variants).
  *
- * To change the actual attributes of a file, you should then set the 
- * attribute in the #GFileInfo and call g_file_set_attributes_from_info() 
+ * To change the actual attributes of a file, you should then set the
+ * attribute in the #GFileInfo and call g_file_set_attributes_from_info()
  * or g_file_set_attributes_async() on a GFile.
  *
- * However, not all attributes can be changed in the file. For instance, 
- * the actual size of a file cannot be changed via g_file_info_set_size(). 
- * You may call g_file_query_settable_attributes() and 
- * g_file_query_writable_namespaces() to discover the settable attributes 
+ * However, not all attributes can be changed in the file. For instance,
+ * the actual size of a file cannot be changed via g_file_info_set_size().
+ * You may call g_file_query_settable_attributes() and
+ * g_file_query_writable_namespaces() to discover the settable attributes
  * of a particular file at runtime.
  *
- * #GFileAttributeMatcher allows for searching through a #GFileInfo for 
+ * #GFileAttributeMatcher allows for searching through a #GFileInfo for
  * attributes.
  **/
 
@@ -259,6 +259,8 @@ ensure_attribute_hash (void)
   REGISTER_ATTRIBUTE (GVFS_BACKEND);
   REGISTER_ATTRIBUTE (SELINUX_CONTEXT);
   REGISTER_ATTRIBUTE (TRASH_ITEM_COUNT);
+  REGISTER_ATTRIBUTE (TRASH_ORIG_PATH);
+  REGISTER_ATTRIBUTE (TRASH_DELETION_DATE);
 
 #undef REGISTER_ATTRIBUTE
 }
@@ -320,7 +322,7 @@ g_file_info_finalize (GObject *object)
   attrs = (GFileAttribute *)info->attributes->data;
   for (i = 0; i < info->attributes->len; i++)
     _g_file_attribute_value_clear (&attrs[i].value);
-  g_array_free (info->attributes, TRUE);  
+  g_array_free (info->attributes, TRUE);
 
   if (info->mask != NO_ATTRIBUTE_MASK)
     g_file_attribute_matcher_unref (info->mask);
