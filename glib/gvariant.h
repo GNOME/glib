@@ -114,6 +114,10 @@ GVariant *                      g_variant_new_dict_entry                (GVarian
 
 GVariant *                      g_variant_get_maybe                     (GVariant             *value);
 gsize                           g_variant_n_children                    (GVariant             *value);
+void                            g_variant_get_child                     (GVariant             *value,
+                                                                         gsize                 index_,
+                                                                         const gchar          *format_string,
+                                                                         ...);
 GVariant *                      g_variant_get_child_value               (GVariant             *value,
                                                                          gsize                 index_);
 gconstpointer                   g_variant_get_fixed_array               (GVariant             *value,
@@ -177,6 +181,20 @@ void                            g_variant_builder_add_value             (GVarian
 void                            g_variant_builder_add                   (GVariantBuilder      *builder,
                                                                          const gchar          *format_string,
                                                                          ...);
+
+GVariant *                      g_variant_new                           (const gchar          *format_string,
+                                                                         ...);
+void                            g_variant_get                           (GVariant             *value,
+                                                                         const gchar          *format_string,
+                                                                         ...);
+GVariant *                      g_variant_new_va                        (const gchar          *format_string,
+                                                                         const gchar         **endptr,
+                                                                         va_list              *app);
+void                            g_variant_get_va                        (GVariant             *value,
+                                                                         const gchar          *format_string,
+                                                                         const gchar         **endptr,
+                                                                         va_list              *app);
+
 
 G_END_DECLS
 

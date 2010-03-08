@@ -121,6 +121,7 @@ synchronize their operation.
       <xi:include href="xml/allocators.xml" />
       <xi:include href="xml/gvarianttype.xml"/>
       <xi:include href="xml/gvariant.xml"/>
+      <xi:include href="gvariant-varargs.xml"/>
   </chapter>
 
   <chapter id="tools">

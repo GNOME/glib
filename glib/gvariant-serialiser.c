@@ -1654,4 +1654,8 @@ g_variant_serialiser_is_signature (gconstpointer data,
   return TRUE;
 }
 
+/* Epilogue {{{1 */
+#define __G_VARIANT_SERIALISER_C__
+#include "galiasdef.c"
+
 /* vim:set foldmethod=marker: */

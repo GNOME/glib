@@ -125,35 +125,27 @@ typedef struct
 #define G_VARIANT_MEMBER_ENDING_OFFSET  2
 
 /* query */
-G_GNUC_INTERNAL
 const gchar *                   g_variant_type_info_get_type_string     (GVariantTypeInfo   *typeinfo);
 
-G_GNUC_INTERNAL
 void                            g_variant_type_info_query               (GVariantTypeInfo   *typeinfo,
                                                                          guint              *alignment,
                                                                          gsize              *size);
 
 /* array */
-G_GNUC_INTERNAL
 GVariantTypeInfo *              g_variant_type_info_element             (GVariantTypeInfo   *typeinfo);
-G_GNUC_INTERNAL
 void                            g_variant_type_info_query_element       (GVariantTypeInfo   *typeinfo,
                                                                          guint              *alignment,
                                                                          gsize              *size);
 
 /* structure */
-G_GNUC_INTERNAL
 gsize                           g_variant_type_info_n_members           (GVariantTypeInfo   *typeinfo);
-G_GNUC_INTERNAL
 const GVariantMemberInfo *      g_variant_type_info_member_info         (GVariantTypeInfo   *typeinfo,
                                                                          gsize               index);
 
 /* new/ref/unref */
-G_GNUC_INTERNAL
 GVariantTypeInfo *              g_variant_type_info_get                 (const GVariantType *type);
-G_GNUC_INTERNAL
 GVariantTypeInfo *              g_variant_type_info_ref                 (GVariantTypeInfo   *typeinfo);
-G_GNUC_INTERNAL
 void                            g_variant_type_info_unref               (GVariantTypeInfo   *typeinfo);
+void                            g_variant_type_info_assert_no_infos     (void);
 
 #endif /* __G_VARIANT_TYPE_INFO_H__ */

@@ -25,6 +25,7 @@
 #include "config.h"
 
 #include <glib/gvariant-serialiser.h>
+#include "gvariant-internal.h"
 #include <glib/gvariant-core.h>
 #include <glib/gtestutils.h>
 #include <glib/gstrfuncs.h>
@@ -2133,167 +2134,6 @@ g_variant_iter_next_value (GVariantIter *iter)
   return NULL;
 }
 
-/**
- * g_variant_iter_loop:
- * @iter: a #GVariantIter
- * @format_string: a GVariant format string
- * @...: the arguments to unpack the value into
- * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
- *           value
- *
- * Gets the next item in the container and unpacks it into the variable
- * argument list according to @format_string, returning %TRUE.
- *
- * If no more items remain then %FALSE is returned.
- *
- * On the first call to this function, the pointers appearing on the
- * variable argument list are assumed to point at uninitialised memory.
- * On the second and later calls, it is assumed that the same pointers
- * will be given and that they will point to the memory as set by the
- * previous call to this function.  This allows the previous values to
- * be freed, as appropriate.
- *
- * This function is intended to be used with a while loop as
- * demonstrated in the following example.  This function can only be
- * used when iterating over an array.  It is only valid to call this
- * function with a string constant for the format string and the same
- * string constant must be used each time.  Mixing calls to this
- * function and g_variant_iter_next() or g_variant_iter_next_value() on
- * the same iterator is not recommended.
- *
- * <example>
- *  <title>Memory management with g_variant_iter_loop()</title>
- *  <programlisting>
- *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
- *   void
- *   iterate_dictionary (GVariant *dictionary)
- *   {
- *     GVariantIter iter;
- *     GVariant *value;
- *     gchar *key;
- *
- *     g_variant_iter_init (&iter, dictionary);
- *     while (g_variant_iter_loop (&iter, "{sv}", &key, &value))
- *       {
- *         g_print ("Item '%s' has type '%s'\n", key,
- *                  g_variant_get_type_string (value));
- *
- *         /<!-- -->* no need to free 'key' and 'value' here *<!-- -->/
- *       }
- *   }
- *  </programlisting>
- * </example>
- *
- * If you want a slightly less magical alternative that requires more
- * typing, see g_variant_iter_next().
- *
- * Since: 2.24
- **/
-gboolean
-g_variant_iter_loop (GVariantIter *iter,
-                     const gchar  *format_string,
-                     ...)
-{
-  gboolean first_time = GVSI(iter)->loop_format == NULL;
-  GVariant *value;
-
-  g_return_val_if_fail (first_time ||
-                        format_string == GVSI(iter)->loop_format,
-                        FALSE);
-
-  if (first_time)
-    {
-      TYPE_CHECK (GVSI(iter)->value, G_VARIANT_TYPE_ARRAY, FALSE);
-      GVSI(iter)->loop_format = format_string;
-    }
-
-  value = g_variant_iter_next_value (iter);
-
-  if (value != NULL)
-    {
-      va_list ap;
-
-      va_start (ap, format_string);
-      /* varargs get stuff */
-      va_end (ap);
-
-      g_variant_unref (value);
-    }
-
-  return value != NULL;
-}
-
-/**
- * g_variant_iter_next:
- * @iter: a #GVariantIter
- * @format_string: a GVariant format string
- * @...: the arguments to unpack the value into
- * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
- *           value
- *
- * Gets the next item in the container and unpacks it into the variable
- * argument list according to @format_string, returning %TRUE.
- *
- * If no more items remain then %FALSE is returned.
- *
- * All of the pointers given on the variable arguments list of this
- * function are assumed to point at uninitialised memory.  It is the
- * responsibility of the caller to free all of the values returned by
- * the unpacking process.
- *
- * <example>
- *  <title>Memory management with g_variant_iter_next()</title>
- *  <programlisting>
- *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
- *   void
- *   iterate_dictionary (GVariant *dictionary)
- *   {
- *     GVariantIter iter;
- *     GVariant *value;
- *     gchar *key;
- *
- *     g_variant_iter_init (&iter, dictionary);
- *     while (g_variant_iter_next (&iter, "{sv}", &key, &value))
- *       {
- *         g_print ("Item '%s' has type '%s'\n", key,
- *                  g_variant_get_type_string (value));
- *
- *         /<!-- -->* must free data for ourselves *<!-- -->/
- *         g_variant_unref (value);
- *         g_free (key);
- *       }
- *   }
- *  </programlisting>
- * </example>
- *
- * For a solution that is likely to be more convenient to C programmers,
- * see g_variant_iter_loop().
- *
- * Since: 2.24
- **/
-gboolean
-g_variant_iter_next (GVariantIter *iter,
-                     const gchar  *format_string,
-                     ...)
-{
-  GVariant *value;
-
-  value = g_variant_iter_next_value (iter);
-
-  if (value != NULL)
-    {
-      va_list ap;
-
-      va_start (ap, format_string);
-      /* varargs get stuff */
-      va_end (ap);
-
-      g_variant_unref (value);
-    }
-
-  return value != NULL;
-}
-
 /* GVariantBuilder {{{1 */
 /**
  * GVariantBuilder:
@@ -2835,6 +2675,1241 @@ g_variant_builder_end (GVariantBuilder *builder)
   g_variant_type_free (my_type);
 
   return value;
+}
+
+/* Format strings {{{1 */
+/*< private >
+ * g_variant_format_string_scan:
+ * @string: a string that may be prefixed with a format string
+ * @limit: a pointer to the end of @string, or %NULL
+ * @endptr: location to store the end pointer, or %NULL
+ * @returns: %TRUE if there was a valid format string
+ *
+ * Checks the string pointed to by @string for starting with a properly
+ * formed #GVariant varargs format string.  If no valid format string is
+ * found then %FALSE is returned.
+ *
+ * If @string does start with a valid format string then %TRUE is
+ * returned.  If @endptr is non-%NULL then it is updated to point to the
+ * first character after the format string.
+ *
+ * If @limit is non-%NULL then @limit (and any charater after it) will
+ * not be accessed and the effect is otherwise equivalent to if the
+ * character at @limit were nul.
+ *
+ * See the section on <link linkend='gvariant-format-strings'>GVariant
+ * Format Strings</link>.
+ *
+ * Since: 2.24
+ */
+gboolean
+g_variant_format_string_scan (const gchar  *string,
+                              const gchar  *limit,
+                              const gchar **endptr)
+{
+#define next_char() (string == limit ? '\0' : *string++)
+#define peek_char() (string == limit ? '\0' : *string)
+  char c;
+
+  switch (next_char())
+    {
+    case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
+    case 'x': case 't': case 'h': case 'd': case 's': case 'o':
+    case 'g': case 'v': case '*': case '?': case 'r':
+      break;
+
+    case 'm':
+      return g_variant_format_string_scan (string, limit, endptr);
+
+    case 'a':
+    case '@':
+      return g_variant_type_string_scan (string, limit, endptr);
+
+    case '(':
+      while (peek_char() != ')')
+        if (!g_variant_format_string_scan (string, limit, &string))
+          return FALSE;
+
+      next_char(); /* consume ')' */
+      break;
+
+    case '{':
+      c = next_char();
+
+      if (c == '@')
+        c = next_char ();
+
+      /* ISO/IEC 9899:1999 (C99) §7.21.5.2:
+       *    The terminating null character is considered to be
+       *    part of the string.
+       */
+      if (c != '\0' && strchr ("bynqiuxthdsog?", c) == NULL)
+        return FALSE;
+
+      if (!g_variant_format_string_scan (string, limit, &string))
+        return FALSE;
+
+      if (next_char() != '}')
+        return FALSE;
+
+      break;
+
+    case '^': /* '^as' or '^a&s' only */
+      if (next_char() != 'a')
+        return FALSE;
+
+      if (peek_char() == '&')
+        next_char ();
+
+      c = next_char ();
+
+      if (c != 's' && c != 'o' && c != 'g')
+        return FALSE;
+
+      break;
+
+    case '&':
+      c = next_char();
+
+      if (c != 's' && c != 'o' && c != 'g')
+        return FALSE;
+
+      break;
+
+    default:
+      return FALSE;
+    }
+
+  if (endptr != NULL)
+    *endptr = string;
+
+#undef next_char
+#undef peek_char
+
+  return TRUE;
+}
+
+/*< private >
+ * g_variant_format_string_scan_type:
+ * @string: a string that may be prefixed with a format string
+ * @limit: a pointer to the end of @string
+ * @endptr: location to store the end pointer, or %NULL
+ * @returns: a #GVariantType if there was a valid format string
+ *
+ * If @string starts with a valid format string then this function will
+ * return the type that the format string corresponds to.  Otherwise
+ * this function returns %NULL.
+ *
+ * Use g_variant_type_free() to free the return value when you no longer
+ * need it.
+ *
+ * This function is otherwise exactly like
+ * g_variant_format_string_scan().
+ *
+ * Since: 2.24
+ */
+GVariantType *
+g_variant_format_string_scan_type (const gchar  *string,
+                                   const gchar  *limit,
+                                   const gchar **endptr)
+{
+  const gchar *my_end;
+  gchar *dest;
+  gchar *new;
+
+  if (endptr == NULL)
+    endptr = &my_end;
+
+  if (!g_variant_format_string_scan (string, limit, endptr))
+    return NULL;
+
+  dest = new = g_malloc (*endptr - string + 1);
+  while (string != *endptr)
+    {
+      if (*string != '@' && *string != '&' && *string != '^')
+        *dest++ = *string;
+      string++;
+    }
+  *dest = '\0';
+
+  return (GVariantType *) G_VARIANT_TYPE (new);
+}
+
+static gboolean
+valid_format_string (const gchar *format_string,
+                     gboolean     single,
+                     GVariant    *value)
+{
+  const gchar *endptr;
+  GVariantType *type;
+
+  type = g_variant_format_string_scan_type (format_string, NULL, &endptr);
+
+  if G_UNLIKELY (type == NULL || (single && *endptr != '\0'))
+    {
+      if (single)
+        g_critical ("`%s' is not a valid GVariant format string",
+                    format_string);
+      else
+        g_critical ("`%s' does not have a valid GVariant format "
+                    "string as a prefix", format_string);
+
+      if (type != NULL)
+        g_variant_type_free (type);
+
+      return FALSE;
+    }
+
+  if G_UNLIKELY (value && !g_variant_is_of_type (value, type))
+    {
+      gchar *fragment;
+      gchar *typestr;
+
+      fragment = g_strndup (format_string, endptr - format_string);
+      typestr = g_variant_type_dup_string (type);
+
+      g_critical ("the GVariant format string `%s' has a type of "
+                  "`%s' but the given value has a type of `%s'",
+                  fragment, typestr, g_variant_get_type_string (value));
+
+      g_variant_type_free (type);
+
+      return FALSE;
+    }
+
+  g_variant_type_free (type);
+
+  return TRUE;
+}
+
+/* Variable Arguments {{{1 */
+/* We consider 2 main classes of format strings:
+ *
+ *   - recursive format strings
+ *      these are ones that result in recursion and the collection of
+ *      possibly more than one argument.  Maybe types, tuples,
+ *      dictionary entries.
+ *
+ *   - leaf format string
+ *      these result in the collection of a single argument.
+ *
+ * Leaf format strings are further subdivided into two categories:
+ *
+ *   - single non-null pointer ("nnp")
+ *      these either collect or return a single non-null pointer.
+ *
+ *   - other
+ *      these collect or return something else (bool, number, etc).
+ *
+ * Based on the above, the varargs handling code is split into 4 main parts:
+ *
+ *   - nnp handling code
+ *   - leaf handling code (which may invoke nnp code)
+ *   - generic handling code (may be recursive, may invoke leaf code)
+ *   - user-facing API (which invokes the generic code)
+ *
+ * Each section implements some of the following functions:
+ *
+ *   - skip:
+ *      collect the arguments for the format string as if
+ *      g_variant_new() had been called, but do nothing with them.  used
+ *      for skipping over arguments when constructing a Nothing maybe
+ *      type.
+ *
+ *   - new:
+ *      create a GVariant *
+ *
+ *   - get:
+ *      unpack a GVariant *
+ *
+ *   - free (nnp only):
+ *      free a previously allocated item
+ */
+
+static gboolean
+g_variant_format_string_is_leaf (const gchar *str)
+{
+  return str[0] != 'm' && str[0] != '(' && str[0] != '{';
+}
+
+static gboolean
+g_variant_format_string_is_nnp (const gchar *str)
+{
+  return str[0] == 'a' || str[0] == 's' || str[0] == 'o' || str[0] == 'g' ||
+         str[0] == '^' || str[0] == '@' || str[0] == '*' || str[0] == '?' ||
+         str[0] == 'r' || str[0] == 'v' || str[0] == '&';
+}
+
+/* Single non-null pointer ("nnp") {{{2 */
+static void
+g_variant_valist_free_nnp (const gchar *str,
+                           gpointer     ptr)
+{
+  switch (*str)
+    {
+    case 'a':
+      g_variant_iter_free (ptr);
+      break;
+
+    case '^':
+      if (str[2] != '&')        /* '^as' */
+        g_strfreev (ptr);
+      else                      /* '^a&s' */
+        g_free (ptr);
+      break;
+
+    case 's':
+    case 'o':
+    case 'g':
+      g_free (ptr);
+      break;
+
+    case '@':
+    case '*':
+    case '?':
+    case 'v':
+      g_variant_unref (ptr);
+      break;
+
+    case '&':
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static GVariant *
+g_variant_valist_new_nnp (const gchar **str,
+                          gpointer      ptr)
+{
+  if (**str == '&')
+    (*str)++;
+
+  switch (*(*str)++)
+    {
+    case 'a':
+      {
+        const GVariantType *type;
+        GVariant *value;
+
+        value = g_variant_builder_end (ptr);
+        type = g_variant_get_type (value);
+
+        if G_UNLIKELY (!g_variant_type_is_array (type))
+          g_error ("g_variant_new: expected array GVariantBuilder but "
+                   "the built value has type `%s'",
+                   g_variant_get_type_string (value));
+
+        type = g_variant_type_element (type);
+
+        if G_UNLIKELY (!g_variant_type_is_subtype_of (type, (GVariantType *) *str))
+          g_error ("g_variant_new: expected GVariantBuilder array element "
+                   "type `%s' but the built value has element type `%s'",
+                   g_variant_type_dup_string ((GVariantType *) *str),
+                   g_variant_get_type_string (value) + 1);
+
+        g_variant_type_string_scan (*str, NULL, str);
+
+        return value;
+      }
+
+    case 's':
+      return g_variant_new_string (ptr);
+
+    case 'o':
+      return g_variant_new_object_path (ptr);
+
+    case 'g':
+      return g_variant_new_signature (ptr);
+
+    case '^':
+      {
+        const GVariantType *type;
+        GVariantType *array_type;
+        GVariant **children;
+        gchar **strv = ptr;
+        GVariant *value;
+        guint length, i;
+
+        if ((*str)[1] == '&')    /* '^a&s' */
+          (*str) += 2;
+        else                     /* '^as' */
+          (*str)++;
+
+        type = (GVariantType *) (*str)++;
+        array_type = g_variant_type_new_array (type);
+        length = g_strv_length (strv);
+        children = g_new (GVariant *, length);
+        for (i = 0; i < length; i++)
+          children[i] = g_variant_ref_sink (
+            g_variant_new_from_trusted (type, strv[i], strlen (strv[i]) + 1));
+
+        value = g_variant_new_from_children (array_type, children,
+                                             length, TRUE);
+        g_variant_type_free (array_type);
+
+        return value;
+      }
+
+    case '@':
+      if G_UNLIKELY (!g_variant_is_of_type (ptr, (GVariantType *) *str))
+        g_error ("g_variant_new: expected GVariant of type `%s' but "
+                 "received value has type `%s'",
+                 g_variant_type_dup_string ((GVariantType *) *str),
+                 g_variant_get_type_string (ptr));
+
+      g_variant_type_string_scan (*str, NULL, str);
+
+      return ptr;
+
+    case '*':
+      return ptr;
+
+    case '?':
+      if G_UNLIKELY (!g_variant_type_is_basic (g_variant_get_type (ptr)))
+        g_error ("g_variant_new: format string `?' expects basic-typed "
+                 "GVariant, but received value has type `%s'",
+                 g_variant_get_type_string (ptr));
+
+      return ptr;
+
+    case 'r':
+      if G_UNLIKELY (!g_variant_type_is_tuple (g_variant_get_type (ptr)))
+        g_error ("g_variant_new: format string `r` expects tuple-typed "
+                 "GVariant, but received value has type `%s'",
+                 g_variant_get_type_string (ptr));
+
+      return ptr;
+
+    case 'v':
+      return g_variant_new_variant (ptr);
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static gpointer
+g_variant_valist_get_nnp (const gchar **str,
+                          GVariant     *value)
+{
+  switch (*(*str)++)
+    {
+    case 'a':
+      g_variant_type_string_scan (*str, NULL, str);
+      return g_variant_iter_new (value);
+
+    case '&':
+      (*str)++;
+      return (gchar *) g_variant_get_string (value, NULL);
+
+    case 's':
+    case 'o':
+    case 'g':
+      return g_variant_dup_string (value, NULL);
+
+    case '^':
+      if ((*str)[1] == '&')    /* '^a&s' */
+        {
+          (*str) += 3;
+          return g_variant_get_strv (value, NULL);
+        }
+      else                    /* '^as' */
+        {
+          (*str) += 2;
+          return g_variant_dup_strv (value, NULL);
+        }
+
+    case '@':
+      g_variant_type_string_scan (*str, NULL, str);
+      /* fall through */
+
+    case '*':
+    case '?':
+    case 'r':
+      return g_variant_ref (value);
+
+    case 'v':
+      return g_variant_get_variant (value);
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+/* Leaves {{{2 */
+static void
+g_variant_valist_skip_leaf (const gchar **str,
+                            va_list      *app)
+{
+  if (g_variant_format_string_is_nnp (*str))
+    {
+      g_variant_format_string_scan (*str, NULL, str);
+      va_arg (*app, gpointer);
+      return;
+    }
+
+  switch (*(*str)++)
+    {
+    case 'b':
+    case 'y':
+    case 'n':
+    case 'q':
+    case 'i':
+    case 'u':
+    case 'h':
+      va_arg (*app, int);
+      return;
+
+    case 'x':
+    case 't':
+      va_arg (*app, guint64);
+      return;
+
+    case 'd':
+      va_arg (*app, gdouble);
+      return;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static GVariant *
+g_variant_valist_new_leaf (const gchar **str,
+                           va_list      *app)
+{
+  if (g_variant_format_string_is_nnp (*str))
+    return g_variant_valist_new_nnp (str, va_arg (*app, gpointer));
+
+  switch (*(*str)++)
+    {
+    case 'b':
+      return g_variant_new_boolean (va_arg (*app, gboolean));
+
+    case 'y':
+      return g_variant_new_byte (va_arg (*app, guint));
+
+    case 'n':
+      return g_variant_new_int16 (va_arg (*app, gint));
+
+    case 'q':
+      return g_variant_new_uint16 (va_arg (*app, guint));
+
+    case 'i':
+      return g_variant_new_int32 (va_arg (*app, gint));
+
+    case 'u':
+      return g_variant_new_uint32 (va_arg (*app, guint));
+
+    case 'x':
+      return g_variant_new_int64 (va_arg (*app, gint64));
+
+    case 't':
+      return g_variant_new_uint64 (va_arg (*app, guint64));
+
+    case 'h':
+      return g_variant_new_handle (va_arg (*app, gint));
+
+    case 'd':
+      return g_variant_new_double (va_arg (*app, gdouble));
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static void
+g_variant_valist_get_leaf (const gchar **str,
+                           GVariant     *value,
+                           gboolean      free,
+                           va_list      *app)
+{
+  gpointer ptr = va_arg (*app, gpointer);
+
+  if (ptr == NULL)
+    {
+      g_variant_format_string_scan (*str, NULL, str);
+      return;
+    }
+
+  if (g_variant_format_string_is_nnp (*str))
+    {
+      gpointer *nnp = (gpointer *) ptr;
+
+      if (free && *nnp != NULL)
+        g_variant_valist_free_nnp (*str, *nnp);
+
+      *nnp = NULL;
+
+      if (value != NULL)
+        *nnp = g_variant_valist_get_nnp (str, value);
+      else
+        g_variant_format_string_scan (*str, NULL, str);
+
+      return;
+    }
+
+  if (value != NULL)
+    {
+      switch (*(*str)++)
+        {
+        case 'b':
+          *(gboolean *) ptr = g_variant_get_boolean (value);
+          return;
+
+        case 'y':
+          *(guchar *) ptr = g_variant_get_byte (value);
+          return;
+
+        case 'n':
+          *(gint16 *) ptr = g_variant_get_int16 (value);
+          return;
+
+        case 'q':
+          *(guint16 *) ptr = g_variant_get_uint16 (value);
+          return;
+
+        case 'i':
+          *(gint32 *) ptr = g_variant_get_int32 (value);
+          return;
+
+        case 'u':
+          *(guint32 *) ptr = g_variant_get_uint32 (value);
+          return;
+
+        case 'x':
+          *(gint64 *) ptr = g_variant_get_int64 (value);
+          return;
+
+        case 't':
+          *(guint64 *) ptr = g_variant_get_uint64 (value);
+          return;
+
+        case 'h':
+          *(gint32 *) ptr = g_variant_get_handle (value);
+          return;
+
+        case 'd':
+          *(gdouble *) ptr = g_variant_get_double (value);
+          return;
+        }
+    }
+  else
+    {
+      switch (*(*str)++)
+        {
+        case 'y':
+          *(guchar *) ptr = 0;
+          return;
+
+        case 'n':
+        case 'q':
+          *(guint16 *) ptr = 0;
+          return;
+
+        case 'i':
+        case 'u':
+        case 'h':
+        case 'b':
+          g_assert (sizeof (gboolean) == sizeof (guint32));
+          *(guint32 *) ptr = 0;
+          return;
+
+        case 'x':
+        case 't':
+        case 'd':
+          g_assert (sizeof (gdouble) == sizeof (guint64));
+          *(guint64 *) ptr = 0;
+          return;
+        }
+    }
+
+  g_assert_not_reached ();
+}
+
+/* Generic (recursive) {{{2 */
+static void
+g_variant_valist_skip (const gchar **str,
+                       va_list      *app)
+{
+  if (g_variant_format_string_is_leaf (*str))
+    g_variant_valist_skip_leaf (str, app);
+
+  else if (**str == 'm') /* maybe */
+    {
+      (*str)++;
+
+      if (!g_variant_format_string_is_nnp (*str))
+        va_arg (*app, gboolean);
+
+      g_variant_valist_skip (str, app);
+    }
+  else /* tuple, dictionary entry */
+    {
+      g_assert (**str == '(' || **str == '{');
+      (*str)++;
+      while (**str != ')' && **str != '}')
+        g_variant_valist_skip (str, app);
+      (*str)++;
+    }
+}
+
+static GVariant *
+g_variant_valist_new (const gchar **str,
+                      va_list      *app)
+{
+  if (g_variant_format_string_is_leaf (*str))
+    return g_variant_valist_new_leaf (str, app);
+
+  if (**str == 'm') /* maybe */
+    {
+      GVariantType *type = NULL;
+      GVariant *value = NULL;
+
+      (*str)++;
+
+      if (g_variant_format_string_is_nnp (*str))
+        {
+          gpointer nnp = va_arg (*app, gpointer);
+
+          if (nnp != NULL)
+            value = g_variant_valist_new_nnp (str, nnp);
+          else
+            type = g_variant_format_string_scan_type (*str, NULL, str);
+        }
+      else
+        {
+          gboolean just = va_arg (*app, gboolean);
+
+          if (just)
+            value = g_variant_valist_new (str, app);
+          else
+            {
+              type = g_variant_format_string_scan_type (*str, NULL, NULL);
+              g_variant_valist_skip (str, app);
+            }
+        }
+
+      value = g_variant_new_maybe (type, value);
+
+      if (type != NULL)
+        g_variant_type_free (type);
+
+      return value;
+    }
+  else /* tuple, dictionary entry */
+    {
+      GVariantBuilder b;
+
+      if (**str == '(')
+        g_variant_builder_init (&b, G_VARIANT_TYPE_TUPLE);
+      else
+        {
+          g_assert (**str == '{');
+          g_variant_builder_init (&b, G_VARIANT_TYPE_DICT_ENTRY);
+        }
+
+      (*str)++; /* '(' */
+      while (**str != ')' && **str != '}')
+        g_variant_builder_add_value (&b, g_variant_valist_new (str, app));
+      (*str)++; /* ')' */
+
+      return g_variant_builder_end (&b);
+    }
+}
+
+static void
+g_variant_valist_get (const gchar **str,
+                      GVariant     *value,
+                      gboolean      free,
+                      va_list      *app)
+{
+  if (g_variant_format_string_is_leaf (*str))
+    g_variant_valist_get_leaf (str, value, free, app);
+
+  else if (**str == 'm')
+    {
+      (*str)++;
+
+      if (value != NULL)
+        value = g_variant_get_maybe (value);
+
+      if (!g_variant_format_string_is_nnp (*str))
+        {
+          gboolean *ptr = va_arg (*app, gboolean *);
+
+          if (ptr != NULL)
+            *ptr = value != NULL;
+        }
+
+      g_variant_valist_get (str, value, free, app);
+
+      if (value != NULL)
+        g_variant_unref (value);
+    }
+
+  else /* tuple, dictionary entry */
+    {
+      GVariantIter iter;
+
+      g_assert (**str == '(' || **str == '{');
+      g_variant_iter_init (&iter, value);
+
+      (*str)++;
+      while (**str != ')' && **str != '}')
+        {
+          value = g_variant_iter_next_value (&iter);
+          g_variant_valist_get (str, value, free, app);
+          g_variant_unref (value);
+        }
+      (*str)++;
+    }
+}
+
+/* User-facing API {{{2 */
+/**
+ * g_variant_new:
+ * @format_string: a #GVariant format string
+ * @...: arguments, as per @format_string
+ * @returns: a new floating #GVariant instance
+ *
+ * Creates a new #GVariant instance.
+ *
+ * Think of this function as an analogue to g_strdup_printf().
+ *
+ * The type of the created instance and the arguments that are
+ * expected by this function are determined by @format_string.  See the
+ * section on <link linkend='gvariant-format-strings'>GVariant Format
+ * Strings</link>.  Please note that the syntax of the format string is
+ * very likely to be extended in the future.
+ *
+ * The first character of the format string must not be '*' '?' '@' or
+ * 'r'; in essence, a new #GVariant must always be constructed by this
+ * function (and not merely passed through it unmodified).
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new (const gchar *format_string,
+               ...)
+{
+  GVariant *value;
+  va_list ap;
+
+  g_return_val_if_fail (valid_format_string (format_string, TRUE, NULL) &&
+                        format_string[0] != '?' && format_string[0] != '@' &&
+                        format_string[0] != '*' && format_string[0] != 'r',
+                        NULL);
+
+  va_start (ap, format_string);
+  value = g_variant_new_va (format_string, NULL, &ap);
+  va_end (ap);
+
+  return value;
+}
+
+/**
+ * g_variant_new_va:
+ * @format_string: a string that is prefixed with a format string
+ * @endptr: location to store the end pointer, or %NULL
+ * @app: a pointer to a #va_list
+ * @returns: a new, usually floating, #GVariant
+ *
+ * This function is intended to be used by libraries based on
+ * #GVariant that want to provide g_variant_new()-like functionality
+ * to their users.
+ *
+ * The API is more general than g_variant_new() to allow a wider range
+ * of possible uses.
+ *
+ * @format_string must still point to a valid format string, but it only
+ * needs to be nul-terminated if @endptr is %NULL.  If @endptr is
+ * non-%NULL then it is updated to point to the first character past the
+ * end of the format string.
+ *
+ * @app is a pointer to a #va_list.  The arguments, according to
+ * @format_string, are collected from this #va_list and the list is left
+ * pointing to the argument following the last.
+ *
+ * These two generalisations allow mixing of multiple calls to
+ * g_variant_new_va() and g_variant_get_va() within a single actual
+ * varargs call by the user.
+ *
+ * The return value will be floating if it was a newly created GVariant
+ * instance (for example, if the format string was "(ii)").  In the case
+ * that the format_string was '*', '?', 'r', or a format starting with
+ * '@' then the collected #GVariant pointer will be returned unmodified,
+ * without adding any additional references.
+ *
+ * In order to behave correctly in all cases it is necessary for the
+ * calling function to g_variant_ref_sink() the return result before
+ * returning control to the user that originally provided the pointer.
+ * At this point, the caller will have their own full reference to the
+ * result.  This can also be done by adding the result to a container,
+ * or by passing it to another g_variant_new() call.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new_va (const gchar  *format_string,
+                  const gchar **endptr,
+                  va_list      *app)
+{
+  GVariant *value;
+
+  g_return_val_if_fail (valid_format_string (format_string, !endptr, NULL),
+                        NULL);
+  g_return_val_if_fail (app != NULL, NULL);
+
+  value = g_variant_valist_new (&format_string, app);
+
+  if (endptr != NULL)
+    *endptr = format_string;
+
+  return value;
+}
+
+/**
+ * g_variant_get:
+ * @value: a #GVariant instance
+ * @format_string: a #GVariant format string
+ * @...: arguments, as per @format_string
+ *
+ * Deconstructs a #GVariant instance.
+ *
+ * Think of this function as an analogue to scanf().
+ *
+ * The arguments that are expected by this function are entirely
+ * determined by @format_string.  @format_string also restricts the
+ * permissible types of @value.  It is an error to give a value with
+ * an incompatible type.  See the section on <link
+ * linkend='gvariant-format-strings'>GVariant Format Strings</link>.
+ * Please note that the syntax of the format string is very likely to be
+ * extended in the future.
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_get (GVariant    *value,
+               const gchar *format_string,
+               ...)
+{
+  va_list ap;
+
+  g_return_if_fail (valid_format_string (format_string, TRUE, value));
+
+  /* if any direct-pointer-access formats are in use, flatten first */
+  if (strchr (format_string, '&'))
+    g_variant_get_data (value);
+
+  va_start (ap, format_string);
+  g_variant_get_va (value, format_string, NULL, &ap);
+  va_end (ap);
+}
+
+/**
+ * g_variant_get_va:
+ * @value: a #GVariant
+ * @format_string: a string that is prefixed with a format string
+ * @endptr: location to store the end pointer, or %NULL
+ * @app: a pointer to a #va_list
+ *
+ * This function is intended to be used by libraries based on #GVariant
+ * that want to provide g_variant_get()-like functionality to their
+ * users.
+ *
+ * The API is more general than g_variant_get() to allow a wider range
+ * of possible uses.
+ *
+ * @format_string must still point to a valid format string, but it only
+ * need to be nul-terminated if @endptr is %NULL.  If @endptr is
+ * non-%NULL then it is updated to point to the first character past the
+ * end of the format string.
+ *
+ * @app is a pointer to a #va_list.  The arguments, according to
+ * @format_string, are collected from this #va_list and the list is left
+ * pointing to the argument following the last.
+ *
+ * These two generalisations allow mixing of multiple calls to
+ * g_variant_new_va() and g_variant_get_va() within a single actual
+ * varargs call by the user.
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_get_va (GVariant     *value,
+                  const gchar  *format_string,
+                  const gchar **endptr,
+                  va_list      *app)
+{
+  g_return_if_fail (valid_format_string (format_string, !endptr, value));
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (app != NULL);
+
+  /* if any direct-pointer-access formats are in use, flatten first */
+  if (strchr (format_string, '&'))
+    g_variant_get_data (value);
+
+  g_variant_valist_get (&format_string, value, FALSE, app);
+
+  if (endptr != NULL)
+    *endptr = format_string;
+}
+
+/* Varargs-enabled Utility Functions {{{1 */
+
+/**
+ * g_variant_builder_add:
+ * @builder: a #GVariantBuilder
+ * @format_string: a #GVariant varargs format string
+ * @...: arguments, as per @format_string
+ *
+ * Adds to a #GVariantBuilder.
+ *
+ * This call is a convenience wrapper that is exactly equivalent to
+ * calling g_variant_new() followed by g_variant_builder_add_value().
+ *
+ * This function might be used as follows:
+ *
+ * <programlisting>
+ * GVariant *
+ * make_pointless_dictionary (void)
+ * {
+ *   GVariantBuilder *builder;
+ *   int i;
+ *
+ *   builder = g_variant_builder_new (G_VARIANT_TYPE_CLASS_ARRAY,
+ *                                    NULL);
+ *   for (i = 0; i < 16; i++)
+ *     {
+ *       gchar buf[3];
+ *
+ *       sprintf (buf, "%d", i);
+ *       g_variant_builder_add (builder, "{is}", i, buf);
+ *     }
+ *
+ *   return g_variant_builder_end (builder);
+ * }
+ * </programlisting>
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_builder_add (GVariantBuilder *builder,
+                       const gchar     *format_string,
+                       ...)
+{
+  GVariant *variant;
+  va_list ap;
+
+  va_start (ap, format_string);
+  variant = g_variant_new_va (format_string, NULL, &ap);
+  va_end (ap);
+
+  g_variant_builder_add_value (builder, variant);
+}
+
+/**
+ * g_variant_get_child:
+ * @value: a container #GVariant
+ * @index_: the index of the child to deconstruct
+ * @format_string: a #GVariant format string
+ * @...: arguments, as per @format_string
+ *
+ * Reads a child item out of a container #GVariant instance and
+ * deconstructs it according to @format_string.  This call is
+ * essentially a combination of g_variant_get_child_value() and
+ * g_variant_get().
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_get_child (GVariant    *value,
+                     gsize        index_,
+                     const gchar *format_string,
+                     ...)
+{
+  GVariant *child;
+  va_list ap;
+
+  child = g_variant_get_child_value (value, index_);
+  g_return_if_fail (valid_format_string (format_string, TRUE, child));
+
+  va_start (ap, format_string);
+  g_variant_get_va (child, format_string, NULL, &ap);
+  va_end (ap);
+
+  g_variant_unref (child);
+}
+
+/**
+ * g_variant_iter_next:
+ * @iter: a #GVariantIter
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
+ *           value
+ *
+ * Gets the next item in the container and unpacks it into the variable
+ * argument list according to @format_string, returning %TRUE.
+ *
+ * If no more items remain then %FALSE is returned.
+ *
+ * All of the pointers given on the variable arguments list of this
+ * function are assumed to point at uninitialised memory.  It is the
+ * responsibility of the caller to free all of the values returned by
+ * the unpacking process.
+ *
+ * <example>
+ *  <title>Memory management with g_variant_iter_next()</title>
+ *  <programlisting>
+ *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ *   void
+ *   iterate_dictionary (GVariant *dictionary)
+ *   {
+ *     GVariantIter iter;
+ *     GVariant *value;
+ *     gchar *key;
+ *
+ *     g_variant_iter_init (&iter, dictionary);
+ *     while (g_variant_iter_next (&iter, "{sv}", &key, &value))
+ *       {
+ *         g_print ("Item '%s' has type '%s'\n", key,
+ *                  g_variant_get_type_string (value));
+ *
+ *         /<!-- -->* must free data for ourselves *<!-- -->/
+ *         g_variant_unref (value);
+ *         g_free (key);
+ *       }
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * For a solution that is likely to be more convenient to C programmers
+ * when dealing with loops, see g_variant_iter_loop().
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_variant_iter_next (GVariantIter *iter,
+                     const gchar  *format_string,
+                     ...)
+{
+  GVariant *value;
+
+  value = g_variant_iter_next_value (iter);
+
+  g_return_val_if_fail (valid_format_string (format_string, TRUE, value),
+                        FALSE);
+
+  if (value != NULL)
+    {
+      va_list ap;
+
+      va_start (ap, format_string);
+      g_variant_valist_get (&format_string, value, FALSE, &ap);
+      va_end (ap);
+
+      g_variant_unref (value);
+    }
+
+  return value != NULL;
+}
+
+/**
+ * g_variant_iter_loop:
+ * @iter: a #GVariantIter
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
+ *           value
+ *
+ * Gets the next item in the container and unpacks it into the variable
+ * argument list according to @format_string, returning %TRUE.
+ *
+ * If no more items remain then %FALSE is returned.
+ *
+ * On the first call to this function, the pointers appearing on the
+ * variable argument list are assumed to point at uninitialised memory.
+ * On the second and later calls, it is assumed that the same pointers
+ * will be given and that they will point to the memory as set by the
+ * previous call to this function.  This allows the previous values to
+ * be freed, as appropriate.
+ *
+ * This function is intended to be used with a while loop as
+ * demonstrated in the following example.  This function can only be
+ * used when iterating over an array.  It is only valid to call this
+ * function with a string constant for the format string and the same
+ * string constant must be used each time.  Mixing calls to this
+ * function and g_variant_iter_next() or g_variant_iter_next_value() on
+ * the same iterator is not recommended.
+ *
+ * <example>
+ *  <title>Memory management with g_variant_iter_loop()</title>
+ *  <programlisting>
+ *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ *   void
+ *   iterate_dictionary (GVariant *dictionary)
+ *   {
+ *     GVariantIter iter;
+ *     GVariant *value;
+ *     gchar *key;
+ *
+ *     g_variant_iter_init (&iter, dictionary);
+ *     while (g_variant_iter_loop (&iter, "{sv}", &key, &value))
+ *       {
+ *         g_print ("Item '%s' has type '%s'\n", key,
+ *                  g_variant_get_type_string (value));
+ *
+ *         /<!-- -->* no need to free 'key' and 'value' here *<!-- -->/
+ *       }
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * If you want a slightly less magical alternative that requires more
+ * typing, see g_variant_iter_next().
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_variant_iter_loop (GVariantIter *iter,
+                     const gchar  *format_string,
+                     ...)
+{
+  gboolean first_time = GVSI(iter)->loop_format == NULL;
+  GVariant *value;
+  va_list ap;
+
+  g_return_val_if_fail (first_time ||
+                        format_string == GVSI(iter)->loop_format,
+                        FALSE);
+
+  if (first_time)
+    {
+      TYPE_CHECK (GVSI(iter)->value, G_VARIANT_TYPE_ARRAY, FALSE);
+      GVSI(iter)->loop_format = format_string;
+
+      if (strchr (format_string, '&'))
+        g_variant_get_data (GVSI(iter)->value);
+    }
+
+  value = g_variant_iter_next_value (iter);
+
+  g_return_val_if_fail (!first_time ||
+                        valid_format_string (format_string, TRUE, value),
+                        FALSE);
+
+  va_start (ap, format_string);
+  g_variant_valist_get (&format_string, value, !first_time, &ap);
+  va_end (ap);
+
+  if (value != NULL)
+    g_variant_unref (value);
+
+  return value != NULL;
 }
 
 /* Epilogue {{{1 */

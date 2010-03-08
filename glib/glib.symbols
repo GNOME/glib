@@ -1767,8 +1767,6 @@ g_variant_iter_free
 g_variant_iter_init
 g_variant_iter_n_children
 g_variant_iter_new
-g_variant_iter_next
-g_variant_iter_loop
 g_variant_iter_next_value
 
 g_variant_builder_add_value
@@ -1780,6 +1778,52 @@ g_variant_builder_end
 g_variant_builder_new
 g_variant_builder_unref
 g_variant_builder_ref
+
+g_variant_new_va
+g_variant_get_va
+g_variant_new
+g_variant_get
+
+g_variant_builder_add
+g_variant_get_child
+g_variant_iter_next
+g_variant_iter_loop
+#endif
+#endif
+
+#if IN_HEADER(__G_VARIANT_TYPE_INFO_H__)
+#if IN_FILE(__G_VARIANT_TYPE_INFO_C__)
+g_variant_type_info_get_type_string
+g_variant_type_info_query
+g_variant_type_info_element
+g_variant_type_info_query_element
+g_variant_type_info_n_members
+g_variant_type_info_member_info
+g_variant_type_info_get
+g_variant_type_info_ref
+g_variant_type_info_unref
+g_variant_type_info_assert_no_infos
+#endif
+#endif
+
+#if IN_HEADER(__G_VARIANT_SERIALISER_H__)
+#if IN_FILE(__G_VARIANT_SERIALISER_C__)
+g_variant_serialised_byteswap
+g_variant_serialised_get_child
+g_variant_serialised_is_normal
+g_variant_serialised_n_children
+g_variant_serialiser_is_object_path
+g_variant_serialiser_is_signature
+g_variant_serialiser_is_string
+g_variant_serialiser_needed_size
+g_variant_serialiser_serialise
+#endif
+#endif
+
+#if IN_HEADER(__G_VARIANT_INTERNAL_H__)
+#if IN_FILE(__G_VARIANT_C__)
+g_variant_format_string_scan_type
+g_variant_format_string_scan
 #endif
 #endif
 

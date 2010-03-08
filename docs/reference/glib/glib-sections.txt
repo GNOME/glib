@@ -2799,6 +2799,12 @@ g_variant_classify
 GVariantClass
 
 <SUBSECTION>
+g_variant_get
+g_variant_get_va
+g_variant_new
+g_variant_new_va
+
+<SUBSECTION>
 g_variant_new_boolean
 g_variant_new_byte
 g_variant_new_int16
@@ -2844,6 +2850,7 @@ g_variant_new_dict_entry
 g_variant_get_maybe
 g_variant_n_children
 g_variant_get_child_value
+g_variant_get_child
 g_variant_get_fixed_array
 
 <SUBSECTION>
@@ -2878,9 +2885,13 @@ g_variant_builder_new
 g_variant_builder_init
 g_variant_builder_clear
 g_variant_builder_add_value
+g_variant_builder_add
 g_variant_builder_end
 g_variant_builder_open
 g_variant_builder_close
+
+<SUBSECTION Private>
+g_variant_type_checked_
 </SECTION>
 
 

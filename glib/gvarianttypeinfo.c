@@ -861,6 +861,11 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
     }
 }
 
-/* used from the test cases */
-#define assert_no_type_infos() \
-  g_assert (g_variant_type_info_table == NULL)
+void
+g_variant_type_info_assert_no_infos (void)
+{
+  g_assert (g_variant_type_info_table == NULL);
+}
+
+#define __G_VARIANT_TYPE_INFO_C__
+#include "galiasdef.c"
