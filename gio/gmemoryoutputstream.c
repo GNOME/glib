@@ -332,8 +332,8 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * g_memory_output_stream_new:
  * @data: pointer to a chunk of memory to use, or %NULL
  * @size: the size of @data
- * @realloc_function: a function with realloc() semantics to be called when
- *     @data needs to be grown, or %NULL
+ * @realloc_function: a function with realloc() semantics (like g_realloc())
+ *     to be called when @data needs to be grown, or %NULL
  * @destroy_function: a function to be called on @data when the stream is
  *     finalized, or %NULL
  *
@@ -343,13 +343,17 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * If @realloc_fn is non-%NULL, it will be used for resizing the internal
  * storage when necessary. To construct a fixed-size output stream,
  * pass %NULL as @realloc_fn.
+ *
  * |[
  * /&ast; a stream that can grow &ast;/
  * stream = g_memory_output_stream_new (NULL, 0, realloc, free);
  *
+ * /&ast; another stream that can grow &ast;/
+ * stream2 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+ *
  * /&ast; a fixed-size stream &ast;/
  * data = malloc (200);
- * stream2 = g_memory_output_stream_new (data, 200, NULL, free);
+ * stream3 = g_memory_output_stream_new (data, 200, NULL, free);
  * ]|
  *
  * Return value: A newly created #GMemoryOutputStream object.
