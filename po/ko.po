@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-21 20:23-0500\n"
+"POT-Creation-Date: 2010-03-08 10:51-0500\n"
 "PO-Revision-Date: 2010-02-16 03:42+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
@@ -100,8 +100,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'에서 '%s'(으)로 변환하는 변환기를 열 수 없습니다"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:980
-#: glib/gutf8.c:1435 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "변환 입력에서 잘못된 바이트 순서"
 
@@ -111,8 +111,8 @@ msgstr "변환 입력에서 잘못된 바이트 순서"
 msgid "Error during conversion: %s"
 msgstr "변환중 오류: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:976 glib/gutf8.c:1186 glib/gutf8.c:1327
-#: glib/gutf8.c:1431
+#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
+#: glib/gutf8.c:1432
 msgid "Partial character sequence at end of input"
 msgstr "입력의 끝에서 부분적인 문자 순서"
 
@@ -548,7 +548,7 @@ msgstr "역추적 최대값에 도달했습니다"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "패턴 안에 부분 매치에서 지원하지 않는 항목이 들어 있습니다."
 
-#: glib/gregex.c:154 gio/glocalfile.c:2101
+#: glib/gregex.c:154 gio/glocalfile.c:2115
 msgid "internal error"
 msgstr "내부 오류"
 
@@ -958,16 +958,16 @@ msgstr "하위 프로세스 \"%s\"을(를) 실행하는 중 알 수 없는 오�
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "하위 PID 파이프에서 필요한 데이터를 읽는데 실패했습니다 (%s)"
 
-#: glib/gutf8.c:1054
+#: glib/gutf8.c:1055
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 범위 밖의 문자"
 
-#: glib/gutf8.c:1154 glib/gutf8.c:1163 glib/gutf8.c:1295 glib/gutf8.c:1304
-#: glib/gutf8.c:1445 glib/gutf8.c:1541
+#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
+#: glib/gutf8.c:1446 glib/gutf8.c:1542
 msgid "Invalid sequence in conversion input"
 msgstr "변환 입력에서 잘못된 순서"
 
-#: glib/gutf8.c:1456 glib/gutf8.c:1552
+#: glib/gutf8.c:1457 glib/gutf8.c:1553
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
 
@@ -1150,7 +1150,7 @@ msgstr "%s에 넘긴 카운트 값이 너무 큽니다"
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2094 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "동작이 취소되었습니다"
@@ -1292,7 +1292,7 @@ msgstr "동작을 지원하지 않습니다"
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2250
+#: gio/gfile.c:2409 gio/glocalfile.c:2264
 msgid "Can't copy over directory"
 msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 
@@ -1300,13 +1300,18 @@ msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 msgid "Can't copy directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 복사할 수 없습니다"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2259
+#: gio/gfile.c:2477 gio/glocalfile.c:2273
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
 #: gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "디렉터리를 재귀적으로 복사할 수 없습니다"
+
+#: gio/gfile.c:2755
+#, fuzzy
+msgid "Splice not supported"
+msgstr "심볼릭 링크를 지원하지 않습니다"
 
 #: gio/gfile.c:2759
 #, c-format
@@ -1450,105 +1455,105 @@ msgstr "잘못된 파일 이름 %s"
 msgid "Error getting filesystem info: %s"
 msgstr "파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: gio/glocalfile.c:1109
+#: gio/glocalfile.c:1111
 msgid "Can't rename root directory"
 msgstr "루트 디렉터리의 이름을 바꿀 수 없습니다"
 
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
+#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "파일 이름 바꾸기 오류: %s"
 
-#: gio/glocalfile.c:1138
+#: gio/glocalfile.c:1140
 msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:1151 gio/glocalfile.c:2123 gio/glocalfile.c:2152
-#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
+#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: gio/glocalfile.c:1307
+#: gio/glocalfile.c:1314
 #, c-format
 msgid "Error opening file: %s"
 msgstr "파일 열기 오류: %s"
 
-#: gio/glocalfile.c:1317
+#: gio/glocalfile.c:1324
 msgid "Can't open directory"
 msgstr "디렉터리를 열 수 없습니다"
 
-#: gio/glocalfile.c:1442
+#: gio/glocalfile.c:1449
 #, c-format
 msgid "Error removing file: %s"
 msgstr "파일 제거 오류: %s"
 
-#: gio/glocalfile.c:1807
+#: gio/glocalfile.c:1816
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "파일 버리기 오류: %s"
 
-#: gio/glocalfile.c:1830
+#: gio/glocalfile.c:1839
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉터리(%s)를 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1851
+#: gio/glocalfile.c:1860
 msgid "Unable to find toplevel directory for trash"
 msgstr "휴지통의 상위 디렉터리를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:1930 gio/glocalfile.c:1950
+#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
 msgid "Unable to find or create trash directory"
 msgstr "휴지통 디렉터리를 찾을 수 없거나 만들 수 없습니다"
 
-#: gio/glocalfile.c:1984
+#: gio/glocalfile.c:1993
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:2013 gio/glocalfile.c:2018 gio/glocalfile.c:2093
-#: gio/glocalfile.c:2100
+#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
+#: gio/glocalfile.c:2114
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: gio/glocalfile.c:2127
+#: gio/glocalfile.c:2141
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "디렉터리를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2156
+#: gio/glocalfile.c:2170
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "파일 시스템이 심볼릭 링크를 지원하지 않습니다"
 
-#: gio/glocalfile.c:2160
+#: gio/glocalfile.c:2174
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 중 오류: %s"
 
-#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
+#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 중 오류: %s"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2259
 msgid "Can't move directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:2291
+#: gio/glocalfile.c:2305
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 제거하는 중 오류: %s"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2319
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
 
@@ -1718,7 +1723,7 @@ msgstr "파일이 외부에서 바뀌었습니다"
 msgid "Error removing old file: %s"
 msgstr "예전 파일을 제거하는 중 오류: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:714
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:718
 msgid "Invalid GSeekType supplied"
 msgstr "잘못된 GSeekType이 주어졌습니다"
 
@@ -1730,25 +1735,25 @@ msgstr "잘못된 seek 요청"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream은 자를 수 없습니다"
 
-#: gio/gmemoryoutputstream.c:464
+#: gio/gmemoryoutputstream.c:468
 msgid "Memory output stream not resizable"
 msgstr "메모리 출력 스트림은 크기를 바꿀 수 없습니다"
 
-#: gio/gmemoryoutputstream.c:480
+#: gio/gmemoryoutputstream.c:484
 msgid "Failed to resize memory output stream"
 msgstr "출력 스트림의 크기를 바꾸는데 실패했습니다"
 
-#: gio/gmemoryoutputstream.c:568
+#: gio/gmemoryoutputstream.c:572
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr "쓰기를 처리하는데 필요한 메모리 용량이 빈 공간보다 더 큽니다"
 
-#: gio/gmemoryoutputstream.c:724
+#: gio/gmemoryoutputstream.c:728
 msgid "Requested seek before the beginning of the stream"
 msgstr "요청한 파일 이동 위치가 스트림의 맨 앞보다 더 앞쪽입니다"
 
-#: gio/gmemoryoutputstream.c:733
+#: gio/gmemoryoutputstream.c:737
 msgid "Requested seek beyond the end of the stream"
 msgstr "요청한 파일 이동 위치가 스트림의 맨 뒤보다 더 뒤쪽입니다"
 
@@ -2007,11 +2012,6 @@ msgstr "유닉스 소켓에 쓰는 중 오류: %s"
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "가상 유닉스 도메인 소켓 주소는 이 시스템에서 지원하지 않습니다"
 
-#: gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "변환 입력에서 잘못된 UTF-8 시퀀스"
-
 #: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "볼륨이 eject를 구현하지 않았습니다"
@@ -2060,6 +2060,9 @@ msgstr "입력이 더 필요합니다"
 #: gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "잘못된 압축 데이터"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "변환 입력에서 잘못된 UTF-8 시퀀스"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "최대 데이터 배열 한계에 도달했습니다"

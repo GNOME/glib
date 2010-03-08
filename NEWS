@@ -1,3 +1,53 @@
+Overview of Changes from GLib 2.23.4 to GLib 2.23.5
+===================================================
+
+* New API addition: g_malloc_n() and friends used to implement an
+  overflow-safe family of g_new() macros.
+
+* GVariant:
+ - GVariantBuilder and GVariantIter are now merged.
+ - The variable arguments API is now merged.
+ - The parser will be in a future release.
+
+* GIO:
+ - Remove GUtf8InputStream (which never appeared in a stable release)
+   for now since it doesn't satisfy the needs of its main intended use
+   case.  We hope to reimplement this feature in a better form in a
+   future release.
+
+* Bugs fixed:
+ 609531 missing licence headers
+ 612107 Missing G_FILE_ATTRIBUTE_TRASH_ORIG_PATH
+ 611897 g_io_modules_scan_all_in_directory leaks
+ 608196 Overflow-safe g_new family
+ 611696 gio uses GetAddrInfo which requires special handing on windows 2k
+ 605667 Don't use G_PARAM_SPEC_VALUE_TYPE when we know the pspec is valid
+ 610860 test_g_file_open_readwrite fails if $HOME is unwritable
+ 552912 glib-2.18 /live-g-file/test_copy_move failed when run as root
+ 609813 Renaming a file discards file notes
+
+* Updated translations:
+ Basque
+ Brazilian Portuguese
+ British English
+ Bulgarian
+ Catalan
+ Danish
+ Estonian
+ French
+ German
+ Hungarian
+ Italian
+ Lithuanian
+ Norwegian bokmål
+ Portuguese
+ Russian
+ Slovenian
+ Spanish
+ Swedish
+ Traditional Chinese
+
+
 Overview of Changes from GLib 2.23.3 to GLib 2.23.4
 ===================================================
 

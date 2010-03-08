@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-21 20:23-0500\n"
+"POT-Creation-Date: 2010-03-08 10:51-0500\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -102,8 +102,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'-ല്‍ നിന്നും '%s'-ലേക്ക് വേര്‍തിരിക്കുന്ന സംവിധാനം ലഭ്യമായില്ല"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:980
-#: glib/gutf8.c:1435 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട്ടില്‍ തെറ്റായ ബൈറ്റ് ക്രമം"
 
@@ -113,8 +113,8 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Error during conversion: %s"
 msgstr "മാറ്റം വരുത്തുന്നതില്‍ പരാജയം : %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:976 glib/gutf8.c:1186 glib/gutf8.c:1327
-#: glib/gutf8.c:1431
+#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
+#: glib/gutf8.c:1432
 msgid "Partial character sequence at end of input"
 msgstr "ഇന്‍പുട്ടിന്റെ അവസാനം ഭാഗികമായ അക്ഷര ക്രമം"
 
@@ -547,7 +547,7 @@ msgstr "ബാക്ക്ട്രാക്കിങ് പരിധി എത�
 msgid "the pattern contains items not supported for partial matching"
 msgstr "പാറ്‍ഷ്യല്‍ മാച്ചിങിന് പിന്തുണ ലഭ്യമല്ലാത്ത വസ്തുക്കള്‍ ഈ മാതൃകയിലുണ്ട്"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2101
+#: glib/gregex.c:154 gio/glocalfile.c:2115
 msgid "internal error"
 msgstr "ആന്തരിക പിശക്"
 
@@ -949,16 +949,16 @@ msgstr "ചൈള്‍ഡ് പ്രക്രിയ \"%s\" പ്രവര്
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ചൈള്‍ഡ് pid പൈപ്പിന്‍ നിന്നും ആവശ്യത്തിനുളള ഡേറ്റാ വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gutf8.c:1054
+#: glib/gutf8.c:1055
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
-#: glib/gutf8.c:1154 glib/gutf8.c:1163 glib/gutf8.c:1295 glib/gutf8.c:1304
-#: glib/gutf8.c:1445 glib/gutf8.c:1541
+#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
+#: glib/gutf8.c:1446 glib/gutf8.c:1542
 msgid "Invalid sequence in conversion input"
 msgstr "ഇന്‍പുട്ട് വേര്‍തിരിക്കുന്നതില്‍ അസാധുവായ ക്രമം"
 
-#: glib/gutf8.c:1456 glib/gutf8.c:1552
+#: glib/gutf8.c:1457 glib/gutf8.c:1553
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
@@ -1140,7 +1140,7 @@ msgstr "വളരെ വലിയ കൌണ്ട് മൂല്ല്യം %s
 msgid "Stream is already closed"
 msgstr "സ്ട്രീം നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2094 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "പ്രക്രിയ റദ്ദാക്കിയിരിക്കുന്നു"
@@ -1285,7 +1285,7 @@ msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്�
 msgid "Containing mount does not exist"
 msgstr "മൌണ്ട് ലഭ്യമല്ല"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2250
+#: gio/gfile.c:2409 gio/glocalfile.c:2264
 msgid "Can't copy over directory"
 msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
@@ -1293,13 +1293,18 @@ msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവ�
 msgid "Can't copy directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2259
+#: gio/gfile.c:2477 gio/glocalfile.c:2273
 msgid "Target file exists"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നിലവിലുണ്ട്"
 
 #: gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "ആവര്‍ത്തിച്ച് ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
+
+#: gio/gfile.c:2755
+#, fuzzy
+msgid "Splice not supported"
+msgstr "സിബോളിക്ക് ലിങ്ക് പിന്തുണയ്ക്കുന്നില്ല"
 
 #: gio/gfile.c:2759
 #, fuzzy, c-format
@@ -1443,105 +1448,105 @@ msgstr "തെറ്റായ ഫയല്‍ നാമം %s "
 msgid "Error getting filesystem info: %s"
 msgstr "ഫയല്‍സിസ്റ്റം വിവരം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1109
+#: gio/glocalfile.c:1111
 msgid "Can't rename root directory"
 msgstr "റൂട്ട് ഡയറക്ടറിയുടെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
+#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1138
+#: gio/glocalfile.c:1140
 msgid "Can't rename file, filename already exist"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല, കാരണം ഈ പേര് നിലവിലുണ്ട്"
 
-#: gio/glocalfile.c:1151 gio/glocalfile.c:2123 gio/glocalfile.c:2152
-#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
+#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "തെറ്റായ ഫയല്‍നാമം"
 
-#: gio/glocalfile.c:1307
+#: gio/glocalfile.c:1314
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ഫയല്‍ തുറക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/glocalfile.c:1317
+#: gio/glocalfile.c:1324
 msgid "Can't open directory"
 msgstr "ഡയറക്ടറി തുറക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1442
+#: gio/glocalfile.c:1449
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1807
+#: gio/glocalfile.c:1816
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ഫയല്‍ ചവറ്റുകുട്ടയിലേക്കു് മാറ്റുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1830
+#: gio/glocalfile.c:1839
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:1851
+#: gio/glocalfile.c:1860
 msgid "Unable to find toplevel directory for trash"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ടോപ് ലവല്‍ ഡയറക്ടറി ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:1930 gio/glocalfile.c:1950
+#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
 msgid "Unable to find or create trash directory"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി ഉണ്ടാക്കുവാനോ ലഭ്യമാക്കുവാനോ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:1984
+#: gio/glocalfile.c:1993
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "വിവരങ്ങള്‍ സംബന്ധിച്ചുള്ള ഫയല്‍ ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:2013 gio/glocalfile.c:2018 gio/glocalfile.c:2093
-#: gio/glocalfile.c:2100
+#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
+#: gio/glocalfile.c:2114
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ഫയല്‍ ചവറ്റുകുട്ടയിലേക്ക് നീക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:2127
+#: gio/glocalfile.c:2141
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ഡയറക്ടറി ഉണ്ടാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2156
+#: gio/glocalfile.c:2170
 #, fuzzy, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "സിബോളിക്ക് ലിങ്ക് '%s' വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു: %s"
 
-#: gio/glocalfile.c:2160
+#: gio/glocalfile.c:2174
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "സിംബോളിക് ലിങ്ക് ഉണ്ടാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
+#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ഫയല്‍ നീക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2259
 msgid "Can't move directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി നീക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "ബാക്കപ്പ് ഫയല്‍ ഉണ്ടാക്കുന്നതില്‍ പരാജയം"
 
-#: gio/glocalfile.c:2291
+#: gio/glocalfile.c:2305
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2319
 msgid "Move between mounts not supported"
 msgstr "മൌണ്ട് പോയിന്റുകളില്‍ തമ്മില്‍ നീക്കം ചെയ്യുന്നതില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1711,7 +1716,7 @@ msgstr "ഫയല്‍ പുറമേ നിന്നും മാറ്റം
 msgid "Error removing old file: %s"
 msgstr "പഴയ ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:714
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:718
 msgid "Invalid GSeekType supplied"
 msgstr "തെറ്റായ GSeekType നല്‍കിയിരിക്കുന്നു"
 
@@ -1723,25 +1728,25 @@ msgstr "തെറ്റായ seek ആവശ്യപ്പെട്ടിരി
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream ട്രങ്‌കേറ്റ് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gmemoryoutputstream.c:464
+#: gio/gmemoryoutputstream.c:468
 msgid "Memory output stream not resizable"
 msgstr "മെമ്മറി ഔട്ട്പുട്ട് സ്ട്രീമിന്റെ വ്യാപ്തി മാറ്റുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gmemoryoutputstream.c:480
+#: gio/gmemoryoutputstream.c:484
 msgid "Failed to resize memory output stream"
 msgstr "മെമ്മറി ഔട്ട്പുട്ട് സ്ട്രീമിന്റെ വ്യാപ്തി മാറ്റുന്നതില്‍ പരാജയം"
 
-#: gio/gmemoryoutputstream.c:568
+#: gio/gmemoryoutputstream.c:572
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:724
+#: gio/gmemoryoutputstream.c:728
 msgid "Requested seek before the beginning of the stream"
 msgstr ""
 
-#: gio/gmemoryoutputstream.c:733
+#: gio/gmemoryoutputstream.c:737
 msgid "Requested seek beyond the end of the stream"
 msgstr ""
 
@@ -2001,11 +2006,6 @@ msgstr "യൂണിക്സിലേക്ക് എഴുതുന്നത�
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "ഈ സിസ്റ്റമില്‍ അബ്സ്ട്രാക്ട് യൂണിക്സ് ഡൊമെയിന്‍ സോക്കറ്റ് വിലാസങ്ങള്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gutf8inputstream.c:322
-#, fuzzy, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "ഇന്‍പുട്ട് വേര്‍തിരിക്കുന്നതില്‍ അസാധുവായ ക്രമം"
-
 #: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "വോള്യം പുറത്തിറക്കല്‍ അനുവദിക്കുന്നില്ല"
@@ -2056,6 +2056,10 @@ msgstr ""
 #, fuzzy
 msgid "Invalid compressed data"
 msgstr "സാധുതയില്ലാത്ത ഹോസ്റ്റ് നാമം"
+
+#, fuzzy
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "ഇന്‍പുട്ട് വേര്‍തിരിക്കുന്നതില്‍ അസാധുവായ ക്രമം"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "ഏറ്റവും കൂടുതലായ ഡേറ്റാ അറേ പരിധി എത്തിയിരിക്കുന്നു"

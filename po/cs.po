@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-21 20:23-0500\n"
+"POT-Creation-Date: 2010-03-08 10:51-0500\n"
 "PO-Revision-Date: 2010-02-18 20:07+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -104,8 +104,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nelze otevřít převaděč z \"%s\" do \"%s\""
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:980
-#: glib/gutf8.c:1435 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 
@@ -115,8 +115,8 @@ msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:976 glib/gutf8.c:1186 glib/gutf8.c:1327
-#: glib/gutf8.c:1431
+#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
+#: glib/gutf8.c:1432
 msgid "Partial character sequence at end of input"
 msgstr "Částečná posloupnost znaků na konci vstupu"
 
@@ -551,7 +551,7 @@ msgstr "dosažen limit zpětného vyhledávání"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "vzorek obsahuje položky nepodporované u částečného porovnávání"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2101
+#: glib/gregex.c:154 gio/glocalfile.c:2115
 msgid "internal error"
 msgstr "vnitřní chyba"
 
@@ -956,16 +956,16 @@ msgstr "Neznámá chyba při běhu procesu potomka \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nelze přečíst dostatek dat z roury pid potomka (%s)"
 
-#: glib/gutf8.c:1054
+#: glib/gutf8.c:1055
 msgid "Character out of range for UTF-8"
 msgstr "Znak je mimo rozsah UTF-8"
 
-#: glib/gutf8.c:1154 glib/gutf8.c:1163 glib/gutf8.c:1295 glib/gutf8.c:1304
-#: glib/gutf8.c:1445 glib/gutf8.c:1541
+#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
+#: glib/gutf8.c:1446 glib/gutf8.c:1542
 msgid "Invalid sequence in conversion input"
 msgstr "Neplatná posloupnost na vstupu převodu"
 
-#: glib/gutf8.c:1456 glib/gutf8.c:1552
+#: glib/gutf8.c:1457 glib/gutf8.c:1553
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
@@ -1153,7 +1153,7 @@ msgstr "%s poskytnut příliš vysoký počet"
 msgid "Stream is already closed"
 msgstr "Proud je již uzavřen"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2094 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Operace byla zrušena"
@@ -1295,7 +1295,7 @@ msgstr "Operace není podporována"
 msgid "Containing mount does not exist"
 msgstr "Obsahující připojené neexistuje"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2250
+#: gio/gfile.c:2409 gio/glocalfile.c:2264
 msgid "Can't copy over directory"
 msgstr "Nelze kopírovat nad adresář"
 
@@ -1303,13 +1303,18 @@ msgstr "Nelze kopírovat nad adresář"
 msgid "Can't copy directory over directory"
 msgstr "Nelze kopírovat adresář nad adresář"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2259
+#: gio/gfile.c:2477 gio/glocalfile.c:2273
 msgid "Target file exists"
 msgstr "Cílový soubor existuje"
 
 #: gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "Adresář nelze kopírovat rekurzivně"
+
+#: gio/gfile.c:2755
+#, fuzzy
+msgid "Splice not supported"
+msgstr "Symbolické odkazy nejsou podporovány"
 
 #: gio/gfile.c:2759
 #, c-format
@@ -1453,105 +1458,105 @@ msgstr "Neplatný název souboru %s"
 msgid "Error getting filesystem info: %s"
 msgstr "Chyba při získávání informace o systému souborů: %s"
 
-#: gio/glocalfile.c:1109
+#: gio/glocalfile.c:1111
 msgid "Can't rename root directory"
 msgstr "Nelze přejmenovat kořenový adresář"
 
-#: gio/glocalfile.c:1129 gio/glocalfile.c:1155
+#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Chyba při přejmenovávání souboru: %s"
 
-#: gio/glocalfile.c:1138
+#: gio/glocalfile.c:1140
 msgid "Can't rename file, filename already exist"
 msgstr "Soubor nelze přejmenovat, název souboru již existuje"
 
-#: gio/glocalfile.c:1151 gio/glocalfile.c:2123 gio/glocalfile.c:2152
-#: gio/glocalfile.c:2312 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
+#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "Neplatný název souboru"
 
-#: gio/glocalfile.c:1307
+#: gio/glocalfile.c:1314
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Chyba při otevírání souboru: %s"
 
-#: gio/glocalfile.c:1317
+#: gio/glocalfile.c:1324
 msgid "Can't open directory"
 msgstr "Nelze otevřít adresář"
 
-#: gio/glocalfile.c:1442
+#: gio/glocalfile.c:1449
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Chyba při odstraňování souboru: %s"
 
-#: gio/glocalfile.c:1807
+#: gio/glocalfile.c:1816
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Chyba při zahazování souboru: %s"
 
-#: gio/glocalfile.c:1830
+#: gio/glocalfile.c:1839
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Nelze vytvořit adresář koše %s: %s"
 
-#: gio/glocalfile.c:1851
+#: gio/glocalfile.c:1860
 msgid "Unable to find toplevel directory for trash"
 msgstr "Ke koši nelze nalézt adresář nejvyšší úrovně"
 
-#: gio/glocalfile.c:1930 gio/glocalfile.c:1950
+#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
 msgid "Unable to find or create trash directory"
 msgstr "Nelze nalézt nebo vytvořit adresář koše"
 
-#: gio/glocalfile.c:1984
+#: gio/glocalfile.c:1993
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Nelze vytvořit informační soubor o zahozeném: %s"
 
-#: gio/glocalfile.c:2013 gio/glocalfile.c:2018 gio/glocalfile.c:2093
-#: gio/glocalfile.c:2100
+#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
+#: gio/glocalfile.c:2114
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Nelze zahodit soubor: %s"
 
-#: gio/glocalfile.c:2127
+#: gio/glocalfile.c:2141
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Chyba při vytváření adresáře: %s"
 
-#: gio/glocalfile.c:2156
+#: gio/glocalfile.c:2170
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Systém souborů nepodporuje symbolické odkazy"
 
-#: gio/glocalfile.c:2160
+#: gio/glocalfile.c:2174
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Chyba při vytváření symbolického odkazu: %s"
 
-#: gio/glocalfile.c:2222 gio/glocalfile.c:2316
+#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Chyba při přesunování souboru: %s"
 
-#: gio/glocalfile.c:2245
+#: gio/glocalfile.c:2259
 msgid "Can't move directory over directory"
 msgstr "Adresář nelze přesunout nad adresář"
 
-#: gio/glocalfile.c:2272 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "Vytvoření záložního souboru selhalo"
 
-#: gio/glocalfile.c:2291
+#: gio/glocalfile.c:2305
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Chyba při odstraňování cílového souboru: %s"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2319
 msgid "Move between mounts not supported"
 msgstr "Přesunování mezi připojeními není podporováno"
 
@@ -1722,7 +1727,7 @@ msgstr "Soubor byl externě pozměněn"
 msgid "Error removing old file: %s"
 msgstr "Chyba při odstraňování starého souboru: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:714
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:718
 msgid "Invalid GSeekType supplied"
 msgstr "Poskytnut neplatný GSeekType"
 
@@ -1734,15 +1739,15 @@ msgstr "Neplatný požadavek na hledání"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Nelze zkrátit GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:464
+#: gio/gmemoryoutputstream.c:468
 msgid "Memory output stream not resizable"
 msgstr "Nelze měnit velikost výstupního proudu paměti"
 
-#: gio/gmemoryoutputstream.c:480
+#: gio/gmemoryoutputstream.c:484
 msgid "Failed to resize memory output stream"
 msgstr "Nelze změnit velikost výstupního proudu paměti"
 
-#: gio/gmemoryoutputstream.c:568
+#: gio/gmemoryoutputstream.c:572
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -1750,11 +1755,11 @@ msgstr ""
 "Velikost paměti potřebná ke zpracování zápisu je větší než dostupný adresní "
 "prostor"
 
-#: gio/gmemoryoutputstream.c:724
+#: gio/gmemoryoutputstream.c:728
 msgid "Requested seek before the beginning of the stream"
 msgstr "Požadováno hledání před počátkem proudu"
 
-#: gio/gmemoryoutputstream.c:733
+#: gio/gmemoryoutputstream.c:737
 msgid "Requested seek beyond the end of the stream"
 msgstr "Požadováno hledání za ukončením proudu"
 
@@ -2012,11 +2017,6 @@ msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 "V tomto systému nejsou podporovány abstraktní adresy socketů domén UNIX"
 
-#: gio/gutf8inputstream.c:322
-#, c-format
-msgid "Invalid UTF-8 sequence in input"
-msgstr "Neplatná posloupnost UTF-8 na vstupu"
-
 #: gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "svazek neprovádí vysouvání"
@@ -2065,3 +2065,6 @@ msgstr "Vyžadováno více na vstupu"
 #: gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Neplatná komprimovaná data"
+
+#~ msgid "Invalid UTF-8 sequence in input"
+#~ msgstr "Neplatná posloupnost UTF-8 na vstupu"
