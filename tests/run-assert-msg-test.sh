@@ -29,8 +29,12 @@ if ! type gdb >/dev/null 2>&1; then
   exit 0
 fi
 
+msg_test="assert-msg-test"
+if [ -e ".libs/lt-$msg_test" ]; then
+       msg_test="lt-$msg_test"
+fi
 echo_v "Running gdb on assert-msg-test"
-OUT=$(gdb --batch --ex run --ex "print (char*) __glib_assert_msg" .libs/lt-assert-msg-test 2> $error_out) || \
+OUT=$(gdb --batch --ex run --ex "print (char*) __glib_assert_msg" .libs/$msg_test 2> $error_out) || \
   fail "failed to run gdb"
 
 echo_v "Checking if assert message is in __glib_assert_msg"
