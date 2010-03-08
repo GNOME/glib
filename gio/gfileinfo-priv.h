@@ -99,7 +99,8 @@
 #define G_FILE_ATTRIBUTE_ID_GVFS_BACKEND (13631488 + 1)
 #define G_FILE_ATTRIBUTE_ID_SELINUX_CONTEXT (14680064 + 1)
 #define G_FILE_ATTRIBUTE_ID_TRASH_ITEM_COUNT (15728640 + 1)
-
+#define G_FILE_ATTRIBUTE_ID_TRASH_ORIG_PATH (15728640 + 2)
+#define G_FILE_ATTRIBUTE_ID_TRASH_DELETION_DATE (15728640 + 3)
 
 gboolean           _g_file_attribute_matcher_matches_id         (GFileAttributeMatcher *matcher,
                                                                  guint32                id);
