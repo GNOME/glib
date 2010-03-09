@@ -282,7 +282,7 @@
  */
 #define TYPE_CHECK(value, TYPE, val) \
   if G_UNLIKELY (!g_variant_is_of_type (value, TYPE)) {           \
-    g_return_if_fail_warning (G_LOG_DOMAIN, __PRETTY_FUNCTION__,  \
+    g_return_if_fail_warning (G_LOG_DOMAIN, G_STRFUNC,            \
                               "g_variant_is_of_type (" #value     \
                               ", " #TYPE ")");                    \
     return val;                                                   \
