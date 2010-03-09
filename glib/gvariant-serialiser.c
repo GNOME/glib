@@ -1041,6 +1041,9 @@ gvs_tuple_is_normal (GVariantSerialised value)
 
           end = gvs_read_unaligned_le (value.data + offset_ptr, offset_size);
           break;
+
+        default:
+          g_assert_not_reached ();
         }
 
       if (end < offset || end > offset_ptr)
