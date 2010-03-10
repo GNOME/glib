@@ -56,9 +56,8 @@
  * @short_description: portable support for using files, pipes and
  *                     sockets
  * @see_also: <para> <variablelist> <varlistentry>
- *            <term>gtk_input_add_full(), gtk_input_remove(),
- *            gdk_input_add(), gdk_input_add_full(),
- *            gdk_input_remove()</term> <listitem><para> Convenience
+ *            <term>g_io_add_watch(), g_io_add_watch_full(),
+ *            g_source_remove()</term> <listitem><para> Convenience
  *            functions for creating #GIOChannel instances and adding
  *            them to the <link linkend="glib-The-Main-Event-Loop">main
  *            event loop</link>. </para></listitem> </varlistentry>
