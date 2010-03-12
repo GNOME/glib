@@ -32,6 +32,7 @@ synchronize their operation.
 
     <xi:include href="building.sgml" />
     <xi:include href="cross.sgml" />
+    <xi:include href="compiling.sgml" />
     <xi:include href="running.sgml" />
     <xi:include href="changes.sgml" />
     <xi:include href="regex-syntax.sgml" />
