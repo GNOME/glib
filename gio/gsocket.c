@@ -305,7 +305,8 @@ g_socket_details_from_fd (GSocket *socket)
   int value;
   int errsv;
 #ifdef G_OS_WIN32
-  BOOL bool_val;
+  /* See bug #611756 */
+  BOOL bool_val = FALSE;
 #else
   int bool_val;
 #endif
@@ -388,7 +389,14 @@ g_socket_details_from_fd (GSocket *socket)
   if (getsockopt (fd, SOL_SOCKET, SO_KEEPALIVE,
 		  (void *)&bool_val, &optlen) == 0)
     {
+#ifndef G_OS_WIN32
+      /* Experimentation indicates that the SO_KEEPALIVE value is
+       * actually a char on Windows, even if documentation claims it
+       * to be a BOOL which is a typedef for int. So this g_assert()
+       * fails. See bug #611756.
+       */
       g_assert (optlen == sizeof bool_val);
+#endif
       socket->priv->keepalive = !!bool_val;
     }
   else
