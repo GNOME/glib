@@ -1933,10 +1933,15 @@ tree_instance_new (const GVariantType *type,
       instance->data_size = 4;
       break;
 
-    case 'x': case 't': case 'd':
+    case 'x': case 't':
       instance->data.integer = g_test_rand_int ();
       instance->data.integer <<= 32;
       instance->data.integer |= (guint32) g_test_rand_int ();
+      instance->data_size = 8;
+      break;
+
+    case 'd':
+      instance->data.floating = g_test_rand_double ();
       instance->data_size = 8;
       break;
 
