@@ -32,6 +32,7 @@
 #define __G_STRFUNCS_H__
 
 #include <stdarg.h>
+#include <glib/gmacros.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
