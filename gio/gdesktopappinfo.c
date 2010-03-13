@@ -494,6 +494,23 @@ g_desktop_app_info_get_is_hidden (GDesktopAppInfo *info)
   return info->hidden;
 }
 
+/**
+ * g_desktop_app_info_get_filename:
+ * @info: a #GDesktopAppInfo
+ *
+ * When @info was created from a known filename, return it.  In some
+ * situations such as the #GDesktopAppInfo returned from
+ * g_desktop_app_info_new_from_keyfile(), this function will return %NULL.
+ *
+ * Returns: The full path to the file for @info, or %NULL if not known.
+ * Since: 2.24
+ */
+const char *
+g_desktop_app_info_get_filename (GDesktopAppInfo *info)
+{
+  return info->filename;
+}
+
 static const char *
 g_desktop_app_info_get_description (GAppInfo *appinfo)
 {

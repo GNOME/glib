@@ -1391,6 +1391,7 @@ GDesktopAppInfo
 g_desktop_app_info_new_from_filename
 g_desktop_app_info_new_from_keyfile
 g_desktop_app_info_new
+g_desktop_app_info_get_filename
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
 GDesktopAppInfoLookup
