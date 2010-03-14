@@ -614,6 +614,12 @@ g_socket_finalize (GObject *object)
     g_socket_close (socket, NULL);
 
 #ifdef G_OS_WIN32
+  if (socket->priv->event != WSA_INVALID_EVENT)
+    {
+      WSACloseEvent (socket->priv->event);
+      socket->priv->event = WSA_INVALID_EVENT;
+    }
+
   g_assert (socket->priv->requested_conditions == NULL);
 #endif
 
@@ -2001,14 +2007,6 @@ g_socket_close (GSocket  *socket,
 	}
       break;
     }
-
-#ifdef G_OS_WIN32
-  if (socket->priv->event != WSA_INVALID_EVENT)
-    {
-      WSACloseEvent (socket->priv->event);
-      socket->priv->event = WSA_INVALID_EVENT;
-    }
-#endif
 
   socket->priv->connected = FALSE;
   socket->priv->closed = TRUE;
