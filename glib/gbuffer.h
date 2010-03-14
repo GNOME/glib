@@ -85,4 +85,4 @@ GBuffer *     g_buffer_ref                      (GBuffer        *buffer);
 G_GNUC_INTERNAL
 void          g_buffer_unref                    (GBuffer        *buffer);
 
-#endif /* __G_BUFFER__H */
+#endif /* __G_BUFFER_H__ */
