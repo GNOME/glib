@@ -142,7 +142,7 @@ gboolean                        g_variant_equal                         (gconstp
 typedef struct _GVariantIter GVariantIter;
 struct _GVariantIter {
   /*< private >*/
-  gsize x[8];
+  gsize x[16];
 };
 
 GVariantIter *                  g_variant_iter_new                      (GVariant             *value);

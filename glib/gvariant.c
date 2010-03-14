@@ -1993,7 +1993,7 @@ gsize
 g_variant_iter_init (GVariantIter *iter,
                      GVariant     *value)
 {
-  g_assert (sizeof (GVariantIter) == sizeof (struct stack_iter));
+  g_assert (sizeof (struct stack_iter) <= sizeof (GVariantIter));
 
   GVSI(iter)->magic = GVSI_MAGIC;
   GVSI(iter)->value = value;
@@ -2371,7 +2371,7 @@ g_variant_builder_init (GVariantBuilder    *builder,
   g_return_if_fail (type != NULL);
   g_return_if_fail (g_variant_type_is_container (type));
 
-  g_assert (sizeof (struct stack_builder) < sizeof (GVariantBuilder));
+  g_assert (sizeof (struct stack_builder) <= sizeof (GVariantBuilder));
   memset (builder, 0, sizeof (GVariantBuilder));
 
   GVSB(builder)->type = g_variant_type_copy (type);
