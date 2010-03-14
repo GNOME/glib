@@ -3385,6 +3385,77 @@ test_hashing (void)
   g_variant_type_info_assert_no_infos ();
 }
 
+static void
+test_gv_byteswap ()
+{
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+# define native16(x)  x, 0
+# define swapped16(x) 0, x
+#else
+# define native16(x)  0, x
+# define swapped16(x) x, 0
+#endif
+  /* all kinds of of crazy randomised testing already performed on the
+   * byteswapper in the /gvariant/serialiser/byteswap test and all kinds
+   * of crazy randomised testing performed against the serialiser
+   * normalisation functions in the /gvariant/serialiser/fuzz/ tests.
+   *
+   * just test a few simple cases here to make sure they each work
+   */
+  guchar valid_data[] = { 'a', '\0', swapped16(66), 2,
+                          0,
+                          'b', '\0', swapped16(77), 2,
+                          5, 11 };
+  guchar corrupt_data[] = { 'a', '\0', swapped16(66), 2,
+                            0,
+                            'b', '\0', swapped16(77), 2,
+                            6, 11 };
+  GVariant *value, *swapped, *reswapped;
+  gchar *string, *string2;
+
+
+  /* trusted */
+  value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
+                                   valid_data, sizeof valid_data, TRUE,
+                                   NULL, NULL);
+  swapped = g_variant_byteswap (value);
+  g_variant_unref (value);
+  g_assert (g_variant_get_size (swapped) == 13);
+  string = g_variant_print (swapped, FALSE);
+  g_variant_unref (swapped);
+  g_assert_cmpstr (string, ==, "[('a', 66), ('b', 77)]");
+  g_free (string);
+
+  /* untrusted but valid */
+  value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
+                                   valid_data, sizeof valid_data, FALSE,
+                                   NULL, NULL);
+  swapped = g_variant_byteswap (value);
+  g_variant_unref (value);
+  g_assert (g_variant_get_size (swapped) == 13);
+  string = g_variant_print (swapped, FALSE);
+  g_variant_unref (swapped);
+  g_assert_cmpstr (string, ==, "[('a', 66), ('b', 77)]");
+  g_free (string);
+
+  /* untrusted, invalid */
+  value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
+                                   corrupt_data, sizeof corrupt_data, FALSE,
+                                   NULL, NULL);
+  string = g_variant_print (value, FALSE);
+  swapped = g_variant_byteswap (value);
+  g_variant_unref (value);
+  g_assert (g_variant_get_size (swapped) == 13);
+  value = g_variant_byteswap (swapped);
+  g_variant_unref (swapped);
+  string2 = g_variant_print (value, FALSE);
+  g_assert (g_variant_get_size (value) == 13);
+  g_variant_unref (value);
+  g_assert_cmpstr (string, ==, string2);
+  g_free (string2);
+  g_free (string);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3418,6 +3489,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/valist", test_valist);
   g_test_add_func ("/gvariant/builder-memory", test_builder_memory);
   g_test_add_func ("/gvariant/hashing", test_hashing);
+  g_test_add_func ("/gvariant/byteswap", test_gv_byteswap);
 
   return g_test_run ();
 }

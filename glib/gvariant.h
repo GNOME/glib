@@ -139,6 +139,16 @@ guint                           g_variant_hash                          (gconstp
 gboolean                        g_variant_equal                         (gconstpointer         one,
                                                                          gconstpointer         two);
 
+GVariant *                      g_variant_get_normal_form               (GVariant             *variant);
+gboolean                        g_variant_is_normal_form                (GVariant             *variant);
+GVariant *                      g_variant_byteswap                      (GVariant             *variant);
+GVariant *                      g_variant_new_from_data                 (const GVariantType   *type,
+                                                                         gconstpointer         data,
+                                                                         gsize                 size,
+                                                                         gboolean              trusted,
+                                                                         GDestroyNotify        notify,
+                                                                         gpointer              user_data);
+
 typedef struct _GVariantIter GVariantIter;
 struct _GVariantIter {
   /*< private >*/

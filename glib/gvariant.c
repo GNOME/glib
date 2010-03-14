@@ -3912,6 +3912,213 @@ g_variant_iter_loop (GVariantIter *iter,
   return value != NULL;
 }
 
+/* Serialised data {{{1 */
+static GVariant *
+g_variant_deep_copy (GVariant *value)
+{
+  switch (g_variant_classify (value))
+    {
+    case G_VARIANT_CLASS_MAYBE:
+    case G_VARIANT_CLASS_ARRAY:
+    case G_VARIANT_CLASS_TUPLE:
+    case G_VARIANT_CLASS_DICT_ENTRY:
+    case G_VARIANT_CLASS_VARIANT:
+      {
+        GVariantBuilder builder;
+        GVariantIter iter;
+        GVariant *child;
+
+        g_variant_builder_init (&builder, g_variant_get_type (value));
+        g_variant_iter_init (&iter, value);
+
+        while ((child = g_variant_iter_next_value (&iter)))
+          {
+            g_variant_builder_add_value (&builder, g_variant_deep_copy (child));
+            g_variant_unref (child);
+          }
+
+        return g_variant_builder_end (&builder);
+      }
+
+    case G_VARIANT_CLASS_BOOLEAN:
+      return g_variant_new_boolean (g_variant_get_boolean (value));
+
+    case G_VARIANT_CLASS_BYTE:
+      return g_variant_new_byte (g_variant_get_byte (value));
+
+    case G_VARIANT_CLASS_INT16:
+      return g_variant_new_int16 (g_variant_get_int16 (value));
+
+    case G_VARIANT_CLASS_UINT16:
+      return g_variant_new_uint16 (g_variant_get_uint16 (value));
+
+    case G_VARIANT_CLASS_INT32:
+      return g_variant_new_int32 (g_variant_get_int32 (value));
+
+    case G_VARIANT_CLASS_UINT32:
+      return g_variant_new_uint32 (g_variant_get_uint32 (value));
+
+    case G_VARIANT_CLASS_INT64:
+      return g_variant_new_int64 (g_variant_get_int64 (value));
+
+    case G_VARIANT_CLASS_UINT64:
+      return g_variant_new_uint64 (g_variant_get_uint64 (value));
+
+    case G_VARIANT_CLASS_HANDLE:
+      return g_variant_new_handle (g_variant_get_handle (value));
+
+    case G_VARIANT_CLASS_DOUBLE:
+      return g_variant_new_double (g_variant_get_double (value));
+
+    case G_VARIANT_CLASS_STRING:
+      return g_variant_new_string (g_variant_get_string (value, NULL));
+
+    case G_VARIANT_CLASS_OBJECT_PATH:
+      return g_variant_new_object_path (g_variant_get_string (value, NULL));
+
+    case G_VARIANT_CLASS_SIGNATURE:
+      return g_variant_new_signature (g_variant_get_string (value, NULL));
+    }
+
+  g_assert_not_reached ();
+}
+
+/**
+ * g_variant_get_normal_form:
+ * @value: a #GVariant
+ * @returns: a trusted #GVariant
+ *
+ * Gets a #GVariant instance that has the same value as @value and is
+ * trusted to be in normal form.
+ *
+ * If @value is already trusted to be in normal form then a new
+ * reference to @value is returned.
+ *
+ * If @value is not already trusted, then it is scanned to check if it
+ * is in normal form.  If it is found to be in normal form then it is
+ * marked as trusted and a new reference to it is returned.
+ *
+ * If @value is found not to be in normal form then a new trusted
+ * #GVariant is created with the same value as @value.
+ *
+ * It makes sense to call this function if you've received #GVariant
+ * data from untrusted sources and you want to ensure your serialised
+ * output is definitely in normal form.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_get_normal_form (GVariant *value)
+{
+  GVariant *trusted;
+
+  if (g_variant_is_normal_form (value))
+    return g_variant_ref (value);
+
+  trusted = g_variant_deep_copy (value);
+  g_assert (g_variant_is_trusted (trusted));
+
+  return g_variant_ref_sink (trusted);
+}
+
+/**
+ * g_variant_byteswap:
+ * @value: a #GVariant
+ * @returns: the byteswapped form of @value
+ *
+ * Performs a byteswapping operation on the contents of @value.  The
+ * result is that all multi-byte numeric data contained in @value is
+ * byteswapped.  That includes 16, 32, and 64bit signed and unsigned
+ * integers as well as file handles and double precision floating point
+ * values.
+ *
+ * This function is an identity mapping on any value that does not
+ * contain multi-byte numeric data.  That include strings, booleans,
+ * bytes and containers containing only these things (recursively).
+ *
+ * The returned value is always in normal form and is marked as trusted.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_byteswap (GVariant *value)
+{
+  GVariantSerialised serialised;
+  GVariant *trusted;
+  GBuffer *buffer;
+  GVariant *new;
+
+  trusted = g_variant_get_normal_form (value);
+  serialised.type_info = g_variant_get_type_info (trusted);
+  serialised.size = g_variant_get_size (trusted);
+  serialised.data = g_malloc (serialised.size);
+  g_variant_store (trusted, serialised.data);
+  g_variant_unref (trusted);
+
+  g_variant_serialised_byteswap (serialised);
+
+  buffer = g_buffer_new_take_data (serialised.data, serialised.size);
+  new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
+  g_buffer_unref (buffer);
+
+  return g_variant_ref_sink (new);
+}
+
+/**
+ * g_variant_new_from_data:
+ * @type: a #GVariantType
+ * @data: the serialised data
+ * @size: the size of @data
+ * @trusted: %TRUE if @data is definitely in normal form
+ * @notify: function to call when @data is no longer needed
+ * @user_data: data for @notify
+ * @returns: a new floating #GVariant of type @type
+ *
+ * Creates a new #GVariant instance from serialised data.
+ *
+ * @type is the type of #GVariant instance that will be constructed.
+ * The interpretation of @data depends on knowing the type.
+ *
+ * @data is not modified by this function and must remain valid with an
+ * unchanging value until such a time as @notify is called with
+ * @user_data.  If the contents of @data change before that time then
+ * the result is undefined.
+ *
+ * If @data is trusted to be serialised data in normal form then
+ * @trusted should be %TRUE.  This applies to serialised data created
+ * within this process or read from a trusted location on the disk (such
+ * as a file installed in /usr/lib alongside your application).  You
+ * should set trusted to %FALSE if @data is read from the network, a
+ * file in the user's home directory, etc.
+ *
+ * @notify will be called with @user_data when @data is no longer
+ * needed.  The exact time of this call is unspecified and might even be
+ * before this function returns.
+ *
+ * Since: 2.24
+ **/
+GVariant *
+g_variant_new_from_data (const GVariantType *type,
+                         gconstpointer       data,
+                         gsize               size,
+                         gboolean            trusted,
+                         GDestroyNotify      notify,
+                         gpointer            user_data)
+{
+  GVariant *value;
+  GBuffer *buffer;
+
+  if (notify)
+    buffer = g_buffer_new_from_pointer (data, size, notify, user_data);
+  else
+    buffer = g_buffer_new_from_static_data (data, size);
+
+  value = g_variant_new_from_buffer (type, buffer, trusted);
+  g_buffer_unref (buffer);
+
+  return value;
+}
+
 /* Epilogue {{{1 */
 #define __G_VARIANT_C__
 #include "galiasdef.c"

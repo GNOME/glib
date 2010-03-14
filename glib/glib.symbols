@@ -1705,6 +1705,7 @@ g_variant_get_child_value
 g_variant_get_size
 g_variant_get_data
 g_variant_store
+g_variant_is_normal_form
 #endif
 
 #if IN_FILE(__G_VARIANT_C__)
@@ -1788,6 +1789,10 @@ g_variant_builder_add
 g_variant_get_child
 g_variant_iter_next
 g_variant_iter_loop
+
+g_variant_new_from_data
+g_variant_get_normal_form
+g_variant_byteswap
 #endif
 #endif
 

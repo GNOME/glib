@@ -709,10 +709,9 @@ g_variant_get_size (GVariant *value)
  * @returns: the serialised form of @value, or %NULL
  *
  * Returns a pointer to the serialised form of a #GVariant instance.
- * The returned data is in machine native byte order but may not be in
- * fully-normalised form if read from an untrusted source.  The returned
- * data must not be freed; it remains valid for as long as @value
- * exists.
+ * The returned data may not be in fully-normalised form if read from an
+ * untrusted source.  The returned data must not be freed; it remains
+ * valid for as long as @value exists.
  *
  * If @value is a fixed-sized value that was deserialised from a
  * corrupted serialised container then %NULL may be returned.  In this
@@ -873,6 +872,60 @@ g_variant_store (GVariant *value,
     g_variant_serialise (value, data);
 
   g_variant_unlock (value);
+}
+
+/**
+ * g_variant_is_normal_form:
+ * @value: a #GVariant instance
+ * @returns: %TRUE if @value is in normal form
+ *
+ * Checks if @value is in normal form.
+ *
+ * The main reason to do this is to detect if a given chunk of
+ * serialised data is in normal form: load the data into a #GVariant
+ * using g_variant_create_from_data() and then use this function to
+ * check.
+ *
+ * If @value is found to be in normal form then it will be marked as
+ * being trusted.  If the value was already marked as being trusted then
+ * this function will immediately return %TRUE.
+ *
+ * Since: 2.24
+ **/
+gboolean
+g_variant_is_normal_form (GVariant *value)
+{
+  if (value->state & STATE_TRUSTED)
+    return TRUE;
+
+  g_variant_lock (value);
+
+  if (value->state & STATE_SERIALISED)
+    {
+      GVariantSerialised serialised = {
+        value->type_info,
+        (gpointer) value->contents.serialised.data,
+        value->size
+      };
+
+      if (g_variant_serialised_is_normal (serialised))
+        value->state |= STATE_TRUSTED;
+    }
+  else
+    {
+      gboolean normal = TRUE;
+      gsize i;
+
+      for (i = 0; i < value->contents.tree.n_children; i++)
+        normal &= g_variant_is_normal_form (value->contents.tree.children[i]);
+
+      if (normal)
+        value->state |= STATE_TRUSTED;
+    }
+
+  g_variant_unlock (value);
+
+  return (value->state & STATE_TRUSTED) != 0;
 }
 
 #define __G_VARIANT_CORE_C__
