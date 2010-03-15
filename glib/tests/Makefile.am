@@ -69,6 +69,10 @@ gvariant_LDADD      = $(progs_ldadd)
 TEST_PROGS         += mem-overflow
 mem_overflow_LDADD  = $(progs_ldadd)
 
+TEST_PROGS              += utf8-performance
+utf8_performance_SOURCES = utf8-performance.c
+utf8_performance_LDADD   = $(progs_ldadd)
+
 TEST_PROGS         += utils
 utils_LDADD         = $(progs_ldadd)
 
