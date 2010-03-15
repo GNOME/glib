@@ -3410,7 +3410,7 @@ test_gv_byteswap ()
                             0,
                             'b', '\0', swapped16(77), 2,
                             6, 11 };
-  GVariant *value, *swapped, *reswapped;
+  GVariant *value, *swapped;
   gchar *string, *string2;
 
 
