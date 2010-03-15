@@ -1251,7 +1251,7 @@ flavoured_malloc (gsize size, gsize flavour)
   if (size == 0)
     return NULL;
 
-  return g_malloc (size + flavour) + flavour;
+  return ((gchar *) g_malloc (size + flavour)) + flavour;
 }
 
 static void
@@ -3341,8 +3341,7 @@ test_builder_memory (void)
 static void
 test_hashing (void)
 {
-  const gint n_items = 4096;
-  GVariant *items[n_items];
+  GVariant *items[4096];
   GHashTable *table;
   gint i;
 
@@ -3350,7 +3349,7 @@ test_hashing (void)
                                  (GDestroyNotify ) g_variant_unref,
                                  NULL);
 
-  for (i = 0; i < n_items; i++)
+  for (i = 0; i < G_N_ELEMENTS (items); i++)
     {
       TreeInstance *tree;
       gint j;
@@ -3372,7 +3371,7 @@ test_hashing (void)
                            GINT_TO_POINTER (i));
     }
 
-  for (i = 0; i < n_items; i++)
+  for (i = 0; i < G_N_ELEMENTS (items); i++)
     {
       gpointer result;
 
