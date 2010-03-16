@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-06 20:29-0500\n"
+"POT-Creation-Date: 2010-03-15 23:30-0400\n"
 "PO-Revision-Date: 2009-09-30 02:59+0000\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnome@prevod.org>\n"
@@ -103,8 +103,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не могу да покренем претварање из „%s“ у „%s“"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1419
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:980
+#: glib/gutf8.c:1435
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неисправан низ бајтова у улазу који претварам"
 
@@ -114,8 +114,8 @@ msgstr "Неисправан низ бајтова у улазу који пре
 msgid "Error during conversion: %s"
 msgstr "Грешка при претварању: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
-#: glib/gutf8.c:1415
+#: glib/gconvert.c:678 glib/gutf8.c:976 glib/gutf8.c:1186 glib/gutf8.c:1327
+#: glib/gutf8.c:1431
 msgid "Partial character sequence at end of input"
 msgstr "Непотпун низ знакова на крају улаза"
 
@@ -190,7 +190,7 @@ msgstr "Не могу да прочитам из датотеке „%s“: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Не могу да отворим датотеку „%s“: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:140
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Не могу да сазнам особине датотеке „%s“: неуспешан fstat(): %s"
@@ -302,12 +302,12 @@ msgstr "Канал се завршава делимичним знаком"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не могу да читам без обраде у g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:123
+#: glib/gmappedfile.c:122
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Не могу да отворим датотеку „%s“: неуспешан open(): %s"
 
-#: glib/gmappedfile.c:201
+#: glib/gmappedfile.c:200
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не могу да мапирам датотеку „%s“: неуспешан mmap(): %s"
@@ -537,7 +537,7 @@ msgstr "достигнут је лимит претраживања уназад
 msgid "the pattern contains items not supported for partial matching"
 msgstr "образац садржи ставке које нису подржане за делимично поклапање"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2102
+#: glib/gregex.c:154 gio/glocalfile.c:2121
 msgid "internal error"
 msgstr "интерна грешка"
 
@@ -943,16 +943,16 @@ msgstr "Непозната грешка при извршавању потпро
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Није успео да прочита довољно података из цевке ка потпроцесу (%s)"
 
-#: glib/gutf8.c:1038
+#: glib/gutf8.c:1054
 msgid "Character out of range for UTF-8"
 msgstr "Знак ван опсега за УТФ-8"
 
-#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
-#: glib/gutf8.c:1429 glib/gutf8.c:1525
+#: glib/gutf8.c:1154 glib/gutf8.c:1163 glib/gutf8.c:1295 glib/gutf8.c:1304
+#: glib/gutf8.c:1445 glib/gutf8.c:1541
 msgid "Invalid sequence in conversion input"
 msgstr "Није исправан низ у уносу за претварање"
 
-#: glib/gutf8.c:1440 glib/gutf8.c:1536
+#: glib/gutf8.c:1456 glib/gutf8.c:1552
 msgid "Character out of range for UTF-16"
 msgstr "Знак ван опсега за УТФ-16"
 
@@ -1015,20 +1015,20 @@ msgstr "Недостаје аргумент за %s"
 msgid "Unknown option %s"
 msgstr "Непозната опција %s"
 
-#: glib/gkeyfile.c:362
+#: glib/gkeyfile.c:361
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Не могу да нађем исправну датотеку са кључевима међу директоријумима претраге"
 
-#: glib/gkeyfile.c:397
+#: glib/gkeyfile.c:396
 msgid "Not a regular file"
 msgstr "Није обична датотека"
 
-#: glib/gkeyfile.c:405
+#: glib/gkeyfile.c:404
 msgid "File is empty"
 msgstr "Датотека је празна"
 
-#: glib/gkeyfile.c:764
+#: glib/gkeyfile.c:763
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1036,54 +1036,54 @@ msgstr ""
 "Датотека са кључевима садржи ред „%s“ што не чини пар кључ-вредност, групу "
 "или примедбу"
 
-#: glib/gkeyfile.c:824
+#: glib/gkeyfile.c:823
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неисправно име групе: %s"
 
-#: glib/gkeyfile.c:846
+#: glib/gkeyfile.c:845
 msgid "Key file does not start with a group"
 msgstr "Датотека са кључевима не почиње групом"
 
-#: glib/gkeyfile.c:872
+#: glib/gkeyfile.c:871
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Неисправно име кључа: %s"
 
-#: glib/gkeyfile.c:899
+#: glib/gkeyfile.c:898
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Датотека са кључевима садржи неподржано кодирање „%s“"
 
-#: glib/gkeyfile.c:1115 glib/gkeyfile.c:1277 glib/gkeyfile.c:2506
-#: glib/gkeyfile.c:2572 glib/gkeyfile.c:2707 glib/gkeyfile.c:2840
-#: glib/gkeyfile.c:2993 glib/gkeyfile.c:3180 glib/gkeyfile.c:3241
+#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
+#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Датотека са кључевима нема групу „%s“"
 
-#: glib/gkeyfile.c:1289
+#: glib/gkeyfile.c:1288
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Датотека са кључевима нема кључ „%s“"
 
-#: glib/gkeyfile.c:1396 glib/gkeyfile.c:1511
+#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Датотека са кључевима садржи кључ „%s“ вредности „%s“ што није УТФ-8"
 
-#: glib/gkeyfile.c:1416 glib/gkeyfile.c:1910
+#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Датотека са кључевима садржи кључ „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:1531
+#: glib/gkeyfile.c:1530
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Датотека са кључевима садржи кључ „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2125 glib/gkeyfile.c:2337
+#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1091,36 +1091,36 @@ msgid ""
 msgstr ""
 "Датотека са кључевима садржи кључ „%s“ у групи „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2722 glib/gkeyfile.c:3252
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Датотека са кључевима не садржи кључ „%s“ у групи „%s“"
 
-#: glib/gkeyfile.c:3486
+#: glib/gkeyfile.c:3485
 msgid "Key file contains escape character at end of line"
 msgstr "Датотека са кључевима садржи знак истицања на крају реда"
 
-#: glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3507
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Датотека са кључевима садржи недозвољен низ истицања „%s“"
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Вредност „%s“ се не може сматрати бројем."
 
-#: glib/gkeyfile.c:3664
+#: glib/gkeyfile.c:3663
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целобројна вредност „%s“ је изван опсега"
 
-#: glib/gkeyfile.c:3697
+#: glib/gkeyfile.c:3696
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Вредност „%s“ се не може сматрати реалним бројем једноструке тачности."
 
-#: glib/gkeyfile.c:3721
+#: glib/gkeyfile.c:3720
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Вредност „%s“ се не може сматрати истинитосном."
@@ -1137,7 +1137,7 @@ msgstr "Превелика бројчана вредност је прослеђ
 msgid "Stream is already closed"
 msgstr "Ток је већ затворен"
 
-#: gio/gcancellable.c:420 gio/glocalfile.c:2095 gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:420 gio/glocalfile.c:2114 gio/gsimpleasyncresult.c:648
 #: gio/gsimpleasyncresult.c:674
 msgid "Operation was cancelled"
 msgstr "Радња је прекинута"
@@ -1151,7 +1151,7 @@ msgstr "Непозната врста"
 msgid "%s filetype"
 msgstr "%s врста датотеке"
 
-#: gio/gcontenttype.c:678
+#: gio/gcontenttype.c:681
 #, c-format
 msgid "%s type"
 msgstr "%s врста"
@@ -1258,12 +1258,12 @@ msgstr "Радња није подржана"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1347 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "Садржано монтирање не постоји"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2247
+#: gio/gfile.c:2399 gio/glocalfile.c:2266
 msgid "Can't copy over directory"
 msgstr "Не могу да умножим преко директоријума"
 
@@ -1271,7 +1271,7 @@ msgstr "Не могу да умножим преко директоријума"
 msgid "Can't copy directory over directory"
 msgstr "не могу да умножим директоријум преко директоријума"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2256
+#: gio/gfile.c:2467 gio/glocalfile.c:2275
 msgid "Target file exists"
 msgstr "Циљна датотека већ постоји"
 
@@ -1406,203 +1406,203 @@ msgstr "Није подржана адреса утичнице"
 msgid "Unable to find default local directory monitor type"
 msgstr "Не могу да нађем подразумевану врсту монитора за локални директоријум"
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:605 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Неисправно име датотеке %s"
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Грешка приликом добијања података о систему датотека: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1117
 msgid "Can't rename root directory"
 msgstr "Не могу да преименујем корени директоријум"
 
-#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#: gio/glocalfile.c:1137 gio/glocalfile.c:1163
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Грешка у преименовању датотеке: %s"
 
-#: gio/glocalfile.c:1139
+#: gio/glocalfile.c:1146
 msgid "Can't rename file, filename already exist"
 msgstr "Не могу да преименујем датотеку, јер она већ посотоји"
 
-#: gio/glocalfile.c:1152 gio/glocalfile.c:2124 gio/glocalfile.c:2153
-#: gio/glocalfile.c:2309 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1159 gio/glocalfile.c:2143 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2328 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "Име датотеке је неисправно"
 
-#: gio/glocalfile.c:1308
+#: gio/glocalfile.c:1320
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Грешка приликом отварања датотеке: %s"
 
-#: gio/glocalfile.c:1318
+#: gio/glocalfile.c:1330
 msgid "Can't open directory"
 msgstr "Не могу да отворим директоријум"
 
-#: gio/glocalfile.c:1443
+#: gio/glocalfile.c:1455
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Грешка приликом уклањања датотеке: %s"
 
-#: gio/glocalfile.c:1808
+#: gio/glocalfile.c:1822
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Грешка приликом премештања датотеке у смеће: %s"
 
-#: gio/glocalfile.c:1831
+#: gio/glocalfile.c:1845
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Не могу да направим директоријум за смеће %s: %s"
 
-#: gio/glocalfile.c:1852
+#: gio/glocalfile.c:1866
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не могу да нађем корени директоријум за смеће"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1951
+#: gio/glocalfile.c:1945 gio/glocalfile.c:1965
 msgid "Unable to find or create trash directory"
 msgstr "Не могу да нађем или направим директоријум за смеће"
 
-#: gio/glocalfile.c:1985
+#: gio/glocalfile.c:1999
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Не могу да направим датотеку са подацима о смећу: %s"
 
-#: gio/glocalfile.c:2014 gio/glocalfile.c:2019 gio/glocalfile.c:2094
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2028 gio/glocalfile.c:2033 gio/glocalfile.c:2113
+#: gio/glocalfile.c:2120
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не могу да пошаљем датотеку у смеће: %s"
 
-#: gio/glocalfile.c:2128
+#: gio/glocalfile.c:2147
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Грешка приликом образовања директоријума: %s"
 
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2176
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Грешка приликом образовања симболичке везе: %s"
 
-#: gio/glocalfile.c:2219 gio/glocalfile.c:2313
+#: gio/glocalfile.c:2238 gio/glocalfile.c:2332
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Грешка приликом премештања датотеке: %s"
 
-#: gio/glocalfile.c:2242
+#: gio/glocalfile.c:2261
 msgid "Can't move directory over directory"
 msgstr "Не могу да преместим директоријум преко директоријума"
 
-#: gio/glocalfile.c:2269 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "Није успела израда резервне копије датотеке"
 
-#: gio/glocalfile.c:2288
+#: gio/glocalfile.c:2307
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Грешка приликом уклањања циљње датотеке: %s"
 
-#: gio/glocalfile.c:2302
+#: gio/glocalfile.c:2321
 msgid "Move between mounts not supported"
 msgstr "Није подржано премештање између монтираних уређаја"
 
-#: gio/glocalfileinfo.c:721
+#: gio/glocalfileinfo.c:726
 msgid "Attribute value must be non-NULL"
 msgstr "Вредност особине мора бити различита од NULL"
 
-#: gio/glocalfileinfo.c:728
+#: gio/glocalfileinfo.c:733
 msgid "Invalid attribute type (string expected)"
 msgstr "Није исправна врста атрибута (очекивана је ниска знакова) "
 
-#: gio/glocalfileinfo.c:735
+#: gio/glocalfileinfo.c:740
 msgid "Invalid extended attribute name"
 msgstr "Није исправно проширено име особине"
 
-#: gio/glocalfileinfo.c:775
+#: gio/glocalfileinfo.c:780
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Грешка приликом постављања проширене особине „%s“: %s"
 
-#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Грешка приликом постављања стања датотеке „%s“: %s"
 
-#: gio/glocalfileinfo.c:1555
+#: gio/glocalfileinfo.c:1557
 msgid " (invalid encoding)"
 msgstr " (неисправно кодирање)"
 
-#: gio/glocalfileinfo.c:1753
+#: gio/glocalfileinfo.c:1755
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Грешка приликом постављања стања описивача датотеке: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Није исправна врста особине (очекивана је uint32)"
 
-#: gio/glocalfileinfo.c:1816
+#: gio/glocalfileinfo.c:1818
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Није исправна врста особине (очекивана је uint64)"
 
-#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
+#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Није исправна врста особине (очекивана је ниска битова)"
 
-#: gio/glocalfileinfo.c:1889
+#: gio/glocalfileinfo.c:1891
 msgid "Cannot set permissions on symlinks"
 msgstr "Не могу да поставим овлашћења за симболичке везе"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1907
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Грешка приликом постављања овлашћења: %s"
 
-#: gio/glocalfileinfo.c:1956
+#: gio/glocalfileinfo.c:1958
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Грешка приликом постављања власника: %s"
 
-#: gio/glocalfileinfo.c:1979
+#: gio/glocalfileinfo.c:1981
 msgid "symlink must be non-NULL"
 msgstr "симболичке везе морају бити различите од NULL"
 
-#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
-#: gio/glocalfileinfo.c:2019
+#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
+#: gio/glocalfileinfo.c:2021
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Грешка приликом постављања симболичке везе: %s"
 
-#: gio/glocalfileinfo.c:1998
+#: gio/glocalfileinfo.c:2000
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Грешка при постављању симболичке везе: датотека није симболичка веза"
 
-#: gio/glocalfileinfo.c:2124
+#: gio/glocalfileinfo.c:2126
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Грешка при постављању датума измене или приступа: %s"
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux контекст не сме бити NULL"
 
-#: gio/glocalfileinfo.c:2162
+#: gio/glocalfileinfo.c:2164
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Грешка приликом постављања SELinux контекста: %s"
 
-#: gio/glocalfileinfo.c:2169
+#: gio/glocalfileinfo.c:2171
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux није укључен на вашем систему"
 
-#: gio/glocalfileinfo.c:2261
+#: gio/glocalfileinfo.c:2263
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Није подржано постављање особине %s"
@@ -1803,97 +1803,97 @@ msgstr "Неисправна утичница, покретање није ус�
 msgid "Socket is already closed"
 msgstr "Утичница је већ затворена"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "правим GSocket из fd: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Не могу да направим утичницу: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "Задат је непознати протокол"
 
-#: gio/gsocket.c:758
+#: gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "Није подржано покретање уз могућност прекида"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "не могу да добијем локалну адресу: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "не могу да добијем удаљену адресу: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "не могу да слушам: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "грешка при повезивању на адресу: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "грешка у прихватању везе: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "Грешка у повезивању: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "Повезивање је у току"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Грешка у повезивању: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не могу да добијем грешку на чекању: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Грешка у примању података: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Грешка у слању података: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Грешка у затварању утичнице: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Чекам услов утичнице: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Грешка при слању поруке: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage није подржано у прозорима"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3136
+#: gio/gsocket.c:3003 gio/gsocket.c:3142
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при примању поруке: %s"

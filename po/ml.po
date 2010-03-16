@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-06 20:29-0500\n"
+"POT-Creation-Date: 2010-03-15 23:30-0400\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -101,8 +101,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'-ല്‍ നിന്നും '%s'-ലേക്ക് വേര്‍തിരിക്കുന്ന സംവിധാനം ലഭ്യമായില്ല"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1402
-#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
-#: glib/gutf8.c:1419
+#: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:980
+#: glib/gutf8.c:1435
 msgid "Invalid byte sequence in conversion input"
 msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട്ടില്‍ തെറ്റായ ബൈറ്റ് ക്രമം"
 
@@ -112,8 +112,8 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Error during conversion: %s"
 msgstr "മാറ്റം വരുത്തുന്നതില്‍ പരാജയം : %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:960 glib/gutf8.c:1170 glib/gutf8.c:1311
-#: glib/gutf8.c:1415
+#: glib/gconvert.c:678 glib/gutf8.c:976 glib/gutf8.c:1186 glib/gutf8.c:1327
+#: glib/gutf8.c:1431
 msgid "Partial character sequence at end of input"
 msgstr "ഇന്‍പുട്ടിന്റെ അവസാനം ഭാഗികമായ അക്ഷര ക്രമം"
 
@@ -186,7 +186,7 @@ msgstr "ഫയല്‍ '%s'-ല്‍ നിന്നും വായിക്�
 msgid "Failed to open file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‍‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:141
+#: glib/gfileutils.c:716 glib/gmappedfile.c:140
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "%s-ന്റെ വിശേഷതകള്‍ കണ്ടെത്തുന്നതില്‍ പരാജയം: fstat() പരാജയപ്പെട്ടു: %s"
@@ -299,12 +299,12 @@ msgstr "ചാനല്‍ അവസാനിക്കുന്നത് ഭാ�
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end-ല്‍ റോ വായന സാധ്യമല്ല"
 
-#: glib/gmappedfile.c:123
+#: glib/gmappedfile.c:122
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ഫയല്‍ '%s' തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു: open() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gmappedfile.c:201
+#: glib/gmappedfile.c:200
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ഫയല്‍ '%s' മാപ്പ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു: mmap() പരാജയപ്പെട്ടു: %s"
@@ -531,7 +531,7 @@ msgstr "ബാക്ക്ട്രാക്കിങ് പരിധി എത�
 msgid "the pattern contains items not supported for partial matching"
 msgstr "പാറ്‍ഷ്യല്‍ മാച്ചിങിന് പിന്തുണ ലഭ്യമല്ലാത്ത വസ്തുക്കള്‍ ഈ മാതൃകയിലുണ്ട്"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2102
+#: glib/gregex.c:154 gio/glocalfile.c:2121
 msgid "internal error"
 msgstr "ആന്തരിക പിശക്"
 
@@ -933,16 +933,16 @@ msgstr "ചൈള്‍ഡ് പ്രക്രിയ \"%s\" പ്രവര്
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ചൈള്‍ഡ് pid പൈപ്പിന്‍ നിന്നും ആവശ്യത്തിനുളള ഡേറ്റാ വായിക്കുന്നതില്‍ പരാജയപ്പെട്ടു (%s)"
 
-#: glib/gutf8.c:1038
+#: glib/gutf8.c:1054
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
-#: glib/gutf8.c:1138 glib/gutf8.c:1147 glib/gutf8.c:1279 glib/gutf8.c:1288
-#: glib/gutf8.c:1429 glib/gutf8.c:1525
+#: glib/gutf8.c:1154 glib/gutf8.c:1163 glib/gutf8.c:1295 glib/gutf8.c:1304
+#: glib/gutf8.c:1445 glib/gutf8.c:1541
 msgid "Invalid sequence in conversion input"
 msgstr "ഇന്‍പുട്ട് വേര്‍തിരിക്കുന്നതില്‍ അസാധുവായ ക്രമം"
 
-#: glib/gutf8.c:1440 glib/gutf8.c:1536
+#: glib/gutf8.c:1456 glib/gutf8.c:1552
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 പരിധിയില്‍ നിന്നും പുറത്താണ് അക്ഷരം"
 
@@ -1005,109 +1005,109 @@ msgstr "%s-നുളള ആര്‍ഗ്യുമെന്റ് ലഭ്യ�
 msgid "Unknown option %s"
 msgstr "അപരിചിതമായ ഉപാധി %s"
 
-#: glib/gkeyfile.c:362
+#: glib/gkeyfile.c:361
 msgid "Valid key file could not be found in search dirs"
 msgstr "തിരച്ചില്‍ നടത്തിയ ഡയറക്ടറികളില്‍ സാധുതയുളള കീ ഫയല്‍ ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:397
+#: glib/gkeyfile.c:396
 msgid "Not a regular file"
 msgstr "ഒരു സാധാരണ ഫയല്‍ അല്ല"
 
-#: glib/gkeyfile.c:405
+#: glib/gkeyfile.c:404
 msgid "File is empty"
 msgstr "ഫയല്‍ ശൂന്യമാണ്"
 
-#: glib/gkeyfile.c:764
+#: glib/gkeyfile.c:763
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "കീ ഫയലില്‍ ഉളള '%s' എന്ന വരി ഒരു കീ-മൂല്ല്യം ജോടി അല്ലെങ്കില്‍ ഒരു ഗ്റൂപ്പോ അഭിപ്റായമോ അല്ല"
 
-#: glib/gkeyfile.c:824
+#: glib/gkeyfile.c:823
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "അസാധുവായ ഗ്രൂപ്പ് നാമം: %s"
 
-#: glib/gkeyfile.c:846
+#: glib/gkeyfile.c:845
 msgid "Key file does not start with a group"
 msgstr "കീ ഫയല്‍ ആരംഭിക്കുന്നത് ഒരു ഗ്രൂപ്പിലല്ല"
 
-#: glib/gkeyfile.c:872
+#: glib/gkeyfile.c:871
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "അസാധുവായ കീ നാമം: %s"
 
-#: glib/gkeyfile.c:899
+#: glib/gkeyfile.c:898
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "പിന്തുണയ്ക്കാത്ത രഹസ്യ ഭാഷ '%s' കീ ഫയല്‍ പിന്തുണയ്ക്കുന്നു"
 
-#: glib/gkeyfile.c:1115 glib/gkeyfile.c:1277 glib/gkeyfile.c:2506
-#: glib/gkeyfile.c:2572 glib/gkeyfile.c:2707 glib/gkeyfile.c:2840
-#: glib/gkeyfile.c:2993 glib/gkeyfile.c:3180 glib/gkeyfile.c:3241
+#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
+#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന ഗ്രൂപ്പില്ല"
 
-#: glib/gkeyfile.c:1289
+#: glib/gkeyfile.c:1288
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന കീയില്ല"
 
-#: glib/gkeyfile.c:1396 glib/gkeyfile.c:1511
+#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "UTF-8 അല്ലാത്ത '%s' മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1416 glib/gkeyfile.c:1910
+#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1531
+#: glib/gkeyfile.c:1530
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്."
 
-#: glib/gkeyfile.c:2125 glib/gkeyfile.c:2337
+#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s', '%s' എന്ന ഗ്രൂപ്പില്‍ കീ ഫയലിലുണ്ട്."
 
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2722 glib/gkeyfile.c:3252
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ഗ്രൂപ്പ് '%s'-ല്‍ കീ ഫയലിന് കീ '%s' ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:3486
+#: glib/gkeyfile.c:3485
 msgid "Key file contains escape character at end of line"
 msgstr "കീ ഫയലിന്റെ വരിയുടെ അവസാനം എസ്കെയിപ്പ് അക്ഷരം ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3507
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "കീ ഫയലില്‍ അസാധുവായ എസ്കെയിപ്പ് സീക്വന്‍സ് '%s' ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "മൂല്ല്യം '%s' ഒരു അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3664
+#: glib/gkeyfile.c:3663
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ഇന്റിജര്‍ മൂല്ല്യം '%s' പരിധിയ്ക്ക് പുറത്ത്"
 
-#: glib/gkeyfile.c:3697
+#: glib/gkeyfile.c:3696
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "മൂല്ല്യം '%s' ഒരു ഫ്ളോട്ട് അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3721
+#: glib/gkeyfile.c:3720
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "മൂല്ല്യം '%s' ഒരു ബൂളിയനായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
@@ -1124,7 +1124,7 @@ msgstr "വളരെ വലിയ കൌണ്ട് മൂല്ല്യം %s
 msgid "Stream is already closed"
 msgstr "സ്ട്രീം നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gcancellable.c:420 gio/glocalfile.c:2095 gio/gsimpleasyncresult.c:648
+#: gio/gcancellable.c:420 gio/glocalfile.c:2114 gio/gsimpleasyncresult.c:648
 #: gio/gsimpleasyncresult.c:674
 msgid "Operation was cancelled"
 msgstr "പ്രക്രിയ റദ്ദാക്കിയിരിക്കുന്നു"
@@ -1138,7 +1138,7 @@ msgstr "അപരിചിതമായ തരത്തിലുള്ളത്"
 msgid "%s filetype"
 msgstr "%s ഫയല്‍ രീതിയിലുള്ള"
 
-#: gio/gcontenttype.c:678
+#: gio/gcontenttype.c:681
 #, c-format
 msgid "%s type"
 msgstr "%s തരത്തിലുള്ള"
@@ -1245,12 +1245,12 @@ msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1347 gio/glocalfile.c:1066 gio/glocalfile.c:1077
-#: gio/glocalfile.c:1090
+#: gio/gfile.c:1347 gio/glocalfile.c:1071 gio/glocalfile.c:1082
+#: gio/glocalfile.c:1095
 msgid "Containing mount does not exist"
 msgstr "മൌണ്ട് ലഭ്യമല്ല"
 
-#: gio/gfile.c:2399 gio/glocalfile.c:2247
+#: gio/gfile.c:2399 gio/glocalfile.c:2266
 msgid "Can't copy over directory"
 msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
@@ -1258,7 +1258,7 @@ msgstr "ഡയറക്ടറിയില്‍ പകര്‍ത്തുവ�
 msgid "Can't copy directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:2467 gio/glocalfile.c:2256
+#: gio/gfile.c:2467 gio/glocalfile.c:2275
 msgid "Target file exists"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നിലവിലുണ്ട്"
 
@@ -1393,203 +1393,203 @@ msgstr "പിന്തുണയില്ലാത്ത സോക്കറ്�
 msgid "Unable to find default local directory monitor type"
 msgstr "സ്വതവേയുള്ള ലോക്കല്‍ ഡയറക്ടറി തരത്തിലുള്ള മോണിറ്റര്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:600 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:605 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "തെറ്റായ ഫയല്‍ നാമം %s "
 
-#: gio/glocalfile.c:974
+#: gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ഫയല്‍സിസ്റ്റം വിവരം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1110
+#: gio/glocalfile.c:1117
 msgid "Can't rename root directory"
 msgstr "റൂട്ട് ഡയറക്ടറിയുടെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1130 gio/glocalfile.c:1156
+#: gio/glocalfile.c:1137 gio/glocalfile.c:1163
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1139
+#: gio/glocalfile.c:1146
 msgid "Can't rename file, filename already exist"
 msgstr "ഫയലിന്റെ പേര് മാറ്റുവാന്‍ സാധ്യമല്ല, കാരണം ഈ പേര് നിലവിലുണ്ട്"
 
-#: gio/glocalfile.c:1152 gio/glocalfile.c:2124 gio/glocalfile.c:2153
-#: gio/glocalfile.c:2309 gio/glocalfileoutputstream.c:550
+#: gio/glocalfile.c:1159 gio/glocalfile.c:2143 gio/glocalfile.c:2172
+#: gio/glocalfile.c:2328 gio/glocalfileoutputstream.c:550
 #: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:648
 #: gio/glocalfileoutputstream.c:1130
 msgid "Invalid filename"
 msgstr "തെറ്റായ ഫയല്‍നാമം"
 
-#: gio/glocalfile.c:1308
+#: gio/glocalfile.c:1320
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ഫയല്‍ തുറക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/glocalfile.c:1318
+#: gio/glocalfile.c:1330
 msgid "Can't open directory"
 msgstr "ഡയറക്ടറി തുറക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:1443
+#: gio/glocalfile.c:1455
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1808
+#: gio/glocalfile.c:1822
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ഫയല്‍ ചവറ്റുകുട്ടയിലേക്കു് മാറ്റുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:1831
+#: gio/glocalfile.c:1845
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:1852
+#: gio/glocalfile.c:1866
 msgid "Unable to find toplevel directory for trash"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ടോപ് ലവല്‍ ഡയറക്ടറി ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:1931 gio/glocalfile.c:1951
+#: gio/glocalfile.c:1945 gio/glocalfile.c:1965
 msgid "Unable to find or create trash directory"
 msgstr "ചവറ്റുകുട്ടയ്ക്കുള്ള ഡയറക്ടറി ഉണ്ടാക്കുവാനോ ലഭ്യമാക്കുവാനോ സാധ്യമായില്ല"
 
-#: gio/glocalfile.c:1985
+#: gio/glocalfile.c:1999
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "വിവരങ്ങള്‍ സംബന്ധിച്ചുള്ള ഫയല്‍ ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:2014 gio/glocalfile.c:2019 gio/glocalfile.c:2094
-#: gio/glocalfile.c:2101
+#: gio/glocalfile.c:2028 gio/glocalfile.c:2033 gio/glocalfile.c:2113
+#: gio/glocalfile.c:2120
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ഫയല്‍ ചവറ്റുകുട്ടയിലേക്ക് നീക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/glocalfile.c:2128
+#: gio/glocalfile.c:2147
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ഡയറക്ടറി ഉണ്ടാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2157
+#: gio/glocalfile.c:2176
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "സിംബോളിക് ലിങ്ക് ഉണ്ടാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2219 gio/glocalfile.c:2313
+#: gio/glocalfile.c:2238 gio/glocalfile.c:2332
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ഫയല്‍ നീക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2242
+#: gio/glocalfile.c:2261
 msgid "Can't move directory over directory"
 msgstr "ഒരു ഡയറക്ടറിയില്‍ മറ്റൊരു ഡയറക്ടറി നീക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfile.c:2269 gio/glocalfileoutputstream.c:928
+#: gio/glocalfile.c:2288 gio/glocalfileoutputstream.c:928
 #: gio/glocalfileoutputstream.c:942 gio/glocalfileoutputstream.c:957
 #: gio/glocalfileoutputstream.c:973 gio/glocalfileoutputstream.c:987
 msgid "Backup file creation failed"
 msgstr "ബാക്കപ്പ് ഫയല്‍ ഉണ്ടാക്കുന്നതില്‍ പരാജയം"
 
-#: gio/glocalfile.c:2288
+#: gio/glocalfile.c:2307
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഫയല്‍ നീക്കം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfile.c:2302
+#: gio/glocalfile.c:2321
 msgid "Move between mounts not supported"
 msgstr "മൌണ്ട് പോയിന്റുകളില്‍ തമ്മില്‍ നീക്കം ചെയ്യുന്നതില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/glocalfileinfo.c:721
+#: gio/glocalfileinfo.c:726
 msgid "Attribute value must be non-NULL"
 msgstr "ആട്രിബ്യൂട്ട് മൂല്ല്യം non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:728
+#: gio/glocalfileinfo.c:733
 msgid "Invalid attribute type (string expected)"
 msgstr "തെറ്റായ ആട്രിബ്യൂട്ട് തരം (സ്ട്രിങ് പ്രതീക്ഷിച്ചു)"
 
-#: gio/glocalfileinfo.c:735
+#: gio/glocalfileinfo.c:740
 msgid "Invalid extended attribute name"
 msgstr "തെറ്റായ എക്സ്റ്റെന്‍ഡട് ആട്രിബ്യൂട്ട് നാമം"
 
-#: gio/glocalfileinfo.c:775
+#: gio/glocalfileinfo.c:780
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "എക്സ്റ്റെന്‍ഡട് ആട്രിബ്യൂട്ട് ആയ '%s' ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1482 gio/glocalfileoutputstream.c:812
+#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' എന്ന ഫയല്‍ സ്റ്റാറ്റ് ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1555
+#: gio/glocalfileinfo.c:1557
 msgid " (invalid encoding)"
 msgstr " (തെറ്റായ എന്‍കോഡിങ്)"
 
-#: gio/glocalfileinfo.c:1753
+#: gio/glocalfileinfo.c:1755
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "ഫയല്‍ വിശദീകരണ സംവിധാനം ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint32 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1816
+#: gio/glocalfileinfo.c:1818
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (uint64 പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1835 gio/glocalfileinfo.c:1854
+#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
 msgid "Invalid attribute type (byte string expected)"
 msgstr "തെറ്റായ തരത്തിലുള്ള വിശേഷത (ബൈറ്റ് സ്ട്രിങ് പ്രതീക്ഷിച്ച)"
 
-#: gio/glocalfileinfo.c:1889
+#: gio/glocalfileinfo.c:1891
 msgid "Cannot set permissions on symlinks"
 msgstr "സിംലിങ്കുകള്‍ക്കുള്ള അനുമതികള്‍ സജ്ജമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/glocalfileinfo.c:1905
+#: gio/glocalfileinfo.c:1907
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "അനുവാദങ്ങള്‍ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1956
+#: gio/glocalfileinfo.c:1958
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "ഉടമസ്ഥനെ ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1979
+#: gio/glocalfileinfo.c:1981
 msgid "symlink must be non-NULL"
 msgstr "സിംലിങ്ക് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:1989 gio/glocalfileinfo.c:2008
-#: gio/glocalfileinfo.c:2019
+#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
+#: gio/glocalfileinfo.c:2021
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "സിംലിങ്ക് ക്രമികരിക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:1998
+#: gio/glocalfileinfo.c:2000
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink സജ്ജീകരണത്തില്‍ പിശക്: ഫയല്‍ ഒരു symlink അല്ല"
 
-#: gio/glocalfileinfo.c:2124
+#: gio/glocalfileinfo.c:2126
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "മാറ്റങ്ങള്‍ അല്ലെങ്കില്‍ ആക്സസ് സമയം സജ്ജമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2147
+#: gio/glocalfileinfo.c:2149
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് non-NULL ആയിരിക്കണം"
 
-#: gio/glocalfileinfo.c:2162
+#: gio/glocalfileinfo.c:2164
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux കോണ്‍ടെക്സ്റ്റ് സജ്ജാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/glocalfileinfo.c:2169
+#: gio/glocalfileinfo.c:2171
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ഈ സിസ്റ്റത്തില്‍ സജ്ജമല്ല"
 
-#: gio/glocalfileinfo.c:2261
+#: gio/glocalfileinfo.c:2263
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s ആട്രിബ്യൂട്ട് ക്രമികരണം പിന്തുണയ്ക്കുന്നില്ല"
@@ -1790,97 +1790,97 @@ msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിക്
 msgid "Socket is already closed"
 msgstr "സോക്കറ്റ് നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd-ല്‍ നിന്നും GSocket ഉണ്ടാക്കുന്നു: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "സോക്കറ്റ് ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "അപരിചിതമായ കീഴ്വഴക്കം നല്‍കിയിരിക്കുന്നു"
 
-#: gio/gsocket.c:758
+#: gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "റദ്ദാക്കുവാന്‍ സാധിക്കുന്ന ഇനീഷ്യലൈസേഷന്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ലോക്കല്‍ വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "റിമോട്ട് വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "ശ്രദ്ധിക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "വിലാസത്തിലേക്ക് ബൈന്‍ഡ് ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "കണക്ഷന്‍ സ്വീകരിക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക്: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "കണക്ഷന്‍ പുരോഗതിയില്‍"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ബാക്കിയുള്ള പിശക് ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "ഡേറ്റാ ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "ഡേറ്റാ അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "സോക്കറ്റ് അടയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "സോക്കറ്റ് അവസ്ഥയ്ക്കായി കാത്തിരിക്കുന്നു: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "സന്ദേശം അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage വിന്‍ഡോസില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3136
+#: gio/gsocket.c:3003 gio/gsocket.c:3142
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "സന്ദേശം ലഭിക്കുന്നതില്‍ പിശക്: %s"
