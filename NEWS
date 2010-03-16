@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.22.4 to GLib 2.22.5
+===================================================
+
+* Bugs fixed:
+ 568760 nautilus freezes due to a bug...
+ 609813 Renaming a file discards file notes
+ 611696 gio uses GetAddrInfo which requires special handing...
+ 552912 glib-2.18 /live-g-file/test_copy_move failed...
+ 609143 *result_uncertain is never assigned in g_content_type_guess
+ 609531 missing licence headers
+ 610860 test_g_file_open_readwrite fails if $HOME is unwritable
+ 612702 Fix GSocket-related crash on Windows
+
+
 Overview of Changes from GLib 2.22.3 to GLib 2.22.4
 ===================================================
 
