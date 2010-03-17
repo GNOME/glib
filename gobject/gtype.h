@@ -606,6 +606,22 @@ struct _GTypeQuery
  */
 #define G_TYPE_INSTANCE_GET_PRIVATE(instance, g_type, c_type)   ((c_type*) g_type_instance_get_private ((GTypeInstance*) (instance), (g_type)))
 
+/**
+ * G_TYPE_CLASS_GET_PRIVATE:
+ * @klass: the class of a type deriving from @private_type.
+ * @g_type: the type identifying which private data to retrieve.
+ * @c_type: The C type for the private structure.
+ * 
+ * Gets the private class structure for a particular type.
+ * The private structure must have been registered in the
+ * get_type() function with g_type_add_class_private().
+ * 
+ * This macro should only be used in type implementations.
+ * 
+ * Since: 2.24
+ * Returns: a pointer to the private data structure.
+ */
+#define G_TYPE_CLASS_GET_PRIVATE(klass, g_type, c_type)   ((c_type*) g_type_class_get_private ((GTypeClass*) (klass), (g_type)))
 
 /**
  * GTypeDebugFlags:
@@ -1217,6 +1233,11 @@ void     g_type_class_add_private       (gpointer                    g_class,
                                          gsize                       private_size);
 gpointer g_type_instance_get_private    (GTypeInstance              *instance,
                                          GType                       private_type);
+
+void      g_type_add_class_private      (GType    		     class_type,
+					 gsize    		     private_size);
+gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
+					 GType			     private_type);
 
 
 /* --- GType boilerplate --- */

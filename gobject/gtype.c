@@ -323,6 +323,7 @@ struct _ClassData
 {
   CommonData         common;
   guint16            class_size;
+  guint16            class_private_size;
   int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
@@ -336,6 +337,7 @@ struct _InstanceData
 {
   CommonData         common;
   guint16            class_size;
+  guint16            class_private_size;
   int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
@@ -1081,6 +1083,8 @@ type_data_make_W (TypeNode              *node,
    
   if (node->is_instantiatable) /* carefull, is_instantiatable is also is_classed */
     {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+
       data = g_malloc0 (sizeof (InstanceData) + vtable_size);
       if (vtable_size)
 	vtable = G_STRUCT_MEMBER_P (data, sizeof (InstanceData));
@@ -1097,6 +1101,9 @@ type_data_make_W (TypeNode              *node,
        * after the parent class has been initialized
        */
       data->instance.private_size = 0;
+      data->instance.class_private_size = 0;
+      if (pnode)
+        data->instance.class_private_size = pnode->data->instance.class_private_size;
 #ifdef	DISABLE_MEM_POOLS
       data->instance.n_preallocs = 0;
 #else	/* !DISABLE_MEM_POOLS */
@@ -1106,6 +1113,8 @@ type_data_make_W (TypeNode              *node,
     }
   else if (node->is_classed) /* only classed */
     {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+
       data = g_malloc0 (sizeof (ClassData) + vtable_size);
       if (vtable_size)
 	vtable = G_STRUCT_MEMBER_P (data, sizeof (ClassData));
@@ -1116,6 +1125,9 @@ type_data_make_W (TypeNode              *node,
       data->class.class_finalize = info->class_finalize;
       data->class.class_data = info->class_data;
       data->class.class = NULL;
+      data->class.class_private_size = 0;
+      if (pnode)
+        data->class.class_private_size = pnode->data->class.class_private_size;
       data->class.init_state = UNINITIALIZED;
     }
   else if (NODE_IS_IFACE (node))
@@ -2084,12 +2096,17 @@ type_class_init_Wm (TypeNode   *node,
   TypeNode *bnode, *pnode;
   guint i;
   
+  /* Accessing data->class will work for instantiable types
+   * too because ClassData is a subset of InstanceData
+   */
   g_assert (node->is_classed && node->data &&
 	    node->data->class.class_size &&
 	    !node->data->class.class &&
 	    node->data->class.init_state == UNINITIALIZED);
-
-  class = g_malloc0 (node->data->class.class_size);
+  if (node->data->class.class_private_size)
+    class = g_malloc0 (ALIGN_STRUCT (node->data->class.class_size) + node->data->class.class_private_size);
+  else
+    class = g_malloc0 (node->data->class.class_size);
   node->data->class.class = class;
   g_atomic_int_set (&node->data->class.init_state, BASE_CLASS_INIT);
   
@@ -2098,6 +2115,7 @@ type_class_init_Wm (TypeNode   *node,
       TypeNode *pnode = lookup_type_node_I (pclass->g_type);
       
       memcpy (class, pclass, pnode->data->class.class_size);
+      memcpy (G_STRUCT_MEMBER_P (class, ALIGN_STRUCT (node->data->class.class_size)), G_STRUCT_MEMBER_P (pclass, ALIGN_STRUCT (pnode->data->class.class_size)), pnode->data->class.class_private_size);
 
       if (node->is_instantiatable)
 	{
@@ -4483,6 +4501,102 @@ g_type_instance_get_private (GTypeInstance *instance,
     }
 
   return G_STRUCT_MEMBER_P (instance, offset);
+}
+
+/**
+ * g_type_add_class_private:
+ * @class_type: GType of an classed type.
+ * @private_size: size of private structure.
+ *
+ * Registers a private class structure for a classed type;
+ * when the class is allocated, the private structures for
+ * the class and all of its parent types are allocated
+ * sequentially in the same memory block as the public
+ * structures. This function should be called in the
+ * type's get_type() function after the type is registered.
+ * The private structure can be retrieved using the
+ * G_TYPE_CLASS_GET_PRIVATE() macro.
+ *
+ * Since: 2.24
+ */
+void
+g_type_add_class_private (GType    class_type,
+			  gsize    private_size)
+{
+  TypeNode *node = lookup_type_node_I (class_type);
+  gsize offset;
+
+  g_return_if_fail (private_size > 0);
+
+  if (!node || !node->is_classed || !node->data)
+    {
+      g_warning ("cannot add class private field to invalid type '%s'",
+		 type_descriptive_name_I (class_type));
+      return;
+    }
+
+  if (NODE_PARENT_TYPE (node))
+    {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+      if (node->data->class.class_private_size != pnode->data->class.class_private_size)
+	{
+	  g_warning ("g_type_add_class_private() called multiple times for the same type");
+	  return;
+	}
+    }
+  
+  G_WRITE_LOCK (&type_rw_lock);
+
+  offset = ALIGN_STRUCT (node->data->class.class_private_size);
+  node->data->class.class_private_size = offset + private_size;
+
+  G_WRITE_UNLOCK (&type_rw_lock);
+}
+
+gpointer
+g_type_class_get_private (GTypeClass *klass,
+			  GType       private_type)
+{
+  TypeNode *class_node;
+  TypeNode *private_node;
+  TypeNode *parent_node;
+  gsize offset;
+
+  g_return_val_if_fail (klass != NULL, NULL);
+
+  class_node = lookup_type_node_I (klass->g_type);
+  if (G_UNLIKELY (!class_node || !class_node->is_classed))
+    {
+      g_warning ("class of invalid type `%s'",
+		 type_descriptive_name_I (klass->g_type));
+      return NULL;
+    }
+
+  private_node = lookup_type_node_I (private_type);
+  if (G_UNLIKELY (!private_node || !NODE_IS_ANCESTOR (private_node, class_node)))
+    {
+      g_warning ("attempt to retrieve private data for invalid type '%s'",
+		 type_descriptive_name_I (private_type));
+      return NULL;
+    }
+
+  offset = ALIGN_STRUCT (class_node->data->class.class_size);
+
+  if (NODE_PARENT_TYPE (private_node))
+    {
+      parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
+      g_assert (parent_node->data && NODE_REFCOUNT (parent_node) > 0);
+
+      if (G_UNLIKELY (private_node->data->class.class_private_size == parent_node->data->class.class_private_size))
+	{
+	  g_warning ("g_type_instance_get_class_private() requires a prior call to g_type_class_add_class_private()");
+	  return NULL;
+	}
+
+      offset += ALIGN_STRUCT (parent_node->data->class.class_private_size);
+    }
+
+  return G_STRUCT_MEMBER_P (klass, offset);
 }
 
 #define __G_TYPE_C__
