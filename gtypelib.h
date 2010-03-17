@@ -614,7 +614,7 @@ typedef struct {
   guint32 deprecated : 1;
   guint32 reserved   :31;
   guint32 name;
-  guint32 value;
+  gint32 value;
 } ValueBlob;
 
 /**
