@@ -851,7 +851,6 @@ g_utf8_to_ucs4_fast (const gchar *str,
 		     glong        len,              
 		     glong       *items_written)    
 {
-  gint j, charlen;
   gunichar *result;
   gint n_chars, i;
   const gchar *p;
@@ -882,49 +881,37 @@ g_utf8_to_ucs4_fast (const gchar *str,
   p = str;
   for (i=0; i < n_chars; i++)
     {
-      gunichar wc = ((unsigned char *)p)[0];
+      gunichar wc = (guchar)*p++;
 
       if (wc < 0x80)
 	{
 	  result[i] = wc;
-	  p++;
 	}
       else
 	{ 
-	  if (wc < 0xe0)
+	  gunichar mask = 0x40;
+
+	  if (G_UNLIKELY ((wc & mask) == 0))
 	    {
-	      charlen = 2;
-	      wc &= 0x1f;
-	    }
-	  else if (wc < 0xf0)
-	    {
-	      charlen = 3;
-	      wc &= 0x0f;
-	    }
-	  else if (wc < 0xf8)
-	    {
-	      charlen = 4;
-	      wc &= 0x07;
-	    }
-	  else if (wc < 0xfc)
-	    {
-	      charlen = 5;
-	      wc &= 0x03;
-	    }
-	  else
-	    {
-	      charlen = 6;
-	      wc &= 0x01;
+	      /* It's an out-of-sequence 10xxxxxxx byte.
+	       * Rather than making an ugly hash of this and the next byte
+	       * and overrunning the buffer, it's more useful to treat it
+	       * with a replacement character */
+	      result[i] = 0xfffd;
+	      continue;
 	    }
 
-	  for (j = 1; j < charlen; j++)
+	  do
 	    {
 	      wc <<= 6;
-	      wc |= ((unsigned char *)p)[j] & 0x3f;
+	      wc |= (guchar)(*p++) & 0x3f;
+	      mask <<= 5;
 	    }
+	  while((wc & mask) != 0);
+
+	  wc &= mask - 1;
 
 	  result[i] = wc;
-	  p += charlen;
 	}
     }
   result[i] = 0;
