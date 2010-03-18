@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
 "POT-Creation-Date: 2010-03-15 02:28+0000\n"
-"PO-Revision-Date: 2010-03-15 14:18+0100\n"
+"PO-Revision-Date: 2010-03-18 13:53+0100\n"
 "Last-Translator: Nils-Christoph Fiedler <fiedler@medienkompanie.de>\n"
 "Language-Team: Low German <nds-lowgerman@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,7 @@ msgstr ""
 #: ../glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr ""
+msgstr "Een Leseteken för de URI '%s' givt dat all"
 
 #: ../glib/gbookmarkfile.c:2040
 #: ../glib/gbookmarkfile.c:2198
@@ -72,7 +72,7 @@ msgstr ""
 #: ../glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr ""
+msgstr "Keen Leseteken funnen för URI '%s'"
 
 #: ../glib/gbookmarkfile.c:2372
 #, c-format
@@ -180,7 +180,7 @@ msgstr ""
 
 #: ../glib/gconvert.c:1911
 msgid "Invalid hostname"
-msgstr ""
+msgstr "Nich akerater Hostnaam"
 
 #: ../glib/gdir.c:112
 #: ../glib/gdir.c:135
@@ -195,14 +195,14 @@ msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr ""
 
 #: ../glib/gfileutils.c:551
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Problem bi'm Lesen vun de Datei '%s': %s"
 
 #: ../glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
-msgstr ""
+msgstr "Datei \"%s\" is to grot"
 
 #: ../glib/gfileutils.c:648
 #, c-format
@@ -211,9 +211,9 @@ msgstr ""
 
 #: ../glib/gfileutils.c:699
 #: ../glib/gfileutils.c:786
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Das Öffnen der Datei '%s' ist fehlgeschlagen: %s"
+msgstr "Dat Opmaken vun de Datei '%s' is fehlslagen: %s"
 
 #: ../glib/gfileutils.c:716
 #: ../glib/gmappedfile.c:169
@@ -280,7 +280,7 @@ msgstr ""
 #: ../glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f KB"
 
 #: ../glib/gfileutils.c:1787
 #, c-format
@@ -290,22 +290,22 @@ msgstr "%.1f MB"
 #: ../glib/gfileutils.c:1792
 #, c-format
 msgid "%.1f GB"
-msgstr ""
+msgstr "%.1f GB"
 
 #: ../glib/gfileutils.c:1797
 #, c-format
 msgid "%.1f TB"
-msgstr ""
+msgstr "%.1f TB"
 
 #: ../glib/gfileutils.c:1802
 #, c-format
 msgid "%.1f PB"
-msgstr ""
+msgstr "%.1f PB"
 
 #: ../glib/gfileutils.c:1807
 #, c-format
 msgid "%.1f EB"
-msgstr ""
+msgstr "%.1f EB"
 
 #: ../glib/gfileutils.c:1850
 #, c-format
@@ -341,9 +341,9 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
 #: ../glib/gmappedfile.c:150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Das Öffnen der Datei '%s' ist fehlgeschlagen: %s"
+msgstr "Künn de Datei '%s' nich opmaken: open() failed: %s"
 
 #: ../glib/gmappedfile.c:229
 #, c-format
@@ -365,17 +365,17 @@ msgstr ""
 #: ../glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr ""
+msgstr "'%s' is keen akerater Naam"
 
 #: ../glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr ""
+msgstr "'%s' is kee akerater Naam: '%c' "
 
 #: ../glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
-msgstr ""
+msgstr "Fehler in Reeg %d: %s"
 
 #: ../glib/gmarkup.c:578
 #, c-format
@@ -585,7 +585,7 @@ msgstr ""
 
 #: ../glib/gregex.c:230
 msgid "nothing to repeat"
-msgstr ""
+msgstr "nix to wedderholen"
 
 #: ../glib/gregex.c:233
 msgid "unrecognized character after (?"
@@ -724,7 +724,7 @@ msgstr ""
 
 #: ../glib/gregex.c:342
 msgid "code overflow"
-msgstr ""
+msgstr "Code Överlööp"
 
 #: ../glib/gregex.c:346
 msgid "overran compiling workspace"
@@ -867,13 +867,13 @@ msgstr ""
 #: ../glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
-msgstr ""
+msgstr "Nich akerate Reeg in Umgeven: %s"
 
 #: ../glib/gspawn-win32.c:719
 #: ../glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
-msgstr ""
+msgstr "Nich akerates Orbietsverteeknis: %s"
 
 #: ../glib/gspawn-win32.c:784
 #, c-format
@@ -902,7 +902,7 @@ msgstr ""
 #: ../glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Künn nich opgaveln (%s)"
 
 #: ../glib/gspawn.c:1356
 #, c-format
@@ -961,11 +961,11 @@ msgstr "Hölpoptschoonen:"
 
 #: ../glib/goption.c:862
 msgid "Show help options"
-msgstr ""
+msgstr "Hölpoptschoonen opwiesen"
 
 #: ../glib/goption.c:868
 msgid "Show all help options"
-msgstr ""
+msgstr "All Hölpoptschoonen opwiesen"
 
 #: ../glib/goption.c:930
 msgid "Application Options:"
@@ -1008,7 +1008,7 @@ msgstr ""
 #: ../glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Unbekannte Optschoon %s"
 
 #: ../glib/gkeyfile.c:361
 msgid "Valid key file could not be found in search dirs"
@@ -1016,7 +1016,7 @@ msgstr ""
 
 #: ../glib/gkeyfile.c:396
 msgid "Not a regular file"
-msgstr ""
+msgstr "Keene normale Datei"
 
 #: ../glib/gkeyfile.c:404
 msgid "File is empty"
@@ -1039,7 +1039,7 @@ msgstr ""
 #: ../glib/gkeyfile.c:871
 #, c-format
 msgid "Invalid key name: %s"
-msgstr ""
+msgstr "Nich akerater Slötelnaam: %s"
 
 #: ../glib/gkeyfile.c:898
 #, c-format
@@ -1217,7 +1217,7 @@ msgstr ""
 #: ../gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Eegen Definitschoon för %s"
 
 #: ../gio/gdrive.c:364
 msgid "drive doesn't implement eject"
@@ -1324,7 +1324,7 @@ msgstr ""
 #: ../gio/gfile.c:2477
 #: ../gio/glocalfile.c:2273
 msgid "Target file exists"
-msgstr ""
+msgstr "Tääldatei givt dat all"
 
 #: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
@@ -1367,7 +1367,7 @@ msgstr ""
 
 #: ../gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
-msgstr ""
+msgstr "Tääler is sluten"
 
 #: ../gio/gfileenumerator.c:213
 #: ../gio/gfileenumerator.c:272
@@ -1467,11 +1467,11 @@ msgstr ""
 #: ../gio/ginetsocketaddress.c:199
 #: ../gio/gunixsocketaddress.c:174
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "Nich genug Spieker för Sockelanskrivt"
 
 #: ../gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr ""
+msgstr "Nich unnerstütte Sockelanskrivt"
 
 #: ../gio/glocaldirectorymonitor.c:288
 msgid "Unable to find default local directory monitor type"
@@ -1486,17 +1486,17 @@ msgstr "Nich akerater Dateinaam %s"
 #: ../gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
-msgstr ""
+msgstr "Künn dateisysteminfo nich kregen: %s"
 
 #: ../gio/glocalfile.c:1111
 msgid "Can't rename root directory"
-msgstr ""
+msgstr "Künn root Verteeknisnaam nich ännern"
 
 #: ../gio/glocalfile.c:1131
 #: ../gio/glocalfile.c:1157
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming file: %s"
-msgstr "Fehler bi'm annern Naam geven vun de Datei \"%s\": %s"
+msgstr "Fehler bi'm Naam ännern vun de Datei: %s"
 
 #: ../gio/glocalfile.c:1140
 msgid "Can't rename file, filename already exist"
@@ -1516,11 +1516,11 @@ msgstr "Nich akerater Dateinaam"
 #: ../gio/glocalfile.c:1314
 #, c-format
 msgid "Error opening file: %s"
-msgstr ""
+msgstr "Künn de Datei nich opmaken: %s"
 
 #: ../gio/glocalfile.c:1324
 msgid "Can't open directory"
-msgstr ""
+msgstr "Künn dat verteeknis nich opmaken"
 
 #: ../gio/glocalfile.c:1449
 #, c-format
@@ -1627,7 +1627,7 @@ msgstr ""
 
 #: ../gio/glocalfileinfo.c:1557
 msgid " (invalid encoding)"
-msgstr ""
+msgstr "(nich akerate Koderen)"
 
 #: ../gio/glocalfileinfo.c:1755
 #, c-format
@@ -1719,7 +1719,7 @@ msgstr ""
 #: ../gio/glocalfileoutputstream.c:337
 #, c-format
 msgid "Error closing file: %s"
-msgstr ""
+msgstr "Künn de Datei nich sluten: %s"
 
 #: ../gio/glocalfilemonitor.c:213
 msgid "Unable to find default local file monitor type"
@@ -1766,11 +1766,11 @@ msgstr ""
 
 #: ../gio/glocalfileoutputstream.c:832
 msgid "Target file is a directory"
-msgstr ""
+msgstr "Tääldatei is een Verteeknis"
 
 #: ../gio/glocalfileoutputstream.c:837
 msgid "Target file is not a regular file"
-msgstr ""
+msgstr "Tääldatei is keene normale Datei"
 
 #: ../gio/glocalfileoutputstream.c:849
 msgid "The file was externally modified"
@@ -1788,7 +1788,7 @@ msgstr ""
 
 #: ../gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
-msgstr ""
+msgstr "Nich akerate Sökanfrage"
 
 #: ../gio/gmemoryinputstream.c:521
 msgid "Cannot truncate GMemoryInputStream"
@@ -1962,7 +1962,7 @@ msgstr ""
 
 #: ../gio/gsocket.c:1524
 msgid "Error connecting: "
-msgstr ""
+msgstr "Fehler bi'm Verbinnen:"
 
 #: ../gio/gsocket.c:1528
 msgid "Connection in progress"
@@ -2017,7 +2017,7 @@ msgstr ""
 #: ../gio/gsocketclient.c:521
 #: ../gio/gsocketclient.c:770
 msgid "Unknown error on connect"
-msgstr ""
+msgstr "Unbekannter Fehler bi'm Verbinnen"
 
 #: ../gio/gsocketlistener.c:192
 msgid "Listener is already closed"
@@ -2094,7 +2094,7 @@ msgstr ""
 
 #: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
-msgstr ""
+msgstr "Künn dat Programm nich finnen"
 
 #: ../gio/gwin32appinfo.c:300
 #, c-format
@@ -2103,7 +2103,7 @@ msgstr ""
 
 #: ../gio/gwin32appinfo.c:336
 msgid "URIs not supported"
-msgstr ""
+msgstr "URIs nich unnerstütt"
 
 #: ../gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
@@ -2127,7 +2127,7 @@ msgstr "Binnenfehler: %s"
 #: ../gio/gzlibcompressor.c:299
 #: ../gio/gzlibdecompressor.c:271
 msgid "Need more input"
-msgstr ""
+msgstr "Bruk mehr Ingaven"
 
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
