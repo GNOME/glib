@@ -67,7 +67,7 @@ static void
 compute_enum_storage_type (GIrNodeEnum *enum_node)
 {
   GList *l;
-  guint32 max_value = 0;
+  gint32 max_value = 0;
   int width;
 
   if (enum_node->storage_type != GI_TYPE_TAG_VOID) /* already done */
@@ -77,7 +77,7 @@ compute_enum_storage_type (GIrNodeEnum *enum_node)
     {
       GIrNodeValue *value = l->data;
       if (value->value > max_value)
-	max_value = value->value;
+        max_value = value->value;
     }
 
   if (max_value < 128)
