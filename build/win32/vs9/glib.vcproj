@@ -184,7 +184,13 @@
 				RelativePath="..\..\..\glib\gbase64.c"
 			/>
 			<File
+				RelativePath="..\..\..\glib\gbitlock.c"
+			/>
+			<File
 				RelativePath="..\..\..\glib\gbookmarkfile.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gbuffer.c"
 			/>
 			<File
 				RelativePath="..\..\..\glib\gcache.c"
@@ -344,6 +350,21 @@
 			/>
 			<File
 				RelativePath="..\..\..\glib\gutils.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gvariant.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gvariant-serialiser.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gvarianttype.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gvarianttypeinfo.c"
+			/>
+			<File
+				RelativePath="..\..\..\glib\gvariant-core.c"
 			/>
 			<File
 				RelativePath="..\..\..\glib\gwin32.c"

@@ -42,7 +42,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zdll.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zdll.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
@@ -114,7 +114,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zdll.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
@@ -148,7 +148,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zdll.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\gio.def"
@@ -204,6 +204,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\gio\gcharsetconverter.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gconverter.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gconverterinputstream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gconverteroutputstream.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\gio\gdatainputstream.c"
 				>
 			</File>
@@ -229,6 +245,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gfile.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gfiledescriptorbased.c"
 				>
 			</File>
 			<File
@@ -489,6 +509,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gio\gvolumemonitor.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gzlibcompressor.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\gio\gzlibdecompressor.c"
 				>
 			</File>
 			<File
