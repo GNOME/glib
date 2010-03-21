@@ -767,7 +767,7 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
 }
 
 /**
- * g_hash_table_iter_remove():
+ * g_hash_table_iter_remove:
  * @iter: an initialized #GHashTableIter.
  *
  * Removes the key/value pair currently pointed to by the iterator
@@ -789,7 +789,7 @@ g_hash_table_iter_remove (GHashTableIter *iter)
 }
 
 /**
- * g_hash_table_iter_steal():
+ * g_hash_table_iter_steal:
  * @iter: an initialized #GHashTableIter.
  *
  * Removes the key/value pair currently pointed to by the iterator

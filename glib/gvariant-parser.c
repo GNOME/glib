@@ -32,6 +32,13 @@
  * designed in itb-229 and at ghazi's, 2009.
  */
 
+/**
+ * G_VARIANT_PARSE_ERROR:
+ *
+ * Error domain for GVariant text format parsing.  Specific error codes
+ * are not currently defined for this domain.  See #GError for
+ * information on error domains.
+ **/
 GQuark
 g_variant_parser_get_error_quark (void)
 {
