@@ -26,9 +26,6 @@
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
@@ -58,9 +55,6 @@
 			WholeProgramOptimization="1"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
@@ -87,9 +81,6 @@
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -120,9 +111,6 @@
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS"

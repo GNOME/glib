@@ -25,9 +25,6 @@
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
@@ -62,9 +59,6 @@
 			WholeProgramOptimization="1"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;G_DISABLE_DEPRECATED;GIO_COMPILATION;GIO_MODULE_DIR=\&quot;gio/modules\&quot;"
@@ -96,9 +90,6 @@
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -133,9 +124,6 @@
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
