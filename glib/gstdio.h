@@ -89,12 +89,6 @@ int g_mkdir     (const gchar *filename,
 
 int g_chdir     (const gchar *path);
 
-#ifdef G_OS_WIN32
-
-/* The _g_stat_struct struct tag is an internal implementation detail
- * and not part of the public GLib API.
- */
-
 #if defined (_MSC_VER) && !defined(_WIN64)
 
 /* Make it clear that we mean the struct with 32-bit st_size and
@@ -102,35 +96,29 @@ int g_chdir     (const gchar *path);
  * has been compiled. If you get a compiler warning when calling
  * g_stat(), do take it seriously and make sure that the type of
  * struct stat the code in GLib fills in matches the struct the type
- * of struct stat you pass to g_stat(). To avoid hassle, just use the
- * GIO API instead which doesn't use struct stat to get file
- * attributes, .
+ * of struct stat you pass to g_stat(). To avoid hassle, to get file
+ * attributes just use the GIO API instead which doesn't use struct
+ * stat.
+ *
+ * Sure, it would be nicer to use a struct with 64-bit st_size and
+ * 64-bit st_*time fields, but changing that now would break ABI. And
+ * in MinGW, a plain "struct stat" is the one with 32-bit st_size and
+ * st_*time fields.
  */
-#define _g_stat_struct _stat32
+
+typedef struct _stat32 GStatBuf;
 
 #else
 
-#define _g_stat_struct _stat
+typedef struct stat GStatBuf;
 
 #endif
-
-int g_stat      (const gchar           *filename,
-                 struct _g_stat_struct *buf);
-
-int g_lstat     (const gchar           *filename,
-                 struct _g_stat_struct *buf);
-
-#else
-
-/* No _g_stat_struct used on Unix */
 
 int g_stat      (const gchar *filename,
-                 struct stat *buf);
+                 GStatBuf    *buf);
 
 int g_lstat     (const gchar *filename,
-                 struct stat *buf);
-
-#endif
+                 GStatBuf    *buf);
 
 int g_unlink    (const gchar *filename);
 

@@ -438,6 +438,20 @@ g_chdir (const gchar *path)
  * not look at the ACL at all. Thus on Windows the protection bits in
  * the st_mode field are a fabrication of little use.
  * 
+ * On Windows the Microsoft C libraries have several variants of the
+ * <structname>stat</structname> struct and stat() function with names
+ * like "_stat", "_stat32", "_stat32i64" and "_stat64i32". The one
+ * used here is for 32-bit code the one with 32-bit size and time
+ * fields, specifically called "_stat32".
+ *
+ * In Microsoft's compiler, by default "struct stat" means one with
+ * 64-bit time fields while in MinGW "struct stat" is the legacy one
+ * with 32-bit fields. To hopefully clear up this messs, the gstdio.h
+ * header defines a type GStatBuf which is the appropriate struct type
+ * depending on the platform and/or compiler being used. On POSIX it
+ * is just "struct stat", but note that even on POSIX platforms,
+ * "stat" might be a macro.
+ *
  * See your C library manual for more details about stat().
  *
  * Returns: 0 if the information was successfully retrieved, -1 if an error 
@@ -446,13 +460,8 @@ g_chdir (const gchar *path)
  * Since: 2.6
  */
 int
-g_stat (const gchar           *filename,
-#ifdef G_OS_WIN32
-	struct _g_stat_struct *buf
-#else
-	struct stat           *buf
-#endif
-				  )
+g_stat (const gchar *filename,
+	GStatBuf    *buf)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -505,13 +514,8 @@ g_stat (const gchar           *filename,
  * Since: 2.6
  */
 int
-g_lstat (const gchar           *filename,
-#ifdef G_OS_WIN32
-	 struct _g_stat_struct *buf
-#else
-	 struct stat           *buf
-#endif
-				   )
+g_lstat (const gchar *filename,
+	 GStatBuf    *buf)
 {
 #ifdef HAVE_LSTAT
   /* This can't be Win32, so don't do the widechar dance. */
