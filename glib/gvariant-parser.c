@@ -1550,6 +1550,10 @@ number_get_value (AST                 *ast,
           ast_set_error (ast, error, NULL, "number too big for any type");
           return NULL;
         }
+
+      /* silence uninitialised warnings... */
+      negative = FALSE;
+      abs_val = 0;
     }
   else
     {
@@ -1568,6 +1572,9 @@ number_get_value (AST                 *ast,
 
       if (abs_val == 0)
         negative = FALSE;
+
+      /* silence uninitialised warning... */
+      dbl_val = 0.0;
     }
 
   if (*end != '\0')
