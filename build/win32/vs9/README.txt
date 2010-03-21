@@ -4,7 +4,8 @@ This VS9 solution and the projects it includes are intented to be used
 in a GLib source tree unpacked from a tarball. In a git checkout you
 first need to use some Unix-like environment or manual work to expand
 the .in files needed, mainly config.h.win32.in into config.h.win32 and
-glibconfig.h.win32.in into glibconfig.h.win32.
+glibconfig.h.win32.in into glibconfig.h.win32. You will also need to
+expand the .vcprojin files here into .vcproj files.
 
 The only external dependency is proxy-libintl. Fetch the latest
 proxy-libintl-dev zipfile from

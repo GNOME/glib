@@ -469,11 +469,20 @@ gio_querymodules_LDADD	 = \
 	libgio-2.0.la					\
 	$(NULL)
 
-dist-hook: $(BUILT_EXTRA_DIST)
+dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
+
+../build/win32/vs9/gio.vcproj: $(top_srcdir)/build/win32/vs9/gio.vcprojin
+	for F in $(libgio_2_0_la_SOURCES); do \
+		case $$F in \
+		*.c) echo '   <File RelativePath="..\..\..\gio\'$$F'" />' \
+		     ;; \
+		esac; \
+	done >libgio.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gio.vcprojin >$@
 
 if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:

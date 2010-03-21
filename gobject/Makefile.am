@@ -256,11 +256,20 @@ gobject-win32-res.o: gobject.rc
 gobject-2.0.lib: libgobject-2.0.la gobject.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
 
-dist-hook: $(BUILT_EXTRA_DIST)
+dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
+
+../build/win32/vs9/gobject.vcproj: $(top_srcdir)/build/win32/vs9/gobject.vcprojin
+	for F in $(libgobject_2_0_la_SOURCES); do \
+		case $$F in \
+		*.c) echo '   <File RelativePath="..\..\..\gobject\'$$F'" />' \
+		     ;; \
+		esac; \
+	done >libgobject.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gobject.vcprojin >$@
 
 install-data-local: install-ms-lib install-def-file
 

@@ -383,11 +383,20 @@ endif
 glib-2.0.lib: libglib-2.0.la glib.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:glib.def -out:$@
 
-dist-hook: $(BUILT_EXTRA_DIST)
+dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
+
+../build/win32/vs9/glib.vcproj: $(top_srcdir)/build/win32/vs9/glib.vcprojin
+	for F in $(libglib_2_0_la_SOURCES); do \
+		case $$F in \
+		*.c) echo '   <File RelativePath="..\..\..\glib\'$$F'" />' \
+		     ;; \
+		esac; \
+	done >libglib.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/glib.vcprojin >$@
 
 distclean-local:
 	if test $(srcdir) = .; then :; else \

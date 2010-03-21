@@ -156,207 +156,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\..\..\glib\garray.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gasyncqueue.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gatomic.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gbacktrace.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gbase64.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gbitlock.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gbookmarkfile.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gbuffer.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gcache.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gchecksum.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gcompletion.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gconvert.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gdataset.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gdate.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gdir.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gerror.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gfileutils.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\ghash.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\ghook.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\ghostutils.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\giochannel.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\giowin32.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gkeyfile.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\glist.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gmain.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gmappedfile.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gmarkup.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gmem.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gmessages.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gnode.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\goption.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gpattern.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gpoll.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gprimes.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gprintf.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gqsort.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gqueue.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\grand.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gregex.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\grel.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gscanner.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gsequence.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gshell.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gslice.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gslist.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gspawn-win32.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gstdio.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gstrfuncs.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gstring.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gtestutils.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gthread.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gthreadpool.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gtimer.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gtree.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gunibreak.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gunicollate.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gunidecomp.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\guniprop.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gurifuncs.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gutf8.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gutils.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gvariant.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gvariant-serialiser.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gvarianttype.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gvarianttypeinfo.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gvariant-core.c"
-			/>
-			<File
-				RelativePath="..\..\..\glib\gwin32.c"
-			/>
+#include "libglib.sourcefiles"
+			<File RelativePath="..\..\..\glib\giowin32.c" />
+			<File RelativePath="..\..\..\glib\gspawn-win32.c" />
+			<File RelativePath="..\..\..\glib\gwin32.c" />
 			<Filter
 				Name="libcharset"
 				>
@@ -400,110 +203,35 @@
 			<Filter
 				Name="gnulib"
 				>
-				<File
-					RelativePath="..\..\..\glib\gnulib\asnprintf.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\gnulib\printf-args.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\gnulib\printf-parse.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\gnulib\printf.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\gnulib\vasnprintf.c"
-					>
-				</File>
+				<File RelativePath="..\..\..\glib\gnulib\asnprintf.c" />
+				<File RelativePath="..\..\..\glib\gnulib\printf-args.c" />
+				<File RelativePath="..\..\..\glib\gnulib\printf-parse.c" />
+				<File RelativePath="..\..\..\glib\gnulib\printf.c" />
+				<File RelativePath="..\..\..\glib\gnulib\vasnprintf.c" />
 			</Filter>
 			<Filter
 				Name="pcre"
 				>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_chartables.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_compile.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_config.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_dfa_exec.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_exec.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_fullinfo.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_get.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_globals.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_info.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_maketables.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_newline.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_refcount.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_study.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_tables.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_try_flipped.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_ucp_searchfuncs.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_valid_utf8.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_version.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\glib\pcre\pcre_xclass.c"
-					>
-				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_chartables.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_compile.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_config.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_dfa_exec.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_exec.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_fullinfo.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_get.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_globals.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_info.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_maketables.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_newline.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_refcount.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_study.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_tables.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_try_flipped.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_ucp_searchfuncs.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_valid_utf8.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_version.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_xclass.c" />
 			</Filter>
 		</Filter>
 		<Filter
