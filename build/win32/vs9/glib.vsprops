@@ -53,6 +53,7 @@ copy ..\..\..\glib\gasyncqueue.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gatomic.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbacktrace.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbase64.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gbitlock.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gcache.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
@@ -107,6 +108,8 @@ copy ..\..\..\glib\gtypes.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gunicode.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gurifuncs.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gvariant.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gvarianttype.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 
 mkdir $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
@@ -135,7 +138,11 @@ copy ..\..\..\gio\gasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gcancellable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gcharsetconverter.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gcontenttype.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gconverter.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gconverterinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gconverteroutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdatainputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdataoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdrive.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
@@ -194,6 +201,8 @@ copy ..\..\..\gio\gthreadedsocketservice.h $(OutDir)\include\glib-2.0\gio&#x0D;&
 copy ..\..\..\gio\gvfs.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gvolume.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gvolumemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gzlibcompressor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gzlibdecompressor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 
 mkdir $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
 copy ..\..\..\glibconfig.h $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
