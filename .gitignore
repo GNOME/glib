@@ -13,6 +13,7 @@ Makefile
 *.gcno
 *.gcda
 *.gcov
+*.sourcefiles
 
 # autofoo stuff here
 compile
