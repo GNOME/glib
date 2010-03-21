@@ -270,7 +270,11 @@ g_io_modules_scan_all_in_directory (const char *dirname)
   const gchar *name;
   char *filename;
   GDir *dir;
+#ifdef G_OS_WIN32
+  struct _g_stat_struct statbuf;
+#else
   struct stat statbuf;
+#endif
   char *data;
   time_t cache_mtime;
   GHashTable *cache;
