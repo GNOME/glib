@@ -1794,6 +1794,13 @@ g_variant_new_from_data
 g_variant_get_normal_form
 g_variant_byteswap
 #endif
+
+#if IN_FILE(__G_VARIANT_PARSER_C__)
+g_variant_new_parsed
+g_variant_new_parsed_va
+g_variant_parse
+g_variant_parser_get_error_quark
+#endif
 #endif
 
 #if IN_HEADER(__G_VARIANT_TYPE_INFO_H__)

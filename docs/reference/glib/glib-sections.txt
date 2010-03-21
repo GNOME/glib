@@ -2894,7 +2894,14 @@ g_variant_builder_end
 g_variant_builder_open
 g_variant_builder_close
 
+<SUBSECTION>
+G_VARIANT_PARSE_ERROR
+g_variant_parse
+g_variant_new_parsed_va
+g_variant_new_parsed
+
 <SUBSECTION Private>
+g_variant_parser_get_error
 g_variant_type_checked_
 </SECTION>
 

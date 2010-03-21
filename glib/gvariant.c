@@ -1454,31 +1454,31 @@ g_variant_print_string (GVariant *value,
           /* Nested maybes:
            *
            * Consider the case of the type "mmi".  In this case we could
-           * write "Just Just 4", but "4" alone is totally unambiguous,
-           * so we try to drop "Just" where possible.
+           * write "just just 4", but "4" alone is totally unambiguous,
+           * so we try to drop "just" where possible.
            *
-           * We have to be careful not to always drop "Just", though,
-           * since "Nothing" needs to be distinguishable from "Just
-           * Nothing".  The case where we need to ensure we keep the
-           * "Just" is actually exactly the case where we have a nested
+           * We have to be careful not to always drop "just", though,
+           * since "nothing" needs to be distinguishable from "just
+           * nothing".  The case where we need to ensure we keep the
+           * "just" is actually exactly the case where we have a nested
            * Nothing.
            *
            * Instead of searching for that nested Nothing, we just print
            * the contained value into a separate string and see if we
-           * end up with "Nothing" at the end of it.  If so, we need to
-           * add "Just" at our level.
+           * end up with "nothing" at the end of it.  If so, we need to
+           * add "just" at our level.
            */
           element = g_variant_get_child_value (value, 0);
           printed_child = g_variant_print (element, FALSE);
           g_variant_unref (element);
 
-          if (g_str_has_suffix (printed_child, "Nothing"))
-            g_string_append (string, "Just ");
+          if (g_str_has_suffix (printed_child, "nothing"))
+            g_string_append (string, "just ");
           g_string_append (string, printed_child);
           g_free (printed_child);
         }
       else
-        g_string_append (string, "Nothing");
+        g_string_append (string, "nothing");
 
       break;
 
@@ -1633,7 +1633,11 @@ g_variant_print_string (GVariant *value,
         const gchar *str = g_variant_get_string (value, NULL);
         gchar *escaped = g_strescape (str, NULL);
 
-        g_string_append_printf (string, "\'%s\'", escaped);
+        /* use double quotes only if a ' is in the string */
+        if (strchr (str, '\''))
+          g_string_append_printf (string, "\"%s\"", escaped);
+        else
+          g_string_append_printf (string, "'%s'", escaped);
 
         g_free (escaped);
       }

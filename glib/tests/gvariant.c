@@ -2742,7 +2742,7 @@ do_failed_test (const gchar *pattern)
 static void
 test_invalid_varargs (void)
 {
-  if (do_failed_test ("*not a valid GVariant format string*"))
+  if (do_failed_test ("*GVariant format string*"))
     {
       g_variant_new ("z");
       abort ();
@@ -2790,7 +2790,7 @@ test_varargs (void)
                                   g_variant_new_double (37.5))));
     check_and_free (g_variant_new ("(ma{sv}m(a{sv})ma{sv}ii)",
                                    NULL, FALSE, NULL, &array, 7777, 8888),
-                    "(Nothing, Nothing, {'size': <(800, 600)>, "
+                    "(nothing, nothing, {'size': <(800, 600)>, "
                                         "'title': <'Test case'>, "
                                         "'temperature': <37.5>}, "
                      "7777, 8888)");
@@ -2802,7 +2802,7 @@ test_varargs (void)
                                    FALSE, TRUE, 321,
                                    TRUE, FALSE, 321,
                                    TRUE, TRUE, 123),
-                    "(123, Nothing, 123, Nothing, Just Nothing, 123)");
+                    "(123, nothing, 123, nothing, just nothing, 123)");
 
     check_and_free (g_variant_new ("(ybnixd)",
                                    'a', 1, 22, 33, (guint64) 44, 5.5),
@@ -3047,7 +3047,7 @@ test_varargs (void)
     gdouble dval;
     gint32 hval;
 
-    /* test all 'Nothing' */
+    /* test all 'nothing' */
     value = g_variant_new ("(mymbmnmqmimumxmtmhmdmv)",
                            FALSE, 'a',
                            FALSE, TRUE,
@@ -3144,7 +3144,7 @@ test_varargs (void)
     g_variant_unref (value);
 
 
-    /* test all 'Just' */
+    /* test all 'just' */
     value = g_variant_new ("(mymbmnmqmimumxmtmhmdmv)",
                            TRUE, 'a',
                            TRUE, TRUE,
@@ -3455,6 +3455,242 @@ test_gv_byteswap ()
   g_free (string);
 }
 
+static void
+test_parser (void)
+{
+  TreeInstance *tree;
+  GVariant *parsed;
+  GVariant *value;
+  gchar *pt, *p;
+  gchar *res;
+
+  tree = tree_instance_new (NULL, 3);
+  value = tree_instance_get_gvariant (tree);
+  tree_instance_free (tree);
+
+  pt = g_variant_print (value, TRUE);
+  p = g_variant_print (value, FALSE);
+
+  parsed = g_variant_parse (NULL, pt, NULL, NULL, NULL);
+  res = g_variant_print (parsed, FALSE);
+  g_assert_cmpstr (p, ==, res);
+  g_variant_unref (parsed);
+  g_free (res);
+
+  parsed = g_variant_parse (g_variant_get_type (value), p,
+                            NULL, NULL, NULL);
+  res = g_variant_print (parsed, TRUE);
+  g_assert_cmpstr (pt, ==, res);
+  g_variant_unref (parsed);
+  g_free (res);
+
+  g_variant_unref (value);
+  g_free (pt);
+  g_free (p);
+}
+
+static void
+test_parses (void)
+{
+  gint i;
+
+  for (i = 0; i < 100; i++)
+    {
+      test_parser ();
+    }
+
+  /* mini test */
+  {
+    gchar str[256];
+    GVariant *val;
+    gchar *p, *p2;
+
+    for (i = 0; i < 256; i++)
+      str[i] = i + 1;
+
+    val = g_variant_new_string (str);
+    p = g_variant_print (val, FALSE);
+    g_variant_unref (val);
+
+    val = g_variant_parse (NULL, p, NULL, NULL, NULL);
+    p2 = g_variant_print (val, FALSE);
+
+    g_assert_cmpstr (str, ==, g_variant_get_string (val, NULL));
+    g_assert_cmpstr (p, ==, p2);
+
+    g_variant_unref (val);
+    g_free (p2);
+    g_free (p);
+  }
+
+  /* another mini test */
+  {
+    const gchar *end;
+    GVariant *value;
+
+    value = g_variant_parse (G_VARIANT_TYPE_INT32, "1 2 3", NULL, &end, NULL);
+    g_assert_cmpint (g_variant_get_int32 (value), ==, 1);
+    /* make sure endptr returning works */
+    g_assert_cmpstr (end, ==, " 2 3");
+    g_variant_unref (value);
+  }
+
+  g_variant_type_info_assert_no_infos ();
+}
+
+static void
+test_parse_failures (void)
+{
+  const gchar *test[] = {
+    "[1, 2,",                   "6:",              "expected value",
+    "",                         "0:",              "expected value",
+    "(1, 2,",                   "6:",              "expected value",
+    "<1",                       "2:",              "expected `>'",
+    "[]",                       "0-2:",            "unable to infer",
+    "(,",                       "1:",              "expected value",
+    "[4,'']",                   "1-2,3-5:",        "common type",
+    "[4, '', 5]",               "1-2,4-6:",        "common type",
+    "['', 4, 5]",               "1-3,5-6:",        "common type",
+    "[4, 5, '']",               "1-2,7-9:",        "common type",
+    "[[4], [], ['']]",          "1-4,10-14:",      "common type",
+    "[[], [4], ['']]",          "5-8,10-14:",      "common type",
+    "just",                     "4:",              "expected value",
+    "nothing",                  "0-7:",            "unable to infer",
+    "just [4, '']",             "6-7,9-11:",       "common type",
+    "[[4,'']]",                 "2-3,4-6:",        "common type",
+    "([4,''],)",                "2-3,4-6:",        "common type",
+    "(4)",                      "2:",              "`,'",
+    "{}",                       "0-2:",            "unable to infer",
+    "{[1,2],[3,4]}",            "0-13:",           "basic types",
+    "{[1,2]:[3,4]}",            "0-13:",           "basic types",
+    "justt",                    "0-5:",            "unknown keyword",
+    "nothng",                   "0-6:",            "unknown keyword",
+    "uint33",                   "0-6:",            "unknown keyword",
+    "@mi just ''",              "9-11:",           "can not parse as",
+    "@ai ['']",                 "5-7:",            "can not parse as",
+    "@(i) ('',)",               "6-8:",            "can not parse as",
+    "[[], 5]",                  "1-3,5-6:",        "common type",
+    "[[5], 5]",                 "1-4,6-7:",        "common type",
+    "5 5",                      "2:",              "expected end of input",
+    "[5, [5, '']]",             "5-6,8-10:",       "common type",
+    "@i just 5",                "3-9:",            "can not parse as",
+    "@i nothing",               "3-10:",           "can not parse as",
+    "@i []",                    "3-5:",            "can not parse as",
+    "@i ()",                    "3-5:",            "can not parse as",
+    "@ai (4,)",                 "4-8:",            "can not parse as",
+    "@(i) []",                  "5-7:",            "can not parse as",
+    "(5 5)",                    "3:",              "expected `,'",
+    "[5 5]",                    "3:",              "expected `,' or `]'",
+    "(5, 5 5)",                 "6:",              "expected `,' or `)'",
+    "[5, 5 5]",                 "6:",              "expected `,' or `]'",
+    "<@i []>",                  "4-6:",            "can not parse as",
+    "<[5 5]>",                  "4:",              "expected `,' or `]'",
+    "{[4,''],5}",               "2-3,4-6:",        "common type",
+    "{5,[4,'']}",               "4-5,6-8:",        "common type",
+    "@i {1,2}",                 "3-8:",            "can not parse as",
+    "{@i '', 5}",               "4-6:",            "can not parse as",
+    "{5, @i ''}",               "7-9:",            "can not parse as",
+    "@ai {}",                   "4-6:",            "can not parse as",
+    "{@i '': 5}",               "4-6:",            "can not parse as",
+    "{5: @i ''}",               "7-9:",            "can not parse as",
+    "{<4,5}",                   "3:",              "expected `>'",
+    "{4,<5}",                   "5:",              "expected `>'",
+    "{4,5,6}",                  "4:",              "expected `}'",
+    "{5 5}",                    "3:",              "expected `:' or `,'",
+    "{4: 5: 6}",                "5:",              "expected `,' or `}'",
+    "{4:5,<6:7}",               "7:",              "expected `>'",
+    "{4:5,6:<7}",               "9:",              "expected `>'",
+    "{4:5,6 7}",                "7:",              "expected `:'",
+    "@o 'foo'",                 "3-8:",            "object path",
+    "@g 'zzz'",                 "3-8:",            "signature",
+    "@i true",                  "3-7:",            "can not parse as",
+    "@z 4",                     "0-2:",            "invalid type",
+    "@a* []",                   "0-3:",            "definite",
+    "@ai [3 3]",                "7:",              "expected `,' or `]'",
+    "18446744073709551616",     "0-20:",           "too big for any type",
+    "-18446744073709551616",    "0-21:",           "too big for any type",
+    "byte 256",                 "5-8:",            "out of range for type",
+    "byte -1",                  "5-7:",            "out of range for type",
+    "int16 32768",              "6-11:",           "out of range for type",
+    "int16 -32769",             "6-12:",           "out of range for type",
+    "uint16 -1",                "7-9:",            "out of range for type",
+    "uint16 65536",             "7-12:",           "out of range for type",
+    "2147483648",               "0-10:",           "out of range for type",
+    "-2147483649",              "0-11:",           "out of range for type",
+    "uint32 -1",                "7-9:",            "out of range for type",
+    "uint32 4294967296",        "7-17:",           "out of range for type",
+    "@x 9223372036854775808",   "3-22:",           "out of range for type",
+    "@x -9223372036854775809",  "3-23:",           "out of range for type",
+    "@t -1",                    "3-5:",            "out of range for type",
+    "@t 18446744073709551616",  "3-23:",           "too big for any type",
+    "handle 2147483648",        "7-17:",           "out of range for type",
+    "handle -2147483649",       "7-18:",           "out of range for type",
+    "1.798e308",                "0-9:",            "too big for any type",
+    "37.5a488",                 "4-5:",            "invalid character",
+    "0x7ffgf",                  "5-6:",            "invalid character",
+    "07758",                    "4-5:",            "invalid character",
+    "123a5",                    "3-4:",            "invalid character",
+    "@ai 123",                  "4-7:",            "can not parse as",
+    "'\"\\'",                   "0-4:",            "unterminated string",
+    "'\"\\'\\",                 "0-5:",            "unterminated string",
+    "boolean 4",                "8-9:",            "can not parse as",
+    "int32 true",               "6-10:",           "can not parse as",
+    "[double 5, int32 5]",      "1-9,11-18:",      "common type",
+    "string 4",                 "7-8:",            "can not parse as"
+  };
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (test); i += 3)
+    {
+      GError *error = NULL;
+      GVariant *value;
+
+      value = g_variant_parse (NULL, test[i], NULL, NULL, &error);
+      g_assert (value == NULL);
+
+      if (!strstr (error->message, test[i+2]))
+        g_error ("test %d: Can't find `%s' in `%s'", i / 3,
+                 test[i+2], error->message);
+
+      if (!g_str_has_prefix (error->message, test[i+1]))
+        g_error ("test %d: Expected location `%s' in `%s'", i / 3,
+                 test[i+1], error->message);
+
+      g_error_free (error);
+    }
+}
+
+static void
+test_parse_positional (void)
+{
+  GVariant *value;
+  check_and_free (g_variant_new_parsed ("[('one', 1), (%s, 2),"
+                                        " ('three', %i)]", "two", 3),
+                  "[('one', 1), ('two', 2), ('three', 3)]");
+  value = g_variant_new_parsed ("[('one', 1), (%s, 2),"
+                                " ('three', %u)]", "two", 3);
+  g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("a(su)")));
+  check_and_free (value, "[('one', 1), ('two', 2), ('three', 3)]");
+
+  if (do_failed_test ("*GVariant format string*"))
+    {
+      g_variant_new_parsed ("%z");
+      abort ();
+    }
+
+  if (do_failed_test ("*can not parse as*"))
+    {
+      g_variant_new_parsed ("uint32 %i", 2);
+      abort ();
+    }
+
+  if (do_failed_test ("*expected GVariant of type `i'*"))
+    {
+      g_variant_new_parsed ("%@i", g_variant_new_uint32 (2));
+      abort ();
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3489,6 +3725,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/builder-memory", test_builder_memory);
   g_test_add_func ("/gvariant/hashing", test_hashing);
   g_test_add_func ("/gvariant/byteswap", test_gv_byteswap);
+  g_test_add_func ("/gvariant/parser", test_parses);
+  g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
+  g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
 
   return g_test_run ();
 }

@@ -176,6 +176,9 @@ struct _GVariantBuilder {
   gsize x[16];
 };
 
+#define G_VARIANT_PARSE_ERROR (g_variant_parser_get_error_quark ())
+GQuark                          g_variant_parser_get_error_quark        (void);
+
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
 void                            g_variant_builder_unref                 (GVariantBuilder      *builder);
 GVariantBuilder *               g_variant_builder_ref                   (GVariantBuilder      *builder);
@@ -205,6 +208,16 @@ void                            g_variant_get_va                        (GVarian
                                                                          const gchar         **endptr,
                                                                          va_list              *app);
 
+
+GVariant *                      g_variant_parse                         (const GVariantType   *type,
+                                                                         const gchar          *text,
+                                                                         const gchar          *limit,
+                                                                         const gchar         **endptr,
+                                                                         GError              **error);
+GVariant *                      g_variant_new_parsed                    (const gchar          *format,
+                                                                         ...);
+GVariant *                      g_variant_new_parsed_va                 (const gchar          *format,
+                                                                         va_list              *app);
 
 G_END_DECLS
 
