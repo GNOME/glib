@@ -380,6 +380,8 @@ g_type_remove_interface_check
 g_type_set_qdata
 g_type_test_flags
 g_type_value_table_peek
+g_type_class_get_private
+g_type_add_class_private
 #endif
 #endif
 
