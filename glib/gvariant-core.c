@@ -357,7 +357,7 @@ static void
 g_variant_serialise (GVariant *value,
                      gpointer  data)
 {
-  GVariantSerialised serialised = {  };
+  GVariantSerialised serialised = { 0, };
   gpointer *children;
   gsize n_children;
 

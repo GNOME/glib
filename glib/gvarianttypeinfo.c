@@ -111,33 +111,35 @@ typedef struct
 /* Hard-code the base types in a constant array */
 static const GVariantTypeInfo g_variant_type_info_basic_table[24] = {
 #define fixed_aligned(x)  x, x - 1
+#define not_a_type             0,
 #define unaligned         0, 0
 #define aligned(x)        0, x - 1
   /* 'b' */ { fixed_aligned(1) },   /* boolean */
-  /* 'c' */ { },
+  /* 'c' */ { not_a_type },
   /* 'd' */ { fixed_aligned(8) },   /* double */
-  /* 'e' */ { },
-  /* 'f' */ { },
+  /* 'e' */ { not_a_type },
+  /* 'f' */ { not_a_type },
   /* 'g' */ { unaligned        },   /* signature string */
   /* 'h' */ { fixed_aligned(4) },   /* file handle (int32) */
   /* 'i' */ { fixed_aligned(4) },   /* int32 */
-  /* 'j' */ { },
-  /* 'k' */ { },
-  /* 'l' */ { },
-  /* 'm' */ { },
+  /* 'j' */ { not_a_type },
+  /* 'k' */ { not_a_type },
+  /* 'l' */ { not_a_type },
+  /* 'm' */ { not_a_type },
   /* 'n' */ { fixed_aligned(2) },   /* int16 */
   /* 'o' */ { unaligned        },   /* object path string */
-  /* 'p' */ { },
+  /* 'p' */ { not_a_type },
   /* 'q' */ { fixed_aligned(2) },   /* uint16 */
-  /* 'r' */ { },
+  /* 'r' */ { not_a_type },
   /* 's' */ { unaligned        },   /* string */
   /* 't' */ { fixed_aligned(8) },   /* uint64 */
   /* 'u' */ { fixed_aligned(4) },   /* uint32 */
   /* 'v' */ { aligned(8)       },   /* variant */
-  /* 'w' */ { },
+  /* 'w' */ { not_a_type },
   /* 'x' */ { fixed_aligned(8) },   /* int64 */
   /* 'y' */ { fixed_aligned(1) },   /* byte */
 #undef fixed_aligned
+#undef not_a_type
 #undef unaligned
 #undef aligned
 };

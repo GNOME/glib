@@ -333,7 +333,7 @@ gvs_variable_sized_maybe_needed_size (GVariantTypeInfo         *type_info,
 {
   if (n_children)
     {
-      GVariantSerialised child = {  };
+      GVariantSerialised child = { 0, };
 
       gvs_filler (&child, children[0]);
 
@@ -414,7 +414,7 @@ static GVariantSerialised
 gvs_fixed_sized_array_get_child (GVariantSerialised value,
                                  gsize              index_)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, NULL, &child.size);
@@ -443,7 +443,7 @@ gvs_fixed_sized_array_serialise (GVariantSerialised        value,
                                  const gpointer           *children,
                                  gsize                     n_children)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   gsize i;
 
   child.type_info = g_variant_type_info_element (value.type_info);
@@ -460,7 +460,7 @@ gvs_fixed_sized_array_serialise (GVariantSerialised        value,
 static gboolean
 gvs_fixed_sized_array_is_normal (GVariantSerialised value)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, NULL, &child.size);
@@ -620,7 +620,7 @@ static GVariantSerialised
 gvs_variable_sized_array_get_child (GVariantSerialised value,
                                     gsize              index_)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   gsize offset_size;
   gsize last_end;
   gsize start;
@@ -676,7 +676,7 @@ gvs_variable_sized_array_needed_size (GVariantTypeInfo         *type_info,
 
   for (i = 0; i < n_children; i++)
     {
-      GVariantSerialised child = {  };
+      GVariantSerialised child = { 0, };
 
       offset += (-offset) & alignment;
       gvs_filler (&child, children[i]);
@@ -706,7 +706,7 @@ gvs_variable_sized_array_serialise (GVariantSerialised        value,
 
   for (i = 0; i < n_children; i++)
     {
-      GVariantSerialised child = {  };
+      GVariantSerialised child = { 0, };
 
       while (offset & alignment)
         value.data[offset++] = '\0';
@@ -723,7 +723,7 @@ gvs_variable_sized_array_serialise (GVariantSerialised        value,
 static gboolean
 gvs_variable_sized_array_is_normal (GVariantSerialised value)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   gsize offsets_array_size;
   guchar *offsets_array;
   guint offset_size;
@@ -825,7 +825,7 @@ gvs_tuple_get_child (GVariantSerialised value,
                      gsize              index_)
 {
   const GVariantMemberInfo *member_info;
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   gsize offset_size;
   gsize start, end;
 
@@ -936,7 +936,7 @@ gvs_tuple_needed_size (GVariantTypeInfo         *type_info,
         offset += fixed_size;
       else
         {
-          GVariantSerialised child = {  };
+          GVariantSerialised child = { 0, };
 
           gvs_filler (&child, children[i]);
           offset += child.size;
@@ -962,7 +962,7 @@ gvs_tuple_serialise (GVariantSerialised        value,
   for (i = 0; i < n_children; i++)
     {
       const GVariantMemberInfo *member_info;
-      GVariantSerialised child = {  };
+      GVariantSerialised child = { 0, };
       guint alignment;
 
       member_info = g_variant_type_info_member_info (value.type_info, i);
@@ -1112,7 +1112,7 @@ static inline GVariantSerialised
 gvs_variant_get_child (GVariantSerialised value,
                        gsize              index_)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
 
   /* NOTE: not O(1) and impossible for it to be... */
   if (value.size)
@@ -1169,7 +1169,7 @@ gvs_variant_needed_size (GVariantTypeInfo         *type_info,
                          const gpointer           *children,
                          gsize                     n_children)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   const gchar *type_string;
 
   gvs_filler (&child, children[0]);
@@ -1184,7 +1184,7 @@ gvs_variant_serialise (GVariantSerialised        value,
                        const gpointer           *children,
                        gsize                     n_children)
 {
-  GVariantSerialised child = {  };
+  GVariantSerialised child = { 0, };
   const gchar *type_string;
 
   child.data = value.data;

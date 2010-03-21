@@ -1084,13 +1084,17 @@ const gchar *
 g_variant_get_string (GVariant *value,
                       gsize    *length)
 {
+  gconstpointer data;
+  gsize size;
+
   g_return_val_if_fail (value != NULL, NULL);
   g_return_val_if_fail (
     g_variant_is_of_type (value, G_VARIANT_TYPE_STRING) ||
     g_variant_is_of_type (value, G_VARIANT_TYPE_OBJECT_PATH) ||
     g_variant_is_of_type (value, G_VARIANT_TYPE_SIGNATURE), NULL);
-  gconstpointer data = g_variant_get_data (value);
-  gsize size = g_variant_get_size (value);
+
+  data = g_variant_get_data (value);
+  size = g_variant_get_size (value);
 
   if (!g_variant_is_trusted (value))
     {
