@@ -2097,12 +2097,25 @@ g_variant_parse (const GVariantType  *type,
  * g_variant_new_parsed_va:
  * @format: a text format #GVariant
  * @app: a pointer to a #va_list
- * @returns: a new floating #GVariant instance
+ * @returns: a new, usually floating, #GVariant
  *
  * Parses @format and returns the result.
  *
  * This is the version of g_variant_new_parsed() intended to be used
  * from libraries.
+ *
+ * The return value will be floating if it was a newly created GVariant
+ * instance.  In the case that @format simply specified the collection
+ * of a #GVariant pointer (eg: @format was "%*") then the collected
+ * #GVariant pointer will be returned unmodified, without adding any
+ * additional references.
+ *
+ * In order to behave correctly in all cases it is necessary for the
+ * calling function to g_variant_ref_sink() the return result before
+ * returning control to the user that originally provided the pointer.
+ * At this point, the caller will have their own full reference to the
+ * result.  This can also be done by adding the result to a container,
+ * or by passing it to another g_variant_new() call.
  **/
 GVariant *
 g_variant_new_parsed_va (const gchar *format,
@@ -2139,6 +2152,7 @@ g_variant_new_parsed_va (const gchar *format,
  * g_variant_new_parsed:
  * @format: a text format #GVariant
  * @...: arguments as per @format
+ * @returns: a new floating #GVariant instance
  *
  * Parses @format and returns the result.
  *
