@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-05 22:30+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -90,7 +90,7 @@ msgstr "アプリケーションの '%s' は '%s' というブックマークを
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "コマンドラインの '%s' を '%s' という URI に展開できませんでした"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -101,14 +101,14 @@ msgstr "'%s' から '%s' という文字集合への変換はサポートして�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' から '%s' への変換処理を開けませんでした"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "変換する入力に無効なバイトの並びがあります"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "変換中にエラー: %s"
@@ -187,7 +187,7 @@ msgstr "'%s' が読めません: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' を開けません: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' の属性の取得できません: fstat() に失敗しました: %s"
@@ -296,33 +296,33 @@ msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
 msgid "Symbolic links not supported"
 msgstr "シンボリック・リンクはサポートしていません"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' から '%s' へ変換するコンバータを開けませんでした: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string では raw モードで読めません"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "変換されていないデータが読みこみバッファに残っています"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "チャンネルが不完全な文字で終わっています"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end では raw モードで読めません"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ファイル '%s' を開けません: open() が失敗: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ファイル '%s' のマップに失敗しました: mmap() が失敗: %s"
@@ -1170,7 +1170,7 @@ msgstr "変換する入力に無効なバイトの並びがあります"
 msgid "Not enough space in destination"
 msgstr "ソケット・アドレスを作成するために充分な空きがありません"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "キャンセル可能な初期化はサポートされていません"
 
@@ -1196,30 +1196,30 @@ msgstr "想定していたよりも早くストリームの最後に到達しま
 msgid "Unnamed"
 msgstr "名前なし"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "デスクトップ・ファイルで Exec 項目を指定してませんでした"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "アプリケーションで必要な端末が見つかりませんでした"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ユーザのアプリケーション設定フォルダ %s を生成できません: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ユーザの MIME 型設定フォルダ %s を生成できません: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ユーザのデスクトップ・ファイル %s を生成できません"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s に対する独自の設定"
@@ -1875,93 +1875,93 @@ msgstr "無効なソケットです。初期化に失敗しました: %s"
 msgid "Socket is already closed"
 msgstr "ソースは既に閉じられています"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "ファイルディスクリプタ GSocket を作成: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "ソケットを作成できません: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "不明なプロトコルが指定されました"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ローカルのアドレスを取得できませんでした: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "listen できませんでした: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "アドレスに bind 時にエラー: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接続を accept する時にエラー: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "接続エラー: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "接続中"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "接続中にエラー: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "エラーをペンディングできません： %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "データの受信時にエラー: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "データの送信時にエラー: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "ソケットを閉じる際にエラー: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "ソケットの指定された状態を wait: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "メッセージを送信中にエラー： %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage は Windows ではサポートされていません"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "メッセージを受信中にエラー: %s"

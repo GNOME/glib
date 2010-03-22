@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-17 15:47+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -102,7 +102,7 @@ msgstr "'%s' பெயரிலுள்ள பயன்பாடு  '%s'க்
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec வரி '%s'  ஐ யூஆர்ஐ (URI) '%s' உடன் விரிவாக்குதல் தோல்வியுற்றது"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -113,14 +113,14 @@ msgstr "வரியுரு வகை `%s' இலிருந்து `%s' �
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' லிருந்து '%s'க்கு மாற்றியை திறக்க முடியவில்லை"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
@@ -199,7 +199,7 @@ msgstr "'%s' கோப்பிலிருந்து வாசிக்க �
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() செயலிழந்தது: %s"
@@ -305,33 +305,33 @@ msgstr "'%s' என்பதன்-குறுக்கம் இணைப்�
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' லிருந்து'%s'க்கு மாற்றியை திறக்க முடியவில்லை: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string இல் மூலமாக வாசிக்க முடியாது"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "வாசிப்புத் தாங்ககத்தில் மாற்றப்படாத மீதித் தரவுகள்"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "வாய்க்கால் பாதி வரியுருவில் முடிவடைகிறது"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்க முடியாது"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: open() செயலிழந்தது: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' கோப்பினை ஒப்பிட முடியவில்லை: mmap() செயலிழந்தது: %s"
@@ -1177,7 +1177,7 @@ msgstr "நிலை மாற்றியின் உள்ளீடுக்�
 msgid "Not enough space in destination"
 msgstr "சாக்கெட் முகவரிக்கு போதிய இடம் இல்லை"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "ரத்துசெய்யக்கூடிய துவக்குதல் துணைபுரிவதில்லை"
 
@@ -1203,30 +1203,30 @@ msgstr "எதிர்ப்பார்க்கப்படாத முட�
 msgid "Unnamed"
 msgstr "பெயரில்லாதது"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"
@@ -1872,93 +1872,93 @@ msgstr "தவறான சாக்கெட், இதனால் துவ�
 msgid "Socket is already closed"
 msgstr "சாக்கெட் ஏற்கனவே மூடப்பட்டது"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocketஐ fdஇலிருந்து உருவாக்குகிறது: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "சாக்கெட்டை உருவாக்க முடியவில்லை: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "தெரியாத நெறிமுறை குறிப்பிடப்பட்டுள்ளது"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "உள்ளமை முகவரியை பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "தொலை முகவரியை பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "கேட்க முடியவில்லை: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "முகவரியை பிணைக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "இணைப்பை ஏற்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "இணைக்கும் போது பிழை:"
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "இணைப்பு செயலிலுள்ளது"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "இணைக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "விடுப்பட்ட பிழையைப் பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "தரவைப் பெறும் போது பிழை: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "தரவை அனுப்பும் போது பிழை: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "சாக்கெட்டை மூடும் போது பிழை: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "சாக்கெட் நிலைக்காக காத்திருக்கிறது: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "செய்தி அனுப்பும் போது பிழை: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage windowsஇல் துணைபுரிவதில்லை"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "செய்தி பெறும் போது பிழை: %s"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2010-03-05 23:26+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "No s'ha pogut expandir la línia d'execució «%s» amb URI «%s»"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -103,14 +103,14 @@ msgstr "No es permet la conversió entre els jocs de caràcters «%s» a «%s»"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No s'ha pogut obrir el convertidor de «%s» a «%s»"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "La seqüència de bytes a l'entrada de conversió no és vàlida"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "S'ha produït un error durant la conversió: %s"
@@ -190,7 +190,7 @@ msgstr "No s'ha pogut llegir del fitxer «%s»: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -304,33 +304,33 @@ msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
 msgid "Symbolic links not supported"
 msgstr "No es poden utilitzar els enllaços simbòlics"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "No s'ha pogut obrir el convertidor de «%s» a «%s»: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "A la memòria intermèdia de lectura hi ha dades sobrants no convertides"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "El canal acaba en un caràcter parcial"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: ha fallat la funció open(): %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "No s'ha pogut mapar el fitxer «%s»: ha fallat la funció mmap(): %s"
@@ -1202,7 +1202,7 @@ msgstr "La seqüència de múltiples bytes de l'entrada no és completa"
 msgid "Not enough space in destination"
 msgstr "No hi ha prou espai a la destinació"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "No està implementada la cancel·lació de la inicialització"
 
@@ -1228,33 +1228,33 @@ msgstr "No s'esperava un final de flux tant aviat"
 msgid "Unnamed"
 msgstr "Sense nom"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "El fitxer d'escriptori no especificava el camp d'execució"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari %"
 "s: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració MIME de l'usuari %s: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No s'ha pogut crear el fitxer d'escriptori de l'usuari %s"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definició personalitzada per a %s"
@@ -1915,93 +1915,93 @@ msgstr "El sòcol no és vàlid, ha fallat la inicialització degut a: %s"
 msgid "Socket is already closed"
 msgstr "El sòcol ja és tancat"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "s'està creant un GSocket a partir del descriptor de fitxer: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "No s'ha pogut crear el sòcol: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "S'ha especificat un protocol desconegut"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "no s'ha pogut obtenir l'adreça local: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "no s'ha pogut obtenir l'adreça remota: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "no s'ha pogut escoltar: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "S'ha produït un error en vincular-se a l'adreça: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "S'ha produït un error en acceptar la connexió: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "S'ha produït un error en connectar-se: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "Connexió en procés"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "S'ha produït un error en connectar-se: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "No s'ha pogut obtenir l'error pendent: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "S'ha produït un error en rebre les dades: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "S'ha produït un error en enviar les dades: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "S'ha produït un error en tancar el sòcol: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "S'està esperant la condició del sòcol: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "S'ha produït un error en enviar el missatge: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "El GSocketControlMessage no està implementat a Windows"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "S'ha produït un error en rebre un missatge: %s"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2010-02-08 09:55+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -87,7 +87,7 @@ msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "กระจายบรรทัดคำสั่ง '%s' ด้วย URI '%s' ไม่สำเร็จ"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -98,14 +98,14 @@ msgstr "ไม่รองรับการแปลงรหัสอักข
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "มีลำดับไบต์ที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
@@ -184,7 +184,7 @@ msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำ
 msgid "Failed to open file '%s': %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
@@ -289,33 +289,33 @@ msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่ส
 msgid "Symbolic links not supported"
 msgstr "ไม่รองรับลิงก์สัญลักษณ์"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "แชนเนลจบด้วยข้อมูลไม่เต็มอักขระ"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: open() ล้มเหลว: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "แม็ปแฟ้ม '%s' ไม่สำเร็จ: mmap() ล้มเหลว: %s"
@@ -1133,7 +1133,7 @@ msgstr "มีลำดับไบต์ที่ไม่สมบูรณ์
 msgid "Not enough space in destination"
 msgstr "มีที่ว่างไม่พอที่ปลายทาง"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "ไม่รองรับการตั้งค่าเริ่มต้นแบบยกเลิกได้"
 
@@ -1159,30 +1159,30 @@ msgstr "พบจุดจบสตรีมก่อนกำหนด"
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
@@ -1823,93 +1823,93 @@ msgstr "ซ็อกเก็ตผิดพลาด ตั้งค่าเ�
 msgid "Socket is already closed"
 msgstr "ซ็อกเก็ตถูกปิดไปแล้ว"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "ขณะสร้าง GSocket จาก fd: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "สร้างซ็อกเก็ตไม่สำเร็จ: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "มีการระบุโพรโทคอลที่ไม่รู้จัก"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ไม่สามารถหาที่อยู่ฝั่งนี้ได้: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ไม่สามารถหาที่อยู่ฝั่งโน้นได้: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "ไม่สามารถ listen: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "เกิดข้อผิดพลาดขณะ bind กับที่อยู่: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับการเชื่อมต่อ: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "เกิดข้อผิดพลาดขณะเชื่อมต่อ: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "กำลังอยู่ระหว่างเชื่อมต่อ"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "เกิดข้อผิดพลาดขณะเชื่อมต่อ: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ไม่สามารถอ่านข้อผิดพลาดที่คั่งค้างอยู่ได้: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับข้อมูล: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "เกิดข้อผิดพลาดขณะล่งข้อมูล: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดซ็อกเก็ต: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "กำลังรอเงื่อนไขของซ็อกเก็ต: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "เกิดข้อผิดพลาดขณะส่งข้อความ: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "ไม่รองรับ GSocketControlMessage บนวินโดวส์"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับข้อความ: %s"

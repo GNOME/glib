@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2005-11-16 11:21+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -92,7 +92,7 @@ msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Немагчыма прачытаць сымбалічную спасылку \"%s\": %s"
 
 # glib/gconvert.c:390
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -107,16 +107,16 @@ msgstr "Не атрымалася адкрыць пераўтваральнік 
 # glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Недапушчальная пасьлядоўнасьць байтаў на ўваходзе пераўтварэньня"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
@@ -211,7 +211,7 @@ msgid "Failed to open file '%s': %s"
 msgstr "Збой адкрыцьця файлу \"%s\": %s"
 
 # glib/gfileutils.c:479
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Збой атрыманьня атрыбутаў файлу \"%s\": збой fstat(): %s"
@@ -329,42 +329,42 @@ msgid "Symbolic links not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"
 
 # glib/giochannel.c:1114
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не атрымалася адкрыць пераўтваральнік з \"%s\" у \"%s\": %s"
 
 # glib/giochannel.c:1460
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Не магчыма выканаць непасрэднае чытаньне ў функцыі "
 "g_io_channel_read_line_string"
 
 # glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "У буфэры чытаньня засталіся непераўтвораныя даньні"
 
 # glib/giochannel.c:1587 glib/giochannel.c:1661
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "Канал закрываецца на няпоўным сымбалі"
 
 # glib/giochannel.c:1647
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Немагчыма выканаць непасрэднае чытаньне ў функцыі g_io_channel_read_to_end"
 
 # glib/gfileutils.c:505
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Збой адкрыцьця файлу \"%s\": збой open(): %s"
 
 # glib/gfileutils.c:505
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Збой мапаваньня файлу  '%s': збой mmap(): %s"
@@ -1291,7 +1291,7 @@ msgstr "Недапушчальная пасьлядоўнасьць байтаў
 msgid "Not enough space in destination"
 msgstr ""
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "Сымбалічныя спасылкі не падтрымліваюцца"
@@ -1319,30 +1319,30 @@ msgstr ""
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -2038,107 +2038,107 @@ msgid "Socket is already closed"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Збой стварэньня файлу \"%s\": %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
 # glib/gfileutils.c:337 glib/gfileutils.c:402
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, fuzzy, c-format
 msgid "could not get remote address: %s"
 msgstr "Немагчыма зьмяніць рэжым файлу: збой waitpid(): %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Збой стварэньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Памылка чытаньня файлу \"%s\": %s"

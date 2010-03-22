@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2008-02-04 04:11+0100\n"
 "Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <mkde-l10n@lists.sourceforge.net>\n"
@@ -92,7 +92,7 @@ msgstr "Нема апликација со име „%s“ која регист
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Не успеав да ја проширам линијата за извршување „%s“ со URI „%s“"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -103,14 +103,14 @@ msgstr "Конвертирањето од  %s' во „%s“ не е поддр�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не можам да го отворам конверторот од „%s“ до „%s“"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Невалидна секвенца на бајти во влезот на конвертирањето"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка при конвертирање: %s"
@@ -189,7 +189,7 @@ msgstr "Не успеав да прочитам од датотеката „%s�
 msgid "Failed to open file '%s': %s"
 msgstr "Не успеав да ја отворам датотеката „%s“: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -301,33 +301,33 @@ msgstr "Не успеав да ја прочитам симболичката в
 msgid "Symbolic links not supported"
 msgstr "Симболичките врски не се поддржани"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не можам да го отворам конверторот од „%s“ до „%s“: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не можам да направам грубо читање во g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "Преостанати неконвертирани податоци во баферот за читање"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "Каналот се терминира во парцијален карактер"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Неможам да читам во g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Не успеав да ја отворам датотеката „%s“: open() не успеа: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не успеав да ја означам датотеката „%s“: mmap() не успеа: %s"
@@ -1185,7 +1185,7 @@ msgstr "Невалидна секвенца на бајти во влезот н
 msgid "Not enough space in destination"
 msgstr ""
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "Операцијата не е поддржана"
@@ -1212,31 +1212,31 @@ msgstr "Неочекувано прерано завршување на стри
 msgid "Unnamed"
 msgstr "Неименувано"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop датотеката не одреди Exec поле"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "не успеав да најдам терминал потребен за апликација"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Не можам да креирам папка за конфигурација на корисничките апликации %s: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не можам да креирам папка за MIME конфигурации %s: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не можам да креирам корисничка desktop датотека %s"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Сопствена дефиниција на %s"
@@ -1893,95 +1893,95 @@ msgstr ""
 msgid "Socket is already closed"
 msgstr "Изворот на стримот веќе е затворен"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Грешка при читањето од датотеката: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Не успеав да креирам директориум за ѓубре %s: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Грешка во запишувањето во датотеката: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Грешка при конвертирање: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Грешка при скратувањето на датотеката: %s"
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr ""
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Грешка во отворањето на директоруимот: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не успеав да ја преместам датотеката во ѓубрето: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Грешка при отстранувањето на датотеката: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Грешка во отворањето на директоруимот: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Грешка во затворањето на датотеката: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Грешка во отворањето на директоруимот: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "промените на асоцијации не се поддржани на win32"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при отстранувањето на датотеката: %s"

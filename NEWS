@@ -1,3 +1,44 @@
+Overview of Changes from GLib 2.23.5 to GLib 2.23.6
+===================================================
+
+* Class private data:
+  - support for private data associated with a GTypeClass
+
+* GVariant merge is now complete:
+  - loading functions and parser merged
+
+* Windows improvements:
+  - socket fixes
+  - various build improvements
+  - removal of GCC/C99isms in favour of portable code
+  - drop unmaintained Visual Studio 8 support
+
+* Minor API addition:
+  - g_desktop_app_info_get_filename()
+
+* Bugs fixed:
+ 521707 Class private data
+ 612502 build fails on glib/tests/gvariant.c
+ 612832 [GDesktopAppInfo] New function g_desktop_app_info_get_filename
+ 612702 [PATCH] Fix GSocket-related crash on Windows
+ 612736 Improve the documentation about single include
+ 610858 gvariant test fails sometimes
+ 612327 uninitialized variable
+
+* New translations:
+ Afrikaans
+ LowGerman
+
+* Updated translations:
+ Czech
+ Finnish
+ Galician
+ Greek
+ Punjabi
+ Romanian
+ Serbian
+
+
 Overview of Changes from GLib 2.23.4 to GLib 2.23.5
 ===================================================
 

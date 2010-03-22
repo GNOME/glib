@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-10 12:23+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -87,7 +87,7 @@ msgstr "'%s' ಎಂಬ ಹೆಸರಿನ ಯಾವುದೇ ಅನ್ವಯವ�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec ಸಾಲು '%s' ಅನ್ನು URI '%s' ನೊಂದಿಗೆ ವಿಸ್ತರಿಸುವಲ್ಲಿ ವಿಫಲತೆ ಎದುರಾಗಿದೆ"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -98,14 +98,14 @@ msgstr "'%s' ಅಕ್ಷರಗಳಿಂದ '%s' ಗೆ ಪರಿವರ್ತಿ
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ನಿಂದ '%s'ಗೆ ಪರಿವರ್ತಕವನ್ನು ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ ಅನುಕ್ರಮ ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ಪರಿವರ್ತಿಸುವಾಗ ದೋಷ: %s"
@@ -184,7 +184,7 @@ msgstr "'%s' ಕಡತದಿಂದ ಓದುವಲ್ಲಿ ವಿಫಲತೆ: 
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' ಅನ್ನು ತೆರೆಯಲು ವಿಫಲವಾಗಿದೆ: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' ಕಡತದಿಂದ ಗುಣಲಕ್ಷಣಗಳನ್ನು ಪಡೆಯುವಲ್ಲಿ ವಿಫಲತೆ: fstat() ವಿಫಲಗೊಂಡಿದೆ: %s"
@@ -292,33 +292,33 @@ msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕ್ '%s' ಅನ್ನು ಓದು�
 msgid "Symbolic links not supported"
 msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕುಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' ನಿಂದ '%s' ಗೆ ಪರಿವರ್ತಕವನ್ನು ತೆರೆಯಲು ಆಗಿಲ್ಲ: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string ನಲ್ಲಿ ಒಂದು ಹಗುರ ಓದನ್ನು ಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "ಪರಿವರ್ತಿತವಾಗದೆ ಬಾಕಿ ಉಳಿದ ದತ್ತಾಂಶಗಳು ಓದು-ಬಫರಿನಲ್ಲಿ"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "ಮಾರ್ಗವು ಒಂದು ಆಂಶಿಕ ಅಕ್ಷರದಲ್ಲಿ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end ನಲ್ಲಿ ಒಂದು ಹಗುರ ಓದನ್ನು ಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ಕಡತ '%s' ವನ್ನು ತೆರೆಯಲು ವಿಫಲವಾಗಿದೆ: ತೆರೆಯುವುದು() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' ವನ್ನು ನಕ್ಷೆ ಕಡತಮಾಡುವಲ್ಲಿ ವಿಫಲ: mmap() ವಿಫಲಗೊಂಡಿದೆ: %s"
@@ -1167,7 +1167,7 @@ msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ 
 msgid "Not enough space in destination"
 msgstr "ಸಾಕೆಟ್‌ ವಿಳಾಸಕ್ಕಾಗಿ ಸಾಕಷ್ಟು ಸ್ಥಳವಿಲ್ಲ"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "ರದ್ದುಗೊಳಿಸಬಹುದಾದ ಆರಂಭಕ್ಕೆ ಬೆಂಬಲವಿಲ್ಲ"
 
@@ -1193,30 +1193,30 @@ msgstr "ಸ್ಟ್ರೀಮ್‍ನ ಅನಿರೀಕ್ಷಿತ ಕ್ಷ�
 msgid "Unnamed"
 msgstr "ಹೆಸರಿಸಲಾಗದ"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "ಅನ್ವಯಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಟರ್ಮಿನಲ್‍ ಅನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ ಅನ್ವಯ ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -1863,93 +1863,93 @@ msgstr "ಅಮಾನ್ಯವಾದ ಸಾಕೆಟ್, ಆರಂಭಿಸುವ
 msgid "Socket is already closed"
 msgstr "ಸಾಕೆಟ್ ಈಗಾಗಲೆ ಮುಚ್ಚಲ್ಪಟ್ಟಿದೆ"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd ಇಂದ GSocket ಅನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "ಸಾಕೆಟ್‌ ಅನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "ಅಜ್ಞಾತವಾದ ಪ್ರೊಟೊಕಾಲ್ ಅನ್ನು ಸೂಚಿಸಲಾಗಿದೆ"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ಸ್ಥಳೀಯ ವಿಳಾಸವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ದೂರಸ್ಥ ವಿಳಾಸವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "ಆಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "ವಿಳಾಸಕ್ಕೆ ಬದ್ದವಾಗಿರುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಅಂಗೀಕರಿಸುವಾಗ ದೋಷ: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "ಸಂಪರ್ಕಸಾಧಿಸುವಲ್ಲಿ ದೋಷ: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "ಸಂಪರ್ಕವು ಪ್ರಗತಿಯಲ್ಲಿದೆ"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "ಸಂಪರ್ಕ ಸಾಧಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ಬಾಕಿ ಇರುವ ದೋಷವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಸ್ವೀಕರಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಕಳಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "ಸಾಕೆಟ್‌ ಸ್ಥಿತಿಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "ಸಂದೇಶವನ್ನು ಕಳುಹಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "ವಿಂಡೋಸ್‌ನಲ್ಲಿ GSocketControlMessage ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "ಸಂದೇಶವನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ: %s"

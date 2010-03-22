@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -90,7 +90,7 @@ msgstr "'%s' എന്ന് പേരുളള ഒരു പ്രയോഗവ�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "'%s' എന്ന URI ഉളള '%s' എന്ന  exec വരി വികസിപ്പിക്കുന്നതില്‍ പരാജയപ്പെട്ടു"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -101,14 +101,14 @@ msgstr "അക്ഷരക്കൂട്ടം'%s'ല് നിന്നും 
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'-ല്‍ നിന്നും '%s'-ലേക്ക് വേര്‍തിരിക്കുന്ന സംവിധാനം ലഭ്യമായില്ല"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട്ടില്‍ തെറ്റായ ബൈറ്റ് ക്രമം"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "മാറ്റം വരുത്തുന്നതില്‍ പരാജയം : %s"
@@ -187,7 +187,7 @@ msgstr "ഫയല്‍ '%s'-ല്‍ നിന്നും വായിക്�
 msgid "Failed to open file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‍‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "%s-ന്റെ വിശേഷതകള്‍ കണ്ടെത്തുന്നതില്‍ പരാജയം: fstat() പരാജയപ്പെട്ടു: %s"
@@ -294,33 +294,33 @@ msgstr "സിബോളിക്ക് ലിങ്ക് '%s' വായിക�
 msgid "Symbolic links not supported"
 msgstr "സിബോളിക്ക് ലിങ്ക് പിന്തുണയ്ക്കുന്നില്ല"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s'-ല്‍ നിന്നും '%s'-ലേക്ക് വേര്‍തിരിക്കുന്ന സംവിധാനം ലഭ്യമായില്ല: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string-ല്‍ റോ വായന സാധ്യമല്ല"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "റീഡ് ബഫറില്‍ ബാക്കിയുളള വേര്‍തിരിക്കാത്ത ഡേറ്റാ"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "ചാനല്‍ അവസാനിക്കുന്നത് ഭാഗികമായ അക്ഷരത്തില്‍ ആണ്"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end-ല്‍ റോ വായന സാധ്യമല്ല"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ഫയല്‍ '%s' തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു: open() പരാജയപ്പെട്ടു: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ഫയല്‍ '%s' മാപ്പ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു: mmap() പരാജയപ്പെട്ടു: %s"
@@ -1160,7 +1160,7 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Not enough space in destination"
 msgstr "സോക്കറ്റ് വിലാസത്തിനു് ആവശ്യമുള്ള സ്ഥലം ലഭ്യമല്ല"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "റദ്ദാക്കുവാന്‍ സാധിക്കുന്ന ഇനീഷ്യലൈസേഷന്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1186,30 +1186,30 @@ msgstr "end-of-stream അപ്രതീക്ഷിതമായി സമയത
 msgid "Unnamed"
 msgstr "പേരിടാത്ത"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "പണിയിട ഫയല്‍ Exec ഫീള്‍ഡ് വ്യക്തമാക്കിയിട്ടില്ല"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "പ്രയോഗത്തിനു് ആവശ്യമായ ടെര്‍മിനല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനു് പ്രയോഗത്തിനുള്ള ക്രമീകരണ ഫോള്‍ഡര്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ഉപയോക്താവിനുള്ള MIME ക്രമികരണ ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ഉപയോക്താവിനുള്ള ഡസ്ക്ടോപ്പ് ഫയല്‍ %s ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "യഥേഷ്ടം %s നിഷ്കര്‍ഷിക്കുക"
@@ -1855,93 +1855,93 @@ msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിക്
 msgid "Socket is already closed"
 msgstr "സോക്കറ്റ് നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd-ല്‍ നിന്നും GSocket ഉണ്ടാക്കുന്നു: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "സോക്കറ്റ് ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "അപരിചിതമായ കീഴ്വഴക്കം നല്‍കിയിരിക്കുന്നു"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ലോക്കല്‍ വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "റിമോട്ട് വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "ശ്രദ്ധിക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "വിലാസത്തിലേക്ക് ബൈന്‍ഡ് ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "കണക്ഷന്‍ സ്വീകരിക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക്: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "കണക്ഷന്‍ പുരോഗതിയില്‍"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ബാക്കിയുള്ള പിശക് ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "ഡേറ്റാ ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "ഡേറ്റാ അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "സോക്കറ്റ് അടയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "സോക്കറ്റ് അവസ്ഥയ്ക്കായി കാത്തിരിക്കുന്നു: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "സന്ദേശം അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage വിന്‍ഡോസില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "സന്ദേശം ലഭിക്കുന്നതില്‍ പിശക്: %s"

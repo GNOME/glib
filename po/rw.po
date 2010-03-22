@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Kuri Gusoma Ihuza"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, fuzzy, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -105,15 +105,15 @@ msgstr "Bivuye Inyuguti Gushyiraho Kuri ni OYA"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "OYA Gufungura Bivuye Kuri"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 #, fuzzy
 msgid "Invalid byte sequence in conversion input"
 msgstr "Bayite in Ihindurangero Iyinjiza"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, fuzzy, c-format
 msgid "Error during conversion: %s"
 msgstr "Ihindurangero"
@@ -195,7 +195,7 @@ msgstr "Kuri Gusoma Bivuye IDOSIYE"
 msgid "Failed to open file '%s': %s"
 msgstr "Kuri Gufungura IDOSIYE"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, fuzzy, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Kuri Kubona Ibiranga Bya IDOSIYE Byanze"
@@ -302,37 +302,37 @@ msgstr "Kuri Gusoma Ihuza"
 msgid "Symbolic links not supported"
 msgstr "amahuza OYA"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "OYA Gufungura Bivuye Kuri"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 #, fuzzy
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "a Gusoma in"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 #, fuzzy
 msgid "Leftover unconverted data in read buffer"
 msgstr "Ibyatanzwe in Gusoma"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 #, fuzzy
 msgid "Channel terminates in a partial character"
 msgstr "in a Bituzuye Inyuguti"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 #, fuzzy
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "a Gusoma in"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, fuzzy, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE Byanze"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE Byanze"
@@ -1183,7 +1183,7 @@ msgstr "Bayite in Ihindurangero Iyinjiza"
 msgid "Not enough space in destination"
 msgstr ""
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "amahuza OYA"
@@ -1211,30 +1211,30 @@ msgstr ""
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
@@ -1905,102 +1905,102 @@ msgid "Socket is already closed"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, fuzzy, c-format
 msgid "could not get remote address: %s"
 msgstr "Kuri IDOSIYE Byanze"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Ihindurangero"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kuri Kurema IDOSIYE"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Ikosa mu gusoma idosiye"

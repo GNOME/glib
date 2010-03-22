@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-15 18:31+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
@@ -93,7 +93,7 @@ msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনে�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec পংক্তি '%s'-টি URI '%s' সহ প্রসারণ করতে ব্যর্থ"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -105,14 +105,14 @@ msgstr "'%s' অক্ষরমালা থেকে '%s'-এ রূপান�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' থেকে '%s' রূপান্তর ব্যবস্থা খোলা যায়নি"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "রূপান্তর করার জন্য প্রদত্ত ইনপুটের মধ্যে বাইটের অনুক্রম সঠিক নয়"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "রূপান্তর কর্ম সঞ্চালনকালের উৎপন্ন সমস্যা: %s"
@@ -191,7 +191,7 @@ msgstr "'%s' ফাইল থেকে পড়তে ব্যর্থ: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' ফাইল খুলতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' ফাইলের বৈশিষ্ট্য প্রাপ্ত করতে ব্যর্থ: fstat() বিফল: %s"
@@ -297,33 +297,33 @@ msgstr "'%s' সিম্বোলিঙ্ক লিঙ্ক পড়তে ব�
 msgid "Symbolic links not supported"
 msgstr "সিম্বোলিক লিঙ্ক সমর্থিত হয় না"
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' থেকে '%s' পরিবর্তন ব্যবস্থা খোলা সম্ভব হয়নি: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string'র উপর raw read করা সম্ভব নয়"
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "read বাফারের মধ্যে অরূপান্তরিত তথ্য অবশিষ্ট রয়েছে"
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "আংশিক অক্ষর দ্বারা চ্যানেলের সমাপ্তি"
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end'এ raw read করা যায়নি"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' খুলতে ব্যর্থ: open() বিফল: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' ফাইল ম্যাপ করতে ব্যর্থ: mmap() বিফল: %s"
@@ -1168,7 +1168,7 @@ msgstr "রূপান্তর করার জন্য প্রদত্ত
 msgid "Not enough space in destination"
 msgstr "সকেটের ঠিকানার জন্য পর্যাপ্ত স্থান উপলব্ধ নেই"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "বাতিল করার যোগ্য প্রারম্ভিক কর্ম সমর্থিত নয়"
 
@@ -1194,30 +1194,30 @@ msgstr "স্ট্রিমের সমাপ্তিস্থল অপ্�
 msgid "Unnamed"
 msgstr "নামবিহীন"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "ডেস্কটপ ফাইলের মধ্যে Exec ফিল্ড"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "অ্যাপ্লিকেশনের জন্য আবশ্যক টার্মিনাল পাওয়া যায়নি"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "উইজার অ্যাপ্লিকেশনের কনফিগারেশন ফোল্ডার %s নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ইউজার MIME কনফিগারেশন ফোল্ডার %s নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ইউজার ডেস্কটপ ফাইল %s নির্মাণ করতে ব্যর্থ"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s-র জন্য স্বনির্ধারত ব্যাখ্যা"
@@ -1866,93 +1866,93 @@ msgstr "অবৈধ সকেট, চিহ্নিত কারণে আর�
 msgid "Socket is already closed"
 msgstr "সকেট বর্তমানে বন্ধ করা হয়েছে"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd থেকে GSocket নির্মাণ করা হচ্ছে: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "সকেট নির্মাণ করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "অজানা প্রোটোকল নির্ধারণ করা হয়"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "স্থানীয় ঠিকানা প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "দূরবর্তী ঠিকানা প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "অপেক্ষা করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "ঠিকানার সাথে বাইন্ড করতে ত্রুটি: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "সংযোগ গ্রহণ করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "সংযোগ স্থাপন করতে ব্যর্থ: "
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "সংযোগ বর্তমানে স্থাপিত হচ্ছে"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "সংযোগ স্থাপন করতে ত্রুটি: %s"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "অপেক্ষারত ত্রুটি প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "তথ্য প্রাপ্ত করতে ত্রুটি: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "তথ্য পাঠাতে ত্রুটি: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "সকেট বন্ধ করতে ত্রুটি: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "সকেটের অবস্থা প্রাপ্ত করতে অপেক্ষা করা হচ্ছে: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "বার্তা পাঠাতে ত্রুটি: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "উইন্ডোর GSocketControlMessage মধ্যে সমর্থিত নয়"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "বার্তা প্রাপ্ত করতে ত্রুটি: %s"

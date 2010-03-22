@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:51-0500\n"
+"POT-Creation-Date: 2010-03-21 14:21-0500\n"
 "PO-Revision-Date: 2009-09-17 14:15+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -96,7 +96,7 @@ msgstr "ఎటువంటి అనువర్తనము '%s' నామమ�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec వరుస '%s'ను URI '%s'తో పొడిగించుటకు విఫలమైంది"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1405
+#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -107,14 +107,14 @@ msgstr "అక్షరమాలలొ కల '%s' నుండి '%s'  కు 
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' నుండి  '%s' కు పరివర్తించడం సాధ్యం కాదు "
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1577
-#: glib/giochannel.c:1619 glib/giochannel.c:2463 glib/gutf8.c:981
+#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
 #: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "ఎగుబడి బైట్ క్రమంను పరివర్తించుట నిస్సారమగును"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1584
-#: glib/giochannel.c:2475 gio/gcharsetconverter.c:351
+#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
+#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
@@ -193,7 +193,7 @@ msgstr " దస్త్రం '%s': %s నుండి చదువుటలో
 msgid "Failed to open file '%s': %s"
 msgstr " దస్త్రం '%s': %s తెరుచుటలో విఫలమైనారు"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:169
+#: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "దస్త్ర ఆపాదనలు విఫలమగును '%s': ఎఫ్ స్టాట్() విఫలమైనది: %s"
@@ -299,33 +299,33 @@ msgstr " '%s'  చిహ్న పూరితజోడి చదువుటల
 msgid "Symbolic links not supported"
 msgstr "చిహ్న పూరితజోడి సహకరించలెదు. "
 
-#: glib/giochannel.c:1409
+#: glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "కన్వర్టర్‌ను '%s' నుండి '%s'కు తెరువలేకపోయింది: %s"
 
-#: glib/giochannel.c:1754
+#: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr " జి_ఐఓ_ఛానెల్_రీడ్_లైన్_స్ర్టింగ్ ముడి చదువు సాధ్యపడదు  "
 
-#: glib/giochannel.c:1801 glib/giochannel.c:2059 glib/giochannel.c:2146
+#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr " మిగిలిన దత్తాంశమును రీడ్ బఫర్ లో పరివర్తించలెము  "
 
-#: glib/giochannel.c:1882 glib/giochannel.c:1959
+#: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr " పూర్తికాని అక్షరాన్ని ప్రసార మార్గం ముగించును. "
 
-#: glib/giochannel.c:1945
+#: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "జి_ఐఓ_ఛానెల్_రీడ్_లైన్_ఎండ్ ముడి చదువు సాధ్యపడదు"
 
-#: glib/gmappedfile.c:150
+#: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "దస్త్రము '%s'ను తెరువుటలో విఫలమైంది: open() విఫలమైంది: %s"
 
-#: glib/gmappedfile.c:229
+#: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "దస్త్రము '%s' మాప్‌చేయుటలో విఫలమైంది: mmap() విఫలమైంది: %s"
@@ -1153,7 +1153,7 @@ msgstr "ఎగుబడి బైట్ క్రమంను పరివర్
 msgid "Not enough space in destination"
 msgstr "సాకెట్ చిరునామా కొరకు సరిపోవునంత జాగాలేదు"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:758
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "రద్దుచేయగలిగిన సిద్దీకరణ మద్దతీయబడదు"
 
@@ -1179,30 +1179,30 @@ msgstr "స్ట్రీమ్ యొక్క అనుకోని త్వ
 msgid "Unnamed"
 msgstr "నామములేని"
 
-#: gio/gdesktopappinfo.c:725
+#: gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: gio/gdesktopappinfo.c:907
+#: gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: gio/gdesktopappinfo.c:1115
+#: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1119
+#: gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: gio/gdesktopappinfo.c:1527
+#: gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: gio/gdesktopappinfo.c:1641
+#: gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1848,93 +1848,93 @@ msgstr "చెల్లని సాకెట్, దీని కారణం�
 msgid "Socket is already closed"
 msgstr "సాకెట్ యిప్పటికే మూయబడింది"
 
-#: gio/gsocket.c:405
+#: gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd నుండి GSocket సృష్టిస్తోంది: %s"
 
-#: gio/gsocket.c:439 gio/gsocket.c:453 gio/gsocket.c:1911
+#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "సాకెట్‌ను సృష్టించలేక పోయింది: %s"
 
-#: gio/gsocket.c:439
+#: gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "తెలియని ప్రోటోకాల్ తెలుపబడింది"
 
-#: gio/gsocket.c:1112
+#: gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "స్థానిక చిరునామాను పొందలేక పోయింది: %s"
 
-#: gio/gsocket.c:1145
+#: gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "దూరస్థ చిరునామాను పొందలేక పోయింది: %s"
 
-#: gio/gsocket.c:1203
+#: gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "%s వినలేక పోయింది"
 
-#: gio/gsocket.c:1277
+#: gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "చిరునామాకు బందనం అగుటలో దోషము: %s"
 
-#: gio/gsocket.c:1397
+#: gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "అనుసంధానమును ఆమోదించుటలో దోషము: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "అనుసంధానమగుటలో దోషము:"
 
-#: gio/gsocket.c:1514
+#: gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "అనుసంధానము పురోగతిలోవుంది"
 
-#: gio/gsocket.c:1519
+#: gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "%sకు అనుసంధానమగుటలో దోషము"
 
-#: gio/gsocket.c:1559
+#: gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "వాయిదావున్న దోషమును పొందలేక పోయింది: %s"
 
-#: gio/gsocket.c:1655
+#: gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "డాటా స్వీకరించుటలో దోషము: %s"
 
-#: gio/gsocket.c:1798
+#: gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "డాటా పంపుటలో దోషము: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "సాకెట్ మూయుటలో దోషము: %s"
 
-#: gio/gsocket.c:2475
+#: gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "సాకెట్ పరిస్థితి కోరకు వేచివుంది: %s"
 
-#: gio/gsocket.c:2714 gio/gsocket.c:2795
+#: gio/gsocket.c:2720 gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "సందేశమును పంపుటలో దోషము: %s"
 
-#: gio/gsocket.c:2739
+#: gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "విండోస్ నందు GSocketControlMessage మద్దతీయదు"
 
-#: gio/gsocket.c:2997 gio/gsocket.c:3135
+#: gio/gsocket.c:3003 gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "సందేశమును స్వీకరించుటలో దోషము: %s"
