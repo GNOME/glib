@@ -157,6 +157,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 #include "libglib.sourcefiles"
+			<File RelativePath="..\..\..\glib\gatomic.c" />
 			<File RelativePath="..\..\..\glib\giowin32.c" />
 			<File RelativePath="..\..\..\glib\gspawn-win32.c" />
 			<File RelativePath="..\..\..\glib\gwin32.c" />

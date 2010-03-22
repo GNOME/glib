@@ -393,8 +393,10 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj
 ../build/win32/vs9/glib.vcproj: $(top_srcdir)/build/win32/vs9/glib.vcprojin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \
-		*.c) echo '   <File RelativePath="..\..\..\glib\'$$F'" />' \
-		     ;; \
+		*-gcc.c) \
+			;; \
+		*.c)	echo '   <File RelativePath="..\..\..\glib\'$$F'" />' \
+			;; \
 		esac; \
 	done >libglib.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/glib.vcprojin >$@
