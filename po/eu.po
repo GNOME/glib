@@ -1,29 +1,29 @@
 # translation of eu.po to Basque
-# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 #
 # Joseba Bidaurrazaga van Dierdonck <jepibi-san@ej-gv.es>, 2001.
 # Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009, 2010.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-28 21:03-0400\n"
-"PO-Revision-Date: 2009-03-17 18:55+0100\n"
+"PO-Revision-Date: 2010-03-22 12:40+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
 #: glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr "'%2$s' elementuaren ustekabeko '%1$s'atributua"
+msgstr "'%2$s' elementuaren ustekabeko '%1$s' atributua"
 
 #: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
 #: glib/gbookmarkfile.c:936
@@ -45,13 +45,12 @@ msgstr "'%2$s' barruan ustekabeko '%1$s' etiketa"
 
 #: glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
-msgstr ""
-"Ezin izan da baliozko laster-marken fitxategia aurkitu datuen direktorioan"
+msgstr "Ezin izan da baliozko laster-marken fitxategia aurkitu datuen direktorioan"
 
 #: glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr "'%s' URIaren laster-marka badago lehenedik ere"
+msgstr "'%s' URIaren laster-marka badago lehendik ere"
 
 #: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
 #: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
@@ -69,7 +68,7 @@ msgstr "Ez da '%s' URIaren laster-markarik aurkitu"
 #: glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "Ez dago '%s' URIaren laster-markan MIME-motarik definituta"
+msgstr "Ez dago '%s' URIaren laster-markan MIME motarik definituta"
 
 #: glib/gbookmarkfile.c:2457
 #, c-format
@@ -105,7 +104,7 @@ msgstr "Ezin izan da '%s'(e)tik %s(e)rako bihurtzailea ireki"
 #: glib/giochannel.c:1444 glib/giochannel.c:2288 glib/gutf8.c:964
 #: glib/gutf8.c:1413
 msgid "Invalid byte sequence in conversion input"
-msgstr "Byten sekuentzia baliogabea bihurketa-sarreran"
+msgstr "Byteen sekuentzia baliogabea bihurketa-sarreran"
 
 #: glib/gconvert.c:640 glib/gconvert.c:950 glib/giochannel.c:1409
 #: glib/giochannel.c:2300
@@ -198,8 +197,7 @@ msgstr ""
 #: glib/gfileutils.c:746
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr ""
-"Ezin izan da '%s' fitxategia ireki, fdopen() funtzioak huts egin du: %s"
+msgstr "Ezin izan da '%s' fitxategia ireki, fdopen() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:854
 #, c-format
@@ -223,20 +221,17 @@ msgstr ""
 #: glib/gfileutils.c:935
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr ""
-"Ezin izan da '%s' fitxategia idatzi, fwrite() funtzioak huts egin du: %s"
+msgstr "Ezin izan da '%s' fitxategia idatzi, fwrite() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:954
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr ""
-"Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
+msgstr "Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:983
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr ""
-"Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
+msgstr "Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:1002
 #, c-format
@@ -246,8 +241,7 @@ msgstr "Ezin izan da '%s' fitxategia itxi, fclose() funtzioak huts egin du: %s"
 #: glib/gfileutils.c:1120
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr ""
-"'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
+msgstr "'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:1295
 #, c-format
@@ -312,8 +306,7 @@ msgstr "Ezin izan da '%s' fitxategia ireki, open() funtzioak huts egin du: %s"
 #: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr ""
-"Ezin izan da '%s' fitxategi-mapa ireki, mmap() funtzioak huts egin du: %s"
+msgstr "Ezin izan da '%s' fitxategi-mapa ireki, mmap() funtzioak huts egin du: %s"
 
 #: glib/gmarkup.c:255 glib/gmarkup.c:295
 #, c-format
@@ -326,8 +319,7 @@ msgid "Error on line %d: %s"
 msgstr "Errorea %d lerroan: %s"
 
 #: glib/gmarkup.c:493
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "'&;' entitatea hutsik dago; baliozko entitateak hauek dira: &amp; &quot; "
 "&lt; &gt; &apos;"
@@ -373,13 +365,11 @@ msgstr ""
 #: glib/gmarkup.c:660
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
-"'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
+msgstr "'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
 
 #: glib/gmarkup.c:675
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
-"Karaktere-erreferentzia hutsa, digitu bat eduki beharko luke; adibidez &#454;"
+msgstr "Karaktere-erreferentzia hutsa, digitu bat eduki beharko luke; adibidez &#454;"
 
 #: glib/gmarkup.c:685
 msgid ""
@@ -436,8 +426,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1365
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
 "atributuaren ondoren"
@@ -526,8 +515,7 @@ msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
 
 #: glib/gmarkup.c:1905
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
-"Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
+msgstr "Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
 
 #: glib/gmarkup.c:1911
 msgid ""
@@ -544,8 +532,7 @@ msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
 #: glib/gmarkup.c:1934
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
+msgstr "Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
 
 #: glib/gmarkup.c:1940
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -571,8 +558,7 @@ msgstr "atzera-jotzearen mugara gainditua"
 
 #: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
-msgstr ""
-"ereduak zenbait elementu ditu bat etortze partzialetan onartzen ez direnak"
+msgstr "ereduak zenbait elementu ditu bat etortze partzialetan onartzen ez direnak"
 
 #: glib/gregex.c:154 gio/glocalfile.c:2019
 msgid "internal error"
@@ -581,7 +567,7 @@ msgstr "barneko errorea"
 #: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
-"aurreko erreferentizak baldintza gisa ez daude onartuta bat etortze "
+"aurreko erreferentziak baldintza gisa ez daude onartuta bat etortze "
 "partzialetan"
 
 #: glib/gregex.c:171
@@ -644,15 +630,15 @@ msgstr "ezer ez errepikatzeko"
 
 #: glib/gregex.c:233
 msgid "unrecognized character after (?"
-msgstr "karakete ezezaguna (? karaktereen atzetik"
+msgstr "karaktere ezezaguna (? karaktereen atzetik"
 
 #: glib/gregex.c:237
 msgid "unrecognized character after (?<"
-msgstr "karakete ezezaguna (?< karaktereen atzetik"
+msgstr "karaktere ezezaguna (?< karaktereen atzetik"
 
 #: glib/gregex.c:241
 msgid "unrecognized character after (?P"
-msgstr "karakete ezezaguna (?P karaktereen atzetik"
+msgstr "karaktere ezezaguna (?P karaktereen atzetik"
 
 #: glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
@@ -723,7 +709,7 @@ msgstr "baliogabeko (?(0) baldintza"
 
 #: glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
-msgstr "\\C ez dago baimenduta 'lookbehind' baieztepenean"
+msgstr "\\C ez dago baimenduta 'lookbehind' baieztapenean"
 
 #: glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
@@ -770,8 +756,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "NEWLINE aukera kontraesankorra"
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g ez da prestatutako izenarekin edo zero ez den aukerazko prestatutako "
 "zenbaki batekin jarraitzen"
@@ -790,7 +775,7 @@ msgstr "konpilazioaren laneko area gainezkatua"
 
 #: glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
-msgstr "ez da aurrez egiaaztatutako erreferentziatutako azpieredua aurkitu"
+msgstr "ez da aurrez egiaztatutako erreferentziatutako azpieredua aurkitu"
 
 #: glib/gregex.c:526 glib/gregex.c:1607
 #, c-format
@@ -874,8 +859,7 @@ msgstr "Testua '\\' karakterearen atzetik amaitu da (testua '%s' zen)"
 #: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua '%s' zen)"
+msgstr "Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua '%s' zen)"
 
 #: glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
@@ -1071,8 +1055,7 @@ msgstr "Fitxategia hutsik dago"
 
 #: glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Gako-fitxategiak '%s' lerroa du, gako-balioa bikotea, taldea edo iruzkinik "
 "ez daukalarik"
@@ -1163,7 +1146,7 @@ msgstr "'%s' balioa ezin da zenbaki mugikor gisa interpretatu."
 #: glib/gkeyfile.c:3718
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "'%s' balioa ezin da bolear gisa interpretatu"
+msgstr "'%s' balioa ezin da boolear gisa interpretatu"
 
 #: gio/gbufferedinputstream.c:417 gio/gbufferedinputstream.c:498
 #: gio/ginputstream.c:193 gio/ginputstream.c:325 gio/ginputstream.c:566
@@ -1202,7 +1185,7 @@ msgstr "Ustekabeko korronte-amaiera azkarregia"
 
 #: gio/gdesktopappinfo.c:463 gio/gwin32appinfo.c:222
 msgid "Unnamed"
-msgstr "Izenbagea"
+msgstr "Izengabea"
 
 #: gio/gdesktopappinfo.c:710
 msgid "Desktop file didn't specify Exec field"
@@ -1215,8 +1198,7 @@ msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 #: gio/gdesktopappinfo.c:1098
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
-"Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
+msgstr "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
 #: gio/gdesktopappinfo.c:1102
 #, c-format
@@ -1329,16 +1311,16 @@ msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
 #: gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
-msgstr "Zerrendatzailea itxi da"
+msgstr "Enumeratzailea itxi da"
 
 #: gio/gfileenumerator.c:213 gio/gfileenumerator.c:272
 #: gio/gfileenumerator.c:372 gio/gfileenumerator.c:481
 msgid "File enumerator has outstanding operation"
-msgstr "Fitxategiaren zerrendatzaileak eragiketa bat du lanean"
+msgstr "Fitxategiaren enumeratzaileak eragiketa bat du lanean"
 
 #: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
-msgstr "Fitxategiaren zerrendatzailea itxi da jadanik"
+msgstr "Fitxategiaren enumeratzailea itxita dago jadanik"
 
 #: gio/gfileicon.c:145
 msgid "file"
@@ -1599,8 +1581,7 @@ msgstr "Errorea esteka sinbolikoa ezartzean: %s"
 
 #: gio/glocalfileinfo.c:1925
 msgid "Error setting symlink: file is not a symlink"
-msgstr ""
-"Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
+msgstr "Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
 
 #: gio/glocalfileinfo.c:2074
 msgid "SELinux context must be non-NULL"
@@ -1871,3 +1852,4 @@ msgstr "erabili zerrenda-formatu luzea"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FITXATEGIA...]"
+
