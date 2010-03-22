@@ -1,15 +1,15 @@
 # Vietnamese translation for GLib.
-# Copyright © 2009 GNOME i18n Project for Vietnamese.
+# Copyright © 2010 GNOME i18n Project for Vietnamese.
 # T.M.Thanh <tmthanh@yahoo.com>, 2002.
-# Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2010.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.6\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
-"PO-Revision-Date: 2009-12-18 14:59+0700\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
+"POT-Creation-Date: 2010-03-22 01:08+0000\n"
+"PO-Revision-Date: 2010-03-22 21:32+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -18,1272 +18,1285 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.8\n"
 
-#: glib/gbookmarkfile.c:737
+#: ../glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Thuộc tính bất thường '%s' cho yếu tố '%s'"
 
-#: glib/gbookmarkfile.c:748 glib/gbookmarkfile.c:819 glib/gbookmarkfile.c:829
-#: glib/gbookmarkfile.c:936
+#: ../glib/gbookmarkfile.c:748
+#: ../glib/gbookmarkfile.c:819
+#: ../glib/gbookmarkfile.c:829
+#: ../glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Không tìm thấy thuộc tính '%s' của yếu tố '%s'"
 
-#: glib/gbookmarkfile.c:1106 glib/gbookmarkfile.c:1171
-#: glib/gbookmarkfile.c:1235 glib/gbookmarkfile.c:1245
+#: ../glib/gbookmarkfile.c:1106
+#: ../glib/gbookmarkfile.c:1171
+#: ../glib/gbookmarkfile.c:1235
+#: ../glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Thẻ bất thường '%s', mong đợi thẻ '%s'"
 
-#: glib/gbookmarkfile.c:1131 glib/gbookmarkfile.c:1145
-#: glib/gbookmarkfile.c:1213 glib/gbookmarkfile.c:1265
+#: ../glib/gbookmarkfile.c:1131
+#: ../glib/gbookmarkfile.c:1145
+#: ../glib/gbookmarkfile.c:1213
+#: ../glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Thẻ bất thường '%s' bên trong '%s'"
 
-#: glib/gbookmarkfile.c:1793
+#: ../glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
 msgstr "Không tìm thấy tập tin liên kết lưu hợp lệ trong các thư mục dữ liệu"
 
-#: glib/gbookmarkfile.c:1994
+#: ../glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Một liên kết lưu URI '%s' đã có"
 
-#: glib/gbookmarkfile.c:2040 glib/gbookmarkfile.c:2198
-#: glib/gbookmarkfile.c:2283 glib/gbookmarkfile.c:2363
-#: glib/gbookmarkfile.c:2448 glib/gbookmarkfile.c:2531
-#: glib/gbookmarkfile.c:2609 glib/gbookmarkfile.c:2688
-#: glib/gbookmarkfile.c:2730 glib/gbookmarkfile.c:2827
-#: glib/gbookmarkfile.c:2953 glib/gbookmarkfile.c:3143
-#: glib/gbookmarkfile.c:3219 glib/gbookmarkfile.c:3384
-#: glib/gbookmarkfile.c:3473 glib/gbookmarkfile.c:3563
-#: glib/gbookmarkfile.c:3691
+#: ../glib/gbookmarkfile.c:2040
+#: ../glib/gbookmarkfile.c:2198
+#: ../glib/gbookmarkfile.c:2283
+#: ../glib/gbookmarkfile.c:2363
+#: ../glib/gbookmarkfile.c:2448
+#: ../glib/gbookmarkfile.c:2531
+#: ../glib/gbookmarkfile.c:2609
+#: ../glib/gbookmarkfile.c:2688
+#: ../glib/gbookmarkfile.c:2730
+#: ../glib/gbookmarkfile.c:2827
+#: ../glib/gbookmarkfile.c:2953
+#: ../glib/gbookmarkfile.c:3143
+#: ../glib/gbookmarkfile.c:3219
+#: ../glib/gbookmarkfile.c:3384
+#: ../glib/gbookmarkfile.c:3473
+#: ../glib/gbookmarkfile.c:3563
+#: ../glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Không tìm thấy liên kết lưu URI '%s'"
 
-#: glib/gbookmarkfile.c:2372
+#: ../glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Chưa xác định kiểu MIME trong liên kết lưu URI '%s'"
 
-#: glib/gbookmarkfile.c:2457
+#: ../glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Chưa xác định cờ riêng trong liên kết lưu URI '%s'"
 
-#: glib/gbookmarkfile.c:2836
+#: ../glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Chưa đặt nhóm trong liên kết lưu URI '%s'"
 
-#: glib/gbookmarkfile.c:3237 glib/gbookmarkfile.c:3394
+#: ../glib/gbookmarkfile.c:3237
+#: ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Không có ứng dụng tên '%s' đã đăng ký một liên kết lưu '%s'"
 
-#: glib/gbookmarkfile.c:3417
+#: ../glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Lỗi mở rộng dòng thực hiện '%s' bằng URI '%s'"
 
-#: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
-#: gio/gcharsetconverter.c:459
+#: ../glib/gconvert.c:437
+#: ../glib/gconvert.c:515
+#: ../glib/giochannel.c:1404
+#: ../gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Không hỗ trợ khả năng chuyển đổi từ bộ ký tự '%s' sang '%s'"
 
-#: glib/gconvert.c:441 glib/gconvert.c:519 gio/gcharsetconverter.c:463
+#: ../glib/gconvert.c:441
+#: ../glib/gconvert.c:519
+#: ../gio/gcharsetconverter.c:463
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Không thể mở bộ chuyển đổi từ '%s' sang '%s'"
 
-#: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
-#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
-#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
+#: ../glib/gconvert.c:638
+#: ../glib/gconvert.c:1031
+#: ../glib/giochannel.c:1576
+#: ../glib/giochannel.c:1618
+#: ../glib/giochannel.c:2462
+#: ../glib/gutf8.c:981
+#: ../glib/gutf8.c:1436
+#: ../gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
 
-#: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
-#: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
+#: ../glib/gconvert.c:646
+#: ../glib/gconvert.c:956
+#: ../glib/giochannel.c:1583
+#: ../glib/giochannel.c:2474
+#: ../gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Gặp lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
-#: glib/gutf8.c:1432
+#: ../glib/gconvert.c:678
+#: ../glib/gutf8.c:977
+#: ../glib/gutf8.c:1187
+#: ../glib/gutf8.c:1328
+#: ../glib/gutf8.c:1432
 msgid "Partial character sequence at end of input"
 msgstr "Dây ký tự riêng phần ở cuối dữ liệu nhập"
 
-#: glib/gconvert.c:928
+#: ../glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Không thể chuyển đổi đồ dữ trữ '%s' thành bộ mã '%s'"
 
-#: glib/gconvert.c:1751
+#: ../glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr ""
-"URI '%s' không phải là một URI tuyệt đối sử dụng lược đồ 'file' (tập tin)"
+msgstr "URI '%s' không phải là một URI tuyệt đối sử dụng lược đồ 'file' (tập tin)"
 
-#: glib/gconvert.c:1761
+#: ../glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Không cho phép URI tập tin cục bộ '%s' chứa dấu thăng '#'"
 
-#: glib/gconvert.c:1778
+#: ../glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1790
+#: ../glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Tên máy của URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1806
+#: ../glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' chứa một số ký tự đã thoát không hợp lệ"
 
-#: glib/gconvert.c:1901
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Tên đường dẫn '%s' không phải là một đường dẫn tuyệt đối"
 
-#: glib/gconvert.c:1911
+#: ../glib/gconvert.c:1911
 msgid "Invalid hostname"
 msgstr "Tên máy không hợp lệ"
 
-#: glib/gdir.c:112 glib/gdir.c:135
+#: ../glib/gdir.c:112
+#: ../glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Gặp lỗi khi mở thư mục '%s': %s"
 
-#: glib/gfileutils.c:536 glib/gfileutils.c:624
+#: ../glib/gfileutils.c:536
+#: ../glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Không thẻ cấp phát %lu byte để đọc tập tin '%s'"
 
-#: glib/gfileutils.c:551
+#: ../glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Gặp lỗi khi đọc tập tin '%s': %s"
 
-#: glib/gfileutils.c:565
+#: ../glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Tập tin \"%s\" quá lớn"
 
-#: glib/gfileutils.c:648
+#: ../glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lỗi đọc từ tập tin '%s': %s"
 
-#: glib/gfileutils.c:699 glib/gfileutils.c:786
+#: ../glib/gfileutils.c:699
+#: ../glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Lỗi mở tập tin '%s': %s"
 
-#: glib/gfileutils.c:716 glib/gmappedfile.c:170
+#: ../glib/gfileutils.c:716
+#: ../glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Lỗi lấy các thuộc tính của tập tin '%s': lỗi 'fstat()': %s"
 
-#: glib/gfileutils.c:750
+#: ../glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
 
-#: glib/gfileutils.c:858
+#: ../glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Lỗi thay đổi tên tập tin '%s' thành '%s': lỗi 'g_rename()': %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:900
+#: ../glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Lỗi tạo tập tin '%s': %s"
 
-#: glib/gfileutils.c:914
+#: ../glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
 
-#: glib/gfileutils.c:939
+#: ../glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Lỗi ghi tập tin '%s': lỗi 'fdopen()': %s"
 
-#: glib/gfileutils.c:958
+#: ../glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Lỗi ghi tập tin '%s': lỗi fflush(): %s"
 
-#: glib/gfileutils.c:987
+#: ../glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Lỗi ghi tập tin '%s': lỗi fsync(): %s"
 
-#: glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Lỗi đóng tập tin '%s': lỗi 'fclose()': %s"
 
-#: glib/gfileutils.c:1124
+#: ../glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Không thể gỡ bỏ tập tin tồn tại '%s': lỗi 'g_unlink()': %s"
 
-#: glib/gfileutils.c:1328
+#: ../glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Biểu mẫu '%s' không hợp lệ, không nên chứa '%s'"
 
-#: glib/gfileutils.c:1341
+#: ../glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Biểu mẫu '%s' không chứa XXXXXX"
 
-#: glib/gfileutils.c:1774
-#, c-format
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] "%u byte"
-
-#: glib/gfileutils.c:1782
+#: ../glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gfileutils.c:1787
+#: ../glib/gfileutils.c:1787
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gfileutils.c:1792
+#: ../glib/gfileutils.c:1792
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gfileutils.c:1797
+#: ../glib/gfileutils.c:1797
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gfileutils.c:1802
+#: ../glib/gfileutils.c:1802
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gfileutils.c:1807
+#: ../glib/gfileutils.c:1807
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: glib/gfileutils.c:1850
+#: ../glib/gfileutils.c:1850
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lỗi đọc liên kết tượng trưng '%s': %s"
 
-#: glib/gfileutils.c:1871
+#: ../glib/gfileutils.c:1871
 msgid "Symbolic links not supported"
 msgstr "Không hỗ trợ khả năng sử dụng liên kết tượng trưng"
 
-#: glib/giochannel.c:1408
+#: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Không thể mở bộ chuyển đổi từ '%s' sang '%s': %s"
 
-#: glib/giochannel.c:1753
+#: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_line_string'"
+msgstr "Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_line_string'"
 
-#: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
+#: ../glib/giochannel.c:1800
+#: ../glib/giochannel.c:2058
+#: ../glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "Có dữ liệu chưa được chuyển đổi còn lại nằm trong bộ đệm đọc"
 
-#: glib/giochannel.c:1881 glib/giochannel.c:1958
+#: ../glib/giochannel.c:1881
+#: ../glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "Kênh tận hết trong ký tự riêng phần"
 
-#: glib/giochannel.c:1944
+#: ../glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_to_end'"
+msgstr "Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_to_end'"
 
-#: glib/gmappedfile.c:151
+#: ../glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
 
-#: glib/gmappedfile.c:230
+#: ../glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Lỗi ánh xạ tập tin '%s': lỗi 'mmap()': %s"
 
-#: glib/gmarkup.c:303 glib/gmarkup.c:343
+#: ../glib/gmarkup.c:303
+#: ../glib/gmarkup.c:343
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Lỗi trên dòng %d ký tự %d: "
 
-#: glib/gmarkup.c:363 glib/gmarkup.c:441
+#: ../glib/gmarkup.c:363
+#: ../glib/gmarkup.c:441
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Văn bản được mã hoá UTF-8 không hợp lệ '%s'"
 
-#: glib/gmarkup.c:374
+#: ../glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
 msgstr "'%s' không phải là tên hợp lệ"
 
-#: glib/gmarkup.c:390
+#: ../glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
 msgstr "'%s' không phải là tên hợp lệ: '%c'"
 
-#: glib/gmarkup.c:494
+#: ../glib/gmarkup.c:494
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Lỗi trên dòng %d: %s"
 
-#: glib/gmarkup.c:578
+#: ../glib/gmarkup.c:578
 #, c-format
-msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Lỗi phân tách '%-.*s', nó nên là một chữ số bên trong một tham chiếu ký tự "
-"(v.d. '&#234') — có lẽ chư số quá lớn."
+msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Lỗi phân tách '%-.*s', nó nên là một chữ số bên trong một tham chiếu ký tự (v.d. '&#234') — có lẽ chư số quá lớn."
 
-#: glib/gmarkup.c:590
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
-"Tham chiếu ký tự không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng một "
-"dấu và mà không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
+#: ../glib/gmarkup.c:590
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Tham chiếu ký tự không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng một dấu và mà không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
 
-#: glib/gmarkup.c:616
+#: ../glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Tham chiếu ký tự '%-.*s' không mã hóa một ký tự được phép."
 
-#: glib/gmarkup.c:654
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Thấy thực thể rỗng '&;'; những thực thể hợp lệ là: &amp; &quot; &lt; &gt; "
-"&apos;"
+#: ../glib/gmarkup.c:654
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Thấy thực thể rỗng '&;'; những thực thể hợp lệ là: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:662
+#: ../glib/gmarkup.c:662
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Thực thể lạ '%-.*s'"
 
-#: glib/gmarkup.c:667
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"Thực thể không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng dấu và mà "
-"không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
+#: ../glib/gmarkup.c:667
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Thực thể không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng dấu và mà không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
 
-#: glib/gmarkup.c:1014
+#: ../glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Tài liệu phải bắt đầu bằng một yếu tố (v.d. <book> [quyển sách])"
 
-#: glib/gmarkup.c:1054
+#: ../glib/gmarkup.c:1054
 #, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr ""
-"'%s' không phải là một ký tự hợp lệ đi theo một dấu ngoặc nhọn mở '<' ; "
-"không cho phép nó bắt đầu một tên yếu tố"
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "'%s' không phải là một ký tự hợp lệ đi theo một dấu ngoặc nhọn mở '<' ; không cho phép nó bắt đầu một tên yếu tố"
 
-#: glib/gmarkup.c:1122
+#: ../glib/gmarkup.c:1122
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
-msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' để kết thúc thẻ rỗng '%s'"
+msgid "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+msgstr "Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' để kết thúc thẻ rỗng '%s'"
 
-#: glib/gmarkup.c:1206
+#: ../glib/gmarkup.c:1206
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu bằng '=' nằm sau tên thuộc tính '%s' của yếu "
-"tố '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "Ký tự lạ '%s', mong đợi một dấu bằng '=' nằm sau tên thuộc tính '%s' của yếu tố '%s'"
 
-#: glib/gmarkup.c:1247
+#: ../glib/gmarkup.c:1247
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' hay dấu xuyệc '/' để kết "
-"thúc thẻ khởi đầu của yếu tố '%s', hay tùy ý một thuộc tính; có lẽ bạn đã "
-"dùng một ký tự không hợp lệ trong một tên thuộc tính."
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' hay dấu xuyệc '/' để kết thúc thẻ khởi đầu của yếu tố '%s', hay tùy ý một thuộc tính; có lẽ bạn đã dùng một ký tự không hợp lệ trong một tên thuộc tính."
 
-#: glib/gmarkup.c:1291
+#: ../glib/gmarkup.c:1291
 #, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu nháy kép mở nằm sau dấu bằng khi đưa giá trị "
-"cho thuộc tính '%s' của yếu tố '%s'"
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "Ký tự lạ '%s', mong đợi một dấu nháy kép mở nằm sau dấu bằng khi đưa giá trị cho thuộc tính '%s' của yếu tố '%s'"
 
-#: glib/gmarkup.c:1425
+#: ../glib/gmarkup.c:1425
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
-"'%s' không phải là một ký tự hợp lệ nằm theo các ký tự '</' ; không cho phép "
-"'%s' bắt đầu một tên yếu tố"
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "'%s' không phải là một ký tự hợp lệ nằm theo các ký tự '</' ; không cho phép '%s' bắt đầu một tên yếu tố"
 
-#: glib/gmarkup.c:1461
+#: ../glib/gmarkup.c:1461
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
-"'%s'  không phải là một ký tự hợp lệ nằm theo tên yếu tố đóng '%s'; ký tự "
-"được phép là '>'."
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s'  không phải là một ký tự hợp lệ nằm theo tên yếu tố đóng '%s'; ký tự được phép là '>'."
 
-#: glib/gmarkup.c:1472
+#: ../glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Yếu tố '%s' đã được đóng, không có yếu tố mở hiện thời"
 
-#: glib/gmarkup.c:1481
+#: ../glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Yếu tố '%s' đã được đóng, nhưng yếu tố mở hiện thời là '%s'"
 
-#: glib/gmarkup.c:1648
+#: ../glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
 msgstr "Tài liệu rỗng hay chứa chỉ khoảng trắng"
 
-#: glib/gmarkup.c:1662
+#: ../glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Tài liệu đã kết thúc bất thường ngay sau một dấu ngoặc nhọn mở '<'"
 
-#: glib/gmarkup.c:1670 glib/gmarkup.c:1715
+#: ../glib/gmarkup.c:1670
+#: ../glib/gmarkup.c:1715
 #, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
-"Tài liệu đã kết thúc bất thường với các yếu tố vẫn còn mở — '%s' là yếu tố "
-"đã mở cuối cùng"
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "Tài liệu đã kết thúc bất thường với các yếu tố vẫn còn mở — '%s' là yếu tố đã mở cuối cùng"
 
-#: glib/gmarkup.c:1678
+#: ../glib/gmarkup.c:1678
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
-"Tài liệu kết thúc bất thường, mong đợi thấy dấu ngoặc nhọn đóng kết thúc thẻ "
-"'<%s/>'"
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "Tài liệu kết thúc bất thường, mong đợi thấy dấu ngoặc nhọn đóng kết thúc thẻ '<%s/>'"
 
-#: glib/gmarkup.c:1684
+#: ../glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Tài liệu đã kết thúc bất thường bên trong một tên yếu tố"
 
-#: glib/gmarkup.c:1690
+#: ../glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Tài liệu đã kết thúc bất thường bên trong một tên thuộc tính"
 
-#: glib/gmarkup.c:1695
+#: ../glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Tài liệu đã kết thúc bất thường bên trong một thẻ mở yếu tố"
 
-#: glib/gmarkup.c:1701
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr ""
-"Tài liệu đã kết thúc bất thường sau dấu bằng nằm sau một tên thuộc tính; "
-"không có giá trị thuộc tính"
+#: ../glib/gmarkup.c:1701
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "Tài liệu đã kết thúc bất thường sau dấu bằng nằm sau một tên thuộc tính; không có giá trị thuộc tính"
 
-#: glib/gmarkup.c:1708
+#: ../glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
-"Tài liệu đã kết thúc bất thường trong khi nằm trong một giá trị thuộc tính"
+msgstr "Tài liệu đã kết thúc bất thường trong khi nằm trong một giá trị thuộc tính"
 
-#: glib/gmarkup.c:1724
+#: ../glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Tài liệu đã kết thúc bất thường bên trong thẻ đóng cho yếu tố '%s'"
 
-#: glib/gmarkup.c:1730
+#: ../glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Tài liệu đã kết thúc bất thường bên trong một chú thích hay hướng dẫn xử lý"
+msgstr "Tài liệu đã kết thúc bất thường bên trong một chú thích hay hướng dẫn xử lý"
 
-#: glib/gregex.c:131
+#: ../glib/gregex.c:131
 msgid "corrupted object"
 msgstr "đối tượng bị hỏng"
 
-#: glib/gregex.c:133
+#: ../glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "lỗi nội bộ hay đối tượng bị hỏng"
 
-#: glib/gregex.c:135
+#: ../glib/gregex.c:135
 msgid "out of memory"
 msgstr "hết bộ nhớ"
 
-#: glib/gregex.c:140
+#: ../glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "không thể rút lùi nữa"
 
-#: glib/gregex.c:152 glib/gregex.c:160
+#: ../glib/gregex.c:152
+#: ../glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr "mẫu chứa mục không được hỗ trợ khi khớp bộ phận"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2115
+#: ../glib/gregex.c:154
+#: ../gio/glocalfile.c:2115
 msgid "internal error"
 msgstr "lỗi nội bộ"
 
-#: glib/gregex.c:162
+#: ../glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr "khi khớp bộ phận, không hỗ trợ rút lui làm điều kiện"
 
-#: glib/gregex.c:171
+#: ../glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "không thể đề qui nữa"
 
-#: glib/gregex.c:173
+#: ../glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "vùng làm việc không thể chứa chuỗi con rỗng nữa"
 
-#: glib/gregex.c:175
+#: ../glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "kết hợp cờ dòng mới một cách không hợp lệ"
 
-#: glib/gregex.c:179
+#: ../glib/gregex.c:179
 msgid "unknown error"
 msgstr "lỗi lạ"
 
-#: glib/gregex.c:199
+#: ../glib/gregex.c:199
 msgid "\\ at end of pattern"
 msgstr "\\ ở kết thúc của mẫu"
 
-#: glib/gregex.c:202
+#: ../glib/gregex.c:202
 msgid "\\c at end of pattern"
 msgstr "\\c ở kết thúc của mẫu"
 
-#: glib/gregex.c:205
+#: ../glib/gregex.c:205
 msgid "unrecognized character follows \\"
 msgstr "có ký tự lạ phía sau \\"
 
-#: glib/gregex.c:212
+#: ../glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
-"ở đây thì không cho phép ký tự thoát thay đổi chữ hoa/thường (\\l, \\L, \\u, "
-"\\U)"
+msgstr "ở đây thì không cho phép ký tự thoát thay đổi chữ hoa/thường (\\l, \\L, \\u, \\U)"
 
-#: glib/gregex.c:215
+#: ../glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
 msgstr "các con số không theo thứ tự đúng trong chuỗi xác định số lượng {}"
 
-#: glib/gregex.c:218
+#: ../glib/gregex.c:218
 msgid "number too big in {} quantifier"
 msgstr "con số quá lớn trong chuỗi xác định số lượng {}"
 
-#: glib/gregex.c:221
+#: ../glib/gregex.c:221
 msgid "missing terminating ] for character class"
 msgstr "thiếu ] chấm dứt cho hạng ký tự"
 
-#: glib/gregex.c:224
+#: ../glib/gregex.c:224
 msgid "invalid escape sequence in character class"
 msgstr "gặp dây thoát không hợp lệ trong hạng ký tự"
 
-#: glib/gregex.c:227
+#: ../glib/gregex.c:227
 msgid "range out of order in character class"
 msgstr "phạm vi không theo thứ tự đúng trong hạng ký tự"
 
-#: glib/gregex.c:230
+#: ../glib/gregex.c:230
 msgid "nothing to repeat"
 msgstr "không có gì cần lặp lại"
 
-#: glib/gregex.c:233
+#: ../glib/gregex.c:233
 msgid "unrecognized character after (?"
 msgstr "không nhận dạng ký tự nằm sau (?"
 
-#: glib/gregex.c:237
+#: ../glib/gregex.c:237
 msgid "unrecognized character after (?<"
 msgstr "không nhận dạng ký tự nằm sau (?<"
 
-#: glib/gregex.c:241
+#: ../glib/gregex.c:241
 msgid "unrecognized character after (?P"
 msgstr "không nhận dạng ký tự nằm sau (?P"
 
-#: glib/gregex.c:244
+#: ../glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
 msgstr "Hạng POSIX có tên chỉ được hỗ trợ bên trong hạng"
 
-#: glib/gregex.c:247
+#: ../glib/gregex.c:247
 msgid "missing terminating )"
 msgstr "thiếu ) chấm dứt"
 
-#: glib/gregex.c:251
+#: ../glib/gregex.c:251
 msgid ") without opening ("
 msgstr "có ) không có ( đầu tiên"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: glib/gregex.c:258
+#: ../glib/gregex.c:258
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R hay (?[+-]chữ số phải có ) theo sau"
 
-#: glib/gregex.c:261
+#: ../glib/gregex.c:261
 msgid "reference to non-existent subpattern"
 msgstr "tham chiếu đến mẫu phụ không tồn tại"
 
-#: glib/gregex.c:264
+#: ../glib/gregex.c:264
 msgid "missing ) after comment"
 msgstr "thiếu ) nằm sau chú thích"
 
-#: glib/gregex.c:267
+#: ../glib/gregex.c:267
 msgid "regular expression too large"
 msgstr "biểu thức chính quy quá lớn"
 
-#: glib/gregex.c:270
+#: ../glib/gregex.c:270
 msgid "failed to get memory"
 msgstr "không lấy được bộ nhớ"
 
-#: glib/gregex.c:273
+#: ../glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
 msgstr "khẳng định lookbehind (thấy ở sau) không có độ dài cố định"
 
-#: glib/gregex.c:276
+#: ../glib/gregex.c:276
 msgid "malformed number or name after (?("
 msgstr "có con số hay tên dạng sai nằm sau (?("
 
-#: glib/gregex.c:279
+#: ../glib/gregex.c:279
 msgid "conditional group contains more than two branches"
 msgstr "nhóm điều kiện chứa nhiều hơn hai nhánh"
 
-#: glib/gregex.c:282
+#: ../glib/gregex.c:282
 msgid "assertion expected after (?("
 msgstr "mong đợi khẳng định nằm sau (?("
 
-#: glib/gregex.c:285
+#: ../glib/gregex.c:285
 msgid "unknown POSIX class name"
 msgstr "không rõ tên hạng POSIX"
 
-#: glib/gregex.c:288
+#: ../glib/gregex.c:288
 msgid "POSIX collating elements are not supported"
 msgstr "Không hỗ trợ yếu tố đối chiếu POSIX"
 
-#: glib/gregex.c:291
+#: ../glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
 msgstr "dãy \\x{...} chứa giá trị ký tự quá lớn"
 
-#: glib/gregex.c:294
+#: ../glib/gregex.c:294
 msgid "invalid condition (?(0)"
 msgstr "điều kiện không hợp lệ (?(0)"
 
-#: glib/gregex.c:297
+#: ../glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C không được phép trong khẳng định lookbehind (thấy ở sau)"
 
-#: glib/gregex.c:300
+#: ../glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
 msgstr "lời gọi đệ quy có thể bị lặp vô hạn"
 
-#: glib/gregex.c:303
+#: ../glib/gregex.c:303
 msgid "missing terminator in subpattern name"
 msgstr "thiếu dấu chấm dứt trong tên mẫu phụ"
 
-#: glib/gregex.c:306
+#: ../glib/gregex.c:306
 msgid "two named subpatterns have the same name"
 msgstr "hai mẫu phụ có tên cũng có cùng một tên"
 
-#: glib/gregex.c:309
+#: ../glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
 msgstr "dãy \\P hay \\p dạng sai"
 
-#: glib/gregex.c:312
+#: ../glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
 msgstr "có tên thuộc tính không rõ nằm sau \\P hay \\p"
 
-#: glib/gregex.c:315
+#: ../glib/gregex.c:315
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "tên mẫu phụ quá dài (tối đa 32 ký tự)"
 
-#: glib/gregex.c:318
+#: ../glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "quá nhiều mẫu phụ có tên (tối đa 10 000)"
 
-#: glib/gregex.c:321
+#: ../glib/gregex.c:321
 msgid "octal value is greater than \\377"
 msgstr "giá trị bát phân lớn hơn \\377"
 
-#: glib/gregex.c:324
+#: ../glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
 msgstr "nhóm DEFINE (định nghĩa) chứa nhiều hơn một nhánh"
 
-#: glib/gregex.c:327
+#: ../glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
 msgstr "không cho phép lặp lại một nhóm DEFINE (định nghĩa)"
 
-#: glib/gregex.c:330
+#: ../glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
 msgstr "các tùy chọn NEWLINE (dòng mới) không thống nhất với nhau"
 
-#: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g không đi trước một tên có dấu ngoặc móc hoặc một con số không phải số "
-"không có dấu ngoặc móc tùy chọn"
+#: ../glib/gregex.c:333
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "\\g không đi trước một tên có dấu ngoặc móc hoặc một con số không phải số không có dấu ngoặc móc tùy chọn"
 
-#: glib/gregex.c:338
+#: ../glib/gregex.c:338
 msgid "unexpected repeat"
 msgstr "lặp lại bất thường"
 
-#: glib/gregex.c:342
+#: ../glib/gregex.c:342
 msgid "code overflow"
 msgstr "tràn mã"
 
-#: glib/gregex.c:346
+#: ../glib/gregex.c:346
 msgid "overran compiling workspace"
 msgstr "tràn vùng làm việc biên dịch"
 
-#: glib/gregex.c:350
+#: ../glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
 msgstr "không tìm thấy mẫu phụ đã tham chiếu mà đã kiểm tra trước"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: ../glib/gregex.c:522
+#: ../glib/gregex.c:1603
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Gặp lỗi trong khi khớp biểu thức chính quy %s: %s"
 
-#: glib/gregex.c:1094
+#: ../glib/gregex.c:1094
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ UTF-8"
 
-#: glib/gregex.c:1103
+#: ../glib/gregex.c:1103
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ tài sản UTF-8"
 
-#: glib/gregex.c:1157
+#: ../glib/gregex.c:1157
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Gặp lỗi trong khi biên dịch biểu thức chính quy %s ở ký tự %d: %s"
 
-#: glib/gregex.c:1193
+#: ../glib/gregex.c:1193
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Gặp lỗi trong khi tối hưu hoá biểu thức chính quy %s: %s"
 
-#: glib/gregex.c:2031
+#: ../glib/gregex.c:2031
 msgid "hexadecimal digit or '}' expected"
 msgstr "đợi chữ số thập lục hay dấu ngoặc móc đóng '}'"
 
-#: glib/gregex.c:2047
+#: ../glib/gregex.c:2047
 msgid "hexadecimal digit expected"
 msgstr "đợi chữ số thập lục"
 
-#: glib/gregex.c:2087
+#: ../glib/gregex.c:2087
 msgid "missing '<' in symbolic reference"
 msgstr "thiếu dấu ngoặc nhọn mở '<' trong tham chiếu tượng trưng"
 
-#: glib/gregex.c:2096
+#: ../glib/gregex.c:2096
 msgid "unfinished symbolic reference"
 msgstr "tham chiếu tượng trưng chưa hoàn thành"
 
-#: glib/gregex.c:2103
+#: ../glib/gregex.c:2103
 msgid "zero-length symbolic reference"
 msgstr "tham chiếu tượng trưng có độ dài số không"
 
-#: glib/gregex.c:2114
+#: ../glib/gregex.c:2114
 msgid "digit expected"
 msgstr "đợi chữ số"
 
-#: glib/gregex.c:2132
+#: ../glib/gregex.c:2132
 msgid "illegal symbolic reference"
 msgstr "tham chiếu tượng trưng không cho phép"
 
-#: glib/gregex.c:2194
+#: ../glib/gregex.c:2194
 msgid "stray final '\\'"
 msgstr "dấu xuyệc ngược kết thúc rải rác '\\'"
 
-#: glib/gregex.c:2198
+#: ../glib/gregex.c:2198
 msgid "unknown escape sequence"
 msgstr "dãy thoát lạ"
 
-#: glib/gregex.c:2208
+#: ../glib/gregex.c:2208
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Gặp lỗi trong khi phân tách văn bản thay thế '%s' ở ký tự %lu: %s"
 
-#: glib/gshell.c:92
+#: ../glib/gshell.c:92
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Văn bản trích dẫn không bắt đầu bằng một dấu trích dẫn"
 
-#: glib/gshell.c:182
+#: ../glib/gshell.c:182
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Dấu ngoặc kép không ăn khớp nằm trên dòng lệnh hay trong văn bản khác đã "
-"trích dẫn trong trình bao"
+msgstr "Dấu ngoặc kép không ăn khớp nằm trên dòng lệnh hay trong văn bản khác đã trích dẫn trong trình bao"
 
-#: glib/gshell.c:560
+#: ../glib/gshell.c:560
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Văn bản đã kết thúc ngay sau dấu xuyệc ngược '\\' (văn bản là '%s')"
 
-#: glib/gshell.c:567
+#: ../glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Văn bản đã kết thúc trước khi tìm dấu ngoặc kép tương ứng với '%c' (văn bản "
-"là '%s')"
+msgstr "Văn bản đã kết thúc trước khi tìm dấu ngoặc kép tương ứng với '%c' (văn bản là '%s')"
 
-#: glib/gshell.c:579
+#: ../glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Văn bản rỗng (hay chưa chỉ khoảng trắng)"
 
-#: glib/gspawn-win32.c:283
+#: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "Lỗi đọc dữ liệu từ tiến trình con"
 
-#: glib/gspawn-win32.c:300 glib/gspawn.c:1480
+#: ../glib/gspawn-win32.c:300
+#: ../glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Lỗi tạo ống dẫn để liên lạc với tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
+#: ../glib/gspawn-win32.c:339
+#: ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lỗi đọc từ ống dẫn con (%s)"
 
-#: glib/gspawn-win32.c:370 glib/gspawn.c:1346
+#: ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Lỗi chuyển đổi sang thư mục '%s' (%s)"
 
-#: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
+#: ../glib/gspawn-win32.c:376
+#: ../glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Lỗi thực hiện tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:445
+#: ../glib/gspawn-win32.c:445
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Tên chương trình không hợp lệ: %s"
 
-#: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
+#: ../glib/gspawn-win32.c:455
+#: ../glib/gspawn-win32.c:723
+#: ../glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Gặp chuỗi không hợp lệ nằm trong véc-tơ đối số tại %d: %s"
 
-#: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
+#: ../glib/gspawn-win32.c:466
+#: ../glib/gspawn-win32.c:738
+#: ../glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Gặp chuỗi không hợp lệ nằm trong môi trường: %s"
 
-#: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
+#: ../glib/gspawn-win32.c:719
+#: ../glib/gspawn-win32.c:1260
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Thư mục làm việc không hợp lệ: %s"
 
-#: glib/gspawn-win32.c:784
+#: ../glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Lỗi thực hiện chương trình bổ trợ (%s)"
 
-#: glib/gspawn-win32.c:998
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
-"Gặp lỗi bất thường nằm trong 'g_io_channel_win32_poll()' khi đọc dữ liệu từ "
-"tiến trình con"
+#: ../glib/gspawn-win32.c:998
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "Gặp lỗi bất thường nằm trong 'g_io_channel_win32_poll()' khi đọc dữ liệu từ tiến trình con"
 
-#: glib/gspawn.c:190
+#: ../glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Lỗi đọc dữ liệu từ tiến trình con (%s)"
 
-#: glib/gspawn.c:329
+#: ../glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
-"Gặp lỗi bất thường nằm trong 'select()' khi đọc dữ liệu từ tiến trình con (%"
-"s)"
+msgstr "Gặp lỗi bất thường nằm trong 'select()' khi đọc dữ liệu từ tiến trình con (%s)"
 
-#: glib/gspawn.c:414
+#: ../glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Gặp lỗi bất thường nằm trong 'waitpid()' (%s)"
 
-#: glib/gspawn.c:1206
+#: ../glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Lỗi tạo tiến trình con (%s)"
 
-#: glib/gspawn.c:1356
+#: ../glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Lỗi thực hiện tiến trình con '%s' (%s)"
 
-#: glib/gspawn.c:1366
+#: ../glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Lỗi chuyển hướng kết nhập hay kết xuất của tiến trình con (%s)"
 
-#: glib/gspawn.c:1375
+#: ../glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Lỗi tạo tiến trình con (%s)"
 
-#: glib/gspawn.c:1383
+#: ../glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Gặp lỗi không rõ khi thực hiện tiến trình con '%s'"
 
-#: glib/gspawn.c:1407
+#: ../glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lỗi đọc đủ dữ liệu từ ống dẫn PID con (%s)"
 
-#: glib/gutf8.c:1055
+#: ../glib/gutf8.c:1055
 msgid "Character out of range for UTF-8"
 msgstr "Ký tự ở ngoại phạm vi UTF-8"
 
-#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
-#: glib/gutf8.c:1446 glib/gutf8.c:1542
+#: ../glib/gutf8.c:1155
+#: ../glib/gutf8.c:1164
+#: ../glib/gutf8.c:1296
+#: ../glib/gutf8.c:1305
+#: ../glib/gutf8.c:1446
+#: ../glib/gutf8.c:1542
 msgid "Invalid sequence in conversion input"
 msgstr "Dãy không hợp lệ nằm trong dữ liệu nhập việc chuyển đổi"
 
-#: glib/gutf8.c:1457 glib/gutf8.c:1553
+#: ../glib/gutf8.c:1457
+#: ../glib/gutf8.c:1553
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự ở ngoại phạm vi UTF-16"
 
-#: glib/goption.c:755
+#: ../glib/goption.c:755
 msgid "Usage:"
 msgstr "Sử dụng:"
 
-#: glib/goption.c:755
+#: ../glib/goption.c:755
 msgid "[OPTION...]"
 msgstr "[TÙY_CHỌN...]"
 
-#: glib/goption.c:861
+#: ../glib/goption.c:861
 msgid "Help Options:"
 msgstr "Tùy chọn trợ giúp:"
 
-#: glib/goption.c:862
+#: ../glib/goption.c:862
 msgid "Show help options"
 msgstr "Hiển thị các tùy chọn trợ giúp"
 
-#: glib/goption.c:868
+#: ../glib/goption.c:868
 msgid "Show all help options"
 msgstr "Hiển thị mọi tùy chọn trợ giúp"
 
-#: glib/goption.c:930
+#: ../glib/goption.c:930
 msgid "Application Options:"
 msgstr "Tùy chọn ứng dụng:"
 
-#: glib/goption.c:992 glib/goption.c:1062
+#: ../glib/goption.c:992
+#: ../glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Không thể phân tách giá trị số nguyên '%s' cho %s"
 
-#: glib/goption.c:1002 glib/goption.c:1070
+#: ../glib/goption.c:1002
+#: ../glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Giá trị số nguyên '%s' cho %s ở ngoại phạm vi"
 
-#: glib/goption.c:1027
+#: ../glib/goption.c:1027
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Không thể phân tách giá trị đôi '%s' cho %s"
 
-#: glib/goption.c:1035
+#: ../glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Giá trị đôi '%s' cho %s ở ngoại phạm vi"
 
-#: glib/goption.c:1298 glib/goption.c:1377
+#: ../glib/goption.c:1298
+#: ../glib/goption.c:1377
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Gặp lỗi khi phân tách tùy chọn %s"
 
-#: glib/goption.c:1408 glib/goption.c:1522
+#: ../glib/goption.c:1408
+#: ../glib/goption.c:1522
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Thiếu đối số cho %s"
 
-#: glib/goption.c:1917
+#: ../glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
 msgstr "Không biết tùy chọn %s"
 
-#: glib/gkeyfile.c:361
+#: ../glib/gkeyfile.c:361
 msgid "Valid key file could not be found in search dirs"
 msgstr "Không tìm thấy tập tin khoá hợp lệ nằm trong thư mục tìm kiếm"
 
-#: glib/gkeyfile.c:396
+#: ../glib/gkeyfile.c:396
 msgid "Not a regular file"
 msgstr "Không phải là một tập tin chuẩn"
 
-#: glib/gkeyfile.c:404
+#: ../glib/gkeyfile.c:404
 msgid "File is empty"
 msgstr "Tập tin rỗng"
 
-#: glib/gkeyfile.c:763
+#: ../glib/gkeyfile.c:763
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"Tập tin khóa chứa dòng '%s' mà không phải là một cặp giá trị khóa, nhóm, hay "
-"chú thích"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Tập tin khóa chứa dòng '%s' mà không phải là một cặp giá trị khóa, nhóm, hay chú thích"
 
-#: glib/gkeyfile.c:823
+#: ../glib/gkeyfile.c:823
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Tên nhóm không hợp lệ: %s"
 
-#: glib/gkeyfile.c:845
+#: ../glib/gkeyfile.c:845
 msgid "Key file does not start with a group"
 msgstr "Tập tin khóa không bắt đầu với nhóm"
 
-#: glib/gkeyfile.c:871
+#: ../glib/gkeyfile.c:871
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Tên khoá không hợp lệ: %s"
 
-#: glib/gkeyfile.c:898
+#: ../glib/gkeyfile.c:898
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Tập tin khóa chứa bảng mã không được hỗ trợ '%s'"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: ../glib/gkeyfile.c:1114
+#: ../glib/gkeyfile.c:1276
+#: ../glib/gkeyfile.c:2505
+#: ../glib/gkeyfile.c:2571
+#: ../glib/gkeyfile.c:2706
+#: ../glib/gkeyfile.c:2839
+#: ../glib/gkeyfile.c:2992
+#: ../glib/gkeyfile.c:3179
+#: ../glib/gkeyfile.c:3240
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Tập tin khóa không có nhóm '%s'"
 
-#: glib/gkeyfile.c:1288
+#: ../glib/gkeyfile.c:1288
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Tập tin khóa không có khóa '%s'"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: ../glib/gkeyfile.c:1395
+#: ../glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Tập tin khóa chứa khóa '%s' với giá trị '%s' mà không phải là UTF-8"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: ../glib/gkeyfile.c:1415
+#: ../glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Tập tin khóa chứa khóa '%s' mà có giá trị không có khả năng giải dịch."
 
-#: glib/gkeyfile.c:1530
+#: ../glib/gkeyfile.c:1530
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Không thể phân tích giá trị '%s' chứa trong tập tin khoá."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: ../glib/gkeyfile.c:2124
+#: ../glib/gkeyfile.c:2336
 #, c-format
-msgid ""
-"Key file contains key '%s' in group '%s' which has value that cannot be "
-"interpreted."
-msgstr ""
-"Tập tin khóa chứa khóa '%s' trong nhóm '%s' mà có giá trị không có khả năng "
-"giải dịch."
+msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgstr "Tập tin khóa chứa khóa '%s' trong nhóm '%s' mà có giá trị không có khả năng giải dịch."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: ../glib/gkeyfile.c:2520
+#: ../glib/gkeyfile.c:2721
+#: ../glib/gkeyfile.c:3251
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Tập tin khóa không có khóa '%s' trong nhóm '%s'"
 
-#: glib/gkeyfile.c:3485
+#: ../glib/gkeyfile.c:3485
 msgid "Key file contains escape character at end of line"
 msgstr "Tập tin khóa chứa ký tự thoát tại kết thúc của dòng"
 
-#: glib/gkeyfile.c:3507
+#: ../glib/gkeyfile.c:3507
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Tập tin khóa chứa dãy thoát không hợp lệ '%s'"
 
-#: glib/gkeyfile.c:3649
+#: ../glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Không thể giải dịch giá trị '%s' dạng con số."
 
-#: glib/gkeyfile.c:3663
+#: ../glib/gkeyfile.c:3663
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Giá trị số nguyên '%s' ở ngoại phạm vi"
 
-#: glib/gkeyfile.c:3696
+#: ../glib/gkeyfile.c:3696
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Không thể giải dịch giá trị '%s' dạng con số nổi."
 
-#: glib/gkeyfile.c:3720
+#: ../glib/gkeyfile.c:3720
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị '%s' dạng bun (đúng/sai)."
 
-#: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
-#: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: ../gio/gbufferedinputstream.c:415
+#: ../gio/gbufferedinputstream.c:496
+#: ../gio/ginputstream.c:186
+#: ../gio/ginputstream.c:318
+#: ../gio/ginputstream.c:557
+#: ../gio/ginputstream.c:682
+#: ../gio/goutputstream.c:198
+#: ../gio/goutputstream.c:657
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Giá trị đếm quá lớn được gửi cho %s"
 
-#: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: ../gio/gbufferedinputstream.c:883
+#: ../gio/ginputstream.c:892
+#: ../gio/giostream.c:305
+#: ../gio/goutputstream.c:1108
 msgid "Stream is already closed"
 msgstr "Luồng đã bị đóng"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
-#: gio/gsimpleasyncresult.c:677
+#: ../gio/gcancellable.c:433
+#: ../gio/glocalfile.c:2108
+#: ../gio/gsimpleasyncresult.c:651
+#: ../gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Thao tác bị thôi"
 
-#: gio/gcharsetconverter.c:264
-#, fuzzy
+#: ../gio/gcharsetconverter.c:264
 msgid "Invalid object, not initialized"
-msgstr "Socket không hợp lệ, chưa được khởi động"
+msgstr "Đối tượng không hợp lệ, chưa được sơ khởi"
 
-#: gio/gcharsetconverter.c:285 gio/gcharsetconverter.c:313
-#, fuzzy
+#: ../gio/gcharsetconverter.c:285
+#: ../gio/gcharsetconverter.c:313
 msgid "Incomplete multibyte sequence in input"
-msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
+msgstr "Gặp dây byte không hoàn thành trong đầu vào"
 
-#: gio/gcharsetconverter.c:319 gio/gcharsetconverter.c:328
-#, fuzzy
+#: ../gio/gcharsetconverter.c:319
+#: ../gio/gcharsetconverter.c:328
 msgid "Not enough space in destination"
-msgstr "Không đủ không gian cho địa chỉ socket"
+msgstr "Không đủ không gian trong đích đến"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: ../gio/gcharsetconverter.c:448
+#: ../gio/gsocket.c:772
 msgid "Cancellable initialization not supported"
 msgstr "Không hỗ trợ thao tác khởi động có thể huỷ bỏ"
 
-#: gio/gcontenttype.c:180
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Không rõ kiểu"
 
-#: gio/gcontenttype.c:181
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "kiểu tập tin %s"
 
-#: gio/gcontenttype.c:681
+#: ../gio/gcontenttype.c:681
 #, c-format
 msgid "%s type"
 msgstr "kiểu %s"
 
-#: gio/gdatainputstream.c:311
+#: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Kết thúc luồng sớm bất thường"
 
-#: gio/gdesktopappinfo.c:468 gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:468
+#: ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Không có tên"
 
-#: gio/gdesktopappinfo.c:742
+#: ../gio/gdesktopappinfo.c:742
 msgid "Desktop file didn't specify Exec field"
 msgstr "Tập tin Desktop không ghi rõ trường Exec (thực hiện)"
 
-#: gio/gdesktopappinfo.c:924
+#: ../gio/gdesktopappinfo.c:924
 msgid "Unable to find terminal required for application"
 msgstr "Không tìm thấy thiết bị cuối cần thiết cho ứng dụng"
 
-#: gio/gdesktopappinfo.c:1132
+#: ../gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Không thể tạo thư mục cấu hình ứng dụng người dùng %s: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: ../gio/gdesktopappinfo.c:1136
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Không thể tạo thư mục cấu hình MIME người dùng %s: %s"
 
-#: gio/gdesktopappinfo.c:1544
+#: ../gio/gdesktopappinfo.c:1544
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Không thể tạo tập tin desktop %s"
 
-#: gio/gdesktopappinfo.c:1658
+#: ../gio/gdesktopappinfo.c:1658
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Lời định nghĩa riêng cho %s"
 
-#: gio/gdrive.c:364
+#: ../gio/gdrive.c:364
 msgid "drive doesn't implement eject"
 msgstr "ổ đĩa không thực hiện chức năng đẩy ra"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:444
+#: ../gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr ""
-"ổ đĩa không thực hiện chức năng đẩy ra (eject hoặc eject_with_operation)"
+msgstr "ổ đĩa không thực hiện chức năng đẩy ra (eject hoặc eject_with_operation)"
 
-#: gio/gdrive.c:521
+#: ../gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "ổ đĩa không thực hiện chức năng thăm dò có phương tiện không"
 
-#: gio/gdrive.c:726
+#: ../gio/gdrive.c:726
 msgid "drive doesn't implement start"
 msgstr "ổ đĩa không thực hiện chức năng chạy (start)"
 
-#: gio/gdrive.c:828
+#: ../gio/gdrive.c:828
 msgid "drive doesn't implement stop"
 msgstr "ổ đĩa không thực hiện chức năng dừng (stop)"
 
-#: gio/gemblem.c:325
+#: ../gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GEmblem"
 
-#: gio/gemblem.c:335
+#: ../gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Bảng mã GEmblem chứa số các hiệu bài dạng sai (%d)"
 
-#: gio/gemblemedicon.c:296
+#: ../gio/gemblemedicon.c:296
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GEmblemedIcon"
 
-#: gio/gemblemedicon.c:306
+#: ../gio/gemblemedicon.c:306
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Bảng mã GEmblemedIcon chứa số các hiệu bài dạng sai (%d)"
 
-#: gio/gemblemedicon.c:329
+#: ../gio/gemblemedicon.c:329
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Mong đợi một GEmblem cho GEmblemedIcon"
 
-#: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
-#: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
-#: gio/win32/gwinhttpfile.c:441
+#: ../gio/gfile.c:871
+#: ../gio/gfile.c:1101
+#: ../gio/gfile.c:1236
+#: ../gio/gfile.c:1472
+#: ../gio/gfile.c:1526
+#: ../gio/gfile.c:1583
+#: ../gio/gfile.c:1666
+#: ../gio/gfile.c:1721
+#: ../gio/gfile.c:1781
+#: ../gio/gfile.c:1835
+#: ../gio/gfile.c:3303
+#: ../gio/gfile.c:3357
+#: ../gio/gfile.c:3488
+#: ../gio/gfile.c:3528
+#: ../gio/gfile.c:3855
+#: ../gio/gfile.c:4257
+#: ../gio/gfile.c:4343
+#: ../gio/gfile.c:4432
+#: ../gio/gfile.c:4530
+#: ../gio/gfile.c:4617
+#: ../gio/gfile.c:4710
+#: ../gio/gfile.c:5040
+#: ../gio/gfile.c:5320
+#: ../gio/gfile.c:5389
+#: ../gio/gfile.c:6980
+#: ../gio/gfile.c:7070
+#: ../gio/gfile.c:7156
+#: ../gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Thao tác không được hỗ trợ"
 
@@ -1295,138 +1308,149 @@ msgstr "Thao tác không được hỗ trợ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1357 gio/glocalfile.c:1065 gio/glocalfile.c:1076
-#: gio/glocalfile.c:1089
+#: ../gio/gfile.c:1357
+#: ../gio/glocalfile.c:1065
+#: ../gio/glocalfile.c:1076
+#: ../gio/glocalfile.c:1089
 msgid "Containing mount does not exist"
 msgstr "Bộ lắp chứa không tồn tại"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2264
+#: ../gio/gfile.c:2409
+#: ../gio/glocalfile.c:2264
 msgid "Can't copy over directory"
 msgstr "Không thể sao chép đè lên thư mục"
 
-#: gio/gfile.c:2469
+#: ../gio/gfile.c:2469
 msgid "Can't copy directory over directory"
 msgstr "Không thể sao chép thư mục đè lên thư mục"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2273
+#: ../gio/gfile.c:2477
+#: ../gio/glocalfile.c:2273
 msgid "Target file exists"
 msgstr "Tập tin đích đã có"
 
-#: gio/gfile.c:2495
+#: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "Không thể sao chép đệ quy thư mục"
 
-#: gio/gfile.c:2755
-#, fuzzy
+#: ../gio/gfile.c:2755
 msgid "Splice not supported"
-msgstr "Không hỗ trợ khả năng sử dụng liên kết tượng trưng"
+msgstr "Chức năng nối bện không được hỗ trợ"
 
-#: gio/gfile.c:2759
-#, fuzzy, c-format
+#: ../gio/gfile.c:2759
+#, c-format
 msgid "Error splicing file: %s"
-msgstr "Gặp lỗi khi mở tập tin: %s"
+msgstr "Gặp lỗi khi nối bện tập tin: %s"
 
-#: gio/gfile.c:2905
+#: ../gio/gfile.c:2905
 msgid "Can't copy special file"
 msgstr "Không thể sao chép tập tin đặc biệt"
 
-#: gio/gfile.c:3478
+#: ../gio/gfile.c:3478
 msgid "Invalid symlink value given"
 msgstr "Đưa ra giá trị liên kết tượng trưng không hợp lệ"
 
-#: gio/gfile.c:3571
+#: ../gio/gfile.c:3571
 msgid "Trash not supported"
 msgstr "Thùng rác không được hỗ trợ"
 
-#: gio/gfile.c:3620
+#: ../gio/gfile.c:3620
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tên tập tin không thể chứa '%c'"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: ../gio/gfile.c:6037
+#: ../gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "hàm volume (khối tin) không thực hiện chức năng mount (lắp)"
 
-#: gio/gfile.c:6148
+#: ../gio/gfile.c:6148
 msgid "No application is registered as handling this file"
 msgstr "Không có ứng dụng đăng ký xử lý tập tin này"
 
-#: gio/gfileenumerator.c:206
+#: ../gio/gfileenumerator.c:206
 msgid "Enumerator is closed"
 msgstr "Bộ đếm bị đóng"
 
-#: gio/gfileenumerator.c:213 gio/gfileenumerator.c:272
-#: gio/gfileenumerator.c:372 gio/gfileenumerator.c:481
+#: ../gio/gfileenumerator.c:213
+#: ../gio/gfileenumerator.c:272
+#: ../gio/gfileenumerator.c:372
+#: ../gio/gfileenumerator.c:481
 msgid "File enumerator has outstanding operation"
 msgstr "Bộ đếm tập tin có thao tác còn chạy"
 
-#: gio/gfileenumerator.c:362 gio/gfileenumerator.c:471
+#: ../gio/gfileenumerator.c:362
+#: ../gio/gfileenumerator.c:471
 msgid "File enumerator is already closed"
 msgstr "Bộ đếm tập tin đã bị đóng"
 
-#: gio/gfileicon.c:237
+#: ../gio/gfileicon.c:237
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GFileIcon"
 
-#: gio/gfileicon.c:247
+#: ../gio/gfileicon.c:247
 msgid "Malformed input data for GFileIcon"
 msgstr "Dữ liệu nhập dạng sai cho GFileIcon"
 
-#: gio/gfileinputstream.c:155 gio/gfileinputstream.c:422
-#: gio/gfileiostream.c:171 gio/gfileoutputstream.c:170
-#: gio/gfileoutputstream.c:525
+#: ../gio/gfileinputstream.c:155
+#: ../gio/gfileinputstream.c:422
+#: ../gio/gfileiostream.c:171
+#: ../gio/gfileoutputstream.c:170
+#: ../gio/gfileoutputstream.c:525
 msgid "Stream doesn't support query_info"
 msgstr "Luồng không hỗ trợ hàm 'query_info'"
 
-#: gio/gfileinputstream.c:337 gio/gfileiostream.c:389
-#: gio/gfileoutputstream.c:383
+#: ../gio/gfileinputstream.c:337
+#: ../gio/gfileiostream.c:389
+#: ../gio/gfileoutputstream.c:383
 msgid "Seek not supported on stream"
 msgstr "Chức năng seek (tìm nơi) không được hỗ trợ trên luồng"
 
-#: gio/gfileinputstream.c:381
+#: ../gio/gfileinputstream.c:381
 msgid "Truncate not allowed on input stream"
 msgstr "Không cho phép cắt ngắn luồng nhập vào"
 
-#: gio/gfileiostream.c:465 gio/gfileoutputstream.c:459
+#: ../gio/gfileiostream.c:465
+#: ../gio/gfileoutputstream.c:459
 msgid "Truncate not supported on stream"
 msgstr "Không cho phép cắt ngắn luồng"
 
-#: gio/gicon.c:286
+#: ../gio/gicon.c:286
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Số các hiệu bài không đúng (%d)"
 
-#: gio/gicon.c:306
+#: ../gio/gicon.c:306
 #, c-format
 msgid "No type for class name %s"
 msgstr "Không có kiểu cho tên hạng %s"
 
-#: gio/gicon.c:316
+#: ../gio/gicon.c:316
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Kiểu %s không thực hiện giao diện GIcon"
 
-#: gio/gicon.c:327
+#: ../gio/gicon.c:327
 #, c-format
 msgid "Type %s is not classed"
 msgstr "Kiểu %s không được đặt hạng"
 
-#: gio/gicon.c:341
+#: ../gio/gicon.c:341
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Số thứ tự phiên bản dạng sai: %s"
 
-#: gio/gicon.c:355
+#: ../gio/gicon.c:355
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Kiểu %s không thực hiện 'from_tokens()' trên giao diện GIcon"
 
-#: gio/gicon.c:431
+#: ../gio/gicon.c:431
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Không thể quản lý phiên bản đã cung cấp của bảng mã biểu tượng"
 
-#: gio/ginputstream.c:195
+#: ../gio/ginputstream.c:195
 msgid "Input stream doesn't implement read"
 msgstr "Luồng nhập vào không thực hiện chức năng đọc"
 
@@ -1436,727 +1460,679 @@ msgstr "Luồng nhập vào không thực hiện chức năng đọc"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: ../gio/ginputstream.c:902
+#: ../gio/giostream.c:315
+#: ../gio/goutputstream.c:1118
 msgid "Stream has outstanding operation"
 msgstr "Luồng có thao tác còn chạy"
 
-#: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:174
+#: ../gio/ginetsocketaddress.c:182
+#: ../gio/ginetsocketaddress.c:199
+#: ../gio/gunixsocketaddress.c:174
 msgid "Not enough space for socket address"
-msgstr "Không đủ không gian cho địa chỉ socket"
+msgstr "Không đủ không gian cho địa chỉ ổ cắm"
 
-#: gio/ginetsocketaddress.c:212
+#: ../gio/ginetsocketaddress.c:212
 msgid "Unsupported socket address"
-msgstr "Địa chỉ socket không hỗ trợ"
+msgstr "Địa chỉ ổ cắm không hỗ trợ"
 
-#: gio/glocaldirectorymonitor.c:288
+#: ../gio/glocaldirectorymonitor.c:288
 msgid "Unable to find default local directory monitor type"
 msgstr "Không tìm thấy kiểu theo dõi thư mục cục bộ mặc định"
 
-#: gio/glocalfile.c:599 gio/win32/gwinhttpfile.c:424
+#: ../gio/glocalfile.c:599
+#: ../gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Tên tập tin không hợp lệ: %s"
 
-#: gio/glocalfile.c:973
+#: ../gio/glocalfile.c:973
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Gặp lỗi khi lấy tập tin về hệ thống tập tin: %s"
 
-#: gio/glocalfile.c:1111
+#: ../gio/glocalfile.c:1111
 msgid "Can't rename root directory"
 msgstr "Không thể thay đổi tên của thư mục gốc"
 
-#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
+#: ../gio/glocalfile.c:1131
+#: ../gio/glocalfile.c:1157
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Gặp lỗi khi thay đổi tên của tập tin: %s"
 
-#: gio/glocalfile.c:1140
+#: ../gio/glocalfile.c:1140
 msgid "Can't rename file, filename already exist"
 msgstr "Không thể thay đổi tên của tập tin, vì tên tập tin đã có"
 
-#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
-#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
-#: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
-#: gio/glocalfileoutputstream.c:1137
+#: ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:2137
+#: ../gio/glocalfile.c:2166
+#: ../gio/glocalfile.c:2326
+#: ../gio/glocalfileoutputstream.c:557
+#: ../gio/glocalfileoutputstream.c:610
+#: ../gio/glocalfileoutputstream.c:655
+#: ../gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "Tên tập tin không hợp lệ"
 
-#: gio/glocalfile.c:1314
+#: ../gio/glocalfile.c:1314
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Gặp lỗi khi mở tập tin: %s"
 
-#: gio/glocalfile.c:1324
+#: ../gio/glocalfile.c:1324
 msgid "Can't open directory"
 msgstr "Không thể mở thư mục"
 
-#: gio/glocalfile.c:1449
+#: ../gio/glocalfile.c:1449
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Gặp lỗi khi gỡ bỏ tập tin: %s"
 
-#: gio/glocalfile.c:1816
+#: ../gio/glocalfile.c:1816
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Gặp lỗi khi chuyển tập tin vào sọt rác: %s"
 
-#: gio/glocalfile.c:1839
+#: ../gio/glocalfile.c:1839
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Không thể tạo thư mục sọt rác %s: %s"
 
-#: gio/glocalfile.c:1860
+#: ../gio/glocalfile.c:1860
 msgid "Unable to find toplevel directory for trash"
 msgstr "Không tìm thấy thư mục cấp đầu cho sọt rác"
 
-#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
+#: ../gio/glocalfile.c:1939
+#: ../gio/glocalfile.c:1959
 msgid "Unable to find or create trash directory"
 msgstr "Không tìm thấy hay không thể tạo thư mục sọt rác"
 
-#: gio/glocalfile.c:1993
+#: ../gio/glocalfile.c:1993
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Không thể tạo tập tin thông tin sọt rác: %s"
 
-#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
-#: gio/glocalfile.c:2114
+#: ../gio/glocalfile.c:2022
+#: ../gio/glocalfile.c:2027
+#: ../gio/glocalfile.c:2107
+#: ../gio/glocalfile.c:2114
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Không thể chuyển tập tin vào sọt rác: %s"
 
-#: gio/glocalfile.c:2141
+#: ../gio/glocalfile.c:2141
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Lỗi tạo thư mục: %s"
 
-#: gio/glocalfile.c:2170
+#: ../gio/glocalfile.c:2170
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Hệ tậo tin không hỗ trợ liên kết biểu tượng"
 
-#: gio/glocalfile.c:2174
+#: ../gio/glocalfile.c:2174
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Gặp lỗi khi tạo liên kết tượng trưng: %s"
 
-#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
+#: ../gio/glocalfile.c:2236
+#: ../gio/glocalfile.c:2330
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Gặp lỗi khi di chuyển tập tin: %s"
 
-#: gio/glocalfile.c:2259
+#: ../gio/glocalfile.c:2259
 msgid "Can't move directory over directory"
 msgstr "Không thể di chuyển thư mục đè lên thư mục"
 
-#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
-#: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
-#: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
+#: ../gio/glocalfile.c:2286
+#: ../gio/glocalfileoutputstream.c:935
+#: ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfileoutputstream.c:964
+#: ../gio/glocalfileoutputstream.c:980
+#: ../gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "Lỗi tạo tập tin sao lưu"
 
-#: gio/glocalfile.c:2305
+#: ../gio/glocalfile.c:2305
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Gặp lỗi khi gỡ bỏ tập tin đích: %s"
 
-#: gio/glocalfile.c:2319
+#: ../gio/glocalfile.c:2319
 msgid "Move between mounts not supported"
 msgstr "Không hỗ trợ chức năng di chuyển giữa các bộ lắp"
 
-#: gio/glocalfileinfo.c:726
+#: ../gio/glocalfileinfo.c:726
 msgid "Attribute value must be non-NULL"
 msgstr "Giá trị thuộc tính phải có giá trị"
 
-#: gio/glocalfileinfo.c:733
+#: ../gio/glocalfileinfo.c:733
 msgid "Invalid attribute type (string expected)"
 msgstr "Kiểu thuộc tính không hợp lệ (mong đợi chuỗi)"
 
-#: gio/glocalfileinfo.c:740
+#: ../gio/glocalfileinfo.c:740
 msgid "Invalid extended attribute name"
 msgstr "Tên thuộc tính đã mở rộng không hợp lệ"
 
-#: gio/glocalfileinfo.c:780
+#: ../gio/glocalfileinfo.c:780
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Gặp lỗi khi đặt thuộc tính đã mở rộng '%s': %s"
 
-#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:819
+#: ../gio/glocalfileinfo.c:1484
+#: ../gio/glocalfileoutputstream.c:819
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Gặp lỗi khi lấy trạng thái về tập tin '%s': %s"
 
-#: gio/glocalfileinfo.c:1557
+#: ../gio/glocalfileinfo.c:1557
 msgid " (invalid encoding)"
 msgstr " (bảng mã không hợp lệ)"
 
-#: gio/glocalfileinfo.c:1755
+#: ../gio/glocalfileinfo.c:1755
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Gặp lỗi khi lấy trạng thái về mô tả tập tin: %s"
 
-#: gio/glocalfileinfo.c:1800
+#: ../gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Kiểu thuộc tính không hợp lệ (mong đợi uint32)"
 
-#: gio/glocalfileinfo.c:1818
+#: ../gio/glocalfileinfo.c:1818
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Kiểu thuộc tính không hợp lệ (mong đợi uint64)"
 
-#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
+#: ../gio/glocalfileinfo.c:1837
+#: ../gio/glocalfileinfo.c:1856
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Kiểu thuộc tính không hợp lệ (mong đợi chuỗi byte)"
 
-#: gio/glocalfileinfo.c:1891
+#: ../gio/glocalfileinfo.c:1891
 msgid "Cannot set permissions on symlinks"
 msgstr "Gặp lỗi khi đặt quyền hạn cho liên kết biểu tượng"
 
-#: gio/glocalfileinfo.c:1907
+#: ../gio/glocalfileinfo.c:1907
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Gặp lỗi khi đặt quyền hạn: %s"
 
-#: gio/glocalfileinfo.c:1958
+#: ../gio/glocalfileinfo.c:1958
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Gặp lỗi khi đặt người sở hữu : %s"
 
-#: gio/glocalfileinfo.c:1981
+#: ../gio/glocalfileinfo.c:1981
 msgid "symlink must be non-NULL"
 msgstr "liên kết tượng trưng phải có giá trị"
 
-#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
-#: gio/glocalfileinfo.c:2021
+#: ../gio/glocalfileinfo.c:1991
+#: ../gio/glocalfileinfo.c:2010
+#: ../gio/glocalfileinfo.c:2021
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Gặp lỗi khi đặt liên kết tượng trưng: %s"
 
-#: gio/glocalfileinfo.c:2000
+#: ../gio/glocalfileinfo.c:2000
 msgid "Error setting symlink: file is not a symlink"
-msgstr ""
-"Gặp lỗi khi đặt liên kết tượng trưng: tập tin không phải là liên kết tượng "
-"trưng"
+msgstr "Gặp lỗi khi đặt liên kết tượng trưng: tập tin không phải là liên kết tượng trưng"
 
-#: gio/glocalfileinfo.c:2126
+#: ../gio/glocalfileinfo.c:2126
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Gặp lỗi khi đặt thời gian sửa đổi hoặc truy cập: %s"
 
-#: gio/glocalfileinfo.c:2149
+#: ../gio/glocalfileinfo.c:2149
 msgid "SELinux context must be non-NULL"
 msgstr "Ngữ cảnh SELinux phải khác NULL"
 
-#: gio/glocalfileinfo.c:2164
+#: ../gio/glocalfileinfo.c:2164
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Lỗi đặt ngữ cảnh SELinux: %s"
 
-#: gio/glocalfileinfo.c:2171
+#: ../gio/glocalfileinfo.c:2171
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux chưa được bật trên hệ thống này"
 
-#: gio/glocalfileinfo.c:2263
+#: ../gio/glocalfileinfo.c:2263
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Không hỗ trợ chức năng đặt thuộc tính %s"
 
-#: gio/glocalfileinputstream.c:171 gio/glocalfileoutputstream.c:708
+#: ../gio/glocalfileinputstream.c:171
+#: ../gio/glocalfileoutputstream.c:708
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Gặp lỗi khi đọc từ tập tin: %s"
 
-#: gio/glocalfileinputstream.c:202 gio/glocalfileinputstream.c:214
-#: gio/glocalfileinputstream.c:326 gio/glocalfileoutputstream.c:456
-#: gio/glocalfileoutputstream.c:1012
+#: ../gio/glocalfileinputstream.c:202
+#: ../gio/glocalfileinputstream.c:214
+#: ../gio/glocalfileinputstream.c:326
+#: ../gio/glocalfileoutputstream.c:456
+#: ../gio/glocalfileoutputstream.c:1012
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Gặp lỗi khi tìm nơi trong tập tin: %s"
 
-#: gio/glocalfileinputstream.c:247 gio/glocalfileoutputstream.c:242
-#: gio/glocalfileoutputstream.c:337
+#: ../gio/glocalfileinputstream.c:247
+#: ../gio/glocalfileoutputstream.c:242
+#: ../gio/glocalfileoutputstream.c:337
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Gặp lỗi khi đóng tập tin: %s"
 
-#: gio/glocalfilemonitor.c:213
+#: ../gio/glocalfilemonitor.c:213
 msgid "Unable to find default local file monitor type"
 msgstr "Không tìm thấy kiểu theo dõi tập tin cục bộ mặc định"
 
-#: gio/glocalfileoutputstream.c:188 gio/glocalfileoutputstream.c:221
-#: gio/glocalfileoutputstream.c:729
+#: ../gio/glocalfileoutputstream.c:188
+#: ../gio/glocalfileoutputstream.c:221
+#: ../gio/glocalfileoutputstream.c:729
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Gặp lỗi khi ghi vào tập tin: %s"
 
-#: gio/glocalfileoutputstream.c:269
+#: ../gio/glocalfileoutputstream.c:269
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Gặp lỗi khi gỡ bỏ liên kết sao lưu cũ : %s"
 
-#: gio/glocalfileoutputstream.c:283 gio/glocalfileoutputstream.c:296
+#: ../gio/glocalfileoutputstream.c:283
+#: ../gio/glocalfileoutputstream.c:296
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Gặp lỗi khi tạo bản sao lưu : %s"
 
-#: gio/glocalfileoutputstream.c:314
+#: ../gio/glocalfileoutputstream.c:314
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Gặp lỗi khi thay đổi tên của tập tin tạm thời: %s"
 
-#: gio/glocalfileoutputstream.c:502 gio/glocalfileoutputstream.c:1063
+#: ../gio/glocalfileoutputstream.c:502
+#: ../gio/glocalfileoutputstream.c:1063
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Gặp lỗi khi cắt ngắn tập tin: %s"
 
-#: gio/glocalfileoutputstream.c:563 gio/glocalfileoutputstream.c:616
-#: gio/glocalfileoutputstream.c:661 gio/glocalfileoutputstream.c:801
-#: gio/glocalfileoutputstream.c:1044 gio/glocalfileoutputstream.c:1143
+#: ../gio/glocalfileoutputstream.c:563
+#: ../gio/glocalfileoutputstream.c:616
+#: ../gio/glocalfileoutputstream.c:661
+#: ../gio/glocalfileoutputstream.c:801
+#: ../gio/glocalfileoutputstream.c:1044
+#: ../gio/glocalfileoutputstream.c:1143
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Gặp lỗi khi mở tập tin '%s': %s"
 
-#: gio/glocalfileoutputstream.c:832
+#: ../gio/glocalfileoutputstream.c:832
 msgid "Target file is a directory"
 msgstr "Tập tin đích là một thư mục"
 
-#: gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileoutputstream.c:837
 msgid "Target file is not a regular file"
 msgstr "Tập tin đích không phải là một tập tin bình thường"
 
-#: gio/glocalfileoutputstream.c:849
+#: ../gio/glocalfileoutputstream.c:849
 msgid "The file was externally modified"
 msgstr "Tập tin đã bị sửa đổi bên ngoài"
 
-#: gio/glocalfileoutputstream.c:1028
+#: ../gio/glocalfileoutputstream.c:1028
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Lỗi xoá tập tin cũ: %s"
 
-#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:718
+#: ../gio/gmemoryinputstream.c:487
+#: ../gio/gmemoryoutputstream.c:718
 msgid "Invalid GSeekType supplied"
 msgstr "GSeekType được cung cấp không hợp lệ"
 
-#: gio/gmemoryinputstream.c:497
+#: ../gio/gmemoryinputstream.c:497
 msgid "Invalid seek request"
 msgstr "Yêu cầu tìm không hợp lệ"
 
-#: gio/gmemoryinputstream.c:521
+#: ../gio/gmemoryinputstream.c:521
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Không thể cắt GMemoryInputStream"
 
-#: gio/gmemoryoutputstream.c:468
+#: ../gio/gmemoryoutputstream.c:468
 msgid "Memory output stream not resizable"
 msgstr "Luồng ra bộ nhớ không thể thay đổi kích thước"
 
-#: gio/gmemoryoutputstream.c:484
+#: ../gio/gmemoryoutputstream.c:484
 msgid "Failed to resize memory output stream"
 msgstr "Lỗi thay đổi kích thước luồng ra bộ nhớ"
 
-#: gio/gmemoryoutputstream.c:572
-msgid ""
-"Amount of memory required to process the write is larger than available "
-"address space"
-msgstr ""
+#: ../gio/gmemoryoutputstream.c:572
+msgid "Amount of memory required to process the write is larger than available address space"
+msgstr "Việc ghi này yêu cầu một vùng nhớ lớn hơn sức chứa địa chỉ sẵn sàng hiện thời"
 
-#: gio/gmemoryoutputstream.c:728
+#: ../gio/gmemoryoutputstream.c:728
 msgid "Requested seek before the beginning of the stream"
-msgstr ""
+msgstr "Đã yêu cầu tìm nơi đằng trước đầu của luồng"
 
-#: gio/gmemoryoutputstream.c:737
+#: ../gio/gmemoryoutputstream.c:737
 msgid "Requested seek beyond the end of the stream"
-msgstr ""
+msgstr "Đã yêu cầu tìm nơi đằng sau cuối của luồng"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:364
+#: ../gio/gmount.c:364
 msgid "mount doesn't implement \"unmount\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"unmount\" (bỏ lắp)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:443
+#: ../gio/gmount.c:443
 msgid "mount doesn't implement \"eject\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"eject\" (đầy ra)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:523
+#: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr ""
-"hàm mount (lắp) không thực hiện hàm \"unmount\" hoặc \"unmount_with_operation"
-"\" (bỏ lắp)"
+msgstr "hàm mount (lắp) không thực hiện hàm \"unmount\" hoặc \"unmount_with_operation\" (bỏ lắp)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:610
+#: ../gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr ""
-"hàm mount (lắp) không thực hiện hàm \"eject\" hoặc \"eject_with_operation"
-"\" (đầy ra)"
+msgstr "hàm mount (lắp) không thực hiện hàm \"eject\" hoặc \"eject_with_operation\" (đầy ra)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:699
+#: ../gio/gmount.c:699
 msgid "mount doesn't implement \"remount\""
 msgstr "hàm mount (lắp) không thực hiện hàm \"remount\" (lắp lại)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:783
+#: ../gio/gmount.c:783
 msgid "mount doesn't implement content type guessing"
 msgstr "hàm mount (lắp) không thực hiện đoán nội dung"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:872
+#: ../gio/gmount.c:872
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "hàm mount (lắp) không thực hiện đoán nội dung đồng bộ"
 
-#: gio/gnetworkaddress.c:295
+#: ../gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Tên máy '%s' có '[' nhưng không có ']'"
 
-#: gio/goutputstream.c:207 gio/goutputstream.c:408
+#: ../gio/goutputstream.c:207
+#: ../gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
 msgstr "Luồng xuất không thực hiện hàm write (ghi)"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: ../gio/goutputstream.c:369
+#: ../gio/goutputstream.c:781
 msgid "Source stream is already closed"
 msgstr "Luồng nguồn đã bị đóng"
 
-#: gio/gresolver.c:736
+#: ../gio/gresolver.c:736
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Lỗi phân giải '%s': %s"
 
-#: gio/gresolver.c:786
+#: ../gio/gresolver.c:786
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Lỗi phân giải ngược '%s': %s"
 
-#: gio/gresolver.c:821 gio/gresolver.c:899
+#: ../gio/gresolver.c:821
+#: ../gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Không có bản ghi dịch vụ (service record) cho '%s'"
 
-#: gio/gresolver.c:826 gio/gresolver.c:904
+#: ../gio/gresolver.c:826
+#: ../gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Tạm thời không thể phân giải '%s'"
 
-#: gio/gresolver.c:831 gio/gresolver.c:909
+#: ../gio/gresolver.c:831
+#: ../gio/gresolver.c:909
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Lỗi phân giải '%s'"
 
-#: gio/gsocket.c:277
+#: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
-msgstr "Socket không hợp lệ, chưa được khởi động"
+msgstr "Ổ cắm không hợp lệ, chưa được sơ khởi"
 
-#: gio/gsocket.c:284
+#: ../gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "Socket không hợp lệ, khởi động thất bại vì: %s"
+msgstr "Ổ cắm không hợp lệ, khởi động thất bại vì: %s"
 
-#: gio/gsocket.c:292
+#: ../gio/gsocket.c:292
 msgid "Socket is already closed"
-msgstr "Socket đã được đóng"
+msgstr "Ổ cắm đã được đóng"
 
-#: gio/gsocket.c:413
+#: ../gio/gsocket.c:413
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "tạo GSocket từ fd: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: ../gio/gsocket.c:447
+#: ../gio/gsocket.c:461
+#: ../gio/gsocket.c:1925
 #, c-format
 msgid "Unable to create socket: %s"
-msgstr "Không thể tạo socket: %s"
+msgstr "Không thể tạo ổ cắm: %s"
 
-#: gio/gsocket.c:447
+#: ../gio/gsocket.c:447
 msgid "Unknown protocol was specified"
 msgstr "Lỗi giao thức không xác định"
 
-#: gio/gsocket.c:1126
+#: ../gio/gsocket.c:1126
 #, c-format
 msgid "could not get local address: %s"
 msgstr "không thể lấy địa chỉ cục bộ: %s"
 
-#: gio/gsocket.c:1159
+#: ../gio/gsocket.c:1159
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "không thể lấy địa chỉ ở xa: %s"
 
-#: gio/gsocket.c:1217
+#: ../gio/gsocket.c:1217
 #, c-format
 msgid "could not listen: %s"
 msgstr "không thể lắng nghe: %s"
 
-#: gio/gsocket.c:1291
+#: ../gio/gsocket.c:1291
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Lỗi liên kết địa chỉ: %s"
 
-#: gio/gsocket.c:1411
+#: ../gio/gsocket.c:1411
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Lỗi chấp nhận kết nối: %s"
 
-#: gio/gsocket.c:1524
+#: ../gio/gsocket.c:1524
 msgid "Error connecting: "
 msgstr "Lỗi kết nối: "
 
-#: gio/gsocket.c:1528
+#: ../gio/gsocket.c:1528
 msgid "Connection in progress"
 msgstr "Kết nối đang hình thành"
 
-#: gio/gsocket.c:1533
+#: ../gio/gsocket.c:1533
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Lỗi kết nối: %s"
 
-#: gio/gsocket.c:1573
+#: ../gio/gsocket.c:1573
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Không thể lấy lỗi đang chờ: %s"
 
-#: gio/gsocket.c:1669
+#: ../gio/gsocket.c:1669
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Lỗi nhận dữ liệu: %s"
 
-#: gio/gsocket.c:1812
+#: ../gio/gsocket.c:1812
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Lỗi gửi dữ liệu: %s"
 
-#: gio/gsocket.c:2004
+#: ../gio/gsocket.c:2004
 #, c-format
 msgid "Error closing socket: %s"
-msgstr "Lỗi đóng socket: %s"
+msgstr "Lỗi đóng ổ cắm: %s"
 
-#: gio/gsocket.c:2481
+#: ../gio/gsocket.c:2481
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr "Đang chờ socket: %s"
+msgstr "Đang chờ ổ cắm: %s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: ../gio/gsocket.c:2720
+#: ../gio/gsocket.c:2801
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Lỗi gửi thông điệp: %s"
 
-#: gio/gsocket.c:2745
+#: ../gio/gsocket.c:2745
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage không được hỗ trợ trên Windows"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: ../gio/gsocket.c:3003
+#: ../gio/gsocket.c:3141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Lỗi nhận thông điệp: %s"
 
-#: gio/gsocketclient.c:521 gio/gsocketclient.c:770
+#: ../gio/gsocketclient.c:521
+#: ../gio/gsocketclient.c:770
 msgid "Unknown error on connect"
 msgstr "Lỗi lạ khi kết nối"
 
-#: gio/gsocketlistener.c:192
+#: ../gio/gsocketlistener.c:192
 msgid "Listener is already closed"
 msgstr "Bên lắng nghe đã đóng"
 
-#: gio/gsocketlistener.c:233
+#: ../gio/gsocketlistener.c:233
 msgid "Added socket is closed"
-msgstr "Socket được thêm đã đóng"
+msgstr "Ổ cắm được thêm đã đóng"
 
-#: gio/gthemedicon.c:499
+#: ../gio/gthemedicon.c:499
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GThemedIcon"
 
-#: gio/gunixconnection.c:151
+#: ../gio/gunixconnection.c:151
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Chờ 1 thông điệp điều khiển, nhận được %d"
 
-#: gio/gunixconnection.c:164
+#: ../gio/gunixconnection.c:164
 msgid "Unexpected type of ancillary data"
-msgstr ""
+msgstr "Gặp dữ liệu bổ sung kiểu bất thường"
 
-#: gio/gunixconnection.c:182
+#: ../gio/gunixconnection.c:182
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "Chờ 1 fd, nhận được %d\n"
 
-#: gio/gunixconnection.c:198
+#: ../gio/gunixconnection.c:198
 msgid "Received invalid fd"
 msgstr "Nhận fd không hợp lệ"
 
-#: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
-#: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
+#: ../gio/gunixinputstream.c:354
+#: ../gio/gunixinputstream.c:374
+#: ../gio/gunixinputstream.c:452
+#: ../gio/gunixoutputstream.c:439
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Gặp lỗi khi đọc từ UNIX: %s"
 
-#: gio/gunixinputstream.c:407 gio/gunixinputstream.c:589
-#: gio/gunixoutputstream.c:394 gio/gunixoutputstream.c:545
+#: ../gio/gunixinputstream.c:407
+#: ../gio/gunixinputstream.c:589
+#: ../gio/gunixoutputstream.c:394
+#: ../gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Gặp lỗi khi đóng UNIX: %s"
 
-#: gio/gunixmounts.c:1846 gio/gunixmounts.c:1883
+#: ../gio/gunixmounts.c:1846
+#: ../gio/gunixmounts.c:1883
 msgid "Filesystem root"
 msgstr "Gốc hệ thống tập tin"
 
-#: gio/gunixoutputstream.c:340 gio/gunixoutputstream.c:361
+#: ../gio/gunixoutputstream.c:340
+#: ../gio/gunixoutputstream.c:361
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Gặp lỗi khi ghi vào UNIX: %s"
 
-#: gio/gunixsocketaddress.c:182
+#: ../gio/gunixsocketaddress.c:182
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr "Socket Unix không được hỗ trợ trên hệ thống này"
+msgstr "Địa chỉ ổ cắm UNIX trừu tượng không được hỗ trợ trên hệ thống này"
 
-#: gio/gvolume.c:407
+#: ../gio/gvolume.c:407
 msgid "volume doesn't implement eject"
 msgstr "hàm volume (khối tin) không thực hiện hàm eject (đầy ra)"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:486
+#: ../gio/gvolume.c:486
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr ""
-"hàm volume (khối tin) không thực hiện hàm \"eject\" hoặc "
-"\"eject_with_operation\" (đầy ra)"
+msgstr "hàm volume (khối tin) không thực hiện hàm \"eject\" hoặc \"eject_with_operation\" (đầy ra)"
 
-#: gio/gwin32appinfo.c:277
+#: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
 msgstr "Không tìm thấy ứng dụng"
 
-#: gio/gwin32appinfo.c:300
+#: ../gio/gwin32appinfo.c:300
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Gặp lỗi khi khởi chạy ứng dụng: %s"
 
-#: gio/gwin32appinfo.c:336
+#: ../gio/gwin32appinfo.c:336
 msgid "URIs not supported"
 msgstr "Không hỗ trợ địa chỉ URI"
 
-#: gio/gwin32appinfo.c:358
+#: ../gio/gwin32appinfo.c:358
 msgid "association changes not supported on win32"
 msgstr "các thay đổi liên quan không được hỗ trợ trên win32"
 
-#: gio/gwin32appinfo.c:370
+#: ../gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "chức năng tạo sự liên quan không được hỗ trợ trên win32"
 
-#: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
-#, fuzzy
+#: ../gio/gzlibcompressor.c:279
+#: ../gio/gzlibdecompressor.c:250
 msgid "Not enough memory"
-msgstr "hết bộ nhớ"
+msgstr "Không đủ bộ nhớ"
 
-#: gio/gzlibcompressor.c:286 gio/gzlibdecompressor.c:257
-#, fuzzy, c-format
+#: ../gio/gzlibcompressor.c:286
+#: ../gio/gzlibdecompressor.c:257
+#, c-format
 msgid "Internal error: %s"
-msgstr "lỗi nội bộ"
+msgstr "Lỗi nội bộ : %s"
 
-#: gio/gzlibcompressor.c:299 gio/gzlibdecompressor.c:271
+#: ../gio/gzlibcompressor.c:299
+#: ../gio/gzlibdecompressor.c:271
 msgid "Need more input"
-msgstr ""
+msgstr "Cần thêm đầu vào"
 
-#: gio/gzlibdecompressor.c:243
-#, fuzzy
+#: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
-msgstr "Tên máy không hợp lệ"
+msgstr "Sai nén dữ liệu"
 
-#, fuzzy
-#~ msgid "Invalid UTF-8 sequence in input"
-#~ msgstr "Dãy không hợp lệ nằm trong dữ liệu nhập việc chuyển đổi"
-
-#~ msgid "Reached maximum data array limit"
-#~ msgstr "Đã đạt ngưỡng mảng dữ liệu tối đa"
-
-#~ msgid "do not hide entries"
-#~ msgstr "đừng ẩn mục nhập"
-
-#~ msgid "use a long listing format"
-#~ msgstr "dùng định dạng liệt kê dài"
-
-#~ msgid "[FILE...]"
-#~ msgstr "[TẬP_TIN...]"
-
-#~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & "
-#~ "character begins an entity; if this ampersand isn't supposed to be an "
-#~ "entity, escape it as &amp;"
-#~ msgstr ""
-#~ "Ký tự '%s' không phải là hợp lệ ở đầu của tên thực thể; ký tự '&' khởi "
-#~ "đầu một thực thể; nếu dấu và này không nên là một thực thể, hãy thoát nó "
-#~ "như là '&amp;'"
-
-#~ msgid "Character '%s' is not valid inside an entity name"
-#~ msgstr "Ký tự '%s' không phải là hợp lệ bên trong tên thực thể"
-
-#~ msgid "Empty character reference; should include a digit such as &#454;"
-#~ msgstr "Tham chiếu ký tự trống; nên chứa chữ số như là '&#454;'."
-
-#~ msgid "Unfinished entity reference"
-#~ msgstr "Tham chiếu thực thể chưa hoàn thành"
-
-#~ msgid "Unfinished character reference"
-#~ msgstr "Tham chiếu ký tự chưa hoàn thành"
-
-#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
-#~ msgstr "Văn bản được mã hoá UTF-8 không hợp lệ: dáy quá dài"
-
-#~ msgid "Invalid UTF-8 encoded text - not a start char"
-#~ msgstr "Văn bản được mã hoá UTF-8 không hợp lệ: không phải ký tự bắt đầu"
-
-#~ msgid "file"
-#~ msgstr "tập tin"
-
-#~ msgid "The file containing the icon"
-#~ msgstr "Tập tin chứa biểu tượng"
-
-#~ msgid "name"
-#~ msgstr "tên"
-
-#~ msgid "The name of the icon"
-#~ msgstr "Tên của biểu tượng"
-
-#~ msgid "names"
-#~ msgstr "tên"
-
-#~ msgid "An array containing the icon names"
-#~ msgstr "Mảng chứa tên biểu tượng"
-
-#~ msgid "use default fallbacks"
-#~ msgstr "dùng dự phòng mặc định"
-
-#~ msgid ""
-#~ "Whether to use default fallbacks found by shortening the name at '-' "
-#~ "characters. Ignores names after the first if multiple names are given."
-#~ msgstr ""
-#~ "Có dùng dự phòng mặc định được tìm thấy bằng cách rút ngắn tên tại ký tự "
-#~ "'-' hay không. Chỉ xét tên đầu tiên nếu trùng tên."
-
-#~ msgid "File descriptor"
-#~ msgstr "Bộ mô tả tập tin"
-
-#~ msgid "The file descriptor to read from"
-#~ msgstr "Bộ mô tả tập tin từ đó cần đọc"
-
-#~ msgid "Close file descriptor"
-#~ msgstr "Đóng bộ mô tả tập tin"
-
-#~ msgid "Whether to close the file descriptor when the stream is closed"
-#~ msgstr "Có nên đóng bộ mô tả tập tin khi luồng được đóng, hay không"
-
-#~ msgid "The file descriptor to write to"
-#~ msgstr "Bộ mô tả tập tin vào đó cần ghi"
