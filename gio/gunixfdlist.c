@@ -117,10 +117,15 @@ dup_close_on_exec_fd (gint     fd,
     }
 
   do
-    s = fcntl (new_fd, F_SETFD, FD_CLOEXEC);
+    {
+      s = fcntl (new_fd, F_GETFD);
+
+      if (s >= 0)
+        s = fcntl (new_fd, F_SETFD, (long) (s | FD_CLOEXEC));
+    }
   while (s < 0 && (errno == EINTR));
 
-  if (new_fd < 0)
+  if (s < 0)
     {
       int saved_errno = errno;
 
