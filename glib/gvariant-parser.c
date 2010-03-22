@@ -2057,7 +2057,7 @@ g_variant_parse (const GVariantType  *type,
                  const gchar        **endptr,
                  GError             **error)
 {
-  TokenStream stream = {  };
+  TokenStream stream = { 0, };
   GVariant *result = NULL;
   AST *ast;
 
@@ -2135,7 +2135,7 @@ GVariant *
 g_variant_new_parsed_va (const gchar *format,
                          va_list     *app)
 {
-  TokenStream stream = {  };
+  TokenStream stream = { 0, };
   GVariant *result = NULL;
   GError *error = NULL;
   AST *ast;
