@@ -2699,6 +2699,13 @@ test_format_strings (void)
             *end == '\0');
   g_assert (g_variant_format_string_scan ("{yv}", NULL, &end) &&
             *end == '\0');
+  g_assert (!g_variant_format_string_scan ("{&?v}", NULL, &end));
+  g_assert (g_variant_format_string_scan ("{@?v}", NULL, &end) &&
+            *end == '\0');
+  g_assert (!g_variant_format_string_scan ("{&@sv}", NULL, &end));
+  g_assert (!g_variant_format_string_scan ("{@&sv}", NULL, &end));
+  g_assert (g_variant_format_string_scan ("{&sv}", NULL, &end) &&
+            *end == '\0');
   g_assert (!g_variant_format_string_scan ("{vv}", NULL, &end));
   g_assert (!g_variant_format_string_scan ("{y}", NULL, &end));
   g_assert (!g_variant_format_string_scan ("{yyy}", NULL, &end));

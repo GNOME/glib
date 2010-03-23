@@ -2745,15 +2745,25 @@ g_variant_format_string_scan (const gchar  *string,
     case '{':
       c = next_char();
 
-      if (c == '@')
-        c = next_char ();
+      if (c == '&')
+        {
+          c = next_char ();
 
-      /* ISO/IEC 9899:1999 (C99) §7.21.5.2:
-       *    The terminating null character is considered to be
-       *    part of the string.
-       */
-      if (c != '\0' && strchr ("bynqiuxthdsog?", c) == NULL)
-        return FALSE;
+          if (c != 's' && c != 'o' && c != 'g')
+            return FALSE;
+        }
+      else
+        {
+          if (c == '@')
+            c = next_char ();
+
+          /* ISO/IEC 9899:1999 (C99) §7.21.5.2:
+           *    The terminating null character is considered to be
+           *    part of the string.
+           */
+          if (c != '\0' && strchr ("bynqiuxthdsog?", c) == NULL)
+            return FALSE;
+        }
 
       if (!g_variant_format_string_scan (string, limit, &string))
         return FALSE;
