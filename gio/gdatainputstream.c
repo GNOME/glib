@@ -856,6 +856,9 @@ scan_for_chars (GDataInputStream *stream,
  * Reads a string from the data input stream, up to the first
  * occurrence of any of the stop characters.
  *
+ * Note that, in contrast to g_data_input_stream_read_until_async(),
+ * this function consumes the stop character that it finds.
+ *
  * Returns: a string with the data that was read before encountering
  *     any of the stop characters. Set @length to a #gsize to get the length
  *     of the string. This function will return %NULL on an error.
@@ -1157,6 +1160,10 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
  *
  * The asynchronous version of g_data_input_stream_read_until().
  * It is an error to have two outstanding calls to this function.
+ *
+ * Note that, in contrast to g_data_input_stream_read_until(),
+ * this function does not consume the stop character that it finds.  You
+ * must read it for yourself.
  *
  * When the operation is finished, @callback will be called. You
  * can then call g_data_input_stream_read_until_finish() to get
