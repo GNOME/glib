@@ -251,7 +251,7 @@ struct _GTypeValueTable
           </para></listitem>
           <listitem><para>Create a macro named <function>PREFIX_TYPE_OBJECT</function> which always 
             returns the GType for the associated object type. For an object of type 
-            <emphasis>Bar</emphasis> in a libray prefixed by <emphasis>maman</emphasis>, 
+            <emphasis>Bar</emphasis> in a library prefixed by <emphasis>maman</emphasis>, 
             use: <function>MAMAN_TYPE_BAR</function>.
             It is common although not a convention to implement this macro using either a global 
             static variable or a function named <function>prefix_object_get_type</function>.
