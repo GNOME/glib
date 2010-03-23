@@ -1,7 +1,15 @@
+import os.path
 import gdb
 import glib
-import gdb.backtrace
-import gdb.command.backtrace
+try:
+    import gdb.backtrace
+    import gdb.command.backtrace
+except ImportError:
+    print(os.path.basename(__file__) + ": gdb was not built with "
+          "custom backtrace support, disabling.")
+    HAVE_GDB_BACKTRACE = 0
+else:
+    HAVE_GDB_BACKTRACE = 1
 
 # This is not quite right, as local vars may override symname
 def read_global_var (symname):
@@ -107,13 +115,14 @@ class GFrameWrapper:
         return getattr (self.frame, name)
 
 # Monkey patch FrameWrapper to avoid IA__ in symbol names
-old__init__ = gdb.command.backtrace.FrameWrapper.__init__
-def monkey_patched_init(self, frame):
-    name = frame.name()
-    if name and name.startswith("IA__"):
-        frame = GFrameWrapper(frame)
-    old__init__(self,frame)
-gdb.command.backtrace.FrameWrapper.__init__ = monkey_patched_init
+if HAVE_GDB_BACKTRACE:
+    old__init__ = gdb.command.backtrace.FrameWrapper.__init__
+    def monkey_patched_init(self, frame):
+        name = frame.name()
+        if name and name.startswith("IA__"):
+            frame = GFrameWrapper(frame)
+        old__init__(self,frame)
+    gdb.command.backtrace.FrameWrapper.__init__ = monkey_patched_init
 
 class DummyFrame:
     def __init__ (self, frame):
@@ -301,5 +310,6 @@ def register (obj):
     if obj == None:
         obj = gdb
 
-    gdb.backtrace.push_frame_filter (GFrameFilter)
+    if HAVE_GDB_BACKTRACE:
+        gdb.backtrace.push_frame_filter (GFrameFilter)
     obj.pretty_printers.append(pretty_printer_lookup)
