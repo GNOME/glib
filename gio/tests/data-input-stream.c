@@ -164,7 +164,8 @@ test_read_until (void)
 #define DATA_STRING		" part1 # part2 $ part3 % part4 ^"
 #define DATA_PART_LEN		7    /* number of characters between separators */
 #define DATA_SEP		"#$%^"
-  const int DATA_PARTS_NUM = strlen (DATA_SEP) * REPEATS;
+#define DATA_SEP_LEN            4
+  const int DATA_PARTS_NUM = DATA_SEP_LEN * REPEATS;
   
   base_stream = g_memory_input_stream_new ();
   stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
@@ -190,12 +191,65 @@ test_read_until (void)
     }
   g_assert_no_error (error);
   g_assert_cmpint (line, ==, DATA_PARTS_NUM);
-	
-	
+
   g_object_unref (base_stream);
   g_object_unref (stream);
 }
 
+static void
+test_read_upto (void)
+{
+  GInputStream *stream;
+  GInputStream *base_stream;
+  GError *error = NULL;
+  char *data;
+  int line;
+  int i;
+  guchar stop_char;
+
+#undef REPEATS
+#undef DATA_STRING
+#undef DATA_PART_LEN
+#undef DATA_SEP
+#undef DATA_SEP_LEN
+#define REPEATS			10   /* number of rounds */
+#define DATA_STRING		" part1 # part2 $ part3 \0 part4 ^"
+#define DATA_PART_LEN		7    /* number of characters between separators */
+#define DATA_SEP		"#$\0^"
+#define DATA_SEP_LEN            4
+  const int DATA_PARTS_NUM = DATA_SEP_LEN * REPEATS;
+
+  base_stream = g_memory_input_stream_new ();
+  stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
+
+  for (i = 0; i < REPEATS; i++)
+    g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream), DATA_STRING, 32, NULL);
+
+  /*  Test stop characters */
+  error = NULL;
+  data = (char*)1;
+  line = 0;
+  while (data)
+    {
+      gsize length = -1;
+      data = g_data_input_stream_read_upto (G_DATA_INPUT_STREAM (stream), DATA_SEP, DATA_SEP_LEN, &length, NULL, &error);
+      if (data)
+        {
+          g_assert_cmpint (strlen (data), ==, DATA_PART_LEN);
+          g_assert_no_error (error);
+          line++;
+
+          stop_char = g_data_input_stream_read_byte (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          g_assert (memchr (DATA_SEP, stop_char, DATA_SEP_LEN) != NULL);
+          g_assert_no_error (error);
+        }
+    }
+  g_assert_no_error (error);
+  g_assert_cmpint (line, ==, DATA_PARTS_NUM);
+
+  g_object_unref (base_stream);
+  g_object_unref (stream);
+}
 enum TestDataType {
   TEST_DATA_BYTE = 0,
   TEST_DATA_INT16,
@@ -367,6 +421,7 @@ main (int   argc,
   g_test_add_func ("/data-input-stream/read-lines-CR-LF", test_read_lines_CR_LF);
   g_test_add_func ("/data-input-stream/read-lines-any", test_read_lines_any);
   g_test_add_func ("/data-input-stream/read-until", test_read_until);
+  g_test_add_func ("/data-input-stream/read-upto", test_read_upto);
   g_test_add_func ("/data-input-stream/read-int", test_read_int);
 
   return g_test_run();

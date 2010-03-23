@@ -72,36 +72,36 @@ GType                  g_data_input_stream_get_type             (void) G_GNUC_CO
 GDataInputStream *     g_data_input_stream_new                  (GInputStream            *base_stream);
 
 void                   g_data_input_stream_set_byte_order       (GDataInputStream        *stream,
-							         GDataStreamByteOrder     order);
+                                                                 GDataStreamByteOrder     order);
 GDataStreamByteOrder   g_data_input_stream_get_byte_order       (GDataInputStream        *stream);
 void                   g_data_input_stream_set_newline_type     (GDataInputStream        *stream,
-							         GDataStreamNewlineType   type);
+                                                                 GDataStreamNewlineType   type);
 GDataStreamNewlineType g_data_input_stream_get_newline_type     (GDataInputStream        *stream);
 guchar                 g_data_input_stream_read_byte            (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 gint16                 g_data_input_stream_read_int16           (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 guint16                g_data_input_stream_read_uint16          (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 gint32                 g_data_input_stream_read_int32           (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 guint32                g_data_input_stream_read_uint32          (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 gint64                 g_data_input_stream_read_int64           (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 guint64                g_data_input_stream_read_uint64          (GDataInputStream        *stream,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 char *                 g_data_input_stream_read_line            (GDataInputStream        *stream,
-							         gsize                   *length,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 gsize                   *length,
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 void                   g_data_input_stream_read_line_async      (GDataInputStream        *stream,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
@@ -112,17 +112,35 @@ char *                 g_data_input_stream_read_line_finish     (GDataInputStrea
                                                                  gsize                   *length,
                                                                  GError                 **error);
 char *                 g_data_input_stream_read_until           (GDataInputStream        *stream,
-							         const gchar             *stop_chars,
-							         gsize                   *length,
-							         GCancellable            *cancellable,
-							         GError                 **error);
+                                                                 const gchar             *stop_chars,
+                                                                 gsize                   *length,
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 void                   g_data_input_stream_read_until_async     (GDataInputStream        *stream,
-							         const gchar             *stop_chars,
+                                                                 const gchar             *stop_chars,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
 char *                 g_data_input_stream_read_until_finish    (GDataInputStream        *stream,
+                                                                 GAsyncResult            *result,
+                                                                 gsize                   *length,
+                                                                 GError                 **error);
+
+char *                 g_data_input_stream_read_upto            (GDataInputStream        *stream,
+                                                                 const gchar             *stop_chars,
+                                                                 gssize                   stop_chars_len,
+                                                                 gsize                   *length,
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
+void                   g_data_input_stream_read_upto_async      (GDataInputStream        *stream,
+                                                                 const gchar             *stop_chars,
+                                                                 gssize                   stop_chars_len,
+                                                                 gint                     io_priority,
+                                                                 GCancellable            *cancellable,
+                                                                 GAsyncReadyCallback      callback,
+                                                                 gpointer                 user_data);
+char *                 g_data_input_stream_read_upto_finish     (GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
