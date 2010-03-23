@@ -45,16 +45,6 @@
    </listitem>
    <listitem>
     <para>
-     a type string of a concrete, fixed-sized type, prefixed with a '<literal>&amp;</literal>'
-    </para>
-   </listitem>
-   <listitem>
-    <para>
-     a type string of a concrete, fixed-sized type, prefixed with a '<literal>&amp;a</literal>'
-    </para>
-   </listitem>
-   <listitem>
-    <para>
      '<literal>&amp;s</literal>' '<literal>&amp;o</literal>', '<literal>&amp;g</literal>', '<literal>^as</literal>',
      '<literal>^ao</literal>', '<literal>^ag</literal>', '<literal>^a&amp;s</literal>', '<literal>^a&amp;o</literal>' or
      '<literal>^a&amp;g</literal>'
@@ -62,7 +52,7 @@
    </listitem>
    <listitem>
     <para>
-     any conversion string, prefixed with an '<literal>m</literal>'
+     any format string, prefixed with an '<literal>m</literal>'
     </para>
    </listitem>
    <listitem>
@@ -907,13 +897,6 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
    <para>
     The '<code>&amp;</code>' character is used to indicate that serialised data should be directly exchanged via a
     pointer.
-   </para>
-   <para>
-    Currently there is only one use for this character -- to avoid making a copy of a string when using
-    <link linkend='g-variant-get'><function>g_variant_get()</function></link>.
-   </para>
-   <para>
-    The three cases are as follows:
    </para>
    <para>
     Currently, the only use for this character is when it is applied to a string (ie: '<literal>&amp;s</literal>',
