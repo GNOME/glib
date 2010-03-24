@@ -556,12 +556,12 @@ typedef struct {
  *
  */
 typedef struct {
-  guint8  	 pointer  :1;
-  guint8  	 reserved :2;
-  guint8  	 tag      :5;
+  guint8	 pointer  :1;
+  guint8	 reserved :2;
+  guint8	 tag      :5;
 
-  guint8  	 reserved2;
-  guint16 	 n_types;
+  guint8	 reserved2;
+  guint16	 n_types;
 
   SimpleTypeBlob type[];
 } ParamTypeBlob;

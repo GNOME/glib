@@ -619,8 +619,8 @@ signature_offset (GICallableInfo *info)
 
 GITypeInfo *
 g_type_info_new (GIBaseInfo    *container,
-            	 GTypelib      *typelib,
-		         guint32        offset)
+                 GTypelib      *typelib,
+		 guint32        offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
 
@@ -758,7 +758,7 @@ g_callable_info_get_n_args (GICallableInfo *info)
  */
 GIArgInfo *
 g_callable_info_get_arg (GICallableInfo *info,
-              			 gint           n)
+			 gint           n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -767,7 +767,7 @@ g_callable_info_get_arg (GICallableInfo *info,
   offset = signature_offset (info);
 
   return (GIArgInfo *) g_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
-                				   offset + header->signature_blob_size + n * header->arg_blob_size);
+				   offset + header->signature_blob_size + n * header->arg_blob_size);
 }
 
 /**
@@ -1351,7 +1351,7 @@ find_method (GIBaseInfo   *base,
 
       if (strcmp (name, fname) == 0)
         return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base,
-	                        			      rinfo->typelib, offset);
+			                      rinfo->typelib, offset);
 
       offset += header->function_blob_size;
     }

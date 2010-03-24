@@ -1644,9 +1644,9 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->deprecated = prop->deprecated;
 	blob->readable = prop->readable;
- 	blob->writable = prop->writable;
- 	blob->construct = prop->construct;
- 	blob->construct_only = prop->construct_only;
+	blob->writable = prop->writable;
+	blob->construct = prop->construct;
+	blob->construct_only = prop->construct_only;
 	blob->reserved = 0;
 
         g_ir_node_build_typelib ((GIrNode *)prop->type,
@@ -1860,10 +1860,10 @@ g_ir_node_build_typelib (GIrNode         *node,
 	 */
 	*offset += sizeof (ArgBlob) - sizeof (SimpleTypeBlob);
 
- 	blob->name = write_string (node->name, strings, data, offset2);
- 	blob->in = param->in;
- 	blob->out = param->out;
- 	blob->dipper = param->dipper;
+	blob->name = write_string (node->name, strings, data, offset2);
+	blob->in = param->in;
+	blob->out = param->out;
+	blob->dipper = param->dipper;
 	blob->allow_none = param->allow_none;
 	blob->optional = param->optional;
 	blob->transfer_ownership = param->transfer;
