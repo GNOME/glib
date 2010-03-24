@@ -114,7 +114,7 @@ g_ir_ffi_get_ffi_type (GITypeTag   tag,
   g_assert_not_reached ();
 
   return NULL;
-}  
+}
 
 /**
  * g_type_info_get_ffi_type:
@@ -140,13 +140,13 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
 {
     ffi_type **arg_types;
     gint n_args, i;
-    
+
     g_return_val_if_fail (callable_info != NULL, NULL);
 
     n_args = g_callable_info_get_n_args (callable_info);
-    
+
     arg_types = (ffi_type **) g_new0 (ffi_type *, n_args + 1);
-    
+
     for (i = 0; i < n_args; ++i)
       {
         GIArgInfo *arg_info = g_callable_info_get_arg (callable_info, i);
@@ -181,7 +181,7 @@ g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
   type_tag = g_type_info_get_tag (return_type);
   return_ffi_type = g_type_info_get_ffi_type (return_type);
   g_base_info_unref((GIBaseInfo*)return_type);
-  
+
   return return_ffi_type;
 }
 
@@ -212,12 +212,12 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
   gboolean is_method;
   gboolean throws;
   gint n_args, n_invoke_args, i;
-  
+
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (invoker != NULL, FALSE);
-  
+
   symbol = g_function_info_get_symbol ((GIFunctionInfo*) info);
-  
+
   if (!g_typelib_symbol (g_base_info_get_typelib((GIBaseInfo *) info),
                          symbol, &(invoker->native_address)))
     {
@@ -249,7 +249,7 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
 
   /* TODO: avoid malloc here? */
   atypes = g_malloc0 (sizeof (ffi_type*) * n_invoke_args);
-  
+
   if (is_method)
     {
       atypes[0] = &ffi_type_pointer;
@@ -286,7 +286,7 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
 /**
  * g_function_info_invoker_destroy:
  * @invoker: A #GIFunctionInvoker
- * 
+ *
  * Release all resources allocated for the internals of @invoker; callers
  * are responsible for freeing any resources allocated for the structure
  * itself however.
@@ -320,11 +320,11 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
 {
   ffi_closure *closure;
   ffi_status status;
-    
+
   g_return_val_if_fail (callable_info != NULL, FALSE);
   g_return_val_if_fail (cif != NULL, FALSE);
   g_return_val_if_fail (callback != NULL, FALSE);
-    
+
   closure = mmap (NULL, sizeof (ffi_closure),
                   PROT_EXEC | PROT_READ | PROT_WRITE,
                   MAP_ANON | MAP_PRIVATE, -1, sysconf (_SC_PAGE_SIZE));
@@ -359,7 +359,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
       munmap(closure, sizeof (closure));
       return NULL;
     }
-  
+
   return closure;
 }
 

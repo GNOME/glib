@@ -40,31 +40,31 @@ g_invoke_error_quark (void)
 /**
  * g_function_info_invoke:
  * @info: a #GIFunctionInfo describing the function to invoke
- * @in_args: an array of #GArgument<!-- -->s, one for each in 
+ * @in_args: an array of #GArgument<!-- -->s, one for each in
  *    parameter of @info. If there are no in parameter, @in_args
  *    can be %NULL
  * @n_in_args: the length of the @in_args array
  * @out_args: an array of #GArgument<!-- -->s, one for each out
  *    parameter of @info. If there are no out parameters, @out_args
- *    may be %NULL 
+ *    may be %NULL
  * @n_out_args: the length of the @out_args array
- * @return_value: return location for the return value of the 
+ * @return_value: return location for the return value of the
  *    function. If the function returns void, @return_value may be
  *    %NULL
  * @error: return location for detailed error information, or %NULL
  *
- * Invokes the function described in @info with the given 
+ * Invokes the function described in @info with the given
  * arguments. Note that inout parameters must appear in both
  * argument lists. This function uses dlsym() to obtain a pointer
- * to the function, so the library or shared object containing the 
- * described function must either be linked to the caller, or must 
+ * to the function, so the library or shared object containing the
+ * described function must either be linked to the caller, or must
  * have been dlopen()<!-- -->ed before calling this function.
  *
  * Returns: %TRUE if the function has been invoked, %FALSE if an
- *   error occurred. 
+ *   error occurred.
  */
-gboolean 
-g_function_info_invoke (GIFunctionInfo *info, 
+gboolean
+g_function_info_invoke (GIFunctionInfo *info,
 			const GArgument  *in_args,
 			int               n_in_args,
 			const GArgument  *out_args,
@@ -134,7 +134,7 @@ g_function_info_invoke (GIFunctionInfo *info,
 
   atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
   args = g_alloca (sizeof (gpointer) * n_invoke_args);
-  
+
   if (is_method)
     {
       atypes[0] = &ffi_type_pointer;
@@ -162,7 +162,7 @@ g_function_info_invoke (GIFunctionInfo *info,
 
 	  args[i+offset] = (gpointer)&in_args[in_pos];
 	  in_pos++;
-	  
+
 	  break;
 	case GI_DIRECTION_OUT:
 	  atypes[i+offset] = &ffi_type_pointer;
@@ -172,12 +172,12 @@ g_function_info_invoke (GIFunctionInfo *info,
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"out\" arguments (handling out)");	      
+			   "Too few \"out\" arguments (handling out)");
 	      goto out;
 	    }
 
 	  args[i+offset] = (gpointer)&out_args[out_pos];
-	  out_pos++;	  
+	  out_pos++;
 	  break;
 	case GI_DIRECTION_INOUT:
 	  atypes[i+offset] = &ffi_type_pointer;
@@ -196,13 +196,13 @@ g_function_info_invoke (GIFunctionInfo *info,
 	      g_set_error (error,
 			   G_INVOKE_ERROR,
 			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"out\" arguments (handling inout)");	      
+			   "Too few \"out\" arguments (handling inout)");
 	      goto out;
 	    }
-	  
+
 	  args[i+offset] = (gpointer)&in_args[in_pos];
-	  in_pos++;	  
-	  out_pos++;	  
+	  in_pos++;
+	  out_pos++;
 	  break;
 	default:
 	  g_assert_not_reached ();
@@ -229,7 +229,7 @@ g_function_info_invoke (GIFunctionInfo *info,
       g_set_error (error,
 		   G_INVOKE_ERROR,
 		   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		   "Too many \"out\" arguments (at end)");	      
+		   "Too many \"out\" arguments (at end)");
       goto out;
     }
 
@@ -382,17 +382,17 @@ gi_cclosure_marshal_generic (GClosure *closure,
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
 
-  if (return_gvalue && G_VALUE_TYPE (return_gvalue)) 
+  if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     {
       rtype = value_to_ffi_type (return_gvalue, &rvalue);
     }
-  else 
+  else
     {
       rtype = &ffi_type_void;
     }
 
   rvalue = g_alloca (MAX (rtype->size, sizeof (ffi_arg)));
-  
+
   n_args = n_param_values + 1;
   atypes = g_alloca (sizeof (ffi_type *) * n_args);
   args =  g_alloca (sizeof (gpointer) * n_args);
@@ -401,7 +401,7 @@ gi_cclosure_marshal_generic (GClosure *closure,
     {
       if (G_CCLOSURE_SWAP_DATA (closure))
         {
-          atypes[n_args-1] = value_to_ffi_type (param_values + 0,  
+          atypes[n_args-1] = value_to_ffi_type (param_values + 0,
                                                 &args[n_args-1]);
           atypes[0] = &ffi_type_pointer;
           args[0] = &closure->data;

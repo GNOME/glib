@@ -170,7 +170,7 @@ function_generate (GIdlWriter * writer, GIdlNodeFunction * node)
 	{
 	  GIdlNodeParam *param = l->data;
 	  const gchar *direction = g_idl_node_param_direction_string (param);
-	  
+
 	  markup_s = g_string_new ("<parameter");
 
 	  g_string_append_printf (markup_s, " name=\"%s\"", param->node.name);
@@ -186,7 +186,7 @@ function_generate (GIdlWriter * writer, GIdlNodeFunction * node)
 	  if (param->allow_none)
 	    g_string_append (markup_s,
 			     g_markup_printf_escaped (" allow-none=\"1\""));
-	  
+
 	  if (strcmp (direction, "in") != 0)
 	    g_string_append (markup_s,
 			     g_markup_printf_escaped (" direction=\"%s\"",

@@ -35,21 +35,21 @@ G_BEGIN_DECLS
  *
  * The "typelib" is a binary, readonly, memory-mappable database
  * containing reflective information about a GObject library.
- * 
- * The format of GObject typelib is strongly influenced by the Mozilla XPCOM 
- * format. 
+ *
+ * The format of GObject typelib is strongly influenced by the Mozilla XPCOM
+ * format.
  *
  * Some of the differences to XPCOM include:
- * - Type information is stored not quite as compactly (XPCOM stores it inline 
- * in function descriptions in variable-sized blobs of 1 to n bytes. We store 
- * 16 bits of type information for each parameter, which is enough to encode 
- * simple types inline. Complex (e.g. recursive) types are stored out of line 
+ * - Type information is stored not quite as compactly (XPCOM stores it inline
+ * in function descriptions in variable-sized blobs of 1 to n bytes. We store
+ * 16 bits of type information for each parameter, which is enough to encode
+ * simple types inline. Complex (e.g. recursive) types are stored out of line
  * in a separate list of types.
- * - String and complex type data is stored outside of typelib entry blobs, 
- * references are stored as offsets relative to the start of the typelib. 
- * One possibility is to store the strings and types in a pools at the end 
- * of the typelib. 
- * 
+ * - String and complex type data is stored outside of typelib entry blobs,
+ * references are stored as offsets relative to the start of the typelib.
+ * One possibility is to store the strings and types in a pools at the end
+ * of the typelib.
+ *
  * The typelib has the following general format.
  *
  * typelib ::= header, directory, blobs, attributes, attributedata
@@ -63,8 +63,8 @@ G_BEGIN_DECLS
  * attributedata ::= string data for attributes
  *
  * Details
- * 
- * We describe the fragments that make up the typelib in the form of C structs 
+ *
+ * We describe the fragments that make up the typelib in the form of C structs
  * (although some fall short of being valid C structs since they contain multiple
  * flexible arrays).
  */
@@ -113,11 +113,11 @@ Changes since 0.1:
 - use 'blob' as collective name for the various blob types
 - rename 'type' field in blobs to 'blob_type'
 - rename 'type_name' and 'type_init' fields to 'gtype_name', 'gtype_init'
-- shrink directory entries to 12 bytes 
+- shrink directory entries to 12 bytes
 - merge struct and boxed blobs
 - split interface blobs into enum, object and interface blobs
 - add an 'unregistered' flag to struct and enum blobs
-- add a 'wraps_vfunc' flag to function blobs and link them to 
+- add a 'wraps_vfunc' flag to function blobs and link them to
   the vfuncs they wrap
 - restrict value blobs to only occur inside enums and flags again
 - add constant blobs, allow them toplevel, in interfaces and in objects
@@ -133,8 +133,8 @@ Changes since 0.1:
 
 /**
  * G_IR_MAGIC:
- * 
- * Identifying prefix for the typelib.  This was inspired by XPCOM, 
+ *
+ * Identifying prefix for the typelib.  This was inspired by XPCOM,
  * which in turn borrowed from PNG.
  */
 #define G_IR_MAGIC "GOBJ\nMETADATA\r\n\032"
@@ -153,7 +153,7 @@ Changes since 0.1:
  * @BLOB_TYPE_CONSTANT: A #ConstantBlob
  * @BLOB_TYPE_ERROR_DOMAIN: A #ErrorDomainBlob
  * @BLOB_TYPE_UNION: A #UnionBlob
- * 
+ *
  * The integral value of this enumeration appears in each "Blob"
  * component of a typelib to identify its type.
  */
@@ -182,8 +182,8 @@ typedef enum {
 /**
  * Header:
  * @magic: See #G_IR_MAGIC.
- * @major_version: The version of the typelib format. Minor version changes indicate 
- * compatible changes and should still allow the typelib to be parsed 
+ * @major_version: The version of the typelib format. Minor version changes indicate
+ * compatible changes and should still allow the typelib to be parsed
  * by a parser designed for the same major_version.
  * @minor_version: See major_version.
  * @n_entries: The number of entries in the directory.
@@ -197,7 +197,7 @@ typedef enum {
  * dependencies are required in order to avoid having programs
  * consuming a typelib check for an "Unresolved" type return
  * from every API call.
- * @size: The size in bytes of the typelib. 
+ * @size: The size in bytes of the typelib.
  * @namespace: Offset of the namespace string in the typelib.
  * @nsversion: Offset of the namespace version string in the typelib.
  * @shared_library: This field is the set of shared libraries associated
@@ -222,13 +222,13 @@ typedef enum {
  * @struct_blob_size: See above.
  * @error_domain_blob_size: See above.
  * @interface_blob_size: For variable-size blobs, the size of the struct up to the first
- * flexible array member. Recording this information here allows to 
- * write parser which continue to work if the format is extended by 
- * adding new fields before the first flexible array member in 
+ * flexible array member. Recording this information here allows to
+ * write parser which continue to work if the format is extended by
+ * adding new fields before the first flexible array member in
  * variable-size blobs.
- * 
+ *
  * The header structure appears exactly once at the beginning of a typelib.  It is a
- * collection of meta-information, such as the number of entries and dependencies.  
+ * collection of meta-information, such as the number of entries and dependencies.
  */
 typedef struct {
   gchar   magic[16];
@@ -268,7 +268,7 @@ typedef struct {
   guint16 object_blob_size;
   guint16 interface_blob_size;
   guint16 union_blob_size;
-  
+
   guint16 padding[7];
 } Header;
 
@@ -280,10 +280,10 @@ typedef struct {
  * @offset:   If is_local is set, this is the offset of the blob in the typelib.
  * Otherwise, it is the offset of the namespace in which the blob has
  * to be looked up by name.
- * 
+ *
  * References to directory entries are stored as 1-based 16-bit indexes.
- * 
- * All blobs pointed to by a directory entry start with the same layout for 
+ *
+ * All blobs pointed to by a directory entry start with the same layout for
  * the first 8 bytes (the reserved flags may be used by some blob types)
  */
 typedef struct {
@@ -298,9 +298,9 @@ typedef struct {
 
 /**
  * SimpleTypeBlob:
- * @is_pointer: Indicates whether the type is passed by reference. 
+ * @is_pointer: Indicates whether the type is passed by reference.
  * @tag: A #GITypeTag
- * @offset:  Offset relative to header->types that points to a TypeBlob. 
+ * @offset:  Offset relative to header->types that points to a TypeBlob.
  * Unlike other offsets, this is in words (ie 32bit units) rather
  * than bytes.
  *
@@ -320,53 +320,53 @@ typedef struct {
  */
 typedef union
 {
-  struct 
+  struct
   {
     guint reserved   : 8;
     guint reserved2  :16;
     guint pointer    : 1;
     guint reserved3  : 2;
-    guint tag        : 5;    
+    guint tag        : 5;
   } flags;
   guint32    offset;
 } SimpleTypeBlob;
 
 /*
  * ArgBlob:
- * @name: A suggested name for the parameter. 
+ * @name: A suggested name for the parameter.
  * @in: The parameter is an input to the function
- * @out: The parameter is used to return an output of the function. 
- * Parameters can be both in and out. Out parameters implicitly 
- * add another level of indirection to the parameter type. Ie if 
- * the type is uint32 in an out parameter, the function actually 
+ * @out: The parameter is used to return an output of the function.
+ * Parameters can be both in and out. Out parameters implicitly
+ * add another level of indirection to the parameter type. Ie if
+ * the type is uint32 in an out parameter, the function actually
  * takes an uint32*.
- * @dipper: The parameter is a pointer to a struct or object that will 
- * receive an output of the function. 
+ * @dipper: The parameter is a pointer to a struct or object that will
+ * receive an output of the function.
  * @allow_none: Only meaningful for types which are passed as pointers.
- * For an in parameter, indicates if it is ok to pass NULL in, for 
- * an out parameter, whether it may return NULL. Note that NULL is a 
+ * For an in parameter, indicates if it is ok to pass NULL in, for
+ * an out parameter, whether it may return NULL. Note that NULL is a
  * valid GList and GSList value, thus allow_none will normally be set
  * for parameters of these types.
  * @optional: For an out parameter, indicates that NULL may be passed in
  * if the value is not needed.
- * @transfer_ownership: For an in parameter, indicates that the function takes over 
- * ownership of the parameter value. For an out parameter, it 
- * indicates that the caller is responsible for freeing the return 
+ * @transfer_ownership: For an in parameter, indicates that the function takes over
+ * ownership of the parameter value. For an out parameter, it
+ * indicates that the caller is responsible for freeing the return
  * value.
  * @transfer_container_ownership: For container types, indicates that the
- * ownership of the container,  but not of its contents is transferred. This is typically the case 
+ * ownership of the container,  but not of its contents is transferred. This is typically the case
  * for out parameters returning lists of statically allocated things.
- * @is_return_value: The parameter should be considered the return value of the function. 
- * Only out parameters can be marked as return value, and there can be 
- * at most one per function call. If an out parameter is marked as 
- * return value, the actual return value of the function should be 
+ * @is_return_value: The parameter should be considered the return value of the function.
+ * Only out parameters can be marked as return value, and there can be
+ * at most one per function call. If an out parameter is marked as
+ * return value, the actual return value of the function should be
  * either void or a boolean indicating the success of the call.
  * @scope: A #GIScopeType. If the parameter is of a callback type, this denotes the scope
  * of the user_data and the callback function pointer itself
  * (for languages that emit code at run-time).
- * @closure: Index of the closure (user_data) parameter associated with the callback, 
+ * @closure: Index of the closure (user_data) parameter associated with the callback,
  * or -1.
- * @destroy: Index of the destroy notfication callback parameter associated with 
+ * @destroy: Index of the destroy notfication callback parameter associated with
  * the callback, or -1.
  * @arg_type: Describes the type of the parameter. See details below.
  *
@@ -402,9 +402,9 @@ typedef struct {
  * @caller_owns_return_value: If set, the caller is responsible for freeing the return value
  * if it is no longer needed.
  * @caller_owns_return_container: This flag is only relevant if the return type is a container type.
- * If the flag is set, the caller is resonsible for freeing the 
+ * If the flag is set, the caller is resonsible for freeing the
  * container, but not its contents.
- * @n_arguments: The number of arguments that this function expects, also the length 
+ * @n_arguments: The number of arguments that this function expects, also the length
  * of the array of ArgBlobs.
  * @arguments: An array of ArgBlob for the arguments of the function.
  */
@@ -426,9 +426,9 @@ typedef struct {
  * @blob_type: A #GTypelibBlobType
  * @deprecated: Whether the blob is deprecated.
  * @name: The name of the blob.
- * 
+ *
  * The #CommonBlob is shared between #FunctionBlob,
- * #CallbackBlob, #SignalBlob. 
+ * #CallbackBlob, #SignalBlob.
  */
 typedef struct {
   guint16 blob_type;  /* 1 */
@@ -442,22 +442,22 @@ typedef struct {
 /**
  * FunctionBlob:
  * @blob_Type: #BLOB_TYPE_FUNCTION
- * @symbol:   The symbol which can be used to obtain the function pointer with 
+ * @symbol:   The symbol which can be used to obtain the function pointer with
  * dlsym().
  * @deprecated: The function is deprecated.
- * @setter: The function is a setter for a property. Language bindings may 
- * prefer to not bind individual setters and rely on the generic 
+ * @setter: The function is a setter for a property. Language bindings may
+ * prefer to not bind individual setters and rely on the generic
  * g_object_set().
- * @getter: The function is a getter for a property. Language bindings may 
- * prefer to not bind individual getters and rely on the generic 
+ * @getter: The function is a getter for a property. Language bindings may
+ * prefer to not bind individual getters and rely on the generic
  * g_object_get().
- * @constructor:The function acts as a constructor for the object it is contained 
+ * @constructor:The function acts as a constructor for the object it is contained
  * in.
  * @wraps_vfunc: The function is a simple wrapper for a virtual function.
- * @index: Index of the property that this function is a setter or getter of 
+ * @index: Index of the property that this function is a setter or getter of
  * in the array of properties of the containing interface, or index
  * of the virtual function that this function wraps.
- * @signature: Offset of the SignatureBlob describing the parameter types and the 
+ * @signature: Offset of the SignatureBlob describing the parameter types and the
  * return value type.
  * @is_static: The function is a "static method"; in other words it's a pure
  * function whose name is conceptually scoped to the object.
@@ -487,7 +487,7 @@ typedef struct {
 
 /**
  * CallbackBlob:
- * @signature: Offset of the #SignatureBlob describing the parameter types and the 
+ * @signature: Offset of the #SignatureBlob describing the parameter types and the
  * return value type.
  */
 typedef struct {
@@ -505,36 +505,36 @@ typedef struct {
  * @pointer: Whether this type represents an indirection
  * @tag: A #GITypeTag
  * @interface: Index of the directory entry for the interface.
- * 
+ *
  * If the interface is an enum of flags type, is_pointer is 0, otherwise it is 1.
  */
 typedef struct {
   guint8  pointer  :1;
   guint8  reserved :2;
-  guint8  tag      :5;    
+  guint8  tag      :5;
   guint8  reserved2;
-  guint16 interface;  
+  guint16 interface;
 } InterfaceTypeBlob;
 
 /**
  * ArrayTypeBlob:
- * @zero_terminated: Indicates that the array must be terminated by a suitable #NULL 
- * value. 
- * @has_length: Indicates that length points to a parameter specifying the length 
- * of the array. If both has_length and zero_terminated are set, the 
- * convention is to pass -1 for the length if the array is 
- * zero-terminated. 
- * @length: The index of the parameter which is used to pass the length of the 
- * array. The parameter must be an integer type and have the same 
- * direction as this one. 
+ * @zero_terminated: Indicates that the array must be terminated by a suitable #NULL
+ * value.
+ * @has_length: Indicates that length points to a parameter specifying the length
+ * of the array. If both has_length and zero_terminated are set, the
+ * convention is to pass -1 for the length if the array is
+ * zero-terminated.
+ * @length: The index of the parameter which is used to pass the length of the
+ * array. The parameter must be an integer type and have the same
+ * direction as this one.
  * @type: The type of the array elements.
- * 
+ *
  * Arrays are passed by reference, thus is_pointer is always 1.
  */
 typedef struct {
   guint16 pointer         :1;
   guint16 reserved        :2;
-  guint16 tag             :5;    
+  guint16 tag             :5;
 
   guint16 zero_terminated :1;
   guint16 has_length      :1;
@@ -553,12 +553,12 @@ typedef struct {
  * ParamTypeBlob:
  * @n_types: The number of parameter types to follow.
  * @type: Describes the type of the list elements.
- * 
+ *
  */
 typedef struct {
   guint8  	 pointer  :1;
   guint8  	 reserved :2;
-  guint8  	 tag      :5;    
+  guint8  	 tag      :5;
 
   guint8  	 reserved2;
   guint16 	 n_types;
@@ -574,7 +574,7 @@ typedef struct {
 typedef struct {
   guint8  pointer  :1;
   guint8  reserved :2;
-  guint8  tag      :5;    
+  guint8  tag      :5;
 
   guint8  reserved2;
   guint16 n_domains;
@@ -584,7 +584,7 @@ typedef struct {
 
 /**
  * ErrorDomainBlob:
- * @get_quark: The symbol name of the function which must be called to obtain the 
+ * @get_quark: The symbol name of the function which must be called to obtain the
  * GQuark for the error domain.
  * @error_codes: Index of the InterfaceBlob describing the enumeration which lists
  * the possible error codes.
@@ -594,7 +594,7 @@ typedef struct {
 
   guint16 deprecated : 1;
   guint16 reserved   :15;
-  
+
   guint32 name;
 
   guint32 get_quark;
@@ -607,7 +607,7 @@ typedef struct {
  * @deprecated: Whether this value is deprecated
  * @value: The numerical value
  * @name: Name of blob
- * 
+ *
  * Values commonly occur in enums and flags.
  */
 typedef struct {
@@ -633,7 +633,7 @@ typedef struct {
 typedef struct {
   guint32        name;
 
-  guint8         readable :1; 
+  guint8         readable :1;
   guint8         writable :1;
   guint8         has_embedded_type :1;
   guint8         reserved :5;
@@ -652,11 +652,11 @@ typedef struct {
  * @gtype_init: The symbol name of the get_type() function which registers the type.
  */
 typedef struct {
-  guint16 blob_type;  
-  guint16 deprecated   : 1; 
+  guint16 blob_type;
+  guint16 deprecated   : 1;
   guint16 unregistered : 1;
   guint16 reserved :14;
-  guint32 name; 
+  guint32 name;
 
   guint32 gtype_name;
   guint32 gtype_init;
@@ -672,10 +672,10 @@ typedef struct {
  * @size: The size of the struct in bytes.
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
- * @n_fields: 
+ * @n_fields:
  * @n_functions: The lengths of the arrays.
- * @fields: An array of n_fields FieldBlobs. 
- * @functions: An array of n_functions FunctionBlobs. The described functions 
+ * @fields: An array of n_fields FieldBlobs.
+ * @functions: An array of n_functions FunctionBlobs. The described functions
  * should be considered as methods of the struct.
  */
 typedef struct {
@@ -684,7 +684,7 @@ typedef struct {
   guint16   deprecated   : 1;
   guint16   unregistered : 1;
   guint16   is_gtype_struct : 1;
-  guint16   alignment    : 6;  
+  guint16   alignment    : 6;
   guint16   reserved     : 7;
 
   guint32   name;
@@ -702,7 +702,7 @@ typedef struct {
 
 #if 0
   /* variable-length parts of the blob */
-  FieldBlob    fields[];   
+  FieldBlob    fields[];
   FunctionBlob methods[];
 #endif
 } StructBlob;
@@ -720,12 +720,12 @@ typedef struct {
  * discriminator of a discriminated union is located.
  * The value 0xFFFF indicates that the discriminator offset
  * is unknown.
- * @discriminator_type: Type of the discriminator 
+ * @discriminator_type: Type of the discriminator
  * @discriminator_values: On discriminator value per field
  * @fields: Array of FieldBlobs describing the alternative branches of the union
  */
 typedef struct {
-  guint16      blob_type; 
+  guint16      blob_type;
   guint16      deprecated    : 1;
   guint16      unregistered  : 1;
   guint16      discriminated : 1;
@@ -744,12 +744,12 @@ typedef struct {
   guint32      reserved2;
   guint32      reserved3;
 
-  gint32       discriminator_offset; 
+  gint32       discriminator_offset;
   SimpleTypeBlob discriminator_type;
 
 #if 0
-  FieldBlob    fields[];   
-  FunctionBlob functions[];  
+  FieldBlob    fields[];
+  FunctionBlob functions[];
   ConstantBlob discriminator_values[]
 #endif
 } UnionBlob;
@@ -762,17 +762,17 @@ typedef struct {
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
  * @n_values: The lengths of the values arrays.
- * @values: Describes the enum values. 
+ * @values: Describes the enum values.
  */
 typedef struct {
   guint16   blob_type;
 
-  guint16   deprecated   : 1; 
+  guint16   deprecated   : 1;
   guint16   unregistered : 1;
   guint16   storage_type : 5;
   guint16   reserved     : 9;
 
-  guint32   name; 
+  guint32   name;
 
   guint32   gtype_name;
   guint32   gtype_init;
@@ -782,15 +782,15 @@ typedef struct {
 
   guint32   reserved3;
 
-  ValueBlob values[];    
+  ValueBlob values[];
 } EnumBlob;
 
 /**
  * PropertyBlob:
- * @name:     The name of the property. 
+ * @name:     The name of the property.
  * @readable:
- * @writable: 
- * @construct: 
+ * @writable:
+ * @construct:
  * @construct_only: The ParamFlags used when registering the property.
  * @type: Describes the type of the property.
  */
@@ -823,7 +823,7 @@ typedef struct {
  * @true_stops_emit: Whether the signal has true-stops-emit semantics
  * @class_closure: The index of the class closure in the list of virtual functions
  * of the object or interface on which the signal is defined.
- * @signature: Offset of the SignatureBlob describing the parameter types and the 
+ * @signature: Offset of the SignatureBlob describing the parameter types and the
  * return value type.
  */
 typedef struct {
@@ -852,19 +852,19 @@ typedef struct {
  * VFuncBlob:
  * @name: The name of the virtual function.
  * @must_chain_up: If set, every implementation of this virtual function must
- * chain up to the implementation of the parent class. 
+ * chain up to the implementation of the parent class.
  * @must_be_implemented: If set, every derived class must override this virtual function.
  * @must_not_be_implemented: If set, derived class must not override this virtual function.
  * @class_closure: Set if this virtual function is the class closure of a signal.
- * @signal: The index of the signal in the list of signals of the object or 
+ * @signal: The index of the signal in the list of signals of the object or
  * interface to which this virtual function belongs.
  * @struct_offset: The offset of the function pointer in the class struct. The value
  * 0xFFFF indicates that the struct offset is unknown.
  * @invoker: If a method invoker for this virtual exists, this is the offset in the
  * class structure of the method.  If no method is known, this value will be 0x3ff.
- * @signature: 
- * Offset of the SignatureBlob describing the parameter types and the 
- * return value type. 
+ * @signature:
+ * Offset of the SignatureBlob describing the parameter types and the
+ * return value type.
  */
 typedef struct {
   guint32 name;
@@ -889,19 +889,19 @@ typedef struct {
  * @blob_type: #BLOB_TYPE_OBJECT
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
- * @parent: The directory index of the parent type. This is only set for 
+ * @parent: The directory index of the parent type. This is only set for
  * objects. If an object does not have a parent, it is zero.
  * @n_interfaces:
- * @n_fields: 
+ * @n_fields:
  * @n_properties:
  * @n_methods:
  * @n_signals:
  * @n_vfuncs:
- * @n_constants: The lengths of the arrays.Up to 16bits of padding may be inserted 
+ * @n_constants: The lengths of the arrays.Up to 16bits of padding may be inserted
  * between the arrays to ensure that they start on a 32bit boundary.
- * @interfaces: An array of indices of directory entries for the implemented 
+ * @interfaces: An array of indices of directory entries for the implemented
  * interfaces.
- * @fields: Describes the fields. 
+ * @fields: Describes the fields.
  * @methods: Describes the methods, constructors, setters and getters.
  * @properties: Describes the properties.
  * @signals: Describes the signals.
@@ -934,7 +934,7 @@ typedef struct {
   guint32   reserved4;
 
   guint16   interfaces[];
- 
+
 #if 0
   /* variable-length parts of the blob */
   FieldBlob           fields[];
@@ -965,10 +965,10 @@ typedef struct {
  * @constants: Describes the constants.
  */
 typedef struct {
-  guint16 blob_type;  
+  guint16 blob_type;
   guint16 deprecated   : 1;
   guint16 reserved     :15;
-  guint32 name; 
+  guint32 name;
 
   guint32 gtype_name;
   guint32 gtype_init;
@@ -979,14 +979,14 @@ typedef struct {
   guint16 n_methods;
   guint16 n_signals;
   guint16 n_vfuncs;
-  guint16 n_constants;  
+  guint16 n_constants;
 
   guint32 reserved2;
   guint32 reserved3;
 
   guint16 prerequisites[];
 
-#if 0 
+#if 0
   /* variable-length parts of the blob */
   PropertyBlob        properties[];
   FunctionBlob        methods[];
@@ -1005,9 +1005,9 @@ typedef struct {
  */
 typedef struct {
   guint16        blob_type;
-  guint16        deprecated   : 1; 
+  guint16        deprecated   : 1;
   guint16        reserved     :15;
-  guint32        name; 
+  guint32        name;
 
   SimpleTypeBlob type;
 

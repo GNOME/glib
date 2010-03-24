@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define G_IS_IREPOSITORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_IREPOSITORY))
 #define G_IREPOSITORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_IREPOSITORY, GIRepositoryClass))
 
-typedef struct _GIRepository         GIRepository; 
-typedef struct _GIRepositoryClass    GIRepositoryClass; 
-typedef struct _GIRepositoryPrivate  GIRepositoryPrivate; 
+typedef struct _GIRepository         GIRepository;
+typedef struct _GIRepositoryClass    GIRepositoryClass;
+typedef struct _GIRepositoryPrivate  GIRepositoryPrivate;
 
 typedef struct _GIBaseInfoStub       GIBaseInfo;
 
@@ -73,8 +73,8 @@ typedef GIBaseInfo GIErrorDomainInfo;
 typedef struct _GIUnresolvedInfo     GIUnresolvedInfo;
 typedef struct _GTypelib            GTypelib;
 
-struct _GIRepository 
-{ 
+struct _GIRepository
+{
   GObject parent;
 
   /*< private >*/
@@ -82,8 +82,8 @@ struct _GIRepository
 };
 
 struct _GIRepositoryClass
-{ 
-  GObjectClass parent; 
+{
+  GObjectClass parent;
 };
 
 typedef enum
@@ -173,7 +173,7 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
 
 /* Types of objects registered in the repository */
 
-typedef enum 
+typedef enum
 {
   GI_INFO_TYPE_INVALID,
   GI_INFO_TYPE_FUNCTION,
@@ -226,7 +226,7 @@ gboolean               g_base_info_equal            (GIBaseInfo   *info1,
 
 GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     GIBaseInfo   *container,
-						     GTypelib     *typelib, 
+						     GTypelib     *typelib,
 						     guint32       offset);
 
 
@@ -247,7 +247,7 @@ GIFunctionInfoFlags     g_function_info_get_flags      (GIFunctionInfo *info);
 GIPropertyInfo *        g_function_info_get_property   (GIFunctionInfo *info);
 GIVFuncInfo *           g_function_info_get_vfunc      (GIFunctionInfo *info);
 
-typedef union 
+typedef union
 {
   gboolean v_boolean;
   gint8    v_int8;
@@ -282,7 +282,7 @@ typedef enum
   G_INVOKE_ERROR_ARGUMENT_MISMATCH
 } GInvokeError;
 
-gboolean              g_function_info_invoke         (GIFunctionInfo *info, 
+gboolean              g_function_info_invoke         (GIFunctionInfo *info,
 						      const GArgument  *in_args,
 						      int               n_in_args,
 						      const GArgument  *out_args,
@@ -323,8 +323,8 @@ typedef enum {
   GI_SCOPE_TYPE_INVALID, /* The argument is not of callback type */
   GI_SCOPE_TYPE_CALL, /* The callback and associated user_data is only used during the
                          call to this function */
-  GI_SCOPE_TYPE_ASYNC, /* The callback and associated user_data is 
-                          only used until the callback is invoked, and the callback 
+  GI_SCOPE_TYPE_ASYNC, /* The callback and associated user_data is
+                          only used until the callback is invoked, and the callback
                           is invoked always exactly once. */
   GI_SCOPE_TYPE_NOTIFIED /* The callback and and associated user_data is
                             used until the caller is notfied via the destroy_notify */
@@ -353,7 +353,7 @@ typedef enum {
   GI_TYPE_TAG_INT8      =  2,
   GI_TYPE_TAG_UINT8     =  3,
   GI_TYPE_TAG_INT16     =  4,
-  GI_TYPE_TAG_UINT16    =  5,  
+  GI_TYPE_TAG_UINT16    =  5,
   GI_TYPE_TAG_INT32     =  6,
   GI_TYPE_TAG_UINT32    =  7,
   GI_TYPE_TAG_INT64     =  8,
@@ -407,7 +407,7 @@ GIInterfaceInfo *           g_error_domain_info_get_codes (GIErrorDomainInfo *in
 
 
 /* GIValueInfo */
- 
+
 glong                  g_value_info_get_value      (GIValueInfo *info);
 
 
@@ -477,8 +477,8 @@ GITypeTag              g_enum_info_get_storage_type         (GIEnumInfo      *in
 
 /* GIObjectInfo */
 
-const gchar *          g_object_info_get_type_name 	    (GIObjectInfo    *info);
-const gchar *          g_object_info_get_type_init 	    (GIObjectInfo    *info);
+const gchar *          g_object_info_get_type_name	    (GIObjectInfo    *info);
+const gchar *          g_object_info_get_type_init	    (GIObjectInfo    *info);
 gboolean               g_object_info_get_abstract           (GIObjectInfo    *info);
 GIObjectInfo *         g_object_info_get_parent             (GIObjectInfo    *info);
 gint                   g_object_info_get_n_interfaces       (GIObjectInfo    *info);
@@ -508,7 +508,7 @@ GIConstantInfo *       g_object_info_get_constant           (GIObjectInfo    *in
 							     gint            n);
 GIStructInfo *         g_object_info_get_class_struct       (GIObjectInfo    *info);
 
-							     
+
 /* GIInterfaceInfo */
 
 gint                   g_interface_info_get_n_prerequisites (GIInterfaceInfo *info);
@@ -521,7 +521,7 @@ gint                   g_interface_info_get_n_methods       (GIInterfaceInfo *in
 GIFunctionInfo *       g_interface_info_get_method          (GIInterfaceInfo *info,
 							     gint        n);
 GIFunctionInfo *       g_interface_info_find_method         (GIInterfaceInfo *info,
-		       				             const gchar *name);
+						             const gchar *name);
 gint                   g_interface_info_get_n_signals       (GIInterfaceInfo *info);
 GISignalInfo *         g_interface_info_get_signal          (GIInterfaceInfo *info,
 							     gint        n);

@@ -158,7 +158,7 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
       GString *parent_str;
       GType parent;
       gboolean first = TRUE;
-      
+
       parent = type;
       parent_str = g_string_new ("");
       do
@@ -170,9 +170,9 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
             g_string_append_c (parent_str, ',');
           g_string_append (parent_str, g_type_name (parent));
         } while (parent != G_TYPE_OBJECT && parent != G_TYPE_INVALID);
-   
+
       escaped_printf (out, " parents=\"%s\"", parent_str->str);
-      
+
       g_string_free (parent_str, TRUE);
     }
 

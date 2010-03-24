@@ -1,4 +1,4 @@
-/* GObject introspection: Typelib creation 
+/* GObject introspection: Typelib creation
  *
  * Copyright (C) 2005 Matthias Clasen
  *
@@ -30,13 +30,13 @@
 
 
 GIrModule *
-g_ir_module_new (const gchar *name, 
+g_ir_module_new (const gchar *name,
 		 const gchar *version,
 		 const gchar *shared_library,
 		 const gchar *c_prefix)
 {
   GIrModule *module;
-  
+
   module = g_new0 (GIrModule, 1);
 
   module->name = g_strdup (name);
@@ -94,18 +94,18 @@ g_ir_module_fatal (GIrModule  *module,
   char *formatted;
 
   va_list args;
-  
+
   va_start (args, msg);
-  
+
   formatted = g_strdup_vprintf (msg, args);
-  
+
   if (line)
     g_printerr ("%s-%s.gir:%d: error: %s\n", module->name, module->version, line, formatted);
   else
     g_printerr ("%s-%s.gir: error: %s\n", module->name, module->version, formatted);
-    
+
   exit (1);
-  
+
   va_end (args);
 }
 
@@ -247,7 +247,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
 	     g_list_length (module->dependencies));
-  
+
   dir_size = n_entries * sizeof (DirEntry);
   size = header_size + dir_size;
 
@@ -256,7 +256,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   for (e = module->entries; e; e = e->next)
     {
       GIrNode *node = e->data;
-      
+
       size += g_ir_node_get_full_size (node);
       size += g_ir_node_get_attribute_size (node);
 
@@ -266,14 +266,14 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   /* Adjust size for strings allocated in header below specially */
   size += ALIGN_VALUE (strlen (module->name) + 1, 4);
-  if (module->shared_library) 
+  if (module->shared_library)
     size += ALIGN_VALUE (strlen (module->shared_library) + 1, 4);
   if (dependencies != NULL)
     size += ALIGN_VALUE (strlen (dependencies) + 1, 4);
   if (module->c_prefix != NULL)
     size += ALIGN_VALUE (strlen (module->c_prefix) + 1, 4);
 
-  g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n", 
+  g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n",
 	  size, header_size, dir_size, size - header_size - dir_size);
 
   data = g_malloc0 (size);
@@ -361,13 +361,13 @@ g_ir_module_build_typelib (GIrModule  *module,
 
 	  goto restart;
 	}
-	
+
       offset = offset2;
 
       if (node->type == G_IR_NODE_XREF)
 	{
 	  const char *namespace = ((GIrNodeXRef*)node)->namespace;
-	  
+
 	  entry->blob_type = 0;
 	  entry->local = FALSE;
 	  entry->offset = write_string (namespace, strings, data, &offset2);
@@ -419,7 +419,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 
       write_attributes (module, node, strings, data, &offset, &offset2);
     }
-  
+
   g_message ("reallocating to %d bytes", offset2);
 
   data = g_realloc (data, offset2);

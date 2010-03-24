@@ -28,7 +28,7 @@
 G_BEGIN_DECLS
 
 typedef struct _GIrTypelibBuild GIrTypelibBuild;
-typedef struct _GIrNode GIrNode; 
+typedef struct _GIrNode GIrNode;
 typedef struct _GIrNodeFunction GIrNodeFunction;
 typedef struct _GIrNodeParam GIrNodeParam;
 typedef struct _GIrNodeType GIrNodeType;
@@ -53,10 +53,10 @@ struct _GIrTypelibBuild {
   GHashTable  *types;
   GList       *offset_ordered_nodes;
   guint32      n_attributes;
-  guchar      *data; 
+  guchar      *data;
 };
 
-typedef enum 
+typedef enum
 {
   G_IR_NODE_INVALID      =  0,
   G_IR_NODE_FUNCTION     =  1,
@@ -64,7 +64,7 @@ typedef enum
   G_IR_NODE_STRUCT       =  3,
   G_IR_NODE_BOXED        =  4,
   G_IR_NODE_ENUM         =  5,
-  G_IR_NODE_FLAGS        =  6, 
+  G_IR_NODE_FLAGS        =  6,
   G_IR_NODE_OBJECT       =  7,
   G_IR_NODE_INTERFACE    =  8,
   G_IR_NODE_CONSTANT     =  9,
@@ -102,7 +102,7 @@ struct _GIrNodeFunction
   GIrNode node;
 
   gboolean deprecated;
-  gboolean is_varargs; /* Not in typelib yet */ 
+  gboolean is_varargs; /* Not in typelib yet */
 
   gboolean is_method;
   gboolean is_setter;
@@ -117,7 +117,7 @@ struct _GIrNodeFunction
   GList *parameters;
 };
 
-struct _GIrNodeType 
+struct _GIrNodeType
 {
   GIrNode node;
 
@@ -138,15 +138,15 @@ struct _GIrNodeType
   gint length;
   gboolean has_size;
   gint size;
-  
+
   GIrNodeType *parameter_type1;
-  GIrNodeType *parameter_type2;  
+  GIrNodeType *parameter_type2;
 
   gchar *interface;
   gchar **errors;
 };
 
-struct _GIrNodeParam 
+struct _GIrNodeParam
 {
   GIrNode node;
 
@@ -159,10 +159,10 @@ struct _GIrNodeParam
   gboolean transfer;
   gboolean shallow_transfer;
   GIScopeType scope;
-  
+
   gint8 closure;
   gint8 destroy;
-  
+
   GIrNodeType *type;
 };
 
@@ -177,11 +177,11 @@ struct _GIrNodeProperty
   gboolean writable;
   gboolean construct;
   gboolean construct_only;
-  
+
   GIrNodeType *type;
 };
 
-struct _GIrNodeSignal 
+struct _GIrNodeSignal
 {
   GIrNode node;
 
@@ -194,30 +194,30 @@ struct _GIrNodeSignal
   gboolean detailed;
   gboolean action;
   gboolean no_hooks;
-  
+
   gboolean has_class_closure;
   gboolean true_stops_emit;
-  
+
   gint class_closure;
-  
+
   GList *parameters;
-  GIrNodeParam *result;    
+  GIrNodeParam *result;
 };
 
-struct _GIrNodeVFunc 
+struct _GIrNodeVFunc
 {
   GIrNode node;
 
-  gboolean is_varargs; /* Not in typelib yet */ 
+  gboolean is_varargs; /* Not in typelib yet */
   gboolean must_chain_up;
   gboolean must_be_implemented;
   gboolean must_not_be_implemented;
   gboolean is_class_closure;
-  
+
   char *invoker;
 
   GList *parameters;
-  GIrNodeParam *result;      
+  GIrNodeParam *result;
 
   gint offset;
 };
@@ -231,7 +231,7 @@ struct _GIrNodeField
   gint bits;
   gint offset;
   GIrNodeFunction *callback;
-  
+
   GIrNodeType *type;
 };
 
@@ -247,13 +247,13 @@ struct _GIrNodeInterface
 
   gchar *parent;
   gchar *glib_type_struct;
-  
+
   GList *interfaces;
   GList *prerequisites;
 
   gint alignment;
   gint size;
-  
+
   GList *members;
 };
 
@@ -273,7 +273,7 @@ struct _GIrNodeConstant
   gboolean deprecated;
 
   GIrNodeType *type;
-  
+
   gchar *value;
 };
 
@@ -291,7 +291,7 @@ struct _GIrNodeEnum
 };
 
 struct _GIrNodeBoxed
-{ 
+{
   GIrNode node;
 
   gboolean deprecated;
@@ -301,7 +301,7 @@ struct _GIrNodeBoxed
 
   gint alignment;
   gint size;
-  
+
   GList *members;
 };
 
@@ -318,7 +318,7 @@ struct _GIrNodeStruct
 
   gint alignment;
   gint size;
-  
+
   GList *members;
 };
 
@@ -327,7 +327,7 @@ struct _GIrNodeUnion
   GIrNode node;
 
   gboolean deprecated;
-  
+
   GList *members;
   GList *discriminators;
 
@@ -347,7 +347,7 @@ struct _GIrNodeErrorDomain
   GIrNode node;
 
   gboolean deprecated;
-  
+
   gchar *name;
   gchar *getquark;
   gchar *codes;
@@ -370,7 +370,7 @@ gboolean  g_ir_node_can_have_member (GIrNode    *node);
 void      g_ir_node_add_member      (GIrNode         *node,
 				     GIrNodeFunction *member);
 guint32   write_string              (const gchar *str,
-				     GHashTable  *strings, 
+				     GHashTable  *strings,
 				     guchar      *data,
 				     guint32     *offset);
 

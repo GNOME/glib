@@ -36,7 +36,7 @@ typedef struct _GIFunctionInvoker GIFunctionInvoker;
 struct _GIFunctionInvoker {
   ffi_cif cif;
   gpointer native_address;
-  
+
   gpointer padding[3];
 };
 
@@ -45,7 +45,7 @@ ffi_type *    g_type_info_get_ffi_type            (GITypeInfo           *info);
 gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                    GIFunctionInvoker    *invoker,
                                                    GError              **error);
-                                                   
+
 void          g_function_invoker_destroy          (GIFunctionInvoker    *invoker);
 
 

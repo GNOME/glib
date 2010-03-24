@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 typedef struct _GIrModule GIrModule;
 
 struct _GIrModule
-{ 
+{
   gchar *name;
   gchar *version;
   gchar *shared_library;

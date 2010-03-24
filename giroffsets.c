@@ -235,7 +235,7 @@ get_type_size_alignment (GIrNodeType *type,
   if (type->tag == GI_TYPE_TAG_ARRAY)
     {
       gint elt_size, elt_alignment;
-          
+
       if (!type->has_size
           || !get_type_size_alignment(type->parameter_type1, module, modules,
                                       &elt_size, &elt_alignment, who))
@@ -244,10 +244,10 @@ get_type_size_alignment (GIrNodeType *type,
           *alignment = -1;
           return FALSE;
         }
-          
+
       *size = type->size * elt_size;
       *alignment = elt_alignment;
-          
+
       return TRUE;
     }
   else if (type->is_pointer)
@@ -300,7 +300,7 @@ get_field_size_alignment (GIrNodeField *field,
 {
   gchar *who;
   gboolean success;
-  
+
   who = g_strdup_printf ("field %s.%s.%s", module->name, parent_node->name, ((GIrNode *)field)->name);
 
   if (field->callback)
