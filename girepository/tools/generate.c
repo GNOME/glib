@@ -1,3 +1,4 @@
+
 /* -*- Mode: C; c-file-style: "gnu"; -*- */
 /* GObject introspection: IDL generator
  *
@@ -156,17 +157,17 @@ xml_free (Xml *xml)
 }
 
 
-static void 
+static void
 check_unresolved (GIBaseInfo *info)
 {
   if (g_base_info_get_type (info) != GI_INFO_TYPE_UNRESOLVED)
     return;
 
-  g_critical ("Found unresolved type '%s' '%s'\n", 
+  g_critical ("Found unresolved type '%s' '%s'\n",
 	      g_base_info_get_name (info), g_base_info_get_namespace (info));
 }
 
-static void 
+static void
 write_type_name (const gchar *namespace,
 		 GIBaseInfo  *info,
 		 Xml         *file)
@@ -190,27 +191,27 @@ write_type_name_attribute (const gchar *namespace,
 
 static void
 write_type_info (const gchar *namespace,
-		 GITypeInfo  *info, 
+		 GITypeInfo  *info,
 		 Xml         *file)
 {
   gint tag;
   gint i;
   GITypeInfo *type;
   gboolean is_pointer;
-  
+
   check_unresolved ((GIBaseInfo*)info);
 
   tag = g_type_info_get_tag (info);
   is_pointer = g_type_info_is_pointer (info);
 
-  if (tag == GI_TYPE_TAG_VOID) 
+  if (tag == GI_TYPE_TAG_VOID)
     {
       xml_start_element (file, "type");
 
       xml_printf (file, " name=\"%s\"", is_pointer ? "any" : "none");
 
       xml_end_element (file, "type");
-    } 
+    }
   else if (G_TYPE_TAG_IS_BASIC (tag))
     {
       xml_start_element (file, "type");
@@ -220,7 +221,7 @@ write_type_info (const gchar *namespace,
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length, size;
-      
+
       xml_start_element (file, "array");
 
       type = g_type_info_get_param_type (info, 0);
@@ -232,7 +233,7 @@ write_type_info (const gchar *namespace,
       size = g_type_info_get_array_fixed_size (info);
       if (size >= 0)
         xml_printf (file, " fixed-size=\"%d\"", size);
-      
+
       if (g_type_info_is_zero_terminated (info))
 	xml_printf (file, " zero-terminated=\"1\"");
 
@@ -289,7 +290,7 @@ write_type_info (const gchar *namespace,
 	}
       xml_end_element (file, "type");
     }
-  else if (tag == GI_TYPE_TAG_ERROR) 
+  else if (tag == GI_TYPE_TAG_ERROR)
     {
       gint n;
 
@@ -334,7 +335,7 @@ write_attributes (Xml *file,
 }
 
 static void
-write_constant_value (const gchar *namespace, 
+write_constant_value (const gchar *namespace,
 		      GITypeInfo *info,
 		      GArgument *argument,
 		      Xml *file);
@@ -356,7 +357,7 @@ write_field_info (const gchar *namespace,
   gint offset;
   GITypeInfo *type;
   GIBaseInfo *interface;
-  GArgument value; 
+  GArgument value;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   flags = g_field_info_get_flags (info);
@@ -410,7 +411,7 @@ write_field_info (const gchar *namespace,
   xml_end_element (file, "field");
 }
 
-static void 
+static void
 write_callable_info (const gchar    *namespace,
 		     GICallableInfo *info,
 		     Xml            *file)
@@ -438,14 +439,14 @@ write_callable_info (const gchar    *namespace,
     default:
       g_assert_not_reached ();
     }
-  
+
   if (g_callable_info_may_return_null (info))
     xml_printf (file, " allow-none=\"1\"");
 
   write_type_info (namespace, type, file);
 
   xml_end_element (file, "return-value");
-	
+
   if (g_callable_info_get_n_args (info) <= 0)
     return;
 
@@ -453,11 +454,11 @@ write_callable_info (const gchar    *namespace,
   for (i = 0; i < g_callable_info_get_n_args (info); i++)
     {
       GIArgInfo *arg = g_callable_info_get_arg (info, i);
-      
+
       xml_start_element (file, "parameter");
       xml_printf (file, " name=\"%s\"",
                   g_base_info_get_name ((GIBaseInfo *) arg));
-      
+
       switch (g_arg_info_get_ownership_transfer (arg))
 	{
 	case GI_TRANSFER_NOTHING:
@@ -472,7 +473,7 @@ write_callable_info (const gchar    *namespace,
 	default:
 	  g_assert_not_reached ();
 	}
-      
+
       switch (g_arg_info_get_direction (arg))
 	{
 	case GI_DIRECTION_IN:
@@ -484,16 +485,16 @@ write_callable_info (const gchar    *namespace,
 	  xml_printf (file, " direction=\"inout\"");
 	  break;
 	}
-      
+
       if (g_arg_info_may_be_null (arg))
 	xml_printf (file, " allow-none=\"1\"");
-      
+
       if (g_arg_info_is_dipper (arg))
 	xml_printf (file, " dipper=\"1\"");
-      
+
       if (g_arg_info_is_return_value (arg))
 	xml_printf (file, " retval=\"1\"");
-      
+
       if (g_arg_info_is_optional (arg))
 	xml_printf (file, " optional=\"1\"");
 
@@ -511,13 +512,13 @@ write_callable_info (const gchar    *namespace,
           xml_printf (file, " scope=\"notified\"");
           break;
         }
-      
+
       if (g_arg_info_get_closure (arg) >= 0)
         xml_printf (file, " closure=\"%d\"", g_arg_info_get_closure (arg));
-      
+
       if (g_arg_info_get_destroy (arg) >= 0)
         xml_printf (file, " destroy=\"%d\"", g_arg_info_get_destroy (arg));
-      
+
       type = g_arg_info_get_type (arg);
       write_type_info (namespace, type, file);
 
@@ -525,7 +526,7 @@ write_callable_info (const gchar    *namespace,
 
       g_base_info_unref ((GIBaseInfo *)arg);
     }
-  
+
   xml_end_element (file, "parameters");
   g_base_info_unref ((GIBaseInfo *)type);
 }
@@ -554,16 +555,16 @@ write_function_info (const gchar    *namespace,
     tag = "method";
   else
     tag = "function";
-	
+
   xml_start_element (file, tag);
   xml_printf (file, " name=\"%s\" c:identifier=\"%s\"",
               name, symbol);
-	
+
   if (flags & GI_FUNCTION_IS_SETTER)
     xml_printf (file, " type=\"setter\"");
   else if (flags & GI_FUNCTION_IS_GETTER)
     xml_printf (file, " type=\"getter\"");
-	  
+
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 
@@ -587,10 +588,10 @@ write_callback_info (const gchar    *namespace,
 
   xml_start_element (file, "callback");
   xml_printf (file, " name=\"%s\"", name);
-	
+
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
   write_callable_info (namespace, (GICallableInfo*)info, file);
   xml_end_element (file, "callback");
 }
@@ -614,7 +615,7 @@ write_struct_info (const gchar  *namespace,
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-  
+
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
     {
       xml_start_element (file, "glib:boxed");
@@ -625,19 +626,19 @@ write_struct_info (const gchar  *namespace,
       xml_start_element (file, "record");
       xml_printf (file, " name=\"%s\"", name);
     }
-  
+
   if (type_name != NULL)
     xml_printf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
-	  
+
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-  
+
   is_gtype_struct = g_struct_info_is_gtype_struct (info);
   if (is_gtype_struct)
     xml_printf (file, " glib:is-gtype-struct=\"1\"");
 
   write_attributes (file, (GIBaseInfo*) info);
-	
+
   size = g_struct_info_get_size (info);
   if (show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
@@ -651,15 +652,15 @@ write_struct_info (const gchar  *namespace,
 	  write_field_info (namespace, field, NULL, file);
 	  g_base_info_unref ((GIBaseInfo *)field);
 	}
-      
+
       for (i = 0; i < g_struct_info_get_n_methods (info); i++)
 	{
 	  GIFunctionInfo *function = g_struct_info_get_method (info, i);
 	  write_function_info (namespace, function, file);
 	  g_base_info_unref ((GIBaseInfo *)function);
 	}
-      
-    } 
+
+    }
 
   xml_end_element_unchecked (file);
 }
@@ -682,14 +683,14 @@ write_value_info (const gchar *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-  
+
   write_attributes (file, (GIBaseInfo*) info);
 
   xml_end_element (file, "member");
 }
 
 static void
-write_constant_value (const gchar *namespace, 
+write_constant_value (const gchar *namespace,
 		      GITypeInfo *type,
 		      GArgument  *value,
 		      Xml        *file)
@@ -784,7 +785,7 @@ write_constant_info (const gchar    *namespace,
   write_attributes (file, (GIBaseInfo*) info);
 
   xml_end_element (file, "constant");
-  
+
   g_base_info_unref ((GIBaseInfo *)type);
 }
 
@@ -814,7 +815,7 @@ write_enum_info (const gchar *namespace,
 
   if (type_init)
     xml_printf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
-  
+
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 
@@ -848,7 +849,7 @@ write_signal_info (const gchar  *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
   if (flags & G_SIGNAL_RUN_FIRST)
     xml_printf (file, " when=\"FIRST\"");
   else if (flags & G_SIGNAL_RUN_LAST)
@@ -874,7 +875,7 @@ write_signal_info (const gchar  *namespace,
 }
 
 static void
-write_vfunc_info (const gchar *namespace, 
+write_vfunc_info (const gchar *namespace,
 		  GIVFuncInfo *info,
 		  Xml         *file)
 {
@@ -895,7 +896,7 @@ write_vfunc_info (const gchar *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-	
+
   if (flags & GI_VFUNC_MUST_CHAIN_UP)
     xml_printf (file, " must-chain-up=\"1\"");
 
@@ -903,7 +904,7 @@ write_vfunc_info (const gchar *namespace,
     xml_printf (file, " override=\"always\"");
   else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
     xml_printf (file, " override=\"never\"");
-    
+
   xml_printf (file, " offset=\"%d\"", offset);
 
   if (invoker)
@@ -956,7 +957,7 @@ write_property_info (const gchar    *namespace,
 }
 
 static void
-write_object_info (const gchar  *namespace, 
+write_object_info (const gchar  *namespace,
 		   GIObjectInfo *info,
 		   Xml          *file)
 {
@@ -972,7 +973,7 @@ write_object_info (const gchar  *namespace,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
   is_abstract = g_object_info_get_abstract (info);
-  
+
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
   xml_start_element (file, "class");
@@ -984,7 +985,7 @@ write_object_info (const gchar  *namespace,
       write_type_name_attribute (namespace, (GIBaseInfo *)pnode, "parent", file);
       g_base_info_unref ((GIBaseInfo *)pnode);
     }
-  
+
   class_struct = g_object_info_get_class_struct (info);
   if (class_struct)
     {
@@ -1041,7 +1042,7 @@ write_object_info (const gchar  *namespace,
       write_signal_info (namespace, signal, file);
       g_base_info_unref ((GIBaseInfo *)signal);
     }
-  
+
   for (i = 0; i < g_object_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = g_object_info_get_vfunc (info, i);
@@ -1055,7 +1056,7 @@ write_object_info (const gchar  *namespace,
       write_constant_info (namespace, constant, file);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
-  
+
   xml_end_element (file, "class");
 }
 
@@ -1126,7 +1127,7 @@ write_interface_info (const gchar     *namespace,
       write_signal_info (namespace, signal, file);
       g_base_info_unref ((GIBaseInfo *)signal);
     }
-  
+
   for (i = 0; i < g_interface_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = g_interface_info_get_vfunc (info, i);
@@ -1140,7 +1141,7 @@ write_interface_info (const gchar     *namespace,
       write_constant_info (namespace, constant, file);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
-  
+
   xml_end_element (file, "interface");
 }
 
@@ -1151,7 +1152,7 @@ write_error_domain_info (const gchar       *namespace,
 {
   GIBaseInfo *enum_;
   const gchar *name, *quark;
-  
+
   name = g_base_info_get_name ((GIBaseInfo *)info);
   quark = g_error_domain_info_get_quark (info);
   enum_ = (GIBaseInfo *)g_error_domain_info_get_codes (info);
@@ -1164,8 +1165,8 @@ write_error_domain_info (const gchar       *namespace,
 }
 
 static void
-write_union_info (const gchar *namespace, 
-		  GIUnionInfo *info, 
+write_union_info (const gchar *namespace,
+		  GIUnionInfo *info,
 		  Xml         *file)
 {
   const gchar *name;
@@ -1180,13 +1181,13 @@ write_union_info (const gchar *namespace,
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-  
+
   xml_start_element (file, "union");
   xml_printf (file, " name=\"%s\"", name);
-  
+
   if (type_name)
     xml_printf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
-	  
+
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
 
@@ -1203,7 +1204,7 @@ write_union_info (const gchar *namespace,
 
       offset = g_union_info_get_discriminator_offset (info);
       type = g_union_info_get_discriminator_type (info);
-      
+
       xml_start_element (file, "discriminator");
       xml_printf (file, " offset=\"%d\" type=\"", offset);
       write_type_info (namespace, type, file);
@@ -1248,27 +1249,27 @@ write_repository (const char   *namespace,
   else
     {
       gchar *filename;
-      
+
       if (needs_prefix)
-	filename = g_strdup_printf ("%s-%s", namespace, output);  
+	filename = g_strdup_printf ("%s-%s", namespace, output);
       else
 	filename = g_strdup (output);
       ofile = g_fopen (filename, "w");
-      
+
       if (ofile == NULL)
 	{
 	  g_fprintf (stderr, "failed to open '%s': %s\n",
 		     filename, g_strerror (errno));
 	  g_free (filename);
-	  
+
 	  return;
 	}
-      
+
       g_free (filename);
     }
 
   xml = xml_open (ofile);
-  
+
   xml_printf (xml, "<?xml version=\"1.0\"?>\n");
   xml_start_element (xml, "repository");
   xml_printf (xml, " version=\"1.0\"\n"
@@ -1307,7 +1308,7 @@ write_repository (const char   *namespace,
         xml_printf (xml, " shared-library=\"%s\"", shared_library);
       if (c_prefix)
         xml_printf (xml, " c:prefix=\"%s\"", c_prefix);
-      
+
       for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
 	{
 	  GIBaseInfo *info = g_irepository_get_info (repository, ns, j);
@@ -1316,7 +1317,7 @@ write_repository (const char   *namespace,
 	    case GI_INFO_TYPE_FUNCTION:
 	      write_function_info (ns, (GIFunctionInfo *)info, xml);
 	      break;
-	      
+
 	    case GI_INFO_TYPE_CALLBACK:
 	      write_callback_info (ns, (GICallbackInfo *)info, xml);
 	      break;
@@ -1334,7 +1335,7 @@ write_repository (const char   *namespace,
 	    case GI_INFO_TYPE_FLAGS:
 	      write_enum_info (ns, (GIEnumInfo *)info, xml);
 	      break;
-	      
+
 	    case GI_INFO_TYPE_CONSTANT:
 	      write_constant_info (ns, (GIConstantInfo *)info, xml);
 	      break;
@@ -1362,7 +1363,7 @@ write_repository (const char   *namespace,
     }
 
   xml_end_element (xml, "repository");
-      
+
   xml_free (xml);
 }
 
@@ -1373,41 +1374,41 @@ load_typelib (const gchar  *filename,
 {
   guchar *typelib;
   gsize *typelib_size;
-  GModule *handle; 
+  GModule *handle;
 
   handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
   if (handle == NULL)
     {
-      g_printerr ("Could not load typelib from '%s': %s\n", 
+      g_printerr ("Could not load typelib from '%s': %s\n",
 		  filename, g_module_error ());
       return NULL;
     }
 
   if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &typelib))
     {
-      g_printerr ("Could not load typelib from '%s': %s\n", 
+      g_printerr ("Could not load typelib from '%s': %s\n",
 		  filename, g_module_error ());
       return NULL;
     }
-  
+
   if (!g_module_symbol (handle, "_G_TYPELIB_SIZE", (gpointer *) &typelib_size))
     {
-      g_printerr ("Could not load typelib from '%s': %s\n", 
+      g_printerr ("Could not load typelib from '%s': %s\n",
 		  filename, g_module_error ());
       return NULL;
     }
 
   *len = *typelib_size;
-  
+
   if (dlhandle)
     *dlhandle = handle;
 
   return typelib;
 }
 
-int 
+int
 main (int argc, char *argv[])
-{  
+{
   gboolean shlib = FALSE;
   gchar **input = NULL;
   GOptionContext *context;
@@ -1415,10 +1416,10 @@ main (int argc, char *argv[])
   gboolean needs_prefix;
   gint i;
   GTypelib *data;
-  GOptionEntry options[] = 
+  GOptionEntry options[] =
     {
       { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
-      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
+      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
       { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
       { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
@@ -1435,10 +1436,10 @@ main (int argc, char *argv[])
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
 
-  if (!input) 
-    { 
-      g_fprintf (stderr, "no input files\n"); 
-      
+  if (!input)
+    {
+      g_fprintf (stderr, "no input files\n");
+
       return 1;
     }
 
@@ -1457,7 +1458,7 @@ main (int argc, char *argv[])
 	{
 	  if (!g_file_get_contents (input[i], (gchar **)&typelib, &len, &error))
 	    {
-	      g_fprintf (stderr, "failed to read '%s': %s\n", 
+	      g_fprintf (stderr, "failed to read '%s': %s\n",
 			 input[i], error->message);
 	      g_clear_error (&error);
 	      continue;
@@ -1468,7 +1469,7 @@ main (int argc, char *argv[])
 	  typelib = load_typelib (input[i], &dlhandle, &len);
 	  if (!typelib)
 	    {
-	      g_fprintf (stderr, "failed to load typelib from '%s'\n", 
+	      g_fprintf (stderr, "failed to load typelib from '%s'\n",
 			 input[i]);
 	      continue;
 	    }
@@ -1495,7 +1496,7 @@ main (int argc, char *argv[])
 	  g_printerr ("failed to load typelib: %s\n", error->message);
 	  return 1;
 	}
-	
+
       write_repository (namespace, needs_prefix);
 
       if (dlhandle)
@@ -1513,6 +1514,6 @@ main (int argc, char *argv[])
 	  break;
 	}
     }
-      
+
   return 0;
 }
