@@ -1967,7 +1967,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 
 	blob->blob_type = BLOB_TYPE_UNION;
 	blob->deprecated = union_->deprecated;
- 	blob->reserved = 0;
+	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->alignment = union_->alignment;
 	blob->size = union_->size;
