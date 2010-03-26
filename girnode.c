@@ -1885,6 +1885,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	GList *members;
 
 	blob->blob_type = BLOB_TYPE_STRUCT;
+        blob->foreign = struct_->foreign;
 	blob->deprecated = struct_->deprecated;
 	blob->is_gtype_struct = struct_->is_gtype_struct;
 	blob->reserved = 0;

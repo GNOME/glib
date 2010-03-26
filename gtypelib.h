@@ -669,6 +669,8 @@ typedef struct {
  * @unregistered: If this is set, the type is not registered with GType.
  * @alignment: The byte boundary that the struct is aligned to in memory
  * @is_gtype_struct: Whether this structure is the class or interface layout for a GObject
+ * @foreign: If the type is foreign, eg if it's expected to be overridden by
+ * a native language binding instead of relying of introspected bindings.
  * @size: The size of the struct in bytes.
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
@@ -685,7 +687,8 @@ typedef struct {
   guint16   unregistered : 1;
   guint16   is_gtype_struct : 1;
   guint16   alignment    : 6;
-  guint16   reserved     : 7;
+  guint16   foreign      : 1;
+  guint16   reserved     : 6;
 
   guint32   name;
 

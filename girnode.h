@@ -312,6 +312,7 @@ struct _GIrNodeStruct
   gboolean deprecated;
   gboolean disguised;
   gboolean is_gtype_struct;
+  gboolean foreign;
 
   gchar *gtype_name;
   gchar *gtype_init;

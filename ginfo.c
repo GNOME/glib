@@ -1392,6 +1392,15 @@ g_struct_info_get_alignment (GIStructInfo *info)
   return blob->alignment;
 }
 
+gboolean
+g_struct_info_is_foreign (GIStructInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->foreign;
+}
+
 /**
  * g_struct_info_is_gtype_struct:
  * @info: GIStructInfo

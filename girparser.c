@@ -2201,6 +2201,7 @@ start_struct (GMarkupParseContext *context,
       const gchar *gtype_name;
       const gchar *gtype_init;
       const gchar *gtype_struct;
+      const gchar *foreign;
       GIrNodeStruct *struct_;
 
       name = find_attribute ("name", attribute_names, attribute_values);
@@ -2209,6 +2210,7 @@ start_struct (GMarkupParseContext *context,
       gtype_name = find_attribute ("glib:type-name", attribute_names, attribute_values);
       gtype_init = find_attribute ("glib:get-type", attribute_names, attribute_values);
       gtype_struct = find_attribute ("glib:is-gtype-struct-for", attribute_names, attribute_values);
+      foreign = find_attribute ("foreign", attribute_names, attribute_values);
 
       if (name == NULL && ctx->node_stack == NULL)
 	{
@@ -2241,6 +2243,8 @@ start_struct (GMarkupParseContext *context,
 
       struct_->gtype_name = g_strdup (gtype_name);
       struct_->gtype_init = g_strdup (gtype_init);
+
+      struct_->foreign = (g_strcmp0 (foreign, "1") == 0);
 
       if (ctx->node_stack == NULL)
         ctx->current_module->entries =

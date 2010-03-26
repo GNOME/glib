@@ -461,6 +461,7 @@ GIFunctionInfo *       g_struct_info_find_method   (GIStructInfo *info,
 gsize                  g_struct_info_get_size      (GIStructInfo *info);
 gsize                  g_struct_info_get_alignment (GIStructInfo *info);
 gboolean               g_struct_info_is_gtype_struct (GIStructInfo *info);
+gboolean               g_struct_info_is_foreign    (GIStructInfo *info);
 
 /* GIRegisteredTypeInfo */
 
