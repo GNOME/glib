@@ -184,6 +184,9 @@ static void object_interface_check_properties           (gpointer        func_da
 
 
 /* --- variables --- */
+G_LOCK_DEFINE_STATIC (closure_array_mutex);
+G_LOCK_DEFINE_STATIC (weak_refs_mutex);
+G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
@@ -2232,6 +2235,7 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (object->ref_count >= 1);
 
+  G_LOCK (weak_refs_mutex);
   wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_refs);
   if (wstack)
     {
@@ -2248,6 +2252,7 @@ g_object_weak_ref (GObject    *object,
   wstack->weak_refs[i].notify = notify;
   wstack->weak_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_weak_refs, wstack, weak_refs_notify);
+  G_UNLOCK (weak_refs_mutex);
 }
 
 /**
@@ -2269,6 +2274,7 @@ g_object_weak_unref (GObject    *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
+  G_LOCK (weak_refs_mutex);
   wstack = g_datalist_id_get_data (&object->qdata, quark_weak_refs);
   if (wstack)
     {
@@ -2286,6 +2292,7 @@ g_object_weak_unref (GObject    *object,
 	    break;
 	  }
     }
+  G_UNLOCK (weak_refs_mutex);
   if (!found_one)
     g_warning ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
@@ -2443,13 +2450,18 @@ static void
 toggle_refs_notify (GObject *object,
 		    gboolean is_last_ref)
 {
-  ToggleRefStack *tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+  ToggleRefStack tstack, *tstackptr;
+
+  G_LOCK (toggle_refs_mutex);
+  tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+  tstack = *tstackptr;
+  G_UNLOCK (toggle_refs_mutex);
 
   /* Reentrancy here is not as tricky as it seems, because a toggle reference
    * will only be notified when there is exactly one of them.
    */
-  g_assert (tstack->n_toggle_refs == 1);
-  tstack->toggle_refs[0].notify (tstack->toggle_refs[0].data, tstack->object, is_last_ref);
+  g_assert (tstack.n_toggle_refs == 1);
+  tstack.toggle_refs[0].notify (tstack.toggle_refs[0].data, tstack.object, is_last_ref);
 }
 
 /**
@@ -2505,6 +2517,7 @@ g_object_add_toggle_ref (GObject       *object,
 
   g_object_ref (object);
 
+  G_LOCK (toggle_refs_mutex);
   tstack = g_datalist_id_remove_no_notify (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -2529,6 +2542,7 @@ g_object_add_toggle_ref (GObject       *object,
   tstack->toggle_refs[i].data = data;
   g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
 			       (GDestroyNotify)g_free);
+  G_UNLOCK (toggle_refs_mutex);
 }
 
 /**
@@ -2555,6 +2569,7 @@ g_object_remove_toggle_ref (GObject       *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
+  G_LOCK (toggle_refs_mutex);
   tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
   if (tstack)
     {
@@ -2577,6 +2592,7 @@ g_object_remove_toggle_ref (GObject       *object,
 	    break;
 	  }
     }
+  G_UNLOCK (toggle_refs_mutex);
   
   if (!found_one)
     g_warning ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
@@ -3239,17 +3255,21 @@ object_remove_closure (gpointer  data,
 		       GClosure *closure)
 {
   GObject *object = data;
-  CArray *carray = g_object_get_qdata (object, quark_closure_array);
+  CArray *carray;
   guint i;
   
+  G_LOCK (closure_array_mutex);
+  carray = g_object_get_qdata (object, quark_closure_array);
   for (i = 0; i < carray->n_closures; i++)
     if (carray->closures[i] == closure)
       {
 	carray->n_closures--;
 	if (i < carray->n_closures)
 	  carray->closures[i] = carray->closures[carray->n_closures];
+	G_UNLOCK (closure_array_mutex);
 	return;
       }
+  G_UNLOCK (closure_array_mutex);
   g_assert_not_reached ();
 }
 
@@ -3305,6 +3325,7 @@ g_object_watch_closure (GObject  *object,
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);
+  G_LOCK (closure_array_mutex);
   carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
   if (!carray)
     {
@@ -3320,6 +3341,7 @@ g_object_watch_closure (GObject  *object,
     }
   carray->closures[i] = closure;
   g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
+  G_UNLOCK (closure_array_mutex);
 }
 
 /**
