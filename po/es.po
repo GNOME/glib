@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
+"POT-Creation-Date: 2010-03-26 11:48-0400\n"
 "PO-Revision-Date: 2010-03-07 11:48+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
@@ -1304,11 +1304,11 @@ msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
+#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
+#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
+#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
+#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
+#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1351,28 +1351,28 @@ msgstr "La unión no  está soportada"
 msgid "Error splicing file: %s"
 msgstr "Error al unir el archivo: %s"
 
-#: gio/gfile.c:2905
+#: gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "No se puede copiar el archivo especial"
 
-#: gio/gfile.c:3478
+#: gio/gfile.c:3479
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: gio/gfile.c:3571
+#: gio/gfile.c:3572
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: gio/gfile.c:3620
+#: gio/gfile.c:3621
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: gio/gfile.c:6038 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: gio/gfile.c:6148
+#: gio/gfile.c:6149
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 

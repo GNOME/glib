@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
+"POT-Creation-Date: 2010-03-26 11:48-0400\n"
 "PO-Revision-Date: 2009-09-10 12:23+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -1270,11 +1270,11 @@ msgstr "GEmblemedIcon ಗಾಗಿ GEmblem ಅನ್ನು ನಿರೀಕ್ಷ
 
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
+#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
+#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
+#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
+#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
+#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "ಕಾರ್ಯವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
@@ -1318,28 +1318,28 @@ msgstr "ಸಾಂಕೇತಿಕ ಲಿಂಕುಗಳು ಬೆಂಬಲಿತ�
 msgid "Error splicing file: %s"
 msgstr "ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: gio/gfile.c:2905
+#: gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "ವಿಶೇಷ ಕಡತವನ್ನು ಕಾಪಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:3478
+#: gio/gfile.c:3479
 msgid "Invalid symlink value given"
 msgstr "ಅಮಾನ್ಯವಾದ ಸಿಮ್‍ಲಿಂಕ್ ಮೌಲ್ಯವನ್ನು ಒದಗಿಸಲಾಗಿದೆ"
 
-#: gio/gfile.c:3571
+#: gio/gfile.c:3572
 msgid "Trash not supported"
 msgstr "ಟ್ರ್ಯಾಶ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: gio/gfile.c:3620
+#: gio/gfile.c:3621
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ಕಡತದ ಹೆಸರುಗಳು '%c' ಅನ್ನು ಹೊಂದುವಂತಿಲ್ಲ"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: gio/gfile.c:6038 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "ಪರಿಮಾಣವು ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
-#: gio/gfile.c:6148
+#: gio/gfile.c:6149
 msgid "No application is registered as handling this file"
 msgstr "ಈ ಪುಟವನ್ನು ನಿಭಾಯಿಸಲು ಯಾವುದೆ ಅನ್ವಯವು ಅನುಸ್ಥಾಪಿತಗೊಂಡಿಲ್ಲ"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
+"POT-Creation-Date: 2010-03-26 11:48-0400\n"
 "PO-Revision-Date: 2010-03-22 12:31+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -45,7 +45,8 @@ msgstr "'%2$s' barruan ustekabeko '%1$s' etiketa"
 
 #: glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
-msgstr "Ezin izan da baliozko laster-marken fitxategia aurkitu datuen direktorioan"
+msgstr ""
+"Ezin izan da baliozko laster-marken fitxategia aurkitu datuen direktorioan"
 
 #: glib/gbookmarkfile.c:1994
 #, c-format
@@ -198,7 +199,8 @@ msgstr ""
 #: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Ezin izan da '%s' fitxategia ireki, fdopen() funtzioak huts egin du: %s"
+msgstr ""
+"Ezin izan da '%s' fitxategia ireki, fdopen() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:858
 #, c-format
@@ -222,17 +224,20 @@ msgstr ""
 #: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Ezin izan da '%s' fitxategia idatzi, fwrite() funtzioak huts egin du: %s"
+msgstr ""
+"Ezin izan da '%s' fitxategia idatzi, fwrite() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
+msgstr ""
+"Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
+msgstr ""
+"Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:1006
 #, c-format
@@ -242,7 +247,8 @@ msgstr "Ezin izan da '%s' fitxategia itxi, fclose() funtzioak huts egin du: %s"
 #: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
+msgstr ""
+"'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
 
 #: glib/gfileutils.c:1328
 #, c-format
@@ -329,7 +335,8 @@ msgstr "Ezin izan da '%s' fitxategia ireki, open() funtzioak huts egin du: %s"
 #: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Ezin izan da '%s' fitxategi-mapa ireki, mmap() funtzioak huts egin du: %s"
+msgstr ""
+"Ezin izan da '%s' fitxategi-mapa ireki, mmap() funtzioak huts egin du: %s"
 
 #: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
@@ -378,10 +385,12 @@ msgstr ""
 #: glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
+msgstr ""
+"'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
 
 #: glib/gmarkup.c:654
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "'&;' entitatea hutsik dago; baliozko entitateak hauek dira: &amp; &quot; "
 "&lt; &gt; &apos;"
@@ -423,7 +432,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1206
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
 "atributuaren ondoren"
@@ -512,7 +522,8 @@ msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
 
 #: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
+msgstr ""
+"Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
 
 #: glib/gmarkup.c:1701
 msgid ""
@@ -529,7 +540,8 @@ msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
 #: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
+msgstr ""
+"Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
 
 #: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -555,7 +567,8 @@ msgstr "atzera-jotzearen mugara gainditua"
 
 #: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
-msgstr "ereduak zenbait elementu ditu bat etortze partzialetan onartzen ez direnak"
+msgstr ""
+"ereduak zenbait elementu ditu bat etortze partzialetan onartzen ez direnak"
 
 #: glib/gregex.c:154 gio/glocalfile.c:2115
 msgid "internal error"
@@ -753,7 +766,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "NEWLINE aukera kontraesankorra"
 
 #: glib/gregex.c:333
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g ez da prestatutako izenarekin edo zero ez den aukerazko prestatutako "
 "zenbaki batekin jarraitzen"
@@ -856,7 +870,8 @@ msgstr "Testua '\\' karakterearen atzetik amaitu da (testua '%s' zen)"
 #: glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua '%s' zen)"
+msgstr ""
+"Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua '%s' zen)"
 
 #: glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
@@ -1052,7 +1067,8 @@ msgstr "Fitxategia hutsik dago"
 
 #: glib/gkeyfile.c:763
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Gako-fitxategiak '%s' lerroa du, gako-balioa bikotea, taldea edo iruzkinik "
 "ez daukalarik"
@@ -1104,7 +1120,8 @@ msgstr ""
 
 #: glib/gkeyfile.c:1530
 #, c-format
-msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Gako-fitxategiak '%s' gakoa dauka, baina ezin den interpretatu balio bat "
 "dauka."
@@ -1218,7 +1235,8 @@ msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 #: gio/gdesktopappinfo.c:1132
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
+msgstr ""
+"Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
 #: gio/gdesktopappinfo.c:1136
 #, c-format
@@ -1284,11 +1302,11 @@ msgstr "GEmblen espero zen GEmblemedIcon-entzako"
 
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
+#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
+#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
+#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
+#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
+#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
@@ -1331,28 +1349,28 @@ msgstr "Lotura ez da onartzen"
 msgid "Error splicing file: %s"
 msgstr "Errorea fitxategia batzean: %s"
 
-#: gio/gfile.c:2905
+#: gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "Ezin da fitxategi berezia kopiatu"
 
-#: gio/gfile.c:3478
+#: gio/gfile.c:3479
 msgid "Invalid symlink value given"
 msgstr "Esteka sinbolikoaren baliogabeko balioa eman da"
 
-#: gio/gfile.c:3571
+#: gio/gfile.c:3572
 msgid "Trash not supported"
 msgstr "Zakarrontzira botatzea ez dago onartuta"
 
-#: gio/gfile.c:3620
+#: gio/gfile.c:3621
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Fitxategi-izenek ezin dute '%c' eduki"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: gio/gfile.c:6038 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
-#: gio/gfile.c:6148
+#: gio/gfile.c:6149
 msgid "No application is registered as handling this file"
 msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
@@ -1641,7 +1659,8 @@ msgstr "Errorea esteka sinbolikoa ezartzean: %s"
 
 #: gio/glocalfileinfo.c:2000
 msgid "Error setting symlink: file is not a symlink"
-msgstr "Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
+msgstr ""
+"Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
 
 #: gio/glocalfileinfo.c:2126
 #, c-format
@@ -2081,4 +2100,3 @@ msgstr "Sarrera gehiago behar dira"
 #: gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "Konprimitutako datu baliogabeak"
-

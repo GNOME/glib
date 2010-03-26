@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.23.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
+"POT-Creation-Date: 2010-03-26 11:48-0400\n"
 "PO-Revision-Date: 2010-02-27 18:26+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -1233,11 +1233,11 @@ msgstr "預期為 GEmblemedIcon 的 GEmblem"
 
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
+#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
+#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
+#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
+#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
+#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -1281,28 +1281,28 @@ msgstr "不支援符號連結"
 msgid "Error splicing file: %s"
 msgstr "分割檔案時發生錯誤：%s"
 
-#: gio/gfile.c:2905
+#: gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: gio/gfile.c:3478
+#: gio/gfile.c:3479
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:3571
+#: gio/gfile.c:3572
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: gio/gfile.c:3620
+#: gio/gfile.c:3621
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: gio/gfile.c:6038 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: gio/gfile.c:6148
+#: gio/gfile.c:6149
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 14:21-0500\n"
+"POT-Creation-Date: 2010-03-26 11:48-0400\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1263,11 +1263,11 @@ msgstr "GEmblemedIcon-നു് ഒരു GEmblem പ്രതീക്ഷിച
 
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
-#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3303 gio/gfile.c:3357
-#: gio/gfile.c:3488 gio/gfile.c:3528 gio/gfile.c:3855 gio/gfile.c:4257
-#: gio/gfile.c:4343 gio/gfile.c:4432 gio/gfile.c:4530 gio/gfile.c:4617
-#: gio/gfile.c:4710 gio/gfile.c:5040 gio/gfile.c:5320 gio/gfile.c:5389
-#: gio/gfile.c:6980 gio/gfile.c:7070 gio/gfile.c:7156
+#: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
+#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
+#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
+#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
+#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "പ്രക്രിയ പിന്തുണയ്ക്കുന്നില്ല"
@@ -1311,28 +1311,28 @@ msgstr "സിബോളിക്ക് ലിങ്ക് പിന്തുണ�
 msgid "Error splicing file: %s"
 msgstr "ഫയല്‍ തുറക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gfile.c:2905
+#: gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "പ്രത്യേക ഫയല്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gfile.c:3478
+#: gio/gfile.c:3479
 msgid "Invalid symlink value given"
 msgstr "തെറ്റായ symlink മൂല്ല്യം"
 
-#: gio/gfile.c:3571
+#: gio/gfile.c:3572
 msgid "Trash not supported"
 msgstr "ചവറ്റുകുട്ട പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gfile.c:3620
+#: gio/gfile.c:3621
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ഫയലിന്റെ പേരില്‍ '%c' ഉണ്ടാകുവാന്‍ പാടില്ല"
 
-#: gio/gfile.c:6037 gio/gvolume.c:331
+#: gio/gfile.c:6038 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "വോള്യം മൌണ്ടിനെ ലഭ്യമാക്കുന്നില്ല"
 
-#: gio/gfile.c:6148
+#: gio/gfile.c:6149
 msgid "No application is registered as handling this file"
 msgstr "ഈ ഫയല്‍ കൈകാര്യം ചെയ്യുന്നതിനായി ഒരു പ്രയോഗവും രജിസ്ടര്‍ ചെയ്തിട്ടില്ല"
 
