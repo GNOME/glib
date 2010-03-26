@@ -613,7 +613,6 @@ g_cancellable_release_fd (GCancellable *cancellable)
 void
 g_cancellable_cancel (GCancellable *cancellable)
 {
-  gboolean cancel;
   GCancellablePrivate *priv;
 
   if (cancellable == NULL ||
@@ -621,10 +620,9 @@ g_cancellable_cancel (GCancellable *cancellable)
     return;
 
   priv = cancellable->priv;
-  cancel = FALSE;
 
   G_LOCK(cancellable);
-  cancel = TRUE;
+
   priv->cancelled = TRUE;
   priv->cancelled_running = TRUE;
 #ifdef G_OS_WIN32
@@ -642,22 +640,19 @@ g_cancellable_cancel (GCancellable *cancellable)
     }
   G_UNLOCK(cancellable);
 
-  if (cancel)
-    {
-      g_object_ref (cancellable);
-      g_signal_emit (cancellable, signals[CANCELLED], 0);
+  g_object_ref (cancellable);
+  g_signal_emit (cancellable, signals[CANCELLED], 0);
 
-      G_LOCK(cancellable);
+  G_LOCK(cancellable);
 
-      priv->cancelled_running = FALSE;
-      if (priv->cancelled_running_waiting)
-	g_cond_broadcast (cancellable_cond);
-      priv->cancelled_running_waiting = FALSE;
+  priv->cancelled_running = FALSE;
+  if (priv->cancelled_running_waiting)
+    g_cond_broadcast (cancellable_cond);
+  priv->cancelled_running_waiting = FALSE;
 
-      G_UNLOCK(cancellable);
+  G_UNLOCK(cancellable);
 
-      g_object_unref (cancellable);
-    }
+  g_object_unref (cancellable);
 }
 
 /**
