@@ -622,6 +622,11 @@ g_cancellable_cancel (GCancellable *cancellable)
   priv = cancellable->priv;
 
   G_LOCK(cancellable);
+  if (priv->cancelled)
+    {
+      G_UNLOCK (cancellable);
+      return;
+    }
 
   priv->cancelled = TRUE;
   priv->cancelled_running = TRUE;
