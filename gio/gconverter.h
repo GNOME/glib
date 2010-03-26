@@ -49,6 +49,7 @@ typedef struct _GConverterIface   GConverterIface;
  * GConverterIface:
  * @g_iface: The parent interface.
  * @convert: Converts data.
+ * @reset: Reverts the internal state of the converter to its initial state.
  *
  * Provides an interface for converting data from one type
  * to another type. The conversion can be stateful
