@@ -64,6 +64,15 @@ are set for @type.
 @flags:   Bitwise combination of #GTypeFlags and #GTypeFundamentalFlags.
 @Returns: #TRUE if all @flags are set for @type, #FALSE otherwise.
 
+<!-- ##### FUNCTION g_type_class_get_private ##### -->
+<para>
+
+</para>
+
+@klass: 
+@private_type: 
+@Returns: 
+
 <!-- ##### FUNCTION g_type_instance_is_a ##### -->
 <para>
 Determines if @instance adheres to the interface exported

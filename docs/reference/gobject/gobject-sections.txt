@@ -54,7 +54,6 @@ g_type_class_peek_static
 g_type_class_unref
 g_type_class_peek_parent
 g_type_class_add_private
-g_type_class_get_private
 g_type_add_class_private
 g_type_interface_peek
 g_type_interface_peek_parent
@@ -119,6 +118,7 @@ g_type_check_is_value_type
 g_type_check_value
 g_type_check_value_holds
 g_type_instance_get_private
+g_type_class_get_private
 g_type_test_flags
 g_type_name_from_instance
 g_type_name_from_class

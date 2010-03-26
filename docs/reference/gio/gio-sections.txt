@@ -2066,6 +2066,8 @@ g_zlib_decompressor_get_type
 <TITLE>GFileDescriptorBased</TITLE>
 GFileDescriptorBased
 g_file_descriptor_based_get_fd
+<SUBSECTION Standard>
+GFileDescriptorBaseIFace
 <SUBSECTION Private>
 g_file_descriptor_based_get_type
 G_FILE_DESCRIPTOR_BASED
