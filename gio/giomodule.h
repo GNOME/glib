@@ -129,4 +129,4 @@ char **g_io_module_query (void);
 
 G_END_DECLS
 
-#endiy /* __G_IO_MODULE_H__ */
+#endif /* __G_IO_MODULE_H__ */
