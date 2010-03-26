@@ -606,6 +606,7 @@ write_struct_info (const gchar  *namespace,
   const gchar *type_init;
   gboolean deprecated;
   gboolean is_gtype_struct;
+  gboolean foreign;
   gint i;
   gint size;
   int n_elts;
@@ -642,6 +643,10 @@ write_struct_info (const gchar  *namespace,
   size = g_struct_info_get_size (info);
   if (show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
+
+  foreign = g_struct_info_is_foreign (info);
+  if (foreign)
+    xml_printf (file, " foreign=\"1\"");
 
   n_elts = g_struct_info_get_n_fields (info) + g_struct_info_get_n_methods (info);
   if (n_elts > 0)
