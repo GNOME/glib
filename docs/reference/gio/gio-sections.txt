@@ -1424,6 +1424,7 @@ g_io_modules_load_all_in_directory
 g_io_modules_scan_all_in_directory
 g_io_module_load
 g_io_module_unload
+g_io_module_query
 <SUBSECTION Standard>
 GIOModuleClass
 G_IO_MODULE
