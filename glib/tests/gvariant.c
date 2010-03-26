@@ -3678,6 +3678,7 @@ test_parse_positional (void)
                                 " ('three', %u)]", "two", 3);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("a(su)")));
   check_and_free (value, "[('one', 1), ('two', 2), ('three', 3)]");
+  check_and_free (g_variant_new_parsed ("{%s:%i}", "one", 1), "{'one': 1}");
 
   if (do_failed_test ("*GVariant format string*"))
     {

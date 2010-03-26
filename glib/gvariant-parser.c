@@ -167,11 +167,12 @@ token_stream_prepare (TokenStream *stream)
       break;
 
     case '@': case '%':
-      /* stop at the first space, comma or unmatched bracket.
-       * deals nicely with cases like (%i, %i).
+      /* stop at the first space, comma, colon or unmatched bracket.
+       * deals nicely with cases like (%i, %i) or {%i: %i}.
        */
       for (end = stream->stream + 1;
-           end != stream->end && *end != ',' && !g_ascii_isspace (*end);
+           end != stream->end && *end != ',' &&
+           *end != ':' && !g_ascii_isspace (*end);
            end++)
 
         if (*end == '(' || *end == '{')
