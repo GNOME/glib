@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.23.6 to GLib 2.23.7
+===================================================
+
+* Bug fixes:
+ 613601 buglet in dup_close_on_exec_fd
+ 584284 g_data_input_stream_read_until_async behaves confusingly
+ 613748 Write errors in middle of copy cause hang
+ 613923 splice_stream_with_progress: wrong error handling
+ 613667 Typo in GObject documentation
+ 613618 gvariant format string docs unclear
+
+* Translation updates:
+ Basque
+ Ukrainian
+ Vietnamese
+
+
 Overview of Changes from GLib 2.23.5 to GLib 2.23.6
 ===================================================
 
