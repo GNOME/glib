@@ -2826,10 +2826,10 @@ splice_stream_with_progress (GInputStream           *in,
       while (n_read > 0)
         {
           if (g_cancellable_set_error_if_cancelled (cancellable, error))
-            break;
+            goto out;
 
           if (!do_splice (buffer[0], NULL, fd_out, &offset_out, n_read, &n_written, error))
-            break;
+            goto out;
 
           n_read -= n_written;
         }
@@ -2842,6 +2842,7 @@ splice_stream_with_progress (GInputStream           *in,
   if (progress_callback)
     progress_callback (offset_in, total_size, progress_callback_data);
 
+ out:
   close (buffer[0]);
   close (buffer[1]);
 
