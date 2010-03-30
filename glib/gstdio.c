@@ -473,7 +473,7 @@ g_stat (const gchar           *filename,
       (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
     wfilename[len] = '\0';
 
-  retval = _wstat (wfilename, buf);
+  retval = _wstat (wfilename, (void*) buf);
   save_errno = errno;
 
   g_free (wfilename);

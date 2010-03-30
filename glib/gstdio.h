@@ -110,7 +110,7 @@ int g_chdir     (const gchar *path);
 
 #else
 
-#define _g_stat_struct _stat
+#define _g_stat_struct stat
 
 #endif
 
