@@ -216,7 +216,7 @@ g_uri_parse_scheme (const char  *uri)
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.
  * @reserved_chars_allowed: a string of reserved characters that are
- *      allowed to be used.
+ *      allowed to be used, or %NULL.
  * @allow_utf8: %TRUE if the result can include UTF-8 characters.
  * 
  * Escapes a string for use in a URI.

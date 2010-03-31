@@ -781,7 +781,7 @@ gunichar_ok (gunichar c)
  * g_string_append_uri_escaped:
  * @string: a #GString
  * @unescaped: a string
- * @reserved_chars_allowed: a string of reserved characters allowed to be used
+ * @reserved_chars_allowed: a string of reserved characters allowed to be used, or %NULL
  * @allow_utf8: set %TRUE if the escaped string may include UTF8 characters
  * 
  * Appends @unescaped to @string, escaped any characters that
