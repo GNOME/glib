@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-26 11:48-0400\n"
-"PO-Revision-Date: 2010-02-08 09:55+0700\n"
+"PO-Revision-Date: 2010-04-06 14:40+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1275,14 +1275,13 @@ msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
 #: gio/gfile.c:2755
-#, fuzzy
 msgid "Splice not supported"
-msgstr "ไม่รองรับลิงก์สัญลักษณ์"
+msgstr "ไม่รองรับการต่อถ่าย (splice)"
 
 #: gio/gfile.c:2759
-#, fuzzy, c-format
+#, c-format
 msgid "Error splicing file: %s"
-msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
+msgstr "เกิดข้อผิดพลาดขณะต่อถ่าย (splice) แฟ้ม: %s"
 
 #: gio/gfile.c:2906
 msgid "Can't copy special file"
