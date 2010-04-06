@@ -107,6 +107,13 @@
 #define G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
 
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#define G_GNUC_DEPRECATED_FOR(f)                        \
+  __attribute__((deprecated("Use " #f " instead")))
+#else
+#define G_GNUC_DEPRECATED_FOR(f)        G_GNUC_DEPRECATED
+#endif /* __GNUC__ */
+
 #if     __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
 #  define G_GNUC_MAY_ALIAS __attribute__((may_alias))
 #else
