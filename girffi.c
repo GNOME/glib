@@ -297,11 +297,6 @@ g_function_invoker_destroy (GIFunctionInvoker    *invoker)
   g_free (invoker->cif.arg_types);
 }
 
-typedef struct {
-  ffi_closure ffi_closure;
-  gpointer writable_self;
-} GIClosureWrapper;
-
 /**
  * g_callable_info_prepare_closure:
  * @callable_info: a callable info from a typelib
@@ -311,8 +306,11 @@ typedef struct {
  *
  * Prepares a callback for ffi invocation.
  *
+ * Note: this function requires the heap to be executable, which
+ *       might not function properly on systems with SELinux enabled.
+ *
  * Return value: the ffi_closure or NULL on error.
- * The return value should be freed by calling g_callable_info_free_closure().
+ * The return value should be freed by calling g_callable_info_prepare_closure().
  */
 ffi_closure *
 g_callable_info_prepare_closure (GICallableInfo       *callable_info,
@@ -320,21 +318,21 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
                                  GIFFIClosureCallback  callback,
                                  gpointer              user_data)
 {
-  gpointer exec_ptr;
-  GIClosureWrapper *closure;
+  ffi_closure *closure;
   ffi_status status;
 
   g_return_val_if_fail (callable_info != NULL, FALSE);
   g_return_val_if_fail (cif != NULL, FALSE);
   g_return_val_if_fail (callback != NULL, FALSE);
 
-  closure = ffi_closure_alloc (sizeof (GIClosureWrapper), &exec_ptr);
+  closure = mmap (NULL, sizeof (ffi_closure),
+                  PROT_EXEC | PROT_READ | PROT_WRITE,
+                  MAP_ANON | MAP_PRIVATE, -1, sysconf (_SC_PAGE_SIZE));
   if (!closure)
     {
-      g_warning ("could not allocate closure\n");
+      g_warning("mmap failed: %s\n", strerror(errno));
       return NULL;
     }
-  closure->writable_self = closure;
 
   status = ffi_prep_cif (cif, FFI_DEFAULT_ABI,
                          g_callable_info_get_n_args (callable_info),
@@ -342,23 +340,27 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
                          g_callable_info_get_ffi_arg_types (callable_info));
   if (status != FFI_OK)
     {
-      g_warning ("ffi_prep_cif failed: %d\n", status);
-      ffi_closure_free (closure);
+      g_warning("ffi_prep_cif failed: %d\n", status);
+      munmap(closure, sizeof (closure));
       return NULL;
     }
 
-  status = ffi_prep_closure (&closure->ffi_closure, cif, callback, user_data);
+  status = ffi_prep_closure (closure, cif, callback, user_data);
   if (status != FFI_OK)
     {
       g_warning ("ffi_prep_closure failed: %d\n", status);
-      ffi_closure_free (closure);
+      munmap(closure, sizeof (closure));
       return NULL;
     }
 
-  /* Return exec_ptr, which points to the same underlying memory as
-   * closure, but via an executable-non-writable mapping.
-   */
-  return exec_ptr;
+  if (mprotect(closure, sizeof (closure), PROT_READ | PROT_EXEC) == -1)
+    {
+      g_warning ("ffi_prep_closure failed: %s\n", strerror(errno));
+      munmap(closure, sizeof (closure));
+      return NULL;
+    }
+
+  return closure;
 }
 
 /**
@@ -372,7 +374,5 @@ void
 g_callable_info_free_closure (GICallableInfo *callable_info,
                               ffi_closure    *closure)
 {
-  GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
-
-  ffi_closure_free (wrapper->writable_self);
+  munmap(closure, sizeof (closure));
 }
