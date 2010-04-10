@@ -435,6 +435,8 @@ void        g_object_get_property             (GObject        *object,
 void        g_object_freeze_notify            (GObject        *object);
 void        g_object_notify                   (GObject        *object,
 					       const gchar    *property_name);
+void        g_object_notify_by_pspec          (GObject        *object,
+					       GParamSpec     *pspec);
 void        g_object_thaw_notify              (GObject        *object);
 gboolean    g_object_is_floating    	      (gpointer        object);
 gpointer    g_object_ref_sink       	      (gpointer	       object);

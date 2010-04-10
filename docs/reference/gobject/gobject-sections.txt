@@ -269,6 +269,7 @@ g_object_disconnect
 g_object_set
 g_object_get
 g_object_notify
+g_object_notify_by_pspec
 g_object_freeze_notify
 g_object_thaw_notify
 g_object_get_data

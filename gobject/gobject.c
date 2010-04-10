@@ -849,12 +849,27 @@ g_object_freeze_notify (GObject *object)
   g_object_unref (object);
 }
 
+static inline void
+g_object_notify_by_spec_internal (GObject    *object,
+				  GParamSpec *pspec)
+{
+  GObjectNotifyQueue *nqueue;
+
+  nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+  g_object_notify_queue_add (object, nqueue, pspec);
+  g_object_notify_queue_thaw (object, nqueue);
+}
+
 /**
  * g_object_notify:
  * @object: a #GObject
  * @property_name: the name of a property installed on the class of @object.
  *
  * Emits a "notify" signal for the property @property_name on @object.
+ *
+ * When possible, eg. when signaling a property change from within the class
+ * that registered the property, you should use g_object_notify_by_pspec()
+ * instead.
  */
 void
 g_object_notify (GObject     *object,
@@ -883,13 +898,66 @@ g_object_notify (GObject     *object,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else
-    {
-      GObjectNotifyQueue *nqueue;
-      
-      nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
-      g_object_notify_queue_add (object, nqueue, pspec);
-      g_object_notify_queue_thaw (object, nqueue);
-    }
+    g_object_notify_by_spec_internal (object, pspec);
+  g_object_unref (object);
+}
+
+/**
+ * g_object_notify_by_pspec:
+ * @object: a #GObject
+ * @pspec: the #GParamSpec of a property installed on the class of @object.
+ *
+ * Emits a "notify" signal for the property specified by @pspec on @object.
+ *
+ * This function omits the property name lookup, hence it is faster than
+ * g_object_notify().
+ *
+ * One way to avoid using g_object_notify() from within the
+ * class that registered the properties, and using g_object_notify_by_pspec()
+ * instead, is to store the GParamSpec used with
+ * g_object_class_install_property() inside a static array, e.g.:
+ *
+ *|[
+ *   enum
+ *   {
+ *     PROP_0,
+ *     PROP_FOO,
+ *     PROP_LAST
+ *   };
+ *
+ *   static GParamSpec *properties[PROP_LAST];
+ *
+ *   static void
+ *   my_object_class_init (MyObjectClass *klass)
+ *   {
+ *     properties[PROP_FOO] = g_param_spec_int ("foo", "Foo", "The foo",
+ *                                              0, 100,
+ *                                              50,
+ *                                              G_PARAM_READWRITE);
+ *     g_object_class_install_property (gobject_class,
+ *                                      PROP_FOO,
+ *                                      properties[PROP_FOO]);
+ *   }
+ * ]|
+ *
+ * and then notify a change on the "foo" property with:
+ *
+ * |[
+ *   g_object_notify_by_pspec (self, properties[PROP_FOO]);
+ * ]|
+ *
+ * Since: 2.26
+ */
+void
+g_object_notify_by_pspec (GObject    *object,
+			  GParamSpec *pspec)
+{
+
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+
+  g_object_ref (object);
+  g_object_notify_by_spec_internal (object, pspec);
   g_object_unref (object);
 }
 

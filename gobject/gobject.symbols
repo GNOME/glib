@@ -141,6 +141,7 @@ g_object_new
 g_object_newv
 g_object_new_valist
 g_object_notify
+g_object_notify_by_pspec
 g_object_is_floating
 g_object_ref_sink
 g_object_force_floating
