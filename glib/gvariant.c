@@ -4087,7 +4087,7 @@ g_variant_byteswap (GVariant *value)
 
 /**
  * g_variant_new_from_data:
- * @type: a #GVariantType
+ * @type: a definite #GVariantType
  * @data: the serialised data
  * @size: the size of @data
  * @trusted: %TRUE if @data is definitely in normal form
@@ -4128,6 +4128,9 @@ g_variant_new_from_data (const GVariantType *type,
 {
   GVariant *value;
   GBuffer *buffer;
+
+  g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
+  g_return_val_if_fail (data != NULL || size == 0, NULL);
 
   if (notify)
     buffer = g_buffer_new_from_pointer (data, size, notify, user_data);
