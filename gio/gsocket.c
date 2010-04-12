@@ -212,20 +212,13 @@ socket_strerror (int err)
 #ifndef G_OS_WIN32
   return g_strerror (err);
 #else
-  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
-  char *buf, *msg;
-
-  buf = g_static_private_get (&msg_private);
-  if (!buf)
-    {
-      buf = g_new (gchar, 128);
-      g_static_private_set (&msg_private, buf, g_free);
-    }
+  static GStaticPrivate last_msg = G_STATIC_PRIVATE_INIT;
+  char *msg;
 
   msg = g_win32_error_message (err);
-  strncpy (buf, msg, 128);
-  g_free (msg);
-  return buf;
+  g_static_private_set (&last_msg, msg, g_free);
+
+  return msg;
 #endif
 }
 
