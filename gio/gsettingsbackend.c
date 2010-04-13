@@ -279,7 +279,7 @@ g_settings_backend_set_property (GObject         *object,
                                  const GValue    *value,
                                  GParamSpec      *pspec)
 {
-  GSettingsBackend *backend;
+  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
 
   switch (prop_id)
     {
@@ -298,7 +298,7 @@ g_settings_backend_get_property (GObject    *object,
                                  GValue     *value,
                                  GParamSpec *pspec)
 {
-  GSettingsBackend *backend;
+  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
 
   switch (prop_id)
     {
