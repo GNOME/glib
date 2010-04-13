@@ -27,8 +27,8 @@ static guint changed_signal;
  * SECTION:gsettingsbackend
  * @short_description: an interface for settings backend implementations
  *
- * The #GSettingsBackend inteface defines a generic interface for
- * non-strictly-typed data backend in a hierarchy.
+ * The #GSettingsBackend interface defines a generic interface for
+ * non-strictly-typed data that is stored in a hierarchy.
  *
  * The interface defines methods for reading and writing values, a
  * method for determining if writing of certain values will fail
@@ -37,14 +37,20 @@ static guint changed_signal;
  * The semantics of the interface are very precisely defined and
  * implementations must carefully adhere to the expectations of
  * callers that are documented on each of the interface methods.
+ *
+ * Some of the GSettingsBackend functions accept or return a #GTree.
+ * These trees always have strings as keys and #GVariant as values.
+ * g_settings_backend_create_tree() is a convenience function to create
+ * suitable trees.
  **/
 
 /**
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
- * @prefix: the longest common prefix
- * @items: the NULL-terminated list of changed keys
- * @n_items: the number of items in @items
+ * @prefix: a common prefix of the changed keys
+ * @items: the list of changed keys
+ * @n_items: the number of items in @items. May be -1 if @items is
+ *     %NULL-terminated
  * @origin_tag: the origin tag
  *
  * Emits the changed signal on @backend.  This function should only be
@@ -71,7 +77,9 @@ static guint changed_signal;
  * In the case that this call is in response to a call to
  * g_settings_backend_write() then @origin_tag must be set to the same
  * value that was passed to that call.
- **/
+ *
+ * Since: 2.26
+ */
 void
 g_settings_backend_changed (GSettingsBackend    *backend,
                             const gchar         *prefix,
@@ -99,13 +107,15 @@ g_settings_backend_append_to_list (gpointer key,
 /**
  * g_settings_backend_changed_tree:
  * @backend: a #GSettingsBackend implementation
- * @prefix: the longest common prefix
- * @tree: a #GTree
+ * @prefix: a common prefix of the changed keys
+ * @tree: a #GTree containing the changes
  * @origin_tag: the origin tag
  *
  * This call is a convenience wrapper around
  * g_settings_backend_changed().  It gets the list of changes from
  * @tree.
+ *
+ * Since: 2.26
  **/
 void
 g_settings_backend_changed_tree (GSettingsBackend *backend,
@@ -135,18 +145,20 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * @backend: a #GSettingsBackend implementation
  * @key: the key to read
  * @expected_type: a #GVariantType hint
- * @returns: the values that was read, or %NULL
+ * @returns: the value that was read, or %NULL
  *
- * Reads a keys.  This call will never block.
+ * Reads a key. This call will never block.
  *
- * If the key exists, it will be returned.  If the key does not exist,
- * %NULL will be returned.
+ * If the key exists, the value associated with it will be returned.
+ * If the key does not exist, %NULL will be returned.
  *
  * If @expected_type is given, it serves as a type hint to the backend.
  * If you expect a key of a certain type then you should give
  * @expected_type to increase your chances of getting it.  Some backends
  * may ignore this argument and return values of a different type; it is
  * mostly used by backends that don't store strong type information.
+ *
+ * Since: 2.26
  **/
 GVariant *
 g_settings_backend_read (GSettingsBackend   *backend,
@@ -161,7 +173,7 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * g_settings_backend_write:
  * @backend: a #GSettingsBackend implementation
  * @prefix: the longest common prefix
- * @values: a #GTree containing values to write
+ * @values: a #GTree containing key-value pairs to write
  * @origin_tag: the origin tag
  *
  * Writes one or more keys.  This call will never block.
@@ -173,14 +185,16 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * contains exactly one item, with a key of "".  @prefix need not be the
  * largest possible prefix.
  *
- * This call does not fail.  During this call a "changed" signal will be
- * emitted if any keys have been changed.  The new values of all updated
- * keys will be visible to any signal callbacks.
+ * This call does not fail.  During this call a #GSettingsBackend::changed
+ * signal will be emitted if any keys have been changed.  The new values of
+ * all updated keys will be visible to any signal callbacks.
  *
- * One possible method that an implementation might deal with failures
- * is to emit a second "backend-changed" signal (either during this
- * call, or later) to indicate that the affected keys have suddenly
- * "changed back" to their old values.
+ * One possible method that an implementation might deal with failures is
+ * to emit a second "changed" signal (either during this call, or later)
+ * to indicate that the affected keys have suddenly "changed back" to their
+ * old values.
+ *
+ * Since: 2.26
  **/
 void
 g_settings_backend_write (GSettingsBackend *backend,
@@ -198,12 +212,14 @@ g_settings_backend_write (GSettingsBackend *backend,
  * @name: the name of a key, relative to the root of the backend
  * @returns: %TRUE if the key is writable
  *
- * Ensures that a key is available for writing to.  This is the
+ * Finds out if a key is available for writing to.  This is the
  * interface through which 'lockdown' is implemented.  Locked down
  * keys will have %FALSE returned by this call.
  *
  * You should not write to locked-down keys, but if you do, the
  * implementation will deal with it.
+ *
+ * Since: 2.26
  **/
 gboolean
 g_settings_backend_get_writable (GSettingsBackend *backend,
@@ -214,12 +230,14 @@ g_settings_backend_get_writable (GSettingsBackend *backend,
 }
 
 /**
- * g_settings_backend_subscribe:
+ * g_settings_backend_unsubscribe:
  * @backend: a #GSettingsBackend
  * @name: a key or path to subscribe to
  *
  * Reverses the effect of a previous call to
  * g_settings_backend_subscribe().
+ *
+ * Since: 2.26
  **/
 void
 g_settings_backend_unsubscribe (GSettingsBackend *backend,
@@ -235,6 +253,8 @@ g_settings_backend_unsubscribe (GSettingsBackend *backend,
  * @name: a key or path to subscribe to
  *
  * Requests that change signals be emitted for events on @name.
+ *
+ * Since: 2.26
  **/
 void
 g_settings_backend_subscribe (GSettingsBackend *backend,
@@ -247,6 +267,27 @@ g_settings_backend_subscribe (GSettingsBackend *backend,
 static void
 g_settings_backend_class_init (GSettingsBackendClass *class)
 {
+  /**
+   * GSettingsBackend::changed:
+   * @backend: the object on which the signal was emitted
+   * @prefix: a common prefix of the changed keys
+   * @items: the list of changed keys
+   * @n_items: the number of items in @items. May be -1 if @items is
+   *     %NULL-terminated
+   * @origin_tag: the origin tag
+   *
+   * The "changed" signal gets emitted when one or more keys change
+   * in the #GSettingsBackend store.  The new values of all updated
+   * keys will be visible to any signal callbacks.
+   *
+   * The list of changed keys, relative to the root of the settings store,
+   * is @prefix prepended to each of the @items.  It must either be the
+   * case that @prefix is equal to "" or ends in "/" or that @items
+   * contains exactly one item: "".  @prefix need not be the largest
+   * possible prefix.
+   *
+   * Since: 2.26
+   */
   changed_signal =
     g_signal_new ("changed", G_TYPE_SETTINGS_BACKEND,
                   G_SIGNAL_RUN_LAST,
@@ -264,7 +305,9 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
  *
  * This is a convenience function for creating a tree that is compatible
  * with g_settings_backend_write().  It merely calls g_tree_new_full()
- * with strcmp() g_free() and g_variant_unref().
+ * with strcmp(), g_free() and g_variant_unref().
+ *
+ * Since: 2.26
  **/
 GTree *
 g_settings_backend_create_tree (void)
@@ -314,9 +357,13 @@ get_default_backend (gpointer user_data)
  * g_settings_backend_get_default:
  * @returns: the default #GSettingsBackend
  *
- * Returns the default #GSettingsBackend.
+ * Returns the default #GSettingsBackend. It is possible to override
+ * the default by setting the <envvar>GSETTINGS_BACKEND</envvar>
+ * environment variable to the name of a settings backend.
  *
  * The user does not own the return value and it must not be freed.
+ *
+ * Since: 2.26
  **/
 GSettingsBackend *
 g_settings_backend_get_default (void)
