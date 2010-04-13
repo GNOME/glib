@@ -11,6 +11,7 @@ filter-streams
 g-file
 g-file-info
 g-icon
+gsettings
 httpd
 live-g-file
 memory-input-stream

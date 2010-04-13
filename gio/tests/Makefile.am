@@ -32,7 +32,8 @@ TEST_PROGS +=	 		\
 	filter-streams		\
 	simple-async-result	\
 	srvtarget		\
-	contexts
+	contexts		\
+	gsettings
 
 SAMPLE_PROGS = 			\
 	resolver		\
@@ -132,5 +133,7 @@ srvtarget_LDADD		  = $(progs_ldadd)
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+gsettings_LDADD = $(progs_ldadd)
 
 DISTCLEAN_FILES = applications/mimeinfo.cache

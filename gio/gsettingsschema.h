@@ -53,7 +53,11 @@ struct _GSettingsSchema
   GSettingsSchemaPrivate *priv;
 };
 
-GSettingsSchema *       g_settings_schema_new                           (const gchar *name);
+GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
+const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
+GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
+                                                                         const gchar      *key,
+                                                                         GVariant        **options);
 
 G_END_DECLS
 

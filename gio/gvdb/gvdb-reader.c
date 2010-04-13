@@ -224,6 +224,7 @@ gvdb_table_lookup (GvdbTable   *file,
 {
   guint32 hash_value = 5381;
   guint key_length;
+  guint32 lastno;
   guint32 itemno;
 
   if G_UNLIKELY (file->n_buckets == 0 || file->n_hash_items == 0)
@@ -236,19 +237,20 @@ gvdb_table_lookup (GvdbTable   *file,
     return NULL;
 
   itemno = file->hash_buckets[hash_value % file->n_buckets];
-  hash_value &= ~(1u << 31);
 
-  while G_LIKELY (itemno < file->n_hash_items)
+  if (hash_value % file->n_buckets != file->n_buckets - 1)
+    lastno = file->hash_buckets[hash_value % file->n_buckets + 1];
+  else
+    lastno = file->n_hash_items;
+
+  while G_LIKELY (itemno < lastno)
     {
       struct gvdb_hash_item *item = &file->hash_items[itemno];
 
-      if (hash_value == (guint32_from_le (item->hash_value) & ~(1u << 31)))
+      if (hash_value == guint32_from_le (item->hash_value))
         if G_LIKELY (gvdb_table_check_name (file, item, key, key_length))
           if G_LIKELY (item->type == type)
             return item;
-
-      if (guint32_from_le (item->hash_value) & (1u << 31))
-        return NULL;
 
       itemno++;
     }

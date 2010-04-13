@@ -83,8 +83,16 @@ settings_sources = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-reader.h		\
 	gvdb/gvdb-reader.c		\
+	gdelayedsettingsbackend.h	\
+	gdelayedsettingsbackend.c	\
+	gmemorysettingsbackend.h	\
+	gmemorysettingsbackend.c	\
+	gsettingsbackend.h		\
+	gsettingsbackend.c		\
 	gsettingsschema.h		\
-	gsettingsschema.c
+	gsettingsschema.c		\
+	gsettings.h			\
+	gsettings.c
 
 local_sources = \
 	glocaldirectorymonitor.c 	\
@@ -257,9 +265,6 @@ libgio_2_0_la_SOURCES =		\
 	gpollfilemonitor.h 	\
 	gresolver.c		\
 	gseekable.c 		\
-	gdelayedsettingsbackend.c\
-	gsettingsbackend.c	\
-	gmemorysettingsbackend.c\
 	gsimpleasyncresult.c 	\
 	gsocket.c		\
 	gsocketaddress.c	\

@@ -9,7 +9,7 @@
  */
 
 #include "gsettingsbackend.h"
-
+#include "gmemorysettingsbackend.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
 
@@ -29,6 +29,7 @@ G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 static guint changed_signal;
 
 enum {
+  PROP_ZERO,
   PROP_CONTEXT
 };
 
@@ -322,9 +323,18 @@ g_settings_backend_finalize (GObject *object)
 }
 
 static void
+ignore_subscription (GSettingsBackend *backend,
+                     const gchar      *key)
+{
+}
+
+static void
 g_settings_backend_class_init (GSettingsBackendClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+
+  class->subscribe = ignore_subscription;
+  class->unsubscribe = ignore_subscription;
 
   gobject_class->get_property = g_settings_backend_get_property;
   gobject_class->set_property = g_settings_backend_set_property;
@@ -484,6 +494,13 @@ g_settings_backend_get_with_context (const gchar *context)
 {
   static GHashTable *backends;
   GSettingsBackend *backend;
+
+  _g_io_modules_ensure_extension_points_registered ();
+  G_TYPE_MEMORY_SETTINGS_BACKEND;
+
+  /* FIXME: hash null properly? */
+  if (!context)
+    context = "";
 
   if (!backends)
     backends = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);

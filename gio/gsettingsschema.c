@@ -94,7 +94,7 @@ g_settings_schema_class_init (GSettingsSchemaClass *class)
 GSettingsSchema *
 g_settings_schema_new (const gchar *name)
 {
-  GSettingsSchema *schema = NULL;
+  GSettingsSchema *schema;
   GvdbTable *table = NULL;
   GSList *source;
 
@@ -108,12 +108,12 @@ g_settings_schema_new (const gchar *name)
         break;
     }
 
-  if (table != NULL)
-    {
-      schema = g_object_new (G_TYPE_SETTINGS_SCHEMA, NULL);
-      schema->priv->name = g_strdup (name);
-      schema->priv->table = table;
-    }
+  if (table == NULL)
+    g_error ("Settings schema '%s' is not installed\n", name);
+
+  schema = g_object_new (G_TYPE_SETTINGS_SCHEMA, NULL);
+  schema->priv->name = g_strdup (name);
+  schema->priv->table = table;
   
   return schema;
 }
@@ -124,4 +124,23 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
                              GVariant        **options)
 {
   return gvdb_table_get_value (schema->priv->table, key, options);
+}
+
+const gchar *
+g_settings_schema_get_path (GSettingsSchema *schema)
+{
+  const gchar *result;
+  GVariant *value;
+
+  value = gvdb_table_get_value (schema->priv->table, ".path", NULL);
+
+  if (value && g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+    {
+      result = g_variant_get_string (value, NULL);
+      g_variant_unref (value);
+    }
+  else
+    result = NULL;
+
+  return result;
 }
