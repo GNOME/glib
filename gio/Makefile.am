@@ -79,6 +79,11 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
+settings_sources = \
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-reader.h		\
+	gvdb/gvdb-reader.c
+
 local_sources = \
 	glocaldirectorymonitor.c 	\
 	glocaldirectorymonitor.h 	\
@@ -289,6 +294,7 @@ libgio_2_0_la_SOURCES =		\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
 	$(local_sources) 	\
+	$(settings_sources) 	\
 	$(marshal_sources) 	\
 	$(NULL)
 
