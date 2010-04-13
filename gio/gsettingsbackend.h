@@ -61,6 +61,9 @@ struct _GSettingsBackendClass
                                const gchar         *name);
   void        (*unsubscribe)  (GSettingsBackend    *backend,
                                const gchar         *name);
+
+  gboolean    (*supports_context) (GSettingsBackendClass *klass,
+                                   const gchar           *context);
 };
 
 struct _GSettingsBackend
@@ -72,7 +75,8 @@ struct _GSettingsBackend
 };
 
 GType                           g_settings_backend_get_type             (void);
-GSettingsBackend *              g_settings_backend_get_default          (void);
+gboolean                        g_settings_backend_supports_context     (const gchar *context);
+GSettingsBackend *              g_settings_backend_get_with_context     (const gchar *context);
 GTree *                         g_settings_backend_create_tree          (void);
 
 GVariant *                      g_settings_backend_read                 (GSettingsBackend    *backend,
@@ -101,6 +105,9 @@ void                            g_settings_backend_changed_tree         (GSettin
                                                                          const gchar         *prefix,
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
+
+gboolean      g_settings_backend_class_supports_context (GSettingsBackendClass *klass,
+                                                         const gchar           *context);
 
 G_END_DECLS
 

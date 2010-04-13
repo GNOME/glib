@@ -19,9 +19,18 @@
 
 #include "gioalias.h"
 
+struct _GSettingsBackendPrivate
+{
+  gchar *context;
+};
+
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
 static guint changed_signal;
+
+enum {
+  PROP_CONTEXT
+};
 
 /**
  * SECTION:gsettingsbackend
@@ -265,8 +274,64 @@ g_settings_backend_subscribe (GSettingsBackend *backend,
 }
 
 static void
+g_settings_backend_set_property (GObject         *object,
+                                 guint            prop_id,
+                                 const GValue    *value,
+                                 GParamSpec      *pspec)
+{
+  GSettingsBackend *backend;
+
+  switch (prop_id)
+    {
+    case PROP_CONTEXT:
+      backend->priv->context = g_value_dup_string (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_settings_backend_get_property (GObject    *object,
+                                 guint       prop_id,
+                                 GValue     *value,
+                                 GParamSpec *pspec)
+{
+  GSettingsBackend *backend;
+
+  switch (prop_id)
+    {
+    case PROP_CONTEXT:
+      g_value_set_string (value, backend->priv->context);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_settings_backend_finalize (GObject *object)
+{
+  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
+
+  g_free (backend->priv->context);
+
+  G_OBJECT_CLASS (g_settings_backend_parent_class)->finalize (object);
+}
+
+static void
 g_settings_backend_class_init (GSettingsBackendClass *class)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+
+  gobject_class->get_property = g_settings_backend_get_property;
+  gobject_class->set_property = g_settings_backend_set_property;
+  gobject_class->finalize = g_settings_backend_finalize;
+
+  g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
+
   /**
    * GSettingsBackend::changed:
    * @backend: the object on which the signal was emitted
@@ -297,6 +362,30 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
                   4, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
                   G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE,
                   G_TYPE_INT, G_TYPE_POINTER);
+
+  /**
+   * GSettingsBackend:context:
+   *
+   * The "context" property gives a hint to the backend as to
+   * what storage to use. It is up to the implementation to make
+   * use of this information.
+   *
+   * E.g. DConf supports "user", "system", "defaults" and "login"
+   * contexts.
+   *
+   * If your backend supports different contexts, you should also
+   * provide an implementation of the supports_context() class
+   * function in #GSettingsBackendClass.
+   *
+   * Since: 2.26
+   */
+  g_object_class_install_property (gobject_class, PROP_CONTEXT,
+                                   g_param_spec_string ("context",
+                                                        "Context",
+                                                        "A context to use when deciding which storage to use",
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
 }
 
 /**
@@ -317,7 +406,7 @@ g_settings_backend_create_tree (void)
 }
 
 static gpointer
-get_default_backend (gpointer user_data)
+get_default_backend (const gchar *context)
 {
   GIOExtension *extension = NULL;
   GIOExtensionPoint *point;
@@ -348,32 +437,114 @@ get_default_backend (gpointer user_data)
       extension = extensions->data;
     }
 
+  if (context)
+    {
+      GTypeClass *class;
+
+      class = g_io_extension_ref_class (extension);
+
+      if (!g_settings_backend_class_supports_context (G_SETTINGS_BACKEND_CLASS (class), context))
+        {
+          g_type_class_unref (class);
+          return NULL;
+        }
+
+      g_type_class_unref (class);
+    }
+
   type = g_io_extension_get_type (extension);
 
-  return g_object_new (type, NULL);
+  return g_object_new (type, "context", context, NULL);
 }
 
 /**
- * g_settings_backend_get_default:
+ * g_settings_backend_get_with_context:
+ * @context: a context that might be used by the backend to determine
+ *     which storage to use, or %NULL to use the default storage
  * @returns: the default #GSettingsBackend
  *
  * Returns the default #GSettingsBackend. It is possible to override
  * the default by setting the <envvar>GSETTINGS_BACKEND</envvar>
  * environment variable to the name of a settings backend.
  *
+ * The @context parameter can be used to indicate that a different
+ * than the default storage is desired. E.g. the DConf backend lets
+ * you use "user", "system", "defaults" and "login" as contexts.
+ *
+ * If @context is not supported by the implementation, this function
+ * returns an instance of the #GSettingsMemoryBackend.
+ * See g_settings_backend_supports_context(),
+ *
  * The user does not own the return value and it must not be freed.
  *
  * Since: 2.26
  **/
 GSettingsBackend *
-g_settings_backend_get_default (void)
+g_settings_backend_get_with_context (const gchar *context)
 {
-  static GOnce once = G_ONCE_INIT;
+  static GHashTable *backends;
+  GSettingsBackend *backend;
 
-  return g_once (&once, get_default_backend, NULL);
+  if (!backends)
+    backends = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+  backend = g_hash_table_lookup (backends, context);
+
+  if (backend)
+    return backend;
+
+  backend = get_default_backend (context);
+
+  if (!backend)
+    {
+      /* FIXME: create an instance of the memory backend */
+    }
+
+  g_hash_table_insert (backends, g_strdup (context), backend);
+
+  return backend;
+}
+
+/**
+ * g_settings_backend_supports_context:
+ * @context: a context string that might be passed to
+ *     g_settings_backend_new_with_context()
+ * @returns: #TRUE if @context is supported
+ *
+ * Determines if the given context is supported by the default
+ * GSettingsBackend implementation.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_settings_backend_supports_context (const gchar *context)
+{
+  GSettingsBackend *backend;
+
+  backend = get_default_backend (context);
+
+  if (backend)
+    {
+      g_object_unref (backend);
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
+  backend->priv = g_type_instance_get_private (backend, G_TYPE_SETTINGS_BACKEND);
 }
+
+gboolean
+g_settings_backend_class_supports_context (GSettingsBackendClass *klass,
+                                           const gchar           *context)
+{
+  if (klass->supports_context)
+    return (klass->supports_context) (klass, context);
+
+  return TRUE;
+}
+
