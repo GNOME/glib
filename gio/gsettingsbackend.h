@@ -73,7 +73,6 @@ struct _GSettingsBackend
 
 GType                           g_settings_backend_get_type             (void);
 GSettingsBackend *              g_settings_backend_get_default          (void);
-void                            g_settings_backend_set_default          (GSettingsBackend    *backend);
 GTree *                         g_settings_backend_create_tree          (void);
 
 GVariant *                      g_settings_backend_read                 (GSettingsBackend    *backend,
