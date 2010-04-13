@@ -250,8 +250,6 @@ libgio_2_0_la_SOURCES =		\
 	gpollfilemonitor.h 	\
 	gresolver.c		\
 	gseekable.c 		\
-	gsettings.c		\
-	gsettingsschema.c	\
 	gdelayedsettingsbackend.c\
 	gsettingsbackend.c	\
 	gmemorysettingsbackend.c\
