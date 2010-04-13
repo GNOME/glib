@@ -82,7 +82,9 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 settings_sources = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-reader.h		\
-	gvdb/gvdb-reader.c
+	gvdb/gvdb-reader.c		\
+	gsettingsschema.h		\
+	gsettingsschema.c
 
 local_sources = \
 	glocaldirectorymonitor.c 	\
@@ -469,7 +471,7 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
-bin_PROGRAMS = gio-querymodules
+bin_PROGRAMS = gio-querymodules gschema-compile
 gio_querymodules_SOURCES = gio-querymodules.c
 gio_querymodules_LDADD	 = \
 	$(top_builddir)/glib/libglib-2.0.la		\
@@ -477,6 +479,13 @@ gio_querymodules_LDADD	 = \
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
 	libgio-2.0.la					\
 	$(NULL)
+
+gschema_compile_LDADD = libgio-2.0.la
+gschema_compile_SOURCES = \
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-builder.h		\
+	gvdb/gvdb-builder.c		\
+	gschema-compile.c
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \

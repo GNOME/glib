@@ -50,8 +50,8 @@ void                    gvdb_item_set_parent                            (GvdbIte
                                                                          GvdbItem      *parent);
 
 G_GNUC_INTERNAL
-gboolean                gvdb_file_write                                 (GOutputStream  *output,
-                                                                         GHashTable     *table,
+gboolean                gvdb_table_write_contents                       (GHashTable     *table,
+                                                                         const gchar    *filename,
                                                                          GError        **error);
 
 #endif /* __gvdb_builder_h__ */

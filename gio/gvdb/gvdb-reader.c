@@ -388,7 +388,7 @@ gvdb_table_get_value (GvdbTable    *file,
 }
 
 /**
- * gvdb_table_get_hash:
+ * gvdb_table_get_table:
  * @file: a #GvdbTable
  * @key: a string
  * @returns: a new #GvdbTable, or %NULL
@@ -407,8 +407,8 @@ gvdb_table_get_value (GvdbTable    *file,
  * longer require it.
  **/
 GvdbTable *
-gvdb_table_get_hash (GvdbTable   *file,
-                     const gchar *key)
+gvdb_table_get_table (GvdbTable   *file,
+                      const gchar *key)
 {
   const struct gvdb_hash_item *item;
   GvdbTable *new;

@@ -1,11 +1,11 @@
 #include "gvdb-builder.h"
+#include "gvdb-format.h"
 
 #include <glib.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
 
-#include "gvdb.h"
 
 struct _GvdbItem
 {
@@ -180,8 +180,6 @@ hash_table_insert (gpointer key,
   guint32 hash_value, bucket;
   HashTable *table = data;
   GvdbItem *item = value;
-
-g_print ("i see %s\n", (char*) key);
 
   hash_value = djb_hash (key);
   bucket = hash_value % table->n_buckets;
@@ -440,62 +438,59 @@ file_builder_new (void)
   return builder;
 }
 
-static gboolean
-file_builder_write (FileBuilder          *fb,
-                    GOutputStream        *output,
-                    struct gvdb_pointer   root,
-                    GError              **error)
+static GString *
+file_builder_serialise (FileBuilder          *fb,
+                        struct gvdb_pointer   root)
 {
   struct gvdb_header header = { { GVDB_SIGNATURE0, GVDB_SIGNATURE1 } };
-  gchar zero[8] = { 0, };
-  gsize offset;
+  GString *result = g_string_new (NULL);
+
+  result = g_string_new (NULL);
 
   header.root = root;
-  if (!g_output_stream_write_all (output, &header, sizeof header,
-                                  NULL, NULL, error))
-    return FALSE;
+  g_string_append_len (result, (gpointer) &header, sizeof header);
 
-  offset = sizeof header;
   while (!g_queue_is_empty (fb->chunks))
     {
       FileChunk *chunk = g_queue_pop_head (fb->chunks);
 
-      if (chunk->offset != offset)
+      if (result->len != chunk->offset)
         {
-          g_assert (chunk->offset > offset);
-          g_assert (chunk->offset - offset < 8);
+          gchar zero[8] = { 0, };
 
-          if (!g_output_stream_write_all (output, zero,
-                                          chunk->offset - offset,
-                                          NULL, NULL, error))
-            return FALSE;
+          g_assert (chunk->offset > result->len);
+          g_assert (chunk->offset - result->len < 8);
 
-          offset = chunk->offset;
+          g_string_append_len (result, zero, chunk->offset - result->len);
+          g_assert (result->len == chunk->offset);
         }
 
-      if (!g_output_stream_write_all (output, chunk->data, chunk->size,
-                                      NULL, NULL, error))
-        return FALSE;
-
-      offset += chunk->size;
+      g_string_append_len (result, chunk->data, chunk->size);
       g_free (chunk->data);
     }
 
   g_queue_free (fb->chunks);
   g_slice_free (FileBuilder, fb);
 
-  return TRUE;
+  return result;
 }
 
 gboolean
-gvdb_file_write (GOutputStream  *output,
-                 GHashTable     *table,
-                 GError        **error)
+gvdb_table_write_contents (GHashTable   *table,
+                           const gchar  *filename,
+                           GError      **error)
 {
   struct gvdb_pointer root;
+  gboolean status;
   FileBuilder *fb;
+  GString *str;
 
   fb = file_builder_new ();
   file_builder_add_hash (fb, table, &root);
-  return file_builder_write (fb, output, root, error);
+  str = file_builder_serialise (fb, root);
+
+  status = g_file_set_contents (filename, str->str, str->len, error);
+  g_string_free (str, TRUE);
+
+  return status;
 }
