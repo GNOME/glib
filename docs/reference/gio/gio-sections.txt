@@ -2075,3 +2075,23 @@ G_FILE_DESCRIPTOR_BASED_GET_IFACE
 G_IS_FILE_DESCRIPTOR_BASED
 G_TYPE_FILE_DESCRIPTOR_BASED
 </SECTION>
+
+<SECTION>
+<FILE>gsettingsbackend</FILE>
+<TITLE>GSettingsBackend</TITLE>
+GSettingsBackend
+g_settings_backend_get_default
+g_settings_backend_create_tree
+g_settings_backend_read
+g_settings_backend_write
+g_settings_backend_get_writable
+g_settings_backend_subscribe
+g_settings_backend_unsubscribe
+g_settings_backend_changed
+g_settings_backend_changed_tree
+<SUBSECTION Standard>
+GSettingsBackendClass
+<SUBSECTION Private>
+g_settings_backend_get_type
+GSettingsBackendPrivate
+</SECTION>
