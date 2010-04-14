@@ -49,7 +49,6 @@ enum
   PROP_SCHEMA,
   PROP_CONTEXT,
   PROP_PATH,
-  PROP_DELAY_APPLY,
   PROP_HAS_UNAPPLIED,
 };
 
@@ -348,16 +347,20 @@ g_settings_set_property (GObject      *object,
 
   switch (prop_id)
     {
-     case PROP_SCHEMA:
+    case PROP_SCHEMA:
       g_assert (settings->priv->schema_name == NULL);
       settings->priv->schema_name = g_value_dup_string (value);
       break;
 
-     case PROP_PATH:
+    case PROP_PATH:
       settings->priv->path = g_value_dup_string (value);
       break;
 
-     default:
+    case PROP_CONTEXT:
+      settings->priv->context = g_value_dup_string (value);
+      break;
+
+    default:
       g_assert_not_reached ();
     }
 }
@@ -550,20 +553,6 @@ g_settings_class_init (GSettingsClass *class)
                           NULL,
                           G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-
-   /**
-    * GSettings:delay-apply:
-    *
-    * If this property is %TRUE, the #GSettings object is in 'delay-apply'
-    * mode and will not apply changes until g_settings_apply() is called.
-    */
-   g_object_class_install_property (object_class, PROP_DELAY_APPLY,
-     g_param_spec_boolean ("delay-apply",
-                           P_("Delayed apply"),
-                           P_("If TRUE, you must call apply() to write changes"),
-                           FALSE,
-                           G_PARAM_CONSTRUCT_ONLY |
-                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
    /**
     * GSettings:has-unapplied:
