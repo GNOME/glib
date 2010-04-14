@@ -741,6 +741,20 @@ g_settings_is_writable (GSettings   *settings,
   return writable;
 }
 
+GSettings *
+g_settings_get_child (GSettings   *settings,
+                      const gchar *name)
+{
+  gchar *child_schema;
+  GSettings *child;
+
+  child_schema = g_strconcat (settings->priv->schema_name, ".", name, NULL);
+  child = g_object_new (G_TYPE_SETTINGS, "schema", child_schema, NULL);
+  g_free (child_schema);
+
+  return child;
+}
+
 /**
  * g_settings_new:
  * @schema: the name of the schema
