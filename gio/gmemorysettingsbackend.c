@@ -53,6 +53,7 @@ g_memory_settings_backend_write_one (const gchar            *key,
                         g_strdup (key), g_variant_ref (value));
 
   slash = strrchr (key, '/');
+  g_assert (slash != NULL);
   base_key = (slash + 1);
   path = g_strndup (key, slash - key);
 
