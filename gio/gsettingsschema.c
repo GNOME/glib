@@ -87,7 +87,7 @@ initialise_schema_sources (void)
   if G_UNLIKELY (g_once_init_enter (&initialised))
     {
       const gchar * const *dir;
-      gchar *path;
+      const gchar *path;
 
       for (dir = g_get_system_data_dirs (); *dir; dir++)
         {

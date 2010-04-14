@@ -61,7 +61,7 @@ add_to_tree (gpointer key,
 }
 
 static void
-g_delayed_settings_backend_keys_write (GSettingsBackend *backend,
+g_delayed_settings_backend_write_keys (GSettingsBackend *backend,
                                        GTree            *tree,
                                        gpointer          origin_tag)
 {
@@ -267,6 +267,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   g_type_class_add_private (class, sizeof (GDelayedSettingsBackendPrivate));
 
   backend_class->write = g_delayed_settings_backend_write;
+  backend_class->write_keys = g_delayed_settings_backend_write_keys;
   backend_class->read = g_delayed_settings_backend_read;
   backend_class->get_writable = g_delayed_settings_backend_get_writable;
   backend_class->subscribe = g_delayed_settings_backend_subscribe;
