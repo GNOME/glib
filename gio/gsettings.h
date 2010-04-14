@@ -8,8 +8,8 @@
  * See the included COPYING file for more information.
  */
 
-#ifndef _gsettings_h_
-#define _gsettings_h_
+#ifndef __G_SETTINGS_H__
+#define __G_SETTINGS_H__
 
 #include "gsettingsbackend.h"
 
@@ -111,4 +111,4 @@ void                    g_settings_unbind                               (gpointe
 
 G_END_DECLS
 
-#endif /* _gsettings_h_ */
+#endif  /* __G_SETTINGS_H__ */

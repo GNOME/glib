@@ -8,8 +8,8 @@
  * See the included COPYING file for more information.
  */
 
-#ifndef _gsettingsbackend_h_
-#define _gsettingsbackend_h_
+#ifndef __G_SETTINGS_BACKEND_H__
+#define __G_SETTINGS_BACKEND_H__
 
 #include <glib-object.h>
 
@@ -111,4 +111,4 @@ gboolean      g_settings_backend_class_supports_context (GSettingsBackendClass *
 
 G_END_DECLS
 
-#endif /* _gsettingsbackend_h_ */
+#endif  /* __G_SETTINGS_BACKEND_H__ */
