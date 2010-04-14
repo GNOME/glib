@@ -16,7 +16,6 @@ progs_ldadd     = 					\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
 
-TESTS_ENVIRONMENT += GSETTINGS_SCHEMA_DIR=. GSETTINGS_MEMORY_BACKEND_STORE=./store
 TEST_PROGS +=	 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
@@ -136,6 +135,8 @@ contexts_LDADD		  = $(progs_ldadd) \
 
 gsettings_SOURCES	  = gsettings.c gschemas.compiled
 gsettings_LDADD		  = $(progs_ldadd)
+
+EXTRA_DIST = org.gtk.test.gschema
 
 BUILT_SOURCES = gschemas.compiled
 
