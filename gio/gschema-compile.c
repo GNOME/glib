@@ -322,6 +322,7 @@ main (int argc, char **argv)
       return 1;
     }
 
+  /* FIXME: need a way to specify the output location, for !srcdir builds */
   if (!(table = parse_gschema_files (matched.gl_pathv, &error)) ||
       !gvdb_table_write_contents (table, "gschemas.compiled", &error))
     {
