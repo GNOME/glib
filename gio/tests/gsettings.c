@@ -232,6 +232,104 @@ test_complex_types (void)
   g_variant_iter_free (iter);
 }
 
+static gboolean changed_cb_called;
+
+static void
+changed_cb (GSettings   *settings,
+            const gchar *key,
+            gpointer     data)
+{
+  changed_cb_called = TRUE;
+
+  g_assert_cmpstr (key, ==, data);
+}
+
+void
+test_changes (void)
+{
+  GSettings *settings;
+  GSettings *settings2;
+
+  settings = g_settings_new ("org.gtk.test");
+
+  g_signal_connect (settings, "changed",
+                    G_CALLBACK (changed_cb), "greeting");
+
+  changed_cb_called = FALSE;
+
+  g_settings_set (settings, "greeting", "s", "new greeting");
+  g_assert (changed_cb_called);
+
+  settings2 = g_settings_new ("org.gtk.test");
+
+  changed_cb_called = FALSE;
+
+  g_settings_set (settings2, "greeting", "s", "hi");
+  g_assert (changed_cb_called);
+
+}
+
+static gboolean changed_cb_called2;
+
+static void
+changed_cb2 (GSettings   *settings,
+             const gchar *key,
+             gpointer     data)
+{
+  gboolean *p = data;
+
+  *p = TRUE;
+}
+
+
+void
+test_delay (void)
+{
+  GSettings *settings;
+  GSettings *settings2;
+  gchar *str;
+
+  settings = g_settings_new ("org.gtk.test");
+  settings2 = g_settings_new ("org.gtk.test");
+
+  g_settings_set (settings2, "greeting", "s", "top o' the morning");
+
+  changed_cb_called = FALSE;
+  changed_cb_called2 = FALSE;
+
+  g_signal_connect (settings, "changed",
+                    G_CALLBACK (changed_cb2), &changed_cb_called);
+  g_signal_connect (settings2, "changed",
+                    G_CALLBACK (changed_cb2), &changed_cb_called2);
+
+  g_settings_set_delay_apply (settings, TRUE);
+
+  g_settings_set (settings, "greeting", "s", "greetings from test_delay");
+
+  g_assert (changed_cb_called);
+  g_assert (!changed_cb_called2);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_delay");
+
+  g_settings_get (settings2, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "top o' the morning");
+
+  changed_cb_called = FALSE;
+  changed_cb_called2 = FALSE;
+
+  g_settings_apply (settings);
+
+  g_assert (!changed_cb_called);
+  g_assert (changed_cb_called2);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_delay");
+
+  g_settings_get (settings2, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_delay");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -250,6 +348,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
+  g_test_add_func ("/gsettings/changes", test_changes);
+  g_test_add_func ("/gsettings/delay", test_delay);
 
   return g_test_run ();
 }

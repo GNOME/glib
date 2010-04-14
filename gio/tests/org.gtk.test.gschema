@@ -7,6 +7,9 @@
          Greeting of the invading martians
       </description>
     </key>
+    <key name="farewell" type="s">
+      <default l10n="true">"So long"</default>
+    </key>
   </schema>
   <schema id="org.gtk.test.basic-types" path="/tests/basic_types/" gettext-domain="test">
     <key name="test_boolean" type="b">
