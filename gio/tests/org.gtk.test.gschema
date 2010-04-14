@@ -1,0 +1,46 @@
+<schemalist>
+  <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
+    <key name="greeting" type="s">
+      <default l10n="true">"Hello, earthlings"</default>
+      <summary>A greeting</summary>
+      <description>
+         Greeting of the invading martians
+      </description>
+    </key>
+  </schema>
+  <schema id="org.gtk.test.basic-types" path="/tests/basic_types/" gettext-domain="test">
+    <key name="test_boolean" type="b">
+      <default>true</default>
+    </key>
+    <key name="test_byte" type="y">
+      <default>25</default>
+    </key>
+    <key name="test_int16" type="n">
+      <default>-1234</default>
+    </key>
+    <key name="test_uint16" type="q">
+      <default>1234</default>
+    </key>
+    <key name="test_int32" type="i">
+      <default>-123456</default>
+    </key>
+    <key name="test_uint32" type="u">
+      <default>123456</default>
+    </key>
+    <key name="test_int64" type="x">
+      <default>-123456789</default>
+    </key>
+    <key name="test_uint64" type="t">
+      <default>123456789</default>
+    </key>
+    <key name="test_double" type="d">
+      <default>123.456</default>
+    </key>
+    <key name="test_string" type="s">
+      <default>"a string, it seems"</default>
+    </key>
+    <key name="test_objectpath" type="o">
+      <default>"/a/object/path"</default>
+    </key>
+  </schema>
+</schemalist>
