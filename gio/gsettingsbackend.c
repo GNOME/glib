@@ -638,19 +638,19 @@ g_settings_backend_get_with_context (const gchar *context)
 
   backend = g_hash_table_lookup (backends, context);
 
-  if (backend)
-    return backend;
-
-  backend = get_default_backend (context);
-
   if (!backend)
     {
-      /* FIXME: create an instance of the memory backend */
+      backend = get_default_backend (context);
+
+      if (!backend)
+        {
+          /* FIXME: create an instance of the memory backend */
+        }
+
+      g_hash_table_insert (backends, g_strdup (context), backend);
     }
 
-  g_hash_table_insert (backends, g_strdup (context), backend);
-
-  return backend;
+  return g_object_ref (backend);
 }
 
 /**
