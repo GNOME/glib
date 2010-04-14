@@ -660,7 +660,6 @@ g_settings_get_value (GSettings   *settings,
                       const gchar *key)
 {
   const GVariantType *type;
-  const gchar *format;
   GVariant *value;
   GVariant *sval;
   gchar *path;
@@ -706,14 +705,20 @@ g_settings_set_value (GSettings   *settings,
                       const gchar *key,
                       GVariant    *value)
 {
+  gboolean correct_type;
+  GVariant *sval;
   GTree *tree;
-  gchar *path;
+
+  sval = g_settings_schema_get_value (settings->priv->schema, key, NULL);
+  correct_type = g_variant_is_of_type (value, g_variant_get_type (sval));
+  g_variant_unref (sval);
+
+  g_return_if_fail (correct_type);
 
   tree = g_settings_backend_create_tree ();
-  path = g_strconcat (settings->priv->base_path, key, NULL);
-  g_tree_insert (tree, g_strdup (""), g_variant_ref_sink (value));
-  g_settings_backend_write (settings->priv->backend, path, tree, NULL);
-  g_free (path);
+  g_tree_insert (tree, strdup (key), g_variant_ref_sink (value));
+  g_settings_backend_write (settings->priv->backend, key, tree, NULL);
+  g_tree_unref (tree);
 }
 
 /**
