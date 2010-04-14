@@ -2102,7 +2102,7 @@ GSettingsBackendPrivate
 <TITLE>GSettings</TITLE>
 GSettings
 g_settings_new
-g_settings_new_from_path
+g_settings_new_with_path
 g_settings_get_value
 g_settings_set_value
 g_settings_get

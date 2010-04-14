@@ -425,10 +425,24 @@ g_settings_new (const gchar *schema)
   return g_object_new (G_TYPE_SETTINGS, "schema-name", schema, NULL);
 }
 
+/**
+ * g_settings_new_with_path:
+ * @schema: the name of the schema
+ * @path: the path to use
+ * @returns: a new #GSettings object
+ *
+ * Creates a new #GSettings object with a given schema and path.
+ *
+ * It is a programmer error to call this function for a schema that
+ * has an explicitly specified path.
+ *
+ * Since: 2.26
+ */
 GSettings *
-g_settings_new_from_path (const gchar *path)
+g_settings_new_with_path (const gchar *schema,
+                          const gchar *path)
 {
-  return g_object_new (G_TYPE_SETTINGS, "base-path", path, NULL);
+  return g_object_new (G_TYPE_SETTINGS, "schema-name", schema, "base-path", path, NULL);
 }
 
 #if 0
@@ -531,6 +545,13 @@ g_settings_class_init (GSettingsClass *class)
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
 
+  /**
+   * GSettings::destroyed:
+   * @settings: the object on which this signal was emitted
+   *
+   * The "destroyed" signal is emitted when the root of the settings
+   * is removed from the backend storage.
+   */
   g_settings_signals[SIGNAL_DESTROYED] =
     g_signal_new ("destroyed", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
