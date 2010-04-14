@@ -224,6 +224,7 @@ gvdb_table_lookup (GvdbTable   *file,
 {
   guint32 hash_value = 5381;
   guint key_length;
+  guint32 bucket;
   guint32 lastno;
   guint32 itemno;
 
@@ -236,11 +237,11 @@ gvdb_table_lookup (GvdbTable   *file,
   if (!gvdb_table_bloom_filter (file, hash_value))
     return NULL;
 
-  itemno = file->hash_buckets[hash_value % file->n_buckets];
+  bucket = hash_value % file->n_buckets;
+  itemno = file->hash_buckets[bucket];
 
-  if (hash_value % file->n_buckets != file->n_buckets - 1)
-    lastno = file->hash_buckets[hash_value % file->n_buckets + 1];
-  else
+  if (bucket == file->n_buckets - 1 ||
+      (lastno = file->hash_buckets[bucket + 1]) > file->n_hash_items)
     lastno = file->n_hash_items;
 
   while G_LIKELY (itemno < lastno)
