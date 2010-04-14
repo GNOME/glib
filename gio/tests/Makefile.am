@@ -134,7 +134,12 @@ contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-gsettings_SOURCES	  = gsettings.c
+gsettings_SOURCES	  = gsettings.c gschemas.compiled
 gsettings_LDADD		  = $(progs_ldadd)
+
+BUILT_SOURCES = gschemas.compiled
+
+gschemas.compiled: *.gschema
+	$(top_builddir)/gio/gschema-compile .
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
