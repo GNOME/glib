@@ -9,6 +9,7 @@
  */
 
 #include "gdelayedsettingsbackend.h"
+#include "gsettingsbackendinternal.h"
 
 #include <string.h>
 

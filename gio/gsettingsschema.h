@@ -59,6 +59,8 @@ const gchar *           g_settings_schema_get_path                      (GSettin
 GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
                                                                          const gchar      *key,
                                                                          GVariant        **options);
+gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
+                                                                         const gchar      *key);
 
 G_END_DECLS
 

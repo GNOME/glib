@@ -51,20 +51,12 @@ typedef struct _GSettingsBackendPrivate                     GSettingsBackendPriv
 typedef struct _GSettingsBackendClass                       GSettingsBackendClass;
 typedef struct _GSettingsBackend                            GSettingsBackend;
 
+
 struct _GSettingsBackendClass
 {
   GObjectClass parent_class;
 
-  void        (*changed)          (GSettingsBackend    *backend,
-                                   const gchar         *name,
-                                   gpointer             origin_tag);
-  void        (*keys_changed)     (GSettingsBackend    *backend,
-                                   const gchar         *prefix,
-                                   gchar const * const *names,
-                                   gpointer             origin_tag);
-  void        (*writable_changed) (GSettingsBackend    *backend,
-                                   const gchar         *name);
-
+  gboolean    (*supports_context) (const gchar         *context);
 
   GVariant *  (*read)             (GSettingsBackend    *backend,
                                    const gchar         *key,
@@ -82,8 +74,6 @@ struct _GSettingsBackendClass
                                    const gchar         *name);
   void        (*unsubscribe)      (GSettingsBackend    *backend,
                                    const gchar         *name);
-
-  gboolean    (*supports_context) (const gchar         *context);
 };
 
 struct _GSettingsBackend
@@ -95,28 +85,6 @@ struct _GSettingsBackend
 };
 
 GType                           g_settings_backend_get_type             (void);
-gboolean                        g_settings_backend_supports_context     (const gchar *context);
-GSettingsBackend *              g_settings_backend_get_with_context     (const gchar *context);
-GTree *                         g_settings_backend_create_tree          (void);
-
-GVariant *                      g_settings_backend_read                 (GSettingsBackend    *backend,
-                                                                         const gchar         *key,
-                                                                         const GVariantType  *expected_type);
-void                            g_settings_backend_write                (GSettingsBackend    *backend,
-                                                                         const gchar         *key,
-                                                                         GVariant            *value,
-                                                                         gpointer             origin_tag);
-void                            g_settings_backend_write_keys           (GSettingsBackend    *backend,
-                                                                         GTree               *tree,
-                                                                         gpointer             origin_tag);
-
-gboolean                        g_settings_backend_get_writable         (GSettingsBackend    *backend,
-                                                                         const char          *name);
-
-void                            g_settings_backend_unsubscribe          (GSettingsBackend    *backend,
-                                                                         const char          *name);
-void                            g_settings_backend_subscribe            (GSettingsBackend    *backend,
-                                                                         const char          *name);
 
 void                            g_settings_backend_changed              (GSettingsBackend    *backend,
                                                                          const gchar         *path,
@@ -133,4 +101,4 @@ void                            g_settings_backend_changed_tree         (GSettin
 
 G_END_DECLS
 
-#endif  /* __G_SETTINGS_BACKEND_H__ */
+#endif /* __G_SETTINGS_BACKEND_H__ */

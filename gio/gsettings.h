@@ -1,17 +1,30 @@
 /*
- * Copyright © 2009 Codethink Limited
+ * Copyright © 2009, 2010 Codethink Limited
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of version 3 of the GNU General Public License as
- * published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
  *
- * See the included COPYING file for more information.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
 #ifndef __G_SETTINGS_H__
 #define __G_SETTINGS_H__
 
-#include "gsettingsbackend.h"
+#include <glib-object.h>
+
+G_BEGIN_DECLS
 
 #define G_TYPE_SETTINGS                                     (g_settings_get_type ())
 #define G_SETTINGS(inst)                                    (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
@@ -31,17 +44,16 @@ struct _GSettingsClass
 {
   GObjectClass parent_class;
 
+  void        (*all_writable_changed) (GSettings    *settings);
+  void        (*all_changed)          (GSettings    *settings);
+  void        (*keys_changed)         (GSettings    *settings,
+                                       const GQuark *keys,
+                                       gint          n_keys);
 
-  GSettings * (*get_settings) (GSettings    *settings,
-                               const gchar  *name);
-
-
-  void        (*changes)      (GSettings    *settings,
-                               const GQuark *keys,
-                               gint          n_keys);
-  void        (*changed)      (GSettings    *settings,
-                               const gchar  *key);
-  void        (*destroyed)    (GSettings    *settings);
+  void        (*writable_changed)     (GSettings    *settings,
+                                       const gchar  *key);
+  void        (*changed)              (GSettings    *settings,
+                                       const gchar  *key);
 };
 
 struct _GSettings
@@ -50,62 +62,46 @@ struct _GSettings
   GSettingsPrivate *priv;
 };
 
-typedef enum
-{
-  G_SETTINGS_BIND_DEFAULT,
-  G_SETTINGS_BIND_GET            = (1<<0),
-  G_SETTINGS_BIND_SET            = (1<<1),
-  G_SETTINGS_BIND_NO_SENSITIVITY = (1<<2)
-} GSettingsBindFlags;
-
-G_BEGIN_DECLS
 
 GType                   g_settings_get_type                             (void);
-void                    g_settings_revert                               (GSettings          *settings);
-void                    g_settings_apply                                (GSettings          *settings);
 
-gboolean                g_settings_get_delay_apply                      (GSettings          *settings);
-gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
-void                    g_settings_set_delay_apply                      (GSettings          *settings,
-                                                                         gboolean            delay);
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_with_path                        (const gchar        *schema,
+                                                                         const gchar        *path);
+gboolean                g_settings_supports_context                     (const gchar        *context);
+GSettings *             g_settings_new_with_context                     (const gchar        *schema,
+                                                                         const gchar        *context);
+GSettings *             g_settings_new_with_context_and_path            (const gchar        *schema,
+                                                                         const gchar        *context,
                                                                          const gchar        *path);
 
 void                    g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
-
 GVariant *              g_settings_get_value                            (GSettings          *settings,
                                                                          const gchar        *key);
 
 void                    g_settings_set                                  (GSettings          *settings,
                                                                          const gchar        *key,
-                                                                         const gchar        *format,
+                                                                         const gchar        *format_string,
                                                                          ...);
-
 void                    g_settings_get                                  (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar        *format_string,
                                                                          ...);
 
-GSettings *             g_settings_get_settings                         (GSettings          *settings,
+GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
 
 gboolean                g_settings_is_writable                          (GSettings          *settings,
                                                                          const gchar        *name);
-void                    g_settings_changes                              (GSettings          *settings,
-                                                                         const GQuark       *keys,
-                                                                         gint                n_keys);
-void                    g_settings_destroy                              (GSettings          *settings);
 
-void                    g_settings_bind                                 (GSettings          *settings,
-                                                                         const gchar        *key,
-                                                                         gpointer            object,
-                                                                         const gchar        *property,
-                                                                         GSettingsBindFlags  flags);
-void                    g_settings_unbind                               (gpointer            object,
-                                                                         const gchar        *key);
+void                    g_settings_apply                                (GSettings          *settings);
+void                    g_settings_revert                               (GSettings          *settings);
+gboolean                g_settings_get_delay_apply                      (GSettings          *settings);
+gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
+void                    g_settings_set_delay_apply                      (GSettings          *settings,
+                                                                         gboolean            delay);
 
 G_END_DECLS
 

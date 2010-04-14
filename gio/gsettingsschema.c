@@ -244,3 +244,11 @@ g_settings_schema_get_path (GSettingsSchema *schema)
 
   return result;
 }
+
+gboolean
+g_settings_schema_has_key (GSettingsSchema *schema,
+                           const gchar     *key)
+{
+  /* XXX vuntz wants a commit now :) */
+  return TRUE;
+}

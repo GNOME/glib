@@ -87,6 +87,7 @@ settings_sources = \
 	gdelayedsettingsbackend.c	\
 	gmemorysettingsbackend.h	\
 	gmemorysettingsbackend.c	\
+	gsettingsbackendinternal.h	\
 	gsettingsbackend.h		\
 	gsettingsbackend.c		\
 	gsettingsschema.h		\

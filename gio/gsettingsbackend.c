@@ -23,7 +23,7 @@
 
 #include "config.h"
 
-#include "gsettingsbackend.h"
+#include "gsettingsbackendinternal.h"
 #include "gmemorysettingsbackend.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
@@ -35,19 +35,18 @@
 
 #include "gioalias.h"
 
+G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
+
+typedef struct _GSettingsBackendWatch GSettingsBackendWatch;
+
 struct _GSettingsBackendPrivate
 {
+  GSettingsBackendWatch *watches;
   gchar *context;
 };
 
-G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
-
-static guint writable_changed_signal;
-static guint keys_changed_signal;
-static guint changed_signal;
-
 enum {
-  PROP_ZERO,
+  PROP_0,
   PROP_CONTEXT
 };
 
@@ -71,6 +70,61 @@ enum {
  * g_settings_backend_create_tree() is a convenience function to create
  * suitable trees.
  **/
+
+struct _GSettingsBackendWatch
+{
+  GSettingsBackendChangedFunc              changed;
+  GSettingsBackendPathChangedFunc          path_changed;
+  GSettingsBackendKeysChangedFunc          keys_changed;
+  GSettingsBackendWritableChangedFunc      writable_changed;
+  GSettingsBackendPathWritableChangedFunc  path_writable_changed;
+  gpointer                                 user_data;
+
+  GSettingsBackendWatch                   *next;
+};
+
+void
+g_settings_backend_watch (GSettingsBackend                         *backend,
+                          GSettingsBackendChangedFunc               changed,
+                          GSettingsBackendPathChangedFunc           path,
+                          GSettingsBackendKeysChangedFunc           keys,
+                          GSettingsBackendWritableChangedFunc       writable,
+                          GSettingsBackendPathWritableChangedFunc   path_writable,
+                          gpointer                                  user_data)
+{
+  GSettingsBackendWatch *watch;
+
+  watch = g_slice_new (GSettingsBackendWatch);
+  watch->changed = changed;
+  watch->path_changed = path;
+  watch->keys_changed = keys;
+  watch->writable_changed = writable;
+  watch->path_writable_changed = path_writable;
+  watch->user_data = user_data;
+
+  watch->next = backend->priv->watches;
+  backend->priv->watches = watch;
+}
+
+void
+g_settings_backend_unwatch (GSettingsBackend *backend,
+                            gpointer          user_data)
+{
+  GSettingsBackendWatch **ptr;
+
+  for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
+    if ((*ptr)->user_data == user_data)
+      {
+        GSettingsBackendWatch *tmp = *ptr;
+
+        *ptr = tmp->next;
+        g_slice_free (GSettingsBackendWatch, tmp);
+        
+        return;
+      }
+
+  g_assert_not_reached ();
+}
 
 /**
  * g_settings_backend_changed:
@@ -108,10 +162,13 @@ g_settings_backend_changed (GSettingsBackend    *backend,
                             const gchar         *name,
                             gpointer             origin_tag)
 {
+  GSettingsBackendWatch *watch;
+
   g_return_if_fail (backend != NULL);
   g_return_if_fail (name != NULL);
- 
-  g_signal_emit (backend, changed_signal, 0, name, origin_tag);
+
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->changed (backend, name, origin_tag, watch->user_data);
 }
 
 /**
@@ -154,18 +211,27 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
                                  gchar const * const *items,
                                  gpointer             origin_tag)
 {
+  GSettingsBackendWatch *watch;
+
   g_return_if_fail (backend != NULL);
   g_return_if_fail (prefix != NULL);
   g_return_if_fail (items != NULL);
  
-  g_signal_emit (backend, keys_changed_signal, 0, prefix, items, origin_tag);
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->keys_changed (backend, prefix, items, origin_tag, watch->user_data);
 }
 
 void
 g_settings_backend_writable_changed (GSettingsBackend *backend,
                                      const gchar      *name)
 {
-  g_signal_emit (backend, writable_changed_signal, 0, name);
+  GSettingsBackendWatch *watch;
+
+  g_return_if_fail (backend != NULL);
+  g_return_if_fail (name != NULL);
+
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->writable_changed (backend, name, watch->user_data);
 }
 
 static gboolean
@@ -194,6 +260,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
                                  GTree            *tree,
                                  gpointer          origin_tag)
 {
+  GSettingsBackendWatch *watch;
   gchar **list;
 
   list = g_new (gchar *, g_tree_nnodes (tree) + 1);
@@ -206,8 +273,10 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
     g_assert (list + g_tree_nnodes (tree) == ptr);
   }
 
-  g_signal_emit (backend, changed_signal, 0,
-                 "", list, g_tree_nnodes (tree), origin_tag);
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->keys_changed (backend, "/",
+                         (const gchar * const *) list,
+                         origin_tag, watch->user_data);
   g_free (list);
 }
 
@@ -430,52 +499,6 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   gobject_class->finalize = g_settings_backend_finalize;
 
   g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
-
-  /**
-   * GSettingsBackend::changed:
-   * @backend: the object on which the signal was emitted
-   * @prefix: a common prefix of the changed keys
-   * @items: the list of changed keys
-   * @origin_tag: the origin tag
-   *
-   * The "changed" signal gets emitted when one or more keys change
-   * in the #GSettingsBackend store.  The new values of all updated
-   * keys will be visible to any signal callbacks.
-   *
-   * The list of changed keys, relative to the root of the settings store,
-   * is @prefix prepended to each of the @items.  It must either be the
-   * case that @prefix is equal to "" or ends in "/" or that @items
-   * contains exactly one item: "".  @prefix need not be the largest
-   * possible prefix.
-   *
-   * Since: 2.26
-   */
-  changed_signal =
-    g_signal_new ("changed", G_TYPE_SETTINGS_BACKEND,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, changed),
-                  NULL, NULL,
-                  _gio_marshal_VOID__STRING_POINTER, G_TYPE_NONE,
-                  2, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE |
-                  G_TYPE_POINTER);
-
-  keys_changed_signal =
-    g_signal_new ("keys-changed", G_TYPE_SETTINGS_BACKEND,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, keys_changed),
-                  NULL, NULL,
-                  _gio_marshal_VOID__STRING_BOXED_POINTER, G_TYPE_NONE,
-                  3, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
-                  G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE, G_TYPE_POINTER);
-
-  writable_changed_signal =
-    g_signal_new ("writable-changed", G_TYPE_SETTINGS_BACKEND,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, writable_changed),
-                  NULL, NULL,
-                  _gio_marshal_VOID__STRING_POINTER, G_TYPE_NONE,
-                  2, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE |
-                  G_TYPE_POINTER);
 
   /**
    * GSettingsBackend:context:
