@@ -16,7 +16,7 @@ progs_ldadd     = 					\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
 
-
+TESTS_ENVIRONMENT += GSETTINGS_SCHEMA_DIR=. GSETTINGS_MEMORY_BACKEND_STORE=./store
 TEST_PROGS +=	 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
@@ -134,6 +134,7 @@ contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-gsettings_LDADD = $(progs_ldadd)
+gsettings_SOURCES	  = gsettings.c
+gsettings_LDADD		  = $(progs_ldadd)
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
