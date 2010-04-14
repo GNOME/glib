@@ -55,7 +55,7 @@ g_memory_settings_backend_write_one (const gchar            *key,
   slash = strrchr (key, '/');
   g_assert (slash != NULL);
   base_key = (slash + 1);
-  path = g_strndup (key, slash - key);
+  path = g_strndup (key, slash - key + 1);
 
   g_key_file_set_string (memory->priv->keyfile,
                          path, base_key, g_variant_print (value, FALSE));
@@ -245,7 +245,7 @@ g_memory_settings_backend_keyfile_reload (GMemorySettingsBackend *memory)
       /* the array has to be NULL-terminated */
       g_ptr_array_add (changed_array, NULL);
       g_settings_backend_keys_changed (G_SETTINGS_BACKEND (memory),
-                                       NULL,
+                                       "",
                                        (const gchar **) changed_array->pdata,
                                        NULL);
     }
@@ -315,7 +315,7 @@ g_memory_settings_backend_constructed (GObject *object)
 
   context = NULL;
   g_object_get (memory, "context", &context, NULL);
-  if (context)
+  if (context && context[0] != '\0')
     {
       memory->priv->keyfile_path = g_strdup_printf ("%s.%s", path, context);
       g_free (context);
