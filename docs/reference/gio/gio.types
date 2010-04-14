@@ -72,6 +72,7 @@ g_password_save_get_type
 g_resolver_error_get_type
 g_resolver_get_type
 g_seekable_get_type
+g_settings_get_type
 g_settings_backend_get_type
 g_simple_async_result_get_type
 g_socket_address_enumerator_get_type

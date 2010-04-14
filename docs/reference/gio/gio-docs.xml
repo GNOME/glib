@@ -130,6 +130,7 @@
     </chapter>
     <chapter id="settings">
         <title>Settings</title>
+        <xi:include href="xml/gsettings.xml"/>
         <xi:include href="xml/gsettingsbackend.xml"/>
     </chapter>
     <chapter id="extending">

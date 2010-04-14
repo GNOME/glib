@@ -8,6 +8,10 @@
  * See the included COPYING file for more information.
  */
 
+#include "config.h"
+#include <glib.h>
+#include <glibintl.h>
+
 #include "gsettings.h"
 
 #include "gdelayedsettingsbackend.h"
@@ -34,11 +38,11 @@ struct _GSettingsPrivate {
 enum
 {
   PROP_0,
+  PROP_STORAGE,
   PROP_SCHEMA_NAME,
   PROP_SCHEMA,
-  PROP_DELAY_APPLY,
-  PROP_STORAGE,
   PROP_BASE_PATH,
+  PROP_DELAY_APPLY,
   PROP_HAS_UNAPPLIED,
 };
 
@@ -101,11 +105,13 @@ g_settings_storage_changed (GSettingsBackend    *backend,
  * @keys: an array of #GQuark key names
  * @n_keys: the length of @keys
  *
- * Emits the "changes" signal on a #GSettings object.
+ * Emits the #GSettings::changes signal on a #GSettings object.
  *
  * It is an error to call this function with a quark in @keys that is
  * not a valid key for @settings (according to its schema).
- **/
+ *
+ * Since: 2.26
+ */
 void
 g_settings_changes (GSettings    *settings,
                     const GQuark *keys,
@@ -151,6 +157,17 @@ g_settings_notify_unapplied (GSettings *settings)
   g_object_notify (G_OBJECT (settings), "has-unapplied");
 }
 
+/**
+ * g_settings_set_delay_apply:
+ * @settings: a #GSettings object
+ * @delayed: %TRUE to delay applying of changes
+ *
+ * Changes the #GSettings object into 'delay-apply' mode. In this
+ * mode, changes to @settings are not immediately propagated to the
+ * backend, but kept locally until g_settings_apply() is called.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_set_delay_apply (GSettings *settings,
                             gboolean   delayed)
@@ -194,6 +211,15 @@ g_settings_set_delay_apply (GSettings *settings,
     }
 }
 
+/**
+ * g_settings_get_delay_apply:
+ * @settings: a #GSettings object
+ * @returns: %TRUE if changes in @settings are not applied immediately
+ *
+ * Returns whether the #GSettings object is in 'delay-apply' mode.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_get_delay_apply (GSettings *settings)
 {
@@ -245,8 +271,10 @@ g_settings_revert (GSettings *settings)
 }
 
 static void
-g_settings_set_property (GObject *object, guint prop_id,
-                         const GValue *value, GParamSpec *pspec)
+g_settings_set_property (GObject      *object,
+                         guint         prop_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
 {
   GSettings *settings = G_SETTINGS (object);
 
@@ -279,6 +307,16 @@ g_settings_set_property (GObject *object, guint prop_id,
     }
 }
 
+/**
+ * g_settings_get_has_unapplied:
+ * @settings: a #GSettings object
+ * @returns: %TRUE if @settings has unapplied changes
+ *
+ * Returns whether the #GSettings object has any unapplied
+ * changes.  This can only be the case if it is in 'delayed-apply' mode.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_get_has_unapplied (GSettings *settings)
 {
@@ -288,8 +326,10 @@ g_settings_get_has_unapplied (GSettings *settings)
 }
 
 static void
-g_settings_get_property (GObject *object, guint prop_id,
-                         GValue *value, GParamSpec *pspec)
+g_settings_get_property (GObject    *object,
+                         guint       prop_id,
+                         GValue     *value,
+                         GParamSpec *pspec)
 {
   GSettings *settings = G_SETTINGS (object);
 
@@ -368,6 +408,15 @@ g_settings_constructed (GObject *object)
                                 settings->priv->base_path);
 }
 
+/**
+ * g_settings_new:
+ * @schema: the name of the schema
+ * @returns: a new #GSettings object
+ *
+ * Creates a new #GSettings object with a given schema.
+ *
+ * Since: 2.26
+ */
 GSettings *
 g_settings_new (const gchar *schema)
 {
@@ -449,6 +498,14 @@ g_settings_class_init (GSettingsClass *class)
 
   g_type_class_add_private (object_class, sizeof (GSettingsPrivate));
 
+  /**
+   * GSettings::changes:
+   * @settings: the object on which the signal was emitted
+   * @keys: an array of #GQuark<!-- -->s for the changed keys
+   * @n_keys: the length of the @keys array
+   *
+   * The "changes" signal is emitted when a set of keys changes.
+   */
   g_settings_signals[SIGNAL_CHANGES] =
     g_signal_new ("changes", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
@@ -457,6 +514,13 @@ g_settings_class_init (GSettingsClass *class)
                   _gio_marshal_VOID__POINTER_INT,
                   G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_INT);
 
+  /**
+   * GSettings::chnaged:
+   * @settings: the object on which the signal was emitted
+   * @key:  the changed key
+   *
+   * The "changed" signal is emitted for each changed key.
+   */
   g_settings_signals[SIGNAL_CHANGED] =
     g_signal_new ("changed", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
@@ -471,48 +535,103 @@ g_settings_class_init (GSettingsClass *class)
                   G_STRUCT_OFFSET (GSettingsClass, destroyed),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
+  /**
+   * GSettings:backend:
+   *
+   * The #GSettingsBackend object that provides the backing storage
+   * for this #GSettings object.
+   */
   g_object_class_install_property (object_class, PROP_STORAGE,
-    g_param_spec_object ("backend", "backend storage",
-                         "The GSettingsBackend object for this GSettings",
-                         G_TYPE_SETTINGS_BACKEND, G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_READWRITE | G_PARAM_STATIC_NICK |
-                         G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
+    g_param_spec_object ("backend",
+                         P_("Backend storage"),
+                         P_("The GSettingsBackend object for this settings object"),
+                         G_TYPE_SETTINGS_BACKEND,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GSettings:schema-name:
+   *
+   * The name of the schema that describes the types of keys
+   * for this #GSettings object.
+   */
   g_object_class_install_property (object_class, PROP_SCHEMA_NAME,
-    g_param_spec_string ("schema-name", "schema name",
-                         "The name of the schema for this settings object",
-                         NULL, G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_READWRITE | G_PARAM_STATIC_NICK |
-                         G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
+    g_param_spec_string ("schema-name",
+                         P_("Schema name"),
+                         P_("The name of the schema for this settings object"),
+                         NULL,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+   /**
+    * GSettings:schema:
+    *
+    * The #GSettingsSchema object that describes the types of
+    * keys for this #GSettings object.
+    */
+   g_object_class_install_property (object_class, PROP_SCHEMA,
+     g_param_spec_object ("schema",
+                          P_("Schema"),
+                          P_("The GSettingsSchema object for this settings object"),
+                          G_TYPE_OBJECT,
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+   /**
+    * GSettings:base-path:
+    *
+    * The path within the backend where the settings are stored.
+    */
+   g_object_class_install_property (object_class, PROP_BASE_PATH,
+     g_param_spec_string ("base-path",
+                          P_("Base path"),
+                          P_("The path within the backend where the settings are"),
+                          NULL,
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+   /**
+    * GSettings:delay-apply:
+    *
+    * If this property is %TRUE, the #GSettings object is in 'delay-apply'
+    * mode and will not apply changes until g_settings_apply() is called.
+    */
    g_object_class_install_property (object_class, PROP_DELAY_APPLY,
-    g_param_spec_boolean ("delay-apply", "delayed apply",
-                          "If TRUE, you must call apply() to write changes",
-                          FALSE, G_PARAM_CONSTRUCT_ONLY |
-                          G_PARAM_READWRITE | G_PARAM_STATIC_NICK |
-                          G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
+     g_param_spec_boolean ("delay-apply",
+                           P_("Delayed apply"),
+                           P_("If TRUE, you must call apply() to write changes"),
+                           FALSE,
+                           G_PARAM_CONSTRUCT_ONLY |
+                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+   /**
+    * GSettings:has-unapplied:
+    *
+    * If this property is %TRUE, the #GSettings object has outstanding
+    * changes that will be applied when g_settings_apply() is called.
+    */
    g_object_class_install_property (object_class, PROP_HAS_UNAPPLIED,
-    g_param_spec_boolean ("has-unapplied", "has unapplied changes",
-                          "TRUE if there are outstanding changes to apply()",
-                          FALSE, G_PARAM_READABLE | G_PARAM_STATIC_NICK |
-                          G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
+     g_param_spec_boolean ("has-unapplied",
+                           P_("Has unapplied changes"),
+                           P_("TRUE if there are outstanding changes to apply()"),
+                           FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (object_class, PROP_SCHEMA,
-    g_param_spec_object ("schema", "schema",
-                         "The GSettingsSchema object for this GSettings",
-                         G_TYPE_OBJECT, G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_READWRITE | G_PARAM_STATIC_NICK |
-                         G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
-
-  g_object_class_install_property (object_class, PROP_BASE_PATH,
-    g_param_spec_string ("base-path", "base path",
-                         "the path within the backend where the settings are",
-                         NULL, G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_READWRITE | G_PARAM_STATIC_NICK |
-                         G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB));
 }
 
+/**
+ * g_settings_get_value:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: a new #GVariant
+ *
+ * Gets the value that is stored in @settings for @key.
+ *
+ * It is a programmer error to give a @key that isn't valid for
+ * @settings.
+ *
+ * Since: 2.26
+ */
 GVariant *
 g_settings_get_value (GSettings   *settings,
                       const gchar *key)
@@ -556,6 +675,8 @@ g_settings_get_value (GSettings   *settings,
  * incorrect type.
  *
  * If @value is floating then this function consumes the reference.
+ *
+ * Since: 2.26
  **/
 void
 g_settings_set_value (GSettings   *settings,
@@ -572,6 +693,24 @@ g_settings_set_value (GSettings   *settings,
   g_free (path);
 }
 
+/**
+ * g_settings_get:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @format: a #GVariant format string
+ * @...: arguments as per @format
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience function that combines g_settings_get_value() with
+ * g_variant_get().
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or a @format that doesn't match the type of @key according
+ * to the schema of @settings.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_get (GSettings   *settings,
                 const gchar *key,
@@ -590,6 +729,24 @@ g_settings_get (GSettings   *settings,
   g_variant_unref (value);
 }
 
+/**
+ * g_settings_set:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @format: a #GVariant format string
+ * @...: arguments as per @format
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience function that combines g_settings_set_value() with
+ * g_variant_new().
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or a @format that doesn't match the type of @key according
+ * to the schema of @settings.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_set (GSettings   *settings,
                 const gchar *key,
@@ -606,6 +763,16 @@ g_settings_set (GSettings   *settings,
   g_settings_set_value (settings, key, value);
 }
 
+/**
+ * g_settings_is_writable:
+ * @settings: a #GSettings object
+ * @name: the name of a key
+ * @returns: %TRUE if the key @name is writable
+ *
+ * Finds out if a key can be written or not
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_is_writable (GSettings   *settings,
                         const gchar *name)

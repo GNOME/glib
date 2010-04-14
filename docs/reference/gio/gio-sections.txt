@@ -2095,3 +2095,27 @@ GSettingsBackendClass
 g_settings_backend_get_type
 GSettingsBackendPrivate
 </SECTION>
+
+<SECTION>
+<FILE>gsettings</FILE>
+<TITLE>GSettings</TITLE>
+GSettings
+g_settings_new
+g_settings_new_from_path
+g_settings_get_value
+g_settings_set_value
+g_settings_get
+g_settings_set
+g_settings_is_writable
+g_settings_get_delay_apply
+g_settings_set_delay_apply
+g_settings_apply
+g_settings_revert
+g_settings_get_has_unapplied
+g_settings_changes
+g_settings_destroy
+<SUBSECTION Standard>
+GSettingsClass
+<SUBSECTION Private>
+g_settings_get_type
+</SECTION>
