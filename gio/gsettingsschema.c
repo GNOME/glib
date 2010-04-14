@@ -45,7 +45,7 @@
  *                  path           #IMPLIED
  *                  gettext-domain #IMPLIED >
  *
- * <!ELEMENT key (default|summary|description|range)* >
+ * <!ELEMENT key (default|summary?|description?|range?|choices?) >
  * <!ATTLIST key name #REQUIRED
  *               type #REQUIRED >
  *
@@ -54,13 +54,17 @@
  *
  * <!ELEMENT summary (#PCDATA) >
  * <!ELEMENT description (#PCDATA) >
- * <!ELEMENT range (choice*|(min,max))  >
  *
- * <!ELEMENT choice EMPTY >
- * <!ATTLIST choice value #REQUIRED >
- *
+ * <!ELEMENT range (min,max)  >
  * <!ELEMENT min (#PCDATA) >
  * <!ELEMENT max (#PCDATA) >
+ *
+ * <!ELEMENT choices (choice+) >
+ * <!ELEMENT choice (alias?) >
+ * <!ATTLIST choice value #REQUIRED >
+ * <!ELEMENT choice (alias?) >
+ * <!ELEMENT alias EMPTY >
+ * <!ATTLIST alias value #REQUIRED >
  * ]]>
  * ]|
  */
@@ -83,13 +87,28 @@ initialise_schema_sources (void)
   if G_UNLIKELY (g_once_init_enter (&initialised))
     {
       const gchar * const *dir;
+      gchar *path;
 
       for (dir = g_get_system_data_dirs (); *dir; dir++)
         {
-          GvdbTable *table;
           gchar *filename;
+          GvdbTable *table;
 
           filename = g_strdup_printf ("%s/glib-2.0/schemas/compiled", *dir);
+          table = gvdb_table_new (filename, TRUE, NULL);
+
+          if (table != NULL)
+            schema_sources = g_slist_prepend (schema_sources, table);
+
+          g_free (filename);
+        }
+
+      if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
+        {
+          gchar *filename;
+          GvdbTable *table;
+
+          filename = g_build_filename (path, "compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
