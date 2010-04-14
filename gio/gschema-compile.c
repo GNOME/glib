@@ -323,7 +323,7 @@ main (int argc, char **argv)
     }
 
   if (!(table = parse_gschema_files (matched.gl_pathv, &error)) ||
-      !gvdb_table_write_contents (table, "compiled", &error))
+      !gvdb_table_write_contents (table, "gschemas.compiled", &error))
     {
       fprintf (stderr, "%s\n", error->message);
       return 1;

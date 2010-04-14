@@ -94,7 +94,7 @@ initialise_schema_sources (void)
           gchar *filename;
           GvdbTable *table;
 
-          filename = g_strdup_printf ("%s/glib-2.0/schemas/compiled", *dir);
+          filename = g_build_filename (*dir, "glib-2.0/schemas", "gschemas.compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
@@ -108,7 +108,7 @@ initialise_schema_sources (void)
           gchar *filename;
           GvdbTable *table;
 
-          filename = g_build_filename (path, "compiled", NULL);
+          filename = g_build_filename (path, "gschemas.compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
