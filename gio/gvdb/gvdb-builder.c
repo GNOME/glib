@@ -364,15 +364,17 @@ file_builder_add_hash (FileBuilder         *fb,
   file_builder_allocate_for_hash (fb, mytable->n_buckets, index, 5, 0,
                                   &bloom_filter, &buckets, &items, pointer);
 
+  index = 0;
   for (bucket = 0; bucket < mytable->n_buckets; bucket++)
     {
-      buckets[bucket] = item_to_index (mytable->buckets[bucket]);
+      buckets[bucket] = guint32_to_le (index);
 
       for (item = mytable->buckets[bucket]; item; item = item->next)
         {
           struct gvdb_hash_item *entry = items++;
           const gchar *basename;
 
+          g_assert (index == guint32_from_le (item->assigned_index));
           entry->hash_value = guint32_to_le (item->hash_value);
           entry->parent = item_to_index (item->parent);
           entry->unused = 0;
@@ -421,6 +423,8 @@ file_builder_add_hash (FileBuilder         *fb,
               entry->type = 'H';
               file_builder_add_hash (fb, item->table, &entry->value.pointer);
             }
+
+          index++;
         }
     }
 }
