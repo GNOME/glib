@@ -68,9 +68,6 @@ gboolean                g_settings_get_delay_apply                      (GSettin
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
 void                    g_settings_set_delay_apply                      (GSettings          *settings,
                                                                          gboolean            delay);
-gboolean                g_settings_get_locked                           (GSettings          *settings);
-void                    g_settings_lock                                 (GSettings          *settings);
-
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_from_path                        (const gchar        *path);
 

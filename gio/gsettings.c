@@ -39,7 +39,6 @@ struct _GSettingsPrivate {
 
   guint handler_id;
   guint unapplied_handler;
-  gboolean locked;
   gboolean delayed;
 };
 
@@ -186,10 +185,6 @@ g_settings_set_delay_apply (GSettings *settings,
     {
       GSettingsBackend *backend;
 
-      if G_UNLIKELY (settings->priv->locked)
-        g_error ("Can only set delayed-apply attribute on "
-                 "freshly-created GSettings instances");
-
       g_assert (delayed);
 
       backend = g_delayed_settings_backend_new (settings->priv->backend,
@@ -215,7 +210,6 @@ g_settings_set_delay_apply (GSettings *settings,
       settings->priv->base_path = g_strdup ("");
 
       settings->priv->delayed = TRUE;
-      settings->priv->locked = TRUE;
     }
 }
 
