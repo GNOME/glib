@@ -58,9 +58,8 @@ enum {
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
  * @prefix: a common prefix of the changed keys
- * @items: the list of changed keys
- * @n_items: the number of items in @items. May be -1 if @items is
- *     %NULL-terminated
+ * @items: the %NULL-terminated list of changed keys
+ * @n_items: the number of items in @items. May be -1
  * @origin_tag: the origin tag
  *
  * Emits the changed signal on @backend.  This function should only be
