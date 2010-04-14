@@ -62,7 +62,6 @@ enum {
  * @backend: a #GSettingsBackend implementation
  * @prefix: a common prefix of the changed keys
  * @items: the %NULL-terminated list of changed keys
- * @n_items: the number of items in @items. May be -1
  * @origin_tag: the origin tag
  *
  * Emits the changed signal on @backend.  This function should only be
@@ -349,8 +348,6 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    * @backend: the object on which the signal was emitted
    * @prefix: a common prefix of the changed keys
    * @items: the list of changed keys
-   * @n_items: the number of items in @items. May be -1 if @items is
-   *     %NULL-terminated
    * @origin_tag: the origin tag
    *
    * The "changed" signal gets emitted when one or more keys change
@@ -365,15 +362,32 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    *
    * Since: 2.26
    */
-  changed_signal =
-    g_signal_new ("changed", G_TYPE_SETTINGS_BACKEND,
+  value_changed_signal =
+    g_signal_new ("value-changed", G_TYPE_SETTINGS_BACKEND,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, changed),
+                  G_STRUCT_OFFSET (GSettingsBackendClass, value_changed),
+                  NULL, NULL,
+                  _gio_marshal_VOID__STRING_POINTER, G_TYPE_NONE,
+                  2, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE |
+                  G_TYPE_POINTER);
+
+  multiple_changed_signal =
+    g_signal_new ("multiple-changed", G_TYPE_SETTINGS_BACKEND,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GSettingsBackendClass, multiple_changed),
                   NULL, NULL,
                   _gio_marshal_VOID__STRING_BOXED_INT_POINTER, G_TYPE_NONE,
-                  4, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
-                  G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE,
-                  G_TYPE_INT, G_TYPE_POINTER);
+                  3, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
+                  G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE, G_TYPE_POINTER);
+
+  writable_changed_signal =
+    g_signal_new ("writable-changed", G_TYPE_SETTINGS_BACKEND,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GSettingsBackendClass, writable_changed),
+                  NULL, NULL,
+                  _gio_marshal_VOID__STRING_POINTER, G_TYPE_NONE,
+                  2, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE |
+                  G_TYPE_POINTER);
 
   /**
    * GSettingsBackend:context:
