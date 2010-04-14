@@ -634,6 +634,7 @@ g_settings_set_value (GSettings   *settings,
 {
   gboolean correct_type;
   GVariant *sval;
+  gchar *path;
 
   sval = g_settings_schema_get_value (settings->priv->schema, key, NULL);
   correct_type = g_variant_is_of_type (value, g_variant_get_type (sval));
@@ -641,7 +642,9 @@ g_settings_set_value (GSettings   *settings,
 
   g_return_if_fail (correct_type);
 
-  g_settings_backend_write (settings->priv->backend, key, value, NULL);
+  path = g_strconcat (settings->priv->path, key, NULL);
+  g_settings_backend_write (settings->priv->backend, path, value, NULL);
+  g_free (path);
 }
 
 /**
