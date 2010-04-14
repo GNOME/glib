@@ -1,11 +1,24 @@
 /*
- * Copyright © 2009 Codethink Limited
+ * Copyright © 2009, 2010 Codethink Limited
+ * Copyright © 2010 Red Hat, Inc.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of version 3 of the GNU General Public License as
- * published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
  *
- * See the included COPYING file for more information.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Ryan Lortie <desrt@desrt.ca>
+ *          Matthias Clasen <mclasen@redhat.com>
  */
 
 #include "config.h"
@@ -29,6 +42,8 @@ struct _GSettingsBackendPrivate
 
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
+static guint writable_changed_signal;
+static guint keys_changed_signal;
 static guint changed_signal;
 
 enum {
@@ -56,6 +71,48 @@ enum {
  * g_settings_backend_create_tree() is a convenience function to create
  * suitable trees.
  **/
+
+/**
+ * g_settings_backend_changed:
+ * @backend: a #GSettingsBackend implementation
+ * @name: the name of the key or path that changed
+ * @origin_tag: the origin tag
+ *
+ * Emits the changed signal on @backend.  This function should only be
+ * called by the implementation itself, to indicate that a change has
+ * occurred.
+ *
+ * @name may refer to a specific single key (ie: not ending in '/') or
+ * may refer to a set of keys (ie: ending in '/').  In the case that it
+ * ends in '/' then any key under that path may have been changed.
+ *
+ * The implementation must call this function during any call to
+ * g_settings_backend_write(), before the call returns (except in the
+ * case that no keys are actually changed).  It may not rely on the
+ * existence of a mainloop for dispatching the signal later.
+ *
+ * The implementation may call this function at any other time it likes
+ * in response to other events (such as changes occuring outside of the
+ * program).  These calls may originate from a mainloop or may originate
+ * in response to any other action (including from calls to
+ * g_settings_backend_write()).
+ *
+ * In the case that this call is in response to a call to
+ * g_settings_backend_write() then @origin_tag must be set to the same
+ * value that was passed to that call.
+ *
+ * Since: 2.26
+ **/ 
+void
+g_settings_backend_changed (GSettingsBackend    *backend,
+                            const gchar         *name,
+                            gpointer             origin_tag)
+{
+  g_return_if_fail (backend != NULL);
+  g_return_if_fail (name != NULL);
+ 
+  g_signal_emit (backend, changed_signal, 0, name, origin_tag);
+}
 
 /**
  * g_settings_backend_changed:
@@ -92,19 +149,23 @@ enum {
  * Since: 2.26
  */
 void
-g_settings_backend_changed (GSettingsBackend    *backend,
-                            const gchar         *prefix,
-                            gchar const * const *items,
-                            gint                 n_items,
-                            gpointer             origin_tag)
+g_settings_backend_keys_changed (GSettingsBackend    *backend,
+                                 const gchar         *prefix,
+                                 gchar const * const *items,
+                                 gpointer             origin_tag)
 {
-  if (n_items == -1)
-    for (n_items = 0; items[n_items]; n_items++);
+  g_return_if_fail (backend != NULL);
+  g_return_if_fail (prefix != NULL);
+  g_return_if_fail (items != NULL);
+ 
+  g_signal_emit (backend, keys_changed_signal, 0, prefix, items, origin_tag);
+}
 
-  g_assert (items[n_items] == NULL);
-
-  g_signal_emit (backend, changed_signal, 0,
-                 prefix, items, n_items, origin_tag);
+void
+g_settings_backend_writable_changed (GSettingsBackend *backend,
+                                     const gchar      *name)
+{
+  g_signal_emit (backend, writable_changed_signal, 0, name);
 }
 
 static gboolean
@@ -130,7 +191,6 @@ g_settings_backend_append_to_list (gpointer key,
  **/
 void
 g_settings_backend_changed_tree (GSettingsBackend *backend,
-                                 const gchar      *prefix,
                                  GTree            *tree,
                                  gpointer          origin_tag)
 {
@@ -147,7 +207,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   }
 
   g_signal_emit (backend, changed_signal, 0,
-                 prefix, list, g_tree_nnodes (tree), origin_tag);
+                 "", list, g_tree_nnodes (tree), origin_tag);
   g_free (list);
 }
 
@@ -183,18 +243,47 @@ g_settings_backend_read (GSettingsBackend   *backend,
 /**
  * g_settings_backend_write:
  * @backend: a #GSettingsBackend implementation
- * @prefix: the longest common prefix
+ * @key: the name of the key
+ * @value: a #GVariant value to write to this key
+ * @origin_tag: the origin tag
+ *
+ * Writes exactly one key.
+ *
+ * This call does not fail.  During this call a
+ * #GSettingsBackend::changed signal will be emitted if the value of the
+ * key has changed.  The updated key value will be visible to any signal
+ * callbacks.
+ *
+ * One possible method that an implementation might deal with failures is
+ * to emit a second "changed" signal (either during this call, or later)
+ * to indicate that the affected keys have suddenly "changed back" to their
+ * old values.
+ *
+ * Since: 2.26
+ **/
+void
+g_settings_backend_write (GSettingsBackend *backend,
+                          const gchar      *key,
+                          GVariant         *value,
+                          gpointer          origin_tag)
+{
+  G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->write (backend, key, value, origin_tag);
+}
+
+/**
+ * g_settings_backend_write_keys:
+ * @backend: a #GSettingsBackend implementation
  * @values: a #GTree containing key-value pairs to write
  * @origin_tag: the origin tag
  *
  * Writes one or more keys.  This call will never block.
  *
- * For each item in @values, a key is written.  The key to be written is
- * @prefix prepended to the key used in the tree.  The value stored in
- * the tree is expected to be a #GVariant instance.  It must either be
- * the case that @prefix is equal to "" or ends in "/" or that @values
- * contains exactly one item, with a key of "".  @prefix need not be the
- * largest possible prefix.
+ * The key of each item in the tree is the key name to write to and the
+ * value is a #GVariant to write.  The proper type of #GTree for this
+ * call can be created with g_settings_backend_create_tree().  This call
+ * might take a reference to the tree; you must not modified the #GTree
+ * after passing it to this call.
  *
  * This call does not fail.  During this call a #GSettingsBackend::changed
  * signal will be emitted if any keys have been changed.  The new values of
@@ -208,13 +297,12 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * Since: 2.26
  **/
 void
-g_settings_backend_write (GSettingsBackend *backend,
-                          const gchar      *prefix,
-                          GTree            *values,
-                          gpointer          origin_tag)
+g_settings_backend_write_keys (GSettingsBackend *backend,
+                               GTree            *tree,
+                               gpointer          origin_tag)
 {
   G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->write (backend, prefix, values, origin_tag);
+    ->write_keys (backend, tree, origin_tag);
 }
 
 /**
@@ -362,21 +450,21 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    *
    * Since: 2.26
    */
-  value_changed_signal =
-    g_signal_new ("value-changed", G_TYPE_SETTINGS_BACKEND,
+  changed_signal =
+    g_signal_new ("changed", G_TYPE_SETTINGS_BACKEND,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, value_changed),
+                  G_STRUCT_OFFSET (GSettingsBackendClass, changed),
                   NULL, NULL,
                   _gio_marshal_VOID__STRING_POINTER, G_TYPE_NONE,
                   2, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE |
                   G_TYPE_POINTER);
 
-  multiple_changed_signal =
-    g_signal_new ("multiple-changed", G_TYPE_SETTINGS_BACKEND,
+  keys_changed_signal =
+    g_signal_new ("keys-changed", G_TYPE_SETTINGS_BACKEND,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsBackendClass, multiple_changed),
+                  G_STRUCT_OFFSET (GSettingsBackendClass, keys_changed),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_BOXED_INT_POINTER, G_TYPE_NONE,
+                  _gio_marshal_VOID__STRING_BOXED_POINTER, G_TYPE_NONE,
                   3, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
                   G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE, G_TYPE_POINTER);
 
@@ -466,11 +554,14 @@ get_default_backend (const gchar *context)
 
   if (context)
     {
+      GSettingsBackendClass *backend_class;
       GTypeClass *class;
 
       class = g_io_extension_ref_class (extension);
+      backend_class = G_SETTINGS_BACKEND_CLASS (class);
 
-      if (!g_settings_backend_class_supports_context (G_SETTINGS_BACKEND_CLASS (class), context))
+      if (backend_class->supports_context != NULL &&
+          !backend_class->supports_context (context))
         {
           g_type_class_unref (class);
           return NULL;
@@ -569,16 +660,8 @@ g_settings_backend_supports_context (const gchar *context)
 static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
-  backend->priv = g_type_instance_get_private (backend, G_TYPE_SETTINGS_BACKEND);
-}
-
-gboolean
-g_settings_backend_class_supports_context (GSettingsBackendClass *klass,
-                                           const gchar           *context)
-{
-  if (klass->supports_context)
-    return (klass->supports_context) (klass, context);
-
-  return TRUE;
+  backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
+                                               G_TYPE_SETTINGS_BACKEND,
+                                               GSettingsBackendPrivate);
 }
 

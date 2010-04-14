@@ -18,14 +18,14 @@ enum
 {
   PROP_NONE,
   PROP_BACKEND,
-  PROP_BASE_PATH,
   PROP_HAS_UNAPPLIED
 };
 
 struct _GDelayedSettingsBackendPrivate {
   GSettingsBackend *backend;
-  guint handler_id;
-  gchar *base_path;
+  guint writable_changed_handler_id;
+  guint keys_changed_handler_id;
+  guint changed_handler_id;
   GTree *delayed;
 };
 
@@ -33,35 +33,46 @@ G_DEFINE_TYPE (GDelayedSettingsBackend,
                g_delayed_settings_backend,
                G_TYPE_SETTINGS_BACKEND)
 
-static gboolean
-g_delayed_settings_backend_add_to_tree (gpointer key,
-                                        gpointer value,
-                                        gpointer user_data)
+static void
+g_delayed_settings_backend_write (GSettingsBackend *backend,
+                                  const gchar      *key,
+                                  GVariant         *value,
+                                  gpointer          origin_tag)
 {
-  gpointer *args = user_data;
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+  gboolean was_empty;
 
-  g_tree_insert (args[0],
-                 g_strjoin (NULL, args[1], key, NULL),
-                 g_variant_ref (value));
+  was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
+  g_tree_insert (delayed->priv->delayed, g_strdup (key),
+                 g_variant_ref_sink (value));
+  g_settings_backend_changed (backend, key, origin_tag);
 
+  if (was_empty)
+    g_object_notify (G_OBJECT (delayed), "has-unapplied");
+}
+
+static gboolean
+add_to_tree (gpointer key,
+             gpointer value,
+             gpointer user_data)
+{
+  g_tree_insert (user_data, g_strdup (key), g_variant_ref (value));
   return FALSE;
 }
 
 static void
-g_delayed_settings_backend_write (GSettingsBackend *backend,
-                                  const gchar      *prefix,
-                                  GTree            *tree,
-                                  gpointer          origin_tag)
+g_delayed_settings_backend_keys_write (GSettingsBackend *backend,
+                                       GTree            *tree,
+                                       gpointer          origin_tag)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
-  gconstpointer args[2] = { delayed->priv->delayed, prefix };
   gboolean was_empty;
 
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
 
-  g_tree_foreach (tree, g_delayed_settings_backend_add_to_tree, args);
+  g_tree_foreach (tree, add_to_tree, delayed->priv->delayed);
 
-  g_settings_backend_changed_tree (backend, prefix, tree, origin_tag);
+  g_settings_backend_changed_tree (backend, tree, origin_tag);
 
   if (was_empty)
     g_object_notify (G_OBJECT (delayed), "has-unapplied");
@@ -73,18 +84,13 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
                                  const GVariantType *expected_type)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
-  GVariant *result = NULL;
-  gchar *path;
+  GVariant *result;
 
   if ((result = g_tree_lookup (delayed->priv->delayed, key))) 
     return g_variant_ref (result);
 
-  path = g_strconcat (delayed->priv->base_path, key, NULL);
-  result = g_settings_backend_read (delayed->priv->backend,
-                                    path, expected_type);
-  g_free (path);
-
-  return result;
+  return g_settings_backend_read (delayed->priv->backend,
+                                  key, expected_type);
 }
 
 gboolean
@@ -102,10 +108,8 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
 
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
-
-      g_settings_backend_write (delayed->priv->backend,
-                                delayed->priv->base_path,
-                                tmp, delayed->priv);
+      g_settings_backend_write_keys (delayed->priv->backend,
+                                     tmp, delayed->priv);
       g_tree_unref (tmp);
 
       g_object_notify (G_OBJECT (delayed), "has-unapplied");
@@ -121,8 +125,7 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
 
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
-      g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed),
-                                       "", tmp, NULL);
+      g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed), tmp, NULL);
       g_tree_destroy (tmp);
 
       g_object_notify (G_OBJECT (delayed), "has-unapplied");
@@ -134,14 +137,8 @@ g_delayed_settings_backend_get_writable (GSettingsBackend *backend,
                                          const gchar      *name)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
-  gboolean sensitive;
-  gchar *path;
 
-  path = g_strconcat (delayed->priv->base_path, name, NULL);
-  sensitive = g_settings_backend_get_writable (delayed->priv->backend, path);
-  g_free (path);
-
-  return sensitive;
+  return g_settings_backend_get_writable (delayed->priv->backend, name);
 }
 
 static void
@@ -183,61 +180,45 @@ g_delayed_settings_backend_set_property (GObject *object, guint prop_id,
       delayed->priv->backend = g_value_dup_object (value);
       break;
 
-    case PROP_BASE_PATH:
-      g_assert (delayed->priv->base_path == NULL);
-      delayed->priv->base_path = g_value_dup_string (value);
-      break;
-
     default:
       g_assert_not_reached ();
     }
 }
 
 static void
-g_delayed_settings_backend_backend_changed (GSettingsBackend    *backend,
-                                            const gchar         *prefix,
-                                            const gchar * const *items,
-                                            gint                 n_items,
-                                            gpointer             origin_tag,
-                                            gpointer             user_data)
+delayed_backend_changed (GSettingsBackend *backend,
+                         const gchar      *name,
+                         gpointer          origin_tag,
+                         gpointer          user_data)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
 
-  if (origin_tag == delayed->priv)
-    return;
+  if (origin_tag != delayed->priv)
+    g_settings_backend_changed (backend, name, origin_tag);
+}
 
-  if (g_str_has_prefix (prefix, delayed->priv->base_path))
-    {
-      g_settings_backend_changed (G_SETTINGS_BACKEND (delayed),
-                                  prefix + strlen (delayed->priv->base_path),
-                                  items, n_items, origin_tag);
-    }
+static void
+delayed_backend_keys_changed (GSettingsBackend    *backend,
+                              const gchar         *prefix,
+                              const gchar * const *items,
+                              gpointer             origin_tag,
+                              gpointer             user_data)
+{
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
 
-  else if (g_str_has_prefix (delayed->priv->base_path, prefix))
-    {
-      const gchar **my_items;
-      const gchar *relative;
-      gint relative_length;
-      gint i, j;
+  if (origin_tag != delayed->priv)
+    g_settings_backend_keys_changed (backend, prefix, items, origin_tag);
+}
 
-      relative = delayed->priv->base_path + strlen (prefix);
-      relative_length = strlen (relative);
-
-      my_items = g_new (const gchar *, n_items + 1);
-
-      for (i = j = 0; i < n_items; i++)
-        if (g_str_has_prefix (items[i], relative))
-          my_items[j++] = items[i] + relative_length;
-      my_items[j] = NULL;
-
-      if (j > 0)
-        g_settings_backend_changed (G_SETTINGS_BACKEND (delayed),
-                                    "", my_items, j, origin_tag);
-      g_free (my_items);
-    }
-
-  else
-    /* do nothing */;
+static void
+delayed_backend_writable_changed (GSettingsBackend *backend,
+                                  const gchar      *name,
+                                  gpointer          user_data)
+{
+  /* XXX: maybe drop keys from the delayed-apply settings
+   *      if they became non-writable?
+   */
+  g_settings_backend_writable_changed (backend, name);
 }
 
 static void
@@ -246,15 +227,21 @@ g_delayed_settings_backend_constructed (GObject *object)
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
   g_assert (delayed->priv->backend != NULL);
-  g_assert (delayed->priv->base_path != NULL);
 
-  delayed->priv->handler_id = 
+  delayed->priv->changed_handler_id = 
     g_signal_connect (delayed->priv->backend, "changed",
-                      G_CALLBACK (g_delayed_settings_backend_backend_changed),
+                      G_CALLBACK (delayed_backend_changed),
                       delayed);
 
-  g_settings_backend_subscribe (delayed->priv->backend,
-                                delayed->priv->base_path);
+ delayed->priv->keys_changed_handler_id = 
+    g_signal_connect (delayed->priv->backend, "keys-changed",
+                      G_CALLBACK (delayed_backend_keys_changed),
+                      delayed);
+
+ delayed->priv->writable_changed_handler_id = 
+    g_signal_connect (delayed->priv->backend, "writable-changed",
+                      G_CALLBACK (delayed_backend_writable_changed),
+                      delayed);
 }
 
 static void
@@ -263,11 +250,12 @@ g_delayed_settings_backend_finalize (GObject *object)
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
   g_signal_handler_disconnect (delayed->priv->backend,
-                               delayed->priv->handler_id);
-  g_settings_backend_unsubscribe (delayed->priv->backend,
-                                  delayed->priv->base_path);
+                               delayed->priv->changed_handler_id);
+  g_signal_handler_disconnect (delayed->priv->backend,
+                               delayed->priv->keys_changed_handler_id);
+  g_signal_handler_disconnect (delayed->priv->backend,
+                               delayed->priv->writable_changed_handler_id);
   g_object_unref (delayed->priv->backend);
-  g_free (delayed->priv->base_path);
 }
 
 static void
@@ -294,11 +282,6 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
                          G_TYPE_SETTINGS_BACKEND, G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (object_class, PROP_BASE_PATH,
-    g_param_spec_string ("base-path", "base path", "base",
-                         "", G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
-
   g_object_class_install_property (object_class, PROP_HAS_UNAPPLIED,
     g_param_spec_boolean ("has-unapplied", "has unapplied", "unapplied",
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
@@ -316,13 +299,10 @@ g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
 }
 
 GSettingsBackend *
-g_delayed_settings_backend_new (GSettingsBackend *backend,
-                       const gchar      *base_path)
+g_delayed_settings_backend_new (GSettingsBackend *backend)
 {
   return g_object_new (G_TYPE_DELAYED_SETTINGS_BACKEND,
-                       "backend", backend,
-                       "base-path", base_path,
-                       NULL);
+                       "backend", backend, NULL);
 }
 
 #define _gsettingsdelayedbackend_c_

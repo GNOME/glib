@@ -187,11 +187,7 @@ g_settings_set_delay_apply (GSettings *settings,
 
       g_assert (delayed);
 
-      backend = g_delayed_settings_backend_new (settings->priv->backend,
-                                                settings->priv->base_path);
-      g_settings_backend_subscribe (backend, "");
-      g_settings_backend_unsubscribe (settings->priv->backend,
-                                      settings->priv->base_path);
+      backend = g_delayed_settings_backend_new (settings->priv->backend);
       g_signal_handler_disconnect (settings->priv->backend,
                                    settings->priv->handler_id);
       g_object_unref (settings->priv->backend);
@@ -707,7 +703,6 @@ g_settings_set_value (GSettings   *settings,
 {
   gboolean correct_type;
   GVariant *sval;
-  GTree *tree;
 
   sval = g_settings_schema_get_value (settings->priv->schema, key, NULL);
   correct_type = g_variant_is_of_type (value, g_variant_get_type (sval));
@@ -715,10 +710,7 @@ g_settings_set_value (GSettings   *settings,
 
   g_return_if_fail (correct_type);
 
-  tree = g_settings_backend_create_tree ();
-  g_tree_insert (tree, strdup (key), g_variant_ref_sink (value));
-  g_settings_backend_write (settings->priv->backend, key, tree, NULL);
-  g_tree_unref (tree);
+  g_settings_backend_write (settings->priv->backend, key, value, NULL);
 }
 
 /**

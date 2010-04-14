@@ -48,8 +48,7 @@ struct _GDelayedSettingsBackend
 G_BEGIN_DECLS
 
 GType                           g_delayed_settings_backend_get_type     (void);
-GSettingsBackend *              g_delayed_settings_backend_new          (GSettingsBackend        *backend,
-                                                                         const gchar             *base_path);
+GSettingsBackend *              g_delayed_settings_backend_new          (GSettingsBackend        *backend);
 void                            g_delayed_settings_backend_revert       (GDelayedSettingsBackend *delayed);
 void                            g_delayed_settings_backend_apply        (GDelayedSettingsBackend *delayed);
 gboolean                        g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed);
