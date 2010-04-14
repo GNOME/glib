@@ -1,0 +1,673 @@
+#!/usr/bin/env python
+# vim: set ts=4 sw=4 et: coding=UTF-8
+#
+# Copyright (c) 2010, Novell, Inc.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+# USA.
+#
+# Authors: Vincent Untz <vuntz@gnome.org>
+
+import os
+import sys
+
+import optparse
+
+try:
+    from lxml import etree as ET
+except ImportError:
+    try:
+        from xml.etree import cElementTree as ET
+    except ImportError:
+        import cElementTree as ET
+
+
+GSETTINGS_SIMPLE_SCHEMA_INDENT = '  '
+
+
+######################################
+
+
+class GSettingsSchemaConvertException(Exception):
+    pass
+
+
+######################################
+
+
+class GSettingsSchemaRoot:
+
+    def __init__(self):
+        self.schemas = []
+
+    def simplify(self):
+        for schema in self.schemas:
+            schema.simplify()
+
+    def get_simple_string(self):
+        need_empty_line = False
+        result = ''
+
+        for schema in self.schemas:
+            if need_empty_line:
+                result += '\n'
+            result += schema.get_simple_string()
+            if result:
+                need_empty_line = True
+
+        return result
+
+    def get_xml_node(self):
+        schemalist_node = ET.Element('schemalist')
+        for schema in self.schemas:
+            schema_node = schema.get_xml_node()
+            if schema_node is not None:
+                schemalist_node.append(schema_node)
+        return schemalist_node
+
+
+######################################
+
+
+# Note: defined before GSettingsSchema because GSettingsSchema is a subclass.
+# But from a schema point of view, GSettingsSchema is a parent of
+# GSettingsSchemaDir.
+class GSettingsSchemaDir:
+
+    def __init__(self):
+        self.name = None
+        self.dirs = []
+        self.keys = []
+
+    def get_simple_string(self, current_indent):
+        content = self._get_simple_string_for_content(current_indent)
+        if not content:
+            return ''
+
+        result = ''
+        result += '%schild %s:\n' % (current_indent, self.name)
+        result += content
+        return result
+
+    def _get_simple_string_for_content(self, current_indent):
+        need_empty_line = False
+        result = ''
+
+        for key in self.keys:
+            result += key.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
+            need_empty_line = True
+
+        for dir in self.dirs:
+            if need_empty_line:
+                result += '\n'
+            result += dir.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
+            if result:
+                need_empty_line = True
+
+        return result
+
+    def get_xml_node(self):
+        node = self._get_xml_node_for_content()
+        if node is not None:
+            node.set('id', self.name)
+        return node
+
+    def _get_xml_node_for_content(self):
+        if not self.keys and not self.dirs:
+            return None
+
+        schema_node = ET.Element('schema')
+        for key in self.keys:
+            key_node = key.get_xml_node()
+            schema_node.append(key_node)
+        for dir in self.dirs:
+            dir_node = dir.get_xml_node()
+            schema_node.append(dir_node)
+
+        return schema_node
+
+
+######################################
+
+
+class GSettingsSchema(GSettingsSchemaDir):
+
+    def __init__(self):
+        self.id = None
+        self.path = None
+        self.dirs = []
+        self.keys = []
+
+    def simplify(self):
+        while len(self.dirs) == 1 and not self.keys:
+            dir = self.dirs[0]
+            self.dirs = dir.dirs
+            self.keys = dir.keys
+            if self.path:
+                self.path += dir.name + '/'
+
+    def get_simple_string(self):
+        if not self.dirs and not self.keys:
+            return ''
+
+        result = ''
+        result += 'schema %s:\n' % self.id
+        if self.path:
+            result += '%spath %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
+        result += '\n'
+        result += self._get_simple_string_for_content('')
+
+        return result
+
+    def get_xml_node(self):
+        if not self.dirs and not self.keys:
+            return None
+
+        node = self._get_xml_node_for_content()
+        node.set('id', self.id)
+        if self.path:
+            node.set('path', self.path)
+
+        return node
+
+
+######################################
+
+
+class GSettingsSchemaKey:
+
+    def __init__(self):
+        self.name = None
+        self.type = None
+        self.default = None
+        self.typed_default = None
+        self.localized = None
+        self.summary = None
+        self.description = None
+
+    def fill(self, name, type, default, typed_default, localized, summary, description):
+        self.name = name
+        self.type = type
+        self.default = default
+        self.typed_default = typed_default
+        self.localized = localized
+        self.summary = summary
+        self.description = description
+
+    def get_simple_string(self, current_indent):
+        result = ''
+        result += '%skey %s = %s\n' % (current_indent, self.name, self.typed_default or self.default)
+        current_indent += GSETTINGS_SIMPLE_SCHEMA_INDENT
+        if self.summary:
+            result += '%sSummary: %s\n' % (current_indent, self.summary)
+        if self.description:
+            result += '%sDescription: %s\n' % (current_indent, self.description)
+        return result
+
+    def get_xml_node(self):
+        key_node = ET.Element('key')
+        key_node.set('name', self.name)
+        key_node.set('type', self.type)
+        default_node = ET.SubElement(key_node, 'default')
+        default_node.text = self.default
+        if self.summary:
+            summary_node = ET.SubElement(key_node, 'summary')
+            summary_node.text = self.summary
+        if self.description:
+            description_node = ET.SubElement(key_node, 'description')
+            description_node.text = self.description
+        return key_node
+
+
+######################################
+
+
+def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
+    typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
+    result = typemap[gconftype]
+    if gconftype == 'list':
+        result = result + typemap[gconfsubtype]
+    return result
+
+
+class GConfSchema:
+
+    def __init__(self, node):
+        locale_node = node.find('locale')
+
+        self.key = node.find('key').text
+        self.type = node.find('type').text
+        if self.type == 'list':
+            self.list_type = node.find('list_type').text
+        else:
+            self.list_type = None
+        self.varianttype = map_gconf_type_to_variant_type(self.type, self.list_type)
+
+        applyto_node = node.find('applyto')
+        if applyto_node is not None:
+            self.applyto = node.find('applyto').text
+            self.applyto.strip()
+            self.keyname = self.applyto[self.applyto.rfind('/')+1:]
+            self.prefix = self.applyto[:self.applyto.rfind('/')+1]
+        else:
+            self.applyto = None
+            self.key.strip()
+            self.keyname = self.key[self.key.rfind('/')+1:]
+            self.prefix = self.key[:self.key.rfind('/')+1]
+        self.prefix = os.path.normpath(self.prefix)
+
+        try:
+            self.default = locale_node.find('default').text
+            self.localized = True
+        except:
+            self.default = node.find('default').text
+            self.localized = False
+        self.typed_default = None
+
+        self.short = self._get_value_with_locale(node, locale_node, 'short')
+        self.long = self._get_value_with_locale(node, locale_node, 'long')
+
+        self.short = self._oneline(self.short)
+        self.long = self._oneline(self.long)
+
+        # Fix the default to be parsable by GVariant
+        if self.type == 'string':
+            if not self.default:
+                self.default = '\'\''
+            else:
+                self.default.replace('\'', '\\\'')
+                self.default = '\'%s\'' % self.default
+        elif self.type == 'bool':
+            self.default = self.default.lower()
+        elif self.type == 'list':
+            l = self.default.strip()
+            if not (l[0] == '[' and l[-1] == ']'):
+                raise GSettingsSchemaConvertException('Cannot parse default value for list: %s' % self.default)
+            values = l[1:-1].strip()
+            if not values:
+                self.typed_default = '@%s []' % self.varianttype
+            elif self.list_type == 'string':
+                items = [ item.strip() for item in values.split(',') ]
+                items = [ item.replace('\'', '\\\'') for item in items ]
+                values = ', '.join([ '\'%s\'' % item for item in items ])
+                self.default = '[ %s ]' % values
+
+        # FIXME: kill this when we'll have python bindings for GVariant. Right
+        # now, every simple format schema we'll generate has to have an
+        # explicit type since we can't guess the type later on when converting
+        # to XML.
+        if not self.typed_default:
+            self.typed_default = '@%s %s' % (self.varianttype, self.default)
+
+    def _get_value_with_locale(self, node, locale_node, element):
+        element_node = None
+        if locale_node is not None:
+            element_node = locale_node.find(element)
+        if element_node is None:
+            element_node = node.find(element)
+        if element_node is not None:
+            return element_node.text
+        else:
+            return None
+
+    def _oneline(self, s):
+        lines = s.splitlines()
+        result = ''
+        for line in lines:
+            result += ' ' + line.lstrip()
+        return result.strip()
+
+    def get_gsettings_schema_key(self):
+        key = GSettingsSchemaKey()
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.short, self.long)
+        return key
+
+
+######################################
+
+allowed_tokens = {
+  ''            : [ 'schema' ],
+  'schema'      : [ 'path', 'child', 'key' ],
+  'path'        : [ ],
+  'child'       : [ 'child', 'key' ],
+  'key'         : [ 'summary', 'description' ],
+  'summary'     : [ ],
+  'description' : [ ]
+}
+
+def _eat_indent(line, indent_stack):
+    i = 0
+    buf = ''
+    previous_max_index = len(indent_stack) - 1
+    index = -1
+
+    while i < len(line) - 1 and line[i].isspace():
+        buf += line[i]
+        i += 1
+        if previous_max_index > index:
+            if buf == indent_stack[index + 1]:
+                buf = ''
+                index += 1
+                continue
+            elif indent_stack[index + 1].startswith(buf):
+                continue
+            else:
+                raise GSettingsSchemaConvertException('Indentation not consistent.')
+        else:
+            continue
+
+    if buf and previous_max_index <= index:
+        indent_stack.append(buf)
+    elif previous_max_index > index:
+        indent_stack = indent_stack[:index + 1]
+
+    return (indent_stack, line[i:])
+
+def _eat_word(line):
+    i = 0
+    while i < len(line) - 1 and not line[i].isspace():
+        i += 1
+    return (line[:i], line[i:])
+
+def _word_to_token(word):
+    if word == 'schema':
+        return 'schema'
+    if word == 'path':
+        return 'path'
+    if word == 'child':
+        return 'child'
+    if word == 'key':
+        return 'key'
+    if word == 'Summary:':
+        return 'summary'
+    if word == 'Description:':
+        return 'description'
+    raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
+
+def _get_name_without_colon(line):
+    if line[-1] != ':':
+        raise GSettingsSchemaConvertException('\'%s\' has no trailing colon.' % line)
+    line = line[:-1].strip()
+    # FIXME: we could check there's no space
+    return line
+
+def _parse_key(line):
+    items = line.split('=')
+    if len(items) != 2:
+        raise GSettingsSchemaConvertException('Cannot parse key \'%s\'.' % line)
+    name = items[0].strip()
+    type = ''
+    value = items[1].strip()
+    if value[0] == '@':
+        i = 1
+        while not value[i].isspace():
+            i += 1
+        type = value[1:i]
+        value = value[i:].strip()
+        if not value:
+            raise GSettingsSchemaConvertException('No value specified for key \'%s\'.' % line)
+    return (name, type, value)
+
+def read_simple_schema(simple_schema_file):
+    root = GSettingsSchemaRoot()
+
+    f = open(simple_schema_file, 'r')
+    lines = f.readlines()
+    f.close()
+    lines = [ line[:-1] for line in lines ]
+
+    leading_indent = None
+    indent_stack = []
+    token_stack = []
+    object_stack = [ root ]
+
+    for line in lines:
+        # make sure that lines with only spaces are ignored and considered as
+        # empty lines
+        line = line.rstrip()
+
+        # ignore empty line
+        if not line:
+            continue
+
+        # look at the indentation to know where we should be
+        (indent_stack, line) = _eat_indent(line, indent_stack)
+        if leading_indent is None:
+            leading_indent = len(indent_stack)
+
+        # ignore comments
+        if line[0] == '#':
+            continue
+
+        (word, line) = _eat_word(line)
+        token = _word_to_token(word)
+        line = line.lstrip()
+
+        new_level = len(indent_stack) - leading_indent
+        old_level = len(token_stack)
+
+        if new_level > old_level + 1:
+            raise GSettingsSchemaConvertException('Internal error: stacks not in sync.')
+        elif new_level <= old_level:
+            token_stack = token_stack[:new_level]
+            # we always have the root
+            object_stack = object_stack[:new_level + 1]
+
+        if new_level == 0:
+            parent_token = ''
+        else:
+            parent_token = token_stack[-1]
+
+        if not token in allowed_tokens[parent_token]:
+            raise GSettingsSchemaConvertException('Token \'%s\' not allowed after token \'%s\'.' % (token, parent_token))
+
+        current_object = object_stack[-1]
+
+        new_object = None
+        if token == 'schema':
+            name = _get_name_without_colon(line)
+            new_object = GSettingsSchema()
+            new_object.id = name
+            current_object.schemas.append(new_object)
+        elif token == 'path':
+            current_object.path = line
+        elif token == 'child':
+            name = _get_name_without_colon(line)
+            new_object = GSettingsSchemaDir()
+            new_object.name = name
+            current_object.dirs.append(new_object)
+        elif token == 'key':
+            new_object = GSettingsSchemaKey()
+            (name, type, value) = _parse_key(line)
+            new_object.name = name
+            new_object.type = type
+            new_object.default = value
+            current_object.keys.append(new_object)
+        elif token == 'summary':
+            current_object.summary = line
+        elif token == 'description':
+            current_object.description = line
+
+        if new_object:
+            token_stack.append(token)
+            object_stack.append(new_object)
+
+    return root
+
+
+######################################
+
+
+def read_gconf_schema(gconf_schema_file):
+    gsettings_schema_root = GSettingsSchemaRoot()
+
+    gconfschemafile_node = ET.parse(gconf_schema_file).getroot()
+    for schemalist_node in gconfschemafile_node.findall('schemalist'):
+        for schema_node in schemalist_node.findall('schema'):
+            gconf_schema = GConfSchema(schema_node)
+
+            schemas_only = (gconf_schema.applyto is not None)
+
+            dirpath = gconf_schema.prefix
+            # remove leading slash because there's none in gsettings, and trailing
+            # slash because we'll split the string
+            if dirpath[0] == '/':
+                dirpath = dirpath[1:]
+            if dirpath[-1] == '/':
+                dirpath = dirpath[:-1]
+            # remove leading 'schemas/' for schemas-only keys
+            if schemas_only and dirpath.startswith('schemas/'):
+                dirpath = dirpath[len('schemas/'):]
+
+            if not dirpath:
+                raise GSettingsSchemaConvertException('Toplevel keys are not accepted: %s' % gconf_schema.applyto)
+
+            hierarchy = dirpath.split('/')
+
+            # we don't want to put apps/ and desktop/ keys in the same schema,
+            # so we have a first step where we make sure to create a new schema
+            # to avoid this case if necessary
+            gsettings_schema = None
+            for schema in gsettings_schema_root.schemas:
+                if schemas_only:
+                    schema_path = schema.path
+                else:
+                    schema_path = schema._hacky_path
+                if dirpath.startswith(schema_path):
+                    gsettings_schema = schema
+                    break
+            if not gsettings_schema:
+                gsettings_schema = GSettingsSchema()
+                gsettings_schema.id = 'FIXME'
+                if schemas_only:
+                    gsettings_schema.path = hierarchy[0] + '/'
+                else:
+                    gsettings_schema._hacky_path = hierarchy[0] + '/'
+                gsettings_schema_root.schemas.append(gsettings_schema)
+
+            # we create all the subdirs that lead to this key
+            gsettings_dir = gsettings_schema
+            for item in hierarchy[1:]:
+                subdir = None
+                for dir in gsettings_dir.dirs:
+                    if dir.name == item:
+                        subdir = dir
+                        break
+                if not subdir:
+                    subdir = GSettingsSchemaDir()
+                    subdir.name = item
+                    gsettings_dir.dirs.append(subdir)
+                gsettings_dir = subdir
+
+            # we have the final directory, so we can put the key there
+            gsettings_dir.keys.append(gconf_schema.get_gsettings_schema_key())
+
+    gsettings_schema_root.simplify()
+
+    return gsettings_schema_root
+
+
+######################################
+
+
+def main(args):
+    parser = optparse.OptionParser()
+
+    parser.add_option("-o", "--output", dest="output",
+                      help="output file")
+    parser.add_option("-g", "--gconf", action="store_true", dest="gconf",
+                      default=False, help="convert a gconf schema file")
+    parser.add_option("-s", "--simple", action="store_true", dest="simple",
+                      default=False, help="use the simple schema format as output (only for gconf schema conversion)")
+    parser.add_option("-x", "--xml", action="store_true", dest="xml",
+                      default=False, help="use the xml schema format as output")
+    parser.add_option("-f", "--force", action="store_true", dest="force",
+                      default=False, help="overwrite output file if already existing")
+
+    (options, args) = parser.parse_args()
+
+    if len(args) < 1:
+        print >> sys.stderr, 'Need a filename to work on.'
+        return 1
+    elif len(args) > 1:
+        print >> sys.stderr, 'Too many arguments.'
+        return 1
+
+    if options.simple and options.xml:
+        print >> sys.stderr, 'Too many output formats requested.'
+        return 1
+    if not options.simple and not options.xml:
+        if options.gconf:
+            options.simple = True
+        else:
+            options.xml = True
+
+    argfile = os.path.expanduser(args[0])
+    if not os.path.exists(argfile):
+        print >> sys.stderr, '%s does not exist.' % argfile
+        return 1
+
+    if options.output:
+        options.output = os.path.expanduser(options.output)
+
+    try:
+        if options.output and not options.force and os.path.exists(options.output):
+            raise GSettingsSchemaConvertException('%s already exists.' % options.output)
+
+        if options.gconf:
+            try:
+                schema_root = read_gconf_schema(argfile)
+            except SyntaxError, e:
+                raise GSettingsSchemaConvertException('%s does not look like a gconf schema file: %s' % (argfile, e))
+        else:
+            schema_root = read_simple_schema(argfile)
+
+        if options.xml:
+            node = schema_root.get_xml_node()
+            tree = ET.ElementTree(node)
+            try:
+                output = ET.tostring(tree, pretty_print = True)
+            except TypeError:
+                # pretty_print only works with lxml
+                output = ET.tostring(tree)
+        else:
+            output = schema_root.get_simple_string()
+
+        if not options.output:
+            sys.stdout.write(output)
+        else:
+            try:
+                fout = open(options.output, 'w')
+                fout.write(output)
+                fout.close()
+            except GSettingsSchemaConvertException, e:
+                fout.close()
+                if os.path.exists(options.output):
+                    os.unlink(options.output)
+                raise e
+
+    except GSettingsSchemaConvertException, e:
+        print >> sys.stderr, '%s' % e
+        return 1
+
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        res = main(sys.argv)
+        sys.exit(res)
+    except KeyboardInterrupt:
+        pass
