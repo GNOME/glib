@@ -17,13 +17,17 @@ test_basic (void)
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "goodbye world");
 
-  g_settings_set (settings, "greeting", "i", 555);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      settings = g_settings_new ("org.gtk.test");
+      g_settings_set (settings, "greeting", "i", 555);
+      abort ();
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*correct_type*");
 
   g_settings_get (settings, "greeting", "s", &str);
-#if 0
-  /* FIXME: currently, the integer write is not failing, so we get hte schema default here */
   g_assert_cmpstr (str, ==, "goodbye world");
-#endif
   g_settings_set (settings, "greeting", "s", "this is the end");
 }
 
