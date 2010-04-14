@@ -36,7 +36,7 @@ static GSList *schema_sources;
 static void
 initialise_schema_sources (void)
 {
-  gsize initialised;
+  static gsize initialised;
 
   if G_UNLIKELY (g_once_init_enter (&initialised))
     {
