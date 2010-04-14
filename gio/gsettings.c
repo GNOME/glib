@@ -705,7 +705,7 @@ g_settings_set_value (GSettings   *settings,
  * g_settings_get:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @format: a #GVariant format string
+ * @format_string: a #GVariant format string
  * @...: arguments as per @format
  *
  * Gets the value that is stored at @key in @settings.
@@ -714,7 +714,7 @@ g_settings_set_value (GSettings   *settings,
  * g_variant_get().
  *
  * It is a programmer error to pass a @key that isn't valid for
- * @settings or a @format that doesn't match the type of @key according
+ * @settings or a @format_string that doesn't match the type of @key according
  * to the schema of @settings.
  *
  * Since: 2.26
@@ -722,7 +722,7 @@ g_settings_set_value (GSettings   *settings,
 void
 g_settings_get (GSettings   *settings,
                 const gchar *key,
-                const gchar *format,
+                const gchar *format_string,
                 ...)
 {
   GVariant *value;
@@ -730,8 +730,8 @@ g_settings_get (GSettings   *settings,
 
   value = g_settings_get_value (settings, key);
 
-  va_start (ap, format);
-  g_variant_get_va (value, format, NULL, &ap);
+  va_start (ap, format_string);
+  g_variant_get_va (value, format_string, NULL, &ap);
   va_end (ap);
 
   g_variant_unref (value);

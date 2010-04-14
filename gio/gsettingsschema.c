@@ -31,6 +31,38 @@
  *
  * The #GSettingsSchema class provides schema information (i.e. types,
  * default values and descriptions) for keys in settings.
+ *
+ * Schema information is required to use #GSettings.
+ *
+ * The source format for GSettings schemas is an XML format that can
+ * be described with the following DTD:
+ * |[<![CDATA[
+ * <!ELEMENT schemalist (schema*) >
+ * <!ATTLIST schemalist gettext-domain #IMPLIED >
+ *
+ * <!ELEMENT schema (key*) >
+ * <!ATTLIST schema id             #REQUIRED
+ *                  path           #IMPLIED
+ *                  gettext-domain #IMPLIED >
+ *
+ * <!ELEMENT key (default|summary|description|range)* >
+ * <!ATTLIST key name #REQUIRED
+ *               type #REQUIRED >
+ *
+ * <!ELEMENT default (#PCDATA) >
+ * <!ATTLIST default l10n #IMPLIED >
+ *
+ * <!ELEMENT summary (#PCDATA) >
+ * <!ELEMENT description (#PCDATA) >
+ * <!ELEMENT range (choice*|(min,max))  >
+ *
+ * <!ELEMENT choice EMPTY >
+ * <!ATTLIST choice value #REQUIRED >
+ *
+ * <!ELEMENT min (#PCDATA) >
+ * <!ELEMENT max (#PCDATA) >
+ * ]]>
+ * ]|
  */
 
 G_DEFINE_TYPE (GSettingsSchema, g_settings_schema, G_TYPE_OBJECT)
