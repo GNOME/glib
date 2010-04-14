@@ -79,6 +79,10 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
+settings_headers = \
+	gsettingsbackend.h		\
+	gsettings.h
+
 settings_sources = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-reader.h		\
@@ -88,11 +92,9 @@ settings_sources = \
 	gmemorysettingsbackend.h	\
 	gmemorysettingsbackend.c	\
 	gsettingsbackendinternal.h	\
-	gsettingsbackend.h		\
 	gsettingsbackend.c		\
 	gsettingsschema.h		\
 	gsettingsschema.c		\
-	gsettings.h			\
 	gsettings.c
 
 local_sources = \
@@ -428,6 +430,7 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
+	$(settings_headers)	\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/
