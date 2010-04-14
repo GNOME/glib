@@ -22,6 +22,14 @@
 
 #include "gioalias.h"
 
+/**
+ * SECTION:gsettings
+ * @short_description: a high-level API for application settings
+ *
+ * The #GSettings class provides a convenient API for storing and retrieving
+ * application settings.
+ */
+
 struct _GSettingsPrivate {
   GSettingsBackend *backend;
   gchar *base_path;

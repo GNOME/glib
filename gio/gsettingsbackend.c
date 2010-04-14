@@ -8,6 +8,8 @@
  * See the included COPYING file for more information.
  */
 
+#include "config.h"
+
 #include "gsettingsbackend.h"
 #include "gmemorysettingsbackend.h"
 #include "giomodule-priv.h"
@@ -16,6 +18,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <glibintl.h>
 
 #include "gioalias.h"
 
@@ -389,11 +392,12 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_CONTEXT,
-                                   g_param_spec_string ("context",
-                                                        "Context",
-                                                        "A context to use when deciding which storage to use",
-                                                        NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+    g_param_spec_string ("context",
+                         P_("Context"),
+                         P_("A context to use when deciding which storage to use"),
+                         NULL,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
 }
 
