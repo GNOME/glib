@@ -43,4 +43,12 @@
       <default>"/a/object/path"</default>
     </key>
   </schema>
+  <schema id="org.gtk.test.complex-types" path="/tests/complex_types/" gettext-domain="test">
+    <key name="test_tuple" type="(s(ii))">
+      <default>("one",(2,3))</default>
+    </key>
+    <key name="test_array" type="ai">
+      <default>[0,1,2,3,4,5]</default>
+    </key>
+  </schema>
 </schemalist>

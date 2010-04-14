@@ -37,6 +37,8 @@ test_unknown_key (void)
 
       settings = g_settings_new ("org.gtk.test");
       value = g_settings_get_value (settings, "no_such_key");
+
+      g_object_unref (settings);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
@@ -187,6 +189,45 @@ test_basic_types (void)
   g_assert_cmpstr (str, ==, "/a/object/path");
 }
 
+static void
+test_complex_types (void)
+{
+  GSettings *settings;
+  gchar *s;
+  gint i1, i2;
+  GVariantIter *iter = NULL;
+
+  settings = g_settings_new ("org.gtk.test.complex-types");
+
+  g_settings_get (settings, "test_tuple", "(s(ii))", &s, &i1, &i2);
+  g_assert_cmpstr (s, ==, "one");
+  g_assert_cmpint (i1,==, 2);
+  g_assert_cmpint (i2,==, 3);
+
+  g_settings_set (settings, "test_tuple", "(s(ii))", "none", 0, 0);
+  g_settings_get (settings, "test_tuple", "(s(ii))", &s, &i1, &i2);
+  g_assert_cmpstr (s, ==, "none");
+  g_assert_cmpint (i1,==, 0);
+  g_assert_cmpint (i2,==, 0);
+
+  g_settings_get (settings, "test_array", "ai", &iter);
+  g_assert_cmpint (g_variant_iter_n_children (iter), ==, 6);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 0);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 1);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 2);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 3);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 4);
+  g_assert (g_variant_iter_next (iter, "i", &i1));
+  g_assert_cmpint (i1, ==, 5);
+  g_assert (!g_variant_iter_next (iter, "i", &i1));
+  g_variant_iter_free (iter);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -204,6 +245,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
   g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
+  g_test_add_func ("/gsettings/complex-types", test_complex_types);
 
   return g_test_run ();
 }
