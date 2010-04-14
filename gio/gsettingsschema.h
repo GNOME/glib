@@ -53,6 +53,7 @@ struct _GSettingsSchema
   GSettingsSchemaPrivate *priv;
 };
 
+GType                   g_settings_schema_get_type                      (void);
 GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
 GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
