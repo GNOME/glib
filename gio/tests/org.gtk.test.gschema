@@ -10,6 +10,9 @@
     <key name="farewell" type="s">
       <default l10n="true">"So long"</default>
     </key>
+
+    <child name='basic-types' schema='org.gtk.test.basic-types'/>
+    <child name='complex-types' schema='org.gtk.test.complex-types'/>
   </schema>
   <schema id="org.gtk.test.basic-types" path="/tests/basic_types/" gettext-domain="test">
     <key name="test_boolean" type="b">

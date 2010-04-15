@@ -760,7 +760,7 @@ g_settings_get_child (GSettings   *settings,
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
-                        "schema", child_schema,
+                        "schema", g_variant_get_string (child_schema, NULL),
                         "path", child_path,
                         NULL);
   g_variant_unref (child_schema);
