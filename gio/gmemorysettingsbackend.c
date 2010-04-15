@@ -325,7 +325,7 @@ g_memory_settings_backend_constructed (GObject *object)
     memory->priv->keyfile_path = path;
 
   file = g_file_new_for_path (memory->priv->keyfile_path);
-  memory->priv->keyfile_monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);
+  memory->priv->keyfile_monitor = g_file_monitor_file (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
   g_signal_connect (memory->priv->keyfile_monitor, "changed",
                     (GCallback)g_memory_settings_backend_keyfile_changed, memory);
   g_object_unref (file);
