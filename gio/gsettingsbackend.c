@@ -84,22 +84,22 @@ struct _GSettingsBackendWatch
 };
 
 void
-g_settings_backend_watch (GSettingsBackend                         *backend,
-                          GSettingsBackendChangedFunc               changed,
-                          GSettingsBackendPathChangedFunc           path,
-                          GSettingsBackendKeysChangedFunc           keys,
-                          GSettingsBackendWritableChangedFunc       writable,
-                          GSettingsBackendPathWritableChangedFunc   path_writable,
-                          gpointer                                  user_data)
+g_settings_backend_watch (GSettingsBackend *backend,
+  GSettingsBackendChangedFunc               changed,
+  GSettingsBackendPathChangedFunc           path_changed,
+  GSettingsBackendKeysChangedFunc           keys_changed,
+  GSettingsBackendWritableChangedFunc       writable_changed,
+  GSettingsBackendPathWritableChangedFunc   path_writable_changed,
+                          gpointer          user_data)
 {
   GSettingsBackendWatch *watch;
 
   watch = g_slice_new (GSettingsBackendWatch);
   watch->changed = changed;
-  watch->path_changed = path;
-  watch->keys_changed = keys;
-  watch->writable_changed = writable;
-  watch->path_writable_changed = path_writable;
+  watch->path_changed = path_changed;
+  watch->keys_changed = keys_changed;
+  watch->writable_changed = writable_changed;
+  watch->path_writable_changed = path_writable_changed;
   watch->user_data = user_data;
 
   watch->next = backend->priv->watches;
@@ -124,6 +124,44 @@ g_settings_backend_unwatch (GSettingsBackend *backend,
       }
 
   g_assert_not_reached ();
+}
+
+static gboolean
+is_key (const gchar *key)
+{
+  gint length;
+  gint i;
+
+  g_return_val_if_fail (key != NULL, FALSE);
+  g_return_val_if_fail (key[0] == '/', FALSE);
+
+  for (i = 1; key[i]; i++)
+    g_return_val_if_fail (key[i] != '/' || key[i + 1] != '/', FALSE);
+
+  length = i;
+
+  g_return_val_if_fail (key[length - 1] != '/', FALSE);
+
+  return TRUE;
+}
+
+static gboolean
+is_path (const gchar *path)
+{
+  gint length;
+  gint i;
+
+  g_return_val_if_fail (path != NULL, FALSE);
+  g_return_val_if_fail (path[0] == '/', FALSE);
+
+  for (i = 1; path[i]; i++)
+    g_return_val_if_fail (path[i] != '/' || path[i + 1] != '/', FALSE);
+
+  length = i;
+
+  g_return_val_if_fail (path[length - 1] == '/', FALSE);
+
+  return TRUE;
 }
 
 /**
@@ -159,22 +197,21 @@ g_settings_backend_unwatch (GSettingsBackend *backend,
  **/ 
 void
 g_settings_backend_changed (GSettingsBackend    *backend,
-                            const gchar         *name,
+                            const gchar         *key,
                             gpointer             origin_tag)
 {
   GSettingsBackendWatch *watch;
 
-  g_return_if_fail (backend != NULL);
-  g_return_if_fail (name != NULL);
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+  g_return_if_fail (is_key (key));
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->changed (backend, name, origin_tag, watch->user_data);
+    watch->changed (backend, key, origin_tag, watch->user_data);
 }
 
 /**
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
- * @prefix: a common prefix of the changed keys
  * @items: the %NULL-terminated list of changed keys
  * @origin_tag: the origin tag
  *
@@ -207,31 +244,58 @@ g_settings_backend_changed (GSettingsBackend    *backend,
  */
 void
 g_settings_backend_keys_changed (GSettingsBackend    *backend,
-                                 const gchar         *prefix,
+                                 const gchar         *path,
                                  gchar const * const *items,
                                  gpointer             origin_tag)
 {
   GSettingsBackendWatch *watch;
 
-  g_return_if_fail (backend != NULL);
-  g_return_if_fail (prefix != NULL);
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+  g_return_if_fail (is_path (path));
   g_return_if_fail (items != NULL);
  
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, prefix, items, origin_tag, watch->user_data);
+    watch->keys_changed (backend, path, items, origin_tag, watch->user_data);
+}
+
+void
+g_settings_backend_path_changed (GSettingsBackend *backend,
+                                 const gchar      *path,
+                                 gpointer          origin_tag)
+{
+  GSettingsBackendWatch *watch;
+
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+  g_return_if_fail (is_path (path));
+
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->path_changed (backend, path, origin_tag, watch->user_data);
 }
 
 void
 g_settings_backend_writable_changed (GSettingsBackend *backend,
-                                     const gchar      *name)
+                                     const gchar      *key)
 {
   GSettingsBackendWatch *watch;
 
-  g_return_if_fail (backend != NULL);
-  g_return_if_fail (name != NULL);
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+  g_return_if_fail (is_key (key));
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->writable_changed (backend, name, watch->user_data);
+    watch->writable_changed (backend, key, watch->user_data);
+}
+
+void
+g_settings_backend_path_writable_changed (GSettingsBackend *backend,
+                                          const gchar      *path)
+{
+  GSettingsBackendWatch *watch;
+
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+  g_return_if_fail (is_path (path));
+
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    watch->path_writable_changed (backend, path, watch->user_data);
 }
 
 static gboolean
@@ -445,6 +509,7 @@ g_settings_backend_set_property (GObject         *object,
     case PROP_CONTEXT:
       backend->priv->context = g_value_dup_string (value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -464,6 +529,7 @@ g_settings_backend_get_property (GObject    *object,
     case PROP_CONTEXT:
       g_value_set_string (value, backend->priv->context);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -484,6 +550,14 @@ static void
 ignore_subscription (GSettingsBackend *backend,
                      const gchar      *key)
 {
+}
+
+static void
+g_settings_backend_init (GSettingsBackend *backend)
+{
+  backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
+                                               G_TYPE_SETTINGS_BACKEND,
+                                               GSettingsBackendPrivate);
 }
 
 static void
@@ -517,31 +591,28 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_CONTEXT,
-    g_param_spec_string ("context",
-                         P_("Context"),
-                         P_("A context to use when deciding which storage to use"),
-                         NULL,
-                         G_PARAM_READWRITE |
+    g_param_spec_string ("context", P_("Context"),
+                         P_("An identifier to decide which storage to use"),
+                         NULL, G_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
 }
 
-/**
+/*< private >
  * g_settings_backend_create_tree:
  * @returns: a new #GTree
  *
  * This is a convenience function for creating a tree that is compatible
  * with g_settings_backend_write().  It merely calls g_tree_new_full()
  * with strcmp(), g_free() and g_variant_unref().
- *
- * Since: 2.26
- **/
+ */
 GTree *
 g_settings_backend_create_tree (void)
 {
   return g_tree_new_full ((GCompareDataFunc) strcmp, NULL,
                           g_free, (GDestroyNotify) g_variant_unref);
 }
+
 
 static gpointer
 get_default_backend (const gchar *context)
@@ -679,12 +750,3 @@ g_settings_backend_supports_context (const gchar *context)
 
   return FALSE;
 }
-
-static void
-g_settings_backend_init (GSettingsBackend *backend)
-{
-  backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
-                                               G_TYPE_SETTINGS_BACKEND,
-                                               GSettingsBackendPrivate);
-}
-
