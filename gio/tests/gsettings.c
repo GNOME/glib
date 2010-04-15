@@ -45,7 +45,7 @@ test_unknown_key (void)
       g_object_unref (settings);
     }
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*CRITICAL*");
+  g_test_trap_assert_stderr ("*does not contain*");
 }
 
 void
@@ -72,7 +72,7 @@ test_wrong_type (void)
 
       settings = g_settings_new ("org.gtk.test");
 
-      g_settings_get (settings, "greetings", "o", &str);
+      g_settings_get (settings, "greeting", "o", &str);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
