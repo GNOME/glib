@@ -537,18 +537,18 @@ def read_gconf_schema(gconf_schema_file):
             schemas_only = (gconf_schema.applyto is not None)
 
             dirpath = gconf_schema.prefix
-            # remove leading slash because there's none in gsettings, and trailing
-            # slash because we'll split the string
-            if dirpath[0] == '/':
-                dirpath = dirpath[1:]
+            if dirpath[0] != '/':
+                raise GSettingsSchemaConvertException('Key is not absolute: %s' % gconf_schema.prefix)
+
+            # remove trailing slash because we'll split the string
             if dirpath[-1] == '/':
                 dirpath = dirpath[:-1]
             # remove leading 'schemas/' for schemas-only keys
-            if schemas_only and dirpath.startswith('schemas/'):
-                dirpath = dirpath[len('schemas/'):]
+            if schemas_only and dirpath.startswith('/schemas/'):
+                dirpath = dirpath[len('/schemas'):]
 
-            if not dirpath:
-                raise GSettingsSchemaConvertException('Toplevel keys are not accepted: %s' % gconf_schema.applyto)
+            if len(dirpath) == 1:
+                raise GSettingsSchemaConvertException('Toplevel keys are not accepted: %s' % gconf_schema.prefix)
 
             hierarchy = dirpath.split('/')
 
