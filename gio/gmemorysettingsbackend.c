@@ -58,7 +58,7 @@ g_memory_settings_backend_write_one (const gchar            *key,
   path = g_strndup (key, slash - key + 1);
 
   g_key_file_set_string (memory->priv->keyfile,
-                         path, base_key, g_variant_print (value, FALSE));
+                         path, base_key, g_variant_print (value, TRUE));
 
   g_free (path);
 
