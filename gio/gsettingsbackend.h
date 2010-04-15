@@ -24,7 +24,7 @@
 #ifndef __G_SETTINGS_BACKEND_H__
 #define __G_SETTINGS_BACKEND_H__
 
-#ifndef G_SETTINGS_ENABLE_BACKEND
+#if !defined (G_SETTINGS_ENABLE_BACKEND) && !defined (GIO_COMPILATION)
 #error "You must define G_SETTINGS_ENABLE_BACKEND before including <gio/gsettingsbackend.h>."
 #endif
 
