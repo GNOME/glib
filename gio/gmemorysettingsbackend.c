@@ -178,11 +178,14 @@ g_memory_settings_backend_reset_key (GMemorySettingsBackend *memory,
                                      const gchar            *key,
                                      gpointer                origin_tag)
 {
+  gboolean     had_key;
   const gchar *slash;
   const gchar *base_key;
   gchar       *path;
 
-  g_hash_table_remove (memory->priv->table, key);
+  had_key = g_hash_table_lookup_extended (memory->priv->table, key, NULL, NULL);
+  if (had_key)
+    g_hash_table_remove (memory->priv->table, key);
 
   slash = strrchr (key, '/');
   g_assert (slash != NULL);
@@ -194,7 +197,8 @@ g_memory_settings_backend_reset_key (GMemorySettingsBackend *memory,
 
   g_free (path);
 
-  g_settings_backend_changed (G_SETTINGS_BACKEND (memory), key, origin_tag);
+  if (had_key)
+    g_settings_backend_changed (G_SETTINGS_BACKEND (memory), key, origin_tag);
 }
 
 static void
