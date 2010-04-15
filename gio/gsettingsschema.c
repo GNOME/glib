@@ -25,10 +25,7 @@
 
 #include "gvdb/gvdb-reader.h"
 
-/**
- * SECTION:gsettingsschema
- * @short_description: schema information for settings
- *
+/*
  * The #GSettingsSchema class provides schema information (i.e. types,
  * default values and descriptions) for keys in settings.
  *
@@ -152,17 +149,6 @@ g_settings_schema_class_init (GSettingsSchemaClass *class)
   g_type_class_add_private (class, sizeof (GSettingsSchemaPrivate));
 }
 
-/**
- * g_settings_schema_new:
- * @name: the name of the schema
- * @returns: a newly created #GSettingsSchema object
- *
- * Creates a new #GSettingsSchema object for the schema
- * with the specified name. A settings schema with this name
- * must have been installed, see gschema-compile.
- *
- * Since: 2.26
- */
 GSettingsSchema *
 g_settings_schema_new (const gchar *name)
 {
@@ -190,23 +176,6 @@ g_settings_schema_new (const gchar *name)
   return schema;
 }
 
-/**
- * g_settings_schema_get_value:
- * @schema: a #GSettingsSchema oject
- * @key: the key to get the value for
- * @options: return location for options, or %NULL
- * @returns: a #GVariant holding the default value for @key, or %NULL
- *
- * Gets the default value that is defined for @key
- * in @schema. If @options is not %NULL, then it will be set either
- * to %NULL in the case of no options or a #GVariant containing a
- * dictionary mapping strings to variants.
- *
- * You should call g_variant_unref() on the returned value when
- * it is no longer needed.
- *
- * Since: 2.26
- */
 GVariant *
 g_settings_schema_get_value (GSettingsSchema  *schema,
                              const gchar      *key,
@@ -215,17 +184,6 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
   return gvdb_table_get_value (schema->priv->table, key, options);
 }
 
-/**
- * g_settings_schema_get_path:
- * @schema: a #GSettingsSchema object
- * @returns: the path of the schema, or %NULL
- *
- * Returns the prefix which is prepended to keys described in the schema
- * when storing them in a #GSettingsBackend. Some schemas can be stored
- * at different prefixes, in which case this function will return %NULL.
- *
- * Since: 2.26
- */
 const gchar *
 g_settings_schema_get_path (GSettingsSchema *schema)
 {
