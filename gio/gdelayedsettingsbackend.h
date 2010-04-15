@@ -8,8 +8,8 @@
  * See the included COPYING file for more information.
  */
 
-#ifndef _gsettingsdelayedbackend_h_
-#define _gsettingsdelayedbackend_h_
+#ifndef __G_DELAYED_SETTINGS_BACKEND_H__
+#define __G_DELAYED_SETTINGS_BACKEND_H__
 
 #include <glib-object.h>
 
@@ -56,4 +56,4 @@ gboolean                        g_delayed_settings_backend_get_has_unapplied (GD
 
 G_END_DECLS
 
-#endif /* _gsettingsdelayedbackend_h_ */
+#endif  /* __G_DELAYED_SETTINGS_BACKEND_H__ */
