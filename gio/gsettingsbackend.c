@@ -23,7 +23,6 @@
 
 #include "config.h"
 
-#define G_SETTINGS_ENABLE_BACKEND
 #include "gsettingsbackendinternal.h"
 #include "gmemorysettingsbackend.h"
 #include "giomodule-priv.h"
@@ -100,13 +99,13 @@ struct _GSettingsBackendWatch
 };
 
 void
-g_settings_backend_watch (GSettingsBackend *backend,
-  GSettingsBackendChangedFunc               changed,
-  GSettingsBackendPathChangedFunc           path_changed,
-  GSettingsBackendKeysChangedFunc           keys_changed,
-  GSettingsBackendWritableChangedFunc       writable_changed,
-  GSettingsBackendPathWritableChangedFunc   path_writable_changed,
-                          gpointer          user_data)
+g_settings_backend_watch (GSettingsBackend                        *backend,
+                          GSettingsBackendChangedFunc              changed,
+                          GSettingsBackendPathChangedFunc          path_changed,
+                          GSettingsBackendKeysChangedFunc          keys_changed,
+                          GSettingsBackendWritableChangedFunc      writable_changed,
+                          GSettingsBackendPathWritableChangedFunc  path_writable_changed,
+                          gpointer                                 user_data)
 {
   GSettingsBackendWatch *watch;
 
@@ -460,7 +459,9 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
     watch->keys_changed (backend, state.prefix,
                          (const gchar * const *) list,
                          origin_tag, watch->user_data);
+
   g_free (list);
+  g_free (state.prefix);
 }
 
 /*< private >
@@ -508,8 +509,6 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * to emit a second "changed" signal (either during this call, or later)
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
- *
- * Since: 2.26
  */
 void
 g_settings_backend_write (GSettingsBackend *backend,
@@ -826,12 +825,10 @@ g_settings_backend_get_with_context (const gchar *context)
   static GHashTable *backends;
   GSettingsBackend *backend;
 
+  g_return_val_if_fail (context != NULL, NULL);
+
   _g_io_modules_ensure_extension_points_registered ();
   G_TYPE_MEMORY_SETTINGS_BACKEND;
-
-  /* FIXME: hash null properly? */
-  if (!context)
-    context = "";
 
   if (!backends)
     backends = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
