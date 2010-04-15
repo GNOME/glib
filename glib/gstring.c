@@ -874,7 +874,7 @@ g_string_append_len (GString	 *string,
                      gssize       len)    
 {
   g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (val != NULL, string);
+  g_return_val_if_fail (len == 0 || val != NULL, string);
 
   return g_string_insert_len (string, -1, val, len);
 }
