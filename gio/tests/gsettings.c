@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <locale.h>
+#include <libintl.h>
 #include <gio.h>
 #include <gstdio.h>
 
@@ -429,6 +431,36 @@ test_atomic (void)
   g_assert_cmpstr (str, ==, "atomic bye-bye");
 }
 
+static void
+test_l10n (void)
+{
+  GSettings *settings;
+  gchar *str;
+  gchar *locale;
+
+  bindtextdomain ("glib20", "/usr/share");
+  bind_textdomain_codeset ("glib20", "UTF-8");
+
+  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+
+  settings = g_settings_new ("org.gtk.test.localized");
+
+  setlocale (LC_MESSAGES, "C");
+  g_settings_get (settings, "error_message", "s", &str);
+  setlocale (LC_MESSAGES, locale);
+
+  g_assert_cmpstr (str, ==, "Unnamed");
+  str = NULL;
+
+  setlocale (LC_MESSAGES, "de_DE");
+  g_settings_get (settings, "error_message", "s", &str);
+  setlocale (LC_MESSAGES, locale);
+
+  g_assert_cmpstr (str, ==, "Unbenannt");
+
+  g_free (locale);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -448,6 +480,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
+  g_test_add_func ("/gsettings/l10n", test_l10n);
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);

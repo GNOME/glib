@@ -13,8 +13,9 @@
 
     <child name='basic-types' schema='org.gtk.test.basic-types'/>
     <child name='complex-types' schema='org.gtk.test.complex-types'/>
+    <child name='localized' schema='org.gtk.test.localized'/>
   </schema>
-  <schema id="org.gtk.test.basic-types" path="/tests/basic_types/" gettext-domain="test">
+  <schema id="org.gtk.test.basic-types" path="/tests/basic_types/">
     <key name="test_boolean" type="b">
       <default>true</default>
     </key>
@@ -49,12 +50,17 @@
       <default>"/a/object/path"</default>
     </key>
   </schema>
-  <schema id="org.gtk.test.complex-types" path="/tests/complex_types/" gettext-domain="test">
+  <schema id="org.gtk.test.complex-types" path="/tests/complex_types/">
     <key name="test_tuple" type="(s(ii))">
       <default>("one",(2,3))</default>
     </key>
     <key name="test_array" type="ai">
       <default>[0,1,2,3,4,5]</default>
+    </key>
+  </schema>
+  <schema id="org.gtk.test.localized" path="/tests/localized/" gettext-domain="glib20">
+    <key name="error_message" type="s">
+      <default l10n="messages">"Unnamed"</default>
     </key>
   </schema>
 </schemalist>
