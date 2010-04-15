@@ -24,6 +24,10 @@
 #ifndef __G_SETTINGS_BACKEND_H__
 #define __G_SETTINGS_BACKEND_H__
 
+#ifndef G_SETTINGS_ENABLE_BACKEND
+#error "You must define G_SETTINGS_ENABLE_BACKEND before including <gio/gsettingsbackend.h>."
+#endif
+
 #include <glib-object.h>
 
 G_BEGIN_DECLS

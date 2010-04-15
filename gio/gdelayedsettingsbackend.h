@@ -13,6 +13,7 @@
 
 #include <glib-object.h>
 
+#define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
 #define G_TYPE_DELAYED_SETTINGS_BACKEND                     (g_delayed_settings_backend_get_type ())

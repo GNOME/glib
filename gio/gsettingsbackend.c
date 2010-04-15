@@ -23,6 +23,7 @@
 
 #include "config.h"
 
+#define G_SETTINGS_ENABLE_BACKEND
 #include "gsettingsbackendinternal.h"
 #include "gmemorysettingsbackend.h"
 #include "giomodule-priv.h"
@@ -52,7 +53,9 @@ enum {
 
 /**
  * SECTION:gsettingsbackend
+ * @title: GSettingsBackend
  * @short_description: an interface for settings backend implementations
+ * @include: gio/gsettingsbackend.h
  *
  * The #GSettingsBackend interface defines a generic interface for
  * non-strictly-typed data that is stored in a hierarchy.
@@ -69,6 +72,14 @@ enum {
  * These trees always have strings as keys and #GVariant as values.
  * g_settings_backend_create_tree() is a convenience function to create
  * suitable trees.
+ *
+ * <note><para>
+ * The #GSettingsBackend API is exported to allow third-party
+ * implementations, but does not carry the same stability guarantees
+ * as the public GIO API. For this reason, you have to define the
+ * C preprocessor symbol #G_SETTINGS_ENABLE_BACKEND before including
+ * <filename>gio/gsettingsbackend.h</filename>
+ * </para></note>
  **/
 
 struct _GSettingsBackendWatch
@@ -170,9 +181,9 @@ is_path (const gchar *path)
  * @name: the name of the key or path that changed
  * @origin_tag: the origin tag
  *
- * Emits the changed signal on @backend.  This function should only be
- * called by the implementation itself, to indicate that a change has
- * occurred.
+ * Emits the #GSettingsBackend::changed signal on @backend.
+ * This function should only be called by the implementation itself,
+ * to indicate that a change has occurred.
  *
  * @name may refer to a specific single key (ie: not ending in '/') or
  * may refer to a set of keys (ie: ending in '/').  In the case that it
@@ -210,14 +221,14 @@ g_settings_backend_changed (GSettingsBackend    *backend,
 }
 
 /**
- * g_settings_backend_changed:
+ * g_settings_backend_keys_changed:
  * @backend: a #GSettingsBackend implementation
  * @items: the %NULL-terminated list of changed keys
  * @origin_tag: the origin tag
  *
- * Emits the changed signal on @backend.  This function should only be
- * called by the implementation itself, to indicate that a change has
- * occurred.
+ * Emits the #GSettingsBackend::keys-changed signal on @backend.
+ * This function should only be called by the implementation itself,
+ * to indicate that a change has occurred.
  *
  * The list of changed keys, relative to the root of the settings store,
  * is @prefix prepended to each of the @items.  It must either be the

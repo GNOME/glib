@@ -1,6 +1,7 @@
 #ifndef _gmemorysettingsbackend_h_
 #define _gmemorysettingsbackend_h_
 
+#define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
 G_BEGIN_DECLS
