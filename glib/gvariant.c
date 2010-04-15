@@ -3473,17 +3473,21 @@ g_variant_valist_get (const gchar **str,
 
   else /* tuple, dictionary entry */
     {
-      GVariantIter iter;
+      gint index = 0;
 
       g_assert (**str == '(' || **str == '{');
-      g_variant_iter_init (&iter, value);
 
       (*str)++;
       while (**str != ')' && **str != '}')
         {
-          value = g_variant_iter_next_value (&iter);
-          g_variant_valist_get (str, value, free, app);
-          g_variant_unref (value);
+          if (value != NULL)
+            {
+              GVariant *child = g_variant_get_child_value (value, index++);
+              g_variant_valist_get (str, child, free, app);
+              g_variant_unref (child);
+            }
+          else
+            g_variant_valist_get (str, NULL, free, app);
         }
       (*str)++;
     }
