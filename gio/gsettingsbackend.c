@@ -24,7 +24,7 @@
 #include "config.h"
 
 #include "gsettingsbackendinternal.h"
-#include "gmemorysettingsbackend.h"
+#include "gnullsettingsbackend.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
 
@@ -510,13 +510,13 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
  */
-void
+gboolean
 g_settings_backend_write (GSettingsBackend *backend,
                           const gchar      *key,
                           GVariant         *value,
                           gpointer          origin_tag)
 {
-  G_SETTINGS_BACKEND_GET_CLASS (backend)
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->write (backend, key, value, origin_tag);
 }
 
@@ -543,41 +543,56 @@ g_settings_backend_write (GSettingsBackend *backend,
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
  */
-void
+gboolean
 g_settings_backend_write_keys (GSettingsBackend *backend,
                                GTree            *tree,
                                gpointer          origin_tag)
 {
-  G_SETTINGS_BACKEND_GET_CLASS (backend)
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->write_keys (backend, tree, origin_tag);
 }
 
 /*< private >
  * g_settings_backend_reset:
  * @backend: a #GSettingsBackend implementation
- * @name: the name of a key or path
+ * @key: the name of a key
  * @origin_tag: the origin tag
  *
- * "Resets" the named key or path.  For a key this means that it is
- * reverted to its "default" value (ie: after system-wide defaults,
- * mandatory keys, etc. have been taken into account) or possibly unsets
- * it.
- *
- * For paths, it means that every key under the path is reset.
+ * "Resets" the named key to its "default" value (ie: after system-wide
+ * defaults, mandatory keys, etc. have been taken into account) or possibly
+ * unsets it.
  */
 void
 g_settings_backend_reset (GSettingsBackend *backend,
-                          const gchar      *name,
+                          const gchar      *key,
                           gpointer          origin_tag)
 {
   G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->reset (backend, name, origin_tag);
+    ->reset (backend, key, origin_tag);
+}
+
+/*< private >
+ * g_settings_backend_reset_path:
+ * @backend: a #GSettingsBackend implementation
+ * @name: the name of a key or path
+ * @origin_tag: the origin tag
+ *
+ * "Resets" the named path.  This means that every key under the path is
+ * reset.
+ */
+void
+g_settings_backend_reset_path (GSettingsBackend *backend,
+                               const gchar      *path,
+                               gpointer          origin_tag)
+{
+  G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->reset_path (backend, path, origin_tag);
 }
 
 /*< private >
  * g_settings_backend_get_writable:
  * @backend: a #GSettingsBackend implementation
- * @name: the name of a key
+ * @key: the name of a key
  * @returns: %TRUE if the key is writable
  *
  * Finds out if a key is available for writing to.  This is the
@@ -589,10 +604,10 @@ g_settings_backend_reset (GSettingsBackend *backend,
  */
 gboolean
 g_settings_backend_get_writable (GSettingsBackend *backend,
-                                 const gchar      *name)
+                                 const gchar      *key)
 {
   return G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->get_writable (backend, name);
+    ->get_writable (backend, key);
 }
 
 /*< private >
@@ -784,7 +799,7 @@ get_default_backend (const gchar *context)
       class = g_io_extension_ref_class (extension);
       backend_class = G_SETTINGS_BACKEND_CLASS (class);
 
-      if (backend_class->supports_context != NULL &&
+      if (backend_class->supports_context == NULL ||
           !backend_class->supports_context (context))
         {
           g_type_class_unref (class);
@@ -828,7 +843,6 @@ g_settings_backend_get_with_context (const gchar *context)
   g_return_val_if_fail (context != NULL, NULL);
 
   _g_io_modules_ensure_extension_points_registered ();
-  G_TYPE_MEMORY_SETTINGS_BACKEND;
 
   if (!backends)
     backends = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
@@ -840,9 +854,7 @@ g_settings_backend_get_with_context (const gchar *context)
       backend = get_default_backend (context);
 
       if (!backend)
-        {
-          /* FIXME: create an instance of the memory backend */
-        }
+        backend = g_null_settings_backend_new ();
 
       g_hash_table_insert (backends, g_strdup (context), backend);
     }
@@ -874,3 +886,6 @@ g_settings_backend_supports_context (const gchar *context)
 
   return FALSE;
 }
+
+#define __G_SETTINGS_BACKEND_C__
+#include "gioaliasdef.c"

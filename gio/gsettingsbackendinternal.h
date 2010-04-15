@@ -48,6 +48,7 @@ typedef void          (*GSettingsBackendPathWritableChangedFunc)        (GSettin
                                                                          const gchar         *path,
                                                                          gpointer             user_data);
 
+G_GNUC_INTERNAL
 void                    g_settings_backend_watch                        (GSettingsBackend                        *backend,
                                                                          GSettingsBackendChangedFunc              changed,
                                                                          GSettingsBackendPathChangedFunc          path_changed,
@@ -55,31 +56,46 @@ void                    g_settings_backend_watch                        (GSettin
                                                                          GSettingsBackendWritableChangedFunc      writable_changed,
                                                                          GSettingsBackendPathWritableChangedFunc  path_writable_changed,
                                                                          gpointer                                 user_data);
+G_GNUC_INTERNAL
 void                    g_settings_backend_unwatch                      (GSettingsBackend                     *backend,
                                                                          gpointer                              user_data);
 
+G_GNUC_INTERNAL
 gboolean                        g_settings_backend_supports_context     (const gchar                          *context);
+G_GNUC_INTERNAL
 GSettingsBackend *              g_settings_backend_get_with_context     (const gchar                          *context);
+G_GNUC_INTERNAL
 GTree *                         g_settings_backend_create_tree          (void);
+G_GNUC_INTERNAL
 GVariant *                      g_settings_backend_read                 (GSettingsBackend                     *backend,
                                                                          const gchar                          *key,
                                                                          const GVariantType                   *expected_type);
-void                            g_settings_backend_write                (GSettingsBackend                     *backend,
+G_GNUC_INTERNAL
+gboolean                        g_settings_backend_write                (GSettingsBackend                     *backend,
                                                                          const gchar                          *key,
                                                                          GVariant                             *value,
                                                                          gpointer                              origin_tag);
-void                            g_settings_backend_write_keys           (GSettingsBackend                     *backend,
+G_GNUC_INTERNAL
+gboolean                        g_settings_backend_write_keys           (GSettingsBackend                     *backend,
                                                                          GTree                                *tree,
                                                                          gpointer                              origin_tag);
+G_GNUC_INTERNAL
 void                            g_settings_backend_reset                (GSettingsBackend                     *backend,
-                                                                         const gchar                          *name,
+                                                                         const gchar                          *key,
                                                                          gpointer                              origin_tag);
 
-gboolean                        g_settings_backend_get_writable         (GSettingsBackend                     *backend,
-                                                                         const char                           *name);
+G_GNUC_INTERNAL
+void                            g_settings_backend_reset_path           (GSettingsBackend                     *backend,
+                                                                         const gchar                          *path,
+                                                                         gpointer                              origin_tag);
 
+G_GNUC_INTERNAL
+gboolean                        g_settings_backend_get_writable         (GSettingsBackend                     *backend,
+                                                                         const char                           *key);
+G_GNUC_INTERNAL
 void                            g_settings_backend_unsubscribe          (GSettingsBackend                     *backend,
                                                                          const char                           *name);
+G_GNUC_INTERNAL
 void                            g_settings_backend_subscribe            (GSettingsBackend                     *backend,
                                                                          const char                           *name);
 
