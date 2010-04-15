@@ -2833,6 +2833,74 @@ g_regex_check_replacement (const gchar  *replacement,
 }
 
 /**
+ * g_regex_escape_nul:
+ * @string: the string to escape
+ * @length: the length of @string
+ *
+ * Escapes the nul characters in @string to "\x00".  It can be used
+ * to compile a regex with embedded nul characters.
+ *
+ * For completeness, @length can be -1 for a nul-terminated string.
+ * In this case the output string will be of course equal to @string.
+ *
+ * Returns: a newly-allocated escaped string
+ *
+ * Since: 2.30
+ */
+gchar *
+g_regex_escape_nul (const gchar *string,
+                    gint         length)
+{
+  GString *escaped;
+  const gchar *p, *piece_start, *end;
+  gint backslashes;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  if (length < 0)
+    return g_strdup (string);
+
+  end = string + length;
+  p = piece_start = string;
+  escaped = g_string_sized_new (length + 1);
+
+  backslashes = 0;
+  while (p < end)
+    {
+      switch (*p)
+        {
+        case '\0':
+          if (p != piece_start)
+            {
+              /* copy the previous piece. */
+              g_string_append_len (escaped, piece_start, p - piece_start);
+            }
+          if ((backslashes & 1) == 0)
+            g_string_append_c (escaped, '\\');
+          g_string_append_c (escaped, 'x');
+          g_string_append_c (escaped, '0');
+          g_string_append_c (escaped, '0');
+          piece_start = ++p;
+          backslashes = 0;
+          break;
+        case '\\':
+          backslashes++;
+          ++p;
+          break;
+        default:
+          backslashes = 0;
+          p = g_utf8_next_char (p);
+          break;
+        }
+    }
+
+  if (piece_start < end)
+    g_string_append_len (escaped, piece_start, end - piece_start);
+
+  return g_string_free (escaped, FALSE);
+}
+
+/**
  * g_regex_escape_string:
  * @string: (array length=length): the string to escape
  * @length: the length of @string, or -1 if @string is nul-terminated

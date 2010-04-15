@@ -1352,6 +1352,7 @@ g_regex_get_string_number
 g_regex_get_compile_flags
 g_regex_get_match_flags
 g_regex_escape_string
+g_regex_escape_nul
 g_regex_match_simple
 g_regex_match
 g_regex_match_full

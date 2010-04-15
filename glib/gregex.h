@@ -364,6 +364,8 @@ gint		  g_regex_get_string_number	(const GRegex        *regex,
 						 const gchar         *name);
 gchar		 *g_regex_escape_string		(const gchar         *string,
 						 gint                 length);
+gchar		 *g_regex_escape_nul		(const gchar         *string,
+						 gint                 length);
 
 GRegexCompileFlags g_regex_get_compile_flags    (const GRegex        *regex);
 GRegexMatchFlags   g_regex_get_match_flags      (const GRegex        *regex);

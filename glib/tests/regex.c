@@ -1129,6 +1129,31 @@ test_escape (gconstpointer d)
   g_free (path);                                        \
 }
 
+static void
+test_escape_nul (gconstpointer d)
+{
+  const TestEscapeData *data = d;
+  gchar *escaped;
+
+  escaped = g_regex_escape_nul (data->string, data->length);
+
+  g_assert_cmpstr (escaped, ==, data->expected);
+
+  g_free (escaped);
+}
+
+#define TEST_ESCAPE_NUL(_string, _length, _expected) {  \
+  TestEscapeData *data;                                 \
+  gchar *path;                                          \
+  data = g_new0 (TestEscapeData, 1);                    \
+  data->string = _string;                               \
+  data->length = _length;                               \
+  data->expected = _expected;                           \
+  path = g_strdup_printf ("/regex/escape_nul/%d", ++total);  \
+  g_test_add_data_func (path, data, test_escape_nul);   \
+  g_free (path);                                        \
+}
+
 typedef struct {
   const gchar *pattern;
   const gchar *string;
@@ -2573,6 +2598,23 @@ main (int argc, char *argv[])
   TEST_GET_STRING_NUMBER("(?P<A>.)(.)(?P<B>a)", "C", -1);
   TEST_GET_STRING_NUMBER("(?:a)(?P<A>.)", "A", 1);
   TEST_GET_STRING_NUMBER("(?:a)(?P<A>.)", "B", -1);
+
+  /* TEST_ESCAPE_NUL(string, length, expected) */
+  TEST_ESCAPE_NUL("hello world", -1, "hello world");
+  TEST_ESCAPE_NUL("hello\0world", -1, "hello");
+  TEST_ESCAPE_NUL("\0world", -1, "");
+  TEST_ESCAPE_NUL("hello world", 5, "hello");
+  TEST_ESCAPE_NUL("hello.world", 11, "hello.world");
+  TEST_ESCAPE_NUL("a(b\\b.$", 7, "a(b\\b.$");
+  TEST_ESCAPE_NUL("hello\0", 6, "hello\\x00");
+  TEST_ESCAPE_NUL("\0world", 6, "\\x00world");
+  TEST_ESCAPE_NUL("\0\0", 2, "\\x00\\x00");
+  TEST_ESCAPE_NUL("hello\0world", 11, "hello\\x00world");
+  TEST_ESCAPE_NUL("hello\0world\0", 12, "hello\\x00world\\x00");
+  TEST_ESCAPE_NUL("hello\\\0world", 12, "hello\\x00world");
+  TEST_ESCAPE_NUL("hello\\\\\0world", 13, "hello\\\\\\x00world");
+  TEST_ESCAPE_NUL("|()[]{}^$*+?.", 13, "|()[]{}^$*+?.");
+  TEST_ESCAPE_NUL("|()[]{}^$*+?.\\\\", 15, "|()[]{}^$*+?.\\\\");
 
   /* TEST_ESCAPE(string, length, expected) */
   TEST_ESCAPE("hello world", -1, "hello world");
