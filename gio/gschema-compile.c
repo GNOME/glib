@@ -111,6 +111,28 @@ start_element (GMarkupParseContext  *context,
 
           return;
         }
+      else if (strcmp (element_name, "child") == 0)
+        {
+          const gchar *name, *schema;
+
+          if (COLLECT (STRING, "name", &name, STRING, "schema", &schema))
+            {
+              gchar *childname;
+
+              childname = g_strconcat (name, "/", NULL);
+              
+              if (!g_hash_table_lookup (state->schema, childname))
+                gvdb_hash_table_insert_string (state->schema, childname, schema);
+
+              else
+                g_set_error (error, G_MARKUP_ERROR,
+                             G_MARKUP_ERROR_INVALID_CONTENT,
+                             "<child name='%s'> already specified", name);
+
+              g_free (childname);
+              return;
+            }
+        }
     }
   else if (strcmp (container, "key") == 0)
     {

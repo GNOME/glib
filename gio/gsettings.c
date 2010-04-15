@@ -745,12 +745,27 @@ GSettings *
 g_settings_get_child (GSettings   *settings,
                       const gchar *name)
 {
-  gchar *child_schema;
+  GVariant *child_schema;
+  gchar *child_path;
+  gchar *child_name;
   GSettings *child;
 
-  child_schema = g_strconcat (settings->priv->schema_name, ".", name, NULL);
-  child = g_object_new (G_TYPE_SETTINGS, "schema", child_schema, NULL);
-  g_free (child_schema);
+  child_name = g_strconcat (name, "/", NULL);
+  child_schema = g_settings_schema_get_value (settings->priv->schema,
+                                              child_name, NULL);
+  if (child_schema == NULL ||
+      !g_variant_is_of_type (child_schema, G_VARIANT_TYPE_STRING))
+    g_error ("Schema '%s' has no child '%s'\n",
+             settings->priv->schema_name, name);
+
+  child_path = g_strconcat (settings->priv->path, child_name, NULL);
+  child = g_object_new (G_TYPE_SETTINGS,
+                        "schema", child_schema,
+                        "path", child_path,
+                        NULL);
+  g_variant_unref (child_schema);
+  g_free (child_path);
+  g_free (child_name);
 
   return child;
 }
