@@ -26,6 +26,8 @@
 
 #include "gsettingsbackend.h"
 
+G_BEGIN_DECLS
+
 typedef void          (*GSettingsBackendChangedFunc)                    (GSettingsBackend    *backend,
                                                                          const gchar         *key,
                                                                          gpointer             origin_tag,
@@ -80,5 +82,7 @@ void                            g_settings_backend_unsubscribe          (GSettin
                                                                          const char                           *name);
 void                            g_settings_backend_subscribe            (GSettingsBackend                     *backend,
                                                                          const char                           *name);
+
+G_END_DECLS
 
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */
