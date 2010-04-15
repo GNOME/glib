@@ -448,7 +448,7 @@ g_settings_class_init (GSettingsClass *class)
    * g_settings_reset() is called.
    *
    * The default implementation for this signal is to emit the
-   * GSettings::changed signal for each key in the schema.
+   * #GSettings::changed signal for each key in the schema.
    */
   g_settings_signals[SIGNAL_ALL_CHANGED] =
     g_signal_new ("all-changed", G_TYPE_SETTINGS,
@@ -463,12 +463,12 @@ g_settings_class_init (GSettingsClass *class)
    * @keys: an array of #GQuark<!-- -->s for the changed keys
    * @n_keys: the length of the @keys array
    *
-   * The "changes" signal is emitting when a number of keys have
+   * The "keys-changed" signal is emitting when a number of keys have
    * potentially been changed.  This occurs, for example, if
    * g_settings_apply() is called on a delayed-apply #GSettings.
    *
-   * The default implemenetation for this signal is to emit the
-   * GSettings::changed signal for each item in the list of keys.
+   * The default implementation for this signal is to emit the
+   * #GSettings::changed signal for each item in the list of keys.
    */
   g_settings_signals[SIGNAL_KEYS_CHANGED] =
     g_signal_new ("keys-changed", G_TYPE_SETTINGS,
@@ -497,12 +497,12 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::all-writable-changed:
    *
-   * The "all-writable-changes" signal is emitted when the writability
+   * The "all-writable-changed" signal is emitted when the writability
    * of potentially every key has changed.  This occurs, for example, if
    * an entire subpath is locked down in the settings backend.
    *
    * The default implementation for this signal is to emit the
-   * GSettings:writable-changed signal for each key in the schema.
+   * #GSettings:writable-changed signal for each key in the schema.
    */
   g_settings_signals[SIGNAL_ALL_WRITABLE_CHANGED] =
     g_signal_new ("all-writable-changed", G_TYPE_SETTINGS,
