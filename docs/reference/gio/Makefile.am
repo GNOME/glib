@@ -126,10 +126,10 @@ include $(top_srcdir)/gtk-doc.make
 EXTRA_DIST +=			\
 	version.xml.in
 
+if ENABLE_MAN
+
 man_MANS =			\
 	gschema-compile.1
-
-if ENABLE_MAN
 
 %.1 : xml/%.xml
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<

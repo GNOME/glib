@@ -1,3 +1,24 @@
+/*
+ * Copyright © 2010 Codethink Limited
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ryan Lortie <desrt@desrt.ca>
+ */
+
 #include "gvdb-builder.h"
 #include "gvdb-format.h"
 
@@ -444,10 +465,22 @@ file_builder_new (void)
 
 static GString *
 file_builder_serialise (FileBuilder          *fb,
-                        struct gvdb_pointer   root)
+                        struct gvdb_pointer   root,
+                        gboolean              byteswap)
 {
-  struct gvdb_header header = { { GVDB_SIGNATURE0, GVDB_SIGNATURE1 } };
   GString *result = g_string_new (NULL);
+  struct gvdb_header header;
+
+  if (byteswap)
+    {
+      header.signature[0] = GUINT32_TO_LE (GVDB_SIGNATURE0);
+      header.signature[1] = GUINT32_TO_LE (GVDB_SIGNATURE1);
+    }
+  else
+    {
+      header.signature[0] = GVDB_SIGNATURE0;
+      header.signature[1] = GVDB_SIGNATURE1;
+    }
 
   result = g_string_new (NULL);
 
@@ -482,6 +515,7 @@ file_builder_serialise (FileBuilder          *fb,
 gboolean
 gvdb_table_write_contents (GHashTable   *table,
                            const gchar  *filename,
+                           gboolean      byteswap,
                            GError      **error)
 {
   struct gvdb_pointer root;
@@ -491,7 +525,7 @@ gvdb_table_write_contents (GHashTable   *table,
 
   fb = file_builder_new ();
   file_builder_add_hash (fb, table, &root);
-  str = file_builder_serialise (fb, root);
+  str = file_builder_serialise (fb, root, byteswap);
 
   status = g_file_set_contents (filename, str->str, str->len, error);
   g_string_free (str, TRUE);

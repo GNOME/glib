@@ -1,3 +1,27 @@
+/*
+ * Copyright © 2010 Codethink Limited
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ryan Lortie <desrt@desrt.ca>
+ */
+
+#ifndef __gvdb_format_h__
+#define __gvdb_format_h__
+
 #include <glib.h>
 
 typedef struct { guint16 __value; } guint16_le;
@@ -59,3 +83,5 @@ static inline guint16 guint16_from_le (guint16_le value) {
 
 #define GVDB_SIGNATURE0 1918981703
 #define GVDB_SIGNATURE1 1953390953
+
+#endif /* __gvdb_format_h__ */

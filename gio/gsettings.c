@@ -658,9 +658,10 @@ GVariant *
 g_settings_get_value (GSettings   *settings,
                       const gchar *key)
 {
+  const gchar *unparsed = NULL;
   GVariant *value, *options;
   const GVariantType *type;
-  gint lc_category = -1;
+  gchar lc_char = '\0';
   GVariant *sval;
   gchar *path;
 
@@ -670,6 +671,11 @@ g_settings_get_value (GSettings   *settings,
     g_error ("schema '%s' does not contain a key named '%s'\n",
              settings->priv->schema_name, key);
 
+  path = g_strconcat (settings->priv->path, key, NULL);
+  type = g_variant_get_type (sval);
+  value = g_settings_backend_read (settings->priv->backend, path, type);
+  g_free (path);
+
   if (options != NULL)
     {
       GVariantIter iter;
@@ -677,28 +683,14 @@ g_settings_get_value (GSettings   *settings,
       GVariant *value;
 
       g_variant_iter_init (&iter, options);
-      while (g_variant_iter_loop (&iter, "{sv}", &key, &value))
+      while (g_variant_iter_loop (&iter, "{&sv}", &key, &value))
         {
-          if (strcmp (key, "l10n") == 0 &&
-              g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
-            {
-              const gchar *category = g_variant_get_string (value, NULL);
-
-              if (strcmp (category, "messages") == 0)
-                lc_category = LC_MESSAGES;
-              else if (strcmp (category, "time") == 0)
-                lc_category = LC_TIME;
-              else
-                g_error ("schema requests unsupported l10n category: %s",
-                         category);
-            }
+          if (strcmp (key, "l10n") == 0 && value == NULL)
+            g_variant_get (value, "(y&s)", &lc_char, &unparsed);
+          else
+            g_warning ("unknown schema extension '%s'", key);
         }
     }
-
-  path = g_strconcat (settings->priv->path, key, NULL);
-  type = g_variant_get_type (sval);
-  value = g_settings_backend_read (settings->priv->backend, path, type);
-  g_free (path);
 
   if (value && !g_variant_is_of_type (value, type))
     {
@@ -706,21 +698,44 @@ g_settings_get_value (GSettings   *settings,
       value = NULL;
     }
 
-  if (value == NULL)
+  if (value == NULL && lc_char != '\0')
+  /* we will need to translate the schema default value */
     {
+      const gchar *translated;
+      GError *error = NULL;
+      const gchar *domain;
+      gint lc_category;
+      gchar category;
 
-      if (lc_category != -1)
+      domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
+      g_variant_get (value, "(y&s)", &category, &unparsed);
+
+      if (lc_char == 't')
+        lc_category = LC_TIME;
+      else
+        lc_category = LC_MESSAGES;
+
+      translated = dcgettext (domain, unparsed, lc_category);
+
+      if (translated != unparsed)
+        /* it was translated, so we need to re-parse it */
         {
-          const gchar *domain;
+          value = g_variant_parse (g_variant_get_type (sval),
+                                   translated, NULL, NULL, &error);
 
-          domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
+          if (value == NULL)
+            {
+              g_warning ("Failed to parse translated string `%s' for "
+                         "key `%s' in schema `%s': %s", unparsed, key,
+                         settings->priv->schema_name, error->message);
+              g_warning ("Using untranslated default instead.");
+              g_error_free (error);
 
-          value = g_variant_ref_sink (g_variant_new_string (
-            dcgettext (domain,
-                       g_variant_get_string (sval, NULL),
-                       lc_category)));
+              value = g_variant_ref (sval);
+            }
         }
       else
+        /* the string was untranslated, so just use the pre-parsed one */
         value = g_variant_ref (sval);
     }
 

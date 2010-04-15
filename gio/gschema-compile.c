@@ -7,6 +7,9 @@
 
 typedef struct
 {
+  gboolean byteswap;
+
+  GVariantBuilder key_options;
   GHashTable *schemas;
   gchar *schemalist_domain;
 
@@ -20,7 +23,8 @@ typedef struct
   GVariant *value;
   GVariant *min, *max;
   GVariant *strings;
-  gchar *l10n;
+  gchar l10n;
+  gchar *context;
   GVariantType *type;
 } ParseState;
 
@@ -112,6 +116,9 @@ start_element (GMarkupParseContext  *context,
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
                              "invalid GVariant type string");
+
+              g_variant_builder_init (&state->key_options,
+                                      G_VARIANT_TYPE ("a{sv}"));
             }
 
           return;
@@ -143,9 +150,12 @@ start_element (GMarkupParseContext  *context,
     {
       if (strcmp (element_name, "default") == 0)
         {
-          if (COLLECT (STRDUP | OPTIONAL, "l10n", &state->l10n))
+          const gchar *l10n;
+
+          if (COLLECT (STRING | OPTIONAL, "l10n", &l10n,
+                       STRDUP | OPTIONAL, "context", &state->context))
             {
-              if (state->l10n != NULL)
+              if (l10n != NULL)
                 {
                   if (!g_hash_table_lookup (state->schema, ".gettext-domain"))
                     {   
@@ -166,8 +176,25 @@ start_element (GMarkupParseContext  *context,
 			                             ".gettext-domain",
 						     domain);
 
-                      /* XXX: todo: check l10n category validity */
+                      if (strcmp (l10n, "messages") == 0)
+                        state->l10n = 'm';
+                      else if (strcmp (l10n, "time") == 0)
+                        state->l10n = 't';
+                      else
+                        g_set_error (error, G_MARKUP_ERROR,
+                                     G_MARKUP_ERROR_INVALID_CONTENT,
+                                     "unsupported l10n category: %s", l10n);
                     }
+                }
+              else
+                {
+                  state->l10n = '\0';
+
+                   if (state->context != NULL)
+                     g_set_error (error, G_MARKUP_ERROR,
+                                  G_MARKUP_ERROR_INVALID_CONTENT,
+                                  "translation context given for "
+                                  " value without l10n enabled");
                 }
 
               state->string = g_string_new (NULL);
@@ -175,13 +202,10 @@ start_element (GMarkupParseContext  *context,
 
           return;
         }
-      else if (strcmp (element_name, "summary") == 0)
+      else if (strcmp (element_name, "summary") == 0 ||
+               strcmp (element_name, "description") == 0)
         {
-          NO_ARGS ();
-          return;
-        }
-      else if (strcmp (element_name, "description") == 0)
-        {
+          state->string = g_string_new (NULL);
           NO_ARGS ();
           return;
         }
@@ -238,18 +262,46 @@ end_element (GMarkupParseContext  *context,
   if (strcmp (element_name, "default") == 0)
     {
       state->value = g_variant_parse (state->type, state->string->str,
-                                      state->string->str + state->string->len,
-                                      NULL, error);
+                                      NULL, NULL, error);
+
+      if (state->l10n)
+        {
+          if (state->context)
+            {
+              gint len;
+
+              /* Contextified messages are supported by prepending the
+               * context, followed by '\004' to the start of the message
+               * string.  We do that here to save GSettings the work
+               * later on.
+               *
+               * Note: we are about to g_free() the context anyway...
+               */
+              len = strlen (state->context);
+              state->context[len] = '\004';
+              g_string_prepend_len (state->string, state->context, len + 1);
+            }
+
+          g_variant_builder_add (&state->key_options, "{sv}", "l10n",
+                                 g_variant_new ("(ys)",
+                                                state->l10n,
+                                                state->string->str));
+        }
+
+      g_string_free (state->string, TRUE);
+      g_free (state->context);
     }
 
   else if (strcmp (element_name, "key") == 0)
     {
-      if (state->l10n)
-        gvdb_item_set_options (state->key,
-                               g_variant_new_parsed ("{'l10n': < %s >}",
-                                                     state->l10n));
       gvdb_item_set_value (state->key, state->value);
+      gvdb_item_set_options (state->key,
+                             g_variant_builder_end (&state->key_options));
     }
+
+  else if (strcmp (element_name, "summary") == 0 ||
+           strcmp (element_name, "description") == 0)
+    g_string_free (state->string, TRUE);
 }
 
 static void
@@ -278,12 +330,13 @@ text (GMarkupParseContext  *context,
 }
 
 static GHashTable *
-parse_gschema_files (gchar  **files,
-                     GError **error)
+parse_gschema_files (gchar    **files,
+                     gboolean   byteswap,
+                     GError   **error)
 {
   GMarkupParser parser = { start_element, end_element, text };
   GMarkupParseContext *context;
-  ParseState state = { 0, };
+  ParseState state = { byteswap, };
   const gchar *filename;
 
   context = g_markup_parse_context_new (&parser,
@@ -318,6 +371,7 @@ parse_gschema_files (gchar  **files,
 int
 main (int argc, char **argv)
 {
+  gboolean byteswap = G_BYTE_ORDER != G_LITTLE_ENDIAN;
   GError *error = NULL;
   GHashTable *table;
   glob_t matched;
@@ -382,9 +436,8 @@ main (int argc, char **argv)
       return 1;
     }
 
-  /* FIXME: need a way to specify the output location, for !srcdir builds */
-  if (!(table = parse_gschema_files (matched.gl_pathv, &error)) ||
-      !gvdb_table_write_contents (table, target, &error))
+  if (!(table = parse_gschema_files (matched.gl_pathv, byteswap, &error)) ||
+      !gvdb_table_write_contents (table, target, byteswap, &error))
     {
       fprintf (stderr, "%s\n", error->message);
       return 1;

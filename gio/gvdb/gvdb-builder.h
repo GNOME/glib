@@ -15,6 +15,8 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
 #ifndef __gvdb_builder_h__
@@ -52,6 +54,7 @@ void                    gvdb_item_set_parent                            (GvdbIte
 G_GNUC_INTERNAL
 gboolean                gvdb_table_write_contents                       (GHashTable     *table,
                                                                          const gchar    *filename,
+                                                                         gboolean        byteswap,
                                                                          GError        **error);
 
 #endif /* __gvdb_builder_h__ */

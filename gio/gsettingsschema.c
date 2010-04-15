@@ -30,6 +30,8 @@ G_DEFINE_TYPE (GSettingsSchema, g_settings_schema, G_TYPE_OBJECT)
 
 struct _GSettingsSchemaPrivate
 {
+  const gchar *gettext_domain;
+  const gchar *path;
   GvdbTable *table;
   gchar *name;
 };
@@ -109,6 +111,22 @@ g_settings_schema_class_init (GSettingsSchemaClass *class)
   g_type_class_add_private (class, sizeof (GSettingsSchemaPrivate));
 }
 
+static const gchar *
+g_settings_schema_get_string (GSettingsSchema *schema,
+                              const gchar     *key)
+{
+  const gchar *result = NULL;
+  GVariant *value;
+
+  if ((value = g_settings_schema_get_value (schema, key, NULL)))
+    {
+      result = g_variant_get_string (value, NULL);
+      g_variant_unref (value);
+    }
+
+  return result;
+}
+
 GSettingsSchema *
 g_settings_schema_new (const gchar *name)
 {
@@ -132,6 +150,13 @@ g_settings_schema_new (const gchar *name)
   schema = g_object_new (G_TYPE_SETTINGS_SCHEMA, NULL);
   schema->priv->name = g_strdup (name);
   schema->priv->table = table;
+  schema->priv->path =
+    g_settings_schema_get_string (schema, ".path");
+  schema->priv->gettext_domain =
+    g_settings_schema_get_string (schema, ".gettext-domain");
+
+  if (schema->priv->gettext_domain)
+    bind_textdomain_codeset (schema->priv->gettext_domain, "UTF-8");
 
   return schema;
 }
@@ -147,39 +172,13 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
 const gchar *
 g_settings_schema_get_path (GSettingsSchema *schema)
 {
-  const gchar *result;
-  GVariant *value;
-
-  value = gvdb_table_get_value (schema->priv->table, ".path", NULL);
-
-  if (value && g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
-    {
-      result = g_variant_get_string (value, NULL);
-      g_variant_unref (value);
-    }
-  else
-    result = NULL;
-
-  return result;
+  return schema->priv->path;
 }
 
 const gchar *
 g_settings_schema_get_gettext_domain (GSettingsSchema *schema)
 {
-  const gchar *result;
-  GVariant *value;
-
-  value = gvdb_table_get_value (schema->priv->table, ".gettext-domain", NULL);
-
-  if (value && g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
-    {
-      result = g_variant_get_string (value, NULL);
-      g_variant_unref (value);
-    }
-  else
-    result = NULL;
-
-  return result;
+  return schema->priv->gettext_domain;
 }
 
 gboolean
