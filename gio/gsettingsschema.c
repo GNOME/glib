@@ -25,46 +25,6 @@
 
 #include "gvdb/gvdb-reader.h"
 
-/*
- * The #GSettingsSchema class provides schema information (i.e. types,
- * default values and descriptions) for keys in settings.
- *
- * Schema information is required to use #GSettings.
- *
- * The source format for GSettings schemas is an XML format that can
- * be described with the following DTD:
- * |[<![CDATA[
- * <!ELEMENT schemalist (schema*) >
- * <!ATTLIST schemalist gettext-domain #IMPLIED >
- *
- * <!ELEMENT schema (key*) >
- * <!ATTLIST schema id             #REQUIRED
- *                  path           #IMPLIED
- *                  gettext-domain #IMPLIED >
- *
- * <!ELEMENT key (default|summary?|description?|range?|choices?) >
- * <!ATTLIST key name #REQUIRED
- *               type #REQUIRED >
- *
- * <!ELEMENT default (#PCDATA) >
- * <!ATTLIST default l10n #IMPLIED >
- *
- * <!ELEMENT summary (#PCDATA) >
- * <!ELEMENT description (#PCDATA) >
- *
- * <!ELEMENT range (min,max)  >
- * <!ELEMENT min (#PCDATA) >
- * <!ELEMENT max (#PCDATA) >
- *
- * <!ELEMENT choices (choice+) >
- * <!ELEMENT choice (alias?) >
- * <!ATTLIST choice value #REQUIRED >
- * <!ELEMENT choice (alias?) >
- * <!ELEMENT alias EMPTY >
- * <!ATTLIST alias value #REQUIRED >
- * ]]>
- * ]|
- */
 
 G_DEFINE_TYPE (GSettingsSchema, g_settings_schema, G_TYPE_OBJECT)
 

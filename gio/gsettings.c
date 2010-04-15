@@ -30,6 +30,71 @@
  *
  * The #GSettings class provides a convenient API for storing and retrieving
  * application settings.
+ *
+ * When creating a GSettings instance, you have to specify a schema
+ * that describes the keys in your settings and their types and default
+ * values, as well as some other information.
+ *
+ * Normally, a schema has as fixed path that determines where the settings
+ * are stored in the conceptual global tree of settings. However, schemas
+ * can also be 'relocatable', i.e. not equipped with a fixed path. This is
+ * useful e.g. when the schema describes an 'account', and you want to be
+ * able to store a arbitrary number of accounts.
+ *
+ * Unlike other configuration systems (like GConf), GSettings does not
+ * restrict keys to basic types like strings and numbers. GSettings stores
+ * values as #GVariant, and allows any #GVariantType for keys.
+ *
+ * Similar to GConf, the default values in GSettings schemas can be
+ * localized, but the localized values are stored in gettext catalogs
+ * and looked up with the domain that is specified in the gettext-domain
+ * attribute of the <tag>schemalist</tag> or <tag>schema</tag> elements
+ * and the category that is specified in the l10n attribute of the
+ * <tag>key</tag> element.
+ *
+ * GSettings uses schemas in a compact binary form that is created
+ * by the gschema-compile utility. The input is a schema description in
+ * an XML format that can be described by the following DTD:
+ * |[<![CDATA[
+ * <!ELEMENT schemalist (schema*) >
+ * <!ATTLIST schemalist gettext-domain #IMPLIED >
+ *
+ * <!ELEMENT schema (key*) >
+ * <!ATTLIST schema id             CDATA #REQUIRED
+ *                  path           CDATA #IMPLIED
+ *                  gettext-domain CDATA #IMPLIED >
+ *
+ * <!ELEMENT key (default|summary?|description?|range?|choices?) >
+ * <!-- name can only contain lowercase letters, numbers and '-' -->
+ * <!-- type must be a GVariant type string -->
+ * <!ATTLIST key name CDATA #REQUIRED
+ *               type CDATA #REQUIRED >
+ *
+ * <!-- the default value is specified a a serialized GVariant,
+ *      i.e. you have to include the quotes when specifying a string -->
+ * <!ELEMENT default (#PCDATA) >
+ * <!-- the presence of the l10n attribute marks a default value for
+ *      translation, its value is the gettext category to use -->
+ * <!ATTLIST default l10n (ctype|numeric|time|collate|
+ *                         monetary|messages|all|paper|
+ *                         name|address|telephone|
+ *                         measurement|identification) #IMPLIED >
+ *
+ * <!ELEMENT summary (#PCDATA) >
+ * <!ELEMENT description (#PCDATA) >
+ *
+ * <!ELEMENT range (min,max)  >
+ * <!ELEMENT min (#PCDATA) >
+ * <!ELEMENT max (#PCDATA) >
+ *
+ * <!ELEMENT choices (choice+) >
+ * <!ELEMENT choice (alias?) >
+ * <!ATTLIST choice value CDATA #REQUIRED >
+ * <!ELEMENT choice (alias?) >
+ * <!ELEMENT alias EMPTY >
+ * <!ATTLIST alias value CDATA #REQUIRED >
+ * ]]>
+ * ]|
  */
 
 struct _GSettingsPrivate
