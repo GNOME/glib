@@ -31,7 +31,8 @@
  * application settings.
  */
 
-struct _GSettingsPrivate {
+struct _GSettingsPrivate
+{
   GSettingsBackend *backend;
   GSettingsSchema *schema;
   gchar *schema_name;

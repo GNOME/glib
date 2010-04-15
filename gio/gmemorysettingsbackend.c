@@ -1,3 +1,6 @@
+
+#include "config.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -155,10 +158,11 @@ g_memory_settings_backend_keyfile_reload (GMemorySettingsBackend *memory)
 
   new_checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, length);
 
-  if (g_strcmp0 (memory->priv->keyfile_checksum, new_checksum) == 0) {
-    g_free (new_checksum);
-    return;
-  }
+  if (g_strcmp0 (memory->priv->keyfile_checksum, new_checksum) == 0)
+    {
+      g_free (new_checksum);
+      return;
+    }
 
   if (memory->priv->keyfile_checksum != NULL)
     g_free (memory->priv->keyfile_checksum);

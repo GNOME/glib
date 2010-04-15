@@ -8,6 +8,10 @@
  * See the included COPYING file for more information.
  */
 
+#include "config.h"
+#include <glib.h>
+#include <glibintl.h>
+
 #include "gdelayedsettingsbackend.h"
 #include "gsettingsbackendinternal.h"
 
@@ -22,7 +26,8 @@ enum
   PROP_HAS_UNAPPLIED
 };
 
-struct _GDelayedSettingsBackendPrivate {
+struct _GDelayedSettingsBackendPrivate
+{
   GSettingsBackend *backend;
   guint writable_changed_handler_id;
   guint keys_changed_handler_id;
@@ -149,8 +154,10 @@ g_delayed_settings_backend_subscribe (GSettingsBackend *base,
 }
 
 static void
-g_delayed_settings_backend_get_property (GObject *object, guint prop_id,
-                                         GValue *value, GParamSpec *pspec)
+g_delayed_settings_backend_get_property (GObject    *object,
+                                         guint       prop_id,
+                                         GValue     *value,
+                                         GParamSpec *pspec)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
@@ -169,8 +176,10 @@ g_delayed_settings_backend_get_property (GObject *object, guint prop_id,
 }
 
 static void
-g_delayed_settings_backend_set_property (GObject *object, guint prop_id,
-                                         const GValue *value, GParamSpec *pspec)
+g_delayed_settings_backend_set_property (GObject      *object,
+                                         guint         prop_id,
+                                         const GValue *value,
+                                         GParamSpec   *pspec)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
@@ -229,17 +238,17 @@ g_delayed_settings_backend_constructed (GObject *object)
 
   g_assert (delayed->priv->backend != NULL);
 
-  delayed->priv->changed_handler_id = 
+  delayed->priv->changed_handler_id =
     g_signal_connect (delayed->priv->backend, "changed",
                       G_CALLBACK (delayed_backend_changed),
                       delayed);
 
- delayed->priv->keys_changed_handler_id = 
+ delayed->priv->keys_changed_handler_id =
     g_signal_connect (delayed->priv->backend, "keys-changed",
                       G_CALLBACK (delayed_backend_keys_changed),
                       delayed);
 
- delayed->priv->writable_changed_handler_id = 
+ delayed->priv->writable_changed_handler_id =
     g_signal_connect (delayed->priv->backend, "writable-changed",
                       G_CALLBACK (delayed_backend_writable_changed),
                       delayed);
@@ -280,13 +289,19 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   object_class->finalize = g_delayed_settings_backend_finalize;
 
   g_object_class_install_property (object_class, PROP_BACKEND,
-    g_param_spec_object ("backend", "backend backend", "backend",
-                         G_TYPE_SETTINGS_BACKEND, G_PARAM_CONSTRUCT_ONLY |
+    g_param_spec_object ("backend",
+                         P_("Backend"),
+                         P_("The actual backend"),
+                         G_TYPE_SETTINGS_BACKEND,
+                         G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_HAS_UNAPPLIED,
-    g_param_spec_boolean ("has-unapplied", "has unapplied", "unapplied",
-                          FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+    g_param_spec_boolean ("has-unapplied",
+                          P_("Has unapplied"),
+                          P_("TRUE if there are unapplied changes"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 }
 
@@ -306,6 +321,3 @@ g_delayed_settings_backend_new (GSettingsBackend *backend)
   return g_object_new (G_TYPE_DELAYED_SETTINGS_BACKEND,
                        "backend", backend, NULL);
 }
-
-#define _gsettingsdelayedbackend_c_
-#include "gioaliasdef.c"

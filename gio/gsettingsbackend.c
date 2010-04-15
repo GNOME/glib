@@ -46,7 +46,8 @@ struct _GSettingsBackendPrivate
   gchar *context;
 };
 
-enum {
+enum
+{
   PROP_0,
   PROP_CONTEXT
 };
@@ -134,7 +135,7 @@ g_settings_backend_unwatch (GSettingsBackend *backend,
 
         *ptr = tmp->next;
         g_slice_free (GSettingsBackendWatch, tmp);
-        
+
         return;
       }
 
@@ -209,11 +210,11 @@ is_path (const gchar *path)
  * value that was passed to that call.
  *
  * Since: 2.26
- **/ 
+ **/
 void
-g_settings_backend_changed (GSettingsBackend    *backend,
-                            const gchar         *key,
-                            gpointer             origin_tag)
+g_settings_backend_changed (GSettingsBackend *backend,
+                            const gchar      *key,
+                            gpointer          origin_tag)
 {
   GSettingsBackendWatch *watch;
 
@@ -268,7 +269,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (path[0] == '\0' || is_path (path));
   g_return_if_fail (items != NULL);
- 
+
   for (watch = backend->priv->watches; watch; watch = watch->next)
     watch->keys_changed (backend, path, items, origin_tag, watch->user_data);
 }
