@@ -239,6 +239,10 @@ end_element (GMarkupParseContext  *context,
 
   else if (strcmp (element_name, "key") == 0)
     {
+      if (state->l10n)
+        gvdb_item_set_options (state->key,
+                               g_variant_new_parsed ("{'l10n': < %s >}",
+                                                     state->l10n));
       gvdb_item_set_value (state->key, state->value);
     }
 }
