@@ -738,7 +738,7 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   g_object_class_install_property (gobject_class, PROP_CONTEXT,
     g_param_spec_string ("context", P_("Context"),
                          P_("An identifier to decide which storage to use"),
-                         NULL, G_PARAM_READWRITE |
+                         "", G_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
 }
@@ -791,7 +791,7 @@ get_default_backend (const gchar *context)
       extension = extensions->data;
     }
 
-  if (context)
+  if (context[0] != '\0') /* (context != "") */
     {
       GSettingsBackendClass *backend_class;
       GTypeClass *class;
@@ -875,6 +875,8 @@ gboolean
 g_settings_backend_supports_context (const gchar *context)
 {
   GSettingsBackend *backend;
+
+  g_return_val_if_fail (context != NULL, NULL);
 
   backend = get_default_backend (context);
 
