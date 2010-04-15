@@ -145,6 +145,9 @@ class GSettingsSchemaDir:
         for dir in self.dirs:
             dir_nodes = dir.get_xml_nodes(id, path)
             children.extend(dir_nodes)
+            child_node = ET.SubElement(schema_node, 'child')
+            child_node.set('name', dir.name)
+            child_node.set('schema', '%s.%s' % (id, dir.name))
 
         return (schema_node, children)
 
@@ -540,9 +543,6 @@ def read_gconf_schema(gconf_schema_file):
             if dirpath[0] != '/':
                 raise GSettingsSchemaConvertException('Key is not absolute: %s' % gconf_schema.prefix)
 
-            # remove trailing slash because we'll split the string
-            if dirpath[-1] == '/':
-                dirpath = dirpath[:-1]
             # remove leading 'schemas/' for schemas-only keys
             if schemas_only and dirpath.startswith('/schemas/'):
                 dirpath = dirpath[len('/schemas'):]
@@ -550,7 +550,11 @@ def read_gconf_schema(gconf_schema_file):
             if len(dirpath) == 1:
                 raise GSettingsSchemaConvertException('Toplevel keys are not accepted: %s' % gconf_schema.prefix)
 
-            hierarchy = dirpath.split('/')
+            # remove trailing slash because we'll split the string
+            if dirpath[-1] == '/':
+                dirpath = dirpath[:-1]
+            # and also remove leading slash when splitting
+            hierarchy = dirpath[1:].split('/')
 
             # we don't want to put apps/ and desktop/ keys in the same schema,
             # so we have a first step where we make sure to create a new schema
@@ -568,9 +572,9 @@ def read_gconf_schema(gconf_schema_file):
                 gsettings_schema = GSettingsSchema()
                 gsettings_schema.id = 'FIXME'
                 if schemas_only:
-                    gsettings_schema.path = hierarchy[0] + '/'
+                    gsettings_schema.path = '/' + hierarchy[0] + '/'
                 else:
-                    gsettings_schema._hacky_path = hierarchy[0] + '/'
+                    gsettings_schema._hacky_path = '/' + hierarchy[0] + '/'
                 gsettings_schema_root.schemas.append(gsettings_schema)
 
             # we create all the subdirs that lead to this key
