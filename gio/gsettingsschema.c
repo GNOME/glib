@@ -53,7 +53,7 @@ initialise_schema_sources (void)
           gchar *filename;
           GvdbTable *table;
 
-          filename = g_build_filename (*dir, "glib-2.0/schemas", "gschemas.compiled", NULL);
+          filename = g_build_filename (*dir, "glib-2.0", "schemas", "gschemas.compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
@@ -61,6 +61,8 @@ initialise_schema_sources (void)
 
           g_free (filename);
         }
+
+      schema_sources = g_slist_reverse (schema_sources);
 
       if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
         {
@@ -75,8 +77,6 @@ initialise_schema_sources (void)
 
           g_free (filename);
         }
-
-      schema_sources = g_slist_reverse (schema_sources);
 
       g_once_init_leave (&initialised, TRUE);
     }

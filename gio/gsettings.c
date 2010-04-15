@@ -600,7 +600,19 @@ g_settings_class_init (GSettingsClass *class)
                   G_TYPE_NONE, 1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * GSettings:schema-name:
+   * GSettings:context:
+   *
+   * The name of the context that the settings are stored in.
+   */
+  g_object_class_install_property (object_class, PROP_CONTEXT,
+    g_param_spec_string ("context",
+                         P_("Context name"),
+                         P_("The name of the context for this settings object"),
+                         "", G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSettings:schema:
    *
    * The name of the schema that describes the types of keys
    * for this #GSettings object.
@@ -614,7 +626,7 @@ g_settings_class_init (GSettingsClass *class)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
    /**
-    * GSettings:base-path:
+    * GSettings:path:
     *
     * The path within the backend where the settings are stored.
     */
@@ -685,7 +697,7 @@ g_settings_get_value (GSettings   *settings,
       g_variant_iter_init (&iter, options);
       while (g_variant_iter_loop (&iter, "{&sv}", &key, &value))
         {
-          if (strcmp (key, "l10n") == 0 && value == NULL)
+          if (strcmp (key, "l10n") == 0)
             g_variant_get (value, "(y&s)", &lc_char, &unparsed);
           else
             g_warning ("unknown schema extension '%s'", key);
@@ -705,10 +717,8 @@ g_settings_get_value (GSettings   *settings,
       GError *error = NULL;
       const gchar *domain;
       gint lc_category;
-      gchar category;
 
       domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
-      g_variant_get (value, "(y&s)", &category, &unparsed);
 
       if (lc_char == 't')
         lc_category = LC_TIME;
@@ -730,14 +740,15 @@ g_settings_get_value (GSettings   *settings,
                          settings->priv->schema_name, error->message);
               g_warning ("Using untranslated default instead.");
               g_error_free (error);
-
-              value = g_variant_ref (sval);
             }
         }
-      else
-        /* the string was untranslated, so just use the pre-parsed one */
-        value = g_variant_ref (sval);
     }
+
+  if (value == NULL)
+    /* either translation failed or there was none to do.
+     * use the pre-compiled default.
+     */
+    value = g_variant_ref (sval);
 
   g_variant_unref (sval);
 
