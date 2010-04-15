@@ -20,24 +20,24 @@
   <part>
   <title>API Reference</title>
     <chapter id="file_ops">
-    	<title>File Operations</title>
-    	<xi:include href="xml/gfile.xml"/>
+        <title>File Operations</title>
+        <xi:include href="xml/gfile.xml"/>
         <xi:include href="xml/gfileattribute.xml"/>
-    	<xi:include href="xml/gfileinfo.xml"/>
-	<xi:include href="xml/gfileenumerator.xml"/>
-	<xi:include href="xml/gioerror.xml"/>
-	<xi:include href="xml/gmountoperation.xml"/>
+        <xi:include href="xml/gfileinfo.xml"/>
+        <xi:include href="xml/gfileenumerator.xml"/>
+        <xi:include href="xml/gioerror.xml"/>
+        <xi:include href="xml/gmountoperation.xml"/>
     </chapter>
     <chapter id="file_mon">
-    	<title>File System Monitoring</title>
+        <title>File System Monitoring</title>
         <xi:include href="xml/gfilemonitor.xml"/>
     </chapter>
     <chapter id="async">
         <title>Asynchronous I/O</title>
-	<xi:include href="xml/gcancellable.xml"/>
-	<xi:include href="xml/gasyncresult.xml"/>
+        <xi:include href="xml/gcancellable.xml"/>
+        <xi:include href="xml/gasyncresult.xml"/>
         <xi:include href="xml/gioscheduler.xml"/>
-	<xi:include href="xml/gsimpleasyncresult.xml"/>
+        <xi:include href="xml/gsimpleasyncresult.xml"/>
     </chapter>
     <chapter id="conversion">
         <title>Data conversion</title>
@@ -48,7 +48,7 @@
     </chapter>
     <chapter id="streaming">
         <title>Streaming I/O</title>
-	<xi:include href="xml/gseekable.xml"/>
+        <xi:include href="xml/gseekable.xml"/>
         <xi:include href="xml/ginputstream.xml"/>
         <xi:include href="xml/goutputstream.xml"/>
         <xi:include href="xml/giostream.xml"/>
@@ -72,30 +72,30 @@
     <chapter id="types">
         <title>File types and applications</title>
         <xi:include href="xml/gcontenttype.xml"/>
-	<xi:include href="xml/gappinfo.xml"/>
-	<xi:include href="xml/gdesktopappinfo.xml"/>
+        <xi:include href="xml/gappinfo.xml"/>
+        <xi:include href="xml/gdesktopappinfo.xml"/>
     </chapter>
     <chapter id="volume_mon">
-    	<title>Volumes and Drives</title>
+        <title>Volumes and Drives</title>
         <xi:include href="xml/gvolumemonitor.xml"/>
-	<xi:include href="xml/gvolume.xml"/>
+        <xi:include href="xml/gvolume.xml"/>
         <xi:include href="xml/gmount.xml"/>
-	<xi:include href="xml/gdrive.xml"/>
-	<xi:include href="xml/gunixmounts.xml"/>
+        <xi:include href="xml/gdrive.xml"/>
+        <xi:include href="xml/gunixmounts.xml"/>
     </chapter>
     <chapter id="icons">
-    	<title>Icons</title>
-    	<xi:include href="xml/gicon.xml"/>
-    	<xi:include href="xml/gfileicon.xml"/>
-    	<xi:include href="xml/gloadableicon.xml"/>
-    	<xi:include href="xml/gthemedicon.xml"/>
-    	<xi:include href="xml/gemblemedicon.xml"/>
-    	<xi:include href="xml/gemblem.xml"/>
+        <title>Icons</title>
+        <xi:include href="xml/gicon.xml"/>
+        <xi:include href="xml/gfileicon.xml"/>
+        <xi:include href="xml/gloadableicon.xml"/>
+        <xi:include href="xml/gthemedicon.xml"/>
+        <xi:include href="xml/gemblemedicon.xml"/>
+        <xi:include href="xml/gemblem.xml"/>
     </chapter>
     <chapter id="failable_initialization">
-    	<title>Failable Initialization</title>
-    	<xi:include href="xml/ginitable.xml"/>
-    	<xi:include href="xml/gasyncinitable.xml"/>
+        <title>Failable Initialization</title>
+        <xi:include href="xml/ginitable.xml"/>
+        <xi:include href="xml/gasyncinitable.xml"/>
     </chapter>
     <chapter id="networking">
       <title>Lowlevel platform-independent network support</title>
@@ -125,7 +125,7 @@
       <xi:include href="xml/gthreadedsocketservice.xml"/>
     </chapter>
     <chapter id="utils">
-    	<title>Utilities</title>
+        <title>Utilities</title>
         <xi:include href="xml/gfilenamecompleter.xml"/>
     </chapter>
     <chapter id="settings">
@@ -134,10 +134,14 @@
         <xi:include href="xml/gsettingsbackend.xml"/>
     </chapter>
     <chapter id="extending">
-    	<title>Extending GIO</title>
+        <title>Extending GIO</title>
         <xi:include href="xml/gvfs.xml"/>
-	<xi:include href="xml/giomodule.xml"/>
-	<xi:include href="xml/extensionpoints.xml"/>
+        <xi:include href="xml/giomodule.xml"/>
+        <xi:include href="xml/extensionpoints.xml"/>
+    </chapter>
+    <chapter id="tools">
+        <title>GIO Tools</title>
+        <xi:include href="xml/gschema-compile.xml"/>
     </chapter>
   </part>
 

@@ -113,7 +113,8 @@ content_files =			\
 
 expand_content_files =		\
 	overview.xml		\
-	migrating.xml
+	migrating.xml		\
+	gschema-compile.xml
 
 extra_files =			\
 	version.xml.in		\
@@ -123,3 +124,22 @@ include $(top_srcdir)/gtk-doc.make
 
 EXTRA_DIST +=			\
 	version.xml.in
+
+man_MANS =			\
+	gschema-compile.1
+
+if ENABLE_MAN
+
+%.1 : xml/%.xml
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
+
+BUILT_EXTRA_DIST = $(man_MANS)
+
+dist-hook-local: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)';				\
+	for f in $$files; do					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
+	  cp $$d/$$f $(distdir) || exit 1; done
+
