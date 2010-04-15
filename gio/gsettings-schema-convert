@@ -72,8 +72,7 @@ class GSettingsSchemaRoot:
     def get_xml_node(self):
         schemalist_node = ET.Element('schemalist')
         for schema in self.schemas:
-            schema_node = schema.get_xml_node()
-            if schema_node is not None:
+            for schema_node in schema.get_xml_nodes():
                 schemalist_node.append(schema_node)
         return schemalist_node
 
@@ -118,25 +117,36 @@ class GSettingsSchemaDir:
 
         return result
 
-    def get_xml_node(self):
-        node = self._get_xml_node_for_content()
-        if node is not None:
-            node.set('id', self.name)
-        return node
+    def get_xml_nodes(self, parent_id, parent_path):
+        id = '%s.%s' % (parent_id, self.name)
+        path = '%s%s/' % (parent_path, self.name)
 
-    def _get_xml_node_for_content(self):
+        (node, children) = self._get_xml_nodes_for_content(id, path)
+        if node is None:
+            return []
+
+        node.set('id', id)
+        node.set('path', path)
+        nodes = [ node ]
+        nodes.extend(children)
+
+        return nodes
+
+    def _get_xml_nodes_for_content(self, id, path):
         if not self.keys and not self.dirs:
-            return None
+            return (None, None)
+
+        children = []
 
         schema_node = ET.Element('schema')
         for key in self.keys:
             key_node = key.get_xml_node()
             schema_node.append(key_node)
         for dir in self.dirs:
-            dir_node = dir.get_xml_node()
-            schema_node.append(dir_node)
+            dir_nodes = dir.get_xml_nodes(id, path)
+            children.extend(dir_nodes)
 
-        return schema_node
+        return (schema_node, children)
 
 
 ######################################
@@ -171,16 +181,22 @@ class GSettingsSchema(GSettingsSchemaDir):
 
         return result
 
-    def get_xml_node(self):
+    def get_xml_nodes(self):
         if not self.dirs and not self.keys:
-            return None
+            return []
 
-        node = self._get_xml_node_for_content()
+        (node, children) = self._get_xml_nodes_for_content(self.id, self.path or '')
+        if node is None:
+            return []
+
         node.set('id', self.id)
         if self.path:
             node.set('path', self.path)
 
-        return node
+        nodes = [ node ]
+        nodes.extend(children)
+
+        return nodes
 
 
 ######################################
