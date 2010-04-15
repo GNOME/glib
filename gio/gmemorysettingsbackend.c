@@ -1,3 +1,25 @@
+/*
+ * Copyright © 2010 Codethink Limited
+ * Copyright © 2010 Novell, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Vincent Untz <vuntz@gnome.org>
+ *          Ryan Lortie <desrt@desrt.ca>
+ */
 
 #include "config.h"
 
@@ -95,7 +117,7 @@ g_memory_settings_backend_keyfile_write (GMemorySettingsBackend *memory)
   g_free (contents);
 }
 
-static void
+static gboolean
 g_memory_settings_backend_write (GSettingsBackend *backend,
                                  const gchar      *key,
                                  GVariant         *value,
@@ -107,9 +129,11 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
   g_memory_settings_backend_keyfile_write (memory);
 
   g_settings_backend_changed (backend, key, origin_tag);
+
+  return TRUE;
 }
 
-static void
+static gboolean
 g_memory_settings_backend_write_keys (GSettingsBackend *backend,
                                       GTree            *tree,
                                       gpointer          origin_tag)
@@ -120,13 +144,16 @@ g_memory_settings_backend_write_keys (GSettingsBackend *backend,
   g_memory_settings_backend_keyfile_write (memory);
 
   g_settings_backend_changed_tree (backend, tree, origin_tag);
+
+  return TRUE;
 }
 
 static void
-g_memory_settings_backend_reset_path (GMemorySettingsBackend *memory,
-                                      const gchar            *path,
-                                      gpointer                origin_tag)
+g_memory_settings_backend_reset_path (GSettingsBackend *backend,
+                                      const gchar      *path,
+                                      gpointer         origin_tag)
 {
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   GPtrArray  *reset_array;
   GList      *hash_keys;
   GList      *l;
@@ -174,10 +201,11 @@ g_memory_settings_backend_reset_path (GMemorySettingsBackend *memory,
 }
 
 static void
-g_memory_settings_backend_reset_key (GMemorySettingsBackend *memory,
-                                     const gchar            *key,
-                                     gpointer                origin_tag)
+g_memory_settings_backend_reset (GSettingsBackend *backend,
+                                 const gchar      *key,
+                                 gpointer          origin_tag)
 {
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   gboolean     had_key;
   const gchar *slash;
   const gchar *base_key;
@@ -199,19 +227,6 @@ g_memory_settings_backend_reset_key (GMemorySettingsBackend *memory,
 
   if (had_key)
     g_settings_backend_changed (G_SETTINGS_BACKEND (memory), key, origin_tag);
-}
-
-static void
-g_memory_settings_backend_reset (GSettingsBackend *backend,
-                                 const gchar      *name,
-                                 gpointer          origin_tag)
-{
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
-
-  if (name[strlen(name) - 1] == '/')
-    g_memory_settings_backend_reset_path (memory, name, origin_tag);
-  else
-    g_memory_settings_backend_reset_key (memory, name, origin_tag);
 }
 
 static gboolean
@@ -458,6 +473,7 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   backend_class->write = g_memory_settings_backend_write;
   backend_class->write_keys = g_memory_settings_backend_write_keys;
   backend_class->reset = g_memory_settings_backend_reset;
+  backend_class->reset_path = g_memory_settings_backend_reset_path;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
