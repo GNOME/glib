@@ -136,11 +136,11 @@ contexts_LDADD		  = $(progs_ldadd) \
 gsettings_SOURCES	  = gsettings.c gschemas.compiled
 gsettings_LDADD		  = $(progs_ldadd)
 
-EXTRA_DIST = org.gtk.test.gschema
+EXTRA_DIST += org.gtk.test.gschema
 
 BUILT_SOURCES = gschemas.compiled
 
 gschemas.compiled: *.gschema
-	$(top_builddir)/gio/gschema-compile .
+	$(top_builddir)/gio/gschema-compile --targetdir=${bulddir} ${srcdir}
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
