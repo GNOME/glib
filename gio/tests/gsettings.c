@@ -431,6 +431,22 @@ test_atomic (void)
   g_assert_cmpstr (str, ==, "atomic bye-bye");
 }
 
+static gboolean
+glib_translations_work (void)
+{
+  gchar *locale;
+  gchar *orig = "Unnamed";
+  gchar *str;
+
+  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+  setlocale (LC_MESSAGES, "de_DE");
+  str = dgettext ("glib20", orig);
+  setlocale (LC_MESSAGES, locale);
+  g_free (locale);
+
+  return str != orig;
+}
+
 static void
 test_l10n (void)
 {
@@ -438,7 +454,12 @@ test_l10n (void)
   gchar *str;
   gchar *locale;
 
-  bindtextdomain ("glib20", "/usr/share");
+  if (!glib_translations_work ())
+    {
+      g_test_message ("Skipping localization tests because translations don't work");
+      return;
+    }
+
   bind_textdomain_codeset ("glib20", "UTF-8");
 
   locale = g_strdup (setlocale (LC_MESSAGES, NULL));
