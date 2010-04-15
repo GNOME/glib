@@ -70,18 +70,21 @@ struct _GSettingsBackendClass
   GVariant *  (*read)             (GSettingsBackend    *backend,
                                    const gchar         *key,
                                    const GVariantType  *expected_type);
-  void        (*write)            (GSettingsBackend    *backend,
+  gboolean    (*write)            (GSettingsBackend    *backend,
                                    const gchar         *key,
                                    GVariant            *value,
                                    gpointer             origin_tag);
-  void        (*write_keys)       (GSettingsBackend    *backend,
+  gboolean    (*write_keys)       (GSettingsBackend    *backend,
                                    GTree               *tree,
                                    gpointer             origin_tag);
   void        (*reset)            (GSettingsBackend    *backend,
-                                   const gchar         *name,
+                                   const gchar         *key,
+                                   gpointer             origin_tag);
+  void        (*reset_path)       (GSettingsBackend    *backend,
+                                   const gchar         *path,
                                    gpointer             origin_tag);
   gboolean    (*get_writable)     (GSettingsBackend    *backend,
-                                   const gchar         *name);
+                                   const gchar         *key);
   void        (*subscribe)        (GSettingsBackend    *backend,
                                    const gchar         *name);
   void        (*unsubscribe)      (GSettingsBackend    *backend,

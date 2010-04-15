@@ -71,23 +71,27 @@ GVariant *                      g_settings_backend_read                 (GSettin
                                                                          const gchar                          *key,
                                                                          const GVariantType                   *expected_type);
 G_GNUC_INTERNAL
-void                            g_settings_backend_write                (GSettingsBackend                     *backend,
+gboolean                        g_settings_backend_write                (GSettingsBackend                     *backend,
                                                                          const gchar                          *key,
                                                                          GVariant                             *value,
                                                                          gpointer                              origin_tag);
 G_GNUC_INTERNAL
-void                            g_settings_backend_write_keys           (GSettingsBackend                     *backend,
+gboolean                        g_settings_backend_write_keys           (GSettingsBackend                     *backend,
                                                                          GTree                                *tree,
                                                                          gpointer                              origin_tag);
 G_GNUC_INTERNAL
 void                            g_settings_backend_reset                (GSettingsBackend                     *backend,
-                                                                         const gchar                          *name,
+                                                                         const gchar                          *key,
+                                                                         gpointer                              origin_tag);
+
+G_GNUC_INTERNAL
+void                            g_settings_backend_reset_path           (GSettingsBackend                     *backend,
+                                                                         const gchar                          *path,
                                                                          gpointer                              origin_tag);
 
 G_GNUC_INTERNAL
 gboolean                        g_settings_backend_get_writable         (GSettingsBackend                     *backend,
-                                                                         const char                           *name);
-
+                                                                         const char                           *key);
 G_GNUC_INTERNAL
 void                            g_settings_backend_unsubscribe          (GSettingsBackend                     *backend,
                                                                          const char                           *name);
