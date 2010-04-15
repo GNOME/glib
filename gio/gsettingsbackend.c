@@ -56,9 +56,13 @@ enum {
  * @title: GSettingsBackend
  * @short_description: an interface for settings backend implementations
  * @include: gio/gsettingsbackend.h
+ * @see_also: #GSettings, #GIOExtensionPoint
  *
  * The #GSettingsBackend interface defines a generic interface for
- * non-strictly-typed data that is stored in a hierarchy.
+ * non-strictly-typed data that is stored in a hierarchy. To implement
+ * an alternative storage backend for #GSettings, you need to implement
+ * the #GSettingsBackend interface and then make it implement the
+ * extension point #G_SETTINGS_BACKEND_EXTENSION_POINT_NAME.
  *
  * The interface defines methods for reading and writing values, a
  * method for determining if writing of certain values will fail
@@ -687,7 +691,7 @@ get_default_backend (const gchar *context)
  * @returns: the default #GSettingsBackend
  *
  * Returns the default #GSettingsBackend. It is possible to override
- * the default by setting the <envvar>GSETTINGS_BACKEND</envvar>
+ * the default by setting the <envar>GSETTINGS_BACKEND</envar>
  * environment variable to the name of a settings backend.
  *
  * The @context parameter can be used to indicate that a different
