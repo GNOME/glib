@@ -304,6 +304,9 @@ test_delay_apply (void)
 
   g_settings_set_delay_apply (settings, TRUE);
 
+  g_assert (g_settings_get_delay_apply (settings));
+  g_assert (!g_settings_get_delay_apply (settings2));
+
   g_settings_set (settings, "greeting", "s", "greetings from test_delay_apply");
 
   g_assert (changed_cb_called);
@@ -314,6 +317,9 @@ test_delay_apply (void)
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
+
+  g_assert (g_settings_get_has_unapplied (settings));
+  g_assert (!g_settings_get_has_unapplied (settings2));
 
   changed_cb_called = FALSE;
   changed_cb_called2 = FALSE;
@@ -328,6 +334,9 @@ test_delay_apply (void)
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
+
+  g_assert (!g_settings_get_has_unapplied (settings));
+  g_assert (!g_settings_get_has_unapplied (settings2));
 }
 
 static void
@@ -361,6 +370,65 @@ test_delay_revert (void)
   g_assert_cmpstr (str, ==, "top o' the morning");
 }
 
+static void
+keys_changed_cb (GSettings    *settings,
+                 const GQuark *keys,
+                 gint          n_keys)
+{
+  gchar *str;
+
+  g_assert_cmpint (n_keys, ==, 2);
+
+  g_assert ((keys[0] == g_quark_from_static_string ("greeting") &&
+             keys[1] == g_quark_from_static_string ("farewell")) ||
+            (keys[1] == g_quark_from_static_string ("greeting") &&
+             keys[0] == g_quark_from_static_string ("farewell")));
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_atomic");
+
+  g_settings_get (settings, "farewell", "s", &str);
+  g_assert_cmpstr (str, ==, "atomic bye-bye");
+}
+
+static void
+test_atomic (void)
+{
+  GSettings *settings;
+  GSettings *settings2;
+  gchar *str;
+
+  settings = g_settings_new ("org.gtk.test");
+  settings2 = g_settings_new ("org.gtk.test");
+
+  g_settings_set (settings2, "greeting", "s", "top o' the morning");
+
+  changed_cb_called = FALSE;
+  changed_cb_called2 = FALSE;
+
+  g_signal_connect (settings2, "keys-changed",
+                    G_CALLBACK (keys_changed_cb), NULL);
+
+  g_settings_set_delay_apply (settings, TRUE);
+
+  g_settings_set (settings, "greeting", "s", "greetings from test_atomic");
+  g_settings_set (settings, "farewell", "s", "atomic bye-bye");
+
+  g_settings_apply (settings);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_atomic");
+
+  g_settings_get (settings, "farewell", "s", &str);
+  g_assert_cmpstr (str, ==, "atomic bye-bye");
+
+  g_settings_get (settings2, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_atomic");
+
+  g_settings_get (settings2, "farewell", "s", &str);
+  g_assert_cmpstr (str, ==, "atomic bye-bye");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -382,6 +450,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/changes", test_changes);
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
+  g_test_add_func ("/gsettings/atomic", test_atomic);
 
   return g_test_run ();
 }
