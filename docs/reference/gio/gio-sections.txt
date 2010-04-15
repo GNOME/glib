@@ -2080,6 +2080,7 @@ G_TYPE_FILE_DESCRIPTOR_BASED
 <FILE>gsettingsbackend</FILE>
 <TITLE>GSettingsBackend</TITLE>
 GSettingsBackend
+G_SETTINGS_BACKEND_EXTENSION_POINT_NAME
 g_settings_backend_get_with_context
 g_settings_backend_supports_context
 g_settings_backend_create_tree

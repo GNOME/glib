@@ -40,6 +40,11 @@ G_BEGIN_DECLS
 #define G_SETTINGS_BACKEND_GET_CLASS(inst)                  (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
                                                              G_TYPE_SETTINGS_BACKEND, GSettingsBackendClass))
 
+/**
+ * G_SETTINGS_BACKEND_EXTENSION_POINT_NAME:
+ *
+ * Extension point for #GSettingsBackend functionality.
+ **/
 #define G_SETTINGS_BACKEND_EXTENSION_POINT_NAME "gsettings-backend"
 
 /**
