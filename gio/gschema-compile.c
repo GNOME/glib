@@ -11,6 +11,7 @@ typedef struct
   gchar *schemalist_domain;
 
   GHashTable *schema;
+  GvdbItem *schema_root;
   gchar *schema_domain;
 
   GString *string;
@@ -71,6 +72,7 @@ start_element (GMarkupParseContext  *context,
               if (!g_hash_table_lookup (state->schemas, id))
                 {
                   state->schema = gvdb_hash_table_new (state->schemas, id);
+                  state->schema_root = gvdb_hash_table_insert (state->schema, "");
 
                   if (path != NULL)
                     gvdb_hash_table_insert_string (state->schema,
@@ -93,7 +95,10 @@ start_element (GMarkupParseContext  *context,
           if (COLLECT (STRING, "name", &name, STRING, "type", &type))
             {
               if (!g_hash_table_lookup (state->schema, name))
-                state->key = gvdb_hash_table_insert (state->schema, name);
+                {
+                  state->key = gvdb_hash_table_insert (state->schema, name);
+                  gvdb_item_set_parent (state->key, state->schema_root);
+                }
 
               else
                 g_set_error (error, G_MARKUP_ERROR,

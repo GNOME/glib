@@ -1,14 +1,14 @@
 <schemalist>
   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
     <key name="greeting" type="s">
-      <default l10n="true">"Hello, earthlings"</default>
+      <default l10n="messages">"Hello, earthlings"</default>
       <summary>A greeting</summary>
       <description>
          Greeting of the invading martians
       </description>
     </key>
     <key name="farewell" type="s">
-      <default l10n="true">"So long"</default>
+      <default l10n="messages">"So long"</default>
     </key>
 
     <child name='basic-types' schema='org.gtk.test.basic-types'/>
