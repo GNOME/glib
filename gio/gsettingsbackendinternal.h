@@ -69,6 +69,9 @@ void                            g_settings_backend_write                (GSettin
 void                            g_settings_backend_write_keys           (GSettingsBackend                     *backend,
                                                                          GTree                                *tree,
                                                                          gpointer                              origin_tag);
+void                            g_settings_backend_reset                (GSettingsBackend                     *backend,
+                                                                         const gchar                          *name,
+                                                                         gpointer                              origin_tag);
 
 gboolean                        g_settings_backend_get_writable         (GSettingsBackend                     *backend,
                                                                          const char                           *name);

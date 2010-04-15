@@ -679,32 +679,10 @@ g_settings_get_value (GSettings   *settings,
             {
               const gchar *category = g_variant_get_string (value, NULL);
 
-              if (strcmp (category, "ctype") == 0)
-                lc_category = LC_CTYPE;
-              else if (strcmp (category, "numeric") == 0)
-                lc_category = LC_NUMERIC;
+              if (strcmp (category, "message") == 0)
+                lc_category = LC_MESSAGES;
               else if (strcmp (category, "time") == 0)
                 lc_category = LC_TIME;
-              else if (strcmp (category, "collate") == 0)
-                lc_category = LC_COLLATE;
-              else if (strcmp (category, "monetary") == 0)
-                lc_category = LC_MONETARY;
-              else if (strcmp (category, "messages") == 0)
-                lc_category = LC_MESSAGES;
-              else if (strcmp (category, "all") == 0)
-                lc_category = LC_ALL;
-              else if (strcmp (category, "paper") == 0)
-                lc_category = LC_PAPER;
-              else if (strcmp (category, "name") == 0)
-                lc_category = LC_NAME;
-              else if (strcmp (category, "address") == 0)
-                lc_category = LC_ADDRESS;
-              else if (strcmp (category, "telephone") == 0)
-                lc_category = LC_TELEPHONE;
-              else if (strcmp (category, "measurement") == 0)
-                lc_category = LC_MEASUREMENT;
-              else if (strcmp (category, "identification") == 0)
-                lc_category = LC_IDENTIFICATION;
               else
                 g_error ("schema requests unsupported l10n category: %s",
                          category);

@@ -367,12 +367,62 @@ g_settings_backend_path_writable_changed (GSettingsBackend *backend,
     watch->path_writable_changed (backend, path, watch->user_data);
 }
 
-static gboolean
-g_settings_backend_append_to_list (gpointer key,
-                                   gpointer value,
-                                   gpointer user_data)
+typedef struct
 {
-  return (*((*((gchar ***) user_data))++) = key, FALSE);
+  gint prefix_len;
+  gchar *prefix;
+  gchar **items;
+} GetKeysState;
+
+static gboolean
+tree_get_keys (gpointer key,
+               gpointer value,
+               gpointer user_data)
+{
+  GetKeysState *state = user_data;
+  const gchar *skey = key;
+  gint i;
+
+  g_return_val_if_fail (is_key (key), TRUE);
+
+  /* calculate longest common prefix */
+  if (state->prefix == NULL)
+    {
+      gchar *last_byte;
+
+      /* first key?  just take the prefix up to the last '/' */
+      state->prefix = g_strdup (skey);
+      last_byte = strrchr (state->prefix, '/') + 1;
+      state->prefix_len = last_byte - state->prefix;
+      *last_byte = '\0';
+    }
+  else
+    {
+      /* find the first character that does not match.  we will
+       * definitely find one because the prefix ends in '/' and the key
+       * does not.  also: no two keys in the tree are the same.
+       */
+      for (i = 0; state->prefix[i] == skey[i]; i++);
+
+      /* check if we need to shorten the prefix */
+      if (state->prefix[i] != '\0')
+        {
+          /* find the nearest '/', terminate after it */
+          while (state->prefix[i - 1] != '/')
+            i--;
+
+          state->prefix[i] = '\0';
+          state->prefix_len = i;
+        }
+    }
+
+
+  /* save the entire item into the array.
+   * the prefixes will be removed later.
+   */
+  *state->items++ = key;
+
+  return FALSE;
 }
 
 /**
@@ -393,20 +443,21 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
                                  gpointer          origin_tag)
 {
   GSettingsBackendWatch *watch;
+  GetKeysState state = { 0, };
   gchar **list;
 
   list = g_new (gchar *, g_tree_nnodes (tree) + 1);
+  state.items = list;
 
-  {
-    gchar **ptr = list;
-    g_tree_foreach (tree, g_settings_backend_append_to_list, &ptr);
-    *ptr = NULL;
+  g_tree_foreach (tree, tree_get_keys, &state);
+  g_return_if_fail (list + g_tree_nnodes (tree) == state.items);
+  *state.items = NULL;
 
-    g_assert (list + g_tree_nnodes (tree) == ptr);
-  }
+  while (state.items-- != list)
+    *state.items += state.prefix_len;
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, "/",
+    watch->keys_changed (backend, state.prefix,
                          (const gchar * const *) list,
                          origin_tag, watch->user_data);
   g_free (list);
@@ -503,9 +554,31 @@ g_settings_backend_write_keys (GSettingsBackend *backend,
 }
 
 /*< private >
+ * g_settings_backend_reset:
+ * @backend: a #GSettingsBackend implementation
+ * @name: the name of a key or path
+ * @origin_tag: the origin tag
+ *
+ * "Resets" the named key or path.  For a key this means that it is
+ * reverted to its "default" value (ie: after system-wide defaults,
+ * mandatory keys, etc. have been taken into account) or possibly unsets
+ * it.
+ *
+ * For paths, it means that every key under the path is reset.
+ */
+void
+g_settings_backend_reset (GSettingsBackend *backend,
+                          const gchar      *name,
+                          gpointer          origin_tag)
+{
+  G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->reset (backend, name, origin_tag);
+}
+
+/*< private >
  * g_settings_backend_get_writable:
  * @backend: a #GSettingsBackend implementation
- * @name: the name of a key, relative to the root of the backend
+ * @name: the name of a key
  * @returns: %TRUE if the key is writable
  *
  * Finds out if a key is available for writing to.  This is the

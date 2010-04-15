@@ -77,6 +77,9 @@ struct _GSettingsBackendClass
   void        (*write_keys)       (GSettingsBackend    *backend,
                                    GTree               *tree,
                                    gpointer             origin_tag);
+  void        (*reset)            (GSettingsBackend    *backend,
+                                   const gchar         *name,
+                                   gpointer             origin_tag);
   gboolean    (*get_writable)     (GSettingsBackend    *backend,
                                    const gchar         *name);
   void        (*subscribe)        (GSettingsBackend    *backend,

@@ -93,6 +93,10 @@ void                    g_settings_get                                  (GSettin
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
 
+void                    g_settings_reset                                (GSettings          *settings,
+                                                                         const gchar        *key);
+void                    g_settings_reset_all                            (GSettings          *settings);
+
 gboolean                g_settings_is_writable                          (GSettings          *settings,
                                                                          const gchar        *name);
 
