@@ -185,6 +185,5 @@ gboolean
 g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)
 {
-  /* XXX vuntz wants a commit now :) */
-  return TRUE;
+  return gvdb_table_has_value (schema->priv->table, key);
 }
