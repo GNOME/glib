@@ -317,6 +317,29 @@ main (int argc, char **argv)
   GHashTable *table;
   glob_t matched;
   gint status;
+  gchar *srcdir;
+  gchar *targetdir = NULL;
+  gchar *target;
+  GOptionContext *context;
+  GOptionEntry entries[] = {
+    { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, "where to store the gschemas.compiled file", "DIRECTORY" },
+    { NULL }
+  };
+
+  context = g_option_context_new ("DIRECTORY");
+
+  g_option_context_set_summary (context,
+    "Compile all GSettings schema files into a schema cache.\n"
+    "Schema files are required to have the extension .gschema,\n"
+    "and the cache file is called gschemas.compiled.");
+
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+    {
+      fprintf (stderr, "%s", error->message);
+      return 1;
+    }
 
   if (argc != 2)
     {
@@ -324,7 +347,13 @@ main (int argc, char **argv)
       return 1;
     }
 
-  if (chdir (argv[1]))
+  srcdir = argv[1];
+  if (targetdir)
+    target = g_build_filename (targetdir, "gschemas.compiled", NULL);
+  else
+    target = "gschemas.compiled";
+
+  if (chdir (srcdir))
     {
       perror ("chdir");
       return 1;
@@ -350,7 +379,7 @@ main (int argc, char **argv)
 
   /* FIXME: need a way to specify the output location, for !srcdir builds */
   if (!(table = parse_gschema_files (matched.gl_pathv, &error)) ||
-      !gvdb_table_write_contents (table, "gschemas.compiled", &error))
+      !gvdb_table_write_contents (table, target, &error))
     {
       fprintf (stderr, "%s\n", error->message);
       return 1;
