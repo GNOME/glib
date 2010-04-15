@@ -120,7 +120,7 @@ start_monitoring_trash (void)
         reflect that state of the trash can.
       </para>
       <para>
-	Moving a file to the trash is much simpler with GIO. Instead of
+        Moving a file to the trash is much simpler with GIO. Instead of
         using gnome_vfs_find_directory() with %GNOME_VFS_DIRECTORY_KIND_TRASH 
         to find out where to move the trashed file, just use the g_file_trash()
         function.
@@ -151,12 +151,30 @@ start_monitoring_trash (void)
         gnome-vfs offered a way to monitor the association between mime types
         and default handlers for changes, with the #GnomeVFSMIMEMonitor object.
         GIO does not offer a replacement for this functionality at this time,
-        since we have not found a compelling use case where 
+        since we have not found a compelling use case where
         #GnomeVFSMIMEMonitor was used. If you think you have such a use
-        case, please report it at 
+        case, please report it at
         <ulink url="http://bugzilla.gnome.org">bugzilla.gnome.org</ulink>.
       </para>
     </section>
+  </chapter>
+
+  <chapter>
+    <title>Migrating from GConf to GSettings</title>
+
+    <para>
+      Information about migration from GConf to GSettings will appear
+      here.
+    </para>
+    <para>
+      Topics to cover:
+      <itemizedlist>
+        <listitem><para>Conceptual differences</para></listitem>
+        <listitem><para>GConfClient API conversion</para></listitem>
+        <listitem><para>Change notification</para></listitem>
+        <listitem><para>Schema conversion</para></listitem>
+      </itemizedlist>
+    </para>
   </chapter>
 
 </part>
