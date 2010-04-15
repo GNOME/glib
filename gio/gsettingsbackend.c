@@ -67,7 +67,7 @@ enum
  *
  * The interface defines methods for reading and writing values, a
  * method for determining if writing of certain values will fail
- * (lockdown) and a change notification signal.
+ * (lockdown) and a change notification mechanism.
  *
  * The semantics of the interface are very precisely defined and
  * implementations must carefully adhere to the expectations of
@@ -183,21 +183,21 @@ is_path (const gchar *path)
 /**
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
- * @name: the name of the key or path that changed
+ * @key: the name of the key
  * @origin_tag: the origin tag
  *
- * Emits the #GSettingsBackend::changed signal on @backend.
- * This function should only be called by the implementation itself,
- * to indicate that a change has occurred.
+ * Signals that a single key has possibly changed.  Backend
+ * implementations should call this if a key has possibly changed its
+ * value.
  *
- * @name may refer to a specific single key (ie: not ending in '/') or
- * may refer to a set of keys (ie: ending in '/').  In the case that it
- * ends in '/' then any key under that path may have been changed.
+ * @key must be a valid key (ie: starting with a slash, not containing
+ * '//', and not ending with a slash).
  *
  * The implementation must call this function during any call to
  * g_settings_backend_write(), before the call returns (except in the
- * case that no keys are actually changed).  It may not rely on the
- * existence of a mainloop for dispatching the signal later.
+ * case that no keys are actually changed and it cares to detect this
+ * fact).  It may not rely on the existence of a mainloop for
+ * dispatching the signal later.
  *
  * The implementation may call this function at any other time it likes
  * in response to other events (such as changes occuring outside of the
@@ -228,33 +228,31 @@ g_settings_backend_changed (GSettingsBackend *backend,
 /**
  * g_settings_backend_keys_changed:
  * @backend: a #GSettingsBackend implementation
+ * @path: the path containing the changes
  * @items: the %NULL-terminated list of changed keys
  * @origin_tag: the origin tag
  *
- * Emits the #GSettingsBackend::keys-changed signal on @backend.
- * This function should only be called by the implementation itself,
- * to indicate that a change has occurred.
+ * Signals that a list of keys have possibly changed.  Backend
+ * implementations should call this if keys have possibly changed their
+ * values.
  *
- * The list of changed keys, relative to the root of the settings store,
- * is @prefix prepended to each of the @items.  It must either be the
- * case that @prefix is equal to "" or ends in "/" or that @items
- * contains exactly one item: "".  @prefix need not be the largest
- * possible prefix.
+ * @path must be a valid path (ie: starting and ending with a slash and
+ * not containing '//').  Each string in @items must form a valid key
+ * name when @path is prefixed to it (ie: each item must not start or
+ * end with '/' and must not contain '//').
  *
- * The implementation must call this function during any call to
- * g_settings_backend_write(), before the call returns (except in the
- * case that no keys are actually changed).  It may not rely on the
- * existence of a mainloop for dispatching the signal later.
+ * The meaning of this signal is that any of the key names resulting
+ * from the contatenation of @path with each item in @items may have
+ * changed.
  *
- * The implementation may call this function at any other time it likes
- * in response to other events (such as changes occuring outside of the
- * program).  These calls may originate from a mainloop or may originate
- * in response to any other action (including from calls to
- * g_settings_backend_write()).
+ * The same rules for when notifications must occur apply as per
+ * g_settings_backend_changed().  These two calls can be used
+ * interchangeably if exactly one item has changed (although in that
+ * case g_settings_backend_changed() is definitely preferred).
  *
- * In the case that this call is in response to a call to
- * g_settings_backend_write() then @origin_tag must be set to the same
- * value that was passed to that call.
+ * For efficiency reasons, the implementation should strive for @path to
+ * be as long as possible (ie: the longest common prefix of all of the
+ * keys that were changed) but this is not strictly required.
  *
  * Since: 2.26
  */
@@ -274,6 +272,36 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
     watch->keys_changed (backend, path, items, origin_tag, watch->user_data);
 }
 
+/**
+ * g_settings_backend_keys_changed:
+ * @backend: a #GSettingsBackend implementation
+ * @path: the path containing the changes
+ * @origin_tag: the origin tag
+ *
+ * Signals that all keys below a given path may have possibly changed.
+ * Backend implementations should call this if an entire path of keys
+ * have possibly changed their values.
+ *
+ * @path must be a valid path (ie: starting and ending with a slash and
+ * not containing '//').
+ *
+ * The meaning of this signal is that any of the key which has a name
+ * starting with @path may have changed.
+ *
+ * The same rules for when notifications must occur apply as per
+ * g_settings_backend_changed().  This call might be an appropriate
+ * reasponse to a 'reset' call but implementations are also free to
+ * explicitly list the keys that were affected by that call if they can
+ * easily do so.
+ *
+ * For efficiency reasons, the implementation should strive for @path to
+ * be as long as possible (ie: the longest common prefix of all of the
+ * keys that were changed) but this is not strictly required.  As an
+ * example, if this function is called with the path of "/" then every
+ * single key in the application will be notified of a possible change.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_backend_path_changed (GSettingsBackend *backend,
                                  const gchar      *path,
@@ -288,6 +316,18 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
     watch->path_changed (backend, path, origin_tag, watch->user_data);
 }
 
+/**
+ * g_settings_backend_writable_changed:
+ * @backend: a #GSettingsBackend implementation
+ * @key: the name of the key
+ *
+ * Signals that the writability of a single key has possibly changed.
+ *
+ * Since GSettings performs no locking operations for itself, this call
+ * will always be made in response to external events.
+ *
+ * Since: 2.26
+ **/
 void
 g_settings_backend_writable_changed (GSettingsBackend *backend,
                                      const gchar      *key)
@@ -301,6 +341,19 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
     watch->writable_changed (backend, key, watch->user_data);
 }
 
+/**
+ * g_settings_backend_writable_changed:
+ * @backend: a #GSettingsBackend implementation
+ * @path: the name of the path
+ *
+ * Signals that the writability of all keys below a given path may have
+ * changed.
+ *
+ * Since GSettings performs no locking operations for itself, this call
+ * will always be made in response to external events.
+ *
+ * Since: 2.26
+ **/
 void
 g_settings_backend_path_writable_changed (GSettingsBackend *backend,
                                           const gchar      *path)
@@ -325,13 +378,12 @@ g_settings_backend_append_to_list (gpointer key,
 /**
  * g_settings_backend_changed_tree:
  * @backend: a #GSettingsBackend implementation
- * @prefix: a common prefix of the changed keys
  * @tree: a #GTree containing the changes
  * @origin_tag: the origin tag
  *
- * This call is a convenience wrapper around
- * g_settings_backend_changed().  It gets the list of changes from
- * @tree.
+ * This call is a convenience wrapper.  It gets the list of changes from
+ * @tree, computes the longest common prefix and calls
+ * g_settings_backend_changed().
  *
  * Since: 2.26
  **/
@@ -360,7 +412,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   g_free (list);
 }
 
-/**
+/*< private >
  * g_settings_backend_read:
  * @backend: a #GSettingsBackend implementation
  * @key: the key to read
@@ -377,9 +429,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * @expected_type to increase your chances of getting it.  Some backends
  * may ignore this argument and return values of a different type; it is
  * mostly used by backends that don't store strong type information.
- *
- * Since: 2.26
- **/
+ */
 GVariant *
 g_settings_backend_read (GSettingsBackend   *backend,
                          const gchar        *key,
@@ -389,7 +439,7 @@ g_settings_backend_read (GSettingsBackend   *backend,
     ->read (backend, key, expected_type);
 }
 
-/**
+/*< private >
  * g_settings_backend_write:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of the key
@@ -409,7 +459,7 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * old values.
  *
  * Since: 2.26
- **/
+ */
 void
 g_settings_backend_write (GSettingsBackend *backend,
                           const gchar      *key,
@@ -420,7 +470,7 @@ g_settings_backend_write (GSettingsBackend *backend,
     ->write (backend, key, value, origin_tag);
 }
 
-/**
+/*< private >
  * g_settings_backend_write_keys:
  * @backend: a #GSettingsBackend implementation
  * @values: a #GTree containing key-value pairs to write
@@ -442,9 +492,7 @@ g_settings_backend_write (GSettingsBackend *backend,
  * to emit a second "changed" signal (either during this call, or later)
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
- *
- * Since: 2.26
- **/
+ */
 void
 g_settings_backend_write_keys (GSettingsBackend *backend,
                                GTree            *tree,
@@ -454,7 +502,7 @@ g_settings_backend_write_keys (GSettingsBackend *backend,
     ->write_keys (backend, tree, origin_tag);
 }
 
-/**
+/*< private >
  * g_settings_backend_get_writable:
  * @backend: a #GSettingsBackend implementation
  * @name: the name of a key, relative to the root of the backend
@@ -466,9 +514,7 @@ g_settings_backend_write_keys (GSettingsBackend *backend,
  *
  * You should not write to locked-down keys, but if you do, the
  * implementation will deal with it.
- *
- * Since: 2.26
- **/
+ */
 gboolean
 g_settings_backend_get_writable (GSettingsBackend *backend,
                                  const gchar      *name)
@@ -477,16 +523,14 @@ g_settings_backend_get_writable (GSettingsBackend *backend,
     ->get_writable (backend, name);
 }
 
-/**
+/*< private >
  * g_settings_backend_unsubscribe:
  * @backend: a #GSettingsBackend
  * @name: a key or path to subscribe to
  *
  * Reverses the effect of a previous call to
  * g_settings_backend_subscribe().
- *
- * Since: 2.26
- **/
+ */
 void
 g_settings_backend_unsubscribe (GSettingsBackend *backend,
                                 const char       *name)
@@ -495,15 +539,13 @@ g_settings_backend_unsubscribe (GSettingsBackend *backend,
     ->unsubscribe (backend, name);
 }
 
-/**
+/*< private >
  * g_settings_backend_subscribe:
  * @backend: a #GSettingsBackend
  * @name: a key or path to subscribe to
  *
  * Requests that change signals be emitted for events on @name.
- *
- * Since: 2.26
- **/
+ */
 void
 g_settings_backend_subscribe (GSettingsBackend *backend,
                               const gchar      *name)
@@ -685,7 +727,7 @@ get_default_backend (const gchar *context)
   return g_object_new (type, "context", context, NULL);
 }
 
-/**
+/*< private >
  * g_settings_backend_get_with_context:
  * @context: a context that might be used by the backend to determine
  *     which storage to use, or %NULL to use the default storage
@@ -704,9 +746,7 @@ get_default_backend (const gchar *context)
  * See g_settings_backend_supports_context(),
  *
  * The user does not own the return value and it must not be freed.
- *
- * Since: 2.26
- **/
+ */
 GSettingsBackend *
 g_settings_backend_get_with_context (const gchar *context)
 {
@@ -740,7 +780,7 @@ g_settings_backend_get_with_context (const gchar *context)
   return g_object_ref (backend);
 }
 
-/**
+/*< private >
  * g_settings_backend_supports_context:
  * @context: a context string that might be passed to
  *     g_settings_backend_new_with_context()
@@ -748,8 +788,6 @@ g_settings_backend_get_with_context (const gchar *context)
  *
  * Determines if the given context is supported by the default
  * GSettingsBackend implementation.
- *
- * Since: 2.26
  */
 gboolean
 g_settings_backend_supports_context (const gchar *context)
