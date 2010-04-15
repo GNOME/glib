@@ -238,6 +238,12 @@ class GSettingsSchemaKey:
         return self.range_minmax is not None and len(self.range_minmax) == 2 and self.type in TYPES_FOR_RANGE_MINMAX
 
     def get_simple_string(self, current_indent):
+        # FIXME: kill this when we'll have python bindings for GVariant. Right
+        # now, every simple format schema we'll generate has to have an
+        # explicit type since we can't guess the type later on when converting
+        # to XML.
+        self.typed_default = '@%s %s' % (self.type, self.default)
+
         result = ''
         result += '%skey %s = %s\n' % (current_indent, self.name, self.typed_default or self.default)
         current_indent += GSETTINGS_SIMPLE_SCHEMA_INDENT
@@ -350,13 +356,6 @@ class GConfSchema:
                 items = [ item.replace('\'', '\\\'') for item in items ]
                 values = ', '.join([ '\'%s\'' % item for item in items ])
                 self.default = '[ %s ]' % values
-
-        # FIXME: kill this when we'll have python bindings for GVariant. Right
-        # now, every simple format schema we'll generate has to have an
-        # explicit type since we can't guess the type later on when converting
-        # to XML.
-        if not self.typed_default:
-            self.typed_default = '@%s %s' % (self.varianttype, self.default)
 
     def _get_value_with_locale(self, node, locale_node, element):
         element_node = None
