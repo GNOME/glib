@@ -35,6 +35,8 @@ except ImportError:
 
 
 GSETTINGS_SIMPLE_SCHEMA_INDENT = '  '
+TYPES_FOR_RANGE_CHOICES = [ 's' ]
+TYPES_FOR_RANGE_MINMAX = [ 'y', 'n', 'q', 'i', 'u', 'x', 't', 'h', 'd' ]
 
 
 ######################################
@@ -215,8 +217,10 @@ class GSettingsSchemaKey:
         self.localized = None
         self.summary = None
         self.description = None
+        self.range_choices = None
+        self.range_minmax = None
 
-    def fill(self, name, type, default, typed_default, localized, summary, description):
+    def fill(self, name, type, default, typed_default, localized, summary, description, range_choices, range_minmax):
         self.name = name
         self.type = type
         self.default = default
@@ -224,6 +228,14 @@ class GSettingsSchemaKey:
         self.localized = localized
         self.summary = summary
         self.description = description
+        self.range_choices = range_choices
+        self.range_minmax = range_minmax
+
+    def _has_range_choices(self):
+        return self.range_choices is not None and self.type in TYPES_FOR_RANGE_CHOICES
+
+    def _has_range_minmax(self):
+        return self.range_minmax is not None and len(self.range_minmax) == 2 and self.type in TYPES_FOR_RANGE_MINMAX
 
     def get_simple_string(self, current_indent):
         result = ''
@@ -233,6 +245,10 @@ class GSettingsSchemaKey:
             result += '%sSummary: %s\n' % (current_indent, self.summary)
         if self.description:
             result += '%sDescription: %s\n' % (current_indent, self.description)
+        if self._has_range_choices():
+            result += '%sRange: %s\n' % ', '.join(self.range_choices)
+        elif self._has_range_minmax():
+            result += '%sRange: %s\n' % '%s..%s' % self._range_minmax
         return result
 
     def get_xml_node(self):
@@ -247,6 +263,18 @@ class GSettingsSchemaKey:
         if self.description:
             description_node = ET.SubElement(key_node, 'description')
             description_node.text = self.description
+        if self._has_range_choices():
+            range_node = ET.SubElement(key_node, 'range')
+            for choice in self.range_choices:
+                choice_node = ET.SubElement(range_node, 'choice')
+                choice_node.text = choice
+        elif self._has_range_minmax():
+            (min, max) = self.range_minmax
+            range_node = ET.SubElement(key_node, 'range')
+            min_node = ET.SubElement(range_node, 'min')
+            min_node.text = min
+            max_node = ET.SubElement(range_node, 'max')
+            max_node.text = max
         return key_node
 
 
@@ -350,7 +378,7 @@ class GConfSchema:
 
     def get_gsettings_schema_key(self):
         key = GSettingsSchemaKey()
-        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.short, self.long)
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.short, self.long, None, None)
         return key
 
 
@@ -361,9 +389,10 @@ allowed_tokens = {
   'schema'      : [ 'path', 'child', 'key' ],
   'path'        : [ ],
   'child'       : [ 'child', 'key' ],
-  'key'         : [ 'summary', 'description' ],
+  'key'         : [ 'summary', 'description', 'range' ],
   'summary'     : [ ],
-  'description' : [ ]
+  'description' : [ ],
+  'range'       : [ ]
 }
 
 def _eat_indent(line, indent_stack):
@@ -413,6 +442,8 @@ def _word_to_token(word):
         return 'summary'
     if word == 'Description:':
         return 'description'
+    if word == 'Range:':
+        return 'range'
     raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
 
 def _get_name_without_colon(line):
@@ -426,6 +457,7 @@ def _parse_key(line):
     items = line.split('=')
     if len(items) != 2:
         raise GSettingsSchemaConvertException('Cannot parse key \'%s\'.' % line)
+    # FIXME: we could check there's no space
     name = items[0].strip()
     type = ''
     value = items[1].strip()
@@ -438,6 +470,22 @@ def _parse_key(line):
         if not value:
             raise GSettingsSchemaConvertException('No value specified for key \'%s\'.' % line)
     return (name, type, value)
+
+def _parse_range(line, type):
+    choices = None
+    minmax = None
+    if type in TYPES_FOR_RANGE_CHOICES:
+        choices = [ item.strip() for item in line.split(',') ]
+    elif type in TYPES_FOR_RANGE_MINMAX:
+        minmax = [ item.strip() for item in line.split('..') ]
+        if len(minmax) != 2:
+            raise GSettingsSchemaConvertException('Range \'%s\' is not a valid min-max range for numerical type.' % line)
+        # FIXME: we'll be able to check min < max once we can convert the
+        # values with GVariant
+        minmax = tuple(minmax)
+    else:
+        raise GSettingsSchemaConvertException('Type \'%s\' cannot have a range.' % type)
+    return (choices, minmax)
 
 def read_simple_schema(simple_schema_file):
     root = GSettingsSchemaRoot()
@@ -518,6 +566,10 @@ def read_simple_schema(simple_schema_file):
             current_object.summary = line
         elif token == 'description':
             current_object.description = line
+        elif token == 'range':
+            (choices, minmax) = _parse_range(line, current_object.type)
+            current_object.range_choices = choices
+            current_object.range_minmax = minmax
 
         if new_object:
             token_stack.append(token)
