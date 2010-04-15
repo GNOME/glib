@@ -251,7 +251,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
   GSettingsBackendWatch *watch;
 
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
-  g_return_if_fail (is_path (path));
+  g_return_if_fail (path[0] == '\0' || is_path (path));
   g_return_if_fail (items != NULL);
  
   for (watch = backend->priv->watches; watch; watch = watch->next)
