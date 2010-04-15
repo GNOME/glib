@@ -939,3 +939,280 @@ g_settings_new_with_context_and_path (const gchar *schema,
                         "path", path,
                         NULL);
 }
+
+typedef struct
+{
+  GSettings *settings;
+  GObject *object;
+
+  GSettingsBindGetMapping get_mapping;
+  GSettingsBindSetMapping set_mapping;
+  gpointer user_data;
+
+  guint property_handler_id;
+  const GParamSpec *property;
+  guint key_handler_id;
+  GVariantType *type;
+  const gchar *key;
+
+  /* prevent recursion */
+  gboolean running;
+} GSettingsBinding;
+
+static void
+g_settings_binding_free (gpointer data)
+{
+  GSettingsBinding *binding = data;
+
+  g_assert (!binding->running);
+
+  if (binding->key_handler_id)
+    g_signal_handler_disconnect (binding->settings,
+                                 binding->key_handler_id);
+
+  if (binding->property_handler_id)
+  g_signal_handler_disconnect (binding->object,
+                               binding->property_handler_id);
+
+  g_variant_type_free (binding->type);
+  g_object_unref (binding->settings);
+
+  g_slice_free (GSettingsBinding, binding);
+}
+
+static GQuark
+g_settings_binding_quark (const char *property)
+{
+  GQuark quark;
+  gchar *tmp;
+
+  tmp = g_strdup_printf ("gsettingsbinding-%s", property);
+  quark = g_quark_from_string (tmp);
+  g_free (tmp);
+
+  return quark;
+}
+
+static void
+g_settings_binding_key_changed (GSettings   *settings,
+                                const gchar *key,
+                                gpointer     user_data)
+{
+  GSettingsBinding *binding = user_data;
+  GValue value = {  };
+  GVariant *variant;
+
+  g_assert (settings == binding->settings);
+  g_assert (key == binding->key);
+
+  if (binding->running)
+    return;
+
+  binding->running = TRUE;
+
+  g_value_init (&value, binding->property->value_type);
+  variant = g_settings_get_value (settings, key);
+  if (binding->get_mapping (&value, variant, binding->user_data))
+    g_object_set_property (binding->object,
+                           binding->property->name,
+                           &value);
+  g_value_unset (&value);
+
+  binding->running = FALSE;
+}
+
+static void
+g_settings_binding_property_changed (GObject          *object,
+                                     const GParamSpec *pspec,
+                                     gpointer          user_data)
+{
+  GSettingsBinding *binding = user_data;
+  GValue value = {  };
+  GVariant *variant;
+
+  g_assert (object == binding->object);
+  g_assert (pspec == binding->property);
+
+  if (binding->running)
+    return;
+
+  binding->running = TRUE;
+
+  g_value_init (&value, pspec->value_type);
+  g_object_get_property (object, pspec->name, &value);
+  if ((variant = binding->set_mapping (&value, binding->type,
+                                       binding->user_data)))
+    {
+      g_settings_set_value (binding->settings,
+                            binding->key,
+                            variant);
+      g_variant_unref (variant);
+    }
+  g_value_unset (&value);
+
+  binding->running = FALSE;
+}
+
+static GVariant *
+g_settings_set_mapping (const GValue       *value,
+                        const GVariantType *expected_type,
+                        gpointer            user_data)
+{
+  if (g_variant_type_is_subtype_of (expected_type, G_VARIANT_TYPE_BOOLEAN))
+    return g_variant_new_boolean (g_value_get_boolean (value));
+
+  g_error ("Sorry; non-boolean bindings are not supported\n");
+}
+
+static gboolean
+g_settings_get_mapping (GValue   *value,
+                        GVariant *variant,
+                        gpointer  user_data)
+{
+  if (g_variant_is_of_type (variant, G_VARIANT_TYPE_BOOLEAN))
+    g_value_set_boolean (value, g_variant_get_boolean (variant));
+  else
+    g_error ("Sorry; non-boolean bindings are not supported\n");
+
+  return TRUE;
+}
+
+void
+g_settings_bind (GSettings          *settings,
+                 const gchar        *key,
+                 gpointer            object,
+                 const gchar        *property,
+                 GSettingsBindFlags  flags)
+{
+  g_settings_bind_with_mapping (settings, key, object, property,
+                                flags, NULL, NULL, NULL);
+}
+
+void
+g_settings_bind_with_mapping (GSettings               *settings,
+                              const gchar             *key,
+                              gpointer                 object,
+                              const gchar             *property,
+                              GSettingsBindFlags       flags,
+                              GSettingsBindGetMapping  get_mapping,
+                              GSettingsBindSetMapping  set_mapping,
+                              gpointer                 user_data)
+{
+  GSettingsBinding *binding;
+  GObjectClass *objectclass;
+  gchar *detailed_signal;
+  GQuark binding_quark;
+  gboolean insensitive;
+
+  objectclass = G_OBJECT_GET_CLASS (object);
+
+  binding = g_slice_new (GSettingsBinding);
+  binding->settings = g_object_ref (settings);
+  binding->object = object;
+  binding->key = g_intern_string (key);
+  binding->property = g_object_class_find_property (objectclass, property);
+  binding->running = FALSE;
+  binding->user_data = user_data;
+  binding->get_mapping = get_mapping ? get_mapping : g_settings_get_mapping;
+  binding->set_mapping = set_mapping ? set_mapping : g_settings_set_mapping;
+
+  if (!(flags & (G_SETTINGS_BIND_GET | G_SETTINGS_BIND_SET)))
+    flags |= G_SETTINGS_BIND_GET | G_SETTINGS_BIND_SET;
+
+  if (binding->property == NULL)
+    {
+      g_critical ("g_settings_bind: no property '%s' on class '%s'",
+                  property, G_OBJECT_TYPE_NAME (object));
+      return;
+    }
+
+  {
+    GVariant *value;
+
+    value = g_settings_schema_get_value (settings->priv->schema, key, NULL);
+    binding->type = g_variant_type_copy (g_variant_get_type (value));
+    g_variant_unref (value);
+  }
+
+  if (binding->type == NULL)
+    {
+      g_critical ("g_settings_bind: no key '%s' on schema '%s'",
+                  key, settings->priv->schema_name);
+      return;
+    }
+
+  if (get_mapping == NULL || set_mapping == NULL)
+    {
+      /* XXX do some simple checks for type compatibility 
+
+  if (!g_type_serialiser_check (G_PARAM_SPEC_VALUE_TYPE (binding->property),
+                                binding->type))
+    {
+      g_critical ("g_settings_bind: property '%s' on class '%s' has type"
+                  "'%s' which is not compatible with type '%s' of key '%s'"
+                  "on schema '%s'", property, G_OBJECT_TYPE_NAME (object),
+                  g_type_name (binding->property->value_type),
+                  g_variant_type_dup_string (binding->type), key,
+                  settings->priv->schema_name);
+      return;
+    }
+*/
+    }
+
+  if (~flags & G_SETTINGS_BIND_NO_SENSITIVITY)
+    {
+      GParamSpec *sensitive;
+
+      sensitive = g_object_class_find_property (objectclass, "sensitive");
+      if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN)
+        {
+          insensitive = !g_settings_is_writable (settings, key);
+          g_object_set (object, "sensitive", !insensitive, NULL);
+        }
+      else
+        insensitive = FALSE;
+    }
+  else
+    insensitive = FALSE;
+
+  if (!insensitive && (flags & G_SETTINGS_BIND_SET))
+    {
+      detailed_signal = g_strdup_printf ("notify::%s", property);
+      binding->property_handler_id =
+        g_signal_connect (object, detailed_signal,
+                          G_CALLBACK (g_settings_binding_property_changed),
+                          binding);
+      g_free (detailed_signal);
+
+      if (~flags & G_SETTINGS_BIND_GET)
+        g_settings_binding_property_changed (object,
+                                             binding->property,
+                                             binding);
+    }
+
+  if (flags & G_SETTINGS_BIND_GET)
+    {
+      detailed_signal = g_strdup_printf ("changed::%s", key);
+      binding->key_handler_id =
+        g_signal_connect (settings, detailed_signal,
+                          G_CALLBACK (g_settings_binding_key_changed),
+                          binding);
+      g_free (detailed_signal);
+
+      g_settings_binding_key_changed (settings, binding->key, binding);
+    }
+
+  binding_quark = g_settings_binding_quark (property);
+  g_object_set_qdata_full (object, binding_quark,
+                           binding, g_settings_binding_free);
+}
+
+void
+g_settings_unbind (gpointer     object,
+                   const gchar *property)
+{
+  GQuark binding_quark;
+
+  binding_quark = g_settings_binding_quark (property);
+  g_object_set_qdata (object, binding_quark, NULL);
+}

@@ -103,6 +103,38 @@ gboolean                g_settings_get_has_unapplied                    (GSettin
 void                    g_settings_set_delay_apply                      (GSettings          *settings,
                                                                          gboolean            delay);
 
+typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
+                                                                         const GVariantType *expected_type,
+                                                                         gpointer            user_data);
+
+typedef gboolean      (*GSettingsBindGetMapping)                        (GValue             *value,
+                                                                         GVariant           *variant,
+                                                                         gpointer            user_data);
+
+typedef enum
+{
+  G_SETTINGS_BIND_DEFAULT,
+  G_SETTINGS_BIND_GET            = (1<<0),
+  G_SETTINGS_BIND_SET            = (1<<1),
+  G_SETTINGS_BIND_NO_SENSITIVITY = (1<<2)
+} GSettingsBindFlags;
+
+void                    g_settings_bind                                 (GSettings               *settings,
+                                                                         const gchar             *key,
+                                                                         gpointer                 object,
+                                                                         const gchar             *property,
+                                                                         GSettingsBindFlags       flags);
+void                    g_settings_bind_with_mapping                    (GSettings               *settings,
+                                                                         const gchar             *key,
+                                                                         gpointer                 object,
+                                                                         const gchar             *property,
+                                                                         GSettingsBindFlags       flags,
+                                                                         GSettingsBindGetMapping  get_mapping,
+                                                                         GSettingsBindSetMapping  set_mapping,
+                                                                         gpointer                 user_data);
+void                    g_settings_unbind                               (gpointer                 object,
+                                                                         const gchar             *key);
+
 G_END_DECLS
 
 #endif  /* __G_SETTINGS_H__ */
