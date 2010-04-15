@@ -50,6 +50,7 @@ IGNORE_HFILES=				\
 	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
 	gpollfilemonitor.h		\
+	gsettingsbackendinternal.h	\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\

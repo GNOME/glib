@@ -79,6 +79,13 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
+settings_sources = \
+	gsettingsbackendinternal.h	\
+	gsettingsbackend.c
+
+settings_headers = \
+	gsettingsbackend.h
+
 local_sources = \
 	glocaldirectorymonitor.c 	\
 	glocaldirectorymonitor.h 	\
@@ -285,6 +292,7 @@ libgio_2_0_la_SOURCES =		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
+	$(settings_sources) 	\
 	$(local_sources) 	\
 	$(marshal_sources) 	\
 	$(NULL)
@@ -411,6 +419,7 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
+	$(settings_headers) 	\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/
