@@ -27,3 +27,5 @@ srvtarget
 unix-fd
 unix-streams
 utf8-input-stream
+store
+gschemas.compiled
