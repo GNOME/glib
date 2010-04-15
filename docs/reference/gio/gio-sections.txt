@@ -2114,6 +2114,7 @@ g_settings_set_delay_apply
 g_settings_apply
 g_settings_revert
 g_settings_get_has_unapplied
+g_settings_get_child
 <SUBSECTION Standard>
 GSettingsClass
 <SUBSECTION Private>

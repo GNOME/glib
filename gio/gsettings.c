@@ -59,7 +59,7 @@
  * <!ELEMENT schemalist (schema*) >
  * <!ATTLIST schemalist gettext-domain #IMPLIED >
  *
- * <!ELEMENT schema (key*) >
+ * <!ELEMENT schema (key|child)* >
  * <!ATTLIST schema id             CDATA #REQUIRED
  *                  path           CDATA #IMPLIED
  *                  gettext-domain CDATA #IMPLIED >
@@ -90,8 +90,16 @@
  * <!ELEMENT choice (alias?) >
  * <!ELEMENT alias EMPTY >
  * <!ATTLIST alias value CDATA #REQUIRED >
+ *
+ * <!ELEMENT child EMPTY >
+ * <!ATTLIST child name  CDATA #REQUIRED
+ *                 schema CDATA #REQUIRED >
  * ]]>
  * ]|
+ */
+
+/* XXX talk about key and schema naming conventions,
+ * explain child settings
  */
 
 struct _GSettingsPrivate
@@ -851,6 +859,21 @@ g_settings_is_writable (GSettings   *settings,
   return writable;
 }
 
+/**
+ * g_settings_get_child:
+ * @settings: a #GSettings object
+ * @name: the name of the 'child' schema
+ * @returns: a 'child' settings object
+ *
+ * Creates a 'child' settings object which has a base path of
+ * <replaceable>base-path</replaceable>/@name", where
+ * <replaceable>base-path</replaceable> is the base path of @settings.
+ *
+ * The schema for the child settings object must have been declared
+ * in the schema of @settings using a <tag>child</tag> element.
+ *
+ * Since: 2.26
+ */
 GSettings *
 g_settings_get_child (GSettings   *settings,
                       const gchar *name)
