@@ -283,7 +283,7 @@ changed_cb2 (GSettings   *settings,
 
 
 void
-test_delay (void)
+test_delay_apply (void)
 {
   GSettings *settings;
   GSettings *settings2;
@@ -304,13 +304,13 @@ test_delay (void)
 
   g_settings_set_delay_apply (settings, TRUE);
 
-  g_settings_set (settings, "greeting", "s", "greetings from test_delay");
+  g_settings_set (settings, "greeting", "s", "greetings from test_delay_apply");
 
   g_assert (changed_cb_called);
   g_assert (!changed_cb_called2);
 
   g_settings_get (settings, "greeting", "s", &str);
-  g_assert_cmpstr (str, ==, "greetings from test_delay");
+  g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
@@ -324,10 +324,41 @@ test_delay (void)
   g_assert (changed_cb_called2);
 
   g_settings_get (settings, "greeting", "s", &str);
-  g_assert_cmpstr (str, ==, "greetings from test_delay");
+  g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
 
   g_settings_get (settings2, "greeting", "s", &str);
-  g_assert_cmpstr (str, ==, "greetings from test_delay");
+  g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
+}
+
+static void
+test_delay_revert (void)
+{
+  GSettings *settings;
+  GSettings *settings2;
+  gchar *str;
+
+  settings = g_settings_new ("org.gtk.test");
+  settings2 = g_settings_new ("org.gtk.test");
+
+  g_settings_set (settings2, "greeting", "s", "top o' the morning");
+
+  g_settings_set_delay_apply (settings, TRUE);
+
+  g_settings_set (settings, "greeting", "s", "greetings from test_delay_revert");
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "greetings from test_delay_revert");
+
+  g_settings_get (settings2, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "top o' the morning");
+
+  g_settings_revert (settings);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "top o' the morning");
+
+  g_settings_get (settings2, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "top o' the morning");
 }
 
 int
@@ -349,7 +380,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
-  g_test_add_func ("/gsettings/delay", test_delay);
+  g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
+  g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
 
   return g_test_run ();
 }
