@@ -18,6 +18,8 @@ test_basic (void)
   g_settings_set (settings, "greeting", "s", "goodbye world");
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "goodbye world");
+  g_free (str);
+  str = NULL;
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
@@ -30,6 +32,9 @@ test_basic (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "goodbye world");
+  g_free (str);
+  str = NULL;
+
   g_settings_set (settings, "greeting", "s", "this is the end");
 }
 
@@ -43,6 +48,8 @@ test_unknown_key (void)
 
       settings = g_settings_new ("org.gtk.test");
       value = g_settings_get_value (settings, "no_such_key");
+
+      g_assert (value == NULL);
 
       g_object_unref (settings);
     }
@@ -58,6 +65,8 @@ test_no_schema (void)
       GSettings *settings;
 
       settings = g_settings_new ("no.such.schema");
+
+      g_assert (settings == NULL);
     }
 
   g_test_trap_assert_failed ();
@@ -75,6 +84,8 @@ test_wrong_type (void)
       settings = g_settings_new ("org.gtk.test");
 
       g_settings_get (settings, "greeting", "o", &str);
+
+      g_assert (str == NULL);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
@@ -82,11 +93,10 @@ test_wrong_type (void)
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings;
-      gchar *str = NULL;
 
       settings = g_settings_new ("org.gtk.test");
 
-      g_settings_set (settings, "greetings", "o", &str);
+      g_settings_set (settings, "greetings", "o", "/a/path");
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
@@ -190,9 +200,13 @@ test_basic_types (void)
 
   g_settings_get (settings, "test_string", "s", &str);
   g_assert_cmpstr (str, ==, "a string, it seems");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings, "test_objectpath", "o", &str);
   g_assert_cmpstr (str, ==, "/a/object/path");
+  g_free (str);
+  str = NULL;
 }
 
 static void
@@ -209,12 +223,16 @@ test_complex_types (void)
   g_assert_cmpstr (s, ==, "one");
   g_assert_cmpint (i1,==, 2);
   g_assert_cmpint (i2,==, 3);
+  g_free (s);
+  s = NULL;
 
   g_settings_set (settings, "test_tuple", "(s(ii))", "none", 0, 0);
   g_settings_get (settings, "test_tuple", "(s(ii))", &s, &i1, &i2);
   g_assert_cmpstr (s, ==, "none");
   g_assert_cmpint (i1,==, 0);
   g_assert_cmpint (i2,==, 0);
+  g_free (s);
+  s = NULL;
 
   g_settings_get (settings, "test_array", "ai", &iter);
   g_assert_cmpint (g_variant_iter_n_children (iter), ==, 6);
@@ -316,9 +334,13 @@ test_delay_apply (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
+  g_free (str);
+  str = NULL;
 
   g_assert (g_settings_get_has_unapplied (settings));
   g_assert (!g_settings_get_has_unapplied (settings2));
@@ -333,9 +355,13 @@ test_delay_apply (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
+  g_free (str);
+  str = NULL;
 
   g_assert (!g_settings_get_has_unapplied (settings));
   g_assert (!g_settings_get_has_unapplied (settings2));
@@ -359,17 +385,25 @@ test_delay_revert (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_revert");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
+  g_free (str);
+  str = NULL;
 
   g_settings_revert (settings);
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
+  g_free (str);
+  str = NULL;
 }
 
 static void
@@ -388,9 +422,13 @@ keys_changed_cb (GSettings    *settings,
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_atomic");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings, "farewell", "s", &str);
   g_assert_cmpstr (str, ==, "atomic bye-bye");
+  g_free (str);
+  str = NULL;
 }
 
 static void
@@ -420,15 +458,23 @@ test_atomic (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_atomic");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings, "farewell", "s", &str);
   g_assert_cmpstr (str, ==, "atomic bye-bye");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_atomic");
+  g_free (str);
+  str = NULL;
 
   g_settings_get (settings2, "farewell", "s", &str);
   g_assert_cmpstr (str, ==, "atomic bye-bye");
+  g_free (str);
+  str = NULL;
 }
 
 static gboolean
@@ -471,6 +517,7 @@ test_l10n (void)
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unnamed");
+  g_free (str);
   str = NULL;
 
   setlocale (LC_MESSAGES, "de_DE");
@@ -478,6 +525,8 @@ test_l10n (void)
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unbenannt");
+  g_free (str);
+  str = NULL;
 
   g_free (locale);
 }
