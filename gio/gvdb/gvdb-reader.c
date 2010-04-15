@@ -31,6 +31,7 @@ struct _GvdbTable {
   gsize size;
 
   GMappedFile *mapped;
+  gboolean byteswapped;
   gboolean trusted;
 
   const guint32 *bloom_words;
@@ -165,6 +166,27 @@ gvdb_table_new (const gchar  *filename,
   if (sizeof (struct gvdb_header) <= file->size)
     {
       const struct gvdb_header *header = (gpointer) file->data;
+
+      if (header->signature[0] == GVDB_SIGNATURE0 &&
+          header->signature[1] == GVDB_SIGNATURE1 &&
+          guint32_from_le (header->version) == 0)
+        file->byteswapped = FALSE;
+
+      else if (header->signature[0] == GVDB_SWAPPED_SIGNATURE0 &&
+               header->signature[1] == GVDB_SWAPPED_SIGNATURE1 &&
+               guint32_from_le (header->version) == 0)
+        file->byteswapped = TRUE;
+
+      else
+        {
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
+                       "%s: invalid header", filename);
+          g_slice_free (GvdbTable, file);
+          g_mapped_file_unref (mapped);
+
+          return NULL;
+        }
+
       gvdb_table_setup_root (file, &header->root);
     }
 
@@ -329,6 +351,24 @@ gvdb_table_list (GvdbTable   *file,
 }
 
 /**
+ * gvdb_table_has_value:
+ * @file: a #GvdbTable
+ * @key: a string
+ * @returns: %TRUE if @key is in the table
+ *
+ * Checks for a value named @key in @file.
+ *
+ * Note: this function does not consider non-value nodes (other hash
+ * tables, for example).
+ **/
+gboolean
+gvdb_table_has_value (GvdbTable    *file,
+                      const gchar  *key)
+{
+  return gvdb_table_lookup (file, key, 'v') != NULL;
+}
+
+/**
  * gvdb_table_get_value:
  * @file: a #GvdbTable
  * @key: a string
@@ -373,6 +413,13 @@ gvdb_table_get_value (GvdbTable    *file,
   value = g_variant_get_variant (variant);
   g_variant_unref (variant);
 
+  if (file->byteswapped)
+    {
+      GVariant *tmp = g_variant_byteswap (value);
+      g_variant_unref (value);
+      value = tmp;
+    }
+
   if (options != NULL)
     {
       data = gvdb_table_dereference (file, &item->options, 8, &size);
@@ -384,6 +431,13 @@ gvdb_table_get_value (GvdbTable    *file,
                                               (GDestroyNotify) g_mapped_file_unref,
                                               g_mapped_file_ref (file->mapped));
           g_variant_ref_sink (*options);
+
+          if (file->byteswapped)
+            {
+              GVariant *tmp = g_variant_byteswap (*options);
+              g_variant_unref (*options);
+              *options = tmp;
+            }
         }
       else
         *options = NULL;

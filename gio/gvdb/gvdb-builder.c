@@ -172,9 +172,6 @@ gvdb_item_set_parent (GvdbItem *item,
   *node = item;
 }
 
-
-
-
 typedef struct
 {
   GvdbItem **buckets;
@@ -219,10 +216,9 @@ item_to_index (GvdbItem *item)
 
 typedef struct
 {
-  GString *strings;
   GQueue *chunks;
   guint64 offset;
-
+  gboolean byteswap;
 } FileBuilder;
 
 typedef struct
@@ -264,7 +260,15 @@ file_builder_add_value (FileBuilder         *fb,
   gpointer data;
   gsize size;
 
-  variant = g_variant_new_variant (value);
+  if (fb->byteswap)
+    {
+      value = g_variant_byteswap (value);
+      variant = g_variant_new_variant (value);
+      g_variant_unref (value);
+    }
+  else
+    variant = g_variant_new_variant (value);
+
   normal = g_variant_get_normal_form (variant);
   g_variant_unref (variant);
 
@@ -283,18 +287,21 @@ file_builder_add_options (FileBuilder         *fb,
   gpointer data;
   gsize size;
 
-  if (options != NULL)
+  if (options)
     {
-      normal = g_variant_get_normal_form (options);
+      if (fb->byteswap)
+        {
+          options = g_variant_byteswap (options);
+          normal = g_variant_get_normal_form (options);
+          g_variant_unref (options);
+        }
+      else
+        normal = g_variant_get_normal_form (options);
+
       size = g_variant_get_size (normal);
       data = file_builder_allocate (fb, 8, size, pointer);
       g_variant_store (normal, data);
       g_variant_unref (normal);
-    }
-  else
-    {
-      pointer->start = guint32_to_le (0);
-      pointer->end = guint32_to_le (0);
     }
 }
 
@@ -451,30 +458,29 @@ file_builder_add_hash (FileBuilder         *fb,
 }
 
 static FileBuilder *
-file_builder_new (void)
+file_builder_new (gboolean byteswap)
 {
   FileBuilder *builder;
 
   builder = g_slice_new (FileBuilder);
-  builder->strings = g_string_new ("");
   builder->chunks = g_queue_new ();
   builder->offset = sizeof (struct gvdb_header);
+  builder->byteswap = byteswap;
 
   return builder;
 }
 
 static GString *
 file_builder_serialise (FileBuilder          *fb,
-                        struct gvdb_pointer   root,
-                        gboolean              byteswap)
+                        struct gvdb_pointer   root)
 {
-  GString *result = g_string_new (NULL);
   struct gvdb_header header;
+  GString *result;
 
-  if (byteswap)
+  if (fb->byteswap)
     {
-      header.signature[0] = GUINT32_TO_LE (GVDB_SIGNATURE0);
-      header.signature[1] = GUINT32_TO_LE (GVDB_SIGNATURE1);
+      header.signature[0] = GVDB_SWAPPED_SIGNATURE0;
+      header.signature[1] = GVDB_SWAPPED_SIGNATURE1;
     }
   else
     {
@@ -523,9 +529,9 @@ gvdb_table_write_contents (GHashTable   *table,
   FileBuilder *fb;
   GString *str;
 
-  fb = file_builder_new ();
+  fb = file_builder_new (byteswap);
   file_builder_add_hash (fb, table, &root);
-  str = file_builder_serialise (fb, root, byteswap);
+  str = file_builder_serialise (fb, root);
 
   status = g_file_set_contents (filename, str->str, str->len, error);
   g_string_free (str, TRUE);

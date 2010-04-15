@@ -46,4 +46,9 @@ GVariant *              gvdb_table_get_value                            (GvdbTab
                                                                          const gchar  *key,
                                                                          GVariant    **options);
 
+G_GNUC_INTERNAL
+gboolean                gvdb_table_has_value                            (GvdbTable    *table,
+                                                                         const gchar  *key);
+
+
 #endif /* __gvdb_reader_h__ */

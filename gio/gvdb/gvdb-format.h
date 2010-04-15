@@ -83,5 +83,7 @@ static inline guint16 guint16_from_le (guint16_le value) {
 
 #define GVDB_SIGNATURE0 1918981703
 #define GVDB_SIGNATURE1 1953390953
+#define GVDB_SWAPPED_SIGNATURE0 GUINT32_SWAP_LE_BE (GVDB_SIGNATURE0)
+#define GVDB_SWAPPED_SIGNATURE1 GUINT32_SWAP_LE_BE (GVDB_SIGNATURE1)
 
 #endif /* __gvdb_format_h__ */
