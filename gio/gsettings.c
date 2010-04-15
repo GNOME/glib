@@ -11,6 +11,7 @@
 #include "config.h"
 #include <glib.h>
 #include <glibintl.h>
+#include <locale.h>
 
 #include "gsettings.h"
 
@@ -587,13 +588,66 @@ GVariant *
 g_settings_get_value (GSettings   *settings,
                       const gchar *key)
 {
+  GVariant *value, *options;
   const GVariantType *type;
-  GVariant *value;
+  gint lc_category = -1;
   GVariant *sval;
   gchar *path;
 
+  sval = g_settings_schema_get_value (settings->priv->schema, key, &options);
+
+  if G_UNLIKELY (sval == NULL)
+    g_error ("schema '%s' does not contain a key named '%s'\n",
+             settings->priv->schema_name, key);
+
+  if (options != NULL)
+    {
+      GVariantIter iter;
+      const gchar *key;
+      GVariant *value;
+
+      g_variant_iter_init (&iter, options);
+      while (g_variant_iter_loop (&iter, "{sv}", &key, &value))
+        {
+          if (strcmp (key, "l10n") == 0 &&
+              g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+            {
+              const gchar *category = g_variant_get_string (value, NULL);
+
+              if (strcmp (category, "ctype") == 0)
+                lc_category = LC_CTYPE;
+              else if (strcmp (category, "numeric") == 0)
+                lc_category = LC_NUMERIC;
+              else if (strcmp (category, "time") == 0)
+                lc_category = LC_TIME;
+              else if (strcmp (category, "collate") == 0)
+                lc_category = LC_COLLATE;
+              else if (strcmp (category, "monetary") == 0)
+                lc_category = LC_MONETARY;
+              else if (strcmp (category, "messages") == 0)
+                lc_category = LC_MESSAGES;
+              else if (strcmp (category, "all") == 0)
+                lc_category = LC_ALL;
+              else if (strcmp (category, "paper") == 0)
+                lc_category = LC_PAPER;
+              else if (strcmp (category, "name") == 0)
+                lc_category = LC_NAME;
+              else if (strcmp (category, "address") == 0)
+                lc_category = LC_ADDRESS;
+              else if (strcmp (category, "telephone") == 0)
+                lc_category = LC_TELEPHONE;
+              else if (strcmp (category, "measurement") == 0)
+                lc_category = LC_MEASUREMENT;
+              else if (strcmp (category, "identification") == 0)
+                lc_category = LC_IDENTIFICATION;
+              else
+                g_error ("schema requests unsupported l10n category: %s",
+                         category);
+            }
+        }
+    }
+
   path = g_strconcat (settings->priv->path, key, NULL);
-  sval = g_settings_schema_get_value (settings->priv->schema, key, NULL);
   type = g_variant_get_type (sval);
   value = g_settings_backend_read (settings->priv->backend, path, type);
   g_free (path);
@@ -605,7 +659,22 @@ g_settings_get_value (GSettings   *settings,
     }
 
   if (value == NULL)
-    value = g_variant_ref (sval);
+    {
+
+      if (lc_category != -1)
+        {
+          const gchar *domain;
+
+          domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
+
+          value = g_variant_ref_sink (g_variant_new_string (
+            dcgettext (domain,
+                       g_variant_get_string (sval, NULL),
+                       lc_category)));
+        }
+      else
+        value = g_variant_ref (sval);
+    }
 
   g_variant_unref (sval);
 

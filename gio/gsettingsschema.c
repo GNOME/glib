@@ -203,6 +203,25 @@ g_settings_schema_get_path (GSettingsSchema *schema)
   return result;
 }
 
+const gchar *
+g_settings_schema_get_gettext_domain (GSettingsSchema *schema)
+{
+  const gchar *result;
+  GVariant *value;
+
+  value = gvdb_table_get_value (schema->priv->table, ".gettext-domain", NULL);
+
+  if (value && g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+    {
+      result = g_variant_get_string (value, NULL);
+      g_variant_unref (value);
+    }
+  else
+    result = NULL;
+
+  return result;
+}
+
 gboolean
 g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)

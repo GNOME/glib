@@ -56,6 +56,7 @@ struct _GSettingsSchema
 GType                   g_settings_schema_get_type                      (void);
 GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
+const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
                                                                          const gchar      *key,
                                                                          GVariant        **options);
