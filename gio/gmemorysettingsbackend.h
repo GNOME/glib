@@ -21,8 +21,6 @@ G_BEGIN_DECLS
                                                              G_TYPE_MEMORY_SETTINGS_BACKEND,                         \
                                                              GMemorySettingsBackendClass))
 
-#define G_MEMORY_SETTINGS_BACKEND_EXTENSION_POINT_NAME "gsettings-backend"
-
 /**
  * GMemorySettingsBackend:
  *
