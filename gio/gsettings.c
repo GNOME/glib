@@ -75,10 +75,7 @@
  * <!ELEMENT default (#PCDATA) >
  * <!-- the presence of the l10n attribute marks a default value for
  *      translation, its value is the gettext category to use -->
- * <!ATTLIST default l10n (ctype|numeric|time|collate|
- *                         monetary|messages|all|paper|
- *                         name|address|telephone|
- *                         measurement|identification) #IMPLIED >
+ * <!ATTLIST default l10n (messages|time) #IMPLIED >
  *
  * <!ELEMENT summary (#PCDATA) >
  * <!ELEMENT description (#PCDATA) >
@@ -679,7 +676,7 @@ g_settings_get_value (GSettings   *settings,
             {
               const gchar *category = g_variant_get_string (value, NULL);
 
-              if (strcmp (category, "message") == 0)
+              if (strcmp (category, "messages") == 0)
                 lc_category = LC_MESSAGES;
               else if (strcmp (category, "time") == 0)
                 lc_category = LC_TIME;
