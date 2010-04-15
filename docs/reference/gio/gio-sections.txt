@@ -2120,16 +2120,3 @@ GSettingsClass
 <SUBSECTION Private>
 g_settings_get_type
 </SECTION>
-
-<SECTION>
-<FILE>gsettingsschema</FILE>
-<TITLE>GSettingsSchema</TITLE>
-GSettingsSchema
-g_settings_schema_new
-g_settings_schema_get_path
-g_settings_schema_get_value
-<SUBSECTION Standard>
-GSettingsSchemaClass
-<SUBSECTION Private>
-g_settings_schema_get_type
-</SECTION>
