@@ -74,6 +74,13 @@
           <listitem><para>abstract type for file and application icons</para></listitem>
        </varlistentry>
     </variablelist>
+    There is a framework for storing and retrieving application settings:
+    <variablelist>
+       <varlistentry>
+          <term>GSettings</term>
+          <listitem><para>stores and retrieves application settings</para></listitem>
+       </varlistentry>
+    </variablelist>
     There is support for network programming, including name resolution, lowlevel socket
     APIs and highlevel client and server helper classes:
     <variablelist>
