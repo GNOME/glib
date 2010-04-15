@@ -413,13 +413,6 @@ gvdb_table_get_value (GvdbTable    *file,
   value = g_variant_get_variant (variant);
   g_variant_unref (variant);
 
-  if (file->byteswapped)
-    {
-      GVariant *tmp = g_variant_byteswap (value);
-      g_variant_unref (value);
-      value = tmp;
-    }
-
   if (options != NULL)
     {
       data = gvdb_table_dereference (file, &item->options, 8, &size);
@@ -431,13 +424,6 @@ gvdb_table_get_value (GvdbTable    *file,
                                               (GDestroyNotify) g_mapped_file_unref,
                                               g_mapped_file_ref (file->mapped));
           g_variant_ref_sink (*options);
-
-          if (file->byteswapped)
-            {
-              GVariant *tmp = g_variant_byteswap (*options);
-              g_variant_unref (*options);
-              *options = tmp;
-            }
         }
       else
         *options = NULL;
@@ -479,6 +465,7 @@ gvdb_table_get_table (GvdbTable   *file,
 
   new = g_slice_new0 (GvdbTable);
   new->mapped = g_mapped_file_ref (file->mapped);
+  new->byteswapped = file->byteswapped;
   new->trusted = file->trusted;
   new->data = file->data;
   new->size = file->size;

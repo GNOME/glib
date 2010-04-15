@@ -118,7 +118,7 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   const gchar *result = NULL;
   GVariant *value;
 
-  if ((value = g_settings_schema_get_value (schema, key, NULL)))
+  if ((value = gvdb_table_get_value (schema->priv->table, key, NULL)))
     {
       result = g_variant_get_string (value, NULL);
       g_variant_unref (value);
@@ -166,7 +166,25 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
                              const gchar      *key,
                              GVariant        **options)
 {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  GVariant *variant, *tmp;
+
+  tmp = gvdb_table_get_value (schema->priv->table, key, options);
+
+  if (tmp)
+    {
+      variant = g_variant_byteswap (tmp);
+      g_variant_unref (tmp);
+    }
+  else
+    variant = NULL;
+
+  /* NOTE: no options have byteswapped data in them at the moment */
+
+  return variant;
+#else
   return gvdb_table_get_value (schema->priv->table, key, options);
+#endif
 }
 
 const gchar *
