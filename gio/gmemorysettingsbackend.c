@@ -122,6 +122,94 @@ g_memory_settings_backend_write_keys (GSettingsBackend *backend,
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 }
 
+static void
+g_memory_settings_backend_reset_path (GMemorySettingsBackend *memory,
+                                      const gchar            *path,
+                                      gpointer                origin_tag)
+{
+  GPtrArray  *reset_array;
+  GList      *hash_keys;
+  GList      *l;
+  gboolean    changed;
+  gchar     **groups = NULL;
+  gsize       groups_nb = 0;
+  int         i;
+
+  reset_array = g_ptr_array_new_with_free_func (g_free);
+
+  hash_keys = g_hash_table_get_keys (memory->priv->table);
+  for (l = hash_keys; l != NULL; l = l->next)
+    {
+      if (g_str_has_prefix (l->data, path))
+        {
+          g_hash_table_remove (memory->priv->table, l->data);
+          g_ptr_array_add (reset_array, g_strdup (l->data));
+        }
+    }
+  g_list_free (hash_keys);
+
+  changed = FALSE;
+  groups = g_key_file_get_groups (memory->priv->keyfile, &groups_nb);
+  for (i = 0; i < groups_nb; i++)
+    {
+      if (g_str_has_prefix (groups[i], path))
+        changed = g_key_file_remove_group (memory->priv->keyfile, groups[i], NULL) || changed;
+    }
+  g_strfreev (groups);
+
+  if (changed)
+    g_memory_settings_backend_keyfile_write (memory);
+
+  if (reset_array->len > 0)
+    {
+      /* the array has to be NULL-terminated */
+      g_ptr_array_add (reset_array, NULL);
+      g_settings_backend_keys_changed (G_SETTINGS_BACKEND (memory),
+                                       "",
+                                       (const gchar **) reset_array->pdata,
+                                       origin_tag);
+    }
+
+  g_ptr_array_free (reset_array, TRUE);
+}
+
+static void
+g_memory_settings_backend_reset_key (GMemorySettingsBackend *memory,
+                                     const gchar            *key,
+                                     gpointer                origin_tag)
+{
+  const gchar *slash;
+  const gchar *base_key;
+  gchar       *path;
+
+  g_hash_table_remove (memory->priv->table, key);
+
+  slash = strrchr (key, '/');
+  g_assert (slash != NULL);
+  base_key = (slash + 1);
+  path = g_strndup (key, slash - key + 1);
+
+  if (g_key_file_remove_key (memory->priv->keyfile, path, base_key, NULL))
+    g_memory_settings_backend_keyfile_write (memory);
+
+  g_free (path);
+
+  g_settings_backend_changed (G_SETTINGS_BACKEND (memory), key, origin_tag);
+}
+
+static void
+g_memory_settings_backend_reset (GSettingsBackend *backend,
+                                 const gchar      *name,
+                                 gpointer          origin_tag)
+{
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
+
+  if (name[strlen(name) - 1] == '/')
+    g_memory_settings_backend_reset_path (memory, name, origin_tag);
+  else
+    g_memory_settings_backend_reset_key (memory, name, origin_tag);
+}
+
 static gboolean
 g_memory_settings_backend_get_writable (GSettingsBackend *backend,
                                         const gchar      *name)
@@ -365,6 +453,7 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   backend_class->read = g_memory_settings_backend_read;
   backend_class->write = g_memory_settings_backend_write;
   backend_class->write_keys = g_memory_settings_backend_write_keys;
+  backend_class->reset = g_memory_settings_backend_reset;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
