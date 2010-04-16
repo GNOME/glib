@@ -49,6 +49,8 @@ typedef struct
   GVariantType *type;
 } ParseState;
 
+static gboolean allow_any_name = FALSE;
+
 static gboolean
 is_valid_keyname (const gchar  *key,
                   GError      **error)
@@ -61,6 +63,9 @@ is_valid_keyname (const gchar  *key,
                    "empty names are not permitted");
       return FALSE;
     }
+
+  if (allow_any_name)
+    return TRUE;
 
   if (!g_ascii_islower (key[0]))
     {
@@ -479,6 +484,7 @@ main (int argc, char **argv)
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, "where to store the gschemas.compiled file", "DIRECTORY" },
+    { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, "do not enforce key name restrictions" },
     { NULL }
   };
 

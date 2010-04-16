@@ -43,6 +43,16 @@ Print help and exit
 Store <filename>gschemas.compiled</filename> in <replaceable>TARGETDIR</replaceable> instead of <replaceable>directory</replaceable>.
 </para></listitem>
 </varlistentry>
+
+<varlistentry>
+<term><option>--allow-any-name</option></term>
+<listitem><para>
+Do not enforce restrictions on key names. Note that this option is purely
+to facility the transition from GConf, and will be removed at some time
+in the future.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect2>
 </refsect1>
