@@ -195,7 +195,7 @@ void                    g_settings_bind_with_mapping                    (GSettin
                                                                          gpointer                 user_data,
                                                                          GDestroyNotify           destroy);
 void                    g_settings_unbind                               (gpointer                 object,
-                                                                         const gchar             *key);
+                                                                         const gchar             *property);
 
 G_END_DECLS
 
