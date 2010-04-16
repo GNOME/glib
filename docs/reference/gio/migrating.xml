@@ -162,21 +162,88 @@ start_monitoring_trash (void)
   <chapter>
     <title>Migrating from GConf to GSettings</title>
 
-    <para>
-      Information about migration from GConf to GSettings will appear
-      here.
-    </para>
-    <para>
-      Topics to cover:
-      <itemizedlist>
-        <listitem><para>Conceptual differences</para></listitem>
-        <listitem><para>GConfClient API conversion</para></listitem>
-        <listitem><para>Change notification</para></listitem>
-        <listitem><para>Defaults</para></listitem>
-        <listitem><para>Schema conversion</para></listitem>
-        <listitem><para>Data conversion</para></listitem>
-      </itemizedlist>
-    </para>
+    <section>
+      <title>Conceptual differences</title>
+
+      <para>
+        Conceptually, GConf and GSettings are fairly similar. Both
+        have a concept of pluggable backends. Both keep information
+        about keys and their types in schemas. GSettings is more
+        strict about requiring a schema whenever you want to read
+        or write a key. Both have a concept of mandatory values,
+        which lets you implement lock-down.
+      </para>
+      <para>
+        One difference in the way applications interact with their
+        settings is that with GConf you interact with a tree of
+        settings (ie the keys you pass to functions when reading
+        or writing values are actually paths with the actual name
+        of the key as the last element. With GSettings, you create
+        a GSettings object which has an implicit prefix that determines
+        where the settings get stored in the global tree of settings,
+        but the keys you pass when reading or writing values are just
+        the key names, not the full path.
+      </para>
+    </section>
+
+    <section>
+      <title>GConfClient API conversion</title>
+
+      <para>
+        Most people use GConf via the high-level #GConfClient API.
+        The corresponding API is the #GSettings object. While not
+        every GConfClient function has a direct GSettings equivalent,
+        many do:
+        <table id="gconf-client-vs-gsettings">
+          <tgroup cols="2">
+            <thead>
+              <row><entry>GConfClient</entry><entry>GSettings</entry></row>
+            </thead>
+            <tbody>
+              <row><entry>gconf_client_set()</entry><entry>g_settings_set()</entry></row>
+              <row><entry>gconf_client_get()</entry><entry>g_settings_get()</entry></row>
+              <row><entry>gconf_entry_get_is_writable()</entry><entry>g_settings_is_writable()</entry></row>
+              <row><entry>gconf_client_notify_add()</entry><entry>not required, the #GSettings::changed signal is emitted automatically</entry></row>
+              <row><entry>GConfChangeSet</entry><entry>g_settings_delay()</entry></row>
+            </tbody>
+          </tgroup>
+        </table>
+      </para>
+    </section>
+
+    <section>
+      <title>Change notification</title>
+
+      <para>
+        GConf requires you to call gconf_client_add_dir() and
+        gconf_client_notify_add() to get change notification. With
+        GSettings, this is not necessary; signals get emitted automatically
+        for every change.
+      </para>
+      <para>
+        The #GSettings::changed signal is emitted when an individual
+        key is changed, #GSettings::keys-changed is emitted when multiple
+        keys are changed at the same time (e.g. when g_settings_apply()
+        is called on a delayed-mode GSettings instance.
+      </para>
+      <para>
+        GSettings also notifies you about changes in writability of keys,
+        with the #GSettings::writable-changed signal.
+      </para>
+    </section>
+
+    <section><title>More information</title>
+      <para>
+        More information about migration from GConf to GSettings will appear
+        here soon. Topics to cover:
+        <itemizedlist>
+          <listitem><para>Defaults</para></listitem>
+          <listitem><para>Change sets</para></listitem>
+          <listitem><para>Schema conversion</para></listitem>
+          <listitem><para>Data conversion</para></listitem>
+        </itemizedlist>
+      </para>
+    </section>
   </chapter>
 
 </part>
