@@ -15,51 +15,51 @@
     <child name='complex-types' schema='org.gtk.test.complex-types'/>
     <child name='localized' schema='org.gtk.test.localized'/>
   </schema>
-  <schema id="org.gtk.test.basic-types" path="/tests/basic_types/">
-    <key name="test_boolean" type="b">
+  <schema id="org.gtk.test.basic-types" path="/tests/basic-types/">
+    <key name="test-boolean" type="b">
       <default>true</default>
     </key>
-    <key name="test_byte" type="y">
+    <key name="test-byte" type="y">
       <default>25</default>
     </key>
-    <key name="test_int16" type="n">
+    <key name="test-int16" type="n">
       <default>-1234</default>
     </key>
-    <key name="test_uint16" type="q">
+    <key name="test-uint16" type="q">
       <default>1234</default>
     </key>
-    <key name="test_int32" type="i">
+    <key name="test-int32" type="i">
       <default>-123456</default>
     </key>
-    <key name="test_uint32" type="u">
+    <key name="test-uint32" type="u">
       <default>123456</default>
     </key>
-    <key name="test_int64" type="x">
+    <key name="test-int64" type="x">
       <default>-123456789</default>
     </key>
-    <key name="test_uint64" type="t">
+    <key name="test-uint64" type="t">
       <default>123456789</default>
     </key>
-    <key name="test_double" type="d">
+    <key name="test-double" type="d">
       <default>123.456</default>
     </key>
-    <key name="test_string" type="s">
+    <key name="test-string" type="s">
       <default>"a string, it seems"</default>
     </key>
-    <key name="test_objectpath" type="o">
+    <key name="test-objectpath" type="o">
       <default>"/a/object/path"</default>
     </key>
   </schema>
-  <schema id="org.gtk.test.complex-types" path="/tests/complex_types/">
-    <key name="test_tuple" type="(s(ii))">
+  <schema id="org.gtk.test.complex-types" path="/tests/complex-types/">
+    <key name="test-tuple" type="(s(ii))">
       <default>("one",(2,3))</default>
     </key>
-    <key name="test_array" type="ai">
+    <key name="test-array" type="ai">
       <default>[0,1,2,3,4,5]</default>
     </key>
   </schema>
   <schema id="org.gtk.test.localized" path="/tests/localized/" gettext-domain="glib20">
-    <key name="error_message" type="s">
+    <key name="error-message" type="s">
       <default l10n="messages">"Unnamed"</default>
     </key>
   </schema>

@@ -119,91 +119,91 @@ test_basic_types (void)
 
   settings = g_settings_new ("org.gtk.test.basic-types");
 
-  g_settings_get (settings, "test_boolean", "b", &b);
+  g_settings_get (settings, "test-boolean", "b", &b);
   g_assert_cmpint (b, ==, 1);
 
-  g_settings_set (settings, "test_boolean", "b", 0);
-  g_settings_get (settings, "test_boolean", "b", &b);
+  g_settings_set (settings, "test-boolean", "b", 0);
+  g_settings_get (settings, "test-boolean", "b", &b);
   g_assert_cmpint (b, ==, 0);
 
-  g_settings_get (settings, "test_byte", "y", &byte);
+  g_settings_get (settings, "test-byte", "y", &byte);
   g_assert_cmpint (byte, ==, 25);
 
-  g_settings_set (settings, "test_byte", "y", G_MAXUINT8);
-  g_settings_get (settings, "test_byte", "y", &byte);
+  g_settings_set (settings, "test-byte", "y", G_MAXUINT8);
+  g_settings_get (settings, "test-byte", "y", &byte);
   g_assert_cmpint (byte, ==, G_MAXUINT8);
 
-  g_settings_get (settings, "test_int16", "n", &i16);
+  g_settings_get (settings, "test-int16", "n", &i16);
   g_assert_cmpint (i16, ==, -1234);
 
-  g_settings_set (settings, "test_int16", "n", G_MININT16);
-  g_settings_get (settings, "test_int16", "n", &i16);
+  g_settings_set (settings, "test-int16", "n", G_MININT16);
+  g_settings_get (settings, "test-int16", "n", &i16);
   g_assert_cmpint (i16, ==, G_MININT16);
 
-  g_settings_set (settings, "test_int16", "n", G_MAXINT16);
-  g_settings_get (settings, "test_int16", "n", &i16);
+  g_settings_set (settings, "test-int16", "n", G_MAXINT16);
+  g_settings_get (settings, "test-int16", "n", &i16);
   g_assert_cmpint (i16, ==, G_MAXINT16);
 
-  g_settings_get (settings, "test_uint16", "q", &u16);
+  g_settings_get (settings, "test-uint16", "q", &u16);
   g_assert_cmpuint (u16, ==, 1234);
 
-  g_settings_set (settings, "test_uint16", "q", G_MAXUINT16);
-  g_settings_get (settings, "test_uint16", "q", &u16);
+  g_settings_set (settings, "test-uint16", "q", G_MAXUINT16);
+  g_settings_get (settings, "test-uint16", "q", &u16);
   g_assert_cmpuint (u16, ==, G_MAXUINT16);
 
-  g_settings_get (settings, "test_int32", "i", &i32);
+  g_settings_get (settings, "test-int32", "i", &i32);
   g_assert_cmpint (i32, ==, -123456);
 
-  g_settings_set (settings, "test_int32", "i", G_MININT32);
-  g_settings_get (settings, "test_int32", "i", &i32);
+  g_settings_set (settings, "test-int32", "i", G_MININT32);
+  g_settings_get (settings, "test-int32", "i", &i32);
   g_assert_cmpint (i32, ==, G_MININT32);
 
-  g_settings_set (settings, "test_int32", "i", G_MAXINT32);
-  g_settings_get (settings, "test_int32", "i", &i32);
+  g_settings_set (settings, "test-int32", "i", G_MAXINT32);
+  g_settings_get (settings, "test-int32", "i", &i32);
   g_assert_cmpint (i32, ==, G_MAXINT32);
 
-  g_settings_get (settings, "test_uint32", "u", &u32);
+  g_settings_get (settings, "test-uint32", "u", &u32);
   g_assert_cmpuint (u32, ==, 123456);
 
-  g_settings_set (settings, "test_uint32", "u", G_MAXUINT32);
-  g_settings_get (settings, "test_uint32", "u", &u32);
+  g_settings_set (settings, "test-uint32", "u", G_MAXUINT32);
+  g_settings_get (settings, "test-uint32", "u", &u32);
   g_assert_cmpuint (u32, ==, G_MAXUINT32);
 
-  g_settings_get (settings, "test_int64", "x", &i64);
+  g_settings_get (settings, "test-int64", "x", &i64);
   g_assert_cmpuint (i64, ==, -123456789);
 
-  g_settings_set (settings, "test_int64", "x", G_MININT64);
-  g_settings_get (settings, "test_int64", "x", &i64);
+  g_settings_set (settings, "test-int64", "x", G_MININT64);
+  g_settings_get (settings, "test-int64", "x", &i64);
   g_assert_cmpuint (i64, ==, G_MININT64);
 
-  g_settings_set (settings, "test_int64", "x", G_MAXINT64);
-  g_settings_get (settings, "test_int64", "x", &i64);
+  g_settings_set (settings, "test-int64", "x", G_MAXINT64);
+  g_settings_get (settings, "test-int64", "x", &i64);
   g_assert_cmpuint (i64, ==, G_MAXINT64);
 
-  g_settings_get (settings, "test_uint64", "t", &u64);
+  g_settings_get (settings, "test-uint64", "t", &u64);
   g_assert_cmpuint (u64, ==, 123456789);
 
-  g_settings_set (settings, "test_uint64", "t", G_MAXUINT64);
-  g_settings_get (settings, "test_uint64", "t", &u64);
+  g_settings_set (settings, "test-uint64", "t", G_MAXUINT64);
+  g_settings_get (settings, "test-uint64", "t", &u64);
   g_assert_cmpuint (u64, ==, G_MAXUINT64);
 
-  g_settings_get (settings, "test_double", "d", &d);
+  g_settings_get (settings, "test-double", "d", &d);
   g_assert_cmpfloat (d, ==, 123.456);
 
-  g_settings_set (settings, "test_double", "d", G_MINDOUBLE);
-  g_settings_get (settings, "test_double", "d", &d);
+  g_settings_set (settings, "test-double", "d", G_MINDOUBLE);
+  g_settings_get (settings, "test-double", "d", &d);
   g_assert_cmpfloat (d, ==, G_MINDOUBLE);
 
-  g_settings_set (settings, "test_double", "d", G_MAXDOUBLE);
-  g_settings_get (settings, "test_double", "d", &d);
+  g_settings_set (settings, "test-double", "d", G_MAXDOUBLE);
+  g_settings_get (settings, "test-double", "d", &d);
   g_assert_cmpfloat (d, ==, G_MAXDOUBLE);
 
-  g_settings_get (settings, "test_string", "s", &str);
+  g_settings_get (settings, "test-string", "s", &str);
   g_assert_cmpstr (str, ==, "a string, it seems");
   g_free (str);
   str = NULL;
 
-  g_settings_get (settings, "test_objectpath", "o", &str);
+  g_settings_get (settings, "test-objectpath", "o", &str);
   g_assert_cmpstr (str, ==, "/a/object/path");
   g_free (str);
   str = NULL;
@@ -219,22 +219,22 @@ test_complex_types (void)
 
   settings = g_settings_new ("org.gtk.test.complex-types");
 
-  g_settings_get (settings, "test_tuple", "(s(ii))", &s, &i1, &i2);
+  g_settings_get (settings, "test-tuple", "(s(ii))", &s, &i1, &i2);
   g_assert_cmpstr (s, ==, "one");
   g_assert_cmpint (i1,==, 2);
   g_assert_cmpint (i2,==, 3);
-  g_free (s);
+  g_free (s) ;
   s = NULL;
 
-  g_settings_set (settings, "test_tuple", "(s(ii))", "none", 0, 0);
-  g_settings_get (settings, "test_tuple", "(s(ii))", &s, &i1, &i2);
+  g_settings_set (settings, "test-tuple", "(s(ii))", "none", 0, 0);
+  g_settings_get (settings, "test-tuple", "(s(ii))", &s, &i1, &i2);
   g_assert_cmpstr (s, ==, "none");
   g_assert_cmpint (i1,==, 0);
   g_assert_cmpint (i2,==, 0);
   g_free (s);
   s = NULL;
 
-  g_settings_get (settings, "test_array", "ai", &iter);
+  g_settings_get (settings, "test-array", "ai", &iter);
   g_assert_cmpint (g_variant_iter_n_children (iter), ==, 6);
   g_assert (g_variant_iter_next (iter, "i", &i1));
   g_assert_cmpint (i1, ==, 0);
@@ -513,7 +513,7 @@ test_l10n (void)
   settings = g_settings_new ("org.gtk.test.localized");
 
   setlocale (LC_MESSAGES, "C");
-  g_settings_get (settings, "error_message", "s", &str);
+  g_settings_get (settings, "error-message", "s", &str);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unnamed");
@@ -521,7 +521,7 @@ test_l10n (void)
   str = NULL;
 
   setlocale (LC_MESSAGES, "de_DE");
-  g_settings_get (settings, "error_message", "s", &str);
+  g_settings_get (settings, "error-message", "s", &str);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unbenannt");

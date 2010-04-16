@@ -1,3 +1,24 @@
+/*
+ * Copyright © 2010 Codethink Limited
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the licence, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ryan Lortie <desrt@desrt.ca>
+ */
+
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -27,6 +48,67 @@ typedef struct
   gchar *context;
   GVariantType *type;
 } ParseState;
+
+static gboolean
+is_valid_keyname (const gchar  *key,
+                  GError      **error)
+{
+  gint i;
+
+  if (key[0] == '\0')
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "empty names are not permitted");
+      return FALSE;
+    }
+
+  if (!g_ascii_islower (key[0]))
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "invalid name '%s': names must begin "
+                   "with a lowercase letter", key);
+      return FALSE;
+    }
+
+  for (i = 1; key[i]; i++)
+    {
+      if (key[i] != '-' &&
+          !g_ascii_islower (key[i]) &&
+          !g_ascii_isdigit (key[i]))
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       "invalid name '%s': invalid character '%c'; "
+                       "only lowercase letters, numbers and dash ('-') "
+                       "are permitted.", key, key[i]);
+          return FALSE;
+        }
+
+      if (key[i] == '-' && key[i + 1] == '-')
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       "invalid name '%s': two successive dashes ('--') are "
+                       "not permitted.", key);
+          return FALSE;
+        }
+    }
+
+  if (key[i - 1] == '-')
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "invalid name '%s': the last character may not be a "
+                   "dash ('-').", key);
+      return FALSE;
+    }
+
+  if (i > 32)
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "invalid name '%s': maximum length is 32", key);
+      return FALSE;
+    }
+
+  return TRUE;
+}
 
 static void
 start_element (GMarkupParseContext  *context,
@@ -98,22 +180,31 @@ start_element (GMarkupParseContext  *context,
 
           if (COLLECT (STRING, "name", &name, STRING, "type", &type))
             {
+              if (!is_valid_keyname (name, error))
+                return;
+
               if (!g_hash_table_lookup (state->schema, name))
                 {
                   state->key = gvdb_hash_table_insert (state->schema, name);
                   gvdb_item_set_parent (state->key, state->schema_root);
                 }
               else
-                g_set_error (error, G_MARKUP_ERROR,
-                             G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<key name='%s'> already specified", name);
+                {
+                  g_set_error (error, G_MARKUP_ERROR,
+                               G_MARKUP_ERROR_INVALID_CONTENT,
+                               "<key name='%s'> already specified", name);
+                  return;
+                }
 
               if (g_variant_type_string_is_valid (type))
                 state->type = g_variant_type_new (type);
               else
-                g_set_error (error, G_MARKUP_ERROR,
-                             G_MARKUP_ERROR_INVALID_CONTENT,
-                             "invalid GVariant type string");
+                {
+                  g_set_error (error, G_MARKUP_ERROR,
+                               G_MARKUP_ERROR_INVALID_CONTENT,
+                               "invalid GVariant type string '%s'", type);
+                  return;
+                }
 
               g_variant_builder_init (&state->key_options,
                                       G_VARIANT_TYPE ("a{sv}"));
@@ -128,6 +219,9 @@ start_element (GMarkupParseContext  *context,
           if (COLLECT (STRING, "name", &name, STRING, "schema", &schema))
             {
               gchar *childname;
+
+              if (!is_valid_keyname (name, error))
+                return;
 
               childname = g_strconcat (name, "/", NULL);
 
@@ -178,20 +272,26 @@ start_element (GMarkupParseContext  *context,
                       else if (strcmp (l10n, "time") == 0)
                         state->l10n = 't';
                       else
-                        g_set_error (error, G_MARKUP_ERROR,
-                                     G_MARKUP_ERROR_INVALID_CONTENT,
-                                     "unsupported l10n category: %s", l10n);
+                        {
+                          g_set_error (error, G_MARKUP_ERROR,
+                                       G_MARKUP_ERROR_INVALID_CONTENT,
+                                       "unsupported l10n category: %s", l10n);
+                          return;
+                        }
                     }
                 }
               else
                 {
                   state->l10n = '\0';
 
-                   if (state->context != NULL)
-                     g_set_error (error, G_MARKUP_ERROR,
-                                  G_MARKUP_ERROR_INVALID_CONTENT,
-                                  "translation context given for "
-                                  " value without l10n enabled");
+                  if (state->context != NULL)
+                    {
+                      g_set_error (error, G_MARKUP_ERROR,
+                                   G_MARKUP_ERROR_INVALID_CONTENT,
+                                   "translation context given for "
+                                   " value without l10n enabled");
+                      return;
+                    }
                 }
 
               state->string = g_string_new (NULL);
@@ -240,11 +340,11 @@ start_element (GMarkupParseContext  *context,
     }
 
   if (container)
-    g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT, 
+    g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                  "Element <%s> not allowed inside <%s>\n",
                  element_name, container);
   else
-    g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT, 
+    g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                  "Element <%s> not allowed at toplevel\n", element_name);
 }
 
