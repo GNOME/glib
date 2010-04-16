@@ -274,6 +274,19 @@ start_monitoring_trash (void)
         </programlisting>
       </para>
       <para>
+        GSettings schemas have more stringent restrictions on key names
+        than GConf. Key names in GSettings are restricted to at most 32
+        characters, and must only consist of lowercase characters, numbers
+        and dashes, with no consecutive dashes. The first character must
+        not be a number or dash, and the last character cannot be '-'.
+        The <link linkend="gschema-compile">gschema-compile</link> schema
+        compiler has a <option>--allow-any-name</option> that lets you
+        ignore these restrictions. Note that this option is only meant
+        to facilitate the migration from GConf, and you should make your
+        key names follow the more stringent GSettings rules when you
+        migrate your data from GConf to dconf.
+      </para>
+      <para>
         GIO comes with a commandline tool
         <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
         that can help with the task of converting a GConf schema into
