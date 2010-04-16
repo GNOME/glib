@@ -1731,6 +1731,21 @@ g_settings_unbind (gpointer     object,
   g_object_set_qdata (object, binding_quark, NULL);
 }
 
+/**
+ * g_settings_get_string:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: a newly-allocated string
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for strings.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type string.
+ *
+ * Since: 2.26
+ */
 gchar *
 g_settings_get_string (GSettings   *settings,
                        const gchar *key)
@@ -1745,6 +1760,23 @@ g_settings_get_string (GSettings   *settings,
   return result;
 }
 
+/**
+ * g_settings_set_string:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for strings.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type string.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_set_string (GSettings   *settings,
                        const gchar *key,
@@ -1753,6 +1785,21 @@ g_settings_set_string (GSettings   *settings,
   return g_settings_set_value (settings, key, g_variant_new_string (value));
 }
 
+/**
+ * g_settings_get_int:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: an integer
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for 32-bit integers.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type int32.
+ *
+ * Since: 2.26
+ */
 gint
 g_settings_get_int (GSettings   *settings,
                     const gchar *key)
@@ -1767,6 +1814,23 @@ g_settings_get_int (GSettings   *settings,
   return result;
 }
 
+/**
+ * g_settings_set_int:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for 32-bit integers.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type int32.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_set_int (GSettings   *settings,
                     const gchar *key,
@@ -1775,6 +1839,21 @@ g_settings_set_int (GSettings   *settings,
   return g_settings_set_value (settings, key, g_variant_new_int32 (value));
 }
 
+/**
+ * g_settings_get_double:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: a double
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for doubles.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type double.
+ *
+ * Since: 2.26
+ */
 gdouble
 g_settings_get_double (GSettings   *settings,
                        const gchar *key)
@@ -1789,6 +1868,23 @@ g_settings_get_double (GSettings   *settings,
   return result;
 }
 
+/**
+ * g_settings_set_double:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for doubles.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type double.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_set_double (GSettings   *settings,
                        const gchar *key,
@@ -1797,6 +1893,21 @@ g_settings_set_double (GSettings   *settings,
   return g_settings_set_value (settings, key, g_variant_new_double (value));
 }
 
+/**
+ * g_settings_get_boolean:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: a boolean
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for booleans.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type boolean.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_get_boolean (GSettings  *settings,
                        const gchar *key)
@@ -1811,6 +1922,23 @@ g_settings_get_boolean (GSettings  *settings,
   return result;
 }
 
+/**
+ * g_settings_set_boolean:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for booleans.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type boolean.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_set_boolean (GSettings  *settings,
                        const gchar *key,
@@ -1819,6 +1947,21 @@ g_settings_set_boolean (GSettings  *settings,
   return g_settings_set_value (settings, key, g_variant_new_boolean (value));
 }
 
+/**
+ * g_settings_get_strv:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: a newly-allocated, %NULL-terminated array of strings
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for string arrays.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type 'string array'.
+ *
+ * Since: 2.26
+ */
 gchar **
 g_settings_get_strv (GSettings   *settings,
                      const gchar *key,
@@ -1834,6 +1977,23 @@ g_settings_get_strv (GSettings   *settings,
   return result;
 }
 
+/**
+ * g_settings_set_strv:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for string arrays.
+ *
+ * It is a programmer error to pass a @key that isn't valid for
+ * @settings or is not of type 'string array'.
+ *
+ * Since: 2.26
+ */
 gboolean
 g_settings_set_strv (GSettings           *settings,
                      const gchar         *key,

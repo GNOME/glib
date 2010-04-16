@@ -497,6 +497,7 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * @key: the name of the key
  * @value: a #GVariant value to write to this key
  * @origin_tag: the origin tag
+ * @returns: %TRUE if the write succeeded, %FALSE if the key was not writable
  *
  * Writes exactly one key.
  *

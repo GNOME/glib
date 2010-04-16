@@ -2102,14 +2102,26 @@ g_settings_new
 g_settings_new_with_path
 g_settings_get_value
 g_settings_set_value
-g_settings_get
-g_settings_set
 g_settings_is_writable
 g_settings_delay
 g_settings_apply
 g_settings_revert
 g_settings_get_has_unapplied
 g_settings_get_child
+
+<SUBSECTION Convenience>
+g_settings_get
+g_settings_set
+g_settings_get_boolean
+g_settings_set_boolean
+g_settings_get_int
+g_settings_set_int
+g_settings_get_double
+g_settings_set_double
+g_settings_get_string
+g_settings_set_string
+g_settings_get_strv
+g_settings_set_strv
 
 <SUBSECTION Binding>
 GSettingsBindFlags
