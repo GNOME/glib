@@ -79,7 +79,9 @@
  * <!ELEMENT default (#PCDATA) >
  * <!-- the presence of the l10n attribute marks a default value for
  *      translation, its value is the gettext category to use -->
- * <!ATTLIST default l10n (messages|time) #IMPLIED >
+ * <!-- if context is present, it specifies msgctxt to use -->
+ * <!ATTLIST default l10n (messages|time) #IMPLIED
+ *                   context CDATA #IMPLIED >
  *
  * <!ELEMENT summary (#PCDATA) >
  * <!ELEMENT description (#PCDATA) >
