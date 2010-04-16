@@ -27,6 +27,7 @@
 #include "giomodule.h"
 #include "giomodule-priv.h"
 #include "glocalfilemonitor.h"
+#include "gkeyfilesettingsbackend.h"
 #include "glocaldirectorymonitor.h"
 #include "gnativevolumemonitor.h"
 #include "gvfs.h"
@@ -583,6 +584,7 @@ _g_io_modules_ensure_loaded (void)
 #ifdef G_OS_WIN32
       _g_winhttp_vfs_get_type ();
 #endif
+      g_keyfile_settings_backend_get_type ();
       _g_local_vfs_get_type ();
     }
 
