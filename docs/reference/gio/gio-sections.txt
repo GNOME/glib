@@ -2105,8 +2105,7 @@ g_settings_set_value
 g_settings_get
 g_settings_set
 g_settings_is_writable
-g_settings_get_delay_apply
-g_settings_set_delay_apply
+g_settings_delay
 g_settings_apply
 g_settings_revert
 g_settings_get_has_unapplied
