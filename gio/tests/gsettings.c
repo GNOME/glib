@@ -36,6 +36,7 @@ test_basic (void)
   str = NULL;
 
   g_settings_set (settings, "greeting", "s", "this is the end");
+  g_object_unref (settings);
 }
 
 static void
@@ -205,6 +206,7 @@ test_basic_types (void)
 
   g_settings_get (settings, "test-objectpath", "o", &str);
   g_assert_cmpstr (str, ==, "/a/object/path");
+  g_object_unref (settings);
   g_free (str);
   str = NULL;
 }
@@ -250,6 +252,8 @@ test_complex_types (void)
   g_assert_cmpint (i1, ==, 5);
   g_assert (!g_variant_iter_next (iter, "i", &i1));
   g_variant_iter_free (iter);
+
+  g_object_unref (settings);
 }
 
 static gboolean changed_cb_called;
@@ -287,6 +291,8 @@ test_changes (void)
   g_settings_set (settings2, "greeting", "s", "hi");
   g_assert (changed_cb_called);
 
+  g_object_unref (settings2);
+  g_object_unref (settings);
 }
 
 static gboolean changed_cb_called2;
@@ -362,6 +368,9 @@ test_delay_apply (void)
 
   g_assert (!g_settings_get_has_unapplied (settings));
   g_assert (!g_settings_get_has_unapplied (settings2));
+
+  g_object_unref (settings2);
+  g_object_unref (settings);
 }
 
 static void
@@ -401,6 +410,9 @@ test_delay_revert (void)
   g_assert_cmpstr (str, ==, "top o' the morning");
   g_free (str);
   str = NULL;
+
+  g_object_unref (settings2);
+  g_object_unref (settings);
 }
 
 static void
@@ -472,6 +484,9 @@ test_atomic (void)
   g_assert_cmpstr (str, ==, "atomic bye-bye");
   g_free (str);
   str = NULL;
+
+  g_object_unref (settings2);
+  g_object_unref (settings);
 }
 
 static gboolean
@@ -522,6 +537,7 @@ test_l10n (void)
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unbenannt");
+  g_object_unref (settings);
   g_free (str);
   str = NULL;
 

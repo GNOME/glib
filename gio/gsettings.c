@@ -114,8 +114,7 @@ struct _GSettingsPrivate
   gchar *context;
   gchar *path;
 
-  guint unapplied_handler;
-  gboolean delayed;
+  GDelayedSettingsBackend *delayed;
 };
 
 enum
@@ -242,6 +241,7 @@ settings_backend_writable_changed (GSettingsBackend *backend,
       const gchar *string;
       GQuark quark;
 
+      quark = g_quark_from_string (key + i);
       string = g_quark_to_string (quark);
 
       quark = g_quark_from_string (key + i);
@@ -358,12 +358,6 @@ g_settings_init (GSettings *settings)
                                                 GSettingsPrivate);
 }
 
-static void
-g_settings_notify_unapplied (GSettings *settings)
-{
-  g_object_notify (G_OBJECT (settings), "has-unapplied");
-}
-
 /**
  * g_settings_set_delay_apply:
  * @settings: a #GSettings object
@@ -394,21 +388,6 @@ g_settings_delay (GSettings *settings)
                             settings_backend_writable_changed,
                             settings_backend_path_writable_changed,
                             settings);
-}
-
-/**
- * g_settings_get_delay_apply:
- * @settings: a #GSettings object
- * @returns: %TRUE if changes in @settings are not applied immediately
- *
- * Returns whether the #GSettings object is in 'delay-apply' mode.
- *
- * Since: 2.26
- */
-gboolean
-g_settings_get_delay_apply (GSettings *settings)
-{
-  return settings->priv->delayed;
 }
 
 /**

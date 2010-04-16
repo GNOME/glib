@@ -157,7 +157,8 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
                                      tmp, delayed->priv);
       g_tree_unref (tmp);
 
-      g_object_notify (G_OBJECT (delayed), "has-unapplied");
+      if (delayed->priv->owner)
+        g_object_notify (delayed->priv->owner, "has-unapplied");
     }
 }
 
@@ -173,7 +174,8 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
       g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed), tmp, NULL);
       g_tree_destroy (tmp);
 
-      g_object_notify (G_OBJECT (delayed), "has-unapplied");
+      if (delayed->priv->owner)
+        g_object_notify (delayed->priv->owner, "has-unapplied");
     }
 }
 
@@ -269,7 +271,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   backend_class->reset_path = g_delayed_settings_backend_reset_path;
   backend_class->get_writable = g_delayed_settings_backend_get_writable;
   backend_class->subscribe = g_delayed_settings_backend_subscribe;
-  backend_class->unsubscribe = g_delayed_settings_backend_subscribe;
+  backend_class->unsubscribe = g_delayed_settings_backend_unsubscribe;
 
   object_class->finalize = g_delayed_settings_backend_finalize;
 }
