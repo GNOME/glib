@@ -535,8 +535,8 @@ int
 main (int argc, char *argv[])
 {
   g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
-  g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
-  g_setenv ("GSETTINGS_MEMORY_BACKEND_STORE", "./store", TRUE);
+  g_setenv ("GSETTINGS_BACKEND", "keyfile", TRUE);
+  g_setenv ("GSETTINGS_KEYFILE_BACKEND_STORE", "./store", TRUE);
 
   g_remove ("./store");
 

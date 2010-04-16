@@ -89,8 +89,8 @@ settings_sources = \
 	gvdb/gvdb-reader.c		\
 	gdelayedsettingsbackend.h	\
 	gdelayedsettingsbackend.c	\
-	gmemorysettingsbackend.h	\
-	gmemorysettingsbackend.c	\
+	gkeyfilesettingsbackend.h	\
+	gkeyfilesettingsbackend.c	\
 	gnullsettingsbackend.h	\
 	gnullsettingsbackend.c	\
 	gsettingsbackendinternal.h	\
