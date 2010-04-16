@@ -61,6 +61,8 @@ GVariant *              g_settings_schema_get_value                     (GSettin
                                                                          GVariant        **options);
 gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
                                                                          const gchar      *key);
+const GQuark *          g_settings_schema_list                          (GSettingsSchema  *schema,
+                                                                         gint             *n_items);
 
 G_END_DECLS
 

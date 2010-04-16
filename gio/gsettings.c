@@ -225,20 +225,6 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 static void
-settings_backend_path_writable_changed (GSettingsBackend *backend,
-                                        const gchar      *path,
-                                        gpointer          user_data)
-{
-  GSettings *settings = G_SETTINGS (user_data);
-
-  g_assert (settings->priv->backend == backend);
-
-  if (g_str_has_prefix (settings->priv->path, path))
-    g_signal_emit (settings,
-                   g_settings_signals[SIGNAL_ALL_WRITABLE_CHANGED], 0);
-}
-
-static void
 settings_backend_writable_changed (GSettingsBackend *backend,
                                    const gchar      *key,
                                    gpointer          user_data)
@@ -253,12 +239,80 @@ settings_backend_writable_changed (GSettingsBackend *backend,
   if (settings->priv->path[i] == '\0' &&
       g_settings_schema_has_key (settings->priv->schema, key + i))
     {
+      const gchar *string;
       GQuark quark;
 
+      string = g_quark_to_string (quark);
+
       quark = g_quark_from_string (key + i);
+      g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
+                     quark, string);
+
+      /* if 'writeable' changes the key value may change as a
+       * side-effect (consider the admin setting a mandatory key over
+       * top of an existing key).  so, signal that possibility.
+       */
       g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                     quark, g_quark_to_string (quark));
+                     quark, string);
     }
+}
+
+static void
+settings_backend_path_writable_changed (GSettingsBackend *backend,
+                                        const gchar      *path,
+                                        gpointer          user_data)
+{
+  GSettings *settings = G_SETTINGS (user_data);
+
+  g_assert (settings->priv->backend == backend);
+
+  if (g_str_has_prefix (settings->priv->path, path))
+    {
+      g_signal_emit (settings,
+                     g_settings_signals[SIGNAL_ALL_WRITABLE_CHANGED], 0);
+      g_signal_emit (settings, g_settings_signals[SIGNAL_ALL_CHANGED], 0);
+    }
+}
+
+
+static void
+real_all_writable_changed (GSettings *settings)
+{
+  const GQuark *list;
+  gint n_items;
+  gint i;
+
+  list = g_settings_schema_list (settings->priv->schema, &n_items);
+
+  for (i = 0; i < n_items; i++)
+    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
+                   list[i], g_quark_to_string (list[i]));
+}
+
+static void
+real_all_changed (GSettings *settings)
+{
+  const GQuark *list;
+  gint n_items;
+  gint i;
+
+  list = g_settings_schema_list (settings->priv->schema, &n_items);
+
+  for (i = 0; i < n_items; i++)
+    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
+                   list[i], g_quark_to_string (list[i]));
+}
+
+static void
+real_keys_changed (GSettings    *settings,
+                   const GQuark *items,
+                   gint          n_items)
+{
+  gint i;
+
+  for (i = 0; i < n_items; i++)
+    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
+                   items[i], g_quark_to_string (items[i]));
 }
 
 static void
@@ -500,14 +554,10 @@ static void
 g_settings_class_init (GSettingsClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-/*
-  class->all_writable_changed = g_settings_real_all_writable_changed;
-  class->all_changed = g_settings_real_all_changed;
-  class->keys_changed = g_settings_real_keys_changed;
-  class->writable_changed = g_settings_real_writable_changed;
-  class->changed = g_settings_real_changed;
-  class->destroyed = g_settings_real_destroyed;
-*/
+  class->all_writable_changed = real_all_writable_changed;
+  class->all_changed = real_all_changed;
+  class->keys_changed = real_keys_changed;
+
   object_class->set_property = g_settings_set_property;
   object_class->get_property = g_settings_get_property;
   object_class->constructed = g_settings_constructed;
