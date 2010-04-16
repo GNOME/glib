@@ -1344,13 +1344,11 @@ g_file_descriptor_based_get_fd
 #if IN_HEADER(__G_SETTINGS_BACKEND_H__)
 #if IN_FILE(__G_SETTINGS_BACKEND_C__)
 g_settings_backend_get_type
-
 g_settings_backend_changed
 g_settings_backend_keys_changed
 g_settings_backend_path_changed
 g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
-
 g_settings_backend_changed_tree
 #endif
 #endif
