@@ -18,13 +18,11 @@
  */
 
 #include "config.h"
-#include <glib.h>
-#include <glibintl.h>
 
 #include "gsettingsschema.h"
-
 #include "gvdb/gvdb-reader.h"
 
+#include <glibintl.h>
 
 G_DEFINE_TYPE (GSettingsSchema, g_settings_schema, G_TYPE_OBJECT)
 
