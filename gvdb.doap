@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Project xmlns='http://usefulinc.com/ns/doap#'
+         xmlns:foaf='http://xmlns.com/foaf/0.1/'
+         xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+         xmlns:gnome='http://api.gnome.org/doap-extensions#'>
+
+  <name xml:lang='en'>gvdb</name>
+  <shortdesc xml:lang='en'>GVariant Database file</shortdesc>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Ryan Lortie</foaf:name>
+      <foaf:mbox rdf:resource='mailto:desrt@desrt.ca'/>
+      <gnome:userid>ryanl</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+</Project>
