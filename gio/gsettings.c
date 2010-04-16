@@ -1623,7 +1623,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
       return;
     }
 
-  if (get_mapping == NULL || set_mapping == NULL)
+  if ((get_mapping == NULL && (flags & G_SETTINGS_BIND_GET)) ||
+      (set_mapping == NULL && (flags & G_SETTINGS_BIND_SET)))
     {
       gboolean ok = FALSE;
 
