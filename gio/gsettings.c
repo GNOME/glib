@@ -43,7 +43,11 @@
  *
  * Unlike other configuration systems (like GConf), GSettings does not
  * restrict keys to basic types like strings and numbers. GSettings stores
- * values as #GVariant, and allows any #GVariantType for keys.
+ * values as #GVariant, and allows any #GVariantType for keys. Key names
+ * are restricted to lowercase characters, numbers and '-'. Furthermore,
+ * the names must begin with a lowercase character, must not end
+ * with a '-', and must not contain consecutive dashes. Key names can
+ * be up to 32 characters long.
  *
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
@@ -98,8 +102,8 @@
  * ]|
  */
 
-/* XXX talk about key and schema naming conventions,
- * explain child settings
+/* TODO:
+ * Talk about schema naming conventions, explain child settings
  */
 
 struct _GSettingsPrivate
