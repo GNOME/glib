@@ -172,7 +172,9 @@ start_monitoring_trash (void)
         <listitem><para>Conceptual differences</para></listitem>
         <listitem><para>GConfClient API conversion</para></listitem>
         <listitem><para>Change notification</para></listitem>
+        <listitem><para>Defaults</para></listitem>
         <listitem><para>Schema conversion</para></listitem>
+        <listitem><para>Data conversion</para></listitem>
       </itemizedlist>
     </para>
   </chapter>
