@@ -1477,6 +1477,27 @@ g_settings_get_mapping (GValue   *value,
   return FALSE;
 }
 
+/**
+ * g_settings_bind:
+ * @settings: a #GSettings object
+ * @key: the key to bind
+ * @object: a #GObject
+ * @property: the name of the property to bind
+ * @flags: flags for the binding
+ *
+ * Create a binding between the @key in the @settings object
+ * and the property @property of @object, using the default GIO
+ * mapping functions to map between the settings and property values.
+ *
+ * The default GIO mapping functions handle booleans, numeric and
+ * string types in a straightforward way. See g_settings_bind_with_mapping()
+ * if you need a custom mapping.
+ *
+ * Note that the lifecycle of the binding is tied to the
+ * object.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_bind (GSettings          *settings,
                  const gchar        *key,
@@ -1488,6 +1509,30 @@ g_settings_bind (GSettings          *settings,
                                 flags, NULL, NULL, NULL);
 }
 
+/**
+ * g_settings_bind_with_mapping:
+ * @settings: a #GSettings object
+ * @key: the key to bind
+ * @object: a #GObject
+ * @property: the name of the property to bind
+ * @flags: flags for the binding
+ * @get_mapping: a function that gets called to convert values
+ *     from @settings to @object, or %NULL to use the default GIO mapping
+ * @set_mapping: a function that gets called to convert values
+ *     from @object to @settings, or %NULL to use the default GIO mapping
+ * @user_data: data that gets passed to @get_mapping and @set_mapping
+ *
+ * Create a binding between the @key in the @settings object
+ * and the property @property of @object, using the provided mapping
+ * functions to map between settings and property values.
+ *
+ * Note that the lifecycle of the binding is tied to the object,
+ * and that you can have only one binding per object property.
+ * If you bind the same property twice on the same object, the second
+ * binding overrides the first one.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_bind_with_mapping (GSettings               *settings,
                               const gchar             *key,
@@ -1628,6 +1673,19 @@ g_settings_bind_with_mapping (GSettings               *settings,
                            binding, g_settings_binding_free);
 }
 
+/**
+ * g_settings_unbind:
+ * @object: the object
+ * @property: the property whose binding is removed
+ *
+ * Removes an existing binding for @property on @object.
+ *
+ * Note that bindings are automatically removed when the
+ * object is finalized, so it is rarely necessary to call this
+ * function.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_unbind (gpointer     object,
                    const gchar *property)

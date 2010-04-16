@@ -131,14 +131,47 @@ void                    g_settings_apply                                (GSettin
 void                    g_settings_revert                               (GSettings          *settings);
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
 
+/**
+ * GSettingsBindSetMapping:
+ * @value: a #GValue containing the property value to map
+ * @expected_type: the #GVariantType to create
+ * @user_data: user data that was specified when the binding was created
+ * @returns: a new #GVariant holding the data from @value,
+ *     or %NULL in case of an error
+ *
+ * The type for the function that is used to convert an object property
+ * value to a #GVariant for storing it in #GSettings.
+ */
 typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
                                                                          const GVariantType *expected_type,
                                                                          gpointer            user_data);
 
+/**
+ * GSettingsBindGetMapping:
+ * @value: return location for the property value
+ * @variant: the #GVariant
+ * @user_data: user data that was specified when the binding was created
+ * @returns: %TRUE if the conversion succeeded, %FALSE in case of an error
+ *
+ * The type for the function that is used to convert from #GSettings to
+ * an object property. The @value is already initialized to hold values
+ * of the appropriate type.
+ */
 typedef gboolean      (*GSettingsBindGetMapping)                        (GValue             *value,
                                                                          GVariant           *variant,
                                                                          gpointer            user_data);
 
+/**
+ * GSettingsBindFlags:
+ * @G_SETTINGS_BIND_DEFAULT: Equivalent to <literal>G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET</literal>
+ * @G_SETTINGS_BIND_GET: Update the #GObject property when the #GSettings key changes
+ * @G_SETTINGS_BIND_SET: Update the #GSettings key when the #GObject property changes
+ * @G_SETTINGS_BIND_NO_SENSITIVITY: Do not try to bind a "sensitivity" property to #GSettings writability
+ *
+ * Flags used when creating a binding. These flags determine in which
+ * direction the binding works. The default is to synchronize in both
+ * directions.
+ */
 typedef enum
 {
   G_SETTINGS_BIND_DEFAULT,
