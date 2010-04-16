@@ -1376,5 +1376,15 @@ g_settings_revert
 g_settings_set
 g_settings_set_value
 g_settings_unbind
+g_settings_get_int
+g_settings_set_int
+g_settings_get_string
+g_settings_set_string
+g_settings_get_strv
+g_settings_set_strv
+g_settings_get_double
+g_settings_set_double
+g_settings_get_boolean
+g_settings_set_boolean
 #endif
 #endif
