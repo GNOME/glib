@@ -1613,7 +1613,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
     value = g_settings_schema_get_value (settings->priv->schema, key, NULL);
     binding->type = g_variant_type_copy (g_variant_get_type (value));
-    g_variant_unref (value);
+    if (value)
+      g_variant_unref (value);
   }
 
   if (binding->type == NULL)
