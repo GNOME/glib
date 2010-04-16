@@ -795,6 +795,7 @@ g_settings_get_value (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: a #GVariant of the correct type
+ * @returns: %TRUE if setting succeeded, %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -834,7 +835,7 @@ g_settings_set_value (GSettings   *settings,
  * g_settings_get:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @format_string: a #GVariant format string
+ * @format: a #GVariant format string
  * @...: arguments as per @format
  *
  * Gets the value that is stored at @key in @settings.
@@ -851,7 +852,7 @@ g_settings_set_value (GSettings   *settings,
 void
 g_settings_get (GSettings   *settings,
                 const gchar *key,
-                const gchar *format_string,
+                const gchar *format,
                 ...)
 {
   GVariant *value;
@@ -859,8 +860,8 @@ g_settings_get (GSettings   *settings,
 
   value = g_settings_get_value (settings, key);
 
-  va_start (ap, format_string);
-  g_variant_get_va (value, format_string, NULL, &ap);
+  va_start (ap, format);
+  g_variant_get_va (value, format, NULL, &ap);
   va_end (ap);
 
   g_variant_unref (value);

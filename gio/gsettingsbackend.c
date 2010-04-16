@@ -272,7 +272,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 /**
- * g_settings_backend_keys_changed:
+ * g_settings_backend_path_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the path containing the changes
  * @origin_tag: the origin tag
@@ -341,7 +341,7 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
 }
 
 /**
- * g_settings_backend_writable_changed:
+ * g_settings_backend_path_writable_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the name of the path
  *

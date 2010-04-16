@@ -26,6 +26,7 @@ IGNORE_HFILES=				\
 	fen-node.h			\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
+	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
@@ -37,6 +38,7 @@ IGNORE_HFILES=				\
 	gio.h				\
 	gioalias.h			\
 	gioalias.h			\
+	gkeyfilesettingsbackend.h	\
 	gioenumtypes.h			\
 	giomodule-priv.h		\
 	glocaldirectorymonitor.h	\
@@ -49,6 +51,7 @@ IGNORE_HFILES=				\
 	glocalvfs.h			\
 	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
+	gnullsettingsbackend.h		\
 	gpollfilemonitor.h		\
 	gsettingsbackendinternal.h	\
 	gthreadedresolver.h		\

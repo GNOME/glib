@@ -77,11 +77,13 @@ is not explicitly specified, a GConf schema will be converted
 into a simple Gsettings schema, and a simple GSettings schema
 will be converted into XML.
 </para></listitem>
+</varlistentry>
 
 <varlistentry>
 <term><option>-i <replaceable>ID</replaceable></option>, <option>--schema-id=<replaceable>ID</replaceable></option></term>
 <listitem><para>
-Use <replaceable>ID</replaceable> as the schema id in the generated GSettings schema.
+Use <replaceable>ID</replaceable> as the schema id in the generated
+GSettings schema.
 </para></listitem>
 </varlistentry>
 

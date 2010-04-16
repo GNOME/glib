@@ -85,11 +85,11 @@ GVariant *              g_settings_get_value                            (GSettin
 
 gboolean                g_settings_set                                  (GSettings          *settings,
                                                                          const gchar        *key,
-                                                                         const gchar        *format_string,
+                                                                         const gchar        *format,
                                                                          ...);
 void                    g_settings_get                                  (GSettings          *settings,
                                                                          const gchar        *key,
-                                                                         const gchar        *format_string,
+                                                                         const gchar        *format,
                                                                          ...);
 
 gint                    g_settings_get_int                              (GSettings          *settings,
