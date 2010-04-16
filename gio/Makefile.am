@@ -81,6 +81,8 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 
 settings_sources = \
 	gsettingsbackendinternal.h	\
+	gdelayedsettingsbackend.h	\
+	gdelayedsettingsbackend.		\
 	gnullsettingsbackend.h		\
 	gnullsettingsbackend.c		\
 	gsettingsbackend.c		\
