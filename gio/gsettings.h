@@ -44,16 +44,15 @@ struct _GSettingsClass
 {
   GObjectClass parent_class;
 
-  void        (*all_writable_changed) (GSettings    *settings);
-  void        (*all_changed)          (GSettings    *settings);
-  void        (*keys_changed)         (GSettings    *settings,
-                                       const GQuark *keys,
-                                       gint          n_keys);
+  void        (*keys_writable_changed) (GSettings    *settings);
+  void        (*keys_changed)          (GSettings    *settings,
+                                        const GQuark *keys,
+                                        gint          n_keys);
 
-  void        (*writable_changed)     (GSettings    *settings,
-                                       const gchar  *key);
-  void        (*changed)              (GSettings    *settings,
-                                       const gchar  *key);
+  void        (*writable_changed)      (GSettings    *settings,
+                                        const gchar  *key);
+  void        (*changed)               (GSettings    *settings,
+                                        const gchar  *key);
 };
 
 struct _GSettings
@@ -90,12 +89,36 @@ void                    g_settings_get                                  (GSettin
                                                                          const gchar        *format_string,
                                                                          ...);
 
+gint                    g_settings_get_int                              (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_int                              (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gint                value);
+gchar *                 g_settings_get_string                           (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_string                           (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         const gchar        *value);
+gboolean                g_settings_get_boolean                          (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_boolean                          (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gboolean            value);
+gdouble                 g_settings_get_double                           (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_double                           (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gdouble             value);
+gchar **                g_settings_get_strv                             (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gint               *length);
+gboolean                g_settings_set_strv                             (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         const gchar *const *value,
+                                                                         gint                length);
+
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
-
-void                    g_settings_reset                                (GSettings          *settings,
-                                                                         const gchar        *key);
-void                    g_settings_reset_all                            (GSettings          *settings);
 
 gboolean                g_settings_is_writable                          (GSettings          *settings,
                                                                          const gchar        *name);
