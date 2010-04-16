@@ -359,9 +359,8 @@ g_settings_init (GSettings *settings)
 }
 
 /**
- * g_settings_set_delay_apply:
+ * g_settings_delay:
  * @settings: a #GSettings object
- * @delayed: %TRUE to delay applying of changes
  *
  * Changes the #GSettings object into 'delay-apply' mode. In this
  * mode, changes to @settings are not immediately propagated to the
