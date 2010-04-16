@@ -455,7 +455,7 @@ test_atomic (void)
   changed_cb_called = FALSE;
   changed_cb_called2 = FALSE;
 
-  g_signal_connect (settings2, "keys-changed",
+  g_signal_connect (settings2, "change-event",
                     G_CALLBACK (keys_changed_cb), NULL);
 
   g_settings_delay (settings);

@@ -876,7 +876,7 @@ g_settings_backend_supports_context (const gchar *context)
 {
   GSettingsBackend *backend;
 
-  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (context != NULL, FALSE);
 
   backend = get_default_backend (context);
 

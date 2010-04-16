@@ -188,6 +188,7 @@ settings_backend_changed (GSettingsBackend    *backend,
                           gpointer             user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
+  gboolean ignore_this;
   gint i;
 
   g_assert (settings->priv->backend == backend);
@@ -201,7 +202,7 @@ settings_backend_changed (GSettingsBackend    *backend,
 
       quark = g_quark_from_string (key + i);
       g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                     0, &quark, 1);
+                     0, &quark, 1, &ignore_this);
     }
 }
 
@@ -212,12 +213,13 @@ settings_backend_path_changed (GSettingsBackend *backend,
                                gpointer          user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
+  gboolean ignore_this;
 
   g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                   0, NULL, 0);
+                   0, NULL, 0, &ignore_this);
 }
 
 static void
@@ -228,6 +230,7 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
                                gpointer             user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
+  gboolean ignore_this;
   gint i;
 
   g_assert (settings->priv->backend == backend);
@@ -259,7 +262,7 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
 
       if (l > 0)
         g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                       0, quarks, l);
+                       0, quarks, l, &ignore_this);
     }
 }
 
@@ -269,6 +272,7 @@ settings_backend_writable_changed (GSettingsBackend *backend,
                                    gpointer          user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
+  gboolean ignore_this;
   gint i;
 
   g_assert (settings->priv->backend == backend);
@@ -278,7 +282,7 @@ settings_backend_writable_changed (GSettingsBackend *backend,
   if (settings->priv->path[i] == '\0' &&
       g_settings_schema_has_key (settings->priv->schema, key + i))
     g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
-                   0, g_quark_from_string (key + i));
+                   0, g_quark_from_string (key + i), &ignore_this);
 }
 
 static void
@@ -287,12 +291,13 @@ settings_backend_path_writable_changed (GSettingsBackend *backend,
                                         gpointer          user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
+  gboolean ignore_this;
 
   g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
-                   0, (GQuark) 0);
+                   0, (GQuark) 0, &ignore_this);
 }
 
 static void
@@ -518,14 +523,17 @@ g_settings_class_init (GSettingsClass *class)
    * The "changed" signal is emitted when a key has potentially changed.
    * You should call one of the g_settings_get() calls to check the new
    * value.
+   *
+   * This signal supports detailed connections.  You can connect to the
+   * detailed signal "changed::x" in order to only receive callbacks
+   * when key "x" changes.
    */
   g_settings_signals[SIGNAL_CHANGED] =
     g_signal_new ("changed", G_TYPE_SETTINGS,
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GSettingsClass, changed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 1,
-                  G_TYPE_STRING | G_SIGNAL_STATIC_SCOPE);
+                  NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
+                  1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * GSettings::change-event:
@@ -536,9 +544,10 @@ g_settings_class_init (GSettingsClass *class)
    *           event. FALSE to propagate the event further.
    *
    * The "change-event" signal is emitted once per change event that
-   * affects this settings object.  You should connect to this signal if
-   * you are interested in viewing groups of changes before they are
-   * split out into multiple calls to the "changed" signal.
+   * affects this settings object.  You should connect to this signal
+   * only if you are interested in viewing groups of changes before they
+   * are split out into multiple calls to the "changed" signal.  For
+   * most use cases it is more appropriate to use the "changed" signal.
    *
    * In the event that the change event applies to one or more specified
    * keys, @keys will be an array of #GQuark of length @n_keys.  In the
@@ -555,7 +564,7 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  _gio_marshal_VOID__POINTER_INT,
+                  _gio_marshal_BOOL__POINTER_INT,
                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_INT);
 
   /**
@@ -566,6 +575,10 @@ g_settings_class_init (GSettingsClass *class)
    * The "writable-changed" signal is emitted when the writability of a
    * key has potentially changed.  You should call
    * g_settings_is_writable() in order to determine the new status.
+   *
+   * This signal supports detailed connections.  You can connect to the
+   * detailed signal "writable-changed::x" in order to only receive
+   * callbacks when the writability of "x" changes.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGED] =
     g_signal_new ("writable-changed", G_TYPE_SETTINGS,
@@ -585,7 +598,8 @@ g_settings_class_init (GSettingsClass *class)
    * change event that affects this settings object.  You should connect
    * to this signal if you are interested in viewing groups of changes
    * before they are split out into multiple calls to the
-   * "writable-changed" signal.
+   * "writable-changed" signal.  For most use cases it is more
+   * appropriate to use the "writable-changed" signal.
    *
    * In the event that the writability change applies only to a single
    * key, @key will be set to the #GQuark for that key.  In the event
@@ -593,15 +607,18 @@ g_settings_class_init (GSettingsClass *class)
    * @key will be 0.
    *
    * The default handler for this signal invokes the "writabile-changed"
-   * signal for each affected key.  If any other connected handler
-   * returns %TRUE then this default functionality will be supressed.
+   * and "changed" signals for each affected key.  This is done because
+   * changes in writability might also imply changes in value (if for
+   * example, a new mandatory setting is introduced).  If any other
+   * connected handler returns %TRUE then this default functionality
+   * will be supressed.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
-    g_signal_new ("all-writable-changed", G_TYPE_SETTINGS,
+    g_signal_new ("writable-change-event", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsClass, all_changed),
+                  G_STRUCT_OFFSET (GSettingsClass, writable_change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  g_cclosure_marshal_BOOL__INT, G_TYPE_BOOLEAN, 0);
+                  _gio_marshal_BOOLEAN__UINT, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
 
   /**
    * GSettings:context:

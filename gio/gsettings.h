@@ -49,11 +49,13 @@ struct _GSettingsClass
                                         const gchar  *key);
   void        (*changed)               (GSettings    *settings,
                                         const gchar  *key);
-  void        (*writable_change_event) (GSettings    *settings,
+  gboolean    (*writable_change_event) (GSettings    *settings,
                                         GQuark        key);
-  void        (*change_event)          (GSettings    *settings,
+  gboolean    (*change_event)          (GSettings    *settings,
                                         const GQuark *keys,
                                         gint          n_keys);
+
+  gpointer padding[20];
 };
 
 struct _GSettings
