@@ -83,7 +83,12 @@ settings_sources = \
 	gsettingsbackendinternal.h	\
 	gnullsettingsbackend.h		\
 	gnullsettingsbackend.c		\
-	gsettingsbackend.c
+	gsettingsbackend.c		\
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-reader.h		\
+	gvdb/gvdb-reader.c		\
+	gsettingsschema.h		\
+	gsettingsschema.c
 
 settings_headers = \
 	gsettingsbackend.h
