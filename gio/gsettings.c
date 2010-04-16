@@ -100,10 +100,24 @@
  *                 schema CDATA #REQUIRED >
  * ]]>
  * ]|
- */
-
-/* TODO:
- * Talk about schema naming conventions, explain child settings
+ *
+ * <refsect2>
+ *  <title>Binding</title>
+ *   <para>
+ *    A very convenient feature of GSettings lets you bind #GObject properties
+ *    directly to settings, using g_settings_bind(). Once a GObject property
+ *    has been bound to a setting, changes on either side are automatically
+ *    propagated to the other side.
+ *   </para>
+ *   <para>
+ *    This makes it very easy to hook up a preferences dialog to the
+ *    underlying settings. To make this even more convenient, GSettings
+ *    looks for a boolean property with the name "sensitivity" and
+ *    automatically binds it to the writability of the bound setting.
+ *    If this 'magic' gets in the way, it can be suppressed with the
+ *    #G_SETTINGS_BIND_NO_SENSITIVITY flag.
+ *   </para>
+ *  </refsect2>
  */
 
 struct _GSettingsPrivate
@@ -1081,11 +1095,13 @@ g_settings_binding_free (gpointer data)
 
   g_assert (!binding->running);
 
-  if (binding->key_handler_id)
+  if (g_signal_handler_is_connected (binding->settings,
+                                     binding->key_handler_id))
     g_signal_handler_disconnect (binding->settings,
                                  binding->key_handler_id);
 
-  if (binding->property_handler_id)
+  if (g_signal_handler_is_connected (binding->object,
+                                     binding->property_handler_id))
   g_signal_handler_disconnect (binding->object,
                                binding->property_handler_id);
 
