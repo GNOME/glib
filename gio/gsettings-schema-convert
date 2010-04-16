@@ -580,8 +580,10 @@ def read_simple_schema(simple_schema_file):
 ######################################
 
 
-def read_gconf_schema(gconf_schema_file):
+def read_gconf_schema(gconf_schema_file, default_schema_id):
     gsettings_schema_root = GSettingsSchemaRoot()
+
+    default_schema_id_count = 0
 
     gconfschemafile_node = ET.parse(gconf_schema_file).getroot()
     for schemalist_node in gconfschemafile_node.findall('schemalist'):
@@ -621,7 +623,13 @@ def read_gconf_schema(gconf_schema_file):
                     break
             if not gsettings_schema:
                 gsettings_schema = GSettingsSchema()
-                gsettings_schema.id = 'FIXME'
+                if default_schema_id:
+                    gsettings_schema.id = default_schema_id
+                    if default_schema_id_count > 0:
+                        gsettings_schema.id += '.FIXME-%s' % default_schema_id_count
+                    default_schema_id_count += 1
+                else:
+                    gsettings_schema.id = 'FIXME'
                 if schemas_only:
                     gsettings_schema.path = '/' + hierarchy[0] + '/'
                 else:
@@ -660,6 +668,8 @@ def main(args):
                       help="output file")
     parser.add_option("-g", "--gconf", action="store_true", dest="gconf",
                       default=False, help="convert a gconf schema file")
+    parser.add_option("-i", "--schema-id", dest="schema_id",
+                      help="schema ID to use by default when converting gconf schema file")
     parser.add_option("-s", "--simple", action="store_true", dest="simple",
                       default=False, help="use the simple schema format as output (only for gconf schema conversion)")
     parser.add_option("-x", "--xml", action="store_true", dest="xml",
@@ -685,6 +695,10 @@ def main(args):
         else:
             options.xml = True
 
+    if not options.gconf and options.schema_id:
+        print >> sys.stderr, 'Default chema ID can only be specified when converting a gconf schema.'
+        return 1
+
     argfile = os.path.expanduser(args[0])
     if not os.path.exists(argfile):
         print >> sys.stderr, '%s does not exist.' % argfile
@@ -699,7 +713,7 @@ def main(args):
 
         if options.gconf:
             try:
-                schema_root = read_gconf_schema(argfile)
+                schema_root = read_gconf_schema(argfile, options.schema_id)
             except SyntaxError, e:
                 raise GSettingsSchemaConvertException('%s does not look like a gconf schema file: %s' % (argfile, e))
         else:
