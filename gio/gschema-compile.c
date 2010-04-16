@@ -103,7 +103,6 @@ start_element (GMarkupParseContext  *context,
                   state->key = gvdb_hash_table_insert (state->schema, name);
                   gvdb_item_set_parent (state->key, state->schema_root);
                 }
-
               else
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
@@ -111,7 +110,6 @@ start_element (GMarkupParseContext  *context,
 
               if (g_variant_type_string_is_valid (type))
                 state->type = g_variant_type_new (type);
-
               else
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
@@ -132,10 +130,9 @@ start_element (GMarkupParseContext  *context,
               gchar *childname;
 
               childname = g_strconcat (name, "/", NULL);
-              
+
               if (!g_hash_table_lookup (state->schema, childname))
                 gvdb_hash_table_insert_string (state->schema, childname, schema);
-
               else
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
@@ -158,7 +155,7 @@ start_element (GMarkupParseContext  *context,
               if (l10n != NULL)
                 {
                   if (!g_hash_table_lookup (state->schema, ".gettext-domain"))
-                    {   
+                    {
                       const gchar *domain = state->schema_domain ?
                                             state->schema_domain :
                                             state->schemalist_domain;
@@ -173,8 +170,8 @@ start_element (GMarkupParseContext  *context,
                         }
 
                       gvdb_hash_table_insert_string (state->schema,
-			                             ".gettext-domain",
-						     domain);
+                                                     ".gettext-domain",
+                                                     domain);
 
                       if (strcmp (l10n, "messages") == 0)
                         state->l10n = 'm';
@@ -344,7 +341,7 @@ parse_gschema_files (gchar    **files,
                                         &state, NULL);
   state.schemas = gvdb_hash_table_new (NULL, NULL);
 
-  while ((filename = *files++))
+  while ((filename = *files++) != NULL)
     {
       gchar *contents;
       gsize size;
