@@ -1062,6 +1062,7 @@ typedef struct
   GSettingsBindGetMapping get_mapping;
   GSettingsBindSetMapping set_mapping;
   gpointer user_data;
+  GDestroyNotify destroy;
 
   guint property_handler_id;
   const GParamSpec *property;
@@ -1090,6 +1091,9 @@ g_settings_binding_free (gpointer data)
 
   g_variant_type_free (binding->type);
   g_object_unref (binding->settings);
+
+  if (binding->destroy)
+    binding->destroy (binding->user_data);
 
   g_slice_free (GSettingsBinding, binding);
 }
@@ -1506,7 +1510,7 @@ g_settings_bind (GSettings          *settings,
                  GSettingsBindFlags  flags)
 {
   g_settings_bind_with_mapping (settings, key, object, property,
-                                flags, NULL, NULL, NULL);
+                                flags, NULL, NULL, NULL, NULL);
 }
 
 /**
@@ -1521,6 +1525,7 @@ g_settings_bind (GSettings          *settings,
  * @set_mapping: a function that gets called to convert values
  *     from @object to @settings, or %NULL to use the default GIO mapping
  * @user_data: data that gets passed to @get_mapping and @set_mapping
+ * @destroy: #GDestroyNotify function for @user_data
  *
  * Create a binding between the @key in the @settings object
  * and the property @property of @object, using the provided mapping
@@ -1541,7 +1546,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
                               GSettingsBindFlags       flags,
                               GSettingsBindGetMapping  get_mapping,
                               GSettingsBindSetMapping  set_mapping,
-                              gpointer                 user_data)
+                              gpointer                 user_data,
+                              GDestroyNotify           destroy)
 {
   GSettingsBinding *binding;
   GObjectClass *objectclass;
@@ -1558,6 +1564,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
   binding->property = g_object_class_find_property (objectclass, property);
   binding->running = FALSE;
   binding->user_data = user_data;
+  binding->destroy = destroy;
   binding->get_mapping = get_mapping ? get_mapping : g_settings_get_mapping;
   binding->set_mapping = set_mapping ? set_mapping : g_settings_set_mapping;
 
