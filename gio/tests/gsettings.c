@@ -497,7 +497,7 @@ glib_translations_work (void)
   gchar *str;
 
   locale = g_strdup (setlocale (LC_MESSAGES, NULL));
-  setlocale (LC_MESSAGES, "de_DE");
+  setlocale (LC_MESSAGES, "de");
   str = dgettext ("glib20", orig);
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
@@ -532,7 +532,7 @@ test_l10n (void)
   g_free (str);
   str = NULL;
 
-  setlocale (LC_MESSAGES, "de_DE");
+  setlocale (LC_MESSAGES, "de");
   g_settings_get (settings, "error-message", "s", &str);
   setlocale (LC_MESSAGES, locale);
 
@@ -542,6 +542,150 @@ test_l10n (void)
   str = NULL;
 
   g_free (locale);
+}
+
+enum
+{
+  PROP_0,
+  PROP_BOOL,
+  PROP_INT,
+  PROP_DOUBLE,
+  PROP_STRING
+};
+
+typedef struct
+{
+  GObject parent_instance;
+
+  gboolean bool_prop;
+  gint int_prop;
+  gdouble double_prop;
+  gchar *string_prop;
+} TestObject;
+
+typedef struct
+{
+  GObjectClass parent_class;
+} TestObjectClass;
+
+G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
+
+static void
+test_object_init (TestObject *object)
+{
+}
+
+static void
+test_object_finalize (GObject *object)
+{
+  TestObject *testo = (TestObject*)object;
+  g_free (testo->string_prop);
+  G_OBJECT_CLASS (test_object_parent_class)->finalize (object);
+}
+
+static void
+test_object_get_property (GObject    *object,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
+{
+  TestObject *test_object = (TestObject *)object;
+
+  switch (prop_id)
+    {
+    case PROP_BOOL:
+      g_value_set_boolean (value, test_object->bool_prop);
+      break;
+    case PROP_INT:
+      g_value_set_int (value, test_object->int_prop);
+      break;
+    case PROP_DOUBLE:
+      g_value_set_double (value, test_object->double_prop);
+      break;
+    case PROP_STRING:
+      g_value_set_string (value, test_object->string_prop);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+test_object_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  TestObject *test_object = (TestObject *)object;
+
+  switch (prop_id)
+    {
+    case PROP_BOOL:
+      test_object->bool_prop = g_value_get_boolean (value);
+      break;
+    case PROP_INT:
+      test_object->int_prop = g_value_get_int (value);
+      break;
+    case PROP_DOUBLE:
+      test_object->double_prop = g_value_get_double (value);
+      break;
+    case PROP_STRING:
+      g_free (test_object->string_prop);
+      test_object->string_prop = g_value_dup_string (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+test_object_class_init (TestObjectClass *class)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+
+  gobject_class->get_property = test_object_get_property;
+  gobject_class->set_property = test_object_set_property;
+  gobject_class->finalize = test_object_finalize;
+
+  g_object_class_install_property (gobject_class, PROP_BOOL,
+    g_param_spec_boolean ("bool", "", "", FALSE, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_INT,
+    g_param_spec_int ("int", "", "", -G_MAXINT, G_MAXINT, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_DOUBLE,
+    g_param_spec_double ("double", "", "", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_STRING,
+    g_param_spec_string ("string", "", "", NULL, G_PARAM_READWRITE));
+}
+
+static TestObject *
+test_object_new (void)
+{
+  return (TestObject*)g_object_new (test_object_get_type (), NULL);
+}
+
+static void
+test_simple_binding (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+  gboolean b;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "bool", TRUE, NULL);
+  g_assert_cmpint (g_settings_get_boolean (settings, "bool"), ==, TRUE);
+
+  g_settings_set_boolean (settings, "bool", FALSE);
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, FALSE);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
 }
 
 int
@@ -567,6 +711,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
+  g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
 
   return g_test_run ();
 }
