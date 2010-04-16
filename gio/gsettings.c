@@ -107,7 +107,9 @@
  *    A very convenient feature of GSettings lets you bind #GObject properties
  *    directly to settings, using g_settings_bind(). Once a GObject property
  *    has been bound to a setting, changes on either side are automatically
- *    propagated to the other side.
+ *    propagated to the other side. GSettings handles details like
+ *    mapping between GObject and GVariant types, and preventing infinite
+ *    cycles.
  *   </para>
  *   <para>
  *    This makes it very easy to hook up a preferences dialog to the
@@ -795,7 +797,8 @@ g_settings_get_value (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: a #GVariant of the correct type
- * @returns: %TRUE if setting succeeded, %FALSE if the key was not writable
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -873,6 +876,8 @@ g_settings_get (GSettings   *settings,
  * @key: the name of the key to set
  * @format: a #GVariant format string
  * @...: arguments as per @format
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1507,15 +1512,19 @@ g_settings_get_mapping (GValue   *value,
  * @flags: flags for the binding
  *
  * Create a binding between the @key in the @settings object
- * and the property @property of @object, using the default GIO
- * mapping functions to map between the settings and property values.
+ * and the property @property of @object.
  *
- * The default GIO mapping functions handle booleans, numeric and
- * string types in a straightforward way. See g_settings_bind_with_mapping()
- * if you need a custom mapping.
+ * The binding uses the default GIO mapping functions to map
+ * between the settings and property values. These functions
+ * handle booleans, numeric types and string types in a
+ * straightforward way. Use g_settings_bind_with_mapping()
+ * if you need a custom mapping, or map between types that
+ * are not supported by the default mapping functions.
  *
- * Note that the lifecycle of the binding is tied to the
- * object.
+ * Note that the lifecycle of the binding is tied to the object,
+ * and that you can have only one binding per object property.
+ * If you bind the same property twice on the same object, the second
+ * binding overrides the first one.
  *
  * Since: 2.26
  */
@@ -1545,8 +1554,10 @@ g_settings_bind (GSettings          *settings,
  * @destroy: #GDestroyNotify function for @user_data
  *
  * Create a binding between the @key in the @settings object
- * and the property @property of @object, using the provided mapping
- * functions to map between settings and property values.
+ * and the property @property of @object.
+ *
+ * The binding uses the provided mapping functions to map between
+ * settings and property values.
  *
  * Note that the lifecycle of the binding is tied to the object,
  * and that you can have only one binding per object property.
