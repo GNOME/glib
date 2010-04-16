@@ -91,8 +91,8 @@ settings_sources = \
 	gdelayedsettingsbackend.c	\
 	gkeyfilesettingsbackend.h	\
 	gkeyfilesettingsbackend.c	\
-	gnullsettingsbackend.h	\
-	gnullsettingsbackend.c	\
+	gnullsettingsbackend.h		\
+	gnullsettingsbackend.c		\
 	gsettingsbackendinternal.h	\
 	gsettingsbackend.c		\
 	gsettingsschema.h		\
