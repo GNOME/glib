@@ -54,6 +54,7 @@ IGNORE_HFILES=				\
 	gnullsettingsbackend.h		\
 	gpollfilemonitor.h		\
 	gsettingsbackendinternal.h	\
+	gsettingsschema.h		\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\
