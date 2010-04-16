@@ -18,7 +18,7 @@
     output).
 
     It is intended that this code be used by copy-pasting into your
-    project or by making use of git-submodule(1).
+    project or by making use of git-merge(1).
   </description>
 
   <maintainer>
