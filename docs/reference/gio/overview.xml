@@ -255,7 +255,7 @@
         This variable can be set to the name of a #GSettingsBackend
         implementation to override the default for debugging purposes.
         The keyfile-based implementation that is included in GIO has
-        the name "memory", the one in dconf has the name "dconf-settings".
+        the name "keyfile", the one in dconf has the name "dconf-settings".
       </para>
     </formalpara>
 
@@ -271,11 +271,11 @@
     </formalpara>
 
     <formalpara>
-      <title><envar>GSETTINGS_MEMORY_BACKEND_STORE</envar></title>
+      <title><envar>GSETTINGS_KEYFILE_BACKEND_STORE</envar></title>
 
       <para>
-        This variable can be set to the path where the built-in #GSettings
-        backend stores its keyfile. By default, the keyfile is stored in
+        This variable can be set to the path where the keyfile #GSettings
+        backend stores its data. By default, the keyfile is stored in
         <filename>$HOME/.config/gsettings/store</filename>.
       </para>
     </formalpara>
