@@ -272,7 +272,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 /**
- * g_settings_backend_keys_changed:
+ * g_settings_backend_path_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the path containing the changes
  * @origin_tag: the origin tag
@@ -341,7 +341,7 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
 }
 
 /**
- * g_settings_backend_writable_changed:
+ * g_settings_backend_path_writable_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the name of the path
  *
@@ -497,6 +497,7 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * @key: the name of the key
  * @value: a #GVariant value to write to this key
  * @origin_tag: the origin tag
+ * @returns: %TRUE if the write succeeded, %FALSE if the key was not writable
  *
  * Writes exactly one key.
  *
@@ -732,8 +733,6 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
    * If your backend supports different contexts, you should also
    * provide an implementation of the supports_context() class
    * function in #GSettingsBackendClass.
-   *
-   * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_CONTEXT,
     g_param_spec_string ("context", P_("Context"),
