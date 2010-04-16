@@ -74,13 +74,13 @@ GSettings *             g_settings_new_with_context_and_path            (const g
                                                                          const gchar        *context,
                                                                          const gchar        *path);
 
-void                    g_settings_set_value                            (GSettings          *settings,
+gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
 GVariant *              g_settings_get_value                            (GSettings          *settings,
                                                                          const gchar        *key);
 
-void                    g_settings_set                                  (GSettings          *settings,
+gboolean                g_settings_set                                  (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar        *format_string,
                                                                          ...);
@@ -111,11 +111,11 @@ gboolean                g_settings_set_double                           (GSettin
                                                                          gdouble             value);
 gchar **                g_settings_get_strv                             (GSettings          *settings,
                                                                          const gchar        *key,
-                                                                         gint               *length);
+                                                                         gsize              *length);
 gboolean                g_settings_set_strv                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar *const *value,
-                                                                         gint                length);
+                                                                         gssize              length);
 
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);

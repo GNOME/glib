@@ -520,10 +520,11 @@ static void
 g_settings_class_init (GSettingsClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
+/*
   class->all_writable_changed = real_all_writable_changed;
   class->all_changed = real_all_changed;
   class->keys_changed = real_keys_changed;
-
+*/
   object_class->set_property = g_settings_set_property;
   object_class->get_property = g_settings_get_property;
   object_class->constructed = g_settings_constructed;
@@ -531,6 +532,7 @@ g_settings_class_init (GSettingsClass *class)
 
   g_type_class_add_private (object_class, sizeof (GSettingsPrivate));
 
+#if 0
   /**
    * GSettings::all-changed:
    * @settings: the object on which the signal was emitted
@@ -618,7 +620,7 @@ g_settings_class_init (GSettingsClass *class)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
-
+#endif
   /**
    * GSettings:context:
    *
@@ -791,12 +793,13 @@ g_settings_get_value (GSettings   *settings,
  *
  * Since: 2.26
  **/
-void
+gboolean
 g_settings_set_value (GSettings   *settings,
                       const gchar *key,
                       GVariant    *value)
 {
   gboolean correct_type;
+  gboolean result;
   GVariant *sval;
   gchar *path;
 
@@ -804,11 +807,14 @@ g_settings_set_value (GSettings   *settings,
   correct_type = g_variant_is_of_type (value, g_variant_get_type (sval));
   g_variant_unref (sval);
 
-  g_return_if_fail (correct_type);
+  g_return_val_if_fail (correct_type, FALSE);
 
   path = g_strconcat (settings->priv->path, key, NULL);
-  g_settings_backend_write (settings->priv->backend, path, value, NULL);
+  result = g_settings_backend_write (settings->priv->backend,
+                                     path, value, NULL);
   g_free (path);
+
+  return result;
 }
 
 /**
@@ -865,7 +871,7 @@ g_settings_get (GSettings   *settings,
  *
  * Since: 2.26
  */
-void
+gboolean
 g_settings_set (GSettings   *settings,
                 const gchar *key,
                 const gchar *format,
@@ -878,7 +884,7 @@ g_settings_set (GSettings   *settings,
   value = g_variant_new_va (format, NULL, &ap);
   va_end (ap);
 
-  g_settings_set_value (settings, key, value);
+  return g_settings_set_value (settings, key, value);
 }
 
 /**
@@ -1631,6 +1637,118 @@ g_settings_unbind (gpointer     object,
 
   binding_quark = g_settings_binding_quark (property);
   g_object_set_qdata (object, binding_quark, NULL);
+}
+
+gchar *
+g_settings_get_string (GSettings   *settings,
+                       const gchar *key)
+{
+  GVariant *value;
+  gchar *result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_dup_string (value, NULL);
+  g_variant_unref (value);
+
+  return result;
+}
+
+gboolean
+g_settings_set_string (GSettings   *settings,
+                       const gchar *key,
+                       const gchar *value)
+{
+  return g_settings_set_value (settings, key, g_variant_new_string (value));
+}
+
+gint
+g_settings_get_int (GSettings   *settings,
+                    const gchar *key)
+{
+  GVariant *value;
+  gint result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_get_int32 (value);
+  g_variant_unref (value);
+
+  return result;
+}
+
+gboolean
+g_settings_set_int (GSettings   *settings,
+                    const gchar *key,
+                    gint         value)
+{
+  return g_settings_set_value (settings, key, g_variant_new_int32 (value));
+}
+
+gdouble
+g_settings_get_double (GSettings   *settings,
+                       const gchar *key)
+{
+  GVariant *value;
+  gdouble result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_get_double (value);
+  g_variant_unref (value);
+
+  return result;
+}
+
+gboolean
+g_settings_set_double (GSettings   *settings,
+                       const gchar *key,
+                       gdouble      value)
+{
+  return g_settings_set_value (settings, key, g_variant_new_double (value));
+}
+
+gboolean
+g_settings_get_boolean (GSettings  *settings,
+                       const gchar *key)
+{
+  GVariant *value;
+  gboolean result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_get_boolean (value);
+  g_variant_unref (value);
+
+  return result;
+}
+
+gboolean
+g_settings_set_boolean (GSettings  *settings,
+                       const gchar *key,
+                       gboolean     value)
+{
+  return g_settings_set_value (settings, key, g_variant_new_boolean (value));
+}
+
+gchar **
+g_settings_get_strv (GSettings   *settings,
+                     const gchar *key,
+                     gsize       *length)
+{
+  GVariant *value;
+  gchar **result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_dup_strv (value, length);
+  g_variant_unref (value);
+
+  return result;
+}
+
+gboolean
+g_settings_set_strv (GSettings           *settings,
+                     const gchar         *key,
+                     const gchar * const *value,
+                     gssize               length)
+{
+  return g_settings_set_value (settings, key, g_variant_new_strv (value, length));
 }
 
 #define __G_SETTINGS_C__
