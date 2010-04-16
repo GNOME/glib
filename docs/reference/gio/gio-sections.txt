@@ -2110,6 +2110,14 @@ g_settings_apply
 g_settings_revert
 g_settings_get_has_unapplied
 g_settings_get_child
+
+<SUBSECTION Binding>
+GSettingsBindFlags
+g_settings_bind
+g_settings_bind_with_mapping
+g_settings_unbind
+GSettingsBindSetMapping
+GSettingsBindGetMapping
 <SUBSECTION Standard>
 GSettingsClass
 <SUBSECTION Private>
