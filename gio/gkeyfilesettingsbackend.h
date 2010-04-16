@@ -66,6 +66,7 @@ struct _GKeyfileSettingsBackend
   GKeyfileSettingsBackendPrivate *priv;
 };
 
+G_GNUC_INTERNAL
 GType g_keyfile_settings_backend_get_type (void);
 
 G_END_DECLS

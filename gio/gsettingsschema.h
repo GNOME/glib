@@ -52,15 +52,22 @@ struct _GSettingsSchema
   GSettingsSchemaPrivate *priv;
 };
 
+G_GNUC_INTERNAL
 GType                   g_settings_schema_get_type                      (void);
+G_GNUC_INTERNAL
 GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
+G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
+G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
+G_GNUC_INTERNAL
 GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
                                                                          const gchar      *key,
                                                                          GVariant        **options);
+G_GNUC_INTERNAL
 gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
                                                                          const gchar      *key);
+G_GNUC_INTERNAL
 const GQuark *          g_settings_schema_list                          (GSettingsSchema  *schema,
                                                                          gint             *n_items);
 

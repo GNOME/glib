@@ -23,6 +23,8 @@
 
 #include "config.h"
 
+#include "gkeyfilesettingsbackend.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -33,7 +35,7 @@
 #include "gfileinfo.h"
 #include "gfilemonitor.h"
 
-#include "gkeyfilesettingsbackend.h"
+#include "gioalias.h"
 
 G_DEFINE_TYPE_WITH_CODE (GKeyfileSettingsBackend,
                          g_keyfile_settings_backend,

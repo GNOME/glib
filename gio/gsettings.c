@@ -1326,3 +1326,6 @@ g_settings_unbind (gpointer     object,
   binding_quark = g_settings_binding_quark (property);
   g_object_set_qdata (object, binding_quark, NULL);
 }
+
+#define __G_SETTINGS_C__
+#include "gioaliasdef.c"
