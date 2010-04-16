@@ -671,6 +671,9 @@ test_simple_binding (void)
   TestObject *obj;
   GSettings *settings;
   gboolean b;
+  gint i;
+  gdouble d;
+  gchar *s;
 
   settings = g_settings_new ("org.gtk.test.binding");
   obj = test_object_new ();
@@ -683,6 +686,155 @@ test_simple_binding (void)
   g_settings_set_boolean (settings, "bool", FALSE);
   g_object_get (obj, "bool", &b, NULL);
   g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "int", 12345, NULL);
+  g_assert_cmpint (g_settings_get_int (settings, "int"), ==, 12345);
+
+  g_settings_set_int (settings, "int", 54321);
+  g_object_get (obj, "int", &i, NULL);
+  g_assert_cmpint (i, ==, 54321);
+
+  g_settings_bind (settings, "string", obj, "string", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "string", "bu ba", NULL);
+  s = g_settings_get_string (settings, "string");
+  g_assert_cmpstr (s, ==, "bu ba");
+  g_free (s);
+
+  g_settings_set_string (settings, "string", "bla bla");
+  g_object_get (obj, "string", &s, NULL);
+  g_assert_cmpstr (s, ==, "bla bla");
+  g_free (s);
+
+  g_settings_bind (settings, "double", obj, "double", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "double", 203e7, NULL);
+  g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, 203e7);
+
+  g_settings_set_double (settings, "double", 207e3);
+  g_object_get (obj, "double", &d, NULL);
+  g_assert_cmpfloat (d, ==, 207e3);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+static void
+test_directional_binding (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+  gboolean b;
+  gint i;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_object_set (obj, "bool", FALSE, NULL);
+  g_settings_set_boolean (settings, "bool", FALSE);
+
+  g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_GET);
+
+  g_settings_set_boolean (settings, "bool", TRUE);
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, TRUE);
+
+  g_object_set (obj, "bool", FALSE, NULL);
+  g_assert_cmpint (g_settings_get_boolean (settings, "bool"), ==, TRUE);
+
+  g_object_set (obj, "int", 20, NULL);
+  g_settings_set_int (settings, "int", 20);
+
+  g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_SET);
+
+  g_object_set (obj, "int", 32, NULL);
+  g_assert_cmpint (g_settings_get_int (settings, "int"), ==, 32);
+
+  g_settings_set_int (settings, "int", 20);
+  g_object_get (obj, "int", &i, NULL);
+  g_assert_cmpint (i, ==, 32);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+static void
+test_typesafe_binding (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "int", G_SETTINGS_BIND_DEFAULT);
+
+      g_object_unref (obj);
+      g_object_unref (settings);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*not compatible*");
+}
+
+static gboolean
+string_to_bool (GValue   *value,
+                GVariant *variant,
+                gpointer  user_data)
+{
+  const gchar *s;
+
+  s = g_variant_get_string (variant, NULL);
+  g_value_set_boolean (value, g_strcmp0 (s, "true") == 0);
+
+  return TRUE;
+}
+
+static GVariant *
+bool_to_string (const GValue       *value,
+                const GVariantType *expected_type,
+                gpointer            user_data)
+{
+  if (g_value_get_boolean (value))
+    return g_variant_new_string ("true");
+  else
+    return g_variant_new_string ("false");
+}
+
+static void
+test_custom_binding (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+  gchar *s;
+  gboolean b;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_set_string (settings, "string", "true");
+
+  g_settings_bind_with_mapping (settings, "string",
+                                obj, "bool",
+                                G_SETTINGS_BIND_DEFAULT,
+                                string_to_bool,
+                                bool_to_string,
+                                NULL, NULL);
+
+  g_settings_set_string (settings, "string", "false");
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_set_string (settings, "string", "not true");
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, FALSE);
+
+  g_object_set (obj, "bool", TRUE, NULL);
+  s = g_settings_get_string (settings, "string");
+  g_assert_cmpstr (s, ==, "true");
 
   g_object_unref (obj);
   g_object_unref (settings);
@@ -712,6 +864,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
+  g_test_add_func ("/gsettings/directional-binding", test_directional_binding);
+  g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
+  g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
 
   return g_test_run ();
 }
