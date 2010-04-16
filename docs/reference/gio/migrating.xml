@@ -232,6 +232,56 @@ start_monitoring_trash (void)
       </para>
     </section>
 
+    <section>
+      <title>Schema conversion</title>
+
+      <para>
+        One possible pitfall in doing schema conversion is that the default
+        values in GSettings schemas are in the format of a serialized #GVariant,
+        and the types are specified as #GVariant type strings.
+        This means that strings need to include quotes in the XML, so
+        <programlisting>
+<![CDATA[
+<type>string</type>
+<default>rgb</default>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<key name="rgba_order" type="s">
+  <default>'rgb'</default>
+</key>
+]]>
+        </programlisting>
+      </para>
+      <para>
+        Another possible complication is that GConf specifies full paths
+        for each key, while a GSettings schema has a 'path' attribute that
+        contains the prefix for all the keys in the schema, and individual
+        keys just have a simple name. So
+        <programlisting>
+<![CDATA[
+<key>/schemas/desktop/gnome/font_rendering/antialiasing</key>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<schema id="org.gnome.font" path="/desktop/gnome/font_rendering/">
+  <key name="antialiasing" type="s">
+]]>
+        </programlisting>
+      </para>
+      <para>
+        GIO comes with a commandline tool
+        <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
+        that can help with the task of converting a GConf schema into
+        an equivalent GSettings schema. The tool is not perfect and
+        may need assistence in some cases.
+      </para>
+    </section>
+
     <section><title>More information</title>
       <para>
         More information about migration from GConf to GSettings will appear
@@ -239,7 +289,6 @@ start_monitoring_trash (void)
         <itemizedlist>
           <listitem><para>Defaults</para></listitem>
           <listitem><para>Change sets</para></listitem>
-          <listitem><para>Schema conversion</para></listitem>
           <listitem><para>Data conversion</para></listitem>
         </itemizedlist>
       </para>

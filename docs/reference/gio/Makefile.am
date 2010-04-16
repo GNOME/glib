@@ -115,7 +115,8 @@ content_files =			\
 expand_content_files =		\
 	overview.xml		\
 	migrating.xml		\
-	gschema-compile.xml
+	gschema-compile.xml	\
+	gsettings-schema-convert.xml
 
 extra_files =			\
 	version.xml.in		\
@@ -129,7 +130,8 @@ EXTRA_DIST +=			\
 if ENABLE_MAN
 
 man_MANS =			\
-	gschema-compile.1
+	gschema-compile.1	\
+	gsettings-schema-convert.1
 
 %.1 : xml/%.xml
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<

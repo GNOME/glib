@@ -1,0 +1,86 @@
+<refentry id="gsettings-schema-convert">
+
+<refmeta>
+<refentrytitle>gsettings-schema-convert</refentrytitle>
+<manvolnum>1</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname>gsettings-schema-convert</refname>
+<refpurpose>GConf to GSettings schema conversion</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<cmdsynopsis>
+<command>gsettings-schema-convert</command>
+<arg choice="opt" rep="repeat">option</arg>
+<arg choice="req">file</arg>
+</cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+<para><command>gsettings-schema-convert</command> converts between GConf
+and GSettings schema file formats. Note that the conversion is not
+expected to be fully automated. You are expected to verify and edit
+the result of the conversion.
+</para>
+<para>
+Note that GSettings schemas need to be converted into binary form
+with <link linkend="gschema-compile">gschema-compile</link> before they
+can be used by applications.
+</para>
+
+<refsect2><title>Options</title>
+<variablelist>
+
+<varlistentry>
+<term><option>-h</option>, <option>--help</option></term>
+<listitem><para>
+Print help and exit
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-o <replaceable>OUTPUT</replaceable></option>, <option>--output=<replaceable>OUTPUT</replaceable></option></term>
+<listitem><para>
+Store the generated output in the file <replaceable>OUTPUT</replaceable>. If no output file is specified, the generated output is written to stdout.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-f</option>, <option>--force</option></term>
+<listitem><para>
+Overwrite the output file if it already exists.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-g</option>, <option>--gconf</option></term>
+<listitem><para>
+The input file is a GConf schema.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-s</option>, <option>--simple</option></term>
+<listitem><para>
+The input file is a simple GSettings schema. If the input
+format is not explicitly specified, this is the default.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-x</option>, <option>--xml</option></term>
+<listitem><para>
+Produce a GSettings schema in XML format. If the output format
+is not explicitly specified, a GConf schema will be converted
+into a simple Gsettings schema, and a simple GSettings schema
+will be converted into XML.
+</para></listitem>
+</varlistentry>
+
+</variablelist>
+</refsect2>
+</refsect1>
+</refentry>
+
