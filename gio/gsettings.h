@@ -100,12 +100,10 @@ void                    g_settings_reset_all                            (GSettin
 gboolean                g_settings_is_writable                          (GSettings          *settings,
                                                                          const gchar        *name);
 
+void                    g_settings_delay                                (GSettings          *settings);
 void                    g_settings_apply                                (GSettings          *settings);
 void                    g_settings_revert                               (GSettings          *settings);
-gboolean                g_settings_get_delay_apply                      (GSettings          *settings);
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
-void                    g_settings_set_delay_apply                      (GSettings          *settings,
-                                                                         gboolean            delay);
 
 typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
                                                                          const GVariantType *expected_type,

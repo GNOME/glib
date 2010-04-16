@@ -322,10 +322,7 @@ test_delay_apply (void)
   g_signal_connect (settings2, "changed",
                     G_CALLBACK (changed_cb2), &changed_cb_called2);
 
-  g_settings_set_delay_apply (settings, TRUE);
-
-  g_assert (g_settings_get_delay_apply (settings));
-  g_assert (!g_settings_get_delay_apply (settings2));
+  g_settings_delay (settings);
 
   g_settings_set (settings, "greeting", "s", "greetings from test_delay_apply");
 
@@ -379,7 +376,7 @@ test_delay_revert (void)
 
   g_settings_set (settings2, "greeting", "s", "top o' the morning");
 
-  g_settings_set_delay_apply (settings, TRUE);
+  g_settings_delay (settings);
 
   g_settings_set (settings, "greeting", "s", "greetings from test_delay_revert");
 
@@ -449,7 +446,7 @@ test_atomic (void)
   g_signal_connect (settings2, "keys-changed",
                     G_CALLBACK (keys_changed_cb), NULL);
 
-  g_settings_set_delay_apply (settings, TRUE);
+  g_settings_delay (settings);
 
   g_settings_set (settings, "greeting", "s", "greetings from test_atomic");
   g_settings_set (settings, "farewell", "s", "atomic bye-bye");

@@ -376,36 +376,24 @@ g_settings_notify_unapplied (GSettings *settings)
  * Since: 2.26
  */
 void
-g_settings_set_delay_apply (GSettings *settings,
-                            gboolean   delayed)
+g_settings_delay (GSettings *settings)
 {
-  delayed = !!delayed;
+  if (settings->priv->delayed)
+    return;
 
-  if (delayed != settings->priv->delayed)
-    {
-      GSettingsBackend *backend;
+  settings->priv->delayed =
+    g_delayed_settings_backend_new (settings->priv->backend, settings);
+  g_settings_backend_unwatch (settings->priv->backend, settings);
+  g_object_unref (settings->priv->backend);
 
-      g_assert (delayed);
-
-      backend = g_delayed_settings_backend_new (settings->priv->backend);
-      g_settings_backend_unwatch (settings->priv->backend, settings);
-      g_settings_backend_watch (backend,
-                                settings_backend_changed,
-                                settings_backend_path_changed,
-                                settings_backend_keys_changed,
-                                settings_backend_writable_changed,
-                                settings_backend_path_writable_changed,
-                                settings);
-      g_object_unref (settings->priv->backend);
-
-      settings->priv->backend = backend;
-      settings->priv->unapplied_handler =
-        g_signal_connect_swapped (backend, "notify::has-unapplied",
-                                  G_CALLBACK (g_settings_notify_unapplied),
-                                  settings);
-
-      settings->priv->delayed = TRUE;
-    }
+  settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
+  g_settings_backend_watch (settings->priv->backend,
+                            settings_backend_changed,
+                            settings_backend_path_changed,
+                            settings_backend_keys_changed,
+                            settings_backend_writable_changed,
+                            settings_backend_path_writable_changed,
+                            settings);
 }
 
 /**

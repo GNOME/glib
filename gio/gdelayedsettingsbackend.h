@@ -46,14 +46,12 @@ struct _GDelayedSettingsBackend
   GDelayedSettingsBackendPrivate *priv;
 };
 
-G_BEGIN_DECLS
-
 GType                           g_delayed_settings_backend_get_type     (void);
-GSettingsBackend *              g_delayed_settings_backend_new          (GSettingsBackend        *backend);
+GDelayedSettingsBackend *       g_delayed_settings_backend_new          (GSettingsBackend        *backend,
+                                                                         gpointer                 owner);
+void                            g_delayed_settings_backend_disown       (GDelayedSettingsBackend *backend);
 void                            g_delayed_settings_backend_revert       (GDelayedSettingsBackend *delayed);
 void                            g_delayed_settings_backend_apply        (GDelayedSettingsBackend *delayed);
 gboolean                        g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed);
-
-G_END_DECLS
 
 #endif  /* __G_DELAYED_SETTINGS_BACKEND_H__ */
