@@ -38,7 +38,7 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   GVariant *result;
 
-  if ((result = g_tree_lookup (delayed->priv->delayed, key))) 
+  if ((result = g_tree_lookup (delayed->priv->delayed, key)))
     return g_variant_ref (result);
 
   return g_settings_backend_read (delayed->priv->backend,
@@ -147,7 +147,7 @@ g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed)
 void
 g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
 {
-  if (g_tree_nnodes (delayed->priv->delayed))
+  if (g_tree_nnodes (delayed->priv->delayed) > 0)
     {
       GTree *tmp;
 
@@ -165,14 +165,14 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
 void
 g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
 {
-  if (g_tree_nnodes (delayed->priv->delayed))
+  if (g_tree_nnodes (delayed->priv->delayed) > 0)
     {
       GTree *tmp;
 
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
       g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed), tmp, NULL);
-      g_tree_destroy (tmp);
+      g_tree_unref (tmp);
 
       if (delayed->priv->owner)
         g_object_notify (delayed->priv->owner, "has-unapplied");
