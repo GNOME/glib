@@ -27,8 +27,10 @@
 #include <string.h>
 #include <errno.h>
 
+#include "gioerror.h"
 #include "giomodule.h"
 #include "gfile.h"
+#include "gfileinfo.h"
 #include "gfilemonitor.h"
 
 #include "gkeyfilesettingsbackend.h"
@@ -43,6 +45,7 @@ struct _GKeyfileSettingsBackendPrivate
 {
   GHashTable   *table;
   GKeyFile     *keyfile;
+  gboolean      writable;
   gchar        *file_path;
   gchar        *checksum;
   GFileMonitor *monitor;
@@ -232,7 +235,9 @@ static gboolean
 g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
                                          const gchar      *name)
 {
-  return TRUE;
+  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
+
+  return kf_backend->priv->writable;
 }
 
 static gboolean
@@ -364,6 +369,47 @@ g_keyfile_settings_backend_keyfile_reload (GKeyfileSettingsBackend *kf_backend)
   g_ptr_array_free (changed_array, TRUE);
 }
 
+static gboolean
+g_keyfile_settings_backend_keyfile_writable (GFile *file)
+{
+  GFileInfo *fileinfo;
+  GError    *error;
+  gboolean   writable = FALSE;
+
+  error = NULL;
+  fileinfo = g_file_query_info (file, "access::*",
+                                G_FILE_QUERY_INFO_NONE, NULL, &error);
+
+  if (fileinfo == NULL)
+    {
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        {
+          GFile *parent;
+
+          parent = g_file_get_parent (file);
+          if (parent)
+            {
+              writable = g_keyfile_settings_backend_keyfile_writable (parent);
+              g_object_unref (parent);
+            }
+        }
+
+      g_error_free (error);
+
+      return writable;
+    }
+
+  /* We don't want to mark the backend as writable if the file is not readable,
+   * since it means we won't be able to load the content of the file, and we'll
+   * lose data. */
+  writable =
+        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_READ) &&
+        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+  g_object_unref (fileinfo);
+
+  return writable;
+}
+
 static void
 g_keyfile_settings_backend_keyfile_changed (GFileMonitor      *monitor,
                                             GFile             *file,
@@ -375,10 +421,27 @@ g_keyfile_settings_backend_keyfile_changed (GFileMonitor      *monitor,
 
   if (event_type != G_FILE_MONITOR_EVENT_CHANGED &&
       event_type != G_FILE_MONITOR_EVENT_CREATED &&
-      event_type != G_FILE_MONITOR_EVENT_DELETED)
+      event_type != G_FILE_MONITOR_EVENT_DELETED &&
+      event_type != G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED)
     return;
 
   kf_backend = G_KEYFILE_SETTINGS_BACKEND (user_data);
+
+  if (event_type == G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED)
+    {
+      gboolean writable;
+
+      writable = g_keyfile_settings_backend_keyfile_writable (file);
+
+      if (kf_backend->priv->writable == writable)
+        return;
+
+      kf_backend->priv->writable = writable;
+      if (!writable)
+        return;
+      /* else: reload the file since it was possibly not readable before */
+    }
+
   g_keyfile_settings_backend_keyfile_reload (kf_backend);
 }
 
@@ -435,9 +498,13 @@ g_keyfile_settings_backend_constructed (GObject *object)
     kf_backend->priv->file_path = path;
 
   file = g_file_new_for_path (kf_backend->priv->file_path);
+
+  kf_backend->priv->writable = g_keyfile_settings_backend_keyfile_writable (file);
+
   kf_backend->priv->monitor = g_file_monitor_file (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
   g_signal_connect (kf_backend->priv->monitor, "changed",
                     (GCallback)g_keyfile_settings_backend_keyfile_changed, kf_backend);
+
   g_object_unref (file);
 
   g_keyfile_settings_backend_keyfile_reload (kf_backend);
@@ -454,6 +521,7 @@ g_keyfile_settings_backend_init (GKeyfileSettingsBackend *kf_backend)
                            (GDestroyNotify) g_variant_unref);
 
   kf_backend->priv->keyfile = NULL;
+  kf_backend->priv->writable = FALSE;
   kf_backend->priv->file_path = NULL;
   kf_backend->priv->checksum = NULL;
   kf_backend->priv->monitor = NULL;
