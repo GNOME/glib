@@ -129,18 +129,57 @@ enum
 
 enum
 {
-  SIGNAL_ALL_WRITABLE_CHANGED,
-  SIGNAL_ALL_CHANGED,
-  SIGNAL_KEYS_CHANGED,
+  SIGNAL_WRITABLE_CHANGE_EVENT,
   SIGNAL_WRITABLE_CHANGED,
+  SIGNAL_CHANGE_EVENT,
   SIGNAL_CHANGED,
-  SIGNAL_DESTROYED,
   N_SIGNALS
 };
 
 static guint g_settings_signals[N_SIGNALS];
 
 G_DEFINE_TYPE (GSettings, g_settings, G_TYPE_OBJECT)
+
+static gboolean
+g_settings_real_change_event (GSettings    *settings,
+                              const GQuark *keys,
+                              gint          n_keys)
+{
+  gint i;
+
+  if (keys == NULL)
+    keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+
+  for (i = 0; i < n_keys; i++)
+    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
+                   keys[i], g_quark_to_string (keys[i]));
+
+  return FALSE;
+}
+
+static gboolean
+g_settings_real_writable_change_event (GSettings *settings,
+                                       GQuark     key)
+{
+  const GQuark *keys = &key;
+  gint n_keys = 1;
+  gint i;
+
+  if (key == 0)
+    keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+
+  for (i = 0; i < n_keys; i++)
+    {
+      const gchar *string = g_quark_to_string (keys[i]);
+
+      g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
+                     keys[i], string);
+      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
+                     keys[i], string);
+    }
+
+  return FALSE;
+}
 
 static void
 settings_backend_changed (GSettingsBackend    *backend,
@@ -161,8 +200,8 @@ settings_backend_changed (GSettingsBackend    *backend,
       GQuark quark;
 
       quark = g_quark_from_string (key + i);
-      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                     quark, g_quark_to_string (quark));
+      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
+                     0, &quark, 1);
     }
 }
 
@@ -177,7 +216,8 @@ settings_backend_path_changed (GSettingsBackend *backend,
   g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
-    g_signal_emit (settings, g_settings_signals[SIGNAL_ALL_CHANGED], 0);
+    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
+                   0, NULL, 0);
 }
 
 static void
@@ -218,7 +258,7 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
          }
 
       if (l > 0)
-        g_signal_emit (settings, g_settings_signals[SIGNAL_KEYS_CHANGED],
+        g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
                        0, quarks, l);
     }
 }
@@ -237,24 +277,8 @@ settings_backend_writable_changed (GSettingsBackend *backend,
 
   if (settings->priv->path[i] == '\0' &&
       g_settings_schema_has_key (settings->priv->schema, key + i))
-    {
-      const gchar *string;
-      GQuark quark;
-
-      quark = g_quark_from_string (key + i);
-      string = g_quark_to_string (quark);
-
-      quark = g_quark_from_string (key + i);
-      g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
-                     quark, string);
-
-      /* if 'writeable' changes the key value may change as a
-       * side-effect (consider the admin setting a mandatory key over
-       * top of an existing key).  so, signal that possibility.
-       */
-      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                     quark, string);
-    }
+    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
+                   0, g_quark_from_string (key + i));
 }
 
 static void
@@ -267,52 +291,8 @@ settings_backend_path_writable_changed (GSettingsBackend *backend,
   g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
-    {
-      g_signal_emit (settings,
-                     g_settings_signals[SIGNAL_ALL_WRITABLE_CHANGED], 0);
-      g_signal_emit (settings, g_settings_signals[SIGNAL_ALL_CHANGED], 0);
-    }
-}
-
-
-static void
-real_all_writable_changed (GSettings *settings)
-{
-  const GQuark *list;
-  gint n_items;
-  gint i;
-
-  list = g_settings_schema_list (settings->priv->schema, &n_items);
-
-  for (i = 0; i < n_items; i++)
-    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
-                   list[i], g_quark_to_string (list[i]));
-}
-
-static void
-real_all_changed (GSettings *settings)
-{
-  const GQuark *list;
-  gint n_items;
-  gint i;
-
-  list = g_settings_schema_list (settings->priv->schema, &n_items);
-
-  for (i = 0; i < n_items; i++)
-    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                   list[i], g_quark_to_string (list[i]));
-}
-
-static void
-real_keys_changed (GSettings    *settings,
-                   const GQuark *items,
-                   gint          n_items)
-{
-  gint i;
-
-  for (i = 0; i < n_items; i++)
-    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                   items[i], g_quark_to_string (items[i]));
+    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
+                   0, (GQuark) 0);
 }
 
 static void
@@ -326,13 +306,13 @@ g_settings_constructed (GObject *object)
 
   if (settings->priv->path && schema_path && strcmp (settings->priv->path, schema_path) != 0)
     g_error ("settings object created with schema '%s' and path '%s', but "
-             "path '%s' is specified by schema\n",
+             "path '%s' is specified by schema",
              settings->priv->schema_name, settings->priv->path, schema_path);
 
   if (settings->priv->path == NULL)
     {
       if (schema_path == NULL)
-        g_error ("attempting to create schema '%s' without a path\n",
+        g_error ("attempting to create schema '%s' without a path",
                  settings->priv->schema_name);
 
       settings->priv->path = g_strdup (schema_path);
@@ -520,11 +500,10 @@ static void
 g_settings_class_init (GSettingsClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-/*
-  class->all_writable_changed = real_all_writable_changed;
-  class->all_changed = real_all_changed;
-  class->keys_changed = real_keys_changed;
-*/
+
+  class->writable_change_event = g_settings_real_writable_change_event;
+  class->change_event = g_settings_real_change_event;
+
   object_class->set_property = g_settings_set_property;
   object_class->get_property = g_settings_get_property;
   object_class->constructed = g_settings_constructed;
@@ -532,78 +511,53 @@ g_settings_class_init (GSettingsClass *class)
 
   g_type_class_add_private (object_class, sizeof (GSettingsPrivate));
 
-#if 0
-  /**
-   * GSettings::all-changed:
-   * @settings: the object on which the signal was emitted
-   *
-   * The "all-changed" signal is emitted when potentially every key in
-   * the settings object has changed.  This occurs, for example, if
-   * g_settings_reset() is called.
-   *
-   * The default implementation for this signal is to emit the
-   * #GSettings::changed signal for each key in the schema.
-   */
-  g_settings_signals[SIGNAL_ALL_CHANGED] =
-    g_signal_new ("all-changed", G_TYPE_SETTINGS,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsClass, all_changed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
-
-  /**
-   * GSettings::keys-changed:
-   * @settings: the object on which the signal was emitted
-   * @keys: an array of #GQuark<!-- -->s for the changed keys
-   * @n_keys: the length of the @keys array
-   *
-   * The "keys-changed" signal is emitting when a number of keys have
-   * potentially been changed.  This occurs, for example, if
-   * g_settings_apply() is called on a delayed-apply #GSettings.
-   *
-   * The default implementation for this signal is to emit the
-   * #GSettings::changed signal for each item in the list of keys.
-   */
-  g_settings_signals[SIGNAL_KEYS_CHANGED] =
-    g_signal_new ("keys-changed", G_TYPE_SETTINGS,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsClass, keys_changed),
-                  NULL, NULL,
-                  _gio_marshal_VOID__POINTER_INT,
-                  G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_INT);
-
   /**
    * GSettings::changed:
    * @settings: the object on which the signal was emitted
-   * @key: the changed key
    *
-   * The "changed" signal is emitted when a key has potentially been
-   * changed.
+   * The "changed" signal is emitted when a key has potentially changed.
+   * You should call one of the g_settings_get() calls to check the new
+   * value.
    */
   g_settings_signals[SIGNAL_CHANGED] =
     g_signal_new ("changed", G_TYPE_SETTINGS,
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
+                  G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, changed),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
+                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 1,
+                  G_TYPE_STRING | G_SIGNAL_STATIC_SCOPE);
 
   /**
-   * GSettings::all-writable-changed:
+   * GSettings::change-event:
+   * @settings: the object on which the signal was emitted
+   * @keys: an array of #GQuark<!-- -->s for the changed keys, or %NULL
+   * @n_keys: the length of the @keys array, or 0
+   * @returns: %TRUE to stop other handlers from being invoked for the
+   *           event. FALSE to propagate the event further.
    *
-   * The "all-writable-changed" signal is emitted when the writability
-   * of potentially every key has changed.  This occurs, for example, if
-   * an entire subpath is locked down in the settings backend.
+   * The "change-event" signal is emitted once per change event that
+   * affects this settings object.  You should connect to this signal if
+   * you are interested in viewing groups of changes before they are
+   * split out into multiple calls to the "changed" signal.
    *
-   * The default implementation for this signal is to emit the
-   * #GSettings:writable-changed signal for each key in the schema.
+   * In the event that the change event applies to one or more specified
+   * keys, @keys will be an array of #GQuark of length @n_keys.  In the
+   * event that the change event applies to the #GSettings object as a
+   * whole (ie: potentially every key has been changed) then @keys will
+   * be %NULL and @n_keys will be 0.
+   *
+   * The default handler for this signal invokes the "changed" signal
+   * for each affected key.  If any other connected handler returns
+   * %TRUE then this default functionality will be supressed.
    */
-  g_settings_signals[SIGNAL_ALL_WRITABLE_CHANGED] =
-    g_signal_new ("all-writable-changed", G_TYPE_SETTINGS,
+  g_settings_signals[SIGNAL_CHANGE_EVENT] =
+    g_signal_new ("change-event", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GSettingsClass, all_changed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  G_STRUCT_OFFSET (GSettingsClass, change_event),
+                  g_signal_accumulator_true_handled, NULL,
+                  _gio_marshal_VOID__POINTER_INT,
+                  G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_INT);
+
   /**
    * GSettings::writable-changed:
    * @settings: the object on which the signal was emitted
@@ -617,10 +571,38 @@ g_settings_class_init (GSettingsClass *class)
     g_signal_new ("writable-changed", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GSettingsClass, changed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
-#endif
+                  NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
+                  1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * GSettings::writable-change-event:
+   * @settings: the object on which the signal was emitted
+   * @key: the quark of the key, or 0
+   * @returns: %TRUE to stop other handlers from being invoked for the
+   *           event. FALSE to propagate the event further.
+   *
+   * The "writable-change-event" signal is emitted once per wriability
+   * change event that affects this settings object.  You should connect
+   * to this signal if you are interested in viewing groups of changes
+   * before they are split out into multiple calls to the
+   * "writable-changed" signal.
+   *
+   * In the event that the writability change applies only to a single
+   * key, @key will be set to the #GQuark for that key.  In the event
+   * that the writability change affects the entire settings object,
+   * @key will be 0.
+   *
+   * The default handler for this signal invokes the "writabile-changed"
+   * signal for each affected key.  If any other connected handler
+   * returns %TRUE then this default functionality will be supressed.
+   */
+  g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
+    g_signal_new ("all-writable-changed", G_TYPE_SETTINGS,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GSettingsClass, all_changed),
+                  g_signal_accumulator_true_handled, NULL,
+                  g_cclosure_marshal_BOOL__INT, G_TYPE_BOOLEAN, 0);
+
   /**
    * GSettings:context:
    *
@@ -702,7 +684,7 @@ g_settings_get_value (GSettings   *settings,
   sval = g_settings_schema_get_value (settings->priv->schema, key, &options);
 
   if G_UNLIKELY (sval == NULL)
-    g_error ("schema '%s' does not contain a key named '%s'\n",
+    g_error ("schema '%s' does not contain a key named '%s'",
              settings->priv->schema_name, key);
 
   path = g_strconcat (settings->priv->path, key, NULL);
@@ -940,7 +922,7 @@ g_settings_get_child (GSettings   *settings,
                                               child_name, NULL);
   if (child_schema == NULL ||
       !g_variant_is_of_type (child_schema, G_VARIANT_TYPE_STRING))
-    g_error ("Schema '%s' has no child '%s'\n",
+    g_error ("Schema '%s' has no child '%s'",
              settings->priv->schema_name, name);
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);

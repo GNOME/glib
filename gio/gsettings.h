@@ -44,15 +44,16 @@ struct _GSettingsClass
 {
   GObjectClass parent_class;
 
-  void        (*keys_writable_changed) (GSettings    *settings);
-  void        (*keys_changed)          (GSettings    *settings,
-                                        const GQuark *keys,
-                                        gint          n_keys);
-
+  /* Signals */
   void        (*writable_changed)      (GSettings    *settings,
                                         const gchar  *key);
   void        (*changed)               (GSettings    *settings,
                                         const gchar  *key);
+  void        (*writable_change_event) (GSettings    *settings,
+                                        GQuark        key);
+  void        (*change_event)          (GSettings    *settings,
+                                        const GQuark *keys,
+                                        gint          n_keys);
 };
 
 struct _GSettings
