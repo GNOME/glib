@@ -55,6 +55,7 @@ class GSettingsSchemaRoot:
 
     def __init__(self):
         self.schemas = []
+        self.gettext_domain = None
 
     def simplify(self):
         for schema in self.schemas:
@@ -71,10 +72,16 @@ class GSettingsSchemaRoot:
             if result:
                 need_empty_line = True
 
+        # Only put the gettext domain if we have some content
+        if result and self.gettext_domain:
+            result = 'gettext-domain %s\n\n%s' % (self.gettext_domain, result)
+
         return result
 
     def get_xml_node(self):
         schemalist_node = ET.Element('schemalist')
+        if self.gettext_domain:
+            schemalist_node.set('gettext-domain', self.gettext_domain)
         for schema in self.schemas:
             for schema_node in schema.get_xml_nodes():
                 schemalist_node.append(schema_node)
@@ -91,6 +98,7 @@ class GSettingsSchemaDir:
 
     def __init__(self):
         self.name = None
+        self.gettext_domain = None
         self.dirs = []
         self.keys = []
 
@@ -119,6 +127,9 @@ class GSettingsSchemaDir:
             if result:
                 need_empty_line = True
 
+        if result and self.gettext_domain:
+            result = '%sgettext-domain %s\n\n%s' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain, result)
+
         return result
 
     def get_xml_nodes(self, parent_id, parent_path):
@@ -143,6 +154,9 @@ class GSettingsSchemaDir:
         children = []
 
         schema_node = ET.Element('schema')
+        if self.gettext_domain:
+            schema_node.set('gettext-domain', self.gettext_domain)
+
         for key in self.keys:
             key_node = key.get_xml_node()
             schema_node.append(key_node)
@@ -164,6 +178,7 @@ class GSettingsSchema(GSettingsSchemaDir):
     def __init__(self):
         self.id = None
         self.path = None
+        self.gettext_domain = None
         self.dirs = []
         self.keys = []
 
@@ -181,6 +196,8 @@ class GSettingsSchema(GSettingsSchemaDir):
 
         result = ''
         result += 'schema %s:\n' % self.id
+        if self.gettext_domain:
+            result += '%sgettext-domain %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
         if self.path:
             result += '%spath %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
         result += '\n'
@@ -402,10 +419,10 @@ class GConfSchema:
 ######################################
 
 allowed_tokens = {
-  ''            : [ 'schema' ],
-  'schema'      : [ 'path', 'child', 'key' ],
+  ''            : [ 'gettext', 'schema' ],
+  'schema'      : [ 'gettext', 'path', 'child', 'key' ],
   'path'        : [ ],
-  'child'       : [ 'child', 'key' ],
+  'child'       : [ 'gettext', 'child', 'key' ],
   'key'         : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
   'l10n'        : [ ],
   'summary'     : [ ],
@@ -449,6 +466,8 @@ def _eat_word(line):
     return (line[:i], line[i:])
 
 def _word_to_token(word):
+    if word == 'gettext-domain':
+        return 'gettext'
     if word == 'schema':
         return 'schema'
     if word == 'path':
@@ -579,7 +598,9 @@ def read_simple_schema(simple_schema_file):
         current_object = object_stack[-1]
 
         new_object = None
-        if token == 'schema':
+        if token == 'gettext':
+            current_object.gettext_domain = line
+        elif token == 'schema':
             name = _get_name_without_colon(line)
             new_object = GSettingsSchema()
             new_object.id = name
