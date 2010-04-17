@@ -412,7 +412,7 @@ class GConfSchema:
 
     def get_gsettings_schema_key(self):
         key = GSettingsSchemaKey()
-        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, None, self.short, self.long, None, None)
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.keyname, self.short, self.long, None, None)
         return key
 
 
