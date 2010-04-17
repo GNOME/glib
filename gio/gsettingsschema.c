@@ -30,6 +30,8 @@ struct _GSettingsSchemaPrivate
 {
   const gchar *gettext_domain;
   const gchar *path;
+  GQuark *items;
+  gint n_items;
   GvdbTable *table;
   gchar *name;
 };
@@ -86,6 +88,7 @@ g_settings_schema_finalize (GObject *object)
   GSettingsSchema *schema = G_SETTINGS_SCHEMA (object);
 
   gvdb_table_unref (schema->priv->table);
+  g_free (schema->priv->items);
   g_free (schema->priv->name);
 
   G_OBJECT_CLASS (g_settings_schema_parent_class)
@@ -202,4 +205,33 @@ g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)
 {
   return gvdb_table_has_value (schema->priv->table, key);
+}
+
+const GQuark *
+g_settings_schema_list (GSettingsSchema *schema,
+                        gint            *n_items)
+{
+  gint i, j;
+
+  if (schema->priv->items == NULL)
+    {
+      gchar **list;
+      gint len;
+
+      list = gvdb_table_list (schema->priv->table, "");
+      len = g_strv_length (list);
+
+      schema->priv->items = g_new (GQuark, len);
+      j = 0;
+
+      for (i = 0; i < len; i++)
+        if (list[i][0] != '.')
+          schema->priv->items[j++] = g_quark_from_string (list[i]);
+      schema->priv->n_items = j;
+
+      g_strfreev (list);
+    }
+
+  *n_items = schema->priv->n_items;
+  return schema->priv->items;
 }
