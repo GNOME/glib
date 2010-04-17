@@ -20,6 +20,8 @@
 #
 # Authors: Vincent Untz <vuntz@gnome.org>
 
+# TODO: support alias for choice
+
 import os
 import sys
 
@@ -35,8 +37,8 @@ except ImportError:
 
 
 GSETTINGS_SIMPLE_SCHEMA_INDENT = '  '
-TYPES_FOR_RANGE_CHOICES = [ 's' ]
-TYPES_FOR_RANGE_MINMAX = [ 'y', 'n', 'q', 'i', 'u', 'x', 't', 'h', 'd' ]
+TYPES_FOR_CHOICES = [ 's' ]
+TYPES_FOR_RANGE = [ 'y', 'n', 'q', 'i', 'u', 'x', 't', 'h', 'd' ]
 
 
 ######################################
@@ -217,10 +219,10 @@ class GSettingsSchemaKey:
         self.localized = None
         self.summary = None
         self.description = None
-        self.range_choices = None
-        self.range_minmax = None
+        self.choices = None
+        self.range = None
 
-    def fill(self, name, type, default, typed_default, localized, summary, description, range_choices, range_minmax):
+    def fill(self, name, type, default, typed_default, localized, summary, description, choices, range):
         self.name = name
         self.type = type
         self.default = default
@@ -228,14 +230,14 @@ class GSettingsSchemaKey:
         self.localized = localized
         self.summary = summary
         self.description = description
-        self.range_choices = range_choices
-        self.range_minmax = range_minmax
+        self.choices = choices
+        self.range = range
 
     def _has_range_choices(self):
-        return self.range_choices is not None and self.type in TYPES_FOR_RANGE_CHOICES
+        return self.choices is not None and self.type in TYPES_FOR_CHOICES
 
     def _has_range_minmax(self):
-        return self.range_minmax is not None and len(self.range_minmax) == 2 and self.type in TYPES_FOR_RANGE_MINMAX
+        return self.range is not None and len(self.range) == 2 and self.type in TYPES_FOR_RANGE
 
     def get_simple_string(self, current_indent):
         # FIXME: kill this when we'll have python bindings for GVariant. Right
@@ -252,7 +254,7 @@ class GSettingsSchemaKey:
         if self.description:
             result += '%sDescription: %s\n' % (current_indent, self.description)
         if self._has_range_choices():
-            result += '%sRange: %s\n' % ', '.join(self.range_choices)
+            result += '%sRange: %s\n' % ', '.join(self.choices)
         elif self._has_range_minmax():
             result += '%sRange: %s\n' % '%s..%s' % self._range_minmax
         return result
@@ -270,17 +272,19 @@ class GSettingsSchemaKey:
             description_node = ET.SubElement(key_node, 'description')
             description_node.text = self.description
         if self._has_range_choices():
-            range_node = ET.SubElement(key_node, 'range')
-            for choice in self.range_choices:
-                choice_node = ET.SubElement(range_node, 'choice')
-                choice_node.text = choice
+            choices_node = ET.SubElement(key_node, 'choices')
+            for choice in self.choices:
+                choice_node = ET.SubElement(choices_node, 'choice')
+                choice_node.set('value', choice)
         elif self._has_range_minmax():
-            (min, max) = self.range_minmax
+            (min, max) = self.range
             range_node = ET.SubElement(key_node, 'range')
             min_node = ET.SubElement(range_node, 'min')
-            min_node.text = min
+            if min:
+                min_node.text = min
             max_node = ET.SubElement(range_node, 'max')
-            max_node.text = max
+            if max:
+                max_node.text = max
         return key_node
 
 
@@ -391,9 +395,10 @@ allowed_tokens = {
   'schema'      : [ 'path', 'child', 'key' ],
   'path'        : [ ],
   'child'       : [ 'child', 'key' ],
-  'key'         : [ 'summary', 'description', 'range' ],
+  'key'         : [ 'summary', 'description', 'choices', 'range' ],
   'summary'     : [ ],
   'description' : [ ],
+  'choices'     : [ ],
   'range'       : [ ]
 }
 
@@ -444,6 +449,8 @@ def _word_to_token(word):
         return 'summary'
     if word == 'Description:':
         return 'description'
+    if word == 'Choices:':
+        return 'choices'
     if word == 'Range:':
         return 'range'
     raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
@@ -473,21 +480,23 @@ def _parse_key(line):
             raise GSettingsSchemaConvertException('No value specified for key \'%s\'.' % line)
     return (name, type, value)
 
+def _parse_choices(line, type):
+    if type in TYPES_FOR_CHOICES:
+        return [ item.strip() for item in line.split(',') ]
+    else:
+        raise GSettingsSchemaConvertException('Type \'%s\' cannot have choices.' % type)
+
 def _parse_range(line, type):
-    choices = None
     minmax = None
-    if type in TYPES_FOR_RANGE_CHOICES:
-        choices = [ item.strip() for item in line.split(',') ]
-    elif type in TYPES_FOR_RANGE_MINMAX:
+    if type in TYPES_FOR_RANGE:
         minmax = [ item.strip() for item in line.split('..') ]
         if len(minmax) != 2:
-            raise GSettingsSchemaConvertException('Range \'%s\' is not a valid min-max range for numerical type.' % line)
+            raise GSettingsSchemaConvertException('Range \'%s\' is not a valid range.' % line)
         # FIXME: we'll be able to check min < max once we can convert the
         # values with GVariant
-        minmax = tuple(minmax)
+        return tuple(minmax)
     else:
         raise GSettingsSchemaConvertException('Type \'%s\' cannot have a range.' % type)
-    return (choices, minmax)
 
 def read_simple_schema(simple_schema_file):
     root = GSettingsSchemaRoot()
@@ -568,10 +577,10 @@ def read_simple_schema(simple_schema_file):
             current_object.summary = line
         elif token == 'description':
             current_object.description = line
+        elif token == 'choices':
+            current_object.choices = _parse_choices(line, current_object.type)
         elif token == 'range':
-            (choices, minmax) = _parse_range(line, current_object.type)
-            current_object.range_choices = choices
-            current_object.range_minmax = minmax
+            current_object.range = _parse_range(line, current_object.type)
 
         if new_object:
             token_stack.append(token)
