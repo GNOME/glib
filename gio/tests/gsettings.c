@@ -4,6 +4,13 @@
 #include <gio.h>
 #include <gstdio.h>
 
+/* These tests rely on the schemas in org.gtk.test.gschema.xml
+ * to be compiled and installed in the same directory.
+ */
+
+/* Just to get warmed up: Read and set a string, and
+ * verify that can read the changed string back
+ */
 static void
 test_basic (void)
 {
@@ -39,6 +46,9 @@ test_basic (void)
   g_object_unref (settings);
 }
 
+/* Check that we get an error when getting a key
+ * that is not in the schema
+ */
 static void
 test_unknown_key (void)
 {
@@ -58,6 +68,9 @@ test_unknown_key (void)
   g_test_trap_assert_stderr ("*does not contain*");
 }
 
+/* Check that we get an error when the schema
+ * has not been installed
+ */
 void
 test_no_schema (void)
 {
@@ -74,6 +87,9 @@ test_no_schema (void)
   g_test_trap_assert_stderr ("*Settings schema 'no.such.schema' is not installed*");
 }
 
+/* Check that we get an error when passing a type string
+ * that does not match the schema
+ */
 static void
 test_wrong_type (void)
 {
@@ -103,6 +119,9 @@ test_wrong_type (void)
   g_test_trap_assert_stderr ("*CRITICAL*");
 }
 
+/* Check that we can successfully read and set the full
+ * range of all basic types
+ */
 static void
 test_basic_types (void)
 {
@@ -211,6 +230,9 @@ test_basic_types (void)
   str = NULL;
 }
 
+/* Check that we can read an set complex types like
+ * tuples, arrays and dictionaries
+ */
 static void
 test_complex_types (void)
 {
@@ -268,6 +290,8 @@ changed_cb (GSettings   *settings,
   g_assert_cmpstr (key, ==, data);
 }
 
+/* Test that basic change notification with the changed signal works.
+ */
 void
 test_changes (void)
 {
@@ -307,7 +331,13 @@ changed_cb2 (GSettings   *settings,
   *p = TRUE;
 }
 
-
+/* Test that changes done to a delay-mode instance
+ * don't appear to the outside world until apply. Also
+ * check that we get change notification when they are
+ * applied.
+ * Also test that the has-unapplied property is properly
+ * maintained.
+ */
 void
 test_delay_apply (void)
 {
@@ -373,6 +403,9 @@ test_delay_apply (void)
   g_object_unref (settings);
 }
 
+/* Test that reverting unapplied changes in a delay-apply
+ * settings instance works.
+ */
 static void
 test_delay_revert (void)
 {
@@ -399,7 +432,11 @@ test_delay_revert (void)
   g_free (str);
   str = NULL;
 
+  g_assert (g_settings_get_has_unapplied (settings));
+
   g_settings_revert (settings);
+
+  g_assert (g_settings_get_has_unapplied (settings));
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
@@ -440,6 +477,10 @@ keys_changed_cb (GSettings    *settings,
   str = NULL;
 }
 
+/* Check that delay-applied changes appear atomically.
+ * More specifically, verify that all changed keys appear
+ * with their new value while handling the change-event signal.
+ */
 static void
 test_atomic (void)
 {
@@ -489,6 +530,11 @@ test_atomic (void)
   g_object_unref (settings);
 }
 
+/* Test that translations work for schema defaults.
+ *
+ * This test relies on the de.po file in the same directory
+ * to be compiled into ./de/LC_MESSAGES/test.mo
+ */
 static void
 test_l10n (void)
 {
@@ -523,6 +569,13 @@ test_l10n (void)
   g_free (locale);
 }
 
+/* Test that message context works as expected with translated
+ * schema defaults. Also, verify that non-ASCII UTF-8 content
+ * works.
+ *
+ * This test relies on the de.po file in the same directory
+ * to be compiled into ./de/LC_MESSAGES/test.mo
+ */
 static void
 test_l10n_context (void)
 {
@@ -678,6 +731,10 @@ test_object_new (void)
   return (TestObject*)g_object_new (test_object_get_type (), NULL);
 }
 
+/* Test basic binding functionality for simple types.
+ * Verify that with bidirectional bindings, changes on either side
+ * are notified on the other end.
+ */
 static void
 test_simple_binding (void)
 {
@@ -734,6 +791,10 @@ test_simple_binding (void)
   g_object_unref (settings);
 }
 
+/* Test one-way bindings.
+ * Verify that changes on one side show up on the other,
+ * but not vice versa
+ */
 static void
 test_directional_binding (void)
 {
@@ -773,6 +834,8 @@ test_directional_binding (void)
   g_object_unref (settings);
 }
 
+/* Test that type mismatch is caught when creating a binding
+ */
 static void
 test_typesafe_binding (void)
 {
@@ -817,6 +880,9 @@ bool_to_string (const GValue       *value,
     return g_variant_new_string ("false");
 }
 
+/* Test custom bindings.
+ * Translate strings to booleans and back
+ */
 static void
 test_custom_binding (void)
 {
@@ -853,6 +919,11 @@ test_custom_binding (void)
   g_object_unref (settings);
 }
 
+/* Test that with G_SETTINGS_BIND_NO_CHANGES, the
+ * initial settings value is transported to the object
+ * side, but later settings changes do not affect the
+ * object
+ */
 static void
 test_no_change_binding (void)
 {
