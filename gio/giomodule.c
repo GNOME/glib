@@ -26,6 +26,7 @@
 
 #include "giomodule.h"
 #include "giomodule-priv.h"
+#include "gmemorysettingsbackend.h"
 #include "glocalfilemonitor.h"
 #include "glocaldirectorymonitor.h"
 #include "gnativevolumemonitor.h"
@@ -565,6 +566,7 @@ _g_io_modules_ensure_loaded (void)
 	}
 
       /* Initialize types from built-in "modules" */
+      g_memory_settings_backend_get_type ();
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
       _g_inotify_directory_monitor_get_type ();
       _g_inotify_file_monitor_get_type ();
