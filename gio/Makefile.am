@@ -79,21 +79,25 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
+settings_headers = \
+	gsettingsbackend.h		\
+	gsettings.h
+
 settings_sources = \
-	gsettingsbackendinternal.h	\
-	gdelayedsettingsbackend.h	\
-	gdelayedsettingsbackend.		\
-	gnullsettingsbackend.h		\
-	gnullsettingsbackend.c		\
-	gsettingsbackend.c		\
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-reader.h		\
 	gvdb/gvdb-reader.c		\
+	gdelayedsettingsbackend.h	\
+	gdelayedsettingsbackend.c	\
+	gnullsettingsbackend.h		\
+	gnullsettingsbackend.c		\
+	gsettingsbackendinternal.h	\
+	gsettingsbackend.c		\
 	gsettingsschema.h		\
-	gsettingsschema.c
-
-settings_headers = \
-	gsettingsbackend.h
+	gsettingsschema.c		\
+	gsettings-mapping.h		\
+	gsettings-mapping.c		\
+	gsettings.c
 
 local_sources = \
 	glocaldirectorymonitor.c 	\
@@ -428,7 +432,7 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
-	$(settings_headers) 	\
+	$(settings_headers)	\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/
@@ -489,9 +493,9 @@ gio_querymodules_LDADD	 = \
 
 gschema_compile_LDADD = $(top_builddir)/glib/libglib-2.0.la
 gschema_compile_SOURCES = \
-	gvdb/gvdb-format.h	\
-	gvdb/gvdb-builder.h	\
-	gvdb/gvdb-builder.c	\
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-builder.h		\
+	gvdb/gvdb-builder.c		\
 	gschema-compile.c
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
