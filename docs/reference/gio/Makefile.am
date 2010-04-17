@@ -137,6 +137,8 @@ man_MANS =			\
 	gschema-compile.1	\
 	gsettings-schema-convert.1
 
+$(man_MANS) : sgml-build.stamp
+
 %.1 : xml/%.xml
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
@@ -149,4 +151,3 @@ dist-hook-local: $(BUILT_EXTRA_DIST)
 	for f in $$files; do					\
 	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
 	  cp $$d/$$f $(distdir) || exit 1; done
-
