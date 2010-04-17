@@ -311,7 +311,7 @@ class GSettingsSchemaKey:
         if self._has_range_choices():
             result += '%schoices: %s\n' % (current_indent, ', '.join(self.choices))
         elif self._has_range_minmax():
-            result += '%srange: %s\n' % (current_indent, '%s..%s' % self.range)
+            result += '%srange: %s\n' % (current_indent, '%s..%s' % (self.range[0] or '', self.range[1] or ''))
         return result
 
     def get_xml_node(self):
@@ -635,6 +635,146 @@ class SimpleSchemaParser:
 ######################################
 
 
+class XMLSchemaParser:
+
+    def __init__(self, file):
+        self.file = file
+
+        self.root = None
+
+    def _parse_key(self, key_node, schema):
+        key = GSettingsSchemaKey()
+
+        key.name = key_node.get('name')
+        if not key.name:
+            raise GSettingsSchemaConvertException('A key in schema \'%s\' has no name.' % schema.id)
+        key.type = key_node.get('type')
+        if not key.type:
+            raise GSettingsSchemaConvertException('Key \'%s\' in schema \'%s\' has no type.' % (key.name, schema.id))
+
+        default_node = key_node.find('default')
+        if default_node is None or not default_node.text.strip():
+            raise GSettingsSchemaConvertException('Key \'%s\' in schema \'%s\' has no default value.' % (key.name, schema.id))
+        key.l10n = default_node.get('l10n')
+        key.l10n_context = default_node.get('context')
+        key.default = default_node.text.strip()
+
+        summary_node = key_node.find('summary')
+        if summary_node is not None:
+            key.summary = summary_node.text.strip()
+        description_node = key_node.find('description')
+        if description_node is not None:
+            key.description = description_node.text.strip()
+
+        range_node = key_node.find('range')
+        if range_node is not None:
+            min = None
+            max = None
+            min_node = range_node.find('min')
+            if min_node is not None:
+                min = min_node.text.strip()
+            max_node = range_node.find('max')
+            if max_node is not None:
+                max = max_node.text.strip()
+            if min or max:
+                self.range = (min, max)
+
+        choices_node = key_node.find('choices')
+        if choices_node is not None:
+            self.choices = []
+            for choice_node in choices_node.findall('choice'):
+                value = choice_node.get('value')
+                if value:
+                    self.choices.append(value)
+                else:
+                    raise GSettingsSchemaConvertException('A choice for key \'%s\' in schema \'%s\' has no value.' % (key.name, schema.id))
+
+        return key
+
+    def _parse_schema(self, schema_node):
+        schema = GSettingsSchema()
+
+        schema._children = []
+
+        schema.id = schema_node.get('id')
+        if not schema.id:
+            raise GSettingsSchemaConvertException('A schema has no id.')
+        schema.path = schema_node.get('path')
+        schema.gettext_domain = schema_node.get('gettext-domain')
+
+        for key_node in schema_node.findall('key'):
+            key = self._parse_key(key_node, schema)
+            schema.keys.append(key)
+
+        for child_node in schema_node.findall('child'):
+            child_name = child_node.get('name')
+            if not child_name:
+                raise GSettingsSchemaConvertException('A child of schema \'%s\' has no name.' % schema.id)
+            child_schema = child_node.get('schema')
+            if not child_schema:
+                raise GSettingsSchemaConvertException('Child \'%s\' of schema \'%s\' has no schema.' % (child_name, schema.id))
+
+            expected_id = schema.id + '.' + child_name
+            if child_schema != expected_id:
+                raise GSettingsSchemaConvertException('\'%s\' is too complex for this tool: child \'%s\' of schema \'%s\' has a schema that is not the expected one (\'%s\' vs \'%s\').' % (os.path.basename(self.file), child_name, schema.id, child_schema, expected_id))
+
+            schema._children.append((child_schema, child_name))
+
+        return schema
+
+    def parse(self):
+        self.root = GSettingsSchemaRoot()
+        schemas = []
+        parent = {}
+
+        schemalist_node = ET.parse(self.file).getroot()
+        self.root.gettext_domain = schemalist_node.get('gettext-domain')
+
+        for schema_node in schemalist_node.findall('schema'):
+            schema = self._parse_schema(schema_node)
+
+            for (child_schema, child_name) in schema._children:
+                if parent.has_key(child_schema):
+                    raise GSettingsSchemaConvertException('Child \'%s\' is declared by two different schemas: \'%s\' and \'%s\'.' % (child_schema, parent[child_schema], schema.id))
+                parent[child_schema] = schema
+
+            schemas.append(schema)
+
+        # now let's move all schemas where they should leave
+        for schema in schemas:
+            if parent.has_key(schema.id):
+                parent_schema = parent[schema.id]
+
+                # check that the paths of parent and child are supported by
+                # this tool
+                found = False
+                for (child_schema, child_name) in parent_schema._children:
+                    if child_schema == schema.id:
+                        found = True
+                        expected_path = parent_schema.path + child_name + '/'
+                        if schema.path != expected_path:
+                            raise GSettingsSchemaConvertException('\'%s\' is too complex for this tool: child \'%s\' of schema \'%s\' has a path that is not the expected one (\'%s\' vs \'%s\').' % (os.path.basename(self.file), child_name, parent_schema.id, schema.path, expected_path))
+                        break
+
+                if not found:
+                    raise GSettingsSchemaConvertException('Internal error: child not found in parent\'s children.')
+
+                schema_dir = GSettingsSchemaDir()
+                schema_dir.name = child_name
+                schema_dir.gettext_domain = schema.gettext_domain
+                schema_dir.dirs = schema.dirs
+                schema_dir.keys = schema.keys
+
+                parent_schema.dirs.append(schema_dir)
+            else:
+                self.root.schemas.append(schema)
+
+        return self.root
+
+
+######################################
+
+
 def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
     typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
     result = typemap[gconftype]
@@ -854,11 +994,6 @@ def main(args):
     if options.simple and options.xml:
         print >> sys.stderr, 'Too many output formats requested.'
         return 1
-    if not options.simple and not options.xml:
-        if options.gconf:
-            options.simple = True
-        else:
-            options.xml = True
 
     if not options.gconf and options.schema_id:
         print >> sys.stderr, 'Default schema ID can only be specified when converting a gconf schema.'
@@ -877,14 +1012,26 @@ def main(args):
             raise GSettingsSchemaConvertException('\'%s\' already exists. Use --force to overwrite it.' % options.output)
 
         if options.gconf:
+            if not options.simple and not options.xml:
+                options.simple = True
+
             try:
                 parser = GConfSchemaParser(argfile, options.schema_id)
                 schema_root = parser.parse()
             except SyntaxError, e:
                 raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))
         else:
-            parser = SimpleSchemaParser(argfile)
-            schema_root = parser.parse()
+            # autodetect if file is XML or not
+            try:
+                parser = XMLSchemaParser(argfile)
+                schema_root = parser.parse()
+                if not options.simple and not options.xml:
+                    options.simple = True
+            except SyntaxError, e:
+                parser = SimpleSchemaParser(argfile)
+                schema_root = parser.parse()
+                if not options.simple and not options.xml:
+                    options.xml = True
 
         if options.xml:
             node = schema_root.get_xml_node()
