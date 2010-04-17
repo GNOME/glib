@@ -419,17 +419,20 @@ class GConfSchema:
 ######################################
 
 allowed_tokens = {
-  ''            : [ 'gettext-domain', 'schema' ],
-  'schema'      : [ 'gettext-domain', 'path', 'child', 'key' ],
-  'path'        : [ ],
-  'child'       : [ 'gettext-domain', 'child', 'key' ],
-  'key'         : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
-  'l10n'        : [ ],
-  'summary'     : [ ],
-  'description' : [ ],
-  'choices'     : [ ],
-  'range'       : [ ]
+  ''               : [ 'gettext-domain', 'schema' ],
+  'gettext-domain' : [ ],
+  'schema'         : [ 'gettext-domain', 'path', 'child', 'key' ],
+  'path'           : [ ],
+  'child'          : [ 'gettext-domain', 'child', 'key' ],
+  'key'            : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
+  'l10n'           : [ ],
+  'summary'        : [ ],
+  'description'    : [ ],
+  'choices'        : [ ],
+  'range'          : [ ]
 }
+
+allowed_separators = [ ':', '=' ]
 
 def _eat_indent(line, indent_stack):
     i = 0
@@ -461,47 +464,36 @@ def _eat_indent(line, indent_stack):
 
 def _eat_word(line):
     i = 0
-    while i < len(line) - 1 and not line[i].isspace():
+    while i < len(line) and not line[i].isspace() and not line[i] in allowed_separators:
         i += 1
     return (line[:i], line[i:])
 
 def _word_to_token(word):
-    wordmap = {
-        'gettext-domain': 'gettext-domain',
-        'gettext-domain:': 'gettext-domain',
-        'schema': 'schema',
-        'path': 'path',
-        'path:': 'path',
-        'child': 'child',
-        'key': 'key',
-        'l10n': 'l10n',
-        'l10n:': 'l10n',
-        'summary': 'summary',
-        'summary:': 'summary',
-        'description': 'description',
-        'description:': 'description',
-        'choices': 'choices',
-        'choices:': 'choices',
-        'range': 'range',
-        'range:': 'range',
-    }
-
     lower = word.lower()
-    if not wordmap.has_key(lower):
-        raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
-    return wordmap[lower]
+    if lower and lower in allowed_tokens.keys():
+        return lower
+    raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % lower)
 
-def _get_name_without_colon(line, token):
-    if line[-1] != ':':
-        raise GSettingsSchemaConvertException('%s \'%s\' has no trailing colon.' % (token, line))
-    line = line[:-1].strip()
+def _token_allow_separator(token):
+    return token in [ 'gettext-domain', 'path', 'l10n', 'summary', 'description', 'choices', 'range' ]
+
+def _get_name_without_separator(line, token):
+    if line[-1] in allowed_separators:
+        line = line[:-1].strip()
     # FIXME: we could check there's no space
     return line
 
 def _parse_key(line):
-    items = line.split('=')
-    if len(items) != 2:
+    split = False
+    for separator in allowed_separators:
+        items = line.split(separator)
+        if len(items) == 2:
+            split = True
+            break
+
+    if not split:
         raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
+
     # FIXME: we could check there's no space
     name = items[0].strip()
     type = ''
@@ -580,6 +572,14 @@ def read_simple_schema(simple_schema_file):
         token = _word_to_token(word)
         line = line.lstrip()
 
+        allow_separator = _token_allow_separator(token)
+        if len(line) > 0 and line[0] in allowed_separators:
+            if allow_separator:
+                line = line[1:]
+                line = line.lstrip()
+            else:
+                raise GSettingsSchemaConvertException('Separator \'%s\' is not allowed after \'%s\'.' % (line[0], token))
+
         new_level = len(indent_stack) - leading_indent
         old_level = len(token_stack)
 
@@ -608,14 +608,14 @@ def read_simple_schema(simple_schema_file):
         if token == 'gettext-domain':
             current_object.gettext_domain = line
         elif token == 'schema':
-            name = _get_name_without_colon(line, token)
+            name = _get_name_without_separator(line, token)
             new_object = GSettingsSchema()
             new_object.id = name
             current_object.schemas.append(new_object)
         elif token == 'path':
             current_object.path = line
         elif token == 'child':
-            name = _get_name_without_colon(line, token)
+            name = _get_name_without_separator(line, token)
             new_object = GSettingsSchemaDir()
             new_object.name = name
             current_object.dirs.append(new_object)
