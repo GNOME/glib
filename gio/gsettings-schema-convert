@@ -20,7 +20,8 @@
 #
 # Authors: Vincent Untz <vuntz@gnome.org>
 
-# TODO: support alias for choice
+# TODO: add alias support for choices
+#       choices: 'this-is-an-alias' = 'real', 'other', 'real'
 
 import os
 import sys
@@ -39,6 +40,34 @@ except ImportError:
 GSETTINGS_SIMPLE_SCHEMA_INDENT = '  '
 TYPES_FOR_CHOICES = [ 's' ]
 TYPES_FOR_RANGE = [ 'y', 'n', 'q', 'i', 'u', 'x', 't', 'h', 'd' ]
+
+
+######################################
+
+
+def is_schema_id_valid(id):
+    # FIXME: there's currently no restriction on what an id should contain,
+    # but there might be some later on
+    return True
+
+
+def is_key_name_valid(name):
+    # FIXME: we could check that name is valid ([-a-z0-9], no leading/trailing
+    # -, no leading digit, 32 char max). Note that we don't want to validate
+    # the key when converting from gconf, though, since gconf keys use
+    # underscores.
+    return True
+
+
+def are_choices_valid(choices):
+    # FIXME: we could check that all values have the same type with GVariant
+    return True
+
+
+def is_range_valid(minmax):
+    # FIXME: we'll be able to easily check min < max once we can convert the
+    # values with GVariant
+    return True
 
 
 ######################################
@@ -502,12 +531,14 @@ class SimpleSchemaParser:
     def _token_allow_separator(self):
         return self.current_token in [ 'gettext-domain', 'path', 'l10n', 'summary', 'description', 'choices', 'range' ]
 
-    def _parse_name_without_separator(self):
+    def _parse_id_without_separator(self):
         line = self.unparsed_line
         if line[-1] in self.allowed_separators:
             line = line[:-1].strip()
+        if not is_schema_id_valid(line):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid schema id.' % line)
+
         self.unparsed_line = ''
-        # FIXME: we could check there's no space
         return line
 
     def _parse_key(self):
@@ -523,8 +554,10 @@ class SimpleSchemaParser:
         if not split:
             raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
 
-        # FIXME: we could check there's no space
         name = items[0].strip()
+        if not is_key_name_valid(name):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid key name.' % name)
+
         type = ''
         value = items[1].strip()
         if value[0] == '@':
@@ -562,27 +595,31 @@ class SimpleSchemaParser:
         raise GSettingsSchemaConvertException('Localization \'%s\' cannot be parsed.' % line)
 
     def _parse_choices(self, object):
-        if object.type in TYPES_FOR_CHOICES:
-            line = self.unparsed_line
-            result = [ item.strip() for item in line.split(',') ]
-            self.unparsed_line = ''
-            return result
-        else:
+        if object.type not in TYPES_FOR_CHOICES:
             raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have choices.' % (object.name, object.type))
 
+        line = self.unparsed_line
+        choices = [ item.strip() for item in line.split(',') ]
+        if not are_choices_valid(choices):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid choice.' % line)
+
+        self.unparsed_line = ''
+        return choices
+
     def _parse_range(self, object):
-        minmax = None
-        if object.type in TYPES_FOR_RANGE:
-            line = self.unparsed_line
-            minmax = [ item.strip() for item in line.split('..') ]
-            if len(minmax) != 2:
-                raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
-            # FIXME: we'll be able to check min < max once we can convert the
-            # values with GVariant
-            self.unparsed_line = ''
-            return tuple(minmax)
-        else:
+        if object.type not in TYPES_FOR_RANGE:
             raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have a range.' % (object.name, object.type))
+
+        line = self.unparsed_line
+        minmax = [ item.strip() for item in line.split('..') ]
+
+        if len(minmax) != 2:
+            raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
+        if not is_range_valid(minmax):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid range.' % line)
+
+        self.unparsed_line = ''
+        return tuple(minmax)
 
     def parse_line(self, line):
         # make sure that lines with only spaces are ignored and considered as
@@ -648,14 +685,14 @@ class SimpleSchemaParser:
         if self.current_token == 'gettext-domain':
             current_object.gettext_domain = self.unparsed_line
         elif self.current_token == 'schema':
-            name = self._parse_name_without_separator()
+            name = self._parse_id_without_separator()
             new_object = GSettingsSchema()
             new_object.id = name
             current_object.schemas.append(new_object)
         elif self.current_token == 'path':
             current_object.path = self.unparsed_line
         elif self.current_token == 'child':
-            name = self._parse_name_without_separator()
+            name = self._parse_id_without_separator()
             new_object = GSettingsSchemaDir()
             new_object.name = name
             current_object.dirs.append(new_object)
