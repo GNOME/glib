@@ -813,6 +813,8 @@ get_default_backend (const gchar *context)
   return g_object_new (type, "context", context, NULL);
 }
 
+static GHashTable *g_settings_backends;
+
 /*< private >
  * g_settings_backend_get_with_context:
  * @context: a context that might be used by the backend to determine
@@ -836,17 +838,16 @@ get_default_backend (const gchar *context)
 GSettingsBackend *
 g_settings_backend_get_with_context (const gchar *context)
 {
-  static GHashTable *backends;
   GSettingsBackend *backend;
 
   g_return_val_if_fail (context != NULL, NULL);
 
   _g_io_modules_ensure_extension_points_registered ();
 
-  if (!backends)
-    backends = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  if (g_settings_backends == NULL)
+    g_settings_backends = g_hash_table_new (g_str_hash, g_str_equal);
 
-  backend = g_hash_table_lookup (backends, context);
+  backend = g_hash_table_lookup (g_settings_backends, context);
 
   if (!backend)
     {
@@ -855,7 +856,7 @@ g_settings_backend_get_with_context (const gchar *context)
       if (!backend)
         backend = g_null_settings_backend_new ();
 
-      g_hash_table_insert (backends, g_strdup (context), backend);
+      g_hash_table_insert (g_settings_backends, g_strdup (context), backend);
     }
 
   return g_object_ref (backend);
@@ -886,6 +887,41 @@ g_settings_backend_supports_context (const gchar *context)
     }
 
   return FALSE;
+}
+
+/**
+ * g_settings_backend_setup:
+ * @context: a context string (not %NULL or "")
+ * @backend: a #GSettingsBackend
+ *
+ * Sets up @backend for use with #GSettings.
+ *
+ * If you create a #GSettings with its context property set to @context
+ * then it will use the backend given to this function.  See
+ * g_settings_new_with_context().
+ *
+ * The backend must be set up before any settings objects are created
+ * for the named context.
+ *
+ * It is not possible to specify a backend for the default context.
+ *
+ * This function takes a reference on @backend and never releases it.
+ **/
+void
+g_settings_backend_setup (const gchar      *context,
+                          GSettingsBackend *backend)
+{
+  g_return_if_fail (context[0] != '\0');
+
+  if (g_settings_backends == NULL)
+    g_settings_backends = g_hash_table_new (g_str_hash, g_str_equal);
+
+  if (g_hash_table_lookup (g_settings_backends, context))
+    g_error ("A GSettingsBackend already exists for context '%s'", context);
+
+  g_hash_table_insert (g_settings_backends,
+                       g_strdup (context),
+                       g_object_ref (backend));
 }
 
 #define __G_SETTINGS_BACKEND_C__

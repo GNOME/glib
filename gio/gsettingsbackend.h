@@ -101,6 +101,11 @@ struct _GSettingsBackend
 
 GType                           g_settings_backend_get_type             (void);
 
+void                            g_settings_backend_setup                (const gchar         *context,
+                                                                         GSettingsBackend    *backend);
+void                            g_settings_backend_setup_keyfile        (const gchar         *context,
+                                                                         const gchar         *filename);
+
 void                            g_settings_backend_changed              (GSettingsBackend    *backend,
                                                                          const gchar         *key,
                                                                          gpointer             origin_tag);

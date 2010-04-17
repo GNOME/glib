@@ -37,11 +37,9 @@
 
 #include "gioalias.h"
 
-G_DEFINE_TYPE_WITH_CODE (GKeyfileSettingsBackend,
-                         g_keyfile_settings_backend,
-                         G_TYPE_SETTINGS_BACKEND,
-                         g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
-                                                         g_define_type_id, "keyfile", 0))
+G_DEFINE_TYPE (GKeyfileSettingsBackend,
+               g_keyfile_settings_backend,
+               G_TYPE_SETTINGS_BACKEND)
 
 struct _GKeyfileSettingsBackendPrivate
 {
@@ -240,12 +238,6 @@ g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
   GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
 
   return kf_backend->priv->writable;
-}
-
-static gboolean
-g_keyfile_settings_backend_supports_context (const gchar *context)
-{
-  return TRUE;
 }
 
 static void
@@ -473,46 +465,6 @@ g_keyfile_settings_backend_finalize (GObject *object)
 }
 
 static void
-g_keyfile_settings_backend_constructed (GObject *object)
-{
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (object);
-  const gchar             *envvar_path;
-  gchar                   *path;
-  gchar                   *context;
-  GFile                   *file;
-
-  envvar_path = g_getenv ("GSETTINGS_KEYFILE_BACKEND_STORE");
-  if (envvar_path != NULL && envvar_path[0] != '\0')
-    path = g_strdup (envvar_path);
-  else
-    path = g_build_filename (g_get_user_config_dir (),
-                             "gsettings", "store", NULL);
-
-  context = NULL;
-  g_object_get (kf_backend, "context", &context, NULL);
-  if (context && context[0] != '\0')
-    {
-      kf_backend->priv->file_path = g_strdup_printf ("%s.%s", path, context);
-      g_free (context);
-      g_free (path);
-    }
-  else
-    kf_backend->priv->file_path = path;
-
-  file = g_file_new_for_path (kf_backend->priv->file_path);
-
-  kf_backend->priv->writable = g_keyfile_settings_backend_keyfile_writable (file);
-
-  kf_backend->priv->monitor = g_file_monitor_file (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
-  g_signal_connect (kf_backend->priv->monitor, "changed",
-                    (GCallback)g_keyfile_settings_backend_keyfile_changed, kf_backend);
-
-  g_object_unref (file);
-
-  g_keyfile_settings_backend_keyfile_reload (kf_backend);
-}
-
-static void
 g_keyfile_settings_backend_init (GKeyfileSettingsBackend *kf_backend)
 {
   kf_backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (kf_backend,
@@ -535,7 +487,6 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   GSettingsBackendClass *backend_class = G_SETTINGS_BACKEND_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->constructed = g_keyfile_settings_backend_constructed;
   object_class->finalize = g_keyfile_settings_backend_finalize;
 
   backend_class->read = g_keyfile_settings_backend_read;
@@ -547,7 +498,66 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
    * big win. */
-  backend_class->supports_context = g_keyfile_settings_backend_supports_context;
 
   g_type_class_add_private (class, sizeof (GKeyfileSettingsBackendPrivate));
 }
+
+static GKeyfileSettingsBackend *
+g_keyfile_settings_backend_new (const gchar *filename)
+{
+  GKeyfileSettingsBackend *kf_backend;
+  GFile *file;
+
+  kf_backend = g_object_new (G_TYPE_KEYFILE_SETTINGS_BACKEND, NULL);
+  kf_backend->priv->file_path = g_strdup (filename);
+
+  file = g_file_new_for_path (kf_backend->priv->file_path);
+
+  kf_backend->priv->writable = g_keyfile_settings_backend_keyfile_writable (file);
+
+  kf_backend->priv->monitor = g_file_monitor_file (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
+  g_signal_connect (kf_backend->priv->monitor, "changed",
+                    (GCallback)g_keyfile_settings_backend_keyfile_changed, kf_backend);
+
+  g_object_unref (file);
+
+  g_keyfile_settings_backend_keyfile_reload (kf_backend);
+
+  return kf_backend;
+}
+
+/**
+ * g_settings_backend_setup_keyfile:
+ * @context: a context string (not %NULL or "")
+ * @filename: a filename
+ *
+ * Sets up a keyfile for use with #GSettings.
+ *
+ * If you create a #GSettings with its context property set to @context
+ * then the settings will be stored in the keyfile at @filename.  See
+ * g_settings_new_with_context().
+ *
+ * The keyfile must be setup before any settings objects are created
+ * for the named context.
+ *
+ * It is not possible to specify a keyfile for the default context.
+ *
+ * If the path leading up to @filename does not exist, it will be
+ * recursively created with user-only permissions.  If the keyfile is
+ * not writable, any #GSettings objects created using @context will
+ * return %FALSE for any calls to g_settings_is_writable() and any
+ * attempts to write will fail.
+ */
+void
+g_settings_backend_setup_keyfile (const gchar *context,
+                                  const gchar *filename)
+{
+  GKeyfileSettingsBackend *kf_backend;
+
+  kf_backend = g_keyfile_settings_backend_new (filename);
+  g_settings_backend_setup (context, G_SETTINGS_BACKEND (kf_backend));
+  g_object_unref (kf_backend);
+}
+
+#define __G_KEYFILE_SETTINGS_BACKEND_C__
+#include "gioaliasdef.c"
