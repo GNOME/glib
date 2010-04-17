@@ -483,7 +483,7 @@ class SimpleSchemaParser:
     def _parse_l10n(self):
         line = self.unparsed_line
 
-        items = [ item.strip() for item in line.split(' ') if item.strip() ]
+        items = [ item.strip() for item in line.split(' ', 1) if item.strip() ]
         if not items:
             self.unparsed_line = ''
             return (None, None)
@@ -494,7 +494,7 @@ class SimpleSchemaParser:
             self.unparsed_line = ''
             return (items[0], items[1])
 
-        raise GSettingsSchemaConvertException('Localization \'%s\' cannot be parsed.' % line)
+        raise GSettingsSchemaConvertException('Internal error: more items than expected for localization \'%s\'.' % line)
 
     def _parse_choices(self, object):
         if object.type not in TYPES_FOR_CHOICES:
