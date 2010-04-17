@@ -21,13 +21,11 @@
  *          Ryan Lortie <desrt@desrt.ca>
  */
 
-#ifndef _gkeyfilesettingsbackend_h_
-#define _gkeyfilesettingsbackend_h_
+#ifndef __G_KEY_FILE_SETTINGS_BACKEND_H__
+#define __G_KEY_FILE_SETTINGS_BACKEND_H__
 
-#define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
-G_BEGIN_DECLS
 
 #define G_TYPE_KEYFILE_SETTINGS_BACKEND                      (g_keyfile_settings_backend_get_type ())
 #define G_KEYFILE_SETTINGS_BACKEND(inst)                     (G_TYPE_CHECK_INSTANCE_CAST ((inst),      \
@@ -44,11 +42,11 @@ G_BEGIN_DECLS
                                                               G_TYPE_KEYFILE_SETTINGS_BACKEND,         \
                                                               GKeyfileSettingsBackendClass))
 
-/**
+/*
  * GKeyfileSettingsBackend:
  *
  * A backend to GSettings that stores the settings in keyfile.
- **/
+ */
 typedef struct _GKeyfileSettingsBackendPrivate               GKeyfileSettingsBackendPrivate;
 typedef struct _GKeyfileSettingsBackendClass                 GKeyfileSettingsBackendClass;
 typedef struct _GKeyfileSettingsBackend                      GKeyfileSettingsBackend;
@@ -69,6 +67,5 @@ struct _GKeyfileSettingsBackend
 G_GNUC_INTERNAL
 GType g_keyfile_settings_backend_get_type (void);
 
-G_END_DECLS
 
-#endif /* _gkeyfilesettingsbackend_h_ */
+#endif  /* __G_KEY_FILE_SETTINGS_BACKEND_H__ */
