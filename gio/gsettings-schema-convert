@@ -361,7 +361,7 @@ class GConfSchema:
                 self.default = node.find('default').text
                 self.localized = None
             except:
-                raise GSettingsSchemaConvertException('No default value for \'%s\'. GSettings schemas require one default value.' % self.applyto or self.key)
+                raise GSettingsSchemaConvertException('No default value for key \'%s\'. A default value is always required in GSettings schemas.' % self.applyto or self.key)
         self.typed_default = None
 
         self.short = self._get_value_with_locale(node, locale_node, 'short')
@@ -382,7 +382,7 @@ class GConfSchema:
         elif self.type == 'list':
             l = self.default.strip()
             if not (l[0] == '[' and l[-1] == ']'):
-                raise GSettingsSchemaConvertException('Cannot parse default value for list: %s' % self.default)
+                raise GSettingsSchemaConvertException('Cannot parse default list value \'%s\' for key \'%s\'.' % (self.default, self.applyto or self.key))
             values = l[1:-1].strip()
             if not values:
                 self.typed_default = '@%s []' % self.varianttype
@@ -448,7 +448,7 @@ def _eat_indent(line, indent_stack):
             elif indent_stack[index + 1].startswith(buf):
                 continue
             else:
-                raise GSettingsSchemaConvertException('Indentation not consistent.')
+                raise GSettingsSchemaConvertException('Inconsistent indentation.')
         else:
             continue
 
@@ -488,9 +488,9 @@ def _word_to_token(word):
         return 'range'
     raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
 
-def _get_name_without_colon(line):
+def _get_name_without_colon(line, token):
     if line[-1] != ':':
-        raise GSettingsSchemaConvertException('\'%s\' has no trailing colon.' % line)
+        raise GSettingsSchemaConvertException('%s \'%s\' has no trailing colon.' % (token, line))
     line = line[:-1].strip()
     # FIXME: we could check there's no space
     return line
@@ -498,7 +498,7 @@ def _get_name_without_colon(line):
 def _parse_key(line):
     items = line.split('=')
     if len(items) != 2:
-        raise GSettingsSchemaConvertException('Cannot parse key \'%s\'.' % line)
+        raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
     # FIXME: we could check there's no space
     name = items[0].strip()
     type = ''
@@ -510,14 +510,8 @@ def _parse_key(line):
         type = value[1:i]
         value = value[i:].strip()
         if not value:
-            raise GSettingsSchemaConvertException('No value specified for key \'%s\'.' % line)
+            raise GSettingsSchemaConvertException('No value specified for key \'%s\' (\'%s\').' % (name, line))
     return (name, type, value)
-
-def _parse_choices(line, type):
-    if type in TYPES_FOR_CHOICES:
-        return [ item.strip() for item in line.split(',') ]
-    else:
-        raise GSettingsSchemaConvertException('Type \'%s\' cannot have choices.' % type)
 
 def _parse_l10n(line):
     items = [ item.strip() for item in line.split(' ') if item.strip() ]
@@ -528,19 +522,25 @@ def _parse_l10n(line):
     if len(items) == 2:
         return (items[0], items[1])
 
-    raise GSettingsSchemaConvertException('\'%s\' is not a valid localization.' % line)
+    raise GSettingsSchemaConvertException('Localization \'%s\' cannot be parsed.' % line)
 
-def _parse_range(line, type):
+def _parse_choices(line, type, keyname):
+    if type in TYPES_FOR_CHOICES:
+        return [ item.strip() for item in line.split(',') ]
+    else:
+        raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have choices.' % (keyname, type))
+
+def _parse_range(line, type, keyname):
     minmax = None
     if type in TYPES_FOR_RANGE:
         minmax = [ item.strip() for item in line.split('..') ]
         if len(minmax) != 2:
-            raise GSettingsSchemaConvertException('Range \'%s\' is not a valid range.' % line)
+            raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
         # FIXME: we'll be able to check min < max once we can convert the
         # values with GVariant
         return tuple(minmax)
     else:
-        raise GSettingsSchemaConvertException('Type \'%s\' cannot have a range.' % type)
+        raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have a range.' % (keyname, type))
 
 def read_simple_schema(simple_schema_file):
     root = GSettingsSchemaRoot()
@@ -593,7 +593,11 @@ def read_simple_schema(simple_schema_file):
             parent_token = token_stack[-1]
 
         if not token in allowed_tokens[parent_token]:
-            raise GSettingsSchemaConvertException('Token \'%s\' not allowed after token \'%s\'.' % (token, parent_token))
+            if parent_token:
+                error = '\'%s\' is not allowed after \'%s\'.' % (token, parent_token)
+            else:
+                error = '\'%s\' is not allowed at the root level.' % token
+            raise GSettingsSchemaConvertException(error)
 
         current_object = object_stack[-1]
 
@@ -601,14 +605,14 @@ def read_simple_schema(simple_schema_file):
         if token == 'gettext':
             current_object.gettext_domain = line
         elif token == 'schema':
-            name = _get_name_without_colon(line)
+            name = _get_name_without_colon(line, token)
             new_object = GSettingsSchema()
             new_object.id = name
             current_object.schemas.append(new_object)
         elif token == 'path':
             current_object.path = line
         elif token == 'child':
-            name = _get_name_without_colon(line)
+            name = _get_name_without_colon(line, token)
             new_object = GSettingsSchemaDir()
             new_object.name = name
             current_object.dirs.append(new_object)
@@ -626,9 +630,9 @@ def read_simple_schema(simple_schema_file):
         elif token == 'description':
             current_object.description = line
         elif token == 'choices':
-            current_object.choices = _parse_choices(line, current_object.type)
+            current_object.choices = _parse_choices(line, current_object.type, current_object.name)
         elif token == 'range':
-            current_object.range = _parse_range(line, current_object.type)
+            current_object.range = _parse_range(line, current_object.type, current_object.name)
 
         if new_object:
             token_stack.append(token)
@@ -654,14 +658,14 @@ def read_gconf_schema(gconf_schema_file, default_schema_id):
 
             dirpath = gconf_schema.prefix
             if dirpath[0] != '/':
-                raise GSettingsSchemaConvertException('Key is not absolute: %s' % gconf_schema.prefix)
+                raise GSettingsSchemaConvertException('Key \'%s\' has a relative path. There is no relative path in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
 
             # remove leading 'schemas/' for schemas-only keys
             if schemas_only and dirpath.startswith('/schemas/'):
                 dirpath = dirpath[len('/schemas'):]
 
             if len(dirpath) == 1:
-                raise GSettingsSchemaConvertException('Toplevel keys are not accepted: %s' % gconf_schema.prefix)
+                raise GSettingsSchemaConvertException('Key \'%s\' is a toplevel key. Toplevel keys are not accepted in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
 
             # remove trailing slash because we'll split the string
             if dirpath[-1] == '/':
@@ -729,7 +733,7 @@ def main(args):
     parser.add_option("-g", "--gconf", action="store_true", dest="gconf",
                       default=False, help="convert a gconf schema file")
     parser.add_option("-i", "--schema-id", dest="schema_id",
-                      help="schema ID to use by default when converting gconf schema file")
+                      help="default schema ID to use when converting gconf schema file")
     parser.add_option("-s", "--simple", action="store_true", dest="simple",
                       default=False, help="use the simple schema format as output (only for gconf schema conversion)")
     parser.add_option("-x", "--xml", action="store_true", dest="xml",
@@ -756,12 +760,12 @@ def main(args):
             options.xml = True
 
     if not options.gconf and options.schema_id:
-        print >> sys.stderr, 'Default chema ID can only be specified when converting a gconf schema.'
+        print >> sys.stderr, 'Default schema ID can only be specified when converting a gconf schema.'
         return 1
 
     argfile = os.path.expanduser(args[0])
     if not os.path.exists(argfile):
-        print >> sys.stderr, '%s does not exist.' % argfile
+        print >> sys.stderr, '\'%s\' does not exist.' % argfile
         return 1
 
     if options.output:
@@ -769,13 +773,13 @@ def main(args):
 
     try:
         if options.output and not options.force and os.path.exists(options.output):
-            raise GSettingsSchemaConvertException('%s already exists.' % options.output)
+            raise GSettingsSchemaConvertException('\'%s\' already exists. Use --force to overwrite it.' % options.output)
 
         if options.gconf:
             try:
                 schema_root = read_gconf_schema(argfile, options.schema_id)
             except SyntaxError, e:
-                raise GSettingsSchemaConvertException('%s does not look like a gconf schema file: %s' % (argfile, e))
+                raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))
         else:
             schema_root = read_simple_schema(argfile)
 
