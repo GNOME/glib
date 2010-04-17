@@ -74,7 +74,7 @@ class GSettingsSchemaRoot:
 
         # Only put the gettext domain if we have some content
         if result and self.gettext_domain:
-            result = 'gettext-domain %s\n\n%s' % (self.gettext_domain, result)
+            result = 'gettext-domain: %s\n\n%s' % (self.gettext_domain, result)
 
         return result
 
@@ -128,7 +128,7 @@ class GSettingsSchemaDir:
                 need_empty_line = True
 
         if result and self.gettext_domain:
-            result = '%sgettext-domain %s\n\n%s' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain, result)
+            result = '%sgettext-domain: %s\n\n%s' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain, result)
 
         return result
 
@@ -197,9 +197,9 @@ class GSettingsSchema(GSettingsSchemaDir):
         result = ''
         result += 'schema %s:\n' % self.id
         if self.gettext_domain:
-            result += '%sgettext-domain %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
+            result += '%sgettext-domain: %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
         if self.path:
-            result += '%spath %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
+            result += '%spath: %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
         result += '\n'
         result += self._get_simple_string_for_content('')
 
@@ -274,13 +274,13 @@ class GSettingsSchemaKey:
                 l10n += ' %s' % self.l10n_context
             result += '%sl10n: %s\n' % (current_indent, l10n)
         if self.summary:
-            result += '%sSummary: %s\n' % (current_indent, self.summary)
+            result += '%ssummary: %s\n' % (current_indent, self.summary)
         if self.description:
-            result += '%sDescription: %s\n' % (current_indent, self.description)
+            result += '%sdescription: %s\n' % (current_indent, self.description)
         if self._has_range_choices():
-            result += '%sChoices: %s\n' % (current_indent, ', '.join(self.choices))
+            result += '%schoices: %s\n' % (current_indent, ', '.join(self.choices))
         elif self._has_range_minmax():
-            result += '%sRange: %s\n' % (current_indent, '%s..%s' % self.range)
+            result += '%srange: %s\n' % (current_indent, '%s..%s' % self.range)
         return result
 
     def get_xml_node(self):
@@ -466,27 +466,30 @@ def _eat_word(line):
     return (line[:i], line[i:])
 
 def _word_to_token(word):
-    if word == 'gettext-domain':
-        return 'gettext'
-    if word == 'schema':
-        return 'schema'
-    if word == 'path':
-        return 'path'
-    if word == 'child':
-        return 'child'
-    if word == 'key':
-        return 'key'
-    if word == 'l10n:':
-        return 'l10n'
-    if word == 'Summary:':
-        return 'summary'
-    if word == 'Description:':
-        return 'description'
-    if word == 'Choices:':
-        return 'choices'
-    if word == 'Range:':
-        return 'range'
-    raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
+    wordmap = {
+        'gettext-domain': 'gettext',
+        'gettext-domain:': 'gettext',
+        'schema': 'schema',
+        'path': 'path',
+        'path:': 'path',
+        'child': 'child',
+        'key': 'key',
+        'l10n': 'l10n',
+        'l10n:': 'l10n',
+        'summary': 'summary',
+        'summary:': 'summary',
+        'description': 'description',
+        'description:': 'description',
+        'choices': 'choices',
+        'choices:': 'choices',
+        'range': 'range',
+        'range:': 'range',
+    }
+
+    lower = word.lower()
+    if not wordmap.has_key(lower):
+        raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % word)
+    return wordmap[lower]
 
 def _get_name_without_colon(line, token):
     if line[-1] != ':':

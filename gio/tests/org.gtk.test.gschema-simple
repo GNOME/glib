@@ -1,11 +1,11 @@
 schema org.gtk.test:
-  gettext-domain test
-  path /tests/
+  gettext-domain: test
+  path: /tests/
 
   key greeting = @s "Hello, earthlings"
     l10n: messages
-    Summary: A greeting
-    Description: Greeting of the invading martians
+    summary: A greeting
+    description: Greeting of the invading martians
   key farewell = @s "So long"
     l10n: messages
 
@@ -27,7 +27,7 @@ schema org.gtk.test:
     key test-array = @ai [0,1,2,3,4,5]
 
   child localized:
-    gettext-domain glib20
+    gettext-domain: glib20
 
     key error-message = @s "Unnamed"
       l10n: messages
