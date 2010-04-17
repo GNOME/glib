@@ -1,7 +1,7 @@
 <part>
   <title>GIO Overview</title>
 
-  <chapter> 
+  <chapter>
     <title>Introduction</title>
 
   <para>
@@ -9,7 +9,7 @@
     at the right level in the library stack. The goal is to overcome the
     shortcomings of GnomeVFS and provide an API that is so good that
     developers prefer it over raw POSIX calls. Among other things
-    that means using GObject. It also means not cloning the POSIX 
+    that means using GObject. It also means not cloning the POSIX
     API, but providing higher-level, document-centric interfaces.
   </para>
 
@@ -74,6 +74,13 @@
           <listitem><para>abstract type for file and application icons</para></listitem>
        </varlistentry>
     </variablelist>
+    There is a framework for storing and retrieving application settings:
+    <variablelist>
+       <varlistentry>
+          <term>GSettings</term>
+          <listitem><para>stores and retrieves application settings</para></listitem>
+       </varlistentry>
+    </variablelist>
     There is support for network programming, including name resolution, lowlevel socket
     APIs and highlevel client and server helper classes:
     <variablelist>
@@ -99,9 +106,9 @@
        </varlistentry>
     </variablelist>
     Beyond these, GIO provides facilities for file monitoring,
-    asynchronous I/O and filename completion. In addition to the 
-    interfaces, GIO provides implementations for the local case. 
-    Implementations for various network file systems are provided 
+    asynchronous I/O and filename completion. In addition to the
+    interfaces, GIO provides implementations for the local case.
+    Implementations for various network file systems are provided
     by the GVFS package as loadable modules.
   </para>
 
@@ -109,8 +116,8 @@
     Other design choices which consciously break with the GnomeVFS
     design are to move backends out-of-process, which minimizes the
     dependency bloat and makes the whole system more robust. The backends
-    are not included in GIO, but in the separate GVFS package. The GVFS 
-    package also contains the GVFS daemon, which spawn further mount 
+    are not included in GIO, but in the separate GVFS package. The GVFS
+    package also contains the GVFS daemon, which spawn further mount
     daemons for each individual connection.
   </para>
 
@@ -120,13 +127,13 @@
   </figure>
 
   <para>
-    The GIO model of I/O is stateful: if an application establishes e.g. 
-    a SFTP connection to a server, it becomes available to all applications 
-    in the session; the user does not have to enter his password over 
+    The GIO model of I/O is stateful: if an application establishes e.g.
+    a SFTP connection to a server, it becomes available to all applications
+    in the session; the user does not have to enter his password over
     and over again.
   </para>
   <para>
-    One of the big advantages of putting the VFS in the GLib layer 
+    One of the big advantages of putting the VFS in the GLib layer
     is that GTK+ can directly use it, e.g. in the filechooser.
   </para>
   </chapter>
@@ -138,16 +145,16 @@
       GIO comes with a <filename>gio-2.0.pc</filename> file that you
       should use together with <literal>pkg-config</literal> to obtain
       the necessary information about header files and libraries. See
-      the <literal>pkg-config</literal> man page or the GLib documentation 
-      for more information on how to use <literal>pkg-config</literal> 
+      the <literal>pkg-config</literal> man page or the GLib documentation
+      for more information on how to use <literal>pkg-config</literal>
       to compile your application.
     </para>
 
     <para>
       If you are using GIO on UNIX-like systems, you may want to use
-      UNIX-specific GIO interfaces such as #GUnixInputStream, 
-      #GUnixOutputStream, #GUnixMount or #GDesktopAppInfo. 
-      To do so, use the <filename>gio-unix-2.0.pc</filename> file 
+      UNIX-specific GIO interfaces such as #GUnixInputStream,
+      #GUnixOutputStream, #GUnixMount or #GDesktopAppInfo.
+      To do so, use the <filename>gio-unix-2.0.pc</filename> file
       instead of <filename>gio-2.0.pc</filename>
     </para>
   </chapter>
@@ -164,7 +171,7 @@
       <title><envar>XDG_DATA_HOME</envar>, <envar>XDG_DATA_DIRS</envar></title>
 
       <para>
-        GIO uses these environment variables to locate MIME information. 
+        GIO uses these environment variables to locate MIME information.
         For more information, see the <ulink url="http://freedesktop.org/Standards/shared-mime-info-spec">Shared MIME-info Database</ulink>
         and the <ulink url="http://freedesktop.org/Standards/basedir-spec">Base Directory Specification</ulink>.
       </para>
@@ -188,19 +195,19 @@
       <title><envar>GIO_USE_VFS</envar></title>
 
       <para>
-        This environment variable can be set to the name of a #GVfs 
+        This environment variable can be set to the name of a #GVfs
         implementation to override the default for debugging purposes.
-        The #GVfs implementation for local files that is included in GIO 
-        has the name "local", the implementation in the gvfs module has 
-        the name "gvfs". 
+        The #GVfs implementation for local files that is included in GIO
+        has the name "local", the implementation in the gvfs module has
+        the name "gvfs".
       </para>
     </formalpara>
 
     <formalpara>
       <title><envar>GIO_USE_VOLUME_MONITOR</envar></title>
-        
+
       <para>
-        This variable can be set to the name of a #GVolumeMonitor 
+        This variable can be set to the name of a #GVolumeMonitor
         implementation to override the default for debugging purposes.
         The #GVolumeMonitor implementation for local files that is included
         in GIO has the name "unix", the hal-based implementation in the
@@ -216,7 +223,7 @@
         implementation to override the default for debugging purposes.
         GIO does not include a #GDesktopAppInfoLookup implementation,
         the GConf-based implementation in the gvfs module has the name
-        "gconf".  
+        "gconf".
       </para>
     </formalpara>
 
@@ -225,7 +232,7 @@
 
       <para>
         When this environment variable is set and GIO has been built
-        with inotify support, a dump of diagnostic inotify information 
+        with inotify support, a dump of diagnostic inotify information
         will be written every 20 seconds to a file named
         <filename>/tmp/gvfsdid.<replaceable>pid</replaceable></filename>.
       </para>
@@ -235,12 +242,43 @@
       <title><envar>GIO_EXTRA_MODULES</envar></title>
 
       <para>
-	When this environment variable is set to a path, or a set of 
-	paths separated by a colon, GIO will attempt to load
-	modules from within the path.
+        When this environment variable is set to a path, or a set of
+        paths separated by a colon, GIO will attempt to load
+        modules from within the path.
       </para>
     </formalpara>
 
+    <formalpara>
+      <title><envar>GSETTINGS_BACKEND</envar></title>
+
+      <para>
+        This variable can be set to the name of a #GSettingsBackend
+        implementation to override the default for debugging purposes.
+        The keyfile-based implementation that is included in GIO has
+        the name "keyfile", the one in dconf has the name "dconf-settings".
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><envar>GSETTINGS_SCHEMA_DIR</envar></title>
+
+      <para>
+        This variable can be set to the name of a directory that is
+        considered in addition to the <filename>glib-2.0/schemas</filename>
+        subdirectories of the XDG system data dirs when looking
+        for compiled schemas for #GSettings.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><envar>GSETTINGS_KEYFILE_BACKEND_STORE</envar></title>
+
+      <para>
+        This variable can be set to the path where the keyfile #GSettings
+        backend stores its data. By default, the keyfile is stored in
+        <filename>$HOME/.config/gsettings/store</filename>.
+      </para>
+    </formalpara>
   </chapter>
 
   <chapter id="extending-gio">
@@ -249,7 +287,7 @@
     <para>
       A lot of the functionality that is accessible through GIO
       is implemented in loadable modules, and modules provide a convenient
-      way to extend GIO. In addition to the #GIOModule API which supports 
+      way to extend GIO. In addition to the #GIOModule API which supports
       writing such modules, GIO has a mechanism to define extension points,
       and register implementations thereof, see #GIOExtensionPoint.
     </para>
@@ -297,8 +335,8 @@
          is_supported() vfunc in #GVolumeMonitorClass.
       </para>
       <para>
-         GIO implements this extension point for local mounts, 
-         gvfs contains a hal-based implementation. 
+         GIO implements this extension point for local mounts,
+         gvfs contains a hal-based implementation.
       </para>
    </formalpara>
 
@@ -306,9 +344,9 @@
       <title>G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME</title>
 
       <para>
-        Allows to override the file monitor implementation for 
-        local files. Implementations of this extension point must 
-        be derived from #GLocalFileMonitor. GIO uses the implementation 
+        Allows to override the file monitor implementation for
+        local files. Implementations of this extension point must
+        be derived from #GLocalFileMonitor. GIO uses the implementation
         with the highest priority that is supported, as determined by the
         is_supported() vfunc in #GLocalFileMonitorClass.
       </para>
@@ -322,8 +360,8 @@
       <title>G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME</title>
 
       <para>
-        Allows to override the directory monitor implementation for 
-        local files. Implementations of this extension point must be 
+        Allows to override the directory monitor implementation for
+        local files. Implementations of this extension point must be
         derived from #GLocalDirectoryMonitor. GIO uses the implementation
         with the highest priority that is supported, as determined by the
         is_supported() vfunc in #GLocalDirectoryMonitorClass.
@@ -339,13 +377,25 @@
 
       <para>
         Unix-only. Allows to provide a way to associate default handlers
-        with URI schemes. Implementations of this extension point must 
-        implement the #GDesktopAppInfoLookup interface. GIO uses the 
+        with URI schemes. Implementations of this extension point must
+        implement the #GDesktopAppInfoLookup interface. GIO uses the
         implementation with the highest priority.
       </para>
       <para>
-        gvfs contains a GConf-based implementation that uses the 
+        gvfs contains a GConf-based implementation that uses the
         same GConf keys as gnome-vfs.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_SETTINGS_BACKEND_EXTENSION_POINT_NAME</title>
+
+      <para>
+        Allows to provide an alternative storage for #GSettings.
+        Implementations of this extension point must derive from the
+        #GSettingsBackend type. GIO contains a keyfile-based
+        implementation of this extension point, another one is provided
+        by dconf.
       </para>
    </formalpara>
   </chapter>

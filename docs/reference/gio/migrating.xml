@@ -120,7 +120,7 @@ start_monitoring_trash (void)
         reflect that state of the trash can.
       </para>
       <para>
-	Moving a file to the trash is much simpler with GIO. Instead of
+        Moving a file to the trash is much simpler with GIO. Instead of
         using gnome_vfs_find_directory() with %GNOME_VFS_DIRECTORY_KIND_TRASH 
         to find out where to move the trashed file, just use the g_file_trash()
         function.
@@ -151,10 +151,291 @@ start_monitoring_trash (void)
         gnome-vfs offered a way to monitor the association between mime types
         and default handlers for changes, with the #GnomeVFSMIMEMonitor object.
         GIO does not offer a replacement for this functionality at this time,
-        since we have not found a compelling use case where 
+        since we have not found a compelling use case where
         #GnomeVFSMIMEMonitor was used. If you think you have such a use
-        case, please report it at 
+        case, please report it at
         <ulink url="http://bugzilla.gnome.org">bugzilla.gnome.org</ulink>.
+      </para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Migrating from GConf to GSettings</title>
+
+    <section>
+      <title>Before you start</title>
+
+      <para>
+        Converting individual applications and their settings from GConf to
+        GSettings can be done at will. But desktop-wide settings like font or
+        theme settings often have consumers in multiple modules. Therefore,
+        some consideration has to go into making sure that all users of a setting
+        are converted to GSettings at the same time or that the program
+        responsible for configuring that setting continues to update the value in
+        both places.
+      </para>
+      <para>
+        It is always a good idea to have a look at how others have handled
+        similar problems before.  An examplaric conversion can be found e.g.
+        in the <ulink url="http://git.gnome.org/browse/gnome-utils/log/?h=gsettings-tutorial">gsettings-tutorial</ulink> branch of gnome-utils.
+      </para>
+    </section>
+
+    <section>
+      <title>Conceptual differences</title>
+
+      <para>
+        Conceptually, GConf and GSettings are fairly similar. Both
+        have a concept of pluggable backends. Both keep information
+        about keys and their types in schemas. Both have a concept of
+        mandatory values, which lets you implement lock-down.
+      </para>
+      <para>
+        There are some differences in the approach to schemas. GConf
+        installs the schemas into the database and has API to handle
+        schema information (gconf_client_get_default_from_schema(),
+        gconf_value_get_schema(), etc). GSettings on the other hand
+        assumes that an application knows its own schemas, and does
+        not provide API to handle schema information at runtime.
+        GSettings is also more strict about requiring a schema whenever
+        you want to read or write a key. To deal with more free-form
+        information that would appear in schema-less entries in GConf,
+        GSettings allows for schemas to be 'relocatable'.
+      </para>
+      <para>
+        One difference in the way applications interact with their
+        settings is that with GConf you interact with a tree of
+        settings (ie the keys you pass to functions when reading
+        or writing values are actually paths with the actual name
+        of the key as the last element. With GSettings, you create
+        a GSettings object which has an implicit prefix that determines
+        where the settings get stored in the global tree of settings,
+        but the keys you pass when reading or writing values are just
+        the key names, not the full path.
+      </para>
+    </section>
+
+    <section>
+      <title>GConfClient API conversion</title>
+
+      <para>
+        Most people use GConf via the high-level #GConfClient API.
+        The corresponding API is the #GSettings object. While not
+        every GConfClient function has a direct GSettings equivalent,
+        many do:
+        <table id="gconf-client-vs-gsettings">
+          <tgroup cols="2">
+            <thead>
+              <row><entry>GConfClient</entry><entry>GSettings</entry></row>
+            </thead>
+            <tbody>
+              <row><entry>gconf_client_set()</entry><entry>g_settings_set()</entry></row>
+              <row><entry>gconf_client_get()</entry><entry>g_settings_get()</entry></row>
+              <row><entry>gconf_client_get_bool()</entry><entry>g_settings_get_boolean()</entry></row>
+              <row><entry>gconf_client_set_bool()</entry><entry>g_settings_set_boolean()</entry></row>
+              <row><entry>gconf_client_get_int()</entry><entry>g_settings_get_int()</entry></row>
+              <row><entry>gconf_client_set_int()</entry><entry>g_settings_set_int()</entry></row>
+              <row><entry>gconf_client_get_float()</entry><entry>g_settings_get_double()</entry></row>
+              <row><entry>gconf_client_set_float()</entry><entry>g_settings_set_double()</entry></row>
+              <row><entry>gconf_client_get_string()</entry><entry>g_settings_get_string()</entry></row>
+              <row><entry>gconf_client_set_string()</entry><entry>g_settings_set_string()</entry></row>
+              <row><entry>gconf_client_get_list()</entry><entry>for string lists, see g_settings_get_strv(), else see g_settings_get_value() and #GVariant API</entry></row>
+              <row><entry>gconf_client_set_list()</entry><entry>for string lists, see g_settings_set_strv(), else see g_settings_set_value() and #GVariant API</entry></row>
+              <row><entry>gconf_entry_get_is_writable()</entry><entry>g_settings_is_writable()</entry></row>
+              <row><entry>gconf_client_notify_add()</entry><entry>not required, the #GSettings::changed signal is emitted automatically</entry></row>
+              <row><entry>gconf_client_add_dir()</entry><entry>not required, each GSettings instance automatically watches all keys in its path</entry></row>
+              <row><entry>#GConfChangeSet</entry><entry>g_settings_delay(), g_settings_apply()</entry></row>
+              <row><entry>gconf_client_get_default_from_schema()</entry><entry>no equivalent, applications are expected to know their schema</entry></row>
+              <row><entry>gconf_client_all_entries()</entry><entry>no equivalent, applications are expected to know their schema, and GSettings does not allow schema-less entries</entry></row>
+              <row><entry>gconf_client_get_without_default()</entry><entry>no equivalent</entry></row>
+            </tbody>
+          </tgroup>
+        </table>
+      </para>
+      <para>
+        There is a pattern that is sometimes used for GConf, where a setting can have
+        explicit 'value A', explicit 'value B' or 'use the system default'. With GConf,
+        'use the system default' is sometimes implemented by unsetting the user value.
+      </para>
+      <para>
+        This is not possible in GSettings, since it does not have API to determine if a value
+        is the default and does not let you unset values. The recommended way (and much
+        clearer) way in which this can be implemented in GSettings is to have a separate
+        'use-system-default' boolean setting.
+      </para>
+    </section>
+
+    <section>
+      <title>Change notification</title>
+
+      <para>
+        GConf requires you to call gconf_client_add_dir() and
+        gconf_client_notify_add() to get change notification. With
+        GSettings, this is not necessary; signals get emitted automatically
+        for every change.
+      </para>
+      <para>
+        The #GSettings::changed signal is emitted for each changed key.
+        There is also a #GSettings::change-event signal that you can handle
+        if you need to see groups of keys that get changed at the same time.
+      </para>
+      <para>
+        GSettings also notifies you about changes in writability of keys,
+        with the #GSettings::writable-changed signal (and the
+        #GSettings::writable-change-event signal).
+      </para>
+    </section>
+
+    <section><title>Change sets</title>
+      <para>
+        GConf has a a concept of a set of changes which can be applied or reverted
+        at once: #GConfChangeSet (GConf doesn't actually apply changes atomically,
+        which is one of its shortcomings).
+      </para>
+      <para>
+        Instead of a separate object to represent a change set, GSettings has a
+        'delayed-apply' mode, which can be turned on for a GSettings object by
+        calling g_settings_delay(). In this mode, changes done to the GSettings
+        object are not applied - they are still visible when calling g_settings_get()
+        <emphasis>on the same object</emphasis>, but not to other GSettings instances
+        or even other processes.
+      </para>
+      <para>
+        To apply the pending changes all at once (GSettings <emphasis>does</emphasis>
+        atomicity here), call g_settings_apply(). To revert the pending changes,
+        call g_settings_revert() or just drop the reference to the #GSettings object.
+      </para>
+    </section>
+
+    <section>
+      <title>Schema conversion</title>
+
+      <para>
+        One possible pitfall in doing schema conversion is that the default
+        values in GSettings schemas are parsed by the #GVariant parser.
+        This means that strings need to include quotes in the XML.  Also note
+        that the types are now specified as #GVariant type strings.
+        <programlisting>
+<![CDATA[
+<type>string</type>
+<default>rgb</default>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<key name="rgba-order" type="s">
+  <default>'rgb'</default> <!-- note quotes -->
+</key>
+]]>
+        </programlisting>
+      </para>
+      <para>
+        Another possible complication is that GConf specifies full paths
+        for each key, while a GSettings schema has a 'path' attribute that
+        contains the prefix for all the keys in the schema, and individual
+        keys just have a simple name. So
+        <programlisting>
+<![CDATA[
+<key>/schemas/desktop/gnome/font_rendering/antialiasing</key>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<schema id="org.gnome.font" path="/desktop/gnome/font_rendering/">
+  <key name="antialiasing" type="s">
+]]>
+        </programlisting>
+      </para>
+      <para>
+        Default values can be localized in both GConf and GSettings schemas,
+        but GSettings uses gettext for the localization, so
+        <programlisting>
+<![CDATA[
+<key>/schemas/apps/my_app/font_size</key>
+  <locale name="C">
+    <default>18</default>
+  </locale>
+  <locale name="be">
+    <default>24</default>
+  </locale>
+</key>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<key name="font-size" type="i">
+  <default l10n="messages" context="font_size">18</default>
+</key>
+]]>
+        </programlisting>
+        Note how we used the context attribute to add msgctxt - "18" is not a
+        good string to look up in gettext by itself. Also note that the value
+        24 is not present in the schema anymore. It has to be added to the gettext
+        catalog for "be" instead.
+      </para>
+      <para>
+        GSettings schemas have more stringent restrictions on key names
+        than GConf. Key names in GSettings are restricted to at most 32
+        characters, and must only consist of lowercase characters, numbers
+        and dashes, with no consecutive dashes. The first character must
+        not be a number or dash, and the last character cannot be '-'.
+        The <link linkend="gschema-compile">gschema-compile</link> schema
+        compiler has a <option>--allow-any-name</option> that lets you
+        ignore these restrictions. Note that this option is only meant
+        to ease the process of porting your application, allowing parts
+        of your application to continue to access GConf and parts to use
+        GSettings. By the time you have finished porting your application
+        you must ensure that all key names are valid.
+      </para>
+      <para>
+        GIO comes with a commandline tool
+        <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
+        that can help with the task of converting a GConf schema into
+        an equivalent GSettings schema. The tool is not perfect and
+        may need assistence in some cases.
+      </para>
+    </section>
+
+    <section><title>Data conversion</title>
+      <para>
+        GConf comes with a utility called <command>gsettings-data-convert</command>,
+        which is designed to help with the task of migrating user settings from
+        GConf into GSetting. <command>gsettings-data-convert</command> can be run
+        manually, but it is designed to be run automatically, every time a user
+        logs in. It keeps track of the conversion that it has already done, and it
+        is harmless to run it more than once.
+      </para>
+      <para>
+        To make use of this utility, you must install a keyfile in the
+        <filename>/usr/share/gsettings-data-convert</filename> which lists the GSettings
+        and GConf paths to map to each other, for each schema that you want to migrate
+        user data for.
+      </para>
+      <para>
+        Here is an example:
+        <programlisting>
+<![CDATA[
+[org.gnome.fonts]
+antialiasing = /desktop/gnome/font_rendering/antialiasing
+dpi = /desktop/gnome/font_rendering/dpi
+hinting = /desktop/gnome/font_rendering/hinting
+rgba-order = /desktop/gnome/font_rendering/rgba_order
+
+[apps.myapp]
+some-odd-key1 = /apps/myapp/some_ODD-key1
+]]>
+        </programlisting>
+        The last key demonstrates that it may be necessary to modify the key name
+        to comply with stricter GSettings key name rules. Of course, that means your
+        application must make the corresponding adjustments.
+      </para>
+      <para>
+        There are some limitations: <command>gsettings-data-convert</command> does not
+        do any transformation of the values. And it does not handle complex GConf types
+        other than lists of strings or integers.
       </para>
     </section>
   </chapter>

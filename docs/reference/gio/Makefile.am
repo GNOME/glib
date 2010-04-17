@@ -26,6 +26,7 @@ IGNORE_HFILES=				\
 	fen-node.h			\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
+	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
@@ -37,6 +38,7 @@ IGNORE_HFILES=				\
 	gio.h				\
 	gioalias.h			\
 	gioalias.h			\
+	gkeyfilesettingsbackend.h	\
 	gioenumtypes.h			\
 	giomodule-priv.h		\
 	glocaldirectorymonitor.h	\
@@ -49,8 +51,10 @@ IGNORE_HFILES=				\
 	glocalvfs.h			\
 	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
+	gnullsettingsbackend.h		\
 	gpollfilemonitor.h		\
 	gsettingsbackendinternal.h	\
+	gsettingsschema.h		\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\
@@ -114,7 +118,9 @@ content_files =			\
 
 expand_content_files =		\
 	overview.xml		\
-	migrating.xml
+	migrating.xml		\
+	gschema-compile.xml	\
+	gsettings-schema-convert.xml
 
 extra_files =			\
 	version.xml.in		\
@@ -124,3 +130,23 @@ include $(top_srcdir)/gtk-doc.make
 
 EXTRA_DIST +=			\
 	version.xml.in
+
+if ENABLE_MAN
+
+man_MANS =			\
+	gschema-compile.1	\
+	gsettings-schema-convert.1
+
+%.1 : xml/%.xml
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
+
+BUILT_EXTRA_DIST = $(man_MANS)
+
+dist-hook-local: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)';				\
+	for f in $$files; do					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
+	  cp $$d/$$f $(distdir) || exit 1; done
+
