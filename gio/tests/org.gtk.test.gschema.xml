@@ -1,0 +1,89 @@
+<schemalist>
+
+  <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
+    <key name="greeting" type="s">
+      <default l10n="messages">"Hello, earthlings"</default>
+      <summary>A greeting</summary>
+      <description>
+         Greeting of the invading martians
+      </description>
+    </key>
+    <key name="farewell" type="s">
+      <default l10n="messages">"So long"</default>
+    </key>
+
+    <child name='basic-types' schema='org.gtk.test.basic-types'/>
+    <child name='complex-types' schema='org.gtk.test.complex-types'/>
+    <child name='localized' schema='org.gtk.test.localized'/>
+  </schema>
+
+  <schema id="org.gtk.test.basic-types" path="/tests/basic-types/">
+    <key name="test-boolean" type="b">
+      <default>true</default>
+    </key>
+    <key name="test-byte" type="y">
+      <default>25</default>
+    </key>
+    <key name="test-int16" type="n">
+      <default>-1234</default>
+    </key>
+    <key name="test-uint16" type="q">
+      <default>1234</default>
+    </key>
+    <key name="test-int32" type="i">
+      <default>-123456</default>
+    </key>
+    <key name="test-uint32" type="u">
+      <default>123456</default>
+    </key>
+    <key name="test-int64" type="x">
+      <default>-123456789</default>
+    </key>
+    <key name="test-uint64" type="t">
+      <default>123456789</default>
+    </key>
+    <key name="test-double" type="d">
+      <default>123.456</default>
+    </key>
+    <key name="test-string" type="s">
+      <default>"a string, it seems"</default>
+    </key>
+    <key name="test-objectpath" type="o">
+      <default>"/a/object/path"</default>
+    </key>
+  </schema>
+
+  <schema id="org.gtk.test.complex-types" path="/tests/complex-types/">
+    <key name="test-tuple" type="(s(ii))">
+      <default>("one",(2,3))</default>
+    </key>
+    <key name="test-array" type="ai">
+      <default>[0,1,2,3,4,5]</default>
+    </key>
+  </schema>
+
+  <schema id="org.gtk.test.localized" path="/tests/localized/" gettext-domain="test">
+    <key name="error-message" type="s">
+      <default l10n="messages">"Unnamed"</default>
+    </key>
+    <key name="backspace" type="s">
+      <default l10n="messages" context="keyboard label">"BackSpace"</default>
+    </key>
+  </schema>
+
+  <schema id="org.gtk.test.binding" path="/tests/binding/">
+    <key name="bool" type="b">
+      <default>false</default>
+    </key>
+    <key name="int" type="i">
+      <default>0</default>
+    </key>
+    <key name="double" type="d">
+      <default>0</default>
+    </key>
+    <key name="string" type="s">
+      <default>""</default>
+    </key>
+  </schema>
+
+</schemalist>

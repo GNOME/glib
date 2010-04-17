@@ -16,7 +16,6 @@ progs_ldadd     = 					\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
 
-
 TEST_PROGS +=	 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
@@ -32,7 +31,8 @@ TEST_PROGS +=	 		\
 	filter-streams		\
 	simple-async-result	\
 	srvtarget		\
-	contexts
+	contexts		\
+	gsettings
 
 SAMPLE_PROGS = 			\
 	resolver		\
@@ -132,5 +132,20 @@ srvtarget_LDADD		  = $(progs_ldadd)
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+gsettings_SOURCES	  = gsettings.c gschemas.compiled test.mo
+gsettings_LDADD		  = $(progs_ldadd)
+
+EXTRA_DIST += org.gtk.test.gschema org.gtk.test.gschema.xml de.po
+
+BUILT_SOURCES = gschemas.compiled test.mo
+
+test.mo: de.po
+	$(MSGFMT) -o test.mo de.po; \
+	$(MKDIR_P) de/LC_MESSAGES; \
+	cp -f test.mo de/LC_MESSAGES
+
+gschemas.compiled: *.gschema
+	$(top_builddir)/gio/gschema-compile --targetdir=${bulddir} ${srcdir}
 
 DISTCLEAN_FILES = applications/mimeinfo.cache
