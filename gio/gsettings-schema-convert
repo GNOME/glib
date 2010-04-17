@@ -261,9 +261,9 @@ class GSettingsSchemaKey:
         if self.description:
             result += '%sDescription: %s\n' % (current_indent, self.description)
         if self._has_range_choices():
-            result += '%sChoices: %s\n' % ', '.join(self.choices)
+            result += '%sChoices: %s\n' % (current_indent, ', '.join(self.choices))
         elif self._has_range_minmax():
-            result += '%sRange: %s\n' % '%s..%s' % self._range_minmax
+            result += '%sRange: %s\n' % (current_indent, '%s..%s' % self.range)
         return result
 
     def get_xml_node(self):
