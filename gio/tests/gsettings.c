@@ -854,7 +854,7 @@ test_no_change_binding (void)
   g_object_set (obj, "bool", TRUE, NULL);
   g_settings_set_boolean (settings, "bool", FALSE);
 
-  g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_GET_NO_CHANGE);
+  g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_GET_NO_CHANGES);
 
   g_object_get (obj, "bool", &b, NULL);
   g_assert_cmpint (b, ==, FALSE);
