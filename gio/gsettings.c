@@ -212,10 +212,10 @@ g_settings_real_writable_change_event (GSettings *settings,
 }
 
 static void
-settings_backend_changed (GSettingsBackend    *backend,
-                          const gchar         *key,
-                          gpointer             origin_tag,
-                          gpointer             user_data)
+settings_backend_changed (GSettingsBackend *backend,
+                          const gchar      *key,
+                          gpointer          origin_tag,
+                          gpointer          user_data)
 {
   GSettings *settings = G_SETTINGS (user_data);
   gboolean ignore_this;
@@ -1083,9 +1083,9 @@ g_settings_new_with_context_and_path (const gchar *schema,
 {
   return g_object_new (G_TYPE_SETTINGS,
                        "schema", schema,
-                        "context", context,
-                        "path", path,
-                        NULL);
+                       "context", context,
+                       "path", path,
+                       NULL);
 }
 
 typedef struct
