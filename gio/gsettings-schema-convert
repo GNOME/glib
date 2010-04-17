@@ -22,6 +22,8 @@
 
 # TODO: add alias support for choices
 #       choices: 'this-is-an-alias' = 'real', 'other', 'real'
+# TODO: we don't support migrating a pair from a gconf schema. It has yet to be
+#       seen in real-world usage, though.
 
 import os
 import sys
@@ -348,106 +350,6 @@ class GSettingsSchemaKey:
 ######################################
 
 
-def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
-    typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
-    result = typemap[gconftype]
-    if gconftype == 'list':
-        result = result + typemap[gconfsubtype]
-    return result
-
-
-class GConfSchema:
-
-    def __init__(self, node):
-        locale_node = node.find('locale')
-
-        self.key = node.find('key').text
-        self.type = node.find('type').text
-        if self.type == 'list':
-            self.list_type = node.find('list_type').text
-        else:
-            self.list_type = None
-        self.varianttype = map_gconf_type_to_variant_type(self.type, self.list_type)
-
-        applyto_node = node.find('applyto')
-        if applyto_node is not None:
-            self.applyto = node.find('applyto').text
-            self.applyto.strip()
-            self.keyname = self.applyto[self.applyto.rfind('/')+1:]
-            self.prefix = self.applyto[:self.applyto.rfind('/')+1]
-        else:
-            self.applyto = None
-            self.key.strip()
-            self.keyname = self.key[self.key.rfind('/')+1:]
-            self.prefix = self.key[:self.key.rfind('/')+1]
-        self.prefix = os.path.normpath(self.prefix)
-
-        try:
-            self.default = locale_node.find('default').text
-            self.localized = 'messages'
-        except:
-            try:
-                self.default = node.find('default').text
-                self.localized = None
-            except:
-                raise GSettingsSchemaConvertException('No default value for key \'%s\'. A default value is always required in GSettings schemas.' % self.applyto or self.key)
-        self.typed_default = None
-
-        self.short = self._get_value_with_locale(node, locale_node, 'short')
-        self.long = self._get_value_with_locale(node, locale_node, 'long')
-
-        self.short = self._oneline(self.short)
-        self.long = self._oneline(self.long)
-
-        # Fix the default to be parsable by GVariant
-        if self.type == 'string':
-            if not self.default:
-                self.default = '\'\''
-            else:
-                self.default.replace('\'', '\\\'')
-                self.default = '\'%s\'' % self.default
-        elif self.type == 'bool':
-            self.default = self.default.lower()
-        elif self.type == 'list':
-            l = self.default.strip()
-            if not (l[0] == '[' and l[-1] == ']'):
-                raise GSettingsSchemaConvertException('Cannot parse default list value \'%s\' for key \'%s\'.' % (self.default, self.applyto or self.key))
-            values = l[1:-1].strip()
-            if not values:
-                self.typed_default = '@%s []' % self.varianttype
-            elif self.list_type == 'string':
-                items = [ item.strip() for item in values.split(',') ]
-                items = [ item.replace('\'', '\\\'') for item in items ]
-                values = ', '.join([ '\'%s\'' % item for item in items ])
-                self.default = '[ %s ]' % values
-
-    def _get_value_with_locale(self, node, locale_node, element):
-        element_node = None
-        if locale_node is not None:
-            element_node = locale_node.find(element)
-        if element_node is None:
-            element_node = node.find(element)
-        if element_node is not None:
-            return element_node.text
-        else:
-            return None
-
-    def _oneline(self, s):
-        lines = s.splitlines()
-        result = ''
-        for line in lines:
-            result += ' ' + line.lstrip()
-        return result.strip()
-
-    def get_gsettings_schema_key(self):
-        key = GSettingsSchemaKey()
-        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.keyname, self.short, self.long, None, None)
-        return key
-
-
-######################################
-
-
 class SimpleSchemaParser:
 
     allowed_tokens = {
@@ -733,82 +635,192 @@ class SimpleSchemaParser:
 ######################################
 
 
-def read_gconf_schema(gconf_schema_file, default_schema_id):
-    gsettings_schema_root = GSettingsSchemaRoot()
+def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
+    typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
+    result = typemap[gconftype]
+    if gconftype == 'list':
+        result = result + typemap[gconfsubtype]
+    return result
 
-    default_schema_id_count = 0
 
-    gconfschemafile_node = ET.parse(gconf_schema_file).getroot()
-    for schemalist_node in gconfschemafile_node.findall('schemalist'):
-        for schema_node in schemalist_node.findall('schema'):
-            gconf_schema = GConfSchema(schema_node)
+class GConfSchema:
 
-            schemas_only = (gconf_schema.applyto is not None)
+    def __init__(self, node):
+        locale_node = node.find('locale')
 
-            dirpath = gconf_schema.prefix
-            if dirpath[0] != '/':
-                raise GSettingsSchemaConvertException('Key \'%s\' has a relative path. There is no relative path in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+        self.key = node.find('key').text
+        self.type = node.find('type').text
+        if self.type == 'list':
+            self.list_type = node.find('list_type').text
+        else:
+            self.list_type = None
+        self.varianttype = map_gconf_type_to_variant_type(self.type, self.list_type)
 
-            # remove leading 'schemas/' for schemas-only keys
-            if schemas_only and dirpath.startswith('/schemas/'):
-                dirpath = dirpath[len('/schemas'):]
+        applyto_node = node.find('applyto')
+        if applyto_node is not None:
+            self.applyto = node.find('applyto').text
+            self.applyto.strip()
+            self.keyname = self.applyto[self.applyto.rfind('/')+1:]
+            self.prefix = self.applyto[:self.applyto.rfind('/')+1]
+        else:
+            self.applyto = None
+            self.key.strip()
+            self.keyname = self.key[self.key.rfind('/')+1:]
+            self.prefix = self.key[:self.key.rfind('/')+1]
+        self.prefix = os.path.normpath(self.prefix)
 
-            if len(dirpath) == 1:
-                raise GSettingsSchemaConvertException('Key \'%s\' is a toplevel key. Toplevel keys are not accepted in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+        try:
+            self.default = locale_node.find('default').text
+            self.localized = 'messages'
+        except:
+            try:
+                self.default = node.find('default').text
+                self.localized = None
+            except:
+                raise GSettingsSchemaConvertException('No default value for key \'%s\'. A default value is always required in GSettings schemas.' % self.applyto or self.key)
+        self.typed_default = None
 
-            # remove trailing slash because we'll split the string
-            if dirpath[-1] == '/':
-                dirpath = dirpath[:-1]
-            # and also remove leading slash when splitting
-            hierarchy = dirpath[1:].split('/')
+        self.short = self._get_value_with_locale(node, locale_node, 'short')
+        self.long = self._get_value_with_locale(node, locale_node, 'long')
 
-            # we don't want to put apps/ and desktop/ keys in the same schema,
-            # so we have a first step where we make sure to create a new schema
-            # to avoid this case if necessary
-            gsettings_schema = None
-            for schema in gsettings_schema_root.schemas:
-                if schemas_only:
-                    schema_path = schema.path
-                else:
-                    schema_path = schema._hacky_path
-                if dirpath.startswith(schema_path):
-                    gsettings_schema = schema
+        self.short = self._oneline(self.short)
+        self.long = self._oneline(self.long)
+
+        # Fix the default to be parsable by GVariant
+        if self.type == 'string':
+            if not self.default:
+                self.default = '\'\''
+            else:
+                self.default.replace('\'', '\\\'')
+                self.default = '\'%s\'' % self.default
+        elif self.type == 'bool':
+            self.default = self.default.lower()
+        elif self.type == 'list':
+            l = self.default.strip()
+            if not (l[0] == '[' and l[-1] == ']'):
+                raise GSettingsSchemaConvertException('Cannot parse default list value \'%s\' for key \'%s\'.' % (self.default, self.applyto or self.key))
+            values = l[1:-1].strip()
+            if not values:
+                self.typed_default = '@%s []' % self.varianttype
+            elif self.list_type == 'string':
+                items = [ item.strip() for item in values.split(',') ]
+                items = [ item.replace('\'', '\\\'') for item in items ]
+                values = ', '.join([ '\'%s\'' % item for item in items ])
+                self.default = '[ %s ]' % values
+
+    def _get_value_with_locale(self, node, locale_node, element):
+        element_node = None
+        if locale_node is not None:
+            element_node = locale_node.find(element)
+        if element_node is None:
+            element_node = node.find(element)
+        if element_node is not None:
+            return element_node.text
+        else:
+            return None
+
+    def _oneline(self, s):
+        lines = s.splitlines()
+        result = ''
+        for line in lines:
+            result += ' ' + line.lstrip()
+        return result.strip()
+
+    def get_gsettings_schema_key(self):
+        key = GSettingsSchemaKey()
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.keyname, self.short, self.long, None, None)
+        return key
+
+
+######################################
+
+
+class GConfSchemaParser:
+
+    def __init__(self, file, default_schema_id):
+        self.file = file
+        self.default_schema_id = default_schema_id
+
+        self.root = None
+        self.default_schema_id_count = 0
+
+    def _insert_schema(self, gconf_schema):
+        schemas_only = (gconf_schema.applyto is not None)
+
+        dirpath = gconf_schema.prefix
+        if dirpath[0] != '/':
+            raise GSettingsSchemaConvertException('Key \'%s\' has a relative path. There is no relative path in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+
+        # remove leading 'schemas/' for schemas-only keys
+        if schemas_only and dirpath.startswith('/schemas/'):
+            dirpath = dirpath[len('/schemas'):]
+
+        if len(dirpath) == 1:
+            raise GSettingsSchemaConvertException('Key \'%s\' is a toplevel key. Toplevel keys are not accepted in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+
+        # remove trailing slash because we'll split the string
+        if dirpath[-1] == '/':
+            dirpath = dirpath[:-1]
+        # and also remove leading slash when splitting
+        hierarchy = dirpath[1:].split('/')
+
+        # we don't want to put apps/ and desktop/ keys in the same schema,
+        # so we have a first step where we make sure to create a new schema
+        # to avoid this case if necessary
+        gsettings_schema = None
+        for schema in self.root.schemas:
+            if schemas_only:
+                schema_path = schema.path
+            else:
+                schema_path = schema._hacky_path
+            if dirpath.startswith(schema_path):
+                gsettings_schema = schema
+                break
+        if not gsettings_schema:
+            gsettings_schema = GSettingsSchema()
+            if self.default_schema_id:
+                gsettings_schema.id = self.default_schema_id
+                if self.default_schema_id_count > 0:
+                    gsettings_schema.id += '.FIXME-%s' % self.default_schema_id_count
+                self.default_schema_id_count += 1
+            else:
+                gsettings_schema.id = 'FIXME'
+            if schemas_only:
+                gsettings_schema.path = '/' + hierarchy[0] + '/'
+            else:
+                gsettings_schema._hacky_path = '/' + hierarchy[0] + '/'
+            self.root.schemas.append(gsettings_schema)
+
+        # we create all the subdirs that lead to this key
+        gsettings_dir = gsettings_schema
+        for item in hierarchy[1:]:
+            subdir = None
+            for dir in gsettings_dir.dirs:
+                if dir.name == item:
+                    subdir = dir
                     break
-            if not gsettings_schema:
-                gsettings_schema = GSettingsSchema()
-                if default_schema_id:
-                    gsettings_schema.id = default_schema_id
-                    if default_schema_id_count > 0:
-                        gsettings_schema.id += '.FIXME-%s' % default_schema_id_count
-                    default_schema_id_count += 1
-                else:
-                    gsettings_schema.id = 'FIXME'
-                if schemas_only:
-                    gsettings_schema.path = '/' + hierarchy[0] + '/'
-                else:
-                    gsettings_schema._hacky_path = '/' + hierarchy[0] + '/'
-                gsettings_schema_root.schemas.append(gsettings_schema)
+            if not subdir:
+                subdir = GSettingsSchemaDir()
+                subdir.name = item
+                gsettings_dir.dirs.append(subdir)
+            gsettings_dir = subdir
 
-            # we create all the subdirs that lead to this key
-            gsettings_dir = gsettings_schema
-            for item in hierarchy[1:]:
-                subdir = None
-                for dir in gsettings_dir.dirs:
-                    if dir.name == item:
-                        subdir = dir
-                        break
-                if not subdir:
-                    subdir = GSettingsSchemaDir()
-                    subdir.name = item
-                    gsettings_dir.dirs.append(subdir)
-                gsettings_dir = subdir
+        # we have the final directory, so we can put the key there
+        gsettings_dir.keys.append(gconf_schema.get_gsettings_schema_key())
 
-            # we have the final directory, so we can put the key there
-            gsettings_dir.keys.append(gconf_schema.get_gsettings_schema_key())
+    def parse(self):
+        # reset the state of the parser
+        self.root = GSettingsSchemaRoot()
+        self.default_schema_id_count = 0
 
-    gsettings_schema_root.simplify()
+        gconfschemafile_node = ET.parse(self.file).getroot()
+        for schemalist_node in gconfschemafile_node.findall('schemalist'):
+            for schema_node in schemalist_node.findall('schema'):
+                self._insert_schema(GConfSchema(schema_node))
 
-    return gsettings_schema_root
+        self.root.simplify()
+
+        return self.root
 
 
 ######################################
@@ -866,7 +878,8 @@ def main(args):
 
         if options.gconf:
             try:
-                schema_root = read_gconf_schema(argfile, options.schema_id)
+                parser = GConfSchemaParser(argfile, options.schema_id)
+                schema_root = parser.parse()
             except SyntaxError, e:
                 raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))
         else:
