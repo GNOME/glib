@@ -455,7 +455,9 @@ def _eat_indent(line, indent_stack):
         else:
             continue
 
-    if buf and previous_max_index <= index:
+    if buf and previous_max_index > index:
+        raise GSettingsSchemaConvertException('Inconsistent indentation.')
+    elif buf and previous_max_index <= index:
         indent_stack.append(buf)
     elif previous_max_index > index:
         indent_stack = indent_stack[:index + 1]
