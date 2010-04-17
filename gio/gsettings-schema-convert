@@ -419,10 +419,10 @@ class GConfSchema:
 ######################################
 
 allowed_tokens = {
-  ''            : [ 'gettext', 'schema' ],
-  'schema'      : [ 'gettext', 'path', 'child', 'key' ],
+  ''            : [ 'gettext-domain', 'schema' ],
+  'schema'      : [ 'gettext-domain', 'path', 'child', 'key' ],
   'path'        : [ ],
-  'child'       : [ 'gettext', 'child', 'key' ],
+  'child'       : [ 'gettext-domain', 'child', 'key' ],
   'key'         : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
   'l10n'        : [ ],
   'summary'     : [ ],
@@ -467,8 +467,8 @@ def _eat_word(line):
 
 def _word_to_token(word):
     wordmap = {
-        'gettext-domain': 'gettext',
-        'gettext-domain:': 'gettext',
+        'gettext-domain': 'gettext-domain',
+        'gettext-domain:': 'gettext-domain',
         'schema': 'schema',
         'path': 'path',
         'path:': 'path',
@@ -605,7 +605,7 @@ def read_simple_schema(simple_schema_file):
         current_object = object_stack[-1]
 
         new_object = None
-        if token == 'gettext':
+        if token == 'gettext-domain':
             current_object.gettext_domain = line
         elif token == 'schema':
             name = _get_name_without_colon(line, token)
