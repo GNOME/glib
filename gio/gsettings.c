@@ -564,8 +564,8 @@ g_settings_class_init (GSettingsClass *class)
    * The "change-event" signal is emitted once per change event that
    * affects this settings object.  You should connect to this signal
    * only if you are interested in viewing groups of changes before they
-   * are split out into multiple calls to the "changed" signal.  For
-   * most use cases it is more appropriate to use the "changed" signal.
+   * are split out into multiple emissions of the "changed" signal.
+   * For most use cases it is more appropriate to use the "changed" signal.
    *
    * In the event that the change event applies to one or more specified
    * keys, @keys will be an array of #GQuark of length @n_keys.  In the
@@ -612,10 +612,10 @@ g_settings_class_init (GSettingsClass *class)
    * @returns: %TRUE to stop other handlers from being invoked for the
    *           event. FALSE to propagate the event further.
    *
-   * The "writable-change-event" signal is emitted once per wriability
+   * The "writable-change-event" signal is emitted once per writability
    * change event that affects this settings object.  You should connect
    * to this signal if you are interested in viewing groups of changes
-   * before they are split out into multiple calls to the
+   * before they are split out into multiple emissions of the
    * "writable-changed" signal.  For most use cases it is more
    * appropriate to use the "writable-changed" signal.
    *
@@ -624,7 +624,7 @@ g_settings_class_init (GSettingsClass *class)
    * that the writability change affects the entire settings object,
    * @key will be 0.
    *
-   * The default handler for this signal invokes the "writabile-changed"
+   * The default handler for this signal invokes the "writable-changed"
    * and "changed" signals for each affected key.  This is done because
    * changes in writability might also imply changes in value (if for
    * example, a new mandatory setting is introduced).  If any other
