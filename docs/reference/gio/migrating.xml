@@ -170,7 +170,9 @@ start_monitoring_trash (void)
         GSettings can be done at will. But desktop-wide settings like font or
         theme settings often have consumers in multiple modules. Therefore,
         some consideration has to go into making sure that all users of a setting
-        are converted to GSettings at the same time.
+        are converted to GSettings at the same time or that the program
+        responsible for configuring that setting continues to update the value in
+        both places.
       </para>
     </section>
 
@@ -270,7 +272,7 @@ start_monitoring_trash (void)
 
     <section><title>Change sets</title>
       <para>
-        GConf has a a concept of a set of changes with can be applied or reverted
+        GConf has a a concept of a set of changes which can be applied or reverted
         at once: #GConfChangeSet (GConf doesn't actually apply changes atomically,
         which is one of its shortcomings).
       </para>
@@ -285,7 +287,7 @@ start_monitoring_trash (void)
       <para>
         To apply the pending changes all at once (GSettings <emphasis>does</emphasis>
         atomicity here), call g_settings_apply(). To revert the pending changes,
-        call g_settings_revert().
+        call g_settings_revert() or just drop the reference to the #GSettings object.
       </para>
     </section>
 
@@ -294,9 +296,9 @@ start_monitoring_trash (void)
 
       <para>
         One possible pitfall in doing schema conversion is that the default
-        values in GSettings schemas are in the format of a serialized #GVariant,
-        and the types are specified as #GVariant type strings.
-        This means that strings need to include quotes in the XML, so
+        values in GSettings schemas are parsed by the #GVariant parser.
+        This means that strings need to include quotes in the XML.  Also note
+        that the types are now specified as #GVariant type strings.
         <programlisting>
 <![CDATA[
 <type>string</type>
@@ -306,8 +308,8 @@ start_monitoring_trash (void)
         becomes
         <programlisting>
 <![CDATA[
-<key name="rgba_order" type="s">
-  <default>'rgb'</default>
+<key name="rgba-order" type="s">
+  <default>'rgb'</default> <!-- note quotes -->
 </key>
 ]]>
         </programlisting>
@@ -348,7 +350,7 @@ start_monitoring_trash (void)
         becomes
         <programlisting>
 <![CDATA[
-<key name="font_size" type="i">
+<key name="font-size" type="i">
   <default l10n="messages" context="font_size">18</default>
 </key>
 ]]>
@@ -367,9 +369,10 @@ start_monitoring_trash (void)
         The <link linkend="gschema-compile">gschema-compile</link> schema
         compiler has a <option>--allow-any-name</option> that lets you
         ignore these restrictions. Note that this option is only meant
-        to facilitate the migration from GConf, and you should make your
-        key names follow the more stringent GSettings rules when you
-        migrate your data from GConf to dconf.
+        to ease the process of porting your application, allowing parts
+        of your application to continue to access GConf and parts to use
+        GSettings. By the time you have finished porting your application
+        you must ensure that all key names are valid.
       </para>
       <para>
         GIO comes with a commandline tool
