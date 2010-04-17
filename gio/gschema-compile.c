@@ -515,7 +515,7 @@ main (int argc, char **argv)
       return 1;
     }
 
-  status = glob ("*.gschema", 0, NULL, &matched);
+  status = glob ("*.gschema.xml", 0, NULL, &matched);
 
   if (status == GLOB_ABORTED)
     {
