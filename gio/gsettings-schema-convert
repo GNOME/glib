@@ -418,242 +418,279 @@ class GConfSchema:
 
 ######################################
 
-allowed_tokens = {
-  ''               : [ 'gettext-domain', 'schema' ],
-  'gettext-domain' : [ ],
-  'schema'         : [ 'gettext-domain', 'path', 'child', 'key' ],
-  'path'           : [ ],
-  'child'          : [ 'gettext-domain', 'child', 'key' ],
-  'key'            : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
-  'l10n'           : [ ],
-  'summary'        : [ ],
-  'description'    : [ ],
-  'choices'        : [ ],
-  'range'          : [ ]
-}
 
-allowed_separators = [ ':', '=' ]
+class SimpleSchemaParser:
 
-def _eat_indent(line, indent_stack):
-    i = 0
-    buf = ''
-    previous_max_index = len(indent_stack) - 1
-    index = -1
+    allowed_tokens = {
+      ''               : [ 'gettext-domain', 'schema' ],
+      'gettext-domain' : [ ],
+      'schema'         : [ 'gettext-domain', 'path', 'child', 'key' ],
+      'path'           : [ ],
+      'child'          : [ 'gettext-domain', 'child', 'key' ],
+      'key'            : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
+      'l10n'           : [ ],
+      'summary'        : [ ],
+      'description'    : [ ],
+      'choices'        : [ ],
+      'range'          : [ ]
+    }
 
-    while i < len(line) - 1 and line[i].isspace():
-        buf += line[i]
-        i += 1
-        if previous_max_index > index:
-            if buf == indent_stack[index + 1]:
-                buf = ''
-                index += 1
-                continue
-            elif indent_stack[index + 1].startswith(buf):
-                continue
-            else:
-                raise GSettingsSchemaConvertException('Inconsistent indentation.')
-        else:
-            continue
+    allowed_separators = [ ':', '=' ]
 
-    if buf and previous_max_index > index:
-        raise GSettingsSchemaConvertException('Inconsistent indentation.')
-    elif buf and previous_max_index <= index:
-        indent_stack.append(buf)
-    elif previous_max_index > index:
-        indent_stack = indent_stack[:index + 1]
+    def __init__(self, file):
+        self.file = file
 
-    return (indent_stack, line[i:])
+        self.root = GSettingsSchemaRoot()
 
-def _eat_word(line):
-    i = 0
-    while i < len(line) and not line[i].isspace() and not line[i] in allowed_separators:
-        i += 1
-    return (line[:i], line[i:])
+        # this is just a convenient helper to remove the leading indentation
+        # that should be common to all lines
+        self.leading_indent = None
 
-def _word_to_token(word):
-    lower = word.lower()
-    if lower and lower in allowed_tokens.keys():
-        return lower
-    raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % lower)
+        self.indent_stack = []
+        self.token_stack = []
+        self.object_stack = [ self.root ]
 
-def _token_allow_separator(token):
-    return token in [ 'gettext-domain', 'path', 'l10n', 'summary', 'description', 'choices', 'range' ]
+        self.previous_token = None
+        self.current_token = None
+        self.unparsed_line = ''
 
-def _get_name_without_separator(line, token):
-    if line[-1] in allowed_separators:
-        line = line[:-1].strip()
-    # FIXME: we could check there's no space
-    return line
+    def _eat_indent(self):
+        line = self.unparsed_line
+        i = 0
+        buf = ''
+        previous_max_index = len(self.indent_stack) - 1
+        index = -1
 
-def _parse_key(line):
-    split = False
-    for separator in allowed_separators:
-        items = line.split(separator)
-        if len(items) == 2:
-            split = True
-            break
-
-    if not split:
-        raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
-
-    # FIXME: we could check there's no space
-    name = items[0].strip()
-    type = ''
-    value = items[1].strip()
-    if value[0] == '@':
-        i = 1
-        while not value[i].isspace():
+        while i < len(line) - 1 and line[i].isspace():
+            buf += line[i]
             i += 1
-        type = value[1:i]
-        value = value[i:].strip()
-        if not value:
-            raise GSettingsSchemaConvertException('No value specified for key \'%s\' (\'%s\').' % (name, line))
-    return (name, type, value)
+            if previous_max_index > index:
+                if buf == self.indent_stack[index + 1]:
+                    buf = ''
+                    index += 1
+                    continue
+                elif self.indent_stack[index + 1].startswith(buf):
+                    continue
+                else:
+                    raise GSettingsSchemaConvertException('Inconsistent indentation.')
+            else:
+                continue
 
-def _parse_l10n(line):
-    items = [ item.strip() for item in line.split(' ') if item.strip() ]
-    if not items:
-        return (None, None)
-    if len(items) == 1:
-        return (items[0], None)
-    if len(items) == 2:
-        return (items[0], items[1])
+        if buf and previous_max_index > index:
+            raise GSettingsSchemaConvertException('Inconsistent indentation.')
+        elif buf and previous_max_index <= index:
+            self.indent_stack.append(buf)
+        elif previous_max_index > index:
+            self.indent_stack = self.indent_stack[:index + 1]
 
-    raise GSettingsSchemaConvertException('Localization \'%s\' cannot be parsed.' % line)
+        self.unparsed_line = line[i:]
 
-def _parse_choices(line, type, keyname):
-    if type in TYPES_FOR_CHOICES:
-        return [ item.strip() for item in line.split(',') ]
-    else:
-        raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have choices.' % (keyname, type))
+    def _parse_word(self):
+        line = self.unparsed_line
+        i = 0
+        while i < len(line) and not line[i].isspace() and not line[i] in self.allowed_separators:
+            i += 1
+        self.unparsed_line = line[i:]
+        return line[:i]
 
-def _parse_range(line, type, keyname):
-    minmax = None
-    if type in TYPES_FOR_RANGE:
-        minmax = [ item.strip() for item in line.split('..') ]
-        if len(minmax) != 2:
-            raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
-        # FIXME: we'll be able to check min < max once we can convert the
-        # values with GVariant
-        return tuple(minmax)
-    else:
-        raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have a range.' % (keyname, type))
+    def _word_to_token(self, word):
+        lower = word.lower()
+        if lower and lower in self.allowed_tokens.keys():
+            return lower
+        raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % lower)
 
-def read_simple_schema(simple_schema_file):
-    root = GSettingsSchemaRoot()
+    def _token_allow_separator(self):
+        return self.current_token in [ 'gettext-domain', 'path', 'l10n', 'summary', 'description', 'choices', 'range' ]
 
-    f = open(simple_schema_file, 'r')
-    lines = f.readlines()
-    f.close()
-    lines = [ line[:-1] for line in lines ]
+    def _parse_name_without_separator(self):
+        line = self.unparsed_line
+        if line[-1] in self.allowed_separators:
+            line = line[:-1].strip()
+        self.unparsed_line = ''
+        # FIXME: we could check there's no space
+        return line
 
-    leading_indent = None
-    indent_stack = []
-    token_stack = []
-    object_stack = [ root ]
+    def _parse_key(self):
+        line = self.unparsed_line
 
-    token = None
-    previous_token = None
+        split = False
+        for separator in self.allowed_separators:
+            items = line.split(separator)
+            if len(items) == 2:
+                split = True
+                break
 
-    for line in lines:
+        if not split:
+            raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
+
+        # FIXME: we could check there's no space
+        name = items[0].strip()
+        type = ''
+        value = items[1].strip()
+        if value[0] == '@':
+            i = 1
+            while not value[i].isspace():
+                i += 1
+            type = value[1:i]
+            value = value[i:].strip()
+            if not value:
+                raise GSettingsSchemaConvertException('No value specified for key \'%s\' (\'%s\').' % (name, line))
+
+        self.unparsed_line = ''
+
+        object = GSettingsSchemaKey()
+        object.name = name
+        object.type = type
+        object.default = value
+
+        return object
+
+    def _parse_l10n(self):
+        line = self.unparsed_line
+
+        items = [ item.strip() for item in line.split(' ') if item.strip() ]
+        if not items:
+            self.unparsed_line = ''
+            return (None, None)
+        if len(items) == 1:
+            self.unparsed_line = ''
+            return (items[0], None)
+        if len(items) == 2:
+            self.unparsed_line = ''
+            return (items[0], items[1])
+
+        raise GSettingsSchemaConvertException('Localization \'%s\' cannot be parsed.' % line)
+
+    def _parse_choices(self, object):
+        if object.type in TYPES_FOR_CHOICES:
+            line = self.unparsed_line
+            result = [ item.strip() for item in line.split(',') ]
+            self.unparsed_line = ''
+            return result
+        else:
+            raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have choices.' % (object.name, object.type))
+
+    def _parse_range(self, object):
+        minmax = None
+        if object.type in TYPES_FOR_RANGE:
+            line = self.unparsed_line
+            minmax = [ item.strip() for item in line.split('..') ]
+            if len(minmax) != 2:
+                raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
+            # FIXME: we'll be able to check min < max once we can convert the
+            # values with GVariant
+            self.unparsed_line = ''
+            return tuple(minmax)
+        else:
+            raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have a range.' % (object.name, object.type))
+
+    def parse_line(self, line):
         # make sure that lines with only spaces are ignored and considered as
         # empty lines
-        line = line.rstrip()
+        self.unparsed_line = line.rstrip()
 
         # ignore empty line
-        if not line:
-            continue
+        if not self.unparsed_line:
+            return
 
         # look at the indentation to know where we should be
-        (indent_stack, line) = _eat_indent(line, indent_stack)
-        if leading_indent is None:
-            leading_indent = len(indent_stack)
+        self._eat_indent()
+        if self.leading_indent is None:
+            self.leading_indent = len(self.indent_stack)
 
         # ignore comments
-        if line[0] == '#':
-            continue
+        if self.unparsed_line[0] == '#':
+            return
 
-        (word, line) = _eat_word(line)
-        if token:
-            previous_token = token
-        token = _word_to_token(word)
-        line = line.lstrip()
+        word = self._parse_word()
+        if self.current_token:
+            self.previous_token = self.current_token
+        self.current_token = self._word_to_token(word)
+        self.unparsed_line = self.unparsed_line.lstrip()
 
-        allow_separator = _token_allow_separator(token)
-        if len(line) > 0 and line[0] in allowed_separators:
+        allow_separator = self._token_allow_separator()
+        if len(self.unparsed_line) > 0 and self.unparsed_line[0] in self.allowed_separators:
             if allow_separator:
-                line = line[1:]
-                line = line.lstrip()
+                self.unparsed_line = self.unparsed_line[1:].lstrip()
             else:
-                raise GSettingsSchemaConvertException('Separator \'%s\' is not allowed after \'%s\'.' % (line[0], token))
+                raise GSettingsSchemaConvertException('Separator \'%s\' is not allowed after \'%s\'.' % (self.unparsed_line[0], self.current_token))
 
-        new_level = len(indent_stack) - leading_indent
-        old_level = len(token_stack)
+        new_level = len(self.indent_stack) - self.leading_indent
+        old_level = len(self.token_stack)
 
         if new_level > old_level + 1:
             raise GSettingsSchemaConvertException('Internal error: stacks not in sync.')
         elif new_level <= old_level:
-            token_stack = token_stack[:new_level]
+            self.token_stack = self.token_stack[:new_level]
             # we always have the root
-            object_stack = object_stack[:new_level + 1]
+            self.object_stack = self.object_stack[:new_level + 1]
 
         if new_level == 0:
             parent_token = ''
         else:
-            parent_token = token_stack[-1]
+            parent_token = self.token_stack[-1]
 
         # there's new indentation, but no token is allowed under the previous
         # one
-        if new_level == old_level + 1 and previous_token != parent_token:
-            raise GSettingsSchemaConvertException('\'%s\' is not allowed under \'%s\'.' % (token, previous_token))
+        if new_level == old_level + 1 and self.previous_token != parent_token:
+            raise GSettingsSchemaConvertException('\'%s\' is not allowed under \'%s\'.' % (self.current_token, self.previous_token))
 
-        if not token in allowed_tokens[parent_token]:
+        if not self.current_token in self.allowed_tokens[parent_token]:
             if parent_token:
-                error = '\'%s\' is not allowed under \'%s\'.' % (token, parent_token)
+                error = '\'%s\' is not allowed under \'%s\'.' % (self.current_token, parent_token)
             else:
-                error = '\'%s\' is not allowed at the root level.' % token
+                error = '\'%s\' is not allowed at the root level.' % self.current_token
             raise GSettingsSchemaConvertException(error)
 
-        current_object = object_stack[-1]
+        current_object = self.object_stack[-1]
 
         new_object = None
-        if token == 'gettext-domain':
-            current_object.gettext_domain = line
-        elif token == 'schema':
-            name = _get_name_without_separator(line, token)
+        if self.current_token == 'gettext-domain':
+            current_object.gettext_domain = self.unparsed_line
+        elif self.current_token == 'schema':
+            name = self._parse_name_without_separator()
             new_object = GSettingsSchema()
             new_object.id = name
             current_object.schemas.append(new_object)
-        elif token == 'path':
-            current_object.path = line
-        elif token == 'child':
-            name = _get_name_without_separator(line, token)
+        elif self.current_token == 'path':
+            current_object.path = self.unparsed_line
+        elif self.current_token == 'child':
+            name = self._parse_name_without_separator()
             new_object = GSettingsSchemaDir()
             new_object.name = name
             current_object.dirs.append(new_object)
-        elif token == 'key':
-            new_object = GSettingsSchemaKey()
-            (name, type, value) = _parse_key(line)
-            new_object.name = name
-            new_object.type = type
-            new_object.default = value
+        elif self.current_token == 'key':
+            new_object =  self._parse_key()
             current_object.keys.append(new_object)
-        elif token == 'l10n':
-            (current_object.l10n, current_object.l10n_context) = _parse_l10n(line)
-        elif token == 'summary':
-            current_object.summary = line
-        elif token == 'description':
-            current_object.description = line
-        elif token == 'choices':
-            current_object.choices = _parse_choices(line, current_object.type, current_object.name)
-        elif token == 'range':
-            current_object.range = _parse_range(line, current_object.type, current_object.name)
+        elif self.current_token == 'l10n':
+            (current_object.l10n, current_object.l10n_context) = self._parse_l10n()
+        elif self.current_token == 'summary':
+            current_object.summary = self.unparsed_line
+        elif self.current_token == 'description':
+            current_object.description = self.unparsed_line
+        elif self.current_token == 'choices':
+            current_object.choices = self._parse_choices(current_object)
+        elif self.current_token == 'range':
+            current_object.range = self._parse_range(current_object)
 
         if new_object:
-            token_stack.append(token)
-            object_stack.append(new_object)
+            self.token_stack.append(self.current_token)
+            self.object_stack.append(new_object)
 
-    return root
+    def parse(self):
+        f = open(self.file, 'r')
+        lines = [ line[:-1] for line in f.readlines() ]
+        f.close()
+
+        try:
+            current_line_nb = 0
+            for line in lines:
+                current_line_nb += 1
+                self.parse_line(line)
+        except GSettingsSchemaConvertException, e:
+            raise GSettingsSchemaConvertException('%s:%s: %s' % (os.path.basename(self.file), current_line_nb, e))
+
+        return self.root
 
 
 ######################################
@@ -796,7 +833,8 @@ def main(args):
             except SyntaxError, e:
                 raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))
         else:
-            schema_root = read_simple_schema(argfile)
+            parser = SimpleSchemaParser(argfile)
+            schema_root = parser.parse()
 
         if options.xml:
             node = schema_root.get_xml_node()
