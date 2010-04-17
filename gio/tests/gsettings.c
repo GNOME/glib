@@ -436,7 +436,7 @@ test_delay_revert (void)
 
   g_settings_revert (settings);
 
-  g_assert (g_settings_get_has_unapplied (settings));
+  g_assert (!g_settings_get_has_unapplied (settings));
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
