@@ -177,7 +177,8 @@ typedef enum
   G_SETTINGS_BIND_DEFAULT,
   G_SETTINGS_BIND_GET            = (1<<0),
   G_SETTINGS_BIND_SET            = (1<<1),
-  G_SETTINGS_BIND_NO_SENSITIVITY = (1<<2)
+  G_SETTINGS_BIND_NO_SENSITIVITY = (1<<2),
+  G_SETTINGS_BIND_GET_NO_CHANGES = (1<<3)
 } GSettingsBindFlags;
 
 void                    g_settings_bind                                 (GSettings               *settings,

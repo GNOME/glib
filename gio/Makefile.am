@@ -97,6 +97,8 @@ settings_sources = \
 	gsettingsbackend.c		\
 	gsettingsschema.h		\
 	gsettingsschema.c		\
+	gsettings-mapping.h		\
+	gsettings-mapping.c		\
 	gsettings.c
 
 local_sources = \
