@@ -1,8 +1,9 @@
-<refentry id="glib-gettextize">
+<refentry id="glib-gettextize" lang="en">
 
 <refmeta>
 <refentrytitle>glib-gettextize</refentrytitle>
 <manvolnum>1</manvolnum>
+<refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
@@ -68,7 +69,7 @@ force writing of new files even if old ones exist
 
 <refsect1><title>See also</title>
 <para>
-<command>gettextize</command>(1)
+<citerefentry><refentrytitle>gettextize</refentrytitle><manvolnum>1</manvolnum></citerefentry>
 </para>
 </refsect1>
 </refentry>

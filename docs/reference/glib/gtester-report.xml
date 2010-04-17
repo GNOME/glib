@@ -3,6 +3,7 @@
 <refmeta>
 <refentrytitle>gtester-report</refentrytitle>
 <manvolnum>1</manvolnum>
+<refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
@@ -46,7 +47,10 @@ print version information and exit
 
 <refsect1><title>See also</title>
 <para>
-<command>gtester</command>(1)
+<citerefentry>
+<refentrytitle>gtester</refentrytitle>
+<manvolnum>1</manvolnum>
+</citerefentry>
 </para>
 </refsect1>
 </refentry>
