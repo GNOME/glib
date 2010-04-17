@@ -174,6 +174,11 @@ start_monitoring_trash (void)
         responsible for configuring that setting continues to update the value in
         both places.
       </para>
+      <para>
+        It is always a good idea to have a look at how others have handled
+        similar problems before.  An examplaric conversion can be found e.g.
+        in the <ulink url="http://git.gnome.org/browse/gnome-utils/log/?h=gsettings-tutorial">gsettings-tutorial</ulink> branch of gnome-utils.
+      </para>
     </section>
 
     <section>
