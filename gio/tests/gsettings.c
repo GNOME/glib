@@ -544,6 +544,61 @@ test_l10n (void)
   g_free (locale);
 }
 
+static gboolean
+gtk_translations_work (void)
+{
+  gchar *locale;
+  gchar *orig = "SCREEN";
+  gchar *str;
+
+  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+  setlocale (LC_MESSAGES, "de");
+  str = dgettext ("gtk20", orig);
+  setlocale (LC_MESSAGES, locale);
+  g_free (locale);
+
+  return str != orig;
+}
+
+static void
+test_l10n_context (void)
+{
+  GSettings *settings;
+  gchar *str;
+  gchar *locale;
+
+  if (!gtk_translations_work ())
+    {
+      g_test_message ("Skipping localization tests because translations don't work");
+      return;
+    }
+
+  bind_textdomain_codeset ("gtk20", "UTF-8");
+
+  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+
+  settings = g_settings_new ("org.gtk.test.localized");
+
+  setlocale (LC_MESSAGES, "C");
+  g_settings_get (settings, "backspace", "s", &str);
+  setlocale (LC_MESSAGES, locale);
+
+  g_assert_cmpstr (str, ==, "BackSpace");
+  g_free (str);
+  str = NULL;
+
+  setlocale (LC_MESSAGES, "de");
+  g_settings_get (settings, "backspace", "s", &str);
+  setlocale (LC_MESSAGES, locale);
+
+  g_assert_cmpstr (str, ==, "Löschen");
+  g_object_unref (settings);
+  g_free (str);
+  str = NULL;
+
+  g_free (locale);
+}
+
 enum
 {
   PROP_0,
@@ -892,6 +947,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
   g_test_add_func ("/gsettings/l10n", test_l10n);
+  g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
