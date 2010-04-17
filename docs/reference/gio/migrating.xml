@@ -163,15 +163,37 @@ start_monitoring_trash (void)
     <title>Migrating from GConf to GSettings</title>
 
     <section>
+      <title>Before you start</title>
+
+      <para>
+        Converting individual applications and their settings from GConf to
+        GSettings can be done at will. But desktop-wide settings like font or
+        theme settings often have consumers in multiple modules. Therefore,
+        some consideration has to go into making sure that all users of a setting
+        are converted to GSettings at the same time.
+      </para>
+    </section>
+
+    <section>
       <title>Conceptual differences</title>
 
       <para>
         Conceptually, GConf and GSettings are fairly similar. Both
         have a concept of pluggable backends. Both keep information
-        about keys and their types in schemas. GSettings is more
-        strict about requiring a schema whenever you want to read
-        or write a key. Both have a concept of mandatory values,
-        which lets you implement lock-down.
+        about keys and their types in schemas. Both have a concept of
+        mandatory values, which lets you implement lock-down.
+      </para>
+      <para>
+        There are some differences in the approach to schemas. GConf
+        installs the schemas into the database and has API to handle
+        schema information (gconf_client_get_default_from_schema(),
+        gconf_value_get_schema(), etc). GSettings on the other hand
+        assumes that an application knows its own schemas, and does
+        not provide API to handle schema information at runtime.
+        GSettings is also more strict about requiring a schema whenever
+        you want to read or write a key. To deal with more free-form
+        information that would appear in schema-less entries in GConf,
+        GSettings allows for schemas to be 'relocatable'.
       </para>
       <para>
         One difference in the way applications interact with their
@@ -202,9 +224,23 @@ start_monitoring_trash (void)
             <tbody>
               <row><entry>gconf_client_set()</entry><entry>g_settings_set()</entry></row>
               <row><entry>gconf_client_get()</entry><entry>g_settings_get()</entry></row>
+              <row><entry>gconf_client_get_bool()</entry><entry>g_settings_get_boolean()</entry></row>
+              <row><entry>gconf_client_set_bool()</entry><entry>g_settings_set_boolean()</entry></row>
+              <row><entry>gconf_client_get_int()</entry><entry>g_settings_get_int()</entry></row>
+              <row><entry>gconf_client_set_int()</entry><entry>g_settings_set_int()</entry></row>
+              <row><entry>gconf_client_get_float()</entry><entry>g_settings_get_double()</entry></row>
+              <row><entry>gconf_client_set_float()</entry><entry>g_settings_set_double()</entry></row>
+              <row><entry>gconf_client_get_string()</entry><entry>g_settings_get_string()</entry></row>
+              <row><entry>gconf_client_set_string()</entry><entry>g_settings_set_string()</entry></row>
+              <row><entry>gconf_client_get_list()</entry><entry>for string lists, see g_settings_get_strv(), else see g_settings_get_value() and #GVariant API</entry></row>
+              <row><entry>gconf_client_set_list()</entry><entry>for string lists, see g_settings_set_strv(), else see g_settings_set_value() and #GVariant API</entry></row>
               <row><entry>gconf_entry_get_is_writable()</entry><entry>g_settings_is_writable()</entry></row>
               <row><entry>gconf_client_notify_add()</entry><entry>not required, the #GSettings::changed signal is emitted automatically</entry></row>
-              <row><entry>GConfChangeSet</entry><entry>g_settings_delay()</entry></row>
+              <row><entry>gconf_client_add_dir()</entry><entry>not required, each GSettings instance automatically watches all keys in its path</entry></row>
+              <row><entry>#GConfChangeSet</entry><entry>g_settings_delay(), g_settings_apply()</entry></row>
+              <row><entry>gconf_client_get_default_from_schema()</entry><entry>no equivalent, applications are expected to know their schema</entry></row>
+              <row><entry>gconf_client_all_entries()</entry><entry>no equivalent, applications are expected to know their schema, and GSettings does not allow schema-less entries</entry></row>
+              <row><entry>gconf_client_get_without_default()</entry><entry>no equivalent</entry></row>
             </tbody>
           </tgroup>
         </table>
@@ -221,14 +257,35 @@ start_monitoring_trash (void)
         for every change.
       </para>
       <para>
-        The #GSettings::changed signal is emitted when an individual
-        key is changed, #GSettings::keys-changed is emitted when multiple
-        keys are changed at the same time (e.g. when g_settings_apply()
-        is called on a delayed-mode GSettings instance.
+        The #GSettings::changed signal is emitted for each changed key.
+        There is also a #GSettings::change-event signal that you can handle
+        if you need to see groups of keys that get changed at the same time.
       </para>
       <para>
         GSettings also notifies you about changes in writability of keys,
-        with the #GSettings::writable-changed signal.
+        with the #GSettings::writable-changed signal (and the
+        #GSettings::writable-change-event signal).
+      </para>
+    </section>
+
+    <section><title>Change sets</title>
+      <para>
+        GConf has a a concept of a set of changes with can be applied or reverted
+        at once: #GConfChangeSet (GConf doesn't actually apply changes atomically,
+        which is one of its shortcomings).
+      </para>
+      <para>
+        Instead of a separate object to represent a change set, GSettings has a
+        'delayed-apply' mode, which can be turned on for a GSettings object by
+        calling g_settings_delay(). In this mode, changes done to the GSettings
+        object are not applied - they are still visible when calling g_settings_get()
+        <emphasis>on the same object</emphasis>, but not to other GSettings instances
+        or even other processes.
+      </para>
+      <para>
+        To apply the pending changes all at once (GSettings <emphasis>does</emphasis>
+        atomicity here), call g_settings_apply(). To revert the pending changes,
+        call g_settings_revert().
       </para>
     </section>
 
@@ -274,6 +331,34 @@ start_monitoring_trash (void)
         </programlisting>
       </para>
       <para>
+        Default values can be localized in both GConf and GSettings schemas,
+        but GSettings uses gettext for the localization, so
+        <programlisting>
+<![CDATA[
+<key>/schemas/apps/my_app/font_size</key>
+  <locale name="C">
+    <default>18</default>
+  </locale>
+  <locale name="be">
+    <default>24</default>
+  </locale>
+</key>
+]]>
+        </programlisting>
+        becomes
+        <programlisting>
+<![CDATA[
+<key name="font_size" type="i">
+  <default l10n="messages" context="font_size">18</default>
+</key>
+]]>
+        </programlisting>
+        Note how we used the context attribute to add msgctxt - "18" is not a
+        good string to look up in gettext by itself. Also note that the value
+        24 is not present in the schema anymore. It has to be added to the gettext
+        catalog for "be" instead.
+      </para>
+      <para>
         GSettings schemas have more stringent restrictions on key names
         than GConf. Key names in GSettings are restricted to at most 32
         characters, and must only consist of lowercase characters, numbers
@@ -295,15 +380,43 @@ start_monitoring_trash (void)
       </para>
     </section>
 
-    <section><title>More information</title>
+    <section><title>Data conversion</title>
       <para>
-        More information about migration from GConf to GSettings will appear
-        here soon. Topics to cover:
-        <itemizedlist>
-          <listitem><para>Defaults</para></listitem>
-          <listitem><para>Change sets</para></listitem>
-          <listitem><para>Data conversion</para></listitem>
-        </itemizedlist>
+        GConf comes with a utility called <command>gsettings-data-convert</command>,
+        which is designed to help with the task of migrating user settings from
+        GConf into GSetting. <command>gsettings-data-convert</command> can be run
+        manually, but it is designed to be run automatically, every time a user
+        logs in. It keeps track of the conversion that it has already done, and it
+        is harmless to run it more than once.
+      </para>
+      <para>
+        To make use of this utility, you must install a keyfile in the
+        <filename>/usr/share/gsettings-data-convert</filename> which lists the GSettings
+        and GConf paths to map to each other, for each schema that you want to migrate
+        user data for.
+      </para>
+      <para>
+        Here is an example:
+        <programlisting>
+<![CDATA[
+[org.gnome.fonts]
+antialiasing = /desktop/gnome/font_rendering/antialiasing
+dpi = /desktop/gnome/font_rendering/dpi
+hinting = /desktop/gnome/font_rendering/hinting
+rgba-order = /desktop/gnome/font_rendering/rgba_order
+
+[apps.myapp]
+some-odd-key1 = /apps/myapp/some_ODD-key1
+]]>
+        </programlisting>
+        The last key demonstrates that it may be necessary to modify the key name
+        to comply with stricter GSettings key name rules. Of course, that means your
+        application must make the corresponding adjustments.
+      </para>
+      <para>
+        There are some limitations: <command>gsettings-data-convert</command> does not
+        do any transformation of the values. And it does not handle complex GConf types
+        other than lists of strings or integers.
       </para>
     </section>
   </chapter>
