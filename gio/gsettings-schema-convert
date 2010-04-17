@@ -254,7 +254,7 @@ class GSettingsSchemaKey:
         if self.description:
             result += '%sDescription: %s\n' % (current_indent, self.description)
         if self._has_range_choices():
-            result += '%sRange: %s\n' % ', '.join(self.choices)
+            result += '%sChoices: %s\n' % ', '.join(self.choices)
         elif self._has_range_minmax():
             result += '%sRange: %s\n' % '%s..%s' % self._range_minmax
         return result
