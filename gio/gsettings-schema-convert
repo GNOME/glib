@@ -325,8 +325,11 @@ class GConfSchema:
             self.default = locale_node.find('default').text
             self.localized = True
         except:
-            self.default = node.find('default').text
-            self.localized = False
+            try:
+                self.default = node.find('default').text
+                self.localized = False
+            except:
+                raise GSettingsSchemaConvertException('No default value for \'%s\'. GSettings schemas require one default value.' % self.applyto or self.key)
         self.typed_default = None
 
         self.short = self._get_value_with_locale(node, locale_node, 'short')
