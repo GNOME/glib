@@ -247,6 +247,17 @@ start_monitoring_trash (void)
           </tgroup>
         </table>
       </para>
+      <para>
+        There is a pattern that is sometimes used for GConf, where a setting can have
+        explicit 'value A', explicit 'value B' or 'use the system default'. With GConf,
+        'use the system default' is sometimes implemented by unsetting the user value.
+      </para>
+      <para>
+        This is not possible in GSettings, since it does not have API to determine if a value
+        is the default and does not let you unset values. The recommended way (and much
+        clearer) way in which this can be implemented in GSettings is to have a separate
+        'use-system-default' boolean setting.
+      </para>
     </section>
 
     <section>
