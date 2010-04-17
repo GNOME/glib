@@ -552,6 +552,9 @@ def read_simple_schema(simple_schema_file):
     token_stack = []
     object_stack = [ root ]
 
+    token = None
+    previous_token = None
+
     for line in lines:
         # make sure that lines with only spaces are ignored and considered as
         # empty lines
@@ -571,6 +574,8 @@ def read_simple_schema(simple_schema_file):
             continue
 
         (word, line) = _eat_word(line)
+        if token:
+            previous_token = token
         token = _word_to_token(word)
         line = line.lstrip()
 
@@ -597,9 +602,14 @@ def read_simple_schema(simple_schema_file):
         else:
             parent_token = token_stack[-1]
 
+        # there's new indentation, but no token is allowed under the previous
+        # one
+        if new_level == old_level + 1 and previous_token != parent_token:
+            raise GSettingsSchemaConvertException('\'%s\' is not allowed under \'%s\'.' % (token, previous_token))
+
         if not token in allowed_tokens[parent_token]:
             if parent_token:
-                error = '\'%s\' is not allowed after \'%s\'.' % (token, parent_token)
+                error = '\'%s\' is not allowed under \'%s\'.' % (token, parent_token)
             else:
                 error = '\'%s\' is not allowed at the root level.' % token
             raise GSettingsSchemaConvertException(error)
