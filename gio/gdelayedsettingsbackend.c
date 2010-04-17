@@ -249,6 +249,11 @@ delayed_backend_writable_changed (GSettingsBackend *backend,
        * no need to signal this since the writable change implies it.
        */
       g_tree_remove (delayed->priv->delayed, key);
+
+      /* if that was the only key... */
+      if (delayed->priv->owner &&
+          g_tree_nnodes (delayed->priv->delayed) == 0)
+        g_object_notify (delayed->priv->owner, "has-unapplied");
     }
 
   g_settings_backend_writable_changed (G_SETTINGS_BACKEND (delayed), key);
@@ -282,20 +287,30 @@ delayed_backend_path_writable_changed (GSettingsBackend *backend,
                                        gpointer          user_data)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
-  CheckPrefixState state = { path, };
-  gsize i;
+  gsize n_keys;
 
-  /* collect a list of possibly-affected keys (ie: matching the path) */
-  state.keys = g_new (const gchar *, g_tree_nnodes (delayed->priv->delayed));
-  g_tree_foreach (delayed->priv->delayed, check_prefix, &state);
+  n_keys = g_tree_nnodes (delayed->priv->delayed);
 
-  /* drop the keys that have been affected */
-  for (i = 0; i < state.index; i++)
-    if (!g_settings_backend_get_writable (delayed->priv->backend,
-                                          state.keys[i]))
-      g_tree_remove (delayed->priv->delayed, state.keys[i]);
+  if (n_keys > 0)
+    {
+      CheckPrefixState state = { path, g_new (const gchar *, n_keys) };
+      gsize i;
 
-  g_free (state.keys);
+      /* collect a list of possibly-affected keys (ie: matching the path) */
+      g_tree_foreach (delayed->priv->delayed, check_prefix, &state);
+
+      /* drop the keys that have been affected */
+      for (i = 0; i < state.index; i++)
+        if (!g_settings_backend_get_writable (delayed->priv->backend,
+                                              state.keys[i]))
+          g_tree_remove (delayed->priv->delayed, state.keys[i]);
+
+      g_free (state.keys);
+
+      if (delayed->priv->owner &&
+          g_tree_nnodes (delayed->priv->delayed) == 0)
+        g_object_notify (delayed->priv->owner, "has-unapplied");
+    }
 
   g_settings_backend_path_writable_changed (G_SETTINGS_BACKEND (delayed),
                                             path);
