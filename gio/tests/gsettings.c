@@ -840,6 +840,38 @@ test_custom_binding (void)
   g_object_unref (settings);
 }
 
+static void
+test_no_change_binding (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+  gboolean b;
+  gint i;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_object_set (obj, "bool", TRUE, NULL);
+  g_settings_set_boolean (settings, "bool", FALSE);
+
+  g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_GET_NO_CHANGE);
+
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_set_boolean (settings, "bool", TRUE);
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_set_boolean (settings, "bool", FALSE);
+  g_object_set (obj, "bool", TRUE, NULL);
+  b = g_settings_get_boolean (settings, "bool");
+  g_assert_cmpint (b, ==, TRUE);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -867,6 +899,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/directional-binding", test_directional_binding);
   g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
+  g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
 
   return g_test_run ();
 }
