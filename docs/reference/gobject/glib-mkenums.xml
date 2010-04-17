@@ -1,8 +1,9 @@
-<refentry id="glib-mkenums">
+<refentry id="glib-mkenums" lang="en">
 
 <refmeta>
 <refentrytitle>glib-mkenums</refentrytitle>
 <manvolnum>1</manvolnum>
+<refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
@@ -271,7 +272,11 @@ typedef enum /*&lt; flags,prefix=PREFIX &gt;*/
 </refsect2>
 </refsect1>
 <refsect1><title>See also</title>
-<para><command>glib-genmarshal</command>(1)
+<para>
+<citerefentry>
+<refentrytitle>glib-genmarshal</refentrytitle>
+<manvolnum>1</manvolnum>
+</citerefentry>
 </para>
 </refsect1>
 </refentry>
