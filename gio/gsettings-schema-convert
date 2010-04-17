@@ -216,18 +216,20 @@ class GSettingsSchemaKey:
         self.type = None
         self.default = None
         self.typed_default = None
-        self.localized = None
+        self.l10n = None
+        self.l10n_context = None
         self.summary = None
         self.description = None
         self.choices = None
         self.range = None
 
-    def fill(self, name, type, default, typed_default, localized, summary, description, choices, range):
+    def fill(self, name, type, default, typed_default, l10n, l10n_context, summary, description, choices, range):
         self.name = name
         self.type = type
         self.default = default
         self.typed_default = typed_default
-        self.localized = localized
+        self.l10n = l10n
+        self.l10n_context = l10n_context
         self.summary = summary
         self.description = description
         self.choices = choices
@@ -249,6 +251,11 @@ class GSettingsSchemaKey:
         result = ''
         result += '%skey %s = %s\n' % (current_indent, self.name, self.typed_default or self.default)
         current_indent += GSETTINGS_SIMPLE_SCHEMA_INDENT
+        if self.l10n:
+            l10n = self.l10n
+            if self.l10n_context:
+                l10n += ' %s' % self.l10n_context
+            result += '%sl10n: %s\n' % (current_indent, l10n)
         if self.summary:
             result += '%sSummary: %s\n' % (current_indent, self.summary)
         if self.description:
@@ -265,6 +272,10 @@ class GSettingsSchemaKey:
         key_node.set('type', self.type)
         default_node = ET.SubElement(key_node, 'default')
         default_node.text = self.default
+        if self.l10n:
+            default_node.set('l10n', self.l10n)
+            if self.l10n_context:
+                default_node.set('context', self.l10n_context)
         if self.summary:
             summary_node = ET.SubElement(key_node, 'summary')
             summary_node.text = self.summary
@@ -327,11 +338,11 @@ class GConfSchema:
 
         try:
             self.default = locale_node.find('default').text
-            self.localized = True
+            self.localized = 'messages'
         except:
             try:
                 self.default = node.find('default').text
-                self.localized = False
+                self.localized = None
             except:
                 raise GSettingsSchemaConvertException('No default value for \'%s\'. GSettings schemas require one default value.' % self.applyto or self.key)
         self.typed_default = None
@@ -384,7 +395,7 @@ class GConfSchema:
 
     def get_gsettings_schema_key(self):
         key = GSettingsSchemaKey()
-        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.short, self.long, None, None)
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, None, self.short, self.long, None, None)
         return key
 
 
@@ -395,7 +406,8 @@ allowed_tokens = {
   'schema'      : [ 'path', 'child', 'key' ],
   'path'        : [ ],
   'child'       : [ 'child', 'key' ],
-  'key'         : [ 'summary', 'description', 'choices', 'range' ],
+  'key'         : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
+  'l10n'        : [ ],
   'summary'     : [ ],
   'description' : [ ],
   'choices'     : [ ],
@@ -445,6 +457,8 @@ def _word_to_token(word):
         return 'child'
     if word == 'key':
         return 'key'
+    if word == 'l10n:':
+        return 'l10n'
     if word == 'Summary:':
         return 'summary'
     if word == 'Description:':
@@ -485,6 +499,17 @@ def _parse_choices(line, type):
         return [ item.strip() for item in line.split(',') ]
     else:
         raise GSettingsSchemaConvertException('Type \'%s\' cannot have choices.' % type)
+
+def _parse_l10n(line):
+    items = [ item.strip() for item in line.split(' ') if item.strip() ]
+    if not items:
+        return (None, None)
+    if len(items) == 1:
+        return (items[0], None)
+    if len(items) == 2:
+        return (items[0], items[1])
+
+    raise GSettingsSchemaConvertException('\'%s\' is not a valid localization.' % line)
 
 def _parse_range(line, type):
     minmax = None
@@ -573,6 +598,8 @@ def read_simple_schema(simple_schema_file):
             new_object.type = type
             new_object.default = value
             current_object.keys.append(new_object)
+        elif token == 'l10n':
+            (current_object.l10n, current_object.l10n_context) = _parse_l10n(line)
         elif token == 'summary':
             current_object.summary = line
         elif token == 'description':
