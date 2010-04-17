@@ -109,6 +109,9 @@ class GSettingsSchemaDir:
 
         result = ''
         result += '%schild %s:\n' % (current_indent, self.name)
+        if self.gettext_domain:
+            result += '%sgettext-domain: %s\n' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
+            result += '\n'
         result += content
         return result
 
@@ -126,9 +129,6 @@ class GSettingsSchemaDir:
             result += dir.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
             if result:
                 need_empty_line = True
-
-        if result and self.gettext_domain:
-            result = '%sgettext-domain: %s\n\n%s' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain, result)
 
         return result
 
