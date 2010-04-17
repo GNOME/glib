@@ -158,12 +158,18 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
 {
   if (g_tree_nnodes (delayed->priv->delayed) > 0)
     {
+      gboolean success;
       GTree *tmp;
 
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
-      g_settings_backend_write_keys (delayed->priv->backend,
-                                     tmp, delayed->priv);
+      success = g_settings_backend_write_keys (delayed->priv->backend,
+                                               tmp, delayed->priv);
+
+      if (!success)
+        g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed),
+                                         tmp, NULL);
+
       g_tree_unref (tmp);
 
       if (delayed->priv->owner)
@@ -236,10 +242,38 @@ delayed_backend_writable_changed (GSettingsBackend *backend,
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
 
-  /* XXX: maybe drop keys from the delayed-apply settings
-   *      if they became non-writable?
-   */
+  if (g_tree_lookup (delayed->priv->delayed, key) &&
+      !g_settings_backend_get_writable (delayed->priv->backend, key))
+    {
+      /* drop the key from our changeset if it just became read-only.
+       * no need to signal this since the writable change implies it.
+       */
+      g_tree_remove (delayed->priv->delayed, key);
+    }
+
   g_settings_backend_writable_changed (G_SETTINGS_BACKEND (delayed), key);
+}
+
+/* slow method until we get foreach-with-remove in GTree
+ */
+typedef struct
+{
+  const gchar *path;
+  const gchar **keys;
+  gsize index;
+} CheckPrefixState;
+
+static gboolean
+check_prefix (gpointer key,
+              gpointer value,
+              gpointer data)
+{
+  CheckPrefixState *state = data;
+
+  if (g_str_has_prefix (key, state->path))
+    state->keys[state->index++] = key;
+
+  return FALSE;
 }
 
 static void
@@ -248,10 +282,21 @@ delayed_backend_path_writable_changed (GSettingsBackend *backend,
                                        gpointer          user_data)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  CheckPrefixState state = { path, };
+  gsize i;
 
-  /* XXX: maybe drop keys from the delayed-apply settings
-   *      if they became non-writable?
-   */
+  /* collect a list of possibly-affected keys (ie: matching the path) */
+  state.keys = g_new (const gchar *, g_tree_nnodes (delayed->priv->delayed));
+  g_tree_foreach (delayed->priv->delayed, check_prefix, &state);
+
+  /* drop the keys that have been affected */
+  for (i = 0; i < state.index; i++)
+    if (!g_settings_backend_get_writable (delayed->priv->backend,
+                                          state.keys[i]))
+      g_tree_remove (delayed->priv->delayed, state.keys[i]);
+
+  g_free (state.keys);
+
   g_settings_backend_path_writable_changed (G_SETTINGS_BACKEND (delayed),
                                             path);
 }
