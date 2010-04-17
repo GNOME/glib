@@ -1218,7 +1218,7 @@ g_settings_binding_property_changed (GObject          *object,
     {
       g_settings_set_value (binding->settings,
                             binding->key,
-                            variant);
+                            g_variant_ref_sink (variant));
       g_variant_unref (variant);
     }
   g_value_unset (&value);
