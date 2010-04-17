@@ -1,21 +1,22 @@
-<refentry id="gsettings-schema-convert">
+<refentry id="gsettings-schema-convert" lang="en">
 
 <refmeta>
-<refentrytitle>gsettings-schema-convert</refentrytitle>
-<manvolnum>1</manvolnum>
+  <refentrytitle>gsettings-schema-convert</refentrytitle>
+  <manvolnum>1</manvolnum>
+  <refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gsettings-schema-convert</refname>
-<refpurpose>GConf to GSettings schema conversion</refpurpose>
+  <refname>gsettings-schema-convert</refname>
+  <refpurpose>GConf to GSettings schema conversion</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
-<cmdsynopsis>
-<command>gsettings-schema-convert</command>
-<arg choice="opt" rep="repeat">option</arg>
-<arg choice="req">file</arg>
-</cmdsynopsis>
+  <cmdsynopsis>
+    <command>gsettings-schema-convert</command>
+    <arg choice="opt" rep="repeat">option</arg>
+    <arg choice="req">file</arg>
+  </cmdsynopsis>
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
@@ -90,5 +91,15 @@ GSettings schema.
 </variablelist>
 </refsect2>
 </refsect1>
+<refsect1><title>See also</title>
+<para>
+<citerefentry>
+  <refentrytitle>gsettings-data-convert</refentrytitle>
+  <manvolnum>1</manvolnum>
+</citerefentry> a related command to migrate user settings
+from GConf to GSettings.
+</para>
+</refsect1>
+
 </refentry>
 

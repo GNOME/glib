@@ -1,21 +1,22 @@
-<refentry id="gschema-compile">
+<refentry id="gschema-compile" lang="en">
 
 <refmeta>
-<refentrytitle>gschema-compile</refentrytitle>
-<manvolnum>1</manvolnum>
+  <refentrytitle>gschema-compile</refentrytitle>
+  <manvolnum>1</manvolnum>
+  <refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gschema-compile</refname>
-<refpurpose>GSettings schema compiler</refpurpose>
+  <refname>gschema-compile</refname>
+  <refpurpose>GSettings schema compiler</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
-<cmdsynopsis>
-<command>gschema-compile</command>
-<arg choice="opt" rep="repeat">option</arg>
-<arg choice="req">directory</arg>
-</cmdsynopsis>
+  <cmdsynopsis>
+    <command>gschema-compile</command>
+    <arg choice="opt" rep="repeat">option</arg>
+    <arg choice="req">directory</arg>
+  </cmdsynopsis>
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
