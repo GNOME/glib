@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.24.0 to GLib 2.25.0
+===================================================
+
+* The GSettings framework has been merged. This provides the API to
+  replace GConf. DConf will provide a backend implementation for it.
+  GConf will also provide a backend implementation to ease the
+  transition. We provide utilities to assist with schema conversion
+  and data migration, as well as a porting guide.
+
+* Translation updates:
+ Bengali
+ Catalan
+ Danish
+ Gujarati
+ Marathi
+ Thai
+ Traditional Chinese
+
+
 Overview of Changes from GLib 2.23.6 to GLib 2.24.0
 ===================================================
 
