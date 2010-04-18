@@ -10,7 +10,7 @@ INCLUDES = 			\
 	$(GLIB_DEBUG_FLAGS)	\
 	-DSRCDIR=\""$(srcdir)"\"
 
-noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
+noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS) $(OTHER_PROGS)
 progs_ldadd     = 					\
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
@@ -44,7 +44,7 @@ SAMPLE_PROGS = 			\
 	filter-cat
 
 if OS_UNIX
-TEST_PROGS += live-g-file unix-streams desktop-app-info unix-fd
+TEST_PROGS += live-g-file desktop-app-info unix-fd #unix-streams
 endif
 
 memory_input_stream_SOURCES	  = memory-input-stream.c
@@ -133,19 +133,21 @@ contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-gsettings_SOURCES	  = gsettings.c gschemas.compiled test.mo
+gsettings_SOURCES	  = gsettings.c
 gsettings_LDADD		  = $(progs_ldadd)
 
 EXTRA_DIST += org.gtk.test.gschema org.gtk.test.gschema.xml de.po
 
-BUILT_SOURCES = gschemas.compiled test.mo
+gschemas_compiled_SOURCES =
+test_mo_SOURCES =
+OTHER_PROGS = gschemas.compiled test.mo
 
 test.mo: de.po
-	$(MSGFMT) -o test.mo de.po; \
+	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
-gschemas.compiled: *.gschema.xml
-	$(top_builddir)/gio/gschema-compile --targetdir=${bulddir} ${srcdir}
+gschemas.compiled:
+	$(top_builddir)/gio/gschema-compile --targetdir=$(abs_builddir) $(srcdir)
 
-DISTCLEAN_FILES = applications/mimeinfo.cache
+DISTCLEAN_FILES = applications/mimeinfo.cache de/LC_MESSAGES/test.mo
