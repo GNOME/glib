@@ -150,4 +150,4 @@ test.mo: de.po
 gschemas.compiled:
 	$(top_builddir)/gio/gschema-compile --targetdir=$(abs_builddir) $(srcdir)
 
-DISTCLEAN_FILES = applications/mimeinfo.cache de/LC_MESSAGES/test.mo gsettings.store
+DISTCLEANFILES = applications/mimeinfo.cache de/LC_MESSAGES/test.mo test.mo  gsettings.store
