@@ -486,7 +486,7 @@ main (int argc, char **argv)
 
   g_option_context_set_summary (context,
     "Compile all GSettings schema files into a schema cache.\n"
-    "Schema files are required to have the extension .gschema,\n"
+    "Schema files are required to have the extension .gschema.xml,\n"
     "and the cache file is called gschemas.compiled.");
 
   g_option_context_add_main_entries (context, entries, NULL);
