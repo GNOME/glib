@@ -114,7 +114,9 @@ HTML_IMAGES =			\
 content_files =			\
 	version.xml		\
 	overview.xml		\
-	migrating.xml
+	migrating.xml		\
+	gschema-compile.xml	\
+	gsettings-schema-convert.xml
 
 expand_content_files =		\
 	overview.xml		\
@@ -143,6 +145,8 @@ $(man_MANS) : sgml-build.stamp
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
 endif
+
+DISTCLEANFILES = $(man_MANS)
 
 BUILT_EXTRA_DIST = $(man_MANS)
 
