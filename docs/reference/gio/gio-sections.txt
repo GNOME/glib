@@ -2089,6 +2089,10 @@ g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
 
+<SUBSECTION Custom>
+g_settings_backend_setup
+g_settings_backend_setup_keyfile
+
 <SUBSECTION Standard>
 G_IS_SETTINGS_BACKEND
 G_IS_SETTINGS_BACKEND_CLASS

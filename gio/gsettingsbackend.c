@@ -906,6 +906,8 @@ g_settings_backend_supports_context (const gchar *context)
  * It is not possible to specify a backend for the default context.
  *
  * This function takes a reference on @backend and never releases it.
+ *
+ * Since: 2.26
  **/
 void
 g_settings_backend_setup (const gchar      *context,

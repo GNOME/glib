@@ -547,6 +547,8 @@ g_keyfile_settings_backend_new (const gchar *filename)
  * not writable, any #GSettings objects created using @context will
  * return %FALSE for any calls to g_settings_is_writable() and any
  * attempts to write will fail.
+ *
+ * Since: 2.26
  */
 void
 g_settings_backend_setup_keyfile (const gchar *context,
