@@ -3,6 +3,8 @@
 #include <libintl.h>
 #include <gio.h>
 #include <gstdio.h>
+#define G_SETTINGS_ENABLE_BACKEND
+#include <gio/gsettingsbackend.h>
 
 /* These tests rely on the schemas in org.gtk.test.gschema.xml
  * to be compiled and installed in the same directory.
@@ -955,6 +957,35 @@ test_no_change_binding (void)
   g_object_unref (settings);
 }
 
+/*
+ * Test that using a keyfile works
+ */
+static void
+test_keyfile (void)
+{
+  GSettings *settings;
+  GKeyFile *keyfile;
+  gchar *str;
+
+  g_remove ("gsettings.store");
+
+  g_settings_backend_setup_keyfile ("blah", "gsettings.store");
+
+  settings = g_settings_new_with_context ("org.gtk.test", "blah");
+
+  g_settings_set (settings, "greeting", "s", "see if this works");
+
+  keyfile = g_key_file_new ();
+  g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
+
+  str = g_key_file_get_string (keyfile, "/tests/", "greeting", NULL);
+  g_assert_cmpstr (str, ==, "'see if this works'");
+
+  g_free (str);
+  g_key_file_free (keyfile);
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -983,6 +1014,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
   g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
+  g_test_add_func ("/gsettings/keyfile", test_keyfile);
 
   return g_test_run ();
 }
