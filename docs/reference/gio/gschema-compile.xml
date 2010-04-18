@@ -24,8 +24,15 @@
 schema files in <replaceable>directory</replaceable> into a binary file
 with the name <filename>gschemas.compiled</filename> that can be used
 by #GSettings. The XML schema files must have the filename extension
-<filename>.gschema</filename>. For a detailed description of the XML
+<filename>.gschema.xml</filename>. For a detailed description of the XML
 file format, see the #GSettings documentation.
+</para>
+<para>
+At runtime, GSettings looks for schemas in the
+<filename>glib-2.0/schemas</filename> subdirectories of all directories
+specified in the <envar>XDG_DATA_DIRS</envar> environment variable. The
+usual location to install schema files is
+<filename>/usr/share/glib-2.0/schemas</filename>.
 </para>
 
 <refsect2><title>Options</title>
@@ -56,6 +63,15 @@ in the future.
 
 </variablelist>
 </refsect2>
+</refsect1>
+<refsect1><title>See also</title>
+<para>
+<citerefentry>
+  <refentrytitle>gsettings-schema-convert</refentrytitle>
+    <manvolnum>1</manvolnum>
+    </citerefentry> is a utility to convert GConf schemas into
+    GSettings schemas.
+</para>
 </refsect1>
 </refentry>
 
