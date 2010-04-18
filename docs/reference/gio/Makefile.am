@@ -115,12 +115,14 @@ content_files =			\
 	version.xml		\
 	overview.xml		\
 	migrating.xml		\
+	gio-querymodules.xml	\
 	gschema-compile.xml	\
 	gsettings-schema-convert.xml
 
 expand_content_files =		\
 	overview.xml		\
 	migrating.xml		\
+	gio-querymodules.xml	\
 	gschema-compile.xml	\
 	gsettings-schema-convert.xml
 
@@ -136,6 +138,7 @@ EXTRA_DIST +=			\
 if ENABLE_MAN
 
 man_MANS =			\
+	gio-querymodules.1	\
 	gschema-compile.1	\
 	gsettings-schema-convert.1
 
