@@ -90,7 +90,13 @@
  *  it uses the implementations that have been associated with it.
  *  Depending on the use case, it may use all implementations, or
  *  only the one with the highest priority, or pick a specific
- *  one by name. 
+ *  one by name.
+ *
+ *  To avoid opening all modules just to find out what extension
+ *  points they implement, GIO makes use of a caching mechanism,
+ *  see <link linkend="gio-querymodules">gio-querymodules</link>.
+ *  You are expected to run this command after installing a
+ *  GIO module.
  */
 struct _GIOModule {
   GTypeModule parent_instance;
