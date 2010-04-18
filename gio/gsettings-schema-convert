@@ -85,12 +85,8 @@ class GSettingsSchemaConvertException(Exception):
 class GSettingsSchemaRoot:
 
     def __init__(self):
-        self.schemas = []
         self.gettext_domain = None
-
-    def simplify(self):
-        for schema in self.schemas:
-            schema.simplify()
+        self.schemas = []
 
     def get_simple_string(self):
         need_empty_line = False
@@ -122,28 +118,53 @@ class GSettingsSchemaRoot:
 ######################################
 
 
-# Note: defined before GSettingsSchema because GSettingsSchema is a subclass.
-# But from a schema point of view, GSettingsSchema is a parent of
-# GSettingsSchemaDir.
-class GSettingsSchemaDir:
+class GSettingsSchema:
 
     def __init__(self):
+        self.id = None
+        self.path = None
+        # only set when this schema is a child
         self.name = None
+
         self.gettext_domain = None
-        self.dirs = []
+        self.children = []
         self.keys = []
 
-    def get_simple_string(self, current_indent):
+    def get_simple_string(self, current_indent = '', parent_path = ''):
+        if not self.children and not self.keys:
+            return ''
+
         content = self._get_simple_string_for_content(current_indent)
         if not content:
             return ''
 
+        if self.name:
+            id = 'child %s' % self.name
+            force_empty_line = False
+        else:
+            id = 'schema %s' % self.id
+            force_empty_line = True
+
         result = ''
-        result += '%schild %s:\n' % (current_indent, self.name)
+        result += '%s%s:\n' % (current_indent, id)
+        result += self._get_simple_string_for_attributes(current_indent, parent_path, force_empty_line)
+        result += content
+
+        return result
+
+    def _get_simple_string_for_attributes(self, current_indent, parent_path, force_empty_line):
+        need_empty_line = force_empty_line
+        result = ''
+
         if self.gettext_domain:
             result += '%sgettext-domain: %s\n' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
+            need_empty_line = True
+        if self.path and (not parent_path or (self.path != '%s%s/' % (parent_path, self.name))):
+            result += '%spath: %s\n' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
+            need_empty_line = True
+        if need_empty_line:
             result += '\n'
-        result += content
+
         return result
 
     def _get_simple_string_for_content(self, current_indent):
@@ -154,93 +175,20 @@ class GSettingsSchemaDir:
             result += key.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
             need_empty_line = True
 
-        for dir in self.dirs:
+        for child in self.children:
             if need_empty_line:
                 result += '\n'
-            result += dir.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
+            result += child.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
             if result:
                 need_empty_line = True
 
         return result
 
-    def get_xml_nodes(self, parent_id, parent_path):
-        id = '%s.%s' % (parent_id, self.name)
-        path = '%s%s/' % (parent_path, self.name)
-
-        (node, children) = self._get_xml_nodes_for_content(id, path)
-        if node is None:
-            return []
-
-        node.set('id', id)
-        node.set('path', path)
-        nodes = [ node ]
-        nodes.extend(children)
-
-        return nodes
-
-    def _get_xml_nodes_for_content(self, id, path):
-        if not self.keys and not self.dirs:
-            return (None, None)
-
-        children = []
-
-        schema_node = ET.Element('schema')
-        if self.gettext_domain:
-            schema_node.set('gettext-domain', self.gettext_domain)
-
-        for key in self.keys:
-            key_node = key.get_xml_node()
-            schema_node.append(key_node)
-        for dir in self.dirs:
-            dir_nodes = dir.get_xml_nodes(id, path)
-            children.extend(dir_nodes)
-            child_node = ET.SubElement(schema_node, 'child')
-            child_node.set('name', dir.name)
-            child_node.set('schema', '%s.%s' % (id, dir.name))
-
-        return (schema_node, children)
-
-
-######################################
-
-
-class GSettingsSchema(GSettingsSchemaDir):
-
-    def __init__(self):
-        self.id = None
-        self.path = None
-        self.gettext_domain = None
-        self.dirs = []
-        self.keys = []
-
-    def simplify(self):
-        while len(self.dirs) == 1 and not self.keys:
-            dir = self.dirs[0]
-            self.dirs = dir.dirs
-            self.keys = dir.keys
-            if self.path:
-                self.path += dir.name + '/'
-
-    def get_simple_string(self):
-        if not self.dirs and not self.keys:
-            return ''
-
-        result = ''
-        result += 'schema %s:\n' % self.id
-        if self.gettext_domain:
-            result += '%sgettext-domain: %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
-        if self.path:
-            result += '%spath: %s\n' % (GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
-        result += '\n'
-        result += self._get_simple_string_for_content('')
-
-        return result
-
     def get_xml_nodes(self):
-        if not self.dirs and not self.keys:
+        if not self.children and not self.keys:
             return []
 
-        (node, children) = self._get_xml_nodes_for_content(self.id, self.path or '')
+        (node, children_nodes) = self._get_xml_nodes_for_content()
         if node is None:
             return []
 
@@ -249,9 +197,33 @@ class GSettingsSchema(GSettingsSchemaDir):
             node.set('path', self.path)
 
         nodes = [ node ]
-        nodes.extend(children)
+        nodes.extend(children_nodes)
 
         return nodes
+
+    def _get_xml_nodes_for_content(self):
+        if not self.keys and not self.children:
+            return (None, None)
+
+        children_nodes = []
+
+        schema_node = ET.Element('schema')
+        if self.gettext_domain:
+            schema_node.set('gettext-domain', self.gettext_domain)
+
+        for key in self.keys:
+            key_node = key.get_xml_node()
+            schema_node.append(key_node)
+        for child in self.children:
+            child_nodes = child.get_xml_nodes()
+            children_nodes.extend(child_nodes)
+            child_node = ET.SubElement(schema_node, 'child')
+            if not child.name:
+                raise GSettingsSchemaConvertException('Internal error: child being processed with no schema id.')
+            child_node.set('name', child.name)
+            child_node.set('schema', '%s' % child.id)
+
+        return (schema_node, children_nodes)
 
 
 ######################################
@@ -594,10 +566,15 @@ class SimpleSchemaParser:
         elif self.current_token == 'path':
             current_object.path = self.unparsed_line
         elif self.current_token == 'child':
+            if not isinstance(current_object, GSettingsSchema):
+                raise GSettingsSchemaConvertException('Internal error: child being processed with no parent schema.')
             name = self._parse_id_without_separator()
-            new_object = GSettingsSchemaDir()
+            new_object = GSettingsSchema()
+            new_object.id = '%s.%s' % (current_object.id, name)
+            if current_object.path:
+                new_object.path = '%s%s/' % (current_object.path, name)
             new_object.name = name
-            current_object.dirs.append(new_object)
+            current_object.children.append(new_object)
         elif self.current_token == 'key':
             new_object =  self._parse_key()
             current_object.keys.append(new_object)
@@ -751,21 +728,13 @@ class XMLSchemaParser:
                 for (child_schema, child_name) in parent_schema._children:
                     if child_schema == schema.id:
                         found = True
-                        expected_path = parent_schema.path + child_name + '/'
-                        if schema.path != expected_path:
-                            raise GSettingsSchemaConvertException('\'%s\' is too complex for this tool: child \'%s\' of schema \'%s\' has a path that is not the expected one (\'%s\' vs \'%s\').' % (os.path.basename(self.file), child_name, parent_schema.id, schema.path, expected_path))
                         break
 
                 if not found:
                     raise GSettingsSchemaConvertException('Internal error: child not found in parent\'s children.')
 
-                schema_dir = GSettingsSchemaDir()
-                schema_dir.name = child_name
-                schema_dir.gettext_domain = schema.gettext_domain
-                schema_dir.dirs = schema.dirs
-                schema_dir.keys = schema.keys
-
-                parent_schema.dirs.append(schema_dir)
+                schema.name = child_name
+                parent_schema.children.append(schema)
             else:
                 self.root.schemas.append(schema)
 
@@ -885,7 +854,7 @@ class GConfSchemaParser:
         self.default_schema_id_count = 0
 
     def _insert_schema(self, gconf_schema):
-        schemas_only = (gconf_schema.applyto is not None)
+        schemas_only = (gconf_schema.applyto is None)
 
         dirpath = gconf_schema.prefix
         if dirpath[0] != '/':
@@ -910,43 +879,66 @@ class GConfSchemaParser:
         gsettings_schema = None
         for schema in self.root.schemas:
             if schemas_only:
-                schema_path = schema.path
-            else:
                 schema_path = schema._hacky_path
+            else:
+                schema_path = schema.path
             if dirpath.startswith(schema_path):
                 gsettings_schema = schema
                 break
         if not gsettings_schema:
             gsettings_schema = GSettingsSchema()
-            if self.default_schema_id:
-                gsettings_schema.id = self.default_schema_id
-                if self.default_schema_id_count > 0:
-                    gsettings_schema.id += '.FIXME-%s' % self.default_schema_id_count
-                self.default_schema_id_count += 1
-            else:
-                gsettings_schema.id = 'FIXME'
             if schemas_only:
-                gsettings_schema.path = '/' + hierarchy[0] + '/'
-            else:
                 gsettings_schema._hacky_path = '/' + hierarchy[0] + '/'
+            else:
+                gsettings_schema.path = '/' + hierarchy[0] + '/'
             self.root.schemas.append(gsettings_schema)
 
-        # we create all the subdirs that lead to this key
+        # we create the schema hierarchy that leads to this key
         gsettings_dir = gsettings_schema
         for item in hierarchy[1:]:
             subdir = None
-            for dir in gsettings_dir.dirs:
-                if dir.name == item:
-                    subdir = dir
+            for child in gsettings_dir.children:
+                if child.name == item:
+                    subdir = child
                     break
             if not subdir:
-                subdir = GSettingsSchemaDir()
+                subdir = GSettingsSchema()
+                # note: the id will be set later on
+                if gsettings_dir.path:
+                    subdir.path = '%s%s/' % (gsettings_dir.path, item)
                 subdir.name = item
-                gsettings_dir.dirs.append(subdir)
+                gsettings_dir.children.append(subdir)
             gsettings_dir = subdir
 
         # we have the final directory, so we can put the key there
         gsettings_dir.keys.append(gconf_schema.get_gsettings_schema_key())
+
+    def _set_children_id(self, schema):
+        for child in schema.children:
+            child.id = '%s.%s' % (schema.id, child.name)
+            self._set_children_id(child)
+
+    def _fix_hierarchy(self):
+        for schema in self.root.schemas:
+            # we created one schema per level, starting at the root level;
+            # however, we don't need to go that far and we can simplify the
+            # hierarchy
+            while len(schema.children) == 1 and not schema.keys:
+                child = schema.children[0]
+                schema.children = child.children
+                schema.keys = child.keys
+                if schema.path:
+                    schema.path += child.name + '/'
+
+            # now that we have a toplevel schema, set the id
+            if self.default_schema_id:
+                schema.id = self.default_schema_id
+                if self.default_schema_id_count > 0:
+                    schema.id += '.FIXME-%s' % self.default_schema_id_count
+                self.default_schema_id_count += 1
+            else:
+                schema.id = 'FIXME'
+            self._set_children_id(schema)
 
     def parse(self):
         # reset the state of the parser
@@ -958,7 +950,7 @@ class GConfSchemaParser:
             for schema_node in schemalist_node.findall('schema'):
                 self._insert_schema(GConfSchema(schema_node))
 
-        self.root.simplify()
+        self._fix_hierarchy()
 
         return self.root
 
