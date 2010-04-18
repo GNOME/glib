@@ -68,9 +68,8 @@ in the future.
 <para>
 <citerefentry>
   <refentrytitle>gsettings-schema-convert</refentrytitle>
-    <manvolnum>1</manvolnum>
-    </citerefentry> is a utility to convert GConf schemas into
-    GSettings schemas.
+  <manvolnum>1</manvolnum>
+</citerefentry> is a utility to convert GConf schemas into GSettings schemas.
 </para>
 </refsect1>
 </refentry>
