@@ -254,7 +254,7 @@ file_builder_allocate (FileBuilder         *fb,
 static void
 file_builder_add_value (FileBuilder         *fb,
                         GVariant            *value,
-		        struct gvdb_pointer *pointer)
+                        struct gvdb_pointer *pointer)
 {
   GVariant *variant, *normal;
   gpointer data;
