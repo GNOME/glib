@@ -821,7 +821,7 @@ test_simple_binding (void)
 
   g_settings_set (settings, "int64", "x", (gint64) G_MININT64);
   g_object_get (obj, "int64", &i64, NULL);
-  g_assert_cmpint (i, ==, G_MININT64);
+  g_assert_cmpint (i64, ==, G_MININT64);
 
   g_settings_bind (settings, "uint64", obj, "uint64", G_SETTINGS_BIND_DEFAULT);
 
@@ -829,9 +829,9 @@ test_simple_binding (void)
   g_settings_get (settings, "uint64", "t", &u64);
   g_assert_cmpint (u64, ==, G_MAXUINT64);
 
-  g_settings_set (settings, "int64", "t", (guint64) G_MAXINT64);
-  g_object_get (obj, "int64", &u64, NULL);
-  g_assert_cmpint (i, ==, G_MAXINT64);
+  g_settings_set (settings, "uint64", "t", (guint64) G_MAXINT64);
+  g_object_get (obj, "uint64", &u64, NULL);
+  g_assert_cmpint (u64, ==, G_MAXINT64);
 
   g_settings_bind (settings, "string", obj, "string", G_SETTINGS_BIND_DEFAULT);
 
@@ -854,6 +854,12 @@ test_simple_binding (void)
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, G_MINFLOAT);
 
+  g_object_set (obj, "double", G_MAXDOUBLE, NULL);
+  g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, G_MAXDOUBLE);
+
+  g_settings_set_double (settings, "double", -G_MINDOUBLE);
+  g_object_get (obj, "double", &d, NULL);
+  g_assert_cmpfloat (d, ==, -G_MINDOUBLE);
   g_object_unref (obj);
   g_object_unref (settings);
 }
