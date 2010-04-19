@@ -22,7 +22,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <glob.h>
 
 #include "gvdb/gvdb-builder.h"
 
@@ -471,8 +470,9 @@ main (int argc, char **argv)
   gboolean byteswap = G_BYTE_ORDER != G_LITTLE_ENDIAN;
   GError *error = NULL;
   GHashTable *table;
-  glob_t matched;
-  gint status;
+  GDir *dir;
+  const gchar *file;
+  GPtrArray *files;
   gchar *srcdir;
   gchar *targetdir = NULL;
   gchar *target;
@@ -509,31 +509,31 @@ main (int argc, char **argv)
   else
     target = "gschemas.compiled";
 
-  if (chdir (srcdir))
+  dir = g_dir_open (srcdir, 0, &error);
+  if (dir == NULL)
     {
-      perror ("chdir");
+      fprintf (stderr, "%s\n", error->message);
       return 1;
     }
 
-  status = glob ("*.gschema.xml", 0, NULL, &matched);
-
-  if (status == GLOB_ABORTED)
+  files = g_ptr_array_new ();
+  while ((file = g_dir_read_name (dir)) != NULL)
     {
-      perror ("glob");
-      return 1;
+      if (g_str_has_suffix (file, ".gschema.xml"))
+	{
+	  g_ptr_array_add (files, g_strdup (file));
+	}
     }
-  else if (status == GLOB_NOMATCH)
+
+  if (files->len == 0)
     {
       fprintf (stderr, "no schema files found\n");
       return 1;
     }
-  else if (status != 0)
-    {
-      fprintf (stderr, "unknown glob error\n");
-      return 1;
-    }
 
-  if (!(table = parse_gschema_files (matched.gl_pathv, byteswap, &error)) ||
+  g_ptr_array_add (files, NULL);
+
+  if (!(table = parse_gschema_files ((gchar **) files->pdata, byteswap, &error)) ||
       !gvdb_table_write_contents (table, target, byteswap, &error))
     {
       fprintf (stderr, "%s\n", error->message);

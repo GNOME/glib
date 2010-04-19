@@ -148,11 +148,7 @@ gsettings_LDADD		  = $(progs_ldadd)
 
 EXTRA_DIST += org.gtk.test.gschema org.gtk.test.gschema.xml de.po
 
-MISC_STUFF = test.mo
-
-if OS_UNIX
-MISC_STUFF += gschemas.compiled 
-endif
+MISC_STUFF = gschemas.compiled test.mo
 
 test.mo: de.po
 	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
