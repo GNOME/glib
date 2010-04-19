@@ -663,30 +663,33 @@ g_string_set_size (GString *string,
 /**
  * g_string_insert_len:
  * @string: a #GString
- * @pos: position in @string where insertion should 
+ * @pos: position in @string where insertion should
  *       happen, or -1 for at the end
  * @val: bytes to insert
  * @len: number of bytes of @val to insert
- * 
- * Inserts @len bytes of @val into @string at @pos.  
- * Because @len is provided, @val may contain embedded 
- * nuls and need not be nul-terminated. If @pos is -1, 
+ *
+ * Inserts @len bytes of @val into @string at @pos.
+ * Because @len is provided, @val may contain embedded
+ * nuls and need not be nul-terminated. If @pos is -1,
  * bytes are inserted at the end of the string.
  *
- * Since this function does not stop at nul bytes, it is 
- * the caller's responsibility to ensure that @val has at 
+ * Since this function does not stop at nul bytes, it is
+ * the caller's responsibility to ensure that @val has at
  * least @len addressable bytes.
  *
  * Returns: @string
  */
 GString*
 g_string_insert_len (GString     *string,
-		     gssize       pos,    
+		     gssize       pos,
 		     const gchar *val,
-		     gssize       len)    
+		     gssize       len)
 {
   g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (val != NULL, string);
+  g_return_val_if_fail (len == 0 || val != NULL, string);
+
+  if (len == 0)
+    return string;
 
   if (len < 0)
     len = strlen (val);
@@ -711,20 +714,20 @@ g_string_insert_len (GString     *string,
 
       /* Open up space where we are going to insert.  */
       if (pos < string->len)
-	g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+        g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* Move the source part before the gap, if any.  */
       if (offset < pos)
-	{
-	  precount = MIN (len, pos - offset);
-	  memcpy (string->str + pos, val, precount);
-	}
+        {
+          precount = MIN (len, pos - offset);
+          memcpy (string->str + pos, val, precount);
+        }
 
       /* Move the source part after the gap, if any.  */
       if (len > precount)
-	memcpy (string->str + pos + precount,
-		val + /* Already moved: */ precount + /* Space opened up: */ len,
-		len - precount);
+        memcpy (string->str + pos + precount,
+                val + /* Already moved: */ precount + /* Space opened up: */ len,
+                len - precount);
     }
   else
     {
@@ -734,7 +737,7 @@ g_string_insert_len (GString     *string,
        * of the old string to the end, opening up space
        */
       if (pos < string->len)
-	g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+        g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* insert the new string */
       if (len == 1)
