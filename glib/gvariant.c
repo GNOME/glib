@@ -1765,7 +1765,7 @@ g_variant_print (GVariant *value,
                         FALSE);
 };
 
-/* Hash, Equal {{{1 */
+/* Hash, Equal, Compare {{{1 */
 /**
  * g_variant_hash:
  * @value: a basic #GVariant value as a #gconstpointer
@@ -1915,6 +1915,109 @@ g_variant_equal (gconstpointer one,
     }
 
   return equal;
+}
+
+/**
+ * g_variant_compare:
+ * @one: a basic-typed #GVariant instance
+ * @two: a #GVariant instance of the same type
+ * @returns: negative value if a &lt; b;
+ *           zero if a = b;
+ *           positive value if a &gt; b.
+ *
+ * Compares @one and @two.
+ *
+ * The types of @one and @two are #gconstpointer only to allow use of
+ * this function with #GTree, #GPtrArray, etc.  They must each be a
+ * #GVariant.
+ *
+ * Comparison is only defined for basic types (ie: booleans, numbers,
+ * strings).  For booleans, %FALSE is less than %TRUE.  Numbers are
+ * ordered in the usual way.  Strings are in ASCII lexographical order.
+ *
+ * It is a programmer error to attempt to compare container values or
+ * two values that have types that are not exactly equal.  For example,
+ * you can not compare a 32-bit signed integer with a 32-bit unsigned
+ * integer.  Also note that this function is not particularly
+ * well-behaved when it comes to comparison of doubles; in particular,
+ * the handling of incomparable values (ie: NaN) is undefined.
+ *
+ * If you only require an equality comparison, g_variant_equal() is more
+ * general.
+ **/
+gint
+g_variant_compare (gconstpointer one,
+                   gconstpointer two)
+{
+  GVariant *a = (GVariant *) one;
+  GVariant *b = (GVariant *) two;
+
+  g_return_val_if_fail (g_variant_classify (a) == g_variant_classify (b), 0);
+
+  switch (g_variant_classify (a))
+    {
+    case G_VARIANT_CLASS_BYTE:
+      return ((gint) g_variant_get_byte (a)) -
+             ((gint) g_variant_get_byte (b));
+
+    case G_VARIANT_CLASS_INT16:
+      return ((gint) g_variant_get_int16 (a)) -
+             ((gint) g_variant_get_int16 (b));
+
+    case G_VARIANT_CLASS_UINT16:
+      return ((gint) g_variant_get_uint16 (a)) -
+             ((gint) g_variant_get_uint16 (b));
+
+    case G_VARIANT_CLASS_INT32:
+      {
+        gint32 a_val = g_variant_get_int32 (a);
+        gint32 b_val = g_variant_get_int32 (b);
+
+        return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
+      }
+
+    case G_VARIANT_CLASS_UINT32:
+      {
+        guint32 a_val = g_variant_get_uint32 (a);
+        guint32 b_val = g_variant_get_uint32 (b);
+
+        return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
+      }
+
+    case G_VARIANT_CLASS_INT64:
+      {
+        gint64 a_val = g_variant_get_int64 (a);
+        gint64 b_val = g_variant_get_int64 (b);
+
+        return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
+      }
+
+    case G_VARIANT_CLASS_UINT64:
+      {
+        guint64 a_val = g_variant_get_int32 (a);
+        guint64 b_val = g_variant_get_int32 (b);
+
+        return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
+      }
+
+    case G_VARIANT_CLASS_DOUBLE:
+      {
+        gdouble a_val = g_variant_get_double (a);
+        gdouble b_val = g_variant_get_double (b);
+
+        return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
+      }
+
+    case G_VARIANT_CLASS_STRING:
+    case G_VARIANT_CLASS_OBJECT_PATH:
+    case G_VARIANT_CLASS_SIGNATURE:
+      return strcmp (g_variant_get_string (a, NULL),
+                     g_variant_get_string (b, NULL));
+
+    default:
+      g_return_val_if_fail (!g_variant_is_container (a), 0);
+      g_assert_not_reached ();
+    }
 }
 
 /* GVariantIter {{{1 */
