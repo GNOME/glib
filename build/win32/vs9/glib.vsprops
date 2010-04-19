@@ -204,6 +204,10 @@ copy ..\..\..\gio\gvolumemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gzlibcompressor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gzlibdecompressor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 
+mkdir $(OutDir)\include\gio-win32-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gwin32inputstream.h $(OutDir)\include\gio-win32-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gwin32outputstream.h $(OutDir)\include\gio-win32-2.0\gio&#x0D;&#x0A;
+
 mkdir $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
 copy ..\..\..\glibconfig.h $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
 

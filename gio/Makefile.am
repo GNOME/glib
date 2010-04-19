@@ -202,6 +202,15 @@ win32_sources = \
 	gwin32resolver.h \
 	gwin32volumemonitor.c \
 	gwin32volumemonitor.h \
+	gwin32inputstream.c \
+	gwin32outputstream.c \
+	gwin32outputstream.h \
+	$(NULL)
+
+giowin32includedir=$(includedir)/gio-win32-2.0/gio
+giowin32include_HEADERS = \
+	gwin32inputstream.h \
+	gwin32outputstream.h \
 	$(NULL)
 
 endif
@@ -509,7 +518,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 ../build/win32/vs9/gio.vcproj: $(top_srcdir)/build/win32/vs9/gio.vcprojin
-	for F in $(libgio_2_0_la_SOURCES); do \
+	for F in $(libgio_2_0_la_SOURCES) $(win32_sources); do \
 		case $$F in \
 		*.c) echo '   <File RelativePath="..\..\..\gio\'$$F'" />' \
 		     ;; \

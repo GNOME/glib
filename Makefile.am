@@ -53,6 +53,7 @@ EXTRA_DIST += 			\
 	gthread-2.0.pc.in	\
 	gio-2.0.pc.in		\
 	gio-unix-2.0.pc.in	\
+	gio-windows-2.0.pc.in	\
 	glib-2.0-uninstalled.pc.in 	\
 	gobject-2.0-uninstalled.pc.in 	\
 	gmodule-2.0-uninstalled.pc.in	\
@@ -106,6 +107,10 @@ pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc
 
 if OS_UNIX
 pkgconfig_DATA += gio-unix-2.0.pc
+endif
+
+if OS_WIN32
+pkgconfig_DATA += gio-windows-2.0.pc
 endif
 
 $(pkgconfig_DATA): config.status

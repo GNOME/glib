@@ -47,6 +47,10 @@ if OS_UNIX
 TEST_PROGS += live-g-file desktop-app-info unix-fd #unix-streams
 endif
 
+if OS_WIN32
+TEST_PROGS += win32-streams
+endif
+
 memory_input_stream_SOURCES	  = memory-input-stream.c
 memory_input_stream_LDADD	  = $(progs_ldadd)
 
@@ -88,6 +92,10 @@ desktop_app_info_LDADD	  = $(progs_ldadd)
 
 unix_streams_SOURCES	  = unix-streams.c
 unix_streams_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
+
+win32_streams_SOURCES	  = win32-streams.c
+win32_streams_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
 unix_fd_SOURCES	  = unix-fd.c

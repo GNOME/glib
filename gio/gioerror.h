@@ -43,6 +43,10 @@ G_BEGIN_DECLS
 GQuark       g_io_error_quark      (void);
 GIOErrorEnum g_io_error_from_errno (gint err_no);
 
+#ifdef G_OS_WIN32
+GIOErrorEnum g_io_error_from_win32_error (gint error_code);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_IO_ERROR_H__ */

@@ -206,5 +206,32 @@ g_io_error_from_errno (gint err_no)
     }
 }
 
+#ifdef G_OS_WIN32
+
+/**
+ * g_io_error_from_win32_error:
+ * @error_code: Windows error number.
+ *
+ * Converts some common error codes into GIO error codes. The
+ * fallback value G_IO_ERROR_FAILED is returned for error codes not
+ * handled.
+ *
+ * Returns: #GIOErrorEnum value for the given error number.
+ *
+ * Since: 2.26
+ **/
+GIOErrorEnum
+g_io_error_from_win32_error (gint error_code)
+{
+  switch (error_code)
+    {
+    default:
+      return G_IO_ERROR_FAILED;
+      break;
+    }
+}
+
+#endif
+
 #define __G_IO_ERROR_C__
 #include "gioaliasdef.c"
