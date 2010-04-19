@@ -360,6 +360,9 @@ end_element (GMarkupParseContext  *context,
       state->value = g_variant_parse (state->type, state->string->str,
                                       NULL, NULL, error);
 
+      if (state->value == NULL)
+        return;
+
       if (state->l10n)
         {
           if (state->context)
