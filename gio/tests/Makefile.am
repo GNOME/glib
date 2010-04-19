@@ -154,7 +154,12 @@ EXTRA_DIST +=                                          \
 	org.gtk.test.gschema                           \
 	org.gtk.test.gschema.xml                       \
 	de.po                                          \
-	schema-tests/no-default/no-default.gschema.xml
+	schema-tests/bad-type/test.gschema.xml         \
+	schema-tests/incomplete-list/test.gschema.xml  \
+	schema-tests/missing-quotes/test.gschema.xml   \
+	schema-tests/no-default/test.gschema.xml       \
+	schema-tests/wrong-category/test.gschema.xml   \
+	schema-tests/overflow/test.gschema.xml
 
 MISC_STUFF = gschemas.compiled test.mo
 
@@ -166,10 +171,15 @@ test.mo: de.po
 gschemas.compiled:
 	$(top_builddir)/gio/gschema-compile --targetdir=$(abs_builddir) $(srcdir)
 
-DISTCLEANFILES =                                  \
-	applications/mimeinfo.cache               \
-	de/LC_MESSAGES/test.mo                    \
-	test.mo                                   \
-	gsettings.store                           \
-	gschemas.compiled                         \
-	schema-tests/no-schema/gschemas.compiled
+DISTCLEANFILES =                                        \
+	applications/mimeinfo.cache                     \
+	de/LC_MESSAGES/test.mo                          \
+	test.mo                                         \
+	gsettings.store                                 \
+	gschemas.compiled                               \
+	schema-tests/bad-type/gschemas.compiled         \
+	schema-tests/incomplete-list/gschemas.compiled  \
+	schema-tests/missing-quotes/gschemas.compiled   \
+	schema-tests/no-default/gschemas.compiled       \
+	schema-tests/wrong-category/gschemas.compiled   \
+	schema-tests/overflow/gschemas.compiled
