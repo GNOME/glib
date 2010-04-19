@@ -1,51 +1,71 @@
-.\" ** You probably do not want to edit this file directly **
-.\" It was generated using the DocBook XSL Stylesheets (version 1.69.0).
-.\" Instead of manually editing it, you probably should edit the DocBook XML
-.\" source for it and then use the DocBook XSL Stylesheets to regenerate it.
-.TH "GLIB\-GETTEXTIZE" "1" "08/15/2005" "" ""
+'\" t
+.\"     Title: glib-gettextize
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 04/19/2010
+.\"    Manual: User Commands
+.\"    Source: User Commands
+.\"  Language: English
+.\"
+.TH "GLIB\-GETTEXTIZE" "1" "04/19/2010" "User Commands" "User Commands"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-glib\-gettextize \- gettext internationalization utility
+glib-gettextize \- gettext internationalization utility
 .SH "SYNOPSIS"
-.HP 16
+.HP \w'\fBglib\-gettextize\fR\ 'u
 \fBglib\-gettextize\fR [option...] [directory]
 .SH "DESCRIPTION"
 .PP
-\fBglib\-gettextize\fR 
-helps to prepare a source package for being internationalized through 
-gettext. It is a variant of the 
-\fBgettextize\fR 
-that ships with 
-gettext.
+\fBglib\-gettextize\fR
+helps to prepare a source package for being internationalized through
+gettext\&. It is a variant of the
+\fBgettextize\fR
+that ships with
+gettext\&.
 .PP
-\fBglib\-gettextize\fR 
-differs from 
-\fBgettextize\fR 
-in that it doesn't create an 
-\fIintl/\fR 
-subdirectory and doesn't modify 
-\fIpo/ChangeLog\fR 
-(note that newer versions of 
-\fBgettextize\fR 
-behave like this when called with the 
-\fB\-\-no\-changelog\fR 
-option).
+\fBglib\-gettextize\fR
+differs from
+\fBgettextize\fR
+in that it doesn\'t create an
+intl/
+subdirectory and doesn\'t modify
+po/ChangeLog
+(note that newer versions of
+\fBgettextize\fR
+behave like this when called with the
+\fB\-\-no\-changelog\fR
+option)\&.
 .SS "Options"
-.TP
+.PP
 \fB\-\-help\fR
+.RS 4
 print help and exit
-.TP
+.RE
+.PP
 \fB\-\-version\fR
+.RS 4
 print version information and exit
-.TP
+.RE
+.PP
 \fB\-c\fR, \fB\-\-copy\fR
+.RS 4
 copy files instead of making symlinks
-.TP
+.RE
+.PP
 \fB\-f\fR, \fB\-\-force\fR
+.RS 4
 force writing of new files even if old ones exist
+.RE
 .SH "SEE ALSO"
 .PP
- \fBgettextize\fR(1)
+
+\fBgettextize\fR(1)

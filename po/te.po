@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
+"POT-Creation-Date: 2010-04-19 15:10-0400\n"
 "PO-Revision-Date: 2009-09-17 14:15+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -543,7 +543,7 @@ msgstr "బ్యాక్‌ట్రాకింగ్ పరిమితి �
 msgid "the pattern contains items not supported for partial matching"
 msgstr "పాక్షిక సరిజోడికి మద్దతీయని అంశములను మాదిరి కలిగివుంది"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2115
+#: glib/gregex.c:154 gio/glocalfile.c:2110
 msgid "internal error"
 msgstr "అంతర్గత దోషము"
 
@@ -1133,7 +1133,7 @@ msgstr "చాలపెద్ద లెక్కింపు విలువ %s�
 msgid "Stream is already closed"
 msgstr "స్ట్రీమ్ యిప్పటికే మూయబడింది"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2103 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "ఆపరేషన్ రద్దైనది"
@@ -1273,12 +1273,12 @@ msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1357 gio/glocalfile.c:1065 gio/glocalfile.c:1076
-#: gio/glocalfile.c:1089
+#: gio/gfile.c:1357 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "వినియోగదారికి దృగ్గోచరమగు మౌంట్ లేదు"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2264
+#: gio/gfile.c:2409 gio/glocalfile.c:2259
 msgid "Can't copy over directory"
 msgstr "డైరెక్టరీనందు నకలు తీయలేదు"
 
@@ -1286,7 +1286,7 @@ msgstr "డైరెక్టరీనందు నకలు తీయలేద�
 msgid "Can't copy directory over directory"
 msgstr "డైరెక్టరీని డైరెక్టరీకి నకలు తీయలేము"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2273
+#: gio/gfile.c:2477 gio/glocalfile.c:2268
 msgid "Target file exists"
 msgstr "లక్ష్యపు దస్త్రము వుంది"
 
@@ -1431,208 +1431,208 @@ msgstr "మద్దతీయని సాకెట్ చిరునామా"
 msgid "Unable to find default local directory monitor type"
 msgstr "అప్రమేయ స్థానిక మానిటర్ రకమును కనుగొనలేక పోయింది"
 
-#: gio/glocalfile.c:599 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:594 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "చెల్లని దస్త్రనామము %s"
 
-#: gio/glocalfile.c:973
+#: gio/glocalfile.c:968
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "దస్త్రవ్యవస్థ సమాచారంను కనుగొనుటలో దోషము : %s"
 
-#: gio/glocalfile.c:1111
+#: gio/glocalfile.c:1106
 msgid "Can't rename root directory"
 msgstr "రూట్ డైరెక్టరీని పునఃనామకరణ చేయలేము"
 
-#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
+#: gio/glocalfile.c:1126 gio/glocalfile.c:1152
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "దస్త్రమును పునఃనామకరణ చేయుటలో దోషము: %s"
 
-#: gio/glocalfile.c:1140
+#: gio/glocalfile.c:1135
 msgid "Can't rename file, filename already exist"
 msgstr "దస్త్రమును పునఃనామకరణ చేయలేము, దస్త్రనామము యిప్పటికే వుంది"
 
-#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
-#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1148 gio/glocalfile.c:2132 gio/glocalfile.c:2161
+#: gio/glocalfile.c:2321 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "చెల్లని దస్త్రనామము"
 
-#: gio/glocalfile.c:1314
+#: gio/glocalfile.c:1309
 #, c-format
 msgid "Error opening file: %s"
 msgstr "దస్త్రమును తెరుచుటలో దోషము : %s"
 
-#: gio/glocalfile.c:1324
+#: gio/glocalfile.c:1319
 msgid "Can't open directory"
 msgstr "డెరెక్టరీని తెరువలేము"
 
-#: gio/glocalfile.c:1449
+#: gio/glocalfile.c:1444
 #, c-format
 msgid "Error removing file: %s"
 msgstr "దస్త్రమును తొలగించుటలో దోషము: %s"
 
-#: gio/glocalfile.c:1816
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "దస్త్రమును ట్రాష్ చేయుటలో దోషము : %s"
 
-#: gio/glocalfile.c:1839
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ట్రాష్ డెరెక్టరీ(dir)ను సృష్టించలేక పోయింది %s: %s"
 
-#: gio/glocalfile.c:1860
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "ట్రాష్ కొరకు పైస్థాయి డైరెక్టరీని కనుగొనలేక పోయింది"
 
-#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "ట్రాష్ డైరెక్టీని కనుగోనలేక పోయింది లేదా సృష్టించలేక పోయింది"
 
-#: gio/glocalfile.c:1993
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ట్రాషింగ్ సమాచారపు దస్త్రమును సృష్టించలేక పోయింది: %s"
 
-#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
-#: gio/glocalfile.c:2114
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2102
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "దస్త్రమును ట్రాష్ చేయలేక పోయింది: %s"
 
-#: gio/glocalfile.c:2141
+#: gio/glocalfile.c:2136
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "డెరెక్టరీని సృష్టించుటలో దోషము: %s"
 
-#: gio/glocalfile.c:2170
+#: gio/glocalfile.c:2165
 #, fuzzy, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr " '%s'  చిహ్న పూరితజోడి చదువుటలో విఫలమయినావు : %s"
 
-#: gio/glocalfile.c:2174
+#: gio/glocalfile.c:2169
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "చిహ్నరూప లింకును చేయుటలో దోషము: %s"
 
-#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
+#: gio/glocalfile.c:2231 gio/glocalfile.c:2325
 #, c-format
 msgid "Error moving file: %s"
 msgstr "దస్త్రమును కదుపుటలో దోషము: %s"
 
-#: gio/glocalfile.c:2259
+#: gio/glocalfile.c:2254
 msgid "Can't move directory over directory"
 msgstr "డెరెక్టరీని డెరెక్టరీకి కదుపలేము"
 
-#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2281 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "బ్యాకప్ దస్త్రము సృష్టీకరణ విఫలమైంది"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2300
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "టార్గెట్ దస్త్రమును తొలగించుటలో దోషము: %s"
 
-#: gio/glocalfile.c:2319
+#: gio/glocalfile.c:2314
 msgid "Move between mounts not supported"
 msgstr "మౌంట్స్‍ మధ్య కదలిక మద్దతీయబడదు"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "యాట్రిబ్యూట్ విలువ తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (స్ట్రింగ్ ఊహించినది)"
 
-#: gio/glocalfileinfo.c:740
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ చెల్లని నామము"
 
-#: gio/glocalfileinfo.c:780
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ అమర్చుటలో దోషము '%s': %s"
 
-#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileinfo.c:1479 gio/glocalfileoutputstream.c:819
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "దస్త్రము '%s'ను ప్రారంభించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1557
+#: gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
 msgstr " (చెల్లని యెన్కోడింగ్)"
 
-#: gio/glocalfileinfo.c:1755
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "దస్త్రము వివరణిని ప్రతిపాదించుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1800
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint32 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1818
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint64 అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (బైట్ స్ట్రింగ్ అనుకోబడినది)"
 
-#: gio/glocalfileinfo.c:1891
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "సిమ్‌లింకుల నందు అనుమతులను అమర్చలేదు"
 
-#: gio/glocalfileinfo.c:1907
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "అనుమతులను అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1958
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "యజమానిని అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:1981
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "సిమ్‌లింకు తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
-#: gio/glocalfileinfo.c:2021
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2000
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: దస్త్రము సిమ్‌లింకు కాదు"
 
-#: gio/glocalfileinfo.c:2126
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "సవరణ లేదా యాక్సెస్ సమయం అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2149
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux సందర్భం తప్పక NULL-కాకూడదు"
 
-#: gio/glocalfileinfo.c:2164
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux సందర్భం అమర్చుటలో దోషము: %s"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ఈ సిస్టమ్‌పైన చేతనపరచ బడిలేదు"
 
-#: gio/glocalfileinfo.c:2263
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "యాట్రిబ్యూట్ %sను అమర్చుట మద్దతీయుటలేదు"

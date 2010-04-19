@@ -18,6 +18,9 @@ the standard integer and floating point types.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO G_MININT ##### -->
 <para>
 The minimum value which can be held in a #gint.

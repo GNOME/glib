@@ -40,6 +40,9 @@ wide characters (see g_unichar_iswide()) into account.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION g_strdup ##### -->
 <para>
 

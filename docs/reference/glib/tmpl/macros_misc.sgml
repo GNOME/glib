@@ -18,6 +18,9 @@ by application programmers.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
 This macro is used to export function prototypes so they can be linked

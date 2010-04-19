@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
+"POT-Creation-Date: 2010-04-19 15:10-0400\n"
 "PO-Revision-Date: 2010-03-05 22:31+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -586,7 +586,7 @@ msgstr ""
 "le motif contient des éléments non pris en charge par la correspondance "
 "partielle"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2115
+#: glib/gregex.c:154 gio/glocalfile.c:2110
 msgid "internal error"
 msgstr "erreur interne"
 
@@ -1214,7 +1214,7 @@ msgstr "La valeur de comptage fournie à %s est trop grande"
 msgid "Stream is already closed"
 msgstr "Le flux est déjà fermé"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2103 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "L'opération a été annulée"
@@ -1356,12 +1356,12 @@ msgstr "Opération non prise en charge"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1357 gio/glocalfile.c:1065 gio/glocalfile.c:1076
-#: gio/glocalfile.c:1089
+#: gio/gfile.c:1357 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "Le point de montage conteneur n'existe pas"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2264
+#: gio/gfile.c:2409 gio/glocalfile.c:2259
 msgid "Can't copy over directory"
 msgstr "Impossible de copier par dessus un répertoire"
 
@@ -1369,7 +1369,7 @@ msgstr "Impossible de copier par dessus un répertoire"
 msgid "Can't copy directory over directory"
 msgstr "Impossible de copier un répertoire par dessus un autre"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2273
+#: gio/gfile.c:2477 gio/glocalfile.c:2268
 msgid "Target file exists"
 msgstr "Le fichier cible existe"
 
@@ -1516,212 +1516,212 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Impossible de trouver le type de moniteur de répertoire local par défaut"
 
-#: gio/glocalfile.c:599 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:594 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nom de fichier non valide : %s"
 
-#: gio/glocalfile.c:973
+#: gio/glocalfile.c:968
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Impossible d'obtenir les informations du système de fichiers : %s"
 
-#: gio/glocalfile.c:1111
+#: gio/glocalfile.c:1106
 msgid "Can't rename root directory"
 msgstr "Impossible de renommer le répertoire racine"
 
-#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
+#: gio/glocalfile.c:1126 gio/glocalfile.c:1152
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Erreur au renommage du fichier : %s"
 
-#: gio/glocalfile.c:1140
+#: gio/glocalfile.c:1135
 msgid "Can't rename file, filename already exist"
 msgstr "Impossible de renommer le fichier car ce nom est déjà utilisé"
 
-#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
-#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1148 gio/glocalfile.c:2132 gio/glocalfile.c:2161
+#: gio/glocalfile.c:2321 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "Nom de fichier non valide"
 
-#: gio/glocalfile.c:1314
+#: gio/glocalfile.c:1309
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Erreur à l'ouverture du fichier : %s"
 
-#: gio/glocalfile.c:1324
+#: gio/glocalfile.c:1319
 msgid "Can't open directory"
 msgstr "Impossible d'ouvrir le répertoire"
 
-#: gio/glocalfile.c:1449
+#: gio/glocalfile.c:1444
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Erreur à la suppression du fichier : %s"
 
-#: gio/glocalfile.c:1816
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Erreur à la mise à la corbeille du fichier : %s"
 
-#: gio/glocalfile.c:1839
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossible de créer le répertoire de la corbeille %s : %s"
 
-#: gio/glocalfile.c:1860
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "Impossible de trouver le répertoire racine pour la corbeille"
 
-#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "Impossible de trouver ou créer le répertoire de la corbeille"
 
-#: gio/glocalfile.c:1993
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr ""
 "Impossible de créer le fichier d'informations de mise à la corbeille : %s"
 
-#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
-#: gio/glocalfile.c:2114
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2102
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossible de mettre à la corbeille le fichier : %s"
 
-#: gio/glocalfile.c:2141
+#: gio/glocalfile.c:2136
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Erreur à la création du répertoire : %s"
 
-#: gio/glocalfile.c:2170
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Le système de fichiers ne gère pas les liens symboliques"
 
-#: gio/glocalfile.c:2174
+#: gio/glocalfile.c:2169
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Erreur lors de la création du lien symbolique : %s"
 
-#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
+#: gio/glocalfile.c:2231 gio/glocalfile.c:2325
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Erreur lors du déplacement du fichier : %s"
 
-#: gio/glocalfile.c:2259
+#: gio/glocalfile.c:2254
 msgid "Can't move directory over directory"
 msgstr "Impossible de déplacer un répertoire par dessus un autre"
 
-#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2281 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "La création du fichier de sauvegarde a échoué"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2300
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Erreur lors de la suppression du fichier cible : %s"
 
-#: gio/glocalfile.c:2319
+#: gio/glocalfile.c:2314
 msgid "Move between mounts not supported"
 msgstr "Le déplacement entre des points de montage n'est pas pris en charge"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "La valeur d'attribut ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "Type d'attribut non valide (une chaîne est attendue)"
 
-#: gio/glocalfileinfo.c:740
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "Nom d'attribut étendu non valide"
 
-#: gio/glocalfileinfo.c:780
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Erreur lors de la définition de l'attribut étendu « %s » : %s"
 
-#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileinfo.c:1479 gio/glocalfileoutputstream.c:819
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Erreur de l'interrogation du fichier « %s » : %s"
 
-#: gio/glocalfileinfo.c:1557
+#: gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
 msgstr " (codage non valide)"
 
-#: gio/glocalfileinfo.c:1755
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erreur de l'interrogation du descripteur de fichier : %s"
 
-#: gio/glocalfileinfo.c:1800
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Type d'attribut non valide (uint32 attendu)"
 
-#: gio/glocalfileinfo.c:1818
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Type d'attribut non valide (uint64 attendu)"
 
-#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Type d'attribut non valide (chaîne octet attendu)"
 
-#: gio/glocalfileinfo.c:1891
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Impossible de définir des permissions sur les liens symboliques"
 
-#: gio/glocalfileinfo.c:1907
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:1958
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erreur lors de la définition du propriétaire : %s"
 
-#: gio/glocalfileinfo.c:1981
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "un lien symbolique ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
-#: gio/glocalfileinfo.c:2021
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erreur lors de la définition du lien symbolique : %s"
 
-#: gio/glocalfileinfo.c:2000
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erreur lors de la définition du lien symbolique : le fichier n'est pas un "
 "lien symbolique"
 
-#: gio/glocalfileinfo.c:2126
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 "Erreur lors de la définition de l'heure de modification ou d'accès : %s"
 
-#: gio/glocalfileinfo.c:2149
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "Le contexte SELinux ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:2164
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erreur lors de la définition du contexte SELinux : %s"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux n'est pas activé sur ce système"
 
-#: gio/glocalfileinfo.c:2263
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La définition de l'attribut %s n'est pas prise en charge"

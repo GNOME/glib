@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
+"POT-Creation-Date: 2010-04-19 15:10-0400\n"
 "PO-Revision-Date: 2010-03-20 00:00+0200\n"
 "Last-Translator: Tommi Vainikainen <thv@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -558,7 +558,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "malli sisältää kohtia, jotka eivät ole tuettu osittaisessa täsmäyksessä"
 
-#: glib/gregex.c:154 gio/glocalfile.c:2115
+#: glib/gregex.c:154 gio/glocalfile.c:2110
 msgid "internal error"
 msgstr "sisäinen virhe"
 
@@ -1162,7 +1162,7 @@ msgstr "Liian suuri laskuriarvo välitetty kohteelle %s"
 msgid "Stream is already closed"
 msgstr "Virta on jo suljettu"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2108 gio/gsimpleasyncresult.c:651
+#: gio/gcancellable.c:433 gio/glocalfile.c:2103 gio/gsimpleasyncresult.c:651
 #: gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Toiminto oli peruttu"
@@ -1299,12 +1299,12 @@ msgstr "Toiminto ei ole tuettu"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: gio/gfile.c:1357 gio/glocalfile.c:1065 gio/glocalfile.c:1076
-#: gio/glocalfile.c:1089
+#: gio/gfile.c:1357 gio/glocalfile.c:1060 gio/glocalfile.c:1071
+#: gio/glocalfile.c:1084
 msgid "Containing mount does not exist"
 msgstr "Yllä olevaa liitospistettä ei löydy"
 
-#: gio/gfile.c:2409 gio/glocalfile.c:2264
+#: gio/gfile.c:2409 gio/glocalfile.c:2259
 msgid "Can't copy over directory"
 msgstr "Kansion päälle ei voi kopioida"
 
@@ -1312,7 +1312,7 @@ msgstr "Kansion päälle ei voi kopioida"
 msgid "Can't copy directory over directory"
 msgstr "Kansiota ei voi kopioida kansion päälle"
 
-#: gio/gfile.c:2477 gio/glocalfile.c:2273
+#: gio/gfile.c:2477 gio/glocalfile.c:2268
 msgid "Target file exists"
 msgstr "Kohdetiedosto on olemassa"
 
@@ -1456,209 +1456,209 @@ msgstr "Ei-tuettu pistokeosoite"
 msgid "Unable to find default local directory monitor type"
 msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
 
-#: gio/glocalfile.c:599 gio/win32/gwinhttpfile.c:424
+#: gio/glocalfile.c:594 gio/win32/gwinhttpfile.c:424
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Virheellinen tiedostonimi %s"
 
-#: gio/glocalfile.c:973
+#: gio/glocalfile.c:968
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
-#: gio/glocalfile.c:1111
+#: gio/glocalfile.c:1106
 msgid "Can't rename root directory"
 msgstr "Juurikansiota ei voi nimetä uudestaan"
 
-#: gio/glocalfile.c:1131 gio/glocalfile.c:1157
+#: gio/glocalfile.c:1126 gio/glocalfile.c:1152
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
 
-#: gio/glocalfile.c:1140
+#: gio/glocalfile.c:1135
 msgid "Can't rename file, filename already exist"
 msgstr "Tiedostoa ei voi nimetä uudestaan, tiedosto on jo olemassa"
 
-#: gio/glocalfile.c:1153 gio/glocalfile.c:2137 gio/glocalfile.c:2166
-#: gio/glocalfile.c:2326 gio/glocalfileoutputstream.c:557
+#: gio/glocalfile.c:1148 gio/glocalfile.c:2132 gio/glocalfile.c:2161
+#: gio/glocalfile.c:2321 gio/glocalfileoutputstream.c:557
 #: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
 #: gio/glocalfileoutputstream.c:1137
 msgid "Invalid filename"
 msgstr "Virheellinen tiedostonimi"
 
-#: gio/glocalfile.c:1314
+#: gio/glocalfile.c:1309
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Virhe avattaessa tiedostoa: %s"
 
-#: gio/glocalfile.c:1324
+#: gio/glocalfile.c:1319
 msgid "Can't open directory"
 msgstr "Kansiota ei voi avata"
 
-#: gio/glocalfile.c:1449
+#: gio/glocalfile.c:1444
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Virhe poistettaessa tiedostoa: %s"
 
-#: gio/glocalfile.c:1816
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
-#: gio/glocalfile.c:1839
+#: gio/glocalfile.c:1834
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
-#: gio/glocalfile.c:1860
+#: gio/glocalfile.c:1855
 msgid "Unable to find toplevel directory for trash"
 msgstr "Päätasoa roskakoria varten ei löydy"
 
-#: gio/glocalfile.c:1939 gio/glocalfile.c:1959
+#: gio/glocalfile.c:1934 gio/glocalfile.c:1954
 msgid "Unable to find or create trash directory"
 msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
-#: gio/glocalfile.c:1993
+#: gio/glocalfile.c:1988
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
-#: gio/glocalfile.c:2022 gio/glocalfile.c:2027 gio/glocalfile.c:2107
-#: gio/glocalfile.c:2114
+#: gio/glocalfile.c:2017 gio/glocalfile.c:2022 gio/glocalfile.c:2102
+#: gio/glocalfile.c:2109
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: gio/glocalfile.c:2141
+#: gio/glocalfile.c:2136
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Virhe luotaessa kansiota: %s"
 
-#: gio/glocalfile.c:2170
+#: gio/glocalfile.c:2165
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Tiedostojärjestelmä ei tue symbolisia linkkejä"
 
-#: gio/glocalfile.c:2174
+#: gio/glocalfile.c:2169
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Virhe luotaessa symbolista linkkiä: %s"
 
-#: gio/glocalfile.c:2236 gio/glocalfile.c:2330
+#: gio/glocalfile.c:2231 gio/glocalfile.c:2325
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Virhe siirrettäessä tiedostoa: %s"
 
-#: gio/glocalfile.c:2259
+#: gio/glocalfile.c:2254
 msgid "Can't move directory over directory"
 msgstr "Kansiota ei voi siirtää kansion päälle"
 
-#: gio/glocalfile.c:2286 gio/glocalfileoutputstream.c:935
+#: gio/glocalfile.c:2281 gio/glocalfileoutputstream.c:935
 #: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
 #: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
 msgid "Backup file creation failed"
 msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2300
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
-#: gio/glocalfile.c:2319
+#: gio/glocalfile.c:2314
 msgid "Move between mounts not supported"
 msgstr "Siirto liitospisteiden välillä ei ole tuettu"
 
-#: gio/glocalfileinfo.c:726
+#: gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "Ominaisuuden arvo ei voi olla NULL"
 
-#: gio/glocalfileinfo.c:733
+#: gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "Virheellinen ominaisuustyyppi (piti olla merkkijono)"
 
-#: gio/glocalfileinfo.c:740
+#: gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "Virheellinen laajennetun ominaisuuden nimi"
 
-#: gio/glocalfileinfo.c:780
+#: gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Virhe asetettaessa laajennettua ominaisuutta ”%s”: %s"
 
-#: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileinfo.c:1479 gio/glocalfileoutputstream.c:819
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Virhe tarkkailtaessa tiedostoa ”%s”: %s"
 
-#: gio/glocalfileinfo.c:1557
+#: gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
 msgstr " (virheellinen merkistökoodaus)"
 
-#: gio/glocalfileinfo.c:1755
+#: gio/glocalfileinfo.c:1750
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Virhe tarkkailtaessa tiedostokuvaajaa: %s"
 
-#: gio/glocalfileinfo.c:1800
+#: gio/glocalfileinfo.c:1795
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla uint32)"
 
-#: gio/glocalfileinfo.c:1818
+#: gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla uint64)"
 
-#: gio/glocalfileinfo.c:1837 gio/glocalfileinfo.c:1856
+#: gio/glocalfileinfo.c:1832 gio/glocalfileinfo.c:1851
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Virheellinen ominaisuuden tyyppi (piti olla tavujono)"
 
-#: gio/glocalfileinfo.c:1891
+#: gio/glocalfileinfo.c:1886
 msgid "Cannot set permissions on symlinks"
 msgstr "Symbolisille linkeille ei voi asettaa oikeuksia"
 
-#: gio/glocalfileinfo.c:1907
+#: gio/glocalfileinfo.c:1902
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Virhe asetettaessa oikeuksia: %s"
 
-#: gio/glocalfileinfo.c:1958
+#: gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Virhe asetettaessa omistajaa: %s"
 
-#: gio/glocalfileinfo.c:1981
+#: gio/glocalfileinfo.c:1976
 msgid "symlink must be non-NULL"
 msgstr "symbolinen linkki ei voi olla NULL"
 
-#: gio/glocalfileinfo.c:1991 gio/glocalfileinfo.c:2010
-#: gio/glocalfileinfo.c:2021
+#: gio/glocalfileinfo.c:1986 gio/glocalfileinfo.c:2005
+#: gio/glocalfileinfo.c:2016
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Virhe asetettaessa symbolista linkkiä: %s"
 
-#: gio/glocalfileinfo.c:2000
+#: gio/glocalfileinfo.c:1995
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Virhe asetettaessa symbolista linkkiä: tiedosto ei ole symbolinen linkki"
 
-#: gio/glocalfileinfo.c:2126
+#: gio/glocalfileinfo.c:2121
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Virhe asetettaessa muokkaus- tai käyttöaikaa: %s"
 
-#: gio/glocalfileinfo.c:2149
+#: gio/glocalfileinfo.c:2144
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux-konteksti ei voi olla NULL"
 
-#: gio/glocalfileinfo.c:2164
+#: gio/glocalfileinfo.c:2159
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Virhe asetettaessa SELinux-kontekstia: %s"
 
-#: gio/glocalfileinfo.c:2171
+#: gio/glocalfileinfo.c:2166
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ei ole käytössä tässä tietokoneessa"
 
-#: gio/glocalfileinfo.c:2263
+#: gio/glocalfileinfo.c:2258
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Ominaisuuden %s asetus ei ole tuettu"

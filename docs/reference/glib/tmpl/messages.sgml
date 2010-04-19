@@ -23,6 +23,9 @@ These can be extended with user-defined levels.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO G_LOG_DOMAIN ##### -->
 <para>
 Defines the log domain.

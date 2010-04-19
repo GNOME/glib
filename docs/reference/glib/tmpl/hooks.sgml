@@ -20,6 +20,9 @@ and the list of hook functions can be invoked.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GHookList ##### -->
 <para>
 The <structname>GHookList</structname> struct represents a 

@@ -1065,10 +1065,12 @@ main (int argc, char *argv[])
   g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
   g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
-  g_remove ("./store");
-
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+
+  g_remove ("gschemas.compiled");
+  g_assert (g_spawn_command_line_sync ("../gschema-compile --targetdir=. " SRCDIR,
+                                       NULL, NULL, NULL, NULL));
 
   g_test_add_func ("/gsettings/basic", test_basic);
   g_test_add_func ("/gsettings/no-schema", test_no_schema);

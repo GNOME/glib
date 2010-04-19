@@ -88,6 +88,9 @@ The #GBookmarkFile parser was added in GLib 2.12.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GBookmarkFile ##### -->
 <para>
 The <structname>GBookmarkFile</structname> struct contains only private data
@@ -125,6 +128,7 @@ unknown encoding
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -66,6 +66,9 @@ facilitate running tests and producing nicely formatted test reports.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION g_test_minimized_result ##### -->
 <para>
 
@@ -143,6 +146,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -152,7 +156,7 @@ Returns %TRUE if tests are run in quiet mode.
 </para>
 
 @testpath: 
-@test_func: 
+@void: 
 
 
 <!-- ##### FUNCTION g_test_add_data_func ##### -->
@@ -162,7 +166,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 @testpath: 
 @test_data: 
-@test_func: 
+@gconstpointer: 
 
 
 <!-- ##### MACRO g_test_add ##### -->
@@ -229,6 +233,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION g_test_timer_elapsed ##### -->
@@ -236,6 +241,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -244,6 +250,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -308,6 +315,7 @@ determine what traps to set.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -316,6 +324,7 @@ determine what traps to set.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -389,6 +398,7 @@ see g_test_rand_int() for details on test case random numbers.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -407,6 +417,7 @@ see g_test_rand_int() for details on test case random numbers.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -594,9 +605,9 @@ An opaque structure representing a test suite.
 @test_name: 
 @data_size: 
 @test_data: 
-@data_setup: 
-@data_test: 
-@data_teardown: 
+@void: 
+@void: 
+@void: 
 @Returns: 
 
 
@@ -614,6 +625,7 @@ An opaque structure representing a test suite.
 
 </para>
 
+@void: 
 @Returns: 
 
 

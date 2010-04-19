@@ -8,13 +8,18 @@
 static void
 test_no_default (void)
 {
-  g_remove ("schema-tests/no-default/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/no-default/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/no-default/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*<default> is required in <key>*");
@@ -23,13 +28,18 @@ test_no_default (void)
 static void
 test_missing_quotes (void)
 {
-  g_remove ("schema-tests/missing-quotes/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/missing-quotes/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/missing-quotes/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*unknown keyword*");
@@ -38,13 +48,18 @@ test_missing_quotes (void)
 static void
 test_incomplete_list (void)
 {
-  g_remove ("schema-tests/incomplete-list/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/incomplete-list/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/incomplete-list/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*to follow array element*");
@@ -53,13 +68,18 @@ test_incomplete_list (void)
 static void
 test_wrong_category (void)
 {
-  g_remove ("schema-tests/wrong-category/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/wrong-category/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/wrong-category/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*attribute 'l10n' invalid*");
@@ -68,13 +88,18 @@ test_wrong_category (void)
 static void
 test_bad_type (void)
 {
-  g_remove ("schema-tests/bad-type/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/bad-type/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/bad-type/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*invalid GVariant type string*");
@@ -83,13 +108,18 @@ test_bad_type (void)
 static void
 test_overflow (void)
 {
-  g_remove ("schema-tests/overflow/gschemas.compiled");
+  g_remove ("gschemas.compiled");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-       gchar *argv[] = { "../gschema-compile", "./schema-tests/overflow/", NULL };
-       gchar *envp[] = { NULL };
-       execve (argv[0], argv, envp);
+      gchar *argv[] = {
+        "../gschema-compile",
+        SRCDIR "/schema-tests/overflow/",
+        "--targetdir=.",
+        NULL
+      };
+      gchar *envp[] = { NULL };
+      execve (argv[0], argv, envp);
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*out of range*");

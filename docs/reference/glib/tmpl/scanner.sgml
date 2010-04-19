@@ -23,6 +23,9 @@ understand it myself. Look at gtkrc.c for some code using the scanner.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GScanner ##### -->
 <para>
 The data structure representing a lexical scanner.

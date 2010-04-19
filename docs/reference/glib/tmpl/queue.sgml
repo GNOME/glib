@@ -42,6 +42,9 @@ To free the entire queue, use g_queue_free().
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GQueue ##### -->
 <para>
 Contains the public fields of a <link linkend="glib-queues">Queue</link>.
@@ -56,6 +59,7 @@ Contains the public fields of a <link linkend="glib-queues">Queue</link>.
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -176,10 +176,4 @@ DISTCLEANFILES =                                        \
 	de/LC_MESSAGES/test.mo                          \
 	test.mo                                         \
 	gsettings.store                                 \
-	gschemas.compiled                               \
-	schema-tests/bad-type/gschemas.compiled         \
-	schema-tests/incomplete-list/gschemas.compiled  \
-	schema-tests/missing-quotes/gschemas.compiled   \
-	schema-tests/no-default/gschemas.compiled       \
-	schema-tests/wrong-category/gschemas.compiled   \
-	schema-tests/overflow/gschemas.compiled
+	gschemas.compiled
