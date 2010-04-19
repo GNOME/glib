@@ -1,0 +1,40 @@
+<!ELEMENT schemalist (schema*) >
+<!ATTLIST schemalist gettext-domain #IMPLIED >
+
+<!ELEMENT schema (key|child)* >
+<!ATTLIST schema id             CDATA #REQUIRED
+                 path           CDATA #IMPLIED
+                 gettext-domain CDATA #IMPLIED >
+
+<!ELEMENT key (default|summary?|description?|range?|choices?) >
+<!-- name can only contain lowercase letters, numbers and '-' -->
+<!-- type must be a GVariant type string -->
+<!ATTLIST key name CDATA #REQUIRED
+              type CDATA #REQUIRED >
+
+<!-- the default value is specified a a serialized GVariant,
+     i.e. you have to include the quotes when specifying a string -->
+<!ELEMENT default (#PCDATA) >
+<!-- the presence of the l10n attribute marks a default value for
+     translation, its value is the gettext category to use -->
+<!-- if context is present, it specifies msgctxt to use -->
+<!ATTLIST default l10n    (messages|time) #IMPLIED
+                  context CDATA           #IMPLIED >
+
+<!ELEMENT summary (#PCDATA) >
+<!ELEMENT description (#PCDATA) >
+
+<!ELEMENT range (min,max)  >
+<!ELEMENT min (#PCDATA) >
+<!ELEMENT max (#PCDATA) >
+
+<!ELEMENT choices (choice+) >
+<!ELEMENT choice (alias?) >
+<!ATTLIST choice value CDATA #REQUIRED >
+<!ELEMENT choice (alias?) >
+<!ELEMENT alias EMPTY >
+<!ATTLIST alias value CDATA #REQUIRED >
+
+<!ELEMENT child EMPTY >
+<!ATTLIST child name   CDATA #REQUIRED
+                schema CDATA #REQUIRED >

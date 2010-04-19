@@ -473,6 +473,7 @@ EXTRA_DIST += 			\
 	abicheck.sh		\
 	pltcheck.sh		\
 	gio.rc.in		\
+	gschema.dtd		\
 	$(NULL)
 
 BUILT_EXTRA_DIST = 		\
@@ -511,6 +512,9 @@ gschema_compile_SOURCES = \
 	gvdb/gvdb-builder.h		\
 	gvdb/gvdb-builder.c		\
 	gschema-compile.c
+
+schemadir = $(datadir)/glib-2.0/schemas
+dist_schema_DATA = gschema.dtd
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \
