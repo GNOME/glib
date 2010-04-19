@@ -417,7 +417,7 @@ gvdb_table_get_value (GvdbTable    *file,
     {
       data = gvdb_table_dereference (file, &item->options, 8, &size);
 
-      if (data != NULL || size > 0)
+      if (data != NULL && size > 0)
         {
           *options = g_variant_new_from_data (G_VARIANT_TYPE ("a{sv}"),
                                               data, size, file->trusted,
