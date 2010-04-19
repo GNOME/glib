@@ -56,8 +56,8 @@ is_valid_keyname (const gchar  *key,
 
   if (key[0] == '\0')
     {
-      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "empty names are not permitted");
+      g_set_error_literal (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                           "empty names are not permitted");
       return FALSE;
     }
 
@@ -255,10 +255,10 @@ start_element (GMarkupParseContext  *context,
 
                       if (domain == NULL)
                         {
-                          g_set_error (error, G_MARKUP_ERROR,
-                                       G_MARKUP_ERROR_INVALID_CONTENT,
-                                       "l10n requested, but no "
-                                       "gettext domain given");
+                          g_set_error_literal (error, G_MARKUP_ERROR,
+                                               G_MARKUP_ERROR_INVALID_CONTENT,
+                                               "l10n requested, but no "
+                                               "gettext domain given");
                           return;
                         }
 
@@ -285,10 +285,10 @@ start_element (GMarkupParseContext  *context,
 
                   if (state->context != NULL)
                     {
-                      g_set_error (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   "translation context given for "
-                                   " value without l10n enabled");
+                      g_set_error_literal (error, G_MARKUP_ERROR,
+                                           G_MARKUP_ERROR_INVALID_CONTENT,
+                                           "translation context given for "
+                                           " value without l10n enabled");
                       return;
                     }
                 }
@@ -394,7 +394,7 @@ end_element (GMarkupParseContext  *context,
         {
           g_set_error_literal (error,
                                G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                               "Element <default> is required in <key>\n");
+                               "element <default> is required in <key>\n");
           return;
         }
 
