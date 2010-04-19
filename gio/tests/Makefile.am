@@ -154,7 +154,7 @@ EXTRA_DIST +=                                          \
 	org.gtk.test.gschema                           \
 	org.gtk.test.gschema.xml                       \
 	de.po                                          \
-	schema-tests/no-default/no-default.gschema.xml \
+	schema-tests/no-default/no-default.gschema.xml
 
 MISC_STUFF = gschemas.compiled test.mo
 
