@@ -10,7 +10,9 @@ INCLUDES = 			\
 	$(GLIB_DEBUG_FLAGS)	\
 	-DSRCDIR=\""$(srcdir)"\"
 
-noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS) $(OTHER_PROGS)
+noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
+noinst_DATA = $(MISC_STUFF)
+
 progs_ldadd     = 					\
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
@@ -90,9 +92,9 @@ live_g_file_LDADD	  = $(progs_ldadd)
 desktop_app_info_SOURCES  = desktop-app-info.c
 desktop_app_info_LDADD	  = $(progs_ldadd)
 
-unix_streams_SOURCES	  = unix-streams.c
-unix_streams_LDADD	  = $(progs_ldadd) \
-	$(top_builddir)/gthread/libgthread-2.0.la
+#unix_streams_SOURCES	  = unix-streams.c
+#unix_streams_LDADD	  = $(progs_ldadd) \
+#	$(top_builddir)/gthread/libgthread-2.0.la
 
 win32_streams_SOURCES	  = win32-streams.c
 win32_streams_LDADD	  = $(progs_ldadd) \
@@ -146,9 +148,11 @@ gsettings_LDADD		  = $(progs_ldadd)
 
 EXTRA_DIST += org.gtk.test.gschema org.gtk.test.gschema.xml de.po
 
-gschemas_compiled_SOURCES =
-test_mo_SOURCES =
-OTHER_PROGS = gschemas.compiled test.mo
+MISC_STUFF = test.mo
+
+if OS_UNIX
+MISC_STUFF += gschemas.compiled 
+endif
 
 test.mo: de.po
 	$(MSGFMT) -o test.mo $(srcdir)/de.po; \

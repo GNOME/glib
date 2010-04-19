@@ -495,7 +495,12 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
-bin_PROGRAMS = gio-querymodules gschema-compile
+bin_PROGRAMS = gio-querymodules
+
+if OS_UNIX
+bin_PROGRAMS += gschema-compile
+endif
+
 gio_querymodules_SOURCES = gio-querymodules.c
 gio_querymodules_LDADD	 = \
 	$(top_builddir)/glib/libglib-2.0.la		\
