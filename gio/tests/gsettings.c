@@ -532,6 +532,27 @@ test_atomic (void)
   g_object_unref (settings);
 }
 
+#ifndef G_OS_WIN32
+
+/* On Windows the interaction between the C library locale and libintl
+ * (from GNU gettext) is not like on POSIX, so just skip these tests
+ * for now.
+ *
+ * There are several issues:
+ *
+ * 1) The C library doesn't use LC_MESSAGES, that is implemented only
+ * in libintl (defined in its <libintl.h>).
+ *
+ * 2) The locale names that setlocale() accepts and returns aren't in
+ * the "de_DE" style, but like "German_Germany".
+ *
+ * 3) libintl looks at the Win32 thread locale and not the C library
+ * locale. (And even if libintl would use the C library's locale, as
+ * there are several alternative C library DLLs, libintl might be
+ * linked to a different one than the application code, so they
+ * wouldn't have the same C library locale anyway.)
+ */
+
 /* Test that translations work for schema defaults.
  *
  * This test relies on the de.po file in the same directory
@@ -611,6 +632,8 @@ test_l10n_context (void)
 
   g_free (locale);
 }
+
+#endif
 
 enum
 {
@@ -1004,8 +1027,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
+#ifndef G_OS_WIN32
   g_test_add_func ("/gsettings/l10n", test_l10n);
   g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
+#endif
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
