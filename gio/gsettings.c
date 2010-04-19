@@ -743,13 +743,13 @@ g_settings_get_value (GSettings   *settings,
     {
       GVariantIter iter;
       const gchar *key;
-      GVariant *value;
+      GVariant *option_value;
 
       g_variant_iter_init (&iter, options);
-      while (g_variant_iter_loop (&iter, "{&sv}", &key, &value))
+      while (g_variant_iter_loop (&iter, "{&sv}", &key, &option_value))
         {
           if (strcmp (key, "l10n") == 0)
-            g_variant_get (value, "(y&s)", &lc_char, &unparsed);
+            g_variant_get (option_value, "(y&s)", &lc_char, &unparsed);
           else
             g_warning ("unknown schema extension '%s'", key);
         }
