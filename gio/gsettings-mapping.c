@@ -24,18 +24,16 @@
 #include "gsettings-mapping.h"
 
 static GVariant *
-g_settings_set_mapping_numeric (const GValue       *value,
-                                const GVariantType *expected_type)
+g_settings_set_mapping_int (const GValue       *value,
+                            const GVariantType *expected_type)
 {
   GVariant *variant = NULL;
-  glong l;
+  gint64 l;
 
   if (G_VALUE_HOLDS_INT (value))
     l = g_value_get_int (value);
   else if (G_VALUE_HOLDS_INT64 (value))
     l = g_value_get_int64 (value);
-  else if (G_VALUE_HOLDS_DOUBLE (value))
-    l = g_value_get_double (value);
   else
     return NULL;
 
@@ -75,14 +73,68 @@ g_settings_set_mapping_numeric (const GValue       *value,
         variant = g_variant_new_handle ((guint) l);
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
-    variant = g_variant_new_double ((double) l);
+    variant = g_variant_new_double ((gdouble) l);
 
   return variant;
 }
 
 static GVariant *
-g_settings_set_mapping_unsigned_numeric (const GValue       *value,
-                                         const GVariantType *expected_type)
+g_settings_set_mapping_float (const GValue       *value,
+                              const GVariantType *expected_type)
+{
+  GVariant *variant = NULL;
+  gdouble d;
+  gint64 l;
+
+  if (G_VALUE_HOLDS_DOUBLE (value))
+    d = g_value_get_double (value);
+  else
+    return NULL;
+
+  l = (gint64) d;
+  if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_INT16))
+    {
+      if (G_MININT16 <= l && l <= G_MAXINT16)
+        variant = g_variant_new_int16 ((gint16) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_UINT16))
+    {
+      if (0 <= l && l <= G_MAXUINT16)
+        variant = g_variant_new_uint16 ((guint16) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_INT32))
+    {
+      if (G_MININT32 <= l && l <= G_MAXINT32)
+        variant = g_variant_new_int32 ((gint) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_UINT32))
+    {
+      if (0 <= l && l <= G_MAXUINT32)
+        variant = g_variant_new_uint32 ((guint) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_INT64))
+    {
+      if (G_MININT64 <= l && l <= G_MAXINT64)
+        variant = g_variant_new_int64 ((gint64) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_UINT64))
+    {
+      if (0 <= l && l <= G_MAXUINT64)
+        variant = g_variant_new_uint64 ((guint64) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_HANDLE))
+    {
+      if (0 <= l && l <= G_MAXUINT32)
+        variant = g_variant_new_handle ((guint) l);
+    }
+  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
+    variant = g_variant_new_double ((gdouble) d);
+
+  return variant;
+}
+static GVariant *
+g_settings_set_mapping_unsigned_int (const GValue       *value,
+                                     const GVariantType *expected_type)
 {
   GVariant *variant = NULL;
   gulong u;
@@ -130,17 +182,17 @@ g_settings_set_mapping_unsigned_numeric (const GValue       *value,
         variant = g_variant_new_handle ((guint) u);
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
-    variant = g_variant_new_double ((double) u);
+    variant = g_variant_new_double ((gdouble) u);
 
   return variant;
 }
 
 static gboolean
-g_settings_get_mapping_numeric (GValue   *value,
-                                GVariant *variant)
+g_settings_get_mapping_int (GValue   *value,
+                            GVariant *variant)
 {
   const GVariantType *type;
-  glong l;
+  gint64 l;
 
   type = g_variant_get_type (variant);
 
@@ -150,8 +202,6 @@ g_settings_get_mapping_numeric (GValue   *value,
     l = g_variant_get_int32 (variant);
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT64))
     l = g_variant_get_int64 (variant);
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_DOUBLE))
-    l = g_variant_get_double (variant);
   else
     return FALSE;
 
@@ -185,8 +235,52 @@ g_settings_get_mapping_numeric (GValue   *value,
 }
 
 static gboolean
-g_settings_get_mapping_unsigned_numeric (GValue   *value,
-                                         GVariant *variant)
+g_settings_get_mapping_float (GValue   *value,
+                              GVariant *variant)
+{
+  const GVariantType *type;
+  gdouble d;
+  gint64 l;
+
+  type = g_variant_get_type (variant);
+
+  if (g_variant_type_equal (type, G_VARIANT_TYPE_DOUBLE))
+    d = g_variant_get_double (variant);
+  else
+    return FALSE;
+
+  l = (gint64)d;
+  if (G_VALUE_HOLDS_INT (value))
+    {
+      g_value_set_int (value, l);
+      return (G_MININT32 <= l && l <= G_MAXINT32);
+    }
+  else if (G_VALUE_HOLDS_UINT (value))
+    {
+      g_value_set_uint (value, l);
+      return (0 <= l && l <= G_MAXUINT32);
+    }
+  else if (G_VALUE_HOLDS_INT64 (value))
+    {
+      g_value_set_int64 (value, l);
+      return (G_MININT64 <= l && l <= G_MAXINT64);
+    }
+  else if (G_VALUE_HOLDS_UINT64 (value))
+    {
+      g_value_set_uint64 (value, l);
+      return (0 <= l && l <= G_MAXUINT64);
+    }
+  else if (G_VALUE_HOLDS_DOUBLE (value))
+    {
+      g_value_set_double (value, d);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+static gboolean
+g_settings_get_mapping_unsigned_int (GValue   *value,
+                                     GVariant *variant)
 {
   const GVariantType *type;
   gulong u;
@@ -259,13 +353,15 @@ g_settings_set_mapping (const GValue       *value,
     }
 
   else if (G_VALUE_HOLDS_INT (value)   ||
-           G_VALUE_HOLDS_INT64 (value) ||
-           G_VALUE_HOLDS_DOUBLE (value))
-    return g_settings_set_mapping_numeric (value, expected_type);
+           G_VALUE_HOLDS_INT64 (value))
+    return g_settings_set_mapping_int (value, expected_type);
+
+  else if (G_VALUE_HOLDS_DOUBLE (value))
+    return g_settings_set_mapping_float (value, expected_type);
 
   else if (G_VALUE_HOLDS_UINT (value)  ||
            G_VALUE_HOLDS_UINT64 (value))
-    return g_settings_set_mapping_unsigned_numeric (value, expected_type);
+    return g_settings_set_mapping_unsigned_int (value, expected_type);
 
   else if (G_VALUE_HOLDS_STRING (value))
     {
@@ -310,15 +406,17 @@ g_settings_get_mapping (GValue   *value,
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_INT16)  ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_INT32)  ||
-           g_variant_is_of_type (variant, G_VARIANT_TYPE_INT64)  ||
-           g_variant_is_of_type (variant, G_VARIANT_TYPE_DOUBLE))
-    return g_settings_get_mapping_numeric (value, variant);
+           g_variant_is_of_type (variant, G_VARIANT_TYPE_INT64))
+    return g_settings_get_mapping_int (value, variant);
+
+  else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_DOUBLE))
+    return g_settings_get_mapping_float (value, variant);
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT16) ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT32) ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_UINT64) ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_HANDLE))
-    return g_settings_get_mapping_unsigned_numeric (value, variant);
+    return g_settings_get_mapping_unsigned_int (value, variant);
 
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_STRING)      ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_OBJECT_PATH) ||
