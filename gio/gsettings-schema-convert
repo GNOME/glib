@@ -1,0 +1,1064 @@
+#!/usr/bin/env python
+# vim: set ts=4 sw=4 et: coding=UTF-8
+#
+# Copyright (c) 2010, Novell, Inc.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+# USA.
+#
+# Authors: Vincent Untz <vuntz@gnome.org>
+
+# TODO: add alias support for choices
+#       choices: 'this-is-an-alias' = 'real', 'other', 'real'
+# TODO: we don't support migrating a pair from a gconf schema. It has yet to be
+#       seen in real-world usage, though.
+
+import os
+import sys
+
+import optparse
+
+try:
+    from lxml import etree as ET
+except ImportError:
+    try:
+        from xml.etree import cElementTree as ET
+    except ImportError:
+        import cElementTree as ET
+
+
+GSETTINGS_SIMPLE_SCHEMA_INDENT = '  '
+TYPES_FOR_CHOICES = [ 's' ]
+TYPES_FOR_RANGE = [ 'y', 'n', 'q', 'i', 'u', 'x', 't', 'h', 'd' ]
+
+
+######################################
+
+
+def is_schema_id_valid(id):
+    # FIXME: there's currently no restriction on what an id should contain,
+    # but there might be some later on
+    return True
+
+
+def is_key_name_valid(name):
+    # FIXME: we could check that name is valid ([-a-z0-9], no leading/trailing
+    # -, no leading digit, 32 char max). Note that we don't want to validate
+    # the key when converting from gconf, though, since gconf keys use
+    # underscores.
+    return True
+
+
+def are_choices_valid(choices):
+    # FIXME: we could check that all values have the same type with GVariant
+    return True
+
+
+def is_range_valid(minmax):
+    # FIXME: we'll be able to easily check min < max once we can convert the
+    # values with GVariant
+    return True
+
+
+######################################
+
+
+class GSettingsSchemaConvertException(Exception):
+    pass
+
+
+######################################
+
+
+class GSettingsSchemaRoot:
+
+    def __init__(self):
+        self.gettext_domain = None
+        self.schemas = []
+
+    def get_simple_string(self):
+        need_empty_line = False
+        result = ''
+
+        for schema in self.schemas:
+            if need_empty_line:
+                result += '\n'
+            result += schema.get_simple_string()
+            if result:
+                need_empty_line = True
+
+        # Only put the gettext domain if we have some content
+        if result and self.gettext_domain:
+            result = 'gettext-domain: %s\n\n%s' % (self.gettext_domain, result)
+
+        return result
+
+    def get_xml_node(self):
+        schemalist_node = ET.Element('schemalist')
+        if self.gettext_domain:
+            schemalist_node.set('gettext-domain', self.gettext_domain)
+        for schema in self.schemas:
+            for schema_node in schema.get_xml_nodes():
+                schemalist_node.append(schema_node)
+        return schemalist_node
+
+
+######################################
+
+
+class GSettingsSchema:
+
+    def __init__(self):
+        self.id = None
+        self.path = None
+        # only set when this schema is a child
+        self.name = None
+
+        self.gettext_domain = None
+        self.children = []
+        self.keys = []
+
+    def get_simple_string(self, current_indent = '', parent_path = ''):
+        if not self.children and not self.keys:
+            return ''
+
+        content = self._get_simple_string_for_content(current_indent)
+        if not content:
+            return ''
+
+        if self.name:
+            id = 'child %s' % self.name
+            force_empty_line = False
+        else:
+            id = 'schema %s' % self.id
+            force_empty_line = True
+
+        result = ''
+        result += '%s%s:\n' % (current_indent, id)
+        result += self._get_simple_string_for_attributes(current_indent, parent_path, force_empty_line)
+        result += content
+
+        return result
+
+    def _get_simple_string_for_attributes(self, current_indent, parent_path, force_empty_line):
+        need_empty_line = force_empty_line
+        result = ''
+
+        if self.gettext_domain:
+            result += '%sgettext-domain: %s\n' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.gettext_domain)
+            need_empty_line = True
+        if self.path and (not parent_path or (self.path != '%s%s/' % (parent_path, self.name))):
+            result += '%spath: %s\n' % (current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
+            need_empty_line = True
+        if need_empty_line:
+            result += '\n'
+
+        return result
+
+    def _get_simple_string_for_content(self, current_indent):
+        need_empty_line = False
+        result = ''
+
+        for key in self.keys:
+            result += key.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT)
+            need_empty_line = True
+
+        for child in self.children:
+            if need_empty_line:
+                result += '\n'
+            result += child.get_simple_string(current_indent + GSETTINGS_SIMPLE_SCHEMA_INDENT, self.path)
+            if result:
+                need_empty_line = True
+
+        return result
+
+    def get_xml_nodes(self):
+        if not self.children and not self.keys:
+            return []
+
+        (node, children_nodes) = self._get_xml_nodes_for_content()
+        if node is None:
+            return []
+
+        node.set('id', self.id)
+        if self.path:
+            node.set('path', self.path)
+
+        nodes = [ node ]
+        nodes.extend(children_nodes)
+
+        return nodes
+
+    def _get_xml_nodes_for_content(self):
+        if not self.keys and not self.children:
+            return (None, None)
+
+        children_nodes = []
+
+        schema_node = ET.Element('schema')
+        if self.gettext_domain:
+            schema_node.set('gettext-domain', self.gettext_domain)
+
+        for key in self.keys:
+            key_node = key.get_xml_node()
+            schema_node.append(key_node)
+        for child in self.children:
+            child_nodes = child.get_xml_nodes()
+            children_nodes.extend(child_nodes)
+            child_node = ET.SubElement(schema_node, 'child')
+            if not child.name:
+                raise GSettingsSchemaConvertException('Internal error: child being processed with no schema id.')
+            child_node.set('name', child.name)
+            child_node.set('schema', '%s' % child.id)
+
+        return (schema_node, children_nodes)
+
+
+######################################
+
+
+class GSettingsSchemaKey:
+
+    def __init__(self):
+        self.name = None
+        self.type = None
+        self.default = None
+        self.typed_default = None
+        self.l10n = None
+        self.l10n_context = None
+        self.summary = None
+        self.description = None
+        self.choices = None
+        self.range = None
+
+    def fill(self, name, type, default, typed_default, l10n, l10n_context, summary, description, choices, range):
+        self.name = name
+        self.type = type
+        self.default = default
+        self.typed_default = typed_default
+        self.l10n = l10n
+        self.l10n_context = l10n_context
+        self.summary = summary
+        self.description = description
+        self.choices = choices
+        self.range = range
+
+    def _has_range_choices(self):
+        return self.choices is not None and self.type in TYPES_FOR_CHOICES
+
+    def _has_range_minmax(self):
+        return self.range is not None and len(self.range) == 2 and self.type in TYPES_FOR_RANGE
+
+    def get_simple_string(self, current_indent):
+        # FIXME: kill this when we'll have python bindings for GVariant. Right
+        # now, every simple format schema we'll generate has to have an
+        # explicit type since we can't guess the type later on when converting
+        # to XML.
+        self.typed_default = '@%s %s' % (self.type, self.default)
+
+        result = ''
+        result += '%skey %s = %s\n' % (current_indent, self.name, self.typed_default or self.default)
+        current_indent += GSETTINGS_SIMPLE_SCHEMA_INDENT
+        if self.l10n:
+            l10n = self.l10n
+            if self.l10n_context:
+                l10n += ' %s' % self.l10n_context
+            result += '%sl10n: %s\n' % (current_indent, l10n)
+        if self.summary:
+            result += '%ssummary: %s\n' % (current_indent, self.summary)
+        if self.description:
+            result += '%sdescription: %s\n' % (current_indent, self.description)
+        if self._has_range_choices():
+            result += '%schoices: %s\n' % (current_indent, ', '.join(self.choices))
+        elif self._has_range_minmax():
+            result += '%srange: %s\n' % (current_indent, '%s..%s' % (self.range[0] or '', self.range[1] or ''))
+        return result
+
+    def get_xml_node(self):
+        key_node = ET.Element('key')
+        key_node.set('name', self.name)
+        key_node.set('type', self.type)
+        default_node = ET.SubElement(key_node, 'default')
+        default_node.text = self.default
+        if self.l10n:
+            default_node.set('l10n', self.l10n)
+            if self.l10n_context:
+                default_node.set('context', self.l10n_context)
+        if self.summary:
+            summary_node = ET.SubElement(key_node, 'summary')
+            summary_node.text = self.summary
+        if self.description:
+            description_node = ET.SubElement(key_node, 'description')
+            description_node.text = self.description
+        if self._has_range_choices():
+            choices_node = ET.SubElement(key_node, 'choices')
+            for choice in self.choices:
+                choice_node = ET.SubElement(choices_node, 'choice')
+                choice_node.set('value', choice)
+        elif self._has_range_minmax():
+            (min, max) = self.range
+            range_node = ET.SubElement(key_node, 'range')
+            min_node = ET.SubElement(range_node, 'min')
+            if min:
+                min_node.text = min
+            max_node = ET.SubElement(range_node, 'max')
+            if max:
+                max_node.text = max
+        return key_node
+
+
+######################################
+
+
+class SimpleSchemaParser:
+
+    allowed_tokens = {
+      ''               : [ 'gettext-domain', 'schema' ],
+      'gettext-domain' : [ ],
+      'schema'         : [ 'gettext-domain', 'path', 'child', 'key' ],
+      'path'           : [ ],
+      'child'          : [ 'gettext-domain', 'child', 'key' ],
+      'key'            : [ 'l10n', 'summary', 'description', 'choices', 'range' ],
+      'l10n'           : [ ],
+      'summary'        : [ ],
+      'description'    : [ ],
+      'choices'        : [ ],
+      'range'          : [ ]
+    }
+
+    allowed_separators = [ ':', '=' ]
+
+    def __init__(self, file):
+        self.file = file
+
+        self.root = GSettingsSchemaRoot()
+
+        # this is just a convenient helper to remove the leading indentation
+        # that should be common to all lines
+        self.leading_indent = None
+
+        self.indent_stack = []
+        self.token_stack = []
+        self.object_stack = [ self.root ]
+
+        self.previous_token = None
+        self.current_token = None
+        self.unparsed_line = ''
+
+    def _eat_indent(self):
+        line = self.unparsed_line
+        i = 0
+        buf = ''
+        previous_max_index = len(self.indent_stack) - 1
+        index = -1
+
+        while i < len(line) - 1 and line[i].isspace():
+            buf += line[i]
+            i += 1
+            if previous_max_index > index:
+                if buf == self.indent_stack[index + 1]:
+                    buf = ''
+                    index += 1
+                    continue
+                elif self.indent_stack[index + 1].startswith(buf):
+                    continue
+                else:
+                    raise GSettingsSchemaConvertException('Inconsistent indentation.')
+            else:
+                continue
+
+        if buf and previous_max_index > index:
+            raise GSettingsSchemaConvertException('Inconsistent indentation.')
+        elif buf and previous_max_index <= index:
+            self.indent_stack.append(buf)
+        elif previous_max_index > index:
+            self.indent_stack = self.indent_stack[:index + 1]
+
+        self.unparsed_line = line[i:]
+
+    def _parse_word(self):
+        line = self.unparsed_line
+        i = 0
+        while i < len(line) and not line[i].isspace() and not line[i] in self.allowed_separators:
+            i += 1
+        self.unparsed_line = line[i:]
+        return line[:i]
+
+    def _word_to_token(self, word):
+        lower = word.lower()
+        if lower and lower in self.allowed_tokens.keys():
+            return lower
+        raise GSettingsSchemaConvertException('\'%s\' is not a valid token.' % lower)
+
+    def _token_allow_separator(self):
+        return self.current_token in [ 'gettext-domain', 'path', 'l10n', 'summary', 'description', 'choices', 'range' ]
+
+    def _parse_id_without_separator(self):
+        line = self.unparsed_line
+        if line[-1] in self.allowed_separators:
+            line = line[:-1].strip()
+        if not is_schema_id_valid(line):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid schema id.' % line)
+
+        self.unparsed_line = ''
+        return line
+
+    def _parse_key(self):
+        line = self.unparsed_line
+
+        split = False
+        for separator in self.allowed_separators:
+            items = line.split(separator)
+            if len(items) == 2:
+                split = True
+                break
+
+        if not split:
+            raise GSettingsSchemaConvertException('Key \'%s\' cannot be parsed.' % line)
+
+        name = items[0].strip()
+        if not is_key_name_valid(name):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid key name.' % name)
+
+        type = ''
+        value = items[1].strip()
+        if value[0] == '@':
+            i = 1
+            while not value[i].isspace():
+                i += 1
+            type = value[1:i]
+            value = value[i:].strip()
+            if not value:
+                raise GSettingsSchemaConvertException('No value specified for key \'%s\' (\'%s\').' % (name, line))
+
+        self.unparsed_line = ''
+
+        object = GSettingsSchemaKey()
+        object.name = name
+        object.type = type
+        object.default = value
+
+        return object
+
+    def _parse_l10n(self):
+        line = self.unparsed_line
+
+        items = [ item.strip() for item in line.split(' ', 1) if item.strip() ]
+        if not items:
+            self.unparsed_line = ''
+            return (None, None)
+        if len(items) == 1:
+            self.unparsed_line = ''
+            return (items[0], None)
+        if len(items) == 2:
+            self.unparsed_line = ''
+            return (items[0], items[1])
+
+        raise GSettingsSchemaConvertException('Internal error: more items than expected for localization \'%s\'.' % line)
+
+    def _parse_choices(self, object):
+        if object.type not in TYPES_FOR_CHOICES:
+            raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have choices.' % (object.name, object.type))
+
+        line = self.unparsed_line
+        choices = [ item.strip() for item in line.split(',') ]
+        if not are_choices_valid(choices):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid choice.' % line)
+
+        self.unparsed_line = ''
+        return choices
+
+    def _parse_range(self, object):
+        if object.type not in TYPES_FOR_RANGE:
+            raise GSettingsSchemaConvertException('Key \'%s\' of type \'%s\' cannot have a range.' % (object.name, object.type))
+
+        line = self.unparsed_line
+        minmax = [ item.strip() for item in line.split('..') ]
+
+        if len(minmax) != 2:
+            raise GSettingsSchemaConvertException('Range \'%s\' cannot be parsed.' % line)
+        if not is_range_valid(minmax):
+            raise GSettingsSchemaConvertException('\'%s\' is not a valid range.' % line)
+
+        self.unparsed_line = ''
+        return tuple(minmax)
+
+    def parse_line(self, line):
+        # make sure that lines with only spaces are ignored and considered as
+        # empty lines
+        self.unparsed_line = line.rstrip()
+
+        # ignore empty line
+        if not self.unparsed_line:
+            return
+
+        # look at the indentation to know where we should be
+        self._eat_indent()
+        if self.leading_indent is None:
+            self.leading_indent = len(self.indent_stack)
+
+        # ignore comments
+        if self.unparsed_line[0] == '#':
+            return
+
+        word = self._parse_word()
+        if self.current_token:
+            self.previous_token = self.current_token
+        self.current_token = self._word_to_token(word)
+        self.unparsed_line = self.unparsed_line.lstrip()
+
+        allow_separator = self._token_allow_separator()
+        if len(self.unparsed_line) > 0 and self.unparsed_line[0] in self.allowed_separators:
+            if allow_separator:
+                self.unparsed_line = self.unparsed_line[1:].lstrip()
+            else:
+                raise GSettingsSchemaConvertException('Separator \'%s\' is not allowed after \'%s\'.' % (self.unparsed_line[0], self.current_token))
+
+        new_level = len(self.indent_stack) - self.leading_indent
+        old_level = len(self.token_stack)
+
+        if new_level > old_level + 1:
+            raise GSettingsSchemaConvertException('Internal error: stacks not in sync.')
+        elif new_level <= old_level:
+            self.token_stack = self.token_stack[:new_level]
+            # we always have the root
+            self.object_stack = self.object_stack[:new_level + 1]
+
+        if new_level == 0:
+            parent_token = ''
+        else:
+            parent_token = self.token_stack[-1]
+
+        # there's new indentation, but no token is allowed under the previous
+        # one
+        if new_level == old_level + 1 and self.previous_token != parent_token:
+            raise GSettingsSchemaConvertException('\'%s\' is not allowed under \'%s\'.' % (self.current_token, self.previous_token))
+
+        if not self.current_token in self.allowed_tokens[parent_token]:
+            if parent_token:
+                error = '\'%s\' is not allowed under \'%s\'.' % (self.current_token, parent_token)
+            else:
+                error = '\'%s\' is not allowed at the root level.' % self.current_token
+            raise GSettingsSchemaConvertException(error)
+
+        current_object = self.object_stack[-1]
+
+        new_object = None
+        if self.current_token == 'gettext-domain':
+            current_object.gettext_domain = self.unparsed_line
+        elif self.current_token == 'schema':
+            name = self._parse_id_without_separator()
+            new_object = GSettingsSchema()
+            new_object.id = name
+            current_object.schemas.append(new_object)
+        elif self.current_token == 'path':
+            current_object.path = self.unparsed_line
+        elif self.current_token == 'child':
+            if not isinstance(current_object, GSettingsSchema):
+                raise GSettingsSchemaConvertException('Internal error: child being processed with no parent schema.')
+            name = self._parse_id_without_separator()
+            new_object = GSettingsSchema()
+            new_object.id = '%s.%s' % (current_object.id, name)
+            if current_object.path:
+                new_object.path = '%s%s/' % (current_object.path, name)
+            new_object.name = name
+            current_object.children.append(new_object)
+        elif self.current_token == 'key':
+            new_object =  self._parse_key()
+            current_object.keys.append(new_object)
+        elif self.current_token == 'l10n':
+            (current_object.l10n, current_object.l10n_context) = self._parse_l10n()
+        elif self.current_token == 'summary':
+            current_object.summary = self.unparsed_line
+        elif self.current_token == 'description':
+            current_object.description = self.unparsed_line
+        elif self.current_token == 'choices':
+            current_object.choices = self._parse_choices(current_object)
+        elif self.current_token == 'range':
+            current_object.range = self._parse_range(current_object)
+
+        if new_object:
+            self.token_stack.append(self.current_token)
+            self.object_stack.append(new_object)
+
+    def parse(self):
+        f = open(self.file, 'r')
+        lines = [ line[:-1] for line in f.readlines() ]
+        f.close()
+
+        try:
+            current_line_nb = 0
+            for line in lines:
+                current_line_nb += 1
+                self.parse_line(line)
+        except GSettingsSchemaConvertException, e:
+            raise GSettingsSchemaConvertException('%s:%s: %s' % (os.path.basename(self.file), current_line_nb, e))
+
+        return self.root
+
+
+######################################
+
+
+class XMLSchemaParser:
+
+    def __init__(self, file):
+        self.file = file
+
+        self.root = None
+
+    def _parse_key(self, key_node, schema):
+        key = GSettingsSchemaKey()
+
+        key.name = key_node.get('name')
+        if not key.name:
+            raise GSettingsSchemaConvertException('A key in schema \'%s\' has no name.' % schema.id)
+        key.type = key_node.get('type')
+        if not key.type:
+            raise GSettingsSchemaConvertException('Key \'%s\' in schema \'%s\' has no type.' % (key.name, schema.id))
+
+        default_node = key_node.find('default')
+        if default_node is None or not default_node.text.strip():
+            raise GSettingsSchemaConvertException('Key \'%s\' in schema \'%s\' has no default value.' % (key.name, schema.id))
+        key.l10n = default_node.get('l10n')
+        key.l10n_context = default_node.get('context')
+        key.default = default_node.text.strip()
+
+        summary_node = key_node.find('summary')
+        if summary_node is not None:
+            key.summary = summary_node.text.strip()
+        description_node = key_node.find('description')
+        if description_node is not None:
+            key.description = description_node.text.strip()
+
+        range_node = key_node.find('range')
+        if range_node is not None:
+            min = None
+            max = None
+            min_node = range_node.find('min')
+            if min_node is not None:
+                min = min_node.text.strip()
+            max_node = range_node.find('max')
+            if max_node is not None:
+                max = max_node.text.strip()
+            if min or max:
+                self.range = (min, max)
+
+        choices_node = key_node.find('choices')
+        if choices_node is not None:
+            self.choices = []
+            for choice_node in choices_node.findall('choice'):
+                value = choice_node.get('value')
+                if value:
+                    self.choices.append(value)
+                else:
+                    raise GSettingsSchemaConvertException('A choice for key \'%s\' in schema \'%s\' has no value.' % (key.name, schema.id))
+
+        return key
+
+    def _parse_schema(self, schema_node):
+        schema = GSettingsSchema()
+
+        schema._children = []
+
+        schema.id = schema_node.get('id')
+        if not schema.id:
+            raise GSettingsSchemaConvertException('A schema has no id.')
+        schema.path = schema_node.get('path')
+        schema.gettext_domain = schema_node.get('gettext-domain')
+
+        for key_node in schema_node.findall('key'):
+            key = self._parse_key(key_node, schema)
+            schema.keys.append(key)
+
+        for child_node in schema_node.findall('child'):
+            child_name = child_node.get('name')
+            if not child_name:
+                raise GSettingsSchemaConvertException('A child of schema \'%s\' has no name.' % schema.id)
+            child_schema = child_node.get('schema')
+            if not child_schema:
+                raise GSettingsSchemaConvertException('Child \'%s\' of schema \'%s\' has no schema.' % (child_name, schema.id))
+
+            expected_id = schema.id + '.' + child_name
+            if child_schema != expected_id:
+                raise GSettingsSchemaConvertException('\'%s\' is too complex for this tool: child \'%s\' of schema \'%s\' has a schema that is not the expected one (\'%s\' vs \'%s\').' % (os.path.basename(self.file), child_name, schema.id, child_schema, expected_id))
+
+            schema._children.append((child_schema, child_name))
+
+        return schema
+
+    def parse(self):
+        self.root = GSettingsSchemaRoot()
+        schemas = []
+        parent = {}
+
+        schemalist_node = ET.parse(self.file).getroot()
+        self.root.gettext_domain = schemalist_node.get('gettext-domain')
+
+        for schema_node in schemalist_node.findall('schema'):
+            schema = self._parse_schema(schema_node)
+
+            for (child_schema, child_name) in schema._children:
+                if parent.has_key(child_schema):
+                    raise GSettingsSchemaConvertException('Child \'%s\' is declared by two different schemas: \'%s\' and \'%s\'.' % (child_schema, parent[child_schema], schema.id))
+                parent[child_schema] = schema
+
+            schemas.append(schema)
+
+        # now let's move all schemas where they should leave
+        for schema in schemas:
+            if parent.has_key(schema.id):
+                parent_schema = parent[schema.id]
+
+                # check that the paths of parent and child are supported by
+                # this tool
+                found = False
+                for (child_schema, child_name) in parent_schema._children:
+                    if child_schema == schema.id:
+                        found = True
+                        break
+
+                if not found:
+                    raise GSettingsSchemaConvertException('Internal error: child not found in parent\'s children.')
+
+                schema.name = child_name
+                parent_schema.children.append(schema)
+            else:
+                self.root.schemas.append(schema)
+
+        return self.root
+
+
+######################################
+
+
+def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
+    typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
+    result = typemap[gconftype]
+    if gconftype == 'list':
+        result = result + typemap[gconfsubtype]
+    return result
+
+
+class GConfSchema:
+
+    def __init__(self, node):
+        locale_node = node.find('locale')
+
+        self.key = node.find('key').text
+        self.type = node.find('type').text
+        if self.type == 'list':
+            self.list_type = node.find('list_type').text
+        else:
+            self.list_type = None
+        self.varianttype = map_gconf_type_to_variant_type(self.type, self.list_type)
+
+        applyto_node = node.find('applyto')
+        if applyto_node is not None:
+            self.applyto = node.find('applyto').text
+            self.applyto.strip()
+            self.keyname = self.applyto[self.applyto.rfind('/')+1:]
+            self.prefix = self.applyto[:self.applyto.rfind('/')+1]
+        else:
+            self.applyto = None
+            self.key.strip()
+            self.keyname = self.key[self.key.rfind('/')+1:]
+            self.prefix = self.key[:self.key.rfind('/')+1]
+        self.prefix = os.path.normpath(self.prefix)
+
+        try:
+            self.default = locale_node.find('default').text
+            self.localized = 'messages'
+        except:
+            try:
+                self.default = node.find('default').text
+                self.localized = None
+            except:
+                raise GSettingsSchemaConvertException('No default value for key \'%s\'. A default value is always required in GSettings schemas.' % self.applyto or self.key)
+        self.typed_default = None
+
+        self.short = self._get_value_with_locale(node, locale_node, 'short')
+        self.long = self._get_value_with_locale(node, locale_node, 'long')
+
+        self.short = self._oneline(self.short)
+        self.long = self._oneline(self.long)
+
+        # Fix the default to be parsable by GVariant
+        if self.type == 'string':
+            if not self.default:
+                self.default = '\'\''
+            else:
+                self.default.replace('\'', '\\\'')
+                self.default = '\'%s\'' % self.default
+        elif self.type == 'bool':
+            self.default = self.default.lower()
+        elif self.type == 'list':
+            l = self.default.strip()
+            if not (l[0] == '[' and l[-1] == ']'):
+                raise GSettingsSchemaConvertException('Cannot parse default list value \'%s\' for key \'%s\'.' % (self.default, self.applyto or self.key))
+            values = l[1:-1].strip()
+            if not values:
+                self.typed_default = '@%s []' % self.varianttype
+            elif self.list_type == 'string':
+                items = [ item.strip() for item in values.split(',') ]
+                items = [ item.replace('\'', '\\\'') for item in items ]
+                values = ', '.join([ '\'%s\'' % item for item in items ])
+                self.default = '[ %s ]' % values
+
+    def _get_value_with_locale(self, node, locale_node, element):
+        element_node = None
+        if locale_node is not None:
+            element_node = locale_node.find(element)
+        if element_node is None:
+            element_node = node.find(element)
+        if element_node is not None:
+            return element_node.text
+        else:
+            return None
+
+    def _oneline(self, s):
+        lines = s.splitlines()
+        result = ''
+        for line in lines:
+            result += ' ' + line.lstrip()
+        return result.strip()
+
+    def get_gsettings_schema_key(self):
+        key = GSettingsSchemaKey()
+        key.fill(self.keyname, self.varianttype, self.default, self.typed_default, self.localized, self.keyname, self.short, self.long, None, None)
+        return key
+
+
+######################################
+
+
+class GConfSchemaParser:
+
+    def __init__(self, file, default_schema_id):
+        self.file = file
+        self.default_schema_id = default_schema_id
+
+        self.root = None
+        self.default_schema_id_count = 0
+
+    def _insert_schema(self, gconf_schema):
+        schemas_only = (gconf_schema.applyto is None)
+
+        dirpath = gconf_schema.prefix
+        if dirpath[0] != '/':
+            raise GSettingsSchemaConvertException('Key \'%s\' has a relative path. There is no relative path in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+
+        # remove leading 'schemas/' for schemas-only keys
+        if schemas_only and dirpath.startswith('/schemas/'):
+            dirpath = dirpath[len('/schemas'):]
+
+        if len(dirpath) == 1:
+            raise GSettingsSchemaConvertException('Key \'%s\' is a toplevel key. Toplevel keys are not accepted in GSettings schemas.' % gconf_schema.applyto or gconf_schema.key)
+
+        # remove trailing slash because we'll split the string
+        if dirpath[-1] == '/':
+            dirpath = dirpath[:-1]
+        # and also remove leading slash when splitting
+        hierarchy = dirpath[1:].split('/')
+
+        # we don't want to put apps/ and desktop/ keys in the same schema,
+        # so we have a first step where we make sure to create a new schema
+        # to avoid this case if necessary
+        gsettings_schema = None
+        for schema in self.root.schemas:
+            if schemas_only:
+                schema_path = schema._hacky_path
+            else:
+                schema_path = schema.path
+            if dirpath.startswith(schema_path):
+                gsettings_schema = schema
+                break
+        if not gsettings_schema:
+            gsettings_schema = GSettingsSchema()
+            if schemas_only:
+                gsettings_schema._hacky_path = '/' + hierarchy[0] + '/'
+            else:
+                gsettings_schema.path = '/' + hierarchy[0] + '/'
+            self.root.schemas.append(gsettings_schema)
+
+        # we create the schema hierarchy that leads to this key
+        gsettings_dir = gsettings_schema
+        for item in hierarchy[1:]:
+            subdir = None
+            for child in gsettings_dir.children:
+                if child.name == item:
+                    subdir = child
+                    break
+            if not subdir:
+                subdir = GSettingsSchema()
+                # note: the id will be set later on
+                if gsettings_dir.path:
+                    subdir.path = '%s%s/' % (gsettings_dir.path, item)
+                subdir.name = item
+                gsettings_dir.children.append(subdir)
+            gsettings_dir = subdir
+
+        # we have the final directory, so we can put the key there
+        gsettings_dir.keys.append(gconf_schema.get_gsettings_schema_key())
+
+    def _set_children_id(self, schema):
+        for child in schema.children:
+            child.id = '%s.%s' % (schema.id, child.name)
+            self._set_children_id(child)
+
+    def _fix_hierarchy(self):
+        for schema in self.root.schemas:
+            # we created one schema per level, starting at the root level;
+            # however, we don't need to go that far and we can simplify the
+            # hierarchy
+            while len(schema.children) == 1 and not schema.keys:
+                child = schema.children[0]
+                schema.children = child.children
+                schema.keys = child.keys
+                if schema.path:
+                    schema.path += child.name + '/'
+
+            # now that we have a toplevel schema, set the id
+            if self.default_schema_id:
+                schema.id = self.default_schema_id
+                if self.default_schema_id_count > 0:
+                    schema.id += '.FIXME-%s' % self.default_schema_id_count
+                self.default_schema_id_count += 1
+            else:
+                schema.id = 'FIXME'
+            self._set_children_id(schema)
+
+    def parse(self):
+        # reset the state of the parser
+        self.root = GSettingsSchemaRoot()
+        self.default_schema_id_count = 0
+
+        gconfschemafile_node = ET.parse(self.file).getroot()
+        for schemalist_node in gconfschemafile_node.findall('schemalist'):
+            for schema_node in schemalist_node.findall('schema'):
+                self._insert_schema(GConfSchema(schema_node))
+
+        self._fix_hierarchy()
+
+        return self.root
+
+
+######################################
+
+
+def main(args):
+    parser = optparse.OptionParser()
+
+    parser.add_option("-o", "--output", dest="output",
+                      help="output file")
+    parser.add_option("-g", "--gconf", action="store_true", dest="gconf",
+                      default=False, help="convert a gconf schema file")
+    parser.add_option("-i", "--schema-id", dest="schema_id",
+                      help="default schema ID to use when converting gconf schema file")
+    parser.add_option("-s", "--simple", action="store_true", dest="simple",
+                      default=False, help="use the simple schema format as output (only for gconf schema conversion)")
+    parser.add_option("-x", "--xml", action="store_true", dest="xml",
+                      default=False, help="use the xml schema format as output")
+    parser.add_option("-f", "--force", action="store_true", dest="force",
+                      default=False, help="overwrite output file if already existing")
+
+    (options, args) = parser.parse_args()
+
+    if len(args) < 1:
+        print >> sys.stderr, 'Need a filename to work on.'
+        return 1
+    elif len(args) > 1:
+        print >> sys.stderr, 'Too many arguments.'
+        return 1
+
+    if options.simple and options.xml:
+        print >> sys.stderr, 'Too many output formats requested.'
+        return 1
+
+    if not options.gconf and options.schema_id:
+        print >> sys.stderr, 'Default schema ID can only be specified when converting a gconf schema.'
+        return 1
+
+    argfile = os.path.expanduser(args[0])
+    if not os.path.exists(argfile):
+        print >> sys.stderr, '\'%s\' does not exist.' % argfile
+        return 1
+
+    if options.output:
+        options.output = os.path.expanduser(options.output)
+
+    try:
+        if options.output and not options.force and os.path.exists(options.output):
+            raise GSettingsSchemaConvertException('\'%s\' already exists. Use --force to overwrite it.' % options.output)
+
+        if options.gconf:
+            if not options.simple and not options.xml:
+                options.simple = True
+
+            try:
+                parser = GConfSchemaParser(argfile, options.schema_id)
+                schema_root = parser.parse()
+            except SyntaxError, e:
+                raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))
+        else:
+            # autodetect if file is XML or not
+            try:
+                parser = XMLSchemaParser(argfile)
+                schema_root = parser.parse()
+                if not options.simple and not options.xml:
+                    options.simple = True
+            except SyntaxError, e:
+                parser = SimpleSchemaParser(argfile)
+                schema_root = parser.parse()
+                if not options.simple and not options.xml:
+                    options.xml = True
+
+        if options.xml:
+            node = schema_root.get_xml_node()
+            tree = ET.ElementTree(node)
+            try:
+                output = ET.tostring(tree, pretty_print = True)
+            except TypeError:
+                # pretty_print only works with lxml
+                output = ET.tostring(tree)
+        else:
+            output = schema_root.get_simple_string()
+
+        if not options.output:
+            sys.stdout.write(output)
+        else:
+            try:
+                fout = open(options.output, 'w')
+                fout.write(output)
+                fout.close()
+            except GSettingsSchemaConvertException, e:
+                fout.close()
+                if os.path.exists(options.output):
+                    os.unlink(options.output)
+                raise e
+
+    except GSettingsSchemaConvertException, e:
+        print >> sys.stderr, '%s' % e
+        return 1
+
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        res = main(sys.argv)
+        sys.exit(res)
+    except KeyboardInterrupt:
+        pass
