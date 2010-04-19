@@ -390,6 +390,14 @@ end_element (GMarkupParseContext  *context,
 
   else if (strcmp (element_name, "key") == 0)
     {
+      if (state->value == NULL)
+        {
+          g_set_error_literal (error,
+                               G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                               "Element <default> is required in <key>\n");
+          return;
+        }
+
       gvdb_item_set_value (state->key, state->value);
       gvdb_item_set_options (state->key,
                              g_variant_builder_end (&state->key_options));
@@ -521,7 +529,7 @@ main (int argc, char **argv)
     {
       if (g_str_has_suffix (file, ".gschema.xml"))
 	{
-	  g_ptr_array_add (files, g_strdup (file));
+	  g_ptr_array_add (files, g_build_filename (srcdir, file, NULL));
 	}
     }
 

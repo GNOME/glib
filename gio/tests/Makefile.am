@@ -34,7 +34,8 @@ TEST_PROGS +=	 		\
 	simple-async-result	\
 	srvtarget		\
 	contexts		\
-	gsettings
+	gsettings		\
+	gschema-compile
 
 SAMPLE_PROGS = 			\
 	resolver		\
@@ -146,7 +147,14 @@ contexts_LDADD		  = $(progs_ldadd) \
 gsettings_SOURCES	  = gsettings.c
 gsettings_LDADD		  = $(progs_ldadd)
 
-EXTRA_DIST += org.gtk.test.gschema org.gtk.test.gschema.xml de.po
+gschema_compile_SOURCES	  = gschema-compile.c
+gschema_compile_LDADD	  = $(progs_ldadd)
+
+EXTRA_DIST +=                                          \
+	org.gtk.test.gschema                           \
+	org.gtk.test.gschema.xml                       \
+	de.po                                          \
+	schema-tests/no-default/no-default.gschema.xml \
 
 MISC_STUFF = gschemas.compiled test.mo
 
@@ -158,4 +166,10 @@ test.mo: de.po
 gschemas.compiled:
 	$(top_builddir)/gio/gschema-compile --targetdir=$(abs_builddir) $(srcdir)
 
-DISTCLEANFILES = applications/mimeinfo.cache de/LC_MESSAGES/test.mo test.mo  gsettings.store
+DISTCLEANFILES =                                  \
+	applications/mimeinfo.cache               \
+	de/LC_MESSAGES/test.mo                    \
+	test.mo                                   \
+	gsettings.store                           \
+	gschemas.compiled                         \
+	schema-tests/no-schema/gschemas.compiled
