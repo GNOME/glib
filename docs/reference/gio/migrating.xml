@@ -311,6 +311,36 @@ start_monitoring_trash (void)
       <title>Schema conversion</title>
 
       <para>
+        If you are porting your application from GConf, most likely you already
+        have a GConf schema. GIO comes with a commandline tool
+        <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
+        that can help with the task of converting a GConf schema into
+        an equivalent GSettings schema. The tool is not perfect and
+        may need assistence in some cases.
+      </para>
+
+      <para>
+        GSettings schemas are described by XML files that need to get installed
+        into <filename>$datadir/glib-2.0/schemas</filename>, and need to be
+        compiled into a binary form by the <link linkend="gschema-compile">gschema-compile</link>
+        utility. GIO provides variables <literal>gsettingsschemadir</literal>
+        and <literal>gsettingsupdateschemacache</literal> for the location
+        and the command, which can be used in <filename>configure.in</filename>
+        as follows:
+<programlisting>
+AC_SUBST(gsettingsschemadir, `pkg-config --variable gsettingsschemadir gio-2.0`)
+AC_SUBST(gsettingsupdateschemacache, `pkg-config --variable gsettingsupdateschemacache gio-2.0`)
+</programlisting>
+        The corresponding <filename>Makefile.am</filename> fragment looks like
+        this:
+<programlisting>
+gsettingsschema_DATA = my.app.gschema.xml
+install-data-hook:
+        $(gsettingsupdateschemacache) $(gsettingsschemadir)
+</programlisting>
+      </para>
+
+      <para>
         One possible pitfall in doing schema conversion is that the default
         values in GSettings schemas are parsed by the #GVariant parser.
         This means that strings need to include quotes in the XML.  Also note
@@ -389,13 +419,6 @@ start_monitoring_trash (void)
         of your application to continue to access GConf and parts to use
         GSettings. By the time you have finished porting your application
         you must ensure that all key names are valid.
-      </para>
-      <para>
-        GIO comes with a commandline tool
-        <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
-        that can help with the task of converting a GConf schema into
-        an equivalent GSettings schema. The tool is not perfect and
-        may need assistence in some cases.
       </para>
     </section>
 
