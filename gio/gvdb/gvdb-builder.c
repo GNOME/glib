@@ -236,6 +236,9 @@ file_builder_allocate (FileBuilder         *fb,
 {
   FileChunk *chunk;
 
+  if (size == 0)
+    return NULL;
+
   fb->offset += (-fb->offset) & (alignment - 1);
   chunk = g_slice_new (FileChunk);
   chunk->offset = fb->offset;
