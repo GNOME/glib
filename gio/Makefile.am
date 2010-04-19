@@ -496,7 +496,7 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
-bin_SCRIPTS = gsettings-schema-convert
+dist_bin_SCRIPTS = gsettings-schema-convert
 bin_PROGRAMS = gio-querymodules gschema-compile
 
 gio_querymodules_SOURCES = gio-querymodules.c
