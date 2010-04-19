@@ -78,6 +78,12 @@
     <key name="int" type="i">
       <default>0</default>
     </key>
+    <key name="int64" type="x">
+      <default>0</default>
+    </key>
+    <key name="uint64" type="t">
+      <default>0</default>
+    </key>
     <key name="double" type="d">
       <default>0</default>
     </key>

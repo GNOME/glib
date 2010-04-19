@@ -640,6 +640,8 @@ enum
   PROP_0,
   PROP_BOOL,
   PROP_INT,
+  PROP_INT64,
+  PROP_UINT64,
   PROP_DOUBLE,
   PROP_STRING
 };
@@ -650,6 +652,8 @@ typedef struct
 
   gboolean bool_prop;
   gint int_prop;
+  gint64 int64_prop;
+  guint64 uint64_prop;
   gdouble double_prop;
   gchar *string_prop;
 } TestObject;
@@ -690,6 +694,12 @@ test_object_get_property (GObject    *object,
     case PROP_INT:
       g_value_set_int (value, test_object->int_prop);
       break;
+    case PROP_INT64:
+      g_value_set_int64 (value, test_object->int64_prop);
+      break;
+    case PROP_UINT64:
+      g_value_set_uint64 (value, test_object->uint64_prop);
+      break;
     case PROP_DOUBLE:
       g_value_set_double (value, test_object->double_prop);
       break;
@@ -718,6 +728,12 @@ test_object_set_property (GObject      *object,
     case PROP_INT:
       test_object->int_prop = g_value_get_int (value);
       break;
+    case PROP_INT64:
+      test_object->int64_prop = g_value_get_int64 (value);
+      break;
+    case PROP_UINT64:
+      test_object->uint64_prop = g_value_get_uint64 (value);
+      break;
     case PROP_DOUBLE:
       test_object->double_prop = g_value_get_double (value);
       break;
@@ -744,6 +760,10 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_boolean ("bool", "", "", FALSE, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_INT,
     g_param_spec_int ("int", "", "", -G_MAXINT, G_MAXINT, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_INT64,
+    g_param_spec_int64 ("int64", "", "", G_MININT64, G_MAXINT64, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_UINT64,
+    g_param_spec_uint64 ("uint64", "", "", 0, G_MAXUINT64, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_DOUBLE,
     g_param_spec_double ("double", "", "", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_STRING,
@@ -767,6 +787,8 @@ test_simple_binding (void)
   GSettings *settings;
   gboolean b;
   gint i;
+  gint64 i64;
+  guint64 u64;
   gdouble d;
   gchar *s;
 
@@ -791,6 +813,26 @@ test_simple_binding (void)
   g_object_get (obj, "int", &i, NULL);
   g_assert_cmpint (i, ==, 54321);
 
+  g_settings_bind (settings, "int64", obj, "int64", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "int64", (gint64) G_MAXINT64, NULL);
+  g_settings_get (settings, "int64", "x", &i64);
+  g_assert_cmpint (i64, ==, G_MAXINT64);
+
+  g_settings_set (settings, "int64", "x", (gint64) G_MININT64);
+  g_object_get (obj, "int64", &i64, NULL);
+  g_assert_cmpint (i, ==, G_MININT64);
+
+  g_settings_bind (settings, "uint64", obj, "uint64", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "uint64", (guint64) G_MAXUINT64, NULL);
+  g_settings_get (settings, "uint64", "t", &u64);
+  g_assert_cmpint (u64, ==, G_MAXUINT64);
+
+  g_settings_set (settings, "int64", "t", (guint64) G_MAXINT64);
+  g_object_get (obj, "int64", &u64, NULL);
+  g_assert_cmpint (i, ==, G_MAXINT64);
+
   g_settings_bind (settings, "string", obj, "string", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "string", "bu ba", NULL);
@@ -805,12 +847,12 @@ test_simple_binding (void)
 
   g_settings_bind (settings, "double", obj, "double", G_SETTINGS_BIND_DEFAULT);
 
-  g_object_set (obj, "double", 203e7, NULL);
-  g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, 203e7);
+  g_object_set (obj, "double", G_MAXFLOAT, NULL);
+  g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, G_MAXFLOAT);
 
-  g_settings_set_double (settings, "double", 207e3);
+  g_settings_set_double (settings, "double", G_MINFLOAT);
   g_object_get (obj, "double", &d, NULL);
-  g_assert_cmpfloat (d, ==, 207e3);
+  g_assert_cmpfloat (d, ==, G_MINFLOAT);
 
   g_object_unref (obj);
   g_object_unref (settings);
