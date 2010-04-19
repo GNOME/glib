@@ -1012,6 +1012,8 @@ test_keyfile (void)
 int
 main (int argc, char *argv[])
 {
+  setlocale (LC_ALL, "");
+
   g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
   g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
