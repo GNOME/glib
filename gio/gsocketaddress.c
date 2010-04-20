@@ -217,9 +217,13 @@ g_socket_address_new_from_native (gpointer native,
   if (family == AF_INET)
     {
       struct sockaddr_in *addr = (struct sockaddr_in *) native;
-      GInetAddress *iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin_addr), AF_INET);
+      GInetAddress *iaddr;
       GSocketAddress *sockaddr;
 
+      if (len < sizeof (*addr))
+	return NULL;
+
+      iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin_addr), AF_INET);
       sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin_port));
       g_object_unref (iaddr);
       return sockaddr;
@@ -228,9 +232,13 @@ g_socket_address_new_from_native (gpointer native,
   if (family == AF_INET6)
     {
       struct sockaddr_in6 *addr = (struct sockaddr_in6 *) native;
-      GInetAddress *iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
+      GInetAddress *iaddr;
       GSocketAddress *sockaddr;
 
+      if (len < sizeof (*addr))
+	return NULL;
+
+      iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
       sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin6_port));
       g_object_unref (iaddr);
       return sockaddr;
@@ -240,11 +248,30 @@ g_socket_address_new_from_native (gpointer native,
   if (family == AF_UNIX)
     {
       struct sockaddr_un *addr = (struct sockaddr_un *) native;
+      gint path_len = len - G_STRUCT_OFFSET (struct sockaddr_un, sun_path);
 
-      if (addr->sun_path[0] == 0)
-	return g_unix_socket_address_new_abstract (addr->sun_path+1,
-						   sizeof (addr->sun_path) - 1);
-      return g_unix_socket_address_new (addr->sun_path);
+      if (path_len == 0)
+	{
+	  return g_unix_socket_address_new_with_type ("", 0,
+						      G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+	}
+      else if (addr->sun_path[0] == 0)
+	{
+	  if (len < sizeof (*addr))
+	    {
+	      return g_unix_socket_address_new_with_type (addr->sun_path + 1,
+							  path_len - 1,
+							  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+	    }
+	  else
+	    {
+	      return g_unix_socket_address_new_with_type (addr->sun_path + 1,
+							  path_len - 1,
+							  G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
+	    }
+	}
+      else
+	return g_unix_socket_address_new (addr->sun_path);
     }
 #endif
 

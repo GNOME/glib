@@ -698,6 +698,40 @@ typedef enum {
   G_ZLIB_COMPRESSOR_FORMAT_RAW
 } GZlibCompressorFormat;
 
+/**
+ * GUnixSocketAddressType:
+ * @G_UNIX_SOCKET_ADDRESS_INVALID: invalid
+ * @G_UNIX_SOCKET_ADDRESS_ANONYMOUS: anonymous
+ * @G_UNIX_SOCKET_ADDRESS_PATH: a filesystem path
+ * @G_UNIX_SOCKET_ADDRESS_ABSTRACT: an abstract name
+ * @G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED: an abstract name, 0-padded
+ *   to the full length of a unix socket name
+ *
+ * The type of name used by a #GUnixSocketAddress.
+ * %G_UNIX_SOCKET_ADDRESS_PATH indicates a traditional unix domain
+ * socket bound to a filesystem path. %G_UNIX_SOCKET_ADDRESS_ANONYMOUS
+ * indicates a socket not bound to any name (eg, a client-side socket,
+ * or a socket created with socketpair()).
+ *
+ * For abstract sockets, there are two incompatible ways of naming
+ * them: the man pages suggest using the entire <literal>struct
+ * sockaddr_un</literal> as the name, padding the unused parts of the
+ * %sun_path field with zeroes; this corresponds to
+ * %G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED. However, many programs
+ * instead just use a portion of %sun_path, and pass an appropriate
+ * smaller length to bind() or connect(). This is
+ * %G_UNIX_SOCKET_ADDRESS_ABSTRACT.
+ *
+ * Since: 2.26
+ */
+typedef enum {
+  G_UNIX_SOCKET_ADDRESS_INVALID,
+  G_UNIX_SOCKET_ADDRESS_ANONYMOUS,
+  G_UNIX_SOCKET_ADDRESS_PATH,
+  G_UNIX_SOCKET_ADDRESS_ABSTRACT,
+  G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED
+} GUnixSocketAddressType;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

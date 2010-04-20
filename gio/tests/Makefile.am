@@ -151,6 +151,7 @@ gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
 
 EXTRA_DIST +=                                     \
+	socket-common.c                           \
 	org.gtk.test.gschema                      \
 	org.gtk.test.gschema.xml                  \
 	de.po                                     \

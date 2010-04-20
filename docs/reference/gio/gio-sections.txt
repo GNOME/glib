@@ -1556,9 +1556,12 @@ g_inet_socket_address_get_type
 <FILE>gunixsocketaddress</FILE>
 <TITLE>GUnixSocketAddress</TITLE>
 GUnixSocketAddress
+GUnixSocketAddressType
 g_unix_socket_address_new
 g_unix_socket_address_new_abstract
+g_unix_socket_address_new_with_type
 g_unix_socket_address_get_is_abstract
+g_unix_socket_address_get_address_type
 g_unix_socket_address_get_path
 g_unix_socket_address_get_path_len
 g_unix_socket_address_abstract_names_supported

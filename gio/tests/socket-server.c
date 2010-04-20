@@ -1,6 +1,10 @@
 #include <gio/gio.h>
+#include <gio/gunixsocketaddress.h>
 #include <glib.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "socket-common.c"
 
 GMainLoop *loop;
 
@@ -11,6 +15,7 @@ gboolean non_blocking = FALSE;
 gboolean use_udp = FALSE;
 gboolean use_source = FALSE;
 int cancel_timeout = 0;
+gboolean unix_socket = FALSE;
 
 static GOptionEntry cmd_entries[] = {
   {"port", 'p', 0, G_OPTION_ARG_INT, &port,
@@ -27,23 +32,10 @@ static GOptionEntry cmd_entries[] = {
    "Enable non-blocking i/o", NULL},
   {"use-source", 's', 0, G_OPTION_ARG_NONE, &use_source,
    "Use GSource to wait for non-blocking i/o", NULL},
+  {"unix", 'U', 0, G_OPTION_ARG_NONE, &unix_socket,
+   "Use a unix socket instead of IP", NULL},
   {NULL}
 };
-
-static char *
-socket_address_to_string (GSocketAddress *address)
-{
-  GInetAddress *inet_address;
-  char *str, *res;
-  int the_port;
-
-  inet_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (address));
-  str = g_inet_address_to_string (inet_address);
-  the_port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
-  res = g_strdup_printf ("%s:%d", str, the_port);
-  g_free (str);
-  return res;
-}
 
 static gboolean
 source_ready (gpointer data,
@@ -108,9 +100,11 @@ main (int argc,
   GSocketAddress *src_address;
   GSocketAddress *address;
   GSocketType socket_type;
+  GSocketFamily socket_family;
   GError *error = NULL;
   GOptionContext *context;
   GCancellable *cancellable;
+  char *display_addr;
 
   g_thread_init (NULL);
 
@@ -121,6 +115,12 @@ main (int argc,
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
+      return 1;
+    }
+
+  if (unix_socket && argc != 2)
+    {
+      g_printerr ("%s: %s\n", argv[0], "Need to specify unix socket name");
       return 1;
     }
 
@@ -141,7 +141,12 @@ main (int argc,
   else
     socket_type = G_SOCKET_TYPE_STREAM;
 
-  socket = g_socket_new (G_SOCKET_FAMILY_IPV4, socket_type, 0, &error);
+  if (unix_socket)
+    socket_family = G_SOCKET_FAMILY_UNIX;
+  else
+    socket_family = G_SOCKET_FAMILY_IPV4;
+
+  socket = g_socket_new (socket_family, socket_type, 0, &error);
 
   if (socket == NULL)
     {
@@ -152,7 +157,20 @@ main (int argc,
   if (non_blocking)
     g_socket_set_blocking (socket, FALSE);
 
-  src_address = g_inet_socket_address_new (g_inet_address_new_any (G_SOCKET_FAMILY_IPV4), port);
+  if (unix_socket)
+    {
+      src_address = socket_address_from_string (argv[1]);
+      if (src_address == NULL)
+	{
+	  g_printerr ("%s: Could not parse '%s' as unix socket name\n", argv[0], argv[1]);
+	  return 1;
+	}
+    }
+  else
+    {
+      src_address = g_inet_socket_address_new (g_inet_address_new_any (G_SOCKET_FAMILY_IPV4), port);
+    }
+
   if (!g_socket_bind (socket, src_address, !dont_reuse_address, &error))
     {
       g_printerr ("Can't bind socket: %s\n", error->message);
@@ -168,7 +186,16 @@ main (int argc,
 	  return 1;
 	}
 
-      g_print ("listening on port %d...\n", port);
+      address = g_socket_get_local_address (socket, &error);
+      if (!address)
+	{
+	  g_printerr ("Error getting local address: %s\n",
+		      error->message);
+	  return 1;
+	}
+      display_addr = socket_address_to_string (address);
+      g_print ("listening on %s...\n", display_addr);
+      g_free (display_addr);
 
       ensure_condition (socket, "accept", cancellable, G_IO_IN);
       new_socket = g_socket_accept (socket, cancellable, &error);
@@ -190,8 +217,9 @@ main (int argc,
 	  return 1;
 	}
 
-      g_print ("got a new connection from %s\n",
-	       socket_address_to_string (address));
+      display_addr = socket_address_to_string (address);
+      g_print ("got a new connection from %s\n", display_addr);
+      g_free(display_addr);
       g_object_unref (address);
 
       recv_socket = new_socket;
