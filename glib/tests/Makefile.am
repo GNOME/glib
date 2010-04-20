@@ -23,12 +23,16 @@ fileutils_SOURCES  = fileutils.c
 fileutils_LDADD	   = $(progs_ldadd)
 
 TEST_PROGS        += printf
-printf_SOURCES       = printf.c
-printf_LDADD	   = $(progs_ldadd) -lm
+printf_SOURCES     = printf.c
+printf_LDADD       = $(progs_ldadd) -lm
+
+TEST_PROGS        += protocol
+protocol_SOURCES   = protocol.c
+protocol_LDADD     = $(progs_ldadd)
 
 TEST_PROGS        += rand
 rand_SOURCES       = rand.c
-rand_LDADD	   = $(progs_ldadd) -lm
+rand_LDADD         = $(progs_ldadd) -lm
 
 TEST_PROGS        += strfuncs
 strfuncs_SOURCES   = strfuncs.c

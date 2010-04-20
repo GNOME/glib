@@ -1264,6 +1264,7 @@ gtest_default_log_handler (const gchar    *log_domain,
                            gpointer        unused_data)
 {
   const gchar *strv[16];
+  gboolean fatal = FALSE;
   gchar *msg;
   guint i = 0;
   if (log_domain)
@@ -1272,7 +1273,10 @@ gtest_default_log_handler (const gchar    *log_domain,
       strv[i++] = "-";
     }
   if (log_level & G_LOG_FLAG_FATAL)
-    strv[i++] = "FATAL-";
+    {
+      strv[i++] = "FATAL-";
+      fatal = TRUE;
+    }
   if (log_level & G_LOG_FLAG_RECURSION)
     strv[i++] = "RECURSIVE-";
   if (log_level & G_LOG_LEVEL_ERROR)
@@ -1291,7 +1295,7 @@ gtest_default_log_handler (const gchar    *log_domain,
   strv[i++] = message;
   strv[i++] = NULL;
   msg = g_strjoinv ("", (gchar**) strv);
-  g_test_log (G_TEST_LOG_ERROR, msg, NULL, 0, NULL);
+  g_test_log (fatal ? G_TEST_LOG_ERROR : G_TEST_LOG_MESSAGE, msg, NULL, 0, NULL);
   g_log_default_handler (log_domain, log_level, message, unused_data);
   g_free (msg);
 }
