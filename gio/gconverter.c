@@ -43,41 +43,12 @@
  * Since: 2.24
  **/
 
-static void g_converter_base_init (gpointer g_class);
 
-GType
-g_converter_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo converter_info =
-      {
-	sizeof (GConverterIface), /* class_size */
-	g_converter_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	NULL,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GConverter"),
-				&converter_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
+typedef GConverterIface GConverterInterface;
+G_DEFINE_INTERFACE (GConverter, g_converter, G_TYPE_OBJECT)
 
 static void
-g_converter_base_init (gpointer g_class)
+g_converter_default_init (GConverterInterface *iface)
 {
 }
 

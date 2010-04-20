@@ -91,35 +91,13 @@
  * ]|
  */
 
-GType
-g_socket_connectable_get_type (void)
+
+typedef GSocketConnectableIface GSocketConnectableInterface;
+G_DEFINE_INTERFACE (GSocketConnectable, g_socket_connectable, G_TYPE_OBJECT)
+
+static void
+g_socket_connectable_default_init (GSocketConnectableInterface *iface)
 {
-  static volatile gsize g_define_type_id__volatile = 0;
-
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo connectable_info =
-      {
-        sizeof (GSocketConnectableIface), /* class_size */
-	NULL,		/* base_init */
-	NULL,		/* base_finalize */
-	NULL,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GSocketConnectable"),
-				&connectable_info, 0);
-
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
 }
 
 /**

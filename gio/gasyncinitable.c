@@ -48,7 +48,6 @@
  * a set %GError on failure.
  */
 
-static void     g_async_initable_base_init        (gpointer              g_iface);
 static void     g_async_initable_real_init_async  (GAsyncInitable       *initable,
 						   int                   io_priority,
 						   GCancellable         *cancellable,
@@ -58,42 +57,14 @@ static gboolean g_async_initable_real_init_finish (GAsyncInitable       *initabl
 						   GAsyncResult         *res,
 						   GError              **error);
 
-GType
-g_async_initable_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
 
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      const GTypeInfo initable_info =
-      {
-	sizeof (GAsyncInitableIface), /* class_size */
-	g_async_initable_base_init,   /* base_init */
-	NULL,		/* base_finalize */
-	NULL,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data */
-	0,
-	0,              /* n_preallocs */
-	NULL
-      };
-      GType g_define_type_id =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GAsyncInitable"),
-				&initable_info, 0);
+typedef GAsyncInitableIface GAsyncInitableInterface;
+G_DEFINE_INTERFACE (GAsyncInitable, g_async_initable, G_TYPE_OBJECT)
 
-      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_OBJECT);
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
 
 static void
-g_async_initable_base_init (gpointer g_iface)
+g_async_initable_default_init (GAsyncInitableInterface *iface)
 {
-  GAsyncInitableIface *iface = g_iface;
-
   iface->init_async = g_async_initable_real_init_async;
   iface->init_finish = g_async_initable_real_init_finish;
 }
