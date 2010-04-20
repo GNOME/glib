@@ -2141,6 +2141,7 @@ g_settings_set_strv
 GSettingsBindFlags
 g_settings_bind
 g_settings_bind_with_mapping
+g_settings_bind_writable
 g_settings_unbind
 GSettingsBindSetMapping
 GSettingsBindGetMapping

@@ -1230,6 +1230,12 @@ g_settings_binding_property_changed (GObject          *object,
  * if you need a custom mapping, or map between types that
  * are not supported by the default mapping functions.
  *
+ * Unless the @flags include %G_SETTINGS_BIND_NO_SENSITIVITY, this
+ * function also establishes a binding between the writability of
+ * @key and the "sensitive" property of @object (if @object has
+ * a boolean property by that name). See g_settings_bind_writable()
+ * for more details about writable bindings.
+ *
  * Note that the lifecycle of the binding is tied to the object,
  * and that you can have only one binding per object property.
  * If you bind the same property twice on the same object, the second
@@ -1428,7 +1434,35 @@ g_settings_binding_writable_changed (GSettings   *settings,
   g_object_set (binding->object, binding->property, writable, NULL);
 }
 
-
+/**
+ * g_settings_bind_writable:
+ * @settings: a #GSettings object
+ * @key: the key to bind
+ * @object: a #GObject
+ * @property: the name of a boolean property to bind
+ * @inverted: whether to 'invert' the value
+ *
+ * Create a binding between the writability of @key in the
+ * @settings object and the property @property of @object.
+ * The property must be boolean; "sensitive" or "visible"
+ * properties of widgets are the most likely candidates.
+ *
+ * Writable bindings are always uni-directional; changes of the
+ * writability of the setting will be propagated to the object
+ * property, not the other way.
+ *
+ * When the @inverted argument is %TRUE, the binding inverts the
+ * value as it passes from the setting to the object, i.e. @property
+ * will be set to %TRUE if the key is <emphasis>not</emphasis>
+ * writable.
+ *
+ * Note that the lifecycle of the binding is tied to the object,
+ * and that you can have only one binding per object property.
+ * If you bind the same property twice on the same object, the second
+ * binding overrides the first one.
+ *
+ * Since: 2.26
+ */
 void
 g_settings_bind_writable (GSettings   *settings,
                           const gchar *key,
