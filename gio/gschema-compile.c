@@ -515,10 +515,11 @@ main (int argc, char **argv)
     }
 
   srcdir = argv[1];
-  if (targetdir)
-    target = g_build_filename (targetdir, "gschemas.compiled", NULL);
-  else
-    target = "gschemas.compiled";
+
+  if (targetdir == NULL)
+    targetdir = srcdir;
+
+  target = g_build_filename (targetdir, "gschemas.compiled", NULL);
 
   dir = g_dir_open (srcdir, 0, &error);
   if (dir == NULL)
