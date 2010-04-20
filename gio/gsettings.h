@@ -197,6 +197,11 @@ void                    g_settings_bind_with_mapping                    (GSettin
                                                                          GSettingsBindSetMapping  set_mapping,
                                                                          gpointer                 user_data,
                                                                          GDestroyNotify           destroy);
+void                    g_settings_bind_writable                        (GSettings               *settings,
+                                                                         const gchar             *key,
+                                                                         gpointer                 object,
+                                                                         const gchar             *property,
+                                                                         gboolean                 inverted);
 void                    g_settings_unbind                               (gpointer                 object,
                                                                          const gchar             *property);
 

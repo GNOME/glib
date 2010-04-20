@@ -1390,6 +1390,7 @@ g_settings_backend_changed_tree
 #if IN_FILE(__G_SETTINGS_C__)
 g_settings_apply
 g_settings_bind
+g_settings_bind_writable
 g_settings_bind_with_mapping
 g_settings_delay
 g_settings_get

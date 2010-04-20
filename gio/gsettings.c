@@ -1181,21 +1181,6 @@ g_settings_binding_key_changed (GSettings   *settings,
 }
 
 static void
-g_settings_binding_writable_changed (GSettings   *settings,
-                                     const gchar *key,
-                                     gpointer     user_data)
-{
-  GSettingsBinding *binding = user_data;
-  gboolean writable;
-
-  g_assert (settings == binding->settings);
-  g_assert (key == binding->key);
-
-  writable = g_settings_is_writable (settings, key);
-  g_object_set (binding->object, "sensitive", writable, NULL);
-}
-
-static void
 g_settings_binding_property_changed (GObject          *object,
                                      const GParamSpec *pspec,
                                      gpointer          user_data)
@@ -1303,7 +1288,6 @@ g_settings_bind_with_mapping (GSettings               *settings,
 {
   GSettingsBinding *binding;
   GObjectClass *objectclass;
-  gboolean bind_sensitive;
   gchar *detailed_signal;
   GQuark binding_quark;
 
@@ -1365,10 +1349,11 @@ g_settings_bind_with_mapping (GSettings               *settings,
       GParamSpec *sensitive;
 
       sensitive = g_object_class_find_property (objectclass, "sensitive");
-      bind_sensitive = sensitive && sensitive->value_type == G_TYPE_BOOLEAN;
+
+      if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN)
+        g_settings_bind_writable (settings, binding->key,
+                                  object, "sensitive", FALSE);
     }
-  else
-    bind_sensitive = FALSE;
 
   if (flags & G_SETTINGS_BIND_SET)
     {
@@ -1400,21 +1385,77 @@ g_settings_bind_with_mapping (GSettings               *settings,
       g_settings_binding_key_changed (settings, binding->key, binding);
     }
 
-  if (bind_sensitive)
-    {
-      detailed_signal = g_strdup_printf ("writable-changed::%s", key);
-      binding->writable_handler_id =
-        g_signal_connect (settings, detailed_signal,
-                          G_CALLBACK (g_settings_binding_writable_changed),
-                          binding);
-      g_free (detailed_signal);
-
-      g_settings_binding_writable_changed (settings, binding->key, binding);
-    }
-
   binding_quark = g_settings_binding_quark (property);
   g_object_set_qdata_full (object, binding_quark,
                            binding, g_settings_binding_free);
+}
+
+typedef struct
+{
+  GSettings *settings;
+  gpointer object;
+  const gchar *key;
+  const gchar *property;
+  gboolean inverted;
+  gulong handler_id;
+} GSettingsWritableBinding;
+
+static void
+g_settings_writable_binding_free (gpointer data)
+{
+  GSettingsWritableBinding *binding = data;
+
+  g_signal_handler_disconnect (binding->settings, binding->handler_id);
+  g_object_unref (binding->settings);
+}
+
+static void
+g_settings_binding_writable_changed (GSettings   *settings,
+                                     const gchar *key,
+                                     gpointer     user_data)
+{
+  GSettingsWritableBinding *binding = user_data;
+  gboolean writable;
+
+  g_assert (settings == binding->settings);
+  g_assert (key == binding->key);
+
+  writable = g_settings_is_writable (settings, key);
+
+  if (binding->inverted)
+    writable = !writable;
+
+  g_object_set (binding->object, binding->property, writable, NULL);
+}
+
+
+void
+g_settings_bind_writable (GSettings   *settings,
+                          const gchar *key,
+                          gpointer     object,
+                          const gchar *property,
+                          gboolean     inverted)
+{
+  GSettingsWritableBinding *binding;
+  gchar *detailed_signal;
+
+  binding = g_slice_new (GSettingsWritableBinding);
+  binding->settings = g_object_ref (settings);
+  binding->object = object;
+  binding->property = g_intern_string (property);
+  binding->inverted = inverted;
+
+  detailed_signal = g_strdup_printf ("writable-changed::%s", key);
+  binding->handler_id =
+    g_signal_connect (settings, detailed_signal,
+                      G_CALLBACK (g_settings_binding_writable_changed),
+                      binding);
+  g_free (detailed_signal);
+
+  g_object_set_qdata_full (object, g_settings_binding_quark (property),
+                           binding, g_settings_writable_binding_free);
+
+  g_settings_binding_writable_changed (settings, binding->key, binding);
 }
 
 /**
