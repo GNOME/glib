@@ -549,6 +549,7 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::changed:
    * @settings: the object on which the signal was emitted
+   * @key: the name of the key that changed
    *
    * The "changed" signal is emitted when a key has potentially changed.
    * You should call one of the g_settings_get() calls to check the new
