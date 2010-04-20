@@ -1415,7 +1415,10 @@ g_source_unref_internal (GSource      *source,
 
       if (source->source_funcs->finalize)
 	source->source_funcs->finalize (source);
-      
+
+      g_free (source->name);
+      source->name = NULL;
+
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
       g_free (source);
