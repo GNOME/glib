@@ -792,8 +792,10 @@ class GConfSchema:
         self.short = self._get_value_with_locale(node, locale_node, 'short')
         self.long = self._get_value_with_locale(node, locale_node, 'long')
 
-        self.short = self._oneline(self.short)
-        self.long = self._oneline(self.long)
+        if self.short:
+            self.short = self._oneline(self.short)
+        if self.long:
+            self.long = self._oneline(self.long)
 
         # Fix the default to be parsable by GVariant
         if self.type == 'string':
