@@ -519,7 +519,7 @@ install-data-hook:
       </para>
       <para>
         To make use of this utility, you must install a keyfile in the
-        directory <filename>/usr/share/gconf/conf/gsettings</filename> which
+        directory <filename>/usr/share/GConf/gsettings</filename> which
         lists the GSettings keys and GConf paths to map to each other, for
         each schema that you want to migrate user data for.
       </para>
