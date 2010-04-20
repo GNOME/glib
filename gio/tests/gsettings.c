@@ -827,11 +827,11 @@ test_simple_binding (void)
 
   g_object_set (obj, "uint64", (guint64) G_MAXUINT64, NULL);
   g_settings_get (settings, "uint64", "t", &u64);
-  g_assert_cmpint (u64, ==, G_MAXUINT64);
+  g_assert_cmpuint (u64, ==, G_MAXUINT64);
 
   g_settings_set (settings, "uint64", "t", (guint64) G_MAXINT64);
   g_object_get (obj, "uint64", &u64, NULL);
-  g_assert_cmpint (u64, ==, G_MAXINT64);
+  g_assert_cmpuint (u64, ==, (guint64) G_MAXINT64);
 
   g_settings_bind (settings, "string", obj, "string", G_SETTINGS_BIND_DEFAULT);
 

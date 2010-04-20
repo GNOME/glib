@@ -137,7 +137,7 @@ g_settings_set_mapping_unsigned_int (const GValue       *value,
                                      const GVariantType *expected_type)
 {
   GVariant *variant = NULL;
-  gulong u;
+  guint64 u;
 
   if (G_VALUE_HOLDS_UINT (value))
     u = g_value_get_uint (value);
@@ -283,7 +283,7 @@ g_settings_get_mapping_unsigned_int (GValue   *value,
                                      GVariant *variant)
 {
   const GVariantType *type;
-  gulong u;
+  guint64 u;
 
   type = g_variant_get_type (variant);
 
