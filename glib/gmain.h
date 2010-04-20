@@ -60,7 +60,7 @@ struct _GSource
   GSource *prev;
   GSource *next;
 
-  gpointer reserved1;
+  char    *name;
   gpointer reserved2;
 };
 
@@ -204,6 +204,13 @@ void     g_source_set_callback    (GSource        *source,
 void     g_source_set_funcs       (GSource        *source,
                                    GSourceFuncs   *funcs);
 gboolean g_source_is_destroyed    (GSource        *source);
+
+void                 g_source_set_name       (GSource        *source,
+                                              const char     *name);
+G_CONST_RETURN char* g_source_get_name       (GSource        *source);
+void                 g_source_set_name_by_id (guint           tag,
+                                              const char     *name);
+
 
 /* Used to implement g_source_connect_closure and internally*/
 void g_source_set_callback_indirect (GSource              *source,

@@ -1271,6 +1271,88 @@ g_source_get_can_recurse (GSource  *source)
   return (source->flags & G_SOURCE_CAN_RECURSE) != 0;
 }
 
+
+/**
+ * g_source_set_name:
+ * @source: a #GSource
+ * @name: debug name for the source
+ *
+ * Sets a name for the source, used in debugging and profiling.
+ * The name defaults to #NULL.
+ *
+ * The source name should describe in a human-readable way
+ * what the source does. For example, "X11 event queue"
+ * or "GTK+ repaint idle handler" or whatever it is.
+ *
+ * It is permitted to call this function multiple times, but is not
+ * recommended due to the potential performance impact.  For example,
+ * one could change the name in the "check" function of a #GSourceFuncs 
+ * to include details like the event type in the source name.
+ *
+ * Since: 2.26
+ **/
+void
+g_source_set_name (GSource    *source,
+                   const char *name)
+{
+  g_return_if_fail (source != NULL);
+
+  /* setting back to NULL is allowed, just because it's
+   * weird if get_name can return NULL but you can't
+   * set that.
+   */
+
+  g_free (source->name);
+  source->name = g_strdup (name);
+}
+
+/**
+ * g_source_get_name:
+ * @source: a #GSource
+ *
+ * Gets a name for the source, used in debugging and profiling.
+ * The name may be #NULL if it has never been set with
+ * g_source_set_name().
+ *
+ * Return value: the name of the source
+ * Since: 2.26
+ **/
+G_CONST_RETURN char*
+g_source_get_name (GSource *source)
+{
+  g_return_val_if_fail (source != NULL, NULL);
+
+  return source->name;
+}
+
+/**
+ * g_source_set_name_by_id:
+ * @tag: a #GSource ID
+ * @name: debug name for the source
+ *
+ * Sets the name of a source using its ID.
+ *
+ * This is a convenience utility to set source names from the return
+ * value of g_idle_add(), g_timeout_add(), etc.
+ *
+ * Since: 2.26
+ **/
+void
+g_source_set_name_by_id (guint           tag,
+                         const char     *name)
+{
+  GSource *source;
+
+  g_return_if_fail (tag > 0);
+
+  source = g_main_context_find_source_by_id (NULL, tag);
+  if (source == NULL)
+    return;
+
+  g_source_set_name (source, name);
+}
+
+
 /**
  * g_source_ref:
  * @source: a #GSource
@@ -1857,7 +1939,6 @@ g_source_is_destroyed (GSource *source)
 {
   return SOURCE_DESTROYED (source);
 }
-
 
 /* Temporarily remove all this source's file descriptors from the
  * poll(), so that if data comes available for one of the file descriptors
