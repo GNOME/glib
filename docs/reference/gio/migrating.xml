@@ -229,6 +229,8 @@ start_monitoring_trash (void)
               <row><entry>GConfClient</entry><entry>GSettings</entry></row>
             </thead>
             <tbody>
+              <row><entry>gconf_client_get_default()</entry><entry>no direct equivalent,
+                                                                   instead you call g_settings_new() for the schemas you use</entry></row>
               <row><entry>gconf_client_set()</entry><entry>g_settings_set()</entry></row>
               <row><entry>gconf_client_get()</entry><entry>g_settings_get()</entry></row>
               <row><entry>gconf_client_get_bool()</entry><entry>g_settings_get_boolean()</entry></row>
@@ -318,10 +320,59 @@ start_monitoring_trash (void)
         an equivalent GSettings schema. The tool is not perfect and
         may need assistence in some cases.
       </para>
+      <example><title>An example for using gsettings-schema-convert</title>
+        <para>Running <userinput>gsettings-schema-convert --gconf --xml --schema-id "org.gnome.font-rendering" --output org.gnome.font-rendering.gschema.xml destop_gnome_font_rendering.schemas</userinput> on the following <filename>desktop_gnome_font_rendering.schemas</filename> file:
+        <programlisting>
+<![CDATA[
+<?xml version="1.0"?>
+<gconfschemafile>
+    <schemalist>
+        <schema>
+            <key>/schemas/desktop/gnome/font_rendering/dpi</key>
+            <applyto>/desktop/gnome/font_rendering/dpi</applyto>
+            <owner>gnome</owner>
+            <type>int</type>
+            <default>96</default>
+            <locale name="C">
+                <short>DPI</short>
+                <long>The resolution used for converting font sizes to pixel sizes, in dots per inch.</long>
+            </locale>
+        </schema>
+    </schemalist>
+</gconfschemafile>
+]]>
+</programlisting>
+produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with the following content:
+<programlisting>
+<![CDATA[
+<schemalist>
+  <schema id="org.gnome.font-rendering" path="/desktop/gnome/font_rendering/">
+    <key name="dpi" type="i">
+      <default>96</default>
+      <summary>DPI</summary>
+      <description>The resolution used for converting font sizes to pixel sizes, in dots per inch.</description>
+    </key>
+  </schema>
+</schemalist>
+]]>
+</programlisting>
+</para>
+      </example>
 
       <para>
-        GSettings schemas are described by XML files that need to get installed
-        into <filename>$datadir/glib-2.0/schemas</filename>, and need to be
+        GSettings schemas are identified at runtime by their id (as specified
+        in the XML source file). It is recommended to use a dotted name as schema
+        id, similar in style to a DBus bus name, e.g. "org.gnome.font-rendering".
+       The filename used for the XML schema source is immaterial, but
+       schema compiler expects the files to have the extension
+       <filename>.gschema.xml</filename>. It is recommended to simply
+       use the schema id as the filename, followed by this extension,
+       e.g. <filename>org.gnome.font-rendering.gschema.xml</filename>.
+      </para>
+
+      <para>
+        The XML source file for your GSettings schema needs to get installed
+        into <filename>$datadir/glib-2.0/schemas</filename>, and needs to be
         compiled into a binary form by the <link linkend="gschema-compile">gschema-compile</link>
         utility. GIO provides variables <literal>gsettingsschemadir</literal>
         and <literal>gsettingsupdateschemacache</literal> for the location
@@ -380,7 +431,9 @@ install-data-hook:
       </para>
       <para>
         Default values can be localized in both GConf and GSettings schemas,
-        but GSettings uses gettext for the localization, so
+        but GSettings uses gettext for the localization. You can specify
+        the gettext domain to use in the <tag class="attribute">gettext-domain</tag>
+        attribute. Therefore, when converting localized defaults in GConf,
         <programlisting>
 <![CDATA[
 <key>/schemas/apps/my_app/font_size</key>
@@ -396,6 +449,8 @@ install-data-hook:
         becomes
         <programlisting>
 <![CDATA[
+<schema id="..." gettext-domain="your-domain">
+ ...
 <key name="font-size" type="i">
   <default l10n="messages" context="font_size">18</default>
 </key>
@@ -403,18 +458,36 @@ install-data-hook:
         </programlisting>
         Note how we used the context attribute to add msgctxt - "18" is not a
         good string to look up in gettext by itself. Also note that the value
-        24 is not present in the schema anymore. It has to be added to the gettext
-        catalog for "be" instead.
+        24 is not present in the schema anymore. It has to be added to the
+        gettext catalog for "be" instead.
       </para>
       <para>
-        GSettings schemas have more stringent restrictions on key names
-        than GConf. Key names in GSettings are restricted to at most 32
-        characters, and must only consist of lowercase characters, numbers
-        and dashes, with no consecutive dashes. The first character must
-        not be a number or dash, and the last character cannot be '-'.
-        The <link linkend="gschema-compile">gschema-compile</link> schema
-        compiler has a <option>--allow-any-name</option> that lets you
-        ignore these restrictions. Note that this option is only meant
+        GSettings schemas have optional <tag class="starttag">summary</tag> and
+        <tag class="starttag">description</tag> elements for each key which
+        correspond to the <tag class="starttag">short</tag> and
+        <tag class="starttag">long</tag> elements in the GConf schema and
+        will be used in similar ways by a future gsettings-editor, so you
+        should use the same conventions for them: The summary is just a short
+        label with no punctuation, the description can be one or more complete
+        sentences. Translations for these strings will also be handled
+        via gettext, so you should arrange for these strings to be
+        extracted into your gettext catalog.
+      </para>
+      <para>
+        GSettings is a bit more restrictive about key names than GConf. Key
+        names in GSettings can be at most 32 characters long, and must only
+        consist of lowercase characters, numbers and dashes, with no
+        consecutive dashes. The first character must not be a number or dash,
+        and the last character cannot be '-'.
+      </para>
+      <para>
+        If you are using the GConf backend for GSettings during the
+        transition, you may want to keep your key names the same they
+        were in GConf, so that existing settings in the users GConf
+        database are preserved. You can achieve this by using the
+        <option>--allow-any-name</option> with the
+        <link linkend="gschema-compile">gschema-compile</link> schema
+        compiler. Note that this option is only meant
         to ease the process of porting your application, allowing parts
         of your application to continue to access GConf and parts to use
         GSettings. By the time you have finished porting your application
@@ -424,18 +497,31 @@ install-data-hook:
 
     <section><title>Data conversion</title>
       <para>
-        GConf comes with a utility called <command>gsettings-data-convert</command>,
-        which is designed to help with the task of migrating user settings from
-        GConf into GSetting. <command>gsettings-data-convert</command> can be run
-        manually, but it is designed to be run automatically, every time a user
-        logs in. It keeps track of the conversion that it has already done, and it
-        is harmless to run it more than once.
+        GConf comes with a GSettings backend that can be used to
+        facility the transition to the GSettings API until you are
+        ready to make the jump to a different backend (most likely
+        dconf). To use it, you need to set the <envar>GSETTINGS_BACKEND</envar>
+        to 'gconf', e.g. by using
+<programlisting>
+  g_setenv ("GSETTINGS_BACKEND", "gconf", TRUE);
+</programlisting>
+        early on in your program. Note that this backend is meant purely
+        as a transition tool, and should not be used in production.
+      </para>
+      <para>
+        GConf also comes with a utility called
+        <command>gsettings-data-convert</command>, which is designed to help
+        with the task of migrating user settings from GConf into another
+        GSettings backend. It can be run manually, but it is designed to be
+        executed automatically, every time a user logs in. It keeps track of
+        the data migrations that it has already done, and it is harmless to
+        run it more than once.
       </para>
       <para>
         To make use of this utility, you must install a keyfile in the
-        <filename>/usr/share/gsettings-data-convert</filename> which lists the GSettings
-        and GConf paths to map to each other, for each schema that you want to migrate
-        user data for.
+        directory <filename>/usr/share/gconf/conf/gsettings</filename> which
+        lists the GSettings keys and GConf paths to map to each other, for
+        each schema that you want to migrate user data for.
       </para>
       <para>
         Here is an example:
@@ -447,18 +533,24 @@ dpi = /desktop/gnome/font_rendering/dpi
 hinting = /desktop/gnome/font_rendering/hinting
 rgba-order = /desktop/gnome/font_rendering/rgba_order
 
-[apps.myapp]
+[apps.myapp:/path/to/myapps/]
 some-odd-key1 = /apps/myapp/some_ODD-key1
 ]]>
         </programlisting>
-        The last key demonstrates that it may be necessary to modify the key name
-        to comply with stricter GSettings key name rules. Of course, that means your
-        application must make the corresponding adjustments.
+        The last key demonstrates that it may be necessary to modify the key
+        name to comply with stricter GSettings key name rules. Of course,
+        that means your application must use the new key names when looking
+        up settings in GSettings.
       </para>
       <para>
-        There are some limitations: <command>gsettings-data-convert</command> does not
-        do any transformation of the values. And it does not handle complex GConf types
-        other than lists of strings or integers.
+        The last group in the example also shows how to handle the case
+        of 'relocatable' schemas, which don't have a fixed path. You can
+        specify the path to use in the group name, separated by a colon.
+      </para>
+      <para>
+        There are some limitations: <command>gsettings-data-convert</command>
+        does not do any transformation of the values. And it does not handle
+        complex GConf types other than lists of strings or integers.
       </para>
     </section>
   </chapter>

@@ -63,10 +63,11 @@
  *
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
- * and looked up with the domain that is specified in the gettext-domain
- * attribute of the <tag>schemalist</tag> or <tag>schema</tag> elements
- * and the category that is specified in the l10n attribute of the
- * <tag>key</tag> element.
+ * and looked up with the domain that is specified in the
+ * <tag class="attribute">gettext-domain</tag> attribute of the
+ * <tag class="starttag">schemalist</tag> or <tag class="starttag">schema</tag>
+ * elements and the category that is specified in the l10n attribute of the
+ * <tag class="starttag">key</tag> element.
  *
  * GSettings uses schemas in a compact binary form that is created
  * by the gschema-compile utility. The input is a schema description in
@@ -114,6 +115,12 @@
  *                 schema CDATA #REQUIRED >
  * ]]>
  * ]|
+ *
+ * At runtime, schemas are identified by their id (as specified
+ * in the <tag class="attribute">id</tag> attribute of the
+ * <tag class="starttag">schema</tag> element). The
+ * convention for schema ids is to use a dotted name, similar in
+ * style to a DBus bus name, e.g. "org.gnome.font-rendering".
  *
  * <refsect2>
  *  <title>Binding</title>
@@ -956,7 +963,7 @@ g_settings_is_writable (GSettings   *settings,
  * <replaceable>base-path</replaceable> is the base path of @settings.
  *
  * The schema for the child settings object must have been declared
- * in the schema of @settings using a <tag>child</tag> element.
+ * in the schema of @settings using a <tag class="starttag">child</tag> element.
  *
  * Since: 2.26
  */
