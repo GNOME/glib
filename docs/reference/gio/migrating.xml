@@ -570,6 +570,11 @@ some-odd-key1 = /apps/myapp/some_ODD-key1
         does not do any transformation of the values. And it does not handle
         complex GConf types other than lists of strings or integers.
       </para>
+      <para>
+        Don't forget to require GConf 2.31.1 or newer in your configure
+        script if you are making use of the GConf backend or the conversion
+        utility.
+      </para>
     </section>
   </chapter>
 
