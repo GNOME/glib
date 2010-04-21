@@ -150,16 +150,16 @@ gsettings_LDADD		  = $(progs_ldadd)
 gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
 
-EXTRA_DIST +=                                          \
-	org.gtk.test.gschema                           \
-	org.gtk.test.gschema.xml                       \
-	de.po                                          \
-	schema-tests/bad-type/test.gschema.xml         \
-	schema-tests/incomplete-list/test.gschema.xml  \
-	schema-tests/missing-quotes/test.gschema.xml   \
-	schema-tests/no-default/test.gschema.xml       \
-	schema-tests/wrong-category/test.gschema.xml   \
-	schema-tests/overflow/test.gschema.xml
+EXTRA_DIST +=                                     \
+	org.gtk.test.gschema                      \
+	org.gtk.test.gschema.xml                  \
+	de.po                                     \
+	schema-tests/bad-type.gschema.xml         \
+	schema-tests/incomplete-list.gschema.xml  \
+	schema-tests/missing-quotes.gschema.xml   \
+	schema-tests/no-default.gschema.xml       \
+	schema-tests/wrong-category.gschema.xml   \
+	schema-tests/overflow.gschema.xml
 
 MISC_STUFF = gschemas.compiled test.mo
 

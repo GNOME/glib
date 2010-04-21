@@ -492,9 +492,16 @@ main (int argc, char **argv)
   gchar *srcdir;
   gchar *targetdir = NULL;
   gchar *target;
+  gboolean dry_run = FALSE;
+  gchar *one_schema_file = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
+    { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
+
+    /* These options are only for use in the gschema-compile tests */
+    { "one-schema-file", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME, &one_schema_file, NULL, NULL },
+
     { NULL }
   };
 
@@ -515,7 +522,9 @@ main (int argc, char **argv)
       return 1;
     }
 
-  if (argc != 2)
+  g_option_context_free (context);
+
+  if (!one_schema_file && argc != 2)
     {
       fprintf (stderr, _("You should give exactly one directory name\n"));
       return 1;
@@ -528,36 +537,43 @@ main (int argc, char **argv)
 
   target = g_build_filename (targetdir, "gschemas.compiled", NULL);
 
-  dir = g_dir_open (srcdir, 0, &error);
-  if (dir == NULL)
-    {
-      fprintf (stderr, "%s\n", error->message);
-      return 1;
-    }
-
   files = g_ptr_array_new ();
-  while ((file = g_dir_read_name (dir)) != NULL)
+  if (one_schema_file)
     {
-      if (g_str_has_suffix (file, ".gschema.xml"))
-	{
-	  g_ptr_array_add (files, g_build_filename (srcdir, file, NULL));
-	}
+      g_ptr_array_add (files, one_schema_file);
     }
-
-  if (files->len == 0)
+  else
     {
-      fprintf (stderr, _("No schema files found\n"));
-      return 1;
+      dir = g_dir_open (srcdir, 0, &error);
+      if (dir == NULL)
+        {
+          fprintf (stderr, "%s\n", error->message);
+          return 1;
+        }
+
+      while ((file = g_dir_read_name (dir)) != NULL)
+        {
+          if (g_str_has_suffix (file, ".gschema.xml"))
+            g_ptr_array_add (files, g_build_filename (srcdir, file, NULL));
+        }
+
+      if (files->len == 0)
+        {
+          fprintf (stderr, _("No schema files found\n"));
+          return 1;
+        }
     }
 
   g_ptr_array_add (files, NULL);
 
   if (!(table = parse_gschema_files ((gchar **) files->pdata, byteswap, &error)) ||
-      !gvdb_table_write_contents (table, target, byteswap, &error))
+      (!dry_run && !gvdb_table_write_contents (table, target, byteswap, &error)))
     {
       fprintf (stderr, "%s\n", error->message);
       return 1;
     }
+
+  g_free (target);
 
   return 0;
 }
