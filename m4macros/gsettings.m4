@@ -15,7 +15,7 @@ AC_DEFUN([AM_GSETTINGS],
   AM_CONDITIONAL([GSETTINGS_SCHEMAS_INSTALL], [test "$enable_schemas_install" != no])
 
   AC_SUBST(gsettingsschemadir, [${datadir}/glib-2.0/schemas])
-  AC_SUBST(gsettingsupdateschemacache, `pkg-config --variable gsettingsupdateschemacache gio-2.0`)
+  AC_SUBST(gschema_compile, `pkg-config --variable gschema_compile gio-2.0`)
 
   GSETTINGS_CHECK_RULE='
 .PHONY : check-gsettings-schema
@@ -24,7 +24,7 @@ gschema_xml_files := $(wildcard *.gschema.xml)
 check-gsettings-schema: gsettings_schema_validate_stamp
 CLEANFILES += gsettings_schema_validate_stamp
 gsettings_schema_validate_stamp: $(gschema_xml_files)
-	$(gsettingsupdateschemacache) --dry-run --schema-files $?
+	$(gschema_compile) --dry-run --schema-files $?
 	touch [$]@
 
 all: check-gsettings-schema

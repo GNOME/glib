@@ -388,7 +388,7 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
       <para>
         Schemas are compiled into binary form by the
         <link linkend="gschema-compile">gschema-compile</link> utility.
-        GIO provides a <literal>gsettingsupdateschemacache</literal>
+        GIO provides a <literal>gschema_compile</literal>
         variable for the schema compiler, which can be used in
         <filename>configure.in</filename> as follows:
 <programlisting>
@@ -397,13 +397,14 @@ AM_GSETTINGS
         The corresponding <filename>Makefile.am</filename> fragment looks like
         this:
 <programlisting>
-# gsettingsschemadir is defined by the AM_GSETTINGS macro in configure.ac
+# gsettingsschemadir and gschema_compile are defined by the AM_GSETTINGS
+# macro in configure.ac
 gsettingsschema_DATA = my.app.gschema.xml
 # This rule will check your schemas for validity before installation
 @GSETTINGS_CHECK_RULE@
 if GSETTINGS_SCHEMAS_INSTALL
 install-data-hook:
-	$(gsettingsupdateschemacache) $(DESTDIR)$(gsettingsschemadir)
+	$(gschema_compile) $(DESTDIR)$(gsettingsschemadir)
 endif
 </programlisting>
       </para>
