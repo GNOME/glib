@@ -392,15 +392,19 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
         variable for the schema compiler, which can be used in
         <filename>configure.in</filename> as follows:
 <programlisting>
-AC_SUBST(gsettingsupdateschemacache, `pkg-config --variable gsettingsupdateschemacache gio-2.0`)
+AM_GSETTINGS
 </programlisting>
         The corresponding <filename>Makefile.am</filename> fragment looks like
         this:
 <programlisting>
-gsettingsschemadir = $(prefix)/glib-2.0/schemas
+# gsettingsschemadir is defined by the AM_GSETTINGS macro in configure.ac
 gsettingsschema_DATA = my.app.gschema.xml
+# This rule will check your schemas for validity before installation
+@GSETTINGS_CHECK_RULE@
+if GSETTINGS_SCHEMAS_INSTALL
 install-data-hook:
-        $(gsettingsupdateschemacache) $(DESTDIR)$(gsettingsschemadir)
+	$(gsettingsupdateschemacache) $(DESTDIR)$(gsettingsschemadir)
+endif
 </programlisting>
       </para>
 
