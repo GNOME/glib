@@ -745,7 +745,7 @@ class XMLSchemaParser:
 
 
 def map_gconf_type_to_variant_type(gconftype, gconfsubtype):
-    typemap = { 'string': 's', 'int': 'i', 'float': 'f', 'bool': 'b', 'list': 'a' }
+    typemap = { 'string': 's', 'int': 'i', 'float': 'd', 'bool': 'b', 'list': 'a' }
     result = typemap[gconftype]
     if gconftype == 'list':
         result = result + typemap[gconfsubtype]
