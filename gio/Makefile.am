@@ -524,7 +524,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 ../build/win32/vs9/gio.vcproj: $(top_srcdir)/build/win32/vs9/gio.vcprojin
-	for F in $(libgio_2_0_la_SOURCES) $(win32_sources); do \
+	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_sources) | tr '/' '\\' | sort -u`; do \
 		case $$F in \
 		*.c) echo '   <File RelativePath="..\..\..\gio\'$$F'" />' \
 		     ;; \
