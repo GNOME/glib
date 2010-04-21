@@ -370,9 +370,6 @@ end_element (GMarkupParseContext  *context,
       state->value = g_variant_parse (state->type, state->string->str,
                                       NULL, NULL, error);
 
-      if (state->value == NULL)
-        return;
-
       if (state->l10n)
         {
           if (state->context)
@@ -398,7 +395,9 @@ end_element (GMarkupParseContext  *context,
         }
 
       g_string_free (state->string, TRUE);
+      state->string = NULL;
       g_free (state->context);
+      state->context = NULL;
     }
 
   else if (strcmp (element_name, "key") == 0)
@@ -418,7 +417,10 @@ end_element (GMarkupParseContext  *context,
 
   else if (strcmp (element_name, "summary") == 0 ||
            strcmp (element_name, "description") == 0)
-    g_string_free (state->string, TRUE);
+    {
+      g_string_free (state->string, TRUE);
+      state->string = NULL;
+    }
 }
 
 static void
