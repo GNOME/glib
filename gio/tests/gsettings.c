@@ -672,7 +672,6 @@ G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
 static void
 test_object_init (TestObject *object)
 {
-  object->no_write_prop = "";
 }
 
 static void

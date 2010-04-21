@@ -1233,9 +1233,9 @@ g_settings_binding_property_changed (GObject          *object,
  * The binding uses the default GIO mapping functions to map
  * between the settings and property values. These functions
  * handle booleans, numeric types and string types in a
- * straightforward way. Use g_settings_bind_with_mapping()
- * if you need a custom mapping, or map between types that
- * are not supported by the default mapping functions.
+ * straightforward way. Use g_settings_bind_with_mapping() if
+ * you need a custom mapping, or map between types that are not
+ * supported by the default mapping functions.
  *
  * Unless the @flags include %G_SETTINGS_BIND_NO_SENSITIVITY, this
  * function also establishes a binding between the writability of

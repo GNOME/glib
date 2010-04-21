@@ -365,7 +365,9 @@ g_settings_set_mapping (const GValue       *value,
 
   else if (G_VALUE_HOLDS_STRING (value))
     {
-      if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_STRING))
+      if (g_value_get_string (value) == NULL)
+        return NULL;
+      else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_STRING))
         return g_variant_new_string (g_value_get_string (value));
       else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_OBJECT_PATH))
         return g_variant_new_object_path (g_value_get_string (value));
