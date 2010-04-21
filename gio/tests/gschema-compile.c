@@ -23,7 +23,7 @@ test_schema (gpointer data)
       gchar *argv[] = {
         "../gschema-compile",
         "--dry-run",
-        "--one-schema-file", path,
+        "--schema-files", path,
         (gchar *)test->opt,
         NULL
       };
