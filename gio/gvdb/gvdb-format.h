@@ -24,8 +24,8 @@
 
 #include <glib.h>
 
-typedef struct { guint16 __value; } guint16_le;
-typedef struct { guint32 __value; } guint32_le;
+typedef struct { guint16 value; } guint16_le;
+typedef struct { guint32 value; } guint32_le;
 
 struct gvdb_pointer {
   guint32_le start;
@@ -69,7 +69,7 @@ static inline guint32_le guint32_to_le (guint32 value) {
 }
 
 static inline guint32 guint32_from_le (guint32_le value) {
-  return GUINT32_FROM_LE (value.__value);
+  return GUINT32_FROM_LE (value.value);
 }
 
 static inline guint16_le guint16_to_le (guint16 value) {
@@ -78,7 +78,7 @@ static inline guint16_le guint16_to_le (guint16 value) {
 }
 
 static inline guint16 guint16_from_le (guint16_le value) {
-  return GUINT16_FROM_LE (value.__value);
+  return GUINT16_FROM_LE (value.value);
 }
 
 #define GVDB_SIGNATURE0 1918981703
