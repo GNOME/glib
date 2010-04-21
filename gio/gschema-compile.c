@@ -141,7 +141,7 @@ start_element (GMarkupParseContext  *context,
 #define OPTIONAL   G_MARKUP_COLLECT_OPTIONAL
 #define STRDUP     G_MARKUP_COLLECT_STRDUP
 #define STRING     G_MARKUP_COLLECT_STRING
-#define NO_ARGS()  COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
+#define NO_ATTRS()  COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
 
   if (container == NULL)
     {
@@ -312,12 +312,12 @@ start_element (GMarkupParseContext  *context,
                strcmp (element_name, "description") == 0)
         {
           state->string = g_string_new (NULL);
-          NO_ARGS ();
+          NO_ATTRS ();
           return;
         }
       else if (strcmp (element_name, "range") == 0)
         {
-          NO_ARGS ();
+          NO_ATTRS ();
           return;
         }
     }
@@ -335,12 +335,12 @@ start_element (GMarkupParseContext  *context,
         }
       else if (strcmp (element_name, "min") == 0)
         {
-          NO_ARGS ();
+          NO_ATTRS ();
           return;
         }
       else if (strcmp (element_name, "max") == 0)
         {
-          NO_ARGS ();
+          NO_ATTRS ();
           return;
         }
     }
