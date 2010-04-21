@@ -216,7 +216,7 @@ start_monitoring_trash (void)
     </section>
 
     <section>
-      <title>GConfClient API conversion</title>
+      <title>GConfClient (and GConfBridge) API conversion</title>
 
       <para>
         Most people use GConf via the high-level #GConfClient API.
@@ -250,9 +250,15 @@ start_monitoring_trash (void)
               <row><entry>gconf_client_get_default_from_schema()</entry><entry>no equivalent, applications are expected to know their schema</entry></row>
               <row><entry>gconf_client_all_entries()</entry><entry>no equivalent, applications are expected to know their schema, and GSettings does not allow schema-less entries</entry></row>
               <row><entry>gconf_client_get_without_default()</entry><entry>no equivalent</entry></row>
+              <row><entry>gconf_bridge_bind_property()</entry><entry>g_settings_bind()</entry></row>
+              <row><entry>gconf_bridge_bind_property_full()</entry><entry>g_settings_bind_with_mapping()</entry></row>
             </tbody>
           </tgroup>
         </table>
+      </para>
+      <para>
+        GConfBridge was a third-party library that used GConf to bind an object property
+        to a particular configuration key. GSettings offers this service itself.
       </para>
       <para>
         There is a pattern that is sometimes used for GConf, where a setting can have
