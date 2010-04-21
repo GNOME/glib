@@ -493,12 +493,11 @@ main (int argc, char **argv)
   GHashTable *table;
   GDir *dir;
   const gchar *file;
-  GPtrArray *files;
   gchar *srcdir;
   gchar *targetdir = NULL;
   gchar *target;
   gboolean dry_run = FALSE;
-  gchar *one_schema_file = NULL;
+  gchar **schema_files = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
@@ -506,7 +505,7 @@ main (int argc, char **argv)
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
 
     /* These options are only for use in the gschema-compile tests */
-    { "one-schema-file", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME, &one_schema_file, NULL, NULL },
+    { "schema-files", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME_ARRAY, &schema_files, NULL, NULL },
     { NULL }
   };
 
@@ -529,7 +528,7 @@ main (int argc, char **argv)
 
   g_option_context_free (context);
 
-  if (!one_schema_file && argc != 2)
+  if (!schema_files && argc != 2)
     {
       fprintf (stderr, _("You should give exactly one directory name\n"));
       return 1;
@@ -542,13 +541,12 @@ main (int argc, char **argv)
 
   target = g_build_filename (targetdir, "gschemas.compiled", NULL);
 
-  files = g_ptr_array_new ();
-  if (one_schema_file)
+  if (!schema_files)
     {
-      g_ptr_array_add (files, one_schema_file);
-    }
-  else
-    {
+      GPtrArray *files;
+
+      files = g_ptr_array_new ();
+
       dir = g_dir_open (srcdir, 0, &error);
       if (dir == NULL)
         {
@@ -567,11 +565,13 @@ main (int argc, char **argv)
           fprintf (stderr, _("No schema files found\n"));
           return 1;
         }
+      g_ptr_array_add (files, NULL);
+
+      schema_files = (char **) g_ptr_array_free (files, FALSE);
     }
 
-  g_ptr_array_add (files, NULL);
 
-  if (!(table = parse_gschema_files ((gchar **) files->pdata, byteswap, &error)) ||
+  if (!(table = parse_gschema_files (schema_files, byteswap, &error)) ||
       (!dry_run && !gvdb_table_write_contents (table, target, byteswap, &error)))
     {
       fprintf (stderr, "%s\n", error->message);
