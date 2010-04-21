@@ -74,7 +74,11 @@ gio/gnetworkservice.c
 gio/goutputstream.c
 gio/gpollfilemonitor.c
 gio/gresolver.c
+gio/gschema-compile.c
 gio/gseekable.c
+gio/gsettingsbackend.c
+gio/gsettings.c
+gio/gsettings-tool.c
 gio/gsimpleasyncresult.c
 gio/gsocket.c
 gio/gsocketaddress.c

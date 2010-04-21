@@ -142,6 +142,7 @@
     <chapter id="tools">
         <title>GIO Tools</title>
         <xi:include href="xml/gio-querymodules.xml"/>
+        <xi:include href="xml/gsettings-tool.xml"/>
         <xi:include href="xml/gschema-compile.xml"/>
         <xi:include href="xml/gsettings-schema-convert.xml"/>
     </chapter>

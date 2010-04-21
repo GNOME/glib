@@ -20,6 +20,8 @@
  */
 
 #include <config.h>
+#include <locale.h>
+#include <gi18n.h>
 #include <gio.h>
 
 static void
@@ -54,22 +56,23 @@ main (int argc, char *argv[])
 
   GOptionContext *context;
   GOptionEntry entries[] = {
-    { "get", 'g', 0, G_OPTION_ARG_NONE, &do_get, "get a key", NULL },
-    { "set", 's', 0, G_OPTION_ARG_NONE, &do_set, "set a key", NULL },
-    { "writable", 'w', 0, G_OPTION_ARG_NONE, &do_writable, "check if key is writable", NULL },
-    { "monitor", 'm', 0, G_OPTION_ARG_NONE, &do_monitor, "monitor key for changes", NULL },
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, "path for the schema" },
+    { "get", 'g', 0, G_OPTION_ARG_NONE, &do_get, N_("Get the value of KEY"), NULL },
+    { "set", 's', 0, G_OPTION_ARG_NONE, &do_set, N_("Set the value of KEY"), NULL },
+    { "writable", 'w', 0, G_OPTION_ARG_NONE, &do_writable, N_("Check if KEY is writable"), NULL },
+    { "monitor", 'm', 0, G_OPTION_ARG_NONE, &do_monitor, N_("Monitor KEY for changes"), NULL },
+    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
     { NULL }
   };
   GError *error;
 
+  setlocale (LC_ALL, "");
+
   g_type_init ();
 
-  context = g_option_context_new ("SCHEMA KEY [VALUE]");
-
-  g_option_context_set_summary (context, "Manipulate GSettings configuration");
-
-  g_option_context_add_main_entries (context, entries, NULL);
+  context = g_option_context_new (N_("SCHEMA KEY [VALUE]"));
+  g_option_context_set_translation_domain (context, GETTEXT_PACKAGE);
+  g_option_context_set_summary (context, N_("Manipulate GSettings configuration"));
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   error = NULL;
   if (!g_option_context_parse (context, &argc, &argv, &error))
@@ -80,7 +83,7 @@ main (int argc, char *argv[])
 
   if (do_get + do_set + do_writable + do_monitor != 1)
     {
-      g_printerr ("You must specify exactly one of --get, --set, --writable or --monitor\n");
+      g_printerr (_("You must specify exactly one of --get, --set, --writable or --monitor\n"));
       return 1;
     }
 
@@ -88,7 +91,7 @@ main (int argc, char *argv[])
     {
       if (argc != 3)
         {
-          g_printerr ("You must specify a schema and a key\n");
+          g_printerr (_("You must specify a schema and a key\n"));
           return 1;
         }
 
@@ -99,7 +102,7 @@ main (int argc, char *argv[])
     {
       if (argc != 4)
         {
-          g_printerr ("You must specify a schema, a key and a value\n");
+          g_printerr (_("You must specify a schema, a key and a value\n"));
           return 1;
         }
 
@@ -120,8 +123,6 @@ main (int argc, char *argv[])
     }
   else if (do_writable)
     {
-      gboolean writable;
-
       if (g_settings_is_writable (settings, key))
         g_print ("true\n");
       else
@@ -148,7 +149,7 @@ main (int argc, char *argv[])
 
       if (!g_settings_set_value (settings, key, v))
         {
-          g_printerr ("Key %s is not writable\n", key);
+          g_printerr (_("Key %s is not writable\n"), key);
           return 1;
         }
     }

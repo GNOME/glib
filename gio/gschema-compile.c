@@ -19,9 +19,14 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
+#include <locale.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+
+#include <gi18n.h>
 
 #include "gvdb/gvdb-builder.h"
 
@@ -479,7 +484,7 @@ int
 main (int argc, char **argv)
 {
   gboolean byteswap = G_BYTE_ORDER != G_LITTLE_ENDIAN;
-  GError *error = NULL;
+  GError *error;
   GHashTable *table;
   GDir *dir;
   const gchar *file;
@@ -489,19 +494,21 @@ main (int argc, char **argv)
   gchar *target;
   GOptionContext *context;
   GOptionEntry entries[] = {
-    { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, "where to store the gschemas.compiled file", "DIRECTORY" },
+    { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { NULL }
   };
 
-  context = g_option_context_new ("DIRECTORY");
+  setlocale (LC_ALL, "");
 
+  context = g_option_context_new (N_("DIRECTORY"));
+  g_option_context_set_translation_domain (context, GETTEXT_PACKAGE);
   g_option_context_set_summary (context,
-    "Compile all GSettings schema files into a schema cache.\n"
-    "Schema files are required to have the extension .gschema.xml,\n"
-    "and the cache file is called gschemas.compiled.");
+    N_("Compile all GSettings schema files into a schema cache.\n"
+       "Schema files are required to have the extension .gschema.xml,\n"
+       "and the cache file is called gschemas.compiled."));
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
-  g_option_context_add_main_entries (context, entries, NULL);
-
+  error = NULL;
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       fprintf (stderr, "%s", error->message);
@@ -510,7 +517,7 @@ main (int argc, char **argv)
 
   if (argc != 2)
     {
-      fprintf (stderr, "you should give exactly one directory name\n");
+      fprintf (stderr, _("You should give exactly one directory name\n"));
       return 1;
     }
 
@@ -539,7 +546,7 @@ main (int argc, char **argv)
 
   if (files->len == 0)
     {
-      fprintf (stderr, "no schema files found\n");
+      fprintf (stderr, _("No schema files found\n"));
       return 1;
     }
 
