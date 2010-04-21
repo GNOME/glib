@@ -164,8 +164,10 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
 /**
  * GSettingsBindFlags:
  * @G_SETTINGS_BIND_DEFAULT: Equivalent to <literal>G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET</literal>
- * @G_SETTINGS_BIND_GET: Update the #GObject property when the setting changes
- * @G_SETTINGS_BIND_SET: Update the setting when the #GObject property changes
+ * @G_SETTINGS_BIND_GET: Update the #GObject property when the setting changes.
+ *     It is an error to use this flag if the property is not writable.
+ * @G_SETTINGS_BIND_SET: Update the setting when the #GObject property changes.
+ *     It is an error to use this flag if the property is not readable.
  * @G_SETTINGS_BIND_NO_SENSITIVITY: Do not try to bind a "sensitivity" property to the writability of the setting
  * @G_SETTINGS_BIND_GET_NO_CHANGES: When set in addition to #G_SETTINGS_BIND_GET, set the #GObject property
  *     value initially from the setting, but do not listen for changes of the setting

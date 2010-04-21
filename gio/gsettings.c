@@ -1326,6 +1326,19 @@ g_settings_bind_with_mapping (GSettings               *settings,
       return;
     }
 
+  if ((flags & G_SETTINGS_BIND_GET) && (binding->property->flags & G_PARAM_WRITABLE) == 0)
+    {
+      g_critical ("g_settings_bind: property '%s' on class '%s' is not writable",
+                  property, G_OBJECT_TYPE_NAME (object));
+      return;
+    }
+  if ((flags & G_SETTINGS_BIND_SET) && (binding->property->flags & G_PARAM_READABLE) == 0)
+    {
+      g_critical ("g_settings_bind: property '%s' on class '%s' is not readable",
+                  property, G_OBJECT_TYPE_NAME (object));
+      return;
+    }
+
   {
     GVariant *value;
 
@@ -1363,7 +1376,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
       sensitive = g_object_class_find_property (objectclass, "sensitive");
 
-      if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN)
+      if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN &&
+          (sensitive->flags & G_PARAM_WRITABLE))
         g_settings_bind_writable (settings, binding->key,
                                   object, "sensitive", FALSE);
     }
@@ -1479,6 +1493,21 @@ g_settings_bind_writable (GSettings   *settings,
 {
   GSettingsWritableBinding *binding;
   gchar *detailed_signal;
+  GParamSpec *pspec;
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), property);
+  if (pspec == NULL)
+    {
+      g_critical ("g_settings_bind_writable: no property '%s' on class '%s'",
+                  property, G_OBJECT_TYPE_NAME (object));
+      return;
+    }
+  if ((pspec->flags & G_PARAM_WRITABLE) == 0)
+    {
+      g_critical ("g_settings_bind_writable: property '%s' on class '%s' is not writable",
+                  property, G_OBJECT_TYPE_NAME (object));
+      return;
+    }
 
   binding = g_slice_new (GSettingsWritableBinding);
   binding->settings = g_object_ref (settings);
