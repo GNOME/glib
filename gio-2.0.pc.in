@@ -4,7 +4,6 @@ libdir=@libdir@
 includedir=@includedir@
 
 giomoduledir=@GIO_MODULE_DIR@
-gsettingsschemadir=@datarootdir@/glib-2.0/schemas
 gsettingsupdateschemacache=@bindir@/gschema-compile
 
 Name: GIO

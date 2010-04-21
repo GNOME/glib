@@ -379,21 +379,28 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
       <para>
         The XML source file for your GSettings schema needs to get installed
         into <filename>$datadir/glib-2.0/schemas</filename>, and needs to be
-        compiled into a binary form by the <link linkend="gschema-compile">gschema-compile</link>
-        utility. GIO provides variables <literal>gsettingsschemadir</literal>
-        and <literal>gsettingsupdateschemacache</literal> for the location
-        and the command, which can be used in <filename>configure.in</filename>
-        as follows:
+        compiled into a binary form. At runtime, GSettings looks for compiled
+        schemas in the <filename>glib-2.0/schemas</filename> subdirectories
+        of all <envar>XDG_DATA_DIRS</envar> directories, so if you install
+        your schema in a different location, you need to set the
+        <envar>XDG_DATA_DIRS</envar> environment variable appropriately.
+      </para>
+      <para>
+        Schemas are compiled into binary form by the
+        <link linkend="gschema-compile">gschema-compile</link> utility.
+        GIO provides a <literal>gsettingsupdateschemacache</literal>
+        variable for the schema compiler, which can be used in
+        <filename>configure.in</filename> as follows:
 <programlisting>
-AC_SUBST(gsettingsschemadir, `pkg-config --variable gsettingsschemadir gio-2.0`)
 AC_SUBST(gsettingsupdateschemacache, `pkg-config --variable gsettingsupdateschemacache gio-2.0`)
 </programlisting>
         The corresponding <filename>Makefile.am</filename> fragment looks like
         this:
 <programlisting>
+gsettingsschemadir = $(prefix)/glib-2.0/schemas
 gsettingsschema_DATA = my.app.gschema.xml
 install-data-hook:
-        $(gsettingsupdateschemacache) $(gsettingsschemadir)
+        $(gsettingsupdateschemacache) $(DESTDIR)$(gsettingsschemadir)
 </programlisting>
       </para>
 
