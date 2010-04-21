@@ -643,7 +643,9 @@ enum
   PROP_INT64,
   PROP_UINT64,
   PROP_DOUBLE,
-  PROP_STRING
+  PROP_STRING,
+  PROP_NO_READ,
+  PROP_NO_WRITE
 };
 
 typedef struct
@@ -656,6 +658,8 @@ typedef struct
   guint64 uint64_prop;
   gdouble double_prop;
   gchar *string_prop;
+  gchar *no_read_prop;
+  gchar *no_write_prop;
 } TestObject;
 
 typedef struct
@@ -668,6 +672,7 @@ G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
 static void
 test_object_init (TestObject *object)
 {
+  object->no_write_prop = "";
 }
 
 static void
@@ -706,6 +711,9 @@ test_object_get_property (GObject    *object,
     case PROP_STRING:
       g_value_set_string (value, test_object->string_prop);
       break;
+    case PROP_NO_WRITE:
+      g_value_set_string (value, test_object->no_write_prop);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -741,6 +749,10 @@ test_object_set_property (GObject      *object,
       g_free (test_object->string_prop);
       test_object->string_prop = g_value_dup_string (value);
       break;
+    case PROP_NO_READ:
+      g_free (test_object->no_read_prop);
+      test_object->no_read_prop = g_value_dup_string (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -768,6 +780,10 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_double ("double", "", "", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_STRING,
     g_param_spec_string ("string", "", "", NULL, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_NO_WRITE,
+    g_param_spec_string ("no-write", "", "", NULL, G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class, PROP_NO_READ,
+    g_param_spec_string ("no-read", "", "", NULL, G_PARAM_WRITABLE));
 }
 
 static TestObject *
@@ -1028,6 +1044,74 @@ test_no_change_binding (void)
   g_object_unref (settings);
 }
 
+/* Test that binding a non-readable property only
+ * works in 'GET' mode.
+ */
+static void
+test_no_read_binding (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "no-read", 0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*property*is not readable*");
+
+  if (g_test_trap_fork (0, 0))
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "no-read", G_SETTINGS_BIND_GET);
+
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+}
+
+/* Test that binding a non-writable property only
+ * works in 'SET' mode.
+ */
+static void
+test_no_write_binding (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "no-write", 0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*property*is not writable*");
+
+  if (g_test_trap_fork (0, 0))
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "no-write", G_SETTINGS_BIND_SET);
+
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+}
+
 /*
  * Test that using a keyfile works
  */
@@ -1091,6 +1175,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
   g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
+  g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
+  g_test_add_func ("/gsettings/no-write-binding", test_no_write_binding);
   g_test_add_func ("/gsettings/keyfile", test_keyfile);
 
   return g_test_run ();
