@@ -159,7 +159,12 @@ EXTRA_DIST +=                                     \
 	schema-tests/missing-quotes.gschema.xml   \
 	schema-tests/no-default.gschema.xml       \
 	schema-tests/wrong-category.gschema.xml   \
-	schema-tests/overflow.gschema.xml
+	schema-tests/overflow.gschema.xml         \
+	schema-tests/bad-key.gschema.xml          \
+	schema-tests/bad-key2.gschema.xml         \
+	schema-tests/bad-key3.gschema.xml         \
+	schema-tests/bad-key4.gschema.xml         \
+	schema-tests/empty-key.gschema.xml
 
 MISC_STUFF = gschemas.compiled test.mo
 

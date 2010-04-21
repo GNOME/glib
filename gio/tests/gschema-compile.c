@@ -5,140 +5,65 @@
 #include <gio.h>
 #include <gstdio.h>
 
+typedef struct {
+  const gchar *name;
+  const gchar *stderr;
+} SchemaTest;
+
 static void
-test_no_default (void)
+test_schema (gpointer data)
 {
-  g_remove ("gschemas.compiled");
+  SchemaTest *test = (SchemaTest *) data;
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
+      gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
+      gchar *path = g_build_filename (SRCDIR, "schema-tests", filename, NULL);
       gchar *argv[] = {
         "../gschema-compile",
-        SRCDIR "/schema-tests/no-default/",
-        "--targetdir=.",
+        "--dry-run",
+        "--one-schema-file", path,
         NULL
       };
       gchar *envp[] = { NULL };
       execve (argv[0], argv, envp);
+      g_free (filename);
+      g_free (path);
     }
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*<default> is required in <key>*");
+  g_test_trap_assert_stderr (test->stderr);
 }
 
-static void
-test_missing_quotes (void)
-{
-  g_remove ("gschemas.compiled");
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *argv[] = {
-        "../gschema-compile",
-        SRCDIR "/schema-tests/missing-quotes/",
-        "--targetdir=.",
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*unknown keyword*");
-}
-
-static void
-test_incomplete_list (void)
-{
-  g_remove ("gschemas.compiled");
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *argv[] = {
-        "../gschema-compile",
-        SRCDIR "/schema-tests/incomplete-list/",
-        "--targetdir=.",
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*to follow array element*");
-}
-
-static void
-test_wrong_category (void)
-{
-  g_remove ("gschemas.compiled");
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *argv[] = {
-        "../gschema-compile",
-        SRCDIR "/schema-tests/wrong-category/",
-        "--targetdir=.",
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*attribute 'l10n' invalid*");
-}
-
-static void
-test_bad_type (void)
-{
-  g_remove ("gschemas.compiled");
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *argv[] = {
-        "../gschema-compile",
-        SRCDIR "/schema-tests/bad-type/",
-        "--targetdir=.",
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*invalid GVariant type string*");
-}
-
-static void
-test_overflow (void)
-{
-  g_remove ("gschemas.compiled");
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *argv[] = {
-        "../gschema-compile",
-        SRCDIR "/schema-tests/overflow/",
-        "--targetdir=.",
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*out of range*");
-}
+static const SchemaTest tests[] = {
+  { "no-default",       "*<default> is required in <key>*"  },
+  { "missing-quotes",   "*unknown keyword*"                 },
+  { "incomplete-list",  "*to follow array element*"         },
+  { "wrong-category",   "*attribute 'l10n' invalid*"        },
+  { "bad-type",         "*invalid GVariant type string*"    },
+  { "overflow",         "*out of range*"                    },
+  { "bad-key",          "*invalid name*"                    },
+  { "bad-key2",         "*invalid name*"                    },
+  { "bad-key3",         "*invalid name*"                    },
+  { "bad-key4",         "*invalid name*"                    },
+  { "empty-key",        "*empty names*"                     },
+};
 
 int
 main (int argc, char *argv[])
 {
+  guint i;
+
   setlocale (LC_ALL, "");
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/gschema/no-default", test_no_default);
-  g_test_add_func ("/gschema/missing-quotes", test_missing_quotes);
-  g_test_add_func ("/gschema/incomplete-list", test_incomplete_list);
-  g_test_add_func ("/gschema/wrong-category", test_wrong_category);
-  g_test_add_func ("/gschema/bad-type", test_bad_type);
-  g_test_add_func ("/gschema/overflow", test_overflow);
+  for (i = 0; i < G_N_ELEMENTS (tests); ++i)
+    {
+      gchar *name = g_strdup_printf ("/gschema/%s", tests[i].name);
+      g_test_add_data_func (name, &tests[i], (gpointer) test_schema);
+      g_free (name);
+    }
 
   return g_test_run ();
 }
