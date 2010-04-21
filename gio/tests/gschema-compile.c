@@ -7,6 +7,7 @@
 
 typedef struct {
   const gchar *name;
+  const gchar *opt;
   const gchar *stderr;
 } SchemaTest;
 
@@ -23,6 +24,7 @@ test_schema (gpointer data)
         "../gschema-compile",
         "--dry-run",
         "--one-schema-file", path,
+        (gchar *)test->opt,
         NULL
       };
       gchar *envp[] = { NULL };
@@ -30,22 +32,32 @@ test_schema (gpointer data)
       g_free (filename);
       g_free (path);
     }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr (test->stderr);
+  if (test->stderr)
+    {
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr (test->stderr);
+    }
+  else
+    g_test_trap_assert_passed();
 }
 
 static const SchemaTest tests[] = {
-  { "no-default",       "*<default> is required in <key>*"  },
-  { "missing-quotes",   "*unknown keyword*"                 },
-  { "incomplete-list",  "*to follow array element*"         },
-  { "wrong-category",   "*attribute 'l10n' invalid*"        },
-  { "bad-type",         "*invalid GVariant type string*"    },
-  { "overflow",         "*out of range*"                    },
-  { "bad-key",          "*invalid name*"                    },
-  { "bad-key2",         "*invalid name*"                    },
-  { "bad-key3",         "*invalid name*"                    },
-  { "bad-key4",         "*invalid name*"                    },
-  { "empty-key",        "*empty names*"                     },
+  { "no-default",       NULL, "*<default> is required in <key>*"  },
+  { "missing-quotes",   NULL, "*unknown keyword*"                 },
+  { "incomplete-list",  NULL, "*to follow array element*"         },
+  { "wrong-category",   NULL, "*attribute 'l10n' invalid*"        },
+  { "bad-type",         NULL, "*invalid GVariant type string*"    },
+  { "overflow",         NULL, "*out of range*"                    },
+  { "bad-key",          NULL, "*invalid name*"                    },
+  { "bad-key",          "--allow-any-name", NULL                  },
+  { "bad-key2",         NULL, "*invalid name*"                    },
+  { "bad-key2",         "--allow-any-name", NULL                  },
+  { "bad-key3",         NULL, "*invalid name*"                    },
+  { "bad-key3",         "--allow-any-name", NULL                  },
+  { "bad-key4",         NULL, "*invalid name*"                    },
+  { "bad-key4",         "--allow-any-name", NULL                  },
+  { "empty-key",        NULL, "*empty names*"                     },
+  { "empty-key",        "--allow-any-name", "*empty names*"       },
 };
 
 int
@@ -60,7 +72,7 @@ main (int argc, char *argv[])
 
   for (i = 0; i < G_N_ELEMENTS (tests); ++i)
     {
-      gchar *name = g_strdup_printf ("/gschema/%s", tests[i].name);
+      gchar *name = g_strdup_printf ("/gschema/%s%s", tests[i].name, tests[i].opt ? "/opt" : "");
       g_test_add_data_func (name, &tests[i], (gpointer) test_schema);
       g_free (name);
     }
