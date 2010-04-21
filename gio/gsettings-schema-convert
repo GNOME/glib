@@ -848,8 +848,9 @@ class GConfSchema:
 
 class GConfSchemaParser:
 
-    def __init__(self, file, default_schema_id):
+    def __init__(self, file, default_gettext_domain, default_schema_id):
         self.file = file
+        self.default_gettext_domain = default_gettext_domain
         self.default_schema_id = default_schema_id
 
         self.root = None
@@ -950,7 +951,10 @@ class GConfSchemaParser:
         gconfschemafile_node = ET.parse(self.file).getroot()
         for schemalist_node in gconfschemafile_node.findall('schemalist'):
             for schema_node in schemalist_node.findall('schema'):
-                self._insert_schema(GConfSchema(schema_node))
+                gconf_schema = GConfSchema(schema_node)
+                if gconf_schema.localized:
+                    self.root.gettext_domain = self.default_gettext_domain or 'FIXME'
+                self._insert_schema(gconf_schema)
 
         self._fix_hierarchy()
 
@@ -967,6 +971,8 @@ def main(args):
                       help="output file")
     parser.add_option("-g", "--gconf", action="store_true", dest="gconf",
                       default=False, help="convert a gconf schema file")
+    parser.add_option("-d", "--gettext-domain", dest="gettext_domain",
+                      help="default gettext domain to use when converting gconf schema file")
     parser.add_option("-i", "--schema-id", dest="schema_id",
                       help="default schema ID to use when converting gconf schema file")
     parser.add_option("-s", "--simple", action="store_true", dest="simple",
@@ -987,6 +993,10 @@ def main(args):
 
     if options.simple and options.xml:
         print >> sys.stderr, 'Too many output formats requested.'
+        return 1
+
+    if not options.gconf and options.gettext_domain:
+        print >> sys.stderr, 'Default gettext domain can only be specified when converting a gconf schema.'
         return 1
 
     if not options.gconf and options.schema_id:
@@ -1010,7 +1020,7 @@ def main(args):
                 options.simple = True
 
             try:
-                parser = GConfSchemaParser(argfile, options.schema_id)
+                parser = GConfSchemaParser(argfile, options.gettext_domain, options.schema_id)
                 schema_root = parser.parse()
             except SyntaxError, e:
                 raise GSettingsSchemaConvertException('\'%s\' does not look like a valid gconf schema file: %s' % (argfile, e))

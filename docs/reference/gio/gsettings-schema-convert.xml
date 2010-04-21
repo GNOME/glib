@@ -88,6 +88,14 @@ GSettings schema.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>-d <replaceable>DOMAIN</replaceable></option>, <option>--gettext-domain=<replaceable>DOMAIN</replaceable></option></term>
+<listitem><para>
+Use <replaceable>DOMAIN</replaceable> as the gettext domain in the generated
+GSettings schema.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect2>
 </refsect1>
