@@ -393,6 +393,8 @@ g_settings_init (GSettings *settings)
 void
 g_settings_delay (GSettings *settings)
 {
+  g_return_if_fail (G_IS_SETTINGS (settings));
+
   if (settings->priv->delayed)
     return;
 
@@ -496,6 +498,8 @@ g_settings_set_property (GObject      *object,
 gboolean
 g_settings_get_has_unapplied (GSettings *settings)
 {
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
   return settings->priv->delayed &&
          g_delayed_settings_backend_get_has_unapplied (
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
@@ -736,6 +740,8 @@ g_settings_get_value (GSettings   *settings,
   GVariant *sval;
   gchar *path;
 
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
+
   sval = g_settings_schema_get_value (settings->priv->schema, key, &options);
 
   if G_UNLIKELY (sval == NULL)
@@ -842,6 +848,8 @@ g_settings_set_value (GSettings   *settings,
   GVariant *sval;
   gchar *path;
 
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
   sval = g_settings_schema_get_value (settings->priv->schema, key, NULL);
   correct_type = g_variant_is_of_type (value, g_variant_get_type (sval));
   g_variant_unref (sval);
@@ -945,6 +953,8 @@ g_settings_is_writable (GSettings   *settings,
   gboolean writable;
   gchar *path;
 
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
   path = g_strconcat (settings->priv->path, name, NULL);
   writable = g_settings_backend_get_writable (settings->priv->backend, path);
   g_free (path);
@@ -975,6 +985,8 @@ g_settings_get_child (GSettings   *settings,
   gchar *child_path;
   gchar *child_name;
   GSettings *child;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
 
   child_name = g_strconcat (name, "/", NULL);
   child_schema = g_settings_schema_get_value (settings->priv->schema,
@@ -1304,6 +1316,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
   gchar *detailed_signal;
   GQuark binding_quark;
 
+  g_return_if_fail (G_IS_SETTINGS (settings));
+
   objectclass = G_OBJECT_GET_CLASS (object);
 
   binding = g_slice_new0 (GSettingsBinding);
@@ -1494,6 +1508,8 @@ g_settings_bind_writable (GSettings   *settings,
   GSettingsWritableBinding *binding;
   gchar *detailed_signal;
   GParamSpec *pspec;
+
+  g_return_if_fail (G_IS_SETTINGS (settings));
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), property);
   if (pspec == NULL)
