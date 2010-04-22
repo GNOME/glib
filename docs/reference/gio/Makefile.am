@@ -117,16 +117,12 @@ content_files =			\
 	migrating.xml		\
 	gio-querymodules.xml	\
 	gschema-compile.xml	\
-	gsettings-tool.xml	\
+	gsettings.xml		\
 	gsettings-schema-convert.xml
 
 expand_content_files =		\
 	overview.xml		\
-	migrating.xml		\
-	gio-querymodules.xml	\
-	gschema-compile.xml	\
-	gsettings-tool.xml	\
-	gsettings-schema-convert.xml
+	migrating.xml
 
 extra_files =			\
 	version.xml.in		\
@@ -147,7 +143,7 @@ man_MANS =			\
 
 $(man_MANS) : sgml-build.stamp
 
-%.1 : xml/%.xml
+%.1 : %.xml
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
 endif

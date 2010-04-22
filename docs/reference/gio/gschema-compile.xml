@@ -23,9 +23,10 @@
 <para><command>gschema-compile</command> compiles all the GSettings XML
 schema files in <replaceable>directory</replaceable> into a binary file
 with the name <filename>gschemas.compiled</filename> that can be used
-by #GSettings. The XML schema files must have the filename extension
-<filename>.gschema.xml</filename>. For a detailed description of the XML
-file format, see the #GSettings documentation.
+by <link linkend="GSettings"><type>GSettings</type></link>. The XML schema
+files must have the filename extension <filename>.gschema.xml</filename>.
+For a detailed description of the XML file format, see the
+<link linkend="GSettings"><type>GSettings</type></link> documentation.
 </para>
 <para>
 At runtime, GSettings looks for schemas in the
