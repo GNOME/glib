@@ -241,7 +241,7 @@ gvdb_table_check_name (GvdbTable             *file,
   return FALSE;
 }
 
-const struct gvdb_hash_item *
+static const struct gvdb_hash_item *
 gvdb_table_lookup (GvdbTable   *file,
                     const gchar *key,
                     gchar        type)

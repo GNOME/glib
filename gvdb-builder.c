@@ -178,7 +178,7 @@ typedef struct
   gint n_buckets;
 } HashTable;
 
-HashTable *
+static HashTable *
 hash_table_new (gint n_buckets)
 {
   HashTable *table;
