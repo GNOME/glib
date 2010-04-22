@@ -1140,6 +1140,35 @@ test_keyfile (void)
   g_object_unref (settings);
 }
 
+/* Test that getting child schemas works
+ */
+static void
+test_child_schema (void)
+{
+  GSettings *settings;
+  GSettings *child;
+  guint8 byte;
+
+  /* first establish some known conditions */
+  settings = g_settings_new ("org.gtk.test.basic-types");
+  g_settings_set (settings, "test-byte", "y", 36);
+
+  g_settings_get (settings, "test-byte", "y", &byte);
+  g_assert_cmpint (byte, ==, 36);
+
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test");
+  child = g_settings_get_child (settings, "basic-types");
+  g_assert (child != NULL);
+
+  g_settings_get (child, "test-byte", "y", &byte);
+  g_assert_cmpint (byte, ==, 36);
+
+  g_object_unref (child);
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1177,6 +1206,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
   g_test_add_func ("/gsettings/no-write-binding", test_no_write_binding);
   g_test_add_func ("/gsettings/keyfile", test_keyfile);
+  g_test_add_func ("/gsettings/child-schema", test_child_schema);
 
   return g_test_run ();
 }
