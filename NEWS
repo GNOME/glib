@@ -1,3 +1,12 @@
+Overview of Changes from GLib 2.25.0 to GLib 2.25.2
+===================================================
+
+* Include a new utility 'gsettings', for commandline
+  access to GSettings
+
+* Install a AM_GSETTINGS autoconf macro similar to AM_GCONF
+
+
 Overview of Changes from GLib 2.24.0 to GLib 2.25.0
 ===================================================
 
