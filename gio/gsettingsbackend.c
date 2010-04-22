@@ -445,6 +445,8 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   GetKeysState state = { 0, };
   gchar **list;
 
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
+
   list = g_new (gchar *, g_tree_nnodes (tree) + 1);
   state.items = list;
 
@@ -914,6 +916,7 @@ g_settings_backend_setup (const gchar      *context,
                           GSettingsBackend *backend)
 {
   g_return_if_fail (context[0] != '\0');
+  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
 
   if (g_settings_backends == NULL)
     g_settings_backends = g_hash_table_new (g_str_hash, g_str_equal);
