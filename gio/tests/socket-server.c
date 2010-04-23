@@ -32,8 +32,10 @@ static GOptionEntry cmd_entries[] = {
    "Enable non-blocking i/o", NULL},
   {"use-source", 's', 0, G_OPTION_ARG_NONE, &use_source,
    "Use GSource to wait for non-blocking i/o", NULL},
+#ifdef G_OS_UNIX
   {"unix", 'U', 0, G_OPTION_ARG_NONE, &unix_socket,
    "Use a unix socket instead of IP", NULL},
+#endif
   {NULL}
 };
 

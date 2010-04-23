@@ -11,7 +11,7 @@ static const char *unix_socket_address_types[] = {
 static char *
 socket_address_to_string (GSocketAddress *address)
 {
-  char *res;
+  char *res = NULL;
 
   if (G_IS_INET_SOCKET_ADDRESS (address))
     {
@@ -25,6 +25,7 @@ socket_address_to_string (GSocketAddress *address)
       res = g_strdup_printf ("%s:%d", str, port);
       g_free (str);
     }
+#ifdef G_OS_UNIX
   else if (G_IS_UNIX_SOCKET_ADDRESS (address))
     {
       GUnixSocketAddress *uaddr = G_UNIX_SOCKET_ADDRESS (address);
@@ -33,6 +34,7 @@ socket_address_to_string (GSocketAddress *address)
 			     unix_socket_address_types[g_unix_socket_address_get_address_type (uaddr)],
 			     g_unix_socket_address_get_path (uaddr));
     }
+#endif
 
   return res;
 }
@@ -40,6 +42,7 @@ socket_address_to_string (GSocketAddress *address)
 GSocketAddress *
 socket_address_from_string (const char *name)
 {
+#ifdef G_OS_UNIX
   int i, len;
 
   for (i = 0; i < G_N_ELEMENTS (unix_socket_address_types); i++)
@@ -52,5 +55,6 @@ socket_address_from_string (const char *name)
 						      (GUnixSocketAddressType)i);
 	}
     }
+#endif
   return NULL;
 }
