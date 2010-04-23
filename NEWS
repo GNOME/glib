@@ -1,10 +1,36 @@
 Overview of Changes from GLib 2.25.0 to GLib 2.25.2
 ===================================================
 
-* Include a new utility 'gsettings', for commandline
-  access to GSettings
+* Include a 'gsettings' utility, for commandline access to GSettings
 
 * Install a AM_GSETTINGS autoconf macro similar to AM_GCONF
+
+* GSettings can bind the writability of a key explicitly
+
+* There is now a predefined boxed type for GError
+
+* Bugs fixed:
+ 615379 g_new macros crash if sizeof(struct_type) == 0
+ 616312 Add m4 rule equivalent to GCONF_SCHEMAS_INSTALL
+ 616295 mapping bug for uint64
+ 616216 glib compile from remote directory fails
+ 615960 Fix size passed to connect() for abstract sockets
+ 616432 Crash in gschema-compile
+ 616331 gsettings-schema-convert uses imaginary types
+ 616309 gsettings-schema-convert should output gettext-domain
+ 616384 Add mention of GConfBridge in conversion docs
+ 616311 gschema-compile outputs in current directory
+ 616276 simplify gschema-compile test setup
+ 616156 keys with unnecessary empty options arrays
+ 616405 gsettings missing g_return_if_fail's
+ 616245 Use G_DEFINE_INTERFACE macro
+ 614541 Add G_TYPE_ERROR boxed type for GError
+
+* Updated translations:
+ Catalan (Valencian)
+ Galician
+ Kannada
+ Spanish
 
 
 Overview of Changes from GLib 2.24.0 to GLib 2.25.0
