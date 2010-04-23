@@ -80,6 +80,7 @@
 #define ALIGN_TO_SIZEOF(len, obj) (((len) + sizeof (obj) - 1) & ~(sizeof (obj) - 1))
 #define CMSG_SPACE(len) ALIGN_TO_SIZEOF (CMSG_LEN (len), struct cmsghdr)
 #endif
+#endif
 
 G_BEGIN_DECLS
 
