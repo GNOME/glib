@@ -1,26 +1,26 @@
-<refentry id="gschema-compile" lang="en">
+<refentry id="glib-compile-schemas" lang="en">
 
 <refmeta>
-  <refentrytitle>gschema-compile</refentrytitle>
+  <refentrytitle>glib-compile-schemas</refentrytitle>
   <manvolnum>1</manvolnum>
   <refmiscinfo class="manual">User Commands</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-  <refname>gschema-compile</refname>
+  <refname>glib-compile-schemas</refname>
   <refpurpose>GSettings schema compiler</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
   <cmdsynopsis>
-    <command>gschema-compile</command>
+    <command>glib-compile-schemas</command>
     <arg choice="opt" rep="repeat">option</arg>
     <arg choice="req">directory</arg>
   </cmdsynopsis>
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para><command>gschema-compile</command> compiles all the GSettings XML
+<para><command>glib-compile-schemas</command> compiles all the GSettings XML
 schema files in <replaceable>directory</replaceable> into a binary file
 with the name <filename>gschemas.compiled</filename> that can be used
 by <link linkend="GSettings"><type>GSettings</type></link>. The XML schema

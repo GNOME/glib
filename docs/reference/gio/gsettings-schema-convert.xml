@@ -27,7 +27,7 @@ the result of the conversion.
 </para>
 <para>
 Note that GSettings schemas need to be converted into binary form
-with <link linkend="gschema-compile">gschema-compile</link> before they
+with <link linkend="glib-compile-schemas">glib-compile-schemas</link> before they
 can be used by applications.
 </para>
 

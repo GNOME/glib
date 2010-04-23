@@ -387,7 +387,7 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
       </para>
       <para>
         Schemas are compiled into binary form by the
-        <link linkend="gschema-compile">gschema-compile</link> utility.
+        <link linkend="glib-compile-schemas">glib-compile-schemas</link> utility.
         GIO provides a <literal>gschema_compile</literal>
         variable for the schema compiler, which can be used in
         <filename>configure.in</filename> as follows:
@@ -404,7 +404,7 @@ gsettingsschema_DATA = my.app.gschema.xml
 @GSETTINGS_CHECK_RULE@
 if GSETTINGS_SCHEMAS_INSTALL
 install-data-hook:
-	$(gschema_compile) $(DESTDIR)$(gsettingsschemadir)
+	$(GLIB_COMPILE_SCHEMAS) $(DESTDIR)$(gsettingsschemadir)
 endif
 </programlisting>
       </para>
@@ -504,7 +504,7 @@ endif
         were in GConf, so that existing settings in the users GConf
         database are preserved. You can achieve this by using the
         <option>--allow-any-name</option> with the
-        <link linkend="gschema-compile">gschema-compile</link> schema
+        <link linkend="glib-compile-schemas">glib-compile-schemas</link> schema
         compiler. Note that this option is only meant
         to ease the process of porting your application, allowing parts
         of your application to continue to access GConf and parts to use

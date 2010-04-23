@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 giomoduledir=@GIO_MODULE_DIR@
-gschema_compile=@bindir@/gschema-compile
+glib_compile_schemas=@bindir@/gschema-compile
 
 Name: GIO
 Description: glib I/O library

@@ -116,7 +116,7 @@ content_files =			\
 	overview.xml		\
 	migrating.xml		\
 	gio-querymodules.xml	\
-	gschema-compile.xml	\
+	glib-compile-schemas.xml\
 	gsettings.xml		\
 	gsettings-schema-convert.xml
 
@@ -135,7 +135,7 @@ EXTRA_DIST +=			\
 
 man_MANS =			\
 	gio-querymodules.1	\
-	gschema-compile.1	\
+	glib-compile-schemas.1	\
 	gsettings.1	\
 	gsettings-schema-convert.1
 

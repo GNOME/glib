@@ -70,8 +70,9 @@
  * <tag class="starttag">key</tag> element.
  *
  * GSettings uses schemas in a compact binary form that is created
- * by the gschema-compile utility. The input is a schema description in
- * an XML format that can be described by the following DTD:
+ * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
+ * utility. The input is a schema description in an XML format that can be
+ * described by the following DTD:
  * |[<![CDATA[
  * <!ELEMENT schemalist (schema*) >
  * <!ATTLIST schemalist gettext-domain #IMPLIED >

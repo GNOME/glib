@@ -21,7 +21,7 @@ test_schema (gpointer data)
       gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
       gchar *path = g_build_filename (SRCDIR, "schema-tests", filename, NULL);
       gchar *argv[] = {
-        "../gschema-compile",
+        "../glib-compile-schemas",
         "--dry-run",
         "--schema-files", path,
         (gchar *)test->opt,

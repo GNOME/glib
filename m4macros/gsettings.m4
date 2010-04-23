@@ -7,24 +7,29 @@ AC_DEFUN([GLIB_GSETTINGS],
 [
   AC_ARG_ENABLE(schemas-install,
 	AC_HELP_STRING([--disable-schemas-install],
-		       [Disable the schemas installation]),
+		       [Disable installation of GSettings schemas]),
      [case ${enableval} in
        yes|no) ;;
        *) AC_MSG_ERROR([bad value ${enableval} for --enable-schemas-install]) ;;
       esac])
   AM_CONDITIONAL([GSETTINGS_SCHEMAS_INSTALL], [test "$enable_schemas_install" != no])
 
+  PKG_PROG_PKG_CONFIG([0.16])
+
   AC_SUBST(gsettingsschemadir, [${datadir}/glib-2.0/schemas])
-  AC_SUBST(gschema_compile, `pkg-config --variable gschema_compile gio-2.0`)
+  AC_SUBST(GLIB_COMPILE_SCHEMAS, `$PKG_CONFIG --variable glib_compile_schemas gio-2.0`)
+  if test "x$GLIB_COMPILE_SCHEMAS" = "x"; then
+    AC_MSG_ERROR([glib-compile-schemas not found.])
+  fi
 
   GSETTINGS_CHECK_RULE='
 .PHONY : check-gsettings-schema
 
 gschema_xml_files := $(wildcard *.gschema.xml)
 check-gsettings-schema: gsettings_schema_validate_stamp
-CLEANFILES += gsettings_schema_validate_stamp
+MOSTLYCLEANFILES += gsettings_schema_validate_stamp
 gsettings_schema_validate_stamp: $(gschema_xml_files)
-	$(gschema_compile) --dry-run --schema-files $?
+	$(GLIB_COMPILE_SCHEMAS) --dry-run --schema-files $?
 	touch [$]@
 
 all: check-gsettings-schema

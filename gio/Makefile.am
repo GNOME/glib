@@ -497,7 +497,7 @@ gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
 dist_bin_SCRIPTS = gsettings-schema-convert
-bin_PROGRAMS = gio-querymodules gschema-compile gsettings
+bin_PROGRAMS = gio-querymodules glib-compile-schemas gsettings
 
 gio_querymodules_SOURCES = gio-querymodules.c
 gio_querymodules_LDADD	 = \
@@ -507,8 +507,8 @@ gio_querymodules_LDADD	 = \
 	libgio-2.0.la					\
 	$(NULL)
 
-gschema_compile_LDADD = $(top_builddir)/glib/libglib-2.0.la
-gschema_compile_SOURCES = \
+glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
+glib_compile_schemas_SOURCES = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-builder.h		\
 	gvdb/gvdb-builder.c		\

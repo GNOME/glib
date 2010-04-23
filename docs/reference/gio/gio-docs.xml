@@ -143,7 +143,7 @@
         <title>GIO Tools</title>
         <xi:include href="gio-querymodules.xml"/>
         <xi:include href="gsettings.xml"/>
-        <xi:include href="gschema-compile.xml"/>
+        <xi:include href="glib-compile-schemas.xml"/>
         <xi:include href="gsettings-schema-convert.xml"/>
     </chapter>
   </part>
