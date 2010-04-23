@@ -138,7 +138,7 @@ if ENABLE_MAN
 man_MANS =			\
 	gio-querymodules.1	\
 	gschema-compile.1	\
-	gsettings-tool.1	\
+	gsettings.1	\
 	gsettings-schema-convert.1
 
 $(man_MANS) : sgml-build.stamp
