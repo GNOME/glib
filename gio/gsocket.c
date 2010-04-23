@@ -2489,6 +2489,14 @@ g_socket_create_source (GSocket      *socket,
  * against the currently-satisfied conditions on @socket. The result
  * is returned.
  *
+ * Note that on Windows, it is possible for an operation to return
+ * %G_IO_ERROR_WOULD_BLOCK even immediately after
+ * g_socket_condition_check() has claimed that the socket is ready for
+ * writing. Rather than calling g_socket_condition_check() and then
+ * writing to the socket if it succeeds, it is generally better to
+ * simply try writing to the socket right away, and try again later if
+ * the initial attempt returns %G_IO_ERROR_WOULD_BLOCK.
+ *
  * It is meaningless to specify %G_IO_ERR or %G_IO_HUP in condition;
  * these conditions will always be set in the output if they are true.
  *

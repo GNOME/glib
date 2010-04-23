@@ -29,6 +29,7 @@
 
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gcancellable.h>
+#include <gio/gioerror.h>
 
 #include "gioalias.h"
 
@@ -48,7 +49,6 @@ struct _GSocketInputStreamPrivate
   /* pending operation metadata */
   GSimpleAsyncResult *result;
   GCancellable *cancellable;
-  gboolean from_mainloop;
   gpointer buffer;
   gsize count;
 };
@@ -125,14 +125,18 @@ g_socket_input_stream_read_ready (GSocket *socket,
   GError *error = NULL;
   gssize result;
 
-  simple = stream->priv->result;
-  stream->priv->result = NULL;
-
   result = g_socket_receive (stream->priv->socket,
 			     stream->priv->buffer,
 			     stream->priv->count,
 			     stream->priv->cancellable,
 			     &error);
+
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+    return TRUE;
+
+  simple = stream->priv->result;
+  stream->priv->result = NULL;
+
   if (result >= 0)
     g_simple_async_result_set_op_res_gssize (simple, result);
 
@@ -145,11 +149,7 @@ g_socket_input_stream_read_ready (GSocket *socket,
   if (stream->priv->cancellable)
     g_object_unref (stream->priv->cancellable);
 
-  if (stream->priv->from_mainloop)
-    g_simple_async_result_complete (simple);
-  else
-    g_simple_async_result_complete_in_idle (simple);
-
+  g_simple_async_result_complete (simple);
   g_object_unref (simple);
 
   return FALSE;
@@ -165,6 +165,7 @@ g_socket_input_stream_read_async (GInputStream        *stream,
                                   gpointer             user_data)
 {
   GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (stream);
+  GSource *source;
 
   g_assert (input_stream->priv->result == NULL);
 
@@ -177,25 +178,14 @@ g_socket_input_stream_read_async (GInputStream        *stream,
   input_stream->priv->buffer = buffer;
   input_stream->priv->count = count;
 
-  if (!g_socket_condition_check (input_stream->priv->socket, G_IO_IN))
-    {
-      GSource *source;
-
-      input_stream->priv->from_mainloop = TRUE;
-      source = g_socket_create_source (input_stream->priv->socket,
-                                       G_IO_IN | G_IO_HUP | G_IO_ERR,
-                                       cancellable);
-      g_source_set_callback (source,
-                             (GSourceFunc) g_socket_input_stream_read_ready,
-                             g_object_ref (input_stream), g_object_unref);
-      g_source_attach (source, g_main_context_get_thread_default ());
-      g_source_unref (source);
-    }
-  else
-    {
-      input_stream->priv->from_mainloop = FALSE;
-      g_socket_input_stream_read_ready (input_stream->priv->socket, G_IO_IN, input_stream);
-    }
+  source = g_socket_create_source (input_stream->priv->socket,
+				   G_IO_IN | G_IO_HUP | G_IO_ERR,
+				   cancellable);
+  g_source_set_callback (source,
+			 (GSourceFunc) g_socket_input_stream_read_ready,
+			 g_object_ref (input_stream), g_object_unref);
+  g_source_attach (source, g_main_context_get_thread_default ());
+  g_source_unref (source);
 }
 
 static gssize
