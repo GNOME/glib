@@ -392,12 +392,12 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
         variable for the schema compiler, which can be used in
         <filename>configure.in</filename> as follows:
 <programlisting>
-AM_GSETTINGS
+GLIB_GSETTINGS
 </programlisting>
         The corresponding <filename>Makefile.am</filename> fragment looks like
         this:
 <programlisting>
-# gsettingsschemadir and gschema_compile are defined by the AM_GSETTINGS
+# gsettingsschemadir and gschema_compile are defined by the GLIB_GSETTINGS
 # macro in configure.ac
 gsettingsschema_DATA = my.app.gschema.xml
 # This rule will check your schemas for validity before installation

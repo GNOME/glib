@@ -1,9 +1,9 @@
-dnl AM_GSETTINGS
+dnl GLIB_GSETTINGS
 dnl Defines GSETTINGS_SCHEMAS_INSTALL which controls whether
 dnl the schema should be compiled
 dnl
 
-AC_DEFUN([AM_GSETTINGS],
+AC_DEFUN([GLIB_GSETTINGS],
 [
   AC_ARG_ENABLE(schemas-install,
 	AC_HELP_STRING([--disable-schemas-install],
