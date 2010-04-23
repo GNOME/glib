@@ -1944,6 +1944,8 @@ g_variant_equal (gconstpointer one,
  *
  * If you only require an equality comparison, g_variant_equal() is more
  * general.
+ *
+ * Since: 2.26
  **/
 gint
 g_variant_compare (gconstpointer one,

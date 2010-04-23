@@ -62,7 +62,6 @@ gboolean                        g_variant_is_of_type                    (GVarian
                                                                          const GVariantType   *type);
 gboolean                        g_variant_is_container                  (GVariant             *value);
 GVariantClass                   g_variant_classify                      (GVariant             *value);
-
 GVariant *                      g_variant_new_boolean                   (gboolean              boolean);
 GVariant *                      g_variant_new_byte                      (guchar                byte);
 GVariant *                      g_variant_new_int16                     (gint16                int16);
@@ -219,6 +218,8 @@ GVariant *                      g_variant_new_parsed                    (const g
 GVariant *                      g_variant_new_parsed_va                 (const gchar          *format,
                                                                          va_list              *app);
 
+gint                            g_variant_compare                       (gconstpointer one,
+                                                                         gconstpointer two);
 G_END_DECLS
 
 #endif /* __G_VARIANT_H__ */
