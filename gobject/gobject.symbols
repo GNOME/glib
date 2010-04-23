@@ -22,6 +22,7 @@ g_strv_get_type G_GNUC_CONST
 g_hash_table_get_type G_GNUC_CONST
 g_array_get_type G_GNUC_CONST
 g_byte_array_get_type G_GNUC_CONST
+g_error_get_type G_GNUC_CONST
 g_ptr_array_get_type G_GNUC_CONST
 g_regex_get_type G_GNUC_CONST
 g_variant_type_get_gtype G_GNUC_CONST

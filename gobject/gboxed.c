@@ -299,6 +299,19 @@ g_variant_get_gtype (void)
   return type_id;
 }
 
+GType
+g_error_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GError"),
+                                            (GBoxedCopyFunc) g_error_copy,
+                                            (GBoxedFreeFunc) g_error_free);
+
+  return type_id;
+}
+
 static void
 boxed_proxy_value_init (GValue *value)
 {
