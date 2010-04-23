@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.25.2 to GLib 2.25.3
+===================================================
+
+* New macro: G_GNUC_DEPRECATED_FOR, a variant of G_GNUC_DEPRECATED
+  that lets you add replacement information (requires gcc 4.5)
+
+* Rename AM_GSETTINGS autoconf macro to GLIB_GSETTINGS
+
+* Rename gschema-compile utility to glib-compile-schemas
+
+* Add support for timeouts in GSocket
+
+* Bugs fixed:
+ 589989 Compilation error on Solaris 9
+ 616648 Change AM_GSETTINGS macro to GLIB_GSETTINGS
+ 587898 I/O timeouts for GSocket
+ 614541 Add G_TYPE_ERROR boxed type for GError
+
+
 Overview of Changes from GLib 2.25.0 to GLib 2.25.2
 ===================================================
 
