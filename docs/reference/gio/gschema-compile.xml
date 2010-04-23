@@ -54,6 +54,14 @@ Store <filename>gschemas.compiled</filename> in <replaceable>TARGETDIR</replacea
 </varlistentry>
 
 <varlistentry>
+<term><option>--dry-run</option></term>
+<listitem><para>
+Don't write <filename>gschemas.compiled</filename>. This option can be used
+to check <filename>.gschema.xml</filename> sources for errors.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--allow-any-name</option></term>
 <listitem><para>
 Do not enforce restrictions on key names. Note that this option is purely
