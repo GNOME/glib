@@ -1181,7 +1181,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_remove ("gschemas.compiled");
-  g_assert (g_spawn_command_line_sync ("../gschema-compile --targetdir=. " SRCDIR,
+  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. " SRCDIR,
                                        NULL, NULL, NULL, NULL));
 
   g_test_add_func ("/gsettings/basic", test_basic);

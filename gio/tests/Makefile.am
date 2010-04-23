@@ -175,7 +175,7 @@ test.mo: de.po
 	cp -f test.mo de/LC_MESSAGES
 
 gschemas.compiled:
-	$(top_builddir)/gio/gschema-compile --targetdir=$(abs_builddir) $(srcdir)
+	$(top_builddir)/gio/glib-compile-schemas --targetdir=$(abs_builddir) $(srcdir)
 
 DISTCLEANFILES =                                        \
 	applications/mimeinfo.cache                     \
