@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-19 18:37-0400\n"
+"POT-Creation-Date: 2010-04-22 21:59-0400\n"
 "PO-Revision-Date: 2010-03-09 20:28+0100\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnome@prevod.org>\n"
@@ -1435,7 +1435,7 @@ msgid "Stream has outstanding operation"
 msgstr "Ток ради јако добро"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:174
+#: gio/gunixsocketaddress.c:218
 msgid "Not enough space for socket address"
 msgstr "Нема довољно места за адресу утичнице"
 
@@ -1846,6 +1846,117 @@ msgstr "Привремено не могу да разрешим „%s“"
 msgid "Error resolving '%s'"
 msgstr "Грешка у разрешивању „%s“"
 
+#: gio/gschema-compile.c:505
+msgid "where to store the gschemas.compiled file"
+msgstr ""
+
+#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+msgid "DIRECTORY"
+msgstr ""
+
+#: gio/gschema-compile.c:506
+msgid "Do not write the gschema.compiled file"
+msgstr ""
+
+#: gio/gschema-compile.c:507
+msgid "Do not enforce key name restrictions"
+msgstr ""
+
+#: gio/gschema-compile.c:519
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+
+#: gio/gschema-compile.c:535
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr ""
+
+#: gio/gschema-compile.c:567
+#, c-format
+msgid "No schema files found\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:38
+msgid "COMMAND"
+msgstr ""
+
+#: gio/gsettings-tool.c:41
+#, c-format
+msgid ""
+"Commands:\n"
+"  help        Show this information\n"
+"  get         Get the value of a key\n"
+"  set         Set the value of a key\n"
+"  monitor     Monitor a key for changes\n"
+"  writable    Check if a key is writable\n"
+"\n"
+"Use '%s COMMAND --help' to get help for individual commands.\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:234
+#: gio/gsettings-tool.c:307
+msgid "Specify the path for the schema"
+msgstr ""
+
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:234
+#: gio/gsettings-tool.c:307
+msgid "PATH"
+msgstr ""
+
+#: gio/gsettings-tool.c:110 gio/gsettings-tool.c:242 gio/gsettings-tool.c:315
+msgid "SCHEMA KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:112
+msgid "Get the value of KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:114 gio/gsettings-tool.c:246 gio/gsettings-tool.c:322
+msgid ""
+"Arguments:\n"
+"  SCHEMA      The id of the schema\n"
+"  KEY         The name of the key\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:169
+msgid "SCHEMA KEY VALUE"
+msgstr ""
+
+#: gio/gsettings-tool.c:171
+msgid "Set the value of KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:173
+msgid ""
+"Arguments:\n"
+"  SCHEMA      The id of the schema\n"
+"  KEY         The name of the key\n"
+"  VALUE       The value to set key to, as a serialized GVariant\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:212
+#, fuzzy, c-format
+msgid "Key %s is not writable\n"
+msgstr "Врста %s не припада ни једној класи"
+
+#: gio/gsettings-tool.c:244
+msgid "Find out whether KEY is writable"
+msgstr ""
+
+#: gio/gsettings-tool.c:318
+msgid ""
+"Monitor KEY for changes and print the changed values.\n"
+"Monitoring will continue until the process is terminated."
+msgstr ""
+
+#: gio/gsettings-tool.c:381
+#, fuzzy, c-format
+msgid "Unknown command '%s'\n"
+msgstr "Непозната опција %s"
+
 #: gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
 msgstr "Неисправна утичница, није покренуто"
@@ -2006,7 +2117,7 @@ msgstr "Корени систем датотека"
 msgid "Error writing to unix: %s"
 msgstr "Прешка при упису на unix: %s"
 
-#: gio/gunixsocketaddress.c:182
+#: gio/gunixsocketaddress.c:241
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Абстрактна јуникс утичница адреса домена није подржана на овом систему"
 
