@@ -75,6 +75,8 @@ struct _GSocketConnectionPrivate
   GSocket       *socket;
   GInputStream  *input_stream;
   GOutputStream *output_stream;
+
+  gboolean       in_dispose;
 };
 
 static gboolean g_socket_connection_close         (GIOStream            *stream,
@@ -218,6 +220,19 @@ g_socket_connection_constructed (GObject *object)
 }
 
 static void
+g_socket_connection_dispose (GObject *object)
+{
+  GSocketConnection *connection = G_SOCKET_CONNECTION (object);
+
+  connection->priv->in_dispose = TRUE;
+
+  G_OBJECT_CLASS (g_socket_connection_parent_class)
+    ->dispose (object);
+
+  connection->priv->in_dispose = FALSE;
+}
+
+static void
 g_socket_connection_finalize (GObject *object)
 {
   GSocketConnection *connection = G_SOCKET_CONNECTION (object);
@@ -246,6 +261,7 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
   gobject_class->get_property = g_socket_connection_get_property;
   gobject_class->constructed = g_socket_connection_constructed;
   gobject_class->finalize = g_socket_connection_finalize;
+  gobject_class->dispose = g_socket_connection_dispose;
 
   stream_class->get_input_stream = g_socket_connection_get_input_stream;
   stream_class->get_output_stream = g_socket_connection_get_output_stream;
@@ -285,6 +301,15 @@ g_socket_connection_close (GIOStream     *stream,
   if (connection->priv->input_stream)
     g_input_stream_close (connection->priv->input_stream,
 			  cancellable, NULL);
+
+  /* Don't close the underlying socket if this is being called
+   * as part of dispose(); when destroying the GSocketConnection,
+   * we only want to close the socket if we're holding the last
+   * reference on it, and in that case it will close itself when
+   * we unref it in finalize().
+   */
+  if (connection->priv->in_dispose)
+    return TRUE;
 
   return g_socket_close (connection->priv->socket, error);
 }
