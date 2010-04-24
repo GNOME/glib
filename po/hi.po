@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2009-09-11 15:59+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
@@ -1157,7 +1157,7 @@ msgstr "परिवर्तन इनपुट में अवैध बा�
 msgid "Not enough space in destination"
 msgstr "सॉकेट पता के लिए पर्याप्त स्थान नहीं"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 msgid "Cancellable initialization not supported"
 msgstr "रद्द करने योग्य आरंभीकरण समर्थित नहीं है"
 
@@ -1950,106 +1950,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "अनजान विकल्प %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "अवैध सॉकेट, आरंभीकृत नहीं"
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "अवैध सॉकेट, इसके कारण आरंभीकरण विफल: %s"
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "सॉकेट पहले से बंद है"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd से GSocket बना रहा है: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "सॉकेट बनाने में असमर्थ: %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr "अज्ञात प्रोटोकॉल निर्दिष्ट किया गया था"
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr "स्थानीय पता नहीं पा सका: %s"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "दूरस्थ पता नहीं पा सका: %s"
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr "सुन नहीं सका: %s"
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "पता में बांधने में त्रुटि: %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "कनेक्शन स्वीकार करने में त्रुटि: %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 msgid "Error connecting: "
 msgstr "कनेक्ट करने में त्रुटि: "
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr "कनेक्शन प्रगति में"
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, c-format
 msgid "Error connecting: %s"
 msgstr "कनेक्ट करने में त्रुटि: %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "स्थगित त्रुटि पाने में असमर्थ: %s"
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "आंकड़ा पाने में त्रुटि: %s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, c-format
 msgid "Error sending data: %s"
 msgstr "आंकड़ा भेजने में त्रुटि: %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "सॉकेट बंद करने में त्रुटि: %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "सॉकेट स्थिति के लिए प्रतीक्षारत: %s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, c-format
 msgid "Error sending message: %s"
 msgstr "संदेश भेजने में त्रुटि: %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage विंडोज पर समर्थित नहीं"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "संदेश पाने में त्रुटि: %s"

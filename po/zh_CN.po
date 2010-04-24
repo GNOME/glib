@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2009-09-09 20:48+0800\n"
 "Last-Translator: Hinker <hinkerliu@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
@@ -1133,7 +1133,7 @@ msgstr "转换输入中出现无效字符序列"
 msgid "Not enough space in destination"
 msgstr "没有足够的空间套接字地址"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 msgid "Cancellable initialization not supported"
 msgstr "不支持可撤销的初始化"
 
@@ -1929,106 +1929,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "未知选项 %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "无效的套接字，不能被初始化"
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "无效的套接字，初始化失败的原因是：%s"
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "套接字已经关闭"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "从文件描述符创建 GSocket：%s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "无法创建套接字：%s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr "指定了未知协议"
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr "不能获取本地地址：%s"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "不能获取远程地址： %s"
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr "无法监听：%s"
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "错误绑定地址：%s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接受连接出错：%s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 msgid "Error connecting: "
 msgstr "连接出错 :"
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr "正在连接"
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, c-format
 msgid "Error connecting: %s"
 msgstr "连接出错 :%s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "无法获取未决的错误：%s"
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "接收数据出错：%s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, c-format
 msgid "Error sending data: %s"
 msgstr "发送数据出错：%s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "关闭套接字出错：%s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等待套接字状态：%s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, c-format
 msgid "Error sending message: %s"
 msgstr "发送信息出错：%s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 msgid "GSocketControlMessage not supported on windows"
 msgstr "Windows 不支持 GSocketControlMessage"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "接受信息出错：%s"

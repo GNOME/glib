@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2009-02-23 14:07+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -1230,7 +1230,7 @@ msgid "Not enough space in destination"
 msgstr ""
 
 # niet ondersteund/niet mogelijk
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "De bewerking is niet mogelijk"
@@ -2070,115 +2070,119 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Onbekende optie %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr ""
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr ""
 
 # bronstroom/datastroom van de bron
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 #, fuzzy
 msgid "Socket is already closed"
 msgstr "Datastroom is al gesloten"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Fout bij het lezen van bestand: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kan de prullenbakmap %s niet aanmaken: %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Fout bij het schrijven naar bestand: %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fout tijdens omzetten: %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Fout bij het afkappen bestand: %s"
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr ""
 
 # openen/lezen
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan het bestand ‘%s’ niet naar de prullenbak verplaatsen"
 
 # volledig verwijderen/definitief verwijderen/verwijderen
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Fout bij het verwijderen van bestand: %s"
 
 # openen/lezen
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Fout bij het sluiten van bestand: %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
 # openen/lezen
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "associatiewijzigingen niet mogelijk op win32"
 
 # volledig verwijderen/definitief verwijderen/verwijderen
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Fout bij het verwijderen van bestand: %s"

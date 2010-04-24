@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLib MASTER\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2010-03-05 09:47+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -1165,7 +1165,7 @@ msgstr "Sisendis olev mitmebaidine jada on poolik"
 msgid "Not enough space in destination"
 msgstr "Sihtkohas pole piisavalt vaba ruumi"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 msgid "Cancellable initialization not supported"
 msgstr "Tühistatav käivitamine ei ole toetatud"
 
@@ -1959,106 +1959,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Tundmatu võti %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "Vigane sokkel, käivitamata"
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Vigane sokkel, käivitamine nurjus kuna: %s"
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "Sokkel on juba suletud"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocketi loomine fd-st: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Soklit pole võimalik luua: %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr "Etteantud protokoll on tundmatu"
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kohalikku aadressi ei suudeta määrata: %s"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "kaugaadressi ei suudeta määrata: %s"
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr "pole võimalik kuulata: %s"
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Viga aadressile sidumisel: %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Viga ühendusega nõustumisel: %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 msgid "Error connecting: "
 msgstr "Viga ühendumisel: "
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr "Ühendumise edenemine"
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Viga ühendumisel: %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Aktiivset viga pole võimalik saada: %s"
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Viga andmete vastuvõtmisel: %s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Viga andmete saatmisel: %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Viga sokli sulgemisel: %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Sokli ülesseadmise ootamine: %s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Viga sõnumi saatmisel: %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage pole windows-platvormil toetatud"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Viga sõnumi vastuvõtmisel: %s"

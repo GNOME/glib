@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2010-03-05 22:31+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1231,7 +1231,7 @@ msgstr "Séquence multi-octet incomplète en entrée"
 msgid "Not enough space in destination"
 msgstr "Espace insuffisant dans la destination"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 msgid "Cancellable initialization not supported"
 msgstr "Initialisation annulable non prise en charge"
 
@@ -2034,107 +2034,111 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Option inconnue %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "Connecteur réseau non valide, non initialisé"
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr ""
 "Connecteur réseau non valide, l'initialisation a échoué en raison de : %s"
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "Le connecteur réseau est déjà fermé"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "création de GSocket à partir de fd : %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Impossible de créer le connecteur réseau : %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr "Un protocole inconnu a été indiqué"
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr "impossible d'obtenir l'adresse locale : %s"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "impossible d'obtenir l'adresse distante : %s"
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr "impossible d'écouter : %s"
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Erreur lors de liaison à l'adresse : %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Erreur d'acceptation de la connexion : %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 msgid "Error connecting: "
 msgstr "Erreur de connexion : "
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr "Connexion en cours"
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Erreur de connexion : %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Impossible d'obtenir l'erreur actuelle : %s"
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Erreur de réception de données : %s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Erreur d'envoi de données : %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Erreur de fermeture du connecteur réseau : %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Attente de la condition du connecteur réseau : %s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Erreur d'envoi de message : %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage n'est pas pris en en charge sur windows"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Erreur de réception de message : %s"

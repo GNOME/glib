@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1299,7 +1299,7 @@ msgstr "Niapravilnaja paśladoŭnaść bajtaŭ na ŭvachodzie kanversii"
 msgid "Not enough space in destination"
 msgstr ""
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "Aperacyja nie padtrymlivajecca"
@@ -2151,122 +2151,126 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Nieviadomaja opcyja %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr ""
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr ""
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 #, fuzzy
 msgid "Socket is already closed"
 msgstr "Kryničnaja płyń užo začynienaja"
 
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
 # glib/gfileutils.c:348
-#: gio/gsocket.c:413
+#: gio/gsocket.c:427
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Pamyłka adčytańnia z fajłu: %s"
 
 # glib/gfileutils.c:745
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "Niemahčyma stvaryć kataloh śmietnicy %s: %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Pamyłka zapisu ŭ fajł: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Pamyłka padčas kanversii: %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Pamyłka abcinańnia fajłu: %s"
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Pamyłka adčynieńnia fajłu: %s"
 
 # glib/gfileutils.c:745
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Niemahčyma vykinuć u śmietnicu fajł: %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Pamyłka vydaleńnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Pamyłka adčynieńnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Pamyłka začynieńnia fajłu: %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Pamyłka adčynieńnia fajłu: %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "źmieny asacyjacyjaŭ nie padtrymlivajucca dla win32"
 
 # glib/gfileutils.c:348
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Pamyłka vydaleńnia fajłu: %s"

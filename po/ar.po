@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2008-09-17 05:06+0300\n"
 "Last-Translator: Anas Afif Emad <anas.e87@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -1150,7 +1150,7 @@ msgstr "سلسلة بايتات غير سليمة في دخْل التحويل"
 msgid "Not enough space in destination"
 msgstr ""
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "عمليّة غير مدعومة"
@@ -1949,109 +1949,113 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "خيار مجهول %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr ""
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr ""
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 #, fuzzy
 msgid "Socket is already closed"
 msgstr "دَفْقُ المَصدر سبق إغلاقه"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "خطأ أثناء القراءة من الملف: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "تعذّر إنشاء مجلد سلة المهملات %s: ‏%s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "خطأ في الكتابة للملف: %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "خطأ أثناء التحويل: %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 #, fuzzy
 msgid "Error connecting: "
 msgstr "خطأ أثناء بَتْر الملف: %s "
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr ""
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "خطأ عند فتح الملف: %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "تعذّر نقل الملف: %s إلى المهملات "
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "خطأ عند حذف الملف: %s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "خطأ عند فتح الملف: %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "خطأ عند غلق الملف: %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "خطأ عند فتح الملف: %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "تغيير الترابطات غير مدعوم على win32"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "خطأ عند حذف الملف: %s"

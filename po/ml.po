@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 21:59-0400\n"
+"POT-Creation-Date: 2010-04-23 20:25-0400\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -1160,7 +1160,7 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Not enough space in destination"
 msgstr "സോക്കറ്റ് വിലാസത്തിനു് ആവശ്യമുള്ള സ്ഥലം ലഭ്യമല്ല"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:772
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
 msgid "Cancellable initialization not supported"
 msgstr "റദ്ദാക്കുവാന്‍ സാധിക്കുന്ന ഇനീഷ്യലൈസേഷന്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1953,106 +1953,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "അപരിചിതമായ ഉപാധി %s"
 
-#: gio/gsocket.c:277
+#: gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിച്ചിട്ടില്ല"
 
-#: gio/gsocket.c:284
+#: gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിക്കാത്തിതിനുള്ള കാരണം: %s"
 
-#: gio/gsocket.c:292
+#: gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "സോക്കറ്റ് നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gsocket.c:413
+#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+msgid "Socket I/O timed out"
+msgstr ""
+
+#: gio/gsocket.c:427
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd-ല്‍ നിന്നും GSocket ഉണ്ടാക്കുന്നു: %s"
 
-#: gio/gsocket.c:447 gio/gsocket.c:461 gio/gsocket.c:1925
+#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "സോക്കറ്റ് ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:447
+#: gio/gsocket.c:461
 msgid "Unknown protocol was specified"
 msgstr "അപരിചിതമായ കീഴ്വഴക്കം നല്‍കിയിരിക്കുന്നു"
 
-#: gio/gsocket.c:1126
+#: gio/gsocket.c:1225
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ലോക്കല്‍ വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1159
+#: gio/gsocket.c:1258
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "റിമോട്ട് വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1217
+#: gio/gsocket.c:1316
 #, c-format
 msgid "could not listen: %s"
 msgstr "ശ്രദ്ധിക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1291
+#: gio/gsocket.c:1390
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "വിലാസത്തിലേക്ക് ബൈന്‍ഡ് ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1411
+#: gio/gsocket.c:1510
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "കണക്ഷന്‍ സ്വീകരിക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1524
+#: gio/gsocket.c:1623
 msgid "Error connecting: "
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക്: "
 
-#: gio/gsocket.c:1528
+#: gio/gsocket.c:1627
 msgid "Connection in progress"
 msgstr "കണക്ഷന്‍ പുരോഗതിയില്‍"
 
-#: gio/gsocket.c:1533
+#: gio/gsocket.c:1632
 #, c-format
 msgid "Error connecting: %s"
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1573
+#: gio/gsocket.c:1675
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ബാക്കിയുള്ള പിശക് ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gsocket.c:1669
+#: gio/gsocket.c:1771
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "ഡേറ്റാ ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1812
+#: gio/gsocket.c:1914
 #, c-format
 msgid "Error sending data: %s"
 msgstr "ഡേറ്റാ അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2004
+#: gio/gsocket.c:2106
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "സോക്കറ്റ് അടയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2609
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "സോക്കറ്റ് അവസ്ഥയ്ക്കായി കാത്തിരിക്കുന്നു: %s"
 
-#: gio/gsocket.c:2720 gio/gsocket.c:2801
+#: gio/gsocket.c:2866 gio/gsocket.c:2947
 #, c-format
 msgid "Error sending message: %s"
 msgstr "സന്ദേശം അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2745
+#: gio/gsocket.c:2891
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage വിന്‍ഡോസില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gsocket.c:3003 gio/gsocket.c:3141
+#: gio/gsocket.c:3149 gio/gsocket.c:3287
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "സന്ദേശം ലഭിക്കുന്നതില്‍ പിശക്: %s"
