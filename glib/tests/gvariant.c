@@ -1766,6 +1766,7 @@ test_strings (void)
 #define is_sig            is_string | 4
     { is_sig,       1, "" },
     { is_nval,      0, NULL },
+    { is_nval,     13, "hello\xffworld!" },
     { is_string,   13, "hello world!" },
     { is_nval,     13, "hello world\0" },
     { is_nval,     13, "hello\0world!" },
@@ -2662,6 +2663,37 @@ test_container (void)
   g_variant_unref (value);
   g_free (s2);
   g_free (s1);
+}
+
+static void
+test_utf8 (void)
+{
+  const gchar invalid[] = "hello\xffworld";
+  GVariant *value;
+
+  /* ensure that the test data is not valid utf8... */
+  g_assert (!g_utf8_validate (invalid, -1, NULL));
+
+  /* load the data untrusted */
+  value = g_variant_new_from_data (G_VARIANT_TYPE_STRING,
+                                   invalid, sizeof invalid,
+                                   FALSE, NULL, NULL);
+
+  /* ensure that the problem is caught and we get valid UTF-8 */
+  g_assert (g_utf8_validate (g_variant_get_string (value, NULL), -1, NULL));
+  g_variant_unref (value);
+
+
+  /* now load it trusted */
+  value = g_variant_new_from_data (G_VARIANT_TYPE_STRING,
+                                   invalid, sizeof invalid,
+                                   TRUE, NULL, NULL);
+
+  /* ensure we get the invalid data (ie: make sure that time wasn't
+   * wasted on validating data that was marked as trusted)
+   */
+  g_assert (g_variant_get_string (value, NULL) == invalid);
+  g_variant_unref (value);
 }
 
 static void
@@ -3725,6 +3757,7 @@ main (int argc, char **argv)
       g_free (testname);
     }
 
+  g_test_add_func ("/gvariant/utf8", test_utf8);
   g_test_add_func ("/gvariant/containers", test_containers);
   g_test_add_func ("/gvariant/format-strings", test_format_strings);
   g_test_add_func ("/gvariant/invalid-varargs", test_invalid_varargs);

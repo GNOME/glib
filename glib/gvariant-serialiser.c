@@ -1561,15 +1561,11 @@ gboolean
 g_variant_serialiser_is_string (gconstpointer data,
                                 gsize         size)
 {
-  const gchar *string = data;
+  const gchar *end;
 
-  if (size == 0)
-    return FALSE;
+  g_utf8_validate (data, size, &end);
 
-  if (string[size - 1] != '\0')
-    return FALSE;
-
-  return strlen (string) == size - 1;
+  return data == end - (size - 1);
 }
 
 /* < private >

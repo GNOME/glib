@@ -957,10 +957,12 @@ g_variant_get_fixed_array (GVariant *value,
 /* String type constructor/getters/validation {{{1 */
 /**
  * g_variant_new_string:
- * @string: a normal C nul-terminated string
+ * @string: a normal utf8 nul-terminated string
  * @returns: a new string #GVariant instance
  *
  * Creates a string #GVariant with the contents of @string.
+ *
+ * @string must be valid utf8.
  *
  * Since: 2.24
  **/
@@ -1063,11 +1065,13 @@ g_variant_is_signature (const gchar *string)
  * g_variant_get_string:
  * @value: a string #GVariant instance
  * @length: a pointer to a #gsize, to store the length
- * @returns: the constant string
+ * @returns: the constant string, utf8 encoded
  *
  * Returns the string value of a #GVariant instance with a string
  * type.  This includes the types %G_VARIANT_TYPE_STRING,
  * %G_VARIANT_TYPE_OBJECT_PATH and %G_VARIANT_TYPE_SIGNATURE.
+ *
+ * The string will always be utf8 encoded.
  *
  * If @length is non-%NULL then the length of the string (in bytes) is
  * returned there.  For trusted values, this information is already
@@ -1139,10 +1143,12 @@ g_variant_get_string (GVariant *value,
  * g_variant_dup_string:
  * @value: a string #GVariant instance
  * @length: a pointer to a #gsize, to store the length
- * @returns: a newly allocated string
+ * @returns: a newly allocated string, utf8 encoded
  *
  * Similar to g_variant_get_string() except that instead of returning
  * a constant string, the string is duplicated.
+ *
+ * The string will always be utf8 encoded.
  *
  * The return value must be freed using g_free().
  *
