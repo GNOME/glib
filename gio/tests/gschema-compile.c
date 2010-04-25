@@ -8,7 +8,7 @@
 typedef struct {
   const gchar *name;
   const gchar *opt;
-  const gchar *stderr;
+  const gchar *err;
 } SchemaTest;
 
 static void
@@ -32,10 +32,10 @@ test_schema (gpointer data)
       g_free (filename);
       g_free (path);
     }
-  if (test->stderr)
+  if (test->err)
     {
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr (test->stderr);
+      g_test_trap_assert_stderr (test->err);
     }
   else
     g_test_trap_assert_passed();
