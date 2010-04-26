@@ -42,7 +42,8 @@ G_DEFINE_TYPE (GNullSettingsBackend,
 static GVariant *
 g_null_settings_backend_read (GSettingsBackend   *backend,
                               const gchar        *key,
-                              const GVariantType *expected_type)
+                              const GVariantType *expected_type,
+                              gboolean            default_value)
 {
   return NULL;
 }

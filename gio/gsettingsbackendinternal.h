@@ -67,7 +67,8 @@ GTree *                         g_settings_backend_create_tree          (void);
 G_GNUC_INTERNAL
 GVariant *                      g_settings_backend_read                 (GSettingsBackend                     *backend,
                                                                          const gchar                          *key,
-                                                                         const GVariantType                   *expected_type);
+                                                                         const GVariantType                   *expected_type,
+                                                                         gboolean                              default_value);
 G_GNUC_INTERNAL
 gboolean                        g_settings_backend_write                (GSettingsBackend                     *backend,
                                                                          const gchar                          *key,

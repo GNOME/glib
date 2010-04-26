@@ -751,7 +751,7 @@ g_settings_get_value (GSettings   *settings,
 
   path = g_strconcat (settings->priv->path, key, NULL);
   type = g_variant_get_type (sval);
-  value = g_settings_backend_read (settings->priv->backend, path, type);
+  value = g_settings_backend_read (settings->priv->backend, path, type, FALSE);
   g_free (path);
 
   if (options != NULL)

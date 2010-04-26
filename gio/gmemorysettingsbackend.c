@@ -48,11 +48,14 @@ G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
 static GVariant *
 g_memory_settings_backend_read (GSettingsBackend   *backend,
                                 const gchar        *key,
-                                const GVariantType *expected_type)
+                                const GVariantType *expected_type,
+                                gboolean            default_value)
 {
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   GVariant *value;
 
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
+  if (default_value)
+    return NULL;
 
   value = g_hash_table_lookup (memory->table, key);
 

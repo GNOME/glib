@@ -69,7 +69,11 @@ struct _GSettingsBackendClass
 
   GVariant *  (*read)             (GSettingsBackend    *backend,
                                    const gchar         *key,
-                                   const GVariantType  *expected_type);
+                                   const GVariantType  *expected_type,
+                                   gboolean             default_value);
+  gchar **    (*list)             (GSettingsBackend    *backend,
+                                   const gchar         *path,
+                                   gsize               *length);
   gboolean    (*write)            (GSettingsBackend    *backend,
                                    const gchar         *key,
                                    GVariant            *value,
@@ -112,6 +116,10 @@ void                            g_settings_backend_changed              (GSettin
 void                            g_settings_backend_path_changed         (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gpointer             origin_tag);
+void                            g_settings_backend_flatten_tree         (GTree               *tree,
+                                                                         gchar              **path,
+                                                                         const gchar       ***keys,
+                                                                         GVariant          ***values);
 void                            g_settings_backend_keys_changed         (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gchar const * const *items,

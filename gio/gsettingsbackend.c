@@ -368,17 +368,18 @@ g_settings_backend_path_writable_changed (GSettingsBackend *backend,
 
 typedef struct
 {
+  const gchar **keys;
+  GVariant **values;
   gint prefix_len;
   gchar *prefix;
-  gchar **items;
-} GetKeysState;
+} FlattenState;
 
 static gboolean
-tree_get_keys (gpointer key,
-               gpointer value,
-               gpointer user_data)
+g_settings_backend_flatten_one (gpointer key,
+                                gpointer value,
+                                gpointer user_data)
 {
-  GetKeysState *state = user_data;
+  FlattenState *state = user_data;
   const gchar *skey = key;
   gint i;
 
@@ -419,9 +420,58 @@ tree_get_keys (gpointer key,
   /* save the entire item into the array.
    * the prefixes will be removed later.
    */
-  *state->items++ = key;
+  *state->keys++ = key;
+
+  if (state->values)
+    *state->values++ = value;
 
   return FALSE;
+}
+
+/**
+ * g_settings_backend_flatten_tree:
+ * @tree: a #GTree containing the changes
+ * @path: the location to save the path
+ * @keys: the location to save the relative keys
+ * @values: the location to save the values, or %NULL
+ *
+ * Calculate the longest common prefix of all keys in a tree and write
+ * out an array of the key names relative to that prefix and,
+ * optionally, the value to store at each of those keys.
+ *
+ * You must free the value returned in @path, @keys and @values using
+ * g_free().  You should not attempt to free or unref the contents of
+ * @keys or @values.
+ *
+ * Since: 2.26
+ **/
+void
+g_settings_backend_flatten_tree (GTree         *tree,
+                                 gchar        **path,
+                                 const gchar ***keys,
+                                 GVariant    ***values)
+{
+  FlattenState state = { 0, };
+  gsize nnodes;
+  gsize i;
+
+  nnodes = g_tree_nnodes (tree);
+
+  *keys = state.keys = g_new (const gchar *, nnodes + 1);
+  state.keys[nnodes] = NULL;
+
+  if (values != NULL)
+    {
+      *values = state.values = g_new (GVariant *, nnodes + 1);
+      state.values[nnodes] = NULL;
+    }
+
+  g_tree_foreach (tree, g_settings_backend_flatten_one, &state);
+  g_return_if_fail (*keys + nnodes == state.keys);
+
+  *path = state.prefix;
+  for (i = 0; i < nnodes; i++)
+    state.keys[i] += state.prefix_len;
 }
 
 /**
@@ -442,28 +492,18 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
                                  gpointer          origin_tag)
 {
   GSettingsBackendWatch *watch;
-  GetKeysState state = { 0, };
-  gchar **list;
+  const gchar **keys;
+  gchar *path;
 
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
 
-  list = g_new (gchar *, g_tree_nnodes (tree) + 1);
-  state.items = list;
-
-  g_tree_foreach (tree, tree_get_keys, &state);
-  g_return_if_fail (list + g_tree_nnodes (tree) == state.items);
-  *state.items = NULL;
-
-  while (state.items-- != list)
-    *state.items += state.prefix_len;
+  g_settings_backend_flatten_tree (tree, &path, &keys, NULL);
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, state.prefix,
-                         (const gchar * const *) list,
-                         origin_tag, watch->user_data);
+    watch->keys_changed (backend, path, keys, origin_tag, watch->user_data);
 
-  g_free (list);
-  g_free (state.prefix);
+  g_free (path);
+  g_free (keys);
 }
 
 /*< private >
@@ -487,10 +527,11 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
 GVariant *
 g_settings_backend_read (GSettingsBackend   *backend,
                          const gchar        *key,
-                         const GVariantType *expected_type)
+                         const GVariantType *expected_type,
+                         gboolean            default_value)
 {
   return G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->read (backend, key, expected_type);
+    ->read (backend, key, expected_type, default_value);
 }
 
 /*< private >

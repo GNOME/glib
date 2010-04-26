@@ -42,16 +42,18 @@ G_DEFINE_TYPE (GDelayedSettingsBackend,
 static GVariant *
 g_delayed_settings_backend_read (GSettingsBackend   *backend,
                                  const gchar        *key,
-                                 const GVariantType *expected_type)
+                                 const GVariantType *expected_type,
+                                 gboolean            default_value)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   GVariant *result;
 
-  if ((result = g_tree_lookup (delayed->priv->delayed, key)))
+  if (!default_value &&
+      (result = g_tree_lookup (delayed->priv->delayed, key)))
     return g_variant_ref (result);
 
   return g_settings_backend_read (delayed->priv->backend,
-                                  key, expected_type);
+                                  key, expected_type, default_value);
 }
 static gboolean
 g_delayed_settings_backend_write (GSettingsBackend *backend,

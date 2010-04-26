@@ -54,10 +54,14 @@ struct _GKeyfileSettingsBackendPrivate
 static GVariant *
 g_keyfile_settings_backend_read (GSettingsBackend   *backend,
                                  const gchar        *key,
-                                 const GVariantType *expected_type)
+                                 const GVariantType *expected_type,
+                                 gboolean            default_value)
 {
   GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
   GVariant *value;
+
+  if (default_value)
+    return NULL;
 
   value = g_hash_table_lookup (kf_backend->priv->table, key);
 
