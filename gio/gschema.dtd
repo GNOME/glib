@@ -24,9 +24,9 @@
 <!ELEMENT summary (#PCDATA) >
 <!ELEMENT description (#PCDATA) >
 
-<!ELEMENT range (min,max)  >
-<!ELEMENT min (#PCDATA) >
-<!ELEMENT max (#PCDATA) >
+<!ELEMENT range EMPTY >
+<!ATTLIST range min CDATA #REQUIRED
+                max CDATA #REQUIRED >
 
 <!ELEMENT choices (choice+) >
 <!ELEMENT choice (alias?) >

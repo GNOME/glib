@@ -47,7 +47,7 @@ typedef struct
   GvdbItem *key;
   GVariant *value;
   GVariant *min, *max;
-  GVariant *strings;
+  GString *choices;
   gchar l10n;
   gchar *context;
   GVariantType *type;
@@ -117,6 +117,67 @@ is_valid_keyname (const gchar  *key,
     }
 
   return TRUE;
+}
+
+static gboolean
+type_allows_choices (const GVariantType *type)
+{
+  if (g_variant_type_is_array (type) ||
+      g_variant_type_is_maybe (type))
+    return type_allows_choices (g_variant_type_element (type));
+
+  return g_variant_type_equal (type, G_VARIANT_TYPE_STRING);
+}
+
+static gboolean
+type_allows_range (const GVariantType *type)
+{
+  static const char range_types[] = "ynqiuxtd";
+
+  return strchr (range_types, *(const char*) type) != NULL;
+}
+
+static gboolean
+is_valid_choices (GVariant    *variant,
+                  const gchar *choices)
+{
+  switch (g_variant_classify (variant))
+    {
+      case G_VARIANT_CLASS_MAYBE:
+      case G_VARIANT_CLASS_ARRAY:
+        {
+          gsize i, n;
+          GVariant *child;
+          gboolean is_valid;
+
+          n = g_variant_n_children (variant);
+          for (i = 0; i < n; ++i)
+            {
+              child = g_variant_get_child_value (variant, i);
+              is_valid = is_valid_choices (child, choices);
+              g_variant_unref (child);
+
+              if (!is_valid)
+                return FALSE;
+            }
+
+          return TRUE;
+        }
+
+      case G_VARIANT_CLASS_STRING:
+        {
+          const gchar *string;
+
+          g_variant_get (variant, "&s", &string);
+
+          while ((choices = strstr (choices, string)) && choices[-1] != 0xff);
+
+          return choices != NULL;
+        }
+
+      default:
+        g_assert_not_reached ();
+    }
 }
 
 static void
@@ -317,35 +378,74 @@ start_element (GMarkupParseContext  *context,
         }
       else if (strcmp (element_name, "range") == 0)
         {
+          const gchar *min_str, *max_str;
+
+          if (!type_allows_range (state->type))
+            {
+              gchar *type = g_variant_type_dup_string (state->type);
+              g_set_error (error, G_MARKUP_ERROR,
+                          G_MARKUP_ERROR_INVALID_CONTENT,
+                          "Element <%s> not allowed for keys of type \"%s\"\n",
+                          element_name, type);
+              g_free (type);
+              return;
+            }
+
+          if (!COLLECT (STRING, "min", &min_str,
+                        STRING, "max", &max_str))
+            return;
+
+          state->min = g_variant_parse (state->type, min_str, NULL, NULL, error);
+          if (state->min == NULL)
+            return;
+
+          state->max = g_variant_parse (state->type, max_str, NULL, NULL, error);
+          if (state->max == NULL)
+            return;
+
+          if (g_variant_compare (state->min, state->max) > 0)
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "Element <%s> specified minimum is greater than maxmimum",
+                           element_name);
+              return;
+            }
+
+          g_variant_builder_add (&state->key_options, "{sv}", "range",
+                                 g_variant_new ("(@?@?)", state->min, state->max));
+          return;
+        }
+      else if (strcmp (element_name, "choices") == 0)
+        {
+          if (!type_allows_choices (state->type))
+            {
+              gchar *type = g_variant_type_dup_string (state->type);
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "Element <%s> not allowed for keys of type \"%s\"\n",
+                           element_name, type);
+              g_free (type);
+              return;
+            }
+
+          state->choices = g_string_new ("\xff");
+
           NO_ATTRS ();
           return;
         }
     }
-  else if (strcmp (container, "range") == 0)
+  else if (strcmp (container, "choices") == 0)
     {
       if (strcmp (element_name, "choice") == 0)
         {
-          gchar *value;
+          const gchar *value;
 
-          if (COLLECT (STRDUP, "value", &value))
-            {
-            }
+          if (COLLECT (STRING, "value", &value))
+            g_string_append_printf (state->choices, "%s\xff", value);
 
           return;
         }
-      else if (strcmp (element_name, "min") == 0)
-        {
-          NO_ATTRS ();
-          return;
-        }
-      else if (strcmp (element_name, "max") == 0)
-        {
-          NO_ATTRS ();
-          return;
-        }
-    }
-  else if (strcmp (container, "choice") == 0)
-    {
     }
 
   if (container)
@@ -369,6 +469,8 @@ end_element (GMarkupParseContext  *context,
     {
       state->value = g_variant_parse (state->type, state->string->str,
                                       NULL, NULL, error);
+      if (state->value == NULL)
+        return;
 
       if (state->l10n)
         {
@@ -410,9 +512,37 @@ end_element (GMarkupParseContext  *context,
           return;
         }
 
+      if (state->min != NULL)
+        {
+          if (g_variant_compare (state->value, state->min) < 0 ||
+              g_variant_compare (state->value, state->max) > 0)
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<default> is not contained in the specified range");
+              return;
+            }
+
+          state->min = state->max = NULL;
+        }
+      else if (state->choices != NULL)
+        {
+          if (!is_valid_choices (state->value, state->choices->str))
+            {
+              g_set_error_literal (error, G_MARKUP_ERROR,
+                                   G_MARKUP_ERROR_INVALID_CONTENT,
+                                   "<default> contains string not in <choices>");
+              return;
+            }
+
+          state->choices = NULL;
+        }
+
       gvdb_item_set_value (state->key, state->value);
       gvdb_item_set_options (state->key,
                              g_variant_builder_end (&state->key_options));
+
+      state->value = NULL;
     }
 
   else if (strcmp (element_name, "summary") == 0 ||
@@ -420,6 +550,16 @@ end_element (GMarkupParseContext  *context,
     {
       g_string_free (state->string, TRUE);
       state->string = NULL;
+    }
+
+  else if (strcmp (element_name, "choices") == 0)
+    {
+      gchar *choices;
+
+      choices = g_string_free (state->choices, FALSE);
+      g_variant_builder_add (&state->key_options, "{sv}", "choices",
+                             g_variant_new_byte_array (choices, -1));
+      g_free (choices);
     }
 }
 
