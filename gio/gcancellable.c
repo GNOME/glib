@@ -579,6 +579,9 @@ g_cancellable_release_fd (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
 
+  if (cancellable == NULL)
+    return;
+
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
   g_return_if_fail (cancellable->priv->fd_refcount > 0);
 
