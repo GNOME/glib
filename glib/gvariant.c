@@ -1162,6 +1162,85 @@ g_variant_dup_string (GVariant *value,
 }
 
 /**
+ * g_variant_new_byte_array:
+ * @array: a pointer to an array of bytes
+ * @length: the length of @array, or -1
+ * @returns: a new floating #GVariant instance
+ *
+ * Constructs an array of bytes #GVariant from the given array of bytes.
+ *
+ * If @length is -1 then @array is taken to be a normal C string (in the
+ * sense that it is terminated by a nul character).  The nul character
+ * is included in the array.  If length is not -1 then it gives the
+ * length of @array which may then contain nul chracters with no special
+ * meaning.
+ *
+ * Since: 2.26
+ **/
+GVariant *
+g_variant_new_byte_array (gconstpointer array,
+                          gssize        length)
+{
+  if (length == -1)
+    {
+      const gchar *bytes = array;
+
+      length = 0;
+      while (bytes[length++]);
+    }
+
+  return g_variant_new_from_trusted (G_VARIANT_TYPE ("ay"),
+                                     array, length);
+}
+
+/**
+ * g_variant_get_byte_array:
+ * @value: an array of bytes #GVariant
+ * @length: the length of the result, or %NULL
+ * @returns: a pointer to the byte data, or %NULL
+ *
+ * Gets the contents of an array of bytes #GVariant.
+ *
+ * If @length is non-%NULL then it points to a location at which to
+ * store the length of the array and nul bytes contained within the
+ * array have no special meaning.
+ *
+ * If @length is %NULL then the caller has no way to determine what the
+ * length of the returned data might be.  In this case, the function
+ * ensures that the last byte of the array is a nul byte and, if it is
+ * not, returns %NULL instead.  In this way, the caller is assured that
+ * any non-%NULL pointer that is returned will be nul-terminated.
+ *
+ * The return value remains valid as long as @value exists.
+ *
+ * Since: 2.26
+ **/
+gconstpointer
+g_variant_get_byte_array (GVariant *value,
+                          gsize    *length)
+{
+  gconstpointer data;
+  gsize size;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE ("ay"), NULL);
+
+  data = g_variant_get_data (value);
+  size = g_variant_get_size (value);
+
+  if (length == NULL)
+    {
+      const gchar *bytes = data;
+
+      if (bytes[size - 1] != '\0')
+        return NULL;
+    }
+  else
+    *length = size;
+
+  return data;
+}
+
+/**
  * g_variant_new_strv:
  * @strv: an array of strings
  * @length: the length of @strv, or -1
