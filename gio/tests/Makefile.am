@@ -150,23 +150,37 @@ gsettings_LDADD		  = $(progs_ldadd)
 gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
 
-EXTRA_DIST +=                                     \
-	socket-common.c                           \
-	org.gtk.test.gschema                      \
-	org.gtk.test.gschema.xml                  \
-	de.po                                     \
-	schema-tests/bad-type.gschema.xml         \
-	schema-tests/incomplete-list.gschema.xml  \
-	schema-tests/missing-quotes.gschema.xml   \
-	schema-tests/no-default.gschema.xml       \
-	schema-tests/wrong-category.gschema.xml   \
-	schema-tests/overflow.gschema.xml         \
-	schema-tests/bad-key.gschema.xml          \
-	schema-tests/bad-key2.gschema.xml         \
-	schema-tests/bad-key3.gschema.xml         \
-	schema-tests/bad-key4.gschema.xml         \
-	schema-tests/empty-key.gschema.xml
-
+EXTRA_DIST += \
+	socket-common.c						\
+	org.gtk.test.gschema					\
+	org.gtk.test.gschema.xml				\
+	de.po							\
+	schema-tests/bad-type.gschema.xml			\
+	schema-tests/incomplete-list.gschema.xml		\
+	schema-tests/missing-quotes.gschema.xml			\
+	schema-tests/no-default.gschema.xml			\
+	schema-tests/wrong-category.gschema.xml			\
+	schema-tests/overflow.gschema.xml			\
+	schema-tests/bad-key.gschema.xml			\
+	schema-tests/bad-key2.gschema.xml			\
+	schema-tests/bad-key3.gschema.xml			\
+	schema-tests/bad-key4.gschema.xml			\
+	schema-tests/empty-key.gschema.xml			\
+	schema-tests/array-default-not-in-choices.gschema.xml	\
+	schema-tests/bad-type.gschema.xml			\
+	schema-tests/choice-missing-value.gschema.xml		\
+	schema-tests/choices-wrong-type.gschema.xml		\
+	schema-tests/default-not-in-choices.gschema.xml		\
+	schema-tests/default-out-of-range.gschema.xml		\
+	schema-tests/incomplete-list.gschema.xml		\
+	schema-tests/missing-quotes.gschema.xml			\
+	schema-tests/no-default.gschema.xml			\
+	schema-tests/overflow.gschema.xml			\
+	schema-tests/range-missing-max.gschema.xml		\
+	schema-tests/range-missing-min.gschema.xml		\
+	schema-tests/range-wrong-type.gschema.xml		\
+	schema-tests/wrong-category.gschema.xml
+ 
 MISC_STUFF = gschemas.compiled test.mo
 
 test.mo: de.po
