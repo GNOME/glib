@@ -1732,6 +1732,7 @@ g_variant_is_object_path
 g_variant_new_signature
 g_variant_is_signature
 g_variant_new_variant
+g_variant_new_byte_array
 g_variant_new_strv
 
 g_variant_get_boolean
@@ -1747,6 +1748,7 @@ g_variant_get_double
 g_variant_get_string
 g_variant_dup_string
 g_variant_get_variant
+g_variant_get_byte_array
 g_variant_get_strv
 g_variant_dup_strv
 
