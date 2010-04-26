@@ -24,6 +24,7 @@ g_emblem_get_type
 g_emblem_origin_get_type
 g_emblemed_icon_get_type
 g_file_attribute_info_flags_get_type
+g_file_attribute_matcher_get_type
 g_file_attribute_status_get_type
 g_file_attribute_type_get_type
 g_file_copy_flags_get_type

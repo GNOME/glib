@@ -485,6 +485,7 @@ g_file_info_set_size
 g_file_info_set_modification_time
 g_file_info_set_symlink_target
 g_file_info_set_sort_order
+g_file_attribute_matcher_get_type G_GNUC_CONST
 g_file_attribute_matcher_new
 g_file_attribute_matcher_ref
 g_file_attribute_matcher_unref
