@@ -2962,7 +2962,7 @@ g_socket_send_message (GSocket                *socket,
  * @address: a pointer to a #GSocketAddress pointer, or %NULL
  * @vectors: an array of #GInputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
- * @messages: a pointer which will be filled with an array of
+ * @messages: a pointer which may be filled with an array of
  *     #GSocketControlMessages, or %NULL
  * @num_messages: a pointer which will be filled with the number of
  *    elements in @messages, or %NULL
@@ -2990,12 +2990,13 @@ g_socket_send_message (GSocket                *socket,
  * single '\0' byte for the purposes of transferring ancillary data.
  *
  * @messages, if non-%NULL, will be set to point to a newly-allocated
- * array of #GSocketControlMessage instances. These correspond to the
- * control messages received from the kernel, one
- * #GSocketControlMessage per message from the kernel. This array is
- * %NULL-terminated and must be freed by the caller using g_free(). If
- * @messages is %NULL, any control messages received will be
- * discarded.
+ * array of #GSocketControlMessage instances or %NULL if no such
+ * messages was received. These correspond to the control messages
+ * received from the kernel, one #GSocketControlMessage per message
+ * from the kernel. This array is %NULL-terminated and must be freed
+ * by the caller using g_free() after calling g_object_unref() on each
+ * element. If @messages is %NULL, any control messages received will
+ * be discarded.
  *
  * @num_messages, if non-%NULL, will be set to the number of control
  * messages received.
@@ -3165,8 +3166,7 @@ g_socket_receive_message (GSocket                 *socket,
 
     /* decode control messages */
     {
-      GSocketControlMessage **my_messages = NULL;
-      gint allocated = 0, index = 0;
+      GPtrArray *my_messages = NULL;
       const gchar *scm_pointer;
       struct cmsghdr *cmsg;
       gsize scm_size;
@@ -3187,35 +3187,39 @@ g_socket_receive_message (GSocket                 *socket,
 	       deserialization code, so just continue */
 	    continue;
 
-	  if (index == allocated)
+	  if (messages == NULL)
 	    {
-	      /* estimated 99% case: exactly 1 control message */
-	      allocated = MAX (allocated * 2, 1);
-	      my_messages = g_new (GSocketControlMessage *, (allocated + 1));
+	      /* we have to do it this way if the user ignores the
+	       * messages so that we will close any received fds.
+	       */
+	      g_object_unref (message);
 	    }
-
-	  my_messages[index++] = message;
+	  else
+	    {
+	      if (my_messages == NULL)
+		my_messages = g_ptr_array_new ();
+	      g_ptr_array_add (my_messages, message);
+	    }
 	}
 
       if (num_messages)
-	*num_messages = index;
+	*num_messages = my_messages != NULL ? my_messages->len : 0;
 
       if (messages)
 	{
-	  my_messages[index++] = NULL;
-	  *messages = my_messages;
+	  if (my_messages == NULL)
+	    {
+	      *messages = NULL;
+	    }
+	  else
+	    {
+	      g_ptr_array_add (my_messages, NULL);
+	      *messages = (GSocketControlMessage **) g_ptr_array_free (my_messages, FALSE);
+	    }
 	}
       else
 	{
-	  gint i;
-
-	  /* free all those messages we just constructed.
-	   * we have to do it this way if the user ignores the
-	   * messages so that we will close any received fds.
-	   */
-	  for (i = 0; i < index; i++)
-	    g_object_unref (my_messages[i]);
-	  g_free (my_messages);
+	  g_assert (my_messages == NULL);
 	}
     }
 
@@ -3304,6 +3308,11 @@ g_socket_receive_message (GSocket                 *socket,
     /* capture the flags */
     if (flags != NULL)
       *flags = win_flags;
+
+    if (messages != NULL)
+      *messages = NULL;
+    if (n_messages != NULL)
+      *n_messages = 0;
 
     return bytes_received;
   }
