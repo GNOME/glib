@@ -1139,6 +1139,18 @@ g_proxy_resolver_lookup_finish
 #endif
 #endif
 
+#if IN_HEADER(__G_PROXY_ADDRESS_H__)
+#if IN_FILE(__G_PROXY_ADDRESS_C__)
+g_proxy_address_get_type
+g_proxy_address_new
+g_proxy_address_get_protocol
+g_proxy_address_get_destination_hostname
+g_proxy_address_get_destination_port
+g_proxy_address_get_username
+g_proxy_address_get_password
+#endif
+#endif
+
 #if IN_HEADER(__G_RESOLVER_H__)
 #if IN_FILE(__G_RESOLVER_C__)
 g_resolver_error_quark

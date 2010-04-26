@@ -75,6 +75,7 @@ g_output_stream_get_type
 g_output_stream_splice_flags_get_type
 g_password_save_get_type
 g_permission_get_type
+g_proxy_address_get_type
 g_proxy_resolver_get_type
 g_resolver_error_get_type
 g_resolver_get_type

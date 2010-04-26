@@ -2786,3 +2786,26 @@ G_PROXY_RESOLVER_GET_IFACE
 <SUBSECTION Private>
 g_proxy_resolver_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gproxyaddress</FILE>
+<TITLE>GProxyAddress</TITLE>
+GProxyAddress
+GProxyAddressClass
+g_proxy_address_get_destination_hostname
+g_proxy_address_get_destination_port
+g_proxy_address_get_password
+g_proxy_address_get_protocol
+g_proxy_address_get_username
+g_proxy_address_new
+<SUBSECTION Standard>
+G_PROXY_ADDRESS
+G_PROXY_ADDRESS_CLASS
+G_PROXY_ADDRESS_GET_CLASS
+G_IS_PROXY_ADDRESS
+G_IS_PROXY_ADDRESS_CLASS
+G_TYPE_PROXY_ADDRESS
+<SUBSECTION Private>
+GProxyAddressPrivate
+g_proxy_address_get_type
+</SECTION>
