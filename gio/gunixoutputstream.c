@@ -46,9 +46,12 @@
  * @include: gio/gunixoutputstream.h
  * @see_also: #GOutputStream
  *
- * #GUnixOutputStream implements #GOutputStream for writing to a
- * UNIX file descriptor, including asynchronous operations. The file
- * descriptor must be selectable, so it doesn't work with opened files.
+ * #GUnixOutputStream implements #GOutputStream for writing to a UNIX
+ * file descriptor, including asynchronous operations. (If the file
+ * descriptor refers to a socket or pipe, this will use poll() to do
+ * asynchronous I/O. If it refers to a regular file, it will fall back
+ * to doing asynchronous I/O in another thread like
+ * #GLocalFileOutputStream.)
  *
  * Note that <filename>&lt;gio/gunixoutputstream.h&gt;</filename> belongs
  * to the UNIX-specific GIO interfaces, thus you have to use the
@@ -73,7 +76,8 @@ G_DEFINE_TYPE_WITH_CODE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_
 
 struct _GUnixOutputStreamPrivate {
   int fd;
-  gboolean close_fd;
+  guint close_fd : 1;
+  guint is_pipe_or_socket : 1;
 };
 
 static void     g_unix_output_stream_set_property (GObject              *object,
@@ -198,6 +202,10 @@ g_unix_output_stream_set_property (GObject         *object,
     {
     case PROP_FD:
       unix_stream->priv->fd = g_value_get_int (value);
+      if (lseek (unix_stream->priv->fd, 0, SEEK_CUR) == -1 && errno == ESPIPE)
+	unix_stream->priv->is_pipe_or_socket = TRUE;
+      else
+	unix_stream->priv->is_pipe_or_socket = FALSE;
       break;
     case PROP_CLOSE_FD:
       unix_stream->priv->close_fd = g_value_get_boolean (value);
@@ -345,7 +353,8 @@ g_unix_output_stream_write (GOutputStream  *stream,
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
-  if (g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
+  if (unix_stream->priv->is_pipe_or_socket &&
+      g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
     {
       poll_fds[0].fd = unix_stream->priv->fd;
       poll_fds[0].events = G_IO_OUT;
@@ -497,6 +506,14 @@ g_unix_output_stream_write_async (GOutputStream       *stream,
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
+  if (!unix_stream->priv->is_pipe_or_socket)
+    {
+      G_OUTPUT_STREAM_CLASS (g_unix_output_stream_parent_class)->
+	write_async (stream, buffer, count, io_priority,
+		     cancellable, callback, user_data);
+      return;
+    }
+
   data = g_new0 (WriteAsyncData, 1);
   data->count = count;
   data->buffer = buffer;
@@ -521,8 +538,15 @@ g_unix_output_stream_write_finish (GOutputStream  *stream,
 				   GAsyncResult   *result,
 				   GError        **error)
 {
+  GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
   GSimpleAsyncResult *simple;
   gssize nwritten;
+
+  if (!unix_stream->priv->is_pipe_or_socket)
+    {
+      return G_OUTPUT_STREAM_CLASS (g_unix_output_stream_parent_class)->
+	write_finish (stream, result, error);
+    }
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_unix_output_stream_write_async);
