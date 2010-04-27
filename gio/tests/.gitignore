@@ -4,6 +4,7 @@ contexts
 converter-stream
 data-input-stream
 data-output-stream
+de/
 desktop-app-info
 echo-server
 filter-cat
@@ -11,6 +12,9 @@ filter-streams
 g-file
 g-file-info
 g-icon
+gschemas.compiled
+gsettings
+gsettings.store
 httpd
 live-g-file
 memory-input-stream
@@ -23,6 +27,7 @@ sleepy-stream
 socket-client
 socket-server
 srvtarget
+test.mo
 unix-fd
 unix-streams
 utf8-input-stream

@@ -4,3 +4,5 @@ gio-marshal.[ch]
 gioenumtypes.[ch]
 gioalias.h
 gioaliasdef.c
+glib-compile-schemas
+gsettings
