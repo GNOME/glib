@@ -326,6 +326,24 @@ need the #GRegex or the matched string.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_regex_get_compile_flags ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_get_match_flags ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_regex_escape_string ##### -->
 <para>
 

@@ -140,6 +140,9 @@ gint		  g_regex_get_string_number	(const GRegex        *regex,
 gchar		 *g_regex_escape_string		(const gchar         *string,
 						 gint                 length);
 
+GRegexCompileFlags g_regex_get_compile_flags    (GRegex              *regex);
+GRegexMatchFlags   g_regex_get_match_flags      (GRegex              *regex);
+
 /* Matching. */
 gboolean	  g_regex_match_simple		(const gchar         *pattern,
 						 const gchar         *string,

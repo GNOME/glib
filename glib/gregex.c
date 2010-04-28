@@ -1268,6 +1268,42 @@ g_regex_get_capture_count (const GRegex *regex)
 }
 
 /**
+ * g_regex_get_compile_flags:
+ * @regex: a #GRegex
+ *
+ * Returns the compile options that @regex was created with.
+ *
+ * Returns: flags from #GRegexCompileFlags
+ *
+ * Since: 2.26
+ */
+GRegexCompileFlags
+g_regex_get_compile_flags (GRegex *regex)
+{
+  g_return_val_if_fail (regex != NULL, 0);
+
+  return regex->compile_opts;
+}
+
+/**
+ * g_regex_get_match_flags:
+ * @regex: a #GRegex
+ *
+ * Returns the match options that @regex was created with.
+ *
+ * Returns: flags from #GRegexMatchFlags
+ *
+ * Since: 2.26
+ */
+GRegexMatchFlags
+g_regex_get_match_flags (GRegex *regex)
+{
+  g_return_val_if_fail (regex != NULL, 0);
+
+  return regex->match_opts;
+}
+
+/**
  * g_regex_match_simple:
  * @pattern: the regular expression
  * @string: the string to scan for matches
