@@ -436,6 +436,14 @@ typedef enum {
  *     domain. Use g_dbus_error_get_remote_error() to extract the D-Bus
  *     error name and g_dbus_error_strip_remote_error() to fix up the
  *     message so it matches what was received on the wire. Since 2.26.
+ * @G_IO_ERROR_HOST_UNREACHABLE: Host unreachable. Since 2.26
+ * @G_IO_ERROR_NETWORK_UNREACHABLE: Network unreachable. Since 2.26
+ * @G_IO_ERROR_CONNECTION_REFUSED: Connection refused. Since 2.26
+ * @G_IO_ERROR_PROXY_FAILED: Connection to proxy server failed. Since 2.26
+ * @G_IO_ERROR_PROXY_AUTH_FAILED: Proxy authentication failed. Since 2.26
+ * @G_IO_ERROR_PROXY_NEED_AUTH: Proxy server needs authentication. Since 2.26
+ * @G_IO_ERROR_PROXY_NOT_ALLOWED: Proxy connection is not allowed by ruleset.
+ *     Since 2.26
  *
  * Error codes returned by GIO functions.
  *
@@ -477,7 +485,14 @@ typedef enum {
   G_IO_ERROR_ADDRESS_IN_USE,
   G_IO_ERROR_PARTIAL_INPUT,
   G_IO_ERROR_INVALID_DATA,
-  G_IO_ERROR_DBUS_ERROR
+  G_IO_ERROR_DBUS_ERROR,
+  G_IO_ERROR_HOST_UNREACHABLE,
+  G_IO_ERROR_NETWORK_UNREACHABLE,
+  G_IO_ERROR_CONNECTION_REFUSED,
+  G_IO_ERROR_PROXY_FAILED,
+  G_IO_ERROR_PROXY_AUTH_FAILED,
+  G_IO_ERROR_PROXY_NEED_AUTH,
+  G_IO_ERROR_PROXY_NOT_ALLOWED
 } GIOErrorEnum;
 
 
