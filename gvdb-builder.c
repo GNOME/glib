@@ -430,7 +430,7 @@ file_builder_add_hash (FileBuilder         *fb,
 
           if (item->child != NULL)
             {
-              guint32 children = 0;
+              guint32 children = 0, i = 0;
               guint32_le *offsets;
               GvdbItem *child;
 
@@ -444,9 +444,9 @@ file_builder_add_hash (FileBuilder         *fb,
               entry->type = 'L';
 
               for (child = item->child; child; child = child->sibling)
-                offsets[--children] = child->assigned_index;
+                offsets[i++] = child->assigned_index;
 
-              g_assert (children == 0);
+              g_assert (children == i);
             }
 
           if (item->table != NULL)

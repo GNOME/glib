@@ -243,8 +243,8 @@ gvdb_table_check_name (GvdbTable             *file,
 
 static const struct gvdb_hash_item *
 gvdb_table_lookup (GvdbTable   *file,
-                    const gchar *key,
-                    gchar        type)
+                   const gchar *key,
+                   gchar        type)
 {
   guint32 hash_value = 5381;
   guint key_length;
@@ -283,6 +283,37 @@ gvdb_table_lookup (GvdbTable   *file,
   return NULL;
 }
 
+static const struct gvdb_hash_item *
+gvdb_table_get_item (GvdbTable  *table,
+                     guint32_le  item_no)
+{
+  guint32 item_no_native = guint32_from_le (item_no);
+
+  if G_LIKELY (item_no_native < table->n_hash_items)
+    return table->hash_items + item_no_native;
+
+  return NULL;
+}
+
+static gboolean
+gvdb_table_list_from_item (GvdbTable                    *table,
+                           const struct gvdb_hash_item  *item,
+                           const guint32_le            **list,
+                           guint                        *length)
+{
+  gsize size;
+
+  *list = gvdb_table_dereference (table, &item->value.pointer, 4, &size);
+
+  if G_LIKELY (*list == NULL || size % 4)
+    return FALSE;
+
+  *length = size / 4;
+
+  return TRUE;
+}
+
+
 /**
  * gvdb_table_list:
  * @file: a #GvdbTable
@@ -308,21 +339,17 @@ gvdb_table_list (GvdbTable   *file,
   const struct gvdb_hash_item *item;
   const guint32_le *list;
   gchar **strv;
-  gsize size;
+  guint length;
   gint i;
 
   if ((item = gvdb_table_lookup (file, key, 'L')) == NULL)
     return NULL;
 
-  list = gvdb_table_dereference (file, &item->value.pointer, 4, &size);
-
-  if G_UNLIKELY (list == NULL || size % 4)
+  if (!gvdb_table_list_from_item (file, item, &list, &length))
     return NULL;
 
-  size /= 4;
-
-  strv = g_new (gchar *, size + 1);
-  for (i = 0; i < size; i++)
+  strv = g_new (gchar *, length + 1);
+  for (i = 0; i < length; i++)
     {
       guint32 itemno = guint32_from_le (list[i]);
 
@@ -368,6 +395,29 @@ gvdb_table_has_value (GvdbTable    *file,
   return gvdb_table_lookup (file, key, 'v') != NULL;
 }
 
+static GVariant *
+gvdb_table_value_from_item (GvdbTable                   *table,
+                            const struct gvdb_hash_item *item)
+{
+  GVariant *variant, *value;
+  gconstpointer data;
+  gsize size;
+
+  data = gvdb_table_dereference (table, &item->value.pointer, 8, &size);
+
+  if G_UNLIKELY (data == NULL)
+    return NULL;
+
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT,
+                                     data, size, table->trusted,
+                                     (GDestroyNotify) g_mapped_file_unref,
+                                     g_mapped_file_ref (table->mapped));
+  value = g_variant_get_variant (variant);
+  g_variant_unref (variant);
+
+  return value;
+}
+
 /**
  * gvdb_table_get_value:
  * @file: a #GvdbTable
@@ -394,27 +444,18 @@ gvdb_table_get_value (GvdbTable    *file,
                       GVariant    **options)
 {
   const struct gvdb_hash_item *item;
-  GVariant *variant, *value;
-  gconstpointer data;
-  gsize size;
+  GVariant *value;
 
   if ((item = gvdb_table_lookup (file, key, 'v')) == NULL)
     return NULL;
 
-  data = gvdb_table_dereference (file, &item->value.pointer, 8, &size);
-
-  if G_UNLIKELY (data == NULL)
-    return NULL;
-
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT,
-                                     data, size, file->trusted,
-                                     (GDestroyNotify) g_mapped_file_unref,
-                                     g_mapped_file_ref (file->mapped));
-  value = g_variant_get_variant (variant);
-  g_variant_unref (variant);
+  value = gvdb_table_value_from_item (file, item);
 
   if (options != NULL)
     {
+      gconstpointer data;
+      gsize size;
+
       data = gvdb_table_dereference (file, &item->options, 8, &size);
 
       if (data != NULL && size > 0)
@@ -506,5 +547,71 @@ gvdb_table_unref (GvdbTable *file)
     {
       g_mapped_file_unref (file->mapped);
       g_slice_free (GvdbTable, file);
+    }
+}
+
+void
+gvdb_table_walk (GvdbTable         *table,
+                 const gchar       *key,
+                 GvdbWalkOpenFunc   open_func,
+                 GvdbWalkValueFunc  value_func,
+                 GvdbWalkCloseFunc  close_func,
+                 gpointer           user_data)
+{
+  const struct gvdb_hash_item *item;
+  const guint32_le *pointers[64];
+  const guint32_le *enders[64];
+  gint index = 0;
+
+  item = gvdb_table_lookup (table, key, 'L');
+  pointers[0] = NULL;
+  enders[0] = NULL;
+  goto start_here;
+
+  while (index)
+    {
+      close_func (user_data);
+      index--;
+
+      while (pointers[index] < enders[index])
+        {
+          const gchar *name;
+          gsize name_len;
+
+          item = gvdb_table_get_item (table, *pointers[index]++);
+ start_here:
+
+          if (item != NULL &&
+              (name = gvdb_table_item_get_key (table, item, &name_len)))
+            {
+              if (item->type == 'L')
+                {
+                  if (open_func (name, name_len, user_data))
+                    {
+                      guint length;
+
+                      index++;
+                      g_assert (index < 64);
+
+                      gvdb_table_list_from_item (table, item,
+                                                 &pointers[index],
+                                                 &length);
+                      enders[index] = pointers[index] + length;
+                    }
+                }
+              else if (item->type == 'v')
+                {
+                  GVariant *value;
+
+                  value = gvdb_table_value_from_item (table, item);
+
+                  if (value != NULL)
+                    {
+                      value_func (name, name_len, value, user_data);
+                      g_variant_unref (value);
+                    }
+                }
+            }
+        }
     }
 }
