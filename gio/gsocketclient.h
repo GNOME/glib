@@ -103,6 +103,11 @@ GSocketConnection *     g_socket_client_connect_to_service              (GSocket
 									 const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
+GSocketConnection *     g_socket_client_connect_to_uri                  (GSocketClient        *client,
+									 const gchar          *uri,
+									 guint16               default_port,
+                                                                         GCancellable         *cancellable,
+                                                                         GError              **error);
 void                    g_socket_client_connect_async                   (GSocketClient        *client,
                                                                          GSocketConnectable   *connectable,
                                                                          GCancellable         *cancellable,
@@ -128,6 +133,15 @@ void                    g_socket_client_connect_to_service_async        (GSocket
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
 GSocketConnection *     g_socket_client_connect_to_service_finish       (GSocketClient        *client,
+                                                                         GAsyncResult         *result,
+                                                                         GError              **error);
+void                    g_socket_client_connect_to_uri_async            (GSocketClient        *client,
+									 const gchar          *uri,
+									 guint16               default_port,
+                                                                         GCancellable         *cancellable,
+                                                                         GAsyncReadyCallback   callback,
+                                                                         gpointer              user_data);
+GSocketConnection *     g_socket_client_connect_to_uri_finish           (GSocketClient        *client,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
 

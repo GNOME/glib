@@ -754,7 +754,7 @@ g_socket_client_connect (GSocketClient       *client,
 
 /**
  * g_socket_client_connect_to_host:
- * @client: a #SocketClient
+ * @client: a #GSocketClient
  * @host_and_port: the name and optionally port of the host to connect to
  * @default_port: the default port to connect to
  * @cancellable: a #GCancellable, or %NULL
@@ -851,6 +851,59 @@ g_socket_client_connect_to_service (GSocketClient  *client,
   GSocketConnection *connection;
 
   connectable = g_network_service_new (service, "tcp", domain);
+  connection = g_socket_client_connect (client, connectable,
+					cancellable, error);
+  g_object_unref (connectable);
+
+  return connection;
+}
+
+/**
+ * g_socket_client_connect_to_uri:
+ * @client: a #GSocketClient
+ * @uri: A network URI
+ * @default_port: the default port to connect to
+ * @cancellable: a #GCancellable, or %NULL
+ * @error: a pointer to a #GError, or %NULL
+ *
+ * This is a helper function for g_socket_client_connect().
+ *
+ * Attempts to create a TCP connection with a network URI.
+ *
+ * @uri may be any valid URI containing an "authority" (hostname/port)
+ * component. If a port is not specified in the URI, @default_port
+ * will be used.
+ *
+ * Using this rather than g_socket_client_connect() or
+ * g_socket_client_connect_to_host() allows #GSocketClient to
+ * determine when to use application-specific proxy protocols.
+ *
+ * Upon a successful connection, a new #GSocketConnection is constructed
+ * and returned.  The caller owns this new object and must drop their
+ * reference to it when finished with it.
+ *
+ * In the event of any failure (DNS error, service not found, no hosts
+ * connectable) %NULL is returned and @error (if non-%NULL) is set
+ * accordingly.
+ *
+ * Returns: a #GSocketConnection on success, %NULL on error.
+ *
+ * Since: 2.26
+ */
+GSocketConnection *
+g_socket_client_connect_to_uri (GSocketClient  *client,
+				const gchar    *uri,
+				guint16         default_port,
+				GCancellable   *cancellable,
+				GError        **error)
+{
+  GSocketConnectable *connectable;
+  GSocketConnection *connection;
+
+  connectable = g_network_address_parse_uri (uri, default_port, error);
+  if (connectable == NULL)
+    return NULL;
+
   connection = g_socket_client_connect (client, connectable,
 					cancellable, error);
   g_object_unref (connectable);
@@ -1255,6 +1308,52 @@ g_socket_client_connect_to_service_async (GSocketClient       *client,
 }
 
 /**
+ * g_socket_client_connect_to_uri_async:
+ * @client: a #GSocketClient
+ * @uri: a network uri
+ * @default_port: the default port to connect to
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: a #GAsyncReadyCallback
+ * @user_data: user data for the callback
+ *
+ * This is the asynchronous version of g_socket_client_connect_to_uri().
+ *
+ * When the operation is finished @callback will be
+ * called. You can then call g_socket_client_connect_to_uri_finish() to get
+ * the result of the operation.
+ *
+ * Since: 2.26
+ */
+void
+g_socket_client_connect_to_uri_async (GSocketClient        *client,
+				      const gchar          *uri,
+				      guint16               default_port,
+				      GCancellable         *cancellable,
+				      GAsyncReadyCallback   callback,
+				      gpointer              user_data)
+{
+  GSocketConnectable *connectable;
+  GError *error;
+
+  error = NULL;
+  connectable = g_network_address_parse_uri (uri, default_port, &error);
+  if (connectable == NULL)
+    {
+      g_simple_async_report_gerror_in_idle (G_OBJECT (client),
+					    callback, user_data, error);
+      g_error_free (error);
+    }
+  else
+    {
+      g_socket_client_connect_async (client,
+				     connectable, cancellable,
+				     callback, user_data);
+      g_object_unref (connectable);
+    }
+}
+
+
+/**
  * g_socket_client_connect_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
@@ -1318,6 +1417,27 @@ GSocketConnection *
 g_socket_client_connect_to_service_finish (GSocketClient  *client,
 					   GAsyncResult   *result,
 					   GError        **error)
+{
+  return g_socket_client_connect_finish (client, result, error);
+}
+
+/**
+ * g_socket_client_connect_to_uri_finish:
+ * @client: a #GSocketClient.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ * ignore.
+ *
+ * Finishes an async connect operation. See g_socket_client_connect_to_uri_async()
+ *
+ * Returns: a #GSocketConnection on success, %NULL on error.
+ *
+ * Since: 2.26
+ */
+GSocketConnection *
+g_socket_client_connect_to_uri_finish (GSocketClient  *client,
+				       GAsyncResult   *result,
+				       GError        **error)
 {
   return g_socket_client_connect_finish (client, result, error);
 }
