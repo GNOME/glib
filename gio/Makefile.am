@@ -160,6 +160,8 @@ local_sources = \
 	glocalfileiostream.h		\
 	glocalvfs.c 			\
 	glocalvfs.h 			\
+	gsocks5proxy.c			\
+	gsocks5proxy.h			\
 	$(NULL)
 
 platform_libadd =
