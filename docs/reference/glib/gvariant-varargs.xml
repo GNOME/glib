@@ -622,7 +622,7 @@ y = g_variant_get_variant (x);]]></programlisting></informalexample>
     <code>(<link linkend='GVariantIter'>GVariantIter</link> **)</code>).
     A new heap-allocated iterator is created and returned, initialised for iterating over the elements of the array.
     This iterator should be freed when you are done with it, using
-    <link linkend='g-variant-iter-unref'><function>g_variant_iter_unref()</function></link>.
+    <link linkend='g-variant-iter-free'><function>g_variant_iter_free()</function></link>.
     <link linkend='NULL--CAPS'><literal>NULL</literal></link> may also be given to indicate that the value of the array
     should be ignored.
    </para>
@@ -633,12 +633,13 @@ y = g_variant_get_variant (x);]]></programlisting></informalexample>
 <![CDATA[GVariantBuilder *builder;
 GVariant *value;
 
-builder = g_variant_builder_new (G_VARIANT_TYPE_CLASS_ARRAY, NULL);
+builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
 g_variant_builder_add (builder, "s", "when");
 g_variant_builder_add (builder, "s", "in");
 g_variant_builder_add (builder, "s", "the");
 g_variant_builder_add (builder, "s", "course");
 value = g_variant_new ("as", builder);
+g_variant_builder_unref (builder);
 
 {
   GVariantIter *iter;
@@ -646,9 +647,11 @@ value = g_variant_new ("as", builder);
 
   g_variant_get (value, "as", &iter);
   while (g_variant_iter_loop (iter, "s", &str))
-    g_print ("%s\n");
-  g_variant_iter_unref (iter);
-}]]></programlisting></informalexample>
+    g_print ("%s\n", str);
+  g_variant_iter_free (iter);
+}
+
+g_variant_unref (value);]]></programlisting></informalexample>
    </refsect3>
   </refsect2>
 
@@ -814,7 +817,7 @@ value2 = g_variant_new ("()");
 <![CDATA[GVariantBuilder *b;
 GVariant *dict;
 
-b = g_variant_builder_new (G_VARIANT_TYPE_CLASS_ARRAY, G_VARIANT_TYPE ("a{sv}"));
+b = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
 g_variant_builder_add (b, "{sv}", "name", g_variant_new_string ("foo"));
 g_variant_builder_add (b, "{sv}", "timeout", g_variant_new_int32 (10));
 dict = g_variant_builder_end (b);]]></programlisting></informalexample>
