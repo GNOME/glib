@@ -2166,6 +2166,8 @@ g_sequence_remove_range
 g_sequence_move_range
 g_sequence_search
 g_sequence_search_iter
+g_sequence_lookup
+g_sequence_lookup_iter
 
 <SUBSECTION>
 g_sequence_get
