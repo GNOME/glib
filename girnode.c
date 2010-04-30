@@ -1497,6 +1497,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 		      array->zero_terminated = type->zero_terminated;
 		      array->has_length = type->has_length;
                       array->has_size = type->has_size;
+                      array->array_type = type->array_type;
 		      array->reserved2 = 0;
                       if (array->has_length)
                         array->dimensions.length = type->length;
