@@ -453,7 +453,6 @@ g_settings_backend_flatten_tree (GTree         *tree,
 {
   FlattenState state = { 0, };
   gsize nnodes;
-  gsize i;
 
   nnodes = g_tree_nnodes (tree);
 
@@ -470,8 +469,8 @@ g_settings_backend_flatten_tree (GTree         *tree,
   g_return_if_fail (*keys + nnodes == state.keys);
 
   *path = state.prefix;
-  for (i = 0; i < nnodes; i++)
-    state.keys[i] += state.prefix_len;
+  while (nnodes--)
+    *--state.keys += state.prefix_len;
 }
 
 /**
