@@ -1,3 +1,26 @@
+Overview of Changes from GLib 2.24.0 to GLib 2.24.1
+===================================================
+
+* Bugs fixed:
+ 615379 g_new macros crash if sizeof(struct_type) == 0
+ 614185 g_type_class_add_private() documentation is not correct
+ 614372 g_stat() is funny
+ 615111 GAsyncInitable's default implementation is broken
+        Fix race in g_cancellable_cancel()
+        Fix for g_variant_iter_loop()
+        Make g_string_append_len() accept NULL lf len == 0
+        Fix typo in GMutex error message
+
+* Translation updates:
+ Bengali India
+ Catalan
+ Catalan (Valencian)
+ Danish
+ Kannada
+ Thai
+ Traditional Chinese
+
+
 Overview of Changes from GLib 2.23.6 to GLib 2.24.0
 ===================================================
 
