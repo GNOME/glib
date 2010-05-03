@@ -160,15 +160,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 #include "libgio.sourcefiles"
-			<File RelativePath="..\..\..\gio\gwin32appinfo.c" />
-			<File RelativePath="..\..\..\gio\win32\gwin32directorymonitor.c" />
-			<File RelativePath="..\..\..\gio\gwin32mount.c" />
-			<File RelativePath="..\..\..\gio\gwin32resolver.c" />
-			<File RelativePath="..\..\..\gio\gwin32volumemonitor.c" />
-			<File RelativePath="..\..\..\gio\win32\gwinhttpfile.c" />
-			<File RelativePath="..\..\..\gio\win32\gwinhttpfileinputstream.c" />
-			<File RelativePath="..\..\..\gio\win32\gwinhttpfileoutputstream.c" />
-			<File RelativePath="..\..\..\gio\win32\gwinhttpvfs.c" />
 		</Filter>
 		<Filter
 			Name="Header Files"
