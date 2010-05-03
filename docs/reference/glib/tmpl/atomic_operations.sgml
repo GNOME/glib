@@ -65,16 +65,18 @@ g_atomic_pointer_compare_and_exchange() respectively.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION g_atomic_int_get ##### -->
 <para>
 Reads the value of the integer pointed to by @atomic. Also acts as
 a memory barrier.
 </para>
 
+@atomic: a pointer to an integer
 @Returns: the value of *@atomic
 @Since: 2.4
-<!-- # Unused Parameters # -->
-@atomic: a pointer to an integer
 
 
 <!-- ##### FUNCTION g_atomic_int_set ##### -->
@@ -83,10 +85,9 @@ Sets the value of the integer pointed to by @atomic.
 Also acts as a memory barrier.
 </para>
 
-@Since: 2.10
-<!-- # Unused Parameters # -->
 @atomic: a pointer to an integer
 @newval: the new value
+@Since: 2.10
 
 
 <!-- ##### FUNCTION g_atomic_int_add ##### -->
@@ -95,10 +96,9 @@ Atomically adds @val to the integer pointed to by @atomic.
 Also acts as a memory barrier.
 </para>
 
-@Since: 2.4
-<!-- # Unused Parameters # -->
 @atomic: a pointer to an integer.
 @val: the value to add to *@atomic.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_atomic_int_exchange_and_add ##### -->
@@ -108,11 +108,10 @@ the value of *@atomic just before the addition took place.
 Also acts as a memory barrier.
 </para>
 
-@Returns: the value of *@atomic before the addition.
-@Since: 2.4
-<!-- # Unused Parameters # -->
 @atomic: a pointer to an integer.
 @val: the value to add to *@atomic.
+@Returns: the value of *@atomic before the addition.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_atomic_int_compare_and_exchange ##### -->
@@ -122,12 +121,11 @@ if they are equal, atomically exchanges *@atomic with @newval.
 Also acts as a memory barrier.
 </para>
 
-@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
-@Since: 2.4
-<!-- # Unused Parameters # -->
 @atomic: a pointer to an integer.
 @oldval: the assumed old value of *@atomic.
 @newval: the new value of *@atomic.
+@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_atomic_pointer_get ##### -->
@@ -136,10 +134,9 @@ Reads the value of the pointer pointed to by @atomic. Also acts as
 a memory barrier.
 </para>
 
+@atomic: a pointer to a #gpointer.
 @Returns: the value to add to *@atomic.
 @Since: 2.4
-<!-- # Unused Parameters # -->
-@atomic: a pointer to a #gpointer.
 
 
 <!-- ##### FUNCTION g_atomic_pointer_set ##### -->
@@ -148,10 +145,9 @@ Sets the value of the pointer pointed to by @atomic.
 Also acts as a memory barrier.
 </para>
 
-@Since: 2.10
-<!-- # Unused Parameters # -->
 @atomic: a pointer to a #gpointer
 @newval: the new value
+@Since: 2.10
 
 
 <!-- ##### FUNCTION g_atomic_pointer_compare_and_exchange ##### -->
@@ -161,12 +157,11 @@ if they are equal, atomically exchanges *@atomic with @newval.
 Also acts as a memory barrier.
 </para>
 
-@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
-@Since: 2.4
-<!-- # Unused Parameters # -->
 @atomic: a pointer to a #gpointer.
 @oldval: the assumed old value of *@atomic.
 @newval: the new value of *@atomic.
+@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_atomic_int_inc ##### -->

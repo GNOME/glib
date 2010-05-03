@@ -99,6 +99,9 @@ just_say_hello (const char *filename, GError **error)
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GModule ##### -->
 <para>
 The #GModule struct is an opaque data structure to represent a
@@ -112,6 +115,7 @@ It should only be accessed via the following functions.
 Checks if modules are supported on the current platform.
 </para>
 
+@void: 
 @Returns: %TRUE if modules are supported.
 
 
@@ -228,6 +232,7 @@ Closes a module.
 Gets a string describing the last module error.
 </para>
 
+@void: 
 @Returns: a string describing the last module error.
 
 

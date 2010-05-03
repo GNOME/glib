@@ -52,6 +52,9 @@ side-effects.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO G_BYTE_ORDER ##### -->
 <para>
 The host byte order.

@@ -32,6 +32,9 @@ The gettext manual.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO Q_ ##### -->
 <para>
 Like _(), but handles context in message ids. This has the advantage that 
@@ -209,6 +212,7 @@ Intltool has support for the NC_() macro since version 0.40.1.
 
 </para>
 
+@void: 
 @Returns: 
 
 
