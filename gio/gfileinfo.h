@@ -946,7 +946,9 @@ void              g_file_info_set_symlink_target     (GFileInfo         *info,
 void              g_file_info_set_sort_order         (GFileInfo         *info,
 						      gint32             sort_order);
 
-GType                  g_file_attribute_matcher_get_type       (void) G_GNUC_CONST;
+#define G_TYPE_FILE_ATTRIBUTE_MATCHER (g_file_attribute_matcher_get_type ())
+GType g_file_attribute_matcher_get_type (void) G_GNUC_CONST;
+
 GFileAttributeMatcher *g_file_attribute_matcher_new            (const char            *attributes);
 GFileAttributeMatcher *g_file_attribute_matcher_ref            (GFileAttributeMatcher *matcher);
 void                   g_file_attribute_matcher_unref          (GFileAttributeMatcher *matcher);
