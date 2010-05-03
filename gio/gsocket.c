@@ -3304,8 +3304,8 @@ g_socket_receive_message (GSocket                 *socket,
 
     if (messages != NULL)
       *messages = NULL;
-    if (n_messages != NULL)
-      *n_messages = 0;
+    if (num_messages != NULL)
+      *num_messages = 0;
 
     return bytes_received;
   }
