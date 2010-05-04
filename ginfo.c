@@ -1093,6 +1093,23 @@ g_type_info_is_zero_terminated (GITypeInfo *info)
   return FALSE;
 }
 
+GIArrayType
+g_type_info_get_array_type (GITypeInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+    {
+      ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+      g_return_val_if_fail (blob->tag == GI_TYPE_TAG_ARRAY, -1);
+
+      return blob->array_type;
+    }
+
+  return -1;
+}
+
 gint
 g_type_info_get_n_error_domains (GITypeInfo *info)
 {

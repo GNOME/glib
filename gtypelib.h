@@ -524,9 +524,14 @@ typedef struct {
  * of the array. If both has_length and zero_terminated are set, the
  * convention is to pass -1 for the length if the array is
  * zero-terminated.
+ * @has_size: Indicates that size is the fixed size of the array.
+ * @array_type: Indicates whether this is a C array, GArray, GPtrArray, or
+ * GByteArray. If something other than a C array, the length and element size
+ * are implicit in the structure.
  * @length: The index of the parameter which is used to pass the length of the
  * array. The parameter must be an integer type and have the same
  * direction as this one.
+ * @size: The fixed size of the array.
  * @type: The type of the array elements.
  *
  * Arrays are passed by reference, thus is_pointer is always 1.
@@ -539,7 +544,8 @@ typedef struct {
   guint16 zero_terminated :1;
   guint16 has_length      :1;
   guint16 has_size        :1;
-  guint16 reserved2       :5;
+  guint16 array_type      :2;
+  guint16 reserved2       :3;
 
   union {
     guint16 length;

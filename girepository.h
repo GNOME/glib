@@ -383,6 +383,13 @@ typedef enum {
    * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;
 
+typedef enum {
+  GI_ARRAY_TYPE_C,
+  GI_ARRAY_TYPE_ARRAY,
+  GI_ARRAY_TYPE_PTR_ARRAY,
+  GI_ARRAY_TYPE_BYTE_ARRAY
+} GIArrayType;
+
 #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
@@ -395,6 +402,7 @@ GIBaseInfo *           g_type_info_get_interface       (GITypeInfo *info);
 gint                   g_type_info_get_array_length    (GITypeInfo *info);
 gint                   g_type_info_get_array_fixed_size(GITypeInfo *info);
 gboolean               g_type_info_is_zero_terminated  (GITypeInfo *info);
+GIArrayType            g_type_info_get_array_type      (GITypeInfo *info);
 
 gint                   g_type_info_get_n_error_domains (GITypeInfo *info);
 GIErrorDomainInfo     *g_type_info_get_error_domain    (GITypeInfo *info,

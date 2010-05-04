@@ -138,6 +138,7 @@ struct _GIrNodeType
   gint length;
   gboolean has_size;
   gint size;
+  gint array_type;
 
   GIrNodeType *parameter_type1;
   GIrNodeType *parameter_type2;

@@ -1717,22 +1717,40 @@ start_type (GMarkupParseContext *context,
       typenode->is_pointer = TRUE;
       typenode->is_array = TRUE;
 
-      zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
-      len = find_attribute ("length", attribute_names, attribute_values);
-      size = find_attribute ("fixed-size", attribute_names, attribute_values);
+      name = find_attribute ("name", attribute_names, attribute_values);
+      if (name && strcmp (name, "GLib.Array") == 0) {
+        typenode->array_type = GI_ARRAY_TYPE_ARRAY;
+      } else if (name && strcmp (name, "GLib.ByteArray") == 0) {
+        typenode->array_type = GI_ARRAY_TYPE_BYTE_ARRAY;
+      } else if (name && strcmp (name, "GLib.PtrArray") == 0) {
+        typenode->array_type = GI_ARRAY_TYPE_PTR_ARRAY;
+      } else {
+        typenode->array_type = GI_ARRAY_TYPE_C;
+      }
 
-      typenode->zero_terminated = !(zero && strcmp (zero, "1") != 0);
-      typenode->has_length = len != NULL;
-      typenode->length = typenode->has_length ? atoi (len) : -1;
+      if (typenode->array_type == GI_ARRAY_TYPE_C) {
+          zero = find_attribute ("zero-terminated", attribute_names, attribute_values);
+          len = find_attribute ("length", attribute_names, attribute_values);
+          size = find_attribute ("fixed-size", attribute_names, attribute_values);
 
-      typenode->has_size = size != NULL;
-      typenode->size = typenode->has_size ? atoi (size) : -1;
+          typenode->has_length = len != NULL;
+          typenode->length = typenode->has_length ? atoi (len) : -1;
 
-      if (zero)
-        typenode->zero_terminated = strcmp(zero, "1") == 0;
-      else
-        /* If neither zero-terminated nor length nor fixed-size is given, assume zero-terminated. */
-        typenode->zero_terminated = !(typenode->has_length || typenode->has_size);
+          typenode->has_size = size != NULL;
+          typenode->size = typenode->has_size ? atoi (size) : -1;
+
+          if (zero)
+            typenode->zero_terminated = strcmp(zero, "1") == 0;
+          else
+            /* If neither zero-terminated nor length nor fixed-size is given, assume zero-terminated. */
+            typenode->zero_terminated = !(typenode->has_length || typenode->has_size);
+        } else {
+          typenode->zero_terminated = FALSE;
+          typenode->has_length = FALSE;
+          typenode->length = -1;
+          typenode->has_size = FALSE;
+          typenode->size = -1;
+        }
     }
   else
     {
