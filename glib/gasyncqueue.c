@@ -26,7 +26,13 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gasyncqueue.h"
+
+#include "gmem.h"
+#include "gqueue.h"
+#include "gtestutils.h"
+#include "gthread.h"
+
 #include "galias.h"
 
 
