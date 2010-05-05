@@ -27,7 +27,6 @@
 
 #include <glib/gmessages.h>
 #include <glib/gstring.h>
-#include <glib/gtypes.h>
 #include <glib/gerror.h>
 #include <glib/gslist.h>
 

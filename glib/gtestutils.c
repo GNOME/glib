@@ -17,10 +17,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 #include "config.h"
+
 #include "gtestutils.h"
-#include <glib.h>
-#include "galias.h"
+
 #include <sys/types.h>
 #ifdef G_OS_UNIX
 #include <sys/wait.h>
@@ -41,6 +42,14 @@
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+
+#include "gmain.h"
+#include "gpattern.h"
+#include "grand.h"
+#include "gstrfuncs.h"
+#include "gtimer.h"
+
+#include "galias.h"
  
 /* Global variable for storing assertion messages; this is the counterpart to
  * glibc's (private) __abort_msg variable, and allows developers and crash
