@@ -22,11 +22,11 @@
 
 #include "config.h"
 
+#include "gcharsetconverter.h"
+
 #include <errno.h>
 
 #include "gcontenttypeprivate.h"
-#include "gcharsetconverter.h"
-#include "glib.h"
 #include "ginitable.h"
 #include "gioerror.h"
 #include "glibintl.h"

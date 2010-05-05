@@ -22,16 +22,16 @@
 
 #include "config.h"
 
+#include "gzlibdecompressor.h"
+
 #include <errno.h>
 #include <zlib.h>
 #include <string.h>
 
-#include "gzlibdecompressor.h"
-#include "glib.h"
 #include "gioerror.h"
-#include "glibintl.h"
 #include "gioenums.h"
 #include "gioenumtypes.h"
+#include "glibintl.h"
 
 #include "gioalias.h"
 

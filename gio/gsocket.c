@@ -26,7 +26,8 @@
  */
 
 #include "config.h"
-#include "glib.h"
+
+#include "gsocket.h"
 
 #include <errno.h>
 #include <signal.h>
@@ -42,7 +43,6 @@
 #include <sys/uio.h>
 #endif
 
-#include "gsocket.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "ginetaddress.h"
