@@ -1,8 +1,13 @@
 Tor Lillqvist <tml@iki.fi>
 Hans Breuer <hans@breuer.org>
 
-The general parts, and the section about gcc and autoconfiscated build
-are by Tor Lillqvist. The sections about MSVC build is by Hans Breuer.
+Note that this document is not really maintained in a serious
+fashion. Lots of information here might be misleading or outdated. You
+have been warned.
+
+The general parts, and the section about gcc and autoconfiscated
+build, and about a Visual Studio build are by Tor Lillqvist. The
+sections about MSVC build with NMAKE is by Hans Breuer. 
 
 General
 =======
@@ -15,11 +20,11 @@ only. No POSIX (Unix) emulation layer like Cygwin in involved.
 
 To build GLib on Win32, you can use either gcc ("mingw") or the
 Microsoft compiler and tools. For the latter, MSVC6 and later have
-been used successfully. Also the Digital Mars C/C++ compiler have been
-used. 
+been used successfully. Also the Digital Mars C/C++ compiler has
+reportedly been used.
 
-People have also successfully cross-compiled GLib for Win32 from Linux
-using the cross-mingw packages.
+You can also cross-compile GLib for Windows from Linux using the
+cross-compiling mingw packages for your distro.
 
 Note that to just *use* GLib on Windows, there is no need to build it
 yourself.
@@ -141,25 +146,27 @@ For MSVC7 and later (Visual C++ .NET 2003, Visual C++ 2005, Visual C++
 the same C runtime as the code that uses GLib. Such DLLs should be
 named differently than the ones that use msvcrt.dll.
 
-For GLib, the DLL is called libglib-2.0-0.dll, and the import
-libraries libglib-2.0.dll.a and glib-2.0.lib. Note that the "2.0" is
-part of the "basename" of the library, it is not something that
-libtool has added. The -0 suffix is added by libtool and is the value
-of "LT_CURRENT - LT_AGE". The 0 is *not* part of the version number of
-GLib, although, for GLib 2.x.0, it happens to be the same. The
-LT_CURRENT - LT_AGE value will on purpose be kept as zero as long as
-binary compatibility is maintained. For the gory details, see
-configure.in and libtool documentation.
+For GLib, the DLL that uses msvcrt.dll is called libglib-2.0-0.dll,
+and the import libraries libglib-2.0.dll.a and glib-2.0.lib. Note that
+the "2.0" is part of the "basename" of the library, it is not
+something that libtool has added. The -0 suffix is added by libtool
+and is the value of "LT_CURRENT - LT_AGE". The 0 should *not* be
+thought to be part of the version number of GLib. The LT_CURRENT -
+LT_AGE value will on purpose be kept as zero as long as binary
+compatibility is maintained. For the gory details, see configure.in
+and libtool documentation.
 
-Cross-compiling
-===============
+Building with Visual Studio
+===========================
 
-It is possible to build GLib using a cross compiler. See
-docs/reference/glib/html/glib-cross-compiling.html (part of the GLib
-reference manual) for more information.
+In an unpacked tarball, you will find in build\win32\vs9 a solution
+file that can be used to build the GLib DLLs and some auxiliary
+programs. Read the README.txt file in that folder for more
+information. Note that you will need a libintl implementation, and
+zlib.
 
-Building with MSVC
-==================
+Building with MSVC and NMAKE
+============================
 
 If you are building from a GIT snapshot, you will not have all
 makefile.msc files. You should copy the corresponding makefile.msc.in
