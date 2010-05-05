@@ -30,12 +30,15 @@
 
 #include "config.h"
 
+#include "gmem.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 
-#include "glib.h"
-#include "gthreadprivate.h"
+#include "gbacktrace.h"
+#include "gtestutils.h"
+#include "gthread.h"
 
 #include "galias.h"
 
