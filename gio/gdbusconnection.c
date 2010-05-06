@@ -77,6 +77,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusconnection
@@ -1568,7 +1569,7 @@ on_worker_message_received (GDBusWorker  *worker,
     {
       GDBusMessageType message_type;
 
-      message_type = g_dbus_message_get_type (message);
+      message_type = g_dbus_message_get_message_type (message);
       if (message_type == G_DBUS_MESSAGE_TYPE_METHOD_RETURN || message_type == G_DBUS_MESSAGE_TYPE_ERROR)
         {
           guint32 reply_serial;
@@ -4152,7 +4153,7 @@ decode_method_reply (GDBusMessage *reply, GError **error)
   GVariant *result;
 
   result = NULL;
-  switch (g_dbus_message_get_type (reply))
+  switch (g_dbus_message_get_message_type (reply))
     {
     case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
       result = g_dbus_message_get_body (reply);
@@ -5024,7 +5025,7 @@ distribute_method_call (GDBusConnection  *connection,
   gchar *subtree_path;
   gchar *needle;
 
-  g_assert (g_dbus_message_get_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL);
+  g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL);
 
   interface_name = g_dbus_message_get_interface (message);
   member = g_dbus_message_get_member (message);
@@ -5365,3 +5366,6 @@ g_bus_get_finish (GAsyncResult  *res,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_CONNECTION_C__
+#include "gioaliasdef.c"

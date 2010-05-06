@@ -32,6 +32,7 @@
 #include "gdbusprivate.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbuserror
@@ -866,3 +867,6 @@ g_dbus_error_encode_gerror (const GError *error)
 
   return error_name;
 }
+
+#define __G_DBUS_ERROR_C__
+#include "gioaliasdef.c"

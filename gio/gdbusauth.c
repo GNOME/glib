@@ -43,6 +43,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 #define DEBUG_ENABLED 1
 
@@ -1347,3 +1348,6 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_AUTH_C__
+#include "gioaliasdef.c"

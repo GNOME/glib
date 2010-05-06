@@ -28,6 +28,7 @@
 #include "gdbusintrospection.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusintrospection
@@ -60,6 +61,7 @@
 _MY_DEFINE_BOXED_TYPE (GDBusNodeInfo,       g_dbus_node_info);
 _MY_DEFINE_BOXED_TYPE (GDBusInterfaceInfo,  g_dbus_interface_info);
 _MY_DEFINE_BOXED_TYPE (GDBusMethodInfo,     g_dbus_method_info);
+_MY_DEFINE_BOXED_TYPE (GDBusSignalInfo,     g_dbus_signal_info);
 _MY_DEFINE_BOXED_TYPE (GDBusPropertyInfo,   g_dbus_property_info);
 _MY_DEFINE_BOXED_TYPE (GDBusArgInfo,        g_dbus_arg_info);
 _MY_DEFINE_BOXED_TYPE (GDBusAnnotationInfo, g_dbus_annotation_info);
@@ -2052,3 +2054,6 @@ g_dbus_node_info_lookup_interface (const GDBusNodeInfo *node_info,
  out:
   return result;
 }
+
+#define __G_DBUS_INTROSPECTION_C__
+#include "gioaliasdef.c"

@@ -34,6 +34,7 @@
 #include "gcancellable.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusproxywatching
@@ -399,3 +400,6 @@ g_bus_unwatch_proxy (guint watcher_id)
       client_unref (client);
     }
 }
+
+#define __G_DBUS_PROXY_WATCHING_C__
+#include "gioaliasdef.c"

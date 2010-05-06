@@ -27,6 +27,7 @@
 #include "gioenumtypes.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 struct _GDBusAuthMechanismAnonPrivate
 {
@@ -325,3 +326,6 @@ mechanism_client_shutdown (GDBusAuthMechanism   *mechanism)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_AUTH_MECHANISM_ANON_C__
+#include "gioaliasdef.c"

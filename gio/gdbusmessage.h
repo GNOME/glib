@@ -31,7 +31,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_DBUS_MESSAGE         (g_dbus_message_get_gtype ())
+#define G_TYPE_DBUS_MESSAGE         (g_dbus_message_get_type ())
 #define G_DBUS_MESSAGE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_MESSAGE, GDBusMessage))
 #define G_DBUS_MESSAGE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
 #define G_DBUS_MESSAGE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
@@ -69,7 +69,7 @@ struct _GDBusMessage
   GDBusMessagePrivate *priv;
 };
 
-GType                     g_dbus_message_get_gtype          (void) G_GNUC_CONST;
+GType                     g_dbus_message_get_type           (void) G_GNUC_CONST;
 GDBusMessage             *g_dbus_message_new                (void);
 GDBusMessage             *g_dbus_message_new_signal         (const gchar              *path,
                                                              const gchar              *interface,
@@ -93,8 +93,8 @@ GDBusMessage             *g_dbus_message_new_method_error_literal (GDBusMessage 
 gchar                    *g_dbus_message_print              (GDBusMessage             *message,
                                                              guint                     indent);
 
-GDBusMessageType          g_dbus_message_get_type           (GDBusMessage             *message);
-void                      g_dbus_message_set_type           (GDBusMessage             *message,
+GDBusMessageType          g_dbus_message_get_message_type   (GDBusMessage             *message);
+void                      g_dbus_message_set_message_type   (GDBusMessage             *message,
                                                              GDBusMessageType          type);
 GDBusMessageFlags         g_dbus_message_get_flags          (GDBusMessage             *message);
 void                      g_dbus_message_set_flags          (GDBusMessage             *message,

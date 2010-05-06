@@ -44,6 +44,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusserver
@@ -1073,3 +1074,6 @@ initable_iface_init (GInitableIface *initable_iface)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_SERVER_C__
+#include "gioaliasdef.c"

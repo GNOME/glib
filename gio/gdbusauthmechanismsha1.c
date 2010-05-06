@@ -41,6 +41,7 @@
 #include <glib/gstdio.h>
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 struct _GDBusAuthMechanismSha1Private
 {
@@ -1216,3 +1217,6 @@ mechanism_client_shutdown (GDBusAuthMechanism   *mechanism)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_AUTH_MECHANISM_SHA1_C__
+#include "gioaliasdef.c"

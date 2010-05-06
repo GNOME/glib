@@ -35,6 +35,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 struct _GDBusAuthMechanismExternalPrivate
 {
@@ -416,3 +417,6 @@ mechanism_client_shutdown (GDBusAuthMechanism   *mechanism)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_AUTH_MECHANISM_EXTERNAL_C__
+#include "gioaliasdef.c"

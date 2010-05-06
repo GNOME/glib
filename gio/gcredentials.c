@@ -34,6 +34,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gcredentials
@@ -458,3 +459,6 @@ g_credentials_set_windows_user (GCredentials    *credentials,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_CREDENTIALS_C__
+#include "gioaliasdef.c"

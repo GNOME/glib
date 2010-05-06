@@ -51,6 +51,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -1050,3 +1051,6 @@ _g_dbus_compute_complete_signature (GDBusArgInfo **args,
 
   return g_string_free (s, FALSE);
 }
+
+#define __G_DBUS_PRIVATE_C__
+#include "gioaliasdef.c"

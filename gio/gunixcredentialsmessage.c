@@ -57,6 +57,7 @@
 #include "gcredentials.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 struct _GUnixCredentialsMessagePrivate
 {
@@ -343,3 +344,6 @@ g_unix_credentials_message_get_credentials (GUnixCredentialsMessage *message)
   return message->priv->credentials;
 }
 
+
+#define __G_UNIX_CREDENTIALS_MESSAGE_C__
+#include "gioaliasdef.c"

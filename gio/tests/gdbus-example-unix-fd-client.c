@@ -49,7 +49,7 @@ get_server_stdout (GDBusConnection  *connection,
   if (method_reply_message == NULL)
       goto out;
 
-  if (g_dbus_message_get_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_ERROR)
+  if (g_dbus_message_get_message_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_ERROR)
     {
       g_dbus_message_to_gerror (method_reply_message, error);
       goto out;

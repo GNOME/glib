@@ -32,6 +32,7 @@
 #include "gdbusconnection.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusnamewatching
@@ -623,3 +624,6 @@ g_bus_unwatch_name (guint watcher_id)
       client_unref (client);
     }
 }
+
+#define __G_DBUS_NAME_WATCHING_C__
+#include "gioaliasdef.c"

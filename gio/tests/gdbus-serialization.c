@@ -509,7 +509,7 @@ check_serialization (GVariant *value,
 
   message = g_dbus_message_new ();
   g_dbus_message_set_body (message, value);
-  g_dbus_message_set_type (message, G_DBUS_MESSAGE_TYPE_METHOD_CALL);
+  g_dbus_message_set_message_type (message, G_DBUS_MESSAGE_TYPE_METHOD_CALL);
   g_dbus_message_set_serial (message, 0x41);
   s = get_body_signature (value);
   g_dbus_message_set_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH, g_variant_new_object_path ("/foo/bar"));

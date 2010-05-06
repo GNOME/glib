@@ -2300,8 +2300,8 @@ g_dbus_message_new_method_error
 g_dbus_message_new_method_error_valist
 g_dbus_message_new_method_error_literal
 g_dbus_message_print
-g_dbus_message_get_type
-g_dbus_message_set_type
+g_dbus_message_get_message_type
+g_dbus_message_set_message_type
 g_dbus_message_get_serial
 g_dbus_message_set_serial
 g_dbus_message_get_flags
@@ -2338,7 +2338,7 @@ g_dbus_message_to_gerror
 G_DBUS_MESSAGE
 G_IS_DBUS_MESSAGE
 G_TYPE_DBUS_MESSAGE
-g_dbus_message_get_gtype
+g_dbus_message_get_type
 G_DBUS_MESSAGE_CLASS
 G_IS_DBUS_MESSAGE_CLASS
 G_DBUS_MESSAGE_GET_CLASS

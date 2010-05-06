@@ -45,6 +45,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusmessage
@@ -68,9 +69,7 @@ struct _GDBusMessagePrivate
 #endif
 };
 
-#define g_dbus_message_get_type g_dbus_message_get_gtype
 G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT);
-#undef g_dbus_message_get_type
 
 static void
 g_dbus_message_finalize (GObject *object)
@@ -222,7 +221,7 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
   const gchar *sender;
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (method_call_message), NULL);
-  g_return_val_if_fail (g_dbus_message_get_type (method_call_message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL, NULL);
+  g_return_val_if_fail (g_dbus_message_get_message_type (method_call_message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL, NULL);
   g_return_val_if_fail (g_dbus_message_get_serial (method_call_message) != 0, NULL);
 
   message = g_dbus_message_new ();
@@ -292,7 +291,7 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
   const gchar *sender;
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (method_call_message), NULL);
-  g_return_val_if_fail (g_dbus_message_get_type (method_call_message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL, NULL);
+  g_return_val_if_fail (g_dbus_message_get_message_type (method_call_message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL, NULL);
   g_return_val_if_fail (g_dbus_message_get_serial (method_call_message) != 0, NULL);
   g_return_val_if_fail (g_dbus_is_name (error_name), NULL);
   g_return_val_if_fail (error_message != NULL, NULL);
@@ -347,7 +346,7 @@ g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_me
 /* TODO: need GI annotations to specify that any guchar value goes for the type */
 
 /**
- * g_dbus_message_get_type:
+ * g_dbus_message_get_message_type:
  * @message: A #GDBusMessage.
  *
  * Gets the type of @message.
@@ -357,14 +356,14 @@ g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_me
  * Since: 2.26
  */
 GDBusMessageType
-g_dbus_message_get_type (GDBusMessage  *message)
+g_dbus_message_get_message_type (GDBusMessage  *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), G_DBUS_MESSAGE_TYPE_INVALID);
   return message->priv->type;
 }
 
 /**
- * g_dbus_message_set_type:
+ * g_dbus_message_set_message_type:
  * @message: A #GDBusMessage.
  * @type: A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
  *
@@ -373,8 +372,8 @@ g_dbus_message_get_type (GDBusMessage  *message)
  * Since: 2.26
  */
 void
-g_dbus_message_set_type (GDBusMessage      *message,
-                         GDBusMessageType   type)
+g_dbus_message_set_message_type (GDBusMessage      *message,
+                                 GDBusMessageType   type)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (type >=0 && type < 256);
@@ -2508,3 +2507,6 @@ g_dbus_message_print (GDBusMessage *message,
   return g_string_free (str, FALSE);
 }
 
+
+#define __G_DBUS_MESSAGE_C__
+#include "gioaliasdef.c"

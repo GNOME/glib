@@ -593,7 +593,7 @@ test_peer (void)
                                                                            NULL, /* cancellable */
                                                                            &error);
     g_assert_no_error (error);
-    g_assert (g_dbus_message_get_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_METHOD_RETURN);
+    g_assert (g_dbus_message_get_message_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_METHOD_RETURN);
     fd_list = g_dbus_message_get_unix_fd_list (method_reply_message);
     g_assert (fd_list != NULL);
     g_assert_cmpint (g_unix_fd_list_get_length (fd_list), ==, 1);

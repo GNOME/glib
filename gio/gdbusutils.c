@@ -28,6 +28,7 @@
 #include "gdbusutils.h"
 
 #include "glibintl.h"
+#include "gioalias.h"
 
 /**
  * SECTION:gdbusutils
@@ -375,3 +376,6 @@ g_dbus_is_activated (void)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+#define __G_DBUS_UTILS_C__
+#include "gioaliasdef.c"
