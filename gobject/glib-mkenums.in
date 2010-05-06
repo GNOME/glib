@@ -174,8 +174,7 @@ my $eprod = "";   # per enum text (produced prior to value itarations)
 my $vhead = "";   # value header, produced before iterating over enum values
 my $vprod = "";   # value text, produced for each enum value
 my $vtail = "";   # value tail, produced after iterating over enum values
-# other options
-my $comment_tmpl = "/* \@comment\@ */";
+my $comment_tmpl = "";   # comment template
 
 sub read_template_file {
   my ($file) = @_;
@@ -218,6 +217,9 @@ sub read_template_file {
   $vprod = $tmpl{'value-production'};
   $vtail = $tmpl{'value-tail'};
   $comment_tmpl = $tmpl{'comment'};
+
+  # default to C-style comments
+  $comment_tmpl = "/* \@comment\@ */" if $comment_tmpl eq "";
 }
 
 if (!defined $ARGV[0]) {
