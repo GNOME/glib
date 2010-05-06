@@ -23,14 +23,15 @@
 #include "config.h"
 
 #include <stdlib.h>
-
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbuserror.h"
 #include "gioenums.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "gdbusprivate.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbuserror

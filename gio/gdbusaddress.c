@@ -23,8 +23,7 @@
 #include "config.h"
 
 #include <stdlib.h>
-
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusutils.h"
 #include "gdbusaddress.h"
@@ -35,6 +34,8 @@
 #ifdef G_OS_UNIX
 #include <gio/gunixsocketaddress.h>
 #endif
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusaddress

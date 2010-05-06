@@ -31,8 +31,6 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
-
 /* ---------------------------------------------------------------------------------------------------- */
 #ifdef __linux__
 
@@ -57,6 +55,8 @@
 
 #include "gunixcredentialsmessage.h"
 #include "gcredentials.h"
+
+#include "glibintl.h"
 
 struct _GUnixCredentialsMessagePrivate
 {

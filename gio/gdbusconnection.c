@@ -49,20 +49,9 @@
 #include "config.h"
 
 #include <stdlib.h>
-
-#include <glib/gi18n.h>
-
-#ifdef G_OS_UNIX
-#include <gio/gunixconnection.h>
-#include <gio/gunixfdmessage.h>
-#endif
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdlib.h>
+#include <string.h>
 
 #include "gdbusauth.h"
-
 #include "gdbusutils.h"
 #include "gdbusaddress.h"
 #include "gdbusmessage.h"
@@ -74,6 +63,20 @@
 #include "gdbusprivate.h"
 #include "gdbusauthobserver.h"
 #include "gio-marshal.h"
+#include "ginitable.h"
+#include "gasyncinitable.h"
+#include "giostream.h"
+#include "gasyncresult.h"
+#include "gsimpleasyncresult.h"
+
+#ifdef G_OS_UNIX
+#include <gio/gunixconnection.h>
+#include <gio/gunixfdmessage.h>
+#include <unistd.h>
+#include <sys/types.h>
+#endif
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusconnection

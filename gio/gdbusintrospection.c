@@ -23,10 +23,11 @@
 #include "config.h"
 
 #include <stdlib.h>
-
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusintrospection.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusintrospection

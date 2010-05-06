@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <glib/gi18n.h>
 
 #include "gdbusutils.h"
 #include "gdbusconnection.h"
@@ -32,6 +31,8 @@
 #include "gdbusintrospection.h"
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusmethodinvocation

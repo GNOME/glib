@@ -22,13 +22,13 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
-
 #include "gdbusauthmechanism.h"
 #include "gcredentials.h"
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
 #include "giostream.h"
+
+#include "glibintl.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 

@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusauthmechanismsha1.h"
 #include "gcredentials.h"
@@ -39,6 +39,8 @@
 #include <errno.h>
 
 #include <glib/gstdio.h>
+
+#include "glibintl.h"
 
 struct _GDBusAuthMechanismSha1Private
 {

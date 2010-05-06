@@ -25,8 +25,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib/gi18n.h>
-
 #ifdef G_OS_UNIX
 #include <gio/gunixconnection.h>
 #include <gio/gunixfdmessage.h>
@@ -35,10 +33,24 @@
 #endif
 
 #include "giotypes.h"
+#include "gsocket.h"
 #include "gdbusprivate.h"
 #include "gdbusmessage.h"
 #include "gdbuserror.h"
 #include "gdbusintrospection.h"
+#include "gasyncresult.h"
+#include "gsimpleasyncresult.h"
+#include "ginputstream.h"
+#include "giostream.h"
+#include "gsocketcontrolmessage.h"
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#include "gunixfdmessage.h"
+#include "gunixconnection.h"
+#endif
+
+#include "glibintl.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 

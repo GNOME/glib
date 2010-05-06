@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusauthmechanismexternal.h"
 #include "gcredentials.h"
@@ -33,6 +33,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #endif
+
+#include "glibintl.h"
 
 struct _GDBusAuthMechanismExternalPrivate
 {

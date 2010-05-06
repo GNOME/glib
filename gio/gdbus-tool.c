@@ -22,11 +22,13 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include <gio/gio.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <gi18n.h>
 
 /* ---------------------------------------------------------------------------------------------------- */
 

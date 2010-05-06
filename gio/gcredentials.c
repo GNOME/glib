@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <glib/gi18n.h>
 #include <gobject/gvaluecollector.h>
 
 #include "gcredentials.h"
@@ -33,6 +32,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #endif
+
+#include "glibintl.h"
 
 /**
  * SECTION:gcredentials

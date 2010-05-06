@@ -24,8 +24,6 @@
 
 #include <stdlib.h>
 
-#include <glib/gi18n.h>
-
 #include "gdbusutils.h"
 #include "gdbusnamewatching.h"
 #include "gdbusproxywatching.h"
@@ -34,6 +32,8 @@
 #include "gdbusproxy.h"
 #include "gdbusnamewatching.h"
 #include "gcancellable.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusproxywatching

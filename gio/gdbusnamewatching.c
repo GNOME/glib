@@ -23,14 +23,15 @@
 #include "config.h"
 
 #include <stdlib.h>
-
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusutils.h"
 #include "gdbusnamewatching.h"
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusnamewatching

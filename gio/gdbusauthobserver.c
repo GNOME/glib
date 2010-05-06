@@ -22,13 +22,13 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
-
 #include "gdbusauthobserver.h"
 #include "gio-marshal.h"
 #include "gcredentials.h"
 #include "gioenumtypes.h"
 #include "giostream.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusauthobserver

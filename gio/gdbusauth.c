@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
-
 #include "gdbusauth.h"
 #include "gdbusauthmechanismanon.h"
 #include "gdbusauthmechanismexternal.h"
@@ -43,6 +41,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #endif
+
+#include "glibintl.h"
 
 #define DEBUG_ENABLED 1
 

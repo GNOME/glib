@@ -22,11 +22,11 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
-
 #include "gdbusauthmechanismanon.h"
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
+
+#include "glibintl.h"
 
 struct _GDBusAuthMechanismAnonPrivate
 {

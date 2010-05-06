@@ -24,13 +24,13 @@
 
 #include <stdlib.h>
 
-#include <glib/gi18n.h>
-
 #include "gdbusutils.h"
 #include "gdbusnameowning.h"
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusnameowning

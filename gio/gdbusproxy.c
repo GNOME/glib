@@ -23,7 +23,8 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <glib/gi18n.h>
+#include <string.h>
+
 #include <gobject/gvaluecollector.h>
 
 #include "gdbusutils.h"
@@ -38,6 +39,8 @@
 #include "gioerror.h"
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusproxy

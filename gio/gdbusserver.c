@@ -23,13 +23,8 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <glib/gi18n.h>
-#include <unistd.h>
+#include <string.h>
 #include <errno.h>
-
-#ifdef G_OS_UNIX
-#include <gio/gunixsocketaddress.h>
-#endif
 
 #include "giotypes.h"
 #include "gdbusaddress.h"
@@ -40,6 +35,15 @@
 #include "gdbusprivate.h"
 #include "gdbusauthobserver.h"
 #include "gio-marshal.h"
+#include "ginitable.h"
+#include "gsocketservice.h"
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#include "gunixsocketaddress.h"
+#endif
+
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusserver

@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
+#include <string.h>
 
 #include "gdbusutils.h"
 #include "gdbusmessage.h"
@@ -44,6 +44,7 @@
 #include <errno.h>
 #endif
 
+#include "glibintl.h"
 
 /**
  * SECTION:gdbusmessage
