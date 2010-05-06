@@ -79,6 +79,48 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
+gdbus_headers = 			\
+	gdbusauthobserver.h		\
+	gcredentials.h			\
+	gunixcredentialsmessage.h	\
+	gdbusutils.h			\
+	gdbuserror.h			\
+	gdbusaddress.h			\
+	gdbusconnection.h		\
+	gdbusmessage.h			\
+	gdbusnameowning.h		\
+	gdbusnamewatching.h		\
+	gdbusproxywatching.h		\
+	gdbusproxy.h			\
+	gdbusintrospection.h		\
+	gdbusmethodinvocation.h		\
+	gdbusserver.h			\
+	$(NULL)
+
+gdbus_sources = 							\
+	gdbusutils.h			gdbusutils.c			\
+	gcredentials.h			gcredentials.c			\
+	gunixcredentialsmessage.h	gunixcredentialsmessage.c	\
+	gdbusaddress.h			gdbusaddress.c			\
+	gdbusauthobserver.h		gdbusauthobserver.c		\
+	gdbusauth.h			gdbusauth.c			\
+	gdbusauthmechanism.h		gdbusauthmechanism.c		\
+	gdbusauthmechanismanon.h	gdbusauthmechanismanon.c	\
+	gdbusauthmechanismexternal.h	gdbusauthmechanismexternal.c	\
+	gdbusauthmechanismsha1.h	gdbusauthmechanismsha1.c	\
+	gdbuserror.h			gdbuserror.c			\
+	gdbusconnection.h		gdbusconnection.c		\
+	gdbusmessage.h			gdbusmessage.c			\
+	gdbusnameowning.h		gdbusnameowning.c		\
+	gdbusnamewatching.h		gdbusnamewatching.c		\
+	gdbusproxywatching.h		gdbusproxywatching.c		\
+	gdbusproxy.h			gdbusproxy.c			\
+	gdbusprivate.h			gdbusprivate.c			\
+	gdbusintrospection.h		gdbusintrospection.c		\
+	gdbusmethodinvocation.h		gdbusmethodinvocation.c		\
+	gdbusserver.h			gdbusserver.c			\
+	$(NULL)
+
 settings_headers = \
 	gsettingsbackend.h		\
 	gsettings.h
@@ -327,6 +369,7 @@ libgio_2_0_la_SOURCES =		\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
 	$(settings_sources) 	\
+	$(gdbus_sources) 	\
 	$(local_sources) 	\
 	$(marshal_sources) 	\
 	$(NULL)
@@ -454,6 +497,7 @@ gio_headers =			\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
 	$(settings_headers)	\
+	$(gdbus_headers)	\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/
@@ -527,9 +571,21 @@ gsettings_LDADD = \
 	libgio-2.0.la
 gsettings_SOURCES = gsettings-tool.c
 
-
 schemadir = $(datadir)/glib-2.0/schemas
 dist_schema_DATA = gschema.dtd
+
+# ------------------------------------------------------------------------
+# gdbus(1) tool
+
+bin_PROGRAMS += gdbus
+gdbus_SOURCES = gdbus-tool.c
+gdbus_LDADD = libgio-2.0.la
+
+completiondir = $(sysconfdir)/bash_completion.d
+completion_SCRIPTS = gdbus-bash-completion.sh
+EXTRA_DIST += $(completion_SCRIPTS)
+
+# ------------------------------------------------------------------------
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \

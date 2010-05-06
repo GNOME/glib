@@ -1,0 +1,82 @@
+/* GDBus - GLib D-Bus Library
+ *
+ * Copyright (C) 2008-2009 Red Hat, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: David Zeuthen <davidz@redhat.com>
+ */
+
+#if !defined (GIO_COMPILATION)
+#error "gdbusauthmechanismexternal.h is a private header file."
+#endif
+
+#ifndef __G_DBUS_AUTH_MECHANISM_EXTERNAL_H__
+#define __G_DBUS_AUTH_MECHANISM_EXTERNAL_H__
+
+#include <gio/giotypes.h>
+#include <gio/gdbusauthmechanism.h>
+
+G_BEGIN_DECLS
+
+#define G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL         (_g_dbus_auth_mechanism_external_get_type ())
+#define G_DBUS_AUTH_MECHANISM_EXTERNAL(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL, GDBusAuthMechanismExternal))
+#define G_DBUS_AUTH_MECHANISM_EXTERNAL_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL, GDBusAuthMechanismExternalClass))
+#define G_DBUS_AUTH_MECHANISM_EXTERNAL_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL, GDBusAuthMechanismExternalClass))
+#define G_IS_DBUS_AUTH_MECHANISM_EXTERNAL(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL))
+#define G_IS_DBUS_AUTH_MECHANISM_EXTERNAL_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL))
+
+typedef struct _GDBusAuthMechanismExternal        GDBusAuthMechanismExternal;
+typedef struct _GDBusAuthMechanismExternalClass   GDBusAuthMechanismExternalClass;
+typedef struct _GDBusAuthMechanismExternalPrivate GDBusAuthMechanismExternalPrivate;
+
+struct _GDBusAuthMechanismExternalClass
+{
+  /*< private >*/
+  GDBusAuthMechanismClass parent_class;
+
+  /*< private >*/
+  /* Padding for future expansion */
+  void (*_g_reserved1) (void);
+  void (*_g_reserved2) (void);
+  void (*_g_reserved3) (void);
+  void (*_g_reserved4) (void);
+  void (*_g_reserved5) (void);
+  void (*_g_reserved6) (void);
+  void (*_g_reserved7) (void);
+  void (*_g_reserved8) (void);
+  void (*_g_reserved9) (void);
+  void (*_g_reserved10) (void);
+  void (*_g_reserved11) (void);
+  void (*_g_reserved12) (void);
+  void (*_g_reserved13) (void);
+  void (*_g_reserved14) (void);
+  void (*_g_reserved15) (void);
+  void (*_g_reserved16) (void);
+};
+
+struct _GDBusAuthMechanismExternal
+{
+  GDBusAuthMechanism parent_instance;
+  GDBusAuthMechanismExternalPrivate *priv;
+};
+
+GType _g_dbus_auth_mechanism_external_get_type (void) G_GNUC_CONST;
+
+
+G_END_DECLS
+
+#endif /* __G_DBUS_AUTH_MECHANISM_EXTERNAL_H__ */

@@ -97,6 +97,22 @@
 #include <gio/gzlibcompressor.h>
 #include <gio/gzlibdecompressor.h>
 
+#include <gio/gdbusutils.h>
+#include <gio/gdbusaddress.h>
+#include <gio/gdbusmessage.h>
+#include <gio/gdbusconnection.h>
+#include <gio/gdbuserror.h>
+#include <gio/gdbusnameowning.h>
+#include <gio/gdbusnamewatching.h>
+#include <gio/gdbusproxywatching.h>
+#include <gio/gdbusproxy.h>
+#include <gio/gdbusintrospection.h>
+#include <gio/gdbusmethodinvocation.h>
+#include <gio/gdbusserver.h>
+#include <gio/gcredentials.h>
+#include <gio/gunixcredentialsmessage.h>
+#include <gio/gdbusauthobserver.h>
+
 #undef __GIO_GIO_H_INSIDE__
 
 #endif /* __G_IO_H__ */

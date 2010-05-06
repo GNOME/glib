@@ -1,3 +1,5 @@
+NULL =
+
 include $(top_srcdir)/Makefile.decl
 
 INCLUDES = 			\
@@ -35,19 +37,39 @@ TEST_PROGS +=	 		\
 	srvtarget		\
 	contexts		\
 	gsettings		\
-	gschema-compile
+	gschema-compile		\
+	gdbus-addresses		\
+	gdbus-connection	\
+	gdbus-names		\
+	gdbus-proxy		\
+	gdbus-introspection	\
+	gdbus-threading		\
+	gdbus-export		\
+	gdbus-error		\
+	gdbus-peer		\
+	gdbus-exit-on-close	\
+	$(NULL)
 
-SAMPLE_PROGS = 			\
-	resolver		\
-	socket-server		\
-	socket-client		\
-	echo-server		\
-	httpd			\
-	send-data		\
-	filter-cat
+SAMPLE_PROGS = 				\
+	resolver			\
+	socket-server			\
+	socket-client			\
+	echo-server			\
+	httpd				\
+	send-data			\
+	filter-cat			\
+	gdbus-example-own-name		\
+	gdbus-example-watch-name	\
+	gdbus-example-watch-proxy	\
+	gdbus-example-server		\
+	gdbus-example-subtree		\
+	gdbus-example-peer		\
+	$(NULL)
+
 
 if OS_UNIX
 TEST_PROGS += live-g-file desktop-app-info unix-fd #unix-streams
+SAMPLE_PROGS +=	gdbus-example-unix-fd-client
 endif
 
 if OS_WIN32
@@ -149,6 +171,64 @@ gsettings_LDADD		  = $(progs_ldadd)
 
 gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
+
+if HAVE_DBUS1
+TEST_PROGS += gdbus-serialization
+gdbus_serialization_SOURCES = gdbus-serialization.c gdbus-tests.h gdbus-tests.c
+gdbus_serialization_CFLAGS = $(DBUS1_CFLAGS)
+gdbus_serialization_LDADD = $(progs_ldadd) $(DBUS1_LIBS)
+endif
+
+gdbus_addresses_SOURCES = gdbus-addresses.c
+gdbus_addresses_LDADD = $(progs_ldadd)
+
+gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_connection_LDADD = $(progs_ldadd)
+
+gdbus_names_SOURCES = gdbus-names.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_names_LDADD = $(progs_ldadd)
+
+gdbus_proxy_SOURCES = gdbus-proxy.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_proxy_LDADD = $(progs_ldadd)
+
+gdbus_introspection_SOURCES = gdbus-introspection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_introspection_LDADD = $(progs_ldadd)
+
+gdbus_threading_SOURCES = gdbus-threading.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_threading_LDADD = $(progs_ldadd)
+
+gdbus_export_SOURCES = gdbus-export.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_export_LDADD = $(progs_ldadd)
+
+gdbus_error_SOURCES = gdbus-error.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_error_LDADD = $(progs_ldadd)
+
+gdbus_peer_SOURCES = gdbus-peer.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_peer_LDADD = $(progs_ldadd)
+
+gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_exit_on_close_LDADD = $(progs_ldadd)
+
+gdbus_example_watch_name_SOURCES = gdbus-example-watch-name.c
+gdbus_example_watch_name_LDADD   = $(progs_ldadd)
+
+gdbus_example_watch_proxy_SOURCES = gdbus-example-watch-proxy.c
+gdbus_example_watch_proxy_LDADD   = $(progs_ldadd)
+
+gdbus_example_own_name_SOURCES = gdbus-example-own-name.c
+gdbus_example_own_name_LDADD   = $(progs_ldadd)
+
+gdbus_example_server_SOURCES = gdbus-example-server.c
+gdbus_example_server_LDADD   = $(progs_ldadd)
+
+gdbus_example_unix_fd_client_SOURCES = gdbus-example-unix-fd-client.c
+gdbus_example_unix_fd_client_LDADD   = $(progs_ldadd)
+
+gdbus_example_subtree_SOURCES = gdbus-example-subtree.c
+gdbus_example_subtree_LDADD   = $(progs_ldadd)
+
+gdbus_example_peer_SOURCES = gdbus-example-peer.c
+gdbus_example_peer_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \
 	socket-common.c						\

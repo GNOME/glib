@@ -1,0 +1,172 @@
+/* GDBus - GLib D-Bus Library
+ *
+ * Copyright (C) 2008-2009 Red Hat, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: David Zeuthen <davidz@redhat.com>
+ */
+
+#ifndef __G_DBUS_MESSAGE_H__
+#define __G_DBUS_MESSAGE_H__
+
+#include <gio/giotypes.h>
+
+#ifdef G_OS_UNIX
+#include <gio/gunixfdlist.h>
+#endif
+
+G_BEGIN_DECLS
+
+#define G_TYPE_DBUS_MESSAGE         (g_dbus_message_get_gtype ())
+#define G_DBUS_MESSAGE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_MESSAGE, GDBusMessage))
+#define G_DBUS_MESSAGE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
+#define G_DBUS_MESSAGE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
+#define G_IS_DBUS_MESSAGE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_MESSAGE))
+#define G_IS_DBUS_MESSAGE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_MESSAGE))
+
+typedef struct _GDBusMessageClass   GDBusMessageClass;
+typedef struct _GDBusMessagePrivate GDBusMessagePrivate;
+
+/**
+ * GDBusMessageClass:
+ *
+ * Class structure for #GDBusMessage.
+ */
+struct _GDBusMessageClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+};
+
+/**
+ * GDBusMessage:
+ *
+ * The #GDBusMessage structure contains only private data and should
+ * only be accessed using the provided API.
+ */
+struct _GDBusMessage
+{
+  /*< private >*/
+  GObject parent_instance;
+  GDBusMessagePrivate *priv;
+};
+
+GType                     g_dbus_message_get_gtype          (void) G_GNUC_CONST;
+GDBusMessage             *g_dbus_message_new                (void);
+GDBusMessage             *g_dbus_message_new_signal         (const gchar              *path,
+                                                             const gchar              *interface,
+                                                             const gchar              *signal);
+GDBusMessage             *g_dbus_message_new_method_call    (const gchar              *name,
+                                                             const gchar              *path,
+                                                             const gchar              *interface,
+                                                             const gchar              *method);
+GDBusMessage             *g_dbus_message_new_method_reply   (GDBusMessage             *method_call_message);
+GDBusMessage             *g_dbus_message_new_method_error   (GDBusMessage             *method_call_message,
+                                                             const gchar              *error_name,
+                                                             const gchar              *error_message_format,
+                                                             ...);
+GDBusMessage             *g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_message,
+                                                                  const gchar              *error_name,
+                                                                  const gchar              *error_message_format,
+                                                                  va_list                   var_args);
+GDBusMessage             *g_dbus_message_new_method_error_literal (GDBusMessage             *method_call_message,
+                                                                   const gchar              *error_name,
+                                                                   const gchar              *error_message);
+gchar                    *g_dbus_message_print              (GDBusMessage             *message,
+                                                             guint                     indent);
+
+GDBusMessageType          g_dbus_message_get_type           (GDBusMessage             *message);
+void                      g_dbus_message_set_type           (GDBusMessage             *message,
+                                                             GDBusMessageType          type);
+GDBusMessageFlags         g_dbus_message_get_flags          (GDBusMessage             *message);
+void                      g_dbus_message_set_flags          (GDBusMessage             *message,
+                                                             GDBusMessageFlags         flags);
+guint32                   g_dbus_message_get_serial         (GDBusMessage             *message);
+void                      g_dbus_message_set_serial         (GDBusMessage             *message,
+                                                             guint32                   serial);
+GVariant                 *g_dbus_message_get_header         (GDBusMessage             *message,
+                                                             GDBusMessageHeaderField   header_field);
+void                      g_dbus_message_set_header         (GDBusMessage             *message,
+                                                             GDBusMessageHeaderField   header_field,
+                                                             GVariant                 *value);
+guchar                   *g_dbus_message_get_header_fields  (GDBusMessage             *message);
+GVariant                 *g_dbus_message_get_body           (GDBusMessage             *message);
+void                      g_dbus_message_set_body           (GDBusMessage             *message,
+                                                             GVariant                 *body);
+#ifdef G_OS_UNIX
+GUnixFDList              *g_dbus_message_get_unix_fd_list   (GDBusMessage             *message);
+void                      g_dbus_message_set_unix_fd_list   (GDBusMessage             *message,
+                                                             GUnixFDList              *fd_list);
+#endif
+
+guint32                   g_dbus_message_get_reply_serial   (GDBusMessage             *message);
+void                      g_dbus_message_set_reply_serial   (GDBusMessage             *message,
+                                                             guint32                   value);
+
+const gchar              *g_dbus_message_get_interface      (GDBusMessage             *message);
+void                      g_dbus_message_set_interface      (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_member         (GDBusMessage             *message);
+void                      g_dbus_message_set_member         (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_path           (GDBusMessage             *message);
+void                      g_dbus_message_set_path           (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_sender         (GDBusMessage             *message);
+void                      g_dbus_message_set_sender         (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_destination    (GDBusMessage             *message);
+void                      g_dbus_message_set_destination    (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_error_name     (GDBusMessage             *message);
+void                      g_dbus_message_set_error_name     (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+const gchar              *g_dbus_message_get_signature      (GDBusMessage             *message);
+void                      g_dbus_message_set_signature      (GDBusMessage             *message,
+                                                             const gchar              *value);
+
+guint32                   g_dbus_message_get_num_unix_fds   (GDBusMessage             *message);
+void                      g_dbus_message_set_num_unix_fds   (GDBusMessage             *message,
+                                                             guint32                   value);
+
+const gchar              *g_dbus_message_get_arg0           (GDBusMessage             *message);
+
+
+GDBusMessage             *g_dbus_message_new_from_blob      (guchar                   *blob,
+                                                             gsize                     blob_len,
+                                                             GError                  **error);
+
+gssize                    g_dbus_message_bytes_needed       (guchar                   *blob,
+                                                             gsize                     blob_len,
+                                                             GError                  **error);
+
+guchar                   *g_dbus_message_to_blob            (GDBusMessage             *message,
+                                                             gsize                    *out_size,
+                                                             GError                  **error);
+
+gboolean                  g_dbus_message_to_gerror          (GDBusMessage             *message,
+                                                             GError                  **error);
+
+G_END_DECLS
+
+#endif /* __G_DBUS_MESSAGE_H__ */

@@ -429,6 +429,11 @@ typedef enum {
  * @G_IO_ERROR_ADDRESS_IN_USE: The requested address is already in use. Since 2.22
  * @G_IO_ERROR_PARTIAL_INPUT: Need more input to finish operation. Since 2.24
  * @G_IO_ERROR_INVALID_DATA: There input data was invalid. Since 2.24
+ * @G_IO_ERROR_DBUS_ERROR: A remote object generated an error that
+ *     doesn't correspond to a locally registered #GError error
+ *     domain. Use g_dbus_error_get_remote_error() to extract the D-Bus
+ *     error name and g_dbus_error_strip_remote_error() to fix up the
+ *     message so it matches what was received on the wire. Since 2.26.
  *
  * Error codes returned by GIO functions.
  *
@@ -469,7 +474,8 @@ typedef enum {
   G_IO_ERROR_NOT_INITIALIZED,
   G_IO_ERROR_ADDRESS_IN_USE,
   G_IO_ERROR_PARTIAL_INPUT,
-  G_IO_ERROR_INVALID_DATA
+  G_IO_ERROR_INVALID_DATA,
+  G_IO_ERROR_DBUS_ERROR
 } GIOErrorEnum;
 
 
@@ -731,6 +737,370 @@ typedef enum {
   G_UNIX_SOCKET_ADDRESS_ABSTRACT,
   G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED
 } GUnixSocketAddressType;
+
+/**
+ * GBusType:
+ * @G_BUS_TYPE_NONE: Not a message bus connection.
+ * @G_BUS_TYPE_SESSION: The login session message bus.
+ * @G_BUS_TYPE_SYSTEM: The system-wide message bus.
+ * @G_BUS_TYPE_STARTER: Connect to the bus that activated the program.
+ *
+ * An enumeration to specify the type of a #GDBusConnection.
+ */
+typedef enum
+{
+  G_BUS_TYPE_NONE    = -1,
+  G_BUS_TYPE_SESSION = 0,
+  G_BUS_TYPE_SYSTEM  = 1,
+  G_BUS_TYPE_STARTER = 2
+} GBusType;
+
+/**
+ * GBusNameOwnerFlags:
+ * @G_BUS_NAME_OWNER_FLAGS_NONE: No flags set.
+ * @G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT: Allow another message bus connection to claim the the name.
+ * @G_BUS_NAME_OWNER_FLAGS_REPLACE: If another message bus connection owns the name and have
+ * specified #G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection.
+ *
+ * Flags used in g_bus_own_name().
+ */
+typedef enum
+{
+  G_BUS_NAME_OWNER_FLAGS_NONE = 0,                    /*< nick=none >*/
+  G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT = (1<<0),  /*< nick=allow-replacement >*/
+  G_BUS_NAME_OWNER_FLAGS_REPLACE = (1<<1),            /*< nick=replace >*/
+} GBusNameOwnerFlags;
+
+/**
+ * GBusNameWatcherFlags:
+ * @G_BUS_NAME_WATCHER_FLAGS_NONE: No flags set.
+ * @G_BUS_NAME_WATCHER_FLAGS_AUTO_START: If no-one owns the name when
+ * beginning to watch the name, ask the bus to launch an owner for the
+ * name.
+ *
+ * Flags used in g_bus_watch_name().
+ */
+typedef enum
+{
+  G_BUS_NAME_WATCHER_FLAGS_NONE = 0,
+  G_BUS_NAME_WATCHER_FLAGS_AUTO_START = (1<<0)
+} GBusNameWatcherFlags;
+
+/**
+ * GDBusProxyFlags:
+ * @G_DBUS_PROXY_FLAGS_NONE: No flags set.
+ * @G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES: Don't load properties.
+ * @G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS: Don't connect to signals on the remote object.
+ *
+ * Flags used when constructing an instance of a #GDBusProxy derived class.
+ */
+typedef enum
+{
+  G_DBUS_PROXY_FLAGS_NONE = 0,                        /*< nick=none >*/
+  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0), /*< nick=do-not-load-properties >*/
+  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1), /*< nick=do-not-connect-signals >*/
+} GDBusProxyFlags;
+
+/**
+ * GDBusError:
+ * @G_DBUS_ERROR_FAILED:
+ * A generic error; "something went wrong" - see the error message for
+ * more.
+ * @G_DBUS_ERROR_NO_MEMORY:
+ * There was not enough memory to complete an operation.
+ * @G_DBUS_ERROR_SERVICE_UNKNOWN:
+ * The bus doesn't know how to launch a service to supply the bus name
+ * you wanted.
+ * @G_DBUS_ERROR_NAME_HAS_NO_OWNER:
+ * The bus name you referenced doesn't exist (i.e. no application owns
+ * it).
+ * @G_DBUS_ERROR_NO_REPLY:
+ * No reply to a message expecting one, usually means a timeout occurred.
+ * @G_DBUS_ERROR_IO_ERROR:
+ * Something went wrong reading or writing to a socket, for example.
+ * @G_DBUS_ERROR_BAD_ADDRESS:
+ * A D-Bus bus address was malformed.
+ * @G_DBUS_ERROR_NOT_SUPPORTED:
+ * Requested operation isn't supported (like ENOSYS on UNIX).
+ * @G_DBUS_ERROR_LIMITS_EXCEEDED:
+ * Some limited resource is exhausted.
+ * @G_DBUS_ERROR_ACCESS_DENIED:
+ * Security restrictions don't allow doing what you're trying to do.
+ * @G_DBUS_ERROR_AUTH_FAILED:
+ * Authentication didn't work.
+ * @G_DBUS_ERROR_NO_SERVER:
+ * Unable to connect to server (probably caused by ECONNREFUSED on a
+ * socket).
+ * @G_DBUS_ERROR_TIMEOUT:
+ * Certain timeout errors, possibly ETIMEDOUT on a socket.  Note that
+ * %G_DBUS_ERROR_NO_REPLY is used for message reply timeouts. Warning:
+ * this is confusingly-named given that %G_DBUS_ERROR_TIMED_OUT also
+ * exists. We can't fix it for compatibility reasons so just be
+ * careful.
+ * @G_DBUS_ERROR_NO_NETWORK:
+ * No network access (probably ENETUNREACH on a socket).
+ * @G_DBUS_ERROR_ADDRESS_IN_USE:
+ * Can't bind a socket since its address is in use (i.e. EADDRINUSE).
+ * @G_DBUS_ERROR_DISCONNECTED:
+ * The connection is disconnected and you're trying to use it.
+ * @G_DBUS_ERROR_INVALID_ARGS:
+ * Invalid arguments passed to a method call.
+ * @G_DBUS_ERROR_FILE_NOT_FOUND:
+ * Missing file.
+ * @G_DBUS_ERROR_FILE_EXISTS:
+ * Existing file and the operation you're using does not silently overwrite.
+ * @G_DBUS_ERROR_UNKNOWN_METHOD:
+ * Method name you invoked isn't known by the object you invoked it on.
+ * @G_DBUS_ERROR_TIMED_OUT:
+ * Certain timeout errors, e.g. while starting a service. Warning: this is
+ * confusingly-named given that %G_DBUS_ERROR_TIMEOUT also exists. We
+ * can't fix it for compatibility reasons so just be careful.
+ * @G_DBUS_ERROR_MATCH_RULE_NOT_FOUND:
+ * Tried to remove or modify a match rule that didn't exist.
+ * @G_DBUS_ERROR_MATCH_RULE_INVALID:
+ * The match rule isn't syntactically valid.
+ * @G_DBUS_ERROR_SPAWN_EXEC_FAILED:
+ * While starting a new process, the exec() call failed.
+ * @G_DBUS_ERROR_SPAWN_FORK_FAILED:
+ * While starting a new process, the fork() call failed.
+ * @G_DBUS_ERROR_SPAWN_CHILD_EXITED:
+ * While starting a new process, the child exited with a status code.
+ * @G_DBUS_ERROR_SPAWN_CHILD_SIGNALED:
+ * While starting a new process, the child exited on a signal.
+ * @G_DBUS_ERROR_SPAWN_FAILED:
+ * While starting a new process, something went wrong.
+ * @G_DBUS_ERROR_SPAWN_SETUP_FAILED:
+ * We failed to setup the environment correctly.
+ * @G_DBUS_ERROR_SPAWN_CONFIG_INVALID:
+ * We failed to setup the config parser correctly.
+ * @G_DBUS_ERROR_SPAWN_SERVICE_INVALID:
+ * Bus name was not valid.
+ * @G_DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND:
+ * Service file not found in system-services directory.
+ * @G_DBUS_ERROR_SPAWN_PERMISSIONS_INVALID:
+ * Permissions are incorrect on the setuid helper.
+ * @G_DBUS_ERROR_SPAWN_FILE_INVALID:
+ * Service file invalid (Name, User or Exec missing).
+ * @G_DBUS_ERROR_SPAWN_NO_MEMORY:
+ * Tried to get a UNIX process ID and it wasn't available.
+ * @G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN:
+ * Tried to get a UNIX process ID and it wasn't available.
+ * @G_DBUS_ERROR_INVALID_SIGNATURE:
+ * A type signature is not valid.
+ * @G_DBUS_ERROR_INVALID_FILE_CONTENT:
+ * A file contains invalid syntax or is otherwise broken.
+ * @G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+ * Asked for SELinux security context and it wasn't available.
+ * @G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN:
+ * Asked for ADT audit data and it wasn't available.
+ * @G_DBUS_ERROR_OBJECT_PATH_IN_USE:
+ * There's already an object with the requested object path.
+ *
+ * Error codes for the %G_DBUS_ERROR error domain.
+ */
+typedef enum
+{
+  /* Well-known errors in the org.freedesktop.DBus.Error namespace */
+  G_DBUS_ERROR_FAILED,                           /* org.freedesktop.DBus.Error.Failed */
+  G_DBUS_ERROR_NO_MEMORY,                        /* org.freedesktop.DBus.Error.NoMemory */
+  G_DBUS_ERROR_SERVICE_UNKNOWN,                  /* org.freedesktop.DBus.Error.ServiceUnknown */
+  G_DBUS_ERROR_NAME_HAS_NO_OWNER,                /* org.freedesktop.DBus.Error.NameHasNoOwner */
+  G_DBUS_ERROR_NO_REPLY,                         /* org.freedesktop.DBus.Error.NoReply */
+  G_DBUS_ERROR_IO_ERROR,                         /* org.freedesktop.DBus.Error.IOError */
+  G_DBUS_ERROR_BAD_ADDRESS,                      /* org.freedesktop.DBus.Error.BadAddress */
+  G_DBUS_ERROR_NOT_SUPPORTED,                    /* org.freedesktop.DBus.Error.NotSupported */
+  G_DBUS_ERROR_LIMITS_EXCEEDED,                  /* org.freedesktop.DBus.Error.LimitsExceeded */
+  G_DBUS_ERROR_ACCESS_DENIED,                    /* org.freedesktop.DBus.Error.AccessDenied */
+  G_DBUS_ERROR_AUTH_FAILED,                      /* org.freedesktop.DBus.Error.AuthFailed */
+  G_DBUS_ERROR_NO_SERVER,                        /* org.freedesktop.DBus.Error.NoServer */
+  G_DBUS_ERROR_TIMEOUT,                          /* org.freedesktop.DBus.Error.Timeout */
+  G_DBUS_ERROR_NO_NETWORK,                       /* org.freedesktop.DBus.Error.NoNetwork */
+  G_DBUS_ERROR_ADDRESS_IN_USE,                   /* org.freedesktop.DBus.Error.AddressInUse */
+  G_DBUS_ERROR_DISCONNECTED,                     /* org.freedesktop.DBus.Error.Disconnected */
+  G_DBUS_ERROR_INVALID_ARGS,                     /* org.freedesktop.DBus.Error.InvalidArgs */
+  G_DBUS_ERROR_FILE_NOT_FOUND,                   /* org.freedesktop.DBus.Error.FileNotFound */
+  G_DBUS_ERROR_FILE_EXISTS,                      /* org.freedesktop.DBus.Error.FileExists */
+  G_DBUS_ERROR_UNKNOWN_METHOD,                   /* org.freedesktop.DBus.Error.UnknownMethod */
+  G_DBUS_ERROR_TIMED_OUT,                        /* org.freedesktop.DBus.Error.TimedOut */
+  G_DBUS_ERROR_MATCH_RULE_NOT_FOUND,             /* org.freedesktop.DBus.Error.MatchRuleNotFound */
+  G_DBUS_ERROR_MATCH_RULE_INVALID,               /* org.freedesktop.DBus.Error.MatchRuleInvalid */
+  G_DBUS_ERROR_SPAWN_EXEC_FAILED,                /* org.freedesktop.DBus.Error.Spawn.ExecFailed */
+  G_DBUS_ERROR_SPAWN_FORK_FAILED,                /* org.freedesktop.DBus.Error.Spawn.ForkFailed */
+  G_DBUS_ERROR_SPAWN_CHILD_EXITED,               /* org.freedesktop.DBus.Error.Spawn.ChildExited */
+  G_DBUS_ERROR_SPAWN_CHILD_SIGNALED,             /* org.freedesktop.DBus.Error.Spawn.ChildSignaled */
+  G_DBUS_ERROR_SPAWN_FAILED,                     /* org.freedesktop.DBus.Error.Spawn.Failed */
+  G_DBUS_ERROR_SPAWN_SETUP_FAILED,               /* org.freedesktop.DBus.Error.Spawn.FailedToSetup */
+  G_DBUS_ERROR_SPAWN_CONFIG_INVALID,             /* org.freedesktop.DBus.Error.Spawn.ConfigInvalid */
+  G_DBUS_ERROR_SPAWN_SERVICE_INVALID,            /* org.freedesktop.DBus.Error.Spawn.ServiceNotValid */
+  G_DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND,          /* org.freedesktop.DBus.Error.Spawn.ServiceNotFound */
+  G_DBUS_ERROR_SPAWN_PERMISSIONS_INVALID,        /* org.freedesktop.DBus.Error.Spawn.PermissionsInvalid */
+  G_DBUS_ERROR_SPAWN_FILE_INVALID,               /* org.freedesktop.DBus.Error.Spawn.FileInvalid */
+  G_DBUS_ERROR_SPAWN_NO_MEMORY,                  /* org.freedesktop.DBus.Error.Spawn.NoMemory */
+  G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN,          /* org.freedesktop.DBus.Error.UnixProcessIdUnknown */
+  G_DBUS_ERROR_INVALID_SIGNATURE,                /* org.freedesktop.DBus.Error.InvalidSignature */
+  G_DBUS_ERROR_INVALID_FILE_CONTENT,             /* org.freedesktop.DBus.Error.InvalidFileContent */
+  G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN, /* org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown */
+  G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,           /* org.freedesktop.DBus.Error.AdtAuditDataUnknown */
+  G_DBUS_ERROR_OBJECT_PATH_IN_USE,               /* org.freedesktop.DBus.Error.ObjectPathInUse */
+} GDBusError;
+/* TODO: remember to update g_dbus_error_quark() in gdbuserror.c if you extend this enumeration */
+
+/**
+ * GDBusConnectionFlags:
+ * @G_DBUS_CONNECTION_FLAGS_NONE: No flags set.
+ * @G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT: Perform authentication against server.
+ * @G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER: Perform authentication against client.
+ * @G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: When
+ * authenticating as a server, allow the anonymous authentication
+ * method.
+ * @G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION: Pass this flag if connecting to a peer that is a
+ * message bus. This means that the Hello() method will be invoked as part of the connection setup.
+ *
+ * Flags used when creating a new #GDBusConnection.
+ */
+typedef enum {
+  G_DBUS_CONNECTION_FLAGS_NONE = 0,
+  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT = (1<<0),
+  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER = (1<<1),
+  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<2),
+  G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION = (1<<3)
+} GDBusConnectionFlags;
+
+/**
+ * GDBusCapabilityFlags:
+ * @G_DBUS_CAPABILITY_FLAGS_NONE: No flags set.
+ * @G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING: The connection
+ * supports exchanging UNIX file descriptors with the remote peer.
+ *
+ * Capabilities negotiated with the remote peer.
+ */
+typedef enum {
+  G_DBUS_CAPABILITY_FLAGS_NONE = 0,
+  G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING = (1<<0),
+} GDBusCapabilityFlags;
+
+/**
+ * GDBusInvokeMethodFlags:
+ * @G_DBUS_INVOKE_METHOD_FLAGS_NONE: No flags set.
+ * @G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START: The bus must not launch
+ * an owner for the destination name in response to this method
+ * invocation.
+ *
+ * Flags used in g_dbus_connection_invoke_method() and similar APIs.
+ */
+typedef enum {
+  G_DBUS_INVOKE_METHOD_FLAGS_NONE = 0,
+  G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START = (1<<0),
+} GDBusInvokeMethodFlags;
+
+/**
+ * GDBusMessageType:
+ * @G_DBUS_MESSAGE_TYPE_INVALID: Message is of invalid type.
+ * @G_DBUS_MESSAGE_TYPE_METHOD_CALL: Method call.
+ * @G_DBUS_MESSAGE_TYPE_METHOD_RETURN: Method reply.
+ * @G_DBUS_MESSAGE_TYPE_ERROR: Error reply.
+ * @G_DBUS_MESSAGE_TYPE_SIGNAL: Signal emission.
+ *
+ * Message types used in #GDBusMessage.
+ */
+typedef enum {
+  G_DBUS_MESSAGE_TYPE_INVALID,
+  G_DBUS_MESSAGE_TYPE_METHOD_CALL,
+  G_DBUS_MESSAGE_TYPE_METHOD_RETURN,
+  G_DBUS_MESSAGE_TYPE_ERROR,
+  G_DBUS_MESSAGE_TYPE_SIGNAL
+} GDBusMessageType;
+
+/**
+ * GDBusMessageFlags:
+ * @G_DBUS_MESSAGE_FLAGS_NONE: No flags set.
+ * @G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED: A reply is not expected.
+ * @G_DBUS_MESSAGE_FLAGS_NO_AUTO_START: The bus must not launch an
+ * owner for the destination name in response to this message.
+ *
+ * Message flags used in #GDBusMessage.
+ */
+typedef enum {
+  G_DBUS_MESSAGE_FLAGS_NONE = 0,
+  G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED = (1<<0),
+  G_DBUS_MESSAGE_FLAGS_NO_AUTO_START = (1<<1)
+} GDBusMessageFlags;
+
+/**
+ * GDBusMessageHeaderField:
+ * @G_DBUS_MESSAGE_HEADER_FIELD_INVALID: Not a valid header field.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_PATH: The object path.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE: The interface name.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_MEMBER: The method or signal name.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME: The name of the error that occurred.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL: The serial number the message is a reply to.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION: The name the message is intended for.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_SENDER: Unique name of the sender of the message (filled in by the bus).
+ * @G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE: The signature of the message body.
+ * @G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS: The number of UNIX file descriptors that accompany the message.
+ *
+ * Header fields used in #GDBusMessage.
+ */
+typedef enum {
+  G_DBUS_MESSAGE_HEADER_FIELD_INVALID,
+  G_DBUS_MESSAGE_HEADER_FIELD_PATH,
+  G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE,
+  G_DBUS_MESSAGE_HEADER_FIELD_MEMBER,
+  G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME,
+  G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL,
+  G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION,
+  G_DBUS_MESSAGE_HEADER_FIELD_SENDER,
+  G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE,
+  G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS
+} GDBusMessageHeaderField;
+
+/**
+ * GDBusPropertyInfoFlags:
+ * @G_DBUS_PROPERTY_INFO_FLAGS_NONE: No flags set.
+ * @G_DBUS_PROPERTY_INFO_FLAGS_READABLE: Property is readable.
+ * @G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE: Property is writable.
+ *
+ * Flags describing the access control of a D-Bus property.
+ */
+typedef enum
+{
+  G_DBUS_PROPERTY_INFO_FLAGS_NONE = 0,
+  G_DBUS_PROPERTY_INFO_FLAGS_READABLE = (1<<0),
+  G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE = (1<<1),
+} GDBusPropertyInfoFlags;
+
+/**
+ * GDBusSubtreeFlags:
+ * @G_DBUS_SUBTREE_FLAGS_NONE: No flags set.
+ * @G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES: Method calls to objects not in the enumerated range
+ *                                                       will still be dispatched. This is useful if you want
+ *                                                       to dynamically spawn objects in the subtree.
+ *
+ * Flags passed to g_dbus_connection_register_subtree().
+ */
+typedef enum
+{
+  G_DBUS_SUBTREE_FLAGS_NONE = 0,
+  G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES = (1<<0),
+} GDBusSubtreeFlags;
+
+/**
+ * GDBusServerFlags:
+ * @G_DBUS_SERVER_FLAGS_NONE: No flags set.
+ * @G_DBUS_SERVER_FLAGS_RUN_IN_THREAD: All #GDBusServer::new-connection
+ * signals will run in separated dedicated threads (see signal for
+ * details).
+ * @G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: Allow the anonymous
+ * authentication method.
+ *
+ * Flags used when creating a #GDBusServer.
+ */
+typedef enum
+{
+  G_DBUS_SERVER_FLAGS_NONE = 0,
+  G_DBUS_SERVER_FLAGS_RUN_IN_THREAD = (1<<0),
+  G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<1)
+} GDBusServerFlags;
 
 G_END_DECLS
 
