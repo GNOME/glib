@@ -166,6 +166,7 @@
         <xi:include href="gsettings.xml"/>
         <xi:include href="glib-compile-schemas.xml"/>
         <xi:include href="gsettings-schema-convert.xml"/>
+        <xi:include href="gdbus.xml"/>
     </chapter>
   </part>
 

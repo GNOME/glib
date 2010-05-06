@@ -121,7 +121,9 @@ content_files =			\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
-	gsettings-schema-convert.xml
+	gsettings-schema-convert.xml \
+	gdbus.xml		\
+	$(NULL)
 
 expand_content_files =		\
 	overview.xml		\
@@ -143,7 +145,8 @@ man_MANS =			\
 	gio-querymodules.1	\
 	glib-compile-schemas.1	\
 	gsettings.1	\
-	gsettings-schema-convert.1
+	gsettings-schema-convert.1 \
+	gdbus.1
 
 if ENABLE_MAN
 
