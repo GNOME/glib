@@ -208,6 +208,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:sender:
    *
    * The bus name that invoked the method or %NULL if the connection is not a bus connection.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_SENDER,
@@ -226,6 +228,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:object-path:
    *
    * The object path the method was invoked on.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
@@ -244,6 +248,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:interface-name:
    *
    * The name of the D-Bus interface the method was invoked on.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_INTERFACE_NAME,
@@ -262,6 +268,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:method-name:
    *
    * The name of the method that was invoked.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_METHOD_NAME,
@@ -280,6 +288,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:method-info:
    *
    * Information about the method that was invoked, if any.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_METHOD_INFO,
@@ -298,6 +308,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:connection:
    *
    * The #GDBusConnection the method was invoked on.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
@@ -316,6 +328,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:message:
    *
    * The D-Bus message.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_MESSAGE,
@@ -334,6 +348,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:parameters:
    *
    * The parameters as a #GVariant tuple.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PARAMETERS,
@@ -352,6 +368,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
    * GDBusMethodInvocation:user-data:
    *
    * The @user_data #gpointer passed to g_dbus_connection_register_object().
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_USER_DATA,
@@ -383,6 +401,8 @@ g_dbus_method_invocation_init (GDBusMethodInvocation *invocation)
  * Gets the bus name that invoked the method.
  *
  * Returns: A string. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_method_invocation_get_sender (GDBusMethodInvocation *invocation)
@@ -398,6 +418,8 @@ g_dbus_method_invocation_get_sender (GDBusMethodInvocation *invocation)
  * Gets the object path the method was invoked on.
  *
  * Returns: A string. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_method_invocation_get_object_path (GDBusMethodInvocation *invocation)
@@ -413,6 +435,8 @@ g_dbus_method_invocation_get_object_path (GDBusMethodInvocation *invocation)
  * Gets the name of the D-Bus interface the method was invoked on.
  *
  * Returns: A string. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_method_invocation_get_interface_name (GDBusMethodInvocation *invocation)
@@ -428,6 +452,8 @@ g_dbus_method_invocation_get_interface_name (GDBusMethodInvocation *invocation)
  * Gets information about the method call, if any.
  *
  * Returns: A #GDBusMethodInfo or %NULL. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 const GDBusMethodInfo *
 g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
@@ -443,6 +469,8 @@ g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
  * Gets the name of the method that was invoked.
  *
  * Returns: A string. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_method_invocation_get_method_name (GDBusMethodInvocation *invocation)
@@ -458,6 +486,8 @@ g_dbus_method_invocation_get_method_name (GDBusMethodInvocation *invocation)
  * Gets the #GDBusConnection the method was invoked on.
  *
  * Returns: A #GDBusConnection. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_dbus_method_invocation_get_connection (GDBusMethodInvocation *invocation)
@@ -480,6 +510,8 @@ g_dbus_method_invocation_get_connection (GDBusMethodInvocation *invocation)
  * low-level API to send and receive UNIX file descriptors.
  *
  * Returns: A #GDBusMessage. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_method_invocation_get_message (GDBusMethodInvocation *invocation)
@@ -495,6 +527,8 @@ g_dbus_method_invocation_get_message (GDBusMethodInvocation *invocation)
  * Gets the parameters of the method invocation.
  *
  * Returns: A #GVariant. Do not free, it is owned by @invocation.
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_method_invocation_get_parameters (GDBusMethodInvocation *invocation)
@@ -510,6 +544,8 @@ g_dbus_method_invocation_get_parameters (GDBusMethodInvocation *invocation)
  * Gets the @user_data #gpointer passed to g_dbus_connection_register_object().
  *
  * Returns: A #gpointer.
+ *
+ * Since: 2.26
  */
 gpointer
 g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
@@ -533,6 +569,8 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
  * Creates a new #GDBusMethodInvocation object.
  *
  * Returns: A #GDBusMethodInvocation. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMethodInvocation *
 g_dbus_method_invocation_new (const gchar            *sender,
@@ -578,6 +616,8 @@ g_dbus_method_invocation_new (const gchar            *sender,
  * It is an error if @parameters is not of the right format.
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
@@ -655,6 +695,8 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
  * or use g_dbus_method_invocation_return_dbus_error().
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_error (GDBusMethodInvocation *invocation,
@@ -689,6 +731,8 @@ g_dbus_method_invocation_return_error (GDBusMethodInvocation *invocation,
  * language bindings.
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_error_valist (GDBusMethodInvocation *invocation,
@@ -720,6 +764,8 @@ g_dbus_method_invocation_return_error_valist (GDBusMethodInvocation *invocation,
  * Like g_dbus_method_invocation_return_error() but without printf()-style formatting.
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation,
@@ -746,6 +792,8 @@ g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation
  * instead of the error domain, error code and message.
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_gerror (GDBusMethodInvocation *invocation,
@@ -773,6 +821,8 @@ g_dbus_method_invocation_return_gerror (GDBusMethodInvocation *invocation,
  * Finishes handling a D-Bus method call by returning an error.
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,

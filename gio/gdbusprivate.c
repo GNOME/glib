@@ -974,7 +974,7 @@ _g_dbus_debug_message (void)
   return (_gdbus_debug_flags & G_DBUS_DEBUG_MESSAGE) != 0;
 }
 
-/**
+/*
  * _g_dbus_initialize:
  *
  * Does various one-time init things such as

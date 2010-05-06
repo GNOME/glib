@@ -42,6 +42,8 @@ typedef struct _GDBusMethodInvocationPrivate GDBusMethodInvocationPrivate;
  *
  * The #GDBusMethodInvocation structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusMethodInvocation
 {
@@ -54,6 +56,8 @@ struct _GDBusMethodInvocation
  * GDBusMethodInvocationClass:
  *
  * Class structure for #GDBusMethodInvocation.
+ *
+ * Since: 2.26
  */
 struct _GDBusMethodInvocationClass
 {

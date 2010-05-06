@@ -252,6 +252,8 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
    * GUnixCredentialsMessage:credentials:
    *
    * The credentials stored in the message.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CREDENTIALS,
@@ -331,6 +333,8 @@ g_unix_credentials_message_new_with_credentials (GCredentials *credentials)
  * Gets the credentials stored in @message.
  *
  * Returns: A #GCredentials instance. Do not free, it is owned by @message.
+ *
+ * Since: 2.26
  */
 GCredentials *
 g_unix_credentials_message_get_credentials (GUnixCredentialsMessage *message)

@@ -146,6 +146,8 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
    * should be denied.
    *
    * Returns: %TRUE if the peer should be denied, %FALSE otherwise.
+   *
+   * Since: 2.26
    */
   signals[DENY_AUTHENTICATED_PEER_SIGNAL] =
     g_signal_new ("deny-authenticated-peer",
@@ -179,6 +181,8 @@ g_dbus_auth_observer_init (GDBusAuthObserver *observer)
  * Creates a new #GDBusAuthObserver object.
  *
  * Returns: A #GDBusAuthObserver. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusAuthObserver *
 g_dbus_auth_observer_new (void)
@@ -197,6 +201,8 @@ g_dbus_auth_observer_new (void)
  * Emits the #GDBusAuthObserver::deny-authenticated-peer signal on @observer.
  *
  * Returns: %TRUE if the peer should be denied, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_auth_observer_deny_authenticated_peer (GDBusAuthObserver  *observer,

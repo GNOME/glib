@@ -461,7 +461,9 @@ connection_get_cb (GObject      *source_object,
  *
  * Returns: An identifier (never 0) that an be used with
  * g_bus_unown_name() to stop owning the name.
- **/
+ *
+ * Since: 2.26
+ */
 guint
 g_bus_own_name_on_connection (GDBusConnection          *connection,
                               const gchar              *name,
@@ -571,7 +573,9 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  *
  * Returns: An identifier (never 0) that an be used with
  * g_bus_unown_name() to stop owning the name.
- **/
+ *
+ * Since: 2.26
+ */
 guint
 g_bus_own_name (GBusType                  bus_type,
                 const gchar              *name,
@@ -626,6 +630,8 @@ g_bus_own_name (GBusType                  bus_type,
  * @owner_id: An identifier obtained from g_bus_own_name()
  *
  * Stops owning a name.
+ *
+ * Since: 2.26
  */
 void
 g_bus_unown_name (guint owner_id)

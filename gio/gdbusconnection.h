@@ -42,6 +42,8 @@ typedef struct _GDBusConnectionPrivate GDBusConnectionPrivate;
  *
  * The #GDBusConnection structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusConnection
 {
@@ -55,6 +57,8 @@ struct _GDBusConnection
  * @closed: Signal class handler for the #GDBusConnection::closed signal.
  *
  * Class structure for #GDBusConnection.
+ *
+ * Since: 2.26
  */
 struct _GDBusConnectionClass
 {
@@ -207,6 +211,8 @@ GVariant *g_dbus_connection_invoke_method_sync                (GDBusConnection  
  * @user_data: The @user_data #gpointer passed to g_dbus_connection_register_object().
  *
  * The type of the @method_call function in #GDBusInterfaceVTable.
+ *
+ * Since: 2.26
  */
 typedef void (*GDBusInterfaceMethodCallFunc) (GDBusConnection       *connection,
                                               const gchar           *sender,
@@ -230,6 +236,8 @@ typedef void (*GDBusInterfaceMethodCallFunc) (GDBusConnection       *connection,
  * The type of the @get_property function in #GDBusInterfaceVTable.
  *
  * Returns: A newly-allocated #GVariant with the value for @property_name or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 typedef GVariant *(*GDBusInterfaceGetPropertyFunc) (GDBusConnection       *connection,
                                                     const gchar           *sender,
@@ -253,6 +261,8 @@ typedef GVariant *(*GDBusInterfaceGetPropertyFunc) (GDBusConnection       *conne
  * The type of the @set_property function in #GDBusInterfaceVTable.
  *
  * Returns: %TRUE if the property was set to @value, %FALSE if @error is set.
+ *
+ * Since: 2.26
  */
 typedef gboolean  (*GDBusInterfaceSetPropertyFunc) (GDBusConnection       *connection,
                                                     const gchar           *sender,
@@ -275,6 +285,8 @@ typedef gboolean  (*GDBusInterfaceSetPropertyFunc) (GDBusConnection       *conne
  * If you want to handle getting/setting D-Bus properties asynchronously, simply
  * register an object with the <literal>org.freedesktop.DBus.Properties</literal>
  * D-Bus interface using g_dbus_connection_register_object().
+ *
+ * Since: 2.26
  */
 struct _GDBusInterfaceVTable
 {
@@ -317,6 +329,8 @@ gboolean         g_dbus_connection_unregister_object          (GDBusConnection  
  * The type of the @enumerate function in #GDBusSubtreeVTable.
  *
  * Returns: A newly allocated array of strings for node names that are children of @object_path.
+ *
+ * Since: 2.26
  */
 typedef gchar** (*GDBusSubtreeEnumerateFunc) (GDBusConnection       *connection,
                                               const gchar           *sender,
@@ -335,6 +349,8 @@ typedef gchar** (*GDBusSubtreeEnumerateFunc) (GDBusConnection       *connection,
  *
  * Returns: A newly-allocated #GPtrArray with pointers to #GDBusInterfaceInfo describing
  * the interfaces implemented by @node.
+ *
+ * Since: 2.26
  */
 typedef GPtrArray *(*GDBusSubtreeIntrospectFunc) (GDBusConnection       *connection,
                                                   const gchar           *sender,
@@ -355,6 +371,8 @@ typedef GPtrArray *(*GDBusSubtreeIntrospectFunc) (GDBusConnection       *connect
  * The type of the @dispatch function in #GDBusSubtreeVTable.
  *
  * Returns: A #GDBusInterfaceVTable or %NULL if you don't want to handle the methods.
+ *
+ * Since: 2.26
  */
 typedef const GDBusInterfaceVTable * (*GDBusSubtreeDispatchFunc) (GDBusConnection             *connection,
                                                                   const gchar                 *sender,
@@ -371,6 +389,8 @@ typedef const GDBusInterfaceVTable * (*GDBusSubtreeDispatchFunc) (GDBusConnectio
  * @dispatch: Function for dispatching a remote call on a child node.
  *
  * Virtual table for handling subtrees registered with g_dbus_connection_register_subtree().
+ *
+ * Since: 2.26
  */
 struct _GDBusSubtreeVTable
 {
@@ -413,6 +433,8 @@ gboolean         g_dbus_connection_unregister_subtree         (GDBusConnection  
  * @user_data: User data passed when subscribing to the signal.
  *
  * Signature for callback function used in g_dbus_connection_signal_subscribe().
+ *
+ * Since: 2.26
  */
 typedef void (*GDBusSignalCallback) (GDBusConnection  *connection,
                                      const gchar      *sender_name,
@@ -446,6 +468,8 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  *
  * Returns: %TRUE if the filter handled @message, %FALSE to let other
  * handlers run.
+ *
+ * Since: 2.26
  */
 typedef gboolean (*GDBusMessageFilterFunction) (GDBusConnection *connection,
                                                 GDBusMessage    *message,

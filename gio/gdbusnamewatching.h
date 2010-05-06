@@ -35,6 +35,8 @@ G_BEGIN_DECLS
  * @user_data: User data passed to g_bus_watch_name().
  *
  * Invoked when the name being watched is known to have to have a owner.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusNameAppearedCallback) (GDBusConnection *connection,
                                           const gchar     *name,
@@ -48,6 +50,8 @@ typedef void (*GBusNameAppearedCallback) (GDBusConnection *connection,
  * @user_data: User data passed to g_bus_watch_name().
  *
  * Invoked when the name being watched is known not to have to have a owner.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusNameVanishedCallback) (GDBusConnection *connection,
                                           const gchar     *name,

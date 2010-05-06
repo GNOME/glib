@@ -100,6 +100,8 @@ g_credentials_init (GCredentials *credentials)
  * Creates a new empty credentials object.
  *
  * Returns: A #GCredentials. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GCredentials *
 g_credentials_new (void)
@@ -132,6 +134,8 @@ g_credentials_new_for_unix_process (void)
  * platform.
  *
  * Returns: A #GCredentials. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GCredentials *
 g_credentials_new_for_process (void)
@@ -157,6 +161,8 @@ g_credentials_new_for_process (void)
  *
  * Returns: A #GCredentials or %NULL if @error is set. The return
  * object must be freed with g_object_unref().
+ *
+ * Since: 2.26
  */
 GCredentials *
 g_credentials_new_for_string (const gchar  *str,
@@ -212,6 +218,8 @@ g_credentials_new_for_string (const gchar  *str,
  * g_credentials_new_for_string().
  *
  * Returns: A string that should be freed with g_free().
+ *
+ * Since: 2.26
  */
 gchar *
 g_credentials_to_string (GCredentials *credentials)
@@ -244,6 +252,8 @@ g_credentials_to_string (GCredentials *credentials)
  * Checks if @credentials has a UNIX user credential.
  *
  * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_credentials_has_unix_user (GCredentials *credentials)
@@ -259,6 +269,8 @@ g_credentials_has_unix_user (GCredentials *credentials)
  * Gets the UNIX user identifier from @credentials.
  *
  * Returns: The identifier or -1 if unset.
+ *
+ * Since: 2.26
  */
 gint64
 g_credentials_get_unix_user (GCredentials *credentials)
@@ -273,6 +285,8 @@ g_credentials_get_unix_user (GCredentials *credentials)
  * @user_id: A UNIX user identifier (typically type #uid_t) or -1 to unset it.
  *
  * Sets the UNIX user identifier.
+ *
+ * Since: 2.26
  */
 void
 g_credentials_set_unix_user (GCredentials *credentials,
@@ -291,6 +305,8 @@ g_credentials_set_unix_user (GCredentials *credentials,
  * Checks if @credentials has a UNIX group credential.
  *
  * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_credentials_has_unix_group (GCredentials *credentials)
@@ -306,6 +322,8 @@ g_credentials_has_unix_group (GCredentials *credentials)
  * Gets the UNIX group identifier from @credentials.
  *
  * Returns: The identifier or -1 if unset.
+ *
+ * Since: 2.26
  */
 gint64
 g_credentials_get_unix_group (GCredentials *credentials)
@@ -320,6 +338,8 @@ g_credentials_get_unix_group (GCredentials *credentials)
  * @group_id: A UNIX group identifier (typically type #gid_t) or -1 to unset.
  *
  * Sets the UNIX group identifier.
+ *
+ * Since: 2.26
  */
 void
 g_credentials_set_unix_group (GCredentials *credentials,
@@ -338,6 +358,8 @@ g_credentials_set_unix_group (GCredentials *credentials,
  * Checks if @credentials has a UNIX process credential.
  *
  * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_credentials_has_unix_process (GCredentials *credentials)
@@ -353,6 +375,8 @@ g_credentials_has_unix_process (GCredentials *credentials)
  * Gets the UNIX process identifier from @credentials.
  *
  * Returns: The identifier or -1 if unset.
+ *
+ * Since: 2.26
  */
 gint64
 g_credentials_get_unix_process (GCredentials *credentials)
@@ -367,6 +391,8 @@ g_credentials_get_unix_process (GCredentials *credentials)
  * @process_id: A UNIX process identifier (typically type #pid_t/#GPid) or -1 to unset.
  *
  * Sets the UNIX process identifier.
+ *
+ * Since: 2.26
  */
 void
 g_credentials_set_unix_process (GCredentials *credentials,
@@ -385,6 +411,8 @@ g_credentials_set_unix_process (GCredentials *credentials,
  * Checks if @credentials has a Windows user SID (Security Identifier).
  *
  * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_credentials_has_windows_user  (GCredentials *credentials)
@@ -400,6 +428,8 @@ g_credentials_has_windows_user  (GCredentials *credentials)
  * Gets the Windows User SID from @credentials.
  *
  * Returns: A string or %NULL if unset. Do not free, the string is owned by @credentials.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_credentials_get_windows_user  (GCredentials *credentials)
@@ -414,6 +444,8 @@ g_credentials_get_windows_user  (GCredentials *credentials)
  * @user_sid: The Windows User SID or %NULL to unset.
  *
  * Sets the Windows User SID.
+ *
+ * Since: 2.26
  */
 void
 g_credentials_set_windows_user (GCredentials    *credentials,

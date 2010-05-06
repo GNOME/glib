@@ -34,6 +34,8 @@ G_BEGIN_DECLS
  * @user_data: User data passed to g_bus_own_name().
  *
  * Invoked when a connection to a message bus has been obtained.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusAcquiredCallback) (GDBusConnection *connection,
                                       const gchar     *name,
@@ -46,6 +48,8 @@ typedef void (*GBusAcquiredCallback) (GDBusConnection *connection,
  * @user_data: User data passed to g_bus_own_name() or g_bus_own_name_on_connection().
  *
  * Invoked when the name is acquired.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusNameAcquiredCallback) (GDBusConnection *connection,
                                           const gchar     *name,
@@ -59,6 +63,8 @@ typedef void (*GBusNameAcquiredCallback) (GDBusConnection *connection,
  * @user_data: User data passed to g_bus_own_name() or g_bus_own_name_on_connection().
  *
  * Invoked when the name is lost or @connection has been closed.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusNameLostCallback) (GDBusConnection *connection,
                                       const gchar     *name,

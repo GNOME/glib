@@ -39,6 +39,13 @@ G_BEGIN_DECLS
 typedef struct _GUnixCredentialsMessagePrivate  GUnixCredentialsMessagePrivate;
 typedef struct _GUnixCredentialsMessageClass    GUnixCredentialsMessageClass;
 
+/**
+ * GUnixCredentialsMessageClass:
+ *
+ * Class structure for #GUnixCredentialsMessage.
+ *
+ * Since: 2.26
+ */
 struct _GUnixCredentialsMessageClass
 {
   GSocketControlMessageClass parent_class;
@@ -50,6 +57,14 @@ struct _GUnixCredentialsMessageClass
   void (*_g_reserved2) (void);
 };
 
+/**
+ * GUnixCredentialsMessage:
+ *
+ * The #GUnixCredentialsMessage structure contains only private data
+ * and should only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
 struct _GUnixCredentialsMessage
 {
   GSocketControlMessage parent_instance;

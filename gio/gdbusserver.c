@@ -218,6 +218,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:flags:
    *
    * Flags from the #GDBusServerFlags enumeration.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
@@ -237,6 +239,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:guid:
    *
    * The guid of the server.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GUID,
@@ -255,6 +259,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:address:
    *
    * The D-Bus address to listen on.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ADDRESS,
@@ -273,6 +279,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:client-address:
    *
    * The D-Bus address that clients can use.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CLIENT_ADDRESS,
@@ -289,6 +297,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:active:
    *
    * Whether the server is currently active.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ACTIVE,
@@ -305,6 +315,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * GDBusServer:authentication-observer:
    *
    * A #GDBusAuthObserver object to assist in the authentication process or %NULL.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_AUTHENTICATION_OBSERVER,
@@ -338,6 +350,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * connection. Otherwise the signal is emitted in the <link
    * linkend="g-main-context-push-thread-default">thread-default main
    * loop</link> of the thread that @server was constructed in.
+   *
+   * Since: 2.26
    */
   _signals[NEW_CONNECTION_SIGNAL] = g_signal_new ("new-connection",
                                                   G_TYPE_DBUS_SERVER,
@@ -399,6 +413,8 @@ on_run (GSocketService    *service,
  *
  * Returns: A #GDBusServer or %NULL if @error is set. Free with
  * g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusServer *
 g_dbus_server_new_sync (const gchar          *address,
@@ -444,6 +460,8 @@ g_dbus_server_new_sync (const gchar          *address,
  *
  * Returns: A D-Bus address string. Do not free, the string is owned
  * by @server.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_server_get_client_address (GDBusServer *server)
@@ -459,6 +477,8 @@ g_dbus_server_get_client_address (GDBusServer *server)
  * Gets the GUID for @server.
  *
  * Returns: A D-Bus GUID. Do not free this string, it is owned by @server.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_server_get_guid (GDBusServer *server)
@@ -474,6 +494,8 @@ g_dbus_server_get_guid (GDBusServer *server)
  * Gets the flags for @server.
  *
  * Returns: A set of flags from the #GDBusServerFlags enumeration.
+ *
+ * Since: 2.26
  */
 GDBusServerFlags
 g_dbus_server_get_flags (GDBusServer *server)
@@ -489,6 +511,8 @@ g_dbus_server_get_flags (GDBusServer *server)
  * Gets whether @server is active.
  *
  * Returns: %TRUE if server is active, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_server_is_active (GDBusServer *server)
@@ -502,6 +526,8 @@ g_dbus_server_is_active (GDBusServer *server)
  * @server: A #GDBusServer.
  *
  * Starts @server.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_server_start (GDBusServer *server)
@@ -521,6 +547,8 @@ g_dbus_server_start (GDBusServer *server)
  * @server: A #GDBusServer.
  *
  * Stops @server.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_server_stop (GDBusServer *server)

@@ -298,7 +298,9 @@ on_name_vanished (GDBusConnection *connection,
  *
  * Returns: An identifier (never 0) that can be used with
  * g_bus_unwatch_proxy() to stop watching the remote object.
- **/
+ *
+ * Since: 2.26
+ */
 guint
 g_bus_watch_proxy (GBusType                   bus_type,
                    const gchar               *name,
@@ -364,6 +366,8 @@ g_bus_watch_proxy (GBusType                   bus_type,
  * @watcher_id: An identifier obtained from g_bus_watch_proxy()
  *
  * Stops watching proxy.
+ *
+ * Since: 2.26
  */
 void
 g_bus_unwatch_proxy (guint watcher_id)

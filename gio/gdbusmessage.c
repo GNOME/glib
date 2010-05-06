@@ -118,6 +118,8 @@ g_dbus_message_init (GDBusMessage *message)
  * Creates a new empty #GDBusMessage.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new (void)
@@ -135,6 +137,8 @@ g_dbus_message_new (void)
  * Creates a new #GDBusMessage for a method call.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_method_call (const gchar *name,
@@ -171,6 +175,8 @@ g_dbus_message_new_method_call (const gchar *name,
  * Creates a new #GDBusMessage for a signal emission.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_signal (const gchar  *path,
@@ -205,6 +211,8 @@ g_dbus_message_new_signal (const gchar  *path,
  * Creates a new #GDBusMessage that is a reply to @method_call_message.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
@@ -239,6 +247,8 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
  * Creates a new #GDBusMessage that is an error reply to @method_call_message.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_method_error (GDBusMessage             *method_call_message,
@@ -269,6 +279,8 @@ g_dbus_message_new_method_error (GDBusMessage             *method_call_message,
  * Creates a new #GDBusMessage that is an error reply to @method_call_message.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
@@ -310,6 +322,8 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
  * Like g_dbus_message_new_method_error() but intended for language bindings.
  *
  * Returns: A #GDBusMessage. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_message,
@@ -338,6 +352,8 @@ g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_me
  * Gets the type of @message.
  *
  * Returns: A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
+ *
+ * Since: 2.26
  */
 GDBusMessageType
 g_dbus_message_get_type (GDBusMessage  *message)
@@ -352,6 +368,8 @@ g_dbus_message_get_type (GDBusMessage  *message)
  * @type: A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
  *
  * Sets @message to be of @type.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_type (GDBusMessage      *message,
@@ -373,6 +391,8 @@ g_dbus_message_set_type (GDBusMessage      *message,
  * Gets the flags for @message.
  *
  * Returns: Flags that are set (typically values from the #GDBusMessageFlags enumeration bitwise ORed together).
+ *
+ * Since: 2.26
  */
 GDBusMessageFlags
 g_dbus_message_get_flags (GDBusMessage  *message)
@@ -388,6 +408,8 @@ g_dbus_message_get_flags (GDBusMessage  *message)
  * enumeration bitwise ORed together).
  *
  * Sets the flags to set on @message.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_flags (GDBusMessage       *message,
@@ -407,6 +429,8 @@ g_dbus_message_set_flags (GDBusMessage       *message,
  * Gets the serial for @message.
  *
  * Returns: A #guint32.
+ *
+ * Since: 2.26
  */
 guint32
 g_dbus_message_get_serial (GDBusMessage *message)
@@ -421,6 +445,8 @@ g_dbus_message_get_serial (GDBusMessage *message)
  * @serial: A #guint32.
  *
  * Sets the serial for @message.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_serial (GDBusMessage  *message,
@@ -443,6 +469,8 @@ g_dbus_message_set_serial (GDBusMessage  *message,
  *
  * Returns: A #GVariant with the value if the header was found, %NULL
  * otherwise. Do not free, it is owned by @message.
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_message_get_header (GDBusMessage             *message,
@@ -462,6 +490,8 @@ g_dbus_message_get_header (GDBusMessage             *message,
  * Sets a header field on @message.
  *
  * If @value is floating, @message assumes ownership of @value.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_header (GDBusMessage             *message,
@@ -489,6 +519,8 @@ g_dbus_message_set_header (GDBusMessage             *message,
  * Returns: An array of header fields terminated by
  * %G_DBUS_MESSAGE_HEADER_FIELD_INVALID.  Each element is a
  * #guchar. Free with g_free().
+ *
+ * Since: 2.26
  */
 guchar *
 g_dbus_message_get_header_fields (GDBusMessage  *message)
@@ -522,6 +554,8 @@ g_dbus_message_get_header_fields (GDBusMessage  *message)
  * Gets the body of a message.
  *
  * Returns: A #GVariant or %NULL if the body is empty. Do not free, it is owned by @message.
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_message_get_body (GDBusMessage  *message)
@@ -540,6 +574,8 @@ g_dbus_message_get_body (GDBusMessage  *message)
  * type string of @body (or cleared if @body is %NULL).
  *
  * If @body is floating, @message assumes ownership of @body.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_body (GDBusMessage  *message,
@@ -585,6 +621,8 @@ g_dbus_message_set_body (GDBusMessage  *message,
  *
  * Returns: A #GUnixFDList or %NULL if no file descriptors are
  * associated. Do not free, this object is owned by @message.
+ *
+ * Since: 2.26
  */
 GUnixFDList *
 g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
@@ -604,6 +642,8 @@ g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
  * @fd_list is %NULL).
  *
  * This method is only available on UNIX.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_unix_fd_list (GDBusMessage  *message,
@@ -1026,6 +1066,8 @@ parse_value_from_blob (GMemoryInputStream    *mis,
  * Returns: Number of bytes needed or -1 if @error is set (e.g. if
  * @blob contains invalid data or not enough data is available to
  * determine the size).
+ *
+ * Since: 2.26
  */
 gssize
 g_dbus_message_bytes_needed (guchar  *blob,
@@ -1086,6 +1128,8 @@ g_dbus_message_bytes_needed (guchar  *blob,
  *
  * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
  * g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_message_new_from_blob (guchar    *blob,
@@ -1527,6 +1571,8 @@ append_body_to_blob (GVariant             *value,
  *
  * Returns: A pointer to a valid binary D-Bus message of @out_size bytes
  * generated by @message or %NULL if @error is set. Free with g_free().
+ *
+ * Since: 2.26
  */
 guchar *
 g_dbus_message_to_blob (GDBusMessage   *message,
@@ -1792,6 +1838,8 @@ set_signature_header (GDBusMessage             *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 guint32
 g_dbus_message_get_reply_serial (GDBusMessage  *message)
@@ -1806,6 +1854,8 @@ g_dbus_message_get_reply_serial (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_reply_serial (GDBusMessage  *message,
@@ -1824,6 +1874,8 @@ g_dbus_message_set_reply_serial (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_interface (GDBusMessage  *message)
@@ -1838,6 +1890,8 @@ g_dbus_message_get_interface (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_interface (GDBusMessage  *message,
@@ -1857,6 +1911,8 @@ g_dbus_message_set_interface (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_member (GDBusMessage  *message)
@@ -1871,6 +1927,8 @@ g_dbus_message_get_member (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_member (GDBusMessage  *message,
@@ -1890,6 +1948,8 @@ g_dbus_message_set_member (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_path (GDBusMessage  *message)
@@ -1904,6 +1964,8 @@ g_dbus_message_get_path (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_path (GDBusMessage  *message,
@@ -1923,6 +1985,8 @@ g_dbus_message_set_path (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_sender (GDBusMessage *message)
@@ -1937,6 +2001,8 @@ g_dbus_message_get_sender (GDBusMessage *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_sender (GDBusMessage  *message,
@@ -1956,6 +2022,8 @@ g_dbus_message_set_sender (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_destination (GDBusMessage  *message)
@@ -1970,6 +2038,8 @@ g_dbus_message_get_destination (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_destination (GDBusMessage  *message,
@@ -1989,6 +2059,8 @@ g_dbus_message_set_destination (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_error_name (GDBusMessage  *message)
@@ -2003,6 +2075,8 @@ g_dbus_message_get_error_name (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_error_name (GDBusMessage  *message,
@@ -2022,6 +2096,8 @@ g_dbus_message_set_error_name (GDBusMessage  *message,
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_signature (GDBusMessage  *message)
@@ -2040,6 +2116,8 @@ g_dbus_message_get_signature (GDBusMessage  *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_signature (GDBusMessage  *message,
@@ -2060,6 +2138,8 @@ g_dbus_message_set_signature (GDBusMessage  *message,
  *
  * Returns: The string item or %NULL if the first item in the body of
  * @message is not a string.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_message_get_arg0 (GDBusMessage  *message)
@@ -2090,6 +2170,8 @@ g_dbus_message_get_arg0 (GDBusMessage  *message)
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
  *
  * Returns: The value.
+ *
+ * Since: 2.26
  */
 guint32
 g_dbus_message_get_num_unix_fds (GDBusMessage *message)
@@ -2104,6 +2186,8 @@ g_dbus_message_get_num_unix_fds (GDBusMessage *message)
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_message_set_num_unix_fds (GDBusMessage  *message,
@@ -2129,6 +2213,8 @@ g_dbus_message_set_num_unix_fds (GDBusMessage  *message,
  * well as the first string item in @message's body.
  *
  * Returns: %TRUE if @error was set, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_message_to_gerror (GDBusMessage   *message,
@@ -2298,6 +2384,8 @@ _sort_keys_func (gconstpointer a,
  * </programlisting>
  *
  * Returns: A string that should be freed with g_free().
+ *
+ * Since: 2.26
  */
 gchar *
 g_dbus_message_print (GDBusMessage *message,

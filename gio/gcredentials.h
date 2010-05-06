@@ -42,6 +42,8 @@ typedef struct _GCredentialsPrivate GCredentialsPrivate;
  *
  * The #GCredentials structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GCredentials
 {
@@ -54,6 +56,8 @@ struct _GCredentials
  * GCredentialsClass:
  *
  * Class structure for #GCredentials.
+ *
+ * Since: 2.26
  */
 struct _GCredentialsClass
 {

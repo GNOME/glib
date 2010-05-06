@@ -42,6 +42,8 @@ typedef struct _GDBusServerPrivate GDBusServerPrivate;
  *
  * The #GDBusServer structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusServer
 {
@@ -55,6 +57,8 @@ struct _GDBusServer
  * @new_connection: Signal class handler for the #GDBusServer::new-connection signal.
  *
  * Class structure for #GDBusServer.
+ *
+ * Since: 2.26
  */
 struct _GDBusServerClass
 {

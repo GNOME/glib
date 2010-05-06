@@ -35,6 +35,8 @@ G_BEGIN_DECLS
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about an annotation.
+ *
+ * Since: 2.26
  */
 struct _GDBusAnnotationInfo
 {
@@ -52,6 +54,8 @@ struct _GDBusAnnotationInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about an argument for a method or a signal.
+ *
+ * Since: 2.26
  */
 struct _GDBusArgInfo
 {
@@ -70,6 +74,8 @@ struct _GDBusArgInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about a method on an D-Bus interface.
+ *
+ * Since: 2.26
  */
 struct _GDBusMethodInfo
 {
@@ -88,6 +94,8 @@ struct _GDBusMethodInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about a signal on a D-Bus interface.
+ *
+ * Since: 2.26
  */
 struct _GDBusSignalInfo
 {
@@ -106,6 +114,8 @@ struct _GDBusSignalInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about a D-Bus property on a D-Bus interface.
+ *
+ * Since: 2.26
  */
 struct _GDBusPropertyInfo
 {
@@ -126,6 +136,8 @@ struct _GDBusPropertyInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about a D-Bus interface.
+ *
+ * Since: 2.26
  */
 struct _GDBusInterfaceInfo
 {
@@ -146,6 +158,8 @@ struct _GDBusInterfaceInfo
  * @annotations: A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
  * Information about nodes in a remote object hierarchy.
+ *
+ * Since: 2.26
  */
 struct _GDBusNodeInfo
 {
@@ -197,6 +211,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_NODE_INFO:
  *
  * The #GType for a boxed type holding a #GDBusNodeInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_NODE_INFO       (g_dbus_node_info_get_type ())
 
@@ -204,6 +220,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_INTERFACE_INFO:
  *
  * The #GType for a boxed type holding a #GDBusInterfaceInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_INTERFACE_INFO  (g_dbus_interface_info_get_type ())
 
@@ -211,6 +229,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_METHOD_INFO:
  *
  * The #GType for a boxed type holding a #GDBusMethodInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_METHOD_INFO     (g_dbus_method_info_get_type ())
 
@@ -218,6 +238,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_SIGNAL_INFO:
  *
  * The #GType for a boxed type holding a #GDBusSignalInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_SIGNAL_INFO     (g_dbus_signal_info_get_type ())
 
@@ -225,6 +247,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_PROPERTY_INFO:
  *
  * The #GType for a boxed type holding a #GDBusPropertyInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_PROPERTY_INFO   (g_dbus_property_info_get_type ())
 
@@ -232,6 +256,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_ARG_INFO:
  *
  * The #GType for a boxed type holding a #GDBusArgInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_ARG_INFO        (g_dbus_arg_info_get_type ())
 
@@ -239,6 +265,8 @@ void                      g_dbus_annotation_info_unref           (GDBusAnnotatio
  * G_TYPE_DBUS_ANNOTATION_INFO:
  *
  * The #GType for a boxed type holding a #GDBusAnnotationInfo.
+ *
+ * Since: 2.26
  */
 #define G_TYPE_DBUS_ANNOTATION_INFO (g_dbus_annotation_info_get_type ())
 

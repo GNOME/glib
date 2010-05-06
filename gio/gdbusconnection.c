@@ -483,6 +483,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * GDBusConnection:stream:
    *
    * The underlying #GIOStream used for I/O.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_STREAM,
@@ -502,6 +504,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    *
    * A D-Bus address specifying potential endpoints that can be used
    * when establishing the connection.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ADDRESS,
@@ -519,6 +523,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * GDBusConnection:flags:
    *
    * Flags from the #GDBusConnectionFlags enumeration.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
@@ -549,6 +555,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * #GDBusConnection:flags property you will be able to read the GUID
    * of the other peer here after the connection has been succesfully
    * initialized.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GUID,
@@ -568,6 +576,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    *
    * The unique name as assigned by the message bus or %NULL if the
    * connection is not open or not a message bus connection.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_UNIQUE_NAME,
@@ -584,6 +594,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * GDBusConnection:closed:
    *
    * A boolean specifying whether the connection has been closed.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CLOSED,
@@ -602,6 +614,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * A boolean specifying whether the process will be terminated (by
    * calling <literal>raise(SIGTERM)</literal>) if the connection
    * is closed by the remote peer.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_EXIT_ON_CLOSE,
@@ -620,6 +634,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    *
    * Flags from the #GDBusCapabilityFlags enumeration
    * representing connection features negotiated with the other peer.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CAPABILITY_FLAGS,
@@ -637,6 +653,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * GDBusConnection:authentication-observer:
    *
    * A #GDBusAuthObserver object to assist in the authentication process or %NULL.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_AUTHENTICATION_OBSERVER,
@@ -679,6 +697,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * Upon receiving this signal, you should give up your reference to
    * @connection. You are guaranteed that this signal is emitted only
    * once.
+   *
+   * Since: 2.26
    */
   signals[CLOSED_SIGNAL] = g_signal_new ("closed",
                                          G_TYPE_DBUS_CONNECTION,
@@ -750,7 +770,9 @@ g_dbus_connection_get_stream (GDBusConnection *connection)
  * Gets whether @connection is closed.
  *
  * Returns: %TRUE if the connection is closed, %FALSE otherwise.
- **/
+ *
+ * Since: 2.26
+ */
 gboolean
 g_dbus_connection_is_closed (GDBusConnection *connection)
 {
@@ -765,6 +787,8 @@ g_dbus_connection_is_closed (GDBusConnection *connection)
  * Gets the capabilities negotiated with the remote peer
  *
  * Returns: One or more flags from the #GDBusCapabilityFlags enumeration.
+ *
+ * Since: 2.26
  */
 GDBusCapabilityFlags
 g_dbus_connection_get_capabilities (GDBusConnection *connection)
@@ -849,6 +873,8 @@ set_closed_unlocked (GDBusConnection *connection,
  * bus connection disconnects).
  *
  * If @connection is already closed, this method does nothing.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_close (GDBusConnection *connection)
@@ -983,6 +1009,8 @@ g_dbus_connection_send_message_unlocked (GDBusConnection     *connection,
  *
  * Returns: %TRUE if the message was well-formed and queued for
  * transmission, %FALSE if @error is set.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_connection_send_message (GDBusConnection     *connection,
@@ -1297,6 +1325,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * See <xref linkend="gdbus-server"/> and <xref
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
@@ -1339,6 +1369,8 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * low-level API to send and receive UNIX file descriptors.
  *
  * Returns: A #GDBusMessage or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_connection_send_message_with_reply_finish (GDBusConnection     *connection,
@@ -1426,6 +1458,8 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * low-level API to send and receive UNIX file descriptors.
  *
  * Returns: A #GDBusMessage that is the reply to @message or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 GDBusMessage *
 g_dbus_connection_send_message_with_reply_sync (GDBusConnection     *connection,
@@ -1856,6 +1890,8 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * This is a asynchronous failable constructor. See
  * g_dbus_connection_new_sync() for the synchronous
  * version.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_new (GIOStream              *stream,
@@ -1887,6 +1923,8 @@ g_dbus_connection_new (GIOStream              *stream,
  * Finishes an operation started with g_dbus_connection_new().
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_dbus_connection_new_finish (GAsyncResult        *res,
@@ -1930,6 +1968,8 @@ g_dbus_connection_new_finish (GAsyncResult        *res,
  * g_dbus_connection_new() for the asynchronous version.
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_dbus_connection_new_sync (GIOStream              *stream,
@@ -1978,6 +2018,8 @@ g_dbus_connection_new_sync (GIOStream              *stream,
  * This is a asynchronous failable constructor. See
  * g_dbus_connection_new_for_address_sync() for the synchronous
  * version.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_new_for_address (const gchar            *address,
@@ -2005,6 +2047,8 @@ g_dbus_connection_new_for_address (const gchar            *address,
  * Finishes an operation started with g_dbus_connection_new_for_address().
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_dbus_connection_new_for_address_finish (GAsyncResult        *res,
@@ -2049,6 +2093,8 @@ g_dbus_connection_new_for_address_finish (GAsyncResult        *res,
  * g_dbus_connection_new_for_address() for the asynchronous version.
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_dbus_connection_new_for_address_sync (const gchar            *address,
@@ -2077,6 +2123,8 @@ g_dbus_connection_new_for_address_sync (const gchar            *address,
  * Sets whether the process should be terminated when @connection is
  * closed by the remote peer. See #GDBusConnection:exit-on-close for
  * more details.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_set_exit_on_close (GDBusConnection *connection,
@@ -2096,6 +2144,8 @@ g_dbus_connection_set_exit_on_close (GDBusConnection *connection,
  *
  * Returns: Whether the process is terminated when @connection is
  * closed by the remote peer.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
@@ -2113,7 +2163,9 @@ g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
  *
  * Returns: The GUID. Do not free this string, it is owned by
  * @connection.
- **/
+ *
+ * Since: 2.26
+ */
 const gchar *
 g_dbus_connection_get_guid (GDBusConnection *connection)
 {
@@ -2132,7 +2184,9 @@ g_dbus_connection_get_guid (GDBusConnection *connection)
  * Returns: The unique name or %NULL if @connection is not a message
  * bus connection. Do not free this string, it is owned by
  * @connection.
- **/
+ *
+ * Since: 2.26
+ */
 const gchar *
 g_dbus_connection_get_unique_name (GDBusConnection *connection)
 {
@@ -2156,6 +2210,8 @@ g_dbus_connection_get_unique_name (GDBusConnection *connection)
  *
  * Returns: A #GCredentials or %NULL if not available. Do not free
  * this object, it is owned by @connection.
+ *
+ * Since: 2.26
  */
 GCredentials *
 g_dbus_connection_get_peer_credentials (GDBusConnection *connection)
@@ -2192,6 +2248,8 @@ static guint _global_filter_id = 1;
  *
  * Returns: A filter identifier that can be used with
  * g_dbus_connection_remove_filter().
+ *
+ * Since: 2.26
  */
 guint
 g_dbus_connection_add_filter (GDBusConnection            *connection,
@@ -2427,7 +2485,9 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * call g_dbus_connection_signal_unsubscribe() to remove a subscription.
  *
  * Returns: A subscription identifier that can be used with g_dbus_connection_signal_unsubscribe().
- **/
+ *
+ * Since: 2.26
+ */
 guint
 g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
                                     const gchar         *sender,
@@ -2607,7 +2667,9 @@ unsubscribe_id_internal (GDBusConnection    *connection,
  * @subscription_id: A subscription id obtained from g_dbus_connection_signal_subscribe().
  *
  * Unsubscribes from signals.
- **/
+ *
+ * Since: 2.26
+ */
 void
 g_dbus_connection_signal_unsubscribe (GDBusConnection    *connection,
                                       guint               subscription_id)
@@ -3803,6 +3865,8 @@ obj_message_func (GDBusConnection *connection,
  *
  * Returns: 0 if @error is set, otherwise a registration id (never 0)
  * that can be used with g_dbus_connection_unregister_object() .
+ *
+ * Since: 2.26
  */
 guint
 g_dbus_connection_register_object (GDBusConnection            *connection,
@@ -3889,6 +3953,8 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
  * Unregisters an object.
  *
  * Returns: %TRUE if the object was unregistered, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_connection_unregister_object (GDBusConnection *connection,
@@ -3947,6 +4013,8 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
  * This can only fail if @parameters is not compatible with the D-Bus protocol.
  *
  * Returns: %TRUE unless @error is set.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_connection_emit_signal (GDBusConnection    *connection,
@@ -4029,6 +4097,8 @@ add_invoke_method_flags (GDBusMessage *message,
  * g_dbus_connection_invoke_method_finish() to get the result of the operation.
  * See g_dbus_connection_invoke_method_sync() for the synchronous version of this
  * function.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_connection_invoke_method (GDBusConnection       *connection,
@@ -4115,6 +4185,8 @@ decode_method_reply (GDBusMessage *reply, GError **error)
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_connection_invoke_method_finish (GDBusConnection    *connection,
@@ -4173,6 +4245,8 @@ g_dbus_connection_invoke_method_finish (GDBusConnection    *connection,
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_connection_invoke_method_sync (GDBusConnection       *connection,
@@ -4695,6 +4769,8 @@ subtree_message_func (GDBusConnection *connection,
  *
  * Returns: 0 if @error is set, otherwise a subtree registration id (never 0)
  * that can be used with g_dbus_connection_unregister_subtree() .
+ *
+ * Since: 2.26
  */
 guint
 g_dbus_connection_register_subtree (GDBusConnection            *connection,
@@ -4764,6 +4840,8 @@ g_dbus_connection_register_subtree (GDBusConnection            *connection,
  * Unregisters a subtree.
  *
  * Returns: %TRUE if the subtree was unregistered, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_connection_unregister_subtree (GDBusConnection *connection,
@@ -5132,6 +5210,8 @@ get_uninitialized_connection (GBusType            bus_type,
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_bus_get_sync (GBusType            bus_type,
@@ -5198,6 +5278,8 @@ bus_get_async_initable_cb (GObject      *source_object,
  *
  * This is a asynchronous failable function. See g_bus_get_sync() for
  * the synchronous version.
+ *
+ * Since: 2.26
  */
 void
 g_bus_get (GBusType             bus_type,
@@ -5251,6 +5333,8 @@ g_bus_get (GBusType             bus_type,
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ *
+ * Since: 2.26
  */
 GDBusConnection *
 g_bus_get_finish (GAsyncResult  *res,

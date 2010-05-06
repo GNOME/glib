@@ -58,6 +58,8 @@
  * checks.
  *
  * Returns: %TRUE if @string is a valid D-Bus address, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_address (const gchar *string)
@@ -335,6 +337,8 @@ is_valid_tcp (const gchar  *address_entry,
  *
  * Returns: %TRUE if @string is a valid D-Bus address that is
  * supported by this library, %FALSE if @error is set.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_supported_address (const gchar  *string,
@@ -759,6 +763,8 @@ get_stream_thread_func (GSimpleAsyncResult *res,
  *
  * This is an asynchronous failable function. See
  * g_dbus_address_get_stream_sync() for the synchronous version.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_address_get_stream (const gchar         *address,
@@ -796,6 +802,8 @@ g_dbus_address_get_stream (const gchar         *address,
  * Finishes an operation started with g_dbus_address_get_stream().
  *
  * Returns: A #GIOStream or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 GIOStream *
 g_dbus_address_get_stream_finish (GAsyncResult        *res,
@@ -840,6 +848,8 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  * g_dbus_address_get_stream() for the asynchronous version.
  *
  * Returns: A #GIOStream or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 GIOStream *
 g_dbus_address_get_stream_sync (const gchar         *address,
@@ -918,6 +928,8 @@ get_session_address_platform_specific (void)
  * platform specific mechanisms.
  *
  * Returns: A valid D-Bus address string for @bus_type or %NULL if @error is set.
+ *
+ * Since: 2.26
  */
 gchar *
 g_dbus_address_get_for_bus_sync (GBusType       bus_type,

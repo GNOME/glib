@@ -38,6 +38,8 @@ G_BEGIN_DECLS
  * Invoked when the proxy being watched is ready for use - the passed
  * @proxy object is valid until the #GBusProxyVanishedCallback
  * callback is invoked.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusProxyAppearedCallback) (GDBusConnection *connection,
                                            const gchar     *name,
@@ -54,6 +56,8 @@ typedef void (*GBusProxyAppearedCallback) (GDBusConnection *connection,
  * Invoked when the proxy being watched has vanished. The #GDBusProxy
  * object passed in the #GBusProxyAppearedCallback callback is no
  * longer valid.
+ *
+ * Since: 2.26
  */
 typedef void (*GBusProxyVanishedCallback) (GDBusConnection *connection,
                                            const gchar     *name,

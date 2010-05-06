@@ -38,6 +38,8 @@ G_BEGIN_DECLS
  * returning errors from a remote message bus process. Errors
  * generated locally in-process by e.g. #GDBusConnection is from the
  * %G_IO_ERROR domain.
+ *
+ * Since: 2.26
  */
 #define G_DBUS_ERROR g_dbus_error_quark()
 
@@ -54,6 +56,8 @@ gboolean g_dbus_error_strip_remote_error    (GError          *error);
  * @dbus_error_name: The D-Bus error name to associate with @error_code.
  *
  * Struct used in g_dbus_error_register_error_domain().
+ *
+ * Since: 2.26
  */
 struct _GDBusErrorEntry
 {

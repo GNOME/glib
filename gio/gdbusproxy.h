@@ -43,6 +43,8 @@ typedef struct _GDBusProxyPrivate GDBusProxyPrivate;
  *
  * The #GDBusProxy structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusProxy
 {
@@ -57,6 +59,8 @@ struct _GDBusProxy
  * @g_signal: Signal class handler for the #GDBusProxy::g-signal signal.
  *
  * Class structure for #GDBusProxy.
+ *
+ * Since: 2.26
  */
 struct _GDBusProxyClass
 {

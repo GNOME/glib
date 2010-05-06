@@ -43,6 +43,8 @@ typedef struct _GDBusAuthObserverPrivate GDBusAuthObserverPrivate;
  * @deny_authenticated_peer: Signal class handler for the #GDBusAuthObserver::deny-authenticated-peer signal.
  *
  * Class structure for #GDBusAuthObserverClass.
+ *
+ * Since: 2.26
  */
 struct _GDBusAuthObserverClass
 {
@@ -82,6 +84,8 @@ struct _GDBusAuthObserverClass
  *
  * The #GDBusAuthObserver structure contains only private data and
  * should only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusAuthObserver
 {

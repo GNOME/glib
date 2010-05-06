@@ -45,6 +45,8 @@ typedef struct _GDBusMessagePrivate GDBusMessagePrivate;
  * GDBusMessageClass:
  *
  * Class structure for #GDBusMessage.
+ *
+ * Since: 2.26
  */
 struct _GDBusMessageClass
 {
@@ -57,6 +59,8 @@ struct _GDBusMessageClass
  *
  * The #GDBusMessage structure contains only private data and should
  * only be accessed using the provided API.
+ *
+ * Since: 2.26
  */
 struct _GDBusMessage
 {

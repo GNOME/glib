@@ -746,6 +746,8 @@ typedef enum {
  * @G_BUS_TYPE_STARTER: Connect to the bus that activated the program.
  *
  * An enumeration to specify the type of a #GDBusConnection.
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -763,6 +765,8 @@ typedef enum
  * specified #G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection.
  *
  * Flags used in g_bus_own_name().
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -779,6 +783,8 @@ typedef enum
  * name.
  *
  * Flags used in g_bus_watch_name().
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -793,6 +799,8 @@ typedef enum
  * @G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS: Don't connect to signals on the remote object.
  *
  * Flags used when constructing an instance of a #GDBusProxy derived class.
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -897,6 +905,8 @@ typedef enum
  * There's already an object with the requested object path.
  *
  * Error codes for the %G_DBUS_ERROR error domain.
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -943,7 +953,7 @@ typedef enum
   G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,           /* org.freedesktop.DBus.Error.AdtAuditDataUnknown */
   G_DBUS_ERROR_OBJECT_PATH_IN_USE,               /* org.freedesktop.DBus.Error.ObjectPathInUse */
 } GDBusError;
-/* TODO: remember to update g_dbus_error_quark() in gdbuserror.c if you extend this enumeration */
+/* Remember to update g_dbus_error_quark() in gdbuserror.c if you extend this enumeration */
 
 /**
  * GDBusConnectionFlags:
@@ -957,6 +967,8 @@ typedef enum
  * message bus. This means that the Hello() method will be invoked as part of the connection setup.
  *
  * Flags used when creating a new #GDBusConnection.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_CONNECTION_FLAGS_NONE = 0,
@@ -973,6 +985,8 @@ typedef enum {
  * supports exchanging UNIX file descriptors with the remote peer.
  *
  * Capabilities negotiated with the remote peer.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_CAPABILITY_FLAGS_NONE = 0,
@@ -987,6 +1001,8 @@ typedef enum {
  * invocation.
  *
  * Flags used in g_dbus_connection_invoke_method() and similar APIs.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_INVOKE_METHOD_FLAGS_NONE = 0,
@@ -1002,6 +1018,8 @@ typedef enum {
  * @G_DBUS_MESSAGE_TYPE_SIGNAL: Signal emission.
  *
  * Message types used in #GDBusMessage.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_MESSAGE_TYPE_INVALID,
@@ -1019,6 +1037,8 @@ typedef enum {
  * owner for the destination name in response to this message.
  *
  * Message flags used in #GDBusMessage.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_MESSAGE_FLAGS_NONE = 0,
@@ -1040,6 +1060,8 @@ typedef enum {
  * @G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS: The number of UNIX file descriptors that accompany the message.
  *
  * Header fields used in #GDBusMessage.
+ *
+ * Since: 2.26
  */
 typedef enum {
   G_DBUS_MESSAGE_HEADER_FIELD_INVALID,
@@ -1061,6 +1083,8 @@ typedef enum {
  * @G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE: Property is writable.
  *
  * Flags describing the access control of a D-Bus property.
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -1077,6 +1101,8 @@ typedef enum
  *                                                       to dynamically spawn objects in the subtree.
  *
  * Flags passed to g_dbus_connection_register_subtree().
+ *
+ * Since: 2.26
  */
 typedef enum
 {
@@ -1094,6 +1120,8 @@ typedef enum
  * authentication method.
  *
  * Flags used when creating a #GDBusServer.
+ *
+ * Since: 2.26
  */
 typedef enum
 {

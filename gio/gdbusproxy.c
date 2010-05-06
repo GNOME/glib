@@ -240,6 +240,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * type signature of the message isn't what's expected, the given
    * #GError is set.  Signals that have a type signature mismatch are
    * simply dropped.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_INFO,
@@ -257,6 +259,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-connection:
    *
    * The #GDBusConnection the proxy is for.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_CONNECTION,
@@ -275,6 +279,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-flags:
    *
    * Flags from the #GDBusProxyFlags enumeration.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_FLAGS,
@@ -294,6 +300,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-unique-bus-name:
    *
    * The unique bus name the proxy is for.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_UNIQUE_BUS_NAME,
@@ -312,6 +320,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-object-path:
    *
    * The object path the proxy is for.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_OBJECT_PATH,
@@ -330,6 +340,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-interface-name:
    *
    * The D-Bus interface name the proxy is for.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_NAME,
@@ -355,6 +367,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * remote method invocations on the proxy. If this property is -1,
    * the default timeout (typically 25 seconds) is used. If set to
    * %G_MAXINT, then no timeout is used.
+   *
+   * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_DEFAULT_TIMEOUT,
@@ -378,6 +392,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    *
    * Emitted when one or more D-Bus properties on @proxy changes. The cached properties
    * are already replaced when this signal fires.
+   *
+   * Since: 2.26
    */
   signals[PROPERTIES_CHANGED_SIGNAL] = g_signal_new ("g-properties-changed",
                                                      G_TYPE_DBUS_PROXY,
@@ -398,7 +414,9 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * @parameters: A #GVariant tuple with parameters for the signal.
    *
    * Emitted when a signal from the remote object and interface that @proxy is for, has been received.
-   **/
+   *
+   * Since: 2.26
+   */
   signals[SIGNAL_SIGNAL] = g_signal_new ("g-signal",
                                          G_TYPE_DBUS_PROXY,
                                          G_SIGNAL_RUN_LAST,
@@ -433,6 +451,8 @@ g_dbus_proxy_init (GDBusProxy *proxy)
  *
  * Returns: A %NULL-terminated array of strings or %NULL if @error is set. Free with
  * g_strfreev().
+ *
+ * Since: 2.26
  */
 gchar **
 g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
@@ -491,6 +511,8 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
  *
  * Returns: A reference to the #GVariant instance that holds the value for @property_name or
  * %NULL if @error is set. Free the reference with g_variant_unref().
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_proxy_get_cached_property (GDBusProxy          *proxy,
@@ -903,7 +925,9 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * g_dbus_proxy_new_finish() to get the result.
  *
  * See g_dbus_proxy_new_sync() and for a synchronous version of this constructor.
- **/
+ *
+ * Since: 2.26
+ */
 void
 g_dbus_proxy_new (GDBusConnection     *connection,
                   GType                object_type,
@@ -945,7 +969,9 @@ g_dbus_proxy_new (GDBusConnection     *connection,
  * Finishes creating a #GDBusProxy.
  *
  * Returns: A #GDBusProxy or %NULL if @error is set. Free with g_object_unref().
- **/
+ *
+ * Since: 2.26
+ */
 GDBusProxy *
 g_dbus_proxy_new_finish (GAsyncResult  *res,
                          GError       **error)
@@ -994,7 +1020,9 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * and g_dbus_proxy_new_finish() for the asynchronous version.
  *
  * Returns: A #GDBusProxy or %NULL if error is set. Free with g_object_unref().
- **/
+ *
+ * Since: 2.26
+ */
 GDBusProxy *
 g_dbus_proxy_new_sync (GDBusConnection     *connection,
                        GType                object_type,
@@ -1040,7 +1068,9 @@ g_dbus_proxy_new_sync (GDBusConnection     *connection,
  * Gets the connection @proxy is for.
  *
  * Returns: A #GDBusConnection owned by @proxy. Do not free.
- **/
+ *
+ * Since: 2.26
+ */
 GDBusConnection *
 g_dbus_proxy_get_connection (GDBusProxy *proxy)
 {
@@ -1055,7 +1085,9 @@ g_dbus_proxy_get_connection (GDBusProxy *proxy)
  * Gets the flags that @proxy was constructed with.
  *
  * Returns: Flags from the #GDBusProxyFlags enumeration.
- **/
+ *
+ * Since: 2.26
+ */
 GDBusProxyFlags
 g_dbus_proxy_get_flags (GDBusProxy *proxy)
 {
@@ -1070,7 +1102,9 @@ g_dbus_proxy_get_flags (GDBusProxy *proxy)
  * Gets the unique bus name @proxy is for.
  *
  * Returns: A string owned by @proxy. Do not free.
- **/
+ *
+ * Since: 2.26
+ */
 const gchar *
 g_dbus_proxy_get_unique_bus_name (GDBusProxy *proxy)
 {
@@ -1085,7 +1119,9 @@ g_dbus_proxy_get_unique_bus_name (GDBusProxy *proxy)
  * Gets the object path @proxy is for.
  *
  * Returns: A string owned by @proxy. Do not free.
- **/
+ *
+ * Since: 2.26
+ */
 const gchar *
 g_dbus_proxy_get_object_path (GDBusProxy *proxy)
 {
@@ -1100,7 +1136,9 @@ g_dbus_proxy_get_object_path (GDBusProxy *proxy)
  * Gets the D-Bus interface name @proxy is for.
  *
  * Returns: A string owned by @proxy. Do not free.
- **/
+ *
+ * Since: 2.26
+ */
 const gchar *
 g_dbus_proxy_get_interface_name (GDBusProxy *proxy)
 {
@@ -1119,6 +1157,8 @@ g_dbus_proxy_get_interface_name (GDBusProxy *proxy)
  * See the #GDBusProxy:g-default-timeout property for more details.
  *
  * Returns: Timeout to use for @proxy.
+ *
+ * Since: 2.26
  */
 gint
 g_dbus_proxy_get_default_timeout (GDBusProxy *proxy)
@@ -1137,6 +1177,8 @@ g_dbus_proxy_get_default_timeout (GDBusProxy *proxy)
  * g_dbus_proxy_invoke_method_sync() functions.
  *
  * See the #GDBusProxy:g-default-timeout property for more details.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_proxy_set_default_timeout (GDBusProxy *proxy,
@@ -1164,6 +1206,8 @@ g_dbus_proxy_set_default_timeout (GDBusProxy *proxy,
  *
  * Returns: A #GDBusInterfaceInfo or %NULL. Do not unref the returned
  * object, it is owned by @proxy.
+ *
+ * Since: 2.26
  */
 GDBusInterfaceInfo *
 g_dbus_proxy_get_interface_info (GDBusProxy *proxy)
@@ -1184,6 +1228,8 @@ g_dbus_proxy_get_interface_info (GDBusProxy *proxy)
  * dropped.
  *
  * See the #GDBusProxy:g-interface-info property for more details.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_proxy_set_interface_info (GDBusProxy         *proxy,
@@ -1346,6 +1392,8 @@ validate_method_return (const char             *method_name,
  * g_dbus_proxy_invoke_method_finish() to get the result of the operation.
  * See g_dbus_proxy_invoke_method_sync() for the
  * synchronous version of this method.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_proxy_invoke_method (GDBusProxy          *proxy,
@@ -1409,6 +1457,8 @@ g_dbus_proxy_invoke_method (GDBusProxy          *proxy,
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
@@ -1478,6 +1528,8 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
+ *
+ * Since: 2.26
  */
 GVariant *
 g_dbus_proxy_invoke_method_sync (GDBusProxy     *proxy,

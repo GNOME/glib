@@ -167,6 +167,8 @@ g_dbus_error_quark (void)
  * @num_entries: Number of items to register.
  *
  * Helper function for associating a #GError error domain with D-Bus error names.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_error_register_error_domain (const gchar           *error_domain_quark_name,
@@ -336,6 +338,8 @@ static GHashTable *dbus_error_name_to_re = NULL;
  *
  * Returns: %TRUE if the association was created, %FALSE if it already
  * exists.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_error_register_error (GQuark       error_domain,
@@ -395,6 +399,8 @@ g_dbus_error_register_error (GQuark       error_domain,
  * Destroys an association previously set up with g_dbus_error_register_error().
  *
  * Returns: %TRUE if the association was destroyed, %FALSE if it wasn't found.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_error_unregister_error (GQuark       error_domain,
@@ -463,6 +469,8 @@ g_dbus_error_unregister_error (GQuark       error_domain,
  *
  * Returns: %TRUE if @error represents an error from a remote peer,
  * %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_error_is_remote_error (const GError *error)
@@ -483,6 +491,8 @@ g_dbus_error_is_remote_error (const GError *error)
  * unless g_dbus_error_strip_remote_error() has been used on @error.
  *
  * Returns: An allocated string or %NULL if the D-Bus error name could not be found. Free with g_free().
+ *
+ * Since: 2.26
  */
 gchar *
 g_dbus_error_get_remote_error (const GError *error)
@@ -568,6 +578,8 @@ g_dbus_error_get_remote_error (const GError *error)
  * it.
  *
  * Returns: An allocated #GError. Free with g_error_free().
+ *
+ * Since: 2.26
  */
 GError *
 g_dbus_error_new_for_dbus_error (const gchar *dbus_error_name,
@@ -639,6 +651,8 @@ g_dbus_error_new_for_dbus_error (const gchar *dbus_error_name,
  * Does nothing if @error is %NULL. Otherwise sets *@error to
  * a new #GError created with g_dbus_error_new_for_dbus_error()
  * with @dbus_error_message prepend with @format (unless %NULL).
+ *
+ * Since: 2.26
  */
 void
 g_dbus_error_set_dbus_error (GError      **error,
@@ -680,6 +694,8 @@ g_dbus_error_set_dbus_error (GError      **error,
  * @var_args: Arguments for @format.
  *
  * Like g_dbus_error_set_dbus_error() but intended for language bindings.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_error_set_dbus_error_valist (GError      **error,
@@ -723,6 +739,8 @@ g_dbus_error_set_dbus_error_valist (GError      **error,
  * This is typically used when presenting errors to the end user.
  *
  * Returns: %TRUE if information was stripped, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_error_strip_remote_error (GError *error)
@@ -770,6 +788,8 @@ g_dbus_error_strip_remote_error (GError *error)
  * #GError on the wire. Regular applications should not use it.
  *
  * Returns: A D-Bus error name (never %NULL). Free with g_free().
+ *
+ * Since: 2.26
  */
 gchar *
 g_dbus_error_encode_gerror (const GError *error)

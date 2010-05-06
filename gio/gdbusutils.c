@@ -116,6 +116,8 @@ is_valid_name (const gchar *start,
  * Checks if @string is a valid D-Bus bus name (either unique or well-known).
  *
  * Returns: %TRUE if valid, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_name (const gchar *string)
@@ -164,6 +166,8 @@ g_dbus_is_name (const gchar *string)
  * Checks if @string is a valid D-Bus unique bus name.
  *
  * Returns: %TRUE if valid, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_unique_name (const gchar *string)
@@ -198,6 +202,8 @@ g_dbus_is_unique_name (const gchar *string)
  * Checks if @string is a valid D-Bus member (e.g. signal or method) name.
  *
  * Returns: %TRUE if valid, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_member_name (const gchar *string)
@@ -233,6 +239,8 @@ g_dbus_is_member_name (const gchar *string)
  * Checks if @string is a valid D-Bus interface name.
  *
  * Returns: %TRUE if valid, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_interface_name (const gchar *string)
@@ -282,6 +290,8 @@ g_dbus_is_interface_name (const gchar *string)
  * GUID (for example, D-Bus GUIDs are not RFC-4122 compliant).
  *
  * Returns: A valid D-Bus GUID. Free with g_free().
+ *
+ * Since: 2.26
  */
 gchar *
 g_dbus_generate_guid (void)
@@ -317,6 +327,8 @@ g_dbus_generate_guid (void)
  * GUID (for example, D-Bus GUIDs are not RFC-4122 compliant).
  *
  * Returns: %TRUE if @string is a guid, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_guid (const gchar *string)
@@ -344,13 +356,14 @@ g_dbus_is_guid (const gchar *string)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-
 /**
  * g_dbus_is_activated:
  *
  * Determine if the process has been activated by a message bus.
  *
  * Returns: %TRUE if this process has been started by a message bus, %FALSE otherwise.
+ *
+ * Since: 2.26
  */
 gboolean
 g_dbus_is_activated (void)

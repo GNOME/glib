@@ -106,6 +106,8 @@ typedef struct
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusNodeInfo *
 g_dbus_node_info_ref (GDBusNodeInfo *info)
@@ -124,6 +126,8 @@ g_dbus_node_info_ref (GDBusNodeInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusInterfaceInfo *
 g_dbus_interface_info_ref (GDBusInterfaceInfo *info)
@@ -142,6 +146,8 @@ g_dbus_interface_info_ref (GDBusInterfaceInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusMethodInfo *
 g_dbus_method_info_ref (GDBusMethodInfo *info)
@@ -160,6 +166,8 @@ g_dbus_method_info_ref (GDBusMethodInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusSignalInfo *
 g_dbus_signal_info_ref (GDBusSignalInfo *info)
@@ -178,6 +186,8 @@ g_dbus_signal_info_ref (GDBusSignalInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusPropertyInfo *
 g_dbus_property_info_ref (GDBusPropertyInfo *info)
@@ -196,6 +206,8 @@ g_dbus_property_info_ref (GDBusPropertyInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusArgInfo *
 g_dbus_arg_info_ref (GDBusArgInfo *info)
@@ -214,6 +226,8 @@ g_dbus_arg_info_ref (GDBusArgInfo *info)
  * the reference count.
  *
  * Returns: The same @info.
+ *
+ * Since: 2.26
  */
 GDBusAnnotationInfo *
 g_dbus_annotation_info_ref (GDBusAnnotationInfo *info)
@@ -245,6 +259,8 @@ free_null_terminated_array (gpointer array, GDestroyNotify unref_func)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_annotation_info_unref (GDBusAnnotationInfo *info)
@@ -267,6 +283,8 @@ g_dbus_annotation_info_unref (GDBusAnnotationInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_arg_info_unref (GDBusArgInfo *info)
@@ -289,6 +307,8 @@ g_dbus_arg_info_unref (GDBusArgInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_method_info_unref (GDBusMethodInfo *info)
@@ -312,6 +332,8 @@ g_dbus_method_info_unref (GDBusMethodInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_signal_info_unref (GDBusSignalInfo *info)
@@ -334,6 +356,8 @@ g_dbus_signal_info_unref (GDBusSignalInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_property_info_unref (GDBusPropertyInfo *info)
@@ -356,6 +380,8 @@ g_dbus_property_info_unref (GDBusPropertyInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_interface_info_unref (GDBusInterfaceInfo *info)
@@ -380,6 +406,8 @@ g_dbus_interface_info_unref (GDBusInterfaceInfo *info)
  * If @info is statically allocated, does nothing. Otherwise decreases
  * the reference count of @info. When its reference count drops to 0,
  * the memory used is freed.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_node_info_unref (GDBusNodeInfo *info)
@@ -805,6 +833,8 @@ g_dbus_property_info_generate_xml (const GDBusPropertyInfo  *info,
  * documents at run-time for handling the
  * <literal>org.freedesktop.DBus.Introspectable.Introspect</literal>
  * method.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
@@ -850,6 +880,8 @@ g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
  *
  * This function is typically used for generating introspection XML documents at run-time for
  * handling the <literal>org.freedesktop.DBus.Introspectable.Introspect</literal> method.
+ *
+ * Since: 2.26
  */
 void
 g_dbus_node_info_generate_xml (const GDBusNodeInfo  *node_info,
@@ -1759,6 +1791,8 @@ parser_error (GMarkupParseContext *context,
  *
  * Returns: A #GDBusNodeInfo structure or %NULL if @error is set. Free
  * with g_dbus_node_info_unref().
+ *
+ * Since: 2.26
  */
 GDBusNodeInfo *
 g_dbus_node_info_new_for_xml (const gchar  *xml_data,
@@ -1838,6 +1872,8 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
  * This cost of this function is O(n) in number of annotations.
  *
  * Returns: The value or %NULL if not found. Do not free, it is owned by @annotations.
+ *
+ * Since: 2.26
  */
 const gchar *
 g_dbus_annotation_info_lookup (const GDBusAnnotationInfo **annotations,
@@ -1872,7 +1908,9 @@ g_dbus_annotation_info_lookup (const GDBusAnnotationInfo **annotations,
  * This cost of this function is O(n) in number of methods.
  *
  * Returns: A #GDBusMethodInfo or %NULL if not found. Do not free, it is owned by @info.
- **/
+ *
+ * Since: 2.26
+ */
 const GDBusMethodInfo *
 g_dbus_interface_info_lookup_method (const GDBusInterfaceInfo *info,
                                      const gchar              *name)
@@ -1909,7 +1947,9 @@ g_dbus_interface_info_lookup_method (const GDBusInterfaceInfo *info,
  * This cost of this function is O(n) in number of signals.
  *
  * Returns: A #GDBusSignalInfo or %NULL if not found. Do not free, it is owned by @info.
- **/
+ *
+ * Since: 2.26
+ */
 const GDBusSignalInfo *
 g_dbus_interface_info_lookup_signal (const GDBusInterfaceInfo *info,
                                      const gchar              *name)
@@ -1946,7 +1986,9 @@ g_dbus_interface_info_lookup_signal (const GDBusInterfaceInfo *info,
  * This cost of this function is O(n) in number of properties.
  *
  * Returns: A #GDBusPropertyInfo or %NULL if not found. Do not free, it is owned by @info.
- **/
+ *
+ * Since: 2.26
+ */
 const GDBusPropertyInfo *
 g_dbus_interface_info_lookup_property (const GDBusInterfaceInfo *info,
                                        const gchar              *name)
@@ -1983,7 +2025,9 @@ g_dbus_interface_info_lookup_property (const GDBusInterfaceInfo *info,
  * This cost of this function is O(n) in number of interfaces.
  *
  * Returns: A #GDBusInterfaceInfo or %NULL if not found. Do not free, it is owned by @node_info.
- **/
+ *
+ * Since: 2.26
+ */
 const GDBusInterfaceInfo *
 g_dbus_node_info_lookup_interface (const GDBusNodeInfo *node_info,
                                    const gchar         *name)
