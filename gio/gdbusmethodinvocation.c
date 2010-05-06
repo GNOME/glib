@@ -36,7 +36,7 @@
 /**
  * SECTION:gdbusmethodinvocation
  * @short_description: Object for handling remote calls
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Instances of the #GDBusMethodInvocation class are used when
  * handling D-Bus method calls. It provides a way to asynchronously

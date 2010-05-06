@@ -36,6 +36,14 @@
 #include <gio/gsocket.h>
 #include <unistd.h>
 
+#ifdef __linux__
+/* for getsockopt() and setsockopt() */
+#include <sys/types.h>          /* See NOTES */
+#include <sys/socket.h>
+#include <errno.h>
+#include <string.h>
+#endif
+
 #include "gioalias.h"
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
@@ -286,6 +294,256 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
                                                                          GUnixConnection     **two,
                                                                          GError              **error);
 */
+
+
+/**
+ * g_unix_connection_send_credentials:
+ * @connection: A #GUnixConnection.
+ * @credentials: A #GCredentials to send.
+ * @cancellable: A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Passes the credentials stored in @credentials to the recieving side
+ * of the connection. The recieving end has to call
+ * g_unix_connection_receive_credentials() (or similar) to accept the
+ * credentials.
+ *
+ * The credentials which the sender specifies are checked by the
+ * kernel.  A process with effective user ID 0 is allowed to specify
+ * values that do not match its own. This means that the credentials
+ * can be used to authenticate other connections.
+ *
+ * As well as sending the credentials this also writes a single NUL
+ * byte to the stream, as this is required for credentials passing to
+ * work on some implementations.
+ *
+ * Returns: %TRUE on success, %FALSE if @error is set.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_unix_connection_send_credentials (GUnixConnection      *connection,
+                                    GCredentials         *credentials,
+                                    GCancellable         *cancellable,
+                                    GError              **error)
+{
+  GSocketControlMessage *scm;
+  GSocket *socket;
+  gboolean ret;
+  GOutputVector vector;
+  guchar nul_byte[1] = {'\0'};
+
+  g_return_val_if_fail (G_IS_UNIX_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = FALSE;
+
+  vector.buffer = &nul_byte;
+  vector.size = 1;
+  scm = g_unix_credentials_message_new_with_credentials (credentials);
+  g_object_get (connection, "socket", &socket, NULL);
+  if (g_socket_send_message (socket,
+                             NULL, /* address */
+                             &vector,
+                             1,
+                             &scm,
+                             1,
+                             G_SOCKET_MSG_NONE,
+                             cancellable,
+                             error) != 1)
+    {
+      g_prefix_error (error, _("Error sending credentials: "));
+      goto out;
+    }
+
+  ret = TRUE;
+
+ out:
+  g_object_unref (socket);
+  g_object_unref (scm);
+  return ret;
+}
+
+/**
+ * g_unix_connection_receive_credentials:
+ * @connection: A #GUnixConnection.
+ * @cancellable: A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Receives credentials from the sending end of the connection.  The
+ * sending end has to call g_unix_connection_send_credentials() (or
+ * similar) for this to work.
+ *
+ * As well as reading the credentials this also reads (and discards) a
+ * single byte from the stream, as this is required for credentials
+ * passing to work on some implementations.
+ *
+ * Returns: Received credentials on success (free with
+ * g_object_unref()), %NULL if @error is set.
+ *
+ * Since: 2.26
+ */
+GCredentials *
+g_unix_connection_receive_credentials (GUnixConnection      *connection,
+                                       GCancellable         *cancellable,
+                                       GError              **error)
+{
+  GCredentials *ret;
+  GSocketControlMessage **scms;
+  gint nscm;
+  GSocket *socket;
+  gint n;
+  volatile GType credentials_message_gtype;
+  gssize num_bytes_read;
+#ifdef __linux__
+  gboolean turn_off_so_passcreds;
+#endif
+
+  g_return_val_if_fail (G_IS_UNIX_CONNECTION (connection), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  ret = NULL;
+  scms = NULL;
+
+  g_object_get (connection, "socket", &socket, NULL);
+
+  /* On Linux, we need to turn on SO_PASSCRED if it isn't enabled
+   * already. We also need to turn it off when we're done.  See
+   * #617483 for more discussion.
+   */
+#ifdef __linux__
+  {
+    gint opt_val;
+    socklen_t opt_len;
+
+    turn_off_so_passcreds = FALSE;
+    opt_val = 0;
+    opt_len = sizeof (gint);
+    if (getsockopt (g_socket_get_fd (socket),
+                    SOL_SOCKET,
+                    SO_PASSCRED,
+                    &opt_val,
+                    &opt_len) != 0)
+      {
+        g_set_error (error,
+                     G_IO_ERROR,
+                     g_io_error_from_errno (errno),
+                     _("Error checking if SO_PASSCRED is enabled for socket: %s"),
+                     strerror (errno));
+        goto out;
+      }
+    if (opt_len != sizeof (gint))
+      {
+        g_set_error (error,
+                     G_IO_ERROR,
+                     G_IO_ERROR_FAILED,
+                     _("Unexpected option length while checking if SO_PASSCRED is enabled for socket. "
+                       "Expected %d bytes, got %d"),
+                     (gint) sizeof (gint), (gint) opt_len);
+        goto out;
+      }
+    if (opt_val == 0)
+      {
+        opt_val = 1;
+        if (setsockopt (g_socket_get_fd (socket),
+                        SOL_SOCKET,
+                        SO_PASSCRED,
+                        &opt_val,
+                        sizeof opt_val) != 0)
+          {
+            g_set_error (error,
+                         G_IO_ERROR,
+                         g_io_error_from_errno (errno),
+                         _("Error enabling SO_PASSCRED: %s"),
+                         strerror (errno));
+            goto out;
+          }
+        turn_off_so_passcreds = TRUE;
+      }
+  }
+#endif
+
+  /* ensure the type of GUnixCredentialsMessage has been registered with the type system */
+  credentials_message_gtype = G_TYPE_UNIX_CREDENTIALS_MESSAGE;
+  num_bytes_read = g_socket_receive_message (socket,
+                                             NULL, /* GSocketAddress **address */
+                                             NULL,
+                                             0,
+                                             &scms,
+                                             &nscm,
+                                             NULL,
+                                             cancellable,
+                                             error);
+  if (num_bytes_read != 1)
+    {
+      /* Handle situation where g_socket_receive_message() returns
+       * 0 bytes and not setting @error
+       */
+      if (num_bytes_read == 0 && error != NULL && *error == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               _("Expecting to read a single byte for receiving credentials but read zero bytes"));
+        }
+      goto out;
+    }
+
+  if (nscm != 1)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+		   _("Expecting 1 control message, got %d"),
+                   nscm);
+      goto out;
+    }
+
+  if (!G_IS_UNIX_CREDENTIALS_MESSAGE (scms[0]))
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_FAILED,
+			   _("Unexpected type of ancillary data"));
+      goto out;
+    }
+
+  ret = g_unix_credentials_message_get_credentials (G_UNIX_CREDENTIALS_MESSAGE (scms[0]));
+  g_object_ref (ret);
+
+ out:
+
+#ifdef __linux__
+  if (turn_off_so_passcreds)
+    {
+      gint opt_val;
+      opt_val = 0;
+      if (setsockopt (g_socket_get_fd (socket),
+                      SOL_SOCKET,
+                      SO_PASSCRED,
+                      &opt_val,
+                      sizeof opt_val) != 0)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errno),
+                       _("Error while disabling SO_PASSCRED: %s"),
+                       strerror (errno));
+          goto out;
+        }
+    }
+#endif
+
+  if (scms != NULL)
+    {
+      for (n = 0; n < nscm; n++)
+        g_object_unref (scms[n]);
+      g_free (scms);
+    }
+  g_object_unref (socket);
+  return ret;
+}
 
 #define __G_UNIX_CONNECTION_C__
 #include "gioaliasdef.c"

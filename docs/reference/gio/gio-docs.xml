@@ -107,6 +107,8 @@
       <xi:include href="xml/gsocketcontrolmessage.xml"/>
       <xi:include href="xml/gunixfdlist.xml"/>
       <xi:include href="xml/gunixfdmessage.xml"/>
+      <xi:include href="xml/gcredentials.xml"/>
+      <xi:include href="xml/gunixcredentialsmessage.xml"/>
     </chapter>
     <chapter id="resolver">
       <title>DNS resolution</title>
@@ -123,6 +125,25 @@
       <xi:include href="xml/gsocketlistener.xml"/>
       <xi:include href="xml/gsocketservice.xml"/>
       <xi:include href="xml/gthreadedsocketservice.xml"/>
+    </chapter>
+    <chapter id="gdbus-lowlevel">
+      <title>Lowlevel D-Bus Support</title>
+      <xi:include href="xml/gdbusutils.xml"/>
+      <xi:include href="xml/gdbusaddress.xml"/>
+      <xi:include href="xml/gdbusintrospection.xml"/>
+      <xi:include href="xml/gdbuserror.xml"/>
+      <xi:include href="xml/gdbusmessage.xml"/>
+      <xi:include href="xml/gdbusconnection.xml"/>
+      <xi:include href="xml/gdbusmethodinvocation.xml"/>
+      <xi:include href="xml/gdbusproxy.xml"/>
+      <xi:include href="xml/gdbusserver.xml"/>
+      <xi:include href="xml/gdbusauthobserver.xml"/>
+    </chapter>
+    <chapter id="gdbus-convenience">
+      <title>Highlevel D-Bus Support</title>
+      <xi:include href="xml/gdbusnameowning.xml"/>
+      <xi:include href="xml/gdbusnamewatching.xml"/>
+      <xi:include href="xml/gdbusproxywatching.xml"/>
     </chapter>
     <chapter id="utils">
         <title>Utilities</title>

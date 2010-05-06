@@ -36,11 +36,11 @@
  * SECTION:gdbusnamewatching
  * @title: Watching Bus Names
  * @short_description: Simple API for watching bus names
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Convenience API for watching bus names.
  *
- * <example id="gdbus-watching-names"><title>Simple application watching a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-watch-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gdbus-watching-names"><title>Simple application watching a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 G_LOCK_DEFINE_STATIC (lock);

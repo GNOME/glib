@@ -39,11 +39,11 @@
  * SECTION:gdbusproxywatching
  * @title: Watching Proxies
  * @short_description: Simple API for watching proxies
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Convenience API for watching bus proxies.
  *
- * <example id="gdbus-watching-proxy"><title>Simple application watching a proxy</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-watch-proxy.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gdbus-watching-proxy"><title>Simple application watching a proxy</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-proxy.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 /* ---------------------------------------------------------------------------------------------------- */

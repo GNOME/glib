@@ -36,7 +36,7 @@
  * SECTION:gdbuserror
  * @title: GDBusError
  * @short_description: Mapping D-Bus errors to and from #GError
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * All facilities that return errors from remote methods (such as
  * g_dbus_connection_invoke_method_sync()) use #GError to represent

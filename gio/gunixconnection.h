@@ -71,6 +71,16 @@ gint                    g_unix_connection_receive_fd                    (GUnixCo
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 
+gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
+                                                                         GCredentials         *credentials,
+                                                                         GCancellable         *cancellable,
+                                                                         GError              **error);
+
+GCredentials           *g_unix_connection_receive_credentials           (GUnixConnection      *connection,
+                                                                         GCancellable         *cancellable,
+                                                                         GError              **error);
+
+
 G_END_DECLS
 
 #endif /* __G_UNIX_CONNECTION_H__ */

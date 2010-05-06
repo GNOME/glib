@@ -42,7 +42,7 @@
 /**
  * SECTION:gdbusproxy
  * @short_description: Base class for proxies
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * #GDBusProxy is a base class used for proxies to access a D-Bus
  * interface on a remote object. A #GDBusProxy can only be constructed

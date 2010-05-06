@@ -36,8 +36,8 @@
 
 /**
  * SECTION:gcredentials
- * @short_description: Credentials
- * @include: gdbus/gdbus.h
+ * @short_description: An object containing credentials
+ * @include: gio/gio.h
  *
  * The #GCredentials type is used for storing information that can be
  * used for identifying, authenticating and authorizing processes.

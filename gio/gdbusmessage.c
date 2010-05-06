@@ -48,7 +48,7 @@
 /**
  * SECTION:gdbusmessage
  * @short_description: D-Bus Message
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * A type for representing D-Bus messages that can be sent or received
  * on a #GDBusConnection.

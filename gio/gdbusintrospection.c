@@ -32,7 +32,7 @@
  * SECTION:gdbusintrospection
  * @title: Introspection XML
  * @short_description: Parse and Generate Introspection XML
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Various data structures and convenience routines to parse and
  * generate D-Bus introspection XML.

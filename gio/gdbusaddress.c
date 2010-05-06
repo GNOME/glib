@@ -40,7 +40,7 @@
  * SECTION:gdbusaddress
  * @title: D-Bus Addresses
  * @short_description: D-Bus connection endpoints
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Routines for working with D-Bus addresses.
  */

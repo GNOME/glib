@@ -44,12 +44,12 @@
 /**
  * SECTION:gdbusserver
  * @short_description: Helper for accepting connections
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * #GDBusServer is a helper for listening to and accepting D-Bus
  * connections.
  *
- * <example id="gdbus-peer-to-peer"><title>D-Bus peer-to-peer example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-peer.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gdbus-peer-to-peer"><title>D-Bus peer-to-peer example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-peer.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 struct _GDBusServerPrivate

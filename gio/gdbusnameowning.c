@@ -36,11 +36,11 @@
  * SECTION:gdbusnameowning
  * @title: Owning Bus Names
  * @short_description: Simple API for owning bus names
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * Convenience API for owning bus names.
  *
- * <example id="gdbus-owning-names"><title>Simple application owning a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-own-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gdbus-owning-names"><title>Simple application owning a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-own-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 G_LOCK_DEFINE_STATIC (lock);

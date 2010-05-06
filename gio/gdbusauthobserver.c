@@ -33,7 +33,7 @@
 /**
  * SECTION:gdbusauthobserver
  * @short_description: Object used for authenticating connections
- * @include: gdbus/gdbus.h
+ * @include: gio/gio.h
  *
  * The #GDBusAuthObserver type provides a mechanism for participating
  * in how a #GDBusServer (or a #GDBusConnection) authenticates remote
