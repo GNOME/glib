@@ -1,0 +1,7 @@
+<chapter>
+  <title>Migrating from dbus-glib to GDBus</title>
+
+  <para>
+    Hints for migrating from dbus-glib to GDBus will appear here shortly...
+  </para>
+</chapter>

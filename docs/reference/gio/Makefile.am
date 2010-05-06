@@ -114,7 +114,10 @@ HTML_IMAGES =			\
 content_files =			\
 	version.xml		\
 	overview.xml		\
-	migrating.xml		\
+	migrating-posix.xml	\
+	migrating-gnome-vfs.xml	\
+	migrating-gconf.xml	\
+	migrating-dbus-glib.xml	\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
@@ -122,7 +125,10 @@ content_files =			\
 
 expand_content_files =		\
 	overview.xml		\
-	migrating.xml
+	migrating-posix.xml	\
+	migrating-gnome-vfs.xml	\
+	migrating-gconf.xml	\
+	migrating-dbus-glib.xml
 
 extra_files =			\
 	version.xml.in		\

@@ -169,7 +169,13 @@
     </chapter>
   </part>
 
-  <xi:include href="xml/migrating.xml"/>
+  <part id="migrating">
+    <title>Migrating to GIO</title>
+    <xi:include href="xml/migrating-posix.xml"/>
+    <xi:include href="xml/migrating-gnome-vfs.xml"/>
+    <xi:include href="xml/migrating-gconf.xml"/>
+    <xi:include href="xml/migrating-dbus-glib.xml"/>
+  </part>
 
   <chapter id="gio-hierarchy">
     <title>Object Hierarchy</title>
