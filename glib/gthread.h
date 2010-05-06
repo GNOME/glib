@@ -32,7 +32,6 @@
 #define __G_THREAD_H__
 
 #include <glib/gerror.h>
-#include <glib/gtypes.h>
 #include <glib/gutils.h>        /* for G_INLINE_FUNC */
 #include <glib/gatomic.h>       /* for g_atomic_pointer_get */
 

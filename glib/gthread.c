@@ -40,7 +40,7 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gthread.h"
 #include "gthreadprivate.h"
 
 #ifdef HAVE_UNISTD_H
@@ -55,6 +55,11 @@
 #endif /* G_OS_WIN32 */
 
 #include <string.h>
+
+#include "garray.h"
+#include "gslist.h"
+#include "gtestutils.h"
+#include "gtimer.h"
 
 #include "galias.h"
 
