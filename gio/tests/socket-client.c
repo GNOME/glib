@@ -223,7 +223,7 @@ main (int argc,
 
   while (TRUE)
     {
-      gchar buffer[4096] = { };
+      gchar buffer[4096];
       gssize size;
       gsize to_send;
 
