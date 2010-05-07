@@ -56,6 +56,7 @@ usage (void)
   fprintf (stderr, "       Use -netaddr to use GNetworkAddress enumerator (host:port).\n");
   fprintf (stderr, "       Use -neturi to use GNetworkAddress enumerator (uri).\n");
   fprintf (stderr, "       Use -netsrv to use GNetworkService enumerator (srv/protocol/domain).\n");
+  fprintf (stderr, "       Use -connect to create a connection using GSocketClient object (uri).\n");
   exit (1);
 }
 
@@ -481,6 +482,82 @@ use_network_service (gboolean synchronous)
   g_object_unref (enumerator);
 }
 
+static void
+_socket_connect_cb (GObject *object,
+		    GAsyncResult *result,
+		    gpointer user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+  GSocketClient *client = G_SOCKET_CLIENT (object);
+  GSocketConnection *connection;
+
+  connection = g_socket_client_connect_to_uri_finish (client,
+						      result,
+						      &error);
+  if (connection)
+    {
+      GSocketAddress *proxy_addr;
+      proxy_addr = g_socket_connection_get_remote_address (connection, NULL);
+      print_proxy_address (proxy_addr);
+    }
+  else
+    {
+      print_and_free_error (error);
+    }
+
+  g_main_loop_quit (loop);
+}
+
+static void
+use_socket_client (gboolean synchronous)
+{
+  GError *error = NULL;
+  GSocketClient *client;
+
+  client = g_socket_client_new ();
+
+  printf ("Proxies for URI '%s' are:\n", info);
+
+  if (synchronous)
+    {
+      GSocketConnection *connection;
+      GSocketAddress *proxy_addr;
+
+      connection = g_socket_client_connect_to_uri (client,
+						   info,
+						   0,
+      						   cancellable,
+						   &error);
+
+      if (connection)
+	{
+	  proxy_addr = g_socket_connection_get_remote_address (connection, NULL);
+	  print_proxy_address (proxy_addr);
+	}
+      else
+	{
+	  print_and_free_error (error);
+	}
+    }
+  else
+    {
+      GMainLoop *loop = g_main_loop_new (NULL, FALSE);
+
+      g_socket_client_connect_to_uri_async (client,
+					    info,
+					    0,
+					    cancellable,
+					    _socket_connect_cb,
+					    loop);
+
+      g_main_loop_run (loop);
+      g_main_loop_unref (loop);
+    }
+
+  g_object_unref (client);
+}
+
 typedef enum
 {
   USE_RESOLVER,
@@ -493,6 +570,7 @@ typedef enum
   USE_NETWORK_ADDRESS,
   USE_NETWORK_URI,
   USE_NETWORK_SERVICE,
+  USE_SOCKET_CLIENT,
 } ProxyTestType;
 
 gint
@@ -526,6 +604,8 @@ main (gint argc, gchar **argv)
         type = USE_NETWORK_URI;
       else if (!strcmp (argv[1], "-netsrv"))
         type = USE_NETWORK_SERVICE;
+      else if (!strcmp (argv[1], "-connect"))
+        type = USE_SOCKET_CLIENT;
       else
 	usage ();
 
@@ -572,6 +652,9 @@ main (gint argc, gchar **argv)
       break;
     case USE_NETWORK_SERVICE:
       use_network_service (synchronous);
+      break;
+    case USE_SOCKET_CLIENT:
+      use_socket_client (synchronous);
       break;
     }
 
