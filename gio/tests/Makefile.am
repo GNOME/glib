@@ -35,7 +35,8 @@ TEST_PROGS +=	 		\
 	srvtarget		\
 	contexts		\
 	gsettings		\
-	gschema-compile
+	gschema-compile		\
+	async-close-output-stream
 
 SAMPLE_PROGS = 			\
 	resolver		\
@@ -77,6 +78,9 @@ data_input_stream_LDADD		= $(progs_ldadd)
 
 data_output_stream_SOURCES	= data-output-stream.c
 data_output_stream_LDADD	= $(progs_ldadd)
+
+async_close_output_stream_SOURCES	= async-close-output-stream.c
+async_close_output_stream_LDADD		= $(progs_ldadd)
 
 filter_cat_SOURCES	= filter-cat.c
 filter_cat_LDADD	= $(progs_ldadd)
