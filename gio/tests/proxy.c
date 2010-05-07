@@ -41,6 +41,7 @@ usage (void)
   fprintf (stderr, "Usage: proxy [-s] uri\n");
   fprintf (stderr, "       Use -s to do synchronous lookups.\n");
   fprintf (stderr, "       Use -c to cancel operation.\n");
+  fprintf (stderr, "       Use -e to use enumerator.\n");
   exit (1);
 }
 
@@ -125,9 +126,136 @@ use_resolver (gboolean synchronous)
     }
 }
 
+static void
+print_proxy_address (GSocketAddress *sockaddr)
+{
+  GProxyAddress *proxy = NULL;
+
+  if (sockaddr == NULL)
+    {
+      printf ("\tdirect://\n");
+      return;
+    }
+
+  if (G_IS_PROXY_ADDRESS (sockaddr))
+    {
+      proxy = G_PROXY_ADDRESS (sockaddr);
+      printf ("\t%s://", g_proxy_address_get_protocol(proxy));
+    }
+  else
+    {
+      printf ("\tdirect://");
+    }
+
+  if (G_IS_INET_SOCKET_ADDRESS (sockaddr))
+    {
+      GInetAddress *inetaddr;
+      guint port;
+      gchar *addr;
+
+      g_object_get (sockaddr,
+		    "address", &inetaddr,
+		    "port", &port,
+		    NULL);
+
+      addr = g_inet_address_to_string (inetaddr);
+
+      printf ("%s:%u", addr, port);
+
+      g_free (addr);
+    }
+
+  if (proxy && g_proxy_address_get_username(proxy))
+    printf ("\t(Username: %s  Password: %s)",
+	    g_proxy_address_get_username(proxy),
+	    g_proxy_address_get_password(proxy));
+
+  printf ("\n");
+}
+
+static void
+_proxy_enumerate_cb (GObject *object,
+		     GAsyncResult *result,
+		     gpointer user_data)
+{
+  GError *error = NULL;
+  GMainLoop *loop = user_data;
+  GSocketAddressEnumerator *enumerator = G_SOCKET_ADDRESS_ENUMERATOR (object);
+  GSocketAddress *sockaddr;
+
+  sockaddr = g_socket_address_enumerator_next_finish (enumerator,
+						      result,
+						      &error);
+  if (sockaddr)
+    {
+      print_proxy_address (sockaddr);
+      g_socket_address_enumerator_next_async (enumerator,
+                                              cancellable,
+					      _proxy_enumerate_cb,
+					      loop);
+      g_object_unref (sockaddr);
+    }
+  else
+    {
+      if (error)
+	print_and_free_error (error);
+
+      g_main_loop_quit (loop);
+    }
+}
+
+static void
+run_with_enumerator (gboolean synchronous, GSocketAddressEnumerator *enumerator)
+{
+  GError *error = NULL;
+
+  if (synchronous)
+    {
+      GSocketAddress *sockaddr;
+
+      while ((sockaddr = g_socket_address_enumerator_next(enumerator,
+							  cancellable,
+							  &error)))
+	{
+	  print_proxy_address (sockaddr);
+	  g_object_unref (sockaddr);
+	}
+
+      if (error)
+	print_and_free_error (error);
+    }
+  else
+    {
+      GMainLoop *loop = g_main_loop_new (NULL, FALSE);
+
+      g_socket_address_enumerator_next_async (enumerator,
+                                              cancellable,
+					      _proxy_enumerate_cb,
+					      loop);
+      g_main_loop_run (loop);
+      g_main_loop_unref (loop);
+    }
+}
+
+static void
+use_enumerator (gboolean synchronous)
+{
+  GSocketAddressEnumerator *enumerator;
+
+  enumerator = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+			     "uri", uri,
+			     NULL);
+
+  printf ("Proxies for URI '%s' are:\n", uri);
+  run_with_enumerator (synchronous, enumerator);
+
+  g_object_unref (enumerator);
+}
+
 typedef enum
 {
   USE_RESOLVER,
+  USE_ENUMERATOR,
 } ProxyTestType;
 
 gint
@@ -145,6 +273,8 @@ main (gint argc, gchar **argv)
         synchronous = TRUE;
       else if (!strcmp (argv[1], "-c"))
         cancel = TRUE;
+      else if (!strcmp (argv[1], "-e"))
+        type = USE_ENUMERATOR;
       else
 	usage ();
 
@@ -168,6 +298,9 @@ main (gint argc, gchar **argv)
     {
     case USE_RESOLVER:
       use_resolver (synchronous);
+      break;
+    case USE_ENUMERATOR:
+      use_enumerator (synchronous);
       break;
     }
 
