@@ -288,6 +288,8 @@ libgio_2_0_la_SOURCES =		\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
+	gdummyproxyresolver.c	\
+	gdummyproxyresolver.h	\
 	gemblem.h 		\
 	gemblem.c 		\
 	gemblemedicon.h		\
@@ -331,6 +333,7 @@ libgio_2_0_la_SOURCES =		\
 	gpermission.c 		\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
+	gproxyresolver.c	\
 	gresolver.c		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
@@ -478,6 +481,7 @@ gio_headers =			\
 	gnetworkservice.h	\
 	goutputstream.h 	\
 	gpermission.h 		\
+	gproxyresolver.h	\
 	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\

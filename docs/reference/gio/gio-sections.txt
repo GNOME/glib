@@ -2766,3 +2766,23 @@ G_SIMPLE_ACTION_GROUP_GET_CLASS
 G_IS_SIMPLE_ACTION_GROUP_CLASS
 G_SIMPLE_ACTION_GROUP
 </SECTION>
+
+<SECTION>
+<FILE>gproxyresolver</FILE>
+<TITLE>GProxyResolver</TITLE>
+GProxyResolver
+GProxyResolverIface
+G_PROXY_RESOLVER_EXTENSION_POINT_NAME
+g_proxy_resolver_get_default
+g_proxy_resolver_is_supported
+g_proxy_resolver_lookup
+g_proxy_resolver_lookup_async
+g_proxy_resolver_lookup_finish
+<SUBSECTION Standard>
+G_PROXY_RESOLVER
+G_IS_PROXY_RESOLVER
+G_TYPE_PROXY_RESOLVER
+G_PROXY_RESOLVER_GET_IFACE
+<SUBSECTION Private>
+g_proxy_resolver_get_type
+</SECTION>

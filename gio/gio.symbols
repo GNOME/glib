@@ -1128,6 +1128,17 @@ g_socket_address_to_native
 #endif
 #endif
 
+#if IN_HEADER(__G_PROXY_RESOLVER_H__)
+#if IN_FILE(__G_PROXY_RESOLVER_C__)
+g_proxy_resolver_get_default
+g_proxy_resolver_get_type
+g_proxy_resolver_is_supported
+g_proxy_resolver_lookup
+g_proxy_resolver_lookup_async
+g_proxy_resolver_lookup_finish
+#endif
+#endif
+
 #if IN_HEADER(__G_RESOLVER_H__)
 #if IN_FILE(__G_RESOLVER_C__)
 g_resolver_error_quark

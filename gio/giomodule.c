@@ -30,6 +30,7 @@
 #include "glocalfilemonitor.h"
 #include "glocaldirectorymonitor.h"
 #include "gnativevolumemonitor.h"
+#include "gproxyresolver.h"
 #include "gvfs.h"
 #ifdef G_OS_UNIX
 #include "gdesktopappinfo.h"
@@ -467,6 +468,8 @@ extern GType _g_win32_volume_monitor_get_type (void);
 extern GType g_win32_directory_monitor_get_type (void);
 extern GType _g_winhttp_vfs_get_type (void);
 
+extern GType _g_dummy_proxy_resolver_get_type (void);
+
 #ifdef G_PLATFORM_WIN32
 
 #include <windows.h>
@@ -534,6 +537,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register ("gsettings-backend");
       g_io_extension_point_set_required_type (ep, G_TYPE_OBJECT);
+
+      ep = g_io_extension_point_register (G_PROXY_RESOLVER_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_PROXY_RESOLVER);
     }
   
   G_UNLOCK (registered_extensions);
@@ -591,6 +597,7 @@ _g_io_modules_ensure_loaded (void)
       _g_winhttp_vfs_get_type ();
 #endif
       _g_local_vfs_get_type ();
+      _g_dummy_proxy_resolver_get_type ();
     }
 
   G_UNLOCK (loaded_dirs);
