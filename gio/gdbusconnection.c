@@ -25,6 +25,11 @@
  *
  * - would be nice to expose GDBusAuthMechanism and an extension point
  *
+ * - probably want a G_DBUS_NONCE_TCP_TMPDIR environment variable
+ *   to specify where the nonce is stored. This will allow people to use
+ *   G_DBUS_NONCE_TCP_TMPDIR=/mnt/secure.company.server/dbus-nonce-dir
+ *   to easily acheive secure RPC via nonce-tcp.
+ *
  * - need to expose an extension point for resolving D-Bus address and
  *   turning them into GIOStream objects. This will allow us to implement
  *   e.g. X11 D-Bus transports without dlopen()'ing or linking against
