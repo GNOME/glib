@@ -83,6 +83,7 @@ SAMPLE_PROGS = 				\
 	gdbus-connection-flush-helper	\
 	testapp				\
 	appinfo-test			\
+	proxy				\
 	$(NULL)
 
 
@@ -370,6 +371,10 @@ schema_tests = \
 	schema-tests/range-wrong-type.gschema.xml			\
 	schema-tests/range.gschema.xml					\
 	schema-tests/wrong-category.gschema.xml
+
+proxy_SOURCES = proxy.c
+proxy_LDADD   = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
 
 EXTRA_DIST += \
 	socket-common.c			\

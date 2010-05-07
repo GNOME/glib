@@ -53,6 +53,7 @@ memory-input-stream
 memory-output-stream
 network-address
 org.gtk.test.enums.xml
+proxy
 readwrite
 resolver
 send-data
