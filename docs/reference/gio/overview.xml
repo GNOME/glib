@@ -294,6 +294,51 @@
         for compiled schemas for #GSettings.
       </para>
     </formalpara>
+
+   <formalpara>
+      <title><envar>G_DBUS_DEBUG</envar></title>
+
+      <para>
+         This variable can be set to a list of debug options, which
+         cause GLib to print out different types of debugging
+         information when using the D-Bus routines.
+         <variablelist>
+           <varlistentry>
+             <term>message</term>
+             <listitem><para>Show all sent and received D-Bus messages</para></listitem>
+           </varlistentry>
+           <varlistentry>
+             <term>authentication</term>
+             <listitem><para>Information about authentication</para></listitem>
+           </varlistentry>
+         </variablelist>
+         The special value <literal>all</literal> can be used to turn on
+         all debug options.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title><envar>G_DBUS_COOKIE_SHA1_KEYRING_DIR</envar></title>
+
+      <para>
+        Can be used to override the directory used to store the
+        keyring used in the <literal>DBUS_COOKIE_SHA1</literal>
+        authentication mechanism. Normally the directory used is
+        <filename>.dbus-keyrings</filename> in the user's home
+        directory.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title><envar>G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION</envar></title>
+
+      <para>
+        If set, the permissions of the directory used to store the
+        keyring used in the <literal>DBUS_COOKIE_SHA1</literal>
+        authentication mechanism won't be checked. Normally the
+        directory must be readable only by the user.
+      </para>
+   </formalpara>
   </chapter>
 
   <chapter id="extending-gio">
