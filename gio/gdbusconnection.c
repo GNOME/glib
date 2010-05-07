@@ -25,6 +25,9 @@
  *
  * - would be nice to expose GDBusAuthMechanism and an extension point
  *
+ * - Need to rewrite GDBusAuth and rework GDBusAuthMechanism. In particular
+ *   the mechanism VFuncs need to be able to set an error.
+ *
  * - probably want a G_DBUS_NONCE_TCP_TMPDIR environment variable
  *   to specify where the nonce is stored. This will allow people to use
  *   G_DBUS_NONCE_TCP_TMPDIR=/mnt/secure.company.server/dbus-nonce-dir
