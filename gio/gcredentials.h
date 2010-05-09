@@ -25,6 +25,12 @@
 
 #include <gio/giotypes.h>
 
+#ifdef G_OS_UNIX
+/* To get the uid_t type */
+#include <unistd.h>
+#include <sys/types.h>
+#endif
+
 G_BEGIN_DECLS
 
 #define G_TYPE_CREDENTIALS         (g_credentials_get_type ())
@@ -78,30 +84,24 @@ struct _GCredentialsClass
 GType            g_credentials_get_type           (void) G_GNUC_CONST;
 
 GCredentials    *g_credentials_new                (void);
-GCredentials    *g_credentials_new_for_process    (void);
-GCredentials    *g_credentials_new_for_string     (const gchar  *str,
-                                                   GError      **error);
+
 gchar           *g_credentials_to_string          (GCredentials    *credentials);
 
-gboolean         g_credentials_has_unix_user      (GCredentials    *credentials);
-gint64           g_credentials_get_unix_user      (GCredentials    *credentials);
-void             g_credentials_set_unix_user      (GCredentials    *credentials,
-                                                   gint64           user_id);
+gpointer         g_credentials_get_native         (GCredentials    *credentials);
+void             g_credentials_set_native         (GCredentials    *credentials,
+                                                   gpointer         native);
 
-gboolean         g_credentials_has_unix_group     (GCredentials    *credentials);
-gint64           g_credentials_get_unix_group     (GCredentials    *credentials);
-void             g_credentials_set_unix_group     (GCredentials    *credentials,
-                                                   gint64           group_id);
+gboolean         g_credentials_is_same_user       (GCredentials    *credentials,
+                                                   GCredentials    *other_credentials,
+                                                   GError         **error);
 
-gboolean         g_credentials_has_unix_process   (GCredentials    *credentials);
-gint64           g_credentials_get_unix_process   (GCredentials    *credentials);
-void             g_credentials_set_unix_process   (GCredentials    *credentials,
-                                                   gint64           process_id);
-
-gboolean         g_credentials_has_windows_user   (GCredentials    *credentials);
-const gchar     *g_credentials_get_windows_user   (GCredentials    *credentials);
-void             g_credentials_set_windows_user   (GCredentials    *credentials,
-                                                   const gchar     *user_sid);
+#ifdef G_OS_UNIX
+uid_t            g_credentials_get_unix_user      (GCredentials    *credentials,
+                                                   GError         **error);
+gboolean         g_credentials_set_unix_user      (GCredentials    *credentials,
+                                                   uid_t           uid,
+                                                   GError         **error);
+#endif
 
 G_END_DECLS
 

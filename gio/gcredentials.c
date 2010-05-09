@@ -28,9 +28,12 @@
 #include "gcredentials.h"
 #include "gioerror.h"
 
-#ifdef G_OS_UNIX
+#ifdef __linux__
+#define __USE_GNU
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <unistd.h>
+#include <string.h>
 #endif
 
 #include "glibintl.h"
@@ -41,21 +44,31 @@
  * @short_description: An object containing credentials
  * @include: gio/gio.h
  *
- * The #GCredentials type is used for storing information that can be
- * used for identifying, authenticating and authorizing processes.
+ * The #GCredentials type is a reference-counted wrapper for the
+ * native credentials type. This information is typically used for
+ * identifying, authenticating and authorizing other processes.
  *
- * Most UNIX and UNIX-like operating systems support a secure exchange
- * of credentials over a Unix Domain Socket, see
+ * Some operating systems supports looking up the credentials of the
+ * remote peer of a communication endpoint - see e.g.
+ * g_socket_get_credentials().
+ *
+ * Some operating systems supports securely sending and receiving
+ * credentials over a Unix Domain Socket, see
  * #GUnixCredentialsMessage, g_unix_connection_send_credentials() and
  * g_unix_connection_receive_credentials() for details.
+ *
+ * On Linux, the native credential type is a <literal>struct ucred</literal> - see
+ * the <literal>unix(7)</literal> man page for details.
  */
 
 struct _GCredentialsPrivate
 {
-  gint64 unix_user;
-  gint64 unix_group;
-  gint64 unix_process;
-  gchar *windows_user;
+#ifdef __linux__
+  struct ucred native;
+#else
+#warning Please add GCredentials support for your OS
+  guint foo;
+#endif
 };
 
 G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT);
@@ -63,9 +76,7 @@ G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT);
 static void
 g_credentials_finalize (GObject *object)
 {
-  GCredentials *credentials = G_CREDENTIALS (object);
-
-  g_free (credentials->priv->windows_user);
+  G_GNUC_UNUSED GCredentials *credentials = G_CREDENTIALS (object);
 
   if (G_OBJECT_CLASS (g_credentials_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_credentials_parent_class)->finalize (object);
@@ -87,11 +98,11 @@ static void
 g_credentials_init (GCredentials *credentials)
 {
   credentials->priv = G_TYPE_INSTANCE_GET_PRIVATE (credentials, G_TYPE_CREDENTIALS, GCredentialsPrivate);
-
-  credentials->priv->unix_user = -1;
-  credentials->priv->unix_group = -1;
-  credentials->priv->unix_process = -1;
-  credentials->priv->windows_user = NULL;
+#ifdef __linux__
+  credentials->priv->native.pid = getpid ();
+  credentials->priv->native.uid = getuid ();
+  credentials->priv->native.gid = getgid ();
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -99,7 +110,8 @@ g_credentials_init (GCredentials *credentials)
 /**
  * g_credentials_new:
  *
- * Creates a new empty credentials object.
+ * Creates a new #GCredentials object with credentials matching the
+ * the current process.
  *
  * Returns: A #GCredentials. Free with g_object_unref().
  *
@@ -113,111 +125,13 @@ g_credentials_new (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#ifdef G_OS_UNIX
-static GCredentials *
-g_credentials_new_for_unix_process (void)
-{
-  GCredentials *credentials;
-  credentials = g_credentials_new ();
-  credentials->priv->unix_user = getuid ();
-  credentials->priv->unix_group = getgid ();
-  credentials->priv->unix_process = getpid ();
-  return credentials;
-}
-#endif
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/**
- * g_credentials_new_for_process:
- *
- * Gets the credentials for the current process. Note that the exact
- * set of credentials in the returned object vary according to
- * platform.
- *
- * Returns: A #GCredentials. Free with g_object_unref().
- *
- * Since: 2.26
- */
-GCredentials *
-g_credentials_new_for_process (void)
-{
-#ifdef G_OS_UNIX
-  return g_credentials_new_for_unix_process ();
-#elif G_OS_WIN32
-  return g_credentials_new_for_win32_process ();
-#else
-#warning Please implement g_credentials_new_for_process() for your OS. For now g_credentials_new_for_process() will return empty credentials.
-  return g_credentials_new ();
-#endif
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/**
- * g_credentials_new_for_string:
- * @str: A string returned from g_credentials_to_string().
- * @error: Return location for error.
- *
- * Constructs a #GCredentials instance from @str.
- *
- * Returns: A #GCredentials or %NULL if @error is set. The return
- * object must be freed with g_object_unref().
- *
- * Since: 2.26
- */
-GCredentials *
-g_credentials_new_for_string (const gchar  *str,
-                              GError      **error)
-{
-  GCredentials *credentials;
-  gchar **tokens;
-  guint n;
-
-  g_return_val_if_fail (str != NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  tokens = NULL;
-  credentials = g_credentials_new ();
-
-  if (!g_str_has_prefix (str, "GCredentials:"))
-    goto fail;
-
-  tokens = g_strsplit (str + sizeof "GCredentials:" - 1, ",", 0);
-  for (n = 0; tokens[n] != NULL; n++)
-    {
-      const gchar *token = tokens[n];
-      if (g_str_has_prefix (token, "unix-user:"))
-        g_credentials_set_unix_user (credentials, atoi (token + sizeof ("unix-user:") - 1));
-      else if (g_str_has_prefix (token, "unix-group:"))
-        g_credentials_set_unix_group (credentials, atoi (token + sizeof ("unix-group:") - 1));
-      else if (g_str_has_prefix (token, "unix-process:"))
-        g_credentials_set_unix_process (credentials, atoi (token + sizeof ("unix-process:") - 1));
-      else if (g_str_has_prefix (token, "windows-user:"))
-        g_credentials_set_windows_user (credentials, token + sizeof ("windows-user:"));
-      else
-        goto fail;
-    }
-  g_strfreev (tokens);
-  return credentials;
-
- fail:
-  g_set_error (error,
-               G_IO_ERROR,
-               G_IO_ERROR_FAILED,
-               _("The string `%s' is not a valid credentials string"),
-               str);
-  g_object_unref (credentials);
-  g_strfreev (tokens);
-  return NULL;
-}
-
 /**
  * g_credentials_to_string:
  * @credentials: A #GCredentials object.
  *
- * Serializes @credentials to a string that can be used with
- * g_credentials_new_for_string().
+ * Creates a human-readable textual representation of @credentials
+ * that can be used in logging and debug messages. The format of the
+ * returned string may change in future GLib release.
  *
  * Returns: A string that should be freed with g_free().
  *
@@ -231,16 +145,19 @@ g_credentials_to_string (GCredentials *credentials)
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
 
   ret = g_string_new ("GCredentials:");
-  if (credentials->priv->unix_user != -1)
-    g_string_append_printf (ret, "unix-user=%" G_GINT64_FORMAT ",", credentials->priv->unix_user);
-  if (credentials->priv->unix_group != -1)
-    g_string_append_printf (ret, "unix-group=%" G_GINT64_FORMAT ",", credentials->priv->unix_group);
-  if (credentials->priv->unix_process != -1)
-    g_string_append_printf (ret, "unix-process=%" G_GINT64_FORMAT ",", credentials->priv->unix_process);
-  if (credentials->priv->windows_user != NULL)
-    g_string_append_printf (ret, "windows-user=%s,", credentials->priv->windows_user);
+#ifdef __linux__
+  g_string_append (ret, "linux:");
+  if (credentials->priv->native.pid != -1)
+    g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.pid);
+  if (credentials->priv->native.uid != -1)
+    g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.uid);
+  if (credentials->priv->native.gid != -1)
+    g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
+#else
+  g_string_append (ret, "unknown");
+#endif
 
   return g_string_free (ret, FALSE);
 }
@@ -248,217 +165,181 @@ g_credentials_to_string (GCredentials *credentials)
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
- * g_credentials_has_unix_user:
+ * g_credentials_is_same_user:
  * @credentials: A #GCredentials.
+ * @other_credentials: A #GCredentials.
+ * @error: Return location for error or %NULL.
  *
- * Checks if @credentials has a UNIX user credential.
+ * Checks if @credentials and @other_credentials is the same user.
  *
- * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ * This operation can fail if #GCredentials is not supported on the
+ * the OS.
+ *
+ * Returns: %TRUE if @credentials and @other_credentials has the same
+ * user, %FALSE otherwise or if @error is set.
  *
  * Since: 2.26
  */
 gboolean
-g_credentials_has_unix_user (GCredentials *credentials)
+g_credentials_is_same_user (GCredentials  *credentials,
+                            GCredentials  *other_credentials,
+                            GError       **error)
 {
+  gboolean ret;
+
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  return credentials->priv->unix_user != -1;
+  g_return_val_if_fail (G_IS_CREDENTIALS (other_credentials), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = FALSE;
+#ifdef __linux__
+  if (credentials->priv->native.uid == other_credentials->priv->native.uid)
+    ret = TRUE;
+#else
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("GCredentials is not implemented on this OS"));
+#endif
+
+  return ret;
 }
 
 /**
- * g_credentials_get_unix_user:
+ * g_credentials_get_native:
  * @credentials: A #GCredentials.
  *
- * Gets the UNIX user identifier from @credentials.
+ * Gets a pointer to the native credentials structure.
  *
- * Returns: The identifier or -1 if unset.
+ * Returns: The pointer or %NULL if there is no #GCredentials support
+ * for the OS. Do not free the returned data, it is owned by
+ * @credentials.
  *
  * Since: 2.26
  */
-gint64
-g_credentials_get_unix_user (GCredentials *credentials)
+gpointer
+g_credentials_get_native (GCredentials *credentials)
 {
+  gpointer ret;
+  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
+
+#ifdef __linux__
+  ret = &credentials->priv->native;
+#else
+  ret = NULL;
+#endif
+
+  return ret;
+}
+
+/**
+ * g_credentials_set_native:
+ * @credentials: A #GCredentials.
+ * @native: A pointer to native credentials.
+ *
+ * Copies the native credentials from @native into @credentials.
+ *
+ * It is a programming error (which will cause an warning to be
+ * logged) to use this method if there is no #GCredentials support for
+ * the OS.
+ *
+ * Since: 2.26
+ */
+void
+g_credentials_set_native (GCredentials    *credentials,
+                          gpointer         native)
+{
+#ifdef __linux__
+  memcpy (&credentials->priv->native, native, sizeof (struct ucred));
+#else
+  g_warning ("g_credentials_set_native: Trying to set credentials but GLib has no support "
+             "for the native credentials type. Please add support.");
+#endif
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+#ifdef G_OS_UNIX
+/**
+ * g_credentials_get_unix_user:
+ * @credentials: A #GCredentials
+ * @error: Return location for error or %NULL.
+ *
+ * Tries to get the UNIX user identifier from @credentials. This
+ * method is only available on UNIX platforms.
+ *
+ * This operation can fail if #GCredentials is not supported on the
+ * OS or if the native credentials type does not contain information
+ * about the UNIX user.
+ *
+ * Returns: The UNIX user identifier or -1 if @error is set.
+ *
+ * Since: 2.26
+ */
+uid_t
+g_credentials_get_unix_user (GCredentials    *credentials,
+                             GError         **error)
+{
+  uid_t ret;
+
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), -1);
-  return credentials->priv->unix_user;
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
+#ifdef __linux__
+  ret = credentials->priv->native.uid;
+#else
+  ret = -1;
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("There no GCredentials support for your your platform"));
+#endif
+
+  return ret;
 }
 
 /**
  * g_credentials_set_unix_user:
  * @credentials: A #GCredentials.
- * @user_id: A UNIX user identifier (typically type #uid_t) or -1 to unset it.
+ * @uid: The UNIX user identifier to set.
+ * @error: Return location for error or %NULL.
  *
- * Sets the UNIX user identifier.
+ * Tries to set the UNIX user identifier on @credentials. This method
+ * is only available on UNIX platforms.
  *
- * Since: 2.26
- */
-void
-g_credentials_set_unix_user (GCredentials *credentials,
-                             gint64        user_id)
-{
-  g_return_if_fail (G_IS_CREDENTIALS (credentials));
-  credentials->priv->unix_user = user_id;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/**
- * g_credentials_has_unix_group:
- * @credentials: A #GCredentials.
+ * This operation can fail if #GCredentials is not supported on the
+ * OS or if the native credentials type does not contain information
+ * about the UNIX user.
  *
- * Checks if @credentials has a UNIX group credential.
- *
- * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
+ * Returns: %TRUE if @uid was set, %FALSE if error is set.
  *
  * Since: 2.26
  */
 gboolean
-g_credentials_has_unix_group (GCredentials *credentials)
+g_credentials_set_unix_user (GCredentials    *credentials,
+                             uid_t            uid,
+                             GError         **error)
 {
+  gboolean ret;
+
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  return credentials->priv->unix_group != -1;
+  g_return_val_if_fail (uid != -1, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = FALSE;
+#ifdef __linux__
+  credentials->priv->native.uid = uid;
+  ret = TRUE;
+#else
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("GCredentials is not implemented on this OS"));
+#endif
+
+  return ret;
 }
-
-/**
- * g_credentials_get_unix_group:
- * @credentials: A #GCredentials.
- *
- * Gets the UNIX group identifier from @credentials.
- *
- * Returns: The identifier or -1 if unset.
- *
- * Since: 2.26
- */
-gint64
-g_credentials_get_unix_group (GCredentials *credentials)
-{
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), -1);
-  return credentials->priv->unix_group;
-}
-
-/**
- * g_credentials_set_unix_group:
- * @credentials: A #GCredentials.
- * @group_id: A UNIX group identifier (typically type #gid_t) or -1 to unset.
- *
- * Sets the UNIX group identifier.
- *
- * Since: 2.26
- */
-void
-g_credentials_set_unix_group (GCredentials *credentials,
-                              gint64        group_id)
-{
-  g_return_if_fail (G_IS_CREDENTIALS (credentials));
-  credentials->priv->unix_group = group_id;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/**
- * g_credentials_has_unix_process:
- * @credentials: A #GCredentials.
- *
- * Checks if @credentials has a UNIX process credential.
- *
- * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
- *
- * Since: 2.26
- */
-gboolean
-g_credentials_has_unix_process (GCredentials *credentials)
-{
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  return credentials->priv->unix_process != -1;
-}
-
-/**
- * g_credentials_get_unix_process:
- * @credentials: A #GCredentials.
- *
- * Gets the UNIX process identifier from @credentials.
- *
- * Returns: The identifier or -1 if unset.
- *
- * Since: 2.26
- */
-gint64
-g_credentials_get_unix_process (GCredentials *credentials)
-{
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), -1);
-  return credentials->priv->unix_process;
-}
-
-/**
- * g_credentials_set_unix_process:
- * @credentials: A #GCredentials.
- * @process_id: A UNIX process identifier (typically type #pid_t/#GPid) or -1 to unset.
- *
- * Sets the UNIX process identifier.
- *
- * Since: 2.26
- */
-void
-g_credentials_set_unix_process (GCredentials *credentials,
-                                gint64        process_id)
-{
-  g_return_if_fail (G_IS_CREDENTIALS (credentials));
-  credentials->priv->unix_process = process_id;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/**
- * g_credentials_has_windows_user:
- * @credentials: A #GCredentials.
- *
- * Checks if @credentials has a Windows user SID (Security Identifier).
- *
- * Returns: %TRUE if @credentials has this type of credential, %FALSE otherwise.
- *
- * Since: 2.26
- */
-gboolean
-g_credentials_has_windows_user  (GCredentials *credentials)
-{
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  return credentials->priv->windows_user != NULL;
-}
-
-/**
- * g_credentials_get_windows_user:
- * @credentials: A #GCredentials.
- *
- * Gets the Windows User SID from @credentials.
- *
- * Returns: A string or %NULL if unset. Do not free, the string is owned by @credentials.
- *
- * Since: 2.26
- */
-const gchar *
-g_credentials_get_windows_user  (GCredentials *credentials)
-{
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
-  return credentials->priv->windows_user;
-}
-
-/**
- * g_credentials_set_windows_user:
- * @credentials: A #GCredentials.
- * @user_sid: The Windows User SID or %NULL to unset.
- *
- * Sets the Windows User SID.
- *
- * Since: 2.26
- */
-void
-g_credentials_set_windows_user (GCredentials    *credentials,
-                                const gchar     *user_sid)
-{
-  g_return_if_fail (G_IS_CREDENTIALS (credentials));
-  g_free (credentials->priv->windows_user);
-  credentials->priv->windows_user = g_strdup (user_sid);
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
+#endif /* G_OS_UNIX */
 
 #define __G_CREDENTIALS_C__
 #include "gioaliasdef.c"

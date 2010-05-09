@@ -610,7 +610,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 #ifdef G_OS_UNIX
   if (G_IS_UNIX_CONNECTION (auth->priv->stream) && g_unix_credentials_message_is_supported ())
     {
-      credentials = g_credentials_new_for_process ();
+      credentials = g_credentials_new ();
       if (!g_unix_connection_send_credentials (G_UNIX_CONNECTION (auth->priv->stream),
                                                credentials,
                                                cancellable,

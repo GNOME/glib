@@ -128,9 +128,7 @@ g_unix_credentials_message_deserialize (gint     level,
     ucred = data;
 
     credentials = g_credentials_new ();
-    g_credentials_set_unix_user (credentials, ucred->uid);
-    g_credentials_set_unix_group (credentials, ucred->gid);
-    g_credentials_set_unix_process (credentials, ucred->pid);
+    g_credentials_set_native (credentials, ucred);
     message = g_unix_credentials_message_new_with_credentials (credentials);
     g_object_unref (credentials);
  out:
@@ -147,12 +145,7 @@ g_unix_credentials_message_serialize (GSocketControlMessage *_message,
 {
   GUnixCredentialsMessage *message = G_UNIX_CREDENTIALS_MESSAGE (_message);
 #ifdef __linux__
-  {
-    struct ucred *ucred = data;
-    ucred->uid = g_credentials_get_unix_user (message->priv->credentials);
-    ucred->gid = g_credentials_get_unix_group (message->priv->credentials);
-    ucred->pid = g_credentials_get_unix_process (message->priv->credentials);
-  }
+  memcpy (data, g_credentials_get_native (message->priv->credentials), sizeof (struct ucred));
 #endif
 }
 
@@ -222,7 +215,7 @@ g_unix_credentials_message_constructed (GObject *object)
   GUnixCredentialsMessage *message = G_UNIX_CREDENTIALS_MESSAGE (object);
 
   if (message->priv->credentials == NULL)
-    message->priv->credentials = g_credentials_new_for_process ();
+    message->priv->credentials = g_credentials_new ();
 
   if (G_OBJECT_CLASS (g_unix_credentials_message_parent_class)->constructed != NULL)
     G_OBJECT_CLASS (g_unix_credentials_message_parent_class)->constructed (object);

@@ -211,27 +211,14 @@ data_matches_credentials (const gchar *data,
     alleged_uid = g_ascii_strtoll (data, &endp, 10);
     if (*endp == '\0')
       {
-        if (g_credentials_has_unix_user (credentials) &&
-            g_credentials_get_unix_user (credentials) == alleged_uid)
+        if (g_credentials_get_unix_user (credentials, NULL) == alleged_uid)
           {
             match = TRUE;
           }
       }
   }
-#elif defined(G_OS_WIN32)
-  {
-    const gchar *alleged_sid;
-
-    /* on Win32, this is the User SID */
-    alleged_sid = data;
-    if (g_credentials_has_windows_user (credentials) &&
-        g_strcmp0 (g_credentials_get_windows_user (credentials), alleged_sid) == 0)
-      {
-        match = TRUE;
-      }
-  }
 #else
-#error Dont know how to read credentials on this OS. Please implement.
+  /* TODO: Dont know how to compare credentials on this OS. Please implement. */
 #endif
 
  out:
@@ -364,7 +351,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 
   /* return the uid */
 #if defined(G_OS_UNIX)
-  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, g_credentials_get_unix_user (credentials));
+  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, g_credentials_get_unix_user (credentials, NULL));
 #elif defined(G_OS_WIN32)
   initial_response = g_strdup_printf ("%s", g_credentials_get_windows_user ());
 #else
