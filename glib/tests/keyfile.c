@@ -1233,6 +1233,51 @@ test_reload_idempotency (void)
   g_free (data1);
 }
 
+static const char int64_data[] =
+"[bees]\n"
+"a=1\n"
+"b=2\n"
+"c=123456789123456789\n"
+"d=-123456789123456789\n";
+
+static void
+test_int64 (void)
+{
+  GKeyFile *file;
+  gboolean ok;
+  guint64 c;
+  gint64 d;
+  gchar *value;
+
+  g_test_bug ("614864");
+
+  file = g_key_file_new ();
+
+  ok = g_key_file_load_from_data (file, int64_data, strlen (int64_data),
+      0, NULL);
+  g_assert (ok);
+
+  c = g_key_file_get_uint64 (file, "bees", "c", NULL);
+  g_assert (c == G_GUINT64_CONSTANT (123456789123456789));
+
+  d = g_key_file_get_int64 (file, "bees", "d", NULL);
+  g_assert (d == G_GINT64_CONSTANT (-123456789123456789));
+
+  g_key_file_set_uint64 (file, "bees", "c",
+      G_GUINT64_CONSTANT (987654321987654321));
+  value = g_key_file_get_value (file, "bees", "c", NULL);
+  g_assert_cmpstr (value, ==, "987654321987654321");
+  g_free (value);
+
+  g_key_file_set_int64 (file, "bees", "d",
+      G_GINT64_CONSTANT (-987654321987654321));
+  value = g_key_file_get_value (file, "bees", "d", NULL);
+  g_assert_cmpstr (value, ==, "-987654321987654321");
+  g_free (value);
+
+  g_key_file_free (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1258,6 +1303,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/group-names", test_group_names);
   g_test_add_func ("/keyfile/key-names", test_key_names);
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
+  g_test_add_func ("/keyfile/int64", test_int64);
   
   return g_test_run ();
 }

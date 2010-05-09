@@ -1,6 +1,8 @@
 /* gkeyfile.c - key file parser
  *
  *  Copyright 2004  Red Hat, Inc.  
+ *  Copyright 2009-2010  Collabora Ltd.
+ *  Copyright 2009  Nokia Corporation
  *
  * Written by Ray Strode <rstrode@redhat.com>
  *            Matthias Clasen <mclasen@redhat.com>
@@ -2156,6 +2158,156 @@ g_key_file_set_integer (GKeyFile    *key_file,
   g_return_if_fail (key_file != NULL);
 
   result = g_key_file_parse_integer_as_value (key_file, value);
+  g_key_file_set_value (key_file, group_name, key, result);
+  g_free (result);
+}
+
+/**
+ * g_key_file_get_int64:
+ * @key_file: a non-%NULL #GKeyFile
+ * @group_name: a non-%NULL group name
+ * @key: a non-%NULL key
+ * @error: return location for a #GError
+ *
+ * Returns the value associated with @key under @group_name as a signed
+ * 64-bit integer. This is similar to g_key_file_get_integer() but can return
+ * 64-bit results without truncation.
+ *
+ * Returns: the value associated with the key as a signed 64-bit integer, or
+ * 0 if the key was not found or could not be parsed.
+ *
+ * Since: 2.26
+ */
+gint64
+g_key_file_get_int64 (GKeyFile     *key_file,
+                      const gchar  *group_name,
+                      const gchar  *key,
+                      GError      **error)
+{
+  gchar *s, *end;
+  gint64 v;
+
+  g_return_val_if_fail (key_file != NULL, -1);
+  g_return_val_if_fail (group_name != NULL, -1);
+  g_return_val_if_fail (key != NULL, -1);
+
+  s = g_key_file_get_value (key_file, group_name, key, error);
+
+  if (s == NULL)
+    return 0;
+
+  v = g_ascii_strtoll (s, &end, 10);
+
+  if (*s == '\0' || *end != '\0')
+    {
+      g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
+          "Key '%s' in group '%s' has value '%s' where int64 was expected",
+          key, group_name, s);
+      return 0;
+    }
+
+  g_free (s);
+  return v;
+}
+
+/**
+ * g_key_file_set_int64:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @value: an integer value
+ *
+ * Associates a new integer value with @key under @group_name.
+ * If @key cannot be found then it is created.
+ *
+ * Since: 2.26
+ **/
+void
+g_key_file_set_int64 (GKeyFile    *key_file,
+                      const gchar *group_name,
+                      const gchar *key,
+                      gint64       value)
+{
+  gchar *result;
+
+  g_return_if_fail (key_file != NULL);
+
+  result = g_strdup_printf ("%" G_GINT64_FORMAT, value);
+  g_key_file_set_value (key_file, group_name, key, result);
+  g_free (result);
+}
+
+/**
+ * g_key_file_get_uint64:
+ * @key_file: a non-%NULL #GKeyFile
+ * @group_name: a non-%NULL group name
+ * @key: a non-%NULL key
+ * @error: return location for a #GError
+ *
+ * Returns the value associated with @key under @group_name as an unsigned
+ * 64-bit integer. This is similar to g_key_file_get_integer() but can return
+ * large positive results without truncation.
+ *
+ * Returns: the value associated with the key as an unsigned 64-bit integer,
+ * or 0 if the key was not found or could not be parsed.
+ *
+ * Since: 2.26
+ */
+guint64
+g_key_file_get_uint64 (GKeyFile     *key_file,
+                       const gchar  *group_name,
+                       const gchar  *key,
+                       GError      **error)
+{
+  gchar *s, *end;
+  guint64 v;
+
+  g_return_val_if_fail (key_file != NULL, -1);
+  g_return_val_if_fail (group_name != NULL, -1);
+  g_return_val_if_fail (key != NULL, -1);
+
+  s = g_key_file_get_value (key_file, group_name, key, error);
+
+  if (s == NULL)
+    return 0;
+
+  v = g_ascii_strtoull (s, &end, 10);
+
+  if (*s == '\0' || *end != '\0')
+    {
+      g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
+          "Key '%s' in group '%s' has value '%s' where uint64 was expected",
+          key, group_name, s);
+      return 0;
+    }
+
+  g_free (s);
+  return v;
+}
+
+/**
+ * g_key_file_set_uint64:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @value: an integer value
+ *
+ * Associates a new integer value with @key under @group_name.
+ * If @key cannot be found then it is created.
+ *
+ * Since: 2.26
+ **/
+void
+g_key_file_set_uint64 (GKeyFile    *key_file,
+                       const gchar *group_name,
+                       const gchar *key,
+                       guint64      value)
+{
+  gchar *result;
+
+  g_return_if_fail (key_file != NULL);
+
+  result = g_strdup_printf ("%" G_GUINT64_FORMAT, value);
   g_key_file_set_value (key_file, group_name, key, result);
   g_free (result);
 }

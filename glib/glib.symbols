@@ -533,6 +533,8 @@ g_key_file_get_groups G_GNUC_MALLOC
 g_key_file_get_double
 g_key_file_get_double_list G_GNUC_MALLOC
 g_key_file_get_integer
+g_key_file_get_int64
+g_key_file_get_uint64
 g_key_file_get_integer_list G_GNUC_MALLOC
 g_key_file_get_keys G_GNUC_MALLOC
 g_key_file_get_locale_string G_GNUC_MALLOC
@@ -557,6 +559,8 @@ g_key_file_set_comment
 g_key_file_set_double
 g_key_file_set_double_list
 g_key_file_set_integer
+g_key_file_set_int64
+g_key_file_set_uint64
 g_key_file_set_integer_list
 g_key_file_set_list_separator
 g_key_file_set_locale_string

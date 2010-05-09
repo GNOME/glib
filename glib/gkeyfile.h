@@ -136,6 +136,22 @@ void      g_key_file_set_integer            (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gint                  value);
+gint64    g_key_file_get_int64              (GKeyFile             *key_file,
+					     const gchar          *group_name,
+					     const gchar          *key,
+					     GError              **error);
+void      g_key_file_set_int64              (GKeyFile             *key_file,
+					     const gchar          *group_name,
+					     const gchar          *key,
+					     gint64                value);
+guint64   g_key_file_get_uint64             (GKeyFile             *key_file,
+					     const gchar          *group_name,
+					     const gchar          *key,
+					     GError              **error);
+void      g_key_file_set_uint64             (GKeyFile             *key_file,
+					     const gchar          *group_name,
+					     const gchar          *key,
+					     guint64               value);
 gdouble   g_key_file_get_double             (GKeyFile             *key_file,
                                              const gchar          *group_name,
                                              const gchar          *key,
