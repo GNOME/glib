@@ -553,8 +553,9 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * closes, then @name_lost_handler is invoked since it is no
  * longer possible for other processes to access the process.
  *
- * You cannot use g_bus_own_name() several times (unless interleaved
- * with calls to g_bus_unown_name()) - only the first call will work.
+ * You cannot use g_bus_own_name() several times for the same name (unless
+ * interleaved with calls to g_bus_unown_name()) - only the first call
+ * will work.
  *
  * Another guarantee is that invocations of @name_acquired_handler
  * and @name_lost_handler are guaranteed to alternate; that
@@ -562,14 +563,15 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * guaranteed that the next time one of the handlers is invoked, it
  * will be @name_lost_handler. The reverse is also true.
  *
- * If you plan on exporting objects (using e.g. g_dbus_connection_register_object()), note
- * that it is generally too late to export the objects in @name_acquired_handler. Instead,
- * you can do this in @bus_acquired_handler since you are guaranteed that this will
- * run before @name is requested from the bus.
+ * If you plan on exporting objects (using e.g.
+ * g_dbus_connection_register_object()), note that it is generally too late
+ * to export the objects in @name_acquired_handler. Instead, you can do this
+ * in @bus_acquired_handler since you are guaranteed that this will run
+ * before @name is requested from the bus.
  *
  * This behavior makes it very simple to write applications that wants
- * to own names and export objects, see <xref linkend="gdbus-owning-names"/>. Simply
- * register objects to be exported in @bus_acquired_handler and
+ * to own names and export objects, see <xref linkend="gdbus-owning-names"/>.
+ * Simply register objects to be exported in @bus_acquired_handler and
  * unregister the objects (if any) in @name_lost_handler.
  *
  * Returns: An identifier (never 0) that an be used with

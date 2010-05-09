@@ -105,14 +105,14 @@
  * @short_description: D-Bus Connections
  * @include: gio/gio.h
  *
- * <para><note>
- * This class is rarely used directly in D-Bus clients. If you are
- * writing an D-Bus client, it is often easier to use the
- * g_bus_own_name(), g_bus_watch_name() or g_bus_watch_proxy() APIs.
- * </note></para>
- *
  * The #GDBusConnection type is used for D-Bus connections to remote
- * peers such as a message buses.
+ * peers such as a message buses. It is a low-level API that offers a
+ * lot of flexibility. For instance, it lets you establish a connection
+ * over any transport that can by represented as an #GIOStream.
+ *
+ * This class is rarely used directly in D-Bus clients. If you are writing
+ * an D-Bus client, it is often easier to use the g_bus_own_name(),
+ * g_bus_watch_name() or g_bus_watch_proxy() APIs.
  *
  * <example id="gdbus-server"><title>D-Bus server example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  *

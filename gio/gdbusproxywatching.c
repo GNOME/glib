@@ -291,7 +291,7 @@ on_name_vanished (GDBusConnection *connection,
  * additional proxies in response to the result of enumeration methods
  * on the manager object.
  *
- * Many of the comment that applies to g_bus_watch_name() also applies
+ * Many of the comments that apply to g_bus_watch_name() also apply
  * here. For example, you are guaranteed that one of the handlers will
  * be invoked (on the main thread) after calling this function and
  * also that the two handlers alternate. When you are done watching the
