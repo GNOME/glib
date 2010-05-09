@@ -13,7 +13,9 @@
         <listitem><para>
           dbus-glib uses libdbus, GDBus doesn't. Instead, it relies on GIO
           streams as transport layer, and has its own implementation for the
-          the D-Bus connection setup and authentication.
+          the D-Bus connection setup and authentication. Apart from using
+          streams as transport, avoiding libdbus also lets GDBus avoid some
+          thorny multithreading issues.
         </para></listitem>
         <listitem><para>
           dbus-glib uses the GObject type system for method arguments and
