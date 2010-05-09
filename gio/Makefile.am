@@ -82,7 +82,6 @@ gio-marshal.c: gio-marshal.h gio-marshal.list
 gdbus_headers = 			\
 	gdbusauthobserver.h		\
 	gcredentials.h			\
-	gunixcredentialsmessage.h	\
 	gdbusutils.h			\
 	gdbuserror.h			\
 	gdbusaddress.h			\
@@ -99,8 +98,6 @@ gdbus_headers = 			\
 
 gdbus_sources = 							\
 	gdbusutils.h			gdbusutils.c			\
-	gcredentials.h			gcredentials.c			\
-	gunixcredentialsmessage.h	gunixcredentialsmessage.c	\
 	gdbusaddress.h			gdbusaddress.c			\
 	gdbusauthobserver.h		gdbusauthobserver.c		\
 	gdbusauth.h			gdbusauth.c			\
@@ -197,17 +194,18 @@ SUBDIRS += fam
 endif
 
 if OS_UNIX
-appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
+appinfo_sources += gdesktopappinfo.c
 platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
 unix_sources = \
+	gfiledescriptorbased.c  \
 	gunixconnection.c	\
+	gunixcredentialsmessage.c	\
 	gunixfdlist.c		\
 	gunixfdmessage.c	\
 	gunixmount.c		\
 	gunixmount.h		\
 	gunixmounts.c 		\
-	gunixmounts.h 		\
 	gunixresolver.c		\
 	gunixresolver.h		\
 	gunixsocketaddress.c	\
@@ -225,6 +223,7 @@ giounixinclude_HEADERS = \
 	gdesktopappinfo.h	\
 	gfiledescriptorbased.h  \
 	gunixconnection.h	\
+	gunixcredentialsmessage.h	\
 	gunixmounts.h 		\
 	gunixfdlist.h		\
 	gunixfdmessage.h	\
@@ -282,6 +281,7 @@ libgio_2_0_la_SOURCES =		\
 	gconverter.c		\
 	gconverterinputstream.c	\
 	gconverteroutputstream.c	\
+	gcredentials.c		\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
 	gdrive.c 		\
@@ -294,8 +294,6 @@ libgio_2_0_la_SOURCES =		\
 	gfile.c 		\
 	gfileattribute.c 	\
 	gfileattribute-priv.h 	\
-	gfiledescriptorbased.h  \
-	gfiledescriptorbased.c  \
 	gfileenumerator.c 	\
 	gfileicon.c 		\
 	gfileinfo.c 		\
