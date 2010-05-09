@@ -25,7 +25,7 @@ AC_DEFUN([GLIB_GSETTINGS],
   GSETTINGS_CHECK_RULE='
 .PHONY : check-gsettings-schema
 
-gschema_xml_files := $(wildcard *.gschema.xml)
+gschema_xml_files := $(wildcard $(srcdir)/*.gschema.xml)
 check-gsettings-schema: gsettings_schema_validate_stamp
 MOSTLYCLEANFILES += gsettings_schema_validate_stamp
 gsettings_schema_validate_stamp: $(gschema_xml_files)
