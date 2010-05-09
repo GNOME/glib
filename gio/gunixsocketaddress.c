@@ -34,18 +34,22 @@
 /**
  * SECTION:gunixsocketaddress
  * @short_description: UNIX GSocketAddress
+ * @include: gio/gunixsocketaddress.h
  *
- * Support for UNIX-domain (aka local) sockets.
+ * Support for UNIX-domain (also known as local) sockets.
  *
- * Unix domain sockets are generally visible in the filesystem.
+ * UNIX domain sockets are generally visible in the filesystem.
  * However, some systems support abstract socket names which are not
  * visible in the filesystem and not affected by the filesystem
  * permissions, visibility, etc. Currently this is only supported
  * under Linux. If you attempt to use abstract sockets on other
  * systems, function calls may return %G_IO_ERROR_NOT_SUPPORTED
- * errors. You can use
- * g_unix_socket_address_abstract_names_supported() to see if abstract
- * names are supported.
+ * errors. You can use g_unix_socket_address_abstract_names_supported()
+ * to see if abstract names are supported.
+ *
+ * Note that <filename>&lt;gio/gunixsocketaddress.h&gt;</filename> belongs to
+ * the UNIX-specific GIO interfaces, thus you have to use the
+ * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  */
 
 /**

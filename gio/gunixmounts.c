@@ -63,12 +63,12 @@ static const char *_resolve_dev_root (void);
 /**
  * SECTION:gunixmounts
  * @include: gio/gunixmounts.h
- * @short_description: Unix Mounts
- * 
+ * @short_description: UNIX mounts
+ *
  * Routines for managing mounted UNIX mount points and paths.
  *
- * Note that <filename>&lt;gio/gunixmounts.h&gt;</filename> belongs to the 
- * UNIX-specific GIO interfaces, thus you have to use the 
+ * Note that <filename>&lt;gio/gunixmounts.h&gt;</filename> belongs to the
+ * UNIX-specific GIO interfaces, thus you have to use the
  * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  */
 

@@ -48,19 +48,19 @@
 /**
  * SECTION:gdesktopappinfo
  * @short_description: Application information from desktop files
- * @include: gio/gdesktopappinfo.h 
- * 
+ * @include: gio/gdesktopappinfo.h
+ *
  * #GDesktopAppInfo is an implementation of #GAppInfo based on
  * desktop files.
- * 
- * Note that <filename>&lt;gio/gdesktopappinfo.h&gt;</filename> belongs to 
- * the UNIX-specific GIO interfaces, thus you have to use the 
+ *
+ * Note that <filename>&lt;gio/gdesktopappinfo.h&gt;</filename> belongs to
+ * the UNIX-specific GIO interfaces, thus you have to use the
  * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  */
 
-#define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
-#define ADDED_ASSOCIATIONS_GROUP    "Added Associations" 
-#define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations" 
+#define DEFAULT_APPLICATIONS_GROUP  "Default Applications"
+#define ADDED_ASSOCIATIONS_GROUP    "Added Associations"
+#define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations"
 #define MIME_CACHE_GROUP            "MIME Cache"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
 

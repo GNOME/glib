@@ -1804,10 +1804,6 @@ GTcpConnection
 g_tcp_connection_set_graceful_disconnect
 g_tcp_connection_get_graceful_disconnect
 <SUBSECTION>
-GUnixConnection
-g_unix_connection_receive_fd
-g_unix_connection_send_fd
-<SUBSECTION>
 g_socket_connection_factory_create_connection
 g_socket_connection_factory_lookup_type
 g_socket_connection_factory_register_type
@@ -1826,6 +1822,20 @@ G_TCP_CONNECTION
 G_TCP_CONNECTION_CLASS
 G_TCP_CONNECTION_GET_CLASS
 G_TYPE_TCP_CONNECTION
+<SUBSECTION Private>
+GSocketConnectionPrivate
+g_socket_connection_get_type
+GTcpConnectionPrivate
+g_tcp_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gunixconnection</FILE>
+<TITLE>GUnixConnection</TITLE>
+GUnixConnection
+g_unix_connection_receive_fd
+g_unix_connection_send_fd
+<SECTION Standard>
 GUnixConnectionClass
 G_IS_UNIX_CONNECTION
 G_IS_UNIX_CONNECTION_CLASS
@@ -1834,10 +1844,6 @@ G_UNIX_CONNECTION
 G_UNIX_CONNECTION_CLASS
 G_UNIX_CONNECTION_GET_CLASS
 <SUBSECTION Private>
-GSocketConnectionPrivate
-g_socket_connection_get_type
-GTcpConnectionPrivate
-g_tcp_connection_get_type
 GUnixConnectionPrivate
 g_unix_connection_get_type
 </SECTION>

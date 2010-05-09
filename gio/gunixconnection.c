@@ -19,14 +19,19 @@
 /**
  * SECTION: gunixconnection
  * @title: GUnixConnection
- * @short_description: a Unix domain #GSocketConnection
+ * @short_description: A UNIX domain GSocketConnection
+ * @include: gio/gunixconnection.h
  * @see_also: #GSocketConnection.
  *
  * This is the subclass of #GSocketConnection that is created
  * for UNIX domain sockets.
  *
- * It contains functions to do some of the unix socket specific
- * functionallity like passing file descriptors.
+ * It contains functions to do some of the UNIX socket specific
+ * functionality like passing file descriptors.
+ *
+ * Note that <filename>&lt;gio/gunixconnection.h&gt;</filename> belongs to
+ * the UNIX-specific GIO interfaces, thus you have to use the
+ * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  *
  * Since: 2.22
  */
