@@ -3477,50 +3477,58 @@ handle_get_all_properties (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static const gchar introspect_header[] =
+  "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\"\n"
+  "                      \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n"
+  "<!-- GDBus " PACKAGE_VERSION " -->\n"
+  "<node>\n";
+
+static const gchar introspect_tail[] =
+  "</node>\n";
+
+static const gchar introspect_standard_interfaces[] =
+  "  <interface name=\"org.freedesktop.DBus.Properties\">\n"
+  "    <method name=\"Get\">\n"
+  "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
+  "      <arg type=\"s\" name=\"property_name\" direction=\"in\"/>\n"
+  "      <arg type=\"v\" name=\"value\" direction=\"out\"/>\n"
+  "    </method>\n"
+  "    <method name=\"GetAll\">\n"
+  "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
+  "      <arg type=\"a{sv}\" name=\"properties\" direction=\"out\"/>\n"
+  "    </method>\n"
+  "    <method name=\"Set\">\n"
+  "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
+  "      <arg type=\"s\" name=\"property_name\" direction=\"in\"/>\n"
+  "      <arg type=\"v\" name=\"value\" direction=\"in\"/>\n"
+  "    </method>\n"
+  "    <signal name=\"PropertiesChanged\">\n"
+  "      <arg type=\"s\" name=\"interface_name\"/>\n"
+  "      <arg type=\"a{sv}\" name=\"changed_properties\"/>\n"
+  "    </signal>\n"
+  "  </interface>\n"
+  "  <interface name=\"org.freedesktop.DBus.Introspectable\">\n"
+  "    <method name=\"Introspect\">\n"
+  "      <arg type=\"s\" name=\"xml_data\" direction=\"out\"/>\n"
+  "    </method>\n"
+  "  </interface>\n"
+  "  <interface name=\"org.freedesktop.DBus.Peer\">\n"
+  "    <method name=\"Ping\"/>\n"
+  "    <method name=\"GetMachineId\">\n"
+  "      <arg type=\"s\" name=\"machine_uuid\" direction=\"out\"/>\n"
+  "    </method>\n"
+  "  </interface>\n";
+
 static void
 introspect_append_header (GString *s)
 {
-  g_string_append (s,
-                   "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\"\n\"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n"
-                   "<!-- GDBus 0.1 -->\n"
-                   "<node>\n");
+  g_string_append (s, introspect_header);
 }
 
 static void
 introspect_append_standard_interfaces (GString *s)
 {
-  g_string_append (s,
-                   "  <interface name=\"org.freedesktop.DBus.Properties\">\n"
-                   "    <method name=\"Get\">\n"
-                   "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
-                   "      <arg type=\"s\" name=\"property_name\" direction=\"in\"/>\n"
-                   "      <arg type=\"v\" name=\"value\" direction=\"out\"/>\n"
-                   "    </method>\n"
-                   "    <method name=\"GetAll\">\n"
-                   "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
-                   "      <arg type=\"a{sv}\" name=\"properties\" direction=\"out\"/>\n"
-                   "    </method>\n"
-                   "    <method name=\"Set\">\n"
-                   "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
-                   "      <arg type=\"s\" name=\"property_name\" direction=\"in\"/>\n"
-                   "      <arg type=\"v\" name=\"value\" direction=\"in\"/>\n"
-                   "    </method>\n"
-                   "    <signal name=\"PropertiesChanged\">\n"
-                   "      <arg type=\"s\" name=\"interface_name\"/>\n"
-                   "      <arg type=\"a{sv}\" name=\"changed_properties\"/>\n"
-                   "    </signal>\n"
-                   "  </interface>\n"
-                   "  <interface name=\"org.freedesktop.DBus.Introspectable\">\n"
-                   "    <method name=\"Introspect\">\n"
-                   "      <arg type=\"s\" name=\"xml_data\" direction=\"out\"/>\n"
-                   "    </method>\n"
-                   "  </interface>\n"
-                   "  <interface name=\"org.freedesktop.DBus.Peer\">\n"
-                   "    <method name=\"Ping\"/>\n"
-                   "    <method name=\"GetMachineId\">\n"
-                   "      <arg type=\"s\" name=\"machine_uuid\" direction=\"out\"/>\n"
-                   "    </method>\n"
-                   "  </interface>\n");
+  g_string_append (s, introspect_standard_interfaces);
 }
 
 static void
@@ -3624,7 +3632,9 @@ handle_introspect (GDBusConnection *connection,
   gchar **registered;
 
   /* first the header with the standard interfaces */
-  s = g_string_new (NULL);
+  s = g_string_sized_new (sizeof (introspect_header) +
+                          sizeof (introspect_standard_interfaces) +
+                          sizeof (introspect_tail));
   introspect_append_header (s);
   introspect_append_standard_interfaces (s);
 
@@ -3642,7 +3652,7 @@ handle_introspect (GDBusConnection *connection,
       g_string_append_printf (s, "  <node name=\"%s\"/>\n", registered[n]);
     }
   g_strfreev (registered);
-  g_string_append (s, "</node>\n");
+  g_string_append (s, introspect_tail);
 
   reply = g_dbus_message_new_method_reply (message);
   g_dbus_message_set_body (reply, g_variant_new ("(s)", s->str));
