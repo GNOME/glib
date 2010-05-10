@@ -287,16 +287,16 @@ main (int argc, char *argv[])
                g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
       greeting = g_strdup_printf ("Hey, it's %" G_GUINT64_FORMAT " already!", (guint64) time (NULL));
-      value = g_dbus_connection_invoke_method_sync (connection,
-                                                    NULL, /* bus_name */
-                                                    "/org/gtk/GDBus/TestObject",
-                                                    "org.gtk.GDBus.TestPeerInterface",
-                                                    "HelloWorld",
-                                                    g_variant_new ("(s)", greeting),
-                                                    G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                    -1,
-                                                    NULL,
-                                                    &error);
+      value = g_dbus_connection_call_sync (connection,
+                                           NULL, /* bus_name */
+                                           "/org/gtk/GDBus/TestObject",
+                                           "org.gtk.GDBus.TestPeerInterface",
+                                           "HelloWorld",
+                                           g_variant_new ("(s)", greeting),
+                                           G_DBUS_CALL_FLAGS_NONE,
+                                           -1,
+                                           NULL,
+                                           &error);
       if (value == NULL)
         {
           g_printerr ("Error invoking HelloWorld(): %s\n", error->message);

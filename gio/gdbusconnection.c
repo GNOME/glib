@@ -1802,16 +1802,16 @@ initable_init (GInitable     *initable,
       GVariant *hello_result;
       const gchar *s;
 
-      hello_result = g_dbus_connection_invoke_method_sync (connection,
-                                                           "org.freedesktop.DBus", /* name */
-                                                           "/org/freedesktop/DBus", /* path */
-                                                           "org.freedesktop.DBus", /* interface */
-                                                           "Hello",
-                                                           NULL, /* parameters */
-                                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                           -1,
-                                                           NULL, /* TODO: cancellable */
-                                                           &connection->priv->initialization_error);
+      hello_result = g_dbus_connection_call_sync (connection,
+                                                  "org.freedesktop.DBus", /* name */
+                                                  "/org/freedesktop/DBus", /* path */
+                                                  "org.freedesktop.DBus", /* interface */
+                                                  "Hello",
+                                                  NULL, /* parameters */
+                                                  G_DBUS_CALL_FLAGS_NONE,
+                                                  -1,
+                                                  NULL, /* TODO: cancellable */
+                                                  &connection->priv->initialization_error);
       if (hello_result == NULL)
         goto out;
 
@@ -2274,7 +2274,7 @@ static guint _global_filter_id = 1;
  * worker thread. Also note that filters are rarely needed - use API
  * such as g_dbus_connection_send_message_with_reply(),
  * g_dbus_connection_signal_subscribe() or
- * g_dbus_connection_invoke_method() instead.
+ * g_dbus_connection_call() instead.
  *
  * Returns: A filter identifier that can be used with
  * g_dbus_connection_remove_filter().
@@ -3646,7 +3646,7 @@ handle_introspect (GDBusConnection *connection,
 
 /* called in thread where object was registered - no locks held */
 static gboolean
-invoke_method_in_idle_cb (gpointer user_data)
+call_in_idle_cb (gpointer user_data)
 {
   GDBusMethodInvocation *invocation = G_DBUS_METHOD_INVOCATION (user_data);
   GDBusInterfaceVTable *vtable;
@@ -3753,7 +3753,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   idle_source = g_idle_source_new ();
   g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
   g_source_set_callback (idle_source,
-                         invoke_method_in_idle_cb,
+                         call_in_idle_cb,
                          invocation,
                          g_object_unref);
   g_source_attach (idle_source, main_context);
@@ -4068,22 +4068,22 @@ g_dbus_connection_emit_signal (GDBusConnection  *connection,
 }
 
 static void
-add_invoke_method_flags (GDBusMessage           *message,
-                         GDBusInvokeMethodFlags  flags)
+add_call_flags (GDBusMessage           *message,
+                         GDBusCallFlags  flags)
 {
-  if (flags & G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START)
+  if (flags & G_DBUS_CALL_FLAGS_NO_AUTO_START)
     g_dbus_message_set_flags (message, G_DBUS_MESSAGE_FLAGS_NO_AUTO_START);
 }
 
 /**
- * g_dbus_connection_invoke_method:
+ * g_dbus_connection_call:
  * @connection: A #GDBusConnection.
  * @bus_name: A unique or well-known bus name or %NULL if @connection is not a message bus connection.
  * @object_path: Path of remote object.
  * @interface_name: D-Bus interface to invoke method on.
  * @method_name: The name of the method to invoke.
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
- * @flags: Flags from the #GDBusInvokeMethodFlags enumeration.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
@@ -4103,24 +4103,24 @@ add_invoke_method_flags (GDBusMessage           *message,
  * This is an asynchronous method. When the operation is finished, @callback will be invoked
  * in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
  * of the thread you are calling this method from. You can then call
- * g_dbus_connection_invoke_method_finish() to get the result of the operation.
- * See g_dbus_connection_invoke_method_sync() for the synchronous version of this
+ * g_dbus_connection_call_finish() to get the result of the operation.
+ * See g_dbus_connection_call_sync() for the synchronous version of this
  * function.
  *
  * Since: 2.26
  */
 void
-g_dbus_connection_invoke_method (GDBusConnection        *connection,
-                                 const gchar            *bus_name,
-                                 const gchar            *object_path,
-                                 const gchar            *interface_name,
-                                 const gchar            *method_name,
-                                 GVariant               *parameters,
-                                 GDBusInvokeMethodFlags  flags,
-                                 gint                    timeout_msec,
-                                 GCancellable           *cancellable,
-                                 GAsyncReadyCallback     callback,
-                                 gpointer                user_data)
+g_dbus_connection_call (GDBusConnection        *connection,
+                        const gchar            *bus_name,
+                        const gchar            *object_path,
+                        const gchar            *interface_name,
+                        const gchar            *method_name,
+                        GVariant               *parameters,
+                        GDBusCallFlags          flags,
+                        gint                    timeout_msec,
+                        GCancellable           *cancellable,
+                        GAsyncReadyCallback     callback,
+                        gpointer                user_data)
 {
   GDBusMessage *message;
 
@@ -4136,7 +4136,7 @@ g_dbus_connection_invoke_method (GDBusConnection        *connection,
                                             object_path,
                                             interface_name,
                                             method_name);
-  add_invoke_method_flags (message, flags);
+  add_call_flags (message, flags);
   if (parameters != NULL)
     g_dbus_message_set_body (message, parameters);
 
@@ -4187,12 +4187,12 @@ decode_method_reply (GDBusMessage  *reply,
 }
 
 /**
- * g_dbus_connection_invoke_method_finish:
+ * g_dbus_connection_call_finish:
  * @connection: A #GDBusConnection.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_invoke_method().
+ * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call().
  * @error: Return location for error or %NULL.
  *
- * Finishes an operation started with g_dbus_connection_invoke_method().
+ * Finishes an operation started with g_dbus_connection_call().
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
@@ -4200,9 +4200,9 @@ decode_method_reply (GDBusMessage  *reply,
  * Since: 2.26
  */
 GVariant *
-g_dbus_connection_invoke_method_finish (GDBusConnection  *connection,
-                                        GAsyncResult     *res,
-                                        GError          **error)
+g_dbus_connection_call_finish (GDBusConnection  *connection,
+                               GAsyncResult     *res,
+                               GError          **error)
 {
   GDBusMessage *reply;
   GVariant *result;
@@ -4228,14 +4228,14 @@ g_dbus_connection_invoke_method_finish (GDBusConnection  *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
- * g_dbus_connection_invoke_method_sync:
+ * g_dbus_connection_call_sync:
  * @connection: A #GDBusConnection.
  * @bus_name: A unique or well-known bus name.
  * @object_path: Path of remote object.
  * @interface_name: D-Bus interface to invoke method on.
  * @method_name: The name of the method to invoke.
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
- * @flags: Flags from the #GDBusInvokeMethodFlags enumeration.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
@@ -4251,7 +4251,7 @@ g_dbus_connection_invoke_method_finish (GDBusConnection  *connection,
  * fails with %G_IO_ERROR_INVALID_ARGUMENT.
  *
  * The calling thread is blocked until a reply is received. See
- * g_dbus_connection_invoke_method() for the asynchronous version of
+ * g_dbus_connection_call() for the asynchronous version of
  * this method.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
@@ -4260,16 +4260,16 @@ g_dbus_connection_invoke_method_finish (GDBusConnection  *connection,
  * Since: 2.26
  */
 GVariant *
-g_dbus_connection_invoke_method_sync (GDBusConnection         *connection,
-                                      const gchar             *bus_name,
-                                      const gchar             *object_path,
-                                      const gchar             *interface_name,
-                                      const gchar             *method_name,
-                                      GVariant                *parameters,
-                                      GDBusInvokeMethodFlags   flags,
-                                      gint                     timeout_msec,
-                                      GCancellable            *cancellable,
-                                      GError                 **error)
+g_dbus_connection_call_sync (GDBusConnection         *connection,
+                             const gchar             *bus_name,
+                             const gchar             *object_path,
+                             const gchar             *interface_name,
+                             const gchar             *method_name,
+                             GVariant                *parameters,
+                             GDBusCallFlags           flags,
+                             gint                     timeout_msec,
+                             GCancellable            *cancellable,
+                             GError                 **error)
 {
   GDBusMessage *message;
   GDBusMessage *reply;
@@ -4291,7 +4291,7 @@ g_dbus_connection_invoke_method_sync (GDBusConnection         *connection,
                                             object_path,
                                             interface_name,
                                             method_name);
-  add_invoke_method_flags (message, flags);
+  add_call_flags (message, flags);
   if (parameters != NULL)
     g_dbus_message_set_body (message, parameters);
 

@@ -118,9 +118,9 @@ msg_cb_expect_error_disconnected (GDBusConnection *connection,
   GVariant *result;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
   g_assert (!g_dbus_error_is_remote_error (error));
   g_error_free (error);
@@ -138,9 +138,9 @@ msg_cb_expect_error_unknown_method (GDBusConnection *connection,
   GVariant *result;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
   g_assert (g_dbus_error_is_remote_error (error));
   g_assert (result == NULL);
@@ -157,9 +157,9 @@ msg_cb_expect_success (GDBusConnection *connection,
   GVariant *result;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_unref (result);
@@ -176,9 +176,9 @@ msg_cb_expect_error_cancelled (GDBusConnection *connection,
   GVariant *result;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
   g_assert (!g_dbus_error_is_remote_error (error));
   g_error_free (error);
@@ -196,9 +196,9 @@ msg_cb_expect_error_cancelled_2 (GDBusConnection *connection,
   GVariant *result;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
   g_assert (!g_dbus_error_is_remote_error (error));
   g_error_free (error);
@@ -229,67 +229,67 @@ test_connection_send (void)
    */
   ca = g_cancellable_new ();
   g_cancellable_cancel (ca);
-  g_dbus_connection_invoke_method (c,
-                                   "org.freedesktop.DBus",  /* bus_name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "GetId",                 /* method name */
-                                   NULL,
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   ca,
-                                   (GAsyncReadyCallback) msg_cb_expect_error_cancelled,
-                                   NULL);
+  g_dbus_connection_call (c,
+                          "org.freedesktop.DBus",  /* bus_name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "GetId",                 /* method name */
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          ca,
+                          (GAsyncReadyCallback) msg_cb_expect_error_cancelled,
+                          NULL);
   g_main_loop_run (loop);
   g_object_unref (ca);
 
   /*
    * Check that we get a reply to the GetId() method call.
    */
-  g_dbus_connection_invoke_method (c,
-                                   "org.freedesktop.DBus",  /* bus_name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "GetId",                 /* method name */
-                                   NULL,
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   NULL,
-                                   (GAsyncReadyCallback) msg_cb_expect_success,
-                                   NULL);
+  g_dbus_connection_call (c,
+                          "org.freedesktop.DBus",  /* bus_name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "GetId",                 /* method name */
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) msg_cb_expect_success,
+                          NULL);
   g_main_loop_run (loop);
 
   /*
    * Check that we get an error reply to the NonExistantMethod() method call.
    */
-  g_dbus_connection_invoke_method (c,
-                                   "org.freedesktop.DBus",  /* bus_name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "NonExistantMethod",     /* method name */
-                                   NULL,
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   NULL,
-                                   (GAsyncReadyCallback) msg_cb_expect_error_unknown_method,
-                                   NULL);
+  g_dbus_connection_call (c,
+                          "org.freedesktop.DBus",  /* bus_name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "NonExistantMethod",     /* method name */
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) msg_cb_expect_error_unknown_method,
+                          NULL);
   g_main_loop_run (loop);
 
   /*
    * Check that cancellation works when the message is already in flight.
    */
   ca = g_cancellable_new ();
-  g_dbus_connection_invoke_method (c,
-                                   "org.freedesktop.DBus",  /* bus_name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "GetId",                 /* method name */
-                                   NULL,
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   ca,
-                                   (GAsyncReadyCallback) msg_cb_expect_error_cancelled_2,
-                                   NULL);
+  g_dbus_connection_call (c,
+                          "org.freedesktop.DBus",  /* bus_name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "GetId",                 /* method name */
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          ca,
+                          (GAsyncReadyCallback) msg_cb_expect_error_cancelled_2,
+                          NULL);
   g_cancellable_cancel (ca);
   g_main_loop_run (loop);
   g_object_unref (ca);
@@ -302,17 +302,17 @@ test_connection_send (void)
   _g_assert_signal_received (c, "closed");
   g_assert (g_dbus_connection_is_closed (c));
 
-  g_dbus_connection_invoke_method (c,
-                                   "org.freedesktop.DBus",  /* bus_name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "GetId",                 /* method name */
-                                   NULL,
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   NULL,
-                                   (GAsyncReadyCallback) msg_cb_expect_error_disconnected,
-                                   NULL);
+  g_dbus_connection_call (c,
+                          "org.freedesktop.DBus",  /* bus_name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "GetId",                 /* method name */
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) msg_cb_expect_error_disconnected,
+                          NULL);
   g_main_loop_run (loop);
 
   _g_object_wait_for_single_ref (c);
@@ -456,16 +456,16 @@ test_connection_signals (void)
    *
    * To ensure this is not the case, do a synchronous call on c1.
    */
-  result = g_dbus_connection_invoke_method_sync (c1,
-                                                 "org.freedesktop.DBus",  /* bus name */
-                                                 "/org/freedesktop/DBus", /* object path */
-                                                 "org.freedesktop.DBus",  /* interface name */
-                                                 "GetId",                 /* method name */
-                                                 NULL,                    /* parameters */
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 -1,
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c1,
+                                        "org.freedesktop.DBus",  /* bus name */
+                                        "/org/freedesktop/DBus", /* object path */
+                                        "org.freedesktop.DBus",  /* interface name */
+                                        "GetId",                 /* method name */
+                                        NULL,                    /* parameters */
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_unref (result);

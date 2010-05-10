@@ -170,16 +170,16 @@ test_bus_own_name (void)
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   g_assert (c != NULL);
   g_assert (!g_dbus_connection_is_closed (c));
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 "org.freedesktop.DBus",  /* bus name */
-                                                 "/org/freedesktop/DBus", /* object path */
-                                                 "org.freedesktop.DBus",  /* interface name */
-                                                 "NameHasOwner",          /* method name */
-                                                 g_variant_new ("(s)", name),
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 -1,
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        "org.freedesktop.DBus",  /* bus name */
+                                        "/org/freedesktop/DBus", /* object path */
+                                        "org.freedesktop.DBus",  /* interface name */
+                                        "NameHasOwner",          /* method name */
+                                        g_variant_new ("(s)", name),
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_get (result, "(b)", &name_has_owner_reply);
@@ -195,16 +195,16 @@ test_bus_own_name (void)
   /*
    * Check that the name was actually released.
    */
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 "org.freedesktop.DBus",  /* bus name */
-                                                 "/org/freedesktop/DBus", /* object path */
-                                                 "org.freedesktop.DBus",  /* interface name */
-                                                 "NameHasOwner",          /* method name */
-                                                 g_variant_new ("(s)", name),
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 -1,
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        "org.freedesktop.DBus",  /* bus name */
+                                        "/org/freedesktop/DBus", /* object path */
+                                        "org.freedesktop.DBus",  /* interface name */
+                                        "NameHasOwner",          /* method name */
+                                        g_variant_new ("(s)", name),
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_get (result, "(b)", &name_has_owner_reply);

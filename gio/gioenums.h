@@ -994,20 +994,20 @@ typedef enum {
 } GDBusCapabilityFlags;
 
 /**
- * GDBusInvokeMethodFlags:
- * @G_DBUS_INVOKE_METHOD_FLAGS_NONE: No flags set.
- * @G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START: The bus must not launch
+ * GDBusCallFlags:
+ * @G_DBUS_CALL_FLAGS_NONE: No flags set.
+ * @G_DBUS_CALL_FLAGS_NO_AUTO_START: The bus must not launch
  * an owner for the destination name in response to this method
  * invocation.
  *
- * Flags used in g_dbus_connection_invoke_method() and similar APIs.
+ * Flags used in g_dbus_connection_call() and similar APIs.
  *
  * Since: 2.26
  */
 typedef enum {
-  G_DBUS_INVOKE_METHOD_FLAGS_NONE = 0,
-  G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START = (1<<0),
-} GDBusInvokeMethodFlags;
+  G_DBUS_CALL_FLAGS_NONE = 0,
+  G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0),
+} GDBusCallFlags;
 
 /**
  * GDBusMessageType:

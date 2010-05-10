@@ -359,8 +359,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-default-timeout:
    *
    * The timeout to use if -1 (specifying default timeout) is passed
-   * as @timeout_msec in the g_dbus_proxy_invoke_method() and
-   * g_dbus_proxy_invoke_method_sync() functions.
+   * as @timeout_msec in the g_dbus_proxy_call() and
+   * g_dbus_proxy_call_sync() functions.
    *
    * This allows applications to set a proxy-wide timeout for all
    * remote method invocations on the proxy. If this property is -1,
@@ -752,16 +752,16 @@ initable_init (GInitable     *initable,
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
     {
       /* load all properties synchronously */
-      result = g_dbus_connection_invoke_method_sync (proxy->priv->connection,
-                                                     proxy->priv->unique_bus_name,
-                                                     proxy->priv->object_path,
-                                                     "org.freedesktop.DBus.Properties",
-                                                     "GetAll",
-                                                     g_variant_new ("(s)", proxy->priv->interface_name),
-                                                     G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                     -1,           /* timeout */
-                                                     cancellable,
-                                                     error);
+      result = g_dbus_connection_call_sync (proxy->priv->connection,
+                                            proxy->priv->unique_bus_name,
+                                            proxy->priv->object_path,
+                                            "org.freedesktop.DBus.Properties",
+                                            "GetAll",
+                                            g_variant_new ("(s)", proxy->priv->interface_name),
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            -1,           /* timeout */
+                                            cancellable,
+                                            error);
       if (result == NULL)
         goto out;
 
@@ -796,9 +796,9 @@ get_all_cb (GDBusConnection *connection,
   GError *error;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_finish (connection,
-                                                   res,
-                                                   &error);
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
   if (result == NULL)
     {
       g_simple_async_result_set_from_error (simple, error);
@@ -833,17 +833,17 @@ async_initable_init_async (GAsyncInitable      *initable,
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
     {
       /* load all properties asynchronously */
-      g_dbus_connection_invoke_method (proxy->priv->connection,
-                                       proxy->priv->unique_bus_name,
-                                       proxy->priv->object_path,
-                                       "org.freedesktop.DBus.Properties",
-                                       "GetAll",
-                                       g_variant_new ("(s)", proxy->priv->interface_name),
-                                       G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                       -1,           /* timeout */
-                                       cancellable,
-                                       (GAsyncReadyCallback) get_all_cb,
-                                       simple);
+      g_dbus_connection_call (proxy->priv->connection,
+                              proxy->priv->unique_bus_name,
+                              proxy->priv->object_path,
+                              "org.freedesktop.DBus.Properties",
+                              "GetAll",
+                              g_variant_new ("(s)", proxy->priv->interface_name),
+                              G_DBUS_CALL_FLAGS_NONE,
+                              -1,           /* timeout */
+                              cancellable,
+                              (GAsyncReadyCallback) get_all_cb,
+                              simple);
     }
   else
     {
@@ -1148,8 +1148,8 @@ g_dbus_proxy_get_interface_name (GDBusProxy *proxy)
  * @proxy: A #GDBusProxy.
  *
  * Gets the timeout to use if -1 (specifying default timeout) is
- * passed as @timeout_msec in the g_dbus_proxy_invoke_method() and
- * g_dbus_proxy_invoke_method_sync() functions.
+ * passed as @timeout_msec in the g_dbus_proxy_call() and
+ * g_dbus_proxy_call_sync() functions.
  *
  * See the #GDBusProxy:g-default-timeout property for more details.
  *
@@ -1170,8 +1170,8 @@ g_dbus_proxy_get_default_timeout (GDBusProxy *proxy)
  * @timeout_msec: Timeout in milliseconds.
  *
  * Sets the timeout to use if -1 (specifying default timeout) is
- * passed as @timeout_msec in the g_dbus_proxy_invoke_method() and
- * g_dbus_proxy_invoke_method_sync() functions.
+ * passed as @timeout_msec in the g_dbus_proxy_call() and
+ * g_dbus_proxy_call_sync() functions.
  *
  * See the #GDBusProxy:g-default-timeout property for more details.
  *
@@ -1282,9 +1282,9 @@ reply_cb (GDBusConnection *connection,
   GError *error;
 
   error = NULL;
-  value = g_dbus_connection_invoke_method_finish (connection,
-                                                  res,
-                                                  &error);
+  value = g_dbus_connection_call_finish (connection,
+                                         res,
+                                         &error);
   if (error != NULL)
     {
       g_simple_async_result_set_from_error (simple,
@@ -1359,11 +1359,11 @@ validate_method_return (const char             *method_name,
 }
 
 /**
- * g_dbus_proxy_invoke_method:
+ * g_dbus_proxy_call:
  * @proxy: A #GDBusProxy.
  * @method_name: Name of method to invoke.
  * @parameters: A #GVariant tuple with parameters for the signal or %NULL if not passing parameters.
- * @flags: Flags from the #GDBusInvokeMethodFlags enumeration.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the proxy default timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
@@ -1386,17 +1386,17 @@ validate_method_return (const char             *method_name,
  * This is an asynchronous method. When the operation is finished, @callback will be invoked
  * in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
  * of the thread you are calling this method from. You can then call
- * g_dbus_proxy_invoke_method_finish() to get the result of the operation.
- * See g_dbus_proxy_invoke_method_sync() for the
+ * g_dbus_proxy_call_finish() to get the result of the operation.
+ * See g_dbus_proxy_call_sync() for the
  * synchronous version of this method.
  *
  * Since: 2.26
  */
 void
-g_dbus_proxy_invoke_method (GDBusProxy             *proxy,
+g_dbus_proxy_call (GDBusProxy             *proxy,
                             const gchar            *method_name,
                             GVariant               *parameters,
-                            GDBusInvokeMethodFlags  flags,
+                            GDBusCallFlags          flags,
                             gint                    timeout_msec,
                             GCancellable           *cancellable,
                             GAsyncReadyCallback     callback,
@@ -1418,7 +1418,7 @@ g_dbus_proxy_invoke_method (GDBusProxy             *proxy,
   simple = g_simple_async_result_new (G_OBJECT (proxy),
                                       callback,
                                       user_data,
-                                      g_dbus_proxy_invoke_method);
+                                      g_dbus_proxy_call);
 
   was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
   target_method_name = was_split ? split_method_name : method_name;
@@ -1429,28 +1429,28 @@ g_dbus_proxy_invoke_method (GDBusProxy             *proxy,
   /* Just warn here */
   expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
 
-  g_dbus_connection_invoke_method (proxy->priv->connection,
-                                   proxy->priv->unique_bus_name,
-                                   proxy->priv->object_path,
-                                   target_interface_name,
-                                   target_method_name,
-                                   parameters,
-                                   flags,
-                                   timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
-                                   cancellable,
-                                   (GAsyncReadyCallback) reply_cb,
-                                   simple);
+  g_dbus_connection_call (proxy->priv->connection,
+                          proxy->priv->unique_bus_name,
+                          proxy->priv->object_path,
+                          target_interface_name,
+                          target_method_name,
+                          parameters,
+                          flags,
+                          timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                          cancellable,
+                          (GAsyncReadyCallback) reply_cb,
+                          simple);
 
   g_free (split_interface_name);
 }
 
 /**
- * g_dbus_proxy_invoke_method_finish:
+ * g_dbus_proxy_call_finish:
  * @proxy: A #GDBusProxy.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_proxy_invoke_method().
+ * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_proxy_call().
  * @error: Return location for error or %NULL.
  *
- * Finishes an operation started with g_dbus_proxy_invoke_method().
+ * Finishes an operation started with g_dbus_proxy_call().
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
@@ -1458,7 +1458,7 @@ g_dbus_proxy_invoke_method (GDBusProxy             *proxy,
  * Since: 2.26
  */
 GVariant *
-g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
+g_dbus_proxy_call_finish (GDBusProxy    *proxy,
                                    GAsyncResult  *res,
                                    GError       **error)
 {
@@ -1471,7 +1471,7 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_proxy_invoke_method);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_proxy_call);
 
   value = NULL;
 
@@ -1497,11 +1497,11 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
 }
 
 /**
- * g_dbus_proxy_invoke_method_sync:
+ * g_dbus_proxy_call_sync:
  * @proxy: A #GDBusProxy.
  * @method_name: Name of method to invoke.
  * @parameters: A #GVariant tuple with parameters for the signal or %NULL if not passing parameters.
- * @flags: Flags from the #GDBusInvokeMethodFlags enumeration.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the proxy default timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
@@ -1520,7 +1520,7 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
  * %G_IO_ERROR_INVALID_ARGUMENT.
  *
  * The calling thread is blocked until a reply is received. See
- * g_dbus_proxy_invoke_method() for the asynchronous version of this
+ * g_dbus_proxy_call() for the asynchronous version of this
  * method.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
@@ -1529,10 +1529,10 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
  * Since: 2.26
  */
 GVariant *
-g_dbus_proxy_invoke_method_sync (GDBusProxy              *proxy,
+g_dbus_proxy_call_sync (GDBusProxy              *proxy,
                                  const gchar             *method_name,
                                  GVariant                *parameters,
-                                 GDBusInvokeMethodFlags   flags,
+                                 GDBusCallFlags           flags,
                                  gint                     timeout_msec,
                                  GCancellable            *cancellable,
                                  GError                 **error)
@@ -1567,16 +1567,16 @@ g_dbus_proxy_invoke_method_sync (GDBusProxy              *proxy,
       expected_method_info = NULL;
     }
 
-  ret = g_dbus_connection_invoke_method_sync (proxy->priv->connection,
-                                              proxy->priv->unique_bus_name,
-                                              proxy->priv->object_path,
-                                              target_interface_name,
-                                              target_method_name,
-                                              parameters,
-                                              flags,
-                                              timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
-                                              cancellable,
-                                              error);
+  ret = g_dbus_connection_call_sync (proxy->priv->connection,
+                                     proxy->priv->unique_bus_name,
+                                     proxy->priv->object_path,
+                                     target_interface_name,
+                                     target_method_name,
+                                     parameters,
+                                     flags,
+                                     timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                                     cancellable,
+                                     error);
   if (!validate_method_return (target_method_name, ret, expected_method_info, error))
     {
       g_variant_unref (ret);

@@ -294,9 +294,9 @@ request_name_cb (GObject      *source_object,
   request_name_reply = 0;
   result = NULL;
 
-  result = g_dbus_connection_invoke_method_finish (client->connection,
-                                                   res,
-                                                   NULL);
+  result = g_dbus_connection_call_finish (client->connection,
+                                          res,
+                                          NULL);
   if (result != NULL)
     {
       g_variant_get (result, "(u)", &request_name_reply);
@@ -395,19 +395,19 @@ has_connection (Client *client)
                                                              client);
 
   /* attempt to acquire the name */
-  g_dbus_connection_invoke_method (client->connection,
-                                   "org.freedesktop.DBus",  /* bus name */
-                                   "/org/freedesktop/DBus", /* object path */
-                                   "org.freedesktop.DBus",  /* interface name */
-                                   "RequestName",           /* method name */
-                                   g_variant_new ("(su)",
-                                                  client->name,
-                                                  client->flags),
-                                   G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                   -1,
-                                   NULL,
-                                   (GAsyncReadyCallback) request_name_cb,
-                                   client_ref (client));
+  g_dbus_connection_call (client->connection,
+                          "org.freedesktop.DBus",  /* bus name */
+                          "/org/freedesktop/DBus", /* object path */
+                          "org.freedesktop.DBus",  /* interface name */
+                          "RequestName",           /* method name */
+                          g_variant_new ("(su)",
+                                         client->name,
+                                         client->flags),
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) request_name_cb,
+                          client_ref (client));
 }
 
 
@@ -676,16 +676,16 @@ g_bus_unown_name (guint owner_id)
            * I believe this is a bug in the bus daemon.
            */
           error = NULL;
-          result = g_dbus_connection_invoke_method_sync (client->connection,
-                                                         "org.freedesktop.DBus",  /* bus name */
-                                                         "/org/freedesktop/DBus", /* object path */
-                                                         "org.freedesktop.DBus",  /* interface name */
-                                                         "ReleaseName",           /* method name */
-                                                         g_variant_new ("(s)", client->name),
-                                                         G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                         -1,
-                                                         NULL,
-                                                         &error);
+          result = g_dbus_connection_call_sync (client->connection,
+                                                "org.freedesktop.DBus",  /* bus name */
+                                                "/org/freedesktop/DBus", /* object path */
+                                                "org.freedesktop.DBus",  /* interface name */
+                                                "ReleaseName",           /* method name */
+                                                g_variant_new ("(s)", client->name),
+                                                G_DBUS_CALL_FLAGS_NONE,
+                                                -1,
+                                                NULL,
+                                                &error);
           if (result == NULL)
             {
               g_warning ("Error releasing name %s: %s", client->name, error->message);

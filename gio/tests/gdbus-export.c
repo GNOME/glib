@@ -320,7 +320,7 @@ introspect_callback (GDBusProxy   *proxy,
   GError *error;
 
   error = NULL;
-  result = g_dbus_proxy_invoke_method_finish (proxy,
+  result = g_dbus_proxy_call_finish (proxy,
                                               res,
                                               &error);
   g_assert_no_error (error);
@@ -359,14 +359,14 @@ get_nodes_at (GDBusConnection  *c,
 
   /* do this async to avoid libdbus-1 deadlocks */
   xml_data = NULL;
-  g_dbus_proxy_invoke_method (proxy,
-                              "Introspect",
-                              NULL,
-                              G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                              -1,
-                              NULL,
-                              (GAsyncReadyCallback) introspect_callback,
-                              &xml_data);
+  g_dbus_proxy_call (proxy,
+                     "Introspect",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback) introspect_callback,
+                     &xml_data);
   g_main_loop_run (loop);
   g_assert (xml_data != NULL);
 
@@ -416,14 +416,14 @@ has_interface (GDBusConnection *c,
 
   /* do this async to avoid libdbus-1 deadlocks */
   xml_data = NULL;
-  g_dbus_proxy_invoke_method (proxy,
-                              "Introspect",
-                              NULL,
-                              G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                              -1,
-                              NULL,
-                              (GAsyncReadyCallback) introspect_callback,
-                              &xml_data);
+  g_dbus_proxy_call (proxy,
+                     "Introspect",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback) introspect_callback,
+                     &xml_data);
   g_main_loop_run (loop);
   g_assert (xml_data != NULL);
 
@@ -466,14 +466,14 @@ count_interfaces (GDBusConnection *c,
 
   /* do this async to avoid libdbus-1 deadlocks */
   xml_data = NULL;
-  g_dbus_proxy_invoke_method (proxy,
-                              "Introspect",
-                              NULL,
-                              G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                              -1,
-                              NULL,
-                              (GAsyncReadyCallback) introspect_callback,
-                              &xml_data);
+  g_dbus_proxy_call (proxy,
+                     "Introspect",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback) introspect_callback,
+                     &xml_data);
   g_main_loop_run (loop);
   g_assert (xml_data != NULL);
 
@@ -501,9 +501,9 @@ dyna_create_callback (GDBusProxy   *proxy,
   GError *error;
 
   error = NULL;
-  result = g_dbus_proxy_invoke_method_finish (proxy,
-                                              res,
-                                              &error);
+  result = g_dbus_proxy_call_finish (proxy,
+                                     res,
+                                     &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_unref (result);
@@ -537,14 +537,14 @@ dyna_create (GDBusConnection *c,
   g_assert (proxy != NULL);
 
   /* do this async to avoid libdbus-1 deadlocks */
-  g_dbus_proxy_invoke_method (proxy,
-                              "DynaCyber",
-                              g_variant_new ("()"),
-                              G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                              -1,
-                              NULL,
-                              (GAsyncReadyCallback) dyna_create_callback,
-                              NULL);
+  g_dbus_proxy_call (proxy,
+                     "DynaCyber",
+                     g_variant_new ("()"),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback) dyna_create_callback,
+                     NULL);
   g_main_loop_run (loop);
 
   g_assert_no_error (error);
@@ -760,26 +760,26 @@ test_dispatch_thread_func (gpointer user_data)
 
   /* generic interfaces */
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Peer.Ping",
-                                           NULL,
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Peer.Ping",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_no_error (error);
   g_assert (value != NULL);
   g_variant_unref (value);
 
   /* user methods */
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "Method1",
-                                           g_variant_new ("(s)", "winwinwin"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "Method1",
+                                  g_variant_new ("(s)", "winwinwin"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_no_error (error);
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(s)")));
@@ -788,39 +788,39 @@ test_dispatch_thread_func (gpointer user_data)
   g_variant_unref (value);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "Method2",
-                                           NULL,
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "Method2",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.example.SomeError: How do you like them apples, buddy!");
   g_error_free (error);
   g_assert (value == NULL);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "Method2",
-                                           g_variant_new ("(s)", "failfailfail"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "Method2",
+                                  g_variant_new ("(s)", "failfailfail"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Signature of message, `s', does not match expected signature `'");
   g_error_free (error);
   g_assert (value == NULL);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "NonExistantMethod",
-                                           NULL,
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "NonExistantMethod",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such method `NonExistantMethod'");
   g_error_free (error);
@@ -828,15 +828,15 @@ test_dispatch_thread_func (gpointer user_data)
 
   /* user properties */
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.Get",
-                                           g_variant_new ("(ss)",
-                                                          "org.example.Foo",
-                                                          "PropertyUno"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.Get",
+                                  g_variant_new ("(ss)",
+                                                 "org.example.Foo",
+                                                 "PropertyUno"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_no_error (error);
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(v)")));
@@ -846,76 +846,76 @@ test_dispatch_thread_func (gpointer user_data)
   g_variant_unref (value);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.Get",
-                                           g_variant_new ("(ss)",
-                                                          "org.example.Foo",
-                                                          "ThisDoesntExist"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.Get",
+                                  g_variant_new ("(ss)",
+                                                 "org.example.Foo",
+                                                 "ThisDoesntExist"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such property `ThisDoesntExist'");
   g_error_free (error);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.Get",
-                                           g_variant_new ("(ss)",
-                                                          "org.example.Foo",
-                                                          "NotReadable"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.Get",
+                                  g_variant_new ("(ss)",
+                                                 "org.example.Foo",
+                                                 "NotReadable"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property `NotReadable' is not readable");
   g_error_free (error);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.Set",
-                                           g_variant_new ("(ssv)",
-                                                          "org.example.Foo",
-                                                          "NotReadable",
-                                                          g_variant_new_string ("But Writable you are!")),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.Set",
+                                  g_variant_new ("(ssv)",
+                                                 "org.example.Foo",
+                                                 "NotReadable",
+                                                 g_variant_new_string ("But Writable you are!")),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_SPAWN_FILE_INVALID);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.Spawn.FileInvalid: Returning some error instead of writing the value `NotReadable' to the property `'But Writable you are!''");
   g_error_free (error);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.Set",
-                                           g_variant_new ("(ssv)",
-                                                          "org.example.Foo",
-                                                          "NotWritable",
-                                                          g_variant_new_uint32 (42)),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.Set",
+                                  g_variant_new ("(ssv)",
+                                                 "org.example.Foo",
+                                                 "NotWritable",
+                                                 g_variant_new_uint32 (42)),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
   g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property `NotWritable' is not writable");
   g_error_free (error);
 
   error = NULL;
-  value = g_dbus_proxy_invoke_method_sync (foo_proxy,
-                                           "org.freedesktop.DBus.Properties.GetAll",
-                                           g_variant_new ("(s)",
-                                                          "org.example.Foo"),
-                                           G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                           -1,
-                                           NULL,
-                                           &error);
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.freedesktop.DBus.Properties.GetAll",
+                                  g_variant_new ("(s)",
+                                                 "org.example.Foo"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
   g_assert_no_error (error);
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(a{sv})")));

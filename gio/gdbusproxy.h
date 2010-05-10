@@ -126,21 +126,21 @@ GVariant        *g_dbus_proxy_get_cached_property       (GDBusProxy          *pr
                                                          GError             **error);
 gchar          **g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
                                                          GError             **error);
-void             g_dbus_proxy_invoke_method             (GDBusProxy          *proxy,
+void             g_dbus_proxy_call                      (GDBusProxy          *proxy,
                                                          const gchar         *method_name,
                                                          GVariant            *parameters,
-                                                         GDBusInvokeMethodFlags flags,
+                                                         GDBusCallFlags       flags,
                                                          gint                 timeout_msec,
                                                          GCancellable        *cancellable,
                                                          GAsyncReadyCallback  callback,
                                                          gpointer             user_data);
-GVariant        *g_dbus_proxy_invoke_method_finish      (GDBusProxy          *proxy,
+GVariant        *g_dbus_proxy_call_finish               (GDBusProxy          *proxy,
                                                          GAsyncResult        *res,
                                                          GError             **error);
-GVariant        *g_dbus_proxy_invoke_method_sync        (GDBusProxy          *proxy,
+GVariant        *g_dbus_proxy_call_sync                 (GDBusProxy          *proxy,
                                                          const gchar         *method_name,
                                                          GVariant            *parameters,
-                                                         GDBusInvokeMethodFlags flags,
+                                                         GDBusCallFlags       flags,
                                                          gint                 timeout_msec,
                                                          GCancellable        *cancellable,
                                                          GError             **error);

@@ -55,9 +55,9 @@
           <row><entry>dbus_g_connection_unregister_g_object()</entry><entry>g_dbus_connection_unregister_object()</entry></row>
           <row><entry>dbus_g_object_type_install_info()</entry><entry>introspection data is installed while registering
                an object, see g_dbus_connection_register_object()</entry></row>
-          <row><entry>dbus_g_proxy_begin_call()</entry><entry>g_dbus_proxy_invoke_method()</entry></row>
-          <row><entry>dbus_g_proxy_end_call()</entry><entry>g_dbus_proxy_invoke_method_finish()</entry></row>
-          <row><entry>dbus_g_proxy_call()</entry><entry>g_dbus_proxy_invoke_method_sync()</entry></row>
+          <row><entry>dbus_g_proxy_begin_call()</entry><entry>g_dbus_proxy_call()</entry></row>
+          <row><entry>dbus_g_proxy_end_call()</entry><entry>g_dbus_proxy_call_finish()</entry></row>
+          <row><entry>dbus_g_proxy_call()</entry><entry>g_dbus_proxy_call_sync()</entry></row>
           <row><entry>dbus_g_error_domain_register()</entry><entry>g_dbus_error_register_error_domain()</entry></row>
           <row><entry>dbus_g_error_has_name()</entry><entry>no direct equivalent, see g_dbus_error_get_remote_error()</entry></row>
           <row><entry>dbus_g_method_return()</entry><entry>g_dbus_method_invocation_return_value()</entry></row>

@@ -351,7 +351,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 
   /* return the uid */
 #if defined(G_OS_UNIX)
-  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, g_credentials_get_unix_user (credentials, NULL));
+  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) g_credentials_get_unix_user (credentials, NULL));
 #elif defined(G_OS_WIN32)
   initial_response = g_strdup_printf ("%s", g_credentials_get_windows_user ());
 #else

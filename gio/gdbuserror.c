@@ -41,9 +41,9 @@
  * @include: gio/gio.h
  *
  * All facilities that return errors from remote methods (such as
- * g_dbus_connection_invoke_method_sync()) use #GError to represent
- * both D-Bus errors (e.g. errors returned from the other peer) and
- * locally in-process generated errors.
+ * g_dbus_connection_call_sync()) use #GError to represent both D-Bus
+ * errors (e.g. errors returned from the other peer) and locally
+ * in-process generated errors.
  *
  * To check if a returned #GError is an error from a remote peer, use
  * g_dbus_error_is_remote_error(). To get the actual D-Bus error name,
@@ -488,9 +488,10 @@ g_dbus_error_is_remote_error (const GError *error)
  *
  * Gets the D-Bus error name used for @error, if any.
  *
- * This function is guaranteed to return a D-Bus error name for all #GError<!-- -->s returned from
- * functions handling remote method calls (e.g. g_dbus_connection_invoke_method_finish())
- * unless g_dbus_error_strip_remote_error() has been used on @error.
+ * This function is guaranteed to return a D-Bus error name for all
+ * #GError<!-- -->s returned from functions handling remote method
+ * calls (e.g. g_dbus_connection_call_finish()) unless
+ * g_dbus_error_strip_remote_error() has been used on @error.
  *
  * Returns: An allocated string or %NULL if the D-Bus error name could not be found. Free with g_free().
  *

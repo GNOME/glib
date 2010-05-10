@@ -537,13 +537,13 @@ test_peer (void)
 
   /* try invoking a method */
   error = NULL;
-  result = g_dbus_proxy_invoke_method_sync (proxy,
-                                            "HelloPeer",
-                                            g_variant_new ("(s)", "Hey Peer!"),
-                                            G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                            -1,
-                                            NULL,  /* GCancellable */
-                                            &error);
+  result = g_dbus_proxy_call_sync (proxy,
+                                   "HelloPeer",
+                                   g_variant_new ("(s)", "Hey Peer!"),
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,  /* GCancellable */
+                                   &error);
   g_assert_no_error (error);
   g_variant_get (result, "(s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Peer!'.");
@@ -556,14 +556,14 @@ test_peer (void)
                     G_CALLBACK (on_proxy_signal_received),
                     &data);
   g_assert (!data.signal_received);
-  g_dbus_proxy_invoke_method (proxy,
-                              "EmitSignal",
-                              NULL,  /* no arguments */
-                              G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                              -1,
-                              NULL,  /* GCancellable */
-                              NULL,  /* GAsyncReadyCallback - we don't care about the result */
-                              NULL); /* user_data */
+  g_dbus_proxy_call (proxy,
+                     "EmitSignal",
+                     NULL,  /* no arguments */
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,  /* GCancellable */
+                     NULL,  /* GAsyncReadyCallback - we don't care about the result */
+                     NULL); /* user_data */
   g_main_loop_run (loop);
   g_assert (data.signal_received);
   g_assert_cmpint (data.num_method_calls, ==, 2);
@@ -679,13 +679,13 @@ test_peer (void)
   server = NULL;
 
   error = NULL;
-  result = g_dbus_proxy_invoke_method_sync (proxy,
-                                            "HelloPeer",
-                                            g_variant_new ("(s)", "Hey Again Peer!"),
-                                            G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                            -1,
-                                            NULL,  /* GCancellable */
-                                            &error);
+  result = g_dbus_proxy_call_sync (proxy,
+                                   "HelloPeer",
+                                   g_variant_new ("(s)", "Hey Again Peer!"),
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,  /* GCancellable */
+                                   &error);
   g_assert_no_error (error);
   g_variant_get (result, "(s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Again Peer!'.");

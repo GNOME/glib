@@ -143,16 +143,16 @@ print_methods (GDBusConnection *c,
   guint m;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 name,
-                                                 path,
-                                                 "org.freedesktop.DBus.Introspectable",
-                                                 "Introspect",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 secs */
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        name,
+                                        path,
+                                        "org.freedesktop.DBus.Introspectable",
+                                        "Introspect",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 secs */
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
@@ -205,16 +205,16 @@ print_paths (GDBusConnection *c,
   guint n;
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 name,
-                                                 path,
-                                                 "org.freedesktop.DBus.Introspectable",
-                                                 "Introspect",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 secs */
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        name,
+                                        path,
+                                        "org.freedesktop.DBus.Introspectable",
+                                        "Introspect",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 secs */
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
@@ -283,16 +283,16 @@ print_names (GDBusConnection *c,
   name_set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 "org.freedesktop.DBus",
-                                                 "/org/freedesktop/DBus",
-                                                 "org.freedesktop.DBus",
-                                                 "ListNames",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 secs */
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        "org.freedesktop.DBus",
+                                        "/org/freedesktop/DBus",
+                                        "org.freedesktop.DBus",
+                                        "ListNames",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 secs */
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
@@ -312,16 +312,16 @@ print_names (GDBusConnection *c,
   g_variant_unref (result);
 
   error = NULL;
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 "org.freedesktop.DBus",
-                                                 "/org/freedesktop/DBus",
-                                                 "org.freedesktop.DBus",
-                                                 "ListActivatableNames",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 secs */
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        "org.freedesktop.DBus",
+                                        "/org/freedesktop/DBus",
+                                        "org.freedesktop.DBus",
+                                        "ListActivatableNames",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 secs */
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
@@ -453,16 +453,16 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   result = NULL;
   node_info = NULL;
 
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 dest,
-                                                 path,
-                                                 "org.freedesktop.DBus.Introspectable",
-                                                 "Introspect",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 secs */
-                                                 NULL,
-                                                 error);
+  result = g_dbus_connection_call_sync (c,
+                                        dest,
+                                        path,
+                                        "org.freedesktop.DBus.Introspectable",
+                                        "Introspect",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 secs */
+                                        NULL,
+                                        error);
   if (result == NULL)
     goto out;
 
@@ -825,16 +825,16 @@ handle_call (gint        *argc,
 
   if (parameters != NULL)
     parameters = g_variant_ref_sink (parameters);
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 opt_call_dest,
-                                                 opt_call_object_path,
-                                                 interface_name,
-                                                 method_name,
-                                                 parameters,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 -1,
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        opt_call_dest,
+                                        opt_call_object_path,
+                                        interface_name,
+                                        method_name,
+                                        parameters,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
@@ -1011,16 +1011,16 @@ dump_interface (GDBusConnection          *c,
   if (c != NULL && name != NULL && object_path != NULL)
     {
       GVariant *result;
-      result = g_dbus_connection_invoke_method_sync (c,
-                                                     name,
-                                                     object_path,
-                                                     "org.freedesktop.DBus.Properties",
-                                                     "GetAll",
-                                                     g_variant_new ("(s)", o->name),
-                                                     G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                     3000,
-                                                     NULL,
-                                                     NULL);
+      result = g_dbus_connection_call_sync (c,
+                                            name,
+                                            object_path,
+                                            "org.freedesktop.DBus.Properties",
+                                            "GetAll",
+                                            g_variant_new ("(s)", o->name),
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            3000,
+                                            NULL,
+                                            NULL);
       if (result != NULL)
         {
           if (g_variant_is_of_type (result, G_VARIANT_TYPE ("(a{sv})")))
@@ -1259,16 +1259,16 @@ handle_introspect (gint        *argc,
   if (request_completion)
     goto out;
 
-  result = g_dbus_connection_invoke_method_sync (c,
-                                                 opt_introspect_dest,
-                                                 opt_introspect_object_path,
-                                                 "org.freedesktop.DBus.Introspectable",
-                                                 "Introspect",
-                                                 NULL,
-                                                 G_DBUS_INVOKE_METHOD_FLAGS_NONE,
-                                                 3000, /* 3 sec */
-                                                 NULL,
-                                                 &error);
+  result = g_dbus_connection_call_sync (c,
+                                        opt_introspect_dest,
+                                        opt_introspect_object_path,
+                                        "org.freedesktop.DBus.Introspectable",
+                                        "Introspect",
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 sec */
+                                        NULL,
+                                        &error);
   if (result == NULL)
     {
       g_printerr (_("Error: %s\n"), error->message);
