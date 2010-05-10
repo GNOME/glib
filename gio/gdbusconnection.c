@@ -577,7 +577,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * If you are constructing a #GDBusConnection and pass
    * %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT in the
    * #GDBusConnection:flags property you will be able to read the GUID
-   * of the other peer here after the connection has been succesfully
+   * of the other peer here after the connection has been successfully
    * initialized.
    *
    * Since: 2.26
@@ -779,6 +779,16 @@ g_dbus_connection_init (GDBusConnection *connection)
   connection->priv->filters = g_ptr_array_new ();
 }
 
+/**
+ * g_dbus_connection_get_stream:
+ * @connection: a #GDBusConnection
+ *
+ * Gets the underlying stream used for IO.
+ *
+ * Returns: the stream used for IO
+ *
+ * Since: 2.26
+ */
 GIOStream *
 g_dbus_connection_get_stream (GDBusConnection *connection)
 {
@@ -810,7 +820,7 @@ g_dbus_connection_is_closed (GDBusConnection *connection)
  *
  * Gets the capabilities negotiated with the remote peer
  *
- * Returns: One or more flags from the #GDBusCapabilityFlags enumeration.
+ * Returns: Zero or more flags from the #GDBusCapabilityFlags enumeration.
  *
  * Since: 2.26
  */
@@ -1654,9 +1664,7 @@ get_offered_capabilities_max (GDBusConnection *connection)
       ret = G_DBUS_CAPABILITY_FLAGS_NONE;
 #ifdef G_OS_UNIX
       if (G_IS_UNIX_CONNECTION (connection->priv->stream))
-        {
-          ret |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
-        }
+        ret |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
 #endif
       return ret;
 }
@@ -1851,11 +1859,11 @@ async_init_thread (GSimpleAsyncResult *res,
 }
 
 static void
-async_initable_init_async (GAsyncInitable     *initable,
-                           gint                io_priority,
-                           GCancellable       *cancellable,
-                           GAsyncReadyCallback callback,
-                           gpointer            user_data)
+async_initable_init_async (GAsyncInitable      *initable,
+                           gint                 io_priority,
+                           GCancellable        *cancellable,
+                           GAsyncReadyCallback  callback,
+                           gpointer             user_data)
 {
   GSimpleAsyncResult *res;
 
@@ -2586,7 +2594,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   /* Add the match rule to the bus...
    *
    * Avoid adding match rules for NameLost and NameAcquired messages - the bus will
-   * always send such messages to to us.
+   * always send such messages to us.
    */
   if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
@@ -2889,7 +2897,7 @@ distribute_signals (GDBusConnection *connection,
 
   sender = g_dbus_message_get_sender (message);
 
-  /* collect subcsribers that match on sender */
+  /* collect subscribers that match on sender */
   if (sender != NULL)
     {
       signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, sender);
@@ -2897,7 +2905,7 @@ distribute_signals (GDBusConnection *connection,
         schedule_callbacks (connection, signal_data_array, message, sender);
     }
 
-  /* collect subcsribers not matching on sender */
+  /* collect subscribers not matching on sender */
   signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, "");
   if (signal_data_array != NULL)
     schedule_callbacks (connection, signal_data_array, message, sender);

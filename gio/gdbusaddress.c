@@ -396,10 +396,10 @@ g_dbus_is_supported_address (const gchar  *string,
 }
 
 gboolean
-_g_dbus_address_parse_entry (const gchar   *address_entry,
-                             gchar        **out_transport_name,
-                             GHashTable   **out_key_value_pairs,
-                             GError       **error)
+_g_dbus_address_parse_entry (const gchar  *address_entry,
+                             gchar       **out_transport_name,
+                             GHashTable  **out_key_value_pairs,
+                             GError      **error)
 {
   gboolean ret;
   GHashTable *key_value_pairs;
@@ -485,11 +485,11 @@ out:
  * making libgio link to libX11...
  */
 static GIOStream *
-g_dbus_address_connect (const gchar    *address_entry,
-                        const gchar    *transport_name,
-                        GHashTable     *key_value_pairs,
-                        GCancellable   *cancellable,
-                        GError        **error)
+g_dbus_address_connect (const gchar   *address_entry,
+                        const gchar   *transport_name,
+                        GHashTable    *key_value_pairs,
+                        GCancellable  *cancellable,
+                        GError       **error)
 {
   GIOStream *ret;
   GSocketConnectable *connectable;
@@ -669,10 +669,10 @@ g_dbus_address_connect (const gchar    *address_entry,
 }
 
 static GIOStream *
-g_dbus_address_try_connect_one (const gchar         *address_entry,
-                                gchar              **out_guid,
-                                GCancellable        *cancellable,
-                                GError             **error)
+g_dbus_address_try_connect_one (const gchar   *address_entry,
+                                gchar        **out_guid,
+                                GCancellable  *cancellable,
+                                GError       **error)
 {
   GIOStream *ret;
   GHashTable *key_value_pairs;
@@ -856,10 +856,10 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  * Since: 2.26
  */
 GIOStream *
-g_dbus_address_get_stream_sync (const gchar         *address,
-                                gchar              **out_guid,
-                                GCancellable        *cancellable,
-                                GError             **error)
+g_dbus_address_get_stream_sync (const gchar   *address,
+                                gchar        **out_guid,
+                                GCancellable  *cancellable,
+                                GError       **error)
 {
   GIOStream *ret;
   gchar **addr_array;
