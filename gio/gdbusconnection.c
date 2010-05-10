@@ -23,6 +23,11 @@
 /*
  * TODO for GDBus:
  *
+ * - Validate all data (e.g. UTF-8) and check all the required D-Bus headers
+ *   are present and forbidden ones aren't
+ *   - When writing: g_dbus_message_to_blob()
+ *   - When reading: g_dbus_message_new_from_blob()
+ *
  * - would be nice to expose GDBusAuthMechanism and an extension point
  *
  * - Need to rewrite GDBusAuth and rework GDBusAuthMechanism. In particular
