@@ -28,6 +28,34 @@
  * - Need to rewrite GDBusAuth and rework GDBusAuthMechanism. In particular
  *   the mechanism VFuncs need to be able to set an error.
  *
+ * - Need to document usage of DBUS_SYSTEM_ADDRESS and
+ *   DBUS_SESSION_BUS_ADDRESS environment variables. Also need to
+ *   document other mechanisms/sources for determining the D-Bus
+ *   address of a well-known bus.
+ *
+ *   - e.g. on Win32 we need code like from here
+ *
+ *     http://cgit.freedesktop.org/~david/gdbus-standalone/tree/gdbus/gdbusaddress.c#n900
+ *
+ *     that was never copied over here because it originally was copy-paste
+ *     from the GPLv2 / AFL 2.1 libdbus sources.
+ *
+ *   - on OS X we need to look in launchd for the address
+ *
+ *     https://bugs.freedesktop.org/show_bug.cgi?id=14259
+ *
+ *   - on X11 we need to look in a X11 property on the X server
+ *     - (we can also just use dbus-launch(1) from the D-Bus
+ *        distribution)
+ *
+ *   - (ideally) this requires D-Bus spec work because none of
+ *     this has never really been specced out properly (excect
+ *     the X11 bits)
+ *
+ * - Related to the above, we also need to be able to launch a message bus
+ *   instance.... Since we don't want to write our own bus daemon we should
+ *   launch dbus-daemon(1) (thus: Win32 and OS X need to bundle it)
+ *
  * - probably want a G_DBUS_NONCE_TCP_TMPDIR environment variable
  *   to specify where the nonce is stored. This will allow people to use
  *   G_DBUS_NONCE_TCP_TMPDIR=/mnt/secure.company.server/dbus-nonce-dir
