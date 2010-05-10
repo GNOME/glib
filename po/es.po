@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-04-27 18:59+0000\n"
-"PO-Revision-Date: 2010-04-27 21:04+0200\n"
+"POT-Creation-Date: 2010-05-10 06:39+0000\n"
+"PO-Revision-Date: 2010-05-10 19:38+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -252,6 +252,13 @@ msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no contiene XXXXXX"
+
+#: ../glib/gfileutils.c:1774
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "%u byte"
+msgstr[1] "%u bytes"
 
 #: ../glib/gfileutils.c:1782
 #, c-format
@@ -781,7 +788,7 @@ msgstr "se desbordó el espacio de trabajo de compilación"
 msgid "previously-checked referenced subpattern not found"
 msgstr "no se encontró el subpatrón referenciado anteriormente comprobado"
 
-#: ../glib/gregex.c:522 ../glib/gregex.c:1603
+#: ../glib/gregex.c:522 ../glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Error al coincidir con la expresión regular %s: %s"
@@ -805,43 +812,43 @@ msgstr "Error al compilar la expresión regular %s en el carácter %d: %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Error al optimizar la expresión regular %s: %s"
 
-#: ../glib/gregex.c:2031
+#: ../glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "se esperaba un dígito hexadecimal o «}»"
 
-#: ../glib/gregex.c:2047
+#: ../glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "se esperaba un dígito hexadecimal"
 
-#: ../glib/gregex.c:2087
+#: ../glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "falta «<» en la referencia simbólica"
 
-#: ../glib/gregex.c:2096
+#: ../glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "referencia de símbolo sin terminar"
 
-#: ../glib/gregex.c:2103
+#: ../glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "referencia simbólica de longitud cero"
 
-#: ../glib/gregex.c:2114
+#: ../glib/gregex.c:2150
 msgid "digit expected"
 msgstr "se esperaba un dígito"
 
-#: ../glib/gregex.c:2132
+#: ../glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "referencia simbólica ilegal"
 
-#: ../glib/gregex.c:2194
+#: ../glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "«\\» al final de la cadena"
 
-#: ../glib/gregex.c:2198
+#: ../glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "secuencia de escape desconocida"
 
-#: ../glib/gregex.c:2208
+#: ../glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Error al analizar el texto de reemplazo «%s» en el carácter %lu: %s"
@@ -1050,21 +1057,21 @@ msgstr "Falta un argumento para %s"
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
 
-#: ../glib/gkeyfile.c:361
+#: ../glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "No se pudo encontrar la clave de archivo válida en los directorios de "
 "búsqueda"
 
-#: ../glib/gkeyfile.c:396
+#: ../glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 
-#: ../glib/gkeyfile.c:404
+#: ../glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "El archivo está vacío"
 
-#: ../glib/gkeyfile.c:763
+#: ../glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1072,52 +1079,52 @@ msgstr ""
 "El archivo de claves contiene la línea «%s» que no es un par valor-clave, "
 "grupo o comentario"
 
-#: ../glib/gkeyfile.c:823
+#: ../glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nombre de grupo no válido: %s"
 
-#: ../glib/gkeyfile.c:845
+#: ../glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "El archivo de claves no empieza por un grupo"
 
-#: ../glib/gkeyfile.c:871
+#: ../glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nombre de clave no válida: %s"
 
-#: ../glib/gkeyfile.c:898
+#: ../glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de claves contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1114 ../glib/gkeyfile.c:1276 ../glib/gkeyfile.c:2505
-#: ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2706 ../glib/gkeyfile.c:2839
-#: ../glib/gkeyfile.c:2992 ../glib/gkeyfile.c:3179 ../glib/gkeyfile.c:3240
+#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2657
+#: ../glib/gkeyfile.c:2723 ../glib/gkeyfile.c:2858 ../glib/gkeyfile.c:2991
+#: ../glib/gkeyfile.c:3144 ../glib/gkeyfile.c:3331 ../glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1288
+#: ../glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo de claves no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1395 ../glib/gkeyfile.c:1510
+#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1415 ../glib/gkeyfile.c:1909
+#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no puede "
 "interpretarse."
 
-#: ../glib/gkeyfile.c:1530
+#: ../glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1125,7 +1132,7 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no se "
 "puede interpretar."
 
-#: ../glib/gkeyfile.c:2124 ../glib/gkeyfile.c:2336
+#: ../glib/gkeyfile.c:2126 ../glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1134,37 +1141,37 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2520 ../glib/gkeyfile.c:2721 ../glib/gkeyfile.c:3251
+#: ../glib/gkeyfile.c:2672 ../glib/gkeyfile.c:2873 ../glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:3485
+#: ../glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr ""
 "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:3507
+#: ../glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:3649
+#: ../glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3663
+#: ../glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:3696
+#: ../glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:3720
+#: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
@@ -1470,7 +1477,7 @@ msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
 #: ../gio/ginetsocketaddress.c:182 ../gio/ginetsocketaddress.c:199
-#: ../gio/gunixsocketaddress.c:218
+#: ../gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "No hay suficiente espacio para la dirección del socket"
 
@@ -2155,21 +2162,21 @@ msgstr "El socket añadido está cerrado"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "No se puede manejar la versión %d de la codificación GThemedIcon"
 
-#: ../gio/gunixconnection.c:151
+#: ../gio/gunixconnection.c:156
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Se esperaba un mensaje de control, se obtuvieron %d"
 
-#: ../gio/gunixconnection.c:164
+#: ../gio/gunixconnection.c:169
 msgid "Unexpected type of ancillary data"
 msgstr "Tipos de datos complementarios inesperados"
 
-#: ../gio/gunixconnection.c:182
+#: ../gio/gunixconnection.c:187
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "Se esperaba un fd pero se obtuvieron %d\n"
 
-#: ../gio/gunixconnection.c:198
+#: ../gio/gunixconnection.c:203
 msgid "Received invalid fd"
 msgstr "Se recibió un fd no válido"
 
@@ -2194,7 +2201,7 @@ msgstr "Sistema de archivos raíz"
 msgid "Error writing to unix: %s"
 msgstr "Error al escribir en unix: %s"
 
-#: ../gio/gunixsocketaddress.c:241
+#: ../gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 "Este sistema no soporta direcciones de socket de dominio UNIX abstracto"
