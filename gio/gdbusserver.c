@@ -134,8 +134,7 @@ g_dbus_server_finalize (GObject *object)
   if (server->priv->main_context_at_construction != NULL)
     g_main_context_unref (server->priv->main_context_at_construction);
 
-  if (G_OBJECT_CLASS (g_dbus_server_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_dbus_server_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_dbus_server_parent_class)->finalize (object);
 }
 
 static void
@@ -229,8 +228,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
                                    g_param_spec_flags ("flags",
-                                                       _("Flags"),
-                                                       _("Flags for the server"),
+                                                       P_("Flags"),
+                                                       P_("Flags for the server"),
                                                        G_TYPE_DBUS_SERVER_FLAGS,
                                                        G_DBUS_SERVER_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -250,8 +249,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_GUID,
                                    g_param_spec_string ("guid",
-                                                        _("GUID"),
-                                                        _("The guid of the server"),
+                                                        P_("GUID"),
+                                                        P_("The guid of the server"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -270,8 +269,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_ADDRESS,
                                    g_param_spec_string ("address",
-                                                        _("Address"),
-                                                        _("The address to listen on"),
+                                                        P_("Address"),
+                                                        P_("The address to listen on"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -290,8 +289,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CLIENT_ADDRESS,
                                    g_param_spec_string ("client-address",
-                                                        _("Client Address"),
-                                                        _("The address clients can use"),
+                                                        P_("Client Address"),
+                                                        P_("The address clients can use"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_NAME |
@@ -308,8 +307,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_ACTIVE,
                                    g_param_spec_string ("active",
-                                                        _("Active"),
-                                                        _("Whether the server is currently active"),
+                                                        P_("Active"),
+                                                        P_("Whether the server is currently active"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_NAME |
@@ -326,8 +325,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_AUTHENTICATION_OBSERVER,
                                    g_param_spec_object ("authentication-observer",
-                                                        _("Authentication Observer"),
-                                                        _("Object used to assist in the authentication process"),
+                                                        P_("Authentication Observer"),
+                                                        P_("Object used to assist in the authentication process"),
                                                         G_TYPE_DBUS_AUTH_OBSERVER,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -422,12 +421,12 @@ on_run (GSocketService    *service,
  * Since: 2.26
  */
 GDBusServer *
-g_dbus_server_new_sync (const gchar          *address,
-                        GDBusServerFlags      flags,
-                        const gchar          *guid,
-                        GDBusAuthObserver    *observer,
-                        GCancellable         *cancellable,
-                        GError              **error)
+g_dbus_server_new_sync (const gchar        *address,
+                        GDBusServerFlags    flags,
+                        const gchar        *guid,
+                        GDBusAuthObserver  *observer,
+                        GCancellable       *cancellable,
+                        GError            **error)
 {
   GDBusServer *server;
 
@@ -764,9 +763,8 @@ try_tcp (GDBusServer  *server,
                                                   NULL,
                                                   error);
   if (resolved_addresses == NULL)
-    {
-      goto out;
-    }
+    goto out;
+
   /* TODO: handle family */
   for (l = resolved_addresses; l != NULL; l = l->next)
     {
@@ -787,10 +785,9 @@ try_tcp (GDBusServer  *server,
           goto out;
         }
       if (port_num == 0)
-        {
-          /* make sure we allocate the same port number for other listeners */
-          port_num = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (effective_address));
-        }
+        /* make sure we allocate the same port number for other listeners */
+        port_num = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (effective_address));
+
       g_object_unref (effective_address);
       g_object_unref (socket_address);
     }
@@ -961,9 +958,9 @@ on_run (GSocketService    *service,
 }
 
 static gboolean
-initable_init (GInitable       *initable,
-               GCancellable    *cancellable,
-               GError         **error)
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
 {
   GDBusServer *server = G_DBUS_SERVER (initable);
   gboolean ret;
@@ -1009,26 +1006,18 @@ initable_init (GInitable       *initable,
             }
 #ifdef G_OS_UNIX
           else if (g_strcmp0 (transport_name, "unix") == 0)
-            {
-              ret = try_unix (server, address_entry, key_value_pairs, &this_error);
-            }
+            ret = try_unix (server, address_entry, key_value_pairs, &this_error);
 #endif
           else if (g_strcmp0 (transport_name, "tcp") == 0)
-            {
-              ret = try_tcp (server, address_entry, key_value_pairs, FALSE, &this_error);
-            }
+            ret = try_tcp (server, address_entry, key_value_pairs, FALSE, &this_error);
           else if (g_strcmp0 (transport_name, "nonce-tcp") == 0)
-            {
-              ret = try_tcp (server, address_entry, key_value_pairs, TRUE, &this_error);
-            }
+            ret = try_tcp (server, address_entry, key_value_pairs, TRUE, &this_error);
           else
-            {
-              g_set_error (&this_error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Cannot listen on unsupported transport `%s'"),
-                           transport_name);
-            }
+            g_set_error (&this_error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_INVALID_ARGUMENT,
+                         _("Cannot listen on unsupported transport `%s'"),
+                         transport_name);
 
           g_free (transport_name);
           if (key_value_pairs != NULL)

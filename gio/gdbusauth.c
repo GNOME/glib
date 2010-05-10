@@ -175,8 +175,8 @@ _g_dbus_auth_class_init (GDBusAuthClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_STREAM,
                                    g_param_spec_object ("stream",
-                                                        _("IO Stream"),
-                                                        _("The underlying GIOStream used for I/O"),
+                                                        P_("IO Stream"),
+                                                        P_("The underlying GIOStream used for I/O"),
                                                         G_TYPE_IO_STREAM,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |

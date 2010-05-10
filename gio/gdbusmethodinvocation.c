@@ -92,8 +92,7 @@ g_dbus_method_invocation_finalize (GObject *object)
   g_object_unref (invocation->priv->message);
   g_variant_unref (invocation->priv->parameters);
 
-  if (G_OBJECT_CLASS (g_dbus_method_invocation_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_dbus_method_invocation_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_dbus_method_invocation_parent_class)->finalize (object);
 }
 
 static void
@@ -220,8 +219,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_SENDER,
                                    g_param_spec_string ("sender",
-                                                        _("Sender"),
-                                                        _("The bus name that invoked the method."),
+                                                        P_("Sender"),
+                                                        P_("The bus name that invoked the method."),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -240,8 +239,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
                                    g_param_spec_string ("object-path",
-                                                        _("Object Path"),
-                                                        _("The object path the method was invoked on."),
+                                                        P_("Object Path"),
+                                                        P_("The object path the method was invoked on."),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -260,8 +259,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_INTERFACE_NAME,
                                    g_param_spec_string ("interface-name",
-                                                        _("Interface Name"),
-                                                        _("The name of the D-Bus interface the method was invoked on."),
+                                                        P_("Interface Name"),
+                                                        P_("The name of the D-Bus interface the method was invoked on."),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -280,8 +279,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_METHOD_NAME,
                                    g_param_spec_string ("method-name",
-                                                        _("Method Name"),
-                                                        _("The name of the method that was invoked."),
+                                                        P_("Method Name"),
+                                                        P_("The name of the method that was invoked."),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -300,8 +299,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_METHOD_INFO,
                                    g_param_spec_boxed ("method-info",
-                                                       _("Method Info"),
-                                                       _("Information about the method that was invoked, if any."),
+                                                       P_("Method Info"),
+                                                       P_("Information about the method that was invoked, if any."),
                                                        G_TYPE_DBUS_METHOD_INFO,
                                                        G_PARAM_READABLE |
                                                        G_PARAM_WRITABLE |
@@ -320,8 +319,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
                                    g_param_spec_object ("connection",
-                                                        _("Connection"),
-                                                        _("The #GDBusConnection the method was invoked on."),
+                                                        P_("Connection"),
+                                                        P_("The #GDBusConnection the method was invoked on."),
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -340,8 +339,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_MESSAGE,
                                    g_param_spec_object ("message",
-                                                        _("Message"),
-                                                        _("The D-Bus Message."),
+                                                        P_("Message"),
+                                                        P_("The D-Bus Message."),
                                                         G_TYPE_DBUS_MESSAGE,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -360,8 +359,8 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_PARAMETERS,
                                    g_param_spec_boxed ("parameters",
-                                                       _("Parameters"),
-                                                       _("The parameters as a #GVariant tuple."),
+                                                       P_("Parameters"),
+                                                       P_("The parameters as a #GVariant tuple."),
                                                        G_TYPE_VARIANT,
                                                        G_PARAM_READABLE |
                                                        G_PARAM_WRITABLE |
@@ -380,14 +379,14 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_USER_DATA,
                                    g_param_spec_pointer ("user-data",
-                                                        _("User Data"),
-                                                        _("The gpointer passed to g_dbus_connection_register_object()."),
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_NAME |
-                                                        G_PARAM_STATIC_BLURB |
-                                                        G_PARAM_STATIC_NICK));
+                                                         P_("User Data"),
+                                                         P_("The gpointer passed to g_dbus_connection_register_object()."),
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_WRITABLE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_NAME |
+                                                         G_PARAM_STATIC_BLURB |
+                                                         G_PARAM_STATIC_NICK));
 
   g_type_class_add_private (klass, sizeof (GDBusMethodInvocationPrivate));
 }
@@ -579,15 +578,15 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
  * Since: 2.26
  */
 GDBusMethodInvocation *
-g_dbus_method_invocation_new (const gchar            *sender,
-                              const gchar            *object_path,
-                              const gchar            *interface_name,
-                              const gchar            *method_name,
-                              const GDBusMethodInfo  *method_info,
-                              GDBusConnection        *connection,
-                              GDBusMessage           *message,
-                              GVariant               *parameters,
-                              gpointer                user_data)
+g_dbus_method_invocation_new (const gchar           *sender,
+                              const gchar           *object_path,
+                              const gchar           *interface_name,
+                              const gchar           *method_name,
+                              const GDBusMethodInfo *method_info,
+                              GDBusConnection       *connection,
+                              GDBusMessage          *message,
+                              GVariant              *parameters,
+                              gpointer               user_data)
 {
   g_return_val_if_fail (sender == NULL || g_dbus_is_name (sender), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);

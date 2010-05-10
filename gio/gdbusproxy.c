@@ -110,16 +110,12 @@ g_dbus_proxy_finalize (GObject *object)
   GDBusProxy *proxy = G_DBUS_PROXY (object);
 
   if (proxy->priv->properties_changed_subscriber_id > 0)
-    {
-      g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
-                                            proxy->priv->properties_changed_subscriber_id);
-    }
+    g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
+                                          proxy->priv->properties_changed_subscriber_id);
 
   if (proxy->priv->signals_subscriber_id > 0)
-    {
-      g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
-                                            proxy->priv->signals_subscriber_id);
-    }
+    g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
+                                          proxy->priv->signals_subscriber_id);
 
   g_object_unref (proxy->priv->connection);
   g_free (proxy->priv->unique_bus_name);
@@ -131,8 +127,7 @@ g_dbus_proxy_finalize (GObject *object)
   if (proxy->priv->expected_interface != NULL)
     g_dbus_interface_info_unref (proxy->priv->expected_interface);
 
-  if (G_OBJECT_CLASS (g_dbus_proxy_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_dbus_proxy_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_dbus_proxy_parent_class)->finalize (object);
 }
 
 static void
@@ -250,8 +245,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_INFO,
                                    g_param_spec_boxed ("g-interface-info",
-                                                       _("Interface Information"),
-                                                       _("Interface Information"),
+                                                       P_("Interface Information"),
+                                                       P_("Interface Information"),
                                                        G_TYPE_DBUS_INTERFACE_INFO,
                                                        G_PARAM_READABLE |
                                                        G_PARAM_WRITABLE |
@@ -269,8 +264,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_CONNECTION,
                                    g_param_spec_object ("g-connection",
-                                                        _("g-connection"),
-                                                        _("The connection the proxy is for"),
+                                                        P_("g-connection"),
+                                                        P_("The connection the proxy is for"),
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -289,8 +284,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_FLAGS,
                                    g_param_spec_flags ("g-flags",
-                                                       _("g-flags"),
-                                                       _("Flags for the proxy"),
+                                                       P_("g-flags"),
+                                                       P_("Flags for the proxy"),
                                                        G_TYPE_DBUS_PROXY_FLAGS,
                                                        G_DBUS_PROXY_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -310,8 +305,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_UNIQUE_BUS_NAME,
                                    g_param_spec_string ("g-unique-bus-name",
-                                                        _("g-unique-bus-name"),
-                                                        _("The unique bus name the proxy is for"),
+                                                        P_("g-unique-bus-name"),
+                                                        P_("The unique bus name the proxy is for"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -330,8 +325,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_OBJECT_PATH,
                                    g_param_spec_string ("g-object-path",
-                                                        _("g-object-path"),
-                                                        _("The object path the proxy is for"),
+                                                        P_("g-object-path"),
+                                                        P_("The object path the proxy is for"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -350,8 +345,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_INTERFACE_NAME,
                                    g_param_spec_string ("g-interface-name",
-                                                        _("g-interface-name"),
-                                                        _("The D-Bus interface name the proxy is for"),
+                                                        P_("g-interface-name"),
+                                                        P_("The D-Bus interface name the proxy is for"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -377,8 +372,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_G_DEFAULT_TIMEOUT,
                                    g_param_spec_int ("g-default-timeout",
-                                                     _("Default Timeout"),
-                                                     _("Timeout for remote method invocation"),
+                                                     P_("Default Timeout"),
+                                                     P_("Timeout for remote method invocation"),
                                                      -1,
                                                      G_MAXINT,
                                                      -1,
@@ -459,8 +454,8 @@ g_dbus_proxy_init (GDBusProxy *proxy)
  * Since: 2.26
  */
 gchar **
-g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
-                                        GError             **error)
+g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy,
+                                        GError     **error)
 {
   gchar **names;
   GPtrArray *p;
@@ -485,9 +480,7 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
 
   g_hash_table_iter_init (&iter, proxy->priv->properties);
   while (g_hash_table_iter_next (&iter, (gpointer) &key, NULL))
-    {
-      g_ptr_array_add (p, g_strdup (key));
-    }
+    g_ptr_array_add (p, g_strdup (key));
   g_ptr_array_sort (p, (GCompareFunc) g_strcmp0);
   g_ptr_array_add (p, NULL);
 
@@ -519,9 +512,9 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
  * Since: 2.26
  */
 GVariant *
-g_dbus_proxy_get_cached_property (GDBusProxy          *proxy,
-                                  const gchar         *property_name,
-                                  GError             **error)
+g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
+                                  const gchar  *property_name,
+                                  GError      **error)
 {
   GVariant *value;
 
@@ -560,13 +553,13 @@ g_dbus_proxy_get_cached_property (GDBusProxy          *proxy,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-on_signal_received (GDBusConnection  *connection,
-                    const gchar      *sender_name,
-                    const gchar      *object_path,
-                    const gchar      *interface_name,
-                    const gchar      *signal_name,
-                    GVariant         *parameters,
-                    gpointer          user_data)
+on_signal_received (GDBusConnection *connection,
+                    const gchar     *sender_name,
+                    const gchar     *object_path,
+                    const gchar     *interface_name,
+                    const gchar     *signal_name,
+                    GVariant        *parameters,
+                    gpointer         user_data)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
 
@@ -581,13 +574,13 @@ on_signal_received (GDBusConnection  *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-on_properties_changed (GDBusConnection  *connection,
-                       const gchar      *sender_name,
-                       const gchar      *object_path,
-                       const gchar      *interface_name,
-                       const gchar      *signal_name,
-                       GVariant         *parameters,
-                       gpointer          user_data)
+on_properties_changed (GDBusConnection *connection,
+                       const gchar     *sender_name,
+                       const gchar     *object_path,
+                       const gchar     *interface_name,
+                       const gchar     *signal_name,
+                       GVariant        *parameters,
+                       gpointer         user_data)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
   GError *error;
@@ -746,9 +739,9 @@ process_get_all_reply (GDBusProxy *proxy,
 }
 
 static gboolean
-initable_init (GInitable       *initable,
-               GCancellable    *cancellable,
-               GError         **error)
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (initable);
   GVariant *result;
@@ -823,11 +816,11 @@ get_all_cb (GDBusConnection *connection,
 }
 
 static void
-async_initable_init_async (GAsyncInitable     *initable,
-                           gint                io_priority,
-                           GCancellable       *cancellable,
-                           GAsyncReadyCallback callback,
-                           gpointer            user_data)
+async_initable_init_async (GAsyncInitable      *initable,
+                           gint                 io_priority,
+                           GCancellable        *cancellable,
+                           GAsyncReadyCallback  callback,
+                           gpointer             user_data)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (initable);
   GSimpleAsyncResult *simple;
@@ -1248,9 +1241,9 @@ g_dbus_proxy_set_interface_info (GDBusProxy         *proxy,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
-maybe_split_method_name (const gchar   *method_name,
-                         gchar        **out_interface_name,
-                         const gchar  **out_method_name)
+maybe_split_method_name (const gchar  *method_name,
+                         gchar       **out_interface_name,
+                         const gchar **out_method_name)
 {
   gboolean was_split;
 
@@ -1310,8 +1303,8 @@ reply_cb (GDBusConnection *connection,
 }
 
 static const GDBusMethodInfo *
-lookup_method_info_or_warn (GDBusProxy     *proxy,
-                            const char     *method_name)
+lookup_method_info_or_warn (GDBusProxy  *proxy,
+                            const gchar *method_name)
 {
   const GDBusMethodInfo *info;
 
@@ -1400,14 +1393,14 @@ validate_method_return (const char             *method_name,
  * Since: 2.26
  */
 void
-g_dbus_proxy_invoke_method (GDBusProxy          *proxy,
-                            const gchar         *method_name,
-                            GVariant            *parameters,
-                            GDBusInvokeMethodFlags flags,
-                            gint                 timeout_msec,
-                            GCancellable        *cancellable,
-                            GAsyncReadyCallback  callback,
-                            gpointer             user_data)
+g_dbus_proxy_invoke_method (GDBusProxy             *proxy,
+                            const gchar            *method_name,
+                            GVariant               *parameters,
+                            GDBusInvokeMethodFlags  flags,
+                            gint                    timeout_msec,
+                            GCancellable           *cancellable,
+                            GAsyncReadyCallback     callback,
+                            gpointer                user_data)
 {
   GSimpleAsyncResult *simple;
   gboolean was_split;
@@ -1536,21 +1529,21 @@ g_dbus_proxy_invoke_method_finish (GDBusProxy    *proxy,
  * Since: 2.26
  */
 GVariant *
-g_dbus_proxy_invoke_method_sync (GDBusProxy     *proxy,
-                                 const gchar    *method_name,
-                                 GVariant       *parameters,
-                                 GDBusInvokeMethodFlags flags,
-                                 gint            timeout_msec,
-                                 GCancellable   *cancellable,
-                                 GError        **error)
+g_dbus_proxy_invoke_method_sync (GDBusProxy              *proxy,
+                                 const gchar             *method_name,
+                                 GVariant                *parameters,
+                                 GDBusInvokeMethodFlags   flags,
+                                 gint                     timeout_msec,
+                                 GCancellable            *cancellable,
+                                 GError                 **error)
 {
   GVariant *ret;
   gboolean was_split;
   gchar *split_interface_name;
   const gchar *split_method_name;
   const GDBusMethodInfo *expected_method_info;
-  const char *target_method_name;
-  const char *target_interface_name;
+  const gchar *target_method_name;
+  const gchar *target_interface_name;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name), NULL);

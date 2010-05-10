@@ -131,8 +131,8 @@ static GDBusConnection *the_system_bus = NULL;
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
-_g_strv_has_string (const gchar* const * haystack,
-                    const gchar *needle)
+_g_strv_has_string (const gchar* const *haystack,
+                    const gchar        *needle)
 {
   guint n;
 
@@ -303,7 +303,7 @@ static void purge_all_filters (GDBusConnection *connection);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static void initable_iface_init       (GInitableIface *initable_iface);
+static void initable_iface_init       (GInitableIface      *initable_iface);
 static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusConnection, g_dbus_connection, G_TYPE_OBJECT,
@@ -392,8 +392,7 @@ g_dbus_connection_finalize (GObject *object)
   g_mutex_free (connection->priv->init_lock);
   g_mutex_free (connection->priv->lock);
 
-  if (G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize (object);
 }
 
 static void
@@ -514,8 +513,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_STREAM,
                                    g_param_spec_object ("stream",
-                                                        _("IO Stream"),
-                                                        _("The underlying streams used for I/O"),
+                                                        P_("IO Stream"),
+                                                        P_("The underlying streams used for I/O"),
                                                         G_TYPE_IO_STREAM,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -535,8 +534,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_ADDRESS,
                                    g_param_spec_string ("address",
-                                                        _("Address"),
-                                                        _("D-Bus address specifying potential socket endpoints"),
+                                                        P_("Address"),
+                                                        P_("D-Bus address specifying potential socket endpoints"),
                                                         NULL,
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -554,8 +553,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
                                    g_param_spec_flags ("flags",
-                                                       _("Flags"),
-                                                       _("Flags"),
+                                                       P_("Flags"),
+                                                       P_("Flags"),
                                                        G_TYPE_DBUS_CONNECTION_FLAGS,
                                                        G_DBUS_CONNECTION_FLAGS_NONE,
                                                        G_PARAM_WRITABLE |
@@ -586,8 +585,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_GUID,
                                    g_param_spec_string ("guid",
-                                                        _("GUID"),
-                                                        _("GUID of the server peer"),
+                                                        P_("GUID"),
+                                                        P_("GUID of the server peer"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -607,8 +606,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_UNIQUE_NAME,
                                    g_param_spec_string ("unique-name",
-                                                        _("unique-name"),
-                                                        _("Unique name of bus connection"),
+                                                        P_("unique-name"),
+                                                        P_("Unique name of bus connection"),
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_NAME |
@@ -625,8 +624,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CLOSED,
                                    g_param_spec_boolean ("closed",
-                                                         _("Closed"),
-                                                         _("Whether the connection is closed"),
+                                                         P_("Closed"),
+                                                         P_("Whether the connection is closed"),
                                                          FALSE,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_STATIC_NAME |
@@ -645,8 +644,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_EXIT_ON_CLOSE,
                                    g_param_spec_boolean ("exit-on-close",
-                                                         _("Exit on close"),
-                                                         _("Whether the process is terminated when the connection is closed"),
+                                                         P_("Exit on close"),
+                                                         P_("Whether the process is terminated when the connection is closed"),
                                                          FALSE,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
@@ -665,8 +664,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CAPABILITY_FLAGS,
                                    g_param_spec_flags ("capabilities",
-                                                       _("Capabilities"),
-                                                       _("Capabilities"),
+                                                       P_("Capabilities"),
+                                                       P_("Capabilities"),
                                                        G_TYPE_DBUS_CAPABILITY_FLAGS,
                                                        G_DBUS_CAPABILITY_FLAGS_NONE,
                                                        G_PARAM_READABLE |
@@ -684,8 +683,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_AUTHENTICATION_OBSERVER,
                                    g_param_spec_object ("authentication-observer",
-                                                        _("Authentication Observer"),
-                                                        _("Object used to assist in the authentication process"),
+                                                        P_("Authentication Observer"),
+                                                        P_("Object used to assist in the authentication process"),
                                                         G_TYPE_DBUS_AUTH_OBSERVER,
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT_ONLY |
@@ -860,8 +859,8 @@ emit_closed_in_idle (gpointer user_data)
 /* Can be called from any thread, must hold lock */
 static void
 set_closed_unlocked (GDBusConnection *connection,
-                     gboolean  remote_peer_vanished,
-                     GError   *error)
+                     gboolean         remote_peer_vanished,
+                     GError          *error)
 {
   GSource *idle_source;
   EmitClosedData *data;
@@ -908,29 +907,29 @@ g_dbus_connection_close (GDBusConnection *connection)
 
   CONNECTION_LOCK (connection);
   if (!connection->priv->closed)
-  {
-    GError *error = NULL;
+    {
+      GError *error = NULL;
 
-    /* TODO: do this async */
-    //g_debug ("closing connection %p's stream %p", connection, connection->priv->stream);
-    if (!g_io_stream_close (connection->priv->stream, NULL, &error))
-      {
-        g_warning ("Error closing stream: %s", error->message);
-        g_error_free (error);
-      }
+      /* TODO: do this async */
+      //g_debug ("closing connection %p's stream %p", connection, connection->priv->stream);
+      if (!g_io_stream_close (connection->priv->stream, NULL, &error))
+        {
+          g_warning ("Error closing stream: %s", error->message);
+          g_error_free (error);
+        }
 
-    set_closed_unlocked (connection, FALSE, NULL);
-  }
+      set_closed_unlocked (connection, FALSE, NULL);
+    }
   CONNECTION_UNLOCK (connection);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
-g_dbus_connection_send_message_unlocked (GDBusConnection     *connection,
-                                         GDBusMessage        *message,
-                                         volatile guint32    *out_serial,
-                                         GError             **error)
+g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
+                                         GDBusMessage      *message,
+                                         volatile guint32  *out_serial,
+                                         GError           **error)
 {
   guchar *blob;
   gsize blob_size;
@@ -991,9 +990,8 @@ g_dbus_connection_send_message_unlocked (GDBusConnection     *connection,
   /* TODO: use connection->priv->auth to encode the blob */
 
   if (out_serial != NULL)
-    {
-      *out_serial = serial_to_use;
-    }
+    *out_serial = serial_to_use;
+
   g_dbus_message_set_serial (message, serial_to_use);
 
   _g_dbus_worker_send_message (connection->priv->worker,
@@ -1038,10 +1036,10 @@ g_dbus_connection_send_message_unlocked (GDBusConnection     *connection,
  * Since: 2.26
  */
 gboolean
-g_dbus_connection_send_message (GDBusConnection     *connection,
-                                GDBusMessage        *message,
-                                volatile guint32    *out_serial,
-                                GError             **error)
+g_dbus_connection_send_message (GDBusConnection   *connection,
+                                GDBusMessage      *message,
+                                volatile guint32  *out_serial,
+                                GError           **error)
 {
   gboolean ret;
 
@@ -1398,9 +1396,9 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * Since: 2.26
  */
 GDBusMessage *
-g_dbus_connection_send_message_with_reply_finish (GDBusConnection     *connection,
-                                                  GAsyncResult        *res,
-                                                  GError             **error)
+g_dbus_connection_send_message_with_reply_finish (GDBusConnection  *connection,
+                                                  GAsyncResult     *res,
+                                                  GError          **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GDBusMessage *reply;
@@ -1487,12 +1485,12 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * Since: 2.26
  */
 GDBusMessage *
-g_dbus_connection_send_message_with_reply_sync (GDBusConnection     *connection,
-                                                GDBusMessage        *message,
-                                                gint                 timeout_msec,
-                                                volatile guint32    *out_serial,
-                                                GCancellable        *cancellable,
-                                                GError             **error)
+g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
+                                                GDBusMessage      *message,
+                                                gint               timeout_msec,
+                                                volatile guint32  *out_serial,
+                                                GCancellable      *cancellable,
+                                                GError           **error)
 {
   SendMessageSyncData *data;
   GDBusMessage *reply;
@@ -1663,11 +1661,10 @@ get_offered_capabilities_max (GDBusConnection *connection)
       return ret;
 }
 
-
 static gboolean
-initable_init (GInitable       *initable,
-               GCancellable    *cancellable,
-               GError         **error)
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (initable);
   gboolean ret;
@@ -1841,8 +1838,8 @@ initable_iface_init (GInitableIface *initable_iface)
 
 static void
 async_init_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+                   GObject            *object,
+                   GCancellable       *cancellable)
 {
   GError *error = NULL;
 
@@ -1865,9 +1862,9 @@ async_initable_init_async (GAsyncInitable     *initable,
   g_return_if_fail (G_IS_INITABLE (initable));
 
   res = g_simple_async_result_new (G_OBJECT (initable), callback, user_data,
-				   async_initable_init_async);
+                                   async_initable_init_async);
   g_simple_async_result_run_in_thread (res, async_init_thread,
-				       io_priority, cancellable);
+                                       io_priority, cancellable);
   g_object_unref (res);
 }
 
@@ -1919,13 +1916,13 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * Since: 2.26
  */
 void
-g_dbus_connection_new (GIOStream              *stream,
-                       const gchar            *guid,
-                       GDBusConnectionFlags    flags,
-                       GDBusAuthObserver      *authentication_observer,
-                       GCancellable           *cancellable,
-                       GAsyncReadyCallback     callback,
-                       gpointer                user_data)
+g_dbus_connection_new (GIOStream            *stream,
+                       const gchar          *guid,
+                       GDBusConnectionFlags  flags,
+                       GDBusAuthObserver    *authentication_observer,
+                       GCancellable         *cancellable,
+                       GAsyncReadyCallback   callback,
+                       gpointer              user_data)
 {
   g_return_if_fail (G_IS_IO_STREAM (stream));
   g_async_initable_new_async (G_TYPE_DBUS_CONNECTION,
@@ -1952,8 +1949,8 @@ g_dbus_connection_new (GIOStream              *stream,
  * Since: 2.26
  */
 GDBusConnection *
-g_dbus_connection_new_finish (GAsyncResult        *res,
-                              GError             **error)
+g_dbus_connection_new_finish (GAsyncResult  *res,
+                              GError       **error)
 {
   GObject *object;
   GObject *source_object;
@@ -1997,12 +1994,12 @@ g_dbus_connection_new_finish (GAsyncResult        *res,
  * Since: 2.26
  */
 GDBusConnection *
-g_dbus_connection_new_sync (GIOStream              *stream,
-                            const gchar            *guid,
-                            GDBusConnectionFlags    flags,
-                            GDBusAuthObserver      *authentication_observer,
-                            GCancellable           *cancellable,
-                            GError                **error)
+g_dbus_connection_new_sync (GIOStream             *stream,
+                            const gchar           *guid,
+                            GDBusConnectionFlags   flags,
+                            GDBusAuthObserver     *authentication_observer,
+                            GCancellable          *cancellable,
+                            GError               **error)
 {
   g_return_val_if_fail (G_IS_IO_STREAM (stream), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -2047,11 +2044,11 @@ g_dbus_connection_new_sync (GIOStream              *stream,
  * Since: 2.26
  */
 void
-g_dbus_connection_new_for_address (const gchar            *address,
-                                   GDBusConnectionFlags    flags,
-                                   GCancellable           *cancellable,
-                                   GAsyncReadyCallback     callback,
-                                   gpointer                user_data)
+g_dbus_connection_new_for_address (const gchar          *address,
+                                   GDBusConnectionFlags  flags,
+                                   GCancellable         *cancellable,
+                                   GAsyncReadyCallback   callback,
+                                   gpointer              user_data)
 {
   g_return_if_fail (address != NULL);
   g_async_initable_new_async (G_TYPE_DBUS_CONNECTION,
@@ -2076,8 +2073,8 @@ g_dbus_connection_new_for_address (const gchar            *address,
  * Since: 2.26
  */
 GDBusConnection *
-g_dbus_connection_new_for_address_finish (GAsyncResult        *res,
-                                          GError             **error)
+g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
+                                          GError       **error)
 {
   GObject *object;
   GObject *source_object;
@@ -2122,10 +2119,10 @@ g_dbus_connection_new_for_address_finish (GAsyncResult        *res,
  * Since: 2.26
  */
 GDBusConnection *
-g_dbus_connection_new_for_address_sync (const gchar            *address,
-                                        GDBusConnectionFlags    flags,
-                                        GCancellable           *cancellable,
-                                        GError                **error)
+g_dbus_connection_new_for_address_sync (const gchar           *address,
+                                        GDBusConnectionFlags   flags,
+                                        GCancellable          *cancellable,
+                                        GError               **error)
 {
   g_return_val_if_fail (address != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -2314,8 +2311,8 @@ purge_all_filters (GDBusConnection *connection)
 }
 
 void
-g_dbus_connection_remove_filter (GDBusConnection    *connection,
-                                 guint               filter_id)
+g_dbus_connection_remove_filter (GDBusConnection *connection,
+                                 guint            filter_id)
 {
   guint n;
   FilterData *to_destroy;
@@ -2385,11 +2382,11 @@ signal_data_free (SignalData *data)
 }
 
 static gchar *
-args_to_rule (const gchar         *sender,
-              const gchar         *interface_name,
-              const gchar         *member,
-              const gchar         *object_path,
-              const gchar         *arg0)
+args_to_rule (const gchar *sender,
+              const gchar *interface_name,
+              const gchar *member,
+              const gchar *object_path,
+              const gchar *arg0)
 {
   GString *rule;
 
@@ -2474,10 +2471,10 @@ static gboolean
 is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 {
   return g_strcmp0 (signal_data->sender, "org.freedesktop.DBus") == 0 &&
-    g_strcmp0 (signal_data->interface_name, "org.freedesktop.DBus") == 0 &&
-    g_strcmp0 (signal_data->object_path, "/org/freedesktop/DBus") == 0 &&
-    (g_strcmp0 (signal_data->member, "NameLost") == 0 ||
-     g_strcmp0 (signal_data->member, "NameAcquired") == 0);
+         g_strcmp0 (signal_data->interface_name, "org.freedesktop.DBus") == 0 &&
+         g_strcmp0 (signal_data->object_path, "/org/freedesktop/DBus") == 0 &&
+         (g_strcmp0 (signal_data->member, "NameLost") == 0 ||
+          g_strcmp0 (signal_data->member, "NameAcquired") == 0);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2594,9 +2591,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
       if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-        {
-          add_match_rule (connection, signal_data->rule);
-        }
+        add_match_rule (connection, signal_data->rule);
     }
 
  out:
@@ -2624,9 +2619,9 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
 /* must hold lock when calling this */
 static void
-unsubscribe_id_internal (GDBusConnection    *connection,
-                         guint               subscription_id,
-                         GArray             *out_removed_subscribers)
+unsubscribe_id_internal (GDBusConnection *connection,
+                         guint            subscription_id,
+                         GArray          *out_removed_subscribers)
 {
   SignalData *signal_data;
   GPtrArray *signal_data_array;
@@ -2669,9 +2664,7 @@ unsubscribe_id_internal (GDBusConnection    *connection,
           if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
             {
               if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-                {
-                  remove_match_rule (connection, signal_data->rule);
-                }
+                remove_match_rule (connection, signal_data->rule);
             }
 
           signal_data_free (signal_data);
@@ -2696,8 +2689,8 @@ unsubscribe_id_internal (GDBusConnection    *connection,
  * Since: 2.26
  */
 void
-g_dbus_connection_signal_unsubscribe (GDBusConnection    *connection,
-                                      guint               subscription_id)
+g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
+                                      guint            subscription_id)
 {
   GArray *subscribers;
   guint n;
@@ -2783,16 +2776,15 @@ emit_signal_instance_in_idle_cb (gpointer data)
   CONNECTION_UNLOCK (signal_instance->connection);
 
   if (has_subscription)
-    {
-      signal_instance->callback (signal_instance->connection,
-                                 signal_instance->sender,
-                                 signal_instance->path,
-                                 signal_instance->interface,
-                                 signal_instance->member,
-                                 parameters,
-                                 signal_instance->user_data);
-    }
-   if (parameters != NULL)
+    signal_instance->callback (signal_instance->connection,
+                               signal_instance->sender,
+                               signal_instance->path,
+                               signal_instance->interface,
+                               signal_instance->member,
+                               parameters,
+                               signal_instance->user_data);
+
+  if (parameters != NULL)
     g_variant_unref (parameters);
 
   return FALSE;
@@ -2889,8 +2881,8 @@ schedule_callbacks (GDBusConnection *connection,
 
 /* called in message handler thread with lock held */
 static void
-distribute_signals (GDBusConnection  *connection,
-                    GDBusMessage     *message)
+distribute_signals (GDBusConnection *connection,
+                    GDBusMessage    *message)
 {
   GPtrArray *signal_data_array;
   const gchar *sender;
@@ -2901,17 +2893,14 @@ distribute_signals (GDBusConnection  *connection,
   if (sender != NULL)
     {
       signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, sender);
-      if (signal_data_array != NULL) {
+      if (signal_data_array != NULL)
         schedule_callbacks (connection, signal_data_array, message, sender);
-      }
     }
 
   /* collect subcsribers not matching on sender */
   signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, "");
   if (signal_data_array != NULL)
-    {
-      schedule_callbacks (connection, signal_data_array, message, sender);
-    }
+    schedule_callbacks (connection, signal_data_array, message, sender);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2997,14 +2986,12 @@ static void
 exported_interface_free (ExportedInterface *ei)
 {
   if (ei->user_data_free_func != NULL)
-    {
-      /* TODO: push to thread-default mainloop */
-      ei->user_data_free_func (ei->user_data);
-    }
+    /* TODO: push to thread-default mainloop */
+    ei->user_data_free_func (ei->user_data);
+
   if (ei->context != NULL)
-    {
-      g_main_context_unref (ei->context);
-    }
+    g_main_context_unref (ei->context);
+
   g_free (ei->interface_name);
   g_free (ei);
 }
@@ -3544,22 +3531,14 @@ maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHa
       end = strchr (begin, '/');
 
       if (end != NULL)
-        {
-          s = g_strndup (begin, end - begin);
-        }
+        s = g_strndup (begin, end - begin);
       else
-        {
-          s = g_strdup (begin);
-        }
+        s = g_strdup (begin);
 
       if (g_hash_table_lookup (set, s) == NULL)
-        {
-          g_hash_table_insert (set, s, GUINT_TO_POINTER (1));
-        }
+        g_hash_table_insert (set, s, GUINT_TO_POINTER (1));
       else
-        {
-          g_free (s);
-        }
+        g_free (s);
     }
 }
 
@@ -3596,9 +3575,7 @@ g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
   p = g_ptr_array_new ();
   keys = g_hash_table_get_keys (set);
   for (l = keys; l != NULL; l = l->next)
-    {
-      g_ptr_array_add (p, l->data);
-    }
+    g_ptr_array_add (p, l->data);
   g_hash_table_unref (set);
   g_list_free (keys);
 
@@ -3641,16 +3618,12 @@ handle_introspect (GDBusConnection *connection,
   /* then include the registered interfaces */
   g_hash_table_iter_init (&hash_iter, eo->map_if_name_to_ei);
   while (g_hash_table_iter_next (&hash_iter, NULL, (gpointer) &ei))
-    {
-      g_dbus_interface_info_generate_xml (ei->introspection_data, 2, s);
-    }
+    g_dbus_interface_info_generate_xml (ei->introspection_data, 2, s);
 
   /* finally include nodes registered below us */
   registered = g_dbus_connection_list_registered_unlocked (connection, eo->object_path);
   for (n = 0; registered != NULL && registered[n] != NULL; n++)
-    {
-      g_string_append_printf (s, "  <node name=\"%s\"/>\n", registered[n]);
-    }
+    g_string_append_printf (s, "  <node name=\"%s\"/>\n", registered[n]);
   g_strfreev (registered);
   g_string_append (s, introspect_tail);
 
@@ -3781,7 +3754,6 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   handled = TRUE;
 
  out:
-
   return handled;
 }
 
@@ -4008,9 +3980,7 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
   ei = g_hash_table_lookup (connection->priv->map_id_to_ei,
                             GUINT_TO_POINTER (registration_id));
   if (ei == NULL)
-    {
-      goto out;
-    }
+    goto out;
 
   eo = ei->eo;
 
@@ -4018,10 +3988,8 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
   g_warn_if_fail (g_hash_table_remove (eo->map_if_name_to_ei, ei->interface_name));
   /* unregister object path if we have no more exported interfaces */
   if (g_hash_table_size (eo->map_if_name_to_ei) == 0)
-    {
-      g_warn_if_fail (g_hash_table_remove (connection->priv->map_object_path_to_eo,
-                                           eo->object_path));
-    }
+    g_warn_if_fail (g_hash_table_remove (connection->priv->map_object_path_to_eo,
+                                         eo->object_path));
 
   ret = TRUE;
 
@@ -4052,13 +4020,13 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
  * Since: 2.26
  */
 gboolean
-g_dbus_connection_emit_signal (GDBusConnection    *connection,
-                               const gchar        *destination_bus_name,
-                               const gchar        *object_path,
-                               const gchar        *interface_name,
-                               const gchar        *signal_name,
-                               GVariant           *parameters,
-                               GError            **error)
+g_dbus_connection_emit_signal (GDBusConnection  *connection,
+                               const gchar      *destination_bus_name,
+                               const gchar      *object_path,
+                               const gchar      *interface_name,
+                               const gchar      *signal_name,
+                               GVariant         *parameters,
+                               GError          **error)
 {
   GDBusMessage *message;
   gboolean ret;
@@ -4078,11 +4046,9 @@ g_dbus_connection_emit_signal (GDBusConnection    *connection,
                                        signal_name);
 
   if (destination_bus_name != NULL)
-    {
-      g_dbus_message_set_header (message,
-                                 G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION,
-                                 g_variant_new_string (destination_bus_name));
-    }
+    g_dbus_message_set_header (message,
+                               G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION,
+                               g_variant_new_string (destination_bus_name));
 
   if (parameters != NULL)
     g_dbus_message_set_body (message, parameters);
@@ -4094,8 +4060,8 @@ g_dbus_connection_emit_signal (GDBusConnection    *connection,
 }
 
 static void
-add_invoke_method_flags (GDBusMessage *message,
-                         GDBusInvokeMethodFlags flags)
+add_invoke_method_flags (GDBusMessage           *message,
+                         GDBusInvokeMethodFlags  flags)
 {
   if (flags & G_DBUS_INVOKE_METHOD_FLAGS_NO_AUTO_START)
     g_dbus_message_set_flags (message, G_DBUS_MESSAGE_FLAGS_NO_AUTO_START);
@@ -4136,17 +4102,17 @@ add_invoke_method_flags (GDBusMessage *message,
  * Since: 2.26
  */
 void
-g_dbus_connection_invoke_method (GDBusConnection       *connection,
-                                 const gchar           *bus_name,
-                                 const gchar           *object_path,
-                                 const gchar           *interface_name,
-                                 const gchar           *method_name,
-                                 GVariant              *parameters,
-                                 GDBusInvokeMethodFlags flags,
-                                 gint                   timeout_msec,
-                                 GCancellable          *cancellable,
-                                 GAsyncReadyCallback    callback,
-                                 gpointer               user_data)
+g_dbus_connection_invoke_method (GDBusConnection        *connection,
+                                 const gchar            *bus_name,
+                                 const gchar            *object_path,
+                                 const gchar            *interface_name,
+                                 const gchar            *method_name,
+                                 GVariant               *parameters,
+                                 GDBusInvokeMethodFlags  flags,
+                                 gint                    timeout_msec,
+                                 GCancellable           *cancellable,
+                                 GAsyncReadyCallback     callback,
+                                 gpointer                user_data)
 {
   GDBusMessage *message;
 
@@ -4174,12 +4140,13 @@ g_dbus_connection_invoke_method (GDBusConnection       *connection,
                                              callback,
                                              user_data);
 
-   if (message != NULL)
+  if (message != NULL)
     g_object_unref (message);
 }
 
 static GVariant *
-decode_method_reply (GDBusMessage *reply, GError **error)
+decode_method_reply (GDBusMessage  *reply,
+                     GError       **error)
 {
   GVariant *result;
 
@@ -4198,6 +4165,7 @@ decode_method_reply (GDBusMessage *reply, GError **error)
           g_variant_ref (result);
         }
       break;
+
     case G_DBUS_MESSAGE_TYPE_ERROR:
       g_dbus_message_to_gerror (reply, error);
       break;
@@ -4224,9 +4192,9 @@ decode_method_reply (GDBusMessage *reply, GError **error)
  * Since: 2.26
  */
 GVariant *
-g_dbus_connection_invoke_method_finish (GDBusConnection    *connection,
-                                        GAsyncResult       *res,
-                                        GError            **error)
+g_dbus_connection_invoke_method_finish (GDBusConnection  *connection,
+                                        GAsyncResult     *res,
+                                        GError          **error)
 {
   GDBusMessage *reply;
   GVariant *result;
@@ -4284,16 +4252,16 @@ g_dbus_connection_invoke_method_finish (GDBusConnection    *connection,
  * Since: 2.26
  */
 GVariant *
-g_dbus_connection_invoke_method_sync (GDBusConnection       *connection,
-                                      const gchar           *bus_name,
-                                      const gchar           *object_path,
-                                      const gchar           *interface_name,
-                                      const gchar           *method_name,
-                                      GVariant              *parameters,
-                                      GDBusInvokeMethodFlags flags,
-                                      gint                   timeout_msec,
-                                      GCancellable          *cancellable,
-                                      GError               **error)
+g_dbus_connection_invoke_method_sync (GDBusConnection         *connection,
+                                      const gchar             *bus_name,
+                                      const gchar             *object_path,
+                                      const gchar             *interface_name,
+                                      const gchar             *method_name,
+                                      GVariant                *parameters,
+                                      GDBusInvokeMethodFlags   flags,
+                                      gint                     timeout_msec,
+                                      GCancellable            *cancellable,
+                                      GError                 **error)
 {
   GDBusMessage *message;
   GDBusMessage *reply;
@@ -4359,23 +4327,21 @@ static void
 exported_subtree_free (ExportedSubtree *es)
 {
   if (es->user_data_free_func != NULL)
-    {
-      /* TODO: push to thread-default mainloop */
-      es->user_data_free_func (es->user_data);
-    }
+    /* TODO: push to thread-default mainloop */
+    es->user_data_free_func (es->user_data);
+
   if (es->context != NULL)
-    {
-      g_main_context_unref (es->context);
-    }
+    g_main_context_unref (es->context);
+
   g_free (es->object_path);
   g_free (es);
 }
 
 /* called without lock held */
 static gboolean
-handle_subtree_introspect (GDBusConnection  *connection,
-                           ExportedSubtree  *es,
-                           GDBusMessage     *message)
+handle_subtree_introspect (GDBusConnection *connection,
+                           ExportedSubtree *es,
+                           GDBusMessage    *message)
 {
   GString *s;
   gboolean handled;
@@ -4445,17 +4411,13 @@ handle_subtree_introspect (GDBusConnection  *connection,
   if (is_root)
     {
       for (n = 0; children != NULL && children[n] != NULL; n++)
-        {
-          g_string_append_printf (s, "  <node name=\"%s\"/>\n", children[n]);
-        }
+        g_string_append_printf (s, "  <node name=\"%s\"/>\n", children[n]);
     }
 
   /* finally include nodes registered below us */
   subnode_paths = g_dbus_connection_list_registered (es->connection, requested_object_path);
   for (n = 0; subnode_paths != NULL && subnode_paths[n] != NULL; n++)
-    {
-      g_string_append_printf (s, "  <node name=\"%s\"/>\n", subnode_paths[n]);
-    }
+    g_string_append_printf (s, "  <node name=\"%s\"/>\n", subnode_paths[n]);
   g_strfreev (subnode_paths);
 
   g_string_append (s, "</node>\n");
@@ -4475,9 +4437,9 @@ handle_subtree_introspect (GDBusConnection  *connection,
 
 /* called without lock held */
 static gboolean
-handle_subtree_method_invocation (GDBusConnection  *connection,
-                                  ExportedSubtree  *es,
-                                  GDBusMessage     *message)
+handle_subtree_method_invocation (GDBusConnection *connection,
+                                  ExportedSubtree *es,
+                                  GDBusMessage    *message)
 {
   gboolean handled;;
   const gchar *sender;
@@ -4513,17 +4475,11 @@ handle_subtree_method_invocation (GDBusConnection  *connection,
   if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0)
     {
       if (g_strcmp0 (member, "Get") == 0 && g_strcmp0 (signature, "ss") == 0)
-        {
-          is_property_get = TRUE;
-        }
+        is_property_get = TRUE;
       else if (g_strcmp0 (member, "Set") == 0 && g_strcmp0 (signature, "ssv") == 0)
-        {
-          is_property_set = TRUE;
-        }
+        is_property_set = TRUE;
       else if (g_strcmp0 (member, "GetAll") == 0 && g_strcmp0 (signature, "s") == 0)
-        {
-          is_property_get_all = TRUE;
-        }
+        is_property_get_all = TRUE;
     }
 
   children = es->vtable->enumerate (es->connection,
@@ -4557,9 +4513,7 @@ handle_subtree_method_invocation (GDBusConnection  *connection,
     {
       const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
       if (g_strcmp0 (id_n->name, interface_name) == 0)
-        {
-          introspection_data = id_n;
-        }
+        introspection_data = id_n;
     }
 
   /* dispatch the call if the user wants to handle it */
@@ -4603,9 +4557,7 @@ handle_subtree_method_invocation (GDBusConnection  *connection,
         {
           const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
           if (g_strcmp0 (id_n->name, interface_name) == 0)
-            {
-              introspection_data = id_n;
-            }
+            introspection_data = id_n;
         }
 
       /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the user-code
@@ -4693,18 +4645,13 @@ process_subtree_vtable_message_in_idle_cb (gpointer _data)
   if (g_strcmp0 (g_dbus_message_get_interface (data->message), "org.freedesktop.DBus.Introspectable") == 0 &&
       g_strcmp0 (g_dbus_message_get_member (data->message), "Introspect") == 0 &&
       g_strcmp0 (g_dbus_message_get_signature (data->message), "") == 0)
-    {
-      handled = handle_subtree_introspect (data->es->connection,
-                                           data->es,
-                                           data->message);
-    }
+    handled = handle_subtree_introspect (data->es->connection,
+                                         data->es,
+                                         data->message);
   else
-    {
-      handled = handle_subtree_method_invocation (data->es->connection,
-                                                  data->es,
-                                                  data->message);
-    }
-
+    handled = handle_subtree_method_invocation (data->es->connection,
+                                                data->es,
+                                                data->message);
 
   if (!handled)
     {
@@ -4808,13 +4755,13 @@ subtree_message_func (GDBusConnection *connection,
  * Since: 2.26
  */
 guint
-g_dbus_connection_register_subtree (GDBusConnection            *connection,
-                                    const gchar                *object_path,
-                                    const GDBusSubtreeVTable   *vtable,
-                                    GDBusSubtreeFlags           flags,
-                                    gpointer                    user_data,
-                                    GDestroyNotify              user_data_free_func,
-                                    GError                    **error)
+g_dbus_connection_register_subtree (GDBusConnection           *connection,
+                                    const gchar               *object_path,
+                                    const GDBusSubtreeVTable  *vtable,
+                                    GDBusSubtreeFlags          flags,
+                                    gpointer                   user_data,
+                                    GDestroyNotify             user_data_free_func,
+                                    GError                   **error)
 {
   guint ret;
   ExportedSubtree *es;
@@ -4894,9 +4841,7 @@ g_dbus_connection_unregister_subtree (GDBusConnection *connection,
   es = g_hash_table_lookup (connection->priv->map_id_to_es,
                             GUINT_TO_POINTER (registration_id));
   if (es == NULL)
-    {
-      goto out;
-    }
+    goto out;
 
   g_warn_if_fail (g_hash_table_remove (connection->priv->map_id_to_es, GUINT_TO_POINTER (es->id)));
   g_warn_if_fail (g_hash_table_remove (connection->priv->map_object_path_to_es, es->object_path));
@@ -4913,9 +4858,9 @@ g_dbus_connection_unregister_subtree (GDBusConnection *connection,
 
 /* must be called with lock held */
 static void
-handle_generic_ping_unlocked (GDBusConnection  *connection,
-                              const gchar      *object_path,
-                              GDBusMessage     *message)
+handle_generic_ping_unlocked (GDBusConnection *connection,
+                              const gchar     *object_path,
+                              GDBusMessage    *message)
 {
   GDBusMessage *reply;
   reply = g_dbus_message_new_method_reply (message);
@@ -4925,9 +4870,9 @@ handle_generic_ping_unlocked (GDBusConnection  *connection,
 
 /* must be called with lock held */
 static void
-handle_generic_get_machine_id_unlocked (GDBusConnection  *connection,
-                                        const gchar      *object_path,
-                                        GDBusMessage     *message)
+handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
+                                        const gchar     *object_path,
+                                        GDBusMessage    *message)
 {
   GDBusMessage *reply;
 
@@ -4966,9 +4911,9 @@ handle_generic_get_machine_id_unlocked (GDBusConnection  *connection,
 
 /* must be called with lock held */
 static void
-handle_generic_introspect_unlocked (GDBusConnection  *connection,
-                                    const gchar      *object_path,
-                                    GDBusMessage     *message)
+handle_generic_introspect_unlocked (GDBusConnection *connection,
+                                    const gchar     *object_path,
+                                    GDBusMessage    *message)
 {
   guint n;
   GString *s;
@@ -4981,9 +4926,7 @@ handle_generic_introspect_unlocked (GDBusConnection  *connection,
 
   registered = g_dbus_connection_list_registered_unlocked (connection, object_path);
   for (n = 0; registered != NULL && registered[n] != NULL; n++)
-    {
       g_string_append_printf (s, "  <node name=\"%s\"/>\n", registered[n]);
-    }
   g_strfreev (registered);
   g_string_append (s, "</node>\n");
 
@@ -5043,8 +4986,8 @@ handle_generic_unlocked (GDBusConnection *connection,
 
 /* called in message handler thread with lock held */
 static void
-distribute_method_call (GDBusConnection  *connection,
-                        GDBusMessage     *message)
+distribute_method_call (GDBusConnection *connection,
+                        GDBusMessage    *message)
 {
   ExportedObject *eo;
   ExportedSubtree *es;
@@ -5131,10 +5074,6 @@ message_bus_get_singleton (GBusType   bus_type,
 
   switch (bus_type)
     {
-    default:
-      g_assert_not_reached ();
-      break;
-
     case G_BUS_TYPE_SESSION:
       ret = &the_session_bus;
       break;
@@ -5176,15 +5115,20 @@ message_bus_get_singleton (GBusType   bus_type,
             }
         }
       break;
+
+    default:
+      g_assert_not_reached ();
+      break;
     }
+
  out:
   return ret;
 }
 
 static GDBusConnection *
-get_uninitialized_connection (GBusType            bus_type,
-                              GCancellable       *cancellable,
-                              GError            **error)
+get_uninitialized_connection (GBusType       bus_type,
+                              GCancellable  *cancellable,
+                              GError       **error)
 {
   GDBusConnection **singleton;
   GDBusConnection *ret;
@@ -5249,9 +5193,9 @@ get_uninitialized_connection (GBusType            bus_type,
  * Since: 2.26
  */
 GDBusConnection *
-g_bus_get_sync (GBusType            bus_type,
-                GCancellable       *cancellable,
-                GError            **error)
+g_bus_get_sync (GBusType       bus_type,
+                GCancellable  *cancellable,
+                GError       **error)
 {
   GDBusConnection *connection;
 

@@ -60,8 +60,7 @@ _g_dbus_auth_mechanism_finalize (GObject *object)
   if (mechanism->priv->credentials != NULL)
     g_object_unref (mechanism->priv->credentials);
 
-  if (G_OBJECT_CLASS (_g_dbus_auth_mechanism_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (_g_dbus_auth_mechanism_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_g_dbus_auth_mechanism_parent_class)->finalize (object);
 }
 
 static void
@@ -127,8 +126,8 @@ _g_dbus_auth_mechanism_class_init (GDBusAuthMechanismClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_STREAM,
                                    g_param_spec_object ("stream",
-                                                        _("IO Stream"),
-                                                        _("The underlying GIOStream used for I/O"),
+                                                        P_("IO Stream"),
+                                                        P_("The underlying GIOStream used for I/O"),
                                                         G_TYPE_IO_STREAM,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -149,8 +148,8 @@ _g_dbus_auth_mechanism_class_init (GDBusAuthMechanismClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CREDENTIALS,
                                    g_param_spec_object ("credentials",
-                                                        _("Credentials"),
-                                                        _("The credentials of the remote peer"),
+                                                        P_("Credentials"),
+                                                        P_("The credentials of the remote peer"),
                                                         G_TYPE_CREDENTIALS,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
@@ -193,7 +192,7 @@ _g_dbus_auth_mechanism_get_name (GType mechanism_type)
   const gchar *name;
   GDBusAuthMechanismClass *klass;
 
-  g_return_val_if_fail (g_type_is_a (mechanism_type,  G_TYPE_DBUS_AUTH_MECHANISM), NULL);
+  g_return_val_if_fail (g_type_is_a (mechanism_type, G_TYPE_DBUS_AUTH_MECHANISM), NULL);
 
   klass = g_type_class_ref (mechanism_type);
   g_assert (klass != NULL);
@@ -209,7 +208,7 @@ _g_dbus_auth_mechanism_get_priority (GType mechanism_type)
   gint priority;
   GDBusAuthMechanismClass *klass;
 
-  g_return_val_if_fail (g_type_is_a (mechanism_type,  G_TYPE_DBUS_AUTH_MECHANISM), 0);
+  g_return_val_if_fail (g_type_is_a (mechanism_type, G_TYPE_DBUS_AUTH_MECHANISM), 0);
 
   klass = g_type_class_ref (mechanism_type);
   g_assert (klass != NULL);
@@ -229,10 +228,10 @@ _g_dbus_auth_mechanism_is_supported (GDBusAuthMechanism *mechanism)
 }
 
 gchar *
-_g_dbus_auth_mechanism_encode_data (GDBusAuthMechanism   *mechanism,
-                                    const gchar          *data,
-                                    gsize                 data_len,
-                                    gsize                *out_data_len)
+_g_dbus_auth_mechanism_encode_data (GDBusAuthMechanism *mechanism,
+                                    const gchar        *data,
+                                    gsize               data_len,
+                                    gsize              *out_data_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->encode_data (mechanism, data, data_len, out_data_len);
@@ -240,10 +239,10 @@ _g_dbus_auth_mechanism_encode_data (GDBusAuthMechanism   *mechanism,
 
 
 gchar *
-_g_dbus_auth_mechanism_decode_data (GDBusAuthMechanism   *mechanism,
-                                    const gchar          *data,
-                                    gsize                 data_len,
-                                    gsize                *out_data_len)
+_g_dbus_auth_mechanism_decode_data (GDBusAuthMechanism *mechanism,
+                                    const gchar        *data,
+                                    gsize               data_len,
+                                    gsize              *out_data_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->decode_data (mechanism, data, data_len, out_data_len);
@@ -252,47 +251,47 @@ _g_dbus_auth_mechanism_decode_data (GDBusAuthMechanism   *mechanism,
 /* ---------------------------------------------------------------------------------------------------- */
 
 GDBusAuthMechanismState
-_g_dbus_auth_mechanism_server_get_state (GDBusAuthMechanism   *mechanism)
+_g_dbus_auth_mechanism_server_get_state (GDBusAuthMechanism *mechanism)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), G_DBUS_AUTH_MECHANISM_STATE_INVALID);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_get_state (mechanism);
 }
 
 void
-_g_dbus_auth_mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
-                                        const gchar          *initial_response,
-                                        gsize                 initial_response_len)
+_g_dbus_auth_mechanism_server_initiate (GDBusAuthMechanism *mechanism,
+                                        const gchar        *initial_response,
+                                        gsize               initial_response_len)
 {
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism));
   G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_initiate (mechanism, initial_response, initial_response_len);
 }
 
 void
-_g_dbus_auth_mechanism_server_data_receive (GDBusAuthMechanism   *mechanism,
-                                            const gchar          *data,
-                                            gsize                 data_len)
+_g_dbus_auth_mechanism_server_data_receive (GDBusAuthMechanism *mechanism,
+                                            const gchar        *data,
+                                            gsize               data_len)
 {
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism));
   G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_data_receive (mechanism, data, data_len);
 }
 
 gchar *
-_g_dbus_auth_mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
-                                         gsize                *out_data_len)
+_g_dbus_auth_mechanism_server_data_send (GDBusAuthMechanism *mechanism,
+                                         gsize              *out_data_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_data_send (mechanism, out_data_len);
 }
 
 gchar *
-_g_dbus_auth_mechanism_server_get_reject_reason (GDBusAuthMechanism   *mechanism)
+_g_dbus_auth_mechanism_server_get_reject_reason (GDBusAuthMechanism *mechanism)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_get_reject_reason (mechanism);
 }
 
 void
-_g_dbus_auth_mechanism_server_shutdown (GDBusAuthMechanism   *mechanism)
+_g_dbus_auth_mechanism_server_shutdown (GDBusAuthMechanism *mechanism)
 {
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism));
   G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->server_shutdown (mechanism);
@@ -301,15 +300,15 @@ _g_dbus_auth_mechanism_server_shutdown (GDBusAuthMechanism   *mechanism)
 /* ---------------------------------------------------------------------------------------------------- */
 
 GDBusAuthMechanismState
-_g_dbus_auth_mechanism_client_get_state (GDBusAuthMechanism   *mechanism)
+_g_dbus_auth_mechanism_client_get_state (GDBusAuthMechanism *mechanism)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), G_DBUS_AUTH_MECHANISM_STATE_INVALID);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_get_state (mechanism);
 }
 
 gchar *
-_g_dbus_auth_mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
-                                        gsize                *out_initial_response_len)
+_g_dbus_auth_mechanism_client_initiate (GDBusAuthMechanism *mechanism,
+                                        gsize              *out_initial_response_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_initiate (mechanism,
@@ -317,24 +316,24 @@ _g_dbus_auth_mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 }
 
 void
-_g_dbus_auth_mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
-                                            const gchar          *data,
-                                            gsize                 data_len)
+_g_dbus_auth_mechanism_client_data_receive (GDBusAuthMechanism *mechanism,
+                                            const gchar        *data,
+                                            gsize               data_len)
 {
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism));
   G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_data_receive (mechanism, data, data_len);
 }
 
 gchar *
-_g_dbus_auth_mechanism_client_data_send (GDBusAuthMechanism   *mechanism,
-                                         gsize                *out_data_len)
+_g_dbus_auth_mechanism_client_data_send (GDBusAuthMechanism *mechanism,
+                                         gsize              *out_data_len)
 {
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_data_send (mechanism, out_data_len);
 }
 
 void
-_g_dbus_auth_mechanism_client_shutdown (GDBusAuthMechanism   *mechanism)
+_g_dbus_auth_mechanism_client_shutdown (GDBusAuthMechanism *mechanism)
 {
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism));
   G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_shutdown (mechanism);

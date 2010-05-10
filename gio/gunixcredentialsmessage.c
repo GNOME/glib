@@ -157,8 +157,7 @@ g_unix_credentials_message_finalize (GObject *object)
   if (message->priv->credentials != NULL)
     g_object_unref (message->priv->credentials);
 
-  if (G_OBJECT_CLASS (g_unix_credentials_message_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_unix_credentials_message_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_unix_credentials_message_parent_class)->finalize (object);
 }
 
 static void
@@ -252,8 +251,8 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
   g_object_class_install_property (gobject_class,
                                    PROP_CREDENTIALS,
                                    g_param_spec_object ("credentials",
-                                                        _("Credentials"),
-                                                        _("The credentials stored in the message"),
+                                                        P_("Credentials"),
+                                                        P_("The credentials stored in the message"),
                                                         G_TYPE_CREDENTIALS,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
