@@ -1044,6 +1044,34 @@ dump_interface (GDBusConnection          *c,
             }
           g_variant_unref (result);
         }
+      else
+        {
+          guint n;
+          for (n = 0; o->properties != NULL && o->properties[n] != NULL; n++)
+            {
+              result = g_dbus_connection_call_sync (c,
+                                                    name,
+                                                    object_path,
+                                                    "org.freedesktop.DBus.Properties",
+                                                    "Get",
+                                                    g_variant_new ("(ss)", o->name, o->properties[n]->name),
+                                                    G_DBUS_CALL_FLAGS_NONE,
+                                                    3000,
+                                                    NULL,
+                                                    NULL);
+              if (result != NULL)
+                {
+                  GVariant *property_value;
+                  g_variant_get (result,
+                                 "(v)",
+                                 &property_value);
+                  g_hash_table_insert (properties,
+                                       g_strdup (o->properties[n]->name),
+                                       g_variant_ref (property_value));
+                  g_variant_unref (result);
+                }
+            }
+        }
     }
 
   g_print ("%*sinterface %s {\n", indent, "", o->name);
