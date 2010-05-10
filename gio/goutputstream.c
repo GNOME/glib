@@ -569,19 +569,83 @@ async_ready_callback_wrapper (GObject      *source_object,
   g_object_unref (stream);
 }
 
+typedef struct {
+  gint io_priority;
+  GCancellable *cancellable;
+  GError *flush_error;
+  gpointer user_data;
+} CloseUserData;
+
 static void
 async_ready_close_callback_wrapper (GObject      *source_object,
                                     GAsyncResult *res,
                                     gpointer      user_data)
 {
   GOutputStream *stream = G_OUTPUT_STREAM (source_object);
+  CloseUserData *data = user_data;
 
   stream->priv->closing = FALSE;
   stream->priv->closed = TRUE;
+
   g_output_stream_clear_pending (stream);
+
   if (stream->priv->outstanding_callback)
-    (*stream->priv->outstanding_callback) (source_object, res, user_data);
+    {
+      if (data->flush_error != NULL)
+        {
+          GSimpleAsyncResult *err;
+
+          err = g_simple_async_result_new_from_error (source_object,
+                                                      stream->priv->outstanding_callback,
+                                                      data->user_data,
+                                                      data->flush_error);
+
+          (*stream->priv->outstanding_callback) (source_object,
+                                                 G_ASYNC_RESULT (err),
+                                                 data->user_data);
+          g_object_unref (err);
+        }
+      else
+        {
+          (*stream->priv->outstanding_callback) (source_object,
+                                                 res,
+                                                 data->user_data);
+        }
+    }
+
   g_object_unref (stream);
+
+  if (data->cancellable)
+    g_object_unref (data->cancellable);
+
+  if (data->flush_error)
+    g_error_free (data->flush_error);
+
+  g_slice_free (CloseUserData, data);
+}
+
+static void
+async_ready_close_flushed_callback_wrapper (GObject      *source_object,
+                                            GAsyncResult *res,
+                                            gpointer      user_data)
+{
+  GOutputStream *stream = G_OUTPUT_STREAM (source_object);
+  GOutputStreamClass *class;
+  CloseUserData *data = user_data;
+  GSimpleAsyncResult *simple;
+
+  /* propagate the possible error */
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      simple = G_SIMPLE_ASYNC_RESULT (res);
+      g_simple_async_result_propagate_error (simple, &data->flush_error);
+    }
+
+  class = G_OUTPUT_STREAM_GET_CLASS (stream);
+
+  /* we still close, even if there was a flush error */
+  class->close_async (stream, data->io_priority, data->cancellable,
+		      async_ready_close_callback_wrapper, user_data);
 }
 
 /**
@@ -962,6 +1026,7 @@ g_output_stream_close_async (GOutputStream       *stream,
   GOutputStreamClass *class;
   GSimpleAsyncResult *simple;
   GError *error = NULL;
+  CloseUserData *data;
 
   g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
   
@@ -990,8 +1055,31 @@ g_output_stream_close_async (GOutputStream       *stream,
   stream->priv->closing = TRUE;
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
-  class->close_async (stream, io_priority, cancellable,
-		      async_ready_close_callback_wrapper, user_data);
+
+  data = g_slice_new0 (CloseUserData);
+
+  if (cancellable != NULL)
+    data->cancellable = g_object_ref (cancellable);
+
+  data->io_priority = io_priority;
+  data->user_data = user_data;
+
+  /* Call close_async directly if there is no need to flush, or if the flush
+     can be done sync (in the output stream async close thread) */
+  if (class->flush_async == NULL ||
+      (class->flush_async == g_output_stream_real_flush_async &&
+       (class->flush == NULL || class->close_async == g_output_stream_real_close_async)))
+    {
+      class->close_async (stream, io_priority, cancellable,
+                          async_ready_close_callback_wrapper, data);
+    }
+  else
+    {
+      /* First do an async flush, then do the async close in the callback
+         wrapper (see async_ready_close_flushed_callback_wrapper) */
+      class->flush_async (stream, io_priority, cancellable,
+                          async_ready_close_flushed_callback_wrapper, data);
+    }
 }
 
 /**
@@ -1325,17 +1413,32 @@ close_async_thread (GSimpleAsyncResult *res,
 {
   GOutputStreamClass *class;
   GError *error = NULL;
-  gboolean result;
+  gboolean result = TRUE;
+
+  class = G_OUTPUT_STREAM_GET_CLASS (object);
+
+  /* Do a flush here if there is a flush function, and we did not have to do
+     an async flush before (see g_output_stream_close_async) */
+  if (class->flush != NULL &&
+      (class->flush_async == NULL ||
+       class->flush_async == g_output_stream_real_flush_async))
+    {
+      result = class->flush (G_OUTPUT_STREAM (object), cancellable, &error);
+    }
 
   /* Auto handling of cancelation disabled, and ignore
      cancellation, since we want to close things anyway, although
      possibly in a quick-n-dirty way. At least we never want to leak
      open handles */
-
-  class = G_OUTPUT_STREAM_GET_CLASS (object);
+  
   if (class->close_fn)
     {
-      result = class->close_fn (G_OUTPUT_STREAM (object), cancellable, &error);
+      /* Make sure to close, even if the flush failed (see sync close) */
+      if (!result)
+        class->close_fn (G_OUTPUT_STREAM (object), cancellable, NULL);
+      else
+        result = class->close_fn (G_OUTPUT_STREAM (object), cancellable, &error);
+
       if (!result)
 	{
 	  g_simple_async_result_set_from_error (res, error);
