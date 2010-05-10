@@ -70,7 +70,7 @@ struct _GDBusProxyClass
   /*< public >*/
   /* Signals */
   void (*g_properties_changed) (GDBusProxy   *proxy,
-                                GHashTable   *changed_properties);
+                                GVariant     *changed_properties);
   void (*g_signal)             (GDBusProxy   *proxy,
                                 const gchar  *sender_name,
                                 const gchar  *signal_name,

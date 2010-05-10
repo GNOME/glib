@@ -56,19 +56,28 @@ print_properties (GDBusProxy *proxy)
 
 static void
 on_properties_changed (GDBusProxy *proxy,
-                       GHashTable *changed_properties,
+                       GVariant   *changed_properties,
                        gpointer    user_data)
 {
-  GHashTableIter iter;
-  const gchar *key;
-  GVariant *value;
+  GVariantIter *iter;
+  GVariant *item;
 
   g_print (" *** Properties Changed:\n");
 
-  g_hash_table_iter_init (&iter, changed_properties);
-  while (g_hash_table_iter_next (&iter, (gpointer) &key, (gpointer) &value))
+  g_variant_get (changed_properties,
+                 "a{sv}",
+                 &iter);
+  while ((item = g_variant_iter_next_value (iter)))
     {
+      const gchar *key;
+      GVariant *value;
       gchar *value_str;
+
+      g_variant_get (item,
+                     "{sv}",
+                     &key,
+                     &value);
+
       value_str = g_variant_print (value, TRUE);
       g_print ("      %s -> %s\n", key, value_str);
       g_free (value_str);

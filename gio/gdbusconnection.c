@@ -28,19 +28,6 @@
  * - Need to rewrite GDBusAuth and rework GDBusAuthMechanism. In particular
  *   the mechanism VFuncs need to be able to set an error.
  *
- * - The GDBusProxy::g-properties-changed signal currently looks like this
- *
- *      void user_function (GDBusProxy *proxy,
- *                          GHashTable *changed_properties,
- *                          gpointer    user_data);
- *
- *   which is problematic because some people frown upon GHashTable
- *   usage in public API (in particular some of the JS people). Maybe we
- *   need to rework it, maybe it doesn't matter since GDBusProxy is
- *   a low-level API and, for C code, we expect code generators to
- *   spit out subclasses that automatically hook up to this signal
- *   and does g_object_notify() anyway? Hmm...
- *
  * - probably want a G_DBUS_NONCE_TCP_TMPDIR environment variable
  *   to specify where the nonce is stored. This will allow people to use
  *   G_DBUS_NONCE_TCP_TMPDIR=/mnt/secure.company.server/dbus-nonce-dir

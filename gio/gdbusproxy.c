@@ -387,7 +387,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   /**
    * GDBusProxy::g-properties-changed:
    * @proxy: The #GDBusProxy emitting the signal.
-   * @changed_properties: A #GHashTable containing the properties that changed.
+   * @changed_properties: A #GVariant containing the properties that changed.
    *
    * Emitted when one or more D-Bus properties on @proxy changes. The cached properties
    * are already replaced when this signal fires.
@@ -403,7 +403,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                      g_cclosure_marshal_VOID__BOXED,
                                                      G_TYPE_NONE,
                                                      1,
-                                                     G_TYPE_HASH_TABLE);
+                                                     G_TYPE_VARIANT);
 
   /**
    * GDBusProxy::g-signal:
@@ -587,7 +587,8 @@ on_properties_changed (GDBusConnection *connection,
   const gchar *interface_name_for_signal;
   GVariantIter *iter;
   GVariant *item;
-  GHashTable *changed_properties;
+  GVariant *changed_properties;
+  GVariantBuilder *builder;
 
   error = NULL;
   iter = NULL;
@@ -617,11 +618,7 @@ on_properties_changed (GDBusConnection *connection,
   if (g_strcmp0 (interface_name_for_signal, proxy->priv->interface_name) != 0)
     goto out;
 
-  changed_properties = g_hash_table_new_full (g_str_hash,
-                                              g_str_equal,
-                                              g_free,
-                                              (GDestroyNotify) g_variant_unref);
-
+  builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
   while ((item = g_variant_iter_next_value (iter)))
     {
       const gchar *key;
@@ -636,16 +633,17 @@ on_properties_changed (GDBusConnection *connection,
                            g_strdup (key),
                            value); /* steals value */
 
-      g_hash_table_insert (changed_properties,
-                           g_strdup (key),
-                           g_variant_ref (value));
+      g_variant_builder_add (builder,
+                             "{sv}",
+                             g_strdup (key),
+                             g_variant_ref (value));
     }
-
+  changed_properties = g_variant_builder_end (builder);
 
   /* emit signal */
   g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL], 0, changed_properties);
 
-  g_hash_table_unref (changed_properties);
+  g_variant_unref (changed_properties);
 
  out:
   if (iter != NULL)
