@@ -151,7 +151,7 @@ else
 
 $(man_MANS):
 	echo Man generation disabled.  Creating dummy $@.  Configure with --enable-man to enable it.
-	echo Man generation disabled.  Remove this file, configure with --enable-man, and rebuild Pango > $@
+	echo Man generation disabled.  Remove this file, configure with --enable-man, and rebuild > $@
 
 dist-local-check-mans-enabled:
 	echo "*** --enable-man must be used in order to make dist"
