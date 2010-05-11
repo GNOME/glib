@@ -117,7 +117,7 @@ content_files =			\
 	migrating-posix.xml	\
 	migrating-gnome-vfs.xml	\
 	migrating-gconf.xml	\
-	migrating-dbus-glib.xml	\
+	migrating-gdbus.xml	\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
@@ -130,7 +130,7 @@ expand_content_files =		\
 	migrating-posix.xml	\
 	migrating-gnome-vfs.xml	\
 	migrating-gconf.xml	\
-	migrating-dbus-glib.xml
+	migrating-gdbus.xml
 
 extra_files =			\
 	version.xml.in		\
