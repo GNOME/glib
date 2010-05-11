@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.23.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-01 14:21+0200\n"
-"PO-Revision-Date: 2010-05-01 14:25+0200\n"
+"POT-Creation-Date: 2010-05-11 19:52+0200\n"
+"PO-Revision-Date: 2010-05-11 19:54+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -764,7 +764,7 @@ msgstr "gikk ut over arbeidsområde for kompilering"
 msgid "previously-checked referenced subpattern not found"
 msgstr "tidligere sjekket og referert undermønster ikke funnet"
 
-#: ../glib/gregex.c:522 ../glib/gregex.c:1603
+#: ../glib/gregex.c:522 ../glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Feil under treff på regulært uttrykk %s: %s"
@@ -787,43 +787,43 @@ msgstr "Feil under sammensetting av regulært utrykk %s ved tegn %d: %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Feil under optimering av reguært utrykk %s: %s"
 
-#: ../glib/gregex.c:2031
+#: ../glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "heksadesimalt tall eller «}» forventet"
 
-#: ../glib/gregex.c:2047
+#: ../glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "heksadesimalt tall forventet"
 
-#: ../glib/gregex.c:2087
+#: ../glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "mangler «<» i symbolsk referanse"
 
-#: ../glib/gregex.c:2096
+#: ../glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "uferdig symbolsk referanse"
 
-#: ../glib/gregex.c:2103
+#: ../glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "symbolsk referanse med null lengde"
 
-#: ../glib/gregex.c:2114
+#: ../glib/gregex.c:2150
 msgid "digit expected"
 msgstr "tall forventet"
 
-#: ../glib/gregex.c:2132
+#: ../glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "ugyldig symbolsk referanse"
 
-#: ../glib/gregex.c:2194
+#: ../glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "feilplassert siste «\\\\»"
 
-#: ../glib/gregex.c:2198
+#: ../glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "ukjent escapesekvens"
 
-#: ../glib/gregex.c:2208
+#: ../glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Feil under tolking av erstatningstekst «%s» ved tegn %lu: %s"
@@ -1027,19 +1027,19 @@ msgstr "Mangler argument for %s"
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"
 
-#: ../glib/gkeyfile.c:361
+#: ../glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "Gyldig nøkkelfil ble ikke funnet i søkemapper"
 
-#: ../glib/gkeyfile.c:396
+#: ../glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "Ikke en vanlig fil"
 
-#: ../glib/gkeyfile.c:404
+#: ../glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "Filen er tom"
 
-#: ../glib/gkeyfile.c:763
+#: ../glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1047,56 +1047,56 @@ msgstr ""
 "Nøkkelfil inneholder linjen «%s» som ikke er et par med nøkkelverdier, gruppe "
 "eller kommentar"
 
-#: ../glib/gkeyfile.c:823
+#: ../glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Ugyldig navn på gruppe: %s"
 
-#: ../glib/gkeyfile.c:845
+#: ../glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Nøkkelfil starter ikke med en gruppe"
 
-#: ../glib/gkeyfile.c:871
+#: ../glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Ugyldig navn på nøkkel: %s"
 
-#: ../glib/gkeyfile.c:898
+#: ../glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nøkkelfil inneholder ustøttet tegnkoding «%s»"
 
-#: ../glib/gkeyfile.c:1114 ../glib/gkeyfile.c:1276 ../glib/gkeyfile.c:2505
-#: ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2706 ../glib/gkeyfile.c:2839
-#: ../glib/gkeyfile.c:2992 ../glib/gkeyfile.c:3179 ../glib/gkeyfile.c:3240
+#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2657
+#: ../glib/gkeyfile.c:2723 ../glib/gkeyfile.c:2858 ../glib/gkeyfile.c:2991
+#: ../glib/gkeyfile.c:3144 ../glib/gkeyfile.c:3331 ../glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nøkkelfil har ikke gruppe «%s»"
 
-#: ../glib/gkeyfile.c:1288
+#: ../glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Nøkkelfil har ikke nøkkelen «%s»"
 
-#: ../glib/gkeyfile.c:1395 ../glib/gkeyfile.c:1510
+#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Nøkkelfilen inneholder nøkkelen «%s» med verdi «%s» som ikke er UTF-8"
 
-#: ../glib/gkeyfile.c:1415 ../glib/gkeyfile.c:1909
+#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli tolket"
 
-#: ../glib/gkeyfile.c:1530
+#: ../glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli tolket."
 
-#: ../glib/gkeyfile.c:2124 ../glib/gkeyfile.c:2336
+#: ../glib/gkeyfile.c:2126 ../glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1105,36 +1105,36 @@ msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» i gruppen «%s» som har en verdi som ikke "
 "kan bli tolket."
 
-#: ../glib/gkeyfile.c:2520 ../glib/gkeyfile.c:2721 ../glib/gkeyfile.c:3251
+#: ../glib/gkeyfile.c:2672 ../glib/gkeyfile.c:2873 ../glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nøkkelfilen har ikke nøkkelen i «%s» i gruppen «%s»"
 
-#: ../glib/gkeyfile.c:3485
+#: ../glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "Nøkkelfilen inneholder skiftetegn ved linjeslutt"
 
-#: ../glib/gkeyfile.c:3507
+#: ../glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nøkkelfil inneholder ugyldig skiftesekvens «%s»"
 
-#: ../glib/gkeyfile.c:3649
+#: ../glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vedien «%s» kan ikke bli tolket som et tall."
 
-#: ../glib/gkeyfile.c:3663
+#: ../glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heltallsverdi «%s» er utenfor gyldig område"
 
-#: ../glib/gkeyfile.c:3696
+#: ../glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Verdi «%s» kan ikke tolkes som et flyttall."
 
-#: ../glib/gkeyfile.c:3720
+#: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
@@ -1437,7 +1437,7 @@ msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
 #: ../gio/ginetsocketaddress.c:182 ../gio/ginetsocketaddress.c:199
-#: ../gio/gunixsocketaddress.c:218
+#: ../gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "Ikke nok plass til adresse for plugg"
 
@@ -1852,7 +1852,7 @@ msgstr "Feil ved oppslag av «%s»"
 
 #: ../gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
-msgstr ""
+msgstr "gschemas.compiled filen lagres her"
 
 #: ../gio/gschema-compile.c:645 ../gio/gschema-compile.c:656
 msgid "DIRECTORY"
@@ -1864,7 +1864,7 @@ msgstr "Ikke skriv filen gschema.compiled"
 
 #: ../gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
-msgstr ""
+msgstr "Ikke sett restriksjoner på navn på nøkler"
 
 #: ../gio/gschema-compile.c:659
 msgid ""
@@ -1876,7 +1876,7 @@ msgstr ""
 #: ../gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr ""
+msgstr "Du må kun oppgi navn på én katalog\n"
 
 #: ../gio/gschema-compile.c:707
 #, c-format
@@ -1929,7 +1929,7 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:169
 msgid "SCHEMA KEY VALUE"
-msgstr ""
+msgstr "SCHEMA NØKKELVERDI"
 
 #: ../gio/gsettings-tool.c:171
 msgid "Set the value of KEY"
@@ -2088,21 +2088,21 @@ msgstr "Tillagt plugg er lukket"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Kan ikke håndtere versjon %d av GThemedIcon-koding"
 
-#: ../gio/gunixconnection.c:151
+#: ../gio/gunixconnection.c:156
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Ventet 1 kontrollmelding, fikk %d"
 
-#: ../gio/gunixconnection.c:164
+#: ../gio/gunixconnection.c:169
 msgid "Unexpected type of ancillary data"
 msgstr "Uventet type data"
 
-#: ../gio/gunixconnection.c:182
+#: ../gio/gunixconnection.c:187
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "Ventet en fd, men fikk %d\n"
 
-#: ../gio/gunixconnection.c:198
+#: ../gio/gunixconnection.c:203
 msgid "Received invalid fd"
 msgstr "Mottok ugyldig fd"
 
@@ -2127,7 +2127,7 @@ msgstr "Filsystemrot"
 msgid "Error writing to unix: %s"
 msgstr "Feil ved skriving til unix: %s"
 
-#: ../gio/gunixsocketaddress.c:241
+#: ../gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Abstrakte unix domenepluggadresser er ikke støttet på dette systemet"
 
