@@ -42,9 +42,9 @@
            <row><entry>dbus-glib</entry><entry>GDBus</entry></row>
         </thead>
         <tbody>
-          <row><entry>#DBusGConnection</entry></entry>#GDBusConnection</entry></row>
-          <row><entry>#DBusGProxy</entry></entry>#GDBusProxy</entry></row>
-          <row><entry>#DBusGMethodInvocation</entry></entry>#GDBusMethodInvocatoin</entry></row>
+          <row><entry>#DBusGConnection</entry><entry>#GDBusConnection</entry></row>
+          <row><entry>#DBusGProxy</entry><entry>#GDBusProxy</entry></row>
+          <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocatoin</entry></row>
           <row><entry>dbus_g_bus_get()</entry><entry>g_bus_get_sync(), also see
                g_bus_get()</entry></row>
           <row><entry>dbus_g_proxy_new_for_name()</entry><entry>g_dbus_proxy_new_sync(), also see
@@ -66,5 +66,88 @@
         </tbody>
       </tgroup>
     </table>
+  </section>
+
+  <section>
+    <title>Owning bus names</title>
+    <para>
+      Using dbus-glib, you typically call RequestName manually
+      to own a name, like in the following excerpt:
+      <informalexample><programlisting><![CDATA[
+static gboolean
+acquire_name_on_proxy (DBusGProxy *system_bus_proxy,
+                       gboolean    replace)
+{
+        GError *error;
+        guint result;
+        gboolean res;
+        gboolean ret;
+        guint flags;
+
+        ret = FALSE;
+
+        flags = DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
+        if (replace)
+                flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
+
+        error = NULL;
+        res = dbus_g_proxy_call (system_bus_proxy,
+                                 "RequestName",
+                                 &error,
+                                 G_TYPE_STRING,
+                                 NAME_TO_CLAIM,
+                                 G_TYPE_UINT,
+                                 flags,
+                                 G_TYPE_INVALID,
+                                 G_TYPE_UINT,
+                                 &result,
+                                 G_TYPE_INVALID);
+        if (!res) {
+                if (error != NULL) {
+                        g_warning ("Failed to acquire %s: %s",
+                                   NAME_TO_CLAIM, error->message);
+                        g_error_free (error);
+                }
+                else {
+                        g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
+                }
+               goto out;
+        }
+
+        if (result != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
+                if (error != NULL) {
+                        g_warning ("Failed to acquire %s: %s",
+                                   NAME_TO_CLAIM, error->message);
+                        g_error_free (error);
+                }
+                else {
+                        g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
+                }
+                goto out;
+        }
+
+        dbus_g_proxy_add_signal (system_bus_proxy, "NameLost",
+                                 G_TYPE_STRING, G_TYPE_INVALID);
+        dbus_g_proxy_connect_signal (system_bus_proxy, "NameLost",
+                                     G_CALLBACK (name_lost), NULL, NULL);
+        ret = TRUE;
+out:
+        return ret;
+}
+]]>
+      </programlisting></informalexample>
+    </para>
+    <para>
+    While you can do things this way with GDBus too, it is much nicer
+    to use the high-level API for this:
+    <informalexample><programlisting>
+     ...insert example here...
+    </programlisting></informalexample>
+  </section>
+
+  <section>
+    <title>Creating proxies for well-known names</title>
+    <para>
+    </para>
   </section>
 </chapter>
