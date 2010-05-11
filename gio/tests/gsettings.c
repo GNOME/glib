@@ -532,8 +532,6 @@ test_atomic (void)
   g_object_unref (settings);
 }
 
-#ifndef G_OS_WIN32
-
 /* On Windows the interaction between the C library locale and libintl
  * (from GNU gettext) is not like on POSIX, so just skip these tests
  * for now.
@@ -632,8 +630,6 @@ test_l10n_context (void)
 
   g_free (locale);
 }
-
-#endif
 
 enum
 {
@@ -1169,6 +1165,22 @@ test_child_schema (void)
   g_object_unref (settings);
 }
 
+static gboolean
+glib_translations_work (void)
+{
+  gchar *locale;
+  gchar *orig = "Unnamed";
+  gchar *str;
+
+  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+  setlocale (LC_MESSAGES, "de");
+  str = dgettext ("glib20", orig);
+  setlocale (LC_MESSAGES, locale);
+  g_free (locale);
+
+  return str != orig;
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1191,10 +1203,13 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
-#ifndef G_OS_WIN32
-  g_test_add_func ("/gsettings/l10n", test_l10n);
-  g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
-#endif
+
+  if (glib_translations_work ())
+    {
+      g_test_add_func ("/gsettings/l10n", test_l10n);
+      g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
+    }
+
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
