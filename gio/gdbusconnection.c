@@ -85,6 +85,34 @@
  *    3 -> /proc/18068/fd
  *
  *   e.g. not of much use.
+ *
+ *  - GDBus High-Level docs
+ *    - Proxy: properties, signals...
+ *    - Connection: IOStream based, ::close, connection setup steps
+ *                  mainloop integration, threading
+ *    - Differences from libdbus (extend "Migrating from")
+ *      - the message handling thread
+ *      - Using GVariant instead of GValue
+ *    - Explain why the high-level API is a good thing and what
+ *      kind of pitfalls it avoids
+ *      - Export objects before claiming names
+ *    - Talk about auto-starting services (cf. GBusNameWatcherFlags)
+ *
+ *  - Mention in all API that the GVariant is sunk. Also mention
+ *    when the returned GVariant is floating.
+ *
+ *  - Small example snippet for each method where useful (won't
+ *    have to compile) where it makes sense (e.g. connetion_call()
+ *    and using a floating GVariant).
+ *
+ *  - Consistent timeout handling (25s vs 30s?)
+ *
+ *  - GDBusProxy subclass example
+ *
+ *  - Update GDBusAuthObserver (is_same_user(), s/deny/authorize/)
+ *
+ *  - Remove properties on GDBusMethodInvocation
+ *
  */
 
 #include "config.h"
