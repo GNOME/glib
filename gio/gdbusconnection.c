@@ -108,9 +108,6 @@
  *  - GDBusProxy subclass example
  *
  *  - Update GDBusAuthObserver (is_same_user(), s/deny/authorize/)
- *
- *  - Remove properties on GDBusMethodInvocation
- *
  */
 
 #include "config.h"
