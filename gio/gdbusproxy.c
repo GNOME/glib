@@ -1391,14 +1391,14 @@ validate_method_return (const char             *method_name,
  * Since: 2.26
  */
 void
-g_dbus_proxy_call (GDBusProxy             *proxy,
-                            const gchar            *method_name,
-                            GVariant               *parameters,
-                            GDBusCallFlags          flags,
-                            gint                    timeout_msec,
-                            GCancellable           *cancellable,
-                            GAsyncReadyCallback     callback,
-                            gpointer                user_data)
+g_dbus_proxy_call (GDBusProxy          *proxy,
+                   const gchar         *method_name,
+                   GVariant            *parameters,
+                   GDBusCallFlags       flags,
+                   gint                 timeout_msec,
+                   GCancellable        *cancellable,
+                   GAsyncReadyCallback  callback,
+                   gpointer             user_data)
 {
   GSimpleAsyncResult *simple;
   gboolean was_split;
@@ -1457,8 +1457,8 @@ g_dbus_proxy_call (GDBusProxy             *proxy,
  */
 GVariant *
 g_dbus_proxy_call_finish (GDBusProxy    *proxy,
-                                   GAsyncResult  *res,
-                                   GError       **error)
+                          GAsyncResult  *res,
+                          GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GVariant *value;
@@ -1527,13 +1527,13 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * Since: 2.26
  */
 GVariant *
-g_dbus_proxy_call_sync (GDBusProxy              *proxy,
-                                 const gchar             *method_name,
-                                 GVariant                *parameters,
-                                 GDBusCallFlags           flags,
-                                 gint                     timeout_msec,
-                                 GCancellable            *cancellable,
-                                 GError                 **error)
+g_dbus_proxy_call_sync (GDBusProxy      *proxy,
+                        const gchar     *method_name,
+                        GVariant        *parameters,
+                        GDBusCallFlags   flags,
+                        gint             timeout_msec,
+                        GCancellable    *cancellable,
+                        GError         **error)
 {
   GVariant *ret;
   gboolean was_split;
