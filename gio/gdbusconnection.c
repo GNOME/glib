@@ -2365,7 +2365,7 @@ purge_all_filters (GDBusConnection *connection)
 /**
  * g_dbus_connection_remove_filter:
  * @connection: a #GDBusConnection
- * @filer_id: an identifier obtained from g_dbus_connection_add_filter()
+ * @filter_id: an identifier obtained from g_dbus_connection_add_filter()
  *
  * Removes a filter.
  *
@@ -4153,6 +4153,24 @@ add_call_flags (GDBusMessage           *message,
  * not compatible with the D-Bus protocol, the operation fails with
  * %G_IO_ERROR_INVALID_ARGUMENT.
  *
+ * If the @parameters #GVariant is floating, it is consumed. This allows
+ * convenient 'inline' use of g_variant_new(), e.g.:
+ * |[
+ *  g_dbus_connection_call (connection,
+ *                          "org.freedesktop.StringThings",
+ *                          "/org/freedesktop/StringThings",
+ *                          "org.freedesktop.StringThings",
+ *                          "TwoStrings",
+ *                          g_variant_new ("(ss)",
+ *                                         "Thing One",
+ *                                         "Thing Two"),
+ *                          G_DBUS_CALL_FLAGS_NONE,
+ *                          -1,
+ *                          NULL,
+ *                          (GAsyncReadyCallback) two_strings_done,
+ *                          NULL);
+ * ]|
+ *
  * This is an asynchronous method. When the operation is finished, @callback will be invoked
  * in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
  * of the thread you are calling this method from. You can then call
@@ -4302,6 +4320,23 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * operation will fail with %G_IO_ERROR_CANCELLED. If @parameters
  * contains a value not compatible with the D-Bus protocol, the operation
  * fails with %G_IO_ERROR_INVALID_ARGUMENT.
+ *
+ * If the @parameters #GVariant is floating, it is consumed.
+ * This allows convenient 'inline' use of g_variant_new(), e.g.:
+ * |[
+ *  g_dbus_connection_call_sync (connection,
+ *                               "org.freedesktop.StringThings",
+ *                               "/org/freedesktop/StringThings",
+ *                               "org.freedesktop.StringThings",
+ *                               "TwoStrings",
+ *                               g_variant_new ("(ss)",
+ *                                              "Thing One",
+ *                                              "Thing Two"),
+ *                               G_DBUS_CALL_FLAGS_NONE,
+ *                               -1,
+ *                               NULL,
+ *                               &amp;error);
+ * ]|
  *
  * The calling thread is blocked until a reply is received. See
  * g_dbus_connection_call() for the asynchronous version of

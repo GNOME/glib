@@ -1381,12 +1381,28 @@ validate_method_return (const char             *method_name,
  * compatible with the D-Bus protocol, the operation fails with
  * %G_IO_ERROR_INVALID_ARGUMENT.
  *
- * This is an asynchronous method. When the operation is finished, @callback will be invoked
- * in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
- * of the thread you are calling this method from. You can then call
- * g_dbus_proxy_call_finish() to get the result of the operation.
- * See g_dbus_proxy_call_sync() for the
- * synchronous version of this method.
+ * If the @parameters #GVariant is floating, it is consumed. This allows
+ * convenient 'inline' use of g_variant_new(), e.g.:
+ * |[
+ *  g_dbus_proxy_call (proxy,
+ *                     "TwoStrings",
+ *                     g_variant_new ("(ss)",
+ *                                    "Thing One",
+ *                                    "Thing Two"),
+ *                     G_DBUS_CALL_FLAGS_NONE,
+ *                     -1,
+ *                     NULL,
+ *                     (GAsyncReadyCallback) two_strings_done,
+ *                     &amp;data);
+ * ]|
+ *
+ * This is an asynchronous method. When the operation is finished,
+ * @callback will be invoked in the
+ * <link linkend="g-main-context-push-thread-default">thread-default
+ * main loop</link> of the thread you are calling this method from.
+ * You can then call g_dbus_proxy_call_finish() to get the result of
+ * the operation. See g_dbus_proxy_call_sync() for the synchronous
+ * version of this method.
  *
  * Since: 2.26
  */
@@ -1516,6 +1532,20 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * %G_IO_ERROR_CANCELLED. If @parameters contains a value not
  * compatible with the D-Bus protocol, the operation fails with
  * %G_IO_ERROR_INVALID_ARGUMENT.
+ *
+ * If the @parameters #GVariant is floating, it is consumed. This allows
+ * convenient 'inline' use of g_variant_new(), e.g.:
+ * |[
+ *  g_dbus_proxy_call_sync (proxy,
+ *                          "TwoStrings",
+ *                          g_variant_new ("(ss)",
+ *                                         "Thing One",
+ *                                         "Thing Two"),
+ *                          G_DBUS_CALL_FLAGS_NONE,
+ *                          -1,
+ *                          NULL,
+ *                          &amp;error);
+ * ]|
  *
  * The calling thread is blocked until a reply is received. See
  * g_dbus_proxy_call() for the asynchronous version of this
