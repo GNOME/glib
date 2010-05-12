@@ -5239,7 +5239,7 @@ get_uninitialized_connection (GBusType       bus_type,
  * The returned object is a singleton, that is, shared with other
  * callers of g_bus_get() and g_bus_get_sync() for @bus_type. In the
  * event that you need a private message bus connection, use
- * g_dbus_address_get_for_bus() and
+ * g_dbus_address_get_for_bus_sync() and
  * g_dbus_connection_new_for_address().
  *
  * Note that the returned #GDBusConnection object will (usually) have
