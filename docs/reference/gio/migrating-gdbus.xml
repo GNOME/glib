@@ -44,7 +44,7 @@
         <tbody>
           <row><entry>#DBusGConnection</entry><entry>#GDBusConnection</entry></row>
           <row><entry>#DBusGProxy</entry><entry>#GDBusProxy</entry></row>
-          <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocatoin</entry></row>
+          <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocation</entry></row>
           <row><entry>dbus_g_bus_get()</entry><entry>g_bus_get_sync(), also see
                g_bus_get()</entry></row>
           <row><entry>dbus_g_proxy_new_for_name()</entry><entry>g_dbus_proxy_new_sync(), also see
