@@ -179,7 +179,7 @@ on_name_acquired (GDBusConnection *connection,
     <para>
       In contrast, #GDBusProxy instances are always bound to a unique name.
       To get a proxy for a well-known name, you either have to call
-      GetNameOwner() yourself and construct a proxy for the unique name
+      GetNameOwner yourself and construct a proxy for the unique name
       of the current name owner, or use the high-level API. The latter
       option is highly recommended:
       <informalexample><programlisting><![CDATA[
