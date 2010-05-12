@@ -33,9 +33,7 @@
  * - Need to rewrite GDBusAuth and rework GDBusAuthMechanism. In particular
  *   the mechanism VFuncs need to be able to set an error.
  *
- * - Need to document usage of DBUS_SYSTEM_ADDRESS and
- *   DBUS_SESSION_BUS_ADDRESS environment variables. Also need to
- *   document other mechanisms/sources for determining the D-Bus
+ * - Need to document other mechanisms/sources for determining the D-Bus
  *   address of a well-known bus.
  *
  *   - e.g. on Win32 we need code like from here
@@ -2367,6 +2365,15 @@ purge_all_filters (GDBusConnection *connection)
     }
 }
 
+/**
+ * g_dbus_connection_remove_filter:
+ * @connection: a #GDBusConnection
+ * @filer_id: an identifier obtained from g_dbus_connection_add_filter()
+ *
+ * Removes a filter.
+ *
+ * Since: 2.26
+ */
 void
 g_dbus_connection_remove_filter (GDBusConnection *connection,
                                  guint            filter_id)
