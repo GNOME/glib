@@ -74,75 +74,91 @@
       Using dbus-glib, you typically call RequestName manually
       to own a name, like in the following excerpt:
       <informalexample><programlisting><![CDATA[
-static gboolean
-acquire_name_on_proxy (DBusGProxy *system_bus_proxy,
-                       gboolean    replace)
-{
-        GError *error;
-        guint result;
-        gboolean res;
-        gboolean ret;
-        guint flags;
-
-        ret = FALSE;
-
-        flags = DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
-        if (replace)
-                flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
-
-        error = NULL;
-        res = dbus_g_proxy_call (system_bus_proxy,
-                                 "RequestName",
-                                 &error,
-                                 G_TYPE_STRING,
-                                 NAME_TO_CLAIM,
-                                 G_TYPE_UINT,
-                                 flags,
-                                 G_TYPE_INVALID,
-                                 G_TYPE_UINT,
-                                 &result,
-                                 G_TYPE_INVALID);
-        if (!res) {
-                if (error != NULL) {
-                        g_warning ("Failed to acquire %s: %s",
-                                   NAME_TO_CLAIM, error->message);
-                        g_error_free (error);
-                }
-                else {
-                        g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
-                }
-               goto out;
+  error = NULL;
+  res = dbus_g_proxy_call (system_bus_proxy,
+                           "RequestName",
+                           &error,
+                           G_TYPE_STRING, NAME_TO_CLAIM,
+                           G_TYPE_UINT,   DBUS_NAME_FLAG_ALLOW_REPLACEMENT,
+                           G_TYPE_INVALID,
+                           G_TYPE_UINT,   &result,
+                           G_TYPE_INVALID);
+  if (!res)
+    {
+      if (error != NULL)
+        {
+          g_warning ("Failed to acquire %s: %s",
+                     NAME_TO_CLAIM, error->message);
+          g_error_free (error);
         }
-
-        if (result != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
-                if (error != NULL) {
-                        g_warning ("Failed to acquire %s: %s",
-                                   NAME_TO_CLAIM, error->message);
-                        g_error_free (error);
-                }
-                else {
-                        g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
-                }
-                goto out;
+      else
+        {
+          g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
         }
+      goto out;
+    }
 
-        dbus_g_proxy_add_signal (system_bus_proxy, "NameLost",
-                                 G_TYPE_STRING, G_TYPE_INVALID);
-        dbus_g_proxy_connect_signal (system_bus_proxy, "NameLost",
-                                     G_CALLBACK (name_lost), NULL, NULL);
-        ret = TRUE;
-out:
-        return ret;
-}
+  if (result != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER)
+    {
+      if (error != NULL)
+        {
+          g_warning ("Failed to acquire %s: %s",
+                     NAME_TO_CLAIM, error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("Failed to acquire %s", NAME_TO_CLAIM);
+        }
+      exit (1);
+    }
+
+  dbus_g_proxy_add_signal (system_bus_proxy, "NameLost",
+                           G_TYPE_STRING, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (system_bus_proxy, "NameLost",
+                               G_CALLBACK (on_name_lost), NULL, NULL);
+
+  /* further setup ... */
 ]]>
       </programlisting></informalexample>
     </para>
     <para>
-    While you can do things this way with GDBus too, it is much nicer
-    to use the high-level API for this:
-    <informalexample><programlisting>
-     ...insert example here...
+    While you can do things this way with GDBus too, using
+    g_dbus_proxy_call_sync(), it is much nicer to use the high-level API
+    for this:
+    <informalexample><programlisting><![CDATA[
+static void
+on_name_acquired (GDBusConnection *connection,
+                  const gchar     *name,
+                  gpointer         user_data)
+{
+  /* further setup ... */
+}
+
+/* ... */
+
+  owner_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
+                             NAME_TO_CLAIM,
+                             G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT,
+                             on_bus_acquired,
+                             on_name_acquired,
+                             on_name_lost,
+                             NULL,
+                             NULL);
+
+  g_main_loop_run (loop);
+
+  g_bus_unown_name (owner_id);
+]]>
     </programlisting></informalexample>
+    Note that g_bus_own_name() works asynchronously and requires
+    you to enter your mainloop to await the on_name_aquired()
+    callback. Also note that in order to avoid race conditions (e.g.
+    when your service is activated by a method call), you have to export
+    your manager object <emphasis>before</emphasis> acquiring the
+    name. The on_bus_acquired() callback is the right place to do
+    such preparations.
+    </para>
   </section>
 
   <section>
