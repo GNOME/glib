@@ -219,4 +219,9 @@ on_proxy_appeared (GDBusConnection *connection,
       is ready for use.
     </para>
   </section>
+
+  <section>
+    <title>Exporting objects</title>
+  </section>
+
 </chapter>
