@@ -296,20 +296,28 @@
     </formalpara>
 
    <formalpara>
-      <title><envar>DBUS_SYSTEM_ADDRESS</envar></title>
+      <title><envar>DBUS_SYSTEM_BUS_ADDRESS</envar></title>
 
       <para>
         This variable is consulted to find the address of the D-Bus system
         bus. For the format of D-Bus addresses, see the D-Bus
         <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#addresses">specification</ulink>.
       </para>
+      <para>
+        Setting this variable overrides platform-specific ways of determining
+        the system bus address.
+      </para>
    </formalpara>
 
    <formalpara>
-      <title><envar>DBUS_SESSION_ADDRESS</envar></title>
+      <title><envar>DBUS_SESSION_BUS_ADDRESS</envar></title>
 
       <para>
         This variable is consulted to find the address of the D-Bus session bus.
+      </para>
+      <para>
+        Setting this variable overrides platform-specific ways of determining
+        the session bus address.
       </para>
    </formalpara>
 
