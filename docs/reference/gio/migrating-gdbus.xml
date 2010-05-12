@@ -218,6 +218,61 @@ on_proxy_appeared (GDBusConnection *connection,
       proxy asynchronously, and only calls your callback when the proxy
       is ready for use.
     </para>
+
+    <para>
+      For an example of a #GDBusProxy-derived class that wraps a D-Bus
+      interface in a type-safe way, see <xref
+      linkend="gdbus-example-proxy-subclass"/>. The comparison is as
+      follows:
+      <table id="gdbus-example-type-safe-proxy">
+        <title>Wrapping the org.freedesktop.Accounts.User D-Bus interface in the AccountUser GObject type</title>
+        <tgroup cols="2">
+          <thead>
+            <row><entry>D-Bus concept</entry><entry>GObject concept</entry></row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>AutomaticLogin property</entry>
+              <entry>
+                <para><literal>AccountsUser:automatic-login</literal> GObject property</para>
+                <para>C getter: accounts_user_get_automatic_login()</para>
+                <para>Watch changes via the <literal>notify::automatic-login</literal> signal</para>
+              </entry>
+            </row>
+            <row>
+              <entry>RealName property</entry>
+              <entry>
+                <para><literal>AccountsUser:real-name</literal> GObject property</para>
+                <para>C getter: accounts_user_get_real_name()</para>
+                <para>Watch changes via the <literal>notify::real-name signal</literal></para>
+              </entry>
+            </row>
+            <row>
+              <entry>UserName property</entry>
+              <entry>
+                <para><literal>AccountsUser:user-name</literal> GObject property</para>
+                <para>C getter: accounts_user_get_user_name()</para>
+                <para>Watch changes via the <literal>notify::user-name</literal> signal</para>
+              </entry>
+            </row>
+            <row>
+              <entry>Changed signal</entry>
+              <entry>
+                <para><literal>AccountsUser::changed</literal> GObject signal</para>
+                <para>Watch via e.g. g_signal_connect()</para>
+              </entry>
+            </row>
+            <row>
+              <entry>Frobnicate method</entry>
+              <entry>
+                <para>Use accounts_user_frobnicate() + accounts_user_frobnicate_finish() or accounts_user_frobnicate_sync() to invoke</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <example id="gdbus-example-proxy-subclass"><title>GDBusProxy subclass example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-proxy-subclass.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
   </section>
 
   <section>

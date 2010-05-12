@@ -64,6 +64,7 @@ SAMPLE_PROGS = 				\
 	gdbus-example-server		\
 	gdbus-example-subtree		\
 	gdbus-example-peer		\
+	gdbus-example-proxy-subclass	\
 	$(NULL)
 
 
@@ -229,6 +230,9 @@ gdbus_example_subtree_LDADD   = $(progs_ldadd)
 
 gdbus_example_peer_SOURCES = gdbus-example-peer.c
 gdbus_example_peer_LDADD   = $(progs_ldadd)
+
+gdbus_example_proxy_subclass_SOURCES = gdbus-example-proxy-subclass.c
+gdbus_example_proxy_subclass_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \
 	socket-common.c						\

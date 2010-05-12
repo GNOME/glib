@@ -101,8 +101,6 @@
  *
  *  - Consistent timeout handling (25s vs 30s?)
  *
- *  - GDBusProxy subclass example
- *
  *  - Update GDBusAuthObserver (s/deny/authorize/)
  */
 
