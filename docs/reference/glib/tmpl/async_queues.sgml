@@ -66,6 +66,9 @@ locking function variants (those without the suffix _unlocked)
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GAsyncQueue ##### -->
 <para>
 The #GAsyncQueue struct is an opaque data structure, which represents
@@ -77,6 +80,7 @@ an asynchronous queue. It should only be accessed through the
 <!-- ##### FUNCTION g_async_queue_new ##### -->
 
 
+@void: 
 @Returns: 
 
 

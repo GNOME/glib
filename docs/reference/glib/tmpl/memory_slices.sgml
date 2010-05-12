@@ -92,6 +92,9 @@ object size used at allocation time is still available when freeing.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION g_slice_alloc ##### -->
 <para>
 Allocates a block of memory from the slice allocator.

@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Shankar Prasad <svenkate@redhat.com>, 2007, 2008, 2009.
+# Shankar Prasad <svenkate@redhat.com>, 2007, 2008, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
-"PO-Revision-Date: 2009-09-10 12:23+0530\n"
+"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"PO-Revision-Date: 2010-04-22 16:21+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
-"Language-Team: Kannada <en@li.org>\n"
+"Language-Team: kn-IN <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: glib/gbookmarkfile.c:737
@@ -250,8 +250,8 @@ msgstr "ಮಾದರಿ '%s' ಯು XXXXXX ಅನ್ನು ಹೊಂದಿಲ್
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ಬೈಟ್"
+msgstr[1] "%u ಬೈಟ್‌ಗಳು"
 
 #: glib/gfileutils.c:1782
 #, c-format
@@ -269,19 +269,19 @@ msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #: glib/gfileutils.c:1797
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TB"
-msgstr "%.1f KB"
+msgstr "%.1f TB"
 
 #: glib/gfileutils.c:1802
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PB"
-msgstr "%.1f KB"
+msgstr "%.1f PB"
 
 #: glib/gfileutils.c:1807
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EB"
-msgstr "%.1f KB"
+msgstr "%.1f EB"
 
 #: glib/gfileutils.c:1850
 #, c-format
@@ -1761,42 +1761,38 @@ msgstr ""
 #. * message for mount objects that
 #. * don't implement unmount.
 #: gio/gmount.c:364
-#, fuzzy
 msgid "mount doesn't implement \"unmount\""
-msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
+msgstr "ಆರೋಹಣವು \"unmount\"ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:443
-#, fuzzy
 msgid "mount doesn't implement \"eject\""
-msgstr "ಆರೋಹಣವು ಹೊರತೆಗೆಯುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
+msgstr "ಆರೋಹಣವು \"eject\" ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:523
-#, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "ಆರೋಹಣವು ಅವರೋಹಣವನ್ನು ಅಥವ unmount_with_operation ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
+msgstr ""
+"ಆರೋಹಣವು \"unmount\" ಅನ್ನು ಅಥವ \"unmount_with_operation ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:610
-#, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
-"ಆರೋಹಣವು ಹೊರತೆಗೆಯುವುದನ್ನು ಅಥವ eject_with_operation ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
+"ಆರೋಹಣವು \"eject\" ಅಥವ \"eject_with_operation\" ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:699
-#, fuzzy
 msgid "mount doesn't implement \"remount\""
-msgstr "ಆರೋಹಣವು ಪುನಃ ಆರೋಹಿಸುವುದನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
+msgstr "ಆರೋಹಣವು \"remount\" ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವುದಿಲ್ಲ"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2047,14 +2043,13 @@ msgid "Association creation not supported on win32"
 msgstr "win32 ನಲ್ಲಿ ಅಸೋಸಿಯೇಶನ್ ರಚನೆಯು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
-#, fuzzy
 msgid "Not enough memory"
-msgstr "ಮೆಮೊರಿ ಖಾಲಿಯಾಗಿದೆ"
+msgstr "ಸಾಕಷ್ಟು ಮೆಮೊರಿಯು ಲಭ್ಯವಿಲ್ಲ"
 
 #: gio/gzlibcompressor.c:286 gio/gzlibdecompressor.c:257
-#, fuzzy, c-format
+#, c-format
 msgid "Internal error: %s"
-msgstr "ಆಂತರಿಕ ದೋಷ"
+msgstr "ಆಂತರಿಕ ದೋಷ: %s"
 
 #: gio/gzlibcompressor.c:299 gio/gzlibdecompressor.c:271
 msgid "Need more input"
@@ -2065,9 +2060,22 @@ msgstr ""
 msgid "Invalid compressed data"
 msgstr "ಅಮಾನ್ಯವಾದ ಅತಿಥೇಯದ ಹೆಸರು"
 
+#~ msgid "DIRECTORY"
+#~ msgstr "DIRECTORY"
+
+#~ msgid "COMMAND"
+#~ msgstr "COMMAND"
+
+#~ msgid "PATH"
+#~ msgstr "PATH"
+
 #, fuzzy
-#~ msgid "Invalid UTF-8 sequence in input"
-#~ msgstr "ಆದಾನ ಪರಿವರ್ತನೆಯಲ್ಲಿ ಅಮಾನ್ಯ ಅನುಕ್ರಮ"
+#~ msgid "Key %s is not writable\n"
+#~ msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
+
+#, fuzzy
+#~ msgid "Unknown command '%s'\n"
+#~ msgstr "ಗೊತ್ತಿರದ ಆಯ್ಕೆ %s"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "ಗರಿಷ್ಟ ದತ್ತಾಂಶ ಅರೆ(array) ಮಿತಿಯನ್ನು ತಲುಪಿದೆ"

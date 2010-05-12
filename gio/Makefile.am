@@ -180,6 +180,14 @@ win32_sources = \
 	gwin32volumemonitor.h \
 	$(NULL)
 
+win32_more_sources_for_vcproj = \
+	gwin32appinfo.c \
+	win32/gwin32directorymonitor.c \
+	win32/gwinhttpfile.c \
+	win32/gwinhttpfileinputstream.c \
+	win32/gwinhttpfileoutputstream.c \
+	win32/gwinhttpvfs.c
+
 endif
 
 SUBDIRS += tests
@@ -476,13 +484,15 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 ../build/win32/vs9/gio.vcproj: $(top_srcdir)/build/win32/vs9/gio.vcprojin
-	for F in $(libgio_2_0_la_SOURCES); do \
+	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_sources) $(win32_more_sources_for_vcproj) | tr '/' '\\'`; do \
 		case $$F in \
+		gunix*.c|gdesktopappinfo.c) ;; \
 		*.c) echo '   <File RelativePath="..\..\..\gio\'$$F'" />' \
 		     ;; \
 		esac; \
-	done >libgio.sourcefiles
+	done | sort -u >libgio.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gio.vcprojin >$@
+	rm libgio.sourcefiles
 
 if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:

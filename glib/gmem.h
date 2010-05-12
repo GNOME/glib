@@ -88,7 +88,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 	  if (__s == 1)			\
 	    __p = g_##func (__n);				\
 	  else if (__builtin_constant_p (__n) &&		\
-	           __n <= G_MAXSIZE / __s)			\
+	           (__s == 0 || __n <= G_MAXSIZE / __s))	\
 	    __p = g_##func (__n * __s);				\
 	  else							\
 	    __p = g_##func##_n (__n, __s);			\
@@ -102,7 +102,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 	  if (__s == 1)						\
 	    __p = g_##func (__p, __n);				\
 	  else if (__builtin_constant_p (__n) &&		\
-	           __n <= G_MAXSIZE / __s)			\
+	           (__s == 0 || __n <= G_MAXSIZE / __s))	\
 	    __p = g_##func (__p, __n * __s);			\
 	  else							\
 	    __p = g_##func##_n (__p, __n, __s);			\

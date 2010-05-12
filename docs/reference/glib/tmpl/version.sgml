@@ -19,6 +19,9 @@ typically use the features described here.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO GLIB_MAJOR_VERSION ##### -->
 <para>
 The major version number of the GLib library.

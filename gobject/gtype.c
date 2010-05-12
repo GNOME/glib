@@ -4373,12 +4373,52 @@ g_type_init (void)
  * the type and all of its parent types are allocated
  * sequentially in the same memory block as the public
  * structures. This function should be called in the
+ * type's class_init() function. The private structure can
+ * be retrieved using the G_TYPE_INSTANCE_GET_PRIVATE() macro.
+ * The following example shows attaching a private structure
+ * <structname>MyObjectPrivate</structname> to an object
+ * <structname>MyObject</structname> defined in the standard GObject
+ * fashion.
  * type's class_init() function.
  *
- * The private structure can be retrieved using the
- * G_TYPE_CLASS_GET_PRIVATE() macro.
- 
- * Since: 2.24
+ * |[
+ * typedef struct _MyObject        MyObject;
+ * typedef struct _MyObjectPrivate MyObjectPrivate;
+ *
+ * struct _MyObject {
+ *  GObject parent;
+ *
+ *  MyObjectPrivate *priv;
+ * };
+ *
+ * struct _MyObjectPrivate {
+ *   int some_field;
+ * };
+ *
+ * static void
+ * my_object_class_init (MyObjectClass *klass)
+ * {
+ *   g_type_class_add_private (klass, sizeof (MyObjectPrivate));
+ * }
+ *
+ * static void
+ * my_object_init (MyObject *my_object)
+ * {
+ *   my_object->priv = G_TYPE_INSTANCE_GET_PRIVATE (my_object,
+ *                                                  MY_TYPE_OBJECT,
+ *                                                  MyObjectPrivate);
+ * }
+ *
+ * static int
+ * my_object_get_some_field (MyObject *my_object)
+ * {
+ *   MyObjectPrivate *priv = my_object->priv;
+ *
+ *   return priv->some_field;
+ * }
+ * ]|
+ *
+ * Since: 2.4
  */
 void
 g_type_class_add_private (gpointer g_class,

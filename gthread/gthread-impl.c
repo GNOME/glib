@@ -105,7 +105,7 @@ g_mutex_lock_errorcheck_impl (GMutex *mutex,
   g_thread_functions_for_glib_use.thread_self (&self);
 
   if (g_system_thread_equal (info->owner, self))
-    g_error ("Trying to recursivly lock a mutex at '%s', "
+    g_error ("Trying to recursively lock a mutex at '%s', "
 	     "previously locked at '%s'",
 	     loc, info->location);
 

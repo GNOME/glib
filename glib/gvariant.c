@@ -3473,17 +3473,21 @@ g_variant_valist_get (const gchar **str,
 
   else /* tuple, dictionary entry */
     {
-      GVariantIter iter;
+      gint index = 0;
 
       g_assert (**str == '(' || **str == '{');
-      g_variant_iter_init (&iter, value);
 
       (*str)++;
       while (**str != ')' && **str != '}')
         {
-          value = g_variant_iter_next_value (&iter);
-          g_variant_valist_get (str, value, free, app);
-          g_variant_unref (value);
+          if (value != NULL)
+            {
+              GVariant *child = g_variant_get_child_value (value, index++);
+              g_variant_valist_get (str, child, free, app);
+              g_variant_unref (child);
+            }
+          else
+            g_variant_valist_get (str, NULL, free, app);
         }
       (*str)++;
     }
@@ -4087,7 +4091,7 @@ g_variant_byteswap (GVariant *value)
 
 /**
  * g_variant_new_from_data:
- * @type: a #GVariantType
+ * @type: a definite #GVariantType
  * @data: the serialised data
  * @size: the size of @data
  * @trusted: %TRUE if @data is definitely in normal form
@@ -4128,6 +4132,9 @@ g_variant_new_from_data (const GVariantType *type,
 {
   GVariant *value;
   GBuffer *buffer;
+
+  g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
+  g_return_val_if_fail (data != NULL || size == 0, NULL);
 
   if (notify)
     buffer = g_buffer_new_from_pointer (data, size, notify, user_data);

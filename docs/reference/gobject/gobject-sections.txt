@@ -705,6 +705,7 @@ g_param_spec_types
 <FILE>value_collection</FILE>
 <INCLUDE>glib-object.h,gobject/gvaluecollector.h</INCLUDE>
 GTypeCValue
+G_VALUE_COLLECT_INIT
 G_VALUE_COLLECT
 G_VALUE_LCOPY
 G_VALUE_COLLECT_FORMAT_MAX_LENGTH

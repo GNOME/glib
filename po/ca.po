@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
-"PO-Revision-Date: 2010-03-05 23:26+0100\n"
+"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"PO-Revision-Date: 2010-04-02 14:03+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -1612,12 +1612,12 @@ msgstr "Tipus d'atribut no vàlid (s'esperava una cadena)"
 
 #: gio/glocalfileinfo.c:740
 msgid "Invalid extended attribute name"
-msgstr "El nom de l'atribut estès no és vàlid"
+msgstr "El nom de l'atribut ampliat no és vàlid"
 
 #: gio/glocalfileinfo.c:780
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr "S'ha produït un error en establir l'atribut estès «%s»: %s"
+msgstr "S'ha produït un error en establir l'atribut ampliat «%s»: %s"
 
 #: gio/glocalfileinfo.c:1484 gio/glocalfileoutputstream.c:819
 #, c-format

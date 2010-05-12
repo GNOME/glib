@@ -40,6 +40,9 @@ Convenience functions for converting between UTF-8 and the locale encoding.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### TYPEDEF gunichar ##### -->
 <para>
 A type which can hold any UTF-32 or UCS-4 character code, also known

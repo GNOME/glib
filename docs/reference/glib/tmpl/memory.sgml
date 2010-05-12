@@ -34,6 +34,9 @@ g_mem_set_vtable().
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO g_new ##### -->
 <para>
 Allocates @n_structs elements of type @struct_type.
@@ -391,6 +394,7 @@ should return %NULL on failure, GLib will handle error-checking for you.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -419,5 +423,6 @@ Note that this function will not output anything unless you have
 previously installed the #glib_mem_profiler_table with g_mem_set_vtable().
 </para>
 
+@void: 
 
 

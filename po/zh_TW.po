@@ -6,10 +6,10 @@
 # Woodman Tuen <wmtuen@gmail.com>, 2005-07.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.23.5\n"
+"Project-Id-Version: glib 2.24.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-26 11:48-0400\n"
-"PO-Revision-Date: 2010-02-27 18:26+0800\n"
+"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"PO-Revision-Date: 2010-03-27 14:14+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
 "MIME-Version: 1.0\n"
@@ -1272,14 +1272,13 @@ msgid "Can't recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
 #: gio/gfile.c:2755
-#, fuzzy
 msgid "Splice not supported"
-msgstr "不支援符號連結"
+msgstr "不支援拼接"
 
 #: gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
-msgstr "分割檔案時發生錯誤：%s"
+msgstr "拼接檔案時發生錯誤：%s"
 
 #: gio/gfile.c:2906
 msgid "Can't copy special file"

@@ -66,6 +66,9 @@ a #GTimeVal with g_get_current_time().
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO G_USEC_PER_SEC ##### -->
 <para>
 Number of microseconds in one second (1 million). This macro is provided for
@@ -268,6 +271,7 @@ be cleared (as if you'd called g_date_clear()) but invalid (it won't
 represent an existing day). Free the return value with g_date_free().
 </para>
 
+@void: 
 @Returns: a newly-allocated #GDate
 
 

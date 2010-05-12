@@ -42,6 +42,9 @@ for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### TYPEDEF gboolean ##### -->
 <para>
 A standard <type>boolean</type> type.

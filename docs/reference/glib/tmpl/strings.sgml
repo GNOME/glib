@@ -20,6 +20,9 @@ nul bytes.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GString ##### -->
 <para>
 The #GString struct contains the public fields of a #GString.

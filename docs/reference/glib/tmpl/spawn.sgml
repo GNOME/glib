@@ -17,6 +17,9 @@ process launching
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### ENUM GSpawnError ##### -->
 <para>
 Error codes returned by spawning processes.

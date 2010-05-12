@@ -118,6 +118,9 @@ restricted to ASCII characters.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT GKeyFile ##### -->
 <para>
 The <structname>GKeyFile</structname> struct contains only private fields
@@ -164,6 +167,7 @@ Flags which influence the parsing.
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -75,6 +75,9 @@ written by Philip Hazel.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### ENUM GRegexError ##### -->
 <para>
 Error codes returned by regular expressions functions.

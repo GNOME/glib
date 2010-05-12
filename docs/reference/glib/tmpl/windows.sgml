@@ -19,6 +19,9 @@ project.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
 Provided for UNIX emulation on Windows; equivalent to UNIX 
@@ -42,6 +45,7 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -80,6 +84,7 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 </para>
 
+@void: 
 @Returns: 
 
 

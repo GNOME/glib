@@ -28,6 +28,9 @@ give a perhaps-helpful warning before giving up.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION g_print ##### -->
 <para>
 Outputs a formatted message via the print handler.
