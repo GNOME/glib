@@ -103,7 +103,7 @@
  *
  *  - GDBusProxy subclass example
  *
- *  - Update GDBusAuthObserver (is_same_user(), s/deny/authorize/)
+ *  - Update GDBusAuthObserver (s/deny/authorize/)
  */
 
 #include "config.h"

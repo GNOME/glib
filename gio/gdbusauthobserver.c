@@ -51,12 +51,18 @@
  *                             GCredentials      *credentials,
  *                             gpointer           user_data)
  * {
+ *   GCredentials *me;
  *   gboolean deny;
+ *
  *   deny = TRUE;
+ *   me = g_credentials_new ();
+ *
  *   if (credentials != NULL &&
- *       g_credentials_has_unix_user (credentials) &&
- *       g_credentials_get_unix_user (credentials) == getuid ())
+ *       !g_credentials_is_same_user (credentials, me))
  *     deny = FALSE;
+ *
+ *   g_object_unref (me);
+ *
  *   return deny;
  * }
  *
@@ -114,10 +120,7 @@ G_DEFINE_TYPE (GDBusAuthObserver, g_dbus_auth_observer, G_TYPE_OBJECT);
 static void
 g_dbus_auth_observer_finalize (GObject *object)
 {
-  //GDBusAuthObserver *observer = G_DBUS_AUTH_OBSERVER (object);
-
-  if (G_OBJECT_CLASS (g_dbus_auth_observer_parent_class)->finalize != NULL)
-    G_OBJECT_CLASS (g_dbus_auth_observer_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_dbus_auth_observer_parent_class)->finalize (object);
 }
 
 static gboolean
@@ -133,7 +136,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize     = g_dbus_auth_observer_finalize;
+  gobject_class->finalize = g_dbus_auth_observer_finalize;
 
   klass->deny_authenticated_peer = g_dbus_auth_observer_deny_authenticated_peer_real;
 
