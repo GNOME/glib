@@ -99,10 +99,6 @@
  *  - Mention in all API that the GVariant is sunk. Also mention
  *    when the returned GVariant is floating.
  *
- *  - Small example snippet for each method where useful (won't
- *    have to compile) where it makes sense (e.g. connetion_call()
- *    and using a floating GVariant).
- *
  *  - Consistent timeout handling (25s vs 30s?)
  *
  *  - GDBusProxy subclass example
