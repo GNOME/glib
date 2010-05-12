@@ -164,6 +164,59 @@ on_name_acquired (GDBusConnection *connection,
   <section>
     <title>Creating proxies for well-known names</title>
     <para>
+      dbus-glib lets you create proxy objects for well-known names, like the
+      following example:
+      <informalexample><programlisting><![CDATA[
+  proxy = dbus_g_proxy_new_for_name (system_bus_connection,
+                                     "org.freedesktop.Accounts",
+                                     "/org/freedesktop/Accounts",
+                                     "org.freedesktop.Accounts");
+      ]]>
+      </programlisting></informalexample>
+      For a #DBusGProxy constructed like this, method calls will be sent to
+      the current owner of the name, and that owner can change over time.
+    </para>
+    <para>
+      In contrast, #GDBusProxy instances are always bound to a unique name.
+      To get a proxy for a well-known name, you either have to call
+      GetNameOwner() yourself and construct a proxy for the unique name
+      of the current name owner, or use the high-level API. The latter
+      option is highly recommended:
+      <informalexample><programlisting><![CDATA[
+static void
+on_proxy_appeared (GDBusConnection *connection,
+                   const gchar     *name,
+                   const gchar     *name_owner,
+                   GDBusProxy      *proxy,
+                   gpointer         user_data)
+{
+  /* start to use proxy */
+}
+
+  /* ... */
+
+  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SYSTEM,
+                                  "org.freedesktop.Accounts",
+                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                  "/org/freedesktop/Accounts",
+                                  "org.freedesktop.Accounts",
+                                  G_TYPE_DBUS_PROXY,
+                                  G_BUS_PROXY_FLAGS_NONE,
+                                  on_proxy_appeared,
+                                  on_proxy_vanished,
+                                  NULL,
+                                  NULL);
+
+  g_main_loop_run (loop);
+
+  g_bus_unwatch_proxy (watcher_id);
+      ]]>
+      </programlisting></informalexample>
+      Like g_bus_own_name(), g_bus_watch_proxy() is asynchronous and
+      you are expected to enter your mainloop to await the on_proxy_appeared()
+      callback. Note that GDBus also does all the setup operations for the
+      proxy asynchronously, and only calls your callback when the proxy
+      is ready for use.
     </para>
   </section>
 </chapter>
