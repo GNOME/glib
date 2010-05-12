@@ -226,7 +226,7 @@ g_dbus_arg_info_ref (GDBusArgInfo *info)
 }
 
 /**
- * g_dbus_node_info_ref:
+ * g_dbus_annotation_info_ref:
  * @info: A #GDBusNodeInfo
  *
  * If @info is statically allocated does nothing. Otherwise increases
