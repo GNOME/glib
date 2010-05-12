@@ -33,7 +33,7 @@
   </section>
 
   <section>
-    <title>Dbus-glib API conversion</title>
+    <title>API comparison</title>
 
     <table id="dbus-glib-vs-gdbus">
       <title>dbus-glib APIs and their GDBus counterparts</title>
