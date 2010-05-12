@@ -2196,7 +2196,6 @@ g_unix_credentials_message_get_type
 <TITLE>GCredentials</TITLE>
 GCredentials
 GCredentialsClass
-GCredentialType
 g_credentials_new
 g_credentials_to_string
 g_credentials_get_native

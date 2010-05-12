@@ -1435,6 +1435,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
 
 /**
  * g_dbus_connection_send_message_with_reply_finish:
+ * @connection: a #GDBusConnection
  * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_send_message_with_reply().
  * @error: Return location for error or %NULL.
  *
@@ -1949,7 +1950,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * @stream: A #GIOStream.
  * @guid: The GUID to use if a authenticating as a server or %NULL.
  * @flags: Flags describing how to make the connection.
- * @authentication_observer: A #GDBusAuthObserver or %NULL.
+ * @observer: A #GDBusAuthObserver or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
@@ -1958,7 +1959,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * with the end represented by @stream.
  *
  * If %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER is set in @flags,
- * @auth_observer (if not %NULL) is used to assist in the client
+ * @observer (if not %NULL) is used to assist in the client
  * authentication process.
  *
  * When the operation is finished, @callback will be invoked. You can
@@ -1975,7 +1976,7 @@ void
 g_dbus_connection_new (GIOStream            *stream,
                        const gchar          *guid,
                        GDBusConnectionFlags  flags,
-                       GDBusAuthObserver    *authentication_observer,
+                       GDBusAuthObserver    *observer,
                        GCancellable         *cancellable,
                        GAsyncReadyCallback   callback,
                        gpointer              user_data)
@@ -1989,7 +1990,7 @@ g_dbus_connection_new (GIOStream            *stream,
                               "stream", stream,
                               "guid", guid,
                               "flags", flags,
-                              "authentication-observer", authentication_observer,
+                              "authentication-observer", observer,
                               NULL);
 }
 
@@ -2031,7 +2032,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * @stream: A #GIOStream.
  * @guid: The GUID to use if a authenticating as a server or %NULL.
  * @flags: Flags describing how to make the connection.
- * @authentication_observer: A #GDBusAuthObserver or %NULL.
+ * @observer: A #GDBusAuthObserver or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -2039,7 +2040,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * with the end represented by @stream.
  *
  * If %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER is set in @flags,
- * @auth_observer (if not %NULL) is used to assist in the client
+ * @observer (if not %NULL) is used to assist in the client
  * authentication process.
  *
  * This is a synchronous failable constructor. See
@@ -2053,7 +2054,7 @@ GDBusConnection *
 g_dbus_connection_new_sync (GIOStream             *stream,
                             const gchar           *guid,
                             GDBusConnectionFlags   flags,
-                            GDBusAuthObserver     *authentication_observer,
+                            GDBusAuthObserver     *observer,
                             GCancellable          *cancellable,
                             GError               **error)
 {
@@ -2065,7 +2066,7 @@ g_dbus_connection_new_sync (GIOStream             *stream,
                          "stream", stream,
                          "guid", guid,
                          "flags", flags,
-                         "authentication-observer", authentication_observer,
+                         "authentication-observer", observer,
                          NULL);
 }
 

@@ -300,7 +300,7 @@ g_unix_credentials_message_new (void)
 }
 
 /**
- * g_unix_credentials_message_new:
+ * g_unix_credentials_message_new_with_credentials:
  * @credentials: A #GCredentials object.
  *
  * Creates a new #GUnixCredentialsMessage holding @credentials.

@@ -879,11 +879,11 @@ g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
 
 /**
  * g_dbus_node_info_generate_xml:
- * @node_info: A #GDBusNodeInfo.
+ * @info: A #GDBusNodeInfo.
  * @indent: Indentation level.
  * @string_builder: A #GString to to append XML data to.
  *
- * Appends an XML representation of @node_info (and its children) to @string_builder.
+ * Appends an XML representation of @info (and its children) to @string_builder.
  *
  * This function is typically used for generating introspection XML documents at run-time for
  * handling the <literal>org.freedesktop.DBus.Introspectable.Introspect</literal> method.
@@ -891,17 +891,17 @@ g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
  * Since: 2.26
  */
 void
-g_dbus_node_info_generate_xml (const GDBusNodeInfo  *node_info,
+g_dbus_node_info_generate_xml (const GDBusNodeInfo  *info,
                                guint                 indent,
                                GString              *string_builder)
 {
   guint n;
 
   g_string_append_printf (string_builder, "%*s<node", indent, "");
-  if (node_info->path != NULL)
-    g_string_append_printf (string_builder, " name=\"%s\"", node_info->path);
+  if (info->path != NULL)
+    g_string_append_printf (string_builder, " name=\"%s\"", info->path);
 
-  if (node_info->interfaces == NULL && node_info->nodes == NULL && node_info->annotations == NULL)
+  if (info->interfaces == NULL && info->nodes == NULL && info->annotations == NULL)
     {
       g_string_append (string_builder, "/>\n");
     }
@@ -909,18 +909,18 @@ g_dbus_node_info_generate_xml (const GDBusNodeInfo  *node_info,
     {
       g_string_append (string_builder, ">\n");
 
-      for (n = 0; node_info->annotations != NULL && node_info->annotations[n] != NULL; n++)
-        g_dbus_annotation_info_generate_xml (node_info->annotations[n],
+      for (n = 0; info->annotations != NULL && info->annotations[n] != NULL; n++)
+        g_dbus_annotation_info_generate_xml (info->annotations[n],
                                              indent + 2,
                                              string_builder);
 
-      for (n = 0; node_info->interfaces != NULL && node_info->interfaces[n] != NULL; n++)
-        g_dbus_interface_info_generate_xml (node_info->interfaces[n],
+      for (n = 0; info->interfaces != NULL && info->interfaces[n] != NULL; n++)
+        g_dbus_interface_info_generate_xml (info->interfaces[n],
                                             indent + 2,
                                             string_builder);
 
-      for (n = 0; node_info->nodes != NULL && node_info->nodes[n] != NULL; n++)
-        g_dbus_node_info_generate_xml (node_info->nodes[n],
+      for (n = 0; info->nodes != NULL && info->nodes[n] != NULL; n++)
+        g_dbus_node_info_generate_xml (info->nodes[n],
                                        indent + 2,
                                        string_builder);
 
@@ -931,7 +931,8 @@ g_dbus_node_info_generate_xml (const GDBusNodeInfo  *node_info,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static GDBusAnnotationInfo **
-parse_data_steal_annotations (ParseData *data, guint *out_num_elements)
+parse_data_steal_annotations (ParseData *data,
+                              guint     *out_num_elements)
 {
   GDBusAnnotationInfo **ret;
   if (out_num_elements != NULL)
@@ -948,7 +949,8 @@ parse_data_steal_annotations (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusArgInfo **
-parse_data_steal_args (ParseData *data, guint *out_num_elements)
+parse_data_steal_args (ParseData *data,
+                       guint     *out_num_elements)
 {
   GDBusArgInfo **ret;
   if (out_num_elements != NULL)
@@ -965,7 +967,8 @@ parse_data_steal_args (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusArgInfo **
-parse_data_steal_out_args (ParseData *data, guint *out_num_elements)
+parse_data_steal_out_args (ParseData *data,
+                           guint     *out_num_elements)
 {
   GDBusArgInfo **ret;
   if (out_num_elements != NULL)
@@ -982,7 +985,8 @@ parse_data_steal_out_args (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusMethodInfo **
-parse_data_steal_methods (ParseData *data, guint *out_num_elements)
+parse_data_steal_methods (ParseData *data,
+                          guint     *out_num_elements)
 {
   GDBusMethodInfo **ret;
   if (out_num_elements != NULL)
@@ -999,7 +1003,8 @@ parse_data_steal_methods (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusSignalInfo **
-parse_data_steal_signals (ParseData *data, guint *out_num_elements)
+parse_data_steal_signals (ParseData *data,
+                          guint     *out_num_elements)
 {
   GDBusSignalInfo **ret;
   if (out_num_elements != NULL)
@@ -1016,7 +1021,8 @@ parse_data_steal_signals (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusPropertyInfo **
-parse_data_steal_properties (ParseData *data, guint *out_num_elements)
+parse_data_steal_properties (ParseData *data,
+                             guint     *out_num_elements)
 {
   GDBusPropertyInfo **ret;
   if (out_num_elements != NULL)
@@ -1033,7 +1039,8 @@ parse_data_steal_properties (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusInterfaceInfo **
-parse_data_steal_interfaces (ParseData *data, guint *out_num_elements)
+parse_data_steal_interfaces (ParseData *data,
+                             guint     *out_num_elements)
 {
   GDBusInterfaceInfo **ret;
   if (out_num_elements != NULL)
@@ -1050,7 +1057,8 @@ parse_data_steal_interfaces (ParseData *data, guint *out_num_elements)
 }
 
 static GDBusNodeInfo **
-parse_data_steal_nodes (ParseData *data, guint *out_num_elements)
+parse_data_steal_nodes (ParseData *data,
+                        guint     *out_num_elements)
 {
   GDBusNodeInfo **ret;
   if (out_num_elements != NULL)
@@ -1151,7 +1159,8 @@ parse_data_free_nodes (ParseData *data)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static GDBusAnnotationInfo *
-parse_data_get_annotation (ParseData *data, gboolean create_new)
+parse_data_get_annotation (ParseData *data,
+                           gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->annotations, g_new0 (GDBusAnnotationInfo, 1));
@@ -1159,7 +1168,8 @@ parse_data_get_annotation (ParseData *data, gboolean create_new)
 }
 
 static GDBusArgInfo *
-parse_data_get_arg (ParseData *data, gboolean create_new)
+parse_data_get_arg (ParseData *data,
+                    gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->args, g_new0 (GDBusArgInfo, 1));
@@ -1167,7 +1177,8 @@ parse_data_get_arg (ParseData *data, gboolean create_new)
 }
 
 static GDBusArgInfo *
-parse_data_get_out_arg (ParseData *data, gboolean create_new)
+parse_data_get_out_arg (ParseData *data,
+                        gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->out_args, g_new0 (GDBusArgInfo, 1));
@@ -1175,7 +1186,8 @@ parse_data_get_out_arg (ParseData *data, gboolean create_new)
 }
 
 static GDBusMethodInfo *
-parse_data_get_method (ParseData *data, gboolean create_new)
+parse_data_get_method (ParseData *data,
+                       gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->methods, g_new0 (GDBusMethodInfo, 1));
@@ -1183,7 +1195,8 @@ parse_data_get_method (ParseData *data, gboolean create_new)
 }
 
 static GDBusSignalInfo *
-parse_data_get_signal (ParseData *data, gboolean create_new)
+parse_data_get_signal (ParseData *data,
+                       gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->signals, g_new0 (GDBusSignalInfo, 1));
@@ -1191,7 +1204,8 @@ parse_data_get_signal (ParseData *data, gboolean create_new)
 }
 
 static GDBusPropertyInfo *
-parse_data_get_property (ParseData *data, gboolean create_new)
+parse_data_get_property (ParseData *data,
+                         gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->properties, g_new0 (GDBusPropertyInfo, 1));
@@ -1199,7 +1213,8 @@ parse_data_get_property (ParseData *data, gboolean create_new)
 }
 
 static GDBusInterfaceInfo *
-parse_data_get_interface (ParseData *data, gboolean create_new)
+parse_data_get_interface (ParseData *data,
+                          gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->interfaces, g_new0 (GDBusInterfaceInfo, 1));
@@ -1207,7 +1222,8 @@ parse_data_get_interface (ParseData *data, gboolean create_new)
 }
 
 static GDBusNodeInfo *
-parse_data_get_node (ParseData *data, gboolean create_new)
+parse_data_get_node (ParseData *data,
+                     gboolean   create_new)
 {
   if (create_new)
     g_ptr_array_add (data->nodes, g_new0 (GDBusNodeInfo, 1));
@@ -1281,12 +1297,12 @@ parse_data_free (ParseData *data)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-parser_start_element (GMarkupParseContext *context,
-                      const gchar         *element_name,
-                      const gchar        **attribute_names,
-                      const gchar        **attribute_values,
-                      gpointer             user_data,
-                      GError             **error)
+parser_start_element (GMarkupParseContext  *context,
+                      const gchar          *element_name,
+                      const gchar         **attribute_names,
+                      const gchar         **attribute_values,
+                      gpointer              user_data,
+                      GError              **error)
 {
   ParseData *data = user_data;
   GSList *stack;
@@ -1621,10 +1637,10 @@ steal_annotations (ParseData *data)
 
 
 static void
-parser_end_element (GMarkupParseContext *context,
-                    const gchar         *element_name,
-                    gpointer             user_data,
-                    GError             **error)
+parser_end_element (GMarkupParseContext  *context,
+                    const gchar          *element_name,
+                    gpointer              user_data,
+                    GError              **error)
 {
   ParseData *data = user_data;
   gboolean have_popped_annotations;
@@ -2024,27 +2040,27 @@ g_dbus_interface_info_lookup_property (const GDBusInterfaceInfo *info,
 
 /**
  * g_dbus_node_info_lookup_interface:
- * @node_info: A #GDBusNodeInfo.
+ * @info: A #GDBusNodeInfo.
  * @name: A D-Bus interface name.
  *
  * Looks up information about an interface.
  *
  * This cost of this function is O(n) in number of interfaces.
  *
- * Returns: A #GDBusInterfaceInfo or %NULL if not found. Do not free, it is owned by @node_info.
+ * Returns: A #GDBusInterfaceInfo or %NULL if not found. Do not free, it is owned by @info.
  *
  * Since: 2.26
  */
 const GDBusInterfaceInfo *
-g_dbus_node_info_lookup_interface (const GDBusNodeInfo *node_info,
+g_dbus_node_info_lookup_interface (const GDBusNodeInfo *info,
                                    const gchar         *name)
 {
   guint n;
   const GDBusInterfaceInfo *result;
 
-  for (n = 0; node_info->interfaces != NULL && node_info->interfaces[n] != NULL; n++)
+  for (n = 0; info->interfaces != NULL && info->interfaces[n] != NULL; n++)
     {
-      const GDBusInterfaceInfo *i = node_info->interfaces[n];
+      const GDBusInterfaceInfo *i = info->interfaces[n];
 
       if (g_strcmp0 (i->name, name) == 0)
         {

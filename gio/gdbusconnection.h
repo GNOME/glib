@@ -102,7 +102,7 @@ GDBusConnection  *g_bus_get_sync               (GBusType            bus_type,
 void             g_dbus_connection_new                        (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
-                                                               GDBusAuthObserver      *auth_observer,
+                                                               GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
@@ -111,7 +111,7 @@ GDBusConnection *g_dbus_connection_new_finish                 (GAsyncResult     
 GDBusConnection *g_dbus_connection_new_sync                   (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
-                                                               GDBusAuthObserver      *auth_observer,
+                                                               GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GError                **error);
 
