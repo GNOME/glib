@@ -218,7 +218,17 @@ on_proxy_appeared (GDBusConnection *connection,
       proxy asynchronously, and only calls your callback when the proxy
       is ready for use.
     </para>
+  </section>
+  <section>
+    <title>Client-side GObject bindings</title>
 
+    <para>
+      dbus-glib comes with <command>dbus-binding-tool</command>, which
+      can produce somewhat nice client-side wrappers for a D-Bus interface.
+      GDBus does not have code-generation at this point, but #GDBusProxy
+      is designed to allow the creating of client-side wrappers by
+      subclassing #GDBusProxy.
+    </para>
     <para>
       For an example of a #GDBusProxy-derived class that wraps a D-Bus
       interface in a type-safe way, see <xref
