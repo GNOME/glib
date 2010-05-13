@@ -25,6 +25,19 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>
+    <arg choice="plain">monitor</arg>
+    <group>
+      <arg choice="plain">--system</arg>
+      <arg choice="plain">--session</arg>
+      <arg choice="plain">--address <replaceable>address</replaceable></arg>
+    </group>
+    <arg choice="plain">--dest <replaceable>bus_name</replaceable></arg>
+    <group>
+      <arg choice="plain">--object-path <replaceable>/path/to/object</replaceable></arg>
+    </group>
+  </cmdsynopsis>
+  <cmdsynopsis>
+    <command>gdbus</command>
     <arg choice="plain">call</arg>
     <group>
       <arg choice="plain">--system</arg>
@@ -58,6 +71,13 @@
           Prints out interfaces and property values for a remote object.
           For this to work, the owner of the object needs to implement the
           <literal>org.freedesktop.DBus.Introspectable</literal> interface.
+        </para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>monitor</option></term>
+        <listitem><para>
+          Monitors one or all objects owned by the owned of
+          <replaceable>bus_name</replaceable>.
         </para></listitem>
       </varlistentry>
       <varlistentry>
@@ -189,6 +209,29 @@ $ gdbus call --session \
              5000
 (uint32 12,)
 </programlisting>
+<para>
+  Monitoring all objects on a service:
+</para>
+<programlisting>
+$ gdbus monitor --system --dest org.freedesktop.ConsoleKit
+Monitoring signals from all objects owned by org.freedesktop.ConsoleKit
+The name org.freedesktop.ConsoleKit is owned by :1.15
+/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (false,)
+/org/freedesktop/ConsoleKit/Seat1: org.freedesktop.ConsoleKit.Seat.ActiveSessionChanged ('',)
+/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (true,)
+/org/freedesktop/ConsoleKit/Seat1: org.freedesktop.ConsoleKit.Seat.ActiveSessionChanged ('/org/freedesktop/ConsoleKit/Session2',)
+</programlisting>
+<para>
+  Monitoring a single object on a service:
+</para>
+<programlisting>
+$ gdbus monitor --system --dest org.freedesktop.ConsoleKit --object-path /org/freedesktop/ConsoleKit/Session2
+Monitoring signals on object /org/freedesktop/ConsoleKit/Session2 owned by org.freedesktop.ConsoleKit
+The name org.freedesktop.ConsoleKit is owned by :1.15
+/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (false,)
+/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (true,)
+</programlisting>
+
 </refsect1>
 
 <refsect1>

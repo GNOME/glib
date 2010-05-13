@@ -25,6 +25,7 @@
 #include <stdlib.h>
 
 #include "gdbusutils.h"
+#include "gdbusconnection.h"
 #include "gdbusnamewatching.h"
 #include "gdbusproxywatching.h"
 #include "gdbuserror.h"
@@ -361,6 +362,91 @@ g_bus_watch_proxy (GBusType                   bus_type,
 
   return client->id;
 }
+
+/**
+ * g_bus_watch_proxy_on_connection:
+ * @connection: A #GDBusConnection that is not closed.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @object_path: The object path of the remote object to watch.
+ * @interface_name: The D-Bus interface name for the proxy.
+ * @interface_type: The #GType for the kind of proxy to create. This must be a #GDBusProxy derived type.
+ * @proxy_flags: Flags from #GDBusProxyFlags to use when constructing the proxy.
+ * @proxy_appeared_handler: Handler to invoke when @name is known to exist and the
+ * requested proxy is available.
+ * @proxy_vanished_handler: Handler to invoke when @name is known to not exist
+ * and the previously created proxy is no longer available.
+ * @user_data: User data to pass to handlers.
+ * @user_data_free_func: Function for freeing @user_data or %NULL.
+ *
+ * Like g_bus_watch_proxy() but takes a #GDBusConnection instead of a
+ * #GBusType.
+ *
+ * Returns: An identifier (never 0) that can be used with
+ * g_bus_unwatch_proxy() to stop watching the remote object.
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_watch_proxy_on_connection (GDBusConnection           *connection,
+                                 const gchar               *name,
+                                 GBusNameWatcherFlags       flags,
+                                 const gchar               *object_path,
+                                 const gchar               *interface_name,
+                                 GType                      interface_type,
+                                 GDBusProxyFlags            proxy_flags,
+                                 GBusProxyAppearedCallback  proxy_appeared_handler,
+                                 GBusProxyVanishedCallback  proxy_vanished_handler,
+                                 gpointer                   user_data,
+                                 GDestroyNotify             user_data_free_func)
+{
+  Client *client;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
+  g_return_val_if_fail (g_dbus_is_name (name), 0);
+  g_return_val_if_fail (g_variant_is_object_path (object_path), 0);
+  g_return_val_if_fail (g_dbus_is_interface_name (interface_name), 0);
+  g_return_val_if_fail (g_type_is_a (interface_type, G_TYPE_DBUS_PROXY), 0);
+
+  G_LOCK (lock);
+
+  client = g_new0 (Client, 1);
+  client->id = next_global_id++; /* TODO: uh oh, handle overflow */
+  client->name = g_strdup (name);
+  client->proxy_appeared_handler = proxy_appeared_handler;
+  client->proxy_vanished_handler = proxy_vanished_handler;
+  client->user_data = user_data;
+  client->user_data_free_func = user_data_free_func;
+  client->main_context = g_main_context_get_thread_default ();
+  if (client->main_context != NULL)
+    g_main_context_ref (client->main_context);
+  client->name_watcher_id = g_bus_watch_name_on_connection (connection,
+                                                            name,
+                                                            flags,
+                                                            on_name_appeared,
+                                                            on_name_vanished,
+                                                            client,
+                                                            NULL);
+
+  client->object_path = g_strdup (object_path);
+  client->interface_name = g_strdup (interface_name);
+  client->interface_type = interface_type;
+  client->proxy_flags = proxy_flags;
+  client->initial_construction = TRUE;
+
+  if (map_id_to_client == NULL)
+    {
+      map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);
+    }
+  g_hash_table_insert (map_id_to_client,
+                       GUINT_TO_POINTER (client->id),
+                       client);
+
+  G_UNLOCK (lock);
+
+  return client->id;
+}
+
 
 /**
  * g_bus_unwatch_proxy:

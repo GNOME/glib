@@ -92,6 +92,7 @@ usage (gint *argc, gchar **argv[], gboolean use_stdout)
   s = g_strdup_printf (_("Commands:\n"
                          "  help         Shows this information\n"
                          "  introspect   Introspect a remote object\n"
+                         "  monitor      Monitor a remote object\n"
                          "  call         Invoke a method on a remote object\n"
                          "\n"
                          "Use \"%s COMMAND --help\" to get help on each command.\n"),
@@ -1380,6 +1381,246 @@ handle_introspect (gint        *argc,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gchar *opt_monitor_dest = NULL;
+static gchar *opt_monitor_object_path = NULL;
+
+static guint monitor_filter_id = 0;
+
+static void
+monitor_signal_cb (GDBusConnection *connection,
+                   const gchar     *sender_name,
+                   const gchar     *object_path,
+                   const gchar     *interface_name,
+                   const gchar     *signal_name,
+                   GVariant        *parameters,
+                   gpointer         user_data)
+{
+  gchar *s;
+  s = g_variant_print (parameters, TRUE);
+  g_print ("%s: %s.%s %s\n",
+           object_path,
+           interface_name,
+           signal_name,
+           s);
+  g_free (s);
+}
+
+static void
+monitor_on_name_appeared (GDBusConnection *connection,
+                          const gchar *name,
+                          const gchar *name_owner,
+                          gpointer user_data)
+{
+  g_print ("The name %s is owned by %s\n", name, name_owner);
+  g_assert (monitor_filter_id == 0);
+  monitor_filter_id = g_dbus_connection_signal_subscribe (connection,
+                                                          name_owner,
+                                                          NULL,  /* any interface */
+                                                          NULL,  /* any member */
+                                                          opt_monitor_object_path,
+                                                          NULL,  /* arg0 */
+                                                          monitor_signal_cb,
+                                                          NULL,  /* user_data */
+                                                          NULL); /* user_data destroy notify */
+}
+
+static void
+monitor_on_name_vanished (GDBusConnection *connection,
+                          const gchar *name,
+                          gpointer user_data)
+{
+  g_print ("The name %s does not have an owner\n", name);
+
+  if (monitor_filter_id != 0)
+    {
+      g_dbus_connection_signal_unsubscribe (connection, monitor_filter_id);
+      monitor_filter_id = 0;
+    }
+}
+
+static const GOptionEntry monitor_entries[] =
+{
+  { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_monitor_dest, N_("Destination name to monitor"), NULL},
+  { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_monitor_object_path, N_("Object path to monitor"), NULL},
+  { NULL }
+};
+
+static gboolean
+handle_monitor (gint        *argc,
+                gchar      **argv[],
+                gboolean     request_completion,
+                const gchar *completion_cur,
+                const gchar *completion_prev)
+{
+  gint ret;
+  GOptionContext *o;
+  gchar *s;
+  GError *error;
+  GDBusConnection *c;
+  GVariant *result;
+  GDBusNodeInfo *node;
+  gboolean complete_names;
+  gboolean complete_paths;
+  GMainLoop *loop;
+
+  ret = FALSE;
+  c = NULL;
+  node = NULL;
+  result = NULL;
+
+  modify_argv0_for_command (argc, argv, "monitor");
+
+  o = g_option_context_new (NULL);
+  if (request_completion)
+    g_option_context_set_ignore_unknown_options (o, TRUE);
+  g_option_context_set_help_enabled (o, FALSE);
+  g_option_context_set_summary (o, _("Monitor a remote object."));
+  g_option_context_add_main_entries (o, monitor_entries, NULL /* GETTEXT_PACKAGE*/);
+  g_option_context_add_group (o, connection_get_group ());
+
+  complete_names = FALSE;
+  if (request_completion && *argc > 1 && g_strcmp0 ((*argv)[(*argc)-1], "--dest") == 0)
+    {
+      complete_names = TRUE;
+      remove_arg ((*argc) - 1, argc, argv);
+    }
+
+  complete_paths = FALSE;
+  if (request_completion && *argc > 1 && g_strcmp0 ((*argv)[(*argc)-1], "--object-path") == 0)
+    {
+      complete_paths = TRUE;
+      remove_arg ((*argc) - 1, argc, argv);
+    }
+
+  if (!g_option_context_parse (o, argc, argv, NULL))
+    {
+      if (!request_completion)
+        {
+          s = g_option_context_get_help (o, FALSE, NULL);
+          g_printerr ("%s", s);
+          g_free (s);
+          goto out;
+        }
+    }
+
+  error = NULL;
+  c = connection_get_dbus_connection (&error);
+  if (c == NULL)
+    {
+      if (request_completion)
+        {
+          if (g_strcmp0 (completion_prev, "--address") == 0)
+            {
+              g_print ("unix:\n"
+                       "tcp:\n"
+                       "nonce-tcp:\n");
+            }
+          else
+            {
+              g_print ("--system \n--session \n--address \n");
+            }
+        }
+      else
+        {
+          g_printerr (_("Error connecting: %s\n"), error->message);
+          g_error_free (error);
+        }
+      goto out;
+    }
+
+  if (g_dbus_connection_get_unique_name (c) != NULL)
+    {
+      if (complete_names)
+        {
+          print_names (c, FALSE);
+          goto out;
+        }
+      /* this only makes sense on message bus connections */
+      if (opt_monitor_dest == NULL)
+        {
+          if (request_completion)
+            g_print ("--dest \n");
+          else
+            g_printerr (_("Error: Destination is not specified\n"));
+          goto out;
+        }
+      if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
+        {
+          print_names (c, g_str_has_prefix (opt_monitor_dest, ":"));
+          goto out;
+        }
+    }
+  if (complete_paths)
+    {
+      print_paths (c, opt_monitor_dest, "/");
+      goto out;
+    }
+  if (opt_monitor_object_path == NULL)
+    {
+      if (request_completion)
+        {
+          g_print ("--object-path \n");
+          goto out;
+        }
+      /* it's fine to not have an object path */
+    }
+  if (request_completion && g_strcmp0 ("--object-path", completion_prev) == 0)
+    {
+      gchar *p;
+      s = g_strdup (opt_monitor_object_path);
+      p = strrchr (s, '/');
+      if (p != NULL)
+        {
+          if (p == s)
+            p++;
+          *p = '\0';
+        }
+      print_paths (c, opt_monitor_dest, s);
+      g_free (s);
+      goto out;
+    }
+  if (!request_completion && (opt_monitor_object_path != NULL && !g_variant_is_object_path (opt_monitor_object_path)))
+    {
+      g_printerr (_("Error: %s is not a valid object path\n"), opt_monitor_object_path);
+      goto out;
+    }
+
+  /* All done with completion now */
+  if (request_completion)
+    goto out;
+
+  if (opt_monitor_object_path != NULL)
+    g_print ("Monitoring signals on object %s owned by %s\n", opt_monitor_object_path, opt_monitor_dest);
+  else
+    g_print ("Monitoring signals from all objects owned by %s\n", opt_monitor_dest);
+
+  loop = g_main_loop_new (NULL, FALSE);
+  g_bus_watch_name_on_connection (c,
+                                  opt_monitor_dest,
+                                  G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
+                                  monitor_on_name_appeared,
+                                  monitor_on_name_vanished,
+                                  NULL,
+                                  NULL);
+
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
+
+  ret = TRUE;
+
+ out:
+  if (node != NULL)
+    g_dbus_node_info_unref (node);
+  if (result != NULL)
+    g_variant_unref (result);
+  if (c != NULL)
+    g_object_unref (c);
+  g_option_context_free (o);
+  return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static gchar *
 pick_word_at (const gchar  *s,
               gint          cursor,
@@ -1476,6 +1717,16 @@ main (gint argc, gchar *argv[])
         ret = 0;
       goto out;
     }
+  else if (g_strcmp0 (command, "monitor") == 0)
+    {
+      if (handle_monitor (&argc,
+                          &argv,
+                          request_completion,
+                          completion_cur,
+                          completion_prev))
+        ret = 0;
+      goto out;
+    }
   else if (g_strcmp0 (command, "complete") == 0 && argc == 4 && !request_completion)
     {
       const gchar *completion_line;
@@ -1545,7 +1796,7 @@ main (gint argc, gchar *argv[])
     {
       if (request_completion)
         {
-          g_print ("help \ncall \nintrospect \n");
+          g_print ("help \ncall \nintrospect \nmonitor \n");
           ret = 0;
           goto out;
         }

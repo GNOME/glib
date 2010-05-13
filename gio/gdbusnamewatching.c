@@ -417,10 +417,11 @@ start_service_by_name_cb (GObject      *source_object,
        *   org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.Epiphany2
        *   was not provided by any .service files
        *
-       * so just report vanished.
+       * This doesn't mean that the name doesn't have an owner, just
+       * that it's not provided by a .service file. So proceed to
+       * invoke GetNameOwner().
        */
-      call_vanished_handler (client, FALSE);
-      client->initialized = TRUE;
+      invoke_get_name_owner (client);
     }
 
   if (result != NULL)
@@ -582,6 +583,68 @@ g_bus_watch_name (GBusType                  bus_type,
              client_ref (client));
 
   G_UNLOCK (lock);
+
+  return client->id;
+}
+
+/**
+ * g_bus_watch_name_on_connection:
+ * @connection: A #GDBusConnection that is not closed.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @name_appeared_handler: Handler to invoke when @name is known to exist or %NULL.
+ * @name_vanished_handler: Handler to invoke when @name is known to not exist or %NULL.
+ * @user_data: User data to pass to handlers.
+ * @user_data_free_func: Function for freeing @user_data or %NULL.
+ *
+ * Like g_bus_watch_name() but takes a #GDBusConnection instead of a
+ * #GBusType.
+ *
+ * Returns: An identifier (never 0) that an be used with
+ * g_bus_unwatch_name() to stop watching the name.
+ *
+ * Since: 2.26
+ */
+guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
+                                      const gchar              *name,
+                                      GBusNameWatcherFlags      flags,
+                                      GBusNameAppearedCallback  name_appeared_handler,
+                                      GBusNameVanishedCallback  name_vanished_handler,
+                                      gpointer                  user_data,
+                                      GDestroyNotify            user_data_free_func)
+{
+  Client *client;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
+  g_return_val_if_fail (g_dbus_is_name (name), 0);
+
+  G_LOCK (lock);
+
+  client = g_new0 (Client, 1);
+  client->ref_count = 1;
+  client->id = next_global_id++; /* TODO: uh oh, handle overflow */
+  client->name = g_strdup (name);
+  client->flags = flags;
+  client->name_appeared_handler = name_appeared_handler;
+  client->name_vanished_handler = name_vanished_handler;
+  client->user_data = user_data;
+  client->user_data_free_func = user_data_free_func;
+  client->main_context = g_main_context_get_thread_default ();
+  if (client->main_context != NULL)
+    g_main_context_ref (client->main_context);
+
+  if (map_id_to_client == NULL)
+    {
+      map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);
+    }
+  g_hash_table_insert (map_id_to_client,
+                       GUINT_TO_POINTER (client->id),
+                       client);
+
+  client->connection = g_object_ref (connection);
+  G_UNLOCK (lock);
+
+  has_connection (client);
 
   return client->id;
 }

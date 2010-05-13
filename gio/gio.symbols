@@ -1652,6 +1652,7 @@ g_bus_unown_name
 #if IN_HEADER(__G_DBUS_NAME_WATCHING_H__)
 #if IN_FILE(__G_DBUS_NAME_WATCHING_C__)
 g_bus_watch_name
+g_bus_watch_name_on_connection
 g_bus_unwatch_name
 #endif
 #endif
@@ -1683,6 +1684,7 @@ g_dbus_proxy_call_sync
 #if IN_HEADER(__G_DBUS_PROXY_WATCHING_H__)
 #if IN_FILE(__G_DBUS_PROXY_WATCHING_C__)
 g_bus_watch_proxy
+g_bus_watch_proxy_on_connection
 g_bus_unwatch_proxy
 #endif
 #endif

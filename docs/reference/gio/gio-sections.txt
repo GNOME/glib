@@ -2446,6 +2446,7 @@ GBusNameAppearedCallback
 GBusNameVanishedCallback
 GBusNameWatcherFlags
 g_bus_watch_name
+g_bus_watch_name_on_connection
 g_bus_unwatch_name
 </SECTION>
 
@@ -2454,6 +2455,7 @@ g_bus_unwatch_name
 GBusProxyAppearedCallback
 GBusProxyVanishedCallback
 g_bus_watch_proxy
+g_bus_watch_proxy_on_connection
 g_bus_unwatch_proxy
 </SECTION>
 

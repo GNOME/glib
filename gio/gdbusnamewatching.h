@@ -58,14 +58,21 @@ typedef void (*GBusNameVanishedCallback) (GDBusConnection *connection,
                                           gpointer         user_data);
 
 
-guint g_bus_watch_name   (GBusType                  bus_type,
-                          const gchar              *name,
-                          GBusNameWatcherFlags      flags,
-                          GBusNameAppearedCallback  name_appeared_handler,
-                          GBusNameVanishedCallback  name_vanished_handler,
-                          gpointer                  user_data,
-                          GDestroyNotify            user_data_free_func);
-void  g_bus_unwatch_name (guint                     watcher_id);
+guint g_bus_watch_name               (GBusType                  bus_type,
+                                      const gchar              *name,
+                                      GBusNameWatcherFlags      flags,
+                                      GBusNameAppearedCallback  name_appeared_handler,
+                                      GBusNameVanishedCallback  name_vanished_handler,
+                                      gpointer                  user_data,
+                                      GDestroyNotify            user_data_free_func);
+guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
+                                      const gchar              *name,
+                                      GBusNameWatcherFlags      flags,
+                                      GBusNameAppearedCallback  name_appeared_handler,
+                                      GBusNameVanishedCallback  name_vanished_handler,
+                                      gpointer                  user_data,
+                                      GDestroyNotify            user_data_free_func);
+void  g_bus_unwatch_name             (guint                     watcher_id);
 
 G_END_DECLS
 
