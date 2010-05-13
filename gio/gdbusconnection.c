@@ -3923,6 +3923,13 @@ obj_message_func (GDBusConnection *connection,
  * If an existing callback is already registered at @object_path and
  * @interface_name, then @error is set to #G_IO_ERROR_EXISTS.
  *
+ * GDBus automatically implements the standard D-Bus interfaces
+ * org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable
+ * and org.freedesktop.Peer, so you don't have to implement those for
+ * the objects you export. You <emphasis>can</emphasis> implement
+ * org.freedesktop.DBus.Properties yourself, e.g. to handle getting
+ * and setting of properties asynchronously.
+ *
  * See <xref linkend="gdbus-server"/> for an example of how to use this method.
  *
  * Returns: 0 if @error is set, otherwise a registration id (never 0)
