@@ -411,7 +411,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                      G_TYPE_NONE,
                                                      2,
                                                      G_TYPE_VARIANT,
-                                                     G_TYPE_STRV);
+                                                     G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * GDBusProxy::g-signal:
@@ -676,18 +676,13 @@ on_properties_changed (GDBusConnection *connection,
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
   GError *error;
   const gchar *interface_name_for_signal;
-  GVariantIter *iter;
-  GVariantIter *invalidated_iter;
-  GVariant *item;
   GVariant *changed_properties;
-  GVariantBuilder *builder;
-  GPtrArray *p;
-  const gchar *str;
   gchar **invalidated_properties;
+  GVariantIter iter;
+  gchar *key;
+  GVariant *value;
 
   error = NULL;
-  iter = NULL;
-  invalidated_iter = NULL;
 
 #if 0 // TODO!
   /* Ignore this signal if properties are not yet available
@@ -696,70 +691,32 @@ on_properties_changed (GDBusConnection *connection,
    *  org.freedesktop.DBus.Properties.GetAll() returns)
    */
   if (!proxy->priv->properties_available)
-    goto out;
+    return;
 #endif
 
-  if (strcmp (g_variant_get_type_string (parameters), "(sa{sv}as)") != 0)
+  if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sa{sv}as)")))
     {
       g_warning ("Value for PropertiesChanged signal with type `%s' does not match `(sa{sv}as)'",
                  g_variant_get_type_string (parameters));
-      goto out;
+      return;
     }
 
   g_variant_get (parameters,
-                 "(sa{sv}as)",
+                 "(&s@a{sv}^a&s)",
                  &interface_name_for_signal,
-                 &iter,
-                 &invalidated_iter);
+                 &changed_properties,
+                 &invalidated_properties);
 
   if (g_strcmp0 (interface_name_for_signal, proxy->priv->interface_name) != 0)
     goto out;
 
-  builder = NULL;
-  while ((item = g_variant_iter_next_value (iter)))
+  g_variant_iter_init (&iter, changed_properties);
+  while (g_variant_iter_next (&iter, "{sv}", &key, &value))
     {
-      const gchar *key;
-      GVariant *value;
-
-      if (builder == NULL)
-        builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
-
-      g_variant_get (item,
-                     "{sv}",
-                     &key,
-                     &value);
-
       g_hash_table_insert (proxy->priv->properties,
-                           g_strdup (key),
-                           value); /* steals value */
-
-      g_variant_builder_add (builder,
-                             "{sv}",
-                             g_strdup (key),
-                             g_variant_ref (value));
+                           key, /* adopts string */
+                           value); /* adopts value */
     }
-  if (builder != NULL)
-    changed_properties = g_variant_builder_end (builder);
-  else
-    changed_properties = NULL;
-
-  p = NULL;
-  while (g_variant_iter_loop (invalidated_iter, "s", &str))
-    {
-      if (p == NULL)
-        p = g_ptr_array_new ();
-      g_ptr_array_add (p, (gpointer) str);
-    }
-  if (p != NULL)
-    {
-      g_ptr_array_add (p, NULL);
-      invalidated_properties = (gchar **) g_ptr_array_free (p, FALSE);
-    }
-  else
-    {
-      invalidated_properties = NULL;
-    }
-
 
   /* emit signal */
   g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
@@ -767,16 +724,9 @@ on_properties_changed (GDBusConnection *connection,
                  changed_properties,
                  invalidated_properties);
 
-  if (changed_properties != NULL)
-    g_variant_unref (changed_properties);
-  if (invalidated_properties != NULL)
-    g_free (invalidated_properties);
-
  out:
-  if (iter != NULL)
-    g_variant_iter_free (iter);
-  if (invalidated_iter != NULL)
-    g_variant_iter_free (invalidated_iter);
+  g_variant_unref (changed_properties);
+  g_free (invalidated_properties);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
