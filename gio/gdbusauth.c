@@ -612,7 +612,6 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
     {
       credentials = g_credentials_new ();
       if (!g_unix_connection_send_credentials (G_UNIX_CONNECTION (auth->priv->stream),
-                                               credentials,
                                                cancellable,
                                                error))
         goto out;
@@ -641,7 +640,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
       debug_print ("CLIENT: didn't send any credentials");
     }
 
-  /* TODO: to reduce rountrips, try to pick an auth mechanism to start with */
+  /* TODO: to reduce roundtrips, try to pick an auth mechanism to start with */
 
   /* Get list of supported authentication mechanisms */
   s = "AUTH\r\n";

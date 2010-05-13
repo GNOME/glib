@@ -72,7 +72,6 @@ gint                    g_unix_connection_receive_fd                    (GUnixCo
                                                                          GError              **error);
 
 gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
-                                                                         GCredentials         *credentials,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 

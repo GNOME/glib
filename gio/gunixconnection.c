@@ -299,23 +299,19 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
 /**
  * g_unix_connection_send_credentials:
  * @connection: A #GUnixConnection.
- * @credentials: A #GCredentials to send.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
- * Passes the credentials stored in @credentials to the recieving side
+ * Passes the credentials of the current user the receiving side
  * of the connection. The recieving end has to call
  * g_unix_connection_receive_credentials() (or similar) to accept the
  * credentials.
  *
- * The credentials which the sender specifies are checked by the
- * kernel.  A process with effective user ID 0 is allowed to specify
- * values that do not match its own. This means that the credentials
- * can be used to authenticate other connections.
- *
  * As well as sending the credentials this also writes a single NUL
  * byte to the stream, as this is required for credentials passing to
  * work on some implementations.
+ *
+ * Note that this function only works on Linux, currently.
  *
  * Returns: %TRUE on success, %FALSE if @error is set.
  *
@@ -323,10 +319,10 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
  */
 gboolean
 g_unix_connection_send_credentials (GUnixConnection      *connection,
-                                    GCredentials         *credentials,
                                     GCancellable         *cancellable,
                                     GError              **error)
 {
+  GCredentials *credentials;
   GSocketControlMessage *scm;
   GSocket *socket;
   gboolean ret;
@@ -334,10 +330,11 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
   guchar nul_byte[1] = {'\0'};
 
   g_return_val_if_fail (G_IS_UNIX_CONNECTION (connection), FALSE);
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   ret = FALSE;
+
+  credentials = g_credentials_new ();
 
   vector.buffer = &nul_byte;
   vector.size = 1;
@@ -362,6 +359,7 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
  out:
   g_object_unref (socket);
   g_object_unref (scm);
+  g_object_unref (credentials);
   return ret;
 }
 
