@@ -3894,7 +3894,6 @@ obj_message_func (GDBusConnection *connection,
  * g_dbus_connection_register_object:
  * @connection: A #GDBusConnection.
  * @object_path: The object path to register at.
- * @interface_name: The D-Bus interface to register.
  * @introspection_data: Introspection data for the interface.
  * @vtable: A #GDBusInterfaceVTable to call into or %NULL.
  * @user_data: Data to pass to functions in @vtable.
@@ -3902,7 +3901,7 @@ obj_message_func (GDBusConnection *connection,
  * @error: Return location for error or %NULL.
  *
  * Registers callbacks for exported objects at @object_path with the
- * D-Bus interface @interface_name.
+ * D-Bus interface that is described in @introspection_data.
  *
  * Calls to functions in @vtable (and @user_data_free_func) will
  * happen in the <link linkend="g-main-context-push-thread-default">thread-default main
@@ -3943,7 +3942,6 @@ obj_message_func (GDBusConnection *connection,
 guint
 g_dbus_connection_register_object (GDBusConnection            *connection,
                                    const gchar                *object_path,
-                                   const gchar                *interface_name,
                                    const GDBusInterfaceInfo   *introspection_data,
                                    const GDBusInterfaceVTable *vtable,
                                    gpointer                    user_data,
@@ -3957,8 +3955,8 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (!g_dbus_connection_is_closed (connection), 0);
   g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), 0);
-  g_return_val_if_fail (interface_name == NULL || g_dbus_is_interface_name (interface_name), 0);
   g_return_val_if_fail (introspection_data != NULL, 0);
+  g_return_val_if_fail (g_dbus_is_interface_name (introspection_data->name), 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
   ret = 0;
@@ -3978,14 +3976,14 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
       g_hash_table_insert (connection->priv->map_object_path_to_eo, eo->object_path, eo);
     }
 
-  ei = g_hash_table_lookup (eo->map_if_name_to_ei, interface_name);
+  ei = g_hash_table_lookup (eo->map_if_name_to_ei, introspection_data->name);
   if (ei != NULL)
     {
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_EXISTS,
                    _("An object is already exported for the interface %s at %s"),
-                   interface_name,
+                   introspection_data->name,
                    object_path);
       goto out;
     }
@@ -3997,7 +3995,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->user_data_free_func = user_data_free_func;
   ei->vtable = vtable;
   ei->introspection_data = introspection_data;
-  ei->interface_name = g_strdup (interface_name);
+  ei->interface_name = g_strdup (introspection_data->name);
   ei->context = g_main_context_get_thread_default ();
   if (ei->context != NULL)
     g_main_context_ref (ei->context);

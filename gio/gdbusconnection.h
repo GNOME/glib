@@ -308,7 +308,6 @@ struct _GDBusInterfaceVTable
 
 guint            g_dbus_connection_register_object            (GDBusConnection            *connection,
                                                                const gchar                *object_path,
-                                                               const gchar                *interface_name,
                                                                const GDBusInterfaceInfo   *introspection_data,
                                                                const GDBusInterfaceVTable *vtable,
                                                                gpointer                    user_data,

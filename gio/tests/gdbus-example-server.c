@@ -327,7 +327,6 @@ on_bus_acquired (GDBusConnection *connection,
 
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gtk/GDBus/TestObject",
-                                                       "org.gtk.GDBus.TestInterface",
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
                                                        NULL,  /* user_data */

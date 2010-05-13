@@ -146,7 +146,6 @@ on_new_connection (GDBusServer *server,
   g_object_ref (connection);
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gtk/GDBus/TestObject",
-                                                       "org.gtk.GDBus.TestPeerInterface",
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
                                                        NULL,  /* user_data */

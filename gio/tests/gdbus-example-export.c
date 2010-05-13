@@ -272,7 +272,6 @@ on_bus_acquired (GDBusConnection *connection,
                     G_CALLBACK (send_property_change), connection);
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/myorg/MyObject",
-                                                       "org.myorg.MyObject",
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
                                                        myobj,
