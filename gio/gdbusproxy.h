@@ -122,8 +122,10 @@ GDBusInterfaceInfo *g_dbus_proxy_get_interface_info     (GDBusProxy          *pr
 void             g_dbus_proxy_set_interface_info        (GDBusProxy           *proxy,
                                                          GDBusInterfaceInfo   *info);
 GVariant        *g_dbus_proxy_get_cached_property       (GDBusProxy          *proxy,
+                                                         const gchar         *property_name);
+void             g_dbus_proxy_set_cached_property       (GDBusProxy          *proxy,
                                                          const gchar         *property_name,
-                                                         GError             **error);
+                                                         GVariant            *value);
 gchar          **g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
                                                          GError             **error);
 void             g_dbus_proxy_call                      (GDBusProxy          *proxy,

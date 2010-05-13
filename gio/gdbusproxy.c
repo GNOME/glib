@@ -490,64 +490,147 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy,
   return names;
 }
 
+static const GDBusPropertyInfo *
+lookup_property_info_or_warn (GDBusProxy  *proxy,
+                              const gchar *property_name)
+{
+  const GDBusPropertyInfo *info;
+
+  if (proxy->priv->expected_interface == NULL)
+    return NULL;
+
+  info = g_dbus_interface_info_lookup_property (proxy->priv->expected_interface, property_name);
+  if (info == NULL)
+    {
+      g_warning ("Trying to lookup property %s which isn't in expected interface %s",
+                 property_name,
+                 proxy->priv->expected_interface->name);
+    }
+
+  return info;
+}
+
 /**
  * g_dbus_proxy_get_cached_property:
  * @proxy: A #GDBusProxy.
  * @property_name: Property name.
- * @error: Return location for error or %NULL.
  *
- * Looks up the value for a property from the cache. This call does no blocking IO.
+ * Looks up the value for a property from the cache. This call does no
+ * blocking IO.
  *
- * Normally you will not need to modify the returned variant since it is updated automatically
- * in response to <literal>org.freedesktop.DBus.Properties.PropertiesChanged</literal>
- * D-Bus signals (which also causes #GDBusProxy::g-properties-changed to be emitted).
+ * If @proxy has an expected interface (see
+ * #GDBusProxy:g-interface-info), then @property_name (for existence)
+ * is checked against it.
  *
- * However, for properties for which said D-Bus signal is not emitted, you
- * can catch other signals and modify the returned variant accordingly (remember to emit
- * #GDBusProxy::g-properties-changed yourself).
- *
- * Returns: A reference to the #GVariant instance that holds the value for @property_name or
- * %NULL if @error is set. Free the reference with g_variant_unref().
+ * Returns: A reference to the #GVariant instance that holds the value
+ * for @property_name or %NULL if the value is not in the cache. The
+ * returned reference must be freed with g_variant_unref().
  *
  * Since: 2.26
  */
 GVariant *
 g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
-                                  const gchar  *property_name,
-                                  GError      **error)
+                                  const gchar  *property_name)
 {
   GVariant *value;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
 
-  value = NULL;
-
-  if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Properties are not available (proxy created with G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)"));
-      goto out;
-    }
-
   value = g_hash_table_lookup (proxy->priv->properties, property_name);
   if (value == NULL)
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("No property with name %s"),
-                   property_name);
+      const GDBusPropertyInfo *info;
+      info = lookup_property_info_or_warn (proxy, property_name);
+      /* no difference */
       goto out;
     }
 
   g_variant_ref (value);
 
  out:
-
   return value;
+}
+
+/**
+ * g_dbus_proxy_set_cached_property:
+ * @proxy: A #GDBusProxy
+ * @property_name: Property name.
+ * @value: Value for the property or %NULL to remove it from the cache.
+ *
+ * If @value is not %NULL, sets the cached value for the property with
+ * name @property_name to the value in @value.
+ *
+ * If @value is %NULL, then the cached value is removed from the
+ * property cache.
+ *
+ * If @proxy has an expected interface (see
+ * #GDBusProxy:g-interface-info), then @property_name (for existence)
+ * and @value (for the type) is checked against it.
+ *
+ * If the @value #GVariant is floating, it is consumed. This allows
+ * convenient 'inline' use of g_variant_new(), e.g.
+ * |[
+ *  g_dbus_proxy_set_cached_property (proxy,
+ *                                    "SomeProperty",
+ *                                    g_variant_new ("(si)",
+ *                                                  "A String",
+ *                                                  42));
+ * ]|
+ *
+ * Normally you will not need to use this method since @proxy is
+ * tracking changes using the
+ * <literal>org.freedesktop.DBus.Properties.PropertiesChanged</literal>
+ * D-Bus signal. However, for performance reasons an object may decide
+ * to not use this signal for some properties and instead use a
+ * proprietary out-of-band mechanism to transmit changes.
+ *
+ * As a concrete example, consider an object with a property
+ * <literal>ChatroomParticipants</literal> which is an array of
+ * strings. Instead of transmitting the same (long) array every time
+ * the property changes, it is more efficient to only transmit the
+ * delta using e.g. signals <literal>ChatroomParticipantJoined(String
+ * name)</literal> and <literal>ChatroomParticipantParted(String
+ * name)</literal>.
+ *
+ * Since: 2.26
+ */
+void
+g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
+                                  const gchar  *property_name,
+                                  GVariant     *value)
+{
+  const GDBusPropertyInfo *info;
+
+  g_return_if_fail (G_IS_DBUS_PROXY (proxy));
+  g_return_if_fail (property_name != NULL);
+
+  if (value != NULL)
+    {
+      info = lookup_property_info_or_warn (proxy, property_name);
+      if (info != NULL)
+        {
+          if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
+            {
+              g_warning (_("Trying to set property %s of type %s but according to the expected "
+                           "interface the type is %s"),
+                         property_name,
+                         g_variant_get_type_string (value),
+                         info->signature);
+              goto out;
+            }
+        }
+      g_hash_table_insert (proxy->priv->properties,
+                           g_strdup (property_name),
+                           g_variant_ref_sink (value));
+    }
+  else
+    {
+      g_hash_table_remove (proxy->priv->properties, property_name);
+    }
+
+ out:
+  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1306,13 +1389,15 @@ lookup_method_info_or_warn (GDBusProxy  *proxy,
 {
   const GDBusMethodInfo *info;
 
-  if (!proxy->priv->expected_interface)
+  if (proxy->priv->expected_interface == NULL)
     return NULL;
 
   info = g_dbus_interface_info_lookup_method (proxy->priv->expected_interface, method_name);
-  if (!info)
-    g_warning ("Trying to invoke method %s which isn't in expected interface %s",
-               method_name, proxy->priv->expected_interface->name);
+  if (info == NULL)
+    {
+      g_warning ("Trying to invoke method %s which isn't in expected interface %s",
+                 method_name, proxy->priv->expected_interface->name);
+    }
 
   return info;
 }
@@ -1586,9 +1671,12 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
   if (proxy->priv->expected_interface)
     {
       expected_method_info = g_dbus_interface_info_lookup_method (proxy->priv->expected_interface, target_method_name);
-      if (!expected_method_info)
-        g_warning ("Trying to invoke method %s which isn't in expected interface %s",
-                   target_method_name, target_interface_name);
+      if (expected_method_info == NULL)
+        {
+          g_warning ("Trying to invoke method `%s' which isn't in expected interface `%s'",
+                     target_method_name,
+                     target_interface_name);
+        }
     }
   else
     {

@@ -531,8 +531,7 @@ test_peer (void)
   g_assert_no_error (error);
   g_assert (proxy != NULL);
   error = NULL;
-  value = g_dbus_proxy_get_cached_property (proxy, "PeerProperty", &error);
-  g_assert_no_error (error);
+  value = g_dbus_proxy_get_cached_property (proxy, "PeerProperty");
   g_assert_cmpstr (g_variant_get_string (value, NULL), ==, "ThePropertyValue");
 
   /* try invoking a method */

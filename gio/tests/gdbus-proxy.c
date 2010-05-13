@@ -150,13 +150,11 @@ test_properties (GDBusConnection *connection,
    *
    * No need to test all properties - GVariant has already been tested
    */
-  variant = g_dbus_proxy_get_cached_property (proxy, "y", &error);
-  g_assert_no_error (error);
+  variant = g_dbus_proxy_get_cached_property (proxy, "y");
   g_assert (variant != NULL);
   g_assert_cmpint (g_variant_get_byte (variant), ==, 1);
   g_variant_unref (variant);
-  variant = g_dbus_proxy_get_cached_property (proxy, "o", &error);
-  g_assert_no_error (error);
+  variant = g_dbus_proxy_get_cached_property (proxy, "o");
   g_assert (variant != NULL);
   g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "/some/path");
   g_variant_unref (variant);
@@ -180,11 +178,20 @@ test_properties (GDBusConnection *connection,
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
   _g_assert_signal_received (proxy, "g-properties-changed");
-  variant = g_dbus_proxy_get_cached_property (proxy, "y", &error);
-  g_assert_no_error (error);
+  variant = g_dbus_proxy_get_cached_property (proxy, "y");
   g_assert (variant != NULL);
   g_assert_cmpint (g_variant_get_byte (variant), ==, 42);
   g_variant_unref (variant);
+
+  g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (142));
+  variant = g_dbus_proxy_get_cached_property (proxy, "y");
+  g_assert (variant != NULL);
+  g_assert_cmpint (g_variant_get_byte (variant), ==, 142);
+  g_variant_unref (variant);
+
+  g_dbus_proxy_set_cached_property (proxy, "y", NULL);
+  variant = g_dbus_proxy_get_cached_property (proxy, "y");
+  g_assert (variant == NULL);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -352,6 +359,7 @@ static const gchar *frob_dbus_interface_xml =
   "    <method name='Sleep'>"
   "      <arg type='i' name='timeout' direction='in'/>"
   "    </method>"
+  "    <property name='y' type='y' access='readwrite'/>"
   "  </interface>"
   "</node>";
 static GDBusInterfaceInfo *frob_dbus_interface_info;
@@ -367,6 +375,12 @@ on_proxy_appeared (GDBusConnection *connection,
   test_properties (connection, name, name_owner, proxy);
   test_signals (connection, name, name_owner, proxy);
 
+  /* This is obviously wrong but expected interface is not set so we don't fail... */
+  g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+  g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (42));
+  g_dbus_proxy_set_cached_property (proxy, "does-not-exist", g_variant_new_string ("something"));
+  g_dbus_proxy_set_cached_property (proxy, "does-not-exist", NULL);
+
   /* Now repeat the method tests, with an expected interface set */
   g_dbus_proxy_set_interface_info (proxy, frob_dbus_interface_info);
   test_methods (connection, name, name_owner, proxy);
@@ -375,6 +389,24 @@ on_proxy_appeared (GDBusConnection *connection,
    * interface definition incorrectly
    */
   test_bogus_method_return (connection, name, name_owner, proxy);
+
+  /* Also check that we complain if setting a cached property of the wrong type */
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+    }
+  g_test_trap_assert_stderr ("*Trying to set property y of type s but according to the expected interface the type is y*");
+  g_test_trap_assert_failed();
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_dbus_proxy_set_cached_property (proxy, "does-not-exist", g_variant_new_string ("something"));
+    }
+  g_test_trap_assert_stderr ("*Trying to lookup property does-not-exist which isn't in expected interface com.example.Frob*");
+  g_test_trap_assert_failed();
+
+  /* this should work, however (since the type is correct) */
+  g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (42));
 
   g_main_loop_quit (loop);
 }

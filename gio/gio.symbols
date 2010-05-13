@@ -1663,6 +1663,7 @@ g_dbus_proxy_new
 g_dbus_proxy_new_finish
 g_dbus_proxy_new_sync
 g_dbus_proxy_get_cached_property
+g_dbus_proxy_set_cached_property
 g_dbus_proxy_get_cached_property_names
 g_dbus_proxy_get_connection
 g_dbus_proxy_get_default_timeout

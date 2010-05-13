@@ -160,7 +160,7 @@ accounts_user_get_user_name (AccountsUser *user)
   GVariant *value;
   const gchar *ret;
   g_return_val_if_fail (ACCOUNTS_IS_USER (user), NULL);
-  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "UserName", NULL);
+  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "UserName");
   ret = g_variant_get_string (value, NULL);
   g_variant_unref (value);
   return ret;
@@ -172,7 +172,7 @@ accounts_user_get_real_name (AccountsUser *user)
   GVariant *value;
   const gchar *ret;
   g_return_val_if_fail (ACCOUNTS_IS_USER (user), NULL);
-  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "RealName", NULL);
+  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "RealName");
   ret = g_variant_get_string (value, NULL);
   g_variant_unref (value);
   return ret;
@@ -184,7 +184,7 @@ accounts_user_get_automatic_login (AccountsUser *user)
   GVariant *value;
   gboolean ret;
   g_return_val_if_fail (ACCOUNTS_IS_USER (user), FALSE);
-  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "AutomaticLogin", NULL);
+  value = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (user), "AutomaticLogin");
   ret = g_variant_get_boolean (value);
   g_variant_unref (value);
   return ret;

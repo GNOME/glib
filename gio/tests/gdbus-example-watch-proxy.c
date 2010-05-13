@@ -32,7 +32,7 @@ print_properties (GDBusProxy *proxy)
       const gchar *key = property_names[n];
       GVariant *value;
       gchar *value_str;
-      value = g_dbus_proxy_get_cached_property (proxy, key, NULL);
+      value = g_dbus_proxy_get_cached_property (proxy, key);
       value_str = g_variant_print (value, TRUE);
       g_print ("      %s -> %s\n", key, value_str);
       g_variant_unref (value);
