@@ -1,11 +1,11 @@
 # Shavian translation.
-# Copyright (C) 2009.
+# Copyright (C) 2010.
 # This file is distributed under the same license as the GLib package.
-# Thomas Thurman <tthurman@gnome.org>, 2009.
+# Thomas Thurman <tthurman@gnome.org>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
 "POT-Creation-Date: 2010-05-12 07:24+0000\n"
 "PO-Revision-Date: 2010-05-12 18:36 -0400\n"
@@ -244,7 +244,7 @@ msgstr "𐑑𐑧𐑥𐑐𐑤𐑱𐑑 '%s' 𐑦𐑯𐑝𐑨𐑤𐑦𐑛, 𐑖𐑫
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "𐑑𐑧𐑥𐑐𐑤𐑱𐑑 '%s' 𐑛𐑳𐑟𐑯𐑑 𐑒𐑩𐑯𐑑𐑱𐑯 XXXXXX"
 
-#, fuzzy, c-format
+#, c-format
 #: ../glib/gfileutils.c:1774
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -266,20 +266,20 @@ msgstr "%.1f MB"
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#, fuzzy, c-format
+#, c-format
 #: ../glib/gfileutils.c:1797
 msgid "%.1f TB"
-msgstr "%.1f KB"
+msgstr "%.1f TB"
 
-#, fuzzy, c-format
+#, c-format
 #: ../glib/gfileutils.c:1802
 msgid "%.1f PB"
-msgstr "%.1f KB"
+msgstr "%.1f PB"
 
-#, fuzzy, c-format
+#, c-format
 #: ../glib/gfileutils.c:1807
 msgid "%.1f EB"
-msgstr "%.1f KB"
+msgstr "%.1f EB"
 
 #, c-format
 #: ../glib/gfileutils.c:1850
@@ -356,15 +356,14 @@ msgstr ""
 "𐑓𐑱𐑤𐑛 𐑑 𐑐𐑸𐑕 '%-.*s', 𐑢𐑦𐑗 𐑖𐑫𐑛 𐑣𐑨𐑝 𐑚𐑰𐑯 𐑩 𐑛𐑦𐑡𐑦𐑑 𐑦𐑯𐑕𐑲𐑛 𐑩 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑮𐑧𐑓𐑼𐑩𐑯𐑕 (&#234; "
 "𐑓𐑹 𐑦𐑜𐑟𐑭𐑥𐑐𐑩𐑤) - 𐑐𐑼𐑣𐑨𐑐𐑕 𐑞 𐑛𐑦𐑡𐑦𐑑 𐑦𐑟 𐑑𐑵 𐑤𐑸𐑡"
 
-#, fuzzy
 #: ../glib/gmarkup.c:590
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑮𐑧𐑓𐑼𐑩𐑯𐑕 𐑛𐑦𐑛 𐑯𐑪𐑑 𐑧𐑯𐑛 𐑢𐑦𐑞 𐑩 semicolon; 𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑿 𐑿𐑕𐑑 𐑩𐑯 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 "
-"𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑢𐑦𐑞𐑬𐑑 𐑦𐑯𐑑𐑧𐑯𐑛𐑦𐑙 𐑑 𐑕𐑑𐑸𐑑 𐑩𐑯 𐑧𐑯𐑑𐑦𐑑𐑦 - 𐑦𐑕𐑒𐑱𐑐 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑨𐑟 &𐑨𐑥𐑐;"
+"𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑮𐑧𐑓𐑼𐑩𐑯𐑕 𐑛𐑦𐑛 𐑯𐑪𐑑 𐑧𐑯𐑛 𐑢𐑦𐑞 𐑩 𐑕𐑧𐑥𐑦𐑒𐑴𐑤𐑪𐑯; 𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑿 𐑿𐑕𐑑 𐑩𐑯 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 "
+"𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑢𐑦𐑞𐑬𐑑 𐑦𐑯𐑑𐑧𐑯𐑛𐑦𐑙 𐑑 𐑕𐑑𐑸𐑑 𐑩𐑯 𐑧𐑯𐑑𐑦𐑑𐑦 - 𐑦𐑕𐑒𐑱𐑐 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑨𐑟 &amp;"
 
 #, c-format
 #: ../glib/gmarkup.c:616
@@ -381,18 +380,17 @@ msgstr "𐑧𐑥𐑐𐑑𐑦 𐑧𐑯𐑑𐑦𐑑𐑦 '&;' 𐑕𐑰𐑯; 𐑝�
 msgid "Entity name '%-.*s' is not known"
 msgstr "𐑧𐑯𐑑𐑦𐑑𐑦 𐑯𐑱𐑥 '%-.*s' 𐑦𐑟 𐑯𐑪𐑑 𐑯𐑴𐑯"
 
-#, fuzzy
 #: ../glib/gmarkup.c:667
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"𐑧𐑯𐑑𐑦𐑑𐑦 𐑛𐑦𐑛 𐑯𐑪𐑑 𐑧𐑯𐑛 𐑢𐑦𐑞 𐑩 semicolon; 𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑿 𐑿𐑕𐑑 𐑩𐑯 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 "
-"𐑢𐑦𐑞𐑬𐑑 𐑦𐑯𐑑𐑧𐑯𐑛𐑦𐑙 𐑑 𐑕𐑑𐑸𐑑 𐑩𐑯 𐑧𐑯𐑑𐑦𐑑𐑦 - 𐑦𐑕𐑒𐑱𐑐 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑨𐑟 &𐑨𐑥𐑐;"
+"𐑧𐑯𐑑𐑦𐑑𐑦 𐑛𐑦𐑛 𐑯𐑪𐑑 𐑧𐑯𐑛 𐑢𐑦𐑞 𐑩 𐑕𐑧𐑥𐑦𐑒𐑴𐑤𐑪𐑯; 𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑿 𐑿𐑕𐑑 𐑩𐑯 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 "
+"𐑢𐑦𐑞𐑬𐑑 𐑦𐑯𐑑𐑧𐑯𐑛𐑦𐑙 𐑑 𐑕𐑑𐑸𐑑 𐑩𐑯 𐑧𐑯𐑑𐑦𐑑𐑦 - 𐑦𐑕𐑒𐑱𐑐 𐑨𐑥𐑐𐑻𐑕𐑨𐑯𐑛 𐑨𐑟 &amp;"
 
 #: ../glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "𐑛𐑪𐑒𐑿𐑥𐑩𐑯𐑑 𐑥𐑳𐑕𐑑 𐑚𐑩𐑜𐑦𐑯 𐑢𐑦𐑞 𐑩𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 (e.g. <𐑚𐑫𐑒>)"
+msgstr "𐑛𐑪𐑒𐑿𐑥𐑩𐑯𐑑 𐑥𐑳𐑕𐑑 𐑚𐑩𐑜𐑦𐑯 𐑢𐑦𐑞 𐑩𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 (e.g. <book>)"
 
 #, c-format
 #: ../glib/gmarkup.c:1054
@@ -1140,17 +1138,14 @@ msgstr "𐑕𐑑𐑮𐑰𐑥 𐑦𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑒𐑤𐑴𐑟�
 msgid "Operation was cancelled"
 msgstr "𐑪𐑐𐑼𐑱𐑖𐑩𐑯 𐑢𐑪𐑟 𐑒𐑨𐑯𐑕𐑩𐑤𐑛"
 
-#, fuzzy
 #: ../gio/gcharsetconverter.c:264
 msgid "Invalid object, not initialized"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑩𐑚𐑡𐑧𐑒𐑑, 𐑯𐑪𐑑 𐑦𐑯𐑦𐑖𐑩𐑤𐑲𐑟𐑛"
 
-#, fuzzy
 #: ../gio/gcharsetconverter.c:285 ../gio/gcharsetconverter.c:313
 msgid "Incomplete multibyte sequence in input"
-msgstr "𐑦𐑯𐑒𐑩𐑥𐑐𐑤𐑰𐑑 multibyte 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 𐑦𐑯 𐑦𐑯𐑐𐑫𐑑"
+msgstr "𐑦𐑯𐑒𐑩𐑥𐑐𐑤𐑰𐑑 𐑥𐑳𐑤𐑑𐑦𐑚𐑲𐑑 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 𐑦𐑯 𐑦𐑯𐑐𐑫𐑑"
 
-#, fuzzy
 #: ../gio/gcharsetconverter.c:319 ../gio/gcharsetconverter.c:328
 msgid "Not enough space in destination"
 msgstr "𐑯𐑪𐑑 𐑦𐑯𐑳𐑓 𐑕𐑐𐑱𐑕 𐑦𐑯 𐑛𐑧𐑕𐑑𐑦𐑯𐑱𐑖𐑩𐑯"
@@ -1298,15 +1293,14 @@ msgstr "𐑑𐑸𐑜𐑧𐑑 𐑓𐑲𐑤 𐑧𐑒𐑟𐑦𐑕𐑑𐑕"
 msgid "Can't recursively copy directory"
 msgstr "𐑒𐑨𐑯𐑑 𐑮𐑦𐑒𐑻𐑕𐑦𐑝𐑤𐑦 𐑒𐑪𐑐𐑦 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦"
 
-#, fuzzy
 #: ../gio/gfile.c:2755
 msgid "Splice not supported"
 msgstr "𐑕𐑐𐑤𐑲𐑕 𐑯𐑪𐑑 𐑕𐑩𐑐𐑹𐑑𐑩𐑛"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gfile.c:2759
 msgid "Error splicing file: %s"
-msgstr "𐑻𐑼 𐑴𐑐𐑩𐑯𐑦𐑙 𐑓𐑲𐑤: %s"
+msgstr "𐑻𐑼 𐑕𐑐𐑤𐑲𐑕𐑦𐑙 𐑓𐑲𐑤: %s"
 
 #: ../gio/gfile.c:2906
 msgid "Can't copy special file"
@@ -1514,10 +1508,10 @@ msgstr "𐑳𐑯𐑱𐑚𐑩𐑤 𐑑 𐑑𐑮𐑨𐑖 𐑓𐑲𐑤: %s"
 msgid "Error creating directory: %s"
 msgstr "𐑻𐑼 𐑒𐑮𐑦𐑱𐑑𐑦𐑙 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦: %s"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/glocalfile.c:2165
 msgid "Filesystem does not support symbolic links"
-msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑛 𐑞 𐑕𐑦𐑥𐑚𐑪𐑤𐑦𐑒 𐑤𐑦𐑙𐑒 '%s': %s"
+msgstr "𐑓𐑲𐑤𐑕𐑦𐑕𐑑𐑩𐑥 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑕𐑩𐑐𐑹𐑑 𐑕𐑦𐑥𐑚𐑪𐑤𐑦𐑒 𐑤𐑦𐑙𐑒𐑕"
 
 #, c-format
 #: ../gio/glocalfile.c:2169
@@ -1734,19 +1728,16 @@ msgstr "𐑥𐑧𐑥𐑼𐑦 𐑬𐑑𐑐𐑫𐑑 𐑕𐑑𐑮𐑰𐑥 𐑯𐑪�
 msgid "Failed to resize memory output stream"
 msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑕𐑲𐑟 𐑥𐑧𐑥𐑼𐑦 𐑬𐑑𐑐𐑫𐑑 𐑕𐑑𐑮𐑰𐑥"
 
-#, fuzzy
 #: ../gio/gmemoryoutputstream.c:572
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr "𐑩𐑥𐑬𐑯𐑑 𐑝 𐑥𐑧𐑥𐑼𐑦 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑑 𐑐𐑮𐑴𐑕𐑧𐑕 𐑞 𐑮𐑲𐑑 𐑦𐑟 𐑤𐑸𐑡𐑼 𐑞𐑨𐑯 𐑩𐑝𐑱𐑤𐑩𐑚𐑩𐑤 𐑩𐑛𐑮𐑧𐑕 𐑕𐑐𐑱𐑕"
 
-#, fuzzy
 #: ../gio/gmemoryoutputstream.c:728
 msgid "Requested seek before the beginning of the stream"
 msgstr "𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛 𐑕𐑰𐑒 𐑚𐑦𐑓𐑹 𐑞 𐑚𐑩𐑜𐑦𐑯𐑦𐑙 𐑝 𐑞 𐑕𐑑𐑮𐑰𐑥"
 
-#, fuzzy
 #: ../gio/gmemoryoutputstream.c:737
 msgid "Requested seek beyond the end of the stream"
 msgstr "𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛 𐑕𐑰𐑒 𐑚𐑦𐑘𐑪𐑯𐑛 𐑞 𐑧𐑯𐑛 𐑝 𐑞 𐑕𐑑𐑮𐑰𐑥"
@@ -1754,15 +1745,13 @@ msgstr "𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛 𐑕𐑰𐑒 𐑚𐑦𐑘𐑪𐑯�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#, fuzzy
 #: ../gio/gmount.c:364
 msgid "mount doesn't implement \"unmount\""
-msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"unmount\""
+msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑳𐑯𐑥𐑬𐑯𐑑\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#, fuzzy
 #: ../gio/gmount.c:443
 msgid "mount doesn't implement \"eject\""
 msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑦𐑡𐑧𐑒𐑑\""
@@ -1770,26 +1759,23 @@ msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯�
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#, fuzzy
 #: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"unmount\" 𐑹 \"unmount_with_operation\""
+msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑳𐑯𐑥𐑬𐑯𐑑\" 𐑹 \"𐑳𐑯𐑥𐑬𐑯𐑑_𐑢𐑦𐑞_𐑪𐑐𐑼𐑱𐑖𐑩𐑯\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#, fuzzy
 #: ../gio/gmount.c:610
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑦𐑡𐑧𐑒𐑑\" 𐑹 \"eject_with_operation\""
+msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑦𐑡𐑧𐑒𐑑\" 𐑹 \"𐑦𐑡𐑧𐑒𐑑_𐑢𐑦𐑞_𐑪𐑐𐑼𐑱𐑖𐑩𐑯\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#, fuzzy
 #: ../gio/gmount.c:699
 msgid "mount doesn't implement \"remount\""
-msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"remount\""
+msgstr "𐑥𐑬𐑯𐑑 𐑛𐑳𐑟𐑯𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 \"𐑮𐑰𐑥𐑬𐑯𐑑\""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -1843,52 +1829,46 @@ msgstr "𐑑𐑧𐑥𐑐𐑼𐑼𐑦𐑤𐑦 𐑳𐑯𐑱𐑚𐑩𐑤 𐑑 𐑮�
 msgid "Error resolving '%s'"
 msgstr "𐑻𐑼 𐑮𐑦𐑟𐑪𐑤𐑝𐑦𐑙 '%s'"
 
-#, fuzzy
 #: ../gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
-msgstr "𐑢𐑺 𐑑 𐑕𐑑𐑹 𐑞 gschemas.𐑒𐑩𐑥𐑐𐑲𐑤𐑛 𐑓𐑲𐑤"
+msgstr "𐑢𐑺 𐑑 𐑕𐑑𐑹 𐑞 gschemas.compiled 𐑓𐑲𐑤"
 
-#, fuzzy
 #: ../gio/gschema-compile.c:645 ../gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr "𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦"
 
-#, fuzzy
 #: ../gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
-msgstr "𐑛𐑵 𐑯𐑪𐑑 𐑮𐑲𐑑 𐑞 gschema.𐑒𐑩𐑥𐑐𐑲𐑤𐑛 𐑓𐑲𐑤"
+msgstr "𐑛𐑵 𐑯𐑪𐑑 𐑮𐑲𐑑 𐑞 gschema.compiled 𐑓𐑲𐑤"
 
-#, fuzzy
 #: ../gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr "𐑛𐑵 𐑯𐑪𐑑 𐑧𐑯𐑓𐑪𐑮𐑕 𐑒𐑰 𐑯𐑱𐑥 𐑮𐑰𐑕𐑑𐑮𐑦𐑒𐑖𐑩𐑯𐑟"
 
-#, fuzzy
 #: ../gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\nSchema files are "
 "required to have the extension .gschema.xml,\nand the cache file is called "
 "gschemas.compiled."
 msgstr ""
-"𐑒𐑪𐑥𐑐𐑲𐑤 𐑷𐑤 GSettings schema 𐑓𐑲𐑤𐑟 𐑦𐑯𐑑𐑫 𐑩 schema 𐑒𐑨𐑖.\nSchema 𐑓𐑲𐑤𐑟 𐑸 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑑 "
-"𐑣𐑨𐑝 𐑞 𐑩𐑒𐑕𐑑𐑧𐑯𐑖𐑩𐑯 .gschema.·𐑦·𐑥·𐑤,\n𐑯 𐑞 𐑒𐑨𐑖 𐑓𐑲𐑤 𐑦𐑟 𐑒𐑷𐑤𐑛 gschemas.𐑒𐑩𐑥𐑐𐑲𐑤𐑛."
+"𐑒𐑪𐑥𐑐𐑲𐑤 𐑷𐑤 GSettings 𐑕𐑒𐑰𐑥𐑩 𐑓𐑲𐑤𐑟 𐑦𐑯𐑑𐑫 𐑩 𐑕𐑒𐑰𐑥𐑩 𐑒𐑨𐑖.\n𐑕𐑒𐑰𐑥𐑩 𐑓𐑲𐑤𐑟 𐑸 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑑 "
+"𐑣𐑨𐑝 𐑞 𐑩𐑒𐑕𐑑𐑧𐑯𐑖𐑩𐑯 .gschema.xml,\n𐑯 𐑞 𐑒𐑨𐑖 𐑓𐑲𐑤 𐑦𐑟 𐑒𐑷𐑤𐑛 gschemas.compiled."
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gschema-compile.c:675
 msgid "You should give exactly one directory name\n"
 msgstr "𐑿 𐑖𐑫𐑛 𐑜𐑦𐑝 𐑦𐑜𐑟𐑨𐑒𐑑𐑤𐑦 𐑢𐑳𐑯 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦 𐑯𐑱𐑥\n"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gschema-compile.c:707
 msgid "No schema files found\n"
-msgstr "𐑯𐑴 schema 𐑓𐑲𐑤𐑟 𐑓𐑬𐑯𐑛\n"
+msgstr "𐑯𐑴 𐑕𐑒𐑰𐑥𐑩 𐑓𐑲𐑤𐑟 𐑓𐑬𐑯𐑛\n"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:38
 msgid "COMMAND"
 msgstr "𐑒𐑩𐑥𐑭𐑯𐑛"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gsettings-tool.c:41
 msgid ""
 "Commands:\n  help        Show this information\n  get         Get the value "
@@ -1896,72 +1876,62 @@ msgid ""
 "for changes\n  writable    Check if a key is writable\n\nUse '%s COMMAND "
 "--help' to get help for individual commands.\n"
 msgstr ""
-"𐑒𐑩𐑥𐑭𐑯𐑛𐑟:\n  𐑣𐑧𐑤𐑐        𐑖𐑴 𐑞𐑦𐑕 𐑦𐑯𐑓𐑼𐑥𐑱𐑖𐑩𐑯\n  𐑜𐑧𐑑         𐑜𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑩 𐑒𐑰\n  "
-"𐑕𐑧𐑑         𐑕𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑩 𐑒𐑰\n  𐑥𐑪𐑯𐑦𐑑𐑼     𐑥𐑪𐑯𐑦𐑑𐑼 𐑩 𐑒𐑰 𐑓𐑹 𐑗𐑱𐑯𐑡𐑩𐑟\n  "
-"𐑮𐑲𐑑𐑩𐑚𐑩𐑤    𐑗𐑧𐑒 𐑦𐑓 𐑩 𐑒𐑰 𐑦𐑟 𐑮𐑲𐑑𐑩𐑚𐑩𐑤\n\n𐑿𐑟 '%s 𐑒𐑩𐑥𐑭𐑯𐑛 --𐑣𐑧𐑤𐑐' 𐑑 𐑜𐑧𐑑 𐑣𐑧𐑤𐑐 𐑓𐑹 "
+"𐑒𐑩𐑥𐑭𐑯𐑛𐑟:\n  help        𐑖𐑴 𐑞𐑦𐑕 𐑦𐑯𐑓𐑼𐑥𐑱𐑖𐑩𐑯\n  get         𐑜𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑩 𐑒𐑰\n  "
+"set         𐑕𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑩 𐑒𐑰\n  monitor     𐑥𐑪𐑯𐑦𐑑𐑼 𐑩 𐑒𐑰 𐑓𐑹 𐑗𐑱𐑯𐑡𐑩𐑟\n  "
+"writable    𐑗𐑧𐑒 𐑦𐑓 𐑩 𐑒𐑰 𐑦𐑟 𐑮𐑲𐑑𐑩𐑚𐑩𐑤\n\n𐑿𐑟 '%s 𐑒𐑩𐑥𐑭𐑯𐑛 --help' 𐑑 𐑜𐑧𐑑 𐑣𐑧𐑤𐑐 𐑓𐑹 "
 "𐑦𐑯𐑛𐑦𐑝𐑦𐑛𐑿𐑩𐑤 𐑒𐑩𐑥𐑭𐑯𐑛𐑟.\n"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:102 ../gio/gsettings-tool.c:161
 #: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:307
 msgid "Specify the path for the schema"
-msgstr "𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑞 𐑐𐑭𐑔 𐑓𐑹 𐑞 schema"
+msgstr "𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑞 𐑐𐑭𐑔 𐑓𐑹 𐑞 𐑕𐑒𐑰𐑥𐑩"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:102 ../gio/gsettings-tool.c:161
 #: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:307
 msgid "PATH"
 msgstr "𐑐𐑭𐑔"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:110 ../gio/gsettings-tool.c:242
 #: ../gio/gsettings-tool.c:315
 msgid "SCHEMA KEY"
-msgstr "SCHEMA 𐑒𐑰"
+msgstr "𐑕𐑒𐑰𐑥𐑩 𐑒𐑰"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:112
 msgid "Get the value of KEY"
 msgstr "𐑜𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑒𐑰"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:114 ../gio/gsettings-tool.c:246
 #: ../gio/gsettings-tool.c:322
 msgid ""
 "Arguments:\n  SCHEMA      The id of the schema\n  KEY         The name of the "
 "key\n"
-msgstr "𐑸𐑜𐑿𐑥𐑩𐑯𐑑𐑕:\n  SCHEMA      𐑞 𐑦𐑛 𐑝 𐑞 schema\n  𐑒𐑰         𐑞 𐑯𐑱𐑥 𐑝 𐑞 𐑒𐑰\n"
+msgstr "𐑸𐑜𐑿𐑥𐑩𐑯𐑑𐑕:\n  𐑕𐑒𐑰𐑥𐑩      𐑞 𐑦𐑛 𐑝 𐑞 schema\n  𐑒𐑰         𐑞 𐑯𐑱𐑥 𐑝 𐑞 𐑒𐑰\n"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:169
 msgid "SCHEMA KEY VALUE"
-msgstr "SCHEMA 𐑒𐑰 𐑝𐑨𐑤𐑿"
+msgstr "𐑕𐑒𐑰𐑥𐑩 𐑒𐑰 𐑝𐑨𐑤𐑿"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:171
 msgid "Set the value of KEY"
 msgstr "𐑕𐑧𐑑 𐑞 𐑝𐑨𐑤𐑿 𐑝 𐑒𐑰"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:173
 msgid ""
 "Arguments:\n  SCHEMA      The id of the schema\n  KEY         The name of the "
 "key\n  VALUE       The value to set key to, as a serialized GVariant\n"
 msgstr ""
-"𐑸𐑜𐑿𐑥𐑩𐑯𐑑𐑕:\n  SCHEMA      𐑞 𐑦𐑛 𐑝 𐑞 schema\n  𐑒𐑰         𐑞 𐑯𐑱𐑥 𐑝 𐑞 𐑒𐑰\n  "
+"𐑸𐑜𐑿𐑥𐑩𐑯𐑑𐑕:\n  𐑕𐑒𐑰𐑥𐑩      𐑞 𐑦𐑛 𐑝 𐑞 schema\n  𐑒𐑰         𐑞 𐑯𐑱𐑥 𐑝 𐑞 𐑒𐑰\n  "
 "𐑝𐑨𐑤𐑿       𐑞 𐑝𐑨𐑤𐑿 𐑑 𐑕𐑧𐑑 𐑒𐑰 𐑑, 𐑨𐑟 𐑩 𐑕𐑦𐑮𐑰𐑩𐑤𐑲𐑟𐑛 GVariant\n"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gsettings-tool.c:212
 msgid "Key %s is not writable\n"
-msgstr "𐑑𐑲𐑐 %s 𐑦𐑟 𐑯𐑪𐑑 𐑒𐑤𐑨𐑕𐑑"
+msgstr "𐑒𐑰 %s 𐑦𐑟 𐑯𐑪𐑑 𐑮𐑲𐑑𐑩𐑚𐑩𐑤\n"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:244
 msgid "Find out whether KEY is writable"
 msgstr "𐑓𐑲𐑯𐑛 𐑬𐑑 𐑢𐑧𐑞𐑼 𐑒𐑰 𐑦𐑟 𐑮𐑲𐑑𐑩𐑚𐑩𐑤"
 
-#, fuzzy
 #: ../gio/gsettings-tool.c:318
 msgid ""
 "Monitor KEY for changes and print the changed values.\nMonitoring will "
@@ -1970,10 +1940,10 @@ msgstr ""
 "𐑥𐑪𐑯𐑦𐑑𐑼 𐑒𐑰 𐑓𐑹 𐑗𐑱𐑯𐑡𐑩𐑟 𐑯 𐑐𐑮𐑦𐑯𐑑 𐑞 𐑗𐑱𐑯𐑡𐑛 𐑝𐑨𐑤𐑿𐑟.\n𐑥𐑭𐑯𐑩𐑑𐑻𐑦𐑙 𐑢𐑦𐑤 𐑒𐑩𐑯𐑑𐑦𐑯𐑿 𐑳𐑯𐑑𐑦𐑤 𐑞 "
 "𐑐𐑮𐑴𐑕𐑧𐑕 𐑦𐑟 𐑑𐑻𐑥𐑩𐑯𐑱𐑑𐑩𐑛."
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gsettings-tool.c:381
 msgid "Unknown command '%s'\n"
-msgstr "𐑳𐑯𐑴𐑯 𐑪𐑐𐑖𐑩𐑯 %s"
+msgstr "𐑳𐑯𐑴𐑯 𐑒𐑩𐑥𐑭𐑯𐑛 '%s'\n"
 
 #: ../gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
@@ -1988,10 +1958,9 @@ msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑕𐑪𐑒𐑩𐑑, 𐑦𐑯𐑦𐑑𐑦�
 msgid "Socket is already closed"
 msgstr "𐑕𐑪𐑒𐑩𐑑 𐑦𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑒𐑤𐑴𐑟𐑛"
 
-#, fuzzy
 #: ../gio/gsocket.c:298 ../gio/gsocket.c:2609 ../gio/gsocket.c:2653
 msgid "Socket I/O timed out"
-msgstr "𐑕𐑪𐑒𐑩𐑑 𐑲/𐑴 𐑑𐑲𐑥𐑛 𐑬𐑑"
+msgstr "𐑕𐑪𐑒𐑩𐑑 I/O 𐑑𐑲𐑥𐑛 𐑬𐑑"
 
 #, c-format
 #: ../gio/gsocket.c:420
@@ -2176,22 +2145,19 @@ msgstr "𐑩𐑕𐑴𐑕𐑦𐑱𐑖𐑩𐑯 𐑗𐑱𐑯𐑡𐑩𐑟 𐑯𐑪�
 msgid "Association creation not supported on win32"
 msgstr "𐑩𐑕𐑴𐑕𐑦𐑱𐑖𐑩𐑯 𐑒𐑮𐑰𐑱𐑖𐑩𐑯 𐑯𐑪𐑑 𐑕𐑩𐑐𐑹𐑑𐑩𐑛 𐑪𐑯 win32"
 
-#, fuzzy
 #: ../gio/gzlibcompressor.c:279 ../gio/gzlibdecompressor.c:250
 msgid "Not enough memory"
 msgstr "𐑯𐑪𐑑 𐑦𐑯𐑳𐑓 𐑥𐑧𐑥𐑼𐑦"
 
-#, fuzzy, c-format
+#, c-format
 #: ../gio/gzlibcompressor.c:286 ../gio/gzlibdecompressor.c:257
 msgid "Internal error: %s"
-msgstr "𐑦𐑯𐑑𐑻𐑯𐑩𐑤 𐑻𐑼"
+msgstr "𐑦𐑯𐑑𐑻𐑯𐑩𐑤 𐑻𐑼: %s"
 
-#, fuzzy
 #: ../gio/gzlibcompressor.c:299 ../gio/gzlibdecompressor.c:271
 msgid "Need more input"
 msgstr "𐑯𐑰𐑛 𐑥𐑹 𐑦𐑯𐑐𐑫𐑑"
 
-#, fuzzy
 #: ../gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑒𐑪𐑥𐑐𐑮𐑧𐑕𐑑 𐑛𐑱𐑑𐑩"
