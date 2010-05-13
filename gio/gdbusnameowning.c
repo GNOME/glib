@@ -591,7 +591,6 @@ g_bus_own_name (GBusType                  bus_type,
 {
   Client *client;
 
-  g_return_val_if_fail (bus_type != G_BUS_TYPE_NONE, 0);
   g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), 0);
 
   G_LOCK (lock);

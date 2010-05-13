@@ -510,7 +510,6 @@ test_peer (void)
     g_main_loop_run (loop);
   g_assert_cmpint (data.current_connections->len, ==, 1);
   g_assert_cmpint (data.num_connection_attempts, ==, 1);
-  //g_assert (g_dbus_connection_get_bus_type (c) == G_BUS_TYPE_NONE);
   g_assert (g_dbus_connection_get_unique_name (c) == NULL);
   g_assert_cmpstr (g_dbus_connection_get_guid (c), ==, test_guid);
 

@@ -255,7 +255,7 @@ on_name_vanished (GDBusConnection *connection,
 
 /**
  * g_bus_watch_proxy:
- * @bus_type: The type of bus to watch a name on (can't be #G_BUS_TYPE_NONE).
+ * @bus_type: The type of bus to watch a name on.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
  * @object_path: The object path of the remote object to watch.
@@ -318,7 +318,6 @@ g_bus_watch_proxy (GBusType                   bus_type,
 {
   Client *client;
 
-  g_return_val_if_fail (bus_type != G_BUS_TYPE_NONE, 0);
   g_return_val_if_fail (g_dbus_is_name (name), 0);
   g_return_val_if_fail (g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (g_dbus_is_interface_name (interface_name), 0);

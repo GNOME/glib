@@ -740,21 +740,19 @@ typedef enum {
 
 /**
  * GBusType:
- * @G_BUS_TYPE_NONE: Not a message bus connection.
- * @G_BUS_TYPE_SESSION: The login session message bus.
+ * @G_BUS_TYPE_STARTER: An alias for the message bus that activated the process, if any.
  * @G_BUS_TYPE_SYSTEM: The system-wide message bus.
- * @G_BUS_TYPE_STARTER: Connect to the bus that activated the program.
+ * @G_BUS_TYPE_SESSION: The login session message bus.
  *
- * An enumeration to specify the type of a #GDBusConnection.
+ * An enumeration for well-known message buses.
  *
  * Since: 2.26
  */
 typedef enum
 {
-  G_BUS_TYPE_NONE    = -1,
-  G_BUS_TYPE_SESSION = 0,
+  G_BUS_TYPE_STARTER = 0,
   G_BUS_TYPE_SYSTEM  = 1,
-  G_BUS_TYPE_STARTER = 2
+  G_BUS_TYPE_SESSION = 2
 } GBusType;
 
 /**
