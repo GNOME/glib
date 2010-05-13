@@ -58,6 +58,7 @@ SAMPLE_PROGS = 				\
 	httpd				\
 	send-data			\
 	filter-cat			\
+	gdbus-example-export		\
 	gdbus-example-own-name		\
 	gdbus-example-watch-name	\
 	gdbus-example-watch-proxy	\
@@ -233,6 +234,9 @@ gdbus_example_peer_LDADD   = $(progs_ldadd)
 
 gdbus_example_proxy_subclass_SOURCES = gdbus-example-proxy-subclass.c
 gdbus_example_proxy_subclass_LDADD   = $(progs_ldadd)
+
+gdbus_example_export_SOURCES = gdbus-example-export.c
+gdbus_example_export_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \
 	socket-common.c						\
