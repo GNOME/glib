@@ -1705,7 +1705,6 @@ g_dbus_server_get_guid
 #if IN_HEADER(__G_DBUS_UTILS_H__)
 #if IN_FILE(__G_DBUS_UTILS_C__)
 g_dbus_generate_guid
-g_dbus_is_activated
 g_dbus_is_guid
 g_dbus_is_interface_name
 g_dbus_is_member_name

@@ -357,25 +357,5 @@ g_dbus_is_guid (const gchar *string)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/**
- * g_dbus_is_activated:
- *
- * Determine if the process has been activated by a message bus.
- *
- * Returns: %TRUE if this process has been started by a message bus, %FALSE otherwise.
- *
- * Since: 2.26
- */
-gboolean
-g_dbus_is_activated (void)
-{
-  /* TODO: technically this will make child processes forked by us
-   * return TRUE too..
-   */
-  return g_getenv ("DBUS_STARTER_BUS_TYPE") != NULL;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
 #define __G_DBUS_UTILS_C__
 #include "gioaliasdef.c"

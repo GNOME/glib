@@ -35,8 +35,6 @@ gboolean g_dbus_is_unique_name (const gchar *string);
 gboolean g_dbus_is_member_name (const gchar *string);
 gboolean g_dbus_is_interface_name (const gchar *string);
 
-gboolean g_dbus_is_activated (void);
-
 G_END_DECLS
 
 #endif /* __G_DBUS_UTILS_H__ */

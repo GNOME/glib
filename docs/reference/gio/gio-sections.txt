@@ -2225,7 +2225,6 @@ g_dbus_address_get_for_bus_sync
 
 <SECTION>
 <FILE>gdbusutils</FILE>
-g_dbus_is_activated
 g_dbus_generate_guid
 g_dbus_is_guid
 g_dbus_is_name
