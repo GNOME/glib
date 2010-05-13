@@ -1,7 +1,7 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 
-* ---------------------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------------------- */
 
 /* The object we want to export */
 typedef struct _MyObjectClass MyObjectClass;
@@ -129,6 +129,8 @@ my_object_change_count (MyObject *myobj,
   g_object_notify (G_OBJECT (myobj), "count");
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
+
 static GDBusNodeInfo *introspection_data = NULL;
 
 /* Introspection data for the service we are exporting */
@@ -247,7 +249,7 @@ send_property_change (GObject         *obj,
   g_dbus_connection_emit_signal (connection,
                                  NULL,
                                  "/org/myorg/MyObject",
-                                 "org.myorg.MyObject",
+                                 "org.freedesktop.DBus.Properties",
                                  "PropertiesChanged",
                                  g_variant_new ("(sa{sv})",
                                                 "org.myorg.MyObject",

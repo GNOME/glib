@@ -287,6 +287,72 @@ on_proxy_appeared (GDBusConnection *connection,
 
   <section>
     <title>Exporting objects</title>
+
+    <para>
+      With dbus-glib, exporting an object over D-Bus works by generating
+      a bunch of glue code from your introspection XML with
+      <command>dbus-binding-tool</command>. The glue code gets included in
+      your source, and you need to call
+      <informalexample><programlisting>
+  dbus_g_object_type_install_info (TYPE_MYOBJECT,
+                                   &amp;dbus_glib_myobject_object_info);
+      </programlisting></informalexample>
+      in your class_init() function to tell dbus-glib about your type.
+      To actually export an instance, you call
+      <informalexample><programlisting>
+  dbus_g_connection_register_g_object (system_bus_connection,
+                                       my_object_path,
+                                       G_OBJECT (my_object));
+      </programlisting></informalexample>
+
+    </para>
+    <para>
+      The GDBus way of exporting an object works by embedding the
+      introspection XML in the source, creating introspection data
+      structures from it with g_dbus_node_info_new_for_xml(), and
+      passing that along when you register the object:
+      <informalexample><programlisting><![CDATA[
+
+  static const gchar introspection_xml[] =
+    "<node>"
+    "  <interface name='org.gtk.GDBus.TestPeerInterface'>"
+    "    <method name='HelloWorld'>"
+    "      <arg type='s' name='greeting' direction='in'/>"
+    "      <arg type='s' name='response' direction='out'/>"
+    "    </method>"
+    "  </interface>"
+    "</node>";
+
+  /* parse introspection data */
+  introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
+
+  /
+  id = g_dbus_connection_register_object (connection,
+                                          "/org/gtk/GDBus/TestObject",
+                                          "org.gtk.GDBus.TestPeerInterface",
+                                          introspection_data->interfaces[0],
+                                          &interface_vtable,
+                                          NULL,  /* user_data */
+                                          NULL,  /* user_data_free_func */
+                                          NULL); /* GError** */
+
+]]>
+    </programlisting></informalexample>
+    </para>
+    <para>
+      The actual implementation of the exported object is done by specifying
+      a #GDBusInterfaceVTable that has method_call(), get_property() and
+      set_property() methods. There is no direct support beyond that for
+      exporting #GObjects, so there is quite a bit of manual work involved,
+      as you can see in the following example.
+    </para>
+    <para>
+      Since the VTable methods don't have any direct #GObject support, we
+      pass the exported object as @user_data. Also note that we have to handle
+      the emission of the PropertiesChanged signal ourselves, by connecting
+      to ::notify.
+    </para>
+     <example id="gdbus-export"><title>Exporting a GObject</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-export.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
   </section>
 
 </chapter>
