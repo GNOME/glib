@@ -76,7 +76,7 @@
       <varlistentry>
         <term><option>monitor</option></term>
         <listitem><para>
-          Monitors one or all objects owned by the owned of
+          Monitors one or all objects owned by the owner of
           <replaceable>bus_name</replaceable>.
         </para></listitem>
       </varlistentry>
@@ -225,11 +225,13 @@ The name org.freedesktop.ConsoleKit is owned by :1.15
   Monitoring a single object on a service:
 </para>
 <programlisting>
-$ gdbus monitor --system --dest org.freedesktop.ConsoleKit --object-path /org/freedesktop/ConsoleKit/Session2
-Monitoring signals on object /org/freedesktop/ConsoleKit/Session2 owned by org.freedesktop.ConsoleKit
-The name org.freedesktop.ConsoleKit is owned by :1.15
-/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (false,)
-/org/freedesktop/ConsoleKit/Session2: org.freedesktop.ConsoleKit.Session.ActiveChanged (true,)
+$ gdbus monitor --system --dest org.freedesktop.NetworkManager --object-path /org/freedesktop/NetworkManager/AccessPoint/4141
+Monitoring signals on object /org/freedesktop/NetworkManager/AccessPoint/4141 owned by org.freedesktop.NetworkManager
+The name org.freedesktop.NetworkManager is owned by :1.5
+/org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x5c&gt;},)
+/org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x64&gt;},)
+/org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x5e&gt;},)
+/org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x64&gt;},)
 </programlisting>
 
 </refsect1>
