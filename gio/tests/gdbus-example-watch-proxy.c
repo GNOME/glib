@@ -26,7 +26,7 @@ print_properties (GDBusProxy *proxy)
 
   g_print ("    properties:\n");
 
-  property_names = g_dbus_proxy_get_cached_property_names (proxy, NULL);
+  property_names = g_dbus_proxy_get_cached_property_names (proxy);
   for (n = 0; property_names != NULL && property_names[n] != NULL; n++)
     {
       const gchar *key = property_names[n];

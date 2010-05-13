@@ -445,6 +445,10 @@ static void
 g_dbus_proxy_init (GDBusProxy *proxy)
 {
   proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy, G_TYPE_DBUS_PROXY, GDBusProxyPrivate);
+  proxy->priv->properties = g_hash_table_new_full (g_str_hash,
+                                                   g_str_equal,
+                                                   g_free,
+                                                   (GDestroyNotify) g_variant_unref);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -452,18 +456,16 @@ g_dbus_proxy_init (GDBusProxy *proxy)
 /**
  * g_dbus_proxy_get_cached_property_names:
  * @proxy: A #GDBusProxy.
- * @error: Return location for error or %NULL.
  *
  * Gets the names of all cached properties on @proxy.
  *
- * Returns: A %NULL-terminated array of strings or %NULL if @error is set. Free with
- * g_strfreev().
+ * Returns: A %NULL-terminated array of strings or %NULL if @proxy has
+ * no cached properties. Free the returned array with g_strfreev().
  *
  * Since: 2.26
  */
 gchar **
-g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy,
-                                        GError     **error)
+g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy)
 {
   gchar **names;
   GPtrArray *p;
@@ -471,18 +473,10 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy,
   const gchar *key;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   names = NULL;
-
-  if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Properties are not available (proxy created with G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)"));
-      goto out;
-    }
+  if (g_hash_table_size (proxy->priv->properties) == 0)
+    goto out;
 
   p = g_ptr_array_new ();
 
@@ -789,11 +783,6 @@ process_get_all_reply (GDBusProxy *proxy,
                  g_variant_get_type_string (result));
       goto out;
     }
-
-  proxy->priv->properties = g_hash_table_new_full (g_str_hash,
-                                                   g_str_equal,
-                                                   g_free,
-                                                   (GDestroyNotify) g_variant_unref);
 
   g_variant_iter_init (&iter, g_variant_get_child_value (result, 0));
   while ((item = g_variant_iter_next_value (&iter)) != NULL)

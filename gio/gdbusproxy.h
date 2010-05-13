@@ -127,8 +127,7 @@ GVariant        *g_dbus_proxy_get_cached_property       (GDBusProxy          *pr
 void             g_dbus_proxy_set_cached_property       (GDBusProxy          *proxy,
                                                          const gchar         *property_name,
                                                          GVariant            *value);
-gchar          **g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy,
-                                                         GError             **error);
+gchar          **g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy);
 void             g_dbus_proxy_call                      (GDBusProxy          *proxy,
                                                          const gchar         *method_name,
                                                          GVariant            *parameters,
