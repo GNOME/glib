@@ -848,7 +848,7 @@ process_get_all_reply (GDBusProxy *proxy,
   g_variant_iter_init (&iter, g_variant_get_child_value (result, 0));
   while ((item = g_variant_iter_next_value (&iter)) != NULL)
     {
-      const gchar *key;
+      gchar *key;
       GVariant *value;
 
       g_variant_get (item,
@@ -858,7 +858,7 @@ process_get_all_reply (GDBusProxy *proxy,
       //g_print ("got %s -> %s\n", key, g_variant_markup_print (value, FALSE, 0, 0));
 
       g_hash_table_insert (proxy->priv->properties,
-                           g_strdup (key),
+                           key,
                            value); /* steals value */
     }
  out:

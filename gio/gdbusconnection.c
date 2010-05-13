@@ -1839,7 +1839,6 @@ initable_init (GInitable     *initable,
   if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
       GVariant *hello_result;
-      const gchar *s;
 
       hello_result = g_dbus_connection_call_sync (connection,
                                                   "org.freedesktop.DBus", /* name */
@@ -1854,8 +1853,7 @@ initable_init (GInitable     *initable,
       if (hello_result == NULL)
         goto out;
 
-      g_variant_get (hello_result, "(s)", &s);
-      connection->priv->bus_unique_name = g_strdup (s);
+      g_variant_get (hello_result, "(s)", &connection->priv->bus_unique_name);
       g_variant_unref (hello_result);
       //g_debug ("unique name is `%s'", connection->priv->bus_unique_name);
     }
@@ -3217,12 +3215,12 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
 
   if (is_get)
     g_variant_get (g_dbus_message_get_body (message),
-                   "(ss)",
+                   "(&s&s)",
                    &interface_name,
                    &property_name);
   else
     g_variant_get (g_dbus_message_get_body (message),
-                   "(ssv)",
+                   "(&s&sv)",
                    &interface_name,
                    &property_name,
                    NULL);
@@ -3321,12 +3319,12 @@ handle_getset_property (GDBusConnection *connection,
 
   if (is_get)
     g_variant_get (g_dbus_message_get_body (message),
-                   "(ss)",
+                   "(&s&s)",
                    &interface_name,
                    &property_name);
   else
     g_variant_get (g_dbus_message_get_body (message),
-                   "(ssv)",
+                   "(&s&sv)",
                    &interface_name,
                    &property_name,
                    NULL);
@@ -3456,7 +3454,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
   handled = FALSE;
 
   g_variant_get (g_dbus_message_get_body (message),
-                 "(s)",
+                 "(&s)",
                  &interface_name);
 
   if (vtable == NULL || vtable->get_property == NULL)
@@ -3498,7 +3496,7 @@ handle_get_all_properties (GDBusConnection *connection,
   handled = FALSE;
 
   g_variant_get (g_dbus_message_get_body (message),
-                 "(s)",
+                 "(&s)",
                  &interface_name);
 
   /* Fail with org.freedesktop.DBus.Error.InvalidArgs if there is
@@ -4651,11 +4649,11 @@ handle_subtree_method_invocation (GDBusConnection *connection,
   else if (is_property_get || is_property_set || is_property_get_all)
     {
       if (is_property_get)
-        g_variant_get (g_dbus_message_get_body (message), "(ss)", &interface_name, NULL);
+        g_variant_get (g_dbus_message_get_body (message), "(&s&s)", &interface_name, NULL);
       else if (is_property_set)
-        g_variant_get (g_dbus_message_get_body (message), "(ssv)", &interface_name, NULL, NULL);
+        g_variant_get (g_dbus_message_get_body (message), "(&s&sv)", &interface_name, NULL, NULL);
       else if (is_property_get_all)
-        g_variant_get (g_dbus_message_get_body (message), "(s)", &interface_name, NULL, NULL);
+        g_variant_get (g_dbus_message_get_body (message), "(&s)", &interface_name, NULL, NULL);
       else
         g_assert_not_reached ();
 

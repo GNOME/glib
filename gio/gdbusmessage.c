@@ -2247,7 +2247,7 @@ g_dbus_message_to_gerror (GDBusMessage   *message,
       if (body != NULL && g_variant_is_of_type (body, G_VARIANT_TYPE ("(s)")))
         {
           const gchar *error_message;
-          g_variant_get (body, "(s)", &error_message);
+          g_variant_get (body, "(&s)", &error_message);
           g_dbus_error_set_dbus_error (error,
                                        error_name,
                                        error_message,

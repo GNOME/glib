@@ -261,7 +261,7 @@ on_name_lost_or_acquired (GDBusConnection  *connection,
 
   if (g_strcmp0 (signal_name, "NameLost") == 0)
     {
-      g_variant_get (parameters, "(s)", &name);
+      g_variant_get (parameters, "(&s)", &name);
       if (g_strcmp0 (name, client->name) == 0)
         {
           call_lost_handler (client);
@@ -269,7 +269,7 @@ on_name_lost_or_acquired (GDBusConnection  *connection,
     }
   else if (g_strcmp0 (signal_name, "NameAcquired") == 0)
     {
-      g_variant_get (parameters, "(s)", &name);
+      g_variant_get (parameters, "(&s)", &name);
       if (g_strcmp0 (name, client->name) == 0)
         {
           call_acquired_handler (client);

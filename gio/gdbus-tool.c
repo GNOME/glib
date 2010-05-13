@@ -167,7 +167,7 @@ print_methods (GDBusConnection *c,
       g_variant_unref (result);
       goto out;
     }
-  g_variant_get (result, "(s)", &xml_data);
+  g_variant_get (result, "(&s)", &xml_data);
 
   error = NULL;
   node = g_dbus_node_info_new_for_xml (xml_data, &error);
@@ -229,7 +229,9 @@ print_paths (GDBusConnection *c,
       g_variant_unref (result);
       goto out;
     }
-  g_variant_get (result, "(s)", &xml_data);
+  g_variant_get (result, "(&s)", &xml_data);
+
+  //g_printerr ("xml=`%s'", xml_data);
 
   error = NULL;
   node = g_dbus_node_info_new_for_xml (xml_data, &error);
@@ -240,8 +242,6 @@ print_paths (GDBusConnection *c,
       g_error_free (error);
       goto out;
     }
-
-  //g_printerr ("xml=`%s'", xml_data);
 
   //g_printerr ("bar `%s'\n", path);
 
@@ -308,7 +308,7 @@ print_names (GDBusConnection *c,
     }
   g_variant_get (result, "(as)", &iter);
   while (g_variant_iter_loop (iter, "s", &str))
-    g_hash_table_insert (name_set, g_strdup (str), NULL);
+    g_hash_table_insert (name_set, str, NULL);
   g_variant_iter_free (iter);
   g_variant_unref (result);
 
@@ -337,7 +337,7 @@ print_names (GDBusConnection *c,
     }
   g_variant_get (result, "(as)", &iter);
   while (g_variant_iter_loop (iter, "s", &str))
-    g_hash_table_insert (name_set, g_strdup (str), NULL);
+    g_hash_table_insert (name_set, str, NULL);
   g_variant_iter_free (iter);
   g_variant_unref (result);
 
@@ -476,7 +476,7 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
       goto out;
     }
 
-  g_variant_get (result, "(s)", &xml_data);
+  g_variant_get (result, "(&s)", &xml_data);
   node_info = g_dbus_node_info_new_for_xml (xml_data, error);
   if (node_info == NULL)
       goto out;
@@ -1071,14 +1071,14 @@ dump_interface (GDBusConnection          *c,
                              &iter);
               while ((item = g_variant_iter_next_value (iter)))
                 {
-                  const gchar *key;
+                  gchar *key;
                   GVariant *value;
                   g_variant_get (item,
                                  "{sv}",
                                  &key,
                                  &value);
 
-                  g_hash_table_insert (properties, g_strdup (key), g_variant_ref (value));
+                  g_hash_table_insert (properties, key, g_variant_ref (value));
                 }
             }
           g_variant_unref (result);
@@ -1354,7 +1354,7 @@ handle_introspect (gint        *argc,
                   g_variant_get_type_string (result));
       goto out;
     }
-  g_variant_get (result, "(s)", &xml_data);
+  g_variant_get (result, "(&s)", &xml_data);
 
   error = NULL;
   node = g_dbus_node_info_new_for_xml (xml_data, &error);

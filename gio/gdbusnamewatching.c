@@ -289,7 +289,7 @@ on_name_owner_changed (GDBusConnection *connection,
     goto out;
 
   g_variant_get (parameters,
-                 "(sss)",
+                 "(&s&s&s)",
                  &name,
                  &old_owner,
                  &new_owner);
@@ -336,7 +336,7 @@ get_name_owner_cb (GObject      *source_object,
                                           NULL);
   if (result != NULL)
     {
-      g_variant_get (result, "(s)", &name_owner);
+      g_variant_get (result, "(&s)", &name_owner);
     }
 
   if (name_owner != NULL)
