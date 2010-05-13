@@ -28,6 +28,7 @@
 #define __G_ZLIB_DECOMPRESSOR_H__
 
 #include <gio/gconverter.h>
+#include <gio/gfileinfo.h>
 
 G_BEGIN_DECLS
 
@@ -48,6 +49,8 @@ struct _GZlibDecompressorClass
 GType              g_zlib_decompressor_get_type (void) G_GNUC_CONST;
 
 GZlibDecompressor *g_zlib_decompressor_new (GZlibCompressorFormat format);
+
+GFileInfo         *g_zlib_decompressor_get_file_info (GZlibDecompressor *decompressor);
 
 G_END_DECLS
 

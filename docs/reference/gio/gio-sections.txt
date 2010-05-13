@@ -2054,6 +2054,8 @@ g_converter_output_stream_get_type
 GZlibCompressor
 GZlibCompressorFormat
 g_zlib_compressor_new
+g_zlib_compressor_get_file_info
+g_zlib_compressor_set_file_info
 <SUBSECTION Standard>
 GZlibCompressorClass
 G_TYPE_ZLIB_COMPRESSOR
@@ -2071,6 +2073,7 @@ g_zlib_compressor_get_type
 <TITLE>GZlibDecompressor</TITLE>
 GZlibDecompressor
 g_zlib_decompressor_new
+g_zlib_decompressor_get_file_info
 <SUBSECTION Standard>
 GZlibDecompressorClass
 G_TYPE_ZLIB_DECOMPRESSOR

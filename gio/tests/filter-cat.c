@@ -50,6 +50,23 @@ static GOptionEntry entries[] = {
 };
 
 static void
+decompressor_file_info_notify_cb (GZlibDecompressor *decompressor,
+                                  GParamSpec *pspec,
+                                  gpointer data)
+{
+  GFileInfo *file_info;
+  const gchar *filename;
+
+  file_info = g_zlib_decompressor_get_file_info (decompressor);
+  if (file_info == NULL)
+    return;
+
+  filename = g_file_info_get_name (file_info);
+  if (filename)
+    g_printerr ("Decompressor filename: %s\n", filename);
+}
+
+static void
 cat (GFile * file)
 {
   GInputStream *in;
@@ -79,6 +96,7 @@ cat (GFile * file)
       conv = (GConverter *)g_zlib_decompressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
+      g_signal_connect (conv, "notify::file-info", G_CALLBACK (decompressor_file_info_notify_cb), NULL);
       g_object_unref (conv);
       g_object_unref (old);
     }
@@ -108,11 +126,29 @@ cat (GFile * file)
   if (compress)
     {
       GInputStream *old;
-      conv = (GConverter *)g_zlib_compressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB, -1);
+      GFileInfo *in_file_info;
+
+      in_file_info = g_file_query_info (file,
+                                        G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                        G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                                        G_FILE_QUERY_INFO_NONE,
+                                        NULL,
+                                        &error);
+      if (in_file_info == NULL)
+        {
+          g_printerr ("%s: %s: error reading file info: %s\n",
+                      g_get_prgname (), g_file_get_uri (file), error->message);
+          g_error_free (error);
+          return;
+        }
+
+      conv = (GConverter *)g_zlib_compressor_new(gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB, -1);
+      g_zlib_compressor_set_file_info (G_ZLIB_COMPRESSOR (conv), in_file_info);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
       g_object_unref (conv);
       g_object_unref (old);
+      g_object_unref (in_file_info);
     }
 
   while (1)

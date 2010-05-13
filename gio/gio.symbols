@@ -1423,6 +1423,8 @@ g_unix_fd_list_steal_fds
 #if IN_FILE(__G_ZLIB_COMPRESSOR_C__)
 g_zlib_compressor_get_type G_GNUC_CONST
 g_zlib_compressor_new
+g_zlib_compressor_get_file_info
+g_zlib_compressor_set_file_info
 #endif
 #endif
 
@@ -1430,6 +1432,7 @@ g_zlib_compressor_new
 #if IN_FILE(__G_ZLIB_DECOMPRESSOR_C__)
 g_zlib_decompressor_get_type G_GNUC_CONST
 g_zlib_decompressor_new
+g_zlib_decompressor_get_file_info
 #endif
 #endif
 
