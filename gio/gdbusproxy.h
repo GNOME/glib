@@ -69,12 +69,13 @@ struct _GDBusProxyClass
 
   /*< public >*/
   /* Signals */
-  void (*g_properties_changed) (GDBusProxy   *proxy,
-                                GVariant     *changed_properties);
-  void (*g_signal)             (GDBusProxy   *proxy,
-                                const gchar  *sender_name,
-                                const gchar  *signal_name,
-                                GVariant     *parameters);
+  void (*g_properties_changed) (GDBusProxy          *proxy,
+                                GVariant            *changed_properties,
+                                const gchar* const  *invalidated_properties);
+  void (*g_signal)             (GDBusProxy          *proxy,
+                                const gchar         *sender_name,
+                                const gchar         *signal_name,
+                                GVariant            *parameters);
 
   /*< private >*/
   /* Padding for future expansion */

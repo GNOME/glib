@@ -233,9 +233,11 @@ send_property_change (GObject         *obj,
                       GDBusConnection *connection)
 {
   GVariantBuilder *builder;
+  GVariantBuilder *invalidated_builder;
   MyObject *myobj = (MyObject *)obj;
 
   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+  invalidated_builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
 
   if (g_strcmp0 (pspec->name, "count") == 0)
     g_variant_builder_add (builder,
@@ -251,9 +253,10 @@ send_property_change (GObject         *obj,
                                  "/org/myorg/MyObject",
                                  "org.freedesktop.DBus.Properties",
                                  "PropertiesChanged",
-                                 g_variant_new ("(sa{sv})",
+                                 g_variant_new ("(sa{sv}as)",
                                                 "org.myorg.MyObject",
-                                                builder),
+                                                builder,
+                                                invalidated_builder),
                                  NULL);
 }
 

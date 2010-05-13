@@ -387,10 +387,17 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   /**
    * GDBusProxy::g-properties-changed:
    * @proxy: The #GDBusProxy emitting the signal.
-   * @changed_properties: A #GVariant containing the properties that changed.
+   * @changed_properties: A #GVariant containing the properties that
+   * changed or %NULL if no properties changed.
+   * @invalidated_properties: A %NULL terminated list of properties that was
+   * invalidated or %NULL if no properties was invalidated.
    *
-   * Emitted when one or more D-Bus properties on @proxy changes. The cached properties
-   * are already replaced when this signal fires.
+   * Emitted when one or more D-Bus properties on @proxy changes. The
+   * local cache has already been updated when this signal fires.
+   *
+   * This signal corresponds to the
+   * <literal>PropertiesChanged</literal> D-Bus signal on the
+   * <literal>org.freedesktop.DBus.Properties</literal> interface.
    *
    * Since: 2.26
    */
@@ -400,10 +407,11 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                      G_STRUCT_OFFSET (GDBusProxyClass, g_properties_changed),
                                                      NULL,
                                                      NULL,
-                                                     g_cclosure_marshal_VOID__BOXED,
+                                                     _gio_marshal_VOID__BOXED_BOXED,
                                                      G_TYPE_NONE,
-                                                     1,
-                                                     G_TYPE_VARIANT);
+                                                     2,
+                                                     G_TYPE_VARIANT,
+                                                     G_TYPE_STRV);
 
   /**
    * GDBusProxy::g-signal:
@@ -669,12 +677,17 @@ on_properties_changed (GDBusConnection *connection,
   GError *error;
   const gchar *interface_name_for_signal;
   GVariantIter *iter;
+  GVariantIter *invalidated_iter;
   GVariant *item;
   GVariant *changed_properties;
   GVariantBuilder *builder;
+  GPtrArray *p;
+  const gchar *str;
+  gchar **invalidated_properties;
 
   error = NULL;
   iter = NULL;
+  invalidated_iter = NULL;
 
 #if 0 // TODO!
   /* Ignore this signal if properties are not yet available
@@ -686,26 +699,30 @@ on_properties_changed (GDBusConnection *connection,
     goto out;
 #endif
 
-  if (strcmp (g_variant_get_type_string (parameters), "(sa{sv})") != 0)
+  if (strcmp (g_variant_get_type_string (parameters), "(sa{sv}as)") != 0)
     {
-      g_warning ("Value for PropertiesChanged signal with type `%s' does not match `(sa{sv})'",
+      g_warning ("Value for PropertiesChanged signal with type `%s' does not match `(sa{sv}as)'",
                  g_variant_get_type_string (parameters));
       goto out;
     }
 
   g_variant_get (parameters,
-                 "(sa{sv})",
+                 "(sa{sv}as)",
                  &interface_name_for_signal,
-                 &iter);
+                 &iter,
+                 &invalidated_iter);
 
   if (g_strcmp0 (interface_name_for_signal, proxy->priv->interface_name) != 0)
     goto out;
 
-  builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+  builder = NULL;
   while ((item = g_variant_iter_next_value (iter)))
     {
       const gchar *key;
       GVariant *value;
+
+      if (builder == NULL)
+        builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
 
       g_variant_get (item,
                      "{sv}",
@@ -721,16 +738,45 @@ on_properties_changed (GDBusConnection *connection,
                              g_strdup (key),
                              g_variant_ref (value));
     }
-  changed_properties = g_variant_builder_end (builder);
+  if (builder != NULL)
+    changed_properties = g_variant_builder_end (builder);
+  else
+    changed_properties = NULL;
+
+  p = NULL;
+  while (g_variant_iter_loop (invalidated_iter, "s", &str))
+    {
+      if (p == NULL)
+        p = g_ptr_array_new ();
+      g_ptr_array_add (p, (gpointer) str);
+    }
+  if (p != NULL)
+    {
+      g_ptr_array_add (p, NULL);
+      invalidated_properties = (gchar **) g_ptr_array_free (p, FALSE);
+    }
+  else
+    {
+      invalidated_properties = NULL;
+    }
+
 
   /* emit signal */
-  g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL], 0, changed_properties);
+  g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
+                 0,
+                 changed_properties,
+                 invalidated_properties);
 
-  g_variant_unref (changed_properties);
+  if (changed_properties != NULL)
+    g_variant_unref (changed_properties);
+  if (invalidated_properties != NULL)
+    g_free (invalidated_properties);
 
  out:
   if (iter != NULL)
     g_variant_iter_free (iter);
+  if (invalidated_iter != NULL)
+    g_variant_iter_free (invalidated_iter);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

@@ -202,27 +202,31 @@ accounts_user_g_signal (GDBusProxy   *proxy,
 }
 
 static void
-accounts_user_g_properties_changed (GDBusProxy *proxy,
-                                    GVariant   *changed_properties)
+accounts_user_g_properties_changed (GDBusProxy          *proxy,
+                                    GVariant            *changed_properties,
+                                    const gchar* const  *invalidated_properties)
 {
   AccountsUser *user = ACCOUNTS_USER (proxy);
   GVariantIter *iter;
   GVariant *item;
 
-  g_variant_get (changed_properties, "a{sv}", &iter);
-  while ((item = g_variant_iter_next_value (iter)) != NULL)
+  if (changed_properties != NULL)
     {
-      const gchar *key;
-      g_variant_get (item,
-                     "{sv}",
-                     &key,
-                     NULL);
-      if (g_strcmp0 (key, "AutomaticLogin") == 0)
-        g_object_notify (G_OBJECT (user), "automatic-login");
-      else if (g_strcmp0 (key, "RealName") == 0)
-        g_object_notify (G_OBJECT (user), "real-name");
-      else if (g_strcmp0 (key, "UserName") == 0)
-        g_object_notify (G_OBJECT (user), "user-name");
+      g_variant_get (changed_properties, "a{sv}", &iter);
+      while ((item = g_variant_iter_next_value (iter)) != NULL)
+        {
+          const gchar *key;
+          g_variant_get (item,
+                         "{sv}",
+                         &key,
+                         NULL);
+          if (g_strcmp0 (key, "AutomaticLogin") == 0)
+            g_object_notify (G_OBJECT (user), "automatic-login");
+          else if (g_strcmp0 (key, "RealName") == 0)
+            g_object_notify (G_OBJECT (user), "real-name");
+          else if (g_strcmp0 (key, "UserName") == 0)
+            g_object_notify (G_OBJECT (user), "user-name");
+        }
     }
 }
 

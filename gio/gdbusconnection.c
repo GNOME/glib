@@ -3549,6 +3549,7 @@ static const gchar introspect_standard_interfaces[] =
   "    <signal name=\"PropertiesChanged\">\n"
   "      <arg type=\"s\" name=\"interface_name\"/>\n"
   "      <arg type=\"a{sv}\" name=\"changed_properties\"/>\n"
+  "      <arg type=\"as\" name=\"invalidated_properties\"/>\n"
   "    </signal>\n"
   "  </interface>\n"
   "  <interface name=\"org.freedesktop.DBus.Introspectable\">\n"

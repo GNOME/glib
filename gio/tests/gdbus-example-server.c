@@ -243,9 +243,10 @@ handle_set_property (GDBusConnection  *connection,
                                          object_path,
                                          "org.freedesktop.DBus.Properties",
                                          "PropertiesChanged",
-                                         g_variant_new ("(sa{sv})",
+                                         g_variant_new ("(sa{sv}as)",
                                                         interface_name,
-                                                        builder),
+                                                        builder,
+                                                        NULL),
                                          &local_error);
           g_assert_no_error (local_error);
         }
@@ -283,12 +284,14 @@ on_timeout_cb (gpointer user_data)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
   GVariantBuilder *builder;
+  GVariantBuilder *invalidated_builder;
   GError *error;
 
   swap_a_and_b = !swap_a_and_b;
 
   error = NULL;
   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+  invalidated_builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
   g_variant_builder_add (builder,
                          "{sv}",
                          "Foo",
@@ -302,9 +305,10 @@ on_timeout_cb (gpointer user_data)
                                  "/org/gtk/GDBus/TestObject",
                                  "org.freedesktop.DBus.Properties",
                                  "PropertiesChanged",
-                                 g_variant_new ("(sa{sv})",
+                                 g_variant_new ("(sa{sv}as)",
                                                 "org.gtk.GDBus.TestInterface",
-                                                builder),
+                                                builder,
+                                                invalidated_builder),
                                  &error);
   g_assert_no_error (error);
 

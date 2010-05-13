@@ -42,32 +42,45 @@ print_properties (GDBusProxy *proxy)
 }
 
 static void
-on_properties_changed (GDBusProxy *proxy,
-                       GVariant   *changed_properties,
-                       gpointer    user_data)
+on_properties_changed (GDBusProxy          *proxy,
+                       GVariant            *changed_properties,
+                       const gchar* const  *invalidated_properties,
+                       gpointer             user_data)
 {
-  GVariantIter *iter;
-  GVariant *item;
 
-  g_print (" *** Properties Changed:\n");
-
-  g_variant_get (changed_properties,
-                 "a{sv}",
-                 &iter);
-  while ((item = g_variant_iter_next_value (iter)))
+  if (changed_properties != NULL)
     {
-      const gchar *key;
-      GVariant *value;
-      gchar *value_str;
+      GVariantIter *iter;
+      GVariant *item;
 
-      g_variant_get (item,
-                     "{sv}",
-                     &key,
-                     &value);
+      g_print (" *** Properties Changed:\n");
+      g_variant_get (changed_properties,
+                     "a{sv}",
+                     &iter);
+      while ((item = g_variant_iter_next_value (iter)))
+        {
+          const gchar *key;
+          GVariant *value;
+          gchar *value_str;
+          g_variant_get (item,
+                         "{sv}",
+                         &key,
+                         &value);
+          value_str = g_variant_print (value, TRUE);
+          g_print ("      %s -> %s\n", key, value_str);
+          g_free (value_str);
+        }
+    }
 
-      value_str = g_variant_print (value, TRUE);
-      g_print ("      %s -> %s\n", key, value_str);
-      g_free (value_str);
+  if (invalidated_properties != NULL)
+    {
+      guint n;
+      g_print (" *** Properties Invalidated:\n");
+      for (n = 0; invalidated_properties[n] != NULL; n++)
+        {
+          const gchar *key = invalidated_properties[n];
+          g_print ("      %s\n", key);
+        }
     }
 }
 

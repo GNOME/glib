@@ -187,6 +187,7 @@ class TestService(dbus.service.Object):
                                               "PropertiesChanged")
         message.append("com.example.Frob")
         message.append({prop_name : prop_value})
+        message.append([], signature="as")
         session_bus.send_message(message)
     # ----------------------------------------------------------------------------------------------------
 
