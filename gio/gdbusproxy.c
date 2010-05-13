@@ -387,13 +387,13 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   /**
    * GDBusProxy::g-properties-changed:
    * @proxy: The #GDBusProxy emitting the signal.
-   * @changed_properties: A #GVariant containing the properties that
-   * changed or %NULL if no properties changed.
-   * @invalidated_properties: A %NULL terminated list of properties that was
-   * invalidated or %NULL if no properties was invalidated.
+   * @changed_properties: A #GVariant containing the properties that changed
+   * @invalidated_properties: A %NULL terminated array of properties that was invalidated
    *
    * Emitted when one or more D-Bus properties on @proxy changes. The
-   * local cache has already been updated when this signal fires.
+   * local cache has already been updated when this signal fires. Note
+   * that both @changed_properties and @invalidated_properties are
+   * guaranteed to never be %NULL (either may be empty though).
    *
    * This signal corresponds to the
    * <literal>PropertiesChanged</literal> D-Bus signal on the

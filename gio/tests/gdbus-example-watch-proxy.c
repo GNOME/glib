@@ -47,8 +47,11 @@ on_properties_changed (GDBusProxy          *proxy,
                        const gchar* const  *invalidated_properties,
                        gpointer             user_data)
 {
+  /* Note that we are guaranteed that changed_properties and
+   * invalidated_properties are never NULL
+   */
 
-  if (changed_properties != NULL)
+  if (g_variant_n_children (changed_properties) > 0)
     {
       GVariantIter *iter;
       GVariant *item;
@@ -72,7 +75,7 @@ on_properties_changed (GDBusProxy          *proxy,
         }
     }
 
-  if (invalidated_properties != NULL)
+  if (g_strv_length ((GStrv) invalidated_properties) > 0)
     {
       guint n;
       g_print (" *** Properties Invalidated:\n");
