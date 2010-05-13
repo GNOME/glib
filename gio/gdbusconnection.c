@@ -1948,8 +1948,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * Asynchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
  *
- * If %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER is set in @flags,
- * @observer (if not %NULL) is used to assist in the client
+ * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
  * When the operation is finished, @callback will be invoked. You can
@@ -2029,8 +2028,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * Synchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
  *
- * If %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER is set in @flags,
- * @observer (if not %NULL) is used to assist in the client
+ * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
  * This is a synchronous failable constructor. See
@@ -2066,6 +2064,7 @@ g_dbus_connection_new_sync (GIOStream             *stream,
  * g_dbus_connection_new_for_address:
  * @address: A D-Bus address.
  * @flags: Flags describing how to make the connection.
+ * @observer: A #GDBusAuthObserver or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
@@ -2084,6 +2083,9 @@ g_dbus_connection_new_sync (GIOStream             *stream,
  * then call g_dbus_connection_new_finish() to get the result of the
  * operation.
  *
+ * If @observer is not %NULL it may be used to control the
+ * authentication process.
+ *
  * This is a asynchronous failable constructor. See
  * g_dbus_connection_new_for_address_sync() for the synchronous
  * version.
@@ -2093,6 +2095,7 @@ g_dbus_connection_new_sync (GIOStream             *stream,
 void
 g_dbus_connection_new_for_address (const gchar          *address,
                                    GDBusConnectionFlags  flags,
+                                   GDBusAuthObserver    *observer,
                                    GCancellable         *cancellable,
                                    GAsyncReadyCallback   callback,
                                    gpointer              user_data)
@@ -2105,6 +2108,7 @@ g_dbus_connection_new_for_address (const gchar          *address,
                               user_data,
                               "address", address,
                               "flags", flags,
+                              "authentication-observer", observer,
                               NULL);
 }
 
@@ -2145,6 +2149,7 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
  * g_dbus_connection_new_for_address_sync:
  * @address: A D-Bus address.
  * @flags: Flags describing how to make the connection.
+ * @observer: A #GDBusAuthObserver or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -2161,6 +2166,9 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
  * This is a synchronous failable constructor. See
  * g_dbus_connection_new_for_address() for the asynchronous version.
  *
+ * If @observer is not %NULL it may be used to control the
+ * authentication process.
+ *
  * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
@@ -2168,6 +2176,7 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
 GDBusConnection *
 g_dbus_connection_new_for_address_sync (const gchar           *address,
                                         GDBusConnectionFlags   flags,
+                                        GDBusAuthObserver     *observer,
                                         GCancellable          *cancellable,
                                         GError               **error)
 {
@@ -2178,6 +2187,7 @@ g_dbus_connection_new_for_address_sync (const gchar           *address,
                          error,
                          "address", address,
                          "flags", flags,
+                         "authentication-observer", observer,
                          NULL);
 }
 

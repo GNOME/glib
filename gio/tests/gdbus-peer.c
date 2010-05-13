@@ -478,6 +478,7 @@ test_peer (void)
                                                * will fail because the nonce file doesn't exist */
                                               "nonce-tcp:host=localhost,port=12345,noncefile=this-does-not-exist-gdbus",
                                               G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
                                               NULL, /* cancellable */
                                               &error);
   _g_assert_error_domain (error, G_IO_ERROR);
@@ -500,6 +501,7 @@ test_peer (void)
   error = NULL;
   c = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
                                               G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
                                               NULL, /* cancellable */
                                               &error);
   g_assert_no_error (error);
@@ -624,6 +626,7 @@ test_peer (void)
   error = NULL;
   c2 = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
                                                G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                               NULL, /* GDBusAuthObserver */
                                                NULL, /* cancellable */
                                                &error);
   _g_assert_error_domain (error, G_IO_ERROR);
@@ -639,6 +642,7 @@ test_peer (void)
   data.accept_connection = TRUE;
   c2 = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
                                                G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                               NULL, /* GDBusAuthObserver */
                                                NULL, /* cancellable */
                                                &error);
   g_assert_no_error (error);

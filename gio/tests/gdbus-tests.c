@@ -147,6 +147,7 @@ _g_bus_get_priv (GBusType            bus_type,
   ret = g_dbus_connection_new_for_address_sync (address,
                                                 G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
                                                 G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
+                                                NULL, /* GDBusAuthObserver */
                                                 cancellable,
                                                 error);
   g_free (address);

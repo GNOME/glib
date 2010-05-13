@@ -424,6 +424,7 @@ connection_get_dbus_connection (GError **error)
     {
       c = g_dbus_connection_new_for_address_sync (opt_connection_address,
                                                   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                  NULL, /* GDBusAuthObserver */
                                                   NULL, /* GCancellable */
                                                   error);
     }

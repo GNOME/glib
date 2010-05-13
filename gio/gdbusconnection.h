@@ -117,6 +117,7 @@ GDBusConnection *g_dbus_connection_new_sync                   (GIOStream        
 
 void             g_dbus_connection_new_for_address            (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
+                                                               GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
@@ -124,6 +125,7 @@ GDBusConnection *g_dbus_connection_new_for_address_finish     (GAsyncResult     
                                                                GError                **error);
 GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
+                                                               GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GError                **error);
 

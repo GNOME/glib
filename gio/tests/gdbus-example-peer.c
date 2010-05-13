@@ -259,6 +259,7 @@ main (int argc, char *argv[])
       error = NULL;
       connection = g_dbus_connection_new_for_address_sync (opt_address,
                                                            G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                           NULL, /* GDBusAuthObserver */
                                                            NULL, /* GCancellable */
                                                            &error);
       if (connection == NULL)
