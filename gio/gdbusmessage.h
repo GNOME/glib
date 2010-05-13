@@ -158,6 +158,7 @@ const gchar              *g_dbus_message_get_arg0           (GDBusMessage       
 
 GDBusMessage             *g_dbus_message_new_from_blob      (guchar                   *blob,
                                                              gsize                     blob_len,
+                                                             GDBusCapabilityFlags      capabilities,
                                                              GError                  **error);
 
 gssize                    g_dbus_message_bytes_needed       (guchar                   *blob,
@@ -166,6 +167,7 @@ gssize                    g_dbus_message_bytes_needed       (guchar             
 
 guchar                   *g_dbus_message_to_blob            (GDBusMessage             *message,
                                                              gsize                    *out_size,
+                                                             GDBusCapabilityFlags      capabilities,
                                                              GError                  **error);
 
 gboolean                  g_dbus_message_to_gerror          (GDBusMessage             *message,

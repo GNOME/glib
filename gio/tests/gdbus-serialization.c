@@ -522,6 +522,7 @@ check_serialization (GVariant *value,
   error = NULL;
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
+                                 G_DBUS_CAPABILITY_FLAGS_NONE,
                                  &error);
   g_assert_no_error (error);
   g_assert (blob != NULL);
@@ -555,7 +556,10 @@ check_serialization (GVariant *value,
   /* Then serialize back and check that the body is identical */
 
   error = NULL;
-  recovered_message = g_dbus_message_new_from_blob (blob, blob_size, &error);
+  recovered_message = g_dbus_message_new_from_blob (blob,
+                                                    blob_size,
+                                                    G_DBUS_CAPABILITY_FLAGS_NONE,
+                                                    &error);
   g_assert_no_error (error);
   g_assert (recovered_message != NULL);
   g_assert (g_dbus_message_get_body (recovered_message) != NULL);

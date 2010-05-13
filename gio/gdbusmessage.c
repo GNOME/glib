@@ -1070,9 +1070,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
  * Since: 2.26
  */
 gssize
-g_dbus_message_bytes_needed (guchar  *blob,
-                             gsize    blob_len,
-                             GError **error)
+g_dbus_message_bytes_needed (guchar                *blob,
+                             gsize                  blob_len,
+                             GError               **error)
 {
   gssize ret;
 
@@ -1122,6 +1122,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * g_dbus_message_new_from_blob:
  * @blob: A blob represent a binary D-Bus message.
  * @blob_len: The length of @blob.
+ * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error or %NULL.
  *
  * Creates a new #GDBusMessage from the data stored at @blob.
@@ -1132,9 +1133,10 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * Since: 2.26
  */
 GDBusMessage *
-g_dbus_message_new_from_blob (guchar    *blob,
-                              gsize      blob_len,
-                              GError   **error)
+g_dbus_message_new_from_blob (guchar                *blob,
+                              gsize                  blob_len,
+                              GDBusCapabilityFlags   capabilities,
+                              GError               **error)
 {
   gboolean ret;
   GMemoryInputStream *mis;
@@ -1148,6 +1150,8 @@ g_dbus_message_new_from_blob (guchar    *blob,
   GVariant *item;
   GVariantIter iter;
   GVariant *signature;
+
+  /* TODO: check against @capabilities */
 
   ret = FALSE;
 
@@ -1565,6 +1569,7 @@ append_body_to_blob (GVariant             *value,
  * g_dbus_message_to_blob:
  * @message: A #GDBusMessage.
  * @out_size: Return location for size of generated blob.
+ * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error.
  *
  * Serializes @message to a blob.
@@ -1575,9 +1580,10 @@ append_body_to_blob (GVariant             *value,
  * Since: 2.26
  */
 guchar *
-g_dbus_message_to_blob (GDBusMessage   *message,
-                        gsize          *out_size,
-                        GError        **error)
+g_dbus_message_to_blob (GDBusMessage          *message,
+                        gsize                 *out_size,
+                        GDBusCapabilityFlags   capabilities,
+                        GError               **error)
 {
   GMemoryOutputStream *mos;
   GDataOutputStream *dos;
@@ -1596,6 +1602,8 @@ g_dbus_message_to_blob (GDBusMessage   *message,
   const gchar *signature_str;
   gint num_fds_in_message;
   gint num_fds_according_to_header;
+
+  /* TODO: check against @capabilities */
 
   ret = NULL;
 

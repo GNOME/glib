@@ -1009,6 +1009,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
+                                 connection->priv->capabilities,
                                  error);
   if (blob == NULL)
     goto out;

@@ -583,6 +583,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 
           message = g_dbus_message_new_from_blob ((guchar *) worker->read_buffer,
                                                   worker->read_buffer_cur_size,
+                                                  worker->capabilities,
                                                   &error);
           if (message == NULL)
             {
