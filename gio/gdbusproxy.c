@@ -71,6 +71,8 @@ struct _GDBusProxyPrivate
 
   guint properties_changed_subscriber_id;
   guint signals_subscriber_id;
+
+  gboolean initialized;
 };
 
 enum
@@ -648,12 +650,17 @@ on_signal_received (GDBusConnection *connection,
 {
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
 
+  if (!proxy->priv->initialized)
+    goto out;
+
   g_signal_emit (proxy,
                  signals[SIGNAL_SIGNAL],
                  0,
                  sender_name,
                  signal_name,
                  parameters);
+ out:
+  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -677,22 +684,17 @@ on_properties_changed (GDBusConnection *connection,
   GVariant *value;
 
   error = NULL;
+  changed_properties = NULL;
+  invalidated_properties = NULL;
 
-#if 0 // TODO!
-  /* Ignore this signal if properties are not yet available
-   *
-   * (can happen in the window between subscribing to PropertiesChanged() and until
-   *  org.freedesktop.DBus.Properties.GetAll() returns)
-   */
-  if (!proxy->priv->properties_available)
-    return;
-#endif
+  if (!proxy->priv->initialized)
+    goto out;
 
   if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sa{sv}as)")))
     {
       g_warning ("Value for PropertiesChanged signal with type `%s' does not match `(sa{sv}as)'",
                  g_variant_get_type_string (parameters));
-      return;
+      goto out;
     }
 
   g_variant_get (parameters,
@@ -719,7 +721,8 @@ on_properties_changed (GDBusConnection *connection,
                  invalidated_properties);
 
  out:
-  g_variant_unref (changed_properties);
+  if (changed_properties != NULL)
+    g_variant_unref (changed_properties);
   g_free (invalidated_properties);
 }
 
@@ -815,6 +818,8 @@ initable_init (GInitable     *initable,
 
   ret = FALSE;
 
+  subscribe_to_signals (proxy);
+
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
     {
       /* load all properties synchronously */
@@ -836,11 +841,10 @@ initable_init (GInitable     *initable,
       g_variant_unref (result);
     }
 
-  subscribe_to_signals (proxy);
-
   ret = TRUE;
 
  out:
+  proxy->priv->initialized = TRUE;
   return ret;
 }
 
@@ -896,6 +900,8 @@ async_initable_init_async (GAsyncInitable      *initable,
                                       user_data,
                                       NULL);
 
+  subscribe_to_signals (proxy);
+
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
     {
       /* load all properties asynchronously */
@@ -944,11 +950,10 @@ async_initable_init_finish (GAsyncInitable  *initable,
       process_get_all_reply (proxy, result);
     }
 
-  subscribe_to_signals (proxy);
-
   ret = TRUE;
 
  out:
+  proxy->priv->initialized = TRUE;
   return ret;
 }
 
