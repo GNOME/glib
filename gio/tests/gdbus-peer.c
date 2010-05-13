@@ -203,24 +203,24 @@ on_proxy_signal_received (GDBusProxy *proxy,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
-on_deny_authenticated_peer (GDBusAuthObserver *observer,
-                            GIOStream         *stream,
-                            GCredentials      *credentials,
-                            gpointer           user_data)
+on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+                                 GIOStream         *stream,
+                                 GCredentials      *credentials,
+                                 gpointer           user_data)
 {
   PeerData *data = user_data;
-  gboolean deny_peer;
+  gboolean authorized;
 
   data->num_connection_attempts++;
 
-  deny_peer = FALSE;
+  authorized = TRUE;
   if (!data->accept_connection)
     {
-      deny_peer = TRUE;
+      authorized = FALSE;
       g_main_loop_quit (loop);
     }
 
-  return deny_peer;
+  return authorized;
 }
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
@@ -280,8 +280,8 @@ service_thread_func (gpointer user_data)
                     G_CALLBACK (on_new_connection),
                     data);
   g_signal_connect (observer,
-                    "deny-authenticated-peer",
-                    G_CALLBACK (on_deny_authenticated_peer),
+                    "authorize-authenticated-peer",
+                    G_CALLBACK (on_authorize_authenticated_peer),
                     data);
   g_object_unref (observer);
 

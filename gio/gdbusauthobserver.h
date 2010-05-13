@@ -40,7 +40,7 @@ typedef struct _GDBusAuthObserverPrivate GDBusAuthObserverPrivate;
 
 /**
  * GDBusAuthObserverClass:
- * @deny_authenticated_peer: Signal class handler for the #GDBusAuthObserver::deny-authenticated-peer signal.
+ * @authorize_authenticated_peer: Signal class handler for the #GDBusAuthObserver::authorize-authenticated-peer signal.
  *
  * Class structure for #GDBusAuthObserverClass.
  *
@@ -54,9 +54,9 @@ struct _GDBusAuthObserverClass
   /*< public >*/
 
   /* Signals */
-  gboolean (*deny_authenticated_peer) (GDBusAuthObserver  *observer,
-                                       GIOStream          *stream,
-                                       GCredentials       *credentials);
+  gboolean (*authorize_authenticated_peer) (GDBusAuthObserver  *observer,
+                                            GIOStream          *stream,
+                                            GCredentials       *credentials);
 
 
   /*< private >*/
@@ -93,11 +93,11 @@ struct _GDBusAuthObserver
   GDBusAuthObserverPrivate *priv;
 };
 
-GType              g_dbus_auth_observer_get_type                (void) G_GNUC_CONST;
-GDBusAuthObserver *g_dbus_auth_observer_new                     (void);
-gboolean           g_dbus_auth_observer_deny_authenticated_peer (GDBusAuthObserver  *observer,
-                                                                 GIOStream          *stream,
-                                                                 GCredentials       *credentials);
+GType              g_dbus_auth_observer_get_type                     (void) G_GNUC_CONST;
+GDBusAuthObserver *g_dbus_auth_observer_new                          (void);
+gboolean           g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
+                                                                      GIOStream          *stream,
+                                                                      GCredentials       *credentials);
 
 G_END_DECLS
 

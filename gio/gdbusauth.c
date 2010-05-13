@@ -1132,15 +1132,15 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                     {
                     case G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED:
                       if (observer != NULL &&
-                          g_dbus_auth_observer_deny_authenticated_peer (observer,
-                                                                        auth->priv->stream,
-                                                                        credentials))
+                          !g_dbus_auth_observer_authorize_authenticated_peer (observer,
+                                                                              auth->priv->stream,
+                                                                              credentials))
                         {
                           /* disconnect */
                           g_set_error_literal (error,
                                                G_IO_ERROR,
                                                G_IO_ERROR_FAILED,
-                                               _("Cancelled via GDBusAuthObserver::deny-authenticated-peer"));
+                                               _("Cancelled via GDBusAuthObserver::authorize-authenticated-peer"));
                           goto out;
                         }
                       else

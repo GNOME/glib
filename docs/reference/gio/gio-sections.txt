@@ -2240,7 +2240,7 @@ g_dbus_is_interface_name
 GDBusAuthObserver
 GDBusAuthObserverClass
 g_dbus_auth_observer_new
-g_dbus_auth_observer_deny_authenticated_peer
+g_dbus_auth_observer_authorize_authenticated_peer
 <SUBSECTION Standard>
 G_DBUS_AUTH_OBSERVER
 G_IS_DBUS_AUTH_OBSERVER

@@ -46,24 +46,24 @@
  * processes owned by the same uid as the server, you would do this:
  * <example id="auth-observer"><title>Controlling Authentication</title><programlisting>
  * static gboolean
- * on_deny_authenticated_peer (GDBusAuthObserver *observer,
- *                             GIOStream         *stream,
- *                             GCredentials      *credentials,
- *                             gpointer           user_data)
+ * on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+ *                                  GIOStream         *stream,
+ *                                  GCredentials      *credentials,
+ *                                  gpointer           user_data)
  * {
  *   GCredentials *me;
- *   gboolean deny;
+ *   gboolean authorized;
  *
- *   deny = TRUE;
+ *   authorized = FALSE;
  *   me = g_credentials_new ();
  *
  *   if (credentials != NULL &&
  *       !g_credentials_is_same_user (credentials, me))
- *     deny = FALSE;
+ *     authorized = TRUE;
  *
  *   g_object_unref (me);
  *
- *   return deny;
+ *   return authorized;
  * }
  *
  * static gboolean
@@ -88,8 +88,8 @@
  *                                  NULL, /<!-- -->* GCancellable *<!-- -->/
  *                                  &error);
  * g_signal_connect (observer,
- *                   "deny-authenticated-peer",
- *                   G_CALLBACK (on_deny_authenticated_peer),
+ *                   "authorize-authenticated-peer",
+ *                   G_CALLBACK (on_authorize_authenticated_peer),
  *                   NULL);
  * g_signal_connect (server,
  *                   "new-connection",
@@ -107,7 +107,7 @@ struct _GDBusAuthObserverPrivate
 
 enum
 {
-  DENY_AUTHENTICATED_PEER_SIGNAL,
+  AUTHORIZE_AUTHENTICATED_PEER_SIGNAL,
   LAST_SIGNAL,
 };
 
@@ -124,11 +124,27 @@ g_dbus_auth_observer_finalize (GObject *object)
 }
 
 static gboolean
-g_dbus_auth_observer_deny_authenticated_peer_real (GDBusAuthObserver  *observer,
-                                                   GIOStream          *stream,
-                                                   GCredentials       *credentials)
+g_dbus_auth_observer_authorize_authenticated_peer_real (GDBusAuthObserver  *observer,
+                                                        GIOStream          *stream,
+                                                        GCredentials       *credentials)
 {
-  return FALSE;
+  return TRUE;
+}
+
+gboolean
+_g_signal_accumulator_false_handled (GSignalInvocationHint *ihint,
+                                     GValue                *return_accu,
+                                     const GValue          *handler_return,
+                                     gpointer               dummy)
+{
+  gboolean continue_emission;
+  gboolean signal_handled;
+
+  signal_handled = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, signal_handled);
+  continue_emission = signal_handled;
+
+  return continue_emission;
 }
 
 static void
@@ -138,27 +154,27 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
 
   gobject_class->finalize = g_dbus_auth_observer_finalize;
 
-  klass->deny_authenticated_peer = g_dbus_auth_observer_deny_authenticated_peer_real;
+  klass->authorize_authenticated_peer = g_dbus_auth_observer_authorize_authenticated_peer_real;
 
   /**
-   * GDBusAuthObserver::deny-authenticated-peer:
+   * GDBusAuthObserver::authorize-authenticated-peer:
    * @observer: The #GDBusAuthObserver emitting the signal.
    * @stream: A #GIOStream for the #GDBusConnection.
    * @credentials: Credentials received from the peer or %NULL.
    *
    * Emitted to check if a peer that is successfully authenticated
-   * should be denied.
+   * is authorized.
    *
-   * Returns: %TRUE if the peer should be denied, %FALSE otherwise.
+   * Returns: %TRUE if the peer is authorized, %FALSE if not.
    *
    * Since: 2.26
    */
-  signals[DENY_AUTHENTICATED_PEER_SIGNAL] =
-    g_signal_new ("deny-authenticated-peer",
+  signals[AUTHORIZE_AUTHENTICATED_PEER_SIGNAL] =
+    g_signal_new ("authorize-authenticated-peer",
                   G_TYPE_DBUS_AUTH_OBSERVER,
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GDBusAuthObserverClass, deny_authenticated_peer),
-                  g_signal_accumulator_true_handled,
+                  G_STRUCT_OFFSET (GDBusAuthObserverClass, authorize_authenticated_peer),
+                  _g_signal_accumulator_false_handled,
                   NULL, /* accu_data */
                   _gio_marshal_BOOLEAN__OBJECT_OBJECT,
                   G_TYPE_BOOLEAN,
@@ -197,27 +213,27 @@ g_dbus_auth_observer_new (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
- * g_dbus_auth_observer_deny_authenticated_peer:
+ * g_dbus_auth_observer_authorize_authenticated_peer:
  * @observer: A #GDBusAuthObserver.
  * @stream: A #GIOStream for the #GDBusConnection.
  * @credentials: Credentials received from the peer or %NULL.
  *
- * Emits the #GDBusAuthObserver::deny-authenticated-peer signal on @observer.
+ * Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @observer.
  *
  * Returns: %TRUE if the peer should be denied, %FALSE otherwise.
  *
  * Since: 2.26
  */
 gboolean
-g_dbus_auth_observer_deny_authenticated_peer (GDBusAuthObserver  *observer,
-                                              GIOStream          *stream,
-                                              GCredentials       *credentials)
+g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
+                                                   GIOStream          *stream,
+                                                   GCredentials       *credentials)
 {
   gboolean denied;
 
   denied = FALSE;
   g_signal_emit (observer,
-                 signals[DENY_AUTHENTICATED_PEER_SIGNAL],
+                 signals[AUTHORIZE_AUTHENTICATED_PEER_SIGNAL],
                  0,
                  stream,
                  credentials,

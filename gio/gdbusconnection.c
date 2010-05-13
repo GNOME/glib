@@ -100,8 +100,6 @@
  *    when the returned GVariant is floating.
  *
  *  - Consistent timeout handling (25s vs 30s?)
- *
- *  - Update GDBusAuthObserver (s/deny/authorize/)
  */
 
 #include "config.h"
