@@ -882,12 +882,34 @@ handle_call (gint        *argc,
 /* TODO: dump annotations */
 
 static void
+dump_annotation (const GDBusAnnotationInfo *o,
+                 guint indent,
+                 gboolean ignore_indent)
+{
+  guint n;
+  g_print ("%*s@%s(\"%s\")\n",
+           ignore_indent ? 0 : indent, "",
+           o->key,
+           o->value);
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent + 2, FALSE);
+}
+
+static void
 dump_arg (const GDBusArgInfo *o,
           guint indent,
           const gchar *direction,
           gboolean ignore_indent,
           gboolean include_newline)
 {
+  guint n;
+
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    {
+      dump_annotation (o->annotations[n], indent, ignore_indent);
+      ignore_indent = FALSE;
+    }
+
   g_print ("%*s%s%s %s%s",
            ignore_indent ? 0 : indent, "",
            direction,
@@ -917,6 +939,10 @@ dump_method (const GDBusMethodInfo *o,
   guint m;
   guint name_len;
   guint total_num_args;
+
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent, FALSE);
+
   g_print ("%*s%s(", indent, "", o->name);
   name_len = strlen (o->name);
   total_num_args = count_args (o->in_args) + count_args (o->out_args);
@@ -924,6 +950,7 @@ dump_method (const GDBusMethodInfo *o,
     {
       gboolean ignore_indent = (m == 0);
       gboolean include_newline = (m != total_num_args - 1);
+
       dump_arg (o->in_args[n],
                 indent + name_len + 1,
                 "in  ",
@@ -950,6 +977,10 @@ dump_signal (const GDBusSignalInfo *o,
   guint n;
   guint name_len;
   guint total_num_args;
+
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent, FALSE);
+
   g_print ("%*s%s(", indent, "", o->name);
   name_len = strlen (o->name);
   total_num_args = count_args (o->args);
@@ -972,6 +1003,8 @@ dump_property (const GDBusPropertyInfo *o,
                GVariant                *value)
 {
   const gchar *access;
+  guint n;
+
   if (o->flags == G_DBUS_PROPERTY_INFO_FLAGS_READABLE)
     access = "readonly";
   else if (o->flags == G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE)
@@ -980,6 +1013,10 @@ dump_property (const GDBusPropertyInfo *o,
     access = "readwrite";
   else
     g_assert_not_reached ();
+
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent, FALSE);
+
   if (value != NULL)
     {
       gchar *s = g_variant_print (value, FALSE);
@@ -1074,6 +1111,9 @@ dump_interface (GDBusConnection          *c,
         }
     }
 
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent, FALSE);
+
   g_print ("%*sinterface %s {\n", indent, "", o->name);
   if (o->methods != NULL)
     {
@@ -1116,6 +1156,9 @@ dump_node (GDBusConnection      *c,
   object_path_to_print = object_path;
   if (o->path != NULL)
     object_path_to_print = o->path;
+
+  for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)
+    dump_annotation (o->annotations[n], indent, FALSE);
 
   g_print ("%*snode %s", indent, "", object_path_to_print != NULL ? object_path_to_print : "(not set)");
   if (o->interfaces != NULL || o->nodes != NULL)
