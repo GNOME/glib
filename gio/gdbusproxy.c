@@ -797,8 +797,9 @@ static void
 process_get_all_reply (GDBusProxy *proxy,
                        GVariant   *result)
 {
-  GVariantIter iter;
-  GVariant *item;
+  GVariantIter *iter;
+  gchar *key;
+  GVariant *value;
 
   if (strcmp (g_variant_get_type_string (result), "(a{sv})") != 0)
     {
@@ -807,22 +808,17 @@ process_get_all_reply (GDBusProxy *proxy,
       goto out;
     }
 
-  g_variant_iter_init (&iter, g_variant_get_child_value (result, 0));
-  while ((item = g_variant_iter_next_value (&iter)) != NULL)
+  g_variant_get (result, "(a{sv})", &iter);
+  while (g_variant_iter_next (iter, "{sv}", &key, &value))
     {
-      gchar *key;
-      GVariant *value;
-
-      g_variant_get (item,
-                     "{sv}",
-                     &key,
-                     &value);
       //g_print ("got %s -> %s\n", key, g_variant_markup_print (value, FALSE, 0, 0));
 
       g_hash_table_insert (proxy->priv->properties,
-                           key,
-                           value); /* steals value */
+                           key, /* adopts string */
+                           value); /* adopts value */
     }
+  g_variant_iter_free (iter);
+
  out:
   ;
 }
