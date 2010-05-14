@@ -95,11 +95,6 @@
  *      kind of pitfalls it avoids
  *      - Export objects before claiming names
  *    - Talk about auto-starting services (cf. GBusNameWatcherFlags)
- *
- *  - Mention in all API that the GVariant is sunk. Also mention
- *    when the returned GVariant is floating.
- *
- *  - Consistent timeout handling (25s vs 30s?)
  */
 
 #include "config.h"
@@ -1288,7 +1283,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
     out_serial = &serial;
 
   if (timeout_msec == -1)
-    timeout_msec = 30 * 1000; /* TODO: check 30 secs is the default timeout */
+    timeout_msec = 25 * 1000;
 
   simple = g_simple_async_result_new (G_OBJECT (connection),
                                       callback,
