@@ -17,6 +17,7 @@
  * SECTION: gunixcredentialsmessage
  * @title: GUnixCredentialsMessage
  * @short_description: A GSocketControlMessage containing credentials
+ * @include: gio/gunixcredentialsmessage.h
  * @see_also: #GUnixConnection, #GSocketControlMessage
  *
  * This #GSocketControlMessage contains a #GCredentials instance.  It

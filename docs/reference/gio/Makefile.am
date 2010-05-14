@@ -26,6 +26,12 @@ IGNORE_HFILES=				\
 	fen-node.h			\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
+	gdbusauth.h			\
+	gdbusauthmechanism.h		\
+	gdbusauthmechanismanon.h	\
+	gdbusauthmechanismexternal.h	\
+	gdbusauthmechanismsha1.h	\
+	gdbusprivate.h			\
 	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
@@ -55,6 +61,7 @@ IGNORE_HFILES=				\
 	gpollfilemonitor.h		\
 	gsettingsbackendinternal.h	\
 	gsettingsschema.h		\
+	gsettings-mapping.h		\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\

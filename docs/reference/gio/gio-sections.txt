@@ -1116,6 +1116,7 @@ G_CANCELLABLE_CLASS
 G_IS_CANCELLABLE_CLASS
 G_CANCELLABLE_GET_CLASS
 <SUBSECTION Private>
+GCancellablePrivate
 g_cancellable_get_type
 </SECTION>
 
@@ -1468,12 +1469,14 @@ g_unix_fd_list_steal_fds
 g_unix_fd_list_append
 <SUBSECTION Standard>
 GUnixFDListClass
-g_unix_fd_list_get_type
 G_UNIX_FD_LIST
 G_UNIX_FD_LIST_CLASS
 G_IS_UNIX_FD_LIST
 G_IS_UNIX_FD_LIST_CLASS
 G_UNIX_FD_LIST_GET_CLASS
+<SUBSECTION Private>
+GUnixFDListPrivate
+g_unix_fd_list_get_type
 </SECTION>
 
 <SECTION>
@@ -1974,6 +1977,7 @@ g_unix_fd_message_get_type
 GConverter
 GConverterIface
 GConverterResult
+GConverterFlags
 g_converter_convert
 g_converter_reset
 <SUBSECTION Standard>
@@ -2217,10 +2221,12 @@ g_credentials_set_unix_user
 G_CREDENTIALS
 G_IS_CREDENTIALS
 G_TYPE_CREDENTIALS
-g_credentials_get_type
 G_CREDENTIALS_CLASS
 G_IS_CREDENTIALS_CLASS
 G_CREDENTIALS_GET_CLASS
+<SUBSECTION Private>
+GCredentialsPrivate
+g_credentials_get_type
 </SECTION>
 
 <SECTION>
@@ -2254,10 +2260,12 @@ g_dbus_auth_observer_authorize_authenticated_peer
 G_DBUS_AUTH_OBSERVER
 G_IS_DBUS_AUTH_OBSERVER
 G_TYPE_DBUS_AUTH_OBSERVER
-g_dbus_server_get_gtype
 G_DBUS_AUTH_OBSERVER_CLASS
 G_IS_DBUS_AUTH_OBSERVER_CLASS
 G_DBUS_AUTH_OBSERVER_GET_CLASS
+<SUBSECTION Private>
+GDBusAuthObserverPrivate
+g_dbus_auth_observer_get_type
 </SECTION>
 
 <SECTION>
@@ -2277,10 +2285,12 @@ g_dbus_server_get_client_address
 G_DBUS_SERVER
 G_IS_DBUS_SERVER
 G_TYPE_DBUS_SERVER
-g_dbus_server_get_gtype
 G_DBUS_SERVER_CLASS
 G_IS_DBUS_SERVER_CLASS
 G_DBUS_SERVER_GET_CLASS
+<SUBSECTION Private>
+GDBusServerPrivate
+g_dbus_server_get_type
 </SECTION>
 
 <SECTION>
@@ -2309,6 +2319,8 @@ g_dbus_message_get_body
 g_dbus_message_set_body
 g_dbus_message_get_unix_fd_list
 g_dbus_message_set_unix_fd_list
+g_dbus_message_get_num_unix_fds
+g_dbus_message_set_num_unix_fds
 g_dbus_message_get_header_fields
 g_dbus_message_get_header
 g_dbus_message_set_header
@@ -2337,10 +2349,12 @@ g_dbus_message_to_gerror
 G_DBUS_MESSAGE
 G_IS_DBUS_MESSAGE
 G_TYPE_DBUS_MESSAGE
-g_dbus_message_get_type
 G_DBUS_MESSAGE_CLASS
 G_IS_DBUS_MESSAGE_CLASS
 G_DBUS_MESSAGE_GET_CLASS
+<SUBSECTION Private>
+GDBusMessagePrivate
+g_dbus_message_get_type
 </SECTION>
 
 <SECTION>
@@ -2401,10 +2415,12 @@ g_dbus_connection_unregister_subtree
 G_DBUS_CONNECTION
 G_IS_DBUS_CONNECTION
 G_TYPE_DBUS_CONNECTION
-g_dbus_connection_get_type
 G_DBUS_CONNECTION_CLASS
 G_IS_DBUS_CONNECTION_CLASS
 G_DBUS_CONNECTION_GET_CLASS
+<SUBSECTION Private>
+GDBusConnectionPrivate
+g_dbus_connection_get_type
 </SECTION>
 
 <SECTION>
@@ -2432,10 +2448,12 @@ g_dbus_method_invocation_return_dbus_error
 G_DBUS_METHOD_INVOCATION
 G_IS_DBUS_METHOD_INVOCATION
 G_TYPE_DBUS_METHOD_INVOCATION
-g_dbus_method_invocation_get_type
 G_DBUS_METHOD_INVOCATION_CLASS
 G_IS_DBUS_METHOD_INVOCATION_CLASS
 G_DBUS_METHOD_INVOCATION_GET_CLASS
+<SUBSECTION Private>
+GDBusMethodInvocationPrivate
+g_dbus_method_invocation_get_type
 </SECTION>
 
 <SECTION>
@@ -2483,6 +2501,8 @@ g_dbus_error_new_for_dbus_error
 g_dbus_error_set_dbus_error
 g_dbus_error_set_dbus_error_valist
 g_dbus_error_encode_gerror
+<SUBSECTION Standard>
+g_dbus_error_quark
 </SECTION>
 
 <SECTION>
@@ -2513,10 +2533,12 @@ g_dbus_proxy_call_sync
 G_DBUS_PROXY
 G_IS_DBUS_PROXY
 G_TYPE_DBUS_PROXY
-g_dbus_proxy_get_type
 G_DBUS_PROXY_CLASS
 G_IS_DBUS_PROXY_CLASS
 G_DBUS_PROXY_GET_CLASS
+<SUBSECTION Private>
+GDBusProxyPrivate
+g_dbus_proxy_get_type
 </SECTION>
 
 <SECTION>
@@ -2537,13 +2559,6 @@ g_dbus_interface_info_generate_xml
 g_dbus_node_info_new_for_xml
 g_dbus_node_info_lookup_interface
 g_dbus_node_info_generate_xml
-G_TYPE_DBUS_NODE_INFO
-G_TYPE_DBUS_INTERFACE_INFO
-G_TYPE_DBUS_METHOD_INFO
-G_TYPE_DBUS_SIGNAL_INFO
-G_TYPE_DBUS_PROPERTY_INFO
-G_TYPE_DBUS_ARG_INFO
-G_TYPE_DBUS_ANNOTATION_INFO
 g_dbus_node_info_ref
 g_dbus_interface_info_ref
 g_dbus_method_info_ref
@@ -2558,4 +2573,20 @@ g_dbus_signal_info_unref
 g_dbus_property_info_unref
 g_dbus_arg_info_unref
 g_dbus_annotation_info_unref
+<SUBSECTION Standard>
+G_TYPE_DBUS_NODE_INFO
+G_TYPE_DBUS_INTERFACE_INFO
+G_TYPE_DBUS_METHOD_INFO
+G_TYPE_DBUS_SIGNAL_INFO
+G_TYPE_DBUS_PROPERTY_INFO
+G_TYPE_DBUS_ARG_INFO
+G_TYPE_DBUS_ANNOTATION_INFO
+<SUBSECTION Private>
+g_dbus_annotation_info_get_type
+g_dbus_arg_info_get_type
+g_dbus_interface_info_get_type
+g_dbus_method_info_get_type
+g_dbus_node_info_get_type
+g_dbus_property_info_get_type
+g_dbus_signal_info_get_type
 </SECTION>

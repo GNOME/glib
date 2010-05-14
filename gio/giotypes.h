@@ -338,7 +338,6 @@ typedef struct _GUnixCredentialsMessage       GUnixCredentialsMessage;
 typedef struct _GUnixFDList                   GUnixFDList;
 typedef struct _GDBusMessage                  GDBusMessage;
 typedef struct _GDBusConnection               GDBusConnection;
-typedef struct _GMessageBusConnection         GMessageBusConnection;
 typedef struct _GDBusProxy                    GDBusProxy;
 typedef struct _GDBusMethodInvocation         GDBusMethodInvocation;
 typedef struct _GDBusServer                   GDBusServer;
