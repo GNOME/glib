@@ -14,6 +14,7 @@
 
 #include "config.h"
 #include "gunixconnection.h"
+#include "gunixcredentialsmessage.h"
 #include "glibintl.h"
 
 /**
