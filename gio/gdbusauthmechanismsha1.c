@@ -23,22 +23,20 @@
 #include "config.h"
 
 #include <string.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/types.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include <glib/gstdio.h>
 
 #include "gdbusauthmechanismsha1.h"
 #include "gcredentials.h"
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
-
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#endif
-
-#include <errno.h>
-
-#include <glib/gstdio.h>
 
 #include "glibintl.h"
 #include "gioalias.h"

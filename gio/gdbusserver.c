@@ -25,6 +25,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "giotypes.h"
 #include "gdbusaddress.h"
@@ -39,7 +42,6 @@
 #include "gsocketservice.h"
 
 #ifdef G_OS_UNIX
-#include <unistd.h>
 #include "gunixsocketaddress.h"
 #endif
 

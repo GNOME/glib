@@ -110,7 +110,6 @@
 #include <gio/gdbusmethodinvocation.h>
 #include <gio/gdbusserver.h>
 #include <gio/gcredentials.h>
-#include <gio/gunixcredentialsmessage.h>
 #include <gio/gdbusauthobserver.h>
 
 #undef __GIO_GIO_H_INSIDE__

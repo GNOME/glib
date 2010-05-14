@@ -22,11 +22,11 @@
 
 #include "config.h"
 
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <gio/gio.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #include <gi18n.h>
 

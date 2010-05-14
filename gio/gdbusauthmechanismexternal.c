@@ -23,16 +23,15 @@
 #include "config.h"
 
 #include <string.h>
+#include <sys/types.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "gdbusauthmechanismexternal.h"
 #include "gcredentials.h"
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
-
-#ifdef G_OS_UNIX
-#include <sys/types.h>
-#include <unistd.h>
-#endif
 
 #include "glibintl.h"
 #include "gioalias.h"

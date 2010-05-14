@@ -101,6 +101,10 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "gdbusauth.h"
 #include "gdbusutils.h"
@@ -121,10 +125,8 @@
 #include "gsimpleasyncresult.h"
 
 #ifdef G_OS_UNIX
-#include <gio/gunixconnection.h>
-#include <gio/gunixfdmessage.h>
-#include <unistd.h>
-#include <sys/types.h>
+#include "gunixconnection.h"
+#include "gunixfdmessage.h"
 #endif
 
 #include "glibintl.h"

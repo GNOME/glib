@@ -23,6 +23,12 @@
 #include "config.h"
 
 #include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "gdbusutils.h"
 #include "gdbusmessage.h"
@@ -39,11 +45,6 @@
 
 #ifdef G_OS_UNIX
 #include "gunixfdlist.h"
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <errno.h>
 #endif
 
 #include "glibintl.h"

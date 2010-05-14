@@ -24,11 +24,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef G_OS_UNIX
-#include <gio/gunixconnection.h>
-#include <gio/gunixfdmessage.h>
-#include "gunixcredentialsmessage.h"
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -45,9 +41,9 @@
 #include "gsocketcontrolmessage.h"
 
 #ifdef G_OS_UNIX
-#include <unistd.h>
 #include "gunixfdmessage.h"
 #include "gunixconnection.h"
+#include "gunixcredentialsmessage.h"
 #endif
 
 #include "glibintl.h"

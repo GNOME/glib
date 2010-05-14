@@ -23,10 +23,6 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <gobject/gvaluecollector.h>
-
-#include "gcredentials.h"
-#include "gioerror.h"
 
 #ifdef __linux__
 #define __USE_GNU
@@ -35,6 +31,11 @@
 #include <unistd.h>
 #include <string.h>
 #endif
+
+#include <gobject/gvaluecollector.h>
+
+#include "gcredentials.h"
+#include "gioerror.h"
 
 #include "glibintl.h"
 #include "gioalias.h"

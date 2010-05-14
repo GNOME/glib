@@ -31,7 +31,6 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusproxy.h"
-#include "gdbusnamewatching.h"
 #include "gcancellable.h"
 
 #include "glibintl.h"

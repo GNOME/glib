@@ -22,11 +22,14 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #include "gdbusauth.h"
+
 #include "gdbusauthmechanismanon.h"
 #include "gdbusauthmechanismexternal.h"
 #include "gdbusauthmechanismsha1.h"
-
 #include "gdbusauthobserver.h"
 
 #include "gdbuserror.h"
@@ -36,16 +39,14 @@
 #include "gdbusprivate.h"
 
 #ifdef G_OS_UNIX
-#include <gio/gunixconnection.h>
+#include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
-#include <sys/types.h>
-#include <sys/socket.h>
 #endif
 
 #include "glibintl.h"
 #include "gioalias.h"
 
-#define DEBUG_ENABLED 1
+#define DEBUG_ENABLED 0
 
 static void
 debug_print (const gchar *message, ...)
