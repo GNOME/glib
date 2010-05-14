@@ -1278,6 +1278,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
             }
           else if (g_strcmp0 (line, "NEGOTIATE_UNIX_FD") == 0)
             {
+              g_free (line);
               if (offered_capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING)
                 {
                   negotiated_capabilities |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
