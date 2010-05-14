@@ -189,6 +189,21 @@ class TestService(dbus.service.Object):
         message.append({prop_name : prop_value})
         message.append([], signature="as")
         session_bus.send_message(message)
+
+    # ----------------------------------------------------------------------------------------------------
+
+    @dbus.service.method("com.example.Frob",
+                          in_signature='', out_signature='')
+    def FrobInvalidateProperty(self):
+        self.frob_props["PropertyThatWillBeInvalidated"] = "OMGInvalidated"
+        message = dbus.lowlevel.SignalMessage("/com/example/TestObject",
+                                              "org.freedesktop.DBus.Properties",
+                                              "PropertiesChanged")
+        message.append("com.example.Frob")
+        message.append({}, signature="a{sv}")
+        message.append(["PropertyThatWillBeInvalidated"])
+        session_bus.send_message(message)
+
     # ----------------------------------------------------------------------------------------------------
 
     @dbus.service.signal("com.example.Frob",
@@ -266,6 +281,7 @@ if __name__ == '__main__':
     obj.frob_props["as"] = [dbus.String("a string"), dbus.String("another string")]
     obj.frob_props["ao"] = [dbus.ObjectPath("/some/path"), dbus.ObjectPath("/another/path")]
     obj.frob_props["foo"] = "a frobbed string"
+    obj.frob_props["PropertyThatWillBeInvalidated"] = "InitialValue"
 
     mainloop = gobject.MainLoop()
     mainloop.run()

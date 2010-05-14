@@ -696,6 +696,7 @@ on_properties_changed (GDBusConnection *connection,
   GVariantIter iter;
   gchar *key;
   GVariant *value;
+  guint n;
 
   error = NULL;
   changed_properties = NULL;
@@ -726,6 +727,11 @@ on_properties_changed (GDBusConnection *connection,
       g_hash_table_insert (proxy->priv->properties,
                            key, /* adopts string */
                            value); /* adopts value */
+    }
+
+  for (n = 0; invalidated_properties[n] != NULL; n++)
+    {
+      g_hash_table_remove (proxy->priv->properties, invalidated_properties[n]);
     }
 
   /* emit signal */

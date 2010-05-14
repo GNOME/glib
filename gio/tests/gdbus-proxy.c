@@ -192,6 +192,42 @@ test_properties (GDBusConnection *connection,
   g_dbus_proxy_set_cached_property (proxy, "y", NULL);
   variant = g_dbus_proxy_get_cached_property (proxy, "y");
   g_assert (variant == NULL);
+
+  /* Check that the invalidation feature of the PropertiesChanged()
+   * signal works... First, check that we have a cached value of the
+   * property (from the initial GetAll() call)
+   */
+  variant = g_dbus_proxy_get_cached_property (proxy, "PropertyThatWillBeInvalidated");
+  g_assert (variant != NULL);
+  g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "InitialValue");
+  g_variant_unref (variant);
+  /* now ask to invalidate the property - this causes a
+   *
+   *   PropertiesChanaged("com.example.Frob",
+   *                      {},
+   *                      ["PropertyThatWillBeInvalidated")
+   *
+   * signal to be emitted. This is received before the method reply
+   * for FrobInvalidateProperty *but* since the proxy was created in
+   * the same thread as we're doing this synchronous call, we'll get
+   * the method reply before...
+   */
+  result = g_dbus_proxy_call_sync (proxy,
+                                   "FrobInvalidateProperty",
+                                   NULL,
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,
+                                   &error);
+  g_assert_no_error (error);
+  g_assert (result != NULL);
+  g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
+  g_variant_unref (result);
+  /* ... hence we wait for the g-properties-changed signal to be delivered */
+  _g_assert_signal_received (proxy, "g-properties-changed");
+  /* ... and now we finally, check that the cached value has been invalidated */
+  variant = g_dbus_proxy_get_cached_property (proxy, "PropertyThatWillBeInvalidated");
+  g_assert (variant == NULL);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
