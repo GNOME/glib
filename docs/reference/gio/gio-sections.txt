@@ -1844,7 +1844,7 @@ g_tcp_connection_get_type
 GUnixConnection
 g_unix_connection_receive_fd
 g_unix_connection_send_fd
-<SECTION Standard>
+<SUBSECTION Standard>
 GUnixConnectionClass
 G_IS_UNIX_CONNECTION
 G_IS_UNIX_CONNECTION_CLASS
