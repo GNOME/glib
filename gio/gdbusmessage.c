@@ -902,6 +902,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           if (v == NULL)
             goto fail;
           ret = g_variant_new_string (v);
+          g_free (v);
         }
     }
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_OBJECT_PATH))
@@ -925,9 +926,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value `%s' is not a valid D-Bus object path"),
                            v);
+              g_free (v);
               goto fail;
             }
           ret = g_variant_new_object_path (v);
+          g_free (v);
         }
     }
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_SIGNATURE))
@@ -949,9 +952,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value `%s' is not a valid D-Bus signature"),
                        v);
+              g_free (v);
               goto fail;
             }
           ret = g_variant_new_signature (v);
+          g_free (v);
         }
     }
   else if (g_variant_type_is_array (type))
@@ -1110,9 +1115,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value `%s' for variant is not a valid D-Bus signature"),
                            sig);
+              g_free (sig);
               goto fail;
             }
           variant_type = g_variant_type_new (sig);
+          g_free (sig);
           value = parse_value_from_blob (mis,
                                          dis,
                                          variant_type,
