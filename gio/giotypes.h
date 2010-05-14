@@ -335,6 +335,7 @@ struct _GOutputVector {
 
 typedef struct _GCredentials                  GCredentials;
 typedef struct _GUnixCredentialsMessage       GUnixCredentialsMessage;
+typedef struct _GUnixFDList                   GUnixFDList;
 typedef struct _GDBusMessage                  GDBusMessage;
 typedef struct _GDBusConnection               GDBusConnection;
 typedef struct _GMessageBusConnection         GMessageBusConnection;

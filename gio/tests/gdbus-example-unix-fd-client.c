@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include <gio/gio.h>
+#include <gio/gunixfdlist.h>
 
 /* see gdbus-example-server.c for the server implementation */
 static gint

@@ -25,10 +25,6 @@
 
 #include <gio/giotypes.h>
 
-#ifdef G_OS_UNIX
-#include <gio/gunixfdlist.h>
-#endif
-
 G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_MESSAGE         (g_dbus_message_get_type ())
@@ -111,11 +107,9 @@ guchar                   *g_dbus_message_get_header_fields  (GDBusMessage       
 GVariant                 *g_dbus_message_get_body           (GDBusMessage             *message);
 void                      g_dbus_message_set_body           (GDBusMessage             *message,
                                                              GVariant                 *body);
-#ifdef G_OS_UNIX
 GUnixFDList              *g_dbus_message_get_unix_fd_list   (GDBusMessage             *message);
 void                      g_dbus_message_set_unix_fd_list   (GDBusMessage             *message,
                                                              GUnixFDList              *fd_list);
-#endif
 
 guint32                   g_dbus_message_get_reply_serial   (GDBusMessage             *message);
 void                      g_dbus_message_set_reply_serial   (GDBusMessage             *message,

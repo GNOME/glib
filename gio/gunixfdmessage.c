@@ -39,6 +39,7 @@
 #include <errno.h>
 
 #include "gunixfdmessage.h"
+#include "gunixfdlist.h"
 #include "gioerror.h"
 
 #include "gioalias.h"

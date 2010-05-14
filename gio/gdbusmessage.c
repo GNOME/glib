@@ -38,6 +38,8 @@
 #include "gioerror.h"
 
 #ifdef G_OS_UNIX
+#include "gunixfdlist.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>

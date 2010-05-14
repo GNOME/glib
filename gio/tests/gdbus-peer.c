@@ -30,6 +30,7 @@
 #include <fcntl.h>
 
 #include <gio/gunixsocketaddress.h>
+#include <gio/gunixfdlist.h>
 
 #include "gdbus-tests.h"
 
