@@ -2619,14 +2619,10 @@ g_variant_make_array_type (GVariant *element)
  *
  * Ends the builder process and returns the constructed value.
  *
- * This call automatically reduces the reference count on @builder by
- * one, unless it has previously had g_variant_builder_no_autofree()
- * called on it.  Unless you've taken other actions, this is usually
- * sufficient to free @builder.
- *
- * Even if additional references are held, it is not permissible to use
- * @builder in any way after this call except for further reference
- * counting operations.
+ * It is not permissible to use @builder in any way after this call
+ * except for reference counting operations (in the case of a
+ * heap-allocated #GVariantBuilder) or by reinitialising it with
+ * g_variant_builder_init() (in the case of stack-allocated).
  *
  * It is an error to call this function in any way that would create an
  * inconsistent value to be constructed (ie: insufficient number of
