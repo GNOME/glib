@@ -114,15 +114,23 @@ HTML_IMAGES =			\
 content_files =			\
 	version.xml		\
 	overview.xml		\
-	migrating.xml		\
+	migrating-posix.xml	\
+	migrating-gnome-vfs.xml	\
+	migrating-gconf.xml	\
+	migrating-gdbus.xml	\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
-	gsettings-schema-convert.xml
+	gsettings-schema-convert.xml \
+	gdbus.xml		\
+	$(NULL)
 
 expand_content_files =		\
 	overview.xml		\
-	migrating.xml
+	migrating-posix.xml	\
+	migrating-gnome-vfs.xml	\
+	migrating-gconf.xml	\
+	migrating-gdbus.xml
 
 extra_files =			\
 	version.xml.in		\
@@ -137,7 +145,8 @@ man_MANS =			\
 	gio-querymodules.1	\
 	glib-compile-schemas.1	\
 	gsettings.1	\
-	gsettings-schema-convert.1
+	gsettings-schema-convert.1 \
+	gdbus.1
 
 if ENABLE_MAN
 

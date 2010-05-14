@@ -3496,6 +3496,16 @@ if test x$glib_win32_static_compilation = xyes; then
 fi
 ])
 
+# Check for libdbus1 - Optional - is only used in the GDBus test cases
+#
+PKG_CHECK_MODULES(DBUS1,
+                  dbus-1,
+                  [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
+                  have_dbus1=no)
+AC_SUBST(DBUS1_CFLAGS)
+AC_SUBST(DBUS1_LIBS)
+AM_CONDITIONAL(HAVE_DBUS1, [test "x$have_dbus1" = "xyes"])
+
 AC_CONFIG_FILES([
 glib-2.0.pc
 glib-2.0-uninstalled.pc

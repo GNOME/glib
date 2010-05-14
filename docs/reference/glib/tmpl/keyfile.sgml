@@ -365,6 +365,30 @@ Flags which influence the parsing.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_key_file_get_int64 ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_uint64 ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_key_file_get_double ##### -->
 <para>
 
@@ -501,6 +525,28 @@ Flags which influence the parsing.
 
 
 <!-- ##### FUNCTION g_key_file_set_integer ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
+
+
+<!-- ##### FUNCTION g_key_file_set_int64 ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
+
+
+<!-- ##### FUNCTION g_key_file_set_uint64 ##### -->
 <para>
 
 </para>

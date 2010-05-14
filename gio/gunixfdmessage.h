@@ -23,8 +23,8 @@
 #ifndef __G_UNIX_FD_MESSAGE_H__
 #define __G_UNIX_FD_MESSAGE_H__
 
-#include <gio/gunixfdlist.h>
 #include <gio/gio.h>
+#include <gio/gunixfdlist.h>
 
 G_BEGIN_DECLS
 

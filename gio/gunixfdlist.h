@@ -23,7 +23,7 @@
 #ifndef __G_UNIX_FD_LIST_H__
 #define __G_UNIX_FD_LIST_H__
 
-#include <glib-object.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -41,7 +41,6 @@ G_BEGIN_DECLS
 
 typedef struct _GUnixFDListPrivate                       GUnixFDListPrivate;
 typedef struct _GUnixFDListClass                         GUnixFDListClass;
-typedef struct _GUnixFDList                              GUnixFDList;
 
 struct _GUnixFDListClass
 {
