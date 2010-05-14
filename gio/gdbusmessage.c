@@ -965,7 +965,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       goffset offset;
       goffset target;
       const GVariantType *element_type;
-      GVariantBuilder *builder;
+      GVariantBuilder builder;
 
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
@@ -981,7 +981,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           goto fail;
         }
 
-      builder = g_variant_builder_new (type);
+      g_variant_builder_init (&builder, type);
       element_type = g_variant_type_element (type);
 
       if (array_len == 0)
@@ -1009,21 +1009,21 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                             &local_error);
               if (item == NULL)
                 {
-                  g_variant_builder_unref (builder);
+                  g_variant_builder_clear (&builder);
                   goto fail;
                 }
-              g_variant_builder_add_value (builder, item);
+              g_variant_builder_add_value (&builder, item);
               offset = g_seekable_tell (G_SEEKABLE (mis));
             }
         }
 
       if (!just_align)
         {
-          ret = g_variant_builder_end (builder);
+          ret = g_variant_builder_end (&builder);
         }
       else
         {
-          g_variant_builder_unref (builder);
+          g_variant_builder_clear (&builder);
         }
     }
   else if (g_variant_type_is_dict_entry (type))
@@ -1069,9 +1069,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       if (!just_align)
         {
           const GVariantType *element_type;
-          GVariantBuilder *builder;
+          GVariantBuilder builder;
 
-          builder = g_variant_builder_new (type);
+          g_variant_builder_init (&builder, type);
           element_type = g_variant_type_first (type);
           while (element_type != NULL)
             {
@@ -1083,14 +1083,14 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                             &local_error);
               if (item == NULL)
                 {
-                  g_variant_builder_unref (builder);
+                  g_variant_builder_clear (&builder);
                   goto fail;
                 }
-              g_variant_builder_add_value (builder, item);
+              g_variant_builder_add_value (&builder, item);
 
               element_type = g_variant_type_next (element_type);
             }
-          ret = g_variant_builder_end (builder);
+          ret = g_variant_builder_end (&builder);
         }
     }
   else if (g_variant_type_is_variant (type))
@@ -1774,7 +1774,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   goffset body_start_offset;
   gsize body_size;
   GVariant *header_fields;
-  GVariantBuilder *builder;
+  GVariantBuilder builder;
   GHashTableIter hash_iter;
   gpointer key;
   GVariant *header_value;
@@ -1826,16 +1826,16 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       goto out;
     }
 
-  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{yv}"));//G_VARIANT_TYPE_ARRAY);
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{yv}"));
   g_hash_table_iter_init (&hash_iter, message->priv->headers);
   while (g_hash_table_iter_next (&hash_iter, &key, (gpointer) &header_value))
     {
-      g_variant_builder_add (builder,
+      g_variant_builder_add (&builder,
                              "{yv}",
                              (guchar) GPOINTER_TO_UINT (key),
                              header_value);
     }
-  header_fields = g_variant_new ("a{yv}", builder);
+  header_fields = g_variant_builder_end (&builder);
 
   if (!append_value_to_blob (header_fields,
                              g_variant_get_type (header_fields),

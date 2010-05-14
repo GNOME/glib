@@ -3380,9 +3380,7 @@ static gboolean
 invoke_get_all_properties_in_idle_cb (gpointer _data)
 {
   PropertyGetAllData *data = _data;
-  GVariantBuilder *builder;
-  GVariant *packed;
-  GVariant *result;
+  GVariantBuilder builder;
   GError *error;
   GDBusMessage *reply;
   guint n;
@@ -3395,7 +3393,8 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
    *       We could fail the whole call if just a single get_property() call
    *       returns an error. We need clarification in the D-Bus spec about this.
    */
-  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a{sv})"));
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
   for (n = 0; data->interface_info->properties != NULL && data->interface_info->properties[n] != NULL; n++)
     {
       const GDBusPropertyInfo *property_info = data->interface_info->properties[n];
@@ -3415,21 +3414,15 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
       if (value == NULL)
         continue;
 
-      g_variant_ref_sink (value);
-      g_variant_builder_add (builder,
+      g_variant_builder_add (&builder,
                              "{sv}",
                              property_info->name,
                              value);
-      g_variant_unref (value);
     }
-  result = g_variant_builder_end (builder);
-
-  builder = g_variant_builder_new (G_VARIANT_TYPE_TUPLE);
-  g_variant_builder_add_value (builder, result); /* steals result since result is floating */
-  packed = g_variant_builder_end (builder);
+  g_variant_builder_close (&builder);
 
   reply = g_dbus_message_new_method_reply (data->message);
-  g_dbus_message_set_body (reply, packed);
+  g_dbus_message_set_body (reply, g_variant_builder_end (&builder));
   g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
   g_object_unref (reply);
 
