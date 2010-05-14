@@ -618,6 +618,7 @@ message_serialize_complex (void)
   GVariant *value;
 
   error = NULL;
+
   value = g_variant_parse (G_VARIANT_TYPE ("(aia{ss})"),
                            "([1, 2, 3], {'one': 'white', 'two': 'black'})",
                            NULL, NULL, &error);
@@ -635,6 +636,17 @@ message_serialize_complex (void)
                        "    dict_entry:\n"
                        "      string: `two'\n"
                        "      string: `black'\n");
+
+  value = g_variant_parse (G_VARIANT_TYPE ("(sa{sv}as)"),
+                           "('01234567890123456', {}, ['Something'])",
+                           NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (value != NULL);
+  check_serialization (value,
+                       "value 0:   string: `01234567890123456'\n"
+                       "value 1:   array:\n"
+                       "value 2:   array:\n"
+                       "    string: `Something'\n");
 }
 
 
