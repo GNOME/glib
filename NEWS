@@ -1,3 +1,37 @@
+Overview of Changes from GLib 2.25.3 to GLib 2.25.4
+===================================================
+
+* GDBus D-Bus support has been merged. This provides an API
+  to replace dbus-glib
+
+* GVariant no requires strings to be UTF-8. You can use byte
+  arrays for non-UTF-8 strings.
+
+* GSettings allows to bind string properties to byte arrays
+
+* The schema compiler supports range restrictions
+
+* Bugs fixed:
+ 618051 socket-server|client.c fail to compile under AIX...
+ 616102 GSettings ignores <choice> and <range>
+ 616720 Chunked quark allocation
+ 616877 Several issues with g_socket_receive_message
+ 616892 gio: Add a boxed type for GFileAttributeMatcher
+ 616967 Add g_regex_get_compile_flags() and g_regex_get_match_flags()
+ 617767 g_settings_[gs]et_strv() 'length' argument has missing docs...
+ 617914 gtester-report: cope with binaries with no test cases
+ 617937 output_stream_close vs output_stream_close_async semantics
+ 615494 Connction timeouts produce partially invalid error messages
+ 617823 glib-compile-schemas problems with an out of source build
+ 617947 glib-mkenums: add @valuenum@ support
+
+* Translation updates:
+ Galicaian
+ Norwegian bokmål
+ Shavian
+ Spanish
+
+
 Overview of Changes from GLib 2.25.2 to GLib 2.25.3
 ===================================================
 
