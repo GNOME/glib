@@ -4083,6 +4083,8 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
  *
  * Emits a signal.
  *
+ * If the parameters GVariant is floating, it is consumed.
+ *
  * This can only fail if @parameters is not compatible with the D-Bus protocol.
  *
  * Returns: %TRUE unless @error is set.
