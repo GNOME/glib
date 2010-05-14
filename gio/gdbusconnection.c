@@ -5256,6 +5256,7 @@ get_uninitialized_connection (GBusType       bus_type,
                                                 G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
                                        "exit-on-close", TRUE,
                                        NULL);
+      g_free (address);
     }
   else
     {
