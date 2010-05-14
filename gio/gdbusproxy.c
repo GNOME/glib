@@ -53,6 +53,20 @@
  * for unique name bus and does not track whether the name
  * vanishes. Use g_bus_watch_proxy() to construct #GDBusProxy proxies
  * for owners of a well-known names.
+ *
+ * By default, #GDBusProxy will cache all properties (and listen for
+ * their changes) of the remote object, and proxy all signals that gets
+ * emitted. This behaviour can be changed by passing suitable
+ * #GDBusProxyFlags when the proxy is created.
+ *
+ * The generic #GDBusProxy::g-properties-changed and #GDBusProxy::g-signal
+ * signals are not very convenient to work with. Therefore, the recommended
+ * way of working with proxies is to subclass #GDBusProxy, and have
+ * more natural properties and signals in your derived class. The
+ * @interface_type argument of g_bus_watch_proxy() lets you obtain
+ * instances of your derived class when using the high-level API.
+ *
+ * See <xref linkend="gdbus-example-proxy-subclass"/> for an example.
  */
 
 struct _GDBusProxyPrivate
