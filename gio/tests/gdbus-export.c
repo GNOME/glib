@@ -136,7 +136,7 @@ foo_method_call (GDBusConnection       *connection,
     {
       const gchar *input;
       gchar *output;
-      g_variant_get (parameters, "(s)", &input);
+      g_variant_get (parameters, "(&s)", &input);
       output = g_strdup_printf ("You passed the string `%s'. Jolly good!", input);
       g_dbus_method_invocation_return_value (invocation, g_variant_new ("(s)", output));
       g_free (output);
@@ -314,7 +314,6 @@ introspect_callback (GDBusProxy   *proxy,
                      GAsyncResult *res,
                      gpointer      user_data)
 {
-  const gchar *s;
   gchar **xml_data = user_data;
   GVariant *result;
   GError *error;
@@ -325,8 +324,7 @@ introspect_callback (GDBusProxy   *proxy,
                                               &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
-  g_variant_get (result, "(s)", &s);
-  *xml_data = g_strdup (s);
+  g_variant_get (result, "(s)", xml_data);
   g_variant_unref (result);
 
   g_main_loop_quit (loop);
@@ -783,7 +781,7 @@ test_dispatch_thread_func (gpointer user_data)
   g_assert_no_error (error);
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(s)")));
-  g_variant_get (value, "(s)", &value_str);
+  g_variant_get (value, "(&s)", &value_str);
   g_assert_cmpstr (value_str, ==, "You passed the string `winwinwin'. Jolly good!");
   g_variant_unref (value);
 

@@ -56,7 +56,7 @@ test_methods (GDBusConnection *connection,
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "(s)");
-  g_variant_get (result, "(s)", &str);
+  g_variant_get (result, "(&s)", &str);
   g_assert_cmpstr (str, ==, "You greeted me with 'Hey'. Thanks!");
   g_variant_unref (result);
 

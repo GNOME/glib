@@ -54,25 +54,21 @@ on_properties_changed (GDBusProxy          *proxy,
   if (g_variant_n_children (changed_properties) > 0)
     {
       GVariantIter *iter;
-      GVariant *item;
+      const gchar *key;
+      GVariant *value;
 
       g_print (" *** Properties Changed:\n");
       g_variant_get (changed_properties,
                      "a{sv}",
                      &iter);
-      while ((item = g_variant_iter_next_value (iter)))
+      while (g_variant_iter_loop (iter, "{&sv}", &key, &value))
         {
-          const gchar *key;
-          GVariant *value;
           gchar *value_str;
-          g_variant_get (item,
-                         "{sv}",
-                         &key,
-                         &value);
           value_str = g_variant_print (value, TRUE);
           g_print ("      %s -> %s\n", key, value_str);
           g_free (value_str);
         }
+      g_variant_iter_free (iter);
     }
 
   if (g_strv_length ((GStrv) invalidated_properties) > 0)

@@ -55,7 +55,7 @@ manager_method_call (GDBusConnection       *connection,
   g_assert_cmpstr (interface_name, ==, "org.gtk.GDBus.Example.Manager");
   g_assert_cmpstr (method_name, ==, "Hello");
 
-  g_variant_get (parameters, "(s)", &greeting);
+  g_variant_get (parameters, "(&s)", &greeting);
 
   response = g_strdup_printf ("Method %s.%s with user_data `%s' on object path %s called with arg '%s'",
                               interface_name,
@@ -94,7 +94,7 @@ block_method_call (GDBusConnection       *connection,
       const gchar *greeting;
       gchar *response;
 
-      g_variant_get (parameters, "(s)", &greeting);
+      g_variant_get (parameters, "(&s)", &greeting);
 
       response = g_strdup_printf ("Method %s.%s with user_data `%s' on object path %s called with arg '%s'",
                                   interface_name,
@@ -207,7 +207,7 @@ partition_method_call (GDBusConnection       *connection,
   g_assert_cmpstr (interface_name, ==, "org.gtk.GDBus.Example.Partition");
   g_assert_cmpstr (method_name, ==, "Hello");
 
-  g_variant_get (parameters, "(s)", &greeting);
+  g_variant_get (parameters, "(&s)", &greeting);
 
   response = g_strdup_printf ("Method %s.%s with user_data `%s' on object path %s called with arg '%s'",
                               interface_name,

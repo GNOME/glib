@@ -103,7 +103,7 @@ handle_method_call (GDBusConnection       *connection,
       const gchar *greeting;
       gchar *response;
 
-      g_variant_get (parameters, "(s)", &greeting);
+      g_variant_get (parameters, "(&s)", &greeting);
       response = g_strdup_printf ("You said '%s'. KTHXBYE!", greeting);
       g_dbus_method_invocation_return_value (invocation,
                                              g_variant_new ("(s)", response));
@@ -290,7 +290,7 @@ main (int argc, char *argv[])
           g_error_free (error);
           goto out;
         }
-      g_variant_get (value, "(s)", &greeting_response);
+      g_variant_get (value, "(&s)", &greeting_response);
       g_print ("Server said: %s\n", greeting_response);
       g_variant_unref (value);
 

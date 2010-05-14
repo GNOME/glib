@@ -62,7 +62,7 @@ introspection_on_proxy_appeared (GDBusConnection *connection,
                                    &error);
   g_assert_no_error (error);
   g_assert (result != NULL);
-  g_variant_get (result, "(s)", &xml_data);
+  g_variant_get (result, "(&s)", &xml_data);
 
   node_info = g_dbus_node_info_new_for_xml (xml_data, &error);
   g_assert_no_error (error);

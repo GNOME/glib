@@ -208,18 +208,13 @@ accounts_user_g_properties_changed (GDBusProxy          *proxy,
 {
   AccountsUser *user = ACCOUNTS_USER (proxy);
   GVariantIter *iter;
-  GVariant *item;
+  const gchar *key;
 
   if (changed_properties != NULL)
     {
       g_variant_get (changed_properties, "a{sv}", &iter);
-      while ((item = g_variant_iter_next_value (iter)) != NULL)
+      while (g_variant_iter_next (iter, "{&sv}", &key, NULL))
         {
-          const gchar *key;
-          g_variant_get (item,
-                         "{sv}",
-                         &key,
-                         NULL);
           if (g_strcmp0 (key, "AutomaticLogin") == 0)
             g_object_notify (G_OBJECT (user), "automatic-login");
           else if (g_strcmp0 (key, "RealName") == 0)
@@ -227,6 +222,7 @@ accounts_user_g_properties_changed (GDBusProxy          *proxy,
           else if (g_strcmp0 (key, "UserName") == 0)
             g_object_notify (G_OBJECT (user), "user-name");
         }
+      g_variant_iter_free (iter);
     }
 }
 
@@ -308,7 +304,6 @@ accounts_user_frobnicate_sync (AccountsUser        *user,
   if (value != NULL)
     {
       g_variant_get (value, "(s)", &ret);
-      ret = g_strdup (ret);
       g_variant_unref (value);
     }
   return ret;
@@ -349,7 +344,6 @@ accounts_user_frobnicate_finish (AccountsUser        *user,
   if (value != NULL)
     {
       g_variant_get (value, "(s)", &ret);
-      ret = g_strdup (ret);
       g_variant_unref (value);
     }
   return ret;

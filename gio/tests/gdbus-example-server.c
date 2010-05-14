@@ -64,7 +64,7 @@ handle_method_call (GDBusConnection       *connection,
     {
       const gchar *greeting;
 
-      g_variant_get (parameters, "(s)", &greeting);
+      g_variant_get (parameters, "(&s)", &greeting);
 
       if (g_strcmp0 (greeting, "Return Unregistered") == 0)
         {

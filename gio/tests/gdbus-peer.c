@@ -101,7 +101,7 @@ test_interface_method_call (GDBusConnection       *connection,
       const gchar *greeting;
       gchar *response;
 
-      g_variant_get (parameters, "(s)", &greeting);
+      g_variant_get (parameters, "(&s)", &greeting);
 
       response = g_strdup_printf ("You greeted me with '%s'.",
                                   greeting);
@@ -132,7 +132,7 @@ test_interface_method_call (GDBusConnection       *connection,
       gint fd;
       GUnixFDList *fd_list;
 
-      g_variant_get (parameters, "(s)", &path);
+      g_variant_get (parameters, "(&s)", &path);
 
       fd_list = g_unix_fd_list_new ();
 
@@ -544,7 +544,7 @@ test_peer (void)
                                    NULL,  /* GCancellable */
                                    &error);
   g_assert_no_error (error);
-  g_variant_get (result, "(s)", &s);
+  g_variant_get (result, "(&s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Peer!'.");
   g_variant_unref (result);
   g_assert_cmpint (data.num_method_calls, ==, 1);
@@ -688,7 +688,7 @@ test_peer (void)
                                    NULL,  /* GCancellable */
                                    &error);
   g_assert_no_error (error);
-  g_variant_get (result, "(s)", &s);
+  g_variant_get (result, "(&s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Again Peer!'.");
   g_variant_unref (result);
   g_assert_cmpint (data.num_method_calls, ==, 4);
