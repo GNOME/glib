@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2009-09-20 20:08+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -760,7 +760,7 @@ msgstr "overran compiling workspace"
 msgid "previously-checked referenced subpattern not found"
 msgstr "മുമ്പു് പരിശോധിച്ചിട്ടുള്ള സൂചന ഉപമാതൃകകള്‍ ലഭ്യമല്ല"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "സാധാരണ എക്സ്പ്രെഷന്‍ ആയ %s-നൊപ്പം പൊരുത്തപ്പെടുത്തുമ്പോള്‍ പിശക്: %s"
@@ -783,43 +783,43 @@ msgstr "സാധാരണ എക്സ്പ്രെഷന്‍ ആയ %s ക
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s എന്ന സാധാരണ എക്സ്പ്രെഷന്‍ കൈകാര്യം ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "ഹെക്സാ ഡെസിമല്‍ അക്കം അല്ലെങ്കില്‍ '}' ആവശ്യമുണ്ട് "
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "ഹെക്സാ ഡെസിമല്‍ അക്കം ആവശ്യമുണ്ട്"
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "സിംപോളിക് സൂചനയില്‍ '<' ലഭ്യമല്ല"
 
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "പൂര്‍ണ്ണമാകാത്ത സിംപോളിക് സൂചനാ"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "zero-length symbolic reference"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "അക്കം ആവശ്യമുണ്ട്"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "തെറ്റായ സിംപോളിക് സൂചനാ"
 
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "stray final '\\'"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "അപരിചിതമായ എസ്കേപ്പ് സീക്വന്‍സ്"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "പകരമായുളള ടെക്സ്റ്റ് ആയ \"%s\" %lu-ല്‍ പാഴ്സ് ചെയ്യുന്നതിനിടയില്‍ പിശക്: %s"
@@ -1021,122 +1021,122 @@ msgstr "%s-നുളള ആര്‍ഗ്യുമെന്റ് ലഭ്യ�
 msgid "Unknown option %s"
 msgstr "അപരിചിതമായ ഉപാധി %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "തിരച്ചില്‍ നടത്തിയ ഡയറക്ടറികളില്‍ സാധുതയുളള കീ ഫയല്‍ ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "ഒരു സാധാരണ ഫയല്‍ അല്ല"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "ഫയല്‍ ശൂന്യമാണ്"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "കീ ഫയലില്‍ ഉളള '%s' എന്ന വരി ഒരു കീ-മൂല്ല്യം ജോടി അല്ലെങ്കില്‍ ഒരു ഗ്റൂപ്പോ അഭിപ്റായമോ അല്ല"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "അസാധുവായ ഗ്രൂപ്പ് നാമം: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "കീ ഫയല്‍ ആരംഭിക്കുന്നത് ഒരു ഗ്രൂപ്പിലല്ല"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "അസാധുവായ കീ നാമം: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "പിന്തുണയ്ക്കാത്ത രഹസ്യ ഭാഷ '%s' കീ ഫയല്‍ പിന്തുണയ്ക്കുന്നു"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന ഗ്രൂപ്പില്ല"
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "കീ ഫയലിന് '%s' എന്ന കീയില്ല"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "UTF-8 അല്ലാത്ത '%s' മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്"
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s' കീ ഫയലിലുണ്ട്."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "തിരിച്ചറിയുവാന്‍ കഴിയാത്ത മൂല്ല്യമുളള കീ '%s', '%s' എന്ന ഗ്രൂപ്പില്‍ കീ ഫയലിലുണ്ട്."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ഗ്രൂപ്പ് '%s'-ല്‍ കീ ഫയലിന് കീ '%s' ലഭ്യമല്ല"
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "കീ ഫയലിന്റെ വരിയുടെ അവസാനം എസ്കെയിപ്പ് അക്ഷരം ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "കീ ഫയലില്‍ അസാധുവായ എസ്കെയിപ്പ് സീക്വന്‍സ് '%s' ലഭ്യമാണ്"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "മൂല്ല്യം '%s' ഒരു അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ഇന്റിജര്‍ മൂല്ല്യം '%s' പരിധിയ്ക്ക് പുറത്ത്"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "മൂല്ല്യം '%s' ഒരു ഫ്ളോട്ട് അക്കമായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "മൂല്ല്യം '%s' ഒരു ബൂളിയനായി കണക്കാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "വളരെ വലിയ കൌണ്ട് മൂല്ല്യം %s-നു് നല്‍കിയിരിക്കുന്നു"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "സ്ട്രീം നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
@@ -1160,7 +1160,7 @@ msgstr "മാറ്റം വരുത്തുന്ന ഇന്‍പുട�
 msgid "Not enough space in destination"
 msgstr "സോക്കറ്റ് വിലാസത്തിനു് ആവശ്യമുള്ള സ്ഥലം ലഭ്യമല്ല"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 msgid "Cancellable initialization not supported"
 msgstr "റദ്ദാക്കുവാന്‍ സാധിക്കുന്ന ഇനീഷ്യലൈസേഷന്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
@@ -1421,12 +1421,12 @@ msgstr "ഇന്‍പുട്ട് സ്ട്രീം read ലഭ്യ�
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "സ്ട്രീമില്‍ തെറ്റായ പ്രക്രിയ"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "സോക്കറ്റ് വിലാസത്തിനു് ആവശ്യമുള്ള സ്ഥലം ലഭ്യമല്ല"
 
@@ -1813,7 +1813,7 @@ msgstr "ഹോസ്റ്റ്നെയിം '%s'-ല്‍ '[' but not ']' �
 msgid "Output stream doesn't implement write"
 msgstr "ഔട്ട്പുട്ട് സ്ട്രീം റൈറ്റ് ലഭ്യമാക്കുന്നില്ല"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "സോഴ്സ് സ്ട്രീം നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
@@ -1842,35 +1842,35 @@ msgstr "'%s' പരിഹരിക്കുന്നതിനു് താല്
 msgid "Error resolving '%s'"
 msgstr "'%s' പരിഹരിക്കുന്നതില്‍ പിശക്"
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -1953,110 +1953,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "അപരിചിതമായ ഉപാധി %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിച്ചിട്ടില്ല"
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "തെറ്റായ സോക്കറ്റ്, ആരംഭിക്കാത്തിതിനുള്ള കാരണം: %s"
 
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "സോക്കറ്റ് നിലവില്‍ അടച്ചിരിക്കുന്നു"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd-ല്‍ നിന്നും GSocket ഉണ്ടാക്കുന്നു: %s"
 
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "സോക്കറ്റ് ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr "അപരിചിതമായ കീഴ്വഴക്കം നല്‍കിയിരിക്കുന്നു"
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ലോക്കല്‍ വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "റിമോട്ട് വിലാസം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr "ശ്രദ്ധിക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "വിലാസത്തിലേക്ക് ബൈന്‍ഡ് ചെയ്യുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "കണക്ഷന്‍ സ്വീകരിക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 msgid "Error connecting: "
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക്: "
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr "കണക്ഷന്‍ പുരോഗതിയില്‍"
 
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, c-format
 msgid "Error connecting: %s"
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ബാക്കിയുള്ള പിശക് ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "ഡേറ്റാ ലഭ്യമാക്കുന്നതില്‍ പിശക്: %s"
 
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, c-format
 msgid "Error sending data: %s"
 msgstr "ഡേറ്റാ അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "സോക്കറ്റ് അടയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "സോക്കറ്റ് അവസ്ഥയ്ക്കായി കാത്തിരിക്കുന്നു: %s"
 
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "സന്ദേശം അയയ്ക്കുന്നതില്‍ പിശക് : %s"
 
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage വിന്‍ഡോസില്‍ പിന്തുണയ്ക്കുന്നില്ല"
 
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "സന്ദേശം ലഭിക്കുന്നതില്‍ പിശക്: %s"
@@ -2078,23 +2078,55 @@ msgstr "ചേര്‍ത്തിരിക്കുന്ന സോക്ക�
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon എന്‍കോഡിങിനുള്ള %d പതിപ്പു് കൈകാര്യം ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "1 നിയന്ത്രണ സന്ദേശം പ്രതീക്ഷിക്കുന്നു, %d ലഭിച്ചിരിക്കുന്നു"
 
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 msgid "Unexpected type of ancillary data"
 msgstr "അപ്രതീക്ഷിതമായ രീതിയിലുള്ള ആന്‍സിലിയറി ഡേറ്റാ"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "ഒരു fd പ്രതീക്ഷിക്കുന്നു, പക്ഷേ %d ലഭിച്ചിരിക്കുന്നു\n"
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "തെറ്റായ fd ലഭിച്ചിരിക്കുന്നു"
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "ഡേറ്റാ അയയ്ക്കുന്നതില്‍ പിശക് : %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "ഫയലിന്റെ പേര് മാറ്റുന്നതില്‍ പിശക്: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2117,7 +2149,7 @@ msgstr "ഫയല്‍സിസ്റ്റം റൂട്ട്"
 msgid "Error writing to unix: %s"
 msgstr "യൂണിക്സിലേക്ക് എഴുതുന്നതില്‍ പിശക്: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "ഈ സിസ്റ്റമില്‍ അബ്സ്ട്രാക്ട് യൂണിക്സ് ഡൊമെയിന്‍ സോക്കറ്റ് വിലാസങ്ങള്‍ പിന്തുണയ്ക്കുന്നില്ല"
 

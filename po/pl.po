@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2010-03-08 10:50+0100\n"
 "Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
@@ -800,7 +800,7 @@ msgstr "przekroczono przestrzeń roboczą kompilacji"
 msgid "previously-checked referenced subpattern not found"
 msgstr "nie znaleziono wcześniej sprawdzonego podwzorca"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Błąd podczas dopasowywania wyrażenia regularnego %s: %s"
@@ -823,43 +823,43 @@ msgstr "Błąd kompilacji wyrażenia regularnego %s przy znaku %d: %s"
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Błąd podczas optymalizowania wyrażenia regularnego %s: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "oczekiwano cyfry szesnastkowej lub znaku }"
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "oczekiwano cyfry szesnastkowej"
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "brak znaku \"<\" w odniesieniu symbolicznym"
 
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "niezakończona referencja symboliczna"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "referencja symboliczna o zerowej długości"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "oczekiwano cyfry"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "niedozwolona referencja symboliczna"
 
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "pominięto końcowe '\\'"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "nieznana sekwencja sterująca"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1076,20 +1076,20 @@ msgstr "Brak parametru dla %s"
 msgid "Unknown option %s"
 msgstr "Nieznana opcja %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Nie można odnaleźć prawidłowego pliku klucza w przeszukiwanych katalogach"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "To nie jest zwykły plik"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "Plik jest pusty"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1097,52 +1097,52 @@ msgstr ""
 "Plik klucza zawiera wiersz \"%s\", który nie jest parą klucz-wartość, grupą "
 "lub komentarzem"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nieprawidłowa nazwa grupy: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Plik klucza nie rozpoczyna się od grupy"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nieprawidłowa nazwa klucza: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Plik klucza zawiera nieobsługiwane kodowanie \"%s\""
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Plik klucza nie zawiera grupy \"%s\""
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Plik klucza nie zawiera klucza \"%s\""
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Plik klucza zawiera klucz \"%s\" o wartości \"%s\", która nie jest zapisana "
 "w UTF-8"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Plik klucza zawiera klucz \"%s\", który ma wartość niemożliwą do "
 "zinterpretowania."
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1150,7 +1150,7 @@ msgstr ""
 "Plik klucza zawiera klucz \"%s\", który ma wartość niemożliwą do "
 "zinterpretowania."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1159,49 +1159,49 @@ msgstr ""
 "Plik klucza zawiera klucz \"%s\" w grupie \"%s\", która ma wartość "
 "niemożliwą do zinterpretowania."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Plik klucza nie zawiera klucza \"%s\" w grupie \"%s\""
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "Plik klucza zawiera znak sterujący na końcu linii"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Plik klucza zawiera nieprawidłową sekwencję sterującą \"%s\""
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nie można zinterpretować \"%s\" jako liczby."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Wartość całkowita \"%s\" jest spoza dopuszczalnego zakresu"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Nie można zinterpretować \"%s\" jako liczby zmiennoprzecinkowej."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nie można zinterpretować \"%s\" jako wartości logicznej."
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Za duża wartość licznika przekazana do %s"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "Potok jest już zamknięty"
 
@@ -1222,7 +1222,7 @@ msgstr "Niepełna sekwencja wielu bajtów na wejściu"
 msgid "Not enough space in destination"
 msgstr "Brak wystarczającej ilości miejsca w miejscu docelowym"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 msgid "Cancellable initialization not supported"
 msgstr "Zainicjowanie, które można anulować nie jest obsługiwane"
 
@@ -1483,12 +1483,12 @@ msgstr "Potok wejściowy nie obsługuje odczytu"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "Potok ma zaległe działanie"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "Brak wystarczającej ilości miejsca dla adresu gniazda"
 
@@ -1876,7 +1876,7 @@ msgstr "Nazwa komputera \"%s\" zawiera \"[\", ale nie \"]\""
 msgid "Output stream doesn't implement write"
 msgstr "Potok wyjściowy nie obsługuje zapisu"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "Potok źródłowy jest już zamknięty"
 
@@ -1905,35 +1905,35 @@ msgstr "Nie można tymczasowo rozwiązać \"%s\""
 msgid "Error resolving '%s'"
 msgstr "Błąd podczas rozwiązywania \"%s\""
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -2016,110 +2016,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Nieznana opcja %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "Nieprawidłowe gniazdo, nie zainicjowano"
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Nieprawidłowe gniazdo, zainicjowanie się nie powiodło z powodu: %s"
 
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "Gniazdo jest już zamknięte"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "tworzenie GSocket z fd: %s"
 
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nie można utworzyć gniazda: %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr "Określono nieznany protokół"
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nie można uzyskać lokalnego adresu: %s"
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nie można uzyskać zdalnego adresu: %s"
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr "nie można nasłuchiwać: %s"
 
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Błąd podczas dowiązywania do adresu: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Błąd podczas akceptowania połączenia: %s"
 
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 msgid "Error connecting: "
 msgstr "Błąd podczas łączenia: "
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr "Trwa połączenie"
 
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Błąd podczas połączenia: %s"
 
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Nie można uzyskać oczekującego błędu: %s"
 
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Błąd podczas pobierania danych: %s"
 
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Błąd podczas wysyłania danych: %s"
 
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Błąd podczas zamykania gniazda: %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Oczekiwanie na warunek gniazda: %s"
 
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Błąd podczas wysyłania komunikatu: %s"
 
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage nie jest obsługiwane w Windows"
 
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Błąd podczas pobierania komunikatu: %s"
@@ -2141,23 +2141,55 @@ msgstr "Dodane gniazdo jest zamknięte"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nie można obsłużyć wersji %d kodowania GThemedIcon"
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Oczekiwano jeden komunikat kontrolny, otrzymano %d"
 
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 msgid "Unexpected type of ancillary data"
 msgstr "Nieoczekiwany typ podrzędnych danych"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "Oczekiwano jedno fd, otrzymano %d\n"
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "Pobrano nieprawidłowe fd"
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "Błąd podczas wysyłania danych: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "Błąd podczas zmieniania nazwy pliku: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2180,7 +2212,7 @@ msgstr "Katalog główny systemu plików"
 msgid "Error writing to unix: %s"
 msgstr "Błąd podczas zapisywania do Uniksa: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 "Abstrakcyjne adresy gniazd domen Uniksa nie są obsługiwane w tym systemie"

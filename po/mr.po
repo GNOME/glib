@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2010-04-15 15:42+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <maajhe-sanganak@freelists.org>\n"
@@ -746,7 +746,7 @@ msgstr "उत्पकार्यन्वीत कंपाइल कार�
 msgid "previously-checked referenced subpattern not found"
 msgstr "पूर्वी-तपासलेले संदर्भीत उपरचना आढळले नाही"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "रेगुलर एक्सप्रेशन %s जुळवणी करतेवेळी त्रूटी: %s"
@@ -769,43 +769,43 @@ msgstr "अक्षर %2$d वरील रेगुलर एक्सप्�
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "रेगुलर एक्सप्रेशन %s अधिक कार्यक्षम करतेवेळी त्रूटी: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "हेक्जाडेसीमल अंक किंवा '}' अपेक्षीत"
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "क्जाडेसीमल अंक अपेक्षीत"
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "बोधचिन्ह संदर्भात '<' आढळले नाही"
 
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "अपूरे बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "शून्य-लांबीचे बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "अंक अपेक्षीत"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "अवैध बोधचिन्ह संदर्भ"
 
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "अंतिम '\\'"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "अपरिचीत निसटती श्रृंखला"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "अक्षर %2$lu वरील बदलाव पाठ्य \"%1$s\" वाचतेवेळी त्रूटी: %3$s"
@@ -1005,73 +1005,73 @@ msgstr "%s करीता बाब आढळले नाही"
 msgid "Unknown option %s"
 msgstr "अपरिचीत पर्याय %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "शोध संचयीकेत वैध किल्ली फाइल आढळली नाही"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "नियमीत फाइल नाही"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "फाइल रिकामी आहे"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "की फाइल मध्ये ओळ '%s' अंतर्भूत आहे जे की-मुल्य जोड, गट, किंवा टिपप्णी नाही"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "अवैध गट नाव: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "की फाइल गटासह सुरू होत नाही"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "अवैध की नाव: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "की फाइल मध्ये असमर्थित ऐनकोडींग '%s' समाविष्टीत आहे"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "की फाइलमध्ये '%s' गट समाविष्टीत नाही"
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "की फाइल मध्ये '%s' की नाही"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "किल्ली फाइल मध्ये '%1$s' किल्ली समाविष्टीत आहे ज्याचे '%2$s' मुल्य UTF-8 नाही"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "किल्ली फाइल मध्ये '%1$s' किल्ली समाविष्टीत आहे ज्याचे मुल्य विश्लेषीत केल्या जाऊ शकत नाही."
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "कि फाइल मध्ये '%s' कि समाविष्टीत आहे ज्याचे मुल्य विश्लेषीत करणे अशक्य आहे."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1080,49 +1080,49 @@ msgstr ""
 "गट '%2$s' मधिल किल्ली फाइल मध्ये '%1$s' किल्ली समाविष्टीत आहे ज्याचे मुल्य विश्लेषीत "
 "केल्या जाऊ शकत नाही."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "गट '%s' मधिल '%s' किल्ली किल्ली फाइल मध्ये समाविष्टीत नाही"
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "किल्ली फाइलीत निसटते अक्षर ओळीच्या अखेरस समाविष्टीत आहे"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "किल्ली फाइल मध्ये अवैध '%s' निसटती श्रृंखला समाविष्टीत आहे"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मुल्य '%s' संख्या म्हणून विश्लेषीत केले जाऊ शकत नाही."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "संख्यात्मक मुल्य '%s' क्षेत्राच्या अंतर्गत नाही"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "मुल्य '%s' फ्लोट संख्या म्हणून विश्लेषीत केले जाऊ शकत नाही."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मुल्य '%s' बूलीयन म्हणून विश्लेषीत केले जाऊ शकत नाही."
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s करीता खूप मोठी प्रमाण संख्या पुरविले गेली"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "श्रृंखला आधिपासूनच बंद आहे"
 
@@ -1143,7 +1143,7 @@ msgstr "इंपुटमधील अपूर्ण मल्टिबाई�
 msgid "Not enough space in destination"
 msgstr "लक्ष्यमध्ये अतिरीक्त जागा आढळली नाही"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 msgid "Cancellable initialization not supported"
 msgstr "रद्द करण्याजोगी प्रारंभ समर्थीत नाही"
 
@@ -1403,12 +1403,12 @@ msgstr "आगत श्रृंखला वाचतायेण्याज�
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "श्रृंखलाचे अप्रतिम कार्यक्षमता"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "सॉकेट पत्त्यांकरीता अतिरीक्त जागा आढळली नाही"
 
@@ -1790,7 +1790,7 @@ msgstr "यजमाननाव '%s' मध्ये '[' समाविष्�
 msgid "Output stream doesn't implement write"
 msgstr "आगत श्रृंखला लिहीतायेण्याजोगी कार्यरत करत नाही"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "स्त्रोत श्रृंखला आधिपासून बंद"
 
@@ -1819,35 +1819,35 @@ msgstr "तात्पुर्ते '%s'चे निर्धारण क�
 msgid "Error resolving '%s'"
 msgstr "त्रुटीच्या निर्धारणवेळी त्रुटी: %s"
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -1930,110 +1930,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "अपरिचीत पर्याय %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "अवैध सॉकेट, सुरू केले नाही"
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "अवैध सॉकेट, कारणास्तव अपयशी: %s"
 
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "सॉकेट आधिपासून बंद आहे"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd पासून GSocket बनवत आहे: %s"
 
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "सॉकेट निर्माण करणे अशक्य: %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr "अपरिचीत प्रोटोकॉल निर्देशीत केले"
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr "स्थानीय पत्ता प्राप्त करण्यास अशक्य: %s"
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "दूरस्थ पत्ता प्राप्त करण्यास अशक्य: %s"
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr "ऐकणे अशक्य: %s"
 
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "पत्त्याशी बांधणी करतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "त्रुटी स्वीकारतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 msgid "Error connecting: "
 msgstr "जुळवणीवेळी त्रुटी: "
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr "जुळवणी चालू आहे"
 
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, c-format
 msgid "Error connecting: %s"
 msgstr "जुळवणीवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "स्थागीत त्रुटी प्राप्त करणे अशक्य: %s"
 
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "डाटा प्राप्त करतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, c-format
 msgid "Error sending data: %s"
 msgstr "डाटा पाठवतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "सॉकेट बंद करतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "सॉकेट अटची प्रतिक्षा करत आहे: %s"
 
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "फाइल पाठवतेवेळी त्रुटी: %s"
 
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage windows वर समर्थीत नाही"
 
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "संदेश प्राप्त करतेवेळी त्रुटी: %s"
@@ -2055,23 +2055,55 @@ msgstr "समावेश केलेले सॉकेट बंद आह�
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon एनकोडींगची आवृत्ती %d हाताळू शकत नाही"
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "1 कंट्रोल संदेश अपेक्षीत, %d प्राप्त झाले"
 
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 msgid "Unexpected type of ancillary data"
 msgstr "ancillary डाटाचा अनपेक्षीत प्रकार"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "एक fd अपेक्षीत, परंतु %d प्राप्त\n"
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "अवैध fd प्राप्त झाले"
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "डाटा पाठवतेवेळी त्रुटी: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "फाइल पुनःनामांकीत करतेवेळी त्रूटी: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2094,7 +2126,7 @@ msgstr "रूट फाइलप्रणाली"
 msgid "Error writing to unix: %s"
 msgstr "unixकरीता लिहितेवेळी त्रूटी: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Abstract unix क्षेत्र सॉकेट पत्ते या प्रणालीवर समर्थीत नाही"
 

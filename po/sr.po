@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2010-03-09 20:28+0100\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnome@prevod.org>\n"
@@ -768,7 +768,7 @@ msgstr "превише покренутих радних простора за �
 msgid "previously-checked referenced subpattern not found"
 msgstr "није нађен претходно проверени и повезани подобразац"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Грешка приликом претраживања регуларним изразом %s: %s"
@@ -791,43 +791,43 @@ msgstr "Грешка при превођењу регуларног израза
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Грешка при оптимизовању регуларног израза %s: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "очекивана је хексадекадна цифра или „}“"
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "очекивана је хексадекадна цифра"
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "недостаје „<“ у референци симбола"
 
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "Недовршена референца симбола"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "референца симбола је дужине нула"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "очекивана је цифра"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "неисправна референца симбола"
 
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "одлутало завршно „\\“"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "непозната секвенца избегавања"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Грешка приликом обраде текста за замену „%s“ код карактера %lu: %s"
@@ -1031,20 +1031,20 @@ msgstr "Недостаје аргумент за %s"
 msgid "Unknown option %s"
 msgstr "Непозната опција %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Не могу да нађем исправну датотеку са кључевима међу директоријумима претраге"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "Није обична датотека"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "Датотека је празна"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1052,54 +1052,54 @@ msgstr ""
 "Датотека са кључевима садржи ред „%s“ што не чини пар кључ-вредност, групу "
 "или примедбу"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неисправно име групе: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Датотека са кључевима не почиње групом"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Неисправно име кључа: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Датотека са кључевима садржи неподржано кодирање „%s“"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Датотека са кључевима нема групу „%s“"
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Датотека са кључевима нема кључ „%s“"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Датотека са кључевима садржи кључ „%s“ вредности „%s“ што није УТФ-8"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Датотека са кључевима садржи кључ „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Датотека са кључевима садржи кључ „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1107,49 +1107,49 @@ msgid ""
 msgstr ""
 "Датотека са кључевима садржи кључ „%s“ у групи „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Датотека са кључевима не садржи кључ „%s“ у групи „%s“"
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "Датотека са кључевима садржи знак истицања на крају реда"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Датотека са кључевима садржи недозвољен низ истицања „%s“"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Вредност „%s“ се не може сматрати бројем."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целобројна вредност „%s“ је изван опсега"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Вредност „%s“ се не може сматрати реалним бројем једноструке тачности."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Вредност „%s“ се не може сматрати истинитосном."
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Превелика бројчана вредност је прослеђена у %s"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "Ток је већ затворен"
 
@@ -1170,7 +1170,7 @@ msgstr "Непотпун низ бајтова на улазу"
 msgid "Not enough space in destination"
 msgstr "Нема довољно места у одредишту"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 msgid "Cancellable initialization not supported"
 msgstr "Није подржано покретање уз могућност прекида"
 
@@ -1430,12 +1430,12 @@ msgstr "Улазни ток не подржава читање"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "Ток ради јако добро"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "Нема довољно места за адресу утичнице"
 
@@ -1817,7 +1817,7 @@ msgstr "Име домаћина „%s“ садржи „[“, али не и �
 msgid "Output stream doesn't implement write"
 msgstr "Излазни ток не подржава упис"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "Изворни ток је већ затворен"
 
@@ -1846,35 +1846,35 @@ msgstr "Привремено не могу да разрешим „%s“"
 msgid "Error resolving '%s'"
 msgstr "Грешка у разрешивању „%s“"
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -1957,110 +1957,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Непозната опција %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "Неисправна утичница, није покренуто"
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Неисправна утичница, покретање није успело због: %s"
 
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "Утичница је већ затворена"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "правим GSocket из fd: %s"
 
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Не могу да направим утичницу: %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr "Задат је непознати протокол"
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr "не могу да добијем локалну адресу: %s"
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "не могу да добијем удаљену адресу: %s"
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr "не могу да слушам: %s"
 
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "грешка при повезивању на адресу: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "грешка у прихватању везе: %s"
 
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 msgid "Error connecting: "
 msgstr "Грешка у повезивању: "
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr "Повезивање је у току"
 
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Грешка у повезивању: %s"
 
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не могу да добијем грешку на чекању: %s"
 
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Грешка у примању података: %s"
 
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Грешка у слању података: %s"
 
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Грешка у затварању утичнице: %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Чекам услов утичнице: %s"
 
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Грешка при слању поруке: %s"
 
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage није подржано у прозорима"
 
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при примању поруке: %s"
@@ -2082,23 +2082,55 @@ msgstr "Додата утичница је затворена"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Не могу да радим са издањем кодирања %d за GThemedIcon"
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Очекујем једну контролну поруку, добио сам %d"
 
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 msgid "Unexpected type of ancillary data"
 msgstr "Неочекивана врста подређених података"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "Очекујем једно fd, добио сам %d\n"
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "Примљен је неисправни fd"
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "Грешка у слању података: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "Грешка у преименовању датотеке: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2121,7 +2153,7 @@ msgstr "Корени систем датотека"
 msgid "Error writing to unix: %s"
 msgstr "Прешка при упису на unix: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "Абстрактна јуникс утичница адреса домена није подржана на овом систему"
 

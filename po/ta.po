@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2009-09-17 15:47+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -775,7 +775,7 @@ msgstr "overran கைம்பைல் பணியிடம்"
 msgid "previously-checked referenced subpattern not found"
 msgstr "முன்பு சோதிக்கப்பட்ட குறிப்பிடப்பட்ட துணை தோற்றம் இல்லை"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "வழக்கமான கூற்றை பொருத்துவதில் பிழை%s: %s"
@@ -798,43 +798,43 @@ msgstr "இயல்பான கூற்று %s ஐ தொகுக்கு
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "இயல்பான கூற்று ஐ உகந்ததாக்கும்போது பிழை:%s: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "பதின்னறும எண் அல்லது '}'  எதிர்பார்க்கப்பட்டது."
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "பதின்னறும எண் எதிர்பார்க்கப்பட்டது."
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "குறியீட்டுருவான சமர்பணத்தில் '<' ஐ காணவில்லை"
 
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "முடிவடையாத உள்ளீட்பு மேற்கோள்"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "பூஜ்ய நீள உள்ளீட்பு மேற்கோள்"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "எண் எதிர்பார்க்கப்பட்டது"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "சட்டவிரோத உள்ளீட்பு மேற்கோள்"
 
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "அனாதையான கடைசி '\\'"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "தெரியாத வெளியேற்ற வரிசைமுறை"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "மாற்று உரை \"%s\" ஐ பகுக்கையில் பிழை வரியுரு %lu இல்: %s"
@@ -1036,73 +1036,73 @@ msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "தேடல் அடைவுகளில் சரியான விசை கோப்பினை காண முடியவில்லை"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "ஒரு முறையான கோப்பில்லை"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "கோப்பு வெற்றாக உள்ளது"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "செல்லுபடியாகாத குழு பெயர்: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "விசை கோப்பு ஒரு குழுவாக ஆரம்பமாகாது"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "செல்லுபடியாகாத விசை பெயர்: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "விசை கோப்பு துணையில்லாத குறிமுறையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "விசை கோப்பு குழுவினை கொண்டிருக்கவில்லை '%s'"
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr " '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr " '%s'மதிப்பினை உடைய '%s'விசை விசை கோப்பு கொண்டுள்ளது, இது UTF-8 அல்ல"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1111,49 +1111,49 @@ msgstr ""
 "'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற "
 "முடியாது."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' குழுவில் '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "கடைசி வரியில் விசை கோப்பு விடுபடு எழுத்தினை கொண்டுள்ளது"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "விசை கோப்பு தவறான விடுபடு வரிசையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "மதிப்பு '%s' ஒரு எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "இயல் எண் மதிப்பு '%s' வரையறையை தாண்டியுள்ளது"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."
 
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%sக்கு மிகப்பெரிய எண்ணிக்கை மதிப்பு செலுத்தப்பட்டது"
 
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
@@ -1177,7 +1177,7 @@ msgstr "நிலை மாற்றியின் உள்ளீடுக்�
 msgid "Not enough space in destination"
 msgstr "சாக்கெட் முகவரிக்கு போதிய இடம் இல்லை"
 
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 msgid "Cancellable initialization not supported"
 msgstr "ரத்துசெய்யக்கூடிய துவக்குதல் துணைபுரிவதில்லை"
 
@@ -1438,12 +1438,12 @@ msgstr "உள்ளீடு ஸ்ட்ரீம் வாசிப்பை 
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "ஸ்ட்ரீம் சிறந்த செயல்பாட்டை கொண்டுள்ளது"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "சாக்கெட் முகவரிக்கு போதிய இடம் இல்லை"
 
@@ -1830,7 +1830,7 @@ msgstr "புரவலன் பெயர் '%s' '[' but not ']'ஐ கொண�
 msgid "Output stream doesn't implement write"
 msgstr "வெளிப்பாடு ஸ்ட்ரீம் எழுதுதலை செயல்படுத்தவில்லை"
 
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "மூல ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
@@ -1859,35 +1859,35 @@ msgstr "தற்காலிகமாக '%s'ஐ தீர்க்க மு�
 msgid "Error resolving '%s'"
 msgstr "%sஐ தீர்க்கையில் பிழை"
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -1970,110 +1970,110 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "தெரியாத விருப்பம் %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "தவறான சாக்கெட், துவக்கப்படவில்லை"
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "தவறான சாக்கெட், இதனால் துவக்க முடியவில்லை: %s"
 
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "சாக்கெட் ஏற்கனவே மூடப்பட்டது"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocketஐ fdஇலிருந்து உருவாக்குகிறது: %s"
 
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "சாக்கெட்டை உருவாக்க முடியவில்லை: %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr "தெரியாத நெறிமுறை குறிப்பிடப்பட்டுள்ளது"
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr "உள்ளமை முகவரியை பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "தொலை முகவரியை பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr "கேட்க முடியவில்லை: %s"
 
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "முகவரியை பிணைக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "இணைப்பை ஏற்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 msgid "Error connecting: "
 msgstr "இணைக்கும் போது பிழை:"
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr "இணைப்பு செயலிலுள்ளது"
 
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, c-format
 msgid "Error connecting: %s"
 msgstr "இணைக்கும் போது பிழை: %s"
 
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "விடுப்பட்ட பிழையைப் பெற முடியவில்லை: %s"
 
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "தரவைப் பெறும் போது பிழை: %s"
 
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, c-format
 msgid "Error sending data: %s"
 msgstr "தரவை அனுப்பும் போது பிழை: %s"
 
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "சாக்கெட்டை மூடும் போது பிழை: %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "சாக்கெட் நிலைக்காக காத்திருக்கிறது: %s"
 
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "செய்தி அனுப்பும் போது பிழை: %s"
 
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage windowsஇல் துணைபுரிவதில்லை"
 
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "செய்தி பெறும் போது பிழை: %s"
@@ -2095,23 +2095,55 @@ msgstr "சேர்க்கப்பட்ட சாக்கெட் மூ�
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "பதிப்பு %d இன் GThemedIcon குறிமுறையாக்கத்திற்கு கையாள முடியாது"
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "1 கட்டுப்பாட்டு செய்தியை எதிர்ப்பார்க்கிறது, %dஐ பெறுகிறது"
 
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 msgid "Unexpected type of ancillary data"
 msgstr "எதிர்ப்பார்க்கப்படாத துணை தரவு வகை"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr "ஒரு fdஐ எதிர்பார்க்கிறது, ஆனால் %dஐ பெற்றது\n"
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "தவறான fd பெறப்பட்டது"
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "தரவை அனுப்பும் போது பிழை: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "கோப்பு மறுபெயரிடும் போது பிழை: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2134,7 +2166,7 @@ msgstr "கோப்பு முறைமை ரூட்"
 msgid "Error writing to unix: %s"
 msgstr "யுனிக்ஸில் எழுதும் போது பிழை: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr "யுனிக்ஸ் டொமைன் சாக்கெட் முகவரிகள் இந்த கணினியில் துணைபுரியாது"
 

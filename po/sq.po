@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 20:25-0400\n"
+"POT-Creation-Date: 2010-05-14 11:05-0400\n"
 "PO-Revision-Date: 2008-08-18 10:19+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -851,7 +851,7 @@ msgstr "tejkalim kufir gjatë kompilimit të zonës së punës"
 msgid "previously-checked referenced subpattern not found"
 msgstr "nën-model referues i kontrolluar më parë nuk u gjet"
 
-#: glib/gregex.c:522 glib/gregex.c:1603
+#: glib/gregex.c:522 glib/gregex.c:1639
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
@@ -875,45 +875,45 @@ msgstr "Gabim gjatë kompilimit të shprehjes së rregullt %s tek simboli %d: %s
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Gabim gjatë optimizimit të shprehjes së rregullt %s: %s"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2067
 msgid "hexadecimal digit or '}' expected"
 msgstr "pritej një shifër exadecimale ose '}'"
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2083
 msgid "hexadecimal digit expected"
 msgstr "pritej një shifër exadecimale"
 
-#: glib/gregex.c:2087
+#: glib/gregex.c:2123
 msgid "missing '<' in symbolic reference"
 msgstr "mungon '<' në referimin simbolik"
 
 # (pofilter) startcaps: checks that the message starts with the correct capitalisation
-#: glib/gregex.c:2096
+#: glib/gregex.c:2132
 msgid "unfinished symbolic reference"
 msgstr "Riferim simbolik i papërfunduar"
 
-#: glib/gregex.c:2103
+#: glib/gregex.c:2139
 msgid "zero-length symbolic reference"
 msgstr "referim simbolik me gjatësi zero"
 
-#: glib/gregex.c:2114
+#: glib/gregex.c:2150
 msgid "digit expected"
 msgstr "pritej një shifër"
 
-#: glib/gregex.c:2132
+#: glib/gregex.c:2168
 msgid "illegal symbolic reference"
 msgstr "referim simbolik i palejuar"
 
 # (pofilter) startpunc: checks whether punctuation at the beginning of the strings match
-#: glib/gregex.c:2194
+#: glib/gregex.c:2230
 msgid "stray final '\\'"
 msgstr "'\\' në fund e izoluar"
 
-#: glib/gregex.c:2198
+#: glib/gregex.c:2234
 msgid "unknown escape sequence"
 msgstr "sekuencë e panjohur escape"
 
-#: glib/gregex.c:2208
+#: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1127,73 +1127,73 @@ msgstr "Mungojnë argumentë për %s"
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"
 
-#: glib/gkeyfile.c:361
+#: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "Nuk u gjet asnjë file i vlefshëm kyçi tek directory e kërkimit"
 
-#: glib/gkeyfile.c:396
+#: glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "Nuk është një file i rregullt"
 
-#: glib/gkeyfile.c:404
+#: glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "File është bosh"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Kyçi përmban rreshtin '%s' që nuk është një vlerë çift, grup apo koment kyçi"
 
-#: glib/gkeyfile.c:823
+#: glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Emër i pasaktë grupi: %s"
 
-#: glib/gkeyfile.c:845
+#: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "File i kyçit nuk fillon me një grup"
 
-#: glib/gkeyfile.c:871
+#: glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Emër i pasaktë kyçi: %s"
 
-#: glib/gkeyfile.c:898
+#: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "File i kyçit përmban kodifikimin e pasuportuar '%s'"
 
-#: glib/gkeyfile.c:1114 glib/gkeyfile.c:1276 glib/gkeyfile.c:2505
-#: glib/gkeyfile.c:2571 glib/gkeyfile.c:2706 glib/gkeyfile.c:2839
-#: glib/gkeyfile.c:2992 glib/gkeyfile.c:3179 glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
+#: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
+#: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "File i kyçit nuk ka grupin '%s'"
 
-#: glib/gkeyfile.c:1288
+#: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "File i kyçit nuk përmban kyçin '%s'"
 
-#: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
+#: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "File i kyçit përmban kyçin '%s' me vlerë '%s' që nuk është në UTF-8"
 
-#: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
+#: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "File i kyçit përmban kyçin '%s' që ka një vlerë të painterpretueshme."
 
-#: glib/gkeyfile.c:1530
+#: glib/gkeyfile.c:1532
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "File i kyçit përmban kyçin '%s' që ka një vlerë të painterpretueshme."
 
-#: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
+#: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1202,36 +1202,36 @@ msgstr ""
 "File i kyçit përmban kyçin '%s' në grupin '%s' që ka një vlerë të "
 "painterpretueshme."
 
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2721 glib/gkeyfile.c:3251
+#: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "File i kyçit nuk ka kyçin '%s' në grupin '%s'"
 
-#: glib/gkeyfile.c:3485
+#: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
 msgstr "File i kyçit përmban simbolin escape në fund të rreshtit"
 
-#: glib/gkeyfile.c:3507
+#: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "File i kyçit përmban sekuencën e pavlefshme escape '%s'"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
 
-#: glib/gkeyfile.c:3663
+#: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Vlera integruese '%s' është jashtë kufirit"
 
-#: glib/gkeyfile.c:3696
+#: glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër float."
 
-#: glib/gkeyfile.c:3720
+#: glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
@@ -1239,14 +1239,14 @@ msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
 # (pofilter) untranslated: checks whether a string has been translated at all
 #: gio/gbufferedinputstream.c:415 gio/gbufferedinputstream.c:496
 #: gio/ginputstream.c:186 gio/ginputstream.c:318 gio/ginputstream.c:557
-#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:657
+#: gio/ginputstream.c:682 gio/goutputstream.c:198 gio/goutputstream.c:721
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Vlerë count tepër e madhe kaluar tek %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
 #: gio/gbufferedinputstream.c:883 gio/ginputstream.c:892 gio/giostream.c:305
-#: gio/goutputstream.c:1108
+#: gio/goutputstream.c:1196
 msgid "Stream is already closed"
 msgstr "Stream është i mbyllur rregullisht"
 
@@ -1270,7 +1270,7 @@ msgid "Not enough space in destination"
 msgstr ""
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-#: gio/gcharsetconverter.c:448 gio/gsocket.c:811
+#: gio/gcharsetconverter.c:448 gio/gsocket.c:804
 #, fuzzy
 msgid "Cancellable initialization not supported"
 msgstr "Veprimi nuk suportohet"
@@ -1584,12 +1584,12 @@ msgstr "Stream i input nuk suporton leximin"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1118
+#: gio/ginputstream.c:902 gio/giostream.c:315 gio/goutputstream.c:1206
 msgid "Stream has outstanding operation"
 msgstr "Stream prezanton një operacion në pritje"
 
 #: gio/ginetsocketaddress.c:182 gio/ginetsocketaddress.c:199
-#: gio/gunixsocketaddress.c:218
+#: gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr ""
 
@@ -2111,7 +2111,7 @@ msgid "Output stream doesn't implement write"
 msgstr "Stream i output nuk suporton shkrimin"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/goutputstream.c:369 gio/goutputstream.c:781
+#: gio/goutputstream.c:369 gio/goutputstream.c:845
 msgid "Source stream is already closed"
 msgstr "Stream burues është i mbyllur"
 
@@ -2144,35 +2144,35 @@ msgstr ""
 msgid "Error resolving '%s'"
 msgstr "Gabim gjatë fshirjes së file: %s"
 
-#: gio/gschema-compile.c:505
+#: gio/gschema-compile.c:645
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:505 gio/gschema-compile.c:516
+#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:506
+#: gio/gschema-compile.c:646
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:507
+#: gio/gschema-compile.c:647
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:519
+#: gio/gschema-compile.c:659
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:535
+#: gio/gschema-compile.c:675
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:567
+#: gio/gschema-compile.c:707
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
@@ -2255,22 +2255,22 @@ msgstr ""
 msgid "Unknown command '%s'\n"
 msgstr "Opcion i panjohur %s"
 
-#: gio/gsocket.c:282
+#: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr ""
 
-#: gio/gsocket.c:289
+#: gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr ""
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gsocket.c:297
+#: gio/gsocket.c:290
 #, fuzzy
 msgid "Socket is already closed"
 msgstr "Stream burues është i mbyllur"
 
-#: gio/gsocket.c:305 gio/gsocket.c:2616 gio/gsocket.c:2660
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
 msgstr ""
 
@@ -2278,33 +2278,33 @@ msgstr ""
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:427
+#: gio/gsocket.c:420
 #, fuzzy, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Gabim gjatë leximit nga file: %s"
 
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
-#: gio/gsocket.c:461 gio/gsocket.c:475 gio/gsocket.c:2027
+#: gio/gsocket.c:454 gio/gsocket.c:468 gio/gsocket.c:2020
 #, fuzzy, c-format
 msgid "Unable to create socket: %s"
 msgstr "I pamundur krijimi i directory koshit \"%s\": %s"
 
-#: gio/gsocket.c:461
+#: gio/gsocket.c:454
 msgid "Unknown protocol was specified"
 msgstr ""
 
-#: gio/gsocket.c:1225
+#: gio/gsocket.c:1218
 #, c-format
 msgid "could not get local address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1258
+#: gio/gsocket.c:1251
 #, c-format
 msgid "could not get remote address: %s"
 msgstr ""
 
-#: gio/gsocket.c:1316
+#: gio/gsocket.c:1309
 #, c-format
 msgid "could not listen: %s"
 msgstr ""
@@ -2313,12 +2313,12 @@ msgstr ""
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1390
+#: gio/gsocket.c:1383
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
 msgstr "Gabim gjatë shkrimit tek file: %s"
 
-#: gio/gsocket.c:1510
+#: gio/gsocket.c:1503
 #, fuzzy, c-format
 msgid "Error accepting connection: %s"
 msgstr "Gabim gjatë konvertimit: %s"
@@ -2327,12 +2327,12 @@ msgstr "Gabim gjatë konvertimit: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1623
+#: gio/gsocket.c:1616
 #, fuzzy
 msgid "Error connecting: "
 msgstr "Gabim gjatë ndarjes së file: %s"
 
-#: gio/gsocket.c:1627
+#: gio/gsocket.c:1620
 msgid "Connection in progress"
 msgstr ""
 
@@ -2340,7 +2340,7 @@ msgstr ""
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1632
+#: gio/gsocket.c:1625
 #, fuzzy, c-format
 msgid "Error connecting: %s"
 msgstr "Gabim gjatë hapjes së file: %s"
@@ -2349,7 +2349,7 @@ msgstr "Gabim gjatë hapjes së file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1675
+#: gio/gsocket.c:1668
 #, fuzzy, c-format
 msgid "Unable to get pending error: %s"
 msgstr "E pamundur hedhja në kosh e file: %s"
@@ -2358,7 +2358,7 @@ msgstr "E pamundur hedhja në kosh e file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1771
+#: gio/gsocket.c:1764
 #, fuzzy, c-format
 msgid "Error receiving data: %s"
 msgstr "Gabim gjatë fshirjes së file: %s"
@@ -2367,7 +2367,7 @@ msgstr "Gabim gjatë fshirjes së file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:1914
+#: gio/gsocket.c:1907
 #, fuzzy, c-format
 msgid "Error sending data: %s"
 msgstr "Gabim gjatë hapjes së file: %s"
@@ -2376,12 +2376,12 @@ msgstr "Gabim gjatë hapjes së file: %s"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:2106
+#: gio/gsocket.c:2099
 #, fuzzy, c-format
 msgid "Error closing socket: %s"
 msgstr "Gabim gjatë mbylljes së file: %s"
 
-#: gio/gsocket.c:2609
+#: gio/gsocket.c:2602
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
@@ -2390,13 +2390,13 @@ msgstr ""
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:2866 gio/gsocket.c:2947
+#: gio/gsocket.c:2859 gio/gsocket.c:2940
 #, fuzzy, c-format
 msgid "Error sending message: %s"
 msgstr "Gabim gjatë hapjes së file: %s"
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gsocket.c:2891
+#: gio/gsocket.c:2884
 #, fuzzy
 msgid "GSocketControlMessage not supported on windows"
 msgstr "ndryshimi i shoqërimeve nuk suportohet në win32"
@@ -2405,7 +2405,7 @@ msgstr "ndryshimi i shoqërimeve nuk suportohet në win32"
 # (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) printf: checks whether printf format strings match
-#: gio/gsocket.c:3149 gio/gsocket.c:3287
+#: gio/gsocket.c:3143 gio/gsocket.c:3284
 #, fuzzy, c-format
 msgid "Error receiving message: %s"
 msgstr "Gabim gjatë fshirjes së file: %s"
@@ -2430,24 +2430,64 @@ msgstr ""
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr ""
 
-#: gio/gunixconnection.c:151
+#: gio/gunixconnection.c:165 gio/gunixconnection.c:502
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr ""
 
 # (pofilter) untranslated: checks whether a string has been translated at all
-#: gio/gunixconnection.c:164
+#: gio/gunixconnection.c:178 gio/gunixconnection.c:512
 #, fuzzy
 msgid "Unexpected type of ancillary data"
 msgstr "End-of-stream i parakohshëm papritur"
 
-#: gio/gunixconnection.c:182
+#: gio/gunixconnection.c:196
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgstr ""
 
-#: gio/gunixconnection.c:198
+#: gio/gunixconnection.c:212
 msgid "Received invalid fd"
+msgstr ""
+
+# (pofilter) variables: translation contains variables not in original: %s, %s
+# (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
+# (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
+# (pofilter) printf: checks whether printf format strings match
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "Gabim gjatë hapjes së file: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+# (pofilter) variables: translation contains variables not in original: %s, %s
+# (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
+# (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
+# (pofilter) printf: checks whether printf format strings match
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "Gabim gjatë ndryshimit të emrit të file: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
 msgstr ""
 
 # (pofilter) variables: translation contains variables not in original: %s, %s
@@ -2480,7 +2520,7 @@ msgstr "File rrënjë i sistemit"
 msgid "Error writing to unix: %s"
 msgstr "Gabim gjatë shkrimit në unix: %s"
 
-#: gio/gunixsocketaddress.c:241
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
 
