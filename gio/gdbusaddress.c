@@ -907,6 +907,8 @@ g_dbus_address_get_stream_sync (const gchar   *address,
       g_assert (last_error != NULL);
       g_propagate_error (error, last_error);
     }
+
+  g_strfreev (addr_array);
   return ret;
 }
 
