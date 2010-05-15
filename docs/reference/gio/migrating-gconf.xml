@@ -326,9 +326,19 @@ endif
         will be used in similar ways by a future gsettings-editor, so you
         should use the same conventions for them: The summary is just a short
         label with no punctuation, the description can be one or more complete
-        sentences. Translations for these strings will also be handled
+        sentences.
+      </para>
+      <para>
+        Translations for these strings will also be handled
         via gettext, so you should arrange for these strings to be
-        extracted into your gettext catalog.
+        extracted into your gettext catalog. One way to do that is to use
+        intltool. For that, you use <tag class="starttag">_summary</tag>
+        and <tag class="starttag">_description</tag> elements in a
+        .gschema.xml.in file and use <literal>@INTLTOOL_NOMERGE_RULE@</literal>
+        in your Makefile.am to produce the .gschema.xml file. The
+        <literal>NOMERGE</literal> part of the rule instructs intltool
+        to extract translatable strings, but not merge the translations
+        back into the generated xml file.
       </para>
       <para>
         GSettings is a bit more restrictive about key names than GConf. Key
