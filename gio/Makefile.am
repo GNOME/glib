@@ -578,7 +578,9 @@ dist_schema_DATA = gschema.dtd
 
 bin_PROGRAMS += gdbus
 gdbus_SOURCES = gdbus-tool.c
-gdbus_LDADD = libgio-2.0.la
+gdbus_LDADD = libgio-2.0.la \
+	$(top_builddir)/glib/libglib-2.0.la 		\
+	$(top_builddir)/gobject/libgobject-2.0.la
 
 completiondir = $(sysconfdir)/bash_completion.d
 completion_SCRIPTS = gdbus-bash-completion.sh
