@@ -308,7 +308,7 @@ print_names (GDBusConnection *c,
     }
   g_variant_get (result, "(as)", &iter);
   while (g_variant_iter_loop (iter, "s", &str))
-    g_hash_table_insert (name_set, str, NULL);
+    g_hash_table_insert (name_set, g_strdup (str), NULL);
   g_variant_iter_free (iter);
   g_variant_unref (result);
 
@@ -337,7 +337,7 @@ print_names (GDBusConnection *c,
     }
   g_variant_get (result, "(as)", &iter);
   while (g_variant_iter_loop (iter, "s", &str))
-    g_hash_table_insert (name_set, str, NULL);
+    g_hash_table_insert (name_set, g_strdup (str), NULL);
   g_variant_iter_free (iter);
   g_variant_unref (result);
 
