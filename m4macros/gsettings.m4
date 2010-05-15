@@ -28,7 +28,7 @@ AC_DEFUN([GLIB_GSETTINGS],
 check-gsettings-schema: gsettings_schema_validate_stamp
 MOSTLYCLEANFILES += gsettings_schema_validate_stamp
 gsettings_schema_validate_stamp: *.gschema.xml
-	$(GLIB_COMPILE_SCHEMAS) --dry-run $(addprefix --schema-files=,$?)
+	$(GLIB_COMPILE_SCHEMAS) --dry-run $(addprefix --schema-file=,$?)
 	touch [$]@
 
 all: check-gsettings-schema
