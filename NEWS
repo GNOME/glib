@@ -1,3 +1,24 @@
+Overview of Changes from GLib 2.25.4 to GLib 2.25.5
+===================================================
+
+* GDBus: Fix serialization of empty arrays
+
+* GDBus: Plug various memory leaks
+
+* GSettings: Fix problems with GSETTINGS_CHECK_RULE
+
+* Bugs fixed:
+ 616731 GSETTINGS_CHECK_RULE doesn't work in non-srcdir builds
+ 616864 GSETTINGS_CHECK_RULE doesn't work with multiple files
+ 618615 mem leaks in parse_value_from_blob
+ 618622 Plug some mem leaks in gdbus
+ 618650 Plug a mem leak in gdbusauth
+ 618663 Plug mem leaks in gdbus tests & examples
+
+* Updated translations:
+ Spanish
+
+
 Overview of Changes from GLib 2.25.3 to GLib 2.25.4
 ===================================================
 
