@@ -36,7 +36,6 @@
 #ifdef __linux__
 
 #define _GNU_SOURCE
-#define __USE_GNU
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -86,7 +85,11 @@ g_unix_credentials_message_get_size (GSocketControlMessage *message)
 static int
 g_unix_credentials_message_get_level (GSocketControlMessage *message)
 {
+#ifdef __linux__
   return SOL_SOCKET;
+#else
+  return 0;
+#endif
 }
 
 static int
