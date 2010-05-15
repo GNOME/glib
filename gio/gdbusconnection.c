@@ -3393,7 +3393,7 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
    *       We could fail the whole call if just a single get_property() call
    *       returns an error. We need clarification in the D-Bus spec about this.
    */
-  builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
   for (n = 0; data->interface_info->properties != NULL && data->interface_info->properties[n] != NULL; n++)
     {
       const GDBusPropertyInfo *property_info = data->interface_info->properties[n];
