@@ -367,7 +367,7 @@ g_delayed_settings_backend_new (GSettingsBackend *backend,
   delayed->priv->backend = g_object_ref (backend);
   delayed->priv->owner = owner;
 
-  g_settings_backend_watch (delayed->priv->backend,
+  g_settings_backend_watch (delayed->priv->backend, NULL,
                             delayed_backend_changed,
                             delayed_backend_path_changed,
                             delayed_backend_keys_changed,

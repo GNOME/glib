@@ -88,6 +88,7 @@ enum
 
 struct _GSettingsBackendWatch
 {
+  GMainContext                            *context;
   GSettingsBackendChangedFunc              changed;
   GSettingsBackendPathChangedFunc          path_changed;
   GSettingsBackendKeysChangedFunc          keys_changed;
@@ -98,8 +99,22 @@ struct _GSettingsBackendWatch
   GSettingsBackendWatch                   *next;
 };
 
+/*< private >
+ * g_settings_backend_watch:
+ * @backend: a #GSettingsBackend
+ * @context: a #GMainContext, or %NULL
+ * ...: callbacks...
+ * @user_data: the user_data for the callbacks
+ *
+ * Registers a new watch on a #GSettingsBackend.
+ *
+ * note: %NULL @context does not mean "default main context" but rather,
+ * "it is okay to dispatch in any context".  If the default main context
+ * is specifically desired then it must be given.
+ **/
 void
 g_settings_backend_watch (GSettingsBackend                        *backend,
+                          GMainContext                            *context,
                           GSettingsBackendChangedFunc              changed,
                           GSettingsBackendPathChangedFunc          path_changed,
                           GSettingsBackendKeysChangedFunc          keys_changed,
@@ -110,6 +125,11 @@ g_settings_backend_watch (GSettingsBackend                        *backend,
   GSettingsBackendWatch *watch;
 
   watch = g_slice_new (GSettingsBackendWatch);
+  /* don't need to ref the context here because the watch is
+   * only valid for the lifecycle of the attaching GSettings
+   * and it is already holding the context.
+   */
+  watch->context = context;
   watch->changed = changed;
   watch->path_changed = path_changed;
   watch->keys_changed = keys_changed;
@@ -179,6 +199,115 @@ is_path (const gchar *path)
   return TRUE;
 }
 
+static GMainContext *
+g_settings_backend_get_active_context (void)
+{
+  GMainContext *context;
+  GSource *source;
+
+  if ((source = g_main_current_source ()))
+    context = g_source_get_context (source);
+
+  else
+    {
+      context = g_main_context_get_thread_default ();
+
+      if (context == NULL)
+        context = g_main_context_default ();
+    }
+
+  return context;
+}
+
+typedef struct
+{
+  void (*function) (GSettingsBackend *backend,
+                    const gchar      *name,
+                    gpointer          data1,
+                    gpointer          data2,
+                    gpointer          data3);
+  GSettingsBackend *backend;
+  gchar *name;
+
+  gpointer data1;
+  gpointer data2;
+  gpointer data3;
+
+  GDestroyNotify destroy_data1;
+} GSettingsBackendClosure;
+
+static gboolean
+g_settings_backend_invoke_closure (gpointer user_data)
+{
+  GSettingsBackendClosure *closure = user_data;
+
+  closure->function (closure->backend, closure->name,
+                     closure->data1, closure->data2, closure->data3);
+
+  g_object_unref (closure->backend);
+
+  if (closure->destroy_data1)
+    closure->destroy_data1 (closure->data1);
+
+  g_free (closure->name);
+
+  /* make a donation to the magazine in this thread... */
+  g_slice_free (GSettingsBackendClosure, closure);
+
+  return FALSE;
+}
+
+static void
+g_settings_backend_dispatch_signal (GSettingsBackend *backend,
+                                    GMainContext     *context,
+                                    gpointer          function,
+                                    const gchar      *name,
+                                    gpointer          data1,
+                                    GDestroyNotify    destroy_data1,
+                                    gpointer          data2,
+                                    gpointer          data3)
+{
+  GSettingsBackendClosure *closure;
+  GSource *source;
+
+  /* XXX we have a rather obnoxious race condition here.
+   *
+   * In the meantime of this call being dispatched to the other thread,
+   * the GSettings instance that is pointed to by the user_data may have
+   * been freed.
+   *
+   * There are two ways of handling this:
+   *
+   *   1) Ensure that the watch is still valid by the time it arrives in
+   *      the destination thread (potentially expensive)
+   *
+   *   2) Do proper refcounting (requires changing the interface).
+   */
+  closure = g_slice_new (GSettingsBackendClosure);
+  closure->backend = g_object_ref (backend);
+  closure->function = function;
+
+  /* we could make more effort to share this between all of the
+   * dispatches but it seems that it might be an overall loss in terms
+   * of performance/memory use and is definitely not worth the effort.
+   */
+  closure->name = g_strdup (name);
+
+  /* ditto. */
+  closure->data1 = data1;
+  closure->destroy_data1 = destroy_data1;
+
+  closure->data2 = data2;
+  closure->data3 = data3;
+
+  source = g_idle_source_new ();
+  g_source_set_callback (source,
+                         g_settings_backend_invoke_closure,
+                         closure, NULL);
+  g_source_attach (source, context);
+  g_source_unref (source);
+}
+
 /**
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
@@ -216,12 +345,20 @@ g_settings_backend_changed (GSettingsBackend *backend,
                             gpointer          origin_tag)
 {
   GSettingsBackendWatch *watch;
+  GMainContext *context;
 
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_key (key));
 
+  context = g_settings_backend_get_active_context ();
+
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->changed (backend, key, origin_tag, watch->user_data);
+    if (watch->context == context || watch->context == NULL)
+      watch->changed (backend, key, origin_tag, watch->user_data);
+    else
+      g_settings_backend_dispatch_signal (backend, watch->context,
+                                          watch->changed, key, origin_tag,
+                                          NULL, watch->user_data, NULL);
 }
 
 /**

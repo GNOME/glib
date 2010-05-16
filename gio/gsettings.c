@@ -146,6 +146,9 @@
 
 struct _GSettingsPrivate
 {
+  /* where the signals go... */
+  GMainContext *main_context;
+
   GSettingsBackend *backend;
   GSettingsSchema *schema;
   gchar *schema_name;
@@ -363,6 +366,7 @@ g_settings_constructed (GObject *object)
 
   settings->priv->backend = g_settings_backend_get_with_context (settings->priv->context);
   g_settings_backend_watch (settings->priv->backend,
+                            settings->priv->main_context,
                             settings_backend_changed,
                             settings_backend_path_changed,
                             settings_backend_keys_changed,
@@ -379,6 +383,13 @@ g_settings_init (GSettings *settings)
   settings->priv = G_TYPE_INSTANCE_GET_PRIVATE (settings,
                                                 G_TYPE_SETTINGS,
                                                 GSettingsPrivate);
+
+  settings->priv->main_context = g_main_context_get_thread_default ();
+
+  if (settings->priv->main_context == NULL)
+    settings->priv->main_context = g_main_context_default ();
+
+  g_main_context_ref (settings->priv->main_context);
 }
 
 /**
@@ -406,6 +417,7 @@ g_settings_delay (GSettings *settings)
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
   g_settings_backend_watch (settings->priv->backend,
+                            settings->priv->main_context,
                             settings_backend_changed,
                             settings_backend_path_changed,
                             settings_backend_keys_changed,
@@ -537,6 +549,7 @@ g_settings_finalize (GObject *object)
   g_settings_backend_unwatch (settings->priv->backend, settings);
   g_settings_backend_unsubscribe (settings->priv->backend,
                                   settings->priv->path);
+  g_main_context_unref (settings->priv->main_context);
   g_object_unref (settings->priv->backend);
   g_object_unref (settings->priv->schema);
   g_free (settings->priv->schema_name);
@@ -1015,6 +1028,11 @@ g_settings_get_child (GSettings   *settings,
  * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with a given schema.
+ *
+ * Signals on the newly created #GSettings object will be dispatched
+ * via the thread-default #GMainContext in effect at the time of the
+ * call to g_settings_new().  The new #GSettings will hold a reference
+ * on the context.  See g_main_context_push_thread_default().
  *
  * Since: 2.26
  */

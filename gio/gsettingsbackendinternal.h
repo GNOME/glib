@@ -48,6 +48,7 @@ typedef void          (*GSettingsBackendPathWritableChangedFunc)        (GSettin
 
 G_GNUC_INTERNAL
 void                    g_settings_backend_watch                        (GSettingsBackend                        *backend,
+                                                                         GMainContext                            *context,
                                                                          GSettingsBackendChangedFunc              changed,
                                                                          GSettingsBackendPathChangedFunc          path_changed,
                                                                          GSettingsBackendKeysChangedFunc          keys_changed,
@@ -97,4 +98,5 @@ void                            g_settings_backend_unsubscribe          (GSettin
 G_GNUC_INTERNAL
 void                            g_settings_backend_subscribe            (GSettingsBackend                     *backend,
                                                                          const char                           *name);
+
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */
