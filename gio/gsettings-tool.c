@@ -215,6 +215,24 @@ handle_set (gint   *argc,
 
   ret = 0;
 
+  /* XXX: workaround for now
+   *
+   * if we exit() so quickly, GDBus may not have had a chance to
+   * actually send the message (since we're using it async).
+   *
+   * GDBusConnection has no API to sync or wait for messages to be sent,
+   * so we send a meaningless message and wait for the reply to ensure
+   * that all messages that came before must have been sent.
+   */
+  {
+    GDBusConnection *session;
+
+    session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+    g_dbus_connection_call_sync (session, "org.gtk.DoesNotExist", "/",
+                                 "org.gtk.DoesNotExist", "Workaround",
+                                 g_variant_new ("()"), 0, -1, NULL, NULL);
+  }
+
  out:
   g_option_context_free (context);
 
