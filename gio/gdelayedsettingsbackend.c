@@ -31,13 +31,63 @@
 struct _GDelayedSettingsBackendPrivate
 {
   GSettingsBackend *backend;
+  GStaticMutex lock;
   GTree *delayed;
+
+  GMainContext *owner_context;
   gpointer owner;
 };
 
 G_DEFINE_TYPE (GDelayedSettingsBackend,
                g_delayed_settings_backend,
                G_TYPE_SETTINGS_BACKEND)
+
+static gboolean
+invoke_notify_unapplied (gpointer data)
+{
+  g_object_notify (data, "has-unapplied");
+  g_object_unref (data);
+
+  return FALSE;
+}
+
+static void
+g_delayed_settings_backend_notify_unapplied (GDelayedSettingsBackend *delayed)
+{
+  GMainContext *target_context;
+  GObject *target;
+
+  g_static_mutex_lock (&delayed->priv->lock);
+  if (delayed->priv->owner)
+    {
+      target_context = delayed->priv->owner_context;
+      target = g_object_ref (delayed->priv->owner);
+    }
+  else
+    {
+      target_context = NULL;
+      target = NULL;
+    }
+  g_static_mutex_unlock (&delayed->priv->lock);
+
+  if (target != NULL)
+    {
+      if (g_settings_backend_get_active_context () != target_context)
+        {
+          GSource *source;
+
+          source = g_idle_source_new ();
+          g_source_set_priority (source, G_PRIORITY_DEFAULT);
+          g_source_set_callback (source, invoke_notify_unapplied,
+                                 target, g_object_unref);
+          g_source_attach (source, target_context);
+          g_source_unref (source);
+        }
+      else
+        invoke_notify_unapplied (target);
+    }
+}
+
 
 static GVariant *
 g_delayed_settings_backend_read (GSettingsBackend   *backend,
@@ -64,13 +114,16 @@ g_delayed_settings_backend_write (GSettingsBackend *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   gboolean was_empty;
 
+  g_static_mutex_lock (&delayed->priv->lock);
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
   g_tree_insert (delayed->priv->delayed, g_strdup (key),
                  g_variant_ref_sink (value));
+  g_static_mutex_unlock (&delayed->priv->lock);
+
   g_settings_backend_changed (backend, key, origin_tag);
 
-  if (was_empty && delayed->priv->owner)
-    g_object_notify (delayed->priv->owner, "has-unapplied");
+  if (was_empty)
+    g_delayed_settings_backend_notify_unapplied (delayed);
 
   return TRUE;
 }
@@ -92,14 +145,16 @@ g_delayed_settings_backend_write_keys (GSettingsBackend *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   gboolean was_empty;
 
+  g_static_mutex_lock (&delayed->priv->lock);
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
 
   g_tree_foreach (tree, add_to_tree, delayed->priv->delayed);
+  g_static_mutex_unlock (&delayed->priv->lock);
 
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 
-  if (was_empty && delayed->priv->owner)
-    g_object_notify (delayed->priv->owner, "has-unapplied");
+  if (was_empty)
+    g_delayed_settings_backend_notify_unapplied (delayed);
 
   return TRUE;
 }
@@ -147,11 +202,12 @@ g_delayed_settings_backend_unsubscribe (GSettingsBackend *backend,
   g_settings_backend_unsubscribe (delayed->priv->backend, name);
 }
 
-
 /* method calls */
 gboolean
 g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed)
 {
+  /* we don't need to lock for this... */
+
   return g_tree_nnodes (delayed->priv->delayed) > 0;
 }
 
@@ -163,10 +219,12 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
       gboolean success;
       GTree *tmp;
 
+      g_static_mutex_lock (&delayed->priv->lock);
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
       success = g_settings_backend_write_keys (delayed->priv->backend,
                                                tmp, delayed->priv);
+      g_static_mutex_unlock (&delayed->priv->lock);
 
       if (!success)
         g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed),
@@ -174,8 +232,7 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
 
       g_tree_unref (tmp);
 
-      if (delayed->priv->owner)
-        g_object_notify (delayed->priv->owner, "has-unapplied");
+      g_delayed_settings_backend_notify_unapplied (delayed);
     }
 }
 
@@ -186,13 +243,14 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
     {
       GTree *tmp;
 
+      g_static_mutex_lock (&delayed->priv->lock);
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
+      g_static_mutex_unlock (&delayed->priv->lock);
       g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed), tmp, NULL);
       g_tree_unref (tmp);
 
-      if (delayed->priv->owner)
-        g_object_notify (delayed->priv->owner, "has-unapplied");
+      g_delayed_settings_backend_notify_unapplied (delayed);
     }
 }
 
@@ -243,20 +301,26 @@ delayed_backend_writable_changed (GSettingsBackend *backend,
                                   const gchar      *key)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
+  gboolean last_one = FALSE;
+
+  g_static_mutex_lock (&delayed->priv->lock);
 
   if (g_tree_lookup (delayed->priv->delayed, key) &&
       !g_settings_backend_get_writable (delayed->priv->backend, key))
     {
       /* drop the key from our changeset if it just became read-only.
-       * no need to signal this since the writable change implies it.
+       * no need to signal since the writable change below implies it.
        */
       g_tree_remove (delayed->priv->delayed, key);
 
       /* if that was the only key... */
-      if (delayed->priv->owner &&
-          g_tree_nnodes (delayed->priv->delayed) == 0)
-        g_object_notify (delayed->priv->owner, "has-unapplied");
+      last_one = g_tree_nnodes (delayed->priv->delayed) == 0;
     }
+
+  g_static_mutex_unlock (&delayed->priv->lock);
+
+  if (last_one)
+    g_delayed_settings_backend_notify_unapplied (delayed);
 
   g_settings_backend_writable_changed (G_SETTINGS_BACKEND (delayed), key);
 }
@@ -289,7 +353,10 @@ delayed_backend_path_writable_changed (GSettingsBackend *backend,
                                        const gchar      *path)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
+  gboolean last_one = FALSE;
   gsize n_keys;
+
+  g_static_mutex_lock (&delayed->priv->lock);
 
   n_keys = g_tree_nnodes (delayed->priv->delayed);
 
@@ -309,10 +376,13 @@ delayed_backend_path_writable_changed (GSettingsBackend *backend,
 
       g_free (state.keys);
 
-      if (delayed->priv->owner &&
-          g_tree_nnodes (delayed->priv->delayed) == 0)
-        g_object_notify (delayed->priv->owner, "has-unapplied");
+      last_one = g_tree_nnodes (delayed->priv->delayed) == 0;
     }
+
+  g_static_mutex_unlock (&delayed->priv->lock);
+
+  if (last_one)
+    g_delayed_settings_backend_notify_unapplied (delayed);
 
   g_settings_backend_path_writable_changed (G_SETTINGS_BACKEND (delayed),
                                             path);
@@ -323,7 +393,14 @@ g_delayed_settings_backend_finalize (GObject *object)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
+  g_static_mutex_free (&delayed->priv->lock);
   g_object_unref (delayed->priv->backend);
+
+  /* if our owner is still alive, why are we finalizing? */
+  g_assert (delayed->priv->owner == NULL);
+
+  G_OBJECT_CLASS (g_delayed_settings_backend_parent_class)
+    ->finalize (object);
 }
 
 static void
@@ -354,17 +431,34 @@ g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
                                  GDelayedSettingsBackendPrivate);
 
   delayed->priv->delayed = g_settings_backend_create_tree ();
+  g_static_mutex_init (&delayed->priv->lock);
+}
+
+static void
+g_delayed_settings_backend_disown (gpointer  data,
+                                   GObject  *where_the_object_was)
+{
+  GDelayedSettingsBackend *delayed = data;
+
+  g_static_mutex_lock (&delayed->priv->lock);
+  delayed->priv->owner_context = NULL;
+  delayed->priv->owner = NULL;
+  g_static_mutex_unlock (&delayed->priv->lock);
 }
 
 GDelayedSettingsBackend *
 g_delayed_settings_backend_new (GSettingsBackend *backend,
-                                gpointer          owner)
+                                gpointer          owner,
+                                GMainContext     *owner_context)
 {
   GDelayedSettingsBackend *delayed;
 
   delayed = g_object_new (G_TYPE_DELAYED_SETTINGS_BACKEND, NULL);
   delayed->priv->backend = g_object_ref (backend);
+  delayed->priv->owner_context = owner_context;
   delayed->priv->owner = owner;
+
+  g_object_weak_ref (owner, g_delayed_settings_backend_disown, delayed);
 
   g_settings_backend_watch (delayed->priv->backend, G_OBJECT (delayed), NULL,
                             delayed_backend_changed,

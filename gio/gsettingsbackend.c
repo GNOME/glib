@@ -126,7 +126,7 @@ is_path (const gchar *path)
   return TRUE;
 }
 
-static GMainContext *
+GMainContext *
 g_settings_backend_get_active_context (void)
 {
   GMainContext *context;
@@ -177,7 +177,7 @@ struct _GSettingsBackendClosure
 
 static void
 g_settings_backend_watch_weak_notify (gpointer  data,
-                                      GObject  *where_object_was)
+                                      GObject  *where_the_object_was)
 {
   GSettingsBackend *backend = data;
   GSettingsBackendWatch **ptr;
@@ -185,7 +185,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
   /* search and remove */
   g_static_mutex_lock (&backend->priv->lock);
   for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
-    if ((*ptr)->target == where_object_was)
+    if ((*ptr)->target == where_the_object_was)
       {
         GSettingsBackendWatch *tmp = *ptr;
 

@@ -410,7 +410,9 @@ g_settings_delay (GSettings *settings)
     return;
 
   settings->priv->delayed =
-    g_delayed_settings_backend_new (settings->priv->backend, settings);
+    g_delayed_settings_backend_new (settings->priv->backend,
+                                    settings,
+                                    settings->priv->main_context);
   g_settings_backend_unwatch (settings->priv->backend, G_OBJECT (settings));
   g_object_unref (settings->priv->backend);
 
