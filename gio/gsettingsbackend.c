@@ -37,11 +37,13 @@
 
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
-typedef struct _GSettingsBackendWatch GSettingsBackendWatch;
+typedef struct _GSettingsBackendClosure GSettingsBackendClosure;
+typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
 
 struct _GSettingsBackendPrivate
 {
   GSettingsBackendWatch *watches;
+  GStaticMutex lock;
   gchar *context;
 };
 
@@ -85,81 +87,6 @@ enum
  * <filename>gio/gsettingsbackend.h</filename>
  * </para></note>
  **/
-
-struct _GSettingsBackendWatch
-{
-  GMainContext                            *context;
-  GSettingsBackendChangedFunc              changed;
-  GSettingsBackendPathChangedFunc          path_changed;
-  GSettingsBackendKeysChangedFunc          keys_changed;
-  GSettingsBackendWritableChangedFunc      writable_changed;
-  GSettingsBackendPathWritableChangedFunc  path_writable_changed;
-  gpointer                                 user_data;
-
-  GSettingsBackendWatch                   *next;
-};
-
-/*< private >
- * g_settings_backend_watch:
- * @backend: a #GSettingsBackend
- * @context: a #GMainContext, or %NULL
- * ...: callbacks...
- * @user_data: the user_data for the callbacks
- *
- * Registers a new watch on a #GSettingsBackend.
- *
- * note: %NULL @context does not mean "default main context" but rather,
- * "it is okay to dispatch in any context".  If the default main context
- * is specifically desired then it must be given.
- **/
-void
-g_settings_backend_watch (GSettingsBackend                        *backend,
-                          GMainContext                            *context,
-                          GSettingsBackendChangedFunc              changed,
-                          GSettingsBackendPathChangedFunc          path_changed,
-                          GSettingsBackendKeysChangedFunc          keys_changed,
-                          GSettingsBackendWritableChangedFunc      writable_changed,
-                          GSettingsBackendPathWritableChangedFunc  path_writable_changed,
-                          gpointer                                 user_data)
-{
-  GSettingsBackendWatch *watch;
-
-  watch = g_slice_new (GSettingsBackendWatch);
-  /* don't need to ref the context here because the watch is
-   * only valid for the lifecycle of the attaching GSettings
-   * and it is already holding the context.
-   */
-  watch->context = context;
-  watch->changed = changed;
-  watch->path_changed = path_changed;
-  watch->keys_changed = keys_changed;
-  watch->writable_changed = writable_changed;
-  watch->path_writable_changed = path_writable_changed;
-  watch->user_data = user_data;
-
-  watch->next = backend->priv->watches;
-  backend->priv->watches = watch;
-}
-
-void
-g_settings_backend_unwatch (GSettingsBackend *backend,
-                            gpointer          user_data)
-{
-  GSettingsBackendWatch **ptr;
-
-  for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
-    if ((*ptr)->user_data == user_data)
-      {
-        GSettingsBackendWatch *tmp = *ptr;
-
-        *ptr = tmp->next;
-        g_slice_free (GSettingsBackendWatch, tmp);
-
-        return;
-      }
-
-  g_assert_not_reached ();
-}
 
 static gboolean
 is_key (const gchar *key)
@@ -219,93 +146,254 @@ g_settings_backend_get_active_context (void)
   return context;
 }
 
-typedef struct
+struct _GSettingsBackendWatch
+{
+  GObject                                 *target;
+  GMainContext                            *context;
+  GSettingsBackendChangedFunc              changed;
+  GSettingsBackendPathChangedFunc          path_changed;
+  GSettingsBackendKeysChangedFunc          keys_changed;
+  GSettingsBackendWritableChangedFunc      writable_changed;
+  GSettingsBackendPathWritableChangedFunc  path_writable_changed;
+
+  GSettingsBackendWatch                   *next;
+};
+
+struct _GSettingsBackendClosure
 {
   void (*function) (GSettingsBackend *backend,
+                    GObject          *target,
                     const gchar      *name,
                     gpointer          data1,
-                    gpointer          data2,
-                    gpointer          data3);
+                    gpointer          data2);
+
   GSettingsBackend *backend;
-  gchar *name;
+  GObject          *target;
+  gchar            *name;
+  gpointer          data1;
+  GBoxedFreeFunc    data1_free;
+  gpointer          data2;
+};
 
-  gpointer data1;
-  gpointer data2;
-  gpointer data3;
+static void
+g_settings_backend_watch_weak_notify (gpointer  data,
+                                      GObject  *where_object_was)
+{
+  GSettingsBackend *backend = data;
+  GSettingsBackendWatch **ptr;
 
-  GDestroyNotify destroy_data1;
-} GSettingsBackendClosure;
+  /* search and remove */
+  g_static_mutex_lock (&backend->priv->lock);
+  for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
+    if ((*ptr)->target == where_object_was)
+      {
+        GSettingsBackendWatch *tmp = *ptr;
+
+        *ptr = tmp->next;
+        g_slice_free (GSettingsBackendWatch, tmp);
+
+        g_static_mutex_unlock (&backend->priv->lock);
+        return;
+      }
+
+  /* we didn't find it.  that shouldn't happen. */
+  g_assert_not_reached ();
+}
+
+/*< private >
+ * g_settings_backend_watch:
+ * @backend: a #GSettingsBackend
+ * @target: the GObject (typically GSettings instance) to call back to
+ * @context: a #GMainContext, or %NULL
+ * ...: callbacks...
+ *
+ * Registers a new watch on a #GSettingsBackend.
+ *
+ * note: %NULL @context does not mean "default main context" but rather,
+ * "it is okay to dispatch in any context".  If the default main context
+ * is specifically desired then it must be given.
+ *
+ * note also: if you want to get meaningful values for the @origin_tag
+ * that appears as an argument to some of the callbacks, you *must* have
+ * @context as %NULL.  Otherwise, you are subject to cross-thread
+ * dispatching and whatever owned @origin_tag at the time that the event
+ * occured may no longer own it.  This is a problem if you consider that
+ * you may now be the new owner of that address and mistakenly think
+ * that the event in question originated from yourself.
+ *
+ * tl;dr: If you give a non-%NULL @context then you must ignore the
+ * value of @origin_tag given to any callbacks.
+ **/
+void
+g_settings_backend_watch (GSettingsBackend                        *backend,
+                          GObject                                 *target,
+                          GMainContext                            *context,
+                          GSettingsBackendChangedFunc              changed,
+                          GSettingsBackendPathChangedFunc          path_changed,
+                          GSettingsBackendKeysChangedFunc          keys_changed,
+                          GSettingsBackendWritableChangedFunc      writable_changed,
+                          GSettingsBackendPathWritableChangedFunc  path_writable_changed)
+{
+  GSettingsBackendWatch *watch;
+
+  /* For purposes of discussion, we assume that our target is a
+   * GSettings instance.
+   *
+   * Our strategy to defend against the final reference dropping on the
+   * GSettings object in a thread other than the one that is doing the
+   * dispatching is as follows:
+   *
+   *  1) hold a GObject reference on the GSettings during an outstanding
+   *     dispatch.  This ensures that the delivery is always possible.
+   *
+   *  2) hold a weak reference on the GSettings at other times.  This
+   *     allows us to receive early notification of pending destruction
+   *     of the object.  At this point, it is still safe to obtain a
+   *     reference on the GObject to keep it alive, so #1 will work up
+   *     to that point.  After that point, we'll have been able to drop
+   *     the watch from the list.
+   *
+   * Note, in particular, that it's not possible to simply have an
+   * "unwatch" function that gets called from the finalize function of
+   * the GSettings instance because, by that point it is no longer
+   * possible to keep the object alive using g_object_ref() and we would
+   * have no way of knowing this.
+   *
+   * Note also that we do not need to hold a reference on the main
+   * context here since the GSettings instance does that for us and we
+   * will receive the weak notify long before it is dropped.  We don't
+   * even need to hold it during dispatches because our reference on the
+   * GSettings will prevent the finalize from running and dropping the
+   * ref on the context.
+   *
+   * All access to the list holds a mutex.  We have some strategies to
+   * avoid some of the pain that would be associated with that.
+   */
+  
+  watch = g_slice_new (GSettingsBackendWatch);
+  watch->context = context;
+  watch->target = target;
+  g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
+
+  watch->changed = changed;
+  watch->path_changed = path_changed;
+  watch->keys_changed = keys_changed;
+  watch->writable_changed = writable_changed;
+  watch->path_writable_changed = path_writable_changed;
+
+  /* linked list prepend */
+  g_static_mutex_lock (&backend->priv->lock);
+  watch->next = backend->priv->watches;
+  backend->priv->watches = watch;
+  g_static_mutex_unlock (&backend->priv->lock);
+}
+
+void
+g_settings_backend_unwatch (GSettingsBackend *backend,
+                            GObject          *target)
+{
+  /* Our caller surely owns a reference on 'target', so the order of
+   * these two calls is unimportant.
+   */
+  g_object_weak_unref (target, g_settings_backend_watch_weak_notify, backend);
+  g_settings_backend_watch_weak_notify (backend, target);
+}
 
 static gboolean
 g_settings_backend_invoke_closure (gpointer user_data)
 {
   GSettingsBackendClosure *closure = user_data;
 
-  closure->function (closure->backend, closure->name,
-                     closure->data1, closure->data2, closure->data3);
+  closure->function (closure->backend, closure->target, closure->name,
+                     closure->data1, closure->data2);
 
+  closure->data1_free (closure->data1);
   g_object_unref (closure->backend);
-
-  if (closure->destroy_data1)
-    closure->destroy_data1 (closure->data1);
-
+  g_object_unref (closure->target);
   g_free (closure->name);
 
-  /* make a donation to the magazine in this thread... */
   g_slice_free (GSettingsBackendClosure, closure);
 
   return FALSE;
 }
 
+static gpointer
+pointer_id (gpointer a)
+{
+  return a;
+}
+
+static void
+pointer_ignore (gpointer a)
+{
+}
+
 static void
 g_settings_backend_dispatch_signal (GSettingsBackend *backend,
-                                    GMainContext     *context,
-                                    gpointer          function,
+                                    gsize             function_offset,
                                     const gchar      *name,
                                     gpointer          data1,
-                                    GDestroyNotify    destroy_data1,
-                                    gpointer          data2,
-                                    gpointer          data3)
+                                    GBoxedCopyFunc    data1_copy,
+                                    GBoxedFreeFunc    data1_free,
+                                    gpointer          data2)
 {
-  GSettingsBackendClosure *closure;
-  GSource *source;
+  GMainContext *context, *here_and_now;
+  GSettingsBackendWatch *watch;
 
-  /* XXX we have a rather obnoxious race condition here.
-   *
-   * In the meantime of this call being dispatched to the other thread,
-   * the GSettings instance that is pointed to by the user_data may have
-   * been freed.
-   *
-   * There are two ways of handling this:
-   *
-   *   1) Ensure that the watch is still valid by the time it arrives in
-   *      the destination thread (potentially expensive)
-   *
-   *   2) Do proper refcounting (requires changing the interface).
+  /* We need to hold the mutex here (to prevent a node from being
+   * deleted as we are traversing the list).  Since we should not
+   * re-enter user code while holding this mutex, we create a
+   * one-time-use GMainContext and populate it with the events that we
+   * would have called directly.  We dispatch these events after
+   * releasing the lock.  Note that the GObject reference is acquired on
+   * the target while holding the mutex and the mutex needs to be held
+   * as part of the destruction of any GSettings instance (via the weak
+   * reference handling).  This is the key to the safety of the whole
+   * setup.
    */
-  closure = g_slice_new (GSettingsBackendClosure);
-  closure->backend = g_object_ref (backend);
-  closure->function = function;
 
-  /* we could make more effort to share this between all of the
-   * dispatches but it seems that it might be an overall loss in terms
-   * of performance/memory use and is definitely not worth the effort.
-   */
-  closure->name = g_strdup (name);
+  if (data1_copy == NULL)
+    data1_copy = pointer_id;
 
-  /* ditto. */
-  closure->data1 = data1;
-  closure->destroy_data1 = destroy_data1;
+  if (data1_free == NULL)
+    data1_free = pointer_ignore;
+ 
+  context = g_settings_backend_get_active_context ();
+  here_and_now = g_main_context_new ();
 
-  closure->data2 = data2;
-  closure->data3 = data3;
+  /* traverse the (immutable while holding lock) list */
+  g_static_mutex_lock (&backend->priv->lock);
+  for (watch = backend->priv->watches; watch; watch = watch->next)
+    {
+      GSettingsBackendClosure *closure;
+      GSource *source;
 
-  source = g_idle_source_new ();
-  g_source_set_callback (source,
-                         g_settings_backend_invoke_closure,
-                         closure, NULL);
-  g_source_attach (source, context);
-  g_source_unref (source);
+      closure = g_slice_new (GSettingsBackendClosure);
+      closure->backend = g_object_ref (backend);
+      closure->target = g_object_ref (watch->target);
+      closure->function = G_STRUCT_MEMBER (void *, watch, function_offset);
+      closure->name = g_strdup (name);
+      closure->data1 = data1_copy (data1);
+      closure->data1_free = data1_free;
+      closure->data2 = data2;
+
+      source = g_idle_source_new ();
+      g_source_set_priority (source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (source,
+                             g_settings_backend_invoke_closure,
+                             closure, NULL);
+
+      if (watch->context && watch->context != context)
+        g_source_attach (source, watch->context);
+      else
+        g_source_attach (source, here_and_now);
+
+      g_source_unref (source);
+    }
+  g_static_mutex_unlock (&backend->priv->lock);
+
+  while (g_main_context_iteration (here_and_now, FALSE));
+  g_main_context_unref (here_and_now);
 }
 
 /**
@@ -344,21 +432,13 @@ g_settings_backend_changed (GSettingsBackend *backend,
                             const gchar      *key,
                             gpointer          origin_tag)
 {
-  GSettingsBackendWatch *watch;
-  GMainContext *context;
-
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_key (key));
 
-  context = g_settings_backend_get_active_context ();
-
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    if (watch->context == context || watch->context == NULL)
-      watch->changed (backend, key, origin_tag, watch->user_data);
-    else
-      g_settings_backend_dispatch_signal (backend, watch->context,
-                                          watch->changed, key, origin_tag,
-                                          NULL, watch->user_data, NULL);
+  g_settings_backend_dispatch_signal (backend,
+                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                                       changed),
+                                      key, origin_tag, NULL, NULL, NULL);
 }
 
 /**
@@ -398,14 +478,19 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
                                  gchar const * const *items,
                                  gpointer             origin_tag)
 {
-  GSettingsBackendWatch *watch;
-
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
-  g_return_if_fail (path[0] == '\0' || is_path (path));
+  g_return_if_fail (is_path (path));
+
+  /* XXX: should do stricter checking (ie: inspect each item) */
   g_return_if_fail (items != NULL);
 
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, path, items, origin_tag, watch->user_data);
+  g_settings_backend_dispatch_signal (backend,
+                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                                       keys_changed),
+                                      path, (gpointer) items,
+                                      (GBoxedCopyFunc) g_strdupv,
+                                      (GBoxedFreeFunc) g_strfreev,
+                                      origin_tag);
 }
 
 /**
@@ -443,13 +528,13 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
                                  const gchar      *path,
                                  gpointer          origin_tag)
 {
-  GSettingsBackendWatch *watch;
-
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_path (path));
 
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->path_changed (backend, path, origin_tag, watch->user_data);
+  g_settings_backend_dispatch_signal (backend,
+                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                                       path_changed),
+                                      path, origin_tag, NULL, NULL, NULL);
 }
 
 /**
@@ -468,13 +553,13 @@ void
 g_settings_backend_writable_changed (GSettingsBackend *backend,
                                      const gchar      *key)
 {
-  GSettingsBackendWatch *watch;
-
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_key (key));
 
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->writable_changed (backend, key, watch->user_data);
+  g_settings_backend_dispatch_signal (backend,
+                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                                       writable_changed),
+                                      key, NULL, NULL, NULL, NULL);
 }
 
 /**
@@ -494,13 +579,13 @@ void
 g_settings_backend_path_writable_changed (GSettingsBackend *backend,
                                           const gchar      *path)
 {
-  GSettingsBackendWatch *watch;
-
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_path (path));
 
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->path_writable_changed (backend, path, watch->user_data);
+  g_settings_backend_dispatch_signal (backend,
+                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                                       path_writable_changed),
+                                      path, NULL, NULL, NULL, NULL);
 }
 
 typedef struct
@@ -636,7 +721,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   g_settings_backend_flatten_tree (tree, &path, &keys, NULL);
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, path, keys, origin_tag, watch->user_data);
+    watch->keys_changed (backend, watch->target, path, keys, origin_tag);
 
   g_free (path);
   g_free (keys);
@@ -866,9 +951,11 @@ g_settings_backend_finalize (GObject *object)
 {
   GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
 
+  g_static_mutex_unlock (&backend->priv->lock);
   g_free (backend->priv->context);
 
-  G_OBJECT_CLASS (g_settings_backend_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_settings_backend_parent_class)
+    ->finalize (object);
 }
 
 static void
@@ -883,6 +970,7 @@ g_settings_backend_init (GSettingsBackend *backend)
   backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
                                                G_TYPE_SETTINGS_BACKEND,
                                                GSettingsBackendPrivate);
+  g_static_mutex_init (&backend->priv->lock);
 }
 
 static void

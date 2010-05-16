@@ -27,37 +27,37 @@
 #include "gsettingsbackend.h"
 
 typedef void          (*GSettingsBackendChangedFunc)                    (GSettingsBackend    *backend,
+                                                                         GObject             *target,
                                                                          const gchar         *key,
-                                                                         gpointer             origin_tag,
-                                                                         gpointer             user_data);
+                                                                         gpointer             origin_tag);
 typedef void          (*GSettingsBackendPathChangedFunc)                (GSettingsBackend    *backend,
+                                                                         GObject             *target,
                                                                          const gchar         *path,
-                                                                         gpointer             origin_tag,
-                                                                         gpointer             user_data);
+                                                                         gpointer             origin_tag);
 typedef void          (*GSettingsBackendKeysChangedFunc)                (GSettingsBackend    *backend,
+                                                                         GObject             *target,
                                                                          const gchar         *prefix,
                                                                          const gchar * const *names,
-                                                                         gpointer             origin_tag,
-                                                                         gpointer             user_data);
+                                                                         gpointer             origin_tag);
 typedef void          (*GSettingsBackendWritableChangedFunc)            (GSettingsBackend    *backend,
-                                                                         const gchar         *key,
-                                                                         gpointer             user_data);
+                                                                         GObject             *target,
+                                                                         const gchar         *key);
 typedef void          (*GSettingsBackendPathWritableChangedFunc)        (GSettingsBackend    *backend,
-                                                                         const gchar         *path,
-                                                                         gpointer             user_data);
+                                                                         GObject             *target,
+                                                                         const gchar         *path);
 
 G_GNUC_INTERNAL
 void                    g_settings_backend_watch                        (GSettingsBackend                        *backend,
+                                                                         GObject                                 *target,
                                                                          GMainContext                            *context,
                                                                          GSettingsBackendChangedFunc              changed,
                                                                          GSettingsBackendPathChangedFunc          path_changed,
                                                                          GSettingsBackendKeysChangedFunc          keys_changed,
                                                                          GSettingsBackendWritableChangedFunc      writable_changed,
-                                                                         GSettingsBackendPathWritableChangedFunc  path_writable_changed,
-                                                                         gpointer                                 user_data);
+                                                                         GSettingsBackendPathWritableChangedFunc  path_writable_changed);
 G_GNUC_INTERNAL
 void                    g_settings_backend_unwatch                      (GSettingsBackend                     *backend,
-                                                                         gpointer                              user_data);
+                                                                         GObject                              *target);
 
 G_GNUC_INTERNAL
 gboolean                        g_settings_backend_supports_context     (const gchar                          *context);

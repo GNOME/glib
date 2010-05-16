@@ -199,11 +199,11 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
 /* change notification */
 static void
 delayed_backend_changed (GSettingsBackend *backend,
+                         GObject          *target,
                          const gchar      *key,
-                         gpointer          origin_tag,
-                         gpointer          user_data)
+                         gpointer          origin_tag)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
 
   if (origin_tag != delayed->priv)
     g_settings_backend_changed (G_SETTINGS_BACKEND (delayed),
@@ -212,12 +212,12 @@ delayed_backend_changed (GSettingsBackend *backend,
 
 static void
 delayed_backend_keys_changed (GSettingsBackend    *backend,
+                              GObject             *target,
                               const gchar         *path,
                               const gchar * const *items,
-                              gpointer             origin_tag,
-                              gpointer             user_data)
+                              gpointer             origin_tag)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
 
   if (origin_tag != delayed->priv)
     g_settings_backend_keys_changed (G_SETTINGS_BACKEND (delayed),
@@ -225,12 +225,12 @@ delayed_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 static void
-delayed_backend_path_changed (GSettingsBackend    *backend,
-                              const gchar         *path,
-                              gpointer             origin_tag,
-                              gpointer             user_data)
+delayed_backend_path_changed (GSettingsBackend *backend,
+                              GObject          *target,
+                              const gchar      *path,
+                              gpointer          origin_tag)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
 
   if (origin_tag != delayed->priv)
     g_settings_backend_path_changed (G_SETTINGS_BACKEND (delayed),
@@ -239,10 +239,10 @@ delayed_backend_path_changed (GSettingsBackend    *backend,
 
 static void
 delayed_backend_writable_changed (GSettingsBackend *backend,
-                                  const gchar      *key,
-                                  gpointer          user_data)
+                                  GObject          *target,
+                                  const gchar      *key)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
 
   if (g_tree_lookup (delayed->priv->delayed, key) &&
       !g_settings_backend_get_writable (delayed->priv->backend, key))
@@ -285,10 +285,10 @@ check_prefix (gpointer key,
 
 static void
 delayed_backend_path_writable_changed (GSettingsBackend *backend,
-                                       const gchar      *path,
-                                       gpointer          user_data)
+                                       GObject          *target,
+                                       const gchar      *path)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (user_data);
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
   gsize n_keys;
 
   n_keys = g_tree_nnodes (delayed->priv->delayed);
@@ -323,7 +323,6 @@ g_delayed_settings_backend_finalize (GObject *object)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
-  g_settings_backend_unwatch (delayed->priv->backend, delayed);
   g_object_unref (delayed->priv->backend);
 }
 
@@ -367,13 +366,12 @@ g_delayed_settings_backend_new (GSettingsBackend *backend,
   delayed->priv->backend = g_object_ref (backend);
   delayed->priv->owner = owner;
 
-  g_settings_backend_watch (delayed->priv->backend, NULL,
+  g_settings_backend_watch (delayed->priv->backend, G_OBJECT (delayed), NULL,
                             delayed_backend_changed,
                             delayed_backend_path_changed,
                             delayed_backend_keys_changed,
                             delayed_backend_writable_changed,
-                            delayed_backend_path_writable_changed,
-                            delayed);
+                            delayed_backend_path_writable_changed);
 
   return delayed;
 }

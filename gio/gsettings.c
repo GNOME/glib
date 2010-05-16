@@ -224,11 +224,11 @@ g_settings_real_writable_change_event (GSettings *settings,
 
 static void
 settings_backend_changed (GSettingsBackend    *backend,
+                          GObject             *target,
                           const gchar         *key,
-                          gpointer             origin_tag,
-                          gpointer             user_data)
+                          gpointer             origin_tag)
 {
-  GSettings *settings = G_SETTINGS (user_data);
+  GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
   gint i;
 
@@ -249,11 +249,11 @@ settings_backend_changed (GSettingsBackend    *backend,
 
 static void
 settings_backend_path_changed (GSettingsBackend *backend,
+                               GObject          *target,
                                const gchar      *path,
-                               gpointer          origin_tag,
-                               gpointer          user_data)
+                               gpointer          origin_tag)
 {
-  GSettings *settings = G_SETTINGS (user_data);
+  GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
 
   g_assert (settings->priv->backend == backend);
@@ -265,12 +265,12 @@ settings_backend_path_changed (GSettingsBackend *backend,
 
 static void
 settings_backend_keys_changed (GSettingsBackend    *backend,
+                               GObject             *target,
                                const gchar         *path,
                                const gchar * const *items,
-                               gpointer             origin_tag,
-                               gpointer             user_data)
+                               gpointer             origin_tag)
 {
-  GSettings *settings = G_SETTINGS (user_data);
+  GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
   gint i;
 
@@ -309,10 +309,10 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
 
 static void
 settings_backend_writable_changed (GSettingsBackend *backend,
-                                   const gchar      *key,
-                                   gpointer          user_data)
+                                   GObject          *target,
+                                   const gchar      *key)
 {
-  GSettings *settings = G_SETTINGS (user_data);
+  GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
   gint i;
 
@@ -328,10 +328,10 @@ settings_backend_writable_changed (GSettingsBackend *backend,
 
 static void
 settings_backend_path_writable_changed (GSettingsBackend *backend,
-                                        const gchar      *path,
-                                        gpointer          user_data)
+                                        GObject          *target,
+                                        const gchar      *path)
 {
-  GSettings *settings = G_SETTINGS (user_data);
+  GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
 
   g_assert (settings->priv->backend == backend);
@@ -365,14 +365,13 @@ g_settings_constructed (GObject *object)
     }
 
   settings->priv->backend = g_settings_backend_get_with_context (settings->priv->context);
-  g_settings_backend_watch (settings->priv->backend,
+  g_settings_backend_watch (settings->priv->backend, G_OBJECT (settings),
                             settings->priv->main_context,
                             settings_backend_changed,
                             settings_backend_path_changed,
                             settings_backend_keys_changed,
                             settings_backend_writable_changed,
-                            settings_backend_path_writable_changed,
-                            settings);
+                            settings_backend_path_writable_changed);
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
 }
@@ -412,18 +411,17 @@ g_settings_delay (GSettings *settings)
 
   settings->priv->delayed =
     g_delayed_settings_backend_new (settings->priv->backend, settings);
-  g_settings_backend_unwatch (settings->priv->backend, settings);
+  g_settings_backend_unwatch (settings->priv->backend, G_OBJECT (settings));
   g_object_unref (settings->priv->backend);
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
-  g_settings_backend_watch (settings->priv->backend,
+  g_settings_backend_watch (settings->priv->backend, G_OBJECT (settings),
                             settings->priv->main_context,
                             settings_backend_changed,
                             settings_backend_path_changed,
                             settings_backend_keys_changed,
                             settings_backend_writable_changed,
-                            settings_backend_path_writable_changed,
-                            settings);
+                            settings_backend_path_writable_changed);
 }
 
 /**
@@ -546,7 +544,6 @@ g_settings_finalize (GObject *object)
 {
   GSettings *settings = G_SETTINGS (object);
 
-  g_settings_backend_unwatch (settings->priv->backend, settings);
   g_settings_backend_unsubscribe (settings->priv->backend,
                                   settings->priv->path);
   g_main_context_unref (settings->priv->main_context);
