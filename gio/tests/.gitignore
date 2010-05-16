@@ -1,3 +1,4 @@
+async-close-output-stream
 buffered-input-stream
 connectable
 contexts
@@ -12,6 +13,26 @@ filter-streams
 g-file
 g-file-info
 g-icon
+gdbus-addresses
+gdbus-connection
+gdbus-error
+gdbus-example-export
+gdbus-example-own-name
+gdbus-example-peer
+gdbus-example-proxy-subclass
+gdbus-example-server
+gdbus-example-subtree
+gdbus-example-unix-fd-client
+gdbus-example-watch-name
+gdbus-example-watch-proxy
+gdbus-exit-on-close
+gdbus-export
+gdbus-introspection
+gdbus-names
+gdbus-peer
+gdbus-proxy
+gdbus-serialization
+gdbus-threading
 gschemas.compiled
 gsettings
 gsettings.store
@@ -30,4 +51,4 @@ srvtarget
 test.mo
 unix-fd
 unix-streams
-utf8-input-stream
+utf8-input-streamgdbus-addresses

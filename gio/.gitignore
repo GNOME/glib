@@ -5,4 +5,5 @@ gioenumtypes.[ch]
 gioalias.h
 gioaliasdef.c
 glib-compile-schemas
+gdbus
 gsettings
