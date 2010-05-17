@@ -1047,7 +1047,7 @@ dump_interface (GDBusConnection          *c,
                                       (GDestroyNotify) g_variant_unref);
 
   /* Try to get properties */
-  if (c != NULL && name != NULL && object_path != NULL)
+  if (c != NULL && name != NULL && object_path != NULL && o->properties != NULL)
     {
       GVariant *result;
       result = g_dbus_connection_call_sync (c,
