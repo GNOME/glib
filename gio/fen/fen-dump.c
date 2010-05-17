@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,9 +26,6 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include "fen-node.h"
-#include "fen-data.h"
-#include "fen-kernel.h"
-#include "fen-missing.h"
 #include "fen-dump.h"
 
 G_LOCK_EXTERN (fen_lock);
@@ -37,25 +34,16 @@ G_LOCK_EXTERN (fen_lock);
 static void
 dump_node (node_t* node, gpointer data)
 {
-    if (data && node->user_data) {
-        return;
-    }
-    g_printf ("[%s] < 0x%p : 0x%p > %s\n", __func__, node, node->user_data, NODE_NAME(node));
+    g_printf ("n:0x%p ds:0x%p s:0x%p %s\n", node, node->dir_subs, node->subs, NODE_NAME(node));
 }
 
-static gboolean
-dump_node_tree (node_t* node, gpointer user_data)
+static void
+dump_tree (node_t* node)
 {
-    node_op_t op = {dump_node, NULL, NULL, user_data};
-    GList* children;
-    GList* i;
     if (G_TRYLOCK (fen_lock)) {
-        if (node) {
-            _travel_nodes (node, &op);
-        }
+        node_traverse(NULL, dump_node, NULL);
         G_UNLOCK (fen_lock);
     }
-    return TRUE;
 }
 
 /* ------------------ fdata port hash --------------------*/
@@ -64,7 +52,7 @@ dump_hash_cb (gpointer key,
   gpointer value,
   gpointer user_data)
 {
-    g_printf ("[%s] < 0x%p : 0x%p >\n", __func__, key, value);
+    g_printf ("k:0x%p v:0x%p >\n", key, value);
 }
 
 gboolean
@@ -81,20 +69,9 @@ dump_hash (GHashTable* hash, gpointer user_data)
 
 /* ------------------ event --------------------*/
 void
-dump_event (fnode_event_t* ev, gpointer user_data)
+dump_event (node_event_t* ev, gpointer user_data)
 {
-    fdata* data = ev->user_data;
-    g_printf ("[%s] < 0x%p : 0x%p > [ %10s ] %s\n", __func__, ev, ev->user_data, _event_string (ev->e), FN_NAME(data));
-}
-
-void
-dump_event_queue (fdata* data, gpointer user_data)
-{
-    if (G_TRYLOCK (fen_lock)) {
-        if (data->eventq) {
-            g_queue_foreach (data->eventq, (GFunc)dump_event, user_data);
-        }
-        G_UNLOCK (fen_lock);
-    }
+    node_t* node = ev->user_data;
+    g_printf ("ne:0x%p e:%p n:0x%p ds:0x%p s:0x%p s\n", ev, ev->e, node, node->dir_subs, node->subs, NODE_NAME(node));
 }
 

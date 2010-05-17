@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,33 +22,22 @@
  * Authors: Lin Ma <lin.ma@sun.com>
  */
 
-#include <port.h>
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <errno.h>
+
+#include "fen-node.h"
 
 #ifndef _FEN_KERNEL_H_
 #define _FEN_KERNEL_H_
 
-#define FN_STAT	lstat
+#define CONCERNED_EVENTS (FILE_MODIFIED | FILE_ATTRIB | FILE_NOFOLLOW)
+#define EXCEPTION_EVENTS (FILE_DELETE | FILE_RENAME_FROM)
+#define HAS_EXCEPTION_EVENTS(e) ((e & EXCEPTION_EVENTS) != 0)
+#define HAS_NO_EXCEPTION_EVENTS(e) ((e & EXCEPTION_EVENTS) == 0)
 
-typedef struct fnode_event
-{
-    int e;
-    gboolean has_twin;
-    gboolean is_pending;
-    gpointer user_data;
-    GTimeVal t;
-} fnode_event_t;
+gint port_add (node_t* f);
+void port_remove (node_t *f);
 
-gboolean _port_add (file_obj_t* fobj, off_t* len, gpointer f);
-gboolean _port_add_simple (file_obj_t* fobj, gpointer f);
-void _port_remove (gpointer f);
-gboolean _is_ported (gpointer f);
-
-fnode_event_t* _fnode_event_new (int event, gboolean has_twin, gpointer user_data);
-void _fnode_event_delete (fnode_event_t* ev);
-const gchar * _event_string (int event);
-
-extern gboolean _port_class_init ();
+gboolean port_class_init ();
 
 #endif /* _FEN_KERNEL_H_ */

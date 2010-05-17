@@ -4,8 +4,8 @@
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2007 Sebastian Dröge.
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,7 @@
 struct _GFenFileMonitor
 {
     GLocalFileMonitor parent_instance;
-    fen_sub* sub;
+    gboolean enabled;
 };
 
 static gboolean g_fen_file_monitor_cancel (GFileMonitor* monitor);
@@ -55,12 +55,11 @@ G_DEFINE_TYPE_WITH_CODE (GFenFileMonitor, g_fen_file_monitor, G_TYPE_LOCAL_FILE_
 static void
 g_fen_file_monitor_finalize (GObject *object)
 {
-	GFenFileMonitor *self = G_FEN_FILE_MONITOR (object);
+    GFenFileMonitor *self = G_FEN_FILE_MONITOR (object);
     
-    if (self->sub) {
-        _fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
-        _fen_sub_delete (self->sub);
-        self->sub = NULL;
+    if (self->enabled) {
+        fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self, FALSE);
+        self->enabled = FALSE;
     }
     
     if (G_OBJECT_CLASS (g_fen_file_monitor_parent_class)->finalize)
@@ -92,15 +91,13 @@ g_fen_file_monitor_constructor (GType type,
 
     /* Will never fail as is_supported() should be called before instanciating
      * anyway */
-    if (!_fen_init ())
+    if (!fen_init ())
         g_assert_not_reached ();
     
     /* FIXME: what to do about errors here? we can't return NULL or another
      * kind of error and an assertion is probably too hard */
-    self->sub = _fen_sub_new (self, FALSE);
-    g_assert (self->sub);
-    
-    _fen_add (filename, self->sub, FALSE);
+    fen_add (filename, self, FALSE);
+    self->enabled = TRUE;
 
     return obj;
 }
@@ -108,7 +105,7 @@ g_fen_file_monitor_constructor (GType type,
 static gboolean
 g_fen_file_monitor_is_supported (void)
 {
-	return _fen_init ();
+    return fen_init ();
 }
 
 static void
@@ -135,10 +132,9 @@ g_fen_file_monitor_cancel (GFileMonitor* monitor)
 {
     GFenFileMonitor *self = G_FEN_FILE_MONITOR (monitor);
     
-    if (self->sub) {
-        _fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self->sub, FALSE);
-        _fen_sub_delete (self->sub);
-        self->sub = NULL;
+    if (self->enabled) {
+        fen_remove (G_LOCAL_FILE_MONITOR (self)->filename, self, FALSE);
+        self->enabled = FALSE;
     }
     
     if (G_FILE_MONITOR_CLASS (g_fen_file_monitor_parent_class)->cancel)

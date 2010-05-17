@@ -4,8 +4,8 @@
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2007 Sebastian Dröge.
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,9 +39,8 @@
 
 struct _GFenDirectoryMonitor
 {
-	GLocalDirectoryMonitor parent_instance;
-    gboolean cancelled;
-    fen_sub* sub;
+    GLocalDirectoryMonitor parent_instance;
+    gboolean enabled;
 };
 
 static gboolean g_fen_directory_monitor_cancel (GFileMonitor* monitor);
@@ -56,16 +55,15 @@ G_DEFINE_TYPE_WITH_CODE (GFenDirectoryMonitor, g_fen_directory_monitor, G_TYPE_L
 static void
 g_fen_directory_monitor_finalize (GObject *object)
 {
-	GFenDirectoryMonitor *self = G_FEN_DIRECTORY_MONITOR (object);
+    GFenDirectoryMonitor *self = G_FEN_DIRECTORY_MONITOR (object);
     
-    if (self->sub) {
-        _fen_remove (G_LOCAL_DIRECTORY_MONITOR (self)->dirname, self->sub, TRUE);
-        _fen_sub_delete (self->sub);
-        self->sub = NULL;
+    if (self->enabled) {
+        fen_remove (G_LOCAL_DIRECTORY_MONITOR (self)->dirname, self, TRUE);
+        self->enabled = FALSE;
     }
 
-	if (G_OBJECT_CLASS (g_fen_directory_monitor_parent_class)->finalize)
-		(*G_OBJECT_CLASS (g_fen_directory_monitor_parent_class)->finalize) (object);
+    if (G_OBJECT_CLASS (g_fen_directory_monitor_parent_class)->finalize)
+        (*G_OBJECT_CLASS (g_fen_directory_monitor_parent_class)->finalize) (object);
 }
 
 static GObject *
@@ -73,57 +71,55 @@ g_fen_directory_monitor_constructor (GType type,
   guint n_construct_properties,
   GObjectConstructParam *construct_properties)
 {
-	GObject *obj;
-	GFenDirectoryMonitorClass *klass;
-	GObjectClass *parent_class;
-	GFenDirectoryMonitor *self;
-	const gchar *dirname = NULL;
+    GObject *obj;
+    GFenDirectoryMonitorClass *klass;
+    GObjectClass *parent_class;
+    GFenDirectoryMonitor *self;
+    const gchar *dirname = NULL;
   
-	klass = G_FEN_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_FEN_DIRECTORY_MONITOR));
-	parent_class = g_fen_directory_monitor_parent_class;
-	obj = parent_class->constructor (type,
+    klass = G_FEN_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_FEN_DIRECTORY_MONITOR));
+    parent_class = g_fen_directory_monitor_parent_class;
+    obj = parent_class->constructor (type,
       n_construct_properties,
       construct_properties);
 
-	self = G_FEN_DIRECTORY_MONITOR (obj);
+    self = G_FEN_DIRECTORY_MONITOR (obj);
 
-	dirname = G_LOCAL_DIRECTORY_MONITOR (self)->dirname;
-	g_assert (dirname != NULL);
+    dirname = G_LOCAL_DIRECTORY_MONITOR (self)->dirname;
+    g_assert (dirname != NULL);
 
-	/* Will never fail as is_supported() should be called before instanciating
-	 * anyway */
-    if (!_fen_init ())
+    /* Will never fail as is_supported() should be called before instanciating
+     * anyway */
+    if (!fen_init ())
         g_assert_not_reached ();
 
-	/* FIXME: what to do about errors here? we can't return NULL or another
-	 * kind of error and an assertion is probably too hard */
-    self->sub = _fen_sub_new (self, TRUE);
-    g_assert (self->sub);
-    
-    _fen_add (dirname, self->sub, TRUE);
+    /* FIXME: what to do about errors here? we can't return NULL or another
+     * kind of error and an assertion is probably too hard */
+    fen_add (dirname, self, TRUE);
+    self->enabled = TRUE;
 
-	return obj;
+    return obj;
 }
 
 static gboolean
 g_fen_directory_monitor_is_supported (void)
 {
-	return _fen_init ();
+    return fen_init ();
 }
 
 static void
 g_fen_directory_monitor_class_init (GFenDirectoryMonitorClass* klass)
 {
-	GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-	GFileMonitorClass *directory_monitor_class = G_FILE_MONITOR_CLASS (klass);
-	GLocalDirectoryMonitorClass *local_directory_monitor_class = G_LOCAL_DIRECTORY_MONITOR_CLASS (klass);
+    GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
+    GFileMonitorClass *directory_monitor_class = G_FILE_MONITOR_CLASS (klass);
+    GLocalDirectoryMonitorClass *local_directory_monitor_class = G_LOCAL_DIRECTORY_MONITOR_CLASS (klass);
   
-	gobject_class->finalize = g_fen_directory_monitor_finalize;
-	gobject_class->constructor = g_fen_directory_monitor_constructor;
-	directory_monitor_class->cancel = g_fen_directory_monitor_cancel;
+    gobject_class->finalize = g_fen_directory_monitor_finalize;
+    gobject_class->constructor = g_fen_directory_monitor_constructor;
+    directory_monitor_class->cancel = g_fen_directory_monitor_cancel;
 
-	local_directory_monitor_class->mount_notify = TRUE;
-	local_directory_monitor_class->is_supported = g_fen_directory_monitor_is_supported;
+    local_directory_monitor_class->mount_notify = TRUE;
+    local_directory_monitor_class->is_supported = g_fen_directory_monitor_is_supported;
 }
 
 static void
@@ -134,17 +130,16 @@ g_fen_directory_monitor_init (GFenDirectoryMonitor* monitor)
 static gboolean
 g_fen_directory_monitor_cancel (GFileMonitor* monitor)
 {
-	GFenDirectoryMonitor *self = G_FEN_DIRECTORY_MONITOR (monitor);
+    GFenDirectoryMonitor *self = G_FEN_DIRECTORY_MONITOR (monitor);
     
-    if (self->sub) {
-        _fen_remove (G_LOCAL_DIRECTORY_MONITOR (self)->dirname, self->sub, TRUE);
-        _fen_sub_delete (self->sub);
-        self->sub = NULL;
+    if (self->enabled) {
+        fen_remove (G_LOCAL_DIRECTORY_MONITOR (self)->dirname, self, TRUE);
+        self->enabled = FALSE;
     }
     
-	if (G_FILE_MONITOR_CLASS (g_fen_directory_monitor_parent_class)->cancel)
-		(*G_FILE_MONITOR_CLASS (g_fen_directory_monitor_parent_class)->cancel) (monitor);
+    if (G_FILE_MONITOR_CLASS (g_fen_directory_monitor_parent_class)->cancel)
+        (*G_FILE_MONITOR_CLASS (g_fen_directory_monitor_parent_class)->cancel) (monitor);
 
-	return TRUE;
+    return TRUE;
 }
 

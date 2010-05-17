@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,22 +23,24 @@
  */
 
 #include "config.h"
+#include <sys/stat.h>
 #include <errno.h>
 #include <strings.h>
 #include <glib.h>
+#include "fen-kernel.h"
 #include "fen-node.h"
 #include "fen-dump.h"
 
-#define	NODE_STAT(n)	(((node_t*)(n))->stat)
-
-struct _dnode {
-    gchar* filename;
-    node_op_t* op;
-    GTimeVal tv;
-};
+#ifdef GIO_COMPILATION
+#include "gfilemonitor.h"
+#else
+#include "gam_event.h"
+#include "gam_server.h"
+#include "gam_protocol.h"
+#endif
 
 #ifdef GIO_COMPILATION
-#define FN_W if (fn_debug_enabled) g_warning
+#define FN_W if (fn_debug_enabled) g_debug
 static gboolean fn_debug_enabled = FALSE;
 #else
 #include "gam_error.h"
@@ -46,50 +48,45 @@ static gboolean fn_debug_enabled = FALSE;
 #endif
 
 G_LOCK_EXTERN (fen_lock);
-#define	PROCESS_DELETING_INTERVAL	900 /* in second */
 
-static node_t* _head = NULL;
-static GList *deleting_nodes = NULL;
-static guint deleting_nodes_id = 0;
+/* Must continue monitoring if:
+ * 1) I'm subscribed,
+ * 2) The subscribed children (one of the children has subs) are missing,
+ * 3) my parent is subscribed (monitoring directory).
+ */
+#define NODE_NEED_MONITOR(f)                                            \
+    (NODE_IS_ACTIVE(f) || node_children_num(f) > 0 || NODE_IS_REQUIRED_BY_PARENT(f))
 
+static int concern_events[] = {
+    FILE_DELETE,
+    FILE_RENAME_FROM,
+    UNMOUNTED,
+    MOUNTEDOVER,
+#ifdef GIO_COMPILATION
+    FILE_MODIFIED,
+    FILE_ATTRIB,
+#else
+    FILE_MODIFIED | FILE_ATTRIB,
+#endif
+    FILE_RENAME_TO,
+};
+
+node_t *ROOT = NULL;
+
+static void node_emit_one_event(node_t *f, GList *subs, node_t *other, int event);
+static void node_emit_events(node_t *f, const node_event_t *ne);
+static int node_event_translate(int event, gboolean pair);
+static void node_add_event (node_t *f, node_event_t *ev);
 static node_t* node_new (node_t* parent, const gchar* basename);
 static void node_delete (node_t* parent);
-static gboolean remove_node_internal (node_t* node, node_op_t* op);
+static node_t* node_get_child (node_t *f, const gchar *basename);
 static void children_add (node_t *p, node_t *f);
 static void children_remove (node_t *p, node_t *f);
-static guint children_foreach_remove (node_t *f, GHRFunc func, gpointer user_data);
-static void children_foreach (node_t *f, GHFunc func, gpointer user_data);
-static gboolean children_remove_cb (gpointer key,
-  gpointer value,
-  gpointer user_data);
+static gboolean children_remove_cb (gpointer key, gpointer value, gpointer user_data);
+static guint node_children_num (node_t *f);
 
-static struct _dnode*
-_dnode_new (const gchar* filename, node_op_t* op)
-{
-    struct _dnode* d;
-
-    g_assert (op);
-    if ((d = g_new (struct _dnode, 1)) != NULL) {
-        d->filename = g_strdup (filename);
-        d->op = g_memdup (op, sizeof (node_op_t));
-        g_assert (d->op);
-        g_get_current_time (&d->tv);
-        g_time_val_add (&d->tv, PROCESS_DELETING_INTERVAL);
-    }
-    return d;
-}
-
-static void
-_dnode_free (struct _dnode* d)
-{
-    g_assert (d);
-    g_free (d->filename);
-    g_free (d->op);
-    g_free (d);
-}
-
-static gboolean
-g_timeval_lt (GTimeVal *val1, GTimeVal *val2)
+gboolean
+node_timeval_lt(const GTimeVal *val1, const GTimeVal *val2)
 {
     if (val1->tv_sec < val2->tv_sec)
         return TRUE;
@@ -104,85 +101,29 @@ g_timeval_lt (GTimeVal *val1, GTimeVal *val2)
     return FALSE;
 }
 
-static gboolean
-scan_deleting_nodes (gpointer data)
-{
-    struct _dnode* d;
-    GTimeVal tv_now;
-    GList* i;
-    GList* deleted_list = NULL;
-    gboolean ret = TRUE;
-    node_t* node;
-
-    g_get_current_time (&tv_now);
-
-    if (G_TRYLOCK (fen_lock)) {
-        for (i = deleting_nodes; i; i = i->next) {
-            d = (struct _dnode*)i->data;
-            /* Time to free, try only once */
-            if (g_timeval_lt (&d->tv, &tv_now)) {
-                if ((node = _find_node (d->filename)) != NULL) {
-                    remove_node_internal (node, d->op);
-                }
-                _dnode_free (d);
-                deleted_list = g_list_prepend (deleted_list, i);
-            }
-        }
-
-        for (i = deleted_list; i; i = i->next) {
-            deleting_nodes = g_list_remove_link (deleting_nodes,
-              (GList *)i->data);
-            g_list_free_1 ((GList *)i->data);
-        }
-        g_list_free (deleted_list);
-
-        if (deleting_nodes == NULL) {
-            deleting_nodes_id = 0;
-            ret = FALSE;
-        }
-        G_UNLOCK (fen_lock);
-    }
-    return ret;
-}
-
-gpointer
-_node_get_data (node_t* node)
-{
-    g_assert (node);
-    return node->user_data;
-}
-
-gpointer
-_node_set_data (node_t* node, gpointer user_data)
-{
-    gpointer data = node->user_data;
-    g_assert (node);
-    node->user_data = user_data;
-    return data;
-}
-
 void
-_travel_nodes (node_t* node, node_op_t* op)
+node_traverse (node_t* node, void(*traverse_cb)(node_t*, gpointer), gpointer user_data)
 {
-    GList* children;
-    GList* i;
+    GHashTableIter iter;
+    gpointer value;
+
+    g_assert(traverse_cb);
+    if (node == NULL) {
+        node = ROOT;
+    }
 
     if (node) {
-        if (op && op->hit) {
-            op->hit (node, op->user_data);
-        }
+        traverse_cb(node, user_data);
     }
-    children = g_hash_table_get_values (node->children);
-    if (children) {
-        for (i = children; i; i = i->next) {
-            _travel_nodes (i->data, op);
-        }
-        g_list_free (children);
+
+    g_hash_table_iter_init (&iter, node->children);
+    while (g_hash_table_iter_next (&iter, NULL, &value)) {
+        node_traverse((node_t *)value, traverse_cb, user_data);
     }
 }
 
-static node_t*
-find_node_internal (node_t* node, const gchar* filename, node_op_t* op)
+node_t*
+node_find(node_t* node, const gchar* filename, gboolean create_on_missing)
 {
     gchar* str;
     gchar* token;
@@ -191,166 +132,184 @@ find_node_internal (node_t* node, const gchar* filename, node_op_t* op)
     node_t* child;
     
     g_assert (filename && filename[0] == '/');
-    g_assert (node);
-    
-    parent = node;
-    str = g_strdup (filename + strlen (NODE_NAME(parent)));
-    
-    if ((token = strtok_r (str, G_DIR_SEPARATOR_S, &lasts)) != NULL) {
-        do {
-            FN_W ("%s %s + %s\n", __func__, NODE_NAME(parent), token);
-            child = _children_find (parent, token);
-            if (child) {
-                parent = child;
-            } else {
-                if (op && op->add_missing) {
-                    child = op->add_missing (parent, op->user_data);
-                    goto L_hit;
-                }
-                break;
-            }
-        } while ((token = strtok_r (NULL, G_DIR_SEPARATOR_S, &lasts)) != NULL);
-    } else {
-        /* It's the head */
-        g_assert (parent == _head);
-        child = _head;
+
+    if (node == NULL) {
+        node = ROOT;
     }
     
-    if (token == NULL && child) {
-    L_hit:
-        if (op && op->hit) {
-            op->hit (child, op->user_data);
+    FN_W ("%s %s\n", __func__, filename);
+
+    parent = child = node;
+    str = g_strdup (filename);
+    
+    for (token = strtok_r (str, G_DIR_SEPARATOR_S, &lasts);
+         token != NULL && child != NULL;
+         token = strtok_r (NULL, G_DIR_SEPARATOR_S, &lasts)) {
+        FN_W ("%s %s + %s\n", __func__, NODE_NAME(parent), token);
+        child = node_get_child(parent, token);
+        if (child) {
+            parent = child;
+        } else if (create_on_missing) {
+            child = node_new (parent, token);
+            if (child) {
+                children_add (parent, child);
+                parent = child;
+                continue;
+            } else {
+                FN_W ("%s create %s failed", __func__, token);
+            }
+        } else {
+            break;
         }
     }
+    
     g_free (str);
     return child;
 }
 
 node_t*
-_find_node (const gchar *filename)
+node_find_accessible_ancestor(node_t* node)
 {
-    return find_node_internal (_head, filename, NULL);
+    for (node = NODE_PARENT(node); node != ROOT; node = NODE_PARENT(node)) {
+        if (NODE_HAS_STATE(node, NODE_STATE_ASSOCIATED) || node_lstat(node) == 0) {
+            return node;
+        }
+        /* else it isn't existing or not accessible */
+    }
+    g_assert(node);
+    return node;
 }
 
-node_t*
-_find_node_full (const gchar* filename, node_op_t* op)
+gint
+node_lstat(node_t *f)
 {
-    return find_node_internal (_head, filename, op);
-}
+    struct stat buf;
 
-node_t*
-_add_node (node_t* parent, const gchar* filename)
-{
-    gchar* str;
-    gchar* token;
-    gchar* lasts;
-    node_t* child = NULL;
+    g_assert(!NODE_HAS_STATE(f, NODE_STATE_ASSOCIATED));
 
-    g_assert (_head);
-    g_assert (filename && filename[0] == '/');
-
-    if (parent == NULL) {
-        parent = _head;
-    }
-    
-    str = g_strdup (filename + strlen (NODE_NAME(parent)));
-    
-    if ((token = strtok_r (str, G_DIR_SEPARATOR_S, &lasts)) != NULL) {
-        do {
-            FN_W ("%s %s + %s\n", __func__, NODE_NAME(parent), token);
-            child = node_new (parent, token);
-            if (child) {
-                children_add (parent, child);
-                parent = child;
-            } else {
-                break;
-            }
-        } while ((token = strtok_r (NULL, G_DIR_SEPARATOR_S, &lasts)) != NULL);
-    }
-    g_free (str);
-    if (token == NULL) {
-        return child;
+    if (lstat(NODE_NAME(f), &buf) == 0) {
+        FN_W ("%s %s\n", __func__, NODE_NAME(f));
+        FILE_OBJECT(f)->fo_atime = buf.st_atim;
+        FILE_OBJECT(f)->fo_mtime = buf.st_mtim;
+        FILE_OBJECT(f)->fo_ctime = buf.st_ctim;
+        NODE_SET_FLAG(f, NODE_FLAG_STAT_UPDATED |
+          (S_ISDIR (buf.st_mode) ? NODE_FLAG_DIR : NODE_FLAG_NONE));
+        return 0;
     } else {
-        return NULL;
+        FN_W ("%s(lstat) %s %s\n", __func__, NODE_NAME(f), g_strerror (errno));
+    }
+    return errno;
+}
+
+void
+node_create_children_snapshot(node_t *f, gint created_event, gboolean emit)
+{
+	GDir *dir;
+	GError *err = NULL;
+    
+    FN_W ("%s %s [0x%p]\n", __func__, NODE_NAME(f), f);
+
+    dir = g_dir_open (NODE_NAME(f), 0, &err);
+    if (dir) {
+        const char *basename;
+        node_t *child = NULL;
+        
+        while ((basename = g_dir_read_name (dir))) {
+            node_t* data;
+            GList *idx;
+
+            child = node_get_child (f, basename);
+            if (child == NULL) {
+                gchar *filename;
+            
+                child = node_new (f, basename);
+                children_add (f, child);
+            }
+
+            if (f->dir_subs) {
+                /* We need monitor the new children, or the existed child which
+                 * is in the DELETED mode.
+                 */
+                if (!NODE_HAS_STATE(child, NODE_STATE_ASSOCIATED) &&
+                  node_lstat(child) == 0 && port_add(child) == 0) {
+                    if (emit) {
+                        /* Emit the whatever event for the new found file. */
+                        node_emit_one_event(child, child->dir_subs, NULL, created_event);
+                        node_emit_one_event(child, child->subs, NULL, created_event);
+                        node_emit_one_event(child, f->dir_subs, NULL, created_event);
+                        node_emit_one_event(child, f->subs, NULL, created_event);
+                    }
+                }
+                /* else ignore, because it may be deleted. */
+            }
+        }
+        g_dir_close (dir);
+
+        /* We have finished children snapshot. Any other new added subs should
+         * directory iterate the snapshot instead of scan directory again.
+         */
+        NODE_SET_FLAG(f, NODE_FLAG_SNAPSHOT_UPDATED);
+
+    } else {
+        FN_W (err->message);
+        g_error_free (err);
     }
 }
 
-/*
- * delete recursively
+/**
+ * If all active children nodes are ported, then cancel monitor the parent
+ * node. If we know how many children are created, then we can stop accordingly.
+ *
+ * Unsafe, need lock. 
  */
-static gboolean
-remove_children (node_t* node, node_op_t* op)
+static void
+foreach_known_children_scan(gpointer key, gpointer value, gpointer user_data)
 {
-    FN_W ("%s 0x%p %s\n", __func__, node, NODE_NAME(node));
-    if (_children_num (node) > 0) {
-        children_foreach_remove (node, children_remove_cb,
-          (gpointer)op);
+    node_t* f = (node_t*)value;
+    
+    FN_W ("%s 0x%p %s\n", __func__, f, NODE_NAME(f));
+
+    if (!NODE_HAS_STATE(f, NODE_STATE_ASSOCIATED)) {
+        if (node_lstat(f) == 0 && port_add(f) == 0) {
+            node_emit_one_event(f, f->dir_subs, NULL, FN_EVENT_CREATED);
+            node_emit_one_event(f, f->subs, NULL, FN_EVENT_CREATED);
+            if (NODE_PARENT(f)) {
+                node_emit_one_event(f, NODE_PARENT(f)->dir_subs, NULL, FN_EVENT_CREATED);
+                node_emit_one_event(f, NODE_PARENT(f)->subs, NULL, FN_EVENT_CREATED);
+            }
+        }
     }
-    if (_children_num (node) == 0) {
-        return TRUE;
+}
+
+gboolean
+node_try_delete(node_t* node)
+{
+    g_assert (node);
+
+    FN_W ("%s 0x%p %s\n", __func__, node, NODE_NAME(node));
+
+    /* Try clean children */
+    if (node_children_num (node) > 0) {
+        g_hash_table_foreach_remove(node->children, children_remove_cb, NULL);
+    }
+    if (!NODE_NEED_MONITOR(node)) {
+        /* Clean some flags. */
+        /* NODE_CLE_FLAG(node, NODE_FLAG_HAS_SNAPSHOT | NODE_FLAG_STAT_DONE); */
+        node->flag = 0;
+
+        /* Now we handle the state. */
+        if (NODE_HAS_STATE(node, NODE_STATE_ASSOCIATED)) {
+            port_remove(node);
+        }
+        /* Actually ignore the ROOT node. */
+        if (node->state == 0 && NODE_PARENT(node)) {
+            children_remove(NODE_PARENT(node), node);
+            /* Do clean instead of returning TRUE. */
+            node_delete (node);
+        }
+        /* else, we have events, clean event queue? */
     }
     return FALSE;
-}
-
-static gboolean
-remove_node_internal (node_t* node, node_op_t* op)
-{
-    node_t* parent = NULL;
-    /*
-     * If the parent is passive and doesn't have children, delete it.
-     * NOTE node_delete_deep is a depth first delete recursively.
-     * Top node is deleted in node_cancel_sub
-     */
-    g_assert (node);
-    g_assert (op && op->pre_del);
-    if (node != _head) {
-        if (remove_children (node, op)) {
-            if (node->user_data) {
-                if (!op->pre_del (node, op->user_data)) {
-                    return FALSE;
-                }
-            }
-            parent = node->parent;
-            children_remove (parent, node);
-            node_delete (node);
-            if (_children_num (parent) == 0) {
-                remove_node_internal (parent, op);
-            }
-            return TRUE;
-        }
-        return FALSE;
-    }
-    return TRUE;
-}
-
-void
-_pending_remove_node (node_t* node, node_op_t* op)
-{
-    struct _dnode* d;
-    GList* l;
-    
-    for (l = deleting_nodes; l; l=l->next) {
-        d = (struct _dnode*) l->data;
-        if (g_ascii_strcasecmp (d->filename, NODE_NAME(node)) == 0) {
-            return;
-        }
-    }
-    
-    d = _dnode_new (NODE_NAME(node), op);
-    g_assert (d);
-    deleting_nodes = g_list_prepend (deleting_nodes, d);
-    if (deleting_nodes_id == 0) {
-        deleting_nodes_id = g_timeout_add_seconds (PROCESS_DELETING_INTERVAL,
-          scan_deleting_nodes,
-          NULL);
-        g_assert (deleting_nodes_id > 0);
-    }
-}
-
-void
-_remove_node (node_t* node, node_op_t* op)
-{
-    remove_node_internal (node, op);
 }
 
 static node_t*
@@ -359,18 +318,22 @@ node_new (node_t* parent, const gchar* basename)
 	node_t *f = NULL;
 
     g_assert (basename && basename[0]);
-    if ((f = g_new0 (node_t, 1)) != NULL) {
+
+    if ((f = g_new0(node_t, 1)) != NULL) {
         if (parent) {
-            f->basename = g_strdup (basename);
-            f->filename = g_build_filename (G_DIR_SEPARATOR_S,
-              NODE_NAME(parent), basename, NULL);
+            NODE_NAME(f) = g_build_filename(NODE_NAME(parent), basename, NULL);
         } else {
-            f->basename = g_strdup (basename);
-            f->filename = g_strdup (basename);
+            NODE_NAME(f) = g_strdup(G_DIR_SEPARATOR_S);
         }
+        f->basename = g_strdup (basename);
+        /* f->children = g_hash_table_new_full (g_str_hash, g_str_equal, */
+        /*   NULL, (GDestroyNotify)node_delete); */
         f->children = g_hash_table_new_full (g_str_hash, g_str_equal,
-          NULL, (GDestroyNotify)node_delete);
-        FN_W ("[ %s ] 0x%p %s\n", __func__, f, NODE_NAME(f));
+          NULL, NULL);
+#ifdef GIO_COMPILATION
+        f->gfile = g_file_new_for_path (NODE_NAME(f));
+#endif
+        FN_W ("%s 0x%p %s\n", __func__, f, NODE_NAME(f));
     }
 	return f;
 }
@@ -378,89 +341,300 @@ node_new (node_t* parent, const gchar* basename)
 static void
 node_delete (node_t *f)
 {
-    FN_W ("[ %s ] 0x%p %s\n", __func__, f, NODE_NAME(f));
-    g_assert (g_hash_table_size (f->children) == 0);
-    g_assert (f->user_data == NULL);
-
-    g_hash_table_unref (f->children);
-    g_free (f->basename);
-    g_free (f->filename);
+    FN_W ("%s 0x%p %s\n", __func__, f, NODE_NAME(f));
+    g_assert(f->state == 0);
+    g_assert(!NODE_IS_ACTIVE(f));
+    g_assert(g_hash_table_size (f->children) == 0);
+    g_assert(NODE_PARENT(f) == NULL);
+    g_hash_table_unref(f->children);
+#ifdef GIO_COMPILATION
+    g_object_unref (f->gfile);
+#endif
+    g_free(f->basename);
+    g_free(NODE_NAME(f));
     g_free (f);
 }
 
 static void
 children_add (node_t *p, node_t *f)
 {
-    FN_W ("%s [p] %8s [c] %8s\n", __func__, p->basename, f->basename);
+    FN_W ("%s %s %s\n", __func__, NODE_NAME(p), f->basename);
     g_hash_table_insert (p->children, f->basename, f);
-    f->parent = p;
+    NODE_PARENT(f) = p;
 }
 
 static void
 children_remove (node_t *p, node_t *f)
 {
-    FN_W ("%s [p] %8s [c] %8s\n", __func__, p->basename, f->basename);
+    FN_W ("%s %s %s\n", __func__, NODE_NAME(p), f->basename);
     g_hash_table_steal (p->children, f->basename);
-    f->parent = NULL;
+    NODE_PARENT(f) = NULL;
 }
 
-guint
-_children_num (node_t *f)
+static node_t *
+node_get_child (node_t *f, const gchar *basename)
+{
+    if (f->children) {
+        return (node_t *) g_hash_table_lookup (f->children, (gpointer)basename);
+    }
+    return NULL;
+}
+
+static guint
+node_children_num (node_t *f)
 {
     return g_hash_table_size (f->children);
 }
 
-node_t *
-_children_find (node_t *f, const gchar *basename)
-{
-    return (node_t *) g_hash_table_lookup (f->children, (gpointer)basename);
-}
-
-/*
+/**
  * depth first delete recursively
  */
 static gboolean
-children_remove_cb (gpointer key,
-  gpointer value,
-  gpointer user_data)
+children_remove_cb (gpointer key, gpointer value, gpointer user_data)
 {
-    node_t* f = (node_t*)value;
-    node_op_t* op = (node_op_t*) user_data;
-    
-    g_assert (f->parent);
-
-    FN_W ("%s [p] %8s [c] %8s\n", __func__, f->parent->basename, f->basename);
-    if (remove_children (f, op)) {
-        if (f->user_data != NULL) {
-            return op->pre_del (f, op->user_data);
-        }
-        return TRUE;
-    }
-    return FALSE;
-}
-
-static guint
-children_foreach_remove (node_t *f, GHRFunc func, gpointer user_data)
-{
-    g_assert (f);
-    
-    return g_hash_table_foreach_remove (f->children, func, user_data);
-}
-
-static void
-children_foreach (node_t *f, GHFunc func, gpointer user_data)
-{
-    g_assert (f);
-    
-    g_hash_table_foreach (f->children, func, user_data);
+    return node_try_delete ((node_t*)value);
 }
 
 gboolean
-_node_class_init ()
+node_class_init()
 {
-    FN_W ("%s\n", __func__);
-    if (_head == NULL) {
-        _head = node_new (NULL, G_DIR_SEPARATOR_S);
+    ROOT = node_new (NULL, G_DIR_SEPARATOR_S);
+    if (ROOT == NULL) {
+        FN_W ("[node] Create ROOT node failed.\n");
+        return FALSE;
     }
-    return _head != NULL;
+
+    return port_class_init (node_add_event);
 }
+
+/**
+ * Adjust self on failing to Port
+ */
+void
+node_adjust_deleted(node_t* f)
+{
+    node_t *ancestor;
+
+    FN_W ("%s %s\n", __func__, NODE_NAME(f));
+
+    for (ancestor = node_find_accessible_ancestor(f);
+         !NODE_HAS_STATE(ancestor, NODE_STATE_ASSOCIATED) && port_add(ancestor) != 0;
+         ancestor = node_find_accessible_ancestor(ancestor)) { /* Empty */ }
+}
+
+
+static void
+node_emit_events(node_t *f, const node_event_t *ne)
+{
+    gsize num = sizeof(concern_events)/sizeof(int);
+    gint i;
+    int translated_e;
+    node_t *p;
+
+    if (node_timeval_lt(&f->atv, &ne->ctv)) {
+        int event = ne->e;
+
+        /* Emit DELETED on the pair_data */
+        if (ne->pair_data) {
+            node_t *from = ne->pair_data;
+            node_emit_one_event(from, from->dir_subs, NULL, node_event_translate(FILE_DELETE, FALSE));
+            node_emit_one_event(from, from->subs, NULL, node_event_translate(FILE_DELETE, FALSE));
+        }
+
+        for (i = 0; i < num; i++) {
+            if (event & concern_events[i]) {
+                translated_e = node_event_translate(concern_events[i], FALSE);
+                /* Neither GIO or gamin cares about modified events on a
+                 * directory.
+                 */
+#ifdef GIO_COMPILATION
+                if ((concern_events[i] & FILE_MODIFIED) == 0) {
+                    node_emit_one_event(f, f->dir_subs, NULL, translated_e);
+                }
+#else
+                /* Gamin doesn't care about attrib changed events on a directory
+                 * either.
+                 */
+                if ((concern_events[i] & (FILE_MODIFIED | FILE_ATTRIB)) == 0) {
+                    node_emit_one_event(f, f->dir_subs, NULL, translated_e);
+                }
+#endif
+                node_emit_one_event(f, f->subs, NULL, translated_e);
+            }
+            event &= ~concern_events[i];
+        }
+    }
+
+    p = NODE_PARENT(f);
+    if (p != NULL && node_timeval_lt(&p->atv, &ne->ctv)) {
+        int event = ne->e;
+        for (i = 0; i < num; i++) {
+            if (event & concern_events[i]) {
+                translated_e = node_event_translate(concern_events[i], ne->pair_data != NULL);
+                node_emit_one_event(f, p->dir_subs, ne->pair_data, translated_e);
+                node_emit_one_event(f, p->subs, ne->pair_data, translated_e);
+            }
+            event &= ~concern_events[i];
+        }
+    }
+}
+
+/**
+ * node_add_event:
+ *
+ */
+static void
+node_add_event (node_t *f, node_event_t *ev)
+{
+    FN_W ("%s %d\n", __func__, ev->e);
+
+    /* Clean the events flag early, because all received events need be
+     * processed in this function.
+     */
+    NODE_CLE_STATE(f, NODE_STATE_HAS_EVENTS);
+
+    /*
+     * Node the node has been created, so we can delete create event in
+     * optimizing. To reduce the statings, we add it to Port on discoving
+     * it then emit CREATED event. So we don't need to do anything here.
+     */
+    if (NODE_NEED_MONITOR(f)) {
+        if (HAS_NO_EXCEPTION_EVENTS(ev->e)) {
+            if (NODE_HAS_STATE(f, NODE_STATE_ASSOCIATED) || port_add(f) == 0) {
+                if ((ev->e & FILE_MODIFIED) && NODE_HAS_FLAG(f, NODE_FLAG_DIR)) {
+                    if (f->dir_subs) {
+                        node_create_children_snapshot(f, FN_EVENT_CREATED, TRUE);
+                    } else {
+                        g_hash_table_foreach(f->children, foreach_known_children_scan, NULL);
+                    }
+                }
+            } else {
+                /* Emit delete event */
+                ev->e |= FILE_DELETE;
+
+                node_adjust_deleted(f);
+            }
+
+        } else {
+            node_adjust_deleted(f);
+        }
+
+        /* Send events to clients. */
+        node_emit_events (f, ev);
+        
+    } else {
+        /* Send events to clients. */
+        node_emit_events (f, ev);
+
+        node_try_delete(f);
+    }
+
+    if (ev->pair_data) {
+        node_t *from = ev->pair_data;
+        g_assert(ev->e == FILE_RENAME_TO);
+
+        if (NODE_NEED_MONITOR(from)) {
+            /* Clean the events flag, since it may block free this node. */
+            NODE_CLE_STATE(from, NODE_STATE_HAS_EVENTS);
+            node_adjust_deleted(from);
+        } else {
+            node_try_delete(from);
+        }
+    }
+
+    node_event_delete (ev);
+}
+
+static void
+node_emit_one_event(node_t *f, GList *subs, node_t *other, int event)
+{
+    GList* idx;
+    
+    FN_W ("%s %s %d\n", __func__, NODE_NAME(f), event);
+
+#ifdef GIO_COMPILATION
+    for (idx = subs; idx; idx = idx->next) {
+        g_file_monitor_emit_event(G_FILE_MONITOR(idx->data), f->gfile,
+          (other == NULL ? NULL : other->gfile), event);
+    }
+#else
+    for (idx = subs; idx; idx = idx->next) {
+        gam_server_emit_one_event(NODE_NAME(f), gam_subscription_is_dir(idx->data), event, idx->data, 1);
+    }
+#endif
+}
+
+static int
+node_event_translate(int event, gboolean pair)
+{
+#ifdef GIO_COMPILATION
+    switch (event) {
+    case FILE_DELETE:
+    case FILE_RENAME_FROM:
+        return G_FILE_MONITOR_EVENT_DELETED;
+    case UNMOUNTED:
+        return G_FILE_MONITOR_EVENT_UNMOUNTED;
+    case FILE_ATTRIB:
+        return G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED;
+    case MOUNTEDOVER:
+    case FILE_MODIFIED:
+        return G_FILE_MONITOR_EVENT_CHANGED;
+    case FILE_RENAME_TO:
+        if (pair) {
+            return G_FILE_MONITOR_EVENT_MOVED;
+        } else {
+            return G_FILE_MONITOR_EVENT_CREATED;
+        }
+    default:
+        /* case FILE_ACCESS: */
+        g_assert_not_reached ();
+        return -1;
+    }
+#else
+    switch (event) {
+    case FILE_DELETE:
+    case FILE_RENAME_FROM:
+        return GAMIN_EVENT_DELETED;
+    case MOUNTEDOVER:
+    case UNMOUNTED:
+        return GAMIN_EVENT_CHANGED;
+    case FILE_RENAME_TO:
+        if (pair) {
+            return GAMIN_EVENT_MOVED;
+        } else {
+            return GAMIN_EVENT_CREATED;
+        }
+    default:
+        if (event & (FILE_ATTRIB | FILE_MODIFIED)) {
+            return GAMIN_EVENT_CHANGED;
+        }
+        /* case FILE_ACCESS: */
+        g_assert_not_reached ();
+        return -1;
+    }
+#endif
+}
+
+node_event_t*
+node_event_new (int event, gpointer user_data)
+{
+    node_event_t *ev;
+    
+    if ((ev = g_new (node_event_t, 1)) != NULL) {
+        g_assert (ev);
+        ev->e = event;
+        ev->user_data = user_data;
+        ev->pair_data = NULL;   /* For renamed file. */
+        /* Created timestamp */
+        g_get_current_time(&ev->ctv);
+        ev->rename_tv = ev->ctv;
+    }
+    return ev;
+}
+
+void
+node_event_delete (node_event_t* ev)
+{
+    g_free (ev);
+}
+

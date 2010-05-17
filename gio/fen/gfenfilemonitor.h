@@ -4,6 +4,8 @@
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright (C) 2007 Sebastian Dröge.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +25,7 @@
  * Authors: Alexander Larsson <alexl@redhat.com>
  *          John McCutchan <john@johnmccutchan.com> 
  *          Sebastian Dröge <slomo@circular-chaos.org>
+ *          Lin Ma <lin.ma@sun.com>
  */
 
 #ifndef __G_FEN_FILE_MONITOR_H__

@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,15 +22,12 @@
  * Authors: Lin Ma <lin.ma@sun.com>
  */
 
-#include "fen-sub.h"
-
 #ifndef _FEN_HELPER_H_
 #define _FEN_HELPER_H_
 
-void _fen_add (const gchar *filename, gpointer sub, gboolean is_mondir);
-void _fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir);
+void fen_add (const gchar *filename, gpointer sub, gboolean is_mondir);
+void fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir);
 
-/* FEN subsystem initializing */
-gboolean _fen_init ();
+gboolean fen_init ();
 
 #endif /* _FEN_HELPER_H_ */

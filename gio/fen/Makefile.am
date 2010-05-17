@@ -11,14 +11,8 @@ libfen_la_SOURCES = 		\
 	fen-kernel.h 		\
 	fen-node.c		\
 	fen-node.h		\
-	fen-missing.c		\
-	fen-missing.h		\
 	fen-helper.c 		\
 	fen-helper.h		\
-	fen-data.c		\
-	fen-data.h		\
-	fen-sub.c		\
-	fen-sub.h		\
 	gfenfilemonitor.c		\
 	gfenfilemonitor.h		\
 	gfendirectorymonitor.c	\

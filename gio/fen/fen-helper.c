@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,9 @@
 
 #include "config.h"
 #include <glib.h>
-#include "fen-data.h"
 #include "fen-helper.h"
 #include "fen-kernel.h"
 #ifdef GIO_COMPILATION
-#include "gfile.h"
 #include "gfilemonitor.h"
 #else
 #include "gam_event.h"
@@ -37,7 +35,7 @@
 #endif
 
 #ifdef GIO_COMPILATION
-#define FH_W if (fh_debug_enabled) g_warning
+#define FH_W if (fh_debug_enabled) g_debug
 static gboolean fh_debug_enabled = FALSE;
 #else
 #include "gam_error.h"
@@ -46,292 +44,154 @@ static gboolean fh_debug_enabled = FALSE;
 
 G_LOCK_EXTERN (fen_lock);
 
-static void default_emit_event_cb (fdata *f, int events);
-static void default_emit_once_event_cb (fdata *f, int events, gpointer sub);
-static int default_event_converter (int event);
-
+/* misc */
 static void
-scan_children_init (node_t *f, gpointer sub)
+scan_children_init(node_t *f, gpointer sub)
 {
-	GDir *dir;
-	GError *err = NULL;
-    node_op_t op = {NULL, NULL, _pre_del_cb, NULL};
-    fdata* pdata;
-    
+    gboolean emit;
+    gint event;
+
     FH_W ("%s %s [0x%p]\n", __func__, NODE_NAME(f), f);
-    pdata = _node_get_data (f);
 
-    dir = g_dir_open (NODE_NAME(f), 0, &err);
-    if (dir) {
-        const char *basename;
-        
-        while ((basename = g_dir_read_name (dir)))
-        {
-            node_t *childf = NULL;
-            fdata* data;
-            GList *idx;
-
-            childf = _children_find (f, basename);
-            if (childf == NULL) {
-                gchar *filename;
-            
-                filename = g_build_filename (NODE_NAME(f), basename, NULL);
-                childf = _add_node (f, filename);
-                g_assert (childf);
-                g_free (filename);
-            }
-            if ((data = _node_get_data (childf)) == NULL) {
-                data = _fdata_new (childf, FALSE);
-            }
-            
-            if (is_monitoring (data)) {
-                /* Ignored */
-            } else if (/* !_is_ported (data) && */
-                _port_add (&data->fobj, &data->len, data)) {
-                /* Emit created to all other subs */
-                _fdata_emit_events (data, FN_EVENT_CREATED);
-            }
-            /* Emit created to the new sub */
 #ifdef GIO_COMPILATION
-            /* _fdata_emit_events_once (data, FN_EVENT_CREATED, sub); */
+    emit = FALSE;
+    event = G_FILE_MONITOR_EVENT_CREATED;
 #else
-            gam_server_emit_one_event (NODE_NAME(childf),
-              gam_subscription_is_dir (sub), GAMIN_EVENT_EXISTS, sub, 1);
+    emit = TRUE;
+    event = GAMIN_EVENT_EXISTS;
+#endif
+
+    if (!NODE_HAS_FLAG(f, NODE_FLAG_SNAPSHOT_UPDATED)) {
+        /* TODO snapshot should also compare to the sub created timestamp. */
+        /* GIO initially doesn't emit created/existed events. */
+        node_create_children_snapshot(f, event, emit);
+    } else {
+        GHashTableIter iter;
+        gpointer value;
+
+        g_hash_table_iter_init (&iter, f->children);
+        while (g_hash_table_iter_next (&iter, NULL, &value)) {
+            node_t *child = (node_t *)value;
+
+#ifdef GIO_COMPILATION
+            /* GIO initially doesn't emit created/existed events. */
+            /* g_file_monitor_emit_event(G_FILE_MONITOR(sub), child->gfile, NULL, event); */
+#else
+            gam_server_emit_one_event(NODE_NAME(child), gam_subscription_is_dir(sub), event, sub, 1);
 #endif
         }
-        g_dir_close (dir);
-    } else {
-        FH_W (err->message);
-        g_error_free (err);
     }
 }
 
 /**
- * _fen_add
+ * fen_add
  * 
- * Won't hold a ref, we have a timout callback to clean unused fdata.
+ * Won't hold a ref, we have a timout callback to clean unused node_t.
  * If there is no value for a key, add it and return it; else return the old
  * one.
  */
 void
-_fen_add (const gchar *filename, gpointer sub, gboolean is_mondir)
+fen_add (const gchar *filename, gpointer sub, gboolean is_mondir)
 {
-    node_op_t op = {NULL, _add_missing_cb, _pre_del_cb, (gpointer)filename};
 	node_t* f;
-    fdata* data;
-    
+
     g_assert (filename);
     g_assert (sub);
 
     G_LOCK (fen_lock);
-	f = _find_node_full (filename, &op);
-    FH_W ("[ %s ] f[0x%p] sub[0x%p] %s\n", __func__, f, sub, filename);
+	f = node_find(NULL, filename, TRUE);
+    FH_W ("%s 0x%p sub[0x%p] %s\n", __func__, f, sub, filename);
     g_assert (f);
-    data = _node_get_data (f);
-    if (data == NULL) {
-        data = _fdata_new (f, is_mondir);
+
+    /* Update timestamp, the events in global queue will compare itself to this
+     * timestamp to decide if be emitted. TODO, timestamp should be per sub.
+     */
+    if (!NODE_IS_ACTIVE(f)) {
+        g_get_current_time(&f->atv);
     }
 
     if (is_mondir) {
-        data->mon_dir_num ++;
+        f->dir_subs = g_list_prepend(f->dir_subs, sub);
+    } else {
+        f->subs = g_list_prepend(f->subs, sub);
     }
     
-    /* Change to active */
-#ifdef GIO_COMPILATION
-    if (_port_add (&data->fobj, &data->len, data) ||
-      g_file_test (FN_NAME(data), G_FILE_TEST_EXISTS)) {
-        if (is_mondir) {
-            scan_children_init (f, sub);
-        }
-        _fdata_sub_add (data, sub);
-    } else {
-        _fdata_sub_add (data, sub);
-        _fdata_adjust_deleted (data);
-    }
-#else
-    if (_port_add (&data->fobj, &data->len, data) ||
-      g_file_test (FN_NAME(data), G_FILE_TEST_EXISTS)) {
-        gam_server_emit_one_event (FN_NAME(data),
+    if (NODE_HAS_STATE(f, NODE_STATE_ASSOCIATED) ||
+      (node_lstat(f) == 0 && port_add(f) == 0)) {
+#ifndef GIO_COMPILATION
+        gam_server_emit_one_event (NODE_NAME(f),
           gam_subscription_is_dir (sub), GAMIN_EVENT_EXISTS, sub, 1);
+#endif
         if (is_mondir) {
             scan_children_init (f, sub);
         }
-        gam_server_emit_one_event (FN_NAME(data),
-          gam_subscription_is_dir (sub), GAMIN_EVENT_ENDEXISTS, sub, 1);
-        _fdata_sub_add (data, sub);
     } else {
-        _fdata_sub_add (data, sub);
-        gam_server_emit_one_event (FN_NAME(data),
+#ifndef GIO_COMPILATION
+        gam_server_emit_one_event (NODE_NAME(f),
           gam_subscription_is_dir (sub), GAMIN_EVENT_DELETED, sub, 1);
-        _fdata_adjust_deleted (data);
-        gam_server_emit_one_event (FN_NAME(data),
-          gam_subscription_is_dir (sub), GAMIN_EVENT_ENDEXISTS, sub, 1);
+#endif
+        node_adjust_deleted (f);
     }
+#ifndef GIO_COMPILATION
+    gam_server_emit_one_event (NODE_NAME(f),
+      gam_subscription_is_dir (sub), GAMIN_EVENT_ENDEXISTS, sub, 1);
 #endif
     G_UNLOCK (fen_lock);
 }
 
 void
-_fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir)
+fen_remove (const gchar *filename, gpointer sub, gboolean is_mondir)
 {
-    node_op_t op = {NULL, _add_missing_cb, _pre_del_cb, (gpointer)filename};
     node_t* f;
-    fdata* data;
     
     g_assert (filename);
     g_assert (sub);
 
     G_LOCK (fen_lock);
-	f = _find_node (filename);
-    FH_W ("[ %s ] f[0x%p] sub[0x%p] %s\n", __func__, f, sub, filename);
+	f = node_find(NULL, filename, FALSE);
+    FH_W ("%s 0x%p sub[0x%p] %s\n", __func__, f, sub, filename);
 
-    g_assert (f);
-    data = _node_get_data (f);
-    g_assert (data);
-    
-    if (is_mondir) {
-        data->mon_dir_num --;
-    }
-    _fdata_sub_remove (data, sub);
-    if (FN_IS_PASSIVE(data)) {
-#ifdef GIO_COMPILATION
-        _pending_remove_node (f, &op);
-#else
-        _remove_node (f, &op);
-#endif
+    if (f) {
+        if (is_mondir) {
+            f->dir_subs = g_list_remove(f->dir_subs, sub);
+        } else {
+            f->subs = g_list_remove(f->subs, sub);
+        }
+
+        if (!NODE_IS_ACTIVE(f)) {
+            node_try_delete (f);
+        }
     }
     G_UNLOCK (fen_lock);
 }
 
-static gboolean
-fen_init_once_func (gpointer data)
-{
-    FH_W ("%s\n", __func__);
-    if (!_node_class_init ()) {
-        FH_W ("_node_class_init failed.");
-        return FALSE;
-    }
-    if (!_fdata_class_init (default_emit_event_cb,
-          default_emit_once_event_cb,
-          default_event_converter)) {
-        FH_W ("_fdata_class_init failed.");
-        return FALSE;
-    }
-    return TRUE;
-}
-
+/**
+ * fen_init:
+ * 
+ * FEN subsystem initializing.
+ */
 gboolean
-_fen_init ()
+fen_init ()
 {
-#ifdef GIO_COMPILATION
-    static GOnce fen_init_once = G_ONCE_INIT;
-    g_once (&fen_init_once, (GThreadFunc)fen_init_once_func, NULL);
-    return (gboolean)fen_init_once.retval;
-#else
-    return fen_init_once_func (NULL);
-#endif
+    static gboolean initialized = FALSE;
+    static gboolean result = FALSE;
+
+    G_LOCK (fen_lock);
+    if (initialized) {
+        G_UNLOCK (fen_lock);
+        return result;
+    }
+
+    result = node_class_init();
+
+    if (!result) {
+        G_UNLOCK (fen_lock);
+        return result;
+    }
+
+    initialized = TRUE;
+
+    G_UNLOCK (fen_lock);
+    return result;
 }
 
-static void
-default_emit_once_event_cb (fdata *f, int events, gpointer sub)
-{
-#ifdef GIO_COMPILATION
-    GFile* child;
-    fen_sub* _sub = (fen_sub*)sub;
-    child = g_file_new_for_path (FN_NAME(f));
-    g_file_monitor_emit_event (G_FILE_MONITOR (_sub->user_data),
-      child, NULL, events);
-    g_object_unref (child);
-#else
-    gam_server_emit_one_event (FN_NAME(f),
-      gam_subscription_is_dir (sub), events, sub, 1);
-#endif
-}
-
-static void
-default_emit_event_cb (fdata *f, int events)
-{
-    GList* i;
-    fdata* pdata;
-    
-#ifdef GIO_COMPILATION
-    GFile* child;
-    child = g_file_new_for_path (FN_NAME(f));
-    for (i = f->subs; i; i = i->next) {
-        fen_sub* sub = (fen_sub*)i->data;
-        gboolean file_is_dir = sub->is_mondir;
-        if ((events != G_FILE_MONITOR_EVENT_CHANGED &&
-              events != G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED) ||
-          !file_is_dir) {
-            g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-              child, NULL, events);
-        }
-    }
-    if ((pdata = _get_parent_data (f)) != NULL) {
-        for (i = pdata->subs; i; i = i->next) {
-            fen_sub* sub = (fen_sub*)i->data;
-            gboolean file_is_dir = sub->is_mondir;
-            g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-              child, NULL, events);
-        }
-    }
-    g_object_unref (child);
-#else
-    for (i = f->subs; i; i = i->next) {
-        gboolean file_is_dir = gam_subscription_is_dir (i->data);
-        if (events != GAMIN_EVENT_CHANGED || !file_is_dir) {
-            gam_server_emit_one_event (FN_NAME(f), file_is_dir, events, i->data, 1);
-        }
-    }
-    if ((pdata = _get_parent_data (f)) != NULL) {
-        for (i = pdata->subs; i; i = i->next) {
-            gboolean file_is_dir = gam_subscription_is_dir (i->data);
-            gam_server_emit_one_event (FN_NAME(f), file_is_dir, events, i->data, 1);
-        }
-    }
-#endif
-}
-
-static int
-default_event_converter (int event)
-{
-#ifdef GIO_COMPILATION
-    switch (event) {
-    case FN_EVENT_CREATED:
-        return G_FILE_MONITOR_EVENT_CREATED;
-    case FILE_DELETE:
-    case FILE_RENAME_FROM:
-        return G_FILE_MONITOR_EVENT_DELETED;
-    case UNMOUNTED:
-        return G_FILE_MONITOR_EVENT_UNMOUNTED;
-    case FILE_ATTRIB:
-        return G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED;
-    case MOUNTEDOVER:
-    case FILE_MODIFIED:
-    case FILE_RENAME_TO:
-        return G_FILE_MONITOR_EVENT_CHANGED;
-    default:
-        /* case FILE_ACCESS: */
-        g_assert_not_reached ();
-        return -1;
-    }
-#else
-    switch (event) {
-    case FN_EVENT_CREATED:
-        return GAMIN_EVENT_CREATED;
-    case FILE_DELETE:
-    case FILE_RENAME_FROM:
-        return GAMIN_EVENT_DELETED;
-    case FILE_ATTRIB:
-    case MOUNTEDOVER:
-    case UNMOUNTED:
-    case FILE_MODIFIED:
-    case FILE_RENAME_TO:
-        return GAMIN_EVENT_CHANGED;
-    default:
-        /* case FILE_ACCESS: */
-        g_assert_not_reached ();
-        return -1;
-    }
-#endif
-}

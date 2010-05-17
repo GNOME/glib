@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /* vim:set expandtab ts=4 shiftwidth=4: */
 /* 
- * Copyright (C) 2008 Sun Microsystems, Inc. All rights reserved.
- * Use is subject to license terms.
+ * Copyright (c) 2008, 2010 Oracle and/or its affiliates, Inc. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,52 +22,83 @@
  * Authors: Lin Ma <lin.ma@sun.com>
  */
 
+#include <port.h>
+#include <gio/gio.h>
+
 #ifndef _FEN_NODE_H_
 #define _FEN_NODE_H_
 
-typedef struct node node_t;
+#ifdef GIO_COMPILATION
+#define FN_EVENT_CREATED G_FILE_MONITOR_EVENT_CREATED
+#else
+#define FN_EVENT_CREATED GAMIN_EVENT_CREATED
+#endif
 
+#define NODE_STATE_NONE       0x00000000
+#define NODE_STATE_ASSOCIATED 0x00000001 /* This is a confilct to NODE_FLAG_STAT_DONE */
+#define NODE_STATE_HAS_EVENTS 0x00000002
+
+#define NODE_FLAG_NONE             0x00000000
+#define NODE_FLAG_SNAPSHOT_UPDATED 0x00000001
+#define NODE_FLAG_DIR              0x00000002
+#define NODE_FLAG_STAT_UPDATED     0x00000004
+
+#define	NODE_CLE_STATE(f, st)  (f->state &= ~(st))
+#define	NODE_SET_STATE(f, st)  (f->state = ((f->state & ~(st)) | (st)))
+#define	NODE_HAS_STATE(f, st)  (f->state & (st))
+
+#define	NODE_CLE_FLAG(f, fl)  (f->flag &= ~(fl))
+#define	NODE_SET_FLAG(f, fl)  (f->flag = ((f->flag & ~(fl)) | (fl)))
+#define	NODE_HAS_FLAG(f, fl)  (f->flag & (fl))
+
+typedef struct node node_t;
 struct node
 {
-    gchar *filename;
-    gchar *basename;
-    gint stat;
-    
+    file_obj_t  fobj;           /* Inherit from file_obj_t, must be the first. */
+    GSource    *source;
+    gchar      *basename;
+    guint32     state;
+	guint32     flag;
+    GTimeVal    atv;            /* Timestamp for the first added sub. */
+
 	/* the parent and children of node */
     node_t *parent;
     GHashTable *children; /* children in basename */
 
-    gpointer user_data;
+	/* List of subscriptions monitoring this fdata/path */
+	GList *subs;
+	GList *dir_subs;
+
+#ifdef GIO_COMPILATION
+    GFile* gfile;
+#endif
 };
 
-#define	IS_TOPNODE(fp)	(((node_t *)(fp))->parent == NULL)
-#define NODE_NAME(fp)	(((node_t *)(fp))->filename)
+#define FILE_OBJECT(f)                ((file_obj_t *)(f))
+#define NODE_NAME(f)                  (FILE_OBJECT(f)->fo_name)
+#define NODE_PARENT(f)                (((node_t *)f)->parent)
+#define	NODE_IS_ACTIVE(f)             (f->dir_subs || f->subs)
+#define	NODE_IS_REQUIRED_BY_PARENT(f) (NODE_PARENT(f) && NODE_PARENT(f)->dir_subs)
 
-typedef struct node_op
+gboolean node_timeval_lt(const GTimeVal *val1, const GTimeVal *val2);
+gboolean node_try_delete(node_t* node);
+void     node_traverse(node_t* node, void(*traverse_cb)(node_t*, gpointer), gpointer user_data);
+node_t*  node_find(node_t* node, const gchar* filename, gboolean create_on_missing);
+gint     node_lstat(node_t *f);
+void     node_create_children_snapshot(node_t *f, gint created_event, gboolean emit);
+void     node_adjust_deleted(node_t *f);
+gboolean node_class_init();
+
+typedef struct node_event
 {
-    /* find */
-    void (*hit) (node_t* node, gpointer user_data);
-    node_t* (*add_missing) (node_t* parent, gpointer user_data);
-    /* delete */
-    gboolean (*pre_del) (node_t* node, gpointer user_data);
-	/* data */
+    int e;
     gpointer user_data;
-} node_op_t;
+    gpointer pair_data;
+    GTimeVal ctv;               /* Created timestamp */
+    GTimeVal rename_tv;         /* Possible rename timestamp */
+} node_event_t;
 
-node_t* _add_node (node_t* parent, const gchar* filename);
-void _remove_node (node_t* node, node_op_t* op);
-void _pending_remove_node (node_t* node, node_op_t* op);
-
-void _travel_nodes (node_t* node, node_op_t* op);
-node_t* _find_node_full (const gchar* filename, node_op_t* op);
-node_t* _find_node (const gchar *filename);
-
-node_t* _children_find (node_t *f, const gchar *basename);
-guint _children_num (node_t *f);
-
-gpointer _node_get_data (node_t* node);
-gpointer _node_set_data (node_t* node, gpointer user_data);
-
-gboolean _node_class_init ();
+node_event_t* node_event_new (int event, gpointer user_data);
+void node_event_delete (node_event_t* ev);
 
 #endif /* _FEN_NODE_H_ */
