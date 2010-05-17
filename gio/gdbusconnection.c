@@ -3583,7 +3583,7 @@ introspect_append_standard_interfaces (GString *s)
 static void
 maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHashTable *set)
 {
-  if (g_str_has_prefix (object_path, path) && strlen (object_path) >= path_len)
+  if (g_str_has_prefix (object_path, path) && strlen (object_path) > path_len)
     {
       const gchar *begin;
       const gchar *end;
