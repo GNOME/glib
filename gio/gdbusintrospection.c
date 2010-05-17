@@ -1906,7 +1906,7 @@ g_dbus_annotation_info_lookup (const GDBusAnnotationInfo **annotations,
   const gchar *ret;
 
   ret = NULL;
-  for (n = 0; annotations != NULL && annotations[n]->key != NULL; n++)
+  for (n = 0; annotations != NULL && annotations[n] != NULL; n++)
     {
       if (g_strcmp0 (annotations[n]->key, name) == 0)
         {
