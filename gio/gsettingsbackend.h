@@ -65,34 +65,34 @@ struct _GSettingsBackendClass
 {
   GObjectClass parent_class;
 
-  gboolean    (*supports_context) (const gchar         *context);
+  gboolean    (*supports_context) (const gchar        *context);
 
-  GVariant *  (*read)             (GSettingsBackend    *backend,
-                                   const gchar         *key,
-                                   const GVariantType  *expected_type,
-                                   gboolean             default_value);
-  gchar **    (*list)             (GSettingsBackend    *backend,
-                                   const gchar         *path,
-                                   gsize               *length);
-  gboolean    (*write)            (GSettingsBackend    *backend,
-                                   const gchar         *key,
-                                   GVariant            *value,
-                                   gpointer             origin_tag);
-  gboolean    (*write_keys)       (GSettingsBackend    *backend,
-                                   GTree               *tree,
-                                   gpointer             origin_tag);
-  void        (*reset)            (GSettingsBackend    *backend,
-                                   const gchar         *key,
-                                   gpointer             origin_tag);
-  void        (*reset_path)       (GSettingsBackend    *backend,
-                                   const gchar         *path,
-                                   gpointer             origin_tag);
-  gboolean    (*get_writable)     (GSettingsBackend    *backend,
-                                   const gchar         *key);
-  void        (*subscribe)        (GSettingsBackend    *backend,
-                                   const gchar         *name);
-  void        (*unsubscribe)      (GSettingsBackend    *backend,
-                                   const gchar         *name);
+  GVariant *  (*read)             (GSettingsBackend   *backend,
+                                   const gchar        *key,
+                                   const GVariantType *expected_type,
+                                   gboolean            default_value);
+  gchar **    (*list)             (GSettingsBackend   *backend,
+                                   const gchar        *path,
+                                   gsize              *length);
+  gboolean    (*write)            (GSettingsBackend   *backend,
+                                   const gchar        *key,
+                                   GVariant           *value,
+                                   gpointer            origin_tag);
+  gboolean    (*write_keys)       (GSettingsBackend   *backend,
+                                   GTree              *tree,
+                                   gpointer            origin_tag);
+  void        (*reset)            (GSettingsBackend   *backend,
+                                   const gchar        *key,
+                                   gpointer            origin_tag);
+  void        (*reset_path)       (GSettingsBackend   *backend,
+                                   const gchar        *path,
+                                   gpointer            origin_tag);
+  gboolean    (*get_writable)     (GSettingsBackend   *backend,
+                                   const gchar        *key);
+  void        (*subscribe)        (GSettingsBackend   *backend,
+                                   const gchar        *name);
+  void        (*unsubscribe)      (GSettingsBackend   *backend,
+                                   const gchar        *name);
 };
 
 struct _GSettingsBackend
