@@ -228,23 +228,22 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
         Schemas are compiled into binary form by the
         <link linkend="glib-compile-schemas">glib-compile-schemas</link> utility.
         GIO provides a <literal>glib_compile_schemas</literal>
-        variable for the schema compiler, which can be used in
-        <filename>configure.in</filename> as follows:
+        variable for the schema compiler.
+      </para>
+      <para>
+        You can ignore all of this by using the provided m4 macros.  To
+        do this, add to your <filename>configure.ac</filename>:
 <programlisting>
 GLIB_GSETTINGS
 </programlisting>
         The corresponding <filename>Makefile.am</filename> fragment looks like
         this:
 <programlisting>
-# gsettingsschemadir and gschema_compile are defined by the GLIB_GSETTINGS
-# macro in configure.ac
-gsettingsschema_DATA = my.app.gschema.xml
-# This rule will check your schemas for validity before installation
-@GSETTINGS_CHECK_RULE@
-if GSETTINGS_SCHEMAS_INSTALL
-install-data-hook:
-	$(GLIB_COMPILE_SCHEMAS) $(DESTDIR)$(gsettingsschemadir)
-endif
+# gsettings_SCHEMAS is a list of all the schemas you want to install
+gsettings_SCHEMAS = my.app.gschema.xml
+
+# include the appropriate makefile rules for schema handling
+@GSETTINGS_RULES@
 </programlisting>
       </para>
 
