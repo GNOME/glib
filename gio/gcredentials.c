@@ -293,7 +293,7 @@ g_credentials_get_unix_user (GCredentials    *credentials,
   g_set_error_literal (error,
                        G_IO_ERROR,
                        G_IO_ERROR_NOT_SUPPORTED,
-                       _("There is no GCredentials support for your your platform"));
+                       _("There is no GCredentials support for your platform"));
 #endif
 
   return ret;
