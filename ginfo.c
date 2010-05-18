@@ -30,7 +30,7 @@
 
 typedef struct _GIRealInfo GIRealInfo;
 
-/**
+/*
  * We just use one structure for all of the info object
  * types; in general, we should be reading data directly
  * from the typelib, and not having computed data in
@@ -437,7 +437,7 @@ find_first_attribute (GIRealInfo *rinfo)
 /**
  * g_base_info_iterate_attributes:
  * @info: A #GIBaseInfo
- * @iter: A #GIAttributeIter structure, must be initialized; see below
+ * @iterator: A #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *
@@ -469,7 +469,7 @@ find_first_attribute (GIRealInfo *rinfo)
  */
 gboolean
 g_base_info_iterate_attributes (GIBaseInfo       *info,
-                                 GIAttributeIter *iter,
+                                 GIAttributeIter *iterator,
                                  gchar           **name,
                                  gchar           **value)
 {
@@ -480,8 +480,8 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
   after = (AttributeBlob *) &rinfo->typelib->data[header->attributes +
                                                   header->n_attributes * header->attribute_blob_size];
 
-  if (iter->data != NULL)
-    next = (AttributeBlob *) iter->data;
+  if (iterator->data != NULL)
+    next = (AttributeBlob *) iterator->data;
   else
     next = find_first_attribute (rinfo);
 
@@ -490,7 +490,7 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
 
   *name = (gchar*) g_typelib_get_string (rinfo->typelib, next->name);
   *value = (gchar*) g_typelib_get_string (rinfo->typelib, next->value);
-  iter->data = next + 1;
+  iterator->data = next + 1;
 
   return TRUE;
 }
@@ -994,6 +994,8 @@ g_type_info_get_param_type (GITypeInfo *info,
  * this function returns full information about the referenced type.  You can then
  * inspect the type of the returned #GIBaseInfo to further query whether it is
  * a concrete GObject, a GInterface, a structure, etc. using g_base_info_get_type().
+ *
+ * Returns: a struct representing the interface or %NULL
  */
 GIBaseInfo *
 g_type_info_get_interface (GITypeInfo *info)

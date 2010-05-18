@@ -717,7 +717,7 @@ typedef struct {
 } StructBlob;
 
 /**
- * UnionBlob;
+ * UnionBlob:
  * @unregistered: If this is set, the type is not registered with GType.
  * @discriminated: Is set if the union is discriminated
  * @alignment: The byte boundary that the union is aligned to in memory

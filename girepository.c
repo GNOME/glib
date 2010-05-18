@@ -856,7 +856,7 @@ g_irepository_get_shared_library (GIRepository *repository,
 /**
  * g_irepository_get_c_prefix
  * @repository: A #GIRepository, may be %NULL for the default
- * @namespace: Namespace to inspect
+ * @namespace_: Namespace to inspect
  *
  * This function returns the "C prefix", or the C level namespace
  * associated with the given introspection namespace.  Each C symbol
