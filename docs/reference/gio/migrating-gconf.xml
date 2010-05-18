@@ -227,7 +227,7 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
       <para>
         Schemas are compiled into binary form by the
         <link linkend="glib-compile-schemas">glib-compile-schemas</link> utility.
-        GIO provides a <literal>gschema_compile</literal>
+        GIO provides a <literal>glib_compile_schemas</literal>
         variable for the schema compiler, which can be used in
         <filename>configure.in</filename> as follows:
 <programlisting>
