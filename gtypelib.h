@@ -202,6 +202,7 @@ typedef enum {
  * @nsversion: Offset of the namespace version string in the typelib.
  * @shared_library: This field is the set of shared libraries associated
  * with the typelib.  The entries are separated by the '|' (pipe) character.
+ * @c_prefix: The prefix for the function names of the library
  * @entry_blob_size: The sizes of fixed-size blobs. Recording this information here
  * allows to write parser which continue to work if the format is
  * extended by adding new fields to the end of the fixed-size blobs.
@@ -234,7 +235,9 @@ typedef struct {
   gchar   magic[16];
   guint8  major_version;
   guint8  minor_version;
+  /* <private> */
   guint16 reserved;
+  /* <public> */
   guint16 n_entries;
   guint16 n_local_entries;
   guint32 directory;
@@ -269,6 +272,7 @@ typedef struct {
   guint16 interface_blob_size;
   guint16 union_blob_size;
 
+  /* <private> */
   guint16 padding[7];
 } Header;
 
@@ -290,8 +294,9 @@ typedef struct {
   guint16 blob_type;
 
   guint16 local    : 1;
+  /* <private> */
   guint16 reserved :15;
-
+  /* <public> */
   guint32 name;
   guint32 offset;
 } DirEntry;
@@ -322,16 +327,20 @@ typedef union
 {
   struct
   {
+    /* <private> */
     guint reserved   : 8;
     guint reserved2  :16;
+    /* <public> */
     guint pointer    : 1;
+    /* <private> */
     guint reserved3  : 2;
+    /* <public> */
     guint tag        : 5;
   } flags;
   guint32    offset;
 } SimpleTypeBlob;
 
-/*
+/**
  * ArgBlob:
  * @name: A suggested name for the parameter.
  * @in: The parameter is an input to the function
@@ -356,7 +365,7 @@ typedef union
  * @transfer_container_ownership: For container types, indicates that the
  * ownership of the container,  but not of its contents is transferred. This is typically the case
  * for out parameters returning lists of statically allocated things.
- * @is_return_value: The parameter should be considered the return value of the function.
+ * @return_value: The parameter should be considered the return value of the function.
  * Only out parameters can be marked as return value, and there can be
  * at most one per function call. If an out parameter is marked as
  * return value, the actual return value of the function should be
@@ -386,8 +395,9 @@ typedef struct {
   guint          transfer_container_ownership : 1;
   guint          return_value                 : 1;
   guint          scope                        : 3;
+  /* <private> */
   guint          reserved                     :21;
-
+  /* <public> */
   gint8        closure;
   gint8        destroy;
 
@@ -434,8 +444,9 @@ typedef struct {
   guint16 blob_type;  /* 1 */
 
   guint16 deprecated : 1;
+  /* <private> */
   guint16 reserved   :15;
-
+  /* <public> */
   guint32 name;
 } CommonBlob;
 
@@ -494,8 +505,9 @@ typedef struct {
   guint16 blob_type;  /* 2 */
 
   guint16 deprecated : 1;
+  /* <private> */
   guint16 reserved   :15;
-
+  /* <public> */
   guint32 name;
   guint32 signature;
 } CallbackBlob;
@@ -510,9 +522,13 @@ typedef struct {
  */
 typedef struct {
   guint8  pointer  :1;
+  /* <private> */
   guint8  reserved :2;
+  /* <public> */
   guint8  tag      :5;
+  /* <private> */
   guint8  reserved2;
+  /* <public> */
   guint16 interface;
 } InterfaceTypeBlob;
 
@@ -533,7 +549,6 @@ typedef struct {
  * direction as this one.
  * @size: The fixed size of the array.
  * @type: The type of the array elements.
- *
  * Arrays are passed by reference, thus is_pointer is always 1.
  */
 typedef struct {
@@ -618,7 +633,9 @@ typedef struct {
  */
 typedef struct {
   guint32 deprecated : 1;
+  /* <private> */
   guint32 reserved   :31;
+  /* <public> */
   guint32 name;
   gint32 value;
 } ValueBlob;
@@ -681,9 +698,7 @@ typedef struct {
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
  * @n_fields:
- * @n_functions: The lengths of the arrays.
  * @fields: An array of n_fields FieldBlobs.
- * @functions: An array of n_functions FunctionBlobs. The described functions
  * should be considered as methods of the struct.
  */
 typedef struct {
@@ -730,7 +745,6 @@ typedef struct {
  * The value 0xFFFF indicates that the discriminator offset
  * is unknown.
  * @discriminator_type: Type of the discriminator
- * @discriminator_values: On discriminator value per field
  * @fields: Array of FieldBlobs describing the alternative branches of the union
  */
 typedef struct {
@@ -1040,7 +1054,11 @@ typedef struct {
   guint32 value;
 } AttributeBlob;
 
+/**
+ * GTypelib:
+ */
 struct _GTypelib {
+  /* <private> */
   guchar *data;
   gsize len;
   gboolean owns_memory;
@@ -1057,6 +1075,16 @@ void      g_typelib_check_sanity (void);
 #define   g_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
 
 
+/**
+ * GTypelibError:
+ * @G_TYPELIB_ERROR_INVALID: the typelib is invalid
+ * @G_TYPELIB_ERROR_INVALID_HEADER: the typelib header is invalid
+ * @G_TYPELIB_ERROR_INVALID_DIRECTORY: the typelib directory is invalid
+ * @G_TYPELIB_ERROR_INVALID_ENTRY: a typelib entry is invalid
+ * @G_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
+ *
+ * A error set while validating the #GTypelib
+ */
 typedef enum
 {
   G_TYPELIB_ERROR_INVALID,

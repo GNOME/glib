@@ -31,12 +31,17 @@ typedef void (*GIFFIClosureCallback) (ffi_cif *,
                                       void **,
                                       void *);
 
+/**
+ * GIFunctionInvoker:
+ * @cif: the cif
+ * @native_address: the native adress
+ */
 typedef struct _GIFunctionInvoker GIFunctionInvoker;
 
 struct _GIFunctionInvoker {
   ffi_cif cif;
   gpointer native_address;
-
+  /* <private> */
   gpointer padding[3];
 };
 

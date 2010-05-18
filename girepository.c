@@ -1149,7 +1149,7 @@ find_namespace_latest (const gchar  *namespace,
  * @repository: (allow-none): Repository, may be %NULL for the default
  * @namespace_: GI namespace to use, e.g. "Gtk"
  * @version: (allow-none): Version of namespace, may be %NULL for latest
- * @flags: Set of %GIRepositoryLoadFlags, may be %0
+ * @flags: Set of %GIRepositoryLoadFlags, may be 0
  * @error: a #GError.
  *
  * Force the namespace @namespace_ to be loaded if it isn't already.

@@ -41,6 +41,7 @@ typedef struct _GIRepositoryPrivate  GIRepositoryPrivate;
 typedef struct _GIBaseInfoStub       GIBaseInfo;
 
 struct _GIBaseInfoStub {
+  /* <private> */
   gint32 dummy1;
   gint32 dummy2;
   gpointer dummy3;
@@ -51,27 +52,141 @@ struct _GIBaseInfoStub {
   gpointer padding[4];
 };
 
+/**
+ * GICallableInfo:
+ *
+ * Represents a callable, either #GIFunctionInfo, #GICallbackInfo or
+ * #GIVFuncInfo.
+ */
 typedef GIBaseInfo GICallableInfo;
+
+/**
+ * GIFunctionInfo:
+ *
+ * Represents a function, eg arguments and return value.
+ */
 typedef GIBaseInfo GIFunctionInfo;
+
+/**
+ * GICallbackInfo:
+ *
+ * Represents a callback, eg arguments and return value.
+ */
 typedef GIBaseInfo GICallbackInfo;
+
+/**
+ * GIRegisteredTypeInfo:
+ *
+ * Represent a registered type.
+ */
 typedef GIBaseInfo GIRegisteredTypeInfo;
+
+/**
+ * GIStructInfo:
+ *
+ * Represents a struct.
+ */
 typedef GIBaseInfo GIStructInfo;
+
+/**
+ * GIUnionInfo:
+ *
+ * Represents a union.
+ */
 typedef GIBaseInfo GIUnionInfo;
+
+/**
+ * GIEnumInfo:
+ *
+ * Represents an enum or a flag.
+ */
 typedef GIBaseInfo GIEnumInfo;
+
+/**
+ * GIObjectInfo:
+ *
+ * Represents an object.
+ */
 typedef GIBaseInfo GIObjectInfo;
+
+/**
+ * GIInterfaceInfo:
+ *
+ * Represents an interface.
+ */
 typedef GIBaseInfo GIInterfaceInfo;
+
+/**
+ * GIConstantInfo:
+ *
+ * Represents a constant.
+ */
 typedef GIBaseInfo GIConstantInfo;
+
+/**
+ * GIValueInfo:
+ *
+ * Represents a enum value of a #GIEnumInfo.
+ */
 typedef GIBaseInfo GIValueInfo;
+
+/**
+ * GISignalInfo:
+ *
+ * Represents a signal.
+ */
 typedef GIBaseInfo GISignalInfo;
+
+/**
+ * GIVFuncInfo
+ *
+ * Represents a virtual function.
+ */
 typedef GIBaseInfo GIVFuncInfo;
+
+/**
+ * GIPropertyInfo:
+ *
+ * Represents a property of a #GIObjectInfo or a #GIInterfaceInfo.
+ */
 typedef GIBaseInfo GIPropertyInfo;
+
+/**
+ * GIFieldInfo:
+ *
+ * Represents a field of a #GIStructInfo or a #GIUnionInfo.
+ */
 typedef GIBaseInfo GIFieldInfo;
+
+/**
+ * GIArgInfo:
+ *
+ * Represents an argument.
+ */
 typedef GIBaseInfo GIArgInfo;
+
+/**
+ * GITypeInfo:
+ *
+ * Represents type information, direction, transfer etc.
+ */
 typedef GIBaseInfo GITypeInfo;
+
+/**
+ * GIErrorDomainInfo:
+ *
+ * Represents a #GError error domain.
+ */
 typedef GIBaseInfo GIErrorDomainInfo;
 
-typedef struct _GIUnresolvedInfo     GIUnresolvedInfo;
-typedef struct _GTypelib            GTypelib;
+/**
+ * GIUnresolvedInfo:
+ *
+ * Represents a unresolved type in a typelib.
+ */
+typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
+
+typedef struct _GTypelib GTypelib;
 
 struct _GIRepository
 {
@@ -86,6 +201,13 @@ struct _GIRepositoryClass
   GObjectClass parent;
 };
 
+/**
+ * GIRepositoryLoadFlags
+ * @G_IREPOSITORY_LOAD_FLAG_LAZY: Load the types lazily.
+ *
+ * Flags that controlls how a typelib is loaded by
+ * GIRepositry, used by g_irepository_load_typelib().
+ */
 typedef enum
 {
   G_IREPOSITORY_LOAD_FLAG_LAZY = 1 << 0
@@ -149,6 +271,16 @@ gboolean      g_typelib_symbol                (GTypelib    *typelib,
                                                gpointer    *symbol);
 const gchar * g_typelib_get_namespace         (GTypelib    *typelib);
 
+/**
+ * GIRepositoryError:
+ * @G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND: the typelib could not be found.
+ * @G_IREPOSITORY_ERROR_NAMESPACE_MISMATCH: the namespace does not match the
+ * requested namespace.
+ * @G_IREPOSITORY_ERROR_NAMESPACE_VERSION_CONFLICT: the version of the
+ * typelib does not match the requested version.
+ * @G_IREPOSITORY_ERROR_LIBRARY_NOT_FOUND: the library used by the typelib
+ * could not be found.
+ */
 typedef enum
 {
   G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
@@ -173,6 +305,32 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
 
 /* Types of objects registered in the repository */
 
+/**
+ * GIInfoType:
+ * @GI_INFO_TYPE_INVALID: invalid type
+ * @GI_INFO_TYPE_FUNCTION: function, see #GIFunctionInfo
+ * @GI_INFO_TYPE_CALLBACK: callback, see #GICallbackInfo
+ * @GI_INFO_TYPE_STRUCT: struct, see #GIStructInfo
+ * @GI_INFO_TYPE_BOXED: boxed, see #GIBoxedInfo
+ * @GI_INFO_TYPE_ENUM: enum, see #GIEnumInfo
+ * @GI_INFO_TYPE_FLAGS: flags, see #GIEnumInfo
+ * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo
+ * @GI_INFO_TYPE_INTERFACE: interface, see #GIInterfaceInfo
+ * @GI_INFO_TYPE_CONSTANT: contant, see #GIConstantInfo
+ * @GI_INFO_TYPE_ERROR_DOMAIN: error domain for a #GError, see #GIErrorDomainInfo
+ * @GI_INFO_TYPE_UNION: union, see #GIUnionInfo
+ * @GI_INFO_TYPE_VALUE: enum value, see #GIValueInfo
+ * @GI_INFO_TYPE_SIGNAL: signal, see #GISignalInfo
+ * @GI_INFO_TYPE_VFUNC: virtual function, see #GIVFuncInfo
+ * @GI_INFO_TYPE_PROPERTY: GObject property, see #GIPropertyInfo
+ * @GI_INFO_TYPE_FIELD: struct or union field, see #GIFieldInfo
+ * @GI_INFO_TYPE_ARG: argument of a function or callback, see #GIArgInfo
+ * @GI_INFO_TYPE_TYPE: type information, see #GITypeInfo
+ * @GI_INFO_TYPE_UNRESOLVED: unresolved type, a type which is not present in
+ * the typelib, or any of its dependencies.
+ *
+ * The type of a GIBaseInfo struct.
+ */
 typedef enum
 {
   GI_INFO_TYPE_INVALID,
@@ -200,7 +358,14 @@ typedef enum
 
 /* GIBaseInfo */
 
+/**
+ * GIAttributeIter:
+ *
+ * An opaque structure used to iterate over attributes
+ * in a #GIBaseInfo struct.
+ */
 typedef struct {
+  /* <private> */
   gpointer data;
   gpointer data2;
   gpointer data3;
@@ -232,6 +397,17 @@ GIBaseInfo *           g_info_new                   (GIInfoType    type,
 
 /* GIFunctionInfo */
 
+/**
+ * GIFunctionInfoFlags:
+ * @GI_FUNCTION_IS_METHOD: is a method.
+ * @GI_FUNCTION_IS_CONSTRUCTOR: is a constructor.
+ * @GI_FUNCTION_IS_GETTER: is a getter of a #GIPropertyInfo.
+ * @GI_FUNCTION_IS_SETTER: is a setter of a #GIPropertyInfo.
+ * @GI_FUNCTION_WRAPS_VFUNC: represents a virtual function.
+ * @GI_FUNCTION_THROWS: the function may throw an error.
+ *
+ * Flags for a #GIFunctionInfo struct.
+ */
 typedef enum
 {
   GI_FUNCTION_IS_METHOD      = 1 << 0,
@@ -275,6 +451,18 @@ typedef union
 #define G_INVOKE_ERROR (g_invoke_error_quark ())
 GQuark g_invoke_error_quark (void);
 
+/**
+ * GInvokeError:
+ * @G_INVOKE_ERROR_FAILED: invokation failed, unknown error.
+ * @G_INVOKE_ERROR_SYMBOL_NOT_FOUND: symbol couldn't be found in any of the
+ * libraries associated with the typelib of the function.
+ * @G_INVOKE_ERROR_ARGUMENT_MISMATCH: the arguments provided didn't match
+ * the expected arguments for the functions type signature.
+ *
+ * An error occuring while invoking a function via
+ * g_function_info_invoke().
+ */
+
 typedef enum
 {
   G_INVOKE_ERROR_FAILED,
@@ -293,6 +481,16 @@ gboolean              g_function_info_invoke         (GIFunctionInfo *info,
 
 /* GICallableInfo */
 
+/**
+ * GITransfer:
+ * @GI_TRANSFER_NOTHING: transfer nothing to the caller
+ * @GI_TRANSFER_CONTAINER: transfer the container (eg list, array,
+ * hashtable), but no the contents to the caller.
+ * @GI_TRANSFER_EVERYTHING: transfer everything to the caller.
+ *
+ * Represent the transfer ownership information of a #GICallableInfo or
+ * a #GIArgInfo.
+ */
 typedef enum {
   GI_TRANSFER_NOTHING,
   GI_TRANSFER_CONTAINER,
@@ -313,21 +511,40 @@ void                   g_callable_info_load_arg        (GICallableInfo *info,
 
 /* GIArgInfo */
 
+/**
+ * GIDirection:
+ * @GI_DIRECTION_IN: in argument.
+ * @GI_DIRECTION_OUT: out argument.
+ * @GI_DIRECTION_INOUT: in and out argument.
+ *
+ * The direction of a #GIArgInfo.
+ */
 typedef enum  {
   GI_DIRECTION_IN,
   GI_DIRECTION_OUT,
   GI_DIRECTION_INOUT
 } GIDirection;
 
+/**
+ * GIScopeType:
+ * @GI_SCOPE_TYPE_INVALID: The argument is not of callback type.
+ * @GI_SCOPE_TYPE_CALL: The callback and associated user_data is only
+ * used during the call to this function.
+ * @GI_SCOPE_TYPE_ASYNC: The callback and associated user_data is
+ * only used until the callback is invoked, and the callback.
+ * is invoked always exactly once.
+ * @GI_SCOPE_TYPE_NOTIFIED: The callback and and associated
+ * user_data is used until the caller is notfied via the destroy_notify.
+ *
+ * Scope type of a #GIArgInfo representing callback, determines how the
+ * callback is invoked and is used to decided when the invoke structs
+ * can be freed.
+ */
 typedef enum {
-  GI_SCOPE_TYPE_INVALID, /* The argument is not of callback type */
-  GI_SCOPE_TYPE_CALL, /* The callback and associated user_data is only used during the
-                         call to this function */
-  GI_SCOPE_TYPE_ASYNC, /* The callback and associated user_data is
-                          only used until the callback is invoked, and the callback
-                          is invoked always exactly once. */
-  GI_SCOPE_TYPE_NOTIFIED /* The callback and and associated user_data is
-                            used until the caller is notfied via the destroy_notify */
+  GI_SCOPE_TYPE_INVALID,
+  GI_SCOPE_TYPE_CALL,
+  GI_SCOPE_TYPE_ASYNC,
+  GI_SCOPE_TYPE_NOTIFIED
 } GIScopeType;
 
 GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
@@ -344,8 +561,42 @@ void                   g_arg_info_load_type              (GIArgInfo *info,
                                                           GITypeInfo *type);
 
 
-/* GITypeInfo */
-
+/**
+ * GITypeTag:
+ * @GI_TYPE_TAG_VOID: void
+ * @GI_TYPE_TAG_BOOLEAN: boolean
+ * @GI_TYPE_TAG_INT8: 8-bit signed integer
+ * @GI_TYPE_TAG_UINT8: 8-bit unsigned integer
+ * @GI_TYPE_TAG_INT16: 16-bit signed integer
+ * @GI_TYPE_TAG_UINT16: 16-bit unsigned integer
+ * @GI_TYPE_TAG_INT32: 32-bit signed integer
+ * @GI_TYPE_TAG_UINT32: 32-bit unsigned integer
+ * @GI_TYPE_TAG_INT64: 64-bit signed integer
+ * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
+ * @GI_TYPE_TAG_SHORT: signed short
+ * @GI_TYPE_TAG_USHORT: unsigned hosrt
+ * @GI_TYPE_TAG_INT: signed integer
+ * @GI_TYPE_TAG_UINT: unsigned integer
+ * @GI_TYPE_TAG_LONG: signed long
+ * @GI_TYPE_TAG_ULONG: unsigned long
+ * @GI_TYPE_TAG_SSIZE: ssize_t
+ * @GI_TYPE_TAG_SIZE: size_t
+ * @GI_TYPE_TAG_FLOAT: float
+ * @GI_TYPE_TAG_DOUBLE: double floating point
+ * @GI_TYPE_TAG_TIME_T: time_t
+ * @GI_TYPE_TAG_GTYPE: a #GType
+ * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
+ * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
+ * as the native filesystem is using.
+ * @GI_TYPE_TAG_ARRAY: an array
+ * @GI_TYPE_TAG_INTERFACE: an extended interface object
+ * @GI_TYPE_TAG_GLIST: a #GList
+ * @GI_TYPE_TAG_GSLIST: a #GSList
+ * @GI_TYPE_TAG_GHASH: a #GHashTable
+ * @GI_TYPE_TAG_ERROR: a #GError
+ *
+ * The type tag of a #GITypeInfo.
+ */
 typedef enum {
   /* Basic types */
   GI_TYPE_TAG_VOID      =  0,
@@ -383,6 +634,15 @@ typedef enum {
    * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;
 
+/**
+ * GIArrayType:
+ * @GI_ARRAY_TYPE_C: a C array, char[] for instance
+ * @GI_ARRAY_TYPE_ARRAY: a @GArray array
+ * @GI_ARRAY_TYPE_PTR_ARRAY: a #GPtrArray array
+ * @GI_ARRAY_TYPE_BYTE_ARRAY: a #GByteArray array
+ *
+ * The type of array in a #GITypeInfo.
+ */
 typedef enum {
   GI_ARRAY_TYPE_C,
   GI_ARRAY_TYPE_ARRAY,
@@ -420,6 +680,14 @@ glong                  g_value_info_get_value      (GIValueInfo *info);
 
 
 /* GIFieldInfo */
+
+/**
+ * GIFieldInfoFlags:
+ * @GI_FIELD_IS_READABLE: field is readable.
+ * @GI_FIELD_IS_WRITABLE: field is writable.
+ *
+ * Flags for a #GIFieldInfo.
+ */
 
 typedef enum
 {
@@ -561,6 +829,14 @@ gboolean                g_signal_info_true_stops_emit            (GISignalInfo  
 
 /* GIVFuncInfo */
 
+/**
+ * GIVFuncInfoFlags:
+ * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
+ * @GI_VFUNC_MUST_OVERRIDE: overrides
+ * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
+ *
+ * Flags of a #GIVFuncInfo struct.
+ */
 typedef enum
 {
   GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,

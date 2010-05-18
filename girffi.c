@@ -198,6 +198,8 @@ g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
  * A primary intent of this function is that a dynamic structure allocated
  * by a language binding could contain a #GIFunctionInvoker structure
  * inside the binding's function mapping.
+ *
+ * Returns: %TRUE on success, %FALSE otherwise with @error set.
  */
 gboolean
 g_function_info_prep_invoker (GIFunctionInfo       *info,
