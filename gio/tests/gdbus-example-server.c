@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #ifdef G_OS_UNIX
+#include <gio/gunixfdlist.h>
 /* For STDOUT_FILENO */
 #include <unistd.h>
 #endif
