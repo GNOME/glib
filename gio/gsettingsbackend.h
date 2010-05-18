@@ -93,6 +93,9 @@ struct _GSettingsBackendClass
                                    const gchar        *name);
   void        (*unsubscribe)      (GSettingsBackend   *backend,
                                    const gchar        *name);
+  void        (*sync)             (GSettingsBackend   *backend);
+
+  gpointer padding[8];
 };
 
 struct _GSettingsBackend
