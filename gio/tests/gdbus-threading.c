@@ -364,6 +364,11 @@ on_proxy_appeared (GDBusConnection *connection,
    * a number of times. We do this so each set of calls add up to 4000
    * milliseconds.
    *
+   * The dbus test server that this code calls into uses glib timeouts
+   * to do the sleeping which have only a granularity of 1ms.  It is
+   * therefore possible to lose as much as 40ms; the test could finish
+   * in slightly less than 4 seconds.
+   *
    * We run this test twice - first with async calls in each thread, then
    * again with sync calls
    */
@@ -438,8 +443,8 @@ on_proxy_appeared (GDBusConnection *connection,
 
       //g_debug ("Elapsed time for %s = %d msec", n == 0 ? "async" : "sync", elapsed_msec);
 
-      /* elapsed_msec should be 4000 msec + change for overhead */
-      g_assert_cmpint (elapsed_msec, >=, 4000);
+      /* elapsed_msec should be 4000 msec +/- change for overhead/inaccuracy */
+      g_assert_cmpint (elapsed_msec, >=, 3950);
       g_assert_cmpint (elapsed_msec,  <, 5000);
 
       g_print (" ");
