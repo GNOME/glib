@@ -630,6 +630,30 @@ g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
 }
 
 /* GIFunctionInfo functions */
+
+/**
+ * SECTION:gifunctioninfo
+ * @Short_description: Struct representing a function
+ * @Title: GIFunctionInfo
+ *
+ * GIFunctionInfo represents a function, method or constructor.
+ * To find out what kind of entity a #GIFunctionInfo represents, call
+ * g_function_info_get_flags().
+ *
+ * See also #GICallableInfo for information on how to retreive arguments and
+ * other metadata.
+ */
+
+/**
+ * g_function_info_get_symbol:
+ * @info: a #GIFunctionInfo
+ *
+ * Obtains the symbol of the function. The symbol is the name of the
+ * exported function, suitable to be used as an argument to
+ * g_module_symbol().
+ *
+ * Returns: the symbol
+ */
 const gchar *
 g_function_info_get_symbol (GIFunctionInfo *info)
 {
@@ -639,6 +663,14 @@ g_function_info_get_symbol (GIFunctionInfo *info)
   return g_typelib_get_string (rinfo->typelib, blob->symbol);
 }
 
+/**
+ * g_function_info_get_flags:
+ * @info: a #GIFunctionInfo
+ *
+ * Obtains the #GIFunctionInfoFlags for the @info.
+ *
+ * Returns: the flags
+ */
 GIFunctionInfoFlags
 g_function_info_get_flags (GIFunctionInfo *info)
 {
@@ -670,6 +702,17 @@ g_function_info_get_flags (GIFunctionInfo *info)
   return flags;
 }
 
+/**
+ * g_function_info_get_property:
+ * @info: a #GIFunctionInfo
+ *
+ * Obtains the property associated with this #GIFunctionInfo.
+ * Only #GIFunctionInfo with the flag %GI_FUNCTION_IS_GETTER or
+ * %GI_FUNCTION_IS_SETTER have a property set. For other cases,
+ * %NULL will be returned.
+ *
+ * Returns: the property or %NULL if not set.
+ */
 GIPropertyInfo *
 g_function_info_get_property (GIFunctionInfo *info)
 {
@@ -680,6 +723,16 @@ g_function_info_get_property (GIFunctionInfo *info)
   return g_interface_info_get_property (container, blob->index);
 }
 
+/**
+ * g_function_info_get_vfunc:
+ * @info: a #GIFunctionInfo
+ *
+ * Obtains the virtual function associated with this #GIFunctionInfo.
+ * Only #GIFunctionInfo with the flag %GI_FUNCTION_WRAPS_VFUNC has
+ * a virtual function set. For other cases, %NULL will be returned.
+ *
+ * Returns: the virtual function or %NULL if not set.
+ */
 GIVFuncInfo *
 g_function_info_get_vfunc (GIFunctionInfo *info)
 {
