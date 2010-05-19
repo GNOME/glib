@@ -167,6 +167,46 @@ g_info_from_entry (GIRepository *repository,
 }
 
 /* GIBaseInfo functions */
+
+/**
+ * SECTION:gibaseinfo
+ * @Short_description: Base struct for all GTypelib structs
+ * @Title: GIBaseInfo
+ *
+ * GIBaseInfo is the common base struct of all other *Info structs
+ * accessible through the #GIRepository API.
+ * All other structs can be casted to a #GIBaseInfo, for instance:
+ * <example>
+ * <title>Casting a #GIFunctionInfo to #GIBaseInfo</title>
+ * <programlisting>
+ *    GIFunctionInfo *function_info = ...;
+ *    GIBaseInfo *info = (GIBaseInfo*)function_info;
+ * </programlisting>
+ * </example>
+ * Most #GIRepository APIs returning a #GIBaseInfo is actually creating a new struct, in other
+ * words, g_base_info_unref() has to be called when done accessing the data.
+ * GIBaseInfos are normally accessed by calling either
+ * g_irepository_find_by_name(), g_irepository_find_by_gtype() or g_irepository_get_info().
+ *
+ * <example>
+ * <title>Getting the Button of the Gtk typelib</title>
+ * <programlisting>
+ *    GIBaseInfo *button_info = g_irepository_find_by_name(NULL, "Gtk", "Button");
+ *    ... use button_info ...
+ *    g_base_info_unref(button_info);
+ * </programlisting>
+ * </example>
+ *
+ */
+
+/**
+ * g_base_info_ref:
+ * @info: a GIBaseInfo
+ *
+ * Increases the reference count of @info.
+ *
+ * Returns: the same @info.
+ */
 GIBaseInfo *
 g_base_info_ref (GIBaseInfo *info)
 {
@@ -178,6 +218,13 @@ g_base_info_ref (GIBaseInfo *info)
   return info;
 }
 
+/**
+ * g_base_info_unref:
+ * @info: a GIBaseInfo
+ *
+ * Decreases the reference count of @info. When its reference count
+ * drops to 0, the info is freed.
+ */
 void
 g_base_info_unref (GIBaseInfo *info)
 {
@@ -198,6 +245,14 @@ g_base_info_unref (GIBaseInfo *info)
     }
 }
 
+/**
+ * g_base_info_get_type:
+ * @info: a GIBaseInfo
+ *
+ * Obtains the info type of the GIBaseInfo.
+ *
+ * Returns: the info type of @info
+ */
 GIInfoType
 g_base_info_get_type (GIBaseInfo *info)
 {
@@ -205,6 +260,16 @@ g_base_info_get_type (GIBaseInfo *info)
   return ((GIRealInfo*)info)->type;
 }
 
+/**
+ * g_base_info_get_name:
+ * @info: a GIBaseInfo
+ *
+ * Obtains the name of the @info. What the name represents depends on
+ * the #GIInfoType of the @info. For instance for #GIFunctionInfo it is
+ * the name of the function.
+ *
+ * Returns: the name of @info or %NULL if it lacks a name.
+ */
 const gchar *
 g_base_info_get_name (GIBaseInfo *info)
 {
@@ -293,6 +358,14 @@ g_base_info_get_name (GIBaseInfo *info)
   return NULL;
 }
 
+/**
+ * g_base_info_get_namespace:
+ * @info: a GIBaseInfo
+ *
+ * Obtains the namespace of @info.
+ *
+ * Returns: the namespace
+ */
 const gchar *
 g_base_info_get_namespace (GIBaseInfo *info)
 {
@@ -311,6 +384,15 @@ g_base_info_get_namespace (GIBaseInfo *info)
   return g_typelib_get_string (rinfo->typelib, header->namespace);
 }
 
+/**
+ * g_base_info_is_deprecated:
+ * @info: a GIBaseInfo
+ *
+ * Obtains whether the @info is represents a metadata which is
+ * deprecated or not.
+ *
+ * Returns: %TRUE if deprecated, otherwise %FALSE
+ */
 gboolean
 g_base_info_is_deprecated (GIBaseInfo *info)
 {
@@ -371,8 +453,8 @@ g_base_info_is_deprecated (GIBaseInfo *info)
 
 /**
  * g_base_info_get_attribute:
- * @info: A #GIBaseInfo
- * @name: A freeform string naming an attribute
+ * @info: a #GIBaseInfo
+ * @name: a freeform string naming an attribute
  *
  * Retrieve an arbitrary attribute associated with this node.
  *
@@ -495,22 +577,40 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
   return TRUE;
 }
 
+/**
+ * g_base_info_get_container:
+ * @info: a GIBaseInfo
+ *
+ * Obtains the container of the @info. The container is the parent
+ * GIBaseInfo. For instance, the parent of a #GIFunctionInfo is an
+ * #GIObjectInfo or #GIInterfaceInfo.
+ *
+ * Returns: the container
+ */
 GIBaseInfo *
 g_base_info_get_container (GIBaseInfo *info)
 {
   return ((GIRealInfo*)info)->container;
 }
 
+/**
+ * g_base_info_get_typelib:
+ * @info: a GIBaseInfo
+ *
+ * Obtains the typelib this @info belongs to
+ *
+ * Returns: the typelib.
+ */
 GTypelib *
 g_base_info_get_typelib (GIBaseInfo *info)
 {
   return ((GIRealInfo*)info)->typelib;
 }
 
-/*
+/**
  * g_base_info_equal:
- * @info1: A #GIBaseInfo
- * @info2: A #GIBaseInfo
+ * @info1: a #GIBaseInfo
+ * @info2: a #GIBaseInfo
  *
  * Compare two #GIBaseInfo.
  *
@@ -518,7 +618,7 @@ g_base_info_get_typelib (GIBaseInfo *info)
  * different instances of #GIBaseInfo that refers to the same part of the
  * TypeLib; use this function instead to do #GIBaseInfo comparisons.
  *
- * Return value: TRUE if and only if @info1 equals @info2.
+ * Returns: TRUE if and only if @info1 equals @info2.
  */
 gboolean
 g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
