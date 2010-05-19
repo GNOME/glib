@@ -3214,6 +3214,33 @@ g_dgettext (const gchar *domain,
 }
 
 /**
+ * g_dgettext:
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgid: message to translate
+ * @category: a locale category
+ *
+ * This is a variant of g_dgettext() that allows specifying a locale
+ * category instead of always using %LC_MESSAGES. See g_dgettext() for
+ * more information about how this functions differs from calling
+ * dcgettext() directly.
+ *
+ * Returns: the translated string for the given locale category
+ * 
+ * Since: 2.26
+ */
+G_CONST_RETURN gchar *
+g_dcgettext (const gchar *domain,
+             const gchar *msgid,
+             int          category)
+{
+  if (domain && G_UNLIKELY (!_g_dgettext_should_translate ()))
+    return msgid;
+
+  return dcgettext (domain, msgid, category);
+}
+
+/**
  * g_dngettext:
  * @domain: the translation domain to use, or %NULL to use
  *   the domain set with textdomain()

@@ -794,16 +794,13 @@ g_settings_get_value (GSettings   *settings,
       const gchar *translated;
       GError *error = NULL;
       const gchar *domain;
-      gint lc_category;
 
       domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
 
       if (lc_char == 't')
-        lc_category = LC_TIME;
+        translated = g_dcgettext (domain, unparsed, LC_TIME);
       else
-        lc_category = LC_MESSAGES;
-
-      translated = dcgettext (domain, unparsed, lc_category);
+        translated = g_dgettext (domain, unparsed);
 
       if (translated != unparsed)
         /* it was translated, so we need to re-parse it */

@@ -250,7 +250,9 @@ G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid,
 
 G_CONST_RETURN gchar *g_dgettext       (const gchar *domain,
 					const gchar *msgid) G_GNUC_FORMAT(2);
-
+G_CONST_RETURN gchar *g_dcgettext      (const gchar *domain,
+					const gchar *msgid,
+                                        int          category) G_GNUC_FORMAT(2);
 G_CONST_RETURN gchar *g_dngettext      (const gchar *domain,
 					const gchar *msgid,
 					const gchar *msgid_plural,

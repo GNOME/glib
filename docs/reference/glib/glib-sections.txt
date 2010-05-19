@@ -2576,6 +2576,7 @@ C_
 N_
 NC_
 g_dgettext
+g_dcgettext
 g_dngettext
 g_dpgettext
 g_dpgettext2
