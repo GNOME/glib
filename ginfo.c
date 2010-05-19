@@ -201,7 +201,7 @@ g_info_from_entry (GIRepository *repository,
 
 /**
  * g_base_info_ref:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Increases the reference count of @info.
  *
@@ -220,7 +220,7 @@ g_base_info_ref (GIBaseInfo *info)
 
 /**
  * g_base_info_unref:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Decreases the reference count of @info. When its reference count
  * drops to 0, the info is freed.
@@ -247,7 +247,7 @@ g_base_info_unref (GIBaseInfo *info)
 
 /**
  * g_base_info_get_type:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains the info type of the GIBaseInfo.
  *
@@ -262,7 +262,7 @@ g_base_info_get_type (GIBaseInfo *info)
 
 /**
  * g_base_info_get_name:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains the name of the @info. What the name represents depends on
  * the #GIInfoType of the @info. For instance for #GIFunctionInfo it is
@@ -360,7 +360,7 @@ g_base_info_get_name (GIBaseInfo *info)
 
 /**
  * g_base_info_get_namespace:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains the namespace of @info.
  *
@@ -386,12 +386,12 @@ g_base_info_get_namespace (GIBaseInfo *info)
 
 /**
  * g_base_info_is_deprecated:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains whether the @info is represents a metadata which is
  * deprecated or not.
  *
- * Returns: %TRUE if deprecated, otherwise %FALSE
+ * Returns: %TRUE if deprecated
  */
 gboolean
 g_base_info_is_deprecated (GIBaseInfo *info)
@@ -458,7 +458,7 @@ g_base_info_is_deprecated (GIBaseInfo *info)
  *
  * Retrieve an arbitrary attribute associated with this node.
  *
- * Return value: The value of the attribute, or %NULL if no such attribute exists
+ * Returns: The value of the attribute, or %NULL if no such attribute exists
  */
 const gchar *
 g_base_info_get_attribute (GIBaseInfo   *info,
@@ -518,8 +518,8 @@ find_first_attribute (GIRealInfo *rinfo)
 
 /**
  * g_base_info_iterate_attributes:
- * @info: A #GIBaseInfo
- * @iterator: A #GIAttributeIter structure, must be initialized; see below
+ * @info: a #GIBaseInfo
+ * @iterator: a #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *
@@ -547,7 +547,7 @@ find_first_attribute (GIRealInfo *rinfo)
  * </programlisting>
  * </example>
  *
- * Return value: %TRUE if there are more attributes, %FALSE otherwise
+ * Returns: %TRUE if there are more attributes
  */
 gboolean
 g_base_info_iterate_attributes (GIBaseInfo       *info,
@@ -579,13 +579,13 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
 
 /**
  * g_base_info_get_container:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains the container of the @info. The container is the parent
  * GIBaseInfo. For instance, the parent of a #GIFunctionInfo is an
  * #GIObjectInfo or #GIInterfaceInfo.
  *
- * Returns: the container
+ * Returns: (transfer none): the container
  */
 GIBaseInfo *
 g_base_info_get_container (GIBaseInfo *info)
@@ -595,11 +595,11 @@ g_base_info_get_container (GIBaseInfo *info)
 
 /**
  * g_base_info_get_typelib:
- * @info: a GIBaseInfo
+ * @info: a #GIBaseInfo
  *
  * Obtains the typelib this @info belongs to
  *
- * Returns: the typelib.
+ * Returns: (transfer none): the typelib.
  */
 GTypelib *
 g_base_info_get_typelib (GIBaseInfo *info)
@@ -618,7 +618,7 @@ g_base_info_get_typelib (GIBaseInfo *info)
  * different instances of #GIBaseInfo that refers to the same part of the
  * TypeLib; use this function instead to do #GIBaseInfo comparisons.
  *
- * Returns: TRUE if and only if @info1 equals @info2.
+ * Returns: %TRUE if and only if @info1 equals @info2.
  */
 gboolean
 g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
@@ -711,7 +711,8 @@ g_function_info_get_flags (GIFunctionInfo *info)
  * %GI_FUNCTION_IS_SETTER have a property set. For other cases,
  * %NULL will be returned.
  *
- * Returns: the property or %NULL if not set.
+ * Returns: (transfer full): the property or %NULL if not set. Free it with
+ * g_base_info_unref() when done.
  */
 GIPropertyInfo *
 g_function_info_get_property (GIFunctionInfo *info)
@@ -731,7 +732,8 @@ g_function_info_get_property (GIFunctionInfo *info)
  * Only #GIFunctionInfo with the flag %GI_FUNCTION_WRAPS_VFUNC has
  * a virtual function set. For other cases, %NULL will be returned.
  *
- * Returns: the virtual function or %NULL if not set.
+ * Returns: (transfer full): the virtual function or %NULL if not set.
+ * Free it by calling g_base_info_unref() when done.
  */
 GIVFuncInfo *
 g_function_info_get_vfunc (GIFunctionInfo *info)
@@ -798,11 +800,10 @@ g_type_info_init (GIBaseInfo *info,
  * g_callable_info_get_return_type:
  * @info: a #GICallableInfo
  *
- * Get the return type of a callable item as
- * a #GITypeInfo
+ * Get the return type of a callable item as a #GITypeInfo.
  *
- * Returns: a #GITypeInfo idexing the TypeBlob for the
- * return type of #info
+ * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
+ * g_base_info_unref() when done.
  */
 GITypeInfo *
 g_callable_info_get_return_type (GICallableInfo *info)
@@ -843,9 +844,9 @@ g_callable_info_load_return_type (GICallableInfo *info,
  * g_callable_info_may_return_null:
  * @info: a #GICallableInfo
  *
- * See if a callable could return NULL.
+ * See if a callable could return %NULL.
  *
- * Returns: TRUE if callable could return NULL
+ * Returns: %TRUE if callable could return %NULL
  */
 gboolean
 g_callable_info_may_return_null (GICallableInfo *info)
@@ -863,7 +864,7 @@ g_callable_info_may_return_null (GICallableInfo *info)
  * See whether the caller owns the return value
  * of this callable.
  *
- * Returns: TRUE if the caller owns the return value, FALSE otherwise.
+ * Returns: %TRUE if the caller owns the return value, %FALSE otherwise.
  */
 GITransfer
 g_callable_info_get_caller_owns (GICallableInfo *info)
@@ -907,7 +908,8 @@ g_callable_info_get_n_args (GICallableInfo *info)
  *
  * Get information about a particular argument of this callable.
  *
- * Returns: A #GIArgInfo indexing the typelib on the given argument.
+ * Returns: (transfer full): the #GIArgInfo. Free it with
+ * g_base_info_unref() when done.
  */
 GIArgInfo *
 g_callable_info_get_arg (GICallableInfo *info,
@@ -1044,9 +1046,12 @@ g_arg_info_get_destroy (GIArgInfo *info)
 
 /**
  * g_arg_info_get_type:
- * @info: A #GIArgInfo
+ * @info: a #GIArgInfo
  *
- * Returns: (transfer full): Information about the type of argument @info
+ * Obtains the type information for @info.
+ *
+ * Returns: (transfer full): the #GIArgInfo, free it with
+ * g_base_info_unref() when done.
  */
 GITypeInfo *
 g_arg_info_get_type (GIArgInfo *info)
@@ -1058,7 +1063,7 @@ g_arg_info_get_type (GIArgInfo *info)
 
 /**
  * g_arg_info_load_type:
- * @info: A #GIArgInfo
+ * @info: a #GIArgInfo
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
  * Get information about a the type of given argument @info; this
@@ -1141,14 +1146,15 @@ g_type_info_get_param_type (GITypeInfo *info,
 
 /**
  * g_type_info_get_interface:
- * @info: A #GITypeInfo
+ * @info: a #GITypeInfo
  *
  * For types which have #GI_TYPE_TAG_INTERFACE such as GObjects and boxed values,
  * this function returns full information about the referenced type.  You can then
  * inspect the type of the returned #GIBaseInfo to further query whether it is
  * a concrete GObject, a GInterface, a structure, etc. using g_base_info_get_type().
  *
- * Returns: a struct representing the interface or %NULL
+ * Returns: (transfer full): the #GIBaseInfo, or %NULL. Free it with
+ * g_base_info_unref() when done.
  */
 GIBaseInfo *
 g_type_info_get_interface (GITypeInfo *info)
@@ -1575,7 +1581,7 @@ g_struct_info_is_foreign (GIStructInfo *info)
 
 /**
  * g_struct_info_is_gtype_struct:
- * @info: GIStructInfo
+ * @info: a #GIStructInfo
  *
  * Return true if this structure represents the "class structure" for some
  * #GObject or #GInterface.  This function is mainly useful to hide this kind of structure
@@ -1616,7 +1622,7 @@ g_enum_info_get_value (GIEnumInfo *info,
 
 /**
  * g_enum_info_get_storage_type:
- * @info: GIEnumInfo
+ * @info: a #GIEnumInfo
  *
  * Gets the tag of the type used for the enum in the C ABI. This will
  * will be a signed or unsigned integral type.
@@ -1879,16 +1885,19 @@ find_vfunc (GIRealInfo   *rinfo,
 
 /**
  * g_object_info_find_vfunc:
- * @info: An #GIObjectInfo
+ * @info: a #GIObjectInfo
  * @name: The name of a virtual function to find.
  *
- * Locate a virtual function slot with name @name.  Note that the namespace
+ * Locate a virtual function slot with name @name. Note that the namespace
  * for virtuals is distinct from that of methods; there may or may not be
- * a concrete method associated for a virtual.  If there is one, it may
- * be retrieved using #g_vfunc_info_get_invoker.  See the documentation for
- * that function for more information on invoking virtuals.
+ * a concrete method associated for a virtual. If there is one, it may
+ * be retrieved using g_vfunc_info_get_invoker(), otherwise %NULL will be
+ * returned.
+ * See the documentation for g_vfunc_info_get_invoker() for more
+ * information on invoking virtuals.
  *
- * Return value: (transfer full): A #GIVFuncInfo, or %NULL if none with name @name.
+ * Returns: (transfer full): the #GIVFuncInfo, or %NULL. Free it with
+ * g_base_info_unref() when done.
  */
 GIVFuncInfo *
 g_object_info_find_vfunc (GIObjectInfo *info,
@@ -1942,12 +1951,13 @@ g_object_info_get_constant (GIObjectInfo *info,
 
 /**
  * g_object_info_get_class_struct:
- * @info: A #GIObjectInfo to query
+ * @info: a #GIObjectInfo
  *
  * Every #GObject has two structures; an instance structure and a class
  * structure.  This function returns the metadata for the class structure.
  *
- * Returns: a #GIStructInfo for the class struct or %NULL if none found.
+ * Returns: (transfer full): the #GIStructInfo or %NULL. Free with
+ * g_base_info_unref() when done.
  */
 GIStructInfo *
 g_object_info_get_class_struct (GIObjectInfo *info)
@@ -2112,13 +2122,14 @@ g_interface_info_get_vfunc (GIInterfaceInfo *info,
 
 /**
  * g_interface_info_find_vfunc:
- * @info: An #GIObjectInfo
+ * @info: a #GIObjectInfo
  * @name: The name of a virtual function to find.
  *
- * Locate a virtual function slot with name @name.  See the documentation
- * for #g_object_info_find_vfunc for more information on virtuals.
+ * Locate a virtual function slot with name @name. See the documentation
+ * for g_object_info_find_vfunc() for more information on virtuals.
  *
- * Return value: (transfer full): A #GIVFuncInfo, or %NULL if none with name @name.
+ * Returns: (transfer full): the #GIVFuncInfo, or %NULL. Free it with
+ * g_base_info_unref() when done.
  */
 GIVFuncInfo *
 g_interface_info_find_vfunc (GIInterfaceInfo *info,
@@ -2170,11 +2181,12 @@ g_interface_info_get_constant (GIInterfaceInfo *info,
 
 /**
  * g_interface_info_get_iface_struct:
- * @info: A #GIInterfaceInfo to query
+ * @info: a #GIInterfaceInfo
  *
  * Returns the layout C structure associated with this #GInterface.
  *
- * Returns: A #GIStructInfo for the class struct or %NULL if none found.
+ * Returns: (transfer full): the #GIStructInfo or %NULL. Free it with
+ * g_base_info_unref() when done.
  */
 GIStructInfo *
 g_interface_info_get_iface_struct (GIInterfaceInfo *info)
@@ -2325,14 +2337,15 @@ g_vfunc_info_get_signal (GIVFuncInfo *info)
 
 /**
  * g_vfunc_info_get_invoker:
- * @info: A #GIVFuncInfo
+ * @info: a #GIVFuncInfo
  *
  * If this virtual function has an associated invoker method, this
  * method will return it.  An invoker method is a C entry point.
  *
  * Not all virtuals will have invokers.
  *
- * Return value: (transfer full): An invoker function, or %NULL if none known
+ * Returns: (transfer full): the #GIVFuncInfo or %NULL. Free it with
+ * g_base_info_unref() when done.
  */
 GIFunctionInfo *
 g_vfunc_info_get_invoker (GIVFuncInfo *info)
