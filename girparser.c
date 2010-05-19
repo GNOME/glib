@@ -287,7 +287,7 @@ backtrace_stderr (void)
   size = backtrace (array, 50);
   strings = (char**) backtrace_symbols (array, size);
 
-  fprintf (stderr, "--- BACKTRACE (%zd frames) ---\n", size);
+  fprintf (stderr, "--- BACKTRACE (%d frames) ---\n", size);
 
   for (i = 0; i < size; i++)
     fprintf (stderr, "%s\n", strings[i]);
