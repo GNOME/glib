@@ -58,7 +58,7 @@ g_invoke_error_quark (void)
  * argument lists. This function uses dlsym() to obtain a pointer
  * to the function, so the library or shared object containing the
  * described function must either be linked to the caller, or must
- * have been dlopen()<!-- -->ed before calling this function.
+ * have been g_module_symbol()<!-- -->ed before calling this function.
  *
  * Returns: %TRUE if the function has been invoked, %FALSE if an
  *   error occurred.

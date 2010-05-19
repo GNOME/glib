@@ -1982,7 +1982,7 @@ _g_typelib_do_dlopen (GTypelib *typelib)
       shlibs = g_strsplit (shlib_str, ",", 0);
 
        /* We load all passed libs unconditionally as if the same library is loaded
-        * again with dlopen(), the same file handle will be returned. See bug:
+        * again with g_module_open(), the same file handle will be returned. See bug:
         * http://bugzilla.gnome.org/show_bug.cgi?id=555294
         */
       for (i = 0; shlibs[i]; i++)
@@ -1990,7 +1990,7 @@ _g_typelib_do_dlopen (GTypelib *typelib)
           GModule *module;
 
           /* Glade's autoconnect feature and OpenGL's extension mechanism
-           * as used by Clutter rely on dlopen(NULL) to work as a means of
+           * as used by Clutter rely on g_module_open(NULL) to work as a means of
            * accessing the app's symbols. This keeps us from using
            * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
            * in general libraries are not expecting multiple copies of
