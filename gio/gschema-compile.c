@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gstdio.h>
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
@@ -638,12 +639,14 @@ main (int argc, char **argv)
   gchar *srcdir;
   gchar *targetdir = NULL;
   gchar *target;
+  gboolean uninstall = FALSE;
   gboolean dry_run = FALSE;
   gchar **schema_files = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
+    { "uninstall", 0, 0, G_OPTION_ARG_NONE, &uninstall, N_("Do not give error for empty directory"), NULL },
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
 
     /* These options are only for use in the gschema-compile tests */
@@ -704,8 +707,16 @@ main (int argc, char **argv)
 
       if (files->len == 0)
         {
-          fprintf (stderr, _("No schema files found\n"));
-          return 1;
+          if (uninstall)
+            {
+              g_unlink (target);
+              return 0;
+            }
+          else
+            {
+              fprintf (stderr, _("No schema files found\n"));
+              return 1;
+            }
         }
       g_ptr_array_add (files, NULL);
 
