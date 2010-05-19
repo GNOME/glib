@@ -165,6 +165,9 @@
 /* Define to 1 if you have the <crt_externs.h> header file. */
 /* #undef HAVE_CRT_EXTERNS_H */
 
+/* Define if dbus-1 is available */
+/* #undef HAVE_DBUS1 */
+
 /* Define to 1 if you have the `dcgettext' function. */
 #define HAVE_DCGETTEXT 1
 
@@ -330,6 +333,9 @@
 /* Define to 1 if you have the `memalign' function. */
 /* #undef HAVE_MEMALIGN */
 
+/* Define to 1 if you have the `memmem' function. */
+/* #undef HAVE_MEMMEM */
+
 /* Define to 1 if you have the `memmove' function. */
 #define HAVE_MEMMOVE 1
 
@@ -443,8 +449,8 @@
 /* #undef HAVE_STDINT_H */
 #endif /* _MSC_VER */
 
-/* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and 
-   declares uintmax_t. */
+/* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
+   uintmax_t. */
 #ifndef _MSC_VER
 #define HAVE_STDINT_H_WITH_UINTMAX 1
 #else /* _MSC_VER */
@@ -789,7 +795,15 @@
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
-/* #undef WORDS_BIGENDIAN */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+/* #  undef WORDS_BIGENDIAN */
+# endif
+#endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
