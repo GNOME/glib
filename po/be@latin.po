@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-14 22:10-0400\n"
+"POT-Creation-Date: 2010-05-19 16:22-0400\n"
 "PO-Revision-Date: 2008-02-16 23:33+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1278,8 +1278,9 @@ msgstr "Funkcyi %s pieradadzieny nadta vialiki ličylnik"
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
 
-#: gio/gcancellable.c:433 gio/glocalfile.c:2103 gio/gsimpleasyncresult.c:651
-#: gio/gsimpleasyncresult.c:677
+#: gio/gcancellable.c:433 gio/gdbusconnection.c:1212
+#: gio/gdbusconnection.c:1300 gio/gdbusconnection.c:1472 gio/glocalfile.c:2103
+#: gio/gsimpleasyncresult.c:651 gio/gsimpleasyncresult.c:677
 msgid "Operation was cancelled"
 msgstr "Aperacyja anulavanaja"
 
@@ -1318,9 +1319,610 @@ msgstr "typ fajłaŭ %s"
 msgid "%s type"
 msgstr "typ %s"
 
+#: gio/gcredentials.c:203 gio/gcredentials.c:338
+msgid "GCredentials is not implemented on this OS"
+msgstr ""
+
+#: gio/gcredentials.c:296
+msgid "There is no GCredentials support for your platform"
+msgstr ""
+
 #: gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Zaŭčasny kaniec płyni"
+
+#: gio/gdbusaddress.c:129 gio/gdbusaddress.c:220 gio/gdbusaddress.c:294
+#, c-format
+msgid "Unsupported key `%s' in address entry `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:159
+#, c-format
+msgid ""
+"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"
+msgstr ""
+
+#: gio/gdbusaddress.c:172
+#, c-format
+msgid "Meaningless key/value pair combination in address entry `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:235 gio/gdbusaddress.c:309
+#, c-format
+msgid "Error in address `%s' - the port attribute is malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:246 gio/gdbusaddress.c:320
+#, c-format
+msgid "Error in address `%s' - the family attribute is malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:422
+#, c-format
+msgid "Address element `%s', does not contain a colon (:)"
+msgstr ""
+
+#: gio/gdbusaddress.c:443
+#, c-format
+msgid ""
+"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"sign"
+msgstr ""
+
+#: gio/gdbusaddress.c:517
+#, c-format
+msgid ""
+"Error in address `%s' - the unix transport requires exactly one of the keys "
+"`path' or `abstract' to be set"
+msgstr ""
+
+#: gio/gdbusaddress.c:553
+#, c-format
+msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:567
+#, c-format
+msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:581
+#, c-format
+msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:595
+#, c-format
+msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbusaddress.c:629
+#, fuzzy, c-format
+msgid "Error reading nonce file `%s':"
+msgstr "Pamyłka adčytańnia fajłu '%s': %s"
+
+#: gio/gdbusaddress.c:640
+msgid "The nonce-file `%s' was %"
+msgstr ""
+
+#: gio/gdbusaddress.c:656
+#, c-format
+msgid "Error write contents of nonce file `%s' to stream:"
+msgstr ""
+
+#: gio/gdbusaddress.c:972
+#, c-format
+msgid ""
+"Cannot determine session bus address (TODO: run dbus-launch to find out)"
+msgstr ""
+
+#: gio/gdbusaddress.c:996 gio/gdbusconnection.c:5208
+#, c-format
+msgid ""
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:1005 gio/gdbusconnection.c:5217
+msgid ""
+"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
+"variable is not set"
+msgstr ""
+
+#: gio/gdbusaddress.c:1015
+#, fuzzy, c-format
+msgid "Unknown bus type %d"
+msgstr "Nieviadomy typ"
+
+#: gio/gdbusauth.c:287
+msgid "Unexpected lack of content trying to read a line"
+msgstr ""
+
+#: gio/gdbusauth.c:331
+msgid "Unexpected lack of content trying to (safely) read a line"
+msgstr ""
+
+#: gio/gdbusauth.c:502
+#, c-format
+msgid ""
+"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgstr ""
+
+#: gio/gdbusauth.c:1144
+msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
+msgstr ""
+
+# glib/gdir.c:79
+#: gio/gdbusauthmechanismsha1.c:263
+#, fuzzy, c-format
+msgid "Error statting directory `%s': %s"
+msgstr "Pamyłka pry adčynieńni katalohu '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:275
+#, c-format
+msgid ""
+"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgstr ""
+
+# glib/gdir.c:79
+#: gio/gdbusauthmechanismsha1.c:294
+#, fuzzy, c-format
+msgid "Error creating directory `%s': %s"
+msgstr "Pamyłka pry adčynieńni katalohu '%s': %s"
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:377
+#, fuzzy, c-format
+msgid "Error opening keyring `%s' for reading: "
+msgstr "Pamyłka adčynieńnia fajłu '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:401 gio/gdbusauthmechanismsha1.c:710
+#, c-format
+msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:415 gio/gdbusauthmechanismsha1.c:724
+#, c-format
+msgid ""
+"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:429 gio/gdbusauthmechanismsha1.c:738
+#, c-format
+msgid ""
+"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:453
+#, c-format
+msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:530
+#, fuzzy, c-format
+msgid "Error deleting stale lock-file `%s': %s"
+msgstr "Pamyłka adčytańnia fajłu '%s': %s"
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:561
+#, fuzzy, c-format
+msgid "Error creating lock-file `%s': %s"
+msgstr "Pamyłka adčytańnia fajłu '%s': %s"
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:591
+#, fuzzy, c-format
+msgid "Error unlinking lock-file `%s': %s"
+msgstr "Pamyłka adčynieńnia fajłu '%s': %s"
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:601
+#, fuzzy, c-format
+msgid "Error closing (unlinked) lock-file `%s': %s"
+msgstr "Pamyłka začynieńnia fajłu: %s"
+
+# glib/gfileutils.c:348
+#: gio/gdbusauthmechanismsha1.c:677
+#, fuzzy, c-format
+msgid "Error opening keyring `%s' for writing: "
+msgstr "Pamyłka adčynieńnia fajłu '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:872
+#, c-format
+msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgstr ""
+
+#: gio/gdbusconnection.c:1001 gio/gdbusconnection.c:1311
+#, fuzzy
+msgid "The connection is closed"
+msgstr "Ličylnik začynieny"
+
+#: gio/gdbusconnection.c:1256
+msgid "Timeout was reached"
+msgstr ""
+
+#: gio/gdbusconnection.c:1757
+msgid ""
+"Unsupported flags encountered when constructing a client-side connection"
+msgstr ""
+
+#: gio/gdbusconnection.c:3155
+#, c-format
+msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3247
+#, c-format
+msgid "No such property `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3259
+#, c-format
+msgid "Property `%s' is not readable"
+msgstr ""
+
+#: gio/gdbusconnection.c:3270
+#, c-format
+msgid "Property `%s' is not writable"
+msgstr ""
+
+#: gio/gdbusconnection.c:3338 gio/gdbusconnection.c:4675
+#, c-format
+msgid "No such interface `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3508
+msgid "No such interface"
+msgstr ""
+
+#: gio/gdbusconnection.c:3752
+#, c-format
+msgid "No such method `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3770
+#, c-format
+msgid "Signature of message, `%s', does not match expected signature `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3989
+#, c-format
+msgid "An object is already exported for the interface %s at %s"
+msgstr ""
+
+#: gio/gdbusconnection.c:4773
+#, c-format
+msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgstr ""
+
+#: gio/gdbusconnection.c:4888
+#, fuzzy, c-format
+msgid "A subtree is already exported for %s"
+msgstr "Płyń užo začynienaja"
+
+#: gio/gdbusconnection.c:4996
+#, c-format
+msgid "Unable to load /var/lib/dbus/machine-id: %s"
+msgstr ""
+
+#: gio/gdbusmessage.c:723
+msgid "Wanted to read %"
+msgstr ""
+
+#: gio/gdbusmessage.c:744
+#, c-format
+msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
+msgstr ""
+
+#: gio/gdbusmessage.c:927
+#, c-format
+msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgstr ""
+
+#: gio/gdbusmessage.c:953
+#, c-format
+msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgstr ""
+
+#: gio/gdbusmessage.c:979
+msgid "Encountered array of length %"
+msgstr ""
+
+#: gio/gdbusmessage.c:1116
+#, c-format
+msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgstr ""
+
+#: gio/gdbusmessage.c:1141
+#, c-format
+msgid ""
+"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+msgstr ""
+
+#: gio/gdbusmessage.c:1282
+#, c-format
+msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
+msgstr ""
+
+#: gio/gdbusmessage.c:1296
+#, c-format
+msgid "Invalid major protocol version. Expected 1 but found %d"
+msgstr ""
+
+#: gio/gdbusmessage.c:1339
+#, c-format
+msgid "Signature header with signature `%s' found but message body is empty"
+msgstr ""
+
+#: gio/gdbusmessage.c:1353
+#, c-format
+msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgstr ""
+
+#: gio/gdbusmessage.c:1382
+msgid "No signature header in message but the message body is %"
+msgstr ""
+
+#: gio/gdbusmessage.c:1694
+#, c-format
+msgid ""
+"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+msgstr ""
+
+#: gio/gdbusmessage.c:1823
+#, c-format
+msgid "Message has %d fds but the header field indicates %d fds"
+msgstr ""
+
+#: gio/gdbusmessage.c:1869
+#, c-format
+msgid "Message body has signature `%s' but there is no signature header"
+msgstr ""
+
+#: gio/gdbusmessage.c:1879
+#, c-format
+msgid ""
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
+msgstr ""
+
+#: gio/gdbusmessage.c:1895
+#, c-format
+msgid "Message body is empty but signature in the header field is `(%s)'"
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbusmessage.c:2448
+#, fuzzy, c-format
+msgid "Error return with body of type `%s'"
+msgstr "Pamyłka zapisu ŭ fajł: %s"
+
+#: gio/gdbusmessage.c:2456
+msgid "Error return with empty body"
+msgstr ""
+
+#: gio/gdbusmethodinvocation.c:359
+#, c-format
+msgid "Type of return value is incorrect, got `%s', expected  `%s'"
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbusmethodinvocation.c:373 gio/gsocket.c:2859 gio/gsocket.c:2940
+#, fuzzy, c-format
+msgid "Error sending message: %s"
+msgstr "Pamyłka adčynieńnia fajłu: %s"
+
+#: gio/gdbusprivate.c:768
+msgid "Error writing first 16 bytes of message to socket: "
+msgstr ""
+
+#: gio/gdbusproxy.c:633
+#, c-format
+msgid ""
+"Trying to set property %s of type %s but according to the expected interface "
+"the type is %s"
+msgstr ""
+
+#: gio/gdbusproxy.c:1438
+#, c-format
+msgid "Method `%s' returned signature `%s', but expected `%s'"
+msgstr ""
+
+#: gio/gdbusserver.c:662
+#, fuzzy
+msgid "Abstract name space not supported"
+msgstr "Śmietnica nie padtrymlivajacca"
+
+#: gio/gdbusserver.c:752
+msgid "Cannot specify nonce file when creating a server"
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbusserver.c:829
+#, fuzzy, c-format
+msgid "Error writing nonce file at `%s': %s"
+msgstr "Pamyłka zapisu ŭ fajł: %s"
+
+#: gio/gdbusserver.c:981
+#, c-format
+msgid "The string `%s' is not a valid D-Bus GUID"
+msgstr ""
+
+#: gio/gdbusserver.c:1021
+#, c-format
+msgid "Cannot listen on unsupported transport `%s'"
+msgstr ""
+
+#: gio/gdbus-tool.c:87 gio/gsettings-tool.c:38
+msgid "COMMAND"
+msgstr ""
+
+#: gio/gdbus-tool.c:92
+#, c-format
+msgid ""
+"Commands:\n"
+"  help         Shows this information\n"
+"  introspect   Introspect a remote object\n"
+"  monitor      Monitor a remote object\n"
+"  call         Invoke a method on a remote object\n"
+"\n"
+"Use \"%s COMMAND --help\" to get help on each command.\n"
+msgstr ""
+
+# glib/gmarkup.c:303
+#: gio/gdbus-tool.c:159 gio/gdbus-tool.c:221 gio/gdbus-tool.c:299
+#: gio/gdbus-tool.c:328 gio/gdbus-tool.c:842 gio/gdbus-tool.c:1347
+#, fuzzy, c-format
+msgid "Error: %s\n"
+msgstr "Pamyłka ŭ radku %d: %s"
+
+#: gio/gdbus-tool.c:165 gio/gdbus-tool.c:227 gio/gdbus-tool.c:474
+#: gio/gdbus-tool.c:1353
+#, c-format
+msgid "Error: Result is type `%s', expected `(s)'\n"
+msgstr ""
+
+# glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+# glib/giochannel.c:2175
+#: gio/gdbus-tool.c:177 gio/gdbus-tool.c:241 gio/gdbus-tool.c:1363
+#, fuzzy, c-format
+msgid "Error parsing introspection XML: %s\n"
+msgstr "Pamyłka padčas pierapracoŭki %s"
+
+#: gio/gdbus-tool.c:305 gio/gdbus-tool.c:334
+#, c-format
+msgid "Error: Result is type `%s', expected `(as)'\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:368
+msgid "Connect to the system bus"
+msgstr ""
+
+#: gio/gdbus-tool.c:369
+msgid "Connect to the session bus"
+msgstr ""
+
+#: gio/gdbus-tool.c:370
+msgid "Connect to given D-Bus address"
+msgstr ""
+
+#: gio/gdbus-tool.c:380
+msgid "Connection Endpoint Options:"
+msgstr ""
+
+#: gio/gdbus-tool.c:381
+msgid "Options specifying the connection endpoint"
+msgstr ""
+
+#: gio/gdbus-tool.c:401
+#, c-format
+msgid "No connection endpoint specified"
+msgstr ""
+
+#: gio/gdbus-tool.c:411
+#, c-format
+msgid "Multiple connection endpoints specified"
+msgstr ""
+
+#: gio/gdbus-tool.c:488
+#, c-format
+msgid ""
+"Warning: According to introspection data, interface `%s' does not exist\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:497
+#, c-format
+msgid ""
+"Warning: According to introspection data, method `%s' does not exist on "
+"interface `%s'\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:559
+msgid "Destination name to invoke method on"
+msgstr ""
+
+#: gio/gdbus-tool.c:560
+msgid "Object path to invoke method on"
+msgstr ""
+
+#: gio/gdbus-tool.c:561
+msgid "Method and interface name"
+msgstr ""
+
+#: gio/gdbus-tool.c:600
+msgid "Invoke a method on a remote object."
+msgstr ""
+
+# glib/gfileutils.c:348
+#: gio/gdbus-tool.c:655 gio/gdbus-tool.c:1269 gio/gdbus-tool.c:1526
+#, fuzzy, c-format
+msgid "Error connecting: %s\n"
+msgstr "Pamyłka adčynieńnia fajłu: %s"
+
+#: gio/gdbus-tool.c:675 gio/gdbus-tool.c:1288 gio/gdbus-tool.c:1545
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:696 gio/gdbus-tool.c:1307
+#, c-format
+msgid "Error: Object path is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:716 gio/gdbus-tool.c:1327 gio/gdbus-tool.c:1585
+#, c-format
+msgid "Error: %s is not a valid object path\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:731
+#, c-format
+msgid "Error: Method name is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:742
+#, c-format
+msgid "Error: Method name `%s' is invalid\n"
+msgstr ""
+
+# glib/gdir.c:79
+#: gio/gdbus-tool.c:807
+#, fuzzy, c-format
+msgid "Error parsing parameter %d of type `%s': %s\n"
+msgstr "Pamyłka pry adčynieńni katalohu '%s': %s"
+
+# glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+# glib/giochannel.c:2175
+#: gio/gdbus-tool.c:815
+#, fuzzy, c-format
+msgid "Error parsing parameter %d: %s\n"
+msgstr "Pamyłka padčas pierapracoŭki %s"
+
+#: gio/gdbus-tool.c:1187
+msgid "Destination name to introspect"
+msgstr ""
+
+#: gio/gdbus-tool.c:1188
+msgid "Object path to introspect"
+msgstr ""
+
+#: gio/gdbus-tool.c:1221
+msgid "Introspect a remote object."
+msgstr ""
+
+#: gio/gdbus-tool.c:1444
+msgid "Destination name to monitor"
+msgstr ""
+
+#: gio/gdbus-tool.c:1445
+msgid "Object path to monitor"
+msgstr ""
+
+#: gio/gdbus-tool.c:1478
+#, fuzzy
+msgid "Monitor a remote object."
+msgstr "sapsavany abjekt"
 
 #: gio/gdesktopappinfo.c:468 gio/gwin32appinfo.c:222
 msgid "Unnamed"
@@ -2040,41 +2642,42 @@ msgstr ""
 msgid "Error resolving '%s'"
 msgstr "Pamyłka vydaleńnia fajłu: %s"
 
-#: gio/gschema-compile.c:645
+#: gio/gschema-compile.c:647
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:645 gio/gschema-compile.c:656
+#: gio/gschema-compile.c:647 gio/gschema-compile.c:659
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:646
+#: gio/gschema-compile.c:648
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:647
+#: gio/gschema-compile.c:649
+#, fuzzy
+msgid "Do not give error for empty directory"
+msgstr "Niemahčyma pieranieści kataloh zamiest inšaha katalohu"
+
+#: gio/gschema-compile.c:650
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:659
+#: gio/gschema-compile.c:662
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:675
+#: gio/gschema-compile.c:678
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:707
+#: gio/gschema-compile.c:717
 #, c-format
 msgid "No schema files found\n"
-msgstr ""
-
-#: gio/gsettings-tool.c:38
-msgid "COMMAND"
 msgstr ""
 
 #: gio/gsettings-tool.c:41
@@ -2090,17 +2693,17 @@ msgid ""
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
 
-#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:234
-#: gio/gsettings-tool.c:307
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
+#: gio/gsettings-tool.c:325
 msgid "Specify the path for the schema"
 msgstr ""
 
-#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:234
-#: gio/gsettings-tool.c:307
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
+#: gio/gsettings-tool.c:325
 msgid "PATH"
 msgstr ""
 
-#: gio/gsettings-tool.c:110 gio/gsettings-tool.c:242 gio/gsettings-tool.c:315
+#: gio/gsettings-tool.c:110 gio/gsettings-tool.c:260 gio/gsettings-tool.c:333
 msgid "SCHEMA KEY"
 msgstr ""
 
@@ -2108,7 +2711,7 @@ msgstr ""
 msgid "Get the value of KEY"
 msgstr ""
 
-#: gio/gsettings-tool.c:114 gio/gsettings-tool.c:246 gio/gsettings-tool.c:322
+#: gio/gsettings-tool.c:114 gio/gsettings-tool.c:264 gio/gsettings-tool.c:340
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2136,17 +2739,17 @@ msgstr ""
 msgid "Key %s is not writable\n"
 msgstr ""
 
-#: gio/gsettings-tool.c:244
+#: gio/gsettings-tool.c:262
 msgid "Find out whether KEY is writable"
 msgstr ""
 
-#: gio/gsettings-tool.c:318
+#: gio/gsettings-tool.c:336
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 msgstr ""
 
-#: gio/gsettings-tool.c:381
+#: gio/gsettings-tool.c:399
 #, fuzzy, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Nieviadomaja opcyja %s"
@@ -2257,12 +2860,6 @@ msgstr "Pamyłka začynieńnia fajłu: %s"
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr ""
-
-# glib/gfileutils.c:348
-#: gio/gsocket.c:2859 gio/gsocket.c:2940
-#, fuzzy, c-format
-msgid "Error sending message: %s"
-msgstr "Pamyłka adčynieńnia fajłu: %s"
 
 #: gio/gsocket.c:2884
 #, fuzzy

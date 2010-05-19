@@ -1,3 +1,30 @@
+Overview of Changes from GLib 2.25.5 to GLib 2.25.6
+===================================================
+
+* GDBus: introspection improvements
+* GDBus: build fixes
+
+* GSettings: GSettingsBackend ABI changed               **** NOTE ****
+* GSettings: --uninstall option for schema compiler
+* GSettings: new m4 macro with more power
+* GSettings: thread support
+
+* rework of file notification on Solaris
+* fixes for gold linker
+
+* Bugs fixed:
+ 619038 increase gsettings.m4 power
+ 619031 method-calls-in-thread test failing
+ 618839 Typo at translation message
+ 616864 GSETTINGS_CHECK_RULE doesn't work with multiple files
+ 618730 gunixcredentialsmessage.c doesn't compile on GNU/kfreebsd
+ 616314 Make GSettings (partially) threadsafe
+
+* Updated Translations:
+ Indonesian
+ Galician
+ Spanish
+
 Overview of Changes from GLib 2.25.4 to GLib 2.25.5
 ===================================================
 
