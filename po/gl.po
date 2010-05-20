@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-20 19:30+0200\n"
-"PO-Revision-Date: 2010-05-20 19:29+0200\n"
+"POT-Creation-Date: 2010-05-20 21:30+0200\n"
+"PO-Revision-Date: 2010-05-20 21:51+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
@@ -30,25 +30,25 @@ msgstr ""
 #: ../glib/gbookmarkfile.c:737
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr "Atributo '%s' inesperado para o elemento '%s'"
+msgstr "Atributo «%s» inesperado para o elemento «%s»"
 
 #: ../glib/gbookmarkfile.c:748 ../glib/gbookmarkfile.c:819
 #: ../glib/gbookmarkfile.c:829 ../glib/gbookmarkfile.c:936
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr "Non se encontrou o atributo '%s' do elemento '%s'"
+msgstr "Non se encontrou o atributo «%s» do elemento «%s»"
 
 #: ../glib/gbookmarkfile.c:1106 ../glib/gbookmarkfile.c:1171
 #: ../glib/gbookmarkfile.c:1235 ../glib/gbookmarkfile.c:1245
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr "Etiqueta '%s' inesperada, esperábase a etiqueta '%s'"
+msgstr "Etiqueta «%s» inesperada, esperábase a etiqueta «%s»"
 
 #: ../glib/gbookmarkfile.c:1131 ../glib/gbookmarkfile.c:1145
 #: ../glib/gbookmarkfile.c:1213 ../glib/gbookmarkfile.c:1265
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
-msgstr "Etiqueta '%s' inesperada dentro de '%s'"
+msgstr "Etiqueta «%s» inesperada dentro de «%s»"
 
 #: ../glib/gbookmarkfile.c:1793
 msgid "No valid bookmark file found in data dirs"
@@ -59,7 +59,7 @@ msgstr ""
 #: ../glib/gbookmarkfile.c:1994
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr "Xa existe un marcador para o URI '%s'"
+msgstr "Xa existe un marcador para o URI «%s»"
 
 #: ../glib/gbookmarkfile.c:2040 ../glib/gbookmarkfile.c:2198
 #: ../glib/gbookmarkfile.c:2283 ../glib/gbookmarkfile.c:2363
@@ -72,44 +72,44 @@ msgstr "Xa existe un marcador para o URI '%s'"
 #: ../glib/gbookmarkfile.c:3691
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr "Non se encontrou ningún marcador para o URI '%s'"
+msgstr "Non se encontrou ningún marcador para o URI «%s»"
 
 #: ../glib/gbookmarkfile.c:2372
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "Non hai ningún tipo MIME definido no marcador para o URI '%s'"
+msgstr "Non hai ningún tipo MIME definido no marcador para o URI «%s»"
 
 #: ../glib/gbookmarkfile.c:2457
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "Non se definiu ningún parámetro privado no marcador para o URI '%s'"
+msgstr "Non se definiu ningún parámetro privado no marcador para o URI «%s»"
 
 #: ../glib/gbookmarkfile.c:2836
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr "Non existe ningún grupo definido no marcador para o URI '%s'"
+msgstr "Non existe ningún grupo definido no marcador para o URI «%s»"
 
 #: ../glib/gbookmarkfile.c:3237 ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "Ningún aplicativo denominado '%s' rexistrou un marcador para '%s'"
+msgstr "Ningún aplicativo denominado «%s» rexistrou un marcador para «%s»"
 
 #: ../glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Produciuse un fallo ao expandir a liña executábel '%s' co URI '%s'"
+msgstr "Produciuse un fallo ao expandir a liña executábel «%s» co URI «%s»"
 
 #: ../glib/gconvert.c:437 ../glib/gconvert.c:515 ../glib/giochannel.c:1404
 #: ../gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Non se asiste conversión do conxunto de caracteres '%s' a '%s'"
+msgstr "Non se asiste conversión do conxunto de caracteres «%s» a «%s»"
 
 #: ../glib/gconvert.c:441 ../glib/gconvert.c:519
 #: ../gio/gcharsetconverter.c:463
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Non foi posíbel abrir o conversor de '%s' a '%s'"
+msgstr "Non foi posíbel abrir o conversor de «%s» a «%s»"
 
 #: ../glib/gconvert.c:638 ../glib/gconvert.c:1031 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2462 ../glib/gutf8.c:981
@@ -132,38 +132,38 @@ msgstr "Hai unha secuencia de carácter parcial ao final da entrada"
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
-"Non é posíbel converter o modo de emerxencia '%s' na codificación de "
-"caracteres '%s'"
+"Non é posíbel converter o modo de emerxencia «%s» na codificación de "
+"caracteres «%s»"
 
 #: ../glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "O URI '%s' non é un URI absoluto usando o esquema \"file\""
+msgstr "O URI «%s» non é un URI absoluto usando o esquema \"file\""
 
 #: ../glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "O URI do ficheiro local '%s' non pode incluír un '#'"
+msgstr "O URI do ficheiro local «%s» non pode incluír un '#'"
 
 #: ../glib/gconvert.c:1778
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "O URI '%s' non é válido"
+msgstr "O URI «%s» non é válido"
 
 #: ../glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "O nome de host do URI '%s' non é válido"
+msgstr "O nome de host do URI «%s» non é válido"
 
 #: ../glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "O URI '%s' contén caracteres de escape non válidos"
+msgstr "O URI «%s» contén caracteres de escape non válidos"
 
 #: ../glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "O nome de camiño '%s' non é un camiño absoluto"
+msgstr "O nome de camiño «%s» non é un camiño absoluto"
 
 #: ../glib/gconvert.c:1911
 msgid "Invalid hostname"
@@ -172,7 +172,7 @@ msgstr "O nome do host non é válido"
 #: ../glib/gdir.c:112 ../glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Produciuse un erro ao abrir o directorio '%s': %s"
+msgstr "Produciuse un erro ao abrir o directorio «%s»: %s"
 
 #: ../glib/gfileutils.c:536 ../glib/gfileutils.c:624
 #, c-format
@@ -182,7 +182,7 @@ msgstr "Non foi posíbel asignar %lu bytes para ler o ficheiro \"%s\""
 #: ../glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Produciuse un erro ao ler o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao ler o ficheiro «%s»: %s"
 
 #: ../glib/gfileutils.c:565
 #, c-format
@@ -192,79 +192,78 @@ msgstr "O ficheiro \"%s\" é demasiado grande"
 #: ../glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Produciuse un fallo ao ler desde o ficheiro '%s': %s"
+msgstr "Produciuse un fallo ao ler desde o ficheiro «%s»: %s"
 
 #: ../glib/gfileutils.c:699 ../glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Produciuse un fallo ao abrir o ficheiro '%s': %s"
+msgstr "Produciuse un fallo ao abrir o ficheiro «%s»: %s"
 
 #: ../glib/gfileutils.c:716 ../glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Produciuse un fallo ao obter os atributos do ficheiro '%s': fstat() fallou: %"
-"s"
+"Produciuse un fallo ao obter os atributos do ficheiro «%s»: fstat() fallou: %s"
 
 #: ../glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Produciuse un fallo ao abrir o ficheiro '%s': fdopen() fallou: %s"
+msgstr "Produciuse un fallo ao abrir o ficheiro «%s»: fdopen() fallou: %s"
 
 #: ../glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Produciuse un fallo ao renomear o ficheiro '%s' como '%s': g_rename() "
-"fallou: %s"
+"Produciuse un fallo ao renomear o ficheiro «%s» como «%s»: g_rename() fallou: %"
+"s"
 
 #: ../glib/gfileutils.c:900 ../glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Produciuse un fallo ao crear o ficheiro '%s': %s"
+msgstr "Produciuse un fallo ao crear o ficheiro «%s»: %s"
 
 #: ../glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
-"Produciuse un fallo ao abrir o ficheiro '%s' para escritura: fdopen() "
-"fallou: %s"
+"Produciuse un fallo ao abrir o ficheiro «%s» para escritura: fdopen() fallou: "
+"%s"
 
 #: ../glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Produciuse un fallo ao escribir o ficheiro '%s': fwrite() fallou: %s"
+msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fwrite() fallou: %s"
 
 #: ../glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "Produciuse un fallo ao escribir o ficheiro '%s': fflush() fallou: %s"
+msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fflush() fallou: %s"
 
 #: ../glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "Produciuse un fallo ao escribir o ficheiro '%s': fsync() fallou: %s"
+msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fsync() fallou: %s"
 
 #: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Produciuse un fallo ao pechar o ficheiro '%s': fclose() fallou: %s"
+msgstr "Produciuse un fallo ao pechar o ficheiro «%s»: fclose() fallou: %s"
 
 #: ../glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Non foi posíbel eliminar o ficheiro existente '%s': g_unlink() fallou: %s"
+"Non foi posíbel eliminar o ficheiro existente «%s»: g_unlink() fallou: %s"
 
 #: ../glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "O modelo '%s' non é válido, non debería conter '%s'"
+msgstr "O modelo «%s» non é válido, non debería conter «%s»"
 
 #: ../glib/gfileutils.c:1341
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "O modelo '%s' non contén XXXXXX"
+msgstr "O modelo «%s» non contén XXXXXX"
 
 #: ../glib/gfileutils.c:1774
 #, c-format
@@ -306,7 +305,7 @@ msgstr "%.1f EB"
 #: ../glib/gfileutils.c:1850
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Produciuse un fallo ao ler a ligazón simbólica '%s': %s"
+msgstr "Produciuse un fallo ao ler a ligazón simbólica «%s»: %s"
 
 #: ../glib/gfileutils.c:1871
 msgid "Symbolic links not supported"
@@ -315,7 +314,7 @@ msgstr "As ligazóns simbólicas non se admiten"
 #: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Non foi posíbel abrir o conversor de '%s' a '%s': %s"
+msgstr "Non foi posíbel abrir o conversor de «%s» a «%s»: %s"
 
 #: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -338,12 +337,12 @@ msgstr "Non é posíbel facer unha lectura en bruto en g_io_channel_read_to_end"
 #: ../glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Produciuse un fallo ao abrir o ficheiro '%s': open() fallou: %s"
+msgstr "Produciuse un fallo ao abrir o ficheiro «%s»: open() fallou: %s"
 
 #: ../glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Produciuse un fallo ao mapear o ficheiro '%s': mmap() fallou: %s"
+msgstr "Produciuse un fallo ao mapear o ficheiro «%s»: mmap() fallou: %s"
 
 #: ../glib/gmarkup.c:303 ../glib/gmarkup.c:343
 #, c-format
@@ -353,17 +352,17 @@ msgstr "Erro na liña %d carácter %d: "
 #: ../glib/gmarkup.c:363 ../glib/gmarkup.c:441
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
-msgstr "O texto do nome codificado en UTF-8 non é válido - '%s' non válido"
+msgstr "O texto do nome codificado en UTF-8 non é válido - «%s» non válido"
 
 #: ../glib/gmarkup.c:374
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr "'%s' non é un nome válido"
+msgstr "«%s» non é un nome válido"
 
 #: ../glib/gmarkup.c:390
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr "'%s' non é un nome válido: '%c'"
+msgstr "«%s» non é un nome válido: '%c'"
 
 #: ../glib/gmarkup.c:494
 #, c-format
@@ -425,7 +424,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' non é un carácter válido despois dun carácter '<'; non pode iniciar un "
+"«%s» non é un carácter válido despois dun carácter '<'; non pode iniciar un "
 "nome de elemento"
 
 #: ../glib/gmarkup.c:1122
@@ -434,16 +433,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag '%"
 "s'"
 msgstr ""
-"Carácter estraño '%s', esperábase un carácter '>' para pechar a etiqueta de "
-"elemento baleiro '%s'"
+"Carácter estraño «%s», esperábase un carácter '>' para pechar a etiqueta de "
+"elemento baleiro «%s»"
 
 #: ../glib/gmarkup.c:1206
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Carácter estraño '%s', esperábase un '=' despois do nome do atributo '%s' do "
-"elemento '%s'"
+"Carácter estraño «%s», esperábase un '=' despois do nome do atributo «%s» do "
+"elemento «%s»"
 
 #: ../glib/gmarkup.c:1247
 #, c-format
@@ -452,8 +451,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Carácter estraño '%s', esperábase un carácter '>' ou '/' para pechar a "
-"etiqueta de comezo do elemento '%s' ou opcionalmente un atributo; quizais "
+"Carácter estraño «%s», esperábase un carácter '>' ou '/' para pechar a "
+"etiqueta de comezo do elemento «%s» ou opcionalmente un atributo; quizais "
 "usou un carácter non válido no nome dun atributo"
 
 #: ../glib/gmarkup.c:1291
@@ -462,8 +461,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter estraño '%s', esperábase unhas comiñas de apertura despois do signo "
-"igual para dar un valor ao atributo '%s' do elemento '%s'"
+"Carácter estraño «%s», esperábase unhas comiñas de apertura despois do signo "
+"igual para dar un valor ao atributo «%s» do elemento «%s»"
 
 #: ../glib/gmarkup.c:1425
 #, c-format
@@ -471,7 +470,7 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' non é un carácter válido despois dos caracteres '</'; '%s' non pode "
+"«%s» non é un carácter válido despois dos caracteres '</'; «%s» non pode "
 "comezar o nome dun elemento"
 
 #: ../glib/gmarkup.c:1461
@@ -480,18 +479,18 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' non é un carácter válido despois do nome de elemento de peche '%s'; o "
+"«%s» non é un carácter válido despois do nome de elemento de peche «%s»; o "
 "carácter permitido é '>'"
 
 #: ../glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Pechouse o elemento '%s', actualmente non hai ningún elemento aberto"
+msgstr "Pechouse o elemento «%s», actualmente non hai ningún elemento aberto"
 
 #: ../glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Pechouse o elemento '%s', mais o elemento aberto actualmente é '%s'"
+msgstr "Pechouse o elemento «%s», mais o elemento aberto actualmente é «%s»"
 
 #: ../glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
@@ -507,8 +506,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"O documento terminou inesperadamente con elementos aínda abertos - '%s' foi "
-"o último elemento aberto"
+"O documento terminou inesperadamente con elementos aínda abertos - «%s» foi o "
+"último elemento aberto"
 
 #: ../glib/gmarkup.c:1678
 #, c-format
@@ -550,7 +549,7 @@ msgstr "O documento terminou inesperadamente dentro dun valor de atributo"
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "O documento terminou inesperadamente dentro da etiqueta que pechaba o "
-"elemento '%s'"
+"elemento «%s»"
 
 #: ../glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -878,14 +877,13 @@ msgstr ""
 #: ../glib/gshell.c:560
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "O texto terminou despois dun carácter '\\'. (O texto era '%s')"
+msgstr "O texto terminou despois dun carácter '\\'. (O texto era «%s»)"
 
 #: ../glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"O texto terminou antes de encontrar a comiña final para %c. (O texto era '%"
-"s')"
+"O texto terminou antes de encontrar a comiña final para %c. (O texto era «%s»)"
 
 #: ../glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
@@ -910,7 +908,7 @@ msgstr "Produciuse un fallo ao ler desde a canalización filla (%s)"
 #: ../glib/gspawn-win32.c:370 ../glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Produciuse un fallo ao cambiar ao directorio '%s' (%s)"
+msgstr "Produciuse un fallo ao cambiar ao directorio «%s» (%s)"
 
 #: ../glib/gspawn-win32.c:376 ../glib/gspawn-win32.c:495
 #, c-format
@@ -1039,22 +1037,22 @@ msgstr "Opcións do aplicativo:"
 #: ../glib/goption.c:992 ../glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
-msgstr "Non é posíbel analizar o valor enteiro '%s' para %s"
+msgstr "Non é posíbel analizar o valor enteiro «%s» para %s"
 
 #: ../glib/goption.c:1002 ../glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr "O valor enteiro '%s' para %s está fóra do intervalo"
+msgstr "O valor enteiro «%s» para %s está fóra do intervalo"
 
 #: ../glib/goption.c:1027
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "Non é posíbel analizar o valor \"double\" '%s' para %s"
+msgstr "Non é posíbel analizar o valor \"double\" «%s» para %s"
 
 #: ../glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "O valor \"double\" '%s' para %s está fóra do intervalo"
+msgstr "O valor \"double\" «%s» para %s está fóra do intervalo"
 
 #: ../glib/goption.c:1298 ../glib/goption.c:1377
 #, c-format
@@ -1090,7 +1088,7 @@ msgstr "O ficheiro está baleiro"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"O ficheiro chave contén a liña '%s' que non é un par valor-chave, grupo ou "
+"O ficheiro chave contén a liña «%s» que non é un par valor-chave, grupo ou "
 "comentario"
 
 #: ../glib/gkeyfile.c:825
@@ -1110,30 +1108,30 @@ msgstr "Nome de chave non válido: %s"
 #: ../glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr "O ficheiro chave contén unha codificación non permitida '%s'"
+msgstr "O ficheiro chave contén unha codificación non permitida «%s»"
 
 #: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2657
 #: ../glib/gkeyfile.c:2723 ../glib/gkeyfile.c:2858 ../glib/gkeyfile.c:2991
 #: ../glib/gkeyfile.c:3144 ../glib/gkeyfile.c:3331 ../glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr "O ficheiro chave non ten un grupo '%s'"
+msgstr "O ficheiro chave non ten un grupo «%s»"
 
 #: ../glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr "O ficheiro chave non ten a chave '%s'"
+msgstr "O ficheiro chave non ten a chave «%s»"
 
 #: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "O ficheiro chave contén a chave '%s' co valor '%s' que non é UTF-8"
+msgstr "O ficheiro chave contén a chave «%s» co valor «%s» que non é UTF-8"
 
 #: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
-"O ficheiro chave contén a chave '%s' que ten un valor que non pode ser "
+"O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
 #: ../glib/gkeyfile.c:1532
@@ -1141,7 +1139,7 @@ msgstr ""
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
-"O ficheiro chave contén a chave '%s' que ten un valor que non pode ser "
+"O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
 #: ../glib/gkeyfile.c:2126 ../glib/gkeyfile.c:2488
@@ -1150,13 +1148,13 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"O ficheiro chave contén a chave '%s' no grupo '%s' que ten un valor que non "
+"O ficheiro chave contén a chave «%s» no grupo «%s» que ten un valor que non "
 "pode ser interpretado."
 
 #: ../glib/gkeyfile.c:2672 ../glib/gkeyfile.c:2873 ../glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr "O ficheiro chave non ten a chave '%s' no grupo '%s'"
+msgstr "O ficheiro chave non ten a chave «%s» no grupo «%s»"
 
 #: ../glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
@@ -1165,27 +1163,27 @@ msgstr "O ficheiro chave contén un carácter de escape ao final da liña"
 #: ../glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "O ficheiro chave contén a secuencia de escape non válida '%s'"
+msgstr "O ficheiro chave contén a secuencia de escape non válida «%s»"
 
 #: ../glib/gkeyfile.c:3801
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr "Non é posíbel interpretar o valor '%s' como un número."
+msgstr "Non é posíbel interpretar o valor «%s» como un número."
 
 #: ../glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
-msgstr "O valor enteiro '%s' está fóra do intervalo"
+msgstr "O valor enteiro «%s» está fóra do intervalo"
 
 #: ../glib/gkeyfile.c:3848
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "Non é posíbel interpretar o valor '%s' como un número flotante."
+msgstr "Non é posíbel interpretar o valor «%s» como un número flotante."
 
 #: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "Non é posíbel interpretar o valor '%s' como un booleano."
+msgstr "Non é posíbel interpretar o valor «%s» como un booleano."
 
 #: ../gio/gbufferedinputstream.c:415 ../gio/gbufferedinputstream.c:496
 #: ../gio/ginputstream.c:186 ../gio/ginputstream.c:318
@@ -1339,14 +1337,14 @@ msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5210
+#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5203
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5219
+#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5212
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1373,7 +1371,7 @@ msgstr ""
 
 #: ../gio/gdbusauth.c:1146
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
+msgstr "Cancelando mediante GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:264
 #, c-format
@@ -1385,6 +1383,8 @@ msgstr ""
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"Os permisos no cartafol «%s» están malformados. Esperábase o modo 0700 e "
+"obtívose 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:295
 #, c-format
@@ -1399,24 +1399,28 @@ msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para a súa lectura:
 #: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:711
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
+msgstr "A liña %d do anel de chaves en «%s» con contido «%s» está malformada"
 
 #: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:725
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
+"O primeiro token da liña %d no anel de chaves en «%s» co contido «%s» está "
+"malformado"
 
 #: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:739
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
+"O segundo token da liña %d no anel de chaves en «%s» co contido «%s» está "
+"malformado"
 
 #: ../gio/gdbusauthmechanismsha1.c:454
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr ""
+msgstr "Non foi posíbel encontrar a cookie co id %d no anel de chave en «%s»"
 
 #: ../gio/gdbusauthmechanismsha1.c:531
 #, c-format
@@ -1424,24 +1428,24 @@ msgid "Error deleting stale lock-file `%s': %s"
 msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:562
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock-file `%s': %s"
-msgstr "Produciuse un erro ao ler o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao crear o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:592
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock-file `%s': %s"
-msgstr "Produciuse un erro ao pechar o ficheiro: %s"
+msgstr "Produciuse un erro ao pechar o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:602
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock-file `%s': %s"
-msgstr "Produciuse un erro ao abrir o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao abrir o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:678
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr "Produciuse un erro ao abrir o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para escribir:"
 
 #: ../gio/gdbusauthmechanismsha1.c:873
 #, c-format
@@ -1449,23 +1453,26 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
 
 #: ../gio/gdbusconnection.c:1001 ../gio/gdbusconnection.c:1311
-#, fuzzy
 msgid "The connection is closed"
 msgstr "O socket engadido está pechado"
 
 #: ../gio/gdbusconnection.c:1256
 msgid "Timeout was reached"
-msgstr ""
+msgstr "Tempo de espera máximo alcanzado"
 
 #: ../gio/gdbusconnection.c:1757
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
+"Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
+"cliente"
 
 #: ../gio/gdbusconnection.c:3157
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
+"Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
+"pero obtívose «%s»"
 
 #: ../gio/gdbusconnection.c:3249
 #, c-format
@@ -1473,50 +1480,50 @@ msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
 #: ../gio/gdbusconnection.c:3261
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s\n"
 
 #: ../gio/gdbusconnection.c:3272
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s\n"
 
-#: ../gio/gdbusconnection.c:3340 ../gio/gdbusconnection.c:4677
+#: ../gio/gdbusconnection.c:3340 ../gio/gdbusconnection.c:4670
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:3510
+#: ../gio/gdbusconnection.c:3503
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:3754
+#: ../gio/gdbusconnection.c:3747
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:3772
+#: ../gio/gdbusconnection.c:3765
 #, c-format
 msgid "Signature of message, `%s', does not match expected signature `%s'"
 msgstr "A sinatura da mensaxe, «%s», non coincide coa sinatura «%s» esperada"
 
-#: ../gio/gdbusconnection.c:3991
+#: ../gio/gdbusconnection.c:3984
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4775
+#: ../gio/gdbusconnection.c:4768
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr ""
+msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:4890
-#, fuzzy, c-format
+#: ../gio/gdbusconnection.c:4883
+#, c-format
 msgid "A subtree is already exported for %s"
-msgstr "O porto de escoita xa está pechado"
+msgstr "Xa se exportou un subárbore para %s"
 
-#: ../gio/gdbusconnection.c:4998
+#: ../gio/gdbusconnection.c:4991
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: %s"
@@ -1528,7 +1535,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:744
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
-msgstr ""
+msgstr "Esperábase un byte NUL despois da cadea «%s» pero encontrouse «%c» (%d)"
 
 #: ../gio/gdbusmessage.c:927
 #, c-format
@@ -1536,9 +1543,9 @@ msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:953
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "'%s' non é un nome válido"
+msgstr "«%s» non é un nome válido"
 
 #: ../gio/gdbusmessage.c:979
 msgid "Encountered array of length %"
@@ -1548,6 +1555,7 @@ msgstr "Encontrouse unha matriz de lonxitude %"
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
+"O valor «%s» analizado para a variante non é unha sinatura de D-Bus válida."
 
 #: ../gio/gdbusmessage.c:1141
 #, c-format
@@ -1588,7 +1596,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1823
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
+msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 
 #: ../gio/gdbusmessage.c:1869
 #, c-format
@@ -1608,7 +1616,7 @@ msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:2448
-#, fuzzy, c-format
+#, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Produciuse un erro ao escribir no ficheiro: %s"
 
@@ -1652,14 +1660,14 @@ msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 
 #: ../gio/gdbusserver.c:836
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Produciuse un erro ao escribir no ficheiro: %s"
 
 #: ../gio/gdbusserver.c:988
-#, fuzzy, c-format
+#, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "'%s' non é un nome válido"
+msgstr "«%s» non é un nome válido"
 
 #: ../gio/gdbusserver.c:1028
 #, c-format
@@ -1702,7 +1710,7 @@ msgid "Error: Result is type `%s', expected `(s)'\n"
 msgstr "Erro: o tipo do resultado é «%s», esperábase «(s)»\n"
 
 #: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:241 ../gio/gdbus-tool.c:1363
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Produciuse un erro ao analizar a opción %s"
 
@@ -1724,7 +1732,6 @@ msgid "Connect to given D-Bus address"
 msgstr "Conectar a un enderezo D-Bus fornecido"
 
 #: ../gio/gdbus-tool.c:380
-#, fuzzy
 msgid "Connection Endpoint Options:"
 msgstr "Conexión en marcha"
 
@@ -1761,7 +1768,7 @@ msgstr "Nome do destino onde invocar o método"
 
 #: ../gio/gdbus-tool.c:560
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "Camiño ao obxecto onde invocar o método"
 
 #: ../gio/gdbus-tool.c:561
 msgid "Method and interface name"
@@ -1794,20 +1801,20 @@ msgstr "Erro: %s non é un camiño a un obxecto válido\n"
 #: ../gio/gdbus-tool.c:731
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Erro: non se especificou o nome do método\n"
 
 #: ../gio/gdbus-tool.c:742
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
-msgstr ""
+msgstr "Erro: o nome do método «%s» é inválido\n"
 
 #: ../gio/gdbus-tool.c:807
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Produciuse un erro ao abrir o directorio '%s': %s"
+msgstr "Produciuse un erro ao abrir o directorio «%s»: %s"
 
 #: ../gio/gdbus-tool.c:815
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Produciuse un erro ao analizar a opción %s"
 
@@ -2227,12 +2234,12 @@ msgstr "Nome estendido do atributo non válido"
 #: ../gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr "Produciuse un erro ao estabelecer o atributo estendido '%s': %s"
+msgstr "Produciuse un erro ao estabelecer o atributo estendido «%s»: %s"
 
 #: ../gio/glocalfileinfo.c:1479 ../gio/glocalfileoutputstream.c:832
 #, c-format
 msgid "Error stating file '%s': %s"
-msgstr "Produciuse un erro ao iniciar o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao iniciar o ficheiro «%s»: %s"
 
 #: ../gio/glocalfileinfo.c:1552
 msgid " (invalid encoding)"
@@ -2365,7 +2372,7 @@ msgstr "Produciuse un erro ao truncar o ficheiro: %s"
 #: ../gio/glocalfileoutputstream.c:1057 ../gio/glocalfileoutputstream.c:1156
 #, c-format
 msgid "Error opening file '%s': %s"
-msgstr "Produciuse un erro ao abrir o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao abrir o ficheiro «%s»: %s"
 
 #: ../gio/glocalfileoutputstream.c:845
 msgid "Target file is a directory"
@@ -2473,7 +2480,7 @@ msgstr "a montaxe non implementa a averiguación síncrona do tipo de contido"
 #: ../gio/gnetworkaddress.c:295
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr "O nome do host '%s' contén '[' mais non ']'"
+msgstr "O nome do host «%s» contén '[' mais non ']'"
 
 #: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
@@ -2486,27 +2493,27 @@ msgstr "O fluxo de orixe xa está pechado"
 #: ../gio/gresolver.c:736
 #, c-format
 msgid "Error resolving '%s': %s"
-msgstr "Produciuse un erro ao ler o ficheiro '%s': %s"
+msgstr "Produciuse un erro ao ler o ficheiro «%s»: %s"
 
 #: ../gio/gresolver.c:786
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
-msgstr "Produciuse un erro ao reverter-resolver '%s': %s"
+msgstr "Produciuse un erro ao reverter-resolver «%s»: %s"
 
 #: ../gio/gresolver.c:821 ../gio/gresolver.c:899
 #, c-format
 msgid "No service record for '%s'"
-msgstr "Non hai rexistro de servizo de '%s'"
+msgstr "Non hai rexistro de servizo de «%s»"
 
 #: ../gio/gresolver.c:826 ../gio/gresolver.c:904
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr "Foi incapaz de resolver temporalmente '%s'"
+msgstr "Foi incapaz de resolver temporalmente «%s»"
 
 #: ../gio/gresolver.c:831 ../gio/gresolver.c:909
 #, c-format
 msgid "Error resolving '%s'"
-msgstr "Produciuse un erro ao resolver: '%s'"
+msgstr "Produciuse un erro ao resolver: «%s»"
 
 #: ../gio/gschema-compile.c:647
 msgid "where to store the gschemas.compiled file"
@@ -2521,7 +2528,6 @@ msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
 #: ../gio/gschema-compile.c:649
-#, fuzzy
 msgid "Do not give error for empty directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
@@ -2641,7 +2647,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:399
 #, c-format
 msgid "Unknown command '%s'\n"
-msgstr "Orde '%s' descoñecida\n"
+msgstr "Orde «%s» descoñecida\n"
 
 #: ../gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
