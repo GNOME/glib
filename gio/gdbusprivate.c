@@ -39,11 +39,16 @@
 #include "ginputstream.h"
 #include "giostream.h"
 #include "gsocketcontrolmessage.h"
+#include "gsocketconnection.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdmessage.h"
 #include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
+#endif
+
+#ifdef G_OS_WIN32
+#include <windows.h>
 #endif
 
 #include "glibintl.h"
@@ -588,11 +593,13 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               goto out;
             }
 
+#ifdef G_OS_UNIX
           if (worker->read_fd_list != NULL)
             {
               g_dbus_message_set_unix_fd_list (message, worker->read_fd_list);
               worker->read_fd_list = NULL;
             }
+#endif
 
           if (G_UNLIKELY (_g_dbus_debug_message ()))
             {
@@ -1048,6 +1055,75 @@ _g_dbus_compute_complete_signature (GDBusArgInfo **args,
 
   return g_string_free (s, FALSE);
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+#ifdef G_OS_WIN32
+
+extern BOOL WINAPI ConvertSidToStringSidA (PSID Sid, LPSTR *StringSid);
+
+gchar *
+_g_dbus_win32_get_user_sid (void)
+{
+  HANDLE h;
+  TOKEN_USER *user;
+  DWORD token_information_len;
+  PSID psid;
+  gchar *sid;
+  gchar *ret;
+
+  ret = NULL;
+  user = NULL;
+  h = INVALID_HANDLE_VALUE;
+
+  if (!OpenProcessToken (GetCurrentProcess (), TOKEN_QUERY, &h))
+    {
+      g_warning ("OpenProcessToken failed with error code %d", (gint) GetLastError ());
+      goto out;
+    }
+
+  /* Get length of buffer */
+  token_information_len = 0;
+  if (!GetTokenInformation (h, TokenUser, NULL, 0, &token_information_len))
+    {
+      if (GetLastError () != ERROR_INSUFFICIENT_BUFFER)
+        {
+          g_warning ("GetTokenInformation() failed with error code %d", (gint) GetLastError ());
+          goto out;
+        }
+    }
+  user = g_malloc (token_information_len);
+  if (!GetTokenInformation (h, TokenUser, user, token_information_len, &token_information_len))
+    {
+      g_warning ("GetTokenInformation() failed with error code %d", (gint) GetLastError ());
+      goto out;
+    }
+
+  psid = user->User.Sid;
+  if (!IsValidSid (psid))
+    {
+      g_warning ("Invalid SID");
+      goto out;
+    }
+
+  if (!ConvertSidToStringSidA (psid, &sid))
+    {
+      g_warning ("Invalid SID");
+      goto out;
+    }
+
+  ret = g_strdup (sid);
+  LocalFree (sid);
+
+out:
+  g_free (user);
+  if (h != INVALID_HANDLE_VALUE)
+    CloseHandle (h);
+  return ret;
+}
+#endif
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 #define __G_DBUS_PRIVATE_C__
 #include "gioaliasdef.c"

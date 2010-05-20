@@ -22,9 +22,6 @@
 
 #include "config.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
-
 #include "gdbusauth.h"
 
 #include "gdbusauthmechanismanon.h"
@@ -37,8 +34,13 @@
 #include "gioenumtypes.h"
 #include "gcredentials.h"
 #include "gdbusprivate.h"
+#include "giostream.h"
+#include "gdatainputstream.h"
+#include "gdataoutputstream.h"
 
 #ifdef G_OS_UNIX
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
 #endif

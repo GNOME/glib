@@ -30,6 +30,7 @@
 #endif
 
 #include "giotypes.h"
+#include "gioerror.h"
 #include "gdbusaddress.h"
 #include "gdbusutils.h"
 #include "gdbusconnection.h"
@@ -40,6 +41,12 @@
 #include "gio-marshal.h"
 #include "ginitable.h"
 #include "gsocketservice.h"
+#include "gthreadedsocketservice.h"
+#include "gresolver.h"
+#include "ginetaddress.h"
+#include "ginetsocketaddress.h"
+#include "ginputstream.h"
+#include "giostream.h"
 
 #ifdef G_OS_UNIX
 #include "gunixsocketaddress.h"

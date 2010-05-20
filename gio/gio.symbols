@@ -1390,8 +1390,10 @@ g_zlib_decompressor_new
 
 #if IN_HEADER(__G_FILE_DESCRIPTOR_BASED_H__)
 #if IN_FILE(__G_FILE_DESCRIPTOR_BASED_C__)
+#ifdef G_OS_UNIX
 g_file_descriptor_based_get_type G_GNUC_CONST
 g_file_descriptor_based_get_fd
+#endif
 #endif
 #endif
 
@@ -1455,8 +1457,10 @@ g_credentials_to_string
 g_credentials_get_native
 g_credentials_set_native
 g_credentials_is_same_user
+#ifdef G_OS_UNIX
 g_credentials_get_unix_user
 g_credentials_set_unix_user
+#endif
 #endif
 #endif
 
@@ -1597,7 +1601,6 @@ g_dbus_message_get_sender
 g_dbus_message_get_serial
 g_dbus_message_get_signature
 g_dbus_message_get_message_type
-g_dbus_message_get_unix_fd_list
 g_dbus_message_print
 g_dbus_message_set_body
 g_dbus_message_set_destination
@@ -1613,9 +1616,12 @@ g_dbus_message_set_sender
 g_dbus_message_set_serial
 g_dbus_message_set_signature
 g_dbus_message_set_message_type
-g_dbus_message_set_unix_fd_list
 g_dbus_message_to_blob
 g_dbus_message_to_gerror
+#ifdef G_OS_UNIX
+g_dbus_message_get_unix_fd_list
+g_dbus_message_set_unix_fd_list
+#endif
 #endif
 #endif
 
@@ -1715,10 +1721,12 @@ g_dbus_is_unique_name
 
 #if IN_HEADER(__G_UNIX_CREDENTIALS_MESSAGE_H__)
 #if IN_FILE(__G_UNIX_CREDENTIALS_MESSAGE_C__)
+#ifdef G_OS_UNIX
 g_unix_credentials_message_get_type G_GNUC_CONST
 g_unix_credentials_message_new
 g_unix_credentials_message_new_with_credentials
 g_unix_credentials_message_get_credentials
 g_unix_credentials_message_is_supported
+#endif
 #endif
 #endif

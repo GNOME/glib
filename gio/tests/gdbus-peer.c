@@ -126,6 +126,7 @@ test_interface_method_call (GDBusConnection       *connection,
     }
   else if (g_strcmp0 (method_name, "OpenFile") == 0)
     {
+#ifdef G_OS_UNIX
       const gchar *path;
       GDBusMessage *reply;
       GError *error;
@@ -154,6 +155,11 @@ test_interface_method_call (GDBusConnection       *connection,
                                       &error);
       g_assert_no_error (error);
       g_object_unref (reply);
+#else
+      g_dbus_method_invocation_return_dbus_error (invocation,
+                                                  "org.gtk.GDBus.NotOnUnix",
+                                                  "Your OS does not support file descriptor passing");
+#endif
     }
   else
     {
@@ -617,6 +623,18 @@ test_peer (void)
     g_assert_cmpstr (buf, ==, buf2);
     g_free (buf2);
   }
+#else
+  error = NULL;
+  result = g_dbus_proxy_call_sync (proxy,
+                                   "OpenFile",
+                                   g_variant_new ("(s)", "boo"),
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,  /* GCancellable */
+                                   &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR);
+  g_assert (result == NULL);
+  g_error_free (error);
 #endif /* G_OS_UNIX */
 
 

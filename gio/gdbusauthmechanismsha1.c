@@ -37,6 +37,7 @@
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
+#include "gdbusprivate.h"
 
 #include "glibintl.h"
 #include "gioalias.h"
@@ -280,7 +281,7 @@ ensure_keyring_directory (GError **error)
               goto out;
             }
 #else
-#error Please implement permission checking on non-UNIX platforms
+#warning Please implement permission checking on this non-UNIX platform
 #endif
         }
         goto out;
@@ -583,22 +584,22 @@ keyring_release_lock (const gchar  *path,
 
   ret = FALSE;
   lock = g_strdup_printf ("%s.lock", path);
-  if (g_unlink (lock) != 0)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   g_io_error_from_errno (errno),
-                   _("Error unlinking lock-file `%s': %s"),
-                   lock,
-                   strerror (errno));
-      goto out;
-    }
   if (close (lock_fd) != 0)
     {
       g_set_error (error,
                    G_IO_ERROR,
                    g_io_error_from_errno (errno),
                    _("Error closing (unlinked) lock-file `%s': %s"),
+                   lock,
+                   strerror (errno));
+      goto out;
+    }
+  if (g_unlink (lock) != 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   g_io_error_from_errno (errno),
+                   _("Error unlinking lock-file `%s': %s"),
                    lock,
                    strerror (errno));
       goto out;
@@ -953,11 +954,11 @@ mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
             }
         }
 #elif defined(G_OS_WIN32)
-      GCredentials *credentials;
-      credentials = g_credentials_new_for_process ();
-      if (g_strcmp0 (g_credentials_get_windows_user (credentials), initial_response) == 0)
+      gchar *sid;
+      sid = _g_dbus_win32_get_user_sid ();
+      if (g_strcmp0 (initial_response, sid) == 0)
         m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND;
-      g_object_unref (credentials);
+      g_free (sid);
 #else
 #error Please implement for your OS
 #endif
@@ -1109,13 +1110,9 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 #ifdef G_OS_UNIX
   initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) getuid ());
 #elif defined (G_OS_WIN32)
-  {
-    GCredentials *credentials;
-    credentials = g_credentials_new_for_process ();
-    initial_response = g_strdup (g_credentials_get_windows_user (credentials));
-    g_object_unref (credentials);
-  }
+initial_response = _g_dbus_win32_get_user_sid ();
 #else
+#error Please implement for your OS
 #endif
   g_assert (initial_response != NULL);
 

@@ -36,9 +36,12 @@
 #include "glibintl.h"
 #include "gioerror.h"
 #include "gcancellable.h"
-#include "gfiledescriptorbased.h"
 #include "glocalfileoutputstream.h"
 #include "glocalfileinfo.h"
+
+#ifdef G_OS_UNIX
+#include "gfiledescriptorbased.h"
+#endif
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -56,11 +59,17 @@
 
 #include "gioalias.h"
 
+#ifdef G_OS_UNIX
 static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
+#endif
+
 #define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
+#ifdef G_OS_UNIX
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_file_descriptor_based_iface_init));
+						g_file_descriptor_based_iface_init)
+#endif
+                           );
 
 
 /* Some of the file replacement code was based on the code from gedit,
@@ -104,7 +113,9 @@ static gboolean   g_local_file_output_stream_truncate     (GFileOutputStream  *s
 							   goffset             size,
 							   GCancellable       *cancellable,
 							   GError            **error);
+#ifdef G_OS_UNIX
 static int        g_local_file_output_stream_get_fd       (GFileDescriptorBased *stream);
+#endif
 
 static void
 g_local_file_output_stream_finalize (GObject *object)
@@ -144,11 +155,13 @@ g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
   file_stream_class->truncate_fn = g_local_file_output_stream_truncate;
 }
 
+#ifdef G_OS_UNIX
 static void
 g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 {
   iface->get_fd = g_local_file_output_stream_get_fd;
 }
+#endif
 
 static void
 g_local_file_output_stream_init (GLocalFileOutputStream *stream)
@@ -1159,11 +1172,18 @@ _g_local_file_output_stream_replace (const char        *filename,
   return G_FILE_OUTPUT_STREAM (stream);
 }
 
+gint
+_g_local_file_output_stream_get_fd (GLocalFileOutputStream *stream)
+{
+  g_return_val_if_fail (G_IS_LOCAL_FILE_OUTPUT_STREAM (stream), -1);
+  return stream->priv->fd;
+}
+
+#ifdef G_OS_UNIX
 static int
 g_local_file_output_stream_get_fd (GFileDescriptorBased *fd_based)
 {
   GLocalFileOutputStream *stream = G_LOCAL_FILE_OUTPUT_STREAM (fd_based);
-
-  return stream->priv->fd;
+  return _g_local_file_output_stream_get_fd (stream);
 }
-
+#endif

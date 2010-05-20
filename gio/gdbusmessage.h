@@ -68,11 +68,11 @@ struct _GDBusMessage
 GType                     g_dbus_message_get_type           (void) G_GNUC_CONST;
 GDBusMessage             *g_dbus_message_new                (void);
 GDBusMessage             *g_dbus_message_new_signal         (const gchar              *path,
-                                                             const gchar              *interface,
+                                                             const gchar              *interface_,
                                                              const gchar              *signal);
 GDBusMessage             *g_dbus_message_new_method_call    (const gchar              *name,
                                                              const gchar              *path,
-                                                             const gchar              *interface,
+                                                             const gchar              *interface_,
                                                              const gchar              *method);
 GDBusMessage             *g_dbus_message_new_method_reply   (GDBusMessage             *method_call_message);
 GDBusMessage             *g_dbus_message_new_method_error   (GDBusMessage             *method_call_message,

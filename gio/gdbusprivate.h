@@ -78,6 +78,10 @@ gchar * _g_dbus_compute_complete_signature (GDBusArgInfo **args,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef G_OS_WIN32
+gchar *_g_dbus_win32_get_user_sid (void);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_DBUS_PRIVATE_H__ */

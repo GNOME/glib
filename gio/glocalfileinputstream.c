@@ -33,11 +33,14 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include "gcancellable.h"
-#include "gfiledescriptorbased.h"
 #include "gioerror.h"
 #include "glocalfileinputstream.h"
 #include "glocalfileinfo.h"
 #include "glibintl.h"
+
+#ifdef G_OS_UNIX
+#include "gfiledescriptorbased.h"
+#endif
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -46,11 +49,17 @@
 #include "gioalias.h"
 
 
+#ifdef G_OS_UNIX
 static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
+#endif
+
 #define g_local_file_input_stream_get_type _g_local_file_input_stream_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,
+#ifdef G_OS_UNIX
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_file_descriptor_based_iface_init));
+						g_file_descriptor_based_iface_init)
+#endif
+);
 
 struct _GLocalFileInputStreamPrivate {
   int fd;
@@ -80,7 +89,9 @@ static GFileInfo *g_local_file_input_stream_query_info (GFileInputStream  *strea
 							const char        *attributes,
 							GCancellable      *cancellable,
 							GError           **error);
+#ifdef G_OS_UNIX
 static int        g_local_file_input_stream_get_fd     (GFileDescriptorBased *stream);
+#endif
 
 static void
 g_local_file_input_stream_finalize (GObject *object)
@@ -115,11 +126,13 @@ g_local_file_input_stream_class_init (GLocalFileInputStreamClass *klass)
   file_stream_class->query_info = g_local_file_input_stream_query_info;
 }
 
+#ifdef G_OS_UNIX
 static void
 g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 {
   iface->get_fd = g_local_file_input_stream_get_fd;
 }
+#endif
 
 static void
 g_local_file_input_stream_init (GLocalFileInputStream *info)
@@ -349,10 +362,11 @@ g_local_file_input_stream_query_info (GFileInputStream  *stream,
 					 error);
 }
 
+#ifdef G_OS_UNIX
 static int
 g_local_file_input_stream_get_fd (GFileDescriptorBased *fd_based)
 {
   GLocalFileInputStream *stream = G_LOCAL_FILE_INPUT_STREAM (fd_based);
   return stream->priv->fd;
 }
-
+#endif

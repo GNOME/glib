@@ -25,10 +25,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "gioerror.h"
 #include "gdbusutils.h"
 #include "gdbusaddress.h"
 #include "gdbuserror.h"
 #include "gioenumtypes.h"
+#include "gnetworkaddress.h"
+#include "gsocketclient.h"
+#include "giostream.h"
+#include "gasyncresult.h"
+#include "gsimpleasyncresult.h"
 #include "gdbusprivate.h"
 
 #ifdef G_OS_UNIX

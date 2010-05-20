@@ -80,6 +80,12 @@ GFileOutputStream * _g_local_file_output_stream_replace  (const char       *file
                                                           GCancellable     *cancellable,
                                                           GError          **error);
 
+/* Hack to get the fd since GFileDescriptorBased (which is how you
+ * _should_ get the fd) is only available on UNIX but things like
+ * win32 needs this as well
+ */
+gint _g_local_file_output_stream_get_fd (GLocalFileOutputStream *output_stream);
+
 G_END_DECLS
 
 #endif /* __G_LOCAL_FILE_OUTPUT_STREAM_H__ */

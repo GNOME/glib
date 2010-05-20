@@ -134,7 +134,7 @@ g_dbus_message_new (void)
  * g_dbus_message_new_method_call:
  * @name: A valid D-Bus name or %NULL.
  * @path: A valid object path.
- * @interface: A valid D-Bus interface name or %NULL.
+ * @interface_: A valid D-Bus interface name or %NULL.
  * @method: A valid method name.
  *
  * Creates a new #GDBusMessage for a method call.
@@ -146,7 +146,7 @@ g_dbus_message_new (void)
 GDBusMessage *
 g_dbus_message_new_method_call (const gchar *name,
                                 const gchar *path,
-                                const gchar *interface,
+                                const gchar *interface_,
                                 const gchar *method)
 {
   GDBusMessage *message;
@@ -154,7 +154,7 @@ g_dbus_message_new_method_call (const gchar *name,
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), NULL);
   g_return_val_if_fail (g_variant_is_object_path (path), NULL);
   g_return_val_if_fail (g_dbus_is_member_name (method), NULL);
-  g_return_val_if_fail (interface == NULL || g_dbus_is_interface_name (interface), NULL);
+  g_return_val_if_fail (interface_ == NULL || g_dbus_is_interface_name (interface_), NULL);
 
   message = g_dbus_message_new ();
   message->priv->type = G_DBUS_MESSAGE_TYPE_METHOD_CALL;
@@ -163,8 +163,8 @@ g_dbus_message_new_method_call (const gchar *name,
     g_dbus_message_set_destination (message, name);
   g_dbus_message_set_path (message, path);
   g_dbus_message_set_member (message, method);
-  if (interface != NULL)
-    g_dbus_message_set_interface (message, interface);
+  if (interface_ != NULL)
+    g_dbus_message_set_interface (message, interface_);
 
   return message;
 }
@@ -172,7 +172,7 @@ g_dbus_message_new_method_call (const gchar *name,
 /**
  * g_dbus_message_new_signal:
  * @path: A valid object path.
- * @interface: A valid D-Bus interface name or %NULL.
+ * @interface_: A valid D-Bus interface name or %NULL.
  * @signal: A valid signal name.
  *
  * Creates a new #GDBusMessage for a signal emission.
@@ -183,14 +183,14 @@ g_dbus_message_new_method_call (const gchar *name,
  */
 GDBusMessage *
 g_dbus_message_new_signal (const gchar  *path,
-                           const gchar  *interface,
+                           const gchar  *interface_,
                            const gchar  *signal)
 {
   GDBusMessage *message;
 
   g_return_val_if_fail (g_variant_is_object_path (path), NULL);
   g_return_val_if_fail (g_dbus_is_member_name (signal), NULL);
-  g_return_val_if_fail (interface == NULL || g_dbus_is_interface_name (interface), NULL);
+  g_return_val_if_fail (interface_ == NULL || g_dbus_is_interface_name (interface_), NULL);
 
   message = g_dbus_message_new ();
   message->priv->type = G_DBUS_MESSAGE_TYPE_SIGNAL;
@@ -199,8 +199,8 @@ g_dbus_message_new_signal (const gchar  *path,
   g_dbus_message_set_path (message, path);
   g_dbus_message_set_member (message, signal);
 
-  if (interface != NULL)
-    g_dbus_message_set_interface (message, interface);
+  if (interface_ != NULL)
+    g_dbus_message_set_interface (message, interface_);
 
   return message;
 }

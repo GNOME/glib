@@ -1815,6 +1815,7 @@ initable_init (GInitable     *initable,
 
   //g_debug ("haz unix fd passing powers: %d", connection->priv->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
+#ifdef G_OS_UNIX
   /* Hack used until
    *
    *  https://bugzilla.gnome.org/show_bug.cgi?id=616458
@@ -1825,6 +1826,7 @@ initable_init (GInitable     *initable,
     {
       g_socket_set_blocking (g_socket_connection_get_socket (G_SOCKET_CONNECTION (connection->priv->stream)), FALSE);
     }
+#endif
 
   connection->priv->worker = _g_dbus_worker_new (connection->priv->stream,
                                                  connection->priv->capabilities,

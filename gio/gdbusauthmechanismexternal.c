@@ -352,9 +352,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 #if defined(G_OS_UNIX)
   initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) g_credentials_get_unix_user (credentials, NULL));
 #elif defined(G_OS_WIN32)
-  initial_response = g_strdup_printf ("%s", g_credentials_get_windows_user ());
-#else
-#warning Dont know how to send credentials on this OS. Please implement.
+#warning Dont know how to send credentials on this OS. The EXTERNAL D-Bus authentication mechanism will not work.
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
 #endif
   return initial_response;
