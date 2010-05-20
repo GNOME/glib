@@ -2071,7 +2071,7 @@ g_typelib_new_from_memory (guchar *memory, gsize len)
 {
   GTypelib *meta;
 
-  meta = g_new0 (GTypelib, 1);
+  meta = g_slice_new0 (GTypelib);
   meta->data = memory;
   meta->len = len;
   meta->owns_memory = TRUE;
@@ -2094,7 +2094,7 @@ g_typelib_new_from_const_memory (const guchar *memory, gsize len)
 {
   GTypelib *meta;
 
-  meta = g_new0 (GTypelib, 1);
+  meta = g_slice_new0 (GTypelib);
   meta->data = (guchar *) memory;
   meta->len = len;
   meta->owns_memory = FALSE;
@@ -2116,7 +2116,7 @@ g_typelib_new_from_mapped_file (GMappedFile *mfile)
 {
   GTypelib *meta;
 
-  meta = g_new0 (GTypelib, 1);
+  meta = g_slice_new0 (GTypelib);
   meta->mfile = mfile;
   meta->owns_memory = FALSE;
   meta->data = (guchar *) g_mapped_file_get_contents (mfile);
@@ -2144,7 +2144,7 @@ g_typelib_free (GTypelib *typelib)
       g_list_foreach (typelib->modules, (GFunc) g_module_close, NULL);
       g_list_free (typelib->modules);
     }
-  g_free (typelib);
+  g_slice_free (GTypelib, typelib);
 }
 
 const gchar *

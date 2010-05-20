@@ -37,7 +37,7 @@ g_ir_module_new (const gchar *name,
 {
   GIrModule *module;
 
-  module = g_new0 (GIrModule, 1);
+  module = g_slice_new0 (GIrModule);
 
   module->name = g_strdup (name);
   module->version = g_strdup (version);
@@ -73,7 +73,7 @@ g_ir_module_free (GIrModule *module)
   g_hash_table_destroy (module->aliases);
   g_hash_table_destroy (module->disguised_structures);
 
-  g_free (module);
+  g_slice_free (GIrModule, module);
 }
 
 /**

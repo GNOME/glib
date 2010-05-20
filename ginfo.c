@@ -107,7 +107,7 @@ g_info_new_full (GIInfoType     type,
 
   g_return_val_if_fail (container != NULL || repository != NULL, NULL);
 
-  info = g_new (GIRealInfo, 1);
+  info = g_slice_new (GIRealInfo);
 
   g_info_init (info, type, repository, container, typelib, offset);
   info->ref_count = 1;
@@ -149,7 +149,7 @@ g_info_from_entry (GIRepository *repository,
         {
           GIUnresolvedInfo *unresolved;
 
-          unresolved = g_new0 (GIUnresolvedInfo, 1);
+          unresolved = g_slice_new0 (GIUnresolvedInfo);
 
           unresolved->type = GI_INFO_TYPE_UNRESOLVED;
           unresolved->ref_count = 1;
@@ -159,7 +159,7 @@ g_info_from_entry (GIRepository *repository,
           unresolved->namespace = namespace;
 
           return (GIBaseInfo *)unresolved;
-	    }
+	}
       return (GIBaseInfo *)result;
     }
 
@@ -241,7 +241,7 @@ g_base_info_unref (GIBaseInfo *info)
       if (rinfo->repository)
         g_object_unref (rinfo->repository);
 
-      g_free (rinfo);
+      g_slice_free (GIRealInfo, rinfo);
     }
 }
 
