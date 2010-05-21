@@ -824,6 +824,18 @@ test_dispatch_thread_func (gpointer user_data)
   g_error_free (error);
   g_assert (value == NULL);
 
+  error = NULL;
+  value = g_dbus_proxy_call_sync (foo_proxy,
+                                  "org.example.FooXYZ.NonExistant",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &error);
+  g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
+  g_error_free (error);
+  g_assert (value == NULL);
+
   /* user properties */
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,

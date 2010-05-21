@@ -5088,6 +5088,7 @@ static void
 distribute_method_call (GDBusConnection *connection,
                         GDBusMessage    *message)
 {
+  GDBusMessage *reply;
   ExportedObject *eo;
   ExportedSubtree *es;
   const gchar *object_path;
@@ -5154,7 +5155,14 @@ distribute_method_call (GDBusConnection *connection,
   if (handle_generic_unlocked (connection, message))
     goto out;
 
-  /* if we end up here, the message has not been not handled */
+  /* if we end up here, the message has not been not handled - so return an error saying this */
+  reply = g_dbus_message_new_method_error (message,
+                                           "org.freedesktop.DBus.Error.UnknownMethod",
+                                           _("No such interface `%s' on object at path %s"),
+                                           interface_name,
+                                           object_path);
+  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_object_unref (reply);
 
  out:
   g_free (subtree_path);
